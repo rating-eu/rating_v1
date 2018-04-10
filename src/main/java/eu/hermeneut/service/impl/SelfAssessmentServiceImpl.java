@@ -78,7 +78,11 @@ public class SelfAssessmentServiceImpl implements SelfAssessmentService {
 				String self_owner=selfAssessment.getUser().getLogin();
 				
 				if(self_owner.equalsIgnoreCase(logged_user)){
-					if(!toReturn.contains(selfAssessment)) {toReturn.add(selfAssessment);}
+					if(!toReturn.contains(selfAssessment)) {
+					System.out.println("SIZE "+selfAssessment.getCompanyprofiles());
+					System.out.println("SIZE sectors "+selfAssessment.getCompanysectors());
+
+					toReturn.add(selfAssessment);}
 				}else {
 					Iterator<CompanyProfile> companyProfiles_iterator = selfAssessment.getCompanyprofiles().iterator();
 					
@@ -90,6 +94,8 @@ public class SelfAssessmentServiceImpl implements SelfAssessmentService {
 						
 						System.out.println("company owner user "+ company_owner);
 						if(company_owner.equalsIgnoreCase(logged_user)){
+							System.out.println("SIZE "+selfAssessment.getCompanyprofiles());
+							System.out.println("SIZE sectors "+selfAssessment.getCompanysectors());
 							if(!toReturn.contains(selfAssessment)) {toReturn.add(selfAssessment);}
 						}
 

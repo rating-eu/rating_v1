@@ -77,6 +77,8 @@ public class CompanyProfileServiceImpl implements CompanyProfileService {
 				String owner=companyProfile.getUser().getLogin();
 				System.out.println("owner "+ owner);
 				if(owner.equalsIgnoreCase(logged_user)){
+					System.out.println("SIZE "+companyProfile.getContainers().size());
+
 					toReturn.add(companyProfile);
 				}else {
 					/*se logged user appartiene alla company*/
@@ -86,6 +88,7 @@ public class CompanyProfileServiceImpl implements CompanyProfileService {
 						System.out.println("owner department "+ hh.getUser().getLogin() );
 						if(logged_user.equalsIgnoreCase(hh.getUser().getLogin())){
 							if(!toReturn.contains(companyProfile)) {
+								System.out.println("SIZE "+companyProfile.getContainers().size());
 								toReturn.add(companyProfile);
 							}
 						}

@@ -88,7 +88,10 @@ public class CompanySectorServiceImpl implements CompanySectorService {
 					
 					if(logged_user.equalsIgnoreCase(companySector
 							.getCompanyprofile().getUser().getLogin())){
-						if(!toReturn.contains(companySector))toReturn.add(companySector);
+						if(!toReturn.contains(companySector)) {
+							
+							toReturn.add(companySector);
+						}
 
 					}
 				}
