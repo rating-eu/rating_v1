@@ -1,0 +1,30 @@
+
+{
+    "hermeneutApp": {
+        "asset" : {
+            "home": {
+                "title": "Assets",
+                "createLabel": "Créer un nouveau Asset",
+                "createOrEditLabel": "Créer ou éditer un Asset",
+                "search": "Recherche pour Asset"
+            },
+            "created": "Un nouveau Asset a été créé avec l'identifiant {{ param }}",
+            "updated": "Le Asset avec l'identifiant {{ param }} a été mis à jour",
+            "deleted": "Le Asset avec l'identifiant {{ param }} a été supprimé",
+            "delete": {
+                "question": "Etes-vous certain de vouloir supprimer le Asset {{ id }} ?"
+            },
+            "detail": {
+                "title": "Asset"
+            },
+            "name": "Name",
+            "description": "Description",
+            "created": "Created",
+            "modified": "Modified",
+            "container": "Container",
+            "domains": "Domains",
+            "assetcategory": "Assetcategory",
+            "selfassessment": "Selfassessment"
+        }
+    }
+}

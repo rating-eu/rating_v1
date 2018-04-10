@@ -1,0 +1,52 @@
+
+<div *ngIf="companyProfile">
+    <h2><span jhiTranslate="hermeneutApp.companyProfile.detail.title">Company Profile</span> {{companyProfile.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="hermeneutApp.companyProfile.name">Name</span></dt>
+        <dd>
+            <span>{{companyProfile.name}}</span>
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.companyProfile.description">Description</span></dt>
+        <dd>
+            <span>{{companyProfile.description}}</span>
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.companyProfile.created">Created</span></dt>
+        <dd>
+            <span>{{companyProfile.created | date:'medium'}}</span>
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.companyProfile.modified">Modified</span></dt>
+        <dd>
+            <span>{{companyProfile.modified | date:'medium'}}</span>
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.companyProfile.type">Type</span></dt>
+        <dd>
+            <span jhiTranslate="{{'hermeneutApp.CompType.' + companyProfile.type}}">{{companyProfile.type}}</span>
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.companyProfile.user">User</span></dt>
+        <dd>
+            {{companyProfile.user?.login}}
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.companyProfile.container">Container</span></dt>
+        <dd>
+            <span *ngFor="let container of companyProfile.containers; let last = last">
+                <a [routerLink]="['/container-mgm', container?.id ]">{{container.name}}</a>{{last ? '' : ', '}}
+            </span>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'company-profile-mgm/'+ companyProfile.id + '/edit'} }]"
+            replaceUrl="true"
+            queryParamsHandling="merge"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+    </button>
+</div>

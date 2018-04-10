@@ -1,0 +1,156 @@
+<form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+
+    <div class="modal-header">
+        <h4 class="modal-title" id="myAttackStrategyLabel" jhiTranslate="hermeneutApp.attackStrategy.home.createOrEditLabel">Create or edit a Attack Strategy</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                (click)="clear()">&times;</button>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group" [hidden]="!attackStrategy.id">
+            <label for="id" jhiTranslate="global.field.id">ID</label>
+            <input type="text" class="form-control" id="id" name="id"
+                   [(ngModel)]="attackStrategy.id" readonly />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="hermeneutApp.attackStrategy.name" for="field_name">Name</label>
+            <input type="text" class="form-control" name="name" id="field_name"
+                [(ngModel)]="attackStrategy.name" required/>
+            <div [hidden]="!(editForm.controls.name?.dirty && editForm.controls.name?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.name?.errors?.required" jhiTranslate="entity.validation.required">
+                   This field is required.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="hermeneutApp.attackStrategy.description" for="field_description">Description</label>
+            <input type="text" class="form-control" name="description" id="field_description"
+                [(ngModel)]="attackStrategy.description" maxlength="2000"/>
+            <div [hidden]="!(editForm.controls.description?.dirty && editForm.controls.description?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.description?.errors?.maxlength" jhiTranslate="entity.validation.maxlength" translateValues="{ max: 2000 }">
+                   This field cannot be longer than 2000 characters.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="hermeneutApp.attackStrategy.freq" for="field_freq">Freq</label>
+            <select class="form-control" name="freq" [(ngModel)]="attackStrategy.freq" id="field_freq"  required>
+                <option value="LOW">{{'hermeneutApp.AS_Frequency.LOW' | translate}}</option>
+                <option value="MEDIUM">{{'hermeneutApp.AS_Frequency.MEDIUM' | translate}}</option>
+                <option value="HIGH">{{'hermeneutApp.AS_Frequency.HIGH' | translate}}</option>
+            </select>
+            <div [hidden]="!(editForm.controls.freq?.dirty && editForm.controls.freq?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.freq?.errors?.required" jhiTranslate="entity.validation.required">
+                   This field is required.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="hermeneutApp.attackStrategy.skill" for="field_skill">Skill</label>
+            <select class="form-control" name="skill" [(ngModel)]="attackStrategy.skill" id="field_skill"  required>
+                <option value="HIGH">{{'hermeneutApp.SkillLevel.HIGH' | translate}}</option>
+                <option value="MEDIUM">{{'hermeneutApp.SkillLevel.MEDIUM' | translate}}</option>
+                <option value="LOW">{{'hermeneutApp.SkillLevel.LOW' | translate}}</option>
+            </select>
+            <div [hidden]="!(editForm.controls.skill?.dirty && editForm.controls.skill?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.skill?.errors?.required" jhiTranslate="entity.validation.required">
+                   This field is required.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="hermeneutApp.attackStrategy.resources" for="field_resources">Resources</label>
+            <select class="form-control" name="resources" [(ngModel)]="attackStrategy.resources" id="field_resources"  required>
+                <option value="LOW">{{'hermeneutApp.ResourceLevel.LOW' | translate}}</option>
+                <option value="MEDIUM">{{'hermeneutApp.ResourceLevel.MEDIUM' | translate}}</option>
+                <option value="HIGH">{{'hermeneutApp.ResourceLevel.HIGH' | translate}}</option>
+            </select>
+            <div [hidden]="!(editForm.controls.resources?.dirty && editForm.controls.resources?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.resources?.errors?.required" jhiTranslate="entity.validation.required">
+                   This field is required.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="hermeneutApp.attackStrategy.likelihood" for="field_likelihood">Likelihood</label>
+            <select class="form-control" name="likelihood" [(ngModel)]="attackStrategy.likelihood" id="field_likelihood" >
+                <option value="LOW">{{'hermeneutApp.Likelihood.LOW' | translate}}</option>
+                <option value="MEDIUM">{{'hermeneutApp.Likelihood.MEDIUM' | translate}}</option>
+                <option value="HIGH">{{'hermeneutApp.Likelihood.HIGH' | translate}}</option>
+                <option value="MEDIUM_HIGH">{{'hermeneutApp.Likelihood.MEDIUM_HIGH' | translate}}</option>
+                <option value="LOW_MEDIUM">{{'hermeneutApp.Likelihood.LOW_MEDIUM' | translate}}</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="hermeneutApp.attackStrategy.level" for="field_level">Level</label>
+            <select class="form-control" name="level" [(ngModel)]="attackStrategy.level" id="field_level"  required>
+                <option value="HUMAN">{{'hermeneutApp.Level.HUMAN' | translate}}</option>
+                <option value="IT">{{'hermeneutApp.Level.IT' | translate}}</option>
+                <option value="PHYSICAL">{{'hermeneutApp.Level.PHYSICAL' | translate}}</option>
+            </select>
+            <div [hidden]="!(editForm.controls.level?.dirty && editForm.controls.level?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.level?.errors?.required" jhiTranslate="entity.validation.required">
+                   This field is required.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="hermeneutApp.attackStrategy.phase" for="field_phase">Phase</label>
+            <select class="form-control" name="phase" [(ngModel)]="attackStrategy.phase" id="field_phase"  required>
+                <option value="RECONNAISSANCE">{{'hermeneutApp.Phase.RECONNAISSANCE' | translate}}</option>
+                <option value="WEAPONIZATION">{{'hermeneutApp.Phase.WEAPONIZATION' | translate}}</option>
+                <option value="DELIVERY">{{'hermeneutApp.Phase.DELIVERY' | translate}}</option>
+                <option value="EXPLOITATION">{{'hermeneutApp.Phase.EXPLOITATION' | translate}}</option>
+                <option value="INSTALLATION">{{'hermeneutApp.Phase.INSTALLATION' | translate}}</option>
+                <option value="COMMANDCONTROL">{{'hermeneutApp.Phase.COMMANDCONTROL' | translate}}</option>
+            </select>
+            <div [hidden]="!(editForm.controls.phase?.dirty && editForm.controls.phase?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.phase?.errors?.required" jhiTranslate="entity.validation.required">
+                   This field is required.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="hermeneutApp.attackStrategy.created" for="field_created">Created</label>
+            <div class="d-flex">
+                <input id="field_created" type="datetime-local" class="form-control" name="created" [(ngModel)]="attackStrategy.created"
+                />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="hermeneutApp.attackStrategy.modified" for="field_modified">Modified</label>
+            <div class="d-flex">
+                <input id="field_modified" type="datetime-local" class="form-control" name="modified" [(ngModel)]="attackStrategy.modified"
+                />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label jhiTranslate="hermeneutApp.attackStrategy.mitigation" for="field_mitigation">Mitigation</label>
+            <select class="form-control" id="field_mitigation" multiple name="mitigation" [(ngModel)]="attackStrategy.mitigations">
+                <option [ngValue]="getSelected(attackStrategy.mitigations, mitigationOption)" *ngFor="let mitigationOption of mitigations; trackBy: trackMitigationById">{{mitigationOption.name}}</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label jhiTranslate="hermeneutApp.attackStrategy.threatAgent" for="field_threatAgent">Threat Agent</label>
+            <select class="form-control" id="field_threatAgent" multiple name="threatAgent" [(ngModel)]="attackStrategy.threatAgents">
+                <option [ngValue]="getSelected(attackStrategy.threatAgents, threatAgentOption)" *ngFor="let threatAgentOption of threatagents; trackBy: trackThreatAgentById">{{threatAgentOption.name}}</option>
+            </select>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">
+            <span class="fa fa-ban"></span>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+        <button type="submit" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+            <span class="fa fa-save"></span>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+    </div>
+</form>

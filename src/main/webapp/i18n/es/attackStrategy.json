@@ -1,0 +1,36 @@
+
+{
+    "hermeneutApp": {
+        "attackStrategy" : {
+            "home": {
+                "title": "Attack Strategies",
+                "createLabel": "Crear nuevo Attack Strategy",
+                "createOrEditLabel": "Crear o editar Attack Strategy",
+                "search": "Search for Attack Strategy"
+            },
+            "created": "Un nuevo Attack Strategy ha sido creado con el identificador {{ param }}",
+            "updated": "Un Attack Strategy ha sido actualizado con el identificador {{ param }}",
+            "deleted": "Un Attack Strategy ha sido eliminado con el identificador {{ param }}",
+            "delete": {
+                "question": "¿Seguro que quiere eliminar Attack Strategy {{ id }}?"
+            },
+            "detail": {
+                "title": "Attack Strategy"
+            },
+            "name": "Name",
+            "description": "Description",
+            "freq": "Freq",
+            "skill": "Skill",
+            "resources": "Resources",
+            "likelihood": "Likelihood",
+            "level": "Level",
+            "phase": "Phase",
+            "created": "Created",
+            "modified": "Modified",
+            "mitigation": "Mitigation",
+            "threatAgent": "Threat Agent",
+            "answstrategy": "Answstrategy",
+            "selfassessment": "Selfassessment"
+        }
+    }
+}

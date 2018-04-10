@@ -1,0 +1,489 @@
+package eu.hermeneut.web.rest;
+
+import eu.hermeneut.HermeneutApp;
+
+import eu.hermeneut.domain.AttackStrategy;
+import eu.hermeneut.repository.AttackStrategyRepository;
+import eu.hermeneut.service.AttackStrategyService;
+import eu.hermeneut.repository.search.AttackStrategySearchRepository;
+import eu.hermeneut.web.rest.errors.ExceptionTranslator;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.MockitoAnnotations;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.web.PageableHandlerMethodArgumentResolver;
+import org.springframework.http.MediaType;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.springframework.transaction.annotation.Transactional;
+
+import javax.persistence.EntityManager;
+import java.time.Instant;
+import java.time.ZonedDateTime;
+import java.time.ZoneOffset;
+import java.time.ZoneId;
+import java.util.List;
+
+import static eu.hermeneut.web.rest.TestUtil.sameInstant;
+import static eu.hermeneut.web.rest.TestUtil.createFormattingConversionService;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.hasItem;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
+import eu.hermeneut.domain.enumeration.AS_Frequency;
+import eu.hermeneut.domain.enumeration.SkillLevel;
+import eu.hermeneut.domain.enumeration.ResourceLevel;
+import eu.hermeneut.domain.enumeration.Likelihood;
+import eu.hermeneut.domain.enumeration.Level;
+import eu.hermeneut.domain.enumeration.Phase;
+/**
+ * Test class for the AttackStrategyResource REST controller.
+ *
+ * @see AttackStrategyResource
+ */
+@RunWith(SpringRunner.class)
+@SpringBootTest(classes = HermeneutApp.class)
+public class AttackStrategyResourceIntTest {
+
+    private static final String DEFAULT_NAME = "AAAAAAAAAA";
+    private static final String UPDATED_NAME = "BBBBBBBBBB";
+
+    private static final String DEFAULT_DESCRIPTION = "AAAAAAAAAA";
+    private static final String UPDATED_DESCRIPTION = "BBBBBBBBBB";
+
+    private static final AS_Frequency DEFAULT_FREQ = AS_Frequency.LOW;
+    private static final AS_Frequency UPDATED_FREQ = AS_Frequency.MEDIUM;
+
+    private static final SkillLevel DEFAULT_SKILL = SkillLevel.HIGH;
+    private static final SkillLevel UPDATED_SKILL = SkillLevel.MEDIUM;
+
+    private static final ResourceLevel DEFAULT_RESOURCES = ResourceLevel.LOW;
+    private static final ResourceLevel UPDATED_RESOURCES = ResourceLevel.MEDIUM;
+
+    private static final Likelihood DEFAULT_LIKELIHOOD = Likelihood.LOW;
+    private static final Likelihood UPDATED_LIKELIHOOD = Likelihood.MEDIUM;
+
+    private static final Level DEFAULT_LEVEL = Level.HUMAN;
+    private static final Level UPDATED_LEVEL = Level.IT;
+
+    private static final Phase DEFAULT_PHASE = Phase.RECONNAISSANCE;
+    private static final Phase UPDATED_PHASE = Phase.WEAPONIZATION;
+
+    private static final ZonedDateTime DEFAULT_CREATED = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
+    private static final ZonedDateTime UPDATED_CREATED = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
+
+    private static final ZonedDateTime DEFAULT_MODIFIED = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
+    private static final ZonedDateTime UPDATED_MODIFIED = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
+
+    @Autowired
+    private AttackStrategyRepository attackStrategyRepository;
+
+    @Autowired
+    private AttackStrategyService attackStrategyService;
+
+    @Autowired
+    private AttackStrategySearchRepository attackStrategySearchRepository;
+
+    @Autowired
+    private MappingJackson2HttpMessageConverter jacksonMessageConverter;
+
+    @Autowired
+    private PageableHandlerMethodArgumentResolver pageableArgumentResolver;
+
+    @Autowired
+    private ExceptionTranslator exceptionTranslator;
+
+    @Autowired
+    private EntityManager em;
+
+    private MockMvc restAttackStrategyMockMvc;
+
+    private AttackStrategy attackStrategy;
+
+    @Before
+    public void setup() {
+        MockitoAnnotations.initMocks(this);
+        final AttackStrategyResource attackStrategyResource = new AttackStrategyResource(attackStrategyService);
+        this.restAttackStrategyMockMvc = MockMvcBuilders.standaloneSetup(attackStrategyResource)
+            .setCustomArgumentResolvers(pageableArgumentResolver)
+            .setControllerAdvice(exceptionTranslator)
+            .setConversionService(createFormattingConversionService())
+            .setMessageConverters(jacksonMessageConverter).build();
+    }
+
+    /**
+     * Create an entity for this test.
+     *
+     * This is a static method, as tests for other entities might also need it,
+     * if they test an entity which requires the current entity.
+     */
+    public static AttackStrategy createEntity(EntityManager em) {
+        AttackStrategy attackStrategy = new AttackStrategy()
+            .name(DEFAULT_NAME)
+            .description(DEFAULT_DESCRIPTION)
+            .freq(DEFAULT_FREQ)
+            .skill(DEFAULT_SKILL)
+            .resources(DEFAULT_RESOURCES)
+            .likelihood(DEFAULT_LIKELIHOOD)
+            .level(DEFAULT_LEVEL)
+            .phase(DEFAULT_PHASE)
+            .created(DEFAULT_CREATED)
+            .modified(DEFAULT_MODIFIED);
+        return attackStrategy;
+    }
+
+    @Before
+    public void initTest() {
+        attackStrategySearchRepository.deleteAll();
+        attackStrategy = createEntity(em);
+    }
+
+    @Test
+    @Transactional
+    public void createAttackStrategy() throws Exception {
+        int databaseSizeBeforeCreate = attackStrategyRepository.findAll().size();
+
+        // Create the AttackStrategy
+        restAttackStrategyMockMvc.perform(post("/api/attack-strategies")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(attackStrategy)))
+            .andExpect(status().isCreated());
+
+        // Validate the AttackStrategy in the database
+        List<AttackStrategy> attackStrategyList = attackStrategyRepository.findAll();
+        assertThat(attackStrategyList).hasSize(databaseSizeBeforeCreate + 1);
+        AttackStrategy testAttackStrategy = attackStrategyList.get(attackStrategyList.size() - 1);
+        assertThat(testAttackStrategy.getName()).isEqualTo(DEFAULT_NAME);
+        assertThat(testAttackStrategy.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
+        assertThat(testAttackStrategy.getFreq()).isEqualTo(DEFAULT_FREQ);
+        assertThat(testAttackStrategy.getSkill()).isEqualTo(DEFAULT_SKILL);
+        assertThat(testAttackStrategy.getResources()).isEqualTo(DEFAULT_RESOURCES);
+        assertThat(testAttackStrategy.getLikelihood()).isEqualTo(DEFAULT_LIKELIHOOD);
+        assertThat(testAttackStrategy.getLevel()).isEqualTo(DEFAULT_LEVEL);
+        assertThat(testAttackStrategy.getPhase()).isEqualTo(DEFAULT_PHASE);
+        assertThat(testAttackStrategy.getCreated()).isEqualTo(DEFAULT_CREATED);
+        assertThat(testAttackStrategy.getModified()).isEqualTo(DEFAULT_MODIFIED);
+
+        // Validate the AttackStrategy in Elasticsearch
+        AttackStrategy attackStrategyEs = attackStrategySearchRepository.findOne(testAttackStrategy.getId());
+        assertThat(testAttackStrategy.getCreated()).isEqualTo(testAttackStrategy.getCreated());
+        assertThat(testAttackStrategy.getModified()).isEqualTo(testAttackStrategy.getModified());
+        assertThat(attackStrategyEs).isEqualToIgnoringGivenFields(testAttackStrategy, "created", "modified");
+    }
+
+    @Test
+    @Transactional
+    public void createAttackStrategyWithExistingId() throws Exception {
+        int databaseSizeBeforeCreate = attackStrategyRepository.findAll().size();
+
+        // Create the AttackStrategy with an existing ID
+        attackStrategy.setId(1L);
+
+        // An entity with an existing ID cannot be created, so this API call must fail
+        restAttackStrategyMockMvc.perform(post("/api/attack-strategies")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(attackStrategy)))
+            .andExpect(status().isBadRequest());
+
+        // Validate the AttackStrategy in the database
+        List<AttackStrategy> attackStrategyList = attackStrategyRepository.findAll();
+        assertThat(attackStrategyList).hasSize(databaseSizeBeforeCreate);
+    }
+
+    @Test
+    @Transactional
+    public void checkNameIsRequired() throws Exception {
+        int databaseSizeBeforeTest = attackStrategyRepository.findAll().size();
+        // set the field null
+        attackStrategy.setName(null);
+
+        // Create the AttackStrategy, which fails.
+
+        restAttackStrategyMockMvc.perform(post("/api/attack-strategies")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(attackStrategy)))
+            .andExpect(status().isBadRequest());
+
+        List<AttackStrategy> attackStrategyList = attackStrategyRepository.findAll();
+        assertThat(attackStrategyList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
+    public void checkFreqIsRequired() throws Exception {
+        int databaseSizeBeforeTest = attackStrategyRepository.findAll().size();
+        // set the field null
+        attackStrategy.setFreq(null);
+
+        // Create the AttackStrategy, which fails.
+
+        restAttackStrategyMockMvc.perform(post("/api/attack-strategies")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(attackStrategy)))
+            .andExpect(status().isBadRequest());
+
+        List<AttackStrategy> attackStrategyList = attackStrategyRepository.findAll();
+        assertThat(attackStrategyList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
+    public void checkSkillIsRequired() throws Exception {
+        int databaseSizeBeforeTest = attackStrategyRepository.findAll().size();
+        // set the field null
+        attackStrategy.setSkill(null);
+
+        // Create the AttackStrategy, which fails.
+
+        restAttackStrategyMockMvc.perform(post("/api/attack-strategies")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(attackStrategy)))
+            .andExpect(status().isBadRequest());
+
+        List<AttackStrategy> attackStrategyList = attackStrategyRepository.findAll();
+        assertThat(attackStrategyList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
+    public void checkResourcesIsRequired() throws Exception {
+        int databaseSizeBeforeTest = attackStrategyRepository.findAll().size();
+        // set the field null
+        attackStrategy.setResources(null);
+
+        // Create the AttackStrategy, which fails.
+
+        restAttackStrategyMockMvc.perform(post("/api/attack-strategies")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(attackStrategy)))
+            .andExpect(status().isBadRequest());
+
+        List<AttackStrategy> attackStrategyList = attackStrategyRepository.findAll();
+        assertThat(attackStrategyList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
+    public void checkLevelIsRequired() throws Exception {
+        int databaseSizeBeforeTest = attackStrategyRepository.findAll().size();
+        // set the field null
+        attackStrategy.setLevel(null);
+
+        // Create the AttackStrategy, which fails.
+
+        restAttackStrategyMockMvc.perform(post("/api/attack-strategies")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(attackStrategy)))
+            .andExpect(status().isBadRequest());
+
+        List<AttackStrategy> attackStrategyList = attackStrategyRepository.findAll();
+        assertThat(attackStrategyList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
+    public void checkPhaseIsRequired() throws Exception {
+        int databaseSizeBeforeTest = attackStrategyRepository.findAll().size();
+        // set the field null
+        attackStrategy.setPhase(null);
+
+        // Create the AttackStrategy, which fails.
+
+        restAttackStrategyMockMvc.perform(post("/api/attack-strategies")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(attackStrategy)))
+            .andExpect(status().isBadRequest());
+
+        List<AttackStrategy> attackStrategyList = attackStrategyRepository.findAll();
+        assertThat(attackStrategyList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
+    public void getAllAttackStrategies() throws Exception {
+        // Initialize the database
+        attackStrategyRepository.saveAndFlush(attackStrategy);
+
+        // Get all the attackStrategyList
+        restAttackStrategyMockMvc.perform(get("/api/attack-strategies?sort=id,desc"))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(jsonPath("$.[*].id").value(hasItem(attackStrategy.getId().intValue())))
+            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
+            .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION.toString())))
+            .andExpect(jsonPath("$.[*].freq").value(hasItem(DEFAULT_FREQ.toString())))
+            .andExpect(jsonPath("$.[*].skill").value(hasItem(DEFAULT_SKILL.toString())))
+            .andExpect(jsonPath("$.[*].resources").value(hasItem(DEFAULT_RESOURCES.toString())))
+            .andExpect(jsonPath("$.[*].likelihood").value(hasItem(DEFAULT_LIKELIHOOD.toString())))
+            .andExpect(jsonPath("$.[*].level").value(hasItem(DEFAULT_LEVEL.toString())))
+            .andExpect(jsonPath("$.[*].phase").value(hasItem(DEFAULT_PHASE.toString())))
+            .andExpect(jsonPath("$.[*].created").value(hasItem(sameInstant(DEFAULT_CREATED))))
+            .andExpect(jsonPath("$.[*].modified").value(hasItem(sameInstant(DEFAULT_MODIFIED))));
+    }
+
+    @Test
+    @Transactional
+    public void getAttackStrategy() throws Exception {
+        // Initialize the database
+        attackStrategyRepository.saveAndFlush(attackStrategy);
+
+        // Get the attackStrategy
+        restAttackStrategyMockMvc.perform(get("/api/attack-strategies/{id}", attackStrategy.getId()))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(jsonPath("$.id").value(attackStrategy.getId().intValue()))
+            .andExpect(jsonPath("$.name").value(DEFAULT_NAME.toString()))
+            .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION.toString()))
+            .andExpect(jsonPath("$.freq").value(DEFAULT_FREQ.toString()))
+            .andExpect(jsonPath("$.skill").value(DEFAULT_SKILL.toString()))
+            .andExpect(jsonPath("$.resources").value(DEFAULT_RESOURCES.toString()))
+            .andExpect(jsonPath("$.likelihood").value(DEFAULT_LIKELIHOOD.toString()))
+            .andExpect(jsonPath("$.level").value(DEFAULT_LEVEL.toString()))
+            .andExpect(jsonPath("$.phase").value(DEFAULT_PHASE.toString()))
+            .andExpect(jsonPath("$.created").value(sameInstant(DEFAULT_CREATED)))
+            .andExpect(jsonPath("$.modified").value(sameInstant(DEFAULT_MODIFIED)));
+    }
+
+    @Test
+    @Transactional
+    public void getNonExistingAttackStrategy() throws Exception {
+        // Get the attackStrategy
+        restAttackStrategyMockMvc.perform(get("/api/attack-strategies/{id}", Long.MAX_VALUE))
+            .andExpect(status().isNotFound());
+    }
+
+    @Test
+    @Transactional
+    public void updateAttackStrategy() throws Exception {
+        // Initialize the database
+        attackStrategyService.save(attackStrategy);
+
+        int databaseSizeBeforeUpdate = attackStrategyRepository.findAll().size();
+
+        // Update the attackStrategy
+        AttackStrategy updatedAttackStrategy = attackStrategyRepository.findOne(attackStrategy.getId());
+        // Disconnect from session so that the updates on updatedAttackStrategy are not directly saved in db
+        em.detach(updatedAttackStrategy);
+        updatedAttackStrategy
+            .name(UPDATED_NAME)
+            .description(UPDATED_DESCRIPTION)
+            .freq(UPDATED_FREQ)
+            .skill(UPDATED_SKILL)
+            .resources(UPDATED_RESOURCES)
+            .likelihood(UPDATED_LIKELIHOOD)
+            .level(UPDATED_LEVEL)
+            .phase(UPDATED_PHASE)
+            .created(UPDATED_CREATED)
+            .modified(UPDATED_MODIFIED);
+
+        restAttackStrategyMockMvc.perform(put("/api/attack-strategies")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(updatedAttackStrategy)))
+            .andExpect(status().isOk());
+
+        // Validate the AttackStrategy in the database
+        List<AttackStrategy> attackStrategyList = attackStrategyRepository.findAll();
+        assertThat(attackStrategyList).hasSize(databaseSizeBeforeUpdate);
+        AttackStrategy testAttackStrategy = attackStrategyList.get(attackStrategyList.size() - 1);
+        assertThat(testAttackStrategy.getName()).isEqualTo(UPDATED_NAME);
+        assertThat(testAttackStrategy.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
+        assertThat(testAttackStrategy.getFreq()).isEqualTo(UPDATED_FREQ);
+        assertThat(testAttackStrategy.getSkill()).isEqualTo(UPDATED_SKILL);
+        assertThat(testAttackStrategy.getResources()).isEqualTo(UPDATED_RESOURCES);
+        assertThat(testAttackStrategy.getLikelihood()).isEqualTo(UPDATED_LIKELIHOOD);
+        assertThat(testAttackStrategy.getLevel()).isEqualTo(UPDATED_LEVEL);
+        assertThat(testAttackStrategy.getPhase()).isEqualTo(UPDATED_PHASE);
+        assertThat(testAttackStrategy.getCreated()).isEqualTo(UPDATED_CREATED);
+        assertThat(testAttackStrategy.getModified()).isEqualTo(UPDATED_MODIFIED);
+
+        // Validate the AttackStrategy in Elasticsearch
+        AttackStrategy attackStrategyEs = attackStrategySearchRepository.findOne(testAttackStrategy.getId());
+        assertThat(testAttackStrategy.getCreated()).isEqualTo(testAttackStrategy.getCreated());
+        assertThat(testAttackStrategy.getModified()).isEqualTo(testAttackStrategy.getModified());
+        assertThat(attackStrategyEs).isEqualToIgnoringGivenFields(testAttackStrategy, "created", "modified");
+    }
+
+    @Test
+    @Transactional
+    public void updateNonExistingAttackStrategy() throws Exception {
+        int databaseSizeBeforeUpdate = attackStrategyRepository.findAll().size();
+
+        // Create the AttackStrategy
+
+        // If the entity doesn't have an ID, it will be created instead of just being updated
+        restAttackStrategyMockMvc.perform(put("/api/attack-strategies")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(attackStrategy)))
+            .andExpect(status().isCreated());
+
+        // Validate the AttackStrategy in the database
+        List<AttackStrategy> attackStrategyList = attackStrategyRepository.findAll();
+        assertThat(attackStrategyList).hasSize(databaseSizeBeforeUpdate + 1);
+    }
+
+    @Test
+    @Transactional
+    public void deleteAttackStrategy() throws Exception {
+        // Initialize the database
+        attackStrategyService.save(attackStrategy);
+
+        int databaseSizeBeforeDelete = attackStrategyRepository.findAll().size();
+
+        // Get the attackStrategy
+        restAttackStrategyMockMvc.perform(delete("/api/attack-strategies/{id}", attackStrategy.getId())
+            .accept(TestUtil.APPLICATION_JSON_UTF8))
+            .andExpect(status().isOk());
+
+        // Validate Elasticsearch is empty
+        boolean attackStrategyExistsInEs = attackStrategySearchRepository.exists(attackStrategy.getId());
+        assertThat(attackStrategyExistsInEs).isFalse();
+
+        // Validate the database is empty
+        List<AttackStrategy> attackStrategyList = attackStrategyRepository.findAll();
+        assertThat(attackStrategyList).hasSize(databaseSizeBeforeDelete - 1);
+    }
+
+    @Test
+    @Transactional
+    public void searchAttackStrategy() throws Exception {
+        // Initialize the database
+        attackStrategyService.save(attackStrategy);
+
+        // Search the attackStrategy
+        restAttackStrategyMockMvc.perform(get("/api/_search/attack-strategies?query=id:" + attackStrategy.getId()))
+            .andExpect(status().isOk())
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
+            .andExpect(jsonPath("$.[*].id").value(hasItem(attackStrategy.getId().intValue())))
+            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
+            .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION.toString())))
+            .andExpect(jsonPath("$.[*].freq").value(hasItem(DEFAULT_FREQ.toString())))
+            .andExpect(jsonPath("$.[*].skill").value(hasItem(DEFAULT_SKILL.toString())))
+            .andExpect(jsonPath("$.[*].resources").value(hasItem(DEFAULT_RESOURCES.toString())))
+            .andExpect(jsonPath("$.[*].likelihood").value(hasItem(DEFAULT_LIKELIHOOD.toString())))
+            .andExpect(jsonPath("$.[*].level").value(hasItem(DEFAULT_LEVEL.toString())))
+            .andExpect(jsonPath("$.[*].phase").value(hasItem(DEFAULT_PHASE.toString())))
+            .andExpect(jsonPath("$.[*].created").value(hasItem(sameInstant(DEFAULT_CREATED))))
+            .andExpect(jsonPath("$.[*].modified").value(hasItem(sameInstant(DEFAULT_MODIFIED))));
+    }
+
+    @Test
+    @Transactional
+    public void equalsVerifier() throws Exception {
+        TestUtil.equalsVerifier(AttackStrategy.class);
+        AttackStrategy attackStrategy1 = new AttackStrategy();
+        attackStrategy1.setId(1L);
+        AttackStrategy attackStrategy2 = new AttackStrategy();
+        attackStrategy2.setId(attackStrategy1.getId());
+        assertThat(attackStrategy1).isEqualTo(attackStrategy2);
+        attackStrategy2.setId(2L);
+        assertThat(attackStrategy1).isNotEqualTo(attackStrategy2);
+        attackStrategy1.setId(null);
+        assertThat(attackStrategy1).isNotEqualTo(attackStrategy2);
+    }
+}

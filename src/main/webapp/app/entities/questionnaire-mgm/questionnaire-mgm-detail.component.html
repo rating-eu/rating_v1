@@ -1,0 +1,38 @@
+
+<div *ngIf="questionnaire">
+    <h2><span jhiTranslate="hermeneutApp.questionnaire.detail.title">Questionnaire</span> {{questionnaire.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="hermeneutApp.questionnaire.name">Name</span></dt>
+        <dd>
+            <span>{{questionnaire.name}}</span>
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.questionnaire.scope">Scope</span></dt>
+        <dd>
+            <span jhiTranslate="{{'hermeneutApp.Q_Scope.' + questionnaire.scope}}">{{questionnaire.scope}}</span>
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.questionnaire.created">Created</span></dt>
+        <dd>
+            <span>{{questionnaire.created | date:'medium'}}</span>
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.questionnaire.modified">Modified</span></dt>
+        <dd>
+            <span>{{questionnaire.modified | date:'medium'}}</span>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'questionnaire-mgm/'+ questionnaire.id + '/edit'} }]"
+            replaceUrl="true"
+            queryParamsHandling="merge"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+    </button>
+</div>

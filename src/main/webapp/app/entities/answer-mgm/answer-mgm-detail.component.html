@@ -1,0 +1,56 @@
+
+<div *ngIf="answer">
+    <h2><span jhiTranslate="hermeneutApp.answer.detail.title">Answer</span> {{answer.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="hermeneutApp.answer.type">Type</span></dt>
+        <dd>
+            <span jhiTranslate="{{'hermeneutApp.AnswerType.' + answer.type}}">{{answer.type}}</span>
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.answer.name">Name</span></dt>
+        <dd>
+            <span>{{answer.name}}</span>
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.answer.created">Created</span></dt>
+        <dd>
+            <span>{{answer.created | date:'medium'}}</span>
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.answer.modified">Modified</span></dt>
+        <dd>
+            <span>{{answer.modified | date:'medium'}}</span>
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.answer.threatAgents">Threat Agents</span></dt>
+        <dd>
+            <span *ngFor="let threatAgents of answer.threatAgents; let last = last">
+                <a [routerLink]="['/threat-agent-mgm', threatAgents?.id ]">{{threatAgents.name}}</a>{{last ? '' : ', '}}
+            </span>
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.answer.attacks">Attacks</span></dt>
+        <dd>
+            <span *ngFor="let attacks of answer.attacks; let last = last">
+                <a [routerLink]="['/attack-strategy-mgm', attacks?.id ]">{{attacks.name}}</a>{{last ? '' : ', '}}
+            </span>
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.answer.question">Question</span></dt>
+        <dd>
+            <div *ngIf="answer.question">
+                <a [routerLink]="['/question-mgm', answer.question?.id]">{{answer.question?.name}}</a>
+            </div>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'answer-mgm/'+ answer.id + '/edit'} }]"
+            replaceUrl="true"
+            queryParamsHandling="merge"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+    </button>
+</div>

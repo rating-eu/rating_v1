@@ -1,0 +1,101 @@
+<div>
+    <h2>
+        <span jhiTranslate="hermeneutApp.attackStrategy.home.title">Attack Strategies</span>
+        <button class="btn btn-primary float-right jh-create-entity create-attack-strategy-mgm" [routerLink]="['/', { outlets: { popup: ['attack-strategy-mgm-new'] } }]">
+            <span class="fa fa-plus"></span>
+            <span class="hidden-sm-down"  jhiTranslate="hermeneutApp.attackStrategy.home.createLabel">
+            Create new Attack Strategy
+            </span>
+        </button>
+    </h2>
+    <jhi-alert></jhi-alert>
+    <div class="row">
+        <div class="col-sm-12">
+            <form name="searchForm" class="form-inline">
+                <div class="input-group w-100 mt-3">
+                    <input type="text" class="form-control" [(ngModel)]="currentSearch" id="currentSearch" name="currentSearch" placeholder="{{ 'hermeneutApp.attackStrategy.home.search' | translate }}">
+                    <button class="input-group-append btn btn-info" (click)="search(currentSearch)">
+                        <span class="fa fa-search"></span>
+                    </button>
+                    <button class="input-group-append btn btn-danger" (click)="clear()" *ngIf="currentSearch">
+                        <span class="fa fa-trash-o"></span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <br/>
+    <div class="table-responsive" *ngIf="attackStrategies">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+            <th><span jhiTranslate="global.field.id">ID</span></th>
+            <th><span jhiTranslate="hermeneutApp.attackStrategy.name">Name</span></th>
+            <th><span jhiTranslate="hermeneutApp.attackStrategy.description">Description</span></th>
+            <th><span jhiTranslate="hermeneutApp.attackStrategy.freq">Freq</span></th>
+            <th><span jhiTranslate="hermeneutApp.attackStrategy.skill">Skill</span></th>
+            <th><span jhiTranslate="hermeneutApp.attackStrategy.resources">Resources</span></th>
+            <th><span jhiTranslate="hermeneutApp.attackStrategy.likelihood">Likelihood</span></th>
+            <th><span jhiTranslate="hermeneutApp.attackStrategy.level">Level</span></th>
+            <th><span jhiTranslate="hermeneutApp.attackStrategy.phase">Phase</span></th>
+            <th><span jhiTranslate="hermeneutApp.attackStrategy.created">Created</span></th>
+            <th><span jhiTranslate="hermeneutApp.attackStrategy.modified">Modified</span></th>
+            <th><span jhiTranslate="hermeneutApp.attackStrategy.mitigation">Mitigation</span></th>
+            <th><span jhiTranslate="hermeneutApp.attackStrategy.threatAgent">Threat Agent</span></th>
+            <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let attackStrategy of attackStrategies ;trackBy: trackId">
+                <td><a [routerLink]="['../attack-strategy-mgm', attackStrategy.id ]">{{attackStrategy.id}}</a></td>
+                <td>{{attackStrategy.name}}</td>
+                <td>{{attackStrategy.description}}</td>
+                <td jhiTranslate="{{'hermeneutApp.AS_Frequency.' + attackStrategy.freq}}">{{attackStrategy.freq}}</td>
+                <td jhiTranslate="{{'hermeneutApp.SkillLevel.' + attackStrategy.skill}}">{{attackStrategy.skill}}</td>
+                <td jhiTranslate="{{'hermeneutApp.ResourceLevel.' + attackStrategy.resources}}">{{attackStrategy.resources}}</td>
+                <td jhiTranslate="{{'hermeneutApp.Likelihood.' + attackStrategy.likelihood}}">{{attackStrategy.likelihood}}</td>
+                <td jhiTranslate="{{'hermeneutApp.Level.' + attackStrategy.level}}">{{attackStrategy.level}}</td>
+                <td jhiTranslate="{{'hermeneutApp.Phase.' + attackStrategy.phase}}">{{attackStrategy.phase}}</td>
+                <td>{{attackStrategy.created | date:'medium'}}</td>
+                <td>{{attackStrategy.modified | date:'medium'}}</td>
+                <td>
+                    <span *ngFor="let mitigation of attackStrategy.mitigations; let last = last">
+                            <a class="form-control-static" [routerLink]="['../mitigation-mgm', mitigation?.id ]">{{mitigation.name}}</a>{{last ? '' : ', '}}
+                        </span>
+                </td>
+                <td>
+                    <span *ngFor="let threatAgent of attackStrategy.threatAgents; let last = last">
+                            <a class="form-control-static" [routerLink]="['../threat-agent-mgm', threatAgent?.id ]">{{threatAgent.name}}</a>{{last ? '' : ', '}}
+                        </span>
+                </td>
+                <td class="text-right">
+                    <div class="btn-group flex-btn-group-container">
+                        <button type="submit"
+                                [routerLink]="['../attack-strategy-mgm', attackStrategy.id ]"
+                                class="btn btn-info btn-sm">
+                            <span class="fa fa-eye"></span>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'attack-strategy-mgm/'+ attackStrategy.id + '/edit'} }]"
+                                replaceUrl="true"
+                                queryParamsHandling="merge"
+                                class="btn btn-primary btn-sm">
+                            <span class="fa fa-pencil"></span>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'attack-strategy-mgm/'+ attackStrategy.id + '/delete'} }]"
+                                replaceUrl="true"
+                                queryParamsHandling="merge"
+                                class="btn btn-danger btn-sm">
+                            <span class="fa fa-remove"></span>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

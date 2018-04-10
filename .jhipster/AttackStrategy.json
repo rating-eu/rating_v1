@@ -1,0 +1,112 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "many-to-many",
+            "otherEntityRelationshipName": "countermeasure",
+            "relationshipName": "mitigation",
+            "otherEntityName": "mitigation",
+            "otherEntityField": "name",
+            "ownerSide": true
+        },
+        {
+            "relationshipType": "many-to-many",
+            "otherEntityRelationshipName": "strategy",
+            "relationshipName": "threatAgent",
+            "otherEntityName": "threatAgent",
+            "otherEntityField": "name",
+            "ownerSide": true
+        },
+        {
+            "relationshipType": "many-to-many",
+            "relationshipName": "answstrategy",
+            "otherEntityName": "answer",
+            "ownerSide": false,
+            "otherEntityRelationshipName": "attacks"
+        },
+        {
+            "relationshipType": "many-to-many",
+            "relationshipName": "selfassessment",
+            "otherEntityName": "selfAssessment",
+            "ownerSide": false,
+            "otherEntityRelationshipName": "attackstrategy"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "name",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "description",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "maxlength"
+            ],
+            "fieldValidateRulesMaxlength": 2000
+        },
+        {
+            "fieldName": "freq",
+            "fieldType": "AS_Frequency",
+            "fieldValues": "LOW,MEDIUM,HIGH",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "skill",
+            "fieldType": "SkillLevel",
+            "fieldValues": "HIGH,MEDIUM,LOW",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "resources",
+            "fieldType": "ResourceLevel",
+            "fieldValues": "LOW,MEDIUM,HIGH",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "likelihood",
+            "fieldType": "Likelihood",
+            "fieldValues": "LOW,MEDIUM,HIGH,MEDIUM_HIGH,LOW_MEDIUM"
+        },
+        {
+            "fieldName": "level",
+            "fieldType": "Level",
+            "fieldValues": "HUMAN,IT,PHYSICAL",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "phase",
+            "fieldType": "Phase",
+            "fieldValues": "RECONNAISSANCE,WEAPONIZATION,DELIVERY,EXPLOITATION,INSTALLATION,COMMANDCONTROL",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "created",
+            "fieldType": "ZonedDateTime"
+        },
+        {
+            "fieldName": "modified",
+            "fieldType": "ZonedDateTime"
+        }
+    ],
+    "changelogDate": "20180410085201",
+    "entityTableName": "attack_strategy",
+    "dto": "no",
+    "pagination": "no",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "angularJSSuffix": "mgm"
+}

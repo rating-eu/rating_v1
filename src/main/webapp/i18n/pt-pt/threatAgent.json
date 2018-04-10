@@ -1,0 +1,32 @@
+
+{
+    "hermeneutApp": {
+        "threatAgent" : {
+            "home": {
+                "title": "Threat Agents",
+                "createLabel": "Criar um(a) novo(a) Threat Agent",
+                "createOrEditLabel": "Criar ou editar um(a) Threat Agent",
+                "search": "Search for Threat Agent"
+            },
+            "created": "A new Threat Agent is created with identifier {{ param }}",
+            "updated": "A Threat Agent is updated with identifier {{ param }}",
+            "deleted": "A Threat Agent is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Tem a certeza que pretende eliminar o(a) Threat Agent {{ id }}?"
+            },
+            "detail": {
+                "title": "Threat Agent"
+            },
+            "name": "Name",
+            "skillLevel": "Skill Level",
+            "intent": "Intent",
+            "access": "Access",
+            "created": "Created",
+            "modified": "Modified",
+            "motivation": "Motivation",
+            "answthreat": "Answthreat",
+            "strategy": "Strategy",
+            "selfassessment": "Selfassessment"
+        }
+    }
+}

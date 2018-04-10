@@ -1,0 +1,87 @@
+<div>
+    <h2>
+        <span jhiTranslate="hermeneutApp.threatAgent.home.title">Threat Agents</span>
+        <button class="btn btn-primary float-right jh-create-entity create-threat-agent-mgm" [routerLink]="['/', { outlets: { popup: ['threat-agent-mgm-new'] } }]">
+            <span class="fa fa-plus"></span>
+            <span class="hidden-sm-down"  jhiTranslate="hermeneutApp.threatAgent.home.createLabel">
+            Create new Threat Agent
+            </span>
+        </button>
+    </h2>
+    <jhi-alert></jhi-alert>
+    <div class="row">
+        <div class="col-sm-12">
+            <form name="searchForm" class="form-inline">
+                <div class="input-group w-100 mt-3">
+                    <input type="text" class="form-control" [(ngModel)]="currentSearch" id="currentSearch" name="currentSearch" placeholder="{{ 'hermeneutApp.threatAgent.home.search' | translate }}">
+                    <button class="input-group-append btn btn-info" (click)="search(currentSearch)">
+                        <span class="fa fa-search"></span>
+                    </button>
+                    <button class="input-group-append btn btn-danger" (click)="clear()" *ngIf="currentSearch">
+                        <span class="fa fa-trash-o"></span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <br/>
+    <div class="table-responsive" *ngIf="threatAgents">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+            <th><span jhiTranslate="global.field.id">ID</span></th>
+            <th><span jhiTranslate="hermeneutApp.threatAgent.name">Name</span></th>
+            <th><span jhiTranslate="hermeneutApp.threatAgent.skillLevel">Skill Level</span></th>
+            <th><span jhiTranslate="hermeneutApp.threatAgent.intent">Intent</span></th>
+            <th><span jhiTranslate="hermeneutApp.threatAgent.access">Access</span></th>
+            <th><span jhiTranslate="hermeneutApp.threatAgent.created">Created</span></th>
+            <th><span jhiTranslate="hermeneutApp.threatAgent.modified">Modified</span></th>
+            <th><span jhiTranslate="hermeneutApp.threatAgent.motivation">Motivation</span></th>
+            <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let threatAgent of threatAgents ;trackBy: trackId">
+                <td><a [routerLink]="['../threat-agent-mgm', threatAgent.id ]">{{threatAgent.id}}</a></td>
+                <td>{{threatAgent.name}}</td>
+                <td jhiTranslate="{{'hermeneutApp.SkillLevel.' + threatAgent.skillLevel}}">{{threatAgent.skillLevel}}</td>
+                <td jhiTranslate="{{'hermeneutApp.Intent.' + threatAgent.intent}}">{{threatAgent.intent}}</td>
+                <td jhiTranslate="{{'hermeneutApp.TA_Access.' + threatAgent.access}}">{{threatAgent.access}}</td>
+                <td>{{threatAgent.created | date:'medium'}}</td>
+                <td>{{threatAgent.modified | date:'medium'}}</td>
+                <td>
+                    <span *ngFor="let motivation of threatAgent.motivations; let last = last">
+                            <a class="form-control-static" [routerLink]="['../motivation-mgm', motivation?.id ]">{{motivation.name}}</a>{{last ? '' : ', '}}
+                        </span>
+                </td>
+                <td class="text-right">
+                    <div class="btn-group flex-btn-group-container">
+                        <button type="submit"
+                                [routerLink]="['../threat-agent-mgm', threatAgent.id ]"
+                                class="btn btn-info btn-sm">
+                            <span class="fa fa-eye"></span>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'threat-agent-mgm/'+ threatAgent.id + '/edit'} }]"
+                                replaceUrl="true"
+                                queryParamsHandling="merge"
+                                class="btn btn-primary btn-sm">
+                            <span class="fa fa-pencil"></span>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'threat-agent-mgm/'+ threatAgent.id + '/delete'} }]"
+                                replaceUrl="true"
+                                queryParamsHandling="merge"
+                                class="btn btn-danger btn-sm">
+                            <span class="fa fa-remove"></span>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

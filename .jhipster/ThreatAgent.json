@@ -1,0 +1,82 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "many-to-many",
+            "otherEntityRelationshipName": "tagent",
+            "relationshipName": "motivation",
+            "otherEntityName": "motivation",
+            "otherEntityField": "name",
+            "ownerSide": true
+        },
+        {
+            "relationshipType": "many-to-many",
+            "relationshipName": "answthreat",
+            "otherEntityName": "answer",
+            "ownerSide": false,
+            "otherEntityRelationshipName": "threatAgents"
+        },
+        {
+            "relationshipType": "many-to-many",
+            "relationshipName": "strategy",
+            "otherEntityName": "attackStrategy",
+            "ownerSide": false,
+            "otherEntityRelationshipName": "threatAgent"
+        },
+        {
+            "relationshipType": "many-to-many",
+            "relationshipName": "selfassessment",
+            "otherEntityName": "selfAssessment",
+            "ownerSide": false,
+            "otherEntityRelationshipName": "threatagent"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "name",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "skillLevel",
+            "fieldType": "SkillLevel",
+            "fieldValues": "HIGH,MEDIUM,LOW",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "intent",
+            "fieldType": "Intent",
+            "fieldValues": "HOSTILE,NOHOSTILE",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "access",
+            "fieldType": "TA_Access",
+            "fieldValues": "INSIDER,OUTSIDER,BOTH",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "created",
+            "fieldType": "ZonedDateTime"
+        },
+        {
+            "fieldName": "modified",
+            "fieldType": "ZonedDateTime"
+        }
+    ],
+    "changelogDate": "20180410085159",
+    "entityTableName": "threat_agent",
+    "dto": "no",
+    "pagination": "no",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "angularJSSuffix": "mgm"
+}

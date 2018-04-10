@@ -1,0 +1,30 @@
+
+<div *ngIf="domainOfInfluence">
+    <h2><span jhiTranslate="hermeneutApp.domainOfInfluence.detail.title">Domain Of Influence</span> {{domainOfInfluence.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="hermeneutApp.domainOfInfluence.name">Name</span></dt>
+        <dd>
+            <span>{{domainOfInfluence.name}}</span>
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.domainOfInfluence.description">Description</span></dt>
+        <dd>
+            <span>{{domainOfInfluence.description}}</span>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'domain-of-influence-mgm/'+ domainOfInfluence.id + '/edit'} }]"
+            replaceUrl="true"
+            queryParamsHandling="merge"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+    </button>
+</div>

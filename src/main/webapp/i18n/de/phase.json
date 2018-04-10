@@ -1,0 +1,13 @@
+{
+    "hermeneutApp": {
+        "Phase" : {
+            "null": "",
+            "RECONNAISSANCE": "RECONNAISSANCE",
+            "WEAPONIZATION": "WEAPONIZATION",
+            "DELIVERY": "DELIVERY",
+            "EXPLOITATION": "EXPLOITATION",
+            "INSTALLATION": "INSTALLATION",
+            "COMMANDCONTROL": "COMMANDCONTROL"
+        }
+    }
+}

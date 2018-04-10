@@ -1,0 +1,56 @@
+
+<div *ngIf="asset">
+    <h2><span jhiTranslate="hermeneutApp.asset.detail.title">Asset</span> {{asset.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="hermeneutApp.asset.name">Name</span></dt>
+        <dd>
+            <span>{{asset.name}}</span>
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.asset.description">Description</span></dt>
+        <dd>
+            <span>{{asset.description}}</span>
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.asset.created">Created</span></dt>
+        <dd>
+            <span>{{asset.created | date:'medium'}}</span>
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.asset.modified">Modified</span></dt>
+        <dd>
+            <span>{{asset.modified | date:'medium'}}</span>
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.asset.container">Container</span></dt>
+        <dd>
+            <span *ngFor="let container of asset.containers; let last = last">
+                <a [routerLink]="['/container-mgm', container?.id ]">{{container.name}}</a>{{last ? '' : ', '}}
+            </span>
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.asset.domains">Domains</span></dt>
+        <dd>
+            <span *ngFor="let domains of asset.domains; let last = last">
+                <a [routerLink]="['/domain-of-influence-mgm', domains?.id ]">{{domains.name}}</a>{{last ? '' : ', '}}
+            </span>
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.asset.assetcategory">Assetcategory</span></dt>
+        <dd>
+            <div *ngIf="asset.assetcategory">
+                <a [routerLink]="['/asset-category-mgm', asset.assetcategory?.id]">{{asset.assetcategory?.name}}</a>
+            </div>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'asset-mgm/'+ asset.id + '/edit'} }]"
+            replaceUrl="true"
+            queryParamsHandling="merge"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+    </button>
+</div>

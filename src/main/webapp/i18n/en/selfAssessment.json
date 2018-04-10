@@ -1,0 +1,33 @@
+
+{
+    "hermeneutApp": {
+        "selfAssessment" : {
+            "home": {
+                "title": "Self Assessments",
+                "createLabel": "Create a new Self Assessment",
+                "createOrEditLabel": "Create or edit a Self Assessment",
+                "search": "Search for Self Assessment"
+            },
+            "created": "A new Self Assessment is created with identifier {{ param }}",
+            "updated": "A Self Assessment is updated with identifier {{ param }}",
+            "deleted": "A Self Assessment is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Self Assessment {{ id }}?"
+            },
+            "detail": {
+                "title": "Self Assessment"
+            },
+            "name": "Name",
+            "created": "Created",
+            "modified": "Modified",
+            "user": "User",
+            "companyprofiles": "Companyprofiles",
+            "companysector": "Companysector",
+            "asset": "Asset",
+            "threatagent": "Threatagent",
+            "attackstrategy": "Attackstrategy",
+            "externalaudit": "Externalaudit",
+            "questionnaire": "Questionnaire"
+        }
+    }
+}

@@ -1,0 +1,52 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "many-to-many",
+            "relationshipName": "company",
+            "otherEntityName": "companyProfile",
+            "ownerSide": false,
+            "otherEntityRelationshipName": "container"
+        },
+        {
+            "relationshipType": "many-to-many",
+            "relationshipName": "asset",
+            "otherEntityName": "asset",
+            "ownerSide": false,
+            "otherEntityRelationshipName": "container"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "name",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "description",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "maxlength"
+            ],
+            "fieldValidateRulesMaxlength": 2000
+        },
+        {
+            "fieldName": "containerType",
+            "fieldType": "ContainerType",
+            "fieldValues": "HUMAN,IT,PHYSICAL,INTANGIBLE"
+        },
+        {
+            "fieldName": "created",
+            "fieldType": "ZonedDateTime"
+        }
+    ],
+    "changelogDate": "20180410085156",
+    "entityTableName": "container",
+    "dto": "no",
+    "pagination": "no",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "angularJSSuffix": "mgm"
+}

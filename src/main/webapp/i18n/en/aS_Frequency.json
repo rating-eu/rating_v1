@@ -1,0 +1,10 @@
+{
+    "hermeneutApp": {
+        "AS_Frequency" : {
+            "null": "",
+            "LOW": "LOW",
+            "MEDIUM": "MEDIUM",
+            "HIGH": "HIGH"
+        }
+    }
+}

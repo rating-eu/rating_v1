@@ -1,0 +1,11 @@
+{
+    "hermeneutApp": {
+        "AnswerType" : {
+            "null": "",
+            "YESNO": "YESNO",
+            "RANGE5": "RANGE5",
+            "PERC5": "PERC5",
+            "CUSTOM": "CUSTOM"
+        }
+    }
+}

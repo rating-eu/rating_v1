@@ -1,0 +1,99 @@
+<form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+
+    <div class="modal-header">
+        <h4 class="modal-title" id="myCompanyProfileLabel" jhiTranslate="hermeneutApp.companyProfile.home.createOrEditLabel">Create or edit a Company Profile</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                (click)="clear()">&times;</button>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group" [hidden]="!companyProfile.id">
+            <label for="id" jhiTranslate="global.field.id">ID</label>
+            <input type="text" class="form-control" id="id" name="id"
+                   [(ngModel)]="companyProfile.id" readonly />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="hermeneutApp.companyProfile.name" for="field_name">Name</label>
+            <input type="text" class="form-control" name="name" id="field_name"
+                [(ngModel)]="companyProfile.name" required/>
+            <div [hidden]="!(editForm.controls.name?.dirty && editForm.controls.name?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.name?.errors?.required" jhiTranslate="entity.validation.required">
+                   This field is required.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="hermeneutApp.companyProfile.description" for="field_description">Description</label>
+            <input type="text" class="form-control" name="description" id="field_description"
+                [(ngModel)]="companyProfile.description" maxlength="2000"/>
+            <div [hidden]="!(editForm.controls.description?.dirty && editForm.controls.description?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.description?.errors?.maxlength" jhiTranslate="entity.validation.maxlength" translateValues="{ max: 2000 }">
+                   This field cannot be longer than 2000 characters.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="hermeneutApp.companyProfile.created" for="field_created">Created</label>
+            <div class="d-flex">
+                <input id="field_created" type="datetime-local" class="form-control" name="created" [(ngModel)]="companyProfile.created"
+                />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="hermeneutApp.companyProfile.modified" for="field_modified">Modified</label>
+            <div class="d-flex">
+                <input id="field_modified" type="datetime-local" class="form-control" name="modified" [(ngModel)]="companyProfile.modified"
+                />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="hermeneutApp.companyProfile.type" for="field_type">Type</label>
+            <select class="form-control" name="type" [(ngModel)]="companyProfile.type" id="field_type" >
+                <option value="INFORMATION">{{'hermeneutApp.CompType.INFORMATION' | translate}}</option>
+                <option value="HEALTHCARE">{{'hermeneutApp.CompType.HEALTHCARE' | translate}}</option>
+                <option value="FINANCE">{{'hermeneutApp.CompType.FINANCE' | translate}}</option>
+                <option value="ACCOMODATION">{{'hermeneutApp.CompType.ACCOMODATION' | translate}}</option>
+                <option value="ADMINISTRATIVE">{{'hermeneutApp.CompType.ADMINISTRATIVE' | translate}}</option>
+                <option value="AGRICOLTURE">{{'hermeneutApp.CompType.AGRICOLTURE' | translate}}</option>
+                <option value="CONSTRUCTION">{{'hermeneutApp.CompType.CONSTRUCTION' | translate}}</option>
+                <option value="EDUCATION">{{'hermeneutApp.CompType.EDUCATION' | translate}}</option>
+                <option value="ENTERTAINMENT">{{'hermeneutApp.CompType.ENTERTAINMENT' | translate}}</option>
+                <option value="MANAGEMENT">{{'hermeneutApp.CompType.MANAGEMENT' | translate}}</option>
+                <option value="MANUFACTURING">{{'hermeneutApp.CompType.MANUFACTURING' | translate}}</option>
+                <option value="MINING">{{'hermeneutApp.CompType.MINING' | translate}}</option>
+                <option value="OTHERSERVICES">{{'hermeneutApp.CompType.OTHERSERVICES' | translate}}</option>
+                <option value="PROFESSIONAL">{{'hermeneutApp.CompType.PROFESSIONAL' | translate}}</option>
+                <option value="PUBLIC">{{'hermeneutApp.CompType.PUBLIC' | translate}}</option>
+                <option value="REALESTATE">{{'hermeneutApp.CompType.REALESTATE' | translate}}</option>
+                <option value="RETAILS">{{'hermeneutApp.CompType.RETAILS' | translate}}</option>
+                <option value="TRADE">{{'hermeneutApp.CompType.TRADE' | translate}}</option>
+                <option value="TRANSPORTATION">{{'hermeneutApp.CompType.TRANSPORTATION' | translate}}</option>
+                <option value="UTILITIES">{{'hermeneutApp.CompType.UTILITIES' | translate}}</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="hermeneutApp.companyProfile.user" for="field_user">User</label>
+            <select class="form-control" id="field_user" name="user" [(ngModel)]="companyProfile.user" >
+                <option [ngValue]="null"></option>
+                <option [ngValue]="userOption.id === companyProfile.user?.id ? companyProfile.user : userOption" *ngFor="let userOption of users; trackBy: trackUserById">{{userOption.login}}</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label jhiTranslate="hermeneutApp.companyProfile.container" for="field_container">Container</label>
+            <select class="form-control" id="field_container" multiple name="container" [(ngModel)]="companyProfile.containers">
+                <option [ngValue]="getSelected(companyProfile.containers, containerOption)" *ngFor="let containerOption of containers; trackBy: trackContainerById">{{containerOption.name}}</option>
+            </select>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">
+            <span class="fa fa-ban"></span>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+        <button type="submit" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+            <span class="fa fa-save"></span>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+    </div>
+</form>

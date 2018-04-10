@@ -1,0 +1,52 @@
+
+<div *ngIf="threatAgent">
+    <h2><span jhiTranslate="hermeneutApp.threatAgent.detail.title">Threat Agent</span> {{threatAgent.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="hermeneutApp.threatAgent.name">Name</span></dt>
+        <dd>
+            <span>{{threatAgent.name}}</span>
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.threatAgent.skillLevel">Skill Level</span></dt>
+        <dd>
+            <span jhiTranslate="{{'hermeneutApp.SkillLevel.' + threatAgent.skillLevel}}">{{threatAgent.skillLevel}}</span>
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.threatAgent.intent">Intent</span></dt>
+        <dd>
+            <span jhiTranslate="{{'hermeneutApp.Intent.' + threatAgent.intent}}">{{threatAgent.intent}}</span>
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.threatAgent.access">Access</span></dt>
+        <dd>
+            <span jhiTranslate="{{'hermeneutApp.TA_Access.' + threatAgent.access}}">{{threatAgent.access}}</span>
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.threatAgent.created">Created</span></dt>
+        <dd>
+            <span>{{threatAgent.created | date:'medium'}}</span>
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.threatAgent.modified">Modified</span></dt>
+        <dd>
+            <span>{{threatAgent.modified | date:'medium'}}</span>
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.threatAgent.motivation">Motivation</span></dt>
+        <dd>
+            <span *ngFor="let motivation of threatAgent.motivations; let last = last">
+                <a [routerLink]="['/motivation-mgm', motivation?.id ]">{{motivation.name}}</a>{{last ? '' : ', '}}
+            </span>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'threat-agent-mgm/'+ threatAgent.id + '/edit'} }]"
+            replaceUrl="true"
+            queryParamsHandling="merge"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+    </button>
+</div>

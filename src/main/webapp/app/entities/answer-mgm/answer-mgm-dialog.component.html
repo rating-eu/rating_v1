@@ -1,0 +1,78 @@
+<form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+
+    <div class="modal-header">
+        <h4 class="modal-title" id="myAnswerLabel" jhiTranslate="hermeneutApp.answer.home.createOrEditLabel">Create or edit a Answer</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                (click)="clear()">&times;</button>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group" [hidden]="!answer.id">
+            <label for="id" jhiTranslate="global.field.id">ID</label>
+            <input type="text" class="form-control" id="id" name="id"
+                   [(ngModel)]="answer.id" readonly />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="hermeneutApp.answer.type" for="field_type">Type</label>
+            <select class="form-control" name="type" [(ngModel)]="answer.type" id="field_type"  required>
+                <option value="YESNO">{{'hermeneutApp.AnswerType.YESNO' | translate}}</option>
+                <option value="RANGE5">{{'hermeneutApp.AnswerType.RANGE5' | translate}}</option>
+                <option value="PERC5">{{'hermeneutApp.AnswerType.PERC5' | translate}}</option>
+                <option value="CUSTOM">{{'hermeneutApp.AnswerType.CUSTOM' | translate}}</option>
+            </select>
+            <div [hidden]="!(editForm.controls.type?.dirty && editForm.controls.type?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.type?.errors?.required" jhiTranslate="entity.validation.required">
+                   This field is required.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="hermeneutApp.answer.name" for="field_name">Name</label>
+            <input type="text" class="form-control" name="name" id="field_name"
+                [(ngModel)]="answer.name" />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="hermeneutApp.answer.created" for="field_created">Created</label>
+            <div class="d-flex">
+                <input id="field_created" type="datetime-local" class="form-control" name="created" [(ngModel)]="answer.created"
+                />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="hermeneutApp.answer.modified" for="field_modified">Modified</label>
+            <div class="d-flex">
+                <input id="field_modified" type="datetime-local" class="form-control" name="modified" [(ngModel)]="answer.modified"
+                />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label jhiTranslate="hermeneutApp.answer.threatAgents" for="field_threatAgents">Threat Agents</label>
+            <select class="form-control" id="field_threatAgents" multiple name="threatAgents" [(ngModel)]="answer.threatAgents">
+                <option [ngValue]="getSelected(answer.threatAgents, threatAgentOption)" *ngFor="let threatAgentOption of threatagents; trackBy: trackThreatAgentById">{{threatAgentOption.name}}</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label jhiTranslate="hermeneutApp.answer.attacks" for="field_attacks">Attacks</label>
+            <select class="form-control" id="field_attacks" multiple name="attacks" [(ngModel)]="answer.attacks">
+                <option [ngValue]="getSelected(answer.attacks, attackStrategyOption)" *ngFor="let attackStrategyOption of attackstrategies; trackBy: trackAttackStrategyById">{{attackStrategyOption.name}}</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="hermeneutApp.answer.question" for="field_question">Question</label>
+            <select class="form-control" id="field_question" name="question" [(ngModel)]="answer.question" >
+                <option [ngValue]="null"></option>
+                <option [ngValue]="questionOption.id === answer.question?.id ? answer.question : questionOption" *ngFor="let questionOption of questions; trackBy: trackQuestionById">{{questionOption.name}}</option>
+            </select>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">
+            <span class="fa fa-ban"></span>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+        <button type="submit" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+            <span class="fa fa-save"></span>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+    </div>
+</form>

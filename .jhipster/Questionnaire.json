@@ -1,0 +1,50 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "questions",
+            "otherEntityName": "question",
+            "otherEntityRelationshipName": "questionnaire"
+        },
+        {
+            "relationshipType": "many-to-many",
+            "relationshipName": "selfassessment",
+            "otherEntityName": "selfAssessment",
+            "ownerSide": false,
+            "otherEntityRelationshipName": "questionnaire"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "name",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "scope",
+            "fieldType": "Q_Scope",
+            "fieldValues": "ID_THREAT_AGENT,SELFASSESSMENT",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "created",
+            "fieldType": "ZonedDateTime"
+        },
+        {
+            "fieldName": "modified",
+            "fieldType": "ZonedDateTime"
+        }
+    ],
+    "changelogDate": "20180410085203",
+    "entityTableName": "questionnaire",
+    "dto": "no",
+    "pagination": "no",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "angularJSSuffix": "mgm"
+}

@@ -1,0 +1,29 @@
+
+{
+    "hermeneutApp": {
+        "companySector" : {
+            "home": {
+                "title": "Company Sectors",
+                "createLabel": "Create a new Company Sector",
+                "createOrEditLabel": "Create or edit a Company Sector",
+                "search": "Search for Company Sector"
+            },
+            "created": "A new Company Sector is created with identifier {{ param }}",
+            "updated": "A Company Sector is updated with identifier {{ param }}",
+            "deleted": "A Company Sector is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Company Sector {{ id }}?"
+            },
+            "detail": {
+                "title": "Company Sector"
+            },
+            "department": "Department",
+            "description": "Description",
+            "created": "Created",
+            "modified": "Modified",
+            "user": "User",
+            "companyprofile": "Companyprofile",
+            "selfassessment": "Selfassessment"
+        }
+    }
+}

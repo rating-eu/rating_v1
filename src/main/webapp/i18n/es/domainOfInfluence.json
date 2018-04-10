@@ -1,0 +1,25 @@
+
+{
+    "hermeneutApp": {
+        "domainOfInfluence" : {
+            "home": {
+                "title": "Domain Of Influences",
+                "createLabel": "Crear nuevo Domain Of Influence",
+                "createOrEditLabel": "Crear o editar Domain Of Influence",
+                "search": "Search for Domain Of Influence"
+            },
+            "created": "Un nuevo Domain Of Influence ha sido creado con el identificador {{ param }}",
+            "updated": "Un Domain Of Influence ha sido actualizado con el identificador {{ param }}",
+            "deleted": "Un Domain Of Influence ha sido eliminado con el identificador {{ param }}",
+            "delete": {
+                "question": "¿Seguro que quiere eliminar Domain Of Influence {{ id }}?"
+            },
+            "detail": {
+                "title": "Domain Of Influence"
+            },
+            "name": "Name",
+            "description": "Description",
+            "domain": "Domain"
+        }
+    }
+}

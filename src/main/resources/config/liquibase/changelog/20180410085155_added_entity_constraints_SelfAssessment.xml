@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <!--
+        Added the constraints for entity SelfAssessment.
+    -->
+    <changeSet id="20180410085155-2" author="jhipster">
+        
+        <addForeignKeyConstraint baseColumnNames="user_id"
+                                 baseTableName="self_assessment"
+                                 constraintName="fk_self_assessment_user_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="jhi_user"/>
+
+        <addForeignKeyConstraint baseColumnNames="self_assessments_id"
+                                 baseTableName="self_assessment_companyprofiles"
+                                 constraintName="fk_self_assessment_companyprofiles_self_assessments_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="self_assessment"/>
+        <addForeignKeyConstraint baseColumnNames="companyprofiles_id"
+                                 baseTableName="self_assessment_companyprofiles"
+                                 constraintName="fk_self_assessment_companyprofiles_companyprofiles_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="company_profile"/>
+        
+        <addForeignKeyConstraint baseColumnNames="self_assessments_id"
+                                 baseTableName="self_assessment_companysector"
+                                 constraintName="fk_self_assessment_companysector_self_assessments_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="self_assessment"/>
+        <addForeignKeyConstraint baseColumnNames="companysectors_id"
+                                 baseTableName="self_assessment_companysector"
+                                 constraintName="fk_self_assessment_companysector_companysectors_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="company_sector"/>
+        
+        <addForeignKeyConstraint baseColumnNames="self_assessments_id"
+                                 baseTableName="self_assessment_asset"
+                                 constraintName="fk_self_assessment_asset_self_assessments_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="self_assessment"/>
+        <addForeignKeyConstraint baseColumnNames="assets_id"
+                                 baseTableName="self_assessment_asset"
+                                 constraintName="fk_self_assessment_asset_assets_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="asset"/>
+        
+        <addForeignKeyConstraint baseColumnNames="self_assessments_id"
+                                 baseTableName="self_assessment_threatagent"
+                                 constraintName="fk_self_assessment_threatagent_self_assessments_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="self_assessment"/>
+        <addForeignKeyConstraint baseColumnNames="threatagents_id"
+                                 baseTableName="self_assessment_threatagent"
+                                 constraintName="fk_self_assessment_threatagent_threatagents_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="threat_agent"/>
+        
+        <addForeignKeyConstraint baseColumnNames="self_assessments_id"
+                                 baseTableName="self_assessment_attackstrategy"
+                                 constraintName="fk_self_assessment_attackstrategy_self_assessments_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="self_assessment"/>
+        <addForeignKeyConstraint baseColumnNames="attackstrategies_id"
+                                 baseTableName="self_assessment_attackstrategy"
+                                 constraintName="fk_self_assessment_attackstrategy_attackstrategies_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="attack_strategy"/>
+        
+        <addForeignKeyConstraint baseColumnNames="self_assessments_id"
+                                 baseTableName="self_assessment_externalaudit"
+                                 constraintName="fk_self_assessment_externalaudit_self_assessments_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="self_assessment"/>
+        <addForeignKeyConstraint baseColumnNames="externalaudits_id"
+                                 baseTableName="self_assessment_externalaudit"
+                                 constraintName="fk_self_assessment_externalaudit_externalaudits_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="external_audit"/>
+        
+        <addForeignKeyConstraint baseColumnNames="self_assessments_id"
+                                 baseTableName="self_assessment_questionnaire"
+                                 constraintName="fk_self_assessment_questionnaire_self_assessments_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="self_assessment"/>
+        <addForeignKeyConstraint baseColumnNames="questionnaires_id"
+                                 baseTableName="self_assessment_questionnaire"
+                                 constraintName="fk_self_assessment_questionnaire_questionnaires_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="questionnaire"/>
+        
+    </changeSet>
+</databaseChangeLog>

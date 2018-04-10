@@ -1,0 +1,31 @@
+
+{
+    "hermeneutApp": {
+        "companyProfile" : {
+            "home": {
+                "title": "CompanyProfiles",
+                "createLabel": "Créer un nouveau Company Profile",
+                "createOrEditLabel": "Créer ou éditer un Company Profile",
+                "search": "Recherche pour Company Profile"
+            },
+            "created": "Un nouveau Company Profile a été créé avec l'identifiant {{ param }}",
+            "updated": "Le Company Profile avec l'identifiant {{ param }} a été mis à jour",
+            "deleted": "Le Company Profile avec l'identifiant {{ param }} a été supprimé",
+            "delete": {
+                "question": "Etes-vous certain de vouloir supprimer le Company Profile {{ id }} ?"
+            },
+            "detail": {
+                "title": "Company Profile"
+            },
+            "name": "Name",
+            "description": "Description",
+            "created": "Created",
+            "modified": "Modified",
+            "type": "Type",
+            "departments": "Departments",
+            "user": "User",
+            "container": "Container",
+            "selfassessment": "Selfassessment"
+        }
+    }
+}

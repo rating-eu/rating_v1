@@ -1,0 +1,27 @@
+
+{
+    "hermeneutApp": {
+        "motivation" : {
+            "home": {
+                "title": "Motivations",
+                "createLabel": "Crear nuevo Motivation",
+                "createOrEditLabel": "Crear o editar Motivation",
+                "search": "Search for Motivation"
+            },
+            "created": "Un nuevo Motivation ha sido creado con el identificador {{ param }}",
+            "updated": "Un Motivation ha sido actualizado con el identificador {{ param }}",
+            "deleted": "Un Motivation ha sido eliminado con el identificador {{ param }}",
+            "delete": {
+                "question": "¿Seguro que quiere eliminar Motivation {{ id }}?"
+            },
+            "detail": {
+                "title": "Motivation"
+            },
+            "name": "Name",
+            "description": "Description",
+            "created": "Created",
+            "modified": "Modified",
+            "tagent": "Tagent"
+        }
+    }
+}

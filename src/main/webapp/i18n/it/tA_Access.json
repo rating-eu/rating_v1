@@ -1,0 +1,10 @@
+{
+    "hermeneutApp": {
+        "TA_Access" : {
+            "null": "",
+            "INSIDER": "INSIDER",
+            "OUTSIDER": "OUTSIDER",
+            "BOTH": "BOTH"
+        }
+    }
+}

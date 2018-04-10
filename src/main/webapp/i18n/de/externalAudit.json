@@ -1,0 +1,25 @@
+
+{
+    "hermeneutApp": {
+        "externalAudit" : {
+            "home": {
+                "title": "External Audits",
+                "createLabel": "External Audit erstellen",
+                "createOrEditLabel": "External Audit erstellen oder bearbeiten",
+                "search": "Suche nach External Audit"
+            },
+            "created": "External Audit erstellt mit ID {{ param }}",
+            "updated": "External Audit aktualisiert mit ID {{ param }}",
+            "deleted": "External Audit gelöscht mit ID {{ param }}",
+            "delete": {
+                "question": "Soll External Audit {{ id }} wirklich dauerhaft gelöscht werden?"
+            },
+            "detail": {
+                "title": "External Audit"
+            },
+            "name": "Name",
+            "user": "User",
+            "selfassessment": "Selfassessment"
+        }
+    }
+}

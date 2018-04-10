@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <!--
+        Added the constraints for entity ThreatAgent.
+    -->
+    <changeSet id="20180410085159-2" author="jhipster">
+        
+        <addForeignKeyConstraint baseColumnNames="threat_agents_id"
+                                 baseTableName="threat_agent_motivation"
+                                 constraintName="fk_threat_agent_motivation_threat_agents_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="threat_agent"/>
+        <addForeignKeyConstraint baseColumnNames="motivations_id"
+                                 baseTableName="threat_agent_motivation"
+                                 constraintName="fk_threat_agent_motivation_motivations_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="motivation"/>
+        
+    </changeSet>
+</databaseChangeLog>

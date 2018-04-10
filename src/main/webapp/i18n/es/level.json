@@ -1,0 +1,10 @@
+{
+    "hermeneutApp": {
+        "Level" : {
+            "null": "",
+            "HUMAN": "HUMAN",
+            "IT": "IT",
+            "PHYSICAL": "PHYSICAL"
+        }
+    }
+}

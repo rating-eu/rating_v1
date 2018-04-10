@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <!--
+        Added the constraints for entity Asset.
+    -->
+    <changeSet id="20180410085158-2" author="jhipster">
+        
+        <addForeignKeyConstraint baseColumnNames="assets_id"
+                                 baseTableName="asset_container"
+                                 constraintName="fk_asset_container_assets_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="asset"/>
+        <addForeignKeyConstraint baseColumnNames="containers_id"
+                                 baseTableName="asset_container"
+                                 constraintName="fk_asset_container_containers_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="container"/>
+        
+        <addForeignKeyConstraint baseColumnNames="assets_id"
+                                 baseTableName="asset_domains"
+                                 constraintName="fk_asset_domains_assets_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="asset"/>
+        <addForeignKeyConstraint baseColumnNames="domains_id"
+                                 baseTableName="asset_domains"
+                                 constraintName="fk_asset_domains_domains_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="domain_of_influence"/>
+        
+        <addForeignKeyConstraint baseColumnNames="assetcategory_id"
+                                 baseTableName="asset"
+                                 constraintName="fk_asset_assetcategory_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="asset_category"/>
+
+    </changeSet>
+</databaseChangeLog>

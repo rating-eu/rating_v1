@@ -1,0 +1,48 @@
+
+<div *ngIf="companySector">
+    <h2><span jhiTranslate="hermeneutApp.companySector.detail.title">Company Sector</span> {{companySector.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="hermeneutApp.companySector.department">Department</span></dt>
+        <dd>
+            <span>{{companySector.department}}</span>
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.companySector.description">Description</span></dt>
+        <dd>
+            <span>{{companySector.description}}</span>
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.companySector.created">Created</span></dt>
+        <dd>
+            <span>{{companySector.created | date:'medium'}}</span>
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.companySector.modified">Modified</span></dt>
+        <dd>
+            <span>{{companySector.modified | date:'medium'}}</span>
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.companySector.user">User</span></dt>
+        <dd>
+            {{companySector.user?.login}}
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.companySector.companyprofile">Companyprofile</span></dt>
+        <dd>
+            <div *ngIf="companySector.companyprofile">
+                <a [routerLink]="['/company-profile-mgm', companySector.companyprofile?.id]">{{companySector.companyprofile?.name}}</a>
+            </div>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'company-sector-mgm/'+ companySector.id + '/edit'} }]"
+            replaceUrl="true"
+            queryParamsHandling="merge"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+    </button>
+</div>

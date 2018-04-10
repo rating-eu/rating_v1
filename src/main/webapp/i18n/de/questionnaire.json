@@ -1,0 +1,28 @@
+
+{
+    "hermeneutApp": {
+        "questionnaire" : {
+            "home": {
+                "title": "Questionnaires",
+                "createLabel": "Questionnaire erstellen",
+                "createOrEditLabel": "Questionnaire erstellen oder bearbeiten",
+                "search": "Suche nach Questionnaire"
+            },
+            "created": "Questionnaire erstellt mit ID {{ param }}",
+            "updated": "Questionnaire aktualisiert mit ID {{ param }}",
+            "deleted": "Questionnaire gelöscht mit ID {{ param }}",
+            "delete": {
+                "question": "Soll Questionnaire {{ id }} wirklich dauerhaft gelöscht werden?"
+            },
+            "detail": {
+                "title": "Questionnaire"
+            },
+            "name": "Name",
+            "scope": "Scope",
+            "created": "Created",
+            "modified": "Modified",
+            "questions": "Questions",
+            "selfassessment": "Selfassessment"
+        }
+    }
+}

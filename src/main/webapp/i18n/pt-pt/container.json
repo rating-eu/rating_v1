@@ -1,0 +1,28 @@
+
+{
+    "hermeneutApp": {
+        "container" : {
+            "home": {
+                "title": "Containers",
+                "createLabel": "Criar um(a) novo(a) Container",
+                "createOrEditLabel": "Criar ou editar um(a) Container",
+                "search": "Search for Container"
+            },
+            "created": "A new Container is created with identifier {{ param }}",
+            "updated": "A Container is updated with identifier {{ param }}",
+            "deleted": "A Container is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Tem a certeza que pretende eliminar o(a) Container {{ id }}?"
+            },
+            "detail": {
+                "title": "Container"
+            },
+            "name": "Name",
+            "description": "Description",
+            "containerType": "Container Type",
+            "created": "Created",
+            "company": "Company",
+            "asset": "Asset"
+        }
+    }
+}

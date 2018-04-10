@@ -1,0 +1,9 @@
+{
+    "hermeneutApp": {
+        "Q_Scope" : {
+            "null": "",
+            "ID_THREAT_AGENT": "ID_THREAT_AGENT",
+            "SELFASSESSMENT": "SELFASSESSMENT"
+        }
+    }
+}

@@ -1,0 +1,27 @@
+{
+    "hermeneutApp": {
+        "CompType" : {
+            "null": "",
+            "INFORMATION": "INFORMATION",
+            "HEALTHCARE": "HEALTHCARE",
+            "FINANCE": "FINANCE",
+            "ACCOMODATION": "ACCOMODATION",
+            "ADMINISTRATIVE": "ADMINISTRATIVE",
+            "AGRICOLTURE": "AGRICOLTURE",
+            "CONSTRUCTION": "CONSTRUCTION",
+            "EDUCATION": "EDUCATION",
+            "ENTERTAINMENT": "ENTERTAINMENT",
+            "MANAGEMENT": "MANAGEMENT",
+            "MANUFACTURING": "MANUFACTURING",
+            "MINING": "MINING",
+            "OTHERSERVICES": "OTHERSERVICES",
+            "PROFESSIONAL": "PROFESSIONAL",
+            "PUBLIC": "PUBLIC",
+            "REALESTATE": "REALESTATE",
+            "RETAILS": "RETAILS",
+            "TRADE": "TRADE",
+            "TRANSPORTATION": "TRANSPORTATION",
+            "UTILITIES": "UTILITIES"
+        }
+    }
+}

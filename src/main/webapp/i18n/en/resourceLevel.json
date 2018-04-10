@@ -1,0 +1,10 @@
+{
+    "hermeneutApp": {
+        "ResourceLevel" : {
+            "null": "",
+            "LOW": "LOW",
+            "MEDIUM": "MEDIUM",
+            "HIGH": "HIGH"
+        }
+    }
+}
