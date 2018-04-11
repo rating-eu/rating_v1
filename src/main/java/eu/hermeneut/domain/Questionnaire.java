@@ -47,6 +47,7 @@ public class Questionnaire implements Serializable {
     @Column(name = "modified")
     private ZonedDateTime modified;
 
+    
     @OneToMany(mappedBy = "questionnaire")
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
@@ -197,6 +198,7 @@ public class Questionnaire implements Serializable {
             ", scope='" + getScope() + "'" +
             ", created='" + getCreated() + "'" +
             ", modified='" + getModified() + "'" +
+            ", questions='" + getQuestions() + "'" +
             "}";
     }
 }

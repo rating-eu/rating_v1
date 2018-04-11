@@ -1,6 +1,8 @@
 package eu.hermeneut.service.impl;
 
 import eu.hermeneut.service.QuestionnaireService;
+import eu.hermeneut.domain.Answer;
+import eu.hermeneut.domain.Question;
 import eu.hermeneut.domain.Questionnaire;
 import eu.hermeneut.repository.QuestionnaireRepository;
 import eu.hermeneut.repository.search.QuestionnaireSearchRepository;
@@ -10,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -68,8 +71,28 @@ public class QuestionnaireServiceImpl implements QuestionnaireService {
     @Override
     @Transactional(readOnly = true)
     public Questionnaire findOne(Long id) {
-        log.debug("Request to get Questionnaire : {}", id);
-        return questionnaireRepository.findOne(id);
+        
+    	log.debug("Request to get Questionnaire : {}", id);
+        
+        Questionnaire toReturn= new Questionnaire();
+        toReturn=questionnaireRepository.findOne(id);
+        Set<Question> questions = toReturn.getQuestions();
+        toReturn.setQuestions(questions);
+        
+        for (Question question : questions) {
+        	
+			Set<Answer> aa = question.getAnswers();
+			question.setAnswers(aa);
+			for (Answer answer : aa) {
+//				System.out.println("quest "+ answer.getQuestion() 
+//				+ "answer "+ answer.getType());
+			}
+		}
+        
+        
+        System.out.println("toReturn "+ toReturn.toString());
+        
+        return toReturn;
     }
 
     /**
