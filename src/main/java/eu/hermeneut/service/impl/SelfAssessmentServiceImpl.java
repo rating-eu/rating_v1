@@ -79,8 +79,10 @@ public class SelfAssessmentServiceImpl implements SelfAssessmentService {
 				
 				if(self_owner.equalsIgnoreCase(logged_user)){
 					if(!toReturn.contains(selfAssessment)) {
-					System.out.println("SIZE "+selfAssessment.getCompanyprofiles());
-					System.out.println("SIZE sectors "+selfAssessment.getCompanysectors());
+					System.out.println("SIZE "+selfAssessment.getCompanyprofiles().size());
+					System.out.println("SIZE external "+selfAssessment.getExternalaudits().size());
+					System.out.println("SIZE questionnaires "+selfAssessment.getQuestionnaires().size());
+					System.out.println("SIZE sectors "+selfAssessment.getCompanysectors().size());
 
 					toReturn.add(selfAssessment);}
 				}else {
@@ -96,6 +98,9 @@ public class SelfAssessmentServiceImpl implements SelfAssessmentService {
 						if(company_owner.equalsIgnoreCase(logged_user)){
 							System.out.println("SIZE "+selfAssessment.getCompanyprofiles());
 							System.out.println("SIZE sectors "+selfAssessment.getCompanysectors());
+
+							System.out.println("SIZE external "+selfAssessment.getExternalaudits().size());
+							System.out.println("SIZE questionnaires "+selfAssessment.getQuestionnaires().size());
 							if(!toReturn.contains(selfAssessment)) {toReturn.add(selfAssessment);}
 						}
 
