@@ -17,6 +17,7 @@ import { HermeneutAdminModule } from './admin/admin.module';
 import { HermeneutAccountModule } from './account/account.module';
 import { HermeneutEntityModule } from './entities/entity.module';
 import { PaginationConfig } from './blocks/config/uib-pagination.config';
+import { IdentifyThreatAgentModule } from './identify-threat-agent/identify-threat-agent.module';
 // jhipster-needle-angular-add-module-import JHipster will add new module here
 import {
     JhiMainComponent,
@@ -38,6 +39,7 @@ import {
         HermeneutAdminModule,
         HermeneutAccountModule,
         HermeneutEntityModule,
+        IdentifyThreatAgentModule
         // jhipster-needle-angular-add-module JHipster will add new module here
     ],
     declarations: [
