@@ -1,7 +1,8 @@
 {
     "home": {
-        "title": "Welcome, Java Hipster!",
-        "subtitle": "This is your homepage",
+        "title": "Welcome, HERMENEUT!",
+        "subtitle": "Introduction",
+        "description":"Enterprises intangible Risk Management via Economic models based on simulation of modern cyber attacks (Hermeneut) is a Horizon 2020 research and innovation project focusing on economics of cyber security.Cyber-attacks can harm intangible assets like reputation, Intellectual Property Rights, expertise, and know-how. There is a great disparity between the efficiency of attacks and inadequate defences, partly due to the lack of quantitative information for decision makers to prioritise security investments. Fostering a culture of risk management, Hermeneut provides individual organisations as well as business sectors with an innovative methodology to assess their vulnerabilities and corresponding tangible and intangible assets at risk.",
         "logged": {
             "message": "You are logged in as user \"{{username}}\"."
         },
