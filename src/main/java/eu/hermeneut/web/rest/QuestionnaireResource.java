@@ -2,6 +2,7 @@ package eu.hermeneut.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import eu.hermeneut.domain.Questionnaire;
+import eu.hermeneut.domain.enumeration.Q_Scope;
 import eu.hermeneut.service.QuestionnaireService;
 import eu.hermeneut.web.rest.errors.BadRequestAlertException;
 import eu.hermeneut.web.rest.util.HeaderUtil;
@@ -15,6 +16,7 @@ import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.StreamSupport;
@@ -90,7 +92,28 @@ public class QuestionnaireResource {
     public List<Questionnaire> getAllQuestionnaires() {
         log.debug("REST request to get all Questionnaires");
         return questionnaireService.findAll();
+    }
+
+    /**
+     * GET  /questionnaires/{scope} : get all the questionnaires.
+     *
+     * @return the ResponseEntity with status 200 (OK) and the list of questionnaires in body
+     */
+    @GetMapping("/questionnaires/by/scope/{scope}")
+    @Timed
+    public List<Questionnaire> getAllQuestionnairesByScope(@PathVariable String scope) {
+        log.debug("REST request to get all Questionnaires by scope");
+
+        List<Questionnaire> questionnaires = new ArrayList<>();
+        try {
+            Q_Scope q_scope = Q_Scope.valueOf(scope);
+            questionnaires = this.questionnaireService.findAllByScope(q_scope);
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
         }
+
+        return questionnaires;
+    }
 
     /**
      * GET  /questionnaires/:id : get the "id" questionnaire.

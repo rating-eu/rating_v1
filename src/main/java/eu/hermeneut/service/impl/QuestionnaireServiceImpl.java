@@ -1,5 +1,6 @@
 package eu.hermeneut.service.impl;
 
+import eu.hermeneut.domain.enumeration.Q_Scope;
 import eu.hermeneut.service.QuestionnaireService;
 import eu.hermeneut.domain.Answer;
 import eu.hermeneut.domain.Question;
@@ -63,6 +64,18 @@ public class QuestionnaireServiceImpl implements QuestionnaireService {
     }
 
     /**
+     * Get all the questionnaires with a given scope.
+     *
+     * @return the list of entities
+     */
+    @Override
+    @Transactional(readOnly = true)
+    public List<Questionnaire> findAllByScope(Q_Scope scope) {
+        log.debug("Request to get all Questionnaires with a given scope");
+        return questionnaireRepository.findAllByScope(scope);
+    }
+
+    /**
      * Get one questionnaire by id.
      *
      * @param id the id of the entity
@@ -71,27 +84,27 @@ public class QuestionnaireServiceImpl implements QuestionnaireService {
     @Override
     @Transactional(readOnly = true)
     public Questionnaire findOne(Long id) {
-        
-    	log.debug("Request to get Questionnaire : {}", id);
-        
-        Questionnaire toReturn= new Questionnaire();
-        toReturn=questionnaireRepository.findOne(id);
+
+        log.debug("Request to get Questionnaire : {}", id);
+
+        Questionnaire toReturn = new Questionnaire();
+        toReturn = questionnaireRepository.findOne(id);
         Set<Question> questions = toReturn.getQuestions();
         toReturn.setQuestions(questions);
-        
+
         for (Question question : questions) {
-        	
-			Set<Answer> aa = question.getAnswers();
-			question.setAnswers(aa);
-			for (Answer answer : aa) {
-//				System.out.println("quest "+ answer.getQuestion() 
+
+            Set<Answer> aa = question.getAnswers();
+            question.setAnswers(aa);
+            for (Answer answer : aa) {
+//				System.out.println("quest "+ answer.getQuestion()
 //				+ "answer "+ answer.getType());
-			}
-		}
-        
-        
-        System.out.println("toReturn "+ toReturn.toString());
-        
+            }
+        }
+
+
+        System.out.println("toReturn " + toReturn.toString());
+
         return toReturn;
     }
 
