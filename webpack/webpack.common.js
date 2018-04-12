@@ -37,7 +37,16 @@ module.exports = (options) => ({
             {
                 test: /manifest.webapp$/,
                 loader: 'file-loader?name=manifest.webapp!web-app-manifest-loader'
-            }
+            },
+            {
+		         test: /\.ts$/,
+		         loaders: [
+		             'angular2-template-loader',
+		             'awesome-typescript-loader',
+		             'angular-router-loader?aot=true&genDir=aot/'
+		         ],
+		         exclude: ['node_modules/generator-jhipster']
+        		}
         ]
     },
     plugins: [
