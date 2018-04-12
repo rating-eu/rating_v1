@@ -151,70 +151,360 @@
 						<th>Installation</th>
 						<th>Command and Control</th>
 					</tr>
-					<tr>
-					<th	style="vertical-align: middle; background: #cc99ff;">Human</th>
-					</tr>
-					<tr>
-					<th	style="vertical-align: middle; background: #cc99ff;">IT</th>
-					</tr>
-					<tr>
-					<th	style="vertical-align: middle; background: #cc99ff;">Physical</th>
-					</tr>
 				</thead>
 				<tbody>
 				
-					<tr
-						*ngFor="let attackStrategy of attackStrategies ;trackBy: trackId">
-
-						<td></td>
-						<td>
-
-							<button *ngIf="attackStrategy.level=='HUMAN' && attackStrategy.phase=='RECONNAISSANCE' " 
-								type="button" class="btn center-block btn-default"
-								data-toggle="modal" data-target="#OSINT" id="abc0">{{attackStrategy.name}}</button>
-
-						</td>
-						<td>
-
-							<button
-								*ngIf="attackStrategy.level=='HUMAN' && attackStrategy.phase=='WEAPONIZATION' "
-								type="button" class="btn center-block btn-default"
-								data-toggle="modal" data-target="#OSINT" id="abc0">{{attackStrategy.name}}</button>
-
-						</td>
-						<td>
-
-							<button
-								*ngIf="attackStrategy.level=='HUMAN' && attackStrategy.phase=='DELIVERY' "
-								type="button" class="btn center-block btn-default"
-								data-toggle="modal" data-target="#OSINT" id="abc0">{{attackStrategy.name}}</button>
-
-						</td>
-						<td>
-
-							<button
-								*ngIf="attackStrategy.level=='HUMAN' && attackStrategy.phase=='EXPLOITATION' "
-								type="button" class="btn center-block btn-default"
-								data-toggle="modal" data-target="#OSINT" id="abc0">{{attackStrategy.name}}</button>
-
-						</td>	
-						<td>
-
-							<button
-								*ngIf="attackStrategy.level=='HUMAN' && attackStrategy.phase=='INSTALLATION' "
-								type="button" class="btn center-block btn-default"
-								data-toggle="modal" data-target="#OSINT" id="abc0">{{attackStrategy.name}}</button>
-
-						</td>								
-						<td>
-
-							<button
-								*ngIf="attackStrategy.level=='HUMAN' && attackStrategy.phase=='COMMANDCONTROL' "
-								type="button" class="btn center-block btn-default"
-								data-toggle="modal" data-target="#OSINT" id="abc0">{{attackStrategy.name}}</button>
-
-						</td>													
-					</tr>
+					<tr>
+								
+									<th style="vertical-align: middle; background: #cc99ff;">Human</th>
+									<td>
+										<div *ngFor="let hr of HU_R ;trackBy: trackId">									
+										<button  
+										type="button" class="btn center-block btn-default" 
+										data-toggle="modal" 
+										data-target="#" id="{{hr.id}}">{{hr.name}}</button>
+										</div>
+										<div class="modal fade" id="{{hr.id}}" role="dialog">
+										    <div class="modal-dialog">
+										      <!-- Modal content-->
+										      <div class="modal-content">
+										        <div class="modal-header">
+										          <button type="button" class="close" data-dismiss="modal">&times;</button>
+										        </div>
+										        <div class="modal-body">
+										          <!-- <img src="image/1.PNG" width="550"> -->
+										        </div>
+										      </div>
+										      
+										    </div>
+										</div>
+									</td>
+									<td>
+									<div *ngFor="let hw of HU_W ;trackBy: trackId">									
+										<button  
+										type="button" class="btn center-block btn-default" 
+										data-toggle="modal" 
+										data-target="" id="{{hw.id}}">{{hw.name}}</button>
+										</div>
+									</td>
+									<td>
+									<div *ngFor="let hd of HU_D ;trackBy: trackId">									
+										<button  
+										type="button" class="btn center-block btn-default" 
+										data-toggle="modal" 
+										data-target="" id="{{hd.id}}">{{hd.name}}</button>
+										</div>
+										<div class="modal fade" id="{{hd.id}}" role="dialog">
+										    <div class="modal-dialog">
+										      <!-- Modal content-->
+										      <div class="modal-content">
+										        <div class="modal-header">
+										          <button type="button" class="close" data-dismiss="modal">&times;</button>
+										        </div>
+										        <div class="modal-body">
+										          <!-- <img src="image/1.PNG" width="550"> -->
+										        </div>
+										      </div>
+										      
+										    </div>
+										</div>
+									</td>
+									<td>
+										<button *ngFor="let he of HU_E ;trackBy: trackId" 
+										type="button" class="btn center-block btn-default" 
+										data-toggle="modal" 
+										data-target="" 
+										id="{{he.id}}">{{he.name}}</button>
+										<div class="modal fade" id="Manipulating" role="dialog">
+										    <div class="modal-dialog">
+										      <!-- Modal content-->
+										      <div class="modal-content">
+										        <div class="modal-header">
+										          <button type="button" class="close" data-dismiss="modal">&times;</button>
+										        </div>
+										        <div class="modal-body">
+										          <!-- <img src="image/1.PNG" width="550"> -->
+										        </div>
+										      </div>
+										      
+										    </div>
+										</div>
+									</td>
+									<td>
+										<button *ngFor="let hi of HU_I ;trackBy: trackId"
+										type="button" class="btn center-block btn-default" 
+										data-toggle="modal" data-target="" 
+										id="{{hi.id}}">{{hi.name}}</button>
+										<div class="modal fade" id="HumanTargeted" role="dialog">
+										    <div class="modal-dialog">
+										      <!-- Modal content-->
+										      <div class="modal-content">
+										        <div class="modal-header">
+										          <button type="button" class="close" data-dismiss="modal">&times;</button>
+										        </div>
+										        <div class="modal-body">
+										          <!-- <img src="image/1.PNG" width="550"> -->
+										        </div>
+										      </div>
+										      
+										    </div>
+										</div>
+									</td>
+									<td>
+										<button *ngFor="let hc of HU_C ;trackBy: trackId"
+										type="button" class="btn center-block btn-default" 
+										data-toggle="modal" data-target="" 
+										id="{{hc.id}}">{{hc.name}}</button>
+										<div class="modal fade" id="Impersonification" role="dialog">
+										    <div class="modal-dialog">
+										      <!-- Modal content-->
+										      <div class="modal-content">
+										        <div class="modal-header">
+										          <button type="button" class="close" data-dismiss="modal">&times;</button>
+										        </div>
+										        <div class="modal-body">
+										          <!-- <img src="image/1.PNG" width="550"> -->
+										        </div>
+										      </div>
+										      
+										    </div>
+										</div>
+									</td>
+								</tr>
+								<tr>
+									<th style="vertical-align: middle; background: #cc99ff;">IT</th>
+									<td>
+										<div *ngFor="let hr of IT_R ;trackBy: trackId">									
+										<button  
+										type="button" class="btn center-block btn-default" 
+										data-toggle="modal" 
+										data-target="#" id="{{hr.id}}">{{hr.name}}</button>
+										</div>
+										<div class="modal fade" id="{{hr.id}}" role="dialog">
+										    <div class="modal-dialog">
+										      <!-- Modal content-->
+										      <div class="modal-content">
+										        <div class="modal-header">
+										          <button type="button" class="close" data-dismiss="modal">&times;</button>
+										        </div>
+										        <div class="modal-body">
+										          <!-- <img src="image/1.PNG" width="550"> -->
+										        </div>
+										      </div>
+										      
+										    </div>
+										</div>
+									</td>
+									<td>
+									<div *ngFor="let hw of IT_W ;trackBy: trackId">									
+										<button  
+										type="button" class="btn center-block btn-default" 
+										data-toggle="modal" 
+										data-target="" id="{{hw.id}}">{{hw.name}}</button>
+										</div>
+									</td>
+									<td>
+									<div *ngFor="let hd of IT_D ;trackBy: trackId">									
+										<button  
+										type="button" class="btn center-block btn-default" 
+										data-toggle="modal" 
+										data-target="" id="{{hd.id}}">{{hd.name}}</button>
+										</div>
+										<div class="modal fade" id="{{hd.id}}" role="dialog">
+										    <div class="modal-dialog">
+										      <!-- Modal content-->
+										      <div class="modal-content">
+										        <div class="modal-header">
+										          <button type="button" class="close" data-dismiss="modal">&times;</button>
+										        </div>
+										        <div class="modal-body">
+										          <!-- <img src="image/1.PNG" width="550"> -->
+										        </div>
+										      </div>
+										      
+										    </div>
+										</div>
+									</td>
+									<td>
+										<button *ngFor="let he of IT_E ;trackBy: trackId" 
+										type="button" class="btn center-block btn-default" 
+										data-toggle="modal" 
+										data-target="" 
+										id="{{he.id}}">{{he.name}}</button>
+										<div class="modal fade" id="Manipulating" role="dialog">
+										    <div class="modal-dialog">
+										      <!-- Modal content-->
+										      <div class="modal-content">
+										        <div class="modal-header">
+										          <button type="button" class="close" data-dismiss="modal">&times;</button>
+										        </div>
+										        <div class="modal-body">
+										          <!-- <img src="image/1.PNG" width="550"> -->
+										        </div>
+										      </div>
+										      
+										    </div>
+										</div>
+										</td>
+										<td>										
+										<button *ngFor="let hi of IT_I ;trackBy: trackId"
+										type="button" class="btn center-block btn-default" 
+										data-toggle="modal" data-target="" 
+										id="{{hi.id}}">{{hi.name}}</button>
+										<div class="modal fade" id="HumanTargeted" role="dialog">
+										    <div class="modal-dialog">
+										      <!-- Modal content-->
+										      <div class="modal-content">
+										        <div class="modal-header">
+										          <button type="button" class="close" data-dismiss="modal">&times;</button>
+										        </div>
+										        <div class="modal-body">
+										          <!-- <img src="image/1.PNG" width="550"> -->
+										        </div>
+										      </div>
+										      
+										    </div>
+										</div>
+									</td>
+									<td>
+										<button *ngFor="let hc of IT_C ;trackBy: trackId"
+										type="button" class="btn center-block btn-default" 
+										data-toggle="modal" data-target="" 
+										id="{{hc.id}}">{{hc.name}}</button>
+										<div class="modal fade" id="Impersonification" role="dialog">
+										    <div class="modal-dialog">
+										      <!-- Modal content-->
+										      <div class="modal-content">
+										        <div class="modal-header">
+										          <button type="button" class="close" data-dismiss="modal">&times;</button>
+										        </div>
+										        <div class="modal-body">
+										          <!-- <img src="image/1.PNG" width="550"> -->
+										        </div>
+										      </div>
+										      
+										    </div>
+										</div>
+									</td>									
+									
+								</tr>
+								<tr>
+									<th style="vertical-align: middle; background: #cc99ff;">PHYSICAL</th>
+																		<td>
+										<div *ngFor="let hr of PH_R ;trackBy: trackId">									
+										<button  
+										type="button" class="btn center-block btn-default" 
+										data-toggle="modal" 
+										data-target="#" id="{{hr.id}}">{{hr.name}}</button>
+										</div>
+										<div class="modal fade" id="{{hr.id}}" role="dialog">
+										    <div class="modal-dialog">
+										      <!-- Modal content-->
+										      <div class="modal-content">
+										        <div class="modal-header">
+										          <button type="button" class="close" data-dismiss="modal">&times;</button>
+										        </div>
+										        <div class="modal-body">
+										          <!-- <img src="image/1.PNG" width="550"> -->
+										        </div>
+										      </div>
+										      
+										    </div>
+										</div>
+									</td>
+									<td>
+									<div *ngFor="let hw of PH_W ;trackBy: trackId">									
+										<button  
+										type="button" class="btn center-block btn-default" 
+										data-toggle="modal" 
+										data-target="" id="{{hw.id}}">{{hw.name}}</button>
+										</div>
+									</td>
+									<td>
+									<div *ngFor="let hd of PH_D ;trackBy: trackId">									
+										<button  
+										type="button" class="btn center-block btn-default" 
+										data-toggle="modal" 
+										data-target="" id="{{hd.id}}">{{hd.name}}</button>
+										</div>
+										<div class="modal fade" id="{{hd.id}}" role="dialog">
+										    <div class="modal-dialog">
+										      <!-- Modal content-->
+										      <div class="modal-content">
+										        <div class="modal-header">
+										          <button type="button" class="close" data-dismiss="modal">&times;</button>
+										        </div>
+										        <div class="modal-body">
+										          <!-- <img src="image/1.PNG" width="550"> -->
+										        </div>
+										      </div>
+										      
+										    </div>
+										</div>
+									</td>
+									<td>
+										<button *ngFor="let he of PH_E ;trackBy: trackId" 
+										type="button" class="btn center-block btn-default" 
+										data-toggle="modal" 
+										data-target="" 
+										id="{{he.id}}">{{he.name}}</button>
+										<div class="modal fade" id="Manipulating" role="dialog">
+										    <div class="modal-dialog">
+										      <!-- Modal content-->
+										      <div class="modal-content">
+										        <div class="modal-header">
+										          <button type="button" class="close" data-dismiss="modal">&times;</button>
+										        </div>
+										        <div class="modal-body">
+										          <!-- <img src="image/1.PNG" width="550"> -->
+										        </div>
+										      </div>
+										      
+										    </div>
+										</div>
+										</td>
+										<td>										
+										<button *ngFor="let hi of PH_I ;trackBy: trackId"
+										type="button" class="btn center-block btn-default" 
+										data-toggle="modal" data-target="" 
+										id="{{hi.id}}">{{hi.name}}</button>
+										<div class="modal fade" id="HumanTargeted" role="dialog">
+										    <div class="modal-dialog">
+										      <!-- Modal content-->
+										      <div class="modal-content">
+										        <div class="modal-header">
+										          <button type="button" class="close" data-dismiss="modal">&times;</button>
+										        </div>
+										        <div class="modal-body">
+										          <!-- <img src="image/1.PNG" width="550"> -->
+										        </div>
+										      </div>
+										      
+										    </div>
+										</div>
+									</td>
+									<td>
+										<button *ngFor="let hc of PH_C ;trackBy: trackId"
+										type="button" class="btn center-block btn-default" 
+										data-toggle="modal" data-target="" 
+										id="{{hc.id}}">{{hc.name}}</button>
+										<div class="modal fade" id="Impersonification" role="dialog">
+										    <div class="modal-dialog">
+										      <!-- Modal content-->
+										      <div class="modal-content">
+										        <div class="modal-header">
+										          <button type="button" class="close" data-dismiss="modal">&times;</button>
+										        </div>
+										        <div class="modal-body">
+										          <!-- <img src="image/1.PNG" width="550"> -->
+										        </div>
+										      </div>
+										      
+										    </div>
+										</div>
+									</td>									
+	
+								</tr>
 				</tbody>
 			</table>
 		</div>
