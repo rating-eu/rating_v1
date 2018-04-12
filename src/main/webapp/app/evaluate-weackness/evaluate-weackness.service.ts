@@ -1,38 +1,35 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
-import { SERVER_API_URL } from '../../app.constants';
+import { SERVER_API_URL } from '../app.constants';
 
 import { JhiDateUtils } from 'ng-jhipster';
 
-import { AttackStrategyMgm } from './attack-strategy-mgm.model';
-import { createRequestOption } from '../../shared';
+import { AttackStrategyMgm } from '../entities/attack-strategy-mgm/attack-strategy-mgm.model';
+import { createRequestOption } from '../shared';
 
 export type EntityResponseType = HttpResponse<AttackStrategyMgm>;
 
 @Injectable()
-export class AttackStrategyMgmService {
+export class EvaluateService {
 
-    private resourceUrl =  SERVER_API_URL + 'api/attack-strategies';
-    private resourceSearchUrl = SERVER_API_URL + 'api/_search/attack-strategies';
+    private resourceUrl =  SERVER_API_URL + 'api/attack-strategy';
+    private resourceSearchUrl = SERVER_API_URL + 'api/_search/attack-strategy';
 
     constructor(private http: HttpClient, private dateUtils: JhiDateUtils) { }
 
-    create(attackStrategy: AttackStrategyMgm): Observable<EntityResponseType> {
-        const copy = this.convert(attackStrategy);
+    create(threatAgent: AttackStrategyMgm): Observable<EntityResponseType> {
+        const copy = this.convert(threatAgent);
         return this.http.post<AttackStrategyMgm>(this.resourceUrl, copy, { observe: 'response' })
             .map((res: EntityResponseType) => this.convertResponse(res));
     }
 
-    update(attackStrategy: AttackStrategyMgm): Observable<EntityResponseType> {
-        const copy = this.convert(attackStrategy);
+    update(threatAgent: AttackStrategyMgm): Observable<EntityResponseType> {
+        const copy = this.convert(threatAgent);
         return this.http.put<AttackStrategyMgm>(this.resourceUrl, copy, { observe: 'response' })
             .map((res: EntityResponseType) => this.convertResponse(res));
     }
-    findByLevelAndPhase(level: string, phase: string): Observable<HttpResponse<AttackStrategyMgm[]>> {
-        return this.http.get<AttackStrategyMgm[]>(`${this.resourceUrl}/l/${level}/p/${phase}`, { observe: 'response'})
-            .map((res: HttpResponse<AttackStrategyMgm[]>) => this.convertArrayResponse(res));
-    }
+
     find(id: number): Observable<EntityResponseType> {
         return this.http.get<AttackStrategyMgm>(`${this.resourceUrl}/${id}`, { observe: 'response'})
             .map((res: EntityResponseType) => this.convertResponse(res));
@@ -69,7 +66,7 @@ export class AttackStrategyMgmService {
     }
 
     /**
-     * Convert a returned JSON object to AttackStrategyMgm.
+     * Convert a returned JSON object to ThreatAgentMgm.
      */
     private convertItemFromServer(attackStrategy: AttackStrategyMgm): AttackStrategyMgm {
         const copy: AttackStrategyMgm = Object.assign({}, attackStrategy);
@@ -81,7 +78,7 @@ export class AttackStrategyMgmService {
     }
 
     /**
-     * Convert a AttackStrategyMgm to a JSON which can be sent to the server.
+     * Convert a ThreatAgentMgm to a JSON which can be sent to the server.
      */
     private convert(attackStrategy: AttackStrategyMgm): AttackStrategyMgm {
         const copy: AttackStrategyMgm = Object.assign({}, attackStrategy);
