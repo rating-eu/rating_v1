@@ -31,11 +31,11 @@ import {
     ActiveMenuDirective,
     ErrorComponent
 } from './layouts';
+import {QuestionnairesRoutingModule} from './questionnaires/questionnaires-routing.module';
 
 @NgModule({
     imports: [
         BrowserModule,
-        HermeneutAppRoutingModule,
         Ng2Webstorage.forRoot({prefix: 'jhi', separator: '-'}),
         HermeneutSharedModule,
         HermeneutHomeModule,
@@ -43,7 +43,9 @@ import {
         HermeneutAccountModule,
         HermeneutEntityModule,
         IdentifyThreatAgentModule,
-        EvaluateWeacknessModule
+        EvaluateWeacknessModule,
+        QuestionnairesModule, // add the feature module here
+        HermeneutAppRoutingModule
         // jhipster-needle-angular-add-module JHipster will add new module here
     ],
     declarations: [
