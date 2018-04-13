@@ -1954,6 +1954,10 @@ date-now@^0.1.4:
   version "0.1.4"
   resolved "https://registry.yarnpkg.com/date-now/-/date-now-0.1.4.tgz#eaf439fd4d4848ad74e5cc7dbef200672b9e345b"
 
+date-time-js@^1.0.6:
+  version "1.0.6"
+  resolved "https://registry.yarnpkg.com/date-time-js/-/date-time-js-1.0.6.tgz#f87c373a22a283ad53cb923422b9c4fac957155d"
+
 dateformat@^1.0.11, dateformat@^1.0.6:
   version "1.0.12"
   resolved "https://registry.yarnpkg.com/dateformat/-/dateformat-1.0.12.tgz#9f124b67594c937ff706932e4a642cca8dbbfee9"
