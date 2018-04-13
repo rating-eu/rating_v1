@@ -10,7 +10,7 @@ const commonConfig = require('./webpack.common.js');
 
 const ENV = 'development';
 
-module.exports = webpackMerge(commonConfig({ env: ENV }), {
+module.exports = webpackMerge(commonConfig({env: ENV}), {
     devtool: 'eval-source-map',
     devServer: {
         contentBase: './target/www',
@@ -48,23 +48,30 @@ module.exports = webpackMerge(commonConfig({ env: ENV }), {
             loaders: 'tslint-loader',
             exclude: ['node_modules', new RegExp('reflect-metadata\\' + path.sep + 'Reflect\\.ts')]
         },
-        {
-            test: /\.ts$/,
-            loaders: [
-                'angular2-template-loader',
-                'awesome-typescript-loader'
-            ],
-            exclude: ['node_modules/generator-jhipster']
-        },
-        {
-            test: /\.css$/,
-            loaders: ['to-string-loader', 'css-loader'],
-            exclude: /(vendor\.css|global\.css)/
-        },
-        {
-            test: /(vendor\.css|global\.css)/,
-            loaders: ['style-loader', 'css-loader']
-        }]
+            {
+                test: /\.ts$/,
+                loaders: [
+                    'angular2-template-loader',
+                    'awesome-typescript-loader'
+                ],
+                exclude: ['node_modules/generator-jhipster']
+            },
+            {
+                test: /\.(ts|js)$/,
+                loaders: [
+                    'angular-router-loader'
+                ],
+                exclude: ['node_modules/generator-jhipster']
+            },
+            {
+                test: /\.css$/,
+                loaders: ['to-string-loader', 'css-loader'],
+                exclude: /(vendor\.css|global\.css)/
+            },
+            {
+                test: /(vendor\.css|global\.css)/,
+                loaders: ['style-loader', 'css-loader']
+            }]
     },
     plugins: [
         new BrowserSyncPlugin({

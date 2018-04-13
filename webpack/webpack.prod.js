@@ -13,7 +13,7 @@ const commonConfig = require('./webpack.common.js');
 const ENV = 'production';
 const extractCSS = new ExtractTextPlugin(`[name].[hash].css`);
 
-module.exports = webpackMerge(commonConfig({ env: ENV }), {
+module.exports = webpackMerge(commonConfig({env: ENV}), {
     // Enable source maps. Please note that this will slow down the build.
     // You have to enable it in UglifyJSPlugin config below and in tsconfig-aot.json as well
     // devtool: 'source-map',
@@ -28,22 +28,38 @@ module.exports = webpackMerge(commonConfig({ env: ENV }), {
         chunkFilename: 'app/[id].[hash].chunk.js'
     },
     module: {
-        rules: [{
-            test: /(?:\.ngfactory\.js|\.ngstyle\.js|\.ts)$/,
-            use: [ '@ngtools/webpack' ]
-        },
-        {
-            test: /\.css$/,
-            loaders: ['to-string-loader', 'css-loader'],
-            exclude: /(vendor\.css|global\.css)/
-        },
-        {
-            test: /(vendor\.css|global\.css)/,
-            use: extractCSS.extract({
-                fallback: 'style-loader',
-                use: ['css-loader']
-            })
-        }]
+        rules: [
+            {
+                test: /(?:\.ngfactory\.js|\.ngstyle\.js|\.ts)$/,
+                use: ['@ngtools/webpack']
+            },
+            {
+                test: /\.ts$/,
+                loaders: [
+                    'angular2-template-loader',
+                    'awesome-typescript-loader'
+                ],
+                exclude: ['node_modules/generator-jhipster']
+            },
+            {
+                test: /\.(ts|js)$/,
+                loaders: [
+                    'angular-router-loader'
+                ],
+                exclude: ['node_modules/generator-jhipster']
+            },
+            {
+                test: /\.css$/,
+                loaders: ['to-string-loader', 'css-loader'],
+                exclude: /(vendor\.css|global\.css)/
+            },
+            {
+                test: /(vendor\.css|global\.css)/,
+                use: extractCSS.extract({
+                    fallback: 'style-loader',
+                    use: ['css-loader']
+                })
+            }]
     },
     plugins: [
         extractCSS,
@@ -87,8 +103,8 @@ module.exports = webpackMerge(commonConfig({ env: ENV }), {
             debug: false
         }),
         new WorkboxPlugin.GenerateSW({
-          clientsClaim: true,
-          skipWaiting: true,
+            clientsClaim: true,
+            skipWaiting: true,
         })
     ]
 });
