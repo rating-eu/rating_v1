@@ -7,7 +7,7 @@ const routes: Routes = [
     navbarRoute,
     ...errorRoute,
     {
-        path: 'questionnaires-id-ta',
+        path: 'questionnaires',
         loadChildren: './questionnaires/questionnaires.module#QuestionnairesModule'
     }
 ];

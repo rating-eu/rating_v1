@@ -3,7 +3,7 @@ import {Routes, RouterModule} from '@angular/router';
 import {IdTaComponent} from './id-ta/id-ta.component';
 
 const routes: Routes = [
-    {path: 'id-ta', component: IdTaComponent}
+    {path: '', component: IdTaComponent}
 ];
 
 @NgModule({
