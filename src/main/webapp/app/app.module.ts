@@ -20,7 +20,7 @@ import {PaginationConfig} from './blocks/config/uib-pagination.config';
 import {IdentifyThreatAgentModule} from './identify-threat-agent/identify-threat-agent.module';
 import {EvaluateWeacknessModule} from './evaluate-weackness/evaluate-weackness.module';
 import {QuestionnairesModule} from './questionnaires/questionnaires.module';
-import {IdentifyAssetsModule} from './identify-assets/identify-assets.module';
+import {IdentifyAssetModule} from './identify-assets/identify-asset.module';
 // jhipster-needle-angular-add-module-import JHipster will add new module here
 
 import {
@@ -47,7 +47,7 @@ import {QuestionnairesRoutingModule} from './questionnaires/questionnaires-routi
         EvaluateWeacknessModule,
         QuestionnairesModule, // add the feature module here
         HermeneutAppRoutingModule,
-        IdentifyAssetsModule
+        IdentifyAssetModule
         // jhipster-needle-angular-add-module JHipster will add new module here
     ],
     declarations: [
