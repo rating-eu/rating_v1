@@ -2,19 +2,27 @@
     <div class="col-md-3">
         <span class="hipster img-fluid rounded"></span>
     </div>
+
+    <div>
+        ID DATA BEFORE
+        <button type="button" class="btn btn-dark" routerLink="questionnaires"
+                routerLinkActive="active">Questionnaires
+        </button>
+    </div>
+
     <div class="col-md-9">
         <h1 class="display-4" jhiTranslate="home.title">Welcome, HERMENEUT!</h1>
         <p class="lead" jhiTranslate="home.subtitle">Introduction</p>
          <p class="lead" jhiTranslate="home.description"> Description</p>
-      
+
        <button type="button" class="btn btn-dark" routerLink="identify-threat-agent"
                     routerLinkActive="active">Identify Threat Agents
        </button>
-       
+
         <button type="button" class="btn btn-dark" routerLink="evaluate-weackness"
                     routerLinkActive="active">Evaluate Weackness
        </button>
-       
+
       <!-- <div [ngSwitch]="isAuthenticated()">
             <div class="alert alert-success" *ngSwitchCase="true">
                 <span *ngIf="account" jhiTranslate="home.logged.message"
