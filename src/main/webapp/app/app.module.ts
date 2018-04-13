@@ -1,24 +1,25 @@
 import './vendor.ts';
 
-import { NgModule, Injector } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
-import { HTTP_INTERCEPTORS } from '@angular/common/http';
-import { Ng2Webstorage, LocalStorageService, SessionStorageService  } from 'ngx-webstorage';
-import { JhiEventManager } from 'ng-jhipster';
+import {NgModule, Injector} from '@angular/core';
+import {BrowserModule} from '@angular/platform-browser';
+import {HTTP_INTERCEPTORS} from '@angular/common/http';
+import {Ng2Webstorage, LocalStorageService, SessionStorageService} from 'ngx-webstorage';
+import {JhiEventManager} from 'ng-jhipster';
 
-import { AuthInterceptor } from './blocks/interceptor/auth.interceptor';
-import { AuthExpiredInterceptor } from './blocks/interceptor/auth-expired.interceptor';
-import { ErrorHandlerInterceptor } from './blocks/interceptor/errorhandler.interceptor';
-import { NotificationInterceptor } from './blocks/interceptor/notification.interceptor';
-import { HermeneutSharedModule, UserRouteAccessService } from './shared';
-import { HermeneutAppRoutingModule} from './app-routing.module';
-import { HermeneutHomeModule } from './home/home.module';
-import { HermeneutAdminModule } from './admin/admin.module';
-import { HermeneutAccountModule } from './account/account.module';
-import { HermeneutEntityModule } from './entities/entity.module';
-import { PaginationConfig } from './blocks/config/uib-pagination.config';
-import { IdentifyThreatAgentModule } from './identify-threat-agent/identify-threat-agent.module';
-import { EvaluateWeacknessModule } from './evaluate-weackness/evaluate-weackness.module';
+import {AuthInterceptor} from './blocks/interceptor/auth.interceptor';
+import {AuthExpiredInterceptor} from './blocks/interceptor/auth-expired.interceptor';
+import {ErrorHandlerInterceptor} from './blocks/interceptor/errorhandler.interceptor';
+import {NotificationInterceptor} from './blocks/interceptor/notification.interceptor';
+import {HermeneutSharedModule, UserRouteAccessService} from './shared';
+import {HermeneutAppRoutingModule} from './app-routing.module';
+import {HermeneutHomeModule} from './home/home.module';
+import {HermeneutAdminModule} from './admin/admin.module';
+import {HermeneutAccountModule} from './account/account.module';
+import {HermeneutEntityModule} from './entities/entity.module';
+import {PaginationConfig} from './blocks/config/uib-pagination.config';
+import {IdentifyThreatAgentModule} from './identify-threat-agent/identify-threat-agent.module';
+import {EvaluateWeacknessModule} from './evaluate-weackness/evaluate-weackness.module';
+import {QuestionnairesModule} from './questionnaires/questionnaires.module';
 // jhipster-needle-angular-add-module-import JHipster will add new module here
 
 import {
@@ -30,19 +31,21 @@ import {
     ActiveMenuDirective,
     ErrorComponent
 } from './layouts';
+import {QuestionnairesRoutingModule} from './questionnaires/questionnaires-routing.module';
 
 @NgModule({
     imports: [
         BrowserModule,
-        HermeneutAppRoutingModule,
-        Ng2Webstorage.forRoot({ prefix: 'jhi', separator: '-'}),
+        Ng2Webstorage.forRoot({prefix: 'jhi', separator: '-'}),
         HermeneutSharedModule,
         HermeneutHomeModule,
         HermeneutAdminModule,
         HermeneutAccountModule,
         HermeneutEntityModule,
         IdentifyThreatAgentModule,
-        EvaluateWeacknessModule
+        EvaluateWeacknessModule,
+        QuestionnairesModule, // add the feature module here
+        HermeneutAppRoutingModule
         // jhipster-needle-angular-add-module JHipster will add new module here
     ],
     declarations: [
@@ -91,6 +94,7 @@ import {
             ]
         }
     ],
-    bootstrap: [ JhiMainComponent ]
+    bootstrap: [JhiMainComponent]
 })
-export class HermeneutAppModule {}
+export class HermeneutAppModule {
+}
