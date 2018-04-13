@@ -2,7 +2,7 @@ import './vendor.ts';
 
 import {NgModule, Injector} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
-import {HTTP_INTERCEPTORS} from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {Ng2Webstorage, LocalStorageService, SessionStorageService} from 'ngx-webstorage';
 import {JhiEventManager} from 'ng-jhipster';
 
@@ -36,6 +36,7 @@ import {QuestionnairesRoutingModule} from './questionnaires/questionnaires-routi
 @NgModule({
     imports: [
         BrowserModule,
+        HttpClientModule,
         Ng2Webstorage.forRoot({prefix: 'jhi', separator: '-'}),
         HermeneutSharedModule,
         HermeneutHomeModule,
