@@ -9,6 +9,10 @@ const routes: Routes = [
     {
         path: 'questionnaires',
         loadChildren: './questionnaires/questionnaires.module#QuestionnairesModule'
+    },
+    {
+        path: 'identify-asset',
+        loadChildren: './identify-assets/identify-asset.module#IdentifyAssetModule'
     }
 ];
 

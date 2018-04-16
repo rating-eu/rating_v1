@@ -1,12 +1,12 @@
 import {Component, OnInit, OnDestroy} from '@angular/core';
-import {Principal} from '../shared';
+import {Principal} from '../../shared';
 import {HttpResponse, HttpErrorResponse} from '@angular/common/http';
 
 import {ActivatedRoute} from '@angular/router';
 import {Subscription} from 'rxjs/Subscription';
 import {JhiEventManager, JhiAlertService} from 'ng-jhipster';
-import {IdentifyAssetService} from './identify-asset.service';
-import {AssetMgm} from '../entities/asset-mgm/asset-mgm.model';
+import {IdentifyAssetService} from '../identify-asset.service';
+import {AssetMgm} from '../../entities/asset-mgm/asset-mgm.model';
 
 @Component({
     selector: 'jhi-identify-asset',

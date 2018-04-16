@@ -1,18 +1,20 @@
   import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-    import { RouterModule } from '@angular/router';
-
-    import { IdentifyAssetComponent, identifyAssetRoute } from './';
+  import {CommonModule} from '@angular/common';
+  import { RouterModule } from '@angular/router';
+  import { IdentifyAssetsRoutingModule } from './identify-assets-routing.module';
+  import { IdentifyAssetComponent } from './id-assets/identify-asset.component';
 
     @NgModule({
         imports: [
-            RouterModule.forRoot([ identifyAssetRoute ], { useHash: true })
+			CommonModule,
+			IdentifyAssetsRoutingModule
+			
         ],
         declarations: [
             IdentifyAssetComponent,
         ],
-        entryComponents: [
-        ],
-        providers: [
+        exports: [
+        	IdentifyAssetComponent
         ]
     })
     export class IdentifyAssetModule {}
