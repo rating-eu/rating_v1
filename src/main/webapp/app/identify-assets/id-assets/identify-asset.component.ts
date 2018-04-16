@@ -36,6 +36,11 @@ export class IdentifyAssetComponent implements OnInit, OnDestroy {
         this.identifyAssetService.findAll().subscribe(
             (res: HttpResponse<AssetMgm[]>) => this.assets = res.body,
             (res: HttpErrorResponse) => this.onError(res.message));
+            return;
+    }
+
+    previousState() {
+        window.history.back();
     }
 
     ngOnDestroy() {
@@ -46,8 +51,8 @@ export class IdentifyAssetComponent implements OnInit, OnDestroy {
         return item.id;
     }
 
-    registerChangeInAttackStrategies() {
-        this.eventSubscriber = this.eventManager.subscribe('attackStrategyListModification', (response) => this.getAllAssets());
+    registerChangeInIdentifyAsset() {
+        this.eventSubscriber = this.eventManager.subscribe('identifyAssetListModification', (response) => this.getAllAssets());
     }
 
     private onError(error) {

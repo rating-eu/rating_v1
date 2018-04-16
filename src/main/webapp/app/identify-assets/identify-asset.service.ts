@@ -18,33 +18,6 @@ export class IdentifyAssetService {
 
     constructor(private http: HttpClient, private dateUtils: JhiDateUtils) { }
 
-    create(asset: AssetMgm): Observable<EntityResponseType> {
-        const copy = this.convert(asset);
-        return this.http.post<AssetMgm>(this.resourceUrl, copy, { observe: 'response' })
-            .map((res: EntityResponseType) => this.convertResponse(res));
-    }
-
-    update(asset: AssetMgm): Observable<EntityResponseType> {
-        const copy = this.convert(asset);
-        return this.http.put<AssetMgm>(this.resourceUrl, copy, { observe: 'response' })
-            .map((res: EntityResponseType) => this.convertResponse(res));
-    }
-
-    find(id: number): Observable<EntityResponseType> {
-        return this.http.get<AssetMgm>(`${this.resourceUrl}/${id}`, { observe: 'response'})
-            .map((res: EntityResponseType) => this.convertResponse(res));
-    }
-
-    query(req?: any): Observable<HttpResponse<AssetMgm[]>> {
-        const options = createRequestOption(req);
-        return this.http.get<AssetMgm[]>(this.resourceUrl, { params: options, observe: 'response' })
-            .map((res: HttpResponse<AssetMgm[]>) => this.convertArrayResponse(res));
-    }
-
-    delete(id: number): Observable<HttpResponse<any>> {
-        return this.http.delete<any>(`${this.resourceUrl}/${id}`, { observe: 'response'});
-    }
-
     findAll(): Observable<HttpResponse<AssetMgm[]>> {
         const options = createRequestOption();
         return this.http.get<AssetMgm[]>(this.resourceUrl, { params: options, observe: 'response' })
