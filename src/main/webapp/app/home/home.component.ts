@@ -3,6 +3,7 @@ import { NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { JhiEventManager } from 'ng-jhipster';
 
 import { Account, LoginModalService, Principal } from '../shared';
+import {SelfAssessmentMgm, SelfAssessmentMgmService} from '../entities/self-assessment-mgm';
 
 @Component({
     selector: 'jhi-home',
@@ -15,11 +16,12 @@ import { Account, LoginModalService, Principal } from '../shared';
 export class HomeComponent implements OnInit {
     account: Account;
     modalRef: NgbModalRef;
-
+    mySelf: SelfAssessmentMgm = {};
     constructor(
         private principal: Principal,
         private loginModalService: LoginModalService,
-        private eventManager: JhiEventManager
+        private eventManager: JhiEventManager,
+        private mySelfAssessmentService: SelfAssessmentMgmService
     ) {
     }
 
@@ -28,6 +30,7 @@ export class HomeComponent implements OnInit {
             this.account = account;
         });
         this.registerAuthenticationSuccess();
+        this.mySelf = this.mySelfAssessmentService.getSelfAssessment();
     }
 
     registerAuthenticationSuccess() {
