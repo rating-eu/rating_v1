@@ -15,4 +15,7 @@ export class EvaluateWeacknessComponent implements OnInit {
             this.account = account;
         });
     }
+    previousState() {
+        window.history.back();
+    }
 }

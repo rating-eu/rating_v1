@@ -1,11 +1,11 @@
-identify assets 
- 
-step todo: 
-1) get company profile 
- 
-2) check identify asset 
- - get all assets is done 
- 
+identify assets
+
+step todo:
+1) get company profile
+
+2) check identify asset
+ - get all assets is done
+
 3) form to check asssets, based on company profile.
 
 <div>
@@ -20,43 +20,46 @@ step todo:
         <table class="table table-striped">
             <thead>
             <tr>
-            <th><span>ID</span></th>
-            <th><span>Name</span></th>
-            <th><span>Description</span></th>
+                <th><span>Select</span></th>
+                <th><span>Assetcategory</span></th>
+                <th><span>Name</span></th>
+                <th><span>Description</span></th>
             <th><span>Created</span></th>
             <th><span>Modified</span></th>
             <th><span>Container</span></th>
             <th><span>Domains</span></th>
-            <th><span>Assetcategory</span></th>
+
             <th></th>
             </tr>
             </thead>
             <tbody>
             <tr *ngFor="let asset of assets ;trackBy: trackId">
-                <td>{{asset.id}}</td>
+                <td><input type="checkbox" value="{{asset.id}}" name="{{asset.name}}"></td>
+                <td>
+                    <div *ngIf="asset.assetcategory">
+                        {{asset.assetcategory?.name}}
+                    </div>
+                </td>
                 <td>{{asset.name}}</td>
                 <td>{{asset.description}}</td>
                 <td>{{asset.created | date:'medium'}}</td>
                 <td>{{asset.modified | date:'medium'}}</td>
+
                 <td>
                     <span *ngFor="let container of asset.containers; let last = last">
-                           {{container.name}}
+                           {{container.name}}<br/>
                         </span>
                 </td>
                 <td>
                     <span *ngFor="let domains of asset.domains; let last = last">
-                            {{domains.name}}
+                            {{domains.name}}<br/>
                         </span>
                 </td>
-                <td>
-                    <div *ngIf="asset.assetcategory">
-                       {{asset.assetcategory?.name}}
-                    </div>
-                </td>
+
                 <td class="text-right">
                     <div class="btn-group flex-btn-group-container">
                         <button type="submit"
-                                [routerLink]=""
+                                [routerLink]="['../asset-mgm', asset.id ]"
                                 class="btn btn-info btn-sm">
                             <span class="fa fa-eye"></span>
                             <span class="d-none d-md-inline">View</span>
@@ -71,5 +74,5 @@ step todo:
             class="btn btn-info">
         <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
     </button>
-    </div>	
+    </div>
 </div>
