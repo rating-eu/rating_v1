@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {IdentifyAssetService} from '../identify-asset.service';
-import {AssetMgm} from '../../entities/asset-mgm/asset-mgm.model';
+import {Asset} from '../models/Asset';
 
 @Component({
     selector: 'jhi-identify-asset',
@@ -9,7 +9,7 @@ import {AssetMgm} from '../../entities/asset-mgm/asset-mgm.model';
     providers: [IdentifyAssetService]
 })
 export class IdentifyAssetComponent implements OnInit {
-    assets: AssetMgm[];
+    assets: Asset[];
 
     constructor(
         private identifyAssetService: IdentifyAssetService)	{
@@ -26,8 +26,8 @@ export class IdentifyAssetComponent implements OnInit {
 
                 console.log('Data: ' + JSON.stringify(this.assets));
 
-                this.assets.forEach(function(AssetMgm) {
-                    console.log('AssetMgm: ' + JSON.stringify(AssetMgm));
+                this.assets.forEach(function(asset) {
+                    console.log('AssetMgm: ' + JSON.stringify(Asset));
                 });
             },
             (error) => {
