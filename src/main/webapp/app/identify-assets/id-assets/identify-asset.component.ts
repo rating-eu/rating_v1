@@ -1,31 +1,18 @@
-import {Component, OnInit, OnDestroy} from '@angular/core';
-import {Principal} from '../../shared';
-import {HttpResponse, HttpErrorResponse} from '@angular/common/http';
-
-import {ActivatedRoute} from '@angular/router';
-import {Subscription} from 'rxjs/Subscription';
-import {JhiEventManager, JhiAlertService} from 'ng-jhipster';
+import {Component, OnInit} from '@angular/core';
 import {IdentifyAssetService} from '../identify-asset.service';
 import {AssetMgm} from '../../entities/asset-mgm/asset-mgm.model';
 
 @Component({
     selector: 'jhi-identify-asset',
     templateUrl: './identify-asset.component.html',
+    styles: [],
     providers: [IdentifyAssetService]
 })
-export class IdentifyAssetComponent implements OnInit, OnDestroy {
-    account: Account;
+export class IdentifyAssetComponent implements OnInit {
     assets: AssetMgm[];
-    currentAccount: any;
-    eventSubscriber: Subscription;
-    currentSearch: string;
 
     constructor(
-        private identifyAssetService: IdentifyAssetService,
-        private jhiAlertService: JhiAlertService,
-        private eventManager: JhiEventManager,
-        private activatedRoute: ActivatedRoute,
-        private principal: Principal) {
+        private identifyAssetService: IdentifyAssetService)	{
     }
 
     ngOnInit() {
@@ -34,28 +21,22 @@ export class IdentifyAssetComponent implements OnInit, OnDestroy {
 
     getAllAssets() {
         this.identifyAssetService.findAll().subscribe(
-            (res: HttpResponse<AssetMgm[]>) => this.assets = res.body,
-            (res: HttpErrorResponse) => this.onError(res.message));
-            return;
+            (response) => {
+                this.assets = response;
+
+                console.log('Data: ' + JSON.stringify(this.assets));
+
+                this.assets.forEach(function(AssetMgm) {
+                    console.log('AssetMgm: ' + JSON.stringify(AssetMgm));
+                });
+            },
+            (error) => {
+                console.log(error);
+            }
+        );
     }
 
     previousState() {
         window.history.back();
-    }
-
-    ngOnDestroy() {
-        this.eventManager.destroy(this.eventSubscriber);
-    }
-
-    trackId(index: number, item: AssetMgm) {
-        return item.id;
-    }
-
-    registerChangeInIdentifyAsset() {
-        this.eventSubscriber = this.eventManager.subscribe('identifyAssetListModification', (response) => this.getAllAssets());
-    }
-
-    private onError(error) {
-        this.jhiAlertService.error(error.message, null, null);
     }
 }
