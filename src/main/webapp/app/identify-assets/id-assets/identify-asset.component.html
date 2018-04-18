@@ -9,11 +9,90 @@ step todo:
 3) form to check asssets, based on company profile.
 
 <div>
+    <span *ngIf="!mySelf" class="alert alert-warning">Please, <a [routerLink]="['../self-assessment-mgm']"> select</a> a self assessment, otherwise, have a look to our taxonomies</span>
+
     <button type="submit"
             (click)="previousState()"
             class="btn btn-info">
         <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
     </button>
+    <br/><br/>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th><span>Name</span></th>
+            <th><span>Created</span></th>
+            <th><span>Modified</span></th>
+            <th><span>User</span></th>
+            <th><span>Companyprofiles</span></th>
+            <th><span>Companysector</span></th>
+            <th><span>Asset</span></th>
+            <th><span>Threatagent</span></th>
+            <th><span>Attackstrategy</span></th>
+            <th><span>Externalaudit</span></th>
+            <th><span>Questionnaire</span></th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td><a [routerLink]="['../self-assessment-mgm', mySelf.id ]">{{mySelf.name}}</a></td>
+            <td>{{mySelf.created | date:'medium'}}</td>
+            <td>{{mySelf.modified | date:'medium'}}</td>
+            <td>
+                {{mySelf.user?.login}}
+            </td>
+            <td>
+                    <span *ngFor="let companyprofiles of mySelf.companyprofiles; let last = last">
+                            <a class="form-control-static"
+                               [routerLink]="['../company-profile-mgm', companyprofiles?.id ]">{{companyprofiles.name}}</a>{{last ? '' : ', '}}
+                        </span>
+            </td>
+            <td>
+                    <span *ngFor="let companysector of mySelf.companysectors; let last = last">
+                            <a class="form-control-static" [routerLink]="['../company-sector-mgm', companysector?.id ]">{{companysector.department}}</a>{{last ? '' : ', '}}
+                        </span>
+            </td>
+            <td>
+                    <span *ngFor="let asset of mySelf.assets; let last = last">
+                            <a class="form-control-static"
+                               [routerLink]="['../asset-mgm', asset?.id ]">{{asset.name}}</a>{{last ? '' : ', '}}
+                        </span>
+            </td>
+            <td>
+                    <span *ngFor="let threatagent of mySelf.threatagents; let last = last">
+                            <a class="form-control-static" [routerLink]="['../threat-agent-mgm', threatagent?.id ]">{{threatagent.name}}</a>{{last ? '' : ', '}}
+                        </span>
+            </td>
+            <td>
+                    <span *ngFor="let attackstrategy of mySelf.attackstrategies; let last = last">
+                            <a class="form-control-static"
+                               [routerLink]="['../attack-strategy-mgm', attackstrategy?.id ]">{{attackstrategy.name}}</a>{{last ? '' : ', '}}
+                        </span>
+            </td>
+            <td>
+                    <span *ngFor="let externalaudit of mySelf.externalaudits; let last = last">
+                            <a class="form-control-static" [routerLink]="['../external-audit-mgm', externalaudit?.id ]">{{externalaudit.name}}</a>{{last ? '' : ', '}}
+                        </span>
+            </td>
+            <td>
+                    <span *ngFor="let questionnaire of mySelf.questionnaires; let last = last">
+                            <a class="form-control-static" [routerLink]="['../questionnaire-mgm', questionnaire?.id ]">{{questionnaire.name}}</a>{{last ? '' : ', '}}
+                        </span>
+            </td>
+            <td class="text-right">
+                <div class="btn-group flex-btn-group-container">
+                    <button type="submit"
+                            [routerLink]="['../self-assessment-mgm', mySelf.id ]"
+                            class="btn btn-info btn-sm">
+                        <span class="fa fa-eye"></span>
+                        <span class="d-none d-md-inline">View</span>
+                    </button>
+                </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
 <ul>
 	<li>get company profile</li>
 	<li>get self assesment info</li>

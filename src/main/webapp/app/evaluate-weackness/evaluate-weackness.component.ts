@@ -3,7 +3,7 @@ import {HttpResponse, HttpErrorResponse} from '@angular/common/http';
 import {ActivatedRoute} from '@angular/router';
 import {Subscription} from 'rxjs/Subscription';
 import {JhiEventManager, JhiAlertService} from 'ng-jhipster';
-
+import {SelfAssessmentMgm, SelfAssessmentMgmService} from '../entities/self-assessment-mgm';
 import {AttackStrategyMgm} from '../entities/attack-strategy-mgm/attack-strategy-mgm.model';
 import {AttackStrategyMgmService} from '../entities/attack-strategy-mgm/attack-strategy-mgm.service';
 import {Principal} from '../shared';
@@ -36,14 +36,17 @@ export class EvaluateWeacknessComponent implements OnInit, OnDestroy {
     currentAccount: any;
     eventSubscriber: Subscription;
     currentSearch: string;
+    mySelf: SelfAssessmentMgm = {};
 
     constructor(
         private attackStrategyService: AttackStrategyMgmService,
         private jhiAlertService: JhiAlertService,
         private eventManager: JhiEventManager,
         private activatedRoute: ActivatedRoute,
-        private principal: Principal
-    ) {
+        private principal: Principal,
+        private mySelfAssessmentService: SelfAssessmentMgmService
+
+) {
     }
 
     getAttacksHU_R(level, phase) {
@@ -230,8 +233,8 @@ export class EvaluateWeacknessComponent implements OnInit, OnDestroy {
         this.principal.identity().then((account) => {
             this.account = account;
         });
+        this.mySelf = this.mySelfAssessmentService.getSelfAssessment();
         this.registerChangeInEvaluateWeakness();
-
         this.getAttacksHU_R('HUMAN', 'RECONNAISSANCE');
         this.getAttacksIT_R('IT', 'RECONNAISSANCE');
         this.getAttacksPH_R('PHYSICAL', 'RECONNAISSANCE');
