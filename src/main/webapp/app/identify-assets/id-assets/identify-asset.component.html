@@ -9,7 +9,11 @@ step todo:
 3) form to check asssets, based on company profile.
 
 <div>
-
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+    </button>
 <ul>
 	<li>get company profile</li>
 	<li>get self assesment info</li>
@@ -69,10 +73,5 @@ step todo:
             </tr>
             </tbody>
         </table>
-            <button type="submit"
-            (click)="previousState()"
-            class="btn btn-info">
-        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
-    </button>
     </div>
 </div>
