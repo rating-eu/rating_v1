@@ -1,18 +1,20 @@
-  import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-    import { RouterModule } from '@angular/router';
+import {NgModule, CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
+import {RouterModule} from '@angular/router';
+import {HermeneutSharedModule} from '../shared';
+import {EvaluateWeacknessComponent, evaluateWeacknessRoute} from './';
+import {CommonModule} from '@angular/common';
 
-    import { EvaluateWeacknessComponent, evaluateWeacknessRoute } from './';
-
-    @NgModule({
-        imports: [
-            RouterModule.forRoot([ evaluateWeacknessRoute ], { useHash: true })
-        ],
-        declarations: [
-            EvaluateWeacknessComponent,
-        ],
-        entryComponents: [
-        ],
-        providers: [
-        ]
-    })
-    export class EvaluateWeacknessModule {}
+@NgModule({
+    imports: [
+        CommonModule,
+        HermeneutSharedModule,
+        RouterModule.forRoot([evaluateWeacknessRoute], {useHash: true})
+    ],
+    declarations: [
+        EvaluateWeacknessComponent
+    ],
+    entryComponents: [],
+    providers: []
+})
+export class EvaluateWeacknessModule {
+}

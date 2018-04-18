@@ -1,12 +1,12 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
-import { ActivatedRoute } from '@angular/router';
-import { Subscription } from 'rxjs/Subscription';
-import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
+import {Component, OnInit, OnDestroy} from '@angular/core';
+import {HttpResponse, HttpErrorResponse} from '@angular/common/http';
+import {ActivatedRoute} from '@angular/router';
+import {Subscription} from 'rxjs/Subscription';
+import {JhiEventManager, JhiAlertService} from 'ng-jhipster';
 
-import { AttackStrategyMgm } from './attack-strategy-mgm.model';
-import { AttackStrategyMgmService } from './attack-strategy-mgm.service';
-import { Principal } from '../../shared';
+import {AttackStrategyMgm} from './attack-strategy-mgm.model';
+import {AttackStrategyMgmService} from './attack-strategy-mgm.service';
+import {Principal} from '../../shared';
 
 @Component({
     selector: 'jhi-attack-strategy-mgm',
@@ -14,24 +14,6 @@ import { Principal } from '../../shared';
 })
 export class AttackStrategyMgmComponent implements OnInit, OnDestroy {
     attackStrategies: AttackStrategyMgm[];
-    HU_R: AttackStrategyMgm[];
-    HU_W: AttackStrategyMgm[];
-    HU_D: AttackStrategyMgm[];
-    HU_E: AttackStrategyMgm[];
-    HU_I: AttackStrategyMgm[];
-    HU_C: AttackStrategyMgm[];
-    IT_R: AttackStrategyMgm[];
-    IT_W: AttackStrategyMgm[];
-    IT_D: AttackStrategyMgm[];
-    IT_E: AttackStrategyMgm[];
-    IT_I: AttackStrategyMgm[];
-    IT_C: AttackStrategyMgm[];
-    PH_R: AttackStrategyMgm[];
-    PH_W: AttackStrategyMgm[];
-    PH_D: AttackStrategyMgm[];
-    PH_E: AttackStrategyMgm[];
-    PH_I: AttackStrategyMgm[];
-    PH_C: AttackStrategyMgm[];
     currentAccount: any;
     eventSubscriber: Subscription;
     currentSearch: string;
@@ -46,178 +28,17 @@ export class AttackStrategyMgmComponent implements OnInit, OnDestroy {
         this.currentSearch = this.activatedRoute.snapshot && this.activatedRoute.snapshot.params['search'] ?
             this.activatedRoute.snapshot.params['search'] : '';
     }
-    getAttacksHU_R(level, phase) {
-            this.attackStrategyService
-              .findByLevelAndPhase(level, phase)
-              .subscribe(
-                    (res: HttpResponse<AttackStrategyMgm[]>) => this.HU_R = res.body,
-                    (res: HttpErrorResponse) => this.onError(res.message)
-                );
-            return;
-    }
-    getAttacksHU_W(level, phase) {
-            this.attackStrategyService
-              .findByLevelAndPhase(level, phase)
-              .subscribe(
-                    (res: HttpResponse<AttackStrategyMgm[]>) => this.HU_W = res.body,
-                    (res: HttpErrorResponse) => this.onError(res.message)
-                );
-            return;
-    }
-    getAttacksHU_D(level, phase) {
-            this.attackStrategyService
-              .findByLevelAndPhase(level, phase)
-              .subscribe(
-                    (res: HttpResponse<AttackStrategyMgm[]>) => this.HU_D = res.body,
-                    (res: HttpErrorResponse) => this.onError(res.message)
-                );
-            return;
-    }
-    getAttacksHU_E(level, phase) {
-            this.attackStrategyService
-              .findByLevelAndPhase(level, phase)
-              .subscribe(
-                    (res: HttpResponse<AttackStrategyMgm[]>) => this.HU_E = res.body,
-                    (res: HttpErrorResponse) => this.onError(res.message)
-                );
-            return;
-    }
-    getAttacksHU_I(level, phase) {
-            this.attackStrategyService
-              .findByLevelAndPhase(level, phase)
-              .subscribe(
-                    (res: HttpResponse<AttackStrategyMgm[]>) => this.HU_I = res.body,
-                    (res: HttpErrorResponse) => this.onError(res.message)
-                );
-            return;
-    }
-    getAttacksHU_C(level, phase) {
-            this.attackStrategyService
-              .findByLevelAndPhase(level, phase)
-              .subscribe(
-                    (res: HttpResponse<AttackStrategyMgm[]>) => this.HU_C = res.body,
-                    (res: HttpErrorResponse) => this.onError(res.message)
-                );
-            return;
-    }
-    getAttacksIT_R(level, phase) {
-            this.attackStrategyService
-              .findByLevelAndPhase(level, phase)
-              .subscribe(
-                    (res: HttpResponse<AttackStrategyMgm[]>) => this.IT_R = res.body,
-                    (res: HttpErrorResponse) => this.onError(res.message)
-                );
-            return;
-    }
-    getAttacksIT_W(level, phase) {
-            this.attackStrategyService
-              .findByLevelAndPhase(level, phase)
-              .subscribe(
-                    (res: HttpResponse<AttackStrategyMgm[]>) => this.IT_W = res.body,
-                    (res: HttpErrorResponse) => this.onError(res.message)
-                );
-            return;
-    }
-    getAttacksIT_D(level, phase) {
-            this.attackStrategyService
-              .findByLevelAndPhase(level, phase)
-              .subscribe(
-                    (res: HttpResponse<AttackStrategyMgm[]>) => this.IT_D = res.body,
-                    (res: HttpErrorResponse) => this.onError(res.message)
-                );
-            return;
-    }
-    getAttacksIT_E(level, phase) {
-            this.attackStrategyService
-              .findByLevelAndPhase(level, phase)
-              .subscribe(
-                    (res: HttpResponse<AttackStrategyMgm[]>) => this.IT_E = res.body,
-                    (res: HttpErrorResponse) => this.onError(res.message)
-                );
-            return;
-    }
-    getAttacksIT_I(level, phase) {
-            this.attackStrategyService
-              .findByLevelAndPhase(level, phase)
-              .subscribe(
-                    (res: HttpResponse<AttackStrategyMgm[]>) => this.IT_I = res.body,
-                    (res: HttpErrorResponse) => this.onError(res.message)
-                );
-            return;
-    }
-    getAttacksIT_C(level, phase) {
-            this.attackStrategyService
-              .findByLevelAndPhase(level, phase)
-              .subscribe(
-                    (res: HttpResponse<AttackStrategyMgm[]>) => this.IT_C = res.body,
-                    (res: HttpErrorResponse) => this.onError(res.message)
-                );
-            return;
-    }
-    getAttacksPH_R(level, phase) {
-            this.attackStrategyService
-              .findByLevelAndPhase(level, phase)
-              .subscribe(
-                    (res: HttpResponse<AttackStrategyMgm[]>) => this.PH_R = res.body,
-                    (res: HttpErrorResponse) => this.onError(res.message)
-                );
-            return;
-    }
-    getAttacksPH_W(level, phase) {
-            this.attackStrategyService
-              .findByLevelAndPhase(level, phase)
-              .subscribe(
-                    (res: HttpResponse<AttackStrategyMgm[]>) => this.PH_W = res.body,
-                    (res: HttpErrorResponse) => this.onError(res.message)
-                );
-            return;
-    }
-    getAttacksPH_D(level, phase) {
-            this.attackStrategyService
-              .findByLevelAndPhase(level, phase)
-              .subscribe(
-                    (res: HttpResponse<AttackStrategyMgm[]>) => this.PH_D = res.body,
-                    (res: HttpErrorResponse) => this.onError(res.message)
-                );
-            return;
-    }
-    getAttacksPH_E(level, phase) {
-            this.attackStrategyService
-              .findByLevelAndPhase(level, phase)
-              .subscribe(
-                    (res: HttpResponse<AttackStrategyMgm[]>) => this.PH_E = res.body,
-                    (res: HttpErrorResponse) => this.onError(res.message)
-                );
-            return;
-    }
-    getAttacksPH_I(level, phase) {
-            this.attackStrategyService
-              .findByLevelAndPhase(level, phase)
-              .subscribe(
-                    (res: HttpResponse<AttackStrategyMgm[]>) => this.PH_I = res.body,
-                    (res: HttpErrorResponse) => this.onError(res.message)
-                );
-            return;
-    }
-    getAttacksPH_C(level, phase) {
-            this.attackStrategyService
-              .findByLevelAndPhase(level, phase)
-              .subscribe(
-                    (res: HttpResponse<AttackStrategyMgm[]>) => this.PH_C = res.body,
-                    (res: HttpErrorResponse) => this.onError(res.message)
-                );
-            return;
-    }
-  loadAll() {
+
+    loadAll() {
         if (this.currentSearch) {
             this.attackStrategyService.search({
                 query: this.currentSearch,
-                }).subscribe(
-                    (res: HttpResponse<AttackStrategyMgm[]>) => this.attackStrategies = res.body,
-                    (res: HttpErrorResponse) => this.onError(res.message)
-                );
+            }).subscribe(
+                (res: HttpResponse<AttackStrategyMgm[]>) => this.attackStrategies = res.body,
+                (res: HttpErrorResponse) => this.onError(res.message)
+            );
             return;
-       }
+        }
         this.attackStrategyService.query().subscribe(
             (res: HttpResponse<AttackStrategyMgm[]>) => {
                 this.attackStrategies = res.body;
@@ -239,26 +60,9 @@ export class AttackStrategyMgmComponent implements OnInit, OnDestroy {
         this.currentSearch = '';
         this.loadAll();
     }
+
     ngOnInit() {
         this.loadAll();
-        this.getAttacksHU_R('HUMAN', 'RECONNAISSANCE');
-        this.getAttacksIT_R('IT', 'RECONNAISSANCE');
-        this.getAttacksPH_R('PHYSICAL', 'RECONNAISSANCE');
-        this.getAttacksHU_W('HUMAN', 'WEAPONIZATION');
-        this.getAttacksIT_W('IT', 'WEAPONIZATION');
-        this.getAttacksPH_W('PHYSICAL', 'WEAPONIZATION');
-        this.getAttacksHU_D('HUMAN', 'DELIVERY');
-        this.getAttacksIT_D('IT', 'DELIVERY');
-        this.getAttacksPH_D('PHYSICAL', 'DELIVERY');
-        this.getAttacksHU_E('HUMAN', 'EXPLOITATION');
-        this.getAttacksIT_E('IT', 'EXPLOITATION');
-        this.getAttacksPH_E('PHYSICAL', 'EXPLOITATION');
-        this.getAttacksHU_I('HUMAN', 'INSTALLATION');
-        this.getAttacksIT_I('IT', 'INSTALLATION');
-        this.getAttacksPH_I('PHYSICAL', 'INSTALLATION');
-        this.getAttacksHU_C('HUMAN', 'COMMANDCONTROL');
-        this.getAttacksIT_C('IT', 'COMMANDCONTROL');
-        this.getAttacksPH_C('PHYSICAL', 'COMMANDCONTROL');
         this.principal.identity().then((account) => {
             this.currentAccount = account;
         });
@@ -272,6 +76,7 @@ export class AttackStrategyMgmComponent implements OnInit, OnDestroy {
     trackId(index: number, item: AttackStrategyMgm) {
         return item.id;
     }
+
     registerChangeInAttackStrategies() {
         this.eventSubscriber = this.eventManager.subscribe('attackStrategyListModification', (response) => this.loadAll());
     }

@@ -10,7 +10,7 @@ import { IdentifyAssetComponent } from './id-assets/identify-asset.component';
 
     ],
     declarations: [
-        IdentifyAssetComponent,
+        IdentifyAssetComponent
     ],
     exports: [
         IdentifyAssetComponent
