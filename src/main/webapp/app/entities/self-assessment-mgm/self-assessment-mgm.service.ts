@@ -1,53 +1,86 @@
-import { Injectable } from '@angular/core';
-import { HttpClient, HttpResponse } from '@angular/common/http';
-import { Observable } from 'rxjs/Observable';
-import { SERVER_API_URL } from '../../app.constants';
+import {Injectable, OnInit} from '@angular/core';
+import {HttpClient, HttpResponse} from '@angular/common/http';
+import {Observable} from 'rxjs/Observable';
+import {SERVER_API_URL} from '../../app.constants';
+import {isUndefined} from 'util';
+import {Router} from '@angular/router';
+import {JhiDateUtils} from 'ng-jhipster';
 
-import { JhiDateUtils } from 'ng-jhipster';
-
-import { SelfAssessmentMgm } from './self-assessment-mgm.model';
-import { createRequestOption } from '../../shared';
+import {SelfAssessmentMgm} from './self-assessment-mgm.model';
+import {createRequestOption} from '../../shared';
 
 export type EntityResponseType = HttpResponse<SelfAssessmentMgm>;
 
 @Injectable()
-export class SelfAssessmentMgmService {
+export class SelfAssessmentMgmService implements OnInit {
 
-    private resourceUrl =  SERVER_API_URL + 'api/self-assessments';
+    private resourceUrl = SERVER_API_URL + 'api/self-assessments';
     private resourceSearchUrl = SERVER_API_URL + 'api/_search/self-assessments';
+    private selfAssessmentSelected: SelfAssessmentMgm;
 
-    constructor(private http: HttpClient, private dateUtils: JhiDateUtils) { }
+    constructor(private http: HttpClient, private dateUtils: JhiDateUtils, private router: Router) {
+    }
+
+    ngOnInit() {
+        this.selfAssessmentSelected = null;
+    }
+
+    clearSelfAssessment() {
+        this.selfAssessmentSelected = null;
+    }
+
+    getSelfAssessment(): SelfAssessmentMgm {
+        if (isUndefined(this.selfAssessmentSelected)) {
+            this.router.navigate(['/']);
+            return null;
+        } else {
+            return this.selfAssessmentSelected;
+        }
+    }
+
+    setSelfAssessment(selfAssessment: SelfAssessmentMgm) {
+        this.selfAssessmentSelected = selfAssessment;
+        this.checkSelfAssessment();
+    }
+
+    checkSelfAssessment(): boolean {
+        if (this.selfAssessmentSelected == null || isUndefined(this.selfAssessmentSelected)) {
+            return false;
+        } else {
+            return true;
+        }
+    }
 
     create(selfAssessment: SelfAssessmentMgm): Observable<EntityResponseType> {
         const copy = this.convert(selfAssessment);
-        return this.http.post<SelfAssessmentMgm>(this.resourceUrl, copy, { observe: 'response' })
+        return this.http.post<SelfAssessmentMgm>(this.resourceUrl, copy, {observe: 'response'})
             .map((res: EntityResponseType) => this.convertResponse(res));
     }
 
     update(selfAssessment: SelfAssessmentMgm): Observable<EntityResponseType> {
         const copy = this.convert(selfAssessment);
-        return this.http.put<SelfAssessmentMgm>(this.resourceUrl, copy, { observe: 'response' })
+        return this.http.put<SelfAssessmentMgm>(this.resourceUrl, copy, {observe: 'response'})
             .map((res: EntityResponseType) => this.convertResponse(res));
     }
 
     find(id: number): Observable<EntityResponseType> {
-        return this.http.get<SelfAssessmentMgm>(`${this.resourceUrl}/${id}`, { observe: 'response'})
+        return this.http.get<SelfAssessmentMgm>(`${this.resourceUrl}/${id}`, {observe: 'response'})
             .map((res: EntityResponseType) => this.convertResponse(res));
     }
 
     query(req?: any): Observable<HttpResponse<SelfAssessmentMgm[]>> {
         const options = createRequestOption(req);
-        return this.http.get<SelfAssessmentMgm[]>(this.resourceUrl, { params: options, observe: 'response' })
+        return this.http.get<SelfAssessmentMgm[]>(this.resourceUrl, {params: options, observe: 'response'})
             .map((res: HttpResponse<SelfAssessmentMgm[]>) => this.convertArrayResponse(res));
     }
 
     delete(id: number): Observable<HttpResponse<any>> {
-        return this.http.delete<any>(`${this.resourceUrl}/${id}`, { observe: 'response'});
+        return this.http.delete<any>(`${this.resourceUrl}/${id}`, {observe: 'response'});
     }
 
     search(req?: any): Observable<HttpResponse<SelfAssessmentMgm[]>> {
         const options = createRequestOption(req);
-        return this.http.get<SelfAssessmentMgm[]>(this.resourceSearchUrl, { params: options, observe: 'response' })
+        return this.http.get<SelfAssessmentMgm[]>(this.resourceSearchUrl, {params: options, observe: 'response'})
             .map((res: HttpResponse<SelfAssessmentMgm[]>) => this.convertArrayResponse(res));
     }
 

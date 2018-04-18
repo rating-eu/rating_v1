@@ -1,6 +1,5 @@
-import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import { RouterModule } from '@angular/router';
 import { IdentifyAssetsRoutingModule } from './identify-assets-routing.module';
 import { IdentifyAssetComponent } from './id-assets/identify-asset.component';
 
@@ -11,7 +10,7 @@ import { IdentifyAssetComponent } from './id-assets/identify-asset.component';
 
     ],
     declarations: [
-        IdentifyAssetComponent,
+        IdentifyAssetComponent
     ],
     exports: [
         IdentifyAssetComponent
