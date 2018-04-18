@@ -46,6 +46,7 @@ public class Question implements Serializable {
     private Set<Answer> answers = new HashSet<>();
 
     @ManyToOne
+    @JsonIgnore
     private Questionnaire questionnaire;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
