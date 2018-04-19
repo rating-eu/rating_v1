@@ -41,11 +41,11 @@ public class Question implements Serializable {
     private ZonedDateTime modified;
 
     @OneToMany(mappedBy = "question")
-    @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Answer> answers = new HashSet<>();
 
     @ManyToOne
+    @JsonIgnore
     private Questionnaire questionnaire;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove

@@ -56,7 +56,7 @@ public class QuestionServiceImpl implements QuestionService {
     @Transactional(readOnly = true)
     public List<Question> findAll() {
         log.debug("Request to get all Questions");
-        return questionRepository.findAll();
+        return questionRepository.findAllWithEagerRelationships();
     }
 
     /**
@@ -69,7 +69,7 @@ public class QuestionServiceImpl implements QuestionService {
     @Transactional(readOnly = true)
     public Question findOne(Long id) {
         log.debug("Request to get Question : {}", id);
-        return questionRepository.findOne(id);
+        return questionRepository.findOneWithEagerRelationships(id);
     }
 
     /**

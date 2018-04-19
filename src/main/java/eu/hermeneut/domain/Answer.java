@@ -1,5 +1,6 @@
 package eu.hermeneut.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -7,6 +8,7 @@ import javax.persistence.*;
 import javax.validation.constraints.*;
 
 import org.springframework.data.elasticsearch.annotations.Document;
+
 import java.io.Serializable;
 import java.time.ZonedDateTime;
 import java.util.HashSet;
@@ -48,18 +50,19 @@ public class Answer implements Serializable {
     @ManyToMany
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     @JoinTable(name = "answer_threat_agents",
-               joinColumns = @JoinColumn(name="answers_id", referencedColumnName="id"),
-               inverseJoinColumns = @JoinColumn(name="threat_agents_id", referencedColumnName="id"))
+        joinColumns = @JoinColumn(name = "answers_id", referencedColumnName = "id"),
+        inverseJoinColumns = @JoinColumn(name = "threat_agents_id", referencedColumnName = "id"))
     private Set<ThreatAgent> threatAgents = new HashSet<>();
 
     @ManyToMany
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     @JoinTable(name = "answer_attacks",
-               joinColumns = @JoinColumn(name="answers_id", referencedColumnName="id"),
-               inverseJoinColumns = @JoinColumn(name="attacks_id", referencedColumnName="id"))
+        joinColumns = @JoinColumn(name = "answers_id", referencedColumnName = "id"),
+        inverseJoinColumns = @JoinColumn(name = "attacks_id", referencedColumnName = "id"))
     private Set<AttackStrategy> attacks = new HashSet<>();
 
     @ManyToOne
+    @JsonIgnore
     private Question question;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
