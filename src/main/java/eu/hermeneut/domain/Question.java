@@ -8,6 +8,7 @@ import javax.persistence.*;
 import javax.validation.constraints.*;
 
 import org.springframework.data.elasticsearch.annotations.Document;
+
 import java.io.Serializable;
 import java.time.ZonedDateTime;
 import java.util.HashSet;
@@ -40,8 +41,7 @@ public class Question implements Serializable {
     @Column(name = "modified")
     private ZonedDateTime modified;
 
-    @OneToMany(mappedBy = "question")
-    @JsonIgnore
+    @OneToMany(mappedBy = "question", fetch = FetchType.EAGER)
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Answer> answers = new HashSet<>();
 
