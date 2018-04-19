@@ -84,28 +84,8 @@ public class QuestionnaireServiceImpl implements QuestionnaireService {
     @Override
     @Transactional(readOnly = true)
     public Questionnaire findOne(Long id) {
-
         log.debug("Request to get Questionnaire : {}", id);
-
-        Questionnaire toReturn = new Questionnaire();
-        toReturn = questionnaireRepository.findOne(id);
-        Set<Question> questions = toReturn.getQuestions();
-        toReturn.setQuestions(questions);
-
-        for (Question question : questions) {
-
-            Set<Answer> aa = question.getAnswers();
-            question.setAnswers(aa);
-            for (Answer answer : aa) {
-//				System.out.println("quest "+ answer.getQuestion()
-//				+ "answer "+ answer.getType());
-            }
-        }
-
-
-        System.out.println("toReturn " + toReturn.toString());
-
-        return toReturn;
+        return questionnaireRepository.findOne(id);
     }
 
     /**
