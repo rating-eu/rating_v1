@@ -3,6 +3,7 @@ import {CommonModule} from '@angular/common';
 
 import {QuestionnairesRoutingModule} from './questionnaires-routing.module';
 import {IdTaComponent} from './id-ta/id-ta.component';
+import { QuestionnaireComponent } from './questionnaire/questionnaire.component';
 
 @NgModule({
     imports: [
@@ -10,7 +11,8 @@ import {IdTaComponent} from './id-ta/id-ta.component';
         QuestionnairesRoutingModule
     ],
     declarations: [
-        IdTaComponent
+        IdTaComponent,
+        QuestionnaireComponent
     ],
     exports: [
         IdTaComponent
