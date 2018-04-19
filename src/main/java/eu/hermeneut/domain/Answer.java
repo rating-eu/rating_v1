@@ -47,14 +47,14 @@ public class Answer implements Serializable {
     @Column(name = "modified")
     private ZonedDateTime modified;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     @JoinTable(name = "answer_threat_agents",
         joinColumns = @JoinColumn(name = "answers_id", referencedColumnName = "id"),
         inverseJoinColumns = @JoinColumn(name = "threat_agents_id", referencedColumnName = "id"))
     private Set<ThreatAgent> threatAgents = new HashSet<>();
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     @JoinTable(name = "answer_attacks",
         joinColumns = @JoinColumn(name = "answers_id", referencedColumnName = "id"),
