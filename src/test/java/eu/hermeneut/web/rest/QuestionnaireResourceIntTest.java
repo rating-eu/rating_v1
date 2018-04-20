@@ -68,7 +68,7 @@ public class QuestionnaireResourceIntTest {
     private QuestionnaireSearchRepository questionnaireSearchRepository;
 
     @Autowired
-    private MappingJackson2HttpMessageConverter jacksonMessageConverter;
+    private MappingJackson2HttpMessageConverter jackson2HttpMessageConverter;
 
     @Autowired
     private PageableHandlerMethodArgumentResolver pageableArgumentResolver;
