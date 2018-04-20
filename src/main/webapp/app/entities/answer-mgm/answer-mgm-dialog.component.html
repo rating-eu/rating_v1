@@ -13,21 +13,6 @@
                    [(ngModel)]="answer.id" readonly />
         </div>
         <div class="form-group">
-            <label class="form-control-label" jhiTranslate="hermeneutApp.answer.type" for="field_type">Type</label>
-            <select class="form-control" name="type" [(ngModel)]="answer.type" id="field_type"  required>
-                <option value="YESNO">{{'hermeneutApp.AnswerType.YESNO' | translate}}</option>
-                <option value="RANGE5">{{'hermeneutApp.AnswerType.RANGE5' | translate}}</option>
-                <option value="PERC5">{{'hermeneutApp.AnswerType.PERC5' | translate}}</option>
-                <option value="CUSTOM">{{'hermeneutApp.AnswerType.CUSTOM' | translate}}</option>
-            </select>
-            <div [hidden]="!(editForm.controls.type?.dirty && editForm.controls.type?.invalid)">
-                <small class="form-text text-danger"
-                   [hidden]="!editForm.controls.type?.errors?.required" jhiTranslate="entity.validation.required">
-                   This field is required.
-                </small>
-            </div>
-        </div>
-        <div class="form-group">
             <label class="form-control-label" jhiTranslate="hermeneutApp.answer.name" for="field_name">Name</label>
             <input type="text" class="form-control" name="name" id="field_name"
                 [(ngModel)]="answer.name" />

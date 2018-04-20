@@ -1,0 +1,48 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "one-to-one",
+            "relationshipName": "answer",
+            "otherEntityName": "answer",
+            "otherEntityField": "name",
+            "ownerSide": true,
+            "otherEntityRelationshipName": "myanswer(mycheck)"
+        },
+        {
+            "relationshipType": "one-to-one",
+            "relationshipName": "question",
+            "otherEntityName": "question",
+            "otherEntityField": "name",
+            "ownerSide": true,
+            "otherEntityRelationshipName": "myanswer(mycheck)"
+        },
+        {
+            "relationshipType": "one-to-one",
+            "relationshipName": "questionnaire",
+            "otherEntityName": "questionnaire",
+            "otherEntityField": "name",
+            "ownerSide": true,
+            "otherEntityRelationshipName": "myanswer(mycheck)"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "user",
+            "otherEntityName": "user",
+            "otherEntityField": "login"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "notes",
+            "fieldType": "String"
+        }
+    ],
+    "changelogDate": "20180420084813",
+    "entityTableName": "my_answer",
+    "dto": "no",
+    "pagination": "no",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "angularJSSuffix": "mgm"
+}

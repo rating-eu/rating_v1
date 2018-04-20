@@ -30,7 +30,6 @@
             <thead>
             <tr>
             <th><span jhiTranslate="global.field.id">ID</span></th>
-            <th><span jhiTranslate="hermeneutApp.answer.type">Type</span></th>
             <th><span jhiTranslate="hermeneutApp.answer.name">Name</span></th>
             <th><span jhiTranslate="hermeneutApp.answer.created">Created</span></th>
             <th><span jhiTranslate="hermeneutApp.answer.modified">Modified</span></th>
@@ -43,7 +42,6 @@
             <tbody>
             <tr *ngFor="let answer of answers ;trackBy: trackId">
                 <td><a [routerLink]="['../answer-mgm', answer.id ]">{{answer.id}}</a></td>
-                <td jhiTranslate="{{'hermeneutApp.AnswerType.' + answer.type}}">{{answer.type}}</td>
                 <td>{{answer.name}}</td>
                 <td>{{answer.created | date:'medium'}}</td>
                 <td>{{answer.modified | date:'medium'}}</td>

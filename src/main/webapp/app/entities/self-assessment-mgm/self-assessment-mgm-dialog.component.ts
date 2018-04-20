@@ -11,7 +11,7 @@ import { SelfAssessmentMgmPopupService } from './self-assessment-mgm-popup.servi
 import { SelfAssessmentMgmService } from './self-assessment-mgm.service';
 import { User, UserService } from '../../shared';
 import { CompanyProfileMgm, CompanyProfileMgmService } from '../company-profile-mgm';
-import { CompanySectorMgm, CompanySectorMgmService } from '../company-sector-mgm';
+import { DepartmentMgm, DepartmentMgmService } from '../department-mgm';
 import { AssetMgm, AssetMgmService } from '../asset-mgm';
 import { ThreatAgentMgm, ThreatAgentMgmService } from '../threat-agent-mgm';
 import { AttackStrategyMgm, AttackStrategyMgmService } from '../attack-strategy-mgm';
@@ -31,7 +31,7 @@ export class SelfAssessmentMgmDialogComponent implements OnInit {
 
     companyprofiles: CompanyProfileMgm[];
 
-    companysectors: CompanySectorMgm[];
+    departments: DepartmentMgm[];
 
     assets: AssetMgm[];
 
@@ -49,7 +49,7 @@ export class SelfAssessmentMgmDialogComponent implements OnInit {
         private selfAssessmentService: SelfAssessmentMgmService,
         private userService: UserService,
         private companyProfileService: CompanyProfileMgmService,
-        private companySectorService: CompanySectorMgmService,
+        private departmentService: DepartmentMgmService,
         private assetService: AssetMgmService,
         private threatAgentService: ThreatAgentMgmService,
         private attackStrategyService: AttackStrategyMgmService,
@@ -65,8 +65,8 @@ export class SelfAssessmentMgmDialogComponent implements OnInit {
             .subscribe((res: HttpResponse<User[]>) => { this.users = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
         this.companyProfileService.query()
             .subscribe((res: HttpResponse<CompanyProfileMgm[]>) => { this.companyprofiles = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
-        this.companySectorService.query()
-            .subscribe((res: HttpResponse<CompanySectorMgm[]>) => { this.companysectors = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
+        this.departmentService.query()
+            .subscribe((res: HttpResponse<DepartmentMgm[]>) => { this.departments = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
         this.assetService.query()
             .subscribe((res: HttpResponse<AssetMgm[]>) => { this.assets = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
         this.threatAgentService.query()
@@ -121,7 +121,7 @@ export class SelfAssessmentMgmDialogComponent implements OnInit {
         return item.id;
     }
 
-    trackCompanySectorById(index: number, item: CompanySectorMgm) {
+    trackDepartmentById(index: number, item: DepartmentMgm) {
         return item.id;
     }
 

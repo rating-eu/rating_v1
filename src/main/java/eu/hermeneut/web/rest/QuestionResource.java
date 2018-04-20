@@ -83,11 +83,16 @@ public class QuestionResource {
     /**
      * GET  /questions : get all the questions.
      *
+     * @param filter the filter of the request
      * @return the ResponseEntity with status 200 (OK) and the list of questions in body
      */
     @GetMapping("/questions")
     @Timed
-    public List<Question> getAllQuestions() {
+    public List<Question> getAllQuestions(@RequestParam(required = false) String filter) {
+        if ("myanswer-is-null".equals(filter)) {
+            log.debug("REST request to get all Questions where myanswer is null");
+            return questionService.findAllWhereMyanswerIsNull();
+        }
         log.debug("REST request to get all Questions");
         return questionService.findAll();
         }

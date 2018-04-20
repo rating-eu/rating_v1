@@ -68,7 +68,7 @@ class AnswerGatlingTest extends Simulation {
             .exec(http("Create new answer")
             .post("/api/answers")
             .headers(headers_http_authenticated)
-            .body(StringBody("""{"id":null, "type":null, "name":"SAMPLE_TEXT", "created":"2020-01-01T00:00:00.000Z", "modified":"2020-01-01T00:00:00.000Z"}""")).asJSON
+            .body(StringBody("""{"id":null, "name":"SAMPLE_TEXT", "created":"2020-01-01T00:00:00.000Z", "modified":"2020-01-01T00:00:00.000Z"}""")).asJSON
             .check(status.is(201))
             .check(headerRegex("Location", "(.*)").saveAs("new_answer_url"))).exitHereIfFailed
             .pause(10)

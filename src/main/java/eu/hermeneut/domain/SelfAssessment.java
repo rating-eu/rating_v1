@@ -51,10 +51,10 @@ public class SelfAssessment implements Serializable {
 
     @ManyToMany
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    @JoinTable(name = "self_assessment_companysector",
+    @JoinTable(name = "self_assessment_department",
                joinColumns = @JoinColumn(name="self_assessments_id", referencedColumnName="id"),
-               inverseJoinColumns = @JoinColumn(name="companysectors_id", referencedColumnName="id"))
-    private Set<CompanySector> companysectors = new HashSet<>();
+               inverseJoinColumns = @JoinColumn(name="departments_id", referencedColumnName="id"))
+    private Set<Department> departments = new HashSet<>();
 
     @ManyToMany
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
@@ -177,29 +177,29 @@ public class SelfAssessment implements Serializable {
         this.companyprofiles = companyProfiles;
     }
 
-    public Set<CompanySector> getCompanysectors() {
-        return companysectors;
+    public Set<Department> getDepartments() {
+        return departments;
     }
 
-    public SelfAssessment companysectors(Set<CompanySector> companySectors) {
-        this.companysectors = companySectors;
+    public SelfAssessment departments(Set<Department> departments) {
+        this.departments = departments;
         return this;
     }
 
-    public SelfAssessment addCompanysector(CompanySector companySector) {
-        this.companysectors.add(companySector);
-        companySector.getSelfassessments().add(this);
+    public SelfAssessment addDepartment(Department department) {
+        this.departments.add(department);
+        department.getSelfassessments().add(this);
         return this;
     }
 
-    public SelfAssessment removeCompanysector(CompanySector companySector) {
-        this.companysectors.remove(companySector);
-        companySector.getSelfassessments().remove(this);
+    public SelfAssessment removeDepartment(Department department) {
+        this.departments.remove(department);
+        department.getSelfassessments().remove(this);
         return this;
     }
 
-    public void setCompanysectors(Set<CompanySector> companySectors) {
-        this.companysectors = companySectors;
+    public void setDepartments(Set<Department> departments) {
+        this.departments = departments;
     }
 
     public Set<Asset> getAssets() {

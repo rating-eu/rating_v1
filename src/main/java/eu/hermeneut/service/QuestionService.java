@@ -22,6 +22,12 @@ public interface QuestionService {
      * @return the list of entities
      */
     List<Question> findAll();
+    /**
+     * Get all the QuestionDTO where Myanswer is null.
+     *
+     * @return the list of entities
+     */
+    List<Question> findAllWhereMyanswerIsNull();
 
     /**
      * Get the "id" question.

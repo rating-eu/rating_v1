@@ -39,6 +39,7 @@ describe('Question e2e test', () => {
         expect(questionDialogPage.getCreatedInput()).toMatch('2001-12-31T02:30');
         questionDialogPage.setModifiedInput(12310020012301);
         expect(questionDialogPage.getModifiedInput()).toMatch('2001-12-31T02:30');
+        questionDialogPage.typeSelectLastOption();
         questionDialogPage.questionnaireSelectLastOption();
         questionDialogPage.save();
         expect(questionDialogPage.getSaveButton().isPresent()).toBeFalsy();
@@ -69,6 +70,7 @@ export class QuestionDialogPage {
     nameInput = element(by.css('input#field_name'));
     createdInput = element(by.css('input#field_created'));
     modifiedInput = element(by.css('input#field_modified'));
+    typeSelect = element(by.css('select#field_type'));
     questionnaireSelect = element(by.css('select#field_questionnaire'));
 
     getModalTitle() {
@@ -99,6 +101,17 @@ export class QuestionDialogPage {
         return this.modifiedInput.getAttribute('value');
     };
 
+    setTypeSelect = function(type) {
+        this.typeSelect.sendKeys(type);
+    };
+
+    getTypeSelect = function() {
+        return this.typeSelect.element(by.css('option:checked')).getText();
+    };
+
+    typeSelectLastOption = function() {
+        this.typeSelect.all(by.tagName('option')).last().click();
+    };
     questionnaireSelectLastOption = function() {
         this.questionnaireSelect.all(by.tagName('option')).last().click();
     };

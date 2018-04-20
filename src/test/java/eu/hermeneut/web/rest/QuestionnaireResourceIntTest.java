@@ -49,8 +49,8 @@ public class QuestionnaireResourceIntTest {
     private static final String DEFAULT_NAME = "AAAAAAAAAA";
     private static final String UPDATED_NAME = "BBBBBBBBBB";
 
-    private static final Q_Scope DEFAULT_SCOPE = Q_Scope.ID_THREAT_AGENT;
-    private static final Q_Scope UPDATED_SCOPE = Q_Scope.SELFASSESSMENT;
+    private static final Q_Scope DEFAULT_PURPOSE = Q_Scope.ID_THREAT_AGENT;
+    private static final Q_Scope UPDATED_PURPOSE = Q_Scope.SELFASSESSMENT;
 
     private static final ZonedDateTime DEFAULT_CREATED = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
     private static final ZonedDateTime UPDATED_CREATED = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
@@ -103,7 +103,7 @@ public class QuestionnaireResourceIntTest {
     public static Questionnaire createEntity(EntityManager em) {
         Questionnaire questionnaire = new Questionnaire()
             .name(DEFAULT_NAME)
-            .scope(DEFAULT_SCOPE)
+            .purpose(DEFAULT_PURPOSE)
             .created(DEFAULT_CREATED)
             .modified(DEFAULT_MODIFIED);
         return questionnaire;
@@ -131,7 +131,7 @@ public class QuestionnaireResourceIntTest {
         assertThat(questionnaireList).hasSize(databaseSizeBeforeCreate + 1);
         Questionnaire testQuestionnaire = questionnaireList.get(questionnaireList.size() - 1);
         assertThat(testQuestionnaire.getName()).isEqualTo(DEFAULT_NAME);
-        assertThat(testQuestionnaire.getScope()).isEqualTo(DEFAULT_SCOPE);
+        assertThat(testQuestionnaire.getPurpose()).isEqualTo(DEFAULT_PURPOSE);
         assertThat(testQuestionnaire.getCreated()).isEqualTo(DEFAULT_CREATED);
         assertThat(testQuestionnaire.getModified()).isEqualTo(DEFAULT_MODIFIED);
 
@@ -181,10 +181,10 @@ public class QuestionnaireResourceIntTest {
 
     @Test
     @Transactional
-    public void checkScopeIsRequired() throws Exception {
+    public void checkPurposeIsRequired() throws Exception {
         int databaseSizeBeforeTest = questionnaireRepository.findAll().size();
         // set the field null
-        questionnaire.setScope(null);
+        questionnaire.setPurpose(null);
 
         // Create the Questionnaire, which fails.
 
@@ -209,7 +209,7 @@ public class QuestionnaireResourceIntTest {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(questionnaire.getId().intValue())))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
-            .andExpect(jsonPath("$.[*].scope").value(hasItem(DEFAULT_SCOPE.toString())))
+            .andExpect(jsonPath("$.[*].purpose").value(hasItem(DEFAULT_PURPOSE.toString())))
             .andExpect(jsonPath("$.[*].created").value(hasItem(sameInstant(DEFAULT_CREATED))))
             .andExpect(jsonPath("$.[*].modified").value(hasItem(sameInstant(DEFAULT_MODIFIED))));
     }
@@ -226,7 +226,7 @@ public class QuestionnaireResourceIntTest {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(questionnaire.getId().intValue()))
             .andExpect(jsonPath("$.name").value(DEFAULT_NAME.toString()))
-            .andExpect(jsonPath("$.scope").value(DEFAULT_SCOPE.toString()))
+            .andExpect(jsonPath("$.purpose").value(DEFAULT_PURPOSE.toString()))
             .andExpect(jsonPath("$.created").value(sameInstant(DEFAULT_CREATED)))
             .andExpect(jsonPath("$.modified").value(sameInstant(DEFAULT_MODIFIED)));
     }
@@ -253,7 +253,7 @@ public class QuestionnaireResourceIntTest {
         em.detach(updatedQuestionnaire);
         updatedQuestionnaire
             .name(UPDATED_NAME)
-            .scope(UPDATED_SCOPE)
+            .purpose(UPDATED_PURPOSE)
             .created(UPDATED_CREATED)
             .modified(UPDATED_MODIFIED);
 
@@ -267,7 +267,7 @@ public class QuestionnaireResourceIntTest {
         assertThat(questionnaireList).hasSize(databaseSizeBeforeUpdate);
         Questionnaire testQuestionnaire = questionnaireList.get(questionnaireList.size() - 1);
         assertThat(testQuestionnaire.getName()).isEqualTo(UPDATED_NAME);
-        assertThat(testQuestionnaire.getScope()).isEqualTo(UPDATED_SCOPE);
+        assertThat(testQuestionnaire.getPurpose()).isEqualTo(UPDATED_PURPOSE);
         assertThat(testQuestionnaire.getCreated()).isEqualTo(UPDATED_CREATED);
         assertThat(testQuestionnaire.getModified()).isEqualTo(UPDATED_MODIFIED);
 
@@ -330,7 +330,7 @@ public class QuestionnaireResourceIntTest {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(questionnaire.getId().intValue())))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
-            .andExpect(jsonPath("$.[*].scope").value(hasItem(DEFAULT_SCOPE.toString())))
+            .andExpect(jsonPath("$.[*].purpose").value(hasItem(DEFAULT_PURPOSE.toString())))
             .andExpect(jsonPath("$.[*].created").value(hasItem(sameInstant(DEFAULT_CREATED))))
             .andExpect(jsonPath("$.[*].modified").value(hasItem(sameInstant(DEFAULT_MODIFIED))));
     }

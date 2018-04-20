@@ -5,17 +5,13 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
-import javax.validation.constraints.*;
 
 import org.springframework.data.elasticsearch.annotations.Document;
-
 import java.io.Serializable;
 import java.time.ZonedDateTime;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.Objects;
-
-import eu.hermeneut.domain.enumeration.AnswerType;
 
 /**
  * A Answer.
@@ -33,11 +29,6 @@ public class Answer implements Serializable {
     @SequenceGenerator(name = "sequenceGenerator")
     private Long id;
 
-    @NotNull
-    @Enumerated(EnumType.STRING)
-    @Column(name = "jhi_type", nullable = false)
-    private AnswerType type;
-
     @Column(name = "name")
     private String name;
 
@@ -47,22 +38,25 @@ public class Answer implements Serializable {
     @Column(name = "modified")
     private ZonedDateTime modified;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     @JoinTable(name = "answer_threat_agents",
-        joinColumns = @JoinColumn(name = "answers_id", referencedColumnName = "id"),
-        inverseJoinColumns = @JoinColumn(name = "threat_agents_id", referencedColumnName = "id"))
+               joinColumns = @JoinColumn(name="answers_id", referencedColumnName="id"),
+               inverseJoinColumns = @JoinColumn(name="threat_agents_id", referencedColumnName="id"))
     private Set<ThreatAgent> threatAgents = new HashSet<>();
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     @JoinTable(name = "answer_attacks",
-        joinColumns = @JoinColumn(name = "answers_id", referencedColumnName = "id"),
-        inverseJoinColumns = @JoinColumn(name = "attacks_id", referencedColumnName = "id"))
+               joinColumns = @JoinColumn(name="answers_id", referencedColumnName="id"),
+               inverseJoinColumns = @JoinColumn(name="attacks_id", referencedColumnName="id"))
     private Set<AttackStrategy> attacks = new HashSet<>();
 
-    @ManyToOne
+    @OneToOne(mappedBy = "answer")
     @JsonIgnore
+    private MyAnswer myanswer;
+
+    @ManyToOne
     private Question question;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
@@ -72,19 +66,6 @@ public class Answer implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public AnswerType getType() {
-        return type;
-    }
-
-    public Answer type(AnswerType type) {
-        this.type = type;
-        return this;
-    }
-
-    public void setType(AnswerType type) {
-        this.type = type;
     }
 
     public String getName() {
@@ -176,6 +157,19 @@ public class Answer implements Serializable {
         this.attacks = attackStrategies;
     }
 
+    public MyAnswer getMyanswer() {
+        return myanswer;
+    }
+
+    public Answer myanswer(MyAnswer myAnswer) {
+        this.myanswer = myAnswer;
+        return this;
+    }
+
+    public void setMyanswer(MyAnswer myAnswer) {
+        this.myanswer = myAnswer;
+    }
+
     public Question getQuestion() {
         return question;
     }
@@ -214,7 +208,6 @@ public class Answer implements Serializable {
     public String toString() {
         return "Answer{" +
             "id=" + getId() +
-            ", type='" + getType() + "'" +
             ", name='" + getName() + "'" +
             ", created='" + getCreated() + "'" +
             ", modified='" + getModified() + "'" +

@@ -8,7 +8,7 @@ export class SelfAssessmentMgm implements BaseEntity {
         public modified?: any,
         public user?: User,
         public companyprofiles?: BaseEntity[],
-        public companysectors?: BaseEntity[],
+        public departments?: BaseEntity[],
         public assets?: BaseEntity[],
         public threatagents?: BaseEntity[],
         public attackstrategies?: BaseEntity[],

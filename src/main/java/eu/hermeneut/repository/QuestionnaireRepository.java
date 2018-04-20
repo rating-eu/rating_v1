@@ -1,13 +1,9 @@
 package eu.hermeneut.repository;
 
 import eu.hermeneut.domain.Questionnaire;
-import eu.hermeneut.domain.enumeration.Q_Scope;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import org.springframework.data.jpa.repository.*;
-
-import java.util.List;
 
 
 /**
@@ -17,6 +13,4 @@ import java.util.List;
 @Repository
 public interface QuestionnaireRepository extends JpaRepository<Questionnaire, Long> {
 
-    @Query("SELECT questionnaire FROM Questionnaire questionnaire WHERE questionnaire.scope = :scope")
-    List<Questionnaire> findAllByScope(@Param("scope") Q_Scope scope);
 }

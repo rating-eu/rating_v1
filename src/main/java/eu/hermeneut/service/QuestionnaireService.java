@@ -1,8 +1,6 @@
 package eu.hermeneut.service;
 
 import eu.hermeneut.domain.Questionnaire;
-import eu.hermeneut.domain.enumeration.Q_Scope;
-
 import java.util.List;
 
 /**
@@ -24,13 +22,12 @@ public interface QuestionnaireService {
      * @return the list of entities
      */
     List<Questionnaire> findAll();
-
     /**
-     * Get all the questionnaires with a given scope.
+     * Get all the QuestionnaireDTO where Myanswer is null.
      *
      * @return the list of entities
      */
-    List<Questionnaire> findAllByScope(Q_Scope scope);
+    List<Questionnaire> findAllWhereMyanswerIsNull();
 
     /**
      * Get the "id" questionnaire.
@@ -51,6 +48,7 @@ public interface QuestionnaireService {
      * Search for the questionnaire corresponding to the query.
      *
      * @param query the query of the search
+     * 
      * @return the list of entities
      */
     List<Questionnaire> search(String query);

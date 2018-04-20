@@ -41,7 +41,7 @@ describe('SelfAssessment e2e test', () => {
         expect(selfAssessmentDialogPage.getModifiedInput()).toMatch('2001-12-31T02:30');
         selfAssessmentDialogPage.userSelectLastOption();
         // selfAssessmentDialogPage.companyprofilesSelectLastOption();
-        // selfAssessmentDialogPage.companysectorSelectLastOption();
+        // selfAssessmentDialogPage.departmentSelectLastOption();
         // selfAssessmentDialogPage.assetSelectLastOption();
         // selfAssessmentDialogPage.threatagentSelectLastOption();
         // selfAssessmentDialogPage.attackstrategySelectLastOption();
@@ -78,7 +78,7 @@ export class SelfAssessmentDialogPage {
     modifiedInput = element(by.css('input#field_modified'));
     userSelect = element(by.css('select#field_user'));
     companyprofilesSelect = element(by.css('select#field_companyprofiles'));
-    companysectorSelect = element(by.css('select#field_companysector'));
+    departmentSelect = element(by.css('select#field_department'));
     assetSelect = element(by.css('select#field_asset'));
     threatagentSelect = element(by.css('select#field_threatagent'));
     attackstrategySelect = element(by.css('select#field_attackstrategy'));
@@ -145,20 +145,20 @@ export class SelfAssessmentDialogPage {
         return this.companyprofilesSelect.element(by.css('option:checked')).getText();
     };
 
-    companysectorSelectLastOption = function() {
-        this.companysectorSelect.all(by.tagName('option')).last().click();
+    departmentSelectLastOption = function() {
+        this.departmentSelect.all(by.tagName('option')).last().click();
     };
 
-    companysectorSelectOption = function(option) {
-        this.companysectorSelect.sendKeys(option);
+    departmentSelectOption = function(option) {
+        this.departmentSelect.sendKeys(option);
     };
 
-    getCompanysectorSelect = function() {
-        return this.companysectorSelect;
+    getDepartmentSelect = function() {
+        return this.departmentSelect;
     };
 
-    getCompanysectorSelectedOption = function() {
-        return this.companysectorSelect.element(by.css('option:checked')).getText();
+    getDepartmentSelectedOption = function() {
+        return this.departmentSelect.element(by.css('option:checked')).getText();
     };
 
     assetSelectLastOption = function() {

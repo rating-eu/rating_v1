@@ -59,6 +59,20 @@ public class AnswerServiceImpl implements AnswerService {
         return answerRepository.findAllWithEagerRelationships();
     }
 
+
+    /**
+     *  get all the answers where Myanswer is null.
+     *  @return the list of entities
+     */
+    @Transactional(readOnly = true) 
+    public List<Answer> findAllWhereMyanswerIsNull() {
+        log.debug("Request to get all answers where Myanswer is null");
+        return StreamSupport
+            .stream(answerRepository.findAll().spliterator(), false)
+            .filter(answer -> answer.getMyanswer() == null)
+            .collect(Collectors.toList());
+    }
+
     /**
      * Get one answer by id.
      *

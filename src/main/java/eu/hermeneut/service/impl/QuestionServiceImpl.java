@@ -56,7 +56,21 @@ public class QuestionServiceImpl implements QuestionService {
     @Transactional(readOnly = true)
     public List<Question> findAll() {
         log.debug("Request to get all Questions");
-        return questionRepository.findAllWithEagerRelationships();
+        return questionRepository.findAll();
+    }
+
+
+    /**
+     *  get all the questions where Myanswer is null.
+     *  @return the list of entities
+     */
+    @Transactional(readOnly = true) 
+    public List<Question> findAllWhereMyanswerIsNull() {
+        log.debug("Request to get all questions where Myanswer is null");
+        return StreamSupport
+            .stream(questionRepository.findAll().spliterator(), false)
+            .filter(question -> question.getMyanswer() == null)
+            .collect(Collectors.toList());
     }
 
     /**
@@ -69,7 +83,7 @@ public class QuestionServiceImpl implements QuestionService {
     @Transactional(readOnly = true)
     public Question findOne(Long id) {
         log.debug("Request to get Question : {}", id);
-        return questionRepository.findOneWithEagerRelationships(id);
+        return questionRepository.findOne(id);
     }
 
     /**

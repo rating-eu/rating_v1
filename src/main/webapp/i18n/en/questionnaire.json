@@ -18,10 +18,11 @@
                 "title": "Questionnaire"
             },
             "name": "Name",
-            "scope": "Scope",
+            "purpose": "Purpose",
             "created": "Created",
             "modified": "Modified",
             "questions": "Questions",
+            "myanswer": "Myanswer",
             "selfassessment": "Selfassessment"
         }
     }

@@ -25,7 +25,7 @@
                 <constraints nullable="false" />
             </column>
 
-            <column name="jhi_scope" type="varchar(255)">
+            <column name="purpose" type="varchar(255)">
                 <constraints nullable="false" />
             </column>
 

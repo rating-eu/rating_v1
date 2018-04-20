@@ -1,0 +1,48 @@
+
+<div *ngIf="myAnswer">
+    <h2><span jhiTranslate="hermeneutApp.myAnswer.detail.title">My Answer</span> {{myAnswer.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="hermeneutApp.myAnswer.notes">Notes</span></dt>
+        <dd>
+            <span>{{myAnswer.notes}}</span>
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.myAnswer.answer">Answer</span></dt>
+        <dd>
+            <div *ngIf="myAnswer.answer">
+                <a [routerLink]="['/answer-mgm', myAnswer.answer?.id]">{{myAnswer.answer?.name}}</a>
+            </div>
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.myAnswer.question">Question</span></dt>
+        <dd>
+            <div *ngIf="myAnswer.question">
+                <a [routerLink]="['/question-mgm', myAnswer.question?.id]">{{myAnswer.question?.name}}</a>
+            </div>
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.myAnswer.questionnaire">Questionnaire</span></dt>
+        <dd>
+            <div *ngIf="myAnswer.questionnaire">
+                <a [routerLink]="['/questionnaire-mgm', myAnswer.questionnaire?.id]">{{myAnswer.questionnaire?.name}}</a>
+            </div>
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.myAnswer.user">User</span></dt>
+        <dd>
+            {{myAnswer.user?.login}}
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'my-answer-mgm/'+ myAnswer.id + '/edit'} }]"
+            replaceUrl="true"
+            queryParamsHandling="merge"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+    </button>
+</div>
