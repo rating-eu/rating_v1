@@ -91,7 +91,7 @@ public class QuestionnaireResourceIntTest {
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
             .setConversionService(createFormattingConversionService())
-            .setMessageConverters(jacksonMessageConverter).build();
+            .setMessageConverters(jackson2HttpMessageConverter).build();
     }
 
     /**
