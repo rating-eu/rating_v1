@@ -1,10 +1,13 @@
-import {QuestionnaireScope} from "./QuestionnaireScope";
-import { DateTime } from 'date-time-js';
+import {QuestionnaireScope} from './QuestionnaireScope';
+import {DateTime} from 'date-time-js';
+import {BaseEntity} from "../../shared";
 
 export class Questionnaire {
-    id: number;
-    name: String;
-    scope: QuestionnaireScope;
-    created: DateTime;
-    modified: DateTime;
+    public id?: number;
+    public name?: string;
+    public scope?: QuestionnaireScope;
+    public created?: any;
+    public modified?: any;
+    public questions?: BaseEntity[];
+    public selfassessments?: BaseEntity[];
 }

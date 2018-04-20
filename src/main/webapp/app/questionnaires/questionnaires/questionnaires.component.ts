@@ -1,15 +1,14 @@
 import {Component, OnInit} from '@angular/core';
-import {Questionnaire} from '../models/Questionnaire';
 import {QuestionnaireScope} from '../models/QuestionnaireScope';
 import {QuestionnairesService} from '../questionnaires.service';
+import {Questionnaire} from '../models/Questionnaire';
 
 @Component({
-    selector: 'jhi-id-ta',
-    templateUrl: './id-ta.component.html',
+    selector: 'jhi-questionnaires',
+    templateUrl: './questionnaires.component.html',
     styles: [],
-    providers: [QuestionnairesService]
 })
-export class IdTaComponent implements OnInit {
+export class QuestionnairesComponent implements OnInit {
 
     private questionnaires: Questionnaire[];
 
@@ -35,5 +34,9 @@ export class IdTaComponent implements OnInit {
                 console.log(error);
             }
         );
+    }
+
+    setCurrentQuestionnaire(questionnaire: Questionnaire) {
+        this.questionnairesService.setCurrentQuestionnaire(questionnaire);
     }
 }

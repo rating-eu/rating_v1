@@ -2,8 +2,9 @@ import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 
 import {QuestionnairesRoutingModule} from './questionnaires-routing.module';
-import {IdTaComponent} from './id-ta/id-ta.component';
-import { QuestionnaireComponent } from './questionnaire/questionnaire.component';
+import {QuestionnaireComponent} from './questionnaires/questionnaire/questionnaire.component';
+import {QuestionnairesComponent} from './questionnaires/questionnaires.component';
+import {QuestionnairesService} from './questionnaires.service';
 
 @NgModule({
     imports: [
@@ -11,11 +12,12 @@ import { QuestionnaireComponent } from './questionnaire/questionnaire.component'
         QuestionnairesRoutingModule
     ],
     declarations: [
-        IdTaComponent,
+        QuestionnairesComponent,
         QuestionnaireComponent
     ],
     exports: [
-        IdTaComponent
+        QuestionnairesComponent,
+        QuestionnaireComponent
     ]
 })
 export class QuestionnairesModule {

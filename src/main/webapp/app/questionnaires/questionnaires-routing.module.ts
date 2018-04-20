@@ -1,10 +1,10 @@
 import {NgModule} from '@angular/core';
 import {Routes, RouterModule} from '@angular/router';
-import {IdTaComponent} from './id-ta/id-ta.component';
-import {QuestionnaireComponent} from './questionnaire/questionnaire.component';
+import {QuestionnaireComponent} from './questionnaires/questionnaire/questionnaire.component';
+import {QuestionnairesComponent} from './questionnaires/questionnaires.component';
 
 const routes: Routes = [
-    {path: '', component: IdTaComponent},
+    {path: '', component: QuestionnairesComponent},
     {path: 'questionnaire', component: QuestionnaireComponent}
 ];
 
