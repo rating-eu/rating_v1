@@ -9,10 +9,11 @@ export class QuestionnaireMgm implements BaseEntity {
     constructor(
         public id?: number,
         public name?: string,
-        public scope?: Q_Scope,
+        public purpose?: Q_Scope,
         public created?: any,
         public modified?: any,
         public questions?: BaseEntity[],
+        public myanswer?: BaseEntity,
         public selfassessments?: BaseEntity[],
     ) {
     }

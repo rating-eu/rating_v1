@@ -26,15 +26,15 @@
                                  referencedTableName="company_profile"/>
         
         <addForeignKeyConstraint baseColumnNames="self_assessments_id"
-                                 baseTableName="self_assessment_companysector"
-                                 constraintName="fk_self_assessment_companysector_self_assessments_id"
+                                 baseTableName="self_assessment_department"
+                                 constraintName="fk_self_assessment_department_self_assessments_id"
                                  referencedColumnNames="id"
                                  referencedTableName="self_assessment"/>
-        <addForeignKeyConstraint baseColumnNames="companysectors_id"
-                                 baseTableName="self_assessment_companysector"
-                                 constraintName="fk_self_assessment_companysector_companysectors_id"
+        <addForeignKeyConstraint baseColumnNames="departments_id"
+                                 baseTableName="self_assessment_department"
+                                 constraintName="fk_self_assessment_department_departments_id"
                                  referencedColumnNames="id"
-                                 referencedTableName="company_sector"/>
+                                 referencedTableName="department"/>
         
         <addForeignKeyConstraint baseColumnNames="self_assessments_id"
                                  baseTableName="self_assessment_asset"

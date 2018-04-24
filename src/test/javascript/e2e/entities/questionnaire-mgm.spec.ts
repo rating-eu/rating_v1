@@ -35,7 +35,7 @@ describe('Questionnaire e2e test', () => {
         questionnaireComponentsPage.clickOnCreateButton();
         questionnaireDialogPage.setNameInput('name');
         expect(questionnaireDialogPage.getNameInput()).toMatch('name');
-        questionnaireDialogPage.scopeSelectLastOption();
+        questionnaireDialogPage.purposeSelectLastOption();
         questionnaireDialogPage.setCreatedInput(12310020012301);
         expect(questionnaireDialogPage.getCreatedInput()).toMatch('2001-12-31T02:30');
         questionnaireDialogPage.setModifiedInput(12310020012301);
@@ -67,7 +67,7 @@ export class QuestionnaireDialogPage {
     saveButton = element(by.css('.modal-footer .btn.btn-primary'));
     closeButton = element(by.css('button.close'));
     nameInput = element(by.css('input#field_name'));
-    scopeSelect = element(by.css('select#field_scope'));
+    purposeSelect = element(by.css('select#field_purpose'));
     createdInput = element(by.css('input#field_created'));
     modifiedInput = element(by.css('input#field_modified'));
 
@@ -83,16 +83,16 @@ export class QuestionnaireDialogPage {
         return this.nameInput.getAttribute('value');
     };
 
-    setScopeSelect = function(scope) {
-        this.scopeSelect.sendKeys(scope);
+    setPurposeSelect = function(purpose) {
+        this.purposeSelect.sendKeys(purpose);
     };
 
-    getScopeSelect = function() {
-        return this.scopeSelect.element(by.css('option:checked')).getText();
+    getPurposeSelect = function() {
+        return this.purposeSelect.element(by.css('option:checked')).getText();
     };
 
-    scopeSelectLastOption = function() {
-        this.scopeSelect.all(by.tagName('option')).last().click();
+    purposeSelectLastOption = function() {
+        this.purposeSelect.all(by.tagName('option')).last().click();
     };
     setCreatedInput = function(created) {
         this.createdInput.sendKeys(created);

@@ -2,7 +2,6 @@ package eu.hermeneut.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import eu.hermeneut.domain.Questionnaire;
-import eu.hermeneut.domain.enumeration.Q_Scope;
 import eu.hermeneut.service.QuestionnaireService;
 import eu.hermeneut.web.rest.errors.BadRequestAlertException;
 import eu.hermeneut.web.rest.util.HeaderUtil;
@@ -15,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
-
+import eu.hermeneut.domain.enumeration.Q_Scope;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -81,19 +80,6 @@ public class QuestionnaireResource {
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, questionnaire.getId().toString()))
             .body(result);
     }
-
-    /**
-     * GET  /questionnaires : get all the questionnaires.
-     *
-     * @return the ResponseEntity with status 200 (OK) and the list of questionnaires in body
-     */
-    @GetMapping("/questionnaires")
-    @Timed
-    public List<Questionnaire> getAllQuestionnaires() {
-        log.debug("REST request to get all Questionnaires");
-        return questionnaireService.findAll();
-    }
-
     /**
      * GET  /questionnaires/{scope} : get all the questionnaires.
      *
@@ -114,6 +100,23 @@ public class QuestionnaireResource {
 
         return questionnaires;
     }
+
+    /**
+     * GET  /questionnaires : get all the questionnaires.
+     *
+     * @param filter the filter of the request
+     * @return the ResponseEntity with status 200 (OK) and the list of questionnaires in body
+     */
+    @GetMapping("/questionnaires")
+    @Timed
+    public List<Questionnaire> getAllQuestionnaires(@RequestParam(required = false) String filter) {
+        if ("myanswer-is-null".equals(filter)) {
+            log.debug("REST request to get all Questionnaires where myanswer is null");
+            return questionnaireService.findAllWhereMyanswerIsNull();
+        }
+        log.debug("REST request to get all Questionnaires");
+        return questionnaireService.findAll();
+        }
 
     /**
      * GET  /questionnaires/:id : get the "id" questionnaire.

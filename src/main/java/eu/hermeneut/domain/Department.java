@@ -15,13 +15,13 @@ import java.util.Set;
 import java.util.Objects;
 
 /**
- * A CompanySector.
+ * A Department.
  */
 @Entity
-@Table(name = "company_sector")
+@Table(name = "department")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-@Document(indexName = "companysector")
-public class CompanySector implements Serializable {
+@Document(indexName = "department")
+public class Department implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -31,8 +31,8 @@ public class CompanySector implements Serializable {
     private Long id;
 
     @NotNull
-    @Column(name = "department", nullable = false)
-    private String department;
+    @Column(name = "name", nullable = false)
+    private String name;
 
     @Size(max = 2000)
     @Column(name = "description", length = 2000)
@@ -50,7 +50,7 @@ public class CompanySector implements Serializable {
     @ManyToOne
     private CompanyProfile companyprofile;
 
-    @ManyToMany(mappedBy = "companysectors")
+    @ManyToMany(mappedBy = "departments")
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<SelfAssessment> selfassessments = new HashSet<>();
@@ -64,24 +64,24 @@ public class CompanySector implements Serializable {
         this.id = id;
     }
 
-    public String getDepartment() {
-        return department;
+    public String getName() {
+        return name;
     }
 
-    public CompanySector department(String department) {
-        this.department = department;
+    public Department name(String name) {
+        this.name = name;
         return this;
     }
 
-    public void setDepartment(String department) {
-        this.department = department;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getDescription() {
         return description;
     }
 
-    public CompanySector description(String description) {
+    public Department description(String description) {
         this.description = description;
         return this;
     }
@@ -94,7 +94,7 @@ public class CompanySector implements Serializable {
         return created;
     }
 
-    public CompanySector created(ZonedDateTime created) {
+    public Department created(ZonedDateTime created) {
         this.created = created;
         return this;
     }
@@ -107,7 +107,7 @@ public class CompanySector implements Serializable {
         return modified;
     }
 
-    public CompanySector modified(ZonedDateTime modified) {
+    public Department modified(ZonedDateTime modified) {
         this.modified = modified;
         return this;
     }
@@ -120,7 +120,7 @@ public class CompanySector implements Serializable {
         return user;
     }
 
-    public CompanySector user(User user) {
+    public Department user(User user) {
         this.user = user;
         return this;
     }
@@ -133,7 +133,7 @@ public class CompanySector implements Serializable {
         return companyprofile;
     }
 
-    public CompanySector companyprofile(CompanyProfile companyProfile) {
+    public Department companyprofile(CompanyProfile companyProfile) {
         this.companyprofile = companyProfile;
         return this;
     }
@@ -146,20 +146,20 @@ public class CompanySector implements Serializable {
         return selfassessments;
     }
 
-    public CompanySector selfassessments(Set<SelfAssessment> selfAssessments) {
+    public Department selfassessments(Set<SelfAssessment> selfAssessments) {
         this.selfassessments = selfAssessments;
         return this;
     }
 
-    public CompanySector addSelfassessment(SelfAssessment selfAssessment) {
+    public Department addSelfassessment(SelfAssessment selfAssessment) {
         this.selfassessments.add(selfAssessment);
-        selfAssessment.getCompanysectors().add(this);
+        selfAssessment.getDepartments().add(this);
         return this;
     }
 
-    public CompanySector removeSelfassessment(SelfAssessment selfAssessment) {
+    public Department removeSelfassessment(SelfAssessment selfAssessment) {
         this.selfassessments.remove(selfAssessment);
-        selfAssessment.getCompanysectors().remove(this);
+        selfAssessment.getDepartments().remove(this);
         return this;
     }
 
@@ -176,11 +176,11 @@ public class CompanySector implements Serializable {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        CompanySector companySector = (CompanySector) o;
-        if (companySector.getId() == null || getId() == null) {
+        Department department = (Department) o;
+        if (department.getId() == null || getId() == null) {
             return false;
         }
-        return Objects.equals(getId(), companySector.getId());
+        return Objects.equals(getId(), department.getId());
     }
 
     @Override
@@ -190,9 +190,9 @@ public class CompanySector implements Serializable {
 
     @Override
     public String toString() {
-        return "CompanySector{" +
+        return "Department{" +
             "id=" + getId() +
-            ", department='" + getDepartment() + "'" +
+            ", name='" + getName() + "'" +
             ", description='" + getDescription() + "'" +
             ", created='" + getCreated() + "'" +
             ", modified='" + getModified() + "'" +

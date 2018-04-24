@@ -11,7 +11,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -47,7 +46,7 @@ public class AnswerResource {
      */
     @PostMapping("/answers")
     @Timed
-    public ResponseEntity<Answer> createAnswer(@Valid @RequestBody Answer answer) throws URISyntaxException {
+    public ResponseEntity<Answer> createAnswer(@RequestBody Answer answer) throws URISyntaxException {
         log.debug("REST request to save Answer : {}", answer);
         if (answer.getId() != null) {
             throw new BadRequestAlertException("A new answer cannot already have an ID", ENTITY_NAME, "idexists");
@@ -69,7 +68,7 @@ public class AnswerResource {
      */
     @PutMapping("/answers")
     @Timed
-    public ResponseEntity<Answer> updateAnswer(@Valid @RequestBody Answer answer) throws URISyntaxException {
+    public ResponseEntity<Answer> updateAnswer(@RequestBody Answer answer) throws URISyntaxException {
         log.debug("REST request to update Answer : {}", answer);
         if (answer.getId() == null) {
             return createAnswer(answer);
@@ -83,11 +82,16 @@ public class AnswerResource {
     /**
      * GET  /answers : get all the answers.
      *
+     * @param filter the filter of the request
      * @return the ResponseEntity with status 200 (OK) and the list of answers in body
      */
     @GetMapping("/answers")
     @Timed
-    public List<Answer> getAllAnswers() {
+    public List<Answer> getAllAnswers(@RequestParam(required = false) String filter) {
+        if ("myanswer-is-null".equals(filter)) {
+            log.debug("REST request to get all Answers where myanswer is null");
+            return answerService.findAllWhereMyanswerIsNull();
+        }
         log.debug("REST request to get all Answers");
         return answerService.findAll();
         }

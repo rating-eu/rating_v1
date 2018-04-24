@@ -11,7 +11,7 @@ import { SelfAssessmentMgmService } from '../../../../../../main/webapp/app/enti
 import { SelfAssessmentMgm } from '../../../../../../main/webapp/app/entities/self-assessment-mgm/self-assessment-mgm.model';
 import { UserService } from '../../../../../../main/webapp/app/shared';
 import { CompanyProfileMgmService } from '../../../../../../main/webapp/app/entities/company-profile-mgm';
-import { CompanySectorMgmService } from '../../../../../../main/webapp/app/entities/company-sector-mgm';
+import { DepartmentMgmService } from '../../../../../../main/webapp/app/entities/department-mgm';
 import { AssetMgmService } from '../../../../../../main/webapp/app/entities/asset-mgm';
 import { ThreatAgentMgmService } from '../../../../../../main/webapp/app/entities/threat-agent-mgm';
 import { AttackStrategyMgmService } from '../../../../../../main/webapp/app/entities/attack-strategy-mgm';
@@ -34,7 +34,7 @@ describe('Component Tests', () => {
                 providers: [
                     UserService,
                     CompanyProfileMgmService,
-                    CompanySectorMgmService,
+                    DepartmentMgmService,
                     AssetMgmService,
                     ThreatAgentMgmService,
                     AttackStrategyMgmService,

@@ -1,4 +1,13 @@
 <div>
+    <h2>
+        <span jhiTranslate="hermeneutApp.asset.home.title">Assets</span>
+        <button class="btn btn-primary float-right jh-create-entity create-asset-mgm" [routerLink]="['/', { outlets: { popup: ['asset-mgm-new'] } }]">
+            <span class="fa fa-plus"></span>
+            <span class="hidden-sm-down"  jhiTranslate="hermeneutApp.asset.home.createLabel">
+            Create new Asset
+            </span>
+        </button>
+    </h2>
     <jhi-alert></jhi-alert>
     <div class="row">
         <div class="col-sm-12">

@@ -36,6 +36,7 @@ import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+import eu.hermeneut.domain.enumeration.AnswerType;
 /**
  * Test class for the QuestionResource REST controller.
  *
@@ -53,6 +54,9 @@ public class QuestionResourceIntTest {
 
     private static final ZonedDateTime DEFAULT_MODIFIED = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
     private static final ZonedDateTime UPDATED_MODIFIED = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
+
+    private static final AnswerType DEFAULT_TYPE = AnswerType.YESNO;
+    private static final AnswerType UPDATED_TYPE = AnswerType.RANGE5;
 
     @Autowired
     private QuestionRepository questionRepository;
@@ -100,7 +104,8 @@ public class QuestionResourceIntTest {
         Question question = new Question()
             .name(DEFAULT_NAME)
             .created(DEFAULT_CREATED)
-            .modified(DEFAULT_MODIFIED);
+            .modified(DEFAULT_MODIFIED)
+            .type(DEFAULT_TYPE);
         return question;
     }
 
@@ -128,6 +133,7 @@ public class QuestionResourceIntTest {
         assertThat(testQuestion.getName()).isEqualTo(DEFAULT_NAME);
         assertThat(testQuestion.getCreated()).isEqualTo(DEFAULT_CREATED);
         assertThat(testQuestion.getModified()).isEqualTo(DEFAULT_MODIFIED);
+        assertThat(testQuestion.getType()).isEqualTo(DEFAULT_TYPE);
 
         // Validate the Question in Elasticsearch
         Question questionEs = questionSearchRepository.findOne(testQuestion.getId());
@@ -175,6 +181,24 @@ public class QuestionResourceIntTest {
 
     @Test
     @Transactional
+    public void checkTypeIsRequired() throws Exception {
+        int databaseSizeBeforeTest = questionRepository.findAll().size();
+        // set the field null
+        question.setType(null);
+
+        // Create the Question, which fails.
+
+        restQuestionMockMvc.perform(post("/api/questions")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(question)))
+            .andExpect(status().isBadRequest());
+
+        List<Question> questionList = questionRepository.findAll();
+        assertThat(questionList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
     public void getAllQuestions() throws Exception {
         // Initialize the database
         questionRepository.saveAndFlush(question);
@@ -186,7 +210,8 @@ public class QuestionResourceIntTest {
             .andExpect(jsonPath("$.[*].id").value(hasItem(question.getId().intValue())))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
             .andExpect(jsonPath("$.[*].created").value(hasItem(sameInstant(DEFAULT_CREATED))))
-            .andExpect(jsonPath("$.[*].modified").value(hasItem(sameInstant(DEFAULT_MODIFIED))));
+            .andExpect(jsonPath("$.[*].modified").value(hasItem(sameInstant(DEFAULT_MODIFIED))))
+            .andExpect(jsonPath("$.[*].type").value(hasItem(DEFAULT_TYPE.toString())));
     }
 
     @Test
@@ -202,7 +227,8 @@ public class QuestionResourceIntTest {
             .andExpect(jsonPath("$.id").value(question.getId().intValue()))
             .andExpect(jsonPath("$.name").value(DEFAULT_NAME.toString()))
             .andExpect(jsonPath("$.created").value(sameInstant(DEFAULT_CREATED)))
-            .andExpect(jsonPath("$.modified").value(sameInstant(DEFAULT_MODIFIED)));
+            .andExpect(jsonPath("$.modified").value(sameInstant(DEFAULT_MODIFIED)))
+            .andExpect(jsonPath("$.type").value(DEFAULT_TYPE.toString()));
     }
 
     @Test
@@ -228,7 +254,8 @@ public class QuestionResourceIntTest {
         updatedQuestion
             .name(UPDATED_NAME)
             .created(UPDATED_CREATED)
-            .modified(UPDATED_MODIFIED);
+            .modified(UPDATED_MODIFIED)
+            .type(UPDATED_TYPE);
 
         restQuestionMockMvc.perform(put("/api/questions")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -242,6 +269,7 @@ public class QuestionResourceIntTest {
         assertThat(testQuestion.getName()).isEqualTo(UPDATED_NAME);
         assertThat(testQuestion.getCreated()).isEqualTo(UPDATED_CREATED);
         assertThat(testQuestion.getModified()).isEqualTo(UPDATED_MODIFIED);
+        assertThat(testQuestion.getType()).isEqualTo(UPDATED_TYPE);
 
         // Validate the Question in Elasticsearch
         Question questionEs = questionSearchRepository.findOne(testQuestion.getId());
@@ -303,7 +331,8 @@ public class QuestionResourceIntTest {
             .andExpect(jsonPath("$.[*].id").value(hasItem(question.getId().intValue())))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
             .andExpect(jsonPath("$.[*].created").value(hasItem(sameInstant(DEFAULT_CREATED))))
-            .andExpect(jsonPath("$.[*].modified").value(hasItem(sameInstant(DEFAULT_MODIFIED))));
+            .andExpect(jsonPath("$.[*].modified").value(hasItem(sameInstant(DEFAULT_MODIFIED))))
+            .andExpect(jsonPath("$.[*].type").value(hasItem(DEFAULT_TYPE.toString())));
     }
 
     @Test

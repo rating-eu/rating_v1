@@ -8,9 +8,9 @@
         <dd>
             <span>{{questionnaire.name}}</span>
         </dd>
-        <dt><span jhiTranslate="hermeneutApp.questionnaire.scope">Scope</span></dt>
+        <dt><span jhiTranslate="hermeneutApp.questionnaire.purpose">Purpose</span></dt>
         <dd>
-            <span jhiTranslate="{{'hermeneutApp.Q_Scope.' + questionnaire.scope}}">{{questionnaire.scope}}</span>
+            <span jhiTranslate="{{'hermeneutApp.Q_Scope.' + questionnaire.purpose}}">{{questionnaire.purpose}}</span>
         </dd>
         <dt><span jhiTranslate="hermeneutApp.questionnaire.created">Created</span></dt>
         <dd>
@@ -19,11 +19,6 @@
         <dt><span jhiTranslate="hermeneutApp.questionnaire.modified">Modified</span></dt>
         <dd>
             <span>{{questionnaire.modified | date:'medium'}}</span>
-        </dd>
-        
-         <dt><span >Questions</span></dt>
-        <dd>
-            <span>{{questionnaire.questions}}</span>
         </dd>
     </dl>
 

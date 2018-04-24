@@ -36,7 +36,6 @@ import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-import eu.hermeneut.domain.enumeration.AnswerType;
 /**
  * Test class for the AnswerResource REST controller.
  *
@@ -45,9 +44,6 @@ import eu.hermeneut.domain.enumeration.AnswerType;
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = HermeneutApp.class)
 public class AnswerResourceIntTest {
-
-    private static final AnswerType DEFAULT_TYPE = AnswerType.YESNO;
-    private static final AnswerType UPDATED_TYPE = AnswerType.RANGE5;
 
     private static final String DEFAULT_NAME = "AAAAAAAAAA";
     private static final String UPDATED_NAME = "BBBBBBBBBB";
@@ -102,7 +98,6 @@ public class AnswerResourceIntTest {
      */
     public static Answer createEntity(EntityManager em) {
         Answer answer = new Answer()
-            .type(DEFAULT_TYPE)
             .name(DEFAULT_NAME)
             .created(DEFAULT_CREATED)
             .modified(DEFAULT_MODIFIED);
@@ -130,7 +125,6 @@ public class AnswerResourceIntTest {
         List<Answer> answerList = answerRepository.findAll();
         assertThat(answerList).hasSize(databaseSizeBeforeCreate + 1);
         Answer testAnswer = answerList.get(answerList.size() - 1);
-        assertThat(testAnswer.getType()).isEqualTo(DEFAULT_TYPE);
         assertThat(testAnswer.getName()).isEqualTo(DEFAULT_NAME);
         assertThat(testAnswer.getCreated()).isEqualTo(DEFAULT_CREATED);
         assertThat(testAnswer.getModified()).isEqualTo(DEFAULT_MODIFIED);
@@ -163,24 +157,6 @@ public class AnswerResourceIntTest {
 
     @Test
     @Transactional
-    public void checkTypeIsRequired() throws Exception {
-        int databaseSizeBeforeTest = answerRepository.findAll().size();
-        // set the field null
-        answer.setType(null);
-
-        // Create the Answer, which fails.
-
-        restAnswerMockMvc.perform(post("/api/answers")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(answer)))
-            .andExpect(status().isBadRequest());
-
-        List<Answer> answerList = answerRepository.findAll();
-        assertThat(answerList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
     public void getAllAnswers() throws Exception {
         // Initialize the database
         answerRepository.saveAndFlush(answer);
@@ -190,7 +166,6 @@ public class AnswerResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(answer.getId().intValue())))
-            .andExpect(jsonPath("$.[*].type").value(hasItem(DEFAULT_TYPE.toString())))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
             .andExpect(jsonPath("$.[*].created").value(hasItem(sameInstant(DEFAULT_CREATED))))
             .andExpect(jsonPath("$.[*].modified").value(hasItem(sameInstant(DEFAULT_MODIFIED))));
@@ -207,7 +182,6 @@ public class AnswerResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(answer.getId().intValue()))
-            .andExpect(jsonPath("$.type").value(DEFAULT_TYPE.toString()))
             .andExpect(jsonPath("$.name").value(DEFAULT_NAME.toString()))
             .andExpect(jsonPath("$.created").value(sameInstant(DEFAULT_CREATED)))
             .andExpect(jsonPath("$.modified").value(sameInstant(DEFAULT_MODIFIED)));
@@ -234,7 +208,6 @@ public class AnswerResourceIntTest {
         // Disconnect from session so that the updates on updatedAnswer are not directly saved in db
         em.detach(updatedAnswer);
         updatedAnswer
-            .type(UPDATED_TYPE)
             .name(UPDATED_NAME)
             .created(UPDATED_CREATED)
             .modified(UPDATED_MODIFIED);
@@ -248,7 +221,6 @@ public class AnswerResourceIntTest {
         List<Answer> answerList = answerRepository.findAll();
         assertThat(answerList).hasSize(databaseSizeBeforeUpdate);
         Answer testAnswer = answerList.get(answerList.size() - 1);
-        assertThat(testAnswer.getType()).isEqualTo(UPDATED_TYPE);
         assertThat(testAnswer.getName()).isEqualTo(UPDATED_NAME);
         assertThat(testAnswer.getCreated()).isEqualTo(UPDATED_CREATED);
         assertThat(testAnswer.getModified()).isEqualTo(UPDATED_MODIFIED);
@@ -311,7 +283,6 @@ public class AnswerResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(answer.getId().intValue())))
-            .andExpect(jsonPath("$.[*].type").value(hasItem(DEFAULT_TYPE.toString())))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
             .andExpect(jsonPath("$.[*].created").value(hasItem(sameInstant(DEFAULT_CREATED))))
             .andExpect(jsonPath("$.[*].modified").value(hasItem(sameInstant(DEFAULT_MODIFIED))));

@@ -1,0 +1,48 @@
+
+<div *ngIf="department">
+    <h2><span jhiTranslate="hermeneutApp.department.detail.title">Department</span> {{department.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="hermeneutApp.department.name">Name</span></dt>
+        <dd>
+            <span>{{department.name}}</span>
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.department.description">Description</span></dt>
+        <dd>
+            <span>{{department.description}}</span>
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.department.created">Created</span></dt>
+        <dd>
+            <span>{{department.created | date:'medium'}}</span>
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.department.modified">Modified</span></dt>
+        <dd>
+            <span>{{department.modified | date:'medium'}}</span>
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.department.user">User</span></dt>
+        <dd>
+            {{department.user?.login}}
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.department.companyprofile">Companyprofile</span></dt>
+        <dd>
+            <div *ngIf="department.companyprofile">
+                <a [routerLink]="['/company-profile-mgm', department.companyprofile?.id]">{{department.companyprofile?.name}}</a>
+            </div>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'department-mgm/'+ department.id + '/edit'} }]"
+            replaceUrl="true"
+            queryParamsHandling="merge"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+    </button>
+</div>

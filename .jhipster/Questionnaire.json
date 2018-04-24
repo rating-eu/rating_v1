@@ -8,6 +8,13 @@
             "otherEntityRelationshipName": "questionnaire"
         },
         {
+            "relationshipType": "one-to-one",
+            "relationshipName": "myanswer",
+            "otherEntityName": "myAnswer",
+            "ownerSide": false,
+            "otherEntityRelationshipName": "questionnaire"
+        },
+        {
             "relationshipType": "many-to-many",
             "relationshipName": "selfassessment",
             "otherEntityName": "selfAssessment",
@@ -24,7 +31,7 @@
             ]
         },
         {
-            "fieldName": "scope",
+            "fieldName": "purpose",
             "fieldType": "Q_Scope",
             "fieldValues": "ID_THREAT_AGENT,SELFASSESSMENT",
             "fieldValidateRules": [

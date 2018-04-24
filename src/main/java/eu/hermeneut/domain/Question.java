@@ -8,12 +8,13 @@ import javax.persistence.*;
 import javax.validation.constraints.*;
 
 import org.springframework.data.elasticsearch.annotations.Document;
-
 import java.io.Serializable;
 import java.time.ZonedDateTime;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.Objects;
+
+import eu.hermeneut.domain.enumeration.AnswerType;
 
 /**
  * A Question.
@@ -41,12 +42,21 @@ public class Question implements Serializable {
     @Column(name = "modified")
     private ZonedDateTime modified;
 
-    @OneToMany(mappedBy = "question", fetch = FetchType.EAGER)
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    @Column(name = "jhi_type", nullable = false)
+    private AnswerType type;
+
+    @OneToMany(mappedBy = "question")
+    @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Answer> answers = new HashSet<>();
 
-    @ManyToOne
+    @OneToOne(mappedBy = "question")
     @JsonIgnore
+    private MyAnswer myanswer;
+
+    @ManyToOne
     private Questionnaire questionnaire;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
@@ -97,6 +107,19 @@ public class Question implements Serializable {
         this.modified = modified;
     }
 
+    public AnswerType getType() {
+        return type;
+    }
+
+    public Question type(AnswerType type) {
+        this.type = type;
+        return this;
+    }
+
+    public void setType(AnswerType type) {
+        this.type = type;
+    }
+
     public Set<Answer> getAnswers() {
         return answers;
     }
@@ -120,6 +143,19 @@ public class Question implements Serializable {
 
     public void setAnswers(Set<Answer> answers) {
         this.answers = answers;
+    }
+
+    public MyAnswer getMyanswer() {
+        return myanswer;
+    }
+
+    public Question myanswer(MyAnswer myAnswer) {
+        this.myanswer = myAnswer;
+        return this;
+    }
+
+    public void setMyanswer(MyAnswer myAnswer) {
+        this.myanswer = myAnswer;
     }
 
     public Questionnaire getQuestionnaire() {
@@ -163,6 +199,7 @@ public class Question implements Serializable {
             ", name='" + getName() + "'" +
             ", created='" + getCreated() + "'" +
             ", modified='" + getModified() + "'" +
+            ", type='" + getType() + "'" +
             "}";
     }
 }

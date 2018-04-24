@@ -16,6 +16,10 @@
         <dd>
             <span>{{question.modified | date:'medium'}}</span>
         </dd>
+        <dt><span jhiTranslate="hermeneutApp.question.type">Type</span></dt>
+        <dd>
+            <span jhiTranslate="{{'hermeneutApp.AnswerType.' + question.type}}">{{question.type}}</span>
+        </dd>
         <dt><span jhiTranslate="hermeneutApp.question.questionnaire">Questionnaire</span></dt>
         <dd>
             <div *ngIf="question.questionnaire">

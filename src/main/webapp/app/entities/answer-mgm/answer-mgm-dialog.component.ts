@@ -11,6 +11,7 @@ import { AnswerMgmPopupService } from './answer-mgm-popup.service';
 import { AnswerMgmService } from './answer-mgm.service';
 import { ThreatAgentMgm, ThreatAgentMgmService } from '../threat-agent-mgm';
 import { AttackStrategyMgm, AttackStrategyMgmService } from '../attack-strategy-mgm';
+import { MyAnswerMgm, MyAnswerMgmService } from '../my-answer-mgm';
 import { QuestionMgm, QuestionMgmService } from '../question-mgm';
 
 @Component({
@@ -26,6 +27,8 @@ export class AnswerMgmDialogComponent implements OnInit {
 
     attackstrategies: AttackStrategyMgm[];
 
+    myanswers: MyAnswerMgm[];
+
     questions: QuestionMgm[];
 
     constructor(
@@ -34,6 +37,7 @@ export class AnswerMgmDialogComponent implements OnInit {
         private answerService: AnswerMgmService,
         private threatAgentService: ThreatAgentMgmService,
         private attackStrategyService: AttackStrategyMgmService,
+        private myAnswerService: MyAnswerMgmService,
         private questionService: QuestionMgmService,
         private eventManager: JhiEventManager
     ) {
@@ -45,6 +49,8 @@ export class AnswerMgmDialogComponent implements OnInit {
             .subscribe((res: HttpResponse<ThreatAgentMgm[]>) => { this.threatagents = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
         this.attackStrategyService.query()
             .subscribe((res: HttpResponse<AttackStrategyMgm[]>) => { this.attackstrategies = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
+        this.myAnswerService.query()
+            .subscribe((res: HttpResponse<MyAnswerMgm[]>) => { this.myanswers = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
         this.questionService.query()
             .subscribe((res: HttpResponse<QuestionMgm[]>) => { this.questions = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
     }
@@ -88,6 +94,10 @@ export class AnswerMgmDialogComponent implements OnInit {
     }
 
     trackAttackStrategyById(index: number, item: AttackStrategyMgm) {
+        return item.id;
+    }
+
+    trackMyAnswerById(index: number, item: MyAnswerMgm) {
         return item.id;
     }
 
