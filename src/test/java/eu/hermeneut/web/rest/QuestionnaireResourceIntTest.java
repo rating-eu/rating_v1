@@ -36,7 +36,7 @@ import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-import eu.hermeneut.domain.enumeration.Q_Scope;
+import eu.hermeneut.domain.enumeration.QuestionnairePurpose;
 /**
  * Test class for the QuestionnaireResource REST controller.
  *
@@ -49,8 +49,8 @@ public class QuestionnaireResourceIntTest {
     private static final String DEFAULT_NAME = "AAAAAAAAAA";
     private static final String UPDATED_NAME = "BBBBBBBBBB";
 
-    private static final Q_Scope DEFAULT_PURPOSE = Q_Scope.ID_THREAT_AGENT;
-    private static final Q_Scope UPDATED_PURPOSE = Q_Scope.SELFASSESSMENT;
+    private static final QuestionnairePurpose DEFAULT_PURPOSE = QuestionnairePurpose.ID_THREAT_AGENT;
+    private static final QuestionnairePurpose UPDATED_PURPOSE = QuestionnairePurpose.SELFASSESSMENT;
 
     private static final ZonedDateTime DEFAULT_CREATED = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
     private static final ZonedDateTime UPDATED_CREATED = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);

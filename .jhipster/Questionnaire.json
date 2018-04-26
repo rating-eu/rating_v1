@@ -32,7 +32,7 @@
         },
         {
             "fieldName": "purpose",
-            "fieldType": "Q_Scope",
+            "fieldType": "QuestionnairePurpose",
             "fieldValues": "ID_THREAT_AGENT,SELFASSESSMENT",
             "fieldValidateRules": [
                 "required"

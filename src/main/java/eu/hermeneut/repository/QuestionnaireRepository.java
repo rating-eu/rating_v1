@@ -1,7 +1,7 @@
 package eu.hermeneut.repository;
 
 import eu.hermeneut.domain.Questionnaire;
-import eu.hermeneut.domain.enumeration.Q_Scope;
+import eu.hermeneut.domain.enumeration.QuestionnairePurpose;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
@@ -17,5 +17,5 @@ import java.util.List;
 @Repository
 public interface QuestionnaireRepository extends JpaRepository<Questionnaire, Long> {
     @Query("SELECT questionnaire FROM Questionnaire questionnaire WHERE questionnaire.purpose = :purpose")
-    List<Questionnaire> findAllByScope(@Param("purpose") Q_Scope purpose);
+    List<Questionnaire> findAllByScope(@Param("purpose") QuestionnairePurpose purpose);
 }

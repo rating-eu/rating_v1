@@ -1,6 +1,6 @@
 package eu.hermeneut.service.impl;
 
-import eu.hermeneut.domain.enumeration.Q_Scope;
+import eu.hermeneut.domain.enumeration.QuestionnairePurpose;
 import eu.hermeneut.service.QuestionnaireService;
 import eu.hermeneut.domain.Questionnaire;
 import eu.hermeneut.repository.QuestionnaireRepository;
@@ -40,9 +40,9 @@ public class QuestionnaireServiceImpl implements QuestionnaireService {
      */
     @Override
     @Transactional(readOnly = true)
-    public List<Questionnaire> findAllByScope(Q_Scope scope) {
-        log.debug("Request to get all Questionnaires with a given scope");
-        return questionnaireRepository.findAllByScope(scope);
+    public List<Questionnaire> findAllByPurpose(QuestionnairePurpose purpose) {
+        log.debug("Request to get all Questionnaires with a given purpose");
+        return questionnaireRepository.findAllByScope(purpose);
     }
 
     /**

@@ -2,6 +2,7 @@ package eu.hermeneut.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import eu.hermeneut.domain.Questionnaire;
+import eu.hermeneut.domain.enumeration.QuestionnairePurpose;
 import eu.hermeneut.service.QuestionnaireService;
 import eu.hermeneut.web.rest.errors.BadRequestAlertException;
 import eu.hermeneut.web.rest.util.HeaderUtil;
@@ -14,13 +15,9 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
-import eu.hermeneut.domain.enumeration.Q_Scope;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.StreamSupport;
-
-import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
  * REST controller for managing Questionnaire.
@@ -85,15 +82,15 @@ public class QuestionnaireResource {
      *
      * @return the ResponseEntity with status 200 (OK) and the list of questionnaires in body
      */
-    @GetMapping("/questionnaires/by/scope/{scope}")
+    @GetMapping("/questionnaires/by/purpose/{purpose}")
     @Timed
-    public List<Questionnaire> getAllQuestionnairesByScope(@PathVariable String scope) {
+    public List<Questionnaire> getAllQuestionnairesByPurpose(@PathVariable String purpose) {
         log.debug("REST request to get all Questionnaires by scope");
 
         List<Questionnaire> questionnaires = new ArrayList<>();
         try {
-            Q_Scope q_scope = Q_Scope.valueOf(scope);
-            questionnaires = this.questionnaireService.findAllByScope(q_scope);
+            QuestionnairePurpose questionnairePurpose = QuestionnairePurpose.valueOf(purpose);
+            questionnaires = this.questionnaireService.findAllByPurpose(questionnairePurpose);
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
         }

@@ -1,8 +1,8 @@
 package eu.hermeneut.domain.enumeration;
 
 /**
- * The Q_Scope enumeration.
+ * The QuestionnairePurpose enumeration.
  */
-public enum Q_Scope {
+public enum QuestionnairePurpose {
     ID_THREAT_AGENT, SELFASSESSMENT
 }

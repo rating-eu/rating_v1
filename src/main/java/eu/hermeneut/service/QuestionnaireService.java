@@ -1,7 +1,7 @@
 package eu.hermeneut.service;
 
 import eu.hermeneut.domain.Questionnaire;
-import eu.hermeneut.domain.enumeration.Q_Scope;
+import eu.hermeneut.domain.enumeration.QuestionnairePurpose;
 
 import java.util.List;
 
@@ -35,7 +35,7 @@ public interface QuestionnaireService {
      *
      * @return the list of entities
      */
-    List<Questionnaire> findAllByScope(Q_Scope scope);
+    List<Questionnaire> findAllByPurpose(QuestionnairePurpose scope);
 
     List<Questionnaire> findAllWhereMyanswerIsNull();
 

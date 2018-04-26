@@ -1,6 +1,7 @@
 package eu.hermeneut.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import eu.hermeneut.domain.enumeration.QuestionnairePurpose;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -13,8 +14,6 @@ import java.time.ZonedDateTime;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.Objects;
-
-import eu.hermeneut.domain.enumeration.Q_Scope;
 
 /**
  * A Questionnaire.
@@ -39,7 +38,7 @@ public class Questionnaire implements Serializable {
     @NotNull
     @Enumerated(EnumType.STRING)
     @Column(name = "purpose", nullable = false)
-    private Q_Scope purpose;
+    private QuestionnairePurpose purpose;
 
     @Column(name = "created")
     private ZonedDateTime created;
@@ -83,16 +82,16 @@ public class Questionnaire implements Serializable {
         this.name = name;
     }
 
-    public Q_Scope getPurpose() {
+    public QuestionnairePurpose getPurpose() {
         return purpose;
     }
 
-    public Questionnaire purpose(Q_Scope purpose) {
+    public Questionnaire purpose(QuestionnairePurpose purpose) {
         this.purpose = purpose;
         return this;
     }
 
-    public void setPurpose(Q_Scope purpose) {
+    public void setPurpose(QuestionnairePurpose purpose) {
         this.purpose = purpose;
     }
 

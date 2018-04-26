@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {QuestionnaireScope} from '../models/QuestionnaireScope';
+import {QuestionnairePurpose} from '../models/QuestionnairePurpose';
 import {QuestionnairesService} from '../questionnaires.service';
 import {Questionnaire} from '../models/Questionnaire';
 
@@ -16,11 +16,11 @@ export class QuestionnairesComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.getAllQuestionnairesByScope(QuestionnaireScope.ID_THREAT_AGENT);
+        this.getAllQuestionnairesByScope(QuestionnairePurpose.ID_THREAT_AGENT);
     }
 
-    getAllQuestionnairesByScope(scope: QuestionnaireScope) {
-        this.questionnairesService.findAllByScope(scope).subscribe(
+    getAllQuestionnairesByScope(scope: QuestionnairePurpose) {
+        this.questionnairesService.findAllByPurpose(scope).subscribe(
             (response) => {
                 this.questionnaires = response;
 

@@ -1,3 +1,3 @@
-export enum QuestionnaireScope {
+export enum QuestionnairePurpose {
     ID_THREAT_AGENT, SELFASSESSMENT
 }

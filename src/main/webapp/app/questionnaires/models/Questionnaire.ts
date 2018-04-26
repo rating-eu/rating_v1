@@ -1,11 +1,11 @@
-import {QuestionnaireScope} from './QuestionnaireScope';
+import {QuestionnairePurpose} from './QuestionnairePurpose';
 import {DateTime} from 'date-time-js';
 import {BaseEntity} from "../../shared";
 
 export class Questionnaire {
     public id?: number;
     public name?: string;
-    public scope?: QuestionnaireScope;
+    public scope?: QuestionnairePurpose;
     public created?: any;
     public modified?: any;
     public questions?: BaseEntity[];
