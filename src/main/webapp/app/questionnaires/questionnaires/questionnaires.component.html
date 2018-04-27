@@ -19,7 +19,7 @@
         <td>{{questionnaire.modified}}</td>
         <td>
             <button type="button" class="btn btn-success" (click)="setCurrentQuestionnaire(questionnaire)"
-                    routerLink='/questionnaire'>Answer
+                    [routerLink]="['./questionnaire']">Answer
             </button>
         </td>
     </tr>
