@@ -26,8 +26,8 @@
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="hermeneutApp.questionnaire.purpose" for="field_purpose">Purpose</label>
             <select class="form-control" name="purpose" [(ngModel)]="questionnaire.purpose" id="field_purpose"  required>
-                <option value="ID_THREAT_AGENT">{{'hermeneutApp.Q_Scope.ID_THREAT_AGENT' | translate}}</option>
-                <option value="SELFASSESSMENT">{{'hermeneutApp.Q_Scope.SELFASSESSMENT' | translate}}</option>
+                <option value="ID_THREAT_AGENT">{{'hermeneutApp.QuestionnairePurpose.ID_THREAT_AGENT' | translate}}</option>
+                <option value="SELFASSESSMENT">{{'hermeneutApp.QuestionnairePurpose.SELFASSESSMENT' | translate}}</option>
             </select>
             <div [hidden]="!(editForm.controls.purpose?.dirty && editForm.controls.purpose?.invalid)">
                 <small class="form-text text-danger"

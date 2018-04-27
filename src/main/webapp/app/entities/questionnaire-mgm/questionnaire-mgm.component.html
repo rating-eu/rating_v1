@@ -41,7 +41,7 @@
             <tr *ngFor="let questionnaire of questionnaires ;trackBy: trackId">
                 <td><a [routerLink]="['../questionnaire-mgm', questionnaire.id ]">{{questionnaire.id}}</a></td>
                 <td>{{questionnaire.name}}</td>
-                <td jhiTranslate="{{'hermeneutApp.Q_Scope.' + questionnaire.purpose}}">{{questionnaire.purpose}}</td>
+                <td jhiTranslate="{{'hermeneutApp.QuestionnairePurpose.' + questionnaire.purpose}}">{{questionnaire.purpose}}</td>
                 <td>{{questionnaire.created | date:'medium'}}</td>
                 <td>{{questionnaire.modified | date:'medium'}}</td>
                 <td class="text-right">

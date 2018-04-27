@@ -1,6 +1,6 @@
 import { BaseEntity } from './../../shared';
 
-export const enum Q_Scope {
+export const enum QuestionnairePurpose {
     'ID_THREAT_AGENT',
     'SELFASSESSMENT'
 }
@@ -9,7 +9,7 @@ export class QuestionnaireMgm implements BaseEntity {
     constructor(
         public id?: number,
         public name?: string,
-        public purpose?: Q_Scope,
+        public purpose?: QuestionnairePurpose,
         public created?: any,
         public modified?: any,
         public questions?: BaseEntity[],

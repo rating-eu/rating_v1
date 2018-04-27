@@ -64,23 +64,23 @@ entity SelfAssessment{
     Modified ZonedDateTime
     }
 entity Container{
-    Name String required, 
+    Name String required,
     Description String maxlength(2000),
     ContainerType ContainerType,
-    Created ZonedDateTime    
+    Created ZonedDateTime
 }
 entity AssetCategory{
     Name String required,
     Description String maxlength(2000),
     Type AssetType required,
-    
+
 }
 entity Asset{
     Name String required,
     Description String maxlength(2000),
     Created ZonedDateTime,
-    Modified ZonedDateTime    
-    
+    Modified ZonedDateTime
+
 }
 
 entity ThreatAgent{
@@ -119,7 +119,7 @@ enum Phase{
     RECONNAISSANCE, WEAPONIZATION, DELIVERY, EXPLOITATION, INSTALLATION, COMMANDCONTROL
 }
 enum Likelihood{
-    LOW, MEDIUM, HIGH, MEDIUM_HIGH, LOW_MEDIUM 
+    LOW, MEDIUM, HIGH, MEDIUM_HIGH, LOW_MEDIUM
 }
 enum ResourceLevel{
     LOW, MEDIUM, HIGH
@@ -128,7 +128,7 @@ entity Mitigation{
     Name String,
     Description String maxlength(2000),
     Created ZonedDateTime,
-    Modified ZonedDateTime    
+    Modified ZonedDateTime
 }
 
 enum AS_Frequency{
@@ -137,9 +137,9 @@ enum AS_Frequency{
 
 entity Questionnaire{
     Name String required,
-    Purpose Q_Scope required,
+    Purpose QuestionnairePurpose required,
     Created ZonedDateTime,
-    Modified ZonedDateTime    
+    Modified ZonedDateTime
 }
 
 entity Question{
@@ -153,17 +153,17 @@ entity Answer{
     Type AnswerType required,
     Name String,
     Created ZonedDateTime,
-    Modified ZonedDateTime    
+    Modified ZonedDateTime
 
 }
 entity MyAnswer{
-    Mycheck String,    
+    Mycheck String,
 
 }
 enum AnswerType{
     YESNO, RANGE5, PERC5, CUSTOM
 }
-enum Q_Scope{
+enum QuestionnairePurpose{
     ID_THREAT_AGENT, SELFASSESSMENT
 }
 entity ExternalAudit{
@@ -187,7 +187,7 @@ relationship ManyToMany {
     SelfAssessment{externalaudit(name)} to ExternalAudit{selfassessment(name)},
     SelfAssessment{questionnaire(name)} to Questionnaire{selfassessment(name)}
 
-    
+
 }
 
 relationship OneToMany{
