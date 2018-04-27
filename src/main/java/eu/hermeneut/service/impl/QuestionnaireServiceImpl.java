@@ -42,7 +42,7 @@ public class QuestionnaireServiceImpl implements QuestionnaireService {
     @Transactional(readOnly = true)
     public List<Questionnaire> findAllByPurpose(QuestionnairePurpose purpose) {
         log.debug("Request to get all Questionnaires with a given purpose");
-        return questionnaireRepository.findAllByScope(purpose);
+        return questionnaireRepository.findAllByPurpose(purpose);
     }
 
     /**

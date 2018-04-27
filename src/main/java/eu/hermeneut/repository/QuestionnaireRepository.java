@@ -17,5 +17,5 @@ import java.util.List;
 @Repository
 public interface QuestionnaireRepository extends JpaRepository<Questionnaire, Long> {
     @Query("SELECT questionnaire FROM Questionnaire questionnaire WHERE questionnaire.purpose = :purpose")
-    List<Questionnaire> findAllByScope(@Param("purpose") QuestionnairePurpose purpose);
+    List<Questionnaire> findAllByPurpose(@Param("purpose") QuestionnairePurpose purpose);
 }
