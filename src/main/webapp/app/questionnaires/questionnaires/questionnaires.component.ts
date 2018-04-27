@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
-import {QuestionnairePurpose} from '../models/QuestionnairePurpose';
 import {QuestionnairesService} from '../questionnaires.service';
-import {Questionnaire} from '../models/Questionnaire';
+import {QuestionnairePurpose} from '../../entities/questionnaire-mgm';
+import {QuestionnaireMgm} from '../../entities/questionnaire-mgm';
 
 @Component({
     selector: 'jhi-questionnaires',
@@ -10,17 +10,17 @@ import {Questionnaire} from '../models/Questionnaire';
 })
 export class QuestionnairesComponent implements OnInit {
 
-    private questionnaires: Questionnaire[];
+    private questionnaires: QuestionnaireMgm[];
 
     constructor(private questionnairesService: QuestionnairesService) {
     }
 
     ngOnInit() {
-        this.getAllQuestionnairesByScope(QuestionnairePurpose.ID_THREAT_AGENT);
+        this.getAllQuestionnairesByPurpose(QuestionnairePurpose.ID_THREAT_AGENT);
     }
 
-    getAllQuestionnairesByScope(scope: QuestionnairePurpose) {
-        this.questionnairesService.findAllByPurpose(scope).subscribe(
+    getAllQuestionnairesByPurpose(purpose: QuestionnairePurpose) {
+        this.questionnairesService.findAllByPurpose(purpose).subscribe(
             (response) => {
                 this.questionnaires = response;
 
@@ -36,7 +36,7 @@ export class QuestionnairesComponent implements OnInit {
         );
     }
 
-    setCurrentQuestionnaire(questionnaire: Questionnaire) {
+    setCurrentQuestionnaire(questionnaire: QuestionnaireMgm) {
         this.questionnairesService.setCurrentQuestionnaire(questionnaire);
     }
 }

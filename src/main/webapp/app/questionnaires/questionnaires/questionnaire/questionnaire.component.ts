@@ -1,7 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {Questionnaire} from '../../models/Questionnaire';
 import {QuestionnairesService} from '../../questionnaires.service';
-import {Question} from '../../models/Question';
+import {QuestionnaireMgm} from '../../../entities/questionnaire-mgm';
 
 @Component({
     selector: 'jhi-questionnaire',
@@ -10,7 +9,7 @@ import {Question} from '../../models/Question';
 })
 export class QuestionnaireComponent implements OnInit {
 
-    private questionnaire: Questionnaire;
+    private questionnaire: QuestionnaireMgm;
 
     constructor(private questionnairesService: QuestionnairesService) {
     }

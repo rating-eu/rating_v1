@@ -1,8 +1,8 @@
 import { BaseEntity } from './../../shared';
 
-export const enum QuestionnairePurpose {
-    'ID_THREAT_AGENT',
-    'SELFASSESSMENT'
+export enum QuestionnairePurpose {
+    ID_THREAT_AGENT = <any>'ID_THREAT_AGENT',
+    SELFASSESSMENT = <any>'SELFASSESSMENT'
 }
 
 export class QuestionnaireMgm implements BaseEntity {
