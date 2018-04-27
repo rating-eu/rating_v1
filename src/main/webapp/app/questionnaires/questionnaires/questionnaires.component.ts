@@ -20,7 +20,7 @@ export class QuestionnairesComponent implements OnInit {
     }
 
     getAllQuestionnairesByPurpose(purpose: QuestionnairePurpose) {
-        this.questionnairesService.findAllByPurpose(purpose).subscribe(
+        this.questionnairesService.findAllQuestionnairesByPurpose(purpose).subscribe(
             (response) => {
                 this.questionnaires = response;
 

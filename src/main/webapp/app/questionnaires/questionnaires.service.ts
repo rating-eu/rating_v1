@@ -6,19 +6,21 @@ import {JhiDateUtils} from 'ng-jhipster';
 import {HttpClient, HttpErrorResponse, HttpResponse} from '@angular/common/http';
 import {SERVER_API_URL} from '../app.constants';
 import {QuestionnaireMgm, QuestionnairePurpose} from '../entities/questionnaire-mgm';
+import {QuestionMgm} from '../entities/question-mgm';
 
 @Injectable()
 export class QuestionnairesService {
 
-    private resourceUrl = SERVER_API_URL + 'api/questionnaires/by/purpose/{purpose}';
+    private questionnairesByPurposeAPIUrl = SERVER_API_URL + 'api/questionnaires/by/purpose/{purpose}';
+    private questionsByQuestionnaireIDAPIUrl = SERVER_API_URL + 'api/questions/by/questionnaire/{questionnaireID}';
 
     private currentQuestionnaire: QuestionnaireMgm;
 
     constructor(private http: HttpClient, private dateUtils: JhiDateUtils) {
     }
 
-    findAllByPurpose(purpose: QuestionnairePurpose): Observable<QuestionnaireMgm[]> {
-        return this.http.get<QuestionnaireMgm[]>(this.resourceUrl.replace('{purpose}', String(purpose)));
+    findAllQuestionnairesByPurpose(purpose: QuestionnairePurpose): Observable<QuestionnaireMgm[]> {
+        return this.http.get<QuestionnaireMgm[]>(this.questionnairesByPurposeAPIUrl.replace('{purpose}', String(purpose)));
     }
 
     setCurrentQuestionnaire(questionnaire: QuestionnaireMgm) {
@@ -29,5 +31,9 @@ export class QuestionnairesService {
     getCurrentQuestionnaire(): QuestionnaireMgm {
         console.log('Get Current Questionnaire: ' + JSON.stringify(this.currentQuestionnaire));
         return this.currentQuestionnaire;
+    }
+
+    findAllQuestionsByQuestionnaire(questionnaire: QuestionnaireMgm): Observable<QuestionMgm[]> {
+        return this.http.get<QuestionnaireMgm[]>(this.questionsByQuestionnaireIDAPIUrl.replace('{questionnaireID}', String(questionnaire.id)));
     }
 }

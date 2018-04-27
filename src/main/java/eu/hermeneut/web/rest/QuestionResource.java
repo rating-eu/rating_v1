@@ -2,12 +2,15 @@ package eu.hermeneut.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import eu.hermeneut.domain.Question;
+import eu.hermeneut.domain.Questionnaire;
 import eu.hermeneut.service.QuestionService;
+import eu.hermeneut.service.QuestionnaireService;
 import eu.hermeneut.web.rest.errors.BadRequestAlertException;
 import eu.hermeneut.web.rest.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,6 +36,9 @@ public class QuestionResource {
     private static final String ENTITY_NAME = "question";
 
     private final QuestionService questionService;
+
+    @Autowired
+    private QuestionnaireService questionnaireService;
 
     public QuestionResource(QuestionService questionService) {
         this.questionService = questionService;
@@ -95,7 +101,7 @@ public class QuestionResource {
         }
         log.debug("REST request to get all Questions");
         return questionService.findAll();
-        }
+    }
 
     /**
      * GET  /questions/:id : get the "id" question.
@@ -137,6 +143,20 @@ public class QuestionResource {
     public List<Question> searchQuestions(@RequestParam String query) {
         log.debug("REST request to search Questions for query {}", query);
         return questionService.search(query);
+    }
+
+    /**
+     * GET  /questions : get all the questions.
+     *
+     * @param questionnaireID the id of the questionnaire to retrieve the questions
+     * @return the ResponseEntity with status 200 (OK) and the list of questions in body
+     */
+    @GetMapping("/questions/by/questionnaire/{questionnaireID}")
+    @Timed
+    public List<Question> getAllQuestionsByQuestionnaireID(@PathVariable Long questionnaireID) {
+        Questionnaire questionnaire = this.questionnaireService.findOne(questionnaireID);
+
+        return this.questionService.findAllByQuestionnaire(questionnaire);
     }
 
 }
