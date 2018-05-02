@@ -118,8 +118,16 @@ enum Level{
     HUMAN, IT, PHYSICAL
 }
 
+entity LevelWrapper{
+	level Level
+}
+
 enum Phase{
     RECONNAISSANCE, WEAPONIZATION, DELIVERY, EXPLOITATION, INSTALLATION, COMMANDCONTROL
+}
+
+entity PhaseWrapper{
+	phase Phase
 }
 
 enum Likelihood{
@@ -207,8 +215,8 @@ relationship OneToMany{
     Questionnaire{questions(name)} to Question{questionnaire(name)},
     Question{answers(name)} to Answer{question(name)},
     CompanyProfile{departments(name)} to Department{companyprofile(name)},
-    Question{levels} to Level,
-    Question{phases} to Phase
+    Question{levels} to LevelWrapper
+    Question{phases} to PhaseWrapper
 }
 
 relationship OneToOne{
