@@ -153,14 +153,16 @@ entity Questionnaire{
 entity Question{
     Name String required,
     Created ZonedDateTime,
-    Modified ZonedDateTime
+    Modified ZonedDateTime,
+    Order Integer
 }
 
 entity Answer{
     Type AnswerType required,
     Name String,
     Created ZonedDateTime,
-    Modified ZonedDateTime
+    Modified ZonedDateTime,
+    Order Integer
 }
 
 entity MyAnswer{
