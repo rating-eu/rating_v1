@@ -1,5 +1,6 @@
 package eu.hermeneut.service.impl;
 
+import eu.hermeneut.domain.Questionnaire;
 import eu.hermeneut.service.QuestionService;
 import eu.hermeneut.domain.Question;
 import eu.hermeneut.repository.QuestionRepository;
@@ -56,7 +57,22 @@ public class QuestionServiceImpl implements QuestionService {
     @Transactional(readOnly = true)
     public List<Question> findAll() {
         log.debug("Request to get all Questions");
-        return questionRepository.findAllWithEagerRelationships();
+        return questionRepository.findAll();
+    }
+
+
+    /**
+     * get all the questions where Myanswer is null.
+     *
+     * @return the list of entities
+     */
+    @Transactional(readOnly = true)
+    public List<Question> findAllWhereMyanswerIsNull() {
+        log.debug("Request to get all questions where Myanswer is null");
+        return StreamSupport
+            .stream(questionRepository.findAll().spliterator(), false)
+            .filter(question -> question.getMyanswer() == null)
+            .collect(Collectors.toList());
     }
 
     /**
@@ -69,7 +85,7 @@ public class QuestionServiceImpl implements QuestionService {
     @Transactional(readOnly = true)
     public Question findOne(Long id) {
         log.debug("Request to get Question : {}", id);
-        return questionRepository.findOneWithEagerRelationships(id);
+        return questionRepository.findOne(id);
     }
 
     /**
@@ -97,5 +113,10 @@ public class QuestionServiceImpl implements QuestionService {
         return StreamSupport
             .stream(questionSearchRepository.search(queryStringQuery(query)).spliterator(), false)
             .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Question> findAllByQuestionnaire(Questionnaire questionnaire) {
+        return this.questionRepository.findAllByQuestionnaire(questionnaire);
     }
 }

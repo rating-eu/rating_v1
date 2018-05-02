@@ -1,0 +1,9 @@
+{
+    "hermeneutApp": {
+        "QuestionnairePurpose" : {
+            "null": "",
+            "ID_THREAT_AGENT": "ID_THREAT_AGENT",
+            "SELFASSESSMENT": "SELFASSESSMENT"
+        }
+    }
+}

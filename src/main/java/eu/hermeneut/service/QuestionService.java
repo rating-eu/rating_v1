@@ -1,6 +1,8 @@
 package eu.hermeneut.service;
 
 import eu.hermeneut.domain.Question;
+import eu.hermeneut.domain.Questionnaire;
+
 import java.util.List;
 
 /**
@@ -22,6 +24,12 @@ public interface QuestionService {
      * @return the list of entities
      */
     List<Question> findAll();
+    /**
+     * Get all the QuestionDTO where Myanswer is null.
+     *
+     * @return the list of entities
+     */
+    List<Question> findAllWhereMyanswerIsNull();
 
     /**
      * Get the "id" question.
@@ -42,8 +50,15 @@ public interface QuestionService {
      * Search for the question corresponding to the query.
      *
      * @param query the query of the search
-     * 
+     *
      * @return the list of entities
      */
     List<Question> search(String query);
+
+    /**
+     * Get all the questions by questionnaire.
+     *
+     * @return the list of entities
+     */
+    List<Question> findAllByQuestionnaire(Questionnaire questionnaire);
 }

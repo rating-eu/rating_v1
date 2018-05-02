@@ -22,6 +22,8 @@
                 "questionMgm": "Question",
                 "answerMgm": "Answer",
                 "externalAuditMgm": "External Audit",
+                "departmentMgm": "Department",
+                "myAnswerMgm": "My Answer",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {

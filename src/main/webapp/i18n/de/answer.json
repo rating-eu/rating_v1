@@ -17,12 +17,12 @@
             "detail": {
                 "title": "Answer"
             },
-            "type": "Type",
             "name": "Name",
             "created": "Created",
             "modified": "Modified",
             "threatAgents": "Threat Agents",
             "attacks": "Attacks",
+            "myanswer": "Myanswer",
             "question": "Question"
         }
     }

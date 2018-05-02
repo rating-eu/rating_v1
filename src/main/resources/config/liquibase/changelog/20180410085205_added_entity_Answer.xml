@@ -21,10 +21,6 @@
             <column name="id" type="bigint" autoIncrement="${autoIncrement}">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="jhi_type" type="varchar(255)">
-                <constraints nullable="false" />
-            </column>
-
             <column name="name" type="varchar(255)">
                 <constraints nullable="true" />
             </column>

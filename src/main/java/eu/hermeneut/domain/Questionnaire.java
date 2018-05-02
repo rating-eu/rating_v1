@@ -1,5 +1,7 @@
 package eu.hermeneut.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import eu.hermeneut.domain.enumeration.QuestionnairePurpose;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -7,14 +9,11 @@ import javax.persistence.*;
 import javax.validation.constraints.*;
 
 import org.springframework.data.elasticsearch.annotations.Document;
-
 import java.io.Serializable;
 import java.time.ZonedDateTime;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.Objects;
-
-import eu.hermeneut.domain.enumeration.Q_Scope;
 
 /**
  * A Questionnaire.
@@ -38,8 +37,8 @@ public class Questionnaire implements Serializable {
 
     @NotNull
     @Enumerated(EnumType.STRING)
-    @Column(name = "jhi_scope", nullable = false)
-    private Q_Scope scope;
+    @Column(name = "purpose", nullable = false)
+    private QuestionnairePurpose purpose;
 
     @Column(name = "created")
     private ZonedDateTime created;
@@ -47,12 +46,17 @@ public class Questionnaire implements Serializable {
     @Column(name = "modified")
     private ZonedDateTime modified;
 
-
     @OneToMany(mappedBy = "questionnaire")
+    @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Question> questions = new HashSet<>();
 
+    @OneToOne(mappedBy = "questionnaire")
+    @JsonIgnore
+    private MyAnswer myanswer;
+
     @ManyToMany(mappedBy = "questionnaires")
+    @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<SelfAssessment> selfassessments = new HashSet<>();
 
@@ -78,17 +82,17 @@ public class Questionnaire implements Serializable {
         this.name = name;
     }
 
-    public Q_Scope getScope() {
-        return scope;
+    public QuestionnairePurpose getPurpose() {
+        return purpose;
     }
 
-    public Questionnaire scope(Q_Scope scope) {
-        this.scope = scope;
+    public Questionnaire purpose(QuestionnairePurpose purpose) {
+        this.purpose = purpose;
         return this;
     }
 
-    public void setScope(Q_Scope scope) {
-        this.scope = scope;
+    public void setPurpose(QuestionnairePurpose purpose) {
+        this.purpose = purpose;
     }
 
     public ZonedDateTime getCreated() {
@@ -142,6 +146,19 @@ public class Questionnaire implements Serializable {
         this.questions = questions;
     }
 
+    public MyAnswer getMyanswer() {
+        return myanswer;
+    }
+
+    public Questionnaire myanswer(MyAnswer myAnswer) {
+        this.myanswer = myAnswer;
+        return this;
+    }
+
+    public void setMyanswer(MyAnswer myAnswer) {
+        this.myanswer = myAnswer;
+    }
+
     public Set<SelfAssessment> getSelfassessments() {
         return selfassessments;
     }
@@ -193,10 +210,9 @@ public class Questionnaire implements Serializable {
         return "Questionnaire{" +
             "id=" + getId() +
             ", name='" + getName() + "'" +
-            ", scope='" + getScope() + "'" +
+            ", purpose='" + getPurpose() + "'" +
             ", created='" + getCreated() + "'" +
             ", modified='" + getModified() + "'" +
-            ", questions='" + getQuestions() + "'" +
             "}";
     }
 }

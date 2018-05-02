@@ -9,6 +9,7 @@ import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
 import { QuestionMgm } from './question-mgm.model';
 import { QuestionMgmPopupService } from './question-mgm-popup.service';
 import { QuestionMgmService } from './question-mgm.service';
+import { MyAnswerMgm, MyAnswerMgmService } from '../my-answer-mgm';
 import { QuestionnaireMgm, QuestionnaireMgmService } from '../questionnaire-mgm';
 
 @Component({
@@ -20,12 +21,15 @@ export class QuestionMgmDialogComponent implements OnInit {
     question: QuestionMgm;
     isSaving: boolean;
 
+    myanswers: MyAnswerMgm[];
+
     questionnaires: QuestionnaireMgm[];
 
     constructor(
         public activeModal: NgbActiveModal,
         private jhiAlertService: JhiAlertService,
         private questionService: QuestionMgmService,
+        private myAnswerService: MyAnswerMgmService,
         private questionnaireService: QuestionnaireMgmService,
         private eventManager: JhiEventManager
     ) {
@@ -33,6 +37,8 @@ export class QuestionMgmDialogComponent implements OnInit {
 
     ngOnInit() {
         this.isSaving = false;
+        this.myAnswerService.query()
+            .subscribe((res: HttpResponse<MyAnswerMgm[]>) => { this.myanswers = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
         this.questionnaireService.query()
             .subscribe((res: HttpResponse<QuestionnaireMgm[]>) => { this.questionnaires = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
     }
@@ -69,6 +75,10 @@ export class QuestionMgmDialogComponent implements OnInit {
 
     private onError(error: any) {
         this.jhiAlertService.error(error.message, null, null);
+    }
+
+    trackMyAnswerById(index: number, item: MyAnswerMgm) {
+        return item.id;
     }
 
     trackQuestionnaireById(index: number, item: QuestionnaireMgm) {

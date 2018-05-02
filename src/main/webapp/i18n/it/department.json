@@ -1,0 +1,29 @@
+
+{
+    "hermeneutApp": {
+        "department" : {
+            "home": {
+                "title": "Departments",
+                "createLabel": "Genera un nuovo Department",
+                "createOrEditLabel": "Genera o modifica un Department",
+                "search": "Cerca Department"
+            },
+            "created": "&Egrave; stato generato un nuovo Department con identificatore {{ param }}",
+            "updated": "&Egrave; stato aggiornato Department identificato da {{ param }}",
+            "deleted": "&Egrave; stato eliminato Department con identificatore {{ param }}",
+            "delete": {
+                "question": "Sei sicuro di volere eliminare Department {{ id }}?"
+            },
+            "detail": {
+                "title": "Department"
+            },
+            "name": "Name",
+            "description": "Description",
+            "created": "Created",
+            "modified": "Modified",
+            "user": "User",
+            "companyprofile": "Companyprofile",
+            "selfassessment": "Selfassessment"
+        }
+    }
+}

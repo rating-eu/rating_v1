@@ -2,25 +2,38 @@ import {Injectable} from '@angular/core';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import {Observable} from 'rxjs/Observable';
-import {Questionnaire} from './models/Questionnaire';
-import {QuestionnaireScope} from './models/QuestionnaireScope';
 import {JhiDateUtils} from 'ng-jhipster';
 import {HttpClient, HttpErrorResponse, HttpResponse} from '@angular/common/http';
 import {SERVER_API_URL} from '../app.constants';
+import {QuestionnaireMgm, QuestionnairePurpose} from '../entities/questionnaire-mgm';
+import {QuestionMgm} from '../entities/question-mgm';
 
 @Injectable()
 export class QuestionnairesService {
 
-    private resourceUrl = SERVER_API_URL + 'api/questionnaires/by/scope/ID_THREAT_AGENT';
+    private questionnairesByPurposeAPIUrl = SERVER_API_URL + 'api/questionnaires/by/purpose/{purpose}';
+    private questionsByQuestionnaireIDAPIUrl = SERVER_API_URL + 'api/questions/by/questionnaire/{questionnaireID}';
+
+    private currentQuestionnaire: QuestionnaireMgm;
 
     constructor(private http: HttpClient, private dateUtils: JhiDateUtils) {
     }
 
-    findAllByScope(scope: QuestionnaireScope): Observable<Questionnaire[]> {
-        // return this.http.get(this.apiUrl)
-        //     .map((res: Response) => res.json())
-        //     .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
+    findAllQuestionnairesByPurpose(purpose: QuestionnairePurpose): Observable<QuestionnaireMgm[]> {
+        return this.http.get<QuestionnaireMgm[]>(this.questionnairesByPurposeAPIUrl.replace('{purpose}', String(purpose)));
+    }
 
-        return this.http.get<Questionnaire[]>(this.resourceUrl);
+    setCurrentQuestionnaire(questionnaire: QuestionnaireMgm) {
+        this.currentQuestionnaire = questionnaire;
+        console.log('Set Current Questionnaire: ' + JSON.stringify(this.currentQuestionnaire));
+    }
+
+    getCurrentQuestionnaire(): QuestionnaireMgm {
+        console.log('Get Current Questionnaire: ' + JSON.stringify(this.currentQuestionnaire));
+        return this.currentQuestionnaire;
+    }
+
+    findAllQuestionsByQuestionnaire(questionnaire: QuestionnaireMgm): Observable<QuestionMgm[]> {
+        return this.http.get<QuestionnaireMgm[]>(this.questionsByQuestionnaireIDAPIUrl.replace('{questionnaireID}', String(questionnaire.id)));
     }
 }

@@ -32,7 +32,7 @@ import {
     ActiveMenuDirective,
     ErrorComponent
 } from './layouts';
-import {QuestionnairesRoutingModule} from './questionnaires/questionnaires-routing.module';
+import {QuestionnairesService} from './questionnaires/questionnaires.service';
 
 @NgModule({
     imports: [
@@ -63,6 +63,7 @@ import {QuestionnairesRoutingModule} from './questionnaires/questionnaires-routi
         ProfileService,
         PaginationConfig,
         UserRouteAccessService,
+        QuestionnairesService,
         {
             provide: HTTP_INTERCEPTORS,
             useClass: AuthInterceptor,

@@ -15,6 +15,8 @@ import { HermeneutQuestionnaireMgmModule } from './questionnaire-mgm/questionnai
 import { HermeneutQuestionMgmModule } from './question-mgm/question-mgm.module';
 import { HermeneutAnswerMgmModule } from './answer-mgm/answer-mgm.module';
 import { HermeneutExternalAuditMgmModule } from './external-audit-mgm/external-audit-mgm.module';
+import { HermeneutDepartmentMgmModule } from './department-mgm/department-mgm.module';
+import { HermeneutMyAnswerMgmModule } from './my-answer-mgm/my-answer-mgm.module';
 /* jhipster-needle-add-entity-module-import - JHipster will add entity modules imports here */
 
 @NgModule({
@@ -34,6 +36,8 @@ import { HermeneutExternalAuditMgmModule } from './external-audit-mgm/external-a
         HermeneutQuestionMgmModule,
         HermeneutAnswerMgmModule,
         HermeneutExternalAuditMgmModule,
+        HermeneutDepartmentMgmModule,
+        HermeneutMyAnswerMgmModule,
         /* jhipster-needle-add-entity-module - JHipster will add entity modules here */
     ],
     declarations: [],

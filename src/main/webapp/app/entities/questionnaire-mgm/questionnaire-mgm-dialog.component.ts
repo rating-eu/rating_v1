@@ -9,6 +9,7 @@ import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
 import { QuestionnaireMgm } from './questionnaire-mgm.model';
 import { QuestionnaireMgmPopupService } from './questionnaire-mgm-popup.service';
 import { QuestionnaireMgmService } from './questionnaire-mgm.service';
+import { MyAnswerMgm, MyAnswerMgmService } from '../my-answer-mgm';
 import { SelfAssessmentMgm, SelfAssessmentMgmService } from '../self-assessment-mgm';
 
 @Component({
@@ -20,12 +21,15 @@ export class QuestionnaireMgmDialogComponent implements OnInit {
     questionnaire: QuestionnaireMgm;
     isSaving: boolean;
 
+    myanswers: MyAnswerMgm[];
+
     selfassessments: SelfAssessmentMgm[];
 
     constructor(
         public activeModal: NgbActiveModal,
         private jhiAlertService: JhiAlertService,
         private questionnaireService: QuestionnaireMgmService,
+        private myAnswerService: MyAnswerMgmService,
         private selfAssessmentService: SelfAssessmentMgmService,
         private eventManager: JhiEventManager
     ) {
@@ -33,6 +37,8 @@ export class QuestionnaireMgmDialogComponent implements OnInit {
 
     ngOnInit() {
         this.isSaving = false;
+        this.myAnswerService.query()
+            .subscribe((res: HttpResponse<MyAnswerMgm[]>) => { this.myanswers = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
         this.selfAssessmentService.query()
             .subscribe((res: HttpResponse<SelfAssessmentMgm[]>) => { this.selfassessments = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
     }
@@ -69,6 +75,10 @@ export class QuestionnaireMgmDialogComponent implements OnInit {
 
     private onError(error: any) {
         this.jhiAlertService.error(error.message, null, null);
+    }
+
+    trackMyAnswerById(index: number, item: MyAnswerMgm) {
+        return item.id;
     }
 
     trackSelfAssessmentById(index: number, item: SelfAssessmentMgm) {

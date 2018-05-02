@@ -19,9 +19,9 @@ export class IdentifyThreatAgentComponent implements OnInit {
     ) {}
 
     ngOnInit() {
-        this.principal.identity().then((account) => {
-            this.account = account;
-        });
+        // this.principal.identity().then((account) => {
+        //     this.account = account;
+        // });
         this.mySelf = this.mySelfAssessmentService.getSelfAssessment();
 
     }

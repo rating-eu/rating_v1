@@ -18,6 +18,13 @@
             "ownerSide": true
         },
         {
+            "relationshipType": "one-to-one",
+            "relationshipName": "myanswer",
+            "otherEntityName": "myAnswer",
+            "ownerSide": false,
+            "otherEntityRelationshipName": "answer"
+        },
+        {
             "relationshipType": "many-to-one",
             "relationshipName": "question",
             "otherEntityName": "question",
@@ -25,14 +32,6 @@
         }
     ],
     "fields": [
-        {
-            "fieldName": "type",
-            "fieldType": "AnswerType",
-            "fieldValues": "YESNO,RANGE5,PERC5,CUSTOM",
-            "fieldValidateRules": [
-                "required"
-            ]
-        },
         {
             "fieldName": "name",
             "fieldType": "String"

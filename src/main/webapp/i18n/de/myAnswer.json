@@ -1,0 +1,27 @@
+
+{
+    "hermeneutApp": {
+        "myAnswer" : {
+            "home": {
+                "title": "My Answers",
+                "createLabel": "My Answer erstellen",
+                "createOrEditLabel": "My Answer erstellen oder bearbeiten",
+                "search": "Suche nach My Answer"
+            },
+            "created": "My Answer erstellt mit ID {{ param }}",
+            "updated": "My Answer aktualisiert mit ID {{ param }}",
+            "deleted": "My Answer gelöscht mit ID {{ param }}",
+            "delete": {
+                "question": "Soll My Answer {{ id }} wirklich dauerhaft gelöscht werden?"
+            },
+            "detail": {
+                "title": "My Answer"
+            },
+            "notes": "Notes",
+            "answer": "Answer",
+            "question": "Question",
+            "questionnaire": "Questionnaire",
+            "user": "User"
+        }
+    }
+}

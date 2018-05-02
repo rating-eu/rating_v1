@@ -4,7 +4,7 @@
         {
             "relationshipType": "one-to-many",
             "relationshipName": "departments",
-            "otherEntityName": "companySector",
+            "otherEntityName": "department",
             "otherEntityRelationshipName": "companyprofile"
         },
         {

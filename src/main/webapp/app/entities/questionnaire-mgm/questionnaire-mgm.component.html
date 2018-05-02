@@ -31,7 +31,7 @@
             <tr>
             <th><span jhiTranslate="global.field.id">ID</span></th>
             <th><span jhiTranslate="hermeneutApp.questionnaire.name">Name</span></th>
-            <th><span jhiTranslate="hermeneutApp.questionnaire.scope">Scope</span></th>
+            <th><span jhiTranslate="hermeneutApp.questionnaire.purpose">Purpose</span></th>
             <th><span jhiTranslate="hermeneutApp.questionnaire.created">Created</span></th>
             <th><span jhiTranslate="hermeneutApp.questionnaire.modified">Modified</span></th>
             <th></th>
@@ -41,7 +41,7 @@
             <tr *ngFor="let questionnaire of questionnaires ;trackBy: trackId">
                 <td><a [routerLink]="['../questionnaire-mgm', questionnaire.id ]">{{questionnaire.id}}</a></td>
                 <td>{{questionnaire.name}}</td>
-                <td jhiTranslate="{{'hermeneutApp.Q_Scope.' + questionnaire.scope}}">{{questionnaire.scope}}</td>
+                <td jhiTranslate="{{'hermeneutApp.QuestionnairePurpose.' + questionnaire.purpose}}">{{questionnaire.purpose}}</td>
                 <td>{{questionnaire.created | date:'medium'}}</td>
                 <td>{{questionnaire.modified | date:'medium'}}</td>
                 <td class="text-right">

@@ -1,7 +1,7 @@
 package eu.hermeneut.repository;
 
-import eu.hermeneut.domain.Asset;
 import eu.hermeneut.domain.Question;
+import eu.hermeneut.domain.Questionnaire;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
@@ -16,10 +16,6 @@ import java.util.List;
 @SuppressWarnings("unused")
 @Repository
 public interface QuestionRepository extends JpaRepository<Question, Long> {
-
-    @Query("SELECT question from Question question LEFT JOIN FETCH question.answers WHERE question.id =:id")
-    Question findOneWithEagerRelationships(@Param("id") Long id);
-
-    @Query("SELECT DISTINCT question FROM Question question LEFT JOIN FETCH question.answers")
-    List<Question> findAllWithEagerRelationships();
+    @Query("SELECT question FROM Question question WHERE question.questionnaire = :questionnaire")
+    List<Question> findAllByQuestionnaire(@Param("questionnaire") Questionnaire questionnaire);
 }

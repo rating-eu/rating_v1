@@ -18,9 +18,9 @@
         {
             "relationshipType": "many-to-many",
             "otherEntityRelationshipName": "selfassessment",
-            "relationshipName": "companysector",
-            "otherEntityName": "companySector",
-            "otherEntityField": "department",
+            "relationshipName": "department",
+            "otherEntityName": "department",
+            "otherEntityField": "name",
             "ownerSide": true
         },
         {

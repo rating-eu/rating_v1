@@ -8,6 +8,13 @@
             "otherEntityRelationshipName": "question"
         },
         {
+            "relationshipType": "one-to-one",
+            "relationshipName": "myanswer",
+            "otherEntityName": "myAnswer",
+            "ownerSide": false,
+            "otherEntityRelationshipName": "question"
+        },
+        {
             "relationshipType": "many-to-one",
             "relationshipName": "questionnaire",
             "otherEntityName": "questionnaire",
@@ -29,6 +36,14 @@
         {
             "fieldName": "modified",
             "fieldType": "ZonedDateTime"
+        },
+        {
+            "fieldName": "type",
+            "fieldType": "AnswerType",
+            "fieldValues": "YESNO,RANGE5,PERC5,CUSTOM,RANGE3,PERC3",
+            "fieldValidateRules": [
+                "required"
+            ]
         }
     ],
     "changelogDate": "20180410085204",

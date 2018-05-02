@@ -537,7 +537,7 @@
                 <configuration>
                     <!-- Force alphabetical order to have a reproducible build -->
                     <runOrder>alphabetical</runOrder>
-                    <testFailureIgnore>true</testFailureIgnore>
+                    <skipTests>true</skipTests>
                 </configuration>
             </plugin>
             <plugin>

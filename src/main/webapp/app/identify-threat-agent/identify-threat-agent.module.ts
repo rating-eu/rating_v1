@@ -2,18 +2,22 @@ import {NgModule, CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import {RouterModule} from '@angular/router';
 import {HermeneutSharedModule} from '../shared';
 
-import {IdentifyThreatAgentComponent, identifyThreatAgentRoute} from './';
+import {CommonModule} from '@angular/common';
+import {IdentifyThreatAgentRoutingModule} from './identify-threat-agent-routing.module';
+import {IdentifyThreatAgentComponent} from './identify-threat-agent.component';
 
 @NgModule({
     imports: [
         HermeneutSharedModule,
-        RouterModule.forRoot([identifyThreatAgentRoute], {useHash: true})
+        CommonModule,
+        IdentifyThreatAgentRoutingModule
     ],
     declarations: [
-        IdentifyThreatAgentComponent,
+        IdentifyThreatAgentComponent
     ],
-    entryComponents: [],
-    providers: []
+    exports: [
+        IdentifyThreatAgentComponent
+    ]
 })
 export class IdentifyThreatAgentModule {
 }

@@ -7,12 +7,12 @@ const routes: Routes = [
     navbarRoute,
     ...errorRoute,
     {
-        path: 'questionnaires',
-        loadChildren: './questionnaires/questionnaires.module#QuestionnairesModule'
-    },
-    {
         path: 'identify-asset',
         loadChildren: './identify-assets/identify-asset.module#IdentifyAssetModule'
+    },
+    {
+        path: 'identify-threat-agent',
+        loadChildren: './identify-threat-agent/identify-threat-agent.module#IdentifyThreatAgentModule'
     }
 ];
 

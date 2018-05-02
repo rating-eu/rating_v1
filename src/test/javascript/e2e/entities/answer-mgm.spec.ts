@@ -33,7 +33,6 @@ describe('Answer e2e test', () => {
 
     it('should create and save Answers', () => {
         answerComponentsPage.clickOnCreateButton();
-        answerDialogPage.typeSelectLastOption();
         answerDialogPage.setNameInput('name');
         expect(answerDialogPage.getNameInput()).toMatch('name');
         answerDialogPage.setCreatedInput(12310020012301);
@@ -69,7 +68,6 @@ export class AnswerDialogPage {
     modalTitle = element(by.css('h4#myAnswerLabel'));
     saveButton = element(by.css('.modal-footer .btn.btn-primary'));
     closeButton = element(by.css('button.close'));
-    typeSelect = element(by.css('select#field_type'));
     nameInput = element(by.css('input#field_name'));
     createdInput = element(by.css('input#field_created'));
     modifiedInput = element(by.css('input#field_modified'));
@@ -81,17 +79,6 @@ export class AnswerDialogPage {
         return this.modalTitle.getAttribute('jhiTranslate');
     }
 
-    setTypeSelect = function(type) {
-        this.typeSelect.sendKeys(type);
-    };
-
-    getTypeSelect = function() {
-        return this.typeSelect.element(by.css('option:checked')).getText();
-    };
-
-    typeSelectLastOption = function() {
-        this.typeSelect.all(by.tagName('option')).last().click();
-    };
     setNameInput = function(name) {
         this.nameInput.sendKeys(name);
     };

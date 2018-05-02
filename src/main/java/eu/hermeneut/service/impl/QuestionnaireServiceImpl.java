@@ -1,9 +1,7 @@
 package eu.hermeneut.service.impl;
 
-import eu.hermeneut.domain.enumeration.Q_Scope;
+import eu.hermeneut.domain.enumeration.QuestionnairePurpose;
 import eu.hermeneut.service.QuestionnaireService;
-import eu.hermeneut.domain.Answer;
-import eu.hermeneut.domain.Question;
 import eu.hermeneut.domain.Questionnaire;
 import eu.hermeneut.repository.QuestionnaireRepository;
 import eu.hermeneut.repository.search.QuestionnaireSearchRepository;
@@ -13,7 +11,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -35,6 +32,17 @@ public class QuestionnaireServiceImpl implements QuestionnaireService {
     public QuestionnaireServiceImpl(QuestionnaireRepository questionnaireRepository, QuestionnaireSearchRepository questionnaireSearchRepository) {
         this.questionnaireRepository = questionnaireRepository;
         this.questionnaireSearchRepository = questionnaireSearchRepository;
+    }
+    /**
+     * Get all the questionnaires with a given scope.
+     *
+     * @return the list of entities
+     */
+    @Override
+    @Transactional(readOnly = true)
+    public List<Questionnaire> findAllByPurpose(QuestionnairePurpose purpose) {
+        log.debug("Request to get all Questionnaires with a given purpose");
+        return questionnaireRepository.findAllByPurpose(purpose);
     }
 
     /**
@@ -63,16 +71,18 @@ public class QuestionnaireServiceImpl implements QuestionnaireService {
         return questionnaireRepository.findAll();
     }
 
+
     /**
-     * Get all the questionnaires with a given scope.
-     *
-     * @return the list of entities
+     *  get all the questionnaires where Myanswer is null.
+     *  @return the list of entities
      */
-    @Override
     @Transactional(readOnly = true)
-    public List<Questionnaire> findAllByScope(Q_Scope scope) {
-        log.debug("Request to get all Questionnaires with a given scope");
-        return questionnaireRepository.findAllByScope(scope);
+    public List<Questionnaire> findAllWhereMyanswerIsNull() {
+        log.debug("Request to get all questionnaires where Myanswer is null");
+        return StreamSupport
+            .stream(questionnaireRepository.findAll().spliterator(), false)
+            .filter(questionnaire -> questionnaire.getMyanswer() == null)
+            .collect(Collectors.toList());
     }
 
     /**
