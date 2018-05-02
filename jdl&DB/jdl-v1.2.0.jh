@@ -173,7 +173,8 @@ entity Answer{
     Name String,
     Created ZonedDateTime,
     Modified ZonedDateTime,
-    Order Integer
+    Order Integer,
+    Likelihood Likelihood
 }
 
 entity MyAnswer{
