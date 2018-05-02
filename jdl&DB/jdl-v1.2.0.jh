@@ -222,8 +222,8 @@ relationship OneToMany{
     Questionnaire{questions(name)} to Question{questionnaire(name)},
     Question{answers(name)} to Answer{question(name)},
     CompanyProfile{departments(name)} to Department{companyprofile(name)},
-    Question{levels} to LevelWrapper
-    Question{phases} to PhaseWrapper
+    AttackStrategy{levels} to LevelWrapper
+    AttackStrategy{phases} to PhaseWrapper
 }
 
 relationship OneToOne{
