@@ -177,6 +177,12 @@ entity Answer{
     Likelihood Likelihood
 }
 
+entity AnswerWeight{
+	Likelihood Likelihood,
+    QuestionType QuestionType,
+    Weight Integer
+}
+
 entity MyAnswer{
     Mycheck String,
 }
