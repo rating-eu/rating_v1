@@ -1,0 +1,24 @@
+
+{
+    "hermeneutApp": {
+        "levelWrapper" : {
+            "home": {
+                "title": "Level Wrappers",
+                "createLabel": "Create a new Level Wrapper",
+                "createOrEditLabel": "Create or edit a Level Wrapper",
+                "search": "Search for Level Wrapper"
+            },
+            "created": "A new Level Wrapper is created with identifier {{ param }}",
+            "updated": "A Level Wrapper is updated with identifier {{ param }}",
+            "deleted": "A Level Wrapper is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Level Wrapper {{ id }}?"
+            },
+            "detail": {
+                "title": "Level Wrapper"
+            },
+            "level": "Level",
+            "attackStrategy": "Attack Strategy"
+        }
+    }
+}

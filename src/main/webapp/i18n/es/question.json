@@ -20,7 +20,9 @@
             "name": "Name",
             "created": "Created",
             "modified": "Modified",
-            "type": "Type",
+            "order": "Order",
+            "questionType": "Question Type",
+            "answerType": "Answer Type",
             "answers": "Answers",
             "myanswer": "Myanswer",
             "questionnaire": "Questionnaire"

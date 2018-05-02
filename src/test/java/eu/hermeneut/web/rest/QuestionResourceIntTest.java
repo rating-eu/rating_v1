@@ -36,6 +36,7 @@ import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+import eu.hermeneut.domain.enumeration.QuestionType;
 import eu.hermeneut.domain.enumeration.AnswerType;
 /**
  * Test class for the QuestionResource REST controller.
@@ -55,8 +56,14 @@ public class QuestionResourceIntTest {
     private static final ZonedDateTime DEFAULT_MODIFIED = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
     private static final ZonedDateTime UPDATED_MODIFIED = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
 
-    private static final AnswerType DEFAULT_TYPE = AnswerType.YESNO;
-    private static final AnswerType UPDATED_TYPE = AnswerType.RANGE5;
+    private static final Integer DEFAULT_ORDER = 1;
+    private static final Integer UPDATED_ORDER = 2;
+
+    private static final QuestionType DEFAULT_QUESTION_TYPE = QuestionType.REGULAR;
+    private static final QuestionType UPDATED_QUESTION_TYPE = QuestionType.RELEVANT;
+
+    private static final AnswerType DEFAULT_ANSWER_TYPE = AnswerType.YESNO;
+    private static final AnswerType UPDATED_ANSWER_TYPE = AnswerType.RANGE5;
 
     @Autowired
     private QuestionRepository questionRepository;
@@ -105,7 +112,9 @@ public class QuestionResourceIntTest {
             .name(DEFAULT_NAME)
             .created(DEFAULT_CREATED)
             .modified(DEFAULT_MODIFIED)
-            .type(DEFAULT_TYPE);
+            .order(DEFAULT_ORDER)
+            .questionType(DEFAULT_QUESTION_TYPE)
+            .answerType(DEFAULT_ANSWER_TYPE);
         return question;
     }
 
@@ -133,7 +142,9 @@ public class QuestionResourceIntTest {
         assertThat(testQuestion.getName()).isEqualTo(DEFAULT_NAME);
         assertThat(testQuestion.getCreated()).isEqualTo(DEFAULT_CREATED);
         assertThat(testQuestion.getModified()).isEqualTo(DEFAULT_MODIFIED);
-        assertThat(testQuestion.getType()).isEqualTo(DEFAULT_TYPE);
+        assertThat(testQuestion.getOrder()).isEqualTo(DEFAULT_ORDER);
+        assertThat(testQuestion.getQuestionType()).isEqualTo(DEFAULT_QUESTION_TYPE);
+        assertThat(testQuestion.getAnswerType()).isEqualTo(DEFAULT_ANSWER_TYPE);
 
         // Validate the Question in Elasticsearch
         Question questionEs = questionSearchRepository.findOne(testQuestion.getId());
@@ -181,10 +192,28 @@ public class QuestionResourceIntTest {
 
     @Test
     @Transactional
-    public void checkTypeIsRequired() throws Exception {
+    public void checkQuestionTypeIsRequired() throws Exception {
         int databaseSizeBeforeTest = questionRepository.findAll().size();
         // set the field null
-        question.setType(null);
+        question.setQuestionType(null);
+
+        // Create the Question, which fails.
+
+        restQuestionMockMvc.perform(post("/api/questions")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(question)))
+            .andExpect(status().isBadRequest());
+
+        List<Question> questionList = questionRepository.findAll();
+        assertThat(questionList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
+    public void checkAnswerTypeIsRequired() throws Exception {
+        int databaseSizeBeforeTest = questionRepository.findAll().size();
+        // set the field null
+        question.setAnswerType(null);
 
         // Create the Question, which fails.
 
@@ -211,7 +240,9 @@ public class QuestionResourceIntTest {
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
             .andExpect(jsonPath("$.[*].created").value(hasItem(sameInstant(DEFAULT_CREATED))))
             .andExpect(jsonPath("$.[*].modified").value(hasItem(sameInstant(DEFAULT_MODIFIED))))
-            .andExpect(jsonPath("$.[*].type").value(hasItem(DEFAULT_TYPE.toString())));
+            .andExpect(jsonPath("$.[*].order").value(hasItem(DEFAULT_ORDER)))
+            .andExpect(jsonPath("$.[*].questionType").value(hasItem(DEFAULT_QUESTION_TYPE.toString())))
+            .andExpect(jsonPath("$.[*].answerType").value(hasItem(DEFAULT_ANSWER_TYPE.toString())));
     }
 
     @Test
@@ -228,7 +259,9 @@ public class QuestionResourceIntTest {
             .andExpect(jsonPath("$.name").value(DEFAULT_NAME.toString()))
             .andExpect(jsonPath("$.created").value(sameInstant(DEFAULT_CREATED)))
             .andExpect(jsonPath("$.modified").value(sameInstant(DEFAULT_MODIFIED)))
-            .andExpect(jsonPath("$.type").value(DEFAULT_TYPE.toString()));
+            .andExpect(jsonPath("$.order").value(DEFAULT_ORDER))
+            .andExpect(jsonPath("$.questionType").value(DEFAULT_QUESTION_TYPE.toString()))
+            .andExpect(jsonPath("$.answerType").value(DEFAULT_ANSWER_TYPE.toString()));
     }
 
     @Test
@@ -255,7 +288,9 @@ public class QuestionResourceIntTest {
             .name(UPDATED_NAME)
             .created(UPDATED_CREATED)
             .modified(UPDATED_MODIFIED)
-            .type(UPDATED_TYPE);
+            .order(UPDATED_ORDER)
+            .questionType(UPDATED_QUESTION_TYPE)
+            .answerType(UPDATED_ANSWER_TYPE);
 
         restQuestionMockMvc.perform(put("/api/questions")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -269,7 +304,9 @@ public class QuestionResourceIntTest {
         assertThat(testQuestion.getName()).isEqualTo(UPDATED_NAME);
         assertThat(testQuestion.getCreated()).isEqualTo(UPDATED_CREATED);
         assertThat(testQuestion.getModified()).isEqualTo(UPDATED_MODIFIED);
-        assertThat(testQuestion.getType()).isEqualTo(UPDATED_TYPE);
+        assertThat(testQuestion.getOrder()).isEqualTo(UPDATED_ORDER);
+        assertThat(testQuestion.getQuestionType()).isEqualTo(UPDATED_QUESTION_TYPE);
+        assertThat(testQuestion.getAnswerType()).isEqualTo(UPDATED_ANSWER_TYPE);
 
         // Validate the Question in Elasticsearch
         Question questionEs = questionSearchRepository.findOne(testQuestion.getId());
@@ -332,7 +369,9 @@ public class QuestionResourceIntTest {
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
             .andExpect(jsonPath("$.[*].created").value(hasItem(sameInstant(DEFAULT_CREATED))))
             .andExpect(jsonPath("$.[*].modified").value(hasItem(sameInstant(DEFAULT_MODIFIED))))
-            .andExpect(jsonPath("$.[*].type").value(hasItem(DEFAULT_TYPE.toString())));
+            .andExpect(jsonPath("$.[*].order").value(hasItem(DEFAULT_ORDER)))
+            .andExpect(jsonPath("$.[*].questionType").value(hasItem(DEFAULT_QUESTION_TYPE.toString())))
+            .andExpect(jsonPath("$.[*].answerType").value(hasItem(DEFAULT_ANSWER_TYPE.toString())));
     }
 
     @Test

@@ -45,14 +45,6 @@
                 <constraints nullable="true" />
             </column>
 
-            <column name="jhi_level" type="varchar(255)">
-                <constraints nullable="false" />
-            </column>
-
-            <column name="phase" type="varchar(255)">
-                <constraints nullable="false" />
-            </column>
-
             <column name="created" type="timestamp">
                 <constraints nullable="true" />
             </column>

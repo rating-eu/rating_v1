@@ -1,12 +1,18 @@
 import { BaseEntity } from './../../shared';
 
+export const enum QuestionType {
+    'REGULAR',
+    'RELEVANT',
+    'OTHER'
+}
+
 export const enum AnswerType {
     'YESNO',
     'RANGE5',
     'PERC5',
-    'CUSTOM',
     'RANGE3',
-    'PERC3'
+    'PERC3',
+    'CUSTOM'
 }
 
 export class QuestionMgm implements BaseEntity {
@@ -15,7 +21,9 @@ export class QuestionMgm implements BaseEntity {
         public name?: string,
         public created?: any,
         public modified?: any,
-        public type?: AnswerType,
+        public order?: number,
+        public questionType?: QuestionType,
+        public answerType?: AnswerType,
         public answers?: BaseEntity[],
         public myanswer?: BaseEntity,
         public questionnaire?: BaseEntity,

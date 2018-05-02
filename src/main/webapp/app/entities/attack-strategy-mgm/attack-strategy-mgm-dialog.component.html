@@ -87,37 +87,6 @@
             </select>
         </div>
         <div class="form-group">
-            <label class="form-control-label" jhiTranslate="hermeneutApp.attackStrategy.level" for="field_level">Level</label>
-            <select class="form-control" name="level" [(ngModel)]="attackStrategy.level" id="field_level"  required>
-                <option value="HUMAN">{{'hermeneutApp.Level.HUMAN' | translate}}</option>
-                <option value="IT">{{'hermeneutApp.Level.IT' | translate}}</option>
-                <option value="PHYSICAL">{{'hermeneutApp.Level.PHYSICAL' | translate}}</option>
-            </select>
-            <div [hidden]="!(editForm.controls.level?.dirty && editForm.controls.level?.invalid)">
-                <small class="form-text text-danger"
-                   [hidden]="!editForm.controls.level?.errors?.required" jhiTranslate="entity.validation.required">
-                   This field is required.
-                </small>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="form-control-label" jhiTranslate="hermeneutApp.attackStrategy.phase" for="field_phase">Phase</label>
-            <select class="form-control" name="phase" [(ngModel)]="attackStrategy.phase" id="field_phase"  required>
-                <option value="RECONNAISSANCE">{{'hermeneutApp.Phase.RECONNAISSANCE' | translate}}</option>
-                <option value="WEAPONIZATION">{{'hermeneutApp.Phase.WEAPONIZATION' | translate}}</option>
-                <option value="DELIVERY">{{'hermeneutApp.Phase.DELIVERY' | translate}}</option>
-                <option value="EXPLOITATION">{{'hermeneutApp.Phase.EXPLOITATION' | translate}}</option>
-                <option value="INSTALLATION">{{'hermeneutApp.Phase.INSTALLATION' | translate}}</option>
-                <option value="COMMANDCONTROL">{{'hermeneutApp.Phase.COMMANDCONTROL' | translate}}</option>
-            </select>
-            <div [hidden]="!(editForm.controls.phase?.dirty && editForm.controls.phase?.invalid)">
-                <small class="form-text text-danger"
-                   [hidden]="!editForm.controls.phase?.errors?.required" jhiTranslate="entity.validation.required">
-                   This field is required.
-                </small>
-            </div>
-        </div>
-        <div class="form-group">
             <label class="form-control-label" jhiTranslate="hermeneutApp.attackStrategy.created" for="field_created">Created</label>
             <div class="d-flex">
                 <input id="field_created" type="datetime-local" class="form-control" name="created" [(ngModel)]="attackStrategy.created"

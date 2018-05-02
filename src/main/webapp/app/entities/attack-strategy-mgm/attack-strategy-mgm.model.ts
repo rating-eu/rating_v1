@@ -26,21 +26,6 @@ export const enum Likelihood {
     'LOW_MEDIUM'
 }
 
-export const enum Level {
-    'HUMAN',
-    'IT',
-    'PHYSICAL'
-}
-
-export const enum Phase {
-    'RECONNAISSANCE',
-    'WEAPONIZATION',
-    'DELIVERY',
-    'EXPLOITATION',
-    'INSTALLATION',
-    'COMMANDCONTROL'
-}
-
 export class AttackStrategyMgm implements BaseEntity {
     constructor(
         public id?: number,
@@ -50,10 +35,10 @@ export class AttackStrategyMgm implements BaseEntity {
         public skill?: SkillLevel,
         public resources?: ResourceLevel,
         public likelihood?: Likelihood,
-        public level?: Level,
-        public phase?: Phase,
         public created?: any,
         public modified?: any,
+        public levels?: BaseEntity[],
+        public phases?: BaseEntity[],
         public mitigations?: BaseEntity[],
         public threatAgents?: BaseEntity[],
         public answstrategies?: BaseEntity[],

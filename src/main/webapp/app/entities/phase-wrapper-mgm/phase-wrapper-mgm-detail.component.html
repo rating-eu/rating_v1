@@ -1,0 +1,32 @@
+
+<div *ngIf="phaseWrapper">
+    <h2><span jhiTranslate="hermeneutApp.phaseWrapper.detail.title">Phase Wrapper</span> {{phaseWrapper.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="hermeneutApp.phaseWrapper.phase">Phase</span></dt>
+        <dd>
+            <span jhiTranslate="{{'hermeneutApp.Phase.' + phaseWrapper.phase}}">{{phaseWrapper.phase}}</span>
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.phaseWrapper.attackStrategy">Attack Strategy</span></dt>
+        <dd>
+            <div *ngIf="phaseWrapper.attackStrategy">
+                <a [routerLink]="['/attack-strategy-mgm', phaseWrapper.attackStrategy?.id]">{{phaseWrapper.attackStrategy?.id}}</a>
+            </div>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'phase-wrapper-mgm/'+ phaseWrapper.id + '/edit'} }]"
+            replaceUrl="true"
+            queryParamsHandling="merge"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+    </button>
+</div>

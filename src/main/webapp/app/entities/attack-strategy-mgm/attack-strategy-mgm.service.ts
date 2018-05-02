@@ -29,10 +29,7 @@ export class AttackStrategyMgmService {
         return this.http.put<AttackStrategyMgm>(this.resourceUrl, copy, { observe: 'response' })
             .map((res: EntityResponseType) => this.convertResponse(res));
     }
-    findByLevelAndPhase(level: string, phase: string): Observable<HttpResponse<AttackStrategyMgm[]>> {
-        return this.http.get<AttackStrategyMgm[]>(`${this.resourceUrl}/l/${level}/p/${phase}`, { observe: 'response'})
-            .map((res: HttpResponse<AttackStrategyMgm[]>) => this.convertArrayResponse(res));
-    }
+
     find(id: number): Observable<EntityResponseType> {
         return this.http.get<AttackStrategyMgm>(`${this.resourceUrl}/${id}`, { observe: 'response'})
             .map((res: EntityResponseType) => this.convertResponse(res));

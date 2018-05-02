@@ -33,7 +33,9 @@
             <th><span jhiTranslate="hermeneutApp.question.name">Name</span></th>
             <th><span jhiTranslate="hermeneutApp.question.created">Created</span></th>
             <th><span jhiTranslate="hermeneutApp.question.modified">Modified</span></th>
-            <th><span jhiTranslate="hermeneutApp.question.type">Type</span></th>
+            <th><span jhiTranslate="hermeneutApp.question.order">Order</span></th>
+            <th><span jhiTranslate="hermeneutApp.question.questionType">Question Type</span></th>
+            <th><span jhiTranslate="hermeneutApp.question.answerType">Answer Type</span></th>
             <th><span jhiTranslate="hermeneutApp.question.questionnaire">Questionnaire</span></th>
             <th></th>
             </tr>
@@ -44,7 +46,9 @@
                 <td>{{question.name}}</td>
                 <td>{{question.created | date:'medium'}}</td>
                 <td>{{question.modified | date:'medium'}}</td>
-                <td jhiTranslate="{{'hermeneutApp.AnswerType.' + question.type}}">{{question.type}}</td>
+                <td>{{question.order}}</td>
+                <td jhiTranslate="{{'hermeneutApp.QuestionType.' + question.questionType}}">{{question.questionType}}</td>
+                <td jhiTranslate="{{'hermeneutApp.AnswerType.' + question.answerType}}">{{question.answerType}}</td>
                 <td>
                     <div *ngIf="question.questionnaire">
                         <a [routerLink]="['../questionnaire-mgm', question.questionnaire?.id ]" >{{question.questionnaire?.name}}</a>

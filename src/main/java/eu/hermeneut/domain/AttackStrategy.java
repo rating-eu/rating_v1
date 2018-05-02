@@ -22,10 +22,6 @@ import eu.hermeneut.domain.enumeration.ResourceLevel;
 
 import eu.hermeneut.domain.enumeration.Likelihood;
 
-import eu.hermeneut.domain.enumeration.Level;
-
-import eu.hermeneut.domain.enumeration.Phase;
-
 /**
  * A AttackStrategy.
  */
@@ -69,21 +65,21 @@ public class AttackStrategy implements Serializable {
     @Column(name = "likelihood")
     private Likelihood likelihood;
 
-    @NotNull
-    @Enumerated(EnumType.STRING)
-    @Column(name = "jhi_level", nullable = false)
-    private Level level;
-
-    @NotNull
-    @Enumerated(EnumType.STRING)
-    @Column(name = "phase", nullable = false)
-    private Phase phase;
-
     @Column(name = "created")
     private ZonedDateTime created;
 
     @Column(name = "modified")
     private ZonedDateTime modified;
+
+    @OneToMany(mappedBy = "attackStrategy")
+    @JsonIgnore
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    private Set<LevelWrapper> levels = new HashSet<>();
+
+    @OneToMany(mappedBy = "attackStrategy")
+    @JsonIgnore
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    private Set<PhaseWrapper> phases = new HashSet<>();
 
     @ManyToMany
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
@@ -196,32 +192,6 @@ public class AttackStrategy implements Serializable {
         this.likelihood = likelihood;
     }
 
-    public Level getLevel() {
-        return level;
-    }
-
-    public AttackStrategy level(Level level) {
-        this.level = level;
-        return this;
-    }
-
-    public void setLevel(Level level) {
-        this.level = level;
-    }
-
-    public Phase getPhase() {
-        return phase;
-    }
-
-    public AttackStrategy phase(Phase phase) {
-        this.phase = phase;
-        return this;
-    }
-
-    public void setPhase(Phase phase) {
-        this.phase = phase;
-    }
-
     public ZonedDateTime getCreated() {
         return created;
     }
@@ -246,6 +216,56 @@ public class AttackStrategy implements Serializable {
 
     public void setModified(ZonedDateTime modified) {
         this.modified = modified;
+    }
+
+    public Set<LevelWrapper> getLevels() {
+        return levels;
+    }
+
+    public AttackStrategy levels(Set<LevelWrapper> levelWrappers) {
+        this.levels = levelWrappers;
+        return this;
+    }
+
+    public AttackStrategy addLevels(LevelWrapper levelWrapper) {
+        this.levels.add(levelWrapper);
+        levelWrapper.setAttackStrategy(this);
+        return this;
+    }
+
+    public AttackStrategy removeLevels(LevelWrapper levelWrapper) {
+        this.levels.remove(levelWrapper);
+        levelWrapper.setAttackStrategy(null);
+        return this;
+    }
+
+    public void setLevels(Set<LevelWrapper> levelWrappers) {
+        this.levels = levelWrappers;
+    }
+
+    public Set<PhaseWrapper> getPhases() {
+        return phases;
+    }
+
+    public AttackStrategy phases(Set<PhaseWrapper> phaseWrappers) {
+        this.phases = phaseWrappers;
+        return this;
+    }
+
+    public AttackStrategy addPhases(PhaseWrapper phaseWrapper) {
+        this.phases.add(phaseWrapper);
+        phaseWrapper.setAttackStrategy(this);
+        return this;
+    }
+
+    public AttackStrategy removePhases(PhaseWrapper phaseWrapper) {
+        this.phases.remove(phaseWrapper);
+        phaseWrapper.setAttackStrategy(null);
+        return this;
+    }
+
+    public void setPhases(Set<PhaseWrapper> phaseWrappers) {
+        this.phases = phaseWrappers;
     }
 
     public Set<Mitigation> getMitigations() {
@@ -379,8 +399,6 @@ public class AttackStrategy implements Serializable {
             ", skill='" + getSkill() + "'" +
             ", resources='" + getResources() + "'" +
             ", likelihood='" + getLikelihood() + "'" +
-            ", level='" + getLevel() + "'" +
-            ", phase='" + getPhase() + "'" +
             ", created='" + getCreated() + "'" +
             ", modified='" + getModified() + "'" +
             "}";

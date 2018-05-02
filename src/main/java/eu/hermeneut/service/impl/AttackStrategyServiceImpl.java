@@ -1,22 +1,19 @@
 package eu.hermeneut.service.impl;
 
-import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
-
-import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
-
+import eu.hermeneut.service.AttackStrategyService;
+import eu.hermeneut.domain.AttackStrategy;
+import eu.hermeneut.repository.AttackStrategyRepository;
+import eu.hermeneut.repository.search.AttackStrategySearchRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import eu.hermeneut.domain.AttackStrategy;
-import eu.hermeneut.domain.enumeration.Level;
-import eu.hermeneut.domain.enumeration.Phase;
-import eu.hermeneut.repository.AttackStrategyRepository;
-import eu.hermeneut.repository.search.AttackStrategySearchRepository;
-import eu.hermeneut.service.AttackStrategyService;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+
+import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
  * Service Implementation for managing AttackStrategy.
@@ -61,48 +58,7 @@ public class AttackStrategyServiceImpl implements AttackStrategyService {
         log.debug("Request to get all AttackStrategies");
         return attackStrategyRepository.findAllWithEagerRelationships();
     }
-    /**
-     * Get all the attackStrategies by level.
-     *
-     * @return the list of entities
-     */
-    @Override
-    @Transactional(readOnly = true)
-	public List<AttackStrategy> findAllByLevel(Level level) {
-    	log.debug("Request to get all AttackStrategies by Level");
-        return attackStrategyRepository.findAllByLevel(level);
-	}
-    /**
-     * Get all the attackStrategies by phase.
-     *
-     * @return the list of entities
-     */
-    @Override
-    @Transactional(readOnly = true)
-	public List<AttackStrategy> findAllByPhase(Phase phase) {
-    	log.debug("Request to get all AttackStrategies by Phase ------------------ SERVICE IMPL");
-    	
-    	
-        return attackStrategyRepository.findAllByPhase(phase);
-	}    
-    
-    
-    
-    /**
-     * Get all the attackStrategies by phase and level.
-     *
-     * @return the list of entities
-     */
-    @Override
-    @Transactional(readOnly = true)
-	public List<AttackStrategy> findAllByLevelAndPhase(Level level, Phase phase) {
-    	log.debug("Request to get all AttackStrategies by level and Phase");
-    	
-    	
-        return attackStrategyRepository.findAllByLevelAndPhase(level, phase);
-	}
-    
-    
+
     /**
      * Get one attackStrategy by id.
      *
@@ -142,6 +98,4 @@ public class AttackStrategyServiceImpl implements AttackStrategyService {
             .stream(attackStrategySearchRepository.search(queryStringQuery(query)).spliterator(), false)
             .collect(Collectors.toList());
     }
-
-
 }

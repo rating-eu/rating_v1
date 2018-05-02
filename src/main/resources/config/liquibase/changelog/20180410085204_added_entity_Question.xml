@@ -33,7 +33,15 @@
                 <constraints nullable="true" />
             </column>
 
-            <column name="jhi_type" type="varchar(255)">
+            <column name="jhi_order" type="integer">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="question_type" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="answer_type" type="varchar(255)">
                 <constraints nullable="false" />
             </column>
 

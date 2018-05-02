@@ -39,7 +39,10 @@ describe('Question e2e test', () => {
         expect(questionDialogPage.getCreatedInput()).toMatch('2001-12-31T02:30');
         questionDialogPage.setModifiedInput(12310020012301);
         expect(questionDialogPage.getModifiedInput()).toMatch('2001-12-31T02:30');
-        questionDialogPage.typeSelectLastOption();
+        questionDialogPage.setOrderInput('5');
+        expect(questionDialogPage.getOrderInput()).toMatch('5');
+        questionDialogPage.questionTypeSelectLastOption();
+        questionDialogPage.answerTypeSelectLastOption();
         questionDialogPage.questionnaireSelectLastOption();
         questionDialogPage.save();
         expect(questionDialogPage.getSaveButton().isPresent()).toBeFalsy();
@@ -70,7 +73,9 @@ export class QuestionDialogPage {
     nameInput = element(by.css('input#field_name'));
     createdInput = element(by.css('input#field_created'));
     modifiedInput = element(by.css('input#field_modified'));
-    typeSelect = element(by.css('select#field_type'));
+    orderInput = element(by.css('input#field_order'));
+    questionTypeSelect = element(by.css('select#field_questionType'));
+    answerTypeSelect = element(by.css('select#field_answerType'));
     questionnaireSelect = element(by.css('select#field_questionnaire'));
 
     getModalTitle() {
@@ -101,16 +106,35 @@ export class QuestionDialogPage {
         return this.modifiedInput.getAttribute('value');
     };
 
-    setTypeSelect = function(type) {
-        this.typeSelect.sendKeys(type);
+    setOrderInput = function(order) {
+        this.orderInput.sendKeys(order);
     };
 
-    getTypeSelect = function() {
-        return this.typeSelect.element(by.css('option:checked')).getText();
+    getOrderInput = function() {
+        return this.orderInput.getAttribute('value');
     };
 
-    typeSelectLastOption = function() {
-        this.typeSelect.all(by.tagName('option')).last().click();
+    setQuestionTypeSelect = function(questionType) {
+        this.questionTypeSelect.sendKeys(questionType);
+    };
+
+    getQuestionTypeSelect = function() {
+        return this.questionTypeSelect.element(by.css('option:checked')).getText();
+    };
+
+    questionTypeSelectLastOption = function() {
+        this.questionTypeSelect.all(by.tagName('option')).last().click();
+    };
+    setAnswerTypeSelect = function(answerType) {
+        this.answerTypeSelect.sendKeys(answerType);
+    };
+
+    getAnswerTypeSelect = function() {
+        return this.answerTypeSelect.element(by.css('option:checked')).getText();
+    };
+
+    answerTypeSelectLastOption = function() {
+        this.answerTypeSelect.all(by.tagName('option')).last().click();
     };
     questionnaireSelectLastOption = function() {
         this.questionnaireSelect.all(by.tagName('option')).last().click();

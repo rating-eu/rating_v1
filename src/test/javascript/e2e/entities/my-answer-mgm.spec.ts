@@ -33,8 +33,8 @@ describe('MyAnswer e2e test', () => {
 
     it('should create and save MyAnswers', () => {
         myAnswerComponentsPage.clickOnCreateButton();
-        myAnswerDialogPage.setNotesInput('notes');
-        expect(myAnswerDialogPage.getNotesInput()).toMatch('notes');
+        myAnswerDialogPage.setMycheckInput('mycheck');
+        expect(myAnswerDialogPage.getMycheckInput()).toMatch('mycheck');
         myAnswerDialogPage.answerSelectLastOption();
         myAnswerDialogPage.questionSelectLastOption();
         myAnswerDialogPage.questionnaireSelectLastOption();
@@ -65,7 +65,7 @@ export class MyAnswerDialogPage {
     modalTitle = element(by.css('h4#myMyAnswerLabel'));
     saveButton = element(by.css('.modal-footer .btn.btn-primary'));
     closeButton = element(by.css('button.close'));
-    notesInput = element(by.css('input#field_notes'));
+    mycheckInput = element(by.css('input#field_mycheck'));
     answerSelect = element(by.css('select#field_answer'));
     questionSelect = element(by.css('select#field_question'));
     questionnaireSelect = element(by.css('select#field_questionnaire'));
@@ -75,12 +75,12 @@ export class MyAnswerDialogPage {
         return this.modalTitle.getAttribute('jhiTranslate');
     }
 
-    setNotesInput = function(notes) {
-        this.notesInput.sendKeys(notes);
+    setMycheckInput = function(mycheck) {
+        this.mycheckInput.sendKeys(mycheck);
     };
 
-    getNotesInput = function() {
-        return this.notesInput.getAttribute('value');
+    getMycheckInput = function() {
+        return this.mycheckInput.getAttribute('value');
     };
 
     answerSelectLastOption = function() {
