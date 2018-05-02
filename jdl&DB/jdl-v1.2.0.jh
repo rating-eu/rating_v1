@@ -165,11 +165,11 @@ entity Question{
     Created ZonedDateTime,
     Modified ZonedDateTime,
     Order Integer,
-    Type QuestionType
+    QuestionType QuestionType required,
+    AnswerType AnswerType required
 }
 
 entity Answer{
-    Type AnswerType required,
     Name String,
     Created ZonedDateTime,
     Modified ZonedDateTime,
