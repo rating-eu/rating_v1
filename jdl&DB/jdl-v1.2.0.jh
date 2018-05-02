@@ -150,11 +150,16 @@ entity Questionnaire{
     Modified ZonedDateTime
 }
 
+enum QuestionType{
+	REGULAR, RELEVANT, OTHER
+}
+
 entity Question{
     Name String required,
     Created ZonedDateTime,
     Modified ZonedDateTime,
-    Order Integer
+    Order Integer,
+    Type QuestionType
 }
 
 entity Answer{
