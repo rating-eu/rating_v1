@@ -110,8 +110,6 @@ entity AttackStrategy{
     Skill SkillLevel required,
     Resources ResourceLevel required,
     Likelihood Likelihood,
-    Level Level required,
-    Phase Phase required,
     Created ZonedDateTime,
     Modified ZonedDateTime
 }
@@ -208,7 +206,9 @@ relationship OneToMany{
     AssetCategory{asset(name)} to Asset{assetcategory(name)},
     Questionnaire{questions(name)} to Question{questionnaire(name)},
     Question{answers(name)} to Answer{question(name)},
-    CompanyProfile{departments(name)} to Department{companyprofile(name)}
+    CompanyProfile{departments(name)} to Department{companyprofile(name)},
+    Question{levels} to Level,
+    Question{phases} to Phase
 }
 
 relationship OneToOne{
