@@ -5,12 +5,14 @@ entity CompanyProfile{
     Modified ZonedDateTime,
     Type CompType
 }
+
 entity CompanySector{
     Department String required,
     Description String maxlength(2000),
     Created ZonedDateTime,
     Modified ZonedDateTime
 }
+
 enum CompType {
 	INFORMATION,
 	HEALTHCARE,
@@ -41,12 +43,12 @@ enum ContainerType {
 entity DomainOfInfluence {
     Name String required,
     Description String maxlength(2000)
-    }
-
+}
 
 enum AssetType {
     TANGIBLE, INTANGIBLE
 }
+
 enum SkillLevel {
     HIGH, MEDIUM, LOW
 }
@@ -54,6 +56,7 @@ enum SkillLevel {
 enum Intent {
     HOSTILE, NOHOSTILE
 }
+
 enum TA_Access {
     INSIDER, OUTSIDER, BOTH
 }
@@ -62,25 +65,26 @@ entity SelfAssessment{
     Name String required,
     Created ZonedDateTime,
     Modified ZonedDateTime
-    }
+}
+
 entity Container{
 	Name String required,
     Description String maxlength(2000),
     ContainerType ContainerType,
 	Created ZonedDateTime
 }
+
 entity AssetCategory{
 	Name String required,
     Description String maxlength(2000),
 	Type AssetType required,
-
 }
+
 entity Asset{
     Name String required,
     Description String maxlength(2000),
 	Created ZonedDateTime,
     Modified ZonedDateTime
-
 }
 
 entity ThreatAgent{
@@ -90,15 +94,15 @@ entity ThreatAgent{
     Access TA_Access required,
     Created ZonedDateTime,
     Modified ZonedDateTime
-
 }
+
 entity Motivation{
     Name String required,
     Description String maxlength(2000),
 	Created ZonedDateTime,
     Modified ZonedDateTime
-
 }
+
 entity AttackStrategy{
     Name String required,
     Description String maxlength(2000),
@@ -115,15 +119,19 @@ entity AttackStrategy{
 enum Level{
 	HUMAN, IT, PHYSICAL
 }
+
 enum Phase{
     RECONNAISSANCE, WEAPONIZATION, DELIVERY, EXPLOITATION, INSTALLATION, COMMANDCONTROL
 }
+
 enum Likelihood{
     LOW, MEDIUM, HIGH, MEDIUM_HIGH, LOW_MEDIUM
 }
+
 enum ResourceLevel{
     LOW, MEDIUM, HIGH
 }
+
 entity Mitigation{
     Name String,
     Description String maxlength(2000),
@@ -148,21 +156,21 @@ entity Question{
     Modified ZonedDateTime
 }
 
-
 entity Answer{
     Type AnswerType required,
     Name String,
     Created ZonedDateTime,
     Modified ZonedDateTime
-
 }
 
 enum AnswerType{
     YESNO, RANGE5, PERC5, CUSTOM
 }
+
 enum QuestionnairePurpose{
     ID_THREAT_AGENT, SELFASSESSMENT
 }
+
 entity ExternalAudit{
     Name String required
 }
@@ -183,8 +191,6 @@ relationship ManyToMany {
     SelfAssessment{attackstrategy(name)} to AttackStrategy{selfassessment(name)},
     SelfAssessment{externalaudit(name)} to ExternalAudit{selfassessment(name)},
     SelfAssessment{questionnaire(name)} to Questionnaire{selfassessment(name)}
-
-
 }
 
 relationship OneToMany{
@@ -193,14 +199,13 @@ relationship OneToMany{
     Question{answers(name)} to Answer{question(name)},
     CompanyProfile{departments(name)} to CompanySector{companyprofile(name)}
 }
+
 relationship ManyToOne{
     CompanyProfile{user(login)} to User,
     CompanySector{user(login)} to User,
     ExternalAudit{user(login)} to User,
     SelfAssessment{user(login)} to User
-
 }
-
 
 service all with serviceImpl
 
