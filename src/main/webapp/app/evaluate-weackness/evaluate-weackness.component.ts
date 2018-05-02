@@ -38,15 +38,12 @@ export class EvaluateWeacknessComponent implements OnInit, OnDestroy {
     currentSearch: string;
     mySelf: SelfAssessmentMgm = {};
 
-    constructor(
-        private attackStrategyService: AttackStrategyMgmService,
-        private jhiAlertService: JhiAlertService,
-        private eventManager: JhiEventManager,
-        private activatedRoute: ActivatedRoute,
-        private principal: Principal,
-        private mySelfAssessmentService: SelfAssessmentMgmService
-
-) {
+    constructor(private attackStrategyService: AttackStrategyMgmService,
+                private jhiAlertService: JhiAlertService,
+                private eventManager: JhiEventManager,
+                private activatedRoute: ActivatedRoute,
+                private principal: Principal,
+                private mySelfAssessmentService: SelfAssessmentMgmService) {
     }
 
     getAttacksHU_R(level, phase) {
@@ -258,6 +255,7 @@ export class EvaluateWeacknessComponent implements OnInit, OnDestroy {
     previousState() {
         window.history.back();
     }
+
     ngOnDestroy() {
         this.eventManager.destroy(this.eventSubscriber);
     }
@@ -265,6 +263,7 @@ export class EvaluateWeacknessComponent implements OnInit, OnDestroy {
     trackId(index: number, item: AttackStrategyMgm) {
         return item.id;
     }
+
     registerChangeInEvaluateWeakness() {
         this.eventSubscriber = this.eventManager.subscribe('WeaknessListModification', (response) => this.ngOnInit());
     }

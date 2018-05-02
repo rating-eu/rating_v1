@@ -2,6 +2,8 @@ package eu.hermeneut.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import eu.hermeneut.domain.AttackStrategy;
+import eu.hermeneut.domain.enumeration.Level;
+import eu.hermeneut.domain.enumeration.Phase;
 import eu.hermeneut.service.AttackStrategyService;
 import eu.hermeneut.web.rest.errors.BadRequestAlertException;
 import eu.hermeneut.web.rest.util.HeaderUtil;
@@ -15,6 +17,7 @@ import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.StreamSupport;
@@ -90,7 +93,7 @@ public class AttackStrategyResource {
     public List<AttackStrategy> getAllAttackStrategies() {
         log.debug("REST request to get all AttackStrategies");
         return attackStrategyService.findAll();
-        }
+    }
 
     /**
      * GET  /attack-strategies/:id : get the "id" attackStrategy.
@@ -118,6 +121,77 @@ public class AttackStrategyResource {
         log.debug("REST request to delete AttackStrategy : {}", id);
         attackStrategyService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
+    }
+
+
+    /**
+     * GET  /attack-strategies/level/{level} : get all the attackStrategiesByLevel.
+     *
+     * @return the ResponseEntity with status 200 (OK) and the list of attackStrategies in body
+     */
+    @GetMapping("/attack-strategies/level/{level}")
+    @Timed
+    public List<AttackStrategy> getAllAttackStrategiesByLevel(@PathVariable String level) {
+        log.debug("REST request to get all AttackStrategies BY LEVEL");
+        System.out.println("LEVEL " + level);
+        List<AttackStrategy> toReturn = new ArrayList<AttackStrategy>();
+        try {
+            Level l = Level.valueOf(level);
+            toReturn = attackStrategyService.findAllByLevel(l);
+
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        }
+        System.out.println("toRETURN SIZE -----> " + toReturn.size());
+        return toReturn;
+    }
+
+    /**
+     * GET  /attack-strategies/phase/{phase} : get all the attackStrategiesByPhase.
+     *
+     * @return the ResponseEntity with status 200 (OK) and the list of attackStrategies in body
+     */
+    @GetMapping("/attack-strategies/phase/{phase}")
+    @Timed
+    public List<AttackStrategy> getAllAttackStrategiesByPhase(@PathVariable String phase) {
+        log.debug("REST request to get all AttackStrategies BY Phase");
+        System.out.println("PHASE " + phase);
+        List<AttackStrategy> toReturn = new ArrayList<>();
+        try {
+            Phase ph = Phase.valueOf(phase);
+            toReturn = attackStrategyService.findAllByPhase(ph);
+
+        } catch (IllegalArgumentException e) {
+            System.out.println("ERROR-------------------------------------------");
+            e.printStackTrace();
+        }
+        System.out.println("toRETURN SIZE -----> " + toReturn.size());
+        return toReturn;
+    }
+
+
+    /**
+     * GET  /attack-strategies/l/{level}/p/{phase} : get all the attackStrategiesByLevelAndPhase.
+     *
+     * @return the ResponseEntity with status 200 (OK) and the list of attackStrategies in body
+     */
+    @GetMapping("/attack-strategies/l/{level}/p/{phase}")
+    @Timed
+    public List<AttackStrategy> attackStrategiesByLevelAndPhase(@PathVariable String level, @PathVariable String phase) {
+        log.debug("REST request to get all AttackStrategies BY LEVEL AND Phase");
+        System.out.println("PHASE " + phase);
+        List<AttackStrategy> toReturn = new ArrayList<AttackStrategy>();
+        try {
+            Phase ph = Phase.valueOf(phase);
+            Level l = Level.valueOf(level);
+            toReturn = attackStrategyService.findAllByLevelAndPhase(l, ph);
+
+        } catch (IllegalArgumentException e) {
+            System.out.println("ERROR-------------------------------------------");
+            e.printStackTrace();
+        }
+        System.out.println("toRETURN SIZE -----> " + toReturn.size());
+        return toReturn;
     }
 
     /**

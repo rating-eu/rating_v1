@@ -1,6 +1,9 @@
 package eu.hermeneut.service;
 
 import eu.hermeneut.domain.AttackStrategy;
+import eu.hermeneut.domain.enumeration.Level;
+import eu.hermeneut.domain.enumeration.Phase;
+
 import java.util.List;
 
 /**
@@ -42,8 +45,14 @@ public interface AttackStrategyService {
      * Search for the attackStrategy corresponding to the query.
      *
      * @param query the query of the search
-     * 
+     *
      * @return the list of entities
      */
     List<AttackStrategy> search(String query);
+
+    List<AttackStrategy> findAllByLevel(Level level);
+
+    List<AttackStrategy> findAllByPhase(Phase phase);
+
+    List<AttackStrategy> findAllByLevelAndPhase(Level level, Phase phase);
 }
