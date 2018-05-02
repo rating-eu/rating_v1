@@ -181,7 +181,7 @@ entity MyAnswer{
 }
 
 enum AnswerType{
-    YESNO, RANGE5, PERC5, CUSTOM
+    YESNO, RANGE5, PERC5, RANGE3, PERC3, CUSTOM
 }
 
 enum QuestionnairePurpose{
