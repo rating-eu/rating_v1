@@ -46,7 +46,6 @@ describe('AttackStrategy e2e test', () => {
         attackStrategyDialogPage.setModifiedInput(12310020012301);
         expect(attackStrategyDialogPage.getModifiedInput()).toMatch('2001-12-31T02:30');
         // attackStrategyDialogPage.mitigationSelectLastOption();
-        // attackStrategyDialogPage.threatAgentSelectLastOption();
         attackStrategyDialogPage.save();
         expect(attackStrategyDialogPage.getSaveButton().isPresent()).toBeFalsy();
     });
@@ -82,7 +81,6 @@ export class AttackStrategyDialogPage {
     createdInput = element(by.css('input#field_created'));
     modifiedInput = element(by.css('input#field_modified'));
     mitigationSelect = element(by.css('select#field_mitigation'));
-    threatAgentSelect = element(by.css('select#field_threatAgent'));
 
     getModalTitle() {
         return this.modalTitle.getAttribute('jhiTranslate');
@@ -178,22 +176,6 @@ export class AttackStrategyDialogPage {
 
     getMitigationSelectedOption = function() {
         return this.mitigationSelect.element(by.css('option:checked')).getText();
-    };
-
-    threatAgentSelectLastOption = function() {
-        this.threatAgentSelect.all(by.tagName('option')).last().click();
-    };
-
-    threatAgentSelectOption = function(option) {
-        this.threatAgentSelect.sendKeys(option);
-    };
-
-    getThreatAgentSelect = function() {
-        return this.threatAgentSelect;
-    };
-
-    getThreatAgentSelectedOption = function() {
-        return this.threatAgentSelect.element(by.css('option:checked')).getText();
     };
 
     save() {
