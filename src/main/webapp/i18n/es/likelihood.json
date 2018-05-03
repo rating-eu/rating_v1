@@ -3,10 +3,10 @@
         "Likelihood" : {
             "null": "",
             "LOW": "LOW",
+            "LOW_MEDIUM": "LOW_MEDIUM",
             "MEDIUM": "MEDIUM",
-            "HIGH": "HIGH",
             "MEDIUM_HIGH": "MEDIUM_HIGH",
-            "LOW_MEDIUM": "LOW_MEDIUM"
+            "HIGH": "HIGH"
         }
     }
 }

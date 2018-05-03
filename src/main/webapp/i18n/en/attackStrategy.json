@@ -28,7 +28,6 @@
             "levels": "Levels",
             "phases": "Phases",
             "mitigation": "Mitigation",
-            "threatAgent": "Threat Agent",
             "answstrategy": "Answstrategy",
             "selfassessment": "Selfassessment"
         }
