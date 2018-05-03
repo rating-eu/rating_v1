@@ -6,6 +6,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import javax.persistence.*;
 
 import org.springframework.data.elasticsearch.annotations.Document;
+
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -17,7 +18,10 @@ import eu.hermeneut.domain.enumeration.QuestionType;
  * A AnswerWeight.
  */
 @Entity
-@Table(name = "answer_weight")
+@Table(
+    name = "answer_weight",
+    uniqueConstraints = @UniqueConstraint(columnNames = {"likelihood", "question_type"})
+)
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 @Document(indexName = "answerweight")
 public class AnswerWeight implements Serializable {
