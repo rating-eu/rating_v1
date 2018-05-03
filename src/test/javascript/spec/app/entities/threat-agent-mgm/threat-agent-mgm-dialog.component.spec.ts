@@ -11,7 +11,6 @@ import { ThreatAgentMgmService } from '../../../../../../main/webapp/app/entitie
 import { ThreatAgentMgm } from '../../../../../../main/webapp/app/entities/threat-agent-mgm/threat-agent-mgm.model';
 import { MotivationMgmService } from '../../../../../../main/webapp/app/entities/motivation-mgm';
 import { AnswerMgmService } from '../../../../../../main/webapp/app/entities/answer-mgm';
-import { AttackStrategyMgmService } from '../../../../../../main/webapp/app/entities/attack-strategy-mgm';
 import { SelfAssessmentMgmService } from '../../../../../../main/webapp/app/entities/self-assessment-mgm';
 
 describe('Component Tests', () => {
@@ -30,7 +29,6 @@ describe('Component Tests', () => {
                 providers: [
                     MotivationMgmService,
                     AnswerMgmService,
-                    AttackStrategyMgmService,
                     SelfAssessmentMgmService,
                     ThreatAgentMgmService
                 ]

@@ -28,7 +28,6 @@ export class ThreatAgentMgm implements BaseEntity {
         public modified?: any,
         public motivations?: BaseEntity[],
         public answthreats?: BaseEntity[],
-        public strategies?: BaseEntity[],
         public selfassessments?: BaseEntity[],
     ) {
     }
