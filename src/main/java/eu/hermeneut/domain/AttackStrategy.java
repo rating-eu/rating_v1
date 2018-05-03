@@ -88,13 +88,6 @@ public class AttackStrategy implements Serializable {
                inverseJoinColumns = @JoinColumn(name="mitigations_id", referencedColumnName="id"))
     private Set<Mitigation> mitigations = new HashSet<>();
 
-    @ManyToMany
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    @JoinTable(name = "attack_strategy_threat_agent",
-               joinColumns = @JoinColumn(name="attack_strategies_id", referencedColumnName="id"),
-               inverseJoinColumns = @JoinColumn(name="threat_agents_id", referencedColumnName="id"))
-    private Set<ThreatAgent> threatAgents = new HashSet<>();
-
     @ManyToMany(mappedBy = "attacks")
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
@@ -291,31 +284,6 @@ public class AttackStrategy implements Serializable {
 
     public void setMitigations(Set<Mitigation> mitigations) {
         this.mitigations = mitigations;
-    }
-
-    public Set<ThreatAgent> getThreatAgents() {
-        return threatAgents;
-    }
-
-    public AttackStrategy threatAgents(Set<ThreatAgent> threatAgents) {
-        this.threatAgents = threatAgents;
-        return this;
-    }
-
-    public AttackStrategy addThreatAgent(ThreatAgent threatAgent) {
-        this.threatAgents.add(threatAgent);
-        threatAgent.getStrategies().add(this);
-        return this;
-    }
-
-    public AttackStrategy removeThreatAgent(ThreatAgent threatAgent) {
-        this.threatAgents.remove(threatAgent);
-        threatAgent.getStrategies().remove(this);
-        return this;
-    }
-
-    public void setThreatAgents(Set<ThreatAgent> threatAgents) {
-        this.threatAgents = threatAgents;
     }
 
     public Set<Answer> getAnswstrategies() {

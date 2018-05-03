@@ -73,11 +73,6 @@ public class ThreatAgent implements Serializable {
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Answer> answthreats = new HashSet<>();
 
-    @ManyToMany(mappedBy = "threatAgents")
-    @JsonIgnore
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private Set<AttackStrategy> strategies = new HashSet<>();
-
     @ManyToMany(mappedBy = "threatagents")
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
@@ -218,31 +213,6 @@ public class ThreatAgent implements Serializable {
 
     public void setAnswthreats(Set<Answer> answers) {
         this.answthreats = answers;
-    }
-
-    public Set<AttackStrategy> getStrategies() {
-        return strategies;
-    }
-
-    public ThreatAgent strategies(Set<AttackStrategy> attackStrategies) {
-        this.strategies = attackStrategies;
-        return this;
-    }
-
-    public ThreatAgent addStrategy(AttackStrategy attackStrategy) {
-        this.strategies.add(attackStrategy);
-        attackStrategy.getThreatAgents().add(this);
-        return this;
-    }
-
-    public ThreatAgent removeStrategy(AttackStrategy attackStrategy) {
-        this.strategies.remove(attackStrategy);
-        attackStrategy.getThreatAgents().remove(this);
-        return this;
-    }
-
-    public void setStrategies(Set<AttackStrategy> attackStrategies) {
-        this.strategies = attackStrategies;
     }
 
     public Set<SelfAssessment> getSelfassessments() {
