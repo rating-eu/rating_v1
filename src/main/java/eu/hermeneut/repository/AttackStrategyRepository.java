@@ -16,10 +16,10 @@ import java.util.List;
 @SuppressWarnings("unused")
 @Repository
 public interface AttackStrategyRepository extends JpaRepository<AttackStrategy, Long> {
-    @Query("SELECT DISTINCT attack_strategy FROM AttackStrategy attack_strategy LEFT JOIN FETCH attack_strategy.mitigations LEFT JOIN FETCH attack_strategy.threatAgents")
+    @Query("select distinct attack_strategy from AttackStrategy attack_strategy left join fetch attack_strategy.mitigations")
     List<AttackStrategy> findAllWithEagerRelationships();
 
-    @Query("select attack_strategy FROM AttackStrategy attack_strategy LEFT JOIN FETCH attack_strategy.mitigations LEFT JOIN FETCH attack_strategy.threatAgents WHERE attack_strategy.id =:id")
+    @Query("select attack_strategy from AttackStrategy attack_strategy left join fetch attack_strategy.mitigations where attack_strategy.id =:id")
     AttackStrategy findOneWithEagerRelationships(@Param("id") Long id);
 
     @Query("SELECT DISTINCT attack_strategy FROM AttackStrategy attack_strategy INNER JOIN FETCH attack_strategy.levels levels LEFT JOIN FETCH attack_strategy.mitigations LEFT JOIN FETCH attack_strategy.threatAgents WHERE levels.level = :level")
