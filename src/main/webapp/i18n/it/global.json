@@ -27,6 +27,7 @@
                 "levelWrapperMgm": "Level Wrapper",
                 "phaseWrapperMgm": "Phase Wrapper",
                 "answerWeightMgm": "Answer Weight",
+                "likelihoodPositionMgm": "Likelihood Position",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {

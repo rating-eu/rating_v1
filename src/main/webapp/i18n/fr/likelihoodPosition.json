@@ -1,0 +1,24 @@
+
+{
+    "hermeneutApp": {
+        "likelihoodPosition" : {
+            "home": {
+                "title": "LikelihoodPositions",
+                "createLabel": "Créer un nouveau Likelihood Position",
+                "createOrEditLabel": "Créer ou éditer un Likelihood Position",
+                "search": "Recherche pour Likelihood Position"
+            },
+            "created": "Un nouveau Likelihood Position a été créé avec l'identifiant {{ param }}",
+            "updated": "Le Likelihood Position avec l'identifiant {{ param }} a été mis à jour",
+            "deleted": "Le Likelihood Position avec l'identifiant {{ param }} a été supprimé",
+            "delete": {
+                "question": "Etes-vous certain de vouloir supprimer le Likelihood Position {{ id }} ?"
+            },
+            "detail": {
+                "title": "Likelihood Position"
+            },
+            "likelihood": "Likelihood",
+            "position": "Position"
+        }
+    }
+}
