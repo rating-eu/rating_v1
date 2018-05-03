@@ -20,10 +20,10 @@ export const enum ResourceLevel {
 
 export const enum Likelihood {
     'LOW',
+    'LOW_MEDIUM',
     'MEDIUM',
-    'HIGH',
     'MEDIUM_HIGH',
-    'LOW_MEDIUM'
+    'HIGH'
 }
 
 export class AttackStrategyMgm implements BaseEntity {

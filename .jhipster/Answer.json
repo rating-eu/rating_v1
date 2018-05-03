@@ -51,7 +51,7 @@
         {
             "fieldName": "likelihood",
             "fieldType": "Likelihood",
-            "fieldValues": "LOW,MEDIUM,HIGH,MEDIUM_HIGH,LOW_MEDIUM"
+            "fieldValues": "LOW,LOW_MEDIUM,MEDIUM,MEDIUM_HIGH,HIGH"
         }
     ],
     "changelogDate": "20180410085205",

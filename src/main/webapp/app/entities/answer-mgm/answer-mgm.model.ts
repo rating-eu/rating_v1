@@ -2,10 +2,10 @@ import { BaseEntity } from './../../shared';
 
 export const enum Likelihood {
     'LOW',
+    'LOW_MEDIUM',
     'MEDIUM',
-    'HIGH',
     'MEDIUM_HIGH',
-    'LOW_MEDIUM'
+    'HIGH'
 }
 
 export class AnswerMgm implements BaseEntity {
