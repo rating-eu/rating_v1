@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+   <changeSet author="izio (generated)" id="1525333155947-1">
+      <dropForeignKeyConstraint baseTableName="company_sector"
+                                constraintName="fk_company_sector_companyprofile_id"/>
+   </changeSet>
+   <changeSet author="izio (generated)" id="1525333155947-2">
+      <dropForeignKeyConstraint baseTableName="company_sector"
+                                constraintName="fk_company_sector_user_id"/>
+   </changeSet>
+   <changeSet author="izio (generated)" id="1525333155947-3">
+      <dropTable tableName="company_sector"/>
+   </changeSet>
+</databaseChangeLog>
