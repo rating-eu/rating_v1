@@ -22,14 +22,14 @@ public interface AttackStrategyRepository extends JpaRepository<AttackStrategy, 
     @Query("select attack_strategy from AttackStrategy attack_strategy left join fetch attack_strategy.mitigations where attack_strategy.id =:id")
     AttackStrategy findOneWithEagerRelationships(@Param("id") Long id);
 
-    @Query("SELECT DISTINCT attack_strategy FROM AttackStrategy attack_strategy INNER JOIN FETCH attack_strategy.levels levels LEFT JOIN FETCH attack_strategy.mitigations LEFT JOIN FETCH attack_strategy.threatAgents WHERE levels.level = :level")
+    @Query("SELECT DISTINCT attack_strategy FROM AttackStrategy attack_strategy INNER JOIN FETCH attack_strategy.levels levels LEFT JOIN FETCH attack_strategy.mitigations WHERE levels.level = :level")
     List<AttackStrategy> findAllByLevel(@Param("level") Level level);
 
 
-    @Query("SELECT DISTINCT attack_strategy FROM AttackStrategy attack_strategy INNER JOIN FETCH attack_strategy.phases phases LEFT JOIN FETCH attack_strategy.mitigations LEFT JOIN FETCH attack_strategy.threatAgents WHERE phases.phase = :phase")
+    @Query("SELECT DISTINCT attack_strategy FROM AttackStrategy attack_strategy INNER JOIN FETCH attack_strategy.phases phases LEFT JOIN FETCH attack_strategy.mitigations WHERE phases.phase = :phase")
     List<AttackStrategy> findAllByPhase(@Param("phase") Phase phase);
 
 
-    @Query("SELECT DISTINCT attack_strategy FROM AttackStrategy attack_strategy INNER JOIN FETCH attack_strategy.levels levels INNER JOIN FETCH attack_strategy.phases phases LEFT JOIN FETCH attack_strategy.mitigations LEFT JOIN FETCH attack_strategy.threatAgents WHERE levels.level = :level AND phases.phase = :phase")
+    @Query("SELECT DISTINCT attack_strategy FROM AttackStrategy attack_strategy INNER JOIN FETCH attack_strategy.levels levels INNER JOIN FETCH attack_strategy.phases phases LEFT JOIN FETCH attack_strategy.mitigations WHERE levels.level = :level AND phases.phase = :phase")
     List<AttackStrategy> findAllByLevelAndPhase(@Param("level") Level level, @Param("phase") Phase phase);
 }
