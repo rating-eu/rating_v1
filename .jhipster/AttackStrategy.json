@@ -23,14 +23,6 @@
         },
         {
             "relationshipType": "many-to-many",
-            "otherEntityRelationshipName": "strategy",
-            "relationshipName": "threatAgent",
-            "otherEntityName": "threatAgent",
-            "otherEntityField": "name",
-            "ownerSide": true
-        },
-        {
-            "relationshipType": "many-to-many",
             "relationshipName": "answstrategy",
             "otherEntityName": "answer",
             "ownerSide": false,
