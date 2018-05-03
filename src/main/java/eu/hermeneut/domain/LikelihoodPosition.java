@@ -15,7 +15,10 @@ import eu.hermeneut.domain.enumeration.Likelihood;
  * A LikelihoodPosition.
  */
 @Entity
-@Table(name = "likelihood_position")
+@Table(
+    name = "likelihood_position",
+    uniqueConstraints = @UniqueConstraint(columnNames = {"likelihood"})
+)
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 @Document(indexName = "likelihoodposition")
 public class LikelihoodPosition implements Serializable {
