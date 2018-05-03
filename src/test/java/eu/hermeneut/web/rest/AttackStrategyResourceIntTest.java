@@ -40,8 +40,6 @@ import eu.hermeneut.domain.enumeration.AS_Frequency;
 import eu.hermeneut.domain.enumeration.SkillLevel;
 import eu.hermeneut.domain.enumeration.ResourceLevel;
 import eu.hermeneut.domain.enumeration.Likelihood;
-import eu.hermeneut.domain.enumeration.Level;
-import eu.hermeneut.domain.enumeration.Phase;
 /**
  * Test class for the AttackStrategyResource REST controller.
  *
@@ -68,12 +66,6 @@ public class AttackStrategyResourceIntTest {
 
     private static final Likelihood DEFAULT_LIKELIHOOD = Likelihood.LOW;
     private static final Likelihood UPDATED_LIKELIHOOD = Likelihood.MEDIUM;
-
-    private static final Level DEFAULT_LEVEL = Level.HUMAN;
-    private static final Level UPDATED_LEVEL = Level.IT;
-
-    private static final Phase DEFAULT_PHASE = Phase.RECONNAISSANCE;
-    private static final Phase UPDATED_PHASE = Phase.WEAPONIZATION;
 
     private static final ZonedDateTime DEFAULT_CREATED = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
     private static final ZonedDateTime UPDATED_CREATED = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
@@ -131,8 +123,6 @@ public class AttackStrategyResourceIntTest {
             .skill(DEFAULT_SKILL)
             .resources(DEFAULT_RESOURCES)
             .likelihood(DEFAULT_LIKELIHOOD)
-            .level(DEFAULT_LEVEL)
-            .phase(DEFAULT_PHASE)
             .created(DEFAULT_CREATED)
             .modified(DEFAULT_MODIFIED);
         return attackStrategy;
@@ -165,8 +155,6 @@ public class AttackStrategyResourceIntTest {
         assertThat(testAttackStrategy.getSkill()).isEqualTo(DEFAULT_SKILL);
         assertThat(testAttackStrategy.getResources()).isEqualTo(DEFAULT_RESOURCES);
         assertThat(testAttackStrategy.getLikelihood()).isEqualTo(DEFAULT_LIKELIHOOD);
-        assertThat(testAttackStrategy.getLevel()).isEqualTo(DEFAULT_LEVEL);
-        assertThat(testAttackStrategy.getPhase()).isEqualTo(DEFAULT_PHASE);
         assertThat(testAttackStrategy.getCreated()).isEqualTo(DEFAULT_CREATED);
         assertThat(testAttackStrategy.getModified()).isEqualTo(DEFAULT_MODIFIED);
 
@@ -270,42 +258,6 @@ public class AttackStrategyResourceIntTest {
 
     @Test
     @Transactional
-    public void checkLevelIsRequired() throws Exception {
-        int databaseSizeBeforeTest = attackStrategyRepository.findAll().size();
-        // set the field null
-        attackStrategy.setLevel(null);
-
-        // Create the AttackStrategy, which fails.
-
-        restAttackStrategyMockMvc.perform(post("/api/attack-strategies")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(attackStrategy)))
-            .andExpect(status().isBadRequest());
-
-        List<AttackStrategy> attackStrategyList = attackStrategyRepository.findAll();
-        assertThat(attackStrategyList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
-    public void checkPhaseIsRequired() throws Exception {
-        int databaseSizeBeforeTest = attackStrategyRepository.findAll().size();
-        // set the field null
-        attackStrategy.setPhase(null);
-
-        // Create the AttackStrategy, which fails.
-
-        restAttackStrategyMockMvc.perform(post("/api/attack-strategies")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(attackStrategy)))
-            .andExpect(status().isBadRequest());
-
-        List<AttackStrategy> attackStrategyList = attackStrategyRepository.findAll();
-        assertThat(attackStrategyList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
     public void getAllAttackStrategies() throws Exception {
         // Initialize the database
         attackStrategyRepository.saveAndFlush(attackStrategy);
@@ -321,8 +273,6 @@ public class AttackStrategyResourceIntTest {
             .andExpect(jsonPath("$.[*].skill").value(hasItem(DEFAULT_SKILL.toString())))
             .andExpect(jsonPath("$.[*].resources").value(hasItem(DEFAULT_RESOURCES.toString())))
             .andExpect(jsonPath("$.[*].likelihood").value(hasItem(DEFAULT_LIKELIHOOD.toString())))
-            .andExpect(jsonPath("$.[*].level").value(hasItem(DEFAULT_LEVEL.toString())))
-            .andExpect(jsonPath("$.[*].phase").value(hasItem(DEFAULT_PHASE.toString())))
             .andExpect(jsonPath("$.[*].created").value(hasItem(sameInstant(DEFAULT_CREATED))))
             .andExpect(jsonPath("$.[*].modified").value(hasItem(sameInstant(DEFAULT_MODIFIED))));
     }
@@ -344,8 +294,6 @@ public class AttackStrategyResourceIntTest {
             .andExpect(jsonPath("$.skill").value(DEFAULT_SKILL.toString()))
             .andExpect(jsonPath("$.resources").value(DEFAULT_RESOURCES.toString()))
             .andExpect(jsonPath("$.likelihood").value(DEFAULT_LIKELIHOOD.toString()))
-            .andExpect(jsonPath("$.level").value(DEFAULT_LEVEL.toString()))
-            .andExpect(jsonPath("$.phase").value(DEFAULT_PHASE.toString()))
             .andExpect(jsonPath("$.created").value(sameInstant(DEFAULT_CREATED)))
             .andExpect(jsonPath("$.modified").value(sameInstant(DEFAULT_MODIFIED)));
     }
@@ -377,8 +325,6 @@ public class AttackStrategyResourceIntTest {
             .skill(UPDATED_SKILL)
             .resources(UPDATED_RESOURCES)
             .likelihood(UPDATED_LIKELIHOOD)
-            .level(UPDATED_LEVEL)
-            .phase(UPDATED_PHASE)
             .created(UPDATED_CREATED)
             .modified(UPDATED_MODIFIED);
 
@@ -397,8 +343,6 @@ public class AttackStrategyResourceIntTest {
         assertThat(testAttackStrategy.getSkill()).isEqualTo(UPDATED_SKILL);
         assertThat(testAttackStrategy.getResources()).isEqualTo(UPDATED_RESOURCES);
         assertThat(testAttackStrategy.getLikelihood()).isEqualTo(UPDATED_LIKELIHOOD);
-        assertThat(testAttackStrategy.getLevel()).isEqualTo(UPDATED_LEVEL);
-        assertThat(testAttackStrategy.getPhase()).isEqualTo(UPDATED_PHASE);
         assertThat(testAttackStrategy.getCreated()).isEqualTo(UPDATED_CREATED);
         assertThat(testAttackStrategy.getModified()).isEqualTo(UPDATED_MODIFIED);
 
@@ -466,8 +410,6 @@ public class AttackStrategyResourceIntTest {
             .andExpect(jsonPath("$.[*].skill").value(hasItem(DEFAULT_SKILL.toString())))
             .andExpect(jsonPath("$.[*].resources").value(hasItem(DEFAULT_RESOURCES.toString())))
             .andExpect(jsonPath("$.[*].likelihood").value(hasItem(DEFAULT_LIKELIHOOD.toString())))
-            .andExpect(jsonPath("$.[*].level").value(hasItem(DEFAULT_LEVEL.toString())))
-            .andExpect(jsonPath("$.[*].phase").value(hasItem(DEFAULT_PHASE.toString())))
             .andExpect(jsonPath("$.[*].created").value(hasItem(sameInstant(DEFAULT_CREATED))))
             .andExpect(jsonPath("$.[*].modified").value(hasItem(sameInstant(DEFAULT_MODIFIED))));
     }

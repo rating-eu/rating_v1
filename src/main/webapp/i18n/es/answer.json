@@ -20,6 +20,8 @@
             "name": "Name",
             "created": "Created",
             "modified": "Modified",
+            "order": "Order",
+            "likelihood": "Likelihood",
             "threatAgents": "Threat Agents",
             "attacks": "Attacks",
             "myanswer": "Myanswer",

@@ -13,6 +13,8 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.Objects;
 
+import eu.hermeneut.domain.enumeration.Likelihood;
+
 /**
  * A Answer.
  */
@@ -37,6 +39,13 @@ public class Answer implements Serializable {
 
     @Column(name = "modified")
     private ZonedDateTime modified;
+
+    @Column(name = "jhi_order")
+    private Integer order;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "likelihood")
+    private Likelihood likelihood;
 
     @ManyToMany
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
@@ -105,6 +114,32 @@ public class Answer implements Serializable {
 
     public void setModified(ZonedDateTime modified) {
         this.modified = modified;
+    }
+
+    public Integer getOrder() {
+        return order;
+    }
+
+    public Answer order(Integer order) {
+        this.order = order;
+        return this;
+    }
+
+    public void setOrder(Integer order) {
+        this.order = order;
+    }
+
+    public Likelihood getLikelihood() {
+        return likelihood;
+    }
+
+    public Answer likelihood(Likelihood likelihood) {
+        this.likelihood = likelihood;
+        return this;
+    }
+
+    public void setLikelihood(Likelihood likelihood) {
+        this.likelihood = likelihood;
     }
 
     public Set<ThreatAgent> getThreatAgents() {
@@ -211,6 +246,8 @@ public class Answer implements Serializable {
             ", name='" + getName() + "'" +
             ", created='" + getCreated() + "'" +
             ", modified='" + getModified() + "'" +
+            ", order=" + getOrder() +
+            ", likelihood='" + getLikelihood() + "'" +
             "}";
     }
 }

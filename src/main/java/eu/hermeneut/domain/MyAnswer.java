@@ -25,8 +25,8 @@ public class MyAnswer implements Serializable {
     @SequenceGenerator(name = "sequenceGenerator")
     private Long id;
 
-    @Column(name = "notes")
-    private String notes;
+    @Column(name = "mycheck")
+    private String mycheck;
 
     @OneToOne
     @JoinColumn(unique = true)
@@ -52,17 +52,17 @@ public class MyAnswer implements Serializable {
         this.id = id;
     }
 
-    public String getNotes() {
-        return notes;
+    public String getMycheck() {
+        return mycheck;
     }
 
-    public MyAnswer notes(String notes) {
-        this.notes = notes;
+    public MyAnswer mycheck(String mycheck) {
+        this.mycheck = mycheck;
         return this;
     }
 
-    public void setNotes(String notes) {
-        this.notes = notes;
+    public void setMycheck(String mycheck) {
+        this.mycheck = mycheck;
     }
 
     public Answer getAnswer() {
@@ -142,7 +142,7 @@ public class MyAnswer implements Serializable {
     public String toString() {
         return "MyAnswer{" +
             "id=" + getId() +
-            ", notes='" + getNotes() + "'" +
+            ", mycheck='" + getMycheck() + "'" +
             "}";
     }
 }

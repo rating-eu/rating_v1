@@ -39,6 +39,9 @@ describe('Answer e2e test', () => {
         expect(answerDialogPage.getCreatedInput()).toMatch('2001-12-31T02:30');
         answerDialogPage.setModifiedInput(12310020012301);
         expect(answerDialogPage.getModifiedInput()).toMatch('2001-12-31T02:30');
+        answerDialogPage.setOrderInput('5');
+        expect(answerDialogPage.getOrderInput()).toMatch('5');
+        answerDialogPage.likelihoodSelectLastOption();
         // answerDialogPage.threatAgentsSelectLastOption();
         // answerDialogPage.attacksSelectLastOption();
         answerDialogPage.questionSelectLastOption();
@@ -71,6 +74,8 @@ export class AnswerDialogPage {
     nameInput = element(by.css('input#field_name'));
     createdInput = element(by.css('input#field_created'));
     modifiedInput = element(by.css('input#field_modified'));
+    orderInput = element(by.css('input#field_order'));
+    likelihoodSelect = element(by.css('select#field_likelihood'));
     threatAgentsSelect = element(by.css('select#field_threatAgents'));
     attacksSelect = element(by.css('select#field_attacks'));
     questionSelect = element(by.css('select#field_question'));
@@ -103,6 +108,25 @@ export class AnswerDialogPage {
         return this.modifiedInput.getAttribute('value');
     };
 
+    setOrderInput = function(order) {
+        this.orderInput.sendKeys(order);
+    };
+
+    getOrderInput = function() {
+        return this.orderInput.getAttribute('value');
+    };
+
+    setLikelihoodSelect = function(likelihood) {
+        this.likelihoodSelect.sendKeys(likelihood);
+    };
+
+    getLikelihoodSelect = function() {
+        return this.likelihoodSelect.element(by.css('option:checked')).getText();
+    };
+
+    likelihoodSelectLastOption = function() {
+        this.likelihoodSelect.all(by.tagName('option')).last().click();
+    };
     threatAgentsSelectLastOption = function() {
         this.threatAgentsSelect.all(by.tagName('option')).last().click();
     };

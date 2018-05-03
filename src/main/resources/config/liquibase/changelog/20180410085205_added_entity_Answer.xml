@@ -33,6 +33,14 @@
                 <constraints nullable="true" />
             </column>
 
+            <column name="jhi_order" type="integer">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="likelihood" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
             <column name="question_id" type="bigint">
                 <constraints nullable="true" />
             </column>

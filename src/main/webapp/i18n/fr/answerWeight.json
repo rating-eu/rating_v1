@@ -1,0 +1,25 @@
+
+{
+    "hermeneutApp": {
+        "answerWeight" : {
+            "home": {
+                "title": "AnswerWeights",
+                "createLabel": "Créer un nouveau Answer Weight",
+                "createOrEditLabel": "Créer ou éditer un Answer Weight",
+                "search": "Recherche pour Answer Weight"
+            },
+            "created": "Un nouveau Answer Weight a été créé avec l'identifiant {{ param }}",
+            "updated": "Le Answer Weight avec l'identifiant {{ param }} a été mis à jour",
+            "deleted": "Le Answer Weight avec l'identifiant {{ param }} a été supprimé",
+            "delete": {
+                "question": "Etes-vous certain de vouloir supprimer le Answer Weight {{ id }} ?"
+            },
+            "detail": {
+                "title": "Answer Weight"
+            },
+            "likelihood": "Likelihood",
+            "questionType": "Question Type",
+            "weight": "Weight"
+        }
+    }
+}

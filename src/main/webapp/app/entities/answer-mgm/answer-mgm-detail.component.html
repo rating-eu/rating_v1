@@ -16,6 +16,14 @@
         <dd>
             <span>{{answer.modified | date:'medium'}}</span>
         </dd>
+        <dt><span jhiTranslate="hermeneutApp.answer.order">Order</span></dt>
+        <dd>
+            <span>{{answer.order}}</span>
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.answer.likelihood">Likelihood</span></dt>
+        <dd>
+            <span jhiTranslate="{{'hermeneutApp.Likelihood.' + answer.likelihood}}">{{answer.likelihood}}</span>
+        </dd>
         <dt><span jhiTranslate="hermeneutApp.answer.threatAgents">Threat Agents</span></dt>
         <dd>
             <span *ngFor="let threatAgents of answer.threatAgents; let last = last">

@@ -40,8 +40,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(classes = HermeneutApp.class)
 public class MyAnswerResourceIntTest {
 
-    private static final String DEFAULT_NOTES = "AAAAAAAAAA";
-    private static final String UPDATED_NOTES = "BBBBBBBBBB";
+    private static final String DEFAULT_MYCHECK = "AAAAAAAAAA";
+    private static final String UPDATED_MYCHECK = "BBBBBBBBBB";
 
     @Autowired
     private MyAnswerRepository myAnswerRepository;
@@ -87,7 +87,7 @@ public class MyAnswerResourceIntTest {
      */
     public static MyAnswer createEntity(EntityManager em) {
         MyAnswer myAnswer = new MyAnswer()
-            .notes(DEFAULT_NOTES);
+            .mycheck(DEFAULT_MYCHECK);
         return myAnswer;
     }
 
@@ -112,7 +112,7 @@ public class MyAnswerResourceIntTest {
         List<MyAnswer> myAnswerList = myAnswerRepository.findAll();
         assertThat(myAnswerList).hasSize(databaseSizeBeforeCreate + 1);
         MyAnswer testMyAnswer = myAnswerList.get(myAnswerList.size() - 1);
-        assertThat(testMyAnswer.getNotes()).isEqualTo(DEFAULT_NOTES);
+        assertThat(testMyAnswer.getMycheck()).isEqualTo(DEFAULT_MYCHECK);
 
         // Validate the MyAnswer in Elasticsearch
         MyAnswer myAnswerEs = myAnswerSearchRepository.findOne(testMyAnswer.getId());
@@ -149,7 +149,7 @@ public class MyAnswerResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(myAnswer.getId().intValue())))
-            .andExpect(jsonPath("$.[*].notes").value(hasItem(DEFAULT_NOTES.toString())));
+            .andExpect(jsonPath("$.[*].mycheck").value(hasItem(DEFAULT_MYCHECK.toString())));
     }
 
     @Test
@@ -163,7 +163,7 @@ public class MyAnswerResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(myAnswer.getId().intValue()))
-            .andExpect(jsonPath("$.notes").value(DEFAULT_NOTES.toString()));
+            .andExpect(jsonPath("$.mycheck").value(DEFAULT_MYCHECK.toString()));
     }
 
     @Test
@@ -187,7 +187,7 @@ public class MyAnswerResourceIntTest {
         // Disconnect from session so that the updates on updatedMyAnswer are not directly saved in db
         em.detach(updatedMyAnswer);
         updatedMyAnswer
-            .notes(UPDATED_NOTES);
+            .mycheck(UPDATED_MYCHECK);
 
         restMyAnswerMockMvc.perform(put("/api/my-answers")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -198,7 +198,7 @@ public class MyAnswerResourceIntTest {
         List<MyAnswer> myAnswerList = myAnswerRepository.findAll();
         assertThat(myAnswerList).hasSize(databaseSizeBeforeUpdate);
         MyAnswer testMyAnswer = myAnswerList.get(myAnswerList.size() - 1);
-        assertThat(testMyAnswer.getNotes()).isEqualTo(UPDATED_NOTES);
+        assertThat(testMyAnswer.getMycheck()).isEqualTo(UPDATED_MYCHECK);
 
         // Validate the MyAnswer in Elasticsearch
         MyAnswer myAnswerEs = myAnswerSearchRepository.findOne(testMyAnswer.getId());
@@ -256,7 +256,7 @@ public class MyAnswerResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(myAnswer.getId().intValue())))
-            .andExpect(jsonPath("$.[*].notes").value(hasItem(DEFAULT_NOTES.toString())));
+            .andExpect(jsonPath("$.[*].mycheck").value(hasItem(DEFAULT_MYCHECK.toString())));
     }
 
     @Test

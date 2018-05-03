@@ -5,33 +5,35 @@ entity CompanyProfile{
     Modified ZonedDateTime,
     Type CompType
 }
-entity CompanySector{
-    Department String required,
+
+entity Department{
+    Name String required,
     Description String maxlength(2000),
     Created ZonedDateTime,
     Modified ZonedDateTime
 }
+
 enum CompType {
-	INFORMATION,
-	HEALTHCARE,
-	FINANCE,
-	ACCOMODATION,
-	ADMINISTRATIVE,
-	AGRICOLTURE,
-	CONSTRUCTION,
-	EDUCATION,
-	ENTERTAINMENT,
-	MANAGEMENT,
-	MANUFACTURING,
-	MINING,
-	OTHERSERVICES,
-	PROFESSIONAL,
-	PUBLIC,
-	REALESTATE,
-	RETAILS,
-	TRADE,
-	TRANSPORTATION,
-	UTILITIES
+    INFORMATION,
+    HEALTHCARE,
+    FINANCE,
+    ACCOMODATION,
+    ADMINISTRATIVE,
+    AGRICOLTURE,
+    CONSTRUCTION,
+    EDUCATION,
+    ENTERTAINMENT,
+    MANAGEMENT,
+    MANUFACTURING,
+    MINING,
+    OTHERSERVICES,
+    PROFESSIONAL,
+    PUBLIC,
+    REALESTATE,
+    RETAILS,
+    TRADE,
+    TRANSPORTATION,
+    UTILITIES
 }
 
 enum ContainerType {
@@ -41,12 +43,12 @@ enum ContainerType {
 entity DomainOfInfluence {
     Name String required,
     Description String maxlength(2000)
-    }
-
+}
 
 enum AssetType {
     TANGIBLE, INTANGIBLE
 }
+
 enum SkillLevel {
     HIGH, MEDIUM, LOW
 }
@@ -54,6 +56,7 @@ enum SkillLevel {
 enum Intent {
     HOSTILE, NOHOSTILE
 }
+
 enum TA_Access {
     INSIDER, OUTSIDER, BOTH
 }
@@ -62,25 +65,26 @@ entity SelfAssessment{
     Name String required,
     Created ZonedDateTime,
     Modified ZonedDateTime
-    }
+}
+
 entity Container{
-	Name String required,
+    Name String required,
     Description String maxlength(2000),
     ContainerType ContainerType,
-	Created ZonedDateTime
+    Created ZonedDateTime
 }
-entity AssetCategory{
-	Name String required,
-    Description String maxlength(2000),
-	Type AssetType required,
 
+entity AssetCategory{
+    Name String required,
+    Description String maxlength(2000),
+    Type AssetType required,
 }
+
 entity Asset{
     Name String required,
     Description String maxlength(2000),
-	Created ZonedDateTime,
+    Created ZonedDateTime,
     Modified ZonedDateTime
-
 }
 
 entity ThreatAgent{
@@ -90,15 +94,15 @@ entity ThreatAgent{
     Access TA_Access required,
     Created ZonedDateTime,
     Modified ZonedDateTime
-
 }
+
 entity Motivation{
     Name String required,
     Description String maxlength(2000),
-	Created ZonedDateTime,
+    Created ZonedDateTime,
     Modified ZonedDateTime
-
 }
+
 entity AttackStrategy{
     Name String required,
     Description String maxlength(2000),
@@ -106,24 +110,34 @@ entity AttackStrategy{
     Skill SkillLevel required,
     Resources ResourceLevel required,
     Likelihood Likelihood,
-    Level Level required,
-    Phase Phase required,
     Created ZonedDateTime,
     Modified ZonedDateTime
 }
 
 enum Level{
-	HUMAN, IT, PHYSICAL
+    HUMAN, IT, PHYSICAL
 }
+
+entity LevelWrapper{
+	level Level
+}
+
 enum Phase{
     RECONNAISSANCE, WEAPONIZATION, DELIVERY, EXPLOITATION, INSTALLATION, COMMANDCONTROL
 }
-enum Likelihood{
-    LOW, MEDIUM, HIGH, MEDIUM_HIGH, LOW_MEDIUM
+
+entity PhaseWrapper{
+	phase Phase
 }
+
+enum Likelihood{
+    LOW, LOW_MEDIUM, MEDIUM, MEDIUM_HIGH, HIGH
+}
+
 enum ResourceLevel{
     LOW, MEDIUM, HIGH
 }
+
 entity Mitigation{
     Name String,
     Description String maxlength(2000),
@@ -137,32 +151,50 @@ enum AS_Frequency{
 
 entity Questionnaire{
     Name String required,
-    Scope QuestionnairePurpose required,
-	Created ZonedDateTime,
+    Purpose QuestionnairePurpose required,
+    Created ZonedDateTime,
     Modified ZonedDateTime
+}
+
+enum QuestionType{
+	REGULAR, RELEVANT, OTHER
 }
 
 entity Question{
     Name String required,
     Created ZonedDateTime,
-    Modified ZonedDateTime
+    Modified ZonedDateTime,
+    Order Integer,
+    QuestionType QuestionType required,
+    AnswerType AnswerType required
 }
 
-
 entity Answer{
-    Type AnswerType required,
     Name String,
     Created ZonedDateTime,
-    Modified ZonedDateTime
+    Modified ZonedDateTime,
+    Order Integer,
+    Likelihood Likelihood
+}
 
+entity AnswerWeight{
+	Likelihood Likelihood,
+    QuestionType QuestionType,
+    Weight Integer
+}
+
+entity MyAnswer{
+    Mycheck String,
 }
 
 enum AnswerType{
-    YESNO, RANGE5, PERC5, CUSTOM
+    YESNO, RANGE5, PERC5, RANGE3, PERC3, CUSTOM
 }
+
 enum QuestionnairePurpose{
     ID_THREAT_AGENT, SELFASSESSMENT
 }
+
 entity ExternalAudit{
     Name String required
 }
@@ -175,32 +207,37 @@ relationship ManyToMany {
     AttackStrategy{mitigation(name)} to Mitigation{countermeasure},
     Answer{threatAgents(name)} to ThreatAgent{answthreat},
     Answer{attacks(name)} to AttackStrategy{answstrategy},
-    AttackStrategy{threatAgent(name)} to ThreatAgent{strategy},
     SelfAssessment{companyprofiles(name)} to CompanyProfile{selfassessment(name)},
- 	SelfAssessment{companysector(department)} to CompanySector{selfassessment(name)},
+    SelfAssessment{department(name)} to Department{selfassessment(name)},
     SelfAssessment{asset(name)} to Asset{selfassessment(name)},
     SelfAssessment{threatagent(name)} to ThreatAgent{selfassessment(name)},
     SelfAssessment{attackstrategy(name)} to AttackStrategy{selfassessment(name)},
     SelfAssessment{externalaudit(name)} to ExternalAudit{selfassessment(name)},
     SelfAssessment{questionnaire(name)} to Questionnaire{selfassessment(name)}
-
-
 }
 
 relationship OneToMany{
     AssetCategory{asset(name)} to Asset{assetcategory(name)},
     Questionnaire{questions(name)} to Question{questionnaire(name)},
     Question{answers(name)} to Answer{question(name)},
-    CompanyProfile{departments(name)} to CompanySector{companyprofile(name)}
+    CompanyProfile{departments(name)} to Department{companyprofile(name)},
+    AttackStrategy{levels} to LevelWrapper
+    AttackStrategy{phases} to PhaseWrapper
 }
+
+relationship OneToOne{
+    MyAnswer{answer(name)}  to Answer{myanswer(mycheck)},
+    MyAnswer{question(name)} to Question{myanswer(mycheck)},
+    MyAnswer{questionnaire(name)} to Questionnaire{myanswer(mycheck)}
+}
+
 relationship ManyToOne{
     CompanyProfile{user(login)} to User,
-    CompanySector{user(login)} to User,
+    Department{user(login)} to User,
     ExternalAudit{user(login)} to User,
-    SelfAssessment{user(login)} to User
-
+    SelfAssessment{user(login)} to User,
+    MyAnswer{user(login)} to User
 }
-
 
 service all with serviceImpl
 

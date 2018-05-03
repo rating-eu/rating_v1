@@ -41,14 +41,11 @@ describe('AttackStrategy e2e test', () => {
         attackStrategyDialogPage.skillSelectLastOption();
         attackStrategyDialogPage.resourcesSelectLastOption();
         attackStrategyDialogPage.likelihoodSelectLastOption();
-        attackStrategyDialogPage.levelSelectLastOption();
-        attackStrategyDialogPage.phaseSelectLastOption();
         attackStrategyDialogPage.setCreatedInput(12310020012301);
         expect(attackStrategyDialogPage.getCreatedInput()).toMatch('2001-12-31T02:30');
         attackStrategyDialogPage.setModifiedInput(12310020012301);
         expect(attackStrategyDialogPage.getModifiedInput()).toMatch('2001-12-31T02:30');
         // attackStrategyDialogPage.mitigationSelectLastOption();
-        // attackStrategyDialogPage.threatAgentSelectLastOption();
         attackStrategyDialogPage.save();
         expect(attackStrategyDialogPage.getSaveButton().isPresent()).toBeFalsy();
     });
@@ -81,12 +78,9 @@ export class AttackStrategyDialogPage {
     skillSelect = element(by.css('select#field_skill'));
     resourcesSelect = element(by.css('select#field_resources'));
     likelihoodSelect = element(by.css('select#field_likelihood'));
-    levelSelect = element(by.css('select#field_level'));
-    phaseSelect = element(by.css('select#field_phase'));
     createdInput = element(by.css('input#field_created'));
     modifiedInput = element(by.css('input#field_modified'));
     mitigationSelect = element(by.css('select#field_mitigation'));
-    threatAgentSelect = element(by.css('select#field_threatAgent'));
 
     getModalTitle() {
         return this.modalTitle.getAttribute('jhiTranslate');
@@ -152,28 +146,6 @@ export class AttackStrategyDialogPage {
     likelihoodSelectLastOption = function() {
         this.likelihoodSelect.all(by.tagName('option')).last().click();
     };
-    setLevelSelect = function(level) {
-        this.levelSelect.sendKeys(level);
-    };
-
-    getLevelSelect = function() {
-        return this.levelSelect.element(by.css('option:checked')).getText();
-    };
-
-    levelSelectLastOption = function() {
-        this.levelSelect.all(by.tagName('option')).last().click();
-    };
-    setPhaseSelect = function(phase) {
-        this.phaseSelect.sendKeys(phase);
-    };
-
-    getPhaseSelect = function() {
-        return this.phaseSelect.element(by.css('option:checked')).getText();
-    };
-
-    phaseSelectLastOption = function() {
-        this.phaseSelect.all(by.tagName('option')).last().click();
-    };
     setCreatedInput = function(created) {
         this.createdInput.sendKeys(created);
     };
@@ -204,22 +176,6 @@ export class AttackStrategyDialogPage {
 
     getMitigationSelectedOption = function() {
         return this.mitigationSelect.element(by.css('option:checked')).getText();
-    };
-
-    threatAgentSelectLastOption = function() {
-        this.threatAgentSelect.all(by.tagName('option')).last().click();
-    };
-
-    threatAgentSelectOption = function(option) {
-        this.threatAgentSelect.sendKeys(option);
-    };
-
-    getThreatAgentSelect = function() {
-        return this.threatAgentSelect;
-    };
-
-    getThreatAgentSelectedOption = function() {
-        return this.threatAgentSelect.element(by.css('option:checked')).getText();
     };
 
     save() {

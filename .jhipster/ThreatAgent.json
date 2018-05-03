@@ -18,13 +18,6 @@
         },
         {
             "relationshipType": "many-to-many",
-            "relationshipName": "strategy",
-            "otherEntityName": "attackStrategy",
-            "ownerSide": false,
-            "otherEntityRelationshipName": "threatAgent"
-        },
-        {
-            "relationshipType": "many-to-many",
             "relationshipName": "selfassessment",
             "otherEntityName": "selfAssessment",
             "ownerSide": false,

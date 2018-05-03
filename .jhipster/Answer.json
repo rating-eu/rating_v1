@@ -43,6 +43,15 @@
         {
             "fieldName": "modified",
             "fieldType": "ZonedDateTime"
+        },
+        {
+            "fieldName": "order",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "likelihood",
+            "fieldType": "Likelihood",
+            "fieldValues": "LOW,LOW_MEDIUM,MEDIUM,MEDIUM_HIGH,HIGH"
         }
     ],
     "changelogDate": "20180410085205",

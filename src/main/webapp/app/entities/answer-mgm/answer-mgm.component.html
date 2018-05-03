@@ -33,6 +33,8 @@
             <th><span jhiTranslate="hermeneutApp.answer.name">Name</span></th>
             <th><span jhiTranslate="hermeneutApp.answer.created">Created</span></th>
             <th><span jhiTranslate="hermeneutApp.answer.modified">Modified</span></th>
+            <th><span jhiTranslate="hermeneutApp.answer.order">Order</span></th>
+            <th><span jhiTranslate="hermeneutApp.answer.likelihood">Likelihood</span></th>
             <th><span jhiTranslate="hermeneutApp.answer.threatAgents">Threat Agents</span></th>
             <th><span jhiTranslate="hermeneutApp.answer.attacks">Attacks</span></th>
             <th><span jhiTranslate="hermeneutApp.answer.question">Question</span></th>
@@ -45,6 +47,8 @@
                 <td>{{answer.name}}</td>
                 <td>{{answer.created | date:'medium'}}</td>
                 <td>{{answer.modified | date:'medium'}}</td>
+                <td>{{answer.order}}</td>
+                <td jhiTranslate="{{'hermeneutApp.Likelihood.' + answer.likelihood}}">{{answer.likelihood}}</td>
                 <td>
                     <span *ngFor="let threatAgents of answer.threatAgents; let last = last">
                             <a class="form-control-static" [routerLink]="['../threat-agent-mgm', threatAgents?.id ]">{{threatAgents.name}}</a>{{last ? '' : ', '}}

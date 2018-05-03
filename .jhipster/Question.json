@@ -38,9 +38,21 @@
             "fieldType": "ZonedDateTime"
         },
         {
-            "fieldName": "type",
+            "fieldName": "order",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "questionType",
+            "fieldType": "QuestionType",
+            "fieldValues": "REGULAR,RELEVANT,OTHER",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "answerType",
             "fieldType": "AnswerType",
-            "fieldValues": "YESNO,RANGE5,PERC5,CUSTOM,RANGE3,PERC3",
+            "fieldValues": "YESNO,RANGE5,PERC5,RANGE3,PERC3,CUSTOM",
             "fieldValidateRules": [
                 "required"
             ]

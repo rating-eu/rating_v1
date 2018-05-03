@@ -24,6 +24,9 @@
                 "externalAuditMgm": "External Audit",
                 "departmentMgm": "Department",
                 "myAnswerMgm": "My Answer",
+                "levelWrapperMgm": "Level Wrapper",
+                "phaseWrapperMgm": "Phase Wrapper",
+                "answerWeightMgm": "Answer Weight",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {

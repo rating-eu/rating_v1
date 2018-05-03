@@ -38,18 +38,37 @@
             </div>
         </div>
         <div class="form-group">
-            <label class="form-control-label" jhiTranslate="hermeneutApp.question.type" for="field_type">Type</label>
-            <select class="form-control" name="type" [(ngModel)]="question.type" id="field_type"  required>
+            <label class="form-control-label" jhiTranslate="hermeneutApp.question.order" for="field_order">Order</label>
+            <input type="number" class="form-control" name="order" id="field_order"
+                [(ngModel)]="question.order" />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="hermeneutApp.question.questionType" for="field_questionType">Question Type</label>
+            <select class="form-control" name="questionType" [(ngModel)]="question.questionType" id="field_questionType"  required>
+                <option value="REGULAR">{{'hermeneutApp.QuestionType.REGULAR' | translate}}</option>
+                <option value="RELEVANT">{{'hermeneutApp.QuestionType.RELEVANT' | translate}}</option>
+                <option value="OTHER">{{'hermeneutApp.QuestionType.OTHER' | translate}}</option>
+            </select>
+            <div [hidden]="!(editForm.controls.questionType?.dirty && editForm.controls.questionType?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.questionType?.errors?.required" jhiTranslate="entity.validation.required">
+                   This field is required.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="hermeneutApp.question.answerType" for="field_answerType">Answer Type</label>
+            <select class="form-control" name="answerType" [(ngModel)]="question.answerType" id="field_answerType"  required>
                 <option value="YESNO">{{'hermeneutApp.AnswerType.YESNO' | translate}}</option>
                 <option value="RANGE5">{{'hermeneutApp.AnswerType.RANGE5' | translate}}</option>
                 <option value="PERC5">{{'hermeneutApp.AnswerType.PERC5' | translate}}</option>
-                <option value="CUSTOM">{{'hermeneutApp.AnswerType.CUSTOM' | translate}}</option>
                 <option value="RANGE3">{{'hermeneutApp.AnswerType.RANGE3' | translate}}</option>
                 <option value="PERC3">{{'hermeneutApp.AnswerType.PERC3' | translate}}</option>
+                <option value="CUSTOM">{{'hermeneutApp.AnswerType.CUSTOM' | translate}}</option>
             </select>
-            <div [hidden]="!(editForm.controls.type?.dirty && editForm.controls.type?.invalid)">
+            <div [hidden]="!(editForm.controls.answerType?.dirty && editForm.controls.answerType?.invalid)">
                 <small class="form-text text-danger"
-                   [hidden]="!editForm.controls.type?.errors?.required" jhiTranslate="entity.validation.required">
+                   [hidden]="!editForm.controls.answerType?.errors?.required" jhiTranslate="entity.validation.required">
                    This field is required.
                 </small>
             </div>

@@ -1,19 +1,19 @@
-import {Component, OnInit, OnDestroy} from '@angular/core';
-import {HttpResponse, HttpErrorResponse} from '@angular/common/http';
-import {ActivatedRoute} from '@angular/router';
-import {Subscription} from 'rxjs/Subscription';
-import {JhiEventManager, JhiAlertService} from 'ng-jhipster';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
+import { ActivatedRoute } from '@angular/router';
+import { Subscription } from 'rxjs/Subscription';
+import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
 
-import {AttackStrategyMgm} from './attack-strategy-mgm.model';
-import {AttackStrategyMgmService} from './attack-strategy-mgm.service';
-import {Principal} from '../../shared';
+import { AttackStrategyMgm } from './attack-strategy-mgm.model';
+import { AttackStrategyMgmService } from './attack-strategy-mgm.service';
+import { Principal } from '../../shared';
 
 @Component({
     selector: 'jhi-attack-strategy-mgm',
     templateUrl: './attack-strategy-mgm.component.html'
 })
 export class AttackStrategyMgmComponent implements OnInit, OnDestroy {
-    attackStrategies: AttackStrategyMgm[];
+attackStrategies: AttackStrategyMgm[];
     currentAccount: any;
     eventSubscriber: Subscription;
     currentSearch: string;
@@ -33,12 +33,12 @@ export class AttackStrategyMgmComponent implements OnInit, OnDestroy {
         if (this.currentSearch) {
             this.attackStrategyService.search({
                 query: this.currentSearch,
-            }).subscribe(
-                (res: HttpResponse<AttackStrategyMgm[]>) => this.attackStrategies = res.body,
-                (res: HttpErrorResponse) => this.onError(res.message)
-            );
+                }).subscribe(
+                    (res: HttpResponse<AttackStrategyMgm[]>) => this.attackStrategies = res.body,
+                    (res: HttpErrorResponse) => this.onError(res.message)
+                );
             return;
-        }
+       }
         this.attackStrategyService.query().subscribe(
             (res: HttpResponse<AttackStrategyMgm[]>) => {
                 this.attackStrategies = res.body;
@@ -60,7 +60,6 @@ export class AttackStrategyMgmComponent implements OnInit, OnDestroy {
         this.currentSearch = '';
         this.loadAll();
     }
-
     ngOnInit() {
         this.loadAll();
         this.principal.identity().then((account) => {
@@ -76,7 +75,6 @@ export class AttackStrategyMgmComponent implements OnInit, OnDestroy {
     trackId(index: number, item: AttackStrategyMgm) {
         return item.id;
     }
-
     registerChangeInAttackStrategies() {
         this.eventSubscriber = this.eventManager.subscribe('attackStrategyListModification', (response) => this.loadAll());
     }

@@ -14,6 +14,8 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.Objects;
 
+import eu.hermeneut.domain.enumeration.QuestionType;
+
 import eu.hermeneut.domain.enumeration.AnswerType;
 
 /**
@@ -42,10 +44,18 @@ public class Question implements Serializable {
     @Column(name = "modified")
     private ZonedDateTime modified;
 
+    @Column(name = "jhi_order")
+    private Integer order;
+
     @NotNull
     @Enumerated(EnumType.STRING)
-    @Column(name = "jhi_type", nullable = false)
-    private AnswerType type;
+    @Column(name = "question_type", nullable = false)
+    private QuestionType questionType;
+
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    @Column(name = "answer_type", nullable = false)
+    private AnswerType answerType;
 
     @OneToMany(mappedBy = "question")
     @JsonIgnore
@@ -107,17 +117,43 @@ public class Question implements Serializable {
         this.modified = modified;
     }
 
-    public AnswerType getType() {
-        return type;
+    public Integer getOrder() {
+        return order;
     }
 
-    public Question type(AnswerType type) {
-        this.type = type;
+    public Question order(Integer order) {
+        this.order = order;
         return this;
     }
 
-    public void setType(AnswerType type) {
-        this.type = type;
+    public void setOrder(Integer order) {
+        this.order = order;
+    }
+
+    public QuestionType getQuestionType() {
+        return questionType;
+    }
+
+    public Question questionType(QuestionType questionType) {
+        this.questionType = questionType;
+        return this;
+    }
+
+    public void setQuestionType(QuestionType questionType) {
+        this.questionType = questionType;
+    }
+
+    public AnswerType getAnswerType() {
+        return answerType;
+    }
+
+    public Question answerType(AnswerType answerType) {
+        this.answerType = answerType;
+        return this;
+    }
+
+    public void setAnswerType(AnswerType answerType) {
+        this.answerType = answerType;
     }
 
     public Set<Answer> getAnswers() {
@@ -199,7 +235,9 @@ public class Question implements Serializable {
             ", name='" + getName() + "'" +
             ", created='" + getCreated() + "'" +
             ", modified='" + getModified() + "'" +
-            ", type='" + getType() + "'" +
+            ", order=" + getOrder() +
+            ", questionType='" + getQuestionType() + "'" +
+            ", answerType='" + getAnswerType() + "'" +
             "}";
     }
 }

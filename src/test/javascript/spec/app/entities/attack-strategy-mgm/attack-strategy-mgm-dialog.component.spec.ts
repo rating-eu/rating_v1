@@ -10,7 +10,6 @@ import { AttackStrategyMgmDialogComponent } from '../../../../../../main/webapp/
 import { AttackStrategyMgmService } from '../../../../../../main/webapp/app/entities/attack-strategy-mgm/attack-strategy-mgm.service';
 import { AttackStrategyMgm } from '../../../../../../main/webapp/app/entities/attack-strategy-mgm/attack-strategy-mgm.model';
 import { MitigationMgmService } from '../../../../../../main/webapp/app/entities/mitigation-mgm';
-import { ThreatAgentMgmService } from '../../../../../../main/webapp/app/entities/threat-agent-mgm';
 import { AnswerMgmService } from '../../../../../../main/webapp/app/entities/answer-mgm';
 import { SelfAssessmentMgmService } from '../../../../../../main/webapp/app/entities/self-assessment-mgm';
 
@@ -29,7 +28,6 @@ describe('Component Tests', () => {
                 declarations: [AttackStrategyMgmDialogComponent],
                 providers: [
                     MitigationMgmService,
-                    ThreatAgentMgmService,
                     AnswerMgmService,
                     SelfAssessmentMgmService,
                     AttackStrategyMgmService

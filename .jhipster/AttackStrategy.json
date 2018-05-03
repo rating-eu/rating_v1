@@ -2,18 +2,22 @@
     "fluentMethods": true,
     "relationships": [
         {
+            "relationshipType": "one-to-many",
+            "relationshipName": "levels",
+            "otherEntityName": "levelWrapper",
+            "otherEntityRelationshipName": "attackStrategy"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "phases",
+            "otherEntityName": "phaseWrapper",
+            "otherEntityRelationshipName": "attackStrategy"
+        },
+        {
             "relationshipType": "many-to-many",
             "otherEntityRelationshipName": "countermeasure",
             "relationshipName": "mitigation",
             "otherEntityName": "mitigation",
-            "otherEntityField": "name",
-            "ownerSide": true
-        },
-        {
-            "relationshipType": "many-to-many",
-            "otherEntityRelationshipName": "strategy",
-            "relationshipName": "threatAgent",
-            "otherEntityName": "threatAgent",
             "otherEntityField": "name",
             "ownerSide": true
         },
@@ -75,23 +79,7 @@
         {
             "fieldName": "likelihood",
             "fieldType": "Likelihood",
-            "fieldValues": "LOW,MEDIUM,HIGH,MEDIUM_HIGH,LOW_MEDIUM"
-        },
-        {
-            "fieldName": "level",
-            "fieldType": "Level",
-            "fieldValues": "HUMAN,IT,PHYSICAL",
-            "fieldValidateRules": [
-                "required"
-            ]
-        },
-        {
-            "fieldName": "phase",
-            "fieldType": "Phase",
-            "fieldValues": "RECONNAISSANCE,WEAPONIZATION,DELIVERY,EXPLOITATION,INSTALLATION,COMMANDCONTROL",
-            "fieldValidateRules": [
-                "required"
-            ]
+            "fieldValues": "LOW,LOW_MEDIUM,MEDIUM,MEDIUM_HIGH,HIGH"
         },
         {
             "fieldName": "created",

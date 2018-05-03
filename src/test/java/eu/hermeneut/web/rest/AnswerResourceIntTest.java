@@ -36,6 +36,7 @@ import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+import eu.hermeneut.domain.enumeration.Likelihood;
 /**
  * Test class for the AnswerResource REST controller.
  *
@@ -53,6 +54,12 @@ public class AnswerResourceIntTest {
 
     private static final ZonedDateTime DEFAULT_MODIFIED = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
     private static final ZonedDateTime UPDATED_MODIFIED = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
+
+    private static final Integer DEFAULT_ORDER = 1;
+    private static final Integer UPDATED_ORDER = 2;
+
+    private static final Likelihood DEFAULT_LIKELIHOOD = Likelihood.LOW;
+    private static final Likelihood UPDATED_LIKELIHOOD = Likelihood.MEDIUM;
 
     @Autowired
     private AnswerRepository answerRepository;
@@ -100,7 +107,9 @@ public class AnswerResourceIntTest {
         Answer answer = new Answer()
             .name(DEFAULT_NAME)
             .created(DEFAULT_CREATED)
-            .modified(DEFAULT_MODIFIED);
+            .modified(DEFAULT_MODIFIED)
+            .order(DEFAULT_ORDER)
+            .likelihood(DEFAULT_LIKELIHOOD);
         return answer;
     }
 
@@ -128,6 +137,8 @@ public class AnswerResourceIntTest {
         assertThat(testAnswer.getName()).isEqualTo(DEFAULT_NAME);
         assertThat(testAnswer.getCreated()).isEqualTo(DEFAULT_CREATED);
         assertThat(testAnswer.getModified()).isEqualTo(DEFAULT_MODIFIED);
+        assertThat(testAnswer.getOrder()).isEqualTo(DEFAULT_ORDER);
+        assertThat(testAnswer.getLikelihood()).isEqualTo(DEFAULT_LIKELIHOOD);
 
         // Validate the Answer in Elasticsearch
         Answer answerEs = answerSearchRepository.findOne(testAnswer.getId());
@@ -168,7 +179,9 @@ public class AnswerResourceIntTest {
             .andExpect(jsonPath("$.[*].id").value(hasItem(answer.getId().intValue())))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
             .andExpect(jsonPath("$.[*].created").value(hasItem(sameInstant(DEFAULT_CREATED))))
-            .andExpect(jsonPath("$.[*].modified").value(hasItem(sameInstant(DEFAULT_MODIFIED))));
+            .andExpect(jsonPath("$.[*].modified").value(hasItem(sameInstant(DEFAULT_MODIFIED))))
+            .andExpect(jsonPath("$.[*].order").value(hasItem(DEFAULT_ORDER)))
+            .andExpect(jsonPath("$.[*].likelihood").value(hasItem(DEFAULT_LIKELIHOOD.toString())));
     }
 
     @Test
@@ -184,7 +197,9 @@ public class AnswerResourceIntTest {
             .andExpect(jsonPath("$.id").value(answer.getId().intValue()))
             .andExpect(jsonPath("$.name").value(DEFAULT_NAME.toString()))
             .andExpect(jsonPath("$.created").value(sameInstant(DEFAULT_CREATED)))
-            .andExpect(jsonPath("$.modified").value(sameInstant(DEFAULT_MODIFIED)));
+            .andExpect(jsonPath("$.modified").value(sameInstant(DEFAULT_MODIFIED)))
+            .andExpect(jsonPath("$.order").value(DEFAULT_ORDER))
+            .andExpect(jsonPath("$.likelihood").value(DEFAULT_LIKELIHOOD.toString()));
     }
 
     @Test
@@ -210,7 +225,9 @@ public class AnswerResourceIntTest {
         updatedAnswer
             .name(UPDATED_NAME)
             .created(UPDATED_CREATED)
-            .modified(UPDATED_MODIFIED);
+            .modified(UPDATED_MODIFIED)
+            .order(UPDATED_ORDER)
+            .likelihood(UPDATED_LIKELIHOOD);
 
         restAnswerMockMvc.perform(put("/api/answers")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -224,6 +241,8 @@ public class AnswerResourceIntTest {
         assertThat(testAnswer.getName()).isEqualTo(UPDATED_NAME);
         assertThat(testAnswer.getCreated()).isEqualTo(UPDATED_CREATED);
         assertThat(testAnswer.getModified()).isEqualTo(UPDATED_MODIFIED);
+        assertThat(testAnswer.getOrder()).isEqualTo(UPDATED_ORDER);
+        assertThat(testAnswer.getLikelihood()).isEqualTo(UPDATED_LIKELIHOOD);
 
         // Validate the Answer in Elasticsearch
         Answer answerEs = answerSearchRepository.findOne(testAnswer.getId());
@@ -285,7 +304,9 @@ public class AnswerResourceIntTest {
             .andExpect(jsonPath("$.[*].id").value(hasItem(answer.getId().intValue())))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
             .andExpect(jsonPath("$.[*].created").value(hasItem(sameInstant(DEFAULT_CREATED))))
-            .andExpect(jsonPath("$.[*].modified").value(hasItem(sameInstant(DEFAULT_MODIFIED))));
+            .andExpect(jsonPath("$.[*].modified").value(hasItem(sameInstant(DEFAULT_MODIFIED))))
+            .andExpect(jsonPath("$.[*].order").value(hasItem(DEFAULT_ORDER)))
+            .andExpect(jsonPath("$.[*].likelihood").value(hasItem(DEFAULT_LIKELIHOOD.toString())));
     }
 
     @Test

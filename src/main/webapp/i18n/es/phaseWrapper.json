@@ -1,0 +1,24 @@
+
+{
+    "hermeneutApp": {
+        "phaseWrapper" : {
+            "home": {
+                "title": "Phase Wrappers",
+                "createLabel": "Crear nuevo Phase Wrapper",
+                "createOrEditLabel": "Crear o editar Phase Wrapper",
+                "search": "Search for Phase Wrapper"
+            },
+            "created": "Un nuevo Phase Wrapper ha sido creado con el identificador {{ param }}",
+            "updated": "Un Phase Wrapper ha sido actualizado con el identificador {{ param }}",
+            "deleted": "Un Phase Wrapper ha sido eliminado con el identificador {{ param }}",
+            "delete": {
+                "question": "¿Seguro que quiere eliminar Phase Wrapper {{ id }}?"
+            },
+            "detail": {
+                "title": "Phase Wrapper"
+            },
+            "phase": "Phase",
+            "attackStrategy": "Attack Strategy"
+        }
+    }
+}

@@ -34,7 +34,7 @@
     ],
     "fields": [
         {
-            "fieldName": "notes",
+            "fieldName": "mycheck",
             "fieldType": "String"
         }
     ],
