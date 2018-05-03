@@ -10,7 +10,6 @@ import { AttackStrategyMgm } from './attack-strategy-mgm.model';
 import { AttackStrategyMgmPopupService } from './attack-strategy-mgm-popup.service';
 import { AttackStrategyMgmService } from './attack-strategy-mgm.service';
 import { MitigationMgm, MitigationMgmService } from '../mitigation-mgm';
-import { ThreatAgentMgm, ThreatAgentMgmService } from '../threat-agent-mgm';
 import { AnswerMgm, AnswerMgmService } from '../answer-mgm';
 import { SelfAssessmentMgm, SelfAssessmentMgmService } from '../self-assessment-mgm';
 
@@ -25,8 +24,6 @@ export class AttackStrategyMgmDialogComponent implements OnInit {
 
     mitigations: MitigationMgm[];
 
-    threatagents: ThreatAgentMgm[];
-
     answers: AnswerMgm[];
 
     selfassessments: SelfAssessmentMgm[];
@@ -36,7 +33,6 @@ export class AttackStrategyMgmDialogComponent implements OnInit {
         private jhiAlertService: JhiAlertService,
         private attackStrategyService: AttackStrategyMgmService,
         private mitigationService: MitigationMgmService,
-        private threatAgentService: ThreatAgentMgmService,
         private answerService: AnswerMgmService,
         private selfAssessmentService: SelfAssessmentMgmService,
         private eventManager: JhiEventManager
@@ -47,8 +43,6 @@ export class AttackStrategyMgmDialogComponent implements OnInit {
         this.isSaving = false;
         this.mitigationService.query()
             .subscribe((res: HttpResponse<MitigationMgm[]>) => { this.mitigations = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
-        this.threatAgentService.query()
-            .subscribe((res: HttpResponse<ThreatAgentMgm[]>) => { this.threatagents = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
         this.answerService.query()
             .subscribe((res: HttpResponse<AnswerMgm[]>) => { this.answers = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
         this.selfAssessmentService.query()
@@ -90,10 +84,6 @@ export class AttackStrategyMgmDialogComponent implements OnInit {
     }
 
     trackMitigationById(index: number, item: MitigationMgm) {
-        return item.id;
-    }
-
-    trackThreatAgentById(index: number, item: ThreatAgentMgm) {
         return item.id;
     }
 

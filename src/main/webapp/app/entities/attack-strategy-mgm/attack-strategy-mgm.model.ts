@@ -40,7 +40,6 @@ export class AttackStrategyMgm implements BaseEntity {
         public levels?: BaseEntity[],
         public phases?: BaseEntity[],
         public mitigations?: BaseEntity[],
-        public threatAgents?: BaseEntity[],
         public answstrategies?: BaseEntity[],
         public selfassessments?: BaseEntity[],
     ) {

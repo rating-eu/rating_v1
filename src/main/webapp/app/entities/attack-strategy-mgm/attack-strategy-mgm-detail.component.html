@@ -42,12 +42,6 @@
                 <a [routerLink]="['/mitigation-mgm', mitigation?.id ]">{{mitigation.name}}</a>{{last ? '' : ', '}}
             </span>
         </dd>
-        <dt><span jhiTranslate="hermeneutApp.attackStrategy.threatAgent">Threat Agent</span></dt>
-        <dd>
-            <span *ngFor="let threatAgent of attackStrategy.threatAgents; let last = last">
-                <a [routerLink]="['/threat-agent-mgm', threatAgent?.id ]">{{threatAgent.name}}</a>{{last ? '' : ', '}}
-            </span>
-        </dd>
     </dl>
 
     <button type="submit"

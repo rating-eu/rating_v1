@@ -39,7 +39,6 @@
             <th><span jhiTranslate="hermeneutApp.attackStrategy.created">Created</span></th>
             <th><span jhiTranslate="hermeneutApp.attackStrategy.modified">Modified</span></th>
             <th><span jhiTranslate="hermeneutApp.attackStrategy.mitigation">Mitigation</span></th>
-            <th><span jhiTranslate="hermeneutApp.attackStrategy.threatAgent">Threat Agent</span></th>
             <th></th>
             </tr>
             </thead>
@@ -57,11 +56,6 @@
                 <td>
                     <span *ngFor="let mitigation of attackStrategy.mitigations; let last = last">
                             <a class="form-control-static" [routerLink]="['../mitigation-mgm', mitigation?.id ]">{{mitigation.name}}</a>{{last ? '' : ', '}}
-                        </span>
-                </td>
-                <td>
-                    <span *ngFor="let threatAgent of attackStrategy.threatAgents; let last = last">
-                            <a class="form-control-static" [routerLink]="['../threat-agent-mgm', threatAgent?.id ]">{{threatAgent.name}}</a>{{last ? '' : ', '}}
                         </span>
                 </td>
                 <td class="text-right">
