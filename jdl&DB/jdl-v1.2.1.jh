@@ -207,7 +207,6 @@ relationship ManyToMany {
     AttackStrategy{mitigation(name)} to Mitigation{countermeasure},
     Answer{threatAgents(name)} to ThreatAgent{answthreat},
     Answer{attacks(name)} to AttackStrategy{answstrategy},
-    AttackStrategy{threatAgent(name)} to ThreatAgent{strategy},
     SelfAssessment{companyprofiles(name)} to CompanyProfile{selfassessment(name)},
     SelfAssessment{department(name)} to Department{selfassessment(name)},
     SelfAssessment{asset(name)} to Asset{selfassessment(name)},
