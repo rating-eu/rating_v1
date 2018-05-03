@@ -20,6 +20,7 @@ import { HermeneutMyAnswerMgmModule } from './my-answer-mgm/my-answer-mgm.module
 import { HermeneutLevelWrapperMgmModule } from './level-wrapper-mgm/level-wrapper-mgm.module';
 import { HermeneutPhaseWrapperMgmModule } from './phase-wrapper-mgm/phase-wrapper-mgm.module';
 import { HermeneutAnswerWeightMgmModule } from './answer-weight-mgm/answer-weight-mgm.module';
+import { HermeneutLikelihoodPositionMgmModule } from './likelihood-position-mgm/likelihood-position-mgm.module';
 /* jhipster-needle-add-entity-module-import - JHipster will add entity modules imports here */
 
 @NgModule({
@@ -44,6 +45,7 @@ import { HermeneutAnswerWeightMgmModule } from './answer-weight-mgm/answer-weigh
         HermeneutLevelWrapperMgmModule,
         HermeneutPhaseWrapperMgmModule,
         HermeneutAnswerWeightMgmModule,
+        HermeneutLikelihoodPositionMgmModule,
         /* jhipster-needle-add-entity-module - JHipster will add entity modules here */
     ],
     declarations: [],
