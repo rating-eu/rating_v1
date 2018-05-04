@@ -1,6 +1,8 @@
 <h1>Questionnaire</h1>
 <p>{{questionnaire.name}}</p>
+
+
 <ul>
-    <li *ngFor="let question of questions">{{question.name}}-{{question.type}}</li>
+    <li *ngFor="let question of questions">Question {{question.name}} - AnswerType {{question.answerType}}</li>
 </ul>
 
