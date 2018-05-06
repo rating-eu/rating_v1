@@ -1,6 +1,10 @@
 <p>
-  dynamic-form works!
+    dynamic-form works!
 </p>
+
+<p>Questions array is {{questions}}</p>
+<p>Message from parent is</p>
+{{messageFromParent}}
 
 <div>
     <form (ngSubmit)="onSubmit()" [formGroup]="form">
@@ -9,9 +13,9 @@
             <jhi-question [question]="question" [form]="form"></jhi-question>
         </div>
 
-        <div class="form-row">
-            <button type="submit" [disabled]="!form.valid">Save</button>
-        </div>
+        <!--<div class="form-row">-->
+            <!--<button type="submit" [disabled]="!form.valid">Save</button>-->
+        <!--</div>-->
     </form>
 
     <div *ngIf="payLoad" class="form-row">

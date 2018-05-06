@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {QuestionBase} from '../models/question-base';
+import {QuestionMgm} from '../../../../../entities/question-mgm';
 
 @Injectable()
 export class QuestionControlService {
@@ -8,12 +8,11 @@ export class QuestionControlService {
     constructor() {
     }
 
-    toFormGroup(questions: QuestionBase<any>[]) {
+    toFormGroup(questions: QuestionMgm[]) {
         const group: any = {};
 
         questions.forEach((question) => {
-            group[question.key] = question.required ? new FormControl(question.value || '', Validators.required)
-                : new FormControl(question.value || '');
+            group[question.id] = new FormControl('', Validators.required);
         });
         return new FormGroup(group);
     }
