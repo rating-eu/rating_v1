@@ -1,15 +1,25 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
+import {QuestionBase} from '../models/question-base';
+import {FormGroup} from '@angular/forms';
 
 @Component({
-  selector: 'jhi-question',
-  templateUrl: './question.component.html',
-  styles: []
+    selector: 'jhi-question',
+    templateUrl: './question.component.html',
+    styles: []
 })
 export class QuestionComponent implements OnInit {
 
-  constructor() { }
+    @Input() question: QuestionBase<any>;
+    @Input() form: FormGroup;
 
-  ngOnInit() {
-  }
+    get isValid() {
+        return this.form.controls[this.question.key].valid;
+    }
+
+    constructor() {
+    }
+
+    ngOnInit() {
+    }
 
 }
