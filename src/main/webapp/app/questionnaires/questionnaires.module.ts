@@ -6,6 +6,7 @@ import {QuestionnaireComponent} from './questionnaires/questionnaire/questionnai
 import {QuestionnairesComponent} from './questionnaires/questionnaires.component';
 import {QuestionnairesService} from './questionnaires.service';
 import {DynamicFormComponent} from './questionnaires/questionnaire/dynamic-form/dynamic-form.component';
+import { QuestionComponent } from './questionnaires/questionnaire/dynamic-form/question/question.component';
 
 @NgModule({
     imports: [
@@ -15,7 +16,8 @@ import {DynamicFormComponent} from './questionnaires/questionnaire/dynamic-form/
     declarations: [
         QuestionnairesComponent,
         QuestionnaireComponent,
-        DynamicFormComponent
+        DynamicFormComponent,
+        QuestionComponent
     ],
     exports: [
         QuestionnairesComponent,
