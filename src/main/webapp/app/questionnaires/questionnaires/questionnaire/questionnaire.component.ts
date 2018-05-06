@@ -12,7 +12,7 @@ import {Observable} from 'rxjs/Observable';
 export class QuestionnaireComponent implements OnInit {
 
     private questionnaire: QuestionnaireMgm;
-    private questions: QuestionMgm[];
+    questions: QuestionMgm[];
 
     constructor(private questionnairesService: QuestionnairesService) {
     }
