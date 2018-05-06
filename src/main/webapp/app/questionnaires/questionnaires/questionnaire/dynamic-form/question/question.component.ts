@@ -15,7 +15,7 @@ export class QuestionComponent implements OnInit {
     answerType = AnswerType;
 
     get isValid() {
-        return this.form.controls[this.question.key].valid;
+        return this.form.controls[this.question.id].valid;
     }
 
     constructor() {
