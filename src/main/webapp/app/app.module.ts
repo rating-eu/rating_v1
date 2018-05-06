@@ -33,10 +33,12 @@ import {
     ErrorComponent
 } from './layouts';
 import {QuestionnairesService} from './questionnaires/questionnaires.service';
+import {ReactiveFormsModule} from '@angular/forms';
 
 @NgModule({
     imports: [
         BrowserModule,
+        ReactiveFormsModule,
         HttpClientModule,
         Ng2Webstorage.forRoot({prefix: 'jhi', separator: '-'}),
         HermeneutSharedModule,
