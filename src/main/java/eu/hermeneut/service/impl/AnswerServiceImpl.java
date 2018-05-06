@@ -1,5 +1,6 @@
 package eu.hermeneut.service.impl;
 
+import eu.hermeneut.domain.Question;
 import eu.hermeneut.service.AnswerService;
 import eu.hermeneut.domain.Answer;
 import eu.hermeneut.repository.AnswerRepository;
@@ -61,10 +62,11 @@ public class AnswerServiceImpl implements AnswerService {
 
 
     /**
-     *  get all the answers where Myanswer is null.
-     *  @return the list of entities
+     * get all the answers where Myanswer is null.
+     *
+     * @return the list of entities
      */
-    @Transactional(readOnly = true) 
+    @Transactional(readOnly = true)
     public List<Answer> findAllWhereMyanswerIsNull() {
         log.debug("Request to get all answers where Myanswer is null");
         return StreamSupport
@@ -111,5 +113,11 @@ public class AnswerServiceImpl implements AnswerService {
         return StreamSupport
             .stream(answerSearchRepository.search(queryStringQuery(query)).spliterator(), false)
             .collect(Collectors.toList());
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<Answer> findAllByQuestion(Question question) {
+        return this.answerRepository.findAllByQuestion(question);
     }
 }
