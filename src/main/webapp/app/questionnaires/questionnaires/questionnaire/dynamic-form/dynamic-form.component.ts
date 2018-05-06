@@ -12,7 +12,7 @@ import {QuestionMgm} from '../../../../entities/question-mgm';
 export class DynamicFormComponent implements OnInit {
 
     @Input() messageFromParent: String = 'PercheNonFunziona';
-    @Input() questions: QuestionMgm[];
+    @Input() questionsArray: QuestionMgm[];
     form: FormGroup;
     payLoad = '';
 
@@ -22,7 +22,7 @@ export class DynamicFormComponent implements OnInit {
 
     ngOnInit() {
         console.log('MessageFromParent: ' + this.messageFromParent);
-        console.log('Questions: ' + JSON.stringify(this.questions));
+        console.log('Questions: ' + JSON.stringify(this.questionsArray));
         // this.form = this.qcs.toFormGroup(this.questions);
     }
 

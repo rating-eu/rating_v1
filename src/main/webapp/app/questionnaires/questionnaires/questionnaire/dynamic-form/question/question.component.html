@@ -2,18 +2,20 @@
     question works!
 </p>
 
-<div [formGroup]="form">
-    <label [attr.for]="question.id">{{question.name}}</label>
+<h1>Question is</h1>
+<h2>{{dynamicQuestion}}</h2>
 
-    <div [ngSwitch]="question.answerType">
+<div [formGroup]="form">
+    <label [attr.for]="dynamicQuestion.id">{{dynamicQuestion.name}}</label>
+
+    <div [ngSwitch]="dynamicQuestion.answerType">
 
         The answer type is
-        {{question}}
-        {{question.answerType}}
+        {{dynamicQuestion.answerType}}
 
-        <input *ngSwitchCase="answerType.YESNO" [formControlName]="question.id"
-               [id]="question.id" [type]="question.type">
+        <input *ngSwitchCase="answerType.YESNO" [formControlName]="dynamicQuestion.id"
+               [id]="dynamicQuestion.id" [type]="dynamicQuestion.type">
     </div>
 
-    <div class="errorMessage" *ngIf="!isValid">{{question.label}} is required</div>
+    <div class="errorMessage" *ngIf="!isValid">{{dynamicQuestion.name}} is required</div>
 </div>

@@ -9,13 +9,13 @@ import {AnswerType, QuestionMgm} from '../../../../../entities/question-mgm';
 })
 export class QuestionComponent implements OnInit {
 
-    @Input() question: QuestionMgm;
+    @Input() dynamicQuestion: QuestionMgm;
     @Input() form: FormGroup;
     // Store a reference to the enum
     answerType = AnswerType;
 
     get isValid() {
-        return this.form.controls[this.question.id].valid;
+        return this.form.controls[this.dynamicQuestion.id].valid;
     }
 
     constructor() {

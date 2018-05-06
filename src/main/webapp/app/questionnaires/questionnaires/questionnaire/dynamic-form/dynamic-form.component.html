@@ -2,23 +2,21 @@
     dynamic-form works!
 </p>
 
-<p>Questions array is {{questions}}</p>
+<h1>QuestionsArray is</h1>
+<h2>{{questionsArray}}</h2>
 <h1>Message from parent is</h1>
 <h2>{{messageFromParent}}</h2>
 
 <div>
     <form (ngSubmit)="onSubmit()" [formGroup]="form">
 
-        <div *ngFor="let question of questions" class="form-row">
-            <jhi-question [question]="question" [form]="form"></jhi-question>
+        <div *ngFor="let question of questionsArray" class="form-row">
+            <div>
+                Current question is
+                <h1>{{question}}</h1>
+            </div>
+
+            <!--<jhi-question [dynamicQuestion]="question" [form]="form"></jhi-question>-->
         </div>
-
-        <!--<div class="form-row">-->
-        <!--<button type="submit" [disabled]="!form.valid">Save</button>-->
-        <!--</div>-->
     </form>
-
-    <div *ngIf="payLoad" class="form-row">
-        <strong>Saved the following values</strong><br>{{payLoad}}
-    </div>
 </div>
