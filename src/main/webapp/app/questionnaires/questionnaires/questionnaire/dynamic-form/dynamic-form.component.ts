@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'jhi-dynam-form',
+  selector: 'jhi-dynamic-form',
   templateUrl: './dynamic-form.component.html',
   styles: []
 })
