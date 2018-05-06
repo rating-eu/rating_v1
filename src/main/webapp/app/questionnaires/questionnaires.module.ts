@@ -7,11 +7,13 @@ import {QuestionnairesComponent} from './questionnaires/questionnaires.component
 import {QuestionnairesService} from './questionnaires.service';
 import {DynamicFormComponent} from './questionnaires/questionnaire/dynamic-form/dynamic-form.component';
 import { QuestionComponent } from './questionnaires/questionnaire/dynamic-form/question/question.component';
+import {ReactiveFormsModule} from '@angular/forms';
 
 @NgModule({
     imports: [
         CommonModule,
-        QuestionnairesRoutingModule
+        QuestionnairesRoutingModule,
+        ReactiveFormsModule
     ],
     declarations: [
         QuestionnairesComponent,
