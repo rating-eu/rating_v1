@@ -1,15 +1,28 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
+import {QuestionControlService} from './services/question-control.service';
+import {QuestionBase} from './models/question-base';
+import {FormGroup} from '@angular/forms';
 
 @Component({
-  selector: 'jhi-dynamic-form',
-  templateUrl: './dynamic-form.component.html',
-  styles: []
+    selector: 'jhi-dynamic-form',
+    templateUrl: './dynamic-form.component.html',
+    styles: [],
+    providers: [QuestionControlService]
 })
 export class DynamicFormComponent implements OnInit {
 
-  constructor() { }
+    @Input() questions: QuestionBase<any>[] = [];
+    form: FormGroup;
+    payLoad = '';
 
-  ngOnInit() {
-  }
+    constructor(private qcs: QuestionControlService) {
+    }
 
+    ngOnInit() {
+        this.form = this.qcs.toFormGroup(this.questions);
+    }
+
+    onSubmit() {
+        this.payLoad = JSON.stringify(this.form.value);
+    }
 }
