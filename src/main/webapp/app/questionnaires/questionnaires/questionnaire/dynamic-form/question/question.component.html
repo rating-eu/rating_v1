@@ -1,5 +1,6 @@
 <p>
     question works!
+    Answers is {{answers}}
 </p>
 
 <!--<h1>Question is of type</h1>-->
@@ -17,33 +18,88 @@
 <!--</div>-->
 
 
-<div [formGroup]="form">
-    Label
-    <label [attr.for]="dynamicQuestion.id">{{dynamicQuestion.name}}</label>
-    Type
-    {{dynamicQuestion.answerType}}
+<!--<div [formGroup]="form">-->
+<!--Label-->
+<!--<label [attr.for]="dynamicQuestion.id">{{dynamicQuestion.name}}</label>-->
+<!--Type-->
+<!--{{dynamicQuestion.answerType}}-->
+
+<!--&lt;!&ndash;We need to get the integer value of the enum var, otherwise it won't work.&ndash;&gt;-->
+<!--<div [ngSwitch]="answerType[dynamicQuestion.answerType]">-->
+
+<!--<div *ngSwitchCase="answerType.YESNO">-->
+<!--<h1>Ok, the question is of type YES NO</h1>-->
+<!--</div>-->
+
+<!--<div *ngSwitchCase="answerType.RANGE5">-->
+<!--<h1>Ok, the question is of type RANGE 5</h1>-->
+<!--</div>-->
+
+<!--<div *ngSwitchCase="answerType.PERC5">-->
+<!--<h1>Ok, the question is of type PERC 5</h1>-->
+<!--</div>-->
+
+<!--<div *ngSwitchCase="answerType.RANGE3">-->
+<!--<h1>Ok, the question is of type RANGE 3</h1>-->
+<!--</div>-->
+
+<!--<div *ngSwitchCase="answerType.PERC3">-->
+<!--<h1>Ok, the question is of type PERC 3</h1>-->
+<!--</div>-->
+<!--</div>-->
+<!--</div>-->
+
+
+<div [formGroup]="form" class="form-group">
+    <label class="form-control-label" [attr.for]="dynamicQuestion.id">{{dynamicQuestion.name}}</label>
 
     <!--We need to get the integer value of the enum var, otherwise it won't work.-->
-    <div [ngSwitch]="answerType[dynamicQuestion.answerType]">
+    <div [id]="dynamicQuestion.id" [ngSwitch]="answerType[dynamicQuestion.answerType]">
 
         <div *ngSwitchCase="answerType.YESNO">
-            <h1>Ok, the question is of type YES NO</h1>
+            <!--<h1>Ok, the question is of type YES NO</h1>-->
+
+            <select [formControlName]="dynamicQuestion.id">
+                <option *ngFor="let answer of answers" [value]="answer.name">
+                    {{answer.name}}
+                </option>
+            </select>
         </div>
 
         <div *ngSwitchCase="answerType.RANGE5">
-            <h1>Ok, the question is of type RANGE 5</h1>
+            <!--<h1>Ok, the question is of type RANGE 5</h1>-->
+            <select [formControlName]="dynamicQuestion.id">
+                <option *ngFor="let answer of answers" [value]="answer.name">
+                    {{answer.name}}
+                </option>
+            </select>
         </div>
 
         <div *ngSwitchCase="answerType.PERC5">
-            <h1>Ok, the question is of type PERC 5</h1>
+            <!--<h1>Ok, the question is of type PERC 5</h1>-->
+            <select [formControlName]="dynamicQuestion.id">
+                <option *ngFor="let answer of answers" [value]="answer.name">
+                    {{answer.name}}
+                </option>
+            </select>
         </div>
 
         <div *ngSwitchCase="answerType.RANGE3">
-            <h1>Ok, the question is of type RANGE 3</h1>
+            <!--<h1>Ok, the question is of type RANGE 3</h1>-->
+            <select [formControlName]="dynamicQuestion.id">
+                <option *ngFor="let answer of answers" [value]="answer.name">
+                    {{answer.name}}
+                </option>
+            </select>
         </div>
 
         <div *ngSwitchCase="answerType.PERC3">
-            <h1>Ok, the question is of type PERC 3</h1>
+            <!--<h1>Ok, the question is of type PERC 3</h1>-->
+            <select [formControlName]="dynamicQuestion.id">
+                <option *ngFor="let answer of answers" [value]="answer.name">
+                    {{answer.name}}
+                </option>
+            </select>
         </div>
     </div>
 </div>
