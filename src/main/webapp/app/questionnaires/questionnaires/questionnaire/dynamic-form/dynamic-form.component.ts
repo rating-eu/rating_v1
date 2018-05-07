@@ -23,9 +23,12 @@ export class DynamicFormComponent implements OnInit {
     set questionsArray(questionsArray: QuestionMgm[]) {
         console.log('QuestionsArray changed...');
         this._questionsArray = questionsArray;
+        console.log('Now its ' + this._questionsArray);
 
         // Now we can create the form, since the questionsArray is no more undefined
-        this.form = this.questionControlService.toFormGroup(this._questionsArray);
+        if (this._questionsArray) {
+            this.form = this.questionControlService.toFormGroup(this._questionsArray);
+        }
     }
 
     get questionsArray() {
