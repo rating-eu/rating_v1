@@ -8,7 +8,7 @@
 <h2>{{messageFromParent}}</h2>
 
 <div>
-    <form (ngSubmit)="onSubmit()" [formGroup]="form">
+    <form *ngIf="form" (ngSubmit)="onSubmit()" [formGroup]="form">
 
         <div *ngFor="let question of questionsArray" class="form-row">
             <div>

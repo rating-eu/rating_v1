@@ -28,6 +28,8 @@ export class DynamicFormComponent implements OnInit {
         // Now we can create the form, since the questionsArray is no more undefined
         if (this._questionsArray) {
             this.form = this.questionControlService.toFormGroup(this._questionsArray);
+            console.log('Form has been created...');
+            console.log('Form is: ' + this.form);
         }
     }
 
