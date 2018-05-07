@@ -10,20 +10,29 @@ import {QuestionMgm} from '../../../../entities/question-mgm';
     providers: [QuestionControlService]
 })
 export class DynamicFormComponent implements OnInit {
-
     @Input() messageFromParent: String = 'PercheNonFunziona';
-    @Input() questionsArray: QuestionMgm[];
+    _questionsArray: QuestionMgm[];
     form: FormGroup;
     payLoad = '';
 
-    constructor(private qcs: QuestionControlService) {
+    constructor(private questionControlService: QuestionControlService) {
 
     }
 
+    @Input()
+    set questionsArray(questionsArray: QuestionMgm[]) {
+        console.log('QuestionsArray changed...');
+        this._questionsArray = questionsArray;
+
+        // Now we can create the form, since the questionsArray is no more undefined
+        this.form = this.questionControlService.toFormGroup(this._questionsArray);
+    }
+
+    get questionsArray() {
+        return this._questionsArray;
+    }
+
     ngOnInit() {
-        console.log('MessageFromParent: ' + this.messageFromParent);
-        console.log('Questions: ' + JSON.stringify(this.questionsArray));
-        // this.form = this.qcs.toFormGroup(this.questions);
     }
 
     onSubmit() {
