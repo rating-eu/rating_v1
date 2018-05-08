@@ -43,7 +43,7 @@
         {
             "fieldName": "intent",
             "fieldType": "Intent",
-            "fieldValues": "HOSTILE,NOHOSTILE",
+            "fieldValues": "HOSTILE,NON_HOSTILE",
             "fieldValidateRules": [
                 "required"
             ]

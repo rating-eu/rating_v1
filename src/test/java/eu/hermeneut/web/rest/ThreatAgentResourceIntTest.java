@@ -55,7 +55,7 @@ public class ThreatAgentResourceIntTest {
     private static final SkillLevel UPDATED_SKILL_LEVEL = SkillLevel.MEDIUM;
 
     private static final Intent DEFAULT_INTENT = Intent.HOSTILE;
-    private static final Intent UPDATED_INTENT = Intent.NOHOSTILE;
+    private static final Intent UPDATED_INTENT = Intent.NON_HOSTILE;
 
     private static final TA_Access DEFAULT_ACCESS = TA_Access.INSIDER;
     private static final TA_Access UPDATED_ACCESS = TA_Access.OUTSIDER;

@@ -41,7 +41,7 @@
             <label class="form-control-label" jhiTranslate="hermeneutApp.threatAgent.intent" for="field_intent">Intent</label>
             <select class="form-control" name="intent" [(ngModel)]="threatAgent.intent" id="field_intent"  required>
                 <option value="HOSTILE">{{'hermeneutApp.Intent.HOSTILE' | translate}}</option>
-                <option value="NOHOSTILE">{{'hermeneutApp.Intent.NOHOSTILE' | translate}}</option>
+                <option value="NON_HOSTILE">{{'hermeneutApp.Intent.NON_HOSTILE' | translate}}</option>
             </select>
             <div [hidden]="!(editForm.controls.intent?.dirty && editForm.controls.intent?.invalid)">
                 <small class="form-text text-danger"

@@ -8,7 +8,7 @@ export const enum SkillLevel {
 
 export const enum Intent {
     'HOSTILE',
-    'NOHOSTILE'
+    'NON_HOSTILE'
 }
 
 export const enum TA_Access {
