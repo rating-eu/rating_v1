@@ -1,7 +1,3 @@
-<p>
-    dynamic-form works!
-</p>
-
 <form *ngIf="form" (ngSubmit)="onSubmit()" [formGroup]="form" role="form">
     <jhi-question *ngFor="let question of questionsArray" [dynamicQuestion]="question" [form]="form"></jhi-question>
 </form>
