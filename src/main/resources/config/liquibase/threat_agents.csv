@@ -1,0 +1,10 @@
+id;name;skill_level;intent;jhi_access;created;modified
+1;Governament Hacker;HIGH;HOSTILE;BOTH;${now};${now}
+2;Hacktivist;HIGH;HOSTILE;OUTSIDER;${now};${now}
+3;Terrorist;HIGH;HOSTILE;OUTSIDER;${now};${now}
+4;Hacker;HIGH;HOSTILE;BOTH;${now};${now}
+5;Competitor/Hireling Hacker;MEDIUM;HOSTILE;OUTSIDER;${now};${now}
+6;Insider;MEDIUM;HOSTILE;INSIDER;${now};${now}
+7;Script Kiddie;LOW;HOSTILE;OUTSIDER;${now};${now}
+8;Unpredictable Person;LOW;HOSTILE;BOTH;${now};${now}
+9;Unaware;LOW;NON_HOSTILE;INSIDER;${now};${now}
