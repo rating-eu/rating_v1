@@ -16,7 +16,6 @@ export class AnswerMgm implements BaseEntity {
         public modified?: any,
         public order?: number,
         public likelihood?: Likelihood,
-        public threatAgents?: BaseEntity[],
         public attacks?: BaseEntity[],
         public myanswer?: BaseEntity,
         public question?: BaseEntity,

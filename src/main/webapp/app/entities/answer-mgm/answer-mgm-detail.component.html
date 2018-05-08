@@ -24,12 +24,6 @@
         <dd>
             <span jhiTranslate="{{'hermeneutApp.Likelihood.' + answer.likelihood}}">{{answer.likelihood}}</span>
         </dd>
-        <dt><span jhiTranslate="hermeneutApp.answer.threatAgents">Threat Agents</span></dt>
-        <dd>
-            <span *ngFor="let threatAgents of answer.threatAgents; let last = last">
-                <a [routerLink]="['/threat-agent-mgm', threatAgents?.id ]">{{threatAgents.name}}</a>{{last ? '' : ', '}}
-            </span>
-        </dd>
         <dt><span jhiTranslate="hermeneutApp.answer.attacks">Attacks</span></dt>
         <dd>
             <span *ngFor="let attacks of answer.attacks; let last = last">

@@ -9,7 +9,6 @@ import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
 import { AnswerMgm } from './answer-mgm.model';
 import { AnswerMgmPopupService } from './answer-mgm-popup.service';
 import { AnswerMgmService } from './answer-mgm.service';
-import { ThreatAgentMgm, ThreatAgentMgmService } from '../threat-agent-mgm';
 import { AttackStrategyMgm, AttackStrategyMgmService } from '../attack-strategy-mgm';
 import { MyAnswerMgm, MyAnswerMgmService } from '../my-answer-mgm';
 import { QuestionMgm, QuestionMgmService } from '../question-mgm';
@@ -23,8 +22,6 @@ export class AnswerMgmDialogComponent implements OnInit {
     answer: AnswerMgm;
     isSaving: boolean;
 
-    threatagents: ThreatAgentMgm[];
-
     attackstrategies: AttackStrategyMgm[];
 
     myanswers: MyAnswerMgm[];
@@ -35,7 +32,6 @@ export class AnswerMgmDialogComponent implements OnInit {
         public activeModal: NgbActiveModal,
         private jhiAlertService: JhiAlertService,
         private answerService: AnswerMgmService,
-        private threatAgentService: ThreatAgentMgmService,
         private attackStrategyService: AttackStrategyMgmService,
         private myAnswerService: MyAnswerMgmService,
         private questionService: QuestionMgmService,
@@ -45,8 +41,6 @@ export class AnswerMgmDialogComponent implements OnInit {
 
     ngOnInit() {
         this.isSaving = false;
-        this.threatAgentService.query()
-            .subscribe((res: HttpResponse<ThreatAgentMgm[]>) => { this.threatagents = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
         this.attackStrategyService.query()
             .subscribe((res: HttpResponse<AttackStrategyMgm[]>) => { this.attackstrategies = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
         this.myAnswerService.query()
@@ -87,10 +81,6 @@ export class AnswerMgmDialogComponent implements OnInit {
 
     private onError(error: any) {
         this.jhiAlertService.error(error.message, null, null);
-    }
-
-    trackThreatAgentById(index: number, item: ThreatAgentMgm) {
-        return item.id;
     }
 
     trackAttackStrategyById(index: number, item: AttackStrategyMgm) {

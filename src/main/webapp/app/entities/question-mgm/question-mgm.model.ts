@@ -6,7 +6,7 @@ export const enum QuestionType {
     'OTHER'
 }
 
-export const enum AnswerType {
+export enum AnswerType {
     'YESNO',
     'RANGE5',
     'PERC5',
