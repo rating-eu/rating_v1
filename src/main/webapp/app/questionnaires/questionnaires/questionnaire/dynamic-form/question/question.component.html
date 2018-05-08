@@ -1,5 +1,9 @@
 <div [formGroup]="form" class="form-group">
-    <label class="form-control-label" [attr.for]="dynamicQuestion.id"><h3>{{dynamicQuestion.name}}</h3></label>
+    <div class="rounded bg-primary d-inline-block">
+        <label class="form-control-label" [attr.for]="dynamicQuestion.id"><h3>
+            {{dynamicQuestion.name}}</h3>
+        </label>
+    </div>
 
     <!--We need to get the integer value of the enum var, otherwise it won't work.-->
     <div [id]="dynamicQuestion.id" [ngSwitch]="answerType[dynamicQuestion.answerType]">
