@@ -44,5 +44,6 @@
     <include file="config/liquibase/changelog/20180503135646_added_unique_constraint_likelihood_position.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180508144233_added_threat_agents_data.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180508150258_added_questionnaires_data.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20180508153623_added_questions_threat_agents_data.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
 </databaseChangeLog>
