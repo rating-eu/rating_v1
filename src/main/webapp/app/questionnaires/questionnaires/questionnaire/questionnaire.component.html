@@ -1,9 +1,3 @@
-<h1>Questionnaire</h1>
-<p>{{questionnaire.name}}</p>
-
-
-<ul>
-    <li *ngFor="let question of questions">Question {{question.name}} - AnswerType {{question.answerType}}</li>
-</ul>
+<h2>{{questionnaire.name}}</h2>
 
 <jhi-dynamic-form [messageFromParent]="'Hello my son'" [questionsArray]="questions"></jhi-dynamic-form>
