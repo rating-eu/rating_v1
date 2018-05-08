@@ -210,7 +210,6 @@ relationship ManyToMany {
     Asset{domains(name)} to DomainOfInfluence{domain},
     ThreatAgent{motivation(name)} to Motivation{tagent},
     AttackStrategy{mitigation(name)} to Mitigation{countermeasure},
-    Answer{threatAgents(name)} to ThreatAgent{answthreat},
     Answer{attacks(name)} to AttackStrategy{answstrategy},
     SelfAssessment{companyprofiles(name)} to CompanyProfile{selfassessment(name)},
     SelfAssessment{department(name)} to Department{selfassessment(name)},
@@ -228,6 +227,7 @@ relationship OneToMany{
     CompanyProfile{departments(name)} to Department{companyprofile(name)},
     AttackStrategy{levels} to LevelWrapper
     AttackStrategy{phases} to PhaseWrapper
+    ThreatAgent{questions} to Question
 }
 
 relationship OneToOne{
