@@ -6,7 +6,6 @@
 
     <include file="config/liquibase/changelog/00000000000000_initial_schema.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180410085152_added_entity_CompanyProfile.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20180410085153_added_entity_CompanySector.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180410085154_added_entity_DomainOfInfluence.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180410085155_added_entity_SelfAssessment.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180410085156_added_entity_Container.xml" relativeToChangelogFile="false"/>
@@ -28,7 +27,6 @@
     <include file="config/liquibase/changelog/20180503113801_added_entity_LikelihoodPosition.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
     <include file="config/liquibase/changelog/20180410085152_added_entity_constraints_CompanyProfile.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20180410085153_added_entity_constraints_CompanySector.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180410085155_added_entity_constraints_SelfAssessment.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180410085158_added_entity_constraints_Asset.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180410085159_added_entity_constraints_ThreatAgent.xml" relativeToChangelogFile="false"/>
