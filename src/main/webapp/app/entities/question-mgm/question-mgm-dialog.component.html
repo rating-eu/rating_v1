@@ -75,6 +75,13 @@
         </div>
 
         <div class="form-group">
+            <label class="form-control-label" jhiTranslate="hermeneutApp.question.threatAgent" for="field_threatAgent">Threat Agent</label>
+            <select class="form-control" id="field_threatAgent" name="threatAgent" [(ngModel)]="question.threatAgent" >
+                <option [ngValue]="null"></option>
+                <option [ngValue]="threatAgentOption.id === question.threatAgent?.id ? question.threatAgent : threatAgentOption" *ngFor="let threatAgentOption of threatagents; trackBy: trackThreatAgentById">{{threatAgentOption.id}}</option>
+            </select>
+        </div>
+        <div class="form-group">
             <label class="form-control-label" jhiTranslate="hermeneutApp.question.questionnaire" for="field_questionnaire">Questionnaire</label>
             <select class="form-control" id="field_questionnaire" name="questionnaire" [(ngModel)]="question.questionnaire" >
                 <option [ngValue]="null"></option>

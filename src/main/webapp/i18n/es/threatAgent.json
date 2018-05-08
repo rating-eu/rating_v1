@@ -23,8 +23,8 @@
             "access": "Access",
             "created": "Created",
             "modified": "Modified",
+            "questions": "Questions",
             "motivation": "Motivation",
-            "answthreat": "Answthreat",
             "selfassessment": "Selfassessment"
         }
     }

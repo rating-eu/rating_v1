@@ -49,13 +49,6 @@ public class Answer implements Serializable {
 
     @ManyToMany
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    @JoinTable(name = "answer_threat_agents",
-               joinColumns = @JoinColumn(name="answers_id", referencedColumnName="id"),
-               inverseJoinColumns = @JoinColumn(name="threat_agents_id", referencedColumnName="id"))
-    private Set<ThreatAgent> threatAgents = new HashSet<>();
-
-    @ManyToMany
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     @JoinTable(name = "answer_attacks",
                joinColumns = @JoinColumn(name="answers_id", referencedColumnName="id"),
                inverseJoinColumns = @JoinColumn(name="attacks_id", referencedColumnName="id"))
@@ -140,31 +133,6 @@ public class Answer implements Serializable {
 
     public void setLikelihood(Likelihood likelihood) {
         this.likelihood = likelihood;
-    }
-
-    public Set<ThreatAgent> getThreatAgents() {
-        return threatAgents;
-    }
-
-    public Answer threatAgents(Set<ThreatAgent> threatAgents) {
-        this.threatAgents = threatAgents;
-        return this;
-    }
-
-    public Answer addThreatAgents(ThreatAgent threatAgent) {
-        this.threatAgents.add(threatAgent);
-        threatAgent.getAnswthreats().add(this);
-        return this;
-    }
-
-    public Answer removeThreatAgents(ThreatAgent threatAgent) {
-        this.threatAgents.remove(threatAgent);
-        threatAgent.getAnswthreats().remove(this);
-        return this;
-    }
-
-    public void setThreatAgents(Set<ThreatAgent> threatAgents) {
-        this.threatAgents = threatAgents;
     }
 
     public Set<AttackStrategy> getAttacks() {

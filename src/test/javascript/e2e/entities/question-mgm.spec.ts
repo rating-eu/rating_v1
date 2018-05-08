@@ -43,6 +43,7 @@ describe('Question e2e test', () => {
         expect(questionDialogPage.getOrderInput()).toMatch('5');
         questionDialogPage.questionTypeSelectLastOption();
         questionDialogPage.answerTypeSelectLastOption();
+        questionDialogPage.threatAgentSelectLastOption();
         questionDialogPage.questionnaireSelectLastOption();
         questionDialogPage.save();
         expect(questionDialogPage.getSaveButton().isPresent()).toBeFalsy();
@@ -76,6 +77,7 @@ export class QuestionDialogPage {
     orderInput = element(by.css('input#field_order'));
     questionTypeSelect = element(by.css('select#field_questionType'));
     answerTypeSelect = element(by.css('select#field_answerType'));
+    threatAgentSelect = element(by.css('select#field_threatAgent'));
     questionnaireSelect = element(by.css('select#field_questionnaire'));
 
     getModalTitle() {
@@ -136,6 +138,22 @@ export class QuestionDialogPage {
     answerTypeSelectLastOption = function() {
         this.answerTypeSelect.all(by.tagName('option')).last().click();
     };
+    threatAgentSelectLastOption = function() {
+        this.threatAgentSelect.all(by.tagName('option')).last().click();
+    };
+
+    threatAgentSelectOption = function(option) {
+        this.threatAgentSelect.sendKeys(option);
+    };
+
+    getThreatAgentSelect = function() {
+        return this.threatAgentSelect;
+    };
+
+    getThreatAgentSelectedOption = function() {
+        return this.threatAgentSelect.element(by.css('option:checked')).getText();
+    };
+
     questionnaireSelectLastOption = function() {
         this.questionnaireSelect.all(by.tagName('option')).last().click();
     };

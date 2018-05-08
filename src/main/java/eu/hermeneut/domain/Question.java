@@ -57,6 +57,9 @@ public class Question implements Serializable {
     @Column(name = "answer_type", nullable = false)
     private AnswerType answerType;
 
+    @ManyToOne
+    private ThreatAgent threatAgent;
+
     @OneToMany(mappedBy = "question")
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
@@ -154,6 +157,19 @@ public class Question implements Serializable {
 
     public void setAnswerType(AnswerType answerType) {
         this.answerType = answerType;
+    }
+
+    public ThreatAgent getThreatAgent() {
+        return threatAgent;
+    }
+
+    public Question threatAgent(ThreatAgent threatAgent) {
+        this.threatAgent = threatAgent;
+        return this;
+    }
+
+    public void setThreatAgent(ThreatAgent threatAgent) {
+        this.threatAgent = threatAgent;
     }
 
     public Set<Answer> getAnswers() {

@@ -2,19 +2,18 @@
     "fluentMethods": true,
     "relationships": [
         {
+            "relationshipType": "one-to-many",
+            "relationshipName": "questions",
+            "otherEntityName": "question",
+            "otherEntityRelationshipName": "threatAgent"
+        },
+        {
             "relationshipType": "many-to-many",
             "otherEntityRelationshipName": "tagent",
             "relationshipName": "motivation",
             "otherEntityName": "motivation",
             "otherEntityField": "name",
             "ownerSide": true
-        },
-        {
-            "relationshipType": "many-to-many",
-            "relationshipName": "answthreat",
-            "otherEntityName": "answer",
-            "ownerSide": false,
-            "otherEntityRelationshipName": "threatAgents"
         },
         {
             "relationshipType": "many-to-many",

@@ -3,14 +3,6 @@
     "relationships": [
         {
             "relationshipType": "many-to-many",
-            "otherEntityRelationshipName": "answthreat",
-            "relationshipName": "threatAgents",
-            "otherEntityName": "threatAgent",
-            "otherEntityField": "name",
-            "ownerSide": true
-        },
-        {
-            "relationshipType": "many-to-many",
             "otherEntityRelationshipName": "answstrategy",
             "relationshipName": "attacks",
             "otherEntityName": "attackStrategy",

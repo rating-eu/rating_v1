@@ -10,7 +10,6 @@ import { ThreatAgentMgmDialogComponent } from '../../../../../../main/webapp/app
 import { ThreatAgentMgmService } from '../../../../../../main/webapp/app/entities/threat-agent-mgm/threat-agent-mgm.service';
 import { ThreatAgentMgm } from '../../../../../../main/webapp/app/entities/threat-agent-mgm/threat-agent-mgm.model';
 import { MotivationMgmService } from '../../../../../../main/webapp/app/entities/motivation-mgm';
-import { AnswerMgmService } from '../../../../../../main/webapp/app/entities/answer-mgm';
 import { SelfAssessmentMgmService } from '../../../../../../main/webapp/app/entities/self-assessment-mgm';
 
 describe('Component Tests', () => {
@@ -28,7 +27,6 @@ describe('Component Tests', () => {
                 declarations: [ThreatAgentMgmDialogComponent],
                 providers: [
                     MotivationMgmService,
-                    AnswerMgmService,
                     SelfAssessmentMgmService,
                     ThreatAgentMgmService
                 ]

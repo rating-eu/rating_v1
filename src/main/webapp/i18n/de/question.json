@@ -23,6 +23,7 @@
             "order": "Order",
             "questionType": "Question Type",
             "answerType": "Answer Type",
+            "threatAgent": "Threat Agent",
             "answers": "Answers",
             "myanswer": "Myanswer",
             "questionnaire": "Questionnaire"

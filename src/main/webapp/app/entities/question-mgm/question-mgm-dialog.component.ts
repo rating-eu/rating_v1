@@ -9,6 +9,7 @@ import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
 import { QuestionMgm } from './question-mgm.model';
 import { QuestionMgmPopupService } from './question-mgm-popup.service';
 import { QuestionMgmService } from './question-mgm.service';
+import { ThreatAgentMgm, ThreatAgentMgmService } from '../threat-agent-mgm';
 import { MyAnswerMgm, MyAnswerMgmService } from '../my-answer-mgm';
 import { QuestionnaireMgm, QuestionnaireMgmService } from '../questionnaire-mgm';
 
@@ -21,6 +22,8 @@ export class QuestionMgmDialogComponent implements OnInit {
     question: QuestionMgm;
     isSaving: boolean;
 
+    threatagents: ThreatAgentMgm[];
+
     myanswers: MyAnswerMgm[];
 
     questionnaires: QuestionnaireMgm[];
@@ -29,6 +32,7 @@ export class QuestionMgmDialogComponent implements OnInit {
         public activeModal: NgbActiveModal,
         private jhiAlertService: JhiAlertService,
         private questionService: QuestionMgmService,
+        private threatAgentService: ThreatAgentMgmService,
         private myAnswerService: MyAnswerMgmService,
         private questionnaireService: QuestionnaireMgmService,
         private eventManager: JhiEventManager
@@ -37,6 +41,8 @@ export class QuestionMgmDialogComponent implements OnInit {
 
     ngOnInit() {
         this.isSaving = false;
+        this.threatAgentService.query()
+            .subscribe((res: HttpResponse<ThreatAgentMgm[]>) => { this.threatagents = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
         this.myAnswerService.query()
             .subscribe((res: HttpResponse<MyAnswerMgm[]>) => { this.myanswers = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
         this.questionnaireService.query()
@@ -75,6 +81,10 @@ export class QuestionMgmDialogComponent implements OnInit {
 
     private onError(error: any) {
         this.jhiAlertService.error(error.message, null, null);
+    }
+
+    trackThreatAgentById(index: number, item: ThreatAgentMgm) {
+        return item.id;
     }
 
     trackMyAnswerById(index: number, item: MyAnswerMgm) {

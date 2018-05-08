@@ -10,7 +10,6 @@ import { ThreatAgentMgm } from './threat-agent-mgm.model';
 import { ThreatAgentMgmPopupService } from './threat-agent-mgm-popup.service';
 import { ThreatAgentMgmService } from './threat-agent-mgm.service';
 import { MotivationMgm, MotivationMgmService } from '../motivation-mgm';
-import { AnswerMgm, AnswerMgmService } from '../answer-mgm';
 import { SelfAssessmentMgm, SelfAssessmentMgmService } from '../self-assessment-mgm';
 
 @Component({
@@ -24,8 +23,6 @@ export class ThreatAgentMgmDialogComponent implements OnInit {
 
     motivations: MotivationMgm[];
 
-    answers: AnswerMgm[];
-
     selfassessments: SelfAssessmentMgm[];
 
     constructor(
@@ -33,7 +30,6 @@ export class ThreatAgentMgmDialogComponent implements OnInit {
         private jhiAlertService: JhiAlertService,
         private threatAgentService: ThreatAgentMgmService,
         private motivationService: MotivationMgmService,
-        private answerService: AnswerMgmService,
         private selfAssessmentService: SelfAssessmentMgmService,
         private eventManager: JhiEventManager
     ) {
@@ -43,8 +39,6 @@ export class ThreatAgentMgmDialogComponent implements OnInit {
         this.isSaving = false;
         this.motivationService.query()
             .subscribe((res: HttpResponse<MotivationMgm[]>) => { this.motivations = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
-        this.answerService.query()
-            .subscribe((res: HttpResponse<AnswerMgm[]>) => { this.answers = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
         this.selfAssessmentService.query()
             .subscribe((res: HttpResponse<SelfAssessmentMgm[]>) => { this.selfassessments = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
     }
@@ -84,10 +78,6 @@ export class ThreatAgentMgmDialogComponent implements OnInit {
     }
 
     trackMotivationById(index: number, item: MotivationMgm) {
-        return item.id;
-    }
-
-    trackAnswerById(index: number, item: AnswerMgm) {
         return item.id;
     }
 

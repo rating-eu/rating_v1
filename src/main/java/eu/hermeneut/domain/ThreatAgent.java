@@ -61,17 +61,17 @@ public class ThreatAgent implements Serializable {
     @Column(name = "modified")
     private ZonedDateTime modified;
 
+    @OneToMany(mappedBy = "threatAgent")
+    @JsonIgnore
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    private Set<Question> questions = new HashSet<>();
+
     @ManyToMany
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     @JoinTable(name = "threat_agent_motivation",
                joinColumns = @JoinColumn(name="threat_agents_id", referencedColumnName="id"),
                inverseJoinColumns = @JoinColumn(name="motivations_id", referencedColumnName="id"))
     private Set<Motivation> motivations = new HashSet<>();
-
-    @ManyToMany(mappedBy = "threatAgents")
-    @JsonIgnore
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private Set<Answer> answthreats = new HashSet<>();
 
     @ManyToMany(mappedBy = "threatagents")
     @JsonIgnore
@@ -165,6 +165,31 @@ public class ThreatAgent implements Serializable {
         this.modified = modified;
     }
 
+    public Set<Question> getQuestions() {
+        return questions;
+    }
+
+    public ThreatAgent questions(Set<Question> questions) {
+        this.questions = questions;
+        return this;
+    }
+
+    public ThreatAgent addQuestions(Question question) {
+        this.questions.add(question);
+        question.setThreatAgent(this);
+        return this;
+    }
+
+    public ThreatAgent removeQuestions(Question question) {
+        this.questions.remove(question);
+        question.setThreatAgent(null);
+        return this;
+    }
+
+    public void setQuestions(Set<Question> questions) {
+        this.questions = questions;
+    }
+
     public Set<Motivation> getMotivations() {
         return motivations;
     }
@@ -188,31 +213,6 @@ public class ThreatAgent implements Serializable {
 
     public void setMotivations(Set<Motivation> motivations) {
         this.motivations = motivations;
-    }
-
-    public Set<Answer> getAnswthreats() {
-        return answthreats;
-    }
-
-    public ThreatAgent answthreats(Set<Answer> answers) {
-        this.answthreats = answers;
-        return this;
-    }
-
-    public ThreatAgent addAnswthreat(Answer answer) {
-        this.answthreats.add(answer);
-        answer.getThreatAgents().add(this);
-        return this;
-    }
-
-    public ThreatAgent removeAnswthreat(Answer answer) {
-        this.answthreats.remove(answer);
-        answer.getThreatAgents().remove(this);
-        return this;
-    }
-
-    public void setAnswthreats(Set<Answer> answers) {
-        this.answthreats = answers;
     }
 
     public Set<SelfAssessment> getSelfassessments() {
