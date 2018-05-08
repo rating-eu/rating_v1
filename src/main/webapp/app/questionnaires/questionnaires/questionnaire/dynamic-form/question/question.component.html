@@ -5,13 +5,12 @@
     <div [id]="dynamicQuestion.id" [ngSwitch]="answerType[dynamicQuestion.answerType]">
 
         <div *ngSwitchCase="answerType.YESNO">
-            <!--<h1>Ok, the question is of type YES NO</h1>-->
-
-            <select [formControlName]="dynamicQuestion.id">
-                <option *ngFor="let answer of answers" [value]="answer.name">
-                    {{answer.name}}
-                </option>
-            </select>
+            <div class="radio" *ngFor="let answer of answers">
+                <label class="radio">
+                    <input type="radio" [formControlName]="dynamicQuestion.id"
+                           [value]="answer.name"/>&nbsp;{{answer.name}}
+                </label>
+            </div>
         </div>
 
         <div *ngSwitchCase="answerType.RANGE5">
