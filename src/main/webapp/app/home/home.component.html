@@ -8,11 +8,15 @@
         <p class="lead" jhiTranslate="home.subtitle">Introduction</p>
         <p class="lead" jhiTranslate="home.description"> Description</p>
 
-        <span *ngIf="!mySelf" class="alert alert-warning">Please, <a [routerLink]="['../self-assessment-mgm']"> select</a> a self assessment, otherwise, have a look to our taxonomies</span>
+        <span *ngIf="!mySelf" class="alert alert-warning">Please, <a
+            [routerLink]="['../self-assessment-mgm']"> select</a> a self assessment, otherwise, have a look to our taxonomies</span>
 
         <div class="table-responsive" *ngIf="mySelf">
             <button type="button" class="btn btn-dark" routerLink="identify-threat-agent"
-                    routerLinkActive="active">Identify Threat Agents
+                    routerLinkActive="active">
+                <span class="fa fa-lightbulb-o"></span>
+                <span class="d-none d-md-inline">Identify Threat Agents</span>
+                <span class="fa fa-user-secret"></span>
             </button>
 
             <button type="button" class="btn btn-dark" routerLink="evaluate-weackness"
