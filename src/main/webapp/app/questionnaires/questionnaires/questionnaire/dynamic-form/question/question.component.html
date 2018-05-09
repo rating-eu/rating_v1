@@ -13,7 +13,7 @@
             <div class="radio" *ngFor="let answer of answers">
                 <label class="radio">
                     <input type="radio" [formControlName]="dynamicQuestion.id"
-                           [value]="answer.id"/>&nbsp;{{answer.name}}
+                           [value]="answer"/>&nbsp;{{answer.name}}
                 </label>
             </div>
         </div>
