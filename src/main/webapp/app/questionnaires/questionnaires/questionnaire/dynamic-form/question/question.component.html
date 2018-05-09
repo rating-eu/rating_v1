@@ -12,7 +12,7 @@
             <div class="radio" *ngFor="let answer of answers">
                 <label class="radio">
                     <input type="radio" [formControlName]="dynamicQuestion.id"
-                           [value]="answer.name"/>&nbsp;{{answer.name}}
+                           [value]="answer.id"/>&nbsp;{{answer.name}}
                 </label>
             </div>
         </div>
@@ -20,7 +20,7 @@
         <div *ngSwitchCase="answerType.RANGE5">
             <!--<h1>Ok, the question is of type RANGE 5</h1>-->
             <select [formControlName]="dynamicQuestion.id">
-                <option *ngFor="let answer of answers" [value]="answer.name">
+                <option *ngFor="let answer of answers" [value]="answer.id">
                     {{answer.name}}
                 </option>
             </select>
@@ -29,7 +29,7 @@
         <div *ngSwitchCase="answerType.PERC5">
             <!--<h1>Ok, the question is of type PERC 5</h1>-->
             <select [formControlName]="dynamicQuestion.id">
-                <option *ngFor="let answer of answers" [value]="answer.name">
+                <option *ngFor="let answer of answers" [value]="answer.id">
                     {{answer.name}}
                 </option>
             </select>
@@ -38,7 +38,7 @@
         <div *ngSwitchCase="answerType.RANGE3">
             <!--<h1>Ok, the question is of type RANGE 3</h1>-->
             <select [formControlName]="dynamicQuestion.id">
-                <option *ngFor="let answer of answers" [value]="answer.name">
+                <option *ngFor="let answer of answers" [value]="answer.id">
                     {{answer.name}}
                 </option>
             </select>
@@ -47,7 +47,7 @@
         <div *ngSwitchCase="answerType.PERC3">
             <!--<h1>Ok, the question is of type PERC 3</h1>-->
             <select [formControlName]="dynamicQuestion.id">
-                <option *ngFor="let answer of answers" [value]="answer.name">
+                <option *ngFor="let answer of answers" [value]="answer.id">
                     {{answer.name}}
                 </option>
             </select>
