@@ -1,4 +1,5 @@
-<div [formGroup]="form" class="form-group">
+<div [formGroup]="form" class="form-group"
+     [ngClass]="{'ng-valid': isValid == true, 'ng-invalid': isValid == false}">
     <div class="rounded bg-primary d-inline-block">
         <label class="form-control-label" [attr.for]="dynamicQuestion.id"><h3>
             {{dynamicQuestion.name}}</h3>
