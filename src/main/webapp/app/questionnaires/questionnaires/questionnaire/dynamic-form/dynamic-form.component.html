@@ -2,6 +2,6 @@
     <jhi-question *ngFor="let question of questionsArray" [dynamicQuestion]="question" [form]="form"></jhi-question>
 
     <div class="form-row">
-        <button type="submit" [disabled]="!form.valid">Save</button>
+        <button class="btn btn-success btn-lg" type="submit" [disabled]="!form.valid">Save</button>
     </div>
 </form>

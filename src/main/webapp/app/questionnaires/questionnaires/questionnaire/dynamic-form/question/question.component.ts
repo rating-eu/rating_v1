@@ -28,6 +28,9 @@ export class QuestionComponent implements OnInit {
         this.questionnairesService.getAllAnswersByQuestion(this.dynamicQuestion).subscribe(
             (response) => {
                 this.answers = response as AnswerMgm[];
+                this.answers = this.answers.sort(function(a: AnswerMgm, b: AnswerMgm) {
+                    return a.order - b.order;
+                });
             }
         );
     }
