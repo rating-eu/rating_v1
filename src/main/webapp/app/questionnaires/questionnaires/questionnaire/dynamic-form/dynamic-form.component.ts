@@ -2,6 +2,7 @@ import {Component, Input, OnInit} from '@angular/core';
 import {QuestionControlService} from './services/question-control.service';
 import {FormGroup} from '@angular/forms';
 import {QuestionMgm} from '../../../../entities/question-mgm';
+import {AnswerMgm} from '../../../../entities/answer-mgm';
 
 @Component({
     selector: 'jhi-dynamic-form',
@@ -45,5 +46,22 @@ export class DynamicFormComponent implements OnInit {
         this.payLoad = JSON.stringify(this.form.value);
         console.log('Form\'s value is:');
         console.log(this.payLoad);
+
+        const formData = this.form.value;
+
+        console.log('Keys: ' + Object.keys(formData));
+
+        const formDataMap = new Map();
+
+        Object.keys(formData).forEach((key) => {
+            formDataMap.set(key, formData[key] as AnswerMgm);
+        });
+
+        console.log('Map: ' + formDataMap);
+
+        formDataMap.forEach((value, key) => {
+            console.log('key: ' + key);
+            console.log('value: ' + JSON.stringify(value));
+        });
     }
 }
