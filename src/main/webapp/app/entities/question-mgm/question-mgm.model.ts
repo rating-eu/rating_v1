@@ -1,4 +1,8 @@
-import { BaseEntity } from './../../shared';
+import {BaseEntity} from './../../shared';
+import {ThreatAgentMgm} from '../threat-agent-mgm';
+import {AnswerMgm} from '../answer-mgm';
+import {MyAnswerMgm} from '../my-answer-mgm';
+import {QuestionnaireMgm} from '../questionnaire-mgm';
 
 export const enum QuestionType {
     'REGULAR',
@@ -16,18 +20,16 @@ export enum AnswerType {
 }
 
 export class QuestionMgm implements BaseEntity {
-    constructor(
-        public id?: number,
-        public name?: string,
-        public created?: any,
-        public modified?: any,
-        public order?: number,
-        public questionType?: QuestionType,
-        public answerType?: AnswerType,
-        public threatAgent?: BaseEntity,
-        public answers?: BaseEntity[],
-        public myanswer?: BaseEntity,
-        public questionnaire?: BaseEntity,
-    ) {
+    constructor(public id?: number,
+                public name?: string,
+                public created?: any,
+                public modified?: any,
+                public order?: number,
+                public questionType?: QuestionType,
+                public answerType?: AnswerType,
+                public threatAgent?: ThreatAgentMgm,
+                public answers?: AnswerMgm[],
+                public myanswer?: MyAnswerMgm,
+                public questionnaire?: QuestionnaireMgm) {
     }
 }
