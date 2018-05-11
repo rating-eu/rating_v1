@@ -1,3 +1,7 @@
 <p>
-  result works!
+    The following Threat agents have been identified!!!
 </p>
+
+<ul>
+    <li *ngFor="let couple of threatAgentsMap.values()">{{couple.key.name}} ==> {{couple.value.toPercentage()}}</li>
+</ul>

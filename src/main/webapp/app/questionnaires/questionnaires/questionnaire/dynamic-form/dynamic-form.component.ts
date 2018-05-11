@@ -47,8 +47,6 @@ export class DynamicFormComponent implements OnInit {
     }
 
     ngOnInit() {
-        console.log('Sha256:');
-        console.log(CryptoJS.SHA256('Maurizio').toString());
     }
 
     onSubmit() {
@@ -112,6 +110,6 @@ export class DynamicFormComponent implements OnInit {
             console.log('ThreatAgent:' + key + ' ==> ' + value.key.name + '\t' + value.value.toPercentage() + '\%');
         });
 
-        this.dataSharingSerivce.setMessage('Working...');
+        this.dataSharingSerivce.threatAgentsMap = threatAgentsMap;
     }
 }

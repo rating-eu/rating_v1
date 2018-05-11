@@ -1,5 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {DatasharingService} from '../../datasharing/datasharing.service';
+import {ThreatAgentMgm} from '../../entities/threat-agent-mgm';
+import {Couple} from '../../utils/couple.class';
+import {Fraction} from '../../utils/fraction.class';
 
 @Component({
     selector: 'jhi-result',
@@ -8,11 +11,12 @@ import {DatasharingService} from '../../datasharing/datasharing.service';
 })
 export class ResultComponent implements OnInit {
 
+    threatAgentsMap: Map<String, Couple<ThreatAgentMgm, Fraction>>;
+
     constructor(private dataSharingService: DatasharingService) {
     }
 
     ngOnInit() {
-        console.log('Message from dataSharingService is: ' + this.dataSharingService.getMessage());
+        this.threatAgentsMap = this.dataSharingService.threatAgentsMap;
     }
-
 }

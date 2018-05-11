@@ -1,18 +1,23 @@
 import {Injectable} from '@angular/core';
+import {Fraction} from '../utils/fraction.class';
+import {Couple} from '../utils/couple.class';
+import {ThreatAgentMgm} from '../entities/threat-agent-mgm';
 
 @Injectable()
 export class DatasharingService {
 
-    _message: String = 'Default';
+    _threatAgentsMap: Map<String, Couple<ThreatAgentMgm, Fraction>>;
 
-    constructor() {
+    set threatAgentsMap(threatAgents: Map<String, Couple<ThreatAgentMgm, Fraction>>) {
+        console.log('ThreatAgents param was: ' + JSON.stringify(threatAgents));
+
+        this._threatAgentsMap = threatAgents;
+        console.log('ThreatAgents SET to ' + JSON.stringify(this._threatAgentsMap));
     }
 
-    setMessage(m: String) {
-        this._message = m;
-    }
+    get threatAgentsMap(): Map<String, Couple<ThreatAgentMgm, Fraction>> {
+        console.log('ThreatAgents GET to ' + JSON.stringify(this._threatAgentsMap));
 
-    getMessage() {
-        return this._message;
+        return this._threatAgentsMap;
     }
 }
