@@ -8,13 +8,15 @@ import {DynamicFormComponent} from './questionnaires/questionnaire/dynamic-form/
 import {QuestionComponent} from './questionnaires/questionnaire/dynamic-form/question/question.component';
 import {ReactiveFormsModule} from '@angular/forms';
 import {IdentifyThreatAgentModule} from '../identify-threat-agent/identify-threat-agent.module';
+import {DatasharingModule} from '../datasharing/datasharing.module';
 
 @NgModule({
     imports: [
         CommonModule,
         QuestionnairesRoutingModule,
         ReactiveFormsModule,
-        IdentifyThreatAgentModule
+        IdentifyThreatAgentModule,
+        DatasharingModule
     ],
     declarations: [
         QuestionnairesComponent,

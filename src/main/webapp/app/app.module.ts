@@ -34,6 +34,7 @@ import {
 } from './layouts';
 import {QuestionnairesService} from './questionnaires/questionnaires.service';
 import {ReactiveFormsModule} from '@angular/forms';
+import {DatasharingModule} from './datasharing/datasharing.module';
 
 @NgModule({
     imports: [
@@ -50,7 +51,8 @@ import {ReactiveFormsModule} from '@angular/forms';
         EvaluateWeacknessModule,
         QuestionnairesModule, // add the feature module here
         HermeneutAppRoutingModule,
-        IdentifyAssetModule
+        IdentifyAssetModule,
+        DatasharingModule.forRoot()
         // jhipster-needle-angular-add-module JHipster will add new module here
     ],
     declarations: [
