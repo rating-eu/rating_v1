@@ -195,6 +195,10 @@
   dependencies:
     typescript "~2.6.2"
 
+"@types/crypto-js@^3.1.39":
+  version "3.1.39"
+  resolved "https://registry.npmjs.org/@types/crypto-js/-/crypto-js-3.1.39.tgz#b4bb3a9881c0065b30be15b9bb199732e57191a0"
+
 "@types/jasmine@2.5.53":
   version "2.5.53"
   resolved "https://registry.yarnpkg.com/@types/jasmine/-/jasmine-2.5.53.tgz#4e0cefad09df5ec48c8dd40433512f84b1568d61"
@@ -1779,6 +1783,10 @@ crypto-browserify@^3.11.0:
     public-encrypt "^4.0.0"
     randombytes "^2.0.0"
     randomfill "^1.0.3"
+
+crypto-js@^3.1.9-1:
+  version "3.1.9-1"
+  resolved "https://registry.npmjs.org/crypto-js/-/crypto-js-3.1.9-1.tgz#fda19e761fc077e01ffbfdc6e9fdfc59e8806cd8"
 
 css-color-names@0.0.4:
   version "0.0.4"
