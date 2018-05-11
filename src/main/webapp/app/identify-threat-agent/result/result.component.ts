@@ -12,11 +12,13 @@ import {Fraction} from '../../utils/fraction.class';
 export class ResultComponent implements OnInit {
 
     threatAgentsMap: Map<String, Couple<ThreatAgentMgm, Fraction>>;
+    threatAgentsPercentageArray: Couple<ThreatAgentMgm, Fraction>[];
 
     constructor(private dataSharingService: DatasharingService) {
     }
 
     ngOnInit() {
         this.threatAgentsMap = this.dataSharingService.threatAgentsMap;
+        this.threatAgentsPercentageArray = Array.from(this.threatAgentsMap.values());
     }
 }
