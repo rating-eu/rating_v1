@@ -5,6 +5,7 @@ import {HermeneutSharedModule} from '../shared';
 import {CommonModule} from '@angular/common';
 import {IdentifyThreatAgentRoutingModule} from './identify-threat-agent-routing.module';
 import {IdentifyThreatAgentComponent} from './identify-threat-agent.component';
+import { ResultComponent } from './result/result.component';
 
 @NgModule({
     imports: [
@@ -13,7 +14,8 @@ import {IdentifyThreatAgentComponent} from './identify-threat-agent.component';
         IdentifyThreatAgentRoutingModule
     ],
     declarations: [
-        IdentifyThreatAgentComponent
+        IdentifyThreatAgentComponent,
+        ResultComponent
     ],
     exports: [
         IdentifyThreatAgentComponent
