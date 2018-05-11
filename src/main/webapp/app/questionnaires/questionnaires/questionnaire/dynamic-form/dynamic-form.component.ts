@@ -7,6 +7,7 @@ import {ThreatAgentMgm} from '../../../../entities/threat-agent-mgm';
 import {Fraction} from '../../../../utils/fraction.class';
 import * as CryptoJS from 'crypto-js';
 import {Couple} from '../../../../utils/couple.class';
+import {DatasharingService} from '../../../../datasharing/datasharing.service';
 
 @Component({
     selector: 'jhi-dynamic-form',
@@ -23,7 +24,7 @@ export class DynamicFormComponent implements OnInit {
     form: FormGroup;
     payLoad = '';
 
-    constructor(private questionControlService: QuestionControlService) {
+    constructor(private questionControlService: QuestionControlService, private dataSharingSerivce: DatasharingService) {
 
     }
 
@@ -110,5 +111,7 @@ export class DynamicFormComponent implements OnInit {
         threatAgentsMap.forEach((value, key) => {
             console.log('ThreatAgent:' + key + ' ==> ' + value.key.name + '\t' + value.value.toPercentage() + '\%');
         });
+
+        this.dataSharingSerivce.setMessage('Working...');
     }
 }
