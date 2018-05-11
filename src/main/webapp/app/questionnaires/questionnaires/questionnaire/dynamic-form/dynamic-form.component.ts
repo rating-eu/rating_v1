@@ -8,6 +8,7 @@ import {Fraction} from '../../../../utils/fraction.class';
 import * as CryptoJS from 'crypto-js';
 import {Couple} from '../../../../utils/couple.class';
 import {DatasharingService} from '../../../../datasharing/datasharing.service';
+import {Router} from '@angular/router';
 
 @Component({
     selector: 'jhi-dynamic-form',
@@ -24,7 +25,7 @@ export class DynamicFormComponent implements OnInit {
     form: FormGroup;
     payLoad = '';
 
-    constructor(private questionControlService: QuestionControlService, private dataSharingSerivce: DatasharingService) {
+    constructor(private questionControlService: QuestionControlService, private dataSharingSerivce: DatasharingService, private router: Router) {
 
     }
 
@@ -111,5 +112,7 @@ export class DynamicFormComponent implements OnInit {
         });
 
         this.dataSharingSerivce.threatAgentsMap = threatAgentsMap;
+
+        this.router.navigate(['/identify-threat-agent/result']);
     }
 }

@@ -3,5 +3,7 @@
 </p>
 
 <ul>
-    <li *ngFor="let couple of threatAgentsPercentageArray">{{couple.key.name}} ==> {{couple.value.toPercentage()}}</li>
+    <li *ngFor="let couple of threatAgentsPercentageArray">{{couple.key.name}} ==> {{couple.value.toPercentage() |
+        number:'1.2-2'}} %
+    </li>
 </ul>
