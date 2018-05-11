@@ -4,16 +4,17 @@ import {CommonModule} from '@angular/common';
 import {QuestionnairesRoutingModule} from './questionnaires-routing.module';
 import {QuestionnaireComponent} from './questionnaires/questionnaire/questionnaire.component';
 import {QuestionnairesComponent} from './questionnaires/questionnaires.component';
-import {QuestionnairesService} from './questionnaires.service';
 import {DynamicFormComponent} from './questionnaires/questionnaire/dynamic-form/dynamic-form.component';
-import { QuestionComponent } from './questionnaires/questionnaire/dynamic-form/question/question.component';
+import {QuestionComponent} from './questionnaires/questionnaire/dynamic-form/question/question.component';
 import {ReactiveFormsModule} from '@angular/forms';
+import {IdentifyThreatAgentModule} from '../identify-threat-agent/identify-threat-agent.module';
 
 @NgModule({
     imports: [
         CommonModule,
         QuestionnairesRoutingModule,
-        ReactiveFormsModule
+        ReactiveFormsModule,
+        IdentifyThreatAgentModule
     ],
     declarations: [
         QuestionnairesComponent,
