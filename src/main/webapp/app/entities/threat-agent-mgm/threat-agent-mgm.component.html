@@ -31,6 +31,8 @@
             <tr>
             <th><span jhiTranslate="global.field.id">ID</span></th>
             <th><span jhiTranslate="hermeneutApp.threatAgent.name">Name</span></th>
+            <th><span jhiTranslate="hermeneutApp.threatAgent.description">Description</span></th>
+            <th><span jhiTranslate="hermeneutApp.threatAgent.image">Image</span></th>
             <th><span jhiTranslate="hermeneutApp.threatAgent.skillLevel">Skill Level</span></th>
             <th><span jhiTranslate="hermeneutApp.threatAgent.intent">Intent</span></th>
             <th><span jhiTranslate="hermeneutApp.threatAgent.access">Access</span></th>
@@ -44,6 +46,13 @@
             <tr *ngFor="let threatAgent of threatAgents ;trackBy: trackId">
                 <td><a [routerLink]="['../threat-agent-mgm', threatAgent.id ]">{{threatAgent.id}}</a></td>
                 <td>{{threatAgent.name}}</td>
+                <td>{{threatAgent.description}}</td>
+                <td>
+                    <a *ngIf="threatAgent.image" (click)="openFile(threatAgent.imageContentType, threatAgent.image)">
+                        <img [src]="'data:' + threatAgent.imageContentType + ';base64,' + threatAgent.image" style="max-height: 30px;" alt="threatAgent image"/>
+                    </a>
+                    <span *ngIf="threatAgent.image">{{threatAgent.imageContentType}}, {{byteSize(threatAgent.image)}}</span>
+                </td>
                 <td jhiTranslate="{{'hermeneutApp.SkillLevel.' + threatAgent.skillLevel}}">{{threatAgent.skillLevel}}</td>
                 <td jhiTranslate="{{'hermeneutApp.Intent.' + threatAgent.intent}}">{{threatAgent.intent}}</td>
                 <td jhiTranslate="{{'hermeneutApp.TA_Access.' + threatAgent.access}}">{{threatAgent.access}}</td>

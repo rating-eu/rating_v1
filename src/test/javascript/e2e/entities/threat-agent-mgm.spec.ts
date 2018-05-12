@@ -1,11 +1,13 @@
 import { browser, element, by } from 'protractor';
 import { NavBarPage } from './../page-objects/jhi-page-objects';
-
+import * as path from 'path';
 describe('ThreatAgent e2e test', () => {
 
     let navBarPage: NavBarPage;
     let threatAgentDialogPage: ThreatAgentDialogPage;
     let threatAgentComponentsPage: ThreatAgentComponentsPage;
+    const fileToUpload = '../../../../main/webapp/content/images/logo-jhipster.png';
+    const absolutePath = path.resolve(__dirname, fileToUpload);
 
     beforeAll(() => {
         browser.get('/');
@@ -35,6 +37,9 @@ describe('ThreatAgent e2e test', () => {
         threatAgentComponentsPage.clickOnCreateButton();
         threatAgentDialogPage.setNameInput('name');
         expect(threatAgentDialogPage.getNameInput()).toMatch('name');
+        threatAgentDialogPage.setDescriptionInput('description');
+        expect(threatAgentDialogPage.getDescriptionInput()).toMatch('description');
+        threatAgentDialogPage.setImageInput(absolutePath);
         threatAgentDialogPage.skillLevelSelectLastOption();
         threatAgentDialogPage.intentSelectLastOption();
         threatAgentDialogPage.accessSelectLastOption();
@@ -70,6 +75,8 @@ export class ThreatAgentDialogPage {
     saveButton = element(by.css('.modal-footer .btn.btn-primary'));
     closeButton = element(by.css('button.close'));
     nameInput = element(by.css('input#field_name'));
+    descriptionInput = element(by.css('input#field_description'));
+    imageInput = element(by.css('input#file_image'));
     skillLevelSelect = element(by.css('select#field_skillLevel'));
     intentSelect = element(by.css('select#field_intent'));
     accessSelect = element(by.css('select#field_access'));
@@ -87,6 +94,22 @@ export class ThreatAgentDialogPage {
 
     getNameInput = function() {
         return this.nameInput.getAttribute('value');
+    };
+
+    setDescriptionInput = function(description) {
+        this.descriptionInput.sendKeys(description);
+    };
+
+    getDescriptionInput = function() {
+        return this.descriptionInput.getAttribute('value');
+    };
+
+    setImageInput = function(image) {
+        this.imageInput.sendKeys(image);
+    };
+
+    getImageInput = function() {
+        return this.imageInput.getAttribute('value');
     };
 
     setSkillLevelSelect = function(skillLevel) {

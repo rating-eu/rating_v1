@@ -1,10 +1,10 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ElementRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 
 import { Observable } from 'rxjs/Observable';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
+import { JhiEventManager, JhiAlertService, JhiDataUtils } from 'ng-jhipster';
 
 import { ThreatAgentMgm } from './threat-agent-mgm.model';
 import { ThreatAgentMgmPopupService } from './threat-agent-mgm-popup.service';
@@ -27,10 +27,12 @@ export class ThreatAgentMgmDialogComponent implements OnInit {
 
     constructor(
         public activeModal: NgbActiveModal,
+        private dataUtils: JhiDataUtils,
         private jhiAlertService: JhiAlertService,
         private threatAgentService: ThreatAgentMgmService,
         private motivationService: MotivationMgmService,
         private selfAssessmentService: SelfAssessmentMgmService,
+        private elementRef: ElementRef,
         private eventManager: JhiEventManager
     ) {
     }
@@ -41,6 +43,22 @@ export class ThreatAgentMgmDialogComponent implements OnInit {
             .subscribe((res: HttpResponse<MotivationMgm[]>) => { this.motivations = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
         this.selfAssessmentService.query()
             .subscribe((res: HttpResponse<SelfAssessmentMgm[]>) => { this.selfassessments = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
+    }
+
+    byteSize(field) {
+        return this.dataUtils.byteSize(field);
+    }
+
+    openFile(contentType, field) {
+        return this.dataUtils.openFile(contentType, field);
+    }
+
+    setFileData(event, entity, field, isImage) {
+        this.dataUtils.setFileData(event, entity, field, isImage);
+    }
+
+    clearInputImage(field: string, fieldContentType: string, idInput: string) {
+        this.dataUtils.clearInputImage(this.threatAgent, this.elementRef, field, fieldContentType, idInput);
     }
 
     clear() {

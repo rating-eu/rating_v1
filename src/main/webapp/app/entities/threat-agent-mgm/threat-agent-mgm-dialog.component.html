@@ -24,6 +24,34 @@
             </div>
         </div>
         <div class="form-group">
+            <label class="form-control-label" jhiTranslate="hermeneutApp.threatAgent.description" for="field_description">Description</label>
+            <input type="text" class="form-control" name="description" id="field_description"
+                [(ngModel)]="threatAgent.description" required/>
+            <div [hidden]="!(editForm.controls.description?.dirty && editForm.controls.description?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.description?.errors?.required" jhiTranslate="entity.validation.required">
+                   This field is required.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="hermeneutApp.threatAgent.image" for="field_image">Image</label>
+            <div>
+                <img [src]="'data:' + threatAgent.imageContentType + ';base64,' + threatAgent.image" style="max-height: 100px;" *ngIf="threatAgent.image" alt="threatAgent image"/>
+                <div *ngIf="threatAgent.image" class="form-text text-danger clearfix">
+                    <span class="pull-left">{{threatAgent.imageContentType}}, {{byteSize(threatAgent.image)}}</span>
+                    <button type="button" (click)="clearInputImage('image', 'imageContentType', 'fileImage')" class="btn btn-secondary btn-xs pull-right">
+                        <span class="fa fa-times"></span>
+                    </button>
+                </div>
+                <input type="file" id="file_image" (change)="setFileData($event, threatAgent, 'image', true)" accept="image/*" jhiTranslate="entity.action.addimage"/>
+            </div>
+            <input type="hidden" class="form-control" name="image" id="field_image"
+                [(ngModel)]="threatAgent.image" />
+            <input type="hidden" class="form-control" name="imageContentType" id="field_imageContentType"
+                [(ngModel)]="threatAgent.imageContentType" />
+        </div>
+        <div class="form-group">
             <label class="form-control-label" jhiTranslate="hermeneutApp.threatAgent.skillLevel" for="field_skillLevel">Skill Level</label>
             <select class="form-control" name="skillLevel" [(ngModel)]="threatAgent.skillLevel" id="field_skillLevel"  required>
                 <option value="HIGH">{{'hermeneutApp.SkillLevel.HIGH' | translate}}</option>

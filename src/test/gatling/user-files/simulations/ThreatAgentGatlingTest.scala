@@ -68,7 +68,7 @@ class ThreatAgentGatlingTest extends Simulation {
             .exec(http("Create new threatAgent")
             .post("/api/threat-agents")
             .headers(headers_http_authenticated)
-            .body(StringBody("""{"id":null, "name":"SAMPLE_TEXT", "skillLevel":null, "intent":null, "access":null, "created":"2020-01-01T00:00:00.000Z", "modified":"2020-01-01T00:00:00.000Z"}""")).asJSON
+            .body(StringBody("""{"id":null, "name":"SAMPLE_TEXT", "description":"SAMPLE_TEXT", "image":null, "skillLevel":null, "intent":null, "access":null, "created":"2020-01-01T00:00:00.000Z", "modified":"2020-01-01T00:00:00.000Z"}""")).asJSON
             .check(status.is(201))
             .check(headerRegex("Location", "(.*)").saveAs("new_threatAgent_url"))).exitHereIfFailed
             .pause(10)

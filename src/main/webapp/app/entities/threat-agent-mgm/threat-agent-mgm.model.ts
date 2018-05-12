@@ -21,6 +21,9 @@ export class ThreatAgentMgm implements BaseEntity {
     constructor(
         public id?: number,
         public name?: string,
+        public description?: string,
+        public imageContentType?: string,
+        public image?: any,
         public skillLevel?: SkillLevel,
         public intent?: Intent,
         public access?: TA_Access,

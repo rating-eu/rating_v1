@@ -18,6 +18,8 @@
                 "title": "Threat Agent"
             },
             "name": "Name",
+            "description": "Description",
+            "image": "Image",
             "skillLevel": "Skill Level",
             "intent": "Intent",
             "access": "Access",

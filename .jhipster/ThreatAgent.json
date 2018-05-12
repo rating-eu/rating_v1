@@ -32,6 +32,18 @@
             ]
         },
         {
+            "fieldName": "description",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "image",
+            "fieldType": "byte[]",
+            "fieldTypeBlobContent": "image"
+        },
+        {
             "fieldName": "skillLevel",
             "fieldType": "SkillLevel",
             "fieldValues": "HIGH,MEDIUM,LOW",

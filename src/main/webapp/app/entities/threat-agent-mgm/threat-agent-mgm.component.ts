@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
-import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
+import { JhiEventManager, JhiAlertService, JhiDataUtils } from 'ng-jhipster';
 
 import { ThreatAgentMgm } from './threat-agent-mgm.model';
 import { ThreatAgentMgmService } from './threat-agent-mgm.service';
@@ -21,6 +21,7 @@ threatAgents: ThreatAgentMgm[];
     constructor(
         private threatAgentService: ThreatAgentMgmService,
         private jhiAlertService: JhiAlertService,
+        private dataUtils: JhiDataUtils,
         private eventManager: JhiEventManager,
         private activatedRoute: ActivatedRoute,
         private principal: Principal
@@ -74,6 +75,14 @@ threatAgents: ThreatAgentMgm[];
 
     trackId(index: number, item: ThreatAgentMgm) {
         return item.id;
+    }
+
+    byteSize(field) {
+        return this.dataUtils.byteSize(field);
+    }
+
+    openFile(contentType, field) {
+        return this.dataUtils.openFile(contentType, field);
     }
     registerChangeInThreatAgents() {
         this.eventSubscriber = this.eventManager.subscribe('threatAgentListModification', (response) => this.loadAll());

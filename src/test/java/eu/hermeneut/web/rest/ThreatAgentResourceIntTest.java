@@ -21,6 +21,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.Base64Utils;
 
 import javax.persistence.EntityManager;
 import java.time.Instant;
@@ -50,6 +51,14 @@ public class ThreatAgentResourceIntTest {
 
     private static final String DEFAULT_NAME = "AAAAAAAAAA";
     private static final String UPDATED_NAME = "BBBBBBBBBB";
+
+    private static final String DEFAULT_DESCRIPTION = "AAAAAAAAAA";
+    private static final String UPDATED_DESCRIPTION = "BBBBBBBBBB";
+
+    private static final byte[] DEFAULT_IMAGE = TestUtil.createByteArray(1, "0");
+    private static final byte[] UPDATED_IMAGE = TestUtil.createByteArray(2, "1");
+    private static final String DEFAULT_IMAGE_CONTENT_TYPE = "image/jpg";
+    private static final String UPDATED_IMAGE_CONTENT_TYPE = "image/png";
 
     private static final SkillLevel DEFAULT_SKILL_LEVEL = SkillLevel.HIGH;
     private static final SkillLevel UPDATED_SKILL_LEVEL = SkillLevel.MEDIUM;
@@ -111,6 +120,9 @@ public class ThreatAgentResourceIntTest {
     public static ThreatAgent createEntity(EntityManager em) {
         ThreatAgent threatAgent = new ThreatAgent()
             .name(DEFAULT_NAME)
+            .description(DEFAULT_DESCRIPTION)
+            .image(DEFAULT_IMAGE)
+            .imageContentType(DEFAULT_IMAGE_CONTENT_TYPE)
             .skillLevel(DEFAULT_SKILL_LEVEL)
             .intent(DEFAULT_INTENT)
             .access(DEFAULT_ACCESS)
@@ -141,6 +153,9 @@ public class ThreatAgentResourceIntTest {
         assertThat(threatAgentList).hasSize(databaseSizeBeforeCreate + 1);
         ThreatAgent testThreatAgent = threatAgentList.get(threatAgentList.size() - 1);
         assertThat(testThreatAgent.getName()).isEqualTo(DEFAULT_NAME);
+        assertThat(testThreatAgent.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
+        assertThat(testThreatAgent.getImage()).isEqualTo(DEFAULT_IMAGE);
+        assertThat(testThreatAgent.getImageContentType()).isEqualTo(DEFAULT_IMAGE_CONTENT_TYPE);
         assertThat(testThreatAgent.getSkillLevel()).isEqualTo(DEFAULT_SKILL_LEVEL);
         assertThat(testThreatAgent.getIntent()).isEqualTo(DEFAULT_INTENT);
         assertThat(testThreatAgent.getAccess()).isEqualTo(DEFAULT_ACCESS);
@@ -179,6 +194,24 @@ public class ThreatAgentResourceIntTest {
         int databaseSizeBeforeTest = threatAgentRepository.findAll().size();
         // set the field null
         threatAgent.setName(null);
+
+        // Create the ThreatAgent, which fails.
+
+        restThreatAgentMockMvc.perform(post("/api/threat-agents")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(threatAgent)))
+            .andExpect(status().isBadRequest());
+
+        List<ThreatAgent> threatAgentList = threatAgentRepository.findAll();
+        assertThat(threatAgentList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
+    public void checkDescriptionIsRequired() throws Exception {
+        int databaseSizeBeforeTest = threatAgentRepository.findAll().size();
+        // set the field null
+        threatAgent.setDescription(null);
 
         // Create the ThreatAgent, which fails.
 
@@ -257,6 +290,9 @@ public class ThreatAgentResourceIntTest {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(threatAgent.getId().intValue())))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
+            .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION.toString())))
+            .andExpect(jsonPath("$.[*].imageContentType").value(hasItem(DEFAULT_IMAGE_CONTENT_TYPE)))
+            .andExpect(jsonPath("$.[*].image").value(hasItem(Base64Utils.encodeToString(DEFAULT_IMAGE))))
             .andExpect(jsonPath("$.[*].skillLevel").value(hasItem(DEFAULT_SKILL_LEVEL.toString())))
             .andExpect(jsonPath("$.[*].intent").value(hasItem(DEFAULT_INTENT.toString())))
             .andExpect(jsonPath("$.[*].access").value(hasItem(DEFAULT_ACCESS.toString())))
@@ -276,6 +312,9 @@ public class ThreatAgentResourceIntTest {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(threatAgent.getId().intValue()))
             .andExpect(jsonPath("$.name").value(DEFAULT_NAME.toString()))
+            .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION.toString()))
+            .andExpect(jsonPath("$.imageContentType").value(DEFAULT_IMAGE_CONTENT_TYPE))
+            .andExpect(jsonPath("$.image").value(Base64Utils.encodeToString(DEFAULT_IMAGE)))
             .andExpect(jsonPath("$.skillLevel").value(DEFAULT_SKILL_LEVEL.toString()))
             .andExpect(jsonPath("$.intent").value(DEFAULT_INTENT.toString()))
             .andExpect(jsonPath("$.access").value(DEFAULT_ACCESS.toString()))
@@ -305,6 +344,9 @@ public class ThreatAgentResourceIntTest {
         em.detach(updatedThreatAgent);
         updatedThreatAgent
             .name(UPDATED_NAME)
+            .description(UPDATED_DESCRIPTION)
+            .image(UPDATED_IMAGE)
+            .imageContentType(UPDATED_IMAGE_CONTENT_TYPE)
             .skillLevel(UPDATED_SKILL_LEVEL)
             .intent(UPDATED_INTENT)
             .access(UPDATED_ACCESS)
@@ -321,6 +363,9 @@ public class ThreatAgentResourceIntTest {
         assertThat(threatAgentList).hasSize(databaseSizeBeforeUpdate);
         ThreatAgent testThreatAgent = threatAgentList.get(threatAgentList.size() - 1);
         assertThat(testThreatAgent.getName()).isEqualTo(UPDATED_NAME);
+        assertThat(testThreatAgent.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
+        assertThat(testThreatAgent.getImage()).isEqualTo(UPDATED_IMAGE);
+        assertThat(testThreatAgent.getImageContentType()).isEqualTo(UPDATED_IMAGE_CONTENT_TYPE);
         assertThat(testThreatAgent.getSkillLevel()).isEqualTo(UPDATED_SKILL_LEVEL);
         assertThat(testThreatAgent.getIntent()).isEqualTo(UPDATED_INTENT);
         assertThat(testThreatAgent.getAccess()).isEqualTo(UPDATED_ACCESS);
@@ -386,6 +431,9 @@ public class ThreatAgentResourceIntTest {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(threatAgent.getId().intValue())))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
+            .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION.toString())))
+            .andExpect(jsonPath("$.[*].imageContentType").value(hasItem(DEFAULT_IMAGE_CONTENT_TYPE)))
+            .andExpect(jsonPath("$.[*].image").value(hasItem(Base64Utils.encodeToString(DEFAULT_IMAGE))))
             .andExpect(jsonPath("$.[*].skillLevel").value(hasItem(DEFAULT_SKILL_LEVEL.toString())))
             .andExpect(jsonPath("$.[*].intent").value(hasItem(DEFAULT_INTENT.toString())))
             .andExpect(jsonPath("$.[*].access").value(hasItem(DEFAULT_ACCESS.toString())))
