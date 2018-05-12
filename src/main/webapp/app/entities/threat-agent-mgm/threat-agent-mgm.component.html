@@ -51,7 +51,6 @@
                     <a *ngIf="threatAgent.image" (click)="openFile(threatAgent.imageContentType, threatAgent.image)">
                         <img [src]="'data:' + threatAgent.imageContentType + ';base64,' + threatAgent.image" style="max-height: 30px;" alt="threatAgent image"/>
                     </a>
-                    <span *ngIf="threatAgent.image">{{threatAgent.imageContentType}}, {{byteSize(threatAgent.image)}}</span>
                 </td>
                 <td jhiTranslate="{{'hermeneutApp.SkillLevel.' + threatAgent.skillLevel}}">{{threatAgent.skillLevel}}</td>
                 <td jhiTranslate="{{'hermeneutApp.Intent.' + threatAgent.intent}}">{{threatAgent.intent}}</td>
