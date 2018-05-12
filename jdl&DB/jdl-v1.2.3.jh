@@ -89,6 +89,8 @@ entity Asset{
 
 entity ThreatAgent{
     Name String required,
+    Description String required,
+    Image ImageBlob,
     SkillLevel SkillLevel required,
     Intent Intent required,
     Access TA_Access required,
