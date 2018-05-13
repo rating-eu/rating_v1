@@ -39,7 +39,6 @@
             <div>
                 <img [src]="'data:' + threatAgent.imageContentType + ';base64,' + threatAgent.image" style="max-height: 100px;" *ngIf="threatAgent.image" alt="threatAgent image"/>
                 <div *ngIf="threatAgent.image" class="form-text text-danger clearfix">
-                    <span class="pull-left">{{threatAgent.imageContentType}}, {{byteSize(threatAgent.image)}}</span>
                     <button type="button" (click)="clearInputImage('image', 'imageContentType', 'fileImage')" class="btn btn-secondary btn-xs pull-right">
                         <span class="fa fa-times"></span>
                     </button>

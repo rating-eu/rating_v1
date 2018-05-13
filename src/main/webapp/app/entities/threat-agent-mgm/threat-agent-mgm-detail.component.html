@@ -18,7 +18,6 @@
                 <a (click)="openFile(threatAgent.imageContentType, threatAgent.image)">
                     <img [src]="'data:' + threatAgent.imageContentType + ';base64,' + threatAgent.image" style="max-width: 100%;" alt="threatAgent image"/>
                 </a>
-                {{threatAgent.imageContentType}}, {{byteSize(threatAgent.image)}}
             </div>
         </dd>
         <dt><span jhiTranslate="hermeneutApp.threatAgent.skillLevel">Skill Level</span></dt>
