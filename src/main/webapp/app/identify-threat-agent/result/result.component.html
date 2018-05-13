@@ -7,3 +7,19 @@
         number:'1.2-2'}} %
     </li>
 </ul>
+
+<table class="table" *ngIf="motivations, threatAgentsPercentageArray">
+    <thead>
+    <tr>
+        <th>Threat Agent</th>
+        <th>Likelihood</th>
+
+        <th *ngFor="let motivation of motivations">
+            {{motivation.name}}
+        </th>
+    </tr>
+    </thead>
+
+    <tbody>
+    </tbody>
+</table>
