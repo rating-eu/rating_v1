@@ -21,5 +21,15 @@
     </thead>
 
     <tbody>
+    <!--For rows-->
+    <tr *ngFor="let couple of threatAgentsPercentageArray">
+        <!--For cols-->
+        <th>
+            {{couple.key.name}}
+        </th>
+        <th>
+            {{couple.value.toPercentage() | number:'1.2-2'}} %
+        </th>
+    </tr>
     </tbody>
 </table>
