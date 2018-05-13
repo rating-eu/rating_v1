@@ -1,0 +1,11 @@
+id;name;description;created;modified
+1;Dominance;;${now};${now}
+2;Organizational Gain;;${now};${now}
+3;Ideology;;${now};${now}
+4;Disgruntlement;;${now};${now}
+5;Personal Financial Gain;;${now};${now}
+6;Notoriety;;${now};${now}
+7;Personal Satisfaction;;${now};${now}
+8;Coercion;;${now};${now}
+9;Unpredictable;;${now};${now}
+10;Accidental;;${now};${now}
