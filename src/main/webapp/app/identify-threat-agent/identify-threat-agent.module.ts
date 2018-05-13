@@ -6,6 +6,7 @@ import {IdentifyThreatAgentRoutingModule} from './identify-threat-agent-routing.
 import {IdentifyThreatAgentComponent} from './identify-threat-agent.component';
 import {ResultComponent} from './result/result.component';
 import {DatasharingModule} from '../datasharing/datasharing.module';
+import { IdentifyThreatAgentService } from './identify-threat-agent.service';
 
 @NgModule({
     imports: [
@@ -21,7 +22,8 @@ import {DatasharingModule} from '../datasharing/datasharing.module';
     exports: [
         IdentifyThreatAgentComponent,
         ResultComponent
-    ]
+    ],
+    providers: [IdentifyThreatAgentService]
 })
 export class IdentifyThreatAgentModule {
 }
