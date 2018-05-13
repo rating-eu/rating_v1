@@ -77,7 +77,7 @@ public class ThreatAgent implements Serializable {
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Question> questions = new HashSet<>();
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     @JoinTable(name = "threat_agent_motivation",
                joinColumns = @JoinColumn(name="threat_agents_id", referencedColumnName="id"),
