@@ -2,8 +2,8 @@
     The following Threat agents have been identified!!!
 </h2>
 
-<table class="table" *ngIf="motivations, threatAgentsPercentageArray">
-    <thead>
+<table class="table table-bordered" *ngIf="motivations, threatAgentsPercentageArray">
+    <thead class="thead-dark">
     <tr>
         <th scope="col" class="text-center align-middle">Threat Agent</th>
         <th scope="col" class="text-center align-middle">Likelihood</th>
@@ -18,7 +18,7 @@
     <!--For rows-->
     <tr *ngFor="let couple of threatAgentsPercentageArray">
         <!--For cols-->
-        <th scope="row" class="text-left align-middle">
+        <th scope="row" class="text-left align-middle table-dark">
             {{couple.key.name}}
         </th>
         <td class="text-center align-middle">
