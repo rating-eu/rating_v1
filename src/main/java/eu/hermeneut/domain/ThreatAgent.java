@@ -72,6 +72,10 @@ public class ThreatAgent implements Serializable {
     @Column(name = "modified")
     private ZonedDateTime modified;
 
+    @NotNull
+    @Column(name = "identified_by_default", nullable = false)
+    private Boolean identifiedByDefault;
+
     @OneToMany(mappedBy = "threatAgent")
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
@@ -215,6 +219,19 @@ public class ThreatAgent implements Serializable {
         this.modified = modified;
     }
 
+    public Boolean isIdentifiedByDefault() {
+        return identifiedByDefault;
+    }
+
+    public ThreatAgent identifiedByDefault(Boolean identifiedByDefault) {
+        this.identifiedByDefault = identifiedByDefault;
+        return this;
+    }
+
+    public void setIdentifiedByDefault(Boolean identifiedByDefault) {
+        this.identifiedByDefault = identifiedByDefault;
+    }
+
     public Set<Question> getQuestions() {
         return questions;
     }
@@ -324,6 +341,7 @@ public class ThreatAgent implements Serializable {
             ", access='" + getAccess() + "'" +
             ", created='" + getCreated() + "'" +
             ", modified='" + getModified() + "'" +
+            ", identifiedByDefault='" + isIdentifiedByDefault() + "'" +
             "}";
     }
 }

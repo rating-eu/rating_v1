@@ -40,6 +40,10 @@
         <dd>
             <span>{{threatAgent.modified | date:'medium'}}</span>
         </dd>
+        <dt><span jhiTranslate="hermeneutApp.threatAgent.identifiedByDefault">Identified By Default</span></dt>
+        <dd>
+            <span>{{threatAgent.identifiedByDefault}}</span>
+        </dd>
         <dt><span jhiTranslate="hermeneutApp.threatAgent.motivation">Motivation</span></dt>
         <dd>
             <span *ngFor="let motivation of threatAgent.motivations; let last = last">

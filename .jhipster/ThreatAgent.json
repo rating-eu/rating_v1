@@ -74,6 +74,13 @@
         {
             "fieldName": "modified",
             "fieldType": "ZonedDateTime"
+        },
+        {
+            "fieldName": "identifiedByDefault",
+            "fieldType": "Boolean",
+            "fieldValidateRules": [
+                "required"
+            ]
         }
     ],
     "changelogDate": "20180410085159",

@@ -75,6 +75,9 @@ public class ThreatAgentResourceIntTest {
     private static final ZonedDateTime DEFAULT_MODIFIED = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
     private static final ZonedDateTime UPDATED_MODIFIED = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
 
+    private static final Boolean DEFAULT_IDENTIFIED_BY_DEFAULT = false;
+    private static final Boolean UPDATED_IDENTIFIED_BY_DEFAULT = true;
+
     @Autowired
     private ThreatAgentRepository threatAgentRepository;
 
@@ -127,7 +130,8 @@ public class ThreatAgentResourceIntTest {
             .intent(DEFAULT_INTENT)
             .access(DEFAULT_ACCESS)
             .created(DEFAULT_CREATED)
-            .modified(DEFAULT_MODIFIED);
+            .modified(DEFAULT_MODIFIED)
+            .identifiedByDefault(DEFAULT_IDENTIFIED_BY_DEFAULT);
         return threatAgent;
     }
 
@@ -161,6 +165,7 @@ public class ThreatAgentResourceIntTest {
         assertThat(testThreatAgent.getAccess()).isEqualTo(DEFAULT_ACCESS);
         assertThat(testThreatAgent.getCreated()).isEqualTo(DEFAULT_CREATED);
         assertThat(testThreatAgent.getModified()).isEqualTo(DEFAULT_MODIFIED);
+        assertThat(testThreatAgent.isIdentifiedByDefault()).isEqualTo(DEFAULT_IDENTIFIED_BY_DEFAULT);
 
         // Validate the ThreatAgent in Elasticsearch
         ThreatAgent threatAgentEs = threatAgentSearchRepository.findOne(testThreatAgent.getId());
@@ -280,6 +285,24 @@ public class ThreatAgentResourceIntTest {
 
     @Test
     @Transactional
+    public void checkIdentifiedByDefaultIsRequired() throws Exception {
+        int databaseSizeBeforeTest = threatAgentRepository.findAll().size();
+        // set the field null
+        threatAgent.setIdentifiedByDefault(null);
+
+        // Create the ThreatAgent, which fails.
+
+        restThreatAgentMockMvc.perform(post("/api/threat-agents")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(threatAgent)))
+            .andExpect(status().isBadRequest());
+
+        List<ThreatAgent> threatAgentList = threatAgentRepository.findAll();
+        assertThat(threatAgentList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
     public void getAllThreatAgents() throws Exception {
         // Initialize the database
         threatAgentRepository.saveAndFlush(threatAgent);
@@ -297,7 +320,8 @@ public class ThreatAgentResourceIntTest {
             .andExpect(jsonPath("$.[*].intent").value(hasItem(DEFAULT_INTENT.toString())))
             .andExpect(jsonPath("$.[*].access").value(hasItem(DEFAULT_ACCESS.toString())))
             .andExpect(jsonPath("$.[*].created").value(hasItem(sameInstant(DEFAULT_CREATED))))
-            .andExpect(jsonPath("$.[*].modified").value(hasItem(sameInstant(DEFAULT_MODIFIED))));
+            .andExpect(jsonPath("$.[*].modified").value(hasItem(sameInstant(DEFAULT_MODIFIED))))
+            .andExpect(jsonPath("$.[*].identifiedByDefault").value(hasItem(DEFAULT_IDENTIFIED_BY_DEFAULT.booleanValue())));
     }
 
     @Test
@@ -319,7 +343,8 @@ public class ThreatAgentResourceIntTest {
             .andExpect(jsonPath("$.intent").value(DEFAULT_INTENT.toString()))
             .andExpect(jsonPath("$.access").value(DEFAULT_ACCESS.toString()))
             .andExpect(jsonPath("$.created").value(sameInstant(DEFAULT_CREATED)))
-            .andExpect(jsonPath("$.modified").value(sameInstant(DEFAULT_MODIFIED)));
+            .andExpect(jsonPath("$.modified").value(sameInstant(DEFAULT_MODIFIED)))
+            .andExpect(jsonPath("$.identifiedByDefault").value(DEFAULT_IDENTIFIED_BY_DEFAULT.booleanValue()));
     }
 
     @Test
@@ -351,7 +376,8 @@ public class ThreatAgentResourceIntTest {
             .intent(UPDATED_INTENT)
             .access(UPDATED_ACCESS)
             .created(UPDATED_CREATED)
-            .modified(UPDATED_MODIFIED);
+            .modified(UPDATED_MODIFIED)
+            .identifiedByDefault(UPDATED_IDENTIFIED_BY_DEFAULT);
 
         restThreatAgentMockMvc.perform(put("/api/threat-agents")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -371,6 +397,7 @@ public class ThreatAgentResourceIntTest {
         assertThat(testThreatAgent.getAccess()).isEqualTo(UPDATED_ACCESS);
         assertThat(testThreatAgent.getCreated()).isEqualTo(UPDATED_CREATED);
         assertThat(testThreatAgent.getModified()).isEqualTo(UPDATED_MODIFIED);
+        assertThat(testThreatAgent.isIdentifiedByDefault()).isEqualTo(UPDATED_IDENTIFIED_BY_DEFAULT);
 
         // Validate the ThreatAgent in Elasticsearch
         ThreatAgent threatAgentEs = threatAgentSearchRepository.findOne(testThreatAgent.getId());
@@ -438,7 +465,8 @@ public class ThreatAgentResourceIntTest {
             .andExpect(jsonPath("$.[*].intent").value(hasItem(DEFAULT_INTENT.toString())))
             .andExpect(jsonPath("$.[*].access").value(hasItem(DEFAULT_ACCESS.toString())))
             .andExpect(jsonPath("$.[*].created").value(hasItem(sameInstant(DEFAULT_CREATED))))
-            .andExpect(jsonPath("$.[*].modified").value(hasItem(sameInstant(DEFAULT_MODIFIED))));
+            .andExpect(jsonPath("$.[*].modified").value(hasItem(sameInstant(DEFAULT_MODIFIED))))
+            .andExpect(jsonPath("$.[*].identifiedByDefault").value(hasItem(DEFAULT_IDENTIFIED_BY_DEFAULT.booleanValue())));
     }
 
     @Test

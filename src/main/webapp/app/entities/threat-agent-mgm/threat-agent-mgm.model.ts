@@ -30,9 +30,11 @@ export class ThreatAgentMgm implements BaseEntity {
         public access?: TA_Access,
         public created?: any,
         public modified?: any,
+        public identifiedByDefault?: boolean,
         public questions?: BaseEntity[],
         public motivations?: MotivationMgm[],
         public selfassessments?: BaseEntity[],
     ) {
+        this.identifiedByDefault = false;
     }
 }

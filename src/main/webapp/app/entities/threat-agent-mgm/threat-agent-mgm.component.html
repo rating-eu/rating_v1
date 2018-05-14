@@ -38,6 +38,7 @@
             <th><span jhiTranslate="hermeneutApp.threatAgent.access">Access</span></th>
             <th><span jhiTranslate="hermeneutApp.threatAgent.created">Created</span></th>
             <th><span jhiTranslate="hermeneutApp.threatAgent.modified">Modified</span></th>
+            <th><span jhiTranslate="hermeneutApp.threatAgent.identifiedByDefault">Identified By Default</span></th>
             <th><span jhiTranslate="hermeneutApp.threatAgent.motivation">Motivation</span></th>
             <th></th>
             </tr>
@@ -57,6 +58,7 @@
                 <td jhiTranslate="{{'hermeneutApp.TA_Access.' + threatAgent.access}}">{{threatAgent.access}}</td>
                 <td>{{threatAgent.created | date:'medium'}}</td>
                 <td>{{threatAgent.modified | date:'medium'}}</td>
+                <td>{{threatAgent.identifiedByDefault}}</td>
                 <td>
                     <span *ngFor="let motivation of threatAgent.motivations; let last = last">
                             <a class="form-control-static" [routerLink]="['../motivation-mgm', motivation?.id ]">{{motivation.name}}</a>{{last ? '' : ', '}}

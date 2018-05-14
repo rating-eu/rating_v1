@@ -105,6 +105,17 @@
                 />
             </div>
         </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="hermeneutApp.threatAgent.identifiedByDefault" for="field_identifiedByDefault">Identified By Default</label>
+            <input type="checkbox" class="form-control" name="identifiedByDefault" id="field_identifiedByDefault"
+                [(ngModel)]="threatAgent.identifiedByDefault" />
+            <div [hidden]="!(editForm.controls.identifiedByDefault?.dirty && editForm.controls.identifiedByDefault?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.identifiedByDefault?.errors?.required" jhiTranslate="entity.validation.required">
+                   This field is required.
+                </small>
+            </div>
+        </div>
 
         <div class="form-group">
             <label jhiTranslate="hermeneutApp.threatAgent.motivation" for="field_motivation">Motivation</label>

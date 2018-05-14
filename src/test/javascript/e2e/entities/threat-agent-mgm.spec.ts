@@ -47,6 +47,15 @@ describe('ThreatAgent e2e test', () => {
         expect(threatAgentDialogPage.getCreatedInput()).toMatch('2001-12-31T02:30');
         threatAgentDialogPage.setModifiedInput(12310020012301);
         expect(threatAgentDialogPage.getModifiedInput()).toMatch('2001-12-31T02:30');
+        threatAgentDialogPage.getIdentifiedByDefaultInput().isSelected().then((selected) => {
+            if (selected) {
+                threatAgentDialogPage.getIdentifiedByDefaultInput().click();
+                expect(threatAgentDialogPage.getIdentifiedByDefaultInput().isSelected()).toBeFalsy();
+            } else {
+                threatAgentDialogPage.getIdentifiedByDefaultInput().click();
+                expect(threatAgentDialogPage.getIdentifiedByDefaultInput().isSelected()).toBeTruthy();
+            }
+        });
         // threatAgentDialogPage.motivationSelectLastOption();
         threatAgentDialogPage.save();
         expect(threatAgentDialogPage.getSaveButton().isPresent()).toBeFalsy();
@@ -82,6 +91,7 @@ export class ThreatAgentDialogPage {
     accessSelect = element(by.css('select#field_access'));
     createdInput = element(by.css('input#field_created'));
     modifiedInput = element(by.css('input#field_modified'));
+    identifiedByDefaultInput = element(by.css('input#field_identifiedByDefault'));
     motivationSelect = element(by.css('select#field_motivation'));
 
     getModalTitle() {
@@ -161,6 +171,9 @@ export class ThreatAgentDialogPage {
         return this.modifiedInput.getAttribute('value');
     };
 
+    getIdentifiedByDefaultInput = function() {
+        return this.identifiedByDefaultInput;
+    };
     motivationSelectLastOption = function() {
         this.motivationSelect.all(by.tagName('option')).last().click();
     };
