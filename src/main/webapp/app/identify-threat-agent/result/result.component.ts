@@ -16,6 +16,7 @@ export class ResultComponent implements OnInit {
     threatAgentsMap: Map<String, Couple<ThreatAgentMgm, Fraction>>;
     threatAgentsPercentageArray: Couple<ThreatAgentMgm, Fraction>[];
     motivations: MotivationMgm[];
+    defaultThreatAgents: ThreatAgentMgm[];
 
     constructor(private dataSharingService: DatasharingService, private identifyThreatAgentService: IdentifyThreatAgentService) {
     }
@@ -23,6 +24,14 @@ export class ResultComponent implements OnInit {
     ngOnInit() {
         this.threatAgentsMap = this.dataSharingService.threatAgentsMap;
         this.threatAgentsPercentageArray = Array.from(this.threatAgentsMap.values());
+
+        this.identifyThreatAgentService.getDefaultThreatAgents().subscribe((response) => {
+            this.defaultThreatAgents = response as ThreatAgentMgm[];
+
+            this.defaultThreatAgents.forEach((value) => {// Add the default Threat-Agents to the list
+                this.threatAgentsPercentageArray.push(new Couple<ThreatAgentMgm, Fraction>(value, new Fraction(1, 1)));
+            });
+        });
 
         console.log('Calling to find all motivations...');
         this.identifyThreatAgentService.findAllMotivations().subscribe((response) => {
