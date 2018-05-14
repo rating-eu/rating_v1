@@ -1,10 +1,10 @@
-id;name;description;skill_level;intent;jhi_access;created;modified
-1;Governament Hacker;Description;HIGH;HOSTILE;BOTH;${now};${now}
-2;Hacktivist;Description;HIGH;HOSTILE;OUTSIDER;${now};${now}
-3;Terrorist;Description;HIGH;HOSTILE;OUTSIDER;${now};${now}
-4;Hacker;Description;HIGH;HOSTILE;BOTH;${now};${now}
-5;Competitor/Hireling Hacker;Description;MEDIUM;HOSTILE;OUTSIDER;${now};${now}
-6;Insider;Description;MEDIUM;HOSTILE;INSIDER;${now};${now}
-7;Script Kiddie;Description;LOW;HOSTILE;OUTSIDER;${now};${now}
-8;Unpredictable Person;Description;LOW;HOSTILE;BOTH;${now};${now}
-9;Unaware;Description;LOW;NON_HOSTILE;INSIDER;${now};${now}
+id;name;description;skill_level;intent;jhi_access;created;modified;identified_by_default
+1;Governament Hacker;Description;HIGH;HOSTILE;BOTH;${now};${now};FALSE
+2;Hacktivist;Description;HIGH;HOSTILE;OUTSIDER;${now};${now};FALSE
+3;Terrorist;Description;HIGH;HOSTILE;OUTSIDER;${now};${now};FALSE
+4;Hacker;Description;HIGH;HOSTILE;BOTH;${now};${now};FALSE
+5;Competitor/Hireling Hacker;Description;MEDIUM;HOSTILE;OUTSIDER;${now};${now};FALSE
+6;Insider;Description;MEDIUM;HOSTILE;INSIDER;${now};${now};FALSE
+7;Script Kiddie;Description;LOW;HOSTILE;OUTSIDER;${now};${now};TRUE
+8;Unpredictable Person;Description;LOW;HOSTILE;BOTH;${now};${now};TRUE
+9;Unaware;Description;LOW;NON_HOSTILE;INSIDER;${now};${now};TRUE
