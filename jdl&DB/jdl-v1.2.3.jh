@@ -95,7 +95,8 @@ entity ThreatAgent{
     Intent Intent required,
     Access TA_Access required,
     Created ZonedDateTime,
-    Modified ZonedDateTime
+    Modified ZonedDateTime,
+    IdentifiedByDefault Boolean required
 }
 
 entity Motivation{
