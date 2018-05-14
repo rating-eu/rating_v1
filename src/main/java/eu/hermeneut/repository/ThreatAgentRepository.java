@@ -5,6 +5,7 @@ import org.springframework.stereotype.Repository;
 
 import org.springframework.data.jpa.repository.*;
 import org.springframework.data.repository.query.Param;
+
 import java.util.List;
 
 /**
@@ -19,4 +20,6 @@ public interface ThreatAgentRepository extends JpaRepository<ThreatAgent, Long> 
     @Query("select threat_agent from ThreatAgent threat_agent left join fetch threat_agent.motivations where threat_agent.id =:id")
     ThreatAgent findOneWithEagerRelationships(@Param("id") Long id);
 
+    @Query("select distinct threat_agent from ThreatAgent threat_agent left join fetch threat_agent.motivations where threat_agent.identifiedByDefault = true")
+    List<ThreatAgent> findAllDefault();
 }

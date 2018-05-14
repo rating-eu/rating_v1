@@ -8,6 +8,7 @@ import javax.persistence.*;
 import javax.validation.constraints.*;
 
 import org.springframework.data.elasticsearch.annotations.Document;
+
 import java.io.Serializable;
 import java.time.ZonedDateTime;
 import java.util.HashSet;
@@ -84,8 +85,8 @@ public class ThreatAgent implements Serializable {
     @ManyToMany(fetch = FetchType.EAGER)
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     @JoinTable(name = "threat_agent_motivation",
-               joinColumns = @JoinColumn(name="threat_agents_id", referencedColumnName="id"),
-               inverseJoinColumns = @JoinColumn(name="motivations_id", referencedColumnName="id"))
+        joinColumns = @JoinColumn(name = "threat_agents_id", referencedColumnName = "id"),
+        inverseJoinColumns = @JoinColumn(name = "motivations_id", referencedColumnName = "id"))
     private Set<Motivation> motivations = new HashSet<>();
 
     @ManyToMany(mappedBy = "threatagents")
@@ -230,6 +231,10 @@ public class ThreatAgent implements Serializable {
 
     public void setIdentifiedByDefault(Boolean identifiedByDefault) {
         this.identifiedByDefault = identifiedByDefault;
+    }
+
+    public Boolean getIdentifiedByDefault() {
+        return this.identifiedByDefault;
     }
 
     public Set<Question> getQuestions() {

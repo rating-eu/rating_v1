@@ -60,6 +60,17 @@ public class ThreatAgentServiceImpl implements ThreatAgentService {
     }
 
     /**
+     * Get all the default threatAgents.
+     *
+     * @return the list of entities
+     */
+    @Override
+    public List<ThreatAgent> findAllDefault() {
+        log.debug("Request to get all default ThreatAgents");
+        return threatAgentRepository.findAllDefault();
+    }
+
+    /**
      * Get one threatAgent by id.
      *
      * @param id the id of the entity
