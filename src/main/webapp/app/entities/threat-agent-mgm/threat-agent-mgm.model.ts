@@ -1,4 +1,5 @@
 import { BaseEntity } from './../../shared';
+import {MotivationMgm} from '../motivation-mgm';
 
 export const enum SkillLevel {
     'HIGH',
@@ -30,7 +31,7 @@ export class ThreatAgentMgm implements BaseEntity {
         public created?: any,
         public modified?: any,
         public questions?: BaseEntity[],
-        public motivations?: BaseEntity[],
+        public motivations?: MotivationMgm[],
         public selfassessments?: BaseEntity[],
     ) {
     }

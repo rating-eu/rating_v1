@@ -29,4 +29,12 @@ export class ResultComponent implements OnInit {
             this.motivations = response as MotivationMgm[];
         });
     }
+
+    hasMotivation(threatAgent: ThreatAgentMgm, motivation: MotivationMgm): boolean {
+        const found = threatAgent.motivations.find((m) => {
+            return m.id === motivation.id;
+        });
+
+        return found !== undefined;
+    }
 }
