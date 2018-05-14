@@ -1,20 +1,14 @@
-<p>
+<h2>
     The following Threat agents have been identified!!!
-</p>
-
-<ul>
-    <li *ngFor="let couple of threatAgentsPercentageArray">{{couple.key.name}} ==> {{couple.value.toPercentage() |
-        number:'1.2-2'}} %
-    </li>
-</ul>
+</h2>
 
 <table class="table" *ngIf="motivations, threatAgentsPercentageArray">
     <thead>
     <tr>
-        <th scope="col">Threat Agent</th>
-        <th scope="col">Likelihood</th>
+        <th scope="col" class="text-center align-middle">Threat Agent</th>
+        <th scope="col" class="text-center align-middle">Likelihood</th>
 
-        <th scope="col" *ngFor="let motivation of motivations">
+        <th scope="col" *ngFor="let motivation of motivations" class="text-center align-middle">
             {{motivation.name}}
         </th>
     </tr>
@@ -24,14 +18,14 @@
     <!--For rows-->
     <tr *ngFor="let couple of threatAgentsPercentageArray">
         <!--For cols-->
-        <th scope="row">
+        <th scope="row" class="text-left align-middle">
             {{couple.key.name}}
         </th>
-        <td>
+        <td class="text-center align-middle">
             {{couple.value.toPercentage() | number:'1.2-2'}} %
         </td>
 
-        <td *ngFor="let motivation of motivations">
+        <td *ngFor="let motivation of motivations" class="text-center align-middle">
             <span *ngIf="hasMotivation(couple.key, motivation)" class="fa fa-star"></span>
         </td>
     </tr>
