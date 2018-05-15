@@ -46,4 +46,12 @@ export class ResultComponent implements OnInit {
 
         return found !== undefined;
     }
+
+    saveIdentfiedThreatAgents() {
+        console.log('Saving identified threat agents...');
+    }
+
+    discardIdentfiedThreatAgents() {
+        console.log('Discarding identified threat agents...');
+    }
 }
