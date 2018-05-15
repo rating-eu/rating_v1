@@ -50,7 +50,7 @@ export class DynamicFormComponent implements OnInit {
     ngOnInit() {
     }
 
-    onSubmit() {
+    identifyThreatAgents() {
         console.log('OnSubmit called');
         this.payLoad = JSON.stringify(this.form.value);
         console.log('Form\'s value is:');
