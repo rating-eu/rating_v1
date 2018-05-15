@@ -10,6 +10,7 @@ import {AccountService, User, UserService} from '../../shared';
 import {QuestionMgm} from '../../entities/question-mgm';
 import {QuestionnaireMgm} from '../../entities/questionnaire-mgm';
 import {MyAnswerMgm, MyAnswerMgmService} from '../../entities/my-answer-mgm';
+import {Router} from '@angular/router';
 
 @Component({
     selector: 'jhi-result',
@@ -30,7 +31,8 @@ export class ResultComponent implements OnInit {
                 private identifyThreatAgentService: IdentifyThreatAgentService,
                 private myAnswerService: MyAnswerMgmService,
                 private accountService: AccountService,
-                private userService: UserService) {
+                private userService: UserService,
+                private router: Router) {
     }
 
     ngOnInit() {
@@ -96,5 +98,6 @@ export class ResultComponent implements OnInit {
 
     discardIdentfiedThreatAgents() {
         console.log('Discarding identified threat agents...');
+        this.router.navigate(['identify-threat-agent']);
     }
 }
