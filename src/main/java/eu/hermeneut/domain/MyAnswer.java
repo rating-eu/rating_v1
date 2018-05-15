@@ -6,6 +6,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import javax.persistence.*;
 
 import org.springframework.data.elasticsearch.annotations.Document;
+
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -13,7 +14,9 @@ import java.util.Objects;
  * A MyAnswer.
  */
 @Entity
-@Table(name = "my_answer")
+@Table(name = "my_answer",
+    uniqueConstraints = @UniqueConstraint(columnNames = {"question_id", "questionnaire_id", "user_id"})
+)
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 @Document(indexName = "myanswer")
 public class MyAnswer implements Serializable {
@@ -33,14 +36,15 @@ public class MyAnswer implements Serializable {
     private Answer answer;
 
     @OneToOne
-    @JoinColumn
+    @JoinColumn(name = "question_id")
     private Question question;
 
     @OneToOne
-    @JoinColumn
+    @JoinColumn(name = "questionnaire_id")
     private Questionnaire questionnaire;
 
     @ManyToOne
+    @JoinColumn(name = "user_id")
     private User user;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
