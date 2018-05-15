@@ -11,6 +11,7 @@ import {QuestionMgm} from '../../entities/question-mgm';
 import {QuestionnaireMgm} from '../../entities/questionnaire-mgm';
 import {MyAnswerMgm, MyAnswerMgmService} from '../../entities/my-answer-mgm';
 import {Router} from '@angular/router';
+import {SelfAssessmentMgmService} from '../../entities/self-assessment-mgm';
 
 @Component({
     selector: 'jhi-result',
@@ -32,6 +33,7 @@ export class ResultComponent implements OnInit {
                 private myAnswerService: MyAnswerMgmService,
                 private accountService: AccountService,
                 private userService: UserService,
+                private selfAssessmentService: SelfAssessmentMgmService,
                 private router: Router) {
     }
 

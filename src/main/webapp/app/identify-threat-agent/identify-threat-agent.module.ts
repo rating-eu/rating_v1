@@ -14,15 +14,13 @@ import {HTTP_INTERCEPTORS} from '@angular/common/http';
 import {AuthExpiredInterceptor} from '../blocks/interceptor/auth-expired.interceptor';
 import {ErrorHandlerInterceptor} from '../blocks/interceptor/errorhandler.interceptor';
 import {JhiEventManager} from 'ng-jhipster';
-import {HermeneutMyAnswerMgmModule} from '../entities/my-answer-mgm/my-answer-mgm.module';
 
 @NgModule({
     imports: [
         CommonModule,
         HermeneutSharedModule,
         IdentifyThreatAgentRoutingModule,
-        DatasharingModule,
-        HermeneutMyAnswerMgmModule
+        DatasharingModule
     ],
     declarations: [
         IdentifyThreatAgentComponent,
