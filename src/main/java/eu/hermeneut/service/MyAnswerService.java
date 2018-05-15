@@ -1,6 +1,7 @@
 package eu.hermeneut.service;
 
 import eu.hermeneut.domain.MyAnswer;
+
 import java.util.List;
 
 /**
@@ -24,6 +25,15 @@ public interface MyAnswerService {
     List<MyAnswer> findAll();
 
     /**
+     * Get all the myAnswers by questionnaire and user
+     *
+     * @param questionnaireID the id of the questionnaire
+     * @param userID          the id of the user
+     * @return the myAnswers of the user on the questionnaire
+     */
+    List<MyAnswer> findAllByQuestionnaireAndUser(Long questionnaireID, Long userID);
+
+    /**
      * Get the "id" myAnswer.
      *
      * @param id the id of the entity
@@ -42,7 +52,6 @@ public interface MyAnswerService {
      * Search for the myAnswer corresponding to the query.
      *
      * @param query the query of the search
-     * 
      * @return the list of entities
      */
     List<MyAnswer> search(String query);

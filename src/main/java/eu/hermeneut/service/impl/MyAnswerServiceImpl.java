@@ -60,6 +60,20 @@ public class MyAnswerServiceImpl implements MyAnswerService {
     }
 
     /**
+     * Get all the myAnswers by questionnaire and user.
+     *
+     * @param questionnaireID the id of the questionnaire
+     * @param userID          the id of the user
+     * @return the answers of the user on that questionnaire.
+     */
+    @Override
+    @Transactional(readOnly = true)
+    public List<MyAnswer> findAllByQuestionnaireAndUser(Long questionnaireID, Long userID) {
+        log.debug("Request to get all MyAnswers by questionnaire and user");
+        return myAnswerRepository.findAllByQuestionnaireAndUser(questionnaireID, userID);
+    }
+
+    /**
      * Get one myAnswer by id.
      *
      * @param id the id of the entity

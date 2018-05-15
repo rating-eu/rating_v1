@@ -89,7 +89,19 @@ public class MyAnswerResource {
     public List<MyAnswer> getAllMyAnswers() {
         log.debug("REST request to get all MyAnswers");
         return myAnswerService.findAll();
-        }
+    }
+
+    /**
+     * GET  /my-answers : get all the myAnswers.
+     *
+     * @return the ResponseEntity with status 200 (OK) and the list of myAnswers in body
+     */
+    @GetMapping("/my-answers/questionnaire/{questionnaireID}/user/{userID}")
+    @Timed
+    public List<MyAnswer> getAllMyAnswers(@PathVariable Long questionnaireID, @PathVariable Long userID) {
+        log.debug("REST request to get all MyAnswers by questionnaire and user");
+        return myAnswerService.findAllByQuestionnaireAndUser(questionnaireID, userID);
+    }
 
     /**
      * GET  /my-answers/:id : get the "id" myAnswer.
