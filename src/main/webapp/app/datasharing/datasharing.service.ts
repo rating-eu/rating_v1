@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {Fraction} from '../utils/fraction.class';
 import {Couple} from '../utils/couple.class';
 import {ThreatAgentMgm} from '../entities/threat-agent-mgm';
+import {AnswerMgm} from '../entities/answer-mgm';
 
 @Injectable()
 export class DatasharingService {
@@ -19,5 +20,15 @@ export class DatasharingService {
         console.log('ThreatAgents GET to ' + JSON.stringify(this._threatAgentsMap));
 
         return this._threatAgentsMap;
+    }
+
+    private _identifyThreatAgentsFormDataMap: Map<String, AnswerMgm>;
+
+    get identifyThreatAgentsFormDataMap(): Map<String, AnswerMgm> {
+        return this._identifyThreatAgentsFormDataMap;
+    }
+
+    set identifyThreatAgentsFormDataMap(value: Map<String, AnswerMgm>) {
+        this._identifyThreatAgentsFormDataMap = value;
     }
 }

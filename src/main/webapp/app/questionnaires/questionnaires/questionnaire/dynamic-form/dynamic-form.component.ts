@@ -60,7 +60,12 @@ export class DynamicFormComponent implements OnInit {
 
         console.log('Keys: ' + Object.keys(formData));
 
-        const formDataMap = new Map<String, AnswerMgm>();
+        /**
+         * The key: String is the ID of the Question
+         * The value: AnswerMgm is the selected Answer
+         * @type {Map<String, AnswerMgm>}
+         */
+        const formDataMap: Map<String, AnswerMgm> = new Map<String, AnswerMgm>();
 
         Object.keys(formData).forEach((key) => {
             formDataMap.set(key, formData[key] as AnswerMgm);
@@ -68,7 +73,15 @@ export class DynamicFormComponent implements OnInit {
 
         console.log('Map: ' + formDataMap);
 
-        const threatAgentsMap: Map<String, Couple<ThreatAgentMgm, Fraction>> = new Map<String, Couple<ThreatAgentMgm, Fraction>>();
+        this.dataSharingSerivce.identifyThreatAgentsFormDataMap = formDataMap;
+
+        /**
+         * The key: String is the SHA256 of the ThreatAgent JSON
+         * The value: Couple<ThreatAgentMgm, Fraction> contains the ThreatAgent itself
+         * and the fraction of YES answers over all te questions identifying that ThreatAgent.
+         * @type {Map<String, Couple<ThreatAgentMgm, Fraction>>}
+         */
+        const threatAgentsPercentageMap: Map<String, Couple<ThreatAgentMgm, Fraction>> = new Map<String, Couple<ThreatAgentMgm, Fraction>>();
 
         formDataMap.forEach((value, key) => {
             console.log('key: ' + key);
@@ -78,11 +91,11 @@ export class DynamicFormComponent implements OnInit {
             const threatAgent: ThreatAgentMgm = answer.question.threatAgent;
             const threatAgentHash = CryptoJS.SHA256(JSON.stringify(threatAgent)).toString();
 
-            if (threatAgentsMap.has(threatAgentHash)) {// a question identifying this threat agent has already been encountered.
+            if (threatAgentsPercentageMap.has(threatAgentHash)) {// a question identifying this threat agent has already been encountered.
                 console.log('Threat agent already processed...');
 
                 // fraction = #YES/#Questions
-                const fraction: Fraction = threatAgentsMap.get(threatAgentHash).value;
+                const fraction: Fraction = threatAgentsPercentageMap.get(threatAgentHash).value;
                 // increment the number of questions identifying this threat-agent
                 fraction.whole++;
 
@@ -96,7 +109,7 @@ export class DynamicFormComponent implements OnInit {
                 console.log('First Time processing this threat agent');
 
                 const fraction = new Fraction(0, 1);
-                threatAgentsMap.set(threatAgentHash, new Couple<ThreatAgentMgm, Fraction>(threatAgent, fraction));
+                threatAgentsPercentageMap.set(threatAgentHash, new Couple<ThreatAgentMgm, Fraction>(threatAgent, fraction));
 
                 if (answer.name === DynamicFormComponent.YES) {
                     console.log('Warning: you answered YES');
@@ -107,11 +120,11 @@ export class DynamicFormComponent implements OnInit {
             }
         });
 
-        threatAgentsMap.forEach((value, key) => {
+        threatAgentsPercentageMap.forEach((value, key) => {
             console.log('ThreatAgent:' + key + ' ==> ' + value.key.name + '\t' + value.value.toPercentage() + '\%');
         });
 
-        this.dataSharingSerivce.threatAgentsMap = threatAgentsMap;
+        this.dataSharingSerivce.threatAgentsMap = threatAgentsPercentageMap;
 
         this.router.navigate(['/identify-threat-agent/result']);
     }
