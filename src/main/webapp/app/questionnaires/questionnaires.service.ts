@@ -8,6 +8,8 @@ import {SERVER_API_URL} from '../app.constants';
 import {QuestionnaireMgm, QuestionnairePurpose} from '../entities/questionnaire-mgm';
 import {QuestionMgm} from '../entities/question-mgm';
 import {AnswerMgm} from '../entities/answer-mgm';
+import {User} from '../shared';
+import {MyAnswerMgm} from '../entities/my-answer-mgm';
 
 @Injectable()
 export class QuestionnairesService {
@@ -15,6 +17,7 @@ export class QuestionnairesService {
     private questionnairesByPurposeAPIUrl = SERVER_API_URL + 'api/questionnaires/by/purpose/{purpose}';
     private questionsByQuestionnaireIDAPIUrl = SERVER_API_URL + 'api/questions/by/questionnaire/{questionnaireID}';
     private answersByQuestionIDAPIUrl = SERVER_API_URL + 'api/answers/by/question/{questionID}';
+    private myAnswersByQuestionnaireAndUser = SERVER_API_URL + 'api/my-answers/questionnaire/{questionnaireID}/user/{userID}';
 
     private currentQuestionnaire: QuestionnaireMgm;
 
@@ -41,5 +44,9 @@ export class QuestionnairesService {
 
     getAllAnswersByQuestion(question: QuestionMgm): Observable<AnswerMgm[]> {
         return this.http.get<AnswerMgm[]>(this.answersByQuestionIDAPIUrl.replace('{questionID}', String(question.id)));
+    }
+
+    getMyAnswersByQuestionnaireAndUser(questionnaire: QuestionnaireMgm, user: User): Observable<MyAnswerMgm[]> {
+        return this.http.get<MyAnswerMgm[]>(this.myAnswersByQuestionnaireAndUser.replace('{questionnaireID}', String(questionnaire.id)).replace('{userID}', user.id));
     }
 }
