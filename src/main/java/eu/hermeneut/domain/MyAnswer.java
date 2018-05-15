@@ -29,15 +29,15 @@ public class MyAnswer implements Serializable {
     private String mycheck;
 
     @OneToOne
-    @JoinColumn(unique = true)
+    @JoinColumn
     private Answer answer;
 
     @OneToOne
-    @JoinColumn(unique = true)
+    @JoinColumn
     private Question question;
 
     @OneToOne
-    @JoinColumn(unique = true)
+    @JoinColumn
     private Questionnaire questionnaire;
 
     @ManyToOne

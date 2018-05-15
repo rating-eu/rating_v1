@@ -25,11 +25,8 @@
                 <constraints nullable="true" />
             </column>
             <column name="answer_id" type="bigint">
-                <constraints unique="true" nullable="true" />
             </column>            <column name="question_id" type="bigint">
-                <constraints unique="true" nullable="true" />
             </column>            <column name="questionnaire_id" type="bigint">
-                <constraints unique="true" nullable="true" />
             </column>
             <column name="user_id" type="bigint">
                 <constraints nullable="true" />
@@ -37,7 +34,7 @@
 
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
-        
+
     </changeSet>
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here, do not remove-->
 </databaseChangeLog>
