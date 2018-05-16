@@ -31,6 +31,9 @@ public class MyAnswer implements Serializable {
     @Column(name = "mycheck")
     private String mycheck;
 
+    @ManyToOne
+    private QuestionnaireStatus questionnaireStatus;
+
     @OneToOne
     @JoinColumn
     private Answer answer;
@@ -67,6 +70,19 @@ public class MyAnswer implements Serializable {
 
     public void setMycheck(String mycheck) {
         this.mycheck = mycheck;
+    }
+
+    public QuestionnaireStatus getQuestionnaireStatus() {
+        return questionnaireStatus;
+    }
+
+    public MyAnswer questionnaireStatus(QuestionnaireStatus questionnaireStatus) {
+        this.questionnaireStatus = questionnaireStatus;
+        return this;
+    }
+
+    public void setQuestionnaireStatus(QuestionnaireStatus questionnaireStatus) {
+        this.questionnaireStatus = questionnaireStatus;
     }
 
     public Answer getAnswer() {
