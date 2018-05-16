@@ -26,13 +26,6 @@ public interface AnswerService {
     List<Answer> findAll();
 
     /**
-     * Get all the AnswerDTO where Myanswer is null.
-     *
-     * @return the list of entities
-     */
-    List<Answer> findAllWhereMyanswerIsNull();
-
-    /**
      * Get the "id" answer.
      *
      * @param id the id of the entity
