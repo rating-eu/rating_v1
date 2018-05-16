@@ -32,6 +32,8 @@
             </column>
             <column name="user_id" type="bigint">
             </column>
+            <column name="questionnaire_status_id" type="bigint">
+            </column>
 
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
