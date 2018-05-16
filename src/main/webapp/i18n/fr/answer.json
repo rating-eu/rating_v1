@@ -23,7 +23,6 @@
             "order": "Order",
             "likelihood": "Likelihood",
             "attacks": "Attacks",
-            "myanswer": "Myanswer",
             "question": "Question"
         }
     }

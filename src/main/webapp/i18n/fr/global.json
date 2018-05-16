@@ -28,6 +28,7 @@
                 "phaseWrapperMgm": "Phase Wrapper",
                 "answerWeightMgm": "Answer Weight",
                 "likelihoodPositionMgm": "Likelihood Position",
+                "questionnaireStatusMgm": "Questionnaire Status",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {
