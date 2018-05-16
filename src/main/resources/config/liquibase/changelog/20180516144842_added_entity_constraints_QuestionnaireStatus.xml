@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <!--
+        Added the constraints for entity QuestionnaireStatus.
+    -->
+    <changeSet id="20180516144842-2" author="jhipster">
+        
+        <addForeignKeyConstraint baseColumnNames="self_assessment_id"
+                                 baseTableName="questionnaire_status"
+                                 constraintName="fk_questionnaire_status_self_assessment_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="self_assessment"/>
+
+        <addForeignKeyConstraint baseColumnNames="questionnaire_id"
+                                 baseTableName="questionnaire_status"
+                                 constraintName="fk_questionnaire_status_questionnaire_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="questionnaire"/>
+
+        <addForeignKeyConstraint baseColumnNames="user_id"
+                                 baseTableName="questionnaire_status"
+                                 constraintName="fk_questionnaire_status_user_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="jhi_user"/>
+
+    </changeSet>
+</databaseChangeLog>

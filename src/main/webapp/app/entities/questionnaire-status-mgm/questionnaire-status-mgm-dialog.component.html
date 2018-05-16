@@ -1,0 +1,60 @@
+<form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+
+    <div class="modal-header">
+        <h4 class="modal-title" id="myQuestionnaireStatusLabel" jhiTranslate="hermeneutApp.questionnaireStatus.home.createOrEditLabel">Create or edit a Questionnaire Status</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                (click)="clear()">&times;</button>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group" [hidden]="!questionnaireStatus.id">
+            <label for="id" jhiTranslate="global.field.id">ID</label>
+            <input type="text" class="form-control" id="id" name="id"
+                   [(ngModel)]="questionnaireStatus.id" readonly />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="hermeneutApp.questionnaireStatus.status" for="field_status">Status</label>
+            <select class="form-control" name="status" [(ngModel)]="questionnaireStatus.status" id="field_status"  required>
+                <option value="EMPTY">{{'hermeneutApp.Status.EMPTY' | translate}}</option>
+                <option value="PENDING">{{'hermeneutApp.Status.PENDING' | translate}}</option>
+                <option value="FULL">{{'hermeneutApp.Status.FULL' | translate}}</option>
+            </select>
+            <div [hidden]="!(editForm.controls.status?.dirty && editForm.controls.status?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.status?.errors?.required" jhiTranslate="entity.validation.required">
+                   This field is required.
+                </small>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="hermeneutApp.questionnaireStatus.selfAssessment" for="field_selfAssessment">Self Assessment</label>
+            <select class="form-control" id="field_selfAssessment" name="selfAssessment" [(ngModel)]="questionnaireStatus.selfAssessment">
+                <option [ngValue]="null"></option>
+                <option [ngValue]="selfAssessmentOption.id === questionnaireStatus.selfAssessment?.id ? questionnaireStatus.selfAssessment : selfAssessmentOption" *ngFor="let selfAssessmentOption of selfassessments; trackBy: trackSelfAssessmentById">{{selfAssessmentOption.id}}</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="hermeneutApp.questionnaireStatus.questionnaire" for="field_questionnaire">Questionnaire</label>
+            <select class="form-control" id="field_questionnaire" name="questionnaire" [(ngModel)]="questionnaireStatus.questionnaire">
+                <option [ngValue]="null"></option>
+                <option [ngValue]="questionnaireOption.id === questionnaireStatus.questionnaire?.id ? questionnaireStatus.questionnaire : questionnaireOption" *ngFor="let questionnaireOption of questionnaires; trackBy: trackQuestionnaireById">{{questionnaireOption.id}}</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="hermeneutApp.questionnaireStatus.user" for="field_user">User</label>
+            <select class="form-control" id="field_user" name="user" [(ngModel)]="questionnaireStatus.user" >
+                <option [ngValue]="null"></option>
+                <option [ngValue]="userOption.id === questionnaireStatus.user?.id ? questionnaireStatus.user : userOption" *ngFor="let userOption of users; trackBy: trackUserById">{{userOption.id}}</option>
+            </select>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">
+            <span class="fa fa-ban"></span>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+        <button type="submit" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+            <span class="fa fa-save"></span>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+    </div>
+</form>
