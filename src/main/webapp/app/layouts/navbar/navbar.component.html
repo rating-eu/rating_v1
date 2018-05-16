@@ -155,6 +155,12 @@
                             <span jhiTranslate="global.menu.entities.likelihoodPositionMgm">Likelihood Position Mgm</span>
                         </a>
                     </li>
+                    <li>
+                        <a class="dropdown-item" routerLink="questionnaire-status-mgm" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                            <i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
+                            <span jhiTranslate="global.menu.entities.questionnaireStatusMgm">Questionnaire Status Mgm</span>
+                        </a>
+                    </li>
                     <!-- jhipster-needle-add-entity-to-menu - JHipster will add entities to the menu here -->
                 </ul>
             </li>
