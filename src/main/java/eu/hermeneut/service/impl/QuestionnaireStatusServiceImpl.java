@@ -98,4 +98,10 @@ public class QuestionnaireStatusServiceImpl implements QuestionnaireStatusServic
             .stream(questionnaireStatusSearchRepository.search(queryStringQuery(query)).spliterator(), false)
             .collect(Collectors.toList());
     }
+
+    @Override
+    public List<QuestionnaireStatus> findAllBySelfAssessmentAndUser(Long selfAssessmentID, Long userID) {
+        log.debug("Request to get all QuestionnaireStatuses");
+        return questionnaireStatusRepository.findAllBySelfAssessmentAndUser(selfAssessmentID, userID);
+    }
 }

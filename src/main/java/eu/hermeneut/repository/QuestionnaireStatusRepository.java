@@ -1,9 +1,12 @@
 package eu.hermeneut.repository;
 
 import eu.hermeneut.domain.QuestionnaireStatus;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import org.springframework.data.jpa.repository.*;
+
+import java.util.List;
 
 
 /**
@@ -13,4 +16,6 @@ import org.springframework.data.jpa.repository.*;
 @Repository
 public interface QuestionnaireStatusRepository extends JpaRepository<QuestionnaireStatus, Long> {
 
+    @Query("SELECT questionnaireStatus FROM QuestionnaireStatus questionnaireStatus WHERE questionnaireStatus.selfAssessment.id = :selfAssessmentID AND questionnaireStatus.user.id = :userID")
+    List<QuestionnaireStatus> findAllBySelfAssessmentAndUser(@Param("selfAssessmentID") Long selfAssessmentID, @Param("userID") Long userID);
 }

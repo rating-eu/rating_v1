@@ -42,8 +42,16 @@ public interface QuestionnaireStatusService {
      * Search for the questionnaireStatus corresponding to the query.
      *
      * @param query the query of the search
-     * 
+     *
      * @return the list of entities
      */
     List<QuestionnaireStatus> search(String query);
+
+    /**
+     * Get all the questionnaireStatuses by selfAssessment and user
+     * @param selfAssessmentID
+     * @param userID
+     * @return the list of entities
+     */
+    List<QuestionnaireStatus> findAllBySelfAssessmentAndUser(Long selfAssessmentID, Long userID);
 }
