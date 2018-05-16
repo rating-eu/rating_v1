@@ -10,6 +10,7 @@ export class MyAnswerMgm implements BaseEntity {
         public answer?: AnswerMgm,
         public question?: QuestionMgm,
         public questionnaire?: QuestionnaireMgm,
+        public questionnaireStatus?: BaseEntity,
         public user?: User,
     ) {
     }
