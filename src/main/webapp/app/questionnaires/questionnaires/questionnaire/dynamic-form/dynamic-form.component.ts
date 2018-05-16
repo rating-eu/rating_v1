@@ -20,7 +20,6 @@ export class DynamicFormComponent implements OnInit {
     private static YES: String = 'YES';
     private static NO: String = 'NO';
 
-    @Input() messageFromParent: String = 'PercheNonFunziona';
     _questionsArray: QuestionMgm[];
     form: FormGroup;
     payLoad = '';

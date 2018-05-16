@@ -12,17 +12,13 @@ import {Observable} from 'rxjs/Observable';
 export class QuestionnaireComponent implements OnInit {
 
     private questionnaire: QuestionnaireMgm;
-    questions: QuestionMgm[];
+    questions$: Observable<QuestionMgm[]>;
 
     constructor(private questionnairesService: QuestionnairesService) {
     }
 
     ngOnInit() {
         this.questionnaire = this.questionnairesService.getCurrentQuestionnaire();
-        this.questionnairesService.findAllQuestionsByQuestionnaire(this.questionnaire).subscribe(
-            (response) => {
-                this.questions = response as QuestionMgm[];
-            }
-        );
+        this.questions$ = this.questionnairesService.getAllQuestionsByQuestionnaire(this.questionnaire);
     }
 }
