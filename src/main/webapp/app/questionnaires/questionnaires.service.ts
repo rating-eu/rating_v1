@@ -19,23 +19,11 @@ export class QuestionnairesService {
     private answersByQuestionIDAPIUrl = SERVER_API_URL + 'api/answers/by/question/{questionID}';
     private myAnswersByQuestionnaireAndUser = SERVER_API_URL + 'api/my-answers/questionnaire/{questionnaireID}/user/{userID}';
 
-    private currentQuestionnaire: QuestionnaireMgm;
-
     constructor(private http: HttpClient, private dateUtils: JhiDateUtils) {
     }
 
     getAllQuestionnairesByPurpose(purpose: QuestionnairePurpose): Observable<QuestionnaireMgm[]> {
         return this.http.get<QuestionnaireMgm[]>(this.questionnairesByPurposeAPIUrl.replace('{purpose}', String(purpose)));
-    }
-
-    setCurrentQuestionnaire(questionnaire: QuestionnaireMgm) {
-        this.currentQuestionnaire = questionnaire;
-        console.log('Set Current Questionnaire: ' + JSON.stringify(this.currentQuestionnaire));
-    }
-
-    getCurrentQuestionnaire(): QuestionnaireMgm {
-        console.log('Get Current Questionnaire: ' + JSON.stringify(this.currentQuestionnaire));
-        return this.currentQuestionnaire;
     }
 
     getAllQuestionsByQuestionnaire(questionnaire: QuestionnaireMgm): Observable<QuestionMgm[]> {

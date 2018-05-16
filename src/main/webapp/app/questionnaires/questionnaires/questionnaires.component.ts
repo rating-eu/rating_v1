@@ -3,6 +3,7 @@ import {QuestionnairesService} from '../questionnaires.service';
 import {QuestionnairePurpose} from '../../entities/questionnaire-mgm';
 import {QuestionnaireMgm} from '../../entities/questionnaire-mgm';
 import {Observable} from 'rxjs/Observable';
+import {DatasharingService} from '../../datasharing/datasharing.service';
 
 @Component({
     selector: 'jhi-questionnaires',
@@ -14,7 +15,7 @@ export class QuestionnairesComponent implements OnInit {
     private purpose: QuestionnairePurpose = QuestionnairePurpose.ID_THREAT_AGENT;
     private questionnaires$: Observable<QuestionnaireMgm[]>;
 
-    constructor(private questionnairesService: QuestionnairesService) {
+    constructor(private questionnairesService: QuestionnairesService, private dataSharingService: DatasharingService) {
     }
 
     ngOnInit() {
@@ -22,6 +23,6 @@ export class QuestionnairesComponent implements OnInit {
     }
 
     setCurrentQuestionnaire(questionnaire: QuestionnaireMgm) {
-        this.questionnairesService.setCurrentQuestionnaire(questionnaire);
+        this.dataSharingService.currentQuestionnaire = questionnaire;
     }
 }

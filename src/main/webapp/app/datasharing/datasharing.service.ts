@@ -3,11 +3,12 @@ import {Fraction} from '../utils/fraction.class';
 import {Couple} from '../utils/couple.class';
 import {ThreatAgentMgm} from '../entities/threat-agent-mgm';
 import {AnswerMgm} from '../entities/answer-mgm';
+import {QuestionMgm} from '../entities/question-mgm';
 
 @Injectable()
 export class DatasharingService {
 
-    _threatAgentsMap: Map<String, Couple<ThreatAgentMgm, Fraction>>;
+    private _threatAgentsMap: Map<String, Couple<ThreatAgentMgm, Fraction>>;
 
     set threatAgentsMap(threatAgents: Map<String, Couple<ThreatAgentMgm, Fraction>>) {
         console.log('ThreatAgents param was: ' + JSON.stringify(threatAgents));
@@ -30,5 +31,15 @@ export class DatasharingService {
 
     set identifyThreatAgentsFormDataMap(value: Map<String, AnswerMgm>) {
         this._identifyThreatAgentsFormDataMap = value;
+    }
+
+    private _currentQuestionnaire: QuestionMgm;
+
+    get currentQuestionnaire(): QuestionMgm {
+        return this._currentQuestionnaire;
+    }
+
+    set currentQuestionnaire(value: QuestionMgm) {
+        this._currentQuestionnaire = value;
     }
 }

@@ -3,6 +3,7 @@ import {QuestionnairesService} from '../../questionnaires.service';
 import {QuestionnaireMgm} from '../../../entities/questionnaire-mgm';
 import {QuestionMgm} from '../../../entities/question-mgm';
 import {Observable} from 'rxjs/Observable';
+import {DatasharingService} from '../../../datasharing/datasharing.service';
 
 @Component({
     selector: 'jhi-questionnaire',
@@ -14,11 +15,11 @@ export class QuestionnaireComponent implements OnInit {
     private questionnaire: QuestionnaireMgm;
     questions$: Observable<QuestionMgm[]>;
 
-    constructor(private questionnairesService: QuestionnairesService) {
+    constructor(private questionnairesService: QuestionnairesService, private dataSharingService: DatasharingService) {
     }
 
     ngOnInit() {
-        this.questionnaire = this.questionnairesService.getCurrentQuestionnaire();
+        this.questionnaire = this.dataSharingService.currentQuestionnaire;
         this.questions$ = this.questionnairesService.getAllQuestionsByQuestionnaire(this.questionnaire);
     }
 }
