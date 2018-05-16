@@ -1,0 +1,252 @@
+entity CompanyProfile{
+    Name String required,
+    Description String maxlength(2000),
+    Created ZonedDateTime,
+    Modified ZonedDateTime,
+    Type CompType
+}
+
+entity Department{
+    Name String required,
+    Description String maxlength(2000),
+    Created ZonedDateTime,
+    Modified ZonedDateTime
+}
+
+enum CompType {
+    INFORMATION,
+    HEALTHCARE,
+    FINANCE,
+    ACCOMODATION,
+    ADMINISTRATIVE,
+    AGRICOLTURE,
+    CONSTRUCTION,
+    EDUCATION,
+    ENTERTAINMENT,
+    MANAGEMENT,
+    MANUFACTURING,
+    MINING,
+    OTHERSERVICES,
+    PROFESSIONAL,
+    PUBLIC,
+    REALESTATE,
+    RETAILS,
+    TRADE,
+    TRANSPORTATION,
+    UTILITIES
+}
+
+enum ContainerType {
+    HUMAN, IT, PHYSICAL, INTANGIBLE
+}
+
+entity DomainOfInfluence {
+    Name String required,
+    Description String maxlength(2000)
+}
+
+enum AssetType {
+    TANGIBLE, INTANGIBLE
+}
+
+enum SkillLevel {
+    HIGH, MEDIUM, LOW
+}
+
+enum Intent {
+    HOSTILE, NON_HOSTILE
+}
+
+enum TA_Access {
+    INSIDER, OUTSIDER, BOTH
+}
+
+entity SelfAssessment{
+    Name String required,
+    Created ZonedDateTime,
+    Modified ZonedDateTime
+}
+
+entity Container{
+    Name String required,
+    Description String maxlength(2000),
+    ContainerType ContainerType,
+    Created ZonedDateTime
+}
+
+entity AssetCategory{
+    Name String required,
+    Description String maxlength(2000),
+    Type AssetType required,
+}
+
+entity Asset{
+    Name String required,
+    Description String maxlength(2000),
+    Created ZonedDateTime,
+    Modified ZonedDateTime
+}
+
+entity ThreatAgent{
+    Name String required,
+    Description String required,
+    Image ImageBlob,
+    SkillLevel SkillLevel required,
+    Intent Intent required,
+    Access TA_Access required,
+    Created ZonedDateTime,
+    Modified ZonedDateTime,
+    IdentifiedByDefault Boolean required
+}
+
+entity Motivation{
+    Name String required,
+    Description String maxlength(2000),
+    Created ZonedDateTime,
+    Modified ZonedDateTime
+}
+
+entity AttackStrategy{
+    Name String required,
+    Description String maxlength(2000),
+    Freq AS_Frequency required,
+    Skill SkillLevel required,
+    Resources ResourceLevel required,
+    Likelihood Likelihood,
+    Created ZonedDateTime,
+    Modified ZonedDateTime
+}
+
+enum Level{
+    HUMAN, IT, PHYSICAL
+}
+
+entity LevelWrapper{
+	level Level
+}
+
+enum Phase{
+    RECONNAISSANCE, WEAPONIZATION, DELIVERY, EXPLOITATION, INSTALLATION, COMMANDCONTROL
+}
+
+entity PhaseWrapper{
+	phase Phase
+}
+
+enum Likelihood{
+    LOW, LOW_MEDIUM, MEDIUM, MEDIUM_HIGH, HIGH
+}
+
+entity LikelihoodPosition{
+	Likelihood Likelihood,
+    Position Integer
+}
+
+enum ResourceLevel{
+    LOW, MEDIUM, HIGH
+}
+
+entity Mitigation{
+    Name String,
+    Description String maxlength(2000),
+    Created ZonedDateTime,
+    Modified ZonedDateTime
+}
+
+enum AS_Frequency{
+    LOW, MEDIUM, HIGH
+}
+
+entity Questionnaire{
+    Name String required,
+    Purpose QuestionnairePurpose required,
+    Created ZonedDateTime,
+    Modified ZonedDateTime
+}
+
+enum QuestionType{
+	REGULAR, RELEVANT, OTHER
+}
+
+entity Question{
+    Name String required,
+    Created ZonedDateTime,
+    Modified ZonedDateTime,
+    Order Integer,
+    QuestionType QuestionType required,
+    AnswerType AnswerType required
+}
+
+entity Answer{
+    Name String,
+    Created ZonedDateTime,
+    Modified ZonedDateTime,
+    Order Integer,
+    Likelihood Likelihood
+}
+
+entity AnswerWeight{
+	Likelihood Likelihood,
+    QuestionType QuestionType,
+    Weight Integer
+}
+
+entity MyAnswer{
+    Mycheck String,
+}
+
+enum AnswerType{
+    YESNO, RANGE5, PERC5, RANGE3, PERC3, CUSTOM
+}
+
+enum QuestionnairePurpose{
+    ID_THREAT_AGENT, SELFASSESSMENT
+}
+
+entity ExternalAudit{
+    Name String required
+}
+
+relationship ManyToMany {
+    CompanyProfile{container(name)} to Container{company},
+    Asset{container(name)} to Container{asset},
+    Asset{domains(name)} to DomainOfInfluence{domain},
+    ThreatAgent{motivation(name)} to Motivation{tagent},
+    AttackStrategy{mitigation(name)} to Mitigation{countermeasure},
+    Answer{attacks(name)} to AttackStrategy{answstrategy},
+    SelfAssessment{companyprofiles(name)} to CompanyProfile{selfassessment(name)},
+    SelfAssessment{department(name)} to Department{selfassessment(name)},
+    SelfAssessment{asset(name)} to Asset{selfassessment(name)},
+    SelfAssessment{threatagent(name)} to ThreatAgent{selfassessment(name)},
+    SelfAssessment{attackstrategy(name)} to AttackStrategy{selfassessment(name)},
+    SelfAssessment{externalaudit(name)} to ExternalAudit{selfassessment(name)},
+    SelfAssessment{questionnaire(name)} to Questionnaire{selfassessment(name)}
+}
+
+relationship OneToMany{
+    AssetCategory{asset(name)} to Asset{assetcategory(name)},
+    Questionnaire{questions(name)} to Question{questionnaire(name)},
+    Question{answers(name)} to Answer{question(name)},
+    CompanyProfile{departments(name)} to Department{companyprofile(name)},
+    AttackStrategy{levels} to LevelWrapper
+    AttackStrategy{phases} to PhaseWrapper
+    ThreatAgent{questions} to Question
+}
+
+relationship OneToOne{
+    MyAnswer{answer(name)}  to Answer{myanswer(mycheck)},
+    MyAnswer{question(name)} to Question{myanswer(mycheck)},
+    MyAnswer{questionnaire(name)} to Questionnaire{myanswer(mycheck)}
+}
+
+relationship ManyToOne{
+    CompanyProfile{user(login)} to User,
+    Department{user(login)} to User,
+    ExternalAudit{user(login)} to User,
+    SelfAssessment{user(login)} to User,
+    MyAnswer{user(login)} to User
+}
+
+service all with serviceImpl
+
+angularSuffix * with mgm
