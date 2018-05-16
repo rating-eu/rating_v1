@@ -9,6 +9,7 @@ import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
 import { MyAnswerMgm } from './my-answer-mgm.model';
 import { MyAnswerMgmPopupService } from './my-answer-mgm-popup.service';
 import { MyAnswerMgmService } from './my-answer-mgm.service';
+import { QuestionnaireStatusMgm, QuestionnaireStatusMgmService } from '../questionnaire-status-mgm';
 import { AnswerMgm, AnswerMgmService } from '../answer-mgm';
 import { QuestionMgm, QuestionMgmService } from '../question-mgm';
 import { QuestionnaireMgm, QuestionnaireMgmService } from '../questionnaire-mgm';
@@ -23,6 +24,8 @@ export class MyAnswerMgmDialogComponent implements OnInit {
     myAnswer: MyAnswerMgm;
     isSaving: boolean;
 
+    questionnairestatuses: QuestionnaireStatusMgm[];
+
     answers: AnswerMgm[];
 
     questions: QuestionMgm[];
@@ -35,6 +38,7 @@ export class MyAnswerMgmDialogComponent implements OnInit {
         public activeModal: NgbActiveModal,
         private jhiAlertService: JhiAlertService,
         private myAnswerService: MyAnswerMgmService,
+        private questionnaireStatusService: QuestionnaireStatusMgmService,
         private answerService: AnswerMgmService,
         private questionService: QuestionMgmService,
         private questionnaireService: QuestionnaireMgmService,
@@ -45,8 +49,10 @@ export class MyAnswerMgmDialogComponent implements OnInit {
 
     ngOnInit() {
         this.isSaving = false;
+        this.questionnaireStatusService.query()
+            .subscribe((res: HttpResponse<QuestionnaireStatusMgm[]>) => { this.questionnairestatuses = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
         this.answerService
-            .query({filter: 'myanswer(mycheck)-is-null'})
+            .query({filter: 'myanswer-is-null'})
             .subscribe((res: HttpResponse<AnswerMgm[]>) => {
                 if (!this.myAnswer.answer || !this.myAnswer.answer.id) {
                     this.answers = res.body;
@@ -59,7 +65,7 @@ export class MyAnswerMgmDialogComponent implements OnInit {
                 }
             }, (res: HttpErrorResponse) => this.onError(res.message));
         this.questionService
-            .query({filter: 'myanswer(mycheck)-is-null'})
+            .query({filter: 'myanswer-is-null'})
             .subscribe((res: HttpResponse<QuestionMgm[]>) => {
                 if (!this.myAnswer.question || !this.myAnswer.question.id) {
                     this.questions = res.body;
@@ -72,7 +78,7 @@ export class MyAnswerMgmDialogComponent implements OnInit {
                 }
             }, (res: HttpErrorResponse) => this.onError(res.message));
         this.questionnaireService
-            .query({filter: 'myanswer(mycheck)-is-null'})
+            .query({filter: 'myanswer-is-null'})
             .subscribe((res: HttpResponse<QuestionnaireMgm[]>) => {
                 if (!this.myAnswer.questionnaire || !this.myAnswer.questionnaire.id) {
                     this.questionnaires = res.body;
@@ -120,6 +126,10 @@ export class MyAnswerMgmDialogComponent implements OnInit {
 
     private onError(error: any) {
         this.jhiAlertService.error(error.message, null, null);
+    }
+
+    trackQuestionnaireStatusById(index: number, item: QuestionnaireStatusMgm) {
+        return item.id;
     }
 
     trackAnswerById(index: number, item: AnswerMgm) {
