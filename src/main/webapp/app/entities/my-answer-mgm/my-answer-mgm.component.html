@@ -31,6 +31,7 @@
             <tr>
             <th><span jhiTranslate="global.field.id">ID</span></th>
             <th><span jhiTranslate="hermeneutApp.myAnswer.mycheck">Mycheck</span></th>
+            <th><span jhiTranslate="hermeneutApp.myAnswer.questionnaireStatus">Questionnaire Status</span></th>
             <th><span jhiTranslate="hermeneutApp.myAnswer.answer">Answer</span></th>
             <th><span jhiTranslate="hermeneutApp.myAnswer.question">Question</span></th>
             <th><span jhiTranslate="hermeneutApp.myAnswer.questionnaire">Questionnaire</span></th>
@@ -42,6 +43,11 @@
             <tr *ngFor="let myAnswer of myAnswers ;trackBy: trackId">
                 <td><a [routerLink]="['../my-answer-mgm', myAnswer.id ]">{{myAnswer.id}}</a></td>
                 <td>{{myAnswer.mycheck}}</td>
+                <td>
+                    <div *ngIf="myAnswer.questionnaireStatus">
+                        <a [routerLink]="['../questionnaire-status-mgm', myAnswer.questionnaireStatus?.id ]" >{{myAnswer.questionnaireStatus?.id}}</a>
+                    </div>
+                </td>
                 <td>
                     <div *ngIf="myAnswer.answer">
                         <a [routerLink]="['../answer-mgm', myAnswer.answer?.id ]" >{{myAnswer.answer?.name}}</a>
