@@ -243,10 +243,10 @@ relationship OneToMany{
 }
 
 relationship OneToOne{
-    MyAnswer{answer(name)}  to Answer{myanswer(mycheck)},
-    MyAnswer{question(name)} to Question{myanswer(mycheck)},
-    MyAnswer{questionnaire(name)} to Questionnaire{myanswer(mycheck)},
-    MyAnswer{user(login)} to User,
+    MyAnswer{answer}  to Answer,
+    MyAnswer{question} to Question{myanswer},
+    MyAnswer{questionnaire} to Questionnaire{myanswer},
+    MyAnswer{user} to User,
     QuestionnaireStatus{selfAssessment} to SelfAssessment,
     QuestionnaireStatus{questionnaire} to Questionnaire,
     QuestionnaireStatus{user} to User
