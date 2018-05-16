@@ -23,7 +23,7 @@
     <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
 </button>
 <br/><br/>
-<table class="table table-striped">
+<table class="table table-responsive table-striped">
     <thead>
     <tr>
         <th><span>Name</span></th>
@@ -41,7 +41,7 @@
     </tr>
     </thead>
     <tbody>
-    <tr>
+    <tr *ngIf="mySelf">
         <td><a [routerLink]="['../self-assessment-mgm', mySelf.id ]">{{mySelf.name}}</a></td>
         <td>{{mySelf.created | date:'medium'}}</td>
         <td>{{mySelf.modified | date:'medium'}}</td>

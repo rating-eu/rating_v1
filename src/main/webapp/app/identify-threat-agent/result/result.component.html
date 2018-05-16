@@ -2,7 +2,7 @@
     The following Threat agents have been identified!!!
 </h2>
 
-<table class="table-responsive table-bordered" *ngIf="motivations, threatAgentsPercentageArray">
+<table class="table table-responsive table-bordered" *ngIf="motivations, threatAgentsPercentageArray">
     <thead class="thead-dark">
     <tr>
         <th scope="col" class="text-center align-middle">Threat Agent</th>
@@ -22,7 +22,7 @@
             {{couple.key.name}}
         </th>
         <td class="text-center align-middle">
-            {{couple.value.toPercentage() | number:'1.2-2'}} %
+            {{couple.value.toPercentage()/100 | percent:'1.2-2'}}
         </td>
 
         <td *ngFor="let motivation of motivations" class="text-center align-middle">
