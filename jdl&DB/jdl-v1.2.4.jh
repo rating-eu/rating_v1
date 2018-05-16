@@ -164,6 +164,14 @@ entity Questionnaire{
     Modified ZonedDateTime
 }
 
+enum Status{
+	EMPTY, PENDING, FULL
+}
+
+entity QuestionnaireStatus{
+    Status Status required
+}
+
 enum QuestionType{
 	REGULAR, RELEVANT, OTHER
 }
@@ -231,20 +239,24 @@ relationship OneToMany{
     AttackStrategy{levels} to LevelWrapper
     AttackStrategy{phases} to PhaseWrapper
     ThreatAgent{questions} to Question
+    QuestionnaireStatus{answers} to MyAnswer
 }
 
 relationship OneToOne{
     MyAnswer{answer(name)}  to Answer{myanswer(mycheck)},
     MyAnswer{question(name)} to Question{myanswer(mycheck)},
-    MyAnswer{questionnaire(name)} to Questionnaire{myanswer(mycheck)}
+    MyAnswer{questionnaire(name)} to Questionnaire{myanswer(mycheck)},
+    MyAnswer{user(login)} to User,
+    QuestionnaireStatus{selfAssessment} to SelfAssessment,
+    QuestionnaireStatus{questionnaire} to Questionnaire,
+    QuestionnaireStatus{user} to User
 }
 
 relationship ManyToOne{
     CompanyProfile{user(login)} to User,
     Department{user(login)} to User,
     ExternalAudit{user(login)} to User,
-    SelfAssessment{user(login)} to User,
-    MyAnswer{user(login)} to User
+    SelfAssessment{user(login)} to User
 }
 
 service all with serviceImpl
