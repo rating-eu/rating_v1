@@ -1,0 +1,27 @@
+
+{
+    "hermeneutApp": {
+        "questionnaireStatus" : {
+            "home": {
+                "title": "QuestionnaireStatuses",
+                "createLabel": "Créer un nouveau Questionnaire Status",
+                "createOrEditLabel": "Créer ou éditer un Questionnaire Status",
+                "search": "Recherche pour Questionnaire Status"
+            },
+            "created": "Un nouveau Questionnaire Status a été créé avec l'identifiant {{ param }}",
+            "updated": "Le Questionnaire Status avec l'identifiant {{ param }} a été mis à jour",
+            "deleted": "Le Questionnaire Status avec l'identifiant {{ param }} a été supprimé",
+            "delete": {
+                "question": "Etes-vous certain de vouloir supprimer le Questionnaire Status {{ id }} ?"
+            },
+            "detail": {
+                "title": "Questionnaire Status"
+            },
+            "status": "Status",
+            "selfAssessment": "Self Assessment",
+            "questionnaire": "Questionnaire",
+            "user": "User",
+            "answers": "Answers"
+        }
+    }
+}
