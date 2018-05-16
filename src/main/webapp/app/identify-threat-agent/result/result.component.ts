@@ -14,6 +14,7 @@ import {Router} from '@angular/router';
 import {SelfAssessmentMgm, SelfAssessmentMgmService} from '../../entities/self-assessment-mgm';
 import {Subscription} from 'rxjs/Subscription';
 import {QuestionnairesService} from '../../questionnaires/questionnaires.service';
+import {QuestionnaireStatusMgm, QuestionnaireStatusMgmService, Status} from '../../entities/questionnaire-status-mgm';
 
 @Component({
     selector: 'jhi-result',
@@ -39,7 +40,8 @@ export class ResultComponent implements OnInit, OnDestroy {
                 private userService: UserService,
                 private selfAssessmentService: SelfAssessmentMgmService,
                 private router: Router,
-                private questionnairesService: QuestionnairesService) {
+                private questionnairesService: QuestionnairesService,
+                private questionnaireStatusService: QuestionnaireStatusMgmService) {
     }
 
     ngOnInit() {
@@ -104,23 +106,30 @@ export class ResultComponent implements OnInit, OnDestroy {
         console.log('Account: ' + JSON.stringify(this.account));
         console.log('User: ' + JSON.stringify(this.user));
 
-        this.identifyThreatAgentsFormDataMap.forEach((value: AnswerMgm, key: String) => {
-            const answer: AnswerMgm = value;
-            const question: QuestionMgm = answer.question;
-            const questionnaire: QuestionnaireMgm = question.questionnaire;
+        let questionnaireStatus: QuestionnaireStatusMgm = new QuestionnaireStatusMgm(undefined, Status.FULL, this.selfAssessment, this.questionnaire, this.user, []);
 
-            console.log('Answer: ' + JSON.stringify(answer));
-            console.log('Question: ' + JSON.stringify(question));
-            console.log('Questionnaire: ' + JSON.stringify(questionnaire));
+        // Getting the id of the above QuestionnaireStatus
+        this.questionnaireStatusService.create(questionnaireStatus).subscribe((statusResponse) => {
+            questionnaireStatus = statusResponse.body;
 
-            const myAnser: MyAnswerMgm = new MyAnswerMgm(undefined, 'Checked', answer, question, questionnaire, this.user);
+            this.identifyThreatAgentsFormDataMap.forEach((value: AnswerMgm, key: String) => {
+                const answer: AnswerMgm = value;
+                const question: QuestionMgm = answer.question;
+                const questionnaire: QuestionnaireMgm = question.questionnaire;
 
-            console.log('MyAnser: ' + myAnser);
+                console.log('Answer: ' + JSON.stringify(answer));
+                console.log('Question: ' + JSON.stringify(question));
+                console.log('Questionnaire: ' + JSON.stringify(questionnaire));
 
-            // persist the answer of the user
-            this.myAnswerService.create(myAnser).subscribe((response) => {
-                const result: MyAnswerMgm = response.body;
-                console.log('MyAnswer response: ' + JSON.stringify(result));
+                const myAnser: MyAnswerMgm = new MyAnswerMgm(undefined, 'Checked', answer, question, questionnaire, questionnaireStatus, this.user);
+
+                console.log('MyAnser: ' + myAnser);
+
+                // persist the answer of the user
+                this.myAnswerService.create(myAnser).subscribe((response) => {
+                    const result: MyAnswerMgm = response.body;
+                    console.log('MyAnswer response: ' + JSON.stringify(result));
+                });
             });
         });
 
