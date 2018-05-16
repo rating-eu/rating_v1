@@ -88,19 +88,14 @@ public class AnswerResource {
     /**
      * GET  /answers : get all the answers.
      *
-     * @param filter the filter of the request
      * @return the ResponseEntity with status 200 (OK) and the list of answers in body
      */
     @GetMapping("/answers")
     @Timed
-    public List<Answer> getAllAnswers(@RequestParam(required = false) String filter) {
-        if ("myanswer-is-null".equals(filter)) {
-            log.debug("REST request to get all Answers where myanswer is null");
-            return answerService.findAllWhereMyanswerIsNull();
-        }
+    public List<Answer> getAllAnswers() {
         log.debug("REST request to get all Answers");
         return answerService.findAll();
-    }
+        }
 
     /**
      * GET  /answers/:id : get the "id" answer.
