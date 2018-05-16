@@ -10,13 +10,6 @@
             "ownerSide": true
         },
         {
-            "relationshipType": "one-to-one",
-            "relationshipName": "myanswer",
-            "otherEntityName": "myAnswer",
-            "ownerSide": false,
-            "otherEntityRelationshipName": "answer"
-        },
-        {
             "relationshipType": "many-to-one",
             "relationshipName": "question",
             "otherEntityName": "question",
