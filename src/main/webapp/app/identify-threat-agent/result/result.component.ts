@@ -79,6 +79,8 @@ export class ResultComponent implements OnInit, OnDestroy {
         );
 
         this.identifyThreatAgentsFormDataMap = this.dataSharingService.identifyThreatAgentsFormDataMap;
+
+        this.questionnaire = this.dataSharingService.currentQuestionnaire;
     }
 
     ngOnDestroy() {
@@ -136,6 +138,9 @@ export class ResultComponent implements OnInit, OnDestroy {
         this.selfAssessment.threatagents = uniqueThreatAgentsArray;
 
         console.log('AllThreatAgents: ' + JSON.stringify(this.selfAssessment.threatagents));
+
+        this.selfAssessment.questionnaires = [...new Set<QuestionnaireMgm>(this.selfAssessment.questionnaires.concat(this.questionnaire))];
+        this.selfAssessment.user = this.user;
 
         // Update the SelfAssessment
         this.selfAssessmentService.update(this.selfAssessment).subscribe((response) => {
