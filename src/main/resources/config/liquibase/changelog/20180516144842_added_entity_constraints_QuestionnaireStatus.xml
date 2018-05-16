@@ -7,7 +7,7 @@
         Added the constraints for entity QuestionnaireStatus.
     -->
     <changeSet id="20180516144842-2" author="jhipster">
-        
+
         <addForeignKeyConstraint baseColumnNames="self_assessment_id"
                                  baseTableName="questionnaire_status"
                                  constraintName="fk_questionnaire_status_self_assessment_id"
@@ -26,5 +26,9 @@
                                  referencedColumnNames="id"
                                  referencedTableName="jhi_user"/>
 
+        <addUniqueConstraint columnNames="self_assessment_id, questionnaire_id, user_id"
+                             constraintName="unique_questionnaire_status_self_user"
+                             schemaName="public"
+                             tableName="questionnaire_status"/>
     </changeSet>
 </databaseChangeLog>
