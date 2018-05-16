@@ -25,6 +25,7 @@
     <include file="config/liquibase/changelog/20180502153129_added_entity_PhaseWrapper.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180502153134_added_entity_AnswerWeight.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180503113801_added_entity_LikelihoodPosition.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20180516144842_added_entity_QuestionnaireStatus.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
     <include file="config/liquibase/changelog/20180410085152_added_entity_constraints_CompanyProfile.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180410085155_added_entity_constraints_SelfAssessment.xml" relativeToChangelogFile="false"/>
@@ -46,5 +47,6 @@
     <include file="config/liquibase/changelog/20180508160443_added_answers_threat_agents_data.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180513165449_added_motivations_data.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180513173449_added_threat_agent_motivations_data.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20180516144842_added_entity_constraints_QuestionnaireStatus.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
 </databaseChangeLog>
