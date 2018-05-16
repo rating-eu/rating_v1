@@ -10,7 +10,6 @@ import { AnswerMgm } from './answer-mgm.model';
 import { AnswerMgmPopupService } from './answer-mgm-popup.service';
 import { AnswerMgmService } from './answer-mgm.service';
 import { AttackStrategyMgm, AttackStrategyMgmService } from '../attack-strategy-mgm';
-import { MyAnswerMgm, MyAnswerMgmService } from '../my-answer-mgm';
 import { QuestionMgm, QuestionMgmService } from '../question-mgm';
 
 @Component({
@@ -24,8 +23,6 @@ export class AnswerMgmDialogComponent implements OnInit {
 
     attackstrategies: AttackStrategyMgm[];
 
-    myanswers: MyAnswerMgm[];
-
     questions: QuestionMgm[];
 
     constructor(
@@ -33,7 +30,6 @@ export class AnswerMgmDialogComponent implements OnInit {
         private jhiAlertService: JhiAlertService,
         private answerService: AnswerMgmService,
         private attackStrategyService: AttackStrategyMgmService,
-        private myAnswerService: MyAnswerMgmService,
         private questionService: QuestionMgmService,
         private eventManager: JhiEventManager
     ) {
@@ -43,8 +39,6 @@ export class AnswerMgmDialogComponent implements OnInit {
         this.isSaving = false;
         this.attackStrategyService.query()
             .subscribe((res: HttpResponse<AttackStrategyMgm[]>) => { this.attackstrategies = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
-        this.myAnswerService.query()
-            .subscribe((res: HttpResponse<MyAnswerMgm[]>) => { this.myanswers = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
         this.questionService.query()
             .subscribe((res: HttpResponse<QuestionMgm[]>) => { this.questions = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
     }
@@ -84,10 +78,6 @@ export class AnswerMgmDialogComponent implements OnInit {
     }
 
     trackAttackStrategyById(index: number, item: AttackStrategyMgm) {
-        return item.id;
-    }
-
-    trackMyAnswerById(index: number, item: MyAnswerMgm) {
         return item.id;
     }
 

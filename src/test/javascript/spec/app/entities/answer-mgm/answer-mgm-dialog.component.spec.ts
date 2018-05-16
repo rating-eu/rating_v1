@@ -10,7 +10,6 @@ import { AnswerMgmDialogComponent } from '../../../../../../main/webapp/app/enti
 import { AnswerMgmService } from '../../../../../../main/webapp/app/entities/answer-mgm/answer-mgm.service';
 import { AnswerMgm } from '../../../../../../main/webapp/app/entities/answer-mgm/answer-mgm.model';
 import { AttackStrategyMgmService } from '../../../../../../main/webapp/app/entities/attack-strategy-mgm';
-import { MyAnswerMgmService } from '../../../../../../main/webapp/app/entities/my-answer-mgm';
 import { QuestionMgmService } from '../../../../../../main/webapp/app/entities/question-mgm';
 
 describe('Component Tests', () => {
@@ -28,7 +27,6 @@ describe('Component Tests', () => {
                 declarations: [AnswerMgmDialogComponent],
                 providers: [
                     AttackStrategyMgmService,
-                    MyAnswerMgmService,
                     QuestionMgmService,
                     AnswerMgmService
                 ]
