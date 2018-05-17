@@ -9,6 +9,7 @@
             <th>Purpose</th>
             <th>Created</th>
             <th>Modified</th>
+            <th>Status</th>
             <th></th>
         </tr>
         </thead>
@@ -19,6 +20,7 @@
             <td>{{questionnaire.purpose}}</td>
             <td>{{questionnaire.created}}</td>
             <td>{{questionnaire.modified}}</td>
+            <td>{{questionnaireStatusesMap?.get(questionnaire.id)?.status}}</td>
 
             <td [ngSwitch]="statusEnum[questionnaireStatusesMap?.get(questionnaire.id)?.status]">
 
