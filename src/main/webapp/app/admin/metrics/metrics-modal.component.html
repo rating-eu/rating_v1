@@ -28,8 +28,9 @@
                 </div>
             </div>
         </div>
-        <table class="table table-sm table-responsive">
-            <thead>
+        <div class="table-responsive">
+            <table class="table table-sm">
+                <thead>
                 <tr>
                     <th jhiTranslate="metrics.jvm.threads.dump.blockedtime">Blocked Time</th>
                     <th jhiTranslate="metrics.jvm.threads.dump.blockedcount">Blocked Count</th>
@@ -37,8 +38,8 @@
                     <th jhiTranslate="metrics.jvm.threads.dump.waitedcount">Waited Count</th>
                     <th jhiTranslate="metrics.jvm.threads.dump.lockname">Lock Name</th>
                 </tr>
-            </thead>
-            <tbody>
+                </thead>
+                <tbody>
                 <tr>
                     <td>{{entry.value.blockedTime}}</td>
                     <td>{{entry.value.blockedCount}}</td>
@@ -46,9 +47,9 @@
                     <td>{{entry.value.waitedCount}}</td>
                     <td class="thread-dump-modal-lock" title="{{entry.value.lockName}}"><code>{{entry.value.lockName}}</code></td>
                 </tr>
-            </tbody>
-        </table>
-
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
 <div class="modal-footer">
