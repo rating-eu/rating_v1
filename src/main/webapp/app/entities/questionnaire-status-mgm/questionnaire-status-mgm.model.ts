@@ -1,6 +1,9 @@
 import { BaseEntity, User } from './../../shared';
+import {SelfAssessmentMgm} from '../self-assessment-mgm';
+import {QuestionnaireMgm} from '../questionnaire-mgm';
+import {MyAnswerMgm} from '../my-answer-mgm';
 
-export const enum Status {
+export enum Status {
     'EMPTY',
     'PENDING',
     'FULL'
@@ -10,10 +13,10 @@ export class QuestionnaireStatusMgm implements BaseEntity {
     constructor(
         public id?: number,
         public status?: Status,
-        public selfAssessment?: BaseEntity,
-        public questionnaire?: BaseEntity,
+        public selfAssessment?: SelfAssessmentMgm,
+        public questionnaire?: QuestionnaireMgm,
         public user?: User,
-        public answers?: BaseEntity[],
+        public answers?: MyAnswerMgm[],
     ) {
     }
 }

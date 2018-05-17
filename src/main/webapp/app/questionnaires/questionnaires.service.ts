@@ -10,6 +10,8 @@ import {QuestionMgm} from '../entities/question-mgm';
 import {AnswerMgm} from '../entities/answer-mgm';
 import {User} from '../shared';
 import {MyAnswerMgm} from '../entities/my-answer-mgm';
+import {SelfAssessmentMgm} from '../entities/self-assessment-mgm';
+import {QuestionnaireStatusMgm} from '../entities/questionnaire-status-mgm';
 
 @Injectable()
 export class QuestionnairesService {
@@ -18,6 +20,7 @@ export class QuestionnairesService {
     private questionsByQuestionnaireIDAPIUrl = SERVER_API_URL + 'api/questions/by/questionnaire/{questionnaireID}';
     private answersByQuestionIDAPIUrl = SERVER_API_URL + 'api/answers/by/question/{questionID}';
     private myAnswersByQuestionnaireAndUser = SERVER_API_URL + 'api/my-answers/questionnaire/{questionnaireID}/user/{userID}';
+    private questionnaireStatusesBySelfAssessmentAndUser = SERVER_API_URL + 'api/questionnaire-statuses/self-assessment/{selfAssessmentID}/user/{userID}';
 
     constructor(private http: HttpClient, private dateUtils: JhiDateUtils) {
     }
@@ -36,5 +39,10 @@ export class QuestionnairesService {
 
     getMyAnswersByQuestionnaireAndUser(questionnaire: QuestionnaireMgm, user: User): Observable<MyAnswerMgm[]> {
         return this.http.get<MyAnswerMgm[]>(this.myAnswersByQuestionnaireAndUser.replace('{questionnaireID}', String(questionnaire.id)).replace('{userID}', user.id));
+    }
+
+    getQuestionnaireStatusesBySelfAssessmentAndUser(selfAssessment: SelfAssessmentMgm, user: User): Observable<QuestionnaireStatusMgm[]> {
+        return this.http.get<QuestionnaireStatusMgm[]>(
+            this.questionnaireStatusesBySelfAssessmentAndUser.replace('{selfAssessmentID}', String(selfAssessment.id)).replace('{userID}', user.id));
     }
 }
