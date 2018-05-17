@@ -4,9 +4,9 @@ import {QuestionnaireMgm} from '../questionnaire-mgm';
 import {MyAnswerMgm} from '../my-answer-mgm';
 
 export enum Status {
-    'EMPTY',
-    'PENDING',
-    'FULL'
+    'EMPTY' = 'EMPTY',
+    'PENDING' = 'PENDING',
+    'FULL' = 'FULL'
 }
 
 export class QuestionnaireStatusMgm implements BaseEntity {

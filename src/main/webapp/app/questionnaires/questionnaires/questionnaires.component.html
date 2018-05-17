@@ -1,30 +1,55 @@
 <h1>Questionnaires</h1>
 
-<table class="table table-responsive">
-    <thead>
-    <tr>
-        <th>#</th>
-        <th>Name</th>
-        <th>Purpose</th>
-        <th>Created</th>
-        <th>Modified</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr *ngFor="let questionnaire of questionnaires$ | async">
-        <th scope="row">{{questionnaire.id}}</th>
-        <td>{{questionnaire.name}}</td>
-        <td>{{questionnaire.purpose}}</td>
-        <td>{{questionnaire.created}}</td>
-        <td>{{questionnaire.modified}}</td>
-        <td>
-            <button type="button" class="btn btn-success" (click)="setCurrentQuestionnaire(questionnaire)"
-                    [routerLink]="['./questionnaire']">
-                <span class="fa fa-edit"></span>
-                <span class="d-none d-md-inline">Answer</span>
-            </button>
-        </td>
-    </tr>
+<div class="table-responsive">
+    <table class="table">
+        <thead>
+        <tr>
+            <th>#</th>
+            <th>Name</th>
+            <th>Purpose</th>
+            <th>Created</th>
+            <th>Modified</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let questionnaire of questionnaires$ | async">
+            <th scope="row">{{questionnaire.id}}</th>
+            <td>{{questionnaire.name}}</td>
+            <td>{{questionnaire.purpose}}</td>
+            <td>{{questionnaire.created}}</td>
+            <td>{{questionnaire.modified}}</td>
 
-    </tbody>
-</table>
+            <td [ngSwitch]="statusEnum[questionnaireStatusesMap?.get(questionnaire.id)?.status]">
+
+                <button *ngSwitchCase="statusEnum.EMPTY" class="btn">
+                    Should never happen since we dont save the EMPTY status cause its useless/same as no status
+                </button>
+
+                <button *ngSwitchCase="statusEnum.PENDING" class="btn"
+                        (click)="setCurrentQuestionnaire(questionnaire)"
+                        [routerLink]="['./questionnaire', statusEnum.PENDING]">
+                    <span class="fa fa-clock-o"></span>
+                    <span class="d-none d-md-inline">Resume</span>
+                </button>
+
+                <button *ngSwitchCase="statusEnum.FULL" class="btn"
+                        (click)="setCurrentQuestionnaire(questionnaire)"
+                        [routerLink]="['./questionnaire', statusEnum.FULL]">
+                    <span class="fa fa-eraser"></span>
+                    <span class="d-none d-md-inline">Edit (not supported)</span>
+                </button>
+
+                <!--When the status is null-->
+                <button *ngSwitchDefault class="btn"
+                        (click)="setCurrentQuestionnaire(questionnaire)"
+                        [routerLink]="['./questionnaire', statusEnum.EMPTY]">
+                    <span class="fa fa-pencil"></span>
+                    <span class="d-none d-md-inline">Answer</span>
+                </button>
+            </td>
+        </tr>
+
+        </tbody>
+    </table>
+</div>
