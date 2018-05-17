@@ -1,10 +1,9 @@
 <form *ngIf="form" (ngSubmit)="identifyThreatAgents()" [formGroup]="form" role="form"
-(reset)="freezeQuestionnaireStatus()"
 >
     <jhi-question *ngFor="let question of questionsArray" [dynamicQuestion]="question" [form]="form"></jhi-question>
 
     <div class="form-row">
         <button class="btn btn-success btn-lg" type="submit" [disabled]="!form.valid">Identify</button>
-        <button class="btn btn-primary btn-lg" type="reset">Freeze</button>
+        <button class="btn btn-primary btn-lg" type="button" (click)="freezeQuestionnaireStatus()">Freeze</button>
     </div>
 </form>

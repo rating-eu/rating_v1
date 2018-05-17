@@ -18,6 +18,7 @@ import {MyAnswerMgm, MyAnswerMgmService} from '../../../../entities/my-answer-mg
 import {AccountService, User, UserService} from '../../../../shared';
 import {SelfAssessmentMgm, SelfAssessmentMgmService} from '../../../../entities/self-assessment-mgm';
 import {Subscription} from 'rxjs/Subscription';
+import {FormUtils} from '../../../utils/FormUtils';
 
 @Component({
     selector: 'jhi-dynamic-form',
@@ -37,7 +38,7 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
     private user: User;
     private selfAssessment: SelfAssessmentMgm;
     private subscriptions: Subscription[] = [];
-    private questionnaire: QuestionnaireMgm;
+    private _questionnaire: QuestionnaireMgm;
 
     constructor(private questionControlService: QuestionControlService,
                 private dataSharingSerivce: DatasharingService,
@@ -68,6 +69,12 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
         return this._questionsArray;
     }
 
+    @Input()
+    set questionnaire(questionnaire: QuestionnaireMgm) {
+        console.log('Questionnaire coming from @INPUT: ' + JSON.stringify(questionnaire));
+        this._questionnaire = questionnaire;
+    }
+
     ngOnInit() {
         this.selfAssessment = this.selfAssessmentService.getSelfAssessment();
 
@@ -78,7 +85,6 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
                 this.subscriptions.push(
                     this.userService.find(this.account['login']).subscribe((response2) => {
                         this.user = response2.body;
-
                     })
                 );
             })
@@ -105,7 +111,7 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
          * The value: AnswerMgm is the selected Answer
          * @type {Map<String, AnswerMgm>}
          */
-        const formDataMap: Map<string, AnswerMgm> = this.form.value as Map<string, AnswerMgm>;
+        const formDataMap: Map<string, AnswerMgm> = FormUtils.formToMap<AnswerMgm>(this.form);
 
         this.dataSharingSerivce.identifyThreatAgentsFormDataMap = formDataMap;
 
@@ -172,13 +178,14 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
          * The value: AnswerMgm is the selected Answer
          * @type {Map<String, AnswerMgm>}
          */
-        const formDataMap: Map<string, AnswerMgm> = this.form.value as Map<string, AnswerMgm>;
-
+        const formDataMap: Map<string, AnswerMgm> = FormUtils.formToMap<AnswerMgm>(this.form);
+        console.log('FormData: ' + formDataMap);
+        console.log('FormDataMap Size: ' + formDataMap.size);
         /**
          * The PENDING status for the questionnaire.
          * @type {QuestionnaireStatusMgm}
          */
-        let questionnaireStatus: QuestionnaireStatusMgm = new QuestionnaireStatusMgm(undefined, Status.PENDING, this.selfAssessment, this.questionnaire, this.user, []);
+        let questionnaireStatus: QuestionnaireStatusMgm = new QuestionnaireStatusMgm(undefined, Status.PENDING, this.selfAssessment, this._questionnaire, this.user, []);
 
         // Getting the id of the above QuestionnaireStatus
         this.subscriptions.push(
@@ -188,35 +195,36 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
 
                     formDataMap.forEach((value: AnswerMgm, key: String) => {
                         const answer: AnswerMgm = value;
-                        const question: QuestionMgm = answer.question;
-                        const questionnaire: QuestionnaireMgm = question.questionnaire;
+                        console.log('Answer: ' + answer);
 
-                        console.log('Answer: ' + JSON.stringify(answer));
-                        console.log('Question: ' + JSON.stringify(question));
-                        console.log('Questionnaire: ' + JSON.stringify(questionnaire));
+                        if (answer) {
+                            const question: QuestionMgm = answer.question;
+                            const questionnaire: QuestionnaireMgm = question.questionnaire;
 
-                        const myAnser: MyAnswerMgm = new MyAnswerMgm(undefined, 'Checked', answer, question, questionnaire, questionnaireStatus, this.user);
+                            console.log('Answer: ' + JSON.stringify(answer));
+                            console.log('Question: ' + JSON.stringify(question));
+                            console.log('Questionnaire: ' + JSON.stringify(questionnaire));
 
-                        console.log('MyAnser: ' + myAnser);
+                            const myAnser: MyAnswerMgm = new MyAnswerMgm(undefined, 'Checked', answer, question, questionnaire, questionnaireStatus, this.user);
 
-                        // persist the answer of the user
-                        this.myAnswerService.create(myAnser).subscribe((response) => {
-                            const result: MyAnswerMgm = response.body;
-                            console.log('MyAnswer response: ' + JSON.stringify(result));
-                        });
+                            console.log('MyAnser: ' + myAnser);
+
+                            // persist the answer of the user
+                            this.myAnswerService.create(myAnser).subscribe((response) => {
+                                const result: MyAnswerMgm = response.body;
+                                console.log('MyAnswer response: ' + JSON.stringify(result));
+                            });
+                        }
                     });
                 },
                 (error: any) => {
                     console.log(error);
                 },
                 () => {
-                    this.router.navigate(['identify-threat-agent/questionnaires']);
 
                 })
         );
-    }
 
-    private mapQuestionToAnswer() {
-
+        // this.router.navigate(['identify-threat-agent/questionnaires']);
     }
 }
