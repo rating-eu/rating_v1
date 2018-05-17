@@ -24,7 +24,7 @@ import {QuestionnaireStatusMgm, QuestionnaireStatusMgmService, Status} from '../
 export class ResultComponent implements OnInit, OnDestroy {
     private threatAgentsMap: Map<String, Couple<ThreatAgentMgm, Fraction>>;
     private threatAgentsPercentageArray: Couple<ThreatAgentMgm, Fraction>[];
-    private motivations: MotivationMgm[];
+    motivations: MotivationMgm[];
     private defaultThreatAgents: ThreatAgentMgm[];
     private identifyThreatAgentsFormDataMap: Map<String, AnswerMgm>;
     private account: Account;

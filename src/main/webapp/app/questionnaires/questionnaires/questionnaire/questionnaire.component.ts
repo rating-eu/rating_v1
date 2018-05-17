@@ -12,7 +12,7 @@ import {DatasharingService} from '../../../datasharing/datasharing.service';
 })
 export class QuestionnaireComponent implements OnInit {
 
-    private questionnaire: QuestionnaireMgm;
+    questionnaire: QuestionnaireMgm;
     questions$: Observable<QuestionMgm[]>;
 
     constructor(private questionnairesService: QuestionnairesService, private dataSharingService: DatasharingService) {

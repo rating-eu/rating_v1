@@ -18,7 +18,7 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
 
     private statusEnum = Status;
     private purpose: QuestionnairePurpose = QuestionnairePurpose.ID_THREAT_AGENT;
-    private questionnaires$: Observable<QuestionnaireMgm[]>;
+    questionnaires$: Observable<QuestionnaireMgm[]>;
     private selfAssessment: SelfAssessmentMgm;
     private account: Account;
     private user: User;

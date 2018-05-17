@@ -4,7 +4,7 @@ step todo:
 1) get company profile
 
 2) check identify asset
- - get all assets is done
+- get all assets is done
 
 3) form to check asssets, based on company profile.
 
@@ -25,7 +25,7 @@ step todo:
             <th><span>Modified</span></th>
             <th><span>User</span></th>
             <th><span>Companyprofiles</span></th>
-            <th><span>Companysector</span></th>
+            <th><span>Departments</span></th>
             <th><span>Asset</span></th>
             <th><span>Threatagent</span></th>
             <th><span>Attackstrategy</span></th>
@@ -49,8 +49,8 @@ step todo:
                         </span>
             </td>
             <td>
-                    <span *ngFor="let companysector of mySelf.companysectors; let last = last">
-                            <a class="form-control-static" [routerLink]="['../company-sector-mgm', companysector?.id ]">{{companysector.department}}</a>{{last ? '' : ', '}}
+                    <span *ngFor="let department of mySelf.departments; let last = last">
+                            <a class="form-control-static" [routerLink]="['../company-sector-mgm', department?.id ]">{{department.department}}</a>{{last ? '' : ', '}}
                         </span>
             </td>
             <td>
@@ -93,12 +93,12 @@ step todo:
         </tr>
         </tbody>
     </table>
-<ul>
-	<li>get company profile</li>
-	<li>get self assesment info</li>
-	<li>check if assets are already identified</li>
-	<li>form to select assets</li>
-</ul>
+    <ul>
+        <li>get company profile</li>
+        <li>get self assesment info</li>
+        <li>check if assets are already identified</li>
+        <li>form to select assets</li>
+    </ul>
     <div class="table-responsive" *ngIf="assets">
         <table class="table table-striped">
             <thead>
@@ -107,12 +107,12 @@ step todo:
                 <th><span>Assetcategory</span></th>
                 <th><span>Name</span></th>
                 <th><span>Description</span></th>
-            <th><span>Created</span></th>
-            <th><span>Modified</span></th>
-            <th><span>Container</span></th>
-            <th><span>Domains</span></th>
+                <th><span>Created</span></th>
+                <th><span>Modified</span></th>
+                <th><span>Container</span></th>
+                <th><span>Domains</span></th>
 
-            <th></th>
+                <th></th>
             </tr>
             </thead>
             <tbody>
