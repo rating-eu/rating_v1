@@ -1,3 +1,5 @@
+<h2>Status is {{questionnaireStatus.status}}</h2>
+
 <form *ngIf="form" (ngSubmit)="identifyThreatAgents()" [formGroup]="form" role="form"
 >
     <jhi-question *ngFor="let question of questionsArray" [dynamicQuestion]="question" [form]="form"></jhi-question>

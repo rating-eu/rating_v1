@@ -10,8 +10,7 @@ import {Couple} from '../../../../utils/couple.class';
 import {DatasharingService} from '../../../../datasharing/datasharing.service';
 import {Router} from '@angular/router';
 import {
-    QuestionnaireStatusMgm, QuestionnaireStatusMgmService,
-    Status
+    QuestionnaireStatusMgm, QuestionnaireStatusMgmService, Status
 } from '../../../../entities/questionnaire-status-mgm';
 import {QuestionnaireMgm} from '../../../../entities/questionnaire-mgm';
 import {MyAnswerMgm, MyAnswerMgmService} from '../../../../entities/my-answer-mgm';
@@ -32,7 +31,7 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
 
     _questionsArray: QuestionMgm[];
     form: FormGroup;
-    payLoad = '';
+    _questionnaireStatus: QuestionnaireStatusMgm;
 
     private account: Account;
     private user: User;
@@ -48,7 +47,6 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
                 private questionnaireStatusService: QuestionnaireStatusMgmService,
                 private accountService: AccountService,
                 private userService: UserService) {
-
     }
 
     @Input()
@@ -73,6 +71,15 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
     set questionnaire(questionnaire: QuestionnaireMgm) {
         console.log('Questionnaire coming from @INPUT: ' + JSON.stringify(questionnaire));
         this._questionnaire = questionnaire;
+    }
+
+    @Input()
+    set questionnaireStatus(status: QuestionnaireStatusMgm) {
+        this._questionnaireStatus = status;
+    }
+
+    get questionnaireStatus() {
+        return this._questionnaireStatus;
     }
 
     ngOnInit() {

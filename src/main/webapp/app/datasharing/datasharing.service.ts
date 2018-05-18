@@ -4,6 +4,7 @@ import {Couple} from '../utils/couple.class';
 import {ThreatAgentMgm} from '../entities/threat-agent-mgm';
 import {AnswerMgm} from '../entities/answer-mgm';
 import {QuestionMgm} from '../entities/question-mgm';
+import {QuestionnaireStatusMgm} from '../entities/questionnaire-status-mgm';
 
 @Injectable()
 export class DatasharingService {
@@ -41,5 +42,25 @@ export class DatasharingService {
 
     set currentQuestionnaire(value: QuestionMgm) {
         this._currentQuestionnaire = value;
+    }
+
+    private _questionnaireStatusesMap: Map<number, QuestionnaireStatusMgm>;
+
+    get questionnaireStatusesMap(): Map<number, QuestionnaireStatusMgm> {
+        return this._questionnaireStatusesMap;
+    }
+
+    set questionnaireStatusesMap(statusesMap: Map<number, QuestionnaireStatusMgm>) {
+        this._questionnaireStatusesMap = statusesMap;
+    }
+
+    private _questionnaireStatus: QuestionnaireStatusMgm;
+
+    get questionnaireStatus(): QuestionnaireStatusMgm {
+        return this._questionnaireStatus;
+    }
+
+    set questionnaireStatus(value: QuestionnaireStatusMgm) {
+        this._questionnaireStatus = value;
     }
 }

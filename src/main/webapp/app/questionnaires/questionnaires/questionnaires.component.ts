@@ -53,6 +53,8 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
                                     this.questionnaireStatuses.forEach((questionnaireStatus: QuestionnaireStatusMgm) => {
                                         this.questionnaireStatusesMap.set(questionnaireStatus.questionnaire.id, questionnaireStatus);
                                     });
+
+                                    this.dataSharingService.questionnaireStatusesMap = this.questionnaireStatusesMap;
                                 })
                         );
                     })
@@ -71,5 +73,12 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
 
     setCurrentQuestionnaire(questionnaire: QuestionnaireMgm) {
         this.dataSharingService.currentQuestionnaire = questionnaire;
+
+        if (this.questionnaireStatusesMap.has(questionnaire.id)) {
+            this.dataSharingService.questionnaireStatus = this.questionnaireStatusesMap.get(questionnaire.id);
+        } else {
+            const emptyQStatus: QuestionnaireStatusMgm = new QuestionnaireStatusMgm(undefined, Status.EMPTY, this.selfAssessment, questionnaire, this.user, []);
+            this.dataSharingService.questionnaireStatus = emptyQStatus;
+        }
     }
 }

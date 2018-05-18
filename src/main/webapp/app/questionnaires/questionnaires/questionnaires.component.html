@@ -30,14 +30,14 @@
 
                 <button *ngSwitchCase="statusEnum.PENDING" class="btn"
                         (click)="setCurrentQuestionnaire(questionnaire)"
-                        [routerLink]="['./questionnaire', statusEnum.PENDING]">
+                        [routerLink]="['./questionnaire']">
                     <span class="fa fa-clock-o"></span>
                     <span class="d-none d-md-inline">Resume</span>
                 </button>
 
                 <button *ngSwitchCase="statusEnum.FULL" class="btn"
                         (click)="setCurrentQuestionnaire(questionnaire)"
-                        [routerLink]="['./questionnaire', statusEnum.FULL]">
+                        [routerLink]="['./questionnaire']">
                     <span class="fa fa-eraser"></span>
                     <span class="d-none d-md-inline">Edit (not supported)</span>
                 </button>
@@ -45,7 +45,7 @@
                 <!--When the status is null-->
                 <button *ngSwitchDefault class="btn"
                         (click)="setCurrentQuestionnaire(questionnaire)"
-                        [routerLink]="['./questionnaire', statusEnum.EMPTY]">
+                        [routerLink]="['./questionnaire']">
                     <span class="fa fa-pencil"></span>
                     <span class="d-none d-md-inline">Answer</span>
                 </button>
