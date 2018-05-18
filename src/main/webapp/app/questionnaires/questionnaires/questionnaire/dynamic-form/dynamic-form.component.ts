@@ -221,10 +221,8 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
                     console.log(error);
                 },
                 () => {
-
+                    this.router.navigate(['identify-threat-agent/questionnaires']);
                 })
         );
-
-        // this.router.navigate(['identify-threat-agent/questionnaires']);
     }
 }

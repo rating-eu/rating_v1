@@ -33,7 +33,6 @@ public class MyAnswer implements Serializable {
     private String mycheck;
 
     @ManyToOne
-    @JsonIgnore
     private QuestionnaireStatus questionnaireStatus;
 
     @OneToOne

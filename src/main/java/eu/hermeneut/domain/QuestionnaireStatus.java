@@ -53,6 +53,7 @@ public class QuestionnaireStatus implements Serializable {
     private User user;
 
     @OneToMany(mappedBy = "questionnaireStatus", fetch = FetchType.EAGER)
+    @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<MyAnswer> answers = new HashSet<>();
 
