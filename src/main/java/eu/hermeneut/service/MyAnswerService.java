@@ -55,4 +55,6 @@ public interface MyAnswerService {
      * @return the list of entities
      */
     List<MyAnswer> search(String query);
+
+    List<MyAnswer> findAllByQuestionnaireStatus(Long questionnaireStatusID);
 }

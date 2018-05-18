@@ -112,4 +112,17 @@ public class MyAnswerServiceImpl implements MyAnswerService {
             .stream(myAnswerSearchRepository.search(queryStringQuery(query)).spliterator(), false)
             .collect(Collectors.toList());
     }
+
+    /**
+     * Get all the myAnswers by questionnaire status.
+     *
+     * @param questionnaireStatusID the id of the questionnaire
+     * @return the answers by questionnaire status id.
+     */
+    @Override
+    @Transactional(readOnly = true)
+    public List<MyAnswer> findAllByQuestionnaireStatus(Long questionnaireStatusID) {
+        log.debug("Request to get all MyAnswers by questionnaire and user");
+        return myAnswerRepository.findAllByQuestionnaireStatus(questionnaireStatusID);
+    }
 }

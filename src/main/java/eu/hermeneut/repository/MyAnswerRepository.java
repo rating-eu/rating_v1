@@ -20,4 +20,7 @@ public interface MyAnswerRepository extends JpaRepository<MyAnswer, Long> {
 
     @Query("SELECT my_answer FROM MyAnswer my_answer WHERE my_answer.questionnaire.id = :questionnaireID AND my_answer.user.id = :userID")
     List<MyAnswer> findAllByQuestionnaireAndUser(@Param("questionnaireID") Long questionnaireID, @Param("userID") Long userID);
+
+    @Query("SELECT my_answer FROM MyAnswer my_answer WHERE my_answer.questionnaireStatus.id =:questionnaireStatusID")
+    List<MyAnswer> findAllByQuestionnaireStatus(@Param("questionnaireStatusID") Long questionnaireStatusID);
 }

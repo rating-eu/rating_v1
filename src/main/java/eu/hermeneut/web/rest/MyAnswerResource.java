@@ -104,6 +104,19 @@ public class MyAnswerResource {
     }
 
     /**
+     * GET  /my-answers : get all the myAnswers y QuestionnaireStatus.
+     *
+     * @return the ResponseEntity with status 200 (OK) and the list of myAnswers in body
+     */
+    @GetMapping("/my-answers/questionnaire-status/{questionnaireStatusID}")
+    @Timed
+    public List<MyAnswer> getAllMyAnswers(@PathVariable Long questionnaireStatusID) {
+        log.debug("REST request to get all MyAnswers by questionnaire and user");
+        return myAnswerService.findAllByQuestionnaireStatus(questionnaireStatusID);
+    }
+
+
+    /**
      * GET  /my-answers/:id : get the "id" myAnswer.
      *
      * @param id the id of the myAnswer to retrieve
