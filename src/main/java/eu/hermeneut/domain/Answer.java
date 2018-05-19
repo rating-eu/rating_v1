@@ -1,5 +1,6 @@
 package eu.hermeneut.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -54,6 +55,7 @@ public class Answer implements Serializable {
     private Set<AttackStrategy> attacks = new HashSet<>();
 
     @ManyToOne
+    @JsonIgnore
     private Question question;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
