@@ -1,10 +1,14 @@
 <div [formGroup]="form" class="form-group"
-     [ngClass]="{'ng-valid': isValid === true, 'ng-invalid': isValid === false}">
+     [ngClass]="{'ng-valid': (isValid === true), 'ng-invalid': (isValid === false)}">
     <div class="rounded bg-primary d-inline-block">
         <label class="form-control-label" [attr.for]="dynamicQuestion.id"><h3>
             {{dynamicQuestion.name}}</h3>
         </label>
         <p>Is valid: {{isValid}}</p>
+        <p>Is valid == true: {{isValid == true}}</p>
+        <p>Is valid == false: {{isValid == false}}</p>
+        <p>Is valid === true: {{isValid === true}}</p>
+        <p>Is valid === false: {{isValid === false}}</p>
     </div>
 
     <!--We need to get the integer value of the enum var, otherwise it won't work.-->
