@@ -119,6 +119,10 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
         return this._questionnaireStatus;
     }
 
+    isValid(questionID) {
+        return this.form.controls[questionID].valid;
+    }
+
     ngOnInit() {
         this.selfAssessment = this.selfAssessmentService.getSelfAssessment();
 
@@ -283,6 +287,12 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
         this.form.patchValue(value);
 
         console.log('Form value after: ' + JSON.stringify(this.form.value));
+    }
+
+    sort(answers: AnswerMgm[]): AnswerMgm[] {
+        return answers.sort((a, b) => {
+            return a.order - b.order;
+        });
     }
 
     private myAnswersToFormValue(myAnswers: MyAnswerMgm[]) {
