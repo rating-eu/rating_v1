@@ -18,6 +18,7 @@ import {AccountService, User, UserService} from '../../../../shared';
 import {SelfAssessmentMgm, SelfAssessmentMgmService} from '../../../../entities/self-assessment-mgm';
 import {Subscription} from 'rxjs/Subscription';
 import {FormUtils} from '../../../utils/FormUtils';
+import {Likelihood} from '../../../../entities/answer-weight-mgm';
 
 @Component({
     selector: 'jhi-dynamic-form',
@@ -32,6 +33,8 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
     _questionsArray: QuestionMgm[];
     form: FormGroup;
     _questionnaireStatus: QuestionnaireStatusMgm;
+
+    myAnswers: MyAnswerMgm[];
 
     private account: Account;
     private user: User;
@@ -60,6 +63,10 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
             this.form = this.questionControlService.toFormGroup(this._questionsArray);
             console.log('Form has been created...');
             console.log('Form is: ' + this.form);
+
+            if (this.myAnswers) {
+                this.form.patchValue(this.myAnswersToFormValue(this.myAnswers));
+            }
         }
     }
 
@@ -76,6 +83,36 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
     @Input()
     set questionnaireStatus(status: QuestionnaireStatusMgm) {
         this._questionnaireStatus = status;
+
+        switch (this._questionnaireStatus.status) {
+            case Status.EMPTY: {
+
+                break;
+            }
+            case Status.PENDING: {
+                console.log('Status PENDING case');
+
+                this.myAnswerService.getAllByQuestionnaireStatusID(this.questionnaireStatus.id).subscribe(
+                    (response) => {
+                        this.myAnswers = response as MyAnswerMgm[];
+
+                        if (this.form) {
+                            this.form.patchValue(this.myAnswersToFormValue(this.myAnswers));
+                        }
+                    }
+                );
+
+                break;
+            }
+            case Status.FULL: {
+
+                break;
+            }
+            default: {
+                console.log('Status DEFAULT case');
+            }
+        }
+
     }
 
     get questionnaireStatus() {
@@ -231,5 +268,32 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
                     this.router.navigate(['identify-threat-agent/questionnaires']);
                 })
         );
+    }
+
+    patchValues() {
+        console.log('Form value before: ' + JSON.stringify(this.form.value));
+
+        const value = {};
+        value[1] = new AnswerMgm(1, 'YES');
+
+        value[2] = new AnswerMgm(3, 'YES');
+
+        console.log('Patching values: ' + JSON.stringify(value));
+
+        this.form.patchValue(value);
+
+        console.log('Form value after: ' + JSON.stringify(this.form.value));
+    }
+
+    private myAnswersToFormValue(myAnswers: MyAnswerMgm[]) {
+        const value = {};
+
+        this.myAnswers.forEach((myAnswer) => {
+            value[myAnswer.question.id] = myAnswer.answer;
+        });
+
+        console.log('Patching values: ' + JSON.stringify(value));
+
+        return value;
     }
 }

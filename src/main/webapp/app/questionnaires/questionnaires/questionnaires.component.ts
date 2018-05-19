@@ -72,6 +72,23 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
     }
 
     setCurrentQuestionnaire(questionnaire: QuestionnaireMgm) {
+        if (!this.questionnaireStatusesMap) {
+            this.subscriptions.push(
+                this.questionnairesService.getQuestionnaireStatusesBySelfAssessmentAndUser(this.selfAssessment, this.user)
+                    .subscribe((response: QuestionnaireStatusMgm[]) => {
+                        this.questionnaireStatuses = response;
+                        this.questionnaireStatusesMap = new Map<number, QuestionnaireStatusMgm>();
+                        this.questionnaireStatuses.forEach((questionnaireStatus: QuestionnaireStatusMgm) => {
+                            this.questionnaireStatusesMap.set(questionnaireStatus.questionnaire.id, questionnaireStatus);
+                        });
+
+                        this.dataSharingService.questionnaireStatusesMap = this.questionnaireStatusesMap;
+                    })
+            );
+        }else {
+
+        }
+
         this.dataSharingService.currentQuestionnaire = questionnaire;
 
         if (this.questionnaireStatusesMap.has(questionnaire.id)) {

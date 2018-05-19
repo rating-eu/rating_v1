@@ -1,9 +1,10 @@
 <div [formGroup]="form" class="form-group"
-     [ngClass]="{'ng-valid': isValid == true, 'ng-invalid': isValid == false}">
+     [ngClass]="{'ng-valid': isValid === true, 'ng-invalid': isValid === false}">
     <div class="rounded bg-primary d-inline-block">
         <label class="form-control-label" [attr.for]="dynamicQuestion.id"><h3>
             {{dynamicQuestion.name}}</h3>
         </label>
+        <p>Is valid: {{isValid}}</p>
     </div>
 
     <!--We need to get the integer value of the enum var, otherwise it won't work.-->
@@ -12,8 +13,10 @@
         <div *ngSwitchCase="answerType.YESNO">
             <div class="radio" *ngFor="let answer of answers">
                 <label class="radio">
-                    <input type="radio" [formControlName]="dynamicQuestion.id"
-                           [value]="answer"/>&nbsp;{{answer.name}}
+                    <input type="radio"
+                           [formControlName]="dynamicQuestion.id"
+                           [checked]="answer.id === form.value[dynamicQuestion.id].id"
+                           [value]="answer"/>&nbsp;{{answer.name}} answer id {{answer.id}} form value id {{form.value[dynamicQuestion.id].id | json}}
                 </label>
             </div>
         </div>
