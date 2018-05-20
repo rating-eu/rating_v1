@@ -18,7 +18,6 @@ import {AccountService, User, UserService} from '../../../../shared';
 import {SelfAssessmentMgm, SelfAssessmentMgmService} from '../../../../entities/self-assessment-mgm';
 import {Subscription} from 'rxjs/Subscription';
 import {FormUtils} from '../../../utils/FormUtils';
-import {Likelihood} from '../../../../entities/answer-weight-mgm';
 
 @Component({
     selector: 'jhi-dynamic-form',
@@ -27,6 +26,7 @@ import {Likelihood} from '../../../../entities/answer-weight-mgm';
     providers: [QuestionControlService]
 })
 export class DynamicFormComponent implements OnInit, OnDestroy {
+
     private static YES: String = 'YES';
     private static NO: String = 'NO';
     private statusEnum = Status;
@@ -71,14 +71,14 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
             console.log('Form has been created...');
             console.log('Form is: ' + this.form);
 
-            if (this.myAnswers) {
-                this.form.patchValue(this.myAnswersToFormValue(this.myAnswers));
-            }
-
             this._questionsArrayMap = new Map<number, QuestionMgm>();
             this._questionsArray.forEach((question) => {
                 this._questionsArrayMap.set(question.id, question);
             });
+
+            if (this.myAnswers) {
+                this.form.patchValue(this.myAnswersToFormValue(this.myAnswers, this._questionsArrayMap));
+            }
         }
     }
 
@@ -109,7 +109,7 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
                         this.myAnswers = response as MyAnswerMgm[];
 
                         if (this.form) {
-                            this.form.patchValue(this.myAnswersToFormValue(this.myAnswers));
+                            this.form.patchValue(this.myAnswersToFormValue(this.myAnswers, this._questionsArrayMap));
                         }
                     }
                 );
@@ -124,7 +124,6 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
                 console.log('Status DEFAULT case');
             }
         }
-
     }
 
     get questionnaireStatus() {
@@ -318,11 +317,39 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
         });
     }
 
-    private myAnswersToFormValue(myAnswers: MyAnswerMgm[]) {
+    private myAnswersToFormValue(myAnswers: MyAnswerMgm[], questionsMap: Map<number, QuestionMgm>) {
+        console.log('MyAnswers to FormValue...');
+        console.log('MyAnswers: ' + JSON.stringify(myAnswers));
+        console.log('QuestionsMap size: ' + questionsMap.size);
+
         const value = {};
 
-        this.myAnswers.forEach((myAnswer) => {
-            value[myAnswer.question.id] = myAnswer.answer;
+        myAnswers.forEach((myAnswer) => {
+            console.log('MyAnswer: ' + JSON.stringify(myAnswer));
+
+            // Get the "exact" QUESTION used in the form generation
+            const question = questionsMap.get(myAnswer.question.id);
+            console.log('Question: ' + JSON.stringify(question));
+
+            // Get the "exact" ANSWERS used as [VALUE] for the question
+            const answers: AnswerMgm[] = question.answers;
+            console.log('Answers: ' + JSON.stringify(answers));
+
+            let exactAnswer: AnswerMgm;
+            console.log('For each answers...');
+
+            for (const answer of answers) {
+                console.log('Answer ID: ' + answer.id + '==> MyAnswer ID: ' + myAnswer.answer.id);
+
+                if (answer.id === myAnswer.answer.id) {
+                    exactAnswer = answer;
+                    break;
+                }
+            }
+
+            console.log('Exact Answer: ' + JSON.stringify(exactAnswer));
+
+            value[String(myAnswer.question.id)] = exactAnswer;
         });
 
         console.log('Patching values: ' + JSON.stringify(value));
