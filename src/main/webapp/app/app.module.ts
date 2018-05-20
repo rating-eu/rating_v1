@@ -18,7 +18,7 @@ import {HermeneutAccountModule} from './account/account.module';
 import {HermeneutEntityModule} from './entities/entity.module';
 import {PaginationConfig} from './blocks/config/uib-pagination.config';
 import {IdentifyThreatAgentModule} from './identify-threat-agent/identify-threat-agent.module';
-import {EvaluateWeacknessModule} from './evaluate-weackness/evaluate-weackness.module';
+import {EvaluateWeaknessModule} from './evaluate-weakness/evaluate-weakness.module';
 import {QuestionnairesModule} from './questionnaires/questionnaires.module';
 import {IdentifyAssetModule} from './identify-assets/identify-asset.module';
 // jhipster-needle-angular-add-module-import JHipster will add new module here
@@ -48,7 +48,7 @@ import {DatasharingModule} from './datasharing/datasharing.module';
         HermeneutAccountModule,
         HermeneutEntityModule,
         IdentifyThreatAgentModule,
-        EvaluateWeacknessModule,
+        EvaluateWeaknessModule,
         QuestionnairesModule, // add the feature module here
         HermeneutAppRoutingModule,
         IdentifyAssetModule,

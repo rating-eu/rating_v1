@@ -40,12 +40,12 @@ import static org.elasticsearch.index.query.QueryBuilders.*;
 
 @RestController
 @RequestMapping("/api")
-public class EvaluateWeacknessResource {
+public class EvaluateWeaknessResource {
     private final Logger log = LoggerFactory.getLogger(AssetResource.class);
 
     private final AssetService assetService;
 
-    public EvaluateWeacknessResource(AssetService assetService) {
+    public EvaluateWeaknessResource(AssetService assetService) {
         this.assetService = assetService;
     }
 

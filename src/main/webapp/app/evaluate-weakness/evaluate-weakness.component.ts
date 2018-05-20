@@ -9,10 +9,10 @@ import {AttackStrategyMgmService} from '../entities/attack-strategy-mgm/attack-s
 import {Principal} from '../shared';
 
 @Component({
-    selector: 'jhi-evaluate-weackness',
-    templateUrl: './evaluate-weackness.component.html'
+    selector: 'jhi-evaluate-weakness',
+    templateUrl: './evaluate-weakness.component.html'
 })
-export class EvaluateWeacknessComponent implements OnInit, OnDestroy {
+export class EvaluateWeaknessComponent implements OnInit, OnDestroy {
     attackStrategies: AttackStrategyMgm[];
     HU_R: AttackStrategyMgm[];
     HU_W: AttackStrategyMgm[];
