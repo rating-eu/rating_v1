@@ -31,6 +31,8 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
     private static NO: String = 'NO';
     private statusEnum = Status;
 
+    debug = false;
+
     _questionsArray: QuestionMgm[];
     /**
      * Map QuestionID ==> Question
@@ -299,9 +301,9 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
         console.log('Form value before: ' + JSON.stringify(this.form.value));
 
         const value = {};
-        value[1] = new AnswerMgm(1, 'YES');
-
-        value[2] = new AnswerMgm(3, 'YES');
+        value[1] = this._questionsArrayMap.get(1).answers[0]; // YES
+        value[2] = this._questionsArrayMap.get(2).answers[0]; // YES
+        value[3] = this._questionsArrayMap.get(3).answers[1]; // NO
 
         console.log('Patching values: ' + JSON.stringify(value));
 
