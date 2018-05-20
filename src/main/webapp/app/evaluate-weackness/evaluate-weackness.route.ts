@@ -1,7 +1,6 @@
 import { Route } from '@angular/router';
 
-import { UserRouteAccessService } from '../shared';
-import { EvaluateWeacknessComponent } from './';
+import {EvaluateWeacknessComponent} from './evaluate-weackness.component';
 
 export const evaluateWeacknessRoute: Route = {
     path: 'evaluate-weackness',
