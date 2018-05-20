@@ -4,7 +4,7 @@ import {QuestionnaireMgm} from '../../../entities/questionnaire-mgm';
 import {QuestionMgm} from '../../../entities/question-mgm';
 import {Observable} from 'rxjs/Observable';
 import {DatasharingService} from '../../../datasharing/datasharing.service';
-import {QuestionnaireStatusMgm} from '../../../entities/questionnaire-status-mgm';
+import {QuestionnaireStatusMgm, Status} from '../../../entities/questionnaire-status-mgm';
 
 @Component({
     selector: 'jhi-questionnaire',
@@ -13,6 +13,7 @@ import {QuestionnaireStatusMgm} from '../../../entities/questionnaire-status-mgm
 })
 export class QuestionnaireComponent implements OnInit {
 
+    private statusEnum = Status;
     questionnaire: QuestionnaireMgm;
     questions$: Observable<QuestionMgm[]>;
     questionnaireStatus: QuestionnaireStatusMgm;
@@ -24,7 +25,7 @@ export class QuestionnaireComponent implements OnInit {
         this.questionnaire = this.dataSharingService.currentQuestionnaire;
         this.questionnaireStatus = this.dataSharingService.questionnaireStatus;
 
-        console.log('QuestionnaireStatus: ' + this.questionnaireStatus.status);
+        console.log('QuestionnaireStatus: ' + this.questionnaireStatus);
 
         this.questions$ = this.questionnairesService.getAllQuestionsByQuestionnaire(this.questionnaire);
     }

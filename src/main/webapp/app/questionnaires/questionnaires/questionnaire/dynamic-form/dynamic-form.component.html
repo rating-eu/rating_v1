@@ -1,4 +1,4 @@
-<h2>Status is {{questionnaireStatus.status}}</h2>
+<h2>Status is {{questionnaireStatus?.status || statusEnum.EMPTY}}</h2>
 
 <form *ngIf="form" (ngSubmit)="identifyThreatAgents()" [formGroup]="form" role="form"
 >

@@ -1,7 +1,7 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {QuestionControlService} from './services/question-control.service';
 import {FormGroup} from '@angular/forms';
-import {QuestionMgm} from '../../../../entities/question-mgm';
+import {QuestionMgm, QuestionMgmService} from '../../../../entities/question-mgm';
 import {AnswerMgm} from '../../../../entities/answer-mgm';
 import {ThreatAgentMgm} from '../../../../entities/threat-agent-mgm';
 import {Fraction} from '../../../../utils/fraction.class';
@@ -29,8 +29,13 @@ import {Likelihood} from '../../../../entities/answer-weight-mgm';
 export class DynamicFormComponent implements OnInit, OnDestroy {
     private static YES: String = 'YES';
     private static NO: String = 'NO';
+    private statusEnum = Status;
 
     _questionsArray: QuestionMgm[];
+    /**
+     * Map QuestionID ==> Question
+     */
+    _questionsArrayMap: Map<number, QuestionMgm>;
     form: FormGroup;
     _questionnaireStatus: QuestionnaireStatusMgm;
 
@@ -49,7 +54,7 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
                 private selfAssessmentService: SelfAssessmentMgmService,
                 private questionnaireStatusService: QuestionnaireStatusMgmService,
                 private accountService: AccountService,
-                private userService: UserService) {
+                private userService: UserService, private questionService: QuestionMgmService) {
     }
 
     @Input()
@@ -67,6 +72,11 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
             if (this.myAnswers) {
                 this.form.patchValue(this.myAnswersToFormValue(this.myAnswers));
             }
+
+            this._questionsArrayMap = new Map<number, QuestionMgm>();
+            this._questionsArray.forEach((question) => {
+                this._questionsArrayMap.set(question.id, question);
+            });
         }
     }
 
@@ -176,7 +186,13 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
             console.log('value: ' + JSON.stringify(value));
 
             const answer: AnswerMgm = value as AnswerMgm;
-            const threatAgent: ThreatAgentMgm = answer.question.threatAgent;
+            const question: QuestionMgm = this._questionsArrayMap.get(Number(key));
+
+            console.log('Question: ' + JSON.stringify(question));
+
+            const threatAgent: ThreatAgentMgm = question.threatAgent;
+            console.log('ThreatAgent: ' + JSON.stringify(threatAgent));
+
             const threatAgentHash = CryptoJS.SHA256(JSON.stringify(threatAgent)).toString();
 
             if (threatAgentsPercentageMap.has(threatAgentHash)) {// a question identifying this threat agent has already been encountered.
@@ -208,9 +224,14 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
             }
         });
 
+        console.log('Threat agents percentage map size: ' + threatAgentsPercentageMap.size);
+        console.log(('Begin looping threat agents percentage map...'));
+
         threatAgentsPercentageMap.forEach((value, key) => {
             console.log('ThreatAgent:' + key + ' ==> ' + value.key.name + '\t' + value.value.toPercentage() + '\%');
         });
+
+        console.log(('Begin looping threat agents percentage map...'));
 
         this.dataSharingSerivce.threatAgentsMap = threatAgentsPercentageMap;
 
@@ -246,7 +267,7 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
                         console.log('Answer: ' + answer);
 
                         if (answer) {
-                            const question: QuestionMgm = answer.question;
+                            const question: QuestionMgm = this._questionsArrayMap.get(Number(key));
                             const questionnaire: QuestionnaireMgm = question.questionnaire;
 
                             console.log('Answer: ' + JSON.stringify(answer));
