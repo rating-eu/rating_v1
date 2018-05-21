@@ -266,19 +266,22 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
                  * The PENDING status for the questionnaire.
                  * @type {QuestionnaireStatusMgm}
                  */
-                let questionnaireStatus: QuestionnaireStatusMgm = new QuestionnaireStatusMgm(undefined, Status.PENDING, this.selfAssessment, this._questionnaire, this.user, []);
+                this._questionnaireStatus = new QuestionnaireStatusMgm(undefined, Status.PENDING, this.selfAssessment, this._questionnaire, this.user, []);
 
                 // Getting the id of the above QuestionnaireStatus
                 this.subscriptions.push(
-                    this.questionnaireStatusService.create(questionnaireStatus).subscribe(
+                    this.questionnaireStatusService.create(this._questionnaireStatus).subscribe(
                         (statusResponse) => {
-                            questionnaireStatus = statusResponse.body;
+                            this._questionnaireStatus = statusResponse.body;
+
+                            // CREATE the NEW MyAnswers
+                            const createObservables: Observable<HttpResponse<MyAnswerMgm>>[] = [];
 
                             formDataMap.forEach((value: AnswerMgm, key: String) => {
                                 const answer: AnswerMgm = value;
                                 console.log('Answer: ' + answer);
 
-                                if (answer) {
+                                if (answer) {// check if the the user answered this question
                                     const question: QuestionMgm = this._questionsArrayMap.get(Number(key));
                                     const questionnaire: QuestionnaireMgm = question.questionnaire;
 
@@ -286,17 +289,26 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
                                     console.log('Question: ' + JSON.stringify(question));
                                     console.log('Questionnaire: ' + JSON.stringify(questionnaire));
 
-                                    const myAnser: MyAnswerMgm = new MyAnswerMgm(undefined, 'Checked', answer, question, questionnaire, questionnaireStatus, this.user);
+                                    const myAnser: MyAnswerMgm = new MyAnswerMgm(undefined, 'Checked', answer, question, questionnaire, this._questionnaireStatus, this.user);
 
                                     console.log('MyAnser: ' + myAnser);
 
-                                    // persist the answer of the user
-                                    this.myAnswerService.create(myAnser).subscribe((response) => {
-                                        const result: MyAnswerMgm = response.body;
-                                        console.log('MyAnswer response: ' + JSON.stringify(result));
-                                    });
+                                    createObservables.push(this.myAnswerService.create(myAnser));
                                 }
                             });
+
+                            forkJoin(createObservables).subscribe((responses: HttpResponse<MyAnswerMgm>[]) => {
+                                    console.log('New my answers creaed: ' + JSON.stringify(responses));
+                                },
+                                (error) => {
+                                    console.log(error);
+                                },
+                                () => {
+                                    console.log('Create Observables completed...');
+                                    this.router.navigate(['identify-threat-agent/questionnaires']);
+                                }
+                            );
+
                         },
                         (error: any) => {
                             console.log(error);
@@ -377,6 +389,8 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
             }
         }
     }
+
+    // ==========HELPER METHODS============
 
     sort(answers: AnswerMgm[]): AnswerMgm[] {
         return answers.sort((a, b) => {
