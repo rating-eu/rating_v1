@@ -18,6 +18,10 @@ import {AccountService, User, UserService} from '../../../../shared';
 import {SelfAssessmentMgm, SelfAssessmentMgmService} from '../../../../entities/self-assessment-mgm';
 import {Subscription} from 'rxjs/Subscription';
 import {FormUtils} from '../../../utils/FormUtils';
+import {forkJoin} from 'rxjs/observable/forkJoin';
+import {observable} from 'rxjs/symbol/observable';
+import {Observable} from 'rxjs/Observable';
+import {HttpResponse} from '@angular/common/http';
 
 @Component({
     selector: 'jhi-dynamic-form',
@@ -94,15 +98,18 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
 
     @Input()
     set questionnaireStatus(status: QuestionnaireStatusMgm) {
+        console.log('Questionnaire status input: ' + JSON.stringify(status));
+
         this._questionnaireStatus = status;
 
         switch (this._questionnaireStatus.status) {
             case Status.EMPTY: {
+                console.log('Status EMPTY');
 
                 break;
             }
             case Status.PENDING: {
-                console.log('Status PENDING case');
+                console.log('Status PENDING');
 
                 this.myAnswerService.getAllByQuestionnaireStatusID(this.questionnaireStatus.id).subscribe(
                     (response) => {
@@ -117,6 +124,7 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
                 break;
             }
             case Status.FULL: {
+                console.log('Status FULL');
 
                 break;
             }
@@ -251,49 +259,123 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
         const formDataMap: Map<string, AnswerMgm> = FormUtils.formToMap<AnswerMgm>(this.form);
         console.log('FormData: ' + formDataMap);
         console.log('FormDataMap Size: ' + formDataMap.size);
-        /**
-         * The PENDING status for the questionnaire.
-         * @type {QuestionnaireStatusMgm}
-         */
-        let questionnaireStatus: QuestionnaireStatusMgm = new QuestionnaireStatusMgm(undefined, Status.PENDING, this.selfAssessment, this._questionnaire, this.user, []);
 
-        // Getting the id of the above QuestionnaireStatus
-        this.subscriptions.push(
-            this.questionnaireStatusService.create(questionnaireStatus).subscribe(
-                (statusResponse) => {
-                    questionnaireStatus = statusResponse.body;
+        switch (this._questionnaireStatus.status) {
+            case Status.EMPTY: {// create a new QuestionnaireStatus && create MyAnswers
+                /**
+                 * The PENDING status for the questionnaire.
+                 * @type {QuestionnaireStatusMgm}
+                 */
+                let questionnaireStatus: QuestionnaireStatusMgm = new QuestionnaireStatusMgm(undefined, Status.PENDING, this.selfAssessment, this._questionnaire, this.user, []);
 
-                    formDataMap.forEach((value: AnswerMgm, key: String) => {
-                        const answer: AnswerMgm = value;
-                        console.log('Answer: ' + answer);
+                // Getting the id of the above QuestionnaireStatus
+                this.subscriptions.push(
+                    this.questionnaireStatusService.create(questionnaireStatus).subscribe(
+                        (statusResponse) => {
+                            questionnaireStatus = statusResponse.body;
 
-                        if (answer) {
-                            const question: QuestionMgm = this._questionsArrayMap.get(Number(key));
-                            const questionnaire: QuestionnaireMgm = question.questionnaire;
+                            formDataMap.forEach((value: AnswerMgm, key: String) => {
+                                const answer: AnswerMgm = value;
+                                console.log('Answer: ' + answer);
 
-                            console.log('Answer: ' + JSON.stringify(answer));
-                            console.log('Question: ' + JSON.stringify(question));
-                            console.log('Questionnaire: ' + JSON.stringify(questionnaire));
+                                if (answer) {
+                                    const question: QuestionMgm = this._questionsArrayMap.get(Number(key));
+                                    const questionnaire: QuestionnaireMgm = question.questionnaire;
 
-                            const myAnser: MyAnswerMgm = new MyAnswerMgm(undefined, 'Checked', answer, question, questionnaire, questionnaireStatus, this.user);
+                                    console.log('Answer: ' + JSON.stringify(answer));
+                                    console.log('Question: ' + JSON.stringify(question));
+                                    console.log('Questionnaire: ' + JSON.stringify(questionnaire));
 
-                            console.log('MyAnser: ' + myAnser);
+                                    const myAnser: MyAnswerMgm = new MyAnswerMgm(undefined, 'Checked', answer, question, questionnaire, questionnaireStatus, this.user);
 
-                            // persist the answer of the user
-                            this.myAnswerService.create(myAnser).subscribe((response) => {
-                                const result: MyAnswerMgm = response.body;
-                                console.log('MyAnswer response: ' + JSON.stringify(result));
+                                    console.log('MyAnser: ' + myAnser);
+
+                                    // persist the answer of the user
+                                    this.myAnswerService.create(myAnser).subscribe((response) => {
+                                        const result: MyAnswerMgm = response.body;
+                                        console.log('MyAnswer response: ' + JSON.stringify(result));
+                                    });
+                                }
                             });
-                        }
-                    });
-                },
-                (error: any) => {
-                    console.log(error);
-                },
-                () => {
-                    this.router.navigate(['identify-threat-agent/questionnaires']);
-                })
-        );
+                        },
+                        (error: any) => {
+                            console.log(error);
+                        },
+                        () => {
+                            this.router.navigate(['identify-threat-agent/questionnaires']);
+                        })
+                );
+
+                break;
+            }
+            case Status.PENDING: {// no need to update the existing QuestionnaireStatus, just delete old MyAnswers, create new MyAnswers
+
+                // DELETE the OLD MyAnswers
+                const deleteObservables: Observable<HttpResponse<any>>[] = [];
+
+                this.myAnswers.forEach((myAnswer) => {
+                    deleteObservables.push(
+                        this.myAnswerService.delete(myAnswer.id)
+                    );
+                });
+
+                forkJoin(deleteObservables).subscribe(
+                    (responses: HttpResponse<any>[]) => {
+                        console.log('Old my answers deleted: ' + JSON.stringify(responses));
+                    },
+                    (error) => {
+
+                    },
+                    () => {
+                        console.log('Delete Observables completed...');
+                    }
+                );
+
+                // CREATE the NEW MyAnswers
+                const createObservables: Observable<HttpResponse<MyAnswerMgm>>[] = [];
+
+                formDataMap.forEach((value: AnswerMgm, key: String) => {
+                    const answer: AnswerMgm = value;
+                    console.log('Answer: ' + answer);
+
+                    if (answer) {// check if the the user answered this question
+                        const question: QuestionMgm = this._questionsArrayMap.get(Number(key));
+                        const questionnaire: QuestionnaireMgm = question.questionnaire;
+
+                        console.log('Answer: ' + JSON.stringify(answer));
+                        console.log('Question: ' + JSON.stringify(question));
+                        console.log('Questionnaire: ' + JSON.stringify(questionnaire));
+
+                        const myAnser: MyAnswerMgm = new MyAnswerMgm(undefined, 'Checked', answer, question, questionnaire, this._questionnaireStatus, this.user);
+
+                        console.log('MyAnser: ' + myAnser);
+
+                        createObservables.push(this.myAnswerService.create(myAnser));
+                    }
+                });
+
+                forkJoin(createObservables).subscribe((responses: HttpResponse<MyAnswerMgm>[]) => {
+                        console.log('New my answers creaed: ' + JSON.stringify(responses));
+                    },
+                    (error) => {
+                        console.log(error);
+                    },
+                    () => {
+                        console.log('Create Observables completed...');
+                        this.router.navigate(['identify-threat-agent/questionnaires']);
+                    }
+                );
+
+                break;
+            }
+            case Status.FULL: {
+                /*
+                DO-NOTHING: at the moment the EDITING of an already submitted form cannot be handled
+                cause this would need to edit also the previously identified threat agents
+                */
+                break;
+            }
+        }
     }
 
     sort(answers: AnswerMgm[]): AnswerMgm[] {
