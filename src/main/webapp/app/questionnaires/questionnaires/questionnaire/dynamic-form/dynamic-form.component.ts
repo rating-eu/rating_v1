@@ -296,21 +296,6 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
         );
     }
 
-    patchValues() {
-        console.log('Form value before: ' + JSON.stringify(this.form.value));
-
-        const value = {};
-        value[1] = this._questionsArrayMap.get(1).answers[0]; // YES
-        value[2] = this._questionsArrayMap.get(2).answers[0]; // YES
-        value[3] = this._questionsArrayMap.get(3).answers[1]; // NO
-
-        console.log('Patching values: ' + JSON.stringify(value));
-
-        this.form.patchValue(value);
-
-        console.log('Form value after: ' + JSON.stringify(this.form.value));
-    }
-
     sort(answers: AnswerMgm[]): AnswerMgm[] {
         return answers.sort((a, b) => {
             return a.order - b.order;
