@@ -65,6 +65,13 @@ public class Question implements Serializable {
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Answer> answers = new HashSet<>();
 
+    @ManyToMany
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    @JoinTable(name = "question_attack_strategies",
+               joinColumns = @JoinColumn(name="questions_id", referencedColumnName="id"),
+               inverseJoinColumns = @JoinColumn(name="attack_strategies_id", referencedColumnName="id"))
+    private Set<AttackStrategy> attackStrategies = new HashSet<>();
+
     @OneToOne(mappedBy = "question")
     @JsonIgnore
     private MyAnswer myanswer;
@@ -195,6 +202,31 @@ public class Question implements Serializable {
 
     public void setAnswers(Set<Answer> answers) {
         this.answers = answers;
+    }
+
+    public Set<AttackStrategy> getAttackStrategies() {
+        return attackStrategies;
+    }
+
+    public Question attackStrategies(Set<AttackStrategy> attackStrategies) {
+        this.attackStrategies = attackStrategies;
+        return this;
+    }
+
+    public Question addAttackStrategies(AttackStrategy attackStrategy) {
+        this.attackStrategies.add(attackStrategy);
+        attackStrategy.getQuestions().add(this);
+        return this;
+    }
+
+    public Question removeAttackStrategies(AttackStrategy attackStrategy) {
+        this.attackStrategies.remove(attackStrategy);
+        attackStrategy.getQuestions().remove(this);
+        return this;
+    }
+
+    public void setAttackStrategies(Set<AttackStrategy> attackStrategies) {
+        this.attackStrategies = attackStrategies;
     }
 
     public MyAnswer getMyanswer() {
