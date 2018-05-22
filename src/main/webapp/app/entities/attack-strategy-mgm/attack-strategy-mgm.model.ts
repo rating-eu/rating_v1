@@ -1,4 +1,6 @@
 import { BaseEntity } from './../../shared';
+import {QuestionMgm} from '../question-mgm';
+import {MitigationMgm} from '../mitigation-mgm';
 
 export const enum AS_Frequency {
     'LOW',
@@ -39,8 +41,8 @@ export class AttackStrategyMgm implements BaseEntity {
         public modified?: any,
         public levels?: BaseEntity[],
         public phases?: BaseEntity[],
-        public mitigations?: BaseEntity[],
-        public answstrategies?: BaseEntity[],
+        public mitigations?: MitigationMgm[],
+        public questions?: QuestionMgm[],
         public selfassessments?: BaseEntity[],
     ) {
     }
