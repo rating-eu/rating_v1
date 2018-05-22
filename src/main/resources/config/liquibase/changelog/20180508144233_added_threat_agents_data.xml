@@ -14,7 +14,7 @@
     <property name="floatType" value="float" dbms="mysql, oracle, mssql"/>
 
     <!--
-        Added the entity ExternalAudit.
+        Added the ThreatAgents.
     -->
     <changeSet id="20180508144233-1" author="developer">
         <loadData catalogName="threat_agent"
@@ -25,6 +25,71 @@
                   quotchar="'"
                   tableName="threat_agent">
         </loadData>
+    </changeSet>
+
+    <changeSet id="20180508144233-2" author="developer">
+        <update schemaName="public"
+                tableName="threat_agent">
+            <column name="image" type="longblob" valueBlobFile="../../../images/1.GovernmentHacker.jpg"/>
+            <column name="image_content_type" type="varchar(255)" value="image/jpeg"/>
+            <where>id = 1</where>
+        </update>
+
+        <update schemaName="public"
+                tableName="threat_agent">
+            <column name="image" type="longblob" valueBlobFile="../../../images/2.Hacktivist.jpg"/>
+            <column name="image_content_type" type="varchar(255)" value="image/jpeg"/>
+            <where>id = 2</where>
+        </update>
+
+        <update schemaName="public"
+                tableName="threat_agent">
+            <column name="image" type="longblob" valueBlobFile="../../../images/3.Terrorist.jpg"/>
+            <column name="image_content_type" type="varchar(255)" value="image/jpeg"/>
+            <where>id = 3</where>
+        </update>
+
+        <update schemaName="public"
+                tableName="threat_agent">
+            <column name="image" type="longblob" valueBlobFile="../../../images/4.Hacker.jpg"/>
+            <column name="image_content_type" type="varchar(255)" value="image/jpeg"/>
+            <where>id = 4</where>
+        </update>
+
+        <update schemaName="public"
+                tableName="threat_agent">
+            <column name="image" type="longblob" valueBlobFile="../../../images/5.Competitor.jpg"/>
+            <column name="image_content_type" type="varchar(255)" value="image/jpeg"/>
+            <where>id = 5</where>
+        </update>
+
+        <update schemaName="public"
+                tableName="threat_agent">
+            <column name="image" type="longblob" valueBlobFile="../../../images/6.Insider.jpg"/>
+            <column name="image_content_type" type="varchar(255)" value="image/jpeg"/>
+            <where>id = 6</where>
+        </update>
+
+        <update schemaName="public"
+                tableName="threat_agent">
+            <column name="image" type="longblob" valueBlobFile="../../../images/7.ScriptKiddie.jpg"/>
+            <column name="image_content_type" type="varchar(255)" value="image/jpeg"/>
+            <where>id = 7</where>
+        </update>
+
+        <update schemaName="public"
+                tableName="threat_agent">
+            <column name="image" type="longblob" valueBlobFile="../../../images/8.Unpredictable.jpg"/>
+            <column name="image_content_type" type="varchar(255)" value="image/jpeg"/>
+            <where>id = 8</where>
+        </update>
+
+        <update schemaName="public"
+                tableName="threat_agent">
+            <column name="image" type="longblob" valueBlobFile="../../../images/9.Unaware.jpg"/>
+            <column name="image_content_type" type="varchar(255)" value="image/jpeg"/>
+            <where>id = 9</where>
+        </update>
     </changeSet>
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here, do not remove-->
 </databaseChangeLog>
