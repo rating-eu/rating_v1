@@ -44,6 +44,7 @@ describe('Question e2e test', () => {
         questionDialogPage.questionTypeSelectLastOption();
         questionDialogPage.answerTypeSelectLastOption();
         questionDialogPage.threatAgentSelectLastOption();
+        // questionDialogPage.attackStrategiesSelectLastOption();
         questionDialogPage.questionnaireSelectLastOption();
         questionDialogPage.save();
         expect(questionDialogPage.getSaveButton().isPresent()).toBeFalsy();
@@ -78,6 +79,7 @@ export class QuestionDialogPage {
     questionTypeSelect = element(by.css('select#field_questionType'));
     answerTypeSelect = element(by.css('select#field_answerType'));
     threatAgentSelect = element(by.css('select#field_threatAgent'));
+    attackStrategiesSelect = element(by.css('select#field_attackStrategies'));
     questionnaireSelect = element(by.css('select#field_questionnaire'));
 
     getModalTitle() {
@@ -152,6 +154,22 @@ export class QuestionDialogPage {
 
     getThreatAgentSelectedOption = function() {
         return this.threatAgentSelect.element(by.css('option:checked')).getText();
+    };
+
+    attackStrategiesSelectLastOption = function() {
+        this.attackStrategiesSelect.all(by.tagName('option')).last().click();
+    };
+
+    attackStrategiesSelectOption = function(option) {
+        this.attackStrategiesSelect.sendKeys(option);
+    };
+
+    getAttackStrategiesSelect = function() {
+        return this.attackStrategiesSelect;
+    };
+
+    getAttackStrategiesSelectedOption = function() {
+        return this.attackStrategiesSelect.element(by.css('option:checked')).getText();
     };
 
     questionnaireSelectLastOption = function() {

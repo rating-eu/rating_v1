@@ -48,12 +48,6 @@
         </div>
 
         <div class="form-group">
-            <label jhiTranslate="hermeneutApp.answer.attacks" for="field_attacks">Attacks</label>
-            <select class="form-control" id="field_attacks" multiple name="attacks" [(ngModel)]="answer.attacks">
-                <option [ngValue]="getSelected(answer.attacks, attackStrategyOption)" *ngFor="let attackStrategyOption of attackstrategies; trackBy: trackAttackStrategyById">{{attackStrategyOption.name}}</option>
-            </select>
-        </div>
-        <div class="form-group">
             <label class="form-control-label" jhiTranslate="hermeneutApp.answer.question" for="field_question">Question</label>
             <select class="form-control" id="field_question" name="question" [(ngModel)]="answer.question" >
                 <option [ngValue]="null"></option>

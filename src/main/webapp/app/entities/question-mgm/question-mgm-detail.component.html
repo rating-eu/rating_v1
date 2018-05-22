@@ -34,6 +34,12 @@
                 <a [routerLink]="['/threat-agent-mgm', question.threatAgent?.id]">{{question.threatAgent?.id}}</a>
             </div>
         </dd>
+        <dt><span jhiTranslate="hermeneutApp.question.attackStrategies">Attack Strategies</span></dt>
+        <dd>
+            <span *ngFor="let attackStrategies of question.attackStrategies; let last = last">
+                <a [routerLink]="['/attack-strategy-mgm', attackStrategies?.id ]">{{attackStrategies.name}}</a>{{last ? '' : ', '}}
+            </span>
+        </dd>
         <dt><span jhiTranslate="hermeneutApp.question.questionnaire">Questionnaire</span></dt>
         <dd>
             <div *ngIf="question.questionnaire">

@@ -57,7 +57,7 @@ public class AnswerServiceImpl implements AnswerService {
     @Transactional(readOnly = true)
     public List<Answer> findAll() {
         log.debug("Request to get all Answers");
-        return answerRepository.findAllWithEagerRelationships();
+        return answerRepository.findAll();
     }
 
     /**
@@ -70,7 +70,7 @@ public class AnswerServiceImpl implements AnswerService {
     @Transactional(readOnly = true)
     public Answer findOne(Long id) {
         log.debug("Request to get Answer : {}", id);
-        return answerRepository.findOneWithEagerRelationships(id);
+        return answerRepository.findOne(id);
     }
 
     /**

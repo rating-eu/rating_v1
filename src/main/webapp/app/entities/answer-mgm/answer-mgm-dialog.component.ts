@@ -9,7 +9,6 @@ import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
 import { AnswerMgm } from './answer-mgm.model';
 import { AnswerMgmPopupService } from './answer-mgm-popup.service';
 import { AnswerMgmService } from './answer-mgm.service';
-import { AttackStrategyMgm, AttackStrategyMgmService } from '../attack-strategy-mgm';
 import { QuestionMgm, QuestionMgmService } from '../question-mgm';
 
 @Component({
@@ -21,15 +20,12 @@ export class AnswerMgmDialogComponent implements OnInit {
     answer: AnswerMgm;
     isSaving: boolean;
 
-    attackstrategies: AttackStrategyMgm[];
-
     questions: QuestionMgm[];
 
     constructor(
         public activeModal: NgbActiveModal,
         private jhiAlertService: JhiAlertService,
         private answerService: AnswerMgmService,
-        private attackStrategyService: AttackStrategyMgmService,
         private questionService: QuestionMgmService,
         private eventManager: JhiEventManager
     ) {
@@ -37,8 +33,6 @@ export class AnswerMgmDialogComponent implements OnInit {
 
     ngOnInit() {
         this.isSaving = false;
-        this.attackStrategyService.query()
-            .subscribe((res: HttpResponse<AttackStrategyMgm[]>) => { this.attackstrategies = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
         this.questionService.query()
             .subscribe((res: HttpResponse<QuestionMgm[]>) => { this.questions = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
     }
@@ -77,23 +71,8 @@ export class AnswerMgmDialogComponent implements OnInit {
         this.jhiAlertService.error(error.message, null, null);
     }
 
-    trackAttackStrategyById(index: number, item: AttackStrategyMgm) {
-        return item.id;
-    }
-
     trackQuestionById(index: number, item: QuestionMgm) {
         return item.id;
-    }
-
-    getSelected(selectedVals: Array<any>, option: any) {
-        if (selectedVals) {
-            for (let i = 0; i < selectedVals.length; i++) {
-                if (option.id === selectedVals[i].id) {
-                    return selectedVals[i];
-                }
-            }
-        }
-        return option;
     }
 }
 

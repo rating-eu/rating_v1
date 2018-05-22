@@ -1,6 +1,5 @@
 import {BaseEntity} from './../../shared';
 import {QuestionMgm} from '../question-mgm';
-import {AttackStrategyMgm} from '../attack-strategy-mgm';
 
 export const enum Likelihood {
     'LOW',
@@ -17,7 +16,6 @@ export class AnswerMgm implements BaseEntity {
                 public modified?: any,
                 public order?: number,
                 public likelihood?: Likelihood,
-                public attacks?: AttackStrategyMgm[],
                 public question?: QuestionMgm) {
     }
 }

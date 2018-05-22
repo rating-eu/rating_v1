@@ -9,7 +9,6 @@ import { HermeneutTestModule } from '../../../test.module';
 import { AnswerMgmDialogComponent } from '../../../../../../main/webapp/app/entities/answer-mgm/answer-mgm-dialog.component';
 import { AnswerMgmService } from '../../../../../../main/webapp/app/entities/answer-mgm/answer-mgm.service';
 import { AnswerMgm } from '../../../../../../main/webapp/app/entities/answer-mgm/answer-mgm.model';
-import { AttackStrategyMgmService } from '../../../../../../main/webapp/app/entities/attack-strategy-mgm';
 import { QuestionMgmService } from '../../../../../../main/webapp/app/entities/question-mgm';
 
 describe('Component Tests', () => {
@@ -26,7 +25,6 @@ describe('Component Tests', () => {
                 imports: [HermeneutTestModule],
                 declarations: [AnswerMgmDialogComponent],
                 providers: [
-                    AttackStrategyMgmService,
                     QuestionMgmService,
                     AnswerMgmService
                 ]

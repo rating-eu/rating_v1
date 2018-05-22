@@ -22,7 +22,6 @@
             "modified": "Modified",
             "order": "Order",
             "likelihood": "Likelihood",
-            "attacks": "Attacks",
             "question": "Question"
         }
     }

@@ -88,10 +88,10 @@ public class AttackStrategy implements Serializable {
                inverseJoinColumns = @JoinColumn(name="mitigations_id", referencedColumnName="id"))
     private Set<Mitigation> mitigations = new HashSet<>();
 
-    @ManyToMany(mappedBy = "attacks")
+    @ManyToMany(mappedBy = "attackStrategies")
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private Set<Answer> answstrategies = new HashSet<>();
+    private Set<Question> questions = new HashSet<>();
 
     @ManyToMany(mappedBy = "attackstrategies")
     @JsonIgnore
@@ -286,29 +286,29 @@ public class AttackStrategy implements Serializable {
         this.mitigations = mitigations;
     }
 
-    public Set<Answer> getAnswstrategies() {
-        return answstrategies;
+    public Set<Question> getQuestions() {
+        return questions;
     }
 
-    public AttackStrategy answstrategies(Set<Answer> answers) {
-        this.answstrategies = answers;
+    public AttackStrategy questions(Set<Question> questions) {
+        this.questions = questions;
         return this;
     }
 
-    public AttackStrategy addAnswstrategy(Answer answer) {
-        this.answstrategies.add(answer);
-        answer.getAttacks().add(this);
+    public AttackStrategy addQuestion(Question question) {
+        this.questions.add(question);
+        question.getAttackStrategies().add(this);
         return this;
     }
 
-    public AttackStrategy removeAnswstrategy(Answer answer) {
-        this.answstrategies.remove(answer);
-        answer.getAttacks().remove(this);
+    public AttackStrategy removeQuestion(Question question) {
+        this.questions.remove(question);
+        question.getAttackStrategies().remove(this);
         return this;
     }
 
-    public void setAnswstrategies(Set<Answer> answers) {
-        this.answstrategies = answers;
+    public void setQuestions(Set<Question> questions) {
+        this.questions = questions;
     }
 
     public Set<SelfAssessment> getSelfassessments() {

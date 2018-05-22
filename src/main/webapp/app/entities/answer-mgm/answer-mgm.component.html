@@ -35,7 +35,6 @@
             <th><span jhiTranslate="hermeneutApp.answer.modified">Modified</span></th>
             <th><span jhiTranslate="hermeneutApp.answer.order">Order</span></th>
             <th><span jhiTranslate="hermeneutApp.answer.likelihood">Likelihood</span></th>
-            <th><span jhiTranslate="hermeneutApp.answer.attacks">Attacks</span></th>
             <th><span jhiTranslate="hermeneutApp.answer.question">Question</span></th>
             <th></th>
             </tr>
@@ -48,11 +47,6 @@
                 <td>{{answer.modified | date:'medium'}}</td>
                 <td>{{answer.order}}</td>
                 <td jhiTranslate="{{'hermeneutApp.Likelihood.' + answer.likelihood}}">{{answer.likelihood}}</td>
-                <td>
-                    <span *ngFor="let attacks of answer.attacks; let last = last">
-                            <a class="form-control-static" [routerLink]="['../attack-strategy-mgm', attacks?.id ]">{{attacks.name}}</a>{{last ? '' : ', '}}
-                        </span>
-                </td>
                 <td>
                     <div *ngIf="answer.question">
                         <a [routerLink]="['../question-mgm', answer.question?.id ]" >{{answer.question?.name}}</a>
