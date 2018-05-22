@@ -23,10 +23,10 @@
         },
         {
             "relationshipType": "many-to-many",
-            "relationshipName": "answstrategy",
-            "otherEntityName": "answer",
+            "relationshipName": "question",
+            "otherEntityName": "question",
             "ownerSide": false,
-            "otherEntityRelationshipName": "attacks"
+            "otherEntityRelationshipName": "attackStrategies"
         },
         {
             "relationshipType": "many-to-many",

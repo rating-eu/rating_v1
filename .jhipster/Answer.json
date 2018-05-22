@@ -2,14 +2,6 @@
     "fluentMethods": true,
     "relationships": [
         {
-            "relationshipType": "many-to-many",
-            "otherEntityRelationshipName": "answstrategy",
-            "relationshipName": "attacks",
-            "otherEntityName": "attackStrategy",
-            "otherEntityField": "name",
-            "ownerSide": true
-        },
-        {
             "relationshipType": "many-to-one",
             "relationshipName": "question",
             "otherEntityName": "question",
