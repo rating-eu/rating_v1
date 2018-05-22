@@ -58,6 +58,17 @@
         <dropDefaultValue tableName="question" columnName="created" columnDataType="datetime"/>
         <dropDefaultValue tableName="question" columnName="modified" columnDataType="datetime"/>
         
+        <createTable tableName="question_attack_strategies">
+            <column name="attack_strategies_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="questions_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addPrimaryKey columnNames="questions_id, attack_strategies_id" tableName="question_attack_strategies"/>
+        
     </changeSet>
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here, do not remove-->
 </databaseChangeLog>
