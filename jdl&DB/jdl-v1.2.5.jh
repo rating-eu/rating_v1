@@ -221,7 +221,7 @@ relationship ManyToMany {
     Asset{domains(name)} to DomainOfInfluence{domain},
     ThreatAgent{motivation(name)} to Motivation{tagent},
     AttackStrategy{mitigation(name)} to Mitigation{countermeasure},
-    Answer{attacks(name)} to AttackStrategy{answstrategy},
+    Question{attackStrategies(name)} to AttackStrategy{question(name)},
     SelfAssessment{companyprofiles(name)} to CompanyProfile{selfassessment(name)},
     SelfAssessment{department(name)} to Department{selfassessment(name)},
     SelfAssessment{asset(name)} to Asset{selfassessment(name)},
