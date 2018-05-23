@@ -14,7 +14,7 @@
         },
         {
             "fieldName": "weight",
-            "fieldType": "Integer"
+            "fieldType": "Float"
         }
     ],
     "changelogDate": "20180502153134",

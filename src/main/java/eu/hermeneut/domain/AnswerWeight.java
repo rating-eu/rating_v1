@@ -42,7 +42,7 @@ public class AnswerWeight implements Serializable {
     private QuestionType questionType;
 
     @Column(name = "weight")
-    private Integer weight;
+    private Float weight;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -79,16 +79,16 @@ public class AnswerWeight implements Serializable {
         this.questionType = questionType;
     }
 
-    public Integer getWeight() {
+    public Float getWeight() {
         return weight;
     }
 
-    public AnswerWeight weight(Integer weight) {
+    public AnswerWeight weight(Float weight) {
         this.weight = weight;
         return this;
     }
 
-    public void setWeight(Integer weight) {
+    public void setWeight(Float weight) {
         this.weight = weight;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
