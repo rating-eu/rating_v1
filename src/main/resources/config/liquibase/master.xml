@@ -49,5 +49,6 @@
     <include file="config/liquibase/changelog/20180513173449_added_threat_agent_motivations_data.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180516144842_added_entity_constraints_QuestionnaireStatus.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180523150559_added_answer_weights_data.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20180523160524_added_containers_data.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
 </databaseChangeLog>
