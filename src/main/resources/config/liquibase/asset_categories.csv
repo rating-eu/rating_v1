@@ -1,0 +1,11 @@
+id;name;description;jhi_type
+1;Current Assets;'Cash and any other company asset that can be turned to cash within one year.';TANGIBLE
+2;Fixed Assets;'Long-term assets that a firm uses in the production of its income and that is NOT expected to be consumed or converted into cash in one year''s time';TANGIBLE
+3;Intellectual Property (IPR);'Existing copyrights, patents, blueprints, etc.';INTANGIBLE
+4;Innovation;'Trade/business secrets, industrial process, on-going R&D innovation projects, etc.';INTANGIBLE
+5;Data;'Personal data, business data, technical data, etc.';INTANGIBLE
+6;Reputation;'Organisation reputation with clients, stakeholders and firm''s ecosystems, reputation of managers and employees, cyber-trustworthy, etc.';INTANGIBLE
+7;Brand;'A brand is a name, design, symbol, or other feature that distinguishes an organization or product from its rivals in the eyes of the customer.';INTANGIBLE
+8;Key competences and human capital;'Firm''s personnel technical and business key competences, firm''s personnel soft-skills, etc.';INTANGIBLE
+9;Organisational capital;'Digital supported process, non-digitised functional and inter-functional processes, etc.';INTANGIBLE
+
