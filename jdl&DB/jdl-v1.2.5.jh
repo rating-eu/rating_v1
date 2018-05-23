@@ -196,7 +196,7 @@ entity Answer{
 entity AnswerWeight{
 	Likelihood Likelihood,
     QuestionType QuestionType,
-    Weight Integer
+    Weight Float
 }
 
 entity MyAnswer{
