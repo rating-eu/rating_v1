@@ -25,7 +25,7 @@
                 <constraints nullable="false" />
             </column>
 
-            <column name="description" type="varchar(255)">
+            <column name="description" type="varchar(512)">
                 <constraints nullable="false" />
             </column>
 
@@ -64,7 +64,7 @@
         </createTable>
         <dropDefaultValue tableName="threat_agent" columnName="created" columnDataType="datetime"/>
         <dropDefaultValue tableName="threat_agent" columnName="modified" columnDataType="datetime"/>
-        
+
         <createTable tableName="threat_agent_motivation">
             <column name="motivations_id" type="bigint">
                 <constraints nullable="false"/>
@@ -75,7 +75,7 @@
         </createTable>
 
         <addPrimaryKey columnNames="threat_agents_id, motivations_id" tableName="threat_agent_motivation"/>
-        
+
     </changeSet>
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here, do not remove-->
 </databaseChangeLog>

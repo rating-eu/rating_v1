@@ -42,7 +42,7 @@ public class ThreatAgent implements Serializable {
     private String name;
 
     @NotNull
-    @Column(name = "description", nullable = false)
+    @Column(name = "description", nullable = false, length = 512)
     private String description;
 
     @Lob
