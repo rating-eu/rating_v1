@@ -1,180 +1,100 @@
 assets_id;domains_id
-//copyright
 13;1
 13;2
 13;3
-//Patent
 14;1
 14;2
 14;3
-//Blueprint
 15;1
 15;2
 15;3
-//Intellectual prop
 16;1
 16;2
 16;3
-//Trade or business serets
 17;1
 17;2
 17;3
-//Indutrial process
 18;2
 18;3
-
-
-//Ongoing r e d
-19;1//Human
-19;3//IT
-19;5//digital footprint
-//ongoing new
+19;1
+19;3
+19;5
 20;2
 20;3
-20;5//digital footprint
-//Business models
+20;5
 21;3
 21;5
-
-//data clients
 22;1
 22;3
 22;5
-//data personnel
 23;1
 23;3
 23;5
-//data supppliers
 24;1
 24;3
 24;5
-//data functions
 25;1
 25;3
 25;5
-//reputation with clients
-26;1//human
-26;5//digital footprint
-26;6//social network
-26;7//digital media
-26;8//press and media
-
-//Reputation managers and employees
+26;1
+26;5
+26;6
+26;7
+26;8
 27;1
 27;5
 27;6
 27;7
 27;8
-
-//Cyber trusworthy
 28;1
 28;5
 28;6
 28;7
 28;8
-
-//Brand value customers
-29;1//human
-29;6//social network
-29;7//digital media
-29;8//press and media
-29;9//wikileaks
-
-//Brand reputation
-30;1//human
-30;5//digital footprint
-30;6//social network
-30;7//digital media
-30;8//press and media
-
-//firms technical
-31;1//human
-//firms soft skills
-32;1//human
-
-//org knowledge
+29;1
+29;6
+29;7
+29;8
+29;9
+30;1
+30;5
+30;6
+30;7
+30;8
+31;1
+32;1
 33;1
 33;5
-
-//pers motivation and satisfaction
-34;1//human
-34;5//digital footprint
-34;6//social network
-34;7//digital media
-34;8//press and media
-
-//pers trust in org
+34;1
+34;5
+34;6
+34;7
+34;8
 35;1
 35;5
 35;6
 35;7
 35;8
-
-//pers learning cpabilities
-36;1//human
-
-//digital supported processes
-37;1//human
-37;3//IT
-37;5//digital footprint
-37;6//social network
-37;7//digital media
-37;8//press and media
-
-//non digitised
-38;1//human
-
-//continuous learning
+36;1
+37;1
+37;3
+37;5
+37;6
+37;7
+37;8
+38;1
 39;1
-
-//firm org strat capabs
 40;1
 40;3
 40;5
 40;6
-
-//eco syst
 41;1
 41;3
 41;5
 41;6
-
-//commercial stakeholder network
 42;2
 42;3
-
-//royality
 43;2
 43;3
-
-//Cooperation adn commercial agrrements
 44;2
 44;3
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
