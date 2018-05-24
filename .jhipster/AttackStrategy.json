@@ -53,8 +53,8 @@
             "fieldValidateRulesMaxlength": 2000
         },
         {
-            "fieldName": "freq",
-            "fieldType": "AS_Frequency",
+            "fieldName": "frequency",
+            "fieldType": "Frequency",
             "fieldValues": "LOW,MEDIUM,HIGH",
             "fieldValidateRules": [
                 "required"

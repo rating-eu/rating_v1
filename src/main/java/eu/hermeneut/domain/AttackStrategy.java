@@ -14,7 +14,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.Objects;
 
-import eu.hermeneut.domain.enumeration.AS_Frequency;
+import eu.hermeneut.domain.enumeration.Frequency;
 
 import eu.hermeneut.domain.enumeration.SkillLevel;
 
@@ -48,8 +48,8 @@ public class AttackStrategy implements Serializable {
 
     @NotNull
     @Enumerated(EnumType.STRING)
-    @Column(name = "freq", nullable = false)
-    private AS_Frequency freq;
+    @Column(name = "frequency", nullable = false)
+    private Frequency frequency;
 
     @NotNull
     @Enumerated(EnumType.STRING)
@@ -133,17 +133,17 @@ public class AttackStrategy implements Serializable {
         this.description = description;
     }
 
-    public AS_Frequency getFreq() {
-        return freq;
+    public Frequency getFrequency() {
+        return frequency;
     }
 
-    public AttackStrategy freq(AS_Frequency freq) {
-        this.freq = freq;
+    public AttackStrategy frequency(Frequency frequency) {
+        this.frequency = frequency;
         return this;
     }
 
-    public void setFreq(AS_Frequency freq) {
-        this.freq = freq;
+    public void setFrequency(Frequency frequency) {
+        this.frequency = frequency;
     }
 
     public SkillLevel getSkill() {
@@ -363,7 +363,7 @@ public class AttackStrategy implements Serializable {
             "id=" + getId() +
             ", name='" + getName() + "'" +
             ", description='" + getDescription() + "'" +
-            ", freq='" + getFreq() + "'" +
+            ", frequency='" + getFrequency() + "'" +
             ", skill='" + getSkill() + "'" +
             ", resources='" + getResources() + "'" +
             ", likelihood='" + getLikelihood() + "'" +

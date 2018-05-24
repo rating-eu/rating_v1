@@ -37,7 +37,7 @@ describe('AttackStrategy e2e test', () => {
         expect(attackStrategyDialogPage.getNameInput()).toMatch('name');
         attackStrategyDialogPage.setDescriptionInput('description');
         expect(attackStrategyDialogPage.getDescriptionInput()).toMatch('description');
-        attackStrategyDialogPage.freqSelectLastOption();
+        attackStrategyDialogPage.frequencySelectLastOption();
         attackStrategyDialogPage.skillSelectLastOption();
         attackStrategyDialogPage.resourcesSelectLastOption();
         attackStrategyDialogPage.likelihoodSelectLastOption();
@@ -74,7 +74,7 @@ export class AttackStrategyDialogPage {
     closeButton = element(by.css('button.close'));
     nameInput = element(by.css('input#field_name'));
     descriptionInput = element(by.css('input#field_description'));
-    freqSelect = element(by.css('select#field_freq'));
+    frequencySelect = element(by.css('select#field_frequency'));
     skillSelect = element(by.css('select#field_skill'));
     resourcesSelect = element(by.css('select#field_resources'));
     likelihoodSelect = element(by.css('select#field_likelihood'));
@@ -102,16 +102,16 @@ export class AttackStrategyDialogPage {
         return this.descriptionInput.getAttribute('value');
     };
 
-    setFreqSelect = function(freq) {
-        this.freqSelect.sendKeys(freq);
+    setFrequencySelect = function(frequency) {
+        this.frequencySelect.sendKeys(frequency);
     };
 
-    getFreqSelect = function() {
-        return this.freqSelect.element(by.css('option:checked')).getText();
+    getFrequencySelect = function() {
+        return this.frequencySelect.element(by.css('option:checked')).getText();
     };
 
-    freqSelectLastOption = function() {
-        this.freqSelect.all(by.tagName('option')).last().click();
+    frequencySelectLastOption = function() {
+        this.frequencySelect.all(by.tagName('option')).last().click();
     };
     setSkillSelect = function(skill) {
         this.skillSelect.sendKeys(skill);

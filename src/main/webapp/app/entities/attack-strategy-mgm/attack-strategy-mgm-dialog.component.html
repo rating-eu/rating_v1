@@ -35,15 +35,15 @@
             </div>
         </div>
         <div class="form-group">
-            <label class="form-control-label" jhiTranslate="hermeneutApp.attackStrategy.freq" for="field_freq">Freq</label>
-            <select class="form-control" name="freq" [(ngModel)]="attackStrategy.freq" id="field_freq"  required>
-                <option value="LOW">{{'hermeneutApp.AS_Frequency.LOW' | translate}}</option>
-                <option value="MEDIUM">{{'hermeneutApp.AS_Frequency.MEDIUM' | translate}}</option>
-                <option value="HIGH">{{'hermeneutApp.AS_Frequency.HIGH' | translate}}</option>
+            <label class="form-control-label" jhiTranslate="hermeneutApp.attackStrategy.frequency" for="field_frequency">Frequency</label>
+            <select class="form-control" name="frequency" [(ngModel)]="attackStrategy.frequency" id="field_frequency"  required>
+                <option value="LOW">{{'hermeneutApp.Frequency.LOW' | translate}}</option>
+                <option value="MEDIUM">{{'hermeneutApp.Frequency.MEDIUM' | translate}}</option>
+                <option value="HIGH">{{'hermeneutApp.Frequency.HIGH' | translate}}</option>
             </select>
-            <div [hidden]="!(editForm.controls.freq?.dirty && editForm.controls.freq?.invalid)">
+            <div [hidden]="!(editForm.controls.frequency?.dirty && editForm.controls.frequency?.invalid)">
                 <small class="form-text text-danger"
-                   [hidden]="!editForm.controls.freq?.errors?.required" jhiTranslate="entity.validation.required">
+                   [hidden]="!editForm.controls.frequency?.errors?.required" jhiTranslate="entity.validation.required">
                    This field is required.
                 </small>
             </div>

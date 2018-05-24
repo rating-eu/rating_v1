@@ -2,7 +2,7 @@ import { BaseEntity } from './../../shared';
 import {QuestionMgm} from '../question-mgm';
 import {MitigationMgm} from '../mitigation-mgm';
 
-export const enum AS_Frequency {
+export const enum Frequency {
     'LOW',
     'MEDIUM',
     'HIGH'
@@ -33,7 +33,7 @@ export class AttackStrategyMgm implements BaseEntity {
         public id?: number,
         public name?: string,
         public description?: string,
-        public freq?: AS_Frequency,
+        public frequency?: Frequency,
         public skill?: SkillLevel,
         public resources?: ResourceLevel,
         public likelihood?: Likelihood,

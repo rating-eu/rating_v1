@@ -29,7 +29,7 @@
                 <constraints nullable="true" />
             </column>
 
-            <column name="freq" type="varchar(255)">
+            <column name="frequency" type="varchar(255)">
                 <constraints nullable="false" />
             </column>
 

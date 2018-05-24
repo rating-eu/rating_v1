@@ -19,7 +19,7 @@
             },
             "name": "Name",
             "description": "Description",
-            "freq": "Freq",
+            "frequency": "Frequency",
             "skill": "Skill",
             "resources": "Resources",
             "likelihood": "Likelihood",
