@@ -109,7 +109,7 @@ entity Motivation{
 entity AttackStrategy{
     Name String required,
     Description String maxlength(2000),
-    Freq AS_Frequency required,
+    Frequency Frequency required,
     Skill SkillLevel required,
     Resources ResourceLevel required,
     Likelihood Likelihood,
@@ -153,7 +153,7 @@ entity Mitigation{
     Modified ZonedDateTime
 }
 
-enum AS_Frequency{
+enum Frequency{
     LOW, MEDIUM, HIGH
 }
 
