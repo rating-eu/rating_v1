@@ -55,5 +55,6 @@
     <include file="config/liquibase/changelog/20180523191137_added_asset_containers_data.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180524100524_added_domains_of_influence_data.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180524111237_added_asset_domains_of_influence_data.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20180524154922_added_attack_strategies_data.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
 </databaseChangeLog>
