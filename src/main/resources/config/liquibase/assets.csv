@@ -33,7 +33,7 @@ id;name;description;created;modified;assetcategory_id
 32;Firm''s personnel soft-skills;Waiting for description;${now};${now};8
 33;Organisational knowledge;Waiting for description;${now};${now};8
 34;Personnel motivation and satisfaction;Waiting for description;${now};${now};8
-35;Personnel trus in the organisation;Waiting for description;${now};${now};8
+35;Personnel trust in the organisation;Waiting for description;${now};${now};8
 36;Personnel learning capabilities;Waiting for description;${now};${now};8
 37;Digital supported process;Waiting for description;${now};${now};9
 38;Non-digitised functional and interfunctional processes;Waiting for description;${now};${now};9
