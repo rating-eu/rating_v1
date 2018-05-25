@@ -41,7 +41,7 @@
                 <td jhiTranslate="{{'hermeneutApp.Phase.' + phaseWrapper.phase}}">{{phaseWrapper.phase}}</td>
                 <td>
                     <div *ngIf="phaseWrapper.attackStrategy">
-                        <a [routerLink]="['../attack-strategy-mgm', phaseWrapper.attackStrategy?.id ]" >{{phaseWrapper.attackStrategy?.id}}</a>
+                        <a [routerLink]="['../attack-strategy-mgm', phaseWrapper.attackStrategy?.id ]" >{{phaseWrapper.attackStrategy?.name}}</a>
                     </div>
                 </td>
                 <td class="text-right">

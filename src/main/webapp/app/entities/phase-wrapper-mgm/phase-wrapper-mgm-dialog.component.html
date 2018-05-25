@@ -28,7 +28,7 @@
             <label class="form-control-label" jhiTranslate="hermeneutApp.phaseWrapper.attackStrategy" for="field_attackStrategy">Attack Strategy</label>
             <select class="form-control" id="field_attackStrategy" name="attackStrategy" [(ngModel)]="phaseWrapper.attackStrategy" >
                 <option [ngValue]="null"></option>
-                <option [ngValue]="attackStrategyOption.id === phaseWrapper.attackStrategy?.id ? phaseWrapper.attackStrategy : attackStrategyOption" *ngFor="let attackStrategyOption of attackstrategies; trackBy: trackAttackStrategyById">{{attackStrategyOption.id}}</option>
+                <option [ngValue]="attackStrategyOption.id === phaseWrapper.attackStrategy?.id ? phaseWrapper.attackStrategy : attackStrategyOption" *ngFor="let attackStrategyOption of attackstrategies; trackBy: trackAttackStrategyById">{{attackStrategyOption.name}}</option>
             </select>
         </div>
     </div>
