@@ -1,12 +1,13 @@
 import {Component, OnInit, OnDestroy} from '@angular/core';
 import {IdentifyAssetService} from '../identify-asset.service';
-import {Asset} from '../models/Asset';
 import {SelfAssessmentMgm, SelfAssessmentMgmService} from '../../entities/self-assessment-mgm';
 import {Principal, LoginModalService} from '../../shared';
 import {JhiAlertService, JhiEventManager} from 'ng-jhipster';
 import {ActivatedRoute} from '@angular/router';
 import {Subscription} from 'rxjs/Subscription';
 import {AttackStrategyMgm} from '../../entities/attack-strategy-mgm/attack-strategy-mgm.model';
+import {Observable} from 'rxjs/Observable';
+import {AssetMgm, AssetMgmService} from '../../entities/asset-mgm';
 
 @Component({
     selector: 'jhi-identify-asset',
@@ -20,32 +21,15 @@ export class IdentifyAssetComponent implements OnInit, OnDestroy {
     eventSubscriber: Subscription;
     currentSearch: string;
     mySelf: SelfAssessmentMgm = {};
-    assets: Asset[];
+    assets$: Observable<AssetMgm[]>;
 
-    constructor(
-        private jhiAlertService: JhiAlertService,
-        private eventManager: JhiEventManager,
-        private activatedRoute: ActivatedRoute,
-        private principal: Principal,
-        private mySelfAssessmentService: SelfAssessmentMgmService,
-        private identifyAssetService: IdentifyAssetService) {
-    }
-
-    getAllAssets() {
-        this.identifyAssetService.findAll().subscribe(
-            (response) => {
-                this.assets = response;
-
-                console.log('Data: ' + JSON.stringify(this.assets));
-
-                this.assets.forEach(function(asset) {
-                    console.log('AssetMgm: ' + JSON.stringify(Asset));
-                });
-            },
-            (error) => {
-                console.log(error);
-            }
-        );
+    constructor(private jhiAlertService: JhiAlertService,
+                private eventManager: JhiEventManager,
+                private activatedRoute: ActivatedRoute,
+                private principal: Principal,
+                private mySelfAssessmentService: SelfAssessmentMgmService,
+                private identifyAssetService: IdentifyAssetService,
+                private assetService: AssetMgmService) {
     }
 
     ngOnInit() {
@@ -54,7 +38,7 @@ export class IdentifyAssetComponent implements OnInit, OnDestroy {
         });
         this.mySelf = this.mySelfAssessmentService.getSelfAssessment();
         this.registerChangeIdentifyAssets();
-        this.getAllAssets();
+        this.assets$ = this.assetService.findAll();
     }
 
     ngOnDestroy() {
