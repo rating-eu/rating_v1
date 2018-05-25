@@ -106,6 +106,16 @@ entity Motivation{
     Modified ZonedDateTime
 }
 
+entity Level{
+    Name String required,
+    Description String
+}
+
+entity Phase{
+    Name String required,
+    Description String
+}
+
 entity AttackStrategy{
     Name String required,
     Description String maxlength(2000),
@@ -115,22 +125,6 @@ entity AttackStrategy{
     Likelihood Likelihood,
     Created ZonedDateTime,
     Modified ZonedDateTime
-}
-
-enum Level{
-    HUMAN, IT, PHYSICAL
-}
-
-entity LevelWrapper{
-	level Level
-}
-
-enum Phase{
-    RECONNAISSANCE, WEAPONIZATION, DELIVERY, EXPLOITATION, INSTALLATION, COMMANDCONTROL
-}
-
-entity PhaseWrapper{
-	phase Phase
 }
 
 enum Likelihood{
@@ -236,8 +230,8 @@ relationship OneToMany{
     Questionnaire{questions(name)} to Question{questionnaire(name)},
     Question{answers(name)} to Answer{question(name)},
     CompanyProfile{departments(name)} to Department{companyprofile(name)},
-    AttackStrategy{levels} to LevelWrapper
-    AttackStrategy{phases} to PhaseWrapper
+    AttackStrategy{levels} to Level
+    AttackStrategy{phases} to Phase
     ThreatAgent{questions} to Question
     QuestionnaireStatus{answers} to MyAnswer
 }
