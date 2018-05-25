@@ -2,7 +2,7 @@ import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {QuestionControlService} from './services/question-control.service';
 import {FormGroup} from '@angular/forms';
 import {QuestionMgm, QuestionMgmService} from '../../../../entities/question-mgm';
-import {AnswerMgm} from '../../../../entities/answer-mgm';
+import {AnswerMgm, AnswerMgmService} from '../../../../entities/answer-mgm';
 import {ThreatAgentMgm} from '../../../../entities/threat-agent-mgm';
 import {Fraction} from '../../../../utils/fraction.class';
 import * as CryptoJS from 'crypto-js';
@@ -57,6 +57,7 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
                 private dataSharingSerivce: DatasharingService,
                 private router: Router,
                 private myAnswerService: MyAnswerMgmService,
+                private answerService: AnswerMgmService,
                 private selfAssessmentService: SelfAssessmentMgmService,
                 private questionnaireStatusService: QuestionnaireStatusMgmService,
                 private accountService: AccountService,
@@ -77,6 +78,11 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
 
             this._questionsArrayMap = new Map<number, QuestionMgm>();
             this._questionsArray.forEach((question) => {
+                this.answerService.findByQuestion(question.id)
+                    .toPromise()
+                    .then((answers: AnswerMgm[]) => {
+                        question.answers = answers;
+                    });
                 this._questionsArrayMap.set(question.id, question);
             });
 

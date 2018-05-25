@@ -48,7 +48,6 @@ public class Answer implements Serializable {
     private Likelihood likelihood;
 
     @ManyToOne
-    @JsonIgnore
     private Question question;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
