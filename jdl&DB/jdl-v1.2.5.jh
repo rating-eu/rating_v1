@@ -222,7 +222,9 @@ relationship ManyToMany {
     SelfAssessment{threatagent(name)} to ThreatAgent{selfassessment(name)},
     SelfAssessment{attackstrategy(name)} to AttackStrategy{selfassessment(name)},
     SelfAssessment{externalaudit(name)} to ExternalAudit{selfassessment(name)},
-    SelfAssessment{questionnaire(name)} to Questionnaire{selfassessment(name)}
+    SelfAssessment{questionnaire(name)} to Questionnaire{selfassessment(name)},
+    AttackStrategy{level(name)} to Level
+    AttackStrategy{phase(name)} to Phase
 }
 
 relationship OneToMany{
@@ -230,8 +232,6 @@ relationship OneToMany{
     Questionnaire{questions(name)} to Question{questionnaire(name)},
     Question{answers(name)} to Answer{question(name)},
     CompanyProfile{departments(name)} to Department{companyprofile(name)},
-    AttackStrategy{levels} to Level
-    AttackStrategy{phases} to Phase
     ThreatAgent{questions} to Question
     QuestionnaireStatus{answers} to MyAnswer
 }
