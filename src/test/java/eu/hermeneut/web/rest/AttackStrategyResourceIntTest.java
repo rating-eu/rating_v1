@@ -6,6 +6,8 @@ import eu.hermeneut.domain.AttackStrategy;
 import eu.hermeneut.repository.AttackStrategyRepository;
 import eu.hermeneut.service.AttackStrategyService;
 import eu.hermeneut.repository.search.AttackStrategySearchRepository;
+import eu.hermeneut.service.LevelService;
+import eu.hermeneut.service.PhaseService;
 import eu.hermeneut.web.rest.errors.ExceptionTranslator;
 
 import org.junit.Before;
@@ -40,6 +42,7 @@ import eu.hermeneut.domain.enumeration.Frequency;
 import eu.hermeneut.domain.enumeration.SkillLevel;
 import eu.hermeneut.domain.enumeration.ResourceLevel;
 import eu.hermeneut.domain.enumeration.Likelihood;
+
 /**
  * Test class for the AttackStrategyResource REST controller.
  *
@@ -80,6 +83,12 @@ public class AttackStrategyResourceIntTest {
     private AttackStrategyService attackStrategyService;
 
     @Autowired
+    private LevelService levelService;
+
+    @Autowired
+    private PhaseService phaseService;
+
+    @Autowired
     private AttackStrategySearchRepository attackStrategySearchRepository;
 
     @Autowired
@@ -101,7 +110,7 @@ public class AttackStrategyResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final AttackStrategyResource attackStrategyResource = new AttackStrategyResource(attackStrategyService);
+        final AttackStrategyResource attackStrategyResource = new AttackStrategyResource(attackStrategyService, levelService, phaseService);
         this.restAttackStrategyMockMvc = MockMvcBuilders.standaloneSetup(attackStrategyResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -111,7 +120,7 @@ public class AttackStrategyResourceIntTest {
 
     /**
      * Create an entity for this test.
-     *
+     * <p>
      * This is a static method, as tests for other entities might also need it,
      * if they test an entity which requires the current entity.
      */
