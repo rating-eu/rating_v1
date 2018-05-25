@@ -1,5 +1,5 @@
-id;attack_strategy_id;level
-1;1;HUMAN //OSINT
-2;2;HUMAN //*SHING
+id;attack_strategy_id;jhi_level
+1;1;HUMAN
+2;2;HUMAN
 
 
