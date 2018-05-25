@@ -25,9 +25,9 @@
             "likelihood": "Likelihood",
             "created": "Created",
             "modified": "Modified",
-            "levels": "Levels",
-            "phases": "Phases",
             "mitigation": "Mitigation",
+            "level": "Level",
+            "phase": "Phase",
             "question": "Question",
             "selfassessment": "Selfassessment"
         }

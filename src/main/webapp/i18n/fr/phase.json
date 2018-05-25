@@ -18,8 +18,7 @@
                 "title": "Phase"
             },
             "name": "Name",
-            "description": "Description",
-            "attackStrategy": "Attack Strategy"
+            "description": "Description"
         }
     }
 }

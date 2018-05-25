@@ -69,6 +69,28 @@
 
         <addPrimaryKey columnNames="attack_strategies_id, mitigations_id" tableName="attack_strategy_mitigation"/>
         
+        <createTable tableName="attack_strategy_level">
+            <column name="levels_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="attack_strategies_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addPrimaryKey columnNames="attack_strategies_id, levels_id" tableName="attack_strategy_level"/>
+        
+        <createTable tableName="attack_strategy_phase">
+            <column name="phases_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="attack_strategies_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addPrimaryKey columnNames="attack_strategies_id, phases_id" tableName="attack_strategy_phase"/>
+        
     </changeSet>
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here, do not remove-->
 </databaseChangeLog>

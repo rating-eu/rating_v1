@@ -29,13 +29,6 @@
                 [(ngModel)]="phase.description" />
         </div>
 
-        <div class="form-group">
-            <label class="form-control-label" jhiTranslate="hermeneutApp.phase.attackStrategy" for="field_attackStrategy">Attack Strategy</label>
-            <select class="form-control" id="field_attackStrategy" name="attackStrategy" [(ngModel)]="phase.attackStrategy" >
-                <option [ngValue]="null"></option>
-                <option [ngValue]="attackStrategyOption.id === phase.attackStrategy?.id ? phase.attackStrategy : attackStrategyOption" *ngFor="let attackStrategyOption of attackstrategies; trackBy: trackAttackStrategyById">{{attackStrategyOption.id}}</option>
-            </select>
-        </div>
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">

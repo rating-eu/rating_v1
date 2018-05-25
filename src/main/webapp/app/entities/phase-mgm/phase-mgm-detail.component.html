@@ -12,12 +12,6 @@
         <dd>
             <span>{{phase.description}}</span>
         </dd>
-        <dt><span jhiTranslate="hermeneutApp.phase.attackStrategy">Attack Strategy</span></dt>
-        <dd>
-            <div *ngIf="phase.attackStrategy">
-                <a [routerLink]="['/attack-strategy-mgm', phase.attackStrategy?.id]">{{phase.attackStrategy?.id}}</a>
-            </div>
-        </dd>
     </dl>
 
     <button type="submit"

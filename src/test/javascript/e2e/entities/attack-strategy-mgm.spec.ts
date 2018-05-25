@@ -46,6 +46,8 @@ describe('AttackStrategy e2e test', () => {
         attackStrategyDialogPage.setModifiedInput(12310020012301);
         expect(attackStrategyDialogPage.getModifiedInput()).toMatch('2001-12-31T02:30');
         // attackStrategyDialogPage.mitigationSelectLastOption();
+        // attackStrategyDialogPage.levelSelectLastOption();
+        // attackStrategyDialogPage.phaseSelectLastOption();
         attackStrategyDialogPage.save();
         expect(attackStrategyDialogPage.getSaveButton().isPresent()).toBeFalsy();
     });
@@ -81,6 +83,8 @@ export class AttackStrategyDialogPage {
     createdInput = element(by.css('input#field_created'));
     modifiedInput = element(by.css('input#field_modified'));
     mitigationSelect = element(by.css('select#field_mitigation'));
+    levelSelect = element(by.css('select#field_level'));
+    phaseSelect = element(by.css('select#field_phase'));
 
     getModalTitle() {
         return this.modalTitle.getAttribute('jhiTranslate');
@@ -176,6 +180,38 @@ export class AttackStrategyDialogPage {
 
     getMitigationSelectedOption = function() {
         return this.mitigationSelect.element(by.css('option:checked')).getText();
+    };
+
+    levelSelectLastOption = function() {
+        this.levelSelect.all(by.tagName('option')).last().click();
+    };
+
+    levelSelectOption = function(option) {
+        this.levelSelect.sendKeys(option);
+    };
+
+    getLevelSelect = function() {
+        return this.levelSelect;
+    };
+
+    getLevelSelectedOption = function() {
+        return this.levelSelect.element(by.css('option:checked')).getText();
+    };
+
+    phaseSelectLastOption = function() {
+        this.phaseSelect.all(by.tagName('option')).last().click();
+    };
+
+    phaseSelectOption = function(option) {
+        this.phaseSelect.sendKeys(option);
+    };
+
+    getPhaseSelect = function() {
+        return this.phaseSelect;
+    };
+
+    getPhaseSelectedOption = function() {
+        return this.phaseSelect.element(by.css('option:checked')).getText();
     };
 
     save() {

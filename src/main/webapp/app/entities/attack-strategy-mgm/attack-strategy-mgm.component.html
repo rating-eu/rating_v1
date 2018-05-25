@@ -39,6 +39,8 @@
             <th><span jhiTranslate="hermeneutApp.attackStrategy.created">Created</span></th>
             <th><span jhiTranslate="hermeneutApp.attackStrategy.modified">Modified</span></th>
             <th><span jhiTranslate="hermeneutApp.attackStrategy.mitigation">Mitigation</span></th>
+            <th><span jhiTranslate="hermeneutApp.attackStrategy.level">Level</span></th>
+            <th><span jhiTranslate="hermeneutApp.attackStrategy.phase">Phase</span></th>
             <th></th>
             </tr>
             </thead>
@@ -56,6 +58,16 @@
                 <td>
                     <span *ngFor="let mitigation of attackStrategy.mitigations; let last = last">
                             <a class="form-control-static" [routerLink]="['../mitigation-mgm', mitigation?.id ]">{{mitigation.name}}</a>{{last ? '' : ', '}}
+                        </span>
+                </td>
+                <td>
+                    <span *ngFor="let level of attackStrategy.levels; let last = last">
+                            <a class="form-control-static" [routerLink]="['../level-mgm', level?.id ]">{{level.name}}</a>{{last ? '' : ', '}}
+                        </span>
+                </td>
+                <td>
+                    <span *ngFor="let phase of attackStrategy.phases; let last = last">
+                            <a class="form-control-static" [routerLink]="['../phase-mgm', phase?.id ]">{{phase.name}}</a>{{last ? '' : ', '}}
                         </span>
                 </td>
                 <td class="text-right">

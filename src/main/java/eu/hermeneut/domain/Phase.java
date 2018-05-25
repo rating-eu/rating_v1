@@ -33,9 +33,6 @@ public class Phase implements Serializable {
     @Column(name = "description")
     private String description;
 
-    @ManyToOne
-    private AttackStrategy attackStrategy;
-
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
         return id;
@@ -69,19 +66,6 @@ public class Phase implements Serializable {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public AttackStrategy getAttackStrategy() {
-        return attackStrategy;
-    }
-
-    public Phase attackStrategy(AttackStrategy attackStrategy) {
-        this.attackStrategy = attackStrategy;
-        return this;
-    }
-
-    public void setAttackStrategy(AttackStrategy attackStrategy) {
-        this.attackStrategy = attackStrategy;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 

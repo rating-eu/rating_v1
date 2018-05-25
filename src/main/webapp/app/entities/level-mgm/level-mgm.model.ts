@@ -5,7 +5,6 @@ export class LevelMgm implements BaseEntity {
         public id?: number,
         public name?: string,
         public description?: string,
-        public attackStrategy?: BaseEntity,
     ) {
     }
 }

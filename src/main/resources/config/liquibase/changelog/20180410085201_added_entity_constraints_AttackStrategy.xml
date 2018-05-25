@@ -19,5 +19,27 @@
                                  referencedColumnNames="id"
                                  referencedTableName="mitigation"/>
         
+        <addForeignKeyConstraint baseColumnNames="attack_strategies_id"
+                                 baseTableName="attack_strategy_level"
+                                 constraintName="fk_attack_strategy_level_attack_strategies_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="attack_strategy"/>
+        <addForeignKeyConstraint baseColumnNames="levels_id"
+                                 baseTableName="attack_strategy_level"
+                                 constraintName="fk_attack_strategy_level_levels_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="level"/>
+        
+        <addForeignKeyConstraint baseColumnNames="attack_strategies_id"
+                                 baseTableName="attack_strategy_phase"
+                                 constraintName="fk_attack_strategy_phase_attack_strategies_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="attack_strategy"/>
+        <addForeignKeyConstraint baseColumnNames="phases_id"
+                                 baseTableName="attack_strategy_phase"
+                                 constraintName="fk_attack_strategy_phase_phases_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="phase"/>
+        
     </changeSet>
 </databaseChangeLog>

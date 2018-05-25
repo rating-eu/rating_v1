@@ -2,22 +2,26 @@
     "fluentMethods": true,
     "relationships": [
         {
-            "relationshipType": "one-to-many",
-            "relationshipName": "levels",
-            "otherEntityName": "level",
-            "otherEntityRelationshipName": "attackStrategy"
-        },
-        {
-            "relationshipType": "one-to-many",
-            "relationshipName": "phases",
-            "otherEntityName": "phase",
-            "otherEntityRelationshipName": "attackStrategy"
-        },
-        {
             "relationshipType": "many-to-many",
             "otherEntityRelationshipName": "countermeasure",
             "relationshipName": "mitigation",
             "otherEntityName": "mitigation",
+            "otherEntityField": "name",
+            "ownerSide": true
+        },
+        {
+            "relationshipType": "many-to-many",
+            "otherEntityRelationshipName": "",
+            "relationshipName": "level",
+            "otherEntityName": "level",
+            "otherEntityField": "name",
+            "ownerSide": true
+        },
+        {
+            "relationshipType": "many-to-many",
+            "otherEntityRelationshipName": "",
+            "relationshipName": "phase",
+            "otherEntityName": "phase",
             "otherEntityField": "name",
             "ownerSide": true
         },

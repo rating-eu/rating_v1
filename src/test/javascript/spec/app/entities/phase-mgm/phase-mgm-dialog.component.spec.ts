@@ -9,7 +9,6 @@ import { HermeneutTestModule } from '../../../test.module';
 import { PhaseMgmDialogComponent } from '../../../../../../main/webapp/app/entities/phase-mgm/phase-mgm-dialog.component';
 import { PhaseMgmService } from '../../../../../../main/webapp/app/entities/phase-mgm/phase-mgm.service';
 import { PhaseMgm } from '../../../../../../main/webapp/app/entities/phase-mgm/phase-mgm.model';
-import { AttackStrategyMgmService } from '../../../../../../main/webapp/app/entities/attack-strategy-mgm';
 
 describe('Component Tests', () => {
 
@@ -25,7 +24,6 @@ describe('Component Tests', () => {
                 imports: [HermeneutTestModule],
                 declarations: [PhaseMgmDialogComponent],
                 providers: [
-                    AttackStrategyMgmService,
                     PhaseMgmService
                 ]
             })

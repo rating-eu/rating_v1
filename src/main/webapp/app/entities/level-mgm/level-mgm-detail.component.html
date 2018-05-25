@@ -12,12 +12,6 @@
         <dd>
             <span>{{level.description}}</span>
         </dd>
-        <dt><span jhiTranslate="hermeneutApp.level.attackStrategy">Attack Strategy</span></dt>
-        <dd>
-            <div *ngIf="level.attackStrategy">
-                <a [routerLink]="['/attack-strategy-mgm', level.attackStrategy?.id]">{{level.attackStrategy?.id}}</a>
-            </div>
-        </dd>
     </dl>
 
     <button type="submit"

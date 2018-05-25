@@ -37,7 +37,6 @@ describe('Phase e2e test', () => {
         expect(phaseDialogPage.getNameInput()).toMatch('name');
         phaseDialogPage.setDescriptionInput('description');
         expect(phaseDialogPage.getDescriptionInput()).toMatch('description');
-        phaseDialogPage.attackStrategySelectLastOption();
         phaseDialogPage.save();
         expect(phaseDialogPage.getSaveButton().isPresent()).toBeFalsy();
     });
@@ -66,7 +65,6 @@ export class PhaseDialogPage {
     closeButton = element(by.css('button.close'));
     nameInput = element(by.css('input#field_name'));
     descriptionInput = element(by.css('input#field_description'));
-    attackStrategySelect = element(by.css('select#field_attackStrategy'));
 
     getModalTitle() {
         return this.modalTitle.getAttribute('jhiTranslate');
@@ -86,22 +84,6 @@ export class PhaseDialogPage {
 
     getDescriptionInput = function() {
         return this.descriptionInput.getAttribute('value');
-    };
-
-    attackStrategySelectLastOption = function() {
-        this.attackStrategySelect.all(by.tagName('option')).last().click();
-    };
-
-    attackStrategySelectOption = function(option) {
-        this.attackStrategySelect.sendKeys(option);
-    };
-
-    getAttackStrategySelect = function() {
-        return this.attackStrategySelect;
-    };
-
-    getAttackStrategySelectedOption = function() {
-        return this.attackStrategySelect.element(by.css('option:checked')).getText();
     };
 
     save() {

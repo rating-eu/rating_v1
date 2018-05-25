@@ -9,7 +9,6 @@ import { HermeneutTestModule } from '../../../test.module';
 import { LevelMgmDialogComponent } from '../../../../../../main/webapp/app/entities/level-mgm/level-mgm-dialog.component';
 import { LevelMgmService } from '../../../../../../main/webapp/app/entities/level-mgm/level-mgm.service';
 import { LevelMgm } from '../../../../../../main/webapp/app/entities/level-mgm/level-mgm.model';
-import { AttackStrategyMgmService } from '../../../../../../main/webapp/app/entities/attack-strategy-mgm';
 
 describe('Component Tests', () => {
 
@@ -25,7 +24,6 @@ describe('Component Tests', () => {
                 imports: [HermeneutTestModule],
                 declarations: [LevelMgmDialogComponent],
                 providers: [
-                    AttackStrategyMgmService,
                     LevelMgmService
                 ]
             })

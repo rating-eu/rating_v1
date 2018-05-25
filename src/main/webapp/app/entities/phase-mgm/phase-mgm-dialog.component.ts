@@ -4,12 +4,11 @@ import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 
 import { Observable } from 'rxjs/Observable';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
+import { JhiEventManager } from 'ng-jhipster';
 
 import { PhaseMgm } from './phase-mgm.model';
 import { PhaseMgmPopupService } from './phase-mgm-popup.service';
 import { PhaseMgmService } from './phase-mgm.service';
-import { AttackStrategyMgm, AttackStrategyMgmService } from '../attack-strategy-mgm';
 
 @Component({
     selector: 'jhi-phase-mgm-dialog',
@@ -20,21 +19,15 @@ export class PhaseMgmDialogComponent implements OnInit {
     phase: PhaseMgm;
     isSaving: boolean;
 
-    attackstrategies: AttackStrategyMgm[];
-
     constructor(
         public activeModal: NgbActiveModal,
-        private jhiAlertService: JhiAlertService,
         private phaseService: PhaseMgmService,
-        private attackStrategyService: AttackStrategyMgmService,
         private eventManager: JhiEventManager
     ) {
     }
 
     ngOnInit() {
         this.isSaving = false;
-        this.attackStrategyService.query()
-            .subscribe((res: HttpResponse<AttackStrategyMgm[]>) => { this.attackstrategies = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
     }
 
     clear() {
@@ -65,14 +58,6 @@ export class PhaseMgmDialogComponent implements OnInit {
 
     private onSaveError() {
         this.isSaving = false;
-    }
-
-    private onError(error: any) {
-        this.jhiAlertService.error(error.message, null, null);
-    }
-
-    trackAttackStrategyById(index: number, item: AttackStrategyMgm) {
-        return item.id;
     }
 }
 

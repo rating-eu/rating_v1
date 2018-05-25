@@ -71,22 +71,26 @@ public class AttackStrategy implements Serializable {
     @Column(name = "modified")
     private ZonedDateTime modified;
 
-    @OneToMany(mappedBy = "attackStrategy")
-    @JsonIgnore
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private Set<Level> levels = new HashSet<>();
-
-    @OneToMany(mappedBy = "attackStrategy")
-    @JsonIgnore
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private Set<Phase> phases = new HashSet<>();
-
     @ManyToMany
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     @JoinTable(name = "attack_strategy_mitigation",
                joinColumns = @JoinColumn(name="attack_strategies_id", referencedColumnName="id"),
                inverseJoinColumns = @JoinColumn(name="mitigations_id", referencedColumnName="id"))
     private Set<Mitigation> mitigations = new HashSet<>();
+
+    @ManyToMany
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    @JoinTable(name = "attack_strategy_level",
+               joinColumns = @JoinColumn(name="attack_strategies_id", referencedColumnName="id"),
+               inverseJoinColumns = @JoinColumn(name="levels_id", referencedColumnName="id"))
+    private Set<Level> levels = new HashSet<>();
+
+    @ManyToMany
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    @JoinTable(name = "attack_strategy_phase",
+               joinColumns = @JoinColumn(name="attack_strategies_id", referencedColumnName="id"),
+               inverseJoinColumns = @JoinColumn(name="phases_id", referencedColumnName="id"))
+    private Set<Phase> phases = new HashSet<>();
 
     @ManyToMany(mappedBy = "attackStrategies")
     @JsonIgnore
@@ -211,56 +215,6 @@ public class AttackStrategy implements Serializable {
         this.modified = modified;
     }
 
-    public Set<Level> getLevels() {
-        return levels;
-    }
-
-    public AttackStrategy levels(Set<Level> levels) {
-        this.levels = levels;
-        return this;
-    }
-
-    public AttackStrategy addLevels(Level level) {
-        this.levels.add(level);
-        level.setAttackStrategy(this);
-        return this;
-    }
-
-    public AttackStrategy removeLevels(Level level) {
-        this.levels.remove(level);
-        level.setAttackStrategy(null);
-        return this;
-    }
-
-    public void setLevels(Set<Level> levels) {
-        this.levels = levels;
-    }
-
-    public Set<Phase> getPhases() {
-        return phases;
-    }
-
-    public AttackStrategy phases(Set<Phase> phases) {
-        this.phases = phases;
-        return this;
-    }
-
-    public AttackStrategy addPhases(Phase phase) {
-        this.phases.add(phase);
-        phase.setAttackStrategy(this);
-        return this;
-    }
-
-    public AttackStrategy removePhases(Phase phase) {
-        this.phases.remove(phase);
-        phase.setAttackStrategy(null);
-        return this;
-    }
-
-    public void setPhases(Set<Phase> phases) {
-        this.phases = phases;
-    }
-
     public Set<Mitigation> getMitigations() {
         return mitigations;
     }
@@ -284,6 +238,52 @@ public class AttackStrategy implements Serializable {
 
     public void setMitigations(Set<Mitigation> mitigations) {
         this.mitigations = mitigations;
+    }
+
+    public Set<Level> getLevels() {
+        return levels;
+    }
+
+    public AttackStrategy levels(Set<Level> levels) {
+        this.levels = levels;
+        return this;
+    }
+
+    public AttackStrategy addLevel(Level level) {
+        this.levels.add(level);
+        return this;
+    }
+
+    public AttackStrategy removeLevel(Level level) {
+        this.levels.remove(level);
+        return this;
+    }
+
+    public void setLevels(Set<Level> levels) {
+        this.levels = levels;
+    }
+
+    public Set<Phase> getPhases() {
+        return phases;
+    }
+
+    public AttackStrategy phases(Set<Phase> phases) {
+        this.phases = phases;
+        return this;
+    }
+
+    public AttackStrategy addPhase(Phase phase) {
+        this.phases.add(phase);
+        return this;
+    }
+
+    public AttackStrategy removePhase(Phase phase) {
+        this.phases.remove(phase);
+        return this;
+    }
+
+    public void setPhases(Set<Phase> phases) {
+        this.phases = phases;
     }
 
     public Set<Question> getQuestions() {

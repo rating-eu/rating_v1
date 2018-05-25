@@ -42,6 +42,18 @@
                 <a [routerLink]="['/mitigation-mgm', mitigation?.id ]">{{mitigation.name}}</a>{{last ? '' : ', '}}
             </span>
         </dd>
+        <dt><span jhiTranslate="hermeneutApp.attackStrategy.level">Level</span></dt>
+        <dd>
+            <span *ngFor="let level of attackStrategy.levels; let last = last">
+                <a [routerLink]="['/level-mgm', level?.id ]">{{level.name}}</a>{{last ? '' : ', '}}
+            </span>
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.attackStrategy.phase">Phase</span></dt>
+        <dd>
+            <span *ngFor="let phase of attackStrategy.phases; let last = last">
+                <a [routerLink]="['/phase-mgm', phase?.id ]">{{phase.name}}</a>{{last ? '' : ', '}}
+            </span>
+        </dd>
     </dl>
 
     <button type="submit"
