@@ -1,10 +1,25 @@
+
 {
     "hermeneutApp": {
-        "Level" : {
-            "null": "",
-            "HUMAN": "HUMAN",
-            "IT": "IT",
-            "PHYSICAL": "PHYSICAL"
+        "level" : {
+            "home": {
+                "title": "Levels",
+                "createLabel": "Crear nuevo Level",
+                "createOrEditLabel": "Crear o editar Level",
+                "search": "Search for Level"
+            },
+            "created": "Un nuevo Level ha sido creado con el identificador {{ param }}",
+            "updated": "Un Level ha sido actualizado con el identificador {{ param }}",
+            "deleted": "Un Level ha sido eliminado con el identificador {{ param }}",
+            "delete": {
+                "question": "¿Seguro que quiere eliminar Level {{ id }}?"
+            },
+            "detail": {
+                "title": "Level"
+            },
+            "name": "Name",
+            "description": "Description",
+            "attackStrategy": "Attack Strategy"
         }
     }
 }

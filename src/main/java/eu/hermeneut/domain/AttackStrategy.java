@@ -74,12 +74,12 @@ public class AttackStrategy implements Serializable {
     @OneToMany(mappedBy = "attackStrategy")
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private Set<LevelWrapper> levels = new HashSet<>();
+    private Set<Level> levels = new HashSet<>();
 
     @OneToMany(mappedBy = "attackStrategy")
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private Set<PhaseWrapper> phases = new HashSet<>();
+    private Set<Phase> phases = new HashSet<>();
 
     @ManyToMany
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
@@ -211,54 +211,54 @@ public class AttackStrategy implements Serializable {
         this.modified = modified;
     }
 
-    public Set<LevelWrapper> getLevels() {
+    public Set<Level> getLevels() {
         return levels;
     }
 
-    public AttackStrategy levels(Set<LevelWrapper> levelWrappers) {
-        this.levels = levelWrappers;
+    public AttackStrategy levels(Set<Level> levels) {
+        this.levels = levels;
         return this;
     }
 
-    public AttackStrategy addLevels(LevelWrapper levelWrapper) {
-        this.levels.add(levelWrapper);
-        levelWrapper.setAttackStrategy(this);
+    public AttackStrategy addLevels(Level level) {
+        this.levels.add(level);
+        level.setAttackStrategy(this);
         return this;
     }
 
-    public AttackStrategy removeLevels(LevelWrapper levelWrapper) {
-        this.levels.remove(levelWrapper);
-        levelWrapper.setAttackStrategy(null);
+    public AttackStrategy removeLevels(Level level) {
+        this.levels.remove(level);
+        level.setAttackStrategy(null);
         return this;
     }
 
-    public void setLevels(Set<LevelWrapper> levelWrappers) {
-        this.levels = levelWrappers;
+    public void setLevels(Set<Level> levels) {
+        this.levels = levels;
     }
 
-    public Set<PhaseWrapper> getPhases() {
+    public Set<Phase> getPhases() {
         return phases;
     }
 
-    public AttackStrategy phases(Set<PhaseWrapper> phaseWrappers) {
-        this.phases = phaseWrappers;
+    public AttackStrategy phases(Set<Phase> phases) {
+        this.phases = phases;
         return this;
     }
 
-    public AttackStrategy addPhases(PhaseWrapper phaseWrapper) {
-        this.phases.add(phaseWrapper);
-        phaseWrapper.setAttackStrategy(this);
+    public AttackStrategy addPhases(Phase phase) {
+        this.phases.add(phase);
+        phase.setAttackStrategy(this);
         return this;
     }
 
-    public AttackStrategy removePhases(PhaseWrapper phaseWrapper) {
-        this.phases.remove(phaseWrapper);
-        phaseWrapper.setAttackStrategy(null);
+    public AttackStrategy removePhases(Phase phase) {
+        this.phases.remove(phase);
+        phase.setAttackStrategy(null);
         return this;
     }
 
-    public void setPhases(Set<PhaseWrapper> phaseWrappers) {
-        this.phases = phaseWrappers;
+    public void setPhases(Set<Phase> phases) {
+        this.phases = phases;
     }
 
     public Set<Mitigation> getMitigations() {

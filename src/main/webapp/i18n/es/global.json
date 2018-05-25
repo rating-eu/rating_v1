@@ -29,6 +29,8 @@
                 "answerWeightMgm": "Answer Weight",
                 "likelihoodPositionMgm": "Likelihood Position",
                 "questionnaireStatusMgm": "Questionnaire Status",
+                "levelMgm": "Level",
+                "phaseMgm": "Phase",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {

@@ -1,13 +1,25 @@
+
 {
     "hermeneutApp": {
-        "Phase" : {
-            "null": "",
-            "RECONNAISSANCE": "RECONNAISSANCE",
-            "WEAPONIZATION": "WEAPONIZATION",
-            "DELIVERY": "DELIVERY",
-            "EXPLOITATION": "EXPLOITATION",
-            "INSTALLATION": "INSTALLATION",
-            "COMMANDCONTROL": "COMMANDCONTROL"
+        "phase" : {
+            "home": {
+                "title": "Phases",
+                "createLabel": "Créer un nouveau Phase",
+                "createOrEditLabel": "Créer ou éditer un Phase",
+                "search": "Recherche pour Phase"
+            },
+            "created": "Un nouveau Phase a été créé avec l'identifiant {{ param }}",
+            "updated": "Le Phase avec l'identifiant {{ param }} a été mis à jour",
+            "deleted": "Le Phase avec l'identifiant {{ param }} a été supprimé",
+            "delete": {
+                "question": "Etes-vous certain de vouloir supprimer le Phase {{ id }} ?"
+            },
+            "detail": {
+                "title": "Phase"
+            },
+            "name": "Name",
+            "description": "Description",
+            "attackStrategy": "Attack Strategy"
         }
     }
 }

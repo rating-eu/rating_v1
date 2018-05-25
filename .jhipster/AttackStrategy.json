@@ -4,13 +4,13 @@
         {
             "relationshipType": "one-to-many",
             "relationshipName": "levels",
-            "otherEntityName": "levelWrapper",
+            "otherEntityName": "level",
             "otherEntityRelationshipName": "attackStrategy"
         },
         {
             "relationshipType": "one-to-many",
             "relationshipName": "phases",
-            "otherEntityName": "phaseWrapper",
+            "otherEntityName": "phase",
             "otherEntityRelationshipName": "attackStrategy"
         },
         {
