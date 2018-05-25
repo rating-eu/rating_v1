@@ -13,25 +13,14 @@
     <property name="floatType" value="float4" dbms="postgresql, h2"/>
     <property name="floatType" value="float" dbms="mysql, oracle, mssql"/>
 
-    <!--
-        Added the entity Phase.
-    -->
-    <changeSet id="20180525150017-1" author="jhipster">
-        <createTable tableName="phase">
-            <column name="id" type="bigint" autoIncrement="${autoIncrement}">
-                <constraints primaryKey="true" nullable="false"/>
-            </column>
-            <column name="name" type="varchar(255)">
-                <constraints nullable="false" />
-            </column>
-
-            <column name="description" type="varchar(1024)">
-                <constraints nullable="true" />
-            </column>
-
-            <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
-        </createTable>
-
+    <changeSet id="20180526003018-1" author="developer">
+        <loadData encoding="UTF-8"
+                  file="config/liquibase/attack_levels.csv"
+                  schemaName="public"
+                  separator=";"
+                  quotchar="'"
+                  tableName="level">
+        </loadData>
     </changeSet>
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here, do not remove-->
 </databaseChangeLog>
