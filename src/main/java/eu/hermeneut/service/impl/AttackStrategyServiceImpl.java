@@ -1,7 +1,7 @@
 package eu.hermeneut.service.impl;
 
-import eu.hermeneut.domain.enumeration.Level;
-import eu.hermeneut.domain.enumeration.Phase;
+import eu.hermeneut.domain.Level;
+import eu.hermeneut.domain.Phase;
 import eu.hermeneut.service.AttackStrategyService;
 import eu.hermeneut.domain.AttackStrategy;
 import eu.hermeneut.repository.AttackStrategyRepository;

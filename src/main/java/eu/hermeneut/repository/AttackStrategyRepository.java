@@ -1,8 +1,8 @@
 package eu.hermeneut.repository;
 
 import eu.hermeneut.domain.AttackStrategy;
-import eu.hermeneut.domain.enumeration.Level;
-import eu.hermeneut.domain.enumeration.Phase;
+import eu.hermeneut.domain.Level;
+import eu.hermeneut.domain.Phase;
 import org.springframework.stereotype.Repository;
 
 import org.springframework.data.jpa.repository.*;
