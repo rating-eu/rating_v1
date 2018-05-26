@@ -177,7 +177,7 @@ public class AttackStrategyResource {
      *
      * @return the ResponseEntity with status 200 (OK) and the list of attackStrategies in body
      */
-    @GetMapping("/attack-strategies/l/{level}/p/{phase}")
+    @GetMapping("/attack-strategies/level/{levelID}/phase/{phaseID}")
     @Timed
     public List<AttackStrategy> attackStrategiesByLevelAndPhase(@PathVariable Long levelID, @PathVariable Long phaseID) {
         log.debug("REST request to get all AttackStrategies BY LEVEL AND Phase");
