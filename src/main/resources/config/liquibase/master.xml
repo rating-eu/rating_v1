@@ -56,5 +56,6 @@
     <include file="config/liquibase/changelog/20180524154922_added_attack_strategies_data.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180526000622_added_cyber_kill_chain_phases_data.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180526003018_added_attack_levels_data.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20180526013023_added_attack_strategy_levels_phases_data.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
 </databaseChangeLog>
