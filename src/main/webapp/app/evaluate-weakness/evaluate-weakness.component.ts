@@ -7,6 +7,11 @@ import {SelfAssessmentMgm, SelfAssessmentMgmService} from '../entities/self-asse
 import {AttackStrategyMgm} from '../entities/attack-strategy-mgm/attack-strategy-mgm.model';
 import {AttackStrategyMgmService} from '../entities/attack-strategy-mgm/attack-strategy-mgm.service';
 import {Principal} from '../shared';
+import {LevelMgm, LevelMgmService} from '../entities/level-mgm';
+import {PhaseMgm, PhaseMgmService} from '../entities/phase-mgm';
+import {Observable} from 'rxjs/Observable';
+import {forkJoin} from 'rxjs/observable/forkJoin';
+import {isUndefined} from 'util';
 
 @Component({
     selector: 'jhi-evaluate-weakness',
@@ -14,24 +19,10 @@ import {Principal} from '../shared';
 })
 export class EvaluateWeaknessComponent implements OnInit, OnDestroy {
     attackStrategies: AttackStrategyMgm[];
-    HU_R: AttackStrategyMgm[];
-    HU_W: AttackStrategyMgm[];
-    HU_D: AttackStrategyMgm[];
-    HU_E: AttackStrategyMgm[];
-    HU_I: AttackStrategyMgm[];
-    HU_C: AttackStrategyMgm[];
-    IT_R: AttackStrategyMgm[];
-    IT_W: AttackStrategyMgm[];
-    IT_D: AttackStrategyMgm[];
-    IT_E: AttackStrategyMgm[];
-    IT_I: AttackStrategyMgm[];
-    IT_C: AttackStrategyMgm[];
-    PH_R: AttackStrategyMgm[];
-    PH_W: AttackStrategyMgm[];
-    PH_D: AttackStrategyMgm[];
-    PH_E: AttackStrategyMgm[];
-    PH_I: AttackStrategyMgm[];
-    PH_C: AttackStrategyMgm[];
+    attackLayers: LevelMgm[];
+    cyberKillChainPhases: PhaseMgm[];
+    attacksCKC7Matrix: AttackStrategyMgm[][][];
+
     account: Account;
     currentAccount: any;
     eventSubscriber: Subscription;
@@ -43,213 +34,67 @@ export class EvaluateWeaknessComponent implements OnInit, OnDestroy {
                 private eventManager: JhiEventManager,
                 private activatedRoute: ActivatedRoute,
                 private principal: Principal,
-                private mySelfAssessmentService: SelfAssessmentMgmService) {
-    }
-
-    getAttacksHU_R(level, phase) {
-        this.attackStrategyService
-            .findByLevelAndPhase(level, phase)
-            .subscribe(
-                (res: HttpResponse<AttackStrategyMgm[]>) => this.HU_R = res.body,
-                (res: HttpErrorResponse) => this.onError(res.message)
-            );
-        return;
-    }
-
-    getAttacksHU_W(level, phase) {
-        this.attackStrategyService
-            .findByLevelAndPhase(level, phase)
-            .subscribe(
-                (res: HttpResponse<AttackStrategyMgm[]>) => this.HU_W = res.body,
-                (res: HttpErrorResponse) => this.onError(res.message)
-            );
-        return;
-    }
-
-    getAttacksHU_D(level, phase) {
-        this.attackStrategyService
-            .findByLevelAndPhase(level, phase)
-            .subscribe(
-                (res: HttpResponse<AttackStrategyMgm[]>) => this.HU_D = res.body,
-                (res: HttpErrorResponse) => this.onError(res.message)
-            );
-        return;
-    }
-
-    getAttacksHU_E(level, phase) {
-        this.attackStrategyService
-            .findByLevelAndPhase(level, phase)
-            .subscribe(
-                (res: HttpResponse<AttackStrategyMgm[]>) => this.HU_E = res.body,
-                (res: HttpErrorResponse) => this.onError(res.message)
-            );
-        return;
-    }
-
-    getAttacksHU_I(level, phase) {
-        this.attackStrategyService
-            .findByLevelAndPhase(level, phase)
-            .subscribe(
-                (res: HttpResponse<AttackStrategyMgm[]>) => this.HU_I = res.body,
-                (res: HttpErrorResponse) => this.onError(res.message)
-            );
-        return;
-    }
-
-    getAttacksHU_C(level, phase) {
-        this.attackStrategyService
-            .findByLevelAndPhase(level, phase)
-            .subscribe(
-                (res: HttpResponse<AttackStrategyMgm[]>) => this.HU_C = res.body,
-                (res: HttpErrorResponse) => this.onError(res.message)
-            );
-        return;
-    }
-
-    getAttacksIT_R(level, phase) {
-        this.attackStrategyService
-            .findByLevelAndPhase(level, phase)
-            .subscribe(
-                (res: HttpResponse<AttackStrategyMgm[]>) => this.IT_R = res.body,
-                (res: HttpErrorResponse) => this.onError(res.message)
-            );
-        return;
-    }
-
-    getAttacksIT_W(level, phase) {
-        this.attackStrategyService
-            .findByLevelAndPhase(level, phase)
-            .subscribe(
-                (res: HttpResponse<AttackStrategyMgm[]>) => this.IT_W = res.body,
-                (res: HttpErrorResponse) => this.onError(res.message)
-            );
-        return;
-    }
-
-    getAttacksIT_D(level, phase) {
-        this.attackStrategyService
-            .findByLevelAndPhase(level, phase)
-            .subscribe(
-                (res: HttpResponse<AttackStrategyMgm[]>) => this.IT_D = res.body,
-                (res: HttpErrorResponse) => this.onError(res.message)
-            );
-        return;
-    }
-
-    getAttacksIT_E(level, phase) {
-        this.attackStrategyService
-            .findByLevelAndPhase(level, phase)
-            .subscribe(
-                (res: HttpResponse<AttackStrategyMgm[]>) => this.IT_E = res.body,
-                (res: HttpErrorResponse) => this.onError(res.message)
-            );
-        return;
-    }
-
-    getAttacksIT_I(level, phase) {
-        this.attackStrategyService
-            .findByLevelAndPhase(level, phase)
-            .subscribe(
-                (res: HttpResponse<AttackStrategyMgm[]>) => this.IT_I = res.body,
-                (res: HttpErrorResponse) => this.onError(res.message)
-            );
-        return;
-    }
-
-    getAttacksIT_C(level, phase) {
-        this.attackStrategyService
-            .findByLevelAndPhase(level, phase)
-            .subscribe(
-                (res: HttpResponse<AttackStrategyMgm[]>) => this.IT_C = res.body,
-                (res: HttpErrorResponse) => this.onError(res.message)
-            );
-        return;
-    }
-
-    getAttacksPH_R(level, phase) {
-        this.attackStrategyService
-            .findByLevelAndPhase(level, phase)
-            .subscribe(
-                (res: HttpResponse<AttackStrategyMgm[]>) => this.PH_R = res.body,
-                (res: HttpErrorResponse) => this.onError(res.message)
-            );
-        return;
-    }
-
-    getAttacksPH_W(level, phase) {
-        this.attackStrategyService
-            .findByLevelAndPhase(level, phase)
-            .subscribe(
-                (res: HttpResponse<AttackStrategyMgm[]>) => this.PH_W = res.body,
-                (res: HttpErrorResponse) => this.onError(res.message)
-            );
-        return;
-    }
-
-    getAttacksPH_D(level, phase) {
-        this.attackStrategyService
-            .findByLevelAndPhase(level, phase)
-            .subscribe(
-                (res: HttpResponse<AttackStrategyMgm[]>) => this.PH_D = res.body,
-                (res: HttpErrorResponse) => this.onError(res.message)
-            );
-        return;
-    }
-
-    getAttacksPH_E(level, phase) {
-        this.attackStrategyService
-            .findByLevelAndPhase(level, phase)
-            .subscribe(
-                (res: HttpResponse<AttackStrategyMgm[]>) => this.PH_E = res.body,
-                (res: HttpErrorResponse) => this.onError(res.message)
-            );
-        return;
-    }
-
-    getAttacksPH_I(level, phase) {
-        this.attackStrategyService
-            .findByLevelAndPhase(level, phase)
-            .subscribe(
-                (res: HttpResponse<AttackStrategyMgm[]>) => this.PH_I = res.body,
-                (res: HttpErrorResponse) => this.onError(res.message)
-            );
-        return;
-    }
-
-    getAttacksPH_C(level, phase) {
-        this.attackStrategyService
-            .findByLevelAndPhase(level, phase)
-            .subscribe(
-                (res: HttpResponse<AttackStrategyMgm[]>) => this.PH_C = res.body,
-                (res: HttpErrorResponse) => this.onError(res.message)
-            );
-        return;
+                private mySelfAssessmentService: SelfAssessmentMgmService,
+                private levelService: LevelMgmService,
+                private phaseService: PhaseMgmService) {
     }
 
     ngOnInit() {
+        console.log('Evaluate weakness onInit');
         this.principal.identity().then((account) => {
             this.account = account;
         });
         this.mySelf = this.mySelfAssessmentService.getSelfAssessment();
         this.registerChangeInEvaluateWeakness();
-        this.getAttacksHU_R('HUMAN', 'RECONNAISSANCE');
-        this.getAttacksIT_R('IT', 'RECONNAISSANCE');
-        this.getAttacksPH_R('PHYSICAL', 'RECONNAISSANCE');
-        this.getAttacksHU_W('HUMAN', 'WEAPONIZATION');
-        this.getAttacksIT_W('IT', 'WEAPONIZATION');
-        this.getAttacksPH_W('PHYSICAL', 'WEAPONIZATION');
-        this.getAttacksHU_D('HUMAN', 'DELIVERY');
-        this.getAttacksIT_D('IT', 'DELIVERY');
-        this.getAttacksPH_D('PHYSICAL', 'DELIVERY');
-        this.getAttacksHU_E('HUMAN', 'EXPLOITATION');
-        this.getAttacksIT_E('IT', 'EXPLOITATION');
-        this.getAttacksPH_E('PHYSICAL', 'EXPLOITATION');
-        this.getAttacksHU_I('HUMAN', 'INSTALLATION');
-        this.getAttacksIT_I('IT', 'INSTALLATION');
-        this.getAttacksPH_I('PHYSICAL', 'INSTALLATION');
-        this.getAttacksHU_C('HUMAN', 'COMMANDCONTROL');
-        this.getAttacksIT_C('IT', 'COMMANDCONTROL');
-        this.getAttacksPH_C('PHYSICAL', 'COMMANDCONTROL');
+
+        const observables: Observable<HttpResponse<any>>[] = [];
+        observables.push(this.levelService.query());
+        observables.push(this.phaseService.query());
+        observables.push(this.attackStrategyService.query());
+
+        forkJoin(observables).toPromise()
+            .then((responses: HttpResponse<any>[]) => {
+                responses.forEach((value: HttpResponse<any>, index: Number, array: HttpResponse<any>[]) => {
+                    switch (index) {
+                        case 0: {// attack-layers
+                            this.attackLayers = value.body as LevelMgm[];
+                            break;
+                        }
+                        case 1: {// ckc7-phases
+                            this.cyberKillChainPhases = value.body as PhaseMgm[];
+                            break;
+                        }
+                        case 2: {// attack-strategies
+                            this.attackStrategies = value.body as AttackStrategyMgm[];
+                            break;
+                        }
+                    }
+                });
+
+                this.attacksCKC7Matrix = [];
+
+                this.attackStrategies.forEach(((attackStrategy: AttackStrategyMgm) => {
+                    attackStrategy.levels.forEach((level: LevelMgm) => {
+                        if (isUndefined(this.attacksCKC7Matrix[level.id])) {
+                            this.attacksCKC7Matrix[level.id] = [];
+                        }
+
+                        attackStrategy.phases.forEach((phase: PhaseMgm) => {
+                            if (isUndefined(this.attacksCKC7Matrix[level.id][phase.id])) {
+                                this.attacksCKC7Matrix[level.id][phase.id] = [];
+                            }
+
+                            this.attacksCKC7Matrix[level.id][phase.id].push(attackStrategy);
+                        });
+                    });
+                }));
+
+                console.log('CKC7 matrix...');
+                console.log(JSON.stringify(this.attacksCKC7Matrix));
+
+                console.log('HUMAN-RECONNAISSANCE');
+                console.log(JSON.stringify(this.attacksCKC7Matrix[1][1]));
+            });
     }
 
     previousState() {
