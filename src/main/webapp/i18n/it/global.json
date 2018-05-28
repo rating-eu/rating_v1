@@ -8,7 +8,6 @@
             "entities": {
                 "main": "Entità",
                 "companyProfileMgm": "Company Profile",
-                "companySectorMgm": "Company Sector",
                 "domainOfInfluenceMgm": "Domain Of Influence",
                 "selfAssessmentMgm": "Self Assessment",
                 "containerMgm": "Container",
