@@ -1,9 +1,10 @@
 <div>
     <h2>
         <span jhiTranslate="hermeneutApp.selfAssessment.home.title">Self Assessments</span>
-        <button class="btn btn-primary float-right jh-create-entity create-self-assessment-mgm" [routerLink]="['/', { outlets: { popup: ['self-assessment-mgm-new'] } }]">
+        <button class="btn btn-primary float-right jh-create-entity create-self-assessment-mgm"
+                [routerLink]="['/', { outlets: { popup: ['self-assessment-mgm-new'] } }]">
             <span class="fa fa-plus"></span>
-            <span class="hidden-sm-down"  jhiTranslate="hermeneutApp.selfAssessment.home.createLabel">
+            <span class="hidden-sm-down" jhiTranslate="hermeneutApp.selfAssessment.home.createLabel">
             Create new Self Assessment
             </span>
         </button>
@@ -13,7 +14,9 @@
         <div class="col-sm-12">
             <form name="searchForm" class="form-inline">
                 <div class="input-group w-100 mt-3">
-                    <input type="text" class="form-control" [(ngModel)]="currentSearch" id="currentSearch" name="currentSearch" placeholder="{{ 'hermeneutApp.selfAssessment.home.search' | translate }}">
+                    <input type="text" class="form-control" [(ngModel)]="currentSearch" id="currentSearch"
+                           name="currentSearch"
+                           placeholder="{{ 'hermeneutApp.selfAssessment.home.search' | translate }}">
                     <button class="input-group-append btn btn-info" (click)="search(currentSearch)">
                         <span class="fa fa-search"></span>
                     </button>
@@ -55,17 +58,19 @@
                 </td>
                 <td>
                     <span *ngFor="let companyprofiles of selfAssessment.companyprofiles; let last = last">
-                            <a class="form-control-static" [routerLink]="['../company-profile-mgm', companyprofiles?.id ]">{{companyprofiles.name}}</a>{{last ? '' : ', '}}
+                            <a class="form-control-static"
+                               [routerLink]="['../company-profile-mgm', companyprofiles?.id ]">{{companyprofiles.name}}</a>{{last ? '' : ', '}}
                         </span>
                 </td>
                 <td>
-                    <span *ngFor="let companysector of selfAssessment.companysectors; let last = last">
-                            <a class="form-control-static" [routerLink]="['../company-sector-mgm', companysector?.id ]">{{companysector.department}}</a>{{last ? '' : ', '}}
+                    <span *ngFor="let department of selfAssessment.departments; let last = last">
+                            <a class="form-control-static" [routerLink]="['../department-mgm', department?.id ]">{{department.name}}</a>{{last ? '' : ', '}}
                         </span>
                 </td>
                 <td>
                     <span *ngFor="let asset of selfAssessment.assets; let last = last">
-                            <a class="form-control-static" [routerLink]="['../asset-mgm', asset?.id ]">{{asset.name}}</a>{{last ? '' : ', '}}
+                            <a class="form-control-static"
+                               [routerLink]="['../asset-mgm', asset?.id ]">{{asset.name}}</a>{{last ? '' : ', '}}
                         </span>
                 </td>
                 <td>
@@ -75,7 +80,8 @@
                 </td>
                 <td>
                     <span *ngFor="let attackstrategy of selfAssessment.attackstrategies; let last = last">
-                            <a class="form-control-static" [routerLink]="['../attack-strategy-mgm', attackstrategy?.id ]">{{attackstrategy.name}}</a>{{last ? '' : ', '}}
+                            <a class="form-control-static"
+                               [routerLink]="['../attack-strategy-mgm', attackstrategy?.id ]">{{attackstrategy.name}}</a>{{last ? '' : ', '}}
                         </span>
                 </td>
                 <td>
