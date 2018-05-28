@@ -1,7 +1,6 @@
 import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 import { HermeneutCompanyProfileMgmModule } from './company-profile-mgm/company-profile-mgm.module';
-import { HermeneutCompanySectorMgmModule } from './company-sector-mgm/company-sector-mgm.module';
 import { HermeneutDomainOfInfluenceMgmModule } from './domain-of-influence-mgm/domain-of-influence-mgm.module';
 import { HermeneutSelfAssessmentMgmModule } from './self-assessment-mgm/self-assessment-mgm.module';
 import { HermeneutContainerMgmModule } from './container-mgm/container-mgm.module';
@@ -27,7 +26,6 @@ import { HermeneutPhaseMgmModule } from './phase-mgm/phase-mgm.module';
 @NgModule({
     imports: [
         HermeneutCompanyProfileMgmModule,
-        HermeneutCompanySectorMgmModule,
         HermeneutDomainOfInfluenceMgmModule,
         HermeneutSelfAssessmentMgmModule,
         HermeneutContainerMgmModule,
