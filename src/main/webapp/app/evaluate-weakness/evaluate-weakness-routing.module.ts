@@ -9,8 +9,7 @@ const routes: Routes = [
 
 @NgModule({
     imports: [
-        CommonModule,
-        EvaluateWeaknessRoutingModule
+        RouterModule.forChild(routes)
     ],
     exports: [
         RouterModule
