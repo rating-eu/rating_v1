@@ -8,6 +8,18 @@
         <dd>
             <span>{{threatAgent.name}}</span>
         </dd>
+        <dt><span jhiTranslate="hermeneutApp.threatAgent.description">Description</span></dt>
+        <dd>
+            <span>{{threatAgent.description}}</span>
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.threatAgent.image">Image</span></dt>
+        <dd>
+            <div *ngIf="threatAgent.image">
+                <a (click)="openFile(threatAgent.imageContentType, threatAgent.image)">
+                    <img [src]="'data:' + threatAgent.imageContentType + ';base64,' + threatAgent.image" style="max-width: 100%;" alt="threatAgent image"/>
+                </a>
+            </div>
+        </dd>
         <dt><span jhiTranslate="hermeneutApp.threatAgent.skillLevel">Skill Level</span></dt>
         <dd>
             <span jhiTranslate="{{'hermeneutApp.SkillLevel.' + threatAgent.skillLevel}}">{{threatAgent.skillLevel}}</span>
@@ -27,6 +39,10 @@
         <dt><span jhiTranslate="hermeneutApp.threatAgent.modified">Modified</span></dt>
         <dd>
             <span>{{threatAgent.modified | date:'medium'}}</span>
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.threatAgent.identifiedByDefault">Identified By Default</span></dt>
+        <dd>
+            <span>{{threatAgent.identifiedByDefault}}</span>
         </dd>
         <dt><span jhiTranslate="hermeneutApp.threatAgent.motivation">Motivation</span></dt>
         <dd>

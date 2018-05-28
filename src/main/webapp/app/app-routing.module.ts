@@ -13,6 +13,10 @@ const routes: Routes = [
     {
         path: 'identify-threat-agent',
         loadChildren: './identify-threat-agent/identify-threat-agent.module#IdentifyThreatAgentModule'
+    },
+    {
+        path: 'evaluate-weakness',
+        loadChildren: './evaluate-weakness/evaluate-weakness.module#EvaluateWeaknessModule'
     }
 ];
 

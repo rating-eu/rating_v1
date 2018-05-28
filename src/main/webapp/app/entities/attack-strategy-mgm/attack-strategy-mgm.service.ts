@@ -31,7 +31,7 @@ export class AttackStrategyMgmService {
     }
 
     findByLevelAndPhase(level: string, phase: string): Observable<HttpResponse<AttackStrategyMgm[]>> {
-        return this.http.get<AttackStrategyMgm[]>(`${this.resourceUrl}/l/${level}/p/${phase}`, { observe: 'response'})
+        return this.http.get<AttackStrategyMgm[]>(`${this.resourceUrl}/level/${level}/phase/${phase}`, { observe: 'response'})
             .map((res: HttpResponse<AttackStrategyMgm[]>) => this.convertArrayResponse(res));
     }
 

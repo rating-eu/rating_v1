@@ -8,6 +8,7 @@ import javax.persistence.*;
 import javax.validation.constraints.*;
 
 import org.springframework.data.elasticsearch.annotations.Document;
+
 import java.io.Serializable;
 import java.time.ZonedDateTime;
 import java.util.HashSet;
@@ -57,10 +58,20 @@ public class Question implements Serializable {
     @Column(name = "answer_type", nullable = false)
     private AnswerType answerType;
 
+    @ManyToOne
+    private ThreatAgent threatAgent;
+
     @OneToMany(mappedBy = "question")
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Answer> answers = new HashSet<>();
+
+    @ManyToMany
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    @JoinTable(name = "question_attack_strategies",
+               joinColumns = @JoinColumn(name="questions_id", referencedColumnName="id"),
+               inverseJoinColumns = @JoinColumn(name="attack_strategies_id", referencedColumnName="id"))
+    private Set<AttackStrategy> attackStrategies = new HashSet<>();
 
     @OneToOne(mappedBy = "question")
     @JsonIgnore
@@ -156,6 +167,19 @@ public class Question implements Serializable {
         this.answerType = answerType;
     }
 
+    public ThreatAgent getThreatAgent() {
+        return threatAgent;
+    }
+
+    public Question threatAgent(ThreatAgent threatAgent) {
+        this.threatAgent = threatAgent;
+        return this;
+    }
+
+    public void setThreatAgent(ThreatAgent threatAgent) {
+        this.threatAgent = threatAgent;
+    }
+
     public Set<Answer> getAnswers() {
         return answers;
     }
@@ -179,6 +203,31 @@ public class Question implements Serializable {
 
     public void setAnswers(Set<Answer> answers) {
         this.answers = answers;
+    }
+
+    public Set<AttackStrategy> getAttackStrategies() {
+        return attackStrategies;
+    }
+
+    public Question attackStrategies(Set<AttackStrategy> attackStrategies) {
+        this.attackStrategies = attackStrategies;
+        return this;
+    }
+
+    public Question addAttackStrategies(AttackStrategy attackStrategy) {
+        this.attackStrategies.add(attackStrategy);
+        attackStrategy.getQuestions().add(this);
+        return this;
+    }
+
+    public Question removeAttackStrategies(AttackStrategy attackStrategy) {
+        this.attackStrategies.remove(attackStrategy);
+        attackStrategy.getQuestions().remove(this);
+        return this;
+    }
+
+    public void setAttackStrategies(Set<AttackStrategy> attackStrategies) {
+        this.attackStrategies = attackStrategies;
     }
 
     public MyAnswer getMyanswer() {

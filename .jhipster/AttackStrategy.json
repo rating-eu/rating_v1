@@ -2,18 +2,6 @@
     "fluentMethods": true,
     "relationships": [
         {
-            "relationshipType": "one-to-many",
-            "relationshipName": "levels",
-            "otherEntityName": "levelWrapper",
-            "otherEntityRelationshipName": "attackStrategy"
-        },
-        {
-            "relationshipType": "one-to-many",
-            "relationshipName": "phases",
-            "otherEntityName": "phaseWrapper",
-            "otherEntityRelationshipName": "attackStrategy"
-        },
-        {
             "relationshipType": "many-to-many",
             "otherEntityRelationshipName": "countermeasure",
             "relationshipName": "mitigation",
@@ -23,10 +11,26 @@
         },
         {
             "relationshipType": "many-to-many",
-            "relationshipName": "answstrategy",
-            "otherEntityName": "answer",
+            "otherEntityRelationshipName": "",
+            "relationshipName": "level",
+            "otherEntityName": "level",
+            "otherEntityField": "name",
+            "ownerSide": true
+        },
+        {
+            "relationshipType": "many-to-many",
+            "otherEntityRelationshipName": "",
+            "relationshipName": "phase",
+            "otherEntityName": "phase",
+            "otherEntityField": "name",
+            "ownerSide": true
+        },
+        {
+            "relationshipType": "many-to-many",
+            "relationshipName": "question",
+            "otherEntityName": "question",
             "ownerSide": false,
-            "otherEntityRelationshipName": "attacks"
+            "otherEntityRelationshipName": "attackStrategies"
         },
         {
             "relationshipType": "many-to-many",
@@ -53,8 +57,8 @@
             "fieldValidateRulesMaxlength": 2000
         },
         {
-            "fieldName": "freq",
-            "fieldType": "AS_Frequency",
+            "fieldName": "frequency",
+            "fieldType": "Frequency",
             "fieldValues": "LOW,MEDIUM,HIGH",
             "fieldValidateRules": [
                 "required"

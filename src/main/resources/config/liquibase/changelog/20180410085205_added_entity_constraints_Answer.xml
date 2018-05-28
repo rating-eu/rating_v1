@@ -8,28 +8,6 @@
     -->
     <changeSet id="20180410085205-2" author="jhipster">
         
-        <addForeignKeyConstraint baseColumnNames="answers_id"
-                                 baseTableName="answer_threat_agents"
-                                 constraintName="fk_answer_threat_agents_answers_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="answer"/>
-        <addForeignKeyConstraint baseColumnNames="threat_agents_id"
-                                 baseTableName="answer_threat_agents"
-                                 constraintName="fk_answer_threat_agents_threat_agents_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="threat_agent"/>
-        
-        <addForeignKeyConstraint baseColumnNames="answers_id"
-                                 baseTableName="answer_attacks"
-                                 constraintName="fk_answer_attacks_answers_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="answer"/>
-        <addForeignKeyConstraint baseColumnNames="attacks_id"
-                                 baseTableName="answer_attacks"
-                                 constraintName="fk_answer_attacks_attacks_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="attack_strategy"/>
-        
         <addForeignKeyConstraint baseColumnNames="question_id"
                                  baseTableName="answer"
                                  constraintName="fk_answer_question_id"

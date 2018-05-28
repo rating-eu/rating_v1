@@ -1,0 +1,10 @@
+{
+    "hermeneutApp": {
+        "Status" : {
+            "null": "",
+            "EMPTY": "EMPTY",
+            "PENDING": "PENDING",
+            "FULL": "FULL"
+        }
+    }
+}

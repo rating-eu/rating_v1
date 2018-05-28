@@ -2,9 +2,11 @@ package eu.hermeneut.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import eu.hermeneut.domain.AttackStrategy;
-import eu.hermeneut.domain.enumeration.Level;
-import eu.hermeneut.domain.enumeration.Phase;
+import eu.hermeneut.domain.Level;
+import eu.hermeneut.domain.Phase;
 import eu.hermeneut.service.AttackStrategyService;
+import eu.hermeneut.service.LevelService;
+import eu.hermeneut.service.PhaseService;
 import eu.hermeneut.web.rest.errors.BadRequestAlertException;
 import eu.hermeneut.web.rest.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
@@ -20,9 +22,6 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.StreamSupport;
-
-import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
  * REST controller for managing AttackStrategy.
@@ -36,9 +35,14 @@ public class AttackStrategyResource {
     private static final String ENTITY_NAME = "attackStrategy";
 
     private final AttackStrategyService attackStrategyService;
+    private final LevelService levelService;
+    private final PhaseService phaseService;
 
-    public AttackStrategyResource(AttackStrategyService attackStrategyService) {
+
+    public AttackStrategyResource(AttackStrategyService attackStrategyService, LevelService levelService, PhaseService phaseService) {
         this.attackStrategyService = attackStrategyService;
+        this.levelService = levelService;
+        this.phaseService = phaseService;
     }
 
     /**
@@ -129,20 +133,20 @@ public class AttackStrategyResource {
      *
      * @return the ResponseEntity with status 200 (OK) and the list of attackStrategies in body
      */
-    @GetMapping("/attack-strategies/level/{level}")
+    @GetMapping("/attack-strategies/level/{levelID}")
     @Timed
-    public List<AttackStrategy> getAllAttackStrategiesByLevel(@PathVariable String level) {
+    public List<AttackStrategy> getAllAttackStrategiesByLevel(@PathVariable Long levelID) {
         log.debug("REST request to get all AttackStrategies BY LEVEL");
-        System.out.println("LEVEL " + level);
+
         List<AttackStrategy> toReturn = new ArrayList<AttackStrategy>();
         try {
-            Level l = Level.valueOf(level);
-            toReturn = attackStrategyService.findAllByLevel(l);
+            Level level = this.levelService.findOne(levelID);
+            toReturn = attackStrategyService.findAllByLevel(level);
 
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
         }
-        System.out.println("toRETURN SIZE -----> " + toReturn.size());
+
         return toReturn;
     }
 
@@ -151,21 +155,19 @@ public class AttackStrategyResource {
      *
      * @return the ResponseEntity with status 200 (OK) and the list of attackStrategies in body
      */
-    @GetMapping("/attack-strategies/phase/{phase}")
+    @GetMapping("/attack-strategies/phase/{phaseID}")
     @Timed
-    public List<AttackStrategy> getAllAttackStrategiesByPhase(@PathVariable String phase) {
+    public List<AttackStrategy> getAllAttackStrategiesByPhase(@PathVariable Long phaseID) {
         log.debug("REST request to get all AttackStrategies BY Phase");
-        System.out.println("PHASE " + phase);
+
         List<AttackStrategy> toReturn = new ArrayList<>();
         try {
-            Phase ph = Phase.valueOf(phase);
-            toReturn = attackStrategyService.findAllByPhase(ph);
-
+            Phase phase = this.phaseService.findOne(phaseID);
+            toReturn = attackStrategyService.findAllByPhase(phase);
         } catch (IllegalArgumentException e) {
-            System.out.println("ERROR-------------------------------------------");
             e.printStackTrace();
         }
-        System.out.println("toRETURN SIZE -----> " + toReturn.size());
+
         return toReturn;
     }
 
@@ -175,22 +177,21 @@ public class AttackStrategyResource {
      *
      * @return the ResponseEntity with status 200 (OK) and the list of attackStrategies in body
      */
-    @GetMapping("/attack-strategies/l/{level}/p/{phase}")
+    @GetMapping("/attack-strategies/level/{levelID}/phase/{phaseID}")
     @Timed
-    public List<AttackStrategy> attackStrategiesByLevelAndPhase(@PathVariable String level, @PathVariable String phase) {
+    public List<AttackStrategy> attackStrategiesByLevelAndPhase(@PathVariable Long levelID, @PathVariable Long phaseID) {
         log.debug("REST request to get all AttackStrategies BY LEVEL AND Phase");
-        System.out.println("PHASE " + phase);
+
         List<AttackStrategy> toReturn = new ArrayList<AttackStrategy>();
         try {
-            Phase ph = Phase.valueOf(phase);
-            Level l = Level.valueOf(level);
-            toReturn = attackStrategyService.findAllByLevelAndPhase(l, ph);
+            Phase phase = this.phaseService.findOne(phaseID);
+            Level level = this.levelService.findOne(levelID);
+            toReturn = attackStrategyService.findAllByLevelAndPhase(level, phase);
 
         } catch (IllegalArgumentException e) {
-            System.out.println("ERROR-------------------------------------------");
             e.printStackTrace();
         }
-        System.out.println("toRETURN SIZE -----> " + toReturn.size());
+
         return toReturn;
     }
 

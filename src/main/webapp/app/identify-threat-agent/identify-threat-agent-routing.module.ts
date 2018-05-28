@@ -1,7 +1,7 @@
 import {NgModule} from '@angular/core';
 import {Routes, RouterModule} from '@angular/router';
 import {IdentifyThreatAgentComponent} from './identify-threat-agent.component';
-import {QuestionnairesComponent} from '../questionnaires/questionnaires/questionnaires.component';
+import {ResultComponent} from './result/result.component';
 
 const routes: Routes = [
     {
@@ -11,6 +11,10 @@ const routes: Routes = [
             {
                 path: 'questionnaires',
                 loadChildren: '../questionnaires/questionnaires.module#QuestionnairesModule'
+            },
+            {
+                path: 'result',
+                component: ResultComponent
             }
         ]
     }
@@ -18,7 +22,7 @@ const routes: Routes = [
 
 @NgModule({
     imports: [
-        RouterModule.forChild(routes),
+        RouterModule.forChild(routes)
     ],
     exports: [
         RouterModule

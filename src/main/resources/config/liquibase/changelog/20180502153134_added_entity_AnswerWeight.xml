@@ -29,7 +29,7 @@
                 <constraints nullable="true" />
             </column>
 
-            <column name="weight" type="integer">
+            <column name="weight" type="${floatType}">
                 <constraints nullable="true" />
             </column>
 

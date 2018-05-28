@@ -1,7 +1,7 @@
 package eu.hermeneut.service.impl;
 
-import eu.hermeneut.domain.enumeration.Level;
-import eu.hermeneut.domain.enumeration.Phase;
+import eu.hermeneut.domain.Level;
+import eu.hermeneut.domain.Phase;
 import eu.hermeneut.service.AttackStrategyService;
 import eu.hermeneut.domain.AttackStrategy;
 import eu.hermeneut.repository.AttackStrategyRepository;
@@ -110,8 +110,9 @@ public class AttackStrategyServiceImpl implements AttackStrategyService {
     @Transactional(readOnly = true)
     public List<AttackStrategy> findAllByLevel(Level level) {
         log.debug("Request to get all AttackStrategies by Level");
-        return attackStrategyRepository.findAllByLevel(level);
+        return attackStrategyRepository.findAllByLevel(level.getId());
     }
+
     /**
      * Get all the attackStrategies by phase.
      *
@@ -123,9 +124,8 @@ public class AttackStrategyServiceImpl implements AttackStrategyService {
         log.debug("Request to get all AttackStrategies by Phase ------------------ SERVICE IMPL");
 
 
-        return attackStrategyRepository.findAllByPhase(phase);
+        return attackStrategyRepository.findAllByPhase(phase.getId());
     }
-
 
 
     /**
@@ -139,6 +139,6 @@ public class AttackStrategyServiceImpl implements AttackStrategyService {
         log.debug("Request to get all AttackStrategies by level and Phase");
 
 
-        return attackStrategyRepository.findAllByLevelAndPhase(level, phase);
+        return attackStrategyRepository.findAllByLevelAndPhase(level.getId(), phase.getId());
     }
 }

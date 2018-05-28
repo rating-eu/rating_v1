@@ -1,4 +1,9 @@
 import { BaseEntity } from './../../shared';
+import {ThreatAgentMgm} from '../threat-agent-mgm';
+import {AnswerMgm} from '../answer-mgm';
+import {AttackStrategyMgm} from '../attack-strategy-mgm';
+import {MyAnswerMgm} from '../my-answer-mgm';
+import {QuestionnaireMgm} from '../questionnaire-mgm';
 
 export const enum QuestionType {
     'REGULAR',
@@ -24,9 +29,11 @@ export class QuestionMgm implements BaseEntity {
         public order?: number,
         public questionType?: QuestionType,
         public answerType?: AnswerType,
-        public answers?: BaseEntity[],
-        public myanswer?: BaseEntity,
-        public questionnaire?: BaseEntity,
+        public threatAgent?: ThreatAgentMgm,
+        public answers?: AnswerMgm[],
+        public attackStrategies?: AttackStrategyMgm[],
+        public myanswer?: MyAnswerMgm,
+        public questionnaire?: QuestionnaireMgm,
     ) {
     }
 }

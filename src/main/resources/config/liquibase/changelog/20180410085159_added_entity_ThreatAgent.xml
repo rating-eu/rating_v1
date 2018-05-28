@@ -25,6 +25,17 @@
                 <constraints nullable="false" />
             </column>
 
+            <column name="description" type="varchar(512)">
+                <constraints nullable="false" />
+            </column>
+
+            <column name="image" type="longblob">
+                <constraints nullable="true" />
+            </column>
+            <column name="image_content_type" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
             <column name="skill_level" type="varchar(255)">
                 <constraints nullable="false" />
             </column>
@@ -45,11 +56,15 @@
                 <constraints nullable="true" />
             </column>
 
+            <column name="identified_by_default" type="boolean">
+                <constraints nullable="false" />
+            </column>
+
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
         <dropDefaultValue tableName="threat_agent" columnName="created" columnDataType="datetime"/>
         <dropDefaultValue tableName="threat_agent" columnName="modified" columnDataType="datetime"/>
-        
+
         <createTable tableName="threat_agent_motivation">
             <column name="motivations_id" type="bigint">
                 <constraints nullable="false"/>
@@ -60,7 +75,7 @@
         </createTable>
 
         <addPrimaryKey columnNames="threat_agents_id, motivations_id" tableName="threat_agent_motivation"/>
-        
+
     </changeSet>
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here, do not remove-->
 </databaseChangeLog>

@@ -2,12 +2,15 @@ package eu.hermeneut.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import eu.hermeneut.domain.Answer;
+import eu.hermeneut.domain.Question;
 import eu.hermeneut.service.AnswerService;
+import eu.hermeneut.service.QuestionService;
 import eu.hermeneut.web.rest.errors.BadRequestAlertException;
 import eu.hermeneut.web.rest.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,6 +35,9 @@ public class AnswerResource {
     private static final String ENTITY_NAME = "answer";
 
     private final AnswerService answerService;
+
+    @Autowired
+    private QuestionService questionService;
 
     public AnswerResource(AnswerService answerService) {
         this.answerService = answerService;
@@ -82,16 +88,11 @@ public class AnswerResource {
     /**
      * GET  /answers : get all the answers.
      *
-     * @param filter the filter of the request
      * @return the ResponseEntity with status 200 (OK) and the list of answers in body
      */
     @GetMapping("/answers")
     @Timed
-    public List<Answer> getAllAnswers(@RequestParam(required = false) String filter) {
-        if ("myanswer-is-null".equals(filter)) {
-            log.debug("REST request to get all Answers where myanswer is null");
-            return answerService.findAllWhereMyanswerIsNull();
-        }
+    public List<Answer> getAllAnswers() {
         log.debug("REST request to get all Answers");
         return answerService.findAll();
         }
@@ -138,4 +139,16 @@ public class AnswerResource {
         return answerService.search(query);
     }
 
+    /**
+     * GET  /answers : get all the answers.
+     *
+     * @return the ResponseEntity with status 200 (OK) and the list of answers in body
+     */
+    @GetMapping("/answers/by/question/{questionID}")
+    @Timed
+    public List<Answer> getAllAnswersByQuestionID(@PathVariable Long questionID) {
+        Question question = this.questionService.findOne(questionID);
+
+        return this.answerService.findAllByQuestion(question);
+    }
 }

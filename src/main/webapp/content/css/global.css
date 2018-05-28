@@ -1,3 +1,5 @@
+@import '~bootstrap/dist/css/bootstrap.min.css';
+@import '~font-awesome/css/font-awesome.css';
 /* ==============================================================
 Bootstrap tweaks
 ===============================================================*/
@@ -41,6 +43,10 @@ Generic styles
 
 .ng-invalid:not(form)  {
   border-left: 5px solid red;
+}
+
+.ng-valid:not(form)  {
+    border-left: 5px solid green;
 }
 
 /* other generic styles */

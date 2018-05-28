@@ -1,0 +1,46 @@
+<h2>
+    The following Threat agents have been identified!!!
+</h2>
+
+<div class="table-responsive">
+    <table class="table table-bordered" *ngIf="motivations, threatAgentsPercentageArray">
+        <thead class="thead-dark">
+        <tr>
+            <th scope="col" class="text-center align-middle">Threat Agent</th>
+            <th scope="col" class="text-center align-middle">Likelihood</th>
+
+            <th scope="col" *ngFor="let motivation of motivations" class="text-center align-middle">
+                {{motivation.name}}
+            </th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <!--For rows-->
+        <tr *ngFor="let couple of threatAgentsPercentageArray">
+            <!--For cols-->
+            <th scope="row" class="text-left align-middle table-dark">
+                {{couple.key.name}}
+            </th>
+            <td class="text-center align-middle">
+                {{couple.value.toPercentage()/100 | percent:'1.2-2'}}
+            </td>
+
+            <td *ngFor="let motivation of motivations" class="text-center align-middle">
+                <span *ngIf="hasMotivation(couple.key, motivation)" class="fa fa-star"></span>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<form class="form-group" role="form"
+      (submit)="saveIdentfiedThreatAgents()"
+      (reset)="discardIdentfiedThreatAgents()"
+>
+
+    <div class="form-group">
+        <button class="btn btn-success" type="submit">Save</button>
+        <button class="btn btn-danger" type="reset">Discard</button>
+    </div>
+</form>

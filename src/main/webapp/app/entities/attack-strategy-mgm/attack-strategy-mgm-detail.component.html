@@ -12,9 +12,9 @@
         <dd>
             <span>{{attackStrategy.description}}</span>
         </dd>
-        <dt><span jhiTranslate="hermeneutApp.attackStrategy.freq">Freq</span></dt>
+        <dt><span jhiTranslate="hermeneutApp.attackStrategy.frequency">Frequency</span></dt>
         <dd>
-            <span jhiTranslate="{{'hermeneutApp.AS_Frequency.' + attackStrategy.freq}}">{{attackStrategy.freq}}</span>
+            <span jhiTranslate="{{'hermeneutApp.Frequency.' + attackStrategy.frequency}}">{{attackStrategy.frequency}}</span>
         </dd>
         <dt><span jhiTranslate="hermeneutApp.attackStrategy.skill">Skill</span></dt>
         <dd>
@@ -40,6 +40,18 @@
         <dd>
             <span *ngFor="let mitigation of attackStrategy.mitigations; let last = last">
                 <a [routerLink]="['/mitigation-mgm', mitigation?.id ]">{{mitigation.name}}</a>{{last ? '' : ', '}}
+            </span>
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.attackStrategy.level">Level</span></dt>
+        <dd>
+            <span *ngFor="let level of attackStrategy.levels; let last = last">
+                <a [routerLink]="['/level-mgm', level?.id ]">{{level.name}}</a>{{last ? '' : ', '}}
+            </span>
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.attackStrategy.phase">Phase</span></dt>
+        <dd>
+            <span *ngFor="let phase of attackStrategy.phases; let last = last">
+                <a [routerLink]="['/phase-mgm', phase?.id ]">{{phase.name}}</a>{{last ? '' : ', '}}
             </span>
         </dd>
     </dl>

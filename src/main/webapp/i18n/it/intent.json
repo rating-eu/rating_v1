@@ -3,7 +3,7 @@
         "Intent" : {
             "null": "",
             "HOSTILE": "HOSTILE",
-            "NOHOSTILE": "NOHOSTILE"
+            "NON_HOSTILE": "NON_HOSTILE"
         }
     }
 }

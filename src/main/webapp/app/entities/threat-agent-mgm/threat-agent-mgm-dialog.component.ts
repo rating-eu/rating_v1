@@ -1,16 +1,15 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ElementRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 
 import { Observable } from 'rxjs/Observable';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
+import { JhiEventManager, JhiAlertService, JhiDataUtils } from 'ng-jhipster';
 
 import { ThreatAgentMgm } from './threat-agent-mgm.model';
 import { ThreatAgentMgmPopupService } from './threat-agent-mgm-popup.service';
 import { ThreatAgentMgmService } from './threat-agent-mgm.service';
 import { MotivationMgm, MotivationMgmService } from '../motivation-mgm';
-import { AnswerMgm, AnswerMgmService } from '../answer-mgm';
 import { SelfAssessmentMgm, SelfAssessmentMgmService } from '../self-assessment-mgm';
 
 @Component({
@@ -24,17 +23,16 @@ export class ThreatAgentMgmDialogComponent implements OnInit {
 
     motivations: MotivationMgm[];
 
-    answers: AnswerMgm[];
-
     selfassessments: SelfAssessmentMgm[];
 
     constructor(
         public activeModal: NgbActiveModal,
+        private dataUtils: JhiDataUtils,
         private jhiAlertService: JhiAlertService,
         private threatAgentService: ThreatAgentMgmService,
         private motivationService: MotivationMgmService,
-        private answerService: AnswerMgmService,
         private selfAssessmentService: SelfAssessmentMgmService,
+        private elementRef: ElementRef,
         private eventManager: JhiEventManager
     ) {
     }
@@ -43,10 +41,24 @@ export class ThreatAgentMgmDialogComponent implements OnInit {
         this.isSaving = false;
         this.motivationService.query()
             .subscribe((res: HttpResponse<MotivationMgm[]>) => { this.motivations = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
-        this.answerService.query()
-            .subscribe((res: HttpResponse<AnswerMgm[]>) => { this.answers = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
         this.selfAssessmentService.query()
             .subscribe((res: HttpResponse<SelfAssessmentMgm[]>) => { this.selfassessments = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
+    }
+
+    byteSize(field) {
+        return this.dataUtils.byteSize(field);
+    }
+
+    openFile(contentType, field) {
+        return this.dataUtils.openFile(contentType, field);
+    }
+
+    setFileData(event, entity, field, isImage) {
+        this.dataUtils.setFileData(event, entity, field, isImage);
+    }
+
+    clearInputImage(field: string, fieldContentType: string, idInput: string) {
+        this.dataUtils.clearInputImage(this.threatAgent, this.elementRef, field, fieldContentType, idInput);
     }
 
     clear() {
@@ -84,10 +96,6 @@ export class ThreatAgentMgmDialogComponent implements OnInit {
     }
 
     trackMotivationById(index: number, item: MotivationMgm) {
-        return item.id;
-    }
-
-    trackAnswerById(index: number, item: AnswerMgm) {
         return item.id;
     }
 

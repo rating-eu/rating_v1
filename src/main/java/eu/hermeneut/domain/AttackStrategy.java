@@ -14,7 +14,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.Objects;
 
-import eu.hermeneut.domain.enumeration.AS_Frequency;
+import eu.hermeneut.domain.enumeration.Frequency;
 
 import eu.hermeneut.domain.enumeration.SkillLevel;
 
@@ -48,8 +48,8 @@ public class AttackStrategy implements Serializable {
 
     @NotNull
     @Enumerated(EnumType.STRING)
-    @Column(name = "freq", nullable = false)
-    private AS_Frequency freq;
+    @Column(name = "frequency", nullable = false)
+    private Frequency frequency;
 
     @NotNull
     @Enumerated(EnumType.STRING)
@@ -71,16 +71,6 @@ public class AttackStrategy implements Serializable {
     @Column(name = "modified")
     private ZonedDateTime modified;
 
-    @OneToMany(mappedBy = "attackStrategy")
-    @JsonIgnore
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private Set<LevelWrapper> levels = new HashSet<>();
-
-    @OneToMany(mappedBy = "attackStrategy")
-    @JsonIgnore
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private Set<PhaseWrapper> phases = new HashSet<>();
-
     @ManyToMany
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     @JoinTable(name = "attack_strategy_mitigation",
@@ -88,10 +78,24 @@ public class AttackStrategy implements Serializable {
                inverseJoinColumns = @JoinColumn(name="mitigations_id", referencedColumnName="id"))
     private Set<Mitigation> mitigations = new HashSet<>();
 
-    @ManyToMany(mappedBy = "attacks")
+    @ManyToMany
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    @JoinTable(name = "attack_strategy_level",
+               joinColumns = @JoinColumn(name="attack_strategies_id", referencedColumnName="id"),
+               inverseJoinColumns = @JoinColumn(name="levels_id", referencedColumnName="id"))
+    private Set<Level> levels = new HashSet<>();
+
+    @ManyToMany
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    @JoinTable(name = "attack_strategy_phase",
+               joinColumns = @JoinColumn(name="attack_strategies_id", referencedColumnName="id"),
+               inverseJoinColumns = @JoinColumn(name="phases_id", referencedColumnName="id"))
+    private Set<Phase> phases = new HashSet<>();
+
+    @ManyToMany(mappedBy = "attackStrategies")
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private Set<Answer> answstrategies = new HashSet<>();
+    private Set<Question> questions = new HashSet<>();
 
     @ManyToMany(mappedBy = "attackstrategies")
     @JsonIgnore
@@ -133,17 +137,17 @@ public class AttackStrategy implements Serializable {
         this.description = description;
     }
 
-    public AS_Frequency getFreq() {
-        return freq;
+    public Frequency getFrequency() {
+        return frequency;
     }
 
-    public AttackStrategy freq(AS_Frequency freq) {
-        this.freq = freq;
+    public AttackStrategy frequency(Frequency frequency) {
+        this.frequency = frequency;
         return this;
     }
 
-    public void setFreq(AS_Frequency freq) {
-        this.freq = freq;
+    public void setFrequency(Frequency frequency) {
+        this.frequency = frequency;
     }
 
     public SkillLevel getSkill() {
@@ -211,56 +215,6 @@ public class AttackStrategy implements Serializable {
         this.modified = modified;
     }
 
-    public Set<LevelWrapper> getLevels() {
-        return levels;
-    }
-
-    public AttackStrategy levels(Set<LevelWrapper> levelWrappers) {
-        this.levels = levelWrappers;
-        return this;
-    }
-
-    public AttackStrategy addLevels(LevelWrapper levelWrapper) {
-        this.levels.add(levelWrapper);
-        levelWrapper.setAttackStrategy(this);
-        return this;
-    }
-
-    public AttackStrategy removeLevels(LevelWrapper levelWrapper) {
-        this.levels.remove(levelWrapper);
-        levelWrapper.setAttackStrategy(null);
-        return this;
-    }
-
-    public void setLevels(Set<LevelWrapper> levelWrappers) {
-        this.levels = levelWrappers;
-    }
-
-    public Set<PhaseWrapper> getPhases() {
-        return phases;
-    }
-
-    public AttackStrategy phases(Set<PhaseWrapper> phaseWrappers) {
-        this.phases = phaseWrappers;
-        return this;
-    }
-
-    public AttackStrategy addPhases(PhaseWrapper phaseWrapper) {
-        this.phases.add(phaseWrapper);
-        phaseWrapper.setAttackStrategy(this);
-        return this;
-    }
-
-    public AttackStrategy removePhases(PhaseWrapper phaseWrapper) {
-        this.phases.remove(phaseWrapper);
-        phaseWrapper.setAttackStrategy(null);
-        return this;
-    }
-
-    public void setPhases(Set<PhaseWrapper> phaseWrappers) {
-        this.phases = phaseWrappers;
-    }
-
     public Set<Mitigation> getMitigations() {
         return mitigations;
     }
@@ -286,29 +240,75 @@ public class AttackStrategy implements Serializable {
         this.mitigations = mitigations;
     }
 
-    public Set<Answer> getAnswstrategies() {
-        return answstrategies;
+    public Set<Level> getLevels() {
+        return levels;
     }
 
-    public AttackStrategy answstrategies(Set<Answer> answers) {
-        this.answstrategies = answers;
+    public AttackStrategy levels(Set<Level> levels) {
+        this.levels = levels;
         return this;
     }
 
-    public AttackStrategy addAnswstrategy(Answer answer) {
-        this.answstrategies.add(answer);
-        answer.getAttacks().add(this);
+    public AttackStrategy addLevel(Level level) {
+        this.levels.add(level);
         return this;
     }
 
-    public AttackStrategy removeAnswstrategy(Answer answer) {
-        this.answstrategies.remove(answer);
-        answer.getAttacks().remove(this);
+    public AttackStrategy removeLevel(Level level) {
+        this.levels.remove(level);
         return this;
     }
 
-    public void setAnswstrategies(Set<Answer> answers) {
-        this.answstrategies = answers;
+    public void setLevels(Set<Level> levels) {
+        this.levels = levels;
+    }
+
+    public Set<Phase> getPhases() {
+        return phases;
+    }
+
+    public AttackStrategy phases(Set<Phase> phases) {
+        this.phases = phases;
+        return this;
+    }
+
+    public AttackStrategy addPhase(Phase phase) {
+        this.phases.add(phase);
+        return this;
+    }
+
+    public AttackStrategy removePhase(Phase phase) {
+        this.phases.remove(phase);
+        return this;
+    }
+
+    public void setPhases(Set<Phase> phases) {
+        this.phases = phases;
+    }
+
+    public Set<Question> getQuestions() {
+        return questions;
+    }
+
+    public AttackStrategy questions(Set<Question> questions) {
+        this.questions = questions;
+        return this;
+    }
+
+    public AttackStrategy addQuestion(Question question) {
+        this.questions.add(question);
+        question.getAttackStrategies().add(this);
+        return this;
+    }
+
+    public AttackStrategy removeQuestion(Question question) {
+        this.questions.remove(question);
+        question.getAttackStrategies().remove(this);
+        return this;
+    }
+
+    public void setQuestions(Set<Question> questions) {
+        this.questions = questions;
     }
 
     public Set<SelfAssessment> getSelfassessments() {
@@ -363,7 +363,7 @@ public class AttackStrategy implements Serializable {
             "id=" + getId() +
             ", name='" + getName() + "'" +
             ", description='" + getDescription() + "'" +
-            ", freq='" + getFreq() + "'" +
+            ", frequency='" + getFrequency() + "'" +
             ", skill='" + getSkill() + "'" +
             ", resources='" + getResources() + "'" +
             ", likelihood='" + getLikelihood() + "'" +

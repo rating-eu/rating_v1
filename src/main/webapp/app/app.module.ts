@@ -17,10 +17,6 @@ import {HermeneutAdminModule} from './admin/admin.module';
 import {HermeneutAccountModule} from './account/account.module';
 import {HermeneutEntityModule} from './entities/entity.module';
 import {PaginationConfig} from './blocks/config/uib-pagination.config';
-import {IdentifyThreatAgentModule} from './identify-threat-agent/identify-threat-agent.module';
-import {EvaluateWeacknessModule} from './evaluate-weackness/evaluate-weackness.module';
-import {QuestionnairesModule} from './questionnaires/questionnaires.module';
-import {IdentifyAssetModule} from './identify-assets/identify-asset.module';
 // jhipster-needle-angular-add-module-import JHipster will add new module here
 
 import {
@@ -33,10 +29,13 @@ import {
     ErrorComponent
 } from './layouts';
 import {QuestionnairesService} from './questionnaires/questionnaires.service';
+import {ReactiveFormsModule} from '@angular/forms';
+import {DatasharingModule} from './datasharing/datasharing.module';
 
 @NgModule({
     imports: [
         BrowserModule,
+        ReactiveFormsModule,
         HttpClientModule,
         Ng2Webstorage.forRoot({prefix: 'jhi', separator: '-'}),
         HermeneutSharedModule,
@@ -44,11 +43,8 @@ import {QuestionnairesService} from './questionnaires/questionnaires.service';
         HermeneutAdminModule,
         HermeneutAccountModule,
         HermeneutEntityModule,
-        IdentifyThreatAgentModule,
-        EvaluateWeacknessModule,
-        QuestionnairesModule, // add the feature module here
         HermeneutAppRoutingModule,
-        IdentifyAssetModule
+        DatasharingModule.forRoot()
         // jhipster-needle-angular-add-module JHipster will add new module here
     ],
     declarations: [

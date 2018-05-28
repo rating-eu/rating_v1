@@ -9,9 +9,6 @@ import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
 import { AnswerMgm } from './answer-mgm.model';
 import { AnswerMgmPopupService } from './answer-mgm-popup.service';
 import { AnswerMgmService } from './answer-mgm.service';
-import { ThreatAgentMgm, ThreatAgentMgmService } from '../threat-agent-mgm';
-import { AttackStrategyMgm, AttackStrategyMgmService } from '../attack-strategy-mgm';
-import { MyAnswerMgm, MyAnswerMgmService } from '../my-answer-mgm';
 import { QuestionMgm, QuestionMgmService } from '../question-mgm';
 
 @Component({
@@ -23,21 +20,12 @@ export class AnswerMgmDialogComponent implements OnInit {
     answer: AnswerMgm;
     isSaving: boolean;
 
-    threatagents: ThreatAgentMgm[];
-
-    attackstrategies: AttackStrategyMgm[];
-
-    myanswers: MyAnswerMgm[];
-
     questions: QuestionMgm[];
 
     constructor(
         public activeModal: NgbActiveModal,
         private jhiAlertService: JhiAlertService,
         private answerService: AnswerMgmService,
-        private threatAgentService: ThreatAgentMgmService,
-        private attackStrategyService: AttackStrategyMgmService,
-        private myAnswerService: MyAnswerMgmService,
         private questionService: QuestionMgmService,
         private eventManager: JhiEventManager
     ) {
@@ -45,12 +33,6 @@ export class AnswerMgmDialogComponent implements OnInit {
 
     ngOnInit() {
         this.isSaving = false;
-        this.threatAgentService.query()
-            .subscribe((res: HttpResponse<ThreatAgentMgm[]>) => { this.threatagents = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
-        this.attackStrategyService.query()
-            .subscribe((res: HttpResponse<AttackStrategyMgm[]>) => { this.attackstrategies = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
-        this.myAnswerService.query()
-            .subscribe((res: HttpResponse<MyAnswerMgm[]>) => { this.myanswers = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
         this.questionService.query()
             .subscribe((res: HttpResponse<QuestionMgm[]>) => { this.questions = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
     }
@@ -89,31 +71,8 @@ export class AnswerMgmDialogComponent implements OnInit {
         this.jhiAlertService.error(error.message, null, null);
     }
 
-    trackThreatAgentById(index: number, item: ThreatAgentMgm) {
-        return item.id;
-    }
-
-    trackAttackStrategyById(index: number, item: AttackStrategyMgm) {
-        return item.id;
-    }
-
-    trackMyAnswerById(index: number, item: MyAnswerMgm) {
-        return item.id;
-    }
-
     trackQuestionById(index: number, item: QuestionMgm) {
         return item.id;
-    }
-
-    getSelected(selectedVals: Array<any>, option: any) {
-        if (selectedVals) {
-            for (let i = 0; i < selectedVals.length; i++) {
-                if (option.id === selectedVals[i].id) {
-                    return selectedVals[i];
-                }
-            }
-        }
-        return option;
     }
 }
 

@@ -32,13 +32,15 @@
             <th><span jhiTranslate="global.field.id">ID</span></th>
             <th><span jhiTranslate="hermeneutApp.attackStrategy.name">Name</span></th>
             <th><span jhiTranslate="hermeneutApp.attackStrategy.description">Description</span></th>
-            <th><span jhiTranslate="hermeneutApp.attackStrategy.freq">Freq</span></th>
+            <th><span jhiTranslate="hermeneutApp.attackStrategy.frequency">Frequency</span></th>
             <th><span jhiTranslate="hermeneutApp.attackStrategy.skill">Skill</span></th>
             <th><span jhiTranslate="hermeneutApp.attackStrategy.resources">Resources</span></th>
             <th><span jhiTranslate="hermeneutApp.attackStrategy.likelihood">Likelihood</span></th>
             <th><span jhiTranslate="hermeneutApp.attackStrategy.created">Created</span></th>
             <th><span jhiTranslate="hermeneutApp.attackStrategy.modified">Modified</span></th>
             <th><span jhiTranslate="hermeneutApp.attackStrategy.mitigation">Mitigation</span></th>
+            <th><span jhiTranslate="hermeneutApp.attackStrategy.level">Level</span></th>
+            <th><span jhiTranslate="hermeneutApp.attackStrategy.phase">Phase</span></th>
             <th></th>
             </tr>
             </thead>
@@ -47,7 +49,7 @@
                 <td><a [routerLink]="['../attack-strategy-mgm', attackStrategy.id ]">{{attackStrategy.id}}</a></td>
                 <td>{{attackStrategy.name}}</td>
                 <td>{{attackStrategy.description}}</td>
-                <td jhiTranslate="{{'hermeneutApp.AS_Frequency.' + attackStrategy.freq}}">{{attackStrategy.freq}}</td>
+                <td jhiTranslate="{{'hermeneutApp.Frequency.' + attackStrategy.frequency}}">{{attackStrategy.frequency}}</td>
                 <td jhiTranslate="{{'hermeneutApp.SkillLevel.' + attackStrategy.skill}}">{{attackStrategy.skill}}</td>
                 <td jhiTranslate="{{'hermeneutApp.ResourceLevel.' + attackStrategy.resources}}">{{attackStrategy.resources}}</td>
                 <td jhiTranslate="{{'hermeneutApp.Likelihood.' + attackStrategy.likelihood}}">{{attackStrategy.likelihood}}</td>
@@ -56,6 +58,16 @@
                 <td>
                     <span *ngFor="let mitigation of attackStrategy.mitigations; let last = last">
                             <a class="form-control-static" [routerLink]="['../mitigation-mgm', mitigation?.id ]">{{mitigation.name}}</a>{{last ? '' : ', '}}
+                        </span>
+                </td>
+                <td>
+                    <span *ngFor="let level of attackStrategy.levels; let last = last">
+                            <a class="form-control-static" [routerLink]="['../level-mgm', level?.id ]">{{level.name}}</a>{{last ? '' : ', '}}
+                        </span>
+                </td>
+                <td>
+                    <span *ngFor="let phase of attackStrategy.phases; let last = last">
+                            <a class="form-control-static" [routerLink]="['../phase-mgm', phase?.id ]">{{phase.name}}</a>{{last ? '' : ', '}}
                         </span>
                 </td>
                 <td class="text-right">

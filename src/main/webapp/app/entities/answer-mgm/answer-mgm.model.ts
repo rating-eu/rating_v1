@@ -1,4 +1,5 @@
-import { BaseEntity } from './../../shared';
+import {BaseEntity} from './../../shared';
+import {QuestionMgm} from '../question-mgm';
 
 export const enum Likelihood {
     'LOW',
@@ -9,17 +10,12 @@ export const enum Likelihood {
 }
 
 export class AnswerMgm implements BaseEntity {
-    constructor(
-        public id?: number,
-        public name?: string,
-        public created?: any,
-        public modified?: any,
-        public order?: number,
-        public likelihood?: Likelihood,
-        public threatAgents?: BaseEntity[],
-        public attacks?: BaseEntity[],
-        public myanswer?: BaseEntity,
-        public question?: BaseEntity,
-    ) {
+    constructor(public id?: number,
+                public name?: string,
+                public created?: any,
+                public modified?: any,
+                public order?: number,
+                public likelihood?: Likelihood,
+                public question?: QuestionMgm) {
     }
 }

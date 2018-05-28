@@ -19,16 +19,16 @@
             },
             "name": "Name",
             "description": "Description",
-            "freq": "Freq",
+            "frequency": "Frequency",
             "skill": "Skill",
             "resources": "Resources",
             "likelihood": "Likelihood",
             "created": "Created",
             "modified": "Modified",
-            "levels": "Levels",
-            "phases": "Phases",
             "mitigation": "Mitigation",
-            "answstrategy": "Answstrategy",
+            "level": "Level",
+            "phase": "Phase",
+            "question": "Question",
             "selfassessment": "Selfassessment"
         }
     }

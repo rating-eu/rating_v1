@@ -90,7 +90,19 @@ public class ThreatAgentResource {
     public List<ThreatAgent> getAllThreatAgents() {
         log.debug("REST request to get all ThreatAgents");
         return threatAgentService.findAll();
-        }
+    }
+
+    /**
+     * GET  /threat-agents : get all the threatAgents.
+     *
+     * @return the ResponseEntity with status 200 (OK) and the list of threatAgents in body
+     */
+    @GetMapping("/threat-agents/default")
+    @Timed
+    public List<ThreatAgent> getDefaultThreatAgents() {
+        log.debug("REST request to get all default ThreatAgents");
+        return threatAgentService.findAllDefault();
+    }
 
     /**
      * GET  /threat-agents/:id : get the "id" threatAgent.

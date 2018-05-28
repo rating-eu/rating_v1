@@ -8,6 +8,12 @@
         <dd>
             <span>{{myAnswer.mycheck}}</span>
         </dd>
+        <dt><span jhiTranslate="hermeneutApp.myAnswer.questionnaireStatus">Questionnaire Status</span></dt>
+        <dd>
+            <div *ngIf="myAnswer.questionnaireStatus">
+                <a [routerLink]="['/questionnaire-status-mgm', myAnswer.questionnaireStatus?.id]">{{myAnswer.questionnaireStatus?.id}}</a>
+            </div>
+        </dd>
         <dt><span jhiTranslate="hermeneutApp.myAnswer.answer">Answer</span></dt>
         <dd>
             <div *ngIf="myAnswer.answer">

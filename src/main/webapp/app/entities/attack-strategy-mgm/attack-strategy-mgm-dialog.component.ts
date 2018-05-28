@@ -10,7 +10,9 @@ import { AttackStrategyMgm } from './attack-strategy-mgm.model';
 import { AttackStrategyMgmPopupService } from './attack-strategy-mgm-popup.service';
 import { AttackStrategyMgmService } from './attack-strategy-mgm.service';
 import { MitigationMgm, MitigationMgmService } from '../mitigation-mgm';
-import { AnswerMgm, AnswerMgmService } from '../answer-mgm';
+import { LevelMgm, LevelMgmService } from '../level-mgm';
+import { PhaseMgm, PhaseMgmService } from '../phase-mgm';
+import { QuestionMgm, QuestionMgmService } from '../question-mgm';
 import { SelfAssessmentMgm, SelfAssessmentMgmService } from '../self-assessment-mgm';
 
 @Component({
@@ -24,7 +26,11 @@ export class AttackStrategyMgmDialogComponent implements OnInit {
 
     mitigations: MitigationMgm[];
 
-    answers: AnswerMgm[];
+    levels: LevelMgm[];
+
+    phases: PhaseMgm[];
+
+    questions: QuestionMgm[];
 
     selfassessments: SelfAssessmentMgm[];
 
@@ -33,7 +39,9 @@ export class AttackStrategyMgmDialogComponent implements OnInit {
         private jhiAlertService: JhiAlertService,
         private attackStrategyService: AttackStrategyMgmService,
         private mitigationService: MitigationMgmService,
-        private answerService: AnswerMgmService,
+        private levelService: LevelMgmService,
+        private phaseService: PhaseMgmService,
+        private questionService: QuestionMgmService,
         private selfAssessmentService: SelfAssessmentMgmService,
         private eventManager: JhiEventManager
     ) {
@@ -43,8 +51,12 @@ export class AttackStrategyMgmDialogComponent implements OnInit {
         this.isSaving = false;
         this.mitigationService.query()
             .subscribe((res: HttpResponse<MitigationMgm[]>) => { this.mitigations = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
-        this.answerService.query()
-            .subscribe((res: HttpResponse<AnswerMgm[]>) => { this.answers = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
+        this.levelService.query()
+            .subscribe((res: HttpResponse<LevelMgm[]>) => { this.levels = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
+        this.phaseService.query()
+            .subscribe((res: HttpResponse<PhaseMgm[]>) => { this.phases = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
+        this.questionService.query()
+            .subscribe((res: HttpResponse<QuestionMgm[]>) => { this.questions = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
         this.selfAssessmentService.query()
             .subscribe((res: HttpResponse<SelfAssessmentMgm[]>) => { this.selfassessments = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
     }
@@ -87,7 +99,15 @@ export class AttackStrategyMgmDialogComponent implements OnInit {
         return item.id;
     }
 
-    trackAnswerById(index: number, item: AnswerMgm) {
+    trackLevelById(index: number, item: LevelMgm) {
+        return item.id;
+    }
+
+    trackPhaseById(index: number, item: PhaseMgm) {
+        return item.id;
+    }
+
+    trackQuestionById(index: number, item: QuestionMgm) {
         return item.id;
     }
 

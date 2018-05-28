@@ -8,6 +8,7 @@ import javax.persistence.*;
 import javax.validation.constraints.*;
 
 import org.springframework.data.elasticsearch.annotations.Document;
+
 import java.io.Serializable;
 import java.time.ZonedDateTime;
 import java.util.HashSet;
@@ -41,6 +42,17 @@ public class ThreatAgent implements Serializable {
     private String name;
 
     @NotNull
+    @Column(name = "description", nullable = false, length = 512)
+    private String description;
+
+    @Lob
+    @Column(name = "image")
+    private byte[] image;
+
+    @Column(name = "image_content_type")
+    private String imageContentType;
+
+    @NotNull
     @Enumerated(EnumType.STRING)
     @Column(name = "skill_level", nullable = false)
     private SkillLevel skillLevel;
@@ -61,17 +73,21 @@ public class ThreatAgent implements Serializable {
     @Column(name = "modified")
     private ZonedDateTime modified;
 
-    @ManyToMany
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    @JoinTable(name = "threat_agent_motivation",
-               joinColumns = @JoinColumn(name="threat_agents_id", referencedColumnName="id"),
-               inverseJoinColumns = @JoinColumn(name="motivations_id", referencedColumnName="id"))
-    private Set<Motivation> motivations = new HashSet<>();
+    @NotNull
+    @Column(name = "identified_by_default", nullable = false)
+    private Boolean identifiedByDefault;
 
-    @ManyToMany(mappedBy = "threatAgents")
+    @OneToMany(mappedBy = "threatAgent")
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private Set<Answer> answthreats = new HashSet<>();
+    private Set<Question> questions = new HashSet<>();
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    @JoinTable(name = "threat_agent_motivation",
+        joinColumns = @JoinColumn(name = "threat_agents_id", referencedColumnName = "id"),
+        inverseJoinColumns = @JoinColumn(name = "motivations_id", referencedColumnName = "id"))
+    private Set<Motivation> motivations = new HashSet<>();
 
     @ManyToMany(mappedBy = "threatagents")
     @JsonIgnore
@@ -98,6 +114,45 @@ public class ThreatAgent implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public ThreatAgent description(String description) {
+        this.description = description;
+        return this;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public byte[] getImage() {
+        return image;
+    }
+
+    public ThreatAgent image(byte[] image) {
+        this.image = image;
+        return this;
+    }
+
+    public void setImage(byte[] image) {
+        this.image = image;
+    }
+
+    public String getImageContentType() {
+        return imageContentType;
+    }
+
+    public ThreatAgent imageContentType(String imageContentType) {
+        this.imageContentType = imageContentType;
+        return this;
+    }
+
+    public void setImageContentType(String imageContentType) {
+        this.imageContentType = imageContentType;
     }
 
     public SkillLevel getSkillLevel() {
@@ -165,6 +220,48 @@ public class ThreatAgent implements Serializable {
         this.modified = modified;
     }
 
+    public Boolean isIdentifiedByDefault() {
+        return identifiedByDefault;
+    }
+
+    public ThreatAgent identifiedByDefault(Boolean identifiedByDefault) {
+        this.identifiedByDefault = identifiedByDefault;
+        return this;
+    }
+
+    public void setIdentifiedByDefault(Boolean identifiedByDefault) {
+        this.identifiedByDefault = identifiedByDefault;
+    }
+
+    public Boolean getIdentifiedByDefault() {
+        return this.identifiedByDefault;
+    }
+
+    public Set<Question> getQuestions() {
+        return questions;
+    }
+
+    public ThreatAgent questions(Set<Question> questions) {
+        this.questions = questions;
+        return this;
+    }
+
+    public ThreatAgent addQuestions(Question question) {
+        this.questions.add(question);
+        question.setThreatAgent(this);
+        return this;
+    }
+
+    public ThreatAgent removeQuestions(Question question) {
+        this.questions.remove(question);
+        question.setThreatAgent(null);
+        return this;
+    }
+
+    public void setQuestions(Set<Question> questions) {
+        this.questions = questions;
+    }
+
     public Set<Motivation> getMotivations() {
         return motivations;
     }
@@ -188,31 +285,6 @@ public class ThreatAgent implements Serializable {
 
     public void setMotivations(Set<Motivation> motivations) {
         this.motivations = motivations;
-    }
-
-    public Set<Answer> getAnswthreats() {
-        return answthreats;
-    }
-
-    public ThreatAgent answthreats(Set<Answer> answers) {
-        this.answthreats = answers;
-        return this;
-    }
-
-    public ThreatAgent addAnswthreat(Answer answer) {
-        this.answthreats.add(answer);
-        answer.getThreatAgents().add(this);
-        return this;
-    }
-
-    public ThreatAgent removeAnswthreat(Answer answer) {
-        this.answthreats.remove(answer);
-        answer.getThreatAgents().remove(this);
-        return this;
-    }
-
-    public void setAnswthreats(Set<Answer> answers) {
-        this.answthreats = answers;
     }
 
     public Set<SelfAssessment> getSelfassessments() {
@@ -266,11 +338,15 @@ public class ThreatAgent implements Serializable {
         return "ThreatAgent{" +
             "id=" + getId() +
             ", name='" + getName() + "'" +
+            ", description='" + getDescription() + "'" +
+            ", image='" + getImage() + "'" +
+            ", imageContentType='" + getImageContentType() + "'" +
             ", skillLevel='" + getSkillLevel() + "'" +
             ", intent='" + getIntent() + "'" +
             ", access='" + getAccess() + "'" +
             ", created='" + getCreated() + "'" +
             ", modified='" + getModified() + "'" +
+            ", identifiedByDefault='" + isIdentifiedByDefault() + "'" +
             "}";
     }
 }

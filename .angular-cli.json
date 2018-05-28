@@ -3,33 +3,41 @@
     "project": {
         "name": "hermeneut"
     },
-    "apps": [{
-        "root": "src/main/webapp",
-        "outDir": "target/www/app",
-        "assets": [
-            "content",
-            "i18n",
-            "favicon.ico"
-        ],
-        "index": "index.html",
-        "main": "app/app.main.ts",
-        "polyfills": "app/polyfills.ts",
-        "test": "src/test/javascript/spec/entry.ts",
-        "tsconfig": "../../../tsconfig.json",
-        "prefix": "jhi",
-        "mobile": false,
-        "styles": [
-            "content/css/vendor.css",
-            "content/css/global.css"
-        ],
-        "scripts": []
-    }],
+    "apps": [
+        {
+            "root": "src/main/webapp",
+            "outDir": "target/www/app",
+            "assets": [
+                "content",
+                "i18n",
+                "favicon.ico"
+            ],
+            "index": "index.html",
+            "main": "app/app.main.ts",
+            "polyfills": "app/polyfills.ts",
+            "test": "src/test/javascript/spec/entry.ts",
+            "tsconfig": "../../../tsconfig.json",
+            "prefix": "jhi",
+            "mobile": false,
+            "styles": [
+                "../../../node_modules/bootstrap/dist/css/bootstrap.min.css",
+                "content/css/vendor.css",
+                "content/css/global.css"
+            ],
+            "scripts": [
+                "../../../node_modules/jquery/dist/jquery.min.js",
+                "../../../node_modules/popper.js/dist/umd/popper.min.js",
+                "../../../node_modules/bootstrap/dist/js/bootstrap.min.js"
+            ]
+        }
+    ],
     "e2e": {
         "protractor": {
             "config": "src/test/javascript/protractor.conf.js"
         }
     },
-    "lint": [{
+    "lint": [
+        {
             "project": "../../../tsconfig.json"
         },
         {
@@ -44,21 +52,21 @@
     "defaults": {
         "styleExt": "css",
         "prefixInterfaces": false,
-        "component" : {
-            "inlineStyle" : true,
+        "component": {
+            "inlineStyle": true,
             "inlineTemplate": false,
             "spec": false
         },
-        "directive" : {
+        "directive": {
             "spec": false
         },
-        "guard" : {
+        "guard": {
             "spec": false
         },
-        "pipe" : {
+        "pipe": {
             "spec": false
         },
-        "service" : {
+        "service": {
             "spec": false
         }
     },

@@ -35,15 +35,15 @@
             </div>
         </div>
         <div class="form-group">
-            <label class="form-control-label" jhiTranslate="hermeneutApp.attackStrategy.freq" for="field_freq">Freq</label>
-            <select class="form-control" name="freq" [(ngModel)]="attackStrategy.freq" id="field_freq"  required>
-                <option value="LOW">{{'hermeneutApp.AS_Frequency.LOW' | translate}}</option>
-                <option value="MEDIUM">{{'hermeneutApp.AS_Frequency.MEDIUM' | translate}}</option>
-                <option value="HIGH">{{'hermeneutApp.AS_Frequency.HIGH' | translate}}</option>
+            <label class="form-control-label" jhiTranslate="hermeneutApp.attackStrategy.frequency" for="field_frequency">Frequency</label>
+            <select class="form-control" name="frequency" [(ngModel)]="attackStrategy.frequency" id="field_frequency"  required>
+                <option value="LOW">{{'hermeneutApp.Frequency.LOW' | translate}}</option>
+                <option value="MEDIUM">{{'hermeneutApp.Frequency.MEDIUM' | translate}}</option>
+                <option value="HIGH">{{'hermeneutApp.Frequency.HIGH' | translate}}</option>
             </select>
-            <div [hidden]="!(editForm.controls.freq?.dirty && editForm.controls.freq?.invalid)">
+            <div [hidden]="!(editForm.controls.frequency?.dirty && editForm.controls.frequency?.invalid)">
                 <small class="form-text text-danger"
-                   [hidden]="!editForm.controls.freq?.errors?.required" jhiTranslate="entity.validation.required">
+                   [hidden]="!editForm.controls.frequency?.errors?.required" jhiTranslate="entity.validation.required">
                    This field is required.
                 </small>
             </div>
@@ -105,6 +105,18 @@
             <label jhiTranslate="hermeneutApp.attackStrategy.mitigation" for="field_mitigation">Mitigation</label>
             <select class="form-control" id="field_mitigation" multiple name="mitigation" [(ngModel)]="attackStrategy.mitigations">
                 <option [ngValue]="getSelected(attackStrategy.mitigations, mitigationOption)" *ngFor="let mitigationOption of mitigations; trackBy: trackMitigationById">{{mitigationOption.name}}</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label jhiTranslate="hermeneutApp.attackStrategy.level" for="field_level">Level</label>
+            <select class="form-control" id="field_level" multiple name="level" [(ngModel)]="attackStrategy.levels">
+                <option [ngValue]="getSelected(attackStrategy.levels, levelOption)" *ngFor="let levelOption of levels; trackBy: trackLevelById">{{levelOption.name}}</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label jhiTranslate="hermeneutApp.attackStrategy.phase" for="field_phase">Phase</label>
+            <select class="form-control" id="field_phase" multiple name="phase" [(ngModel)]="attackStrategy.phases">
+                <option [ngValue]="getSelected(attackStrategy.phases, phaseOption)" *ngFor="let phaseOption of phases; trackBy: trackPhaseById">{{phaseOption.name}}</option>
             </select>
         </div>
     </div>

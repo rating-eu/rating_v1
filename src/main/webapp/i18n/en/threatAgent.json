@@ -18,13 +18,16 @@
                 "title": "Threat Agent"
             },
             "name": "Name",
+            "description": "Description",
+            "image": "Image",
             "skillLevel": "Skill Level",
             "intent": "Intent",
             "access": "Access",
             "created": "Created",
             "modified": "Modified",
+            "identifiedByDefault": "Identified By Default",
+            "questions": "Questions",
             "motivation": "Motivation",
-            "answthreat": "Answthreat",
             "selfassessment": "Selfassessment"
         }
     }

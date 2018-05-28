@@ -1,11 +1,13 @@
 package eu.hermeneut.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
 
 import org.springframework.data.elasticsearch.annotations.Document;
+
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -13,7 +15,9 @@ import java.util.Objects;
  * A MyAnswer.
  */
 @Entity
-@Table(name = "my_answer")
+@Table(name = "my_answer",
+    uniqueConstraints = @UniqueConstraint(columnNames = {"question_id", "questionnaire_id", "user_id"})
+)
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 @Document(indexName = "myanswer")
 public class MyAnswer implements Serializable {
@@ -28,19 +32,23 @@ public class MyAnswer implements Serializable {
     @Column(name = "mycheck")
     private String mycheck;
 
+    @ManyToOne
+    private QuestionnaireStatus questionnaireStatus;
+
     @OneToOne
-    @JoinColumn(unique = true)
+    @JoinColumn
     private Answer answer;
 
     @OneToOne
-    @JoinColumn(unique = true)
+    @JoinColumn(name = "question_id")
     private Question question;
 
     @OneToOne
-    @JoinColumn(unique = true)
+    @JoinColumn(name = "questionnaire_id")
     private Questionnaire questionnaire;
 
     @ManyToOne
+    @JoinColumn(name = "user_id")
     private User user;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
@@ -63,6 +71,19 @@ public class MyAnswer implements Serializable {
 
     public void setMycheck(String mycheck) {
         this.mycheck = mycheck;
+    }
+
+    public QuestionnaireStatus getQuestionnaireStatus() {
+        return questionnaireStatus;
+    }
+
+    public MyAnswer questionnaireStatus(QuestionnaireStatus questionnaireStatus) {
+        this.questionnaireStatus = questionnaireStatus;
+        return this;
+    }
+
+    public void setQuestionnaireStatus(QuestionnaireStatus questionnaireStatus) {
+        this.questionnaireStatus = questionnaireStatus;
     }
 
     public Answer getAnswer() {

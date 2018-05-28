@@ -22,22 +22,28 @@
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="mycheck" type="varchar(255)">
-                <constraints nullable="true" />
+                <constraints nullable="true"/>
             </column>
             <column name="answer_id" type="bigint">
-                <constraints unique="true" nullable="true" />
-            </column>            <column name="question_id" type="bigint">
-                <constraints unique="true" nullable="true" />
-            </column>            <column name="questionnaire_id" type="bigint">
-                <constraints unique="true" nullable="true" />
+            </column>
+            <column name="question_id" type="bigint">
+            </column>
+            <column name="questionnaire_id" type="bigint">
             </column>
             <column name="user_id" type="bigint">
-                <constraints nullable="true" />
+            </column>
+            <column name="questionnaire_status_id" type="bigint">
             </column>
 
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
-        
+    </changeSet>
+
+    <changeSet id="20180420084813-2" author="developer">
+        <addUniqueConstraint columnNames="question_id, questionnaire_id, user_id"
+                             constraintName="unique_questionnaire_user"
+                             schemaName="public"
+                             tableName="my_answer"/>
     </changeSet>
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here, do not remove-->
 </databaseChangeLog>

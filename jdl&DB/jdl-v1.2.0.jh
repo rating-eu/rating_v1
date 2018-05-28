@@ -54,7 +54,7 @@ enum SkillLevel {
 }
 
 enum Intent {
-    HOSTILE, NOHOSTILE
+    HOSTILE, NON_HOSTILE
 }
 
 enum TA_Access {

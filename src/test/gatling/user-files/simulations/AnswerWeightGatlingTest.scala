@@ -68,7 +68,7 @@ class AnswerWeightGatlingTest extends Simulation {
             .exec(http("Create new answerWeight")
             .post("/api/answer-weights")
             .headers(headers_http_authenticated)
-            .body(StringBody("""{"id":null, "likelihood":null, "questionType":null, "weight":"0"}""")).asJSON
+            .body(StringBody("""{"id":null, "likelihood":null, "questionType":null, "weight":null}""")).asJSON
             .check(status.is(201))
             .check(headerRegex("Location", "(.*)").saveAs("new_answerWeight_url"))).exitHereIfFailed
             .pause(10)

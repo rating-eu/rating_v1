@@ -23,7 +23,9 @@
             "order": "Order",
             "questionType": "Question Type",
             "answerType": "Answer Type",
+            "threatAgent": "Threat Agent",
             "answers": "Answers",
+            "attackStrategies": "Attack Strategies",
             "myanswer": "Myanswer",
             "questionnaire": "Questionnaire"
         }

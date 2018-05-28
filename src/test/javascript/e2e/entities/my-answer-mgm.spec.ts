@@ -35,6 +35,7 @@ describe('MyAnswer e2e test', () => {
         myAnswerComponentsPage.clickOnCreateButton();
         myAnswerDialogPage.setMycheckInput('mycheck');
         expect(myAnswerDialogPage.getMycheckInput()).toMatch('mycheck');
+        myAnswerDialogPage.questionnaireStatusSelectLastOption();
         myAnswerDialogPage.answerSelectLastOption();
         myAnswerDialogPage.questionSelectLastOption();
         myAnswerDialogPage.questionnaireSelectLastOption();
@@ -66,6 +67,7 @@ export class MyAnswerDialogPage {
     saveButton = element(by.css('.modal-footer .btn.btn-primary'));
     closeButton = element(by.css('button.close'));
     mycheckInput = element(by.css('input#field_mycheck'));
+    questionnaireStatusSelect = element(by.css('select#field_questionnaireStatus'));
     answerSelect = element(by.css('select#field_answer'));
     questionSelect = element(by.css('select#field_question'));
     questionnaireSelect = element(by.css('select#field_questionnaire'));
@@ -81,6 +83,22 @@ export class MyAnswerDialogPage {
 
     getMycheckInput = function() {
         return this.mycheckInput.getAttribute('value');
+    };
+
+    questionnaireStatusSelectLastOption = function() {
+        this.questionnaireStatusSelect.all(by.tagName('option')).last().click();
+    };
+
+    questionnaireStatusSelectOption = function(option) {
+        this.questionnaireStatusSelect.sendKeys(option);
+    };
+
+    getQuestionnaireStatusSelect = function() {
+        return this.questionnaireStatusSelect;
+    };
+
+    getQuestionnaireStatusSelectedOption = function() {
+        return this.questionnaireStatusSelect.element(by.css('option:checked')).getText();
     };
 
     answerSelectLastOption = function() {

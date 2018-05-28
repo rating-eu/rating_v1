@@ -6,7 +6,6 @@
 
     <include file="config/liquibase/changelog/00000000000000_initial_schema.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180410085152_added_entity_CompanyProfile.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20180410085153_added_entity_CompanySector.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180410085154_added_entity_DomainOfInfluence.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180410085155_added_entity_SelfAssessment.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180410085156_added_entity_Container.xml" relativeToChangelogFile="false"/>
@@ -22,13 +21,13 @@
     <include file="config/liquibase/changelog/20180410085206_added_entity_ExternalAudit.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180420084800_added_entity_Department.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180420084813_added_entity_MyAnswer.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20180502153128_added_entity_LevelWrapper.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20180502153129_added_entity_PhaseWrapper.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180502153134_added_entity_AnswerWeight.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180503113801_added_entity_LikelihoodPosition.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20180516144842_added_entity_QuestionnaireStatus.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20180525150016_added_entity_Level.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20180525150017_added_entity_Phase.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
     <include file="config/liquibase/changelog/20180410085152_added_entity_constraints_CompanyProfile.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20180410085153_added_entity_constraints_CompanySector.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180410085155_added_entity_constraints_SelfAssessment.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180410085158_added_entity_constraints_Asset.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180410085159_added_entity_constraints_ThreatAgent.xml" relativeToChangelogFile="false"/>
@@ -38,9 +37,25 @@
     <include file="config/liquibase/changelog/20180410085206_added_entity_constraints_ExternalAudit.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180420084800_added_entity_constraints_Department.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180420084813_added_entity_constraints_MyAnswer.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20180502153128_added_entity_constraints_LevelWrapper.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20180502153129_added_entity_constraints_PhaseWrapper.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/201805030113055_added_unique_constraint_answer_weight.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/201805030135646_added_unique_constraint_likelihood_position.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20180503113055_added_unique_constraint_answer_weight.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20180503135646_added_unique_constraint_likelihood_position.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20180508144233_added_threat_agents_data.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20180508150258_added_questionnaires_data.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20180508153623_added_questions_threat_agents_data.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20180508160443_added_answers_threat_agents_data.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20180513165449_added_motivations_data.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20180513173449_added_threat_agent_motivations_data.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20180516144842_added_entity_constraints_QuestionnaireStatus.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20180523150559_added_answer_weights_data.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20180523160524_added_containers_data.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20180523163015_added_asset_categories_data.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20180523180428_added_assets_data.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20180523191137_added_asset_containers_data.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20180524100524_added_domains_of_influence_data.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20180524111237_added_asset_domains_of_influence_data.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20180524154922_added_attack_strategies_data.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20180526000622_added_cyber_kill_chain_phases_data.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20180526003018_added_attack_levels_data.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20180526013023_added_attack_strategy_levels_phases_data.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
 </databaseChangeLog>

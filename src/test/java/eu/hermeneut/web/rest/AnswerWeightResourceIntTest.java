@@ -43,13 +43,13 @@ import eu.hermeneut.domain.enumeration.QuestionType;
 public class AnswerWeightResourceIntTest {
 
     private static final Likelihood DEFAULT_LIKELIHOOD = Likelihood.LOW;
-    private static final Likelihood UPDATED_LIKELIHOOD = Likelihood.MEDIUM;
+    private static final Likelihood UPDATED_LIKELIHOOD = Likelihood.LOW_MEDIUM;
 
     private static final QuestionType DEFAULT_QUESTION_TYPE = QuestionType.REGULAR;
     private static final QuestionType UPDATED_QUESTION_TYPE = QuestionType.RELEVANT;
 
-    private static final Integer DEFAULT_WEIGHT = 1;
-    private static final Integer UPDATED_WEIGHT = 2;
+    private static final Float DEFAULT_WEIGHT = 1F;
+    private static final Float UPDATED_WEIGHT = 2F;
 
     @Autowired
     private AnswerWeightRepository answerWeightRepository;
@@ -163,7 +163,7 @@ public class AnswerWeightResourceIntTest {
             .andExpect(jsonPath("$.[*].id").value(hasItem(answerWeight.getId().intValue())))
             .andExpect(jsonPath("$.[*].likelihood").value(hasItem(DEFAULT_LIKELIHOOD.toString())))
             .andExpect(jsonPath("$.[*].questionType").value(hasItem(DEFAULT_QUESTION_TYPE.toString())))
-            .andExpect(jsonPath("$.[*].weight").value(hasItem(DEFAULT_WEIGHT)));
+            .andExpect(jsonPath("$.[*].weight").value(hasItem(DEFAULT_WEIGHT.doubleValue())));
     }
 
     @Test
@@ -179,7 +179,7 @@ public class AnswerWeightResourceIntTest {
             .andExpect(jsonPath("$.id").value(answerWeight.getId().intValue()))
             .andExpect(jsonPath("$.likelihood").value(DEFAULT_LIKELIHOOD.toString()))
             .andExpect(jsonPath("$.questionType").value(DEFAULT_QUESTION_TYPE.toString()))
-            .andExpect(jsonPath("$.weight").value(DEFAULT_WEIGHT));
+            .andExpect(jsonPath("$.weight").value(DEFAULT_WEIGHT.doubleValue()));
     }
 
     @Test
@@ -278,7 +278,7 @@ public class AnswerWeightResourceIntTest {
             .andExpect(jsonPath("$.[*].id").value(hasItem(answerWeight.getId().intValue())))
             .andExpect(jsonPath("$.[*].likelihood").value(hasItem(DEFAULT_LIKELIHOOD.toString())))
             .andExpect(jsonPath("$.[*].questionType").value(hasItem(DEFAULT_QUESTION_TYPE.toString())))
-            .andExpect(jsonPath("$.[*].weight").value(hasItem(DEFAULT_WEIGHT)));
+            .andExpect(jsonPath("$.[*].weight").value(hasItem(DEFAULT_WEIGHT.doubleValue())));
     }
 
     @Test

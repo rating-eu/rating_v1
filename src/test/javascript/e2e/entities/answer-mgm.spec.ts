@@ -42,8 +42,6 @@ describe('Answer e2e test', () => {
         answerDialogPage.setOrderInput('5');
         expect(answerDialogPage.getOrderInput()).toMatch('5');
         answerDialogPage.likelihoodSelectLastOption();
-        // answerDialogPage.threatAgentsSelectLastOption();
-        // answerDialogPage.attacksSelectLastOption();
         answerDialogPage.questionSelectLastOption();
         answerDialogPage.save();
         expect(answerDialogPage.getSaveButton().isPresent()).toBeFalsy();
@@ -76,8 +74,6 @@ export class AnswerDialogPage {
     modifiedInput = element(by.css('input#field_modified'));
     orderInput = element(by.css('input#field_order'));
     likelihoodSelect = element(by.css('select#field_likelihood'));
-    threatAgentsSelect = element(by.css('select#field_threatAgents'));
-    attacksSelect = element(by.css('select#field_attacks'));
     questionSelect = element(by.css('select#field_question'));
 
     getModalTitle() {
@@ -127,38 +123,6 @@ export class AnswerDialogPage {
     likelihoodSelectLastOption = function() {
         this.likelihoodSelect.all(by.tagName('option')).last().click();
     };
-    threatAgentsSelectLastOption = function() {
-        this.threatAgentsSelect.all(by.tagName('option')).last().click();
-    };
-
-    threatAgentsSelectOption = function(option) {
-        this.threatAgentsSelect.sendKeys(option);
-    };
-
-    getThreatAgentsSelect = function() {
-        return this.threatAgentsSelect;
-    };
-
-    getThreatAgentsSelectedOption = function() {
-        return this.threatAgentsSelect.element(by.css('option:checked')).getText();
-    };
-
-    attacksSelectLastOption = function() {
-        this.attacksSelect.all(by.tagName('option')).last().click();
-    };
-
-    attacksSelectOption = function(option) {
-        this.attacksSelect.sendKeys(option);
-    };
-
-    getAttacksSelect = function() {
-        return this.attacksSelect;
-    };
-
-    getAttacksSelectedOption = function() {
-        return this.attacksSelect.element(by.css('option:checked')).getText();
-    };
-
     questionSelectLastOption = function() {
         this.questionSelect.all(by.tagName('option')).last().click();
     };
