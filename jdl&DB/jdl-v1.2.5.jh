@@ -6,7 +6,7 @@ entity CompanyProfile{
     Type CompType
 }
 
-entity Department{
+entity CompanyGroup{
     Name String required,
     Description String maxlength(2000),
     Created ZonedDateTime,
@@ -217,7 +217,7 @@ relationship ManyToMany {
     AttackStrategy{mitigation(name)} to Mitigation{countermeasure},
     Question{attackStrategies(name)} to AttackStrategy{question(name)},
     SelfAssessment{companyprofiles(name)} to CompanyProfile{selfassessment(name)},
-    SelfAssessment{department(name)} to Department{selfassessment(name)},
+    SelfAssessment{companyGroup(name)} to CompanyGroup{selfassessment(name)},
     SelfAssessment{asset(name)} to Asset{selfassessment(name)},
     SelfAssessment{threatagent(name)} to ThreatAgent{selfassessment(name)},
     SelfAssessment{attackstrategy(name)} to AttackStrategy{selfassessment(name)},
@@ -231,7 +231,7 @@ relationship OneToMany{
     AssetCategory{asset(name)} to Asset{assetcategory(name)},
     Questionnaire{questions(name)} to Question{questionnaire(name)},
     Question{answers(name)} to Answer{question(name)},
-    CompanyProfile{departments(name)} to Department{companyprofile(name)},
+    CompanyProfile{companyGroups(name)} to CompanyGroup{companyprofile(name)},
     ThreatAgent{questions} to Question
     QuestionnaireStatus{answers} to MyAnswer
 }
@@ -248,7 +248,7 @@ relationship OneToOne{
 
 relationship ManyToOne{
     CompanyProfile{user(login)} to User,
-    Department{user(login)} to User,
+    CompanyGroup{user(login)} to User,
     ExternalAudit{user(login)} to User,
     SelfAssessment{user(login)} to User
 }
