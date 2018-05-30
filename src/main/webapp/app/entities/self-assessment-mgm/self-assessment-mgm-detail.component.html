@@ -26,7 +26,7 @@
                 <a [routerLink]="['/company-profile-mgm', companyprofiles?.id ]">{{companyprofiles.name}}</a>{{last ? '' : ', '}}
             </span>
         </dd>
-        <dt><span jhiTranslate="hermeneutApp.selfAssessment.companyGroup">Company Group</span></dt>
+        <dt><span jhiTranslate="hermeneutApp.selfAssessment.companyGroup">Group</span></dt>
         <dd>
             <span *ngFor="let companyGroup of selfAssessment.companyGroups; let last = last">
                 <a [routerLink]="['/company-group-mgm', companyGroup?.id ]">{{companyGroup.name}}</a>{{last ? '' : ', '}}

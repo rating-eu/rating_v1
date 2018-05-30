@@ -4,18 +4,18 @@
         "companyGroup" : {
             "home": {
                 "title": "CompanyGroups",
-                "createLabel": "Genera un nuovo Company Group",
-                "createOrEditLabel": "Genera o modifica un Company Group",
-                "search": "Cerca Company Group"
+                "createLabel": "Genera un nuovo Group",
+                "createOrEditLabel": "Genera o modifica un Group",
+                "search": "Cerca Group"
             },
-            "created": "&Egrave; stato generato un nuovo Company Group con identificatore {{ param }}",
-            "updated": "&Egrave; stato aggiornato Company Group identificato da {{ param }}",
-            "deleted": "&Egrave; stato eliminato Company Group con identificatore {{ param }}",
+            "created": "&Egrave; stato generato un nuovo Group con identificatore {{ param }}",
+            "updated": "&Egrave; stato aggiornato Group identificato da {{ param }}",
+            "deleted": "&Egrave; stato eliminato Group con identificatore {{ param }}",
             "delete": {
-                "question": "Sei sicuro di volere eliminare Company Group {{ id }}?"
+                "question": "Sei sicuro di volere eliminare Group {{ id }}?"
             },
             "detail": {
-                "title": "Company Group"
+                "title": "Group"
             },
             "name": "Name",
             "description": "Description",

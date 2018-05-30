@@ -3,19 +3,19 @@
     "hermeneutApp": {
         "companyGroup" : {
             "home": {
-                "title": "Company Groups",
-                "createLabel": "Criar um(a) novo(a) Company Group",
-                "createOrEditLabel": "Criar ou editar um(a) Company Group",
-                "search": "Search for Company Group"
+                "title": "Groups",
+                "createLabel": "Criar um(a) novo(a) Group",
+                "createOrEditLabel": "Criar ou editar um(a) Group",
+                "search": "Search for Group"
             },
-            "created": "A new Company Group is created with identifier {{ param }}",
-            "updated": "A Company Group is updated with identifier {{ param }}",
-            "deleted": "A Company Group is deleted with identifier {{ param }}",
+            "created": "A new Group is created with identifier {{ param }}",
+            "updated": "A Group is updated with identifier {{ param }}",
+            "deleted": "A Group is deleted with identifier {{ param }}",
             "delete": {
-                "question": "Tem a certeza que pretende eliminar o(a) Company Group {{ id }}?"
+                "question": "Tem a certeza que pretende eliminar o(a) Group {{ id }}?"
             },
             "detail": {
-                "title": "Company Group"
+                "title": "Group"
             },
             "name": "Name",
             "description": "Description",
