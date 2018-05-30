@@ -6,51 +6,41 @@ import { Observable } from 'rxjs/Observable';
 import { JhiEventManager } from 'ng-jhipster';
 
 import { HermeneutTestModule } from '../../../test.module';
-import { SelfAssessmentMgmDialogComponent } from '../../../../../../main/webapp/app/entities/self-assessment-mgm/self-assessment-mgm-dialog.component';
-import { SelfAssessmentMgmService } from '../../../../../../main/webapp/app/entities/self-assessment-mgm/self-assessment-mgm.service';
-import { SelfAssessmentMgm } from '../../../../../../main/webapp/app/entities/self-assessment-mgm/self-assessment-mgm.model';
+import { CompanyGroupMgmDialogComponent } from '../../../../../../main/webapp/app/entities/company-group-mgm/company-group-mgm-dialog.component';
+import { CompanyGroupMgmService } from '../../../../../../main/webapp/app/entities/company-group-mgm/company-group-mgm.service';
+import { CompanyGroupMgm } from '../../../../../../main/webapp/app/entities/company-group-mgm/company-group-mgm.model';
 import { UserService } from '../../../../../../main/webapp/app/shared';
 import { CompanyProfileMgmService } from '../../../../../../main/webapp/app/entities/company-profile-mgm';
-import { CompanyGroupMgmService } from '../../../../../../main/webapp/app/entities/company-group-mgm';
-import { AssetMgmService } from '../../../../../../main/webapp/app/entities/asset-mgm';
-import { ThreatAgentMgmService } from '../../../../../../main/webapp/app/entities/threat-agent-mgm';
-import { AttackStrategyMgmService } from '../../../../../../main/webapp/app/entities/attack-strategy-mgm';
-import { ExternalAuditMgmService } from '../../../../../../main/webapp/app/entities/external-audit-mgm';
-import { QuestionnaireMgmService } from '../../../../../../main/webapp/app/entities/questionnaire-mgm';
+import { SelfAssessmentMgmService } from '../../../../../../main/webapp/app/entities/self-assessment-mgm';
 
 describe('Component Tests', () => {
 
-    describe('SelfAssessmentMgm Management Dialog Component', () => {
-        let comp: SelfAssessmentMgmDialogComponent;
-        let fixture: ComponentFixture<SelfAssessmentMgmDialogComponent>;
-        let service: SelfAssessmentMgmService;
+    describe('CompanyGroupMgm Management Dialog Component', () => {
+        let comp: CompanyGroupMgmDialogComponent;
+        let fixture: ComponentFixture<CompanyGroupMgmDialogComponent>;
+        let service: CompanyGroupMgmService;
         let mockEventManager: any;
         let mockActiveModal: any;
 
         beforeEach(async(() => {
             TestBed.configureTestingModule({
                 imports: [HermeneutTestModule],
-                declarations: [SelfAssessmentMgmDialogComponent],
+                declarations: [CompanyGroupMgmDialogComponent],
                 providers: [
                     UserService,
                     CompanyProfileMgmService,
-                    CompanyGroupMgmService,
-                    AssetMgmService,
-                    ThreatAgentMgmService,
-                    AttackStrategyMgmService,
-                    ExternalAuditMgmService,
-                    QuestionnaireMgmService,
-                    SelfAssessmentMgmService
+                    SelfAssessmentMgmService,
+                    CompanyGroupMgmService
                 ]
             })
-            .overrideTemplate(SelfAssessmentMgmDialogComponent, '')
+            .overrideTemplate(CompanyGroupMgmDialogComponent, '')
             .compileComponents();
         }));
 
         beforeEach(() => {
-            fixture = TestBed.createComponent(SelfAssessmentMgmDialogComponent);
+            fixture = TestBed.createComponent(CompanyGroupMgmDialogComponent);
             comp = fixture.componentInstance;
-            service = fixture.debugElement.injector.get(SelfAssessmentMgmService);
+            service = fixture.debugElement.injector.get(CompanyGroupMgmService);
             mockEventManager = fixture.debugElement.injector.get(JhiEventManager);
             mockActiveModal = fixture.debugElement.injector.get(NgbActiveModal);
         });
@@ -60,9 +50,9 @@ describe('Component Tests', () => {
                 inject([],
                     fakeAsync(() => {
                         // GIVEN
-                        const entity = new SelfAssessmentMgm(123);
+                        const entity = new CompanyGroupMgm(123);
                         spyOn(service, 'update').and.returnValue(Observable.of(new HttpResponse({body: entity})));
-                        comp.selfAssessment = entity;
+                        comp.companyGroup = entity;
                         // WHEN
                         comp.save();
                         tick(); // simulate async
@@ -70,7 +60,7 @@ describe('Component Tests', () => {
                         // THEN
                         expect(service.update).toHaveBeenCalledWith(entity);
                         expect(comp.isSaving).toEqual(false);
-                        expect(mockEventManager.broadcastSpy).toHaveBeenCalledWith({ name: 'selfAssessmentListModification', content: 'OK'});
+                        expect(mockEventManager.broadcastSpy).toHaveBeenCalledWith({ name: 'companyGroupListModification', content: 'OK'});
                         expect(mockActiveModal.dismissSpy).toHaveBeenCalled();
                     })
                 )
@@ -80,9 +70,9 @@ describe('Component Tests', () => {
                 inject([],
                     fakeAsync(() => {
                         // GIVEN
-                        const entity = new SelfAssessmentMgm();
+                        const entity = new CompanyGroupMgm();
                         spyOn(service, 'create').and.returnValue(Observable.of(new HttpResponse({body: entity})));
-                        comp.selfAssessment = entity;
+                        comp.companyGroup = entity;
                         // WHEN
                         comp.save();
                         tick(); // simulate async
@@ -90,7 +80,7 @@ describe('Component Tests', () => {
                         // THEN
                         expect(service.create).toHaveBeenCalledWith(entity);
                         expect(comp.isSaving).toEqual(false);
-                        expect(mockEventManager.broadcastSpy).toHaveBeenCalledWith({ name: 'selfAssessmentListModification', content: 'OK'});
+                        expect(mockEventManager.broadcastSpy).toHaveBeenCalledWith({ name: 'companyGroupListModification', content: 'OK'});
                         expect(mockActiveModal.dismissSpy).toHaveBeenCalled();
                     })
                 )
