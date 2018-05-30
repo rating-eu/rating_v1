@@ -35,7 +35,7 @@
                     <th><span>Modified</span></th>
                     <th><span>User</span></th>
                     <th><span>Companyprofiles</span></th>
-                    <th><span>Department</span></th>
+                    <th><span>Groups</span></th>
                     <th><span>Asset</span></th>
                     <th><span>Threatagent</span></th>
                     <th><span>Attackstrategy</span></th>
@@ -59,8 +59,8 @@
                         </span>
                     </td>
                     <td>
-                    <span *ngFor="let department of mySelf.departments; let last = last">
-                            <a class="form-control-static" [routerLink]="['../department-mgm', department?.id ]">{{department.name}}</a>{{last ? '' : ', '}}
+                    <span *ngFor="let group of mySelf.companyGroups; let last = last">
+                            <a class="form-control-static" [routerLink]="['../company-group-mgm', group?.id ]">{{group.name}}</a>{{last ? '' : ', '}}
                         </span>
                     </td>
                     <td>

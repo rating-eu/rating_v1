@@ -14,7 +14,6 @@ import { HermeneutQuestionnaireMgmModule } from './questionnaire-mgm/questionnai
 import { HermeneutQuestionMgmModule } from './question-mgm/question-mgm.module';
 import { HermeneutAnswerMgmModule } from './answer-mgm/answer-mgm.module';
 import { HermeneutExternalAuditMgmModule } from './external-audit-mgm/external-audit-mgm.module';
-import { HermeneutDepartmentMgmModule } from './department-mgm/department-mgm.module';
 import { HermeneutMyAnswerMgmModule } from './my-answer-mgm/my-answer-mgm.module';
 import { HermeneutAnswerWeightMgmModule } from './answer-weight-mgm/answer-weight-mgm.module';
 import { HermeneutLikelihoodPositionMgmModule } from './likelihood-position-mgm/likelihood-position-mgm.module';
@@ -40,7 +39,6 @@ import { HermeneutCompanyGroupMgmModule } from './company-group-mgm/company-grou
         HermeneutQuestionMgmModule,
         HermeneutAnswerMgmModule,
         HermeneutExternalAuditMgmModule,
-        HermeneutDepartmentMgmModule,
         HermeneutMyAnswerMgmModule,
         HermeneutAnswerWeightMgmModule,
         HermeneutLikelihoodPositionMgmModule,
