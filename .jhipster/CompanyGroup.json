@@ -2,31 +2,23 @@
     "fluentMethods": true,
     "relationships": [
         {
-            "relationshipType": "one-to-many",
-            "relationshipName": "companyGroups",
-            "otherEntityName": "companyGroup",
-            "otherEntityRelationshipName": "companyprofile"
-        },
-        {
             "relationshipType": "many-to-one",
             "relationshipName": "user",
             "otherEntityName": "user",
             "otherEntityField": "login"
         },
         {
-            "relationshipType": "many-to-many",
-            "otherEntityRelationshipName": "company",
-            "relationshipName": "container",
-            "otherEntityName": "container",
-            "otherEntityField": "name",
-            "ownerSide": true
+            "relationshipType": "many-to-one",
+            "relationshipName": "companyprofile",
+            "otherEntityName": "companyProfile",
+            "otherEntityField": "name"
         },
         {
             "relationshipType": "many-to-many",
             "relationshipName": "selfassessment",
             "otherEntityName": "selfAssessment",
             "ownerSide": false,
-            "otherEntityRelationshipName": "companyprofiles"
+            "otherEntityRelationshipName": "companyGroup"
         }
     ],
     "fields": [
@@ -52,15 +44,10 @@
         {
             "fieldName": "modified",
             "fieldType": "ZonedDateTime"
-        },
-        {
-            "fieldName": "type",
-            "fieldType": "CompType",
-            "fieldValues": "INFORMATION,HEALTHCARE,FINANCE,ACCOMODATION,ADMINISTRATIVE,AGRICOLTURE,CONSTRUCTION,EDUCATION,ENTERTAINMENT,MANAGEMENT,MANUFACTURING,MINING,OTHERSERVICES,PROFESSIONAL,PUBLIC,REALESTATE,RETAILS,TRADE,TRANSPORTATION,UTILITIES"
         }
     ],
-    "changelogDate": "20180410085152",
-    "entityTableName": "company_profile",
+    "changelogDate": "20180530100401",
+    "entityTableName": "company_group",
     "dto": "no",
     "pagination": "no",
     "service": "serviceImpl",

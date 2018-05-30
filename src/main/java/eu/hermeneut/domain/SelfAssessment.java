@@ -51,10 +51,10 @@ public class SelfAssessment implements Serializable {
 
     @ManyToMany
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    @JoinTable(name = "self_assessment_department",
+    @JoinTable(name = "self_assessment_company_group",
                joinColumns = @JoinColumn(name="self_assessments_id", referencedColumnName="id"),
-               inverseJoinColumns = @JoinColumn(name="departments_id", referencedColumnName="id"))
-    private Set<Department> departments = new HashSet<>();
+               inverseJoinColumns = @JoinColumn(name="company_groups_id", referencedColumnName="id"))
+    private Set<CompanyGroup> companyGroups = new HashSet<>();
 
     @ManyToMany
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
@@ -177,29 +177,29 @@ public class SelfAssessment implements Serializable {
         this.companyprofiles = companyProfiles;
     }
 
-    public Set<Department> getDepartments() {
-        return departments;
+    public Set<CompanyGroup> getCompanyGroups() {
+        return companyGroups;
     }
 
-    public SelfAssessment departments(Set<Department> departments) {
-        this.departments = departments;
+    public SelfAssessment companyGroups(Set<CompanyGroup> companyGroups) {
+        this.companyGroups = companyGroups;
         return this;
     }
 
-    public SelfAssessment addDepartment(Department department) {
-        this.departments.add(department);
-        department.getSelfassessments().add(this);
+    public SelfAssessment addCompanyGroup(CompanyGroup companyGroup) {
+        this.companyGroups.add(companyGroup);
+        companyGroup.getSelfassessments().add(this);
         return this;
     }
 
-    public SelfAssessment removeDepartment(Department department) {
-        this.departments.remove(department);
-        department.getSelfassessments().remove(this);
+    public SelfAssessment removeCompanyGroup(CompanyGroup companyGroup) {
+        this.companyGroups.remove(companyGroup);
+        companyGroup.getSelfassessments().remove(this);
         return this;
     }
 
-    public void setDepartments(Set<Department> departments) {
-        this.departments = departments;
+    public void setCompanyGroups(Set<CompanyGroup> companyGroups) {
+        this.companyGroups = companyGroups;
     }
 
     public Set<Asset> getAssets() {

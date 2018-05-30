@@ -53,7 +53,7 @@ public class CompanyProfile implements Serializable {
     @OneToMany(mappedBy = "companyprofile")
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private Set<Department> departments = new HashSet<>();
+    private Set<CompanyGroup> companyGroups = new HashSet<>();
 
     @ManyToOne
     private User user;
@@ -144,29 +144,29 @@ public class CompanyProfile implements Serializable {
         this.type = type;
     }
 
-    public Set<Department> getDepartments() {
-        return departments;
+    public Set<CompanyGroup> getCompanyGroups() {
+        return companyGroups;
     }
 
-    public CompanyProfile departments(Set<Department> departments) {
-        this.departments = departments;
+    public CompanyProfile companyGroups(Set<CompanyGroup> companyGroups) {
+        this.companyGroups = companyGroups;
         return this;
     }
 
-    public CompanyProfile addDepartments(Department department) {
-        this.departments.add(department);
-        department.setCompanyprofile(this);
+    public CompanyProfile addCompanyGroups(CompanyGroup companyGroup) {
+        this.companyGroups.add(companyGroup);
+        companyGroup.setCompanyprofile(this);
         return this;
     }
 
-    public CompanyProfile removeDepartments(Department department) {
-        this.departments.remove(department);
-        department.setCompanyprofile(null);
+    public CompanyProfile removeCompanyGroups(CompanyGroup companyGroup) {
+        this.companyGroups.remove(companyGroup);
+        companyGroup.setCompanyprofile(null);
         return this;
     }
 
-    public void setDepartments(Set<Department> departments) {
-        this.departments = departments;
+    public void setCompanyGroups(Set<CompanyGroup> companyGroups) {
+        this.companyGroups = companyGroups;
     }
 
     public User getUser() {

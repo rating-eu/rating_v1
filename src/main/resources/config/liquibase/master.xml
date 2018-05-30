@@ -26,6 +26,7 @@
     <include file="config/liquibase/changelog/20180516144842_added_entity_QuestionnaireStatus.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180525150016_added_entity_Level.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180525150017_added_entity_Phase.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20180530100401_added_entity_CompanyGroup.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
     <include file="config/liquibase/changelog/20180410085152_added_entity_constraints_CompanyProfile.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180410085155_added_entity_constraints_SelfAssessment.xml" relativeToChangelogFile="false"/>
@@ -57,5 +58,6 @@
     <include file="config/liquibase/changelog/20180526000622_added_cyber_kill_chain_phases_data.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180526003018_added_attack_levels_data.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180526013023_added_attack_strategy_levels_phases_data.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20180530100401_added_entity_constraints_CompanyGroup.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
 </databaseChangeLog>

@@ -28,6 +28,7 @@
                 "questionnaireStatusMgm": "Questionnaire Status",
                 "levelMgm": "Level",
                 "phaseMgm": "Phase",
+                "companyGroupMgm": "Company Group",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {

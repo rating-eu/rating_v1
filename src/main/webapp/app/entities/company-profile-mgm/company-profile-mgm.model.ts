@@ -31,7 +31,7 @@ export class CompanyProfileMgm implements BaseEntity {
         public created?: any,
         public modified?: any,
         public type?: CompType,
-        public departments?: BaseEntity[],
+        public companyGroups?: BaseEntity[],
         public user?: User,
         public containers?: BaseEntity[],
         public selfassessments?: BaseEntity[],
