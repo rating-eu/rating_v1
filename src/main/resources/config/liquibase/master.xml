@@ -33,7 +33,6 @@
     <include file="config/liquibase/changelog/20180410085159_added_entity_constraints_ThreatAgent.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180410085201_added_entity_constraints_AttackStrategy.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180410085204_added_entity_constraints_Question.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20180410085205_added_entity_constraints_Answer.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180410085206_added_entity_constraints_ExternalAudit.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180420084813_added_entity_constraints_MyAnswer.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180503113055_added_unique_constraint_answer_weight.xml" relativeToChangelogFile="false"/>
@@ -41,8 +40,8 @@
     <include file="config/liquibase/changelog/20180508144233_added_threat_agents_data.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180508150258_added_questionnaires_data.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180508153623_added_questions_threat_agents_data.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20180508160443_added_answers_threat_agents_data.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180513165449_added_motivations_data.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20180508160443_added_answers_data.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180513173449_added_threat_agent_motivations_data.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180516144842_added_entity_constraints_QuestionnaireStatus.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180523150559_added_answer_weights_data.xml" relativeToChangelogFile="false"/>

@@ -19,7 +19,7 @@
     <changeSet id="20180508153623-1" author="developer">
         <loadData catalogName="answer"
                   encoding="UTF-8"
-                  file="config/liquibase/answers_threat_agents.csv"
+                  file="config/liquibase/answers.csv"
                   schemaName="public"
                   separator=";"
                   quotchar="'"
