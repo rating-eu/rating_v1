@@ -8,7 +8,6 @@ import javax.persistence.*;
 import javax.validation.constraints.*;
 
 import org.springframework.data.elasticsearch.annotations.Document;
-
 import java.io.Serializable;
 import java.time.ZonedDateTime;
 import java.util.HashSet;
@@ -61,17 +60,19 @@ public class Question implements Serializable {
     @ManyToOne
     private ThreatAgent threatAgent;
 
-    @OneToMany(mappedBy = "question")
-    @JsonIgnore
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private Set<Answer> answers = new HashSet<>();
-
     @ManyToMany
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     @JoinTable(name = "question_attack_strategies",
                joinColumns = @JoinColumn(name="questions_id", referencedColumnName="id"),
                inverseJoinColumns = @JoinColumn(name="attack_strategies_id", referencedColumnName="id"))
     private Set<AttackStrategy> attackStrategies = new HashSet<>();
+
+    @ManyToMany
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    @JoinTable(name = "question_answers",
+               joinColumns = @JoinColumn(name="questions_id", referencedColumnName="id"),
+               inverseJoinColumns = @JoinColumn(name="answers_id", referencedColumnName="id"))
+    private Set<Answer> answers = new HashSet<>();
 
     @OneToOne(mappedBy = "question")
     @JsonIgnore
@@ -180,31 +181,6 @@ public class Question implements Serializable {
         this.threatAgent = threatAgent;
     }
 
-    public Set<Answer> getAnswers() {
-        return answers;
-    }
-
-    public Question answers(Set<Answer> answers) {
-        this.answers = answers;
-        return this;
-    }
-
-    public Question addAnswers(Answer answer) {
-        this.answers.add(answer);
-        answer.setQuestion(this);
-        return this;
-    }
-
-    public Question removeAnswers(Answer answer) {
-        this.answers.remove(answer);
-        answer.setQuestion(null);
-        return this;
-    }
-
-    public void setAnswers(Set<Answer> answers) {
-        this.answers = answers;
-    }
-
     public Set<AttackStrategy> getAttackStrategies() {
         return attackStrategies;
     }
@@ -228,6 +204,31 @@ public class Question implements Serializable {
 
     public void setAttackStrategies(Set<AttackStrategy> attackStrategies) {
         this.attackStrategies = attackStrategies;
+    }
+
+    public Set<Answer> getAnswers() {
+        return answers;
+    }
+
+    public Question answers(Set<Answer> answers) {
+        this.answers = answers;
+        return this;
+    }
+
+    public Question addAnswers(Answer answer) {
+        this.answers.add(answer);
+        answer.getQuestions().add(this);
+        return this;
+    }
+
+    public Question removeAnswers(Answer answer) {
+        this.answers.remove(answer);
+        answer.getQuestions().remove(this);
+        return this;
+    }
+
+    public void setAnswers(Set<Answer> answers) {
+        this.answers = answers;
     }
 
     public MyAnswer getMyanswer() {

@@ -69,6 +69,17 @@
 
         <addPrimaryKey columnNames="questions_id, attack_strategies_id" tableName="question_attack_strategies"/>
         
+        <createTable tableName="question_answers">
+            <column name="answers_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="questions_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addPrimaryKey columnNames="questions_id, answers_id" tableName="question_answers"/>
+        
     </changeSet>
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here, do not remove-->
 </databaseChangeLog>

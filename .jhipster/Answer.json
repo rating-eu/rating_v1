@@ -2,10 +2,11 @@
     "fluentMethods": true,
     "relationships": [
         {
-            "relationshipType": "many-to-one",
+            "relationshipType": "many-to-many",
             "relationshipName": "question",
             "otherEntityName": "question",
-            "otherEntityField": "name"
+            "ownerSide": false,
+            "otherEntityRelationshipName": "answers"
         }
     ],
     "fields": [
