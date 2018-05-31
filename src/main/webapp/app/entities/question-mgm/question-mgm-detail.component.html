@@ -40,6 +40,12 @@
                 <a [routerLink]="['/attack-strategy-mgm', attackStrategies?.id ]">{{attackStrategies.name}}</a>{{last ? '' : ', '}}
             </span>
         </dd>
+        <dt><span jhiTranslate="hermeneutApp.question.answers">Answers</span></dt>
+        <dd>
+            <span *ngFor="let answers of question.answers; let last = last">
+                <a [routerLink]="['/answer-mgm', answers?.id ]">{{answers.name}}</a>{{last ? '' : ', '}}
+            </span>
+        </dd>
         <dt><span jhiTranslate="hermeneutApp.question.questionnaire">Questionnaire</span></dt>
         <dd>
             <div *ngIf="question.questionnaire">

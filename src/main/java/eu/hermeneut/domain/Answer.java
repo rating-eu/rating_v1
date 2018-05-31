@@ -47,8 +47,10 @@ public class Answer implements Serializable {
     @Column(name = "likelihood")
     private Likelihood likelihood;
 
-    @ManyToOne
-    private Question question;
+    @ManyToMany(mappedBy = "answers")
+    @JsonIgnore
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    private Set<Question> questions = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -124,17 +126,29 @@ public class Answer implements Serializable {
         this.likelihood = likelihood;
     }
 
-    public Question getQuestion() {
-        return question;
+    public Set<Question> getQuestions() {
+        return questions;
     }
 
-    public Answer question(Question question) {
-        this.question = question;
+    public Answer questions(Set<Question> questions) {
+        this.questions = questions;
         return this;
     }
 
-    public void setQuestion(Question question) {
-        this.question = question;
+    public Answer addQuestion(Question question) {
+        this.questions.add(question);
+        question.getAnswers().add(this);
+        return this;
+    }
+
+    public Answer removeQuestion(Question question) {
+        this.questions.remove(question);
+        question.getAnswers().remove(this);
+        return this;
+    }
+
+    public void setQuestions(Set<Question> questions) {
+        this.questions = questions;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 

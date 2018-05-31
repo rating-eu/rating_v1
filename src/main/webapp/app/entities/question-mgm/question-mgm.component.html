@@ -38,6 +38,7 @@
             <th><span jhiTranslate="hermeneutApp.question.answerType">Answer Type</span></th>
             <th><span jhiTranslate="hermeneutApp.question.threatAgent">Threat Agent</span></th>
             <th><span jhiTranslate="hermeneutApp.question.attackStrategies">Attack Strategies</span></th>
+            <th><span jhiTranslate="hermeneutApp.question.answers">Answers</span></th>
             <th><span jhiTranslate="hermeneutApp.question.questionnaire">Questionnaire</span></th>
             <th></th>
             </tr>
@@ -59,6 +60,11 @@
                 <td>
                     <span *ngFor="let attackStrategies of question.attackStrategies; let last = last">
                             <a class="form-control-static" [routerLink]="['../attack-strategy-mgm', attackStrategies?.id ]">{{attackStrategies.name}}</a>{{last ? '' : ', '}}
+                        </span>
+                </td>
+                <td>
+                    <span *ngFor="let answers of question.answers; let last = last">
+                            <a class="form-control-static" [routerLink]="['../answer-mgm', answers?.id ]">{{answers.name}}</a>{{last ? '' : ', '}}
                         </span>
                 </td>
                 <td>

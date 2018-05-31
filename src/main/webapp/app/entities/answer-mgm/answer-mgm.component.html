@@ -35,7 +35,6 @@
             <th><span jhiTranslate="hermeneutApp.answer.modified">Modified</span></th>
             <th><span jhiTranslate="hermeneutApp.answer.order">Order</span></th>
             <th><span jhiTranslate="hermeneutApp.answer.likelihood">Likelihood</span></th>
-            <th><span jhiTranslate="hermeneutApp.answer.question">Question</span></th>
             <th></th>
             </tr>
             </thead>
@@ -47,11 +46,6 @@
                 <td>{{answer.modified | date:'medium'}}</td>
                 <td>{{answer.order}}</td>
                 <td jhiTranslate="{{'hermeneutApp.Likelihood.' + answer.likelihood}}">{{answer.likelihood}}</td>
-                <td>
-                    <div *ngIf="answer.question">
-                        <a [routerLink]="['../question-mgm', answer.question?.id ]" >{{answer.question?.name}}</a>
-                    </div>
-                </td>
                 <td class="text-right">
                     <div class="btn-group flex-btn-group-container">
                         <button type="submit"

@@ -24,12 +24,6 @@
         <dd>
             <span jhiTranslate="{{'hermeneutApp.Likelihood.' + answer.likelihood}}">{{answer.likelihood}}</span>
         </dd>
-        <dt><span jhiTranslate="hermeneutApp.answer.question">Question</span></dt>
-        <dd>
-            <div *ngIf="answer.question">
-                <a [routerLink]="['/question-mgm', answer.question?.id]">{{answer.question?.name}}</a>
-            </div>
-        </dd>
     </dl>
 
     <button type="submit"

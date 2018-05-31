@@ -18,10 +18,10 @@ import java.util.List;
 public interface QuestionRepository extends JpaRepository<Question, Long> {
     @Query("SELECT question FROM Question question WHERE question.questionnaire = :questionnaire")
     List<Question> findAllByQuestionnaire(@Param("questionnaire") Questionnaire questionnaire);
-    @Query("select distinct question from Question question left join fetch question.attackStrategies")
+    @Query("select distinct question from Question question left join fetch question.attackStrategies left join fetch question.answers")
     List<Question> findAllWithEagerRelationships();
 
-    @Query("select question from Question question left join fetch question.attackStrategies where question.id =:id")
+    @Query("select question from Question question left join fetch question.attackStrategies left join fetch question.answers where question.id =:id")
     Question findOneWithEagerRelationships(@Param("id") Long id);
 
 }
