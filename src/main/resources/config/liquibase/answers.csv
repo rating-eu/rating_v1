@@ -1,0 +1,3 @@
+id;name;created;modified;jhi_order;likelihood
+1;YES;${now};${now};1;HIGH
+2;NO;${now};${now};2;LOW
