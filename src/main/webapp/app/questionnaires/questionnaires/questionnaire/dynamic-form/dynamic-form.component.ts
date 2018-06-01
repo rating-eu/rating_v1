@@ -19,7 +19,6 @@ import {SelfAssessmentMgm, SelfAssessmentMgmService} from '../../../../entities/
 import {Subscription} from 'rxjs/Subscription';
 import {FormUtils} from '../../../utils/FormUtils';
 import {forkJoin} from 'rxjs/observable/forkJoin';
-import {observable} from 'rxjs/symbol/observable';
 import {Observable} from 'rxjs/Observable';
 import {HttpResponse} from '@angular/common/http';
 
@@ -77,14 +76,6 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
             console.log('Form is: ' + this.form);
 
             this._questionsArrayMap = new Map<number, QuestionMgm>();
-            this._questionsArray.forEach((question) => {
-                this.answerService.findByQuestion(question.id)
-                    .toPromise()
-                    .then((answers: AnswerMgm[]) => {
-                        question.answers = answers;
-                    });
-                this._questionsArrayMap.set(question.id, question);
-            });
 
             if (this.myAnswers) {
                 this.form.patchValue(this.myAnswersToFormValue(this.myAnswers, this._questionsArrayMap));

@@ -16,8 +16,9 @@ import java.util.List;
 @SuppressWarnings("unused")
 @Repository
 public interface QuestionRepository extends JpaRepository<Question, Long> {
-    @Query("SELECT question FROM Question question WHERE question.questionnaire = :questionnaire")
+    @Query("SELECT DISTINCT question FROM Question question left join fetch question.attackStrategies left join fetch question.answers WHERE question.questionnaire = :questionnaire ORDER BY question.order ASC")
     List<Question> findAllByQuestionnaire(@Param("questionnaire") Questionnaire questionnaire);
+
     @Query("select distinct question from Question question left join fetch question.attackStrategies left join fetch question.answers")
     List<Question> findAllWithEagerRelationships();
 
