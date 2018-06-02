@@ -28,12 +28,6 @@
         <dd>
             <span jhiTranslate="{{'hermeneutApp.AnswerType.' + question.answerType}}">{{question.answerType}}</span>
         </dd>
-        <dt><span jhiTranslate="hermeneutApp.question.threatAgent">Threat Agent</span></dt>
-        <dd>
-            <div *ngIf="question.threatAgent">
-                <a [routerLink]="['/threat-agent-mgm', question.threatAgent?.id]">{{question.threatAgent?.id}}</a>
-            </div>
-        </dd>
         <dt><span jhiTranslate="hermeneutApp.question.attackStrategies">Attack Strategies</span></dt>
         <dd>
             <span *ngFor="let attackStrategies of question.attackStrategies; let last = last">
@@ -50,6 +44,12 @@
         <dd>
             <div *ngIf="question.questionnaire">
                 <a [routerLink]="['/questionnaire-mgm', question.questionnaire?.id]">{{question.questionnaire?.name}}</a>
+            </div>
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.question.threatAgent">Threat Agent</span></dt>
+        <dd>
+            <div *ngIf="question.threatAgent">
+                <a [routerLink]="['/threat-agent-mgm', question.threatAgent?.id]">{{question.threatAgent?.name}}</a>
             </div>
         </dd>
     </dl>

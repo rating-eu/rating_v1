@@ -2,12 +2,6 @@
     "fluentMethods": true,
     "relationships": [
         {
-            "relationshipName": "threatAgent",
-            "otherEntityName": "threatAgent",
-            "relationshipType": "many-to-one",
-            "otherEntityField": "id"
-        },
-        {
             "relationshipType": "many-to-many",
             "otherEntityRelationshipName": "question",
             "relationshipName": "attackStrategies",
@@ -34,6 +28,12 @@
             "relationshipType": "many-to-one",
             "relationshipName": "questionnaire",
             "otherEntityName": "questionnaire",
+            "otherEntityField": "name"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "threatAgent",
+            "otherEntityName": "threatAgent",
             "otherEntityField": "name"
         }
     ],
