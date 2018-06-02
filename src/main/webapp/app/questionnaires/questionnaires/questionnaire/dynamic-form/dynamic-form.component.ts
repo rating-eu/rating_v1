@@ -77,6 +77,10 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
 
             this._questionsArrayMap = new Map<number, QuestionMgm>();
 
+            this._questionsArray.forEach((value: QuestionMgm) => {
+                this._questionsArrayMap.set(value.id, value);
+            });
+
             if (this.myAnswers) {
                 this.form.patchValue(this.myAnswersToFormValue(this.myAnswers, this._questionsArrayMap));
             }
@@ -192,8 +196,8 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
             console.log('value: ' + JSON.stringify(value));
 
             const answer: AnswerMgm = value as AnswerMgm;
-            const question: QuestionMgm = this._questionsArrayMap.get(Number(key));
 
+            const question: QuestionMgm = this._questionsArrayMap.get(Number(key));
             console.log('Question: ' + JSON.stringify(question));
 
             const threatAgent: ThreatAgentMgm = question.threatAgent;
