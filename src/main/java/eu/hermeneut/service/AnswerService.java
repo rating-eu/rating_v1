@@ -47,11 +47,4 @@ public interface AnswerService {
      * @return the list of entities
      */
     List<Answer> search(String query);
-
-    /**
-     * Get all the questions by questionnaire.
-     *
-     * @return the list of entities
-     */
-    List<Answer> findAllByQuestion(Question question);
 }

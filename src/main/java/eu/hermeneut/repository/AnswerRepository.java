@@ -16,6 +16,4 @@ import java.util.List;
 @Repository
 public interface AnswerRepository extends JpaRepository<Answer, Long> {
 
-    @Query("select distinct answer from Answer answer where answer.question = :question")
-    List<Answer> findAllByQuestion(@Param("question") Question question);
 }

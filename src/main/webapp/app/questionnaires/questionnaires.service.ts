@@ -33,10 +33,6 @@ export class QuestionnairesService {
         return this.http.get<QuestionnaireMgm[]>(this.questionsByQuestionnaireIDAPIUrl.replace('{questionnaireID}', String(questionnaire.id)));
     }
 
-    getAllAnswersByQuestion(question: QuestionMgm): Observable<AnswerMgm[]> {
-        return this.http.get<AnswerMgm[]>(this.answersByQuestionIDAPIUrl.replace('{questionID}', String(question.id)));
-    }
-
     getMyAnswersByQuestionnaireAndUser(questionnaire: QuestionnaireMgm, user: User): Observable<MyAnswerMgm[]> {
         return this.http.get<MyAnswerMgm[]>(this.myAnswersByQuestionnaireAndUser.replace('{questionnaireID}', String(questionnaire.id)).replace('{userID}', user.id));
     }
