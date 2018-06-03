@@ -42,7 +42,7 @@
     <include file="config/liquibase/changelog/20180508153623_added_questions_threat_agents_data.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180508160443_added_answers_data.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180508161422_added_questions_answers_threat_agents_join_data.xml" relativeToChangelogFile="false"/>
-    
+
     <include file="config/liquibase/changelog/20180513165449_added_motivations_data.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180513173449_added_threat_agent_motivations_data.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180516144842_added_entity_constraints_QuestionnaireStatus.xml" relativeToChangelogFile="false"/>
@@ -60,5 +60,6 @@
     <include file="config/liquibase/changelog/20180530100401_added_entity_constraints_CompanyGroup.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180530172823_added_questions_attack_strategies_data.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180531103611_added_questions_attack_strategies_join_data.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20180603181922_added_questions_answers_attack_strategies_join_data.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
 </databaseChangeLog>
