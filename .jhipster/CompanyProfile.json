@@ -3,8 +3,8 @@
     "relationships": [
         {
             "relationshipType": "one-to-many",
-            "relationshipName": "departments",
-            "otherEntityName": "department",
+            "relationshipName": "companyGroups",
+            "otherEntityName": "companyGroup",
             "otherEntityRelationshipName": "companyprofile"
         },
         {

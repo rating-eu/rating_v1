@@ -19,7 +19,6 @@ import {SelfAssessmentMgm, SelfAssessmentMgmService} from '../../../../entities/
 import {Subscription} from 'rxjs/Subscription';
 import {FormUtils} from '../../../utils/FormUtils';
 import {forkJoin} from 'rxjs/observable/forkJoin';
-import {observable} from 'rxjs/symbol/observable';
 import {Observable} from 'rxjs/Observable';
 import {HttpResponse} from '@angular/common/http';
 
@@ -77,13 +76,9 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
             console.log('Form is: ' + this.form);
 
             this._questionsArrayMap = new Map<number, QuestionMgm>();
-            this._questionsArray.forEach((question) => {
-                this.answerService.findByQuestion(question.id)
-                    .toPromise()
-                    .then((answers: AnswerMgm[]) => {
-                        question.answers = answers;
-                    });
-                this._questionsArrayMap.set(question.id, question);
+
+            this._questionsArray.forEach((value: QuestionMgm) => {
+                this._questionsArrayMap.set(value.id, value);
             });
 
             if (this.myAnswers) {
@@ -201,8 +196,8 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
             console.log('value: ' + JSON.stringify(value));
 
             const answer: AnswerMgm = value as AnswerMgm;
-            const question: QuestionMgm = this._questionsArrayMap.get(Number(key));
 
+            const question: QuestionMgm = this._questionsArrayMap.get(Number(key));
             console.log('Question: ' + JSON.stringify(question));
 
             const threatAgent: ThreatAgentMgm = question.threatAgent;

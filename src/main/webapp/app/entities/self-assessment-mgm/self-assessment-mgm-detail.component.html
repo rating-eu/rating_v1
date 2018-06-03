@@ -26,10 +26,10 @@
                 <a [routerLink]="['/company-profile-mgm', companyprofiles?.id ]">{{companyprofiles.name}}</a>{{last ? '' : ', '}}
             </span>
         </dd>
-        <dt><span jhiTranslate="hermeneutApp.selfAssessment.department">Department</span></dt>
+        <dt><span jhiTranslate="hermeneutApp.selfAssessment.companyGroup">Group</span></dt>
         <dd>
-            <span *ngFor="let department of selfAssessment.departments; let last = last">
-                <a [routerLink]="['/department-mgm', department?.id ]">{{department.name}}</a>{{last ? '' : ', '}}
+            <span *ngFor="let companyGroup of selfAssessment.companyGroups; let last = last">
+                <a [routerLink]="['/company-group-mgm', companyGroup?.id ]">{{companyGroup.name}}</a>{{last ? '' : ', '}}
             </span>
         </dd>
         <dt><span jhiTranslate="hermeneutApp.selfAssessment.asset">Asset</span></dt>

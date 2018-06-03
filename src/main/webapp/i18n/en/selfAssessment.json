@@ -22,7 +22,7 @@
             "modified": "Modified",
             "user": "User",
             "companyprofiles": "Companyprofiles",
-            "department": "Department",
+            "companyGroup": "Group",
             "asset": "Asset",
             "threatagent": "Threatagent",
             "attackstrategy": "Attackstrategy",

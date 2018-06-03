@@ -22,7 +22,7 @@
             "created": "Created",
             "modified": "Modified",
             "type": "Type",
-            "departments": "Departments",
+            "companyGroups": "Groups",
             "user": "User",
             "container": "Container",
             "selfassessment": "Selfassessment"

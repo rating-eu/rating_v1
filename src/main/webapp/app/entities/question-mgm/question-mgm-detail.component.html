@@ -28,22 +28,28 @@
         <dd>
             <span jhiTranslate="{{'hermeneutApp.AnswerType.' + question.answerType}}">{{question.answerType}}</span>
         </dd>
-        <dt><span jhiTranslate="hermeneutApp.question.threatAgent">Threat Agent</span></dt>
-        <dd>
-            <div *ngIf="question.threatAgent">
-                <a [routerLink]="['/threat-agent-mgm', question.threatAgent?.id]">{{question.threatAgent?.id}}</a>
-            </div>
-        </dd>
         <dt><span jhiTranslate="hermeneutApp.question.attackStrategies">Attack Strategies</span></dt>
         <dd>
             <span *ngFor="let attackStrategies of question.attackStrategies; let last = last">
                 <a [routerLink]="['/attack-strategy-mgm', attackStrategies?.id ]">{{attackStrategies.name}}</a>{{last ? '' : ', '}}
             </span>
         </dd>
+        <dt><span jhiTranslate="hermeneutApp.question.answers">Answers</span></dt>
+        <dd>
+            <span *ngFor="let answers of question.answers; let last = last">
+                <a [routerLink]="['/answer-mgm', answers?.id ]">{{answers.name}}</a>{{last ? '' : ', '}}
+            </span>
+        </dd>
         <dt><span jhiTranslate="hermeneutApp.question.questionnaire">Questionnaire</span></dt>
         <dd>
             <div *ngIf="question.questionnaire">
                 <a [routerLink]="['/questionnaire-mgm', question.questionnaire?.id]">{{question.questionnaire?.name}}</a>
+            </div>
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.question.threatAgent">Threat Agent</span></dt>
+        <dd>
+            <div *ngIf="question.threatAgent">
+                <a [routerLink]="['/threat-agent-mgm', question.threatAgent?.id]">{{question.threatAgent?.name}}</a>
             </div>
         </dd>
     </dl>

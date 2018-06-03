@@ -42,7 +42,6 @@ describe('Answer e2e test', () => {
         answerDialogPage.setOrderInput('5');
         expect(answerDialogPage.getOrderInput()).toMatch('5');
         answerDialogPage.likelihoodSelectLastOption();
-        answerDialogPage.questionSelectLastOption();
         answerDialogPage.save();
         expect(answerDialogPage.getSaveButton().isPresent()).toBeFalsy();
     });
@@ -74,7 +73,6 @@ export class AnswerDialogPage {
     modifiedInput = element(by.css('input#field_modified'));
     orderInput = element(by.css('input#field_order'));
     likelihoodSelect = element(by.css('select#field_likelihood'));
-    questionSelect = element(by.css('select#field_question'));
 
     getModalTitle() {
         return this.modalTitle.getAttribute('jhiTranslate');
@@ -123,22 +121,6 @@ export class AnswerDialogPage {
     likelihoodSelectLastOption = function() {
         this.likelihoodSelect.all(by.tagName('option')).last().click();
     };
-    questionSelectLastOption = function() {
-        this.questionSelect.all(by.tagName('option')).last().click();
-    };
-
-    questionSelectOption = function(option) {
-        this.questionSelect.sendKeys(option);
-    };
-
-    getQuestionSelect = function() {
-        return this.questionSelect;
-    };
-
-    getQuestionSelectedOption = function() {
-        return this.questionSelect.element(by.css('option:checked')).getText();
-    };
-
     save() {
         this.saveButton.click();
     }

@@ -25,6 +25,17 @@
                                  referencedColumnNames="id"
                                  referencedTableName="attack_strategy"/>
         
+        <addForeignKeyConstraint baseColumnNames="questions_id"
+                                 baseTableName="question_answers"
+                                 constraintName="fk_question_answers_questions_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="question"/>
+        <addForeignKeyConstraint baseColumnNames="answers_id"
+                                 baseTableName="question_answers"
+                                 constraintName="fk_question_answers_answers_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="answer"/>
+        
         <addForeignKeyConstraint baseColumnNames="questionnaire_id"
                                  baseTableName="question"
                                  constraintName="fk_question_questionnaire_id"

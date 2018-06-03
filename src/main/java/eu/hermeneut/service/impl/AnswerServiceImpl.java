@@ -99,10 +99,4 @@ public class AnswerServiceImpl implements AnswerService {
             .stream(answerSearchRepository.search(queryStringQuery(query)).spliterator(), false)
             .collect(Collectors.toList());
     }
-
-    @Override
-    @Transactional(readOnly = true)
-    public List<Answer> findAllByQuestion(Question question) {
-        return this.answerRepository.findAllByQuestion(question);
-    }
 }

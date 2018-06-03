@@ -1,0 +1,29 @@
+
+{
+    "hermeneutApp": {
+        "companyGroup" : {
+            "home": {
+                "title": "Groups",
+                "createLabel": "Group erstellen",
+                "createOrEditLabel": "Group erstellen oder bearbeiten",
+                "search": "Suche nach Group"
+            },
+            "created": "Group erstellt mit ID {{ param }}",
+            "updated": "Group aktualisiert mit ID {{ param }}",
+            "deleted": "Group gelöscht mit ID {{ param }}",
+            "delete": {
+                "question": "Soll Group {{ id }} wirklich dauerhaft gelöscht werden?"
+            },
+            "detail": {
+                "title": "Group"
+            },
+            "name": "Name",
+            "description": "Description",
+            "created": "Created",
+            "modified": "Modified",
+            "user": "User",
+            "companyprofile": "Companyprofile",
+            "selfassessment": "Selfassessment"
+        }
+    }
+}

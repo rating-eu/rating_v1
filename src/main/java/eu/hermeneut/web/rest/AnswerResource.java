@@ -138,17 +138,4 @@ public class AnswerResource {
         log.debug("REST request to search Answers for query {}", query);
         return answerService.search(query);
     }
-
-    /**
-     * GET  /answers : get all the answers.
-     *
-     * @return the ResponseEntity with status 200 (OK) and the list of answers in body
-     */
-    @GetMapping("/answers/by/question/{questionID}")
-    @Timed
-    public List<Answer> getAllAnswersByQuestionID(@PathVariable Long questionID) {
-        Question question = this.questionService.findOne(questionID);
-
-        return this.answerService.findAllByQuestion(question);
-    }
 }

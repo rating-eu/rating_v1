@@ -15,7 +15,6 @@ export type EntityResponseType = HttpResponse<AnswerMgm>;
 export class AnswerMgmService {
 
     private resourceUrl = SERVER_API_URL + 'api/answers';
-    private answersByQuestionUrl = this.resourceUrl + '/by/question/';
     private resourceSearchUrl = SERVER_API_URL + 'api/_search/answers';
 
     constructor(private http: HttpClient, private dateUtils: JhiDateUtils) {
@@ -36,10 +35,6 @@ export class AnswerMgmService {
     find(id: number): Observable<EntityResponseType> {
         return this.http.get<AnswerMgm>(`${this.resourceUrl}/${id}`, {observe: 'response'})
             .map((res: EntityResponseType) => this.convertResponse(res));
-    }
-
-    findByQuestion(questionID: Number): Observable<AnswerMgm[]> {
-        return this.http.get<AnswerMgm[]>(this.answersByQuestionUrl + questionID);
     }
 
     query(req?: any): Observable<HttpResponse<AnswerMgm[]>> {

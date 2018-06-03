@@ -7,7 +7,7 @@ import {IdentifyThreatAgentService} from '../identify-threat-agent.service';
 import {MotivationMgm} from '../../entities/motivation-mgm';
 import {AnswerMgm} from '../../entities/answer-mgm';
 import {AccountService, User, UserService} from '../../shared';
-import {QuestionMgm} from '../../entities/question-mgm';
+import {QuestionMgm, QuestionMgmService} from '../../entities/question-mgm';
 import {QuestionnaireMgm} from '../../entities/questionnaire-mgm';
 import {MyAnswerMgm, MyAnswerMgmService} from '../../entities/my-answer-mgm';
 import {Router} from '@angular/router';
@@ -15,6 +15,7 @@ import {SelfAssessmentMgm, SelfAssessmentMgmService} from '../../entities/self-a
 import {Subscription} from 'rxjs/Subscription';
 import {QuestionnairesService} from '../../questionnaires/questionnaires.service';
 import {QuestionnaireStatusMgm, QuestionnaireStatusMgmService, Status} from '../../entities/questionnaire-status-mgm';
+import {HttpResponse} from '@angular/common/http';
 
 @Component({
     selector: 'jhi-result',
@@ -40,6 +41,7 @@ export class ResultComponent implements OnInit, OnDestroy {
                 private userService: UserService,
                 private selfAssessmentService: SelfAssessmentMgmService,
                 private router: Router,
+                private questionService: QuestionMgmService,
                 private questionnairesService: QuestionnairesService,
                 private questionnaireStatusService: QuestionnaireStatusMgmService) {
     }
@@ -114,22 +116,29 @@ export class ResultComponent implements OnInit, OnDestroy {
 
             this.identifyThreatAgentsFormDataMap.forEach((value: AnswerMgm, key: String) => {
                 const answer: AnswerMgm = value;
-                const question: QuestionMgm = answer.question;
-                const questionnaire: QuestionnaireMgm = question.questionnaire;
-
                 console.log('Answer: ' + JSON.stringify(answer));
-                console.log('Question: ' + JSON.stringify(question));
-                console.log('Questionnaire: ' + JSON.stringify(questionnaire));
 
-                const myAnser: MyAnswerMgm = new MyAnswerMgm(undefined, 'Checked', answer, question, questionnaire, questionnaireStatus, this.user);
+                this.questionService.find(Number(key))
+                    .toPromise()
+                    .then((result: HttpResponse<QuestionMgm>) => {
+                        const question: QuestionMgm = result.body;
+                        const questionnaire: QuestionnaireMgm = question.questionnaire;
 
-                console.log('MyAnser: ' + myAnser);
+                        console.log('Question: ' + JSON.stringify(question));
+                        console.log('Questionnaire: ' + JSON.stringify(questionnaire));
 
-                // persist the answer of the user
-                this.myAnswerService.create(myAnser).subscribe((response) => {
-                    const result: MyAnswerMgm = response.body;
-                    console.log('MyAnswer response: ' + JSON.stringify(result));
-                });
+                        const myAnser: MyAnswerMgm = new MyAnswerMgm(undefined, 'Checked', answer, question, questionnaire, questionnaireStatus, this.user);
+
+                        console.log('MyAnser: ' + myAnser);
+
+                        // persist the answer of the user
+                        this.myAnswerService.create(myAnser)
+                            .toPromise()
+                            .then((response: HttpResponse<MyAnswerMgm>) => {
+                                const myAnswerResult: MyAnswerMgm = response.body;
+                                console.log('MyAnswer response: ' + JSON.stringify(myAnswerResult));
+                            });
+                    });
             });
         });
 

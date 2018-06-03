@@ -47,13 +47,6 @@
             </select>
         </div>
 
-        <div class="form-group">
-            <label class="form-control-label" jhiTranslate="hermeneutApp.answer.question" for="field_question">Question</label>
-            <select class="form-control" id="field_question" name="question" [(ngModel)]="answer.question" >
-                <option [ngValue]="null"></option>
-                <option [ngValue]="questionOption.id === answer.question?.id ? answer.question : questionOption" *ngFor="let questionOption of questions; trackBy: trackQuestionById">{{questionOption.name}}</option>
-            </select>
-        </div>
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">

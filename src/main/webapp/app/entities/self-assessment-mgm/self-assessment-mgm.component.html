@@ -29,19 +29,19 @@
         <table class="table table-striped">
             <thead>
             <tr>
-                <th><span jhiTranslate="global.field.id">ID</span></th>
-                <th><span jhiTranslate="hermeneutApp.selfAssessment.name">Name</span></th>
-                <th><span jhiTranslate="hermeneutApp.selfAssessment.created">Created</span></th>
-                <th><span jhiTranslate="hermeneutApp.selfAssessment.modified">Modified</span></th>
-                <th><span jhiTranslate="hermeneutApp.selfAssessment.user">User</span></th>
-                <th><span jhiTranslate="hermeneutApp.selfAssessment.companyprofiles">Companyprofiles</span></th>
-                <th><span jhiTranslate="hermeneutApp.selfAssessment.department">Department</span></th>
-                <th><span jhiTranslate="hermeneutApp.selfAssessment.asset">Asset</span></th>
-                <th><span jhiTranslate="hermeneutApp.selfAssessment.threatagent">Threatagent</span></th>
-                <th><span jhiTranslate="hermeneutApp.selfAssessment.attackstrategy">Attackstrategy</span></th>
-                <th><span jhiTranslate="hermeneutApp.selfAssessment.externalaudit">Externalaudit</span></th>
-                <th><span jhiTranslate="hermeneutApp.selfAssessment.questionnaire">Questionnaire</span></th>
-                <th></th>
+            <th><span jhiTranslate="global.field.id">ID</span></th>
+            <th><span jhiTranslate="hermeneutApp.selfAssessment.name">Name</span></th>
+            <th><span jhiTranslate="hermeneutApp.selfAssessment.created">Created</span></th>
+            <th><span jhiTranslate="hermeneutApp.selfAssessment.modified">Modified</span></th>
+            <th><span jhiTranslate="hermeneutApp.selfAssessment.user">User</span></th>
+            <th><span jhiTranslate="hermeneutApp.selfAssessment.companyprofiles">Companyprofiles</span></th>
+            <th><span jhiTranslate="hermeneutApp.selfAssessment.companyGroup">Group</span></th>
+            <th><span jhiTranslate="hermeneutApp.selfAssessment.asset">Asset</span></th>
+            <th><span jhiTranslate="hermeneutApp.selfAssessment.threatagent">Threatagent</span></th>
+            <th><span jhiTranslate="hermeneutApp.selfAssessment.attackstrategy">Attackstrategy</span></th>
+            <th><span jhiTranslate="hermeneutApp.selfAssessment.externalaudit">Externalaudit</span></th>
+            <th><span jhiTranslate="hermeneutApp.selfAssessment.questionnaire">Questionnaire</span></th>
+            <th></th>
             </tr>
             </thead>
             <tbody>
@@ -59,8 +59,8 @@
                         </span>
                 </td>
                 <td>
-                    <span *ngFor="let companysector of selfAssessment.companysectors; let last = last">
-                            <a class="form-control-static" [routerLink]="['../company-sector-mgm', companysector?.id ]">{{companysector.department}}</a>{{last ? '' : ', '}}
+                    <span *ngFor="let companyGroup of selfAssessment.companyGroups; let last = last">
+                            <a class="form-control-static" [routerLink]="['../company-group-mgm', companyGroup?.id ]">{{companyGroup.name}}</a>{{last ? '' : ', '}}
                         </span>
                 </td>
                 <td>

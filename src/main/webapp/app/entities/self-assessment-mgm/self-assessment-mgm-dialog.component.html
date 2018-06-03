@@ -52,9 +52,9 @@
             </select>
         </div>
         <div class="form-group">
-            <label jhiTranslate="hermeneutApp.selfAssessment.department" for="field_department">Department</label>
-            <select class="form-control" id="field_department" multiple name="department" [(ngModel)]="selfAssessment.departments">
-                <option [ngValue]="getSelected(selfAssessment.departments, departmentOption)" *ngFor="let departmentOption of departments; trackBy: trackDepartmentById">{{departmentOption.name}}</option>
+            <label jhiTranslate="hermeneutApp.selfAssessment.companyGroup" for="field_companyGroup">Group</label>
+            <select class="form-control" id="field_companyGroup" multiple name="companyGroup" [(ngModel)]="selfAssessment.companyGroups">
+                <option [ngValue]="getSelected(selfAssessment.companyGroups, companyGroupOption)" *ngFor="let companyGroupOption of companygroups; trackBy: trackCompanyGroupById">{{companyGroupOption.name}}</option>
             </select>
         </div>
         <div class="form-group">

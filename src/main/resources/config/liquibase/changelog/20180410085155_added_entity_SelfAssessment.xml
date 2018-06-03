@@ -53,8 +53,8 @@
 
         <addPrimaryKey columnNames="self_assessments_id, companyprofiles_id" tableName="self_assessment_companyprofiles"/>
         
-        <createTable tableName="self_assessment_department">
-            <column name="departments_id" type="bigint">
+        <createTable tableName="self_assessment_company_group">
+            <column name="company_groups_id" type="bigint">
                 <constraints nullable="false"/>
             </column>
             <column name="self_assessments_id" type="bigint">
@@ -62,7 +62,7 @@
             </column>
         </createTable>
 
-        <addPrimaryKey columnNames="self_assessments_id, departments_id" tableName="self_assessment_department"/>
+        <addPrimaryKey columnNames="self_assessments_id, company_groups_id" tableName="self_assessment_company_group"/>
         
         <createTable tableName="self_assessment_asset">
             <column name="assets_id" type="bigint">

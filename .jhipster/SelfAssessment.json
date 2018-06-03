@@ -18,8 +18,8 @@
         {
             "relationshipType": "many-to-many",
             "otherEntityRelationshipName": "selfassessment",
-            "relationshipName": "department",
-            "otherEntityName": "department",
+            "relationshipName": "companyGroup",
+            "otherEntityName": "companyGroup",
             "otherEntityField": "name",
             "ownerSide": true
         },
