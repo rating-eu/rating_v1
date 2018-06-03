@@ -1,87 +1,66 @@
 id;name;created;modified;jhi_order;likelihood
 1;Yes;${now};${now};1;HIGH
 2;No;${now};${now};2;LOW
-
 3;Less than 20%;${now};${now};1;LOW
 4;Between 20% and 40%;${now};${now};2;LOW_MEDIUM
 5;Between 40% and 60%;${now};${now};3;MEDIUM
 6;Between 60% and 80%;${now};${now};4;MEDIUM_HIGH
 7;Greater than 80%;${now};${now};5;HIGH
-
 8;No, process and procedures are not documented or known informally;${now};${now};1;LOW
 9;Mostly not, without a well-defined procedure and documentation;${now};${now};2;LOW_MEDIUM
 10;On average, with a defined procedure and documentation;${now};${now};3;MEDIUM
 11;Mostly yes, sustained with a strategic plan and a well-defined procedure and documentation;${now};${now};4;MEDIUM_HIGH
 12;Yes, the process and the documentation are proactively developed and maintained with constant effort and continuous improvement;${now};${now};5;HIGH
-
 13;No;${now};${now};1;LOW
 14;Yes;${now};${now};2;MEDIUM
-15;Can't determine it;${now};${now};3;HIGH
-
-16;Can't determine it;${now};${now};1;LOW
+15;Can''t determine it;${now};${now};3;HIGH
+16;Can''t determine it;${now};${now};1;LOW
 17;Yes, also the mitigation processes are not yet defined;${now};${now};2;LOW_MEDIUM
 18;Yes, but mitigation processes are already defined;${now};${now};3;MEDIUM
 19;No, but the process and the documentation are not well-defined;${now};${now};4;MEDIUM_HIGH
 20;No, the process and the documentation are proactively developed and maintained with constant effort and continuous improvement;${now};${now};5;HIGH
-
 21;Yes, sustained with a strategic plan and a well-defined procedure and documentation but with limited coverage;${now};${now};3;MEDIUM
 22;Yes, sustained with a strategic plan and a well-defined procedure and documentation and with extended coverage;${now};${now};4;MEDIUM_HIGH
-
 23;Between 20% and 50%;${now};${now};2;LOW_MEDIUM
 24;Between 50% and 80%;${now};${now};3;MEDIUM
 25;Greater than 80%;${now};${now};4;MEDIUM_HIGH
 26;Greater than 80% and maintained with constant effort and continuous improvement;${now};${now};5;HIGH
-
 27;No;${now};${now};1;LOW
 28;Yes, only on internal networks;${now};${now};2;MEDIUM
 29;Yes, accessible via Internet;${now};${now};3;HIGH
-
 30;Yes, and the security posture of supply chain is monitored;${now};${now};1;LOW
 31;Yes, but security posture of supply chain is not under my control;${now};${now};2;MEDIUM
 32;No;${now};${now};3;HIGH
-
 33;Only on internal network;${now};${now};1;LOW
 34;Only exposed on the Internet;${now};${now};2;MEDIUM
 35;Both on internal network and exposed on the Internet;${now};${now};3;HIGH
-
 36;No WiFi access-points available;${now};${now};1;LOW
 37;Yes, without WPA2;${now};${now};2;LOW_MEDIUM
 38;Yes, with WPA2 and Pre-Shared key authentication;${now};${now};3;MEDIUM
 39;Yes, with WPA2 and Certificate authentication;${now};${now};4;MEDIUM_HIGH
 40;Yes, with WPA2 and both Pre-Shared key and Certificate authentication;${now};${now};5;HIGH
-
 41;No;${now};${now};1;LOW
 42;Policies are available but not applied by anyone;${now};${now};2;LOW_MEDIUM
 43;Yes, but the policies are not well defined;${now};${now};3;MEDIUM
 44;Yes, the policies are well defined;${now};${now};4;MEDIUM_HIGH
 45;Yes, the policies are well defined and well integrated with software solutions;${now};${now};5;HIGH
-
 46;Yes;${now};${now};1;LOW
 47;No;${now};${now};2;HIGH
-
 48;Only afterward an attack;${now};${now};1;LOW
 49;Less than once a year;${now};${now};2;LOW_MEDIUM
 50;More than once a year;${now};${now};3;MEDIUM
 51;Every few weeks;${now};${now};4;MEDIUM_HIGH
 52;Regularly with a well-defined process;${now};${now};5;HIGH
-
 53;Only DMZ is segregate;${now};${now};2;LOW_MEDIUM
 54;Critical subnets are segregate;${now};${now};3;MEDIUM
 55;Every identified subnet is segregate;${now};${now};4;MEDIUM_HIGH
 56;Every identified subnet is segregate with a defined process, constant effort and continuous improvement;${now};${now};5;HIGH
-
-
 57;Only on critical systems, with a defined procedure and documentation;${now};${now};3;MEDIUM
-
 58;Mostly not;${now};${now};2;LOW_MEDIUM
 59;Only on critical systems;${now};${now};3;MEDIUM
 60;Mostly yes;${now};${now};4;MEDIUM_HIGH
 61;Yes, with a defined process, constant effort and continuous improvement;${now};${now};5;HIGH
-
-
 62;Only for critical systems, without a well-defined procedure and documentation;${now};${now};2;LOW_MEDIUM
 63;Only on critical systems, sustained with a strategic plan and a well-defined procedure and documentation;${now};${now};3;MEDIUM
 64;Yes, sustained with a strategic plan and a well-defined procedure and documentation and with extended coverage;${now};${now};4;MEDIUM_HIGH
 65;Yes, the process and the documentation are proactively developed and maintained with constant effort and continuous improvement;${now};${now};5;HIGH
-
-
