@@ -9,7 +9,7 @@ const routes: Routes = [
         component: IdentifyThreatAgentComponent,
         children: [
             {
-                path: 'questionnaires',
+                path: 'questionnaires/:purpose',
                 loadChildren: '../questionnaires/questionnaires.module#QuestionnairesModule'
             },
             {

@@ -8,6 +8,7 @@ import {QuestionnaireStatusMgm, Status} from '../../entities/questionnaire-statu
 import {SelfAssessmentMgm, SelfAssessmentMgmService} from '../../entities/self-assessment-mgm';
 import {AccountService, User, UserService} from '../../shared';
 import {Subscription} from 'rxjs/Subscription';
+import {ActivatedRoute, Params} from '@angular/router';
 
 @Component({
     selector: 'jhi-questionnaires',
@@ -26,7 +27,8 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
     private questionnaireStatuses: QuestionnaireStatusMgm[];
     private questionnaireStatusesMap: Map<number, QuestionnaireStatusMgm>;
 
-    constructor(private questionnairesService: QuestionnairesService,
+    constructor(private route: ActivatedRoute,
+                private questionnairesService: QuestionnairesService,
                 private dataSharingService: DatasharingService,
                 private selfAssessmentService: SelfAssessmentMgmService,
                 private accountService: AccountService,
@@ -34,7 +36,28 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
-        this.questionnaires$ = this.questionnairesService.getAllQuestionnairesByPurpose(this.purpose);
+        this.subscriptions.push(
+            this.route.params.subscribe(
+                (params: Params) => {
+                    const routeQuestionnairePurpose = params['purpose'];
+                    console.log('Route purpose: ' + routeQuestionnairePurpose);
+
+                    switch (routeQuestionnairePurpose) {
+                        case QuestionnairePurpose[QuestionnairePurpose.ID_THREAT_AGENT]: {
+                            this.purpose = QuestionnairePurpose.ID_THREAT_AGENT;
+                            break;
+                        }
+                        case QuestionnairePurpose[QuestionnairePurpose.SELFASSESSMENT]: {
+                            this.purpose = QuestionnairePurpose.SELFASSESSMENT;
+                            break;
+                        }
+                    }
+
+                    this.questionnaires$ = this.questionnairesService.getAllQuestionnairesByPurpose(this.purpose);
+                }
+            )
+        );
+
         this.selfAssessment = this.selfAssessmentService.getSelfAssessment();
 
         this.subscriptions.push(
@@ -85,7 +108,7 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
                         this.dataSharingService.questionnaireStatusesMap = this.questionnaireStatusesMap;
                     })
             );
-        }else {
+        } else {
 
         }
 
