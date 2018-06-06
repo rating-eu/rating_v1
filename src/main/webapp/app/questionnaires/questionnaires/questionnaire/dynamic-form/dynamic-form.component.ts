@@ -12,7 +12,7 @@ import {Router} from '@angular/router';
 import {
     QuestionnaireStatusMgm, QuestionnaireStatusMgmService, Status
 } from '../../../../entities/questionnaire-status-mgm';
-import {QuestionnaireMgm} from '../../../../entities/questionnaire-mgm';
+import {QuestionnaireMgm, QuestionnairePurpose} from '../../../../entities/questionnaire-mgm';
 import {MyAnswerMgm, MyAnswerMgmService} from '../../../../entities/my-answer-mgm';
 import {AccountService, User, UserService} from '../../../../shared';
 import {SelfAssessmentMgm, SelfAssessmentMgmService} from '../../../../entities/self-assessment-mgm';
@@ -30,8 +30,8 @@ import {HttpResponse} from '@angular/common/http';
 })
 export class DynamicFormComponent implements OnInit, OnDestroy {
 
-    private static YES: String = 'YES';
-    private static NO: String = 'NO';
+    private static YES: string = 'YES';
+    private static NO: string = 'NO';
     private statusEnum = Status;
 
     debug = false;
@@ -95,6 +95,10 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
     set questionnaire(questionnaire: QuestionnaireMgm) {
         console.log('Questionnaire coming from @INPUT: ' + JSON.stringify(questionnaire));
         this._questionnaire = questionnaire;
+    }
+
+    get questionnaire() {
+        return this._questionnaire;
     }
 
     @Input()
@@ -167,7 +171,30 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
         }
     }
 
+    submitDispatcher() {
+        console.log('SubmitDispatcher...');
+
+        switch (this.questionnaire.purpose) {
+            case QuestionnairePurpose.SELFASSESSMENT: {
+                console.log('Case: ' + QuestionnairePurpose.SELFASSESSMENT);
+                this.evaluateWeakness();
+                break;
+            }
+            case QuestionnairePurpose.ID_THREAT_AGENT: {
+                console.log('Case: ' + QuestionnairePurpose.ID_THREAT_AGENT);
+                this.identifyThreatAgents();
+                break;
+            }
+            default: {
+                // Do-Nothing
+                console.log('This shouldn\'t happen...');
+            }
+        }
+    }
+
     identifyThreatAgents() {
+        console.log('ENTER ==> Identify Threat-agents...');
+
         console.log('OnSubmit called');
         console.log('Form\'s value is:');
         console.log(JSON.stringify(this.form.value));
@@ -175,21 +202,24 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
         /**
          * Map representing the submitted form data.
          *
-         * The key: String is the ID of the Question
+         * The key: string is the ID of the Question
          * The value: AnswerMgm is the selected Answer
-         * @type {Map<String, AnswerMgm>}
+         * @type {Map<string, AnswerMgm>}
          */
         const formDataMap: Map<string, AnswerMgm> = FormUtils.formToMap<AnswerMgm>(this.form);
+        console.log('FormDataMap size: ' + formDataMap.size);
 
         this.dataSharingSerivce.identifyThreatAgentsFormDataMap = formDataMap;
+        console.log('FormDataMap in shared...');
+        console.log('Shared FormDataMap size: ' + this.dataSharingSerivce.identifyThreatAgentsFormDataMap.size);
 
         /**
-         * The key: String is the SHA256 of the ThreatAgent JSON
+         * The key: string is the SHA256 of the ThreatAgent JSON
          * The value: Couple<ThreatAgentMgm, Fraction> contains the ThreatAgent itself
          * and the fraction of YES answers over all te questions identifying that ThreatAgent.
-         * @type {Map<String, Couple<ThreatAgentMgm, Fraction>>}
+         * @type {Map<string, Couple<ThreatAgentMgm, Fraction>>}
          */
-        const threatAgentsPercentageMap: Map<String, Couple<ThreatAgentMgm, Fraction>> = new Map<String, Couple<ThreatAgentMgm, Fraction>>();
+        const threatAgentsPercentageMap: Map<string, Couple<ThreatAgentMgm, Fraction>> = new Map<string, Couple<ThreatAgentMgm, Fraction>>();
 
         formDataMap.forEach((value, key) => {
             console.log('key: ' + key);
@@ -213,10 +243,10 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
                 // increment the number of questions identifying this threat-agent
                 fraction.whole++;
 
-                if (answer.name === DynamicFormComponent.YES) {
+                if (answer.name.toUpperCase() === DynamicFormComponent.YES) {
                     console.log('Warning: you answered YES');
                     fraction.part++;
-                } else if (answer.name === DynamicFormComponent.NO) {
+                } else if (answer.name.toUpperCase() === DynamicFormComponent.NO) {
                     console.log('Good, you answered NO');
                 }
             } else {// first time
@@ -225,27 +255,35 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
                 const fraction = new Fraction(0, 1);
                 threatAgentsPercentageMap.set(threatAgentHash, new Couple<ThreatAgentMgm, Fraction>(threatAgent, fraction));
 
-                if (answer.name === DynamicFormComponent.YES) {
+                if (answer.name.toUpperCase() === DynamicFormComponent.YES) {
                     console.log('Warning: you answered YES');
                     fraction.part++;
-                } else if (answer.name === DynamicFormComponent.NO) {
+                } else if (answer.name.toUpperCase() === DynamicFormComponent.NO) {
                     console.log('Good, you answered NO');
                 }
             }
         });
 
         console.log('Threat agents percentage map size: ' + threatAgentsPercentageMap.size);
-        console.log(('Begin looping threat agents percentage map...'));
+        console.log(('BEGIN looping threat agents percentage map...'));
 
         threatAgentsPercentageMap.forEach((value, key) => {
             console.log('ThreatAgent:' + key + ' ==> ' + value.key.name + '\t' + value.value.toPercentage() + '\%');
         });
 
-        console.log(('Begin looping threat agents percentage map...'));
+        console.log(('END looping threat agents percentage map...'));
 
         this.dataSharingSerivce.threatAgentsMap = threatAgentsPercentageMap;
+        console.log('DYNAMIC FORM Shared ThreatAgent Percentage Map size: ', +this.dataSharingSerivce.threatAgentsMap.size);
 
         this.router.navigate(['/identify-threat-agent/result']);
+
+        console.log('EXIT ==> Identify Threat-agents...');
+    }
+
+    evaluateWeakness() {
+        console.log('Evaluating wekness...');
+        // TODO get the Questionnaire's Answers, persist them, update the matrix accordingly
     }
 
     freezeQuestionnaireStatus() {
@@ -253,9 +291,9 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
         /**
          * Map representing the submitted form data.
          *
-         * The key: String is the ID of the Question
+         * The key: string is the ID of the Question
          * The value: AnswerMgm is the selected Answer
-         * @type {Map<String, AnswerMgm>}
+         * @type {Map<string, AnswerMgm>}
          */
         const formDataMap: Map<string, AnswerMgm> = FormUtils.formToMap<AnswerMgm>(this.form);
         console.log('FormData: ' + formDataMap);
@@ -278,7 +316,7 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
                             // CREATE the NEW MyAnswers
                             const createObservables: Observable<HttpResponse<MyAnswerMgm>>[] = [];
 
-                            formDataMap.forEach((value: AnswerMgm, key: String) => {
+                            formDataMap.forEach((value: AnswerMgm, key: string) => {
                                 const answer: AnswerMgm = value;
                                 console.log('Answer: ' + answer);
 
@@ -347,7 +385,7 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
                 // CREATE the NEW MyAnswers
                 const createObservables: Observable<HttpResponse<MyAnswerMgm>>[] = [];
 
-                formDataMap.forEach((value: AnswerMgm, key: String) => {
+                formDataMap.forEach((value: AnswerMgm, key: string) => {
                     const answer: AnswerMgm = value;
                     console.log('Answer: ' + answer);
 
