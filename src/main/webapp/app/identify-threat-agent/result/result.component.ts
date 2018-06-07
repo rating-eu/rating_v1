@@ -142,16 +142,20 @@ export class ResultComponent implements OnInit, OnDestroy {
             });
         });
 
-        const threatAgents: ThreatAgentMgm[] = [];
+        const identifiedThreatAgents: ThreatAgentMgm[] = [];
 
-        this.threatAgentsPercentageArray.forEach((threatPercentage) => {
-            const threatAgent: ThreatAgentMgm = threatPercentage.key;
+        this.threatAgentsPercentageArray.forEach((couple: Couple<ThreatAgentMgm, Fraction>) => {
+            const threatAgent: ThreatAgentMgm = couple.key;
+            const likelihood: Fraction = couple.value;
             console.log('Threat-Agent: ' + JSON.stringify(threatAgent));
+            console.log('Likelihood: ' + likelihood.toPercentage());
 
-            threatAgents.push(threatAgent);
+            if (likelihood.toPercentage() > 0) {
+                identifiedThreatAgents.push(threatAgent);
+            }
         });
 
-        const uniqueThreatAgentsSet: Set<ThreatAgentMgm> = new Set<ThreatAgentMgm>(threatAgents.concat(this.selfAssessment.threatagents));
+        const uniqueThreatAgentsSet: Set<ThreatAgentMgm> = new Set<ThreatAgentMgm>(identifiedThreatAgents.concat(this.selfAssessment.threatagents));
         const uniqueThreatAgentsArray: ThreatAgentMgm[] = [...uniqueThreatAgentsSet];
         this.selfAssessment.threatagents = uniqueThreatAgentsArray;
 
