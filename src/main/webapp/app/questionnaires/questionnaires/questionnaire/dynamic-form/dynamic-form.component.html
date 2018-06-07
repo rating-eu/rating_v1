@@ -2,26 +2,25 @@
 
 <button type="button" (click)="debug = !debug">Debug {{debug}}</button>
 
-<form *ngIf="form" (ngSubmit)="identifyThreatAgents()" [formGroup]="form" role="form"
->
+<form *ngIf="form" (ngSubmit)="submitDispatcher()" [formGroup]="form" role="form">
 
     <div *ngFor="let question of questionsArray"
-         [ngClass]="{'ng-valid': isValid(question?.id) === true, 'ng-invalid': isValid(question?.id) === false}">
+         [ngClass]="{'ng-valid': isValid(question.id) === true, 'ng-invalid': isValid(question.id) === false}">
 
         <label class="form-control-label" [attr.for]="question?.id"><h3>
-            {{question?.id}}) {{question?.name}}</h3>
+            {{question?.name}}</h3>
         </label>
 
-        <div [id]="question?.id" class="radio" *ngFor="let answer of sort(question?.answers)">
+        <div [id]="question.id" class="radio" *ngFor="let answer of sort(question.answers)">
             <pre *ngIf="debug">{{answer | json}}</pre>
 
             <label class="radio">
                 <input type="radio"
-                       [formControlName]="question?.id"
+                       [formControlName]="question.id"
                        [value]="answer"/>&nbsp;{{answer.name}}
                 <pre *ngIf="debug">
-                answer id {{answer?.id}} form value id
-                {{form.value[question?.id]?.id | json}}</pre>
+                answer id {{answer.id}} form value id
+                {{form.value[question.id].id | json}}</pre>
             </label>
         </div>
     </div>
