@@ -12,6 +12,7 @@ import {PhaseMgm, PhaseMgmService} from '../entities/phase-mgm';
 import {Observable} from 'rxjs/Observable';
 import {forkJoin} from 'rxjs/observable/forkJoin';
 import {isUndefined} from 'util';
+import {ThreatAgentMgm} from '../entities/threat-agent-mgm';
 
 @Component({
     selector: 'jhi-evaluate-weakness',
@@ -27,7 +28,8 @@ export class EvaluateWeaknessComponent implements OnInit, OnDestroy {
     currentAccount: any;
     eventSubscriber: Subscription;
     currentSearch: string;
-    mySelf: SelfAssessmentMgm = {};
+    selectedSelfAssessment: SelfAssessmentMgm = {};
+    selectedThreatAgent: ThreatAgentMgm;
 
     constructor(private attackStrategyService: AttackStrategyMgmService,
                 private jhiAlertService: JhiAlertService,
@@ -44,7 +46,7 @@ export class EvaluateWeaknessComponent implements OnInit, OnDestroy {
         this.principal.identity().then((account) => {
             this.account = account;
         });
-        this.mySelf = this.mySelfAssessmentService.getSelfAssessment();
+        this.selectedSelfAssessment = this.mySelfAssessmentService.getSelfAssessment();
         this.registerChangeInEvaluateWeakness();
 
         const observables: Observable<HttpResponse<any>>[] = [];
@@ -115,5 +117,9 @@ export class EvaluateWeaknessComponent implements OnInit, OnDestroy {
 
     private onError(error) {
         this.jhiAlertService.error(error.message, null, null);
+    }
+
+    threatAgentChanged(threatAgent: ThreatAgentMgm) {
+        console.log('ThreatAgent Changed: ' + threatAgent.name);
     }
 }
