@@ -89,6 +89,7 @@
         <h3>Attack Plan</h3>
 
         <select class="m-1" [(ngModel)]="selectedThreatAgent" (ngModelChange)="threatAgentChanged($event)">
+            <option [ngValue]="null" selected></option>
             <option *ngFor="let threatAgent of selectedSelfAssessment.threatagents" [ngValue]="threatAgent">
                 {{threatAgent.name}}
             </option>
