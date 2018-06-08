@@ -4,10 +4,10 @@ import {MitigationMgm} from '../mitigation-mgm';
 import {LevelMgm} from '../level-mgm';
 import {PhaseMgm} from '../phase-mgm';
 
-export const enum Frequency {
-    'LOW',
-    'MEDIUM',
-    'HIGH'
+export enum Frequency {
+    LOW = 1,
+    MEDIUM = 2,
+    HIGH = 3
 }
 
 export enum SkillLevel {
@@ -16,18 +16,18 @@ export enum SkillLevel {
     HIGH = 3
 }
 
-export const enum ResourceLevel {
-    'LOW',
-    'MEDIUM',
-    'HIGH'
+export enum ResourceLevel {
+    LOW = 1,
+    MEDIUM = 2,
+    HIGH = 3
 }
 
-export const enum Likelihood {
-    'LOW',
-    'LOW_MEDIUM',
-    'MEDIUM',
-    'MEDIUM_HIGH',
-    'HIGH'
+export enum Likelihood {
+    LOW = 1,
+    LOW_MEDIUM = 2,
+    MEDIUM = 3,
+    MEDIUM_HIGH = 4,
+    HIGH = 5
 }
 
 export class AttackStrategyMgm implements BaseEntity {

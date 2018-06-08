@@ -6,7 +6,10 @@ import {JhiEventManager, JhiAlertService} from 'ng-jhipster';
 import {SelfAssessmentMgm, SelfAssessmentMgmService} from '../entities/self-assessment-mgm';
 import {
     AttackStrategyMgm,
-    SkillLevel as AttackStrategyDifficulty
+    SkillLevel as AttackStrategyDifficulty,
+    Frequency,
+    ResourceLevel,
+    Likelihood
 } from '../entities/attack-strategy-mgm/attack-strategy-mgm.model';
 import {AttackStrategyMgmService} from '../entities/attack-strategy-mgm/attack-strategy-mgm.service';
 import {Principal} from '../shared';
@@ -19,13 +22,18 @@ import {ThreatAgentMgm, SkillLevel as ThreatAgentSkills} from '../entities/threa
 
 @Component({
     selector: 'jhi-evaluate-weakness',
-    templateUrl: './evaluate-weakness.component.html'
+    templateUrl: './evaluate-weakness.component.html',
+    styleUrls: [
+        './evaluate-weakness.css'
+    ]
 })
 export class EvaluateWeaknessComponent implements OnInit, OnDestroy {
     attackStrategies: AttackStrategyMgm[];
     attackLayers: LevelMgm[];
     cyberKillChainPhases: PhaseMgm[];
     attacksCKC7Matrix: AttackStrategyMgm[][][];
+
+    likelihoodEnum = Likelihood;
 
     account: Account;
     currentAccount: any;
@@ -139,5 +147,59 @@ export class EvaluateWeaknessComponent implements OnInit, OnDestroy {
         console.log(attackStrategyDifficultyValue); // Number
 
         return threatAgentSkillsValue >= attackStrategyDifficultyValue;
+    }
+
+    attackStrategyInitialLikelihood(attackStrategy: AttackStrategyMgm): Likelihood {
+        const frequencyValue = Number(Frequency[attackStrategy.frequency]);
+        const resourcesValue = Number(ResourceLevel[attackStrategy.resources]);
+
+        const initialLikelihoodMatrix: {} = {
+            1: {3: Likelihood.LOW, 2: Likelihood.LOW_MEDIUM, 1: Likelihood.MEDIUM},
+            2: {3: Likelihood.LOW_MEDIUM, 2: Likelihood.MEDIUM, 1: Likelihood.MEDIUM_HIGH},
+            3: {3: Likelihood.MEDIUM, 2: Likelihood.MEDIUM_HIGH, 1: Likelihood.HIGH}
+        };
+
+        console.log('Matrix:');
+        console.log(JSON.stringify(initialLikelihoodMatrix));
+
+        // Reducing matrix index by one, since it's zero-based
+        const likelihood: Likelihood = initialLikelihoodMatrix[frequencyValue][resourcesValue];
+        console.log('Likelihood: ' + likelihood);
+
+        return likelihood;
+    }
+
+    attackStrategyColorStyleClass(attackStrategy: AttackStrategyMgm): string {
+
+        // First check if the attack is possible for the selected ThreatAgent
+        if (this.selectedThreatAgent) {
+            if (this.isAttackPossible(this.selectedThreatAgent.skillLevel, attackStrategy.skill)) {
+                // Get the initial likelihood of the AttackStrategy
+                const likelihood: Likelihood = this.attackStrategyInitialLikelihood(attackStrategy);
+
+                // TODO update the initial likelihood with the data from the self-assessment answers.
+
+                switch (likelihood) {
+                    case Likelihood.LOW: {
+                        return 'low';
+                    }
+                    case Likelihood.LOW_MEDIUM: {
+                        return 'low-medium';
+                    }
+                    case Likelihood.MEDIUM: {
+                        return 'medium';
+                    }
+                    case Likelihood.MEDIUM_HIGH: {
+                        return 'medium-high';
+                    }
+                    case Likelihood.HIGH: {
+                        return 'high';
+                    }
+                }
+            }
+        }
+
+        // If all the above cases failed, the attack is not possible, hence we show it as disabled.
+        return 'disabled';
     }
 }
