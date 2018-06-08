@@ -30,8 +30,8 @@ import {HttpResponse} from '@angular/common/http';
 })
 export class DynamicFormComponent implements OnInit, OnDestroy {
 
-    private static YES: string = 'YES';
-    private static NO: string = 'NO';
+    private static YES = 'YES';
+    private static NO = 'NO';
     private statusEnum = Status;
 
     debug = false;
