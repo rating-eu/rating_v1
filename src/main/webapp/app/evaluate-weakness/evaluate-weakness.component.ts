@@ -4,7 +4,10 @@ import {ActivatedRoute} from '@angular/router';
 import {Subscription} from 'rxjs/Subscription';
 import {JhiEventManager, JhiAlertService} from 'ng-jhipster';
 import {SelfAssessmentMgm, SelfAssessmentMgmService} from '../entities/self-assessment-mgm';
-import {AttackStrategyMgm} from '../entities/attack-strategy-mgm/attack-strategy-mgm.model';
+import {
+    AttackStrategyMgm,
+    SkillLevel as AttackStrategyDifficulty
+} from '../entities/attack-strategy-mgm/attack-strategy-mgm.model';
 import {AttackStrategyMgmService} from '../entities/attack-strategy-mgm/attack-strategy-mgm.service';
 import {Principal} from '../shared';
 import {LevelMgm, LevelMgmService} from '../entities/level-mgm';
@@ -12,7 +15,7 @@ import {PhaseMgm, PhaseMgmService} from '../entities/phase-mgm';
 import {Observable} from 'rxjs/Observable';
 import {forkJoin} from 'rxjs/observable/forkJoin';
 import {isUndefined} from 'util';
-import {ThreatAgentMgm} from '../entities/threat-agent-mgm';
+import {ThreatAgentMgm, SkillLevel as ThreatAgentSkills} from '../entities/threat-agent-mgm';
 
 @Component({
     selector: 'jhi-evaluate-weakness',
@@ -121,5 +124,20 @@ export class EvaluateWeaknessComponent implements OnInit, OnDestroy {
 
     threatAgentChanged(threatAgent: ThreatAgentMgm) {
         console.log('ThreatAgent Changed: ' + threatAgent.name);
+    }
+
+    isAttackPossible(threatAgentSkills: ThreatAgentSkills, attackStrategyDifficulty: AttackStrategyDifficulty): boolean {
+
+        console.log('ENTER isAttackPossible...');
+
+        console.log(threatAgentSkills); // String
+        const threatAgentSkillsValue = ThreatAgentSkills[threatAgentSkills];
+        console.log(threatAgentSkillsValue); // Number
+
+        console.log(attackStrategyDifficulty); // String
+        const attackStrategyDifficultyValue = AttackStrategyDifficulty[attackStrategyDifficulty];
+        console.log(attackStrategyDifficultyValue); // Number
+
+        return threatAgentSkillsValue >= attackStrategyDifficultyValue;
     }
 }
