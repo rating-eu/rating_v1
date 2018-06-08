@@ -1,0 +1,23 @@
+.low {
+    background-color: #00FF00;
+}
+
+.low-medium {
+    background-color: #FFFF00;
+}
+
+.medium {
+    background-color: #FFBF00;
+}
+
+.medium-high {
+    background-color: #FFA500;
+}
+
+.high {
+    background-color: #FF0000;
+}
+
+.disabled {
+    background-color: #808080;
+}

@@ -122,9 +122,11 @@
                                 [routerLink]="['/attack-strategy-mgm', attackStrategy.id]"
                                 *ngFor="let attackStrategy of attacksCKC7Matrix[attackLayer.id][ckc7Phase.id]; trackBy: trackId"
                                 [disabled]="!isAttackPossible(selectedThreatAgent?.skillLevel, attackStrategy.skill)"
+                                [ngClass]="attackStrategyColorStyleClass(attackStrategy)"
                         >
                             {{attackStrategy.name}}
                             <span class="fa fa-star">&nbsp;{{attackStrategy.skill}}</span>
+                            <span class="fa fa-random">&nbsp;{{likelihoodEnum[attackStrategyInitialLikelihood(attackStrategy)]}}</span>
                         </button>
                     </div>
                 </td>
