@@ -1,23 +1,29 @@
 .low {
     background-color: #00FF00;
+    color: black;
 }
 
 .low-medium {
     background-color: #FFFF00;
+    color: black;
 }
 
 .medium {
-    background-color: #FFBF00;
+    background-color: #FFBB00;
+    color: black;
 }
 
 .medium-high {
-    background-color: #FFA500;
+    background-color: #FF7700;
+    color: black;
 }
 
 .high {
     background-color: #FF0000;
+    color: black;
 }
 
 .disabled {
     background-color: #808080;
+    color: white;
 }
