@@ -4,7 +4,8 @@ import {QuestionnaireMgm} from '../../../entities/questionnaire-mgm';
 import {QuestionMgm} from '../../../entities/question-mgm';
 import {Observable} from 'rxjs/Observable';
 import {DatasharingService} from '../../../datasharing/datasharing.service';
-import {QuestionnaireStatusMgm, Status} from '../../../entities/questionnaire-status-mgm';
+import {QuestionnaireStatusMgm} from '../../../entities/questionnaire-status-mgm';
+import {Status} from '../../../entities/enumerations/QuestionnaireStatus.enum';
 
 @Component({
     selector: 'jhi-questionnaire',

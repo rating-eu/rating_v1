@@ -1,6 +1,6 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {QuestionControlService} from './services/question-control.service';
-import {FormGroup} from '@angular/forms';
+import {AbstractControl, FormGroup} from '@angular/forms';
 import {QuestionMgm, QuestionMgmService} from '../../../../entities/question-mgm';
 import {AnswerMgm, AnswerMgmService} from '../../../../entities/answer-mgm';
 import {ThreatAgentMgm} from '../../../../entities/threat-agent-mgm';
@@ -10,9 +10,11 @@ import {Couple} from '../../../../utils/couple.class';
 import {DatasharingService} from '../../../../datasharing/datasharing.service';
 import {Router} from '@angular/router';
 import {
-    QuestionnaireStatusMgm, QuestionnaireStatusMgmService, Status
+    QuestionnaireStatusMgm, QuestionnaireStatusMgmService
 } from '../../../../entities/questionnaire-status-mgm';
-import {QuestionnaireMgm, QuestionnairePurpose} from '../../../../entities/questionnaire-mgm';
+import {Status} from '../../../../entities/enumerations/QuestionnaireStatus.enum';
+import {QuestionnaireMgm} from '../../../../entities/questionnaire-mgm';
+import {QuestionnairePurpose} from '../../../../entities/enumerations/QuestionnairePurpose.enum';
 import {MyAnswerMgm, MyAnswerMgmService} from '../../../../entities/my-answer-mgm';
 import {AccountService, User, UserService} from '../../../../shared';
 import {SelfAssessmentMgm, SelfAssessmentMgmService} from '../../../../entities/self-assessment-mgm';
@@ -84,6 +86,29 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
             if (this.myAnswers) {
                 this.form.patchValue(this.myAnswersToFormValue(this.myAnswers, this._questionsArrayMap));
             }
+
+            if (this.questionnaire.purpose === QuestionnairePurpose.SELFASSESSMENT) {
+                for (const key in this.form.controls) {
+                    const formControl = this.form.get(key);
+
+                    if (formControl) {
+                        formControl.valueChanges.subscribe(
+                            (answer: AnswerMgm) => {
+                                console.log('Question ' + key + ' Field changes:');
+
+                                const question = this._questionsArrayMap.get(Number(key));
+                                console.log('Question:');
+                                console.log(JSON.stringify(question));
+
+                                console.log('Answer:');
+                                console.log(JSON.stringify(answer));
+
+                                this.dataSharingSerivce.answerSelfAssessment(question, answer);
+                            }
+                        );
+                    }
+                }
+            }
         }
     }
 
@@ -145,6 +170,10 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
 
     isValid(questionID) {
         return this.form.controls[questionID].valid;
+    }
+
+    trackByID(index, question: QuestionMgm) {
+        return question.id;
     }
 
     ngOnInit() {
@@ -284,6 +313,7 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
     evaluateWeakness() {
         console.log('Evaluating wekness...');
         // TODO get the Questionnaire's Answers, persist them, update the matrix accordingly
+
     }
 
     freezeQuestionnaireStatus() {

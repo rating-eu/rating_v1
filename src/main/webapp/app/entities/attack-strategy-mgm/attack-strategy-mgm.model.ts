@@ -3,32 +3,10 @@ import {QuestionMgm} from '../question-mgm';
 import {MitigationMgm} from '../mitigation-mgm';
 import {LevelMgm} from '../level-mgm';
 import {PhaseMgm} from '../phase-mgm';
-
-export enum Frequency {
-    LOW = 1,
-    MEDIUM = 2,
-    HIGH = 3
-}
-
-export enum SkillLevel {
-    LOW = 1,
-    MEDIUM = 2,
-    HIGH = 3
-}
-
-export enum ResourceLevel {
-    LOW = 1,
-    MEDIUM = 2,
-    HIGH = 3
-}
-
-export enum Likelihood {
-    LOW = 1,
-    LOW_MEDIUM = 2,
-    MEDIUM = 3,
-    MEDIUM_HIGH = 4,
-    HIGH = 5
-}
+import {Likelihood} from '../enumerations/Likelihood.enum';
+import {Frequency} from '../enumerations/Frequency.enum';
+import {SkillLevel} from '../enumerations/SkillLevel.enum';
+import {ResourceLevel} from '../enumerations/ResourceLevel.enum';
 
 export class AttackStrategyMgm implements BaseEntity {
     constructor(public id?: number,

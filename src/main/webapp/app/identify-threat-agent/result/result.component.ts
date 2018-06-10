@@ -14,7 +14,8 @@ import {Router} from '@angular/router';
 import {SelfAssessmentMgm, SelfAssessmentMgmService} from '../../entities/self-assessment-mgm';
 import {Subscription} from 'rxjs/Subscription';
 import {QuestionnairesService} from '../../questionnaires/questionnaires.service';
-import {QuestionnaireStatusMgm, QuestionnaireStatusMgmService, Status} from '../../entities/questionnaire-status-mgm';
+import {QuestionnaireStatusMgm, QuestionnaireStatusMgmService} from '../../entities/questionnaire-status-mgm';
+import {Status} from '../../entities/enumerations/QuestionnaireStatus.enum';
 import {HttpResponse} from '@angular/common/http';
 
 @Component({

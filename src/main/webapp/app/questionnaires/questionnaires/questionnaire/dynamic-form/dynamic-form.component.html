@@ -4,12 +4,18 @@
 
 <form *ngIf="form" (ngSubmit)="submitDispatcher()" [formGroup]="form" role="form">
 
-    <div *ngFor="let question of questionsArray"
+    <div *ngFor="let question of questionsArray; trackBy: trackByID"
          [ngClass]="{'ng-valid': isValid(question.id) === true, 'ng-invalid': isValid(question.id) === false}">
 
         <label class="form-control-label" [attr.for]="question?.id"><h3>
             {{question?.name}}</h3>
         </label>
+
+        <div *ngIf="debug">
+            <pre>
+                {{question | json}}
+            </pre>
+        </div>
 
         <div [id]="question.id" class="radio" *ngFor="let answer of sort(question.answers)">
             <pre *ngIf="debug">{{answer | json}}</pre>

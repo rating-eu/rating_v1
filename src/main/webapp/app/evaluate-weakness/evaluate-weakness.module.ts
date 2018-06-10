@@ -11,12 +11,14 @@ import {ErrorHandlerInterceptor} from '../blocks/interceptor/errorhandler.interc
 import {IdentifyThreatAgentService} from '../identify-threat-agent/identify-threat-agent.service';
 import {NotificationInterceptor} from '../blocks/interceptor/notification.interceptor';
 import {JhiEventManager} from 'ng-jhipster';
+import {DatasharingModule} from '../datasharing/datasharing.module';
 
 @NgModule({
     imports: [
         CommonModule,
         HermeneutSharedModule,
-        EvaluateWeaknessRoutingModule
+        EvaluateWeaknessRoutingModule,
+        DatasharingModule
     ],
     declarations: [
         EvaluateWeaknessComponent

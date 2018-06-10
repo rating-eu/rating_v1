@@ -4,13 +4,7 @@ import {ActivatedRoute} from '@angular/router';
 import {Subscription} from 'rxjs/Subscription';
 import {JhiEventManager, JhiAlertService} from 'ng-jhipster';
 import {SelfAssessmentMgm, SelfAssessmentMgmService} from '../entities/self-assessment-mgm';
-import {
-    AttackStrategyMgm,
-    SkillLevel as AttackStrategyDifficulty,
-    Frequency,
-    ResourceLevel,
-    Likelihood
-} from '../entities/attack-strategy-mgm/attack-strategy-mgm.model';
+import {AttackStrategyMgm} from '../entities/attack-strategy-mgm/attack-strategy-mgm.model';
 import {AttackStrategyMgmService} from '../entities/attack-strategy-mgm/attack-strategy-mgm.service';
 import {Principal} from '../shared';
 import {LevelMgm, LevelMgmService} from '../entities/level-mgm';
@@ -18,7 +12,17 @@ import {PhaseMgm, PhaseMgmService} from '../entities/phase-mgm';
 import {Observable} from 'rxjs/Observable';
 import {forkJoin} from 'rxjs/observable/forkJoin';
 import {isUndefined} from 'util';
-import {ThreatAgentMgm, SkillLevel as ThreatAgentSkills} from '../entities/threat-agent-mgm';
+import {ThreatAgentMgm} from '../entities/threat-agent-mgm';
+import {DatasharingService} from '../datasharing/datasharing.service';
+import {QuestionMgm} from '../entities/question-mgm';
+import {AnswerMgm} from '../entities/answer-mgm';
+import {QuestionType} from '../entities/enumerations/QuestionType.enum';
+import {Likelihood} from '../entities/enumerations/Likelihood.enum';
+import {Couple} from '../utils/couple.class';
+import {SkillLevel} from '../entities/enumerations/SkillLevel.enum';
+import {Frequency} from '../entities/enumerations/Frequency.enum';
+import {ResourceLevel} from '../entities/enumerations/ResourceLevel.enum';
+import {AnswerWeightMgm, AnswerWeightMgmService} from '../entities/answer-weight-mgm';
 
 @Component({
     selector: 'jhi-evaluate-weakness',
@@ -34,6 +38,7 @@ export class EvaluateWeaknessComponent implements OnInit, OnDestroy {
     attacksCKC7Matrix: AttackStrategyMgm[][][];
 
     likelihoodEnum = Likelihood;
+    threatAgentAttackPossible: boolean[][];
 
     account: Account;
     currentAccount: any;
@@ -42,6 +47,8 @@ export class EvaluateWeaknessComponent implements OnInit, OnDestroy {
     selectedSelfAssessment: SelfAssessmentMgm = {};
     selectedThreatAgent: ThreatAgentMgm;
 
+    selfAssessmentAnswers$: Observable<{}>;
+
     constructor(private attackStrategyService: AttackStrategyMgmService,
                 private jhiAlertService: JhiAlertService,
                 private eventManager: JhiEventManager,
@@ -49,7 +56,8 @@ export class EvaluateWeaknessComponent implements OnInit, OnDestroy {
                 private principal: Principal,
                 private mySelfAssessmentService: SelfAssessmentMgmService,
                 private levelService: LevelMgmService,
-                private phaseService: PhaseMgmService) {
+                private phaseService: PhaseMgmService,
+                private dataSharingService: DatasharingService) {
     }
 
     ngOnInit() {
@@ -107,7 +115,46 @@ export class EvaluateWeaknessComponent implements OnInit, OnDestroy {
 
                 console.log('HUMAN-RECONNAISSANCE');
                 console.log(JSON.stringify(this.attacksCKC7Matrix[1][1]));
+
+                this.threatAgentAttackPossible = [];
+                const threatAgents = this.selectedSelfAssessment.threatagents;
+
+                threatAgents.forEach((threatAgent) => {
+                    this.threatAgentAttackPossible[threatAgent.id] = [];
+
+                    this.attackStrategies.forEach((attackStrategy) => {
+                        this.threatAgentAttackPossible[threatAgent.id][attackStrategy.id] = this.isAttackPossible(threatAgent.skillLevel, attackStrategy.skill);
+                    });
+                });
             });
+
+        this.dataSharingService.selfAssessmentAnswers$.subscribe(
+            (attackStrategyQuestionAnswersMap: Map</*AttackStrategy.ID*/number, Couple<AttackStrategyMgm, Map</*Question.ID*/number, Couple<QuestionMgm, AnswerMgm>>>>) => {
+                console.log('EVALUATE WEAKNESS: Receiving updates from SelfAssessment answers...');
+                console.log('Map size: ' + attackStrategyQuestionAnswersMap.size);
+
+                attackStrategyQuestionAnswersMap.forEach((value: Couple<AttackStrategyMgm, Map</*Question.ID*/number, Couple<QuestionMgm, AnswerMgm>>>, key: Number/*AttackStrategy.ID*/) => {
+                    const attackStrategyID: Number = key;
+                    const attackStrategy: AttackStrategyMgm = value.key;
+                    console.log('AttackStrategy:');
+                    console.log(JSON.stringify(attackStrategy));
+
+                    const questionAnswersMap: Map</*Question.ID*/number, Couple<QuestionMgm, AnswerMgm>> = value.value;
+
+                    questionAnswersMap.forEach((value2: Couple<QuestionMgm, AnswerMgm>, key2: /*Question.ID*/number) => {
+                        const questionID: Number = key2;
+                        const question: QuestionMgm = value2.key;
+                        const answer: AnswerMgm = value2.value;
+
+                        console.log('Question:');
+                        console.log(JSON.stringify(question));
+
+                        console.log('Anser:');
+                        console.log(JSON.stringify(answer));
+                    });
+                });
+            }
+        );
     }
 
     previousState() {
@@ -118,7 +165,7 @@ export class EvaluateWeaknessComponent implements OnInit, OnDestroy {
         this.eventManager.destroy(this.eventSubscriber);
     }
 
-    trackId(index: number, item: AttackStrategyMgm) {
+    trackByID(index: number, item: AttackStrategyMgm) {
         return item.id;
     }
 
@@ -134,16 +181,16 @@ export class EvaluateWeaknessComponent implements OnInit, OnDestroy {
         console.log('ThreatAgent Changed: ' + threatAgent.name);
     }
 
-    isAttackPossible(threatAgentSkills: ThreatAgentSkills, attackStrategyDifficulty: AttackStrategyDifficulty): boolean {
+    isAttackPossible(threatAgentSkills: SkillLevel, attackStrategyDifficulty: SkillLevel): boolean {
 
         console.log('ENTER isAttackPossible...');
 
         console.log(threatAgentSkills); // String
-        const threatAgentSkillsValue = ThreatAgentSkills[threatAgentSkills];
+        const threatAgentSkillsValue = SkillLevel[threatAgentSkills];
         console.log(threatAgentSkillsValue); // Number
 
         console.log(attackStrategyDifficulty); // String
-        const attackStrategyDifficultyValue = AttackStrategyDifficulty[attackStrategyDifficulty];
+        const attackStrategyDifficultyValue = SkillLevel[attackStrategyDifficulty];
         console.log(attackStrategyDifficultyValue); // Number
 
         return threatAgentSkillsValue >= attackStrategyDifficultyValue;
@@ -173,7 +220,7 @@ export class EvaluateWeaknessComponent implements OnInit, OnDestroy {
 
         // First check if the attack is possible for the selected ThreatAgent
         if (this.selectedThreatAgent) {
-            if (this.isAttackPossible(this.selectedThreatAgent.skillLevel, attackStrategy.skill)) {
+            if (this.threatAgentAttackPossible[this.selectedThreatAgent.id][attackStrategy.id]) {
                 // Get the initial likelihood of the AttackStrategy
                 const likelihood: Likelihood = this.attackStrategyInitialLikelihood(attackStrategy);
 

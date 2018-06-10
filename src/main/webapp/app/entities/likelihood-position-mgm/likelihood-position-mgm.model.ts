@@ -1,18 +1,9 @@
-import { BaseEntity } from './../../shared';
-
-export const enum Likelihood {
-    'LOW',
-    'LOW_MEDIUM',
-    'MEDIUM',
-    'MEDIUM_HIGH',
-    'HIGH'
-}
+import {BaseEntity} from './../../shared';
+import {Likelihood} from '../enumerations/Likelihood.enum';
 
 export class LikelihoodPositionMgm implements BaseEntity {
-    constructor(
-        public id?: number,
-        public likelihood?: Likelihood,
-        public position?: number,
-    ) {
+    constructor(public id?: number,
+                public likelihood?: Likelihood,
+                public position?: number) {
     }
 }
