@@ -46,8 +46,11 @@ export class EvaluateWeaknessComponent implements OnInit, OnDestroy {
     currentSearch: string;
     selectedSelfAssessment: SelfAssessmentMgm = {};
     selectedThreatAgent: ThreatAgentMgm;
+    answerWeights: AnswerWeightMgm[];
+    answerWeightMap: Map<number/*QuestionType*/, Map<number/*AnswerLikelihood*/, number/*AnswerWeight*/>>;
 
     selfAssessmentAnswers$: Observable<{}>;
+    private attackStrategyQuestionAnswersMap: Map</*AttackStrategy.ID*/number, Couple<AttackStrategyMgm, Map</*Question.ID*/number, Couple<QuestionMgm, AnswerMgm>>>>;
 
     constructor(private attackStrategyService: AttackStrategyMgmService,
                 private jhiAlertService: JhiAlertService,
@@ -57,7 +60,8 @@ export class EvaluateWeaknessComponent implements OnInit, OnDestroy {
                 private mySelfAssessmentService: SelfAssessmentMgmService,
                 private levelService: LevelMgmService,
                 private phaseService: PhaseMgmService,
-                private dataSharingService: DatasharingService) {
+                private dataSharingService: DatasharingService,
+                private answerWeightService: AnswerWeightMgmService) {
     }
 
     ngOnInit() {
@@ -72,6 +76,7 @@ export class EvaluateWeaknessComponent implements OnInit, OnDestroy {
         observables.push(this.levelService.query());
         observables.push(this.phaseService.query());
         observables.push(this.attackStrategyService.query());
+        observables.push(this.answerWeightService.query());
 
         forkJoin(observables).toPromise()
             .then((responses: HttpResponse<any>[]) => {
@@ -87,6 +92,37 @@ export class EvaluateWeaknessComponent implements OnInit, OnDestroy {
                         }
                         case 2: {// attack-strategies
                             this.attackStrategies = value.body as AttackStrategyMgm[];
+                            break;
+                        }
+                        case 3: {
+                            this.answerWeights = value.body as AnswerWeightMgm[];
+                            this.answerWeightMap = new Map<number, Map<number, number>>();
+
+                            this.answerWeights.forEach((answerWeight: AnswerWeightMgm) => {
+                                const questionType: QuestionType = answerWeight.questionType;
+                                const questionTypeValue: number = Number(QuestionType[questionType]);
+                                console.log('QuestionType: ' + questionType);
+                                console.log('QuestionType value: ' + questionTypeValue);
+
+                                const answerLikelihood: Likelihood = answerWeight.likelihood;
+                                const answerLikelihoodValue: number = Number(Likelihood[answerLikelihood]);
+                                console.log('AnswerLikelihood: ' + answerLikelihood);
+                                console.log('AnswerLikelihood value: ' + answerLikelihoodValue);
+
+                                const weight: number = answerWeight.weight;
+                                console.log('Weight: ' + weight);
+
+                                if (this.answerWeightMap.has(questionTypeValue)) {// REGULAR, RELEVANT
+                                    //LOW, LOW_MEDIUM, MEDIUM, MEDIUM_HIGH, HIGH
+                                    this.answerWeightMap.get(questionTypeValue).set(answerLikelihoodValue, weight);
+                                } else {
+                                    // REGULAR, RELEVANT
+                                    this.answerWeightMap.set(questionTypeValue, new Map<number, number>());
+                                    //LOW, LOW_MEDIUM, MEDIUM, MEDIUM_HIGH, HIGH
+                                    this.answerWeightMap.get(questionTypeValue).set(answerLikelihoodValue, weight);
+                                }
+                            });
+
                             break;
                         }
                     }
@@ -132,9 +168,10 @@ export class EvaluateWeaknessComponent implements OnInit, OnDestroy {
             (attackStrategyQuestionAnswersMap: Map</*AttackStrategy.ID*/number, Couple<AttackStrategyMgm, Map</*Question.ID*/number, Couple<QuestionMgm, AnswerMgm>>>>) => {
                 console.log('EVALUATE WEAKNESS: Receiving updates from SelfAssessment answers...');
                 console.log('Map size: ' + attackStrategyQuestionAnswersMap.size);
+                this.attackStrategyQuestionAnswersMap = attackStrategyQuestionAnswersMap;
 
-                attackStrategyQuestionAnswersMap.forEach((value: Couple<AttackStrategyMgm, Map</*Question.ID*/number, Couple<QuestionMgm, AnswerMgm>>>, key: Number/*AttackStrategy.ID*/) => {
-                    const attackStrategyID: Number = key;
+                attackStrategyQuestionAnswersMap.forEach((value: Couple<AttackStrategyMgm, Map</*Question.ID*/number, Couple<QuestionMgm, AnswerMgm>>>, key: number/*AttackStrategy.ID*/) => {
+                    const attackStrategyID: number = key;
                     const attackStrategy: AttackStrategyMgm = value.key;
                     console.log('AttackStrategy:');
                     console.log(JSON.stringify(attackStrategy));
@@ -142,7 +179,7 @@ export class EvaluateWeaknessComponent implements OnInit, OnDestroy {
                     const questionAnswersMap: Map</*Question.ID*/number, Couple<QuestionMgm, AnswerMgm>> = value.value;
 
                     questionAnswersMap.forEach((value2: Couple<QuestionMgm, AnswerMgm>, key2: /*Question.ID*/number) => {
-                        const questionID: Number = key2;
+                        const questionID: number = key2;
                         const question: QuestionMgm = value2.key;
                         const answer: AnswerMgm = value2.value;
 
@@ -216,15 +253,66 @@ export class EvaluateWeaknessComponent implements OnInit, OnDestroy {
         return likelihood;
     }
 
+    attackStrategyAnswersLikelihood(attackStrategy: AttackStrategyMgm) {
+
+        let numerator = 0;
+        let denominator = 0;
+
+        if (this.attackStrategyQuestionAnswersMap.has(attackStrategy.id)) {
+            const questionAnswersMap: Map</*Question.ID*/number, Couple<QuestionMgm, AnswerMgm>> = this.attackStrategyQuestionAnswersMap.get(attackStrategy.id).value;
+
+            questionAnswersMap.forEach((value: Couple<QuestionMgm, AnswerMgm>, key: Number) => {
+                const question: QuestionMgm = value.key;
+                const answer: AnswerMgm = value.value;
+                const answerLikelihoodValue: number = Number(Likelihood[answer.likelihood]);
+
+                const answerWeight: number = this.getAnswerWeight(question, answer);
+
+                numerator += answerWeight * answerLikelihoodValue;
+                denominator += answerWeight;
+            });
+        }
+
+        if (denominator !== 0) {
+            return numerator / denominator;
+        } else {
+            return 0;
+        }
+    }
+
+    attackStrategyFinalLikelihood(initialLikelihood: number, answersLikelihood: number) {
+        if (answersLikelihood > 0) {
+            return Math.round((initialLikelihood + answersLikelihood) / 2);
+        } else {
+            return initialLikelihood;
+        }
+    }
+
     attackStrategyColorStyleClass(attackStrategy: AttackStrategyMgm): string {
+        console.log('ENTER attackStrategy color style: ' + attackStrategy.name);
 
         // First check if the attack is possible for the selected ThreatAgent
         if (this.selectedThreatAgent) {
             if (this.threatAgentAttackPossible[this.selectedThreatAgent.id][attackStrategy.id]) {
                 // Get the initial likelihood of the AttackStrategy
-                const likelihood: Likelihood = this.attackStrategyInitialLikelihood(attackStrategy);
+                const initialLikelihood: number = this.attackStrategyInitialLikelihood(attackStrategy).valueOf();
+                console.log('Initial likelihood: ' + initialLikelihood);
 
-                // TODO update the initial likelihood with the data from the self-assessment answers.
+                // Get the likelihood from the self-assessment answers.
+                const answersLikelihood: number = this.attackStrategyAnswersLikelihood(attackStrategy);
+                console.log('Answers likelihood: ' + answersLikelihood);
+
+                // Do the average if the answersLikelihood is > 0
+                const finalLikelihood: number = this.attackStrategyFinalLikelihood(initialLikelihood, answersLikelihood);
+                console.log('Final likelihood: ' + finalLikelihood);
+
+                // Round it to the nearest integer value
+                const integerLikelihood: number = Math.round(finalLikelihood);
+                console.log('IntegerLikelihood: ' + integerLikelihood);
+
+                // Get the corresponding Likelihood enum entry
+                const likelihood: Likelihood = Likelihood[Likelihood[integerLikelihood]];
+                console.log('Likelihood enum: ' + likelihood);
 
                 switch (likelihood) {
                     case Likelihood.LOW: {
@@ -248,5 +336,22 @@ export class EvaluateWeaknessComponent implements OnInit, OnDestroy {
 
         // If all the above cases failed, the attack is not possible, hence we show it as disabled.
         return 'disabled';
+    }
+
+    getAnswerWeight(question: QuestionMgm, answer: AnswerMgm): number {
+        const questionTypeValue: number = Number(QuestionType[question.questionType]);
+        const answerLikelihoodValue: number = Number(Likelihood[answer.likelihood]);
+
+        if (this.answerWeightMap) {
+            if (this.answerWeightMap.has(questionTypeValue)) {
+                const map: Map<number, number> = this.answerWeightMap.get(questionTypeValue);
+
+                if (map.has(answerLikelihoodValue)) {
+                    return map.get(answerLikelihoodValue);
+                }
+            }
+        }
+
+        return 0;
     }
 }
