@@ -118,7 +118,7 @@
                         <button type="button" class="btn btn-secondary m-1"
                                 [routerLink]="['/attack-strategy-mgm', attackStrategy.id]"
                                 *ngFor="let attackStrategy of attacksCKC7Matrix[attackLayer.id][ckc7Phase.id]; trackBy: trackId"
-                                [disabled]="!isAttackPossible(selectedThreatAgent?.skillLevel, attackStrategy.skill)"
+                                [disabled]="!selectedThreatAgent || !threatAgentAttackPossible[selectedThreatAgent.id][attackStrategy.id]"
                                 [ngClass]="attackStrategyColorStyleClass(attackStrategy)"
                         >
                             {{attackStrategy.name}}

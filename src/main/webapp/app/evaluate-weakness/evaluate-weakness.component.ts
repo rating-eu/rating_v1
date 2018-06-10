@@ -34,6 +34,7 @@ export class EvaluateWeaknessComponent implements OnInit, OnDestroy {
     attacksCKC7Matrix: AttackStrategyMgm[][][];
 
     likelihoodEnum = Likelihood;
+    threatAgentAttackPossible: boolean[][];
 
     account: Account;
     currentAccount: any;
@@ -107,6 +108,17 @@ export class EvaluateWeaknessComponent implements OnInit, OnDestroy {
 
                 console.log('HUMAN-RECONNAISSANCE');
                 console.log(JSON.stringify(this.attacksCKC7Matrix[1][1]));
+
+                this.threatAgentAttackPossible = [];
+                const threatAgents = this.selectedSelfAssessment.threatagents;
+
+                threatAgents.forEach((threatAgent) => {
+                    this.threatAgentAttackPossible[threatAgent.id] = [];
+
+                    this.attackStrategies.forEach((attackStrategy) => {
+                        this.threatAgentAttackPossible[threatAgent.id][attackStrategy.id] = this.isAttackPossible(threatAgent.skillLevel, attackStrategy.skill);
+                    });
+                });
             });
     }
 
@@ -173,7 +185,7 @@ export class EvaluateWeaknessComponent implements OnInit, OnDestroy {
 
         // First check if the attack is possible for the selected ThreatAgent
         if (this.selectedThreatAgent) {
-            if (this.isAttackPossible(this.selectedThreatAgent.skillLevel, attackStrategy.skill)) {
+            if (this.threatAgentAttackPossible[this.selectedThreatAgent.id][attackStrategy.id]) {
                 // Get the initial likelihood of the AttackStrategy
                 const likelihood: Likelihood = this.attackStrategyInitialLikelihood(attackStrategy);
 
