@@ -100,16 +100,17 @@ export class DatasharingService {
     }
 
     answerSelfAssessment(question: QuestionMgm, answer: AnswerMgm) {
+        console.log('ENTER answer SelfAssessment...');
         console.log('Question: ' + JSON.stringify(question));
 
-        for (let attackStrategy of question.attackStrategies) {
+        for (const attackStrategy of question.attackStrategies) {
             console.log('AttackStrategy: ' + JSON.stringify(attackStrategy));
 
             if (this._selfAssessmentAttackStrategyAnswersMap.has(attackStrategy.id)) {
                 const couple: Couple<AttackStrategyMgm, Map</*Question.ID*/number, Couple<QuestionMgm, AnswerMgm>>> = this._selfAssessmentAttackStrategyAnswersMap.get(attackStrategy.id);
                 const questionsMap: Map</*Question.ID*/number, Couple<QuestionMgm, AnswerMgm>> = couple.value;
 
-                //check if an old answer exists
+                // check if an old answer exists
                 if (questionsMap.has(question.id)) {//
                     const oldAnswer: AnswerMgm = questionsMap.get(question.id).value;
                     console.log('The old answer was: ' + JSON.stringify(oldAnswer));
@@ -132,7 +133,7 @@ export class DatasharingService {
             }
         }
 
-        //broadcast the update
+        // broadcast the update
         this.selfAssessmentAttackStrategyAnswersMap = this._selfAssessmentAttackStrategyAnswersMap;
     }
 }

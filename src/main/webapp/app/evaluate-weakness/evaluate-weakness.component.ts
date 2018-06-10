@@ -19,6 +19,10 @@ import {Observable} from 'rxjs/Observable';
 import {forkJoin} from 'rxjs/observable/forkJoin';
 import {isUndefined} from 'util';
 import {ThreatAgentMgm, SkillLevel as ThreatAgentSkills} from '../entities/threat-agent-mgm';
+import {DatasharingService} from '../datasharing/datasharing.service';
+import {QuestionMgm} from '../entities/question-mgm';
+import {AnswerMgm} from '../entities/answer-mgm';
+import {Couple} from '../utils/couple.class';
 
 @Component({
     selector: 'jhi-evaluate-weakness',
@@ -43,6 +47,8 @@ export class EvaluateWeaknessComponent implements OnInit, OnDestroy {
     selectedSelfAssessment: SelfAssessmentMgm = {};
     selectedThreatAgent: ThreatAgentMgm;
 
+    selfAssessmentAnswers$: Observable<{}>;
+
     constructor(private attackStrategyService: AttackStrategyMgmService,
                 private jhiAlertService: JhiAlertService,
                 private eventManager: JhiEventManager,
@@ -50,7 +56,8 @@ export class EvaluateWeaknessComponent implements OnInit, OnDestroy {
                 private principal: Principal,
                 private mySelfAssessmentService: SelfAssessmentMgmService,
                 private levelService: LevelMgmService,
-                private phaseService: PhaseMgmService) {
+                private phaseService: PhaseMgmService,
+                private dataSharingService: DatasharingService) {
     }
 
     ngOnInit() {
@@ -120,6 +127,34 @@ export class EvaluateWeaknessComponent implements OnInit, OnDestroy {
                     });
                 });
             });
+
+        this.dataSharingService.selfAssessmentAnswers$.subscribe(
+            (attackStrategyQuestionAnswersMap: Map</*AttackStrategy.ID*/number, Couple<AttackStrategyMgm, Map</*Question.ID*/number, Couple<QuestionMgm, AnswerMgm>>>>) => {
+                console.log('EVALUATE WEAKNESS: Receiving updates from SelfAssessment answers...');
+                console.log('Map size: ' + attackStrategyQuestionAnswersMap.size);
+
+                attackStrategyQuestionAnswersMap.forEach((value: Couple<AttackStrategyMgm, Map</*Question.ID*/number, Couple<QuestionMgm, AnswerMgm>>>, key: Number/*AttackStrategy.ID*/) => {
+                    const attackStrategyID: Number = key;
+                    const attackStrategy: AttackStrategyMgm = value.key;
+                    console.log('AttackStrategy:');
+                    console.log(JSON.stringify(attackStrategy));
+
+                    const questionAnswersMap: Map</*Question.ID*/number, Couple<QuestionMgm, AnswerMgm>> = value.value;
+
+                    questionAnswersMap.forEach((value2: Couple<QuestionMgm, AnswerMgm>, key2: /*Question.ID*/number) => {
+                        const questionID: Number = key2;
+                        const question: QuestionMgm = value2.key;
+                        const answer: AnswerMgm = value2.value;
+
+                        console.log('Question:');
+                        console.log(JSON.stringify(question));
+
+                        console.log('Anser:');
+                        console.log(JSON.stringify(answer));
+                    });
+                });
+            }
+        );
     }
 
     previousState() {
@@ -130,7 +165,7 @@ export class EvaluateWeaknessComponent implements OnInit, OnDestroy {
         this.eventManager.destroy(this.eventSubscriber);
     }
 
-    trackId(index: number, item: AttackStrategyMgm) {
+    trackByID(index: number, item: AttackStrategyMgm) {
         return item.id;
     }
 
