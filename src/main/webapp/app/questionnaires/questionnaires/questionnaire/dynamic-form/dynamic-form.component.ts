@@ -10,9 +10,11 @@ import {Couple} from '../../../../utils/couple.class';
 import {DatasharingService} from '../../../../datasharing/datasharing.service';
 import {Router} from '@angular/router';
 import {
-    QuestionnaireStatusMgm, QuestionnaireStatusMgmService, Status
+    QuestionnaireStatusMgm, QuestionnaireStatusMgmService
 } from '../../../../entities/questionnaire-status-mgm';
-import {QuestionnaireMgm, QuestionnairePurpose} from '../../../../entities/questionnaire-mgm';
+import {Status} from '../../../../entities/enumerations/QuestionnaireStatus.enum';
+import {QuestionnaireMgm} from '../../../../entities/questionnaire-mgm';
+import {QuestionnairePurpose} from '../../../../entities/enumerations/QuestionnairePurpose.enum';
 import {MyAnswerMgm, MyAnswerMgmService} from '../../../../entities/my-answer-mgm';
 import {AccountService, User, UserService} from '../../../../shared';
 import {SelfAssessmentMgm, SelfAssessmentMgmService} from '../../../../entities/self-assessment-mgm';
@@ -103,7 +105,7 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
 
                                 this.dataSharingSerivce.answerSelfAssessment(question, answer);
                             }
-                        )
+                        );
                     }
                 }
             }

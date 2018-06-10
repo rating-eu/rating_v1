@@ -1,14 +1,15 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {QuestionnairesService} from '../questionnaires.service';
-import {QuestionnairePurpose} from '../../entities/questionnaire-mgm';
 import {QuestionnaireMgm} from '../../entities/questionnaire-mgm';
 import {Observable} from 'rxjs/Observable';
 import {DatasharingService} from '../../datasharing/datasharing.service';
-import {QuestionnaireStatusMgm, Status} from '../../entities/questionnaire-status-mgm';
+import {QuestionnaireStatusMgm} from '../../entities/questionnaire-status-mgm';
+import {Status} from '../../entities/enumerations/QuestionnaireStatus.enum';
 import {SelfAssessmentMgm, SelfAssessmentMgmService} from '../../entities/self-assessment-mgm';
 import {AccountService, User, UserService} from '../../shared';
 import {Subscription} from 'rxjs/Subscription';
 import {ActivatedRoute, Params} from '@angular/router';
+import {QuestionnairePurpose} from '../../entities/enumerations/QuestionnairePurpose.enum';
 
 @Component({
     selector: 'jhi-questionnaires',
