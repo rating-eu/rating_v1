@@ -17,7 +17,8 @@ import {DatasharingService} from '../datasharing/datasharing.service';
 import {QuestionMgm} from '../entities/question-mgm';
 import {AnswerMgm} from '../entities/answer-mgm';
 import {QuestionType} from '../entities/enumerations/QuestionType.enum';
-import {Likelihood} from '../entities/enumerations/Likelihood.enum';
+import {AnswerLikelihood} from '../entities/enumerations/AnswerLikelihood.enum';
+import {AttackStrategyLikelihood} from '../entities/enumerations/AttackStrategyLikelihood.enum';
 import {Couple} from '../utils/couple.class';
 import {SkillLevel} from '../entities/enumerations/SkillLevel.enum';
 import {Frequency} from '../entities/enumerations/Frequency.enum';
@@ -36,8 +37,6 @@ export class EvaluateWeaknessComponent implements OnInit, OnDestroy {
     attackLayers: LevelMgm[];
     cyberKillChainPhases: PhaseMgm[];
     attacksCKC7Matrix: AttackStrategyMgm[][][];
-
-    likelihoodEnum = Likelihood;
     threatAgentAttackPossible: boolean[][];
 
     account: Account;
@@ -104,8 +103,8 @@ export class EvaluateWeaknessComponent implements OnInit, OnDestroy {
                                 console.log('QuestionType: ' + questionType);
                                 console.log('QuestionType value: ' + questionTypeValue);
 
-                                const answerLikelihood: Likelihood = answerWeight.likelihood;
-                                const answerLikelihoodValue: number = Number(Likelihood[answerLikelihood]);
+                                const answerLikelihood: AnswerLikelihood = answerWeight.likelihood;
+                                const answerLikelihoodValue: number = Number(AnswerLikelihood[answerLikelihood]);
                                 console.log('AnswerLikelihood: ' + answerLikelihood);
                                 console.log('AnswerLikelihood value: ' + answerLikelihoodValue);
 
@@ -113,12 +112,12 @@ export class EvaluateWeaknessComponent implements OnInit, OnDestroy {
                                 console.log('Weight: ' + weight);
 
                                 if (this.answerWeightMap.has(questionTypeValue)) {// REGULAR, RELEVANT
-                                    //LOW, LOW_MEDIUM, MEDIUM, MEDIUM_HIGH, HIGH
+                                    // LOW, LOW_MEDIUM, MEDIUM, MEDIUM_HIGH, HIGH
                                     this.answerWeightMap.get(questionTypeValue).set(answerLikelihoodValue, weight);
                                 } else {
                                     // REGULAR, RELEVANT
                                     this.answerWeightMap.set(questionTypeValue, new Map<number, number>());
-                                    //LOW, LOW_MEDIUM, MEDIUM, MEDIUM_HIGH, HIGH
+                                    // LOW, LOW_MEDIUM, MEDIUM, MEDIUM_HIGH, HIGH
                                     this.answerWeightMap.get(questionTypeValue).set(answerLikelihoodValue, weight);
                                 }
                             });
@@ -233,21 +232,33 @@ export class EvaluateWeaknessComponent implements OnInit, OnDestroy {
         return threatAgentSkillsValue >= attackStrategyDifficultyValue;
     }
 
-    attackStrategyInitialLikelihood(attackStrategy: AttackStrategyMgm): Likelihood {
+    attackStrategyInitialLikelihood(attackStrategy: AttackStrategyMgm): AttackStrategyLikelihood {
         const frequencyValue = Number(Frequency[attackStrategy.frequency]);
         const resourcesValue = Number(ResourceLevel[attackStrategy.resources]);
 
-        const initialLikelihoodMatrix: {} = {
-            1: {3: Likelihood.LOW, 2: Likelihood.LOW_MEDIUM, 1: Likelihood.MEDIUM},
-            2: {3: Likelihood.LOW_MEDIUM, 2: Likelihood.MEDIUM, 1: Likelihood.MEDIUM_HIGH},
-            3: {3: Likelihood.MEDIUM, 2: Likelihood.MEDIUM_HIGH, 1: Likelihood.HIGH}
+        const attackStrategyInitialLikelihoodMatrix: {} = {
+            1: {
+                3: AttackStrategyLikelihood.LOW,
+                2: AttackStrategyLikelihood.LOW_MEDIUM,
+                1: AttackStrategyLikelihood.MEDIUM
+            },
+            2: {
+                3: AttackStrategyLikelihood.LOW_MEDIUM,
+                2: AttackStrategyLikelihood.MEDIUM,
+                1: AttackStrategyLikelihood.MEDIUM_HIGH
+            },
+            3: {
+                3: AttackStrategyLikelihood.MEDIUM,
+                2: AttackStrategyLikelihood.MEDIUM_HIGH,
+                1: AttackStrategyLikelihood.HIGH
+            }
         };
 
         console.log('Matrix:');
-        console.log(JSON.stringify(initialLikelihoodMatrix));
+        console.log(JSON.stringify(attackStrategyInitialLikelihoodMatrix));
 
         // Reducing matrix index by one, since it's zero-based
-        const likelihood: Likelihood = initialLikelihoodMatrix[frequencyValue][resourcesValue];
+        const likelihood: AttackStrategyLikelihood = attackStrategyInitialLikelihoodMatrix[frequencyValue][resourcesValue];
         console.log('Likelihood: ' + likelihood);
 
         return likelihood;
@@ -264,7 +275,7 @@ export class EvaluateWeaknessComponent implements OnInit, OnDestroy {
             questionAnswersMap.forEach((value: Couple<QuestionMgm, AnswerMgm>, key: Number) => {
                 const question: QuestionMgm = value.key;
                 const answer: AnswerMgm = value.value;
-                const answerLikelihoodValue: number = Number(Likelihood[answer.likelihood]);
+                const answerLikelihoodValue: number = Number(AnswerLikelihood[answer.likelihood]);
 
                 const answerWeight: number = this.getAnswerWeight(question, answer);
 
@@ -311,23 +322,23 @@ export class EvaluateWeaknessComponent implements OnInit, OnDestroy {
                 console.log('IntegerLikelihood: ' + integerLikelihood);
 
                 // Get the corresponding Likelihood enum entry
-                const likelihood: Likelihood = Likelihood[Likelihood[integerLikelihood]];
+                const likelihood: AttackStrategyLikelihood = AttackStrategyLikelihood[AttackStrategyLikelihood[integerLikelihood]];
                 console.log('Likelihood enum: ' + likelihood);
 
                 switch (likelihood) {
-                    case Likelihood.LOW: {
+                    case AttackStrategyLikelihood.LOW: {
                         return 'low';
                     }
-                    case Likelihood.LOW_MEDIUM: {
+                    case AttackStrategyLikelihood.LOW_MEDIUM: {
                         return 'low-medium';
                     }
-                    case Likelihood.MEDIUM: {
+                    case AttackStrategyLikelihood.MEDIUM: {
                         return 'medium';
                     }
-                    case Likelihood.MEDIUM_HIGH: {
+                    case AttackStrategyLikelihood.MEDIUM_HIGH: {
                         return 'medium-high';
                     }
-                    case Likelihood.HIGH: {
+                    case AttackStrategyLikelihood.HIGH: {
                         return 'high';
                     }
                 }
@@ -340,7 +351,7 @@ export class EvaluateWeaknessComponent implements OnInit, OnDestroy {
 
     getAnswerWeight(question: QuestionMgm, answer: AnswerMgm): number {
         const questionTypeValue: number = Number(QuestionType[question.questionType]);
-        const answerLikelihoodValue: number = Number(Likelihood[answer.likelihood]);
+        const answerLikelihoodValue: number = Number(AnswerLikelihood[answer.likelihood]);
 
         if (this.answerWeightMap) {
             if (this.answerWeightMap.has(questionTypeValue)) {

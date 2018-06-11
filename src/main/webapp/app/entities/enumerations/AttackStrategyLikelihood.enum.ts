@@ -1,4 +1,4 @@
-export enum Likelihood {
+export enum AttackStrategyLikelihood {
     'LOW' = 1,
     'LOW_MEDIUM' = 2,
     'MEDIUM' = 3,

@@ -1,9 +1,9 @@
 import {BaseEntity} from './../../shared';
-import {Likelihood} from '../enumerations/Likelihood.enum';
+import {AnswerLikelihood} from '../enumerations/AnswerLikelihood.enum';
 
 export class LikelihoodPositionMgm implements BaseEntity {
     constructor(public id?: number,
-                public likelihood?: Likelihood,
+                public likelihood?: AnswerLikelihood,
                 public position?: number) {
     }
 }

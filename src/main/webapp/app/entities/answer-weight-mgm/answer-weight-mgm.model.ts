@@ -1,10 +1,10 @@
 import {BaseEntity} from './../../shared';
 import {QuestionType} from '../enumerations/QuestionType.enum';
-import {Likelihood} from '../enumerations/Likelihood.enum';
+import {AnswerLikelihood} from '../enumerations/AnswerLikelihood.enum';
 
 export class AnswerWeightMgm implements BaseEntity {
     constructor(public id?: number,
-                public likelihood?: Likelihood,
+                public likelihood?: AnswerLikelihood,
                 public questionType?: QuestionType,
                 public weight?: number) {
     }
