@@ -122,6 +122,14 @@
                                 [ngClass]="attackStrategyColorStyleClass(attackStrategy)"
                         >
                             {{attackStrategy.name}}
+                            <div>
+                                <div>Initial likelihood {{attackStrategyInitialLikelihood(attackStrategy)}}</div>
+                                <div>Answers likelihood {{attackStrategyAnswersLikelihood(attackStrategy)}}</div>
+                                <div>Final likelihood
+                                    {{attackStrategyFinalLikelihood(attackStrategyInitialLikelihood(attackStrategy),
+                                    attackStrategyAnswersLikelihood(attackStrategy))}}
+                                </div>
+                            </div>
                         </button>
                     </div>
                 </td>

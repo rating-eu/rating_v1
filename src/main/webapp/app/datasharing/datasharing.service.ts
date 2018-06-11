@@ -75,9 +75,11 @@ export class DatasharingService {
      * @type {Map<string, Couple<AttackStrategyMgm, Couple<QuestionMgm, AnswerMgm>[]>>}
      * @private
      */
-    private _selfAssessmentAttackStrategyAnswersMap: Map</*AttackStrategy.ID*/number, Couple<AttackStrategyMgm, Map</*Question.ID*/number, Couple<QuestionMgm, AnswerMgm>>>> = new Map<number, Couple<AttackStrategyMgm, Map<number, Couple<QuestionMgm, AnswerMgm>>>>();// property
-    private _selfAssessmentAnswersSubject = new BehaviorSubject(this._selfAssessmentAttackStrategyAnswersMap);// subject
-    private _selfAssessmentAnswers$ = this._selfAssessmentAnswersSubject.asObservable();// observable
+    private _selfAssessmentAttackStrategyAnswersMap: Map</*AttackStrategy.ID*/number,
+        Couple<AttackStrategyMgm, Map</*Question.ID*/number, Couple<QuestionMgm, AnswerMgm>>>> =
+        new Map<number, Couple<AttackStrategyMgm, Map<number, Couple<QuestionMgm, AnswerMgm>>>>(); // property
+    private _selfAssessmentAnswersSubject = new BehaviorSubject(this._selfAssessmentAttackStrategyAnswersMap); // subject
+    private _selfAssessmentAnswers$ = this._selfAssessmentAnswersSubject.asObservable(); // observable
 
     set selfAssessmentAttackStrategyAnswersMap(value: Map<number, Couple<AttackStrategyMgm, Map<number, Couple<QuestionMgm, AnswerMgm>>>>) {
         this._selfAssessmentAttackStrategyAnswersMap = value;
