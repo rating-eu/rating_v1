@@ -83,10 +83,6 @@ public class ElasticsearchIndexService {
 
     private final LevelSearchRepository levelSearchRepository;
 
-    private final LevelWrapperRepository levelWrapperRepository;
-
-    private final LevelWrapperSearchRepository levelWrapperSearchRepository;
-
     private final LikelihoodPositionRepository likelihoodPositionRepository;
 
     private final LikelihoodPositionSearchRepository likelihoodPositionSearchRepository;
@@ -106,10 +102,6 @@ public class ElasticsearchIndexService {
     private final PhaseRepository phaseRepository;
 
     private final PhaseSearchRepository phaseSearchRepository;
-
-    private final PhaseWrapperRepository phaseWrapperRepository;
-
-    private final PhaseWrapperSearchRepository phaseWrapperSearchRepository;
 
     private final QuestionRepository questionRepository;
 
@@ -162,8 +154,6 @@ public class ElasticsearchIndexService {
         ExternalAuditSearchRepository externalAuditSearchRepository,
         LevelRepository levelRepository,
         LevelSearchRepository levelSearchRepository,
-        LevelWrapperRepository levelWrapperRepository,
-        LevelWrapperSearchRepository levelWrapperSearchRepository,
         LikelihoodPositionRepository likelihoodPositionRepository,
         LikelihoodPositionSearchRepository likelihoodPositionSearchRepository,
         MitigationRepository mitigationRepository,
@@ -174,8 +164,6 @@ public class ElasticsearchIndexService {
         MyAnswerSearchRepository myAnswerSearchRepository,
         PhaseRepository phaseRepository,
         PhaseSearchRepository phaseSearchRepository,
-        PhaseWrapperRepository phaseWrapperRepository,
-        PhaseWrapperSearchRepository phaseWrapperSearchRepository,
         QuestionRepository questionRepository,
         QuestionSearchRepository questionSearchRepository,
         QuestionnaireRepository questionnaireRepository,
@@ -211,8 +199,6 @@ public class ElasticsearchIndexService {
         this.externalAuditSearchRepository = externalAuditSearchRepository;
         this.levelRepository = levelRepository;
         this.levelSearchRepository = levelSearchRepository;
-        this.levelWrapperRepository = levelWrapperRepository;
-        this.levelWrapperSearchRepository = levelWrapperSearchRepository;
         this.likelihoodPositionRepository = likelihoodPositionRepository;
         this.likelihoodPositionSearchRepository = likelihoodPositionSearchRepository;
         this.mitigationRepository = mitigationRepository;
@@ -223,8 +209,6 @@ public class ElasticsearchIndexService {
         this.myAnswerSearchRepository = myAnswerSearchRepository;
         this.phaseRepository = phaseRepository;
         this.phaseSearchRepository = phaseSearchRepository;
-        this.phaseWrapperRepository = phaseWrapperRepository;
-        this.phaseWrapperSearchRepository = phaseWrapperSearchRepository;
         this.questionRepository = questionRepository;
         this.questionSearchRepository = questionSearchRepository;
         this.questionnaireRepository = questionnaireRepository;
@@ -254,13 +238,11 @@ public class ElasticsearchIndexService {
                 reindexForClass(DomainOfInfluence.class, domainOfInfluenceRepository, domainOfInfluenceSearchRepository);
                 reindexForClass(ExternalAudit.class, externalAuditRepository, externalAuditSearchRepository);
                 reindexForClass(Level.class, levelRepository, levelSearchRepository);
-                reindexForClass(LevelWrapper.class, levelWrapperRepository, levelWrapperSearchRepository);
                 reindexForClass(LikelihoodPosition.class, likelihoodPositionRepository, likelihoodPositionSearchRepository);
                 reindexForClass(Mitigation.class, mitigationRepository, mitigationSearchRepository);
                 reindexForClass(Motivation.class, motivationRepository, motivationSearchRepository);
                 reindexForClass(MyAnswer.class, myAnswerRepository, myAnswerSearchRepository);
                 reindexForClass(Phase.class, phaseRepository, phaseSearchRepository);
-                reindexForClass(PhaseWrapper.class, phaseWrapperRepository, phaseWrapperSearchRepository);
                 reindexForClass(Question.class, questionRepository, questionSearchRepository);
                 reindexForClass(Questionnaire.class, questionnaireRepository, questionnaireSearchRepository);
                 reindexForClass(QuestionnaireStatus.class, questionnaireStatusRepository, questionnaireStatusSearchRepository);
