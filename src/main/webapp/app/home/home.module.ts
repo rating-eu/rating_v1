@@ -1,22 +1,23 @@
-import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import {NgModule, CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
+import {RouterModule} from '@angular/router';
 
-import { HermeneutSharedModule } from '../shared';
+import {HermeneutSharedModule} from '../shared';
 
-import { HOME_ROUTE, HomeComponent } from './';
+import {HOME_ROUTE, HomeComponent} from './';
+import {MaterialModule} from '../material/material.module';
 
 @NgModule({
     imports: [
         HermeneutSharedModule,
-        RouterModule.forChild([ HOME_ROUTE ])
+        RouterModule.forChild([HOME_ROUTE]),
+        MaterialModule
     ],
     declarations: [
         HomeComponent,
     ],
-    entryComponents: [
-    ],
-    providers: [
-    ],
+    entryComponents: [],
+    providers: [],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
-export class HermeneutHomeModule {}
+export class HermeneutHomeModule {
+}
