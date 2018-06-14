@@ -27,66 +27,173 @@
         </div>
     </div>
     <br/>
-    <mat-tab-group>
-        <mat-tab label="One">
-            <h1>Some tab content</h1>
-            <p>...</p>
+    <mat-tab-group (selectedTabChange)="tabClick($event)">
+        <mat-tab label="">
+            <mat-icon></mat-icon>
+
+            <div class="table-responsive" *ngIf="answerWeights">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th><span jhiTranslate="global.field.id">ID</span></th>
+                        <th><span jhiTranslate="hermeneutApp.answerWeight.likelihood">Likelihood</span></th>
+                        <th><span jhiTranslate="hermeneutApp.answerWeight.questionType">Question Type</span></th>
+                        <th><span jhiTranslate="hermeneutApp.answerWeight.weight">Weight</span></th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr *ngFor="let answerWeight of answerWeights ;trackBy: trackId">
+                        <td><a [routerLink]="['../answer-weight-mgm', answerWeight.id ]">{{answerWeight.id}}</a></td>
+                        <td jhiTranslate="{{'hermeneutApp.Likelihood.' + answerWeight.likelihood}}">
+                            {{answerWeight.likelihood}}
+                        </td>
+                        <td jhiTranslate="{{'hermeneutApp.QuestionType.' + answerWeight.questionType}}">
+                            {{answerWeight.questionType}}
+                        </td>
+                        <td>{{answerWeight.weight}}</td>
+                        <td class="text-right">
+                            <div class="btn-group flex-btn-group-container">
+                                <button type="submit"
+                                        [routerLink]="['../answer-weight-mgm', answerWeight.id ]"
+                                        class="btn btn-info btn-sm">
+                                    <span class="fa fa-eye"></span>
+                                    <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                                </button>
+                                <button type="submit"
+                                        [routerLink]="['/', { outlets: { popup: 'answer-weight-mgm/'+ answerWeight.id + '/edit'} }]"
+                                        replaceUrl="true"
+                                        queryParamsHandling="merge"
+                                        class="btn btn-primary btn-sm">
+                                    <span class="fa fa-pencil"></span>
+                                    <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                                </button>
+                                <button type="submit"
+                                        [routerLink]="['/', { outlets: { popup: 'answer-weight-mgm/'+ answerWeight.id + '/delete'} }]"
+                                        replaceUrl="true"
+                                        queryParamsHandling="merge"
+                                        class="btn btn-danger btn-sm">
+                                    <span class="fa fa-remove"></span>
+                                    <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
         </mat-tab>
-        <mat-tab label="Two">
+        <mat-tab label="Regular">
             <h1>Some more tab content</h1>
-            <p>...</p>
+
+            <div class="table-responsive" *ngIf="answerWeights">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th><span jhiTranslate="global.field.id">ID</span></th>
+                        <th><span jhiTranslate="hermeneutApp.answerWeight.likelihood">Likelihood</span></th>
+                        <th><span jhiTranslate="hermeneutApp.answerWeight.questionType">Question Type</span></th>
+                        <th><span jhiTranslate="hermeneutApp.answerWeight.weight">Weight</span></th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr *ngFor="let answerWeight of answerWeights ;trackBy: trackId">
+                        <td><a [routerLink]="['../answer-weight-mgm', answerWeight.id ]">{{answerWeight.id}}</a></td>
+                        <td jhiTranslate="{{'hermeneutApp.Likelihood.' + answerWeight.likelihood}}">
+                            {{answerWeight.likelihood}}
+                        </td>
+                        <td jhiTranslate="{{'hermeneutApp.QuestionType.' + answerWeight.questionType}}">
+                            {{answerWeight.questionType}}
+                        </td>
+                        <td>{{answerWeight.weight}}</td>
+                        <td class="text-right">
+                            <div class="btn-group flex-btn-group-container">
+                                <button type="submit"
+                                        [routerLink]="['../answer-weight-mgm', answerWeight.id ]"
+                                        class="btn btn-info btn-sm">
+                                    <span class="fa fa-eye"></span>
+                                    <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                                </button>
+                                <button type="submit"
+                                        [routerLink]="['/', { outlets: { popup: 'answer-weight-mgm/'+ answerWeight.id + '/edit'} }]"
+                                        replaceUrl="true"
+                                        queryParamsHandling="merge"
+                                        class="btn btn-primary btn-sm">
+                                    <span class="fa fa-pencil"></span>
+                                    <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                                </button>
+                                <button type="submit"
+                                        [routerLink]="['/', { outlets: { popup: 'answer-weight-mgm/'+ answerWeight.id + '/delete'} }]"
+                                        replaceUrl="true"
+                                        queryParamsHandling="merge"
+                                        class="btn btn-danger btn-sm">
+                                    <span class="fa fa-remove"></span>
+                                    <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
         </mat-tab>
+        <mat-tab label="Relevant">
+            <h1>Some more tab content</h1>
+
+            <div class="table-responsive" *ngIf="answerWeights">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th><span jhiTranslate="global.field.id">ID</span></th>
+                        <th><span jhiTranslate="hermeneutApp.answerWeight.likelihood">Likelihood</span></th>
+                        <th><span jhiTranslate="hermeneutApp.answerWeight.questionType">Question Type</span></th>
+                        <th><span jhiTranslate="hermeneutApp.answerWeight.weight">Weight</span></th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr *ngFor="let answerWeight of answerWeights ;trackBy: trackId">
+                        <td><a [routerLink]="['../answer-weight-mgm', answerWeight.id ]">{{answerWeight.id}}</a></td>
+                        <td jhiTranslate="{{'hermeneutApp.Likelihood.' + answerWeight.likelihood}}">
+                            {{answerWeight.likelihood}}
+                        </td>
+                        <td jhiTranslate="{{'hermeneutApp.QuestionType.' + answerWeight.questionType}}">
+                            {{answerWeight.questionType}}
+                        </td>
+                        <td>{{answerWeight.weight}}</td>
+                        <td class="text-right">
+                            <div class="btn-group flex-btn-group-container">
+                                <button type="submit"
+                                        [routerLink]="['../answer-weight-mgm', answerWeight.id ]"
+                                        class="btn btn-info btn-sm">
+                                    <span class="fa fa-eye"></span>
+                                    <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                                </button>
+                                <button type="submit"
+                                        [routerLink]="['/', { outlets: { popup: 'answer-weight-mgm/'+ answerWeight.id + '/edit'} }]"
+                                        replaceUrl="true"
+                                        queryParamsHandling="merge"
+                                        class="btn btn-primary btn-sm">
+                                    <span class="fa fa-pencil"></span>
+                                    <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                                </button>
+                                <button type="submit"
+                                        [routerLink]="['/', { outlets: { popup: 'answer-weight-mgm/'+ answerWeight.id + '/delete'} }]"
+                                        replaceUrl="true"
+                                        queryParamsHandling="merge"
+                                        class="btn btn-danger btn-sm">
+                                    <span class="fa fa-remove"></span>
+                                    <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </mat-tab>
+
     </mat-tab-group>
     <br/>
-    <div class="table-responsive" *ngIf="answerWeights">
-        <table class="table table-striped">
-            <thead>
-            <tr>
-                <th><span jhiTranslate="global.field.id">ID</span></th>
-                <th><span jhiTranslate="hermeneutApp.answerWeight.likelihood">Likelihood</span></th>
-                <th><span jhiTranslate="hermeneutApp.answerWeight.questionType">Question Type</span></th>
-                <th><span jhiTranslate="hermeneutApp.answerWeight.weight">Weight</span></th>
-                <th></th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr *ngFor="let answerWeight of answerWeights ;trackBy: trackId">
-                <td><a [routerLink]="['../answer-weight-mgm', answerWeight.id ]">{{answerWeight.id}}</a></td>
-                <td jhiTranslate="{{'hermeneutApp.Likelihood.' + answerWeight.likelihood}}">
-                    {{answerWeight.likelihood}}
-                </td>
-                <td jhiTranslate="{{'hermeneutApp.QuestionType.' + answerWeight.questionType}}">
-                    {{answerWeight.questionType}}
-                </td>
-                <td>{{answerWeight.weight}}</td>
-                <td class="text-right">
-                    <div class="btn-group flex-btn-group-container">
-                        <button type="submit"
-                                [routerLink]="['../answer-weight-mgm', answerWeight.id ]"
-                                class="btn btn-info btn-sm">
-                            <span class="fa fa-eye"></span>
-                            <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
-                        </button>
-                        <button type="submit"
-                                [routerLink]="['/', { outlets: { popup: 'answer-weight-mgm/'+ answerWeight.id + '/edit'} }]"
-                                replaceUrl="true"
-                                queryParamsHandling="merge"
-                                class="btn btn-primary btn-sm">
-                            <span class="fa fa-pencil"></span>
-                            <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
-                        </button>
-                        <button type="submit"
-                                [routerLink]="['/', { outlets: { popup: 'answer-weight-mgm/'+ answerWeight.id + '/delete'} }]"
-                                replaceUrl="true"
-                                queryParamsHandling="merge"
-                                class="btn btn-danger btn-sm">
-                            <span class="fa fa-remove"></span>
-                            <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
-                        </button>
-                    </div>
-                </td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
 </div>
