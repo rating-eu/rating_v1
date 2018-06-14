@@ -14,6 +14,7 @@ import {
     answerWeightRoute,
     answerWeightPopupRoute,
 } from './';
+import {MaterialModule} from '../../material/material.module';
 
 const ENTITY_STATES = [
     ...answerWeightRoute,
@@ -23,7 +24,8 @@ const ENTITY_STATES = [
 @NgModule({
     imports: [
         HermeneutSharedModule,
-        RouterModule.forChild(ENTITY_STATES)
+        RouterModule.forChild(ENTITY_STATES),
+        MaterialModule
     ],
     declarations: [
         AnswerWeightMgmComponent,
