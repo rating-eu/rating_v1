@@ -31,6 +31,7 @@ import {
 import {QuestionnairesService} from './questionnaires/questionnaires.service';
 import {ReactiveFormsModule} from '@angular/forms';
 import {DatasharingModule} from './datasharing/datasharing.module';
+import {MaterialModule} from './material/material.module';
 
 @NgModule({
     imports: [
@@ -44,7 +45,8 @@ import {DatasharingModule} from './datasharing/datasharing.module';
         HermeneutAccountModule,
         HermeneutEntityModule,
         HermeneutAppRoutingModule,
-        DatasharingModule.forRoot()
+        DatasharingModule.forRoot(),
+        MaterialModule
         // jhipster-needle-angular-add-module JHipster will add new module here
     ],
     declarations: [
