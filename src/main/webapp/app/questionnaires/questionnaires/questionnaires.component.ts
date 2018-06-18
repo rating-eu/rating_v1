@@ -19,7 +19,8 @@ import {QuestionnairePurpose} from '../../entities/enumerations/QuestionnairePur
 export class QuestionnairesComponent implements OnInit, OnDestroy {
 
     private statusEnum = Status;
-    private purpose: QuestionnairePurpose = QuestionnairePurpose.ID_THREAT_AGENT;
+    private purposeEnum = QuestionnairePurpose;
+    private purpose: QuestionnairePurpose;
     questionnaires$: Observable<QuestionnaireMgm[]>;
     private selfAssessment: SelfAssessmentMgm;
     private account: Account;
@@ -121,5 +122,13 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
             const emptyQStatus: QuestionnaireStatusMgm = new QuestionnaireStatusMgm(undefined, Status.EMPTY, this.selfAssessment, questionnaire, this.user, []);
             this.dataSharingService.questionnaireStatus = emptyQStatus;
         }
+    }
+
+    showThreatAgents(questionnaireStatus: QuestionnaireStatusMgm) {
+        console.log('Show Threat Agents...');
+    }
+
+    showAttackStrategies(questionnaireStatus: QuestionnaireStatusMgm) {
+        console.log('Show Attack Strategies...');
     }
 }
