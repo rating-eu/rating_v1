@@ -13,7 +13,7 @@ const routes: Routes = [
                 loadChildren: '../questionnaires/questionnaires.module#QuestionnairesModule'
             },
             {
-                path: 'result',
+                path: 'result/:statusID',
                 component: ResultComponent
             }
         ]

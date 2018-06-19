@@ -11,6 +11,7 @@
             <th>Modified</th>
             <th>Status</th>
             <th></th>
+            <th></th>
         </tr>
         </thead>
         <tbody>
@@ -48,6 +49,20 @@
                         [routerLink]="['./questionnaire']">
                     <span class="fa fa-pencil"></span>
                     <span class="d-none d-md-inline">Answer</span>
+                </button>
+            </td>
+
+            <td [ngSwitch]="purpose">
+                <button *ngSwitchCase="purposeEnum.ID_THREAT_AGENT"
+                        (click)="showThreatAgents(questionnaireStatusesMap?.get(questionnaire.id))"
+                >
+                    Show Threat Agents
+                </button>
+
+                <button *ngSwitchCase="purposeEnum.SELFASSESSMENT"
+                        (click)="showAttackStrategies(questionnaireStatusesMap?.get(questionnaire.id))"
+                >
+                    Show Attack Strategies
                 </button>
             </td>
         </tr>

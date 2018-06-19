@@ -12,6 +12,8 @@ import {IdentifyThreatAgentService} from '../identify-threat-agent/identify-thre
 import {NotificationInterceptor} from '../blocks/interceptor/notification.interceptor';
 import {JhiEventManager} from 'ng-jhipster';
 import {DatasharingModule} from '../datasharing/datasharing.module';
+import {ResultComponent} from './result/result.component';
+import {EvaluateService} from './evaluate-weakness.service';
 
 @NgModule({
     imports: [
@@ -21,7 +23,11 @@ import {DatasharingModule} from '../datasharing/datasharing.module';
         DatasharingModule
     ],
     declarations: [
-        EvaluateWeaknessComponent
+        EvaluateWeaknessComponent,
+        ResultComponent
+    ],
+    exports: [
+        ResultComponent
     ],
     entryComponents: [],
     providers: [
@@ -58,7 +64,8 @@ import {DatasharingModule} from '../datasharing/datasharing.module';
                 Injector
             ]
         },
-        IdentifyThreatAgentService
+        IdentifyThreatAgentService,
+        EvaluateService
     ]
 })
 export class EvaluateWeaknessModule {
