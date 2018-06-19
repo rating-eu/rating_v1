@@ -143,8 +143,8 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
                 console.log('Status PENDING');
 
                 this.myAnswerService.getAllByQuestionnaireStatusID(this.questionnaireStatus.id).subscribe(
-                    (response) => {
-                        this.myAnswers = response as MyAnswerMgm[];
+                    (response: HttpResponse<MyAnswerMgm[]>) => {
+                        this.myAnswers = response.body;
 
                         if (this.form) {
                             this.form.patchValue(this.myAnswersToFormValue(this.myAnswers, this._questionsArrayMap));

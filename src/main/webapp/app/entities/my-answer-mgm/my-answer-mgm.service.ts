@@ -28,8 +28,12 @@ export class MyAnswerMgmService {
             .map((res: EntityResponseType) => this.convertResponse(res));
     }
 
-    getAllByQuestionnaireStatusID(questionnaireStatusID: number): Observable<MyAnswerMgm[]> {
-        return this.http.get<MyAnswerMgm[]>(this.resourceUrl + '/questionnaire-status/' + questionnaireStatusID);
+    getAllByQuestionnaireStatusID(questionnaireStatusID: number): Observable<HttpResponse<MyAnswerMgm[]>> {
+        const options = createRequestOption();
+        return this.http.get<MyAnswerMgm[]>(
+            this.resourceUrl + '/questionnaire-status/' + questionnaireStatusID,
+            {params: options, observe: 'response'})
+            .map((res: HttpResponse<MyAnswerMgm[]>) => this.convertArrayResponse(res));
     }
 
     find(id: number): Observable<EntityResponseType> {

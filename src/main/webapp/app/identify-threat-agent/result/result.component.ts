@@ -23,7 +23,7 @@ import {HttpResponse} from '@angular/common/http';
     templateUrl: './result.component.html',
     styles: []
 })
-export class ResultComponent implements OnInit, OnDestroy {
+export class ThreatResultComponent implements OnInit, OnDestroy {
     private threatAgentsMap: Map<String, Couple<ThreatAgentMgm, Fraction>>;
     private threatAgentsPercentageArray: Couple<ThreatAgentMgm, Fraction>[];
     motivations: MotivationMgm[];
