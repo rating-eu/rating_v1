@@ -8,8 +8,11 @@ import {Status} from '../../entities/enumerations/QuestionnaireStatus.enum';
 import {SelfAssessmentMgm, SelfAssessmentMgmService} from '../../entities/self-assessment-mgm';
 import {AccountService, User, UserService} from '../../shared';
 import {Subscription} from 'rxjs/Subscription';
-import {ActivatedRoute, Params} from '@angular/router';
+import {ActivatedRoute, Params, Router} from '@angular/router';
 import {QuestionnairePurpose} from '../../entities/enumerations/QuestionnairePurpose.enum';
+import {MyAnswerMgmService} from '../../entities/my-answer-mgm';
+import {IdentifyThreatAgentService} from '../../identify-threat-agent/identify-threat-agent.service';
+import {EvaluateService} from '../../evaluate-weakness/evaluate-weakness.service';
 
 @Component({
     selector: 'jhi-questionnaires',
@@ -30,11 +33,15 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
     private questionnaireStatusesMap: Map<number, QuestionnaireStatusMgm>;
 
     constructor(private route: ActivatedRoute,
+                private router: Router,
                 private questionnairesService: QuestionnairesService,
                 private dataSharingService: DatasharingService,
                 private selfAssessmentService: SelfAssessmentMgmService,
                 private accountService: AccountService,
-                private userService: UserService) {
+                private userService: UserService,
+                private myAnswerService: MyAnswerMgmService,
+                private identifyThreatAgentsService: IdentifyThreatAgentService,
+                private evaluateWeaknessService: EvaluateService) {
     }
 
     ngOnInit() {
@@ -126,9 +133,18 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
 
     showThreatAgents(questionnaireStatus: QuestionnaireStatusMgm) {
         console.log('Show Threat Agents...');
+        console.log('Status...');
+        console.log(JSON.stringify(questionnaireStatus));
+
+        //delegate the routing stuff to the service inside the ThreatAgents module.
+        this.identifyThreatAgentsService.showThreatAgentsResult(questionnaireStatus);
     }
 
     showAttackStrategies(questionnaireStatus: QuestionnaireStatusMgm) {
         console.log('Show Attack Strategies...');
+        console.log('Status...');
+        console.log(JSON.stringify(questionnaireStatus));
+
+        this.evaluateWeaknessService.showEvaluatedAttackStrategies(questionnaireStatus);
     }
 }

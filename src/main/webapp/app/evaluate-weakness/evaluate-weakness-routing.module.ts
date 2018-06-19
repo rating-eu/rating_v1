@@ -5,14 +5,15 @@ import {ResultComponent} from './result/result.component';
 
 const routes: Routes = [
     {
-        path: '', component: EvaluateWeaknessComponent,
+        path: '',
+        component: EvaluateWeaknessComponent,
         children: [
             {
                 path: 'questionnaires/:purpose',
                 loadChildren: '../questionnaires/questionnaires.module#QuestionnairesModule'
             },
             {
-                path: 'result',
+                path: 'result/:statusID',
                 component: ResultComponent
             }
         ]

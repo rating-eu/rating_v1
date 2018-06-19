@@ -54,13 +54,13 @@
 
             <td [ngSwitch]="purpose">
                 <button *ngSwitchCase="purposeEnum.ID_THREAT_AGENT"
-                        (click)="showThreatAgents(questionnaireStatusesMap?.get(questionnaire.id)?.status || statusEnum.EMPTY)"
+                        (click)="showThreatAgents(questionnaireStatusesMap?.get(questionnaire.id))"
                 >
                     Show Threat Agents
                 </button>
 
                 <button *ngSwitchCase="purposeEnum.SELFASSESSMENT"
-                        (click)="showAttackStrategies(questionnaireStatusesMap?.get(questionnaire.id)?.status || statusEnum.EMPTY)"
+                        (click)="showAttackStrategies(questionnaireStatusesMap?.get(questionnaire.id))"
                 >
                     Show Attack Strategies
                 </button>
