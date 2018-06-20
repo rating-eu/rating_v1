@@ -1,3 +1,57 @@
 <p>
-  Evaluate weakness result works!
+    Evaluate weakness result works!
 </p>
+
+<div>
+    <div class="table-responsive">
+        <h3>Attack Plan</h3>
+
+        <select class="m-1" [(ngModel)]="selectedThreatAgent" (ngModelChange)="threatAgentChanged($event)">
+            <option [ngValue]="null" selected></option>
+            <option *ngFor="let threatAgent of selectedSelfAssessment?.threatagents" [ngValue]="threatAgent">
+                {{threatAgent.name}}
+            </option>
+        </select>
+
+        <table class="table table-striped table-bordered table-hover">
+            <thead class="align-middle" style="background: #cce6ff">
+            <tr>
+                <th class="border-0" style="background-color: #ffffff"></th>
+                <th class="text-center align-middle"
+                    *ngFor="let ckc7Phase of cyberKillChainPhases">
+                    <a [routerLink]="['/phase-mgm', ckc7Phase.id]">{{ckc7Phase.name}}</a>
+                </th>
+            </tr>
+            </thead>
+
+            <tbody>
+
+            <tr *ngFor="let attackLayer of attackLayers">
+                <th class="text-center align-middle" style="background: #cc99ff">
+                    <a [routerLink]="['/level-mgm', attackLayer.id]">{{attackLayer.name}}</a>
+                </th>
+
+                <td *ngFor="let ckc7Phase of cyberKillChainPhases">
+                    <div class="container-fluid">
+                        <button type="button" class="btn btn-secondary m-1"
+                                [routerLink]="['/attack-strategy-mgm', attackStrategy.id]"
+                                *ngFor="let attackStrategy of attacksCKC7Matrix[attackLayer.id][ckc7Phase.id]; trackBy: trackByID"
+                                [disabled]="!selectedThreatAgent || !threatAgentAttackPossible[selectedThreatAgent.id][attackStrategy.id]"
+                                [ngClass]="attackStrategyColorStyleClass(attackStrategy)"
+                        >
+                            {{attackStrategy.name}}
+                            <div>
+                                <div>Initial likelihood {{attackStrategyInitialLikelihood(attackStrategy)}}</div>
+                                <div>Answers likelihood {{attackStrategyAnswersLikelihood(attackStrategy)}}</div>
+                                <div>Final likelihood
+                                    {{attackStrategyFinalLikelihood(attackStrategyInitialLikelihood(attackStrategy),
+                                    attackStrategyAnswersLikelihood(attackStrategy))}}
+                                </div>
+                            </div>
+                        </button>
+                    </div>
+                </td>
+            </tbody>
+        </table>
+    </div>
+</div>
