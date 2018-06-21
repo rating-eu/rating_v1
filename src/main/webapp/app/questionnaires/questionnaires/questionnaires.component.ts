@@ -136,7 +136,7 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
         console.log('Status...');
         console.log(JSON.stringify(questionnaireStatus));
 
-        //delegate the routing stuff to the service inside the ThreatAgents module.
+        // delegate the routing stuff to the service inside the ThreatAgents module.
         this.identifyThreatAgentsService.showThreatAgentsResult(questionnaireStatus);
     }
 

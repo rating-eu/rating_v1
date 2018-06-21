@@ -1,9 +1,9 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit, Self} from '@angular/core';
 import {QuestionControlService} from './services/question-control.service';
 import {AbstractControl, FormGroup} from '@angular/forms';
 import {QuestionMgm, QuestionMgmService} from '../../../../entities/question-mgm';
 import {AnswerMgm, AnswerMgmService} from '../../../../entities/answer-mgm';
-import {ThreatAgentMgm} from '../../../../entities/threat-agent-mgm';
+import {ThreatAgentMgm, ThreatAgentMgmService} from '../../../../entities/threat-agent-mgm';
 import {Fraction} from '../../../../utils/fraction.class';
 import * as CryptoJS from 'crypto-js';
 import {Couple} from '../../../../utils/couple.class';
@@ -24,6 +24,7 @@ import {forkJoin} from 'rxjs/observable/forkJoin';
 import {Observable} from 'rxjs/Observable';
 import {HttpResponse} from '@angular/common/http';
 import {AttackStrategyMgm} from '../../../../entities/attack-strategy-mgm';
+import {concatMap, mergeMap} from 'rxjs/operators';
 
 @Component({
     selector: 'jhi-dynamic-form',
@@ -63,7 +64,9 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
                 private selfAssessmentService: SelfAssessmentMgmService,
                 private questionnaireStatusService: QuestionnaireStatusMgmService,
                 private accountService: AccountService,
-                private userService: UserService, private questionService: QuestionMgmService) {
+                private userService: UserService,
+                private questionService: QuestionMgmService,
+                private threatAgentService: ThreatAgentMgmService) {
     }
 
     @Input()
@@ -306,7 +309,101 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
         this.dataSharingSerivce.threatAgentsMap = threatAgentsPercentageMap;
         console.log('DYNAMIC FORM Shared ThreatAgent Percentage Map size: ', +this.dataSharingSerivce.threatAgentsMap.size);
 
-        this.router.navigate(['/identify-threat-agent/result']);
+        // #1 Persist QuestionnaireStatus
+        let questionnaireStatus: QuestionnaireStatusMgm = new QuestionnaireStatusMgm(undefined, Status.FULL, this.selfAssessment, this.questionnaire, this.user, []);
+        const questionnaireStatus$: Observable<HttpResponse<QuestionnaireStatusMgm>> = this.questionnaireStatusService.create(questionnaireStatus);
+
+        // #2 Persist MyAnswers
+        const myAnswers$: Observable<HttpResponse<MyAnswerMgm>[]> = questionnaireStatus$.pipe(
+            concatMap((statusResponse: HttpResponse<QuestionnaireStatusMgm>) => {
+                // update the questionnaire status with the ID from the DB
+                questionnaireStatus = statusResponse.body;
+
+                const myAnswersCreatorObservables: Observable<HttpResponse<MyAnswerMgm>>[] = [];
+
+                formDataMap.forEach((value: AnswerMgm, key: String) => {
+                    const question: QuestionMgm = this._questionsArrayMap.get(Number(key));
+                    console.log('Question: ' + JSON.stringify(question));
+                    const answer: AnswerMgm = value;
+                    console.log('Answer: ' + JSON.stringify(answer));
+                    const questionnaire: QuestionnaireMgm = question.questionnaire;
+                    console.log('Questionnaire: ' + JSON.stringify(questionnaire));
+
+                    const myAnser: MyAnswerMgm = new MyAnswerMgm(undefined, 'Checked', answer, question, questionnaire, questionnaireStatus, this.user);
+                    console.log('MyAnser: ' + myAnser);
+
+                    myAnswersCreatorObservables.push(this.myAnswerService.create(myAnser));
+                });
+
+                return forkJoin(myAnswersCreatorObservables);
+            })
+        );
+
+        // #3 Get the default ThreatAgents
+        const defaultThreatAgents$: Observable<HttpResponse<ThreatAgentMgm[]>> = this.threatAgentService.getDefaultThreatAgents();
+
+        const myAnswersAndDefaultThreatAgentsJoin: Observable<any>[] = [];
+        myAnswersAndDefaultThreatAgentsJoin.push(myAnswers$);
+        myAnswersAndDefaultThreatAgentsJoin.push(defaultThreatAgents$);
+        const myAnswersAndDefaultThreatAgentsJoin$: Observable<any> = forkJoin(myAnswersAndDefaultThreatAgentsJoin);
+
+        // TODO Update the SelfAssessment with the identified ThreatAgents
+        const selfAssessment$: Observable<HttpResponse<SelfAssessmentMgm>> = myAnswersAndDefaultThreatAgentsJoin$.pipe(
+            mergeMap((responses: any[]) => {
+                let selfAssessment$: Observable<HttpResponse<SelfAssessmentMgm>> = undefined;
+
+                responses.forEach((value: any, index: number) => {
+                    switch (index) {
+                        case 0: {// TODO MyAnswers --> IdentifyThreatAgents
+                            const myAnswersResponses = value as HttpResponse<MyAnswerMgm>[];
+
+                            const identifiedThreatAgents: ThreatAgentMgm[] = [];
+                            const threatAgentsPercentageArray: Couple<ThreatAgentMgm, Fraction>[] = Array.from(threatAgentsPercentageMap.values());
+
+                            threatAgentsPercentageArray.forEach((couple: Couple<ThreatAgentMgm, Fraction>) => {
+                                const threatAgent: ThreatAgentMgm = couple.key;
+                                const likelihood: Fraction = couple.value;
+                                console.log('Threat-Agent: ' + JSON.stringify(threatAgent));
+                                console.log('Likelihood: ' + likelihood.toPercentage());
+
+                                if (likelihood.toPercentage() > 0) {
+                                    identifiedThreatAgents.push(threatAgent);
+                                }
+                            });
+
+                            const uniqueThreatAgentsSet: Set<ThreatAgentMgm> = new Set<ThreatAgentMgm>(identifiedThreatAgents.concat(this.selfAssessment.threatagents));
+                            const uniqueThreatAgentsArray: ThreatAgentMgm[] = [...uniqueThreatAgentsSet];
+                            this.selfAssessment.threatagents = uniqueThreatAgentsArray;
+
+                            break;
+                        }
+                        case 1: {// Default ThreatAgents
+                            const defaultThreatAgents: ThreatAgentMgm[] = (responses[index] as HttpResponse<ThreatAgentMgm[]>).body;
+
+                            const uniqueThreatAgentsSet: Set<ThreatAgentMgm> = new Set<ThreatAgentMgm>(defaultThreatAgents.concat(this.selfAssessment.threatagents));
+                            const uniqueThreatAgentsArray: ThreatAgentMgm[] = [...uniqueThreatAgentsSet];
+                            this.selfAssessment.threatagents = uniqueThreatAgentsArray;
+
+                            break;
+                        }
+                    }
+                });
+
+                this.selfAssessment.questionnaires = [...new Set<QuestionnaireMgm>(this.selfAssessment.questionnaires.concat(this.questionnaire))];
+                this.selfAssessment.user = this.user;
+
+                return this.selfAssessmentService.update(this.selfAssessment);
+            })
+        );
+
+        selfAssessment$.subscribe(
+            (selfAssessmentResponse: HttpResponse<SelfAssessmentMgm>) => {
+                this.selfAssessment = selfAssessmentResponse.body;
+                this.selfAssessmentService.setSelfAssessment(this.selfAssessment);
+
+                this.router.navigate(['/identify-threat-agent/result', questionnaireStatus.id])
+            }
+        );
 
         console.log('EXIT ==> Identify Threat-agents...');
     }
@@ -361,7 +458,7 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
             });
         });
 
-        //For now don't store the attackStrategies but recalculate them and their likelihood based on the stored MyAnswers
+        // For now don't store the attackStrategies but recalculate them and their likelihood based on the stored MyAnswers
     }
 
     freezeQuestionnaireStatus() {
