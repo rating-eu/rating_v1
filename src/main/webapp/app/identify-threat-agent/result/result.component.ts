@@ -4,19 +4,21 @@ import {ThreatAgentMgm} from '../../entities/threat-agent-mgm';
 import {Couple} from '../../utils/couple.class';
 import {Fraction} from '../../utils/fraction.class';
 import {IdentifyThreatAgentService} from '../identify-threat-agent.service';
-import {MotivationMgm} from '../../entities/motivation-mgm';
+import {MotivationMgm, MotivationMgmService} from '../../entities/motivation-mgm';
 import {AnswerMgm} from '../../entities/answer-mgm';
-import {AccountService, User, UserService} from '../../shared';
+import {AccountService, BaseEntity, UserService} from '../../shared';
 import {QuestionMgm, QuestionMgmService} from '../../entities/question-mgm';
 import {QuestionnaireMgm} from '../../entities/questionnaire-mgm';
 import {MyAnswerMgm, MyAnswerMgmService} from '../../entities/my-answer-mgm';
-import {Router} from '@angular/router';
-import {SelfAssessmentMgm, SelfAssessmentMgmService} from '../../entities/self-assessment-mgm';
+import {ActivatedRoute, Params, Router} from '@angular/router';
 import {Subscription} from 'rxjs/Subscription';
 import {QuestionnairesService} from '../../questionnaires/questionnaires.service';
 import {QuestionnaireStatusMgm, QuestionnaireStatusMgmService} from '../../entities/questionnaire-status-mgm';
-import {Status} from '../../entities/enumerations/QuestionnaireStatus.enum';
 import {HttpResponse} from '@angular/common/http';
+import {Observable} from 'rxjs/Observable';
+import {concatMap} from 'rxjs/operators';
+import {forkJoin} from 'rxjs/observable/forkJoin';
+import * as CryptoJS from 'crypto-js';
 
 @Component({
     selector: 'jhi-result',
@@ -26,40 +28,88 @@ import {HttpResponse} from '@angular/common/http';
 export class ThreatResultComponent implements OnInit, OnDestroy {
     private threatAgentsMap: Map<String, Couple<ThreatAgentMgm, Fraction>>;
     private threatAgentsPercentageArray: Couple<ThreatAgentMgm, Fraction>[];
-    motivations: MotivationMgm[];
     private defaultThreatAgents: ThreatAgentMgm[];
     private identifyThreatAgentsFormDataMap: Map<String, AnswerMgm>;
-    private account: Account;
-    private user: User;
-    private selfAssessment: SelfAssessmentMgm;
     private subscriptions: Subscription[] = [];
     private questionnaire: QuestionnaireMgm;
+
+    private static YES: string = 'YES';
+    private static NO: string = 'NO';
+
+    // ThreatAgents Motivations
+    motivtions$: Observable<HttpResponse<MotivationMgm[]>>;
+    motivations: MotivationMgm[];
+
+    // QuestionnaireStatus
+    private questionnaireStatus$: Observable<HttpResponse<QuestionnaireStatusMgm>>;
+    private questionnaireStatus: QuestionnaireStatusMgm;
+
+    // MyAnswers
+    private myAnswers$: Observable<HttpResponse<MyAnswerMgm[]>>;
+    private myAnswers: MyAnswerMgm[];
+
+    // Questions
+    private questions$: Observable<HttpResponse<QuestionMgm[]>>;
+    private questions: QuestionMgm[];
+    private questionsMap: Map<number, QuestionMgm>;
+
+    // Questions & MyAnswers Join
+    private questionsMyAnswers$: Observable<[HttpResponse<QuestionMgm[]>, HttpResponse<MyAnswerMgm[]>]>;
+
+    // ThreatAgents Percentage Map
+    private threatAgentsPercentageMap: Map<String, Couple<ThreatAgentMgm, Fraction>>;
 
     constructor(private dataSharingService: DatasharingService,
                 private identifyThreatAgentService: IdentifyThreatAgentService,
                 private myAnswerService: MyAnswerMgmService,
                 private accountService: AccountService,
                 private userService: UserService,
-                private selfAssessmentService: SelfAssessmentMgmService,
                 private router: Router,
+                private route: ActivatedRoute,
                 private questionService: QuestionMgmService,
                 private questionnairesService: QuestionnairesService,
-                private questionnaireStatusService: QuestionnaireStatusMgmService) {
+                private questionnaireStatusService: QuestionnaireStatusMgmService,
+                private motivationsService: MotivationMgmService) {
     }
 
     ngOnInit() {
-        this.subscriptions.push(
-            this.accountService.get().subscribe((response1) => {
-                this.account = response1.body;
+        // Create the Observable for the QuestionnaireStatus having the ID in the url.
+        this.questionnaireStatus$ = this.route.params.pipe(
+            concatMap((params: Params) => {
+                const questionnaireStatusID: number = params['statusID'];
+                console.log('Route questionnaireStatusID: ' + questionnaireStatusID);
 
-                this.subscriptions.push(
-                    this.userService.find(this.account['login']).subscribe((response2) => {
-                        this.user = response2.body;
-                    })
-                );
-
-                this.selfAssessment = this.selfAssessmentService.getSelfAssessment();
+                return this.questionnaireStatusService.find(questionnaireStatusID);
             })
+        );
+
+        // First Fetch the QuestionnaireStatus with the above observable.
+        // Then Create the Observable for the Questions and MyAnswers belonging to the fetched QuestionnaireStatus.
+        this.questionsMyAnswers$ = this.questionnaireStatus$.pipe(
+            concatMap((questionnaireStatusResponse: HttpResponse<QuestionnaireStatusMgm>) => {
+                this.questionnaireStatus = questionnaireStatusResponse.body;
+                this.questionnaire = this.questionnaireStatus.questionnaire;
+
+                this.questions$ = this.questionService.getQuestionsByQuestionnaire(this.questionnaire.id);
+                this.myAnswers$ = this.myAnswerService.getAllByQuestionnaireStatusID(this.questionnaireStatus.id);
+
+                return forkJoin(this.questions$, this.myAnswers$);
+            })
+        );
+
+        // Create the Observable to fetch the Motivations of the ThreatAgents
+        this.motivtions$ = this.motivationsService.query();
+
+        forkJoin(this.questionsMyAnswers$, this.motivtions$).subscribe(
+            (value: [[HttpResponse<QuestionMgm[]>, HttpResponse<MyAnswerMgm[]>], HttpResponse<MotivationMgm[]>]) => {
+                this.questions = value[0][0].body;
+                this.myAnswers = value[0][1].body;
+                this.motivations = value[1].body;
+
+                this.questionsMap = this.arrayToMap<QuestionMgm>(this.questions);
+
+                this.threatAgentsPercentageMap = this.questionsMyAnswersToThreatAgentsPercentageMap(this.questionsMap, this.myAnswers);
+            }
         );
 
         this.threatAgentsMap = this.dataSharingService.threatAgentsMap;
@@ -104,78 +154,65 @@ export class ThreatResultComponent implements OnInit, OnDestroy {
         return found !== undefined;
     }
 
-    saveIdentfiedThreatAgents() {
-        console.log('Saving identified threat agents...');
-        console.log('Account: ' + JSON.stringify(this.account));
-        console.log('User: ' + JSON.stringify(this.user));
+    /**
+     * Converts the input array to a Map having the item's ID as the KEY and the item itself as the VALUE.
+     * Attention: If the array contains more items with the same ID, only the last of them will be present.
+     * The id of the item must be a number.
+     * @param {T[]} array The input array.
+     * @returns {Map<number, T extends BaseEntity>} The output map.
+     */
+    arrayToMap<T extends BaseEntity>(array: T[]): Map<number, T> {
 
-        let questionnaireStatus: QuestionnaireStatusMgm = new QuestionnaireStatusMgm(undefined, Status.FULL, this.selfAssessment, this.questionnaire, this.user, []);
+        const map: Map<number, T> = new Map<number, T>();
 
-        // Getting the id of the above QuestionnaireStatus
-        this.questionnaireStatusService.create(questionnaireStatus).subscribe((statusResponse) => {
-            questionnaireStatus = statusResponse.body;
-
-            this.identifyThreatAgentsFormDataMap.forEach((value: AnswerMgm, key: String) => {
-                const answer: AnswerMgm = value;
-                console.log('Answer: ' + JSON.stringify(answer));
-
-                this.questionService.find(Number(key))
-                    .toPromise()
-                    .then((result: HttpResponse<QuestionMgm>) => {
-                        const question: QuestionMgm = result.body;
-                        const questionnaire: QuestionnaireMgm = question.questionnaire;
-
-                        console.log('Question: ' + JSON.stringify(question));
-                        console.log('Questionnaire: ' + JSON.stringify(questionnaire));
-
-                        const myAnser: MyAnswerMgm = new MyAnswerMgm(undefined, 'Checked', answer, question, questionnaire, questionnaireStatus, this.user);
-
-                        console.log('MyAnser: ' + myAnser);
-
-                        // persist the answer of the user
-                        this.myAnswerService.create(myAnser)
-                            .toPromise()
-                            .then((response: HttpResponse<MyAnswerMgm>) => {
-                                const myAnswerResult: MyAnswerMgm = response.body;
-                                console.log('MyAnswer response: ' + JSON.stringify(myAnswerResult));
-                            });
-                    });
-            });
+        array.forEach((item: T) => {
+            map.set(Number(item.id), item);
         });
 
-        const identifiedThreatAgents: ThreatAgentMgm[] = [];
+        return map;
+    }
 
-        this.threatAgentsPercentageArray.forEach((couple: Couple<ThreatAgentMgm, Fraction>) => {
-            const threatAgent: ThreatAgentMgm = couple.key;
-            const likelihood: Fraction = couple.value;
-            console.log('Threat-Agent: ' + JSON.stringify(threatAgent));
-            console.log('Likelihood: ' + likelihood.toPercentage());
+    questionsMyAnswersToThreatAgentsPercentageMap(questionsMap: Map<number, QuestionMgm>, myAnswers: MyAnswerMgm[]): Map<String, Couple<ThreatAgentMgm, Fraction>> {
 
-            if (likelihood.toPercentage() > 0) {
-                identifiedThreatAgents.push(threatAgent);
+        const map: Map<string, Couple<ThreatAgentMgm, Fraction>> = new Map<string, Couple<ThreatAgentMgm, Fraction>>();
+
+        myAnswers.forEach((myAnswer: MyAnswerMgm) => {
+            const question: QuestionMgm = this.questionsMap.get(myAnswer.question.id);
+            const answer: AnswerMgm = myAnswer.answer;
+            const threatAgent: ThreatAgentMgm = question.threatAgent;
+
+            // The hash of the ThreatAgent JSON is used as the Key of the Map.
+            const threatAgentHash = CryptoJS.SHA256(JSON.stringify(threatAgent)).toString();
+
+            if (map.has(threatAgentHash)) {// a question identifying this threat agent has already been encountered.
+                console.log('Threat agent already processed...');
+
+                // fraction = #YES/#Questions
+                const fraction: Fraction = map.get(threatAgentHash).value;
+                // increment the number of questions identifying this threat-agent
+                fraction.whole++;
+
+                if (answer.name.toUpperCase() === ThreatResultComponent.YES) {
+                    console.log('Warning: you answered YES');
+                    fraction.part++;
+                } else if (answer.name.toUpperCase() === ThreatResultComponent.NO) {
+                    console.log('Good, you answered NO');
+                }
+            } else {// first time
+                console.log('First Time processing this threat agent');
+
+                const fraction = new Fraction(0, 1);
+                map.set(threatAgentHash, new Couple<ThreatAgentMgm, Fraction>(threatAgent, fraction));
+
+                if (answer.name.toUpperCase() === ThreatResultComponent.YES) {
+                    console.log('Warning: you answered YES');
+                    fraction.part++;
+                } else if (answer.name.toUpperCase() === ThreatResultComponent.NO) {
+                    console.log('Good, you answered NO');
+                }
             }
         });
 
-        const uniqueThreatAgentsSet: Set<ThreatAgentMgm> = new Set<ThreatAgentMgm>(identifiedThreatAgents.concat(this.selfAssessment.threatagents));
-        const uniqueThreatAgentsArray: ThreatAgentMgm[] = [...uniqueThreatAgentsSet];
-        this.selfAssessment.threatagents = uniqueThreatAgentsArray;
-
-        console.log('AllThreatAgents: ' + JSON.stringify(this.selfAssessment.threatagents));
-
-        this.selfAssessment.questionnaires = [...new Set<QuestionnaireMgm>(this.selfAssessment.questionnaires.concat(this.questionnaire))];
-        this.selfAssessment.user = this.user;
-
-        // Update the SelfAssessment
-        this.selfAssessmentService.update(this.selfAssessment).subscribe((response) => {
-            const result: SelfAssessmentMgm = response.body;
-            console.log('updated SelfAssessment: ' + JSON.stringify(this.selfAssessment));
-        });
-
-        this.router.navigate(['identify-threat-agent']);
-    }
-
-    discardIdentfiedThreatAgents() {
-        console.log('Discarding identified threat agents...');
-        this.router.navigate(['identify-threat-agent']);
+        return map;
     }
 }
