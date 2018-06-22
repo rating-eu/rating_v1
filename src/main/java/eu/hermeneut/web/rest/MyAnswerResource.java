@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.StreamSupport;
@@ -55,6 +56,19 @@ public class MyAnswerResource {
         return ResponseEntity.created(new URI("/api/my-answers/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
+    }
+
+    @PostMapping("/my-answers/all")
+    @Timed
+    public List<MyAnswer> createMyAnswers(@RequestBody List<MyAnswer> myAnswers) {
+        log.debug("REST request to save MyAnswers : {}", myAnswers);
+
+        if (myAnswers.stream().filter(myAnswer -> myAnswer.getId() != null).count() > 0) {
+            throw new BadRequestAlertException("A new myAnswer cannot already have an ID", ENTITY_NAME, "idexists");
+        }
+
+        List<MyAnswer> result = this.myAnswerService.saveAll(myAnswers);
+        return result;
     }
 
     /**

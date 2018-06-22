@@ -17,6 +17,9 @@ public interface MyAnswerService {
      */
     MyAnswer save(MyAnswer myAnswer);
 
+
+    List<MyAnswer> saveAll(List<MyAnswer> myAnswers);
+
     /**
      * Get all the myAnswers.
      *
