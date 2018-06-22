@@ -1,6 +1,6 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {DatasharingService} from '../../datasharing/datasharing.service';
-import {ThreatAgentMgm} from '../../entities/threat-agent-mgm';
+import {ThreatAgentMgm, ThreatAgentMgmService} from '../../entities/threat-agent-mgm';
 import {Couple} from '../../utils/couple.class';
 import {Fraction} from '../../utils/fraction.class';
 import {IdentifyThreatAgentService} from '../identify-threat-agent.service';
@@ -16,9 +16,9 @@ import {QuestionnairesService} from '../../questionnaires/questionnaires.service
 import {QuestionnaireStatusMgm, QuestionnaireStatusMgmService} from '../../entities/questionnaire-status-mgm';
 import {HttpResponse} from '@angular/common/http';
 import {Observable} from 'rxjs/Observable';
-import {concatMap} from 'rxjs/operators';
-import {forkJoin} from 'rxjs/observable/forkJoin';
+import {concatMap, mergeMap} from 'rxjs/operators';
 import * as CryptoJS from 'crypto-js';
+import {forkJoin} from "rxjs/observable/forkJoin";
 
 @Component({
     selector: 'jhi-result',
@@ -26,19 +26,21 @@ import * as CryptoJS from 'crypto-js';
     styles: []
 })
 export class ThreatResultComponent implements OnInit, OnDestroy {
-    private threatAgentsMap: Map<String, Couple<ThreatAgentMgm, Fraction>>;
-    private threatAgentsPercentageArray: Couple<ThreatAgentMgm, Fraction>[];
-    private defaultThreatAgents: ThreatAgentMgm[];
-    private identifyThreatAgentsFormDataMap: Map<String, AnswerMgm>;
-    private subscriptions: Subscription[] = [];
-    private questionnaire: QuestionnaireMgm;
-
     private static YES: string = 'YES';
     private static NO: string = 'NO';
 
-    // ThreatAgents Motivations
-    motivtions$: Observable<HttpResponse<MotivationMgm[]>>;
-    motivations: MotivationMgm[];
+    private subscriptions: Subscription[] = [];
+    private questionnaire: QuestionnaireMgm;
+
+    // ThreatAgents
+    private defaultThreatAgents$: Observable<HttpResponse<ThreatAgentMgm[]>>;
+    private defaultThreatAgents: ThreatAgentMgm[];
+
+    // Motivations
+    private motivations$: Observable<HttpResponse<MotivationMgm[]>>;
+    private motivations: MotivationMgm[];
+
+    private defaultThreatAgentsMotivations$: Observable<[HttpResponse<ThreatAgentMgm[]>, HttpResponse<MotivationMgm[]>]>;
 
     // QuestionnaireStatus
     private questionnaireStatus$: Observable<HttpResponse<QuestionnaireStatusMgm>>;
@@ -58,6 +60,7 @@ export class ThreatResultComponent implements OnInit, OnDestroy {
 
     // ThreatAgents Percentage Map
     private threatAgentsPercentageMap: Map<String, Couple<ThreatAgentMgm, Fraction>>;
+    private threatAgentsPercentageArray: Couple<ThreatAgentMgm, Fraction>[];
 
     constructor(private dataSharingService: DatasharingService,
                 private identifyThreatAgentService: IdentifyThreatAgentService,
@@ -69,7 +72,8 @@ export class ThreatResultComponent implements OnInit, OnDestroy {
                 private questionService: QuestionMgmService,
                 private questionnairesService: QuestionnairesService,
                 private questionnaireStatusService: QuestionnaireStatusMgmService,
-                private motivationsService: MotivationMgmService) {
+                private motivationsService: MotivationMgmService,
+                private threatAgentService: ThreatAgentMgmService) {
     }
 
     ngOnInit() {
@@ -86,9 +90,11 @@ export class ThreatResultComponent implements OnInit, OnDestroy {
         // First Fetch the QuestionnaireStatus with the above observable.
         // Then Create the Observable for the Questions and MyAnswers belonging to the fetched QuestionnaireStatus.
         this.questionsMyAnswers$ = this.questionnaireStatus$.pipe(
-            concatMap((questionnaireStatusResponse: HttpResponse<QuestionnaireStatusMgm>) => {
+            mergeMap((questionnaireStatusResponse: HttpResponse<QuestionnaireStatusMgm>) => {
                 this.questionnaireStatus = questionnaireStatusResponse.body;
+                console.log('QuestionnaireStatus: ' + JSON.stringify(this.questionnaireStatus));
                 this.questionnaire = this.questionnaireStatus.questionnaire;
+                console.log('Questionnaire: ' + JSON.stringify(this.questionnaire));
 
                 this.questions$ = this.questionService.getQuestionsByQuestionnaire(this.questionnaire.id);
                 this.myAnswers$ = this.myAnswerService.getAllByQuestionnaireStatusID(this.questionnaireStatus.id);
@@ -98,44 +104,39 @@ export class ThreatResultComponent implements OnInit, OnDestroy {
         );
 
         // Create the Observable to fetch the Motivations of the ThreatAgents
-        this.motivtions$ = this.motivationsService.query();
+        this.motivations$ = this.motivationsService.query();
 
-        forkJoin(this.questionsMyAnswers$, this.motivtions$).subscribe(
-            (value: [[HttpResponse<QuestionMgm[]>, HttpResponse<MyAnswerMgm[]>], HttpResponse<MotivationMgm[]>]) => {
-                this.questions = value[0][0].body;
-                this.myAnswers = value[0][1].body;
-                this.motivations = value[1].body;
+        // Create the Observable to fetch the default ThreatAgents
+        this.defaultThreatAgents$ = this.threatAgentService.getDefaultThreatAgents();
+
+        // Chain observables
+        this.defaultThreatAgentsMotivations$ =
+            this.questionsMyAnswers$.mergeMap(
+                (response: [HttpResponse<QuestionMgm[]>, HttpResponse<MyAnswerMgm[]>]) => {
+                    this.questions = response[0].body;
+                    console.log('Questions: ' + JSON.stringify(this.questions));
+                    this.myAnswers = response[1].body;
+                    console.log('MyAnswers: ' + JSON.stringify(this.myAnswers));
+
+                    return forkJoin(this.defaultThreatAgents$, this.motivations$);
+                }
+            );
+
+        this.defaultThreatAgentsMotivations$.subscribe(
+            (response: [HttpResponse<ThreatAgentMgm[]>, HttpResponse<MotivationMgm[]>]) => {
+                this.defaultThreatAgents = response[0].body;
+                console.log('DefaultThreatAgents: ' + JSON.stringify(this.defaultThreatAgents));
+
+                this.motivations = response[1].body;
+                console.log('Motivations: ' + JSON.stringify(this.motivations));
 
                 this.questionsMap = this.arrayToMap<QuestionMgm>(this.questions);
 
-                this.threatAgentsPercentageMap = this.questionsMyAnswersToThreatAgentsPercentageMap(this.questionsMap, this.myAnswers);
+                this.threatAgentsPercentageMap = this.questionsMyAnswersToThreatAgentsPercentageMap(this.questionsMap, this.myAnswers, this.defaultThreatAgents);
+                this.threatAgentsPercentageArray = Array.from(this.threatAgentsPercentageMap.values());
+                console.log('ThreatAgentsPercentageArray: ' + JSON.stringify(this.threatAgentsPercentageArray));
             }
         );
-
-        this.threatAgentsMap = this.dataSharingService.threatAgentsMap;
-        this.threatAgentsPercentageArray = Array.from(this.threatAgentsMap.values());
-
-        this.subscriptions.push(
-            this.identifyThreatAgentService.getDefaultThreatAgents().subscribe((response) => {
-                this.defaultThreatAgents = response as ThreatAgentMgm[];
-
-                this.defaultThreatAgents.forEach((value) => {// Add the default Threat-Agents to the list
-                    this.threatAgentsPercentageArray.push(new Couple<ThreatAgentMgm, Fraction>(value, new Fraction(1, 1)));
-                });
-            })
-        );
-
-        console.log('Calling to find all motivations...');
-
-        this.subscriptions.push(
-            this.identifyThreatAgentService.findAllMotivations().subscribe((response) => {
-                this.motivations = response as MotivationMgm[];
-            })
-        );
-
-        this.identifyThreatAgentsFormDataMap = this.dataSharingService.identifyThreatAgentsFormDataMap;
-
-        this.questionnaire = this.dataSharingService.currentQuestionnaire;
     }
 
     ngOnDestroy() {
@@ -172,7 +173,7 @@ export class ThreatResultComponent implements OnInit, OnDestroy {
         return map;
     }
 
-    questionsMyAnswersToThreatAgentsPercentageMap(questionsMap: Map<number, QuestionMgm>, myAnswers: MyAnswerMgm[]): Map<String, Couple<ThreatAgentMgm, Fraction>> {
+    questionsMyAnswersToThreatAgentsPercentageMap(questionsMap: Map<number, QuestionMgm>, myAnswers: MyAnswerMgm[], defaultThreatAgents: ThreatAgentMgm[]): Map<String, Couple<ThreatAgentMgm, Fraction>> {
 
         const map: Map<string, Couple<ThreatAgentMgm, Fraction>> = new Map<string, Couple<ThreatAgentMgm, Fraction>>();
 
@@ -182,7 +183,7 @@ export class ThreatResultComponent implements OnInit, OnDestroy {
             const threatAgent: ThreatAgentMgm = question.threatAgent;
 
             // The hash of the ThreatAgent JSON is used as the Key of the Map.
-            const threatAgentHash = CryptoJS.SHA256(JSON.stringify(threatAgent)).toString();
+            const threatAgentHash: string = CryptoJS.SHA256(JSON.stringify(threatAgent)).toString();
 
             if (map.has(threatAgentHash)) {// a question identifying this threat agent has already been encountered.
                 console.log('Threat agent already processed...');
@@ -211,6 +212,16 @@ export class ThreatResultComponent implements OnInit, OnDestroy {
                     console.log('Good, you answered NO');
                 }
             }
+        });
+
+        // Default ThreatAgents
+        defaultThreatAgents.forEach((threatAgent: ThreatAgentMgm) => {
+            // The hash of the ThreatAgent JSON is used as the Key of the Map.
+            const threatAgentHash: string = CryptoJS.SHA256(JSON.stringify(threatAgent)).toString();
+            const fraction: Fraction = new Fraction(1, 1); // 100%
+            const couple: Couple<ThreatAgentMgm, Fraction> = new Couple<ThreatAgentMgm, Fraction>(threatAgent, fraction);
+
+            map.set(threatAgentHash, couple);
         });
 
         return map;
