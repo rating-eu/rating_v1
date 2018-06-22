@@ -1,7 +1,7 @@
 import {NgModule} from '@angular/core';
 import {Routes, RouterModule} from '@angular/router';
 import {EvaluateWeaknessComponent} from './evaluate-weakness.component';
-import {ResultComponent} from './result/result.component';
+import {WeaknessResultComponent} from './result/result.component';
 
 const routes: Routes = [
     {
@@ -14,7 +14,7 @@ const routes: Routes = [
             },
             {
                 path: 'result/:statusID',
-                component: ResultComponent
+                component: WeaknessResultComponent
             }
         ]
     }

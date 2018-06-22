@@ -1,7 +1,7 @@
 import {NgModule} from '@angular/core';
 import {Routes, RouterModule} from '@angular/router';
 import {IdentifyThreatAgentComponent} from './identify-threat-agent.component';
-import {ResultComponent} from './result/result.component';
+import {ThreatResultComponent} from './result/result.component';
 
 const routes: Routes = [
     {
@@ -14,7 +14,7 @@ const routes: Routes = [
             },
             {
                 path: 'result/:statusID',
-                component: ResultComponent
+                component: ThreatResultComponent
             }
         ]
     }

@@ -12,7 +12,7 @@ import {IdentifyThreatAgentService} from '../identify-threat-agent/identify-thre
 import {NotificationInterceptor} from '../blocks/interceptor/notification.interceptor';
 import {JhiEventManager} from 'ng-jhipster';
 import {DatasharingModule} from '../datasharing/datasharing.module';
-import {ResultComponent} from './result/result.component';
+import {WeaknessResultComponent} from './result/result.component';
 import {EvaluateService} from './evaluate-weakness.service';
 
 @NgModule({
@@ -24,10 +24,10 @@ import {EvaluateService} from './evaluate-weakness.service';
     ],
     declarations: [
         EvaluateWeaknessComponent,
-        ResultComponent
+        WeaknessResultComponent
     ],
     exports: [
-        ResultComponent
+        WeaknessResultComponent
     ],
     entryComponents: [],
     providers: [
