@@ -8,6 +8,7 @@ import javax.persistence.*;
 import javax.validation.constraints.*;
 
 import org.springframework.data.elasticsearch.annotations.Document;
+
 import java.io.Serializable;
 import java.time.ZonedDateTime;
 import java.util.HashSet;
@@ -16,6 +17,8 @@ import java.util.Objects;
 
 /**
  * A Motivation.
+ * The reason that pushes a @{@link ThreatAgent} to perform a certain @{@link AttackStrategy}.
+ * The Motivation also shapes the intensity and the persistence of an attack.
  */
 @Entity
 @Table(name = "motivation")
