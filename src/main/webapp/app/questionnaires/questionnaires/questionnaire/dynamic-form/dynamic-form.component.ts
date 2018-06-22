@@ -314,28 +314,12 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
         const questionnaireStatus$: Observable<HttpResponse<QuestionnaireStatusMgm>> = this.questionnaireStatusService.create(questionnaireStatus);
 
         // #2 Persist MyAnswers
-        const myAnswers$: Observable<HttpResponse<MyAnswerMgm>[]> = questionnaireStatus$.pipe(
+        const myAnswers$: Observable<HttpResponse<MyAnswerMgm[]>> = questionnaireStatus$.pipe(
             concatMap((statusResponse: HttpResponse<QuestionnaireStatusMgm>) => {
                 // update the questionnaire status with the ID from the DB
                 questionnaireStatus = statusResponse.body;
 
-                const myAnswersCreatorObservables: Observable<HttpResponse<MyAnswerMgm>>[] = [];
-
-                formDataMap.forEach((value: AnswerMgm, key: String) => {
-                    const question: QuestionMgm = this._questionsArrayMap.get(Number(key));
-                    console.log('Question: ' + JSON.stringify(question));
-                    const answer: AnswerMgm = value;
-                    console.log('Answer: ' + JSON.stringify(answer));
-                    const questionnaire: QuestionnaireMgm = question.questionnaire;
-                    console.log('Questionnaire: ' + JSON.stringify(questionnaire));
-
-                    const myAnser: MyAnswerMgm = new MyAnswerMgm(undefined, 'Checked', answer, question, questionnaire, questionnaireStatus, this.user);
-                    console.log('MyAnser: ' + myAnser);
-
-                    myAnswersCreatorObservables.push(this.myAnswerService.create(myAnser));
-                });
-
-                return forkJoin(myAnswersCreatorObservables);
+                return this.createMyAnswersObservable(formDataMap, questionnaireStatus);
             })
         );
 
@@ -442,17 +426,13 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
                 const attackStrategies: AttackStrategyMgm[] = question.attackStrategies;
                 console.log('AttackStrategies: ' + JSON.stringify(attackStrategies));
 
-                const createMyAnswersObservable: Observable<HttpResponse<MyAnswerMgm>>[] = this.createMyAnswersObservable(formDataMap, questionnaireStatus);
+                const createMyAnswersObservable: Observable<HttpResponse<MyAnswerMgm[]>> = this.createMyAnswersObservable(formDataMap, questionnaireStatus);
 
-                forkJoin(createMyAnswersObservable).subscribe((responses: HttpResponse<MyAnswerMgm>[]) => {
-                        console.log('New my answers creaed: ' + JSON.stringify(responses));
-                    },
-                    (error) => {
-                        console.log(error);
-                    },
-                    () => {
-                        console.log('Create Observables completed...');
-                        this.router.navigate(['identify-threat-agent/questionnaires']);
+                createMyAnswersObservable.subscribe(
+                    (myAnswersResponse: HttpResponse<MyAnswerMgm[]>) => {
+                        console.log('New MyAnswers created: ');
+                        const myAnswers: MyAnswerMgm[] = myAnswersResponse.body;
+                        console.log(JSON.stringify(myAnswers));
                     }
                 );
             });
@@ -489,20 +469,15 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
                             this._questionnaireStatus = statusResponse.body;
 
                             // CREATE the NEW MyAnswers
-                            const createObservables: Observable<HttpResponse<MyAnswerMgm>>[] = this.createMyAnswersObservable(formDataMap, this._questionnaireStatus);
+                            const createObservables: Observable<HttpResponse<MyAnswerMgm[]>> = this.createMyAnswersObservable(formDataMap, this._questionnaireStatus);
 
-                            forkJoin(createObservables).subscribe((responses: HttpResponse<MyAnswerMgm>[]) => {
-                                    console.log('New my answers creaed: ' + JSON.stringify(responses));
-                                },
-                                (error) => {
-                                    console.log(error);
-                                },
-                                () => {
-                                    console.log('Create Observables completed...');
-                                    this.router.navigate(['identify-threat-agent/questionnaires']);
+                            createObservables.subscribe(
+                                (myAnswersResponse: HttpResponse<MyAnswerMgm[]>) => {
+                                    console.log('New MyAnswers created: ');
+                                    const myAnswers: MyAnswerMgm[] = myAnswersResponse.body;
+                                    console.log(JSON.stringify(myAnswers));
                                 }
                             );
-
                         },
                         (error: any) => {
                             console.log(error);
@@ -532,17 +507,13 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
                 );
 
                 // CREATE the NEW MyAnswers
-                const createObservables: Observable<HttpResponse<MyAnswerMgm>>[] = this.createMyAnswersObservable(formDataMap, this._questionnaireStatus);
+                const createObservables: Observable<HttpResponse<MyAnswerMgm[]>> = this.createMyAnswersObservable(formDataMap, this._questionnaireStatus);
 
-                forkJoin(createObservables).subscribe((responses: HttpResponse<MyAnswerMgm>[]) => {
-                        console.log('New my answers creaed: ' + JSON.stringify(responses));
-                    },
-                    (error) => {
-                        console.log(error);
-                    },
-                    () => {
-                        console.log('Create Observables completed...');
-                        this.router.navigate(['identify-threat-agent/questionnaires']);
+                createObservables.subscribe(
+                    (myAnswersResponse: HttpResponse<MyAnswerMgm[]>) => {
+                        console.log('New MyAnswers created: ');
+                        const myAnswers: MyAnswerMgm[] = myAnswersResponse.body;
+                        console.log(JSON.stringify(myAnswers));
                     }
                 );
 
@@ -606,10 +577,11 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
         return value;
     }
 
-    private createMyAnswersObservable(formDataMap: Map<string, AnswerMgm>, questionnaireStatus: QuestionnaireStatusMgm): Observable<HttpResponse<MyAnswerMgm>>[] {
+    private createMyAnswersObservable(formDataMap: Map<string, AnswerMgm>, questionnaireStatus: QuestionnaireStatusMgm): Observable<HttpResponse<MyAnswerMgm[]>> {
 
         // CREATE the NEW MyAnswers
-        const createMyAnswersObservable: Observable<HttpResponse<MyAnswerMgm>>[] = [];
+        //const createMyAnswersObservable: Observable<HttpResponse<MyAnswerMgm[]>> = [];
+        const myAnswers: MyAnswerMgm[] = [];
 
         formDataMap.forEach((value: AnswerMgm, key: string) => {
             const answer: AnswerMgm = value;
@@ -627,11 +599,11 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
 
                 console.log('MyAnser: ' + myAnser);
 
-                createMyAnswersObservable.push(this.myAnswerService.create(myAnser));
+                myAnswers.push(myAnser);
             }
         });
 
-        return createMyAnswersObservable;
+        return this.myAnswerService.createAll(myAnswers);
     }
 
     private deleteMyAnswersObservable(myAnswers: MyAnswerMgm[]): Observable<HttpResponse<MyAnswerMgm>>[] {

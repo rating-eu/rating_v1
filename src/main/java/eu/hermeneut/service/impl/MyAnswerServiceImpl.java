@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -46,6 +47,15 @@ public class MyAnswerServiceImpl implements MyAnswerService {
         myAnswerSearchRepository.save(result);
         return result;
     }
+
+    @Override
+    public List<MyAnswer> saveAll(List<MyAnswer> myAnswers) {
+        log.debug("Request to save MyAnswer : {}", Arrays.toString(myAnswers.toArray()));
+        List<MyAnswer> result = myAnswerRepository.save(myAnswers);
+        myAnswerSearchRepository.save(myAnswers);
+        return result;
+    }
+
 
     /**
      * Get all the myAnswers.

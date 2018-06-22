@@ -22,6 +22,12 @@ export class MyAnswerMgmService {
             .map((res: EntityResponseType) => this.convertResponse(res));
     }
 
+    createAll(myAnswers: MyAnswerMgm[]): Observable<HttpResponse<MyAnswerMgm[]>> {
+        const copy: MyAnswerMgm[] = this.convertArray(myAnswers);
+        return this.http.post<MyAnswerMgm[]>(this.resourceUrl + '/all', copy, {observe: 'response'})
+            .map((res: HttpResponse<MyAnswerMgm[]>) => this.convertArrayResponse(res));
+    }
+
     update(myAnswer: MyAnswerMgm): Observable<EntityResponseType> {
         const copy = this.convert(myAnswer);
         return this.http.put<MyAnswerMgm>(this.resourceUrl, copy, {observe: 'response'})
@@ -84,6 +90,11 @@ export class MyAnswerMgmService {
      */
     private convert(myAnswer: MyAnswerMgm): MyAnswerMgm {
         const copy: MyAnswerMgm = Object.assign({}, myAnswer);
+        return copy;
+    }
+
+    private convertArray(myAnswers: MyAnswerMgm[]): MyAnswerMgm[] {
+        const copy: MyAnswerMgm[] = Object.assign([], myAnswers);
         return copy;
     }
 }
