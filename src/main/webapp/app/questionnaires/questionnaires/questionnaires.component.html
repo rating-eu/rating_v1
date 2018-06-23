@@ -52,7 +52,9 @@
                 </button>
             </td>
 
-            <td [ngSwitch]="purpose">
+            <td *ngIf="statusEnum[questionnaireStatusesMap?.get(questionnaire.id)?.status] &&
+                statusEnum[questionnaireStatusesMap?.get(questionnaire.id)?.status] !== statusEnum.EMPTY"
+                [ngSwitch]="purpose">
                 <button *ngSwitchCase="purposeEnum.ID_THREAT_AGENT" class="btn"
                         (click)="showThreatAgents(questionnaireStatusesMap?.get(questionnaire.id))">
                     <span class="fa fa-user-secret"></span>

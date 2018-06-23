@@ -24,6 +24,8 @@ import {SkillLevel} from '../entities/enumerations/SkillLevel.enum';
 import {Frequency} from '../entities/enumerations/Frequency.enum';
 import {ResourceLevel} from '../entities/enumerations/ResourceLevel.enum';
 import {AnswerWeightMgm, AnswerWeightMgmService} from '../entities/answer-weight-mgm';
+import {AugmentedAttackStrategy} from './models/augmented-attack-strategy.model';
+import {AttackStrategyUpdate} from './models/attack-strategy-update.model';
 
 @Component({
     selector: 'jhi-evaluate-weakness',
@@ -34,9 +36,13 @@ import {AnswerWeightMgm, AnswerWeightMgmService} from '../entities/answer-weight
 })
 export class EvaluateWeaknessComponent implements OnInit, OnDestroy {
     attackStrategies: AttackStrategyMgm[];
+    /**
+     * Map used to update the likelihoods of each AttackStrategy in time O(1).
+     */
+    augmentedAttackStrategiesMap: Map<number/*AttackStrategy ID*/, AugmentedAttackStrategy/*AttackStrategy likelihoods*/>;
     attackLayers: LevelMgm[];
     cyberKillChainPhases: PhaseMgm[];
-    attacksCKC7Matrix: AttackStrategyMgm[][][];
+    attacksCKC7Matrix: AugmentedAttackStrategy[][][];
     threatAgentAttackPossible: boolean[][];
 
     account: Account;
@@ -47,9 +53,6 @@ export class EvaluateWeaknessComponent implements OnInit, OnDestroy {
     selectedThreatAgent: ThreatAgentMgm;
     answerWeights: AnswerWeightMgm[];
     answerWeightMap: Map<number/*QuestionType*/, Map<number/*AnswerLikelihood*/, number/*AnswerWeight*/>>;
-
-    selfAssessmentAnswers$: Observable<{}>;
-    private attackStrategyQuestionAnswersMap: Map</*AttackStrategy.ID*/number, Couple<AttackStrategyMgm, Map</*Question.ID*/number, Couple<QuestionMgm, AnswerMgm>>>>;
 
     constructor(private attackStrategyService: AttackStrategyMgmService,
                 private jhiAlertService: JhiAlertService,
@@ -91,6 +94,14 @@ export class EvaluateWeaknessComponent implements OnInit, OnDestroy {
                         }
                         case 2: {// attack-strategies
                             this.attackStrategies = value.body as AttackStrategyMgm[];
+                            this.augmentedAttackStrategiesMap = new Map<number, AugmentedAttackStrategy>();
+
+                            this.attackStrategies.forEach((attackStrategy: AttackStrategyMgm) => {
+                                const augmentedAttackStrategy: AugmentedAttackStrategy = new AugmentedAttackStrategy(attackStrategy);
+                                augmentedAttackStrategy.initialLikelihood = this.attackStrategyInitialLikelihood(attackStrategy);
+
+                                this.augmentedAttackStrategiesMap.set(attackStrategy.id, augmentedAttackStrategy);
+                            });
                             break;
                         }
                         case 3: {
@@ -129,21 +140,25 @@ export class EvaluateWeaknessComponent implements OnInit, OnDestroy {
 
                 this.attacksCKC7Matrix = [];
 
-                this.attackStrategies.forEach(((attackStrategy: AttackStrategyMgm) => {
-                    attackStrategy.levels.forEach((level: LevelMgm) => {
+                this.augmentedAttackStrategiesMap.forEach((augmentedAttackStrategy: AugmentedAttackStrategy, attackStrategyID: number) => {
+                    const attackStrategy: AttackStrategyMgm = augmentedAttackStrategy.attackStrategy;
+                    const attackStrategyLevels: LevelMgm[] = attackStrategy.levels;
+                    const attackStrategyPhases: PhaseMgm[] = attackStrategy.phases;
+
+                    attackStrategyLevels.forEach((level: LevelMgm) => {
                         if (isUndefined(this.attacksCKC7Matrix[level.id])) {
                             this.attacksCKC7Matrix[level.id] = [];
                         }
 
-                        attackStrategy.phases.forEach((phase: PhaseMgm) => {
+                        attackStrategyPhases.forEach((phase: PhaseMgm) => {
                             if (isUndefined(this.attacksCKC7Matrix[level.id][phase.id])) {
                                 this.attacksCKC7Matrix[level.id][phase.id] = [];
                             }
 
-                            this.attacksCKC7Matrix[level.id][phase.id].push(attackStrategy);
+                            this.attacksCKC7Matrix[level.id][phase.id].push(augmentedAttackStrategy);
                         });
                     });
-                }));
+                });
 
                 console.log('CKC7 matrix...');
                 console.log(JSON.stringify(this.attacksCKC7Matrix));
@@ -163,32 +178,23 @@ export class EvaluateWeaknessComponent implements OnInit, OnDestroy {
                 });
             });
 
-        this.dataSharingService.selfAssessmentAnswers$.subscribe(
-            (attackStrategyQuestionAnswersMap: Map</*AttackStrategy.ID*/number, Couple<AttackStrategyMgm, Map</*Question.ID*/number, Couple<QuestionMgm, AnswerMgm>>>>) => {
-                console.log('EVALUATE WEAKNESS: Receiving updates from SelfAssessment answers...');
-                console.log('Map size: ' + attackStrategyQuestionAnswersMap.size);
-                this.attackStrategyQuestionAnswersMap = attackStrategyQuestionAnswersMap;
+        // Observe changes for single AttackStrategy
+        this.dataSharingService.attackStrategyUpdate$.subscribe(
+            (attackStrategyUpdate: AttackStrategyUpdate) => {
+                if (attackStrategyUpdate !== undefined) {
+                    console.log('AttackStrategy update: ' + JSON.stringify(attackStrategyUpdate));
+                    console.log('Answers size: ' + attackStrategyUpdate.questionsAnswerMap.size);
 
-                attackStrategyQuestionAnswersMap.forEach((value: Couple<AttackStrategyMgm, Map</*Question.ID*/number, Couple<QuestionMgm, AnswerMgm>>>, key: number/*AttackStrategy.ID*/) => {
-                    const attackStrategyID: number = key;
-                    const attackStrategy: AttackStrategyMgm = value.key;
-                    console.log('AttackStrategy:');
-                    console.log(JSON.stringify(attackStrategy));
+                    // TODO update the AnswersLikelihood and ContextualLikelihood of the AttackStrategy
+                    const augmentedAttackStrategy: AugmentedAttackStrategy = this.augmentedAttackStrategiesMap.get(attackStrategyUpdate.id);
+                    augmentedAttackStrategy.cisoAnswersLikelihoodNumber = this.attackStrategyAnswersLikelihood(attackStrategyUpdate);
+                    augmentedAttackStrategy.cisoAnswersLikelihood = this.numberToAttackStrategyLikelihood(this.attackStrategyAnswersLikelihood(attackStrategyUpdate));
 
-                    const questionAnswersMap: Map</*Question.ID*/number, Couple<QuestionMgm, AnswerMgm>> = value.value;
+                    augmentedAttackStrategy.contextualLikelihoodNumber = this.attackStrategyContextualLikelihood(augmentedAttackStrategy.initialLikelihoodNumber, augmentedAttackStrategy.cisoAnswersLikelihoodNumber);
+                    augmentedAttackStrategy.contextualLikelihood = this.numberToAttackStrategyLikelihood(augmentedAttackStrategy.contextualLikelihoodNumber);
 
-                    questionAnswersMap.forEach((value2: Couple<QuestionMgm, AnswerMgm>, key2: /*Question.ID*/number) => {
-                        const questionID: number = key2;
-                        const question: QuestionMgm = value2.key;
-                        const answer: AnswerMgm = value2.value;
-
-                        console.log('Question:');
-                        console.log(JSON.stringify(question));
-
-                        console.log('Anser:');
-                        console.log(JSON.stringify(answer));
-                    });
-                });
+                    augmentedAttackStrategy.updateCssClass();
+                }
             }
         );
     }
@@ -201,7 +207,7 @@ export class EvaluateWeaknessComponent implements OnInit, OnDestroy {
         this.eventManager.destroy(this.eventSubscriber);
     }
 
-    trackByID(index: number, item: AttackStrategyMgm) {
+    trackByID(index: number, item: AugmentedAttackStrategy) {
         return item.id;
     }
 
@@ -214,7 +220,24 @@ export class EvaluateWeaknessComponent implements OnInit, OnDestroy {
     }
 
     threatAgentChanged(threatAgent: ThreatAgentMgm) {
-        console.log('ThreatAgent Changed: ' + threatAgent.name);
+        console.log('ThreatAgent Changed: ' + JSON.stringify(threatAgent));
+        // Update the enabled status of each AttackStrategy depending on the Skills of
+        // the ThreatAgent and the Skills required to perform the attack.
+        this.augmentedAttackStrategiesMap.forEach((augmentedAttackStrategy: AugmentedAttackStrategy) => {
+            const attackStrategy: AttackStrategyMgm = augmentedAttackStrategy.attackStrategy;
+            console.log('AttackStrategy: ' + JSON.stringify(attackStrategy));
+
+            // Check if the ThreatAgent is defined or not
+            if (threatAgent) {
+                augmentedAttackStrategy.enabled = this.isAttackPossible(threatAgent.skillLevel, attackStrategy.skill);
+            } else {
+                augmentedAttackStrategy.enabled = false;
+            }
+
+            console.log('Enabled: ' + augmentedAttackStrategy.enabled);
+            // Update the CSS class of the AttackStrategy
+            augmentedAttackStrategy.updateCssClass();
+        });
     }
 
     isAttackPossible(threatAgentSkills: SkillLevel, attackStrategyDifficulty: SkillLevel): boolean {
@@ -264,89 +287,51 @@ export class EvaluateWeaknessComponent implements OnInit, OnDestroy {
         return likelihood;
     }
 
-    attackStrategyAnswersLikelihood(attackStrategy: AttackStrategyMgm) {
+    attackStrategyAnswersLikelihood(attackStrategyUpdate: AttackStrategyUpdate) {
 
-        let numerator = 0;
-        let denominator = 0;
+        if (attackStrategyUpdate) {
+            let numerator = 0;
+            let denominator = 0;
 
-        if (this.attackStrategyQuestionAnswersMap.has(attackStrategy.id)) {
-            const questionAnswersMap: Map</*Question.ID*/number, Couple<QuestionMgm, AnswerMgm>> = this.attackStrategyQuestionAnswersMap.get(attackStrategy.id).value;
+            if (attackStrategyUpdate.questionsAnswerMap) {
+                const questionAnswersMap: Map</*Question.ID*/number, Couple<QuestionMgm, AnswerMgm>> = attackStrategyUpdate.questionsAnswerMap;
 
-            questionAnswersMap.forEach((value: Couple<QuestionMgm, AnswerMgm>, key: Number) => {
-                const question: QuestionMgm = value.key;
-                const answer: AnswerMgm = value.value;
-                const answerLikelihoodValue: number = Number(AnswerLikelihood[answer.likelihood]);
+                questionAnswersMap.forEach((value: Couple<QuestionMgm, AnswerMgm>, key: Number) => {
+                    const question: QuestionMgm = value.key;
+                    const answer: AnswerMgm = value.value;
+                    const answerLikelihoodValue: number = Number(AnswerLikelihood[answer.likelihood]);
 
-                const answerWeight: number = this.getAnswerWeight(question, answer);
+                    const answerWeight: number = this.getAnswerWeight(question, answer);
 
-                numerator += answerWeight * answerLikelihoodValue;
-                denominator += answerWeight;
-            });
-        }
+                    numerator += answerWeight * answerLikelihoodValue;
+                    denominator += answerWeight;
+                });
+            }
 
-        if (denominator !== 0) {
-            return numerator / denominator;
+            if (denominator !== 0) {
+                return numerator / denominator;
+            } else {
+                return 0;
+            }
         } else {
             return 0;
         }
     }
 
-    attackStrategyFinalLikelihood(initialLikelihood: number, answersLikelihood: number) {
-        if (answersLikelihood > 0) {
-            return Math.round((initialLikelihood + answersLikelihood) / 2);
-        } else {
-            return initialLikelihood;
-        }
+    attackStrategyContextualLikelihood(initialLikelihood: number, answersLikelihood: number) {
+        return (initialLikelihood + answersLikelihood) / 2;
     }
 
-    attackStrategyColorStyleClass(attackStrategy: AttackStrategyMgm): string {
-        console.log('ENTER attackStrategy color style: ' + attackStrategy.name);
+    numberToAttackStrategyLikelihood(likelihoodNumber: number): AttackStrategyLikelihood {
+        // Round it to the nearest integer value
+        const integerLikelihood: number = Math.round(likelihoodNumber);
+        console.log('Integer LikelihoodNumber: ' + integerLikelihood);
 
-        // First check if the attack is possible for the selected ThreatAgent
-        if (this.selectedThreatAgent) {
-            if (this.threatAgentAttackPossible[this.selectedThreatAgent.id][attackStrategy.id]) {
-                // Get the initial likelihood of the AttackStrategy
-                const initialLikelihood: number = this.attackStrategyInitialLikelihood(attackStrategy).valueOf();
-                console.log('Initial likelihood: ' + initialLikelihood);
+        // Get the corresponding Likelihood enum entry
+        const likelihood: AttackStrategyLikelihood = AttackStrategyLikelihood[AttackStrategyLikelihood[integerLikelihood]];
+        console.log('Likelihood enum: ' + likelihood);
 
-                // Get the likelihood from the self-assessment answers.
-                const answersLikelihood: number = this.attackStrategyAnswersLikelihood(attackStrategy);
-                console.log('Answers likelihood: ' + answersLikelihood);
-
-                // Do the average if the answersLikelihood is > 0
-                const finalLikelihood: number = this.attackStrategyFinalLikelihood(initialLikelihood, answersLikelihood);
-                console.log('Final likelihood: ' + finalLikelihood);
-
-                // Round it to the nearest integer value
-                const integerLikelihood: number = Math.round(finalLikelihood);
-                console.log('IntegerLikelihood: ' + integerLikelihood);
-
-                // Get the corresponding Likelihood enum entry
-                const likelihood: AttackStrategyLikelihood = AttackStrategyLikelihood[AttackStrategyLikelihood[integerLikelihood]];
-                console.log('Likelihood enum: ' + likelihood);
-
-                switch (likelihood) {
-                    case AttackStrategyLikelihood.LOW: {
-                        return 'low';
-                    }
-                    case AttackStrategyLikelihood.LOW_MEDIUM: {
-                        return 'low-medium';
-                    }
-                    case AttackStrategyLikelihood.MEDIUM: {
-                        return 'medium';
-                    }
-                    case AttackStrategyLikelihood.MEDIUM_HIGH: {
-                        return 'medium-high';
-                    }
-                    case AttackStrategyLikelihood.HIGH: {
-                        return 'high';
-                    }
-                }
-            }
-        }
-
-        // If all the above cases failed, the attack is not possible, hence we show it as disabled.
-        return 'disabled';
+        return likelihood;
     }
 
     getAnswerWeight(question: QuestionMgm, answer: AnswerMgm): number {
