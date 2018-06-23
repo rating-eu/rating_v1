@@ -6,7 +6,7 @@ import {PhaseMgm} from '../phase-mgm';
 import {Frequency} from '../enumerations/Frequency.enum';
 import {SkillLevel} from '../enumerations/SkillLevel.enum';
 import {ResourceLevel} from '../enumerations/ResourceLevel.enum';
-import {AttackStrategyLikelihood} from "../enumerations/AttackStrategyLikelihood.enum";
+import {AttackStrategyLikelihood} from '../enumerations/AttackStrategyLikelihood.enum';
 
 export class AttackStrategyMgm implements BaseEntity {
     constructor(public id?: number,

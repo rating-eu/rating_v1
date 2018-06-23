@@ -9,6 +9,7 @@ import {Subject} from 'rxjs/Subject';
 import {Observable} from 'rxjs/Observable';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import {AttackStrategyMgm} from '../entities/attack-strategy-mgm';
+import {AttackStrategyUpdate} from '../evaluate-weakness/models/attack-strategy-update.model';
 
 @Injectable()
 export class DatasharingService {
@@ -69,36 +70,22 @@ export class DatasharingService {
     }
 
     // ===Observables-BehaviorSubjects===
-    /**
-     * For each AttackStrategy, we have the corresponding Map of Question and Answers.
-     * AttackStrategy.ID ==> (AttackStrategy, {Question.ID ==> (Question, Answer)})
-     * @type {Map<string, Couple<AttackStrategyMgm, Couple<QuestionMgm, AnswerMgm>[]>>}
-     * @private
-     */
-    private _selfAssessmentAttackStrategyAnswersMap: Map</*AttackStrategy.ID*/number,
-        Couple<AttackStrategyMgm, Map</*Question.ID*/number, Couple<QuestionMgm, AnswerMgm>>>> =
-        new Map<number, Couple<AttackStrategyMgm, Map<number, Couple<QuestionMgm, AnswerMgm>>>>(); // property
-    private _selfAssessmentAnswersSubject = new BehaviorSubject(this._selfAssessmentAttackStrategyAnswersMap); // subject
-    private _selfAssessmentAnswers$ = this._selfAssessmentAnswersSubject.asObservable(); // observable
 
-    set selfAssessmentAttackStrategyAnswersMap(value: Map<number, Couple<AttackStrategyMgm, Map<number, Couple<QuestionMgm, AnswerMgm>>>>) {
-        this._selfAssessmentAttackStrategyAnswersMap = value;
+    // Map to keep the previous updated answers.
+    private _attackStrategyUpdatesMap: Map<number/*AttackStrategy ID*/, Couple<AttackStrategyMgm, AttackStrategyUpdate>> = new Map<number, Couple<AttackStrategyMgm, AttackStrategyUpdate>>();
+    // Single AttackStrategy update
+    private _attackStrategyUpdate: AttackStrategyUpdate;
+    private _attackStrategyUpdateSubject: BehaviorSubject<AttackStrategyUpdate> = new BehaviorSubject<AttackStrategyUpdate>(this._attackStrategyUpdate);
+    private _attackStrategyUpdate$: Observable<AttackStrategyUpdate> = this._attackStrategyUpdateSubject.asObservable();
+
+    private set attackStrategyUpdate(value: AttackStrategyUpdate) {
+        this._attackStrategyUpdate = value;
         // Broadcast the new value
-        this._selfAssessmentAnswersSubject.next(this._selfAssessmentAttackStrategyAnswersMap);
+        this._attackStrategyUpdateSubject.next(this._attackStrategyUpdate);
     }
 
-    set x(value: Map<number, Couple<AttackStrategyMgm, Map<number, Couple<QuestionMgm, AnswerMgm>>>>) {
-        this._selfAssessmentAttackStrategyAnswersMap = value;
-        // Broadcast the new value
-        this._selfAssessmentAnswersSubject.next(this._selfAssessmentAttackStrategyAnswersMap);
-    }
-
-    /**
-     * Get the observable for the answers of the current SelfAssessment
-     * @returns {Observable<{}>}
-     */
-    get selfAssessmentAnswers$(): Observable<{}> {
-        return this._selfAssessmentAnswers$;
+    get attackStrategyUpdate$() {
+        return this._attackStrategyUpdate$;
     }
 
     answerSelfAssessment(question: QuestionMgm, answer: AnswerMgm) {
@@ -108,34 +95,29 @@ export class DatasharingService {
         for (const attackStrategy of question.attackStrategies) {
             console.log('AttackStrategy: ' + JSON.stringify(attackStrategy));
 
-            if (this._selfAssessmentAttackStrategyAnswersMap.has(attackStrategy.id)) {
-                const couple: Couple<AttackStrategyMgm, Map</*Question.ID*/number, Couple<QuestionMgm, AnswerMgm>>> = this._selfAssessmentAttackStrategyAnswersMap.get(attackStrategy.id);
-                const questionsMap: Map</*Question.ID*/number, Couple<QuestionMgm, AnswerMgm>> = couple.value;
+            // Placeholder for the new update
+            let attackStrategyUpdate: AttackStrategyUpdate;
 
-                // check if an old answer exists
-                if (questionsMap.has(question.id)) {//
-                    const oldAnswer: AnswerMgm = questionsMap.get(question.id).value;
-                    console.log('The old answer was: ' + JSON.stringify(oldAnswer));
-                } else {
-                    console.log('First time answering this quesion...');
-                }
-
-                questionsMap.set(question.id, new Couple<QuestionMgm, AnswerMgm>(question, answer));
-                console.log('Answer was updated: ' + JSON.stringify(answer));
+            if (this._attackStrategyUpdatesMap.has(attackStrategy.id)) {
+                attackStrategyUpdate = this._attackStrategyUpdatesMap.get(attackStrategy.id).value;
             } else {
-                // create a new couple for the current AttackStrategy
-                const couple: Couple<AttackStrategyMgm, Map</*Question.ID*/number, Couple<QuestionMgm, AnswerMgm>>> = new Couple<AttackStrategyMgm, Map<number, Couple<QuestionMgm, AnswerMgm>>>(attackStrategy, null);
-                // create a new map for the questions about the current AttackStrategy
-                const questionsMap: Map</*Question.ID*/number, Couple<QuestionMgm, AnswerMgm>> = new Map<number, Couple<QuestionMgm, AnswerMgm>>();
-                // set the answer for the question
-                questionsMap.set(question.id, new Couple<QuestionMgm, AnswerMgm>(question, answer));
-
-                couple.value = questionsMap;
-                this._selfAssessmentAttackStrategyAnswersMap.set(attackStrategy.id, couple);
+                attackStrategyUpdate = new AttackStrategyUpdate(attackStrategy, new Map<number, Couple<QuestionMgm, AnswerMgm>>());
+                this._attackStrategyUpdatesMap.set(attackStrategy.id, new Couple<AttackStrategyMgm, AttackStrategyUpdate>(attackStrategy, attackStrategyUpdate));
             }
-        }
 
-        // broadcast the update
-        this.selfAssessmentAttackStrategyAnswersMap = this._selfAssessmentAttackStrategyAnswersMap;
+            const questionsAnswerMap: Map<number, Couple<QuestionMgm, AnswerMgm>> = attackStrategyUpdate.questionsAnswerMap;
+
+            if (questionsAnswerMap.has(question.id)) {//
+                const oldAnswer: AnswerMgm = questionsAnswerMap.get(question.id).value;
+                console.log('The old answer was: ' + JSON.stringify(oldAnswer));
+            } else {
+                console.log('First time answering this quesion...');
+            }
+
+            questionsAnswerMap.set(question.id, new Couple<QuestionMgm, AnswerMgm>(question, answer));
+            console.log('Answer was updated: ' + JSON.stringify(answer));
+            // Set & Broadcast the update for the current AttackStrategy
+            this.attackStrategyUpdate = attackStrategyUpdate;
+        }
     }
 }

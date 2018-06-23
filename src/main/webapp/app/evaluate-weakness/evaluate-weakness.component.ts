@@ -24,6 +24,8 @@ import {SkillLevel} from '../entities/enumerations/SkillLevel.enum';
 import {Frequency} from '../entities/enumerations/Frequency.enum';
 import {ResourceLevel} from '../entities/enumerations/ResourceLevel.enum';
 import {AnswerWeightMgm, AnswerWeightMgmService} from '../entities/answer-weight-mgm';
+import {AugmentedAttackStrategy} from './models/augmented-attack-strategy.model';
+import {AttackStrategyUpdate} from './models/attack-strategy-update.model';
 
 @Component({
     selector: 'jhi-evaluate-weakness',
@@ -34,9 +36,13 @@ import {AnswerWeightMgm, AnswerWeightMgmService} from '../entities/answer-weight
 })
 export class EvaluateWeaknessComponent implements OnInit, OnDestroy {
     attackStrategies: AttackStrategyMgm[];
+    /**
+     * Map used to update the likelihoods of each AttackStrategy in time O(1).
+     */
+    augmentedAttackStrategiesMap: Map<number/*AttackStrategy ID*/, AugmentedAttackStrategy/*AttackStrategy likelihoods*/>;
     attackLayers: LevelMgm[];
     cyberKillChainPhases: PhaseMgm[];
-    attacksCKC7Matrix: AttackStrategyMgm[][][];
+    attacksCKC7Matrix: AugmentedAttackStrategy[][][];
     threatAgentAttackPossible: boolean[][];
 
     account: Account;
@@ -91,6 +97,14 @@ export class EvaluateWeaknessComponent implements OnInit, OnDestroy {
                         }
                         case 2: {// attack-strategies
                             this.attackStrategies = value.body as AttackStrategyMgm[];
+                            this.augmentedAttackStrategiesMap = new Map<number, AugmentedAttackStrategy>();
+
+                            this.attackStrategies.forEach((attackStrategy: AttackStrategyMgm) => {
+                                const augmentedAttackStrategy: AugmentedAttackStrategy = new AugmentedAttackStrategy(attackStrategy);
+                                augmentedAttackStrategy.initialLikelihood = this.attackStrategyInitialLikelihood(attackStrategy);
+
+                                this.augmentedAttackStrategiesMap.set(attackStrategy.id, augmentedAttackStrategy);
+                            });
                             break;
                         }
                         case 3: {
@@ -129,21 +143,25 @@ export class EvaluateWeaknessComponent implements OnInit, OnDestroy {
 
                 this.attacksCKC7Matrix = [];
 
-                this.attackStrategies.forEach(((attackStrategy: AttackStrategyMgm) => {
-                    attackStrategy.levels.forEach((level: LevelMgm) => {
+                this.augmentedAttackStrategiesMap.forEach((augmentedAttackStrategy: AugmentedAttackStrategy, attackStrategyID: number) => {
+                    const attackStrategy: AttackStrategyMgm = augmentedAttackStrategy.attackStrategy;
+                    const attackStrategyLevels: LevelMgm[] = attackStrategy.levels;
+                    const attackStrategyPhases: PhaseMgm[] = attackStrategy.phases;
+
+                    attackStrategyLevels.forEach((level: LevelMgm) => {
                         if (isUndefined(this.attacksCKC7Matrix[level.id])) {
                             this.attacksCKC7Matrix[level.id] = [];
                         }
 
-                        attackStrategy.phases.forEach((phase: PhaseMgm) => {
+                        attackStrategyPhases.forEach((phase: PhaseMgm) => {
                             if (isUndefined(this.attacksCKC7Matrix[level.id][phase.id])) {
                                 this.attacksCKC7Matrix[level.id][phase.id] = [];
                             }
 
-                            this.attacksCKC7Matrix[level.id][phase.id].push(attackStrategy);
+                            this.attacksCKC7Matrix[level.id][phase.id].push(augmentedAttackStrategy);
                         });
                     });
-                }));
+                });
 
                 console.log('CKC7 matrix...');
                 console.log(JSON.stringify(this.attacksCKC7Matrix));
@@ -163,32 +181,44 @@ export class EvaluateWeaknessComponent implements OnInit, OnDestroy {
                 });
             });
 
-        this.dataSharingService.selfAssessmentAnswers$.subscribe(
-            (attackStrategyQuestionAnswersMap: Map</*AttackStrategy.ID*/number, Couple<AttackStrategyMgm, Map</*Question.ID*/number, Couple<QuestionMgm, AnswerMgm>>>>) => {
-                console.log('EVALUATE WEAKNESS: Receiving updates from SelfAssessment answers...');
-                console.log('Map size: ' + attackStrategyQuestionAnswersMap.size);
-                this.attackStrategyQuestionAnswersMap = attackStrategyQuestionAnswersMap;
+        // this.dataSharingService.selfAssessmentAnswers$.subscribe(
+        //     (attackStrategyQuestionAnswersMap: Map</*AttackStrategy.ID*/number, Couple<AttackStrategyMgm, Map</*Question.ID*/number, Couple<QuestionMgm, AnswerMgm>>>>) => {
+        //         console.log('EVALUATE WEAKNESS: Receiving updates from SelfAssessment answers...');
+        //         console.log('Map size: ' + attackStrategyQuestionAnswersMap.size);
+        //         this.attackStrategyQuestionAnswersMap = attackStrategyQuestionAnswersMap;
+        //
+        //         attackStrategyQuestionAnswersMap.forEach((value: Couple<AttackStrategyMgm, Map</*Question.ID*/number, Couple<QuestionMgm, AnswerMgm>>>, key: number/*AttackStrategy.ID*/) => {
+        //             const attackStrategyID: number = key;
+        //             const attackStrategy: AttackStrategyMgm = value.key;
+        //             console.log('AttackStrategy:');
+        //             console.log(JSON.stringify(attackStrategy));
+        //
+        //             const questionAnswersMap: Map</*Question.ID*/number, Couple<QuestionMgm, AnswerMgm>> = value.value;
+        //
+        //             questionAnswersMap.forEach((value2: Couple<QuestionMgm, AnswerMgm>, key2: /*Question.ID*/number) => {
+        //                 const questionID: number = key2;
+        //                 const question: QuestionMgm = value2.key;
+        //                 const answer: AnswerMgm = value2.value;
+        //
+        //                 console.log('Question:');
+        //                 console.log(JSON.stringify(question));
+        //
+        //                 console.log('Anser:');
+        //                 console.log(JSON.stringify(answer));
+        //             });
+        //         });
+        //     }
+        // );
 
-                attackStrategyQuestionAnswersMap.forEach((value: Couple<AttackStrategyMgm, Map</*Question.ID*/number, Couple<QuestionMgm, AnswerMgm>>>, key: number/*AttackStrategy.ID*/) => {
-                    const attackStrategyID: number = key;
-                    const attackStrategy: AttackStrategyMgm = value.key;
-                    console.log('AttackStrategy:');
-                    console.log(JSON.stringify(attackStrategy));
+        // Observe changes for single AttackStrategy
+        this.dataSharingService.attackStrategyUpdate$.subscribe(
+            (attackStrategyUpdate: AttackStrategyUpdate) => {
+                if (attackStrategyUpdate !== undefined) {
+                    console.log('AttackStrategy update: ' + JSON.stringify(attackStrategyUpdate));
+                    console.log('Answers size: ' + attackStrategyUpdate.questionsAnswerMap.size);
 
-                    const questionAnswersMap: Map</*Question.ID*/number, Couple<QuestionMgm, AnswerMgm>> = value.value;
-
-                    questionAnswersMap.forEach((value2: Couple<QuestionMgm, AnswerMgm>, key2: /*Question.ID*/number) => {
-                        const questionID: number = key2;
-                        const question: QuestionMgm = value2.key;
-                        const answer: AnswerMgm = value2.value;
-
-                        console.log('Question:');
-                        console.log(JSON.stringify(question));
-
-                        console.log('Anser:');
-                        console.log(JSON.stringify(answer));
-                    });
-                });
+                    // TODO update the AnswersLikelihood and ContextualLikelihood of the AttackStrategy
+                }
             }
         );
     }
@@ -201,7 +231,7 @@ export class EvaluateWeaknessComponent implements OnInit, OnDestroy {
         this.eventManager.destroy(this.eventSubscriber);
     }
 
-    trackByID(index: number, item: AttackStrategyMgm) {
+    trackByID(index: number, item: AugmentedAttackStrategy) {
         return item.id;
     }
 
@@ -214,7 +244,24 @@ export class EvaluateWeaknessComponent implements OnInit, OnDestroy {
     }
 
     threatAgentChanged(threatAgent: ThreatAgentMgm) {
-        console.log('ThreatAgent Changed: ' + threatAgent.name);
+        console.log('ThreatAgent Changed: ' + JSON.stringify(threatAgent));
+        // Update the enabled status of each AttackStrategy depending on the Skills of
+        // the ThreatAgent and the Skills required to perform the attack.
+        this.augmentedAttackStrategiesMap.forEach((augmentedAttackStrategy: AugmentedAttackStrategy) => {
+            const attackStrategy: AttackStrategyMgm = augmentedAttackStrategy.attackStrategy;
+            console.log('AttackStrategy: ' + JSON.stringify(attackStrategy));
+
+            // Check if the ThreatAgent is defined or not
+            if (threatAgent) {
+                augmentedAttackStrategy.enabled = this.isAttackPossible(threatAgent.skillLevel, attackStrategy.skill);
+            } else {
+                augmentedAttackStrategy.enabled = false;
+            }
+
+            console.log('Enabled: ' + augmentedAttackStrategy.enabled);
+            // Update the CSS class of the AttackStrategy
+            augmentedAttackStrategy.updateCssClass();
+        });
     }
 
     isAttackPossible(threatAgentSkills: SkillLevel, attackStrategyDifficulty: SkillLevel): boolean {
