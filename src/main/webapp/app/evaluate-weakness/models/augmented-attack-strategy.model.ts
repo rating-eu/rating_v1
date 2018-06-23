@@ -47,6 +47,11 @@ export class AugmentedAttackStrategy extends AttackStrategyMgm {
          */
         public initialLikelihood?: AttackStrategyLikelihood,
         /**
+         * Used to keep the exact decimal value of the corresponding likelihood,
+         * in contrast with the enum which is always an integer.
+         */
+        public initialLikelihoodNumber?: number,
+        /**
          * The cisoAnswersLikelihood of the AttackStrategy.
          * It is calculated as the GEOMETRIC MEAN of the answers given by the CISO
          * to the SelfAssessment Questionnaire, and depends uniquely on them.
@@ -56,11 +61,21 @@ export class AugmentedAttackStrategy extends AttackStrategyMgm {
          */
         public cisoAnswersLikelihood?: AttackStrategyLikelihood,
         /**
+         * Used to keep the exact decimal value of the corresponding likelihood,
+         * in contrast with the enum which is always an integer.
+         */
+        public cisoAnswersLikelihoodNumber?: number,
+        /**
          * The contextualLikelihood of the AttackStrategy, according to the answers of the CISO.
          * It is calculated as the mean between the @initialLikelihood and the @cisoAnswersLikelihood.
          * @type {AttackStrategyLikelihood}
          */
         public contextualLikelihood?: AttackStrategyLikelihood,
+        /**
+         * Used to keep the exact decimal value of the corresponding likelihood,
+         * in contrast with the enum which is always an integer.
+         */
+        public contextualLikelihoodNumber?: number,
         /**
          * The externalAuditAnswersLikelihood of the AttackStrategy.
          * It is calculated as the GEOMETRIC MEAN of the answers given by the ExternalAudit,
@@ -72,11 +87,21 @@ export class AugmentedAttackStrategy extends AttackStrategyMgm {
          */
         public externalAuditAnswersLikelihood?: AttackStrategyLikelihood,
         /**
+         * Used to keep the exact decimal value of the corresponding likelihood,
+         * in contrast with the enum which is always an integer.
+         */
+        public externalAuditAnswersLikelihoodNumber?: number,
+        /**
          * The refinedLikelihood of the AttackStrategy, according to the answers of the External Audit.
          * It is calculated as the mean between the @initialLikelihood and the @externalAuditAnswersLikelihood.
          * @type {AttackStrategyLikelihood}
          */
         public refinedLikelihood?: AttackStrategyLikelihood,
+        /**
+         * Used to keep the exact decimal value of the corresponding likelihood,
+         * in contrast with the enum which is always an integer.
+         */
+        public refinedLikelihoodNumber?: number,
         /**
          * The CSS class used to show the color of the AttackStrategy.
          * @type {string}
@@ -101,6 +126,7 @@ export class AugmentedAttackStrategy extends AttackStrategyMgm {
         );
 
         this.initialLikelihood = AugmentedAttackStrategy.calculateInitialLikelihood(this);
+        this.initialLikelihoodNumber = this.initialLikelihood;
     }
 
     updateCssClass() {
