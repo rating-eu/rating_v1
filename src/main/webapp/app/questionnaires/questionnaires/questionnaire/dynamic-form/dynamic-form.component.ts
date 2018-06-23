@@ -334,7 +334,6 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
         // TODO Update the SelfAssessment with the identified ThreatAgents
         const selfAssessment$: Observable<HttpResponse<SelfAssessmentMgm>> = myAnswersAndDefaultThreatAgentsJoin$.pipe(
             mergeMap((responses: any[]) => {
-                let selfAssessment$: Observable<HttpResponse<SelfAssessmentMgm>> = undefined;
 
                 responses.forEach((value: any, index: number) => {
                     switch (index) {
@@ -385,7 +384,7 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
                 this.selfAssessment = selfAssessmentResponse.body;
                 this.selfAssessmentService.setSelfAssessment(this.selfAssessment);
 
-                this.router.navigate(['/identify-threat-agent/result', questionnaireStatus.id])
+                this.router.navigate(['/identify-threat-agent/result', questionnaireStatus.id]);
             }
         );
 
@@ -414,28 +413,19 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
         // Persist the QuestionnaireStatus
         this.questionnaireStatusService.create(questionnaireStatus).subscribe((statusResponse) => {
             questionnaireStatus = statusResponse.body;
+            console.log('QuestionnaireStatus: ' + JSON.stringify(questionnaireStatus));
 
             // TODO persist MyAnswers
-            formDataMap.forEach((value, key) => {
-                const answer: AnswerMgm = value as AnswerMgm;
-                console.log('Answer: ' + JSON.stringify(answer));
+            const createMyAnswersObservable: Observable<HttpResponse<MyAnswerMgm[]>> = this.createMyAnswersObservable(formDataMap, questionnaireStatus);
+            createMyAnswersObservable.subscribe(
+                (myAnswersResponse: HttpResponse<MyAnswerMgm[]>) => {
+                    console.log('New MyAnswers created: ');
+                    const myAnswers: MyAnswerMgm[] = myAnswersResponse.body;
+                    console.log(JSON.stringify(myAnswers));
 
-                const question: QuestionMgm = this._questionsArrayMap.get(Number(key));
-                console.log('Question: ' + JSON.stringify(question));
-
-                const attackStrategies: AttackStrategyMgm[] = question.attackStrategies;
-                console.log('AttackStrategies: ' + JSON.stringify(attackStrategies));
-
-                const createMyAnswersObservable: Observable<HttpResponse<MyAnswerMgm[]>> = this.createMyAnswersObservable(formDataMap, questionnaireStatus);
-
-                createMyAnswersObservable.subscribe(
-                    (myAnswersResponse: HttpResponse<MyAnswerMgm[]>) => {
-                        console.log('New MyAnswers created: ');
-                        const myAnswers: MyAnswerMgm[] = myAnswersResponse.body;
-                        console.log(JSON.stringify(myAnswers));
-                    }
-                );
-            });
+                    this.router.navigate(['/evaluate-weakness/result', questionnaireStatus.id]);
+                }
+            );
         });
 
         // For now don't store the attackStrategies but recalculate them and their likelihood based on the stored MyAnswers
