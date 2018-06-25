@@ -8,7 +8,7 @@
 
         <select class="m-1" [(ngModel)]="selectedThreatAgent" (ngModelChange)="threatAgentChanged($event)">
             <option [ngValue]="null" selected></option>
-            <option *ngFor="let threatAgent of selectedSelfAssessment?.threatagents" [ngValue]="threatAgent">
+            <option *ngFor="let threatAgent of threatAgents" [ngValue]="threatAgent">
                 {{threatAgent.name}}
             </option>
         </select>
@@ -18,7 +18,7 @@
             <tr>
                 <th class="border-0" style="background-color: #ffffff"></th>
                 <th class="text-center align-middle"
-                    *ngFor="let ckc7Phase of cyberKillChainPhases">
+                    *ngFor="let ckc7Phase of ckc7Phases">
                     <a [routerLink]="['/phase-mgm', ckc7Phase.id]">{{ckc7Phase.name}}</a>
                 </th>
             </tr>
@@ -26,28 +26,33 @@
 
             <tbody>
 
-            <tr *ngFor="let attackLayer of attackLayers">
+            <tr *ngFor="let attackLevel of attackLevels">
                 <th class="text-center align-middle" style="background: #cc99ff">
-                    <a [routerLink]="['/level-mgm', attackLayer.id]">{{attackLayer.name}}</a>
+                    <a [routerLink]="['/level-mgm', attackLevel.id]">{{attackLevel.name}}</a>
                 </th>
 
-                <td *ngFor="let ckc7Phase of cyberKillChainPhases">
+                <td *ngFor="let ckc7Phase of ckc7Phases">
                     <div class="container-fluid">
                         <button type="button" class="btn btn-secondary m-1"
-                                [routerLink]="['/attack-strategy-mgm', attackStrategy.id]"
-                                *ngFor="let attackStrategy of attacksCKC7Matrix[attackLayer.id][ckc7Phase.id]; trackBy: trackByID"
-                                [disabled]="!selectedThreatAgent || !threatAgentAttackPossible[selectedThreatAgent.id][attackStrategy.id]"
-                                [ngClass]="attackStrategyColorStyleClass(attackStrategy)"
+                                *ngFor="let augmentedAttackStrategy of attacksCKC7Matrix[attackLevel.id][ckc7Phase.id]; trackBy: trackByID"
+                                [routerLink]="['/attack-strategy-mgm', augmentedAttackStrategy.id]"
+                                [disabled]="!selectedThreatAgent || !augmentedAttackStrategy.enabled"
+                                [ngClass]="augmentedAttackStrategy.cssClass"
                         >
-                            {{attackStrategy.name}}
-                            <div>
-                                <div>Initial likelihood {{attackStrategyInitialLikelihood(attackStrategy)}}</div>
-                                <div>Answers likelihood {{attackStrategyAnswersLikelihood(attackStrategy)}}</div>
-                                <div>Final likelihood
-                                    {{attackStrategyFinalLikelihood(attackStrategyInitialLikelihood(attackStrategy),
-                                    attackStrategyAnswersLikelihood(attackStrategy))}}
-                                </div>
-                            </div>
+                            {{augmentedAttackStrategy.attackStrategy.name}}
+                            <ul>
+                                <li>Enabled {{augmentedAttackStrategy.enabled}}</li>
+                                <li>Initial likelihood {{augmentedAttackStrategy.initialLikelihood}}</li>
+                                <li>Initial likelihood number {{augmentedAttackStrategy.initialLikelihoodNumber}}</li>
+                                <li>CISO Answers likelihood {{augmentedAttackStrategy.cisoAnswersLikelihood}}</li>
+                                <li>CISO Answers likelihood number
+                                    {{augmentedAttackStrategy.cisoAnswersLikelihoodNumber}}
+                                </li>
+                                <li>Contextual likelihood {{augmentedAttackStrategy.contextualLikelihood}}</li>
+                                <li>Contextual likelihood number
+                                    {{augmentedAttackStrategy.contextualLikelihoodNumber}}
+                                </li>
+                            </ul>
                         </button>
                     </div>
                 </td>

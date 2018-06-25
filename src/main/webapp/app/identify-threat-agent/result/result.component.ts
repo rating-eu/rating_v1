@@ -18,7 +18,7 @@ import {HttpResponse} from '@angular/common/http';
 import {Observable} from 'rxjs/Observable';
 import {concatMap, mergeMap} from 'rxjs/operators';
 import * as CryptoJS from 'crypto-js';
-import {forkJoin} from "rxjs/observable/forkJoin";
+import {forkJoin} from 'rxjs/observable/forkJoin';
 
 @Component({
     selector: 'jhi-result',
