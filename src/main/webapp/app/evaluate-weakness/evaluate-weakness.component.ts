@@ -19,7 +19,6 @@ import {AnswerMgm} from '../entities/answer-mgm';
 import {AnswerLikelihood} from '../entities/enumerations/AnswerLikelihood.enum';
 import {AttackStrategyLikelihood} from '../entities/enumerations/AttackStrategyLikelihood.enum';
 import {Couple} from '../utils/couple.class';
-import {SkillLevel} from '../entities/enumerations/SkillLevel.enum';
 import {Frequency} from '../entities/enumerations/Frequency.enum';
 import {ResourceLevel} from '../entities/enumerations/ResourceLevel.enum';
 import {AnswerWeightMgm, AnswerWeightMgmService} from '../entities/answer-weight-mgm';
@@ -98,7 +97,7 @@ export class EvaluateWeaknessComponent implements OnInit, OnDestroy {
 
                             this.attackStrategies.forEach((attackStrategy: AttackStrategyMgm) => {
                                 const augmentedAttackStrategy: AugmentedAttackStrategy = new AugmentedAttackStrategy(attackStrategy);
-                                augmentedAttackStrategy.initialLikelihood = this.attackStrategyInitialLikelihood(attackStrategy);
+                                augmentedAttackStrategy.initialLikelihood = WeaknessUtils.attackStrategyInitialLikelihood(attackStrategy,);
 
                                 this.augmentedAttackStrategiesMap.set(attackStrategy.id, augmentedAttackStrategy);
                             });
@@ -161,10 +160,10 @@ export class EvaluateWeaknessComponent implements OnInit, OnDestroy {
 
                     // TODO update the AnswersLikelihood and ContextualLikelihood of the AttackStrategy
                     const augmentedAttackStrategy: AugmentedAttackStrategy = this.augmentedAttackStrategiesMap.get(attackStrategyUpdate.id);
-                    augmentedAttackStrategy.cisoAnswersLikelihoodNumber = this.attackStrategyAnswersLikelihood(attackStrategyUpdate);
-                    augmentedAttackStrategy.cisoAnswersLikelihood = WeaknessUtils.numberToAttackStrategyLikelihood(this.attackStrategyAnswersLikelihood(attackStrategyUpdate));
+                    augmentedAttackStrategy.cisoAnswersLikelihoodNumber = WeaknessUtils.attackStrategyAnswersLikelihood(attackStrategyUpdate, this.answerWeightMap);
+                    augmentedAttackStrategy.cisoAnswersLikelihood = WeaknessUtils.numberToAttackStrategyLikelihood(augmentedAttackStrategy.cisoAnswersLikelihoodNumber);
 
-                    augmentedAttackStrategy.contextualLikelihoodNumber = this.attackStrategyContextualLikelihood(augmentedAttackStrategy.initialLikelihoodNumber, augmentedAttackStrategy.cisoAnswersLikelihoodNumber);
+                    augmentedAttackStrategy.contextualLikelihoodNumber = WeaknessUtils.attackStrategyContextualLikelihood(augmentedAttackStrategy.initialLikelihoodNumber, augmentedAttackStrategy.cisoAnswersLikelihoodNumber);
                     augmentedAttackStrategy.contextualLikelihood = WeaknessUtils.numberToAttackStrategyLikelihood(augmentedAttackStrategy.contextualLikelihoodNumber);
 
                     augmentedAttackStrategy.updateCssClass();
@@ -194,90 +193,6 @@ export class EvaluateWeaknessComponent implements OnInit, OnDestroy {
     }
 
     threatAgentChanged(threatAgent: ThreatAgentMgm) {
-        console.log('ThreatAgent Changed: ' + JSON.stringify(threatAgent));
-        // Update the enabled status of each AttackStrategy depending on the Skills of
-        // the ThreatAgent and the Skills required to perform the attack.
-        this.augmentedAttackStrategiesMap.forEach((augmentedAttackStrategy: AugmentedAttackStrategy) => {
-            const attackStrategy: AttackStrategyMgm = augmentedAttackStrategy.attackStrategy;
-            console.log('AttackStrategy: ' + JSON.stringify(attackStrategy));
-
-            // Check if the ThreatAgent is defined or not
-            if (threatAgent) {
-                augmentedAttackStrategy.enabled = WeaknessUtils.isAttackPossible(threatAgent.skillLevel, attackStrategy.skill);
-            } else {
-                augmentedAttackStrategy.enabled = false;
-            }
-
-            console.log('Enabled: ' + augmentedAttackStrategy.enabled);
-            // Update the CSS class of the AttackStrategy
-            augmentedAttackStrategy.updateCssClass();
-        });
-    }
-
-    attackStrategyInitialLikelihood(attackStrategy: AttackStrategyMgm): AttackStrategyLikelihood {
-        const frequencyValue = Number(Frequency[attackStrategy.frequency]);
-        const resourcesValue = Number(ResourceLevel[attackStrategy.resources]);
-
-        const attackStrategyInitialLikelihoodMatrix: {} = {
-            1: {
-                3: AttackStrategyLikelihood.LOW,
-                2: AttackStrategyLikelihood.LOW_MEDIUM,
-                1: AttackStrategyLikelihood.MEDIUM
-            },
-            2: {
-                3: AttackStrategyLikelihood.LOW_MEDIUM,
-                2: AttackStrategyLikelihood.MEDIUM,
-                1: AttackStrategyLikelihood.MEDIUM_HIGH
-            },
-            3: {
-                3: AttackStrategyLikelihood.MEDIUM,
-                2: AttackStrategyLikelihood.MEDIUM_HIGH,
-                1: AttackStrategyLikelihood.HIGH
-            }
-        };
-
-        console.log('Matrix:');
-        console.log(JSON.stringify(attackStrategyInitialLikelihoodMatrix));
-
-        // Reducing matrix index by one, since it's zero-based
-        const likelihood: AttackStrategyLikelihood = attackStrategyInitialLikelihoodMatrix[frequencyValue][resourcesValue];
-        console.log('Likelihood: ' + likelihood);
-
-        return likelihood;
-    }
-
-    attackStrategyAnswersLikelihood(attackStrategyUpdate: AttackStrategyUpdate) {
-
-        if (attackStrategyUpdate) {
-            let numerator = 0;
-            let denominator = 0;
-
-            if (attackStrategyUpdate.questionsAnswerMap) {
-                const questionAnswersMap: Map</*Question.ID*/number, Couple<QuestionMgm, AnswerMgm>> = attackStrategyUpdate.questionsAnswerMap;
-
-                questionAnswersMap.forEach((value: Couple<QuestionMgm, AnswerMgm>, key: Number) => {
-                    const question: QuestionMgm = value.key;
-                    const answer: AnswerMgm = value.value;
-                    const answerLikelihoodValue: number = Number(AnswerLikelihood[answer.likelihood]);
-
-                    const answerWeight: number = WeaknessUtils.getAnswerWeight(question, answer, this.answerWeightMap);
-
-                    numerator += answerWeight * answerLikelihoodValue;
-                    denominator += answerWeight;
-                });
-            }
-
-            if (denominator !== 0) {
-                return numerator / denominator;
-            } else {
-                return 0;
-            }
-        } else {
-            return 0;
-        }
-    }
-
-    attackStrategyContextualLikelihood(initialLikelihood: number, answersLikelihood: number) {
-        return (initialLikelihood + answersLikelihood) / 2;
+        WeaknessUtils.threatAgentChanged(threatAgent, this.augmentedAttackStrategiesMap);
     }
 }
