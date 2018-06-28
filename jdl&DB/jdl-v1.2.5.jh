@@ -131,11 +131,6 @@ enum Likelihood{
     LOW, LOW_MEDIUM, MEDIUM, MEDIUM_HIGH, HIGH
 }
 
-entity LikelihoodPosition{
-	Likelihood Likelihood,
-    Position Integer
-}
-
 enum ResourceLevel{
     LOW, MEDIUM, HIGH
 }

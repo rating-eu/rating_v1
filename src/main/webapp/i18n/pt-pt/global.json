@@ -23,7 +23,6 @@
                 "externalAuditMgm": "External Audit",
                 "myAnswerMgm": "My Answer",
                 "answerWeightMgm": "Answer Weight",
-                "likelihoodPositionMgm": "Likelihood Position",
                 "questionnaireStatusMgm": "Questionnaire Status",
                 "levelMgm": "Level",
                 "phaseMgm": "Phase",
@@ -78,7 +77,7 @@
                 }
             },
             "error": {
-                "dontmatch" : "A palavra-passe e a sua confirmação devem ser iguais!"
+                "dontmatch": "A palavra-passe e a sua confirmação devem ser iguais!"
             },
             "validate": {
                 "newpassword": {
@@ -101,10 +100,10 @@
             }
         },
         "field": {
-            "id" : "Código"
+            "id": "Código"
         },
         "ribbon": {
-            "dev":"Development"
+            "dev": "Development"
         },
         "item-count": "Mostrando {{first}} - {{second}} de {{total}} resultados."
     },
