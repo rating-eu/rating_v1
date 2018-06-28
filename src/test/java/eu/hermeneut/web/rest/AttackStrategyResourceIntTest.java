@@ -3,6 +3,7 @@ package eu.hermeneut.web.rest;
 import eu.hermeneut.HermeneutApp;
 
 import eu.hermeneut.domain.AttackStrategy;
+import eu.hermeneut.domain.enumeration.AttackStrategyLikelihood;
 import eu.hermeneut.repository.AttackStrategyRepository;
 import eu.hermeneut.service.AttackStrategyService;
 import eu.hermeneut.repository.search.AttackStrategySearchRepository;
@@ -41,7 +42,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import eu.hermeneut.domain.enumeration.Frequency;
 import eu.hermeneut.domain.enumeration.SkillLevel;
 import eu.hermeneut.domain.enumeration.ResourceLevel;
-import eu.hermeneut.domain.enumeration.Likelihood;
 
 /**
  * Test class for the AttackStrategyResource REST controller.
@@ -67,8 +67,8 @@ public class AttackStrategyResourceIntTest {
     private static final ResourceLevel DEFAULT_RESOURCES = ResourceLevel.LOW;
     private static final ResourceLevel UPDATED_RESOURCES = ResourceLevel.MEDIUM;
 
-    private static final Likelihood DEFAULT_LIKELIHOOD = Likelihood.LOW;
-    private static final Likelihood UPDATED_LIKELIHOOD = Likelihood.LOW_MEDIUM;
+    private static final AttackStrategyLikelihood DEFAULT_ATTACK_STRATEGY_LIKELIHOOD = AttackStrategyLikelihood.LOW;
+    private static final AttackStrategyLikelihood UPDATED_ATTACK_STRATEGY_LIKELIHOOD = AttackStrategyLikelihood.LOW_MEDIUM;
 
     private static final ZonedDateTime DEFAULT_CREATED = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
     private static final ZonedDateTime UPDATED_CREATED = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
@@ -131,7 +131,7 @@ public class AttackStrategyResourceIntTest {
             .frequency(DEFAULT_FREQUENCY)
             .skill(DEFAULT_SKILL)
             .resources(DEFAULT_RESOURCES)
-            .likelihood(DEFAULT_LIKELIHOOD)
+            .likelihood(DEFAULT_ATTACK_STRATEGY_LIKELIHOOD)
             .created(DEFAULT_CREATED)
             .modified(DEFAULT_MODIFIED);
         return attackStrategy;
@@ -163,7 +163,7 @@ public class AttackStrategyResourceIntTest {
         assertThat(testAttackStrategy.getFrequency()).isEqualTo(DEFAULT_FREQUENCY);
         assertThat(testAttackStrategy.getSkill()).isEqualTo(DEFAULT_SKILL);
         assertThat(testAttackStrategy.getResources()).isEqualTo(DEFAULT_RESOURCES);
-        assertThat(testAttackStrategy.getLikelihood()).isEqualTo(DEFAULT_LIKELIHOOD);
+        assertThat(testAttackStrategy.getLikelihood()).isEqualTo(DEFAULT_ATTACK_STRATEGY_LIKELIHOOD);
         assertThat(testAttackStrategy.getCreated()).isEqualTo(DEFAULT_CREATED);
         assertThat(testAttackStrategy.getModified()).isEqualTo(DEFAULT_MODIFIED);
 
@@ -281,7 +281,7 @@ public class AttackStrategyResourceIntTest {
             .andExpect(jsonPath("$.[*].frequency").value(hasItem(DEFAULT_FREQUENCY.toString())))
             .andExpect(jsonPath("$.[*].skill").value(hasItem(DEFAULT_SKILL.toString())))
             .andExpect(jsonPath("$.[*].resources").value(hasItem(DEFAULT_RESOURCES.toString())))
-            .andExpect(jsonPath("$.[*].likelihood").value(hasItem(DEFAULT_LIKELIHOOD.toString())))
+            .andExpect(jsonPath("$.[*].likelihood").value(hasItem(DEFAULT_ATTACK_STRATEGY_LIKELIHOOD.toString())))
             .andExpect(jsonPath("$.[*].created").value(hasItem(sameInstant(DEFAULT_CREATED))))
             .andExpect(jsonPath("$.[*].modified").value(hasItem(sameInstant(DEFAULT_MODIFIED))));
     }
@@ -302,7 +302,7 @@ public class AttackStrategyResourceIntTest {
             .andExpect(jsonPath("$.frequency").value(DEFAULT_FREQUENCY.toString()))
             .andExpect(jsonPath("$.skill").value(DEFAULT_SKILL.toString()))
             .andExpect(jsonPath("$.resources").value(DEFAULT_RESOURCES.toString()))
-            .andExpect(jsonPath("$.likelihood").value(DEFAULT_LIKELIHOOD.toString()))
+            .andExpect(jsonPath("$.likelihood").value(DEFAULT_ATTACK_STRATEGY_LIKELIHOOD.toString()))
             .andExpect(jsonPath("$.created").value(sameInstant(DEFAULT_CREATED)))
             .andExpect(jsonPath("$.modified").value(sameInstant(DEFAULT_MODIFIED)));
     }
@@ -333,7 +333,7 @@ public class AttackStrategyResourceIntTest {
             .frequency(UPDATED_FREQUENCY)
             .skill(UPDATED_SKILL)
             .resources(UPDATED_RESOURCES)
-            .likelihood(UPDATED_LIKELIHOOD)
+            .likelihood(UPDATED_ATTACK_STRATEGY_LIKELIHOOD)
             .created(UPDATED_CREATED)
             .modified(UPDATED_MODIFIED);
 
@@ -351,7 +351,7 @@ public class AttackStrategyResourceIntTest {
         assertThat(testAttackStrategy.getFrequency()).isEqualTo(UPDATED_FREQUENCY);
         assertThat(testAttackStrategy.getSkill()).isEqualTo(UPDATED_SKILL);
         assertThat(testAttackStrategy.getResources()).isEqualTo(UPDATED_RESOURCES);
-        assertThat(testAttackStrategy.getLikelihood()).isEqualTo(UPDATED_LIKELIHOOD);
+        assertThat(testAttackStrategy.getLikelihood()).isEqualTo(UPDATED_ATTACK_STRATEGY_LIKELIHOOD);
         assertThat(testAttackStrategy.getCreated()).isEqualTo(UPDATED_CREATED);
         assertThat(testAttackStrategy.getModified()).isEqualTo(UPDATED_MODIFIED);
 
@@ -418,7 +418,7 @@ public class AttackStrategyResourceIntTest {
             .andExpect(jsonPath("$.[*].frequency").value(hasItem(DEFAULT_FREQUENCY.toString())))
             .andExpect(jsonPath("$.[*].skill").value(hasItem(DEFAULT_SKILL.toString())))
             .andExpect(jsonPath("$.[*].resources").value(hasItem(DEFAULT_RESOURCES.toString())))
-            .andExpect(jsonPath("$.[*].likelihood").value(hasItem(DEFAULT_LIKELIHOOD.toString())))
+            .andExpect(jsonPath("$.[*].likelihood").value(hasItem(DEFAULT_ATTACK_STRATEGY_LIKELIHOOD.toString())))
             .andExpect(jsonPath("$.[*].created").value(hasItem(sameInstant(DEFAULT_CREATED))))
             .andExpect(jsonPath("$.[*].modified").value(hasItem(sameInstant(DEFAULT_MODIFIED))));
     }

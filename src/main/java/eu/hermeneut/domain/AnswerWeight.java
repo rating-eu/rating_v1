@@ -1,5 +1,6 @@
 package eu.hermeneut.domain;
 
+import eu.hermeneut.domain.enumeration.AnswerLikelihood;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -9,8 +10,6 @@ import org.springframework.data.elasticsearch.annotations.Document;
 
 import java.io.Serializable;
 import java.util.Objects;
-
-import eu.hermeneut.domain.enumeration.Likelihood;
 
 import eu.hermeneut.domain.enumeration.QuestionType;
 
@@ -35,7 +34,7 @@ public class AnswerWeight implements Serializable {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "likelihood")
-    private Likelihood likelihood;
+    private AnswerLikelihood likelihood;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "question_type")
@@ -53,17 +52,17 @@ public class AnswerWeight implements Serializable {
         this.id = id;
     }
 
-    public Likelihood getLikelihood() {
+    public AnswerLikelihood getLikelihood() {
         return likelihood;
     }
 
-    public AnswerWeight likelihood(Likelihood likelihood) {
-        this.likelihood = likelihood;
+    public AnswerWeight likelihood(AnswerLikelihood answerLikelihood) {
+        this.likelihood = answerLikelihood;
         return this;
     }
 
-    public void setLikelihood(Likelihood likelihood) {
-        this.likelihood = likelihood;
+    public void setLikelihood(AnswerLikelihood answerLikelihood) {
+        this.likelihood = answerLikelihood;
     }
 
     public QuestionType getQuestionType() {

@@ -1,19 +1,19 @@
 package eu.hermeneut.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import eu.hermeneut.domain.enumeration.AnswerLikelihood;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
 
 import org.springframework.data.elasticsearch.annotations.Document;
+
 import java.io.Serializable;
 import java.time.ZonedDateTime;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.Objects;
-
-import eu.hermeneut.domain.enumeration.Likelihood;
 
 /**
  * A Answer.
@@ -45,7 +45,7 @@ public class Answer implements Serializable {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "likelihood")
-    private Likelihood likelihood;
+    private AnswerLikelihood likelihood;
 
     @ManyToMany(mappedBy = "answers")
     @JsonIgnore
@@ -113,17 +113,17 @@ public class Answer implements Serializable {
         this.order = order;
     }
 
-    public Likelihood getLikelihood() {
+    public AnswerLikelihood getLikelihood() {
         return likelihood;
     }
 
-    public Answer likelihood(Likelihood likelihood) {
-        this.likelihood = likelihood;
+    public Answer likelihood(AnswerLikelihood attackStrategyLikelihood) {
+        this.likelihood = attackStrategyLikelihood;
         return this;
     }
 
-    public void setLikelihood(Likelihood likelihood) {
-        this.likelihood = likelihood;
+    public void setLikelihood(AnswerLikelihood attackStrategyLikelihood) {
+        this.likelihood = attackStrategyLikelihood;
     }
 
     public Set<Question> getQuestions() {

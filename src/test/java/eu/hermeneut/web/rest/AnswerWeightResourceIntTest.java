@@ -3,6 +3,8 @@ package eu.hermeneut.web.rest;
 import eu.hermeneut.HermeneutApp;
 
 import eu.hermeneut.domain.AnswerWeight;
+import eu.hermeneut.domain.enumeration.AnswerLikelihood;
+import eu.hermeneut.domain.enumeration.AttackStrategyLikelihood;
 import eu.hermeneut.repository.AnswerWeightRepository;
 import eu.hermeneut.service.AnswerWeightService;
 import eu.hermeneut.repository.search.AnswerWeightSearchRepository;
@@ -31,7 +33,6 @@ import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-import eu.hermeneut.domain.enumeration.Likelihood;
 import eu.hermeneut.domain.enumeration.QuestionType;
 /**
  * Test class for the AnswerWeightResource REST controller.
@@ -42,8 +43,8 @@ import eu.hermeneut.domain.enumeration.QuestionType;
 @SpringBootTest(classes = HermeneutApp.class)
 public class AnswerWeightResourceIntTest {
 
-    private static final Likelihood DEFAULT_LIKELIHOOD = Likelihood.LOW;
-    private static final Likelihood UPDATED_LIKELIHOOD = Likelihood.LOW_MEDIUM;
+    private static final AnswerLikelihood DEFAULT_ATTACK_STRATEGY_LIKELIHOOD = AnswerLikelihood.LOW;
+    private static final AnswerLikelihood UPDATED_ATTACK_STRATEGY_LIKELIHOOD = AnswerLikelihood.LOW_MEDIUM;
 
     private static final QuestionType DEFAULT_QUESTION_TYPE = QuestionType.REGULAR;
     private static final QuestionType UPDATED_QUESTION_TYPE = QuestionType.RELEVANT;
@@ -95,7 +96,7 @@ public class AnswerWeightResourceIntTest {
      */
     public static AnswerWeight createEntity(EntityManager em) {
         AnswerWeight answerWeight = new AnswerWeight()
-            .likelihood(DEFAULT_LIKELIHOOD)
+            .likelihood(DEFAULT_ATTACK_STRATEGY_LIKELIHOOD)
             .questionType(DEFAULT_QUESTION_TYPE)
             .weight(DEFAULT_WEIGHT);
         return answerWeight;
@@ -122,7 +123,7 @@ public class AnswerWeightResourceIntTest {
         List<AnswerWeight> answerWeightList = answerWeightRepository.findAll();
         assertThat(answerWeightList).hasSize(databaseSizeBeforeCreate + 1);
         AnswerWeight testAnswerWeight = answerWeightList.get(answerWeightList.size() - 1);
-        assertThat(testAnswerWeight.getLikelihood()).isEqualTo(DEFAULT_LIKELIHOOD);
+        assertThat(testAnswerWeight.getLikelihood()).isEqualTo(DEFAULT_ATTACK_STRATEGY_LIKELIHOOD);
         assertThat(testAnswerWeight.getQuestionType()).isEqualTo(DEFAULT_QUESTION_TYPE);
         assertThat(testAnswerWeight.getWeight()).isEqualTo(DEFAULT_WEIGHT);
 
@@ -161,7 +162,7 @@ public class AnswerWeightResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(answerWeight.getId().intValue())))
-            .andExpect(jsonPath("$.[*].likelihood").value(hasItem(DEFAULT_LIKELIHOOD.toString())))
+            .andExpect(jsonPath("$.[*].likelihood").value(hasItem(DEFAULT_ATTACK_STRATEGY_LIKELIHOOD.toString())))
             .andExpect(jsonPath("$.[*].questionType").value(hasItem(DEFAULT_QUESTION_TYPE.toString())))
             .andExpect(jsonPath("$.[*].weight").value(hasItem(DEFAULT_WEIGHT.doubleValue())));
     }
@@ -177,7 +178,7 @@ public class AnswerWeightResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(answerWeight.getId().intValue()))
-            .andExpect(jsonPath("$.likelihood").value(DEFAULT_LIKELIHOOD.toString()))
+            .andExpect(jsonPath("$.likelihood").value(DEFAULT_ATTACK_STRATEGY_LIKELIHOOD.toString()))
             .andExpect(jsonPath("$.questionType").value(DEFAULT_QUESTION_TYPE.toString()))
             .andExpect(jsonPath("$.weight").value(DEFAULT_WEIGHT.doubleValue()));
     }
@@ -203,7 +204,7 @@ public class AnswerWeightResourceIntTest {
         // Disconnect from session so that the updates on updatedAnswerWeight are not directly saved in db
         em.detach(updatedAnswerWeight);
         updatedAnswerWeight
-            .likelihood(UPDATED_LIKELIHOOD)
+            .likelihood(UPDATED_ATTACK_STRATEGY_LIKELIHOOD)
             .questionType(UPDATED_QUESTION_TYPE)
             .weight(UPDATED_WEIGHT);
 
@@ -216,7 +217,7 @@ public class AnswerWeightResourceIntTest {
         List<AnswerWeight> answerWeightList = answerWeightRepository.findAll();
         assertThat(answerWeightList).hasSize(databaseSizeBeforeUpdate);
         AnswerWeight testAnswerWeight = answerWeightList.get(answerWeightList.size() - 1);
-        assertThat(testAnswerWeight.getLikelihood()).isEqualTo(UPDATED_LIKELIHOOD);
+        assertThat(testAnswerWeight.getLikelihood()).isEqualTo(UPDATED_ATTACK_STRATEGY_LIKELIHOOD);
         assertThat(testAnswerWeight.getQuestionType()).isEqualTo(UPDATED_QUESTION_TYPE);
         assertThat(testAnswerWeight.getWeight()).isEqualTo(UPDATED_WEIGHT);
 
@@ -276,7 +277,7 @@ public class AnswerWeightResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(answerWeight.getId().intValue())))
-            .andExpect(jsonPath("$.[*].likelihood").value(hasItem(DEFAULT_LIKELIHOOD.toString())))
+            .andExpect(jsonPath("$.[*].likelihood").value(hasItem(DEFAULT_ATTACK_STRATEGY_LIKELIHOOD.toString())))
             .andExpect(jsonPath("$.[*].questionType").value(hasItem(DEFAULT_QUESTION_TYPE.toString())))
             .andExpect(jsonPath("$.[*].weight").value(hasItem(DEFAULT_WEIGHT.doubleValue())));
     }
