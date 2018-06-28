@@ -79,8 +79,8 @@ export class EvaluateWeaknessComponent implements OnInit, OnDestroy {
         observables.push(this.attackStrategyService.query());
         observables.push(this.answerWeightService.query());
 
-        forkJoin(observables).toPromise()
-            .then((responses: HttpResponse<any>[]) => {
+        const attackStrategyUpdate$: Observable<AttackStrategyUpdate> = forkJoin(observables).mergeMap(
+            (responses: HttpResponse<any>[]) => {
                 responses.forEach((value: HttpResponse<any>, index: Number, array: HttpResponse<any>[]) => {
                     switch (index) {
                         case 0: {// attack-layers
@@ -149,10 +149,13 @@ export class EvaluateWeaknessComponent implements OnInit, OnDestroy {
                         this.threatAgentAttackPossible[threatAgent.id][attackStrategy.id] = WeaknessUtils.isAttackPossible(threatAgent.skillLevel, attackStrategy.skill);
                     });
                 });
-            });
+
+                return this.dataSharingService.attackStrategyUpdate$;
+            }
+        );
 
         // Observe changes for single AttackStrategy
-        this.dataSharingService.attackStrategyUpdate$.subscribe(
+        attackStrategyUpdate$.subscribe(
             (attackStrategyUpdate: AttackStrategyUpdate) => {
                 if (attackStrategyUpdate !== undefined) {
                     console.log('AttackStrategy update: ' + JSON.stringify(attackStrategyUpdate));
