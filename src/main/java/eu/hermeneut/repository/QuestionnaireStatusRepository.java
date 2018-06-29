@@ -18,4 +18,7 @@ public interface QuestionnaireStatusRepository extends JpaRepository<Questionnai
 
     @Query("SELECT questionnaireStatus FROM QuestionnaireStatus questionnaireStatus WHERE questionnaireStatus.selfAssessment.id = :selfAssessmentID AND questionnaireStatus.user.id = :userID")
     List<QuestionnaireStatus> findAllBySelfAssessmentAndUser(@Param("selfAssessmentID") Long selfAssessmentID, @Param("userID") Long userID);
+
+    @Query("SELECT questionnaireStatus FROM QuestionnaireStatus questionnaireStatus WHERE questionnaireStatus.selfAssessment.id = :selfAssessmentID")
+    List<QuestionnaireStatus> findAllBySelfAssessment(@Param("selfAssessmentID") Long selfAssessmentID);
 }
