@@ -7,5 +7,15 @@ package eu.hermeneut.domain.enumeration;
  * happens.
  */
 public enum Frequency {
-    LOW, MEDIUM, HIGH
+    LOW(1), MEDIUM(2), HIGH(3);
+
+    private int value;
+
+    Frequency(int value) {
+        this.value = value;
+    }
+
+    public int getValue() {
+        return value;
+    }
 }
