@@ -4,7 +4,6 @@ import eu.hermeneut.HermeneutApp;
 
 import eu.hermeneut.domain.AnswerWeight;
 import eu.hermeneut.domain.enumeration.AnswerLikelihood;
-import eu.hermeneut.domain.enumeration.AttackStrategyLikelihood;
 import eu.hermeneut.repository.AnswerWeightRepository;
 import eu.hermeneut.service.AnswerWeightService;
 import eu.hermeneut.repository.search.AnswerWeightSearchRepository;
