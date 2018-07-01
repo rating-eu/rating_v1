@@ -68,7 +68,7 @@ class PhaseGatlingTest extends Simulation {
             .exec(http("Create new phase")
             .post("/api/phases")
             .headers(headers_http_authenticated)
-            .body(StringBody("""{"id":null, "name":"SAMPLE_TEXT", "description":"SAMPLE_TEXT"}""")).asJSON
+            .body(StringBody("""{"id":null, "name":"SAMPLE_TEXT", "description":"SAMPLE_TEXT", "weight":null}""")).asJSON
             .check(status.is(201))
             .check(headerRegex("Location", "(.*)").saveAs("new_phase_url"))).exitHereIfFailed
             .pause(10)

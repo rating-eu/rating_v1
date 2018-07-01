@@ -113,7 +113,8 @@ entity Level{
 
 entity Phase{
     Name String required,
-    Description String
+    Description String,
+    Weight Float required
 }
 
 entity AttackStrategy{

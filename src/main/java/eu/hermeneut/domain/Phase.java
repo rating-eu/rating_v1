@@ -33,6 +33,10 @@ public class Phase implements Serializable {
     @Column(name = "description", length = 1024)
     private String description;
 
+    @NotNull
+    @Column(name = "weight", nullable = false)
+    private Float weight;
+
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
         return id;
@@ -67,6 +71,19 @@ public class Phase implements Serializable {
     public void setDescription(String description) {
         this.description = description;
     }
+
+    public Float getWeight() {
+        return weight;
+    }
+
+    public Phase weight(Float weight) {
+        this.weight = weight;
+        return this;
+    }
+
+    public void setWeight(Float weight) {
+        this.weight = weight;
+    }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
     @Override
@@ -95,6 +112,7 @@ public class Phase implements Serializable {
             "id=" + getId() +
             ", name='" + getName() + "'" +
             ", description='" + getDescription() + "'" +
+            ", weight=" + getWeight() +
             "}";
     }
 }
