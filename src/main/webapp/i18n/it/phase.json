@@ -18,7 +18,8 @@
                 "title": "Phase"
             },
             "name": "Name",
-            "description": "Description"
+            "description": "Description",
+            "weight": "Weight"
         }
     }
 }

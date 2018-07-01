@@ -21,7 +21,6 @@ import {HermeneutLevelMgmModule} from './level-mgm/level-mgm.module';
 import {HermeneutPhaseMgmModule} from './phase-mgm/phase-mgm.module';
 import {HermeneutCompanyGroupMgmModule} from './company-group-mgm/company-group-mgm.module';
 
-import { HermeneutPhaseMgmModule } from './phase-mgm/phase-mgm.module';
 /* jhipster-needle-add-entity-module-import - JHipster will add entity modules imports here */
 
 @NgModule({
