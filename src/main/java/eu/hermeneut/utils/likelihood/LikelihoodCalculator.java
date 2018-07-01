@@ -161,6 +161,72 @@ public class LikelihoodCalculator {
         }
     }
 
+    public static float overallContextualLikelihoodByThreatAgent(ThreatAgent threatAgent, AttackMap attackMap) {
+
+        //Placeholder to store the Max of each Attack phase.
+        Map<Phase, AugmentedAttackStrategy> phaseMaxMap = new HashMap<>();
+
+        for (Map.Entry<Level, Map<Phase, Set<AugmentedAttackStrategy>>> entry : attackMap.entrySet()) {
+            Level level = entry.getKey();
+            logger.debug("Level: " + level);
+
+            Map<Phase, Set<AugmentedAttackStrategy>> internalMap = entry.getValue();
+
+            for (Map.Entry<Phase, Set<AugmentedAttackStrategy>> internalEntry : internalMap.entrySet()) {
+                Phase phase = internalEntry.getKey();
+                logger.debug("Phase: " + phase);
+
+                Set<AugmentedAttackStrategy> phaseAttackSet = internalEntry.getValue();
+                //Remove attacks that are not feasible by the ThreatAgent
+                phaseAttackSet = phaseAttackSet.stream().filter(augmentedAttackStrategy -> AttackStrategyFilter.isAttackPossible(threatAgent, augmentedAttackStrategy)).collect(Collectors.toSet());
+
+                AugmentedAttackStrategy localMax = null;
+
+                for (AugmentedAttackStrategy attackStrategy : phaseAttackSet) {
+                    //Set the status to Enabled since they have already been filtered above.
+                    attackStrategy.setEnabled(true);
+
+                    //GET the  Likelihood of the AttackStrategy
+                    float likelihood = attackStrategy.getContextualLikelihood();
+
+                    if (localMax == null) {
+                        localMax = attackStrategy;
+                    } else {
+                        if (likelihood > localMax.getContextualLikelihood()) {
+                            localMax = attackStrategy;
+                        }
+                    }
+                }
+
+                if (phaseMaxMap.containsKey(phase)) {
+                    AugmentedAttackStrategy currentMax = phaseMaxMap.get(phase);
+
+                    if (localMax.getContextualLikelihood() > currentMax.getContextualLikelihood()) {
+                        phaseMaxMap.put(phase, localMax);
+                    }
+                } else {
+                    phaseMaxMap.put(phase, localMax);
+                }
+            }
+        }
+
+        //Calculate the likelihood
+        float numerator = 0;
+        float denominator = 0;
+        for (Map.Entry<Phase, AugmentedAttackStrategy> entry : phaseMaxMap.entrySet()) {
+            Phase phase = entry.getKey();
+            float likelihood = entry.getValue().getContextualLikelihood();
+
+            numerator += phase.getWeight() * likelihood;
+            denominator += phase.getWeight();
+        }
+
+        if (denominator != 0) {
+            return numerator / denominator;
+        } else {
+            return 0;
+        }
+    }
 
     /**
      * Calculates the likelihood of the given answers.
@@ -170,7 +236,7 @@ public class LikelihoodCalculator {
      * @param answerWeightsMap        The Map with the weights of the different types of answers (QuestionType X AnswerType).
      * @return the likelihood of the given MyAnswers about a single AttackStrategy.
      */
-    public static float answersLikelihood(MyAnswer[] attackStrategyMyAnswers, Map<QuestionType, Map<AnswerLikelihood, AnswerWeight>> answerWeightsMap) {
+    public static float answersLikelihood(Set<MyAnswer> attackStrategyMyAnswers, Map<QuestionType, Map<AnswerLikelihood, AnswerWeight>> answerWeightsMap) {
         float numerator = 0;
         float denominator = 0;
 

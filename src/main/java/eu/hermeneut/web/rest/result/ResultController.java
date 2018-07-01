@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
@@ -51,6 +52,12 @@ public class ResultController {
 
     @Autowired
     private MyAnswerService myAnswerService;
+
+    @Autowired
+    private QuestionService questionService;
+
+    @Autowired
+    private AnswerService answerService;
 
     @GetMapping("/test")
     @Timed
@@ -121,23 +128,17 @@ public class ResultController {
                 attackStrategy.setInitialLikelihood(LikelihoodCalculator.initialLikelihood(attackStrategy).getValue());
             }
 
-            log.debug("BEGIN AttackMap...");
+            log.debug("BEGIN ############AttackMap############...");
             AttackMap attackMap = new AttackMap(augmentedAttackStrategyMap);
             log.debug("size: " + attackMap.size());
             log.debug(attackMap.toString());
-            log.debug("END AttackMap...");
+            log.debug("END ############AttackMap############...");
 
             //#Output 1 ==> OVERALL INITIAL LIKELIHOOD
             result.setInitialLikelihood(LikelihoodCalculator.overallInitialLikelihoodByThreatAgent(strongestThreatAgent, attackMap));
 
-            List<Level> levels = this.levelService.findAll();
-            log.debug("Levels: " + Arrays.toString(levels.toArray()));
-
-            List<Phase> phases = this.phaseService.findAll();
-            log.debug("Phases: " + Arrays.toString(phases.toArray()));
-
+            //__________________________________________________________________________________________________________
             List<AnswerWeight> answerWeights = this.answerWeightService.findAll();
-
             Map<QuestionType, Map<AnswerLikelihood, AnswerWeight>> answerWeightsMap = new HashMap<>();
 
             for (AnswerWeight answerWeight : answerWeights) {
@@ -161,12 +162,53 @@ public class ResultController {
             }).findFirst().orElse(null);
 
             if (selfAssessmentQuestionnaireStatus != null) {
+                Questionnaire questionnaire = selfAssessmentQuestionnaireStatus.getQuestionnaire();
+                List<Question> questions = this.questionService.findAllByQuestionnaire(questionnaire);
+                List<Answer> answers = this.answerService.findAll();
+                Map<Long/*AnswerID*/, Answer> answersMap = answers.stream().collect(Collectors.toMap(Answer::getId, Function.identity()));
+                Map<Long/*QuestionID*/, Question> questionsMap = questions.stream().collect(Collectors.toMap(Question::getId, Function.identity()));
+
                 List<MyAnswer> myAnswers = this.myAnswerService.findAllByQuestionnaireStatus(selfAssessmentQuestionnaireStatus.getId());
 
                 //TODO group the answers by AttackStrategy and find the likelihood for each of them.
+                Map<AugmentedAttackStrategy, Set<MyAnswer>> attackAnswersMap = new HashMap<>();
+
+                for (MyAnswer myAnswer : myAnswers) {
+                    myAnswer.setQuestion(questionsMap.get(myAnswer.getQuestion().getId()));
+                    myAnswer.setAnswer(answersMap.get(myAnswer.getAnswer().getId()));
+
+                    Question question = myAnswer.getQuestion();
+                    Set<AttackStrategy> attacks = question.getAttackStrategies();
+
+                    for (AttackStrategy attackStrategy : attacks) {
+                        AugmentedAttackStrategy augmentedAttackStrategy = augmentedAttackStrategyMap.get(attackStrategy.getId());
+
+                        if (attackAnswersMap.containsKey(augmentedAttackStrategy)) {
+                            Set<MyAnswer> myAnswerSet = attackAnswersMap.get(augmentedAttackStrategy);
+                            myAnswerSet.add(myAnswer);
+                        } else {
+                            Set<MyAnswer> myAnswerSet = new HashSet<>();
+                            myAnswerSet.add(myAnswer);
+                            attackAnswersMap.put(augmentedAttackStrategy, myAnswerSet);
+                        }
+                    }
+                }
+
+                for (Map.Entry<Long, AugmentedAttackStrategy> entry : augmentedAttackStrategyMap.entrySet()) {
+                    AugmentedAttackStrategy augmentedAttackStrategy = entry.getValue();
+                    log.debug("AugmentedAttackStrategy: " + augmentedAttackStrategy);
+
+                    Set<MyAnswer> myAnswerSet = attackAnswersMap.get(augmentedAttackStrategy);
+                    log.debug("MyAnswerSet: " + myAnswerSet);
+
+                    augmentedAttackStrategy.setCisoAnswersLikelihood(LikelihoodCalculator.answersLikelihood(myAnswerSet, answerWeightsMap));
+                    augmentedAttackStrategy.setContextualLikelihood((augmentedAttackStrategy.getInitialLikelihood() + augmentedAttackStrategy.getCisoAnswersLikelihood()) / 2);
+                }
+
+                //#Output 2 ==> OVERALL CONTEXTUAL LIKELIHOOD
+                result.setContextualLikelihood(LikelihoodCalculator.overallContextualLikelihoodByThreatAgent(strongestThreatAgent, attackMap));
             }
 
-            List<AugmentedAttackStrategy> attackMatrix[][][] = new ArrayList[levels.size()][phases.size()][];
 
         } else {
 
