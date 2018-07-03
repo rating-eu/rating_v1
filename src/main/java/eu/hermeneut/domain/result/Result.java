@@ -5,24 +5,24 @@ import eu.hermeneut.domain.ThreatAgent;
 import java.util.Map;
 
 public class Result {
-    private float initialLikelihood;
-    private float contextualLikelihood;
+    private Map<ThreatAgent, Float> initialVulnerability;
+    private Map<ThreatAgent, Float> contextualVulnerability;
     private Map<ThreatAgent, Float> refinedVulnerability;
 
-    public float getInitialLikelihood() {
-        return initialLikelihood;
+    public Map<ThreatAgent, Float> getInitialVulnerability() {
+        return initialVulnerability;
     }
 
-    public void setInitialLikelihood(float initialLikelihood) {
-        this.initialLikelihood = initialLikelihood;
+    public void setInitialVulnerability(Map<ThreatAgent, Float> initialLikelihood) {
+        this.initialVulnerability = initialLikelihood;
     }
 
-    public float getContextualLikelihood() {
-        return contextualLikelihood;
+    public Map<ThreatAgent, Float> getContextualVulnerability() {
+        return contextualVulnerability;
     }
 
-    public void setContextualLikelihood(float contextualLikelihood) {
-        this.contextualLikelihood = contextualLikelihood;
+    public void setContextualVulnerability(Map<ThreatAgent, Float> contextualLikelihood) {
+        this.contextualVulnerability = contextualLikelihood;
     }
 
     public Map<ThreatAgent, Float> getRefinedVulnerability() {

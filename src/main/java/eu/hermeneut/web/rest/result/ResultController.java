@@ -77,8 +77,8 @@ public class ResultController {
         log.debug("REST request to get the RESULT");
 
         Result result = new Result();
-        result.setInitialLikelihood(100);
-        result.setContextualLikelihood(500);
+//        result.setInitialVulnerability(100);
+//        result.setContextualVulnerability(500);
         result.setRefinedVulnerability(new HashMap<ThreatAgent, Float>() {
             {
                 this.put(new ThreatAgent() {
@@ -147,7 +147,16 @@ public class ResultController {
             log.debug("END ############AttackMap############...");
 
             //#Output 1 ==> OVERALL INITIAL LIKELIHOOD
-            result.setInitialLikelihood(this.overallCalculator.overallInitialLikelihoodByThreatAgent(strongestThreatAgent, attackMap));
+            //result.setInitialVulnerability(this.overallCalculator.overallInitialLikelihoodByThreatAgent(strongestThreatAgent, attackMap));
+            result.setInitialVulnerability(new HashMap<ThreatAgent, Float>() {
+                {
+                    for (ThreatAgent threatAgent : ascendingThreatAgentSkills) {
+                        log.debug("Skills: " + threatAgent.getSkillLevel().getValue());
+
+                        put(threatAgent, ResultController.this.overallCalculator.overallInitialLikelihoodByThreatAgent(threatAgent, attackMap));
+                    }
+                }
+            });
 
             //__________________________________________________________________________________________________________
             List<AnswerWeight> answerWeights = this.answerWeightService.findAll();
@@ -203,16 +212,21 @@ public class ResultController {
                 }
 
                 //#Output 2 ==> OVERALL CONTEXTUAL LIKELIHOOD
-                result.setContextualLikelihood(OverallCalculator.overallContextualLikelihoodByThreatAgent(strongestThreatAgent, attackMap));
-
+                //result.setContextualVulnerability(OverallCalculator.overallContextualLikelihoodByThreatAgent(strongestThreatAgent, attackMap));
+                result.setContextualVulnerability(new HashMap<ThreatAgent, Float>() {
+                    {
+                        for (ThreatAgent threatAgent : ascendingThreatAgentSkills) {
+                            put(threatAgent, ResultController.this.overallCalculator.overallContextualLikelihoodByThreatAgent(threatAgent, attackMap));
+                        }
+                    }
+                });
 
                 //#Output 3 ==> REFINED VULNERABILITY
+                //FAKE RANDOM DATA
                 Random random = new Random();
                 result.setRefinedVulnerability(new HashMap<ThreatAgent, Float>() {
                     {
                         for (ThreatAgent threatAgent : ascendingThreatAgentSkills) {
-                            log.debug("Skills: " + threatAgent.getSkillLevel().getValue());
-
                             put(threatAgent, AttackStrategyLikelihood.HIGH.getValue() * random.nextFloat());
                         }
                     }
