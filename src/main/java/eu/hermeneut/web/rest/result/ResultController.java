@@ -3,13 +3,16 @@ package eu.hermeneut.web.rest.result;
 import com.codahale.metrics.annotation.Timed;
 import eu.hermeneut.domain.*;
 import eu.hermeneut.domain.enumeration.AnswerLikelihood;
+import eu.hermeneut.domain.enumeration.AttackStrategyLikelihood;
 import eu.hermeneut.domain.enumeration.QuestionType;
 import eu.hermeneut.domain.enumeration.QuestionnairePurpose;
 import eu.hermeneut.domain.result.AttackMap;
 import eu.hermeneut.domain.result.AugmentedAttackStrategy;
 import eu.hermeneut.domain.result.Result;
 import eu.hermeneut.service.*;
-import eu.hermeneut.utils.likelihood.LikelihoodCalculator;
+import eu.hermeneut.utils.likelihood.answer.AnswerCalculator;
+import eu.hermeneut.utils.likelihood.attackstrategy.AttackStrategyCalculator;
+import eu.hermeneut.utils.likelihood.overall.OverallCalculator;
 import eu.hermeneut.utils.threatagent.ThreatAgentComparator;
 import eu.hermeneut.web.rest.AssetResource;
 import org.slf4j.Logger;
@@ -58,6 +61,15 @@ public class ResultController {
 
     @Autowired
     private AnswerService answerService;
+
+    @Autowired
+    private AttackStrategyCalculator attackStrategyCalculator;
+
+    @Autowired
+    private OverallCalculator overallCalculator;
+
+    @Autowired
+    private AnswerCalculator answerCalculator;
 
     @GetMapping("/test")
     @Timed
@@ -125,7 +137,7 @@ public class ResultController {
             //Set the Initial Likelihood for the AttackStrategies
             for (Map.Entry<Long, AugmentedAttackStrategy> entry : augmentedAttackStrategyMap.entrySet()) {
                 AugmentedAttackStrategy attackStrategy = entry.getValue();
-                attackStrategy.setInitialLikelihood(LikelihoodCalculator.initialLikelihood(attackStrategy).getValue());
+                attackStrategy.setInitialLikelihood(this.attackStrategyCalculator.initialLikelihood(attackStrategy).getValue());
             }
 
             log.debug("BEGIN ############AttackMap############...");
@@ -135,26 +147,11 @@ public class ResultController {
             log.debug("END ############AttackMap############...");
 
             //#Output 1 ==> OVERALL INITIAL LIKELIHOOD
-            result.setInitialLikelihood(LikelihoodCalculator.overallInitialLikelihoodByThreatAgent(strongestThreatAgent, attackMap));
+            result.setInitialLikelihood(this.overallCalculator.overallInitialLikelihoodByThreatAgent(strongestThreatAgent, attackMap));
 
             //__________________________________________________________________________________________________________
             List<AnswerWeight> answerWeights = this.answerWeightService.findAll();
             Map<QuestionType, Map<AnswerLikelihood, AnswerWeight>> answerWeightsMap = new HashMap<>();
-
-            for (AnswerWeight answerWeight : answerWeights) {
-                QuestionType questionType = answerWeight.getQuestionType();
-                AnswerLikelihood answerLikelihood = answerWeight.getLikelihood();
-
-                if (answerWeightsMap.containsKey(questionType)) {
-                    Map<AnswerLikelihood, AnswerWeight> internalMap = answerWeightsMap.get(questionType);
-
-                    internalMap.put(answerLikelihood, answerWeight);
-                } else {
-                    Map<AnswerLikelihood, AnswerWeight> internalMap = new HashMap<>();
-                    internalMap.put(answerLikelihood, answerWeight);
-                    answerWeightsMap.put(questionType, internalMap);
-                }
-            }
 
             List<QuestionnaireStatus> questionnaireStatuses = this.questionnaireStatusService.findAllBySelfAssessment(selfAssessment.getId());
             QuestionnaireStatus selfAssessmentQuestionnaireStatus = questionnaireStatuses.stream().filter(questionnaireStatus -> {
@@ -201,12 +198,25 @@ public class ResultController {
                     Set<MyAnswer> myAnswerSet = attackAnswersMap.get(augmentedAttackStrategy);
                     log.debug("MyAnswerSet: " + myAnswerSet);
 
-                    augmentedAttackStrategy.setCisoAnswersLikelihood(LikelihoodCalculator.answersLikelihood(myAnswerSet, answerWeightsMap));
+                    augmentedAttackStrategy.setCisoAnswersLikelihood(this.answerCalculator.getAnswersLikelihood(myAnswerSet));
                     augmentedAttackStrategy.setContextualLikelihood((augmentedAttackStrategy.getInitialLikelihood() + augmentedAttackStrategy.getCisoAnswersLikelihood()) / 2);
                 }
 
                 //#Output 2 ==> OVERALL CONTEXTUAL LIKELIHOOD
-                result.setContextualLikelihood(LikelihoodCalculator.overallContextualLikelihoodByThreatAgent(strongestThreatAgent, attackMap));
+                result.setContextualLikelihood(OverallCalculator.overallContextualLikelihoodByThreatAgent(strongestThreatAgent, attackMap));
+
+
+                //#Output 3 ==> REFINED VULNERABILITY
+                Random random = new Random();
+                result.setRefinedVulnerability(new HashMap<ThreatAgent, Float>() {
+                    {
+                        for (ThreatAgent threatAgent : ascendingThreatAgentSkills) {
+                            log.debug("Skills: " + threatAgent.getSkillLevel().getValue());
+
+                            put(threatAgent, AttackStrategyLikelihood.HIGH.getValue() * random.nextFloat());
+                        }
+                    }
+                });
             }
 
 
