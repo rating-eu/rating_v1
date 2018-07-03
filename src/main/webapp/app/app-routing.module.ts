@@ -17,6 +17,10 @@ const routes: Routes = [
     {
         path: 'evaluate-weakness',
         loadChildren: './evaluate-weakness/evaluate-weakness.module#EvaluateWeaknessModule'
+    },
+    {
+        path: 'results',
+        loadChildren: './results/results.module#ResultsModule'
     }
 ];
 
