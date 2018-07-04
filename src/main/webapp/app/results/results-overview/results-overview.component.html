@@ -1,3 +1,37 @@
 <p>
-  results-overview works!
+    results-overview works!
 </p>
+
+<div class="table-responsive">
+    <table class="table table-bordered" *ngIf="threatAgentLikelihoodsMap && threatAgentIDs">
+        <thead class="thead-dark">
+        <tr>
+            <th scope="col" class="text-center align-middle">Threat Agent</th>
+            <th scope="col" class="text-center align-middle">Initial Likelihood</th>
+            <th scope="col" class="text-center align-middle">Contextual Likelihood</th>
+            <th scope="col" class="text-center align-middle">Refined Likelihood</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <!--For rows-->
+        <tr *ngFor="let threatAgentID of threatAgentIDs">
+            <td class="text-center align-middle">
+                {{threatAgentLikelihoodsMap.get(threatAgentID).threatAgent.name}}
+            </td>
+
+            <td class="text-center align-middle">
+                {{threatAgentLikelihoodsMap.get(threatAgentID).initialLikelihood}}
+            </td>
+
+            <td class="text-center align-middle">
+                {{threatAgentLikelihoodsMap.get(threatAgentID).contextualLikelihood}}
+            </td>
+
+            <td class="text-center align-middle">
+                {{threatAgentLikelihoodsMap.get(threatAgentID).refinedLikelihood}}
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>

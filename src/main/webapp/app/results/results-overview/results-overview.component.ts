@@ -1,8 +1,10 @@
 import {Component, OnInit} from '@angular/core';
-import {SelfAssessmentMgm, SelfAssessmentMgmService} from "../../entities/self-assessment-mgm";
-import {ResultsService} from "../results.service";
-import {Result} from "../models/result.model";
-import {HttpResponse} from "@angular/common/http";
+import {SelfAssessmentMgm, SelfAssessmentMgmService} from '../../entities/self-assessment-mgm';
+import {ResultsService} from '../results.service';
+import {Result} from '../models/result.model';
+import {HttpResponse} from '@angular/common/http';
+import {ThreatAgentLikelihoods} from '../../utils/threatagent.likelihoods.class';
+import {ThreatAgentMgm} from '../../entities/threat-agent-mgm';
 
 @Component({
     selector: 'jhi-results-overview',
@@ -12,7 +14,12 @@ import {HttpResponse} from "@angular/common/http";
 export class ResultsOverviewComponent implements OnInit {
 
     selfAssessment: SelfAssessmentMgm;
+    threatAgents: ThreatAgentMgm[];
+    threatAgentsMap: Map<number, ThreatAgentMgm>;
     result: Result;
+
+    threatAgentLikelihoodsMap: Map<number/*ThreatAgent ID*/, ThreatAgentLikelihoods>;
+    threatAgentIDs: number[];
 
     constructor(private selfAssessmentService: SelfAssessmentMgmService,
                 private resultService: ResultsService) {
@@ -21,11 +28,73 @@ export class ResultsOverviewComponent implements OnInit {
     ngOnInit() {
         this.selfAssessment = this.selfAssessmentService.getSelfAssessment();
         console.log('SelfAssessment: ' + this.selfAssessment.id);
+        this.threatAgents = this.selfAssessment.threatagents;
+        this.threatAgentsMap = new Map<number, ThreatAgentMgm>();
+        this.threatAgents.forEach((value: ThreatAgentMgm) => {
+            this.threatAgentsMap.set(value.id, value);
+        });
+
+        this.threatAgentLikelihoodsMap = new Map<number/*ThreatAgentID*/, ThreatAgentLikelihoods>();
 
         this.resultService.getResult(this.selfAssessment.id).subscribe(
             (response: HttpResponse<Result>) => {
                 this.result = response.body;
                 console.log('Result: ' + JSON.stringify(this.result));
+
+                const initialVulnerabilityMap: Map<number, number> = this.result.initialVulnerability as Map<number, number>;
+                console.log('TypeOf initialVulnerabilityMap: ' + typeof initialVulnerabilityMap);
+
+                console.log('InitialVulnerabilityMap: ' + initialVulnerabilityMap.size);
+                console.log('InitialVulnerabilityKeys: ' + JSON.stringify(Array.from(initialVulnerabilityMap.keys())));
+                console.log('InitialVulnerabiltyValues: ' + JSON.stringify(Array.from(initialVulnerabilityMap.values())));
+
+                const contextualVulnerabilityMap: Map<number/*ThreatAgentID*/, number> = this.result.contextualVulnerability as Map<number, number>;
+                const refinedVulnerabilityMap: Map<number, number> = this.result.refinedVulnerability as Map<number, number>;
+
+                // Initial Likelihood
+                initialVulnerabilityMap.forEach((value: number, threatAgentID: number) => {
+                    if (this.threatAgentLikelihoodsMap.has(threatAgentID)) {
+                        const likelihood: ThreatAgentLikelihoods = this.threatAgentLikelihoodsMap.get(threatAgentID);
+                        likelihood.initialLikelihood = value;
+                    } else {
+                        const likelihood: ThreatAgentLikelihoods = new ThreatAgentLikelihoods(this.threatAgentsMap.get(threatAgentID));
+                        likelihood.initialLikelihood = value;
+                        this.threatAgentLikelihoodsMap.set(threatAgentID, likelihood);
+                    }
+                });
+
+                // Contextual Likelihood
+                contextualVulnerabilityMap.forEach((value: number, threatAgentID: number) => {
+                    if (this.threatAgentLikelihoodsMap.has(threatAgentID)) {
+                        const likelihood: ThreatAgentLikelihoods = this.threatAgentLikelihoodsMap.get(threatAgentID);
+                        likelihood.contextualLikelihood = value;
+                    } else {
+                        const likelihood: ThreatAgentLikelihoods = new ThreatAgentLikelihoods(this.threatAgentsMap.get(threatAgentID));
+                        likelihood.contextualLikelihood = value;
+                        this.threatAgentLikelihoodsMap.set(threatAgentID, likelihood);
+                    }
+                });
+
+                // Refined Likelihood
+                refinedVulnerabilityMap.forEach((value: number, threatAgentID: number) => {
+                    if (this.threatAgentLikelihoodsMap.has(threatAgentID)) {
+                        const likelihood: ThreatAgentLikelihoods = this.threatAgentLikelihoodsMap.get(threatAgentID);
+                        likelihood.refinedLikelihood = value;
+                    } else {
+                        const likelihood: ThreatAgentLikelihoods = new ThreatAgentLikelihoods(this.threatAgentsMap.get(threatAgentID));
+                        likelihood.refinedLikelihood = value;
+                        this.threatAgentLikelihoodsMap.set(threatAgentID, likelihood);
+                    }
+                });
+
+                this.threatAgentIDs = [];
+                this.threatAgentLikelihoodsMap.forEach((value: ThreatAgentLikelihoods, key: number) => {
+                    this.threatAgentIDs.push(key);
+                });
+
+                this.threatAgentIDs.forEach((value: number) => {
+                    console.log('ThreatAgent ID: ' + value);
+                });
             }
         );
     }

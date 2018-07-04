@@ -1,10 +1,8 @@
-import {ThreatAgentMgm} from "../../entities/threat-agent-mgm";
-
 export class Result {
     constructor(
-        public initialVulnerability: Map<ThreatAgentMgm, number>,
-        public contextualVulnerability: Map<ThreatAgentMgm, number>,
-        public refinedVulnerability: Map<ThreatAgentMgm, number>
+        public initialVulnerability: Map<number, number>,
+        public contextualVulnerability: Map<number, number>,
+        public refinedVulnerability: Map<number, number>
     ) {
     }
 }

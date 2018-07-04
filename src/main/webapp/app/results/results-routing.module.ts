@@ -1,6 +1,6 @@
 import {NgModule} from '@angular/core';
 import {Routes, RouterModule} from '@angular/router';
-import {ResultsOverviewComponent} from "./results-overview/results-overview.component";
+import {ResultsOverviewComponent} from './results-overview/results-overview.component';
 
 const routes: Routes = [
     {
