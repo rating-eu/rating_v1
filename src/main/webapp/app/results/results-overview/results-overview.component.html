@@ -2,6 +2,10 @@
     results-overview works!
 </p>
 
+<div *ngIf="maxRefinedVulnerability">
+    Likelihood {{maxRefinedVulnerability | percent}}
+</div>
+
 <div class="table-responsive">
     <table class="table table-bordered" *ngIf="threatAgentLikelihoodsMap && threatAgentIDs">
         <thead class="thead-dark">
