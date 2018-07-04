@@ -31,7 +31,7 @@ import java.util.stream.Collectors;
  * REST controller for managing the result.
  */
 @RestController
-@RequestMapping("/api/result")
+@RequestMapping("/api")
 public class ResultController {
     private final Logger log = LoggerFactory.getLogger(AssetResource.class);
 
@@ -71,26 +71,13 @@ public class ResultController {
     @Autowired
     private AnswerCalculator answerCalculator;
 
-    @GetMapping("/test")
-    @Timed
-    public Result getResult() {
-        log.debug("REST request to get the RESULT");
-
-        Result result = new Result();
-//        result.setInitialVulnerability(100);
-//        result.setContextualVulnerability(500);
-        result.setRefinedVulnerability(new HashMap<Long, Float>() {
-            {
-                this.put(1L, 100F);
-                this.put(2L, 200F);
-                this.put(3L, 300F);
-            }
-        });
-
-        return result;
+    @GetMapping("/likelihood/max")
+    public int getMaxLikelihood() {
+        final int numerator = AttackStrategyLikelihood.HIGH.getValue() * 5/*1+1+1+1+1*/ + AttackStrategyLikelihood.HIGH.getValue() * 5/*5*/;
+        return numerator / OverallCalculator.DENOMINATOR;
     }
 
-    @GetMapping("/{selfAssessmentID}")
+    @GetMapping("/result/{selfAssessmentID}")
     public Result getResult(@PathVariable Long selfAssessmentID) {
         log.debug("REST request to get the RESULT");
         log.debug("SelfAssessmentID: " + selfAssessmentID);

@@ -5,6 +5,7 @@ import {Result} from '../models/result.model';
 import {HttpResponse} from '@angular/common/http';
 import {ThreatAgentLikelihoods} from '../../utils/threatagent.likelihoods.class';
 import {ThreatAgentMgm} from '../../entities/threat-agent-mgm';
+import {Observable} from "rxjs/Observable";
 
 @Component({
     selector: 'jhi-results-overview',
@@ -16,7 +17,12 @@ export class ResultsOverviewComponent implements OnInit {
     selfAssessment: SelfAssessmentMgm;
     threatAgents: ThreatAgentMgm[];
     threatAgentsMap: Map<number, ThreatAgentMgm>;
+
     result: Result;
+    result$: Observable<HttpResponse<Result>>
+
+    maxLikelihood: number;
+    maxLikelihood$: Observable<number>;
 
     threatAgentLikelihoodsMap: Map<number/*ThreatAgent ID*/, ThreatAgentLikelihoods>;
     threatAgentIDs: number[];
@@ -36,7 +42,17 @@ export class ResultsOverviewComponent implements OnInit {
 
         this.threatAgentLikelihoodsMap = new Map<number/*ThreatAgentID*/, ThreatAgentLikelihoods>();
 
-        this.resultService.getResult(this.selfAssessment.id).subscribe(
+        this.maxLikelihood$ = this.resultService.getMax();
+
+        this.result$ = this.maxLikelihood$.mergeMap(
+            (value: number) => {
+                this.maxLikelihood = value;
+
+                return this.resultService.getResult(this.selfAssessment.id);
+            }
+        );
+
+        this.result$.subscribe(
             (response: HttpResponse<Result>) => {
                 this.result = response.body;
                 console.log('Result: ' + JSON.stringify(this.result));
@@ -55,10 +71,10 @@ export class ResultsOverviewComponent implements OnInit {
                 initialVulnerabilityMap.forEach((value: number, threatAgentID: number) => {
                     if (this.threatAgentLikelihoodsMap.has(threatAgentID)) {
                         const likelihood: ThreatAgentLikelihoods = this.threatAgentLikelihoodsMap.get(threatAgentID);
-                        likelihood.initialLikelihood = value;
+                        likelihood.initialLikelihood = (value / this.maxLikelihood);
                     } else {
                         const likelihood: ThreatAgentLikelihoods = new ThreatAgentLikelihoods(this.threatAgentsMap.get(threatAgentID));
-                        likelihood.initialLikelihood = value;
+                        likelihood.initialLikelihood = (value / this.maxLikelihood);
                         this.threatAgentLikelihoodsMap.set(threatAgentID, likelihood);
                     }
                 });
@@ -67,10 +83,10 @@ export class ResultsOverviewComponent implements OnInit {
                 contextualVulnerabilityMap.forEach((value: number, threatAgentID: number) => {
                     if (this.threatAgentLikelihoodsMap.has(threatAgentID)) {
                         const likelihood: ThreatAgentLikelihoods = this.threatAgentLikelihoodsMap.get(threatAgentID);
-                        likelihood.contextualLikelihood = value;
+                        likelihood.contextualLikelihood = (value / this.maxLikelihood);
                     } else {
                         const likelihood: ThreatAgentLikelihoods = new ThreatAgentLikelihoods(this.threatAgentsMap.get(threatAgentID));
-                        likelihood.contextualLikelihood = value;
+                        likelihood.contextualLikelihood = (value / this.maxLikelihood);
                         this.threatAgentLikelihoodsMap.set(threatAgentID, likelihood);
                     }
                 });
@@ -79,10 +95,10 @@ export class ResultsOverviewComponent implements OnInit {
                 refinedVulnerabilityMap.forEach((value: number, threatAgentID: number) => {
                     if (this.threatAgentLikelihoodsMap.has(threatAgentID)) {
                         const likelihood: ThreatAgentLikelihoods = this.threatAgentLikelihoodsMap.get(threatAgentID);
-                        likelihood.refinedLikelihood = value;
+                        likelihood.refinedLikelihood = (value / this.maxLikelihood);
                     } else {
                         const likelihood: ThreatAgentLikelihoods = new ThreatAgentLikelihoods(this.threatAgentsMap.get(threatAgentID));
-                        likelihood.refinedLikelihood = value;
+                        likelihood.refinedLikelihood = (value / this.maxLikelihood);
                         this.threatAgentLikelihoodsMap.set(threatAgentID, likelihood);
                     }
                 });

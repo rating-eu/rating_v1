@@ -21,15 +21,15 @@
             </td>
 
             <td class="text-center align-middle">
-                {{threatAgentLikelihoodsMap.get(threatAgentID).initialLikelihood}}
+                {{threatAgentLikelihoodsMap.get(threatAgentID).initialLikelihood | percent}}
             </td>
 
             <td class="text-center align-middle">
-                {{threatAgentLikelihoodsMap.get(threatAgentID).contextualLikelihood}}
+                {{threatAgentLikelihoodsMap.get(threatAgentID).contextualLikelihood | percent}}
             </td>
 
             <td class="text-center align-middle">
-                {{threatAgentLikelihoodsMap.get(threatAgentID).refinedLikelihood}}
+                {{threatAgentLikelihoodsMap.get(threatAgentID).refinedLikelihood | percent}}
             </td>
         </tr>
         </tbody>

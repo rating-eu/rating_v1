@@ -18,6 +18,8 @@ public class OverallCalculator {
 
     private static Logger logger = LoggerFactory.getLogger(OverallCalculator.class);
     private AttackStrategyCalculator attackStrategyCalculator;
+    // TODO make it dynamic
+    public static final int DENOMINATOR = 1 + 1 + 1 + 5 + 1 + 1;
 
     @Autowired
     public OverallCalculator(AttackStrategyCalculator attackStrategyCalculator) {
@@ -115,11 +117,7 @@ public class OverallCalculator {
         logger.debug("Numerator: " + numerator$);
         logger.debug("Denominator: " + denominator$);
 
-        if (denominator != 0) {
-            return numerator / denominator;
-        } else {
-            return 0;
-        }
+        return numerator / DENOMINATOR;
     }
 
     public float overallContextualLikelihoodByThreatAgent(ThreatAgent threatAgent, AttackMap attackMap) {
@@ -187,10 +185,6 @@ public class OverallCalculator {
             denominator += phase.getWeight();
         }
 
-        if (denominator != 0) {
-            return numerator / denominator;
-        } else {
-            return 0;
-        }
+        return numerator / DENOMINATOR;
     }
 }

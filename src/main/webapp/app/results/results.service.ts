@@ -9,6 +9,7 @@ export type EntityResponseType = HttpResponse<Result>;
 @Injectable()
 export class ResultsService {
     private resourceUrl = SERVER_API_URL + 'api/result';
+    private maxLikelihoodUrl = SERVER_API_URL + 'api/likelihood/max';
 
     constructor(
         private http: HttpClient
@@ -16,8 +17,15 @@ export class ResultsService {
     }
 
     getResult(selfAssessmentID: number): Observable<EntityResponseType> {
-        return this.http.get<Result>(`${this.resourceUrl}/${selfAssessmentID}`, {observe: 'response'})
+        return this.http.get<Result>(this.resourceUrl + '/' + selfAssessmentID, {observe: 'response'})
             .map((res: EntityResponseType) => this.convertResponse(res));
+    }
+
+    getMax(): Observable<number> {
+        return this.http.get<number>(this.maxLikelihoodUrl, {observe: 'response'})
+            .map((res: HttpResponse<number>) => {
+                return res.body;
+            });
     }
 
     private convertResponse(res: EntityResponseType): EntityResponseType {
