@@ -83,10 +83,6 @@ public class ElasticsearchIndexService {
 
     private final LevelSearchRepository levelSearchRepository;
 
-    private final LikelihoodPositionRepository likelihoodPositionRepository;
-
-    private final LikelihoodPositionSearchRepository likelihoodPositionSearchRepository;
-
     private final MitigationRepository mitigationRepository;
 
     private final MitigationSearchRepository mitigationSearchRepository;
@@ -154,8 +150,6 @@ public class ElasticsearchIndexService {
         ExternalAuditSearchRepository externalAuditSearchRepository,
         LevelRepository levelRepository,
         LevelSearchRepository levelSearchRepository,
-        LikelihoodPositionRepository likelihoodPositionRepository,
-        LikelihoodPositionSearchRepository likelihoodPositionSearchRepository,
         MitigationRepository mitigationRepository,
         MitigationSearchRepository mitigationSearchRepository,
         MotivationRepository motivationRepository,
@@ -199,8 +193,6 @@ public class ElasticsearchIndexService {
         this.externalAuditSearchRepository = externalAuditSearchRepository;
         this.levelRepository = levelRepository;
         this.levelSearchRepository = levelSearchRepository;
-        this.likelihoodPositionRepository = likelihoodPositionRepository;
-        this.likelihoodPositionSearchRepository = likelihoodPositionSearchRepository;
         this.mitigationRepository = mitigationRepository;
         this.mitigationSearchRepository = mitigationSearchRepository;
         this.motivationRepository = motivationRepository;
@@ -238,7 +230,6 @@ public class ElasticsearchIndexService {
                 reindexForClass(DomainOfInfluence.class, domainOfInfluenceRepository, domainOfInfluenceSearchRepository);
                 reindexForClass(ExternalAudit.class, externalAuditRepository, externalAuditSearchRepository);
                 reindexForClass(Level.class, levelRepository, levelSearchRepository);
-                reindexForClass(LikelihoodPosition.class, likelihoodPositionRepository, likelihoodPositionSearchRepository);
                 reindexForClass(Mitigation.class, mitigationRepository, mitigationSearchRepository);
                 reindexForClass(Motivation.class, motivationRepository, motivationSearchRepository);
                 reindexForClass(MyAnswer.class, myAnswerRepository, myAnswerSearchRepository);

@@ -16,7 +16,6 @@ import {HermeneutAnswerMgmModule} from './answer-mgm/answer-mgm.module';
 import {HermeneutExternalAuditMgmModule} from './external-audit-mgm/external-audit-mgm.module';
 import {HermeneutMyAnswerMgmModule} from './my-answer-mgm/my-answer-mgm.module';
 import {HermeneutAnswerWeightMgmModule} from './answer-weight-mgm/answer-weight-mgm.module';
-import {HermeneutLikelihoodPositionMgmModule} from './likelihood-position-mgm/likelihood-position-mgm.module';
 import {HermeneutQuestionnaireStatusMgmModule} from './questionnaire-status-mgm/questionnaire-status-mgm.module';
 import {HermeneutLevelMgmModule} from './level-mgm/level-mgm.module';
 import {HermeneutPhaseMgmModule} from './phase-mgm/phase-mgm.module';
@@ -42,7 +41,6 @@ import {HermeneutCompanyGroupMgmModule} from './company-group-mgm/company-group-
         HermeneutExternalAuditMgmModule,
         HermeneutMyAnswerMgmModule,
         HermeneutAnswerWeightMgmModule,
-        HermeneutLikelihoodPositionMgmModule,
         HermeneutQuestionnaireStatusMgmModule,
         HermeneutLevelMgmModule,
         HermeneutPhaseMgmModule,

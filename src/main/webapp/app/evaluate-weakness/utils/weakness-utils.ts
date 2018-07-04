@@ -148,7 +148,7 @@ export class WeaknessUtils {
         return likelihood;
     }
 
-    public static attackStrategyAnswersLikelihood(attackStrategyUpdate: AttackStrategyUpdate, answerWeightMap: Map<number, Map<number, number>>) {
+    public static attackStrategyAnswersLikelihood(attackStrategyUpdate: AttackStrategyUpdate, answerWeightMap: Map<number, Map<number, number>>): number {
 
         if (attackStrategyUpdate) {
             let numerator = 0;

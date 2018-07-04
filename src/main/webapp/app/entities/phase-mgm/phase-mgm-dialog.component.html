@@ -28,6 +28,21 @@
             <input type="text" class="form-control" name="description" id="field_description"
                 [(ngModel)]="phase.description" />
         </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="hermeneutApp.phase.weight" for="field_weight">Weight</label>
+            <input type="number" class="form-control" name="weight" id="field_weight"
+                [(ngModel)]="phase.weight" required/>
+            <div [hidden]="!(editForm.controls.weight?.dirty && editForm.controls.weight?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.weight?.errors?.required" jhiTranslate="entity.validation.required">
+                   This field is required.
+                </small>
+                <small class="form-text text-danger"
+                    [hidden]="!editForm.controls.weight?.errors?.number" jhiTranslate="entity.validation.number">
+                    This field should be a number.
+                </small>
+            </div>
+        </div>
 
     </div>
     <div class="modal-footer">

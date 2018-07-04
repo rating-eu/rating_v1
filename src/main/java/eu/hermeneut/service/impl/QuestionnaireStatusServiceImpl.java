@@ -101,7 +101,13 @@ public class QuestionnaireStatusServiceImpl implements QuestionnaireStatusServic
 
     @Override
     public List<QuestionnaireStatus> findAllBySelfAssessmentAndUser(Long selfAssessmentID, Long userID) {
-        log.debug("Request to get all QuestionnaireStatuses");
+        log.debug("Request to get all QuestionnaireStatuses by SelfAssessment");
         return questionnaireStatusRepository.findAllBySelfAssessmentAndUser(selfAssessmentID, userID);
+    }
+
+    @Override
+    public List<QuestionnaireStatus> findAllBySelfAssessment(Long selfAssessmentID) {
+        log.debug("Request to get all QuestionnaireStatuses by SelfAssessment and User");
+        return questionnaireStatusRepository.findAllBySelfAssessment(selfAssessmentID);
     }
 }

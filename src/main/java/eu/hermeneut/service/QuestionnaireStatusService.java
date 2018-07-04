@@ -1,6 +1,7 @@
 package eu.hermeneut.service;
 
 import eu.hermeneut.domain.QuestionnaireStatus;
+
 import java.util.List;
 
 /**
@@ -42,16 +43,24 @@ public interface QuestionnaireStatusService {
      * Search for the questionnaireStatus corresponding to the query.
      *
      * @param query the query of the search
-     *
      * @return the list of entities
      */
     List<QuestionnaireStatus> search(String query);
 
     /**
      * Get all the questionnaireStatuses by selfAssessment and user
+     *
      * @param selfAssessmentID
      * @param userID
      * @return the list of entities
      */
     List<QuestionnaireStatus> findAllBySelfAssessmentAndUser(Long selfAssessmentID, Long userID);
+
+    /**
+     * Get all the questionnaireStatuses by selfAssessment.
+     *
+     * @param selfAssessmentID
+     * @return the list of entities
+     */
+    List<QuestionnaireStatus> findAllBySelfAssessment(Long selfAssessmentID);
 }

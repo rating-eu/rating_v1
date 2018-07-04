@@ -411,22 +411,36 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
         let questionnaireStatus = new QuestionnaireStatusMgm(undefined, Status.FULL, this.selfAssessment, this.questionnaire, this.user, []);
 
         // Persist the QuestionnaireStatus
-        this.questionnaireStatusService.create(questionnaireStatus).subscribe((statusResponse) => {
-            questionnaireStatus = statusResponse.body;
-            console.log('QuestionnaireStatus: ' + JSON.stringify(questionnaireStatus));
+        const selfAssessment$: Observable<HttpResponse<SelfAssessmentMgm>> =
+            this.questionnaireStatusService.create(questionnaireStatus)
+                .mergeMap(
+                    (statusResponse: HttpResponse<QuestionnaireStatusMgm>) => {
+                        questionnaireStatus = statusResponse.body;
+                        console.log('QuestionnaireStatus: ' + JSON.stringify(questionnaireStatus));
 
-            // TODO persist MyAnswers
-            const createMyAnswersObservable: Observable<HttpResponse<MyAnswerMgm[]>> = this.createMyAnswersObservable(formDataMap, questionnaireStatus);
-            createMyAnswersObservable.subscribe(
-                (myAnswersResponse: HttpResponse<MyAnswerMgm[]>) => {
-                    console.log('New MyAnswers created: ');
-                    const myAnswers: MyAnswerMgm[] = myAnswersResponse.body;
-                    console.log(JSON.stringify(myAnswers));
+                        // TODO persist MyAnswers
+                        return this.createMyAnswersObservable(formDataMap, questionnaireStatus);
+                    })
+                .mergeMap(
+                    (myAnswersResponse: HttpResponse<MyAnswerMgm[]>) => {
+                        console.log('New MyAnswers created: ');
+                        const myAnswers: MyAnswerMgm[] = myAnswersResponse.body;
+                        console.log(JSON.stringify(myAnswers));
 
-                    this.router.navigate(['/evaluate-weakness/result', questionnaireStatus.id]);
-                }
-            );
-        });
+                        this.selfAssessment.questionnaires = [...new Set<QuestionnaireMgm>(this.selfAssessment.questionnaires.concat(this.questionnaire))];
+                        this.selfAssessment.user = this.user;
+
+                        return this.selfAssessmentService.update(this.selfAssessment);
+                    }
+                );
+
+        selfAssessment$.subscribe(
+            (selfAssessmentResponse: HttpResponse<SelfAssessmentMgm>) => {
+                this.selfAssessment = selfAssessmentResponse.body;
+                this.selfAssessmentService.setSelfAssessment(this.selfAssessment);
+
+                this.router.navigate(['/evaluate-weakness/result', questionnaireStatus.id]);
+            });
 
         // For now don't store the attackStrategies but recalculate them and their likelihood based on the stored MyAnswers
     }
@@ -519,12 +533,13 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
         }
     }
 
-    // ==========HELPER METHODS============
+// ==========HELPER METHODS============
 
     sort(answers: AnswerMgm[]): AnswerMgm[] {
         return answers.sort((a, b) => {
-            return a.order - b.order;
-        });
+                return a.order - b.order;
+            }
+        );
     }
 
     private myAnswersToFormValue(myAnswers: MyAnswerMgm[], questionsMap: Map<number, QuestionMgm>) {
@@ -534,78 +549,87 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
 
         const value = {};
 
-        myAnswers.forEach((myAnswer) => {
-            console.log('MyAnswer: ' + JSON.stringify(myAnswer));
+        myAnswers.forEach(
+            (myAnswer) => {
+                console.log('MyAnswer: ' + JSON.stringify(myAnswer));
 
-            // Get the "exact" QUESTION used in the form generation
-            const question = questionsMap.get(myAnswer.question.id);
-            console.log('Question: ' + JSON.stringify(question));
+                // Get the "exact" QUESTION used in the form generation
+                const question = questionsMap.get(myAnswer.question.id);
+                console.log('Question: ' + JSON.stringify(question));
 
-            // Get the "exact" ANSWERS used as [VALUE] for the question
-            const answers: AnswerMgm[] = question.answers;
-            console.log('Answers: ' + JSON.stringify(answers));
+                // Get the "exact" ANSWERS used as [VALUE] for the question
+                const answers: AnswerMgm[] = question.answers;
+                console.log('Answers: ' + JSON.stringify(answers));
 
-            let exactAnswer: AnswerMgm;
-            console.log('For each answers...');
+                let exactAnswer: AnswerMgm;
+                console.log('For each answers...');
 
-            for (const answer of answers) {
-                console.log('Answer ID: ' + answer.id + '==> MyAnswer ID: ' + myAnswer.answer.id);
+                for (const answer of answers) {
+                    console.log('Answer ID: ' + answer.id + '==> MyAnswer ID: ' + myAnswer.answer.id);
 
-                if (answer.id === myAnswer.answer.id) {
-                    exactAnswer = answer;
-                    break;
+                    if (answer.id === myAnswer.answer.id) {
+                        exactAnswer = answer;
+                        break;
+                    }
                 }
+
+                console.log('Exact Answer: ' + JSON.stringify(exactAnswer));
+
+                value[String(myAnswer.question.id)] = exactAnswer;
             }
-
-            console.log('Exact Answer: ' + JSON.stringify(exactAnswer));
-
-            value[String(myAnswer.question.id)] = exactAnswer;
-        });
+        );
 
         console.log('Patching values: ' + JSON.stringify(value));
 
         return value;
     }
 
-    private createMyAnswersObservable(formDataMap: Map<string, AnswerMgm>, questionnaireStatus: QuestionnaireStatusMgm): Observable<HttpResponse<MyAnswerMgm[]>> {
+    private createMyAnswersObservable(formDataMap: Map<string, AnswerMgm>, questionnaireStatus: QuestionnaireStatusMgm):
+
+        Observable<HttpResponse<MyAnswerMgm[]>> {
 
         // CREATE the NEW MyAnswers
         //const createMyAnswersObservable: Observable<HttpResponse<MyAnswerMgm[]>> = [];
-        const myAnswers: MyAnswerMgm[] = [];
+        const myAnswers:
+            MyAnswerMgm[] = [];
 
-        formDataMap.forEach((value: AnswerMgm, key: string) => {
-            const answer: AnswerMgm = value;
-            console.log('Answer: ' + answer);
+        formDataMap.forEach(
+            (value: AnswerMgm, key: string) => {
+                const answer: AnswerMgm = value;
+                console.log('Answer: ' + answer);
 
-            if (answer) {// check if the the user answered this question
-                const question: QuestionMgm = this._questionsArrayMap.get(Number(key));
-                const questionnaire: QuestionnaireMgm = question.questionnaire;
+                if (answer) {// check if the the user answered this question
+                    const question: QuestionMgm = this._questionsArrayMap.get(Number(key));
+                    const questionnaire: QuestionnaireMgm = question.questionnaire;
 
-                console.log('Answer: ' + JSON.stringify(answer));
-                console.log('Question: ' + JSON.stringify(question));
-                console.log('Questionnaire: ' + JSON.stringify(questionnaire));
+                    console.log('Answer: ' + JSON.stringify(answer));
+                    console.log('Question: ' + JSON.stringify(question));
+                    console.log('Questionnaire: ' + JSON.stringify(questionnaire));
 
-                const myAnser: MyAnswerMgm = new MyAnswerMgm(undefined, 'Checked', answer, question, questionnaire, questionnaireStatus, this.user);
+                    const myAnser: MyAnswerMgm = new MyAnswerMgm(undefined, 'Checked', answer, question, questionnaire, questionnaireStatus, this.user);
 
-                console.log('MyAnser: ' + myAnser);
+                    console.log('MyAnser: ' + myAnser);
 
-                myAnswers.push(myAnser);
+                    myAnswers.push(myAnser);
+                }
             }
-        });
+        );
 
         return this.myAnswerService.createAll(myAnswers);
     }
 
-    private deleteMyAnswersObservable(myAnswers: MyAnswerMgm[]): Observable<HttpResponse<MyAnswerMgm>>[] {
+    private deleteMyAnswersObservable(myAnswers: MyAnswerMgm[]):
 
-        // DELETE the OLD MyAnswers
-        const deleteMyAnswerObservable: Observable<HttpResponse<MyAnswerMgm>>[] = [];
+        Observable<HttpResponse<MyAnswerMgm>>[] {// DELETE the OLD MyAnswers
+        const deleteMyAnswerObservable: Observable<HttpResponse<MyAnswerMgm>> [] = [];
 
-        myAnswers.forEach((myAnswer) => {
-            deleteMyAnswerObservable.push(
-                this.myAnswerService.delete(myAnswer.id)
-            );
-        });
+        myAnswers.forEach(
+            (myAnswer) => {
+                deleteMyAnswerObservable.push(
+                    this.myAnswerService.delete(myAnswer.id)
+                );
+            }
+        );
 
         return deleteMyAnswerObservable;
     }

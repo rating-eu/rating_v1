@@ -32,6 +32,7 @@
             <th><span jhiTranslate="global.field.id">ID</span></th>
             <th><span jhiTranslate="hermeneutApp.phase.name">Name</span></th>
             <th><span jhiTranslate="hermeneutApp.phase.description">Description</span></th>
+            <th><span jhiTranslate="hermeneutApp.phase.weight">Weight</span></th>
             <th></th>
             </tr>
             </thead>
@@ -40,6 +41,7 @@
                 <td><a [routerLink]="['../phase-mgm', phase.id ]">{{phase.id}}</a></td>
                 <td>{{phase.name}}</td>
                 <td>{{phase.description}}</td>
+                <td>{{phase.weight}}</td>
                 <td class="text-right">
                     <div class="btn-group flex-btn-group-container">
                         <button type="submit"

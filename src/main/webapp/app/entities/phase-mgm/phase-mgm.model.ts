@@ -5,6 +5,7 @@ export class PhaseMgm implements BaseEntity {
         public id?: number,
         public name?: string,
         public description?: string,
+        public weight?: number,
     ) {
     }
 }

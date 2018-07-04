@@ -105,6 +105,18 @@ public class QuestionnaireStatusResource {
     }
 
     /**
+     * GET  /questionnaire-statuses : get all the questionnaireStatuses.
+     *
+     * @return the ResponseEntity with status 200 (OK) and the list of questionnaireStatuses in body
+     */
+    @GetMapping("/questionnaire-statuses/self-assessment/{selfAssessmentID}")
+    @Timed
+    public List<QuestionnaireStatus> getAllQuestionnaireStatusesBySelfAssessment(@PathVariable Long selfAssessmentID) {
+        log.debug("REST request to get all QuestionnaireStatuses by SelfAssessment");
+        return questionnaireStatusService.findAllBySelfAssessment(selfAssessmentID);
+    }
+
+    /**
      * GET  /questionnaire-statuses/:id : get the "id" questionnaireStatus.
      *
      * @param id the id of the questionnaireStatus to retrieve

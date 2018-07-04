@@ -37,6 +37,8 @@ describe('Phase e2e test', () => {
         expect(phaseDialogPage.getNameInput()).toMatch('name');
         phaseDialogPage.setDescriptionInput('description');
         expect(phaseDialogPage.getDescriptionInput()).toMatch('description');
+        phaseDialogPage.setWeightInput('5');
+        expect(phaseDialogPage.getWeightInput()).toMatch('5');
         phaseDialogPage.save();
         expect(phaseDialogPage.getSaveButton().isPresent()).toBeFalsy();
     });
@@ -65,6 +67,7 @@ export class PhaseDialogPage {
     closeButton = element(by.css('button.close'));
     nameInput = element(by.css('input#field_name'));
     descriptionInput = element(by.css('input#field_description'));
+    weightInput = element(by.css('input#field_weight'));
 
     getModalTitle() {
         return this.modalTitle.getAttribute('jhiTranslate');
@@ -84,6 +87,14 @@ export class PhaseDialogPage {
 
     getDescriptionInput = function() {
         return this.descriptionInput.getAttribute('value');
+    };
+
+    setWeightInput = function(weight) {
+        this.weightInput.sendKeys(weight);
+    };
+
+    getWeightInput = function() {
+        return this.weightInput.getAttribute('value');
     };
 
     save() {

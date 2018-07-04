@@ -46,6 +46,9 @@ public class PhaseResourceIntTest {
     private static final String DEFAULT_DESCRIPTION = "AAAAAAAAAA";
     private static final String UPDATED_DESCRIPTION = "BBBBBBBBBB";
 
+    private static final Float DEFAULT_WEIGHT = 1F;
+    private static final Float UPDATED_WEIGHT = 2F;
+
     @Autowired
     private PhaseRepository phaseRepository;
 
@@ -91,7 +94,8 @@ public class PhaseResourceIntTest {
     public static Phase createEntity(EntityManager em) {
         Phase phase = new Phase()
             .name(DEFAULT_NAME)
-            .description(DEFAULT_DESCRIPTION);
+            .description(DEFAULT_DESCRIPTION)
+            .weight(DEFAULT_WEIGHT);
         return phase;
     }
 
@@ -118,6 +122,7 @@ public class PhaseResourceIntTest {
         Phase testPhase = phaseList.get(phaseList.size() - 1);
         assertThat(testPhase.getName()).isEqualTo(DEFAULT_NAME);
         assertThat(testPhase.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
+        assertThat(testPhase.getWeight()).isEqualTo(DEFAULT_WEIGHT);
 
         // Validate the Phase in Elasticsearch
         Phase phaseEs = phaseSearchRepository.findOne(testPhase.getId());
@@ -163,6 +168,24 @@ public class PhaseResourceIntTest {
 
     @Test
     @Transactional
+    public void checkWeightIsRequired() throws Exception {
+        int databaseSizeBeforeTest = phaseRepository.findAll().size();
+        // set the field null
+        phase.setWeight(null);
+
+        // Create the Phase, which fails.
+
+        restPhaseMockMvc.perform(post("/api/phases")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(phase)))
+            .andExpect(status().isBadRequest());
+
+        List<Phase> phaseList = phaseRepository.findAll();
+        assertThat(phaseList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
     public void getAllPhases() throws Exception {
         // Initialize the database
         phaseRepository.saveAndFlush(phase);
@@ -173,7 +196,8 @@ public class PhaseResourceIntTest {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(phase.getId().intValue())))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
-            .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION.toString())));
+            .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION.toString())))
+            .andExpect(jsonPath("$.[*].weight").value(hasItem(DEFAULT_WEIGHT.doubleValue())));
     }
 
     @Test
@@ -188,7 +212,8 @@ public class PhaseResourceIntTest {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(phase.getId().intValue()))
             .andExpect(jsonPath("$.name").value(DEFAULT_NAME.toString()))
-            .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION.toString()));
+            .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION.toString()))
+            .andExpect(jsonPath("$.weight").value(DEFAULT_WEIGHT.doubleValue()));
     }
 
     @Test
@@ -213,7 +238,8 @@ public class PhaseResourceIntTest {
         em.detach(updatedPhase);
         updatedPhase
             .name(UPDATED_NAME)
-            .description(UPDATED_DESCRIPTION);
+            .description(UPDATED_DESCRIPTION)
+            .weight(UPDATED_WEIGHT);
 
         restPhaseMockMvc.perform(put("/api/phases")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -226,6 +252,7 @@ public class PhaseResourceIntTest {
         Phase testPhase = phaseList.get(phaseList.size() - 1);
         assertThat(testPhase.getName()).isEqualTo(UPDATED_NAME);
         assertThat(testPhase.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
+        assertThat(testPhase.getWeight()).isEqualTo(UPDATED_WEIGHT);
 
         // Validate the Phase in Elasticsearch
         Phase phaseEs = phaseSearchRepository.findOne(testPhase.getId());
@@ -284,7 +311,8 @@ public class PhaseResourceIntTest {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(phase.getId().intValue())))
             .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
-            .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION.toString())));
+            .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION.toString())))
+            .andExpect(jsonPath("$.[*].weight").value(hasItem(DEFAULT_WEIGHT.doubleValue())));
     }
 
     @Test

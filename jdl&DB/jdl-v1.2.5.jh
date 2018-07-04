@@ -113,7 +113,8 @@ entity Level{
 
 entity Phase{
     Name String required,
-    Description String
+    Description String,
+    Weight Float required
 }
 
 entity AttackStrategy{
@@ -129,11 +130,6 @@ entity AttackStrategy{
 
 enum Likelihood{
     LOW, LOW_MEDIUM, MEDIUM, MEDIUM_HIGH, HIGH
-}
-
-entity LikelihoodPosition{
-	Likelihood Likelihood,
-    Position Integer
 }
 
 enum ResourceLevel{
