@@ -1,3 +1,13 @@
 <p>
-  refinement works!
+    refinement works!
 </p>
+
+<div>
+    <button type="button" class="btn btn-dark" [routerLink]="['./questionnaires', 'SELFASSESSMENT']"
+            routerLinkActive="active">
+        <span class="fa fa-eye"></span>
+        <span class="d-none d-md-inline">Questionnaires</span>
+    </button>
+</div>
+
+<router-outlet></router-outlet>
