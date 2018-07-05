@@ -10,7 +10,7 @@ import {Observable} from "rxjs/Observable";
 @Component({
     selector: 'jhi-results-overview',
     templateUrl: './results-overview.component.html',
-    styles: []
+    styleUrls: ['../results.css']
 })
 export class ResultsOverviewComponent implements OnInit {
 
