@@ -2,6 +2,14 @@
     results-overview works!
 </p>
 
+<div *ngIf="maxRefinedVulnerability">
+    <mat-progress-spinner
+        [value]="maxRefinedVulnerability * 100">
+    </mat-progress-spinner>
+
+    Likelihood {{maxRefinedVulnerability | percent}}
+</div>
+
 <div class="table-responsive">
     <table class="table table-bordered" *ngIf="threatAgentLikelihoodsMap && threatAgentIDs">
         <thead class="thead-dark">
@@ -21,14 +29,23 @@
             </td>
 
             <td class="text-center align-middle">
+                <mat-progress-spinner
+                    [value]="threatAgentLikelihoodsMap.get(threatAgentID).initialLikelihood * 100">
+                </mat-progress-spinner>
                 {{threatAgentLikelihoodsMap.get(threatAgentID).initialLikelihood | percent}}
             </td>
 
             <td class="text-center align-middle">
+                <mat-progress-spinner
+                    [value]="threatAgentLikelihoodsMap.get(threatAgentID).contextualLikelihood * 100">
+                </mat-progress-spinner>
                 {{threatAgentLikelihoodsMap.get(threatAgentID).contextualLikelihood | percent}}
             </td>
 
             <td class="text-center align-middle">
+                <mat-progress-spinner
+                    [value]="threatAgentLikelihoodsMap.get(threatAgentID).refinedLikelihood * 100">
+                </mat-progress-spinner>
                 {{threatAgentLikelihoodsMap.get(threatAgentID).refinedLikelihood | percent}}
             </td>
         </tr>
