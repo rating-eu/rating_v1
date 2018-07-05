@@ -19,6 +19,10 @@ const routes: Routes = [
         loadChildren: './evaluate-weakness/evaluate-weakness.module#EvaluateWeaknessModule'
     },
     {
+        path: 'external-audit',
+        loadChildren: './external-audit/external-audit.module#ExternalAuditModule'
+    },
+    {
         path: 'results',
         loadChildren: './results/results.module#ResultsModule'
     }
