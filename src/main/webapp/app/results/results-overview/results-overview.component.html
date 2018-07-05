@@ -3,11 +3,12 @@
 </p>
 
 <div *ngIf="maxRefinedVulnerability">
-    <mat-progress-spinner
-        [value]="maxRefinedVulnerability * 100">
+    <mat-progress-spinner style="margin:0 auto;"
+                          class="high"
+                          [value]="maxRefinedVulnerability * 100">
     </mat-progress-spinner>
 
-    Likelihood {{maxRefinedVulnerability | percent}}
+    <span>Likelihood {{maxRefinedVulnerability | percent}}</span>
 </div>
 
 <div class="table-responsive">
@@ -30,6 +31,7 @@
 
             <td class="text-center align-middle">
                 <mat-progress-spinner
+                    style="margin:0 auto;"
                     [value]="threatAgentLikelihoodsMap.get(threatAgentID).initialLikelihood * 100">
                 </mat-progress-spinner>
                 {{threatAgentLikelihoodsMap.get(threatAgentID).initialLikelihood | percent}}
@@ -37,6 +39,7 @@
 
             <td class="text-center align-middle">
                 <mat-progress-spinner
+                    style="margin:0 auto;"
                     [value]="threatAgentLikelihoodsMap.get(threatAgentID).contextualLikelihood * 100">
                 </mat-progress-spinner>
                 {{threatAgentLikelihoodsMap.get(threatAgentID).contextualLikelihood | percent}}
@@ -44,6 +47,7 @@
 
             <td class="text-center align-middle">
                 <mat-progress-spinner
+                    style="margin:0 auto;"
                     [value]="threatAgentLikelihoodsMap.get(threatAgentID).refinedLikelihood * 100">
                 </mat-progress-spinner>
                 {{threatAgentLikelihoodsMap.get(threatAgentID).refinedLikelihood | percent}}

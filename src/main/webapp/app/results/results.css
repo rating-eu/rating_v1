@@ -1,0 +1,23 @@
+.low.mat-progress-spinner::ng-deep circle {
+    stroke: #00FF00;
+}
+
+.low-medium.mat-progress-spinner::ng-deep circle {
+    stroke: #FFFF00;
+}
+
+.medium.mat-progress-spinner::ng-deep circle {
+    stroke: #FFBB00;
+}
+
+.medium-high.mat-progress-spinner::ng-deep circle {
+    stroke: #FF7700;
+}
+
+.high.mat-progress-spinner::ng-deep circle {
+    stroke: #FF0000;
+}
+
+.disabled.mat-progress-spinner::ng-deep circle {
+    stroke: #808080;
+}
