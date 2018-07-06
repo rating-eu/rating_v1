@@ -5,7 +5,13 @@ import {RefinementComponent} from "./refinement/refinement.component";
 const routes: Routes = [
     {
         path: '',
-        component: RefinementComponent
+        component: RefinementComponent,
+        children: [
+            {
+                path: 'questionnaires/:purpose',
+                loadChildren: '../questionnaires/questionnaires.module#QuestionnairesModule'
+            }
+        ]
     }
 ];
 
