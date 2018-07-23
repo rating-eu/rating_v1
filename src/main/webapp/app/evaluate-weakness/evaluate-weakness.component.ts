@@ -34,6 +34,8 @@ import {WeaknessUtils} from './utils/weakness-utils';
     ]
 })
 export class EvaluateWeaknessComponent implements OnInit, OnDestroy {
+    debug = false;
+
     attackStrategies: AttackStrategyMgm[];
     /**
      * Map used to update the likelihoods of each AttackStrategy in time O(1).

@@ -85,6 +85,8 @@
 </table>
 
 <div>
+    <button type="button" (click)="debug = !debug">Debug {{debug}}</button>
+
     <div class="table-responsive">
         <h3>Attack Plan</h3>
 
@@ -122,7 +124,7 @@
                                 [ngClass]="augmentedAttackStrategy.cssClass"
                         >
                             {{augmentedAttackStrategy.attackStrategy.name}}
-                            <ul>
+                            <ul *ngIf="debug">
                                 <li>Enabled {{augmentedAttackStrategy.enabled}}</li>
                                 <li>Initial likelihood {{augmentedAttackStrategy.initialLikelihood}}</li>
                                 <li>Initial likelihood number {{augmentedAttackStrategy.initialLikelihoodNumber}}</li>

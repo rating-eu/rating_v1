@@ -39,6 +39,7 @@ import {AttackStrategyUpdate} from '../models/attack-strategy-update.model';
 })
 export class WeaknessResultComponent implements OnInit, OnDestroy {
     private _subscriptions: Subscription[] = [];
+    debug = false;
 
     questionnaireStatus$: Observable<HttpResponse<QuestionnaireStatusMgm>>;
     questionnaireStatus: QuestionnaireStatusMgm;
