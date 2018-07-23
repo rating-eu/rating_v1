@@ -59,5 +59,7 @@
     <include file="config/liquibase/changelog/20180530172823_added_questions_attack_strategies_data.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180531103611_added_questions_attack_strategies_join_data.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180603181922_added_questions_answers_attack_strategies_join_data.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20180723141516_added_mitigations_data.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20180723141746_attack_strategy_mitigations_data.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
 </databaseChangeLog>

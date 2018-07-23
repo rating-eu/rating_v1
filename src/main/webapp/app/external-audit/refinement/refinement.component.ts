@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {SelfAssessmentMgm, SelfAssessmentMgmService} from "../../entities/self-assessment-mgm";
+import {SelfAssessmentMgm, SelfAssessmentMgmService} from '../../entities/self-assessment-mgm';
 
 @Component({
     selector: 'jhi-refinement',
@@ -17,8 +17,5 @@ export class RefinementComponent implements OnInit {
 
     ngOnInit() {
         this.selfAssessment = this.selfAssessmentService.getSelfAssessment();
-
-
     }
-
 }

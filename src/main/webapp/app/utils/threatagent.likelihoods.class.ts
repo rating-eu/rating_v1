@@ -1,4 +1,4 @@
-import {ThreatAgentMgm} from "../entities/threat-agent-mgm";
+import {ThreatAgentMgm} from '../entities/threat-agent-mgm';
 
 export class ThreatAgentLikelihoods {
     threatAgent: ThreatAgentMgm;

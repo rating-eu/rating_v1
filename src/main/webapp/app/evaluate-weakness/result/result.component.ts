@@ -58,7 +58,6 @@ export class WeaknessResultComponent implements OnInit, OnDestroy {
     answerWeights: AnswerWeightMgm[];
     answerWeightMap: Map<number/*QuestionType*/, Map<number/*AnswerLikelihood*/, number/*AnswerWeight*/>>;
 
-
     selfAssessment$: Observable<HttpResponse<SelfAssessmentMgm>>;
     selfAssessment: SelfAssessmentMgm;
 
@@ -84,7 +83,6 @@ export class WeaknessResultComponent implements OnInit, OnDestroy {
 
     // Attack Plan Matrix
     attacksCKC7Matrix: AugmentedAttackStrategy[/*Level*/][/*Phase*/][/*AugmentedAttackStrategy*/];
-
 
     constructor(private route: ActivatedRoute,
                 private selfAssessmentService: SelfAssessmentMgmService,
