@@ -5,7 +5,7 @@ import {Result} from '../models/result.model';
 import {HttpResponse} from '@angular/common/http';
 import {ThreatAgentLikelihoods} from '../../utils/threatagent.likelihoods.class';
 import {ThreatAgentMgm} from '../../entities/threat-agent-mgm';
-import {Observable} from "rxjs/Observable";
+import {Observable} from 'rxjs/Observable';
 
 @Component({
     selector: 'jhi-results-overview',
@@ -19,7 +19,7 @@ export class ResultsOverviewComponent implements OnInit {
     threatAgentsMap: Map<number, ThreatAgentMgm>;
 
     result: Result;
-    result$: Observable<HttpResponse<Result>>
+    result$: Observable<HttpResponse<Result>>;
 
     maxLikelihood: number;
     maxLikelihood$: Observable<number>;

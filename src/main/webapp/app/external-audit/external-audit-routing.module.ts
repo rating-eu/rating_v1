@@ -1,6 +1,6 @@
 import {NgModule} from '@angular/core';
 import {Routes, RouterModule} from '@angular/router';
-import {RefinementComponent} from "./refinement/refinement.component";
+import {RefinementComponent} from './refinement/refinement.component';
 
 const routes: Routes = [
     {

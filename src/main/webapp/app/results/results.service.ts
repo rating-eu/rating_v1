@@ -1,8 +1,8 @@
 import {Injectable} from '@angular/core';
-import {SERVER_API_URL} from "../app.constants";
-import {HttpClient, HttpResponse} from "@angular/common/http";
-import {Result} from "./models/result.model";
-import {Observable} from "rxjs/Observable";
+import {SERVER_API_URL} from '../app.constants';
+import {HttpClient, HttpResponse} from '@angular/common/http';
+import {Result} from './models/result.model';
+import {Observable} from 'rxjs/Observable';
 
 export type EntityResponseType = HttpResponse<Result>;
 
