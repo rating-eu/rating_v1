@@ -40,7 +40,7 @@
                                 [ngClass]="augmentedAttackStrategy.cssClass"
                         >
                             {{augmentedAttackStrategy.attackStrategy.name}}
-                            <ul>
+                            <ul *ngIf="debug">
                                 <li>Enabled {{augmentedAttackStrategy.enabled}}</li>
                                 <li>Initial likelihood {{augmentedAttackStrategy.initialLikelihood}}</li>
                                 <li>Initial likelihood number {{augmentedAttackStrategy.initialLikelihoodNumber}}</li>
