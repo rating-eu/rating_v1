@@ -100,8 +100,8 @@ entity IndirectAsset {
 
 enum CostType{
     BEFORE_THE_ATTACK_STATUS_RESTORATION,
-    INCREASED SECURITY,
-    LEGAL/LITIGATION_COSTS_AND_ATTORNEY_FEES,
+    INCREASED_SECURITY,
+    LEGAL_LITIGATION_COSTS_AND_ATTORNEY_FEES,
     NOTIFICATION_AND_REGULATORY_COMPLIANCE_COSTS,
     LIABILITY_COSTS,
     CUSTOMER_BREACH_NOTIFICATION_COSTS,
@@ -110,7 +110,7 @@ enum CostType{
     PUBLIC_RELATIONS,
     INCREASE_OF_INSURANCE_PREMIUMS,
     LOSS_OF_REVENUES,
-    INCREASED_COST_TO_RAISE DEBT,
+    INCREASED_COST_TO_RAISE_DEBT,
     VALUE_OF_LOST_OR_NOT_FULFILLED_CONTRACT_REVENUES,
     LOST_OR_NON_FULFILLED_CONTRACTS
 }
@@ -268,17 +268,26 @@ relationship OneToMany{
     Questionnaire{questions(name)} to Question{questionnaire(name)},
     CompanyProfile{companyGroups(name)} to CompanyGroup{companyprofile(name)},
     ThreatAgent{questions} to Question{threatAgent(name)}
-    QuestionnaireStatus{answers} to MyAnswer
+    QuestionnaireStatus{answers} to MyAnswer,
+    DirectAsset{costs} to AttackCost,
+    IndirectAsset{costs} to AttackCost,
+    DirectAsset{effects} to IndirectAsset
 }
 
 relationship OneToOne{
-    MyAnswer{answer}  to Answer,
+    MyAnswer{answer} to Answer,
     MyAnswer{question} to Question{myanswer},
     MyAnswer{questionnaire} to Questionnaire{myanswer},
     MyAnswer{user} to User,
     QuestionnaireStatus{selfAssessment} to SelfAssessment,
     QuestionnaireStatus{questionnaire} to Questionnaire,
-    QuestionnaireStatus{user} to User
+    QuestionnaireStatus{user} to User,
+    Answer{asset} to Asset,
+    MyAsset{asset} to Asset,
+    MyAsset{selfAssessment} to SelfAssessment,
+    MyAsset{questionnaire} to Questionnaire,
+    DirectAsset{asset} to MyAsset,
+    IndirectAsset{asset} to MyAsset
 }
 
 relationship ManyToOne{
