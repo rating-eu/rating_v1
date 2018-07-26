@@ -87,6 +87,16 @@ entity Asset{
     Modified ZonedDateTime
 }
 
+entity MyAsset{
+	Magnitude String,
+	Ranking Integer
+}
+
+entity DirectAsset {
+}
+
+entity IndirectAsset {
+}
 entity ThreatAgent{
     Name String required,
     Description String required,
