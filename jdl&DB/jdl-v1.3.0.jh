@@ -97,6 +97,33 @@ entity DirectAsset {
 
 entity IndirectAsset {
 }
+
+enum CostType{
+    BEFORE_THE_ATTACK_STATUS_RESTORATION,
+    INCREASED SECURITY,
+    LEGAL/LITIGATION_COSTS_AND_ATTORNEY_FEES,
+    NOTIFICATION_AND_REGULATORY_COMPLIANCE_COSTS,
+    LIABILITY_COSTS,
+    CUSTOMER_BREACH_NOTIFICATION_COSTS,
+    POST_BREACH_CUSTOMER_PROTECTION_OR_CARE_COSTS,
+    LOST_CUSTOMERS_RECOVERY,
+    PUBLIC_RELATIONS,
+    INCREASE_OF_INSURANCE_PREMIUMS,
+    LOSS_OF_REVENUES,
+    INCREASED_COST_TO_RAISE DEBT,
+    VALUE_OF_LOST_OR_NOT_FULFILLED_CONTRACT_REVENUES,
+    LOST_OR_NON_FULFILLED_CONTRACTS
+}
+
+entity AttackCost {
+    Type CostType required,
+    //ImpactFactor String required,
+    Description String maxlength(2000),
+    //Term String,
+    Costs Integer,
+    //TotalCosts String
+}
+
 entity ThreatAgent{
     Name String required,
     Description String required,
