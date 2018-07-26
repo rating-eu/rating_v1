@@ -196,7 +196,9 @@ enum Status{
 }
 
 entity QuestionnaireStatus{
-    Status Status required
+    Status Status required,
+    Created ZonedDateTime,
+    Modified ZonedDateTime
 }
 
 enum QuestionType{
@@ -231,11 +233,11 @@ entity MyAnswer{
 }
 
 enum AnswerType{
-    YESNO, RANGE5, PERC5, RANGE3, PERC3, CUSTOM
+    YESNO, RANGE5, PERC5, RANGE3, PERC3, CUSTOM, ASSET
 }
 
 enum QuestionnairePurpose{
-    ID_THREAT_AGENT, SELFASSESSMENT
+    ID_THREAT_AGENT, SELFASSESSMENT, ID_ASSETS
 }
 
 entity ExternalAudit{
