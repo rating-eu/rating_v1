@@ -16,7 +16,7 @@ import java.util.Objects;
  */
 @Entity
 @Table(name = "my_answer",
-    uniqueConstraints = @UniqueConstraint(columnNames = {"question_id", "questionnaire_id", "user_id"})
+    uniqueConstraints = @UniqueConstraint(columnNames = {"questionnaire_status_id", "questionnaire_id", "question_id", "user_id", "answer_id"})
 )
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 @Document(indexName = "myanswer")
