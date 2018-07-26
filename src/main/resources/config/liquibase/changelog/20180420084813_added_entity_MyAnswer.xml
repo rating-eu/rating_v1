@@ -40,8 +40,8 @@
     </changeSet>
 
     <changeSet id="20180420084813-2" author="developer">
-        <addUniqueConstraint columnNames="question_id, questionnaire_id, user_id"
-                             constraintName="unique_questionnaire_user"
+        <addUniqueConstraint columnNames="questionnaire_status_id, questionnaire_id, question_id, user_id, answer_id"
+                             constraintName="unique_questionnaire_question_answer_per_user"
                              schemaName="public"
                              tableName="my_answer"/>
     </changeSet>
