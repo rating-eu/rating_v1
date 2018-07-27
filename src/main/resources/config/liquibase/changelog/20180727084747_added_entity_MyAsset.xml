@@ -28,6 +28,10 @@
             <column name="ranking" type="integer">
                 <constraints nullable="true" />
             </column>
+
+            <column name="estimated" type="boolean">
+                <constraints nullable="true" />
+            </column>
             <column name="asset_id" type="bigint">
                 <constraints unique="true" nullable="true" />
             </column>            <column name="self_assessment_id" type="bigint">

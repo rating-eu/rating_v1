@@ -19,6 +19,7 @@
             },
             "magnitude": "Magnitude",
             "ranking": "Ranking",
+            "estimated": "Estimated",
             "asset": "Asset",
             "selfAssessment": "Self Assessment",
             "questionnaire": "Questionnaire"

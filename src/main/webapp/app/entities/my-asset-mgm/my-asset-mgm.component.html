@@ -32,6 +32,7 @@
             <th><span jhiTranslate="global.field.id">ID</span></th>
             <th><span jhiTranslate="hermeneutApp.myAsset.magnitude">Magnitude</span></th>
             <th><span jhiTranslate="hermeneutApp.myAsset.ranking">Ranking</span></th>
+            <th><span jhiTranslate="hermeneutApp.myAsset.estimated">Estimated</span></th>
             <th><span jhiTranslate="hermeneutApp.myAsset.asset">Asset</span></th>
             <th><span jhiTranslate="hermeneutApp.myAsset.selfAssessment">Self Assessment</span></th>
             <th><span jhiTranslate="hermeneutApp.myAsset.questionnaire">Questionnaire</span></th>
@@ -43,6 +44,7 @@
                 <td><a [routerLink]="['../my-asset-mgm', myAsset.id ]">{{myAsset.id}}</a></td>
                 <td>{{myAsset.magnitude}}</td>
                 <td>{{myAsset.ranking}}</td>
+                <td>{{myAsset.estimated}}</td>
                 <td>
                     <div *ngIf="myAsset.asset">
                         <a [routerLink]="['../asset-mgm', myAsset.asset?.id ]" >{{myAsset.asset?.id}}</a>

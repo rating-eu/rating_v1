@@ -31,6 +31,9 @@ public class MyAsset implements Serializable {
     @Column(name = "ranking")
     private Integer ranking;
 
+    @Column(name = "estimated")
+    private Boolean estimated;
+
     @OneToOne
     @JoinColumn(unique = true)
     private Asset asset;
@@ -76,6 +79,19 @@ public class MyAsset implements Serializable {
 
     public void setRanking(Integer ranking) {
         this.ranking = ranking;
+    }
+
+    public Boolean isEstimated() {
+        return estimated;
+    }
+
+    public MyAsset estimated(Boolean estimated) {
+        this.estimated = estimated;
+        return this;
+    }
+
+    public void setEstimated(Boolean estimated) {
+        this.estimated = estimated;
     }
 
     public Asset getAsset() {
@@ -144,6 +160,7 @@ public class MyAsset implements Serializable {
             "id=" + getId() +
             ", magnitude='" + getMagnitude() + "'" +
             ", ranking=" + getRanking() +
+            ", estimated='" + isEstimated() + "'" +
             "}";
     }
 }

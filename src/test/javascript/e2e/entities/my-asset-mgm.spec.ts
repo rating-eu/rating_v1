@@ -37,6 +37,15 @@ describe('MyAsset e2e test', () => {
         expect(myAssetDialogPage.getMagnitudeInput()).toMatch('magnitude');
         myAssetDialogPage.setRankingInput('5');
         expect(myAssetDialogPage.getRankingInput()).toMatch('5');
+        myAssetDialogPage.getEstimatedInput().isSelected().then((selected) => {
+            if (selected) {
+                myAssetDialogPage.getEstimatedInput().click();
+                expect(myAssetDialogPage.getEstimatedInput().isSelected()).toBeFalsy();
+            } else {
+                myAssetDialogPage.getEstimatedInput().click();
+                expect(myAssetDialogPage.getEstimatedInput().isSelected()).toBeTruthy();
+            }
+        });
         myAssetDialogPage.assetSelectLastOption();
         myAssetDialogPage.selfAssessmentSelectLastOption();
         myAssetDialogPage.questionnaireSelectLastOption();
@@ -68,6 +77,7 @@ export class MyAssetDialogPage {
     closeButton = element(by.css('button.close'));
     magnitudeInput = element(by.css('input#field_magnitude'));
     rankingInput = element(by.css('input#field_ranking'));
+    estimatedInput = element(by.css('input#field_estimated'));
     assetSelect = element(by.css('select#field_asset'));
     selfAssessmentSelect = element(by.css('select#field_selfAssessment'));
     questionnaireSelect = element(by.css('select#field_questionnaire'));
@@ -92,6 +102,9 @@ export class MyAssetDialogPage {
         return this.rankingInput.getAttribute('value');
     };
 
+    getEstimatedInput = function() {
+        return this.estimatedInput;
+    };
     assetSelectLastOption = function() {
         this.assetSelect.all(by.tagName('option')).last().click();
     };
