@@ -34,6 +34,10 @@
         {
             "fieldName": "ranking",
             "fieldType": "Integer"
+        },
+        {
+            "fieldName": "estimated",
+            "fieldType": "Boolean"
         }
     ],
     "changelogDate": "20180727084747",

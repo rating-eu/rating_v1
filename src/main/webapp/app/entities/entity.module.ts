@@ -23,8 +23,6 @@ import {HermeneutMyAssetMgmModule} from './my-asset-mgm/my-asset-mgm.module';
 import {HermeneutDirectAssetMgmModule} from './direct-asset-mgm/direct-asset-mgm.module';
 import {HermeneutIndirectAssetMgmModule} from './indirect-asset-mgm/indirect-asset-mgm.module';
 import {HermeneutAttackCostMgmModule} from './attack-cost-mgm/attack-cost-mgm.module';
-
-
 /* jhipster-needle-add-entity-module-import - JHipster will add entity modules imports here */
 
 @NgModule({

@@ -5,6 +5,7 @@ export class MyAssetMgm implements BaseEntity {
         public id?: number,
         public magnitude?: string,
         public ranking?: number,
+        public estimated?: boolean,
         public asset?: BaseEntity,
         public selfAssessment?: BaseEntity,
         public questionnaire?: BaseEntity,
