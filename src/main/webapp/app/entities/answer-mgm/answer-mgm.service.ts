@@ -1,55 +1,53 @@
-import {Injectable} from '@angular/core';
-import {HttpClient, HttpResponse} from '@angular/common/http';
-import {Observable} from 'rxjs/Observable';
-import {SERVER_API_URL} from '../../app.constants';
+import { Injectable } from '@angular/core';
+import { HttpClient, HttpResponse } from '@angular/common/http';
+import { Observable } from 'rxjs/Observable';
+import { SERVER_API_URL } from '../../app.constants';
 
-import {JhiDateUtils} from 'ng-jhipster';
+import { JhiDateUtils } from 'ng-jhipster';
 
-import {AnswerMgm} from './answer-mgm.model';
-import {createRequestOption} from '../../shared';
-import {QuestionMgm} from '../question-mgm';
+import { AnswerMgm } from './answer-mgm.model';
+import { createRequestOption } from '../../shared';
 
 export type EntityResponseType = HttpResponse<AnswerMgm>;
 
 @Injectable()
 export class AnswerMgmService {
 
-    private resourceUrl = SERVER_API_URL + 'api/answers';
+    private resourceUrl =  SERVER_API_URL + 'api/answers';
     private resourceSearchUrl = SERVER_API_URL + 'api/_search/answers';
 
-    constructor(private http: HttpClient, private dateUtils: JhiDateUtils) {
-    }
+    constructor(private http: HttpClient, private dateUtils: JhiDateUtils) { }
 
     create(answer: AnswerMgm): Observable<EntityResponseType> {
         const copy = this.convert(answer);
-        return this.http.post<AnswerMgm>(this.resourceUrl, copy, {observe: 'response'})
+        return this.http.post<AnswerMgm>(this.resourceUrl, copy, { observe: 'response' })
             .map((res: EntityResponseType) => this.convertResponse(res));
     }
 
     update(answer: AnswerMgm): Observable<EntityResponseType> {
         const copy = this.convert(answer);
-        return this.http.put<AnswerMgm>(this.resourceUrl, copy, {observe: 'response'})
+        return this.http.put<AnswerMgm>(this.resourceUrl, copy, { observe: 'response' })
             .map((res: EntityResponseType) => this.convertResponse(res));
     }
 
     find(id: number): Observable<EntityResponseType> {
-        return this.http.get<AnswerMgm>(`${this.resourceUrl}/${id}`, {observe: 'response'})
+        return this.http.get<AnswerMgm>(`${this.resourceUrl}/${id}`, { observe: 'response'})
             .map((res: EntityResponseType) => this.convertResponse(res));
     }
 
     query(req?: any): Observable<HttpResponse<AnswerMgm[]>> {
         const options = createRequestOption(req);
-        return this.http.get<AnswerMgm[]>(this.resourceUrl, {params: options, observe: 'response'})
+        return this.http.get<AnswerMgm[]>(this.resourceUrl, { params: options, observe: 'response' })
             .map((res: HttpResponse<AnswerMgm[]>) => this.convertArrayResponse(res));
     }
 
     delete(id: number): Observable<HttpResponse<any>> {
-        return this.http.delete<any>(`${this.resourceUrl}/${id}`, {observe: 'response'});
+        return this.http.delete<any>(`${this.resourceUrl}/${id}`, { observe: 'response'});
     }
 
     search(req?: any): Observable<HttpResponse<AnswerMgm[]>> {
         const options = createRequestOption(req);
-        return this.http.get<AnswerMgm[]>(this.resourceSearchUrl, {params: options, observe: 'response'})
+        return this.http.get<AnswerMgm[]>(this.resourceSearchUrl, { params: options, observe: 'response' })
             .map((res: HttpResponse<AnswerMgm[]>) => this.convertArrayResponse(res));
     }
 

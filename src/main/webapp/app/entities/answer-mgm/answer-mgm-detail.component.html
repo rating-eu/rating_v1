@@ -24,6 +24,12 @@
         <dd>
             <span jhiTranslate="{{'hermeneutApp.Likelihood.' + answer.likelihood}}">{{answer.likelihood}}</span>
         </dd>
+        <dt><span jhiTranslate="hermeneutApp.answer.asset">Asset</span></dt>
+        <dd>
+            <div *ngIf="answer.asset">
+                <a [routerLink]="['/asset-mgm', answer.asset?.id]">{{answer.asset?.id}}</a>
+            </div>
+        </dd>
     </dl>
 
     <button type="submit"

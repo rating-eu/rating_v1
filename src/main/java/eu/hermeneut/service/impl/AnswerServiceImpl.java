@@ -1,6 +1,5 @@
 package eu.hermeneut.service.impl;
 
-import eu.hermeneut.domain.Question;
 import eu.hermeneut.service.AnswerService;
 import eu.hermeneut.domain.Answer;
 import eu.hermeneut.repository.AnswerRepository;
