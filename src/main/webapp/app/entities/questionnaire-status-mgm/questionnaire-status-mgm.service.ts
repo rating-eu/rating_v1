@@ -3,6 +3,8 @@ import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import { SERVER_API_URL } from '../../app.constants';
 
+import { JhiDateUtils } from 'ng-jhipster';
+
 import { QuestionnaireStatusMgm } from './questionnaire-status-mgm.model';
 import { createRequestOption } from '../../shared';
 
@@ -14,7 +16,7 @@ export class QuestionnaireStatusMgmService {
     private resourceUrl =  SERVER_API_URL + 'api/questionnaire-statuses';
     private resourceSearchUrl = SERVER_API_URL + 'api/_search/questionnaire-statuses';
 
-    constructor(private http: HttpClient) { }
+    constructor(private http: HttpClient, private dateUtils: JhiDateUtils) { }
 
     create(questionnaireStatus: QuestionnaireStatusMgm): Observable<EntityResponseType> {
         const copy = this.convert(questionnaireStatus);
@@ -68,6 +70,10 @@ export class QuestionnaireStatusMgmService {
      */
     private convertItemFromServer(questionnaireStatus: QuestionnaireStatusMgm): QuestionnaireStatusMgm {
         const copy: QuestionnaireStatusMgm = Object.assign({}, questionnaireStatus);
+        copy.created = this.dateUtils
+            .convertDateTimeFromServer(questionnaireStatus.created);
+        copy.modified = this.dateUtils
+            .convertDateTimeFromServer(questionnaireStatus.modified);
         return copy;
     }
 
@@ -76,6 +82,10 @@ export class QuestionnaireStatusMgmService {
      */
     private convert(questionnaireStatus: QuestionnaireStatusMgm): QuestionnaireStatusMgm {
         const copy: QuestionnaireStatusMgm = Object.assign({}, questionnaireStatus);
+
+        copy.created = this.dateUtils.toDate(questionnaireStatus.created);
+
+        copy.modified = this.dateUtils.toDate(questionnaireStatus.modified);
         return copy;
     }
 }

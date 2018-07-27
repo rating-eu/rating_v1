@@ -31,6 +31,8 @@
             <tr>
             <th><span jhiTranslate="global.field.id">ID</span></th>
             <th><span jhiTranslate="hermeneutApp.questionnaireStatus.status">Status</span></th>
+            <th><span jhiTranslate="hermeneutApp.questionnaireStatus.created">Created</span></th>
+            <th><span jhiTranslate="hermeneutApp.questionnaireStatus.modified">Modified</span></th>
             <th><span jhiTranslate="hermeneutApp.questionnaireStatus.selfAssessment">Self Assessment</span></th>
             <th><span jhiTranslate="hermeneutApp.questionnaireStatus.questionnaire">Questionnaire</span></th>
             <th><span jhiTranslate="hermeneutApp.questionnaireStatus.user">User</span></th>
@@ -41,6 +43,8 @@
             <tr *ngFor="let questionnaireStatus of questionnaireStatuses ;trackBy: trackId">
                 <td><a [routerLink]="['../questionnaire-status-mgm', questionnaireStatus.id ]">{{questionnaireStatus.id}}</a></td>
                 <td jhiTranslate="{{'hermeneutApp.Status.' + questionnaireStatus.status}}">{{questionnaireStatus.status}}</td>
+                <td>{{questionnaireStatus.created | date:'medium'}}</td>
+                <td>{{questionnaireStatus.modified | date:'medium'}}</td>
                 <td>
                     <div *ngIf="questionnaireStatus.selfAssessment">
                         <a [routerLink]="['../self-assessment-mgm', questionnaireStatus.selfAssessment?.id ]" >{{questionnaireStatus.selfAssessment?.id}}</a>

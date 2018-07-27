@@ -18,6 +18,8 @@
                 "title": "Questionnaire Status"
             },
             "status": "Status",
+            "created": "Created",
+            "modified": "Modified",
             "selfAssessment": "Self Assessment",
             "questionnaire": "Questionnaire",
             "user": "User",

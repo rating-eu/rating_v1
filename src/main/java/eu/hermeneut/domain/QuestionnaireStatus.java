@@ -8,8 +8,8 @@ import javax.persistence.*;
 import javax.validation.constraints.*;
 
 import org.springframework.data.elasticsearch.annotations.Document;
-
 import java.io.Serializable;
+import java.time.ZonedDateTime;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.Objects;
@@ -20,10 +20,7 @@ import eu.hermeneut.domain.enumeration.Status;
  * A QuestionnaireStatus.
  */
 @Entity
-@Table(
-    name = "questionnaire_status",
-    uniqueConstraints = @UniqueConstraint(columnNames = {"self_assessment_id", "questionnaire_id", "user_id"})
-)
+@Table(name = "questionnaire_status")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 @Document(indexName = "questionnairestatus")
 public class QuestionnaireStatus implements Serializable {
@@ -40,16 +37,22 @@ public class QuestionnaireStatus implements Serializable {
     @Column(name = "status", nullable = false)
     private Status status;
 
+    @Column(name = "created")
+    private ZonedDateTime created;
+
+    @Column(name = "modified")
+    private ZonedDateTime modified;
+
     @OneToOne
-    @JoinColumn(name = "self_assessment_id")
+    @JoinColumn(unique = true)
     private SelfAssessment selfAssessment;
 
     @OneToOne
-    @JoinColumn(name = "questionnaire_id")
+    @JoinColumn(unique = true)
     private Questionnaire questionnaire;
 
     @OneToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(unique = true)
     private User user;
 
     @OneToMany(mappedBy = "questionnaireStatus")
@@ -77,6 +80,32 @@ public class QuestionnaireStatus implements Serializable {
 
     public void setStatus(Status status) {
         this.status = status;
+    }
+
+    public ZonedDateTime getCreated() {
+        return created;
+    }
+
+    public QuestionnaireStatus created(ZonedDateTime created) {
+        this.created = created;
+        return this;
+    }
+
+    public void setCreated(ZonedDateTime created) {
+        this.created = created;
+    }
+
+    public ZonedDateTime getModified() {
+        return modified;
+    }
+
+    public QuestionnaireStatus modified(ZonedDateTime modified) {
+        this.modified = modified;
+        return this;
+    }
+
+    public void setModified(ZonedDateTime modified) {
+        this.modified = modified;
     }
 
     public SelfAssessment getSelfAssessment() {
@@ -169,6 +198,8 @@ public class QuestionnaireStatus implements Serializable {
         return "QuestionnaireStatus{" +
             "id=" + getId() +
             ", status='" + getStatus() + "'" +
+            ", created='" + getCreated() + "'" +
+            ", modified='" + getModified() + "'" +
             "}";
     }
 }

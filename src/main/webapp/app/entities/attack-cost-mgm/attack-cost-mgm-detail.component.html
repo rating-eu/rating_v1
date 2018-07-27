@@ -1,0 +1,46 @@
+
+<div *ngIf="attackCost">
+    <h2><span jhiTranslate="hermeneutApp.attackCost.detail.title">Attack Cost</span> {{attackCost.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="hermeneutApp.attackCost.type">Type</span></dt>
+        <dd>
+            <span jhiTranslate="{{'hermeneutApp.CostType.' + attackCost.type}}">{{attackCost.type}}</span>
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.attackCost.description">Description</span></dt>
+        <dd>
+            <span>{{attackCost.description}}</span>
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.attackCost.costs">Costs</span></dt>
+        <dd>
+            <span>{{attackCost.costs}}</span>
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.attackCost.directAsset">Direct Asset</span></dt>
+        <dd>
+            <div *ngIf="attackCost.directAsset">
+                <a [routerLink]="['/direct-asset-mgm', attackCost.directAsset?.id]">{{attackCost.directAsset?.id}}</a>
+            </div>
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.attackCost.indirectAsset">Indirect Asset</span></dt>
+        <dd>
+            <div *ngIf="attackCost.indirectAsset">
+                <a [routerLink]="['/indirect-asset-mgm', attackCost.indirectAsset?.id]">{{attackCost.indirectAsset?.id}}</a>
+            </div>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'attack-cost-mgm/'+ attackCost.id + '/edit'} }]"
+            replaceUrl="true"
+            queryParamsHandling="merge"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+    </button>
+</div>

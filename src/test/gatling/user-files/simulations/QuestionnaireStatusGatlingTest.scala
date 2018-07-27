@@ -68,7 +68,7 @@ class QuestionnaireStatusGatlingTest extends Simulation {
             .exec(http("Create new questionnaireStatus")
             .post("/api/questionnaire-statuses")
             .headers(headers_http_authenticated)
-            .body(StringBody("""{"id":null, "status":null}""")).asJSON
+            .body(StringBody("""{"id":null, "status":null, "created":"2020-01-01T00:00:00.000Z", "modified":"2020-01-01T00:00:00.000Z"}""")).asJSON
             .check(status.is(201))
             .check(headerRegex("Location", "(.*)").saveAs("new_questionnaireStatus_url"))).exitHereIfFailed
             .pause(10)

@@ -1,0 +1,80 @@
+<form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+
+    <div class="modal-header">
+        <h4 class="modal-title" id="myAttackCostLabel" jhiTranslate="hermeneutApp.attackCost.home.createOrEditLabel">Create or edit a Attack Cost</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                (click)="clear()">&times;</button>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group" [hidden]="!attackCost.id">
+            <label for="id" jhiTranslate="global.field.id">ID</label>
+            <input type="text" class="form-control" id="id" name="id"
+                   [(ngModel)]="attackCost.id" readonly />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="hermeneutApp.attackCost.type" for="field_type">Type</label>
+            <select class="form-control" name="type" [(ngModel)]="attackCost.type" id="field_type"  required>
+                <option value="BEFORE_THE_ATTACK_STATUS_RESTORATION">{{'hermeneutApp.CostType.BEFORE_THE_ATTACK_STATUS_RESTORATION' | translate}}</option>
+                <option value="INCREASED_SECURITY">{{'hermeneutApp.CostType.INCREASED_SECURITY' | translate}}</option>
+                <option value="LEGAL_LITIGATION_COSTS_AND_ATTORNEY_FEES">{{'hermeneutApp.CostType.LEGAL_LITIGATION_COSTS_AND_ATTORNEY_FEES' | translate}}</option>
+                <option value="NOTIFICATION_AND_REGULATORY_COMPLIANCE_COSTS">{{'hermeneutApp.CostType.NOTIFICATION_AND_REGULATORY_COMPLIANCE_COSTS' | translate}}</option>
+                <option value="LIABILITY_COSTS">{{'hermeneutApp.CostType.LIABILITY_COSTS' | translate}}</option>
+                <option value="CUSTOMER_BREACH_NOTIFICATION_COSTS">{{'hermeneutApp.CostType.CUSTOMER_BREACH_NOTIFICATION_COSTS' | translate}}</option>
+                <option value="POST_BREACH_CUSTOMER_PROTECTION_OR_CARE_COSTS">{{'hermeneutApp.CostType.POST_BREACH_CUSTOMER_PROTECTION_OR_CARE_COSTS' | translate}}</option>
+                <option value="LOST_CUSTOMERS_RECOVERY">{{'hermeneutApp.CostType.LOST_CUSTOMERS_RECOVERY' | translate}}</option>
+                <option value="PUBLIC_RELATIONS">{{'hermeneutApp.CostType.PUBLIC_RELATIONS' | translate}}</option>
+                <option value="INCREASE_OF_INSURANCE_PREMIUMS">{{'hermeneutApp.CostType.INCREASE_OF_INSURANCE_PREMIUMS' | translate}}</option>
+                <option value="LOSS_OF_REVENUES">{{'hermeneutApp.CostType.LOSS_OF_REVENUES' | translate}}</option>
+                <option value="INCREASED_COST_TO_RAISE_DEBT">{{'hermeneutApp.CostType.INCREASED_COST_TO_RAISE_DEBT' | translate}}</option>
+                <option value="VALUE_OF_LOST_OR_NOT_FULFILLED_CONTRACT_REVENUES">{{'hermeneutApp.CostType.VALUE_OF_LOST_OR_NOT_FULFILLED_CONTRACT_REVENUES' | translate}}</option>
+                <option value="LOST_OR_NON_FULFILLED_CONTRACTS">{{'hermeneutApp.CostType.LOST_OR_NON_FULFILLED_CONTRACTS' | translate}}</option>
+            </select>
+            <div [hidden]="!(editForm.controls.type?.dirty && editForm.controls.type?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.type?.errors?.required" jhiTranslate="entity.validation.required">
+                   This field is required.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="hermeneutApp.attackCost.description" for="field_description">Description</label>
+            <input type="text" class="form-control" name="description" id="field_description"
+                [(ngModel)]="attackCost.description" maxlength="2000"/>
+            <div [hidden]="!(editForm.controls.description?.dirty && editForm.controls.description?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.description?.errors?.maxlength" jhiTranslate="entity.validation.maxlength" translateValues="{ max: 2000 }">
+                   This field cannot be longer than 2000 characters.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="hermeneutApp.attackCost.costs" for="field_costs">Costs</label>
+            <input type="number" class="form-control" name="costs" id="field_costs"
+                [(ngModel)]="attackCost.costs" />
+        </div>
+
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="hermeneutApp.attackCost.directAsset" for="field_directAsset">Direct Asset</label>
+            <select class="form-control" id="field_directAsset" name="directAsset" [(ngModel)]="attackCost.directAsset" >
+                <option [ngValue]="null"></option>
+                <option [ngValue]="directAssetOption.id === attackCost.directAsset?.id ? attackCost.directAsset : directAssetOption" *ngFor="let directAssetOption of directassets; trackBy: trackDirectAssetById">{{directAssetOption.id}}</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="hermeneutApp.attackCost.indirectAsset" for="field_indirectAsset">Indirect Asset</label>
+            <select class="form-control" id="field_indirectAsset" name="indirectAsset" [(ngModel)]="attackCost.indirectAsset" >
+                <option [ngValue]="null"></option>
+                <option [ngValue]="indirectAssetOption.id === attackCost.indirectAsset?.id ? attackCost.indirectAsset : indirectAssetOption" *ngFor="let indirectAssetOption of indirectassets; trackBy: trackIndirectAssetById">{{indirectAssetOption.id}}</option>
+            </select>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">
+            <span class="fa fa-ban"></span>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+        <button type="submit" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+            <span class="fa fa-save"></span>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+    </div>
+</form>

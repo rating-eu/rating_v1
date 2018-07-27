@@ -23,8 +23,13 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import java.time.Instant;
+import java.time.ZonedDateTime;
+import java.time.ZoneOffset;
+import java.time.ZoneId;
 import java.util.List;
 
+import static eu.hermeneut.web.rest.TestUtil.sameInstant;
 import static eu.hermeneut.web.rest.TestUtil.createFormattingConversionService;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
@@ -43,6 +48,12 @@ public class QuestionnaireStatusResourceIntTest {
 
     private static final Status DEFAULT_STATUS = Status.EMPTY;
     private static final Status UPDATED_STATUS = Status.PENDING;
+
+    private static final ZonedDateTime DEFAULT_CREATED = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
+    private static final ZonedDateTime UPDATED_CREATED = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
+
+    private static final ZonedDateTime DEFAULT_MODIFIED = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
+    private static final ZonedDateTime UPDATED_MODIFIED = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
 
     @Autowired
     private QuestionnaireStatusRepository questionnaireStatusRepository;
@@ -88,7 +99,9 @@ public class QuestionnaireStatusResourceIntTest {
      */
     public static QuestionnaireStatus createEntity(EntityManager em) {
         QuestionnaireStatus questionnaireStatus = new QuestionnaireStatus()
-            .status(DEFAULT_STATUS);
+            .status(DEFAULT_STATUS)
+            .created(DEFAULT_CREATED)
+            .modified(DEFAULT_MODIFIED);
         return questionnaireStatus;
     }
 
@@ -114,10 +127,14 @@ public class QuestionnaireStatusResourceIntTest {
         assertThat(questionnaireStatusList).hasSize(databaseSizeBeforeCreate + 1);
         QuestionnaireStatus testQuestionnaireStatus = questionnaireStatusList.get(questionnaireStatusList.size() - 1);
         assertThat(testQuestionnaireStatus.getStatus()).isEqualTo(DEFAULT_STATUS);
+        assertThat(testQuestionnaireStatus.getCreated()).isEqualTo(DEFAULT_CREATED);
+        assertThat(testQuestionnaireStatus.getModified()).isEqualTo(DEFAULT_MODIFIED);
 
         // Validate the QuestionnaireStatus in Elasticsearch
         QuestionnaireStatus questionnaireStatusEs = questionnaireStatusSearchRepository.findOne(testQuestionnaireStatus.getId());
-        assertThat(questionnaireStatusEs).isEqualToIgnoringGivenFields(testQuestionnaireStatus);
+        assertThat(testQuestionnaireStatus.getCreated()).isEqualTo(testQuestionnaireStatus.getCreated());
+        assertThat(testQuestionnaireStatus.getModified()).isEqualTo(testQuestionnaireStatus.getModified());
+        assertThat(questionnaireStatusEs).isEqualToIgnoringGivenFields(testQuestionnaireStatus, "created", "modified");
     }
 
     @Test
@@ -168,7 +185,9 @@ public class QuestionnaireStatusResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(questionnaireStatus.getId().intValue())))
-            .andExpect(jsonPath("$.[*].status").value(hasItem(DEFAULT_STATUS.toString())));
+            .andExpect(jsonPath("$.[*].status").value(hasItem(DEFAULT_STATUS.toString())))
+            .andExpect(jsonPath("$.[*].created").value(hasItem(sameInstant(DEFAULT_CREATED))))
+            .andExpect(jsonPath("$.[*].modified").value(hasItem(sameInstant(DEFAULT_MODIFIED))));
     }
 
     @Test
@@ -182,7 +201,9 @@ public class QuestionnaireStatusResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(questionnaireStatus.getId().intValue()))
-            .andExpect(jsonPath("$.status").value(DEFAULT_STATUS.toString()));
+            .andExpect(jsonPath("$.status").value(DEFAULT_STATUS.toString()))
+            .andExpect(jsonPath("$.created").value(sameInstant(DEFAULT_CREATED)))
+            .andExpect(jsonPath("$.modified").value(sameInstant(DEFAULT_MODIFIED)));
     }
 
     @Test
@@ -206,7 +227,9 @@ public class QuestionnaireStatusResourceIntTest {
         // Disconnect from session so that the updates on updatedQuestionnaireStatus are not directly saved in db
         em.detach(updatedQuestionnaireStatus);
         updatedQuestionnaireStatus
-            .status(UPDATED_STATUS);
+            .status(UPDATED_STATUS)
+            .created(UPDATED_CREATED)
+            .modified(UPDATED_MODIFIED);
 
         restQuestionnaireStatusMockMvc.perform(put("/api/questionnaire-statuses")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -218,10 +241,14 @@ public class QuestionnaireStatusResourceIntTest {
         assertThat(questionnaireStatusList).hasSize(databaseSizeBeforeUpdate);
         QuestionnaireStatus testQuestionnaireStatus = questionnaireStatusList.get(questionnaireStatusList.size() - 1);
         assertThat(testQuestionnaireStatus.getStatus()).isEqualTo(UPDATED_STATUS);
+        assertThat(testQuestionnaireStatus.getCreated()).isEqualTo(UPDATED_CREATED);
+        assertThat(testQuestionnaireStatus.getModified()).isEqualTo(UPDATED_MODIFIED);
 
         // Validate the QuestionnaireStatus in Elasticsearch
         QuestionnaireStatus questionnaireStatusEs = questionnaireStatusSearchRepository.findOne(testQuestionnaireStatus.getId());
-        assertThat(questionnaireStatusEs).isEqualToIgnoringGivenFields(testQuestionnaireStatus);
+        assertThat(testQuestionnaireStatus.getCreated()).isEqualTo(testQuestionnaireStatus.getCreated());
+        assertThat(testQuestionnaireStatus.getModified()).isEqualTo(testQuestionnaireStatus.getModified());
+        assertThat(questionnaireStatusEs).isEqualToIgnoringGivenFields(testQuestionnaireStatus, "created", "modified");
     }
 
     @Test
@@ -275,7 +302,9 @@ public class QuestionnaireStatusResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(questionnaireStatus.getId().intValue())))
-            .andExpect(jsonPath("$.[*].status").value(hasItem(DEFAULT_STATUS.toString())));
+            .andExpect(jsonPath("$.[*].status").value(hasItem(DEFAULT_STATUS.toString())))
+            .andExpect(jsonPath("$.[*].created").value(hasItem(sameInstant(DEFAULT_CREATED))))
+            .andExpect(jsonPath("$.[*].modified").value(hasItem(sameInstant(DEFAULT_MODIFIED))));
     }
 
     @Test

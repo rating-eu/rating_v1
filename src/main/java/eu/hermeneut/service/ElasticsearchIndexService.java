@@ -55,6 +55,10 @@ public class ElasticsearchIndexService {
 
     private final AssetCategorySearchRepository assetCategorySearchRepository;
 
+    private final AttackCostRepository attackCostRepository;
+
+    private final AttackCostSearchRepository attackCostSearchRepository;
+
     private final AttackStrategyRepository attackStrategyRepository;
 
     private final AttackStrategySearchRepository attackStrategySearchRepository;
@@ -71,6 +75,10 @@ public class ElasticsearchIndexService {
 
     private final ContainerSearchRepository containerSearchRepository;
 
+    private final DirectAssetRepository directAssetRepository;
+
+    private final DirectAssetSearchRepository directAssetSearchRepository;
+
     private final DomainOfInfluenceRepository domainOfInfluenceRepository;
 
     private final DomainOfInfluenceSearchRepository domainOfInfluenceSearchRepository;
@@ -78,6 +86,10 @@ public class ElasticsearchIndexService {
     private final ExternalAuditRepository externalAuditRepository;
 
     private final ExternalAuditSearchRepository externalAuditSearchRepository;
+
+    private final IndirectAssetRepository indirectAssetRepository;
+
+    private final IndirectAssetSearchRepository indirectAssetSearchRepository;
 
     private final LevelRepository levelRepository;
 
@@ -94,6 +106,10 @@ public class ElasticsearchIndexService {
     private final MyAnswerRepository myAnswerRepository;
 
     private final MyAnswerSearchRepository myAnswerSearchRepository;
+
+    private final MyAssetRepository myAssetRepository;
+
+    private final MyAssetSearchRepository myAssetSearchRepository;
 
     private final PhaseRepository phaseRepository;
 
@@ -136,6 +152,8 @@ public class ElasticsearchIndexService {
         AssetSearchRepository assetSearchRepository,
         AssetCategoryRepository assetCategoryRepository,
         AssetCategorySearchRepository assetCategorySearchRepository,
+        AttackCostRepository attackCostRepository,
+        AttackCostSearchRepository attackCostSearchRepository,
         AttackStrategyRepository attackStrategyRepository,
         AttackStrategySearchRepository attackStrategySearchRepository,
         CompanyGroupRepository companyGroupRepository,
@@ -144,10 +162,14 @@ public class ElasticsearchIndexService {
         CompanyProfileSearchRepository companyProfileSearchRepository,
         ContainerRepository containerRepository,
         ContainerSearchRepository containerSearchRepository,
+        DirectAssetRepository directAssetRepository,
+        DirectAssetSearchRepository directAssetSearchRepository,
         DomainOfInfluenceRepository domainOfInfluenceRepository,
         DomainOfInfluenceSearchRepository domainOfInfluenceSearchRepository,
         ExternalAuditRepository externalAuditRepository,
         ExternalAuditSearchRepository externalAuditSearchRepository,
+        IndirectAssetRepository indirectAssetRepository,
+        IndirectAssetSearchRepository indirectAssetSearchRepository,
         LevelRepository levelRepository,
         LevelSearchRepository levelSearchRepository,
         MitigationRepository mitigationRepository,
@@ -156,6 +178,8 @@ public class ElasticsearchIndexService {
         MotivationSearchRepository motivationSearchRepository,
         MyAnswerRepository myAnswerRepository,
         MyAnswerSearchRepository myAnswerSearchRepository,
+        MyAssetRepository myAssetRepository,
+        MyAssetSearchRepository myAssetSearchRepository,
         PhaseRepository phaseRepository,
         PhaseSearchRepository phaseSearchRepository,
         QuestionRepository questionRepository,
@@ -179,6 +203,8 @@ public class ElasticsearchIndexService {
         this.assetSearchRepository = assetSearchRepository;
         this.assetCategoryRepository = assetCategoryRepository;
         this.assetCategorySearchRepository = assetCategorySearchRepository;
+        this.attackCostRepository = attackCostRepository;
+        this.attackCostSearchRepository = attackCostSearchRepository;
         this.attackStrategyRepository = attackStrategyRepository;
         this.attackStrategySearchRepository = attackStrategySearchRepository;
         this.companyGroupRepository = companyGroupRepository;
@@ -187,10 +213,14 @@ public class ElasticsearchIndexService {
         this.companyProfileSearchRepository = companyProfileSearchRepository;
         this.containerRepository = containerRepository;
         this.containerSearchRepository = containerSearchRepository;
+        this.directAssetRepository = directAssetRepository;
+        this.directAssetSearchRepository = directAssetSearchRepository;
         this.domainOfInfluenceRepository = domainOfInfluenceRepository;
         this.domainOfInfluenceSearchRepository = domainOfInfluenceSearchRepository;
         this.externalAuditRepository = externalAuditRepository;
         this.externalAuditSearchRepository = externalAuditSearchRepository;
+        this.indirectAssetRepository = indirectAssetRepository;
+        this.indirectAssetSearchRepository = indirectAssetSearchRepository;
         this.levelRepository = levelRepository;
         this.levelSearchRepository = levelSearchRepository;
         this.mitigationRepository = mitigationRepository;
@@ -199,6 +229,8 @@ public class ElasticsearchIndexService {
         this.motivationSearchRepository = motivationSearchRepository;
         this.myAnswerRepository = myAnswerRepository;
         this.myAnswerSearchRepository = myAnswerSearchRepository;
+        this.myAssetRepository = myAssetRepository;
+        this.myAssetSearchRepository = myAssetSearchRepository;
         this.phaseRepository = phaseRepository;
         this.phaseSearchRepository = phaseSearchRepository;
         this.questionRepository = questionRepository;
@@ -223,16 +255,20 @@ public class ElasticsearchIndexService {
                 reindexForClass(AnswerWeight.class, answerWeightRepository, answerWeightSearchRepository);
                 reindexForClass(Asset.class, assetRepository, assetSearchRepository);
                 reindexForClass(AssetCategory.class, assetCategoryRepository, assetCategorySearchRepository);
+                reindexForClass(AttackCost.class, attackCostRepository, attackCostSearchRepository);
                 reindexForClass(AttackStrategy.class, attackStrategyRepository, attackStrategySearchRepository);
                 reindexForClass(CompanyGroup.class, companyGroupRepository, companyGroupSearchRepository);
                 reindexForClass(CompanyProfile.class, companyProfileRepository, companyProfileSearchRepository);
                 reindexForClass(Container.class, containerRepository, containerSearchRepository);
+                reindexForClass(DirectAsset.class, directAssetRepository, directAssetSearchRepository);
                 reindexForClass(DomainOfInfluence.class, domainOfInfluenceRepository, domainOfInfluenceSearchRepository);
                 reindexForClass(ExternalAudit.class, externalAuditRepository, externalAuditSearchRepository);
+                reindexForClass(IndirectAsset.class, indirectAssetRepository, indirectAssetSearchRepository);
                 reindexForClass(Level.class, levelRepository, levelSearchRepository);
                 reindexForClass(Mitigation.class, mitigationRepository, mitigationSearchRepository);
                 reindexForClass(Motivation.class, motivationRepository, motivationSearchRepository);
                 reindexForClass(MyAnswer.class, myAnswerRepository, myAnswerSearchRepository);
+                reindexForClass(MyAsset.class, myAssetRepository, myAssetSearchRepository);
                 reindexForClass(Phase.class, phaseRepository, phaseSearchRepository);
                 reindexForClass(Question.class, questionRepository, questionSearchRepository);
                 reindexForClass(Questionnaire.class, questionnaireRepository, questionnaireSearchRepository);

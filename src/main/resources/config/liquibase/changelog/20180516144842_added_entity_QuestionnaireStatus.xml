@@ -22,24 +22,28 @@
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="status" type="varchar(255)">
-                <constraints nullable="false"/>
+                <constraints nullable="false" />
+            </column>
+
+            <column name="created" type="timestamp">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="modified" type="timestamp">
+                <constraints nullable="true" />
             </column>
             <column name="self_assessment_id" type="bigint">
-                <constraints unique="false" nullable="true"/>
-            </column>
-            <column name="questionnaire_id" type="bigint">
-                <constraints unique="false" nullable="true"/>
-            </column>
-            <column name="user_id" type="bigint">
-                <constraints unique="false" nullable="true"/>
+                <constraints unique="false" nullable="true" />
+            </column>            <column name="questionnaire_id" type="bigint">
+                <constraints unique="false" nullable="true" />
+            </column>            <column name="user_id" type="bigint">
+                <constraints unique="false" nullable="true" />
             </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
+        <dropDefaultValue tableName="questionnaire_status" columnName="created" columnDataType="datetime"/>
+        <dropDefaultValue tableName="questionnaire_status" columnName="modified" columnDataType="datetime"/>
 
-        <addUniqueConstraint columnNames="self_assessment_id, questionnaire_id, user_id"
-                             constraintName="unique_questionnaire_per_user_per_self_assessment"
-                             schemaName="public"
-                             tableName="questionnaire_status"/>
     </changeSet>
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here, do not remove-->
 </databaseChangeLog>

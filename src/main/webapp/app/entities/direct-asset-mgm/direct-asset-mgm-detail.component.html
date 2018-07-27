@@ -1,0 +1,28 @@
+
+<div *ngIf="directAsset">
+    <h2><span jhiTranslate="hermeneutApp.directAsset.detail.title">Direct Asset</span> {{directAsset.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="hermeneutApp.directAsset.asset">Asset</span></dt>
+        <dd>
+            <div *ngIf="directAsset.asset">
+                <a [routerLink]="['/my-asset-mgm', directAsset.asset?.id]">{{directAsset.asset?.id}}</a>
+            </div>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'direct-asset-mgm/'+ directAsset.id + '/edit'} }]"
+            replaceUrl="true"
+            queryParamsHandling="merge"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+    </button>
+</div>

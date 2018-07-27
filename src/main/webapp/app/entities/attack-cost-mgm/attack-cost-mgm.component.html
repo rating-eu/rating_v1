@@ -1,0 +1,87 @@
+<div>
+    <h2>
+        <span jhiTranslate="hermeneutApp.attackCost.home.title">Attack Costs</span>
+        <button class="btn btn-primary float-right jh-create-entity create-attack-cost-mgm" [routerLink]="['/', { outlets: { popup: ['attack-cost-mgm-new'] } }]">
+            <span class="fa fa-plus"></span>
+            <span class="hidden-sm-down"  jhiTranslate="hermeneutApp.attackCost.home.createLabel">
+            Create new Attack Cost
+            </span>
+        </button>
+    </h2>
+    <jhi-alert></jhi-alert>
+    <div class="row">
+        <div class="col-sm-12">
+            <form name="searchForm" class="form-inline">
+                <div class="input-group w-100 mt-3">
+                    <input type="text" class="form-control" [(ngModel)]="currentSearch" id="currentSearch" name="currentSearch" placeholder="{{ 'hermeneutApp.attackCost.home.search' | translate }}">
+                    <button class="input-group-append btn btn-info" (click)="search(currentSearch)">
+                        <span class="fa fa-search"></span>
+                    </button>
+                    <button class="input-group-append btn btn-danger" (click)="clear()" *ngIf="currentSearch">
+                        <span class="fa fa-trash-o"></span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <br/>
+    <div class="table-responsive" *ngIf="attackCosts">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+            <th><span jhiTranslate="global.field.id">ID</span></th>
+            <th><span jhiTranslate="hermeneutApp.attackCost.type">Type</span></th>
+            <th><span jhiTranslate="hermeneutApp.attackCost.description">Description</span></th>
+            <th><span jhiTranslate="hermeneutApp.attackCost.costs">Costs</span></th>
+            <th><span jhiTranslate="hermeneutApp.attackCost.directAsset">Direct Asset</span></th>
+            <th><span jhiTranslate="hermeneutApp.attackCost.indirectAsset">Indirect Asset</span></th>
+            <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let attackCost of attackCosts ;trackBy: trackId">
+                <td><a [routerLink]="['../attack-cost-mgm', attackCost.id ]">{{attackCost.id}}</a></td>
+                <td jhiTranslate="{{'hermeneutApp.CostType.' + attackCost.type}}">{{attackCost.type}}</td>
+                <td>{{attackCost.description}}</td>
+                <td>{{attackCost.costs}}</td>
+                <td>
+                    <div *ngIf="attackCost.directAsset">
+                        <a [routerLink]="['../direct-asset-mgm', attackCost.directAsset?.id ]" >{{attackCost.directAsset?.id}}</a>
+                    </div>
+                </td>
+                <td>
+                    <div *ngIf="attackCost.indirectAsset">
+                        <a [routerLink]="['../indirect-asset-mgm', attackCost.indirectAsset?.id ]" >{{attackCost.indirectAsset?.id}}</a>
+                    </div>
+                </td>
+                <td class="text-right">
+                    <div class="btn-group flex-btn-group-container">
+                        <button type="submit"
+                                [routerLink]="['../attack-cost-mgm', attackCost.id ]"
+                                class="btn btn-info btn-sm">
+                            <span class="fa fa-eye"></span>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'attack-cost-mgm/'+ attackCost.id + '/edit'} }]"
+                                replaceUrl="true"
+                                queryParamsHandling="merge"
+                                class="btn btn-primary btn-sm">
+                            <span class="fa fa-pencil"></span>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'attack-cost-mgm/'+ attackCost.id + '/delete'} }]"
+                                replaceUrl="true"
+                                queryParamsHandling="merge"
+                                class="btn btn-danger btn-sm">
+                            <span class="fa fa-remove"></span>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
