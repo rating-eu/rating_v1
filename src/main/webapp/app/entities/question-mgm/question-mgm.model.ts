@@ -7,7 +7,6 @@ import {AnswerType} from '../enumerations/AnswerType.enum';
 import {QuestionnaireMgm} from '../questionnaire-mgm';
 import {ThreatAgentMgm} from '../threat-agent-mgm';
 
-
 export class QuestionMgm implements BaseEntity {
     constructor(
         public id?: number,

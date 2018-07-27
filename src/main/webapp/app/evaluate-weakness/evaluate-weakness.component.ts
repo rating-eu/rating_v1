@@ -99,7 +99,7 @@ export class EvaluateWeaknessComponent implements OnInit, OnDestroy {
 
                             this.attackStrategies.forEach((attackStrategy: AttackStrategyMgm) => {
                                 const augmentedAttackStrategy: AugmentedAttackStrategy = new AugmentedAttackStrategy(attackStrategy);
-                                augmentedAttackStrategy.initialLikelihood = WeaknessUtils.attackStrategyInitialLikelihood(attackStrategy,);
+                                augmentedAttackStrategy.initialLikelihood = WeaknessUtils.attackStrategyInitialLikelihood(attackStrategy);
 
                                 this.augmentedAttackStrategiesMap.set(attackStrategy.id, augmentedAttackStrategy);
                             });

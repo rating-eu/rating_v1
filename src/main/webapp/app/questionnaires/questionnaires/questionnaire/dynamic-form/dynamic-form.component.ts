@@ -310,7 +310,7 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
         console.log('DYNAMIC FORM Shared ThreatAgent Percentage Map size: ', +this.dataSharingSerivce.threatAgentsMap.size);
 
         // #1 Persist QuestionnaireStatus
-        let questionnaireStatus: QuestionnaireStatusMgm = new QuestionnaireStatusMgm(undefined, Status.FULL, this.selfAssessment, this.questionnaire, this.user, []);
+        let questionnaireStatus: QuestionnaireStatusMgm = new QuestionnaireStatusMgm(undefined, Status.FULL, this.selfAssessment, this.questionnaire, this.user, this.questionnaire);
         const questionnaireStatus$: Observable<HttpResponse<QuestionnaireStatusMgm>> = this.questionnaireStatusService.create(questionnaireStatus);
 
         // #2 Persist MyAnswers
@@ -408,7 +408,7 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
         console.log('FormDataMap size: ' + formDataMap.size);
 
         // Update the status of the questionnaire
-        let questionnaireStatus = new QuestionnaireStatusMgm(undefined, Status.FULL, this.selfAssessment, this.questionnaire, this.user, []);
+        let questionnaireStatus = new QuestionnaireStatusMgm(undefined, Status.FULL, this.selfAssessment, this.questionnaire, this.user, this.questionnaire);
 
         // Persist the QuestionnaireStatus
         const selfAssessment$: Observable<HttpResponse<SelfAssessmentMgm>> =
@@ -464,7 +464,7 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
                  * The PENDING status for the questionnaire.
                  * @type {QuestionnaireStatusMgm}
                  */
-                this._questionnaireStatus = new QuestionnaireStatusMgm(undefined, Status.PENDING, this.selfAssessment, this._questionnaire, this.user, []);
+                this._questionnaireStatus = new QuestionnaireStatusMgm(undefined, Status.PENDING, this.selfAssessment, this._questionnaire, this.user, this.questionnaire);
 
                 // Getting the id of the above QuestionnaireStatus
                 this.subscriptions.push(
