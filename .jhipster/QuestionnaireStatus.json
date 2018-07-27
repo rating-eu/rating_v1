@@ -5,7 +5,7 @@
             "relationshipType": "one-to-one",
             "relationshipName": "selfAssessment",
             "otherEntityName": "selfAssessment",
-            "otherEntityField": "id",
+            "otherEntityField": "name",
             "ownerSide": true,
             "otherEntityRelationshipName": "questionnaireStatus"
         },
@@ -13,7 +13,7 @@
             "relationshipType": "one-to-one",
             "relationshipName": "questionnaire",
             "otherEntityName": "questionnaire",
-            "otherEntityField": "id",
+            "otherEntityField": "name",
             "ownerSide": true,
             "otherEntityRelationshipName": "questionnaireStatus"
         },
@@ -21,7 +21,7 @@
             "relationshipType": "one-to-one",
             "relationshipName": "user",
             "otherEntityName": "user",
-            "otherEntityField": "id",
+            "otherEntityField": "login",
             "ownerSide": true,
             "otherEntityRelationshipName": "questionnaireStatus"
         },
