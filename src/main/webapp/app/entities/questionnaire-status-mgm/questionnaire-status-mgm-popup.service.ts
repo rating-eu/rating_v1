@@ -2,6 +2,7 @@ import { Injectable, Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { HttpResponse } from '@angular/common/http';
+import { DatePipe } from '@angular/common';
 import { QuestionnaireStatusMgm } from './questionnaire-status-mgm.model';
 import { QuestionnaireStatusMgmService } from './questionnaire-status-mgm.service';
 
@@ -10,6 +11,7 @@ export class QuestionnaireStatusMgmPopupService {
     private ngbModalRef: NgbModalRef;
 
     constructor(
+        private datePipe: DatePipe,
         private modalService: NgbModal,
         private router: Router,
         private questionnaireStatusService: QuestionnaireStatusMgmService
@@ -29,6 +31,10 @@ export class QuestionnaireStatusMgmPopupService {
                 this.questionnaireStatusService.find(id)
                     .subscribe((questionnaireStatusResponse: HttpResponse<QuestionnaireStatusMgm>) => {
                         const questionnaireStatus: QuestionnaireStatusMgm = questionnaireStatusResponse.body;
+                        questionnaireStatus.created = this.datePipe
+                            .transform(questionnaireStatus.created, 'yyyy-MM-ddTHH:mm:ss');
+                        questionnaireStatus.modified = this.datePipe
+                            .transform(questionnaireStatus.modified, 'yyyy-MM-ddTHH:mm:ss');
                         this.ngbModalRef = this.questionnaireStatusModalRef(component, questionnaireStatus);
                         resolve(this.ngbModalRef);
                     });

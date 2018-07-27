@@ -34,6 +34,10 @@ describe('QuestionnaireStatus e2e test', () => {
     it('should create and save QuestionnaireStatuses', () => {
         questionnaireStatusComponentsPage.clickOnCreateButton();
         questionnaireStatusDialogPage.statusSelectLastOption();
+        questionnaireStatusDialogPage.setCreatedInput(12310020012301);
+        expect(questionnaireStatusDialogPage.getCreatedInput()).toMatch('2001-12-31T02:30');
+        questionnaireStatusDialogPage.setModifiedInput(12310020012301);
+        expect(questionnaireStatusDialogPage.getModifiedInput()).toMatch('2001-12-31T02:30');
         questionnaireStatusDialogPage.selfAssessmentSelectLastOption();
         questionnaireStatusDialogPage.questionnaireSelectLastOption();
         questionnaireStatusDialogPage.userSelectLastOption();
@@ -64,6 +68,8 @@ export class QuestionnaireStatusDialogPage {
     saveButton = element(by.css('.modal-footer .btn.btn-primary'));
     closeButton = element(by.css('button.close'));
     statusSelect = element(by.css('select#field_status'));
+    createdInput = element(by.css('input#field_created'));
+    modifiedInput = element(by.css('input#field_modified'));
     selfAssessmentSelect = element(by.css('select#field_selfAssessment'));
     questionnaireSelect = element(by.css('select#field_questionnaire'));
     userSelect = element(by.css('select#field_user'));
@@ -83,6 +89,22 @@ export class QuestionnaireStatusDialogPage {
     statusSelectLastOption = function() {
         this.statusSelect.all(by.tagName('option')).last().click();
     };
+    setCreatedInput = function(created) {
+        this.createdInput.sendKeys(created);
+    };
+
+    getCreatedInput = function() {
+        return this.createdInput.getAttribute('value');
+    };
+
+    setModifiedInput = function(modified) {
+        this.modifiedInput.sendKeys(modified);
+    };
+
+    getModifiedInput = function() {
+        return this.modifiedInput.getAttribute('value');
+    };
+
     selfAssessmentSelectLastOption = function() {
         this.selfAssessmentSelect.all(by.tagName('option')).last().click();
     };

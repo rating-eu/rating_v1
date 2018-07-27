@@ -22,6 +22,7 @@
             "modified": "Modified",
             "order": "Order",
             "likelihood": "Likelihood",
+            "asset": "Asset",
             "question": "Question"
         }
     }

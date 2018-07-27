@@ -68,7 +68,7 @@
         {
             "fieldName": "answerType",
             "fieldType": "AnswerType",
-            "fieldValues": "YESNO,RANGE5,PERC5,RANGE3,PERC3,CUSTOM",
+            "fieldValues": "YESNO,RANGE5,PERC5,RANGE3,PERC3,CUSTOM,ASSET",
             "fieldValidateRules": [
                 "required"
             ]

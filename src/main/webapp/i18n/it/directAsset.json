@@ -1,0 +1,25 @@
+
+{
+    "hermeneutApp": {
+        "directAsset" : {
+            "home": {
+                "title": "DirectAssets",
+                "createLabel": "Genera un nuovo Direct Asset",
+                "createOrEditLabel": "Genera o modifica un Direct Asset",
+                "search": "Cerca Direct Asset"
+            },
+            "created": "&Egrave; stato generato un nuovo Direct Asset con identificatore {{ param }}",
+            "updated": "&Egrave; stato aggiornato Direct Asset identificato da {{ param }}",
+            "deleted": "&Egrave; stato eliminato Direct Asset con identificatore {{ param }}",
+            "delete": {
+                "question": "Sei sicuro di volere eliminare Direct Asset {{ id }}?"
+            },
+            "detail": {
+                "title": "Direct Asset"
+            },
+            "asset": "Asset",
+            "costs": "Costs",
+            "effects": "Effects"
+        }
+    }
+}

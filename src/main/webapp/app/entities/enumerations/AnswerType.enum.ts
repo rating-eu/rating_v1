@@ -4,5 +4,6 @@ export const enum AnswerType {
     'PERC5',
     'RANGE3',
     'PERC3',
-    'CUSTOM'
+    'CUSTOM',
+    'ASSET'
 }

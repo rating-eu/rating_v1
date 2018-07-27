@@ -87,6 +87,43 @@ entity Asset{
     Modified ZonedDateTime
 }
 
+entity MyAsset{
+	Magnitude String,
+	Ranking Integer
+}
+
+entity DirectAsset {
+}
+
+entity IndirectAsset {
+}
+
+enum CostType{
+    BEFORE_THE_ATTACK_STATUS_RESTORATION,
+    INCREASED_SECURITY,
+    LEGAL_LITIGATION_COSTS_AND_ATTORNEY_FEES,
+    NOTIFICATION_AND_REGULATORY_COMPLIANCE_COSTS,
+    LIABILITY_COSTS,
+    CUSTOMER_BREACH_NOTIFICATION_COSTS,
+    POST_BREACH_CUSTOMER_PROTECTION_OR_CARE_COSTS,
+    LOST_CUSTOMERS_RECOVERY,
+    PUBLIC_RELATIONS,
+    INCREASE_OF_INSURANCE_PREMIUMS,
+    LOSS_OF_REVENUES,
+    INCREASED_COST_TO_RAISE_DEBT,
+    VALUE_OF_LOST_OR_NOT_FULFILLED_CONTRACT_REVENUES,
+    LOST_OR_NON_FULFILLED_CONTRACTS
+}
+
+entity AttackCost {
+    Type CostType required,
+    //ImpactFactor String required,
+    Description String maxlength(2000),
+    //Term String,
+    Costs Integer,
+    //TotalCosts String
+}
+
 entity ThreatAgent{
     Name String required,
     Description String required,
@@ -159,7 +196,9 @@ enum Status{
 }
 
 entity QuestionnaireStatus{
-    Status Status required
+    Status Status required,
+    Created ZonedDateTime,
+    Modified ZonedDateTime
 }
 
 enum QuestionType{
@@ -194,11 +233,11 @@ entity MyAnswer{
 }
 
 enum AnswerType{
-    YESNO, RANGE5, PERC5, RANGE3, PERC3, CUSTOM
+    YESNO, RANGE5, PERC5, RANGE3, PERC3, CUSTOM, ASSET
 }
 
 enum QuestionnairePurpose{
-    ID_THREAT_AGENT, SELFASSESSMENT
+    ID_THREAT_AGENT, SELFASSESSMENT, ID_ASSETS
 }
 
 entity ExternalAudit{
@@ -229,17 +268,26 @@ relationship OneToMany{
     Questionnaire{questions(name)} to Question{questionnaire(name)},
     CompanyProfile{companyGroups(name)} to CompanyGroup{companyprofile(name)},
     ThreatAgent{questions} to Question{threatAgent(name)}
-    QuestionnaireStatus{answers} to MyAnswer
+    QuestionnaireStatus{answers} to MyAnswer,
+    DirectAsset{costs} to AttackCost,
+    IndirectAsset{costs} to AttackCost,
+    DirectAsset{effects} to IndirectAsset
 }
 
 relationship OneToOne{
-    MyAnswer{answer}  to Answer,
+    MyAnswer{answer} to Answer,
     MyAnswer{question} to Question{myanswer},
     MyAnswer{questionnaire} to Questionnaire{myanswer},
     MyAnswer{user} to User,
     QuestionnaireStatus{selfAssessment} to SelfAssessment,
     QuestionnaireStatus{questionnaire} to Questionnaire,
-    QuestionnaireStatus{user} to User
+    QuestionnaireStatus{user} to User,
+    Answer{asset} to Asset,
+    MyAsset{asset} to Asset,
+    MyAsset{selfAssessment} to SelfAssessment,
+    MyAsset{questionnaire} to Questionnaire,
+    DirectAsset{asset} to MyAsset,
+    IndirectAsset{asset} to MyAsset
 }
 
 relationship ManyToOne{

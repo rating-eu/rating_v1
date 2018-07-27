@@ -126,7 +126,7 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
         if (this.questionnaireStatusesMap.has(questionnaire.id)) {
             this.dataSharingService.questionnaireStatus = this.questionnaireStatusesMap.get(questionnaire.id);
         } else {
-            const emptyQStatus: QuestionnaireStatusMgm = new QuestionnaireStatusMgm(undefined, Status.EMPTY, this.selfAssessment, questionnaire, this.user, []);
+            const emptyQStatus: QuestionnaireStatusMgm = new QuestionnaireStatusMgm(undefined, Status.EMPTY, this.selfAssessment, questionnaire, this.user, questionnaire);
             this.dataSharingService.questionnaireStatus = emptyQStatus;
         }
     }

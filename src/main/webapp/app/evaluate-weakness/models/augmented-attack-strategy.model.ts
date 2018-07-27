@@ -39,7 +39,7 @@ export class AugmentedAttackStrategy extends AttackStrategyMgm {
          * be performed by the selected ThreatAgent.
          * @type {boolean}
          */
-        public enabled: boolean = false,
+        public enabled = false,
         /**
          * The initialLikelihood of the AttackStrategy.
          * It is calculated as the AttackStrategy's Frequency over Resources ratio.

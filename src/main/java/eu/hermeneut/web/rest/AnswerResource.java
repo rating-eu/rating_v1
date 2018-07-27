@@ -2,15 +2,12 @@ package eu.hermeneut.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import eu.hermeneut.domain.Answer;
-import eu.hermeneut.domain.Question;
 import eu.hermeneut.service.AnswerService;
-import eu.hermeneut.service.QuestionService;
 import eu.hermeneut.web.rest.errors.BadRequestAlertException;
 import eu.hermeneut.web.rest.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,9 +32,6 @@ public class AnswerResource {
     private static final String ENTITY_NAME = "answer";
 
     private final AnswerService answerService;
-
-    @Autowired
-    private QuestionService questionService;
 
     public AnswerResource(AnswerService answerService) {
         this.answerService = answerService;
@@ -138,4 +132,5 @@ public class AnswerResource {
         log.debug("REST request to search Answers for query {}", query);
         return answerService.search(query);
     }
+
 }

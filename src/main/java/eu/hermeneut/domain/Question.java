@@ -57,9 +57,6 @@ public class Question implements Serializable {
     @Column(name = "answer_type", nullable = false)
     private AnswerType answerType;
 
-    @ManyToOne
-    private ThreatAgent threatAgent;
-
     @ManyToMany
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     @JoinTable(name = "question_attack_strategies",
@@ -80,6 +77,9 @@ public class Question implements Serializable {
 
     @ManyToOne
     private Questionnaire questionnaire;
+
+    @ManyToOne
+    private ThreatAgent threatAgent;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -168,19 +168,6 @@ public class Question implements Serializable {
         this.answerType = answerType;
     }
 
-    public ThreatAgent getThreatAgent() {
-        return threatAgent;
-    }
-
-    public Question threatAgent(ThreatAgent threatAgent) {
-        this.threatAgent = threatAgent;
-        return this;
-    }
-
-    public void setThreatAgent(ThreatAgent threatAgent) {
-        this.threatAgent = threatAgent;
-    }
-
     public Set<AttackStrategy> getAttackStrategies() {
         return attackStrategies;
     }
@@ -255,6 +242,19 @@ public class Question implements Serializable {
 
     public void setQuestionnaire(Questionnaire questionnaire) {
         this.questionnaire = questionnaire;
+    }
+
+    public ThreatAgent getThreatAgent() {
+        return threatAgent;
+    }
+
+    public Question threatAgent(ThreatAgent threatAgent) {
+        this.threatAgent = threatAgent;
+        return this;
+    }
+
+    public void setThreatAgent(ThreatAgent threatAgent) {
+        this.threatAgent = threatAgent;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 

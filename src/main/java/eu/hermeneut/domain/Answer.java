@@ -47,6 +47,10 @@ public class Answer implements Serializable {
     @Column(name = "likelihood")
     private AnswerLikelihood likelihood;
 
+    @OneToOne
+    @JoinColumn(unique = true)
+    private Asset asset;
+
     @ManyToMany(mappedBy = "answers")
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
@@ -113,6 +117,10 @@ public class Answer implements Serializable {
         this.order = order;
     }
 
+    public void setLikelihood(AnswerLikelihood attackStrategyLikelihood) {
+        this.likelihood = attackStrategyLikelihood;
+    }
+
     public AnswerLikelihood getLikelihood() {
         return likelihood;
     }
@@ -122,8 +130,17 @@ public class Answer implements Serializable {
         return this;
     }
 
-    public void setLikelihood(AnswerLikelihood attackStrategyLikelihood) {
-        this.likelihood = attackStrategyLikelihood;
+    public Asset getAsset() {
+        return asset;
+    }
+
+    public Answer asset(Asset asset) {
+        this.asset = asset;
+        return this;
+    }
+
+    public void setAsset(Asset asset) {
+        this.asset = asset;
     }
 
     public Set<Question> getQuestions() {

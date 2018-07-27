@@ -9,6 +9,7 @@ import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
 import { AnswerMgm } from './answer-mgm.model';
 import { AnswerMgmPopupService } from './answer-mgm-popup.service';
 import { AnswerMgmService } from './answer-mgm.service';
+import { AssetMgm, AssetMgmService } from '../asset-mgm';
 import { QuestionMgm, QuestionMgmService } from '../question-mgm';
 
 @Component({
@@ -20,12 +21,15 @@ export class AnswerMgmDialogComponent implements OnInit {
     answer: AnswerMgm;
     isSaving: boolean;
 
+    assets: AssetMgm[];
+
     questions: QuestionMgm[];
 
     constructor(
         public activeModal: NgbActiveModal,
         private jhiAlertService: JhiAlertService,
         private answerService: AnswerMgmService,
+        private assetService: AssetMgmService,
         private questionService: QuestionMgmService,
         private eventManager: JhiEventManager
     ) {
@@ -33,6 +37,19 @@ export class AnswerMgmDialogComponent implements OnInit {
 
     ngOnInit() {
         this.isSaving = false;
+        this.assetService
+            .query({filter: 'answer-is-null'})
+            .subscribe((res: HttpResponse<AssetMgm[]>) => {
+                if (!this.answer.asset || !this.answer.asset.id) {
+                    this.assets = res.body;
+                } else {
+                    this.assetService
+                        .find(this.answer.asset.id)
+                        .subscribe((subRes: HttpResponse<AssetMgm>) => {
+                            this.assets = [subRes.body].concat(res.body);
+                        }, (subRes: HttpErrorResponse) => this.onError(subRes.message));
+                }
+            }, (res: HttpErrorResponse) => this.onError(res.message));
         this.questionService.query()
             .subscribe((res: HttpResponse<QuestionMgm[]>) => { this.questions = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
     }
@@ -69,6 +86,10 @@ export class AnswerMgmDialogComponent implements OnInit {
 
     private onError(error: any) {
         this.jhiAlertService.error(error.message, null, null);
+    }
+
+    trackAssetById(index: number, item: AssetMgm) {
+        return item.id;
     }
 
     trackQuestionById(index: number, item: QuestionMgm) {
