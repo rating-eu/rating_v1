@@ -23,11 +23,11 @@
             "order": "Order",
             "questionType": "Question Type",
             "answerType": "Answer Type",
-            "threatAgent": "Threat Agent",
             "attackStrategies": "Attack Strategies",
             "answers": "Answers",
             "myanswer": "Myanswer",
-            "questionnaire": "Questionnaire"
+            "questionnaire": "Questionnaire",
+            "threatAgent": "Threat Agent"
         }
     }
 }
