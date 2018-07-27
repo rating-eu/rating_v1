@@ -89,7 +89,8 @@ entity Asset{
 
 entity MyAsset{
 	Magnitude String,
-	Ranking Integer
+	Ranking Integer,
+    Estimated Boolean
 }
 
 entity DirectAsset {
