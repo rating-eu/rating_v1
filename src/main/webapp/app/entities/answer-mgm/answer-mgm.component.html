@@ -49,7 +49,7 @@
                 <td jhiTranslate="{{'hermeneutApp.Likelihood.' + answer.likelihood}}">{{answer.likelihood}}</td>
                 <td>
                     <div *ngIf="answer.asset">
-                        <a [routerLink]="['../asset-mgm', answer.asset?.id ]" >{{answer.asset?.id}}</a>
+                        <a [routerLink]="['../asset-mgm', answer.asset?.id ]" >{{answer.asset?.name}}</a>
                     </div>
                 </td>
                 <td class="text-right">

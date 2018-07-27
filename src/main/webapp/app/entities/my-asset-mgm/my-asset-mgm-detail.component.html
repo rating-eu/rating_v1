@@ -19,19 +19,19 @@
         <dt><span jhiTranslate="hermeneutApp.myAsset.asset">Asset</span></dt>
         <dd>
             <div *ngIf="myAsset.asset">
-                <a [routerLink]="['/asset-mgm', myAsset.asset?.id]">{{myAsset.asset?.id}}</a>
+                <a [routerLink]="['/asset-mgm', myAsset.asset?.id]">{{myAsset.asset?.name}}</a>
             </div>
         </dd>
         <dt><span jhiTranslate="hermeneutApp.myAsset.selfAssessment">Self Assessment</span></dt>
         <dd>
             <div *ngIf="myAsset.selfAssessment">
-                <a [routerLink]="['/self-assessment-mgm', myAsset.selfAssessment?.id]">{{myAsset.selfAssessment?.id}}</a>
+                <a [routerLink]="['/self-assessment-mgm', myAsset.selfAssessment?.id]">{{myAsset.selfAssessment?.name}}</a>
             </div>
         </dd>
         <dt><span jhiTranslate="hermeneutApp.myAsset.questionnaire">Questionnaire</span></dt>
         <dd>
             <div *ngIf="myAsset.questionnaire">
-                <a [routerLink]="['/questionnaire-mgm', myAsset.questionnaire?.id]">{{myAsset.questionnaire?.id}}</a>
+                <a [routerLink]="['/questionnaire-mgm', myAsset.questionnaire?.id]">{{myAsset.questionnaire?.name}}</a>
             </div>
         </dd>
     </dl>

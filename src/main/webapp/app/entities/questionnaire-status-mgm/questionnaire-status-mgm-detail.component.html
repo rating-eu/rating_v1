@@ -19,18 +19,18 @@
         <dt><span jhiTranslate="hermeneutApp.questionnaireStatus.selfAssessment">Self Assessment</span></dt>
         <dd>
             <div *ngIf="questionnaireStatus.selfAssessment">
-                <a [routerLink]="['/self-assessment-mgm', questionnaireStatus.selfAssessment?.id]">{{questionnaireStatus.selfAssessment?.id}}</a>
+                <a [routerLink]="['/self-assessment-mgm', questionnaireStatus.selfAssessment?.id]">{{questionnaireStatus.selfAssessment?.name}}</a>
             </div>
         </dd>
         <dt><span jhiTranslate="hermeneutApp.questionnaireStatus.questionnaire">Questionnaire</span></dt>
         <dd>
             <div *ngIf="questionnaireStatus.questionnaire">
-                <a [routerLink]="['/questionnaire-mgm', questionnaireStatus.questionnaire?.id]">{{questionnaireStatus.questionnaire?.id}}</a>
+                <a [routerLink]="['/questionnaire-mgm', questionnaireStatus.questionnaire?.id]">{{questionnaireStatus.questionnaire?.name}}</a>
             </div>
         </dd>
         <dt><span jhiTranslate="hermeneutApp.questionnaireStatus.user">User</span></dt>
         <dd>
-            {{questionnaireStatus.user?.id}}
+            {{questionnaireStatus.user?.login}}
         </dd>
     </dl>
 

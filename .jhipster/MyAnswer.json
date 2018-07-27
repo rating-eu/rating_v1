@@ -11,7 +11,7 @@
             "relationshipType": "one-to-one",
             "relationshipName": "answer",
             "otherEntityName": "answer",
-            "otherEntityField": "id",
+            "otherEntityField": "name",
             "ownerSide": true,
             "otherEntityRelationshipName": "myAnswer"
         },
@@ -19,7 +19,7 @@
             "relationshipType": "one-to-one",
             "relationshipName": "question",
             "otherEntityName": "question",
-            "otherEntityField": "id",
+            "otherEntityField": "name",
             "ownerSide": true,
             "otherEntityRelationshipName": "myanswer"
         },
@@ -27,7 +27,7 @@
             "relationshipType": "one-to-one",
             "relationshipName": "questionnaire",
             "otherEntityName": "questionnaire",
-            "otherEntityField": "id",
+            "otherEntityField": "name",
             "ownerSide": true,
             "otherEntityRelationshipName": "myanswer"
         },
@@ -35,7 +35,7 @@
             "relationshipType": "one-to-one",
             "relationshipName": "user",
             "otherEntityName": "user",
-            "otherEntityField": "id",
+            "otherEntityField": "login",
             "ownerSide": true,
             "otherEntityRelationshipName": "myAnswer"
         }

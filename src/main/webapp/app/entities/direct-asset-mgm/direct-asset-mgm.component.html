@@ -39,7 +39,7 @@
                 <td><a [routerLink]="['../direct-asset-mgm', directAsset.id ]">{{directAsset.id}}</a></td>
                 <td>
                     <div *ngIf="directAsset.asset">
-                        <a [routerLink]="['../my-asset-mgm', directAsset.asset?.id ]" >{{directAsset.asset?.id}}</a>
+                        <a [routerLink]="['../my-asset-mgm', directAsset.asset?.id ]" >{{directAsset.asset?.name}}</a>
                     </div>
                 </td>
                 <td class="text-right">

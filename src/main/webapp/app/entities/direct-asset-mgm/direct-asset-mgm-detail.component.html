@@ -7,7 +7,7 @@
         <dt><span jhiTranslate="hermeneutApp.directAsset.asset">Asset</span></dt>
         <dd>
             <div *ngIf="directAsset.asset">
-                <a [routerLink]="['/my-asset-mgm', directAsset.asset?.id]">{{directAsset.asset?.id}}</a>
+                <a [routerLink]="['/my-asset-mgm', directAsset.asset?.id]">{{directAsset.asset?.name}}</a>
             </div>
         </dd>
     </dl>

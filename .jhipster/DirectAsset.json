@@ -5,7 +5,7 @@
             "relationshipType": "one-to-one",
             "relationshipName": "asset",
             "otherEntityName": "myAsset",
-            "otherEntityField": "id",
+            "otherEntityField": "name",
             "ownerSide": true,
             "otherEntityRelationshipName": "directAsset"
         },

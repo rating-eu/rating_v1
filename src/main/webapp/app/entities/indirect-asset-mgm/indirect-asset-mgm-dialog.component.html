@@ -24,7 +24,7 @@
             <label class="form-control-label" jhiTranslate="hermeneutApp.indirectAsset.asset" for="field_asset">Asset</label>
             <select class="form-control" id="field_asset" name="asset" [(ngModel)]="indirectAsset.asset">
                 <option [ngValue]="null"></option>
-                <option [ngValue]="myAssetOption.id === indirectAsset.asset?.id ? indirectAsset.asset : myAssetOption" *ngFor="let myAssetOption of assets; trackBy: trackMyAssetById">{{myAssetOption.id}}</option>
+                <option [ngValue]="myAssetOption.id === indirectAsset.asset?.id ? indirectAsset.asset : myAssetOption" *ngFor="let myAssetOption of assets; trackBy: trackMyAssetById">{{myAssetOption.name}}</option>
             </select>
         </div>
     </div>
