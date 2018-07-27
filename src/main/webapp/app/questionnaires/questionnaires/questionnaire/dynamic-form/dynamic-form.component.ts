@@ -310,7 +310,7 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
         console.log('DYNAMIC FORM Shared ThreatAgent Percentage Map size: ', +this.dataSharingSerivce.threatAgentsMap.size);
 
         // #1 Persist QuestionnaireStatus
-        let questionnaireStatus: QuestionnaireStatusMgm = new QuestionnaireStatusMgm(undefined, Status.FULL, this.selfAssessment, this.questionnaire, this.user, this.questionnaire);
+        let questionnaireStatus: QuestionnaireStatusMgm = new QuestionnaireStatusMgm(undefined, Status.FULL, null, null, this.selfAssessment, this.questionnaire, this.user, []);
         const questionnaireStatus$: Observable<HttpResponse<QuestionnaireStatusMgm>> = this.questionnaireStatusService.create(questionnaireStatus);
 
         // #2 Persist MyAnswers
