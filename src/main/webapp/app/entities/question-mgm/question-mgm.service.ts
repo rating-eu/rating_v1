@@ -1,47 +1,46 @@
-import {Injectable} from '@angular/core';
-import {HttpClient, HttpResponse} from '@angular/common/http';
-import {Observable} from 'rxjs/Observable';
-import {SERVER_API_URL} from '../../app.constants';
+import { Injectable } from '@angular/core';
+import { HttpClient, HttpResponse } from '@angular/common/http';
+import { Observable } from 'rxjs/Observable';
+import { SERVER_API_URL } from '../../app.constants';
 
-import {JhiDateUtils} from 'ng-jhipster';
+import { JhiDateUtils } from 'ng-jhipster';
 
-import {QuestionMgm} from './question-mgm.model';
-import {createRequestOption} from '../../shared';
 import {QuestionnaireMgm} from '../questionnaire-mgm';
 import {MyAnswerMgm} from '../my-answer-mgm/my-answer-mgm.model';
+import { QuestionMgm } from './question-mgm.model';
+import { createRequestOption } from '../../shared';
 
 export type EntityResponseType = HttpResponse<QuestionMgm>;
 
 @Injectable()
 export class QuestionMgmService {
 
-    private resourceUrl = SERVER_API_URL + 'api/questions';
+    private resourceUrl =  SERVER_API_URL + 'api/questions';
     private resourceSearchUrl = SERVER_API_URL + 'api/_search/questions';
     private questionsByQuestionnaireIDAPIUrl = SERVER_API_URL + 'api/questions/by/questionnaire/{questionnaireID}';
 
-    constructor(private http: HttpClient, private dateUtils: JhiDateUtils) {
-    }
+    constructor(private http: HttpClient, private dateUtils: JhiDateUtils) { }
 
     create(question: QuestionMgm): Observable<EntityResponseType> {
         const copy = this.convert(question);
-        return this.http.post<QuestionMgm>(this.resourceUrl, copy, {observe: 'response'})
+        return this.http.post<QuestionMgm>(this.resourceUrl, copy, { observe: 'response' })
             .map((res: EntityResponseType) => this.convertResponse(res));
     }
 
     update(question: QuestionMgm): Observable<EntityResponseType> {
         const copy = this.convert(question);
-        return this.http.put<QuestionMgm>(this.resourceUrl, copy, {observe: 'response'})
+        return this.http.put<QuestionMgm>(this.resourceUrl, copy, { observe: 'response' })
             .map((res: EntityResponseType) => this.convertResponse(res));
     }
 
     find(id: number): Observable<EntityResponseType> {
-        return this.http.get<QuestionMgm>(`${this.resourceUrl}/${id}`, {observe: 'response'})
+        return this.http.get<QuestionMgm>(`${this.resourceUrl}/${id}`, { observe: 'response'})
             .map((res: EntityResponseType) => this.convertResponse(res));
     }
 
     query(req?: any): Observable<HttpResponse<QuestionMgm[]>> {
         const options = createRequestOption(req);
-        return this.http.get<QuestionMgm[]>(this.resourceUrl, {params: options, observe: 'response'})
+        return this.http.get<QuestionMgm[]>(this.resourceUrl, { params: options, observe: 'response' })
             .map((res: HttpResponse<QuestionMgm[]>) => this.convertArrayResponse(res));
     }
 
@@ -55,12 +54,12 @@ export class QuestionMgmService {
     }
 
     delete(id: number): Observable<HttpResponse<any>> {
-        return this.http.delete<any>(`${this.resourceUrl}/${id}`, {observe: 'response'});
+        return this.http.delete<any>(`${this.resourceUrl}/${id}`, { observe: 'response'});
     }
 
     search(req?: any): Observable<HttpResponse<QuestionMgm[]>> {
         const options = createRequestOption(req);
-        return this.http.get<QuestionMgm[]>(this.resourceSearchUrl, {params: options, observe: 'response'})
+        return this.http.get<QuestionMgm[]>(this.resourceSearchUrl, { params: options, observe: 'response' })
             .map((res: HttpResponse<QuestionMgm[]>) => this.convertArrayResponse(res));
     }
 

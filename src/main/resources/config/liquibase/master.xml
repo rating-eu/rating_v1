@@ -25,6 +25,10 @@
     <include file="config/liquibase/changelog/20180525150016_added_entity_Level.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180525150017_added_entity_Phase.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180530100401_added_entity_CompanyGroup.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20180727084747_added_entity_MyAsset.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20180727084748_added_entity_DirectAsset.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20180727084749_added_entity_IndirectAsset.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20180727084750_added_entity_AttackCost.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
     <include file="config/liquibase/changelog/20180410085152_added_entity_constraints_CompanyProfile.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180410085155_added_entity_constraints_SelfAssessment.xml" relativeToChangelogFile="false"/>
@@ -61,5 +65,10 @@
     <include file="config/liquibase/changelog/20180603181922_added_questions_answers_attack_strategies_join_data.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180723141516_added_mitigations_data.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180723141746_attack_strategy_mitigations_data.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20180410085205_added_entity_constraints_Answer.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20180727084747_added_entity_constraints_MyAsset.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20180727084748_added_entity_constraints_DirectAsset.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20180727084749_added_entity_constraints_IndirectAsset.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20180727084750_added_entity_constraints_AttackCost.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
 </databaseChangeLog>

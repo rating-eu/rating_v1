@@ -2,6 +2,14 @@
     "fluentMethods": true,
     "relationships": [
         {
+            "relationshipType": "one-to-one",
+            "relationshipName": "asset",
+            "otherEntityName": "asset",
+            "otherEntityField": "id",
+            "ownerSide": true,
+            "otherEntityRelationshipName": "answer"
+        },
+        {
             "relationshipType": "many-to-many",
             "relationshipName": "question",
             "otherEntityName": "question",

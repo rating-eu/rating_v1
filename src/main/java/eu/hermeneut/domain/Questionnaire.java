@@ -1,7 +1,6 @@
 package eu.hermeneut.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import eu.hermeneut.domain.enumeration.QuestionnairePurpose;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -14,6 +13,8 @@ import java.time.ZonedDateTime;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.Objects;
+
+import eu.hermeneut.domain.enumeration.QuestionnairePurpose;
 
 /**
  * A Questionnaire.

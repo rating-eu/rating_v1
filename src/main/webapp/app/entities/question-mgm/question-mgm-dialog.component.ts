@@ -9,11 +9,11 @@ import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
 import { QuestionMgm } from './question-mgm.model';
 import { QuestionMgmPopupService } from './question-mgm-popup.service';
 import { QuestionMgmService } from './question-mgm.service';
-import { ThreatAgentMgm, ThreatAgentMgmService } from '../threat-agent-mgm';
 import { AttackStrategyMgm, AttackStrategyMgmService } from '../attack-strategy-mgm';
 import { AnswerMgm, AnswerMgmService } from '../answer-mgm';
 import { MyAnswerMgm, MyAnswerMgmService } from '../my-answer-mgm';
 import { QuestionnaireMgm, QuestionnaireMgmService } from '../questionnaire-mgm';
+import { ThreatAgentMgm, ThreatAgentMgmService } from '../threat-agent-mgm';
 
 @Component({
     selector: 'jhi-question-mgm-dialog',
@@ -24,8 +24,6 @@ export class QuestionMgmDialogComponent implements OnInit {
     question: QuestionMgm;
     isSaving: boolean;
 
-    threatagents: ThreatAgentMgm[];
-
     attackstrategies: AttackStrategyMgm[];
 
     answers: AnswerMgm[];
@@ -34,23 +32,23 @@ export class QuestionMgmDialogComponent implements OnInit {
 
     questionnaires: QuestionnaireMgm[];
 
+    threatagents: ThreatAgentMgm[];
+
     constructor(
         public activeModal: NgbActiveModal,
         private jhiAlertService: JhiAlertService,
         private questionService: QuestionMgmService,
-        private threatAgentService: ThreatAgentMgmService,
         private attackStrategyService: AttackStrategyMgmService,
         private answerService: AnswerMgmService,
         private myAnswerService: MyAnswerMgmService,
         private questionnaireService: QuestionnaireMgmService,
+        private threatAgentService: ThreatAgentMgmService,
         private eventManager: JhiEventManager
     ) {
     }
 
     ngOnInit() {
         this.isSaving = false;
-        this.threatAgentService.query()
-            .subscribe((res: HttpResponse<ThreatAgentMgm[]>) => { this.threatagents = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
         this.attackStrategyService.query()
             .subscribe((res: HttpResponse<AttackStrategyMgm[]>) => { this.attackstrategies = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
         this.answerService.query()
@@ -59,6 +57,8 @@ export class QuestionMgmDialogComponent implements OnInit {
             .subscribe((res: HttpResponse<MyAnswerMgm[]>) => { this.myanswers = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
         this.questionnaireService.query()
             .subscribe((res: HttpResponse<QuestionnaireMgm[]>) => { this.questionnaires = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
+        this.threatAgentService.query()
+            .subscribe((res: HttpResponse<ThreatAgentMgm[]>) => { this.threatagents = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
     }
 
     clear() {
@@ -95,10 +95,6 @@ export class QuestionMgmDialogComponent implements OnInit {
         this.jhiAlertService.error(error.message, null, null);
     }
 
-    trackThreatAgentById(index: number, item: ThreatAgentMgm) {
-        return item.id;
-    }
-
     trackAttackStrategyById(index: number, item: AttackStrategyMgm) {
         return item.id;
     }
@@ -112,6 +108,10 @@ export class QuestionMgmDialogComponent implements OnInit {
     }
 
     trackQuestionnaireById(index: number, item: QuestionnaireMgm) {
+        return item.id;
+    }
+
+    trackThreatAgentById(index: number, item: ThreatAgentMgm) {
         return item.id;
     }
 

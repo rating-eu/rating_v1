@@ -1,0 +1,46 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "one-to-one",
+            "relationshipName": "asset",
+            "otherEntityName": "asset",
+            "otherEntityField": "id",
+            "ownerSide": true,
+            "otherEntityRelationshipName": "myAsset"
+        },
+        {
+            "relationshipType": "one-to-one",
+            "relationshipName": "selfAssessment",
+            "otherEntityName": "selfAssessment",
+            "otherEntityField": "id",
+            "ownerSide": true,
+            "otherEntityRelationshipName": "myAsset"
+        },
+        {
+            "relationshipType": "one-to-one",
+            "relationshipName": "questionnaire",
+            "otherEntityName": "questionnaire",
+            "otherEntityField": "id",
+            "ownerSide": true,
+            "otherEntityRelationshipName": "myAsset"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "magnitude",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "ranking",
+            "fieldType": "Integer"
+        }
+    ],
+    "changelogDate": "20180727084747",
+    "entityTableName": "my_asset",
+    "dto": "no",
+    "pagination": "no",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "angularJSSuffix": "mgm"
+}

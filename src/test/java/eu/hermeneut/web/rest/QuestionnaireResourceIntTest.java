@@ -68,7 +68,7 @@ public class QuestionnaireResourceIntTest {
     private QuestionnaireSearchRepository questionnaireSearchRepository;
 
     @Autowired
-    private MappingJackson2HttpMessageConverter jackson2HttpMessageConverter;
+    private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
     private PageableHandlerMethodArgumentResolver pageableArgumentResolver;
@@ -91,7 +91,7 @@ public class QuestionnaireResourceIntTest {
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
             .setConversionService(createFormattingConversionService())
-            .setMessageConverters(jackson2HttpMessageConverter).build();
+            .setMessageConverters(jacksonMessageConverter).build();
     }
 
     /**

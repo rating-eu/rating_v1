@@ -27,6 +27,10 @@
                 "levelMgm": "Level",
                 "phaseMgm": "Phase",
                 "companyGroupMgm": "Group",
+                "myAssetMgm": "My Asset",
+                "directAssetMgm": "Direct Asset",
+                "indirectAssetMgm": "Indirect Asset",
+                "attackCostMgm": "Attack Cost",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {

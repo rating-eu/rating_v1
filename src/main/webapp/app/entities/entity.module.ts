@@ -21,6 +21,14 @@ import {HermeneutLevelMgmModule} from './level-mgm/level-mgm.module';
 import {HermeneutPhaseMgmModule} from './phase-mgm/phase-mgm.module';
 import {HermeneutCompanyGroupMgmModule} from './company-group-mgm/company-group-mgm.module';
 
+import { HermeneutQuestionnaireMgmModule } from './questionnaire-mgm/questionnaire-mgm.module';
+import { HermeneutQuestionMgmModule } from './question-mgm/question-mgm.module';
+import { HermeneutAnswerMgmModule } from './answer-mgm/answer-mgm.module';
+import { HermeneutQuestionnaireStatusMgmModule } from './questionnaire-status-mgm/questionnaire-status-mgm.module';
+import { HermeneutMyAssetMgmModule } from './my-asset-mgm/my-asset-mgm.module';
+import { HermeneutDirectAssetMgmModule } from './direct-asset-mgm/direct-asset-mgm.module';
+import { HermeneutIndirectAssetMgmModule } from './indirect-asset-mgm/indirect-asset-mgm.module';
+import { HermeneutAttackCostMgmModule } from './attack-cost-mgm/attack-cost-mgm.module';
 /* jhipster-needle-add-entity-module-import - JHipster will add entity modules imports here */
 
 @NgModule({
@@ -45,6 +53,10 @@ import {HermeneutCompanyGroupMgmModule} from './company-group-mgm/company-group-
         HermeneutLevelMgmModule,
         HermeneutPhaseMgmModule,
         HermeneutCompanyGroupMgmModule
+        HermeneutMyAssetMgmModule,
+        HermeneutDirectAssetMgmModule,
+        HermeneutIndirectAssetMgmModule,
+        HermeneutAttackCostMgmModule,
         /* jhipster-needle-add-entity-module - JHipster will add entity modules here */
     ],
     declarations: [],
