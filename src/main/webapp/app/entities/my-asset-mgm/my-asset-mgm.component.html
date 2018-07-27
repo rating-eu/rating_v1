@@ -47,17 +47,17 @@
                 <td>{{myAsset.estimated}}</td>
                 <td>
                     <div *ngIf="myAsset.asset">
-                        <a [routerLink]="['../asset-mgm', myAsset.asset?.id ]" >{{myAsset.asset?.id}}</a>
+                        <a [routerLink]="['../asset-mgm', myAsset.asset?.id ]" >{{myAsset.asset?.name}}</a>
                     </div>
                 </td>
                 <td>
                     <div *ngIf="myAsset.selfAssessment">
-                        <a [routerLink]="['../self-assessment-mgm', myAsset.selfAssessment?.id ]" >{{myAsset.selfAssessment?.id}}</a>
+                        <a [routerLink]="['../self-assessment-mgm', myAsset.selfAssessment?.id ]" >{{myAsset.selfAssessment?.name}}</a>
                     </div>
                 </td>
                 <td>
                     <div *ngIf="myAsset.questionnaire">
-                        <a [routerLink]="['../questionnaire-mgm', myAsset.questionnaire?.id ]" >{{myAsset.questionnaire?.id}}</a>
+                        <a [routerLink]="['../questionnaire-mgm', myAsset.questionnaire?.id ]" >{{myAsset.questionnaire?.name}}</a>
                     </div>
                 </td>
                 <td class="text-right">

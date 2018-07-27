@@ -47,16 +47,16 @@
                 <td>{{questionnaireStatus.modified | date:'medium'}}</td>
                 <td>
                     <div *ngIf="questionnaireStatus.selfAssessment">
-                        <a [routerLink]="['../self-assessment-mgm', questionnaireStatus.selfAssessment?.id ]" >{{questionnaireStatus.selfAssessment?.id}}</a>
+                        <a [routerLink]="['../self-assessment-mgm', questionnaireStatus.selfAssessment?.id ]" >{{questionnaireStatus.selfAssessment?.name}}</a>
                     </div>
                 </td>
                 <td>
                     <div *ngIf="questionnaireStatus.questionnaire">
-                        <a [routerLink]="['../questionnaire-mgm', questionnaireStatus.questionnaire?.id ]" >{{questionnaireStatus.questionnaire?.id}}</a>
+                        <a [routerLink]="['../questionnaire-mgm', questionnaireStatus.questionnaire?.id ]" >{{questionnaireStatus.questionnaire?.name}}</a>
                     </div>
                 </td>
                 <td>
-                    {{questionnaireStatus.user?.id}}
+                    {{questionnaireStatus.user?.login}}
                 </td>
                 <td class="text-right">
                     <div class="btn-group flex-btn-group-container">
