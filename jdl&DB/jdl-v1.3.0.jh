@@ -270,25 +270,25 @@ relationship OneToMany{
     CompanyProfile{companyGroups(name)} to CompanyGroup{companyprofile(name)},
     ThreatAgent{questions} to Question{threatAgent(name)}
     QuestionnaireStatus{answers} to MyAnswer,
-    DirectAsset{costs} to AttackCost,
-    IndirectAsset{costs} to AttackCost,
-    DirectAsset{effects} to IndirectAsset
+    DirectAsset{costs(type)} to AttackCost,
+    IndirectAsset{costs(type)} to AttackCost,
+    DirectAsset{effects(name)} to IndirectAsset
 }
 
 relationship OneToOne{
-    MyAnswer{answer} to Answer,
-    MyAnswer{question} to Question{myanswer},
-    MyAnswer{questionnaire} to Questionnaire{myanswer},
-    MyAnswer{user} to User,
-    QuestionnaireStatus{selfAssessment} to SelfAssessment,
-    QuestionnaireStatus{questionnaire} to Questionnaire,
-    QuestionnaireStatus{user} to User,
-    Answer{asset} to Asset,
-    MyAsset{asset} to Asset,
-    MyAsset{selfAssessment} to SelfAssessment,
-    MyAsset{questionnaire} to Questionnaire,
-    DirectAsset{asset} to MyAsset,
-    IndirectAsset{asset} to MyAsset
+    MyAnswer{answer(name)} to Answer,
+    MyAnswer{question(name)} to Question{myanswer},
+    MyAnswer{questionnaire(name)} to Questionnaire{myanswer},
+    MyAnswer{user(login)} to User,
+    QuestionnaireStatus{selfAssessment(name)} to SelfAssessment,
+    QuestionnaireStatus{questionnaire(name)} to Questionnaire,
+    QuestionnaireStatus{user(login)} to User,
+    Answer{asset(name)} to Asset,
+    MyAsset{asset(name)} to Asset,
+    MyAsset{selfAssessment(name)} to SelfAssessment,
+    MyAsset{questionnaire(name)} to Questionnaire,
+    DirectAsset{asset(name)} to MyAsset,
+    IndirectAsset{asset(name)} to MyAsset
 }
 
 relationship ManyToOne{
