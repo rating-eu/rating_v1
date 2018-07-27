@@ -408,7 +408,7 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
         console.log('FormDataMap size: ' + formDataMap.size);
 
         // Update the status of the questionnaire
-        let questionnaireStatus = new QuestionnaireStatusMgm(undefined, Status.FULL, this.selfAssessment, this.questionnaire, this.user, this.questionnaire);
+        let questionnaireStatus = new QuestionnaireStatusMgm(undefined, Status.FULL, null, null, this.selfAssessment, this.questionnaire, this.user, []);
 
         // Persist the QuestionnaireStatus
         const selfAssessment$: Observable<HttpResponse<SelfAssessmentMgm>> =
