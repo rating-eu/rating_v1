@@ -15,6 +15,7 @@ import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.StreamSupport;
@@ -52,6 +53,12 @@ public class QuestionnaireStatusResource {
         if (questionnaireStatus.getId() != null) {
             throw new BadRequestAlertException("A new questionnaireStatus cannot already have an ID", ENTITY_NAME, "idexists");
         }
+
+        //Set the current date for the questionnaire status (created and modified)
+        ZonedDateTime now = ZonedDateTime.now();
+        questionnaireStatus.setCreated(now);
+        questionnaireStatus.setModified(now);
+
         QuestionnaireStatus result = questionnaireStatusService.save(questionnaireStatus);
         return ResponseEntity.created(new URI("/api/questionnaire-statuses/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
@@ -74,6 +81,11 @@ public class QuestionnaireStatusResource {
         if (questionnaireStatus.getId() == null) {
             return createQuestionnaireStatus(questionnaireStatus);
         }
+
+        //Set the current date for the questionnaire status (modified)
+        ZonedDateTime now = ZonedDateTime.now();
+        questionnaireStatus.setModified(now);
+
         QuestionnaireStatus result = questionnaireStatusService.save(questionnaireStatus);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, questionnaireStatus.getId().toString()))
