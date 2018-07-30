@@ -44,6 +44,12 @@
     <include file="config/liquibase/changelog/20180508153623_added_questions_threat_agents_data.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180508160443_added_answers_data.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180508161422_added_questions_answers_threat_agents_join_data.xml" relativeToChangelogFile="false"/>
+    
+    <include file="config/liquibase/changelog/20180727172520_added_entity_question_id_assets_data.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20180727172520_added_entity_answer_id_assets_data.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20180727172520_added_entity_question_answer_id_assets_join_data.xml" relativeToChangelogFile="false"/>
+    
+    
 
     <include file="config/liquibase/changelog/20180513165449_added_motivations_data.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180513173449_added_threat_agent_motivations_data.xml" relativeToChangelogFile="false"/>

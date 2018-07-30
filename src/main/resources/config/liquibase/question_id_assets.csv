@@ -1,0 +1,7 @@
+id;name;created;modified;jhi_order;question_type;answer_type;questionnaire_id
+79;Considering your organization, please rank the main asset categories according to their relevance for your organization (from the first to the last one – select just one from 1 to N);${now};${now};61;OTHER;ASSET;3
+80;Considering your organization, which are the intangible and tangible assets that can be directly stolen/compromised/damaged during a cyber attack;${now};${now};62;OTHER;ASSET;3
+81;For each of the assets selected, please identify which are the other assets that could be indirectly compromised/damaged/devalued.;${now};${now};63;OTHER;ASSET;3
+82;Have you ever quantified the estimated value of your intangible assets?;${now};${now};64;OTHER;ASSET;3
+83;If you have this information, are you available to share the order of magnitude of these asset values with HERMENEUT?;${now};${now};65;OTHER;ASSET;3
+84;For each directly and indirectly stolen/compromised/damaged asset identified in the 2 previous questions please identify the costs that the attack could generate.;${now};${now};66;OTHER;ASSET;3

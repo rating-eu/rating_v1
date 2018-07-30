@@ -8,6 +8,7 @@ step todo:
 
 3) form to check asssets, based on company profile.
 
+
 <div>
     <span *ngIf="!mySelf" class="alert alert-warning">Please, <a [routerLink]="['../self-assessment-mgm']"> select</a> a self assessment, otherwise, have a look to our taxonomies</span>
 
@@ -99,6 +100,20 @@ step todo:
         <li>check if assets are already identified</li>
         <li>form to select assets</li>
     </ul>
+
+    <!-- Recupero del SelfAssessment -->
+<!-- Recupero del questionario Questionario -->
+<!-- Recupero degli asset vedi -> getAllAssets() -->
+<!-- Compilo MyAsset -->
+<!-- Compilo i direct -->
+<!-- compilo i indirect -->
+<!-- Attack related cost -->
+<!-- per il salvataggio 
+    1) create su MyAsset >> MyAsset con id (my asset deve essere atomico per un componente)
+    2) uguale per i direct (devono essere atomici per la selezione degli indirect)
+    3) e per indirect
+    3) 
+-->
     <div class="table-responsive" *ngIf="assets$">
         <table class="table table-striped">
             <thead>
