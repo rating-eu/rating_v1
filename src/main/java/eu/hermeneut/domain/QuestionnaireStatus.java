@@ -8,6 +8,7 @@ import javax.persistence.*;
 import javax.validation.constraints.*;
 
 import org.springframework.data.elasticsearch.annotations.Document;
+
 import java.io.Serializable;
 import java.time.ZonedDateTime;
 import java.util.HashSet;
@@ -22,7 +23,10 @@ import eu.hermeneut.domain.enumeration.Role;
  * A QuestionnaireStatus.
  */
 @Entity
-@Table(name = "questionnaire_status")
+@Table(
+    name = "questionnaire_status",
+    uniqueConstraints = @UniqueConstraint(columnNames = {"jhi_role", "self_assessment_id", "questionnaire_id"})
+)
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 @Document(indexName = "questionnairestatus")
 public class QuestionnaireStatus implements Serializable {
@@ -53,11 +57,11 @@ public class QuestionnaireStatus implements Serializable {
     private Role role;
 
     @OneToOne
-    @JoinColumn(unique = true)
+    @JoinColumn(unique = true, name = "self_assessment_id")
     private SelfAssessment selfAssessment;
 
     @OneToOne
-    @JoinColumn(unique = true)
+    @JoinColumn(unique = true, name = "questionnaire_id")
     private Questionnaire questionnaire;
 
     @OneToOne
