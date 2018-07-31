@@ -43,11 +43,25 @@
         },
         {
             "fieldName": "created",
-            "fieldType": "ZonedDateTime"
+            "fieldType": "ZonedDateTime",
+            "fieldValidateRules": [
+                "required"
+            ]
         },
         {
             "fieldName": "modified",
-            "fieldType": "ZonedDateTime"
+            "fieldType": "ZonedDateTime",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "role",
+            "fieldType": "Role",
+            "fieldValues": "ROLE_ADMIN,ROLE_USER,ROLE_EXTERNAL_AUDIT,ROLE_CISO",
+            "fieldValidateRules": [
+                "required"
+            ]
         }
     ],
     "changelogDate": "20180516144842",

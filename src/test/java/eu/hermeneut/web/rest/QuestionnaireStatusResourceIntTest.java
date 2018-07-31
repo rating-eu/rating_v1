@@ -37,6 +37,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import eu.hermeneut.domain.enumeration.Status;
+import eu.hermeneut.domain.enumeration.Role;
 /**
  * Test class for the QuestionnaireStatusResource REST controller.
  *
@@ -54,6 +55,9 @@ public class QuestionnaireStatusResourceIntTest {
 
     private static final ZonedDateTime DEFAULT_MODIFIED = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
     private static final ZonedDateTime UPDATED_MODIFIED = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
+
+    private static final Role DEFAULT_ROLE = Role.ROLE_ADMIN;
+    private static final Role UPDATED_ROLE = Role.ROLE_USER;
 
     @Autowired
     private QuestionnaireStatusRepository questionnaireStatusRepository;
@@ -101,7 +105,8 @@ public class QuestionnaireStatusResourceIntTest {
         QuestionnaireStatus questionnaireStatus = new QuestionnaireStatus()
             .status(DEFAULT_STATUS)
             .created(DEFAULT_CREATED)
-            .modified(DEFAULT_MODIFIED);
+            .modified(DEFAULT_MODIFIED)
+            .role(DEFAULT_ROLE);
         return questionnaireStatus;
     }
 
@@ -129,6 +134,7 @@ public class QuestionnaireStatusResourceIntTest {
         assertThat(testQuestionnaireStatus.getStatus()).isEqualTo(DEFAULT_STATUS);
         assertThat(testQuestionnaireStatus.getCreated()).isEqualTo(DEFAULT_CREATED);
         assertThat(testQuestionnaireStatus.getModified()).isEqualTo(DEFAULT_MODIFIED);
+        assertThat(testQuestionnaireStatus.getRole()).isEqualTo(DEFAULT_ROLE);
 
         // Validate the QuestionnaireStatus in Elasticsearch
         QuestionnaireStatus questionnaireStatusEs = questionnaireStatusSearchRepository.findOne(testQuestionnaireStatus.getId());
@@ -176,6 +182,60 @@ public class QuestionnaireStatusResourceIntTest {
 
     @Test
     @Transactional
+    public void checkCreatedIsRequired() throws Exception {
+        int databaseSizeBeforeTest = questionnaireStatusRepository.findAll().size();
+        // set the field null
+        questionnaireStatus.setCreated(null);
+
+        // Create the QuestionnaireStatus, which fails.
+
+        restQuestionnaireStatusMockMvc.perform(post("/api/questionnaire-statuses")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(questionnaireStatus)))
+            .andExpect(status().isBadRequest());
+
+        List<QuestionnaireStatus> questionnaireStatusList = questionnaireStatusRepository.findAll();
+        assertThat(questionnaireStatusList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
+    public void checkModifiedIsRequired() throws Exception {
+        int databaseSizeBeforeTest = questionnaireStatusRepository.findAll().size();
+        // set the field null
+        questionnaireStatus.setModified(null);
+
+        // Create the QuestionnaireStatus, which fails.
+
+        restQuestionnaireStatusMockMvc.perform(post("/api/questionnaire-statuses")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(questionnaireStatus)))
+            .andExpect(status().isBadRequest());
+
+        List<QuestionnaireStatus> questionnaireStatusList = questionnaireStatusRepository.findAll();
+        assertThat(questionnaireStatusList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
+    public void checkRoleIsRequired() throws Exception {
+        int databaseSizeBeforeTest = questionnaireStatusRepository.findAll().size();
+        // set the field null
+        questionnaireStatus.setRole(null);
+
+        // Create the QuestionnaireStatus, which fails.
+
+        restQuestionnaireStatusMockMvc.perform(post("/api/questionnaire-statuses")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(questionnaireStatus)))
+            .andExpect(status().isBadRequest());
+
+        List<QuestionnaireStatus> questionnaireStatusList = questionnaireStatusRepository.findAll();
+        assertThat(questionnaireStatusList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
     public void getAllQuestionnaireStatuses() throws Exception {
         // Initialize the database
         questionnaireStatusRepository.saveAndFlush(questionnaireStatus);
@@ -187,7 +247,8 @@ public class QuestionnaireStatusResourceIntTest {
             .andExpect(jsonPath("$.[*].id").value(hasItem(questionnaireStatus.getId().intValue())))
             .andExpect(jsonPath("$.[*].status").value(hasItem(DEFAULT_STATUS.toString())))
             .andExpect(jsonPath("$.[*].created").value(hasItem(sameInstant(DEFAULT_CREATED))))
-            .andExpect(jsonPath("$.[*].modified").value(hasItem(sameInstant(DEFAULT_MODIFIED))));
+            .andExpect(jsonPath("$.[*].modified").value(hasItem(sameInstant(DEFAULT_MODIFIED))))
+            .andExpect(jsonPath("$.[*].role").value(hasItem(DEFAULT_ROLE.toString())));
     }
 
     @Test
@@ -203,7 +264,8 @@ public class QuestionnaireStatusResourceIntTest {
             .andExpect(jsonPath("$.id").value(questionnaireStatus.getId().intValue()))
             .andExpect(jsonPath("$.status").value(DEFAULT_STATUS.toString()))
             .andExpect(jsonPath("$.created").value(sameInstant(DEFAULT_CREATED)))
-            .andExpect(jsonPath("$.modified").value(sameInstant(DEFAULT_MODIFIED)));
+            .andExpect(jsonPath("$.modified").value(sameInstant(DEFAULT_MODIFIED)))
+            .andExpect(jsonPath("$.role").value(DEFAULT_ROLE.toString()));
     }
 
     @Test
@@ -229,7 +291,8 @@ public class QuestionnaireStatusResourceIntTest {
         updatedQuestionnaireStatus
             .status(UPDATED_STATUS)
             .created(UPDATED_CREATED)
-            .modified(UPDATED_MODIFIED);
+            .modified(UPDATED_MODIFIED)
+            .role(UPDATED_ROLE);
 
         restQuestionnaireStatusMockMvc.perform(put("/api/questionnaire-statuses")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -243,6 +306,7 @@ public class QuestionnaireStatusResourceIntTest {
         assertThat(testQuestionnaireStatus.getStatus()).isEqualTo(UPDATED_STATUS);
         assertThat(testQuestionnaireStatus.getCreated()).isEqualTo(UPDATED_CREATED);
         assertThat(testQuestionnaireStatus.getModified()).isEqualTo(UPDATED_MODIFIED);
+        assertThat(testQuestionnaireStatus.getRole()).isEqualTo(UPDATED_ROLE);
 
         // Validate the QuestionnaireStatus in Elasticsearch
         QuestionnaireStatus questionnaireStatusEs = questionnaireStatusSearchRepository.findOne(testQuestionnaireStatus.getId());
@@ -304,7 +368,8 @@ public class QuestionnaireStatusResourceIntTest {
             .andExpect(jsonPath("$.[*].id").value(hasItem(questionnaireStatus.getId().intValue())))
             .andExpect(jsonPath("$.[*].status").value(hasItem(DEFAULT_STATUS.toString())))
             .andExpect(jsonPath("$.[*].created").value(hasItem(sameInstant(DEFAULT_CREATED))))
-            .andExpect(jsonPath("$.[*].modified").value(hasItem(sameInstant(DEFAULT_MODIFIED))));
+            .andExpect(jsonPath("$.[*].modified").value(hasItem(sameInstant(DEFAULT_MODIFIED))))
+            .andExpect(jsonPath("$.[*].role").value(hasItem(DEFAULT_ROLE.toString())));
     }
 
     @Test

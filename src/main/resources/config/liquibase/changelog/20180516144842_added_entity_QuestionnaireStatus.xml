@@ -26,18 +26,22 @@
             </column>
 
             <column name="created" type="timestamp">
-                <constraints nullable="true" />
+                <constraints nullable="false" />
             </column>
 
             <column name="modified" type="timestamp">
-                <constraints nullable="true" />
+                <constraints nullable="false" />
+            </column>
+
+            <column name="jhi_role" type="varchar(255)">
+                <constraints nullable="false" />
             </column>
             <column name="self_assessment_id" type="bigint">
-                <constraints unique="false" nullable="true" />
+                <constraints unique="false" nullable="false" />
             </column>            <column name="questionnaire_id" type="bigint">
-                <constraints unique="false" nullable="true" />
+                <constraints unique="false" nullable="false" />
             </column>            <column name="user_id" type="bigint">
-                <constraints unique="false" nullable="true" />
+                <constraints unique="false" nullable="false" />
             </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>

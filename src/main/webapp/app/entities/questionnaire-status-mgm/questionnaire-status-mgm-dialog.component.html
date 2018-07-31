@@ -30,14 +30,49 @@
             <label class="form-control-label" jhiTranslate="hermeneutApp.questionnaireStatus.created" for="field_created">Created</label>
             <div class="d-flex">
                 <input id="field_created" type="datetime-local" class="form-control" name="created" [(ngModel)]="questionnaireStatus.created"
-                />
+                required/>
+            </div>
+            <div [hidden]="!(editForm.controls.created?.dirty && editForm.controls.created?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.created?.errors?.required" jhiTranslate="entity.validation.required">
+                   This field is required.
+                </small>
+                <small class="form-text text-danger"
+                    [hidden]="!editForm.controls.created?.errors?.ZonedDateTimelocal" jhiTranslate="entity.validation.ZonedDateTimelocal">
+                    This field should be a date and time.
+                </small>
             </div>
         </div>
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="hermeneutApp.questionnaireStatus.modified" for="field_modified">Modified</label>
             <div class="d-flex">
                 <input id="field_modified" type="datetime-local" class="form-control" name="modified" [(ngModel)]="questionnaireStatus.modified"
-                />
+                required/>
+            </div>
+            <div [hidden]="!(editForm.controls.modified?.dirty && editForm.controls.modified?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.modified?.errors?.required" jhiTranslate="entity.validation.required">
+                   This field is required.
+                </small>
+                <small class="form-text text-danger"
+                    [hidden]="!editForm.controls.modified?.errors?.ZonedDateTimelocal" jhiTranslate="entity.validation.ZonedDateTimelocal">
+                    This field should be a date and time.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="hermeneutApp.questionnaireStatus.role" for="field_role">Role</label>
+            <select class="form-control" name="role" [(ngModel)]="questionnaireStatus.role" id="field_role"  required>
+                <option value="ROLE_ADMIN">{{'hermeneutApp.Role.ROLE_ADMIN' | translate}}</option>
+                <option value="ROLE_USER">{{'hermeneutApp.Role.ROLE_USER' | translate}}</option>
+                <option value="ROLE_EXTERNAL_AUDIT">{{'hermeneutApp.Role.ROLE_EXTERNAL_AUDIT' | translate}}</option>
+                <option value="ROLE_CISO">{{'hermeneutApp.Role.ROLE_CISO' | translate}}</option>
+            </select>
+            <div [hidden]="!(editForm.controls.role?.dirty && editForm.controls.role?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.role?.errors?.required" jhiTranslate="entity.validation.required">
+                   This field is required.
+                </small>
             </div>
         </div>
 

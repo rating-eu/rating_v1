@@ -16,6 +16,8 @@ import java.util.Objects;
 
 import eu.hermeneut.domain.enumeration.Status;
 
+import eu.hermeneut.domain.enumeration.Role;
+
 /**
  * A QuestionnaireStatus.
  */
@@ -37,11 +39,18 @@ public class QuestionnaireStatus implements Serializable {
     @Column(name = "status", nullable = false)
     private Status status;
 
-    @Column(name = "created")
+    @NotNull
+    @Column(name = "created", nullable = false)
     private ZonedDateTime created;
 
-    @Column(name = "modified")
+    @NotNull
+    @Column(name = "modified", nullable = false)
     private ZonedDateTime modified;
+
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    @Column(name = "jhi_role", nullable = false)
+    private Role role;
 
     @OneToOne
     @JoinColumn(unique = true)
@@ -106,6 +115,19 @@ public class QuestionnaireStatus implements Serializable {
 
     public void setModified(ZonedDateTime modified) {
         this.modified = modified;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public QuestionnaireStatus role(Role role) {
+        this.role = role;
+        return this;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
     }
 
     public SelfAssessment getSelfAssessment() {
@@ -200,6 +222,7 @@ public class QuestionnaireStatus implements Serializable {
             ", status='" + getStatus() + "'" +
             ", created='" + getCreated() + "'" +
             ", modified='" + getModified() + "'" +
+            ", role='" + getRole() + "'" +
             "}";
     }
 }
