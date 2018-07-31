@@ -3,7 +3,7 @@ import {SelfAssessmentMgm} from '../self-assessment-mgm';
 import {QuestionnaireMgm} from '../questionnaire-mgm';
 import {Status} from '../enumerations/QuestionnaireStatus.enum';
 import {MyAnswerMgm} from '../my-answer-mgm';
-export const enum Role {
+export enum Role {
     'ROLE_ADMIN',
     'ROLE_USER',
     'ROLE_EXTERNAL_AUDIT',
