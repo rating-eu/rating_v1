@@ -47,7 +47,14 @@
         </createTable>
         <dropDefaultValue tableName="questionnaire_status" columnName="created" columnDataType="datetime"/>
         <dropDefaultValue tableName="questionnaire_status" columnName="modified" columnDataType="datetime"/>
+    </changeSet>
 
+    <changeSet id="20180516144842-2" author="developer">
+        <addUniqueConstraint catalogName="questionnaire_status"
+                             columnNames="jhi_role, self_assessment_id, questionnaire_id"
+                             constraintName="one_questionnaire_per_role_per_self_assessment"
+                             schemaName="public"
+                             tableName="questionnaire_status"/>
     </changeSet>
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here, do not remove-->
 </databaseChangeLog>
