@@ -16,6 +16,10 @@
         <dd>
             <span>{{questionnaireStatus.modified | date:'medium'}}</span>
         </dd>
+        <dt><span jhiTranslate="hermeneutApp.questionnaireStatus.role">Role</span></dt>
+        <dd>
+            <span jhiTranslate="{{'hermeneutApp.Role.' + questionnaireStatus.role}}">{{questionnaireStatus.role}}</span>
+        </dd>
         <dt><span jhiTranslate="hermeneutApp.questionnaireStatus.selfAssessment">Self Assessment</span></dt>
         <dd>
             <div *ngIf="questionnaireStatus.selfAssessment">

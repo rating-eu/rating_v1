@@ -26,24 +26,35 @@
             </column>
 
             <column name="created" type="timestamp">
-                <constraints nullable="true" />
+                <constraints nullable="false" />
             </column>
 
             <column name="modified" type="timestamp">
-                <constraints nullable="true" />
+                <constraints nullable="false" />
+            </column>
+
+            <column name="jhi_role" type="varchar(255)">
+                <constraints nullable="false" />
             </column>
             <column name="self_assessment_id" type="bigint">
-                <constraints unique="false" nullable="true" />
+                <constraints unique="false" nullable="false" />
             </column>            <column name="questionnaire_id" type="bigint">
-                <constraints unique="false" nullable="true" />
+                <constraints unique="false" nullable="false" />
             </column>            <column name="user_id" type="bigint">
-                <constraints unique="false" nullable="true" />
+                <constraints unique="false" nullable="false" />
             </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
         <dropDefaultValue tableName="questionnaire_status" columnName="created" columnDataType="datetime"/>
         <dropDefaultValue tableName="questionnaire_status" columnName="modified" columnDataType="datetime"/>
+    </changeSet>
 
+    <changeSet id="20180516144842-2" author="developer">
+        <addUniqueConstraint catalogName="questionnaire_status"
+                             columnNames="jhi_role, self_assessment_id, questionnaire_id"
+                             constraintName="one_questionnaire_per_role_per_self_assessment"
+                             schemaName="public"
+                             tableName="questionnaire_status"/>
     </changeSet>
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here, do not remove-->
 </databaseChangeLog>

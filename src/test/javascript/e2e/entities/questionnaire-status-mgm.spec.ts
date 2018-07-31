@@ -38,6 +38,7 @@ describe('QuestionnaireStatus e2e test', () => {
         expect(questionnaireStatusDialogPage.getCreatedInput()).toMatch('2001-12-31T02:30');
         questionnaireStatusDialogPage.setModifiedInput(12310020012301);
         expect(questionnaireStatusDialogPage.getModifiedInput()).toMatch('2001-12-31T02:30');
+        questionnaireStatusDialogPage.roleSelectLastOption();
         questionnaireStatusDialogPage.selfAssessmentSelectLastOption();
         questionnaireStatusDialogPage.questionnaireSelectLastOption();
         questionnaireStatusDialogPage.userSelectLastOption();
@@ -70,6 +71,7 @@ export class QuestionnaireStatusDialogPage {
     statusSelect = element(by.css('select#field_status'));
     createdInput = element(by.css('input#field_created'));
     modifiedInput = element(by.css('input#field_modified'));
+    roleSelect = element(by.css('select#field_role'));
     selfAssessmentSelect = element(by.css('select#field_selfAssessment'));
     questionnaireSelect = element(by.css('select#field_questionnaire'));
     userSelect = element(by.css('select#field_user'));
@@ -105,6 +107,17 @@ export class QuestionnaireStatusDialogPage {
         return this.modifiedInput.getAttribute('value');
     };
 
+    setRoleSelect = function(role) {
+        this.roleSelect.sendKeys(role);
+    };
+
+    getRoleSelect = function() {
+        return this.roleSelect.element(by.css('option:checked')).getText();
+    };
+
+    roleSelectLastOption = function() {
+        this.roleSelect.all(by.tagName('option')).last().click();
+    };
     selfAssessmentSelectLastOption = function() {
         this.selfAssessmentSelect.all(by.tagName('option')).last().click();
     };
