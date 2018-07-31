@@ -1,6 +1,7 @@
 package eu.hermeneut.repository;
 
 import eu.hermeneut.domain.QuestionnaireStatus;
+import eu.hermeneut.domain.enumeration.Role;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
@@ -21,4 +22,7 @@ public interface QuestionnaireStatusRepository extends JpaRepository<Questionnai
 
     @Query("SELECT questionnaireStatus FROM QuestionnaireStatus questionnaireStatus WHERE questionnaireStatus.selfAssessment.id = :selfAssessmentID")
     List<QuestionnaireStatus> findAllBySelfAssessment(@Param("selfAssessmentID") Long selfAssessmentID);
+
+    @Query("SELECT questionnaireStatus FROM QuestionnaireStatus questionnaireStatus WHERE questionnaireStatus.role = :role AND questionnaireStatus.selfAssessment.id = :selfAssessmentID AND questionnaireStatus.questionnaire.id = :questionnaireID")
+    QuestionnaireStatus findByRoleSelfAssessmentAndQuestionnaire(@Param("role") Role role, @Param("selfAssessmentID") Long selfAssessmentID, @Param("questionnaireID") Long questionnaireID);
 }

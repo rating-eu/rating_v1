@@ -56,6 +56,8 @@ public interface QuestionnaireStatusService {
      */
     List<QuestionnaireStatus> findAllBySelfAssessmentAndUser(Long selfAssessmentID, Long userID);
 
+    QuestionnaireStatus findByRoleSelfAssessmentAndQuestionnaire(String role, Long selfAssessmentID, Long questionnaireID);
+
     /**
      * Get all the questionnaireStatuses by selfAssessment.
      *

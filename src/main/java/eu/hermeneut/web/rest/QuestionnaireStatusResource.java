@@ -112,8 +112,20 @@ public class QuestionnaireStatusResource {
     @GetMapping("/questionnaire-statuses/self-assessment/{selfAssessmentID}/user/{userID}")
     @Timed
     public List<QuestionnaireStatus> getAllQuestionnaireStatusesBySelfAssessmentAndUser(@PathVariable Long selfAssessmentID, @PathVariable Long userID) {
-        log.debug("REST request to get all QuestionnaireStatuses");
+        log.debug("REST request to get all QuestionnaireStatuses by self assessment and user");
         return questionnaireStatusService.findAllBySelfAssessmentAndUser(selfAssessmentID, userID);
+    }
+
+    /**
+     * GET  /questionnaire-statuses : get all the questionnaireStatuses by Role SelfAssessment and Questionnaire.
+     *
+     * @return the ResponseEntity with status 200 (OK) and the list of questionnaireStatuses in body
+     */
+    @GetMapping("/questionnaire-statuses/self-assessment/{selfAssessmentID}/questionnaire/{questionnaireID}/role/{role}")
+    @Timed
+    public QuestionnaireStatus getQuestionnaireStatusByRoleSelfAssessmentAndQuestionnaire(@PathVariable Long selfAssessmentID, @PathVariable Long questionnaireID, @PathVariable String role) {
+        log.debug("REST request to get all QuestionnaireStatuses by Role SelfAssessment and Questionnaire");
+        return questionnaireStatusService.findByRoleSelfAssessmentAndQuestionnaire(role, selfAssessmentID, questionnaireID);
     }
 
     /**
