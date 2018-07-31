@@ -114,6 +114,7 @@ step todo:
     3) e per indirect
     3) 
 -->
+<!--
     <div class="table-responsive" *ngIf="assets$">
         <table class="table table-striped">
             <thead>
@@ -176,3 +177,14 @@ step todo:
         </table>
     </div>
 </div>
+-->
+<ng-container *ngIf="questions">
+    <ng-container *ngFor="let q of questions">
+            <question-card
+                [question]="q"
+                [self]="mySelf"
+                [questionnaire]="questionnaries[0]"
+                [questionRenderType]="q.name"
+                (myAnswerComplited)="myAnswerReceiver($event)"></question-card>
+    </ng-container>
+</ng-container>

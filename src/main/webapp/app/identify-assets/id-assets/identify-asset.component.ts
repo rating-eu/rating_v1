@@ -1,3 +1,5 @@
+import * as _ from 'lodash';
+
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { IdentifyAssetService } from '../identify-asset.service';
 import { SelfAssessmentMgm, SelfAssessmentMgmService } from '../../entities/self-assessment-mgm';
@@ -35,7 +37,7 @@ export class IdentifyAssetComponent implements OnInit, OnDestroy {
     questionnaries: QuestionnaireMgm[];
     questions: QuestionMgm[];
     myAnswers: MyAnswerMgm[];
-    answers: AnswerMgm[];
+    questionsAnswerMap: Map<number, Array<AnswerMgm>>;
 
     constructor(private jhiAlertService: JhiAlertService,
         private eventManager: JhiEventManager,
@@ -60,6 +62,7 @@ export class IdentifyAssetComponent implements OnInit, OnDestroy {
         this.registerChangeIdentifyAssets();
         this.assets$ = this.assetService.findAll();
         this.questionnaries = [];
+        this.myAnswers = [];
         this.questionnairesService.getAllQuestionnairesByPurpose(QuestionnairePurpose.ID_ASSETS).toPromise().then((res) => {
             if (res && res instanceof QuestionnaireMgm) {
                 this.questionnaries.push(res);
@@ -77,39 +80,46 @@ export class IdentifyAssetComponent implements OnInit, OnDestroy {
                     } else if (resQ.body && resQ.body instanceof Array) {
                         this.questions = resQ.body;
                     }
+                    /*
                     if (this.questions && this.questions.length > 0) {
                         console.log(this.questions);
                         this.myAnswers = [];
-                        // TODO check for this request
-                        this.answerService
-                            .query({ filter: 'myanswer-is-null' })
-                            .subscribe((resA: HttpResponse<AnswerMgm[]>) => {
-                                let newMyAnswer: MyAnswerMgm = new MyAnswerMgm();
-                                const answs: AnswerMgm[] = resA.body;
-                                for (const as of answs) {
-                                    newMyAnswer = this.myAnswers.find((answ) => answ.answer.id === as.id);
-                                }
-                                if (!newMyAnswer || !newMyAnswer.answer || !newMyAnswer.answer.id) {
-                                    this.answers = resA.body;
-                                    this.myAnswers = resA.body;
-                                } else {
-                                    this.answerService
-                                        .find(newMyAnswer.answer.id)
-                                        .subscribe((subRes: HttpResponse<AnswerMgm>) => {
-                                            this.answers = [subRes.body].concat(resA.body);
-                                            this.myAnswers = this.myAnswers.concat(this.answers);
-                                        }, (subRes: HttpErrorResponse) => this.onError(subRes.message));
-                                }
-                                console.log(this.mySelf);
-                                console.log(this.questionnaries);
-                                console.log(this.questions);
-                                console.log(this.answers);
-                                console.log(this.myAnswers);
-                            }, (resA: HttpErrorResponse) => this.onError(resA.message));
+                        this.questionsAnswerMap = new Map<number, Array<AnswerMgm>>();
+                        for (const q of this.questions) {
+                            for (const a of q.answers) {
+                                this.answerService.find(a.id).toPromise().then((ans) => {
+                                    if (ans.body) {
+                                        let arr;
+                                        if (this.questionsAnswerMap.get(q.id)) {
+                                            arr = this.questionsAnswerMap.get(q.id) as AnswerMgm[];
+                                            arr.push(ans.body);
+                                        } else {
+                                            arr = [];
+                                            arr.push(ans.body);
+                                        }
+                                        this.questionsAnswerMap.set(q.id, arr);
+                                    }
+                                });
+                            }
+                            console.log(this.questionsAnswerMap);
+                        }
                     }
+                    */
                 });
             }
         });
+    }
+
+    public myAnswerReceiver(myAnswer: MyAnswerMgm) {
+        // console.log(myAnswer);
+        if (myAnswer) {
+            const index = _.findIndex(this.myAnswers, { id: myAnswer.id });
+            if (index !== -1) {
+                this.myAnswers.splice(index, 1, myAnswer);
+            } else {
+                this.myAnswers.push(myAnswer);
+            }
+        }
     }
 
     ngOnDestroy() {

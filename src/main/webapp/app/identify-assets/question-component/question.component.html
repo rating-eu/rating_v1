@@ -1,0 +1,50 @@
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">{{question.name}}</h5>
+        <ng-container class="card-text" *ngIf="question.answers && renderType">
+            <ng-container [ngSwitch]="renderType">
+                <ng-container *ngSwitchCase="'select_rank'">
+                    <b>Intangible Assets </b>
+                    <br>
+                    <ul class="list-inline">
+                        <li class="list-inline-item" *ngFor="let ans of question.answers; let i=index">
+                            <div class="chipsContainer">
+                                <div *ngIf="i>=0 && i<7" class="badge badge-secondary chips" (click)="select(ans)">
+                                    {{ans.name}}
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                    <b>Tangible Assets: </b>
+                    <i>Current assets</i>
+                    <br>
+                    <ul class="list-inline">
+                        <li class="list-inline-item" *ngFor="let ans of question.answers; let i=index">
+                            <div class="chipsContainer">
+                                <div *ngIf="i>=7 && i<14" class="badge badge-secondary chips" (click)="select(ans)">
+                                    {{ans.name}}
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                    <br>
+                    <b>Tangible Assets: </b>
+                    <i>Fixed assets</i>
+                    <br>
+                    <ul class="list-inline">
+                        <li class="list-inline-item" *ngFor="let ans of question.answers; let i=index">
+                            <div class="chipsContainer">
+                                <div *ngIf="i>=14" class="badge badge-secondary chips" (click)="select(ans)">
+                                    {{ans.name}}
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </ng-container>
+                <ng-container *ngSwitchCase="'select_direct_assets'">
+                    select direct
+                </ng-container>
+            </ng-container>
+        </ng-container>
+    </div>
+</div>

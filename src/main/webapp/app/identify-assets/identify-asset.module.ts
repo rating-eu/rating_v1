@@ -2,6 +2,7 @@ import { NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import { IdentifyAssetsRoutingModule } from './identify-assets-routing.module';
 import { IdentifyAssetComponent } from './id-assets/identify-asset.component';
+import { QuestionComponent } from './question-component/question.component';
 
 @NgModule({
     imports: [
@@ -10,10 +11,12 @@ import { IdentifyAssetComponent } from './id-assets/identify-asset.component';
 
     ],
     declarations: [
-        IdentifyAssetComponent
+        IdentifyAssetComponent,
+        QuestionComponent
     ],
     exports: [
-        IdentifyAssetComponent
+        IdentifyAssetComponent,
+        QuestionComponent
     ]
 })
 export class IdentifyAssetModule { }
