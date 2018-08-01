@@ -54,6 +54,13 @@
                 <option [ngValue]="assetOption.id === answer.asset?.id ? answer.asset : assetOption" *ngFor="let assetOption of assets; trackBy: trackAssetById">{{assetOption.name}}</option>
             </select>
         </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="hermeneutApp.answer.assetCategory" for="field_assetCategory">Asset Category</label>
+            <select class="form-control" id="field_assetCategory" name="assetCategory" [(ngModel)]="answer.assetCategory">
+                <option [ngValue]="null"></option>
+                <option [ngValue]="assetCategoryOption.id === answer.assetCategory?.id ? answer.assetCategory : assetCategoryOption" *ngFor="let assetCategoryOption of assetcategories; trackBy: trackAssetCategoryById">{{assetCategoryOption.name}}</option>
+            </select>
+        </div>
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">

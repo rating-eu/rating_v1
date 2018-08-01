@@ -10,6 +10,7 @@ import { AnswerMgm } from './answer-mgm.model';
 import { AnswerMgmPopupService } from './answer-mgm-popup.service';
 import { AnswerMgmService } from './answer-mgm.service';
 import { AssetMgm, AssetMgmService } from '../asset-mgm';
+import { AssetCategoryMgm, AssetCategoryMgmService } from '../asset-category-mgm';
 import { QuestionMgm, QuestionMgmService } from '../question-mgm';
 
 @Component({
@@ -23,6 +24,8 @@ export class AnswerMgmDialogComponent implements OnInit {
 
     assets: AssetMgm[];
 
+    assetcategories: AssetCategoryMgm[];
+
     questions: QuestionMgm[];
 
     constructor(
@@ -30,6 +33,7 @@ export class AnswerMgmDialogComponent implements OnInit {
         private jhiAlertService: JhiAlertService,
         private answerService: AnswerMgmService,
         private assetService: AssetMgmService,
+        private assetCategoryService: AssetCategoryMgmService,
         private questionService: QuestionMgmService,
         private eventManager: JhiEventManager
     ) {
@@ -47,6 +51,19 @@ export class AnswerMgmDialogComponent implements OnInit {
                         .find(this.answer.asset.id)
                         .subscribe((subRes: HttpResponse<AssetMgm>) => {
                             this.assets = [subRes.body].concat(res.body);
+                        }, (subRes: HttpErrorResponse) => this.onError(subRes.message));
+                }
+            }, (res: HttpErrorResponse) => this.onError(res.message));
+        this.assetCategoryService
+            .query({filter: 'answer-is-null'})
+            .subscribe((res: HttpResponse<AssetCategoryMgm[]>) => {
+                if (!this.answer.assetCategory || !this.answer.assetCategory.id) {
+                    this.assetcategories = res.body;
+                } else {
+                    this.assetCategoryService
+                        .find(this.answer.assetCategory.id)
+                        .subscribe((subRes: HttpResponse<AssetCategoryMgm>) => {
+                            this.assetcategories = [subRes.body].concat(res.body);
                         }, (subRes: HttpErrorResponse) => this.onError(subRes.message));
                 }
             }, (res: HttpErrorResponse) => this.onError(res.message));
@@ -89,6 +106,10 @@ export class AnswerMgmDialogComponent implements OnInit {
     }
 
     trackAssetById(index: number, item: AssetMgm) {
+        return item.id;
+    }
+
+    trackAssetCategoryById(index: number, item: AssetCategoryMgm) {
         return item.id;
     }
 

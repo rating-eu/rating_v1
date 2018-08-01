@@ -30,6 +30,12 @@
                 <a [routerLink]="['/asset-mgm', answer.asset?.id]">{{answer.asset?.name}}</a>
             </div>
         </dd>
+        <dt><span jhiTranslate="hermeneutApp.answer.assetCategory">Asset Category</span></dt>
+        <dd>
+            <div *ngIf="answer.assetCategory">
+                <a [routerLink]="['/asset-category-mgm', answer.assetCategory?.id]">{{answer.assetCategory?.name}}</a>
+            </div>
+        </dd>
     </dl>
 
     <button type="submit"
