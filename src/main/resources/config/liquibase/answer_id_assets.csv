@@ -15,7 +15,7 @@ id;name;created;modified;jhi_order;likelihood
 79;Row material and stocks;${now};${now};7;NOT_AVAILABLE
 80;Land;${now};${now};8;NOT_AVAILABLE
 81;Buildings;${now};${now};9;NOT_AVAILABLE
-82;Equipment and Machinery;${now};${now};10;NOT_AVAILABLE
+82;Plants and Machinery;${now};${now};10;NOT_AVAILABLE
 83;Current assets (e.g., cash, equities, stocks, etc.);${now};${now};9;NOT_AVAILABLE
 84;Fixed Assets (buildings, equipment and machinery, etc.);${now};${now};10;NOT_AVAILABLE
 85;Before the attack status restoration (service, data, etc.);${now};${now};1;NOT_AVAILABLE
@@ -32,7 +32,8 @@ id;name;created;modified;jhi_order;likelihood
 96;Increased cost to raise debt;${now};${now};12;NOT_AVAILABLE
 97;Value of lost or not fulfilled contract revenues;${now};${now};13;NOT_AVAILABLE
 98;Lost or non fulfilled contracts;${now};${now};14;NOT_AVAILABLE
-
+99;Plants and Machinery;${now};${now};11;NOT_AVAILABLE
+100;Forniture and office supplies;${now};${now};11;NOT_AVAILABLE
 
 
 

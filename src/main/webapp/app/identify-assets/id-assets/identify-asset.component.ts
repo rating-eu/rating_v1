@@ -19,6 +19,8 @@ import { QuestionMgm, QuestionMgmService } from '../../entities/question-mgm';
 import { AnswerMgm, AnswerMgmService } from '../../entities/answer-mgm';
 import { MyAnswerMgmService, MyAnswerMgm } from '../../entities/my-answer-mgm';
 import { QuestionnaireStatusMgmService } from '../../entities/questionnaire-status-mgm';
+import { MyAssetMgm } from '../../entities/my-asset-mgm';
+import { IdentifyAssetUtilService } from '../identify-asset.util.service';
 
 @Component({
     selector: 'jhi-identify-asset',
@@ -37,6 +39,7 @@ export class IdentifyAssetComponent implements OnInit, OnDestroy {
     questionnaries: QuestionnaireMgm[];
     questions: QuestionMgm[];
     myAnswers: MyAnswerMgm[];
+    myAssets: MyAssetMgm[];
     questionsAnswerMap: Map<number, Array<AnswerMgm>>;
 
     constructor(private jhiAlertService: JhiAlertService,
@@ -51,7 +54,9 @@ export class IdentifyAssetComponent implements OnInit, OnDestroy {
         private answerService: AnswerMgmService,
         private identifyAssetService: IdentifyAssetService,
         private route: ActivatedRoute,
-        private assetService: AssetMgmService) {
+        private assetService: AssetMgmService,
+        private idaUtilsService: IdentifyAssetUtilService
+    ) {
     }
 
     ngOnInit() {
@@ -110,16 +115,28 @@ export class IdentifyAssetComponent implements OnInit, OnDestroy {
         });
     }
 
-    public myAnswerReceiver(myAnswer: MyAnswerMgm) {
+    /*
+    public myAnswersReceiver(myAnswers: MyAnswerMgm[]) {
         // console.log(myAnswer);
-        if (myAnswer) {
-            const index = _.findIndex(this.myAnswers, { id: myAnswer.id });
-            if (index !== -1) {
-                this.myAnswers.splice(index, 1, myAnswer);
-            } else {
-                this.myAnswers.push(myAnswer);
+        if (myAnswers) {
+            for (const myAnswer of myAnswers) {
+                const index = _.findIndex(this.myAnswers, { id: myAnswer.id });
+                if (index !== -1) {
+                    this.myAnswers.splice(index, 1, myAnswer);
+                } else {
+                    this.myAnswers.push(myAnswer);
+                }
             }
         }
+    }
+    */
+
+    public sendAnswerAndSaveMyAssets() {
+        this.myAnswers = this.idaUtilsService.getMyAnswersComplited();
+        this.myAssets = this.idaUtilsService.getMyAssets();
+        console.log(this.myAnswers);
+        console.log(this.myAssets);
+        // TODO funzioni per il salvataggio
     }
 
     ngOnDestroy() {

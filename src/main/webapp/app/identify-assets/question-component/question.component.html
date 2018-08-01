@@ -4,37 +4,42 @@
         <ng-container class="card-text" *ngIf="question.answers && renderType">
             <ng-container [ngSwitch]="renderType">
                 <ng-container *ngSwitchCase="'select_rank'">
-                    <b>Intangible Assets </b>
+                    <b style="clear: both">Intangible Assets </b>
                     <br>
-                    <ul class="list-inline">
-                        <li class="list-inline-item" *ngFor="let ans of question.answers; let i=index">
+                    <ul class="list-unstyled" *ngIf="intangible">
+                        <li *ngFor="let ans of intangible">
+                            <div class="row">
+                                <div class="col">
+                                    <div class="chipsContainer">
+                                        <div class="badge chips" [ngClass]="{'badge-secondary': !isSelected(ans), 'badge-primary': isSelected(ans)}" (click)="select(ans)">
+                                            {{ans.name}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    rank
+                                </div>
+                            </div>    
+                        </li>
+                    </ul>
+                    <b>Tangible Assets: </b><i style="clear: both">Current assets</i>
+                    <br>
+                    <ul class="list-unstyled" *ngIf="tangibleCurrent">
+                        <li *ngFor="let ans of tangibleCurrent">
                             <div class="chipsContainer">
-                                <div *ngIf="i>=0 && i<7" class="badge badge-secondary chips" (click)="select(ans)">
+                                <div class="badge chips" [ngClass]="{'badge-secondary': !isSelected(ans), 'badge-primary': isSelected(ans)}" (click)="select(ans)">
                                     {{ans.name}}
                                 </div>
                             </div>
                         </li>
                     </ul>
                     <b>Tangible Assets: </b>
-                    <i>Current assets</i>
+                    <i style="clear: both">Fixed assets</i>
                     <br>
-                    <ul class="list-inline">
-                        <li class="list-inline-item" *ngFor="let ans of question.answers; let i=index">
+                    <ul class="list-unstyled" *ngIf="tangibleFixed">
+                        <li *ngFor="let ans of tangibleFixed">
                             <div class="chipsContainer">
-                                <div *ngIf="i>=7 && i<14" class="badge badge-secondary chips" (click)="select(ans)">
-                                    {{ans.name}}
-                                </div>
-                            </div>
-                        </li>
-                    </ul>
-                    <br>
-                    <b>Tangible Assets: </b>
-                    <i>Fixed assets</i>
-                    <br>
-                    <ul class="list-inline">
-                        <li class="list-inline-item" *ngFor="let ans of question.answers; let i=index">
-                            <div class="chipsContainer">
-                                <div *ngIf="i>=14" class="badge badge-secondary chips" (click)="select(ans)">
+                                <div class="badge chips" [ngClass]="{'badge-secondary': !isSelected(ans), 'badge-primary': isSelected(ans)}" (click)="select(ans)">
                                     {{ans.name}}
                                 </div>
                             </div>
@@ -42,7 +47,53 @@
                     </ul>
                 </ng-container>
                 <ng-container *ngSwitchCase="'select_direct_assets'">
-                    select direct
+                    <ul class="list-inline" *ngIf="question.answers">
+                        <li class="list-inline-item" *ngFor="let ans of question.answers">
+                            <div class="chipsContainer">
+                                <div class="badge chips" [ngClass]="{'badge-secondary': !isSelected(ans), 'badge-primary': isSelected(ans)}" (click)="select(ans)">
+                                    {{ans.name}}
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </ng-container>
+                <ng-container *ngSwitchCase="'select_indirect_assets'">
+                    <!-- For …………………………….. Please select one or more assets from the following list:  -->
+                    <ul class="list-inline" *ngIf="question.answers">
+                            <li class="list-inline-item" *ngFor="let ans of question.answers">
+                                <div class="chipsContainer">
+                                    <div class="badge chips" [ngClass]="{'badge-secondary': !isSelected(ans), 'badge-primary': isSelected(ans)}" (click)="select(ans)">
+                                        {{ans.name}}
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                </ng-container>
+                <ng-container *ngSwitchCase="'estimated_assets'">
+                    <ul class="list-inline" *ngIf="question.answers">
+                        <li class="list-inline-item" *ngFor="let ans of question.answers">
+                            <div class="chipsContainer">
+                                <div class="badge chips" [ngClass]="{'badge-secondary': !isSelected(ans), 'badge-primary': isSelected(ans)}" (click)="select(ans)">
+                                    {{ans.name}}
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </ng-container>
+                <ng-container *ngSwitchCase="'insert_magnitude'">
+                    insert magnitude for each estimated
+                </ng-container>
+                <ng-container *ngSwitchCase="'idetify_costs'">
+                    <!-- For the …..…………………………………………………….. asset identified, please select from the following list: -->
+                    <ul class="list-inline" *ngIf="question.answers">
+                        <li class="list-inline-item" *ngFor="let ans of question.answers">
+                            <div class="chipsContainer">
+                                <div class="badge chips" [ngClass]="{'badge-secondary': !isSelected(ans), 'badge-primary': isSelected(ans)}" (click)="select(ans)">
+                                    {{ans.name}}
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
                 </ng-container>
             </ng-container>
         </ng-container>

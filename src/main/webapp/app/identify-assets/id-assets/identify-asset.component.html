@@ -184,7 +184,7 @@ step todo:
                 [question]="q"
                 [self]="mySelf"
                 [questionnaire]="questionnaries[0]"
-                [questionRenderType]="q.name"
-                (myAnswerComplited)="myAnswerReceiver($event)"></question-card>
+                [questionRenderType]="q.name"></question-card>
     </ng-container>
+    <button (click)="sendAnswerAndSaveMyAssets()">click</button>
 </ng-container>
