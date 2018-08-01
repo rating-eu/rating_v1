@@ -10,6 +10,7 @@ import { AnswerMgmDialogComponent } from '../../../../../../main/webapp/app/enti
 import { AnswerMgmService } from '../../../../../../main/webapp/app/entities/answer-mgm/answer-mgm.service';
 import { AnswerMgm } from '../../../../../../main/webapp/app/entities/answer-mgm/answer-mgm.model';
 import { AssetMgmService } from '../../../../../../main/webapp/app/entities/asset-mgm';
+import { AssetCategoryMgmService } from '../../../../../../main/webapp/app/entities/asset-category-mgm';
 import { QuestionMgmService } from '../../../../../../main/webapp/app/entities/question-mgm';
 
 describe('Component Tests', () => {
@@ -27,6 +28,7 @@ describe('Component Tests', () => {
                 declarations: [AnswerMgmDialogComponent],
                 providers: [
                     AssetMgmService,
+                    AssetCategoryMgmService,
                     QuestionMgmService,
                     AnswerMgmService
                 ]

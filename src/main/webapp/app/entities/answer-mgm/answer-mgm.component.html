@@ -36,6 +36,7 @@
             <th><span jhiTranslate="hermeneutApp.answer.order">Order</span></th>
             <th><span jhiTranslate="hermeneutApp.answer.likelihood">Likelihood</span></th>
             <th><span jhiTranslate="hermeneutApp.answer.asset">Asset</span></th>
+            <th><span jhiTranslate="hermeneutApp.answer.assetCategory">Asset Category</span></th>
             <th></th>
             </tr>
             </thead>
@@ -50,6 +51,11 @@
                 <td>
                     <div *ngIf="answer.asset">
                         <a [routerLink]="['../asset-mgm', answer.asset?.id ]" >{{answer.asset?.name}}</a>
+                    </div>
+                </td>
+                <td>
+                    <div *ngIf="answer.assetCategory">
+                        <a [routerLink]="['../asset-category-mgm', answer.assetCategory?.id ]" >{{answer.assetCategory?.name}}</a>
                     </div>
                 </td>
                 <td class="text-right">

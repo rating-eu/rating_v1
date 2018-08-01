@@ -14,5 +14,11 @@
                                  referencedColumnNames="id"
                                  referencedTableName="asset"/>
 
+        <addForeignKeyConstraint baseColumnNames="asset_category_id"
+                                 baseTableName="answer"
+                                 constraintName="fk_answer_asset_category_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="asset_category"/>
+
     </changeSet>
 </databaseChangeLog>
