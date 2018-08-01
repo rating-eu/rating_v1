@@ -54,23 +54,64 @@
                 </label>
 
                 <div *ngIf="debug">
-            <pre>
-                {{question | json}}
-            </pre>
+                    <pre>
+                        {{question | json}}
+                    </pre>
                 </div>
 
-                <div [id]="question.id" class="radio" *ngFor="let answer of sort(question.answers)">
-                    <pre *ngIf="debug">{{answer | json}}</pre>
+                <table>
+                    <thead>
+                    <tr>
+                        <th>CISO</th>
+                        <th>External</th>
+                        <th>Note</th>
+                    </tr>
+                    </thead>
 
-                    <label class="radio">
-                        <input type="radio"
-                               [formControlName]="question.id"
-                               [value]="answer"/>&nbsp;{{answer.name}}
-                        <pre *ngIf="debug">
-                answer id {{answer.id}} form value id
-                {{form.value[question.id].id | json}}</pre>
-                    </label>
-                </div>
+                    <tbody>
+                    <tr>
+                        <td>
+                            <div [id]="question.id" class="radio" *ngFor="let answer of sort(question.answers)">
+                                <pre *ngIf="debug">{{answer | json}}</pre>
+
+                                <label class="radio">
+                                    <input type="radio"
+                                           [formControlName]="question.id"
+                                           [value]="answer"/>&nbsp;{{answer.name}}
+                                    <pre *ngIf="debug">
+                                        answer id {{answer.id}} form value id
+                                        {{form.value[question.id].id | json}}
+                                    </pre>
+                                </label>
+                            </div>
+                        </td>
+
+                        <td>
+                            <div [id]="question.id" class="radio" *ngFor="let answer of sort(question.answers)">
+                                <pre *ngIf="debug">{{answer | json}}</pre>
+
+                                <label class="radio">
+                                    <input type="radio"
+                                           [formControlName]="question.id"
+                                           [value]="answer"/>&nbsp;{{answer.name}}
+                                    <pre *ngIf="debug">
+                                        answer id {{answer.id}} form value id
+                                        {{form.value[question.id].id | json}}
+                                    </pre>
+                                </label>
+                            </div>
+                        </td>
+
+                        <td>
+                            <div>
+                                <label>
+                                    <input type="text" [formControlName]="question.id + '.note'">
+                                </label>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
             </div>
 
             <div class="form-row">

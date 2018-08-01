@@ -13,6 +13,7 @@ export class QuestionControlService {
 
         questions.forEach((question) => {
             group[question.id] = new FormControl('', Validators.required);
+            group[question.id + '.note'] = new FormControl('', Validators.required);
         });
         return new FormGroup(group);
     }
