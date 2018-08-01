@@ -4,37 +4,86 @@
 
 <form *ngIf="form" (ngSubmit)="submitDispatcher()" [formGroup]="form" role="form">
 
-    <div *ngFor="let question of questionsArray; trackBy: trackByID"
-         [ngClass]="{'ng-valid': isValid(question.id) === true, 'ng-invalid': isValid(question.id) === false}">
+    <div [ngSwitch]="role">
+        <div *ngSwitchCase="roleEnum.ROLE_CISO">
+            <h2>ROLE CISO</h2>
 
-        <label class="form-control-label" [attr.for]="question?.id"><h3>
-            {{question?.name}}</h3>
-        </label>
+            <div *ngFor="let question of questionsArray; trackBy: trackByID"
+                 [ngClass]="{'ng-valid': isValid(question.id) === true, 'ng-invalid': isValid(question.id) === false}">
 
-        <div *ngIf="debug">
+                <label class="form-control-label" [attr.for]="question?.id"><h3>
+                    {{question?.name}}</h3>
+                </label>
+
+                <div *ngIf="debug">
             <pre>
                 {{question | json}}
             </pre>
-        </div>
+                </div>
 
-        <div [id]="question.id" class="radio" *ngFor="let answer of sort(question.answers)">
-            <pre *ngIf="debug">{{answer | json}}</pre>
+                <div [id]="question.id" class="radio" *ngFor="let answer of sort(question.answers)">
+                    <pre *ngIf="debug">{{answer | json}}</pre>
 
-            <label class="radio">
-                <input type="radio"
-                       [formControlName]="question.id"
-                       [value]="answer"/>&nbsp;{{answer.name}}
-                <pre *ngIf="debug">
+                    <label class="radio">
+                        <input type="radio"
+                               [formControlName]="question.id"
+                               [value]="answer"/>&nbsp;{{answer.name}}
+                        <pre *ngIf="debug">
                 answer id {{answer.id}} form value id
                 {{form.value[question.id].id | json}}</pre>
-            </label>
-        </div>
-    </div>
+                    </label>
+                </div>
+            </div>
 
-    <div class="form-row">
-        <button class="btn btn-success btn-lg" type="submit" [disabled]="!form.valid">Identify</button>
-        <button class="btn btn-primary btn-lg" type="button" (click)="freezeQuestionnaireStatus()">Freeze</button>
-        <button class="btn btn-danger" type="reset" (click)="form.reset()">Reset</button>
+            <div class="form-row">
+                <button class="btn btn-success btn-lg" type="submit" [disabled]="!form.valid">Submit</button>
+                <button class="btn btn-primary btn-lg" type="button" (click)="freezeQuestionnaireStatus()">Freeze
+                </button>
+                <button class="btn btn-danger" type="reset" (click)="form.reset()">Reset</button>
+            </div>
+        </div>
+
+        <div *ngSwitchCase="roleEnum.ROLE_EXTERNAL_AUDIT">
+            <h2>ROLE EXTERNAL AUDIT</h2>
+
+            <div *ngFor="let question of questionsArray; trackBy: trackByID"
+                 [ngClass]="{'ng-valid': isValid(question.id) === true, 'ng-invalid': isValid(question.id) === false}">
+
+                <label class="form-control-label" [attr.for]="question?.id"><h3>
+                    {{question?.name}}</h3>
+                </label>
+
+                <div *ngIf="debug">
+            <pre>
+                {{question | json}}
+            </pre>
+                </div>
+
+                <div [id]="question.id" class="radio" *ngFor="let answer of sort(question.answers)">
+                    <pre *ngIf="debug">{{answer | json}}</pre>
+
+                    <label class="radio">
+                        <input type="radio"
+                               [formControlName]="question.id"
+                               [value]="answer"/>&nbsp;{{answer.name}}
+                        <pre *ngIf="debug">
+                answer id {{answer.id}} form value id
+                {{form.value[question.id].id | json}}</pre>
+                    </label>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <button class="btn btn-success btn-lg" type="submit" [disabled]="!form.valid">Submit</button>
+                <button class="btn btn-primary btn-lg" type="button" (click)="freezeQuestionnaireStatus()">Freeze
+                </button>
+                <button class="btn btn-danger" type="reset" (click)="form.reset()">Reset</button>
+            </div>
+        </div>
+
+        <div *ngSwitchDefault="">
+            <h2>The role {{role}} is not allowed to perform this action</h2>
+        </div>
     </div>
 </form>
 

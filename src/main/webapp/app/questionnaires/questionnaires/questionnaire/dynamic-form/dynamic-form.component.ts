@@ -41,6 +41,7 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
     private static EXTERNAL_ROLE = Role[Role.ROLE_EXTERNAL_AUDIT];
 
     debug = false;
+    roleEnum = Role;
 
     _questionsArray: QuestionMgm[];
     /**
