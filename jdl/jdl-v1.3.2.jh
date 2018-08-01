@@ -292,6 +292,7 @@ relationship OneToOne{
     QuestionnaireStatus{questionnaire(name)} to Questionnaire,
     QuestionnaireStatus{user(login)} to User,
     Answer{asset(name)} to Asset,
+    Answer{assetCategory(name)} to AssetCategory,
     MyAsset{asset(name)} to Asset,
     MyAsset{selfAssessment(name)} to SelfAssessment,
     MyAsset{questionnaire(name)} to Questionnaire,
