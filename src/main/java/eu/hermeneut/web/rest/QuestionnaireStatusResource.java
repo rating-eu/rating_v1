@@ -15,6 +15,7 @@ import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.StreamSupport;
@@ -52,6 +53,12 @@ public class QuestionnaireStatusResource {
         if (questionnaireStatus.getId() != null) {
             throw new BadRequestAlertException("A new questionnaireStatus cannot already have an ID", ENTITY_NAME, "idexists");
         }
+
+        //Set the current date for the questionnaire status (created and modified)
+        ZonedDateTime now = ZonedDateTime.now();
+        questionnaireStatus.setCreated(now);
+        questionnaireStatus.setModified(now);
+
         QuestionnaireStatus result = questionnaireStatusService.save(questionnaireStatus);
         return ResponseEntity.created(new URI("/api/questionnaire-statuses/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
@@ -74,6 +81,11 @@ public class QuestionnaireStatusResource {
         if (questionnaireStatus.getId() == null) {
             return createQuestionnaireStatus(questionnaireStatus);
         }
+
+        //Set the current date for the questionnaire status (modified)
+        ZonedDateTime now = ZonedDateTime.now();
+        questionnaireStatus.setModified(now);
+
         QuestionnaireStatus result = questionnaireStatusService.save(questionnaireStatus);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, questionnaireStatus.getId().toString()))
@@ -100,8 +112,20 @@ public class QuestionnaireStatusResource {
     @GetMapping("/questionnaire-statuses/self-assessment/{selfAssessmentID}/user/{userID}")
     @Timed
     public List<QuestionnaireStatus> getAllQuestionnaireStatusesBySelfAssessmentAndUser(@PathVariable Long selfAssessmentID, @PathVariable Long userID) {
-        log.debug("REST request to get all QuestionnaireStatuses");
+        log.debug("REST request to get all QuestionnaireStatuses by self assessment and user");
         return questionnaireStatusService.findAllBySelfAssessmentAndUser(selfAssessmentID, userID);
+    }
+
+    /**
+     * GET  /questionnaire-statuses : get all the questionnaireStatuses by Role SelfAssessment and Questionnaire.
+     *
+     * @return the ResponseEntity with status 200 (OK) and the list of questionnaireStatuses in body
+     */
+    @GetMapping("/questionnaire-statuses/self-assessment/{selfAssessmentID}/questionnaire/{questionnaireID}/role/{role}")
+    @Timed
+    public QuestionnaireStatus getQuestionnaireStatusByRoleSelfAssessmentAndQuestionnaire(@PathVariable Long selfAssessmentID, @PathVariable Long questionnaireID, @PathVariable String role) {
+        log.debug("REST request to get all QuestionnaireStatuses by Role SelfAssessment and Questionnaire");
+        return questionnaireStatusService.findByRoleSelfAssessmentAndQuestionnaire(role, selfAssessmentID, questionnaireID);
     }
 
     /**

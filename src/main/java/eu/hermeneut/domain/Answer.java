@@ -51,6 +51,10 @@ public class Answer implements Serializable {
     @JoinColumn(unique = true)
     private Asset asset;
 
+    @OneToOne
+    @JoinColumn(unique = true)
+    private AssetCategory assetCategory;
+
     @ManyToMany(mappedBy = "answers")
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
@@ -141,6 +145,19 @@ public class Answer implements Serializable {
 
     public void setAsset(Asset asset) {
         this.asset = asset;
+    }
+
+    public AssetCategory getAssetCategory() {
+        return assetCategory;
+    }
+
+    public Answer assetCategory(AssetCategory assetCategory) {
+        this.assetCategory = assetCategory;
+        return this;
+    }
+
+    public void setAssetCategory(AssetCategory assetCategory) {
+        this.assetCategory = assetCategory;
     }
 
     public Set<Question> getQuestions() {

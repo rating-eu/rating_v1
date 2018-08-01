@@ -10,6 +10,14 @@
             "otherEntityRelationshipName": "answer"
         },
         {
+            "relationshipType": "one-to-one",
+            "relationshipName": "assetCategory",
+            "otherEntityName": "assetCategory",
+            "otherEntityField": "name",
+            "ownerSide": true,
+            "otherEntityRelationshipName": "answer"
+        },
+        {
             "relationshipType": "many-to-many",
             "relationshipName": "question",
             "otherEntityName": "question",

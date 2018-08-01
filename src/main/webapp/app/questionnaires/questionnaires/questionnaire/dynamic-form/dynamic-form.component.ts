@@ -10,20 +10,19 @@ import {Couple} from '../../../../utils/couple.class';
 import {DatasharingService} from '../../../../datasharing/datasharing.service';
 import {Router} from '@angular/router';
 import {
-    QuestionnaireStatusMgm, QuestionnaireStatusMgmService
+    QuestionnaireStatusMgm, QuestionnaireStatusMgmService, Role
 } from '../../../../entities/questionnaire-status-mgm';
 import {Status} from '../../../../entities/enumerations/QuestionnaireStatus.enum';
 import {QuestionnaireMgm} from '../../../../entities/questionnaire-mgm';
 import {QuestionnairePurpose} from '../../../../entities/enumerations/QuestionnairePurpose.enum';
 import {MyAnswerMgm, MyAnswerMgmService} from '../../../../entities/my-answer-mgm';
-import {AccountService, User, UserService} from '../../../../shared';
+import {AccountService, Principal, User, UserService} from '../../../../shared';
 import {SelfAssessmentMgm, SelfAssessmentMgmService} from '../../../../entities/self-assessment-mgm';
 import {Subscription} from 'rxjs/Subscription';
 import {FormUtils} from '../../../utils/FormUtils';
 import {forkJoin} from 'rxjs/observable/forkJoin';
 import {Observable} from 'rxjs/Observable';
 import {HttpResponse} from '@angular/common/http';
-import {AttackStrategyMgm} from '../../../../entities/attack-strategy-mgm';
 import {concatMap, mergeMap} from 'rxjs/operators';
 
 @Component({
@@ -38,6 +37,9 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
     private static NO = 'NO';
     private statusEnum = Status;
 
+    private static CISO_ROLE = Role[Role.ROLE_CISO];
+    private static EXTERNAL_ROLE = Role[Role.ROLE_EXTERNAL_AUDIT];
+
     debug = false;
 
     _questionsArray: QuestionMgm[];
@@ -51,6 +53,7 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
     myAnswers: MyAnswerMgm[];
 
     private account: Account;
+    private role: Role;
     private user: User;
     private selfAssessment: SelfAssessmentMgm;
     private subscriptions: Subscription[] = [];
@@ -183,17 +186,26 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.selfAssessment = this.selfAssessmentService.getSelfAssessment();
 
-        this.subscriptions.push(
-            this.accountService.get().subscribe((response1) => {
-                this.account = response1.body;
+        this.accountService.get().mergeMap(
+            (accountHttpResponse: HttpResponse<Account>) => {// Get the Account
+                this.account = accountHttpResponse.body;
+                console.log('Account: ' + JSON.stringify(this.account));
 
-                this.subscriptions.push(
-                    this.userService.find(this.account['login']).subscribe((response2) => {
-                        this.user = response2.body;
-                    })
-                );
-            })
-        );
+                if (this.account['authorities'].includes(DynamicFormComponent.CISO_ROLE)) {
+                    this.role = Role.ROLE_CISO;
+                } else if (this.account['authorities'].includes(DynamicFormComponent.EXTERNAL_ROLE)) {
+                    this.role = Role.ROLE_EXTERNAL_AUDIT;
+                }
+
+                console.log('Role: ' + this.role);
+
+                return this.userService.find(this.account['login']);
+            }
+        ).toPromise().then(
+            (userHttpResponse: HttpResponse<User>) => {// Get the User
+                this.user = userHttpResponse.body;
+                console.log('User: ' + JSON.stringify(this.user));
+            });
     }
 
     ngOnDestroy() {
@@ -309,8 +321,10 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
         this.dataSharingSerivce.threatAgentsMap = threatAgentsPercentageMap;
         console.log('DYNAMIC FORM Shared ThreatAgent Percentage Map size: ', +this.dataSharingSerivce.threatAgentsMap.size);
 
+        const now: string = new Date().toISOString();
+
         // #1 Persist QuestionnaireStatus
-        let questionnaireStatus: QuestionnaireStatusMgm = new QuestionnaireStatusMgm(undefined, Status.FULL, null, null, this.selfAssessment, this.questionnaire, this.user, []);
+        let questionnaireStatus: QuestionnaireStatusMgm = new QuestionnaireStatusMgm(undefined, Status.FULL, now, now, this.selfAssessment, this.questionnaire, this.role, this.user, []);
         const questionnaireStatus$: Observable<HttpResponse<QuestionnaireStatusMgm>> = this.questionnaireStatusService.create(questionnaireStatus);
 
         // #2 Persist MyAnswers
@@ -407,8 +421,11 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
         const formDataMap: Map<string, AnswerMgm> = FormUtils.formToMap<AnswerMgm>(this.form);
         console.log('FormDataMap size: ' + formDataMap.size);
 
+        //Now ISO8601
+        const now: string = new Date().toISOString();
+
         // Update the status of the questionnaire
-        let questionnaireStatus = new QuestionnaireStatusMgm(undefined, Status.FULL, null, null, this.selfAssessment, this.questionnaire, this.user, []);
+        let questionnaireStatus = new QuestionnaireStatusMgm(undefined, Status.FULL, now, now, this.selfAssessment, this.questionnaire, this.role, this.user, []);
 
         // Persist the QuestionnaireStatus
         const selfAssessment$: Observable<HttpResponse<SelfAssessmentMgm>> =
@@ -458,13 +475,15 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
         console.log('FormData: ' + formDataMap);
         console.log('FormDataMap Size: ' + formDataMap.size);
 
+        const now: string = new Date().toISOString();
+
         switch (this._questionnaireStatus.status) {
             case Status.EMPTY: {// create a new QuestionnaireStatus && create MyAnswers
                 /**
                  * The PENDING status for the questionnaire.
                  * @type {QuestionnaireStatusMgm}
                  */
-                this._questionnaireStatus = new QuestionnaireStatusMgm(undefined, Status.PENDING, this.selfAssessment, this._questionnaire, this.user, this.questionnaire);
+                this._questionnaireStatus = new QuestionnaireStatusMgm(undefined, Status.PENDING, now, now, this.selfAssessment, this._questionnaire, this.role, this.user, []);
 
                 // Getting the id of the above QuestionnaireStatus
                 this.subscriptions.push(

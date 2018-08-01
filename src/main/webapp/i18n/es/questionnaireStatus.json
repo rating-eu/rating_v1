@@ -20,6 +20,7 @@
             "status": "Status",
             "created": "Created",
             "modified": "Modified",
+            "role": "Role",
             "selfAssessment": "Self Assessment",
             "questionnaire": "Questionnaire",
             "user": "User",

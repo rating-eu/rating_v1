@@ -8,6 +8,7 @@ import javax.persistence.*;
 import javax.validation.constraints.*;
 
 import org.springframework.data.elasticsearch.annotations.Document;
+
 import java.io.Serializable;
 import java.time.ZonedDateTime;
 import java.util.HashSet;
@@ -16,11 +17,16 @@ import java.util.Objects;
 
 import eu.hermeneut.domain.enumeration.Status;
 
+import eu.hermeneut.domain.enumeration.Role;
+
 /**
  * A QuestionnaireStatus.
  */
 @Entity
-@Table(name = "questionnaire_status")
+@Table(
+    name = "questionnaire_status",
+    uniqueConstraints = @UniqueConstraint(columnNames = {"jhi_role", "self_assessment_id", "questionnaire_id"})
+)
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 @Document(indexName = "questionnairestatus")
 public class QuestionnaireStatus implements Serializable {
@@ -37,18 +43,25 @@ public class QuestionnaireStatus implements Serializable {
     @Column(name = "status", nullable = false)
     private Status status;
 
-    @Column(name = "created")
+    @NotNull
+    @Column(name = "created", nullable = false)
     private ZonedDateTime created;
 
-    @Column(name = "modified")
+    @NotNull
+    @Column(name = "modified", nullable = false)
     private ZonedDateTime modified;
 
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    @Column(name = "jhi_role", nullable = false)
+    private Role role;
+
     @OneToOne
-    @JoinColumn(unique = true)
+    @JoinColumn(unique = true, name = "self_assessment_id")
     private SelfAssessment selfAssessment;
 
     @OneToOne
-    @JoinColumn(unique = true)
+    @JoinColumn(unique = true, name = "questionnaire_id")
     private Questionnaire questionnaire;
 
     @OneToOne
@@ -106,6 +119,19 @@ public class QuestionnaireStatus implements Serializable {
 
     public void setModified(ZonedDateTime modified) {
         this.modified = modified;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public QuestionnaireStatus role(Role role) {
+        this.role = role;
+        return this;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
     }
 
     public SelfAssessment getSelfAssessment() {
@@ -200,6 +226,7 @@ public class QuestionnaireStatus implements Serializable {
             ", status='" + getStatus() + "'" +
             ", created='" + getCreated() + "'" +
             ", modified='" + getModified() + "'" +
+            ", role='" + getRole() + "'" +
             "}";
     }
 }
