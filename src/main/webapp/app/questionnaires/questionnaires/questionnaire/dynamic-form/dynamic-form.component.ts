@@ -24,6 +24,7 @@ import {forkJoin} from 'rxjs/observable/forkJoin';
 import {Observable} from 'rxjs/Observable';
 import {HttpResponse} from '@angular/common/http';
 import {concatMap, mergeMap} from 'rxjs/operators';
+import {QuestionnaireStatusMgmCustomService} from '../../../../entities/questionnaire-status-mgm/questionnaire-status-mgm.custom.service';
 
 @Component({
     selector: 'jhi-dynamic-form',
@@ -41,14 +42,16 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
     private static EXTERNAL_ROLE = Role[Role.ROLE_EXTERNAL_AUDIT];
 
     debug = false;
+    roleEnum = Role;
+    purposeEnum = QuestionnairePurpose;
 
-    _questionsArray: QuestionMgm[];
+    questionsArray: QuestionMgm[];
     /**
      * Map QuestionID ==> Question
      */
-    _questionsArrayMap: Map<number, QuestionMgm>;
+    questionsArrayMap: Map<number, QuestionMgm>;
     form: FormGroup;
-    _questionnaireStatus: QuestionnaireStatusMgm;
+    questionnaireStatus: QuestionnaireStatusMgm;
 
     myAnswers: MyAnswerMgm[];
 
@@ -66,61 +69,11 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
                 private answerService: AnswerMgmService,
                 private selfAssessmentService: SelfAssessmentMgmService,
                 private questionnaireStatusService: QuestionnaireStatusMgmService,
+                private questionnaireStatusCustomService: QuestionnaireStatusMgmCustomService,
                 private accountService: AccountService,
                 private userService: UserService,
                 private questionService: QuestionMgmService,
                 private threatAgentService: ThreatAgentMgmService) {
-    }
-
-    @Input()
-    set questionsArray(questionsArray: QuestionMgm[]) {
-        console.log('QuestionsArray changed...');
-        this._questionsArray = questionsArray;
-        console.log('Now its ' + this._questionsArray);
-
-        // Now we can create the form, since the questionsArray is no more undefined
-        if (this._questionsArray) {
-            this.form = this.questionControlService.toFormGroup(this._questionsArray);
-            console.log('Form has been created...');
-            console.log('Form is: ' + this.form);
-
-            this._questionsArrayMap = new Map<number, QuestionMgm>();
-
-            this._questionsArray.forEach((value: QuestionMgm) => {
-                this._questionsArrayMap.set(value.id, value);
-            });
-
-            if (this.myAnswers) {
-                this.form.patchValue(this.myAnswersToFormValue(this.myAnswers, this._questionsArrayMap));
-            }
-
-            if (this.questionnaire.purpose === QuestionnairePurpose.SELFASSESSMENT) {
-                for (const key in this.form.controls) {
-                    const formControl = this.form.get(key);
-
-                    if (formControl) {
-                        formControl.valueChanges.subscribe(
-                            (answer: AnswerMgm) => {
-                                console.log('Question ' + key + ' Field changes:');
-
-                                const question = this._questionsArrayMap.get(Number(key));
-                                console.log('Question:');
-                                console.log(JSON.stringify(question));
-
-                                console.log('Answer:');
-                                console.log(JSON.stringify(answer));
-
-                                this.dataSharingSerivce.answerSelfAssessment(question, answer);
-                            }
-                        );
-                    }
-                }
-            }
-        }
-    }
-
-    get questionsArray() {
-        return this._questionsArray;
     }
 
     @Input()
@@ -133,48 +86,6 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
         return this._questionnaire;
     }
 
-    @Input()
-    set questionnaireStatus(status: QuestionnaireStatusMgm) {
-        console.log('Questionnaire status input: ' + JSON.stringify(status));
-
-        this._questionnaireStatus = status;
-
-        switch (this._questionnaireStatus.status) {
-            case Status.EMPTY: {
-                console.log('Status EMPTY');
-
-                break;
-            }
-            case Status.PENDING: {
-                console.log('Status PENDING');
-
-                this.myAnswerService.getAllByQuestionnaireStatusID(this.questionnaireStatus.id).subscribe(
-                    (response: HttpResponse<MyAnswerMgm[]>) => {
-                        this.myAnswers = response.body;
-
-                        if (this.form) {
-                            this.form.patchValue(this.myAnswersToFormValue(this.myAnswers, this._questionsArrayMap));
-                        }
-                    }
-                );
-
-                break;
-            }
-            case Status.FULL: {
-                console.log('Status FULL');
-
-                break;
-            }
-            default: {
-                console.log('Status DEFAULT case');
-            }
-        }
-    }
-
-    get questionnaireStatus() {
-        return this._questionnaireStatus;
-    }
-
     isValid(questionID) {
         return this.form.controls[questionID].valid;
     }
@@ -183,12 +94,26 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
         return question.id;
     }
 
+    /*
+    Initialize the directive/component after Angular first displays
+    the data-bound properties and sets the directive/component's
+    input properties. Called once, after the first ngOnChanges().
+     */
     ngOnInit() {
         this.selfAssessment = this.selfAssessmentService.getSelfAssessment();
 
-        this.accountService.get().mergeMap(
-            (accountHttpResponse: HttpResponse<Account>) => {// Get the Account
-                this.account = accountHttpResponse.body;
+        // 1) Here all the input properties are expected to be set!!!
+        // 2) Get the logged user and its ROLE.
+        // 3) Get the QuestionnairePurpose.
+        // 4) Create the form based on points 2 & 3.
+
+        const account$ = this.accountService.get();
+        const questions$ = this.questionService.getQuestionsByQuestionnaire(this.questionnaire.id);
+        const questionsAndAccount$ = forkJoin(account$, questions$);
+
+        const user$ = questionsAndAccount$.mergeMap(
+            (response: [HttpResponse<Account>, HttpResponse<QuestionMgm[]>]) => {
+                this.account = response[0].body;
                 console.log('Account: ' + JSON.stringify(this.account));
 
                 if (this.account['authorities'].includes(DynamicFormComponent.CISO_ROLE)) {
@@ -197,15 +122,86 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
                     this.role = Role.ROLE_EXTERNAL_AUDIT;
                 }
 
-                console.log('Role: ' + this.role);
+                this.questionsArray = response[1].body;
+                this.questionsArrayMap = FormUtils.questionsToMap(this.questionsArray);
+
+                // Generate the form according to the Role
+                switch (this.role) {
+                    case Role.ROLE_CISO: {
+                        this.form = this.questionControlService.toFormGroupCISO(this.questionsArray);
+                        console.log('Form has been created...');
+                        console.log('Form is: ' + this.form);
+                        break;
+                    }
+                    case Role.ROLE_EXTERNAL_AUDIT: {
+                        this.form = this.questionControlService.toFormGroupExternalAuditor(this.questionsArray);
+                        console.log('Form has been created...');
+                        console.log('Form is: ' + this.form);
+                        break;
+                    }
+                    default: {
+                        console.log('Warning: There is a problem... Role is different from CISO or EXTERNAL_AUDIT');
+                    }
+                }
 
                 return this.userService.find(this.account['login']);
+
+                // Real time matrix update (DONT REMOVE THIS)
+                /*if (this.questionnaire.purpose === QuestionnairePurpose.SELFASSESSMENT) {
+                    for (const key in this.form.controls) {
+                        const formControl = this.form.get(key);
+
+                        if (formControl) {
+                            formControl.valueChanges.subscribe(
+                                (answer: AnswerMgm) => {
+                                    console.log('Question ' + key + ' Field changes:');
+
+                                    const question = this.questionsArrayMap.get(Number(key));
+                                    console.log('Question:');
+                                    console.log(JSON.stringify(question));
+
+                                    console.log('Answer:');
+                                    console.log(JSON.stringify(answer));
+
+                                    this.dataSharingSerivce.answerSelfAssessment(question, answer);
+                                }
+                            );
+                        }
+                    }
+                }*/
             }
-        ).toPromise().then(
-            (userHttpResponse: HttpResponse<User>) => {// Get the User
-                this.user = userHttpResponse.body;
+        );
+
+        const questionnaireStatus$ = user$.mergeMap(
+            (response: HttpResponse<User>) => {
+                this.user = response.body;
                 console.log('User: ' + JSON.stringify(this.user));
-            });
+
+                // Fetch the QuestionnaireStatus of the CISO
+                const questionnaireStatus$ = this.questionnaireStatusCustomService
+                    .getByRoleSelfAssessmentAndQuestionnaire(DynamicFormComponent.CISO_ROLE, this.selfAssessment.id, this.questionnaire.id);
+
+                return questionnaireStatus$;
+            }
+        );
+
+        questionnaireStatus$.subscribe(
+            (response: HttpResponse<QuestionnaireStatusMgm>) => {
+                this.questionnaireStatus = response.body;
+
+                if (this.questionnaireStatus) {
+                    this.myAnswerService.getAllByQuestionnaireStatusID(this.questionnaireStatus.id)
+                        .toPromise().then(
+                        (response: HttpResponse<MyAnswerMgm[]>) => {
+                            this.myAnswers = response.body;
+
+                            // Restore the checked status of the Form inputs
+                            this.form.patchValue(this.myAnswersToFormValue(this.myAnswers, this.questionsArrayMap));
+                        }
+                    );
+                }
+            }
+        );
     }
 
     ngOnDestroy() {
@@ -272,7 +268,7 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
 
             const answer: AnswerMgm = value as AnswerMgm;
 
-            const question: QuestionMgm = this._questionsArrayMap.get(Number(key));
+            const question: QuestionMgm = this.questionsArrayMap.get(Number(key));
             console.log('Question: ' + JSON.stringify(question));
 
             const threatAgent: ThreatAgentMgm = question.threatAgent;
@@ -477,22 +473,22 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
 
         const now: string = new Date().toISOString();
 
-        switch (this._questionnaireStatus.status) {
+        switch (this.questionnaireStatus.status) {
             case Status.EMPTY: {// create a new QuestionnaireStatus && create MyAnswers
                 /**
                  * The PENDING status for the questionnaire.
                  * @type {QuestionnaireStatusMgm}
                  */
-                this._questionnaireStatus = new QuestionnaireStatusMgm(undefined, Status.PENDING, now, now, this.selfAssessment, this._questionnaire, this.role, this.user, []);
+                this.questionnaireStatus = new QuestionnaireStatusMgm(undefined, Status.PENDING, now, now, this.selfAssessment, this._questionnaire, this.role, this.user, []);
 
                 // Getting the id of the above QuestionnaireStatus
                 this.subscriptions.push(
-                    this.questionnaireStatusService.create(this._questionnaireStatus).subscribe(
+                    this.questionnaireStatusService.create(this.questionnaireStatus).subscribe(
                         (statusResponse) => {
-                            this._questionnaireStatus = statusResponse.body;
+                            this.questionnaireStatus = statusResponse.body;
 
                             // CREATE the NEW MyAnswers
-                            const createObservables: Observable<HttpResponse<MyAnswerMgm[]>> = this.createMyAnswersObservable(formDataMap, this._questionnaireStatus);
+                            const createObservables: Observable<HttpResponse<MyAnswerMgm[]>> = this.createMyAnswersObservable(formDataMap, this.questionnaireStatus);
 
                             createObservables.subscribe(
                                 (myAnswersResponse: HttpResponse<MyAnswerMgm[]>) => {
@@ -530,7 +526,7 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
                 );
 
                 // CREATE the NEW MyAnswers
-                const createObservables: Observable<HttpResponse<MyAnswerMgm[]>> = this.createMyAnswersObservable(formDataMap, this._questionnaireStatus);
+                const createObservables: Observable<HttpResponse<MyAnswerMgm[]>> = this.createMyAnswersObservable(formDataMap, this.questionnaireStatus);
 
                 createObservables.subscribe(
                     (myAnswersResponse: HttpResponse<MyAnswerMgm[]>) => {
@@ -618,7 +614,7 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
                 console.log('Answer: ' + answer);
 
                 if (answer) {// check if the the user answered this question
-                    const question: QuestionMgm = this._questionsArrayMap.get(Number(key));
+                    const question: QuestionMgm = this.questionsArrayMap.get(Number(key));
                     const questionnaire: QuestionnaireMgm = question.questionnaire;
 
                     console.log('Answer: ' + JSON.stringify(answer));
