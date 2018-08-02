@@ -25,6 +25,7 @@ import {Observable} from 'rxjs/Observable';
 import {HttpResponse} from '@angular/common/http';
 import {concatMap, mergeMap} from 'rxjs/operators';
 import {QuestionnaireStatusMgmCustomService} from '../../../../entities/questionnaire-status-mgm/questionnaire-status-mgm.custom.service';
+import {not} from 'rxjs/util/not';
 
 @Component({
     selector: 'jhi-dynamic-form',
@@ -218,7 +219,21 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
         switch (this.questionnaire.purpose) {
             case QuestionnairePurpose.SELFASSESSMENT: {
                 console.log('Case: ' + QuestionnairePurpose.SELFASSESSMENT);
-                this.evaluateWeakness();
+
+                switch (this.role) {
+                    case Role.ROLE_CISO: {
+                        this.evaluateWeakness();
+                        break;
+                    }
+                    case Role.ROLE_EXTERNAL_AUDIT: {
+                        this.externalAuditRefinement();
+                        break;
+                    }
+                    default: {
+                        //DO-NOTHING
+                    }
+                }
+
                 break;
             }
             case QuestionnairePurpose.ID_THREAT_AGENT: {
@@ -233,7 +248,7 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
         }
     }
 
-    identifyThreatAgents() {
+    private identifyThreatAgents() {
         console.log('ENTER ==> Identify Threat-agents...');
 
         console.log('OnSubmit called');
@@ -401,7 +416,7 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
         console.log('EXIT ==> Identify Threat-agents...');
     }
 
-    evaluateWeakness() {
+    private evaluateWeakness() {
         console.log('ENTER ==> Evaluating wekness...');
         console.log('OnSubmit called');
         console.log('Form\'s value is:');
@@ -456,6 +471,44 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
             });
 
         // For now don't store the attackStrategies but recalculate them and their likelihood based on the stored MyAnswers
+    }
+
+    private externalAuditRefinement() {
+        console.log('ENTER ==> Evaluating wekness...');
+        console.log('OnSubmit called');
+        console.log('Form\'s value is:');
+        console.log(JSON.stringify(this.form.value));
+        // TODO get the Questionnaire's Answers, persist them, update the matrix accordingly
+        /**
+         * Map representing the submitted form data.
+         *
+         * The key: string is the ID of the Question
+         * The value: AnswerMgm is the selected Answer
+         * @type {Map<string, AnswerMgm>}
+         */
+        const formDataMap: Map<string, AnswerMgm | string> = FormUtils.formToMap<AnswerMgm | string>(this.form);
+        console.log('FormDataMap size: ' + formDataMap.size);
+
+        //Now ISO8601
+        const now: string = new Date().toISOString();
+
+        // Create the status of the questionnaire
+        let questionnaireStatus = new QuestionnaireStatusMgm(undefined, Status.FULL, now, now, this.selfAssessment, this.questionnaire, this.role, this.user, []);
+
+        const myRefinementAnswers: Observable<HttpResponse<MyAnswerMgm[]>> = this.questionnaireStatusService.create(questionnaireStatus)
+            .mergeMap(
+                (statusResponse: HttpResponse<QuestionnaireStatusMgm>) => {
+                    questionnaireStatus = statusResponse.body;
+                    console.log('QuestionnaireStatus: ' + JSON.stringify(questionnaireStatus));
+
+                    // TODO persist MyAnswers
+                    return this.createMyRefinementAnswersObservable(formDataMap, questionnaireStatus);
+                });
+
+        myRefinementAnswers.subscribe((response: HttpResponse<MyAnswerMgm[]>) => {
+            console.log('MyAnswers: ' + JSON.stringify(response));
+            this.router.navigate(['/evaluate-weakness/result', questionnaireStatus.id]);
+        });
     }
 
     freezeQuestionnaireStatus() {
@@ -647,5 +700,51 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
         );
 
         return deleteMyAnswerObservable;
+    }
+
+    private createMyRefinementAnswersObservable(formDataMap: Map<string, AnswerMgm | string>, questionnaireStatus: QuestionnaireStatusMgm) {
+        // CREATE the NEW MyAnswers
+        //const createMyAnswersObservable: Observable<HttpResponse<MyAnswerMgm[]>> = [];
+        const myAnswers: MyAnswerMgm[] = [];
+
+        //Contains the Answers of the External Audit
+        const refinementMap: Map<number/*Question.ID*/, AnswerMgm> = new Map<number, AnswerMgm>();
+
+        //Contains the notes of the External Audit
+        const notesMap: Map<number/*Qestion.ID*/, string> = new Map<number, string>();
+
+        formDataMap.forEach(// Key could be id | id.external | id.note
+            (value: AnswerMgm | string, key: string) => {
+
+                if (value instanceof AnswerMgm && key.endsWith('.external')) {
+                    const answer: AnswerMgm = value;
+                    console.log('Answer: ' + answer);
+
+                    const questionID: number = Number(key.replace('.external', ''));
+                    const question: QuestionMgm = this.questionsArrayMap.get(questionID);
+                    const questionnaire: QuestionnaireMgm = question.questionnaire;
+
+                    refinementMap.set(question.id, answer);
+                } else if (key.endsWith('.note')) {
+                    const note: string = value as string;
+                    console.log('Note: ' + note);
+
+                    const questionID: number = Number(key.replace('.note', ''));
+                    const question: QuestionMgm = this.questionsArrayMap.get(questionID);
+
+                    notesMap.set(questionID, note);
+                }
+            }
+        );
+
+        this.questionsArrayMap.forEach((question: QuestionMgm, key: number) => {
+            const note: string = notesMap.get(question.id);
+            const refinedAnswer: AnswerMgm = refinementMap.get(question.id);
+
+            const myAnswer: MyAnswerMgm = new MyAnswerMgm(undefined, note, 0, refinedAnswer, question, question.questionnaire, questionnaireStatus, this.user);
+            myAnswers.push(myAnswer);
+        });
+
+        return this.myAnswerService.createAll(myAnswers);
     }
 }

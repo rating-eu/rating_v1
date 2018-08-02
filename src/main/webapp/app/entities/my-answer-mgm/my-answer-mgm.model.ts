@@ -2,6 +2,7 @@ import { BaseEntity, User } from './../../shared';
 import {AnswerMgm} from '../answer-mgm';
 import {QuestionMgm} from '../question-mgm';
 import {QuestionnaireMgm} from '../questionnaire-mgm';
+import {QuestionnaireStatusMgm} from '../questionnaire-status-mgm';
 
 export class MyAnswerMgm implements BaseEntity {
     constructor(
@@ -11,7 +12,7 @@ export class MyAnswerMgm implements BaseEntity {
         public answer?: AnswerMgm,
         public question?: QuestionMgm,
         public questionnaire?: QuestionnaireMgm,
-        public questionnaireStatus?: BaseEntity,
+        public questionnaireStatus?: QuestionnaireStatusMgm,
         public user?: User,
     ) {
     }
