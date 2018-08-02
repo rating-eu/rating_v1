@@ -40,8 +40,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(classes = HermeneutApp.class)
 public class MyAnswerResourceIntTest {
 
-    private static final String DEFAULT_MYCHECK = "AAAAAAAAAA";
-    private static final String UPDATED_MYCHECK = "BBBBBBBBBB";
+    private static final String DEFAULT_NOTE = "AAAAAAAAAA";
+    private static final String UPDATED_NOTE = "BBBBBBBBBB";
+
+    private static final Integer DEFAULT_ANSWER_OFFSET = 1;
+    private static final Integer UPDATED_ANSWER_OFFSET = 2;
 
     @Autowired
     private MyAnswerRepository myAnswerRepository;
@@ -87,7 +90,8 @@ public class MyAnswerResourceIntTest {
      */
     public static MyAnswer createEntity(EntityManager em) {
         MyAnswer myAnswer = new MyAnswer()
-            .mycheck(DEFAULT_MYCHECK);
+            .note(DEFAULT_NOTE)
+            .answerOffset(DEFAULT_ANSWER_OFFSET);
         return myAnswer;
     }
 
@@ -112,7 +116,8 @@ public class MyAnswerResourceIntTest {
         List<MyAnswer> myAnswerList = myAnswerRepository.findAll();
         assertThat(myAnswerList).hasSize(databaseSizeBeforeCreate + 1);
         MyAnswer testMyAnswer = myAnswerList.get(myAnswerList.size() - 1);
-        assertThat(testMyAnswer.getMycheck()).isEqualTo(DEFAULT_MYCHECK);
+        assertThat(testMyAnswer.getNote()).isEqualTo(DEFAULT_NOTE);
+        assertThat(testMyAnswer.getAnswerOffset()).isEqualTo(DEFAULT_ANSWER_OFFSET);
 
         // Validate the MyAnswer in Elasticsearch
         MyAnswer myAnswerEs = myAnswerSearchRepository.findOne(testMyAnswer.getId());
@@ -140,6 +145,24 @@ public class MyAnswerResourceIntTest {
 
     @Test
     @Transactional
+    public void checkAnswerOffsetIsRequired() throws Exception {
+        int databaseSizeBeforeTest = myAnswerRepository.findAll().size();
+        // set the field null
+        myAnswer.setAnswerOffset(null);
+
+        // Create the MyAnswer, which fails.
+
+        restMyAnswerMockMvc.perform(post("/api/my-answers")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(myAnswer)))
+            .andExpect(status().isBadRequest());
+
+        List<MyAnswer> myAnswerList = myAnswerRepository.findAll();
+        assertThat(myAnswerList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
     public void getAllMyAnswers() throws Exception {
         // Initialize the database
         myAnswerRepository.saveAndFlush(myAnswer);
@@ -149,7 +172,8 @@ public class MyAnswerResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(myAnswer.getId().intValue())))
-            .andExpect(jsonPath("$.[*].mycheck").value(hasItem(DEFAULT_MYCHECK.toString())));
+            .andExpect(jsonPath("$.[*].note").value(hasItem(DEFAULT_NOTE.toString())))
+            .andExpect(jsonPath("$.[*].answerOffset").value(hasItem(DEFAULT_ANSWER_OFFSET)));
     }
 
     @Test
@@ -163,7 +187,8 @@ public class MyAnswerResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(myAnswer.getId().intValue()))
-            .andExpect(jsonPath("$.mycheck").value(DEFAULT_MYCHECK.toString()));
+            .andExpect(jsonPath("$.note").value(DEFAULT_NOTE.toString()))
+            .andExpect(jsonPath("$.answerOffset").value(DEFAULT_ANSWER_OFFSET));
     }
 
     @Test
@@ -187,7 +212,8 @@ public class MyAnswerResourceIntTest {
         // Disconnect from session so that the updates on updatedMyAnswer are not directly saved in db
         em.detach(updatedMyAnswer);
         updatedMyAnswer
-            .mycheck(UPDATED_MYCHECK);
+            .note(UPDATED_NOTE)
+            .answerOffset(UPDATED_ANSWER_OFFSET);
 
         restMyAnswerMockMvc.perform(put("/api/my-answers")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -198,7 +224,8 @@ public class MyAnswerResourceIntTest {
         List<MyAnswer> myAnswerList = myAnswerRepository.findAll();
         assertThat(myAnswerList).hasSize(databaseSizeBeforeUpdate);
         MyAnswer testMyAnswer = myAnswerList.get(myAnswerList.size() - 1);
-        assertThat(testMyAnswer.getMycheck()).isEqualTo(UPDATED_MYCHECK);
+        assertThat(testMyAnswer.getNote()).isEqualTo(UPDATED_NOTE);
+        assertThat(testMyAnswer.getAnswerOffset()).isEqualTo(UPDATED_ANSWER_OFFSET);
 
         // Validate the MyAnswer in Elasticsearch
         MyAnswer myAnswerEs = myAnswerSearchRepository.findOne(testMyAnswer.getId());
@@ -256,7 +283,8 @@ public class MyAnswerResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(myAnswer.getId().intValue())))
-            .andExpect(jsonPath("$.[*].mycheck").value(hasItem(DEFAULT_MYCHECK.toString())));
+            .andExpect(jsonPath("$.[*].note").value(hasItem(DEFAULT_NOTE.toString())))
+            .andExpect(jsonPath("$.[*].answerOffset").value(hasItem(DEFAULT_ANSWER_OFFSET)));
     }
 
     @Test

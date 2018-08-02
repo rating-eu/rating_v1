@@ -17,7 +17,8 @@
             "detail": {
                 "title": "My Answer"
             },
-            "mycheck": "Mycheck",
+            "note": "Note",
+            "answerOffset": "Answer Offset",
             "questionnaireStatus": "Questionnaire Status",
             "answer": "Answer",
             "question": "Question",
