@@ -117,7 +117,7 @@
                                         <div *ngIf="!isSelectable(ans)" class="badge chips badge-secondary disabled" (click)="false">
                                             {{ans.name}}
                                         </div>
-                                        <div *ngIf="isSelectable(ans)" class="badge chips" [ngClass]="{'badge-light': !isSelected(ans, i), 'badge-primary': isSelected(ans)}" (click)="setIndirect(ans, direct, i)">
+                                        <div *ngIf="isSelectable(ans)" class="badge chips" [ngClass]="{'badge-light': !isSelected(ans, i), 'badge-primary': isSelected(ans, i)}" (click)="setIndirect(ans, direct, i)">
                                             {{ans.name}}
                                         </div>
                                     </div>
