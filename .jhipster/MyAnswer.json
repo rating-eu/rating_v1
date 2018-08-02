@@ -42,8 +42,15 @@
     ],
     "fields": [
         {
-            "fieldName": "mycheck",
+            "fieldName": "note",
             "fieldType": "String"
+        },
+        {
+            "fieldName": "answerOffset",
+            "fieldType": "Integer",
+            "fieldValidateRules": [
+                "required"
+            ]
         }
     ],
     "changelogDate": "20180420084813",
