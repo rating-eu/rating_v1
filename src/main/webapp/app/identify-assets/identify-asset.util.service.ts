@@ -11,15 +11,17 @@ import { MyAnswerMgm } from '../entities/my-answer-mgm';
 import { DirectAssetMgm } from '../entities/direct-asset-mgm';
 import { IndirectAssetMgm } from '../entities/indirect-asset-mgm';
 import { Subject } from '../../../../../node_modules/rxjs';
+import { AssetMgm } from '../entities/asset-mgm';
+import { AttackCostMgm } from '../entities/attack-cost-mgm';
 
 @Injectable()
 export class IdentifyAssetUtilService {
     private myAnswersComplited: MyAnswerMgm[];
     private myAssets: MyAssetMgm[];
-    private myDirectAsset: DirectAssetMgm[];
-    private myIndirectAsset: IndirectAssetMgm[];
+    private myDirectAssets: DirectAssetMgm[];
+    private myIndirectAssets: IndirectAssetMgm[];
 
-    private updateAssetsList: Subject<MyAssetMgm> = new Subject<MyAssetMgm>();
+    // private updateAssetsList: Subject<MyAssetMgm> = new Subject<MyAssetMgm>();
 
     constructor() {
         if (!this.myAnswersComplited) {
@@ -28,14 +30,28 @@ export class IdentifyAssetUtilService {
         if (!this.myAssets) {
             this.myAssets = [];
         }
+        if (!this.myDirectAssets) {
+            this.myDirectAssets = [];
+        }
+        if (!this.myIndirectAssets) {
+            this.myIndirectAssets = [];
+        }
     }
-
+    /*
     public getUpdateAssetsList(): Observable<MyAssetMgm> {
         return this.sectionTitle.asObservable();
     }
     
     publi sendSectionTitle(title: string) {
         this.sectionTitle.next(title);
+    }
+    */
+    public getMyDirectAsset(): DirectAssetMgm[] {
+        return this.myDirectAssets;
+    }
+
+    public getMyIndirectAsset(): IndirectAssetMgm[] {
+        return this.myIndirectAssets;
     }
 
     public getMyAnswersComplited(): MyAnswerMgm[] {
@@ -44,6 +60,105 @@ export class IdentifyAssetUtilService {
 
     public getMyAssets(): MyAssetMgm[] {
         return this.myAssets;
+    }
+
+    public addMyDirectAssets(asset: MyAssetMgm) {
+        const index = _.findIndex(this.myDirectAssets,
+            (myDirectAsset) => (myDirectAsset.asset as MyAssetMgm).asset.id === asset.asset.id
+        );
+        if (index === -1) {
+            const direct = new DirectAssetMgm();
+            direct.asset = asset;
+            direct.costs = undefined;
+            direct.effects = undefined;
+            this.myDirectAssets.push(direct);
+        }
+    }
+
+    public removeFromMyDirectAssets(asset: MyAssetMgm) {
+        const index = _.findIndex(this.myDirectAssets,
+            (myDirectAsset) => (myDirectAsset.asset as MyAssetMgm).asset.id === asset.asset.id
+        );
+        if (index !== -1) {
+            this.myDirectAssets.splice(index, 1);
+        }
+    }
+
+    public updateMyDirectAssets(asset: MyAssetMgm, cost: AttackCostMgm, effect: IndirectAssetMgm) {
+        const index = _.findIndex(this.myDirectAssets,
+            (myDirectAsset) => (myDirectAsset.asset as MyAssetMgm).asset.id === asset.asset.id
+        );
+        if (index !== -1) {
+            if (cost) {
+                if (!this.myDirectAssets[index].costs) {
+                    this.myDirectAssets[index].costs = [];
+                }
+                const indexC = _.findIndex(this.myDirectAssets,
+                    (myDirectAsset) => (myDirectAsset.costs as AttackCostMgm).id === cost.id
+                );
+                if (indexC === -1) {
+                    this.myDirectAssets[index].costs.push(cost);
+                } else {
+                    this.myDirectAssets[index].costs.splice(indexC, 1);
+                }
+            }
+            if (effect) {
+                if (!this.myDirectAssets[index].effects) {
+                    this.myDirectAssets[index].effects = [];
+                }
+                const indexF = _.findIndex(this.myDirectAssets,
+                    (myDirectAsset) => (myDirectAsset.effects as IndirectAssetMgm).id === effect.id
+                );
+                if (indexF === -1) {
+                    this.myDirectAssets[index].effects.push(effect);
+                } else {
+                    this.myDirectAssets[index].effects.splice(indexF, 1);
+                }
+            }
+        }
+    }
+
+    public addMyIndirectAssets(asset: MyAssetMgm, directAsset: AssetMgm) {
+        const index = _.findIndex(this.myIndirectAssets,
+            (myIndirectAsset) => (myIndirectAsset.asset as MyAssetMgm).asset.id === asset.asset.id
+        );
+        if (index === -1) {
+            const indirect = new IndirectAssetMgm();
+            indirect.asset = asset;
+            indirect.costs = undefined;
+            indirect.directAsset = directAsset;
+            this.myIndirectAssets.push(indirect);
+        }
+    }
+
+    public removeFromMyIndirectAssets(asset: MyAssetMgm) {
+        const index = _.findIndex(this.myIndirectAssets,
+            (myIndirectAsset) => (myIndirectAsset.asset as MyAssetMgm).asset.id === asset.asset.id
+        );
+        if (index !== -1) {
+            this.myIndirectAssets.splice(index, 1);
+        }
+    }
+
+    public updateMyIndirectAssets(asset: MyAssetMgm, cost: AttackCostMgm) {
+        const index = _.findIndex(this.myIndirectAssets,
+            (myIndirectAsset) => (myIndirectAsset.asset as MyAssetMgm).asset.id === asset.asset.id
+        );
+        if (index !== -1) {
+            if (cost) {
+                if (!this.myIndirectAssets[index].costs) {
+                    this.myIndirectAssets[index].costs = [];
+                }
+                const indexC = _.findIndex(this.myIndirectAssets,
+                    (myIndirectAsset) => (myIndirectAsset.costs as AttackCostMgm).id === cost.id
+                );
+                if (indexC === -1) {
+                    this.myIndirectAssets[index].costs.push(cost);
+                } else {
+                    this.myIndirectAssets[index].costs.splice(indexC, 1);
+                }
+            }
+        }
     }
 
     public addMyAnswer(answer: MyAnswerMgm) {

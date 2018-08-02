@@ -12,7 +12,8 @@ import { AssetMgm, AssetMgmService } from '../../entities/asset-mgm';
 import { AnswerType } from '../../entities/enumerations/AnswerType.enum';
 import { MyAssetMgm } from '../../entities/my-asset-mgm';
 import { IdentifyAssetUtilService } from '../identify-asset.util.service';
-import { AssetCategoryMgmService, AssetType } from '../../entities/asset-category-mgm';
+import { AssetCategoryMgmService } from '../../entities/asset-category-mgm';
+import { AssetType } from '../../entities/enumerations/AssetType.enum';
 
 @Component({
     selector: 'question-card',
@@ -49,6 +50,33 @@ export class QuestionComponent implements OnInit {
     ngOnInit() {
         if (this.questionRenderType.search('rank') !== -1) {
             this.renderType = 'select_rank';
+            for (const qa of this.question.answers) {
+                if (qa.asset) {
+                    if (qa.asset.assetcategory.type.toString() === AssetType.INTANGIBLE.toString()) {
+                        this.intangible.push(qa);
+                    } else if (qa.asset.assetcategory.type.toString() === AssetType.TANGIBLE.toString()) {
+                        if (qa.asset.assetcategory.name === 'Current Assets') {
+                            this.tangibleCurrent.push(qa);
+                        } else if (qa.asset.assetcategory.name === 'Fixed Assets') {
+                            this.tangibleFixed.push(qa);
+                        }
+                    }
+                } else if (qa.assetCategory) {
+                    if (qa.assetCategory.type.toString() === AssetType.INTANGIBLE.toString()) {
+                        this.intangible.push(qa);
+                    } else if (qa.assetCategory.type.toString() === AssetType.TANGIBLE.toString()) {
+                        if (qa.assetCategory.name === 'Current Assets') {
+                            this.tangibleCurrent.push(qa);
+                        } else if (qa.assetCategory.name === 'Fixed Assets') {
+                            this.tangibleFixed.push(qa);
+                        }
+                    }
+                } else {
+                    continue;
+                }
+
+            }
+            /*
             this.assetCategoryService.findAll().toPromise().then((res) => {
                 for (const qa of this.question.answers) {
                     if (qa.asset.assetcategory.type === AssetType.INTANGIBLE) {
@@ -62,6 +90,7 @@ export class QuestionComponent implements OnInit {
                     }
                 }
             });
+            */
         } else if (this.questionRenderType.search('directly stolen/compromised/damaged') !== -1) {
             this.renderType = 'select_direct_assets';
         } else if (this.questionRenderType.search('indirectly compromised/damaged/devalued') !== -1) {
@@ -188,40 +217,92 @@ export class QuestionComponent implements OnInit {
     }
 
     private findAsset(ans: AnswerMgm): AssetMgm | AssetMgm[] {
-        // let param: string;
         const assetsByCategory: AssetMgm[] = [];
-        if(ans.asset){
+        if (ans.asset) {
             return ans.asset as AssetMgm;
-        }
-        /*
-        if (ans.name.search('etc.') !== -1) {
-            param = ans.name.substring(0, ans.name.indexOf('('));
-            param = param.trim();
-        } else {
-            param = ans.name;
-        }
-        for (const ass of this.allAssets) {
-            if (ass.name === param) {
-                return ass as AssetMgm;
-            } else if (ass.assetcategory.name.search(param) !== -1) {
-                assetsByCategory.push(ass);
+        } else if (ans.assetCategory) {
+            for (const ass of this.allAssets) {
+                if (ans.assetCategory.id === ass.assetcategory.id) {
+                    assetsByCategory.push(ass);
+                }
             }
-        }
-        if (assetsByCategory.length > 0) {
             return assetsByCategory as AssetMgm[];
         }
-        */
         return undefined;
     }
 
+    public setDirect(ans: AnswerMgm) {
+        const index = _.findIndex(this.selectedAnswers, { id: ans.id });
+        const selectedAsset: AssetMgm | AssetMgm[] = this.findAsset(ans);
+        const myGlobalAssets: MyAssetMgm[] = this.idaUtilsService.getMyAssets();
+        if (index !== -1) {
+            if (!(selectedAsset instanceof Array)) {
+                const indexA = _.findIndex(myGlobalAssets,
+                    (myAsset) => myAsset.asset.id === selectedAsset.id
+                );
+                if (indexA !== -1) {
+                    this.idaUtilsService.removeFromMyDirectAssets(myGlobalAssets[indexA]);
+                }
+            } else {
+                for (const ass of selectedAsset) {
+                    const indexA = _.findIndex(myGlobalAssets,
+                        (myAsset) => myAsset.asset.id === ass.id
+                    );
+                    if (indexA !== -1) {
+                        this.idaUtilsService.removeFromMyDirectAssets(myGlobalAssets[indexA]);
+                    }
+                }
+            }
+            const indexQ = _.findIndex(this.myQuestionAnswer,
+                (myAnswer) => myAnswer.answer.id === this.selectedAnswers[index].id
+            );
+            if (indexQ !== -1) {
+                this.idaUtilsService.removeFromMyAnswer(this.myQuestionAnswer[indexQ]);
+                this.myQuestionAnswer.splice(indexQ, 1);
+            }
+            this.selectedAnswers.splice(index, 1);
+        } else {
+            if (!(selectedAsset instanceof Array)) {
+                const indexA = _.findIndex(myGlobalAssets,
+                    (myAsset) => myAsset.asset.id === selectedAsset.id
+                );
+                if (indexA !== -1) {
+                    this.idaUtilsService.addMyDirectAssets(myGlobalAssets[indexA]);
+                }
+            } else {
+                for (const ass of selectedAsset) {
+                    const indexA = _.findIndex(myGlobalAssets,
+                        (myAsset) => myAsset.asset.id === ass.id
+                    );
+                    if (indexA !== -1) {
+                        this.idaUtilsService.addMyDirectAssets(myGlobalAssets[indexA]);
+                    }
+                }
+            }
+            // genero una nuova risposta e la invio al servizio che si occupa di gestirle
+            const myAnswer = new MyAnswerMgm();
+            myAnswer.answer = ans;
+            myAnswer.question = this.question;
+            myAnswer.questionnaire = this.questionnaire;
+            myAnswer.user = this.user;
+            this.idaUtilsService.addMyAnswer(myAnswer);
+            this.myQuestionAnswer.push(myAnswer);
+            this.selectedAnswers.push(ans);
+
+            console.log(this.idaUtilsService.getMyAssets());
+            console.log(this.idaUtilsService.getMyDirectAsset());
+        }
+
+    }
     public setRank(ans: AnswerMgm, rank: number) {
         const selectedAsset = this.findAsset(ans);
-        if (selectedAsset instanceof AssetMgm) {
+        if (!(selectedAsset instanceof Array)) {
             const indexA = _.findIndex(this.myQuestionAssets,
                 (myAsset) => myAsset.asset.id === selectedAsset.id
             );
             if (indexA !== -1) {
                 this.myQuestionAssets[indexA].ranking = rank;
+                this.idaUtilsService.updateMyAssets(this.myQuestionAssets[indexA], 'ranking');
             }
         } else {
             for (const sA of selectedAsset) {
@@ -230,30 +311,40 @@ export class QuestionComponent implements OnInit {
                 );
                 if (indexA !== -1) {
                     this.myQuestionAssets[indexA].ranking = rank;
+                    this.idaUtilsService.updateMyAssets(this.myQuestionAssets[indexA], 'ranking');
                 }
             }
         }
+        console.log(this.idaUtilsService.getMyAssets());
     }
 
-    public whichRank(ans: AnswerMgm): number {
+    public whichRank(ans: AnswerMgm, rank: number): boolean {
         const selectedAsset = this.findAsset(ans);
-        if (selectedAsset instanceof AssetMgm) {
+        if (!(selectedAsset instanceof Array)) {
             const indexA = _.findIndex(this.myQuestionAssets,
                 (myAsset) => myAsset.asset.id === selectedAsset.id
             );
             if (indexA !== -1) {
-                return this.myQuestionAssets[indexA].ranking;
+                if (this.myQuestionAssets[indexA].ranking === rank) {
+                    return true;
+                } else {
+                    return false;
+                }
             } else {
-                return 0;
+                return false;
             }
         } else {
             const indexA = _.findIndex(this.myQuestionAssets,
                 (myAsset) => myAsset.asset.id === selectedAsset[0].id
             );
             if (indexA !== -1) {
-                return this.myQuestionAssets[indexA].ranking;
+                if (this.myQuestionAssets[indexA].ranking === rank) {
+                    return true;
+                } else {
+                    return false;
+                }
             } else {
-                return 0;
+                return false;
             }
         }
     }
@@ -262,6 +353,31 @@ export class QuestionComponent implements OnInit {
         const index = _.findIndex(this.selectedAnswers, { id: ans.id });
         if (index !== -1) {
             return true;
+        }
+        return false;
+    }
+
+    public isSelectable(ans: AnswerMgm): boolean {
+        const selectableAsset: AssetMgm | AssetMgm[] = this.findAsset(ans);
+        const myGlobalAssets: MyAssetMgm[] = this.idaUtilsService.getMyAssets();
+        if (selectableAsset) {
+            if (!(selectableAsset instanceof Array)) {
+                const indexA = _.findIndex(myGlobalAssets,
+                    (myAsset) => myAsset.asset.id === selectableAsset.id
+                );
+                if (indexA !== -1) {
+                    return true;
+                }
+            } else {
+                for (const ass of selectableAsset) {
+                    const indexA = _.findIndex(myGlobalAssets,
+                        (myAsset) => myAsset.asset.id === ass.id
+                    );
+                    if (indexA !== -1) {
+                        return true;
+                    }
+                }
+            }
         }
         return false;
     }
