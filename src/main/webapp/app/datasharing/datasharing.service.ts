@@ -10,6 +10,7 @@ import {Observable} from 'rxjs/Observable';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import {AttackStrategyMgm} from '../entities/attack-strategy-mgm';
 import {AttackStrategyUpdate} from '../evaluate-weakness/models/attack-strategy-update.model';
+import { QuestionnaireMgm } from '../entities/questionnaire-mgm';
 
 @Injectable()
 export class DatasharingService {
@@ -39,13 +40,13 @@ export class DatasharingService {
         this._identifyThreatAgentsFormDataMap = value;
     }
 
-    private _currentQuestionnaire: QuestionMgm;
+    private _currentQuestionnaire: QuestionnaireMgm;
 
-    get currentQuestionnaire(): QuestionMgm {
+    get currentQuestionnaire(): QuestionnaireMgm {
         return this._currentQuestionnaire;
     }
 
-    set currentQuestionnaire(value: QuestionMgm) {
+    set currentQuestionnaire(value: QuestionnaireMgm) {
         this._currentQuestionnaire = value;
     }
 

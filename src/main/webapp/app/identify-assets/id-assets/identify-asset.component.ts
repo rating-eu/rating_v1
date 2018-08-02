@@ -3,7 +3,7 @@ import * as _ from 'lodash';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { IdentifyAssetService } from '../identify-asset.service';
 import { SelfAssessmentMgm, SelfAssessmentMgmService } from '../../entities/self-assessment-mgm';
-import { Principal, LoginModalService } from '../../shared';
+import { Principal, LoginModalService, AccountService, UserService, User } from '../../shared';
 import { JhiAlertService, JhiEventManager } from 'ng-jhipster';
 import { ActivatedRoute, Params } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
@@ -18,7 +18,7 @@ import { QuestionnairesService } from '../../questionnaires/questionnaires.servi
 import { QuestionMgm, QuestionMgmService } from '../../entities/question-mgm';
 import { AnswerMgm, AnswerMgmService } from '../../entities/answer-mgm';
 import { MyAnswerMgmService, MyAnswerMgm } from '../../entities/my-answer-mgm';
-import { QuestionnaireStatusMgmService } from '../../entities/questionnaire-status-mgm';
+import { QuestionnaireStatusMgmService, QuestionnaireStatusMgm, QuestionnaireStatusMgmCustomService } from '../../entities/questionnaire-status-mgm';
 import { MyAssetMgm } from '../../entities/my-asset-mgm';
 import { IdentifyAssetUtilService } from '../identify-asset.util.service';
 
@@ -34,9 +34,11 @@ export class IdentifyAssetComponent implements OnInit, OnDestroy {
     eventSubscriber: Subscription;
     currentSearch: string;
     mySelf: SelfAssessmentMgm = {};
-    assets$: Observable<AssetMgm[]>;
+    // assets$: Observable<AssetMgm[]>;
+    user: User;
 
     questionnaries: QuestionnaireMgm[];
+    questionnariesStatus: QuestionnaireStatusMgm[];
     questions: QuestionMgm[];
     myAnswers: MyAnswerMgm[];
     myAssets: MyAssetMgm[];
@@ -48,31 +50,59 @@ export class IdentifyAssetComponent implements OnInit, OnDestroy {
         private principal: Principal,
         private mySelfAssessmentService: SelfAssessmentMgmService,
         private questionnairesService: QuestionnairesService,
-        private questionnaireStatusService: QuestionnaireStatusMgmService,
+        private questionnaireStatusService: QuestionnaireStatusMgmCustomService,
         private questionService: QuestionMgmService,
         private myAnswerService: MyAnswerMgmService,
         private answerService: AnswerMgmService,
         private identifyAssetService: IdentifyAssetService,
         private route: ActivatedRoute,
         private assetService: AssetMgmService,
-        private idaUtilsService: IdentifyAssetUtilService
+        private idaUtilsService: IdentifyAssetUtilService,
+        private accountService: AccountService,
+        private userService: UserService
     ) {
     }
 
     ngOnInit() {
-        this.principal.identity().then((account) => {
+        this.myInit();
+    }
+
+    private async myInit(): Promise<void> {
+        await this.principal.identity().then((account) => {
             this.account = account;
+        });
+        await this.accountService.get().subscribe((response1) => {
+            const loggedAccount = response1.body;
+            this.userService.find(loggedAccount['login']).subscribe((response2) => {
+                this.user = response2.body;
+            });
         });
         this.mySelf = this.mySelfAssessmentService.getSelfAssessment();
         this.registerChangeIdentifyAssets();
-        this.assets$ = this.assetService.findAll();
+        // await this.assets$ = this.assetService.findAll();
         this.questionnaries = [];
         this.myAnswers = [];
-        this.questionnairesService.getAllQuestionnairesByPurpose(QuestionnairePurpose.ID_ASSETS).toPromise().then((res) => {
+        await this.questionnairesService.getAllQuestionnairesByPurpose(QuestionnairePurpose.ID_ASSETS).toPromise().then((res) => {
             if (res && res instanceof QuestionnaireMgm) {
                 this.questionnaries.push(res);
             } else if (res && res instanceof Array) {
                 this.questionnaries = res;
+            }
+            if (this.account['authorities'].includes('CISO_ROLE')) {
+                for (const qs of this.questionnaries) {
+                    // controllo esistenza questionnaire status
+                    this.questionnaireStatusService.getByRoleSelfAssessmentAndQuestionnaire('CISO_ROLE', this.mySelf.id, qs.id)
+                        .toPromise()
+                        .then((status) => {
+                            this.questionnariesStatus.push(status.body as QuestionnaireStatusMgm);
+                            this.myAnswerService.getAllByQuestionnaireStatusID(status.body.id)
+                                .toPromise().then((answers) => {
+                                    if (answers.body) {
+                                        this.myAnswers = answers.body;
+                                    }
+                                });
+                        });
+                }
             }
             if (this.questionnaries && this.questionnaries.length > 0) {
                 this.questions = [];
@@ -85,58 +115,25 @@ export class IdentifyAssetComponent implements OnInit, OnDestroy {
                     } else if (resQ.body && resQ.body instanceof Array) {
                         this.questions = resQ.body;
                     }
-                    /*
-                    if (this.questions && this.questions.length > 0) {
-                        console.log(this.questions);
-                        this.myAnswers = [];
-                        this.questionsAnswerMap = new Map<number, Array<AnswerMgm>>();
-                        for (const q of this.questions) {
-                            for (const a of q.answers) {
-                                this.answerService.find(a.id).toPromise().then((ans) => {
-                                    if (ans.body) {
-                                        let arr;
-                                        if (this.questionsAnswerMap.get(q.id)) {
-                                            arr = this.questionsAnswerMap.get(q.id) as AnswerMgm[];
-                                            arr.push(ans.body);
-                                        } else {
-                                            arr = [];
-                                            arr.push(ans.body);
-                                        }
-                                        this.questionsAnswerMap.set(q.id, arr);
-                                    }
-                                });
-                            }
-                            console.log(this.questionsAnswerMap);
-                        }
-                    }
-                    */
                 });
             }
         });
     }
-
-    /*
-    public myAnswersReceiver(myAnswers: MyAnswerMgm[]) {
-        // console.log(myAnswer);
-        if (myAnswers) {
-            for (const myAnswer of myAnswers) {
-                const index = _.findIndex(this.myAnswers, { id: myAnswer.id });
-                if (index !== -1) {
-                    this.myAnswers.splice(index, 1, myAnswer);
-                } else {
-                    this.myAnswers.push(myAnswer);
-                }
-            }
-        }
-    }
-    */
 
     public sendAnswerAndSaveMyAssets() {
         this.myAnswers = this.idaUtilsService.getMyAnswersComplited();
         this.myAssets = this.idaUtilsService.getMyAssets();
         console.log(this.myAnswers);
         console.log(this.myAssets);
+        // SERVONO questionnariesStatus, user
         // TODO funzioni per il salvataggio
+        // Salvare prima un questionnaire status
+        // salvare le MyAnswer
+        // salvare i MyAssets
+        // salvare i direct assets
+        // salvare gli indirect
+        // getTemporaryId() uuid::189y4861
+        // (all objects)
     }
 
     ngOnDestroy() {

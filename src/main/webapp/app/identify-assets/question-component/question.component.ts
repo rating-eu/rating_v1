@@ -194,6 +194,9 @@ export class QuestionComponent implements OnInit, OnDestroy {
             }
             // genero una nuova risposta e la invio al servizio che si occupa di gestirle
             const myAnswer = new MyAnswerMgm();
+            if (idOffset) {
+                myAnswer.answerOffset = idOffset;
+            }
             myAnswer.answer = ans;
             myAnswer.question = this.question;
             myAnswer.questionnaire = this.questionnaire;
@@ -275,12 +278,10 @@ export class QuestionComponent implements OnInit, OnDestroy {
             }
             // genero una nuova risposta e la invio al servizio che si occupa di gestirle
             const myAnswer = new MyAnswerMgm();
-            /*
-            if(idOffset){
-                ans.offset = idOffset;
+            if (idOffset) {
+                myAnswer.answerOffset = idOffset;
             }
-            */
-            myAnswer.answer = _.clone(ans);
+            myAnswer.answer = ans;
             myAnswer.question = this.question;
             myAnswer.questionnaire = this.questionnaire;
             myAnswer.user = this.user;
@@ -295,7 +296,7 @@ export class QuestionComponent implements OnInit, OnDestroy {
         }
     }
 
-    public setDirect(ans: AnswerMgm) {
+    public setDirect(ans: AnswerMgm, idOffset?: number) {
         const index = _.findIndex(this.selectedAnswers, { id: ans.id });
         const selectedAsset: AssetMgm | AssetMgm[] = this.findAsset(ans);
         const myGlobalAssets: MyAssetMgm[] = this.idaUtilsService.getMyAssets();
@@ -345,6 +346,9 @@ export class QuestionComponent implements OnInit, OnDestroy {
             }
             // genero una nuova risposta e la invio al servizio che si occupa di gestirle
             const myAnswer = new MyAnswerMgm();
+            if (idOffset) {
+                myAnswer.answerOffset = idOffset;
+            }
             myAnswer.answer = ans;
             myAnswer.question = this.question;
             myAnswer.questionnaire = this.questionnaire;
@@ -415,9 +419,18 @@ export class QuestionComponent implements OnInit, OnDestroy {
     }
 
     public isSelected(ans: AnswerMgm, idOffset?: number): boolean {
-        const index = _.findIndex(this.selectedAnswers, { id: ans.id });
-        if (index !== -1) {
-            return true;
+        if (idOffset) {
+            const anss = _.filter(this.myQuestionAnswer, (qA) => (qA as MyAnswerMgm).answerOffset !== 0);
+            for (const a of anss) {
+                if (a.answerOffset === idOffset) {
+                    return true;
+                }
+            }
+        } else {
+            const index = _.findIndex(this.selectedAnswers, { id: ans.id });
+            if (index !== -1) {
+                return true;
+            }
         }
         return false;
     }
