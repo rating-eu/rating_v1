@@ -44,81 +44,86 @@
         </div>
 
         <div *ngSwitchCase="roleEnum.ROLE_EXTERNAL_AUDIT">
-            <h2>ROLE EXTERNAL AUDIT</h2>
+            <div *ngIf="questionnaire.purpose === purposeEnum.SELFASSESSMENT">
 
-            <div *ngFor="let question of questionsArray; trackBy: trackByID"
-                 [ngClass]="{'ng-valid': isValid(question.id) === true, 'ng-invalid': isValid(question.id) === false}">
+                <h2>ROLE EXTERNAL AUDIT</h2>
 
-                <label class="form-control-label" [attr.for]="question?.id"><h3>
-                    {{question?.name}}</h3>
-                </label>
+                <div *ngFor="let question of questionsArray; trackBy: trackByID"
+                     [ngClass]="{'ng-valid': isValid(question.id) === true, 'ng-invalid': isValid(question.id) === false}">
 
-                <div *ngIf="debug">
+                    <label class="form-control-label" [attr.for]="question?.id"><h3>
+                        {{question?.name}}</h3>
+                    </label>
+
+                    <div *ngIf="debug">
                     <pre>
                         {{question | json}}
                     </pre>
+                    </div>
+
+                    <table>
+                        <thead>
+                        <tr>
+                            <th>CISO</th>
+                            <th>External</th>
+                            <th>Note</th>
+                        </tr>
+                        </thead>
+
+                        <tbody>
+                        <tr>
+                            <td>
+                                <div [id]="question.id" class="radio" *ngFor="let answer of sort(question.answers)">
+                                    <pre *ngIf="debug">{{answer | json}}</pre>
+
+                                    <label class="radio">
+                                        <input type="radio"
+                                               [formControlName]="question.id"
+                                               [value]="answer"
+                                               disabled
+                                        />&nbsp;{{answer.name}}
+                                        <pre *ngIf="debug">
+                                        answer id {{answer.id}} form value id
+                                        {{form.value[question.id].id | json}}
+                                    </pre>
+                                    </label>
+                                </div>
+                            </td>
+
+                            <td>
+                                <div [id]="question.id" class="radio" *ngFor="let answer of sort(question.answers)">
+                                    <pre *ngIf="debug">{{answer | json}}</pre>
+
+                                    <label class="radio">
+                                        <input type="radio"
+                                               [formControlName]="question.id + '.external'"
+                                               [value]="answer"/>&nbsp;{{answer.name}}
+                                        <pre *ngIf="debug">
+                                        answer id {{answer.id}} form value id
+                                        {{form.value[question.id].id | json}}
+                                    </pre>
+                                    </label>
+                                </div>
+                            </td>
+
+                            <td>
+                                <div>
+                                    <label>
+                                        <textarea [formControlName]="question.id + '.note'"></textarea>
+                                    </label>
+                                </div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
                 </div>
 
-                <table>
-                    <thead>
-                    <tr>
-                        <th>CISO</th>
-                        <th>External</th>
-                        <th>Note</th>
-                    </tr>
-                    </thead>
-
-                    <tbody>
-                    <tr>
-                        <td>
-                            <div [id]="question.id" class="radio" *ngFor="let answer of sort(question.answers)">
-                                <pre *ngIf="debug">{{answer | json}}</pre>
-
-                                <label class="radio">
-                                    <input type="radio"
-                                           [formControlName]="question.id"
-                                           [value]="answer"/>&nbsp;{{answer.name}}
-                                    <pre *ngIf="debug">
-                                        answer id {{answer.id}} form value id
-                                        {{form.value[question.id].id | json}}
-                                    </pre>
-                                </label>
-                            </div>
-                        </td>
-
-                        <td>
-                            <div [id]="question.id" class="radio" *ngFor="let answer of sort(question.answers)">
-                                <pre *ngIf="debug">{{answer | json}}</pre>
-
-                                <label class="radio">
-                                    <input type="radio"
-                                           [formControlName]="question.id"
-                                           [value]="answer"/>&nbsp;{{answer.name}}
-                                    <pre *ngIf="debug">
-                                        answer id {{answer.id}} form value id
-                                        {{form.value[question.id].id | json}}
-                                    </pre>
-                                </label>
-                            </div>
-                        </td>
-
-                        <td>
-                            <div>
-                                <label>
-                                    <input type="text" [formControlName]="question.id + '.note'">
-                                </label>
-                            </div>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-            </div>
-
-            <div class="form-row">
-                <button class="btn btn-success btn-lg" type="submit" [disabled]="!form.valid">Submit</button>
-                <button class="btn btn-primary btn-lg" type="button" (click)="freezeQuestionnaireStatus()">Freeze
-                </button>
-                <button class="btn btn-danger" type="reset" (click)="form.reset()">Reset</button>
+                <div class="form-row">
+                    <button class="btn btn-success btn-lg" type="submit" [disabled]="!form.valid">Submit</button>
+                    <button class="btn btn-primary btn-lg" type="button" (click)="freezeQuestionnaireStatus()">Freeze
+                    </button>
+                    <button class="btn btn-danger" type="reset" (click)="form.reset()">Reset</button>
+                </div>
             </div>
         </div>
 

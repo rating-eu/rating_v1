@@ -42,12 +42,13 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
 
     debug = false;
     roleEnum = Role;
+    purposeEnum = QuestionnairePurpose;
 
-    _questionsArray: QuestionMgm[];
+    questionsArray: QuestionMgm[];
     /**
      * Map QuestionID ==> Question
      */
-    _questionsArrayMap: Map<number, QuestionMgm>;
+    questionsArrayMap: Map<number, QuestionMgm>;
     form: FormGroup;
     _questionnaireStatus: QuestionnaireStatusMgm;
 
@@ -71,57 +72,6 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
                 private userService: UserService,
                 private questionService: QuestionMgmService,
                 private threatAgentService: ThreatAgentMgmService) {
-    }
-
-    @Input()
-    set questionsArray(questionsArray: QuestionMgm[]) {
-        console.log('QuestionsArray changed...');
-        this._questionsArray = questionsArray;
-        console.log('Now its ' + this._questionsArray);
-
-        // Now we can create the form, since the questionsArray is no more undefined
-        if (this._questionsArray) {
-            this.form = this.questionControlService.toFormGroup(this._questionsArray);
-            console.log('Form has been created...');
-            console.log('Form is: ' + this.form);
-
-            this._questionsArrayMap = new Map<number, QuestionMgm>();
-
-            this._questionsArray.forEach((value: QuestionMgm) => {
-                this._questionsArrayMap.set(value.id, value);
-            });
-
-            if (this.myAnswers) {
-                this.form.patchValue(this.myAnswersToFormValue(this.myAnswers, this._questionsArrayMap));
-            }
-
-            if (this.questionnaire.purpose === QuestionnairePurpose.SELFASSESSMENT) {
-                for (const key in this.form.controls) {
-                    const formControl = this.form.get(key);
-
-                    if (formControl) {
-                        formControl.valueChanges.subscribe(
-                            (answer: AnswerMgm) => {
-                                console.log('Question ' + key + ' Field changes:');
-
-                                const question = this._questionsArrayMap.get(Number(key));
-                                console.log('Question:');
-                                console.log(JSON.stringify(question));
-
-                                console.log('Answer:');
-                                console.log(JSON.stringify(answer));
-
-                                this.dataSharingSerivce.answerSelfAssessment(question, answer);
-                            }
-                        );
-                    }
-                }
-            }
-        }
-    }
-
-    get questionsArray() {
-        return this._questionsArray;
     }
 
     @Input()
@@ -154,7 +104,7 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
                         this.myAnswers = response.body;
 
                         if (this.form) {
-                            this.form.patchValue(this.myAnswersToFormValue(this.myAnswers, this._questionsArrayMap));
+                            this.form.patchValue(this.myAnswersToFormValue(this.myAnswers, this.questionsArrayMap));
                         }
                     }
                 );
@@ -184,13 +134,26 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
         return question.id;
     }
 
+    /*
+    Initialize the directive/component after Angular first displays
+    the data-bound properties and sets the directive/component's
+    input properties. Called once, after the first ngOnChanges().
+     */
     ngOnInit() {
         this.selfAssessment = this.selfAssessmentService.getSelfAssessment();
 
-        this.accountService.get().mergeMap(
-            (accountHttpResponse: HttpResponse<Account>) => {// Get the Account
-                this.account = accountHttpResponse.body;
-                console.log('Account: ' + JSON.stringify(this.account));
+        // 1) Here all the input properties are expected to be set!!!
+        // 2) Get the logged user and its ROLE.
+        // 3) Get the QuestionnairePurpose.
+        // 4) Create the form based on points 2 & 3.
+
+        const account$ = this.accountService.get();
+        const questions$ = this.questionService.getQuestionsByQuestionnaire(this.questionnaire.id);
+        const questionsAndAccount$ = forkJoin(account$, questions$);
+
+        const user$ = questionsAndAccount$.mergeMap(
+            (response: [HttpResponse<Account>, HttpResponse<QuestionMgm[]>]) => {
+                this.account = response[0].body;
 
                 if (this.account['authorities'].includes(DynamicFormComponent.CISO_ROLE)) {
                     this.role = Role.ROLE_CISO;
@@ -198,15 +161,66 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
                     this.role = Role.ROLE_EXTERNAL_AUDIT;
                 }
 
-                console.log('Role: ' + this.role);
+                this.questionsArray = response[1].body;
+                this.questionsArrayMap = FormUtils.questionsToMap(this.questionsArray);
+
+                switch (this.role) {
+                    case Role.ROLE_CISO: {
+                        this.form = this.questionControlService.toFormGroupCISO(this.questionsArray);
+                        console.log('Form has been created...');
+                        console.log('Form is: ' + this.form);
+                        break;
+                    }
+                    case Role.ROLE_EXTERNAL_AUDIT: {
+                        this.form = this.questionControlService.toFormGroupExternalAuditor(this.questionsArray);
+                        console.log('Form has been created...');
+                        console.log('Form is: ' + this.form);
+                        break;
+                    }
+                    default: {
+                        console.log('Warning: There is a problem... Role is different from CISO or EXTERNAL_AUDIT');
+                    }
+                }
+
+                if (this.myAnswers) {
+                    this.form.patchValue(this.myAnswersToFormValue(this.myAnswers, this.questionsArrayMap));
+                }
+
+                // Real time matrix update
+                if (this.questionnaire.purpose === QuestionnairePurpose.SELFASSESSMENT) {
+                    for (const key in this.form.controls) {
+                        const formControl = this.form.get(key);
+
+                        if (formControl) {
+                            formControl.valueChanges.subscribe(
+                                (answer: AnswerMgm) => {
+                                    console.log('Question ' + key + ' Field changes:');
+
+                                    const question = this.questionsArrayMap.get(Number(key));
+                                    console.log('Question:');
+                                    console.log(JSON.stringify(question));
+
+                                    console.log('Answer:');
+                                    console.log(JSON.stringify(answer));
+
+                                    this.dataSharingSerivce.answerSelfAssessment(question, answer);
+                                }
+                            );
+                        }
+                    }
+                }
 
                 return this.userService.find(this.account['login']);
             }
-        ).toPromise().then(
-            (userHttpResponse: HttpResponse<User>) => {// Get the User
-                this.user = userHttpResponse.body;
-                console.log('User: ' + JSON.stringify(this.user));
-            });
+        );
+
+        user$.toPromise()
+            .then(
+                (userHttpResponse: HttpResponse<User>) => {// Get the User
+                    this.user = userHttpResponse.body;
+                    console.log('User: ' + JSON.stringify(this.user));
+                }
+            );
     }
 
     ngOnDestroy() {
@@ -273,7 +287,7 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
 
             const answer: AnswerMgm = value as AnswerMgm;
 
-            const question: QuestionMgm = this._questionsArrayMap.get(Number(key));
+            const question: QuestionMgm = this.questionsArrayMap.get(Number(key));
             console.log('Question: ' + JSON.stringify(question));
 
             const threatAgent: ThreatAgentMgm = question.threatAgent;
@@ -619,7 +633,7 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
                 console.log('Answer: ' + answer);
 
                 if (answer) {// check if the the user answered this question
-                    const question: QuestionMgm = this._questionsArrayMap.get(Number(key));
+                    const question: QuestionMgm = this.questionsArrayMap.get(Number(key));
                     const questionnaire: QuestionnaireMgm = question.questionnaire;
 
                     console.log('Answer: ' + JSON.stringify(answer));

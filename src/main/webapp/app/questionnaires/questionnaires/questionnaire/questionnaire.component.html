@@ -1,4 +1,4 @@
 <h2 class="text-center">{{questionnaire.name}}</h2>
 <h3 class="text-center">Status is {{questionnaireStatusesMap?.get(questionnaire.id)?.status || statusEnum.EMPTY}}</h3>
 
-<jhi-dynamic-form  [questionnaire]="questionnaire" [questionsArray]="questions$ | async" [questionnaireStatus]="questionnaireStatus"></jhi-dynamic-form>
+<jhi-dynamic-form  [questionnaire]="questionnaire" [questionnaireStatus]="questionnaireStatus"></jhi-dynamic-form>
