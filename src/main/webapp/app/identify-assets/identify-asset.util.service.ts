@@ -21,7 +21,8 @@ export class IdentifyAssetUtilService {
     private myDirectAssets: DirectAssetMgm[];
     private myIndirectAssets: IndirectAssetMgm[];
 
-    // private updateAssetsList: Subject<MyAssetMgm> = new Subject<MyAssetMgm>();
+    private subscriptorForDirectAssets: Subject<DirectAssetMgm[]> = new Subject<DirectAssetMgm[]>();
+    private subscriptorForIndirectAssets: Subject<IndirectAssetMgm[]> = new Subject<IndirectAssetMgm[]>();
 
     constructor() {
         if (!this.myAnswersComplited) {
@@ -37,15 +38,23 @@ export class IdentifyAssetUtilService {
             this.myIndirectAssets = [];
         }
     }
-    /*
-    public getUpdateAssetsList(): Observable<MyAssetMgm> {
-        return this.sectionTitle.asObservable();
+
+    public subscribeForDirect(): Observable<DirectAssetMgm[]> {
+        return this.subscriptorForDirectAssets.asObservable();
     }
-    
-    publi sendSectionTitle(title: string) {
-        this.sectionTitle.next(title);
+
+    public sendUpdateForDirectToSubscriptor(directs: DirectAssetMgm[]) {
+        this.subscriptorForDirectAssets.next(directs);
     }
-    */
+
+    public subscribeForIndirect(): Observable<IndirectAssetMgm[]> {
+        return this.subscriptorForIndirectAssets.asObservable();
+    }
+
+    public sendUpdateForIndirectToSubscriptor(indirects: IndirectAssetMgm[]) {
+        this.subscriptorForIndirectAssets.next(indirects);
+    }
+
     public getMyDirectAsset(): DirectAssetMgm[] {
         return this.myDirectAssets;
     }
@@ -73,6 +82,7 @@ export class IdentifyAssetUtilService {
             direct.effects = undefined;
             this.myDirectAssets.push(direct);
         }
+        this.sendUpdateForDirectToSubscriptor(this.myDirectAssets);
     }
 
     public removeFromMyDirectAssets(asset: MyAssetMgm) {
@@ -82,6 +92,7 @@ export class IdentifyAssetUtilService {
         if (index !== -1) {
             this.myDirectAssets.splice(index, 1);
         }
+        this.sendUpdateForDirectToSubscriptor(this.myDirectAssets);
     }
 
     public updateMyDirectAssets(asset: MyAssetMgm, cost: AttackCostMgm, effect: IndirectAssetMgm) {
@@ -115,10 +126,11 @@ export class IdentifyAssetUtilService {
                     this.myDirectAssets[index].effects.splice(indexF, 1);
                 }
             }
+            this.sendUpdateForDirectToSubscriptor(this.myDirectAssets);
         }
     }
 
-    public addMyIndirectAssets(asset: MyAssetMgm, directAsset: AssetMgm) {
+    public addMyIndirectAssets(asset: MyAssetMgm, directAsset: MyAssetMgm) {
         const index = _.findIndex(this.myIndirectAssets,
             (myIndirectAsset) => (myIndirectAsset.asset as MyAssetMgm).asset.id === asset.asset.id
         );
@@ -129,6 +141,7 @@ export class IdentifyAssetUtilService {
             indirect.directAsset = directAsset;
             this.myIndirectAssets.push(indirect);
         }
+        this.sendUpdateForIndirectToSubscriptor(this.myIndirectAssets);
     }
 
     public removeFromMyIndirectAssets(asset: MyAssetMgm) {
@@ -138,6 +151,7 @@ export class IdentifyAssetUtilService {
         if (index !== -1) {
             this.myIndirectAssets.splice(index, 1);
         }
+        this.sendUpdateForIndirectToSubscriptor(this.myIndirectAssets);
     }
 
     public updateMyIndirectAssets(asset: MyAssetMgm, cost: AttackCostMgm) {
@@ -158,6 +172,7 @@ export class IdentifyAssetUtilService {
                     this.myIndirectAssets[index].costs.splice(indexC, 1);
                 }
             }
+            this.sendUpdateForIndirectToSubscriptor(this.myIndirectAssets);
         }
     }
 

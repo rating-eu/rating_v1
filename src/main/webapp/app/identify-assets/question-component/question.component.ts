@@ -1,7 +1,7 @@
 // tslint:disable:component-selectorù
 import * as _ from 'lodash';
 
-import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChange } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { QuestionMgm } from '../../entities/question-mgm';
 import { SelfAssessmentMgm } from '../../entities/self-assessment-mgm';
 import { QuestionnaireMgm } from '../../entities/questionnaire-mgm';
@@ -14,30 +14,40 @@ import { MyAssetMgm } from '../../entities/my-asset-mgm';
 import { IdentifyAssetUtilService } from '../identify-asset.util.service';
 import { AssetCategoryMgmService } from '../../entities/asset-category-mgm';
 import { AssetType } from '../../entities/enumerations/AssetType.enum';
+import { DirectAssetMgm } from '../../entities/direct-asset-mgm';
+import { Subscription } from '../../../../../../node_modules/rxjs/Subscription';
+import { IndirectAssetMgm } from '../../entities/indirect-asset-mgm';
 
 @Component({
+    // tslint:disable-next-line:component-selector
     selector: 'question-card',
     templateUrl: './question.component.html',
     styleUrls: ['./question.component.css'],
     providers: []
 })
 
-export class QuestionComponent implements OnInit {
+export class QuestionComponent implements OnInit, OnDestroy {
     @Input() public question: QuestionMgm;
     @Input() public questionRenderType: string;
     @Input() public self: SelfAssessmentMgm;
     @Input() public questionnaire: QuestionnaireMgm;
     @Input() public user: User;
-    // @Output() public myAnswersComplited = new EventEmitter();
-    // @Output() public myAssetsComplited = new EventEmitter();
+
     public renderType: string;
+
     private myQuestionAnswer: MyAnswerMgm[] = [];
+    private selectedAnswers: AnswerMgm[] = [];
     public intangible: AnswerMgm[] = [];
     public tangibleCurrent: AnswerMgm[] = [];
     public tangibleFixed: AnswerMgm[] = [];
-    private selectedAnswers: AnswerMgm[] = [];
+
     private allAssets: AssetMgm[];
     private myQuestionAssets: MyAssetMgm[] = [];
+    public directGuiAssets: DirectAssetMgm[] = [];
+    public indirectGuiAsset: IndirectAssetMgm[] = [];
+
+    private directAssetsSubscription: Subscription;
+    private indirectAssetsSubscription: Subscription;
 
     constructor(
         private accountService: AccountService,
@@ -47,7 +57,19 @@ export class QuestionComponent implements OnInit {
         private idaUtilsService: IdentifyAssetUtilService
     ) { }
 
+    ngOnDestroy() {
+        this.directAssetsSubscription.unsubscribe();
+        this.indirectAssetsSubscription.unsubscribe();
+    }
+
     ngOnInit() {
+        this.directAssetsSubscription = this.idaUtilsService.subscribeForDirect().subscribe((res) => {
+            this.directGuiAssets = res;
+        });
+        this.indirectAssetsSubscription = this.idaUtilsService.subscribeForIndirect().subscribe((res) => {
+            this.indirectGuiAsset = res;
+        });
+
         if (this.questionRenderType.search('rank') !== -1) {
             this.renderType = 'select_rank';
             for (const qa of this.question.answers) {
@@ -111,38 +133,9 @@ export class QuestionComponent implements OnInit {
         this.assetService.findAll().toPromise().then((res) => {
             this.allAssets = res;
         });
-        console.log(this.question);
-        // console.log(this.self);
-        // console.log(this.questionnaire);
-        // console.log(this.question.answers);
-        // console.log(_.sortBy(this.question.answers, 'order'));
-        // this.question.answers = _.sortBy(this.question.answers, 'order');
-        // console.log(this.question.answers);
-        /*
-        this.myAnswer = new MyAnswerMgm();
-        this.myAnswer.answer = this.question.answers[0];
-        this.myAnswer.question = this.question;
-        this.myAnswer.questionnaire = this.questionnaire;
-        this.accountService.get().subscribe((response1) => {
-            const account = response1.body;
-            this.userService.find(account['login']).subscribe((response2) => {
-                this.user = response2.body;
-                this.myAnswer.user = this.user;
-                this.myAnswerComplited.emit(this.myAnswer);
-            });
-        });
-        */
     }
 
-    /*
-    public onAnswerResponded(myAnswer: MyAnswerMgm) {
-        if (myAnswer) {
-            this.myAnswerComplited.emit(myAnswer);
-        }
-    }
-    */
-
-    public select(ans: AnswerMgm) {
+    public select(ans: AnswerMgm, idOffset?: number) {
         console.log(ans);
         const selectedAsset: AssetMgm | AssetMgm[] = this.findAsset(ans);
         const index = _.findIndex(this.selectedAnswers, { id: ans.id });
@@ -199,7 +192,6 @@ export class QuestionComponent implements OnInit {
                     this.idaUtilsService.addMyAsset(myAsset);
                 }
             }
-
             // genero una nuova risposta e la invio al servizio che si occupa di gestirle
             const myAnswer = new MyAnswerMgm();
             myAnswer.answer = ans;
@@ -229,6 +221,78 @@ export class QuestionComponent implements OnInit {
             return assetsByCategory as AssetMgm[];
         }
         return undefined;
+    }
+
+    public setIndirect(ans: AnswerMgm, direct: MyAssetMgm, idOffset?: number) {
+        // creare l'indirect
+        // aggiornare il direct con gli effetti
+        const index = _.findIndex(this.selectedAnswers, { id: ans.id });
+        const selectedAsset: AssetMgm | AssetMgm[] = this.findAsset(ans);
+        const myGlobalAssets: MyAssetMgm[] = this.idaUtilsService.getMyAssets();
+        if (index !== -1) {
+            if (!(selectedAsset instanceof Array)) {
+                const indexA = _.findIndex(myGlobalAssets,
+                    (myAsset) => myAsset.asset.id === selectedAsset.id
+                );
+                if (indexA !== -1) {
+                    this.idaUtilsService.removeFromMyIndirectAssets(myGlobalAssets[indexA]);
+                }
+            } else {
+                for (const ass of selectedAsset) {
+                    const indexA = _.findIndex(myGlobalAssets,
+                        (myAsset) => myAsset.asset.id === ass.id
+                    );
+                    if (indexA !== -1) {
+                        this.idaUtilsService.removeFromMyIndirectAssets(myGlobalAssets[indexA]);
+                    }
+                }
+            }
+            const indexQ = _.findIndex(this.myQuestionAnswer,
+                (myAnswer) => myAnswer.answer.id === this.selectedAnswers[index].id
+            );
+            if (indexQ !== -1) {
+                this.idaUtilsService.removeFromMyAnswer(this.myQuestionAnswer[indexQ]);
+                this.myQuestionAnswer.splice(indexQ, 1);
+            }
+            this.selectedAnswers.splice(index, 1);
+        } else {
+            if (!(selectedAsset instanceof Array)) {
+                const indexA = _.findIndex(myGlobalAssets,
+                    (myAsset) => myAsset.asset.id === selectedAsset.id
+                );
+                if (indexA !== -1) {
+                    this.idaUtilsService.addMyIndirectAssets(myGlobalAssets[indexA], direct);
+                }
+            } else {
+                for (const ass of selectedAsset) {
+                    const indexA = _.findIndex(myGlobalAssets,
+                        (myAsset) => myAsset.asset.id === ass.id
+                    );
+                    if (indexA !== -1) {
+                        this.idaUtilsService.addMyIndirectAssets(myGlobalAssets[indexA], direct);
+                    }
+                }
+            }
+            // genero una nuova risposta e la invio al servizio che si occupa di gestirle
+            const myAnswer = new MyAnswerMgm();
+            /*
+            if(idOffset){
+                ans.offset = idOffset;
+            }
+            */
+            myAnswer.answer = _.clone(ans);
+            myAnswer.question = this.question;
+            myAnswer.questionnaire = this.questionnaire;
+            myAnswer.user = this.user;
+            this.idaUtilsService.addMyAnswer(myAnswer);
+            this.myQuestionAnswer.push(myAnswer);
+            this.selectedAnswers.push(ans);
+
+            // this.directGuiAssets = this.idaUtilsService.getMyDirectAsset();
+            console.log(this.idaUtilsService.getMyAssets());
+            console.log(this.idaUtilsService.getMyIndirectAsset());
+            console.log(this.idaUtilsService.getMyDirectAsset());
+        }
     }
 
     public setDirect(ans: AnswerMgm) {
@@ -289,11 +353,12 @@ export class QuestionComponent implements OnInit {
             this.myQuestionAnswer.push(myAnswer);
             this.selectedAnswers.push(ans);
 
+            // this.directGuiAssets = this.idaUtilsService.getMyDirectAsset();
             console.log(this.idaUtilsService.getMyAssets());
             console.log(this.idaUtilsService.getMyDirectAsset());
         }
-
     }
+
     public setRank(ans: AnswerMgm, rank: number) {
         const selectedAsset = this.findAsset(ans);
         if (!(selectedAsset instanceof Array)) {
@@ -315,7 +380,7 @@ export class QuestionComponent implements OnInit {
                 }
             }
         }
-        console.log(this.idaUtilsService.getMyAssets());
+        // console.log(this.idaUtilsService.getMyAssets());
     }
 
     public whichRank(ans: AnswerMgm, rank: number): boolean {
@@ -349,7 +414,7 @@ export class QuestionComponent implements OnInit {
         }
     }
 
-    public isSelected(ans: AnswerMgm): boolean {
+    public isSelected(ans: AnswerMgm, idOffset?: number): boolean {
         const index = _.findIndex(this.selectedAnswers, { id: ans.id });
         if (index !== -1) {
             return true;
