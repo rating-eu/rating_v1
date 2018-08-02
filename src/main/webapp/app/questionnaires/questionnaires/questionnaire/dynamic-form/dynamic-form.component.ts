@@ -51,7 +51,7 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
      */
     questionsArrayMap: Map<number, QuestionMgm>;
     form: FormGroup;
-    _questionnaireStatus: QuestionnaireStatusMgm;
+    questionnaireStatus: QuestionnaireStatusMgm;
 
     myAnswers: MyAnswerMgm[];
 
@@ -84,48 +84,6 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
 
     get questionnaire() {
         return this._questionnaire;
-    }
-
-    @Input()
-    set questionnaireStatus(status: QuestionnaireStatusMgm) {
-        console.log('Questionnaire status input: ' + JSON.stringify(status));
-
-        this._questionnaireStatus = status;
-
-        switch (this._questionnaireStatus.status) {
-            case Status.EMPTY: {
-                console.log('Status EMPTY');
-
-                break;
-            }
-            case Status.PENDING: {
-                console.log('Status PENDING');
-
-                this.myAnswerService.getAllByQuestionnaireStatusID(this.questionnaireStatus.id).subscribe(
-                    (response: HttpResponse<MyAnswerMgm[]>) => {
-                        this.myAnswers = response.body;
-
-                        if (this.form) {
-                            this.form.patchValue(this.myAnswersToFormValue(this.myAnswers, this.questionsArrayMap));
-                        }
-                    }
-                );
-
-                break;
-            }
-            case Status.FULL: {
-                console.log('Status FULL');
-
-                break;
-            }
-            default: {
-                console.log('Status DEFAULT case');
-            }
-        }
-    }
-
-    get questionnaireStatus() {
-        return this._questionnaireStatus;
     }
 
     isValid(questionID) {
@@ -515,22 +473,22 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
 
         const now: string = new Date().toISOString();
 
-        switch (this._questionnaireStatus.status) {
+        switch (this.questionnaireStatus.status) {
             case Status.EMPTY: {// create a new QuestionnaireStatus && create MyAnswers
                 /**
                  * The PENDING status for the questionnaire.
                  * @type {QuestionnaireStatusMgm}
                  */
-                this._questionnaireStatus = new QuestionnaireStatusMgm(undefined, Status.PENDING, now, now, this.selfAssessment, this._questionnaire, this.role, this.user, []);
+                this.questionnaireStatus = new QuestionnaireStatusMgm(undefined, Status.PENDING, now, now, this.selfAssessment, this._questionnaire, this.role, this.user, []);
 
                 // Getting the id of the above QuestionnaireStatus
                 this.subscriptions.push(
-                    this.questionnaireStatusService.create(this._questionnaireStatus).subscribe(
+                    this.questionnaireStatusService.create(this.questionnaireStatus).subscribe(
                         (statusResponse) => {
-                            this._questionnaireStatus = statusResponse.body;
+                            this.questionnaireStatus = statusResponse.body;
 
                             // CREATE the NEW MyAnswers
-                            const createObservables: Observable<HttpResponse<MyAnswerMgm[]>> = this.createMyAnswersObservable(formDataMap, this._questionnaireStatus);
+                            const createObservables: Observable<HttpResponse<MyAnswerMgm[]>> = this.createMyAnswersObservable(formDataMap, this.questionnaireStatus);
 
                             createObservables.subscribe(
                                 (myAnswersResponse: HttpResponse<MyAnswerMgm[]>) => {
@@ -568,7 +526,7 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
                 );
 
                 // CREATE the NEW MyAnswers
-                const createObservables: Observable<HttpResponse<MyAnswerMgm[]>> = this.createMyAnswersObservable(formDataMap, this._questionnaireStatus);
+                const createObservables: Observable<HttpResponse<MyAnswerMgm[]>> = this.createMyAnswersObservable(formDataMap, this.questionnaireStatus);
 
                 createObservables.subscribe(
                     (myAnswersResponse: HttpResponse<MyAnswerMgm[]>) => {
