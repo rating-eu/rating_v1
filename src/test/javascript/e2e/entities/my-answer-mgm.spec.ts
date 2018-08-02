@@ -33,8 +33,10 @@ describe('MyAnswer e2e test', () => {
 
     it('should create and save MyAnswers', () => {
         myAnswerComponentsPage.clickOnCreateButton();
-        myAnswerDialogPage.setMycheckInput('mycheck');
-        expect(myAnswerDialogPage.getMycheckInput()).toMatch('mycheck');
+        myAnswerDialogPage.setNoteInput('note');
+        expect(myAnswerDialogPage.getNoteInput()).toMatch('note');
+        myAnswerDialogPage.setAnswerOffsetInput('5');
+        expect(myAnswerDialogPage.getAnswerOffsetInput()).toMatch('5');
         myAnswerDialogPage.questionnaireStatusSelectLastOption();
         myAnswerDialogPage.answerSelectLastOption();
         myAnswerDialogPage.questionSelectLastOption();
@@ -66,7 +68,8 @@ export class MyAnswerDialogPage {
     modalTitle = element(by.css('h4#myMyAnswerLabel'));
     saveButton = element(by.css('.modal-footer .btn.btn-primary'));
     closeButton = element(by.css('button.close'));
-    mycheckInput = element(by.css('input#field_mycheck'));
+    noteInput = element(by.css('input#field_note'));
+    answerOffsetInput = element(by.css('input#field_answerOffset'));
     questionnaireStatusSelect = element(by.css('select#field_questionnaireStatus'));
     answerSelect = element(by.css('select#field_answer'));
     questionSelect = element(by.css('select#field_question'));
@@ -77,12 +80,20 @@ export class MyAnswerDialogPage {
         return this.modalTitle.getAttribute('jhiTranslate');
     }
 
-    setMycheckInput = function(mycheck) {
-        this.mycheckInput.sendKeys(mycheck);
+    setNoteInput = function(note) {
+        this.noteInput.sendKeys(note);
     };
 
-    getMycheckInput = function() {
-        return this.mycheckInput.getAttribute('value');
+    getNoteInput = function() {
+        return this.noteInput.getAttribute('value');
+    };
+
+    setAnswerOffsetInput = function(answerOffset) {
+        this.answerOffsetInput.sendKeys(answerOffset);
+    };
+
+    getAnswerOffsetInput = function() {
+        return this.answerOffsetInput.getAttribute('value');
     };
 
     questionnaireStatusSelectLastOption = function() {

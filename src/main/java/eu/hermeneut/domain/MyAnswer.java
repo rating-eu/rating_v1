@@ -1,13 +1,12 @@
 package eu.hermeneut.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
+import javax.validation.constraints.*;
 
 import org.springframework.data.elasticsearch.annotations.Document;
-
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -16,7 +15,7 @@ import java.util.Objects;
  */
 @Entity
 @Table(name = "my_answer",
-    uniqueConstraints = @UniqueConstraint(columnNames = {"questionnaire_status_id", "questionnaire_id", "question_id", "user_id", "answer_id"})
+    uniqueConstraints = @UniqueConstraint(columnNames = {"questionnaire_status_id", "questionnaire_id", "question_id", "user_id", "answer_id", "answer_offset"})
 )
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 @Document(indexName = "myanswer")
@@ -29,26 +28,30 @@ public class MyAnswer implements Serializable {
     @SequenceGenerator(name = "sequenceGenerator")
     private Long id;
 
-    @Column(name = "mycheck")
-    private String mycheck;
+    @Column(name = "note")
+    private String note;
+
+    @NotNull
+    @Column(name = "answer_offset", nullable = false)
+    private Integer answerOffset;
 
     @ManyToOne
     private QuestionnaireStatus questionnaireStatus;
 
     @OneToOne
-    @JoinColumn
+    @JoinColumn(unique = true)
     private Answer answer;
 
     @OneToOne
-    @JoinColumn(name = "question_id")
+    @JoinColumn(unique = true)
     private Question question;
 
     @OneToOne
-    @JoinColumn(name = "questionnaire_id")
+    @JoinColumn(unique = true)
     private Questionnaire questionnaire;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
+    @OneToOne
+    @JoinColumn(unique = true)
     private User user;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
@@ -60,17 +63,30 @@ public class MyAnswer implements Serializable {
         this.id = id;
     }
 
-    public String getMycheck() {
-        return mycheck;
+    public String getNote() {
+        return note;
     }
 
-    public MyAnswer mycheck(String mycheck) {
-        this.mycheck = mycheck;
+    public MyAnswer note(String note) {
+        this.note = note;
         return this;
     }
 
-    public void setMycheck(String mycheck) {
-        this.mycheck = mycheck;
+    public void setNote(String note) {
+        this.note = note;
+    }
+
+    public Integer getAnswerOffset() {
+        return answerOffset;
+    }
+
+    public MyAnswer answerOffset(Integer answerOffset) {
+        this.answerOffset = answerOffset;
+        return this;
+    }
+
+    public void setAnswerOffset(Integer answerOffset) {
+        this.answerOffset = answerOffset;
     }
 
     public QuestionnaireStatus getQuestionnaireStatus() {
@@ -163,7 +179,8 @@ public class MyAnswer implements Serializable {
     public String toString() {
         return "MyAnswer{" +
             "id=" + getId() +
-            ", mycheck='" + getMycheck() + "'" +
+            ", note='" + getNote() + "'" +
+            ", answerOffset=" + getAnswerOffset() +
             "}";
     }
 }

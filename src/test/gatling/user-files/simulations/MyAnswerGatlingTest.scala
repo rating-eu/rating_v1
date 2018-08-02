@@ -68,7 +68,7 @@ class MyAnswerGatlingTest extends Simulation {
             .exec(http("Create new myAnswer")
             .post("/api/my-answers")
             .headers(headers_http_authenticated)
-            .body(StringBody("""{"id":null, "mycheck":"SAMPLE_TEXT"}""")).asJSON
+            .body(StringBody("""{"id":null, "note":"SAMPLE_TEXT", "answerOffset":"0"}""")).asJSON
             .check(status.is(201))
             .check(headerRegex("Location", "(.*)").saveAs("new_myAnswer_url"))).exitHereIfFailed
             .pause(10)

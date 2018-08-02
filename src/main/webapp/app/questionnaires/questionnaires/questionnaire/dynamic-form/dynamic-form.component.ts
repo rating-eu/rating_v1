@@ -674,7 +674,7 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
                     console.log('Question: ' + JSON.stringify(question));
                     console.log('Questionnaire: ' + JSON.stringify(questionnaire));
 
-                    const myAnser: MyAnswerMgm = new MyAnswerMgm(undefined, 'Checked', answer, question, questionnaire, questionnaireStatus, this.user);
+                    const myAnser: MyAnswerMgm = new MyAnswerMgm(undefined, 'Checked', 0, answer, question, questionnaire, questionnaireStatus, this.user);
 
                     console.log('MyAnser: ' + myAnser);
 
@@ -741,7 +741,7 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
             const note: string = notesMap.get(question.id);
             const refinedAnswer: AnswerMgm = refinementMap.get(question.id);
 
-            const myAnswer: MyAnswerMgm = new MyAnswerMgm(undefined, note, refinedAnswer, question, question.questionnaire, questionnaireStatus, this.user);
+            const myAnswer: MyAnswerMgm = new MyAnswerMgm(undefined, note, 0, refinedAnswer, question, question.questionnaire, questionnaireStatus, this.user);
             myAnswers.push(myAnswer);
         });
 
