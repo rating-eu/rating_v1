@@ -39,19 +39,15 @@ public class MyAnswer implements Serializable {
     private QuestionnaireStatus questionnaireStatus;
 
     @OneToOne
-    @JoinColumn(unique = true)
     private Answer answer;
 
     @OneToOne
-    @JoinColumn(unique = true)
     private Question question;
 
     @OneToOne
-    @JoinColumn(unique = true)
     private Questionnaire questionnaire;
 
     @OneToOne
-    @JoinColumn(unique = true)
     private User user;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove

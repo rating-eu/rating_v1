@@ -1,7 +1,9 @@
+import * as _ from 'lodash';
+
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { IdentifyAssetService } from '../identify-asset.service';
 import { SelfAssessmentMgm, SelfAssessmentMgmService } from '../../entities/self-assessment-mgm';
-import { Principal, LoginModalService } from '../../shared';
+import { Principal, LoginModalService, AccountService, UserService, User } from '../../shared';
 import { JhiAlertService, JhiEventManager } from 'ng-jhipster';
 import { ActivatedRoute, Params } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
@@ -16,7 +18,9 @@ import { QuestionnairesService } from '../../questionnaires/questionnaires.servi
 import { QuestionMgm, QuestionMgmService } from '../../entities/question-mgm';
 import { AnswerMgm, AnswerMgmService } from '../../entities/answer-mgm';
 import { MyAnswerMgmService, MyAnswerMgm } from '../../entities/my-answer-mgm';
-import { QuestionnaireStatusMgmService } from '../../entities/questionnaire-status-mgm';
+import { QuestionnaireStatusMgmService, QuestionnaireStatusMgm, QuestionnaireStatusMgmCustomService } from '../../entities/questionnaire-status-mgm';
+import { MyAssetMgm } from '../../entities/my-asset-mgm';
+import { IdentifyAssetUtilService } from '../identify-asset.util.service';
 
 @Component({
     selector: 'jhi-identify-asset',
@@ -30,12 +34,15 @@ export class IdentifyAssetComponent implements OnInit, OnDestroy {
     eventSubscriber: Subscription;
     currentSearch: string;
     mySelf: SelfAssessmentMgm = {};
-    assets$: Observable<AssetMgm[]>;
+    // assets$: Observable<AssetMgm[]>;
+    user: User;
 
     questionnaries: QuestionnaireMgm[];
+    questionnariesStatus: QuestionnaireStatusMgm[];
     questions: QuestionMgm[];
     myAnswers: MyAnswerMgm[];
-    answers: AnswerMgm[];
+    myAssets: MyAssetMgm[];
+    questionsAnswerMap: Map<number, Array<AnswerMgm>>;
 
     constructor(private jhiAlertService: JhiAlertService,
         private eventManager: JhiEventManager,
@@ -43,28 +50,59 @@ export class IdentifyAssetComponent implements OnInit, OnDestroy {
         private principal: Principal,
         private mySelfAssessmentService: SelfAssessmentMgmService,
         private questionnairesService: QuestionnairesService,
-        private questionnaireStatusService: QuestionnaireStatusMgmService,
+        private questionnaireStatusService: QuestionnaireStatusMgmCustomService,
         private questionService: QuestionMgmService,
         private myAnswerService: MyAnswerMgmService,
         private answerService: AnswerMgmService,
         private identifyAssetService: IdentifyAssetService,
         private route: ActivatedRoute,
-        private assetService: AssetMgmService) {
+        private assetService: AssetMgmService,
+        private idaUtilsService: IdentifyAssetUtilService,
+        private accountService: AccountService,
+        private userService: UserService
+    ) {
     }
 
     ngOnInit() {
-        this.principal.identity().then((account) => {
+        this.myInit();
+    }
+
+    private async myInit(): Promise<void> {
+        await this.principal.identity().then((account) => {
             this.account = account;
+        });
+        await this.accountService.get().subscribe((response1) => {
+            const loggedAccount = response1.body;
+            this.userService.find(loggedAccount['login']).subscribe((response2) => {
+                this.user = response2.body;
+            });
         });
         this.mySelf = this.mySelfAssessmentService.getSelfAssessment();
         this.registerChangeIdentifyAssets();
-        this.assets$ = this.assetService.findAll();
+        // await this.assets$ = this.assetService.findAll();
         this.questionnaries = [];
-        this.questionnairesService.getAllQuestionnairesByPurpose(QuestionnairePurpose.ID_ASSETS).toPromise().then((res) => {
+        this.myAnswers = [];
+        await this.questionnairesService.getAllQuestionnairesByPurpose(QuestionnairePurpose.ID_ASSETS).toPromise().then((res) => {
             if (res && res instanceof QuestionnaireMgm) {
                 this.questionnaries.push(res);
             } else if (res && res instanceof Array) {
                 this.questionnaries = res;
+            }
+            if (this.account['authorities'].includes('CISO_ROLE')) {
+                for (const qs of this.questionnaries) {
+                    // controllo esistenza questionnaire status
+                    this.questionnaireStatusService.getByRoleSelfAssessmentAndQuestionnaire('CISO_ROLE', this.mySelf.id, qs.id)
+                        .toPromise()
+                        .then((status) => {
+                            this.questionnariesStatus.push(status.body as QuestionnaireStatusMgm);
+                            this.myAnswerService.getAllByQuestionnaireStatusID(status.body.id)
+                                .toPromise().then((answers) => {
+                                    if (answers.body) {
+                                        this.myAnswers = answers.body;
+                                    }
+                                });
+                        });
+                }
             }
             if (this.questionnaries && this.questionnaries.length > 0) {
                 this.questions = [];
@@ -77,39 +115,25 @@ export class IdentifyAssetComponent implements OnInit, OnDestroy {
                     } else if (resQ.body && resQ.body instanceof Array) {
                         this.questions = resQ.body;
                     }
-                    if (this.questions && this.questions.length > 0) {
-                        console.log(this.questions);
-                        this.myAnswers = [];
-                        // TODO check for this request
-                        this.answerService
-                            .query({ filter: 'myanswer-is-null' })
-                            .subscribe((resA: HttpResponse<AnswerMgm[]>) => {
-                                let newMyAnswer: MyAnswerMgm = new MyAnswerMgm();
-                                const answs: AnswerMgm[] = resA.body;
-                                for (const as of answs) {
-                                    newMyAnswer = this.myAnswers.find((answ) => answ.answer.id === as.id);
-                                }
-                                if (!newMyAnswer || !newMyAnswer.answer || !newMyAnswer.answer.id) {
-                                    this.answers = resA.body;
-                                    this.myAnswers = resA.body;
-                                } else {
-                                    this.answerService
-                                        .find(newMyAnswer.answer.id)
-                                        .subscribe((subRes: HttpResponse<AnswerMgm>) => {
-                                            this.answers = [subRes.body].concat(resA.body);
-                                            this.myAnswers = this.myAnswers.concat(this.answers);
-                                        }, (subRes: HttpErrorResponse) => this.onError(subRes.message));
-                                }
-                                console.log(this.mySelf);
-                                console.log(this.questionnaries);
-                                console.log(this.questions);
-                                console.log(this.answers);
-                                console.log(this.myAnswers);
-                            }, (resA: HttpErrorResponse) => this.onError(resA.message));
-                    }
                 });
             }
         });
+    }
+
+    public sendAnswerAndSaveMyAssets() {
+        this.myAnswers = this.idaUtilsService.getMyAnswersComplited();
+        this.myAssets = this.idaUtilsService.getMyAssets();
+        console.log(this.myAnswers);
+        console.log(this.myAssets);
+        // SERVONO questionnariesStatus, user
+        // TODO funzioni per il salvataggio
+        // Salvare prima un questionnaire status
+        // salvare le MyAnswer
+        // salvare i MyAssets
+        // salvare i direct assets
+        // salvare gli indirect
+        // getTemporaryId() uuid::189y4861
+        // (all objects)
     }
 
     ngOnDestroy() {

@@ -33,6 +33,10 @@ export class AssetCategoryMgmService {
             .map((res: EntityResponseType) => this.convertResponse(res));
     }
 
+    findAll(): Observable<AssetCategoryMgm[]> {
+        return this.http.get<AssetCategoryMgm[]>(this.resourceUrl);
+    }
+
     query(req?: any): Observable<HttpResponse<AssetCategoryMgm[]>> {
         const options = createRequestOption(req);
         return this.http.get<AssetCategoryMgm[]>(this.resourceUrl, { params: options, observe: 'response' })
