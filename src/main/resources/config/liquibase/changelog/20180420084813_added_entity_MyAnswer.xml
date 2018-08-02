@@ -21,27 +21,34 @@
             <column name="id" type="bigint" autoIncrement="${autoIncrement}">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="mycheck" type="varchar(255)">
+            <column name="note" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+
+            <column name="answer_offset" type="integer">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="questionnaire_status_id" type="bigint">
                 <constraints nullable="true"/>
             </column>
             <column name="answer_id" type="bigint">
+                <constraints unique="true" nullable="true"/>
             </column>
             <column name="question_id" type="bigint">
+                <constraints unique="true" nullable="true"/>
             </column>
             <column name="questionnaire_id" type="bigint">
+                <constraints unique="true" nullable="true"/>
             </column>
             <column name="user_id" type="bigint">
+                <constraints unique="true" nullable="true"/>
             </column>
-            <column name="questionnaire_status_id" type="bigint">
-            </column>
-
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
-    </changeSet>
 
-    <changeSet id="20180420084813-2" author="developer">
-        <addUniqueConstraint columnNames="questionnaire_status_id, questionnaire_id, question_id, user_id, answer_id"
-                             constraintName="unique_questionnaire_question_answer_per_user"
+        <addUniqueConstraint columnNames="questionnaire_status_id, questionnaire_id, question_id, user_id, answer_id, answer_offset"
+                             constraintName="multiple_answer_per_user_with_offset"
                              schemaName="public"
                              tableName="my_answer"/>
     </changeSet>
