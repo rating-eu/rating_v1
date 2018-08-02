@@ -1,4 +1,5 @@
 import {FormGroup} from '@angular/forms';
+import {QuestionMgm} from '../../entities/question-mgm';
 
 export class FormUtils {
     static formToMap<V>(formGroup: FormGroup): Map<string, V> {
@@ -10,5 +11,15 @@ export class FormUtils {
         });
 
         return m;
+    }
+
+    static questionsToMap(questions: QuestionMgm[]): Map<number, QuestionMgm> {
+        const questionsMap: Map<number, QuestionMgm> = new Map();
+
+        questions.forEach((value: QuestionMgm) => {
+            questionsMap.set(value.id, value);
+        });
+
+        return questionsMap;
     }
 }

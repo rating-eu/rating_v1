@@ -8,11 +8,22 @@ export class QuestionControlService {
     constructor() {
     }
 
-    toFormGroup(questions: QuestionMgm[]) {
+    toFormGroupCISO(questions: QuestionMgm[]) {
         const group: any = {};
 
         questions.forEach((question) => {
             group[question.id] = new FormControl('', Validators.required);
+        });
+        return new FormGroup(group);
+    }
+
+    toFormGroupExternalAuditor(questions: QuestionMgm[]) {
+        const group: any = {};
+
+        questions.forEach((question) => {
+            group[question.id] = new FormControl('', Validators.required);
+            group[question.id + '.external'] = new FormControl('', Validators.required);
+            group[question.id + '.note'] = new FormControl('', Validators.required);
         });
         return new FormGroup(group);
     }
