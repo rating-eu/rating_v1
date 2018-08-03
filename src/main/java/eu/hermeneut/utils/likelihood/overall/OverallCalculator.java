@@ -135,15 +135,15 @@ public class OverallCalculator {
                 Phase phase = internalEntry.getKey();
                 logger.debug("Phase: " + phase);
 
-                Set<AugmentedAttackStrategy> phaseAttackSet = internalEntry.getValue();
+                Set<AugmentedAttackStrategy> phaseAttacksSet = internalEntry.getValue();
                 //Remove attacks that are not feasible by the ThreatAgent
                 //Warning: it may contain no AttackStrategy if the ThreatAgent has low skills.
-                phaseAttackSet = phaseAttackSet.stream().filter(augmentedAttackStrategy -> AttackStrategyFilter.isAttackPossible(threatAgent, augmentedAttackStrategy)).collect(Collectors.toSet());
+                phaseAttacksSet = phaseAttacksSet.stream().filter(augmentedAttackStrategy -> AttackStrategyFilter.isAttackPossible(threatAgent, augmentedAttackStrategy)).collect(Collectors.toSet());
 
                 //Warning: it may remain NULL if the ThreatAgent has low skills.
                 AugmentedAttackStrategy localMax = null;
 
-                for (AugmentedAttackStrategy attackStrategy : phaseAttackSet) {
+                for (AugmentedAttackStrategy attackStrategy : phaseAttacksSet) {
                     //Set the status to Enabled since they have already been filtered above.
                     attackStrategy.setEnabled(true);
 
@@ -180,6 +180,74 @@ public class OverallCalculator {
         for (Map.Entry<Phase, AugmentedAttackStrategy> entry : phaseMaxMap.entrySet()) {
             Phase phase = entry.getKey();
             float likelihood = entry.getValue().getContextualLikelihood();
+
+            numerator += phase.getWeight() * likelihood;
+            denominator += phase.getWeight();
+        }
+
+        return numerator / DENOMINATOR;
+    }
+
+    public float overallRefinedLikelihoodByThreatAgent(ThreatAgent threatAgent, AttackMap attackMap) {
+        //Placeholder to store the Max of each Attack phase.
+        Map<Phase, AugmentedAttackStrategy> phaseMaxMap = new HashMap<>();
+
+        for (Map.Entry<Level, Map<Phase, Set<AugmentedAttackStrategy>>> entry : attackMap.entrySet()) {
+            Level level = entry.getKey();
+            logger.debug("Level: " + level);
+
+            //Phase attacks
+            Map<Phase, Set<AugmentedAttackStrategy>> phaseAttacksMap = entry.getValue();
+
+            for (Map.Entry<Phase, Set<AugmentedAttackStrategy>> phaseAttacks : phaseAttacksMap.entrySet()) {
+                Phase phase = phaseAttacks.getKey();
+                logger.debug("Phase: " + phase);
+
+                Set<AugmentedAttackStrategy> phaseAttacksSet = phaseAttacks.getValue();
+                //Remove attacks that are not feasible by the ThreatAgent
+                //Warning: it may contain no AttackStrategy if the ThreatAgent has low skills.
+                phaseAttacksSet = phaseAttacksSet.stream().filter(augmentedAttackStrategy -> AttackStrategyFilter.isAttackPossible(threatAgent, augmentedAttackStrategy)).collect(Collectors.toSet());
+
+                //Warning: it may remain NULL if the ThreatAgent has low skills.
+                AugmentedAttackStrategy localMax = null;
+
+                for (AugmentedAttackStrategy attackStrategy : phaseAttacksSet) {
+                    //Set the status to Enabled since they have already been filtered above.
+                    attackStrategy.setEnabled(true);
+
+                    //GET the  Likelihood of the AttackStrategy
+                    float likelihood = attackStrategy.getRefinedLikelihood();
+
+                    if (localMax == null) {//First iteration
+                        localMax = attackStrategy;
+                    } else {
+                        if (likelihood > localMax.getContextualLikelihood()) {
+                            localMax = attackStrategy;
+                        }
+                    }
+                }
+
+                //Important: check if the localMax is not null (has been updated)
+                if (localMax != null) {
+                    if (phaseMaxMap.containsKey(phase)) {
+                        AugmentedAttackStrategy currentMax = phaseMaxMap.get(phase);
+
+                        if (localMax.getRefinedLikelihood() > currentMax.getRefinedLikelihood()) {
+                            phaseMaxMap.put(phase, localMax);
+                        }
+                    } else {
+                        phaseMaxMap.put(phase, localMax);
+                    }
+                }
+            }
+        }
+
+        //Calculate the likelihood
+        float numerator = 0;
+        float denominator = 0;
+        for (Map.Entry<Phase, AugmentedAttackStrategy> entry : phaseMaxMap.entrySet()) {
+            Phase phase = entry.getKey();
+            float likelihood = entry.getValue().getRefinedLikelihood();
 
             numerator += phase.getWeight() * likelihood;
             denominator += phase.getWeight();
