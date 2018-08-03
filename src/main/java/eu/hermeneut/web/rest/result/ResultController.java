@@ -188,8 +188,12 @@ public class ResultController {
                     Set<MyAnswer> myAnswerSet = attackAnswersMap.get(augmentedAttackStrategy);
                     log.debug("MyAnswerSet: " + myAnswerSet);
 
-                    augmentedAttackStrategy.setCisoAnswersLikelihood(this.answerCalculator.getAnswersLikelihood(myAnswerSet));
-                    augmentedAttackStrategy.setContextualLikelihood((augmentedAttackStrategy.getInitialLikelihood() + augmentedAttackStrategy.getCisoAnswersLikelihood()) / 2);
+                    if (myAnswerSet != null) {
+                        augmentedAttackStrategy.setCisoAnswersLikelihood(this.answerCalculator.getAnswersLikelihood(myAnswerSet));
+                        augmentedAttackStrategy.setContextualLikelihood((augmentedAttackStrategy.getInitialLikelihood() + augmentedAttackStrategy.getCisoAnswersLikelihood()) / 2);
+                    } else {
+                        //TODO Same as InitialLikelihood ???
+                    }
                 }
 
                 //#Output 2 ==> OVERALL CONTEXTUAL LIKELIHOOD
@@ -200,6 +204,8 @@ public class ResultController {
                         }
                     }
                 });
+            } else {
+                result.setContextualVulnerability(new HashMap<>());
             }
 
             //#6 Turn ExternalAudit MyAnswers to RefinedLikelihoods
@@ -216,11 +222,21 @@ public class ResultController {
                 Map<AugmentedAttackStrategy, Set<MyAnswer>> attackAnswersMap = new HashMap<>();
 
                 for (MyAnswer myAnswer : myAnswers) {
-                    myAnswer.setQuestion(questionsMap.get(myAnswer.getQuestion().getId()));
-                    myAnswer.setAnswer(answersMap.get(myAnswer.getAnswer().getId()));
-
                     Question question = myAnswer.getQuestion();
-                    Set<AttackStrategy> attacks = question.getAttackStrategies();
+                    log.debug("Question: " + question);
+                    Question fullQuestion = questionsMap.get(question.getId());
+                    log.debug("Full question: " + fullQuestion);
+
+                    Answer answer = myAnswer.getAnswer();
+                    log.debug("Answer: " + answer);
+                    Answer fullAnswer = answersMap.get(myAnswer.getAnswer().getId());
+                    log.debug("FullAnswer: " + fullAnswer);
+
+                    myAnswer.setQuestion(fullQuestion);
+                    myAnswer.setAnswer(fullAnswer);
+
+                    Set<AttackStrategy> attacks = fullQuestion.getAttackStrategies();
+                    log.debug("Attacks: " + attacks);
 
                     for (AttackStrategy attackStrategy : attacks) {
                         AugmentedAttackStrategy augmentedAttackStrategy = augmentedAttackStrategyMap.get(attackStrategy.getId());
@@ -243,8 +259,12 @@ public class ResultController {
                     Set<MyAnswer> myAnswerSet = attackAnswersMap.get(augmentedAttackStrategy);
                     log.debug("MyAnswerSet: " + myAnswerSet);
 
-                    augmentedAttackStrategy.setExternalAuditAnswersLikelihood(this.answerCalculator.getAnswersLikelihood(myAnswerSet));
-                    augmentedAttackStrategy.setRefinedLikelihood((augmentedAttackStrategy.getInitialLikelihood() + augmentedAttackStrategy.getExternalAuditAnswersLikelihood()) / 2);
+                    if (myAnswerSet != null) {
+                        augmentedAttackStrategy.setExternalAuditAnswersLikelihood(this.answerCalculator.getAnswersLikelihood(myAnswerSet));
+                        augmentedAttackStrategy.setRefinedLikelihood((augmentedAttackStrategy.getInitialLikelihood() + augmentedAttackStrategy.getExternalAuditAnswersLikelihood()) / 2);
+                    } else {
+                        //TODO same as ContextualLikelihood ???
+                    }
                 }
 
                 //#Output 3 ==> OVERALL REFINED LIKELIHOOD
@@ -255,9 +275,11 @@ public class ResultController {
                         }
                     }
                 });
+            } else {
+                result.setRefinedVulnerability(new HashMap<>());
             }
         } else {
-
+            
         }
 
         return result;
