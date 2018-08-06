@@ -29,8 +29,6 @@ public class AugmentedAttackStrategy extends AttackStrategy {
         this.mitigations = attackStrategy.getMitigations();
         this.levels = attackStrategy.getLevels();
         this.phases = attackStrategy.getPhases();
-        this.questions = attackStrategy.getQuestions();
-        this.selfassessments = attackStrategy.getSelfassessments();
     }
 
     public boolean isEnabled() {

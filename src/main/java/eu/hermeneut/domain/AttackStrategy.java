@@ -35,61 +35,61 @@ public class AttackStrategy implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
     @SequenceGenerator(name = "sequenceGenerator")
-    private Long id;
+    protected Long id;
 
     @NotNull
     @Column(name = "name", nullable = false)
-    private String name;
+    protected String name;
 
     @Size(max = 2000)
     @Column(name = "description", length = 2000)
-    private String description;
+    protected String description;
 
     @NotNull
     @Enumerated(EnumType.STRING)
     @Column(name = "frequency", nullable = false)
-    private Frequency frequency;
+    protected Frequency frequency;
 
     @NotNull
     @Enumerated(EnumType.STRING)
     @Column(name = "skill", nullable = false)
-    private SkillLevel skill;
+    protected SkillLevel skill;
 
     @NotNull
     @Enumerated(EnumType.STRING)
     @Column(name = "resources", nullable = false)
-    private ResourceLevel resources;
+    protected ResourceLevel resources;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "likelihood")
-    private Likelihood likelihood;
+    protected Likelihood likelihood;
 
     @Column(name = "created")
-    private ZonedDateTime created;
+    protected ZonedDateTime created;
 
     @Column(name = "modified")
-    private ZonedDateTime modified;
+    protected ZonedDateTime modified;
 
     @ManyToMany
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     @JoinTable(name = "attack_strategy_mitigation",
                joinColumns = @JoinColumn(name="attack_strategies_id", referencedColumnName="id"),
                inverseJoinColumns = @JoinColumn(name="mitigations_id", referencedColumnName="id"))
-    private Set<Mitigation> mitigations = new HashSet<>();
+    protected Set<Mitigation> mitigations = new HashSet<>();
 
     @ManyToMany
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     @JoinTable(name = "attack_strategy_level",
                joinColumns = @JoinColumn(name="attack_strategies_id", referencedColumnName="id"),
                inverseJoinColumns = @JoinColumn(name="levels_id", referencedColumnName="id"))
-    private Set<Level> levels = new HashSet<>();
+    protected Set<Level> levels = new HashSet<>();
 
     @ManyToMany
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     @JoinTable(name = "attack_strategy_phase",
                joinColumns = @JoinColumn(name="attack_strategies_id", referencedColumnName="id"),
                inverseJoinColumns = @JoinColumn(name="phases_id", referencedColumnName="id"))
-    private Set<Phase> phases = new HashSet<>();
+    protected Set<Phase> phases = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
