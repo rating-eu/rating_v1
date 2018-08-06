@@ -1,6 +1,8 @@
 package eu.hermeneut.service;
 
 import eu.hermeneut.domain.AssetCategory;
+import eu.hermeneut.domain.enumeration.AssetType;
+
 import java.util.List;
 
 /**
@@ -42,8 +44,15 @@ public interface AssetCategoryService {
      * Search for the assetCategory corresponding to the query.
      *
      * @param query the query of the search
-     * 
      * @return the list of entities
      */
     List<AssetCategory> search(String query);
+
+    /**
+     * Get all the assetCategories with the specified AssetType..
+     *
+     * @param assetType the type of the assets to load.
+     * @return the list of entities
+     */
+    List<AssetCategory> findAllByAssetType(AssetType assetType);
 }
