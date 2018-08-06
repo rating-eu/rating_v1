@@ -120,9 +120,7 @@ export class AugmentedAttackStrategy extends AttackStrategyMgm {
             attackStrategy.modified,
             attackStrategy.levels,
             attackStrategy.phases,
-            attackStrategy.mitigations,
-            attackStrategy.questions,
-            attackStrategy.selfassessments
+            attackStrategy.mitigations
         );
 
         this.initialLikelihood = AugmentedAttackStrategy.calculateInitialLikelihood(this);

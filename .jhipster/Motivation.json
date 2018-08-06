@@ -1,14 +1,6 @@
 {
     "fluentMethods": true,
-    "relationships": [
-        {
-            "relationshipType": "many-to-many",
-            "relationshipName": "tagent",
-            "otherEntityName": "threatAgent",
-            "ownerSide": false,
-            "otherEntityRelationshipName": "motivation"
-        }
-    ],
+    "relationships": [],
     "fields": [
         {
             "fieldName": "name",

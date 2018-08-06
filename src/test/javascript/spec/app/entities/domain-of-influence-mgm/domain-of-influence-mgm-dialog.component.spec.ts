@@ -9,7 +9,7 @@ import { HermeneutTestModule } from '../../../test.module';
 import { DomainOfInfluenceMgmDialogComponent } from '../../../../../../main/webapp/app/entities/domain-of-influence-mgm/domain-of-influence-mgm-dialog.component';
 import { DomainOfInfluenceMgmService } from '../../../../../../main/webapp/app/entities/domain-of-influence-mgm/domain-of-influence-mgm.service';
 import { DomainOfInfluenceMgm } from '../../../../../../main/webapp/app/entities/domain-of-influence-mgm/domain-of-influence-mgm.model';
-import { AssetMgmService } from '../../../../../../main/webapp/app/entities/asset-mgm';
+import { ContainerMgmService } from '../../../../../../main/webapp/app/entities/container-mgm';
 
 describe('Component Tests', () => {
 
@@ -25,7 +25,7 @@ describe('Component Tests', () => {
                 imports: [HermeneutTestModule],
                 declarations: [DomainOfInfluenceMgmDialogComponent],
                 providers: [
-                    AssetMgmService,
+                    ContainerMgmService,
                     DomainOfInfluenceMgmService
                 ]
             })

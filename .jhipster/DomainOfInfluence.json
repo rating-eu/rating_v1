@@ -2,11 +2,12 @@
     "fluentMethods": true,
     "relationships": [
         {
-            "relationshipType": "many-to-many",
-            "relationshipName": "domain",
-            "otherEntityName": "asset",
-            "ownerSide": false,
-            "otherEntityRelationshipName": "domains"
+            "relationshipType": "one-to-one",
+            "relationshipName": "container",
+            "otherEntityName": "container",
+            "otherEntityField": "name",
+            "ownerSide": true,
+            "otherEntityRelationshipName": "domainOfInfluence"
         }
     ],
     "fields": [

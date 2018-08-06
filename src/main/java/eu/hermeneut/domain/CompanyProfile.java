@@ -60,15 +60,10 @@ public class CompanyProfile implements Serializable {
 
     @ManyToMany
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    @JoinTable(name = "company_profile_container",
+    @JoinTable(name = "company_profile_containers",
                joinColumns = @JoinColumn(name="company_profiles_id", referencedColumnName="id"),
                inverseJoinColumns = @JoinColumn(name="containers_id", referencedColumnName="id"))
     private Set<Container> containers = new HashSet<>();
-
-    @ManyToMany(mappedBy = "companyprofiles")
-    @JsonIgnore
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private Set<SelfAssessment> selfassessments = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -191,45 +186,18 @@ public class CompanyProfile implements Serializable {
         return this;
     }
 
-    public CompanyProfile addContainer(Container container) {
+    public CompanyProfile addContainers(Container container) {
         this.containers.add(container);
-        container.getCompanies().add(this);
         return this;
     }
 
-    public CompanyProfile removeContainer(Container container) {
+    public CompanyProfile removeContainers(Container container) {
         this.containers.remove(container);
-        container.getCompanies().remove(this);
         return this;
     }
 
     public void setContainers(Set<Container> containers) {
         this.containers = containers;
-    }
-
-    public Set<SelfAssessment> getSelfassessments() {
-        return selfassessments;
-    }
-
-    public CompanyProfile selfassessments(Set<SelfAssessment> selfAssessments) {
-        this.selfassessments = selfAssessments;
-        return this;
-    }
-
-    public CompanyProfile addSelfassessment(SelfAssessment selfAssessment) {
-        this.selfassessments.add(selfAssessment);
-        selfAssessment.getCompanyprofiles().add(this);
-        return this;
-    }
-
-    public CompanyProfile removeSelfassessment(SelfAssessment selfAssessment) {
-        this.selfassessments.remove(selfAssessment);
-        selfAssessment.getCompanyprofiles().remove(this);
-        return this;
-    }
-
-    public void setSelfassessments(Set<SelfAssessment> selfAssessments) {
-        this.selfassessments = selfAssessments;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 

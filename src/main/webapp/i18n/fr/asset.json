@@ -22,9 +22,8 @@
             "created": "Created",
             "modified": "Modified",
             "container": "Container",
-            "domains": "Domains",
-            "assetcategory": "Assetcategory",
-            "selfassessment": "Selfassessment"
+            "domainsOfInfluence": "Domains Of Influence",
+            "assetcategory": "Assetcategory"
         }
     }
 }

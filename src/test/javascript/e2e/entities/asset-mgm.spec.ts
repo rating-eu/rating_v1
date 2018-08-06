@@ -42,7 +42,7 @@ describe('Asset e2e test', () => {
         assetDialogPage.setModifiedInput(12310020012301);
         expect(assetDialogPage.getModifiedInput()).toMatch('2001-12-31T02:30');
         // assetDialogPage.containerSelectLastOption();
-        // assetDialogPage.domainsSelectLastOption();
+        // assetDialogPage.domainsOfInfluenceSelectLastOption();
         assetDialogPage.assetcategorySelectLastOption();
         assetDialogPage.save();
         expect(assetDialogPage.getSaveButton().isPresent()).toBeFalsy();
@@ -75,7 +75,7 @@ export class AssetDialogPage {
     createdInput = element(by.css('input#field_created'));
     modifiedInput = element(by.css('input#field_modified'));
     containerSelect = element(by.css('select#field_container'));
-    domainsSelect = element(by.css('select#field_domains'));
+    domainsOfInfluenceSelect = element(by.css('select#field_domainsOfInfluence'));
     assetcategorySelect = element(by.css('select#field_assetcategory'));
 
     getModalTitle() {
@@ -130,20 +130,20 @@ export class AssetDialogPage {
         return this.containerSelect.element(by.css('option:checked')).getText();
     };
 
-    domainsSelectLastOption = function() {
-        this.domainsSelect.all(by.tagName('option')).last().click();
+    domainsOfInfluenceSelectLastOption = function() {
+        this.domainsOfInfluenceSelect.all(by.tagName('option')).last().click();
     };
 
-    domainsSelectOption = function(option) {
-        this.domainsSelect.sendKeys(option);
+    domainsOfInfluenceSelectOption = function(option) {
+        this.domainsOfInfluenceSelect.sendKeys(option);
     };
 
-    getDomainsSelect = function() {
-        return this.domainsSelect;
+    getDomainsOfInfluenceSelect = function() {
+        return this.domainsOfInfluenceSelect;
     };
 
-    getDomainsSelectedOption = function() {
-        return this.domainsSelect.element(by.css('option:checked')).getText();
+    getDomainsOfInfluenceSelectedOption = function() {
+        return this.domainsOfInfluenceSelect.element(by.css('option:checked')).getText();
     };
 
     assetcategorySelectLastOption = function() {

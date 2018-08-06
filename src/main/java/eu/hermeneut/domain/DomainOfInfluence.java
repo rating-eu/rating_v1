@@ -1,6 +1,5 @@
 package eu.hermeneut.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -9,8 +8,6 @@ import javax.validation.constraints.*;
 
 import org.springframework.data.elasticsearch.annotations.Document;
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.Objects;
 
 /**
@@ -37,10 +34,9 @@ public class DomainOfInfluence implements Serializable {
     @Column(name = "description", length = 2000)
     private String description;
 
-    @ManyToMany(mappedBy = "domains")
-    @JsonIgnore
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private Set<Asset> domains = new HashSet<>();
+    @OneToOne
+    @JoinColumn
+    private Container container;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -77,29 +73,17 @@ public class DomainOfInfluence implements Serializable {
         this.description = description;
     }
 
-    public Set<Asset> getDomains() {
-        return domains;
+    public Container getContainer() {
+        return container;
     }
 
-    public DomainOfInfluence domains(Set<Asset> assets) {
-        this.domains = assets;
+    public DomainOfInfluence container(Container container) {
+        this.container = container;
         return this;
     }
 
-    public DomainOfInfluence addDomain(Asset asset) {
-        this.domains.add(asset);
-        asset.getDomains().add(this);
-        return this;
-    }
-
-    public DomainOfInfluence removeDomain(Asset asset) {
-        this.domains.remove(asset);
-        asset.getDomains().remove(this);
-        return this;
-    }
-
-    public void setDomains(Set<Asset> assets) {
-        this.domains = assets;
+    public void setContainer(Container container) {
+        this.container = container;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 

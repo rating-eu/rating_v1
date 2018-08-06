@@ -11,7 +11,6 @@ import { CompanyGroupMgmPopupService } from './company-group-mgm-popup.service';
 import { CompanyGroupMgmService } from './company-group-mgm.service';
 import { User, UserService } from '../../shared';
 import { CompanyProfileMgm, CompanyProfileMgmService } from '../company-profile-mgm';
-import { SelfAssessmentMgm, SelfAssessmentMgmService } from '../self-assessment-mgm';
 
 @Component({
     selector: 'jhi-company-group-mgm-dialog',
@@ -26,15 +25,12 @@ export class CompanyGroupMgmDialogComponent implements OnInit {
 
     companyprofiles: CompanyProfileMgm[];
 
-    selfassessments: SelfAssessmentMgm[];
-
     constructor(
         public activeModal: NgbActiveModal,
         private jhiAlertService: JhiAlertService,
         private companyGroupService: CompanyGroupMgmService,
         private userService: UserService,
         private companyProfileService: CompanyProfileMgmService,
-        private selfAssessmentService: SelfAssessmentMgmService,
         private eventManager: JhiEventManager
     ) {
     }
@@ -45,8 +41,6 @@ export class CompanyGroupMgmDialogComponent implements OnInit {
             .subscribe((res: HttpResponse<User[]>) => { this.users = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
         this.companyProfileService.query()
             .subscribe((res: HttpResponse<CompanyProfileMgm[]>) => { this.companyprofiles = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
-        this.selfAssessmentService.query()
-            .subscribe((res: HttpResponse<SelfAssessmentMgm[]>) => { this.selfassessments = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
     }
 
     clear() {
@@ -89,21 +83,6 @@ export class CompanyGroupMgmDialogComponent implements OnInit {
 
     trackCompanyProfileById(index: number, item: CompanyProfileMgm) {
         return item.id;
-    }
-
-    trackSelfAssessmentById(index: number, item: SelfAssessmentMgm) {
-        return item.id;
-    }
-
-    getSelected(selectedVals: Array<any>, option: any) {
-        if (selectedVals) {
-            for (let i = 0; i < selectedVals.length; i++) {
-                if (option.id === selectedVals[i].id) {
-                    return selectedVals[i];
-                }
-            }
-        }
-        return option;
     }
 }
 

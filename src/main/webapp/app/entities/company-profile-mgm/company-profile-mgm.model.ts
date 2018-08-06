@@ -34,7 +34,6 @@ export class CompanyProfileMgm implements BaseEntity {
         public companyGroups?: BaseEntity[],
         public user?: User,
         public containers?: BaseEntity[],
-        public selfassessments?: BaseEntity[],
     ) {
     }
 }

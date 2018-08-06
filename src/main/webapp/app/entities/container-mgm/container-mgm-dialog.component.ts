@@ -4,13 +4,11 @@ import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 
 import { Observable } from 'rxjs/Observable';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
+import { JhiEventManager } from 'ng-jhipster';
 
 import { ContainerMgm } from './container-mgm.model';
 import { ContainerMgmPopupService } from './container-mgm-popup.service';
 import { ContainerMgmService } from './container-mgm.service';
-import { CompanyProfileMgm, CompanyProfileMgmService } from '../company-profile-mgm';
-import { AssetMgm, AssetMgmService } from '../asset-mgm';
 
 @Component({
     selector: 'jhi-container-mgm-dialog',
@@ -21,26 +19,15 @@ export class ContainerMgmDialogComponent implements OnInit {
     container: ContainerMgm;
     isSaving: boolean;
 
-    companyprofiles: CompanyProfileMgm[];
-
-    assets: AssetMgm[];
-
     constructor(
         public activeModal: NgbActiveModal,
-        private jhiAlertService: JhiAlertService,
         private containerService: ContainerMgmService,
-        private companyProfileService: CompanyProfileMgmService,
-        private assetService: AssetMgmService,
         private eventManager: JhiEventManager
     ) {
     }
 
     ngOnInit() {
         this.isSaving = false;
-        this.companyProfileService.query()
-            .subscribe((res: HttpResponse<CompanyProfileMgm[]>) => { this.companyprofiles = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
-        this.assetService.query()
-            .subscribe((res: HttpResponse<AssetMgm[]>) => { this.assets = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
     }
 
     clear() {
@@ -71,29 +58,6 @@ export class ContainerMgmDialogComponent implements OnInit {
 
     private onSaveError() {
         this.isSaving = false;
-    }
-
-    private onError(error: any) {
-        this.jhiAlertService.error(error.message, null, null);
-    }
-
-    trackCompanyProfileById(index: number, item: CompanyProfileMgm) {
-        return item.id;
-    }
-
-    trackAssetById(index: number, item: AssetMgm) {
-        return item.id;
-    }
-
-    getSelected(selectedVals: Array<any>, option: any) {
-        if (selectedVals) {
-            for (let i = 0; i < selectedVals.length; i++) {
-                if (option.id === selectedVals[i].id) {
-                    return selectedVals[i];
-                }
-            }
-        }
-        return option;
     }
 }
 

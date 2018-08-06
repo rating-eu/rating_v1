@@ -1,4 +1,5 @@
-import {BaseEntity} from './../../shared';
+import { BaseEntity } from './../../shared';
+import {QuestionMgm} from '../question-mgm';
 import {MotivationMgm} from '../motivation-mgm';
 import {SkillLevel} from '../enumerations/SkillLevel.enum';
 
@@ -14,20 +15,21 @@ export const enum TA_Access {
 }
 
 export class ThreatAgentMgm implements BaseEntity {
-    constructor(public id?: number,
-                public name?: string,
-                public description?: string,
-                public imageContentType?: string,
-                public image?: any,
-                public skillLevel?: SkillLevel,
-                public intent?: Intent,
-                public access?: TA_Access,
-                public created?: any,
-                public modified?: any,
-                public identifiedByDefault?: boolean,
-                public questions?: BaseEntity[],
-                public motivations?: MotivationMgm[],
-                public selfassessments?: BaseEntity[]) {
+    constructor(
+        public id?: number,
+        public name?: string,
+        public description?: string,
+        public imageContentType?: string,
+        public image?: any,
+        public skillLevel?: SkillLevel,
+        public intent?: Intent,
+        public access?: TA_Access,
+        public created?: any,
+        public modified?: any,
+        public identifiedByDefault?: boolean,
+        public questions?: QuestionMgm[],
+        public motivations?: MotivationMgm[],
+    ) {
         this.identifiedByDefault = false;
     }
 }

@@ -9,7 +9,6 @@ import { HermeneutTestModule } from '../../../test.module';
 import { MotivationMgmDialogComponent } from '../../../../../../main/webapp/app/entities/motivation-mgm/motivation-mgm-dialog.component';
 import { MotivationMgmService } from '../../../../../../main/webapp/app/entities/motivation-mgm/motivation-mgm.service';
 import { MotivationMgm } from '../../../../../../main/webapp/app/entities/motivation-mgm/motivation-mgm.model';
-import { ThreatAgentMgmService } from '../../../../../../main/webapp/app/entities/threat-agent-mgm';
 
 describe('Component Tests', () => {
 
@@ -25,7 +24,6 @@ describe('Component Tests', () => {
                 imports: [HermeneutTestModule],
                 declarations: [MotivationMgmDialogComponent],
                 providers: [
-                    ThreatAgentMgmService,
                     MotivationMgmService
                 ]
             })

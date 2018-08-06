@@ -1,13 +1,12 @@
 import {Component, OnInit, OnDestroy} from '@angular/core';
-import {Router} from '@angular/router';
 import {HttpResponse, HttpErrorResponse} from '@angular/common/http';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {Subscription} from 'rxjs/Subscription';
 import {JhiEventManager, JhiAlertService} from 'ng-jhipster';
+
 import {SelfAssessmentMgm} from './self-assessment-mgm.model';
 import {SelfAssessmentMgmService} from './self-assessment-mgm.service';
 import {Principal} from '../../shared';
-import {logger} from 'codelyzer/util/logger';
 
 @Component({
     selector: 'jhi-self-assessment-mgm',
@@ -20,22 +19,15 @@ export class SelfAssessmentMgmComponent implements OnInit, OnDestroy {
     currentSearch: string;
 
     constructor(
+        private router: Router,
         private selfAssessmentService: SelfAssessmentMgmService,
         private jhiAlertService: JhiAlertService,
         private eventManager: JhiEventManager,
         private activatedRoute: ActivatedRoute,
-        private principal: Principal,
-        private router: Router
+        private principal: Principal
     ) {
         this.currentSearch = this.activatedRoute.snapshot && this.activatedRoute.snapshot.params['search'] ?
             this.activatedRoute.snapshot.params['search'] : '';
-    }
-
-    selectSelfAssessment(mySelf) {
-        this.selfAssessmentService.setSelfAssessment(mySelf);
-        const link = ['/'];
-        // this.mySidemenuService.roomeMenu('collapsed');
-        this.router.navigate(link);
     }
 
     loadAll() {
@@ -76,6 +68,13 @@ export class SelfAssessmentMgmComponent implements OnInit, OnDestroy {
             this.currentAccount = account;
         });
         this.registerChangeInSelfAssessments();
+    }
+
+    selectSelfAssessment(selfAssessment: SelfAssessmentMgm) {
+        this.selfAssessmentService.setSelfAssessment(selfAssessment);
+        const link = ['/'];
+        // this.mySidemenuService.roomeMenu('collapsed');
+        this.router.navigate(link);
     }
 
     ngOnDestroy() {

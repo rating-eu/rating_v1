@@ -9,6 +9,7 @@ import { HermeneutTestModule } from '../../../test.module';
 import { LevelMgmDialogComponent } from '../../../../../../main/webapp/app/entities/level-mgm/level-mgm-dialog.component';
 import { LevelMgmService } from '../../../../../../main/webapp/app/entities/level-mgm/level-mgm.service';
 import { LevelMgm } from '../../../../../../main/webapp/app/entities/level-mgm/level-mgm.model';
+import { ContainerMgmService } from '../../../../../../main/webapp/app/entities/container-mgm';
 
 describe('Component Tests', () => {
 
@@ -24,6 +25,7 @@ describe('Component Tests', () => {
                 imports: [HermeneutTestModule],
                 declarations: [LevelMgmDialogComponent],
                 providers: [
+                    ContainerMgmService,
                     LevelMgmService
                 ]
             })

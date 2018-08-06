@@ -35,7 +35,7 @@
             <th><span jhiTranslate="hermeneutApp.asset.created">Created</span></th>
             <th><span jhiTranslate="hermeneutApp.asset.modified">Modified</span></th>
             <th><span jhiTranslate="hermeneutApp.asset.container">Container</span></th>
-            <th><span jhiTranslate="hermeneutApp.asset.domains">Domains</span></th>
+            <th><span jhiTranslate="hermeneutApp.asset.domainsOfInfluence">Domains Of Influence</span></th>
             <th><span jhiTranslate="hermeneutApp.asset.assetcategory">Assetcategory</span></th>
             <th></th>
             </tr>
@@ -53,8 +53,8 @@
                         </span>
                 </td>
                 <td>
-                    <span *ngFor="let domains of asset.domains; let last = last">
-                            <a class="form-control-static" [routerLink]="['../domain-of-influence-mgm', domains?.id ]">{{domains.name}}</a>{{last ? '' : ', '}}
+                    <span *ngFor="let domainsOfInfluence of asset.domainsOfInfluences; let last = last">
+                            <a class="form-control-static" [routerLink]="['../domain-of-influence-mgm', domainsOfInfluence?.id ]">{{domainsOfInfluence.name}}</a>{{last ? '' : ', '}}
                         </span>
                 </td>
                 <td>

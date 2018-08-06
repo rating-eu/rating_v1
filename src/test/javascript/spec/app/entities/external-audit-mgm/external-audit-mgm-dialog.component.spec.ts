@@ -10,7 +10,6 @@ import { ExternalAuditMgmDialogComponent } from '../../../../../../main/webapp/a
 import { ExternalAuditMgmService } from '../../../../../../main/webapp/app/entities/external-audit-mgm/external-audit-mgm.service';
 import { ExternalAuditMgm } from '../../../../../../main/webapp/app/entities/external-audit-mgm/external-audit-mgm.model';
 import { UserService } from '../../../../../../main/webapp/app/shared';
-import { SelfAssessmentMgmService } from '../../../../../../main/webapp/app/entities/self-assessment-mgm';
 
 describe('Component Tests', () => {
 
@@ -27,7 +26,6 @@ describe('Component Tests', () => {
                 declarations: [ExternalAuditMgmDialogComponent],
                 providers: [
                     UserService,
-                    SelfAssessmentMgmService,
                     ExternalAuditMgmService
                 ]
             })

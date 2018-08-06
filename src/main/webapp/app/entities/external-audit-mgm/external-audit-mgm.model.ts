@@ -5,7 +5,6 @@ export class ExternalAuditMgm implements BaseEntity {
         public id?: number,
         public name?: string,
         public user?: User,
-        public selfassessments?: BaseEntity[],
     ) {
     }
 }

@@ -12,13 +12,6 @@
             "relationshipName": "companyprofile",
             "otherEntityName": "companyProfile",
             "otherEntityField": "name"
-        },
-        {
-            "relationshipType": "many-to-many",
-            "relationshipName": "selfassessment",
-            "otherEntityName": "selfAssessment",
-            "ownerSide": false,
-            "otherEntityRelationshipName": "companyGroup"
         }
     ],
     "fields": [

@@ -1,6 +1,15 @@
 {
     "fluentMethods": true,
-    "relationships": [],
+    "relationships": [
+        {
+            "relationshipType": "one-to-one",
+            "relationshipName": "container",
+            "otherEntityName": "container",
+            "otherEntityField": "name",
+            "ownerSide": true,
+            "otherEntityRelationshipName": "level"
+        }
+    ],
     "fields": [
         {
             "fieldName": "name",

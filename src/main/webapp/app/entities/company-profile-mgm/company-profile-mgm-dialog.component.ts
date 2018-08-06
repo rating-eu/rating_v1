@@ -11,7 +11,6 @@ import { CompanyProfileMgmPopupService } from './company-profile-mgm-popup.servi
 import { CompanyProfileMgmService } from './company-profile-mgm.service';
 import { User, UserService } from '../../shared';
 import { ContainerMgm, ContainerMgmService } from '../container-mgm';
-import { SelfAssessmentMgm, SelfAssessmentMgmService } from '../self-assessment-mgm';
 
 @Component({
     selector: 'jhi-company-profile-mgm-dialog',
@@ -26,15 +25,12 @@ export class CompanyProfileMgmDialogComponent implements OnInit {
 
     containers: ContainerMgm[];
 
-    selfassessments: SelfAssessmentMgm[];
-
     constructor(
         public activeModal: NgbActiveModal,
         private jhiAlertService: JhiAlertService,
         private companyProfileService: CompanyProfileMgmService,
         private userService: UserService,
         private containerService: ContainerMgmService,
-        private selfAssessmentService: SelfAssessmentMgmService,
         private eventManager: JhiEventManager
     ) {
     }
@@ -45,8 +41,6 @@ export class CompanyProfileMgmDialogComponent implements OnInit {
             .subscribe((res: HttpResponse<User[]>) => { this.users = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
         this.containerService.query()
             .subscribe((res: HttpResponse<ContainerMgm[]>) => { this.containers = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
-        this.selfAssessmentService.query()
-            .subscribe((res: HttpResponse<SelfAssessmentMgm[]>) => { this.selfassessments = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
     }
 
     clear() {
@@ -88,10 +82,6 @@ export class CompanyProfileMgmDialogComponent implements OnInit {
     }
 
     trackContainerById(index: number, item: ContainerMgm) {
-        return item.id;
-    }
-
-    trackSelfAssessmentById(index: number, item: SelfAssessmentMgm) {
         return item.id;
     }
 

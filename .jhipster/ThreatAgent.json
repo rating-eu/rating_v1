@@ -9,18 +9,11 @@
         },
         {
             "relationshipType": "many-to-many",
-            "otherEntityRelationshipName": "tagent",
+            "otherEntityRelationshipName": "",
             "relationshipName": "motivation",
             "otherEntityName": "motivation",
             "otherEntityField": "name",
             "ownerSide": true
-        },
-        {
-            "relationshipType": "many-to-many",
-            "relationshipName": "selfassessment",
-            "otherEntityName": "selfAssessment",
-            "ownerSide": false,
-            "otherEntityRelationshipName": "threatagent"
         }
     ],
     "fields": [

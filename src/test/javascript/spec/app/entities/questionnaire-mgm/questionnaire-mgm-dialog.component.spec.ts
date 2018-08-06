@@ -9,8 +9,6 @@ import { HermeneutTestModule } from '../../../test.module';
 import { QuestionnaireMgmDialogComponent } from '../../../../../../main/webapp/app/entities/questionnaire-mgm/questionnaire-mgm-dialog.component';
 import { QuestionnaireMgmService } from '../../../../../../main/webapp/app/entities/questionnaire-mgm/questionnaire-mgm.service';
 import { QuestionnaireMgm } from '../../../../../../main/webapp/app/entities/questionnaire-mgm/questionnaire-mgm.model';
-import { MyAnswerMgmService } from '../../../../../../main/webapp/app/entities/my-answer-mgm';
-import { SelfAssessmentMgmService } from '../../../../../../main/webapp/app/entities/self-assessment-mgm';
 
 describe('Component Tests', () => {
 
@@ -26,8 +24,6 @@ describe('Component Tests', () => {
                 imports: [HermeneutTestModule],
                 declarations: [QuestionnaireMgmDialogComponent],
                 providers: [
-                    MyAnswerMgmService,
-                    SelfAssessmentMgmService,
                     QuestionnaireMgmService
                 ]
             })

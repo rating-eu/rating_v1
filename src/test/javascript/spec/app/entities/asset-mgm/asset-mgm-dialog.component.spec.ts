@@ -12,7 +12,6 @@ import { AssetMgm } from '../../../../../../main/webapp/app/entities/asset-mgm/a
 import { ContainerMgmService } from '../../../../../../main/webapp/app/entities/container-mgm';
 import { DomainOfInfluenceMgmService } from '../../../../../../main/webapp/app/entities/domain-of-influence-mgm';
 import { AssetCategoryMgmService } from '../../../../../../main/webapp/app/entities/asset-category-mgm';
-import { SelfAssessmentMgmService } from '../../../../../../main/webapp/app/entities/self-assessment-mgm';
 
 describe('Component Tests', () => {
 
@@ -31,7 +30,6 @@ describe('Component Tests', () => {
                     ContainerMgmService,
                     DomainOfInfluenceMgmService,
                     AssetCategoryMgmService,
-                    SelfAssessmentMgmService,
                     AssetMgmService
                 ]
             })

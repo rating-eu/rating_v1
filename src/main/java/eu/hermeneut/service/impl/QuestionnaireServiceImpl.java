@@ -71,20 +71,6 @@ public class QuestionnaireServiceImpl implements QuestionnaireService {
         return questionnaireRepository.findAll();
     }
 
-
-    /**
-     *  get all the questionnaires where Myanswer is null.
-     *  @return the list of entities
-     */
-    @Transactional(readOnly = true)
-    public List<Questionnaire> findAllWhereMyanswerIsNull() {
-        log.debug("Request to get all questionnaires where Myanswer is null");
-        return StreamSupport
-            .stream(questionnaireRepository.findAll().spliterator(), false)
-            .filter(questionnaire -> questionnaire.getMyanswer() == null)
-            .collect(Collectors.toList());
-    }
-
     /**
      * Get one questionnaire by id.
      *

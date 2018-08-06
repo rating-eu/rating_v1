@@ -7,7 +7,6 @@ export class MitigationMgm implements BaseEntity {
         public description?: string,
         public created?: any,
         public modified?: any,
-        public countermeasures?: BaseEntity[],
     ) {
     }
 }

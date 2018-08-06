@@ -1,6 +1,5 @@
 package eu.hermeneut.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -10,8 +9,6 @@ import javax.validation.constraints.*;
 import org.springframework.data.elasticsearch.annotations.Document;
 import java.io.Serializable;
 import java.time.ZonedDateTime;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.Objects;
 
 import eu.hermeneut.domain.enumeration.ContainerType;
@@ -46,16 +43,6 @@ public class Container implements Serializable {
 
     @Column(name = "created")
     private ZonedDateTime created;
-
-    @ManyToMany(mappedBy = "containers")
-    @JsonIgnore
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private Set<CompanyProfile> companies = new HashSet<>();
-
-    @ManyToMany(mappedBy = "containers")
-    @JsonIgnore
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private Set<Asset> assets = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -116,56 +103,6 @@ public class Container implements Serializable {
 
     public void setCreated(ZonedDateTime created) {
         this.created = created;
-    }
-
-    public Set<CompanyProfile> getCompanies() {
-        return companies;
-    }
-
-    public Container companies(Set<CompanyProfile> companyProfiles) {
-        this.companies = companyProfiles;
-        return this;
-    }
-
-    public Container addCompany(CompanyProfile companyProfile) {
-        this.companies.add(companyProfile);
-        companyProfile.getContainers().add(this);
-        return this;
-    }
-
-    public Container removeCompany(CompanyProfile companyProfile) {
-        this.companies.remove(companyProfile);
-        companyProfile.getContainers().remove(this);
-        return this;
-    }
-
-    public void setCompanies(Set<CompanyProfile> companyProfiles) {
-        this.companies = companyProfiles;
-    }
-
-    public Set<Asset> getAssets() {
-        return assets;
-    }
-
-    public Container assets(Set<Asset> assets) {
-        this.assets = assets;
-        return this;
-    }
-
-    public Container addAsset(Asset asset) {
-        this.assets.add(asset);
-        asset.getContainers().add(this);
-        return this;
-    }
-
-    public Container removeAsset(Asset asset) {
-        this.assets.remove(asset);
-        asset.getContainers().remove(this);
-        return this;
-    }
-
-    public void setAssets(Set<Asset> assets) {
-        this.assets = assets;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 

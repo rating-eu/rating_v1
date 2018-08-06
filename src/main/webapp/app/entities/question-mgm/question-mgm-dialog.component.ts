@@ -11,7 +11,6 @@ import { QuestionMgmPopupService } from './question-mgm-popup.service';
 import { QuestionMgmService } from './question-mgm.service';
 import { AttackStrategyMgm, AttackStrategyMgmService } from '../attack-strategy-mgm';
 import { AnswerMgm, AnswerMgmService } from '../answer-mgm';
-import { MyAnswerMgm, MyAnswerMgmService } from '../my-answer-mgm';
 import { QuestionnaireMgm, QuestionnaireMgmService } from '../questionnaire-mgm';
 import { ThreatAgentMgm, ThreatAgentMgmService } from '../threat-agent-mgm';
 
@@ -28,8 +27,6 @@ export class QuestionMgmDialogComponent implements OnInit {
 
     answers: AnswerMgm[];
 
-    myanswers: MyAnswerMgm[];
-
     questionnaires: QuestionnaireMgm[];
 
     threatagents: ThreatAgentMgm[];
@@ -40,7 +37,6 @@ export class QuestionMgmDialogComponent implements OnInit {
         private questionService: QuestionMgmService,
         private attackStrategyService: AttackStrategyMgmService,
         private answerService: AnswerMgmService,
-        private myAnswerService: MyAnswerMgmService,
         private questionnaireService: QuestionnaireMgmService,
         private threatAgentService: ThreatAgentMgmService,
         private eventManager: JhiEventManager
@@ -53,8 +49,6 @@ export class QuestionMgmDialogComponent implements OnInit {
             .subscribe((res: HttpResponse<AttackStrategyMgm[]>) => { this.attackstrategies = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
         this.answerService.query()
             .subscribe((res: HttpResponse<AnswerMgm[]>) => { this.answers = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
-        this.myAnswerService.query()
-            .subscribe((res: HttpResponse<MyAnswerMgm[]>) => { this.myanswers = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
         this.questionnaireService.query()
             .subscribe((res: HttpResponse<QuestionnaireMgm[]>) => { this.questionnaires = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
         this.threatAgentService.query()
@@ -100,10 +94,6 @@ export class QuestionMgmDialogComponent implements OnInit {
     }
 
     trackAnswerById(index: number, item: AnswerMgm) {
-        return item.id;
-    }
-
-    trackMyAnswerById(index: number, item: MyAnswerMgm) {
         return item.id;
     }
 

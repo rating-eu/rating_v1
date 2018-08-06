@@ -86,14 +86,9 @@ public class ThreatAgent implements Serializable {
     @ManyToMany(fetch = FetchType.EAGER)
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     @JoinTable(name = "threat_agent_motivation",
-        joinColumns = @JoinColumn(name = "threat_agents_id", referencedColumnName = "id"),
-        inverseJoinColumns = @JoinColumn(name = "motivations_id", referencedColumnName = "id"))
+               joinColumns = @JoinColumn(name="threat_agents_id", referencedColumnName="id"),
+               inverseJoinColumns = @JoinColumn(name="motivations_id", referencedColumnName="id"))
     private Set<Motivation> motivations = new HashSet<>();
-
-    @ManyToMany(mappedBy = "threatagents")
-    @JsonIgnore
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private Set<SelfAssessment> selfassessments = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -274,43 +269,16 @@ public class ThreatAgent implements Serializable {
 
     public ThreatAgent addMotivation(Motivation motivation) {
         this.motivations.add(motivation);
-        motivation.getTagents().add(this);
         return this;
     }
 
     public ThreatAgent removeMotivation(Motivation motivation) {
         this.motivations.remove(motivation);
-        motivation.getTagents().remove(this);
         return this;
     }
 
     public void setMotivations(Set<Motivation> motivations) {
         this.motivations = motivations;
-    }
-
-    public Set<SelfAssessment> getSelfassessments() {
-        return selfassessments;
-    }
-
-    public ThreatAgent selfassessments(Set<SelfAssessment> selfAssessments) {
-        this.selfassessments = selfAssessments;
-        return this;
-    }
-
-    public ThreatAgent addSelfassessment(SelfAssessment selfAssessment) {
-        this.selfassessments.add(selfAssessment);
-        selfAssessment.getThreatagents().add(this);
-        return this;
-    }
-
-    public ThreatAgent removeSelfassessment(SelfAssessment selfAssessment) {
-        this.selfassessments.remove(selfAssessment);
-        selfAssessment.getThreatagents().remove(this);
-        return this;
-    }
-
-    public void setSelfassessments(Set<SelfAssessment> selfAssessments) {
-        this.selfassessments = selfAssessments;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 

@@ -9,7 +9,6 @@ import { HermeneutTestModule } from '../../../test.module';
 import { MitigationMgmDialogComponent } from '../../../../../../main/webapp/app/entities/mitigation-mgm/mitigation-mgm-dialog.component';
 import { MitigationMgmService } from '../../../../../../main/webapp/app/entities/mitigation-mgm/mitigation-mgm.service';
 import { MitigationMgm } from '../../../../../../main/webapp/app/entities/mitigation-mgm/mitigation-mgm.model';
-import { AttackStrategyMgmService } from '../../../../../../main/webapp/app/entities/attack-strategy-mgm';
 
 describe('Component Tests', () => {
 
@@ -25,7 +24,6 @@ describe('Component Tests', () => {
                 imports: [HermeneutTestModule],
                 declarations: [MitigationMgmDialogComponent],
                 providers: [
-                    AttackStrategyMgmService,
                     MitigationMgmService
                 ]
             })

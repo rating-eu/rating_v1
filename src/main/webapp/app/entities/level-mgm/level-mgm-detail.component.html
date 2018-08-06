@@ -12,6 +12,12 @@
         <dd>
             <span>{{level.description}}</span>
         </dd>
+        <dt><span jhiTranslate="hermeneutApp.level.container">Container</span></dt>
+        <dd>
+            <div *ngIf="level.container">
+                <a [routerLink]="['/container-mgm', level.container?.id]">{{level.container?.name}}</a>
+            </div>
+        </dd>
     </dl>
 
     <button type="submit"

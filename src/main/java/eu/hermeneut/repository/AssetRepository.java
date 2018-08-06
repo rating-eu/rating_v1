@@ -13,10 +13,10 @@ import java.util.List;
 @SuppressWarnings("unused")
 @Repository
 public interface AssetRepository extends JpaRepository<Asset, Long> {
-    @Query("select distinct asset from Asset asset left join fetch asset.containers left join fetch asset.domains")
+    @Query("select distinct asset from Asset asset left join fetch asset.containers left join fetch asset.domainsOfInfluences")
     List<Asset> findAllWithEagerRelationships();
 
-    @Query("select asset from Asset asset left join fetch asset.containers left join fetch asset.domains where asset.id =:id")
+    @Query("select asset from Asset asset left join fetch asset.containers left join fetch asset.domainsOfInfluences where asset.id =:id")
     Asset findOneWithEagerRelationships(@Param("id") Long id);
 
 }

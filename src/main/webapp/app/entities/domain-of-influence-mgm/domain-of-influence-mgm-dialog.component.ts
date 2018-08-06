@@ -9,7 +9,7 @@ import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
 import { DomainOfInfluenceMgm } from './domain-of-influence-mgm.model';
 import { DomainOfInfluenceMgmPopupService } from './domain-of-influence-mgm-popup.service';
 import { DomainOfInfluenceMgmService } from './domain-of-influence-mgm.service';
-import { AssetMgm, AssetMgmService } from '../asset-mgm';
+import { ContainerMgm, ContainerMgmService } from '../container-mgm';
 
 @Component({
     selector: 'jhi-domain-of-influence-mgm-dialog',
@@ -20,21 +20,32 @@ export class DomainOfInfluenceMgmDialogComponent implements OnInit {
     domainOfInfluence: DomainOfInfluenceMgm;
     isSaving: boolean;
 
-    assets: AssetMgm[];
+    containers: ContainerMgm[];
 
     constructor(
         public activeModal: NgbActiveModal,
         private jhiAlertService: JhiAlertService,
         private domainOfInfluenceService: DomainOfInfluenceMgmService,
-        private assetService: AssetMgmService,
+        private containerService: ContainerMgmService,
         private eventManager: JhiEventManager
     ) {
     }
 
     ngOnInit() {
         this.isSaving = false;
-        this.assetService.query()
-            .subscribe((res: HttpResponse<AssetMgm[]>) => { this.assets = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
+        this.containerService
+            .query({filter: 'domainofinfluence-is-null'})
+            .subscribe((res: HttpResponse<ContainerMgm[]>) => {
+                if (!this.domainOfInfluence.container || !this.domainOfInfluence.container.id) {
+                    this.containers = res.body;
+                } else {
+                    this.containerService
+                        .find(this.domainOfInfluence.container.id)
+                        .subscribe((subRes: HttpResponse<ContainerMgm>) => {
+                            this.containers = [subRes.body].concat(res.body);
+                        }, (subRes: HttpErrorResponse) => this.onError(subRes.message));
+                }
+            }, (res: HttpErrorResponse) => this.onError(res.message));
     }
 
     clear() {
@@ -71,19 +82,8 @@ export class DomainOfInfluenceMgmDialogComponent implements OnInit {
         this.jhiAlertService.error(error.message, null, null);
     }
 
-    trackAssetById(index: number, item: AssetMgm) {
+    trackContainerById(index: number, item: ContainerMgm) {
         return item.id;
-    }
-
-    getSelected(selectedVals: Array<any>, option: any) {
-        if (selectedVals) {
-            for (let i = 0; i < selectedVals.length; i++) {
-                if (option.id === selectedVals[i].id) {
-                    return selectedVals[i];
-                }
-            }
-        }
-        return option;
     }
 }
 
