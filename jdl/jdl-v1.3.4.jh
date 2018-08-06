@@ -198,8 +198,8 @@ enum Status{
 
 entity QuestionnaireStatus{
     Status Status required,
-    Created ZonedDateTime required,
-    Modified ZonedDateTime required,
+    Created ZonedDateTime,
+    Modified ZonedDateTime,
     Role Role required
 }
 
@@ -255,19 +255,19 @@ enum Role{
 }
 
 relationship ManyToMany {
-    CompanyProfile{container(name)} to Container{company},
-    Asset{container(name)} to Container{asset},
-    Asset{domains(name)} to DomainOfInfluence{domain},
-    ThreatAgent{motivation(name)} to Motivation{tagent},
-    AttackStrategy{mitigation(name)} to Mitigation{countermeasure},
-    Question{attackStrategies(name)} to AttackStrategy{question(name)},
-    SelfAssessment{companyprofiles(name)} to CompanyProfile{selfassessment(name)},
-    SelfAssessment{companyGroup(name)} to CompanyGroup{selfassessment(name)},
-    SelfAssessment{asset(name)} to Asset{selfassessment(name)},
-    SelfAssessment{threatagent(name)} to ThreatAgent{selfassessment(name)},
-    SelfAssessment{attackstrategy(name)} to AttackStrategy{selfassessment(name)},
-    SelfAssessment{externalaudit(name)} to ExternalAudit{selfassessment(name)},
-    SelfAssessment{questionnaire(name)} to Questionnaire{selfassessment(name)},
+    CompanyProfile{containers(name)} to Container,
+    Asset{container(name)} to Container,
+    Asset{domainsOfInfluence(name)} to DomainOfInfluence,
+    ThreatAgent{motivation(name)} to Motivation,
+    AttackStrategy{mitigation(name)} to Mitigation,
+    Question{attackStrategies(name)} to AttackStrategy,
+    SelfAssessment{companyprofiles(name)} to CompanyProfile,
+    SelfAssessment{companyGroup(name)} to CompanyGroup,
+    SelfAssessment{asset(name)} to Asset,
+    SelfAssessment{threatagent(name)} to ThreatAgent,
+    SelfAssessment{attackstrategy(name)} to AttackStrategy,
+    SelfAssessment{externalaudit(name)} to ExternalAudit,
+    SelfAssessment{questionnaire(name)} to Questionnaire,
     AttackStrategy{level(name)} to Level,
     AttackStrategy{phase(name)} to Phase,
     Question{answers(name)} to Answer{question(name)}
@@ -286,8 +286,8 @@ relationship OneToMany{
 
 relationship OneToOne{
     MyAnswer{answer(name)} to Answer,
-    MyAnswer{question(name)} to Question{myanswer},
-    MyAnswer{questionnaire(name)} to Questionnaire{myanswer},
+    MyAnswer{question(name)} to Question,
+    MyAnswer{questionnaire(name)} to Questionnaire,
     MyAnswer{user(login)} to User,
     QuestionnaireStatus{selfAssessment(name)} to SelfAssessment,
     QuestionnaireStatus{questionnaire(name)} to Questionnaire,
@@ -298,7 +298,9 @@ relationship OneToOne{
     MyAsset{selfAssessment(name)} to SelfAssessment,
     MyAsset{questionnaire(name)} to Questionnaire,
     DirectAsset{asset(name)} to MyAsset,
-    IndirectAsset{asset(name)} to MyAsset
+    IndirectAsset{asset(name)} to MyAsset,
+    Level{container(name)} to Container,
+    DomainOfInfluence{container(name)} to Container
 }
 
 relationship ManyToOne{
