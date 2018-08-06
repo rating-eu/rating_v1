@@ -60,20 +60,6 @@ public class QuestionServiceImpl implements QuestionService {
         return questionRepository.findAllWithEagerRelationships();
     }
 
-
-    /**
-     *  get all the questions where Myanswer is null.
-     *  @return the list of entities
-     */
-    @Transactional(readOnly = true) 
-    public List<Question> findAllWhereMyanswerIsNull() {
-        log.debug("Request to get all questions where Myanswer is null");
-        return StreamSupport
-            .stream(questionRepository.findAll().spliterator(), false)
-            .filter(question -> question.getMyanswer() == null)
-            .collect(Collectors.toList());
-    }
-
     /**
      * Get one question by id.
      *

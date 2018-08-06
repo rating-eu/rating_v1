@@ -1,12 +1,7 @@
 import { BaseEntity } from './../../shared';
 import {QuestionMgm} from '../question-mgm';
 import {MotivationMgm} from '../motivation-mgm';
-
-export const enum SkillLevel {
-    'HIGH',
-    'MEDIUM',
-    'LOW'
-}
+import {SkillLevel} from '../enumerations/SkillLevel.enum';
 
 export const enum Intent {
     'HOSTILE',

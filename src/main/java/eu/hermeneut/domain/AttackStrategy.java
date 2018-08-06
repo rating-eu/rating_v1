@@ -1,5 +1,6 @@
 package eu.hermeneut.domain;
 
+import eu.hermeneut.domain.enumeration.*;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -12,14 +13,6 @@ import java.time.ZonedDateTime;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.Objects;
-
-import eu.hermeneut.domain.enumeration.Frequency;
-
-import eu.hermeneut.domain.enumeration.SkillLevel;
-
-import eu.hermeneut.domain.enumeration.ResourceLevel;
-
-import eu.hermeneut.domain.enumeration.Likelihood;
 
 /**
  * A AttackStrategy.
@@ -62,7 +55,7 @@ public class AttackStrategy implements Serializable {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "likelihood")
-    protected Likelihood likelihood;
+    protected AttackStrategyLikelihood likelihood;
 
     @Column(name = "created")
     protected ZonedDateTime created;
@@ -165,16 +158,16 @@ public class AttackStrategy implements Serializable {
         this.resources = resources;
     }
 
-    public Likelihood getLikelihood() {
+    public AttackStrategyLikelihood getLikelihood() {
         return likelihood;
     }
 
-    public AttackStrategy likelihood(Likelihood likelihood) {
+    public AttackStrategy likelihood(AttackStrategyLikelihood likelihood) {
         this.likelihood = likelihood;
         return this;
     }
 
-    public void setLikelihood(Likelihood likelihood) {
+    public void setLikelihood(AttackStrategyLikelihood likelihood) {
         this.likelihood = likelihood;
     }
 

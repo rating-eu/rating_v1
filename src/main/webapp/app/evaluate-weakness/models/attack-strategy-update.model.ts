@@ -20,9 +20,7 @@ export class AttackStrategyUpdate extends AttackStrategyMgm {
             attackStrategy.modified,
             attackStrategy.levels,
             attackStrategy.phases,
-            attackStrategy.mitigations,
-            attackStrategy.questions,
-            attackStrategy.selfassessments
+            attackStrategy.mitigations
         );
     }
 }
