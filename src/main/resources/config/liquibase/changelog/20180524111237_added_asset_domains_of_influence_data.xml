@@ -19,7 +19,7 @@
                   schemaName="public"
                   separator=";"
                   quotchar="'"
-                  tableName="asset_domains">
+                  tableName="asset_domains_of_influence">
         </loadData>
     </changeSet>
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here, do not remove-->

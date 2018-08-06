@@ -13,7 +13,7 @@ import {
     QuestionnaireStatusMgmDeletePopupComponent,
     QuestionnaireStatusMgmDeleteDialogComponent,
     questionnaireStatusRoute,
-    questionnaireStatusPopupRoute,
+    questionnaireStatusPopupRoute, QuestionnaireStatusMgmCustomService,
 } from './';
 
 const ENTITY_STATES = [
@@ -44,6 +44,7 @@ const ENTITY_STATES = [
     ],
     providers: [
         QuestionnaireStatusMgmService,
+        QuestionnaireStatusMgmCustomService,
         QuestionnaireStatusMgmPopupService,
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
