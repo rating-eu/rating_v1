@@ -2,6 +2,7 @@ package eu.hermeneut.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import eu.hermeneut.domain.AssetCategory;
+import eu.hermeneut.domain.enumeration.AssetType;
 import eu.hermeneut.service.AssetCategoryService;
 import eu.hermeneut.web.rest.errors.BadRequestAlertException;
 import eu.hermeneut.web.rest.util.HeaderUtil;
@@ -90,7 +91,22 @@ public class AssetCategoryResource {
     public List<AssetCategory> getAllAssetCategories() {
         log.debug("REST request to get all AssetCategories");
         return assetCategoryService.findAll();
-        }
+    }
+
+    /**
+     * Get all the assetCategories with the specified AssetType..
+     *
+     * @param assetType the type of the assets to load.
+     * @return the list of entities
+     */
+    @GetMapping("/asset-categories/asset-type/{assetType}")
+    @Timed
+    public List<AssetCategory> getAllByAssetType(@PathVariable String assetType) {
+        log.debug("REST request to get all AssetCategories by AssetType...");
+        AssetType type = AssetType.valueOf(assetType);
+
+        return this.assetCategoryService.findAllByAssetType(type);
+    }
 
     /**
      * GET  /asset-categories/:id : get the "id" assetCategory.
