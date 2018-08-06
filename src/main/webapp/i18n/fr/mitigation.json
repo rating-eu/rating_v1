@@ -20,8 +20,7 @@
             "name": "Name",
             "description": "Description",
             "created": "Created",
-            "modified": "Modified",
-            "countermeasure": "Countermeasure"
+            "modified": "Modified"
         }
     }
 }

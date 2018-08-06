@@ -4,11 +4,12 @@ import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 
 import { Observable } from 'rxjs/Observable';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { JhiEventManager } from 'ng-jhipster';
+import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
 
 import { LevelMgm } from './level-mgm.model';
 import { LevelMgmPopupService } from './level-mgm-popup.service';
 import { LevelMgmService } from './level-mgm.service';
+import { ContainerMgm, ContainerMgmService } from '../container-mgm';
 
 @Component({
     selector: 'jhi-level-mgm-dialog',
@@ -19,15 +20,32 @@ export class LevelMgmDialogComponent implements OnInit {
     level: LevelMgm;
     isSaving: boolean;
 
+    containers: ContainerMgm[];
+
     constructor(
         public activeModal: NgbActiveModal,
+        private jhiAlertService: JhiAlertService,
         private levelService: LevelMgmService,
+        private containerService: ContainerMgmService,
         private eventManager: JhiEventManager
     ) {
     }
 
     ngOnInit() {
         this.isSaving = false;
+        this.containerService
+            .query({filter: 'level-is-null'})
+            .subscribe((res: HttpResponse<ContainerMgm[]>) => {
+                if (!this.level.container || !this.level.container.id) {
+                    this.containers = res.body;
+                } else {
+                    this.containerService
+                        .find(this.level.container.id)
+                        .subscribe((subRes: HttpResponse<ContainerMgm>) => {
+                            this.containers = [subRes.body].concat(res.body);
+                        }, (subRes: HttpErrorResponse) => this.onError(subRes.message));
+                }
+            }, (res: HttpErrorResponse) => this.onError(res.message));
     }
 
     clear() {
@@ -58,6 +76,14 @@ export class LevelMgmDialogComponent implements OnInit {
 
     private onSaveError() {
         this.isSaving = false;
+    }
+
+    private onError(error: any) {
+        this.jhiAlertService.error(error.message, null, null);
+    }
+
+    trackContainerById(index: number, item: ContainerMgm) {
+        return item.id;
     }
 }
 

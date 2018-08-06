@@ -57,8 +57,8 @@
 
         <addPrimaryKey columnNames="assets_id, containers_id" tableName="asset_container"/>
         
-        <createTable tableName="asset_domains">
-            <column name="domains_id" type="bigint">
+        <createTable tableName="asset_domains_of_influence">
+            <column name="domains_of_influences_id" type="bigint">
                 <constraints nullable="false"/>
             </column>
             <column name="assets_id" type="bigint">
@@ -66,7 +66,7 @@
             </column>
         </createTable>
 
-        <addPrimaryKey columnNames="assets_id, domains_id" tableName="asset_domains"/>
+        <addPrimaryKey columnNames="assets_id, domains_of_influences_id" tableName="asset_domains_of_influence"/>
         
     </changeSet>
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here, do not remove-->

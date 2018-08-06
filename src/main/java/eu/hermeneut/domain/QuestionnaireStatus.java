@@ -43,12 +43,10 @@ public class QuestionnaireStatus implements Serializable {
     @Column(name = "status", nullable = false)
     private Status status;
 
-    @NotNull
-    @Column(name = "created", nullable = false)
+    @Column(name = "created")
     private ZonedDateTime created;
 
-    @NotNull
-    @Column(name = "modified", nullable = false)
+    @Column(name = "modified")
     private ZonedDateTime modified;
 
     @NotNull
@@ -57,11 +55,11 @@ public class QuestionnaireStatus implements Serializable {
     private Role role;
 
     @OneToOne
-    @JoinColumn(unique = true, name = "self_assessment_id")
+    @JoinColumn(name = "self_assessment_id")
     private SelfAssessment selfAssessment;
 
     @OneToOne
-    @JoinColumn(unique = true, name = "questionnaire_id")
+    @JoinColumn(name = "questionnaire_id")
     private Questionnaire questionnaire;
 
     @OneToOne

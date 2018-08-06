@@ -163,13 +163,11 @@ public class SelfAssessment implements Serializable {
 
     public SelfAssessment addCompanyprofiles(CompanyProfile companyProfile) {
         this.companyprofiles.add(companyProfile);
-        companyProfile.getSelfassessments().add(this);
         return this;
     }
 
     public SelfAssessment removeCompanyprofiles(CompanyProfile companyProfile) {
         this.companyprofiles.remove(companyProfile);
-        companyProfile.getSelfassessments().remove(this);
         return this;
     }
 
@@ -188,13 +186,11 @@ public class SelfAssessment implements Serializable {
 
     public SelfAssessment addCompanyGroup(CompanyGroup companyGroup) {
         this.companyGroups.add(companyGroup);
-        companyGroup.getSelfassessments().add(this);
         return this;
     }
 
     public SelfAssessment removeCompanyGroup(CompanyGroup companyGroup) {
         this.companyGroups.remove(companyGroup);
-        companyGroup.getSelfassessments().remove(this);
         return this;
     }
 
@@ -213,13 +209,11 @@ public class SelfAssessment implements Serializable {
 
     public SelfAssessment addAsset(Asset asset) {
         this.assets.add(asset);
-        asset.getSelfassessments().add(this);
         return this;
     }
 
     public SelfAssessment removeAsset(Asset asset) {
         this.assets.remove(asset);
-        asset.getSelfassessments().remove(this);
         return this;
     }
 
@@ -238,13 +232,11 @@ public class SelfAssessment implements Serializable {
 
     public SelfAssessment addThreatagent(ThreatAgent threatAgent) {
         this.threatagents.add(threatAgent);
-        threatAgent.getSelfassessments().add(this);
         return this;
     }
 
     public SelfAssessment removeThreatagent(ThreatAgent threatAgent) {
         this.threatagents.remove(threatAgent);
-        threatAgent.getSelfassessments().remove(this);
         return this;
     }
 
@@ -263,13 +255,11 @@ public class SelfAssessment implements Serializable {
 
     public SelfAssessment addAttackstrategy(AttackStrategy attackStrategy) {
         this.attackstrategies.add(attackStrategy);
-        attackStrategy.getSelfassessments().add(this);
         return this;
     }
 
     public SelfAssessment removeAttackstrategy(AttackStrategy attackStrategy) {
         this.attackstrategies.remove(attackStrategy);
-        attackStrategy.getSelfassessments().remove(this);
         return this;
     }
 
@@ -288,13 +278,11 @@ public class SelfAssessment implements Serializable {
 
     public SelfAssessment addExternalaudit(ExternalAudit externalAudit) {
         this.externalaudits.add(externalAudit);
-        externalAudit.getSelfassessments().add(this);
         return this;
     }
 
     public SelfAssessment removeExternalaudit(ExternalAudit externalAudit) {
         this.externalaudits.remove(externalAudit);
-        externalAudit.getSelfassessments().remove(this);
         return this;
     }
 
@@ -313,13 +301,11 @@ public class SelfAssessment implements Serializable {
 
     public SelfAssessment addQuestionnaire(Questionnaire questionnaire) {
         this.questionnaires.add(questionnaire);
-        questionnaire.getSelfassessments().add(this);
         return this;
     }
 
     public SelfAssessment removeQuestionnaire(Questionnaire questionnaire) {
         this.questionnaires.remove(questionnaire);
-        questionnaire.getSelfassessments().remove(this);
         return this;
     }
 

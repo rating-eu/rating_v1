@@ -22,8 +22,7 @@
             "created": "Created",
             "modified": "Modified",
             "user": "User",
-            "companyprofile": "Companyprofile",
-            "selfassessment": "Selfassessment"
+            "companyprofile": "Companyprofile"
         }
     }
 }

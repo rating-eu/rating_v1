@@ -21,7 +21,7 @@
             "otherEntityName": "question",
             "otherEntityField": "name",
             "ownerSide": true,
-            "otherEntityRelationshipName": "myanswer"
+            "otherEntityRelationshipName": "myAnswer"
         },
         {
             "relationshipType": "one-to-one",
@@ -29,7 +29,7 @@
             "otherEntityName": "questionnaire",
             "otherEntityField": "name",
             "ownerSide": true,
-            "otherEntityRelationshipName": "myanswer"
+            "otherEntityRelationshipName": "myAnswer"
         },
         {
             "relationshipType": "one-to-one",

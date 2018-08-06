@@ -1,7 +1,5 @@
 package eu.hermeneut.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import eu.hermeneut.domain.enumeration.AttackStrategyLikelihood;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -9,7 +7,6 @@ import javax.persistence.*;
 import javax.validation.constraints.*;
 
 import org.springframework.data.elasticsearch.annotations.Document;
-
 import java.io.Serializable;
 import java.time.ZonedDateTime;
 import java.util.HashSet;
@@ -21,6 +18,8 @@ import eu.hermeneut.domain.enumeration.Frequency;
 import eu.hermeneut.domain.enumeration.SkillLevel;
 
 import eu.hermeneut.domain.enumeration.ResourceLevel;
+
+import eu.hermeneut.domain.enumeration.Likelihood;
 
 /**
  * A AttackStrategy.
@@ -36,71 +35,61 @@ public class AttackStrategy implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
     @SequenceGenerator(name = "sequenceGenerator")
-    protected Long id;
+    private Long id;
 
     @NotNull
     @Column(name = "name", nullable = false)
-    protected String name;
+    private String name;
 
     @Size(max = 2000)
     @Column(name = "description", length = 2000)
-    protected String description;
+    private String description;
 
     @NotNull
     @Enumerated(EnumType.STRING)
     @Column(name = "frequency", nullable = false)
-    protected Frequency frequency;
+    private Frequency frequency;
 
     @NotNull
     @Enumerated(EnumType.STRING)
     @Column(name = "skill", nullable = false)
-    protected SkillLevel skill;
+    private SkillLevel skill;
 
     @NotNull
     @Enumerated(EnumType.STRING)
     @Column(name = "resources", nullable = false)
-    protected ResourceLevel resources;
+    private ResourceLevel resources;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "likelihood")
-    protected AttackStrategyLikelihood likelihood;
+    private Likelihood likelihood;
 
     @Column(name = "created")
-    protected ZonedDateTime created;
+    private ZonedDateTime created;
 
     @Column(name = "modified")
-    protected ZonedDateTime modified;
+    private ZonedDateTime modified;
 
     @ManyToMany
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     @JoinTable(name = "attack_strategy_mitigation",
-        joinColumns = @JoinColumn(name = "attack_strategies_id", referencedColumnName = "id"),
-        inverseJoinColumns = @JoinColumn(name = "mitigations_id", referencedColumnName = "id"))
-    protected Set<Mitigation> mitigations = new HashSet<>();
+               joinColumns = @JoinColumn(name="attack_strategies_id", referencedColumnName="id"),
+               inverseJoinColumns = @JoinColumn(name="mitigations_id", referencedColumnName="id"))
+    private Set<Mitigation> mitigations = new HashSet<>();
 
     @ManyToMany
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     @JoinTable(name = "attack_strategy_level",
-        joinColumns = @JoinColumn(name = "attack_strategies_id", referencedColumnName = "id"),
-        inverseJoinColumns = @JoinColumn(name = "levels_id", referencedColumnName = "id"))
-    protected Set<Level> levels = new HashSet<>();
+               joinColumns = @JoinColumn(name="attack_strategies_id", referencedColumnName="id"),
+               inverseJoinColumns = @JoinColumn(name="levels_id", referencedColumnName="id"))
+    private Set<Level> levels = new HashSet<>();
 
     @ManyToMany
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     @JoinTable(name = "attack_strategy_phase",
-        joinColumns = @JoinColumn(name = "attack_strategies_id", referencedColumnName = "id"),
-        inverseJoinColumns = @JoinColumn(name = "phases_id", referencedColumnName = "id"))
-    protected Set<Phase> phases = new HashSet<>();
-
-    @ManyToMany(mappedBy = "attackStrategies")
-    @JsonIgnore
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    protected Set<Question> questions = new HashSet<>();
-
-    @ManyToMany(mappedBy = "attackstrategies")
-    @JsonIgnore
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    protected Set<SelfAssessment> selfassessments = new HashSet<>();
+               joinColumns = @JoinColumn(name="attack_strategies_id", referencedColumnName="id"),
+               inverseJoinColumns = @JoinColumn(name="phases_id", referencedColumnName="id"))
+    private Set<Phase> phases = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -176,17 +165,17 @@ public class AttackStrategy implements Serializable {
         this.resources = resources;
     }
 
-    public AttackStrategyLikelihood getLikelihood() {
+    public Likelihood getLikelihood() {
         return likelihood;
     }
 
-    public AttackStrategy likelihood(AttackStrategyLikelihood attackStrategyLikelihood) {
-        this.likelihood = attackStrategyLikelihood;
+    public AttackStrategy likelihood(Likelihood likelihood) {
+        this.likelihood = likelihood;
         return this;
     }
 
-    public void setLikelihood(AttackStrategyLikelihood attackStrategyLikelihood) {
-        this.likelihood = attackStrategyLikelihood;
+    public void setLikelihood(Likelihood likelihood) {
+        this.likelihood = likelihood;
     }
 
     public ZonedDateTime getCreated() {
@@ -226,13 +215,11 @@ public class AttackStrategy implements Serializable {
 
     public AttackStrategy addMitigation(Mitigation mitigation) {
         this.mitigations.add(mitigation);
-        mitigation.getCountermeasures().add(this);
         return this;
     }
 
     public AttackStrategy removeMitigation(Mitigation mitigation) {
         this.mitigations.remove(mitigation);
-        mitigation.getCountermeasures().remove(this);
         return this;
     }
 
@@ -284,56 +271,6 @@ public class AttackStrategy implements Serializable {
 
     public void setPhases(Set<Phase> phases) {
         this.phases = phases;
-    }
-
-    public Set<Question> getQuestions() {
-        return questions;
-    }
-
-    public AttackStrategy questions(Set<Question> questions) {
-        this.questions = questions;
-        return this;
-    }
-
-    public AttackStrategy addQuestion(Question question) {
-        this.questions.add(question);
-        question.getAttackStrategies().add(this);
-        return this;
-    }
-
-    public AttackStrategy removeQuestion(Question question) {
-        this.questions.remove(question);
-        question.getAttackStrategies().remove(this);
-        return this;
-    }
-
-    public void setQuestions(Set<Question> questions) {
-        this.questions = questions;
-    }
-
-    public Set<SelfAssessment> getSelfassessments() {
-        return selfassessments;
-    }
-
-    public AttackStrategy selfassessments(Set<SelfAssessment> selfAssessments) {
-        this.selfassessments = selfAssessments;
-        return this;
-    }
-
-    public AttackStrategy addSelfassessment(SelfAssessment selfAssessment) {
-        this.selfassessments.add(selfAssessment);
-        selfAssessment.getAttackstrategies().add(this);
-        return this;
-    }
-
-    public AttackStrategy removeSelfassessment(SelfAssessment selfAssessment) {
-        this.selfassessments.remove(selfAssessment);
-        selfAssessment.getAttackstrategies().remove(this);
-        return this;
-    }
-
-    public void setSelfassessments(Set<SelfAssessment> selfAssessments) {
-        this.selfassessments = selfAssessments;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 

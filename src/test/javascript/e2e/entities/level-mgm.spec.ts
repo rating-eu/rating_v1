@@ -37,6 +37,7 @@ describe('Level e2e test', () => {
         expect(levelDialogPage.getNameInput()).toMatch('name');
         levelDialogPage.setDescriptionInput('description');
         expect(levelDialogPage.getDescriptionInput()).toMatch('description');
+        levelDialogPage.containerSelectLastOption();
         levelDialogPage.save();
         expect(levelDialogPage.getSaveButton().isPresent()).toBeFalsy();
     });
@@ -65,6 +66,7 @@ export class LevelDialogPage {
     closeButton = element(by.css('button.close'));
     nameInput = element(by.css('input#field_name'));
     descriptionInput = element(by.css('input#field_description'));
+    containerSelect = element(by.css('select#field_container'));
 
     getModalTitle() {
         return this.modalTitle.getAttribute('jhiTranslate');
@@ -84,6 +86,22 @@ export class LevelDialogPage {
 
     getDescriptionInput = function() {
         return this.descriptionInput.getAttribute('value');
+    };
+
+    containerSelectLastOption = function() {
+        this.containerSelect.all(by.tagName('option')).last().click();
+    };
+
+    containerSelectOption = function(option) {
+        this.containerSelect.sendKeys(option);
+    };
+
+    getContainerSelect = function() {
+        return this.containerSelect;
+    };
+
+    getContainerSelectedOption = function() {
+        return this.containerSelect.element(by.css('option:checked')).getText();
     };
 
     save() {

@@ -11,7 +11,6 @@ import { QuestionMgmService } from '../../../../../../main/webapp/app/entities/q
 import { QuestionMgm } from '../../../../../../main/webapp/app/entities/question-mgm/question-mgm.model';
 import { AttackStrategyMgmService } from '../../../../../../main/webapp/app/entities/attack-strategy-mgm';
 import { AnswerMgmService } from '../../../../../../main/webapp/app/entities/answer-mgm';
-import { MyAnswerMgmService } from '../../../../../../main/webapp/app/entities/my-answer-mgm';
 import { QuestionnaireMgmService } from '../../../../../../main/webapp/app/entities/questionnaire-mgm';
 import { ThreatAgentMgmService } from '../../../../../../main/webapp/app/entities/threat-agent-mgm';
 
@@ -31,7 +30,6 @@ describe('Component Tests', () => {
                 providers: [
                     AttackStrategyMgmService,
                     AnswerMgmService,
-                    MyAnswerMgmService,
                     QuestionnaireMgmService,
                     ThreatAgentMgmService,
                     QuestionMgmService

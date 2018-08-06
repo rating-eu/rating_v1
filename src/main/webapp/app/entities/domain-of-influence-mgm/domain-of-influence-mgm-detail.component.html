@@ -12,6 +12,12 @@
         <dd>
             <span>{{domainOfInfluence.description}}</span>
         </dd>
+        <dt><span jhiTranslate="hermeneutApp.domainOfInfluence.container">Container</span></dt>
+        <dd>
+            <div *ngIf="domainOfInfluence.container">
+                <a [routerLink]="['/container-mgm', domainOfInfluence.container?.id]">{{domainOfInfluence.container?.name}}</a>
+            </div>
+        </dd>
     </dl>
 
     <button type="submit"

@@ -1,14 +1,6 @@
 {
     "fluentMethods": true,
-    "relationships": [
-        {
-            "relationshipType": "many-to-many",
-            "relationshipName": "countermeasure",
-            "otherEntityName": "attackStrategy",
-            "ownerSide": false,
-            "otherEntityRelationshipName": "mitigation"
-        }
-    ],
+    "relationships": [],
     "fields": [
         {
             "fieldName": "name",

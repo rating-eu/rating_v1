@@ -43,17 +43,11 @@
         },
         {
             "fieldName": "created",
-            "fieldType": "ZonedDateTime",
-            "fieldValidateRules": [
-                "required"
-            ]
+            "fieldType": "ZonedDateTime"
         },
         {
             "fieldName": "modified",
-            "fieldType": "ZonedDateTime",
-            "fieldValidateRules": [
-                "required"
-            ]
+            "fieldType": "ZonedDateTime"
         },
         {
             "fieldName": "role",

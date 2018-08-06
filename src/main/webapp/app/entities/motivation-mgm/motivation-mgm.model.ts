@@ -7,7 +7,6 @@ export class MotivationMgm implements BaseEntity {
         public description?: string,
         public created?: any,
         public modified?: any,
-        public tagents?: BaseEntity[],
     ) {
     }
 }

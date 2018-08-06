@@ -24,8 +24,7 @@
             "type": "Type",
             "companyGroups": "Groups",
             "user": "User",
-            "container": "Container",
-            "selfassessment": "Selfassessment"
+            "containers": "Containers"
         }
     }
 }

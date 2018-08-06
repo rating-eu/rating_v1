@@ -1,6 +1,5 @@
 package eu.hermeneut.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -10,8 +9,6 @@ import javax.validation.constraints.*;
 import org.springframework.data.elasticsearch.annotations.Document;
 import java.io.Serializable;
 import java.time.ZonedDateTime;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.Objects;
 
 /**
@@ -49,11 +46,6 @@ public class CompanyGroup implements Serializable {
 
     @ManyToOne
     private CompanyProfile companyprofile;
-
-    @ManyToMany(mappedBy = "companyGroups")
-    @JsonIgnore
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private Set<SelfAssessment> selfassessments = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -140,31 +132,6 @@ public class CompanyGroup implements Serializable {
 
     public void setCompanyprofile(CompanyProfile companyProfile) {
         this.companyprofile = companyProfile;
-    }
-
-    public Set<SelfAssessment> getSelfassessments() {
-        return selfassessments;
-    }
-
-    public CompanyGroup selfassessments(Set<SelfAssessment> selfAssessments) {
-        this.selfassessments = selfAssessments;
-        return this;
-    }
-
-    public CompanyGroup addSelfassessment(SelfAssessment selfAssessment) {
-        this.selfassessments.add(selfAssessment);
-        selfAssessment.getCompanyGroups().add(this);
-        return this;
-    }
-
-    public CompanyGroup removeSelfassessment(SelfAssessment selfAssessment) {
-        this.selfassessments.remove(selfAssessment);
-        selfAssessment.getCompanyGroups().remove(this);
-        return this;
-    }
-
-    public void setSelfassessments(Set<SelfAssessment> selfAssessments) {
-        this.selfassessments = selfAssessments;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 

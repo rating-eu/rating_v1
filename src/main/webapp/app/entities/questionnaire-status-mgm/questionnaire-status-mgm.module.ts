@@ -1,11 +1,10 @@
-import {NgModule, CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
-import {RouterModule} from '@angular/router';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { RouterModule } from '@angular/router';
 
-import {HermeneutSharedModule} from '../../shared';
-import {HermeneutAdminModule} from '../../admin/admin.module';
+import { HermeneutSharedModule } from '../../shared';
+import { HermeneutAdminModule } from '../../admin/admin.module';
 import {
     QuestionnaireStatusMgmService,
-    QuestionnaireStatusMgmCustomService,
     QuestionnaireStatusMgmPopupService,
     QuestionnaireStatusMgmComponent,
     QuestionnaireStatusMgmDetailComponent,
@@ -45,10 +44,8 @@ const ENTITY_STATES = [
     ],
     providers: [
         QuestionnaireStatusMgmService,
-        QuestionnaireStatusMgmCustomService,
         QuestionnaireStatusMgmPopupService,
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
-export class HermeneutQuestionnaireStatusMgmModule {
-}
+export class HermeneutQuestionnaireStatusMgmModule {}

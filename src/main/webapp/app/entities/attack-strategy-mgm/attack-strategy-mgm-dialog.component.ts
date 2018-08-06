@@ -12,8 +12,6 @@ import { AttackStrategyMgmService } from './attack-strategy-mgm.service';
 import { MitigationMgm, MitigationMgmService } from '../mitigation-mgm';
 import { LevelMgm, LevelMgmService } from '../level-mgm';
 import { PhaseMgm, PhaseMgmService } from '../phase-mgm';
-import { QuestionMgm, QuestionMgmService } from '../question-mgm';
-import { SelfAssessmentMgm, SelfAssessmentMgmService } from '../self-assessment-mgm';
 
 @Component({
     selector: 'jhi-attack-strategy-mgm-dialog',
@@ -30,10 +28,6 @@ export class AttackStrategyMgmDialogComponent implements OnInit {
 
     phases: PhaseMgm[];
 
-    questions: QuestionMgm[];
-
-    selfassessments: SelfAssessmentMgm[];
-
     constructor(
         public activeModal: NgbActiveModal,
         private jhiAlertService: JhiAlertService,
@@ -41,8 +35,6 @@ export class AttackStrategyMgmDialogComponent implements OnInit {
         private mitigationService: MitigationMgmService,
         private levelService: LevelMgmService,
         private phaseService: PhaseMgmService,
-        private questionService: QuestionMgmService,
-        private selfAssessmentService: SelfAssessmentMgmService,
         private eventManager: JhiEventManager
     ) {
     }
@@ -55,10 +47,6 @@ export class AttackStrategyMgmDialogComponent implements OnInit {
             .subscribe((res: HttpResponse<LevelMgm[]>) => { this.levels = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
         this.phaseService.query()
             .subscribe((res: HttpResponse<PhaseMgm[]>) => { this.phases = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
-        this.questionService.query()
-            .subscribe((res: HttpResponse<QuestionMgm[]>) => { this.questions = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
-        this.selfAssessmentService.query()
-            .subscribe((res: HttpResponse<SelfAssessmentMgm[]>) => { this.selfassessments = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
     }
 
     clear() {
@@ -104,14 +92,6 @@ export class AttackStrategyMgmDialogComponent implements OnInit {
     }
 
     trackPhaseById(index: number, item: PhaseMgm) {
-        return item.id;
-    }
-
-    trackQuestionById(index: number, item: QuestionMgm) {
-        return item.id;
-    }
-
-    trackSelfAssessmentById(index: number, item: SelfAssessmentMgm) {
         return item.id;
     }
 

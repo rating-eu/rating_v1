@@ -19,7 +19,7 @@
             },
             "name": "Name",
             "description": "Description",
-            "domain": "Domain"
+            "container": "Container"
         }
     }
 }

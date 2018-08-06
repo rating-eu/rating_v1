@@ -11,7 +11,6 @@ import { CompanyProfileMgmService } from '../../../../../../main/webapp/app/enti
 import { CompanyProfileMgm } from '../../../../../../main/webapp/app/entities/company-profile-mgm/company-profile-mgm.model';
 import { UserService } from '../../../../../../main/webapp/app/shared';
 import { ContainerMgmService } from '../../../../../../main/webapp/app/entities/container-mgm';
-import { SelfAssessmentMgmService } from '../../../../../../main/webapp/app/entities/self-assessment-mgm';
 
 describe('Component Tests', () => {
 
@@ -29,7 +28,6 @@ describe('Component Tests', () => {
                 providers: [
                     UserService,
                     ContainerMgmService,
-                    SelfAssessmentMgmService,
                     CompanyProfileMgmService
                 ]
             })

@@ -52,15 +52,6 @@ public class Questionnaire implements Serializable {
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Question> questions = new HashSet<>();
 
-    @OneToOne(mappedBy = "questionnaire")
-    @JsonIgnore
-    private MyAnswer myanswer;
-
-    @ManyToMany(mappedBy = "questionnaires")
-    @JsonIgnore
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private Set<SelfAssessment> selfassessments = new HashSet<>();
-
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
         return id;
@@ -145,44 +136,6 @@ public class Questionnaire implements Serializable {
 
     public void setQuestions(Set<Question> questions) {
         this.questions = questions;
-    }
-
-    public MyAnswer getMyanswer() {
-        return myanswer;
-    }
-
-    public Questionnaire myanswer(MyAnswer myAnswer) {
-        this.myanswer = myAnswer;
-        return this;
-    }
-
-    public void setMyanswer(MyAnswer myAnswer) {
-        this.myanswer = myAnswer;
-    }
-
-    public Set<SelfAssessment> getSelfassessments() {
-        return selfassessments;
-    }
-
-    public Questionnaire selfassessments(Set<SelfAssessment> selfAssessments) {
-        this.selfassessments = selfAssessments;
-        return this;
-    }
-
-    public Questionnaire addSelfassessment(SelfAssessment selfAssessment) {
-        this.selfassessments.add(selfAssessment);
-        selfAssessment.getQuestionnaires().add(this);
-        return this;
-    }
-
-    public Questionnaire removeSelfassessment(SelfAssessment selfAssessment) {
-        this.selfassessments.remove(selfAssessment);
-        selfAssessment.getQuestionnaires().remove(this);
-        return this;
-    }
-
-    public void setSelfassessments(Set<SelfAssessment> selfAssessments) {
-        this.selfassessments = selfAssessments;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 

@@ -6,13 +6,6 @@
             "relationshipName": "user",
             "otherEntityName": "user",
             "otherEntityField": "login"
-        },
-        {
-            "relationshipType": "many-to-many",
-            "relationshipName": "selfassessment",
-            "otherEntityName": "selfAssessment",
-            "ownerSide": false,
-            "otherEntityRelationshipName": "externalaudit"
         }
     ],
     "fields": [

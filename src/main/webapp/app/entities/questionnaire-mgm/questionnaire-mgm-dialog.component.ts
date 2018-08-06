@@ -4,13 +4,11 @@ import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 
 import { Observable } from 'rxjs/Observable';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
+import { JhiEventManager } from 'ng-jhipster';
 
 import { QuestionnaireMgm } from './questionnaire-mgm.model';
 import { QuestionnaireMgmPopupService } from './questionnaire-mgm-popup.service';
 import { QuestionnaireMgmService } from './questionnaire-mgm.service';
-import { MyAnswerMgm, MyAnswerMgmService } from '../my-answer-mgm';
-import { SelfAssessmentMgm, SelfAssessmentMgmService } from '../self-assessment-mgm';
 
 @Component({
     selector: 'jhi-questionnaire-mgm-dialog',
@@ -21,26 +19,15 @@ export class QuestionnaireMgmDialogComponent implements OnInit {
     questionnaire: QuestionnaireMgm;
     isSaving: boolean;
 
-    myanswers: MyAnswerMgm[];
-
-    selfassessments: SelfAssessmentMgm[];
-
     constructor(
         public activeModal: NgbActiveModal,
-        private jhiAlertService: JhiAlertService,
         private questionnaireService: QuestionnaireMgmService,
-        private myAnswerService: MyAnswerMgmService,
-        private selfAssessmentService: SelfAssessmentMgmService,
         private eventManager: JhiEventManager
     ) {
     }
 
     ngOnInit() {
         this.isSaving = false;
-        this.myAnswerService.query()
-            .subscribe((res: HttpResponse<MyAnswerMgm[]>) => { this.myanswers = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
-        this.selfAssessmentService.query()
-            .subscribe((res: HttpResponse<SelfAssessmentMgm[]>) => { this.selfassessments = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
     }
 
     clear() {
@@ -71,29 +58,6 @@ export class QuestionnaireMgmDialogComponent implements OnInit {
 
     private onSaveError() {
         this.isSaving = false;
-    }
-
-    private onError(error: any) {
-        this.jhiAlertService.error(error.message, null, null);
-    }
-
-    trackMyAnswerById(index: number, item: MyAnswerMgm) {
-        return item.id;
-    }
-
-    trackSelfAssessmentById(index: number, item: SelfAssessmentMgm) {
-        return item.id;
-    }
-
-    getSelected(selectedVals: Array<any>, option: any) {
-        if (selectedVals) {
-            for (let i = 0; i < selectedVals.length; i++) {
-                if (option.id === selectedVals[i].id) {
-                    return selectedVals[i];
-                }
-            }
-        }
-        return option;
     }
 }
 

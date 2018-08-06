@@ -14,8 +14,6 @@ export class ContainerMgm implements BaseEntity {
         public description?: string,
         public containerType?: ContainerType,
         public created?: any,
-        public companies?: BaseEntity[],
-        public assets?: BaseEntity[],
     ) {
     }
 }

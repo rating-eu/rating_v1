@@ -9,7 +9,6 @@ export class CompanyGroupMgm implements BaseEntity {
         public modified?: any,
         public user?: User,
         public companyprofile?: BaseEntity,
-        public selfassessments?: BaseEntity[],
     ) {
     }
 }

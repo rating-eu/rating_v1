@@ -12,8 +12,6 @@ import { AttackStrategyMgm } from '../../../../../../main/webapp/app/entities/at
 import { MitigationMgmService } from '../../../../../../main/webapp/app/entities/mitigation-mgm';
 import { LevelMgmService } from '../../../../../../main/webapp/app/entities/level-mgm';
 import { PhaseMgmService } from '../../../../../../main/webapp/app/entities/phase-mgm';
-import { QuestionMgmService } from '../../../../../../main/webapp/app/entities/question-mgm';
-import { SelfAssessmentMgmService } from '../../../../../../main/webapp/app/entities/self-assessment-mgm';
 
 describe('Component Tests', () => {
 
@@ -32,8 +30,6 @@ describe('Component Tests', () => {
                     MitigationMgmService,
                     LevelMgmService,
                     PhaseMgmService,
-                    QuestionMgmService,
-                    SelfAssessmentMgmService,
                     AttackStrategyMgmService
                 ]
             })

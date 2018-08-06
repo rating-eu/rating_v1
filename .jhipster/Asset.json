@@ -3,7 +3,7 @@
     "relationships": [
         {
             "relationshipType": "many-to-many",
-            "otherEntityRelationshipName": "asset",
+            "otherEntityRelationshipName": "",
             "relationshipName": "container",
             "otherEntityName": "container",
             "otherEntityField": "name",
@@ -11,8 +11,8 @@
         },
         {
             "relationshipType": "many-to-many",
-            "otherEntityRelationshipName": "domain",
-            "relationshipName": "domains",
+            "otherEntityRelationshipName": "",
+            "relationshipName": "domainsOfInfluence",
             "otherEntityName": "domainOfInfluence",
             "otherEntityField": "name",
             "ownerSide": true
@@ -22,13 +22,6 @@
             "relationshipName": "assetcategory",
             "otherEntityName": "assetCategory",
             "otherEntityField": "name"
-        },
-        {
-            "relationshipType": "many-to-many",
-            "relationshipName": "selfassessment",
-            "otherEntityName": "selfAssessment",
-            "ownerSide": false,
-            "otherEntityRelationshipName": "asset"
         }
     ],
     "fields": [

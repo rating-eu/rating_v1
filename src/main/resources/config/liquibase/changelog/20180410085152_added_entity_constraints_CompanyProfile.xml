@@ -15,13 +15,13 @@
                                  referencedTableName="jhi_user"/>
 
         <addForeignKeyConstraint baseColumnNames="company_profiles_id"
-                                 baseTableName="company_profile_container"
-                                 constraintName="fk_company_profile_container_company_profiles_id"
+                                 baseTableName="company_profile_containers"
+                                 constraintName="fk_company_profile_containers_company_profiles_id"
                                  referencedColumnNames="id"
                                  referencedTableName="company_profile"/>
         <addForeignKeyConstraint baseColumnNames="containers_id"
-                                 baseTableName="company_profile_container"
-                                 constraintName="fk_company_profile_container_containers_id"
+                                 baseTableName="company_profile_containers"
+                                 constraintName="fk_company_profile_containers_containers_id"
                                  referencedColumnNames="id"
                                  referencedTableName="container"/>
         

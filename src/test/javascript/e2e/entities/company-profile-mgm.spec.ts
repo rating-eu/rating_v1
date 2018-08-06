@@ -43,7 +43,7 @@ describe('CompanyProfile e2e test', () => {
         expect(companyProfileDialogPage.getModifiedInput()).toMatch('2001-12-31T02:30');
         companyProfileDialogPage.typeSelectLastOption();
         companyProfileDialogPage.userSelectLastOption();
-        // companyProfileDialogPage.containerSelectLastOption();
+        // companyProfileDialogPage.containersSelectLastOption();
         companyProfileDialogPage.save();
         expect(companyProfileDialogPage.getSaveButton().isPresent()).toBeFalsy();
     });
@@ -76,7 +76,7 @@ export class CompanyProfileDialogPage {
     modifiedInput = element(by.css('input#field_modified'));
     typeSelect = element(by.css('select#field_type'));
     userSelect = element(by.css('select#field_user'));
-    containerSelect = element(by.css('select#field_container'));
+    containersSelect = element(by.css('select#field_containers'));
 
     getModalTitle() {
         return this.modalTitle.getAttribute('jhiTranslate');
@@ -141,20 +141,20 @@ export class CompanyProfileDialogPage {
         return this.userSelect.element(by.css('option:checked')).getText();
     };
 
-    containerSelectLastOption = function() {
-        this.containerSelect.all(by.tagName('option')).last().click();
+    containersSelectLastOption = function() {
+        this.containersSelect.all(by.tagName('option')).last().click();
     };
 
-    containerSelectOption = function(option) {
-        this.containerSelect.sendKeys(option);
+    containersSelectOption = function(option) {
+        this.containersSelect.sendKeys(option);
     };
 
-    getContainerSelect = function() {
-        return this.containerSelect;
+    getContainersSelect = function() {
+        return this.containersSelect;
     };
 
-    getContainerSelectedOption = function() {
-        return this.containerSelect.element(by.css('option:checked')).getText();
+    getContainersSelectedOption = function() {
+        return this.containersSelect.element(by.css('option:checked')).getText();
     };
 
     save() {

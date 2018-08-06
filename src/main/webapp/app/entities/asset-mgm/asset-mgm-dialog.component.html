@@ -56,9 +56,9 @@
             </select>
         </div>
         <div class="form-group">
-            <label jhiTranslate="hermeneutApp.asset.domains" for="field_domains">Domains</label>
-            <select class="form-control" id="field_domains" multiple name="domains" [(ngModel)]="asset.domains">
-                <option [ngValue]="getSelected(asset.domains, domainOfInfluenceOption)" *ngFor="let domainOfInfluenceOption of domainofinfluences; trackBy: trackDomainOfInfluenceById">{{domainOfInfluenceOption.name}}</option>
+            <label jhiTranslate="hermeneutApp.asset.domainsOfInfluence" for="field_domainsOfInfluence">Domains Of Influence</label>
+            <select class="form-control" id="field_domainsOfInfluence" multiple name="domainsOfInfluence" [(ngModel)]="asset.domainsOfInfluences">
+                <option [ngValue]="getSelected(asset.domainsOfInfluences, domainOfInfluenceOption)" *ngFor="let domainOfInfluenceOption of domainofinfluences; trackBy: trackDomainOfInfluenceById">{{domainOfInfluenceOption.name}}</option>
             </select>
         </div>
         <div class="form-group">
