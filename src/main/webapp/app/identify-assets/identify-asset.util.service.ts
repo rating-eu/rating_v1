@@ -10,7 +10,7 @@ import { MyAssetMgm } from '../entities/my-asset-mgm';
 import { MyAnswerMgm } from '../entities/my-answer-mgm';
 import { DirectAssetMgm } from '../entities/direct-asset-mgm';
 import { IndirectAssetMgm } from '../entities/indirect-asset-mgm';
-import { Subject } from '../../../../../node_modules/rxjs';
+import { Subject } from 'rxjs';
 import { AssetMgm } from '../entities/asset-mgm';
 import { AttackCostMgm } from '../entities/attack-cost-mgm';
 
@@ -21,6 +21,10 @@ export class IdentifyAssetUtilService {
     private myDirectAssets: DirectAssetMgm[];
     private myIndirectAssets: IndirectAssetMgm[];
     private myAnswerLinkedMap: any[];
+
+    private myAssetIndex = 1;
+    private myDirectAssetIndex = 1;
+    private myIndirectAssetIndex = 1;
 
     private subscriptorForMyAsset: Subject<MyAssetMgm[]> = new Subject<MyAssetMgm[]>();
     private subscriptorForDirectAssets: Subject<DirectAssetMgm[]> = new Subject<DirectAssetMgm[]>();
@@ -107,6 +111,8 @@ export class IdentifyAssetUtilService {
             (myDirectAsset) => (myDirectAsset.asset as MyAssetMgm).asset.id === asset.asset.id
         );
         if (index === -1) {
+            asset.id = this.myDirectAssetIndex;
+            this.myDirectAssetIndex++;
             const direct = new DirectAssetMgm();
             direct.asset = asset;
             direct.costs = undefined;
@@ -172,6 +178,8 @@ export class IdentifyAssetUtilService {
                 (myIndirectAsset.directAsset as MyAssetMgm).asset.id === (directAsset.asset as AssetMgm).id
         );
         if (index === -1) {
+            asset.id = this.myIndirectAssetIndex;
+            this.myIndirectAssetIndex++;
             const indirect = new IndirectAssetMgm();
             indirect.asset = asset;
             indirect.costs = undefined;
@@ -377,6 +385,8 @@ export class IdentifyAssetUtilService {
             (myAsset) => myAsset.asset.id === asset.asset.id
         );
         if (index === -1) {
+            asset.id = this.myAssetIndex;
+            this.myAssetIndex++;
             this.myAssets.push(asset);
             const directIndexCategory = _.findIndex(this.myDirectAssets,
                 (myDirectAsset) =>

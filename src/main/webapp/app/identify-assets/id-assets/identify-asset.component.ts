@@ -11,19 +11,20 @@ import { AttackStrategyMgm } from '../../entities/attack-strategy-mgm/attack-str
 import { Observable } from 'rxjs/Observable';
 import { AssetMgm, AssetMgmService } from '../../entities/asset-mgm';
 import { QuestionnaireMgm } from '../../entities/questionnaire-mgm';
-import { HttpResponse, HttpErrorResponse } from '../../../../../../node_modules/@angular/common/http';
+import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { QuestionnairePurpose } from '../../entities/enumerations/QuestionnairePurpose.enum';
-import { concatMap } from '../../../../../../node_modules/rxjs/operators/concatMap';
+import { concatMap } from 'rxjs/operators/concatMap';
 import { QuestionnairesService } from '../../questionnaires/questionnaires.service';
 import { QuestionMgm, QuestionMgmService } from '../../entities/question-mgm';
 import { AnswerMgm, AnswerMgmService } from '../../entities/answer-mgm';
 import { MyAnswerMgmService, MyAnswerMgm } from '../../entities/my-answer-mgm';
-import { QuestionnaireStatusMgmService, QuestionnaireStatusMgm, QuestionnaireStatusMgmCustomService } from '../../entities/questionnaire-status-mgm';
+import { QuestionnaireStatusMgmService, QuestionnaireStatusMgm, Role, QuestionnaireStatusMgmCustomService } from '../../entities/questionnaire-status-mgm';
 import { MyAssetMgm } from '../../entities/my-asset-mgm';
 import { IdentifyAssetUtilService } from '../identify-asset.util.service';
-import { Role } from '../../entities/enumerations/Role.enum';
+import { MyRole } from '../../entities/enumerations/MyRole.enum';
 import { DirectAssetMgm } from '../../entities/direct-asset-mgm';
 import { IndirectAssetMgm } from '../../entities/indirect-asset-mgm';
+import { Status } from '../../entities/enumerations/QuestionnaireStatus.enum';
 
 @Component({
     selector: 'jhi-identify-asset',
@@ -31,6 +32,7 @@ import { IndirectAssetMgm } from '../../entities/indirect-asset-mgm';
     styles: [],
     providers: [IdentifyAssetService]
 })
+
 export class IdentifyAssetComponent implements OnInit, OnDestroy {
     account: Account;
     currentAccount: any;
@@ -56,6 +58,7 @@ export class IdentifyAssetComponent implements OnInit, OnDestroy {
         private mySelfAssessmentService: SelfAssessmentMgmService,
         private questionnairesService: QuestionnairesService,
         private questionnaireStatusService: QuestionnaireStatusMgmCustomService,
+        private questionnaireStatusServices: QuestionnaireStatusMgmService,
         private questionService: QuestionMgmService,
         private myAnswerService: MyAnswerMgmService,
         private answerService: AnswerMgmService,
@@ -91,11 +94,11 @@ export class IdentifyAssetComponent implements OnInit, OnDestroy {
                 this.questionnaries = res;
             }
             // TODO a regime rimuovere il controllo sull'enum ADMIN
-            if (this.account['authorities'].includes(Role.ROLE_CISO) || this.account['authorities'].includes(Role.ROLE_ADMIN)) {
+            if (this.account['authorities'].includes(MyRole.ROLE_CISO)) {
                 for (const qs of this.questionnaries) {
                     // controllo esistenza questionnaire status
                     // TODO a regime usare l'enum corretto ROLE_CISO
-                    this.questionnaireStatusService.getByRoleSelfAssessmentAndQuestionnaire(Role.ROLE_ADMIN.toString(), this.mySelfAssessmentService.getSelfAssessment().id, qs.id)
+                    this.questionnaireStatusService.getByRoleSelfAssessmentAndQuestionnaire(MyRole.ROLE_CISO.toString(), this.mySelfAssessmentService.getSelfAssessment().id, qs.id)
                         .toPromise()
                         .then((status) => {
                             if (status.body) {
@@ -135,10 +138,58 @@ export class IdentifyAssetComponent implements OnInit, OnDestroy {
         console.log(this.myAssets);
         console.log(this.myDirectAssets);
         console.log(this.myIndirectAssets);
+        let status: QuestionnaireStatusMgm = new QuestionnaireStatusMgm();
+        status.selfAssessment = this.mySelf;
+        status.questionnaire = this.questionnaries[0];
+        status.role = Role.ROLE_CISO;
+        const dateString = new Date().toISOString();
+        status.created = dateString;
+        status.modified = dateString;
+        status.user = this.user;
+        status.status = Status.FULL;
+        this.questionnaireStatusServices.create(status).toPromise().then((receivedStatus) => {
+            if (receivedStatus.body) {
+                status = receivedStatus.body;
+                for (const ans of this.myAnswers) {
+                    ans.questionnaireStatus = status;
+                }
+                this.myAnswerService.createAll(this.myAnswers).toPromise().then((savedAnswers) => {
+                    if (savedAnswers.body) {
+                        this.myAnswers = savedAnswers.body;
+                        /*
+                        export type EntityResponseType = HttpResponse<{
+                            myAssets: MyAssetMgm[],
+                            myDirectAssets: DirectAssetMgm[],
+                            myIndirectAssets: IndirectAssetMgm[]
+                        }>;
+                        */
+                       /*
+                        this.myCustomAssetServices.saveAll(this.myAssets, this.myDirectAssets, this.myIndirectAssets).toPromise().then((savedAssets) =>{
+                            if(savedAssets.body){
+                                this.myAssets = savedAssets.body['myAssets'];
+                                this.myDirectAssets = savedAssets.body['myDirectAssets'];
+                                this.myIndirectAssets = savedAnswers.body['myIndirectAssets'];
+                            }
+                        });
+                        */
+                        /*
+                        for (let i = 0; i < this.myAssets.length; i++) {
+                            this.assetService.create(this.myAssets[i]).toPromise().then((mySavedAsset) => {
+                                if (mySavedAsset.body) {
+                                    this.myAssets[i] = mySavedAsset.body;
+                                }
+                            });
+                        }
+                        */
+                    }
+                });
+            }
+        });
+
         // SERVONO questionnariesStatus, user
         // TODO funzioni per il salvataggio
-        // Salvare prima un questionnaire status
-        // salvare le MyAnswer
+        // Salvare prima un questionnaire status        OK
+        // salvare le MyAnswer                          OK
         // salvare i MyAssets
         // salvare i direct assets
         // salvare gli indirect

@@ -15,7 +15,7 @@ import { IdentifyAssetUtilService } from '../identify-asset.util.service';
 import { AssetCategoryMgmService } from '../../entities/asset-category-mgm';
 import { AssetType } from '../../entities/enumerations/AssetType.enum';
 import { DirectAssetMgm } from '../../entities/direct-asset-mgm';
-import { Subscription } from '../../../../../../node_modules/rxjs/Subscription';
+import { Subscription } from 'rxjs/Subscription';
 import { IndirectAssetMgm } from '../../entities/indirect-asset-mgm';
 import { AttackCostMgm, CostType } from '../../entities/attack-cost-mgm';
 import { MyCostType } from '../../entities/enumerations/AttackCostType.enum';
