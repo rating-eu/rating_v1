@@ -20,9 +20,13 @@ export class IdentifyAssetUtilService {
     private myAssets: MyAssetMgm[];
     private myDirectAssets: DirectAssetMgm[];
     private myIndirectAssets: IndirectAssetMgm[];
+    private myAnswerLinkedMap: any[];
 
+    private subscriptorForMyAsset: Subject<MyAssetMgm[]> = new Subject<MyAssetMgm[]>();
     private subscriptorForDirectAssets: Subject<DirectAssetMgm[]> = new Subject<DirectAssetMgm[]>();
     private subscriptorForIndirectAssets: Subject<IndirectAssetMgm[]> = new Subject<IndirectAssetMgm[]>();
+    private subscriptorForAnswersComplited: Subject<MyAnswerMgm[]> = new Subject<MyAnswerMgm[]>();
+    private subscriptorForIndirectMap: Subject<any> = new Subject<any>();
 
     constructor() {
         if (!this.myAnswersComplited) {
@@ -37,6 +41,33 @@ export class IdentifyAssetUtilService {
         if (!this.myIndirectAssets) {
             this.myIndirectAssets = [];
         }
+        if (!this.myAnswerLinkedMap) {
+            this.myAnswerLinkedMap = [];
+        }
+    }
+
+    public subscribeForIndirectMap(): Observable<any> {
+        return this.subscriptorForIndirectMap.asObservable();
+    }
+
+    public sendUpdateForIndirectMapToSubscriptor(map: any) {
+        this.subscriptorForIndirectMap.next(map);
+    }
+
+    public subscribeForMyAssets(): Observable<MyAssetMgm[]> {
+        return this.subscriptorForMyAsset.asObservable();
+    }
+
+    public sendUpdateForMyAssetsToSubscriptor(asset: MyAssetMgm[]) {
+        this.subscriptorForMyAsset.next(asset);
+    }
+
+    public subscribeForAnswer(): Observable<MyAnswerMgm[]> {
+        return this.subscriptorForAnswersComplited.asObservable();
+    }
+
+    public sendUpdateForAnswersToSubscriptor(answers: MyAnswerMgm[]) {
+        this.subscriptorForAnswersComplited.next(answers);
     }
 
     public subscribeForDirect(): Observable<DirectAssetMgm[]> {
@@ -95,7 +126,7 @@ export class IdentifyAssetUtilService {
         this.sendUpdateForDirectToSubscriptor(this.myDirectAssets);
     }
 
-    public updateMyDirectAssets(asset: MyAssetMgm, cost: AttackCostMgm, effect: IndirectAssetMgm) {
+    public updateMyDirectAssets(asset: MyAssetMgm, cost?: AttackCostMgm, effect?: IndirectAssetMgm) {
         const index = _.findIndex(this.myDirectAssets,
             (myDirectAsset) => (myDirectAsset.asset as MyAssetMgm).asset.id === asset.asset.id
         );
@@ -105,7 +136,7 @@ export class IdentifyAssetUtilService {
                     this.myDirectAssets[index].costs = [];
                 }
                 const indexC = _.findIndex(this.myDirectAssets,
-                    (myDirectAsset) => (myDirectAsset.costs as AttackCostMgm).id === cost.id
+                    (myDirectAsset) => (myDirectAsset.costs as AttackCostMgm).type === cost.type
                 );
                 if (indexC === -1) {
                     this.myDirectAssets[index].costs.push(cost);
@@ -118,7 +149,8 @@ export class IdentifyAssetUtilService {
                     this.myDirectAssets[index].effects = [];
                 }
                 const indexF = _.findIndex(this.myDirectAssets,
-                    (myDirectAsset) => (myDirectAsset.effects as IndirectAssetMgm).id === effect.id
+                    (myDirectAsset) =>
+                        ((myDirectAsset.effects as IndirectAssetMgm).asset as MyAssetMgm).asset.id === ((effect as IndirectAssetMgm).asset as MyAssetMgm).asset.id
                 );
                 if (indexF === -1) {
                     this.myDirectAssets[index].effects.push(effect);
@@ -131,8 +163,13 @@ export class IdentifyAssetUtilService {
     }
 
     public addMyIndirectAssets(asset: MyAssetMgm, directAsset: MyAssetMgm) {
+        if (asset.asset.id === (directAsset.asset as AssetMgm).id) {
+            return;
+        }
         const index = _.findIndex(this.myIndirectAssets,
-            (myIndirectAsset) => (myIndirectAsset.asset as MyAssetMgm).asset.id === asset.asset.id
+            (myIndirectAsset) =>
+                (myIndirectAsset.asset as MyAssetMgm).asset.id === asset.asset.id &&
+                (myIndirectAsset.directAsset as MyAssetMgm).asset.id === (directAsset.asset as AssetMgm).id
         );
         if (index === -1) {
             const indirect = new IndirectAssetMgm();
@@ -144,19 +181,55 @@ export class IdentifyAssetUtilService {
         this.sendUpdateForIndirectToSubscriptor(this.myIndirectAssets);
     }
 
-    public removeFromMyIndirectAssets(asset: MyAssetMgm) {
-        const index = _.findIndex(this.myIndirectAssets,
-            (myIndirectAsset) => (myIndirectAsset.asset as MyAssetMgm).asset.id === asset.asset.id
-        );
-        if (index !== -1) {
-            this.myIndirectAssets.splice(index, 1);
+    public removeFromMyIndirectAssets(asset: MyAssetMgm, directAsset?: MyAssetMgm) {
+        if (directAsset) {
+            const index = _.findIndex(this.myIndirectAssets,
+                (myIndirectAsset) =>
+                    (myIndirectAsset.asset as MyAssetMgm).asset.id === asset.asset.id &&
+                    (myIndirectAsset.directAsset as MyAssetMgm).asset.id === (directAsset.asset as AssetMgm).id
+            );
+            if (index !== -1) {
+                this.myIndirectAssets.splice(index, 1);
+            }
+        } else {
+            const indirects = _.filter(this.myIndirectAssets, (indirectAsset) =>
+                ((indirectAsset.asset as MyAssetMgm).asset as AssetMgm).id === (asset.asset as AssetMgm).id ||
+                ((indirectAsset.directAsset as MyAssetMgm).asset as AssetMgm).id === (asset.asset as AssetMgm).id
+            );
+            for (const i of indirects) {
+                const index = _.findIndex(this.myIndirectAssets,
+                    (myIndirectAsset) =>
+                        ((myIndirectAsset.asset as MyAssetMgm).asset as AssetMgm).id === ((i.asset as MyAssetMgm).asset as AssetMgm).id
+                );
+                if (index !== -1) {
+                    this.myIndirectAssets.splice(index, 1);
+                }
+            }
         }
         this.sendUpdateForIndirectToSubscriptor(this.myIndirectAssets);
     }
 
-    public updateMyIndirectAssets(asset: MyAssetMgm, cost: AttackCostMgm) {
+    public removeFromMyIndirectAssetsByDirect(directAsset: MyAssetMgm) {
+        const indirects = _.filter(this.myIndirectAssets, (indirectAsset) =>
+            ((indirectAsset.directAsset as MyAssetMgm).asset as AssetMgm).id === (directAsset.asset as AssetMgm).id
+        );
+        for (const i of indirects) {
+            const index = _.findIndex(this.myIndirectAssets,
+                (myIndirectAsset) =>
+                    ((myIndirectAsset.asset as MyAssetMgm).asset as AssetMgm).id === ((i.asset as MyAssetMgm).asset as AssetMgm).id
+            );
+            if (index !== -1) {
+                this.myIndirectAssets.splice(index, 1);
+            }
+        }
+        this.sendUpdateForIndirectToSubscriptor(this.myIndirectAssets);
+    }
+
+    public updateMyIndirectAssets(asset: MyAssetMgm, cost: AttackCostMgm, directAsset: MyAssetMgm) {
         const index = _.findIndex(this.myIndirectAssets,
-            (myIndirectAsset) => (myIndirectAsset.asset as MyAssetMgm).asset.id === asset.asset.id
+            (myIndirectAsset) =>
+                (myIndirectAsset.asset as MyAssetMgm).asset.id === asset.asset.id &&
+                (myIndirectAsset.directAsset as MyAssetMgm).asset.id === (directAsset.asset as AssetMgm).id
         );
         if (index !== -1) {
             if (cost) {
@@ -164,7 +237,7 @@ export class IdentifyAssetUtilService {
                     this.myIndirectAssets[index].costs = [];
                 }
                 const indexC = _.findIndex(this.myIndirectAssets,
-                    (myIndirectAsset) => (myIndirectAsset.costs as AttackCostMgm).id === cost.id
+                    (myIndirectAsset) => (myIndirectAsset.costs as AttackCostMgm).type === cost.type
                 );
                 if (indexC === -1) {
                     this.myIndirectAssets[index].costs.push(cost);
@@ -172,29 +245,129 @@ export class IdentifyAssetUtilService {
                     this.myIndirectAssets[index].costs.splice(indexC, 1);
                 }
             }
+            if (directAsset) {
+                this.myIndirectAssets[index].directAsset = directAsset;
+            }
             this.sendUpdateForIndirectToSubscriptor(this.myIndirectAssets);
         }
     }
 
+    public removeFromMyAnswerByAsset(asset: MyAssetMgm) {
+        const answerToRemove = _.filter(this.myAnswerLinkedMap, (linked) =>
+            linked[3] === asset.asset.id
+        );
+        const answerToPreserve = _.filter(this.myAnswerLinkedMap, (linked) =>
+            linked[3] !== asset.asset.id
+        );
+        for (const rem of answerToRemove) {
+            const indexQ = _.findIndex(this.myAnswersComplited, (myAnswer) =>
+                myAnswer.answer.id === rem[0] &&
+                myAnswer.question.id === rem[1] &&
+                myAnswer.answerOffset === rem[2]
+            );
+            if (indexQ !== -1) {
+                this.myAnswersComplited.splice(indexQ, 1);
+            }
+        }
+        for (const pre of answerToPreserve) {
+            let offsetsAnsw = _.filter(this.myAnswersComplited, (myAnswer) =>
+                myAnswer.answer.id === pre[0] &&
+                myAnswer.question.id === pre[1] &&
+                myAnswer.answerOffset >= 0
+            );
+            if (offsetsAnsw.length !== 0) {
+                offsetsAnsw = _.orderBy(offsetsAnsw, ['answerOffset'], ['asc']);
+                let index = 0;
+                for (const oA of offsetsAnsw) {
+                    if (oA.answerOffset === 0) {
+                        index++;
+                        continue;
+                    } else {
+                        if (oA.answerOffset === index) {
+                            index++;
+                            continue;
+                        }
+                        const indexSubs = _.findIndex(this.myAnswersComplited, (myAnswer) =>
+                            myAnswer.answer.id === oA.answer.id &&
+                            myAnswer.question.id === oA.question.id &&
+                            myAnswer.answerOffset === oA.answerOffset
+                        );
+                        for (let i = 0; i < this.myAnswerLinkedMap.length; i++) {
+                            if (this.myAnswerLinkedMap[i][0] === oA.answer.id &&
+                                this.myAnswerLinkedMap[i][1] === oA.question.id &&
+                                this.myAnswerLinkedMap[i][2] === oA.answerOffset) {
+                                this.myAnswerLinkedMap[i][2] = index;
+                            }
+                        }
+                        oA.answerOffset = index;
+                        index++;
+                        this.myAnswersComplited.splice(indexSubs, 1, oA);
+                    }
+                }
+            }
+        }
+        this.myAnswerLinkedMap = _.filter(this.myAnswerLinkedMap, (linked) =>
+            linked[3] !== asset.asset.id
+        );
+    }
+
+    public getMyLinkedMap(): any {
+        return this.myAnswerLinkedMap;
+    }
+
     public addMyAnswer(answer: MyAnswerMgm) {
         const index = _.findIndex(this.myAnswersComplited,
-            (myAnswer) => myAnswer.answer.id === answer.answer.id && myAnswer.question.id === answer.question.id
+            (myAnswer) =>
+                myAnswer.answer.id === answer.answer.id &&
+                myAnswer.question.id === answer.question.id &&
+                myAnswer.answerOffset === answer.answerOffset
         );
         if (index === -1) {
+            let linked: any;
+            if (answer.answer.asset) {
+                linked = [answer.answer.id, answer.question.id, answer.answerOffset, answer.answer.asset.id];
+                this.myAnswerLinkedMap.push(linked);
+            } else if (answer.answer.asset) {
+                // ricerco su myAssets
+                for (const gA of this.myAssets) {
+                    if ((gA.asset as AssetMgm).assetcategory.id === answer.answer.assetCategory.id) {
+                        linked = [answer.answer.id, answer.question.id, answer.answerOffset, gA.asset.id];
+                        this.myAnswerLinkedMap.push(linked);
+                    }
+                }
+                // ricerco su direct
+                for (const dA of this.myDirectAssets) {
+                    if ((((dA.asset) as MyAssetMgm).asset as AssetMgm).assetcategory.id === answer.answer.assetCategory.id) {
+                        linked = [answer.answer.id, answer.question.id, answer.answerOffset, (((dA.asset) as MyAssetMgm).asset as AssetMgm).id];
+                        this.myAnswerLinkedMap.push(linked);
+                    }
+                }
+                // ricerco su indirect
+                for (const dI of this.myIndirectAssets) {
+                    if ((((dI.asset) as MyAssetMgm).asset as AssetMgm).assetcategory.id === answer.answer.assetCategory.id) {
+                        linked = [answer.answer.id, answer.question.id, answer.answerOffset, (((dI.asset) as MyAssetMgm).asset as AssetMgm).id];
+                        this.myAnswerLinkedMap.push(linked);
+                    }
+                }
+            } else {
+                linked = [answer.answer.id, answer.question.id, answer.answerOffset];
+                this.myAnswerLinkedMap.push(linked);
+            }
             this.myAnswersComplited.push(answer);
         }
     }
 
     public removeFromMyAnswer(answer: MyAnswerMgm) {
         const index = _.findIndex(this.myAnswersComplited,
-            (myAnswer) => myAnswer.answer.id === answer.answer.id && myAnswer.question.id === answer.question.id
+            (myAnswer) => myAnswer.answer.id === answer.answer.id && myAnswer.question.id === answer.question.id && myAnswer.answerOffset === answer.answerOffset
         );
+        // Prevedere pulizia delle linkedAnswer
         this.myAnswersComplited.splice(index, 1);
     }
 
     public updateMyAnswers(answer: MyAnswerMgm) {
         const index = _.findIndex(this.myAnswersComplited,
-            (myAnswer) => myAnswer.answer.id === answer.answer.id && myAnswer.question.id === answer.question.id
+            (myAnswer) => myAnswer.answer.id === answer.answer.id && myAnswer.question.id === answer.question.id && myAnswer.answerOffset === answer.answerOffset
         );
         this.myAnswersComplited.splice(index, 1, answer);
     }
@@ -205,6 +378,13 @@ export class IdentifyAssetUtilService {
         );
         if (index === -1) {
             this.myAssets.push(asset);
+            const directIndexCategory = _.findIndex(this.myDirectAssets,
+                (myDirectAsset) =>
+                    ((myDirectAsset.asset as MyAssetMgm).asset as AssetMgm).assetcategory.id === (asset.asset as AssetMgm).assetcategory.id
+            );
+            if (directIndexCategory !== -1) {
+                this.addMyDirectAssets(asset);
+            }
         }
     }
 
@@ -212,6 +392,9 @@ export class IdentifyAssetUtilService {
         const index = _.findIndex(this.myAssets,
             (myAsset) => myAsset.asset.id === asset.asset.id
         );
+        if (index === -1) {
+            return;
+        }
         switch (property) {
             case 'asset': {
                 this.myAssets[index].asset = asset.asset;
@@ -261,12 +444,17 @@ export class IdentifyAssetUtilService {
         const index = _.findIndex(this.myAssets,
             (myAsset) => myAsset.asset.id === asset.asset.id
         );
+        if (index !== -1) {
+            this.myAssets.splice(index, 1);
+        }
+        /*
         if (this.myAssets[index].estimated === undefined &&
             this.myAssets[index].magnitude === undefined &&
             this.myAssets[index].ranking === undefined
         ) {
             this.myAssets.splice(index, 1);
         }
+        */
     }
 
 }

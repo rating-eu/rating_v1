@@ -178,7 +178,7 @@ step todo:
     </div>
 </div>
 -->
-<ng-container *ngIf="questions && !myAnswers">
+<ng-container *ngIf="questions">
     <ng-container *ngFor="let q of questions">
             <question-card
                 [question]="q"
@@ -188,6 +188,8 @@ step todo:
     </ng-container>
     <button (click)="sendAnswerAndSaveMyAssets()">click</button>
 </ng-container>
-<ng-container *ngIf="questions && myAnswers">
-    <!-- TODO View my saved answer -->
+<!--
+<ng-container *ngIf="questions && myAnswers.lenght > 0">
+    View
 </ng-container>
+-->

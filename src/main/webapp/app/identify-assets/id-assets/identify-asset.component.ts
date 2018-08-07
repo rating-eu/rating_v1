@@ -21,6 +21,9 @@ import { MyAnswerMgmService, MyAnswerMgm } from '../../entities/my-answer-mgm';
 import { QuestionnaireStatusMgmService, QuestionnaireStatusMgm, QuestionnaireStatusMgmCustomService } from '../../entities/questionnaire-status-mgm';
 import { MyAssetMgm } from '../../entities/my-asset-mgm';
 import { IdentifyAssetUtilService } from '../identify-asset.util.service';
+import { Role } from '../../entities/enumerations/Role.enum';
+import { DirectAssetMgm } from '../../entities/direct-asset-mgm';
+import { IndirectAssetMgm } from '../../entities/indirect-asset-mgm';
 
 @Component({
     selector: 'jhi-identify-asset',
@@ -42,6 +45,8 @@ export class IdentifyAssetComponent implements OnInit, OnDestroy {
     questions: QuestionMgm[];
     myAnswers: MyAnswerMgm[];
     myAssets: MyAssetMgm[];
+    myDirectAssets: DirectAssetMgm[];
+    myIndirectAssets: IndirectAssetMgm[];
     questionsAnswerMap: Map<number, Array<AnswerMgm>>;
 
     constructor(private jhiAlertService: JhiAlertService,
@@ -64,14 +69,10 @@ export class IdentifyAssetComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
-        this.myInit();
-    }
-
-    private async myInit(): Promise<void> {
-        await this.principal.identity().then((account) => {
+        this.principal.identity().then((account) => {
             this.account = account;
         });
-        await this.accountService.get().subscribe((response1) => {
+        this.accountService.get().subscribe((response1) => {
             const loggedAccount = response1.body;
             this.userService.find(loggedAccount['login']).subscribe((response2) => {
                 this.user = response2.body;
@@ -82,25 +83,30 @@ export class IdentifyAssetComponent implements OnInit, OnDestroy {
         // await this.assets$ = this.assetService.findAll();
         this.questionnaries = [];
         this.myAnswers = [];
-        await this.questionnairesService.getAllQuestionnairesByPurpose(QuestionnairePurpose.ID_ASSETS).toPromise().then((res) => {
+        this.questions = [];
+        this.questionnairesService.getAllQuestionnairesByPurpose(QuestionnairePurpose.ID_ASSETS).toPromise().then((res) => {
             if (res && res instanceof QuestionnaireMgm) {
                 this.questionnaries.push(res);
             } else if (res && res instanceof Array) {
                 this.questionnaries = res;
             }
-            if (this.account['authorities'].includes('CISO_ROLE')) {
+            // TODO a regime rimuovere il controllo sull'enum ADMIN
+            if (this.account['authorities'].includes(Role.ROLE_CISO) || this.account['authorities'].includes(Role.ROLE_ADMIN)) {
                 for (const qs of this.questionnaries) {
                     // controllo esistenza questionnaire status
-                    this.questionnaireStatusService.getByRoleSelfAssessmentAndQuestionnaire('CISO_ROLE', this.mySelf.id, qs.id)
+                    // TODO a regime usare l'enum corretto ROLE_CISO
+                    this.questionnaireStatusService.getByRoleSelfAssessmentAndQuestionnaire(Role.ROLE_ADMIN.toString(), this.mySelfAssessmentService.getSelfAssessment().id, qs.id)
                         .toPromise()
                         .then((status) => {
-                            this.questionnariesStatus.push(status.body as QuestionnaireStatusMgm);
-                            this.myAnswerService.getAllByQuestionnaireStatusID(status.body.id)
-                                .toPromise().then((answers) => {
-                                    if (answers.body) {
-                                        this.myAnswers = answers.body;
-                                    }
-                                });
+                            if (status.body) {
+                                this.questionnariesStatus.push(status.body as QuestionnaireStatusMgm);
+                                this.myAnswerService.getAllByQuestionnaireStatusID(status.body.id)
+                                    .toPromise().then((answers) => {
+                                        if (answers.body) {
+                                            this.myAnswers = answers.body;
+                                        }
+                                    });
+                            }
                         });
                 }
             }
@@ -123,8 +129,12 @@ export class IdentifyAssetComponent implements OnInit, OnDestroy {
     public sendAnswerAndSaveMyAssets() {
         this.myAnswers = this.idaUtilsService.getMyAnswersComplited();
         this.myAssets = this.idaUtilsService.getMyAssets();
+        this.myDirectAssets = this.idaUtilsService.getMyDirectAsset();
+        this.myIndirectAssets = this.idaUtilsService.getMyIndirectAsset();
         console.log(this.myAnswers);
         console.log(this.myAssets);
+        console.log(this.myDirectAssets);
+        console.log(this.myIndirectAssets);
         // SERVONO questionnariesStatus, user
         // TODO funzioni per il salvataggio
         // Salvare prima un questionnaire status
