@@ -1,5 +1,6 @@
 package eu.hermeneut.service.impl;
 
+import eu.hermeneut.domain.enumeration.AssetType;
 import eu.hermeneut.service.AssetCategoryService;
 import eu.hermeneut.domain.AssetCategory;
 import eu.hermeneut.repository.AssetCategoryRepository;
@@ -97,5 +98,17 @@ public class AssetCategoryServiceImpl implements AssetCategoryService {
         return StreamSupport
             .stream(assetCategorySearchRepository.search(queryStringQuery(query)).spliterator(), false)
             .collect(Collectors.toList());
+    }
+
+    /**
+     * Get all the assetCategories with the given AssetType..
+     *
+     * @param assetType the type of the assets to load.
+     * @return the list of entities
+     */
+    @Override
+    @Transactional(readOnly = true)
+    public List<AssetCategory> findAllByAssetType(AssetType assetType) {
+        return this.assetCategoryRepository.findAllByAssetType(assetType);
     }
 }

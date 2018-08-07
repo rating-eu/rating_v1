@@ -1,6 +1,5 @@
 package eu.hermeneut.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -8,17 +7,12 @@ import javax.persistence.*;
 import javax.validation.constraints.*;
 
 import org.springframework.data.elasticsearch.annotations.Document;
-
 import java.io.Serializable;
 import java.time.ZonedDateTime;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.Objects;
 
 /**
  * A Motivation.
- * The reason that pushes a @{@link ThreatAgent} to perform a certain @{@link AttackStrategy}.
- * The Motivation also shapes the intensity and the persistence of an attack.
  */
 @Entity
 @Table(name = "motivation")
@@ -46,11 +40,6 @@ public class Motivation implements Serializable {
 
     @Column(name = "modified")
     private ZonedDateTime modified;
-
-    @ManyToMany(mappedBy = "motivations")
-    @JsonIgnore
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private Set<ThreatAgent> tagents = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -111,31 +100,6 @@ public class Motivation implements Serializable {
 
     public void setModified(ZonedDateTime modified) {
         this.modified = modified;
-    }
-
-    public Set<ThreatAgent> getTagents() {
-        return tagents;
-    }
-
-    public Motivation tagents(Set<ThreatAgent> threatAgents) {
-        this.tagents = threatAgents;
-        return this;
-    }
-
-    public Motivation addTagent(ThreatAgent threatAgent) {
-        this.tagents.add(threatAgent);
-        threatAgent.getMotivations().add(this);
-        return this;
-    }
-
-    public Motivation removeTagent(ThreatAgent threatAgent) {
-        this.tagents.remove(threatAgent);
-        threatAgent.getMotivations().remove(this);
-        return this;
-    }
-
-    public void setTagents(Set<ThreatAgent> threatAgents) {
-        this.tagents = threatAgents;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 

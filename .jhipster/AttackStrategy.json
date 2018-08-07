@@ -3,7 +3,7 @@
     "relationships": [
         {
             "relationshipType": "many-to-many",
-            "otherEntityRelationshipName": "countermeasure",
+            "otherEntityRelationshipName": "",
             "relationshipName": "mitigation",
             "otherEntityName": "mitigation",
             "otherEntityField": "name",
@@ -24,20 +24,6 @@
             "otherEntityName": "phase",
             "otherEntityField": "name",
             "ownerSide": true
-        },
-        {
-            "relationshipType": "many-to-many",
-            "relationshipName": "question",
-            "otherEntityName": "question",
-            "ownerSide": false,
-            "otherEntityRelationshipName": "attackStrategies"
-        },
-        {
-            "relationshipType": "many-to-many",
-            "relationshipName": "selfassessment",
-            "otherEntityName": "selfAssessment",
-            "ownerSide": false,
-            "otherEntityRelationshipName": "attackstrategy"
         }
     ],
     "fields": [

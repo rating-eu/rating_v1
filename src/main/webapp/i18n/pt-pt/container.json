@@ -20,9 +20,7 @@
             "name": "Name",
             "description": "Description",
             "containerType": "Container Type",
-            "created": "Created",
-            "company": "Company",
-            "asset": "Asset"
+            "created": "Created"
         }
     }
 }

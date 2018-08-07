@@ -1,6 +1,5 @@
 package eu.hermeneut.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -53,18 +52,13 @@ public class Asset implements Serializable {
 
     @ManyToMany
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    @JoinTable(name = "asset_domains",
+    @JoinTable(name = "asset_domains_of_influence",
                joinColumns = @JoinColumn(name="assets_id", referencedColumnName="id"),
-               inverseJoinColumns = @JoinColumn(name="domains_id", referencedColumnName="id"))
-    private Set<DomainOfInfluence> domains = new HashSet<>();
+               inverseJoinColumns = @JoinColumn(name="domains_of_influences_id", referencedColumnName="id"))
+    private Set<DomainOfInfluence> domainsOfInfluences = new HashSet<>();
 
     @ManyToOne
     private AssetCategory assetcategory;
-
-    @ManyToMany(mappedBy = "assets")
-    @JsonIgnore
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private Set<SelfAssessment> selfassessments = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -138,13 +132,11 @@ public class Asset implements Serializable {
 
     public Asset addContainer(Container container) {
         this.containers.add(container);
-        container.getAssets().add(this);
         return this;
     }
 
     public Asset removeContainer(Container container) {
         this.containers.remove(container);
-        container.getAssets().remove(this);
         return this;
     }
 
@@ -152,29 +144,27 @@ public class Asset implements Serializable {
         this.containers = containers;
     }
 
-    public Set<DomainOfInfluence> getDomains() {
-        return domains;
+    public Set<DomainOfInfluence> getDomainsOfInfluences() {
+        return domainsOfInfluences;
     }
 
-    public Asset domains(Set<DomainOfInfluence> domainOfInfluences) {
-        this.domains = domainOfInfluences;
+    public Asset domainsOfInfluences(Set<DomainOfInfluence> domainOfInfluences) {
+        this.domainsOfInfluences = domainOfInfluences;
         return this;
     }
 
-    public Asset addDomains(DomainOfInfluence domainOfInfluence) {
-        this.domains.add(domainOfInfluence);
-        domainOfInfluence.getDomains().add(this);
+    public Asset addDomainsOfInfluence(DomainOfInfluence domainOfInfluence) {
+        this.domainsOfInfluences.add(domainOfInfluence);
         return this;
     }
 
-    public Asset removeDomains(DomainOfInfluence domainOfInfluence) {
-        this.domains.remove(domainOfInfluence);
-        domainOfInfluence.getDomains().remove(this);
+    public Asset removeDomainsOfInfluence(DomainOfInfluence domainOfInfluence) {
+        this.domainsOfInfluences.remove(domainOfInfluence);
         return this;
     }
 
-    public void setDomains(Set<DomainOfInfluence> domainOfInfluences) {
-        this.domains = domainOfInfluences;
+    public void setDomainsOfInfluences(Set<DomainOfInfluence> domainOfInfluences) {
+        this.domainsOfInfluences = domainOfInfluences;
     }
 
     public AssetCategory getAssetcategory() {
@@ -188,31 +178,6 @@ public class Asset implements Serializable {
 
     public void setAssetcategory(AssetCategory assetCategory) {
         this.assetcategory = assetCategory;
-    }
-
-    public Set<SelfAssessment> getSelfassessments() {
-        return selfassessments;
-    }
-
-    public Asset selfassessments(Set<SelfAssessment> selfAssessments) {
-        this.selfassessments = selfAssessments;
-        return this;
-    }
-
-    public Asset addSelfassessment(SelfAssessment selfAssessment) {
-        this.selfassessments.add(selfAssessment);
-        selfAssessment.getAssets().add(this);
-        return this;
-    }
-
-    public Asset removeSelfassessment(SelfAssessment selfAssessment) {
-        this.selfassessments.remove(selfAssessment);
-        selfAssessment.getAssets().remove(this);
-        return this;
-    }
-
-    public void setSelfassessments(Set<SelfAssessment> selfAssessments) {
-        this.selfassessments = selfAssessments;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 

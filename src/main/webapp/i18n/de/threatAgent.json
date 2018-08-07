@@ -27,8 +27,7 @@
             "modified": "Modified",
             "identifiedByDefault": "Identified By Default",
             "questions": "Questions",
-            "motivation": "Motivation",
-            "selfassessment": "Selfassessment"
+            "motivation": "Motivation"
         }
     }
 }

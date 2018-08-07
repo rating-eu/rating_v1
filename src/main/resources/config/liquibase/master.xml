@@ -76,5 +76,7 @@
     <include file="config/liquibase/changelog/20180727084748_added_entity_constraints_DirectAsset.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180727084749_added_entity_constraints_IndirectAsset.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180727084750_added_entity_constraints_AttackCost.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20180410085154_added_entity_constraints_DomainOfInfluence.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20180525150016_added_entity_constraints_Level.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
 </databaseChangeLog>

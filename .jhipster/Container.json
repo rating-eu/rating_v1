@@ -1,21 +1,6 @@
 {
     "fluentMethods": true,
-    "relationships": [
-        {
-            "relationshipType": "many-to-many",
-            "relationshipName": "company",
-            "otherEntityName": "companyProfile",
-            "ownerSide": false,
-            "otherEntityRelationshipName": "container"
-        },
-        {
-            "relationshipType": "many-to-many",
-            "relationshipName": "asset",
-            "otherEntityName": "asset",
-            "ownerSide": false,
-            "otherEntityRelationshipName": "container"
-        }
-    ],
+    "relationships": [],
     "fields": [
         {
             "fieldName": "name",

@@ -27,9 +27,7 @@
             "modified": "Modified",
             "mitigation": "Mitigation",
             "level": "Level",
-            "phase": "Phase",
-            "question": "Question",
-            "selfassessment": "Selfassessment"
+            "phase": "Phase"
         }
     }
 }

@@ -15,18 +15,11 @@
         },
         {
             "relationshipType": "many-to-many",
-            "otherEntityRelationshipName": "company",
-            "relationshipName": "container",
+            "otherEntityRelationshipName": "",
+            "relationshipName": "containers",
             "otherEntityName": "container",
             "otherEntityField": "name",
             "ownerSide": true
-        },
-        {
-            "relationshipType": "many-to-many",
-            "relationshipName": "selfassessment",
-            "otherEntityName": "selfAssessment",
-            "ownerSide": false,
-            "otherEntityRelationshipName": "companyprofiles"
         }
     ],
     "fields": [

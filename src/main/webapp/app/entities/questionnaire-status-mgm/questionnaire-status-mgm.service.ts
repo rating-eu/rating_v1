@@ -15,6 +15,7 @@ export class QuestionnaireStatusMgmService {
 
     private resourceUrl =  SERVER_API_URL + 'api/questionnaire-statuses';
     private resourceSearchUrl = SERVER_API_URL + 'api/_search/questionnaire-statuses';
+    private resourceUrlByRoleSelfAssessmentQuestionnaire = SERVER_API_URL + '';
 
     constructor(private http: HttpClient, private dateUtils: JhiDateUtils) { }
 
@@ -87,5 +88,9 @@ export class QuestionnaireStatusMgmService {
 
         copy.modified = this.dateUtils.toDate(questionnaireStatus.modified);
         return copy;
+    }
+
+    getByRoleSelfAssessmentAndQuestionnaire(role: string, selfAssessmentID: number, questionnaireID: number) {
+        return this.http.get<QuestionnaireStatusMgm>(this.resourceUrlByRoleSelfAssessmentQuestionnaire);
     }
 }

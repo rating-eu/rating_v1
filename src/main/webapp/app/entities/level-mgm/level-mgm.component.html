@@ -32,6 +32,7 @@
             <th><span jhiTranslate="global.field.id">ID</span></th>
             <th><span jhiTranslate="hermeneutApp.level.name">Name</span></th>
             <th><span jhiTranslate="hermeneutApp.level.description">Description</span></th>
+            <th><span jhiTranslate="hermeneutApp.level.container">Container</span></th>
             <th></th>
             </tr>
             </thead>
@@ -40,6 +41,11 @@
                 <td><a [routerLink]="['../level-mgm', level.id ]">{{level.id}}</a></td>
                 <td>{{level.name}}</td>
                 <td>{{level.description}}</td>
+                <td>
+                    <div *ngIf="level.container">
+                        <a [routerLink]="['../container-mgm', level.container?.id ]" >{{level.container?.name}}</a>
+                    </div>
+                </td>
                 <td class="text-right">
                     <div class="btn-group flex-btn-group-container">
                         <button type="submit"

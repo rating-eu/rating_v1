@@ -33,6 +33,10 @@ public class Level implements Serializable {
     @Column(name = "description")
     private String description;
 
+    @OneToOne
+    @JoinColumn(unique = true)
+    private Container container;
+
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
         return id;
@@ -66,6 +70,19 @@ public class Level implements Serializable {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Container getContainer() {
+        return container;
+    }
+
+    public Level container(Container container) {
+        this.container = container;
+        return this;
+    }
+
+    public void setContainer(Container container) {
+        this.container = container;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 

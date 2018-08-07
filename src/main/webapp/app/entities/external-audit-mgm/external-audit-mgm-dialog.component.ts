@@ -10,7 +10,6 @@ import { ExternalAuditMgm } from './external-audit-mgm.model';
 import { ExternalAuditMgmPopupService } from './external-audit-mgm-popup.service';
 import { ExternalAuditMgmService } from './external-audit-mgm.service';
 import { User, UserService } from '../../shared';
-import { SelfAssessmentMgm, SelfAssessmentMgmService } from '../self-assessment-mgm';
 
 @Component({
     selector: 'jhi-external-audit-mgm-dialog',
@@ -23,14 +22,11 @@ export class ExternalAuditMgmDialogComponent implements OnInit {
 
     users: User[];
 
-    selfassessments: SelfAssessmentMgm[];
-
     constructor(
         public activeModal: NgbActiveModal,
         private jhiAlertService: JhiAlertService,
         private externalAuditService: ExternalAuditMgmService,
         private userService: UserService,
-        private selfAssessmentService: SelfAssessmentMgmService,
         private eventManager: JhiEventManager
     ) {
     }
@@ -39,8 +35,6 @@ export class ExternalAuditMgmDialogComponent implements OnInit {
         this.isSaving = false;
         this.userService.query()
             .subscribe((res: HttpResponse<User[]>) => { this.users = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
-        this.selfAssessmentService.query()
-            .subscribe((res: HttpResponse<SelfAssessmentMgm[]>) => { this.selfassessments = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
     }
 
     clear() {
@@ -79,21 +73,6 @@ export class ExternalAuditMgmDialogComponent implements OnInit {
 
     trackUserById(index: number, item: User) {
         return item.id;
-    }
-
-    trackSelfAssessmentById(index: number, item: SelfAssessmentMgm) {
-        return item.id;
-    }
-
-    getSelected(selectedVals: Array<any>, option: any) {
-        if (selectedVals) {
-            for (let i = 0; i < selectedVals.length; i++) {
-                if (option.id === selectedVals[i].id) {
-                    return selectedVals[i];
-                }
-            }
-        }
-        return option;
     }
 }
 

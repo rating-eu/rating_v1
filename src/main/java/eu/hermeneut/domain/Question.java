@@ -1,6 +1,5 @@
 package eu.hermeneut.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -70,10 +69,6 @@ public class Question implements Serializable {
                joinColumns = @JoinColumn(name="questions_id", referencedColumnName="id"),
                inverseJoinColumns = @JoinColumn(name="answers_id", referencedColumnName="id"))
     private Set<Answer> answers = new HashSet<>();
-
-    @OneToOne(mappedBy = "question")
-    @JsonIgnore
-    private MyAnswer myanswer;
 
     @ManyToOne
     private Questionnaire questionnaire;
@@ -179,13 +174,11 @@ public class Question implements Serializable {
 
     public Question addAttackStrategies(AttackStrategy attackStrategy) {
         this.attackStrategies.add(attackStrategy);
-        attackStrategy.getQuestions().add(this);
         return this;
     }
 
     public Question removeAttackStrategies(AttackStrategy attackStrategy) {
         this.attackStrategies.remove(attackStrategy);
-        attackStrategy.getQuestions().remove(this);
         return this;
     }
 
@@ -216,19 +209,6 @@ public class Question implements Serializable {
 
     public void setAnswers(Set<Answer> answers) {
         this.answers = answers;
-    }
-
-    public MyAnswer getMyanswer() {
-        return myanswer;
-    }
-
-    public Question myanswer(MyAnswer myAnswer) {
-        this.myanswer = myAnswer;
-        return this;
-    }
-
-    public void setMyanswer(MyAnswer myAnswer) {
-        this.myanswer = myAnswer;
     }
 
     public Questionnaire getQuestionnaire() {

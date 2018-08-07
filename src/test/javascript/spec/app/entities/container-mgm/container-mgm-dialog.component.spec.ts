@@ -9,8 +9,6 @@ import { HermeneutTestModule } from '../../../test.module';
 import { ContainerMgmDialogComponent } from '../../../../../../main/webapp/app/entities/container-mgm/container-mgm-dialog.component';
 import { ContainerMgmService } from '../../../../../../main/webapp/app/entities/container-mgm/container-mgm.service';
 import { ContainerMgm } from '../../../../../../main/webapp/app/entities/container-mgm/container-mgm.model';
-import { CompanyProfileMgmService } from '../../../../../../main/webapp/app/entities/company-profile-mgm';
-import { AssetMgmService } from '../../../../../../main/webapp/app/entities/asset-mgm';
 
 describe('Component Tests', () => {
 
@@ -26,8 +24,6 @@ describe('Component Tests', () => {
                 imports: [HermeneutTestModule],
                 declarations: [ContainerMgmDialogComponent],
                 providers: [
-                    CompanyProfileMgmService,
-                    AssetMgmService,
                     ContainerMgmService
                 ]
             })

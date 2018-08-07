@@ -26,10 +26,10 @@
                 <a [routerLink]="['/container-mgm', container?.id ]">{{container.name}}</a>{{last ? '' : ', '}}
             </span>
         </dd>
-        <dt><span jhiTranslate="hermeneutApp.asset.domains">Domains</span></dt>
+        <dt><span jhiTranslate="hermeneutApp.asset.domainsOfInfluence">Domains Of Influence</span></dt>
         <dd>
-            <span *ngFor="let domains of asset.domains; let last = last">
-                <a [routerLink]="['/domain-of-influence-mgm', domains?.id ]">{{domains.name}}</a>{{last ? '' : ', '}}
+            <span *ngFor="let domainsOfInfluence of asset.domainsOfInfluences; let last = last">
+                <a [routerLink]="['/domain-of-influence-mgm', domainsOfInfluence?.id ]">{{domainsOfInfluence.name}}</a>{{last ? '' : ', '}}
             </span>
         </dd>
         <dt><span jhiTranslate="hermeneutApp.asset.assetcategory">Assetcategory</span></dt>

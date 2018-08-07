@@ -36,7 +36,7 @@
             <th><span jhiTranslate="hermeneutApp.companyProfile.modified">Modified</span></th>
             <th><span jhiTranslate="hermeneutApp.companyProfile.type">Type</span></th>
             <th><span jhiTranslate="hermeneutApp.companyProfile.user">User</span></th>
-            <th><span jhiTranslate="hermeneutApp.companyProfile.container">Container</span></th>
+            <th><span jhiTranslate="hermeneutApp.companyProfile.containers">Containers</span></th>
             <th></th>
             </tr>
             </thead>
@@ -52,8 +52,8 @@
                     {{companyProfile.user?.login}}
                 </td>
                 <td>
-                    <span *ngFor="let container of companyProfile.containers; let last = last">
-                            <a class="form-control-static" [routerLink]="['../container-mgm', container?.id ]">{{container.name}}</a>{{last ? '' : ', '}}
+                    <span *ngFor="let containers of companyProfile.containers; let last = last">
+                            <a class="form-control-static" [routerLink]="['../container-mgm', containers?.id ]">{{containers.name}}</a>{{last ? '' : ', '}}
                         </span>
                 </td>
                 <td class="text-right">

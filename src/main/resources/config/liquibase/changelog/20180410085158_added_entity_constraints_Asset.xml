@@ -20,13 +20,13 @@
                                  referencedTableName="container"/>
         
         <addForeignKeyConstraint baseColumnNames="assets_id"
-                                 baseTableName="asset_domains"
-                                 constraintName="fk_asset_domains_assets_id"
+                                 baseTableName="asset_domains_of_influence"
+                                 constraintName="fk_asset_domains_of_influence_assets_id"
                                  referencedColumnNames="id"
                                  referencedTableName="asset"/>
-        <addForeignKeyConstraint baseColumnNames="domains_id"
-                                 baseTableName="asset_domains"
-                                 constraintName="fk_asset_domains_domains_id"
+        <addForeignKeyConstraint baseColumnNames="domains_of_influences_id"
+                                 baseTableName="asset_domains_of_influence"
+                                 constraintName="fk_asset_domains_of_influence_domains_of_influences_id"
                                  referencedColumnNames="id"
                                  referencedTableName="domain_of_influence"/>
         

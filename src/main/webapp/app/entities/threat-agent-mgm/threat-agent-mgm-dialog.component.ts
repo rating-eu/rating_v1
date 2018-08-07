@@ -10,7 +10,6 @@ import { ThreatAgentMgm } from './threat-agent-mgm.model';
 import { ThreatAgentMgmPopupService } from './threat-agent-mgm-popup.service';
 import { ThreatAgentMgmService } from './threat-agent-mgm.service';
 import { MotivationMgm, MotivationMgmService } from '../motivation-mgm';
-import { SelfAssessmentMgm, SelfAssessmentMgmService } from '../self-assessment-mgm';
 
 @Component({
     selector: 'jhi-threat-agent-mgm-dialog',
@@ -23,15 +22,12 @@ export class ThreatAgentMgmDialogComponent implements OnInit {
 
     motivations: MotivationMgm[];
 
-    selfassessments: SelfAssessmentMgm[];
-
     constructor(
         public activeModal: NgbActiveModal,
         private dataUtils: JhiDataUtils,
         private jhiAlertService: JhiAlertService,
         private threatAgentService: ThreatAgentMgmService,
         private motivationService: MotivationMgmService,
-        private selfAssessmentService: SelfAssessmentMgmService,
         private elementRef: ElementRef,
         private eventManager: JhiEventManager
     ) {
@@ -41,8 +37,6 @@ export class ThreatAgentMgmDialogComponent implements OnInit {
         this.isSaving = false;
         this.motivationService.query()
             .subscribe((res: HttpResponse<MotivationMgm[]>) => { this.motivations = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
-        this.selfAssessmentService.query()
-            .subscribe((res: HttpResponse<SelfAssessmentMgm[]>) => { this.selfassessments = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
     }
 
     byteSize(field) {
@@ -96,10 +90,6 @@ export class ThreatAgentMgmDialogComponent implements OnInit {
     }
 
     trackMotivationById(index: number, item: MotivationMgm) {
-        return item.id;
-    }
-
-    trackSelfAssessmentById(index: number, item: SelfAssessmentMgm) {
         return item.id;
     }
 

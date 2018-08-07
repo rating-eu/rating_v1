@@ -6,20 +6,6 @@
             "relationshipName": "questions",
             "otherEntityName": "question",
             "otherEntityRelationshipName": "questionnaire"
-        },
-        {
-            "relationshipType": "one-to-one",
-            "relationshipName": "myanswer",
-            "otherEntityName": "myAnswer",
-            "ownerSide": false,
-            "otherEntityRelationshipName": "questionnaire"
-        },
-        {
-            "relationshipType": "many-to-many",
-            "relationshipName": "selfassessment",
-            "otherEntityName": "selfAssessment",
-            "ownerSide": false,
-            "otherEntityRelationshipName": "questionnaire"
         }
     ],
     "fields": [

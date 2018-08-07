@@ -3,7 +3,7 @@
     "relationships": [
         {
             "relationshipType": "many-to-many",
-            "otherEntityRelationshipName": "question",
+            "otherEntityRelationshipName": "",
             "relationshipName": "attackStrategies",
             "otherEntityName": "attackStrategy",
             "otherEntityField": "name",
@@ -16,13 +16,6 @@
             "otherEntityName": "answer",
             "otherEntityField": "name",
             "ownerSide": true
-        },
-        {
-            "relationshipType": "one-to-one",
-            "relationshipName": "myanswer",
-            "otherEntityName": "myAnswer",
-            "ownerSide": false,
-            "otherEntityRelationshipName": "question"
         },
         {
             "relationshipType": "many-to-one",

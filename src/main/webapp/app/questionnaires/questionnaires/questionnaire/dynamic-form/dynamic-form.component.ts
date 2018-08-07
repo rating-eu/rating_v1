@@ -380,7 +380,7 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
                             });
 
                             const uniqueThreatAgentsSet: Set<ThreatAgentMgm> = new Set<ThreatAgentMgm>(identifiedThreatAgents.concat(this.selfAssessment.threatagents));
-                            const uniqueThreatAgentsArray: ThreatAgentMgm[] = [...uniqueThreatAgentsSet];
+                            const uniqueThreatAgentsArray: ThreatAgentMgm[] = Array.from(uniqueThreatAgentsSet);
                             this.selfAssessment.threatagents = uniqueThreatAgentsArray;
 
                             break;
@@ -389,7 +389,7 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
                             const defaultThreatAgents: ThreatAgentMgm[] = (responses[index] as HttpResponse<ThreatAgentMgm[]>).body;
 
                             const uniqueThreatAgentsSet: Set<ThreatAgentMgm> = new Set<ThreatAgentMgm>(defaultThreatAgents.concat(this.selfAssessment.threatagents));
-                            const uniqueThreatAgentsArray: ThreatAgentMgm[] = [...uniqueThreatAgentsSet];
+                            const uniqueThreatAgentsArray: ThreatAgentMgm[] = Array.from(uniqueThreatAgentsSet);
                             this.selfAssessment.threatagents = uniqueThreatAgentsArray;
 
                             break;
@@ -397,7 +397,7 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
                     }
                 });
 
-                this.selfAssessment.questionnaires = [...new Set<QuestionnaireMgm>(this.selfAssessment.questionnaires.concat(this.questionnaire))];
+                this.selfAssessment.questionnaires = Array.from(new Set<QuestionnaireMgm>(this.selfAssessment.questionnaires.concat(this.questionnaire)));
                 this.selfAssessment.user = this.user;
 
                 return this.selfAssessmentService.update(this.selfAssessment);
@@ -455,7 +455,7 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
                         const myAnswers: MyAnswerMgm[] = myAnswersResponse.body;
                         console.log(JSON.stringify(myAnswers));
 
-                        this.selfAssessment.questionnaires = [...new Set<QuestionnaireMgm>(this.selfAssessment.questionnaires.concat(this.questionnaire))];
+                        this.selfAssessment.questionnaires = Array.from(new Set<QuestionnaireMgm>(this.selfAssessment.questionnaires.concat(this.questionnaire)));
                         this.selfAssessment.user = this.user;
 
                         return this.selfAssessmentService.update(this.selfAssessment);
@@ -716,13 +716,12 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
         formDataMap.forEach(// Key could be id | id.external | id.note
             (value: AnswerMgm | string, key: string) => {
 
-                if (value instanceof AnswerMgm && key.endsWith('.external')) {
-                    const answer: AnswerMgm = value;
+                if (key.endsWith('.external')) {
+                    const answer: AnswerMgm = value as AnswerMgm;
                     console.log('Answer: ' + answer);
 
                     const questionID: number = Number(key.replace('.external', ''));
                     const question: QuestionMgm = this.questionsArrayMap.get(questionID);
-                    const questionnaire: QuestionnaireMgm = question.questionnaire;
 
                     refinementMap.set(question.id, answer);
                 } else if (key.endsWith('.note')) {

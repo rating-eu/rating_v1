@@ -1,6 +1,5 @@
 package eu.hermeneut.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -10,8 +9,6 @@ import javax.validation.constraints.*;
 import org.springframework.data.elasticsearch.annotations.Document;
 import java.io.Serializable;
 import java.time.ZonedDateTime;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.Objects;
 
 /**
@@ -42,11 +39,6 @@ public class Mitigation implements Serializable {
 
     @Column(name = "modified")
     private ZonedDateTime modified;
-
-    @ManyToMany(mappedBy = "mitigations")
-    @JsonIgnore
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private Set<AttackStrategy> countermeasures = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -107,31 +99,6 @@ public class Mitigation implements Serializable {
 
     public void setModified(ZonedDateTime modified) {
         this.modified = modified;
-    }
-
-    public Set<AttackStrategy> getCountermeasures() {
-        return countermeasures;
-    }
-
-    public Mitigation countermeasures(Set<AttackStrategy> attackStrategies) {
-        this.countermeasures = attackStrategies;
-        return this;
-    }
-
-    public Mitigation addCountermeasure(AttackStrategy attackStrategy) {
-        this.countermeasures.add(attackStrategy);
-        attackStrategy.getMitigations().add(this);
-        return this;
-    }
-
-    public Mitigation removeCountermeasure(AttackStrategy attackStrategy) {
-        this.countermeasures.remove(attackStrategy);
-        attackStrategy.getMitigations().remove(this);
-        return this;
-    }
-
-    public void setCountermeasures(Set<AttackStrategy> attackStrategies) {
-        this.countermeasures = attackStrategies;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 

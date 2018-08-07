@@ -4,9 +4,6 @@ import eu.hermeneut.service.ExternalAuditService;
 import eu.hermeneut.domain.ExternalAudit;
 import eu.hermeneut.repository.ExternalAuditRepository;
 import eu.hermeneut.repository.search.ExternalAuditSearchRepository;
-import eu.hermeneut.security.AuthoritiesConstants;
-import eu.hermeneut.security.SecurityUtils;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -59,11 +56,7 @@ public class ExternalAuditServiceImpl implements ExternalAuditService {
     @Transactional(readOnly = true)
     public List<ExternalAudit> findAll() {
         log.debug("Request to get all ExternalAudits");
-        if(SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN)) {
         return externalAuditRepository.findAll();
-        }else {
-        	return externalAuditRepository.findByUserIsCurrentUser();
-        }
     }
 
     /**

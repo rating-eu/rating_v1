@@ -18,7 +18,8 @@
                 "title": "Level"
             },
             "name": "Name",
-            "description": "Description"
+            "description": "Description",
+            "container": "Container"
         }
     }
 }

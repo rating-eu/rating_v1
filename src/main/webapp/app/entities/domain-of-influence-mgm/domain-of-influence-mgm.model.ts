@@ -5,7 +5,7 @@ export class DomainOfInfluenceMgm implements BaseEntity {
         public id?: number,
         public name?: string,
         public description?: string,
-        public domains?: BaseEntity[],
+        public container?: BaseEntity,
     ) {
     }
 }

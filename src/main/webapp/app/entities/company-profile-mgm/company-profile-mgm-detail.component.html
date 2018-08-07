@@ -28,10 +28,10 @@
         <dd>
             {{companyProfile.user?.login}}
         </dd>
-        <dt><span jhiTranslate="hermeneutApp.companyProfile.container">Container</span></dt>
+        <dt><span jhiTranslate="hermeneutApp.companyProfile.containers">Containers</span></dt>
         <dd>
-            <span *ngFor="let container of companyProfile.containers; let last = last">
-                <a [routerLink]="['/container-mgm', container?.id ]">{{container.name}}</a>{{last ? '' : ', '}}
+            <span *ngFor="let containers of companyProfile.containers; let last = last">
+                <a [routerLink]="['/container-mgm', containers?.id ]">{{containers.name}}</a>{{last ? '' : ', '}}
             </span>
         </dd>
     </dl>

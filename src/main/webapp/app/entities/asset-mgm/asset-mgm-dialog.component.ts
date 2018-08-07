@@ -12,7 +12,6 @@ import { AssetMgmService } from './asset-mgm.service';
 import { ContainerMgm, ContainerMgmService } from '../container-mgm';
 import { DomainOfInfluenceMgm, DomainOfInfluenceMgmService } from '../domain-of-influence-mgm';
 import { AssetCategoryMgm, AssetCategoryMgmService } from '../asset-category-mgm';
-import { SelfAssessmentMgm, SelfAssessmentMgmService } from '../self-assessment-mgm';
 
 @Component({
     selector: 'jhi-asset-mgm-dialog',
@@ -29,8 +28,6 @@ export class AssetMgmDialogComponent implements OnInit {
 
     assetcategories: AssetCategoryMgm[];
 
-    selfassessments: SelfAssessmentMgm[];
-
     constructor(
         public activeModal: NgbActiveModal,
         private jhiAlertService: JhiAlertService,
@@ -38,7 +35,6 @@ export class AssetMgmDialogComponent implements OnInit {
         private containerService: ContainerMgmService,
         private domainOfInfluenceService: DomainOfInfluenceMgmService,
         private assetCategoryService: AssetCategoryMgmService,
-        private selfAssessmentService: SelfAssessmentMgmService,
         private eventManager: JhiEventManager
     ) {
     }
@@ -51,8 +47,6 @@ export class AssetMgmDialogComponent implements OnInit {
             .subscribe((res: HttpResponse<DomainOfInfluenceMgm[]>) => { this.domainofinfluences = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
         this.assetCategoryService.query()
             .subscribe((res: HttpResponse<AssetCategoryMgm[]>) => { this.assetcategories = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
-        this.selfAssessmentService.query()
-            .subscribe((res: HttpResponse<SelfAssessmentMgm[]>) => { this.selfassessments = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
     }
 
     clear() {
@@ -98,10 +92,6 @@ export class AssetMgmDialogComponent implements OnInit {
     }
 
     trackAssetCategoryById(index: number, item: AssetCategoryMgm) {
-        return item.id;
-    }
-
-    trackSelfAssessmentById(index: number, item: SelfAssessmentMgm) {
         return item.id;
     }
 

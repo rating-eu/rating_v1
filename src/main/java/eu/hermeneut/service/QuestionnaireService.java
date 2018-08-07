@@ -37,8 +37,6 @@ public interface QuestionnaireService {
      */
     List<Questionnaire> findAllByPurpose(QuestionnairePurpose scope);
 
-    List<Questionnaire> findAllWhereMyanswerIsNull();
-
     /**
      * Get the "id" questionnaire.
      *

@@ -50,7 +50,7 @@
         <dropDefaultValue tableName="company_profile" columnName="created" columnDataType="datetime"/>
         <dropDefaultValue tableName="company_profile" columnName="modified" columnDataType="datetime"/>
         
-        <createTable tableName="company_profile_container">
+        <createTable tableName="company_profile_containers">
             <column name="containers_id" type="bigint">
                 <constraints nullable="false"/>
             </column>
@@ -59,7 +59,7 @@
             </column>
         </createTable>
 
-        <addPrimaryKey columnNames="company_profiles_id, containers_id" tableName="company_profile_container"/>
+        <addPrimaryKey columnNames="company_profiles_id, containers_id" tableName="company_profile_containers"/>
         
     </changeSet>
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here, do not remove-->

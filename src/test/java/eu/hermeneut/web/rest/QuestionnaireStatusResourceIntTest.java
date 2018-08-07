@@ -182,42 +182,6 @@ public class QuestionnaireStatusResourceIntTest {
 
     @Test
     @Transactional
-    public void checkCreatedIsRequired() throws Exception {
-        int databaseSizeBeforeTest = questionnaireStatusRepository.findAll().size();
-        // set the field null
-        questionnaireStatus.setCreated(null);
-
-        // Create the QuestionnaireStatus, which fails.
-
-        restQuestionnaireStatusMockMvc.perform(post("/api/questionnaire-statuses")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(questionnaireStatus)))
-            .andExpect(status().isBadRequest());
-
-        List<QuestionnaireStatus> questionnaireStatusList = questionnaireStatusRepository.findAll();
-        assertThat(questionnaireStatusList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
-    public void checkModifiedIsRequired() throws Exception {
-        int databaseSizeBeforeTest = questionnaireStatusRepository.findAll().size();
-        // set the field null
-        questionnaireStatus.setModified(null);
-
-        // Create the QuestionnaireStatus, which fails.
-
-        restQuestionnaireStatusMockMvc.perform(post("/api/questionnaire-statuses")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(questionnaireStatus)))
-            .andExpect(status().isBadRequest());
-
-        List<QuestionnaireStatus> questionnaireStatusList = questionnaireStatusRepository.findAll();
-        assertThat(questionnaireStatusList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
     public void checkRoleIsRequired() throws Exception {
         int databaseSizeBeforeTest = questionnaireStatusRepository.findAll().size();
         // set the field null
