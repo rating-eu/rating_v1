@@ -132,10 +132,6 @@ public class ResultController {
                 }
             });
 
-            //#3 get the answer weights
-            List<AnswerWeight> answerWeights = this.answerWeightService.findAll();
-            Map<QuestionType, Map<AnswerLikelihood, AnswerWeight>> answerWeightsMap = new HashMap<>();
-
             //#4 get the questionnaireStatuses by CISO and EXTERNAL_AUDIT
             List<QuestionnaireStatus> questionnaireStatuses = this.questionnaireStatusService.findAllBySelfAssessment(selfAssessment.getId());
 
@@ -279,7 +275,7 @@ public class ResultController {
                 result.setRefinedVulnerability(new HashMap<>());
             }
         } else {
-            
+
         }
 
         return result;
