@@ -43,7 +43,7 @@ export class IdentifyAssetComponent implements OnInit, OnDestroy {
     user: User;
 
     questionnaries: QuestionnaireMgm[];
-    questionnariesStatus: QuestionnaireStatusMgm[];
+    questionnariesStatus: QuestionnaireStatusMgm[] = [];
     questions: QuestionMgm[];
     myAnswers: MyAnswerMgm[];
     myAssets: MyAssetMgm[];
@@ -147,6 +147,7 @@ export class IdentifyAssetComponent implements OnInit, OnDestroy {
         status.modified = dateString;
         status.user = this.user;
         status.status = Status.FULL;
+        /*
         this.questionnaireStatusServices.create(status).toPromise().then((receivedStatus) => {
             if (receivedStatus.body) {
                 status = receivedStatus.body;
@@ -180,12 +181,11 @@ export class IdentifyAssetComponent implements OnInit, OnDestroy {
                                 }
                             });
                         }
-                        */
                     }
                 });
             }
         });
-
+        */
         // SERVONO questionnariesStatus, user
         // TODO funzioni per il salvataggio
         // Salvare prima un questionnaire status        OK

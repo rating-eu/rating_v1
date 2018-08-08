@@ -75,15 +75,11 @@ export class QuestionComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.directAssetsSubscription = this.idaUtilsService.subscribeForDirect().subscribe((res) => {
             if (res) {
-                console.log(this.renderType);
-                console.log(this.directGuiAssets);
                 this.directGuiAssets = res;
             }
         });
         this.indirectAssetsSubscription = this.idaUtilsService.subscribeForIndirect().subscribe((res) => {
             if (res) {
-                console.log(this.renderType);
-                console.log(this.indirectGuiAssets);
                 this.indirectGuiAssets = res;
             }
         });
@@ -93,7 +89,6 @@ export class QuestionComponent implements OnInit, OnDestroy {
                 setTimeout(() => {
                     this.ref.detectChanges();
                 }, 500);
-                console.log(this.indirectAnswerMap);
             }
         });
         this.myAssetsSubscription = this.idaUtilsService.subscribeForMyAssets().subscribe((res) => {
@@ -108,7 +103,6 @@ export class QuestionComponent implements OnInit, OnDestroy {
                 this.myQuestionAnswer = [];
                 this.selectedAnswers = [];
                 const linkeds = this.idaUtilsService.getMyLinkedMap();
-                console.log(linkeds);
                 for (const linked of linkeds) {
                     if (linked[1] === this.question.id) {
                         const indexA = _.findIndex(res, (ans) =>
@@ -122,8 +116,6 @@ export class QuestionComponent implements OnInit, OnDestroy {
                         }
                     }
                 }
-                console.log(this.myQuestionAnswer);
-                console.log(this.selectedAnswers);
                 // Forzare la selezione della categoria nelle domande che la prevedono... Es: Direct Assets
                 // TODO controllare la deselezione dell'ultima domanda ripetuta all'interno della sezione assets indiretti
                 // TODO Controllare l'evento di update dell'interfaccia
@@ -238,8 +230,6 @@ export class QuestionComponent implements OnInit, OnDestroy {
                     }
                 }
             }
-            // SEZIONE NON PIù NECESSARIA, AL MOMENTO QUESTO COMPITO VIENE SVOLTO DAL SERVIZIO E DALLA SOTTOSCRIZIONE
-            /*
             const indexQ = _.findIndex(this.myQuestionAnswer,
                 (myAnswer) => myAnswer.answer.id === this.selectedAnswers[index].id && myAnswer.answerOffset === idOffset
             );
@@ -247,7 +237,6 @@ export class QuestionComponent implements OnInit, OnDestroy {
                 this.idaUtilsService.removeFromMyAnswer(this.myQuestionAnswer[indexQ]);
                 this.myQuestionAnswer.splice(indexQ, 1);
             }
-            */
             this.selectedAnswers.splice(index, 1);
             this.idaUtilsService.sendUpdateForAnswersToSubscriptor(this.idaUtilsService.getMyAnswersComplited());
         } else {
@@ -334,10 +323,18 @@ export class QuestionComponent implements OnInit, OnDestroy {
                 if (indexA !== -1) {
                     this.idaUtilsService.removeFromMyIndirectAssets(myGlobalAssets[indexA], myGlobalAssets[indexDirect]);
                     if (this.indirectGuiAssets && this.indirectGuiAssets.length > 0) {
-                        const indexInd = _.findIndex(this.indirectGuiAssets, (indirect) =>
+                        const indirects = _.filter(this.indirectGuiAssets, (indirect) =>
                             (indirect.directAsset as MyAssetMgm).asset.id === myGlobalAssets[indexDirect].asset.id
                         );
-                        this.idaUtilsService.updateMyDirectAssets(myGlobalAssets[indexDirect], null, this.indirectGuiAssets[indexInd]);
+                        let lastIndex = 0;
+                        for (const ind of indirects) {
+                            const indexInd = _.findIndex(this.indirectGuiAssets, (indirect) =>
+                                (indirect.directAsset as MyAssetMgm).asset.id === (ind.directAsset as MyAssetMgm).asset.id,
+                                lastIndex
+                            );
+                            lastIndex = indexInd + 1;
+                            this.idaUtilsService.updateMyDirectAssets(myGlobalAssets[indexDirect], null, this.indirectGuiAssets[indexInd]);
+                        }
                     }
                 }
             } else {
@@ -348,10 +345,18 @@ export class QuestionComponent implements OnInit, OnDestroy {
                     if (indexA !== -1) {
                         this.idaUtilsService.removeFromMyIndirectAssets(myGlobalAssets[indexA], myGlobalAssets[indexDirect]);
                         if (this.indirectGuiAssets && this.indirectGuiAssets.length > 0) {
-                            const indexInd = _.findIndex(this.indirectGuiAssets, (indirect) =>
+                            const indirects = _.filter(this.indirectGuiAssets, (indirect) =>
                                 (indirect.directAsset as MyAssetMgm).asset.id === myGlobalAssets[indexDirect].asset.id
                             );
-                            this.idaUtilsService.updateMyDirectAssets(myGlobalAssets[indexDirect], null, this.indirectGuiAssets[indexInd]);
+                            let lastIndex = 0;
+                            for (const ind of indirects) {
+                                const indexInd = _.findIndex(this.indirectGuiAssets, (indirect) =>
+                                    (indirect.directAsset as MyAssetMgm).asset.id === (ind.directAsset as MyAssetMgm).asset.id,
+                                    lastIndex
+                                );
+                                lastIndex = indexInd + 1;
+                                this.idaUtilsService.updateMyDirectAssets(myGlobalAssets[indexDirect], null, this.indirectGuiAssets[indexInd]);
+                            }
                         }
                     }
                 }
@@ -374,10 +379,18 @@ export class QuestionComponent implements OnInit, OnDestroy {
                 if (indexA !== -1) {
                     this.idaUtilsService.addMyIndirectAssets(myGlobalAssets[indexA], myGlobalAssets[indexDirect]);
                     if (this.indirectGuiAssets && this.indirectGuiAssets.length > 0) {
-                        const indexInd = _.findIndex(this.indirectGuiAssets, (indirect) =>
+                        const indirects = _.filter(this.indirectGuiAssets, (indirect) =>
                             (indirect.directAsset as MyAssetMgm).asset.id === myGlobalAssets[indexDirect].asset.id
                         );
-                        this.idaUtilsService.updateMyDirectAssets(myGlobalAssets[indexDirect], null, this.indirectGuiAssets[indexInd]);
+                        let lastIndex = 0;
+                        for (const ind of indirects) {
+                            const indexInd = _.findIndex(this.indirectGuiAssets, (indirect) =>
+                                (indirect.directAsset as MyAssetMgm).asset.id === (ind.directAsset as MyAssetMgm).asset.id,
+                                lastIndex
+                            );
+                            lastIndex = indexInd + 1;
+                            this.idaUtilsService.updateMyDirectAssets(myGlobalAssets[indexDirect], null, this.indirectGuiAssets[indexInd]);
+                        }
                     }
                     const indexValues = [this.question.id, ans.id, idOffset, myGlobalAssets[indexA].asset.id, myGlobalAssets[indexDirect].asset.id];
                     this.indirectAnswerMap.push(indexValues);
@@ -390,10 +403,18 @@ export class QuestionComponent implements OnInit, OnDestroy {
                     if (indexA !== -1) {
                         this.idaUtilsService.addMyIndirectAssets(myGlobalAssets[indexA], myGlobalAssets[indexDirect]);
                         if (this.indirectGuiAssets && this.indirectGuiAssets.length > 0) {
-                            const indexInd = _.findIndex(this.indirectGuiAssets, (indirect) =>
+                            const indirects = _.filter(this.indirectGuiAssets, (indirect) =>
                                 (indirect.directAsset as MyAssetMgm).asset.id === myGlobalAssets[indexDirect].asset.id
                             );
-                            this.idaUtilsService.updateMyDirectAssets(myGlobalAssets[indexDirect], null, this.indirectGuiAssets[indexInd]);
+                            let lastIndex = 0;
+                            for (const ind of indirects) {
+                                const indexInd = _.findIndex(this.indirectGuiAssets, (indirect) =>
+                                    (indirect.directAsset as MyAssetMgm).asset.id === (ind.directAsset as MyAssetMgm).asset.id,
+                                    lastIndex
+                                );
+                                lastIndex = indexInd + 1;
+                                this.idaUtilsService.updateMyDirectAssets(myGlobalAssets[indexDirect], null, this.indirectGuiAssets[indexInd]);
+                            }
                         }
                         const indexValues = [this.question.id, ans.id, idOffset, myGlobalAssets[indexA].asset.id, myGlobalAssets[indexDirect].asset.id];
                         this.indirectAnswerMap.push(indexValues);
@@ -598,10 +619,6 @@ export class QuestionComponent implements OnInit, OnDestroy {
         } else {
             index = _.findIndex(this.selectedAnswers, { id: ans.id });
         }
-        // const selectedAsset: AssetMgm | AssetMgm[] = this.findAsset(ans);
-        // const myGlobalAssets: MyAssetMgm[] = this.idaUtilsService.getMyAssets();
-        const myDirectAssets: DirectAssetMgm[] = this.idaUtilsService.getMyDirectAsset();
-        const myIndirectAssets: IndirectAssetMgm[] = this.idaUtilsService.getMyIndirectAsset();
         const cost: AttackCostMgm = new AttackCostMgm();
         cost.type = this.selectCost(ans);
         if (direct) {

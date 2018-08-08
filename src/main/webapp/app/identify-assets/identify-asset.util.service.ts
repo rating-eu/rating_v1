@@ -111,9 +111,9 @@ export class IdentifyAssetUtilService {
             (myDirectAsset) => (myDirectAsset.asset as MyAssetMgm).asset.id === asset.asset.id
         );
         if (index === -1) {
-            asset.id = this.myDirectAssetIndex;
-            this.myDirectAssetIndex++;
             const direct = new DirectAssetMgm();
+            direct.id = this.myDirectAssetIndex;
+            this.myDirectAssetIndex++;
             direct.asset = asset;
             direct.costs = undefined;
             direct.effects = undefined;
@@ -154,10 +154,14 @@ export class IdentifyAssetUtilService {
                 if (!this.myDirectAssets[index].effects) {
                     this.myDirectAssets[index].effects = [];
                 }
-                const indexF = _.findIndex(this.myDirectAssets,
-                    (myDirectAsset) =>
-                        ((myDirectAsset.effects as IndirectAssetMgm).asset as MyAssetMgm).asset.id === ((effect as IndirectAssetMgm).asset as MyAssetMgm).asset.id
-                );
+                let indexF = -1;
+                if (this.myDirectAssets[index].effects.length > 0) {
+                    indexF = _.findIndex(this.myDirectAssets[index].effects as IndirectAssetMgm[],
+                        (dEffect) =>
+                            ((dEffect.asset as MyAssetMgm).asset as AssetMgm).id ===
+                            ((effect.asset as MyAssetMgm).asset as AssetMgm).id
+                    );
+                }
                 if (indexF === -1) {
                     this.myDirectAssets[index].effects.push(effect);
                 } else {
@@ -178,9 +182,9 @@ export class IdentifyAssetUtilService {
                 (myIndirectAsset.directAsset as MyAssetMgm).asset.id === (directAsset.asset as AssetMgm).id
         );
         if (index === -1) {
-            asset.id = this.myIndirectAssetIndex;
-            this.myIndirectAssetIndex++;
             const indirect = new IndirectAssetMgm();
+            indirect.id = this.myIndirectAssetIndex;
+            this.myIndirectAssetIndex++;
             indirect.asset = asset;
             indirect.costs = undefined;
             indirect.directAsset = directAsset;
