@@ -221,7 +221,7 @@ public class AssetsOneShotResource {
                 updatedDirectAsset.setEffects(effects);
 
                 //Update
-                updatedDirectAsset = this.directAssetService.save(directAsset);
+                updatedDirectAsset = this.directAssetService.save(updatedDirectAsset);
             } else {//Not saved yet
                 //Save Direct Asset
                 //When here, it means that this direct has no indirect assets as effects
