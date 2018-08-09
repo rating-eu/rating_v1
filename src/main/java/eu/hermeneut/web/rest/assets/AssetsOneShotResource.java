@@ -1,6 +1,7 @@
 package eu.hermeneut.web.rest.assets;
 
 import com.codahale.metrics.annotation.Timed;
+import eu.hermeneut.domain.AttackCost;
 import eu.hermeneut.domain.DirectAsset;
 import eu.hermeneut.domain.IndirectAsset;
 import eu.hermeneut.domain.MyAsset;
@@ -120,6 +121,10 @@ public class AssetsOneShotResource {
         Map<Long/*DirectAsset.TempID*/, Set<Long>/*EffectsRealID*/> indirectEffectsRealIDsByDirectTempIDsMap = new HashMap<>();
         Map<Long/*DirectAsset.RealID*/, Set<IndirectAsset>> indirectEffectsByDirectRealIDMap = new HashMap<>();
 
+        //Costs
+        Map<Long/*DirectAsset.TempID*/, Set<AttackCost>> costsByDirectAssetTempID = new HashMap<>();
+        //TODO
+        //Map the costs by direct assets
 
         //=====================INDIRECT ASSETS=====================
         List<IndirectAsset> indirectAssets = assetsOneShot.getIndirectAssets();
@@ -133,6 +138,10 @@ public class AssetsOneShotResource {
         Map<Long/*TempID*/, Long/*RealID*/> indirectAssetsRealIDsByTempIDsMap = new HashMap<>();
         Map<Long/*RealID*/, IndirectAsset> indirectAssetByRealIDMap = new HashMap<>();
 
+        //Costs
+        Map<Long/*DirectAsset.TempID*/, Set<AttackCost>> costsByIndirectAssetTempID = new HashMap<>();
+        //TODO
+        //Map the costs by indirect assets
 
         for (IndirectAsset indirectAsset : indirectAssets) {
             Long myAssetTempID = indirectAsset.getAsset().getId();
