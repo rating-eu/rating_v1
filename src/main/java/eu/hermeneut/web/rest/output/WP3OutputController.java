@@ -1,17 +1,17 @@
-package eu.hermeneut.web.rest.result;
+package eu.hermeneut.web.rest.output;
 
-import com.codahale.metrics.annotation.Timed;
 import eu.hermeneut.domain.*;
-import eu.hermeneut.domain.enumeration.*;
-import eu.hermeneut.domain.result.AttackMap;
+import eu.hermeneut.domain.enumeration.AssetType;
+import eu.hermeneut.domain.enumeration.QuestionnairePurpose;
+import eu.hermeneut.domain.enumeration.Role;
+import eu.hermeneut.domain.output.IntangibleAssetsAttacksLikelihoodTable;
 import eu.hermeneut.domain.result.AugmentedAttackStrategy;
-import eu.hermeneut.domain.result.Result;
 import eu.hermeneut.service.*;
+import eu.hermeneut.utils.attackstrategy.AttackStrategyFilter;
 import eu.hermeneut.utils.likelihood.answer.AnswerCalculator;
 import eu.hermeneut.utils.likelihood.attackstrategy.AttackStrategyCalculator;
-import eu.hermeneut.utils.likelihood.overall.OverallCalculator;
 import eu.hermeneut.utils.threatagent.ThreatAgentComparator;
-import eu.hermeneut.web.rest.AssetResource;
+import eu.hermeneut.web.rest.result.ResultController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,29 +23,28 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
-/**
- * REST controller for managing the result.
- */
 @RestController
 @RequestMapping("/api")
-public class ResultController {
-    private final Logger log = LoggerFactory.getLogger(AssetResource.class);
+public class WP3OutputController {
+
+    Logger logger = LoggerFactory.getLogger(WP3OutputController.class);
 
     @Autowired
-    private SelfAssessmentService selfAssessmentService;
+    private AssetCategoryService assetCategoryService;
+
+    @Autowired
+    private AssetService assetService;
 
     @Autowired
     private AttackStrategyService attackStrategyService;
 
     @Autowired
-    private LevelService levelService;
+    private SelfAssessmentService selfAssessmentService;
 
     @Autowired
-    private PhaseService phaseService;
-
-    @Autowired
-    private AnswerWeightService answerWeightService;
+    private AttackStrategyCalculator attackStrategyCalculator;
 
     @Autowired
     private QuestionnaireStatusService questionnaireStatusService;
@@ -60,53 +59,116 @@ public class ResultController {
     private AnswerService answerService;
 
     @Autowired
-    private AttackStrategyCalculator attackStrategyCalculator;
-
-    @Autowired
-    private OverallCalculator overallCalculator;
-
-    @Autowired
     private AnswerCalculator answerCalculator;
 
-    @GetMapping("/likelihood/max")
-    public int getMaxLikelihood() {
-        final int numerator = AttackStrategyLikelihood.HIGH.getValue() * 5/*1+1+1+1+1*/ + AttackStrategyLikelihood.HIGH.getValue() * 5/*5*/;
-        return numerator / OverallCalculator.DENOMINATOR;
-    }
+    @GetMapping("{selfAssessmentID}/output/intangibles/impact")
+    public IntangibleAssetsAttacksLikelihoodTable intangiblesImpact(@PathVariable Long selfAssessmentID) {
 
-    @GetMapping("/result/{selfAssessmentID}")
-    public Result getResult(@PathVariable Long selfAssessmentID) {
-        log.debug("REST request to get the RESULT");
-        log.debug("SelfAssessmentID: " + selfAssessmentID);
-
-        Result result = new Result();
-
-        //#1 fetch the SelfAssessment
+        //Get the SelfAssessment by the given ID
         SelfAssessment selfAssessment = this.selfAssessmentService.findOne(selfAssessmentID);
-        log.debug("SelfAssessment: " + selfAssessment);
+        logger.info("SelfAssessment: " + selfAssessment);
 
         if (selfAssessment != null) {
-            //#2 get the identified ThreatAgents
+            //Get the StrongestThreatAgent
             Set<ThreatAgent> threatAgentSet = selfAssessment.getThreatagents();
-            log.debug("ThreatAgents: " + Arrays.toString(threatAgentSet.toArray()));
-
             List<ThreatAgent> ascendingThreatAgentSkills = new ArrayList<>(threatAgentSet);
             ascendingThreatAgentSkills.sort(new ThreatAgentComparator().reversed());
-
-            for (ThreatAgent threatAgent : ascendingThreatAgentSkills) {
-                log.debug("Skills: " + threatAgent.getSkillLevel().getValue());
-            }
-
             ThreatAgent strongestThreatAgent = ascendingThreatAgentSkills.get(0);
-            log.debug("Strongest ThreatAgent: " + strongestThreatAgent);
 
+            //Get all the Intangible AssetCategories
+            List<AssetCategory> intangibleAssetCategories = this.assetCategoryService.findAllByAssetType(AssetType.INTANGIBLE);//OK
+            //Map the AssetCategories by ID
+            Map<Long/*AssetCategory.ID*/, AssetCategory> assetCategoryMap = intangibleAssetCategories.stream().collect(Collectors.toMap(AssetCategory::getId, Function.identity()));//OK
+
+            /*
+             *For each of the above AssetCategories,
+             *get all the Intangible Assets belonging to that category,
+             *and for each of them, get their container.
+             */
+            List<Asset> allAssets = this.assetService.findAll();//OK
+
+            //Filter out only the INTANGIBLE assets
+            List<Asset> intangibleAssets = allAssets.stream().filter(asset -> asset.getAssetcategory().getType().equals(AssetType.INTANGIBLE)).collect(Collectors.toList());//OK
+            //Map the Assets by AssetCategory.ID
+            Map<Long/*AssetCategory.ID*/, List<Asset>> intangibleAssetsByCategoryMap = intangibleAssets.stream().collect(Collectors.groupingBy(asset -> asset.getAssetcategory().getId()));//OK
+
+            //Get the container for each of the above asset
+            Iterator<Asset> intangiblesIterator = intangibleAssets.iterator();
+            //Map the Containers by AssetCategory.ID
+            Map<Long/*AssetCategory.ID*/, Set<Container>> containersByCategoryMap =//OK
+                intangibleAssets
+                    .stream()
+                    .collect(
+                        Collectors.toMap(
+                            asset -> asset.getAssetcategory().getId(),//KeyMapper by AssetCategory.ID
+                            Asset::getContainers,//ValueMapper by Asset.containers
+                            (oldContainerSet, newContainerSet) -> Stream.concat(oldContainerSet.stream(), newContainerSet.stream()).collect(Collectors.toSet())//MergeFunction
+                        )
+                    );
+
+            logger.info("ContainersByCategoryMap: " + containersByCategoryMap.size());
+
+            //TODO
+            //Get the AttackStrategy for each container
             List<AttackStrategy> attackStrategies = this.attackStrategyService.findAll();
-            log.debug("AttackStrategies: " + Arrays.toString(attackStrategies.toArray()));
+            //Keep only the attackstrategies that can be performed by the StrongestThreatAgent
+            attackStrategies = attackStrategies
+                .stream()
+                .filter(attackStrategy -> AttackStrategyFilter.isAttackPossible(strongestThreatAgent, attackStrategy))
+                .collect(Collectors.toList());
 
             Map<Long, AttackStrategy> attackStrategyMap = attackStrategies.stream().collect(Collectors.toMap(AttackStrategy::getId, attackStrategy -> attackStrategy));
 
+            //Map the AttackStrategies by Container.ID
+            Map<Long/*Container.ID*/, Set<AttackStrategy>> attackStrategiesByContainerMap = new HashMap<>();
+
+            Iterator<AttackStrategy> attackStrategyIterator = attackStrategies.iterator();
+
+            while (attackStrategyIterator.hasNext()) {
+                AttackStrategy attackStrategy = attackStrategyIterator.next();
+                Set<Level> levels = attackStrategy.getLevels();
+                Iterator<Level> levelIterator = levels.iterator();
+
+                while (levelIterator.hasNext()) {
+                    Level level = levelIterator.next();
+                    Container container = level.getContainer();
+
+                    if (attackStrategiesByContainerMap.containsKey(container.getId())) {
+                        Set<AttackStrategy> attackStrategiesByContainer = attackStrategiesByContainerMap.get(container.getId());
+                        attackStrategiesByContainer.add(attackStrategy);
+                    } else {
+                        Set<AttackStrategy> attackStrategiesByContainer = new HashSet<>();
+                        attackStrategiesByContainer.add(attackStrategy);
+
+                        attackStrategiesByContainerMap.put(container.getId(), attackStrategiesByContainer);
+                    }
+                }
+            }
+
+            //Map the AttackStrategies by AssetCategory
+            Map<Long/*AssetCategory.ID*/, Set<AttackStrategy>> attackStrategiesByAssetCategoryMap = new HashMap<>();
+
+            //containersByCategoryMap
+            //attackStrategiesByContainerMap
+
+            for (Map.Entry<Long/*AssetCategory.ID*/, Set<Container>> containersByCategory : containersByCategoryMap.entrySet()) {
+                Long assetCategoryID = containersByCategory.getKey();
+                Set<Container> containers = containersByCategory.getValue();
+
+                Set<AttackStrategy> attackStrategiesByCategorySet = new HashSet<>();
+
+                for (Container container : containers) {
+                    attackStrategiesByCategorySet.addAll(attackStrategiesByContainerMap.get(container.getId()));
+                }
+
+                attackStrategiesByAssetCategoryMap.put(assetCategoryID, attackStrategiesByCategorySet);
+            }
+
+            //OK
+            logger.info("AttackStrategies by AssetCategory: " + attackStrategiesByAssetCategoryMap.size());
+
             //Map used to update the likelihood of an AttackStrategy in time O(1).
-            Map<Long/*AttackStrategy.ID*/, AugmentedAttackStrategy> augmentedAttackStrategyMap = attackStrategies.stream().collect(Collectors.toMap(AttackStrategy::getId, attackStrategy -> new AugmentedAttackStrategy(attackStrategy)));
+            Map<Long/*AttackStrategy.ID*/, AugmentedAttackStrategy> augmentedAttackStrategyMap = attackStrategies.stream().collect(Collectors.toMap(AttackStrategy::getId, attackStrategy -> new AugmentedAttackStrategy(attackStrategy, true)));
 
             //Set the Initial Likelihood for the AttackStrategies
             for (Map.Entry<Long, AugmentedAttackStrategy> entry : augmentedAttackStrategyMap.entrySet()) {
@@ -114,36 +176,19 @@ public class ResultController {
                 attackStrategy.setInitialLikelihood(this.attackStrategyCalculator.initialLikelihood(attackStrategy).getValue());
             }
 
-            log.debug("BEGIN ############AttackMap############...");
-            AttackMap attackMap = new AttackMap(augmentedAttackStrategyMap);
-            log.debug("size: " + attackMap.size());
-            log.debug(attackMap.toString());
-            log.debug("END ############AttackMap############...");
-
-            //#Output 1 ==> OVERALL INITIAL LIKELIHOOD
-            //result.setInitialVulnerability(this.overallCalculator.overallInitialLikelihoodByThreatAgent(strongestThreatAgent, attackMap));
-            result.setInitialVulnerability(new HashMap<Long, Float>() {
-                {
-                    for (ThreatAgent threatAgent : ascendingThreatAgentSkills) {
-                        log.debug("Skills: " + threatAgent.getSkillLevel().getValue());
-
-                        put(threatAgent.getId(), ResultController.this.overallCalculator.overallInitialLikelihoodByThreatAgent(threatAgent, attackMap));
-                    }
-                }
-            });
-
-            //#4 get the questionnaireStatuses by CISO and EXTERNAL_AUDIT
+            //Get all the QuestionnaireStatus of the SelfAssessment
             List<QuestionnaireStatus> questionnaireStatuses = this.questionnaireStatusService.findAllBySelfAssessment(selfAssessment.getId());
 
+            //Get the CISO's QuestionnaireStatus
             QuestionnaireStatus cisoQuestionnaireStatus = questionnaireStatuses.stream().filter(questionnaireStatus -> {
                 return questionnaireStatus.getQuestionnaire().getPurpose().equals(QuestionnairePurpose.SELFASSESSMENT) && questionnaireStatus.getRole() == Role.ROLE_CISO;
             }).findFirst().orElse(null);
 
+            //Get the ExternalAuditor QuestionnaireStatus
             QuestionnaireStatus externalAuditQuestionnaireStatus = questionnaireStatuses.stream().filter(questionnaireStatus -> {
                 return questionnaireStatus.getQuestionnaire().getPurpose().equals(QuestionnairePurpose.SELFASSESSMENT) && questionnaireStatus.getRole() == Role.ROLE_EXTERNAL_AUDIT;
             }).findFirst().orElse(null);
 
-            //#5 Turn CISO myAnswers to ContextualLikelihoods
             if (cisoQuestionnaireStatus != null) {
                 Questionnaire questionnaire = cisoQuestionnaireStatus.getQuestionnaire();
                 List<Question> questions = this.questionService.findAllByQuestionnaire(questionnaire);
@@ -179,32 +224,18 @@ public class ResultController {
 
                 for (Map.Entry<Long, AugmentedAttackStrategy> entry : augmentedAttackStrategyMap.entrySet()) {
                     AugmentedAttackStrategy augmentedAttackStrategy = entry.getValue();
-                    log.debug("AugmentedAttackStrategy: " + augmentedAttackStrategy);
+                    logger.debug("AugmentedAttackStrategy: " + augmentedAttackStrategy);
 
                     Set<MyAnswer> myAnswerSet = attackAnswersMap.get(augmentedAttackStrategy);
-                    log.debug("MyAnswerSet: " + myAnswerSet);
+                    logger.debug("MyAnswerSet: " + myAnswerSet);
 
                     if (myAnswerSet != null) {
                         augmentedAttackStrategy.setCisoAnswersLikelihood(this.answerCalculator.getAnswersLikelihood(myAnswerSet));
                         augmentedAttackStrategy.setContextualLikelihood((augmentedAttackStrategy.getInitialLikelihood() + augmentedAttackStrategy.getCisoAnswersLikelihood()) / 2);
-                    } else {
-                        //TODO Same as InitialLikelihood ???
                     }
                 }
-
-                //#Output 2 ==> OVERALL CONTEXTUAL LIKELIHOOD
-                result.setContextualVulnerability(new HashMap<Long, Float>() {
-                    {
-                        for (ThreatAgent threatAgent : ascendingThreatAgentSkills) {
-                            put(threatAgent.getId(), ResultController.this.overallCalculator.overallContextualLikelihoodByThreatAgent(threatAgent, attackMap));
-                        }
-                    }
-                });
-            } else {
-                result.setContextualVulnerability(new HashMap<>());
             }
 
-            //#6 Turn ExternalAudit MyAnswers to RefinedLikelihoods
             if (externalAuditQuestionnaireStatus != null) {
                 Questionnaire questionnaire = externalAuditQuestionnaireStatus.getQuestionnaire();
                 List<Question> questions = this.questionService.findAllByQuestionnaire(questionnaire);
@@ -219,20 +250,20 @@ public class ResultController {
 
                 for (MyAnswer myAnswer : myAnswers) {
                     Question question = myAnswer.getQuestion();
-                    log.debug("Question: " + question);
+                    logger.debug("Question: " + question);
                     Question fullQuestion = questionsMap.get(question.getId());
-                    log.debug("Full question: " + fullQuestion);
+                    logger.debug("Full question: " + fullQuestion);
 
                     Answer answer = myAnswer.getAnswer();
-                    log.debug("Answer: " + answer);
+                    logger.debug("Answer: " + answer);
                     Answer fullAnswer = answersMap.get(myAnswer.getAnswer().getId());
-                    log.debug("FullAnswer: " + fullAnswer);
+                    logger.debug("FullAnswer: " + fullAnswer);
 
                     myAnswer.setQuestion(fullQuestion);
                     myAnswer.setAnswer(fullAnswer);
 
                     Set<AttackStrategy> attacks = fullQuestion.getAttackStrategies();
-                    log.debug("Attacks: " + attacks);
+                    logger.debug("Attacks: " + attacks);
 
                     for (AttackStrategy attackStrategy : attacks) {
                         AugmentedAttackStrategy augmentedAttackStrategy = augmentedAttackStrategyMap.get(attackStrategy.getId());
@@ -250,34 +281,43 @@ public class ResultController {
 
                 for (Map.Entry<Long, AugmentedAttackStrategy> entry : augmentedAttackStrategyMap.entrySet()) {
                     AugmentedAttackStrategy augmentedAttackStrategy = entry.getValue();
-                    log.debug("AugmentedAttackStrategy: " + augmentedAttackStrategy);
+                    logger.debug("AugmentedAttackStrategy: " + augmentedAttackStrategy);
 
                     Set<MyAnswer> myAnswerSet = attackAnswersMap.get(augmentedAttackStrategy);
-                    log.debug("MyAnswerSet: " + myAnswerSet);
+                    logger.debug("MyAnswerSet: " + myAnswerSet);
 
                     if (myAnswerSet != null) {
                         augmentedAttackStrategy.setExternalAuditAnswersLikelihood(this.answerCalculator.getAnswersLikelihood(myAnswerSet));
                         augmentedAttackStrategy.setRefinedLikelihood((augmentedAttackStrategy.getInitialLikelihood() + augmentedAttackStrategy.getExternalAuditAnswersLikelihood()) / 2);
-                    } else {
-                        //TODO same as ContextualLikelihood ???
                     }
                 }
-
-                //#Output 3 ==> OVERALL REFINED LIKELIHOOD
-                result.setRefinedVulnerability(new HashMap<Long, Float>() {
-                    {
-                        for (ThreatAgent threatAgent : ascendingThreatAgentSkills) {
-                            put(threatAgent.getId(), ResultController.this.overallCalculator.overallRefinedLikelihoodByThreatAgent(threatAgent, attackMap));
-                        }
-                    }
-                });
-            } else {
-                result.setRefinedVulnerability(new HashMap<>());
             }
-        } else {
 
+            Map<Long, Set<Long>> attackStrategiesByAssetCategoryIDMap = attackStrategiesByAssetCategoryMap
+                .entrySet()
+                .stream()
+                .collect(
+                    Collectors.toMap(
+                        entry -> entry.getKey(),
+                        entry -> entry
+                            .getValue()
+                            .stream().map(
+                                AttackStrategy::getId
+                            ).collect(
+                                Collectors.toSet()
+                            )
+                    )
+                );
+
+            IntangibleAssetsAttacksLikelihoodTable likelihoodTable = new IntangibleAssetsAttacksLikelihoodTable(
+                augmentedAttackStrategyMap.values().stream().collect(Collectors.toList()),
+                intangibleAssetCategories, attackStrategiesByAssetCategoryIDMap
+
+            );
+
+            return likelihoodTable;
         }
 
-        return result;
+        return null;
     }
 }
