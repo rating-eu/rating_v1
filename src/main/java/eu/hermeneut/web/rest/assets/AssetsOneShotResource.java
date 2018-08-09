@@ -54,6 +54,7 @@ public class AssetsOneShotResource {
                 myAsset -> myAsset.getId()//ValueMapper (TempID)
             ));
 
+        //Remove the temp ID of each MyAsset before saving it
         for (MyAsset myAsset : myAssets) {
             myAsset.setId(null);
         }
@@ -97,7 +98,7 @@ public class AssetsOneShotResource {
             .stream()
             .collect(
                 Collectors.toMap(
-                    DirectAsset::getId,
+                    DirectAsset::getId,//Temp ID
                     Function.identity()
                 )
             );
@@ -110,7 +111,7 @@ public class AssetsOneShotResource {
                 .stream()
                 .collect(
                     Collectors.toMap(
-                        DirectAsset::getId,//Temp
+                        DirectAsset::getId,//Temp ID
                         directAsset -> directAsset.getEffects()
                     )
                 );
@@ -146,8 +147,9 @@ public class AssetsOneShotResource {
             Long directTempID = directAsset.getId();
             directAsset.setEffects(null);
 
-            Long myAssetTempIDForDirect = directAsset.getAsset().getId();
-            Long myAssetRealIDForDirect = myAssetsRealIDsByTempIDMap.get(myAssetTempIDForDirect);
+            Long myAssetTempIDForDirect = directAsset.getAsset().getId();//MyAsset TempID
+            Long myAssetRealIDForDirect = myAssetsRealIDsByAssetIDMap.get(myAssetTempIDForDirect);
+
 
             //Update the reference to MyAsset with the Real ID one
             MyAsset myAssetForDirect = myAssetsByRealIDMap.get(myAssetRealIDForDirect);
@@ -221,6 +223,7 @@ public class AssetsOneShotResource {
                 updatedDirectAsset.setEffects(effects);
 
                 //Update
+                //TODO BUG
                 updatedDirectAsset = this.directAssetService.save(updatedDirectAsset);
             } else {//Not saved yet
                 //Save Direct Asset
@@ -268,4 +271,6 @@ public class AssetsOneShotResource {
 
         return result;
     }
+
+
 }
