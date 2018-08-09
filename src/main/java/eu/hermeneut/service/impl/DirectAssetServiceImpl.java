@@ -43,7 +43,7 @@ public class DirectAssetServiceImpl implements DirectAssetService {
     public DirectAsset save(DirectAsset directAsset) {
         log.debug("Request to save DirectAsset : {}", directAsset);
         DirectAsset result = directAssetRepository.save(directAsset);
-        directAssetSearchRepository.save(result);
+        //directAssetSearchRepository.save(result);
         return result;
     }
 
