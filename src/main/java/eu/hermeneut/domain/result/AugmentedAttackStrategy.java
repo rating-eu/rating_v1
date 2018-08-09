@@ -31,6 +31,23 @@ public class AugmentedAttackStrategy extends AttackStrategy {
         this.phases = attackStrategy.getPhases();
     }
 
+    public AugmentedAttackStrategy(AttackStrategy attackStrategy, boolean enabled) {
+        super();
+        this.enabled = enabled;
+        this.id = attackStrategy.getId();
+        this.name = attackStrategy.getName();
+        this.description = attackStrategy.getDescription();
+        this.frequency = attackStrategy.getFrequency();
+        this.skill = attackStrategy.getSkill();
+        this.resources = attackStrategy.getResources();
+        this.likelihood = attackStrategy.getLikelihood();
+        this.created = attackStrategy.getCreated();
+        this.modified = attackStrategy.getModified();
+        this.mitigations = attackStrategy.getMitigations();
+        this.levels = attackStrategy.getLevels();
+        this.phases = attackStrategy.getPhases();
+    }
+
     public boolean isEnabled() {
         return enabled;
     }
