@@ -1,5 +1,6 @@
 package eu.hermeneut.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -94,6 +95,7 @@ public class AttackCost implements Serializable {
         this.costs = costs;
     }
 
+    @JsonIgnore
     public DirectAsset getDirectAsset() {
         return directAsset;
     }
@@ -107,6 +109,7 @@ public class AttackCost implements Serializable {
         this.directAsset = directAsset;
     }
 
+    @JsonIgnore
     public IndirectAsset getIndirectAsset() {
         return indirectAsset;
     }
