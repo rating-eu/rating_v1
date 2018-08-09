@@ -7,6 +7,10 @@ const routes: Routes = [
     navbarRoute,
     ...errorRoute,
     {
+        path: 'impact-evaluation',
+        loadChildren: './impact-evaluation/impact-evaluation.module#ImpactEvaluationModule'
+    },
+    {
         path: 'identify-asset',
         loadChildren: './identify-assets/identify-asset.module#IdentifyAssetModule'
     },
