@@ -48,4 +48,6 @@ public interface MyAssetService {
      * @return the list of entities
      */
     List<MyAsset> search(String query);
+
+    List<MyAsset> findAllBySelfAssessment(Long selfAssessmentID);
 }

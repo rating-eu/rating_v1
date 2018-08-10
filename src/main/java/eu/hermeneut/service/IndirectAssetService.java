@@ -42,8 +42,10 @@ public interface IndirectAssetService {
      * Search for the indirectAsset corresponding to the query.
      *
      * @param query the query of the search
-     * 
+     *
      * @return the list of entities
      */
     List<IndirectAsset> search(String query);
+
+    List<IndirectAsset> findAllByDirectAsset(Long directAssetID);
 }

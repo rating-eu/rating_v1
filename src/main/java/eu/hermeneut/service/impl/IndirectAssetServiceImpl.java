@@ -59,6 +59,13 @@ public class IndirectAssetServiceImpl implements IndirectAssetService {
         return indirectAssetRepository.findAll();
     }
 
+    @Override
+    @Transactional(readOnly = true)
+    public List<IndirectAsset> findAllByDirectAsset(Long directAssetID) {
+        log.debug("Request to get all IndirectAssets by DirectAsset ID");
+        return indirectAssetRepository.findAllbyDirectAsset(directAssetID);
+    }
+
     /**
      * Get one indirectAsset by id.
      *

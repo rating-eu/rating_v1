@@ -107,4 +107,10 @@ public class MyAssetServiceImpl implements MyAssetService {
             .stream(myAssetSearchRepository.search(queryStringQuery(query)).spliterator(), false)
             .collect(Collectors.toList());
     }
+
+    @Override
+    public List<MyAsset> findAllBySelfAssessment(Long selfAssessmentID) {
+        log.debug("Request to get all MyAssets by SelfAssessment ID");
+        return myAssetRepository.findAllBySelfAssessment(selfAssessmentID);
+    }
 }

@@ -89,7 +89,14 @@ public class MyAssetResource {
     public List<MyAsset> getAllMyAssets() {
         log.debug("REST request to get all MyAssets");
         return myAssetService.findAll();
-        }
+    }
+
+    @GetMapping("/my-assets/self-assessment/{selfAssessmentID}")
+    @Timed
+    public List<MyAsset> getMyAssetsBySelfAssessment(@PathVariable Long selfAssessmentID){
+        log.debug("REST request to get all MyAssets by SelfAssessment ID");
+        return myAssetService.findAllBySelfAssessment(selfAssessmentID);
+    }
 
     /**
      * GET  /my-assets/:id : get the "id" myAsset.

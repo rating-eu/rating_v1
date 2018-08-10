@@ -89,7 +89,14 @@ public class IndirectAssetResource {
     public List<IndirectAsset> getAllIndirectAssets() {
         log.debug("REST request to get all IndirectAssets");
         return indirectAssetService.findAll();
-        }
+    }
+
+    @GetMapping("/indirect-assets/direct-asset/{directAssetID}")
+    @Timed
+    public List<IndirectAsset> getIndirectAssetsByDirect(@PathVariable Long directAssetID){
+        log.debug("REST request to get all IndirectAssets by DirectAsset ID");
+        return indirectAssetService.findAllByDirectAsset(directAssetID);
+    }
 
     /**
      * GET  /indirect-assets/:id : get the "id" indirectAsset.
