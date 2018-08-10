@@ -14,10 +14,10 @@
         </div>
 
         <div class="form-group">
-            <label class="form-control-label" jhiTranslate="hermeneutApp.directAsset.asset" for="field_asset">Asset</label>
-            <select class="form-control" id="field_asset" name="asset" [(ngModel)]="directAsset.asset">
+            <label class="form-control-label" jhiTranslate="hermeneutApp.directAsset.myAsset" for="field_myAsset">My Asset</label>
+            <select class="form-control" id="field_myAsset" name="myAsset" [(ngModel)]="directAsset.myAsset">
                 <option [ngValue]="null"></option>
-                <option [ngValue]="myAssetOption.id === directAsset.asset?.id ? directAsset.asset : myAssetOption" *ngFor="let myAssetOption of assets; trackBy: trackMyAssetById">{{myAssetOption.name}}</option>
+                <option [ngValue]="myAssetOption.id === directAsset.myAsset?.id ? directAsset.myAsset : myAssetOption" *ngFor="let myAssetOption of myassets; trackBy: trackMyAssetById">{{myAssetOption.asset}}</option>
             </select>
         </div>
     </div>

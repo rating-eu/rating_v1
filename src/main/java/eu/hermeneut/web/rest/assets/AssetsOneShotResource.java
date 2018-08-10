@@ -166,25 +166,25 @@ public class AssetsOneShotResource {
                 );
 
         for (IndirectAsset indirectAsset : indirectAssets) {
-            Long myAssetTempID = indirectAsset.getAsset().getId();
+            Long myAssetTempID = indirectAsset.getMyAsset().getId();
             Long myAssetRealID = myAssetsRealIDsByTempIDMap.get(myAssetTempID);
 
             //Update the reference to MyAsset with the Real ID one
             MyAsset myAsset = myAssetsByRealIDMap.get(myAssetRealID);
-            indirectAsset.setAsset(myAsset);
+            indirectAsset.setMyAsset(myAsset);
 
             //TODO remove effect from parent DirectAsset
             DirectAsset directAsset = indirectAsset.getDirectAsset();
             Long directTempID = directAsset.getId();
             directAsset.setEffects(null);
 
-            Long myAssetTempIDForDirect = directAsset.getAsset().getId();//MyAsset TempID
+            Long myAssetTempIDForDirect = directAsset.getMyAsset().getId();//MyAsset TempID
             Long myAssetRealIDForDirect = myAssetsRealIDsByAssetIDMap.get(myAssetTempIDForDirect);
 
 
             //Update the reference to MyAsset with the Real ID one
             MyAsset myAssetForDirect = myAssetsByRealIDMap.get(myAssetRealIDForDirect);
-            directAsset.setAsset(myAssetForDirect);
+            directAsset.setMyAsset(myAssetForDirect);
 
             //TODO Save the underlying DirectAsset if not done yet
             if (directAssetsRealIDsByTempIDsMap.containsKey(directTempID)) {//Direct already persisted
@@ -261,11 +261,11 @@ public class AssetsOneShotResource {
                 //When here, it means that this direct has no indirect assets as effects
 
                 //Update the reference to MyAsset with the Real ID one
-                Long myAssetTempID = directAsset.getAsset().getId();//MyAsset temp ID
+                Long myAssetTempID = directAsset.getMyAsset().getId();//MyAsset temp ID
                 Long myAssetRealID = myAssetsRealIDsByTempIDMap.get(myAssetTempID);
 
                 MyAsset myAsset = myAssetsByRealIDMap.get(myAssetRealID);
-                directAsset.setAsset(myAsset);
+                directAsset.setMyAsset(myAsset);
 
                 directAsset.setId(null);
                 directAsset = this.directAssetService.save(directAsset);

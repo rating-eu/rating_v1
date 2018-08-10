@@ -1,11 +1,14 @@
 import { BaseEntity } from './../../shared';
+import {MyAssetMgm} from '../my-asset-mgm';
+import {AttackCostMgm} from '../attack-cost-mgm';
+import {IndirectAssetMgm} from '../indirect-asset-mgm';
 
 export class DirectAssetMgm implements BaseEntity {
     constructor(
         public id?: number,
-        public asset?: BaseEntity,
-        public costs?: BaseEntity[],
-        public effects?: BaseEntity[],
+        public myAsset?: MyAssetMgm,
+        public costs?: AttackCostMgm[],
+        public effects?: IndirectAssetMgm[],
     ) {
     }
 }

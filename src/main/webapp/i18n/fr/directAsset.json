@@ -17,7 +17,7 @@
             "detail": {
                 "title": "Direct Asset"
             },
-            "asset": "Asset",
+            "myAsset": "My Asset",
             "costs": "Costs",
             "effects": "Effects"
         }

@@ -30,7 +30,7 @@ public class DirectAsset implements Serializable {
 
     @OneToOne
     @JoinColumn(unique = true)
-    private MyAsset asset;
+    private MyAsset myAsset;
 
     @OneToMany(mappedBy = "directAsset")
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
@@ -49,17 +49,17 @@ public class DirectAsset implements Serializable {
         this.id = id;
     }
 
-    public MyAsset getAsset() {
-        return asset;
+    public MyAsset getMyAsset() {
+        return myAsset;
     }
 
-    public DirectAsset asset(MyAsset myAsset) {
-        this.asset = myAsset;
+    public DirectAsset myAsset(MyAsset myAsset) {
+        this.myAsset = myAsset;
         return this;
     }
 
-    public void setAsset(MyAsset myAsset) {
-        this.asset = myAsset;
+    public void setMyAsset(MyAsset myAsset) {
+        this.myAsset = myAsset;
     }
 
     public Set<AttackCost> getCosts() {
