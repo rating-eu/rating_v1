@@ -4,10 +4,10 @@
     <hr>
     <jhi-alert-error></jhi-alert-error>
     <dl class="row-md jh-entity-details">
-        <dt><span jhiTranslate="hermeneutApp.directAsset.asset">Asset</span></dt>
+        <dt><span jhiTranslate="hermeneutApp.directAsset.myAsset">My Asset</span></dt>
         <dd>
-            <div *ngIf="directAsset.asset">
-                <a [routerLink]="['/my-asset-mgm', directAsset.asset?.id]">{{directAsset.asset?.name}}</a>
+            <div *ngIf="directAsset.myAsset">
+                <a [routerLink]="['/my-asset-mgm', directAsset.myAsset?.id]">{{directAsset.myAsset?.asset?.name}}</a>
             </div>
         </dd>
     </dl>

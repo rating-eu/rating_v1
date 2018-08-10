@@ -71,13 +71,13 @@ export class IdentifyAssetUtilService {
         return this.myAssets;
     }
 
-    public addMyDirectAssets(asset: MyAssetMgm) {
+    public addMyDirectAssets(myAsset: MyAssetMgm) {
         const index = _.findIndex(this.myDirectAssets,
-            (myDirectAsset) => (myDirectAsset.asset as MyAssetMgm).asset.id === asset.asset.id
+            (myDirectAsset) => (myDirectAsset.asset as MyAssetMgm).asset.id === myAsset.asset.id
         );
         if (index === -1) {
             const direct = new DirectAssetMgm();
-            direct.asset = asset;
+            direct.myAsset = myAsset;
             direct.costs = undefined;
             direct.effects = undefined;
             this.myDirectAssets.push(direct);
@@ -136,7 +136,7 @@ export class IdentifyAssetUtilService {
         );
         if (index === -1) {
             const indirect = new IndirectAssetMgm();
-            indirect.asset = asset;
+            indirect.myAsset = asset;
             indirect.costs = undefined;
             indirect.directAsset = directAsset;
             this.myIndirectAssets.push(indirect);

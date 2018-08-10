@@ -23,7 +23,7 @@ export class IndirectAssetMgmDialogComponent implements OnInit {
 
     directassets: DirectAssetMgm[];
 
-    assets: MyAssetMgm[];
+    myassets: MyAssetMgm[];
 
     constructor(
         public activeModal: NgbActiveModal,
@@ -42,13 +42,13 @@ export class IndirectAssetMgmDialogComponent implements OnInit {
         this.myAssetService
             .query({filter: 'indirectasset-is-null'})
             .subscribe((res: HttpResponse<MyAssetMgm[]>) => {
-                if (!this.indirectAsset.asset || !this.indirectAsset.asset.id) {
-                    this.assets = res.body;
+                if (!this.indirectAsset.myAsset || !this.indirectAsset.myAsset.id) {
+                    this.myassets = res.body;
                 } else {
                     this.myAssetService
-                        .find(this.indirectAsset.asset.id)
+                        .find(this.indirectAsset.myAsset.id)
                         .subscribe((subRes: HttpResponse<MyAssetMgm>) => {
-                            this.assets = [subRes.body].concat(res.body);
+                            this.myassets = [subRes.body].concat(res.body);
                         }, (subRes: HttpErrorResponse) => this.onError(subRes.message));
                 }
             }, (res: HttpErrorResponse) => this.onError(res.message));

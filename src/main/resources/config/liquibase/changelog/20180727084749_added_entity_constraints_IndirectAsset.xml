@@ -14,9 +14,9 @@
                                  referencedColumnNames="id"
                                  referencedTableName="direct_asset"/>
 
-        <addForeignKeyConstraint baseColumnNames="asset_id"
+        <addForeignKeyConstraint baseColumnNames="my_asset_id"
                                  baseTableName="indirect_asset"
-                                 constraintName="fk_indirect_asset_asset_id"
+                                 constraintName="fk_indirect_asset_my_asset_id"
                                  referencedColumnNames="id"
                                  referencedTableName="my_asset"/>
 

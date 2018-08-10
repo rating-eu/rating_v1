@@ -8,9 +8,9 @@
     -->
     <changeSet id="20180727084748-2" author="jhipster">
         
-        <addForeignKeyConstraint baseColumnNames="asset_id"
+        <addForeignKeyConstraint baseColumnNames="my_asset_id"
                                  baseTableName="direct_asset"
-                                 constraintName="fk_direct_asset_asset_id"
+                                 constraintName="fk_direct_asset_my_asset_id"
                                  referencedColumnNames="id"
                                  referencedTableName="my_asset"/>
 

@@ -1,4 +1,7 @@
 import { BaseEntity } from './../../shared';
+import {AssetMgm} from '../asset-mgm';
+import {SelfAssessmentMgm} from '../self-assessment-mgm';
+import {QuestionnaireMgm} from '../questionnaire-mgm';
 
 export class MyAssetMgm implements BaseEntity {
     constructor(
@@ -6,9 +9,9 @@ export class MyAssetMgm implements BaseEntity {
         public magnitude?: string,
         public ranking?: number,
         public estimated?: boolean,
-        public asset?: BaseEntity,
-        public selfAssessment?: BaseEntity,
-        public questionnaire?: BaseEntity,
+        public asset?: AssetMgm,
+        public selfAssessment?: SelfAssessmentMgm,
+        public questionnaire?: QuestionnaireMgm,
     ) {
     }
 }

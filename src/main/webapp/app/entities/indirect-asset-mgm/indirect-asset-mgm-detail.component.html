@@ -10,10 +10,10 @@
                 <a [routerLink]="['/direct-asset-mgm', indirectAsset.directAsset?.id]">{{indirectAsset.directAsset?.id}}</a>
             </div>
         </dd>
-        <dt><span jhiTranslate="hermeneutApp.indirectAsset.asset">Asset</span></dt>
+        <dt><span jhiTranslate="hermeneutApp.indirectAsset.myAsset">My Asset</span></dt>
         <dd>
-            <div *ngIf="indirectAsset.asset">
-                <a [routerLink]="['/my-asset-mgm', indirectAsset.asset?.id]">{{indirectAsset.asset?.name}}</a>
+            <div *ngIf="indirectAsset.myAsset">
+                <a [routerLink]="['/my-asset-mgm', indirectAsset.myAsset?.id]">{{indirectAsset.myAsset?.asset?.name}}</a>
             </div>
         </dd>
     </dl>
