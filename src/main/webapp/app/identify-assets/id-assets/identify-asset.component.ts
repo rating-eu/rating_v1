@@ -25,6 +25,7 @@ import { MyRole } from '../../entities/enumerations/MyRole.enum';
 import { DirectAssetMgm } from '../../entities/direct-asset-mgm';
 import { IndirectAssetMgm } from '../../entities/indirect-asset-mgm';
 import { Status } from '../../entities/enumerations/QuestionnaireStatus.enum';
+import { AssetsOneShot } from '../model/AssetsOneShot.model';
 
 @Component({
     selector: 'jhi-identify-asset',
@@ -147,7 +148,6 @@ export class IdentifyAssetComponent implements OnInit, OnDestroy {
         status.modified = dateString;
         status.user = this.user;
         status.status = Status.FULL;
-        /*
         this.questionnaireStatusServices.create(status).toPromise().then((receivedStatus) => {
             if (receivedStatus.body) {
                 status = receivedStatus.body;
@@ -157,44 +157,33 @@ export class IdentifyAssetComponent implements OnInit, OnDestroy {
                 this.myAnswerService.createAll(this.myAnswers).toPromise().then((savedAnswers) => {
                     if (savedAnswers.body) {
                         this.myAnswers = savedAnswers.body;
-                        /*
-                        export type EntityResponseType = HttpResponse<{
-                            myAssets: MyAssetMgm[],
-                            myDirectAssets: DirectAssetMgm[],
-                            myIndirectAssets: IndirectAssetMgm[]
-                        }>;
-                        */
-                       /*
-                        this.myCustomAssetServices.saveAll(this.myAssets, this.myDirectAssets, this.myIndirectAssets).toPromise().then((savedAssets) =>{
-                            if(savedAssets.body){
-                                this.myAssets = savedAssets.body['myAssets'];
-                                this.myDirectAssets = savedAssets.body['myDirectAssets'];
-                                this.myIndirectAssets = savedAnswers.body['myIndirectAssets'];
+                        const bundle: AssetsOneShot = new AssetsOneShot();
+                        bundle.myAssets = this.myAnswers;
+                        bundle.directAssets = this.myDirectAssets;
+                        bundle.indirectAssets = this.myIndirectAssets;
+                        this.idaUtilsService.oneShotSave(bundle).toPromise().then((savedAssets) => {
+                            if (savedAssets) {
+                                this.myAssets = savedAssets.myAssets;
+                                this.myDirectAssets = savedAssets.directAssets;
+                                this.myIndirectAssets = savedAssets.indirectAssets;
+                                /*
+                                for (const cost of savedAssets.attackCosts) {
+                                    if (cost.directAsset) {
+                                        const index = _.findIndex(this.myDirectAssets,
+                                            (direct) => direct.id === (cost.directAsset as DirectAssetMgm).id
+                                        );
+                                        if(index !== -1)
+                                    } else {
+
+                                    }
+                                }
+                                */
                             }
                         });
-                        */
-                        /*
-                        for (let i = 0; i < this.myAssets.length; i++) {
-                            this.assetService.create(this.myAssets[i]).toPromise().then((mySavedAsset) => {
-                                if (mySavedAsset.body) {
-                                    this.myAssets[i] = mySavedAsset.body;
-                                }
-                            });
-                        }
                     }
                 });
             }
         });
-        */
-        // SERVONO questionnariesStatus, user
-        // TODO funzioni per il salvataggio
-        // Salvare prima un questionnaire status        OK
-        // salvare le MyAnswer                          OK
-        // salvare i MyAssets
-        // salvare i direct assets
-        // salvare gli indirect
-        // getTemporaryId() uuid::189y4861
-        // (all objects)
     }
 
     ngOnDestroy() {

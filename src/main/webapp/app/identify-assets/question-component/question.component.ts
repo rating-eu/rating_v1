@@ -313,7 +313,7 @@ export class QuestionComponent implements OnInit, OnDestroy {
         const selectedAsset: AssetMgm | AssetMgm[] = this.findAsset(ans);
         const myGlobalAssets: MyAssetMgm[] = this.idaUtilsService.getMyAssets();
         const indexDirect = _.findIndex(myGlobalAssets,
-            (myAsset) => myAsset.asset.id === (direct.asset as MyAssetMgm).asset.id
+            (myAsset) => myAsset.asset.id === (direct.myAsset as MyAssetMgm).asset.id
         );
         if (index !== -1) {
             if (!(selectedAsset instanceof Array)) {
@@ -623,7 +623,7 @@ export class QuestionComponent implements OnInit, OnDestroy {
         cost.type = this.selectCost(ans);
         if (direct) {
             const indexD = _.findIndex(this.directGuiAssets, (myDirect) =>
-                (myDirect.asset as MyAssetMgm).asset.id === (direct.asset as MyAssetMgm).asset.id
+                (myDirect.myAsset as MyAssetMgm).asset.id === (direct.myAsset as MyAssetMgm).asset.id
             );
             if (indexD !== -1) {
                 if (!this.directGuiAssets[indexD].costs) {
@@ -634,7 +634,7 @@ export class QuestionComponent implements OnInit, OnDestroy {
             }
         } else if (indirect) {
             const indexI = _.findIndex(this.directGuiAssets, (myDirect) =>
-                (myDirect.asset as MyAssetMgm).asset.id === (direct.asset as MyAssetMgm).asset.id
+                (myDirect.myAsset as MyAssetMgm).asset.id === (direct.myAsset as MyAssetMgm).asset.id
             );
             if (indexI !== -1) {
                 if (!this.directGuiAssets[indexI].costs) {
