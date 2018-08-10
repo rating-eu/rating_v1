@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -43,6 +44,14 @@ public class MyAssetServiceImpl implements MyAssetService {
     public MyAsset save(MyAsset myAsset) {
         log.debug("Request to save MyAsset : {}", myAsset);
         MyAsset result = myAssetRepository.save(myAsset);
+        myAssetSearchRepository.save(result);
+        return result;
+    }
+
+    @Override
+    public List<MyAsset> saveAll(List<MyAsset> myAssets) {
+        log.debug("Request to save all MyAssets : {}", Arrays.toString(myAssets.toArray()));
+        List<MyAsset> result = myAssetRepository.save(myAssets);
         myAssetSearchRepository.save(result);
         return result;
     }

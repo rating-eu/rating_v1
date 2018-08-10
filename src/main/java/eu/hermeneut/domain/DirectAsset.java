@@ -33,12 +33,10 @@ public class DirectAsset implements Serializable {
     private MyAsset asset;
 
     @OneToMany(mappedBy = "directAsset")
-    @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<AttackCost> costs = new HashSet<>();
 
     @OneToMany(mappedBy = "directAsset")
-    @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<IndirectAsset> effects = new HashSet<>();
 
@@ -89,6 +87,7 @@ public class DirectAsset implements Serializable {
         this.costs = attackCosts;
     }
 
+    @JsonIgnore
     public Set<IndirectAsset> getEffects() {
         return effects;
     }

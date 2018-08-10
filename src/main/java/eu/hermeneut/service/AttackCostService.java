@@ -1,6 +1,7 @@
 package eu.hermeneut.service;
 
 import eu.hermeneut.domain.AttackCost;
+
 import java.util.List;
 
 /**
@@ -15,6 +16,8 @@ public interface AttackCostService {
      * @return the persisted entity
      */
     AttackCost save(AttackCost attackCost);
+
+    List<AttackCost> save(List<AttackCost> attackCosts);
 
     /**
      * Get all the attackCosts.
@@ -42,7 +45,6 @@ public interface AttackCostService {
      * Search for the attackCost corresponding to the query.
      *
      * @param query the query of the search
-     * 
      * @return the list of entities
      */
     List<AttackCost> search(String query);

@@ -35,8 +35,7 @@ public class IndirectAsset implements Serializable {
     @JoinColumn(unique = true)
     private MyAsset asset;
 
-    @OneToMany(mappedBy = "indirectAsset")
-    @JsonIgnore
+    @OneToMany(mappedBy = "indirectAsset"/*, fetch = FetchType.LAZY*/)
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<AttackCost> costs = new HashSet<>();
 
