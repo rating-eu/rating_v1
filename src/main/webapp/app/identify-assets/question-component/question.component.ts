@@ -175,22 +175,23 @@ export class QuestionComponent implements OnInit, OnDestroy {
         });
     }
     private findAnswerIndex(idAnswer: number, idOffset: number): number {
-        let ansId = 0;
+        let ansId: number = undefined;
         for (const a of this.myQuestionAnswer) {
             if (a.answerOffset === idOffset && a.answer.id === idAnswer) {
                 ansId = a.answer.id;
                 break;
             }
         }
-        if (ansId !== 0) {
+        if (ansId !== undefined) {
             let index = 0;
             let succ = index;
-            for (let i = 0; i < idOffset; i++) {
-                index = _.findIndex(this.selectedAnswers, { id: ansId }, succ);
-                if (index === -1) {
-                    break;
+            let indexLoop = 0;
+            while (indexLoop !== -1) {
+                indexLoop = _.findIndex(this.selectedAnswers, { id: ansId }, succ);
+                if (indexLoop !== -1) {
+                    index = indexLoop;
                 }
-                succ = index + 1;
+                succ = indexLoop + 1;
             }
             return index;
         }
@@ -275,14 +276,6 @@ export class QuestionComponent implements OnInit, OnDestroy {
             this.myQuestionAnswer.push(myAnswer);
             this.selectedAnswers.push(ans);
         }
-        // console.log(this.myQuestionAssets);
-        // console.log(this.selectedAnswers);
-        // console.log(this.idaUtilsService.getMyAnswersComplited());
-        // console.log(this.idaUtilsService.getMyAssets());
-        /*console.log(this.idaUtilsService.getMyDirectAsset());
-        console.log(this.idaUtilsService.getMyIndirectAsset());
-        console.log(this.myQuestionAnswer);
-        console.log(this.idaUtilsService.getMyAnswersComplited());*/
     }
 
     private findAsset(ans: AnswerMgm): AssetMgm | AssetMgm[] {
@@ -302,8 +295,7 @@ export class QuestionComponent implements OnInit, OnDestroy {
 
     public setIndirect(ans: AnswerMgm, direct: DirectAssetMgm, idOffset = 0) {
         // TODO controllare la deselezione dell'ultima domanda ripetuta all'interno della sezione assets indiretti
-        // creare l'indirect   OK
-        // aggiornare il direct con gli effetti
+        // aggiornare il direct con gli effetti   [RIMOSSA QUESTA POSSIBILITA PER PROBLEMI DI DIPENDENZA CICLICA CON INDIRECT ASSETS]
         let index;
         if (idOffset > 0) {
             index = this.findAnswerIndex(ans.id, idOffset);
@@ -321,15 +313,15 @@ export class QuestionComponent implements OnInit, OnDestroy {
                     (myAsset) => myAsset.asset.id === selectedAsset.id
                 );
                 if (indexA !== -1) {
-                    this.idaUtilsService.removeFromMyIndirectAssets(myGlobalAssets[indexA], myGlobalAssets[indexDirect]);
+                    this.idaUtilsService.removeFromMyIndirectAssets(myGlobalAssets[indexA], direct);
                     if (this.indirectGuiAssets && this.indirectGuiAssets.length > 0) {
                         const indirects = _.filter(this.indirectGuiAssets, (indirect) =>
-                            (indirect.directAsset as MyAssetMgm).asset.id === myGlobalAssets[indexDirect].asset.id
+                            (indirect.directAsset as DirectAssetMgm).myAsset.asset.id === myGlobalAssets[indexDirect].asset.id
                         );
                         let lastIndex = 0;
                         for (const ind of indirects) {
                             const indexInd = _.findIndex(this.indirectGuiAssets, (indirect) =>
-                                (indirect.directAsset as MyAssetMgm).asset.id === (ind.directAsset as MyAssetMgm).asset.id,
+                                (indirect.directAsset as DirectAssetMgm).myAsset.asset.id === (ind.directAsset as DirectAssetMgm).myAsset.asset.id,
                                 lastIndex
                             );
                             lastIndex = indexInd + 1;
@@ -343,15 +335,15 @@ export class QuestionComponent implements OnInit, OnDestroy {
                         (myAsset) => myAsset.asset.id === ass.id
                     );
                     if (indexA !== -1) {
-                        this.idaUtilsService.removeFromMyIndirectAssets(myGlobalAssets[indexA], myGlobalAssets[indexDirect]);
+                        this.idaUtilsService.removeFromMyIndirectAssets(myGlobalAssets[indexA], direct);
                         if (this.indirectGuiAssets && this.indirectGuiAssets.length > 0) {
                             const indirects = _.filter(this.indirectGuiAssets, (indirect) =>
-                                (indirect.directAsset as MyAssetMgm).asset.id === myGlobalAssets[indexDirect].asset.id
+                                (indirect.directAsset as DirectAssetMgm).myAsset.asset.id === myGlobalAssets[indexDirect].asset.id
                             );
                             let lastIndex = 0;
                             for (const ind of indirects) {
                                 const indexInd = _.findIndex(this.indirectGuiAssets, (indirect) =>
-                                    (indirect.directAsset as MyAssetMgm).asset.id === (ind.directAsset as MyAssetMgm).asset.id,
+                                    (indirect.directAsset as DirectAssetMgm).myAsset.asset.id === (ind.directAsset as DirectAssetMgm).myAsset.asset.id,
                                     lastIndex
                                 );
                                 lastIndex = indexInd + 1;
@@ -377,15 +369,15 @@ export class QuestionComponent implements OnInit, OnDestroy {
                     (myAsset) => myAsset.asset.id === selectedAsset.id
                 );
                 if (indexA !== -1) {
-                    this.idaUtilsService.addMyIndirectAssets(myGlobalAssets[indexA], myGlobalAssets[indexDirect]);
+                    this.idaUtilsService.addMyIndirectAssets(myGlobalAssets[indexA], direct);
                     if (this.indirectGuiAssets && this.indirectGuiAssets.length > 0) {
                         const indirects = _.filter(this.indirectGuiAssets, (indirect) =>
-                            (indirect.directAsset as MyAssetMgm).asset.id === myGlobalAssets[indexDirect].asset.id
+                            (indirect.directAsset as DirectAssetMgm).myAsset.asset.id === myGlobalAssets[indexDirect].asset.id
                         );
                         let lastIndex = 0;
                         for (const ind of indirects) {
                             const indexInd = _.findIndex(this.indirectGuiAssets, (indirect) =>
-                                (indirect.directAsset as MyAssetMgm).asset.id === (ind.directAsset as MyAssetMgm).asset.id,
+                                (indirect.directAsset as DirectAssetMgm).myAsset.asset.id === (ind.directAsset as DirectAssetMgm).myAsset.asset.id,
                                 lastIndex
                             );
                             lastIndex = indexInd + 1;
@@ -401,15 +393,15 @@ export class QuestionComponent implements OnInit, OnDestroy {
                         (myAsset) => myAsset.asset.id === ass.id
                     );
                     if (indexA !== -1) {
-                        this.idaUtilsService.addMyIndirectAssets(myGlobalAssets[indexA], myGlobalAssets[indexDirect]);
+                        this.idaUtilsService.addMyIndirectAssets(myGlobalAssets[indexA], direct);
                         if (this.indirectGuiAssets && this.indirectGuiAssets.length > 0) {
                             const indirects = _.filter(this.indirectGuiAssets, (indirect) =>
-                                (indirect.directAsset as MyAssetMgm).asset.id === myGlobalAssets[indexDirect].asset.id
+                                (indirect.directAsset as DirectAssetMgm).myAsset.asset.id === myGlobalAssets[indexDirect].asset.id
                             );
                             let lastIndex = 0;
                             for (const ind of indirects) {
                                 const indexInd = _.findIndex(this.indirectGuiAssets, (indirect) =>
-                                    (indirect.directAsset as MyAssetMgm).asset.id === (ind.directAsset as MyAssetMgm).asset.id,
+                                    (indirect.directAsset as DirectAssetMgm).myAsset.asset.id === (ind.directAsset as DirectAssetMgm).myAsset.asset.id,
                                     lastIndex
                                 );
                                 lastIndex = indexInd + 1;
@@ -630,7 +622,7 @@ export class QuestionComponent implements OnInit, OnDestroy {
                     this.directGuiAssets[indexD].costs = [];
                 }
                 this.directGuiAssets[indexD].costs.push(cost);
-                this.idaUtilsService.updateMyDirectAssets(this.directGuiAssets[indexD], cost);
+                this.idaUtilsService.updateMyDirectAssets(this.directGuiAssets[indexD].myAsset, cost);
             }
         } else if (indirect) {
             const indexI = _.findIndex(this.directGuiAssets, (myDirect) =>
@@ -641,7 +633,7 @@ export class QuestionComponent implements OnInit, OnDestroy {
                     this.directGuiAssets[indexI].costs = [];
                 }
                 this.directGuiAssets[indexI].costs.push(cost);
-                this.idaUtilsService.updateMyDirectAssets(this.directGuiAssets[indexI], cost);
+                this.idaUtilsService.updateMyDirectAssets(this.directGuiAssets[indexI].myAsset, cost);
             }
         }
         if (index !== -1) {
