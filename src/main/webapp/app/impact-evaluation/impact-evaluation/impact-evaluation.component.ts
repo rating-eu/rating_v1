@@ -6,12 +6,14 @@ import { AssetMgmService, AssetMgm } from '../../entities/asset-mgm';
 import { AssetType } from '../../entities/enumerations/AssetType.enum';
 
 @Component({
-  selector: 'jhi-inpact-evaluation',
+  // tslint:disable-next-line:component-selector
+  selector: 'impact-evaluation',
   templateUrl: './impact-evaluation.component.html',
   styles: []
 })
 export class ImpactEvaluationComponent implements OnInit {
 
+  public witchStep = 1;
   public impactFormStepOne: FormGroup;
   public impactFormStepTwo: FormGroup;
   public impactFormStepThree: FormGroup;
@@ -147,7 +149,12 @@ export class ImpactEvaluationComponent implements OnInit {
   }
 
   public evaluateStepOne() {
-    const value = this.impactFormStepOne.get('ebit1').value;
+    const ebit1 = this.impactFormStepOne.get('ebit1').value;
+    const ebit2 = this.impactFormStepOne.get('ebit2').value;
+    const ebit3 = this.impactFormStepOne.get('ebit3').value;
+    const ebit4 = this.impactFormStepOne.get('ebit4').value;
+    const ebit5 = this.impactFormStepOne.get('ebit5').value;
+    const ebit6 = this.impactFormStepOne.get('ebit6').value;
   }
   public evaluateStepTwo() {
 
@@ -157,5 +164,9 @@ export class ImpactEvaluationComponent implements OnInit {
   }
   public evaluateStepFour() {
 
+  }
+
+  public selectStep(step: number) {
+    this.witchStep = step;
   }
 }
