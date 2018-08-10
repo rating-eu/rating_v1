@@ -1,5 +1,6 @@
 package eu.hermeneut.domain.assets;
 
+import eu.hermeneut.domain.AttackCost;
 import eu.hermeneut.domain.DirectAsset;
 import eu.hermeneut.domain.IndirectAsset;
 import eu.hermeneut.domain.MyAsset;
@@ -10,6 +11,7 @@ public class AssetsOneShot {
     private List<MyAsset> myAssets;
     private List<DirectAsset> directAssets;
     private List<IndirectAsset> indirectAssets;
+    private List<AttackCost> attackCosts;
 
     public List<MyAsset> getMyAssets() {
         return myAssets;
@@ -33,5 +35,13 @@ public class AssetsOneShot {
 
     public void setIndirectAssets(List<IndirectAsset> indirectAssets) {
         this.indirectAssets = indirectAssets;
+    }
+
+    public List<AttackCost> getAttackCosts() {
+        return attackCosts;
+    }
+
+    public void setAttackCosts(List<AttackCost> attackCosts) {
+        this.attackCosts = attackCosts;
     }
 }

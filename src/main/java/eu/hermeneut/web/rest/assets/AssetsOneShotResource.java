@@ -6,6 +6,7 @@ import eu.hermeneut.domain.DirectAsset;
 import eu.hermeneut.domain.IndirectAsset;
 import eu.hermeneut.domain.MyAsset;
 import eu.hermeneut.domain.assets.AssetsOneShot;
+import eu.hermeneut.service.AttackCostService;
 import eu.hermeneut.service.DirectAssetService;
 import eu.hermeneut.service.IndirectAssetService;
 import eu.hermeneut.service.MyAssetService;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.*;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -34,6 +36,9 @@ public class AssetsOneShotResource {
 
     @Autowired
     private IndirectAssetService indirectAssetService;
+
+    @Autowired
+    private AttackCostService attackCostService;
 
     @PostMapping("/my-assets-one-shot/")
     @Timed
@@ -121,10 +126,19 @@ public class AssetsOneShotResource {
         Map<Long/*DirectAsset.TempID*/, Set<Long>/*EffectsRealID*/> indirectEffectsRealIDsByDirectTempIDsMap = new HashMap<>();
         Map<Long/*DirectAsset.RealID*/, Set<IndirectAsset>> indirectEffectsByDirectRealIDMap = new HashMap<>();
 
-        //Costs
-        Map<Long/*DirectAsset.TempID*/, Set<AttackCost>> costsByDirectAssetTempID = new HashMap<>();
-        //TODO
-        //Map the costs by direct assets
+        //=======Costs======
+        //Map the costs by direct assets TempID
+        Map<Long/*DirectAsset.TempID*/, Set<AttackCost>> costsByDirectAssetTempID =
+            directAssetsByTempIDMap
+                .entrySet()
+                .stream()
+                .collect(
+                    Collectors.toMap(
+                        entry -> entry.getKey(),
+                        entry -> entry.getValue().getCosts()
+                    )
+                );
+
 
         //=====================INDIRECT ASSETS=====================
         List<IndirectAsset> indirectAssets = assetsOneShot.getIndirectAssets();
@@ -138,10 +152,18 @@ public class AssetsOneShotResource {
         Map<Long/*TempID*/, Long/*RealID*/> indirectAssetsRealIDsByTempIDsMap = new HashMap<>();
         Map<Long/*RealID*/, IndirectAsset> indirectAssetByRealIDMap = new HashMap<>();
 
-        //Costs
-        Map<Long/*DirectAsset.TempID*/, Set<AttackCost>> costsByIndirectAssetTempID = new HashMap<>();
-        //TODO
-        //Map the costs by indirect assets
+        //=======Costs======
+        //Map the costs by indirect assets TempID
+        Map<Long/*DirectAsset.TempID*/, Set<AttackCost>> costsByIndirectAssetTempID =
+            indirectAssetsByTemMap
+                .entrySet()
+                .stream()
+                .collect(
+                    Collectors.toMap(
+                        entry -> entry.getKey(),
+                        entry -> entry.getValue().getCosts()
+                    )
+                );
 
         for (IndirectAsset indirectAsset : indirectAssets) {
             Long myAssetTempID = indirectAsset.getAsset().getId();
@@ -256,6 +278,46 @@ public class AssetsOneShotResource {
         }
 
 
+        //Update my costs with real DirectAssets IDs
+        costsByDirectAssetTempID
+            .forEach((directAssetTempID, directAssetCosts) -> {
+                Long directAssetRealID = directAssetsRealIDsByTempIDsMap.get(directAssetTempID);
+                DirectAsset directAsset = directAssetByRealIDMap.get(directAssetRealID);
+
+                directAssetCosts.forEach(attackCost -> {
+                    attackCost.setDirectAsset(directAsset);
+                });
+            });
+
+        costsByIndirectAssetTempID
+            .forEach((indirectAssetTempID, indirectAssetCosts) -> {
+                Long indirectAssetRealID = indirectAssetsRealIDsByTempIDsMap.get(indirectAssetTempID);
+                IndirectAsset indirectAsset = indirectAssetByRealIDMap.get(indirectAssetRealID);
+
+                indirectAssetCosts.forEach(attackCost -> {
+                    attackCost.setIndirectAsset(indirectAsset);
+                });
+            });
+
+        //Persist AttackCosts
+        List<AttackCost> attackCosts = new ArrayList<>();
+
+        for (Map.Entry<Long, Set<AttackCost>> entry : costsByDirectAssetTempID.entrySet()) {
+            Long directAssetTempID = entry.getKey();
+            Set<AttackCost> costs = entry.getValue();
+
+            attackCosts.addAll(costs);
+        }
+
+        for (Map.Entry<Long, Set<AttackCost>> entry : costsByIndirectAssetTempID.entrySet()) {
+            Long indirectAssetTempID = entry.getKey();
+            Set<AttackCost> costs = entry.getValue();
+
+            attackCosts.addAll(costs);
+        }
+
+        attackCosts = this.attackCostService.save(attackCosts);
+
         //Get updated values
         List<MyAsset> updatedMyAssets = myAssetsByRealIDMap
             .values()
@@ -272,11 +334,11 @@ public class AssetsOneShotResource {
             .stream()
             .collect(Collectors.toList());
 
-
         AssetsOneShot result = new AssetsOneShot();
         result.setMyAssets(updatedMyAssets);
         result.setDirectAssets(updatedDirectAssets);
         result.setIndirectAssets(updatedIndirectAssets);
+        result.setAttackCosts(attackCosts);
 
         return result;
     }
