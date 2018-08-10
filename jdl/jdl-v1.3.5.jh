@@ -297,8 +297,8 @@ relationship OneToOne{
     MyAsset{asset(name)} to Asset,
     MyAsset{selfAssessment(name)} to SelfAssessment,
     MyAsset{questionnaire(name)} to Questionnaire,
-    DirectAsset{asset(name)} to MyAsset,
-    IndirectAsset{asset(name)} to MyAsset,
+    DirectAsset{myAsset(asset)} to MyAsset,
+    IndirectAsset{myAsset(asset)} to MyAsset,
     Level{container(name)} to Container,
     DomainOfInfluence{container(name)} to Container
 }
