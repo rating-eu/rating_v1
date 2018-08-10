@@ -3,9 +3,9 @@
     "relationships": [
         {
             "relationshipType": "one-to-one",
-            "relationshipName": "asset",
+            "relationshipName": "myAsset",
             "otherEntityName": "myAsset",
-            "otherEntityField": "name",
+            "otherEntityField": "asset",
             "ownerSide": true,
             "otherEntityRelationshipName": "directAsset"
         },

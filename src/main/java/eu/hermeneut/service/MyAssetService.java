@@ -1,6 +1,7 @@
 package eu.hermeneut.service;
 
 import eu.hermeneut.domain.MyAsset;
+
 import java.util.List;
 
 /**
@@ -15,6 +16,8 @@ public interface MyAssetService {
      * @return the persisted entity
      */
     MyAsset save(MyAsset myAsset);
+
+    List<MyAsset> saveAll(List<MyAsset> myAssets);
 
     /**
      * Get all the myAssets.
@@ -42,8 +45,9 @@ public interface MyAssetService {
      * Search for the myAsset corresponding to the query.
      *
      * @param query the query of the search
-     * 
      * @return the list of entities
      */
     List<MyAsset> search(String query);
+
+    List<MyAsset> findAllBySelfAssessment(Long selfAssessmentID);
 }

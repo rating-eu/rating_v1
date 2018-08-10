@@ -34,7 +34,7 @@ describe('IndirectAsset e2e test', () => {
     it('should create and save IndirectAssets', () => {
         indirectAssetComponentsPage.clickOnCreateButton();
         indirectAssetDialogPage.directAssetSelectLastOption();
-        indirectAssetDialogPage.assetSelectLastOption();
+        indirectAssetDialogPage.myAssetSelectLastOption();
         indirectAssetDialogPage.save();
         expect(indirectAssetDialogPage.getSaveButton().isPresent()).toBeFalsy();
     });
@@ -62,7 +62,7 @@ export class IndirectAssetDialogPage {
     saveButton = element(by.css('.modal-footer .btn.btn-primary'));
     closeButton = element(by.css('button.close'));
     directAssetSelect = element(by.css('select#field_directAsset'));
-    assetSelect = element(by.css('select#field_asset'));
+    myAssetSelect = element(by.css('select#field_myAsset'));
 
     getModalTitle() {
         return this.modalTitle.getAttribute('jhiTranslate');
@@ -84,20 +84,20 @@ export class IndirectAssetDialogPage {
         return this.directAssetSelect.element(by.css('option:checked')).getText();
     };
 
-    assetSelectLastOption = function() {
-        this.assetSelect.all(by.tagName('option')).last().click();
+    myAssetSelectLastOption = function() {
+        this.myAssetSelect.all(by.tagName('option')).last().click();
     };
 
-    assetSelectOption = function(option) {
-        this.assetSelect.sendKeys(option);
+    myAssetSelectOption = function(option) {
+        this.myAssetSelect.sendKeys(option);
     };
 
-    getAssetSelect = function() {
-        return this.assetSelect;
+    getMyAssetSelect = function() {
+        return this.myAssetSelect;
     };
 
-    getAssetSelectedOption = function() {
-        return this.assetSelect.element(by.css('option:checked')).getText();
+    getMyAssetSelectedOption = function() {
+        return this.myAssetSelect.element(by.css('option:checked')).getText();
     };
 
     save() {

@@ -31,7 +31,7 @@
             <tr>
             <th><span jhiTranslate="global.field.id">ID</span></th>
             <th><span jhiTranslate="hermeneutApp.indirectAsset.directAsset">Direct Asset</span></th>
-            <th><span jhiTranslate="hermeneutApp.indirectAsset.asset">Asset</span></th>
+            <th><span jhiTranslate="hermeneutApp.indirectAsset.myAsset">My Asset</span></th>
             <th></th>
             </tr>
             </thead>
@@ -44,8 +44,8 @@
                     </div>
                 </td>
                 <td>
-                    <div *ngIf="indirectAsset.asset">
-                        <a [routerLink]="['../my-asset-mgm', indirectAsset.asset?.id ]" >{{indirectAsset.asset?.name}}</a>
+                    <div *ngIf="indirectAsset.myAsset">
+                        <a [routerLink]="['../my-asset-mgm', indirectAsset.myAsset?.id ]" >{{indirectAsset.myAsset?.asset?.name}}</a>
                     </div>
                 </td>
                 <td class="text-right">

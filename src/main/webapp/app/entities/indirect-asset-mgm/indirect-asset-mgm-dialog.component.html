@@ -21,10 +21,10 @@
             </select>
         </div>
         <div class="form-group">
-            <label class="form-control-label" jhiTranslate="hermeneutApp.indirectAsset.asset" for="field_asset">Asset</label>
-            <select class="form-control" id="field_asset" name="asset" [(ngModel)]="indirectAsset.asset">
+            <label class="form-control-label" jhiTranslate="hermeneutApp.indirectAsset.myAsset" for="field_myAsset">My Asset</label>
+            <select class="form-control" id="field_myAsset" name="myAsset" [(ngModel)]="indirectAsset.myAsset">
                 <option [ngValue]="null"></option>
-                <option [ngValue]="myAssetOption.id === indirectAsset.asset?.id ? indirectAsset.asset : myAssetOption" *ngFor="let myAssetOption of assets; trackBy: trackMyAssetById">{{myAssetOption.name}}</option>
+                <option [ngValue]="myAssetOption.id === indirectAsset.myAsset?.id ? indirectAsset.myAsset : myAssetOption" *ngFor="let myAssetOption of myassets; trackBy: trackMyAssetById">{{myAssetOption.asset.name}}</option>
             </select>
         </div>
     </div>

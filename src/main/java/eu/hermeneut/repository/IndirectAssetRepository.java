@@ -1,9 +1,12 @@
 package eu.hermeneut.repository;
 
 import eu.hermeneut.domain.IndirectAsset;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import org.springframework.data.jpa.repository.*;
+
+import java.util.List;
 
 
 /**
@@ -13,4 +16,6 @@ import org.springframework.data.jpa.repository.*;
 @Repository
 public interface IndirectAssetRepository extends JpaRepository<IndirectAsset, Long> {
 
+    @Query("SELECT indirectAsset from IndirectAsset indirectAsset WHERE indirectAsset.directAsset.id = :directAssetID")
+    List<IndirectAsset> findAllbyDirectAsset(@Param("directAssetID") Long directAssetID);
 }

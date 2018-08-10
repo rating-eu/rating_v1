@@ -33,10 +33,9 @@ public class IndirectAsset implements Serializable {
 
     @OneToOne
     @JoinColumn(unique = true)
-    private MyAsset asset;
+    private MyAsset myAsset;
 
-    @OneToMany(mappedBy = "indirectAsset")
-    @JsonIgnore
+    @OneToMany(mappedBy = "indirectAsset"/*, fetch = FetchType.LAZY*/)
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<AttackCost> costs = new HashSet<>();
 
@@ -62,17 +61,17 @@ public class IndirectAsset implements Serializable {
         this.directAsset = directAsset;
     }
 
-    public MyAsset getAsset() {
-        return asset;
+    public MyAsset getMyAsset() {
+        return myAsset;
     }
 
-    public IndirectAsset asset(MyAsset myAsset) {
-        this.asset = myAsset;
+    public IndirectAsset myAsset(MyAsset myAsset) {
+        this.myAsset = myAsset;
         return this;
     }
 
-    public void setAsset(MyAsset myAsset) {
-        this.asset = myAsset;
+    public void setMyAsset(MyAsset myAsset) {
+        this.myAsset = myAsset;
     }
 
     public Set<AttackCost> getCosts() {

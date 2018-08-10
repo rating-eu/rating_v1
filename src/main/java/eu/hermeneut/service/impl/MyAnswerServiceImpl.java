@@ -52,7 +52,7 @@ public class MyAnswerServiceImpl implements MyAnswerService {
     public List<MyAnswer> saveAll(List<MyAnswer> myAnswers) {
         log.debug("Request to save MyAnswer : {}", Arrays.toString(myAnswers.toArray()));
         List<MyAnswer> result = myAnswerRepository.save(myAnswers);
-        myAnswerSearchRepository.save(myAnswers);
+        myAnswerSearchRepository.save(result);
         return result;
     }
 

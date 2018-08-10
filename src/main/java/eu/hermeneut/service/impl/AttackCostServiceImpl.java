@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -43,6 +44,14 @@ public class AttackCostServiceImpl implements AttackCostService {
     public AttackCost save(AttackCost attackCost) {
         log.debug("Request to save AttackCost : {}", attackCost);
         AttackCost result = attackCostRepository.save(attackCost);
+        attackCostSearchRepository.save(result);
+        return result;
+    }
+
+    @Override
+    public List<AttackCost> save(List<AttackCost> attackCosts) {
+        log.debug("Request to save all the AttackCosts : {}", Arrays.toString(attackCosts.toArray()));
+        List<AttackCost> result = attackCostRepository.save(attackCosts);
         attackCostSearchRepository.save(result);
         return result;
     }
