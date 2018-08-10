@@ -34,7 +34,7 @@ export class IdentifyAssetUtilService {
     private subscriptorForAnswersComplited: Subject<MyAnswerMgm[]> = new Subject<MyAnswerMgm[]>();
     private subscriptorForIndirectMap: Subject<any> = new Subject<any>();
 
-    private resourceUrl = SERVER_API_URL + 'api/my-assets-one-shot';
+    private resourceUrl = SERVER_API_URL + 'api/my-assets-one-shot/';
 
     constructor(
         private http: HttpClient

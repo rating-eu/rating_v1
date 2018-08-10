@@ -148,6 +148,7 @@ export class IdentifyAssetComponent implements OnInit, OnDestroy {
         status.modified = dateString;
         status.user = this.user;
         status.status = Status.FULL;
+        /*
         this.questionnaireStatusServices.create(status).toPromise().then((receivedStatus) => {
             if (receivedStatus.body) {
                 status = receivedStatus.body;
@@ -157,31 +158,20 @@ export class IdentifyAssetComponent implements OnInit, OnDestroy {
                 this.myAnswerService.createAll(this.myAnswers).toPromise().then((savedAnswers) => {
                     if (savedAnswers.body) {
                         this.myAnswers = savedAnswers.body;
-                        const bundle: AssetsOneShot = new AssetsOneShot();
-                        bundle.myAssets = this.myAnswers;
-                        bundle.directAssets = this.myDirectAssets;
-                        bundle.indirectAssets = this.myIndirectAssets;
-                        this.idaUtilsService.oneShotSave(bundle).toPromise().then((savedAssets) => {
-                            if (savedAssets) {
-                                this.myAssets = savedAssets.myAssets;
-                                this.myDirectAssets = savedAssets.directAssets;
-                                this.myIndirectAssets = savedAssets.indirectAssets;
-                                /*
-                                for (const cost of savedAssets.attackCosts) {
-                                    if (cost.directAsset) {
-                                        const index = _.findIndex(this.myDirectAssets,
-                                            (direct) => direct.id === (cost.directAsset as DirectAssetMgm).id
-                                        );
-                                        if(index !== -1)
-                                    } else {
-
-                                    }
-                                }
-                                */
-                            }
-                        });
                     }
                 });
+            }
+        });
+        */
+        const bundle: AssetsOneShot = new AssetsOneShot();
+        bundle.myAssets = this.myAssets;
+        bundle.directAssets = this.myDirectAssets;
+        bundle.indirectAssets = this.myIndirectAssets;
+        this.idaUtilsService.oneShotSave(bundle).toPromise().then((savedAssets) => {
+            if (savedAssets) {
+                this.myAssets = savedAssets.myAssets;
+                this.myDirectAssets = savedAssets.directAssets;
+                this.myIndirectAssets = savedAssets.indirectAssets;
             }
         });
     }
