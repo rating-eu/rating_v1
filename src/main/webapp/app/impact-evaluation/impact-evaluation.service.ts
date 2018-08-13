@@ -13,11 +13,11 @@ export class ImpactEvaluationService {
     private http: HttpClient
   ) { }
 
-  getMyAssets(self: SelfAssessmentMgm): Observable<MyAssetMgm> {
+  getMyAssets(self: SelfAssessmentMgm): Observable<MyAssetMgm[]> {
     const options: HttpParams = new HttpParams();
     options.set('selfAssessmentID', self.id.toString());
-    return this.http.get<MyAssetMgm>(this.resourceUrl, { params: options, observe: 'response' })
-      .map((res: HttpResponse<MyAssetMgm>) => {
+    return this.http.get<MyAssetMgm[]>(this.resourceUrl, { params: options, observe: 'response' })
+      .map((res: HttpResponse<MyAssetMgm[]>) => {
         return res.body;
     });
   }

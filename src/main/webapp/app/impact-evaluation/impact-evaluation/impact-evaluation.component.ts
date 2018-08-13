@@ -4,6 +4,7 @@ import { SelfAssessmentMgmService, SelfAssessmentMgm } from '../../entities/self
 import { MyAssetMgm } from '../../entities/my-asset-mgm';
 import { AssetMgmService, AssetMgm } from '../../entities/asset-mgm';
 import { AssetType } from '../../entities/enumerations/AssetType.enum';
+import { ImpactEvaluationService } from '../impact-evaluation.service';
 
 @Component({
   // tslint:disable-next-line:component-selector
@@ -31,6 +32,8 @@ export class ImpactEvaluationComponent implements OnInit {
   public impactOnProfessionalSector: number[];
 
   public tangibleAssets: MyAssetMgm[] = [];
+  public financialAssetsAkaCurrent: MyAssetMgm[] = [];
+  public physicalAssetsAkaFixed: MyAssetMgm[] = [];
   private mySelf: SelfAssessmentMgm;
 
   public sectorialPercentageMatrix: any[] = [
@@ -57,7 +60,8 @@ export class ImpactEvaluationComponent implements OnInit {
   ];
   constructor(
     private mySelfAssessmentService: SelfAssessmentMgmService,
-    private assetService: AssetMgmService
+    private assetService: AssetMgmService,
+    private impactService: ImpactEvaluationService
   ) { }
 
   ngOnInit() {
@@ -65,14 +69,25 @@ export class ImpactEvaluationComponent implements OnInit {
     const lastYear = (new Date().getFullYear()) + 3;
     // TODO chiamata per recuperare tutti i MyAssets a partire dal selfAssessment
     this.mySelf = this.mySelfAssessmentService.getSelfAssessment();
-    // const myAssets = this.assetService.getAllBySelf(this.mySelf.id);
-    const myAssets: MyAssetMgm[] = [];
-    // Recuperare tutti gli intangible;
-    for (const asset of myAssets) {
-      if ((asset.asset as AssetMgm).assetcategory.type.toString() === AssetType.TANGIBLE.toString()) {
-        this.tangibleAssets.push(asset);
+    this.impactService.getMyAssets(this.mySelf).toPromise().then((res) => {
+      if (res && res.length > 0) {
+        // Recuperare tutti gli intangible;
+        for (const asset of res) {
+          if ((asset.asset as AssetMgm).assetcategory.type.toString() === AssetType.TANGIBLE.toString()) {
+            this.tangibleAssets.push(asset);
+            if ((asset.asset as AssetMgm).assetcategory.name === 'Current Assets') {
+              this.financialAssetsAkaCurrent.push(asset);
+            } else if ((asset.asset as AssetMgm).assetcategory.name === 'Fixed Assets') {
+              this.physicalAssetsAkaFixed.push(asset);
+            }
+          }
+        }
+        console.log(this.tangibleAssets);
+        console.log(this.financialAssetsAkaCurrent);
+        console.log(this.physicalAssetsAkaFixed);
       }
-    }
+    });
+
     this.tangibleAssets = [];
     this.impactFormStepOne = new FormGroup({
       ebit1: new FormControl(undefined, Validators.compose([

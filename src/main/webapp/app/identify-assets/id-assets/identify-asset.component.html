@@ -1,3 +1,4 @@
+<!--
 identify assets
 
 step todo:
@@ -100,6 +101,7 @@ step todo:
         <li>check if assets are already identified</li>
         <li>form to select assets</li>
     </ul>
+-->
 
     <!-- Recupero del SelfAssessment -->
 <!-- Recupero del questionario Questionario -->
@@ -178,7 +180,7 @@ step todo:
     </div>
 </div>
 -->
-<ng-container *ngIf="questionnariesStatus.lenght === 0">
+<ng-container *ngIf="questionnariesStatus.length === 0">
     <ng-container *ngIf="questions">
         <ng-container *ngFor="let q of questions">
             <question-card
@@ -190,12 +192,13 @@ step todo:
         <button class="btn btn-primary" (click)="sendAnswerAndSaveMyAssets()">submit</button>
     </ng-container>
 </ng-container>
-<ng-container *ngIf="questionnariesStatus.lenght > 0 && questionnariesStatus[0] === 'FULL'">
-    <p>You already completed the questionnaire!</p>
+<ng-container *ngIf="questionnariesStatus.length > 0">
+    <ng-container *ngIf="questionnariesStatus[0].status === 'FULL'">
+        <p>You already completed the questionnaire!</p>
+        <!-- INSERIRE LOGICA DI VISUALIZZAZIONE -->
+    </ng-container>
+    <ng-container *ngIf="questionnariesStatus[0].status === 'PENDING'">
+        <p>You already completed the questionnaire!</p>
+        <!-- INSERIRE LOGICA DI COMPLETAMENTO -->
+    </ng-container>
 </ng-container>
-
-<!--
-<ng-container *ngIf="questions && myAnswers.lenght > 0">
-    View
-</ng-container>
--->

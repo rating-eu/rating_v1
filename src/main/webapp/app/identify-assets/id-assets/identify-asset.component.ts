@@ -1,6 +1,6 @@
 import * as _ from 'lodash';
 
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { IdentifyAssetService } from '../identify-asset.service';
 import { SelfAssessmentMgm, SelfAssessmentMgmService } from '../../entities/self-assessment-mgm';
 import { Principal, LoginModalService, AccountService, UserService, User } from '../../shared';
@@ -68,7 +68,8 @@ export class IdentifyAssetComponent implements OnInit, OnDestroy {
         private assetService: AssetMgmService,
         private idaUtilsService: IdentifyAssetUtilService,
         private accountService: AccountService,
-        private userService: UserService
+        private userService: UserService,
+        private ref: ChangeDetectorRef
     ) {
     }
 
@@ -101,8 +102,8 @@ export class IdentifyAssetComponent implements OnInit, OnDestroy {
                         .toPromise()
                         .then((status) => {
                             if (status.body) {
-                                console.log('STATUS:' + status.body.status);
                                 this.questionnariesStatus.push(status.body as QuestionnaireStatusMgm);
+                                this.ref.detectChanges();
                                 this.myAnswerService.getAllByQuestionnaireStatusID(status.body.id)
                                     .toPromise().then((answers) => {
                                         if (answers.body) {

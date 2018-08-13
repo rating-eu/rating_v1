@@ -1,5 +1,4 @@
 export enum MyCostType {
-    'BEFORE_THE_ATTACK_STATUS_RESTORATION' = <any> 'Before the attack status restoration (service, data, etc.)',
     'INCREASED_SECURITY' = <any> 'Increased security',
     'LEGAL_LITIGATION_COSTS_AND_ATTORNEY_FEES' = <any> 'Legal or litigation costs and attorney fees',
     'NOTIFICATION_AND_REGULATORY_COMPLIANCE_COSTS' = <any> 'Notification and regulatory compliance costs',
@@ -12,5 +11,6 @@ export enum MyCostType {
     'LOSS_OF_REVENUES' = <any> 'Loss of revenues',
     'INCREASED_COST_TO_RAISE_DEBT' = <any> 'Increased cost to raise debt',
     'VALUE_OF_LOST_OR_NOT_FULFILLED_CONTRACT_REVENUES' = <any> 'Value of lost or not fulfilled contract revenues',
-    'LOST_OR_NON_FULFILLED_CONTRACTS' = <any> 'Lost customers recovery'
+    'LOST_OR_NON_FULFILLED_CONTRACTS' = <any> 'Lost customers recovery',
+    'BEFORE_THE_ATTACK_STATUS_RESTORATION' = <any> 'Before the attack status restoration (service, data, etc.)'
 }
