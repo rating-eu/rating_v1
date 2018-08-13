@@ -32,7 +32,7 @@ public class DirectAsset implements Serializable {
     @JoinColumn(unique = true)
     private MyAsset myAsset;
 
-    @OneToMany(mappedBy = "directAsset")
+    @OneToMany(mappedBy = "directAsset", fetch = FetchType.EAGER)
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<AttackCost> costs = new HashSet<>();
 

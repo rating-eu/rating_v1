@@ -1,0 +1,64 @@
+<div *ngIf="witchStep === 1" class="container">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="input-group" style="margin-bottom: 10px">
+            <input type="text" class="form-control" placeholder="Ebit for {{firstYear}}"
+                aria-label="Ebit1" aria-describedby="basic-addon2">
+        </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <button class="btn btn-primary float-right" style="margin-left: 10px" (click)="selectStep(2)">Next</button>
+      <button class="btn btn-secondary float-right" (click)="false">Prev</button>
+    </div>
+  </div>
+</div>
+<div *ngIf="witchStep === 2" class="container">
+  <div class="row">
+    PREVIOUS STEP RESULTS
+  </div>
+  <div class="row">
+    <p>STEP 2</p>
+    CONTENT
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <button class="btn btn-primary float-right" style="margin-left: 10px" (click)="selectStep(3)">Next</button>
+      <button class="btn btn-light float-right" (click)="selectStep(1)">Prev</button>
+    </div>
+  </div>
+</div>
+<div *ngIf="witchStep === 3" class="container">
+  <div class="row">
+    PREVIOUS STEP RESULTS
+  </div>
+  <div class="row">
+    <p>STEP 3</p>
+    CONTENT
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <button class="btn btn-primary float-right" style="margin-left: 10px" (click)="selectStep(4)">Next</button>
+      <button class="btn btn-light float-right" (click)="selectStep(2)">Prev</button>
+    </div>
+  </div>
+</div>
+<div *ngIf="witchStep === 4" class="container">
+  <div class="row">
+    PREVIOUS STEP RESULTS
+  </div>
+  <div class="row">
+    <p>STEP 4</p>
+    CONTENT
+  </div>
+  <div class="row">
+    CURRENT STEP RESULTS
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <button class="btn btn-secondary float-right" style="margin-left: 10px" (click)="false">Next</button>
+      <button class="btn btn-light float-right" (click)="selectStep(3)">Prev</button>
+    </div>
+  </div>
+</div>

@@ -316,7 +316,9 @@ public class AssetsOneShotResource {
             attackCosts.addAll(costs);
         }
 
-        attackCosts = this.attackCostService.save(attackCosts);
+        if (!(attackCosts == null || attackCosts.size() == 0)) {
+            attackCosts = this.attackCostService.save(attackCosts);
+        }
 
         //Get updated values
         List<MyAsset> updatedMyAssets = myAssetsByRealIDMap
