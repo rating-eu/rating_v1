@@ -1,0 +1,12 @@
+{
+    "hermeneutApp": {
+        "SectorType" : {
+            "null": "",
+            "GLOBAL": "GLOBAL",
+            "FINANCE_AND_INSURANCE": "FINANCE_AND_INSURANCE",
+            "HEALTH_CARE_AND_SOCIAL_ASSISTANCE": "HEALTH_CARE_AND_SOCIAL_ASSISTANCE",
+            "INFORMATION": "INFORMATION",
+            "PROFESSIONAL_SCIENTIFIC_AND_TECHNICAL_SERVICE": "PROFESSIONAL_SCIENTIFIC_AND_TECHNICAL_SERVICE"
+        }
+    }
+}

@@ -20,9 +20,13 @@
             "magnitude": "Magnitude",
             "ranking": "Ranking",
             "estimated": "Estimated",
+            "economicValue": "Economic Value",
             "asset": "Asset",
             "selfAssessment": "Self Assessment",
-            "questionnaire": "Questionnaire"
+            "questionnaire": "Questionnaire",
+            "help": {
+                "economicValue": "WP3"
+            }
         }
     }
 }

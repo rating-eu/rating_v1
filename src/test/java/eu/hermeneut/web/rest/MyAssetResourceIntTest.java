@@ -49,6 +49,9 @@ public class MyAssetResourceIntTest {
     private static final Boolean DEFAULT_ESTIMATED = false;
     private static final Boolean UPDATED_ESTIMATED = true;
 
+    private static final Double DEFAULT_ECONOMIC_VALUE = 1D;
+    private static final Double UPDATED_ECONOMIC_VALUE = 2D;
+
     @Autowired
     private MyAssetRepository myAssetRepository;
 
@@ -95,7 +98,8 @@ public class MyAssetResourceIntTest {
         MyAsset myAsset = new MyAsset()
             .magnitude(DEFAULT_MAGNITUDE)
             .ranking(DEFAULT_RANKING)
-            .estimated(DEFAULT_ESTIMATED);
+            .estimated(DEFAULT_ESTIMATED)
+            .economicValue(DEFAULT_ECONOMIC_VALUE);
         return myAsset;
     }
 
@@ -123,6 +127,7 @@ public class MyAssetResourceIntTest {
         assertThat(testMyAsset.getMagnitude()).isEqualTo(DEFAULT_MAGNITUDE);
         assertThat(testMyAsset.getRanking()).isEqualTo(DEFAULT_RANKING);
         assertThat(testMyAsset.isEstimated()).isEqualTo(DEFAULT_ESTIMATED);
+        assertThat(testMyAsset.getEconomicValue()).isEqualTo(DEFAULT_ECONOMIC_VALUE);
 
         // Validate the MyAsset in Elasticsearch
         MyAsset myAssetEs = myAssetSearchRepository.findOne(testMyAsset.getId());
@@ -161,7 +166,8 @@ public class MyAssetResourceIntTest {
             .andExpect(jsonPath("$.[*].id").value(hasItem(myAsset.getId().intValue())))
             .andExpect(jsonPath("$.[*].magnitude").value(hasItem(DEFAULT_MAGNITUDE.toString())))
             .andExpect(jsonPath("$.[*].ranking").value(hasItem(DEFAULT_RANKING)))
-            .andExpect(jsonPath("$.[*].estimated").value(hasItem(DEFAULT_ESTIMATED.booleanValue())));
+            .andExpect(jsonPath("$.[*].estimated").value(hasItem(DEFAULT_ESTIMATED.booleanValue())))
+            .andExpect(jsonPath("$.[*].economicValue").value(hasItem(DEFAULT_ECONOMIC_VALUE.doubleValue())));
     }
 
     @Test
@@ -177,7 +183,8 @@ public class MyAssetResourceIntTest {
             .andExpect(jsonPath("$.id").value(myAsset.getId().intValue()))
             .andExpect(jsonPath("$.magnitude").value(DEFAULT_MAGNITUDE.toString()))
             .andExpect(jsonPath("$.ranking").value(DEFAULT_RANKING))
-            .andExpect(jsonPath("$.estimated").value(DEFAULT_ESTIMATED.booleanValue()));
+            .andExpect(jsonPath("$.estimated").value(DEFAULT_ESTIMATED.booleanValue()))
+            .andExpect(jsonPath("$.economicValue").value(DEFAULT_ECONOMIC_VALUE.doubleValue()));
     }
 
     @Test
@@ -203,7 +210,8 @@ public class MyAssetResourceIntTest {
         updatedMyAsset
             .magnitude(UPDATED_MAGNITUDE)
             .ranking(UPDATED_RANKING)
-            .estimated(UPDATED_ESTIMATED);
+            .estimated(UPDATED_ESTIMATED)
+            .economicValue(UPDATED_ECONOMIC_VALUE);
 
         restMyAssetMockMvc.perform(put("/api/my-assets")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -217,6 +225,7 @@ public class MyAssetResourceIntTest {
         assertThat(testMyAsset.getMagnitude()).isEqualTo(UPDATED_MAGNITUDE);
         assertThat(testMyAsset.getRanking()).isEqualTo(UPDATED_RANKING);
         assertThat(testMyAsset.isEstimated()).isEqualTo(UPDATED_ESTIMATED);
+        assertThat(testMyAsset.getEconomicValue()).isEqualTo(UPDATED_ECONOMIC_VALUE);
 
         // Validate the MyAsset in Elasticsearch
         MyAsset myAssetEs = myAssetSearchRepository.findOne(testMyAsset.getId());
@@ -276,7 +285,8 @@ public class MyAssetResourceIntTest {
             .andExpect(jsonPath("$.[*].id").value(hasItem(myAsset.getId().intValue())))
             .andExpect(jsonPath("$.[*].magnitude").value(hasItem(DEFAULT_MAGNITUDE.toString())))
             .andExpect(jsonPath("$.[*].ranking").value(hasItem(DEFAULT_RANKING)))
-            .andExpect(jsonPath("$.[*].estimated").value(hasItem(DEFAULT_ESTIMATED.booleanValue())));
+            .andExpect(jsonPath("$.[*].estimated").value(hasItem(DEFAULT_ESTIMATED.booleanValue())))
+            .andExpect(jsonPath("$.[*].economicValue").value(hasItem(DEFAULT_ECONOMIC_VALUE.doubleValue())));
     }
 
     @Test

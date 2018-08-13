@@ -1,5 +1,6 @@
 package eu.hermeneut.domain;
 
+import io.swagger.annotations.ApiModelProperty;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -34,6 +35,13 @@ public class MyAsset implements Serializable {
 
     @Column(name = "estimated")
     private Boolean estimated;
+
+    /**
+     * WP3
+     */
+    @ApiModelProperty(value = "WP3")
+    @Column(name = "economic_value")
+    private Double economicValue;
 
     @OneToOne
     @NotNull
@@ -93,6 +101,19 @@ public class MyAsset implements Serializable {
 
     public void setEstimated(Boolean estimated) {
         this.estimated = estimated;
+    }
+
+    public Double getEconomicValue() {
+        return economicValue;
+    }
+
+    public MyAsset economicValue(Double economicValue) {
+        this.economicValue = economicValue;
+        return this;
+    }
+
+    public void setEconomicValue(Double economicValue) {
+        this.economicValue = economicValue;
     }
 
     public Asset getAsset() {
@@ -162,6 +183,7 @@ public class MyAsset implements Serializable {
             ", magnitude='" + getMagnitude() + "'" +
             ", ranking=" + getRanking() +
             ", estimated='" + isEstimated() + "'" +
+            ", economicValue=" + getEconomicValue() +
             "}";
     }
 }

@@ -31,6 +31,10 @@
                 "directAssetMgm": "Direct Asset",
                 "indirectAssetMgm": "Indirect Asset",
                 "attackCostMgm": "Attack Cost",
+                "economicCoefficientsMgm": "Economic Coefficients",
+                "ebitMgm": "EBIT",
+                "economicResultsMgm": "Economic Results",
+                "splittingLossMgm": "Splitting Loss",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {

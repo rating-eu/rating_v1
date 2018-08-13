@@ -16,6 +16,10 @@
         <dd>
             <span>{{myAsset.estimated}}</span>
         </dd>
+        <dt><span jhiTranslate="hermeneutApp.myAsset.economicValue" [ngbTooltip]="'hermeneutApp.myAsset.help.economicValue' | translate">Economic Value</span></dt>
+        <dd>
+            <span>{{myAsset.economicValue}}</span>
+        </dd>
         <dt><span jhiTranslate="hermeneutApp.myAsset.asset">Asset</span></dt>
         <dd>
             <div *ngIf="myAsset.asset">

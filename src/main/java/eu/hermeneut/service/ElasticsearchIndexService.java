@@ -83,6 +83,18 @@ public class ElasticsearchIndexService {
 
     private final DomainOfInfluenceSearchRepository domainOfInfluenceSearchRepository;
 
+    private final EBITRepository eBITRepository;
+
+    private final EBITSearchRepository eBITSearchRepository;
+
+    private final EconomicCoefficientsRepository economicCoefficientsRepository;
+
+    private final EconomicCoefficientsSearchRepository economicCoefficientsSearchRepository;
+
+    private final EconomicResultsRepository economicResultsRepository;
+
+    private final EconomicResultsSearchRepository economicResultsSearchRepository;
+
     private final ExternalAuditRepository externalAuditRepository;
 
     private final ExternalAuditSearchRepository externalAuditSearchRepository;
@@ -131,6 +143,10 @@ public class ElasticsearchIndexService {
 
     private final SelfAssessmentSearchRepository selfAssessmentSearchRepository;
 
+    private final SplittingLossRepository splittingLossRepository;
+
+    private final SplittingLossSearchRepository splittingLossSearchRepository;
+
     private final ThreatAgentRepository threatAgentRepository;
 
     private final ThreatAgentSearchRepository threatAgentSearchRepository;
@@ -166,6 +182,12 @@ public class ElasticsearchIndexService {
         DirectAssetSearchRepository directAssetSearchRepository,
         DomainOfInfluenceRepository domainOfInfluenceRepository,
         DomainOfInfluenceSearchRepository domainOfInfluenceSearchRepository,
+        EBITRepository eBITRepository,
+        EBITSearchRepository eBITSearchRepository,
+        EconomicCoefficientsRepository economicCoefficientsRepository,
+        EconomicCoefficientsSearchRepository economicCoefficientsSearchRepository,
+        EconomicResultsRepository economicResultsRepository,
+        EconomicResultsSearchRepository economicResultsSearchRepository,
         ExternalAuditRepository externalAuditRepository,
         ExternalAuditSearchRepository externalAuditSearchRepository,
         IndirectAssetRepository indirectAssetRepository,
@@ -190,6 +212,8 @@ public class ElasticsearchIndexService {
         QuestionnaireStatusSearchRepository questionnaireStatusSearchRepository,
         SelfAssessmentRepository selfAssessmentRepository,
         SelfAssessmentSearchRepository selfAssessmentSearchRepository,
+        SplittingLossRepository splittingLossRepository,
+        SplittingLossSearchRepository splittingLossSearchRepository,
         ThreatAgentRepository threatAgentRepository,
         ThreatAgentSearchRepository threatAgentSearchRepository,
         ElasticsearchTemplate elasticsearchTemplate) {
@@ -217,6 +241,12 @@ public class ElasticsearchIndexService {
         this.directAssetSearchRepository = directAssetSearchRepository;
         this.domainOfInfluenceRepository = domainOfInfluenceRepository;
         this.domainOfInfluenceSearchRepository = domainOfInfluenceSearchRepository;
+        this.eBITRepository = eBITRepository;
+        this.eBITSearchRepository = eBITSearchRepository;
+        this.economicCoefficientsRepository = economicCoefficientsRepository;
+        this.economicCoefficientsSearchRepository = economicCoefficientsSearchRepository;
+        this.economicResultsRepository = economicResultsRepository;
+        this.economicResultsSearchRepository = economicResultsSearchRepository;
         this.externalAuditRepository = externalAuditRepository;
         this.externalAuditSearchRepository = externalAuditSearchRepository;
         this.indirectAssetRepository = indirectAssetRepository;
@@ -241,6 +271,8 @@ public class ElasticsearchIndexService {
         this.questionnaireStatusSearchRepository = questionnaireStatusSearchRepository;
         this.selfAssessmentRepository = selfAssessmentRepository;
         this.selfAssessmentSearchRepository = selfAssessmentSearchRepository;
+        this.splittingLossRepository = splittingLossRepository;
+        this.splittingLossSearchRepository = splittingLossSearchRepository;
         this.threatAgentRepository = threatAgentRepository;
         this.threatAgentSearchRepository = threatAgentSearchRepository;
         this.elasticsearchTemplate = elasticsearchTemplate;
@@ -262,6 +294,9 @@ public class ElasticsearchIndexService {
                 reindexForClass(Container.class, containerRepository, containerSearchRepository);
                 reindexForClass(DirectAsset.class, directAssetRepository, directAssetSearchRepository);
                 reindexForClass(DomainOfInfluence.class, domainOfInfluenceRepository, domainOfInfluenceSearchRepository);
+                reindexForClass(EBIT.class, eBITRepository, eBITSearchRepository);
+                reindexForClass(EconomicCoefficients.class, economicCoefficientsRepository, economicCoefficientsSearchRepository);
+                reindexForClass(EconomicResults.class, economicResultsRepository, economicResultsSearchRepository);
                 reindexForClass(ExternalAudit.class, externalAuditRepository, externalAuditSearchRepository);
                 reindexForClass(IndirectAsset.class, indirectAssetRepository, indirectAssetSearchRepository);
                 reindexForClass(Level.class, levelRepository, levelSearchRepository);
@@ -274,6 +309,7 @@ public class ElasticsearchIndexService {
                 reindexForClass(Questionnaire.class, questionnaireRepository, questionnaireSearchRepository);
                 reindexForClass(QuestionnaireStatus.class, questionnaireStatusRepository, questionnaireStatusSearchRepository);
                 reindexForClass(SelfAssessment.class, selfAssessmentRepository, selfAssessmentSearchRepository);
+                reindexForClass(SplittingLoss.class, splittingLossRepository, splittingLossSearchRepository);
                 reindexForClass(ThreatAgent.class, threatAgentRepository, threatAgentSearchRepository);
                 reindexForClass(User.class, userRepository, userSearchRepository);
 
