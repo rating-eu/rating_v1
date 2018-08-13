@@ -90,7 +90,9 @@ entity Asset{
 entity MyAsset{
 	Magnitude String,
 	Ranking Integer,
-    Estimated Boolean
+    Estimated Boolean,
+    /**WP3*/
+    EconomicValue Double
 }
 
 entity DirectAsset {
@@ -300,7 +302,12 @@ relationship OneToOne{
     DirectAsset{myAsset(asset)} to MyAsset,
     IndirectAsset{myAsset(asset)} to MyAsset,
     Level{container(name)} to Container,
-    DomainOfInfluence{container(name)} to Container
+    DomainOfInfluence{container(name)} to Container,
+    /*WP3*/
+    EconomicCoefficients{selfAssessment(name)} to SelfAssessment,
+    EBIT{selfAssessment(name)} to SelfAssessment,
+    EconomicResults{selfAssessment(name)} to SelfAssessment,
+    SplittingLoss{selfAssessment(name)} to SelfAssessment
 }
 
 relationship ManyToOne{
@@ -313,3 +320,45 @@ relationship ManyToOne{
 service all with serviceImpl
 
 angularSuffix * with mgm
+
+/*=======WP3=======*/
+entity EconomicCoefficients{
+	DiscountingRate Double,/*1*/
+    PhysicalAssetsReturn Double,/*Fixed Assets Return*/
+	FinancialAssetsReturn Double,/*Current Assets Return*/
+	LossOfIntangible Double /*18.29%*/
+}
+
+entity EBIT{/*2 (6 times)*/
+	Year Integer,
+    Value Double,
+    Created ZonedDateTime
+}
+
+entity EconomicResults{
+	EconomicPerformance Double,
+    IntangibleDrivingEarnings Double,
+    IntangibleCapital Double,
+    IntangibleLossByAttacks Double
+}
+
+/*Step 2 needs to know MyAssets*/
+
+enum SectorType{
+	GLOBAL,
+    FINANCE_AND_INSURANCE,
+    HEALTH_CARE_AND_SOCIAL_ASSISTANCE,
+    INFORMATION,
+    PROFESSIONAL_SCIENTIFIC_AND_TECHNICAL_SERVICE
+}
+
+enum CategoryType{
+	IP, KEY_COMP, ORG_CAPITAL
+}
+
+entity SplittingLoss{
+	SectorType SectorType,
+    CategoryType CategoryType,
+    LossPercentage Double,
+    Loss Double
+}
