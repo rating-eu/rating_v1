@@ -1,0 +1,27 @@
+
+{
+    "hermeneutApp": {
+        "economicResults" : {
+            "home": {
+                "title": "Economic Results",
+                "createLabel": "Economic Results erstellen",
+                "createOrEditLabel": "Economic Results erstellen oder bearbeiten",
+                "search": "Suche nach Economic Results"
+            },
+            "created": "Economic Results erstellt mit ID {{ param }}",
+            "updated": "Economic Results aktualisiert mit ID {{ param }}",
+            "deleted": "Economic Results gelöscht mit ID {{ param }}",
+            "delete": {
+                "question": "Soll Economic Results {{ id }} wirklich dauerhaft gelöscht werden?"
+            },
+            "detail": {
+                "title": "Economic Results"
+            },
+            "economicPerformance": "Economic Performance",
+            "intangibleDrivingEarnings": "Intangible Driving Earnings",
+            "intangibleCapital": "Intangible Capital",
+            "intangibleLossByAttacks": "Intangible Loss By Attacks",
+            "selfAssessment": "Self Assessment"
+        }
+    }
+}

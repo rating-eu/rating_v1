@@ -27,6 +27,11 @@
             <input type="checkbox" class="form-control" name="estimated" id="field_estimated"
                 [(ngModel)]="myAsset.estimated" />
         </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="hermeneutApp.myAsset.economicValue" for="field_economicValue" [ngbTooltip]="'hermeneutApp.myAsset.help.economicValue' | translate">Economic Value</label>
+            <input type="number" class="form-control" name="economicValue" id="field_economicValue"
+                [(ngModel)]="myAsset.economicValue" />
+        </div>
 
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="hermeneutApp.myAsset.asset" for="field_asset">Asset</label>

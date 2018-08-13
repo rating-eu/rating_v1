@@ -1,0 +1,29 @@
+
+{
+    "hermeneutApp": {
+        "eBIT" : {
+            "home": {
+                "title": "EBITS",
+                "createLabel": "Genera un nuovo EBIT",
+                "createOrEditLabel": "Genera o modifica un EBIT",
+                "search": "Cerca EBIT"
+            },
+            "created": "&Egrave; stato generato un nuovo EBIT con identificatore {{ param }}",
+            "updated": "&Egrave; stato aggiornato EBIT identificato da {{ param }}",
+            "deleted": "&Egrave; stato eliminato EBIT con identificatore {{ param }}",
+            "delete": {
+                "question": "Sei sicuro di volere eliminare EBIT {{ id }}?"
+            },
+            "detail": {
+                "title": "EBIT"
+            },
+            "year": "Year",
+            "value": "Value",
+            "created": "Created",
+            "selfAssessment": "Self Assessment",
+            "help": {
+                "year": "2 (6 times)"
+            }
+        }
+    }
+}

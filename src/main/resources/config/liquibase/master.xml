@@ -29,6 +29,10 @@
     <include file="config/liquibase/changelog/20180727084748_added_entity_DirectAsset.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180727084749_added_entity_IndirectAsset.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180727084750_added_entity_AttackCost.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20180813120726_added_entity_EconomicCoefficients.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20180813120727_added_entity_EBIT.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20180813120728_added_entity_EconomicResults.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20180813120729_added_entity_SplittingLoss.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
     <include file="config/liquibase/changelog/20180410085152_added_entity_constraints_CompanyProfile.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180410085155_added_entity_constraints_SelfAssessment.xml" relativeToChangelogFile="false"/>
@@ -78,5 +82,9 @@
     <include file="config/liquibase/changelog/20180727084750_added_entity_constraints_AttackCost.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180410085154_added_entity_constraints_DomainOfInfluence.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180525150016_added_entity_constraints_Level.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20180813120726_added_entity_constraints_EconomicCoefficients.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20180813120727_added_entity_constraints_EBIT.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20180813120728_added_entity_constraints_EconomicResults.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20180813120729_added_entity_constraints_SplittingLoss.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
 </databaseChangeLog>

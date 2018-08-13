@@ -1,0 +1,52 @@
+<form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+
+    <div class="modal-header">
+        <h4 class="modal-title" id="myEconomicResultsLabel" jhiTranslate="hermeneutApp.economicResults.home.createOrEditLabel">Create or edit a Economic Results</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                (click)="clear()">&times;</button>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group" [hidden]="!economicResults.id">
+            <label for="id" jhiTranslate="global.field.id">ID</label>
+            <input type="text" class="form-control" id="id" name="id"
+                   [(ngModel)]="economicResults.id" readonly />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="hermeneutApp.economicResults.economicPerformance" for="field_economicPerformance">Economic Performance</label>
+            <input type="number" class="form-control" name="economicPerformance" id="field_economicPerformance"
+                [(ngModel)]="economicResults.economicPerformance" />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="hermeneutApp.economicResults.intangibleDrivingEarnings" for="field_intangibleDrivingEarnings">Intangible Driving Earnings</label>
+            <input type="number" class="form-control" name="intangibleDrivingEarnings" id="field_intangibleDrivingEarnings"
+                [(ngModel)]="economicResults.intangibleDrivingEarnings" />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="hermeneutApp.economicResults.intangibleCapital" for="field_intangibleCapital">Intangible Capital</label>
+            <input type="number" class="form-control" name="intangibleCapital" id="field_intangibleCapital"
+                [(ngModel)]="economicResults.intangibleCapital" />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="hermeneutApp.economicResults.intangibleLossByAttacks" for="field_intangibleLossByAttacks">Intangible Loss By Attacks</label>
+            <input type="number" class="form-control" name="intangibleLossByAttacks" id="field_intangibleLossByAttacks"
+                [(ngModel)]="economicResults.intangibleLossByAttacks" />
+        </div>
+
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="hermeneutApp.economicResults.selfAssessment" for="field_selfAssessment">Self Assessment</label>
+            <select class="form-control" id="field_selfAssessment" name="selfAssessment" [(ngModel)]="economicResults.selfAssessment">
+                <option [ngValue]="null"></option>
+                <option [ngValue]="selfAssessmentOption.id === economicResults.selfAssessment?.id ? economicResults.selfAssessment : selfAssessmentOption" *ngFor="let selfAssessmentOption of selfassessments; trackBy: trackSelfAssessmentById">{{selfAssessmentOption.name}}</option>
+            </select>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">
+            <span class="fa fa-ban"></span>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+        <button type="submit" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+            <span class="fa fa-save"></span>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+    </div>
+</form>

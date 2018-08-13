@@ -1,0 +1,35 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "one-to-one",
+            "relationshipName": "selfAssessment",
+            "otherEntityName": "selfAssessment",
+            "otherEntityField": "name",
+            "ownerSide": true,
+            "otherEntityRelationshipName": "eBIT"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "year",
+            "javadoc": "2 (6 times)",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "value",
+            "fieldType": "Double"
+        },
+        {
+            "fieldName": "created",
+            "fieldType": "ZonedDateTime"
+        }
+    ],
+    "changelogDate": "20180813120727",
+    "entityTableName": "ebit",
+    "dto": "no",
+    "pagination": "no",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "angularJSSuffix": "mgm"
+}

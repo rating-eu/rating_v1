@@ -38,6 +38,11 @@
         {
             "fieldName": "estimated",
             "fieldType": "Boolean"
+        },
+        {
+            "fieldName": "economicValue",
+            "javadoc": "WP3",
+            "fieldType": "Double"
         }
     ],
     "changelogDate": "20180727084747",
