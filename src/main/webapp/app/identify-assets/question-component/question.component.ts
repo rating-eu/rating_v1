@@ -547,59 +547,45 @@ export class QuestionComponent implements OnInit, OnDestroy {
         switch (ans.name) {
             case MyCostType.BEFORE_THE_ATTACK_STATUS_RESTORATION.toString(): {
                 return CostType.BEFORE_THE_ATTACK_STATUS_RESTORATION;
-                break;
             }
             case MyCostType.INCREASED_SECURITY.toString(): {
                 return CostType.INCREASED_SECURITY;
-                break;
             }
             case MyCostType.LEGAL_LITIGATION_COSTS_AND_ATTORNEY_FEES.toString(): {
                 return CostType.LEGAL_LITIGATION_COSTS_AND_ATTORNEY_FEES;
-                break;
             }
             case MyCostType.NOTIFICATION_AND_REGULATORY_COMPLIANCE_COSTS.toString(): {
                 return CostType.NOTIFICATION_AND_REGULATORY_COMPLIANCE_COSTS;
-                break;
             }
             case MyCostType.LIABILITY_COSTS.toString(): {
                 return CostType.LIABILITY_COSTS;
-                break;
             }
             case MyCostType.CUSTOMER_BREACH_NOTIFICATION_COSTS.toString(): {
                 return CostType.CUSTOMER_BREACH_NOTIFICATION_COSTS;
-                break;
             }
             case MyCostType.POST_BREACH_CUSTOMER_PROTECTION_OR_CARE_COSTS.toString(): {
                 return CostType.POST_BREACH_CUSTOMER_PROTECTION_OR_CARE_COSTS;
-                break;
             }
             case MyCostType.LOST_CUSTOMERS_RECOVERY.toString(): {
                 return CostType.LOST_CUSTOMERS_RECOVERY;
-                break;
             }
             case MyCostType.PUBLIC_RELATIONS.toString(): {
                 return CostType.PUBLIC_RELATIONS;
-                break;
             }
             case MyCostType.INCREASE_OF_INSURANCE_PREMIUMS.toString(): {
                 return CostType.INCREASE_OF_INSURANCE_PREMIUMS;
-                break;
             }
             case MyCostType.LOSS_OF_REVENUES.toString(): {
                 return CostType.LOSS_OF_REVENUES;
-                break;
             }
             case MyCostType.INCREASED_COST_TO_RAISE_DEBT.toString(): {
                 return CostType.INCREASED_COST_TO_RAISE_DEBT;
-                break;
             }
             case MyCostType.VALUE_OF_LOST_OR_NOT_FULFILLED_CONTRACT_REVENUES.toString(): {
                 return CostType.VALUE_OF_LOST_OR_NOT_FULFILLED_CONTRACT_REVENUES;
-                break;
             }
             case MyCostType.LOST_OR_NON_FULFILLED_CONTRACTS.toString(): {
                 return CostType.LOST_OR_NON_FULFILLED_CONTRACTS;
-                break;
             }
         }
     }
