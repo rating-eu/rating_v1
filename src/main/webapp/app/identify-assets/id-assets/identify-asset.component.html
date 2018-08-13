@@ -178,16 +178,22 @@ step todo:
     </div>
 </div>
 -->
-<ng-container *ngIf="questions">
-    <ng-container *ngFor="let q of questions">
+<ng-container *ngIf="questionnariesStatus.lenght === 0">
+    <ng-container *ngIf="questions">
+        <ng-container *ngFor="let q of questions">
             <question-card
-                [question]="q"
-                [self]="mySelf"
-                [questionnaire]="questionnaries[0]"
-                [questionRenderType]="q.name"></question-card>
+            [question]="q"
+            [self]="mySelf"
+            [questionnaire]="questionnaries[0]"
+            [questionRenderType]="q.name"></question-card>
+        </ng-container>
+        <button class="btn btn-primary" (click)="sendAnswerAndSaveMyAssets()">submit</button>
     </ng-container>
-    <button class="btn btn-primary" (click)="sendAnswerAndSaveMyAssets()">submit</button>
 </ng-container>
+<ng-container *ngIf="questionnariesStatus.lenght > 0 && questionnariesStatus[0] === 'FULL'">
+    <p>You already completed the questionnaire!</p>
+</ng-container>
+
 <!--
 <ng-container *ngIf="questions && myAnswers.lenght > 0">
     View

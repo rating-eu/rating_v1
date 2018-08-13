@@ -94,15 +94,14 @@ export class IdentifyAssetComponent implements OnInit, OnDestroy {
             } else if (res && res instanceof Array) {
                 this.questionnaries = res;
             }
-            // TODO a regime rimuovere il controllo sull'enum ADMIN
             if (this.account['authorities'].includes(MyRole.ROLE_CISO)) {
                 for (const qs of this.questionnaries) {
                     // controllo esistenza questionnaire status
-                    // TODO a regime usare l'enum corretto ROLE_CISO
                     this.questionnaireStatusService.getByRoleSelfAssessmentAndQuestionnaire(MyRole.ROLE_CISO.toString(), this.mySelfAssessmentService.getSelfAssessment().id, qs.id)
                         .toPromise()
                         .then((status) => {
                             if (status.body) {
+                                console.log('STATUS:' + status.body.status);
                                 this.questionnariesStatus.push(status.body as QuestionnaireStatusMgm);
                                 this.myAnswerService.getAllByQuestionnaireStatusID(status.body.id)
                                     .toPromise().then((answers) => {
@@ -148,7 +147,6 @@ export class IdentifyAssetComponent implements OnInit, OnDestroy {
         status.modified = dateString;
         status.user = this.user;
         status.status = Status.FULL;
-        /*
         this.questionnaireStatusServices.create(status).toPromise().then((receivedStatus) => {
             if (receivedStatus.body) {
                 status = receivedStatus.body;
@@ -162,7 +160,6 @@ export class IdentifyAssetComponent implements OnInit, OnDestroy {
                 });
             }
         });
-        */
         const bundle: AssetsOneShot = new AssetsOneShot();
         bundle.myAssets = this.myAssets;
         bundle.directAssets = this.myDirectAssets;
