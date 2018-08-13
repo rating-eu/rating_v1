@@ -7,6 +7,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import javax.persistence.*;
 
 import org.springframework.data.elasticsearch.annotations.Document;
+
 import java.io.Serializable;
 import java.time.ZonedDateTime;
 import java.util.Objects;
@@ -21,6 +22,16 @@ import java.util.Objects;
 public class EBIT implements Serializable {
 
     private static final long serialVersionUID = 1L;
+
+    public EBIT() {
+    }
+
+    public EBIT(Integer year, Double value, ZonedDateTime created, SelfAssessment selfAssessment) {
+        this.year = year;
+        this.value = value;
+        this.created = created;
+        this.selfAssessment = selfAssessment;
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
