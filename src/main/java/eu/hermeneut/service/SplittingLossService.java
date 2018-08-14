@@ -1,5 +1,6 @@
 package eu.hermeneut.service;
 
+import eu.hermeneut.domain.EconomicResults;
 import eu.hermeneut.domain.SplittingLoss;
 import java.util.List;
 
@@ -42,8 +43,10 @@ public interface SplittingLossService {
      * Search for the splittingLoss corresponding to the query.
      *
      * @param query the query of the search
-     * 
+     *
      * @return the list of entities
      */
     List<SplittingLoss> search(String query);
+
+    List<SplittingLoss> findAllBySelfAssessmentID(Long selfAssessmentID);
 }

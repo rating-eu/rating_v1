@@ -1,5 +1,6 @@
 package eu.hermeneut.service.impl;
 
+import eu.hermeneut.domain.EconomicResults;
 import eu.hermeneut.service.EconomicCoefficientsService;
 import eu.hermeneut.domain.EconomicCoefficients;
 import eu.hermeneut.repository.EconomicCoefficientsRepository;
@@ -97,5 +98,11 @@ public class EconomicCoefficientsServiceImpl implements EconomicCoefficientsServ
         return StreamSupport
             .stream(economicCoefficientsSearchRepository.search(queryStringQuery(query)).spliterator(), false)
             .collect(Collectors.toList());
+    }
+
+    @Override
+    public EconomicCoefficients findOneBySelfAssessmentID(Long selfAssessmentID) {
+        log.debug("Request to get EconomicCoefficients by SelfAssessmentID: {}", selfAssessmentID);
+        return economicCoefficientsRepository.findOneBySelfAssessmentID(selfAssessmentID);
     }
 }
