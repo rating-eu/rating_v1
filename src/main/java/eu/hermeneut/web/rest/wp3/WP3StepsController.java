@@ -329,6 +329,8 @@ public class WP3StepsController {
             splittingLosses.add(splittingLoss);
         }
 
+        //Persist the NEW SplittingLosses
+        splittingLosses = this.splittingLossService.save(splittingLosses);
 
         WP3OutputBundle wp3OutputBundle = new WP3OutputBundle();
         wp3OutputBundle.setEconomicResults(existingEconomicResults);

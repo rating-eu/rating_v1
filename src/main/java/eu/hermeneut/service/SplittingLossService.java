@@ -51,4 +51,6 @@ public interface SplittingLossService {
     List<SplittingLoss> search(String query);
 
     List<SplittingLoss> findAllBySelfAssessmentID(Long selfAssessmentID);
+
+    List<SplittingLoss> save(List<SplittingLoss> splittingLosses);
 }

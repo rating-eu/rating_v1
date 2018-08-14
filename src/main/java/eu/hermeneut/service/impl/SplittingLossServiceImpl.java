@@ -47,6 +47,14 @@ public class SplittingLossServiceImpl implements SplittingLossService {
         return result;
     }
 
+    @Override
+    public List<SplittingLoss> save(List<SplittingLoss> splittingLosses) {
+        log.debug("Request to save SplittingLosses : {}", splittingLosses.size());
+        List<SplittingLoss> result = splittingLossRepository.save(splittingLosses);
+        splittingLossSearchRepository.save(result);
+        return result;
+    }
+
     /**
      * Get all the splittingLosses.
      *
