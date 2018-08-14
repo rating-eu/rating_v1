@@ -199,4 +199,65 @@ public class WP3StepsController {
 
         return wp3OutputBundle;
     }
+
+    @PostMapping("{selfAssessmentID}/wp3/step-three")
+    public WP3OutputBundle stepThreeIntangibleLossByAttacks(@PathVariable("selfAssessmentID") Long selfAssessmentID, @RequestBody WP3InputBundle wp3InputBundle) throws NullInputException, NotFoundException, IllegalInputException {
+        SelfAssessment selfAssessment = null;
+
+        if (selfAssessmentID != null) {
+            selfAssessment = this.selfAssessmentService.findOne(selfAssessmentID);
+        } else {
+            throw new NullInputException("The selfAssessmentID can NOT be NULL!");
+        }
+
+        if (selfAssessment == null) {
+            throw new NotFoundException("The selfAssessment with ID: " + selfAssessmentID + " was not found!");
+        }
+
+        if (wp3InputBundle == null) {
+            throw new IllegalInputException("WP3InputBundle can NOT be NULL!");
+        }
+
+        EconomicCoefficients economicCoefficients = wp3InputBundle.getEconomicCoefficients();
+
+        if (economicCoefficients == null) {
+            throw new IllegalInputException("EconomicCoefficients can NOT be NULL!");
+        }
+
+        double lossOfIntangiblePercentage = economicCoefficients.getLossOfIntangible();
+
+        EconomicCoefficients existingEconomicCoefficients = this.economicCoefficientsService.findOneBySelfAssessmentID(selfAssessmentID);
+
+        if (existingEconomicCoefficients == null) {
+            throw new NotFoundException("EconomicCoefficients NOT FOUND");
+        } else {
+            existingEconomicCoefficients.setLossOfIntangible(lossOfIntangiblePercentage);
+
+            //Update
+            this.economicCoefficientsService.save(existingEconomicCoefficients);
+        }
+
+        EconomicResults existingEconomicResults = this.economicResultsService.findOneBySelfAssessmentID(selfAssessmentID);
+
+        if (existingEconomicResults == null) {
+            throw new NotFoundException("The EconomicResults for SelfAssessment " + selfAssessmentID + " was not found!");
+        }
+
+        double intangibleCapital = existingEconomicResults.getIntangibleCapital();
+
+        double intangibleLossByAttacks = Calculator.calculateIntangibleLossByAttacks(intangibleCapital, lossOfIntangiblePercentage);
+
+        //Update field
+        existingEconomicResults.setIntangibleLossByAttacks(intangibleLossByAttacks);
+
+        //update entity
+        this.economicResultsService.save(existingEconomicResults);
+
+        //OUTPUT
+        WP3OutputBundle wp3OutputBundle = new WP3OutputBundle();
+        wp3OutputBundle.setEconomicCoefficients(existingEconomicCoefficients);
+        wp3OutputBundle.setEconomicResults(existingEconomicResults);
+
+        return wp3OutputBundle;
+    }
 }

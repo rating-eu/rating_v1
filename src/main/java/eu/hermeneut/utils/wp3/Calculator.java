@@ -101,4 +101,8 @@ public class Calculator {
 
         return intangibleCapital;
     }
+
+    public static double calculateIntangibleLossByAttacks(double intangibleCapital, double lossOfIntangiblePercentage) {
+        return intangibleCapital * lossOfIntangiblePercentage / 100;
+    }
 }
