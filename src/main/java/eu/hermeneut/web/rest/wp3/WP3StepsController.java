@@ -9,14 +9,12 @@ import eu.hermeneut.domain.wp3.WP3OutputBundle;
 import eu.hermeneut.exceptions.IllegalInputException;
 import eu.hermeneut.exceptions.NotFoundException;
 import eu.hermeneut.exceptions.NullInputException;
-import eu.hermeneut.service.EconomicCoefficientsService;
-import eu.hermeneut.service.EconomicResultsService;
-import eu.hermeneut.service.SelfAssessmentService;
-import eu.hermeneut.service.SplittingLossService;
+import eu.hermeneut.service.*;
 import eu.hermeneut.utils.wp3.Calculator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,6 +25,9 @@ public class WP3StepsController {
     public static final double DEFAULT_LOSS_OF_INTANGIBLE = 18.29;
     @Autowired
     private SelfAssessmentService selfAssessmentService;
+
+    @Autowired
+    private EBITService ebitService;
 
     @Autowired
     private EconomicResultsService economicResultsService;
@@ -62,6 +63,17 @@ public class WP3StepsController {
         } else if (ebits.size() != 6) {
             throw new IllegalInputException("The number of ebits MUST be EXACTLY 6!");
         }
+
+        ZonedDateTime now = ZonedDateTime.now();
+
+        for (EBIT ebit : ebits) {
+            ebit.setId(null);
+            ebit.setSelfAssessment(selfAssessment);
+            ebit.setCreated(now);
+        }
+
+        //Save the EBITs
+        this.ebitService.save(ebits);
 
         EconomicCoefficients economicCoefficients = wp3InputBundle.getEconomicCoefficients();
 
