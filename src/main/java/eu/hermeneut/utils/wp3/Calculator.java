@@ -81,15 +81,21 @@ public class Calculator {
         //=======Intangible Driving Earnings=======
         double intangibleDrivingEarnings = economicPerformance;
 
+        double physicalAssetsValuation = 0;
+        double financialAssetsValuation = 0;
+
         //Physical Assets
         for (MyAsset physicalAsset : physicalAssets) {
-            intangibleDrivingEarnings -= physicalAssetsReturn * physicalAsset.getEconomicValue();
+            physicalAssetsValuation += physicalAsset.getEconomicValue();
         }
 
         //Financial Assets
         for (MyAsset financialAsset : financialAssets) {
-            intangibleDrivingEarnings -= financialAssetsReturn * financialAsset.getEconomicValue();
+            financialAssetsValuation += financialAsset.getEconomicValue();
         }
+
+        intangibleDrivingEarnings -= physicalAssetsReturn * physicalAssetsValuation;
+        intangibleDrivingEarnings -= financialAssetsReturn * financialAssetsValuation;
 
         return intangibleDrivingEarnings;
     }
