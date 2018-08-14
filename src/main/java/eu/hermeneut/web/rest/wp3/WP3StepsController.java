@@ -19,7 +19,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api")
-public class WP3StepOneController {
+public class WP3StepsController {
 
     public static final double DEFAULT_LOSS_OF_INTANGIBLE = 18.29;
     @Autowired
@@ -47,6 +47,10 @@ public class WP3StepOneController {
 
         if (selfAssessment == null) {
             throw new NotFoundException("The selfAssessment with ID: " + selfAssessmentID + " was not found!");
+        }
+
+        if (wp3InputBundle == null) {
+            throw new IllegalInputException("WP3InputBundle can NOT be NULL!");
         }
 
         List<EBIT> ebits = wp3InputBundle.getEbits();
@@ -113,6 +117,85 @@ public class WP3StepOneController {
         wp3OutputBundle.setEconomicResults(existingEconomicResults);
         wp3OutputBundle.setEconomicCoefficients(existingEconomicCoefficients);
         wp3OutputBundle.setSplittingLosses(existingSplittingLosses);
+
+        return wp3OutputBundle;
+    }
+
+    @PostMapping("{selfAssessmentID}/wp3/step-two")
+    public WP3OutputBundle stepTwoIntangibleDrivingEarningsAndCapital(@PathVariable("selfAssessmentID") Long selfAssessmentID, @RequestBody WP3InputBundle wp3InputBundle) throws NullInputException, NotFoundException, IllegalInputException {
+        SelfAssessment selfAssessment = null;
+
+        if (selfAssessmentID != null) {
+            selfAssessment = this.selfAssessmentService.findOne(selfAssessmentID);
+        } else {
+            throw new NullInputException("The selfAssessmentID can NOT be NULL!");
+        }
+
+        if (selfAssessment == null) {
+            throw new NotFoundException("The selfAssessment with ID: " + selfAssessmentID + " was not found!");
+        }
+
+        if (wp3InputBundle == null) {
+            throw new IllegalInputException("WP3InputBundle can NOT be NULL!");
+        }
+
+        List<MyAsset> myAssets = wp3InputBundle.getMyAssets();
+
+        if (myAssets == null) {
+            throw new IllegalInputException("MyAssets can NOT be NULL!");
+        }
+
+        if (myAssets.size() == 0) {
+            throw new IllegalInputException("MyAssets can NOT have size equal to ZERO!");
+        }
+
+        EconomicCoefficients economicCoefficients = wp3InputBundle.getEconomicCoefficients();
+
+        if (economicCoefficients == null) {
+            throw new IllegalInputException("EconomicCoefficients can NOT be NULL!");
+        }
+
+        double physicalAssetsReturn = economicCoefficients.getPhysicalAssetsReturn();
+        double financialAssetsReturn = economicCoefficients.getFinancialAssetsReturn();
+
+        EconomicCoefficients existingEconomicCoefficients = this.economicCoefficientsService.findOneBySelfAssessmentID(selfAssessmentID);
+
+        double discountingRate;
+
+        if (existingEconomicCoefficients == null) {
+            throw new NotFoundException("EconomicCoefficients NOT FOUND");
+        } else {
+            existingEconomicCoefficients.setPhysicalAssetsReturn(physicalAssetsReturn);
+            existingEconomicCoefficients.setFinancialAssetsReturn(financialAssetsReturn);
+            discountingRate = existingEconomicCoefficients.getDiscountingRate();
+
+            //Update
+            this.economicCoefficientsService.save(existingEconomicCoefficients);
+        }
+
+        EconomicResults existingEconomicResults = this.economicResultsService.findOneBySelfAssessmentID(selfAssessmentID);
+
+        if (existingEconomicResults == null) {
+            throw new NotFoundException("The EconomicResults for SelfAssessment " + selfAssessmentID + " was not found!");
+        }
+
+        double economicPerformance = existingEconomicResults.getEconomicPerformance();
+
+        double intangibleDriningEarnings = Calculator.calculateIntangibleDrivingEarnings(economicPerformance, physicalAssetsReturn, financialAssetsReturn, myAssets);
+
+        double intangibleCapital = Calculator.calculateIntangibleCapital(intangibleDriningEarnings, discountingRate);
+
+        //Update fields
+        existingEconomicResults.setIntangibleDrivingEarnings(intangibleDriningEarnings);
+        existingEconomicResults.setIntangibleCapital(intangibleCapital);
+
+        //Update entity
+        this.economicResultsService.save(existingEconomicResults);
+
+        //OUTPUT
+        WP3OutputBundle wp3OutputBundle = new WP3OutputBundle();
+        wp3OutputBundle.setEconomicCoefficients(existingEconomicCoefficients);
+        wp3OutputBundle.setEconomicResults(existingEconomicResults);
 
         return wp3OutputBundle;
     }
