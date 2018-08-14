@@ -2,8 +2,6 @@ package eu.hermeneut.utils.wp3;
 
 import eu.hermeneut.domain.EBIT;
 
-import java.time.ZonedDateTime;
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
@@ -49,22 +47,5 @@ public class Calculator {
         economicPerformance /= 6;
 
         return economicPerformance;
-    }
-
-    public static void main(String[] args) {
-        ZonedDateTime now = ZonedDateTime.now();
-
-        List<EBIT> ebits = new ArrayList<>();
-        ebits.add(new EBIT(2011, 72515.00, now, null));
-        ebits.add(new EBIT(2012, 61372.00, now, null));
-        ebits.add(new EBIT(2013, 64089.00, now, null));
-        ebits.add(new EBIT(2014, 69718.70, now, null));
-        ebits.add(new EBIT(2015, 71449.16, now, null));
-        ebits.add(new EBIT(2016, 69693.278, now, null));
-
-        double discountingRate = 0;
-
-        double economicPerformance = calculateEconomicPerformance(ebits, discountingRate);
-        System.out.println("EconomicPerformance: " + economicPerformance);
     }
 }
