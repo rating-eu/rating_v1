@@ -84,6 +84,12 @@ public class SplittingLossServiceImpl implements SplittingLossService {
         splittingLossSearchRepository.delete(id);
     }
 
+    public void delete(List<SplittingLoss> splittingLosses) {
+        log.debug("Request to delete SplittingLosses : {}", splittingLosses);
+        splittingLossRepository.delete(splittingLosses);
+        splittingLossSearchRepository.delete(splittingLosses);
+    }
+
     /**
      * Search for the splittingLoss corresponding to the query.
      *
