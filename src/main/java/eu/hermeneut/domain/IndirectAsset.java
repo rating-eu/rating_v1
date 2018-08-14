@@ -5,8 +5,10 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 import org.springframework.data.elasticsearch.annotations.Document;
+
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
@@ -28,11 +30,12 @@ public class IndirectAsset implements Serializable {
     @SequenceGenerator(name = "sequenceGenerator")
     private Long id;
 
+    @NotNull
     @ManyToOne
     private DirectAsset directAsset;
 
+    @NotNull
     @OneToOne
-    @JoinColumn(unique = true)
     private MyAsset myAsset;
 
     @OneToMany(mappedBy = "indirectAsset", fetch = FetchType.EAGER)

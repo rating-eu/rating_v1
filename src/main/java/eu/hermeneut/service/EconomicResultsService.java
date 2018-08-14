@@ -42,8 +42,10 @@ public interface EconomicResultsService {
      * Search for the economicResults corresponding to the query.
      *
      * @param query the query of the search
-     * 
+     *
      * @return the list of entities
      */
     List<EconomicResults> search(String query);
+
+    EconomicResults findOneBySelfAssessmentID(Long selfAssessmentID);
 }

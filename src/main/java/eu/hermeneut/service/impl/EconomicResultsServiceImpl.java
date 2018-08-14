@@ -98,4 +98,10 @@ public class EconomicResultsServiceImpl implements EconomicResultsService {
             .stream(economicResultsSearchRepository.search(queryStringQuery(query)).spliterator(), false)
             .collect(Collectors.toList());
     }
+
+    @Override
+    public EconomicResults findOneBySelfAssessmentID(Long selfAssessmentID) {
+        log.debug("Request to get EconomicResults by selfAssessmentID: {}", selfAssessmentID);
+        return economicResultsRepository.findOneBySelfAssessmentID(selfAssessmentID);
+    }
 }

@@ -89,7 +89,21 @@ public class EconomicResultsResource {
     public List<EconomicResults> getAllEconomicResults() {
         log.debug("REST request to get all EconomicResults");
         return economicResultsService.findAll();
-        }
+    }
+
+    /**
+     * GET  /economic-results/:id : get the "id" economicResults.
+     *
+     * @param selfAssessmentID the id of the SelfAssessment of the economicResults to retrieve
+     * @return the ResponseEntity with status 200 (OK) and with body the economicResults, or with status 404 (Not Found)
+     */
+    @GetMapping("/{selfAssessmentID}/economic-results")
+    @Timed
+    public ResponseEntity<EconomicResults> getEconomicResultsBySelfAssessmentID(@PathVariable Long selfAssessmentID) {
+        log.debug("REST request to get EconomicResults by selfAssessmentID: {}", selfAssessmentID);
+        EconomicResults economicResults = economicResultsService.findOneBySelfAssessmentID(selfAssessmentID);
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(economicResults));
+    }
 
     /**
      * GET  /economic-results/:id : get the "id" economicResults.
