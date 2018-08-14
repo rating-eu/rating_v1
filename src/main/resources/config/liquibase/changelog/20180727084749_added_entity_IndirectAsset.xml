@@ -22,14 +22,14 @@
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="direct_asset_id" type="bigint">
-                <constraints nullable="true" />
+                <constraints nullable="false"/>
             </column>
             <column name="my_asset_id" type="bigint">
-                <constraints unique="true" nullable="true" />
+                <constraints nullable="false"/>
             </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
-        
+
     </changeSet>
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here, do not remove-->
 </databaseChangeLog>
