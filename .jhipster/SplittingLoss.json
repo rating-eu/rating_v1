@@ -1,0 +1,40 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "one-to-one",
+            "relationshipName": "selfAssessment",
+            "otherEntityName": "selfAssessment",
+            "otherEntityField": "name",
+            "ownerSide": true,
+            "otherEntityRelationshipName": "splittingLoss"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "sectorType",
+            "fieldType": "SectorType",
+            "fieldValues": "GLOBAL,FINANCE_AND_INSURANCE,HEALTH_CARE_AND_SOCIAL_ASSISTANCE,INFORMATION,PROFESSIONAL_SCIENTIFIC_AND_TECHNICAL_SERVICE"
+        },
+        {
+            "fieldName": "categoryType",
+            "fieldType": "CategoryType",
+            "fieldValues": "IP,KEY_COMP,ORG_CAPITAL"
+        },
+        {
+            "fieldName": "lossPercentage",
+            "fieldType": "Double"
+        },
+        {
+            "fieldName": "loss",
+            "fieldType": "Double"
+        }
+    ],
+    "changelogDate": "20180813120729",
+    "entityTableName": "splitting_loss",
+    "dto": "no",
+    "pagination": "no",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "angularJSSuffix": "mgm"
+}

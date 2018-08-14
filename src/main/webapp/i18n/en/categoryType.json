@@ -1,0 +1,10 @@
+{
+    "hermeneutApp": {
+        "CategoryType" : {
+            "null": "",
+            "IP": "IP",
+            "KEY_COMP": "KEY_COMP",
+            "ORG_CAPITAL": "ORG_CAPITAL"
+        }
+    }
+}

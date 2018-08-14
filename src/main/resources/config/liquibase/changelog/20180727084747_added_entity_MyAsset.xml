@@ -32,6 +32,10 @@
             <column name="estimated" type="boolean">
                 <constraints nullable="true" />
             </column>
+
+            <column name="economic_value" type="double">
+                <constraints nullable="true" />
+            </column>
             <column name="asset_id" type="bigint">
             </column>            <column name="self_assessment_id" type="bigint">
             </column>            <column name="questionnaire_id" type="bigint">

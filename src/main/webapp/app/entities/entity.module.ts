@@ -23,6 +23,10 @@ import {HermeneutMyAssetMgmModule} from './my-asset-mgm/my-asset-mgm.module';
 import {HermeneutDirectAssetMgmModule} from './direct-asset-mgm/direct-asset-mgm.module';
 import {HermeneutIndirectAssetMgmModule} from './indirect-asset-mgm/indirect-asset-mgm.module';
 import {HermeneutAttackCostMgmModule} from './attack-cost-mgm/attack-cost-mgm.module';
+import { HermeneutEconomicCoefficientsMgmModule } from './economic-coefficients-mgm/economic-coefficients-mgm.module';
+import { HermeneutEBITMgmModule } from './ebit-mgm/ebit-mgm.module';
+import { HermeneutEconomicResultsMgmModule } from './economic-results-mgm/economic-results-mgm.module';
+import { HermeneutSplittingLossMgmModule } from './splitting-loss-mgm/splitting-loss-mgm.module';
 /* jhipster-needle-add-entity-module-import - JHipster will add entity modules imports here */
 
 @NgModule({
@@ -51,6 +55,10 @@ import {HermeneutAttackCostMgmModule} from './attack-cost-mgm/attack-cost-mgm.mo
         HermeneutDirectAssetMgmModule,
         HermeneutIndirectAssetMgmModule,
         HermeneutAttackCostMgmModule,
+        HermeneutEconomicCoefficientsMgmModule,
+        HermeneutEBITMgmModule,
+        HermeneutEconomicResultsMgmModule,
+        HermeneutSplittingLossMgmModule,
         /* jhipster-needle-add-entity-module - JHipster will add entity modules here */
     ],
     declarations: [],

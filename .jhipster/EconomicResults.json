@@ -1,0 +1,38 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "one-to-one",
+            "relationshipName": "selfAssessment",
+            "otherEntityName": "selfAssessment",
+            "otherEntityField": "name",
+            "ownerSide": true,
+            "otherEntityRelationshipName": "economicResults"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "economicPerformance",
+            "fieldType": "Double"
+        },
+        {
+            "fieldName": "intangibleDrivingEarnings",
+            "fieldType": "Double"
+        },
+        {
+            "fieldName": "intangibleCapital",
+            "fieldType": "Double"
+        },
+        {
+            "fieldName": "intangibleLossByAttacks",
+            "fieldType": "Double"
+        }
+    ],
+    "changelogDate": "20180813120728",
+    "entityTableName": "economic_results",
+    "dto": "no",
+    "pagination": "no",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "angularJSSuffix": "mgm"
+}

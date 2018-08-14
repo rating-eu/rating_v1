@@ -1,0 +1,32 @@
+
+{
+    "hermeneutApp": {
+        "economicCoefficients" : {
+            "home": {
+                "title": "EconomicCoefficients",
+                "createLabel": "Genera un nuovo Economic Coefficients",
+                "createOrEditLabel": "Genera o modifica un Economic Coefficients",
+                "search": "Cerca Economic Coefficients"
+            },
+            "created": "&Egrave; stato generato un nuovo Economic Coefficients con identificatore {{ param }}",
+            "updated": "&Egrave; stato aggiornato Economic Coefficients identificato da {{ param }}",
+            "deleted": "&Egrave; stato eliminato Economic Coefficients con identificatore {{ param }}",
+            "delete": {
+                "question": "Sei sicuro di volere eliminare Economic Coefficients {{ id }}?"
+            },
+            "detail": {
+                "title": "Economic Coefficients"
+            },
+            "discountingRate": "Discounting Rate",
+            "physicalAssetsReturn": "Physical Assets Return",
+            "financialAssetsReturn": "Financial Assets Return",
+            "lossOfIntangible": "Loss Of Intangible",
+            "selfAssessment": "Self Assessment",
+            "help": {
+                "physicalAssetsReturn": "1",
+                "financialAssetsReturn": "Fixed Assets Return",
+                "lossOfIntangible": "Current Assets Return"
+            }
+        }
+    }
+}

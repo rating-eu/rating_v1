@@ -12,6 +12,7 @@ export class MyAssetMgm implements BaseEntity {
         public asset?: AssetMgm,
         public selfAssessment?: SelfAssessmentMgm,
         public questionnaire?: QuestionnaireMgm,
+        public economicValue?: number,
     ) {
     }
 }

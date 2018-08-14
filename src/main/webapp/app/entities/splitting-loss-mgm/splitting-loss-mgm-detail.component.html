@@ -1,0 +1,44 @@
+
+<div *ngIf="splittingLoss">
+    <h2><span jhiTranslate="hermeneutApp.splittingLoss.detail.title">Splitting Loss</span> {{splittingLoss.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="hermeneutApp.splittingLoss.sectorType">Sector Type</span></dt>
+        <dd>
+            <span jhiTranslate="{{'hermeneutApp.SectorType.' + splittingLoss.sectorType}}">{{splittingLoss.sectorType}}</span>
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.splittingLoss.categoryType">Category Type</span></dt>
+        <dd>
+            <span jhiTranslate="{{'hermeneutApp.CategoryType.' + splittingLoss.categoryType}}">{{splittingLoss.categoryType}}</span>
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.splittingLoss.lossPercentage">Loss Percentage</span></dt>
+        <dd>
+            <span>{{splittingLoss.lossPercentage}}</span>
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.splittingLoss.loss">Loss</span></dt>
+        <dd>
+            <span>{{splittingLoss.loss}}</span>
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.splittingLoss.selfAssessment">Self Assessment</span></dt>
+        <dd>
+            <div *ngIf="splittingLoss.selfAssessment">
+                <a [routerLink]="['/self-assessment-mgm', splittingLoss.selfAssessment?.id]">{{splittingLoss.selfAssessment?.name}}</a>
+            </div>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'splitting-loss-mgm/'+ splittingLoss.id + '/edit'} }]"
+            replaceUrl="true"
+            queryParamsHandling="merge"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+    </button>
+</div>
