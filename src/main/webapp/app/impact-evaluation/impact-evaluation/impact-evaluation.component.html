@@ -1,90 +1,155 @@
-<div *ngIf="witchStep === 1" class="container">
-  <div class="row">
-    <div class="col-md-12">
-      <form [formGroup]="impactFormStepOne">
+<ng-container [ngSwitch]="witchStep">
+  <div *ngSwitchCase="1" class="container">
+    <div class="row">
+      <div class="col-md-12">
+        <form [formGroup]="impactFormStepOne">
           <div class="input-group" style="margin-bottom: 10px">
-              <input type="text" class="form-control" placeholder="Discounting rate"
-                  aria-label="discounting" aria-describedby="basic-addon2" formControlName="discountingRate">
+            <input type="text" class="form-control" placeholder="Discounting rate" aria-label="discounting" aria-describedby="basic-addon2"
+              formControlName="discountingRate">
           </div>
           <div class="input-group" style="margin-bottom: 10px">
-              <input type="text" class="form-control" placeholder="{{ebitLabel[0]}}"
-                  aria-label="Ebit1" aria-describedby="basic-addon2" formControlName="ebit1">
+            <input type="text" class="form-control" placeholder="{{ebitLabel[0]}}" aria-label="Ebit1" aria-describedby="basic-addon2"
+              formControlName="ebit1">
           </div>
           <div class="input-group" style="margin-bottom: 10px">
-              <input type="text" class="form-control" placeholder="{{ebitLabel[1]}}"
-                  aria-label="Ebit2" aria-describedby="basic-addon2" formControlName="ebit2">
+            <input type="text" class="form-control" placeholder="{{ebitLabel[1]}}" aria-label="Ebit2" aria-describedby="basic-addon2"
+              formControlName="ebit2">
           </div>
           <div class="input-group" style="margin-bottom: 10px">
-              <input type="text" class="form-control" placeholder="{{ebitLabel[2]}}"
-                  aria-label="Ebit3" aria-describedby="basic-addon2" formControlName="ebit3">
+            <input type="text" class="form-control" placeholder="{{ebitLabel[2]}}" aria-label="Ebit3" aria-describedby="basic-addon2"
+              formControlName="ebit3">
           </div>
           <div class="input-group" style="margin-bottom: 10px">
-              <input type="text" class="form-control" placeholder="{{ebitLabel[3]}}"
-                  aria-label="Ebit4" aria-describedby="basic-addon2" formControlName="ebit4">
+            <input type="text" class="form-control" placeholder="{{ebitLabel[3]}}" aria-label="Ebit4" aria-describedby="basic-addon2"
+              formControlName="ebit4">
           </div>
           <div class="input-group" style="margin-bottom: 10px">
-              <input type="text" class="form-control" placeholder="{{ebitLabel[4]}}"
-                  aria-label="Ebit5" aria-describedby="basic-addon2" formControlName="ebit5">
+            <input type="text" class="form-control" placeholder="{{ebitLabel[4]}}" aria-label="Ebit5" aria-describedby="basic-addon2"
+              formControlName="ebit5">
           </div>
           <div class="input-group" style="margin-bottom: 10px">
-              <input type="text" class="form-control" placeholder="{{ebitLabel[5]}}"
-                  aria-label="Ebit6" aria-describedby="basic-addon2" formControlName="ebit6">
+            <input type="text" class="form-control" placeholder="{{ebitLabel[5]}}" aria-label="Ebit6" aria-describedby="basic-addon2"
+              formControlName="ebit6">
           </div>
+        </form>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <button class="btn btn-primary float-right" style="margin-left: 10px" (click)="selectStep(2)">Next</button>
+        <button class="btn btn-secondary float-right" (click)="false">Prev</button>
+      </div>
+    </div>
+  </div>
+  <div *ngSwitchCase="2" class="container">
+    <div class="row">
+      <p>
+        <b>Evaluated Economic Performance = </b>{{economicPerformance}}</p>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <form [formGroup]="impactFormStepTwo">
+          <div class="row">
+            <div class="col-md-6">
+              <div class="input-group" style="margin-bottom: 10px">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" id="">Physical Assets Return</span>
+                </div>
+                <input type="text" class="form-control" placeholder="Physical Assets Return" aria-label="physicalAssetsReturn" aria-describedby="basic-addon2"
+                  formControlName="physicalAssetsReturn">
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="input-group" style="margin-bottom: 10px">
+                <div class="input-group-prepend">
+                  <span class="input-group-text" id="">Financial Assets Return</span>
+                </div>
+                <input type="text" class="form-control" placeholder="Financial Assets Return" aria-label="financialAssetsReturn" aria-describedby="basic-addon2"
+                  formControlName="financialAssetsReturn">
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <h6>Physical Assets</h6>
+        <ng-container *ngFor="let asset of physicalAssetsAkaFixed; let i = index">
+          <div class="input-group" style="margin-bottom: 10px">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="">Valutation of {{asset.asset.name}}</span>
+            </div>
+            <input type="text" class="form-control" placeholder="Insert economic valutation of {{asset.asset.name}}" aria-label="economicValue"
+              aria-describedby="basic-addon2" (change)="setEconomicValue(asset, $event.target.value)" pattern="[0-9]+">
+          </div>
+        </ng-container>
+      </div>
+      <div class="col-md-6">
+        <h6>Financial Assets</h6>
+        <ng-container *ngFor="let asset of financialAssetsAkaCurrent; let i = index">
+          <div class="input-group" style="margin-bottom: 10px">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="">Valutation of {{asset.asset.name}}</span>
+            </div>
+            <input type="text" class="form-control" placeholder="Insert economic valutation of {{asset.asset.name}}" aria-label="economicValue"
+              aria-describedby="basic-addon2" (change)="setEconomicValue(asset, $event.target.value)" pattern="[0-9]+">
+          </div>
+        </ng-container>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <button class="btn btn-primary float-right" style="margin-left: 10px" (click)="selectStep(3)">Next</button>
+        <button class="btn btn-light float-right" (click)="selectStep(1)">Prev</button>
+      </div>
+    </div>
+  </div>
+  <div *ngSwitchCase="3" class="container">
+    <div class="row">
+      <p>
+        <b>Intangible Driving Earnings = </b>{{intangibleDrivingEarnings}}</p>
+      <p>
+        <br>
+        <b>Intangible Capital = </b>{{intangibleCapitalValuation}}</p>
+    </div>
+    <div class="row">
+      <form [formGroup]="impactFormStepThree">
+        <div class="col-md-12">
+          <div class="input-group" style="margin-bottom: 10px">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="">Loss of intangible percentage</span>
+            </div>
+            <input type="text" class="form-control" placeholder="Loss of intangible percentage" aria-label="lossOfIntangiblePercentage"
+              aria-describedby="basic-addon2" formControlName="lossOfIntangiblePercentage">
+          </div>
+        </div>
       </form>
     </div>
-  </div>
-  <div class="row">
-    <div class="col-md-12">
-      <button class="btn btn-primary float-right" style="margin-left: 10px" (click)="selectStep(2)">Next</button>
-      <button class="btn btn-secondary float-right" (click)="false">Prev</button>
+    <div class="row">
+      <div class="col-md-12">
+        <button class="btn btn-primary float-right" style="margin-left: 10px" (click)="selectStep(4)">Next</button>
+        <button class="btn btn-light float-right" (click)="selectStep(2)">Prev</button>
+      </div>
     </div>
   </div>
-</div>
-<div *ngIf="witchStep === 2" class="container">
-  <div class="row">
-    PREVIOUS STEP RESULTS
-  </div>
-  <div class="row">
-    <p>STEP 2</p>
-    CONTENT
-  </div>
-  <div class="row">
-    <div class="col-md-12">
-      <button class="btn btn-primary float-right" style="margin-left: 10px" (click)="selectStep(3)">Next</button>
-      <button class="btn btn-light float-right" (click)="selectStep(1)">Prev</button>
+  <div *ngSwitchCase="4" class="container">
+    <div class="row">
+      <p>
+        <b>Loss On Intangible Assets Due To Cyberattacks = </b>{{lossOnintangibleAssetsDueToCyberattacks}}</p>
+    </div>
+    <div class="row">
+      <p>STEP 4</p>
+      CONTENT
+    </div>
+    <div class="row">
+      CURRENT STEP RESULTS
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <button class="btn btn-secondary float-right" style="margin-left: 10px" (click)="evaluateStepFour()">Evaluation</button>
+        <button class="btn btn-light float-right" (click)="selectStep(3)">Prev</button>
+      </div>
     </div>
   </div>
-</div>
-<div *ngIf="witchStep === 3" class="container">
-  <div class="row">
-    PREVIOUS STEP RESULTS
-  </div>
-  <div class="row">
-    <p>STEP 3</p>
-    CONTENT
-  </div>
-  <div class="row">
-    <div class="col-md-12">
-      <button class="btn btn-primary float-right" style="margin-left: 10px" (click)="selectStep(4)">Next</button>
-      <button class="btn btn-light float-right" (click)="selectStep(2)">Prev</button>
-    </div>
-  </div>
-</div>
-<div *ngIf="witchStep === 4" class="container">
-  <div class="row">
-    PREVIOUS STEP RESULTS
-  </div>
-  <div class="row">
-    <p>STEP 4</p>
-    CONTENT
-  </div>
-  <div class="row">
-    CURRENT STEP RESULTS
-  </div>
-  <div class="row">
-    <div class="col-md-12">
-      <button class="btn btn-secondary float-right" style="margin-left: 10px" (click)="false">Next</button>
-      <button class="btn btn-light float-right" (click)="selectStep(3)">Prev</button>
-    </div>
-  </div>
-</div>
+</ng-container>

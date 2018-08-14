@@ -4,6 +4,9 @@ import { SelfAssessmentMgm } from '../entities/self-assessment-mgm';
 import { SERVER_API_URL } from '../app.constants';
 import { Observable } from '../../../../../node_modules/rxjs';
 import { MyAssetMgm } from '../entities/my-asset-mgm';
+import { EBITMgm } from '../entities/ebit-mgm';
+import { Wp3BundleInput } from './model/wp3-bundle-input.model';
+import { Wp3BundleOutput } from './model/wp3-bundle-output.model';
 
 @Injectable()
 export class ImpactEvaluationService {
@@ -18,7 +21,23 @@ export class ImpactEvaluationService {
     return this.http.get<MyAssetMgm[]>(uri, { observe: 'response' })
       .map((res: HttpResponse<MyAssetMgm[]>) => {
         return res.body;
-    });
+      });
+  }
+
+  evaluateStepOne(bundle: Wp3BundleInput): Observable<Wp3BundleOutput> {
+    return null;
+  }
+
+  evaluateStepTwo(bundle: Wp3BundleInput): Observable<Wp3BundleOutput> {
+    return null;
+  }
+
+  evaluateStepThree(bundle: Wp3BundleInput): Observable<Wp3BundleOutput> {
+    return null;
+  }
+
+  evaluateStepFour(bundle: Wp3BundleInput): Observable<Wp3BundleOutput> {
+    return null;
   }
 
 }
