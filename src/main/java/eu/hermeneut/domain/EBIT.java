@@ -5,6 +5,7 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 import org.springframework.data.elasticsearch.annotations.Document;
 
@@ -51,8 +52,8 @@ public class EBIT implements Serializable {
     @Column(name = "created")
     private ZonedDateTime created;
 
+    @NotNull
     @OneToOne
-    @JoinColumn(unique = true)
     private SelfAssessment selfAssessment;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove

@@ -1,6 +1,7 @@
 package eu.hermeneut.service;
 
 import eu.hermeneut.domain.EBIT;
+
 import java.util.List;
 
 /**
@@ -15,6 +16,8 @@ public interface EBITService {
      * @return the persisted entity
      */
     EBIT save(EBIT eBIT);
+
+    List<EBIT> save(List<EBIT> ebits);
 
     /**
      * Get all the eBITS.
@@ -42,7 +45,6 @@ public interface EBITService {
      * Search for the eBIT corresponding to the query.
      *
      * @param query the query of the search
-     * 
      * @return the list of entities
      */
     List<EBIT> search(String query);

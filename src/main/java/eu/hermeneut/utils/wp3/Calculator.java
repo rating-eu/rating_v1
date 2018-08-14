@@ -4,12 +4,49 @@ import eu.hermeneut.domain.Asset;
 import eu.hermeneut.domain.AssetCategory;
 import eu.hermeneut.domain.EBIT;
 import eu.hermeneut.domain.MyAsset;
+import eu.hermeneut.domain.enumeration.CategoryType;
+import eu.hermeneut.domain.enumeration.SectorType;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 public class Calculator {
+
+    private static Map<SectorType, Map<CategoryType, Double>> lossPercentageMap;
+
+    static {
+        Calculator.lossPercentageMap = new HashMap<>();
+
+        Map<CategoryType, Double> globalSectorMap = new HashMap<>();
+        globalSectorMap.put(CategoryType.IP, 19.89);
+        globalSectorMap.put(CategoryType.KEY_COMP, 42.34);
+        globalSectorMap.put(CategoryType.ORG_CAPITAL, 37.77);
+        lossPercentageMap.put(SectorType.GLOBAL, globalSectorMap);
+
+        Map<CategoryType, Double> financeAndInsuranceSectorMap = new HashMap<>();
+        financeAndInsuranceSectorMap.put(CategoryType.IP, 13.6);
+        financeAndInsuranceSectorMap.put(CategoryType.KEY_COMP, 45.3);
+        financeAndInsuranceSectorMap.put(CategoryType.ORG_CAPITAL, 41.1);
+        lossPercentageMap.put(SectorType.FINANCE_AND_INSURANCE, financeAndInsuranceSectorMap);
+
+        Map<CategoryType, Double> healthCareAndSocialAssistanceSectorMap = new HashMap<>();
+        healthCareAndSocialAssistanceSectorMap.put(CategoryType.IP, 14.7);
+        healthCareAndSocialAssistanceSectorMap.put(CategoryType.KEY_COMP, 63.3);
+        healthCareAndSocialAssistanceSectorMap.put(CategoryType.ORG_CAPITAL, 22.0);
+        lossPercentageMap.put(SectorType.HEALTH_CARE_AND_SOCIAL_ASSISTANCE, healthCareAndSocialAssistanceSectorMap);
+
+        Map<CategoryType, Double> informationSectorMap = new HashMap<>();
+        informationSectorMap.put(CategoryType.IP, 27.5);
+        informationSectorMap.put(CategoryType.KEY_COMP, 27.8);
+        informationSectorMap.put(CategoryType.ORG_CAPITAL, 44.7);
+        lossPercentageMap.put(SectorType.INFORMATION, informationSectorMap);
+
+        Map<CategoryType, Double> professionalScientificAndTechnicalServiceSectorMap = new HashMap<>();
+        professionalScientificAndTechnicalServiceSectorMap.put(CategoryType.IP, 6.1);
+        professionalScientificAndTechnicalServiceSectorMap.put(CategoryType.KEY_COMP, 53.7);
+        professionalScientificAndTechnicalServiceSectorMap.put(CategoryType.ORG_CAPITAL, 40.2);
+        lossPercentageMap.put(SectorType.PROFESSIONAL_SCIENTIFIC_AND_TECHNICAL_SERVICE, professionalScientificAndTechnicalServiceSectorMap);
+    }
+
 
     public static double calculateEconomicPerformance(List<EBIT> ebits, double discountingRate) throws IllegalArgumentException {
         if (ebits == null || ebits.size() != 6) {
@@ -81,15 +118,21 @@ public class Calculator {
         //=======Intangible Driving Earnings=======
         double intangibleDrivingEarnings = economicPerformance;
 
+        double physicalAssetsValuation = 0;
+        double financialAssetsValuation = 0;
+
         //Physical Assets
         for (MyAsset physicalAsset : physicalAssets) {
-            intangibleDrivingEarnings -= physicalAssetsReturn * physicalAsset.getEconomicValue();
+            physicalAssetsValuation += physicalAsset.getEconomicValue();
         }
 
         //Financial Assets
         for (MyAsset financialAsset : financialAssets) {
-            intangibleDrivingEarnings -= financialAssetsReturn * financialAsset.getEconomicValue();
+            financialAssetsValuation += financialAsset.getEconomicValue();
         }
+
+        intangibleDrivingEarnings -= physicalAssetsReturn * physicalAssetsValuation;
+        intangibleDrivingEarnings -= financialAssetsReturn * financialAssetsValuation;
 
         return intangibleDrivingEarnings;
     }
@@ -100,5 +143,40 @@ public class Calculator {
         intangibleCapital += intangibleDrivingEarnings / (1 + discountingRate);
 
         return intangibleCapital;
+    }
+
+    public static double calculateIntangibleLossByAttacks(double intangibleCapital, double lossOfIntangiblePercentage) {
+        return intangibleCapital * lossOfIntangiblePercentage / 100;
+    }
+
+    public static double calculateSplittingLoss(double intangibleLossByAttacks, CategoryType categoryType, SectorType sectorType/*Optional field*/) {
+        double percentage = calculateSplittingLossPercentage(categoryType, sectorType);
+
+        return intangibleLossByAttacks * percentage / 100;
+    }
+
+    public static double calculateSplittingLossPercentage(CategoryType categoryType, SectorType sectorType/*Optional field*/) {
+        if (categoryType == null) {
+            throw new IllegalArgumentException("CategoryType can NOT be NULL!");
+        }
+
+        if (sectorType == null) {
+            throw new IllegalArgumentException("SectorType can NOT be NULL!");
+        }
+
+        double percentage = 0;
+
+        switch (sectorType) {
+            case GLOBAL:
+            case FINANCE_AND_INSURANCE:
+            case HEALTH_CARE_AND_SOCIAL_ASSISTANCE:
+            case INFORMATION:
+            case PROFESSIONAL_SCIENTIFIC_AND_TECHNICAL_SERVICE: {
+                percentage = lossPercentageMap.get(sectorType).get(categoryType);
+                break;
+            }
+        }
+
+        return percentage;
     }
 }
