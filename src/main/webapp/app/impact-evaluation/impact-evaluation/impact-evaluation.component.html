@@ -1,10 +1,36 @@
 <div *ngIf="witchStep === 1" class="container">
   <div class="row">
     <div class="col-md-12">
-      <div class="input-group" style="margin-bottom: 10px">
-            <input type="text" class="form-control" placeholder="Ebit for {{firstYear}}"
-                aria-label="Ebit1" aria-describedby="basic-addon2">
-        </div>
+      <form [formGroup]="impactFormStepOne">
+          <div class="input-group" style="margin-bottom: 10px">
+              <input type="text" class="form-control" placeholder="Discounting rate"
+                  aria-label="discounting" aria-describedby="basic-addon2" formControlName="discountingRate">
+          </div>
+          <div class="input-group" style="margin-bottom: 10px">
+              <input type="text" class="form-control" placeholder="{{ebitLabel[0]}}"
+                  aria-label="Ebit1" aria-describedby="basic-addon2" formControlName="ebit1">
+          </div>
+          <div class="input-group" style="margin-bottom: 10px">
+              <input type="text" class="form-control" placeholder="{{ebitLabel[1]}}"
+                  aria-label="Ebit2" aria-describedby="basic-addon2" formControlName="ebit2">
+          </div>
+          <div class="input-group" style="margin-bottom: 10px">
+              <input type="text" class="form-control" placeholder="{{ebitLabel[2]}}"
+                  aria-label="Ebit3" aria-describedby="basic-addon2" formControlName="ebit3">
+          </div>
+          <div class="input-group" style="margin-bottom: 10px">
+              <input type="text" class="form-control" placeholder="{{ebitLabel[3]}}"
+                  aria-label="Ebit4" aria-describedby="basic-addon2" formControlName="ebit4">
+          </div>
+          <div class="input-group" style="margin-bottom: 10px">
+              <input type="text" class="form-control" placeholder="{{ebitLabel[4]}}"
+                  aria-label="Ebit5" aria-describedby="basic-addon2" formControlName="ebit5">
+          </div>
+          <div class="input-group" style="margin-bottom: 10px">
+              <input type="text" class="form-control" placeholder="{{ebitLabel[5]}}"
+                  aria-label="Ebit6" aria-describedby="basic-addon2" formControlName="ebit6">
+          </div>
+      </form>
     </div>
   </div>
   <div class="row">

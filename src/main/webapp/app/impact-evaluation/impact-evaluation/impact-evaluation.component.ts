@@ -35,6 +35,7 @@ export class ImpactEvaluationComponent implements OnInit {
   public financialAssetsAkaCurrent: MyAssetMgm[] = [];
   public physicalAssetsAkaFixed: MyAssetMgm[] = [];
   private mySelf: SelfAssessmentMgm;
+  public ebitLabel: string[] = [];
 
   public sectorialPercentageMatrix: any[] = [
     {
@@ -67,6 +68,11 @@ export class ImpactEvaluationComponent implements OnInit {
   ngOnInit() {
     const firstYear = (new Date().getFullYear()) - 2;
     const lastYear = (new Date().getFullYear()) + 3;
+    let year = firstYear;
+    while (year <= lastYear) {
+      this.ebitLabel.push('Ebit for ' + year.toString());
+      year++;
+    }
     // TODO chiamata per recuperare tutti i MyAssets a partire dal selfAssessment
     this.mySelf = this.mySelfAssessmentService.getSelfAssessment();
     this.impactService.getMyAssets(this.mySelf).toPromise().then((res) => {
@@ -92,28 +98,29 @@ export class ImpactEvaluationComponent implements OnInit {
     this.impactFormStepOne = new FormGroup({
       ebit1: new FormControl(undefined, Validators.compose([
         Validators.required,
-        Validators.pattern('[0-9]')
+        Validators.pattern('[0-9]+')
       ])),
       ebit2: new FormControl(undefined, Validators.compose([
         Validators.required,
-        Validators.pattern('[0-9]')
+        Validators.pattern('[0-9]+')
       ])),
       ebit3: new FormControl(undefined, Validators.compose([
         Validators.required,
-        Validators.pattern('[0-9]')
+        Validators.pattern('[0-9]+')
       ])),
       ebit4: new FormControl(undefined, Validators.compose([
         Validators.required,
-        Validators.pattern('[0-9]')
+        Validators.pattern('[0-9]+')
       ])),
       ebit5: new FormControl(undefined, Validators.compose([
         Validators.required,
-        Validators.pattern('[0-9]')
+        Validators.pattern('[0-9]+')
       ])),
       ebit6: new FormControl(undefined, Validators.compose([
         Validators.required,
-        Validators.pattern('[0-9]')
+        Validators.pattern('[0-9]+')
       ])),
+      /*
       firstYear: new FormControl(firstYear, Validators.compose([
         Validators.required,
         Validators.pattern('[0-9]')
@@ -122,43 +129,44 @@ export class ImpactEvaluationComponent implements OnInit {
         Validators.required,
         Validators.pattern('[0-9]')
       ])),
+      */
       discountingRate: new FormControl(undefined, Validators.compose([
         Validators.required,
-        Validators.pattern('[0-9]')
+        Validators.pattern('[0-9]+,[0-9]+|[0-9]+.[0-9]+')
       ])),
     });
     this.impactFormStepTwo = new FormGroup({
       physicalAssetsReturn: new FormControl(7.1, Validators.compose([
         Validators.required,
-        Validators.pattern('[0-9]')
+        Validators.pattern('[0-9]+,[0-9]+|[0-9]+.[0-9]+')
       ])),
       financialAssetsReturn: new FormControl(5, Validators.compose([
         Validators.required,
-        Validators.pattern('[0-9]')
+        Validators.pattern('[0-9]+,[0-9]+|[0-9]+.[0-9]+')
       ])),
     });
     this.impactFormStepThree = new FormGroup({
       lossOfIntangiblePercentage: new FormControl(18.29, Validators.compose([
         Validators.required,
-        Validators.pattern('[0-9]')
+        Validators.pattern('[0-9]+,[0-9]+|[0-9]+.[0-9]+')
       ])),
     });
     this.impactFormStepFour = new FormGroup({
       globalPercentageIP: new FormControl(19.89, Validators.compose([
         Validators.required,
-        Validators.pattern('[0-9]')
+        Validators.pattern('[0-9]+,[0-9]+|[0-9]+.[0-9]+')
       ])),
       globalPercentageKeyComp: new FormControl(42.34, Validators.compose([
         Validators.required,
-        Validators.pattern('[0-9]')
+        Validators.pattern('[0-9]+,[0-9]+|[0-9]+.[0-9]+')
       ])),
       globalPercentageOrgCapital: new FormControl(37.77, Validators.compose([
         Validators.required,
-        Validators.pattern('[0-9]')
+        Validators.pattern('[0-9]+,[0-9]+|[0-9]+.[0-9]+')
       ])),
       sectorialPercentage: new FormControl(undefined, Validators.compose([
         Validators.required,
-        Validators.pattern('[0-9]')
+        Validators.pattern('[0-9]+,[0-9]+|[0-9]+.[0-9]+')
       ])),
     });
   }
