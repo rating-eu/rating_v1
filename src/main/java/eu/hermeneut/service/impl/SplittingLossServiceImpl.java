@@ -98,4 +98,10 @@ public class SplittingLossServiceImpl implements SplittingLossService {
             .stream(splittingLossSearchRepository.search(queryStringQuery(query)).spliterator(), false)
             .collect(Collectors.toList());
     }
+
+    @Override
+    public List<SplittingLoss> findAllBySelfAssessmentID(Long selfAssessmentID) {
+        log.debug("Request to get all SplittingLosses by SelfAssessment ID: " + selfAssessmentID);
+        return splittingLossRepository.findAllBySelfAssessmentID(selfAssessmentID);
+    }
 }

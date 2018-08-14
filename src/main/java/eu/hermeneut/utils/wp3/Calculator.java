@@ -1,7 +1,11 @@
 package eu.hermeneut.utils.wp3;
 
+import eu.hermeneut.domain.Asset;
+import eu.hermeneut.domain.AssetCategory;
 import eu.hermeneut.domain.EBIT;
+import eu.hermeneut.domain.MyAsset;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
@@ -47,5 +51,54 @@ public class Calculator {
         economicPerformance /= 6;
 
         return economicPerformance;
+    }
+
+    public static double calculateIntangibleDrivingEarnings(double economicPerformance, double physicalAssetsReturn, double financialAssetsReturn, List<MyAsset> myAssets) {
+        if (myAssets == null) {
+            throw new IllegalArgumentException("MyAssets can NOT be NULL!");
+        }
+
+        if (myAssets.size() == 0) {
+            throw new IllegalArgumentException("MyAssets can NOT have SIZE equal to ZERO!");
+        }
+
+        List<MyAsset> physicalAssets = new ArrayList<>();
+        List<MyAsset> financialAssets = new ArrayList<>();
+
+        for (MyAsset myAsset : myAssets) {
+            Asset asset = myAsset.getAsset();
+            AssetCategory assetCategory = asset.getAssetcategory();
+
+            if (assetCategory != null) {
+                if (assetCategory.getName().equalsIgnoreCase("Current Assets")) {
+                    financialAssets.add(myAsset);
+                } else if (assetCategory.getName().equalsIgnoreCase("Fixed Assets")) {
+                    physicalAssets.add(myAsset);
+                }
+            }
+        }
+
+        //=======Intangible Driving Earnings=======
+        double intangibleDrivingEarnings = economicPerformance;
+
+        //Physical Assets
+        for (MyAsset physicalAsset : physicalAssets) {
+            intangibleDrivingEarnings -= physicalAssetsReturn * physicalAsset.getEconomicValue();
+        }
+
+        //Financial Assets
+        for (MyAsset financialAsset : financialAssets) {
+            intangibleDrivingEarnings -= financialAssetsReturn * financialAsset.getEconomicValue();
+        }
+
+        return intangibleDrivingEarnings;
+    }
+
+    public static double calculateIntangibleCapital(double intangibleDrivingEarnings, double discountingRate) {
+        double intangibleCapital = 0;
+
+        intangibleCapital += intangibleDrivingEarnings / (1 + discountingRate);
+
+        return intangibleCapital;
     }
 }
