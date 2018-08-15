@@ -92,7 +92,7 @@ entity MyAsset{
 	Ranking Integer,
     Estimated Boolean,
     /**WP3*/
-    EconomicValue Double
+    EconomicValue BigDecimal
 }
 
 entity DirectAsset {
@@ -123,7 +123,7 @@ entity AttackCost {
     //ImpactFactor String required,
     Description String maxlength(2000),
     //Term String,
-    Costs Integer,
+    Costs BigDecimal,
     //TotalCosts String
 }
 
@@ -323,23 +323,23 @@ angularSuffix * with mgm
 
 /*=======WP3=======*/
 entity EconomicCoefficients{
-	DiscountingRate Double,/*1*/
-    PhysicalAssetsReturn Double,/*Fixed Assets Return*/
-	FinancialAssetsReturn Double,/*Current Assets Return*/
-	LossOfIntangible Double /*18.29%*/
+	DiscountingRate BigDecimal,/*Between 0 and 1*/
+    PhysicalAssetsReturn BigDecimal,/*Fixed Assets Return*/
+	FinancialAssetsReturn BigDecimal,/*Current Assets Return*/
+	LossOfIntangible BigDecimal /*18.29%*/
 }
 
 entity EBIT{/*2 (6 times)*/
 	Year Integer,
-    Value Double,
+    Value BigDecimal,
     Created ZonedDateTime
 }
 
 entity EconomicResults{
-	EconomicPerformance Double,
-    IntangibleDrivingEarnings Double,
-    IntangibleCapital Double,
-    IntangibleLossByAttacks Double
+	EconomicPerformance BigDecimal,
+    IntangibleDrivingEarnings BigDecimal,
+    IntangibleCapital BigDecimal,
+    IntangibleLossByAttacks BigDecimal
 }
 
 /*Step 2 needs to know MyAssets*/
@@ -359,6 +359,6 @@ enum CategoryType{
 entity SplittingLoss{
 	SectorType SectorType,
     CategoryType CategoryType,
-    LossPercentage Double,
-    Loss Double
+    LossPercentage BigDecimal,
+    Loss BigDecimal
 }
