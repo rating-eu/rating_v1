@@ -4,8 +4,10 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 import org.springframework.data.elasticsearch.annotations.Document;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Objects;
@@ -38,14 +40,14 @@ public class SplittingLoss implements Serializable {
     @Column(name = "category_type")
     private CategoryType categoryType;
 
-    @Column(name = "loss_percentage", precision=10, scale=2)
+    @Column(name = "loss_percentage", precision = 10, scale = 2)
     private BigDecimal lossPercentage;
 
-    @Column(name = "loss", precision=10, scale=2)
+    @Column(name = "loss", precision = 10, scale = 2)
     private BigDecimal loss;
 
     @OneToOne
-    @JoinColumn(unique = true)
+    @NotNull
     private SelfAssessment selfAssessment;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
