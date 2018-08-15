@@ -323,7 +323,7 @@ angularSuffix * with mgm
 
 /*=======WP3=======*/
 entity EconomicCoefficients{
-	DiscountingRate BigDecimal,/*Between 0 and 1*/
+	DiscountingRate BigDecimal min(0) max(1),
     PhysicalAssetsReturn BigDecimal,/*Fixed Assets Return*/
 	FinancialAssetsReturn BigDecimal,/*Current Assets Return*/
 	LossOfIntangible BigDecimal /*18.29%*/
