@@ -7,53 +7,56 @@ import eu.hermeneut.domain.MyAsset;
 import eu.hermeneut.domain.enumeration.CategoryType;
 import eu.hermeneut.domain.enumeration.SectorType;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.time.ZonedDateTime;
 import java.util.*;
 
 public class Calculator {
 
-    private static Map<SectorType, Map<CategoryType, Double>> lossPercentageMap;
+    private static Map<SectorType, Map<CategoryType, BigDecimal>> lossPercentageMap;
 
     static {
         Calculator.lossPercentageMap = new HashMap<>();
 
-        Map<CategoryType, Double> globalSectorMap = new HashMap<>();
-        globalSectorMap.put(CategoryType.IP, 19.89);
-        globalSectorMap.put(CategoryType.KEY_COMP, 42.34);
-        globalSectorMap.put(CategoryType.ORG_CAPITAL, 37.77);
+        Map<CategoryType, BigDecimal> globalSectorMap = new HashMap<>();
+        globalSectorMap.put(CategoryType.IP, new BigDecimal("19.89"));
+        globalSectorMap.put(CategoryType.KEY_COMP, new BigDecimal("42.34"));
+        globalSectorMap.put(CategoryType.ORG_CAPITAL, new BigDecimal("37.77"));
         lossPercentageMap.put(SectorType.GLOBAL, globalSectorMap);
 
-        Map<CategoryType, Double> financeAndInsuranceSectorMap = new HashMap<>();
-        financeAndInsuranceSectorMap.put(CategoryType.IP, 13.6);
-        financeAndInsuranceSectorMap.put(CategoryType.KEY_COMP, 45.3);
-        financeAndInsuranceSectorMap.put(CategoryType.ORG_CAPITAL, 41.1);
+        Map<CategoryType, BigDecimal> financeAndInsuranceSectorMap = new HashMap<>();
+        financeAndInsuranceSectorMap.put(CategoryType.IP, new BigDecimal("13.6"));
+        financeAndInsuranceSectorMap.put(CategoryType.KEY_COMP, new BigDecimal("45.3"));
+        financeAndInsuranceSectorMap.put(CategoryType.ORG_CAPITAL, new BigDecimal("41.1"));
         lossPercentageMap.put(SectorType.FINANCE_AND_INSURANCE, financeAndInsuranceSectorMap);
 
-        Map<CategoryType, Double> healthCareAndSocialAssistanceSectorMap = new HashMap<>();
-        healthCareAndSocialAssistanceSectorMap.put(CategoryType.IP, 14.7);
-        healthCareAndSocialAssistanceSectorMap.put(CategoryType.KEY_COMP, 63.3);
-        healthCareAndSocialAssistanceSectorMap.put(CategoryType.ORG_CAPITAL, 22.0);
+        Map<CategoryType, BigDecimal> healthCareAndSocialAssistanceSectorMap = new HashMap<>();
+        healthCareAndSocialAssistanceSectorMap.put(CategoryType.IP, new BigDecimal("14.7"));
+        healthCareAndSocialAssistanceSectorMap.put(CategoryType.KEY_COMP, new BigDecimal("63.3"));
+        healthCareAndSocialAssistanceSectorMap.put(CategoryType.ORG_CAPITAL, new BigDecimal("22.0"));
         lossPercentageMap.put(SectorType.HEALTH_CARE_AND_SOCIAL_ASSISTANCE, healthCareAndSocialAssistanceSectorMap);
 
-        Map<CategoryType, Double> informationSectorMap = new HashMap<>();
-        informationSectorMap.put(CategoryType.IP, 27.5);
-        informationSectorMap.put(CategoryType.KEY_COMP, 27.8);
-        informationSectorMap.put(CategoryType.ORG_CAPITAL, 44.7);
+        Map<CategoryType, BigDecimal> informationSectorMap = new HashMap<>();
+        informationSectorMap.put(CategoryType.IP, new BigDecimal("27.5"));
+        informationSectorMap.put(CategoryType.KEY_COMP, new BigDecimal("27.8"));
+        informationSectorMap.put(CategoryType.ORG_CAPITAL, new BigDecimal("44.7"));
         lossPercentageMap.put(SectorType.INFORMATION, informationSectorMap);
 
-        Map<CategoryType, Double> professionalScientificAndTechnicalServiceSectorMap = new HashMap<>();
-        professionalScientificAndTechnicalServiceSectorMap.put(CategoryType.IP, 6.1);
-        professionalScientificAndTechnicalServiceSectorMap.put(CategoryType.KEY_COMP, 53.7);
-        professionalScientificAndTechnicalServiceSectorMap.put(CategoryType.ORG_CAPITAL, 40.2);
+        Map<CategoryType, BigDecimal> professionalScientificAndTechnicalServiceSectorMap = new HashMap<>();
+        professionalScientificAndTechnicalServiceSectorMap.put(CategoryType.IP, new BigDecimal("6.1"));
+        professionalScientificAndTechnicalServiceSectorMap.put(CategoryType.KEY_COMP, new BigDecimal("53.7"));
+        professionalScientificAndTechnicalServiceSectorMap.put(CategoryType.ORG_CAPITAL, new BigDecimal("40.2"));
         lossPercentageMap.put(SectorType.PROFESSIONAL_SCIENTIFIC_AND_TECHNICAL_SERVICE, professionalScientificAndTechnicalServiceSectorMap);
     }
 
 
-    public static double calculateEconomicPerformance(List<EBIT> ebits, double discountingRate) throws IllegalArgumentException {
+    public static BigDecimal calculateEconomicPerformance(List<EBIT> ebits, BigDecimal discountingRate) throws IllegalArgumentException {
         if (ebits == null || ebits.size() != 6) {
             throw new IllegalArgumentException("Ebits' size must be 6");
         }
 
-        if (discountingRate < 0 || discountingRate > 1) {
+        if (discountingRate.compareTo(BigDecimal.ZERO) < 0 || discountingRate.compareTo(BigDecimal.ONE) > 1) {
             throw new IllegalArgumentException("DiscountingRate must be between 0 and 1 (edges included), but it is: " + discountingRate);
         }
 
@@ -67,30 +70,48 @@ public class Calculator {
 
         //=======Calculate the Economic Performance=======
 
-        double economicPerformance = 0;
+        BigDecimal economicPerformance = BigDecimal.ZERO.setScale(3, RoundingMode.HALF_UP);
 
         //First 3 years
         for (int year = -2, time = +2; year <= 0; year++) {
-            int ebitIndex = time + year;//0, 1, 2
-            EBIT ebit = ebits.get(ebitIndex);
-
-            economicPerformance += ebit.getValue() * Math.pow(1 + discountingRate, -year);
+            economicPerformance = economicPerformance.add(economicPerformanceHelper(ebits, discountingRate, year, time));
         }
 
         //Last 3 years
         for (int year = +1, time = +2; year <= +3; year++) {
-            int ebitIndex = time + year;//3, 4, 5
-            EBIT ebit = ebits.get(ebitIndex);
-
-            economicPerformance += ebit.getValue() * Math.pow(1 + discountingRate, -year);
+            economicPerformance = economicPerformance.add(economicPerformanceHelper(ebits, discountingRate, year, time));
         }
 
-        economicPerformance /= 6;
+        economicPerformance = economicPerformance.divide(new BigDecimal("6"), 3, RoundingMode.HALF_UP);
 
         return economicPerformance;
     }
 
-    public static double calculateIntangibleDrivingEarnings(double economicPerformance, double physicalAssetsReturn, double financialAssetsReturn, List<MyAsset> myAssets) {
+    public static BigDecimal economicPerformanceHelper(List<EBIT> ebits, BigDecimal discountingRate, int year, int time) {
+        int ebitIndex = time + year;//0, 1, 2
+        EBIT ebit = ebits.get(ebitIndex);
+        BigDecimal result = BigDecimal.ZERO;
+
+        BigDecimal base = BigDecimal.ONE.add(discountingRate);//1 + discountingRate
+        int exponent = -year;
+
+        if (exponent < 0) {
+            exponent *= -1;//Make it positive
+
+            BigDecimal power = base.pow(exponent).setScale(3, RoundingMode.HALF_UP);
+            power = BigDecimal.ONE.divide(power, 3, RoundingMode.HALF_UP);//Make the inverse
+
+            BigDecimal product = ebit.getValue().multiply(power);
+
+            result = result.add(product);
+        } else {
+            BigDecimal product = ebit.getValue().multiply(base.pow(exponent));
+            result = result.add(product);
+        }
+        return result.setScale(3, RoundingMode.HALF_UP);
+    }
+
+    public static BigDecimal calculateIntangibleDrivingEarnings(BigDecimal economicPerformance, BigDecimal physicalAssetsReturn, BigDecimal financialAssetsReturn, List<MyAsset> myAssets) {
         if (myAssets == null) {
             throw new IllegalArgumentException("MyAssets can NOT be NULL!");
         }
@@ -116,46 +137,46 @@ public class Calculator {
         }
 
         //=======Intangible Driving Earnings=======
-        double intangibleDrivingEarnings = economicPerformance;
+        BigDecimal intangibleDrivingEarnings = economicPerformance;
 
-        double physicalAssetsValuation = 0;
-        double financialAssetsValuation = 0;
+        BigDecimal physicalAssetsValuation = BigDecimal.ZERO;
+        BigDecimal financialAssetsValuation = BigDecimal.ZERO;
 
         //Physical Assets
         for (MyAsset physicalAsset : physicalAssets) {
-            physicalAssetsValuation += physicalAsset.getEconomicValue();
+            physicalAssetsValuation = physicalAssetsValuation.add(physicalAsset.getEconomicValue());
         }
 
         //Financial Assets
         for (MyAsset financialAsset : financialAssets) {
-            financialAssetsValuation += financialAsset.getEconomicValue();
+            financialAssetsValuation = financialAssetsValuation.add(financialAsset.getEconomicValue());
         }
 
-        intangibleDrivingEarnings -= physicalAssetsReturn * physicalAssetsValuation;
-        intangibleDrivingEarnings -= financialAssetsReturn * financialAssetsValuation;
+        intangibleDrivingEarnings = intangibleDrivingEarnings.subtract(physicalAssetsReturn.multiply(physicalAssetsValuation));
+        intangibleDrivingEarnings = intangibleDrivingEarnings.subtract(financialAssetsReturn.multiply(financialAssetsValuation));
 
         return intangibleDrivingEarnings;
     }
 
-    public static double calculateIntangibleCapital(double intangibleDrivingEarnings, double discountingRate) {
-        double intangibleCapital = 0;
+    public static BigDecimal calculateIntangibleCapital(BigDecimal intangibleDrivingEarnings, BigDecimal discountingRate) {
+        BigDecimal intangibleCapital = BigDecimal.ZERO;
 
-        intangibleCapital += intangibleDrivingEarnings / (1 + discountingRate);
+        intangibleCapital = intangibleCapital.add(intangibleDrivingEarnings.divide(BigDecimal.ONE.add(discountingRate), 3, RoundingMode.HALF_UP));
 
         return intangibleCapital;
     }
 
-    public static double calculateIntangibleLossByAttacks(double intangibleCapital, double lossOfIntangiblePercentage) {
-        return intangibleCapital * lossOfIntangiblePercentage / 100;
+    public static BigDecimal calculateIntangibleLossByAttacks(BigDecimal intangibleCapital, BigDecimal lossOfIntangiblePercentage) {
+        return intangibleCapital.multiply(lossOfIntangiblePercentage).divide(new BigDecimal("100"), 3, RoundingMode.HALF_UP);
     }
 
-    public static double calculateSplittingLoss(double intangibleLossByAttacks, CategoryType categoryType, SectorType sectorType/*Optional field*/) {
-        double percentage = calculateSplittingLossPercentage(categoryType, sectorType);
+    public static BigDecimal calculateSplittingLoss(BigDecimal intangibleLossByAttacks, CategoryType categoryType, SectorType sectorType/*Optional field*/) {
+        BigDecimal percentage = calculateSplittingLossPercentage(categoryType, sectorType);
 
-        return intangibleLossByAttacks * percentage / 100;
+        return intangibleLossByAttacks.multiply(percentage).divide(new BigDecimal(100), 3, RoundingMode.HALF_UP);
     }
 
-    public static double calculateSplittingLossPercentage(CategoryType categoryType, SectorType sectorType/*Optional field*/) {
+    public static BigDecimal calculateSplittingLossPercentage(CategoryType categoryType, SectorType sectorType/*Optional field*/) {
         if (categoryType == null) {
             throw new IllegalArgumentException("CategoryType can NOT be NULL!");
         }
@@ -164,7 +185,7 @@ public class Calculator {
             throw new IllegalArgumentException("SectorType can NOT be NULL!");
         }
 
-        double percentage = 0;
+        BigDecimal percentage = BigDecimal.ZERO;
 
         switch (sectorType) {
             case GLOBAL:
