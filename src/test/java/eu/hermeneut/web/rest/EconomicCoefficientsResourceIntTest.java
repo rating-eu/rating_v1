@@ -23,6 +23,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import java.math.BigDecimal;
 import java.util.List;
 
 import static eu.hermeneut.web.rest.TestUtil.createFormattingConversionService;
@@ -40,17 +41,17 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(classes = HermeneutApp.class)
 public class EconomicCoefficientsResourceIntTest {
 
-    private static final Double DEFAULT_DISCOUNTING_RATE = 1D;
-    private static final Double UPDATED_DISCOUNTING_RATE = 2D;
+    private static final BigDecimal DEFAULT_DISCOUNTING_RATE = new BigDecimal(0);
+    private static final BigDecimal UPDATED_DISCOUNTING_RATE = new BigDecimal(1);
 
-    private static final Double DEFAULT_PHYSICAL_ASSETS_RETURN = 1D;
-    private static final Double UPDATED_PHYSICAL_ASSETS_RETURN = 2D;
+    private static final BigDecimal DEFAULT_PHYSICAL_ASSETS_RETURN = new BigDecimal(1);
+    private static final BigDecimal UPDATED_PHYSICAL_ASSETS_RETURN = new BigDecimal(2);
 
-    private static final Double DEFAULT_FINANCIAL_ASSETS_RETURN = 1D;
-    private static final Double UPDATED_FINANCIAL_ASSETS_RETURN = 2D;
+    private static final BigDecimal DEFAULT_FINANCIAL_ASSETS_RETURN = new BigDecimal(1);
+    private static final BigDecimal UPDATED_FINANCIAL_ASSETS_RETURN = new BigDecimal(2);
 
-    private static final Double DEFAULT_LOSS_OF_INTANGIBLE = 1D;
-    private static final Double UPDATED_LOSS_OF_INTANGIBLE = 2D;
+    private static final BigDecimal DEFAULT_LOSS_OF_INTANGIBLE = new BigDecimal(1);
+    private static final BigDecimal UPDATED_LOSS_OF_INTANGIBLE = new BigDecimal(2);
 
     @Autowired
     private EconomicCoefficientsRepository economicCoefficientsRepository;
@@ -164,10 +165,10 @@ public class EconomicCoefficientsResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(economicCoefficients.getId().intValue())))
-            .andExpect(jsonPath("$.[*].discountingRate").value(hasItem(DEFAULT_DISCOUNTING_RATE.doubleValue())))
-            .andExpect(jsonPath("$.[*].physicalAssetsReturn").value(hasItem(DEFAULT_PHYSICAL_ASSETS_RETURN.doubleValue())))
-            .andExpect(jsonPath("$.[*].financialAssetsReturn").value(hasItem(DEFAULT_FINANCIAL_ASSETS_RETURN.doubleValue())))
-            .andExpect(jsonPath("$.[*].lossOfIntangible").value(hasItem(DEFAULT_LOSS_OF_INTANGIBLE.doubleValue())));
+            .andExpect(jsonPath("$.[*].discountingRate").value(hasItem(DEFAULT_DISCOUNTING_RATE.intValue())))
+            .andExpect(jsonPath("$.[*].physicalAssetsReturn").value(hasItem(DEFAULT_PHYSICAL_ASSETS_RETURN.intValue())))
+            .andExpect(jsonPath("$.[*].financialAssetsReturn").value(hasItem(DEFAULT_FINANCIAL_ASSETS_RETURN.intValue())))
+            .andExpect(jsonPath("$.[*].lossOfIntangible").value(hasItem(DEFAULT_LOSS_OF_INTANGIBLE.intValue())));
     }
 
     @Test
@@ -181,10 +182,10 @@ public class EconomicCoefficientsResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(economicCoefficients.getId().intValue()))
-            .andExpect(jsonPath("$.discountingRate").value(DEFAULT_DISCOUNTING_RATE.doubleValue()))
-            .andExpect(jsonPath("$.physicalAssetsReturn").value(DEFAULT_PHYSICAL_ASSETS_RETURN.doubleValue()))
-            .andExpect(jsonPath("$.financialAssetsReturn").value(DEFAULT_FINANCIAL_ASSETS_RETURN.doubleValue()))
-            .andExpect(jsonPath("$.lossOfIntangible").value(DEFAULT_LOSS_OF_INTANGIBLE.doubleValue()));
+            .andExpect(jsonPath("$.discountingRate").value(DEFAULT_DISCOUNTING_RATE.intValue()))
+            .andExpect(jsonPath("$.physicalAssetsReturn").value(DEFAULT_PHYSICAL_ASSETS_RETURN.intValue()))
+            .andExpect(jsonPath("$.financialAssetsReturn").value(DEFAULT_FINANCIAL_ASSETS_RETURN.intValue()))
+            .andExpect(jsonPath("$.lossOfIntangible").value(DEFAULT_LOSS_OF_INTANGIBLE.intValue()));
     }
 
     @Test
@@ -283,10 +284,10 @@ public class EconomicCoefficientsResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(economicCoefficients.getId().intValue())))
-            .andExpect(jsonPath("$.[*].discountingRate").value(hasItem(DEFAULT_DISCOUNTING_RATE.doubleValue())))
-            .andExpect(jsonPath("$.[*].physicalAssetsReturn").value(hasItem(DEFAULT_PHYSICAL_ASSETS_RETURN.doubleValue())))
-            .andExpect(jsonPath("$.[*].financialAssetsReturn").value(hasItem(DEFAULT_FINANCIAL_ASSETS_RETURN.doubleValue())))
-            .andExpect(jsonPath("$.[*].lossOfIntangible").value(hasItem(DEFAULT_LOSS_OF_INTANGIBLE.doubleValue())));
+            .andExpect(jsonPath("$.[*].discountingRate").value(hasItem(DEFAULT_DISCOUNTING_RATE.intValue())))
+            .andExpect(jsonPath("$.[*].physicalAssetsReturn").value(hasItem(DEFAULT_PHYSICAL_ASSETS_RETURN.intValue())))
+            .andExpect(jsonPath("$.[*].financialAssetsReturn").value(hasItem(DEFAULT_FINANCIAL_ASSETS_RETURN.intValue())))
+            .andExpect(jsonPath("$.[*].lossOfIntangible").value(hasItem(DEFAULT_LOSS_OF_INTANGIBLE.intValue())));
     }
 
     @Test

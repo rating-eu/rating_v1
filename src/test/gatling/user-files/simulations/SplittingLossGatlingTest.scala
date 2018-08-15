@@ -68,7 +68,7 @@ class SplittingLossGatlingTest extends Simulation {
             .exec(http("Create new splittingLoss")
             .post("/api/splitting-losses")
             .headers(headers_http_authenticated)
-            .body(StringBody("""{"id":null, "sectorType":null, "categoryType":null, "lossPercentage":null, "loss":null}""")).asJSON
+            .body(StringBody("""{"id":null, "sectorType":null, "categoryType":null, "lossPercentage":"0", "loss":"0"}""")).asJSON
             .check(status.is(201))
             .check(headerRegex("Location", "(.*)").saveAs("new_splittingLoss_url"))).exitHereIfFailed
             .pause(10)

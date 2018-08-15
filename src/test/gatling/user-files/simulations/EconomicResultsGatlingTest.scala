@@ -68,7 +68,7 @@ class EconomicResultsGatlingTest extends Simulation {
             .exec(http("Create new economicResults")
             .post("/api/economic-results")
             .headers(headers_http_authenticated)
-            .body(StringBody("""{"id":null, "economicPerformance":null, "intangibleDrivingEarnings":null, "intangibleCapital":null, "intangibleLossByAttacks":null}""")).asJSON
+            .body(StringBody("""{"id":null, "economicPerformance":"0", "intangibleDrivingEarnings":"0", "intangibleCapital":"0", "intangibleLossByAttacks":"0"}""")).asJSON
             .check(status.is(201))
             .check(headerRegex("Location", "(.*)").saveAs("new_economicResults_url"))).exitHereIfFailed
             .pause(10)

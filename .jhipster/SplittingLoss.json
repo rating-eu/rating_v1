@@ -23,11 +23,11 @@
         },
         {
             "fieldName": "lossPercentage",
-            "fieldType": "Double"
+            "fieldType": "BigDecimal"
         },
         {
             "fieldName": "loss",
-            "fieldType": "Double"
+            "fieldType": "BigDecimal"
         }
     ],
     "changelogDate": "20180813120729",

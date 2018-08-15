@@ -68,7 +68,7 @@ class EBITGatlingTest extends Simulation {
             .exec(http("Create new eBIT")
             .post("/api/ebits")
             .headers(headers_http_authenticated)
-            .body(StringBody("""{"id":null, "year":"0", "value":null, "created":"2020-01-01T00:00:00.000Z"}""")).asJSON
+            .body(StringBody("""{"id":null, "year":"0", "value":"0", "created":"2020-01-01T00:00:00.000Z"}""")).asJSON
             .check(status.is(201))
             .check(headerRegex("Location", "(.*)").saveAs("new_eBIT_url"))).exitHereIfFailed
             .pause(10)

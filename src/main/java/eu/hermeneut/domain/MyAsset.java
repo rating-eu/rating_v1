@@ -9,6 +9,7 @@ import javax.validation.constraints.NotNull;
 
 import org.springframework.data.elasticsearch.annotations.Document;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Objects;
 
 /**
@@ -40,8 +41,8 @@ public class MyAsset implements Serializable {
      * WP3
      */
     @ApiModelProperty(value = "WP3")
-    @Column(name = "economic_value")
-    private Double economicValue;
+    @Column(name = "economic_value", precision=10, scale=2)
+    private BigDecimal economicValue;
 
     @OneToOne
     @NotNull
@@ -103,16 +104,16 @@ public class MyAsset implements Serializable {
         this.estimated = estimated;
     }
 
-    public Double getEconomicValue() {
+    public BigDecimal getEconomicValue() {
         return economicValue;
     }
 
-    public MyAsset economicValue(Double economicValue) {
+    public MyAsset economicValue(BigDecimal economicValue) {
         this.economicValue = economicValue;
         return this;
     }
 
-    public void setEconomicValue(Double economicValue) {
+    public void setEconomicValue(BigDecimal economicValue) {
         this.economicValue = economicValue;
     }
 

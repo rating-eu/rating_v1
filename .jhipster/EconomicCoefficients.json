@@ -14,22 +14,27 @@
     "fields": [
         {
             "fieldName": "discountingRate",
-            "fieldType": "Double"
+            "fieldType": "BigDecimal",
+            "fieldValidateRules": [
+                "min",
+                "max"
+            ],
+            "fieldValidateRulesMin": 0,
+            "fieldValidateRulesMax": 1
         },
         {
             "fieldName": "physicalAssetsReturn",
-            "javadoc": "1",
-            "fieldType": "Double"
+            "fieldType": "BigDecimal"
         },
         {
             "fieldName": "financialAssetsReturn",
             "javadoc": "Fixed Assets Return",
-            "fieldType": "Double"
+            "fieldType": "BigDecimal"
         },
         {
             "fieldName": "lossOfIntangible",
             "javadoc": "Current Assets Return",
-            "fieldType": "Double"
+            "fieldType": "BigDecimal"
         }
     ],
     "changelogDate": "20180813120726",

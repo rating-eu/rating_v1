@@ -29,7 +29,7 @@
                 <constraints nullable="true" />
             </column>
 
-            <column name="costs" type="integer">
+            <column name="costs" type="decimal(10,2)">
                 <constraints nullable="true" />
             </column>
 

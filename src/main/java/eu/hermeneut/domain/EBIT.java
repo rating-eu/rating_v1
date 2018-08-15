@@ -10,6 +10,7 @@ import javax.validation.constraints.NotNull;
 import org.springframework.data.elasticsearch.annotations.Document;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.time.ZonedDateTime;
 import java.util.Objects;
 
@@ -46,8 +47,8 @@ public class EBIT implements Serializable {
     @Column(name = "jhi_year")
     private Integer year;
 
-    @Column(name = "jhi_value")
-    private Double value;
+    @Column(name = "jhi_value", precision=10, scale=2)
+    private BigDecimal value;
 
     @Column(name = "created")
     private ZonedDateTime created;
@@ -78,16 +79,16 @@ public class EBIT implements Serializable {
         this.year = year;
     }
 
-    public Double getValue() {
+    public BigDecimal getValue() {
         return value;
     }
 
-    public EBIT value(Double value) {
+    public EBIT value(BigDecimal value) {
         this.value = value;
         return this;
     }
 
-    public void setValue(Double value) {
+    public void setValue(BigDecimal value) {
         this.value = value;
     }
 

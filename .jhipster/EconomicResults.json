@@ -13,19 +13,19 @@
     "fields": [
         {
             "fieldName": "economicPerformance",
-            "fieldType": "Double"
+            "fieldType": "BigDecimal"
         },
         {
             "fieldName": "intangibleDrivingEarnings",
-            "fieldType": "Double"
+            "fieldType": "BigDecimal"
         },
         {
             "fieldName": "intangibleCapital",
-            "fieldType": "Double"
+            "fieldType": "BigDecimal"
         },
         {
             "fieldName": "intangibleLossByAttacks",
-            "fieldType": "Double"
+            "fieldType": "BigDecimal"
         }
     ],
     "changelogDate": "20180813120728",

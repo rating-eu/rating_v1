@@ -21,19 +21,19 @@
             <column name="id" type="bigint" autoIncrement="${autoIncrement}">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="economic_performance" type="double">
+            <column name="economic_performance" type="decimal(10,2)">
                 <constraints nullable="true" />
             </column>
 
-            <column name="intangible_driving_earnings" type="double">
+            <column name="intangible_driving_earnings" type="decimal(10,2)">
                 <constraints nullable="true" />
             </column>
 
-            <column name="intangible_capital" type="double">
+            <column name="intangible_capital" type="decimal(10,2)">
                 <constraints nullable="true" />
             </column>
 
-            <column name="intangible_loss_by_attacks" type="double">
+            <column name="intangible_loss_by_attacks" type="decimal(10,2)">
                 <constraints nullable="true" />
             </column>
             <column name="self_assessment_id" type="bigint">

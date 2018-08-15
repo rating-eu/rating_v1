@@ -68,7 +68,7 @@ class MyAssetGatlingTest extends Simulation {
             .exec(http("Create new myAsset")
             .post("/api/my-assets")
             .headers(headers_http_authenticated)
-            .body(StringBody("""{"id":null, "magnitude":"SAMPLE_TEXT", "ranking":"0", "estimated":null, "economicValue":null}""")).asJSON
+            .body(StringBody("""{"id":null, "magnitude":"SAMPLE_TEXT", "ranking":"0", "estimated":null, "economicValue":"0"}""")).asJSON
             .check(status.is(201))
             .check(headerRegex("Location", "(.*)").saveAs("new_myAsset_url"))).exitHereIfFailed
             .pause(10)

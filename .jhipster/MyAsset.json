@@ -42,7 +42,7 @@
         {
             "fieldName": "economicValue",
             "javadoc": "WP3",
-            "fieldType": "Double"
+            "fieldType": "BigDecimal"
         }
     ],
     "changelogDate": "20180727084747",
