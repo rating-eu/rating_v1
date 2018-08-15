@@ -28,7 +28,7 @@ public class EBIT implements Serializable {
     public EBIT() {
     }
 
-    public EBIT(Integer year, Double value, ZonedDateTime created, SelfAssessment selfAssessment) {
+    public EBIT(Integer year, BigDecimal value, ZonedDateTime created, SelfAssessment selfAssessment) {
         this.year = year;
         this.value = value;
         this.created = created;
