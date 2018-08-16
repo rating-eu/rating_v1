@@ -9,11 +9,12 @@ import eu.hermeneut.domain.enumeration.SectorType;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.time.ZonedDateTime;
 import java.util.*;
 
 public class Calculator {
 
+    public static final String CURRENT_ASSETS_CATEGORY_NAME = "Current Assets";
+    public static final String FIXED_ASSETS_CATEGORY_NAME = "Fixed Assets";
     private static Map<SectorType, Map<CategoryType, BigDecimal>> lossPercentageMap;
 
     static {
@@ -128,9 +129,9 @@ public class Calculator {
             AssetCategory assetCategory = asset.getAssetcategory();
 
             if (assetCategory != null) {
-                if (assetCategory.getName().equalsIgnoreCase("Current Assets")) {
+                if (assetCategory.getName().equalsIgnoreCase(CURRENT_ASSETS_CATEGORY_NAME)) {
                     financialAssets.add(myAsset);
-                } else if (assetCategory.getName().equalsIgnoreCase("Fixed Assets")) {
+                } else if (assetCategory.getName().equalsIgnoreCase(FIXED_ASSETS_CATEGORY_NAME)) {
                     physicalAssets.add(myAsset);
                 }
             }
@@ -152,8 +153,8 @@ public class Calculator {
             financialAssetsValuation = financialAssetsValuation.add(financialAsset.getEconomicValue());
         }
 
-        intangibleDrivingEarnings = intangibleDrivingEarnings.subtract(physicalAssetsReturn.multiply(physicalAssetsValuation));
-        intangibleDrivingEarnings = intangibleDrivingEarnings.subtract(financialAssetsReturn.multiply(financialAssetsValuation));
+        intangibleDrivingEarnings = intangibleDrivingEarnings.subtract(physicalAssetsReturn.multiply(physicalAssetsValuation).divide(new BigDecimal("100"), 3, RoundingMode.HALF_UP));
+        intangibleDrivingEarnings = intangibleDrivingEarnings.subtract(financialAssetsReturn.multiply(financialAssetsValuation).divide(new BigDecimal("100"), 3, RoundingMode.HALF_UP));
 
         return intangibleDrivingEarnings;
     }
