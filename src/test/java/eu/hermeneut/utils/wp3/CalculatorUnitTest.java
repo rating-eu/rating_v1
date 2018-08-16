@@ -38,6 +38,10 @@ public class CalculatorUnitTest {
     private List<MyAsset> myAssets;
     private static final BigDecimal ZERO_INTANGIBLE_DRIVING_EARNINGS = new BigDecimal("68042.804");
 
+    //Data to calculate the Intangible Capital
+    private BigDecimal intangibleDrivingEarnings;
+    private BigDecimal discountingRateForIntangibleCapital;
+    private static final BigDecimal INTANGIBLE_CAPITAL = new BigDecimal("45361.869");
 
     @Before
     public void setup() {
@@ -95,6 +99,10 @@ public class CalculatorUnitTest {
         myCurrentAsset2.setAsset(currentAsset);
         myCurrentAsset2.setEconomicValue(new BigDecimal("456.123"));
         myAssets.add(myCurrentAsset2);
+
+        //Data to calculate the Intangible Capital
+        this.intangibleDrivingEarnings = ZERO_INTANGIBLE_DRIVING_EARNINGS;
+        this.discountingRateForIntangibleCapital = new BigDecimal("0.5");
     }
 
     @Test
@@ -151,5 +159,12 @@ public class CalculatorUnitTest {
         BigDecimal intangibleDrivingEarnings = Calculator.calculateIntangibleDrivingEarnings(this.economicPerformance, this.physicalAssetsReturn, this.financialAssetsReturn, this.myAssets);
 
         Assert.assertEquals(ZERO_INTANGIBLE_DRIVING_EARNINGS, intangibleDrivingEarnings);
+    }
+
+    @Test
+    public void calculateIntangibleCapital() {
+        BigDecimal intangibleCapital = Calculator.calculateIntangibleCapital(this.intangibleDrivingEarnings, this.discountingRateForIntangibleCapital);
+
+        Assert.assertEquals(INTANGIBLE_CAPITAL, intangibleCapital);
     }
 }
