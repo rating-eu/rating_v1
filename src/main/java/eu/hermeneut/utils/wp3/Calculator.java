@@ -171,7 +171,7 @@ public class Calculator {
         return intangibleCapital.multiply(lossOfIntangiblePercentage).divide(new BigDecimal("100"), 3, RoundingMode.HALF_UP);
     }
 
-    public static BigDecimal calculateSplittingLoss(BigDecimal intangibleLossByAttacks, CategoryType categoryType, SectorType sectorType/*Optional field*/) {
+    public static BigDecimal calculateSplittingLoss(BigDecimal intangibleLossByAttacks, CategoryType categoryType, SectorType sectorType) {
         BigDecimal percentage = calculateSplittingLossPercentage(categoryType, sectorType);
 
         return intangibleLossByAttacks.multiply(percentage).divide(new BigDecimal(100), 3, RoundingMode.HALF_UP);

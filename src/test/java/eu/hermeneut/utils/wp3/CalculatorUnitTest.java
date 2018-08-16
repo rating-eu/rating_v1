@@ -5,6 +5,8 @@ import eu.hermeneut.domain.AssetCategory;
 import eu.hermeneut.domain.EBIT;
 import eu.hermeneut.domain.MyAsset;
 import eu.hermeneut.domain.enumeration.AssetType;
+import eu.hermeneut.domain.enumeration.CategoryType;
+import eu.hermeneut.domain.enumeration.SectorType;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -46,6 +48,14 @@ public class CalculatorUnitTest {
     //Data to calculate the Loss of Intangible by Attacks
     private static final BigDecimal LOSS_OF_INTANGIBLE_PERCENTAGE = new BigDecimal("18.29");
     private static final BigDecimal INTANGIBLE_LOSS_BY_ATTACKS = new BigDecimal("8296.686");
+
+    //Data to calculate the SplittingLoss percentage
+    private SectorType globalSector;
+    private CategoryType ipCategory;
+    private static final BigDecimal GLOBAL_IP_SPLITTING_LOSS_PERCENTAGE = new BigDecimal("19.89");
+
+    //Data to calculate the SplittingLoss
+    private static final BigDecimal SPLITTING_LOSS_OF_INTANGIBLE = new BigDecimal("1650.211");
 
     @Before
     public void setup() {
@@ -107,6 +117,10 @@ public class CalculatorUnitTest {
         //Data to calculate the Intangible Capital
         this.intangibleDrivingEarnings = ZERO_INTANGIBLE_DRIVING_EARNINGS;
         this.discountingRateForIntangibleCapital = new BigDecimal("0.5");
+
+        //Data to calculate the SplittingLoss percentage
+        this.globalSector = SectorType.GLOBAL;
+        this.ipCategory = CategoryType.IP;
     }
 
     @Test
@@ -177,5 +191,19 @@ public class CalculatorUnitTest {
         BigDecimal intangibleLossByAttacks = Calculator.calculateIntangibleLossByAttacks(INTANGIBLE_CAPITAL, LOSS_OF_INTANGIBLE_PERCENTAGE);
 
         Assert.assertEquals(INTANGIBLE_LOSS_BY_ATTACKS, intangibleLossByAttacks);
+    }
+
+    @Test
+    public void calculateSplittingLossPercentage() {
+        BigDecimal splittingLossPercentage = Calculator.calculateSplittingLossPercentage(this.ipCategory, this.globalSector);
+
+        Assert.assertEquals(GLOBAL_IP_SPLITTING_LOSS_PERCENTAGE, splittingLossPercentage);
+    }
+
+    @Test
+    public void calculateSplittingLoss() {
+        BigDecimal splittingLoss = Calculator.calculateSplittingLoss(INTANGIBLE_LOSS_BY_ATTACKS, this.ipCategory, this.globalSector);
+
+        Assert.assertEquals(SPLITTING_LOSS_OF_INTANGIBLE, splittingLoss);
     }
 }
