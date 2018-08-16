@@ -293,14 +293,12 @@ export class ImpactEvaluationComponent implements OnInit {
       inputs.economicCoefficients = new EconomicCoefficientsMgm();
       inputs.economicCoefficients.discountingRate = discounting;
       console.log(inputs);
-      /*
-      this.impactService.evaluateStepOne(inputs).toPromise().then((res) => {
-        if(res){
+      this.impactService.evaluateStepOne(inputs, this.mySelf).toPromise().then((res) => {
+        if (res) {
           this.economicPerformance = res.economicResults.economicPerformance;
         }
       });
-      */
-      this.economicPerformance = Math.random() * 100;
+      // this.economicPerformance = Math.random() * 100;
     }
   }
   public evaluateStepTwo() {
@@ -345,19 +343,20 @@ export class ImpactEvaluationComponent implements OnInit {
       inputs.myAssets = [];
       inputs.myAssets = this.financialAssetsAkaCurrent.concat(this.physicalAssetsAkaFixed);
       console.log(inputs);
-      /*
-      this.impactService.evaluateStepTwo(inputs).toPromise().then((res) => {
+      this.impactService.evaluateStepTwo(inputs, this.mySelf).toPromise().then((res) => {
         if (res) {
           this.intangibleDrivingEarnings = res.economicResults.intangibleDrivingEarnings;
           this.intangibleCapitalValuation = res.economicResults.intangibleCapital;
         }
       });
-      */
+      /*
       this.intangibleDrivingEarnings = Math.random() * 100;
       this.intangibleCapitalValuation = Math.random() * 100;
+      */
     }
   }
   public evaluateStepThree() {
+    console.log('EVALUATE STEP THREE');
     let lossOfIntangiblePercentage = 18.29;
     if (this.impactFormStepThree.get('lossOfIntangiblePercentage').value &&
       !isNaN(parseFloat(this.impactFormStepThree.get('lossOfIntangiblePercentage').value))) {
@@ -372,18 +371,17 @@ export class ImpactEvaluationComponent implements OnInit {
       inputs.economicCoefficients = new EconomicCoefficientsMgm();
       inputs.economicCoefficients.lossOfIntangible = lossOfIntangiblePercentage;
       console.log(inputs);
-      /*
-      this.impactService.evaluateStepThree(inputs).toPromise().then((res) => {
+      this.impactService.evaluateStepThree(inputs, this.mySelf).toPromise().then((res) => {
         if (res) {
           this.lossOnintangibleAssetsDueToCyberattacks = res.economicResults.intangibleLossByAttacks;
         }
       });
-      */
-      this.lossOnintangibleAssetsDueToCyberattacks = Math.random() * 100;
+      // this.lossOnintangibleAssetsDueToCyberattacks = Math.random() * 100;
     }
   }
 
   public evaluateStepFour() {
+    console.log('EVALUATE STEP FOUR');
     /*
     if (this.impactFormStepFour.invalid) {
       // gestire l'errore
@@ -396,8 +394,8 @@ export class ImpactEvaluationComponent implements OnInit {
     } else {
       inputs.sectorType = this.choosedSectorType;
     }
-    /*
-    this.impactService.evaluateStepFour(inputs).toPromise().then((res) => {
+    console.log(inputs);
+    this.impactService.evaluateStepFour(inputs, this.mySelf).toPromise().then((res) => {
       if (res) {
         for (const impactOn of res.splittingLosses) {
           switch (impactOn.categoryType.toString()) {
@@ -417,10 +415,11 @@ export class ImpactEvaluationComponent implements OnInit {
         }
       }
     });
-    */
+    /*
     this.impactOnOrgCapital = Math.random() * 100;
     this.impactOnKeyComp = Math.random() * 100;
     this.impactOnIP = Math.random() * 100;
+    */
   }
 
   public isSectorSelected(sector: string): boolean {
