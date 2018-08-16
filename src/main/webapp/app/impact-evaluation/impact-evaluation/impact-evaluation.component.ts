@@ -10,6 +10,9 @@ import { ImpactEvaluationService } from '../impact-evaluation.service';
 import { EBITMgm } from '../../entities/ebit-mgm';
 import { Wp3BundleInput } from '../model/wp3-bundle-input.model';
 import { EconomicCoefficientsMgm } from '../../entities/economic-coefficients-mgm';
+import { SectorType, CategoryType } from '../../entities/splitting-loss-mgm';
+import { MyCategoryType } from '../../entities/enumerations/MyCategoryType.enum';
+import { Router } from '../../../../../../node_modules/@angular/router';
 
 @Component({
   // tslint:disable-next-line:component-selector
@@ -20,10 +23,12 @@ import { EconomicCoefficientsMgm } from '../../entities/economic-coefficients-mg
 export class ImpactEvaluationComponent implements OnInit {
 
   public witchStep = 1;
+  public isGlobal = true;
+  public sectorChoosed: string;
   public impactFormStepOne: FormGroup;
   public impactFormStepTwo: FormGroup;
   public impactFormStepThree: FormGroup;
-  public impactFormStepFour: FormGroup;
+  // public impactFormStepFour: FormGroup;
 
   public economicPerformance: number;
   public intangibleDrivingEarnings: number;
@@ -40,11 +45,12 @@ export class ImpactEvaluationComponent implements OnInit {
   public tangibleAssets: MyAssetMgm[] = [];
   public financialAssetsAkaCurrent: MyAssetMgm[] = [];
   public physicalAssetsAkaFixed: MyAssetMgm[] = [];
-  private mySelf: SelfAssessmentMgm;
   public ebitLabel: string[] = [];
 
+  private mySelf: SelfAssessmentMgm;
   private firstYear: number;
   private lastYear: number;
+  private choosedSectorType: SectorType;
 
   public sectorialPercentageMatrix: any[] = [
     {
@@ -71,7 +77,8 @@ export class ImpactEvaluationComponent implements OnInit {
   constructor(
     private mySelfAssessmentService: SelfAssessmentMgmService,
     private assetService: AssetMgmService,
-    private impactService: ImpactEvaluationService
+    private impactService: ImpactEvaluationService,
+    private router: Router
   ) { }
 
   ngOnInit() {
@@ -377,10 +384,50 @@ export class ImpactEvaluationComponent implements OnInit {
   }
 
   public evaluateStepFour() {
+    /*
     if (this.impactFormStepFour.invalid) {
       // gestire l'errore
       return;
     }
+    */
+    const inputs: Wp3BundleInput = new Wp3BundleInput();
+    if (this.isGlobal) {
+      inputs.sectorType = SectorType.GLOBAL;
+    } else {
+      inputs.sectorType = this.choosedSectorType;
+    }
+    /*
+    this.impactService.evaluateStepFour(inputs).toPromise().then((res) => {
+      if (res) {
+        for (const impactOn of res.splittingLosses) {
+          switch (impactOn.categoryType.toString()) {
+            case MyCategoryType.IP.toString(): {
+              this.impactOnIP = impactOn.loss;
+              break;
+            }
+            case MyCategoryType.KEY_COMP.toString(): {
+              this.impactOnKeyComp = impactOn.loss;
+              break;
+            }
+            case MyCategoryType.ORG_CAPITAL.toString(): {
+              this.impactOnOrgCapital = impactOn.loss;
+              break;
+            }
+          }
+        }
+      }
+    });
+    */
+    this.impactOnOrgCapital = Math.random() * 100;
+    this.impactOnKeyComp = Math.random() * 100;
+    this.impactOnIP = Math.random() * 100;
+  }
+
+  public isSectorSelected(sector: string): boolean {
+    if (this.sectorChoosed === sector) {
+      return true;
+    }
+    return false;
   }
 
   public selectStep(step: number) {
@@ -404,9 +451,55 @@ export class ImpactEvaluationComponent implements OnInit {
           return;
         }
         this.evaluateStepThree();
+        if (this.isGlobal) {
+          this.evaluateStepFour();
+        }
         break;
       }
     }
     this.witchStep = step;
+  }
+
+  public setIsGlobal() {
+    this.isGlobal = !this.isGlobal;
+    if (this.isGlobal) {
+      this.evaluateStepFour();
+    } else {
+      this.resetStepFourRes();
+    }
+  }
+
+  private resetStepFourRes() {
+    this.choosedSectorType = null;
+    this.impactOnOrgCapital = undefined;
+    this.impactOnKeyComp = undefined;
+    this.impactOnIP = undefined;
+  }
+
+  public setSector(sector: string) {
+    this.sectorChoosed = sector;
+    switch (sector) {
+      case 'finance_and_insurance': {
+        this.choosedSectorType = SectorType.FINANCE_AND_INSURANCE;
+        break;
+      }
+      case 'health_care_and_social_assistance': {
+        this.choosedSectorType = SectorType.HEALTH_CARE_AND_SOCIAL_ASSISTANCE;
+        break;
+      }
+      case 'information': {
+        this.choosedSectorType = SectorType.INFORMATION;
+        break;
+      }
+      case 'professional_scientific_and_technical_service': {
+        this.choosedSectorType = SectorType.PROFESSIONAL_SCIENTIFIC_AND_TECHNICAL_SERVICE;
+        break;
+      }
+    }
+    this.evaluateStepFour();
+  }
+
+  public close() {
+    this.router.navigate(['./']);
   }
 }
