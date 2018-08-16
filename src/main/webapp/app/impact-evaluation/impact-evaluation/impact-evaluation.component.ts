@@ -206,14 +206,8 @@ export class ImpactEvaluationComponent implements OnInit {
     */
   }
 
-  public setEconomicValue(asset: MyAssetMgm, value: number) {
-    const indexP = _.findIndex(this.physicalAssetsAkaFixed, { id: asset.id });
-    const indexF = _.findIndex(this.financialAssetsAkaCurrent, { id: asset.id });
-    if (indexP !== -1) {
-      this.physicalAssetsAkaFixed[indexP].economicValue = value;
-    } else if (indexF !== -1) {
-      this.financialAssetsAkaCurrent[indexF].economicValue = value;
-    }
+  public trackByFn(index: number, value: any) {
+    return index;
   }
 
   public evaluateStepOne() {

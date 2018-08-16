@@ -73,27 +73,27 @@
       </div>
     </div>
     <div class="row">
-      <div class="col-md-6">
+      <div *ngIf="physicalAssetsAkaFixed.length > 0"  class="col-md-6">
         <h6>Physical Assets</h6>
-        <ng-container *ngFor="let asset of physicalAssetsAkaFixed; let i = index">
+        <ng-container *ngFor="let asset of physicalAssetsAkaFixed; let i = index;  trackBy: trackByFn">
           <div class="input-group" style="margin-bottom: 10px">
             <div class="input-group-prepend">
               <span class="input-group-text" id="">Valutation of {{asset.asset.name}}</span>
             </div>
             <input type="text" class="form-control" placeholder="Insert economic valutation of {{asset.asset.name}}" aria-label="economicValue"
-              aria-describedby="basic-addon2" (change)="setEconomicValue(asset, $event.target.value)" pattern="[0-9]+">
+              aria-describedby="basic-addon2" pattern="[0-9]+" [(ngModel)]="asset.economicValue">
           </div>
         </ng-container>
       </div>
-      <div class="col-md-6">
+      <div *ngIf="financialAssetsAkaCurrent.length > 0" class="col-md-6">
         <h6>Financial Assets</h6>
-        <ng-container *ngFor="let asset of financialAssetsAkaCurrent; let i = index">
+        <ng-container *ngFor="let asset of financialAssetsAkaCurrent; let i = index; trackBy: trackByFn">
           <div class="input-group" style="margin-bottom: 10px">
             <div class="input-group-prepend">
               <span class="input-group-text" id="">Valutation of {{asset.asset.name}}</span>
             </div>
             <input type="text" class="form-control" placeholder="Insert economic valutation of {{asset.asset.name}}" aria-label="economicValue"
-              aria-describedby="basic-addon2" (change)="setEconomicValue(asset, $event.target.value)" pattern="[0-9]+">
+              aria-describedby="basic-addon2" pattern="[0-9]+" [(ngModel)]="asset.economicValue">
           </div>
         </ng-container>
       </div>
