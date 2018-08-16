@@ -23,7 +23,6 @@
             "lossOfIntangible": "Loss Of Intangible",
             "selfAssessment": "Self Assessment",
             "help": {
-                "physicalAssetsReturn": "1",
                 "financialAssetsReturn": "Fixed Assets Return",
                 "lossOfIntangible": "Current Assets Return"
             }

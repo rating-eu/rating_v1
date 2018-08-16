@@ -68,7 +68,7 @@ class EconomicCoefficientsGatlingTest extends Simulation {
             .exec(http("Create new economicCoefficients")
             .post("/api/economic-coefficients")
             .headers(headers_http_authenticated)
-            .body(StringBody("""{"id":null, "discountingRate":null, "physicalAssetsReturn":null, "financialAssetsReturn":null, "lossOfIntangible":null}""")).asJSON
+            .body(StringBody("""{"id":null, "discountingRate":"0", "physicalAssetsReturn":"0", "financialAssetsReturn":"0", "lossOfIntangible":"0"}""")).asJSON
             .check(status.is(201))
             .check(headerRegex("Location", "(.*)").saveAs("new_economicCoefficients_url"))).exitHereIfFailed
             .pause(10)

@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -46,7 +47,7 @@ public class EconomicCoefficientsResource {
      */
     @PostMapping("/economic-coefficients")
     @Timed
-    public ResponseEntity<EconomicCoefficients> createEconomicCoefficients(@RequestBody EconomicCoefficients economicCoefficients) throws URISyntaxException {
+    public ResponseEntity<EconomicCoefficients> createEconomicCoefficients(@Valid @RequestBody EconomicCoefficients economicCoefficients) throws URISyntaxException {
         log.debug("REST request to save EconomicCoefficients : {}", economicCoefficients);
         if (economicCoefficients.getId() != null) {
             throw new BadRequestAlertException("A new economicCoefficients cannot already have an ID", ENTITY_NAME, "idexists");
@@ -68,7 +69,7 @@ public class EconomicCoefficientsResource {
      */
     @PutMapping("/economic-coefficients")
     @Timed
-    public ResponseEntity<EconomicCoefficients> updateEconomicCoefficients(@RequestBody EconomicCoefficients economicCoefficients) throws URISyntaxException {
+    public ResponseEntity<EconomicCoefficients> updateEconomicCoefficients(@Valid @RequestBody EconomicCoefficients economicCoefficients) throws URISyntaxException {
         log.debug("REST request to update EconomicCoefficients : {}", economicCoefficients);
         if (economicCoefficients.getId() == null) {
             return createEconomicCoefficients(economicCoefficients);

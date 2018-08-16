@@ -18,7 +18,7 @@
         },
         {
             "fieldName": "value",
-            "fieldType": "Double"
+            "fieldType": "BigDecimal"
         },
         {
             "fieldName": "created",

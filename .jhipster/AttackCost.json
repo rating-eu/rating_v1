@@ -33,7 +33,7 @@
         },
         {
             "fieldName": "costs",
-            "fieldType": "Integer"
+            "fieldType": "BigDecimal"
         }
     ],
     "changelogDate": "20180727084750",

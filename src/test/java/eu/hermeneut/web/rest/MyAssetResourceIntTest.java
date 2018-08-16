@@ -23,6 +23,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import java.math.BigDecimal;
 import java.util.List;
 
 import static eu.hermeneut.web.rest.TestUtil.createFormattingConversionService;
@@ -49,8 +50,8 @@ public class MyAssetResourceIntTest {
     private static final Boolean DEFAULT_ESTIMATED = false;
     private static final Boolean UPDATED_ESTIMATED = true;
 
-    private static final Double DEFAULT_ECONOMIC_VALUE = 1D;
-    private static final Double UPDATED_ECONOMIC_VALUE = 2D;
+    private static final BigDecimal DEFAULT_ECONOMIC_VALUE = new BigDecimal(1);
+    private static final BigDecimal UPDATED_ECONOMIC_VALUE = new BigDecimal(2);
 
     @Autowired
     private MyAssetRepository myAssetRepository;
@@ -167,7 +168,7 @@ public class MyAssetResourceIntTest {
             .andExpect(jsonPath("$.[*].magnitude").value(hasItem(DEFAULT_MAGNITUDE.toString())))
             .andExpect(jsonPath("$.[*].ranking").value(hasItem(DEFAULT_RANKING)))
             .andExpect(jsonPath("$.[*].estimated").value(hasItem(DEFAULT_ESTIMATED.booleanValue())))
-            .andExpect(jsonPath("$.[*].economicValue").value(hasItem(DEFAULT_ECONOMIC_VALUE.doubleValue())));
+            .andExpect(jsonPath("$.[*].economicValue").value(hasItem(DEFAULT_ECONOMIC_VALUE.intValue())));
     }
 
     @Test
@@ -184,7 +185,7 @@ public class MyAssetResourceIntTest {
             .andExpect(jsonPath("$.magnitude").value(DEFAULT_MAGNITUDE.toString()))
             .andExpect(jsonPath("$.ranking").value(DEFAULT_RANKING))
             .andExpect(jsonPath("$.estimated").value(DEFAULT_ESTIMATED.booleanValue()))
-            .andExpect(jsonPath("$.economicValue").value(DEFAULT_ECONOMIC_VALUE.doubleValue()));
+            .andExpect(jsonPath("$.economicValue").value(DEFAULT_ECONOMIC_VALUE.intValue()));
     }
 
     @Test
@@ -286,7 +287,7 @@ public class MyAssetResourceIntTest {
             .andExpect(jsonPath("$.[*].magnitude").value(hasItem(DEFAULT_MAGNITUDE.toString())))
             .andExpect(jsonPath("$.[*].ranking").value(hasItem(DEFAULT_RANKING)))
             .andExpect(jsonPath("$.[*].estimated").value(hasItem(DEFAULT_ESTIMATED.booleanValue())))
-            .andExpect(jsonPath("$.[*].economicValue").value(hasItem(DEFAULT_ECONOMIC_VALUE.doubleValue())));
+            .andExpect(jsonPath("$.[*].economicValue").value(hasItem(DEFAULT_ECONOMIC_VALUE.intValue())));
     }
 
     @Test

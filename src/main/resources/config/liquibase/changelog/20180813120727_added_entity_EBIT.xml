@@ -22,22 +22,22 @@
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="jhi_year" type="integer">
-                <constraints nullable="true"/>
+                <constraints nullable="true" />
             </column>
 
-            <column name="jhi_value" type="double">
-                <constraints nullable="true"/>
+            <column name="jhi_value" type="decimal(10,2)">
+                <constraints nullable="true" />
             </column>
 
             <column name="created" type="timestamp">
-                <constraints nullable="true"/>
+                <constraints nullable="true" />
             </column>
             <column name="self_assessment_id" type="bigint">
             </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
         <dropDefaultValue tableName="ebit" columnName="created" columnDataType="datetime"/>
-
+        
     </changeSet>
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here, do not remove-->
 </databaseChangeLog>

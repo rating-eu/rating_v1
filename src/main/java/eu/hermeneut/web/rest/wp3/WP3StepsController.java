@@ -14,6 +14,7 @@ import eu.hermeneut.utils.wp3.Calculator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +23,7 @@ import java.util.List;
 @RequestMapping("/api")
 public class WP3StepsController {
 
-    public static final double DEFAULT_LOSS_OF_INTANGIBLE = 18.29;
+    public static final BigDecimal DEFAULT_LOSS_OF_INTANGIBLE = new BigDecimal("18.29");
     @Autowired
     private SelfAssessmentService selfAssessmentService;
 
@@ -81,11 +82,11 @@ public class WP3StepsController {
             throw new NullInputException("The economicCoefficients can NOT be NULL!");
         }
 
-        Double discountingRate = economicCoefficients.getDiscountingRate();
+        BigDecimal discountingRate = economicCoefficients.getDiscountingRate();
 
         if (discountingRate == null) {
             throw new NullInputException("The discountingRate can NOT be NULL!");
-        } else if (discountingRate < 0 || discountingRate > 1) {
+        } else if (discountingRate.compareTo(BigDecimal.ZERO) < 0 || discountingRate.compareTo(BigDecimal.ONE) > 0) {
             throw new IllegalInputException("The value of DiscountingRate MUST BE BETWEEN 0 and 1 (edges included)!");
         }
 
@@ -94,7 +95,7 @@ public class WP3StepsController {
         EconomicCoefficients existingEconomicCoefficients = this.economicCoefficientsService.findOneBySelfAssessmentID(selfAssessmentID);
         List<SplittingLoss> existingSplittingLosses = this.splittingLossService.findAllBySelfAssessmentID(selfAssessmentID);
 
-        double economicPerformance = Calculator.calculateEconomicPerformance(ebits, discountingRate);
+        BigDecimal economicPerformance = Calculator.calculateEconomicPerformance(ebits, discountingRate);
 
         //===EconomicResults===
         if (existingEconomicResults != null) {//UPDATE
@@ -170,12 +171,12 @@ public class WP3StepsController {
             throw new IllegalInputException("EconomicCoefficients can NOT be NULL!");
         }
 
-        double physicalAssetsReturn = economicCoefficients.getPhysicalAssetsReturn();
-        double financialAssetsReturn = economicCoefficients.getFinancialAssetsReturn();
+        BigDecimal physicalAssetsReturn = economicCoefficients.getPhysicalAssetsReturn();
+        BigDecimal financialAssetsReturn = economicCoefficients.getFinancialAssetsReturn();
 
         EconomicCoefficients existingEconomicCoefficients = this.economicCoefficientsService.findOneBySelfAssessmentID(selfAssessmentID);
 
-        double discountingRate;
+        BigDecimal discountingRate;
 
         if (existingEconomicCoefficients == null) {
             throw new NotFoundException("EconomicCoefficients NOT FOUND");
@@ -194,11 +195,11 @@ public class WP3StepsController {
             throw new NotFoundException("The EconomicResults for SelfAssessment " + selfAssessmentID + " was not found!");
         }
 
-        double economicPerformance = existingEconomicResults.getEconomicPerformance();
+        BigDecimal economicPerformance = existingEconomicResults.getEconomicPerformance();
 
-        double intangibleDriningEarnings = Calculator.calculateIntangibleDrivingEarnings(economicPerformance, physicalAssetsReturn, financialAssetsReturn, myAssets);
+        BigDecimal intangibleDriningEarnings = Calculator.calculateIntangibleDrivingEarnings(economicPerformance, physicalAssetsReturn, financialAssetsReturn, myAssets);
 
-        double intangibleCapital = Calculator.calculateIntangibleCapital(intangibleDriningEarnings, discountingRate);
+        BigDecimal intangibleCapital = Calculator.calculateIntangibleCapital(intangibleDriningEarnings, discountingRate);
 
         //Update fields
         existingEconomicResults.setIntangibleDrivingEarnings(intangibleDriningEarnings);
@@ -239,7 +240,7 @@ public class WP3StepsController {
             throw new IllegalInputException("EconomicCoefficients can NOT be NULL!");
         }
 
-        double lossOfIntangiblePercentage = economicCoefficients.getLossOfIntangible();
+        BigDecimal lossOfIntangiblePercentage = economicCoefficients.getLossOfIntangible();
 
         EconomicCoefficients existingEconomicCoefficients = this.economicCoefficientsService.findOneBySelfAssessmentID(selfAssessmentID);
 
@@ -258,9 +259,9 @@ public class WP3StepsController {
             throw new NotFoundException("The EconomicResults for SelfAssessment " + selfAssessmentID + " was not found!");
         }
 
-        double intangibleCapital = existingEconomicResults.getIntangibleCapital();
+        BigDecimal intangibleCapital = existingEconomicResults.getIntangibleCapital();
 
-        double intangibleLossByAttacks = Calculator.calculateIntangibleLossByAttacks(intangibleCapital, lossOfIntangiblePercentage);
+        BigDecimal intangibleLossByAttacks = Calculator.calculateIntangibleLossByAttacks(intangibleCapital, lossOfIntangiblePercentage);
 
         //Update field
         existingEconomicResults.setIntangibleLossByAttacks(intangibleLossByAttacks);
@@ -300,7 +301,7 @@ public class WP3StepsController {
             throw new NotFoundException("The EconomicResults for SelfAssessment " + selfAssessmentID + " was not found!");
         }
 
-        double intangibleLossByAttacks = existingEconomicResults.getIntangibleLossByAttacks();
+        BigDecimal intangibleLossByAttacks = existingEconomicResults.getIntangibleLossByAttacks();
 
         SectorType sectorType = wp3InputBundle.getSectorType();
         CategoryType categoryType = wp3InputBundle.getCategoryType();
@@ -340,9 +341,9 @@ public class WP3StepsController {
         return wp3OutputBundle;
     }
 
-    private SplittingLoss createNewSplittingLoss(SelfAssessment selfAssessment, double intangibleLossByAttacks, SectorType sectorType, CategoryType catType) {
-        double splittingLossPercentage = Calculator.calculateSplittingLossPercentage(catType, sectorType);
-        double splittingLossValue = Calculator.calculateSplittingLoss(intangibleLossByAttacks, catType, sectorType);
+    private SplittingLoss createNewSplittingLoss(SelfAssessment selfAssessment, BigDecimal intangibleLossByAttacks, SectorType sectorType, CategoryType catType) {
+        BigDecimal splittingLossPercentage = Calculator.calculateSplittingLossPercentage(catType, sectorType);
+        BigDecimal splittingLossValue = Calculator.calculateSplittingLoss(intangibleLossByAttacks, catType, sectorType);
 
         SplittingLoss splittingLoss = new SplittingLoss();
         splittingLoss.setId(null);//new entity
