@@ -23,6 +23,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import java.math.BigDecimal;
 import java.util.List;
 
 import static eu.hermeneut.web.rest.TestUtil.createFormattingConversionService;
@@ -40,17 +41,17 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(classes = HermeneutApp.class)
 public class EconomicResultsResourceIntTest {
 
-    private static final Double DEFAULT_ECONOMIC_PERFORMANCE = 1D;
-    private static final Double UPDATED_ECONOMIC_PERFORMANCE = 2D;
+    private static final BigDecimal DEFAULT_ECONOMIC_PERFORMANCE = new BigDecimal(1);
+    private static final BigDecimal UPDATED_ECONOMIC_PERFORMANCE = new BigDecimal(2);
 
-    private static final Double DEFAULT_INTANGIBLE_DRIVING_EARNINGS = 1D;
-    private static final Double UPDATED_INTANGIBLE_DRIVING_EARNINGS = 2D;
+    private static final BigDecimal DEFAULT_INTANGIBLE_DRIVING_EARNINGS = new BigDecimal(1);
+    private static final BigDecimal UPDATED_INTANGIBLE_DRIVING_EARNINGS = new BigDecimal(2);
 
-    private static final Double DEFAULT_INTANGIBLE_CAPITAL = 1D;
-    private static final Double UPDATED_INTANGIBLE_CAPITAL = 2D;
+    private static final BigDecimal DEFAULT_INTANGIBLE_CAPITAL = new BigDecimal(1);
+    private static final BigDecimal UPDATED_INTANGIBLE_CAPITAL = new BigDecimal(2);
 
-    private static final Double DEFAULT_INTANGIBLE_LOSS_BY_ATTACKS = 1D;
-    private static final Double UPDATED_INTANGIBLE_LOSS_BY_ATTACKS = 2D;
+    private static final BigDecimal DEFAULT_INTANGIBLE_LOSS_BY_ATTACKS = new BigDecimal(1);
+    private static final BigDecimal UPDATED_INTANGIBLE_LOSS_BY_ATTACKS = new BigDecimal(2);
 
     @Autowired
     private EconomicResultsRepository economicResultsRepository;
@@ -164,10 +165,10 @@ public class EconomicResultsResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(economicResults.getId().intValue())))
-            .andExpect(jsonPath("$.[*].economicPerformance").value(hasItem(DEFAULT_ECONOMIC_PERFORMANCE.doubleValue())))
-            .andExpect(jsonPath("$.[*].intangibleDrivingEarnings").value(hasItem(DEFAULT_INTANGIBLE_DRIVING_EARNINGS.doubleValue())))
-            .andExpect(jsonPath("$.[*].intangibleCapital").value(hasItem(DEFAULT_INTANGIBLE_CAPITAL.doubleValue())))
-            .andExpect(jsonPath("$.[*].intangibleLossByAttacks").value(hasItem(DEFAULT_INTANGIBLE_LOSS_BY_ATTACKS.doubleValue())));
+            .andExpect(jsonPath("$.[*].economicPerformance").value(hasItem(DEFAULT_ECONOMIC_PERFORMANCE.intValue())))
+            .andExpect(jsonPath("$.[*].intangibleDrivingEarnings").value(hasItem(DEFAULT_INTANGIBLE_DRIVING_EARNINGS.intValue())))
+            .andExpect(jsonPath("$.[*].intangibleCapital").value(hasItem(DEFAULT_INTANGIBLE_CAPITAL.intValue())))
+            .andExpect(jsonPath("$.[*].intangibleLossByAttacks").value(hasItem(DEFAULT_INTANGIBLE_LOSS_BY_ATTACKS.intValue())));
     }
 
     @Test
@@ -181,10 +182,10 @@ public class EconomicResultsResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(economicResults.getId().intValue()))
-            .andExpect(jsonPath("$.economicPerformance").value(DEFAULT_ECONOMIC_PERFORMANCE.doubleValue()))
-            .andExpect(jsonPath("$.intangibleDrivingEarnings").value(DEFAULT_INTANGIBLE_DRIVING_EARNINGS.doubleValue()))
-            .andExpect(jsonPath("$.intangibleCapital").value(DEFAULT_INTANGIBLE_CAPITAL.doubleValue()))
-            .andExpect(jsonPath("$.intangibleLossByAttacks").value(DEFAULT_INTANGIBLE_LOSS_BY_ATTACKS.doubleValue()));
+            .andExpect(jsonPath("$.economicPerformance").value(DEFAULT_ECONOMIC_PERFORMANCE.intValue()))
+            .andExpect(jsonPath("$.intangibleDrivingEarnings").value(DEFAULT_INTANGIBLE_DRIVING_EARNINGS.intValue()))
+            .andExpect(jsonPath("$.intangibleCapital").value(DEFAULT_INTANGIBLE_CAPITAL.intValue()))
+            .andExpect(jsonPath("$.intangibleLossByAttacks").value(DEFAULT_INTANGIBLE_LOSS_BY_ATTACKS.intValue()));
     }
 
     @Test
@@ -283,10 +284,10 @@ public class EconomicResultsResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(economicResults.getId().intValue())))
-            .andExpect(jsonPath("$.[*].economicPerformance").value(hasItem(DEFAULT_ECONOMIC_PERFORMANCE.doubleValue())))
-            .andExpect(jsonPath("$.[*].intangibleDrivingEarnings").value(hasItem(DEFAULT_INTANGIBLE_DRIVING_EARNINGS.doubleValue())))
-            .andExpect(jsonPath("$.[*].intangibleCapital").value(hasItem(DEFAULT_INTANGIBLE_CAPITAL.doubleValue())))
-            .andExpect(jsonPath("$.[*].intangibleLossByAttacks").value(hasItem(DEFAULT_INTANGIBLE_LOSS_BY_ATTACKS.doubleValue())));
+            .andExpect(jsonPath("$.[*].economicPerformance").value(hasItem(DEFAULT_ECONOMIC_PERFORMANCE.intValue())))
+            .andExpect(jsonPath("$.[*].intangibleDrivingEarnings").value(hasItem(DEFAULT_INTANGIBLE_DRIVING_EARNINGS.intValue())))
+            .andExpect(jsonPath("$.[*].intangibleCapital").value(hasItem(DEFAULT_INTANGIBLE_CAPITAL.intValue())))
+            .andExpect(jsonPath("$.[*].intangibleLossByAttacks").value(hasItem(DEFAULT_INTANGIBLE_LOSS_BY_ATTACKS.intValue())));
     }
 
     @Test

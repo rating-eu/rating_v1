@@ -4,9 +4,12 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 import org.springframework.data.elasticsearch.annotations.Document;
+
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Objects;
 
 import eu.hermeneut.domain.enumeration.SectorType;
@@ -37,14 +40,14 @@ public class SplittingLoss implements Serializable {
     @Column(name = "category_type")
     private CategoryType categoryType;
 
-    @Column(name = "loss_percentage")
-    private Double lossPercentage;
+    @Column(name = "loss_percentage", precision = 10, scale = 2)
+    private BigDecimal lossPercentage;
 
-    @Column(name = "loss")
-    private Double loss;
+    @Column(name = "loss", precision = 10, scale = 2)
+    private BigDecimal loss;
 
     @OneToOne
-    @JoinColumn(unique = true)
+    @NotNull
     private SelfAssessment selfAssessment;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
@@ -82,29 +85,29 @@ public class SplittingLoss implements Serializable {
         this.categoryType = categoryType;
     }
 
-    public Double getLossPercentage() {
+    public BigDecimal getLossPercentage() {
         return lossPercentage;
     }
 
-    public SplittingLoss lossPercentage(Double lossPercentage) {
+    public SplittingLoss lossPercentage(BigDecimal lossPercentage) {
         this.lossPercentage = lossPercentage;
         return this;
     }
 
-    public void setLossPercentage(Double lossPercentage) {
+    public void setLossPercentage(BigDecimal lossPercentage) {
         this.lossPercentage = lossPercentage;
     }
 
-    public Double getLoss() {
+    public BigDecimal getLoss() {
         return loss;
     }
 
-    public SplittingLoss loss(Double loss) {
+    public SplittingLoss loss(BigDecimal loss) {
         this.loss = loss;
         return this;
     }
 
-    public void setLoss(Double loss) {
+    public void setLoss(BigDecimal loss) {
         this.loss = loss;
     }
 

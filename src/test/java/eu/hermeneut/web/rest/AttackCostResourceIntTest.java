@@ -23,6 +23,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import java.math.BigDecimal;
 import java.util.List;
 
 import static eu.hermeneut.web.rest.TestUtil.createFormattingConversionService;
@@ -47,8 +48,8 @@ public class AttackCostResourceIntTest {
     private static final String DEFAULT_DESCRIPTION = "AAAAAAAAAA";
     private static final String UPDATED_DESCRIPTION = "BBBBBBBBBB";
 
-    private static final Integer DEFAULT_COSTS = 1;
-    private static final Integer UPDATED_COSTS = 2;
+    private static final BigDecimal DEFAULT_COSTS = new BigDecimal(1);
+    private static final BigDecimal UPDATED_COSTS = new BigDecimal(2);
 
     @Autowired
     private AttackCostRepository attackCostRepository;
@@ -180,7 +181,7 @@ public class AttackCostResourceIntTest {
             .andExpect(jsonPath("$.[*].id").value(hasItem(attackCost.getId().intValue())))
             .andExpect(jsonPath("$.[*].type").value(hasItem(DEFAULT_TYPE.toString())))
             .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION.toString())))
-            .andExpect(jsonPath("$.[*].costs").value(hasItem(DEFAULT_COSTS)));
+            .andExpect(jsonPath("$.[*].costs").value(hasItem(DEFAULT_COSTS.intValue())));
     }
 
     @Test
@@ -196,7 +197,7 @@ public class AttackCostResourceIntTest {
             .andExpect(jsonPath("$.id").value(attackCost.getId().intValue()))
             .andExpect(jsonPath("$.type").value(DEFAULT_TYPE.toString()))
             .andExpect(jsonPath("$.description").value(DEFAULT_DESCRIPTION.toString()))
-            .andExpect(jsonPath("$.costs").value(DEFAULT_COSTS));
+            .andExpect(jsonPath("$.costs").value(DEFAULT_COSTS.intValue()));
     }
 
     @Test
@@ -295,7 +296,7 @@ public class AttackCostResourceIntTest {
             .andExpect(jsonPath("$.[*].id").value(hasItem(attackCost.getId().intValue())))
             .andExpect(jsonPath("$.[*].type").value(hasItem(DEFAULT_TYPE.toString())))
             .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION.toString())))
-            .andExpect(jsonPath("$.[*].costs").value(hasItem(DEFAULT_COSTS)));
+            .andExpect(jsonPath("$.[*].costs").value(hasItem(DEFAULT_COSTS.intValue())));
     }
 
     @Test

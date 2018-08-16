@@ -9,6 +9,7 @@ import javax.validation.constraints.*;
 
 import org.springframework.data.elasticsearch.annotations.Document;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Objects;
 
 import eu.hermeneut.domain.enumeration.CostType;
@@ -38,8 +39,8 @@ public class AttackCost implements Serializable {
     @Column(name = "description", length = 2000)
     private String description;
 
-    @Column(name = "costs")
-    private Integer costs;
+    @Column(name = "costs", precision=10, scale=2)
+    private BigDecimal costs;
 
     @ManyToOne
     private DirectAsset directAsset;
@@ -82,16 +83,16 @@ public class AttackCost implements Serializable {
         this.description = description;
     }
 
-    public Integer getCosts() {
+    public BigDecimal getCosts() {
         return costs;
     }
 
-    public AttackCost costs(Integer costs) {
+    public AttackCost costs(BigDecimal costs) {
         this.costs = costs;
         return this;
     }
 
-    public void setCosts(Integer costs) {
+    public void setCosts(BigDecimal costs) {
         this.costs = costs;
     }
 

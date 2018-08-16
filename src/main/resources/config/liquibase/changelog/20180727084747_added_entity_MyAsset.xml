@@ -33,7 +33,7 @@
                 <constraints nullable="true" />
             </column>
 
-            <column name="economic_value" type="double">
+            <column name="economic_value" type="decimal(10,2)">
                 <constraints nullable="true" />
             </column>
             <column name="asset_id" type="bigint">

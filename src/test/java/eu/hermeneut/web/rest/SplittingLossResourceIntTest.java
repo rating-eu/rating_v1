@@ -23,6 +23,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import java.math.BigDecimal;
 import java.util.List;
 
 import static eu.hermeneut.web.rest.TestUtil.createFormattingConversionService;
@@ -48,11 +49,11 @@ public class SplittingLossResourceIntTest {
     private static final CategoryType DEFAULT_CATEGORY_TYPE = CategoryType.IP;
     private static final CategoryType UPDATED_CATEGORY_TYPE = CategoryType.KEY_COMP;
 
-    private static final Double DEFAULT_LOSS_PERCENTAGE = 1D;
-    private static final Double UPDATED_LOSS_PERCENTAGE = 2D;
+    private static final BigDecimal DEFAULT_LOSS_PERCENTAGE = new BigDecimal(1);
+    private static final BigDecimal UPDATED_LOSS_PERCENTAGE = new BigDecimal(2);
 
-    private static final Double DEFAULT_LOSS = 1D;
-    private static final Double UPDATED_LOSS = 2D;
+    private static final BigDecimal DEFAULT_LOSS = new BigDecimal(1);
+    private static final BigDecimal UPDATED_LOSS = new BigDecimal(2);
 
     @Autowired
     private SplittingLossRepository splittingLossRepository;
@@ -168,8 +169,8 @@ public class SplittingLossResourceIntTest {
             .andExpect(jsonPath("$.[*].id").value(hasItem(splittingLoss.getId().intValue())))
             .andExpect(jsonPath("$.[*].sectorType").value(hasItem(DEFAULT_SECTOR_TYPE.toString())))
             .andExpect(jsonPath("$.[*].categoryType").value(hasItem(DEFAULT_CATEGORY_TYPE.toString())))
-            .andExpect(jsonPath("$.[*].lossPercentage").value(hasItem(DEFAULT_LOSS_PERCENTAGE.doubleValue())))
-            .andExpect(jsonPath("$.[*].loss").value(hasItem(DEFAULT_LOSS.doubleValue())));
+            .andExpect(jsonPath("$.[*].lossPercentage").value(hasItem(DEFAULT_LOSS_PERCENTAGE.intValue())))
+            .andExpect(jsonPath("$.[*].loss").value(hasItem(DEFAULT_LOSS.intValue())));
     }
 
     @Test
@@ -185,8 +186,8 @@ public class SplittingLossResourceIntTest {
             .andExpect(jsonPath("$.id").value(splittingLoss.getId().intValue()))
             .andExpect(jsonPath("$.sectorType").value(DEFAULT_SECTOR_TYPE.toString()))
             .andExpect(jsonPath("$.categoryType").value(DEFAULT_CATEGORY_TYPE.toString()))
-            .andExpect(jsonPath("$.lossPercentage").value(DEFAULT_LOSS_PERCENTAGE.doubleValue()))
-            .andExpect(jsonPath("$.loss").value(DEFAULT_LOSS.doubleValue()));
+            .andExpect(jsonPath("$.lossPercentage").value(DEFAULT_LOSS_PERCENTAGE.intValue()))
+            .andExpect(jsonPath("$.loss").value(DEFAULT_LOSS.intValue()));
     }
 
     @Test
@@ -287,8 +288,8 @@ public class SplittingLossResourceIntTest {
             .andExpect(jsonPath("$.[*].id").value(hasItem(splittingLoss.getId().intValue())))
             .andExpect(jsonPath("$.[*].sectorType").value(hasItem(DEFAULT_SECTOR_TYPE.toString())))
             .andExpect(jsonPath("$.[*].categoryType").value(hasItem(DEFAULT_CATEGORY_TYPE.toString())))
-            .andExpect(jsonPath("$.[*].lossPercentage").value(hasItem(DEFAULT_LOSS_PERCENTAGE.doubleValue())))
-            .andExpect(jsonPath("$.[*].loss").value(hasItem(DEFAULT_LOSS.doubleValue())));
+            .andExpect(jsonPath("$.[*].lossPercentage").value(hasItem(DEFAULT_LOSS_PERCENTAGE.intValue())))
+            .andExpect(jsonPath("$.[*].loss").value(hasItem(DEFAULT_LOSS.intValue())));
     }
 
     @Test

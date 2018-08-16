@@ -5,10 +5,12 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 import org.springframework.data.elasticsearch.annotations.Document;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.time.ZonedDateTime;
 import java.util.Objects;
 
@@ -26,7 +28,7 @@ public class EBIT implements Serializable {
     public EBIT() {
     }
 
-    public EBIT(Integer year, Double value, ZonedDateTime created, SelfAssessment selfAssessment) {
+    public EBIT(Integer year, BigDecimal value, ZonedDateTime created, SelfAssessment selfAssessment) {
         this.year = year;
         this.value = value;
         this.created = created;
@@ -45,14 +47,14 @@ public class EBIT implements Serializable {
     @Column(name = "jhi_year")
     private Integer year;
 
-    @Column(name = "jhi_value")
-    private Double value;
+    @Column(name = "jhi_value", precision=10, scale=2)
+    private BigDecimal value;
 
     @Column(name = "created")
     private ZonedDateTime created;
 
+    @NotNull
     @OneToOne
-    @JoinColumn(unique = true)
     private SelfAssessment selfAssessment;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
@@ -77,16 +79,16 @@ public class EBIT implements Serializable {
         this.year = year;
     }
 
-    public Double getValue() {
+    public BigDecimal getValue() {
         return value;
     }
 
-    public EBIT value(Double value) {
+    public EBIT value(BigDecimal value) {
         this.value = value;
         return this;
     }
 
-    public void setValue(Double value) {
+    public void setValue(BigDecimal value) {
         this.value = value;
     }
 

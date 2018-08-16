@@ -23,6 +23,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import java.math.BigDecimal;
 import java.time.Instant;
 import java.time.ZonedDateTime;
 import java.time.ZoneOffset;
@@ -48,8 +49,8 @@ public class EBITResourceIntTest {
     private static final Integer DEFAULT_YEAR = 1;
     private static final Integer UPDATED_YEAR = 2;
 
-    private static final Double DEFAULT_VALUE = 1D;
-    private static final Double UPDATED_VALUE = 2D;
+    private static final BigDecimal DEFAULT_VALUE = new BigDecimal(1);
+    private static final BigDecimal UPDATED_VALUE = new BigDecimal(2);
 
     private static final ZonedDateTime DEFAULT_CREATED = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
     private static final ZonedDateTime UPDATED_CREATED = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
@@ -166,7 +167,7 @@ public class EBITResourceIntTest {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(eBIT.getId().intValue())))
             .andExpect(jsonPath("$.[*].year").value(hasItem(DEFAULT_YEAR)))
-            .andExpect(jsonPath("$.[*].value").value(hasItem(DEFAULT_VALUE.doubleValue())))
+            .andExpect(jsonPath("$.[*].value").value(hasItem(DEFAULT_VALUE.intValue())))
             .andExpect(jsonPath("$.[*].created").value(hasItem(sameInstant(DEFAULT_CREATED))));
     }
 
@@ -182,7 +183,7 @@ public class EBITResourceIntTest {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(eBIT.getId().intValue()))
             .andExpect(jsonPath("$.year").value(DEFAULT_YEAR))
-            .andExpect(jsonPath("$.value").value(DEFAULT_VALUE.doubleValue()))
+            .andExpect(jsonPath("$.value").value(DEFAULT_VALUE.intValue()))
             .andExpect(jsonPath("$.created").value(sameInstant(DEFAULT_CREATED)));
     }
 
@@ -282,7 +283,7 @@ public class EBITResourceIntTest {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(eBIT.getId().intValue())))
             .andExpect(jsonPath("$.[*].year").value(hasItem(DEFAULT_YEAR)))
-            .andExpect(jsonPath("$.[*].value").value(hasItem(DEFAULT_VALUE.doubleValue())))
+            .andExpect(jsonPath("$.[*].value").value(hasItem(DEFAULT_VALUE.intValue())))
             .andExpect(jsonPath("$.[*].created").value(hasItem(sameInstant(DEFAULT_CREATED))));
     }
 

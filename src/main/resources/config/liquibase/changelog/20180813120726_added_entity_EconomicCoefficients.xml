@@ -21,19 +21,19 @@
             <column name="id" type="bigint" autoIncrement="${autoIncrement}">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="discounting_rate" type="double">
+            <column name="discounting_rate" type="decimal(10,2)">
                 <constraints nullable="true" />
             </column>
 
-            <column name="physical_assets_return" type="double">
+            <column name="physical_assets_return" type="decimal(10,2)">
                 <constraints nullable="true" />
             </column>
 
-            <column name="financial_assets_return" type="double">
+            <column name="financial_assets_return" type="decimal(10,2)">
                 <constraints nullable="true" />
             </column>
 
-            <column name="loss_of_intangible" type="double">
+            <column name="loss_of_intangible" type="decimal(10,2)">
                 <constraints nullable="true" />
             </column>
             <column name="self_assessment_id" type="bigint">

@@ -7,6 +7,7 @@ import javax.persistence.*;
 
 import org.springframework.data.elasticsearch.annotations.Document;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Objects;
 
 /**
@@ -25,17 +26,17 @@ public class EconomicResults implements Serializable {
     @SequenceGenerator(name = "sequenceGenerator")
     private Long id;
 
-    @Column(name = "economic_performance")
-    private Double economicPerformance;
+    @Column(name = "economic_performance", precision=10, scale=2)
+    private BigDecimal economicPerformance;
 
-    @Column(name = "intangible_driving_earnings")
-    private Double intangibleDrivingEarnings;
+    @Column(name = "intangible_driving_earnings", precision=10, scale=2)
+    private BigDecimal intangibleDrivingEarnings;
 
-    @Column(name = "intangible_capital")
-    private Double intangibleCapital;
+    @Column(name = "intangible_capital", precision=10, scale=2)
+    private BigDecimal intangibleCapital;
 
-    @Column(name = "intangible_loss_by_attacks")
-    private Double intangibleLossByAttacks;
+    @Column(name = "intangible_loss_by_attacks", precision=10, scale=2)
+    private BigDecimal intangibleLossByAttacks;
 
     @OneToOne
     @JoinColumn(unique = true)
@@ -50,55 +51,55 @@ public class EconomicResults implements Serializable {
         this.id = id;
     }
 
-    public Double getEconomicPerformance() {
+    public BigDecimal getEconomicPerformance() {
         return economicPerformance;
     }
 
-    public EconomicResults economicPerformance(Double economicPerformance) {
+    public EconomicResults economicPerformance(BigDecimal economicPerformance) {
         this.economicPerformance = economicPerformance;
         return this;
     }
 
-    public void setEconomicPerformance(Double economicPerformance) {
+    public void setEconomicPerformance(BigDecimal economicPerformance) {
         this.economicPerformance = economicPerformance;
     }
 
-    public Double getIntangibleDrivingEarnings() {
+    public BigDecimal getIntangibleDrivingEarnings() {
         return intangibleDrivingEarnings;
     }
 
-    public EconomicResults intangibleDrivingEarnings(Double intangibleDrivingEarnings) {
+    public EconomicResults intangibleDrivingEarnings(BigDecimal intangibleDrivingEarnings) {
         this.intangibleDrivingEarnings = intangibleDrivingEarnings;
         return this;
     }
 
-    public void setIntangibleDrivingEarnings(Double intangibleDrivingEarnings) {
+    public void setIntangibleDrivingEarnings(BigDecimal intangibleDrivingEarnings) {
         this.intangibleDrivingEarnings = intangibleDrivingEarnings;
     }
 
-    public Double getIntangibleCapital() {
+    public BigDecimal getIntangibleCapital() {
         return intangibleCapital;
     }
 
-    public EconomicResults intangibleCapital(Double intangibleCapital) {
+    public EconomicResults intangibleCapital(BigDecimal intangibleCapital) {
         this.intangibleCapital = intangibleCapital;
         return this;
     }
 
-    public void setIntangibleCapital(Double intangibleCapital) {
+    public void setIntangibleCapital(BigDecimal intangibleCapital) {
         this.intangibleCapital = intangibleCapital;
     }
 
-    public Double getIntangibleLossByAttacks() {
+    public BigDecimal getIntangibleLossByAttacks() {
         return intangibleLossByAttacks;
     }
 
-    public EconomicResults intangibleLossByAttacks(Double intangibleLossByAttacks) {
+    public EconomicResults intangibleLossByAttacks(BigDecimal intangibleLossByAttacks) {
         this.intangibleLossByAttacks = intangibleLossByAttacks;
         return this;
     }
 
-    public void setIntangibleLossByAttacks(Double intangibleLossByAttacks) {
+    public void setIntangibleLossByAttacks(BigDecimal intangibleLossByAttacks) {
         this.intangibleLossByAttacks = intangibleLossByAttacks;
     }
 

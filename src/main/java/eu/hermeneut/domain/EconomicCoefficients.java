@@ -6,9 +6,11 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
+import javax.validation.constraints.*;
 
 import org.springframework.data.elasticsearch.annotations.Document;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Objects;
 
 /**
@@ -28,29 +30,27 @@ public class EconomicCoefficients implements Serializable {
     @SequenceGenerator(name = "sequenceGenerator")
     private Long id;
 
-    @Column(name = "discounting_rate")
-    private Double discountingRate;
+    @DecimalMin(value = "0")
+    @DecimalMax(value = "1")
+    @Column(name = "discounting_rate", precision=10, scale=2)
+    private BigDecimal discountingRate;
 
-    /**
-     * 1
-     */
-    @ApiModelProperty(value = "1")
-    @Column(name = "physical_assets_return")
-    private Double physicalAssetsReturn;
+    @Column(name = "physical_assets_return", precision=10, scale=2)
+    private BigDecimal physicalAssetsReturn;
 
     /**
      * Fixed Assets Return
      */
     @ApiModelProperty(value = "Fixed Assets Return")
-    @Column(name = "financial_assets_return")
-    private Double financialAssetsReturn;
+    @Column(name = "financial_assets_return", precision=10, scale=2)
+    private BigDecimal financialAssetsReturn;
 
     /**
      * Current Assets Return
      */
     @ApiModelProperty(value = "Current Assets Return")
-    @Column(name = "loss_of_intangible")
-    private Double lossOfIntangible;
+    @Column(name = "loss_of_intangible", precision=10, scale=2)
+    private BigDecimal lossOfIntangible;
 
     /**
      * WP3
@@ -69,55 +69,55 @@ public class EconomicCoefficients implements Serializable {
         this.id = id;
     }
 
-    public Double getDiscountingRate() {
+    public BigDecimal getDiscountingRate() {
         return discountingRate;
     }
 
-    public EconomicCoefficients discountingRate(Double discountingRate) {
+    public EconomicCoefficients discountingRate(BigDecimal discountingRate) {
         this.discountingRate = discountingRate;
         return this;
     }
 
-    public void setDiscountingRate(Double discountingRate) {
+    public void setDiscountingRate(BigDecimal discountingRate) {
         this.discountingRate = discountingRate;
     }
 
-    public Double getPhysicalAssetsReturn() {
+    public BigDecimal getPhysicalAssetsReturn() {
         return physicalAssetsReturn;
     }
 
-    public EconomicCoefficients physicalAssetsReturn(Double physicalAssetsReturn) {
+    public EconomicCoefficients physicalAssetsReturn(BigDecimal physicalAssetsReturn) {
         this.physicalAssetsReturn = physicalAssetsReturn;
         return this;
     }
 
-    public void setPhysicalAssetsReturn(Double physicalAssetsReturn) {
+    public void setPhysicalAssetsReturn(BigDecimal physicalAssetsReturn) {
         this.physicalAssetsReturn = physicalAssetsReturn;
     }
 
-    public Double getFinancialAssetsReturn() {
+    public BigDecimal getFinancialAssetsReturn() {
         return financialAssetsReturn;
     }
 
-    public EconomicCoefficients financialAssetsReturn(Double financialAssetsReturn) {
+    public EconomicCoefficients financialAssetsReturn(BigDecimal financialAssetsReturn) {
         this.financialAssetsReturn = financialAssetsReturn;
         return this;
     }
 
-    public void setFinancialAssetsReturn(Double financialAssetsReturn) {
+    public void setFinancialAssetsReturn(BigDecimal financialAssetsReturn) {
         this.financialAssetsReturn = financialAssetsReturn;
     }
 
-    public Double getLossOfIntangible() {
+    public BigDecimal getLossOfIntangible() {
         return lossOfIntangible;
     }
 
-    public EconomicCoefficients lossOfIntangible(Double lossOfIntangible) {
+    public EconomicCoefficients lossOfIntangible(BigDecimal lossOfIntangible) {
         this.lossOfIntangible = lossOfIntangible;
         return this;
     }
 
-    public void setLossOfIntangible(Double lossOfIntangible) {
+    public void setLossOfIntangible(BigDecimal lossOfIntangible) {
         this.lossOfIntangible = lossOfIntangible;
     }
 

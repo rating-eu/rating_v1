@@ -47,6 +47,14 @@ public class EBITServiceImpl implements EBITService {
         return result;
     }
 
+    @Override
+    public List<EBIT> save(List<EBIT> ebits) {
+        log.debug("Request to save EBITs : {}", ebits.size());
+        List<EBIT> result = eBITRepository.save(ebits);
+        eBITSearchRepository.save(result);
+        return result;
+    }
+
     /**
      * Get all the eBITS.
      *
