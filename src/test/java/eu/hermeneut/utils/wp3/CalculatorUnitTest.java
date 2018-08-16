@@ -43,6 +43,10 @@ public class CalculatorUnitTest {
     private BigDecimal discountingRateForIntangibleCapital;
     private static final BigDecimal INTANGIBLE_CAPITAL = new BigDecimal("45361.869");
 
+    //Data to calculate the Loss of Intangible by Attacks
+    private static final BigDecimal LOSS_OF_INTANGIBLE_PERCENTAGE = new BigDecimal("18.29");
+    private static final BigDecimal INTANGIBLE_LOSS_BY_ATTACKS = new BigDecimal("8296.686");
+
     @Before
     public void setup() {
         //Data to calculate the EconomicPerformance
@@ -166,5 +170,12 @@ public class CalculatorUnitTest {
         BigDecimal intangibleCapital = Calculator.calculateIntangibleCapital(this.intangibleDrivingEarnings, this.discountingRateForIntangibleCapital);
 
         Assert.assertEquals(INTANGIBLE_CAPITAL, intangibleCapital);
+    }
+
+    @Test
+    public void calculateIntangibleLossByAttacks() {
+        BigDecimal intangibleLossByAttacks = Calculator.calculateIntangibleLossByAttacks(INTANGIBLE_CAPITAL, LOSS_OF_INTANGIBLE_PERCENTAGE);
+
+        Assert.assertEquals(INTANGIBLE_LOSS_BY_ATTACKS, intangibleLossByAttacks);
     }
 }
