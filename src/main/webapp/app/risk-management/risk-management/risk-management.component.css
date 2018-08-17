@@ -1,0 +1,15 @@
+.low-level{
+    background: green;
+    width: 100%;
+    margin-bottom: 2px;
+}
+.medium-level{
+    background: yellow;
+    width: 100%;
+    margin-bottom: 2px;
+}
+.high-level{
+    background: red;
+    width: 100%;
+    margin-bottom: 2px;
+}

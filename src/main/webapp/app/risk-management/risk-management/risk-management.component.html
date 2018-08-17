@@ -1,10 +1,165 @@
-<p>
-  risk-management works!
-</p>
+<div class="container">
+  <div class="row">
+    <div class="col-md-6">
+      <button type="button" class="btn btn-dark" routerLink="risk-evaluation" routerLinkActive="active">Risk evaluation
+      </button>
+      <button type="button" class="btn btn-dark" routerLink="risk-mitigation" routerLinkActive="active">Risk mitigation
+      </button>
+    </div>
+    <div class="col-md-5">
+      <div class="btn-group" role="group" aria-label="riskHomeBtnGroup">
+        <button type="button" class="btn btn-primary" (click)="switchOnCollapsible('likelihood')" [attr.aria-expanded]="!isLikelihoodCollapsed"
+          aria-controls="likelihoodScale">
+          Likelihood Scale
+        </button>
+        <button type="button" class="btn btn-primary" (click)="switchOnCollapsible('vulnerability')" [attr.aria-expanded]="!isVulnerabilityCollapsed"
+          aria-controls="vulnerabilityScale">
+          Vulnerability Scale
+        </button>
+        <button type="button" class="btn btn-primary" (click)="switchOnCollapsible('critical-level')" [attr.aria-expanded]="!isCriticalCollapsed"
+          aria-controls="criticalLevel">
+          Critical level definition
+        </button>
+      </div>
+    </div>
+    <div *ngIf="!isCriticalCollapsed || !isVulnerabilityCollapsed || !isLikelihoodCollapsed" class="col-md-1 text-right align-middle">
+      <i class="fa fa-times fa-lg text-secondary" aria-hidden="true" (click)="switchOnCollapsible('none')"></i>
+    </div>
+  </div>
+  <div class="row">
+    <div class="collapse col-md-12" [ngbCollapse]="isLikelihoodCollapsed">
+      <div class="card card-body">
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">Likelihood Rating</th>
+              <th scope="col">Descriptor</th>
+              <th scope="col">Definition</th>
+              <th scope="col">Indicative Frequency</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">5</th>
+              <td>Almost certain</td>
+              <td>The consequence is expected to occur on an annual basis</td>
+              <td>Every year or more frequently</td>
+            </tr>
+            <tr>
+              <th scope="row">4</th>
+              <td>Likely</td>
+              <td>The event has occurred several times or more throughout history of the organization</td>
+              <td>Every three years</td>
+            </tr>
+            <tr>
+              <th scope="row">3</th>
+              <td>Possible</td>
+              <td>The event might occur once in the organization</td>
+              <td>Every ten years</td>
+            </tr>
+            <tr>
+              <th scope="row">2</th>
+              <td>Unlikely</td>
+              <td>The event does occur from time to time</td>
+              <td>Every thirty years</td>
+            </tr>
+            <tr>
+              <th scope="row">1</th>
+              <td>Very Unlikely</td>
+              <td>Heard of something like that occurring elsewhere</td>
+              <td>Every 100 years</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="collapse col-md-12" [ngbCollapse]="isVulnerabilityCollapsed">
+      <div class="card card-body">
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">Vulnerability</th>
+              <th scope="col">Rating</th>
+              <th scope="col">Descriptor</th>
+              <th scope="col">Definition</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <th scope="row">5</th>
+              <td>Extreme</td>
+              <td></td>
+              <td></td>
+            </tr>
+            <tr>
+              <th scope="row">4</th>
+              <td>High</td>
+              <td></td>
+              <td></td>
+            </tr>
+            <tr>
+              <th scope="row">3</th>
+              <td>Elevated</td>
+              <td></td>
+              <td></td>
+            </tr>
+            <tr>
+              <th scope="row">2</th>
+              <td>Moderated</td>
+              <td></td>
+              <td></td>
+            </tr>
+            <tr>
+              <th scope="row">1</th>
+              <td>Low</td>
+              <td></td>
+              <td></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="collapse col-md-12" [ngbCollapse]="isCriticalCollapsed">
+      <div class="card card-body">
+          <div *ngFor="let j of [1,2,3,4,5,6]" class="row">
+            <div class="col-md-2 text-right">
+              <ng-container *ngIf="j!==6">{{6-j}}</ng-container>
+            </div>
+            <ng-container *ngIf="j===6">
+              <div *ngFor="let i of [1,2,3,4,5]" class="col-md-2 text-center">
+                {{i}}
+              </div>
+            </ng-container>
+            <ng-container *ngIf="j!==6">
+              <div *ngFor="let i of [1,2,3,4,5]" class="col-md-2">
+                <div [ngClass]="{'low-level': i<=2, 'medium-level': i<=4 && i>2, 'high-level': i===5}"
+                  (click)="selectedMatrixCell(j, i)">&nbsp;</div>
+              </div>
+            </ng-container>
+          </div>
+          <div class="row">
+              <div class="collapse col-md-12" [ngbCollapse]="isLevelsCollapsed">
+                  <div class="card">
+                    <div class="card-body">
+                      <div class="row">
+                        <div class="col-md-6">
+                            Click on color to change the level of the cell({{selectedRow}}, {{selectedColumn}})!
+                        </div>
+                        <div class="col-md-1 offset-md-5 text-right">
+                            <i class="fa fa-times fa-lg text-secondary" aria-hidden="true" (click)="closeLevelSelection()"></i>
+                        </div>
+                      </div>
+                      <div class="row">
+                          <div class="col low-level" (click)="criticalLevelUpdate('low')">&nbsp;</div>
+                          <div class="col medium-level" (click)="criticalLevelUpdate('medium')">&nbsp;</div>
+                          <div class="col high-level" (click)="criticalLevelUpdate('high')">&nbsp;</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+          </div>
+      </div>
+    </div>
+  </div>
+</div>
 <router-outlet></router-outlet>
-<button type="button" class="btn btn-dark" routerLink="risk-evaluation"
-                    routerLinkActive="active">Risk evaluation
-</button>
-<button type="button" class="btn btn-dark" routerLink="risk-mitigation"
-                    routerLinkActive="active">Risk mitigation
-</button>
