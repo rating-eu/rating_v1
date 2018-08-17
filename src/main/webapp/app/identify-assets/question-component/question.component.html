@@ -173,7 +173,7 @@
                             <ul class="list-inline" *ngIf="question.answers">
                                 <li class="list-inline-item" *ngFor="let ans of question.answers">
                                     <div class="chipsContainer">
-                                        <div class="badge chips" [ngClass]="{'badge-light': !isSelected(ans, i + directGuiAssets.length), 'badge-primary': isSelected(ans, i + directGuiAssets.length)}" (click)="setCost(ans, i + directGuiAssets.length, indirect)">
+                                        <div class="badge chips" [ngClass]="{'badge-light': !isSelected(ans, i + directGuiAssets.length), 'badge-primary': isSelected(ans, i + directGuiAssets.length)}" (click)="setCost(ans, i + directGuiAssets.length, null, indirect)">
                                             {{ans.name}}
                                         </div>
                                     </div>
