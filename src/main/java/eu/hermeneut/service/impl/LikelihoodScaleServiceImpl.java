@@ -98,4 +98,10 @@ public class LikelihoodScaleServiceImpl implements LikelihoodScaleService {
             .stream(likelihoodScaleSearchRepository.search(queryStringQuery(query)).spliterator(), false)
             .collect(Collectors.toList());
     }
+
+    @Override
+    public List<LikelihoodScale> findAllBySelfAssessment(Long selfAssessmentID) {
+        log.debug("Request to get all LikelihoodScales by SelfAssessment");
+        return likelihoodScaleRepository.findAllBySelfAssessment(selfAssessmentID);
+    }
 }
