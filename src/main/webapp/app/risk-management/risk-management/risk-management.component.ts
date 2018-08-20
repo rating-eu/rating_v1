@@ -18,6 +18,7 @@ export class RiskManagementComponent implements OnInit {
   public selectedColumn: number;
   public squareColumnElement: number[];
   public squareRowElement: number[];
+  public lastSquareRowElement: number;
   private mySelf: SelfAssessmentMgm;
   private criticalLevel: CriticalLevelMgm;
 
@@ -47,6 +48,7 @@ export class RiskManagementComponent implements OnInit {
       }
       this.squareColumnElement = [];
       this.squareRowElement = [];
+      this.lastSquareRowElement = this.criticalLevel.side + 1;
       for (let i = 1; i <= this.criticalLevel.side; i++) {
         this.squareColumnElement.push(i);
       }
