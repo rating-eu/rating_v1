@@ -307,18 +307,18 @@ relationship OneToOne{
     EconomicCoefficients{selfAssessment(name)} to SelfAssessment,
     EBIT{selfAssessment(name)} to SelfAssessment,
     EconomicResults{selfAssessment(name)} to SelfAssessment,
-    SplittingLoss{selfAssessment(name)} to SelfAssessment,
-    /*WP4*/
-    CriticalLevel{selfAssessment(name)} to SelfAssessment,
-    LikelihoodScale{selfAssessment(name)} to SelfAssessment,
-    VulnerabilityScale{selfAssessment(name)} to SelfAssessment
+    SplittingLoss{selfAssessment(name)} to SelfAssessment
 }
 
 relationship ManyToOne{
     CompanyProfile{user(login)} to User,
     CompanyGroup{user(login)} to User,
     ExternalAudit{user(login)} to User,
-    SelfAssessment{user(login)} to User
+    SelfAssessment{user(login)} to User,
+    /*WP4*/
+    CriticalLevel{selfAssessment(name)} to SelfAssessment,
+    LikelihoodScale{selfAssessment(name)} to SelfAssessment,
+    VulnerabilityScale{selfAssessment(name)} to SelfAssessment
 }
 
 service all with serviceImpl
