@@ -3,6 +3,7 @@
     "relationships": [
         {
             "relationshipType": "many-to-one",
+            "javadoc": "WP4",
             "relationshipName": "selfAssessment",
             "otherEntityName": "selfAssessment",
             "otherEntityField": "name"

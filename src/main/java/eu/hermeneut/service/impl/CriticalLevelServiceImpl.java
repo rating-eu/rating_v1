@@ -98,4 +98,11 @@ public class CriticalLevelServiceImpl implements CriticalLevelService {
             .stream(criticalLevelSearchRepository.search(queryStringQuery(query)).spliterator(), false)
             .collect(Collectors.toList());
     }
+
+    @Override
+    @Transactional(readOnly = true)
+    public CriticalLevel findOneBySelfAssessment(Long selfAssessmentID) {
+        log.debug("Request to get CriticalLevel by SelfAssessment ID: {}", selfAssessmentID);
+        return criticalLevelRepository.findOneBySelfAssessment(selfAssessmentID);
+    }
 }

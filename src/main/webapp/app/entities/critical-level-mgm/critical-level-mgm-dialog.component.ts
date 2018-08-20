@@ -33,8 +33,19 @@ export class CriticalLevelMgmDialogComponent implements OnInit {
 
     ngOnInit() {
         this.isSaving = false;
-        this.selfAssessmentService.query()
-            .subscribe((res: HttpResponse<SelfAssessmentMgm[]>) => { this.selfassessments = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
+        this.selfAssessmentService
+            .query({filter: 'criticallevel-is-null'})
+            .subscribe((res: HttpResponse<SelfAssessmentMgm[]>) => {
+                if (!this.criticalLevel.selfAssessment || !this.criticalLevel.selfAssessment.id) {
+                    this.selfassessments = res.body;
+                } else {
+                    this.selfAssessmentService
+                        .find(this.criticalLevel.selfAssessment.id)
+                        .subscribe((subRes: HttpResponse<SelfAssessmentMgm>) => {
+                            this.selfassessments = [subRes.body].concat(res.body);
+                        }, (subRes: HttpErrorResponse) => this.onError(subRes.message));
+                }
+            }, (res: HttpErrorResponse) => this.onError(res.message));
     }
 
     clear() {

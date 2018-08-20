@@ -106,6 +106,14 @@ public class CriticalLevelResource {
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(criticalLevel));
     }
 
+    @GetMapping("/critical-levels/self-assessment/{selfAssessmentID}")
+    @Timed
+    public ResponseEntity<CriticalLevel> getCriticalLevelBySelfAssessment(@PathVariable Long selfAssessmentID){
+        log.debug("REST request to get CriticalLevel by SelfAssessment ID: {}", selfAssessmentID);
+        CriticalLevel criticalLevel = criticalLevelService.findOneBySelfAssessment(selfAssessmentID);
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(criticalLevel));
+    }
+
     /**
      * DELETE  /critical-levels/:id : delete the "id" criticalLevel.
      *

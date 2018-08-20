@@ -90,7 +90,19 @@ public class LikelihoodScaleResource {
     public List<LikelihoodScale> getAllLikelihoodScales() {
         log.debug("REST request to get all LikelihoodScales");
         return likelihoodScaleService.findAll();
-        }
+    }
+
+    /**
+     * GET  /likelihood-scales : get all the likelihoodScales of the input SelfAssessment..
+     *
+     * @return the ResponseEntity with status 200 (OK) and the list of likelihoodScales in body
+     */
+    @GetMapping("/likelihood-scales/self-assessment/{selfAssessmentID}")
+    @Timed
+    public List<LikelihoodScale> getAllLikelihoodScalesBySelfAssessment(@PathVariable Long selfAssessmentID) {
+        log.debug("REST request to get all LikelihoodScales by SelfAssessment: " + selfAssessmentID);
+        return likelihoodScaleService.findAllBySelfAssessment(selfAssessmentID);
+    }
 
     /**
      * GET  /likelihood-scales/:id : get the "id" likelihoodScale.
