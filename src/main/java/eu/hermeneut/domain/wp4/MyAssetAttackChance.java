@@ -6,15 +6,15 @@ import eu.hermeneut.domain.MyAsset;
 public class MyAssetAttackChance {
     private MyAsset myAsset;
     private AttackStrategy attackStrategy;
-    private Double likelihood;
-    private Double vulnerability;
-    private Double critical;
-    private Double impact;
+    private Float likelihood;
+    private Float vulnerability;
+    private Float critical;
+    private Float impact;
 
     public MyAssetAttackChance() {
     }
 
-    public MyAssetAttackChance(MyAsset myAsset, AttackStrategy attackStrategy, Double likelihood, Double vulnerability, Double critical, Double impact) {
+    public MyAssetAttackChance(MyAsset myAsset, AttackStrategy attackStrategy, Float likelihood, Float vulnerability, Float critical, Float impact) {
         this.myAsset = myAsset;
         this.attackStrategy = attackStrategy;
         this.likelihood = likelihood;
@@ -39,35 +39,35 @@ public class MyAssetAttackChance {
         this.attackStrategy = attackStrategy;
     }
 
-    public Double getLikelihood() {
+    public Float getLikelihood() {
         return likelihood;
     }
 
-    public void setLikelihood(Double likelihood) {
+    public void setLikelihood(Float likelihood) {
         this.likelihood = likelihood;
     }
 
-    public Double getVulnerability() {
+    public Float getVulnerability() {
         return vulnerability;
     }
 
-    public void setVulnerability(Double vulnerability) {
+    public void setVulnerability(Float vulnerability) {
         this.vulnerability = vulnerability;
     }
 
-    public Double getCritical() {
+    public Float getCritical() {
         return critical;
     }
 
-    public void setCritical(Double critical) {
+    public void setCritical(Float critical) {
         this.critical = critical;
     }
 
-    public Double getImpact() {
+    public Float getImpact() {
         return impact;
     }
 
-    public void setImpact(Double impact) {
+    public void setImpact(Float impact) {
         this.impact = impact;
     }
 }
