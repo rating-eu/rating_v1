@@ -1,0 +1,54 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "selfAssessment",
+            "otherEntityName": "selfAssessment",
+            "otherEntityField": "name"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "name",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "description",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "likelihood",
+            "fieldType": "Integer",
+            "fieldValidateRules": [
+                "min",
+                "max",
+                "required"
+            ],
+            "fieldValidateRulesMin": 1,
+            "fieldValidateRulesMax": 5
+        },
+        {
+            "fieldName": "frequency",
+            "fieldType": "Integer",
+            "fieldValidateRules": [
+                "min",
+                "required"
+            ],
+            "fieldValidateRulesMin": 1
+        }
+    ],
+    "changelogDate": "20180820094757",
+    "entityTableName": "likelihood_scale",
+    "dto": "no",
+    "pagination": "no",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "angularJSSuffix": "mgm"
+}

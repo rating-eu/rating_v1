@@ -35,6 +35,9 @@
                 "ebitMgm": "EBIT",
                 "economicResultsMgm": "Economic Results",
                 "splittingLossMgm": "Splitting Loss",
+                "criticalLevelMgm": "Critical Level",
+                "likelihoodScaleMgm": "Likelihood Scale",
+                "vulnerabilityScaleMgm": "Vulnerability Scale",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {

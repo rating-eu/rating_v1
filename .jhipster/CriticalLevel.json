@@ -1,0 +1,54 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "javadoc": "WP4",
+            "relationshipName": "selfAssessment",
+            "otherEntityName": "selfAssessment",
+            "otherEntityField": "name"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "side",
+            "fieldType": "Integer",
+            "fieldValidateRules": [
+                "min"
+            ],
+            "fieldValidateRulesMin": 3
+        },
+        {
+            "fieldName": "lowLimit",
+            "fieldType": "Integer",
+            "fieldValidateRules": [
+                "min"
+            ],
+            "fieldValidateRulesMin": 1
+        },
+        {
+            "fieldName": "mediumLimit",
+            "fieldType": "Integer",
+            "fieldValidateRules": [
+                "min"
+            ],
+            "fieldValidateRulesMin": 1
+        },
+        {
+            "fieldName": "highLimit",
+            "fieldType": "Integer",
+            "fieldValidateRules": [
+                "min"
+            ],
+            "fieldValidateRulesMin": 1
+        }
+    ],
+    "changelogDate": "20180820094756",
+    "javadoc": "=======WP4=======",
+    "entityTableName": "critical_level",
+    "dto": "no",
+    "pagination": "no",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "angularJSSuffix": "mgm"
+}

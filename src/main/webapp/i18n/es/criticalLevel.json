@@ -1,0 +1,27 @@
+
+{
+    "hermeneutApp": {
+        "criticalLevel" : {
+            "home": {
+                "title": "Critical Levels",
+                "createLabel": "Crear nuevo Critical Level",
+                "createOrEditLabel": "Crear o editar Critical Level",
+                "search": "Search for Critical Level"
+            },
+            "created": "Un nuevo Critical Level ha sido creado con el identificador {{ param }}",
+            "updated": "Un Critical Level ha sido actualizado con el identificador {{ param }}",
+            "deleted": "Un Critical Level ha sido eliminado con el identificador {{ param }}",
+            "delete": {
+                "question": "¿Seguro que quiere eliminar Critical Level {{ id }}?"
+            },
+            "detail": {
+                "title": "Critical Level"
+            },
+            "side": "Side",
+            "lowLimit": "Low Limit",
+            "mediumLimit": "Medium Limit",
+            "highLimit": "High Limit",
+            "selfAssessment": "Self Assessment"
+        }
+    }
+}

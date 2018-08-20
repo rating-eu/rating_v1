@@ -1,0 +1,44 @@
+
+<div *ngIf="likelihoodScale">
+    <h2><span jhiTranslate="hermeneutApp.likelihoodScale.detail.title">Likelihood Scale</span> {{likelihoodScale.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="hermeneutApp.likelihoodScale.name">Name</span></dt>
+        <dd>
+            <span>{{likelihoodScale.name}}</span>
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.likelihoodScale.description">Description</span></dt>
+        <dd>
+            <span>{{likelihoodScale.description}}</span>
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.likelihoodScale.likelihood">Likelihood</span></dt>
+        <dd>
+            <span>{{likelihoodScale.likelihood}}</span>
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.likelihoodScale.frequency">Frequency</span></dt>
+        <dd>
+            <span>{{likelihoodScale.frequency}}</span>
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.likelihoodScale.selfAssessment">Self Assessment</span></dt>
+        <dd>
+            <div *ngIf="likelihoodScale.selfAssessment">
+                <a [routerLink]="['/self-assessment-mgm', likelihoodScale.selfAssessment?.id]">{{likelihoodScale.selfAssessment?.name}}</a>
+            </div>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'likelihood-scale-mgm/'+ likelihoodScale.id + '/edit'} }]"
+            replaceUrl="true"
+            queryParamsHandling="merge"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+    </button>
+</div>
