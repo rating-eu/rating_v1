@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { SelfAssessmentMgm, SelfAssessmentMgmService } from '../../entities/self-assessment-mgm';
 import { RiskManagementService } from '../risk-management.service';
+import { CriticalLevelMgm, CriticalLevelMgmService } from '../../entities/critical-level-mgm';
 
 @Component({
   // tslint:disable-next-line:component-selector
@@ -15,17 +16,40 @@ export class RiskManagementComponent implements OnInit {
   public isLevelsCollapsed = true;
   public selectedRow: number;
   public selectedColumn: number;
+  public squareColumnElement: number[];
+  public squareRowElement: number[];
   private mySelf: SelfAssessmentMgm;
-  private criticalLevel: {side: number, low: number,};
+  private criticalLevel: CriticalLevelMgm;
 
   constructor(
     private mySelfAssessmentService: SelfAssessmentMgmService,
+    private criticalLevelService: CriticalLevelMgmService,
     private riskService: RiskManagementService
   ) { }
 
   ngOnInit() {
-    // getCriticalLevel(selfId)
     this.mySelf = this.mySelfAssessmentService.getSelfAssessment();
+    /*
+    this.riskService.getCriticalLevel(this.mySelf).toPromise().then((res) => {
+      if (res) {
+        this.criticalLevel = res;
+      }
+    });
+    */
+    this.criticalLevel = new CriticalLevelMgm();
+    this.criticalLevel.side = 5;
+    this.criticalLevel.lowLimit = 4;
+    this.criticalLevel.mediumLimit = 14;
+    this.criticalLevel.highLimit = 25;
+
+    this.squareColumnElement = [];
+    this.squareRowElement = [];
+    for (let i = 1; i <= this.criticalLevel.side; i++) {
+      this.squareColumnElement.push(i);
+    }
+    for (let i = 1; i <= this.criticalLevel.side + 1; i++) {
+      this.squareRowElement.push(i);
+    }
   }
 
   public switchOnCollapsible(collapsible: string) {
@@ -76,8 +100,16 @@ export class RiskManagementComponent implements OnInit {
   }
 
   public whichLevel(row: number, column: number): string {
-
-    return '';
+    const level = row * column;
+    if (level <= this.criticalLevel.lowLimit) {
+      return 'low';
+    } else if (level > this.criticalLevel.lowLimit && level <= this.criticalLevel.mediumLimit) {
+      return 'medium';
+    } else if (level > this.criticalLevel.mediumLimit && level <= this.criticalLevel.highLimit) {
+      return 'high';
+    } else {
+      return 'undefined';
+    }
   }
 
   public selectedMatrixCell(row: number, column: number) {

@@ -121,19 +121,19 @@
     </div>
     <div class="collapse col-md-12" [ngbCollapse]="isCriticalCollapsed">
       <div class="card card-body">
-          <div *ngFor="let j of [1,2,3,4,5,6]" class="row">
+          <div *ngFor="let j of squareRowElement" class="row">
             <div class="col-md-2 text-right">
               <ng-container *ngIf="j!==6">{{6-j}}</ng-container>
             </div>
             <ng-container *ngIf="j===6">
-              <div *ngFor="let i of [1,2,3,4,5]" class="col-md-2 text-center">
+              <div *ngFor="let i of squareColumnElement" class="col-md-2 text-center">
                 {{i}}
               </div>
             </ng-container>
             <ng-container *ngIf="j!==6">
-              <div *ngFor="let i of [1,2,3,4,5]" class="col-md-2">
-                <div [ngClass]="{'low-level': whichLevel(j, i) === 'low', 'medium-level': whichLevel(j, i) === 'medium', 'high-level': whichLevel(j, i) === 'high'}"
-                  (click)="selectedMatrixCell(j, i)">&nbsp;</div>
+              <div *ngFor="let i of squareColumnElement" class="col-md-2">
+                <div [ngClass]="{'low-level': whichLevel(6-j, i) === 'low', 'medium-level': whichLevel(6-j, i) === 'medium', 'high-level': whichLevel(6-j, i) === 'high'}"
+                  (click)="selectedMatrixCell(6-j, i)">&nbsp;</div>
               </div>
             </ng-container>
           </div>
