@@ -171,6 +171,18 @@ public class AttackStrategyResource {
         return toReturn;
     }
 
+    /**
+     * GET all the attackStrategies By Container.
+     *
+     * @return the ResponseEntity with status 200 (OK) and the list of attackStrategies in body
+     */
+    @GetMapping("/attack-strategies/container/{containerID}")
+    @Timed
+    public List<AttackStrategy> getAllAttackStrategiesByContainer(@PathVariable("containerID") Long containerID) {
+        log.debug("REST request to get all AttackStrategies by Container: " + containerID);
+
+        return attackStrategyService.findAllByContainer(containerID);
+    }
 
     /**
      * GET  /attack-strategies/l/{level}/p/{phase} : get all the attackStrategiesByLevelAndPhase.

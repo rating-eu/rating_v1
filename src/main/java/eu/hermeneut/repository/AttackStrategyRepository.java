@@ -32,4 +32,7 @@ public interface AttackStrategyRepository extends JpaRepository<AttackStrategy, 
 
     @Query("SELECT DISTINCT attack_strategy FROM AttackStrategy attack_strategy LEFT JOIN FETCH attack_strategy.mitigations INNER JOIN FETCH attack_strategy.levels levels INNER JOIN FETCH attack_strategy.phases phases WHERE levels.id = :levelID AND phases.id = :phaseID")
     List<AttackStrategy> findAllByLevelAndPhase(@Param("levelID") Long levelID, @Param("phaseID") Long phaseID);
+
+    @Query("SELECT DISTINCT attack_strategy FROM AttackStrategy attack_strategy LEFT JOIN FETCH attack_strategy.mitigations INNER JOIN FETCH attack_strategy.levels levels INNER JOIN FETCH attack_strategy.phases phases WHERE levels.container.id = :containerID")
+    List<AttackStrategy> findAllByContainer(@Param("containerID") Long containerID);
 }

@@ -141,4 +141,16 @@ public class AttackStrategyServiceImpl implements AttackStrategyService {
 
         return attackStrategyRepository.findAllByLevelAndPhase(level.getId(), phase.getId());
     }
+
+    /**
+     * Get all the attackStrategies by Container.
+     *
+     * @return the list of entities
+     */
+    @Override
+    @Transactional(readOnly = true)
+    public List<AttackStrategy> findAllByContainer(Long containerID) {
+        log.debug("Request to get all AttackStrategies by Container: " + containerID);
+        return attackStrategyRepository.findAllByContainer(containerID);
+    }
 }

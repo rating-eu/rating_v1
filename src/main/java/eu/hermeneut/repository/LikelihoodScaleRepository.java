@@ -16,6 +16,6 @@ import java.util.List;
 @Repository
 public interface LikelihoodScaleRepository extends JpaRepository<LikelihoodScale, Long> {
 
-    @Query("SELECT LikelihoodScale from LikelihoodScale likelihoodScale WHERE likelihoodScale.selfAssessment.id = :selfAssessmentID")
+    @Query("SELECT likelihoodScale from LikelihoodScale likelihoodScale WHERE likelihoodScale.selfAssessment.id = :selfAssessmentID")
     List<LikelihoodScale> findAllBySelfAssessment(@Param("selfAssessmentID") Long selfAssessmentID);
 }
