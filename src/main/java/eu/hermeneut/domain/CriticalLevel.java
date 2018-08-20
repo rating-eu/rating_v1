@@ -49,7 +49,8 @@ public class CriticalLevel implements Serializable {
      * WP4
      */
     @ApiModelProperty(value = "WP4")
-    @ManyToOne
+    @OneToOne
+    @JoinColumn(unique = true)
     private SelfAssessment selfAssessment;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove

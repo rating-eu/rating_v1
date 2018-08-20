@@ -1,5 +1,6 @@
 package eu.hermeneut.domain;
 
+import io.swagger.annotations.ApiModelProperty;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -45,6 +46,10 @@ public class LikelihoodScale implements Serializable {
     @Column(name = "frequency", nullable = false)
     private Integer frequency;
 
+    /**
+     * WP4
+     */
+    @ApiModelProperty(value = "WP4")
     @ManyToOne
     private SelfAssessment selfAssessment;
 

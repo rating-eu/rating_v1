@@ -75,7 +75,7 @@
 
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="hermeneutApp.criticalLevel.selfAssessment" for="field_selfAssessment">Self Assessment</label>
-            <select class="form-control" id="field_selfAssessment" name="selfAssessment" [(ngModel)]="criticalLevel.selfAssessment" >
+            <select class="form-control" id="field_selfAssessment" name="selfAssessment" [(ngModel)]="criticalLevel.selfAssessment">
                 <option [ngValue]="null"></option>
                 <option [ngValue]="selfAssessmentOption.id === criticalLevel.selfAssessment?.id ? criticalLevel.selfAssessment : selfAssessmentOption" *ngFor="let selfAssessmentOption of selfassessments; trackBy: trackSelfAssessmentById">{{selfAssessmentOption.name}}</option>
             </select>

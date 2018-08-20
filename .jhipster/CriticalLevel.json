@@ -2,11 +2,13 @@
     "fluentMethods": true,
     "relationships": [
         {
-            "relationshipType": "many-to-one",
+            "relationshipType": "one-to-one",
             "javadoc": "WP4",
             "relationshipName": "selfAssessment",
             "otherEntityName": "selfAssessment",
-            "otherEntityField": "name"
+            "otherEntityField": "name",
+            "ownerSide": true,
+            "otherEntityRelationshipName": "criticalLevel"
         }
     ],
     "fields": [
