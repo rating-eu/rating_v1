@@ -132,7 +132,7 @@
             </ng-container>
             <ng-container *ngIf="j!==6">
               <div *ngFor="let i of [1,2,3,4,5]" class="col-md-2">
-                <div [ngClass]="{'low-level': i<=2, 'medium-level': i<=4 && i>2, 'high-level': i===5}"
+                <div [ngClass]="{'low-level': whichLevel(j, i) === 'low', 'medium-level': whichLevel(j, i) === 'medium', 'high-level': whichLevel(j, i) === 'high'}"
                   (click)="selectedMatrixCell(j, i)">&nbsp;</div>
               </div>
             </ng-container>

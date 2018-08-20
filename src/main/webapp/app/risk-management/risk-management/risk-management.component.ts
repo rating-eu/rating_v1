@@ -16,7 +16,7 @@ export class RiskManagementComponent implements OnInit {
   public selectedRow: number;
   public selectedColumn: number;
   private mySelf: SelfAssessmentMgm;
-  private criticalLevel: any;
+  private criticalLevel: {side: number, low: number,};
 
   constructor(
     private mySelfAssessmentService: SelfAssessmentMgmService,
@@ -73,6 +73,11 @@ export class RiskManagementComponent implements OnInit {
       }
     });
     */
+  }
+
+  public whichLevel(row: number, column: number): string {
+
+    return '';
   }
 
   public selectedMatrixCell(row: number, column: number) {
