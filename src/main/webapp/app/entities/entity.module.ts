@@ -27,6 +27,9 @@ import { HermeneutEconomicCoefficientsMgmModule } from './economic-coefficients-
 import { HermeneutEBITMgmModule } from './ebit-mgm/ebit-mgm.module';
 import { HermeneutEconomicResultsMgmModule } from './economic-results-mgm/economic-results-mgm.module';
 import { HermeneutSplittingLossMgmModule } from './splitting-loss-mgm/splitting-loss-mgm.module';
+import { HermeneutCriticalLevelMgmModule } from './critical-level-mgm/critical-level-mgm.module';
+import { HermeneutLikelihoodScaleMgmModule } from './likelihood-scale-mgm/likelihood-scale-mgm.module';
+import { HermeneutVulnerabilityScaleMgmModule } from './vulnerability-scale-mgm/vulnerability-scale-mgm.module';
 /* jhipster-needle-add-entity-module-import - JHipster will add entity modules imports here */
 
 @NgModule({
@@ -59,6 +62,9 @@ import { HermeneutSplittingLossMgmModule } from './splitting-loss-mgm/splitting-
         HermeneutEBITMgmModule,
         HermeneutEconomicResultsMgmModule,
         HermeneutSplittingLossMgmModule,
+        HermeneutCriticalLevelMgmModule,
+        HermeneutLikelihoodScaleMgmModule,
+        HermeneutVulnerabilityScaleMgmModule,
         /* jhipster-needle-add-entity-module - JHipster will add entity modules here */
     ],
     declarations: [],

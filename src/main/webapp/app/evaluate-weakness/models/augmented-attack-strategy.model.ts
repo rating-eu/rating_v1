@@ -63,6 +63,8 @@ export class AugmentedAttackStrategy extends AttackStrategyMgm {
         /**
          * Used to keep the exact decimal value of the corresponding likelihood,
          * in contrast with the enum which is always an integer.
+         *
+         * VULNERABILITY
          */
         public cisoAnswersLikelihoodNumber?: number,
         /**
@@ -89,6 +91,8 @@ export class AugmentedAttackStrategy extends AttackStrategyMgm {
         /**
          * Used to keep the exact decimal value of the corresponding likelihood,
          * in contrast with the enum which is always an integer.
+         *
+         * VULNERABILITY
          */
         public externalAuditAnswersLikelihoodNumber?: number,
         /**
