@@ -307,7 +307,11 @@ relationship OneToOne{
     EconomicCoefficients{selfAssessment(name)} to SelfAssessment,
     EBIT{selfAssessment(name)} to SelfAssessment,
     EconomicResults{selfAssessment(name)} to SelfAssessment,
-    SplittingLoss{selfAssessment(name)} to SelfAssessment
+    SplittingLoss{selfAssessment(name)} to SelfAssessment,
+    /*WP4*/
+    CriticalLevel{selfAssessment(name)} to SelfAssessment,
+    LikelihoodScale{selfAssessment(name)} to SelfAssessment,
+    VulnerabilityScale{selfAssessment(name)} to SelfAssessment
 }
 
 relationship ManyToOne{
@@ -361,4 +365,25 @@ entity SplittingLoss{
     CategoryType CategoryType,
     LossPercentage BigDecimal,
     Loss BigDecimal
+}
+
+/*=======WP4=======*/
+entity CriticalLevel{
+	Side  Integer min(3),
+    LowLimit Integer min(1),
+    MediumLimit Integer min(1),
+    HighLimit Integer min(1)
+}
+
+entity LikelihoodScale{
+	Name String required,
+    Description String required,
+    Likelihood Integer min(1) max(5) required,
+    Frequency Integer min(1) required
+}
+
+entity VulnerabilityScale{
+	Name String required,
+    Description String required,
+    Vulnerability Integer min(1) max(5) required
 }
