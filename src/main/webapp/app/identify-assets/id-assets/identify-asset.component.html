@@ -181,7 +181,10 @@ step todo:
 </div>
 -->
 <ng-container *ngIf="questionnariesStatus.length === 0">
-    <ng-container *ngIf="questions">
+    <ng-container *ngIf="questions.length === 0" class="text-center">
+        <div class="loader"></div>
+    </ng-container>
+    <ng-container *ngIf="questions.length > 0">
         <ng-container *ngFor="let q of questions">
             <question-card
             [question]="q"
