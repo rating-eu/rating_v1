@@ -296,9 +296,6 @@ relationship OneToOne{
     QuestionnaireStatus{user(login)} to User,
     Answer{asset(name)} to Asset,
     Answer{assetCategory(name)} to AssetCategory,
-    MyAsset{asset(name)} to Asset,
-    MyAsset{selfAssessment(name)} to SelfAssessment,
-    MyAsset{questionnaire(name)} to Questionnaire,
     DirectAsset{myAsset(asset)} to MyAsset,
     IndirectAsset{myAsset(asset)} to MyAsset,
     Level{container(name)} to Container,
@@ -317,6 +314,9 @@ relationship ManyToOne{
     CompanyGroup{user(login)} to User,
     ExternalAudit{user(login)} to User,
     SelfAssessment{user(login)} to User,
+    MyAsset{asset(name)} to Asset,
+    MyAsset{selfAssessment(name)} to SelfAssessment,
+    MyAsset{questionnaire(name)} to Questionnaire,
     /*WP4*/
     LikelihoodScale{selfAssessment(name)} to SelfAssessment,
     VulnerabilityScale{selfAssessment(name)} to SelfAssessment
