@@ -30,7 +30,7 @@ import {not} from 'rxjs/util/not';
 @Component({
     selector: 'jhi-dynamic-form',
     templateUrl: './dynamic-form.component.html',
-    styles: [],
+    styleUrls: ['../../../css/radio.css'],
     providers: [QuestionControlService]
 })
 export class DynamicFormComponent implements OnInit, OnDestroy {
