@@ -7,42 +7,54 @@
         <h1 class="display-4" jhiTranslate="home.title">Welcome, HERMENEUT!</h1>
         <p class="lead" jhiTranslate="home.subtitle">Introduction</p>
         <p class="lead" jhiTranslate="home.description"> Description</p>
-
-        <span *ngIf="!mySelf" class="alert alert-warning">Please, <a
+    </div>
+</div>
+<div class="row" style="margin-bottom: 10px">
+    <div class="col-md-12 text-center">
+        <span *ngIf="!mySelf" class="alert alert-warning" style="padding: .50rem 0.25rem;">Please, <a
             [routerLink]="['../self-assessment-mgm']"> select</a> a self assessment, otherwise, have a look to our taxonomies</span>
-
-        <div class="table-responsive" *ngIf="mySelf">
-            <button type="button" class="btn btn-dark" routerLink="identify-threat-agent"
+    </div>
+</div>
+<div class="row" style="margin-bottom: 10px">
+    <div class="col-md-12 text-center">
+            <button type="button" class="btn btn-primary" routerLink="identify-threat-agent"
                     routerLinkActive="active">
                 <span class="fa fa-lightbulb-o"></span>
                 <span class="d-none d-md-inline">Identify Threat Agents</span>
                 <span class="fa fa-user-secret"></span>
             </button>
 
-            <button type="button" class="btn btn-dark" routerLink="evaluate-weakness"
+            <button type="button" class="btn btn-primary" routerLink="evaluate-weakness"
                     routerLinkActive="active">Evaluate Weakness
             </button>
 
-            <button type="button" class="btn btn-dark" routerLink="identify-asset"
+            <button type="button" class="btn btn-primary" routerLink="identify-asset"
                     routerLinkActive="active">Identify assets
             </button>
 
-            <button type="button" class="btn btn-dark" routerLink="external-audit"
+            <button type="button" class="btn btn-primary" routerLink="external-audit"
                     routerLinkActive="active">External Audit
             </button>
 
-            <button type="button" class="btn btn-dark" routerLink="impact-evaluation"
+            <button type="button" class="btn btn-primary" routerLink="impact-evaluation"
                     routerLinkActive="active">Impact evaluation
             </button>
 
-            <button type="button" class="btn btn-dark" routerLink="risk-management"
+            <button type="button" class="btn btn-primary" routerLink="risk-management"
                     routerLinkActive="active">Risk management
             </button>
 
-            <button type="button" class="btn btn-dark" routerLink="results"
+            <button type="button" class="btn btn-primary" routerLink="results"
                     routerLinkActive="active">Results
             </button>
-            <br/><br/>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12" *ngIf="mySelf">
+        <p>Selected <i>Self Assessment</i></p>
+    </div>
+    <div class="col-md-12" *ngIf="mySelf">
+        <div class="table-responsive">
             <table class="table table-striped">
                 <thead>
                 <tr>
@@ -120,6 +132,7 @@
                 </tbody>
             </table>
         </div>
+    </div>
 
         <!-- <div [ngSwitch]="isAuthenticated()">
               <div class="alert alert-success" *ngSwitchCase="true">
@@ -153,5 +166,4 @@
               <span jhiTranslate="home.like">If you like JHipster, don't forget to give us a star on</span> <a href="https://github.com/jhipster/generator-jhipster" target="_blank" rel="noopener" jhiTranslate="home.github">GitHub</a>!
           </p>
               -->
-    </div>
 </div>
