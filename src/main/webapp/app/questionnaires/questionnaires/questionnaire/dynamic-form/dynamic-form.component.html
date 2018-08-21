@@ -62,7 +62,7 @@
                             <td>
                                 <mat-radio-group [formControlName]="question.id" class="radio-group">
                                     <mat-radio-button *ngFor="let answer of sort(question.answers)" class="radio-button"
-                                                      [value]="answer">
+                                                      [value]="answer" disabled="disabled">
                                         {{answer.name}}
                                     </mat-radio-button>
                                 </mat-radio-group>
