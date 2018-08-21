@@ -1,13 +1,9 @@
-<h2>Status is {{questionnaireStatus?.status || statusEnum.EMPTY}}</h2>
-
 <button type="button" (click)="debug = !debug">Debug {{debug}}</button>
 
 <form *ngIf="form" (ngSubmit)="submitDispatcher()" [formGroup]="form" role="form">
 
     <div [ngSwitch]="role">
         <div *ngSwitchCase="roleEnum.ROLE_CISO">
-            <h2>ROLE CISO</h2>
-
             <div *ngFor="let question of questionsArray; trackBy: trackByID"
                  [ngClass]="{'ng-valid': isValid(question.id) === true, 'ng-invalid': isValid(question.id) === false}">
 
@@ -21,18 +17,12 @@
             </pre>
                 </div>
 
-                <div [id]="question.id" class="radio" *ngFor="let answer of sort(question.answers)">
-                    <pre *ngIf="debug">{{answer | json}}</pre>
-
-                    <label class="radio">
-                        <input type="radio"
-                               [formControlName]="question.id"
-                               [value]="answer"/>&nbsp;{{answer.name}}
-                        <pre *ngIf="debug">
-                answer id {{answer.id}} form value id
-                {{form.value[question.id].id | json}}</pre>
-                    </label>
-                </div>
+                <mat-radio-group [formControlName]="question.id" class="radio-group">
+                    <mat-radio-button *ngFor="let answer of sort(question.answers)" class="radio-button"
+                                      [value]="answer">
+                        {{answer.name}}
+                    </mat-radio-button>
+                </mat-radio-group>
             </div>
 
             <div class="form-row">
@@ -45,9 +35,6 @@
 
         <div *ngSwitchCase="roleEnum.ROLE_EXTERNAL_AUDIT">
             <div *ngIf="questionnaire.purpose === purposeEnum.SELFASSESSMENT">
-
-                <h2>ROLE EXTERNAL AUDIT</h2>
-
                 <div *ngFor="let question of questionsArray; trackBy: trackByID"
                      [ngClass]="{'ng-valid': isValid(question.id) === true, 'ng-invalid': isValid(question.id) === false}">
 
@@ -73,45 +60,28 @@
                         <tbody>
                         <tr>
                             <td>
-                                <div [id]="question.id" class="radio" *ngFor="let answer of sort(question.answers)">
-                                    <pre *ngIf="debug">{{answer | json}}</pre>
-
-                                    <label class="radio">
-                                        <input type="radio"
-                                               [formControlName]="question.id"
-                                               [value]="answer"
-                                               disabled
-                                        />&nbsp;{{answer.name}}
-                                        <pre *ngIf="debug">
-                                        answer id {{answer.id}} form value id
-                                        {{form.value[question.id].id | json}}
-                                    </pre>
-                                    </label>
-                                </div>
+                                <mat-radio-group [formControlName]="question.id" class="radio-group">
+                                    <mat-radio-button *ngFor="let answer of sort(question.answers)" class="radio-button"
+                                                      [value]="answer" disabled="disabled">
+                                        {{answer.name}}
+                                    </mat-radio-button>
+                                </mat-radio-group>
                             </td>
 
                             <td>
-                                <div [id]="question.id" class="radio" *ngFor="let answer of sort(question.answers)">
-                                    <pre *ngIf="debug">{{answer | json}}</pre>
-
-                                    <label class="radio">
-                                        <input type="radio"
-                                               [formControlName]="question.id + '.external'"
-                                               [value]="answer"/>&nbsp;{{answer.name}}
-                                        <pre *ngIf="debug">
-                                        answer id {{answer.id}} form value id
-                                        {{form.value[question.id].id | json}}
-                                    </pre>
-                                    </label>
-                                </div>
+                                <mat-radio-group [formControlName]="question.id + '.external'" class="radio-group">
+                                    <mat-radio-button *ngFor="let answer of sort(question.answers)" class="radio-button"
+                                                      [value]="answer">
+                                        {{answer.name}}
+                                    </mat-radio-button>
+                                </mat-radio-group>
                             </td>
 
                             <td>
-                                <div>
-                                    <label>
-                                        <textarea [formControlName]="question.id + '.note'" [rows]="5"></textarea>
-                                    </label>
-                                </div>
+                                <mat-form-field>
+                                    <textarea matInput [formControlName]="question.id + '.note'" [rows]="5"
+                                              placeholder="Notes"></textarea>
+                                </mat-form-field>
                             </td>
                         </tr>
                         </tbody>

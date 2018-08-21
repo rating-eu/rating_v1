@@ -1,0 +1,27 @@
+
+{
+    "hermeneutApp": {
+        "likelihoodScale" : {
+            "home": {
+                "title": "LikelihoodScales",
+                "createLabel": "Genera un nuovo Likelihood Scale",
+                "createOrEditLabel": "Genera o modifica un Likelihood Scale",
+                "search": "Cerca Likelihood Scale"
+            },
+            "created": "&Egrave; stato generato un nuovo Likelihood Scale con identificatore {{ param }}",
+            "updated": "&Egrave; stato aggiornato Likelihood Scale identificato da {{ param }}",
+            "deleted": "&Egrave; stato eliminato Likelihood Scale con identificatore {{ param }}",
+            "delete": {
+                "question": "Sei sicuro di volere eliminare Likelihood Scale {{ id }}?"
+            },
+            "detail": {
+                "title": "Likelihood Scale"
+            },
+            "name": "Name",
+            "description": "Description",
+            "likelihood": "Likelihood",
+            "frequency": "Frequency",
+            "selfAssessment": "Self Assessment"
+        }
+    }
+}

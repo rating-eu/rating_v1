@@ -183,7 +183,6 @@ export class IdentifyAssetUtilService {
                 }
                 */
             }
-            this.sendUpdateForDirectToSubscriptor(this.myDirectAssets);
         }
     }
 
@@ -275,7 +274,7 @@ export class IdentifyAssetUtilService {
             if (directAsset) {
                 this.myIndirectAssets[index].directAsset = directAsset;
             }
-            this.sendUpdateForIndirectToSubscriptor(this.myIndirectAssets);
+            // this.sendUpdateForIndirectToSubscriptor(this.myIndirectAssets);
         }
     }
 

@@ -76,11 +76,13 @@ export class QuestionComponent implements OnInit, OnDestroy {
         this.directAssetsSubscription = this.idaUtilsService.subscribeForDirect().subscribe((res) => {
             if (res) {
                 this.directGuiAssets = res;
+                this.ref.detectChanges();
             }
         });
         this.indirectAssetsSubscription = this.idaUtilsService.subscribeForIndirect().subscribe((res) => {
             if (res) {
                 this.indirectGuiAssets = res;
+                this.ref.detectChanges();
             }
         });
         this.indirectMapSubscription = this.idaUtilsService.subscribeForIndirectMap().subscribe((res) => {
@@ -424,6 +426,9 @@ export class QuestionComponent implements OnInit, OnDestroy {
             this.idaUtilsService.addMyAnswer(myAnswer);
             this.myQuestionAnswer.push(myAnswer);
             this.selectedAnswers.push(ans);
+
+            this.idaUtilsService.sendUpdateForDirectToSubscriptor(this.idaUtilsService.getMyDirectAsset());
+            this.idaUtilsService.sendUpdateForIndirectToSubscriptor(this.idaUtilsService.getMyIndirectAsset());
         }
     }
 
@@ -543,13 +548,17 @@ export class QuestionComponent implements OnInit, OnDestroy {
         }
     }
 
-    private selectCost(ans: AnswerMgm): CostType {
-        switch (ans.name) {
-            case MyCostType.BEFORE_THE_ATTACK_STATUS_RESTORATION.toString(): {
-                return CostType.BEFORE_THE_ATTACK_STATUS_RESTORATION;
-            }
+    private selectCost(costName: string): CostType {
+        // WORKAROUND... questa stringa non viene riconosciuta dal compare invocato dallo switch, sono state fatte prove anche con altre funzionalità primitive di js
+        if (costName.toLowerCase().includes('restoration')) {
+            return CostType.BEFORE_THE_ATTACK_STATUS_RESTORATION;
+        }
+        switch (costName) {
             case MyCostType.INCREASED_SECURITY.toString(): {
                 return CostType.INCREASED_SECURITY;
+            }
+            case MyCostType.BEFORE_THE_ATTACK_STATUS_RESTORATION.toString(): {
+                return CostType.BEFORE_THE_ATTACK_STATUS_RESTORATION;
             }
             case MyCostType.LEGAL_LITIGATION_COSTS_AND_ATTORNEY_FEES.toString(): {
                 return CostType.LEGAL_LITIGATION_COSTS_AND_ATTORNEY_FEES;
@@ -598,28 +607,32 @@ export class QuestionComponent implements OnInit, OnDestroy {
             index = _.findIndex(this.selectedAnswers, { id: ans.id });
         }
         const cost: AttackCostMgm = new AttackCostMgm();
-        cost.type = this.selectCost(ans);
+        cost.type = this.selectCost(ans.name);
         if (direct) {
             const indexD = _.findIndex(this.directGuiAssets, (myDirect) =>
                 (myDirect.myAsset as MyAssetMgm).asset.id === (direct.myAsset as MyAssetMgm).asset.id
             );
             if (indexD !== -1) {
+                /*
                 if (!this.directGuiAssets[indexD].costs) {
                     this.directGuiAssets[indexD].costs = [];
                 }
                 this.directGuiAssets[indexD].costs.push(cost);
+                */
                 this.idaUtilsService.updateMyDirectAssets(this.directGuiAssets[indexD].myAsset, cost);
             }
         } else if (indirect) {
-            const indexI = _.findIndex(this.directGuiAssets, (myDirect) =>
-                (myDirect.myAsset as MyAssetMgm).asset.id === (direct.myAsset as MyAssetMgm).asset.id
+            const indexI = _.findIndex(this.indirectGuiAssets, (myDirect) =>
+                (myDirect.myAsset as MyAssetMgm).asset.id === (indirect.myAsset as MyAssetMgm).asset.id
             );
             if (indexI !== -1) {
-                if (!this.directGuiAssets[indexI].costs) {
-                    this.directGuiAssets[indexI].costs = [];
+                /*
+                if (!this.indirectGuiAssets[indexI].costs) {
+                    this.indirectGuiAssets[indexI].costs = [];
                 }
-                this.directGuiAssets[indexI].costs.push(cost);
-                this.idaUtilsService.updateMyDirectAssets(this.directGuiAssets[indexI].myAsset, cost);
+                this.indirectGuiAssets[indexI].costs.push(cost);
+                */
+                this.idaUtilsService.updateMyIndirectAssets(this.indirectGuiAssets[indexI].myAsset, cost, this.indirectGuiAssets[indexI].directAsset);
             }
         }
         if (index !== -1) {
@@ -642,6 +655,11 @@ export class QuestionComponent implements OnInit, OnDestroy {
             this.idaUtilsService.addMyAnswer(myAnswer);
             this.myQuestionAnswer.push(myAnswer);
             this.selectedAnswers.push(ans);
+        }
+        if (direct) {
+            this.idaUtilsService.sendUpdateForDirectToSubscriptor(this.idaUtilsService.getMyDirectAsset());
+        } else {
+            this.idaUtilsService.sendUpdateForIndirectToSubscriptor(this.idaUtilsService.getMyIndirectAsset());
         }
     }
 

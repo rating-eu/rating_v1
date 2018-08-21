@@ -9,6 +9,7 @@ import {ReactiveFormsModule} from '@angular/forms';
 import {IdentifyThreatAgentModule} from '../identify-threat-agent/identify-threat-agent.module';
 import {DatasharingModule} from '../datasharing/datasharing.module';
 import {EvaluateWeaknessModule} from '../evaluate-weakness/evaluate-weakness.module';
+import {MaterialModule} from '../material/material.module';
 
 @NgModule({
     imports: [
@@ -17,7 +18,8 @@ import {EvaluateWeaknessModule} from '../evaluate-weakness/evaluate-weakness.mod
         ReactiveFormsModule,
         IdentifyThreatAgentModule,
         EvaluateWeaknessModule,
-        DatasharingModule
+        DatasharingModule,
+        MaterialModule
     ],
     declarations: [
         QuestionnairesComponent,
@@ -26,7 +28,8 @@ import {EvaluateWeaknessModule} from '../evaluate-weakness/evaluate-weakness.mod
     ],
     exports: [
         QuestionnairesComponent,
-        QuestionnaireComponent
+        QuestionnaireComponent,
+        MaterialModule
     ]
 })
 export class QuestionnairesModule {
