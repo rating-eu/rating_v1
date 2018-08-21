@@ -3,6 +3,7 @@ import { RiskManagementService } from '../risk-management.service';
 import { SelfAssessmentMgmService, SelfAssessmentMgm } from '../../entities/self-assessment-mgm';
 import { CriticalLevelMgm } from '../../entities/critical-level-mgm';
 import { MyAssetMgm } from '../../entities/my-asset-mgm';
+import { MyAssetAttackChance } from '../model/my-asset-attack-chance.model';
 
 @Component({
   // tslint:disable-next-line:component-selector
@@ -19,6 +20,7 @@ export class RiskEvaluationComponent implements OnInit {
   public lastSquareRowElement: number;
   public selectedRow: number;
   public selectedColumn: number;
+  public mapAssetAttacks: Map<number, MyAssetAttackChance[]> = new Map<number, MyAssetAttackChance[]>();
 
   constructor(
     private mySelfAssessmentService: SelfAssessmentMgmService,
@@ -31,6 +33,14 @@ export class RiskEvaluationComponent implements OnInit {
       if (res && res.length > 0) {
         this.myAssets = res;
         console.log(this.myAssets);
+        for (const myAsset of this.myAssets) {
+          this.riskService.getAttackChance(myAsset, this.mySelf).toPromise().then((res2) => {
+            if (res2) {
+              this.mapAssetAttacks.set(myAsset.id, res2);
+            }
+          });
+        }
+        console.log(this.mapAssetAttacks);
       }
     });
     this.riskService.getCriticalLevel(this.mySelf).toPromise().then((res) => {
