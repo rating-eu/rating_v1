@@ -5,24 +5,33 @@ import { RiskEvaluationComponent } from './risk-evaluation/risk-evaluation.compo
 import { RiskMitigationComponent } from './risk-mitigation/risk-mitigation.component';
 
 const routes: Routes = [
-  {
-      path: '',
-      component: RiskManagementComponent,
-      children: [
-          {
-              path: 'risk-evaluation',
-              component: RiskEvaluationComponent,
-          },
-          {
-              path: 'risk-mitigation',
-              component: RiskMitigationComponent
-          }
-      ]
-  }
+    {
+        path: '',
+        component: RiskManagementComponent,
+        data: {
+            pageTitle: 'Risk management'
+        },
+        children: [
+            {
+                path: 'risk-evaluation',
+                component: RiskEvaluationComponent,
+                data: {
+                    pageTitle: 'Risk evaluation'
+                }
+            },
+            {
+                path: 'risk-mitigation',
+                component: RiskMitigationComponent,
+                data: {
+                    pageTitle: 'Risk mitigation'
+                }
+            }
+        ]
+    }
 ];
 
 @NgModule({
-  imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+    imports: [RouterModule.forChild(routes)],
+    exports: [RouterModule]
 })
 export class RiskManagementRoutingModule { }
