@@ -78,11 +78,10 @@
                             </td>
 
                             <td>
-                                <div>
-                                    <label>
-                                        <textarea [formControlName]="question.id + '.note'" [rows]="5"></textarea>
-                                    </label>
-                                </div>
+                                <mat-form-field>
+                                    <textarea matInput [formControlName]="question.id + '.note'" [rows]="5"
+                                              placeholder="Notes"></textarea>
+                                </mat-form-field>
                             </td>
                         </tr>
                         </tbody>

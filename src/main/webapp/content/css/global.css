@@ -43,11 +43,11 @@ Generic styles
     border-left: 5px solid green;
 }
 
-.ng-invalid:not(form):not(mat-radio-group) {
+.ng-invalid:not(form):not(mat-radio-button):not(textarea):not(div) {
     border-left: 5px solid red;
 }
 
-.ng-valid:not(form):not(mat-radio-group) {
+.ng-valid:not(form):not(mat-radio-button):not(textarea):not(div) {
     border-left: 5px solid green;
 }
 
