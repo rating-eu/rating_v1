@@ -16,10 +16,7 @@ import eu.hermeneut.utils.wp4.MyAssetComparator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 import java.util.function.Function;
@@ -57,9 +54,9 @@ public class WP4StepsController {
     @Autowired
     private AnswerCalculator answerCalculator;
 
-    @PostMapping("{selfAssessmentID}/wp4/my-assets/{myAssetID}/attack-chances")
+    @GetMapping("{selfAssessmentID}/wp4/my-assets/{myAssetID}/attack-chances")
     @Timed
-    public List<MyAssetAttackChance> get(@PathVariable("selfAssessmentID") Long selfAssessmentID, @PathVariable("myAssetID") Long myAssetID) throws NullInputException, NotFoundException {
+    public List<MyAssetAttackChance> getAttackChances(@PathVariable("selfAssessmentID") Long selfAssessmentID, @PathVariable("myAssetID") Long myAssetID) throws NullInputException, NotFoundException {
 
         SelfAssessment selfAssessment = null;
 
