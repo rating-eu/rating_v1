@@ -40,6 +40,7 @@ export class RiskEvaluationComponent implements OnInit {
             }
           });
         }
+        console.log(this.mapAssetAttacks);
       }
     });
     this.riskService.getCriticalLevel(this.mySelf).toPromise().then((res) => {
