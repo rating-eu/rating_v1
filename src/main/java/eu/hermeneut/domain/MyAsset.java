@@ -5,7 +5,6 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 
 import org.springframework.data.elasticsearch.annotations.Document;
 import java.io.Serializable;
@@ -44,16 +43,13 @@ public class MyAsset implements Serializable {
     @Column(name = "economic_value", precision=10, scale=2)
     private BigDecimal economicValue;
 
-    @OneToOne
-    @NotNull
+    @ManyToOne
     private Asset asset;
 
-    @OneToOne
-    @NotNull
+    @ManyToOne
     private SelfAssessment selfAssessment;
 
-    @OneToOne
-    @NotNull
+    @ManyToOne
     private Questionnaire questionnaire;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
