@@ -5,11 +5,13 @@ import { SelfAssessmentMgm } from '../entities/self-assessment-mgm';
 import { CriticalLevelMgm } from '../entities/critical-level-mgm';
 import { HttpClient, HttpResponse, HttpErrorResponse } from '../../../../../node_modules/@angular/common/http';
 import { MyAssetMgm } from '../entities/my-asset-mgm';
+import { MyAssetAttackChance } from './model/my-asset-attack-chance.model';
 
 @Injectable()
 export class RiskManagementService {
   private criticalLevelServiceUrl = SERVER_API_URL + 'api/critical-levels/self-assessment/';
   private assetServiceUrl = SERVER_API_URL + 'api/my-assets/self-assessment/';
+  private attackChanceServiceUrl = SERVER_API_URL + 'api/{selfAssessmentID}/wp4/my-assets/{myAssetID}/attack-chances/';
 
   constructor(
     private http: HttpClient
@@ -30,6 +32,14 @@ export class RiskManagementService {
     const uri = this.assetServiceUrl + self.id.toString();
     return this.http.get<MyAssetMgm[]>(uri, { observe: 'response' })
       .map((res: HttpResponse<MyAssetMgm[]>) => {
+        return res.body;
+      });
+  }
+
+  public getAttackChance(myAsset: MyAssetMgm, self: SelfAssessmentMgm): Observable<MyAssetAttackChance[]> {
+    const uri = this.attackChanceServiceUrl.replace('{selfAssessmentID}', String(self.id)).replace('{myAssetID}', String(myAsset.id));
+    return this.http.get<MyAssetAttackChance[]>(uri, { observe: 'response' })
+      .map((res: HttpResponse<MyAssetAttackChance[]>) => {
         return res.body;
       });
   }
