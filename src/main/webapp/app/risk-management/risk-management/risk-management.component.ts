@@ -99,57 +99,63 @@ export class RiskManagementComponent implements OnInit {
     // setto il nuovo limite
     switch (level) {
       case 'low': {
+        const oldLowLimit = this.criticalLevel.lowLimit;
         this.criticalLevel.lowLimit = newLimit;
-        if (this.criticalLevel.lowLimit > this.criticalLevel.mediumLimit && this.criticalLevel.lowLimit !== this.criticalLevel.side * this.criticalLevel.side) {
-          this.criticalLevel.mediumLimit = this.criticalLevel.highLimit - 1;
-        } else if (this.criticalLevel.mediumLimit === undefined) {
-          break;
-        } else {
+        if (this.criticalLevel.lowLimit >= this.criticalLevel.mediumLimit) {
           this.criticalLevel.mediumLimit = undefined;
+        } else {
+          if (this.criticalLevel.mediumLimit === undefined && this.criticalLevel.highLimit === undefined) {
+            this.criticalLevel.mediumLimit = this.criticalLevel.side * this.criticalLevel.side;
+          } else if (this.criticalLevel.mediumLimit === undefined && this.criticalLevel.highLimit !== undefined) {
+            this.criticalLevel.mediumLimit = oldLowLimit;
+          }
+        }
+        if (this.criticalLevel.lowLimit === this.criticalLevel.side * this.criticalLevel.side) {
           this.criticalLevel.highLimit = undefined;
         }
         break;
       }
       case 'medium': {
         this.criticalLevel.mediumLimit = newLimit;
-        if (this.criticalLevel.mediumLimit <= this.criticalLevel.lowLimit && this.criticalLevel.mediumLimit !== this.criticalLevel.side * this.criticalLevel.side) {
-          this.criticalLevel.lowLimit = this.criticalLevel.mediumLimit - 1;
-          if (this.criticalLevel.lowLimit === 0) {
-            this.criticalLevel.lowLimit = undefined;
+        if (this.criticalLevel.mediumLimit === 1) {
+          this.criticalLevel.lowLimit = undefined;
+          if (this.criticalLevel.highLimit === undefined) {
+            this.criticalLevel.mediumLimit = this.criticalLevel.side * this.criticalLevel.side;
           }
-        } else if (this.criticalLevel.lowLimit === undefined) {
-          break;
-        } else if (this.criticalLevel.mediumLimit < this.criticalLevel.highLimit && this.criticalLevel.mediumLimit !== this.criticalLevel.side * this.criticalLevel.side) {
-          break;
         } else {
-          this.criticalLevel.highLimit = undefined;
+          if (this.criticalLevel.mediumLimit <= this.criticalLevel.lowLimit && this.criticalLevel.mediumLimit !== 1) {
+            this.criticalLevel.lowLimit = this.criticalLevel.mediumLimit - 1;
+          }
+          if (this.criticalLevel.highLimit === undefined) {
+            this.criticalLevel.mediumLimit = this.criticalLevel.side * this.criticalLevel.side;
+          } else if (this.criticalLevel.mediumLimit === this.criticalLevel.side * this.criticalLevel.side) {
+            this.criticalLevel.highLimit = undefined;
+          }
         }
         break;
       }
       case 'high': {
         this.criticalLevel.highLimit = newLimit;
-        if (this.criticalLevel.highLimit <= this.criticalLevel.lowLimit) {
-          this.criticalLevel.lowLimit = this.criticalLevel.highLimit - 1;
-          if (this.criticalLevel.lowLimit === 0) {
-            this.criticalLevel.lowLimit = undefined;
-          }
+        if (this.criticalLevel.highLimit === 1) {
+          this.criticalLevel.lowLimit = undefined;
           this.criticalLevel.mediumLimit = undefined;
-        } else if (this.criticalLevel.highLimit < this.criticalLevel.mediumLimit) {
-          this.criticalLevel.mediumLimit = this.criticalLevel.highLimit - 1;
-          if (this.criticalLevel.mediumLimit === 0) {
-            this.criticalLevel.mediumLimit = undefined;
+          this.criticalLevel.highLimit = this.criticalLevel.side * this.criticalLevel.side;
+        } else {
+          if (this.criticalLevel.highLimit <= this.criticalLevel.lowLimit && this.criticalLevel.highLimit !== 1) {
+            this.criticalLevel.lowLimit = this.criticalLevel.highLimit - 1;
+            this.criticalLevel.highLimit = this.criticalLevel.side * this.criticalLevel.side;
+          } else if (this.criticalLevel.highLimit < this.criticalLevel.mediumLimit && this.criticalLevel.highLimit > this.criticalLevel.lowLimit) {
+            this.criticalLevel.mediumLimit = this.criticalLevel.highLimit - 1;
+            this.criticalLevel.highLimit = this.criticalLevel.side * this.criticalLevel.side;
+          } else if (this.criticalLevel.highLimit < this.criticalLevel.mediumLimit) {
+            this.criticalLevel.mediumLimit = this.criticalLevel.highLimit - 1;
+            this.criticalLevel.highLimit = this.criticalLevel.side * this.criticalLevel.side;
+          } else {
+            this.criticalLevel.highLimit = this.criticalLevel.side * this.criticalLevel.side;
           }
         }
         break;
       }
-    }
-    // correggo una eventuale situazione di inconsistenza
-    if (this.criticalLevel.highLimit !== undefined) {
-      this.criticalLevel.highLimit = this.criticalLevel.side * this.criticalLevel.side;
-    } else if (this.criticalLevel.mediumLimit !== undefined) {
-      this.criticalLevel.mediumLimit = this.criticalLevel.side * this.criticalLevel.side;
-    } else if (this.criticalLevel.lowLimit !== undefined) {
-      this.criticalLevel.lowLimit = this.criticalLevel.side * this.criticalLevel.side;
     }
     console.log(this.criticalLevel.lowLimit);
     console.log(this.criticalLevel.mediumLimit);

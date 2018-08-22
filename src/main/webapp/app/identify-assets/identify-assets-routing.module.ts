@@ -7,7 +7,7 @@ const routes: Routes = [
         path: '',
         component: IdentifyAssetComponent,
         data: {
-            pageTitle: 'Identify asset'
+            pageTitle: 'hermeneutApp.identifyAsset.home.title'
         }
     }
 ];

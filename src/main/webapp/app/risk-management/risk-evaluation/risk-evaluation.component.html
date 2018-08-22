@@ -3,6 +3,22 @@
 </div>
 <div class="container" *ngIf="!loading">
   <ng-container *ngFor="let myAsset of myAssets">
+      <ng-template #assetDetail let-c="close" let-d="dismiss">
+          <div class="modal-header">
+              <h5 class="modal-title">Detail about {{myAsset.asset.name}}!</h5>
+              <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <p>{{modalContent}}</p>
+            </div>
+            <!--
+            <div class="modal-footer">
+              <button type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">Close</button>
+            </div>
+            -->
+      </ng-template>
     <div class="row">
       <div class="col-md-12" *ngIf="criticalLevel">
         <div class="card">
@@ -32,7 +48,7 @@
                   <div *ngFor="let i of squareColumnElement" class="col-md-2">
                     <div class="text-center" [ngClass]="{'low-level': whichLevel(lastSquareRowElement-j, i) === 'low', 'medium-level': whichLevel(lastSquareRowElement-j, i) === 'medium', 'high-level': whichLevel(lastSquareRowElement-j, i) === 'high'}"
                       (click)="selectedMatrixCell(lastSquareRowElement-j, i)">
-                      <ng-container *ngIf="whichContentByCell(lastSquareRowElement-j, i, myAsset, 'likelihood-vulnerability') !== ''"><a (click)="loadContent(lastSquareRowElement-j, i, myAsset, 'likelihood-vulnerability')">Click Me!</a></ng-container>
+                      <ng-container *ngIf="whichContentByCell(lastSquareRowElement-j, i, myAsset, 'likelihood-vulnerability') !== ''"><a (click)="loadContent(lastSquareRowElement-j, i, myAsset, 'likelihood-vulnerability', assetDetail)">Click Me!</a></ng-container>
                       <!--
                       <ng-container *ngIf="whichContentByCell(lastSquareRowElement-j, i, myAsset, 'likelihood-vulnerability') !== ''">{{whichContentByCell(lastSquareRowElement-j, i, myAsset, 'likelihood-vulnerability')}}</ng-container>
                       -->
@@ -66,7 +82,7 @@
                   <div *ngFor="let i of squareColumnElement" class="col-md-2">
                     <div class="text-center" [ngClass]="{'low-level': whichLevel(lastSquareRowElement-j, i) === 'low', 'medium-level': whichLevel(lastSquareRowElement-j, i) === 'medium', 'high-level': whichLevel(lastSquareRowElement-j, i) === 'high'}"
                       (click)="selectedMatrixCell(lastSquareRowElement-j, i)">
-                      <ng-container *ngIf="whichContentByCell(lastSquareRowElement-j, i, myAsset, 'critically-impact') !== ''"><a (click)="loadContent(lastSquareRowElement-j, i, myAsset, 'critically-impact')">Click Me!</a></ng-container>
+                      <ng-container *ngIf="whichContentByCell(lastSquareRowElement-j, i, myAsset, 'critically-impact') !== ''"><a (click)="loadContent(lastSquareRowElement-j, i, myAsset, 'critically-impact', assetDetail)">Click Me!</a></ng-container>
                       <!--
                       <ng-container *ngIf="whichContentByCell(lastSquareRowElement-j, i, myAsset, 'critically-impact') !== ''">{{whichContentByCell(lastSquareRowElement-j, i, myAsset, 'critically-impact')}}</ng-container>
                       -->

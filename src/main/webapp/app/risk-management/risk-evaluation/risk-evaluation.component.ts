@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { RiskManagementService } from '../risk-management.service';
 import { SelfAssessmentMgmService, SelfAssessmentMgm } from '../../entities/self-assessment-mgm';
 import { CriticalLevelMgm } from '../../entities/critical-level-mgm';
 import { MyAssetMgm } from '../../entities/my-asset-mgm';
 import { MyAssetAttackChance } from '../model/my-asset-attack-chance.model';
 import { AttackStrategyMgm } from '../../entities/attack-strategy-mgm';
+import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   // tslint:disable-next-line:component-selector
@@ -23,9 +24,13 @@ export class RiskEvaluationComponent implements OnInit {
   public selectedColumn: number;
   public mapAssetAttacks: Map<number, MyAssetAttackChance[]> = new Map<number, MyAssetAttackChance[]>();
   public loading = false;
+  public modalContent: string;
+  private closeResult: string;
+
   constructor(
     private mySelfAssessmentService: SelfAssessmentMgmService,
-    private riskService: RiskManagementService
+    private riskService: RiskManagementService,
+    private modalService: NgbModal
   ) { }
 
   ngOnInit() {
@@ -93,12 +98,23 @@ export class RiskEvaluationComponent implements OnInit {
     return this.riskService.whichLevel(row, column, this.criticalLevel);
   }
 
-  public loadContent(row: number, column: number, myAsset: MyAssetMgm, type: string): string {
-    console.log(row);
-    console.log(column);
-    console.log(myAsset.asset.name);
-    console.log(type);
-    return '';
+  public loadContent(row: number, column: number, myAsset: MyAssetMgm, type: string, content: any) {
+    this.modalContent = this.whichContentByCell(row, column, myAsset, type);
+    this.modalService.open(content).result.then((result) => {
+      this.closeResult = `Closed with: ${result}`;
+    }, (reason) => {
+      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+    });
+  }
+
+  private getDismissReason(reason: any): string {
+    if (reason === ModalDismissReasons.ESC) {
+      return 'by pressing ESC';
+    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+      return 'by clicking on a backdrop';
+    } else {
+      return  `with: ${reason}`;
+    }
   }
 
   public whichContentByCell(row: number, column: number, myAsset: MyAssetMgm, type: string): string {

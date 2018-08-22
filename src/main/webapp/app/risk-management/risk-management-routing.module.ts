@@ -9,21 +9,21 @@ const routes: Routes = [
         path: '',
         component: RiskManagementComponent,
         data: {
-            pageTitle: 'Risk management'
+            pageTitle: 'hermeneutApp.riskManagement.home.title'
         },
         children: [
             {
                 path: 'risk-evaluation',
                 component: RiskEvaluationComponent,
                 data: {
-                    pageTitle: 'Risk evaluation'
+                    pageTitle: 'hermeneutApp.riskManagement.riskEvaluation.title'
                 }
             },
             {
                 path: 'risk-mitigation',
                 component: RiskMitigationComponent,
                 data: {
-                    pageTitle: 'Risk mitigation'
+                    pageTitle: 'hermeneutApp.riskManagement.riskMitigation.title'
                 }
             }
         ]

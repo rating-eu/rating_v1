@@ -7,7 +7,7 @@ const routes: Routes = [
     path: '',
     component: ImpactEvaluationComponent,
     data: {
-      pageTitle: 'Impact evaluation'
+      pageTitle: 'hermeneutApp.impactEvaluation.home.title'
     }
   }
 ];
