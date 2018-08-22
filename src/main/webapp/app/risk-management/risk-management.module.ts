@@ -7,9 +7,11 @@ import { RiskManagementService } from './risk-management.service';
 import { RiskEvaluationComponent } from './risk-evaluation/risk-evaluation.component';
 import { RiskMitigationComponent } from './risk-mitigation/risk-mitigation.component';
 import { NgbCollapseModule } from '../../../../../node_modules/@ng-bootstrap/ng-bootstrap';
+import { HermeneutSharedModule } from '../shared';
 
 @NgModule({
   imports: [
+    HermeneutSharedModule,
     CommonModule,
     RiskManagementRoutingModule,
     NgbCollapseModule.forRoot()
