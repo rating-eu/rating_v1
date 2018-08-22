@@ -35,11 +35,12 @@ export class RiskEvaluationComponent implements OnInit {
 
   ngOnInit() {
     this.mySelf = this.mySelfAssessmentService.getSelfAssessment();
+    this.loading = true;
     this.riskService.getMyAssets(this.mySelf).toPromise().then((res) => {
       if (res && res.length > 0) {
-        this.loading = true;
         this.myAssets = res;
         console.log(this.myAssets);
+        /*
         for (const myAsset of this.myAssets) {
           let intIndex = 0;
           while (intIndex < 15) {
@@ -61,19 +62,20 @@ export class RiskEvaluationComponent implements OnInit {
             intIndex++;
           }
         }
+        */
         // TODO codice da decommentare quando rientra la issue relativa al WP4
-        /*
         for (const myAsset of this.myAssets) {
+          this.loading = true;
           this.riskService.getAttackChance(myAsset, this.mySelf).toPromise().then((res2) => {
             if (res2) {
               this.mapAssetAttacks.set(myAsset.id, res2);
             }
+            this.loading = false;
           });
         }
-        */
         console.log(this.mapAssetAttacks);
-        this.loading = false;
       }
+      this.loading = false;
     });
     this.riskService.getCriticalLevel(this.mySelf).toPromise().then((res) => {
       if (res) {

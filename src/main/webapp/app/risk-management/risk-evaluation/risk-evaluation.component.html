@@ -1,7 +1,7 @@
-<div class="container" *ngIf="loading">
+<div class="container" *ngIf="loading && mapAssetAttacks.size === 0">
   <div class="loader"></div>
 </div>
-<div class="container" *ngIf="!loading">
+<div class="container" *ngIf="!loading  && mapAssetAttacks.size > 0">
   <ng-container *ngFor="let myAsset of myAssets">
       <ng-template #assetDetail let-c="close" let-d="dismiss">
           <div class="modal-header">
