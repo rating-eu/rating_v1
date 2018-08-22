@@ -114,27 +114,27 @@ export class ImpactEvaluationComponent implements OnInit {
     this.impactFormStepOne = new FormGroup({
       ebit1: new FormControl(undefined, Validators.compose([
         Validators.required,
-        Validators.pattern('[0-9]+')
+        Validators.pattern('[0-9]+,[0-9]+|[0-9]+.[0-9]+')
       ])),
       ebit2: new FormControl(undefined, Validators.compose([
         Validators.required,
-        Validators.pattern('[0-9]+')
+        Validators.pattern('[0-9]+,[0-9]+|[0-9]+.[0-9]+')
       ])),
       ebit3: new FormControl(undefined, Validators.compose([
         Validators.required,
-        Validators.pattern('[0-9]+')
+        Validators.pattern('[0-9]+,[0-9]+|[0-9]+.[0-9]+')
       ])),
       ebit4: new FormControl(undefined, Validators.compose([
         Validators.required,
-        Validators.pattern('[0-9]+')
+        Validators.pattern('[0-9]+,[0-9]+|[0-9]+.[0-9]+')
       ])),
       ebit5: new FormControl(undefined, Validators.compose([
         Validators.required,
-        Validators.pattern('[0-9]+')
+        Validators.pattern('[0-9]+,[0-9]+|[0-9]+.[0-9]+')
       ])),
       ebit6: new FormControl(undefined, Validators.compose([
         Validators.required,
-        Validators.pattern('[0-9]+')
+        Validators.pattern('[0-9]+,[0-9]+|[0-9]+.[0-9]+')
       ])),
       /*
       firstYear: new FormControl(firstYear, Validators.compose([

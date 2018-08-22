@@ -41,45 +41,12 @@ export class MyAssetMgmDialogComponent implements OnInit {
 
     ngOnInit() {
         this.isSaving = false;
-        this.assetService
-            .query({filter: 'myasset-is-null'})
-            .subscribe((res: HttpResponse<AssetMgm[]>) => {
-                if (!this.myAsset.asset || !this.myAsset.asset.id) {
-                    this.assets = res.body;
-                } else {
-                    this.assetService
-                        .find(this.myAsset.asset.id)
-                        .subscribe((subRes: HttpResponse<AssetMgm>) => {
-                            this.assets = [subRes.body].concat(res.body);
-                        }, (subRes: HttpErrorResponse) => this.onError(subRes.message));
-                }
-            }, (res: HttpErrorResponse) => this.onError(res.message));
-        this.selfAssessmentService
-            .query({filter: 'myasset-is-null'})
-            .subscribe((res: HttpResponse<SelfAssessmentMgm[]>) => {
-                if (!this.myAsset.selfAssessment || !this.myAsset.selfAssessment.id) {
-                    this.selfassessments = res.body;
-                } else {
-                    this.selfAssessmentService
-                        .find(this.myAsset.selfAssessment.id)
-                        .subscribe((subRes: HttpResponse<SelfAssessmentMgm>) => {
-                            this.selfassessments = [subRes.body].concat(res.body);
-                        }, (subRes: HttpErrorResponse) => this.onError(subRes.message));
-                }
-            }, (res: HttpErrorResponse) => this.onError(res.message));
-        this.questionnaireService
-            .query({filter: 'myasset-is-null'})
-            .subscribe((res: HttpResponse<QuestionnaireMgm[]>) => {
-                if (!this.myAsset.questionnaire || !this.myAsset.questionnaire.id) {
-                    this.questionnaires = res.body;
-                } else {
-                    this.questionnaireService
-                        .find(this.myAsset.questionnaire.id)
-                        .subscribe((subRes: HttpResponse<QuestionnaireMgm>) => {
-                            this.questionnaires = [subRes.body].concat(res.body);
-                        }, (subRes: HttpErrorResponse) => this.onError(subRes.message));
-                }
-            }, (res: HttpErrorResponse) => this.onError(res.message));
+        this.assetService.query()
+            .subscribe((res: HttpResponse<AssetMgm[]>) => { this.assets = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
+        this.selfAssessmentService.query()
+            .subscribe((res: HttpResponse<SelfAssessmentMgm[]>) => { this.selfassessments = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
+        this.questionnaireService.query()
+            .subscribe((res: HttpResponse<QuestionnaireMgm[]>) => { this.questionnaires = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
     }
 
     clear() {

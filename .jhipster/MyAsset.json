@@ -2,28 +2,22 @@
     "fluentMethods": true,
     "relationships": [
         {
-            "relationshipType": "one-to-one",
+            "relationshipType": "many-to-one",
             "relationshipName": "asset",
             "otherEntityName": "asset",
-            "otherEntityField": "name",
-            "ownerSide": true,
-            "otherEntityRelationshipName": "myAsset"
+            "otherEntityField": "name"
         },
         {
-            "relationshipType": "one-to-one",
+            "relationshipType": "many-to-one",
             "relationshipName": "selfAssessment",
             "otherEntityName": "selfAssessment",
-            "otherEntityField": "name",
-            "ownerSide": true,
-            "otherEntityRelationshipName": "myAsset"
+            "otherEntityField": "name"
         },
         {
-            "relationshipType": "one-to-one",
+            "relationshipType": "many-to-one",
             "relationshipName": "questionnaire",
             "otherEntityName": "questionnaire",
-            "otherEntityField": "name",
-            "ownerSide": true,
-            "otherEntityRelationshipName": "myAsset"
+            "otherEntityField": "name"
         }
     ],
     "fields": [

@@ -5,7 +5,7 @@ import { IdentifyAssetService } from '../identify-asset.service';
 import { SelfAssessmentMgm, SelfAssessmentMgmService } from '../../entities/self-assessment-mgm';
 import { Principal, LoginModalService, AccountService, UserService, User } from '../../shared';
 import { JhiAlertService, JhiEventManager } from 'ng-jhipster';
-import { ActivatedRoute, Params } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 import { AttackStrategyMgm } from '../../entities/attack-strategy-mgm/attack-strategy-mgm.model';
 import { Observable } from 'rxjs/Observable';
@@ -30,7 +30,7 @@ import { AssetsOneShot } from '../model/AssetsOneShot.model';
 @Component({
     selector: 'jhi-identify-asset',
     templateUrl: './identify-asset.component.html',
-    styles: [],
+    styleUrls: ['./identify-asset.component.css'],
     providers: [IdentifyAssetService]
 })
 
@@ -45,7 +45,7 @@ export class IdentifyAssetComponent implements OnInit, OnDestroy {
 
     questionnaries: QuestionnaireMgm[];
     questionnariesStatus: QuestionnaireStatusMgm[] = [];
-    questions: QuestionMgm[];
+    questions: QuestionMgm[] = [];
     myAnswers: MyAnswerMgm[];
     myAssets: MyAssetMgm[];
     myDirectAssets: DirectAssetMgm[];
@@ -65,6 +65,7 @@ export class IdentifyAssetComponent implements OnInit, OnDestroy {
         private answerService: AnswerMgmService,
         private identifyAssetService: IdentifyAssetService,
         private route: ActivatedRoute,
+        private router: Router,
         private assetService: AssetMgmService,
         private idaUtilsService: IdentifyAssetUtilService,
         private accountService: AccountService,
@@ -88,7 +89,6 @@ export class IdentifyAssetComponent implements OnInit, OnDestroy {
         // await this.assets$ = this.assetService.findAll();
         this.questionnaries = [];
         this.myAnswers = [];
-        this.questions = [];
         this.questionnairesService.getAllQuestionnairesByPurpose(QuestionnairePurpose.ID_ASSETS).toPromise().then((res) => {
             if (res && res instanceof QuestionnaireMgm) {
                 this.questionnaries.push(res);
@@ -171,6 +171,7 @@ export class IdentifyAssetComponent implements OnInit, OnDestroy {
                 this.myDirectAssets = savedAssets.directAssets;
                 this.myIndirectAssets = savedAssets.indirectAssets;
             }
+            this.router.navigate(['/']);
         });
     }
 

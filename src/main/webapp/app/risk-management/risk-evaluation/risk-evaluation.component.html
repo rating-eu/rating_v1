@@ -1,24 +1,29 @@
 <div class="container">
-  <div class="row">
-    <div class="col-md-12" *ngIf="criticalLevel">
-      <div class="card card-body">
-        <div *ngFor="let j of squareRowElement" class="row">
-          <div class="col text-right">
-            <ng-container *ngIf="j!==lastSquareRowElement">{{lastSquareRowElement-j}}</ng-container>
-          </div>
-          <ng-container *ngIf="j===lastSquareRowElement">
-            <div *ngFor="let i of squareColumnElement" class="col text-center">
-              {{i}}
-            </div>
-          </ng-container>
-          <ng-container *ngIf="j!==lastSquareRowElement">
-            <div *ngFor="let i of squareColumnElement" class="col">
-              <div [ngClass]="{'low-level': whichLevel(lastSquareRowElement-j, i) === 'low', 'medium-level': whichLevel(lastSquareRowElement-j, i) === 'medium', 'high-level': whichLevel(lastSquareRowElement-j, i) === 'high'}"
-                (click)="selectedMatrixCell(lastSquareRowElement-j, i)">&nbsp;</div>
-            </div>
-          </ng-container>
+  <ng-container *ngFor="let myAsset of myAssets">
+      <div class="row">
+        <div class="col-md-12">
+          <h5>{{myAsset.asset.name}}</h5>
         </div>
-      </div>
-    </div>
-  </div>
+        <div class="col-md-12" *ngIf="criticalLevel">
+            <div class="card card-body">
+              <div *ngFor="let j of squareRowElement" class="row">
+                <div class="col text-right">
+                  <ng-container *ngIf="j!==lastSquareRowElement">{{lastSquareRowElement-j}}</ng-container>
+                </div>
+                <ng-container *ngIf="j===lastSquareRowElement">
+                  <div *ngFor="let i of squareColumnElement" class="col text-center">
+                    {{i}}
+                  </div>
+                </ng-container>
+                <ng-container *ngIf="j!==lastSquareRowElement">
+                  <div *ngFor="let i of squareColumnElement" class="col">
+                    <div [ngClass]="{'low-level': whichLevel(lastSquareRowElement-j, i) === 'low', 'medium-level': whichLevel(lastSquareRowElement-j, i) === 'medium', 'high-level': whichLevel(lastSquareRowElement-j, i) === 'high'}"
+                      (click)="selectedMatrixCell(lastSquareRowElement-j, i)">&nbsp;</div>
+                  </div>
+                </ng-container>
+              </div>
+            </div>
+          </div>
+        </div>
+  </ng-container>
 </div>

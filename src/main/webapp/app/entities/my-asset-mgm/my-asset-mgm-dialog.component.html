@@ -35,21 +35,21 @@
 
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="hermeneutApp.myAsset.asset" for="field_asset">Asset</label>
-            <select class="form-control" id="field_asset" name="asset" [(ngModel)]="myAsset.asset">
+            <select class="form-control" id="field_asset" name="asset" [(ngModel)]="myAsset.asset" >
                 <option [ngValue]="null"></option>
                 <option [ngValue]="assetOption.id === myAsset.asset?.id ? myAsset.asset : assetOption" *ngFor="let assetOption of assets; trackBy: trackAssetById">{{assetOption.name}}</option>
             </select>
         </div>
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="hermeneutApp.myAsset.selfAssessment" for="field_selfAssessment">Self Assessment</label>
-            <select class="form-control" id="field_selfAssessment" name="selfAssessment" [(ngModel)]="myAsset.selfAssessment">
+            <select class="form-control" id="field_selfAssessment" name="selfAssessment" [(ngModel)]="myAsset.selfAssessment" >
                 <option [ngValue]="null"></option>
                 <option [ngValue]="selfAssessmentOption.id === myAsset.selfAssessment?.id ? myAsset.selfAssessment : selfAssessmentOption" *ngFor="let selfAssessmentOption of selfassessments; trackBy: trackSelfAssessmentById">{{selfAssessmentOption.name}}</option>
             </select>
         </div>
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="hermeneutApp.myAsset.questionnaire" for="field_questionnaire">Questionnaire</label>
-            <select class="form-control" id="field_questionnaire" name="questionnaire" [(ngModel)]="myAsset.questionnaire">
+            <select class="form-control" id="field_questionnaire" name="questionnaire" [(ngModel)]="myAsset.questionnaire" >
                 <option [ngValue]="null"></option>
                 <option [ngValue]="questionnaireOption.id === myAsset.questionnaire?.id ? myAsset.questionnaire : questionnaireOption" *ngFor="let questionnaireOption of questionnaires; trackBy: trackQuestionnaireById">{{questionnaireOption.name}}</option>
             </select>
