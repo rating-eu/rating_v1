@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.*;
-import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -42,7 +41,7 @@ public class AssetsOneShotResource {
 
     @PostMapping("/my-assets-one-shot/")
     @Timed
-    public AssetsOneShot creteMyAssetsOneShot(@RequestBody AssetsOneShot assetsOneShot) {
+    public AssetsOneShot createMyAssetsOneShot(@RequestBody AssetsOneShot assetsOneShot) {
         //===================MY ASSETS======================
         List<MyAsset> myAssets = assetsOneShot.getMyAssets();
         //ATTENTION: we are assuming that no two MyAssets linked to the same Asset are passed.
@@ -111,16 +110,6 @@ public class AssetsOneShotResource {
 
         Map<Long/*TempID*/, Long/*RealID*/> directAssetsRealIDsByTempIDsMap = new HashMap<>();
         Map<Long/*RealID*/, DirectAsset> directAssetByRealIDMap = new HashMap<>();
-
-        Map<Long/*TempID*/, Set<IndirectAsset>> effectsByDirectTempIDMap =
-            directAssets
-                .stream()
-                .collect(
-                    Collectors.toMap(
-                        DirectAsset::getId,//Temp ID
-                        directAsset -> directAsset.getEffects()
-                    )
-                );
 
         //Effects
         Map<Long/*DirectAsset.TempID*/, Set<Long>/*EffectsRealID*/> indirectEffectsRealIDsByDirectTempIDsMap = new HashMap<>();
@@ -214,10 +203,6 @@ public class AssetsOneShotResource {
             indirectAssetsRealIDsByTempIDsMap.put(indirectAssetTempID, indirectAsset.getId());
             indirectAssetByRealIDMap.put(indirectAsset.getId(), indirectAsset);
 
-
-            //Map<Long/*DirectTempID*/, Set<Long>/*EffectsRealID*/> indirectEffectsRealIDsByDirectTempIDsMap = new HashMap<>();
-            //Map<Long/*RealID*/, Set<IndirectAsset>> indirectAssetByDirectRealIDMap = new HashMap<>();
-
             //Update IDs maps
             if (indirectEffectsRealIDsByDirectTempIDsMap.containsKey(directTempID)) {
                 Set<Long> effectsRealIDs = indirectEffectsRealIDsByDirectTempIDsMap.get(directTempID);
@@ -249,10 +234,6 @@ public class AssetsOneShotResource {
                 //Get the persisted DirectAsset
                 DirectAsset updatedDirectAsset = directAssetByRealIDMap.get(realDirectID);
 
-                //Link effects (Indirects)
-                Set<IndirectAsset> effects = indirectEffectsByDirectRealIDMap.get(realDirectID);
-                updatedDirectAsset.setEffects(effects);
-
                 //Update
                 //TODO BUG
                 updatedDirectAsset = this.directAssetService.save(updatedDirectAsset);
@@ -276,7 +257,6 @@ public class AssetsOneShotResource {
                 directAssetByRealIDMap.put(realDirectID, directAsset);
             }
         }
-
 
         //Update my costs with real DirectAssets IDs
         costsByDirectAssetTempID
@@ -345,5 +325,88 @@ public class AssetsOneShotResource {
         return result;
     }
 
+    @PostMapping("/my-assets-one-shot2/")
+    @Timed
+    public AssetsOneShot createMyAssetsOneShot2(@RequestBody AssetsOneShot assetsOneShot) {
+        //===Save MyAssets===
+        List<MyAsset> myAssets = assetsOneShot.getMyAssets();
+        Map<Long/*MyAsset.Temp-ID*/, MyAsset/*with Real-ID*/> myAssetMap = new HashMap<>();
 
+        for (MyAsset myAsset : myAssets) {
+            Long tempID = myAsset.getId();
+            myAsset.setId(null);
+            MyAsset saved = this.myAssetService.save(myAsset);
+
+            myAssetMap.put(tempID, saved);
+        }
+
+        //===Save DirectAssets===
+        List<DirectAsset> directAssets = assetsOneShot.getDirectAssets();
+        Map<Long/*DirectAsset.Temp-ID*/, DirectAsset/*with Real-ID*/> directAssetMap = new HashMap<>();
+
+        for (DirectAsset directAsset : directAssets) {
+            Long tempID = directAsset.getId();
+            directAsset.setId(null);
+
+            //Update MyAsset reference
+            Long myAssetTempID = directAsset.getMyAsset().getId();
+            directAsset.setMyAsset(myAssetMap.get(myAssetTempID));
+
+            DirectAsset saved = this.directAssetService.save(directAsset);
+
+            directAssetMap.put(tempID, saved);
+        }
+
+        //===Save IndirectAssets===
+        List<IndirectAsset> indirectAssets = assetsOneShot.getIndirectAssets();
+        Map<Long/*IndirectAsset.Temp-ID*/, IndirectAsset/*with Real-ID*/> indirectAssetMap = new HashMap<>();
+
+        for (IndirectAsset indirectAsset : indirectAssets) {
+            Long tempID = indirectAsset.getId();
+            indirectAsset.setId(null);
+
+            //Update MyAsset reference
+            Long myAssetTempID = indirectAsset.getMyAsset().getId();
+            indirectAsset.setMyAsset(myAssetMap.get(myAssetTempID));
+
+            //Update DirectAsset reference
+            Long directTempID = indirectAsset.getDirectAsset().getId();
+            indirectAsset.setDirectAsset(directAssetMap.get(directTempID));
+
+            IndirectAsset saved = this.indirectAssetService.save(indirectAsset);
+
+            indirectAssetMap.put(tempID, saved);
+        }
+
+        //===Save AttackCosts===
+        List<AttackCost> attackCosts = assetsOneShot.getAttackCosts();
+        Map<Long/*AttackCost.Temp-ID*/, AttackCost/*with Real-ID*/> attackCostMap = new HashMap<>();
+
+        for (AttackCost attackCost : attackCosts) {
+            Long tempID = attackCost.getId();
+            attackCost.setId(null);
+
+            //Update AttackCost's source
+            if (attackCost.getDirectAsset() != null) {
+                Long directAssetTempID = attackCost.getDirectAsset().getId();
+                attackCost.setDirectAsset(directAssetMap.get(directAssetTempID));
+            } else if (attackCost.getIndirectAsset() != null) {
+                Long indirectAssetTempID = attackCost.getIndirectAsset().getId();
+                attackCost.setIndirectAsset(indirectAssetMap.get(indirectAssetTempID));
+            }
+
+            //Save it
+            AttackCost saved = this.attackCostService.save(attackCost);
+            attackCostMap.put(tempID, saved);
+        }
+
+        //Return Result with saved entities
+        AssetsOneShot result = new AssetsOneShot();
+        result.setMyAssets(myAssetMap.values().stream().collect(Collectors.toList()));
+        result.setDirectAssets(directAssetMap.values().stream().collect(Collectors.toList()));
+        result.setIndirectAssets(indirectAssetMap.values().stream().collect(Collectors.toList()));
+        result.setAttackCosts(attackCostMap.values().stream().collect(Collectors.toList()));
+
+        return result;
+    }
 }
