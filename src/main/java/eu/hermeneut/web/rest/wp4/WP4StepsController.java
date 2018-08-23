@@ -273,6 +273,8 @@ public class WP4StepsController {
             } else {
 
             }
+
+            myAssetAttackChances.add(attackChance);
         }
 
         return myAssetAttackChances;

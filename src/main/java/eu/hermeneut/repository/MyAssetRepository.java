@@ -17,7 +17,7 @@ import java.util.List;
 public interface MyAssetRepository extends JpaRepository<MyAsset, Long> {
 
     @Query(
-        "SELECT my_asset from MyAsset my_asset LEFT JOIN FETCH my_asset.asset asset " +
+        "SELECT DISTINCT my_asset from MyAsset my_asset LEFT JOIN FETCH my_asset.asset asset " +
             "LEFT JOIN FETCH asset.containers WHERE my_asset.selfAssessment.id = :selfAssessmentID")
     List<MyAsset> findAllBySelfAssessment(@Param("selfAssessmentID") Long selfAssessmentID);
 }
