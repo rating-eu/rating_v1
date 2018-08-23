@@ -15,7 +15,7 @@ import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 })
 export class RiskEvaluationComponent implements OnInit {
   private mySelf: SelfAssessmentMgm;
-  private myAssets: MyAssetMgm[];
+  private myAssets: MyAssetMgm[] = [];
   public criticalLevel: CriticalLevelMgm;
   public squareColumnElement: number[];
   public squareRowElement: number[];
@@ -26,7 +26,7 @@ export class RiskEvaluationComponent implements OnInit {
   public loading = false;
   public modalContent: string;
   private closeResult: string;
-  private selectedAssets: MyAssetMgm;
+  private selectedAsset: MyAssetMgm;
 
   constructor(
     private mySelfAssessmentService: SelfAssessmentMgmService,
@@ -41,7 +41,7 @@ export class RiskEvaluationComponent implements OnInit {
       if (res && res.length > 0) {
         this.myAssets = res;
         console.log(this.myAssets);
-        
+
         for (const myAsset of this.myAssets) {
           let intIndex = 0;
           while (intIndex < 15) {
@@ -98,11 +98,20 @@ export class RiskEvaluationComponent implements OnInit {
   }
 
   public selectAsset(asset: MyAssetMgm) {
-    this.selectedAssets = asset;
+    if (!this.selectedAsset) {
+      this.selectedAsset = asset;
+    } else if (this.selectedAsset.id === asset.id) {
+      this.selectedAsset = null;
+    } else {
+      this.selectedAsset = asset;
+    }
   }
 
   public isAssetCollapsed(asset: MyAssetMgm): boolean {
-    if (this.selectedAssets.id === asset.id) {
+    if (!this.selectedAsset) {
+      return true;
+    }
+    if (this.selectedAsset.id === asset.id) {
       return false;
     }
     return true;
