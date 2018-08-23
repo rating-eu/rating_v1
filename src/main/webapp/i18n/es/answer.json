@@ -1,0 +1,30 @@
+
+{
+    "hermeneutApp": {
+        "answer" : {
+            "home": {
+                "title": "Answers",
+                "createLabel": "Crear nuevo Answer",
+                "createOrEditLabel": "Crear o editar Answer",
+                "search": "Search for Answer"
+            },
+            "created": "Un nuevo Answer ha sido creado con el identificador {{ param }}",
+            "updated": "Un Answer ha sido actualizado con el identificador {{ param }}",
+            "deleted": "Un Answer ha sido eliminado con el identificador {{ param }}",
+            "delete": {
+                "question": "¿Seguro que quiere eliminar Answer {{ id }}?"
+            },
+            "detail": {
+                "title": "Answer"
+            },
+            "name": "Name",
+            "created": "Created",
+            "modified": "Modified",
+            "order": "Order",
+            "likelihood": "Likelihood",
+            "asset": "Asset",
+            "assetCategory": "Asset Category",
+            "question": "Question"
+        }
+    }
+}

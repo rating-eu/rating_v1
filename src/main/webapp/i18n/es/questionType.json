@@ -1,0 +1,10 @@
+{
+    "hermeneutApp": {
+        "QuestionType" : {
+            "null": "",
+            "REGULAR": "REGULAR",
+            "RELEVANT": "RELEVANT",
+            "OTHER": "OTHER"
+        }
+    }
+}

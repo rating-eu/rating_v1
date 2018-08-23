@@ -1,0 +1,27 @@
+{
+    "fluentMethods": true,
+    "relationships": [],
+    "fields": [
+        {
+            "fieldName": "likelihood",
+            "fieldType": "Likelihood",
+            "fieldValues": "LOW,LOW_MEDIUM,MEDIUM,MEDIUM_HIGH,HIGH"
+        },
+        {
+            "fieldName": "questionType",
+            "fieldType": "QuestionType",
+            "fieldValues": "REGULAR,RELEVANT,OTHER"
+        },
+        {
+            "fieldName": "weight",
+            "fieldType": "Float"
+        }
+    ],
+    "changelogDate": "20180502153134",
+    "entityTableName": "answer_weight",
+    "dto": "no",
+    "pagination": "no",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "angularJSSuffix": "mgm"
+}

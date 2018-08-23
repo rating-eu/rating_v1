@@ -1,0 +1,63 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipName": "questionnaireStatus",
+            "otherEntityName": "questionnaireStatus",
+            "relationshipType": "many-to-one",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "one-to-one",
+            "relationshipName": "answer",
+            "otherEntityName": "answer",
+            "otherEntityField": "name",
+            "ownerSide": true,
+            "otherEntityRelationshipName": "myAnswer"
+        },
+        {
+            "relationshipType": "one-to-one",
+            "relationshipName": "question",
+            "otherEntityName": "question",
+            "otherEntityField": "name",
+            "ownerSide": true,
+            "otherEntityRelationshipName": "myAnswer"
+        },
+        {
+            "relationshipType": "one-to-one",
+            "relationshipName": "questionnaire",
+            "otherEntityName": "questionnaire",
+            "otherEntityField": "name",
+            "ownerSide": true,
+            "otherEntityRelationshipName": "myAnswer"
+        },
+        {
+            "relationshipType": "one-to-one",
+            "relationshipName": "user",
+            "otherEntityName": "user",
+            "otherEntityField": "login",
+            "ownerSide": true,
+            "otherEntityRelationshipName": "myAnswer"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "note",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "answerOffset",
+            "fieldType": "Integer",
+            "fieldValidateRules": [
+                "required"
+            ]
+        }
+    ],
+    "changelogDate": "20180420084813",
+    "entityTableName": "my_answer",
+    "dto": "no",
+    "pagination": "no",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "angularJSSuffix": "mgm"
+}

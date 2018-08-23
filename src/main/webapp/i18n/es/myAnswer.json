@@ -1,0 +1,29 @@
+
+{
+    "hermeneutApp": {
+        "myAnswer" : {
+            "home": {
+                "title": "My Answers",
+                "createLabel": "Crear nuevo My Answer",
+                "createOrEditLabel": "Crear o editar My Answer",
+                "search": "Search for My Answer"
+            },
+            "created": "Un nuevo My Answer ha sido creado con el identificador {{ param }}",
+            "updated": "Un My Answer ha sido actualizado con el identificador {{ param }}",
+            "deleted": "Un My Answer ha sido eliminado con el identificador {{ param }}",
+            "delete": {
+                "question": "¿Seguro que quiere eliminar My Answer {{ id }}?"
+            },
+            "detail": {
+                "title": "My Answer"
+            },
+            "note": "Note",
+            "answerOffset": "Answer Offset",
+            "questionnaireStatus": "Questionnaire Status",
+            "answer": "Answer",
+            "question": "Question",
+            "questionnaire": "Questionnaire",
+            "user": "User"
+        }
+    }
+}

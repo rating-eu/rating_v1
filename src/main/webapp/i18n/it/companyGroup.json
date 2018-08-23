@@ -1,0 +1,28 @@
+
+{
+    "hermeneutApp": {
+        "companyGroup" : {
+            "home": {
+                "title": "CompanyGroups",
+                "createLabel": "Genera un nuovo Company Group",
+                "createOrEditLabel": "Genera o modifica un Company Group",
+                "search": "Cerca Company Group"
+            },
+            "created": "&Egrave; stato generato un nuovo Company Group con identificatore {{ param }}",
+            "updated": "&Egrave; stato aggiornato Company Group identificato da {{ param }}",
+            "deleted": "&Egrave; stato eliminato Company Group con identificatore {{ param }}",
+            "delete": {
+                "question": "Sei sicuro di volere eliminare Company Group {{ id }}?"
+            },
+            "detail": {
+                "title": "Company Group"
+            },
+            "name": "Name",
+            "description": "Description",
+            "created": "Created",
+            "modified": "Modified",
+            "user": "User",
+            "companyprofile": "Companyprofile"
+        }
+    }
+}

@@ -1,0 +1,27 @@
+
+{
+    "hermeneutApp": {
+        "questionnaire" : {
+            "home": {
+                "title": "Questionnaires",
+                "createLabel": "Crear nuevo Questionnaire",
+                "createOrEditLabel": "Crear o editar Questionnaire",
+                "search": "Search for Questionnaire"
+            },
+            "created": "Un nuevo Questionnaire ha sido creado con el identificador {{ param }}",
+            "updated": "Un Questionnaire ha sido actualizado con el identificador {{ param }}",
+            "deleted": "Un Questionnaire ha sido eliminado con el identificador {{ param }}",
+            "delete": {
+                "question": "¿Seguro que quiere eliminar Questionnaire {{ id }}?"
+            },
+            "detail": {
+                "title": "Questionnaire"
+            },
+            "name": "Name",
+            "purpose": "Purpose",
+            "created": "Created",
+            "modified": "Modified",
+            "questions": "Questions"
+        }
+    }
+}

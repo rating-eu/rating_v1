@@ -1,0 +1,32 @@
+
+{
+    "hermeneutApp": {
+        "question" : {
+            "home": {
+                "title": "Questions",
+                "createLabel": "Criar um(a) novo(a) Question",
+                "createOrEditLabel": "Criar ou editar um(a) Question",
+                "search": "Search for Question"
+            },
+            "created": "A new Question is created with identifier {{ param }}",
+            "updated": "A Question is updated with identifier {{ param }}",
+            "deleted": "A Question is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Tem a certeza que pretende eliminar o(a) Question {{ id }}?"
+            },
+            "detail": {
+                "title": "Question"
+            },
+            "name": "Name",
+            "created": "Created",
+            "modified": "Modified",
+            "order": "Order",
+            "questionType": "Question Type",
+            "answerType": "Answer Type",
+            "attackStrategies": "Attack Strategies",
+            "answers": "Answers",
+            "questionnaire": "Questionnaire",
+            "threatAgent": "Threat Agent"
+        }
+    }
+}

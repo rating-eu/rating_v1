@@ -1,0 +1,27 @@
+
+{
+    "hermeneutApp": {
+        "splittingLoss" : {
+            "home": {
+                "title": "SplittingLosses",
+                "createLabel": "Créer un nouveau Splitting Loss",
+                "createOrEditLabel": "Créer ou éditer un Splitting Loss",
+                "search": "Recherche pour Splitting Loss"
+            },
+            "created": "Un nouveau Splitting Loss a été créé avec l'identifiant {{ param }}",
+            "updated": "Le Splitting Loss avec l'identifiant {{ param }} a été mis à jour",
+            "deleted": "Le Splitting Loss avec l'identifiant {{ param }} a été supprimé",
+            "delete": {
+                "question": "Etes-vous certain de vouloir supprimer le Splitting Loss {{ id }} ?"
+            },
+            "detail": {
+                "title": "Splitting Loss"
+            },
+            "sectorType": "Sector Type",
+            "categoryType": "Category Type",
+            "lossPercentage": "Loss Percentage",
+            "loss": "Loss",
+            "selfAssessment": "Self Assessment"
+        }
+    }
+}

@@ -1,0 +1,25 @@
+
+{
+    "hermeneutApp": {
+        "indirectAsset" : {
+            "home": {
+                "title": "IndirectAssets",
+                "createLabel": "Créer un nouveau Indirect Asset",
+                "createOrEditLabel": "Créer ou éditer un Indirect Asset",
+                "search": "Recherche pour Indirect Asset"
+            },
+            "created": "Un nouveau Indirect Asset a été créé avec l'identifiant {{ param }}",
+            "updated": "Le Indirect Asset avec l'identifiant {{ param }} a été mis à jour",
+            "deleted": "Le Indirect Asset avec l'identifiant {{ param }} a été supprimé",
+            "delete": {
+                "question": "Etes-vous certain de vouloir supprimer le Indirect Asset {{ id }} ?"
+            },
+            "detail": {
+                "title": "Indirect Asset"
+            },
+            "directAsset": "Direct Asset",
+            "myAsset": "My Asset",
+            "costs": "Costs"
+        }
+    }
+}

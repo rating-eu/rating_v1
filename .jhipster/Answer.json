@@ -1,0 +1,58 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "one-to-one",
+            "relationshipName": "asset",
+            "otherEntityName": "asset",
+            "otherEntityField": "name",
+            "ownerSide": true,
+            "otherEntityRelationshipName": "answer"
+        },
+        {
+            "relationshipType": "one-to-one",
+            "relationshipName": "assetCategory",
+            "otherEntityName": "assetCategory",
+            "otherEntityField": "name",
+            "ownerSide": true,
+            "otherEntityRelationshipName": "answer"
+        },
+        {
+            "relationshipType": "many-to-many",
+            "relationshipName": "question",
+            "otherEntityName": "question",
+            "ownerSide": false,
+            "otherEntityRelationshipName": "answers"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "name",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "created",
+            "fieldType": "ZonedDateTime"
+        },
+        {
+            "fieldName": "modified",
+            "fieldType": "ZonedDateTime"
+        },
+        {
+            "fieldName": "order",
+            "fieldType": "Integer"
+        },
+        {
+            "fieldName": "likelihood",
+            "fieldType": "Likelihood",
+            "fieldValues": "LOW,LOW_MEDIUM,MEDIUM,MEDIUM_HIGH,HIGH"
+        }
+    ],
+    "changelogDate": "20180410085205",
+    "entityTableName": "answer",
+    "dto": "no",
+    "pagination": "no",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "angularJSSuffix": "mgm"
+}

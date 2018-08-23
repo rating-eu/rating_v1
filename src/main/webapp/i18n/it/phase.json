@@ -1,0 +1,25 @@
+
+{
+    "hermeneutApp": {
+        "phase" : {
+            "home": {
+                "title": "Phases",
+                "createLabel": "Genera un nuovo Phase",
+                "createOrEditLabel": "Genera o modifica un Phase",
+                "search": "Cerca Phase"
+            },
+            "created": "&Egrave; stato generato un nuovo Phase con identificatore {{ param }}",
+            "updated": "&Egrave; stato aggiornato Phase identificato da {{ param }}",
+            "deleted": "&Egrave; stato eliminato Phase con identificatore {{ param }}",
+            "delete": {
+                "question": "Sei sicuro di volere eliminare Phase {{ id }}?"
+            },
+            "detail": {
+                "title": "Phase"
+            },
+            "name": "Name",
+            "description": "Description",
+            "weight": "Weight"
+        }
+    }
+}

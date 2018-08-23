@@ -1,0 +1,48 @@
+
+<div *ngIf="companyGroup">
+    <h2><span jhiTranslate="hermeneutApp.companyGroup.detail.title">Company Group</span> {{companyGroup.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="hermeneutApp.companyGroup.name">Name</span></dt>
+        <dd>
+            <span>{{companyGroup.name}}</span>
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.companyGroup.description">Description</span></dt>
+        <dd>
+            <span>{{companyGroup.description}}</span>
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.companyGroup.created">Created</span></dt>
+        <dd>
+            <span>{{companyGroup.created | date:'medium'}}</span>
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.companyGroup.modified">Modified</span></dt>
+        <dd>
+            <span>{{companyGroup.modified | date:'medium'}}</span>
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.companyGroup.user">User</span></dt>
+        <dd>
+            {{companyGroup.user?.login}}
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.companyGroup.companyprofile">Companyprofile</span></dt>
+        <dd>
+            <div *ngIf="companyGroup.companyprofile">
+                <a [routerLink]="['/company-profile-mgm', companyGroup.companyprofile?.id]">{{companyGroup.companyprofile?.name}}</a>
+            </div>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'company-group-mgm/'+ companyGroup.id + '/edit'} }]"
+            replaceUrl="true"
+            queryParamsHandling="merge"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+    </button>
+</div>

@@ -1,0 +1,54 @@
+
+<div *ngIf="answer">
+    <h2><span jhiTranslate="hermeneutApp.answer.detail.title">Answer</span> {{answer.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="hermeneutApp.answer.name">Name</span></dt>
+        <dd>
+            <span>{{answer.name}}</span>
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.answer.created">Created</span></dt>
+        <dd>
+            <span>{{answer.created | date:'medium'}}</span>
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.answer.modified">Modified</span></dt>
+        <dd>
+            <span>{{answer.modified | date:'medium'}}</span>
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.answer.order">Order</span></dt>
+        <dd>
+            <span>{{answer.order}}</span>
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.answer.likelihood">Likelihood</span></dt>
+        <dd>
+            <span jhiTranslate="{{'hermeneutApp.Likelihood.' + answer.likelihood}}">{{answer.likelihood}}</span>
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.answer.asset">Asset</span></dt>
+        <dd>
+            <div *ngIf="answer.asset">
+                <a [routerLink]="['/asset-mgm', answer.asset?.id]">{{answer.asset?.name}}</a>
+            </div>
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.answer.assetCategory">Asset Category</span></dt>
+        <dd>
+            <div *ngIf="answer.assetCategory">
+                <a [routerLink]="['/asset-category-mgm', answer.assetCategory?.id]">{{answer.assetCategory?.name}}</a>
+            </div>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'answer-mgm/'+ answer.id + '/edit'} }]"
+            replaceUrl="true"
+            queryParamsHandling="merge"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+    </button>
+</div>

@@ -1,0 +1,25 @@
+
+{
+    "hermeneutApp": {
+        "domainOfInfluence" : {
+            "home": {
+                "title": "Domain Of Influences",
+                "createLabel": "Domain Of Influence erstellen",
+                "createOrEditLabel": "Domain Of Influence erstellen oder bearbeiten",
+                "search": "Suche nach Domain Of Influence"
+            },
+            "created": "Domain Of Influence erstellt mit ID {{ param }}",
+            "updated": "Domain Of Influence aktualisiert mit ID {{ param }}",
+            "deleted": "Domain Of Influence gelöscht mit ID {{ param }}",
+            "delete": {
+                "question": "Soll Domain Of Influence {{ id }} wirklich dauerhaft gelöscht werden?"
+            },
+            "detail": {
+                "title": "Domain Of Influence"
+            },
+            "name": "Name",
+            "description": "Description",
+            "container": "Container"
+        }
+    }
+}

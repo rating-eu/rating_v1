@@ -1,0 +1,54 @@
+
+<div *ngIf="questionnaireStatus">
+    <h2><span jhiTranslate="hermeneutApp.questionnaireStatus.detail.title">Questionnaire Status</span> {{questionnaireStatus.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="hermeneutApp.questionnaireStatus.status">Status</span></dt>
+        <dd>
+            <span jhiTranslate="{{'hermeneutApp.Status.' + questionnaireStatus.status}}">{{questionnaireStatus.status}}</span>
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.questionnaireStatus.created">Created</span></dt>
+        <dd>
+            <span>{{questionnaireStatus.created | date:'medium'}}</span>
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.questionnaireStatus.modified">Modified</span></dt>
+        <dd>
+            <span>{{questionnaireStatus.modified | date:'medium'}}</span>
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.questionnaireStatus.role">Role</span></dt>
+        <dd>
+            <span jhiTranslate="{{'hermeneutApp.Role.' + questionnaireStatus.role}}">{{questionnaireStatus.role}}</span>
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.questionnaireStatus.selfAssessment">Self Assessment</span></dt>
+        <dd>
+            <div *ngIf="questionnaireStatus.selfAssessment">
+                <a [routerLink]="['/self-assessment-mgm', questionnaireStatus.selfAssessment?.id]">{{questionnaireStatus.selfAssessment?.name}}</a>
+            </div>
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.questionnaireStatus.questionnaire">Questionnaire</span></dt>
+        <dd>
+            <div *ngIf="questionnaireStatus.questionnaire">
+                <a [routerLink]="['/questionnaire-mgm', questionnaireStatus.questionnaire?.id]">{{questionnaireStatus.questionnaire?.name}}</a>
+            </div>
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.questionnaireStatus.user">User</span></dt>
+        <dd>
+            {{questionnaireStatus.user?.login}}
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'questionnaire-status-mgm/'+ questionnaireStatus.id + '/edit'} }]"
+            replaceUrl="true"
+            queryParamsHandling="merge"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+    </button>
+</div>

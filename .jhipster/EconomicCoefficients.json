@@ -1,0 +1,48 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "one-to-one",
+            "javadoc": "WP3",
+            "relationshipName": "selfAssessment",
+            "otherEntityName": "selfAssessment",
+            "otherEntityField": "name",
+            "ownerSide": true,
+            "otherEntityRelationshipName": "economicCoefficients"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "discountingRate",
+            "fieldType": "BigDecimal",
+            "fieldValidateRules": [
+                "min",
+                "max"
+            ],
+            "fieldValidateRulesMin": 0,
+            "fieldValidateRulesMax": 1
+        },
+        {
+            "fieldName": "physicalAssetsReturn",
+            "fieldType": "BigDecimal"
+        },
+        {
+            "fieldName": "financialAssetsReturn",
+            "javadoc": "Fixed Assets Return",
+            "fieldType": "BigDecimal"
+        },
+        {
+            "fieldName": "lossOfIntangible",
+            "javadoc": "Current Assets Return",
+            "fieldType": "BigDecimal"
+        }
+    ],
+    "changelogDate": "20180813120726",
+    "javadoc": "=======WP3=======",
+    "entityTableName": "economic_coefficients",
+    "dto": "no",
+    "pagination": "no",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "angularJSSuffix": "mgm"
+}

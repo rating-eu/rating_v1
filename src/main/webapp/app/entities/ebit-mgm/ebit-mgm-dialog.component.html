@@ -1,0 +1,49 @@
+<form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+
+    <div class="modal-header">
+        <h4 class="modal-title" id="myEBITLabel" jhiTranslate="hermeneutApp.eBIT.home.createOrEditLabel">Create or edit a EBIT</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                (click)="clear()">&times;</button>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group" [hidden]="!eBIT.id">
+            <label for="id" jhiTranslate="global.field.id">ID</label>
+            <input type="text" class="form-control" id="id" name="id"
+                   [(ngModel)]="eBIT.id" readonly />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="hermeneutApp.eBIT.year" for="field_year" [ngbTooltip]="'hermeneutApp.eBIT.help.year' | translate">Year</label>
+            <input type="number" class="form-control" name="year" id="field_year"
+                [(ngModel)]="eBIT.year" />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="hermeneutApp.eBIT.value" for="field_value">Value</label>
+            <input type="number" class="form-control" name="value" id="field_value"
+                [(ngModel)]="eBIT.value" />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="hermeneutApp.eBIT.created" for="field_created">Created</label>
+            <div class="d-flex">
+                <input id="field_created" type="datetime-local" class="form-control" name="created" [(ngModel)]="eBIT.created"
+                />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="hermeneutApp.eBIT.selfAssessment" for="field_selfAssessment">Self Assessment</label>
+            <select class="form-control" id="field_selfAssessment" name="selfAssessment" [(ngModel)]="eBIT.selfAssessment">
+                <option [ngValue]="null"></option>
+                <option [ngValue]="selfAssessmentOption.id === eBIT.selfAssessment?.id ? eBIT.selfAssessment : selfAssessmentOption" *ngFor="let selfAssessmentOption of selfassessments; trackBy: trackSelfAssessmentById">{{selfAssessmentOption.name}}</option>
+            </select>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">
+            <span class="fa fa-ban"></span>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+        <button type="submit" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+            <span class="fa fa-save"></span>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+    </div>
+</form>

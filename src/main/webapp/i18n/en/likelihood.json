@@ -1,0 +1,12 @@
+{
+    "hermeneutApp": {
+        "Likelihood" : {
+            "null": "",
+            "LOW": "LOW",
+            "LOW_MEDIUM": "LOW_MEDIUM",
+            "MEDIUM": "MEDIUM",
+            "MEDIUM_HIGH": "MEDIUM_HIGH",
+            "HIGH": "HIGH"
+        }
+    }
+}

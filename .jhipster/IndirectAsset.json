@@ -1,0 +1,33 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipName": "directAsset",
+            "otherEntityName": "directAsset",
+            "relationshipType": "many-to-one",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "one-to-one",
+            "relationshipName": "myAsset",
+            "otherEntityName": "myAsset",
+            "otherEntityField": "asset",
+            "ownerSide": true,
+            "otherEntityRelationshipName": "indirectAsset"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "costs",
+            "otherEntityName": "attackCost",
+            "otherEntityRelationshipName": "indirectAsset"
+        }
+    ],
+    "fields": [],
+    "changelogDate": "20180727084749",
+    "entityTableName": "indirect_asset",
+    "dto": "no",
+    "pagination": "no",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "angularJSSuffix": "mgm"
+}

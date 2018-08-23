@@ -1,0 +1,32 @@
+
+{
+    "hermeneutApp": {
+        "question" : {
+            "home": {
+                "title": "Questions",
+                "createLabel": "Question erstellen",
+                "createOrEditLabel": "Question erstellen oder bearbeiten",
+                "search": "Suche nach Question"
+            },
+            "created": "Question erstellt mit ID {{ param }}",
+            "updated": "Question aktualisiert mit ID {{ param }}",
+            "deleted": "Question gelöscht mit ID {{ param }}",
+            "delete": {
+                "question": "Soll Question {{ id }} wirklich dauerhaft gelöscht werden?"
+            },
+            "detail": {
+                "title": "Question"
+            },
+            "name": "Name",
+            "created": "Created",
+            "modified": "Modified",
+            "order": "Order",
+            "questionType": "Question Type",
+            "answerType": "Answer Type",
+            "attackStrategies": "Attack Strategies",
+            "answers": "Answers",
+            "questionnaire": "Questionnaire",
+            "threatAgent": "Threat Agent"
+        }
+    }
+}

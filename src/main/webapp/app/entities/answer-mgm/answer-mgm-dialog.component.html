@@ -1,0 +1,73 @@
+<form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+
+    <div class="modal-header">
+        <h4 class="modal-title" id="myAnswerLabel" jhiTranslate="hermeneutApp.answer.home.createOrEditLabel">Create or edit a Answer</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                (click)="clear()">&times;</button>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group" [hidden]="!answer.id">
+            <label for="id" jhiTranslate="global.field.id">ID</label>
+            <input type="text" class="form-control" id="id" name="id"
+                   [(ngModel)]="answer.id" readonly />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="hermeneutApp.answer.name" for="field_name">Name</label>
+            <input type="text" class="form-control" name="name" id="field_name"
+                [(ngModel)]="answer.name" />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="hermeneutApp.answer.created" for="field_created">Created</label>
+            <div class="d-flex">
+                <input id="field_created" type="datetime-local" class="form-control" name="created" [(ngModel)]="answer.created"
+                />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="hermeneutApp.answer.modified" for="field_modified">Modified</label>
+            <div class="d-flex">
+                <input id="field_modified" type="datetime-local" class="form-control" name="modified" [(ngModel)]="answer.modified"
+                />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="hermeneutApp.answer.order" for="field_order">Order</label>
+            <input type="number" class="form-control" name="order" id="field_order"
+                [(ngModel)]="answer.order" />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="hermeneutApp.answer.likelihood" for="field_likelihood">Likelihood</label>
+            <select class="form-control" name="likelihood" [(ngModel)]="answer.likelihood" id="field_likelihood" >
+                <option value="LOW">{{'hermeneutApp.Likelihood.LOW' | translate}}</option>
+                <option value="LOW_MEDIUM">{{'hermeneutApp.Likelihood.LOW_MEDIUM' | translate}}</option>
+                <option value="MEDIUM">{{'hermeneutApp.Likelihood.MEDIUM' | translate}}</option>
+                <option value="MEDIUM_HIGH">{{'hermeneutApp.Likelihood.MEDIUM_HIGH' | translate}}</option>
+                <option value="HIGH">{{'hermeneutApp.Likelihood.HIGH' | translate}}</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="hermeneutApp.answer.asset" for="field_asset">Asset</label>
+            <select class="form-control" id="field_asset" name="asset" [(ngModel)]="answer.asset">
+                <option [ngValue]="null"></option>
+                <option [ngValue]="assetOption.id === answer.asset?.id ? answer.asset : assetOption" *ngFor="let assetOption of assets; trackBy: trackAssetById">{{assetOption.name}}</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="hermeneutApp.answer.assetCategory" for="field_assetCategory">Asset Category</label>
+            <select class="form-control" id="field_assetCategory" name="assetCategory" [(ngModel)]="answer.assetCategory">
+                <option [ngValue]="null"></option>
+                <option [ngValue]="assetCategoryOption.id === answer.assetCategory?.id ? answer.assetCategory : assetCategoryOption" *ngFor="let assetCategoryOption of assetcategories; trackBy: trackAssetCategoryById">{{assetCategoryOption.name}}</option>
+            </select>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">
+            <span class="fa fa-ban"></span>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+        <button type="submit" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+            <span class="fa fa-save"></span>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+    </div>
+</form>

@@ -1,0 +1,80 @@
+<form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+
+    <div class="modal-header">
+        <h4 class="modal-title" id="myAssetLabel" jhiTranslate="hermeneutApp.asset.home.createOrEditLabel">Create or edit a Asset</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                (click)="clear()">&times;</button>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group" [hidden]="!asset.id">
+            <label for="id" jhiTranslate="global.field.id">ID</label>
+            <input type="text" class="form-control" id="id" name="id"
+                   [(ngModel)]="asset.id" readonly />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="hermeneutApp.asset.name" for="field_name">Name</label>
+            <input type="text" class="form-control" name="name" id="field_name"
+                [(ngModel)]="asset.name" required/>
+            <div [hidden]="!(editForm.controls.name?.dirty && editForm.controls.name?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.name?.errors?.required" jhiTranslate="entity.validation.required">
+                   This field is required.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="hermeneutApp.asset.description" for="field_description">Description</label>
+            <input type="text" class="form-control" name="description" id="field_description"
+                [(ngModel)]="asset.description" maxlength="2000"/>
+            <div [hidden]="!(editForm.controls.description?.dirty && editForm.controls.description?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.description?.errors?.maxlength" jhiTranslate="entity.validation.maxlength" translateValues="{ max: 2000 }">
+                   This field cannot be longer than 2000 characters.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="hermeneutApp.asset.created" for="field_created">Created</label>
+            <div class="d-flex">
+                <input id="field_created" type="datetime-local" class="form-control" name="created" [(ngModel)]="asset.created"
+                />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="hermeneutApp.asset.modified" for="field_modified">Modified</label>
+            <div class="d-flex">
+                <input id="field_modified" type="datetime-local" class="form-control" name="modified" [(ngModel)]="asset.modified"
+                />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label jhiTranslate="hermeneutApp.asset.container" for="field_container">Container</label>
+            <select class="form-control" id="field_container" multiple name="container" [(ngModel)]="asset.containers">
+                <option [ngValue]="getSelected(asset.containers, containerOption)" *ngFor="let containerOption of containers; trackBy: trackContainerById">{{containerOption.name}}</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label jhiTranslate="hermeneutApp.asset.domainsOfInfluence" for="field_domainsOfInfluence">Domains Of Influence</label>
+            <select class="form-control" id="field_domainsOfInfluence" multiple name="domainsOfInfluence" [(ngModel)]="asset.domainsOfInfluences">
+                <option [ngValue]="getSelected(asset.domainsOfInfluences, domainOfInfluenceOption)" *ngFor="let domainOfInfluenceOption of domainofinfluences; trackBy: trackDomainOfInfluenceById">{{domainOfInfluenceOption.name}}</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="hermeneutApp.asset.assetcategory" for="field_assetcategory">Assetcategory</label>
+            <select class="form-control" id="field_assetcategory" name="assetcategory" [(ngModel)]="asset.assetcategory" >
+                <option [ngValue]="null"></option>
+                <option [ngValue]="assetCategoryOption.id === asset.assetcategory?.id ? asset.assetcategory : assetCategoryOption" *ngFor="let assetCategoryOption of assetcategories; trackBy: trackAssetCategoryById">{{assetCategoryOption.name}}</option>
+            </select>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">
+            <span class="fa fa-ban"></span>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+        <button type="submit" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+            <span class="fa fa-save"></span>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+    </div>
+</form>

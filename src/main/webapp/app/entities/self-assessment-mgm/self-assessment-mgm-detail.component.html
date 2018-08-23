@@ -1,0 +1,80 @@
+
+<div *ngIf="selfAssessment">
+    <h2><span jhiTranslate="hermeneutApp.selfAssessment.detail.title">Self Assessment</span> {{selfAssessment.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="hermeneutApp.selfAssessment.name">Name</span></dt>
+        <dd>
+            <span>{{selfAssessment.name}}</span>
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.selfAssessment.created">Created</span></dt>
+        <dd>
+            <span>{{selfAssessment.created | date:'medium'}}</span>
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.selfAssessment.modified">Modified</span></dt>
+        <dd>
+            <span>{{selfAssessment.modified | date:'medium'}}</span>
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.selfAssessment.user">User</span></dt>
+        <dd>
+            {{selfAssessment.user?.login}}
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.selfAssessment.companyprofiles">Companyprofiles</span></dt>
+        <dd>
+            <span *ngFor="let companyprofiles of selfAssessment.companyprofiles; let last = last">
+                <a [routerLink]="['/company-profile-mgm', companyprofiles?.id ]">{{companyprofiles.name}}</a>{{last ? '' : ', '}}
+            </span>
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.selfAssessment.companyGroup">Company Group</span></dt>
+        <dd>
+            <span *ngFor="let companyGroup of selfAssessment.companyGroups; let last = last">
+                <a [routerLink]="['/company-group-mgm', companyGroup?.id ]">{{companyGroup.name}}</a>{{last ? '' : ', '}}
+            </span>
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.selfAssessment.asset">Asset</span></dt>
+        <dd>
+            <span *ngFor="let asset of selfAssessment.assets; let last = last">
+                <a [routerLink]="['/asset-mgm', asset?.id ]">{{asset.name}}</a>{{last ? '' : ', '}}
+            </span>
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.selfAssessment.threatagent">Threatagent</span></dt>
+        <dd>
+            <span *ngFor="let threatagent of selfAssessment.threatagents; let last = last">
+                <a [routerLink]="['/threat-agent-mgm', threatagent?.id ]">{{threatagent.name}}</a>{{last ? '' : ', '}}
+            </span>
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.selfAssessment.attackstrategy">Attackstrategy</span></dt>
+        <dd>
+            <span *ngFor="let attackstrategy of selfAssessment.attackstrategies; let last = last">
+                <a [routerLink]="['/attack-strategy-mgm', attackstrategy?.id ]">{{attackstrategy.name}}</a>{{last ? '' : ', '}}
+            </span>
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.selfAssessment.externalaudit">Externalaudit</span></dt>
+        <dd>
+            <span *ngFor="let externalaudit of selfAssessment.externalaudits; let last = last">
+                <a [routerLink]="['/external-audit-mgm', externalaudit?.id ]">{{externalaudit.name}}</a>{{last ? '' : ', '}}
+            </span>
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.selfAssessment.questionnaire">Questionnaire</span></dt>
+        <dd>
+            <span *ngFor="let questionnaire of selfAssessment.questionnaires; let last = last">
+                <a [routerLink]="['/questionnaire-mgm', questionnaire?.id ]">{{questionnaire.name}}</a>{{last ? '' : ', '}}
+            </span>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'self-assessment-mgm/'+ selfAssessment.id + '/edit'} }]"
+            replaceUrl="true"
+            queryParamsHandling="merge"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+    </button>
+</div>

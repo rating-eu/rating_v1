@@ -1,0 +1,26 @@
+
+{
+    "hermeneutApp": {
+        "assetCategory" : {
+            "home": {
+                "title": "Asset Categories",
+                "createLabel": "Create a new Asset Category",
+                "createOrEditLabel": "Create or edit a Asset Category",
+                "search": "Search for Asset Category"
+            },
+            "created": "A new Asset Category is created with identifier {{ param }}",
+            "updated": "A Asset Category is updated with identifier {{ param }}",
+            "deleted": "A Asset Category is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Asset Category {{ id }}?"
+            },
+            "detail": {
+                "title": "Asset Category"
+            },
+            "name": "Name",
+            "description": "Description",
+            "type": "Type",
+            "asset": "Asset"
+        }
+    }
+}

@@ -1,0 +1,9 @@
+{
+    "hermeneutApp": {
+        "AssetType" : {
+            "null": "",
+            "TANGIBLE": "TANGIBLE",
+            "INTANGIBLE": "INTANGIBLE"
+        }
+    }
+}

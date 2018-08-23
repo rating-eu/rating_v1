@@ -1,0 +1,70 @@
+
+<div *ngIf="question">
+    <h2><span jhiTranslate="hermeneutApp.question.detail.title">Question</span> {{question.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="hermeneutApp.question.name">Name</span></dt>
+        <dd>
+            <span>{{question.name}}</span>
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.question.created">Created</span></dt>
+        <dd>
+            <span>{{question.created | date:'medium'}}</span>
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.question.modified">Modified</span></dt>
+        <dd>
+            <span>{{question.modified | date:'medium'}}</span>
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.question.order">Order</span></dt>
+        <dd>
+            <span>{{question.order}}</span>
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.question.questionType">Question Type</span></dt>
+        <dd>
+            <span jhiTranslate="{{'hermeneutApp.QuestionType.' + question.questionType}}">{{question.questionType}}</span>
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.question.answerType">Answer Type</span></dt>
+        <dd>
+            <span jhiTranslate="{{'hermeneutApp.AnswerType.' + question.answerType}}">{{question.answerType}}</span>
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.question.attackStrategies">Attack Strategies</span></dt>
+        <dd>
+            <span *ngFor="let attackStrategies of question.attackStrategies; let last = last">
+                <a [routerLink]="['/attack-strategy-mgm', attackStrategies?.id ]">{{attackStrategies.name}}</a>{{last ? '' : ', '}}
+            </span>
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.question.answers">Answers</span></dt>
+        <dd>
+            <span *ngFor="let answers of question.answers; let last = last">
+                <a [routerLink]="['/answer-mgm', answers?.id ]">{{answers.name}}</a>{{last ? '' : ', '}}
+            </span>
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.question.questionnaire">Questionnaire</span></dt>
+        <dd>
+            <div *ngIf="question.questionnaire">
+                <a [routerLink]="['/questionnaire-mgm', question.questionnaire?.id]">{{question.questionnaire?.name}}</a>
+            </div>
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.question.threatAgent">Threat Agent</span></dt>
+        <dd>
+            <div *ngIf="question.threatAgent">
+                <a [routerLink]="['/threat-agent-mgm', question.threatAgent?.id]">{{question.threatAgent?.name}}</a>
+            </div>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'question-mgm/'+ question.id + '/edit'} }]"
+            replaceUrl="true"
+            queryParamsHandling="merge"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+    </button>
+</div>

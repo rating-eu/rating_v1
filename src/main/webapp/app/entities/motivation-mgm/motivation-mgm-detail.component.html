@@ -1,0 +1,38 @@
+
+<div *ngIf="motivation">
+    <h2><span jhiTranslate="hermeneutApp.motivation.detail.title">Motivation</span> {{motivation.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="hermeneutApp.motivation.name">Name</span></dt>
+        <dd>
+            <span>{{motivation.name}}</span>
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.motivation.description">Description</span></dt>
+        <dd>
+            <span>{{motivation.description}}</span>
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.motivation.created">Created</span></dt>
+        <dd>
+            <span>{{motivation.created | date:'medium'}}</span>
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.motivation.modified">Modified</span></dt>
+        <dd>
+            <span>{{motivation.modified | date:'medium'}}</span>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'motivation-mgm/'+ motivation.id + '/edit'} }]"
+            replaceUrl="true"
+            queryParamsHandling="merge"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+    </button>
+</div>

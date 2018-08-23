@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <!--
+        Added the constraints for entity EconomicResults.
+    -->
+    <changeSet id="20180813120728-2" author="jhipster">
+        
+        <addForeignKeyConstraint baseColumnNames="self_assessment_id"
+                                 baseTableName="economic_results"
+                                 constraintName="fk_economic_results_self_assessment_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="self_assessment"/>
+
+    </changeSet>
+</databaseChangeLog>

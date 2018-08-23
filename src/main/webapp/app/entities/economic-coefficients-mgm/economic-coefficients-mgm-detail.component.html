@@ -1,0 +1,44 @@
+
+<div *ngIf="economicCoefficients">
+    <h2><span jhiTranslate="hermeneutApp.economicCoefficients.detail.title">Economic Coefficients</span> {{economicCoefficients.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="hermeneutApp.economicCoefficients.discountingRate">Discounting Rate</span></dt>
+        <dd>
+            <span>{{economicCoefficients.discountingRate}}</span>
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.economicCoefficients.physicalAssetsReturn">Physical Assets Return</span></dt>
+        <dd>
+            <span>{{economicCoefficients.physicalAssetsReturn}}</span>
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.economicCoefficients.financialAssetsReturn" [ngbTooltip]="'hermeneutApp.economicCoefficients.help.financialAssetsReturn' | translate">Financial Assets Return</span></dt>
+        <dd>
+            <span>{{economicCoefficients.financialAssetsReturn}}</span>
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.economicCoefficients.lossOfIntangible" [ngbTooltip]="'hermeneutApp.economicCoefficients.help.lossOfIntangible' | translate">Loss Of Intangible</span></dt>
+        <dd>
+            <span>{{economicCoefficients.lossOfIntangible}}</span>
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.economicCoefficients.selfAssessment">Self Assessment</span></dt>
+        <dd>
+            <div *ngIf="economicCoefficients.selfAssessment">
+                <a [routerLink]="['/self-assessment-mgm', economicCoefficients.selfAssessment?.id]">{{economicCoefficients.selfAssessment?.name}}</a>
+            </div>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'economic-coefficients-mgm/'+ economicCoefficients.id + '/edit'} }]"
+            replaceUrl="true"
+            queryParamsHandling="merge"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+    </button>
+</div>

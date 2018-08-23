@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <!--
+        Added the constraints for entity Question.
+    -->
+    <changeSet id="20180410085204-2" author="jhipster">
+        
+        <addForeignKeyConstraint baseColumnNames="questions_id"
+                                 baseTableName="question_attack_strategies"
+                                 constraintName="fk_question_attack_strategies_questions_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="question"/>
+        <addForeignKeyConstraint baseColumnNames="attack_strategies_id"
+                                 baseTableName="question_attack_strategies"
+                                 constraintName="fk_question_attack_strategies_attack_strategies_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="attack_strategy"/>
+        
+        <addForeignKeyConstraint baseColumnNames="questions_id"
+                                 baseTableName="question_answers"
+                                 constraintName="fk_question_answers_questions_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="question"/>
+        <addForeignKeyConstraint baseColumnNames="answers_id"
+                                 baseTableName="question_answers"
+                                 constraintName="fk_question_answers_answers_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="answer"/>
+        
+        <addForeignKeyConstraint baseColumnNames="questionnaire_id"
+                                 baseTableName="question"
+                                 constraintName="fk_question_questionnaire_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="questionnaire"/>
+
+        <addForeignKeyConstraint baseColumnNames="threat_agent_id"
+                                 baseTableName="question"
+                                 constraintName="fk_question_threat_agent_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="threat_agent"/>
+
+    </changeSet>
+</databaseChangeLog>

@@ -1,0 +1,26 @@
+
+{
+    "hermeneutApp": {
+        "mitigation" : {
+            "home": {
+                "title": "Mitigations",
+                "createLabel": "Criar um(a) novo(a) Mitigation",
+                "createOrEditLabel": "Criar ou editar um(a) Mitigation",
+                "search": "Search for Mitigation"
+            },
+            "created": "A new Mitigation is created with identifier {{ param }}",
+            "updated": "A Mitigation is updated with identifier {{ param }}",
+            "deleted": "A Mitigation is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Tem a certeza que pretende eliminar o(a) Mitigation {{ id }}?"
+            },
+            "detail": {
+                "title": "Mitigation"
+            },
+            "name": "Name",
+            "description": "Description",
+            "created": "Created",
+            "modified": "Modified"
+        }
+    }
+}

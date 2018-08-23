@@ -1,0 +1,9 @@
+{
+    "hermeneutApp": {
+        "Intent" : {
+            "null": "",
+            "HOSTILE": "HOSTILE",
+            "NON_HOSTILE": "NON_HOSTILE"
+        }
+    }
+}

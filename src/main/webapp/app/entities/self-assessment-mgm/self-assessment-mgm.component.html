@@ -1,0 +1,121 @@
+<div>
+    <h2>
+        <span jhiTranslate="hermeneutApp.selfAssessment.home.title">Self Assessments</span>
+        <button class="btn btn-primary float-right jh-create-entity create-self-assessment-mgm" [routerLink]="['/', { outlets: { popup: ['self-assessment-mgm-new'] } }]">
+            <span class="fa fa-plus"></span>
+            <span class="hidden-sm-down"  jhiTranslate="hermeneutApp.selfAssessment.home.createLabel">
+            Create new Self Assessment
+            </span>
+        </button>
+    </h2>
+    <jhi-alert></jhi-alert>
+    <div class="row">
+        <div class="col-sm-12">
+            <form name="searchForm" class="form-inline">
+                <div class="input-group w-100 mt-3">
+                    <input type="text" class="form-control" [(ngModel)]="currentSearch" id="currentSearch" name="currentSearch" placeholder="{{ 'hermeneutApp.selfAssessment.home.search' | translate }}">
+                    <button class="input-group-append btn btn-info" (click)="search(currentSearch)">
+                        <span class="fa fa-search"></span>
+                    </button>
+                    <button class="input-group-append btn btn-danger" (click)="clear()" *ngIf="currentSearch">
+                        <span class="fa fa-trash-o"></span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <br/>
+    <div class="table-responsive" *ngIf="selfAssessments">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+            <th><span jhiTranslate="global.field.id">ID</span></th>
+            <th><span jhiTranslate="hermeneutApp.selfAssessment.name">Name</span></th>
+            <th><span jhiTranslate="hermeneutApp.selfAssessment.created">Created</span></th>
+            <th><span jhiTranslate="hermeneutApp.selfAssessment.modified">Modified</span></th>
+            <th><span jhiTranslate="hermeneutApp.selfAssessment.user">User</span></th>
+            <th><span jhiTranslate="hermeneutApp.selfAssessment.companyprofiles">Companyprofiles</span></th>
+            <th><span jhiTranslate="hermeneutApp.selfAssessment.companyGroup">Company Group</span></th>
+            <th><span jhiTranslate="hermeneutApp.selfAssessment.asset">Asset</span></th>
+            <th><span jhiTranslate="hermeneutApp.selfAssessment.threatagent">Threatagent</span></th>
+            <th><span jhiTranslate="hermeneutApp.selfAssessment.attackstrategy">Attackstrategy</span></th>
+            <th><span jhiTranslate="hermeneutApp.selfAssessment.externalaudit">Externalaudit</span></th>
+            <th><span jhiTranslate="hermeneutApp.selfAssessment.questionnaire">Questionnaire</span></th>
+            <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let selfAssessment of selfAssessments ;trackBy: trackId">
+                <td><a [routerLink]="['../self-assessment-mgm', selfAssessment.id ]">{{selfAssessment.id}}</a></td>
+                <td>{{selfAssessment.name}}</td>
+                <td>{{selfAssessment.created | date:'medium'}}</td>
+                <td>{{selfAssessment.modified | date:'medium'}}</td>
+                <td>
+                    {{selfAssessment.user?.login}}
+                </td>
+                <td>
+                    <span *ngFor="let companyprofiles of selfAssessment.companyprofiles; let last = last">
+                            <a class="form-control-static" [routerLink]="['../company-profile-mgm', companyprofiles?.id ]">{{companyprofiles.name}}</a>{{last ? '' : ', '}}
+                        </span>
+                </td>
+                <td>
+                    <span *ngFor="let companyGroup of selfAssessment.companyGroups; let last = last">
+                            <a class="form-control-static" [routerLink]="['../company-group-mgm', companyGroup?.id ]">{{companyGroup.name}}</a>{{last ? '' : ', '}}
+                        </span>
+                </td>
+                <td>
+                    <span *ngFor="let asset of selfAssessment.assets; let last = last">
+                            <a class="form-control-static" [routerLink]="['../asset-mgm', asset?.id ]">{{asset.name}}</a>{{last ? '' : ', '}}
+                        </span>
+                </td>
+                <td>
+                    <span *ngFor="let threatagent of selfAssessment.threatagents; let last = last">
+                            <a class="form-control-static" [routerLink]="['../threat-agent-mgm', threatagent?.id ]">{{threatagent.name}}</a>{{last ? '' : ', '}}
+                        </span>
+                </td>
+                <td>
+                    <span *ngFor="let attackstrategy of selfAssessment.attackstrategies; let last = last">
+                            <a class="form-control-static" [routerLink]="['../attack-strategy-mgm', attackstrategy?.id ]">{{attackstrategy.name}}</a>{{last ? '' : ', '}}
+                        </span>
+                </td>
+                <td>
+                    <span *ngFor="let externalaudit of selfAssessment.externalaudits; let last = last">
+                            <a class="form-control-static" [routerLink]="['../external-audit-mgm', externalaudit?.id ]">{{externalaudit.name}}</a>{{last ? '' : ', '}}
+                        </span>
+                </td>
+                <td>
+                    <span *ngFor="let questionnaire of selfAssessment.questionnaires; let last = last">
+                            <a class="form-control-static" [routerLink]="['../questionnaire-mgm', questionnaire?.id ]">{{questionnaire.name}}</a>{{last ? '' : ', '}}
+                        </span>
+                </td>
+                <td class="text-right">
+                    <div class="btn-group flex-btn-group-container">
+                        <button type="submit"
+                                [routerLink]="['../self-assessment-mgm', selfAssessment.id ]"
+                                class="btn btn-info btn-sm">
+                            <span class="fa fa-eye"></span>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'self-assessment-mgm/'+ selfAssessment.id + '/edit'} }]"
+                                replaceUrl="true"
+                                queryParamsHandling="merge"
+                                class="btn btn-primary btn-sm">
+                            <span class="fa fa-pencil"></span>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'self-assessment-mgm/'+ selfAssessment.id + '/delete'} }]"
+                                replaceUrl="true"
+                                queryParamsHandling="merge"
+                                class="btn btn-danger btn-sm">
+                            <span class="fa fa-remove"></span>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

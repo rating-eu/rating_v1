@@ -1,0 +1,32 @@
+
+{
+    "hermeneutApp": {
+        "myAsset" : {
+            "home": {
+                "title": "My Assets",
+                "createLabel": "My Asset erstellen",
+                "createOrEditLabel": "My Asset erstellen oder bearbeiten",
+                "search": "Suche nach My Asset"
+            },
+            "created": "My Asset erstellt mit ID {{ param }}",
+            "updated": "My Asset aktualisiert mit ID {{ param }}",
+            "deleted": "My Asset gelöscht mit ID {{ param }}",
+            "delete": {
+                "question": "Soll My Asset {{ id }} wirklich dauerhaft gelöscht werden?"
+            },
+            "detail": {
+                "title": "My Asset"
+            },
+            "magnitude": "Magnitude",
+            "ranking": "Ranking",
+            "estimated": "Estimated",
+            "economicValue": "Economic Value",
+            "asset": "Asset",
+            "selfAssessment": "Self Assessment",
+            "questionnaire": "Questionnaire",
+            "help": {
+                "economicValue": "WP3"
+            }
+        }
+    }
+}

@@ -1,0 +1,11 @@
+{
+    "hermeneutApp": {
+        "Role" : {
+            "null": "",
+            "ROLE_ADMIN": "ROLE_ADMIN",
+            "ROLE_USER": "ROLE_USER",
+            "ROLE_EXTERNAL_AUDIT": "ROLE_EXTERNAL_AUDIT",
+            "ROLE_CISO": "ROLE_CISO"
+        }
+    }
+}

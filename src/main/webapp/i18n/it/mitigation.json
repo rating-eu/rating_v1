@@ -1,0 +1,26 @@
+
+{
+    "hermeneutApp": {
+        "mitigation" : {
+            "home": {
+                "title": "Mitigations",
+                "createLabel": "Genera un nuovo Mitigation",
+                "createOrEditLabel": "Genera o modifica un Mitigation",
+                "search": "Cerca Mitigation"
+            },
+            "created": "&Egrave; stato generato un nuovo Mitigation con identificatore {{ param }}",
+            "updated": "&Egrave; stato aggiornato Mitigation identificato da {{ param }}",
+            "deleted": "&Egrave; stato eliminato Mitigation con identificatore {{ param }}",
+            "delete": {
+                "question": "Sei sicuro di volere eliminare Mitigation {{ id }}?"
+            },
+            "detail": {
+                "title": "Mitigation"
+            },
+            "name": "Name",
+            "description": "Description",
+            "created": "Created",
+            "modified": "Modified"
+        }
+    }
+}

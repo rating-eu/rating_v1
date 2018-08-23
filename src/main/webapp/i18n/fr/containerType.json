@@ -1,0 +1,11 @@
+{
+    "hermeneutApp": {
+        "ContainerType" : {
+            "null": "",
+            "HUMAN": "HUMAN",
+            "IT": "IT",
+            "PHYSICAL": "PHYSICAL",
+            "INTANGIBLE": "INTANGIBLE"
+        }
+    }
+}

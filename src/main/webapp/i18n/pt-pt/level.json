@@ -1,0 +1,25 @@
+
+{
+    "hermeneutApp": {
+        "level" : {
+            "home": {
+                "title": "Levels",
+                "createLabel": "Criar um(a) novo(a) Level",
+                "createOrEditLabel": "Criar ou editar um(a) Level",
+                "search": "Search for Level"
+            },
+            "created": "A new Level is created with identifier {{ param }}",
+            "updated": "A Level is updated with identifier {{ param }}",
+            "deleted": "A Level is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Tem a certeza que pretende eliminar o(a) Level {{ id }}?"
+            },
+            "detail": {
+                "title": "Level"
+            },
+            "name": "Name",
+            "description": "Description",
+            "container": "Container"
+        }
+    }
+}

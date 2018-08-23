@@ -1,0 +1,62 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "companyGroups",
+            "otherEntityName": "companyGroup",
+            "otherEntityRelationshipName": "companyprofile"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "user",
+            "otherEntityName": "user",
+            "otherEntityField": "login"
+        },
+        {
+            "relationshipType": "many-to-many",
+            "otherEntityRelationshipName": "",
+            "relationshipName": "containers",
+            "otherEntityName": "container",
+            "otherEntityField": "name",
+            "ownerSide": true
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "name",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "description",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "maxlength"
+            ],
+            "fieldValidateRulesMaxlength": 2000
+        },
+        {
+            "fieldName": "created",
+            "fieldType": "ZonedDateTime"
+        },
+        {
+            "fieldName": "modified",
+            "fieldType": "ZonedDateTime"
+        },
+        {
+            "fieldName": "type",
+            "fieldType": "CompType",
+            "fieldValues": "INFORMATION,HEALTHCARE,FINANCE,ACCOMODATION,ADMINISTRATIVE,AGRICOLTURE,CONSTRUCTION,EDUCATION,ENTERTAINMENT,MANAGEMENT,MANUFACTURING,MINING,OTHERSERVICES,PROFESSIONAL,PUBLIC,REALESTATE,RETAILS,TRADE,TRANSPORTATION,UTILITIES"
+        }
+    ],
+    "changelogDate": "20180410085152",
+    "entityTableName": "company_profile",
+    "dto": "no",
+    "pagination": "no",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "angularJSSuffix": "mgm"
+}

@@ -1,0 +1,72 @@
+
+<div *ngIf="attackStrategy">
+    <h2><span jhiTranslate="hermeneutApp.attackStrategy.detail.title">Attack Strategy</span> {{attackStrategy.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="hermeneutApp.attackStrategy.name">Name</span></dt>
+        <dd>
+            <span>{{attackStrategy.name}}</span>
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.attackStrategy.description">Description</span></dt>
+        <dd>
+            <span>{{attackStrategy.description}}</span>
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.attackStrategy.frequency">Frequency</span></dt>
+        <dd>
+            <span jhiTranslate="{{'hermeneutApp.Frequency.' + attackStrategy.frequency}}">{{attackStrategy.frequency}}</span>
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.attackStrategy.skill">Skill</span></dt>
+        <dd>
+            <span jhiTranslate="{{'hermeneutApp.SkillLevel.' + attackStrategy.skill}}">{{attackStrategy.skill}}</span>
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.attackStrategy.resources">Resources</span></dt>
+        <dd>
+            <span jhiTranslate="{{'hermeneutApp.ResourceLevel.' + attackStrategy.resources}}">{{attackStrategy.resources}}</span>
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.attackStrategy.likelihood">Likelihood</span></dt>
+        <dd>
+            <span jhiTranslate="{{'hermeneutApp.Likelihood.' + attackStrategy.likelihood}}">{{attackStrategy.likelihood}}</span>
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.attackStrategy.created">Created</span></dt>
+        <dd>
+            <span>{{attackStrategy.created | date:'medium'}}</span>
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.attackStrategy.modified">Modified</span></dt>
+        <dd>
+            <span>{{attackStrategy.modified | date:'medium'}}</span>
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.attackStrategy.mitigation">Mitigation</span></dt>
+        <dd>
+            <span *ngFor="let mitigation of attackStrategy.mitigations; let last = last">
+                <a [routerLink]="['/mitigation-mgm', mitigation?.id ]">{{mitigation.name}}</a>{{last ? '' : ', '}}
+            </span>
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.attackStrategy.level">Level</span></dt>
+        <dd>
+            <span *ngFor="let level of attackStrategy.levels; let last = last">
+                <a [routerLink]="['/level-mgm', level?.id ]">{{level.name}}</a>{{last ? '' : ', '}}
+            </span>
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.attackStrategy.phase">Phase</span></dt>
+        <dd>
+            <span *ngFor="let phase of attackStrategy.phases; let last = last">
+                <a [routerLink]="['/phase-mgm', phase?.id ]">{{phase.name}}</a>{{last ? '' : ', '}}
+            </span>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'attack-strategy-mgm/'+ attackStrategy.id + '/edit'} }]"
+            replaceUrl="true"
+            queryParamsHandling="merge"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+    </button>
+</div>

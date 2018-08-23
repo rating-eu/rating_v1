@@ -1,0 +1,27 @@
+
+{
+    "hermeneutApp": {
+        "attackCost" : {
+            "home": {
+                "title": "Attack Costs",
+                "createLabel": "Crear nuevo Attack Cost",
+                "createOrEditLabel": "Crear o editar Attack Cost",
+                "search": "Search for Attack Cost"
+            },
+            "created": "Un nuevo Attack Cost ha sido creado con el identificador {{ param }}",
+            "updated": "Un Attack Cost ha sido actualizado con el identificador {{ param }}",
+            "deleted": "Un Attack Cost ha sido eliminado con el identificador {{ param }}",
+            "delete": {
+                "question": "¿Seguro que quiere eliminar Attack Cost {{ id }}?"
+            },
+            "detail": {
+                "title": "Attack Cost"
+            },
+            "type": "Type",
+            "description": "Description",
+            "costs": "Costs",
+            "directAsset": "Direct Asset",
+            "indirectAsset": "Indirect Asset"
+        }
+    }
+}
