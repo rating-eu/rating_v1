@@ -48,4 +48,6 @@ public interface EBITService {
      * @return the list of entities
      */
     List<EBIT> search(String query);
+
+    List<EBIT> findAllBySelfAssessment(Long selfAssessmentID);
 }
