@@ -3,94 +3,104 @@
 </div>
 <div class="container" *ngIf="!loading  && mapAssetAttacks.size > 0">
   <ng-container *ngFor="let myAsset of myAssets">
-      <ng-template #assetDetail let-c="close" let-d="dismiss">
-          <div class="modal-header">
-              <h5 class="modal-title">Detail about {{myAsset.asset.name}}!</h5>
-              <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body">
-              <p>{{modalContent}}</p>
-            </div>
-            <!--
+    <ng-template #assetDetail let-c="close" let-d="dismiss">
+      <div class="modal-header">
+        <h5 class="modal-title">Detail about {{myAsset.asset.name}}!</h5>
+        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>{{modalContent}}</p>
+      </div>
+      <!--
             <div class="modal-footer">
               <button type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">Close</button>
             </div>
             -->
-      </ng-template>
+    </ng-template>
     <div class="row">
       <div class="col-md-12" *ngIf="criticalLevel">
         <div class="card">
           <div class="card-body">
             <h5 class="card-title">{{myAsset.asset.name}}</h5>
-            <div class="card-text">
-              <div class="row">
-                <div class="col-md-2 text-left">
-                  <b>Likelihood</b>
-                </div>
-              </div>
-              <div *ngFor="let j of squareRowElement" class="row">
-                <div class="col-md-1 text-right">
-                  <ng-container *ngIf="j!==lastSquareRowElement">{{lastSquareRowElement-j}}</ng-container>
-                </div>
-                <ng-container *ngIf="j===lastSquareRowElement">
-                  <div *ngFor="let i of squareColumnElement" class="col-md-2 text-center">
-                    {{i}}
+            <i *ngIf="!isAssetCollapsed(myAsset)" class="fa fa-chevron-circle-down fa-2x" aria-hidden="true" (click)="selectAsset(myAsset)"></i>
+            <i *ngIf="isAssetCollapsed(myAsset)" class="fa fa-chevron-circle-up fa-2x" aria-hidden="true" (click)="selectAsset(myAsset)"></i>
+            <div id="collapseExample" [ngbCollapse]="isAssetCollapsed(myAsset)">
+              <div class="card-text">
+                <div class="row">
+                  <div class="col-md-2 text-left">
+                    <b>Likelihood</b>
                   </div>
-                  <div class="row">
-                    <div class="col-md-12 text-right">
-                      <b>Vulnerability</b>
+                </div>
+                <div *ngFor="let j of squareRowElement" class="row">
+                  <div class="col-md-1 text-right">
+                    <ng-container *ngIf="j!==lastSquareRowElement">{{lastSquareRowElement-j}}</ng-container>
+                  </div>
+                  <ng-container *ngIf="j===lastSquareRowElement">
+                    <div *ngFor="let i of squareColumnElement" class="col-md-2 text-center">
+                      {{i}}
                     </div>
-                  </div>
-                </ng-container>
-                <ng-container *ngIf="j!==lastSquareRowElement">
-                  <div *ngFor="let i of squareColumnElement" class="col-md-2">
-                    <div class="text-center" [ngClass]="{'low-level': whichLevel(lastSquareRowElement-j, i) === 'low', 'medium-level': whichLevel(lastSquareRowElement-j, i) === 'medium', 'high-level': whichLevel(lastSquareRowElement-j, i) === 'high'}"
-                      (click)="selectedMatrixCell(lastSquareRowElement-j, i)">
-                      <ng-container *ngIf="whichContentByCell(lastSquareRowElement-j, i, myAsset, 'likelihood-vulnerability') !== ''"><a (click)="loadContent(lastSquareRowElement-j, i, myAsset, 'likelihood-vulnerability', assetDetail)">Click Me!</a></ng-container>
-                      <!--
+                    <div class="row">
+                      <div class="col-md-12 text-right">
+                        <b>Vulnerability</b>
+                      </div>
+                    </div>
+                  </ng-container>
+                  <ng-container *ngIf="j!==lastSquareRowElement">
+                    <div *ngFor="let i of squareColumnElement" class="col-md-2">
+                      <div class="text-center" [ngClass]="{'low-level': whichLevel(lastSquareRowElement-j, i) === 'low', 'medium-level': whichLevel(lastSquareRowElement-j, i) === 'medium', 'high-level': whichLevel(lastSquareRowElement-j, i) === 'high'}"
+                        (click)="selectedMatrixCell(lastSquareRowElement-j, i)">
+                        <ng-container *ngIf="whichContentByCell(lastSquareRowElement-j, i, myAsset, 'likelihood-vulnerability') !== ''">
+                          <a (click)="loadContent(lastSquareRowElement-j, i, myAsset, 'likelihood-vulnerability', assetDetail)">Click Me!</a>
+                        </ng-container>
+                        <!--
                       <ng-container *ngIf="whichContentByCell(lastSquareRowElement-j, i, myAsset, 'likelihood-vulnerability') !== ''">{{whichContentByCell(lastSquareRowElement-j, i, myAsset, 'likelihood-vulnerability')}}</ng-container>
                       -->
-                      <ng-container *ngIf="whichContentByCell(lastSquareRowElement-j, i, myAsset, 'likelihood-vulnerability') === ''">&nbsp;</ng-container>
+                        <ng-container *ngIf="whichContentByCell(lastSquareRowElement-j, i, myAsset, 'likelihood-vulnerability') === ''">&nbsp;</ng-container>
+                      </div>
                     </div>
-                  </div>
-                  <div class="col-md-1"></div>
-                </ng-container>
-              </div>
-              <div class="row"><span class="col-md-10 offset-md-1 border-bottom border-secondary">&nbsp;</span></div>
-              <div class="row">
-                <div class="col-md-2 text-left">
-                  <b>Critically</b>
+                    <div class="col-md-1"></div>
+                  </ng-container>
                 </div>
-              </div>
-              <div *ngFor="let j of squareRowElement" class="row">
-                <div class="col-md-1 text-right">
-                  <ng-container *ngIf="j!==lastSquareRowElement">{{lastSquareRowElement-j}}</ng-container>
+                <div class="row">
+                  <span class="col-md-10 offset-md-1 border-bottom border-secondary">&nbsp;</span>
                 </div>
-                <ng-container *ngIf="j===lastSquareRowElement">
-                  <div *ngFor="let i of squareColumnElement" class="col-md-2 text-center">
-                    {{i}}
+                <div class="row">
+                  <div class="col-md-2 text-left">
+                    <b>Critically</b>
                   </div>
-                  <div class="row">
-                    <div class="col-md-12 text-right">
-                      <b>Impact</b>
+                </div>
+                <div *ngFor="let j of squareRowElement" class="row">
+                  <div class="col-md-1 text-right">
+                    <ng-container *ngIf="j!==lastSquareRowElement">{{lastSquareRowElement-j}}</ng-container>
+                  </div>
+                  <ng-container *ngIf="j===lastSquareRowElement">
+                    <div *ngFor="let i of squareColumnElement" class="col-md-2 text-center">
+                      {{i}}
                     </div>
-                  </div>
-                </ng-container>
-                <ng-container *ngIf="j!==lastSquareRowElement">
-                  <div *ngFor="let i of squareColumnElement" class="col-md-2">
-                    <div class="text-center" [ngClass]="{'low-level': whichLevel(lastSquareRowElement-j, i) === 'low', 'medium-level': whichLevel(lastSquareRowElement-j, i) === 'medium', 'high-level': whichLevel(lastSquareRowElement-j, i) === 'high'}"
-                      (click)="selectedMatrixCell(lastSquareRowElement-j, i)">
-                      <ng-container *ngIf="whichContentByCell(lastSquareRowElement-j, i, myAsset, 'critically-impact') !== ''"><a (click)="loadContent(lastSquareRowElement-j, i, myAsset, 'critically-impact', assetDetail)">Click Me!</a></ng-container>
-                      <!--
+                    <div class="row">
+                      <div class="col-md-12 text-right">
+                        <b>Impact</b>
+                      </div>
+                    </div>
+                  </ng-container>
+                  <ng-container *ngIf="j!==lastSquareRowElement">
+                    <div *ngFor="let i of squareColumnElement" class="col-md-2">
+                      <div class="text-center" [ngClass]="{'low-level': whichLevel(lastSquareRowElement-j, i) === 'low', 'medium-level': whichLevel(lastSquareRowElement-j, i) === 'medium', 'high-level': whichLevel(lastSquareRowElement-j, i) === 'high'}"
+                        (click)="selectedMatrixCell(lastSquareRowElement-j, i)">
+                        <ng-container *ngIf="whichContentByCell(lastSquareRowElement-j, i, myAsset, 'critically-impact') !== ''">
+                          <a (click)="loadContent(lastSquareRowElement-j, i, myAsset, 'critically-impact', assetDetail)">Click Me!</a>
+                        </ng-container>
+                        <!--
                       <ng-container *ngIf="whichContentByCell(lastSquareRowElement-j, i, myAsset, 'critically-impact') !== ''">{{whichContentByCell(lastSquareRowElement-j, i, myAsset, 'critically-impact')}}</ng-container>
                       -->
-                      <ng-container *ngIf="whichContentByCell(lastSquareRowElement-j, i, myAsset, 'critically-impact') === ''">&nbsp;</ng-container>
+                        <ng-container *ngIf="whichContentByCell(lastSquareRowElement-j, i, myAsset, 'critically-impact') === ''">&nbsp;</ng-container>
+                      </div>
                     </div>
-                  </div>
-                  <div class="col-md-1"></div>
-                </ng-container>
+                    <div class="col-md-1"></div>
+                  </ng-container>
+                </div>
               </div>
             </div>
           </div>

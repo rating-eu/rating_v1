@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, Injector } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { RiskManagementRoutingModule } from './risk-management-routing.module';
@@ -8,6 +8,13 @@ import { RiskEvaluationComponent } from './risk-evaluation/risk-evaluation.compo
 import { RiskMitigationComponent } from './risk-mitigation/risk-mitigation.component';
 import { NgbCollapseModule } from '../../../../../node_modules/@ng-bootstrap/ng-bootstrap';
 import { HermeneutSharedModule } from '../shared';
+import { HTTP_INTERCEPTORS } from '../../../../../node_modules/@angular/common/http';
+import { AuthInterceptor } from '../blocks/interceptor/auth.interceptor';
+import { LocalStorageService, SessionStorageService } from '../../../../../node_modules/ngx-webstorage';
+import { AuthExpiredInterceptor } from '../blocks/interceptor/auth-expired.interceptor';
+import { ErrorHandlerInterceptor } from '../blocks/interceptor/errorhandler.interceptor';
+import { JhiEventManager } from '../../../../../node_modules/ng-jhipster';
+import { NotificationInterceptor } from '../blocks/interceptor/notification.interceptor';
 
 @NgModule({
   imports: [
@@ -18,6 +25,39 @@ import { HermeneutSharedModule } from '../shared';
   ],
   declarations: [RiskManagementComponent, RiskEvaluationComponent, RiskMitigationComponent],
   providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true,
+      deps: [
+        LocalStorageService,
+        SessionStorageService
+      ]
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthExpiredInterceptor,
+      multi: true,
+      deps: [
+        Injector
+      ]
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: ErrorHandlerInterceptor,
+      multi: true,
+      deps: [
+        JhiEventManager
+      ]
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: NotificationInterceptor,
+      multi: true,
+      deps: [
+        Injector
+      ]
+    },
     RiskManagementService
   ]
 })
