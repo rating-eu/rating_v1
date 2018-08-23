@@ -13,7 +13,8 @@ import {LocalStorageService, SessionStorageService} from 'ngx-webstorage';
 import {HTTP_INTERCEPTORS} from '@angular/common/http';
 import {AuthExpiredInterceptor} from '../blocks/interceptor/auth-expired.interceptor';
 import {ErrorHandlerInterceptor} from '../blocks/interceptor/errorhandler.interceptor';
-import {JhiEventManager} from 'ng-jhipster';
+import {JhiEventManager, JhiLanguageService} from 'ng-jhipster';
+import {JhiLanguageHelper} from '../shared';
 
 @NgModule({
     imports: [
@@ -68,4 +69,7 @@ import {JhiEventManager} from 'ng-jhipster';
     ]
 })
 export class IdentifyThreatAgentModule {
+    constructor(private languageService: JhiLanguageService, private languageHelper: JhiLanguageHelper) {
+        this.languageHelper.language.subscribe((languageKey: string) => this.languageService.changeLanguage(languageKey));
+    }
 }

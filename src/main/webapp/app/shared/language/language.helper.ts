@@ -1,13 +1,16 @@
-import { Injectable, RendererFactory2, Renderer2 } from '@angular/core';
-import { Title } from '@angular/platform-browser';
-import { Router, ActivatedRouteSnapshot } from '@angular/router';
-import { TranslateService, LangChangeEvent } from '@ngx-translate/core';
+import {Injectable, RendererFactory2, Renderer2} from '@angular/core';
+import {Title} from '@angular/platform-browser';
+import {Router, ActivatedRouteSnapshot} from '@angular/router';
+import {TranslateService, LangChangeEvent} from '@ngx-translate/core';
 
-import { LANGUAGES } from './language.constants';
+import {LANGUAGES} from './language.constants';
+import {BehaviorSubject} from 'rxjs/BehaviorSubject';
+import {Observable} from 'rxjs/Observable';
 
 @Injectable()
 export class JhiLanguageHelper {
     renderer: Renderer2 = null;
+    private _language: BehaviorSubject<string>;
 
     constructor(
         private translateService: TranslateService,
@@ -16,6 +19,7 @@ export class JhiLanguageHelper {
         private titleService: Title,
         private router: Router
     ) {
+        this._language = new BehaviorSubject<string>(this.translateService.currentLang);
         this.renderer = rootRenderer.createRenderer(document.querySelector('html'), null);
         this.init();
     }
@@ -33,7 +37,7 @@ export class JhiLanguageHelper {
      */
     updateTitle(titleKey?: string) {
         if (!titleKey) {
-             titleKey = this.getPageTitle(this.router.routerState.snapshot.root);
+            titleKey = this.getPageTitle(this.router.routerState.snapshot.root);
         }
 
         this.translateService.get(titleKey).subscribe((title) => {
@@ -43,6 +47,7 @@ export class JhiLanguageHelper {
 
     private init() {
         this.translateService.onLangChange.subscribe((event: LangChangeEvent) => {
+            this._language.next(this.translateService.currentLang);
             this.renderer.setAttribute(document.querySelector('html'), 'lang', this.translateService.currentLang);
             this.updateTitle();
         });
@@ -54,5 +59,9 @@ export class JhiLanguageHelper {
             title = this.getPageTitle(routeSnapshot.firstChild) || title;
         }
         return title;
+    }
+
+    get language(): Observable<string> {
+        return this._language.asObservable();
     }
 }
