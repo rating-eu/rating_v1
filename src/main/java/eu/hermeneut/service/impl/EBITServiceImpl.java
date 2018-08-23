@@ -92,6 +92,13 @@ public class EBITServiceImpl implements EBITService {
         eBITSearchRepository.delete(id);
     }
 
+    @Override
+    public void delete(List<EBIT> ebits) {
+        log.debug("Request to delete EBITs");
+        eBITRepository.delete(ebits);
+        eBITSearchRepository.delete(ebits);
+    }
+
     /**
      * Search for the eBIT corresponding to the query.
      *
@@ -105,5 +112,11 @@ public class EBITServiceImpl implements EBITService {
         return StreamSupport
             .stream(eBITSearchRepository.search(queryStringQuery(query)).spliterator(), false)
             .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<EBIT> findAllBySelfAssessment(Long selfAssessmentID) {
+        log.debug("Request to get all EBITS");
+        return eBITRepository.findAllBySelfAssessment(selfAssessmentID);
     }
 }

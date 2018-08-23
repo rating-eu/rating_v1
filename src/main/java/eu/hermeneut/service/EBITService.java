@@ -42,10 +42,19 @@ public interface EBITService {
     void delete(Long id);
 
     /**
+     * Delete the list of EBITs.
+     *
+     * @param ebits the list of EBITs.
+     */
+    void delete(List<EBIT> ebits);
+
+    /**
      * Search for the eBIT corresponding to the query.
      *
      * @param query the query of the search
      * @return the list of entities
      */
     List<EBIT> search(String query);
+
+    List<EBIT> findAllBySelfAssessment(Long selfAssessmentID);
 }

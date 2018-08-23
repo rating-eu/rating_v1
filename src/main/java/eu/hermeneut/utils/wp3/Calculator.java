@@ -6,6 +6,8 @@ import eu.hermeneut.domain.EBIT;
 import eu.hermeneut.domain.MyAsset;
 import eu.hermeneut.domain.enumeration.CategoryType;
 import eu.hermeneut.domain.enumeration.SectorType;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -16,6 +18,8 @@ public class Calculator {
     public static final String CURRENT_ASSETS_CATEGORY_NAME = "Current Assets";
     public static final String FIXED_ASSETS_CATEGORY_NAME = "Fixed Assets";
     private static Map<SectorType, Map<CategoryType, BigDecimal>> lossPercentageMap;
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(Calculator.class);
 
     static {
         Calculator.lossPercentageMap = new HashMap<>();
@@ -173,6 +177,8 @@ public class Calculator {
 
     public static BigDecimal calculateSplittingLoss(BigDecimal intangibleLossByAttacks, CategoryType categoryType, SectorType sectorType) {
         BigDecimal percentage = calculateSplittingLossPercentage(categoryType, sectorType);
+        LOGGER.debug("Percentage: " + percentage);
+        LOGGER.debug("IntangibleLossByAttacks: " + intangibleLossByAttacks);
 
         return intangibleLossByAttacks.multiply(percentage).divide(new BigDecimal(100), 3, RoundingMode.HALF_UP);
     }
