@@ -150,7 +150,7 @@ export class ImpactEvaluationComponent implements OnInit {
         Validators.required,
         Validators.min(0),
         Validators.max(1),
-        Validators.pattern('[0-9]+,[0-9]+|[0-9]+.[0-9]+')
+        Validators.pattern('[0-9]+,[0-9]+|[0-9]+.[0-9]+|[0-1]+')
       ])),
     });
     this.impactFormStepTwo = new FormGroup({

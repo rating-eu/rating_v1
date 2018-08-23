@@ -1,0 +1,15 @@
+{
+    "hermeneutApp": {
+        "riskManagement" : {
+            "home": {
+                "title": "Risk management"
+            },
+            "riskEvaluation": {
+                "title": "Risk evaluation"
+            },
+            "riskMitigation": {
+                "title": "Risk mitigation"
+            }
+        }
+    }
+}

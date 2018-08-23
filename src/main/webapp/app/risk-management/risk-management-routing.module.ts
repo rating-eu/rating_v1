@@ -5,24 +5,33 @@ import { RiskEvaluationComponent } from './risk-evaluation/risk-evaluation.compo
 import { RiskMitigationComponent } from './risk-mitigation/risk-mitigation.component';
 
 const routes: Routes = [
-  {
-      path: '',
-      component: RiskManagementComponent,
-      children: [
-          {
-              path: 'risk-evaluation',
-              component: RiskEvaluationComponent,
-          },
-          {
-              path: 'risk-mitigation',
-              component: RiskMitigationComponent
-          }
-      ]
-  }
+    {
+        path: '',
+        component: RiskManagementComponent,
+        data: {
+            pageTitle: 'hermeneutApp.riskManagement.home.title'
+        },
+        children: [
+            {
+                path: 'risk-evaluation',
+                component: RiskEvaluationComponent,
+                data: {
+                    pageTitle: 'hermeneutApp.riskManagement.riskEvaluation.title'
+                }
+            },
+            {
+                path: 'risk-mitigation',
+                component: RiskMitigationComponent,
+                data: {
+                    pageTitle: 'hermeneutApp.riskManagement.riskMitigation.title'
+                }
+            }
+        ]
+    }
 ];
 
 @NgModule({
-  imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+    imports: [RouterModule.forChild(routes)],
+    exports: [RouterModule]
 })
 export class RiskManagementRoutingModule { }
