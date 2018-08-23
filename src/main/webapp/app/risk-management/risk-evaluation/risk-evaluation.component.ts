@@ -41,7 +41,7 @@ export class RiskEvaluationComponent implements OnInit {
       if (res && res.length > 0) {
         this.myAssets = res;
         console.log(this.myAssets);
-        /*
+        
         for (const myAsset of this.myAssets) {
           let intIndex = 0;
           while (intIndex < 15) {
@@ -63,9 +63,9 @@ export class RiskEvaluationComponent implements OnInit {
             intIndex++;
           }
         }
-        */
+
         // TODO codice da decommentare quando rientra la issue relativa al WP4
-        for (const myAsset of this.myAssets) {
+        /*for (const myAsset of this.myAssets) {
           this.loading = true;
           this.riskService.getAttackChance(myAsset, this.mySelf).toPromise().then((res2) => {
             if (res2) {
@@ -73,7 +73,7 @@ export class RiskEvaluationComponent implements OnInit {
             }
             this.loading = false;
           });
-        }
+        }*/
         console.log(this.mapAssetAttacks);
       }
       this.loading = false;
