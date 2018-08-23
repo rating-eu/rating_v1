@@ -1,5 +1,5 @@
 import {Injector, NgModule} from '@angular/core';
-import {HermeneutSharedModule} from '../shared';
+import {HermeneutSharedModule, JhiLanguageHelper} from '../shared';
 import {EvaluateWeaknessComponent} from './evaluate-weakness.component';
 import {CommonModule} from '@angular/common';
 import {EvaluateWeaknessRoutingModule} from './evaluate-weakness-routing.module';
@@ -10,7 +10,7 @@ import {LocalStorageService, SessionStorageService} from 'ngx-webstorage';
 import {ErrorHandlerInterceptor} from '../blocks/interceptor/errorhandler.interceptor';
 import {IdentifyThreatAgentService} from '../identify-threat-agent/identify-threat-agent.service';
 import {NotificationInterceptor} from '../blocks/interceptor/notification.interceptor';
-import {JhiEventManager} from 'ng-jhipster';
+import {JhiEventManager, JhiLanguageService} from 'ng-jhipster';
 import {DatasharingModule} from '../datasharing/datasharing.module';
 import {WeaknessResultComponent} from './result/result.component';
 import {EvaluateService} from './evaluate-weakness.service';
@@ -69,4 +69,10 @@ import {EvaluateService} from './evaluate-weakness.service';
     ]
 })
 export class EvaluateWeaknessModule {
+    constructor(private languageService: JhiLanguageService, private languageHelper: JhiLanguageHelper) {
+        this.languageHelper.language
+            .subscribe((languageKey: string) => {
+                this.languageService.changeLanguage(languageKey)
+            });
+    }
 }
