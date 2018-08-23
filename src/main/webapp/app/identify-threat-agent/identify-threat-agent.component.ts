@@ -10,8 +10,6 @@ import {SelfAssessmentMgm, SelfAssessmentMgmService} from '../entities/self-asse
 export class IdentifyThreatAgentComponent implements OnInit {
     account: Account;
     mySelf: SelfAssessmentMgm = {};
-    langs: string[] = ['de', 'en', 'es', 'fr', 'it', 'pt-pt'];
-    index = 1;
 
     constructor(
         private principal: Principal,
@@ -32,9 +30,5 @@ export class IdentifyThreatAgentComponent implements OnInit {
 
     previousState() {
         window.history.back();
-    }
-
-    nextLanguage() {
-        this.languageService.changeLanguage('it');
     }
 }
