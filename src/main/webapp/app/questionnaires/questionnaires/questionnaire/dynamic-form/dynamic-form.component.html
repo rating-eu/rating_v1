@@ -48,44 +48,30 @@
                     </pre>
                     </div>
 
-                    <table>
-                        <thead>
-                        <tr>
-                            <th>CISO</th>
-                            <th>External</th>
-                            <th>Note</th>
-                        </tr>
-                        </thead>
-
-                        <tbody>
-                        <tr>
-                            <td>
-                                <mat-radio-group [formControlName]="question.id" class="radio-group">
-                                    <mat-radio-button *ngFor="let answer of sort(question.answers)" class="radio-button"
-                                                      [value]="answer" disabled="disabled">
-                                        {{answer.name}}
-                                    </mat-radio-button>
-                                </mat-radio-group>
-                            </td>
-
-                            <td>
-                                <mat-radio-group [formControlName]="question.id + '.external'" class="radio-group">
-                                    <mat-radio-button *ngFor="let answer of sort(question.answers)" class="radio-button"
-                                                      [value]="answer">
-                                        {{answer.name}}
-                                    </mat-radio-button>
-                                </mat-radio-group>
-                            </td>
-
-                            <td>
-                                <mat-form-field>
-                                    <textarea matInput [formControlName]="question.id + '.note'" [rows]="5"
+                    <div class="row">
+                        <div style="width:20px">
+                            <mat-radio-group [formControlName]="question.id" class="radio-group">
+                                <mat-radio-button *ngFor="let answer of sort(question.answers)" class="radio-button"
+                                                  [value]="answer" disabled="disabled">
+                                    &nbsp;
+                                </mat-radio-button>
+                            </mat-radio-group>
+                        </div>
+                        <div class="col-md-9">
+                            <mat-radio-group [formControlName]="question.id + '.external'" class="radio-group">
+                                <mat-radio-button *ngFor="let answer of sort(question.answers)" class="radio-button"
+                                                  [value]="answer">
+                                    {{answer.name}}
+                                </mat-radio-button>
+                            </mat-radio-group>
+                        </div>
+                        <div class="col-md-2">
+                            <mat-form-field>
+                                    <textarea matInput [formControlName]="question.id + '.note'" [rows]="7"
                                               placeholder="Notes"></textarea>
-                                </mat-form-field>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
+                            </mat-form-field>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="form-row">
