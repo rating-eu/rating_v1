@@ -73,30 +73,9 @@ public class WP3StepsController {
         List<EBIT> existingEbits = this.ebitService.findAllBySelfAssessment(selfAssessmentID);
 
         if (existingEbits != null) {
-            /*Map<Integer, EBIT> existingEbitsByYear = existingEbits.stream().collect(
-                Collectors.toMap(
-                    existingEbit -> existingEbit.getYear(),
-                    Function.identity()
-                )
-            );
-
-            for (int i = 0; i < ebits.size(); i++) {
-                EBIT ebit = ebits.get(i);
-
-                try {
-                    if (existingEbitsByYear.containsKey(ebit.getYear())) {
-                        throw new DuplicateValueException();
-                    }
-                } catch (DuplicateValueException e) {
-                    ebits.remove(i);
-                    i--;
-                }
-            }*/
-
             ebits = existingEbits;
         } else {
             ZonedDateTime now = ZonedDateTime.now();
-
 
             for (EBIT ebit : ebits) {
                 ebit.setId(null);
