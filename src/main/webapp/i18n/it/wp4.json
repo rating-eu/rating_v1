@@ -1,0 +1,15 @@
+{
+    "hermeneutApp": {
+        "riskManagement" : {
+            "home": {
+                "title": "Gestione del rischio"
+            },
+            "riskEvaluation": {
+                "title": "Valutazione del rischio"
+            },
+            "riskMitigation": {
+                "title": "Attenuazione del rischio"
+            }
+        }
+    }
+}

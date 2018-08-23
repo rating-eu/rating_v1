@@ -3,7 +3,13 @@ import { Routes, RouterModule } from '@angular/router';
 import { ImpactEvaluationComponent } from './impact-evaluation/impact-evaluation.component';
 
 const routes: Routes = [
-  {path: '', component: ImpactEvaluationComponent}
+  {
+    path: '',
+    component: ImpactEvaluationComponent,
+    data: {
+      pageTitle: 'hermeneutApp.impactEvaluation.home.title'
+    }
+  }
 ];
 
 @NgModule({

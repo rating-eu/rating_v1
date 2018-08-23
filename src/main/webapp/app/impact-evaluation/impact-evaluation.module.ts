@@ -5,9 +5,11 @@ import { ImpactEvaluationRoutingModule } from './impact-evaluation-routing.modul
 import { ImpactEvaluationComponent } from './impact-evaluation/impact-evaluation.component';
 import { ImpactEvaluationService } from './impact-evaluation.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { HermeneutSharedModule } from '../shared';
 
 @NgModule({
   imports: [
+    HermeneutSharedModule,
     CommonModule,
     ImpactEvaluationRoutingModule,
     ReactiveFormsModule,

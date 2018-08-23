@@ -1,9 +1,9 @@
 <div class="container">
   <div class="row">
     <div class="col-md-6">
-      <button type="button" class="btn btn-dark" routerLink="risk-evaluation" routerLinkActive="active">Risk evaluation
+      <button *ngIf="criticalLevel" type="button" class="btn btn-dark" routerLink="risk-evaluation" routerLinkActive="active">Risk evaluation
       </button>
-      <button type="button" class="btn btn-dark" routerLink="risk-mitigation" routerLinkActive="active">Risk mitigation
+      <button *ngIf="criticalLevel" type="button" class="btn btn-dark" routerLink="risk-mitigation" routerLinkActive="active">Risk mitigation
       </button>
     </div>
     <div class="col-md-5">
