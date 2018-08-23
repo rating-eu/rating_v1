@@ -69,12 +69,13 @@ public class WP3StepsController {
             throw new IllegalInputException("The number of ebits MUST be EXACTLY 6!");
         }
 
-        //TODO
         List<EBIT> existingEbits = this.ebitService.findAllBySelfAssessment(selfAssessmentID);
 
         if (existingEbits != null) {
-            ebits = existingEbits;
+            //Drop the OLD EBITs
+            this.ebitService.delete(existingEbits);
         } else {
+            //Save new EBITs
             ZonedDateTime now = ZonedDateTime.now();
 
             for (EBIT ebit : ebits) {
