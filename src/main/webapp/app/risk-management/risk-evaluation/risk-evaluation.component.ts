@@ -26,6 +26,7 @@ export class RiskEvaluationComponent implements OnInit {
   public loading = false;
   public modalContent: string;
   private closeResult: string;
+  private selectedAssets: MyAssetMgm;
 
   constructor(
     private mySelfAssessmentService: SelfAssessmentMgmService,
@@ -96,6 +97,16 @@ export class RiskEvaluationComponent implements OnInit {
     });
   }
 
+  public selectAsset(asset: MyAssetMgm) {
+    this.selectedAssets = asset;
+  }
+
+  public isAssetCollapsed(asset: MyAssetMgm): boolean {
+    if (this.selectedAssets.id === asset.id) {
+      return false;
+    }
+    return true;
+  }
   public whichLevel(row: number, column: number): string {
     return this.riskService.whichLevel(row, column, this.criticalLevel);
   }
@@ -115,7 +126,7 @@ export class RiskEvaluationComponent implements OnInit {
     } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
       return 'by clicking on a backdrop';
     } else {
-      return  `with: ${reason}`;
+      return `with: ${reason}`;
     }
   }
 
