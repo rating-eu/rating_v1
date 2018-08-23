@@ -98,7 +98,13 @@ export class RiskEvaluationComponent implements OnInit {
   }
 
   public selectAsset(asset: MyAssetMgm) {
-    this.selectedAsset = asset;
+    if (!this.selectedAsset) {
+      this.selectedAsset = asset;
+    } else if (this.selectedAsset.id === asset.id) {
+      this.selectedAsset = null;
+    } else {
+      this.selectedAsset = asset;
+    }
   }
 
   public isAssetCollapsed(asset: MyAssetMgm): boolean {
