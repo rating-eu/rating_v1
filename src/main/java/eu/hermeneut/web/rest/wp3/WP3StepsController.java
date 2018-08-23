@@ -6,6 +6,7 @@ import eu.hermeneut.domain.enumeration.CategoryType;
 import eu.hermeneut.domain.enumeration.SectorType;
 import eu.hermeneut.domain.wp3.WP3InputBundle;
 import eu.hermeneut.domain.wp3.WP3OutputBundle;
+import eu.hermeneut.exceptions.DuplicateValueException;
 import eu.hermeneut.exceptions.IllegalInputException;
 import eu.hermeneut.exceptions.NotFoundException;
 import eu.hermeneut.exceptions.NullInputException;
@@ -18,6 +19,9 @@ import java.math.BigDecimal;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api")
@@ -65,16 +69,44 @@ public class WP3StepsController {
             throw new IllegalInputException("The number of ebits MUST be EXACTLY 6!");
         }
 
-        ZonedDateTime now = ZonedDateTime.now();
+        //TODO
+        List<EBIT> existingEbits = this.ebitService.findAllBySelfAssessment(selfAssessmentID);
 
-        for (EBIT ebit : ebits) {
-            ebit.setId(null);
-            ebit.setSelfAssessment(selfAssessment);
-            ebit.setCreated(now);
+        if (existingEbits != null) {
+            /*Map<Integer, EBIT> existingEbitsByYear = existingEbits.stream().collect(
+                Collectors.toMap(
+                    existingEbit -> existingEbit.getYear(),
+                    Function.identity()
+                )
+            );
+
+            for (int i = 0; i < ebits.size(); i++) {
+                EBIT ebit = ebits.get(i);
+
+                try {
+                    if (existingEbitsByYear.containsKey(ebit.getYear())) {
+                        throw new DuplicateValueException();
+                    }
+                } catch (DuplicateValueException e) {
+                    ebits.remove(i);
+                    i--;
+                }
+            }*/
+
+            ebits = existingEbits;
+        } else {
+            ZonedDateTime now = ZonedDateTime.now();
+
+
+            for (EBIT ebit : ebits) {
+                ebit.setId(null);
+                ebit.setSelfAssessment(selfAssessment);
+                ebit.setCreated(now);
+            }
+
+            //Save the EBITs
+            ebits = this.ebitService.save(ebits);
         }
-
-        //Save the EBITs
-        this.ebitService.save(ebits);
 
         EconomicCoefficients economicCoefficients = wp3InputBundle.getEconomicCoefficients();
 
@@ -302,6 +334,10 @@ public class WP3StepsController {
         }
 
         BigDecimal intangibleLossByAttacks = existingEconomicResults.getIntangibleLossByAttacks();
+
+        if (intangibleLossByAttacks == null) {
+            throw new NullInputException("IntangibleLossByAttacks (from DB) can NOT be NULL!");
+        }
 
         SectorType sectorType = wp3InputBundle.getSectorType();
         CategoryType categoryType = wp3InputBundle.getCategoryType();

@@ -106,4 +106,10 @@ public class EBITServiceImpl implements EBITService {
             .stream(eBITSearchRepository.search(queryStringQuery(query)).spliterator(), false)
             .collect(Collectors.toList());
     }
+
+    @Override
+    public List<EBIT> findAllBySelfAssessment(Long selfAssessmentID) {
+        log.debug("Request to get all EBITS");
+        return eBITRepository.findAllBySelfAssessment(selfAssessmentID);
+    }
 }
