@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import java.math.BigDecimal;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -42,6 +43,8 @@ public class WP3StepsController {
 
     @Autowired
     private SplittingLossService splittingLossService;
+
+    private static final Map<Long, Object> SELF_ASSESSMENT_LOCK = new HashMap<>();
 
     @PostMapping("{selfAssessmentID}/wp3/step-one")
     @Timed
@@ -69,84 +72,95 @@ public class WP3StepsController {
             throw new IllegalInputException("The number of ebits MUST be EXACTLY 6!");
         }
 
-        List<EBIT> existingEbits = this.ebitService.findAllBySelfAssessment(selfAssessmentID);
-
-        if (existingEbits != null) {
-            //Drop the OLD EBITs
-            this.ebitService.delete(existingEbits);
+        //===SelfAssessment Lock===
+        Object lock = null;
+        if (SELF_ASSESSMENT_LOCK.containsKey(selfAssessmentID)) {
+            lock = SELF_ASSESSMENT_LOCK.get(selfAssessmentID);
         } else {
-            //Save new EBITs
-            ZonedDateTime now = ZonedDateTime.now();
+            lock = new Object();
+            SELF_ASSESSMENT_LOCK.put(selfAssessmentID, lock);
+        }
 
-            for (EBIT ebit : ebits) {
-                ebit.setId(null);
-                ebit.setSelfAssessment(selfAssessment);
-                ebit.setCreated(now);
+        synchronized (lock) {
+            List<EBIT> existingEbits = this.ebitService.findAllBySelfAssessment(selfAssessmentID);
+
+            if (existingEbits != null) {
+                //Drop the OLD EBITs
+                this.ebitService.delete(existingEbits);
+            } else {
+                //Save new EBITs
+                ZonedDateTime now = ZonedDateTime.now();
+
+                for (EBIT ebit : ebits) {
+                    ebit.setId(null);
+                    ebit.setSelfAssessment(selfAssessment);
+                    ebit.setCreated(now);
+                }
+
+                //Save the EBITs
+                ebits = this.ebitService.save(ebits);
             }
 
-            //Save the EBITs
-            ebits = this.ebitService.save(ebits);
+            EconomicCoefficients economicCoefficients = wp3InputBundle.getEconomicCoefficients();
+
+            if (economicCoefficients == null) {
+                throw new NullInputException("The economicCoefficients can NOT be NULL!");
+            }
+
+            BigDecimal discountingRate = economicCoefficients.getDiscountingRate();
+
+            if (discountingRate == null) {
+                throw new NullInputException("The discountingRate can NOT be NULL!");
+            } else if (discountingRate.compareTo(BigDecimal.ZERO) < 0 || discountingRate.compareTo(BigDecimal.ONE) > 0) {
+                throw new IllegalInputException("The value of DiscountingRate MUST BE BETWEEN 0 and 1 (edges included)!");
+            }
+
+            //Find existing data by SelfAssessmentID
+            EconomicResults existingEconomicResults = this.economicResultsService.findOneBySelfAssessmentID(selfAssessmentID);
+            EconomicCoefficients existingEconomicCoefficients = this.economicCoefficientsService.findOneBySelfAssessmentID(selfAssessmentID);
+            List<SplittingLoss> existingSplittingLosses = this.splittingLossService.findAllBySelfAssessmentID(selfAssessmentID);
+
+            BigDecimal economicPerformance = Calculator.calculateEconomicPerformance(ebits, discountingRate);
+
+            //===EconomicResults===
+            if (existingEconomicResults != null) {//UPDATE
+                existingEconomicResults.setEconomicPerformance(economicPerformance);
+                //Update
+                this.economicResultsService.save(existingEconomicResults);
+            } else {//NEW
+                existingEconomicResults = new EconomicResults();
+                existingEconomicResults.setId(null);//Create a new entry in the table
+                existingEconomicResults.setSelfAssessment(selfAssessment);
+                //New field value
+                existingEconomicResults.setEconomicPerformance(economicPerformance);
+                //Create
+                this.economicResultsService.save(existingEconomicResults);
+            }
+
+            //===EconomicCoefficients===
+            if (existingEconomicCoefficients != null) {//UPDATE
+                existingEconomicCoefficients.setDiscountingRate(discountingRate);
+                //Update
+                this.economicCoefficientsService.save(existingEconomicCoefficients);
+            } else {//NEW
+                existingEconomicCoefficients = new EconomicCoefficients();
+                existingEconomicCoefficients.setId(null);//Create a new entry in the table
+                existingEconomicCoefficients.setSelfAssessment(selfAssessment);
+                //New field value
+                existingEconomicCoefficients.setDiscountingRate(discountingRate);
+                //Default field value
+                existingEconomicCoefficients.setLossOfIntangible(DEFAULT_LOSS_OF_INTANGIBLE);
+                //Create
+                this.economicCoefficientsService.save(existingEconomicCoefficients);
+            }
+
+            WP3OutputBundle wp3OutputBundle = new WP3OutputBundle();
+            wp3OutputBundle.setEconomicResults(existingEconomicResults);
+            wp3OutputBundle.setEconomicCoefficients(existingEconomicCoefficients);
+            wp3OutputBundle.setSplittingLosses(existingSplittingLosses);
+
+            return wp3OutputBundle;
         }
-
-        EconomicCoefficients economicCoefficients = wp3InputBundle.getEconomicCoefficients();
-
-        if (economicCoefficients == null) {
-            throw new NullInputException("The economicCoefficients can NOT be NULL!");
-        }
-
-        BigDecimal discountingRate = economicCoefficients.getDiscountingRate();
-
-        if (discountingRate == null) {
-            throw new NullInputException("The discountingRate can NOT be NULL!");
-        } else if (discountingRate.compareTo(BigDecimal.ZERO) < 0 || discountingRate.compareTo(BigDecimal.ONE) > 0) {
-            throw new IllegalInputException("The value of DiscountingRate MUST BE BETWEEN 0 and 1 (edges included)!");
-        }
-
-        //Find existing data by SelfAssessmentID
-        EconomicResults existingEconomicResults = this.economicResultsService.findOneBySelfAssessmentID(selfAssessmentID);
-        EconomicCoefficients existingEconomicCoefficients = this.economicCoefficientsService.findOneBySelfAssessmentID(selfAssessmentID);
-        List<SplittingLoss> existingSplittingLosses = this.splittingLossService.findAllBySelfAssessmentID(selfAssessmentID);
-
-        BigDecimal economicPerformance = Calculator.calculateEconomicPerformance(ebits, discountingRate);
-
-        //===EconomicResults===
-        if (existingEconomicResults != null) {//UPDATE
-            existingEconomicResults.setEconomicPerformance(economicPerformance);
-            //Update
-            this.economicResultsService.save(existingEconomicResults);
-        } else {//NEW
-            existingEconomicResults = new EconomicResults();
-            existingEconomicResults.setId(null);//Create a new entry in the table
-            existingEconomicResults.setSelfAssessment(selfAssessment);
-            //New field value
-            existingEconomicResults.setEconomicPerformance(economicPerformance);
-            //Create
-            this.economicResultsService.save(existingEconomicResults);
-        }
-
-        //===EconomicCoefficients===
-        if (existingEconomicCoefficients != null) {//UPDATE
-            existingEconomicCoefficients.setDiscountingRate(discountingRate);
-            //Update
-            this.economicCoefficientsService.save(existingEconomicCoefficients);
-        } else {//NEW
-            existingEconomicCoefficients = new EconomicCoefficients();
-            existingEconomicCoefficients.setId(null);//Create a new entry in the table
-            existingEconomicCoefficients.setSelfAssessment(selfAssessment);
-            //New field value
-            existingEconomicCoefficients.setDiscountingRate(discountingRate);
-            //Default field value
-            existingEconomicCoefficients.setLossOfIntangible(DEFAULT_LOSS_OF_INTANGIBLE);
-            //Create
-            this.economicCoefficientsService.save(existingEconomicCoefficients);
-        }
-
-        WP3OutputBundle wp3OutputBundle = new WP3OutputBundle();
-        wp3OutputBundle.setEconomicResults(existingEconomicResults);
-        wp3OutputBundle.setEconomicCoefficients(existingEconomicCoefficients);
-        wp3OutputBundle.setSplittingLosses(existingSplittingLosses);
-
-        return wp3OutputBundle;
     }
 
     @PostMapping("{selfAssessmentID}/wp3/step-two")
@@ -177,55 +191,66 @@ public class WP3StepsController {
             throw new IllegalInputException("MyAssets can NOT have size equal to ZERO!");
         }
 
-        EconomicCoefficients economicCoefficients = wp3InputBundle.getEconomicCoefficients();
-
-        if (economicCoefficients == null) {
-            throw new IllegalInputException("EconomicCoefficients can NOT be NULL!");
-        }
-
-        BigDecimal physicalAssetsReturn = economicCoefficients.getPhysicalAssetsReturn();
-        BigDecimal financialAssetsReturn = economicCoefficients.getFinancialAssetsReturn();
-
-        EconomicCoefficients existingEconomicCoefficients = this.economicCoefficientsService.findOneBySelfAssessmentID(selfAssessmentID);
-
-        BigDecimal discountingRate;
-
-        if (existingEconomicCoefficients == null) {
-            throw new NotFoundException("EconomicCoefficients NOT FOUND");
+        //===SelfAssessment Lock===
+        Object lock = null;
+        if (SELF_ASSESSMENT_LOCK.containsKey(selfAssessmentID)) {
+            lock = SELF_ASSESSMENT_LOCK.get(selfAssessmentID);
         } else {
-            existingEconomicCoefficients.setPhysicalAssetsReturn(physicalAssetsReturn);
-            existingEconomicCoefficients.setFinancialAssetsReturn(financialAssetsReturn);
-            discountingRate = existingEconomicCoefficients.getDiscountingRate();
-
-            //Update
-            this.economicCoefficientsService.save(existingEconomicCoefficients);
+            lock = new Object();
+            SELF_ASSESSMENT_LOCK.put(selfAssessmentID, lock);
         }
 
-        EconomicResults existingEconomicResults = this.economicResultsService.findOneBySelfAssessmentID(selfAssessmentID);
+        synchronized (lock) {
+            EconomicCoefficients economicCoefficients = wp3InputBundle.getEconomicCoefficients();
 
-        if (existingEconomicResults == null) {
-            throw new NotFoundException("The EconomicResults for SelfAssessment " + selfAssessmentID + " was not found!");
+            if (economicCoefficients == null) {
+                throw new IllegalInputException("EconomicCoefficients can NOT be NULL!");
+            }
+
+            BigDecimal physicalAssetsReturn = economicCoefficients.getPhysicalAssetsReturn();
+            BigDecimal financialAssetsReturn = economicCoefficients.getFinancialAssetsReturn();
+
+            EconomicCoefficients existingEconomicCoefficients = this.economicCoefficientsService.findOneBySelfAssessmentID(selfAssessmentID);
+
+            BigDecimal discountingRate;
+
+            if (existingEconomicCoefficients == null) {
+                throw new NotFoundException("EconomicCoefficients NOT FOUND");
+            } else {
+                existingEconomicCoefficients.setPhysicalAssetsReturn(physicalAssetsReturn);
+                existingEconomicCoefficients.setFinancialAssetsReturn(financialAssetsReturn);
+                discountingRate = existingEconomicCoefficients.getDiscountingRate();
+
+                //Update
+                this.economicCoefficientsService.save(existingEconomicCoefficients);
+            }
+
+            EconomicResults existingEconomicResults = this.economicResultsService.findOneBySelfAssessmentID(selfAssessmentID);
+
+            if (existingEconomicResults == null) {
+                throw new NotFoundException("The EconomicResults for SelfAssessment " + selfAssessmentID + " was not found!");
+            }
+
+            BigDecimal economicPerformance = existingEconomicResults.getEconomicPerformance();
+
+            BigDecimal intangibleDriningEarnings = Calculator.calculateIntangibleDrivingEarnings(economicPerformance, physicalAssetsReturn, financialAssetsReturn, myAssets);
+
+            BigDecimal intangibleCapital = Calculator.calculateIntangibleCapital(intangibleDriningEarnings, discountingRate);
+
+            //Update fields
+            existingEconomicResults.setIntangibleDrivingEarnings(intangibleDriningEarnings);
+            existingEconomicResults.setIntangibleCapital(intangibleCapital);
+
+            //Update entity
+            this.economicResultsService.save(existingEconomicResults);
+
+            //OUTPUT
+            WP3OutputBundle wp3OutputBundle = new WP3OutputBundle();
+            wp3OutputBundle.setEconomicCoefficients(existingEconomicCoefficients);
+            wp3OutputBundle.setEconomicResults(existingEconomicResults);
+
+            return wp3OutputBundle;
         }
-
-        BigDecimal economicPerformance = existingEconomicResults.getEconomicPerformance();
-
-        BigDecimal intangibleDriningEarnings = Calculator.calculateIntangibleDrivingEarnings(economicPerformance, physicalAssetsReturn, financialAssetsReturn, myAssets);
-
-        BigDecimal intangibleCapital = Calculator.calculateIntangibleCapital(intangibleDriningEarnings, discountingRate);
-
-        //Update fields
-        existingEconomicResults.setIntangibleDrivingEarnings(intangibleDriningEarnings);
-        existingEconomicResults.setIntangibleCapital(intangibleCapital);
-
-        //Update entity
-        this.economicResultsService.save(existingEconomicResults);
-
-        //OUTPUT
-        WP3OutputBundle wp3OutputBundle = new WP3OutputBundle();
-        wp3OutputBundle.setEconomicCoefficients(existingEconomicCoefficients);
-        wp3OutputBundle.setEconomicResults(existingEconomicResults);
-
-        return wp3OutputBundle;
     }
 
     @PostMapping("{selfAssessmentID}/wp3/step-three")
@@ -246,47 +271,58 @@ public class WP3StepsController {
             throw new IllegalInputException("WP3InputBundle can NOT be NULL!");
         }
 
-        EconomicCoefficients economicCoefficients = wp3InputBundle.getEconomicCoefficients();
-
-        if (economicCoefficients == null) {
-            throw new IllegalInputException("EconomicCoefficients can NOT be NULL!");
-        }
-
-        BigDecimal lossOfIntangiblePercentage = economicCoefficients.getLossOfIntangible();
-
-        EconomicCoefficients existingEconomicCoefficients = this.economicCoefficientsService.findOneBySelfAssessmentID(selfAssessmentID);
-
-        if (existingEconomicCoefficients == null) {
-            throw new NotFoundException("EconomicCoefficients NOT FOUND");
+        //===SelfAssessment Lock===
+        Object lock = null;
+        if (SELF_ASSESSMENT_LOCK.containsKey(selfAssessmentID)) {
+            lock = SELF_ASSESSMENT_LOCK.get(selfAssessmentID);
         } else {
-            existingEconomicCoefficients.setLossOfIntangible(lossOfIntangiblePercentage);
-
-            //Update
-            this.economicCoefficientsService.save(existingEconomicCoefficients);
+            lock = new Object();
+            SELF_ASSESSMENT_LOCK.put(selfAssessmentID, lock);
         }
 
-        EconomicResults existingEconomicResults = this.economicResultsService.findOneBySelfAssessmentID(selfAssessmentID);
+        synchronized (lock) {
+            EconomicCoefficients economicCoefficients = wp3InputBundle.getEconomicCoefficients();
 
-        if (existingEconomicResults == null) {
-            throw new NotFoundException("The EconomicResults for SelfAssessment " + selfAssessmentID + " was not found!");
+            if (economicCoefficients == null) {
+                throw new IllegalInputException("EconomicCoefficients can NOT be NULL!");
+            }
+
+            BigDecimal lossOfIntangiblePercentage = economicCoefficients.getLossOfIntangible();
+
+            EconomicCoefficients existingEconomicCoefficients = this.economicCoefficientsService.findOneBySelfAssessmentID(selfAssessmentID);
+
+            if (existingEconomicCoefficients == null) {
+                throw new NotFoundException("EconomicCoefficients NOT FOUND");
+            } else {
+                existingEconomicCoefficients.setLossOfIntangible(lossOfIntangiblePercentage);
+
+                //Update
+                this.economicCoefficientsService.save(existingEconomicCoefficients);
+            }
+
+            EconomicResults existingEconomicResults = this.economicResultsService.findOneBySelfAssessmentID(selfAssessmentID);
+
+            if (existingEconomicResults == null) {
+                throw new NotFoundException("The EconomicResults for SelfAssessment " + selfAssessmentID + " was not found!");
+            }
+
+            BigDecimal intangibleCapital = existingEconomicResults.getIntangibleCapital();
+
+            BigDecimal intangibleLossByAttacks = Calculator.calculateIntangibleLossByAttacks(intangibleCapital, lossOfIntangiblePercentage);
+
+            //Update field
+            existingEconomicResults.setIntangibleLossByAttacks(intangibleLossByAttacks);
+
+            //update entity
+            this.economicResultsService.save(existingEconomicResults);
+
+            //OUTPUT
+            WP3OutputBundle wp3OutputBundle = new WP3OutputBundle();
+            wp3OutputBundle.setEconomicCoefficients(existingEconomicCoefficients);
+            wp3OutputBundle.setEconomicResults(existingEconomicResults);
+
+            return wp3OutputBundle;
         }
-
-        BigDecimal intangibleCapital = existingEconomicResults.getIntangibleCapital();
-
-        BigDecimal intangibleLossByAttacks = Calculator.calculateIntangibleLossByAttacks(intangibleCapital, lossOfIntangiblePercentage);
-
-        //Update field
-        existingEconomicResults.setIntangibleLossByAttacks(intangibleLossByAttacks);
-
-        //update entity
-        this.economicResultsService.save(existingEconomicResults);
-
-        //OUTPUT
-        WP3OutputBundle wp3OutputBundle = new WP3OutputBundle();
-        wp3OutputBundle.setEconomicCoefficients(existingEconomicCoefficients);
-        wp3OutputBundle.setEconomicResults(existingEconomicResults);
-
-        return wp3OutputBundle;
     }
 
     @PostMapping("{selfAssessmentID}/wp3/step-four")
@@ -307,54 +343,65 @@ public class WP3StepsController {
             throw new IllegalInputException("WP3InputBundle can NOT be NULL!");
         }
 
-        EconomicResults existingEconomicResults = this.economicResultsService.findOneBySelfAssessmentID(selfAssessmentID);
-
-        if (existingEconomicResults == null) {
-            throw new NotFoundException("The EconomicResults for SelfAssessment " + selfAssessmentID + " was not found!");
+        //===SelfAssessment Lock===
+        Object lock = null;
+        if (SELF_ASSESSMENT_LOCK.containsKey(selfAssessmentID)) {
+            lock = SELF_ASSESSMENT_LOCK.get(selfAssessmentID);
+        } else {
+            lock = new Object();
+            SELF_ASSESSMENT_LOCK.put(selfAssessmentID, lock);
         }
 
-        BigDecimal intangibleLossByAttacks = existingEconomicResults.getIntangibleLossByAttacks();
+        synchronized (lock) {
+            EconomicResults existingEconomicResults = this.economicResultsService.findOneBySelfAssessmentID(selfAssessmentID);
 
-        if (intangibleLossByAttacks == null) {
-            throw new NullInputException("IntangibleLossByAttacks (from DB) can NOT be NULL!");
-        }
+            if (existingEconomicResults == null) {
+                throw new NotFoundException("The EconomicResults for SelfAssessment " + selfAssessmentID + " was not found!");
+            }
 
-        SectorType sectorType = wp3InputBundle.getSectorType();
-        CategoryType categoryType = wp3InputBundle.getCategoryType();
+            BigDecimal intangibleLossByAttacks = existingEconomicResults.getIntangibleLossByAttacks();
 
-        List<SplittingLoss> splittingLosses = this.splittingLossService.findAllBySelfAssessmentID(selfAssessmentID);
+            if (intangibleLossByAttacks == null) {
+                throw new NullInputException("IntangibleLossByAttacks (from DB) can NOT be NULL!");
+            }
 
-        if (splittingLosses != null) {//Already exists
-            //Remove OLD ones
-            this.splittingLossService.delete(splittingLosses);
-        }
+            SectorType sectorType = wp3InputBundle.getSectorType();
+            CategoryType categoryType = wp3InputBundle.getCategoryType();
 
-        //Create NEW ones
-        splittingLosses = new ArrayList<>();
+            List<SplittingLoss> splittingLosses = this.splittingLossService.findAllBySelfAssessmentID(selfAssessmentID);
 
-        if (sectorType == null) {//means GLOBAL
-            sectorType = SectorType.GLOBAL;
-        }
+            if (splittingLosses != null) {//Already exists
+                //Remove OLD ones
+                this.splittingLossService.delete(splittingLosses);
+            }
 
-        if (categoryType == null) {//SplittingLosses for ALL CategoryTypes
-            for (CategoryType catType : CategoryType.values()) {
-                SplittingLoss splittingLoss = createNewSplittingLoss(selfAssessment, intangibleLossByAttacks, sectorType, catType);
+            //Create NEW ones
+            splittingLosses = new ArrayList<>();
+
+            if (sectorType == null) {//means GLOBAL
+                sectorType = SectorType.GLOBAL;
+            }
+
+            if (categoryType == null) {//SplittingLosses for ALL CategoryTypes
+                for (CategoryType catType : CategoryType.values()) {
+                    SplittingLoss splittingLoss = createNewSplittingLoss(selfAssessment, intangibleLossByAttacks, sectorType, catType);
+                    splittingLosses.add(splittingLoss);
+                }
+            } else {//SplittingLoss ONLY for that CategoryType
+                SplittingLoss splittingLoss = createNewSplittingLoss(selfAssessment, intangibleLossByAttacks, sectorType, categoryType);
                 splittingLosses.add(splittingLoss);
             }
-        } else {//SplittingLoss ONLY for that CategoryType
-            SplittingLoss splittingLoss = createNewSplittingLoss(selfAssessment, intangibleLossByAttacks, sectorType, categoryType);
-            splittingLosses.add(splittingLoss);
+
+            //Persist the NEW SplittingLosses
+            splittingLosses = this.splittingLossService.save(splittingLosses);
+
+            WP3OutputBundle wp3OutputBundle = new WP3OutputBundle();
+            wp3OutputBundle.setEconomicResults(existingEconomicResults);
+            wp3OutputBundle.setEconomicCoefficients(null);//Not used in this step, if needed may be fetched and returned.
+            wp3OutputBundle.setSplittingLosses(splittingLosses);
+
+            return wp3OutputBundle;
         }
-
-        //Persist the NEW SplittingLosses
-        splittingLosses = this.splittingLossService.save(splittingLosses);
-
-        WP3OutputBundle wp3OutputBundle = new WP3OutputBundle();
-        wp3OutputBundle.setEconomicResults(existingEconomicResults);
-        wp3OutputBundle.setEconomicCoefficients(null);//Not used in this step, if needed may be fetched and returned.
-        wp3OutputBundle.setSplittingLosses(splittingLosses);
-
-        return wp3OutputBundle;
     }
 
     private SplittingLoss createNewSplittingLoss(SelfAssessment selfAssessment, BigDecimal intangibleLossByAttacks, SectorType sectorType, CategoryType catType) {
