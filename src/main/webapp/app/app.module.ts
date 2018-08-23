@@ -40,7 +40,7 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
         ReactiveFormsModule,
         HttpClientModule,
         Ng2Webstorage.forRoot({prefix: 'jhi', separator: '-'}),
-        HermeneutSharedModule,
+        HermeneutSharedModule.forRoot(),
         HermeneutHomeModule,
         HermeneutAdminModule,
         HermeneutAccountModule,

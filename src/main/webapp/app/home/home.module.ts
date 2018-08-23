@@ -8,7 +8,7 @@ import {MaterialModule} from '../material/material.module';
 
 @NgModule({
     imports: [
-        HermeneutSharedModule,
+        HermeneutSharedModule.forRoot(),
         RouterModule.forChild([HOME_ROUTE]),
         MaterialModule
     ],
