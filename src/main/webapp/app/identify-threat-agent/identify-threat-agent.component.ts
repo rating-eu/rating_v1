@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { JhiEventManager } from 'ng-jhipster';
-import {LoginModalService, Principal} from '../shared';
+import {Component, OnInit} from '@angular/core';
+import {JhiEventManager, JhiLanguageService} from 'ng-jhipster';
+import {JhiLanguageHelper, LoginModalService, Principal} from '../shared';
 import {SelfAssessmentMgm, SelfAssessmentMgmService} from '../entities/self-assessment-mgm';
 
 @Component({
@@ -15,8 +15,10 @@ export class IdentifyThreatAgentComponent implements OnInit {
         private principal: Principal,
         private loginModalService: LoginModalService,
         private eventManager: JhiEventManager,
-        private mySelfAssessmentService: SelfAssessmentMgmService
-    ) {}
+        private mySelfAssessmentService: SelfAssessmentMgmService,
+        private languageService: JhiLanguageService, private languageHelper: JhiLanguageHelper
+    ) {
+    }
 
     ngOnInit() {
         // this.principal.identity().then((account) => {
@@ -25,6 +27,7 @@ export class IdentifyThreatAgentComponent implements OnInit {
         this.mySelf = this.mySelfAssessmentService.getSelfAssessment();
 
     }
+
     previousState() {
         window.history.back();
     }

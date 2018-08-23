@@ -1,5 +1,6 @@
-import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { DatePipe } from '@angular/common';
+import {NgModule, CUSTOM_ELEMENTS_SCHEMA, ModuleWithProviders, LOCALE_ID} from '@angular/core';
+import {DatePipe, registerLocaleData} from '@angular/common';
+import locale from '@angular/common/locales/en';
 
 import {
     HermeneutSharedLibsModule,
@@ -14,7 +15,11 @@ import {
     JhiLoginModalComponent,
     Principal,
     HasAnyAuthorityDirective,
+    FindLanguageFromKeyPipe,
+    JhiLanguageHelper
 } from './';
+
+import {Title} from '@angular/platform-browser';
 
 @NgModule({
     imports: [
@@ -23,7 +28,8 @@ import {
     ],
     declarations: [
         JhiLoginModalComponent,
-        HasAnyAuthorityDirective
+        HasAnyAuthorityDirective,
+        FindLanguageFromKeyPipe
     ],
     providers: [
         LoginService,
@@ -40,10 +46,30 @@ import {
     exports: [
         HermeneutSharedCommonModule,
         JhiLoginModalComponent,
+        FindLanguageFromKeyPipe,
         HasAnyAuthorityDirective,
         DatePipe
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 
 })
-export class HermeneutSharedModule {}
+export class HermeneutSharedModule {
+
+    constructor() {
+        registerLocaleData(locale);
+    }
+
+    static forRoot(): ModuleWithProviders {
+        return {
+            ngModule: HermeneutSharedModule,
+            providers: [
+                JhiLanguageHelper,
+                Title,
+                {
+                    provide: LOCALE_ID,
+                    useValue: 'en'
+                }
+            ]
+        }
+    }
+}

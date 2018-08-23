@@ -4,13 +4,13 @@ import {IdentifyAssetsRoutingModule} from './identify-assets-routing.module';
 import {IdentifyAssetComponent} from './id-assets/identify-asset.component';
 import {QuestionComponent} from './question-component/question.component';
 import {IdentifyAssetUtilService} from './identify-asset.util.service';
-import {HermeneutSharedModule} from '../shared';
+import {HermeneutSharedModule, JhiLanguageHelper} from '../shared';
 import {HTTP_INTERCEPTORS} from '@angular/common/http';
 import {AuthExpiredInterceptor} from '../blocks/interceptor/auth-expired.interceptor';
 import {AuthInterceptor} from '../blocks/interceptor/auth.interceptor';
 import {LocalStorageService, SessionStorageService} from 'ngx-webstorage';
 import {ErrorHandlerInterceptor} from '../blocks/interceptor/errorhandler.interceptor';
-import {JhiEventManager} from 'ng-jhipster';
+import {JhiEventManager, JhiLanguageService} from 'ng-jhipster';
 import {NotificationInterceptor} from '../blocks/interceptor/notification.interceptor';
 
 @NgModule({
@@ -66,4 +66,12 @@ import {NotificationInterceptor} from '../blocks/interceptor/notification.interc
     ]
 })
 export class IdentifyAssetModule {
+    constructor(private languageService: JhiLanguageService, private languageHelper: JhiLanguageHelper) {
+        this.languageHelper.language
+            .subscribe((languageKey: string) => {
+                console.log('ID_THREAT_AGENT lang: ' + languageKey);
+
+                this.languageService.changeLanguage(languageKey)
+            });
+    }
 }

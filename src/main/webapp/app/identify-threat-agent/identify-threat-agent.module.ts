@@ -1,7 +1,4 @@
 import {Injector, NgModule} from '@angular/core';
-import {HermeneutSharedModule} from '../shared';
-
-import {CommonModule} from '@angular/common';
 import {IdentifyThreatAgentRoutingModule} from './identify-threat-agent-routing.module';
 import {IdentifyThreatAgentComponent} from './identify-threat-agent.component';
 import {ThreatResultComponent} from './result/result.component';
@@ -14,7 +11,8 @@ import {HTTP_INTERCEPTORS} from '@angular/common/http';
 import {AuthExpiredInterceptor} from '../blocks/interceptor/auth-expired.interceptor';
 import {ErrorHandlerInterceptor} from '../blocks/interceptor/errorhandler.interceptor';
 import {JhiEventManager, JhiLanguageService} from 'ng-jhipster';
-import {JhiLanguageHelper} from '../shared';
+import {HermeneutSharedModule, JhiLanguageHelper} from '../shared';
+import {CommonModule} from '@angular/common';
 
 @NgModule({
     imports: [
@@ -70,6 +68,9 @@ import {JhiLanguageHelper} from '../shared';
 })
 export class IdentifyThreatAgentModule {
     constructor(private languageService: JhiLanguageService, private languageHelper: JhiLanguageHelper) {
-        this.languageHelper.language.subscribe((languageKey: string) => this.languageService.changeLanguage(languageKey));
+        this.languageHelper.language
+            .subscribe((languageKey: string) => {
+                this.languageService.changeLanguage(languageKey)
+            });
     }
 }
