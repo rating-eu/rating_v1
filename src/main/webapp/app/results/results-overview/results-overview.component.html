@@ -4,7 +4,13 @@
 
 <div *ngIf="maxRefinedVulnerability">
     <mat-progress-spinner style="margin:0 auto;"
-                          class="high"
+                          [ngClass]="{
+                          'low': maxRefinedVulnerability * 5 > 0 && maxRefinedVulnerability * 5 <= 1,
+                          'low-medium': maxRefinedVulnerability * 5 > 1 && maxRefinedVulnerability * 5 <= 2,
+                          'medium': maxRefinedVulnerability * 5 > 2 && maxRefinedVulnerability * 5 <= 3,
+                          'medium-high': maxRefinedVulnerability * 5 > 3 && maxRefinedVulnerability * 5 <= 4,
+                          'high': maxRefinedVulnerability * 5 > 4 && maxRefinedVulnerability * 5 <= 5
+                          }"
                           [value]="maxRefinedVulnerability * 100">
     </mat-progress-spinner>
 
@@ -32,6 +38,13 @@
             <td class="text-center align-middle">
                 <mat-progress-spinner
                     style="margin:0 auto;"
+                    [ngClass]="{
+                          'low': threatAgentLikelihoodsMap.get(threatAgentID).initialLikelihood * 5 > 0 && threatAgentLikelihoodsMap.get(threatAgentID).initialLikelihood * 5 <= 1,
+                          'low-medium': threatAgentLikelihoodsMap.get(threatAgentID).initialLikelihood * 5 > 1 && threatAgentLikelihoodsMap.get(threatAgentID).initialLikelihood * 5 <= 2,
+                          'medium': threatAgentLikelihoodsMap.get(threatAgentID).initialLikelihood * 5 > 2 && threatAgentLikelihoodsMap.get(threatAgentID).initialLikelihood * 5 <= 3,
+                          'medium-high': threatAgentLikelihoodsMap.get(threatAgentID).initialLikelihood * 5 > 3 && threatAgentLikelihoodsMap.get(threatAgentID).initialLikelihood * 5 <= 4,
+                          'high': threatAgentLikelihoodsMap.get(threatAgentID).initialLikelihood * 5 > 4 && threatAgentLikelihoodsMap.get(threatAgentID).initialLikelihood * 5 <= 5
+                          }"
                     [value]="threatAgentLikelihoodsMap.get(threatAgentID).initialLikelihood * 100">
                 </mat-progress-spinner>
                 {{threatAgentLikelihoodsMap.get(threatAgentID).initialLikelihood | percent}}
@@ -40,6 +53,13 @@
             <td class="text-center align-middle">
                 <mat-progress-spinner
                     style="margin:0 auto;"
+                    [ngClass]="{
+                          'low': threatAgentLikelihoodsMap.get(threatAgentID).contextualLikelihood * 5 > 0 && threatAgentLikelihoodsMap.get(threatAgentID).contextualLikelihood * 5 <= 1,
+                          'low-medium': threatAgentLikelihoodsMap.get(threatAgentID).contextualLikelihood * 5 > 1 && threatAgentLikelihoodsMap.get(threatAgentID).contextualLikelihood * 5 <= 2,
+                          'medium': threatAgentLikelihoodsMap.get(threatAgentID).contextualLikelihood * 5 > 2 && threatAgentLikelihoodsMap.get(threatAgentID).contextualLikelihood * 5 <= 3,
+                          'medium-high': threatAgentLikelihoodsMap.get(threatAgentID).contextualLikelihood * 5 > 3 && threatAgentLikelihoodsMap.get(threatAgentID).contextualLikelihood * 5 <= 4,
+                          'high': threatAgentLikelihoodsMap.get(threatAgentID).contextualLikelihood * 5 > 4 && threatAgentLikelihoodsMap.get(threatAgentID).contextualLikelihood * 5 <= 5
+                          }"
                     [value]="threatAgentLikelihoodsMap.get(threatAgentID).contextualLikelihood * 100">
                 </mat-progress-spinner>
                 {{threatAgentLikelihoodsMap.get(threatAgentID).contextualLikelihood | percent}}
@@ -48,6 +68,13 @@
             <td class="text-center align-middle">
                 <mat-progress-spinner
                     style="margin:0 auto;"
+                    [ngClass]="{
+                          'low': threatAgentLikelihoodsMap.get(threatAgentID).refinedLikelihood * 5 > 0 && threatAgentLikelihoodsMap.get(threatAgentID).refinedLikelihood * 5 <= 1,
+                          'low-medium': threatAgentLikelihoodsMap.get(threatAgentID).refinedLikelihood * 5 > 1 && threatAgentLikelihoodsMap.get(threatAgentID).refinedLikelihood * 5 <= 2,
+                          'medium': threatAgentLikelihoodsMap.get(threatAgentID).refinedLikelihood * 5 > 2 && threatAgentLikelihoodsMap.get(threatAgentID).refinedLikelihood * 5 <= 3,
+                          'medium-high': threatAgentLikelihoodsMap.get(threatAgentID).refinedLikelihood * 5 > 3 && threatAgentLikelihoodsMap.get(threatAgentID).refinedLikelihood * 5 <= 4,
+                          'high': threatAgentLikelihoodsMap.get(threatAgentID).refinedLikelihood * 5 > 4 && threatAgentLikelihoodsMap.get(threatAgentID).refinedLikelihood * 5 <= 5
+                          }"
                     [value]="threatAgentLikelihoodsMap.get(threatAgentID).refinedLikelihood * 100">
                 </mat-progress-spinner>
                 {{threatAgentLikelihoodsMap.get(threatAgentID).refinedLikelihood | percent}}
