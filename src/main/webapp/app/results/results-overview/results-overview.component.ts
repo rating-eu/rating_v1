@@ -46,15 +46,83 @@ export class ResultsOverviewComponent implements OnInit {
 
         this.maxLikelihood$ = this.resultService.getMax();
 
-        /*this.result$ = this.maxLikelihood$.mergeMap(
+        this.result$ = this.maxLikelihood$.mergeMap(
             (value: number) => {
                 this.maxLikelihood = value;
 
                 return this.resultService.getResult(this.selfAssessment.id);
             }
-        );*/
+        );
 
-        this.threatAgentIDs = [1, 2, 3, 4, 5];
+        this.result$.subscribe(
+            (response: HttpResponse<Result>) => {
+                this.result = response.body;
+                console.log('Result: ' + JSON.stringify(this.result));
+
+                const initialVulnerabilityMap: Map<number, number> = this.result.initialVulnerability as Map<number, number>;
+                console.log('TypeOf initialVulnerabilityMap: ' + typeof initialVulnerabilityMap);
+
+                console.log('InitialVulnerabilityMap: ' + initialVulnerabilityMap.size);
+                console.log('InitialVulnerabilityKeys: ' + JSON.stringify(Array.from(initialVulnerabilityMap.keys())));
+                console.log('InitialVulnerabiltyValues: ' + JSON.stringify(Array.from(initialVulnerabilityMap.values())));
+
+                const contextualVulnerabilityMap: Map<number/*ThreatAgentID*/, number> = this.result.contextualVulnerability as Map<number, number>;
+                const refinedVulnerabilityMap: Map<number, number> = this.result.refinedVulnerability as Map<number, number>;
+
+                // Initial Likelihood
+                initialVulnerabilityMap.forEach((value: number, threatAgentID: number) => {
+                    if (this.threatAgentLikelihoodsMap.has(threatAgentID)) {
+                        const likelihood: ThreatAgentLikelihoods = this.threatAgentLikelihoodsMap.get(threatAgentID);
+                        likelihood.initialLikelihood = (value / this.maxLikelihood);
+                    } else {
+                        const likelihood: ThreatAgentLikelihoods = new ThreatAgentLikelihoods(this.threatAgentsMap.get(threatAgentID));
+                        likelihood.initialLikelihood = (value / this.maxLikelihood);
+                        this.threatAgentLikelihoodsMap.set(threatAgentID, likelihood);
+                    }
+                });
+
+                // Contextual Likelihood
+                contextualVulnerabilityMap.forEach((value: number, threatAgentID: number) => {
+                    if (this.threatAgentLikelihoodsMap.has(threatAgentID)) {
+                        const likelihood: ThreatAgentLikelihoods = this.threatAgentLikelihoodsMap.get(threatAgentID);
+                        likelihood.contextualLikelihood = (value / this.maxLikelihood);
+                    } else {
+                        const likelihood: ThreatAgentLikelihoods = new ThreatAgentLikelihoods(this.threatAgentsMap.get(threatAgentID));
+                        likelihood.contextualLikelihood = (value / this.maxLikelihood);
+                        this.threatAgentLikelihoodsMap.set(threatAgentID, likelihood);
+                    }
+                });
+
+                // Refined Likelihood
+                refinedVulnerabilityMap.forEach((value: number, threatAgentID: number) => {
+                    if (this.threatAgentLikelihoodsMap.has(threatAgentID)) {
+                        const likelihood: ThreatAgentLikelihoods = this.threatAgentLikelihoodsMap.get(threatAgentID);
+                        likelihood.refinedLikelihood = (value / this.maxLikelihood);
+                    } else {
+                        const likelihood: ThreatAgentLikelihoods = new ThreatAgentLikelihoods(this.threatAgentsMap.get(threatAgentID));
+                        likelihood.refinedLikelihood = (value / this.maxLikelihood);
+                        this.threatAgentLikelihoodsMap.set(threatAgentID, likelihood);
+                    }
+
+                    // Update the max
+                    if ((value / this.maxLikelihood) > this.maxRefinedVulnerability) {
+                        this.maxRefinedVulnerability = (value / this.maxLikelihood);
+                    }
+                });
+
+                this.threatAgentIDs = [];
+                this.threatAgentLikelihoodsMap.forEach((value: ThreatAgentLikelihoods, key: number) => {
+                    this.threatAgentIDs.push(key);
+                });
+
+                this.threatAgentIDs.forEach((value: number) => {
+                    console.log('ThreatAgent ID: ' + value);
+                });
+            }
+        );
+
+        //Random Data
+        /*this.threatAgentIDs = [1, 2, 3, 4, 5];
 
         this.threatAgentIDs.forEach(id => {
             const threatAgent = new ThreatAgentMgm(id, 'ThreatAgent: ' + id);
@@ -67,6 +135,6 @@ export class ResultsOverviewComponent implements OnInit {
             this.threatAgentLikelihoodsMap.set(id, likelihoods);
         });
 
-        this.maxRefinedVulnerability = Math.floor(Math.random() * 5) / 5;
+        this.maxRefinedVulnerability = Math.floor(Math.random() * 5) / 5;*/
     }
 }
