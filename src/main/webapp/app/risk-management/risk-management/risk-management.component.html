@@ -1,6 +1,6 @@
 <div class="container">
   <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-5">
       <button *ngIf="criticalLevel" type="button" class="btn btn-dark" routerLink="risk-evaluation" routerLinkActive="active">Risk evaluation
       </button>
       <button *ngIf="criticalLevel" type="button" class="btn btn-dark" routerLink="risk-mitigation" routerLinkActive="active">Risk mitigation
@@ -22,7 +22,7 @@
         </button>
       </div>
     </div>
-    <div *ngIf="!isCriticalCollapsed || !isVulnerabilityCollapsed || !isLikelihoodCollapsed" class="col-md-1 text-right align-middle">
+    <div *ngIf="!isCriticalCollapsed || !isVulnerabilityCollapsed || !isLikelihoodCollapsed" class="col-md-1 offset-md-1 text-right align-middle">
       <i class="fa fa-times fa-lg text-secondary" aria-hidden="true" (click)="switchOnCollapsible('none')"></i>
     </div>
   </div>

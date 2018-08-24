@@ -104,9 +104,9 @@ export class RiskManagementComponent implements OnInit {
         if (this.criticalLevel.lowLimit >= this.criticalLevel.mediumLimit) {
           this.criticalLevel.mediumLimit = undefined;
         } else {
-          if (this.criticalLevel.mediumLimit === undefined && this.criticalLevel.highLimit === undefined) {
+          if (!this.criticalLevel.mediumLimit && !this.criticalLevel.highLimit) {
             this.criticalLevel.mediumLimit = this.criticalLevel.side * this.criticalLevel.side;
-          } else if (this.criticalLevel.mediumLimit === undefined && this.criticalLevel.highLimit !== undefined) {
+          } else if (!this.criticalLevel.mediumLimit && (this.criticalLevel.highLimit !== undefined || this.criticalLevel.highLimit !== null)) {
             this.criticalLevel.mediumLimit = oldLowLimit;
           }
         }
@@ -119,15 +119,15 @@ export class RiskManagementComponent implements OnInit {
         this.criticalLevel.mediumLimit = newLimit;
         if (this.criticalLevel.mediumLimit === 1) {
           this.criticalLevel.lowLimit = undefined;
-          if (this.criticalLevel.highLimit === undefined) {
+          if (!this.criticalLevel.highLimit) {
             this.criticalLevel.mediumLimit = this.criticalLevel.side * this.criticalLevel.side;
           }
         } else {
           if (this.criticalLevel.mediumLimit <= this.criticalLevel.lowLimit && this.criticalLevel.mediumLimit !== 1) {
             this.criticalLevel.lowLimit = this.criticalLevel.mediumLimit - 1;
           }
-          if (this.criticalLevel.highLimit === undefined) {
-            this.criticalLevel.mediumLimit = this.criticalLevel.side * this.criticalLevel.side;
+          if (!this.criticalLevel.highLimit) {
+            this.criticalLevel.highLimit = this.criticalLevel.side * this.criticalLevel.side;
           } else if (this.criticalLevel.mediumLimit === this.criticalLevel.side * this.criticalLevel.side) {
             this.criticalLevel.highLimit = undefined;
           }
