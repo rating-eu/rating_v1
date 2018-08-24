@@ -6,7 +6,10 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.data.elasticsearch.annotations.Document;
+
 import java.io.Serializable;
 import java.time.ZonedDateTime;
 import java.util.HashSet;
@@ -33,9 +36,11 @@ public class SelfAssessment implements Serializable {
     @Column(name = "name", nullable = false)
     private String name;
 
+    @CreationTimestamp
     @Column(name = "created")
     private ZonedDateTime created;
 
+    @UpdateTimestamp
     @Column(name = "modified")
     private ZonedDateTime modified;
 
@@ -45,50 +50,50 @@ public class SelfAssessment implements Serializable {
     @ManyToMany
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     @JoinTable(name = "self_assessment_companyprofiles",
-               joinColumns = @JoinColumn(name="self_assessments_id", referencedColumnName="id"),
-               inverseJoinColumns = @JoinColumn(name="companyprofiles_id", referencedColumnName="id"))
+        joinColumns = @JoinColumn(name = "self_assessments_id", referencedColumnName = "id"),
+        inverseJoinColumns = @JoinColumn(name = "companyprofiles_id", referencedColumnName = "id"))
     private Set<CompanyProfile> companyprofiles = new HashSet<>();
 
     @ManyToMany
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     @JoinTable(name = "self_assessment_company_group",
-               joinColumns = @JoinColumn(name="self_assessments_id", referencedColumnName="id"),
-               inverseJoinColumns = @JoinColumn(name="company_groups_id", referencedColumnName="id"))
+        joinColumns = @JoinColumn(name = "self_assessments_id", referencedColumnName = "id"),
+        inverseJoinColumns = @JoinColumn(name = "company_groups_id", referencedColumnName = "id"))
     private Set<CompanyGroup> companyGroups = new HashSet<>();
 
     @ManyToMany
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     @JoinTable(name = "self_assessment_asset",
-               joinColumns = @JoinColumn(name="self_assessments_id", referencedColumnName="id"),
-               inverseJoinColumns = @JoinColumn(name="assets_id", referencedColumnName="id"))
+        joinColumns = @JoinColumn(name = "self_assessments_id", referencedColumnName = "id"),
+        inverseJoinColumns = @JoinColumn(name = "assets_id", referencedColumnName = "id"))
     private Set<Asset> assets = new HashSet<>();
 
     @ManyToMany
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     @JoinTable(name = "self_assessment_threatagent",
-               joinColumns = @JoinColumn(name="self_assessments_id", referencedColumnName="id"),
-               inverseJoinColumns = @JoinColumn(name="threatagents_id", referencedColumnName="id"))
+        joinColumns = @JoinColumn(name = "self_assessments_id", referencedColumnName = "id"),
+        inverseJoinColumns = @JoinColumn(name = "threatagents_id", referencedColumnName = "id"))
     private Set<ThreatAgent> threatagents = new HashSet<>();
 
     @ManyToMany
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     @JoinTable(name = "self_assessment_attackstrategy",
-               joinColumns = @JoinColumn(name="self_assessments_id", referencedColumnName="id"),
-               inverseJoinColumns = @JoinColumn(name="attackstrategies_id", referencedColumnName="id"))
+        joinColumns = @JoinColumn(name = "self_assessments_id", referencedColumnName = "id"),
+        inverseJoinColumns = @JoinColumn(name = "attackstrategies_id", referencedColumnName = "id"))
     private Set<AttackStrategy> attackstrategies = new HashSet<>();
 
     @ManyToMany
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     @JoinTable(name = "self_assessment_externalaudit",
-               joinColumns = @JoinColumn(name="self_assessments_id", referencedColumnName="id"),
-               inverseJoinColumns = @JoinColumn(name="externalaudits_id", referencedColumnName="id"))
+        joinColumns = @JoinColumn(name = "self_assessments_id", referencedColumnName = "id"),
+        inverseJoinColumns = @JoinColumn(name = "externalaudits_id", referencedColumnName = "id"))
     private Set<ExternalAudit> externalaudits = new HashSet<>();
 
     @ManyToMany
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     @JoinTable(name = "self_assessment_questionnaire",
-               joinColumns = @JoinColumn(name="self_assessments_id", referencedColumnName="id"),
-               inverseJoinColumns = @JoinColumn(name="questionnaires_id", referencedColumnName="id"))
+        joinColumns = @JoinColumn(name = "self_assessments_id", referencedColumnName = "id"),
+        inverseJoinColumns = @JoinColumn(name = "questionnaires_id", referencedColumnName = "id"))
     private Set<Questionnaire> questionnaires = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove

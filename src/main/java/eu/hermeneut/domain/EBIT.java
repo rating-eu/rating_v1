@@ -7,6 +7,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.data.elasticsearch.annotations.Document;
 
 import java.io.Serializable;
@@ -50,6 +51,7 @@ public class EBIT implements Serializable {
     @Column(name = "jhi_value", precision=10, scale=2)
     private BigDecimal value;
 
+    @CreationTimestamp
     @Column(name = "created")
     private ZonedDateTime created;
 
