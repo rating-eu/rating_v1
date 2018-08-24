@@ -1,20 +1,21 @@
-<p>
-    results-overview works!
-</p>
-
-<div *ngIf="maxRefinedVulnerability">
-    <mat-progress-spinner style="margin:0 auto;"
-                          [ngClass]="{
+<div class="row" *ngIf="maxRefinedVulnerability">
+    <div class="col-md-12 align-middle text-center">
+        <mat-progress-spinner
+            style="margin: 0 auto;"
+            [ngClass]="{
                           'low': maxRefinedVulnerability * 5 > 0 && maxRefinedVulnerability * 5 <= 1,
                           'low-medium': maxRefinedVulnerability * 5 > 1 && maxRefinedVulnerability * 5 <= 2,
                           'medium': maxRefinedVulnerability * 5 > 2 && maxRefinedVulnerability * 5 <= 3,
                           'medium-high': maxRefinedVulnerability * 5 > 3 && maxRefinedVulnerability * 5 <= 4,
                           'high': maxRefinedVulnerability * 5 > 4 && maxRefinedVulnerability * 5 <= 5
                           }"
-                          [value]="maxRefinedVulnerability * 100">
-    </mat-progress-spinner>
+            [value]="maxRefinedVulnerability * 100">
+        </mat-progress-spinner>
 
-    <span>Likelihood {{maxRefinedVulnerability | percent}}</span>
+        <div style="top:-60px; z-index:2;position:relative;">
+            {{maxRefinedVulnerability | percent}}
+        </div>
+    </div>
 </div>
 
 <div class="table-responsive">
@@ -47,7 +48,9 @@
                           }"
                     [value]="threatAgentLikelihoodsMap.get(threatAgentID).initialLikelihood * 100">
                 </mat-progress-spinner>
-                {{threatAgentLikelihoodsMap.get(threatAgentID).initialLikelihood | percent}}
+                <div style="top:-60px; z-index:2;position:relative;">
+                    {{threatAgentLikelihoodsMap.get(threatAgentID).initialLikelihood | percent}}
+                </div>
             </td>
 
             <td class="text-center align-middle">
@@ -62,7 +65,9 @@
                           }"
                     [value]="threatAgentLikelihoodsMap.get(threatAgentID).contextualLikelihood * 100">
                 </mat-progress-spinner>
-                {{threatAgentLikelihoodsMap.get(threatAgentID).contextualLikelihood | percent}}
+                <div style="top:-60px; z-index:2;position:relative;">
+                    {{threatAgentLikelihoodsMap.get(threatAgentID).contextualLikelihood | percent}}
+                </div>
             </td>
 
             <td class="text-center align-middle">
@@ -77,7 +82,10 @@
                           }"
                     [value]="threatAgentLikelihoodsMap.get(threatAgentID).refinedLikelihood * 100">
                 </mat-progress-spinner>
-                {{threatAgentLikelihoodsMap.get(threatAgentID).refinedLikelihood | percent}}
+                <div style="top:-60px; z-index:2;position:relative;">
+                    {{threatAgentLikelihoodsMap.get(threatAgentID).refinedLikelihood | percent}}
+                </div>
+
             </td>
         </tr>
         </tbody>
