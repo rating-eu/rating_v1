@@ -92,6 +92,13 @@ public class EBITServiceImpl implements EBITService {
         eBITSearchRepository.delete(id);
     }
 
+    @Override
+    public void delete(List<EBIT> ebits) {
+        log.debug("Request to delete EBITs");
+        eBITRepository.delete(ebits);
+        eBITSearchRepository.delete(ebits);
+    }
+
     /**
      * Search for the eBIT corresponding to the query.
      *
