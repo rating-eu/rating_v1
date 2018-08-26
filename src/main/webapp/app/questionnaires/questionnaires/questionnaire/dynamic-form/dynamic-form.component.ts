@@ -332,10 +332,8 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
         this.dataSharingSerivce.threatAgentsMap = threatAgentsPercentageMap;
         console.log('DYNAMIC FORM Shared ThreatAgent Percentage Map size: ', +this.dataSharingSerivce.threatAgentsMap.size);
 
-        const now: string = new Date().toISOString();
-
         // #1 Persist QuestionnaireStatus
-        let questionnaireStatus: QuestionnaireStatusMgm = new QuestionnaireStatusMgm(undefined, Status.FULL, now, now, this.selfAssessment, this.questionnaire, this.role, this.user, []);
+        let questionnaireStatus: QuestionnaireStatusMgm = new QuestionnaireStatusMgm(undefined, Status.FULL, null, null, this.selfAssessment, this.questionnaire, this.role, this.user, []);
         const questionnaireStatus$: Observable<HttpResponse<QuestionnaireStatusMgm>> = this.questionnaireStatusService.create(questionnaireStatus);
 
         // #2 Persist MyAnswers
@@ -432,11 +430,8 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
         const formDataMap: Map<string, AnswerMgm> = FormUtils.formToMap<AnswerMgm>(this.form);
         console.log('FormDataMap size: ' + formDataMap.size);
 
-        //Now ISO8601
-        const now: string = new Date().toISOString();
-
         // Update the status of the questionnaire
-        let questionnaireStatus = new QuestionnaireStatusMgm(undefined, Status.FULL, now, now, this.selfAssessment, this.questionnaire, this.role, this.user, []);
+        let questionnaireStatus = new QuestionnaireStatusMgm(undefined, Status.FULL, null, null, this.selfAssessment, this.questionnaire, this.role, this.user, []);
 
         // Persist the QuestionnaireStatus
         const selfAssessment$: Observable<HttpResponse<SelfAssessmentMgm>> =
@@ -489,11 +484,8 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
         const formDataMap: Map<string, AnswerMgm | string> = FormUtils.formToMap<AnswerMgm | string>(this.form);
         console.log('FormDataMap size: ' + formDataMap.size);
 
-        //Now ISO8601
-        const now: string = new Date().toISOString();
-
         // Create the status of the questionnaire
-        let questionnaireStatus = new QuestionnaireStatusMgm(undefined, Status.FULL, now, now, this.selfAssessment, this.questionnaire, this.role, this.user, []);
+        let questionnaireStatus = new QuestionnaireStatusMgm(undefined, Status.FULL, null, null, this.selfAssessment, this.questionnaire, this.role, this.user, []);
 
         const myRefinementAnswers: Observable<HttpResponse<MyAnswerMgm[]>> = this.questionnaireStatusService.create(questionnaireStatus)
             .mergeMap(
@@ -524,15 +516,13 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
         console.log('FormData: ' + formDataMap);
         console.log('FormDataMap Size: ' + formDataMap.size);
 
-        const now: string = new Date().toISOString();
-
         switch (this.questionnaireStatus.status) {
             case Status.EMPTY: {// create a new QuestionnaireStatus && create MyAnswers
                 /**
                  * The PENDING status for the questionnaire.
                  * @type {QuestionnaireStatusMgm}
                  */
-                this.questionnaireStatus = new QuestionnaireStatusMgm(undefined, Status.PENDING, now, now, this.selfAssessment, this._questionnaire, this.role, this.user, []);
+                this.questionnaireStatus = new QuestionnaireStatusMgm(undefined, Status.PENDING, null, null, this.selfAssessment, this._questionnaire, this.role, this.user, []);
 
                 // Getting the id of the above QuestionnaireStatus
                 this.subscriptions.push(
