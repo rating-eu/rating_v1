@@ -1,9 +1,8 @@
 package eu.hermeneut.web.rest.result;
 
-import com.codahale.metrics.annotation.Timed;
 import eu.hermeneut.domain.*;
 import eu.hermeneut.domain.enumeration.*;
-import eu.hermeneut.domain.result.AttackMap;
+import eu.hermeneut.domain.attackmap.AttackMap;
 import eu.hermeneut.domain.result.AugmentedAttackStrategy;
 import eu.hermeneut.domain.result.Result;
 import eu.hermeneut.service.*;

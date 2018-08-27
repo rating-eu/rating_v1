@@ -1,7 +1,8 @@
-package eu.hermeneut.domain.result;
+package eu.hermeneut.domain.attackmap;
 
 import eu.hermeneut.domain.Level;
 import eu.hermeneut.domain.Phase;
+import eu.hermeneut.domain.result.AugmentedAttackStrategy;
 
 import java.util.*;
 
