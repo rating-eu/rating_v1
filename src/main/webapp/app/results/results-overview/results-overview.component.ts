@@ -120,5 +120,21 @@ export class ResultsOverviewComponent implements OnInit {
                 });
             }
         );
+
+        //Random Data
+        /*this.threatAgentIDs = [1, 2, 3, 4, 5];
+
+        this.threatAgentIDs.forEach(id => {
+            const threatAgent = new ThreatAgentMgm(id, 'ThreatAgent: ' + id);
+
+            const likelihoods = new ThreatAgentLikelihoods(threatAgent);
+            likelihoods.initialLikelihood = (Math.floor(Math.random() * 5) + 1) / 5;
+            likelihoods.contextualLikelihood = (Math.floor(Math.random() * 5) + 1) / 5;
+            likelihoods.refinedLikelihood = (Math.floor(Math.random() * 5) + 1) / 5;
+
+            this.threatAgentLikelihoodsMap.set(id, likelihoods);
+        });
+
+        this.maxRefinedVulnerability = Math.floor(Math.random() * 5) / 5;*/
     }
 }

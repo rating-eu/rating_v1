@@ -8,6 +8,7 @@ import {JhiDateUtils} from 'ng-jhipster';
 
 import {SelfAssessmentMgm} from './self-assessment-mgm.model';
 import {createRequestOption} from '../../shared';
+import {SessionStorageService} from '../../../../../../node_modules/ngx-webstorage';
 
 export type EntityResponseType = HttpResponse<SelfAssessmentMgm>;
 
@@ -17,8 +18,13 @@ export class SelfAssessmentMgmService implements OnInit {
     private resourceUrl = SERVER_API_URL + 'api/self-assessments';
     private resourceSearchUrl = SERVER_API_URL + 'api/_search/self-assessments';
     private selfAssessmentSelected: SelfAssessmentMgm;
+    private static readonly SELF_ASSESSMENT_KEY = 'selfAssessment';
 
-    constructor(private http: HttpClient, private dateUtils: JhiDateUtils, private router: Router) {
+    constructor(
+        private http: HttpClient,
+        private dateUtils: JhiDateUtils,
+        private router: Router,
+        private sessionStorage: SessionStorageService) {
     }
 
     ngOnInit() {
@@ -30,19 +36,22 @@ export class SelfAssessmentMgmService implements OnInit {
     }
 
     getSelfAssessment(): SelfAssessmentMgm {
-        if (isUndefined(this.selfAssessmentSelected)) {
+        const self = this.sessionStorage.retrieve(SelfAssessmentMgmService.SELF_ASSESSMENT_KEY);
+        if (!self) {
             this.router.navigate(['/']);
             return null;
         } else {
+            this.selfAssessmentSelected = self;
             return this.selfAssessmentSelected;
         }
     }
 
     setSelfAssessment(selfAssessment: SelfAssessmentMgm) {
         this.selfAssessmentSelected = selfAssessment;
-        this.checkSelfAssessment();
+        this.sessionStorage.store(SelfAssessmentMgmService.SELF_ASSESSMENT_KEY, selfAssessment);
     }
 
+    /*
     checkSelfAssessment(): boolean {
         if (this.selfAssessmentSelected == null || isUndefined(this.selfAssessmentSelected)) {
             return false;
@@ -50,6 +59,7 @@ export class SelfAssessmentMgmService implements OnInit {
             return true;
         }
     }
+    */
 
     create(selfAssessment: SelfAssessmentMgm): Observable<EntityResponseType> {
         const copy = this.convert(selfAssessment);
@@ -59,6 +69,12 @@ export class SelfAssessmentMgmService implements OnInit {
 
     update(selfAssessment: SelfAssessmentMgm): Observable<EntityResponseType> {
         const copy = this.convert(selfAssessment);
+
+        const self: SelfAssessmentMgm = this.sessionStorage.retrieve(SelfAssessmentMgmService.SELF_ASSESSMENT_KEY);
+        if (self && self.id === copy.id) {
+            this.sessionStorage.store(SelfAssessmentMgmService.SELF_ASSESSMENT_KEY, copy);
+        }
+
         return this.http.put<SelfAssessmentMgm>(this.resourceUrl, copy, {observe: 'response'})
             .map((res: EntityResponseType) => this.convertResponse(res));
     }
@@ -75,6 +91,11 @@ export class SelfAssessmentMgmService implements OnInit {
     }
 
     delete(id: number): Observable<HttpResponse<any>> {
+        const self: SelfAssessmentMgm = this.sessionStorage.retrieve(SelfAssessmentMgmService.SELF_ASSESSMENT_KEY);
+        if (self && self.id === id) {
+            this.sessionStorage.clear(SelfAssessmentMgmService.SELF_ASSESSMENT_KEY);
+        }
+
         return this.http.delete<any>(`${this.resourceUrl}/${id}`, {observe: 'response'});
     }
 
@@ -116,9 +137,9 @@ export class SelfAssessmentMgmService implements OnInit {
     private convert(selfAssessment: SelfAssessmentMgm): SelfAssessmentMgm {
         const copy: SelfAssessmentMgm = Object.assign({}, selfAssessment);
 
-        copy.created = this.dateUtils.toDate(selfAssessment.created);
+        copy.created = this.dateUtils.toDate(selfAssessment.created + '');
 
-        copy.modified = this.dateUtils.toDate(selfAssessment.modified);
+        copy.modified = this.dateUtils.toDate(selfAssessment.modified + '');
         return copy;
     }
 }
