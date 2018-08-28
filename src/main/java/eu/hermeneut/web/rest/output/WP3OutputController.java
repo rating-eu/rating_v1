@@ -11,7 +11,6 @@ import eu.hermeneut.utils.attackstrategy.AttackStrategyFilter;
 import eu.hermeneut.utils.likelihood.answer.AnswerCalculator;
 import eu.hermeneut.utils.likelihood.attackstrategy.AttackStrategyCalculator;
 import eu.hermeneut.utils.threatagent.ThreatAgentComparator;
-import eu.hermeneut.web.rest.result.ResultController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -230,8 +229,8 @@ public class WP3OutputController {
                     logger.debug("MyAnswerSet: " + myAnswerSet);
 
                     if (myAnswerSet != null) {
-                        augmentedAttackStrategy.setCisoAnswersLikelihood(this.answerCalculator.getAnswersLikelihood(myAnswerSet));
-                        augmentedAttackStrategy.setContextualLikelihood((augmentedAttackStrategy.getInitialLikelihood() + augmentedAttackStrategy.getCisoAnswersLikelihood()) / 2);
+                        augmentedAttackStrategy.setContextualVulnerability(this.answerCalculator.getAnswersLikelihood(myAnswerSet));
+                        augmentedAttackStrategy.setContextualLikelihood((augmentedAttackStrategy.getInitialLikelihood() + augmentedAttackStrategy.getContextualVulnerability()) / 2);
                     }
                 }
             }
@@ -287,8 +286,8 @@ public class WP3OutputController {
                     logger.debug("MyAnswerSet: " + myAnswerSet);
 
                     if (myAnswerSet != null) {
-                        augmentedAttackStrategy.setExternalAuditAnswersLikelihood(this.answerCalculator.getAnswersLikelihood(myAnswerSet));
-                        augmentedAttackStrategy.setRefinedLikelihood((augmentedAttackStrategy.getInitialLikelihood() + augmentedAttackStrategy.getExternalAuditAnswersLikelihood()) / 2);
+                        augmentedAttackStrategy.setRefinedVulnerability(this.answerCalculator.getAnswersLikelihood(myAnswerSet));
+                        augmentedAttackStrategy.setRefinedLikelihood((augmentedAttackStrategy.getInitialLikelihood() + augmentedAttackStrategy.getRefinedVulnerability()) / 2);
                     }
                 }
             }
