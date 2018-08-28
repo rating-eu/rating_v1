@@ -14,6 +14,8 @@ import {ThreatAgentMgm} from '../../entities/threat-agent-mgm';
 import {AugmentedAttackStrategy} from '../models/augmented-attack-strategy.model';
 import {WeaknessUtils} from '../utils/weakness-utils';
 import {AttackMapService} from '../attack-map.service';
+import {MatHorizontalStepper} from '@angular/material';
+import {LikelihoodStep} from '../../entities/enumerations/LikelihoodStep.enum';
 
 @Component({
     selector: 'jhi-result',
@@ -52,6 +54,10 @@ export class WeaknessResultComponent implements OnInit, OnDestroy {
 
     // Attack Plan Matrix
     attacksCKC7Matrix: Map<Number, Map<Number, AugmentedAttackStrategy>>;
+
+    //Likelihood Steps
+    likelihoodStep: LikelihoodStep = LikelihoodStep.INITIAL_LIKELIHOOD;
+    likelihoodStepEnum = LikelihoodStep;
 
     constructor(private route: ActivatedRoute,
                 private selfAssessmentService: SelfAssessmentMgmService,
@@ -109,5 +115,16 @@ export class WeaknessResultComponent implements OnInit, OnDestroy {
 
     threatAgentChanged(threatAgent: ThreatAgentMgm) {
         WeaknessUtils.threatAgentChanged(threatAgent, this.augmentedAttackStrategiesMap);
+    }
+
+    likelihoodStepChange($event: MatHorizontalStepper) {
+        console.log('Likelihood Step Change...');
+        console.log('SelectedIndex: ' + $event.selectedIndex);
+
+        const stepNumber: number = $event.selectedIndex;
+        const stepName: string = LikelihoodStep[stepNumber];
+        this.likelihoodStep = LikelihoodStep[stepName];
+
+        console.log('Likelihood Step: ' + this.likelihoodStep);
     }
 }

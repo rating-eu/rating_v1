@@ -9,6 +9,24 @@
             </option>
         </select>
 
+        <mat-horizontal-stepper (selectionChange)="likelihoodStepChange($event)">
+            <mat-step label="Initial Likelihood">
+            </mat-step>
+
+            <mat-step label="Contextual Likelihood">
+            </mat-step>
+
+            <mat-step label="Refined Likelihood">
+            </mat-step>
+        </mat-horizontal-stepper>
+
+        <pre>
+            InitialLikelihood: {{likelihoodStepEnum.INITIAL_LIKELIHOOD}}
+            ContextualLikelihood: {{likelihoodStepEnum.CONTEXTUAL_LIKELIHOOD}}
+            RefinedLikelihood: {{likelihoodStepEnum.REFINED_LIKELIHOOD}}
+            LikelihoodStep: {{likelihoodStep}}
+        </pre>
+
         <table class="table table-striped table-bordered table-hover">
             <thead class="align-middle" style="background: #cce6ff">
             <tr>
@@ -28,15 +46,66 @@
                 </th>
 
                 <td *ngFor="let ckc7Phase of ckc7Phases">
-                    <div class="container-fluid">
-                        <button type="button" class="btn btn-secondary m-1"
-                                *ngFor="let augmentedAttackStrategy of attacksCKC7Matrix[attackLevel.id][ckc7Phase.id]; trackBy: trackByID"
+                    <div class="container-fluid" [ngSwitch]="likelihoodStep">
+                        <span *ngSwitchCase="likelihoodStepEnum.INITIAL_LIKELIHOOD">
+                            INITIAL LIKELIHOOD
+                            <button
+                                type="button" class="btn btn-secondary m-1"
+                                *ngFor="let augmentedAttackStrategy of attacksCKC7Matrix[attackLevel.id][ckc7Phase.id];
+                            trackBy: trackByID"
                                 [routerLink]="['/attack-strategy-mgm', augmentedAttackStrategy.id]"
                                 [disabled]="!selectedThreatAgent || !augmentedAttackStrategy.enabled"
-                                [ngClass]="augmentedAttackStrategy.cssClass"
-                        >
-                            {{augmentedAttackStrategy.name}}
-                        </button>
+                                [ngClass]="{
+                                  'low': augmentedAttackStrategy.initialLikelihood > 0 && augmentedAttackStrategy.initialLikelihood <= 1,
+                                  'low-medium': augmentedAttackStrategy.initialLikelihood > 1 && augmentedAttackStrategy.initialLikelihood <= 2,
+                                  'medium': augmentedAttackStrategy.initialLikelihood > 2 && augmentedAttackStrategy.initialLikelihood <= 3,
+                                  'medium-high': augmentedAttackStrategy.initialLikelihood > 3 && augmentedAttackStrategy.initialLikelihood <= 4,
+                                  'high': augmentedAttackStrategy.initialLikelihood > 4 && augmentedAttackStrategy.initialLikelihood <= 5
+                                 }">
+                                {{augmentedAttackStrategy.name}}
+                                {{augmentedAttackStrategy.initialLikelihood}}
+                            </button>
+                        </span>
+
+                        <span *ngSwitchCase="likelihoodStepEnum.CONTEXTUAL_LIKELIHOOD">
+                            CONTEXTUAL LIKELIHOOD
+                            <button
+                                type="button" class="btn btn-secondary m-1"
+                                *ngFor="let augmentedAttackStrategy of attacksCKC7Matrix[attackLevel.id][ckc7Phase.id];
+                            trackBy: trackByID"
+                                [routerLink]="['/attack-strategy-mgm', augmentedAttackStrategy.id]"
+                                [disabled]="!selectedThreatAgent || !augmentedAttackStrategy.enabled"
+                                [ngClass]="{
+                                  'low': augmentedAttackStrategy.contextualLikelihood > 0 && augmentedAttackStrategy.contextualLikelihood <= 1,
+                                  'low-medium': augmentedAttackStrategy.contextualLikelihood > 1 && augmentedAttackStrategy.contextualLikelihood <= 2,
+                                  'medium': augmentedAttackStrategy.contextualLikelihood > 2 && augmentedAttackStrategy.contextualLikelihood <= 3,
+                                  'medium-high': augmentedAttackStrategy.contextualLikelihood > 3 && augmentedAttackStrategy.contextualLikelihood <= 4,
+                                  'high': augmentedAttackStrategy.contextualLikelihood > 4 && augmentedAttackStrategy.contextualLikelihood <= 5
+                                 }">
+                                {{augmentedAttackStrategy.name}}
+                                {{augmentedAttackStrategy.contextualLikelihood}}
+                            </button>
+                        </span>
+
+                        <span *ngSwitchCase="likelihoodStepEnum.REFINED_LIKELIHOOD">
+                            REFINED LIKELIHOOD
+                            <button
+                                type="button" class="btn btn-secondary m-1"
+                                *ngFor="let augmentedAttackStrategy of attacksCKC7Matrix[attackLevel.id][ckc7Phase.id];
+                            trackBy: trackByID"
+                                [routerLink]="['/attack-strategy-mgm', augmentedAttackStrategy.id]"
+                                [disabled]="!selectedThreatAgent || !augmentedAttackStrategy.enabled"
+                                [ngClass]="{
+                                  'low': augmentedAttackStrategy.refinedLikelihood > 0 && augmentedAttackStrategy.refinedLikelihood <= 1,
+                                  'low-medium': augmentedAttackStrategy.refinedLikelihood > 1 && augmentedAttackStrategy.refinedLikelihood <= 2,
+                                  'medium': augmentedAttackStrategy.refinedLikelihood > 2 && augmentedAttackStrategy.refinedLikelihood <= 3,
+                                  'medium-high': augmentedAttackStrategy.refinedLikelihood > 3 && augmentedAttackStrategy.refinedLikelihood <= 4,
+                                  'high': augmentedAttackStrategy.refinedLikelihood > 4 && augmentedAttackStrategy.refinedLikelihood <= 5
+                                 }">
+                                {{augmentedAttackStrategy.name}}
+                                {{augmentedAttackStrategy.refinedLikelihood}}
+                            </button>
+                        </span>
                     </div>
                 </td>
             </tbody>
