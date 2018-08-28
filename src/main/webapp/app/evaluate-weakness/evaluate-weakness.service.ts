@@ -14,6 +14,6 @@ export class EvaluateService {
 
     showEvaluatedAttackStrategies(questionnaireStatus: QuestionnaireStatusMgm) {
         console.log('AttackStrategies QuestionnaireStatus: ' + JSON.stringify(questionnaireStatus));
-        this.router.navigate(['/evaluate-weakness/result', questionnaireStatus.id]);
+        this.router.navigate(['/evaluate-weakness/result']);
     }
 }

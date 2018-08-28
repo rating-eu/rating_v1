@@ -2,7 +2,7 @@ package eu.hermeneut.domain.output;
 
 
 import eu.hermeneut.domain.AssetCategory;
-import eu.hermeneut.domain.result.AugmentedAttackStrategy;
+import eu.hermeneut.domain.attackmap.AugmentedAttackStrategy;
 
 import java.util.List;
 import java.util.Map;

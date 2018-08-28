@@ -1,10 +1,9 @@
 package eu.hermeneut.web.rest.result;
 
-import com.codahale.metrics.annotation.Timed;
 import eu.hermeneut.domain.*;
 import eu.hermeneut.domain.enumeration.*;
-import eu.hermeneut.domain.result.AttackMap;
-import eu.hermeneut.domain.result.AugmentedAttackStrategy;
+import eu.hermeneut.domain.attackmap.AttackMap;
+import eu.hermeneut.domain.attackmap.AugmentedAttackStrategy;
 import eu.hermeneut.domain.result.Result;
 import eu.hermeneut.service.*;
 import eu.hermeneut.utils.likelihood.answer.AnswerCalculator;
@@ -185,8 +184,8 @@ public class ResultController {
                     log.debug("MyAnswerSet: " + myAnswerSet);
 
                     if (myAnswerSet != null) {
-                        augmentedAttackStrategy.setCisoAnswersLikelihood(this.answerCalculator.getAnswersLikelihood(myAnswerSet));
-                        augmentedAttackStrategy.setContextualLikelihood((augmentedAttackStrategy.getInitialLikelihood() + augmentedAttackStrategy.getCisoAnswersLikelihood()) / 2);
+                        augmentedAttackStrategy.setContextualVulnerability(this.answerCalculator.getAnswersLikelihood(myAnswerSet));
+                        augmentedAttackStrategy.setContextualLikelihood((augmentedAttackStrategy.getInitialLikelihood() + augmentedAttackStrategy.getContextualVulnerability()) / 2);
                     } else {
                         //TODO Same as InitialLikelihood ???
                     }
@@ -256,8 +255,8 @@ public class ResultController {
                     log.debug("MyAnswerSet: " + myAnswerSet);
 
                     if (myAnswerSet != null) {
-                        augmentedAttackStrategy.setExternalAuditAnswersLikelihood(this.answerCalculator.getAnswersLikelihood(myAnswerSet));
-                        augmentedAttackStrategy.setRefinedLikelihood((augmentedAttackStrategy.getInitialLikelihood() + augmentedAttackStrategy.getExternalAuditAnswersLikelihood()) / 2);
+                        augmentedAttackStrategy.setRefinedVulnerability(this.answerCalculator.getAnswersLikelihood(myAnswerSet));
+                        augmentedAttackStrategy.setRefinedLikelihood((augmentedAttackStrategy.getInitialLikelihood() + augmentedAttackStrategy.getRefinedVulnerability()) / 2);
                     } else {
                         //TODO same as ContextualLikelihood ???
                     }
