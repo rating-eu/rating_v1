@@ -100,7 +100,7 @@ export class WeaknessUtils {
         // Update the enabled status of each AttackStrategy depending on the Skills of
         // the ThreatAgent and the Skills required to perform the attack.
         augmentedAttackStrategiesMap.forEach((augmentedAttackStrategy: AugmentedAttackStrategy) => {
-            const attackStrategy: AttackStrategyMgm = augmentedAttackStrategy.attackStrategy;
+            const attackStrategy: AttackStrategyMgm = augmentedAttackStrategy;
             console.log('AttackStrategy: ' + JSON.stringify(attackStrategy));
 
             // Check if the ThreatAgent is defined or not
@@ -111,8 +111,6 @@ export class WeaknessUtils {
             }
 
             console.log('Enabled: ' + augmentedAttackStrategy.enabled);
-            // Update the CSS class of the AttackStrategy
-            augmentedAttackStrategy.updateCssClass();
         });
     }
 

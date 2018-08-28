@@ -14,6 +14,7 @@ import {JhiEventManager, JhiLanguageService} from 'ng-jhipster';
 import {DatasharingModule} from '../datasharing/datasharing.module';
 import {WeaknessResultComponent} from './result/result.component';
 import {EvaluateService} from './evaluate-weakness.service';
+import {AttackMapService} from './attack-map.service';
 
 @NgModule({
     imports: [
@@ -65,7 +66,8 @@ import {EvaluateService} from './evaluate-weakness.service';
             ]
         },
         IdentifyThreatAgentService,
-        EvaluateService
+        EvaluateService,
+        AttackMapService
     ]
 })
 export class EvaluateWeaknessModule {
