@@ -3,7 +3,7 @@ package eu.hermeneut.web.rest.result;
 import eu.hermeneut.domain.*;
 import eu.hermeneut.domain.enumeration.*;
 import eu.hermeneut.domain.attackmap.AttackMap;
-import eu.hermeneut.domain.result.AugmentedAttackStrategy;
+import eu.hermeneut.domain.attackmap.AugmentedAttackStrategy;
 import eu.hermeneut.domain.result.Result;
 import eu.hermeneut.service.*;
 import eu.hermeneut.utils.likelihood.answer.AnswerCalculator;

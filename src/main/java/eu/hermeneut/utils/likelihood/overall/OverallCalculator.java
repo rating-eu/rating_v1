@@ -2,7 +2,7 @@ package eu.hermeneut.utils.likelihood.overall;
 
 import eu.hermeneut.domain.*;
 import eu.hermeneut.domain.attackmap.AttackMap;
-import eu.hermeneut.domain.result.AugmentedAttackStrategy;
+import eu.hermeneut.domain.attackmap.AugmentedAttackStrategy;
 import eu.hermeneut.utils.attackstrategy.AttackStrategyFilter;
 import eu.hermeneut.utils.likelihood.attackstrategy.AttackStrategyCalculator;
 import org.slf4j.Logger;
