@@ -15,13 +15,15 @@ import {DatasharingModule} from '../datasharing/datasharing.module';
 import {WeaknessResultComponent} from './result/result.component';
 import {EvaluateService} from './evaluate-weakness.service';
 import {AttackMapService} from './attack-map.service';
+import {MaterialModule} from '../material/material.module';
 
 @NgModule({
     imports: [
         CommonModule,
         HermeneutSharedModule,
         EvaluateWeaknessRoutingModule,
-        DatasharingModule
+        DatasharingModule,
+        MaterialModule
     ],
     declarations: [
         EvaluateWeaknessComponent,
