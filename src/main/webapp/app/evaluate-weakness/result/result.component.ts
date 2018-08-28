@@ -94,16 +94,29 @@ export class WeaknessResultComponent implements OnInit, OnDestroy {
                     console.log('PhaseID: ' + phaseID);
 
                     const augmentedAttackStrategies: Array<AugmentedAttackStrategy> = this.attacksCKC7Matrix[Number(levelID)][Number(phaseID)];
+                    const augmentedAttackStrategiesByReference: Array<AugmentedAttackStrategy> = [];
 
                     for (var augmentedAttackStrategy of augmentedAttackStrategies) {
                         if (!this.augmentedAttackStrategiesMap.has(augmentedAttackStrategy.id)) {
                             this.augmentedAttackStrategiesMap.set(augmentedAttackStrategy.id, augmentedAttackStrategy);
+
+                            //Each time that we encounter an AttackStrategy we put it in the array by Reference
+                            augmentedAttackStrategiesByReference.push(augmentedAttackStrategy);
                         } else {
                             augmentedAttackStrategy = this.augmentedAttackStrategiesMap.get(augmentedAttackStrategy.id);
+                            //Each time that we encounter an AttackStrategy we put it in the array by Reference
+                            augmentedAttackStrategiesByReference.push(augmentedAttackStrategy);
                         }
                     }
+
+                    //Finally we replace the initial AttackStrategies with those by REFERENCE
+                    //(to allow one-time update for all the occurrences of the same AttackStrategy in different Levels or Phases)
+                    this.attacksCKC7Matrix[Number(levelID)][Number(phaseID)] = augmentedAttackStrategiesByReference;
                 }
             }
+
+            //Set the SelectedThreatAgent (NULL) to make sure all the AttackStrategies are disabled at start.
+            this.threatAgentChanged(this.selectedThreatAgent);
         });
     }
 
