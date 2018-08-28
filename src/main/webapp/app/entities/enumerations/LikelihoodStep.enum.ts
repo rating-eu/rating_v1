@@ -1,0 +1,5 @@
+export enum LikelihoodStep {
+    INITIAL_LIKELIHOOD = 0,
+    CONTEXTUAL_LIKELIHOOD = 1,
+    REFINED_LIKELIHOOD = 2
+}
