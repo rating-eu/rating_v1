@@ -20,13 +20,6 @@
             </mat-step>
         </mat-horizontal-stepper>
 
-        <pre>
-            InitialLikelihood: {{likelihoodStepEnum.INITIAL_LIKELIHOOD}}
-            ContextualLikelihood: {{likelihoodStepEnum.CONTEXTUAL_LIKELIHOOD}}
-            RefinedLikelihood: {{likelihoodStepEnum.REFINED_LIKELIHOOD}}
-            LikelihoodStep: {{likelihoodStep}}
-        </pre>
-
         <table class="table table-striped table-bordered table-hover">
             <thead class="align-middle" style="background: #cce6ff">
             <tr>
@@ -48,7 +41,6 @@
                 <td *ngFor="let ckc7Phase of ckc7Phases">
                     <div class="container-fluid" [ngSwitch]="likelihoodStep">
                         <span *ngSwitchCase="likelihoodStepEnum.INITIAL_LIKELIHOOD">
-                            INITIAL LIKELIHOOD
                             <button
                                 type="button" class="btn btn-secondary m-1"
                                 *ngFor="let augmentedAttackStrategy of attacksCKC7Matrix[attackLevel.id][ckc7Phase.id];
@@ -60,15 +52,14 @@
                                   'low-medium': augmentedAttackStrategy.initialLikelihood > 1 && augmentedAttackStrategy.initialLikelihood <= 2,
                                   'medium': augmentedAttackStrategy.initialLikelihood > 2 && augmentedAttackStrategy.initialLikelihood <= 3,
                                   'medium-high': augmentedAttackStrategy.initialLikelihood > 3 && augmentedAttackStrategy.initialLikelihood <= 4,
-                                  'high': augmentedAttackStrategy.initialLikelihood > 4 && augmentedAttackStrategy.initialLikelihood <= 5
+                                  'high': augmentedAttackStrategy.initialLikelihood > 4 && augmentedAttackStrategy.initialLikelihood <= 5,
+                                  'disabled': !augmentedAttackStrategy.enabled
                                  }">
                                 {{augmentedAttackStrategy.name}}
-                                {{augmentedAttackStrategy.initialLikelihood}}
                             </button>
                         </span>
 
                         <span *ngSwitchCase="likelihoodStepEnum.CONTEXTUAL_LIKELIHOOD">
-                            CONTEXTUAL LIKELIHOOD
                             <button
                                 type="button" class="btn btn-secondary m-1"
                                 *ngFor="let augmentedAttackStrategy of attacksCKC7Matrix[attackLevel.id][ckc7Phase.id];
@@ -80,15 +71,14 @@
                                   'low-medium': augmentedAttackStrategy.contextualLikelihood > 1 && augmentedAttackStrategy.contextualLikelihood <= 2,
                                   'medium': augmentedAttackStrategy.contextualLikelihood > 2 && augmentedAttackStrategy.contextualLikelihood <= 3,
                                   'medium-high': augmentedAttackStrategy.contextualLikelihood > 3 && augmentedAttackStrategy.contextualLikelihood <= 4,
-                                  'high': augmentedAttackStrategy.contextualLikelihood > 4 && augmentedAttackStrategy.contextualLikelihood <= 5
+                                  'high': augmentedAttackStrategy.contextualLikelihood > 4 && augmentedAttackStrategy.contextualLikelihood <= 5,
+                                  'disabled': !augmentedAttackStrategy.enabled
                                  }">
                                 {{augmentedAttackStrategy.name}}
-                                {{augmentedAttackStrategy.contextualLikelihood}}
                             </button>
                         </span>
 
                         <span *ngSwitchCase="likelihoodStepEnum.REFINED_LIKELIHOOD">
-                            REFINED LIKELIHOOD
                             <button
                                 type="button" class="btn btn-secondary m-1"
                                 *ngFor="let augmentedAttackStrategy of attacksCKC7Matrix[attackLevel.id][ckc7Phase.id];
@@ -100,10 +90,10 @@
                                   'low-medium': augmentedAttackStrategy.refinedLikelihood > 1 && augmentedAttackStrategy.refinedLikelihood <= 2,
                                   'medium': augmentedAttackStrategy.refinedLikelihood > 2 && augmentedAttackStrategy.refinedLikelihood <= 3,
                                   'medium-high': augmentedAttackStrategy.refinedLikelihood > 3 && augmentedAttackStrategy.refinedLikelihood <= 4,
-                                  'high': augmentedAttackStrategy.refinedLikelihood > 4 && augmentedAttackStrategy.refinedLikelihood <= 5
+                                  'high': augmentedAttackStrategy.refinedLikelihood > 4 && augmentedAttackStrategy.refinedLikelihood <= 5,
+                                  'disabled': !augmentedAttackStrategy.enabled
                                  }">
                                 {{augmentedAttackStrategy.name}}
-                                {{augmentedAttackStrategy.refinedLikelihood}}
                             </button>
                         </span>
                     </div>
