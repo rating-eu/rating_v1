@@ -15,7 +15,7 @@ import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 })
 export class RiskEvaluationComponent implements OnInit {
     private mySelf: SelfAssessmentMgm;
-    private myAssets: MyAssetMgm[] = [];
+    public myAssets: MyAssetMgm[] = [];
     public criticalLevel: CriticalLevelMgm;
     public squareColumnElement: number[];
     public squareRowElement: number[];
