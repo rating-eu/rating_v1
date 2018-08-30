@@ -6,6 +6,6 @@ services:
         #     - ~/volumes/jhipster/hermeneut/postgresql/:/var/lib/postgresql/data/
         environment:
             - POSTGRES_USER=hermeneut
-            - POSTGRES_PASSWORD=
+            - POSTGRES_PASSWORD=tuenemreh
         ports:
             - 5432:5432
