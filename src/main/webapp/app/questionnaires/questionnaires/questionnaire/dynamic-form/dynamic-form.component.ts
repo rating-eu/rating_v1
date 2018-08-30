@@ -499,7 +499,7 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
 
         myRefinementAnswers.subscribe((response: HttpResponse<MyAnswerMgm[]>) => {
             console.log('MyAnswers: ' + JSON.stringify(response));
-            this.router.navigate(['/evaluate-weakness/result', questionnaireStatus.id]);
+            this.router.navigate(['/evaluate-weakness/result']);
         });
     }
 
