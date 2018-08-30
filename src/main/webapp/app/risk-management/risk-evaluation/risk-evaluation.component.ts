@@ -1,10 +1,9 @@
-import {Component, OnInit, Input} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {RiskManagementService} from '../risk-management.service';
 import {SelfAssessmentMgmService, SelfAssessmentMgm} from '../../entities/self-assessment-mgm';
 import {CriticalLevelMgm} from '../../entities/critical-level-mgm';
 import {MyAssetMgm} from '../../entities/my-asset-mgm';
 import {MyAssetAttackChance} from '../model/my-asset-attack-chance.model';
-import {AttackStrategyMgm} from '../../entities/attack-strategy-mgm';
 import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
@@ -15,7 +14,7 @@ import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 })
 export class RiskEvaluationComponent implements OnInit {
     private mySelf: SelfAssessmentMgm;
-    private myAssets: MyAssetMgm[] = [];
+    public myAssets: MyAssetMgm[] = [];
     public criticalLevel: CriticalLevelMgm;
     public squareColumnElement: number[];
     public squareRowElement: number[];

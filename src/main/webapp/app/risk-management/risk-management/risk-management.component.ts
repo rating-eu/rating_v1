@@ -20,7 +20,7 @@ export class RiskManagementComponent implements OnInit {
   public squareRowElement: number[];
   public lastSquareRowElement: number;
   private mySelf: SelfAssessmentMgm;
-  private criticalLevel: CriticalLevelMgm;
+  public criticalLevel: CriticalLevelMgm;
 
   constructor(
     private mySelfAssessmentService: SelfAssessmentMgmService,

@@ -43,7 +43,7 @@ export class QuestionComponent implements OnInit, OnDestroy {
     public tangibleCurrent: AnswerMgm[] = [];
     public tangibleFixed: AnswerMgm[] = [];
 
-    private allAssets: AssetMgm[];
+    public allAssets: AssetMgm[];
     private myQuestionAssets: MyAssetMgm[] = [];
     public directGuiAssets: DirectAssetMgm[] = [];
     public indirectGuiAssets: IndirectAssetMgm[] = [];

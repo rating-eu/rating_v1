@@ -15,10 +15,10 @@ export type EntityResponseType = HttpResponse<SelfAssessmentMgm>;
 @Injectable()
 export class SelfAssessmentMgmService implements OnInit {
 
+    private static readonly SELF_ASSESSMENT_KEY = 'selfAssessment';
     private resourceUrl = SERVER_API_URL + 'api/self-assessments';
     private resourceSearchUrl = SERVER_API_URL + 'api/_search/self-assessments';
     private selfAssessmentSelected: SelfAssessmentMgm;
-    private static readonly SELF_ASSESSMENT_KEY = 'selfAssessment';
 
     constructor(
         private http: HttpClient,

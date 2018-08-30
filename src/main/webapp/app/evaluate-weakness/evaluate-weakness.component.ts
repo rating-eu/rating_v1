@@ -10,20 +10,10 @@ import {Principal} from '../shared';
 import {LevelMgm, LevelMgmService} from '../entities/level-mgm';
 import {PhaseMgm, PhaseMgmService} from '../entities/phase-mgm';
 import {Observable} from 'rxjs/Observable';
-import {forkJoin} from 'rxjs/observable/forkJoin';
-import {isUndefined} from 'util';
 import {ThreatAgentMgm} from '../entities/threat-agent-mgm';
 import {DatasharingService} from '../datasharing/datasharing.service';
-import {QuestionMgm} from '../entities/question-mgm';
-import {AnswerMgm} from '../entities/answer-mgm';
-import {AnswerLikelihood} from '../entities/enumerations/AnswerLikelihood.enum';
-import {AttackStrategyLikelihood} from '../entities/enumerations/AttackStrategyLikelihood.enum';
-import {Couple} from '../utils/couple.class';
-import {Frequency} from '../entities/enumerations/Frequency.enum';
-import {ResourceLevel} from '../entities/enumerations/ResourceLevel.enum';
 import {AnswerWeightMgm, AnswerWeightMgmService} from '../entities/answer-weight-mgm';
 import {AugmentedAttackStrategy} from './models/augmented-attack-strategy.model';
-import {AttackStrategyUpdate} from './models/attack-strategy-update.model';
 import {WeaknessUtils} from './utils/weakness-utils';
 
 @Component({
