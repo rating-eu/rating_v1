@@ -55,10 +55,6 @@ import {Title} from '@angular/platform-browser';
 })
 export class HermeneutSharedModule {
 
-    constructor() {
-        registerLocaleData(locale);
-    }
-
     static forRoot(): ModuleWithProviders {
         return {
             ngModule: HermeneutSharedModule,
@@ -70,6 +66,10 @@ export class HermeneutSharedModule {
                     useValue: 'en'
                 }
             ]
-        }
+        };
+    }
+
+    constructor() {
+        registerLocaleData(locale);
     }
 }
