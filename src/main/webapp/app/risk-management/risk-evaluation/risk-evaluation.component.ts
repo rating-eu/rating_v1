@@ -1,10 +1,9 @@
-import {Component, OnInit, Input} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {RiskManagementService} from '../risk-management.service';
 import {SelfAssessmentMgmService, SelfAssessmentMgm} from '../../entities/self-assessment-mgm';
 import {CriticalLevelMgm} from '../../entities/critical-level-mgm';
 import {MyAssetMgm} from '../../entities/my-asset-mgm';
 import {MyAssetAttackChance} from '../model/my-asset-attack-chance.model';
-import {AttackStrategyMgm} from '../../entities/attack-strategy-mgm';
 import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
