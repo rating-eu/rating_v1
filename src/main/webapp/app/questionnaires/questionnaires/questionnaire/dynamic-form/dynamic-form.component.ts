@@ -462,7 +462,7 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
                 this.selfAssessment = selfAssessmentResponse.body;
                 this.selfAssessmentService.setSelfAssessment(this.selfAssessment);
 
-                this.router.navigate(['/evaluate-weakness/result', questionnaireStatus.id]);
+                this.router.navigate(['/evaluate-weakness/result']);
             });
 
         // For now don't store the attackStrategies but recalculate them and their likelihood based on the stored MyAnswers
