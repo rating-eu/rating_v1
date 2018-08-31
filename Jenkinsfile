@@ -5,7 +5,7 @@ node {
         checkout scm
     }
 
-    gitlabCommitStatus('build') {
+    gitlabCommitStatus(name: 'build') {
         docker.image('openjdk:8').inside('-u root -e MAVEN_OPTS="-Duser.home=./"') {
             stage('check java') {
                 sh "java -version"
@@ -22,26 +22,6 @@ node {
 
             stage('yarn install') {
                 sh "./mvnw com.github.eirslett:frontend-maven-plugin:yarn"
-            }
-
-            stage('backend tests') {
-                try {
-                    sh "./mvnw test"
-                } catch(err) {
-                    throw err
-                } finally {
-                    junit '**/target/surefire-reports/TEST-*.xml'
-                }
-            }
-
-            stage('frontend tests') {
-                try {
-                    sh "./mvnw com.github.eirslett:frontend-maven-plugin:yarn -Dfrontend.yarn.arguments=test"
-                } catch(err) {
-                    throw err
-                } finally {
-                    junit '**/target/test-results/karma/TESTS-*.xml'
-                }
             }
 
             stage('packaging') {
