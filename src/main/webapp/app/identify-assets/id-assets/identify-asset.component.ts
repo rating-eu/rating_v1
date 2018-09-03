@@ -134,9 +134,11 @@ export class IdentifyAssetComponent implements OnInit, OnDestroy {
                                                             costD.description = 'blablabla direct';
                                                             direct.costs.push(costD);
                                                             this.myDirectAssets.push(direct);
+                                                            let index2 = 0;
                                                             for (const asset2 of this.myAssets) {
                                                                 const indirect = new IndirectAssetMgm();
                                                                 indirect.myAsset = asset2;
+                                                                indirect.id = index2;
                                                                 indirect.directAsset = direct;
                                                                 indirect.costs = [];
                                                                 const costI = new AttackCostMgm();
@@ -144,6 +146,7 @@ export class IdentifyAssetComponent implements OnInit, OnDestroy {
                                                                 costI.description = 'blablabla indirect';
                                                                 indirect.costs.push(costI);
                                                                 this.myIndirectAssets.push(indirect);
+                                                                index2 ++;
                                                             }
                                                             index++;
                                                         }
