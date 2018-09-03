@@ -1,4 +1,4 @@
-package eu.hermeneut.domain.result;
+package eu.hermeneut.domain.attackmap;
 
 import eu.hermeneut.domain.AttackStrategy;
 
@@ -7,11 +7,11 @@ public class AugmentedAttackStrategy extends AttackStrategy {
 
     private float initialLikelihood;
 
-    private float cisoAnswersLikelihood;
+    private float contextualVulnerability;
 
     private float contextualLikelihood;
 
-    private float externalAuditAnswersLikelihood;
+    private float refinedVulnerability;
 
     private float refinedLikelihood;
 
@@ -67,15 +67,15 @@ public class AugmentedAttackStrategy extends AttackStrategy {
         this.initialLikelihood = initialLikelihood;
     }
 
-    public float getCisoAnswersLikelihood() {
+    public float getContextualVulnerability() {
         if (!isEnabled()) {
             return 0;
         }
-        return cisoAnswersLikelihood;
+        return contextualVulnerability;
     }
 
-    public void setCisoAnswersLikelihood(float cisoAnswersLikelihood) {
-        this.cisoAnswersLikelihood = cisoAnswersLikelihood;
+    public void setContextualVulnerability(float contextualVulnerability) {
+        this.contextualVulnerability = contextualVulnerability;
     }
 
     public float getContextualLikelihood() {
@@ -89,15 +89,15 @@ public class AugmentedAttackStrategy extends AttackStrategy {
         this.contextualLikelihood = contextualLikelihood;
     }
 
-    public float getExternalAuditAnswersLikelihood() {
+    public float getRefinedVulnerability() {
         if (!isEnabled()) {
             return 0;
         }
-        return externalAuditAnswersLikelihood;
+        return refinedVulnerability;
     }
 
-    public void setExternalAuditAnswersLikelihood(float externalAuditAnswersLikelihood) {
-        this.externalAuditAnswersLikelihood = externalAuditAnswersLikelihood;
+    public void setRefinedVulnerability(float refinedVulnerability) {
+        this.refinedVulnerability = refinedVulnerability;
     }
 
     public float getRefinedLikelihood() {

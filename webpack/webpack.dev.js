@@ -92,6 +92,14 @@ module.exports = webpackMerge(commonConfig({env: ENV}), {
         new WebpackNotifierPlugin({
             title: 'JHipster',
             contentImage: path.join(__dirname, 'logo-jhipster.png')
-        })
+        }),
+        /**
+         * See: https://github.com/angular/angular/issues/11580
+         * See: https://stackoverflow.com/questions/47038516/aot-ngtools-webpack-lazy-loading-does-not-work-using-angular-4-webpack-3
+         */
+        new webpack.ContextReplacementPlugin(
+            /(.+)?angular(\\|\/)core(.+)?/,
+            utils.root('src/main/webapp/app'), {}
+        )
     ]
 });

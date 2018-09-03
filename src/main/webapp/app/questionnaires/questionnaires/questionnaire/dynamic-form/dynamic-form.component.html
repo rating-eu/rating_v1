@@ -1,5 +1,3 @@
-<button type="button" (click)="debug = !debug">Debug {{debug}}</button>
-
 <form *ngIf="form" (ngSubmit)="submitDispatcher()" [formGroup]="form" role="form">
 
     <div [ngSwitch]="role">
@@ -10,13 +8,6 @@
                 <label class="form-control-label" [attr.for]="question?.id"><h3>
                     {{question?.name}}</h3>
                 </label>
-
-                <div *ngIf="debug">
-            <pre>
-                {{question | json}}
-            </pre>
-                </div>
-
                 <mat-radio-group [formControlName]="question.id" class="radio-group">
                     <mat-radio-button *ngFor="let answer of sort(question.answers)" class="radio-button"
                                       [value]="answer">
@@ -37,17 +28,9 @@
             <div *ngIf="questionnaire.purpose === purposeEnum.SELFASSESSMENT">
                 <div *ngFor="let question of questionsArray; trackBy: trackByID"
                      [ngClass]="{'ng-valid': isValid(question.id) === true, 'ng-invalid': isValid(question.id) === false}">
-
                     <label class="form-control-label" [attr.for]="question?.id"><h3>
                         {{question?.name}}</h3>
                     </label>
-
-                    <div *ngIf="debug">
-                    <pre>
-                        {{question | json}}
-                    </pre>
-                    </div>
-
                     <div class="row">
                         <div style="width:20px">
                             <mat-radio-group [formControlName]="question.id" class="radio-group">
@@ -88,7 +71,3 @@
         </div>
     </div>
 </form>
-
-<pre *ngIf="form && debug">
-    {{form.value | json}}
-</pre>

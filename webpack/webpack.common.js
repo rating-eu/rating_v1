@@ -70,13 +70,6 @@ module.exports = (options) => ({
             name: ['manifest'],
             minChunks: Infinity,
         }),
-        /**
-         * See: https://github.com/angular/angular/issues/11580
-         */
-        new webpack.ContextReplacementPlugin(
-            /(.+)?angular(\\|\/)core(.+)?/,
-            utils.root('src/main/webapp/app'), {}
-        ),
         new CopyWebpackPlugin([
             { from: './node_modules/swagger-ui/dist/css', to: 'swagger-ui/dist/css' },
             { from: './node_modules/swagger-ui/dist/lib', to: 'swagger-ui/dist/lib' },

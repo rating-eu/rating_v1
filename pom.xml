@@ -928,6 +928,9 @@
                                 </configuration>
                             </execution>
                         </executions>
+                        <configuration>
+                            <skipTests>true</skipTests>
+                        </configuration>
                     </plugin>
                     <plugin>
                         <groupId>pl.project13.maven</groupId>

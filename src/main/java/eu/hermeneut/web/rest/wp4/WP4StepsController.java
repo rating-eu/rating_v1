@@ -3,7 +3,7 @@ package eu.hermeneut.web.rest.wp4;
 import com.codahale.metrics.annotation.Timed;
 import eu.hermeneut.domain.*;
 import eu.hermeneut.domain.enumeration.Role;
-import eu.hermeneut.domain.result.AugmentedAttackStrategy;
+import eu.hermeneut.domain.attackmap.AugmentedAttackStrategy;
 import eu.hermeneut.domain.wp4.MyAssetAttackChance;
 import eu.hermeneut.exceptions.NotFoundException;
 import eu.hermeneut.exceptions.NullInputException;
@@ -250,8 +250,8 @@ public class WP4StepsController {
             log.debug("MyAnswerSet: " + myAnswerSet);
 
             if (myAnswerSet != null) {
-                augmentedAttackStrategy.setExternalAuditAnswersLikelihood(this.answerCalculator.getAnswersLikelihood(myAnswerSet));
-                augmentedAttackStrategy.setRefinedLikelihood((augmentedAttackStrategy.getInitialLikelihood() + augmentedAttackStrategy.getExternalAuditAnswersLikelihood()) / 2);
+                augmentedAttackStrategy.setRefinedVulnerability(this.answerCalculator.getAnswersLikelihood(myAnswerSet));
+                augmentedAttackStrategy.setRefinedLikelihood((augmentedAttackStrategy.getInitialLikelihood() + augmentedAttackStrategy.getRefinedVulnerability()) / 2);
             } else {
                 //TODO same as ContextualLikelihood ???
             }
@@ -269,7 +269,7 @@ public class WP4StepsController {
             attackChance.setAttackStrategy(attackStrategy);
 
             attackChance.setLikelihood(augmentedAttackStrategy.getRefinedLikelihood());
-            attackChance.setVulnerability(augmentedAttackStrategy.getExternalAuditAnswersLikelihood());
+            attackChance.setVulnerability(augmentedAttackStrategy.getRefinedVulnerability());
 
             float critical = attackChance.getLikelihood() * attackChance.getVulnerability();
             attackChance.setCritical(critical);

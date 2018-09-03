@@ -38,7 +38,7 @@ export class ThreatResultComponent implements OnInit, OnDestroy {
 
     // Motivations
     private motivations$: Observable<HttpResponse<MotivationMgm[]>>;
-    private motivations: MotivationMgm[];
+    public motivations: MotivationMgm[];
 
     private defaultThreatAgentsMotivations$: Observable<[HttpResponse<ThreatAgentMgm[]>, HttpResponse<MotivationMgm[]>]>;
 
