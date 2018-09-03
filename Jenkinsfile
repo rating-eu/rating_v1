@@ -35,11 +35,11 @@ node {
         stage('build docker') {
             sh "cp -R src/main/docker target/"
             sh "cp target/*.war target/docker/"
-            dockerImage = docker.build('docker-login/hermeneut', 'target/docker')
+            dockerImage = docker.build('hermeneut', 'target/docker')
         }
 
         stage('publish docker') {
-            docker.withRegistry('172.17.0.2:5000', 'docker-login') {
+            docker.withRegistry('http://localhost:5000', 'docker-registry-login') {
                 dockerImage.push 'latest'
             }
         }
