@@ -28,6 +28,11 @@
                 "../../../node_modules/jquery/dist/jquery.min.js",
                 "../../../node_modules/popper.js/dist/umd/popper.min.js",
                 "../../../node_modules/bootstrap/dist/js/bootstrap.min.js",
+                "content/asset/js/metisMenu.min.js",
+                "content/asset/js/jquery.slimscroll.js",
+                "content/asset/js/jquery.core.js",
+                "content/asset/js/jquery.app.js",
+                "content/asset/js/coreDashboard.js",
                 "../../../node_modules/hammerjs/hammer.min.js"
             ]
         }

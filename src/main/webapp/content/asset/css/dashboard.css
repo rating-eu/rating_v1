@@ -1,0 +1,96 @@
+/*
+Template Name: Hermeneut - Bootstrap 4
+File: Dashboard Css File
+*/
+
+
+.navbar-custom,
+.topbar .topbar-left{
+    background: #17698a;
+    background: linear-gradient(to top, #17698a, #00293a);
+}
+
+.menu-title {
+    background: #1a6e90;
+}
+
+
+
+#TypeofCompany input[type="radio"]:before, 
+#TypeofCompany .radio input[type="radio"]:before, 
+#TypeofCompany .radio-inline input[type="radio"]:before,
+#TypeofCompany input[type="radio"]:after, 
+#TypeofCompany .radio input[type="radio"]:after, 
+#TypeofCompany .radio-inline input[type="radio"]:after{
+    top: -15px;
+
+}
+
+#sidebar-menu .btn-step-ok{
+    color: #2be263 !important;
+}
+
+.table > tbody > tr > td button {
+    margin: 5px;
+    border: 1px solid #ccc9c9;
+    cursor: pointer;
+    font-size: 12px;
+}
+
+.table > tbody > tr > td button:hover {
+    -webkit-box-shadow: 0px 0px 5px 0px rgba(107,107,107,1);
+    -moz-box-shadow: 0px 0px 5px 0px rgba(107,107,107,1);
+    box-shadow: 0px 0px 5px 0px rgba(107,107,107,1);
+}
+
+#questionSA ul {
+    list-style-type: none;
+    padding-left: 20px;
+}
+
+#questionSA div {
+    font-size: 17px;
+    color: #3c86d8;
+    font-weight: bold;
+}
+
+div#cicleProb {
+    width: 280px;
+}
+
+#cicleProb .progressbar-text {
+    font-size: 5rem !important;
+}
+
+
+#potentialContainerIT, #potentialTAIT, 
+#potentialContainerBrand, #potentialTABrand,
+#potentialContainerPD, #potentialTAPD,
+#potentialContainerS, #potentialTAS, #IPl,
+#IPb, #IPpd, #IPs {
+  margin: auto;
+  width: 200px;
+  height: 100px;
+}
+
+.table .textCentre th {
+   text-align: center;
+}
+
+.table .textCentre tr {
+    height: 100em
+}
+
+.filterR {
+    background: #ececec;
+    border: 5px solid #fff;
+}
+
+.FilteredResult {
+    font-size: 1.2em;
+}
+
+.filterR  td{
+    height: 10em;
+}
+
