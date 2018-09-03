@@ -224,7 +224,7 @@ step todo:
                         </div>
                     </ng-container>
                 </div>
-                <div class="col-md-5">
+                <div *ngIf="isAssetTreeShow(direct)" class="col-md-5">
                     <div *ngIf="directAssetSelected && !indirectAssetSelected">
                         {{directAssetSelected.myAsset.asset.name}} details
                     </div>
