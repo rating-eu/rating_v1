@@ -5,8 +5,8 @@ node {
         checkout scm
     }
 
-    gitlabCommitStatus('build') {
-        docker.image('openjdk:8').inside('-u root -e MAVEN_OPTS="-Duser.home=./"') {
+    gitlabCommitStatus(name: 'build') {
+        docker.image('openjdk:8').inside('-e MAVEN_OPTS="-Duser.home=./"') {
             stage('check java') {
                 sh "java -version"
             }
@@ -24,26 +24,6 @@ node {
                 sh "./mvnw com.github.eirslett:frontend-maven-plugin:yarn"
             }
 
-            stage('backend tests') {
-                try {
-                    sh "./mvnw test"
-                } catch(err) {
-                    throw err
-                } finally {
-                    junit '**/target/surefire-reports/TEST-*.xml'
-                }
-            }
-
-            stage('frontend tests') {
-                try {
-                    sh "./mvnw com.github.eirslett:frontend-maven-plugin:yarn -Dfrontend.yarn.arguments=test"
-                } catch(err) {
-                    throw err
-                } finally {
-                    junit '**/target/test-results/karma/TESTS-*.xml'
-                }
-            }
-
             stage('packaging') {
                 sh "./mvnw verify -Pprod -DskipTests"
                 archiveArtifacts artifacts: '**/target/*.war', fingerprint: true
@@ -55,11 +35,11 @@ node {
         stage('build docker') {
             sh "cp -R src/main/docker target/"
             sh "cp target/*.war target/docker/"
-            dockerImage = docker.build('docker-login/hermeneut', 'target/docker')
+            dockerImage = docker.build('hermeneut', 'target/docker')
         }
 
         stage('publish docker') {
-            docker.withRegistry('172.17.0.2:5000', 'docker-login') {
+            docker.withRegistry('http://localhost:5000', 'docker-registry-login') {
                 dockerImage.push 'latest'
             }
         }
