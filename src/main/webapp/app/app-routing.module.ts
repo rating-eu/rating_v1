@@ -1,10 +1,11 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
-import {errorRoute, navbarRoute} from './layouts';
+import {errorRoute, navbarRoute, sidebarRoute} from './layouts';
 import {DEBUG_INFO_ENABLED} from './app.constants';
 
 const routes: Routes = [
     navbarRoute,
+    sidebarRoute,
     ...errorRoute,
     {
         path: 'risk-management',
