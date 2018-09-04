@@ -37,8 +37,8 @@ export class IdentifyAssetUtilService {
 
     private resourceUrl = SERVER_API_URL + 'api/my-assets-one-shot/';
     private assetServiceUrl = SERVER_API_URL + 'api/my-assets/self-assessment/';
-    private directUrl = SERVER_API_URL + 'api/';
-    private indirectUrl = SERVER_API_URL + 'api/';
+    private directUrl = SERVER_API_URL + 'api/{selfAssessmentID}/direct-assets';
+    private indirectUrl = SERVER_API_URL + 'api/{selfAssessmentID}/indirect-assets';
 
     constructor(
         private http: HttpClient
@@ -79,7 +79,7 @@ export class IdentifyAssetUtilService {
     }
 
     public getMySavedDirectAssets(self: SelfAssessmentMgm): Observable<DirectAssetMgm[]> {
-        const uri = this.directUrl + self.id.toString();
+        const uri = this.directUrl.replace('{selfAssessmentID}', String(self.id));
         return this.http.get<DirectAssetMgm[]>(uri, { observe: 'response' })
             .map((res: HttpResponse<DirectAssetMgm[]>) => {
                 return res.body;
@@ -87,7 +87,7 @@ export class IdentifyAssetUtilService {
     }
 
     public getMySavedIndirectAssets(self: SelfAssessmentMgm): Observable<IndirectAssetMgm[]> {
-        const uri = this.indirectUrl + self.id.toString();
+        const uri = this.indirectUrl.replace('{selfAssessmentID}', String(self.id));
         return this.http.get<IndirectAssetMgm[]>(uri, { observe: 'response' })
             .map((res: HttpResponse<IndirectAssetMgm[]>) => {
                 return res.body;

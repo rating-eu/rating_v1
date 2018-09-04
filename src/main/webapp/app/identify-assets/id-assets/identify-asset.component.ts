@@ -109,17 +109,24 @@ export class IdentifyAssetComponent implements OnInit, OnDestroy {
                                                     if (mySavedAssets) {
                                                         this.myAssets = mySavedAssets;
                                                         // Decommentare il codice di seguito quando saranno pronti i relativi servizi
-                                                        /*
                                                         this.idaUtilsService.getMySavedDirectAssets(this.mySelf)
                                                             .toPromise().then((mySavedDirects) => {
                                                                 this.myDirectAssets = mySavedDirects;
+                                                                console.log(this.myDirectAssets);
+                                                                this.idaUtilsService.getMySavedIndirectAssets(this.mySelf)
+                                                                    .toPromise().then((mySavedIndirects) => {
+                                                                        this.myIndirectAssets = mySavedIndirects;
+                                                                        for (let i = 0; i < this.myDirectAssets.length; i++) {
+                                                                            this.myDirectAssets[i].effects =
+                                                                                this.idaUtilsService.getSavedIndirectFromDirect(this.myDirectAssets[i], this.myIndirectAssets);
+                                                                        }
+                                                                        console.log(this.myDirectAssets);
+                                                                        console.log(this.myIndirectAssets);
+                                                                        this.ref.detectChanges();
+                                                                    });
                                                             });
-                                                        this.idaUtilsService.getMySavedIndirectAssets(this.mySelf)
-                                                            .toPromise().then((mySavedIndirects) => {
-                                                                this.myIndirectAssets = mySavedIndirects;
-                                                            });
-                                                        */
                                                         // Eliminare il codice di seguito quando saranno pronti i relativi servizi
+                                                        /*
                                                         let index = 0;
                                                         this.myDirectAssets = [];
                                                         this.myIndirectAssets = [];
@@ -156,6 +163,7 @@ export class IdentifyAssetComponent implements OnInit, OnDestroy {
                                                             console.log(this.myDirectAssets[i].effects);
                                                         }
                                                         this.ref.detectChanges();
+                                                        */
                                                     }
                                                 });
                                         }
