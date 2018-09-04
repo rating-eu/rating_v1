@@ -42,8 +42,10 @@ public interface DirectAssetService {
      * Search for the directAsset corresponding to the query.
      *
      * @param query the query of the search
-     * 
+     *
      * @return the list of entities
      */
     List<DirectAsset> search(String query);
+
+    List<DirectAsset> findAllBySelfAssessment(Long selfAssessmentID);
 }
