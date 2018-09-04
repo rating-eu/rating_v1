@@ -5,7 +5,10 @@ import { JhiLanguageHelper } from '../../shared';
 
 @Component({
     selector: 'jhi-main',
-    templateUrl: './main.component.html'
+    templateUrl: './main.component.html',
+    styleUrls: [
+        'style.css'
+    ]
 })
 export class JhiMainComponent implements OnInit {
 
@@ -21,6 +24,8 @@ export class JhiMainComponent implements OnInit {
         }
         return title;
     }
+
+
 
     ngOnInit() {
         this.router.events.subscribe((event) => {
