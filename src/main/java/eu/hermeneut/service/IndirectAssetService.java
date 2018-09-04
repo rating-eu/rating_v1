@@ -48,4 +48,6 @@ public interface IndirectAssetService {
     List<IndirectAsset> search(String query);
 
     List<IndirectAsset> findAllByDirectAsset(Long directAssetID);
+
+    List<IndirectAsset> findAllBySelfAssessment(Long selfAssessmentID);
 }
