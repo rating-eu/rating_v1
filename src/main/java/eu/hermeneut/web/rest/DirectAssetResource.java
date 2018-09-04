@@ -89,7 +89,19 @@ public class DirectAssetResource {
     public List<DirectAsset> getAllDirectAssets() {
         log.debug("REST request to get all DirectAssets");
         return directAssetService.findAll();
-        }
+    }
+
+    /**
+     * GET  /direct-assets : get all the directAssets by SelfAssessment.
+     *
+     * @return the ResponseEntity with status 200 (OK) and the list of directAssets in body
+     */
+    @GetMapping("/{selfAssessmentID}/direct-assets")
+    @Timed
+    public List<DirectAsset> getAllDirectAssets(@PathVariable("selfAssessmentID") Long selfAssessmentID) {
+        log.debug("REST request to get all DirectAssets");
+        return directAssetService.findAllBySelfAssessment(selfAssessmentID);
+    }
 
     /**
      * GET  /direct-assets/:id : get the "id" directAsset.

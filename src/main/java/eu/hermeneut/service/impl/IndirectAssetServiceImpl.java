@@ -66,6 +66,12 @@ public class IndirectAssetServiceImpl implements IndirectAssetService {
         return indirectAssetRepository.findAllbyDirectAsset(directAssetID);
     }
 
+    @Override
+    public List<IndirectAsset> findAllBySelfAssessment(Long selfAssessmentID) {
+        log.debug("Request to get all IndirectAssets by SelfAssessment ID");
+        return indirectAssetRepository.findAllbySelfAssessment(selfAssessmentID);
+    }
+
     /**
      * Get one indirectAsset by id.
      *
