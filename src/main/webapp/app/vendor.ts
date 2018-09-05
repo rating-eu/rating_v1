@@ -8,10 +8,15 @@ import 'rxjs/add/observable/throw';
 // jhipster-needle-add-element-to-vendor - JHipster will add new menu items here
 
 import '../content/assets/js/jquery.min.js';
+import '../content/assets/js/bootstrap.bundle.js';
 import '../content/assets/js/metisMenu.min.js';
 import '../content/assets/js/waves.js';
 import '../content/assets/js/jquery.slimscroll.js';
 import '../content/plugins/custombox/js/custombox.min.js';
 import '../content/plugins/custombox/js/legacy.min.js';
-import '../content/assets/js/jquery.core.js';
+/* import '../content/plugins/sweet-alert/sweetalert2.min.js';
+import '../content/assets/pages/jquery.sweet-alert.init.js';*/
+import '../content/assets/js/bootstrap.bundle.js';
+/* import '../content/assets/js/jquery.core.js';*/
 import '../content/assets/js/jquery.app.js';
+
