@@ -98,4 +98,10 @@ public class DirectAssetServiceImpl implements DirectAssetService {
             .stream(directAssetSearchRepository.search(queryStringQuery(query)).spliterator(), false)
             .collect(Collectors.toList());
     }
+
+    @Override
+    public List<DirectAsset> findAllBySelfAssessment(Long selfAssessmentID) {
+        log.debug("Request to get all DirectAssets");
+        return directAssetRepository.findAllBySelfAssessment(selfAssessmentID);
+    }
 }

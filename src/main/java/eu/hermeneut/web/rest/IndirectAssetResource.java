@@ -84,6 +84,18 @@ public class IndirectAssetResource {
      *
      * @return the ResponseEntity with status 200 (OK) and the list of indirectAssets in body
      */
+    @GetMapping("/{selfAssessmentID}/indirect-assets")
+    @Timed
+    public List<IndirectAsset> getAllIndirectAssets(@PathVariable("selfAssessmentID") Long selfAssessmentID) {
+        log.debug("REST request to get all IndirectAssets");
+        return indirectAssetService.findAllBySelfAssessment(selfAssessmentID);
+    }
+
+    /**
+     * GET  /indirect-assets : get all the indirectAssets.
+     *
+     * @return the ResponseEntity with status 200 (OK) and the list of indirectAssets in body
+     */
     @GetMapping("/indirect-assets")
     @Timed
     public List<IndirectAsset> getAllIndirectAssets() {
