@@ -33,8 +33,8 @@
                     </span>
                 </a>
                 <ul class="dropdown-menu" ngbDropdownMenu *ngIf="languages.length > 1">
-                    <li *ngFor="let language of languages">
-                        <a class="dropdown-item" [jhiActiveMenu]="language" href="javascript:void(0);"
+                    <li *ngFor="let language of languages" class="dropdown-item">
+                        <a  [jhiActiveMenu]="language" href="javascript:void(0);"
                            (click)="changeLanguage(language);collapseNavbar();">
                             <span ngClass="flag-icon flag-icon-{{language}}"></span> {{language | findLanguageFromKey}}
                         </a>
