@@ -132,34 +132,34 @@
                     </span>
                 </a>
                 <ul class="dropdown-menu" ngbDropdownMenu>
-                    <li *ngSwitchCase="true">
-                        <a class="dropdown-item" routerLink="settings" routerLinkActive="active"
+                    <li *ngSwitchCase="true"  class="dropdown-item">
+                        <a routerLink="settings" routerLinkActive="active"
                            (click)="collapseNavbar()">
                             <i class="fa fa-fw fa-wrench" aria-hidden="true"></i>
                             <span jhiTranslate="global.menu.account.settings">Settings</span>
                         </a>
                     </li>
-                    <li *ngSwitchCase="true">
-                        <a class="dropdown-item" routerLink="password" routerLinkActive="active"
+                    <li *ngSwitchCase="true" class="dropdown-item">
+                        <a  routerLink="password" routerLinkActive="active"
                            (click)="collapseNavbar()">
                             <i class="fa fa-fw fa-clock-o" aria-hidden="true"></i>
                             <span jhiTranslate="global.menu.account.password">Password</span>
                         </a>
                     </li>
-                    <li *ngSwitchCase="true">
-                        <a class="dropdown-item" (click)="logout()" id="logout">
+                    <li *ngSwitchCase="true" class="dropdown-item">
+                        <a (click)="logout()" id="logout">
                             <i class="fa fa-fw fa-sign-out" aria-hidden="true"></i>
                             <span jhiTranslate="global.menu.account.logout">Sign out</span>
                         </a>
                     </li>
-                    <li *ngSwitchCase="false">
-                        <a class="dropdown-item" (click)="login()" id="login">
+                    <li *ngSwitchCase="false" class="dropdown-item">
+                        <a (click)="login()" id="login">
                             <i class="fa fa-fw fa-sign-in" aria-hidden="true"></i>
                             <span jhiTranslate="global.menu.account.login">Sign in</span>
                         </a>
                     </li>
-                    <li *ngSwitchCase="false">
-                        <a class="dropdown-item" routerLink="register" routerLinkActive="active"
+                    <li *ngSwitchCase="false" class="dropdown-item">
+                        <a routerLink="register" routerLinkActive="active"
                            (click)="collapseNavbar()">
                             <i class="fa fa-fw fa-user-plus" aria-hidden="true"></i>
                             <span jhiTranslate="global.menu.account.register">Register</span>
