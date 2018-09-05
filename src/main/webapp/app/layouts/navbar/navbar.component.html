@@ -14,7 +14,7 @@
 
     <nav class="navbar-custom" [ngSwitch]="isAuthenticated()">
 
-        <ul class="list-unstyled topbar-right-menu float-right mb-0">
+        <div class="list-unstyled topbar-right-menu float-right mb-0">
 
             <li class="float-left">
                 <button
@@ -23,13 +23,18 @@
                 </button>
             </li>
 
+            <!--Translation menu-->
             <li class="dropdown notification-list" *ngIf="languages">
-                <a class="nav-link dropdown-toggle waves-effect waves-light nav-user" href="javascript:void(0);"
+                <a class="nav-link dropdown-toggle waves-effect waves-light nav-user"
+                   href="javascript:void(0);"
                    data-toggle="dropdown"
-                   role="button" aria-haspopup="false" aria-expanded="false"
-                   id="languagesnavBarDropdown" *ngIf="languages.length > 1">
-                    <i class="mdi mdi-earth"></i> <span jhiTranslate="global.menu.language">Language</span> <i
-                    class="mdi mdi-chevron-down"></i>
+                   role="button"
+                   aria-haspopup="false"
+                   aria-expanded="false"
+                   id="languagesnavBarDropdown"
+                   *ngIf="languages.length > 1">
+                    <i class="mdi mdi-earth"></i> <span jhiTranslate="global.menu.language">Language</span>
+                    <i class="mdi mdi-chevron-down"></i>
                 </a>
                 <div class="dropdown-menu dropdown-menu-right" *ngIf="languages.length > 1">
                     <a class="dropdown-item" [jhiActiveMenu]="language" href="javascript:void(0);"
@@ -39,50 +44,244 @@
                 </div>
             </li>
 
-            <li class="dropdown notification-list">
-                <a class="nav-link dropdown-toggle waves-effect waves-light nav-user" data-toggle="dropdown" href="#"
-                   role="button" aria-haspopup="false" aria-expanded="false">
-                    <i class="fas fa-cogs"></i> <span>Administrator</span> <i class="mdi mdi-chevron-down"></i>
+            <!--Administration menu-->
+            <li *jhiHasAnyAuthority="'ROLE_ADMIN'"
+                id="admin-menu"
+                class="dropdown notification-list"
+                routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+                <a class="nav-link dropdown-toggle waves-effect waves-light nav-user"
+                   href="javascript:void(0);"
+                   data-toggle="dropdown"
+                   role="button"
+                   aria-haspopup="false"
+                   aria-expanded="false"
+                >
+                    <span>
+                        <i class="fa fa-user-plus" aria-hidden="true"></i>
+                        <span jhiTranslate="global.menu.admin.main">Administration</span>
+                    </span>
                 </a>
                 <div class="dropdown-menu dropdown-menu-right">
-
-                    <!-- item-->
-                    <a href="javascript:void(0);" class="dropdown-item">
-                        User management
+                    <a class="dropdown-item" routerLink="user-management" routerLinkActive="active"
+                       (click)="collapseNavbar()">
+                        <i class="fa fa-fw fa-user" aria-hidden="true"></i>
+                        <span jhiTranslate="global.menu.admin.userManagement">User management</span>
                     </a>
-
-                    <!-- item-->
-                    <a href="javascript:void(0);" class="dropdown-item">
-                        Metrics
+                    <a class="dropdown-item" routerLink="jhi-metrics" routerLinkActive="active"
+                       (click)="collapseNavbar()">
+                        <i class="fa fa-fw fa-tachometer" aria-hidden="true"></i>
+                        <span jhiTranslate="global.menu.admin.metrics">Metrics</span>
                     </a>
-
-                    <!-- item-->
-                    <a href="javascript:void(0);" class="dropdown-item">
-                        Health
+                    <a class="dropdown-item" routerLink="jhi-health" routerLinkActive="active"
+                       (click)="collapseNavbar()">
+                        <i class="fa fa-fw fa-heart" aria-hidden="true"></i>
+                        <span jhiTranslate="global.menu.admin.health">Health</span>
                     </a>
-
-                    <!-- item-->
-                    <a href="javascript:void(0);" class="dropdown-item">
-                        Configuration
+                    <a class="dropdown-item" routerLink="jhi-configuration" routerLinkActive="active"
+                       (click)="collapseNavbar()">
+                        <i class="fa fa-fw fa-list" aria-hidden="true"></i>
+                        <span jhiTranslate="global.menu.admin.configuration">Configuration</span>
                     </a>
-
-                    <!-- item-->
-                    <a href="javascript:void(0);" class="dropdown-item">
-                        Audits
+                    <a class="dropdown-item" routerLink="audits" routerLinkActive="active"
+                       (click)="collapseNavbar()">
+                        <i class="fa fa-fw fa-bell" aria-hidden="true"></i>
+                        <span jhiTranslate="global.menu.admin.audits">Audits</span>
                     </a>
-
-                    <a href="javascript:void(0);" class="dropdown-item">
-                        Logs
+                    <a class="dropdown-item" routerLink="logs" routerLinkActive="active" (click)="collapseNavbar()">
+                        <i class="fa fa-fw fa-tasks" aria-hidden="true"></i>
+                        <span jhiTranslate="global.menu.admin.logs">Logs</span>
                     </a>
-
-                    <a href="javascript:void(0);" class="dropdown-item">
-                        API
+                    <a *ngIf="swaggerEnabled" class="dropdown-item" routerLink="docs" routerLinkActive="active"
+                       (click)="collapseNavbar()">
+                        <i class="fa fa-fw fa-book" aria-hidden="true"></i>
+                        <span jhiTranslate="global.menu.admin.apidocs">API</span>
                     </a>
-
-                    <a href="javascript:void(0);" class="dropdown-item">
-                        Reindex Elasticsearch
+                    <a class="dropdown-item" routerLink="elasticsearch-reindex" routerLinkActive="active"
+                       (click)="collapseNavbar()">
+                        <i class="fa fa-fw fa-search" aria-hidden="true"></i>&nbsp;
+                        <span jhiTranslate="global.menu.admin.elasticsearch-reindex">Elasticsearch Reindex</span>
                     </a>
+                    <!-- jhipster-needle-add-element-to-admin-menu - JHipster will add entities to the admin menu here -->
+                </div>
+            </li>
 
+            <!--Entities-->
+            <li *jhiHasAnyAuthority="'ROLE_ADMIN'"
+                class="dropdown notification-list"
+                routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+
+                <a class="nav-link dropdown-toggle waves-effect waves-light nav-user"
+                   href="javascript:void(0);"
+                   id="entity-menu"
+                   data-toggle="dropdown"
+                   role="button"
+                   aria-haspopup="false"
+                   aria-expanded="false"
+                >
+                    <span>
+                        <i class="fa fa-th-list" aria-hidden="true"></i>
+                        <span jhiTranslate="global.menu.entities.main">Entities</span>
+                    </span>
+                </a>
+
+                <div class="dropdown-menu dropdown-menu-right">
+                    <a class="dropdown-item" routerLink="company-profile-mgm" routerLinkActive="active"
+                       [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                        <i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
+                        <span jhiTranslate="global.menu.entities.companyProfileMgm">Company Profile Mgm</span>
+                    </a>
+                    <a class="dropdown-item" routerLink="domain-of-influence-mgm" routerLinkActive="active"
+                       [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                        <i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
+                        <span jhiTranslate="global.menu.entities.domainOfInfluenceMgm">Domain Of Influence Mgm</span>
+                    </a>
+                    <a class="dropdown-item" routerLink="self-assessment-mgm" routerLinkActive="active"
+                       [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                        <i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
+                        <span jhiTranslate="global.menu.entities.selfAssessmentMgm">Self Assessment Mgm</span>
+                    </a>
+                    <a class="dropdown-item" routerLink="container-mgm" routerLinkActive="active"
+                       [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                        <i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
+                        <span jhiTranslate="global.menu.entities.containerMgm">Container Mgm</span>
+                    </a>
+                    <a class="dropdown-item" routerLink="asset-category-mgm" routerLinkActive="active"
+                       [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                        <i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
+                        <span jhiTranslate="global.menu.entities.assetCategoryMgm">Asset Category Mgm</span>
+                    </a>
+                    <a class="dropdown-item" routerLink="asset-mgm" routerLinkActive="active"
+                       [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                        <i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
+                        <span jhiTranslate="global.menu.entities.assetMgm">Asset Mgm</span>
+                    </a>
+                    <a class="dropdown-item" routerLink="threat-agent-mgm" routerLinkActive="active"
+                       [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                        <i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
+                        <span jhiTranslate="global.menu.entities.threatAgentMgm">Threat Agent Mgm</span>
+                    </a>
+                    <a class="dropdown-item" routerLink="motivation-mgm" routerLinkActive="active"
+                       [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                        <i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
+                        <span jhiTranslate="global.menu.entities.motivationMgm">Motivation Mgm</span>
+                    </a>
+                    <a class="dropdown-item" routerLink="attack-strategy-mgm" routerLinkActive="active"
+                       [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                        <i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
+                        <span jhiTranslate="global.menu.entities.attackStrategyMgm">Attack Strategy Mgm</span>
+                    </a>
+                    <a class="dropdown-item" routerLink="mitigation-mgm" routerLinkActive="active"
+                       [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                        <i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
+                        <span jhiTranslate="global.menu.entities.mitigationMgm">Mitigation Mgm</span>
+                    </a>
+                    <a class="dropdown-item" routerLink="questionnaire-mgm" routerLinkActive="active"
+                       [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                        <i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
+                        <span jhiTranslate="global.menu.entities.questionnaireMgm">Questionnaire Mgm</span>
+                    </a>
+                    <a class="dropdown-item" routerLink="question-mgm" routerLinkActive="active"
+                       [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                        <i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
+                        <span jhiTranslate="global.menu.entities.questionMgm">Question Mgm</span>
+                    </a>
+                    <a class="dropdown-item" routerLink="answer-mgm" routerLinkActive="active"
+                       [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                        <i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
+                        <span jhiTranslate="global.menu.entities.answerMgm">Answer Mgm</span>
+                    </a>
+                    <a class="dropdown-item" routerLink="external-audit-mgm" routerLinkActive="active"
+                       [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                        <i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
+                        <span jhiTranslate="global.menu.entities.externalAuditMgm">External Audit Mgm</span>
+                    </a>
+                    <a class="dropdown-item" routerLink="my-answer-mgm" routerLinkActive="active"
+                       [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                        <i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
+                        <span jhiTranslate="global.menu.entities.myAnswerMgm">My Answer Mgm</span>
+                    </a>
+                    <a class="dropdown-item" routerLink="answer-weight-mgm" routerLinkActive="active"
+                       [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                        <i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
+                        <span jhiTranslate="global.menu.entities.answerWeightMgm">Answer Weight Mgm</span>
+                    </a>
+                    <a class="dropdown-item" routerLink="questionnaire-status-mgm" routerLinkActive="active"
+                       [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                        <i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
+                        <span jhiTranslate="global.menu.entities.questionnaireStatusMgm">Questionnaire Status Mgm</span>
+                    </a>
+                    <a class="dropdown-item" routerLink="level-mgm" routerLinkActive="active"
+                       [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                        <i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
+                        <span jhiTranslate="global.menu.entities.levelMgm">Level Mgm</span>
+                    </a>
+                    <a class="dropdown-item" routerLink="phase-mgm" routerLinkActive="active"
+                       [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                        <i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
+                        <span jhiTranslate="global.menu.entities.phaseMgm">Phase Mgm</span>
+                    </a>
+                    <a class="dropdown-item" routerLink="company-group-mgm" routerLinkActive="active"
+                       [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                        <i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
+                        <span jhiTranslate="global.menu.entities.companyGroupMgm">Group Mgm</span>
+                    </a>
+                    <a class="dropdown-item" routerLink="my-asset-mgm" routerLinkActive="active"
+                       [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                        <i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
+                        <span jhiTranslate="global.menu.entities.myAssetMgm">My Asset Mgm</span>
+                    </a>
+                    <a class="dropdown-item" routerLink="direct-asset-mgm" routerLinkActive="active"
+                       [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                        <i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
+                        <span jhiTranslate="global.menu.entities.directAssetMgm">Direct Asset Mgm</span>
+                    </a>
+                    <a class="dropdown-item" routerLink="indirect-asset-mgm" routerLinkActive="active"
+                       [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                        <i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
+                        <span jhiTranslate="global.menu.entities.indirectAssetMgm">Indirect Asset Mgm</span>
+                    </a>
+                    <a class="dropdown-item" routerLink="attack-cost-mgm" routerLinkActive="active"
+                       [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                        <i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
+                        <span jhiTranslate="global.menu.entities.attackCostMgm">Attack Cost Mgm</span>
+                    </a>
+                    <a class="dropdown-item" routerLink="economic-coefficients-mgm" routerLinkActive="active"
+                       [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                        <i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
+                        <span
+                            jhiTranslate="global.menu.entities.economicCoefficientsMgm">Economic Coefficients Mgm</span>
+                    </a>
+                    <a class="dropdown-item" routerLink="ebit-mgm" routerLinkActive="active"
+                       [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                        <i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
+                        <span jhiTranslate="global.menu.entities.ebitMgm">Ebit Mgm</span>
+                    </a>
+                    <a class="dropdown-item" routerLink="economic-results-mgm" routerLinkActive="active"
+                       [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                        <i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
+                        <span jhiTranslate="global.menu.entities.economicResultsMgm">Economic Results Mgm</span>
+                    </a>
+                    <a class="dropdown-item" routerLink="splitting-loss-mgm" routerLinkActive="active"
+                       [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                        <i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
+                        <span jhiTranslate="global.menu.entities.splittingLossMgm">Splitting Loss Mgm</span>
+                    </a>
+                    <a class="dropdown-item" routerLink="critical-level-mgm" routerLinkActive="active"
+                       [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                        <i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
+                        <span jhiTranslate="global.menu.entities.criticalLevelMgm">Critical Level Mgm</span>
+                    </a>
+                    <a class="dropdown-item" routerLink="likelihood-scale-mgm" routerLinkActive="active"
+                       [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                        <i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
+                        <span jhiTranslate="global.menu.entities.likelihoodScaleMgm">Likelihood Scale Mgm</span>
+                    </a>
+                    <a class="dropdown-item" routerLink="vulnerability-scale-mgm" routerLinkActive="active"
+                       [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                        <i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
+                        <span jhiTranslate="global.menu.entities.vulnerabilityScaleMgm">Vulnerability Scale Mgm</span>
+                    </a>
+                    <!-- jhipster-needle-add-entity-to-menu - JHipster will add entities to the menu here -->
                 </div>
             </li>
 
@@ -203,6 +402,6 @@
                     </a>
                 </div>
             </li>
-        </ul>
+        </div>
     </nav>
 </div>
