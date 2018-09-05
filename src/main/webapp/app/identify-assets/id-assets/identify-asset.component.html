@@ -197,11 +197,55 @@ step todo:
 </ng-container>
 <ng-container *ngIf="questionnariesStatus.length > 0">
     <ng-container *ngIf="questionnariesStatus[0].status === 'FULL'">
-        <p>You already completed the questionnaire!</p>
-        <!-- INSERIRE LOGICA DI VISUALIZZAZIONE -->
+        <ng-container *ngIf="myDirectAssets">
+            <div class="row" style="margin-bottom: 10px" *ngFor="let direct of myDirectAssets">
+                <div class="col-md-7">
+                    <div class="col-md-12">
+                        <div class="parentAssetBox" (click)="selectDirectAsset(direct)">
+                            {{direct.myAsset.asset.name}}
+                        </div>
+                    </div>
+                    <ng-container *ngIf="isAssetTreeShow(direct) && direct.effects">
+                        <div class="row" style="height:7em" *ngFor="let effect of direct.effects; let last = last;">
+                            <div class="col-md-1">
+                                <svg>
+                                    <line *ngIf="!last" x1="40" y1="0" x2="40" y2="7em" stroke="black"/>
+                                    <line *ngIf="last" x1="40" y1="0" x2="40" y2="3.3em" stroke="black"/>
+                                    <line stroke="black" x1="40" x2="100" y1="35%" y2="35%"/>
+                                </svg>
+                            </div>
+                            <div class="col-md-11">
+                                <div class="childAssetBox" (click)="selectIndirectAsset(effect)">
+                                    {{effect.myAsset.asset.name}}
+                                </div>
+                            </div>
+                        </div>
+                    </ng-container>
+                </div>
+                <div *ngIf="isAssetTreeShow(direct)" class="col-md-5">
+                    <div class="card">
+                        <div class="card-body">
+                            <div *ngIf="directAssetSelected && !indirectAssetSelected">
+                                <h5 class="card-title">{{directAssetSelected.myAsset.asset.name}} details</h5>
+                                <ng-container class="card-text">
+                                    DETAILS
+                                </ng-container>
+                            </div>
+                            <div *ngIf="directAssetSelected && indirectAssetSelected">
+                                <h5 class="card-title">{{indirectAssetSelected.myAsset.asset.name}} details</h5>
+                                <ng-container class="card-text">
+                                    DETAILS
+                                </ng-container>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </ng-container>
     </ng-container>
     <ng-container *ngIf="questionnariesStatus[0].status === 'PENDING'">
         <p>You already completed the questionnaire!</p>
         <!-- INSERIRE LOGICA DI COMPLETAMENTO -->
+        
     </ng-container>
 </ng-container>

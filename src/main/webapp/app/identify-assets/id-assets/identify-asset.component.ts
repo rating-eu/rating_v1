@@ -8,12 +8,8 @@ import { JhiAlertService, JhiEventManager } from 'ng-jhipster';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 import { AttackStrategyMgm } from '../../entities/attack-strategy-mgm/attack-strategy-mgm.model';
-import { Observable } from 'rxjs/Observable';
-import { AssetMgm, AssetMgmService } from '../../entities/asset-mgm';
 import { QuestionnaireMgm } from '../../entities/questionnaire-mgm';
-import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { QuestionnairePurpose } from '../../entities/enumerations/QuestionnairePurpose.enum';
-import { concatMap } from 'rxjs/operators/concatMap';
 import { QuestionnairesService } from '../../questionnaires/questionnaires.service';
 import { QuestionMgm, QuestionMgmService } from '../../entities/question-mgm';
 import { AnswerMgm, AnswerMgmService } from '../../entities/answer-mgm';
@@ -26,6 +22,7 @@ import { DirectAssetMgm } from '../../entities/direct-asset-mgm';
 import { IndirectAssetMgm } from '../../entities/indirect-asset-mgm';
 import { Status } from '../../entities/enumerations/QuestionnaireStatus.enum';
 import { AssetsOneShot } from '../model/AssetsOneShot.model';
+import { AttackCostMgm, CostType } from '../../entities/attack-cost-mgm';
 
 @Component({
     selector: 'jhi-identify-asset',
@@ -52,9 +49,11 @@ export class IdentifyAssetComponent implements OnInit, OnDestroy {
     myIndirectAssets: IndirectAssetMgm[];
     questionsAnswerMap: Map<number, Array<AnswerMgm>>;
 
+    directAssetSelected: DirectAssetMgm;
+    indirectAssetSelected: IndirectAssetMgm;
+
     constructor(private jhiAlertService: JhiAlertService,
         private eventManager: JhiEventManager,
-        private activatedRoute: ActivatedRoute,
         private principal: Principal,
         private mySelfAssessmentService: SelfAssessmentMgmService,
         private questionnairesService: QuestionnairesService,
@@ -62,11 +61,7 @@ export class IdentifyAssetComponent implements OnInit, OnDestroy {
         private questionnaireStatusServices: QuestionnaireStatusMgmService,
         private questionService: QuestionMgmService,
         private myAnswerService: MyAnswerMgmService,
-        private answerService: AnswerMgmService,
-        private identifyAssetService: IdentifyAssetService,
-        private route: ActivatedRoute,
         private router: Router,
-        private assetService: AssetMgmService,
         private idaUtilsService: IdentifyAssetUtilService,
         private accountService: AccountService,
         private userService: UserService,
@@ -108,6 +103,69 @@ export class IdentifyAssetComponent implements OnInit, OnDestroy {
                                     .toPromise().then((answers) => {
                                         if (answers.body) {
                                             this.myAnswers = answers.body;
+                                            this.idaUtilsService.getMySavedAssets(this.mySelf)
+                                                .toPromise()
+                                                .then((mySavedAssets) => {
+                                                    if (mySavedAssets) {
+                                                        this.myAssets = mySavedAssets;
+                                                        // Decommentare il codice di seguito quando saranno pronti i relativi servizi
+                                                        this.idaUtilsService.getMySavedDirectAssets(this.mySelf)
+                                                            .toPromise().then((mySavedDirects) => {
+                                                                this.myDirectAssets = mySavedDirects;
+                                                                console.log(this.myDirectAssets);
+                                                                this.idaUtilsService.getMySavedIndirectAssets(this.mySelf)
+                                                                    .toPromise().then((mySavedIndirects) => {
+                                                                        this.myIndirectAssets = mySavedIndirects;
+                                                                        for (let i = 0; i < this.myDirectAssets.length; i++) {
+                                                                            this.myDirectAssets[i].effects =
+                                                                                this.idaUtilsService.getSavedIndirectFromDirect(this.myDirectAssets[i], this.myIndirectAssets);
+                                                                        }
+                                                                        console.log(this.myDirectAssets);
+                                                                        console.log(this.myIndirectAssets);
+                                                                        this.ref.detectChanges();
+                                                                    });
+                                                            });
+                                                        // Eliminare il codice di seguito quando saranno pronti i relativi servizi
+                                                        /*
+                                                        let index = 0;
+                                                        this.myDirectAssets = [];
+                                                        this.myIndirectAssets = [];
+                                                        for (const asset of this.myAssets) {
+                                                            const direct = new DirectAssetMgm();
+                                                            direct.myAsset = asset;
+                                                            direct.id = index;
+                                                            direct.costs = [];
+                                                            const costD = new AttackCostMgm();
+                                                            costD.directAsset = direct;
+                                                            costD.type = CostType.INCREASED_SECURITY;
+                                                            costD.description = 'blablabla direct';
+                                                            direct.costs.push(costD);
+                                                            this.myDirectAssets.push(direct);
+                                                            let index2 = 0;
+                                                            for (const asset2 of this.myAssets) {
+                                                                const indirect = new IndirectAssetMgm();
+                                                                indirect.myAsset = asset2;
+                                                                indirect.id = index2;
+                                                                indirect.directAsset = direct;
+                                                                indirect.costs = [];
+                                                                const costI = new AttackCostMgm();
+                                                                costI.type = CostType.INCREASED_SECURITY;
+                                                                costI.description = 'blablabla indirect';
+                                                                indirect.costs.push(costI);
+                                                                this.myIndirectAssets.push(indirect);
+                                                                index2 ++;
+                                                            }
+                                                            index++;
+                                                        }
+                                                        for (let i = 0; i < this.myDirectAssets.length; i++) {
+                                                            this.myDirectAssets[i].effects =
+                                                                this.idaUtilsService.getSavedIndirectFromDirect(this.myDirectAssets[i], this.myIndirectAssets);
+                                                            console.log(this.myDirectAssets[i].effects);
+                                                        }
+                                                        this.ref.detectChanges();
+                                                        */
+                                                    }
+                                                });
                                         }
                                     });
                             }
@@ -128,6 +186,44 @@ export class IdentifyAssetComponent implements OnInit, OnDestroy {
                 });
             }
         });
+    }
+
+    public selectDirectAsset(direct: DirectAssetMgm) {
+        if (this.directAssetSelected) {
+            if (this.directAssetSelected.id === direct.id) {
+                this.directAssetSelected = null;
+                this.indirectAssetSelected = null;
+            } else {
+                this.directAssetSelected = direct;
+                this.indirectAssetSelected = null;
+            }
+        } else {
+            this.directAssetSelected = direct;
+            this.indirectAssetSelected = null;
+        }
+    }
+
+    public selectIndirectAsset(indirect: IndirectAssetMgm) {
+        if (this.indirectAssetSelected) {
+            if (this.indirectAssetSelected.id === indirect.id) {
+                this.indirectAssetSelected = null;
+            } else {
+                this.indirectAssetSelected = indirect;
+            }
+        } else {
+            this.indirectAssetSelected = indirect;
+        }
+    }
+
+    public isAssetTreeShow(direct: DirectAssetMgm): boolean {
+        if (this.directAssetSelected) {
+            if (this.directAssetSelected.id === direct.id) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+        return false;
     }
 
     public sendAnswerAndSaveMyAssets() {
