@@ -5527,3 +5527,8 @@ th.years {
     border: 1px solid #e2e2e2;
     margin-bottom: 20px;
 }
+
+ul.dropdown-menu.show li a {
+    color: #000;
+    font-weight: normal;
+}
