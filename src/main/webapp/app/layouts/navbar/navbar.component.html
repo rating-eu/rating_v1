@@ -23,45 +23,6 @@
                 </button>
             </li>
 
-            <li class="dropdown notification-list">
-                <a class="nav-link dropdown-toggle waves-effect waves-light nav-user" data-toggle="dropdown" href="#"
-                   role="button" aria-haspopup="false" aria-expanded="false">
-                    <i class="mdi mdi-earth"></i> <span>Language</span> <i class="mdi mdi-chevron-down"></i>
-                </a>
-                <div class="dropdown-menu dropdown-menu-right">
-
-                    <!-- item-->
-                    <a href="javascript:void(0);" class="dropdown-item">
-                        <span class="flag-icon flag-icon-gb"></span> English
-                    </a>
-
-                    <!-- item-->
-                    <a href="javascript:void(0);" class="dropdown-item">
-                        <span class="flag-icon flag-icon-mf"></span> Français
-                    </a>
-
-                    <!-- item-->
-                    <a href="javascript:void(0);" class="dropdown-item">
-                        <span class="flag-icon flag-icon-de"></span> Deutsch
-                    </a>
-
-                    <!-- item-->
-                    <a href="javascript:void(0);" class="dropdown-item">
-                        <span class="flag-icon flag-icon-it"></span> Italiano
-                    </a>
-
-                    <!-- item-->
-                    <a href="javascript:void(0);" class="dropdown-item">
-                        <span class="flag-icon flag-icon-pt"></span> Português
-                    </a>
-
-                    <a href="javascript:void(0);" class="dropdown-item">
-                        <span class="flag-icon flag-icon-it"></span> Español
-                    </a>
-
-                </div>
-            </li>
-
             <li ngbDropdown class="nav-item dropdown pointer" *ngIf="languages">
                 <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);"
                    id="languagesnavBarDropdown" *ngIf="languages.length > 1">
