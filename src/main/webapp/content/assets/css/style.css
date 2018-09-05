@@ -1,10 +1,17 @@
+/*
+Template Name: Hermeneut - Bootstrap 4
+File: Main Css File
+*/
+
 @import url("https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700|Karla:700|Nunito+Sans:600,700");
 @import url("https://fonts.googleapis.com/css?family=Quattrocento+Sans:400,700|Roboto:400,500,700");
 
+/* =============
+  Menu
+============= */
 
-body{
-    background:red !Important;
-}
+
+/* Menu css */
 
 .metismenu {
     padding: 0;
@@ -90,6 +97,18 @@ body{
     display: none;
 }
 
+/*
+.navbar-custom {
+    background: #333b44;
+    background: linear-gradient(to top, #333b44, #141414);
+    border-radius: 0;
+    margin-bottom: 0;
+    padding: 0 10px 0 0;
+    margin-left: 240px;
+    min-height: 70px;
+    box-shadow: 0 0 18px 0 rgba(0, 0, 0, 0.3);
+}
+*/
 
 
 .navbar-custom {
@@ -452,7 +471,7 @@ body{
 }
 
 
-
+/* Search */
 
 .app-search {
     position: relative;
@@ -507,6 +526,7 @@ body{
 }
 
 
+/* Page titles */
 
 .page-title {
     font-size: 18px;
@@ -557,7 +577,7 @@ span.badge.badge-secondary.date-box-container-detail-view span {
 }
 
 
-
+/* Body min-height set */
 
 body.enlarged {
     min-height: 1200px;
@@ -568,7 +588,7 @@ body.enlarged.bg-transparent {
 }
 
 
-
+/* Footer */
 
 .footer {
     border-top: 1px solid rgba(152, 166, 173, 0.2);
@@ -579,6 +599,9 @@ body.enlarged.bg-transparent {
     right: 0;
     left: 240px;
 }
+
+
+/* Notification */
 
 .notification-wrapper {
     max-height: 190px;
@@ -679,6 +702,9 @@ body.enlarged.bg-transparent {
 }
 
 
+/* =============
+   Common
+============= */
 
 body {
     margin: 0;
@@ -751,6 +777,9 @@ a:focus {
 }
 
 
+/* =============
+   Helper classes
+============= */
 
 .m-b-30 {
     margin-bottom: 30px;
@@ -873,6 +902,7 @@ a:focus {
 }
 
 
+/* Table type box */
 
 .table-box {
     display: table;
@@ -886,6 +916,7 @@ a:focus {
 }
 
 
+/* Button demo */
 
 .button-list {
     margin-left: -8px;
@@ -898,6 +929,7 @@ a:focus {
 }
 
 
+/* Demo only */
 
 .icon-list-demo div {
     cursor: pointer;
@@ -948,6 +980,10 @@ a:focus {
 }
 
 
+/* =============
+   Bootstrap-custom
+============= */
+
 .breadcrumb {
     background-color: transparent;
     margin-bottom: 15px;
@@ -967,6 +1003,7 @@ a:focus {
 }
 
 
+/* Blockquote */
 
 .blockquote {
     font-size: 1.1rem;
@@ -976,6 +1013,8 @@ a:focus {
     margin-top: 25px;
 }
 
+
+/* Dropdown */
 
 .dropdown-menu {
     padding: 4px 0;
@@ -1022,6 +1061,8 @@ a:focus {
     display: none;
 }
 
+
+/* Background colors */
 
 .bg-custom {
     background-color: #3c86d8 !important;
@@ -1073,6 +1114,8 @@ a:focus {
 }
 
 
+/* Text colors */
+
 .text-custom {
     color: #3c86d8 !important;
 }
@@ -1118,6 +1161,8 @@ a:focus {
 }
 
 
+/* Border colors */
+
 .border-primary {
     border-color: #5d6dc3 !important;
 }
@@ -1154,6 +1199,8 @@ a:focus {
     border-color: #5d6dc3 !important;
 }
 
+
+/* Badge */
 
 .badge {
     font-family: "Roboto", sans-serif;
@@ -1205,6 +1252,9 @@ a:focus {
 .badge-dark {
     background-color: #313a46;
 }
+
+
+/* Pagination/ Pager */
 
 .pagination > li:first-child > a,
 .pagination > li:first-child > span {
@@ -1279,6 +1329,20 @@ a:focus {
     color: fade(#ffffff, 70%);
 }
 
+
+/* =============
+   Waves
+============= */
+
+
+/*!
+ * Waves v0.6.0
+ * http://fian.my.id/Waves
+ *
+ * Copyright 2014 Alfiana E. Sibuea and other contributors
+ * Released under the MIT license
+ * https://github.com/fians/Waves/blob/master/LICENSE
+ */
 
 .waves-effect {
     position: relative;
@@ -1401,6 +1465,12 @@ a:focus {
 }
 
 
+/* =============
+   Card
+============= */
+
+
+/* Card Box */
 
 .card-box {
     padding: 20px;
@@ -1411,17 +1481,24 @@ a:focus {
 }
 
 
+/* Card */
+
 .card {
     border: none;
     box-shadow: 0 0 24px 0 rgba(0, 0, 0, 0.06), 0 1px 0 0 rgba(0, 0, 0, 0.02);
 }
 
 
+/* Card Bordered */
 
 .card.border-* {
     border: 2px solid;
 }
 
+
+/* =============
+   Buttons
+============= */
 
 .btn {
     border-radius: 2px;
@@ -1736,6 +1813,9 @@ a:focus {
     box-shadow: 0 0 0 2px rgba(224, 97, 201, 0.5);
 }
 
+
+/* button Outline */
+
 .btn-outline-custom {
     color: #3c86d8;
     border-color: #3c86d8;
@@ -1840,6 +1920,8 @@ a:focus {
 }
 
 
+/* Social Buttons */
+
 .btn-facebook {
     color: #ffffff !important;
     background-color: #3b5998;
@@ -1905,6 +1987,13 @@ a:focus {
     background-color: #171515;
 }
 
+
+/* =============
+   Checkbox and Radios
+============= */
+
+
+/* Checkbox */
 
 input[type="checkbox"],
 .checkbox input[type="checkbox"],
@@ -2054,6 +2143,8 @@ input[type="checkbox"]:disabled:checked:after,
     border-color: #313a46;
 }
 
+
+/* Radio */
 
 .radio label,
 .radio-inline label,
@@ -2241,6 +2332,10 @@ input[type="radio"]:disabled:checked:after,
 }
 
 
+/* =============
+   Alerts
+============= */
+
 .alert-custom {
     color: #3c86d8;
     background-color: #bcd5f2;
@@ -2357,6 +2452,11 @@ input[type="radio"]:disabled:checked:after,
     border-radius: 0;
 }
 
+
+/* =============
+   Modals
+============= */
+
 .modal .modal-dialog .close {
     top: 0;
     position: absolute;
@@ -2410,6 +2510,8 @@ input[type="radio"]:disabled:checked:after,
 }
 
 
+/* Custom-modal */
+
 .modal-demo {
     background-color: #ffffff;
     width: 600px;
@@ -2455,6 +2557,11 @@ input[type="radio"]:disabled:checked:after,
     height: auto;
 }
 
+
+/* =============
+   Tabs
+============= */
+
 .tab-content {
     padding: 20px 0 0 0;
 }
@@ -2471,6 +2578,8 @@ input[type="radio"]:disabled:checked:after,
     background: linear-gradient(to top, #5d6dc3, #3c86d8);
 }
 
+
+/* Vertial tab */
 
 .tabs-vertical-env .tab-content {
     background: #ffffff;
@@ -2525,6 +2634,8 @@ input[type="radio"]:disabled:checked:after,
 }
 
 
+/* Navpills */
+
 .nav-pills > li > a {
     color: #313a46;
 }
@@ -2536,6 +2647,10 @@ input[type="radio"]:disabled:checked:after,
     background: linear-gradient(to top, #5d6dc3, #3c86d8);
 }
 
+
+/* =============
+   Progressbars
+============= */
 
 .progress {
     -webkit-box-shadow: none;
@@ -2590,6 +2705,7 @@ input[type="radio"]:disabled:checked:after,
 }
 
 
+/* Progressbar Vertical */
 
 .progress-vertical {
     min-height: 250px;
@@ -2654,6 +2770,14 @@ input[type="radio"]:disabled:checked:after,
     line-height: 20px;
 }
 
+
+/* =========== */
+
+
+/* Sweet Alert */
+
+
+/* =========== */
 
 .swal2-modal {
     font-family: "Quattrocento Sans", sans-serif;
@@ -2726,6 +2850,13 @@ input[type="radio"]:disabled:checked:after,
 }
 
 
+/* =============
+   Charts
+============= */
+
+
+/* Flot chart */
+
 #flotTip {
     padding: 8px 12px;
     background-color: #ffffff;
@@ -2758,6 +2889,8 @@ input[type="radio"]:disabled:checked:after,
 }
 
 
+/* Morris chart */
+
 .morris-hover.morris-default-style {
     border-radius: 3px;
     padding: 10px 12px;
@@ -2767,6 +2900,8 @@ input[type="radio"]:disabled:checked:after,
     color: #313a46;
 }
 
+
+/* Sparkline chart */
 
 .jqstooltip {
     -webkit-box-sizing: content-box;
@@ -2789,6 +2924,10 @@ input[type="radio"]:disabled:checked:after,
     line-height: 18px !important;
 }
 
+
+/* =============
+   Email
+============= */
 
 .inbox-leftbar {
     width: 240px;
@@ -2996,6 +3135,9 @@ input[type="radio"]:disabled:checked:after,
 }
 
 
+/* =============
+   Form
+============= */
 
 label {
     font-size: 14px;
@@ -3072,6 +3214,13 @@ textarea.form-control {
     position: absolute;
 }
 
+
+/* =============
+   Form Advanced
+============= */
+
+
+/* Select 2 */
 
 .select2-container {
     width: 100% !important;
@@ -3150,6 +3299,8 @@ textarea.form-control {
 }
 
 
+/* AUTOCOMPLETE */
+
 .autocomplete-suggestions {
     border: 1px solid #f9f9f9;
     background: #ffffff;
@@ -3198,6 +3349,8 @@ textarea.form-control {
 }
 
 
+/* Bootstrap tagsinput */
+
 .bootstrap-tagsinput {
     box-shadow: none;
     padding: 3px 7px 5px;
@@ -3217,7 +3370,7 @@ textarea.form-control {
 }
 
 
-
+/* Bootstrap select */
 
 .bootstrap-select:not([class*=col-]):not([class*=form-control]):not(.input-group-btn) {
     width: 100% !important;
@@ -3273,12 +3426,16 @@ textarea.form-control {
 }
 
 
+/* X Editable */
 
 .editable-checklist label {
     display: block;
 }
 
 
+/* =============
+   Form Validation
+============= */
 
 .parsley-errors-list {
     margin: 0;
@@ -3302,12 +3459,20 @@ textarea.form-control {
 }
 
 
+/* =============
+   Form Pickers
+============= */
+
+
+/* Color Picker */
 
 .colorpicker-selectors i {
     margin-top: 5px;
     margin-left: 5px;
 }
 
+
+/* Daterange Picker */
 
 .daterangepicker td.active,
 .daterangepicker td.active:hover {
@@ -3348,6 +3513,9 @@ textarea.form-control {
     border-color: #98a6ad;
 }
 
+
+/* Clock picker */
+
 .clockpicker-canvas line {
     stroke: #7caee5;
 }
@@ -3358,6 +3526,10 @@ textarea.form-control {
     fill: #7caee5;
 }
 
+
+/* =============
+   Form Wizard
+============= */
 
 .wizard > .content {
     background: #ffffff;
@@ -3477,10 +3649,18 @@ textarea.form-control {
 }
 
 
+/* =============
+   Summernote
+============= */
+
 .note-editor.note-frame {
     border: none;
 }
 
+
+/* =============
+   Wysiwig
+============= */
 
 .mce-panel {
     border: 1px solid #f3f3f3 !important;
@@ -3527,6 +3707,11 @@ textarea.form-control {
     background: linear-gradient(to top, #5d6dc3, #3c86d8);
 }
 
+
+/* =============
+   Tables
+============= */
+
 .table > tbody > tr > td,
 .table > tbody > tr > th,
 .table > tfoot > tr > td,
@@ -3559,6 +3744,8 @@ th {
 }
 
 
+/* Data table */
+
 div.dt-button-info {
     background-color: #3c86d8;
     border: none;
@@ -3586,6 +3773,8 @@ table.dataTable {
 }
 
 
+/* Responsive data table */
+
 table.dataTable.dtr-inline.collapsed > tbody > tr > td:first-child:before,
 table.dataTable.dtr-inline.collapsed > tbody > tr > th:first-child:before {
     box-shadow: 0 0 3px rgba(67, 89, 102, 0.2);
@@ -3601,6 +3790,8 @@ table.dataTable > tbody > tr.child span.dtr-title {
     font-family: "Roboto", sans-serif;
 }
 
+
+/* Responsive Table */
 
 .table-rep-plugin .dropdown-menu li.checkbox-row {
     padding: 7px 15px;
@@ -3723,6 +3914,9 @@ table.dataTable > tbody > tr.child span.dtr-title {
     display: block;
 }
 
+
+/* Tablesaw Tables */
+
 .tablesaw thead {
     background: rgba(243, 243, 243, 0.7);
     background-image: none;
@@ -3800,6 +3994,9 @@ table.dataTable > tbody > tr.child span.dtr-title {
 }
 
 
+/* =============
+   Maps
+============= */
 
 .gmaps,
 .gmaps-panaroma {
@@ -3852,6 +4049,7 @@ table.dataTable > tbody > tr.child span.dtr-title {
 }
 
 
+/* Vector Map */
 
 .jvectormap-zoomin,
 .jvectormap-zoomout {
@@ -3873,6 +4071,8 @@ table.dataTable > tbody > tr.child span.dtr-title {
     padding: 5px 8px;
 }
 
+
+/* Mapael Map */
 
 .mapael .map {
     position: relative;
@@ -3920,6 +4120,10 @@ table.dataTable > tbody > tr.child span.dtr-title {
     top: 50px;
 }
 
+
+/* =============
+   Calendar
+============= */
 
 .calendar {
     float: left;
@@ -4095,6 +4299,10 @@ table.dataTable > tbody > tr.child span.dtr-title {
     color: #ffffff;
 }
 
+
+/* =============
+   Timeline
+============= */
 
 .timeline {
     border-collapse: collapse;
@@ -4308,6 +4516,10 @@ h3.timeline-title {
 }
 
 
+/* =============
+   Print css
+============= */
+
 @media print {
     .page-title-box,
     .topbar-left,
@@ -4341,6 +4553,10 @@ h3.timeline-title {
 }
 
 
+/* =============
+   FAQ
+============= */
+
 .faq-box {
     text-align: center;
     padding: 30px;
@@ -4362,6 +4578,10 @@ h3.timeline-title {
     font-size: 14px;
 }
 
+
+/* =============
+   Pricing
+============= */
 
 .pricing-column {
     position: relative;
@@ -4428,6 +4648,9 @@ h3.timeline-title {
 }
 
 
+/* =============
+   Login Pages
+============= */
 
 .home-wrapper {
     margin: 10% 0;
@@ -4440,7 +4663,14 @@ h3.timeline-title {
     min-height: 100px;
 }
 
-
+/*
+.bg-login-pages {
+    background: #0a417d;
+    background: linear-gradient(to top, #0469a7, #0a417d);
+    padding-bottom: 0;
+    min-height: 100px;
+}
+*/
 
 .wrapper-page {
     display: table;
@@ -4559,6 +4789,10 @@ h3.timeline-title {
 }
 
 
+/* =================
+   Spinners
+==================== */
+
 .sk-rotating-plane,
 .sk-double-bounce .sk-child,
 .sk-wave .sk-rect,
@@ -4578,8 +4812,12 @@ h3.timeline-title {
 }
 
 
+/* =============
+   Widgets
+============= */
+
 .tilebox-one {
-    background: url("../images/bg-1.png");
+    /*background: url("../images/bg-1.png");*/
     background-size: cover;
     border: 4px solid #ffffff;
 }
@@ -4597,6 +4835,8 @@ h3.timeline-title {
     box-shadow: 0 0 24px 0 rgba(0, 0, 0, 0.15), 0 1px 0 0 rgba(0, 0, 0, 0.1);
 }
 
+
+/* Inbox-widget */
 
 .inbox-widget .inbox-item {
     border-bottom: 1px solid #efefef;
@@ -4638,6 +4878,8 @@ h3.timeline-title {
 }
 
 
+/* Comment List */
+
 .comment-list .comment-box-item {
     position: relative;
 }
@@ -4672,6 +4914,8 @@ h3.timeline-title {
 }
 
 
+/* Transaction */
+
 .transaction-list li {
     padding: 7px 0;
     border-bottom: 1px solid #efefef;
@@ -4700,6 +4944,9 @@ h3.timeline-title {
 }
 
 
+/* =============
+   Responsive
+============= */
 
 @media (min-width: 768px) and (max-width: 991px) {
     body {
@@ -4850,6 +5097,11 @@ h3.timeline-title {
     .navbar-default .navbar-left li {
         padding: 0 5px;
     }
+    /*
+    .topbar-left {
+        display: none;
+    }
+    */
     .navbar-custom .nav-link span {
         display: none;
     }
@@ -4904,6 +5156,7 @@ canvas {
   vertical-align: bottom;
 }
 
+/* ---- particles.js container ---- */
 
 #particles-js {
   position: absolute;
@@ -4912,6 +5165,7 @@ canvas {
 
 }
 
+/* ---- stats.js ---- */
 
 .count-particles{
   background: #000022;
@@ -4960,6 +5214,7 @@ canvas {
 }
 
 
+/*Wizard*/
 #Questions h4{
     color: #094a87;
 }
