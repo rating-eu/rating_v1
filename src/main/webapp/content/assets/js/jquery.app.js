@@ -3,7 +3,55 @@
  * Module/App: Main Js
 */
 
+$(document).ready(function() {
+    $('.slimscroll-menu').slimscroll({
+        height: 'auto',
+        position: 'right',
+        size: "8px",
+        color: '#9ea5ab',
+        wheelStep: 5
+    });
 
+    $('.slimscroll').slimscroll({
+        height: 'auto',
+        position: 'right',
+        size: "8px",
+        color: '#9ea5ab'
+    });
+
+    $("#side-menu").metisMenu();
+
+    $('.button-menu-mobile').on('click', function (event) {
+        event.preventDefault();
+        $("body").toggleClass("enlarged");
+    });
+
+    if ($(window).width() < 1025) {
+        $('body').addClass('enlarged');
+    } else {
+        $('body').removeClass('enlarged');
+    }
+
+    $("#sidebar-menu a").each(function () {
+        if (this.href == window.location.href) {
+            $(this).addClass("active");
+            $(this).parent().addClass("active"); // add active to li of the current link
+            $(this).parent().parent().addClass("in");
+            $(this).parent().parent().prev().addClass("active"); // add active class to an anchor
+            $(this).parent().parent().parent().addClass("active");
+            $(this).parent().parent().parent().parent().addClass("in"); // add active to li of the current link
+            $(this).parent().parent().parent().parent().parent().addClass("active");
+        }
+    });
+
+    $('.accordian-body').on('show.bs.collapse', function () {
+        $(this).closest("table")
+            .find(".collapse.in")
+            .not(this)
+            .collapse('toggle')
+    })
+});
+/*
 (function ($) {
 
     'use strict';
@@ -84,7 +132,4 @@ $('.accordian-body').on('show.bs.collapse', function () {
         .not(this)
         .collapse('toggle')
 })
-
-
-
-
+*/
