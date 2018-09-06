@@ -1,7 +1,7 @@
 <div>
     <router-outlet name="navbar"></router-outlet>
 </div>
-<div>
+<div *ngIf="isAuthenticated()">
     <router-outlet name="sidebar"></router-outlet>
 </div>
 

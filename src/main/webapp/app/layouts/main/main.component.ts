@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRouteSnapshot, NavigationEnd } from '@angular/router';
 
-import { JhiLanguageHelper } from '../../shared';
+import {JhiLanguageHelper, Principal} from '../../shared';
 
 @Component({
     selector: 'jhi-main',
@@ -10,6 +10,7 @@ import { JhiLanguageHelper } from '../../shared';
 export class JhiMainComponent implements OnInit {
 
     constructor(
+        private principal: Principal,
         private jhiLanguageHelper: JhiLanguageHelper,
         private router: Router
     ) {}
@@ -22,13 +23,15 @@ export class JhiMainComponent implements OnInit {
         return title;
     }
 
-
-
     ngOnInit() {
         this.router.events.subscribe((event) => {
             if (event instanceof NavigationEnd) {
                 this.jhiLanguageHelper.updateTitle(this.getPageTitle(this.router.routerState.snapshot.root));
             }
         });
+    }
+
+    isAuthenticated() {
+        return this.principal.isAuthenticated();
     }
 }
