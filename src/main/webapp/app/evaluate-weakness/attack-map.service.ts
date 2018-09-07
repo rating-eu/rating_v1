@@ -8,7 +8,6 @@ import {Observable} from 'rxjs/Observable';
 export class AttackMapService {
     private resourceUrl = SERVER_API_URL + 'api/{selfAssessmentID}/attack-matrix';
 
-
     constructor(private http: HttpClient) {
     }
 

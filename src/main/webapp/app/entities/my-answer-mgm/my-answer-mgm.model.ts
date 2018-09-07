@@ -8,7 +8,7 @@ export class MyAnswerMgm implements BaseEntity {
     constructor(
         public id?: number,
         public note?: string,
-        public answerOffset: number = 0,
+        public answerOffset = 0,
         public answer?: AnswerMgm,
         public question?: QuestionMgm,
         public questionnaire?: QuestionnaireMgm,

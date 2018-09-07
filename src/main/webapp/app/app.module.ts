@@ -26,7 +26,8 @@ import {
     ProfileService,
     PageRibbonComponent,
     ActiveMenuDirective,
-    ErrorComponent
+    ErrorComponent,
+    SidebarComponent
 } from './layouts';
 import {QuestionnairesService} from './questionnaires/questionnaires.service';
 import {ReactiveFormsModule} from '@angular/forms';
@@ -60,7 +61,8 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
         ErrorComponent,
         PageRibbonComponent,
         ActiveMenuDirective,
-        FooterComponent
+        FooterComponent,
+        SidebarComponent
     ],
     providers: [
         ProfileService,

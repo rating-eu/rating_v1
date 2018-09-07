@@ -2,3 +2,10 @@
 @import '~bootstrap/dist/css/bootstrap.min.css';
 @import '~font-awesome/css/font-awesome.css';
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
+@import '../plugins/responsive-table/css/rwd-table.min.css';
+@import '../plugins/sweet-alert/sweetalert2.min.css';
+@import '../plugins/custombox/css/custombox.min.css';
+@import '../assets/css/icons.css';
+@import '../assets/css/flag-icon.css';
+@import '../assets/css/metismenu.min.css';
+@import '../assets/css/style.css';

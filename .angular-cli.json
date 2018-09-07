@@ -18,16 +18,20 @@
             "test": "src/test/javascript/spec/entry.ts",
             "tsconfig": "../../../tsconfig.json",
             "prefix": "jhi",
-            "mobile": false,
+            "mobile": true,
             "styles": [
                 "../../../node_modules/bootstrap/dist/css/bootstrap.min.css",
+                "content/plugins/responsive-table/css/rwd-table.min.css",
+                "content/plugins/sweet-alert/sweetalert2.min.css",
+                "content/plugins/custombox/css/custombox.min.css",
+                "content/asset/css/icons.css",
+                "content/asset/css/flag-icon.css",
+                "content/asset/css/metismenu.min.css",
                 "content/css/vendor.css",
-                "content/css/global.css"
+                "content/css/global.css",
+                "content/asset/css/style.css"
             ],
             "scripts": [
-                "../../../node_modules/jquery/dist/jquery.min.js",
-                "../../../node_modules/popper.js/dist/umd/popper.min.js",
-                "../../../node_modules/bootstrap/dist/js/bootstrap.min.js",
                 "../../../node_modules/hammerjs/hammer.min.js"
             ]
         }

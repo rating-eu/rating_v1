@@ -1,11 +1,40 @@
-<jhi-page-ribbon></jhi-page-ribbon>
 <div>
-    <router-outlet name="navbar"></router-outlet>
+    <jhi-navbar></jhi-navbar>
 </div>
-<div class="container-fluid">
-    <div class="card jh-card">
-        <router-outlet></router-outlet>
-        <router-outlet name="popup"></router-outlet>
+
+<jhi-sidebar></jhi-sidebar>
+
+<div *ngIf="isAuthenticated  && !loading"
+     [ngClass]="{'content-page-sidenav': !updateLayout.isSidebarCollapsed, 'content-page-no-sidenav': updateLayout.isSidebarCollapsed}">
+    <!-- Start content -->
+    <div class="content">
+        <div class="container-fluid">
+
+            <div class="row">
+                <div class="col-12">
+                    <div class="page-title-box">
+                        <h4 class="page-title float-left">Welcome</h4>
+
+                        <ol class="breadcrumb float-right">
+                            <li class="breadcrumb-item"><a href="#">Pages</a></li>
+                            <li class="breadcrumb-item active">Welcome</li>
+                        </ol>
+
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <router-outlet></router-outlet>
+                    <router-outlet name="popup"></router-outlet>
+                </div>
+            </div>
+        </div>
     </div>
     <jhi-footer></jhi-footer>
+</div>
+</div>
+<div class="bg-login-pages" *ngIf="!isAuthenticated && !loading">
+    <jhi-login-plain></jhi-login-plain>
 </div>

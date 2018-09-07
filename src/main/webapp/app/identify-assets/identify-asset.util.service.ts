@@ -15,6 +15,7 @@ import { AssetMgm } from '../entities/asset-mgm';
 import { AttackCostMgm } from '../entities/attack-cost-mgm';
 import { SERVER_API_URL } from '../app.constants';
 import { AssetsOneShot } from './model/AssetsOneShot.model';
+import { SelfAssessmentMgm } from '../entities/self-assessment-mgm';
 
 @Injectable()
 export class IdentifyAssetUtilService {
@@ -35,6 +36,9 @@ export class IdentifyAssetUtilService {
     private subscriptorForIndirectMap: Subject<any> = new Subject<any>();
 
     private resourceUrl = SERVER_API_URL + 'api/my-assets-one-shot/';
+    private assetServiceUrl = SERVER_API_URL + 'api/my-assets/self-assessment/';
+    private directUrl = SERVER_API_URL + 'api/{selfAssessmentID}/direct-assets';
+    private indirectUrl = SERVER_API_URL + 'api/{selfAssessmentID}/indirect-assets';
 
     constructor(
         private http: HttpClient
@@ -54,6 +58,40 @@ export class IdentifyAssetUtilService {
         if (!this.myAnswerLinkedMap) {
             this.myAnswerLinkedMap = [];
         }
+    }
+
+    public getMySavedAssets(self: SelfAssessmentMgm): Observable<MyAssetMgm[]> {
+        const uri = this.assetServiceUrl + self.id.toString();
+        return this.http.get<MyAssetMgm[]>(uri, { observe: 'response' })
+            .map((res: HttpResponse<MyAssetMgm[]>) => {
+                return res.body;
+            });
+    }
+
+    public getSavedIndirectFromDirect(direct: DirectAssetMgm, receivedIndirects: IndirectAssetMgm[]): IndirectAssetMgm[] {
+        const indirects: IndirectAssetMgm[] = [];
+        for (const ind of receivedIndirects) {
+            if (direct.id === ind.directAsset.id) {
+                indirects.push(ind);
+            }
+        }
+        return indirects;
+    }
+
+    public getMySavedDirectAssets(self: SelfAssessmentMgm): Observable<DirectAssetMgm[]> {
+        const uri = this.directUrl.replace('{selfAssessmentID}', String(self.id));
+        return this.http.get<DirectAssetMgm[]>(uri, { observe: 'response' })
+            .map((res: HttpResponse<DirectAssetMgm[]>) => {
+                return res.body;
+            });
+    }
+
+    public getMySavedIndirectAssets(self: SelfAssessmentMgm): Observable<IndirectAssetMgm[]> {
+        const uri = this.indirectUrl.replace('{selfAssessmentID}', String(self.id));
+        return this.http.get<IndirectAssetMgm[]>(uri, { observe: 'response' })
+            .map((res: HttpResponse<IndirectAssetMgm[]>) => {
+                return res.body;
+            });
     }
 
     oneShotSave(bundle: AssetsOneShot): Observable<AssetsOneShot> {

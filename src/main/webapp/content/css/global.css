@@ -2,6 +2,7 @@
 @import '~font-awesome/css/font-awesome.css';
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
 
+
 /* ==============================================================
 Bootstrap tweaks
 ===============================================================*/
@@ -10,9 +11,6 @@ body, h1, h2, h3, h4 {
     font-weight: 300;
 }
 
-body {
-    background: #e4e5e6;
-}
 
 a {
     color: #533f03;
@@ -234,3 +232,4 @@ ui bootstrap tweaks
 }
 
 /* jhipster-needle-css-add-main JHipster will add new css style */
+
