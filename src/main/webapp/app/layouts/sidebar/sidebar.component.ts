@@ -1,15 +1,27 @@
-import { Component, OnInit,  } from '@angular/core';
+import {Component, OnInit,} from '@angular/core';
+import {Principal} from '../../shared';
 
 @Component({
-  selector: 'jhi-sidebar',
-  templateUrl: './sidebar.component.html',
-  styles: []
+    selector: 'jhi-sidebar',
+    templateUrl: './sidebar.component.html',
+    styles: []
 })
 export class SidebarComponent implements OnInit {
 
-  constructor() { }
+    isCollapsed: boolean;
 
-  ngOnInit() {
-  }
+    constructor(private principal: Principal) {
+        this.isCollapsed = true;
+    }
 
+    ngOnInit() {
+    }
+
+    toggle() {
+        this.isCollapsed = !this.isCollapsed;
+    }
+
+    isAuthenticated() {
+        return this.principal.isAuthenticated();
+    }
 }

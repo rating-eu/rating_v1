@@ -427,7 +427,7 @@
       var _proto = Button.prototype;
 
       // Public
-      _proto.toggle = function toggle() {
+      _proto.toggleSideBar = function toggle() {
         var triggerChangeEvent = true;
         var addAriaPressed = true;
         var rootElement = $$$1(this._element).closest(Selector.DATA_TOGGLE)[0];
@@ -1136,7 +1136,7 @@
       var _proto = Collapse.prototype;
 
       // Public
-      _proto.toggle = function toggle() {
+      _proto.toggleSideBar = function toggle() {
         if ($$$1(this._element).hasClass(ClassName.SHOW)) {
           this.hide();
         } else {
@@ -4035,7 +4035,7 @@
       var _proto = Dropdown.prototype;
 
       // Public
-      _proto.toggle = function toggle() {
+      _proto.toggleSideBar = function toggle() {
         if (this._element.disabled || $$$1(this._element).hasClass(ClassName.DISABLED)) {
           return;
         }
@@ -4501,7 +4501,7 @@
       var _proto = Modal.prototype;
 
       // Public
-      _proto.toggle = function toggle(relatedTarget) {
+      _proto.toggleSideBar = function toggle(relatedTarget) {
         return this._isShown ? this.hide() : this.show(relatedTarget);
       };
 
@@ -5122,7 +5122,7 @@
         this._isEnabled = !this._isEnabled;
       };
 
-      _proto.toggle = function toggle(event) {
+      _proto.toggleSideBar = function toggle(event) {
         if (!this._isEnabled) {
           return;
         }

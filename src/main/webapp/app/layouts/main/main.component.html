@@ -1,9 +1,8 @@
 <div>
-    <router-outlet name="navbar"></router-outlet>
+    <jhi-navbar [sideBar]="sidebar"></jhi-navbar>
 </div>
-<div *ngIf="isAuthenticated()">
-    <router-outlet name="sidebar"></router-outlet>
-</div>
+
+<jhi-sidebar #sidebar></jhi-sidebar>
 
 <div class="content-page">
     <!-- Start content -->

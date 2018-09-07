@@ -1,12 +1,13 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { JhiLanguageService } from 'ng-jhipster';
+import {Component, Input, OnInit} from '@angular/core';
+import {Router} from '@angular/router';
+import {NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
+import {JhiLanguageService} from 'ng-jhipster';
 
-import { ProfileService } from '../profiles/profile.service';
-import { JhiLanguageHelper, Principal, LoginModalService, LoginService } from '../../shared';
+import {ProfileService} from '../profiles/profile.service';
+import {JhiLanguageHelper, Principal, LoginModalService, LoginService} from '../../shared';
 
-import { VERSION } from '../../app.constants';
+import {VERSION} from '../../app.constants';
+import {SidebarComponent} from '../sidebar/sidebar.component';
 
 @Component({
     selector: 'jhi-navbar',
@@ -22,6 +23,13 @@ export class NavbarComponent implements OnInit {
     swaggerEnabled: boolean;
     modalRef: NgbModalRef;
     version: string;
+
+    @Input()
+    sideBar: SidebarComponent;
+
+    toggleSideBar() {
+        this.sideBar.toggle();
+    }
 
     constructor(
         private loginService: LoginService,
@@ -45,10 +53,11 @@ export class NavbarComponent implements OnInit {
             this.inProduction = profileInfo.inProduction;
             this.swaggerEnabled = profileInfo.swaggerEnabled;
         });
+        this.sideBar.isCollapsed = true;
     }
 
     changeLanguage(languageKey: string) {
-      this.languageService.changeLanguage(languageKey);
+        this.languageService.changeLanguage(languageKey);
     }
 
     collapseNavbar() {
