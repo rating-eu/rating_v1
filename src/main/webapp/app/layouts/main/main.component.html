@@ -1,82 +1,32 @@
-<<<<<<< HEAD
 <div *ngIf="isAuthenticated()">
     <div>
         <jhi-navbar [sideBar]="sidebar"></jhi-navbar>
     </div>
-=======
-<div>
-    <jhi-navbar [sideBar]="sidebar"></jhi-navbar>
-</div>
-
-<jhi-sidebar #sidebar></jhi-sidebar>
-
-<div class="content-page">
-    <!-- Start content -->
-    <div class="content">
-        <div class="container-fluid">
-
-            <div class="row">
-                <div class="col-12">
-                    <div class="page-title-box">
-                        <h4 class="page-title float-left">Insert Dynamic Breadcumbs</h4>
-
-                        <ol class="breadcrumb float-right">
-                            <li class="breadcrumb-item"><a href="#"></a></li>
-                        </ol>
->>>>>>> 9a83498b1b986e0e2bfc5700a6e3ef4677c1c925
-
     <jhi-sidebar #sidebar></jhi-sidebar>
-
     <div class="content-page">
-        <!-- Start content -->
         <div class="content">
             <div class="container-fluid">
-                <!-- BREADCRUMB LINE TODO -->
-                <!--<div class="row">
+                <div class="row">
                     <div class="col-12">
                         <div class="page-title-box">
-                            <h4 class="page-title float-left">Welcome</h4>
-
+                            <h4 class="page-title float-left">Insert Dynamic Breadcumbs</h4>
                             <ol class="breadcrumb float-right">
-                                <li class="breadcrumb-item"><a href="#">Pages</a></li>
-                                <li class="breadcrumb-item active">Welcome</li>
+                                <li class="breadcrumb-item"><a href="#"></a></li>
                             </ol>
 
-                            <div class="clearfix"></div>
+                        <div class="clearfix"></div>
                         </div>
                     </div>
-<<<<<<< HEAD
-                </div>-->
-                <!-- end row -->
+                </div>
                 <div class="row">
                     <div class="col-md-12">
-                        <div class="card-box">
-                            <router-outlet></router-outlet>
-                            <router-outlet name="popup"></router-outlet>
-
-                        </div>
-                    </div>
-
-=======
-                </div>
-            </div>
-            <!-- end row -->
-            <div class="row">
-                <div class="col-md-12">
                         <router-outlet></router-outlet>
                         <router-outlet name="popup"></router-outlet>
->>>>>>> 9a83498b1b986e0e2bfc5700a6e3ef4677c1c925
+                    </div>
                 </div>
-
-
             </div>
-            <!-- container -->
-
         </div>
-        <!-- content -->
-
         <jhi-footer></jhi-footer>
-
     </div>
 </div>
 <div *ngIf="!isAuthenticated()">
