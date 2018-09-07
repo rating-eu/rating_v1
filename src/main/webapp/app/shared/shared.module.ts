@@ -20,6 +20,7 @@ import {
 } from './';
 
 import {Title} from '@angular/platform-browser';
+import {LoginPlainComponent} from './index';
 
 @NgModule({
     imports: [
@@ -29,7 +30,8 @@ import {Title} from '@angular/platform-browser';
     declarations: [
         JhiLoginModalComponent,
         HasAnyAuthorityDirective,
-        FindLanguageFromKeyPipe
+        FindLanguageFromKeyPipe,
+        LoginPlainComponent
     ],
     providers: [
         LoginService,
@@ -42,13 +44,14 @@ import {Title} from '@angular/platform-browser';
         UserService,
         DatePipe
     ],
-    entryComponents: [JhiLoginModalComponent],
+    entryComponents: [JhiLoginModalComponent, LoginPlainComponent],
     exports: [
         HermeneutSharedCommonModule,
         JhiLoginModalComponent,
         FindLanguageFromKeyPipe,
         HasAnyAuthorityDirective,
-        DatePipe
+        DatePipe,
+        LoginPlainComponent
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 
@@ -60,6 +63,13 @@ export class HermeneutSharedModule {
             ngModule: HermeneutSharedModule,
             providers: [
                 JhiLanguageHelper,
+                Principal,
+                LoginService,
+                AuthServerProvider,
+                UserService,
+                AccountService,
+                StateStorageService,
+                LoginModalService,
                 Title,
                 {
                     provide: LOCALE_ID,

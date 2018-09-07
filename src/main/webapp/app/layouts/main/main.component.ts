@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {Router, ActivatedRouteSnapshot, NavigationEnd} from '@angular/router';
 
-import {JhiLanguageHelper, Principal} from '../../shared';
+import {JhiLanguageHelper, LoginService, Principal} from '../../shared';
 import {DatasharingService} from '../../datasharing/datasharing.service';
 import {Update} from '../model/Update';
 
@@ -12,9 +12,12 @@ import {Update} from '../model/Update';
 export class JhiMainComponent implements OnInit {
 
     public updateLayout: Update;
+    public isAuthenticated: boolean = false;
+    public loading = true;
 
     constructor(
         private principal: Principal,
+        private loginService: LoginService,
         private jhiLanguageHelper: JhiLanguageHelper,
         private router: Router,
         private dataSharingService: DatasharingService
@@ -44,9 +47,22 @@ export class JhiMainComponent implements OnInit {
 
             console.log('Update onInit: ' + JSON.stringify(update));
         });
-    }
 
-    isAuthenticated() {
-        return this.principal.isAuthenticated();
+        this.principal.getAuthenticationState().subscribe((authentication: any) => {
+            console.log('AuthenticationState: ' + JSON.stringify(authentication));
+
+            if (authentication) {
+                this.isAuthenticated = true;
+            } else {
+                this.isAuthenticated = false;
+            }
+        });
+
+        this.loginService.checkLogin().then((check: boolean) => {
+            console.log('Check login: ' + check);
+
+            this.isAuthenticated = check;
+            this.loading = false;
+        });
     }
 }

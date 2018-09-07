@@ -193,7 +193,7 @@ ul li {
 }
 
 .content-page-no-sidenav {
-    margin-left: 0;
+    margin-left: 71px;
     overflow: hidden;
 }
 
@@ -5523,7 +5523,6 @@ ul.dropdown-menu.show li a {
     margin-left: 5px !important;
     border-radius: 0;
 }
-
 
 .welcome-rating .alert.alert-warning {
     background: #d8d8d8;

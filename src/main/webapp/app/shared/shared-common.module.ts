@@ -2,10 +2,8 @@ import {NgModule} from '@angular/core';
 
 import {
     HermeneutSharedLibsModule,
-    FindLanguageFromKeyPipe,
     JhiAlertComponent,
     JhiAlertErrorComponent,
-    LoginPlainComponent
 } from './';
 
 @NgModule({
@@ -14,14 +12,12 @@ import {
     ],
     declarations: [
         JhiAlertComponent,
-        JhiAlertErrorComponent,
-        LoginPlainComponent
+        JhiAlertErrorComponent
     ],
     exports: [
         HermeneutSharedLibsModule,
         JhiAlertComponent,
-        JhiAlertErrorComponent,
-        LoginPlainComponent
+        JhiAlertErrorComponent
     ]
 })
 export class HermeneutSharedCommonModule {

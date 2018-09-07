@@ -4,8 +4,8 @@
 
 <jhi-sidebar></jhi-sidebar>
 
-<div
-    [ngClass]="{'content-page-sidenav': !updateLayout.isSidebarCollapsed, 'content-page-no-sidenav': updateLayout.isSidebarCollapsed}">
+<div *ngIf="isAuthenticated  && !loading"
+     [ngClass]="{'content-page-sidenav': !updateLayout.isSidebarCollapsed, 'content-page-no-sidenav': updateLayout.isSidebarCollapsed}">
     <!-- Start content -->
     <div class="content">
         <div class="container-fluid">
@@ -21,20 +21,20 @@
                         </ol>
 
                         <div class="clearfix"></div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-12">
-                        <router-outlet></router-outlet>
-                        <router-outlet name="popup"></router-outlet>
                     </div>
                 </div>
             </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <router-outlet></router-outlet>
+                    <router-outlet name="popup"></router-outlet>
+                </div>
+            </div>
         </div>
-        <jhi-footer></jhi-footer>
     </div>
+    <jhi-footer></jhi-footer>
 </div>
-<div class="bg-login-pages" *ngIf="!isAuthenticated()">
+</div>
+<div class="bg-login-pages" *ngIf="!isAuthenticated && !loading">
     <jhi-login-plain></jhi-login-plain>
 </div>
