@@ -29,7 +29,6 @@
         <jhi-footer></jhi-footer>
     </div>
 </div>
-<div *ngIf="!isAuthenticated()">
-    <h1>Not authenticated!</h1>
+<div class="bg-login-pages" *ngIf="!isAuthenticated()">
     <jhi-login-plain></jhi-login-plain>
 </div>

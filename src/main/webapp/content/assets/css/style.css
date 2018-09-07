@@ -4662,7 +4662,7 @@ h3.timeline-title {
 
 .bg-login-pages {
     background: #0a417d;
-    background: linear-gradient(to top, #333b44, #141414);
+    background: linear-gradient(to top, #0469a7, #0a417d);
     padding-bottom: 0;
     min-height: 100px;
 }
@@ -4691,7 +4691,7 @@ h3.timeline-title {
     position: relative;
     max-width: 460px;
     margin: 20px auto;
-    background-color: #e6e6e6;
+    background-color: #fff;
     border-radius: 5px;
     box-shadow: 0 0 24px 0 rgba(0, 0, 0, 0.15), 0 1px 0 0 rgba(0, 0, 0, 0.1);
 }
