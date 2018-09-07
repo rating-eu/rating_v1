@@ -1,64 +1,139 @@
-<nav *ngIf="isAuthenticated()" class="left side-menu show" id="sidebar">
-<!--<nav *ngIf="isAuthenticated()" class="left side-menu show" id="sidebar" [ngbCollapse]="isCollapsed"> -->
-    <ul class="navbar-nav ml-auto">
-        <li class="menu-title">Entities</li>
+<nav *ngIf="isAuthenticated()" class="left side-menu" id="sidebar" [ngClass]="{'sidebar-collapsed': isCollapsed}">
+    <ul class="navbar-nav ml-auto" [ngSwitch]="isCollapsed">
+        <li class="nav-item" routerLinkActive="active"
+            [routerLinkActiveOptions]="{exact: true}">
+            <a class="nav-link text-right" (click)="toggleSideBar()"
+               [attr.aria-expanded]="sideBar?.isCollapsed" aria-controls="sidebar">
+                <i *ngSwitchCase="true" class="fa fa-chevron-right fa-lg" aria-hidden="true"></i>
+                <i *ngSwitchCase="false" class="fa fa-times fa-lg" aria-hidden="true"></i>
+            </a>
+        </li>
         <li>
             <a class="dropdown-item" routerLink="self-assessment-mgm" routerLinkActive="active"
                [routerLinkActiveOptions]="{ exact: true }">
-                <i class="fi-air-play"></i>
-                <span class="d-none d-md-inline">Self Assessment</span>
+                <i class="fa fa-archive fa-lg" aria-hidden="true"></i>
+                <span *ngSwitchCase="false" class="d-none d-md-inline">Self Assessment</span>
             </a>
         </li>
         <li>
             <a class="dropdown-item" routerLink="identify-threat-agent" routerLinkActive="active"
                [routerLinkActiveOptions]="{ exact: true }">
-                <i class="fa fa-lightbulb-o"></i>
-                <span class="d-none d-md-inline">Identify Threat Agents</span>
+                <i class="fa fa-user-secret fa-lg"></i>
+                <span *ngSwitchCase="false" class="d-none d-md-inline">Identify Threat Agents</span>
             </a>
         </li>
         <li>
             <a class="dropdown-item" routerLink="evaluate-weakness" routerLinkActive="active"
                [routerLinkActiveOptions]="{ exact: true }">
-                <i class="fi-air-play"></i>
-                <span class="d-none d-md-inline">Evaluate Weakness</span>
+                <i class="fa fa-user-secret fa-lg"></i>
+                <span *ngSwitchCase="false" class="d-none d-md-inline">Evaluate Weakness</span>
             </a>
         </li>
         <li>
             <a class="dropdown-item" routerLink="identify-asset" routerLinkActive="active"
                [routerLinkActiveOptions]="{ exact: true }">
-                <i class="fi-air-play"></i>
-                <span class="d-none d-md-inline">Identify Assets</span>
+                <i class="fa fa-user-secret fa-lg"></i>
+                <span *ngSwitchCase="false" class="d-none d-md-inline">Identify Assets</span>
             </a>
         </li>
         <li>
             <a class="dropdown-item" routerLink="external-audit" routerLinkActive="active"
                [routerLinkActiveOptions]="{ exact: true }">
-                <i class="fi-air-play"></i>
-                <span class="d-none d-md-inline">External Audit</span>
+                <i class="fa fa-user-secret fa-lg"></i>
+                <span *ngSwitchCase="false" class="d-none d-md-inline">External Audit</span>
             </a>
         </li>
         <li>
             <a class="dropdown-item" routerLink="impact-evaluation" routerLinkActive="active"
                [routerLinkActiveOptions]="{ exact: true }">
-                <i class="fi-air-play"></i>
-                <span class="d-none d-md-inline">Impact Evaluation</span>
+                <i class="fa fa-user-secret fa-lg"></i>
+                <span *ngSwitchCase="false" class="d-none d-md-inline">Impact Evaluation</span>
             </a>
         </li>
 
         <li>
             <a class="dropdown-item" routerLink="risk-management" routerLinkActive="active"
                [routerLinkActiveOptions]="{ exact: true }">
-                <i class="fi-air-play"></i>
-                <span class="d-none d-md-inline">Risk Management</span>
+                <i class="fa fa-user-secret fa-lg"></i>
+                <span *ngSwitchCase="false" class="d-none d-md-inline">Risk Management</span>
             </a>
         </li>
 
         <li>
             <a class="dropdown-item" routerLink="results" routerLinkActive="active"
                [routerLinkActiveOptions]="{ exact: true }">
-                <i class="fi-air-play"></i>
-                <span class="d-none d-md-inline">Results</span>
+                <i class="fa fa-user-secret fa-lg"></i>
+                <span *ngSwitchCase="false" class="d-none d-md-inline">Results</span>
             </a>
         </li>
+
+        <li ngbDropdown>
+            <a class="nav-link dropdown-toggle" ngbDropdownToggle id="steps-menu"
+               routerLinkActive="active"
+               [routerLinkActiveOptions]="{ exact: true }">
+                    <span>
+                        <i class="icon-list-ul" aria-hidden="true"></i>
+                        <span>
+                            DropDown
+                        </span>
+                    </span>
+            </a>
+            <ul class="dropdown-menu" ngbDropdownMenu>
+                <li>
+                    <a class="dropdown-item">
+                        Do Nothing 1
+                    </a>
+                </li>
+                <li>
+                    <a class="dropdown-item">
+                        Do Nothing 2
+                    </a>
+                </li>
+                <li>
+                    <a class="dropdown-item">
+                        Do Nothing 3
+                    </a>
+                </li>
+            </ul>
+        </li>
+
+        <ngb-accordion>
+            <ngb-panel title="First panel">
+                <ng-template ngbPanelContent>
+                    <ul>
+                        <li>
+                            <a class="dropdown-item" routerLink="#" routerLinkActive="active"
+                               [routerLinkActiveOptions]="{ exact: true }">
+                                <span class="d-none d-md-inline">A</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" routerLink="results" routerLinkActive="active"
+                               [routerLinkActiveOptions]="{ exact: true }">
+                                <span class="d-none d-md-inline">B</span>
+                            </a>
+                        </li>
+                    </ul>
+                </ng-template>
+            </ngb-panel>
+            <ngb-panel title="Second">
+                <ng-template ngbPanelContent>
+                    <ul>
+                        <li>
+                            <a class="dropdown-item" routerLink="#" routerLinkActive="active"
+                               [routerLinkActiveOptions]="{ exact: true }">
+                                <span class="d-none d-md-inline">A</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" routerLink="results" routerLinkActive="active"
+                               [routerLinkActiveOptions]="{ exact: true }">
+                                <span class="d-none d-md-inline">B</span>
+                            </a>
+                        </li>
+                    </ul>
+                </ng-template>
+            </ngb-panel>
+        </ngb-accordion>
     </ul>
 </nav>
