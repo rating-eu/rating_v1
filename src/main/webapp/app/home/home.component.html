@@ -1,18 +1,14 @@
+<div class="card-box welcome-rating">
 <div class="row">
-    <div class="col-md-3">
-        <span class="hipster img-fluid rounded"></span>
-    </div>
-
-    <div class="col-md-9">
+    <div class="col-md-12">
         <h1 class="display-4" jhiTranslate="home.title">Welcome, Rating!</h1>
-        <p class="lead" jhiTranslate="home.subtitle">Introduction</p>
         <p class="lead" jhiTranslate="home.description"> Description</p>
     </div>
 </div>
 <div class="row" style="margin-bottom: 10px">
     <div class="col-md-12 text-center">
-        <span *ngIf="!mySelf" class="alert alert-warning" style="padding: .50rem 0.25rem;">Please, <a
-            [routerLink]="['../self-assessment-mgm']"> select</a> a self assessment, otherwise, have a look to our taxonomies</span>
+        <div *ngIf="!mySelf" class="alert alert-warning" style="padding: .50rem 0.25rem;">Please, <a
+            [routerLink]="['../self-assessment-mgm']"> select</a> a self assessment, otherwise, have a look to our taxonomies</div>
     </div>
 </div>
 
@@ -133,4 +129,5 @@
           <span jhiTranslate="home.like">If you like JHipster, don't forget to give us a star on</span> <a href="https://github.com/jhipster/generator-jhipster" target="_blank" rel="noopener" jhiTranslate="home.github">GitHub</a>!
       </p>
           -->
+</div>
 </div>
