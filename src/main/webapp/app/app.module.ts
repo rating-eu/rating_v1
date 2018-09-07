@@ -26,14 +26,14 @@ import {
     ProfileService,
     PageRibbonComponent,
     ActiveMenuDirective,
-    ErrorComponent
+    ErrorComponent,
+    SidebarComponent
 } from './layouts';
 import {QuestionnairesService} from './questionnaires/questionnaires.service';
 import {ReactiveFormsModule} from '@angular/forms';
 import {DatasharingModule} from './datasharing/datasharing.module';
 import {MaterialModule} from './material/material.module';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import { SidebarComponent } from './layouts/sidebar/sidebar.component';
 
 @NgModule({
     imports: [

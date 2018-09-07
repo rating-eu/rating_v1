@@ -1,10 +1,11 @@
 <div>
-    <jhi-navbar [sideBar]="sidebar"></jhi-navbar>
+    <jhi-navbar></jhi-navbar>
 </div>
 
-<jhi-sidebar #sidebar></jhi-sidebar>
+<jhi-sidebar></jhi-sidebar>
 
-<div class="content-page">
+<div
+    [ngClass]="{'content-page-sidenav': !updateLayout.isSidebarCollapsed, 'content-page-no-sidenav': updateLayout.isSidebarCollapsed}">
     <!-- Start content -->
     <div class="content">
         <div class="container-fluid">

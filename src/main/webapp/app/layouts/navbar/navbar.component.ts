@@ -8,6 +8,8 @@ import {JhiLanguageHelper, Principal, LoginModalService, LoginService} from '../
 
 import {VERSION} from '../../app.constants';
 import {SidebarComponent} from '../sidebar/sidebar.component';
+import {DatasharingService} from '../../datasharing/datasharing.service';
+import {Update} from '../model/Update';
 
 @Component({
     selector: 'jhi-navbar',
@@ -24,13 +26,6 @@ export class NavbarComponent implements OnInit {
     modalRef: NgbModalRef;
     version: string;
 
-    @Input()
-    sideBar: SidebarComponent;
-
-    toggleSideBar() {
-        this.sideBar.toggle();
-    }
-
     constructor(
         private loginService: LoginService,
         private languageService: JhiLanguageService,
@@ -38,7 +33,8 @@ export class NavbarComponent implements OnInit {
         private principal: Principal,
         private loginModalService: LoginModalService,
         private profileService: ProfileService,
-        private router: Router
+        private router: Router,
+        private dataSharingServive: DatasharingService
     ) {
         this.version = VERSION ? 'v' + VERSION : '';
         this.isNavbarCollapsed = true;
@@ -53,7 +49,6 @@ export class NavbarComponent implements OnInit {
             this.inProduction = profileInfo.inProduction;
             this.swaggerEnabled = profileInfo.swaggerEnabled;
         });
-        this.sideBar.isCollapsed = true;
     }
 
     changeLanguage(languageKey: string) {
@@ -75,6 +70,12 @@ export class NavbarComponent implements OnInit {
     logout() {
         this.collapseNavbar();
         this.loginService.logout();
+
+        const update: Update = this.dataSharingServive.getUpdate();
+        update.isSidebarCollapsed = true;
+
+        this.dataSharingServive.updateLayout(update);
+
         this.router.navigate(['']);
     }
 
