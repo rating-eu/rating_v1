@@ -1,4 +1,4 @@
-<nav class="navbar navbar-custom navbar-expand-md topbar">
+<nav *ngIf="isAuthenticated()" class="navbar navbar-custom navbar-expand-md topbar">
     <div class="topbar-left">
         <a routerLink="/" class="logo">
             <span>
