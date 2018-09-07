@@ -5569,14 +5569,10 @@ ul.dropdown-menu.show li a {
     border-radius: 0;
 }
 
-.welcome-rating {
-    background: #05619f;
-    color: #fff;
-}
 
 .welcome-rating .alert.alert-warning {
-    background: #ffff80;
+    background: #d8d8d8;
     color: #05619f;
     font-size: 22px;
-    border: 2px solid #094884;
+    border: 1px solid #bdbdbd;
 }
