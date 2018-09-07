@@ -5536,3 +5536,30 @@ ul.dropdown-menu.show li a {
     color: #000;
     font-weight: normal;
 }
+
+.jhi-sidebar ul.navbar-nav.ml-auto li a {
+    color: #313a46;
+    display: block;
+    padding: 4px 15px;
+    margin: 2px 0;
+    font-size: 14px;
+    position: relative;
+}
+
+.jhi-sidebar ul.navbar-nav.ml-auto li a span {
+    color: #313a46;
+}
+
+.jhi-sidebar ul.navbar-nav.ml-auto li a i {
+    display: inline-block;
+    font-size: 18px;
+    line-height: 17px;
+    margin: 0 10px 0 3px;
+    text-align: center;
+    vertical-align: middle;
+    width: 20px;
+}
+
+.form-search-table .ng-valid:not(form):not(mat-radio-button):not(textarea):not(div) {
+    border-left: 0;
+}

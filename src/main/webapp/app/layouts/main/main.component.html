@@ -1,7 +1,29 @@
+<<<<<<< HEAD
 <div *ngIf="isAuthenticated()">
     <div>
         <jhi-navbar [sideBar]="sidebar"></jhi-navbar>
     </div>
+=======
+<div>
+    <jhi-navbar [sideBar]="sidebar"></jhi-navbar>
+</div>
+
+<jhi-sidebar #sidebar></jhi-sidebar>
+
+<div class="content-page">
+    <!-- Start content -->
+    <div class="content">
+        <div class="container-fluid">
+
+            <div class="row">
+                <div class="col-12">
+                    <div class="page-title-box">
+                        <h4 class="page-title float-left">Insert Dynamic Breadcumbs</h4>
+
+                        <ol class="breadcrumb float-right">
+                            <li class="breadcrumb-item"><a href="#"></a></li>
+                        </ol>
+>>>>>>> 9a83498b1b986e0e2bfc5700a6e3ef4677c1c925
 
     <jhi-sidebar #sidebar></jhi-sidebar>
 
@@ -23,6 +45,7 @@
                             <div class="clearfix"></div>
                         </div>
                     </div>
+<<<<<<< HEAD
                 </div>-->
                 <!-- end row -->
                 <div class="row">
@@ -34,6 +57,15 @@
                         </div>
                     </div>
 
+=======
+                </div>
+            </div>
+            <!-- end row -->
+            <div class="row">
+                <div class="col-md-12">
+                        <router-outlet></router-outlet>
+                        <router-outlet name="popup"></router-outlet>
+>>>>>>> 9a83498b1b986e0e2bfc5700a6e3ef4677c1c925
                 </div>
 
 
