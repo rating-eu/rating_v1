@@ -1,27 +1,27 @@
 id;name;description;created;modified
-1;Antivirus;;${now};${now}
-2;IDS/IPS;;${now};${now}
-3;Firewall/UTM;;${now};${now}
-4;Awareness;;${now};${now}
-5;Secure Coding;;${now};${now}
-6;Hardening;;${now};${now}
-7;VA/Penetration testing;;${now};${now}
-8;SIEM/Log Collection;;${now};${now}
-9;Anti-Spam;;${now};${now}
-10;Strong Authentication;;${now};${now}
-11;DLP;;${now};${now}
-12;Web Application Firewall;;${now};${now}
-13;Surveillance;;${now};${now}
-14;Advanced Behaviour Detection;;${now};${now}
-15;Backup;;${now};${now}
-16;Security Policy Framework;;${now};${now}
-17;ISP DOS Protection;;${now};${now}
-18;Data Classification;;${now};${now}
-19;Data Encryption;;${now};${now}
-20;Patching;;${now};${now}
-21;DR;;${now};${now}
-22;IAM/SSO;;${now};${now}
-23;Early Warning/Thread Intelligence;;${now};${now}
-24;SOC;;${now};${now}
-25;Physical Access Control;;${now};${now}
-26;Secure Network Protocol (https, vpn ...);;${now};${now}
+1;Antivirus;;now();now()
+2;IDS/IPS;;now();now()
+3;Firewall/UTM;;now();now()
+4;Awareness;;now();now()
+5;Secure Coding;;now();now()
+6;Hardening;;now();now()
+7;VA/Penetration testing;;now();now()
+8;SIEM/Log Collection;;now();now()
+9;Anti-Spam;;now();now()
+10;Strong Authentication;;now();now()
+11;DLP;;now();now()
+12;Web Application Firewall;;now();now()
+13;Surveillance;;now();now()
+14;Advanced Behaviour Detection;;now();now()
+15;Backup;;now();now()
+16;Security Policy Framework;;now();now()
+17;ISP DOS Protection;;now();now()
+18;Data Classification;;now();now()
+19;Data Encryption;;now();now()
+20;Patching;;now();now()
+21;DR;;now();now()
+22;IAM/SSO;;now();now()
+23;Early Warning/Thread Intelligence;;now();now()
+24;SOC;;now();now()
+25;Physical Access Control;;now();now()
+26;Secure Network Protocol (https, vpn ...);;now();now()
