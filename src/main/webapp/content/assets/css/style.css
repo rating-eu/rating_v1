@@ -5563,3 +5563,8 @@ ul.dropdown-menu.show li a {
 .form-search-table .ng-valid:not(form):not(mat-radio-button):not(textarea):not(div) {
     border-left: 0;
 }
+
+.btn-table button {
+    margin-left: 5px !important;
+    border-radius: 0; 
+}
