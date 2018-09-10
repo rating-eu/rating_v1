@@ -1,0 +1,13 @@
+/*
+Identify Threat Agent CSS
+*/
+
+.badge.chips.badge-secondary {
+    width: 30px;
+    height: 30px;
+    padding: 6px 0px;
+    border-radius: 15px;
+    text-align: center;
+    font-size: 15px;
+    line-height: 1.42857;
+}

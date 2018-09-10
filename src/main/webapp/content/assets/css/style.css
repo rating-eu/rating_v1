@@ -583,10 +583,12 @@ body.enlarged.bg-transparent {
     border-top: 1px solid rgba(152, 166, 173, 0.2);
     bottom: 0;
     text-align: left !important;
-    padding: 19px 30px 20px;
+    padding: 10px 30px 5px;
     position: absolute;
     right: 0;
     left: 240px;
+    background:#ddd;
+    font-size: 12px;
 }
 
 /* Notification */
@@ -5520,10 +5522,12 @@ ul.dropdown-menu.show li a {
     border: 1px solid #bdbdbd;
 }
 
-.jh-entity-details a {
+.jh-entity-details a,
+.card-box table td a {
     color: #1881d2 ;
 }
 
 .card-box h2 {
     margin-bottom: 0;
 }
+
