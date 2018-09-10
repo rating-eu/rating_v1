@@ -1,51 +1,54 @@
 <nav *ngIf="isAuthenticated()" class="left side-menu" id="sidebar" [ngClass]="{'sidebar-collapsed': isCollapsed}">
     <ul class="navbar-nav ml-auto" [ngSwitch]="isCollapsed">
-        <li class="nav-item" routerLinkActive="active"
+        <li class="menu-title nav-item" routerLinkActive="active"
             [routerLinkActiveOptions]="{exact: true}">
-            <a class="nav-link text-right" (click)="toggleSideBar()"
+            <a class="nav-link " (click)="toggleSideBar()"
                [attr.aria-expanded]="sideBar?.isCollapsed" aria-controls="sidebar">
-                <i *ngSwitchCase="true" class="fa fa-chevron-right fa-lg" aria-hidden="true"></i>
-                <i *ngSwitchCase="false" class="fa fa-times fa-lg" aria-hidden="true"></i>
+                <i *ngSwitchCase="true" class="fas fa-angle-double-right fa-lg float-right" aria-hidden="true"></i>
+                <span *ngSwitchCase="true"></span>
+                <span *ngSwitchCase="false">Entities</span>
+                <i *ngSwitchCase="false" class="fas fa-bars fa-lg float-right" aria-hidden="true"></i>
+
             </a>
         </li>
         <li>
             <a class="dropdown-item" routerLink="self-assessment-mgm" routerLinkActive="active"
-               [routerLinkActiveOptions]="{ exact: true }">
+               [routerLinkActiveOptions]="{ exact: true }" placement="right" ngbTooltip="Self Assessment">
                 <i class="fa fa-archive fa-lg" aria-hidden="true"></i>
                 <span *ngSwitchCase="false" class="d-none d-md-inline">Self Assessment</span>
             </a>
         </li>
         <li>
             <a class="dropdown-item" routerLink="identify-threat-agent" routerLinkActive="active"
-               [routerLinkActiveOptions]="{ exact: true }">
+               [routerLinkActiveOptions]="{ exact: true }" placement="right" ngbTooltip="Identify Threat Agents">
                 <i class="fa fa-user-secret fa-lg"></i>
                 <span *ngSwitchCase="false" class="d-none d-md-inline">Identify Threat Agents</span>
             </a>
         </li>
         <li>
             <a class="dropdown-item" routerLink="evaluate-weakness" routerLinkActive="active"
-               [routerLinkActiveOptions]="{ exact: true }">
+               [routerLinkActiveOptions]="{ exact: true }" placement="right" ngbTooltip="Evaluate Weakness">
                 <i class="fa fa-user-secret fa-lg"></i>
                 <span *ngSwitchCase="false" class="d-none d-md-inline">Evaluate Weakness</span>
             </a>
         </li>
         <li>
             <a class="dropdown-item" routerLink="identify-asset" routerLinkActive="active"
-               [routerLinkActiveOptions]="{ exact: true }">
+               [routerLinkActiveOptions]="{ exact: true }" placement="right" ngbTooltip="Identify Assets">
                 <i class="fa fa-user-secret fa-lg"></i>
                 <span *ngSwitchCase="false" class="d-none d-md-inline">Identify Assets</span>
             </a>
         </li>
         <li>
             <a class="dropdown-item" routerLink="external-audit" routerLinkActive="active"
-               [routerLinkActiveOptions]="{ exact: true }">
+               [routerLinkActiveOptions]="{ exact: true }"  placement="right" ngbTooltip="External Audit">
                 <i class="fa fa-user-secret fa-lg"></i>
                 <span *ngSwitchCase="false" class="d-none d-md-inline">External Audit</span>
             </a>
         </li>
         <li>
             <a class="dropdown-item" routerLink="impact-evaluation" routerLinkActive="active"
-               [routerLinkActiveOptions]="{ exact: true }">
+               [routerLinkActiveOptions]="{ exact: true }" placement="right" ngbTooltip="Impact Evaluation">
                 <i class="fa fa-user-secret fa-lg"></i>
                 <span *ngSwitchCase="false" class="d-none d-md-inline">Impact Evaluation</span>
             </a>
@@ -53,7 +56,7 @@
 
         <li>
             <a class="dropdown-item" routerLink="risk-management" routerLinkActive="active"
-               [routerLinkActiveOptions]="{ exact: true }">
+               [routerLinkActiveOptions]="{ exact: true }" placement="right" ngbTooltip="Risk Management">
                 <i class="fa fa-user-secret fa-lg"></i>
                 <span *ngSwitchCase="false" class="d-none d-md-inline">Risk Management</span>
             </a>
@@ -61,13 +64,13 @@
 
         <li>
             <a class="dropdown-item" routerLink="results" routerLinkActive="active"
-               [routerLinkActiveOptions]="{ exact: true }">
+               [routerLinkActiveOptions]="{ exact: true }" placement="right" ngbTooltip="Results">
                 <i class="fa fa-user-secret fa-lg"></i>
                 <span *ngSwitchCase="false" class="d-none d-md-inline">Results</span>
             </a>
         </li>
 
-        <li ngbDropdown>
+        <!-- <li ngbDropdown>
             <a class="nav-link dropdown-toggle" ngbDropdownToggle id="steps-menu"
                routerLinkActive="active"
                [routerLinkActiveOptions]="{ exact: true }">
@@ -134,6 +137,6 @@
                     </ul>
                 </ng-template>
             </ngb-panel>
-        </ngb-accordion>
+        </ngb-accordion>-->
     </ul>
 </nav>

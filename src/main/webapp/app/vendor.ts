@@ -10,7 +10,7 @@ import 'rxjs/add/observable/throw';
 //import '../content/assets/js/jquery.min.js';
 //import '../content/assets/js/bootstrap.bundle.js';
 //import '../content/assets/js/metisMenu.min.js';
-//import '../content/assets/js/waves.js';
+import '../content/assets/js/waves.js';
 //import '../content/assets/js/jquery.slimscroll.js';
 //import '../content/plugins/custombox/js/custombox.min.js';
 //import '../content/plugins/custombox/js/legacy.min.js';
