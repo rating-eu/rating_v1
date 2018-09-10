@@ -5523,3 +5523,7 @@ ul.dropdown-menu.show li a {
 .jh-entity-details a {
     color: #1881d2 ;
 }
+
+.card-box h2 {
+    margin-bottom: 0;
+}

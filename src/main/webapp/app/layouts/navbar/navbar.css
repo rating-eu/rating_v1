@@ -90,7 +90,7 @@ Logo styles
     overflow: inherit;
 }
 
-.navbar-expand-md .navbar-nav .dropdown-menu {
+.entities-nav  .dropdown-menu {
     overflow: auto;
     height: 300px;
 }
