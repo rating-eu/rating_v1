@@ -192,13 +192,14 @@ step todo:
             [questionnaire]="questionnaries[0]"
             [questionRenderType]="q.name"></question-card>
         </ng-container>
-
+        <div class="card-box button-box">
+            <button class="btn btn-primary btn-success btn-lg btn-block" (click)="sendAnswerAndSaveMyAssets()"><i class="fas fa-save"></i> Submit</button>
+        </div>
     </ng-container>
+
 </ng-container>
-<div class="card-box">
-    <button class="btn btn-primary btn-success btn-lg btn-block" (click)="sendAnswerAndSaveMyAssets()"><i class="fas fa-save"></i> Submit</button>
-</div>
-<br><br>
+
+
 <ng-container *ngIf="questionnariesStatus.length > 0">
     <ng-container *ngIf="questionnariesStatus[0].status === 'FULL'">
         <ng-container *ngIf="myDirectAssets">
