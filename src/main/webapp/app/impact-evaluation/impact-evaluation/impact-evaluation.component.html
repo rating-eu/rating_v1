@@ -1,5 +1,8 @@
+<div class="card-box">
+
 <ng-container [ngSwitch]="witchStep">
-  <div *ngSwitchCase="1" class="container">
+  <div *ngSwitchCase="1" class="container-fluid">
+    <h2 >Impact Evaluation</h2>
     <div class="row">
       <div class="col-md-12">
         <form [formGroup]="impactFormStepOne">
@@ -41,10 +44,11 @@
       </div>
     </div>
   </div>
-  <div *ngSwitchCase="2" class="container">
+  <div *ngSwitchCase="2" class="container-fluid">
     <div class="row">
       <p>
-        <b>Evaluated Economic Performance = </b>{{economicPerformance}}</p>
+        <h2>Evaluated Economic Performance = <b class="color-b">{{economicPerformance}}</b></h2>
+      </p>
     </div>
     <div class="row">
       <div class="col-md-12">
@@ -105,9 +109,9 @@
       </div>
     </div>
   </div>
-  <div *ngSwitchCase="3" class="container">
+  <div *ngSwitchCase="3" class="container-fluid">
     <div class="row">
-      <p><b>Intangible Driving Earnings = </b>{{intangibleDrivingEarnings}}, <b>Intangible Capital = </b>{{intangibleCapitalValuation}}</p>
+      <p><h2>Intangible Driving Earnings = <b class="color-b">{{intangibleDrivingEarnings}}</b>, Intangible Capital = <b class="color-b">{{intangibleCapitalValuation}}</b></h2></p>
     </div>
     <div class="row">
       <form [formGroup]="impactFormStepThree">
@@ -129,10 +133,10 @@
       </div>
     </div>
   </div>
-  <div *ngSwitchCase="4" class="container">
+  <div *ngSwitchCase="4" class="container-fluid">
     <div class="row">
       <p>
-        <b>Loss On Intangible Assets Due To Cyberattacks = </b>{{lossOnintangibleAssetsDueToCyberattacks}}</p>
+        <h2>Loss On Intangible Assets Due To Cyberattacks = <b class="color-b">{{lossOnintangibleAssetsDueToCyberattacks}}</b></h2></p>
     </div>
     <div class="row">
       <div class="col-md-12">
@@ -163,7 +167,7 @@
       </div>
     </div>
     <div class="row">
-      <p><b>IP</b>: {{impactOnIP}}, <b>Key Comp</b>: {{impactOnKeyComp}}, <b>Org Capital</b>: {{impactOnOrgCapital}}</p>
+        <p>IP: <b class="color-b">{{impactOnIP}}</b>, Key Comp: <b class="color-b">{{impactOnKeyComp}}</b>, Org Capital: <b class="color-b">{{impactOnOrgCapital}}<b class="color-b"></p>
     </div>
     <div class="row">
       <div class="col-md-12">
@@ -173,3 +177,4 @@
     </div>
   </div>
 </ng-container>
+</div>
