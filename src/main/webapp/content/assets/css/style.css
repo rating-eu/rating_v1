@@ -695,7 +695,7 @@ body.enlarged.bg-transparent {
 
 body {
     margin: 0;
-    padding-bottom: 60px;
+    padding-bottom: 0;
     overflow-x: hidden;
     color: #797979;
     font-size: 15px;
