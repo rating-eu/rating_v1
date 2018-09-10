@@ -296,18 +296,6 @@ ul li {
     background-color: whitesmoke;
 }
 
-.menu-title {
-    padding: 12px 20px;
-    letter-spacing: .05em;
-    pointer-events: none;
-    cursor: default;
-    font-size: 15px;
-    text-transform: uppercase;
-    color: #ffffff;
-    font-family: "Roboto", sans-serif;
-    background: #09437f;
-}
-
 .enlarged .slimScrollDiv,
 .enlarged .slimscroll-menu {
     overflow: inherit !important;
@@ -5530,4 +5518,8 @@ ul.dropdown-menu.show li a {
     color: #05619f;
     font-size: 22px;
     border: 1px solid #bdbdbd;
+}
+
+.jh-entity-details a {
+    color: #1881d2 ;
 }

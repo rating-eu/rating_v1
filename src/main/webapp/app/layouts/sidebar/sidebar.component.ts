@@ -6,7 +6,9 @@ import {Update} from '../model/Update';
 @Component({
     selector: 'jhi-sidebar',
     templateUrl: './sidebar.component.html',
-    styles: []
+    styleUrls: [
+       'sidebar.css'
+    ]
 })
 export class SidebarComponent implements OnInit {
 

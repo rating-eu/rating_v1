@@ -1,0 +1,36 @@
+/* ==========================================================================
+Sidebar
+========================================================================== */
+
+
+.menu-title {
+    padding: 10px 25px;
+    letter-spacing: .05em;
+    cursor: default;
+    font-size: 15px;
+    text-transform: uppercase;
+    color: #ffffff;
+    font-family: "Roboto", sans-serif;
+    background: #09437f;
+}
+
+
+i.fas.fa-angle-double-left.fa-lg.float-right,
+i.fas.fa-bars.fa-lg.float-right{
+    margin-right: 5px;
+    margin-top: 5px;
+}
+
+.side-menu a.dropdown-item {
+    color: rgba(49, 58, 70, 0.8);
+    display: block;
+    padding: 10px 15px;
+    margin: 0;
+    font-size: 14px;
+    position: relative;
+    text-align:left;
+}
+
+.sidebar-collapsed a.dropdown-item {
+    text-align:center;
+}
