@@ -89,3 +89,8 @@ Logo styles
 .waves-effect {
     overflow: inherit;
 }
+
+.navbar-expand-md .navbar-nav .dropdown-menu {
+    overflow: auto;
+    height: 300px;
+}
