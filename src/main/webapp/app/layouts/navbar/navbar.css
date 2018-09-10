@@ -85,3 +85,7 @@ Logo styles
     background-size: contain;
     width: 100%;
 }
+
+.waves-effect {
+    overflow: inherit;
+}
