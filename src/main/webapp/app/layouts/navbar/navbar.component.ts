@@ -1,12 +1,15 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { JhiLanguageService } from 'ng-jhipster';
+import {Component, Input, OnInit} from '@angular/core';
+import {Router} from '@angular/router';
+import {NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
+import {JhiLanguageService} from 'ng-jhipster';
 
-import { ProfileService } from '../profiles/profile.service';
-import { JhiLanguageHelper, Principal, LoginModalService, LoginService } from '../../shared';
+import {ProfileService} from '../profiles/profile.service';
+import {JhiLanguageHelper, Principal, LoginModalService, LoginService} from '../../shared';
 
-import { VERSION } from '../../app.constants';
+import {VERSION} from '../../app.constants';
+import {SidebarComponent} from '../sidebar/sidebar.component';
+import {DatasharingService} from '../../datasharing/datasharing.service';
+import {Update} from '../model/Update';
 
 @Component({
     selector: 'jhi-navbar',
@@ -30,7 +33,8 @@ export class NavbarComponent implements OnInit {
         private principal: Principal,
         private loginModalService: LoginModalService,
         private profileService: ProfileService,
-        private router: Router
+        private router: Router,
+        private dataSharingServive: DatasharingService
     ) {
         this.version = VERSION ? 'v' + VERSION : '';
         this.isNavbarCollapsed = true;
@@ -48,7 +52,7 @@ export class NavbarComponent implements OnInit {
     }
 
     changeLanguage(languageKey: string) {
-      this.languageService.changeLanguage(languageKey);
+        this.languageService.changeLanguage(languageKey);
     }
 
     collapseNavbar() {
@@ -66,6 +70,12 @@ export class NavbarComponent implements OnInit {
     logout() {
         this.collapseNavbar();
         this.loginService.logout();
+
+        const update: Update = this.dataSharingServive.getUpdate();
+        update.isSidebarCollapsed = true;
+
+        this.dataSharingServive.updateLayout(update);
+
         this.router.navigate(['']);
     }
 

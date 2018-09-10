@@ -1,15 +1,47 @@
-<div>
+<div class="row">
+
+    <div class="col-lg-9 col-md-12">
+        <div class="card-box">
+            <div class="form-search-table">
+
+                <form name="searchForm"role="search" class="">
+                    <div class="input-group w-100">
+                        <input type="text" class="form-control" [(ngModel)]="currentSearch" id="currentSearch" name="currentSearch" placeholder="{{ 'hermeneutApp.mitigation.home.search' | translate }}">
+                        <button class="input-group-append btn btn-info" (click)="search(currentSearch)">
+                            <span class="fa fa-search"></span>
+                        </button>
+                        <button class="input-group-append btn btn-danger" (click)="clear()" *ngIf="currentSearch">
+                            <span class="fa fa-trash-o"></span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-12">
+        <div class="card-box">
+            <button class="btn btn-block btn-primary waves-effect waves-light btn-info jh-create-entity create-mitigation-mgm" [routerLink]="['/', { outlets: { popup: ['mitigation-mgm-new'] } }]">
+                <i class="fas fa-plus"></i>
+                <span class="hidden-sm-down"  jhiTranslate="hermeneutApp.mitigation.home.createLabel">
+            Create new Mitigation
+            </span>
+            </button>
+        </div>
+    </div>
+
+</div>
+<div class="card-box">
     <h2>
         <span jhiTranslate="hermeneutApp.mitigation.home.title">Mitigations</span>
-        <button class="btn btn-primary float-right jh-create-entity create-mitigation-mgm" [routerLink]="['/', { outlets: { popup: ['mitigation-mgm-new'] } }]">
+        <!-- <button class="btn btn-primary float-right jh-create-entity create-mitigation-mgm" [routerLink]="['/', { outlets: { popup: ['mitigation-mgm-new'] } }]">
             <span class="fa fa-plus"></span>
             <span class="hidden-sm-down"  jhiTranslate="hermeneutApp.mitigation.home.createLabel">
             Create new Mitigation
             </span>
-        </button>
+        </button> -->
     </h2>
     <jhi-alert></jhi-alert>
-    <div class="row">
+    <!-- <div class="row">
         <div class="col-sm-12">
             <form name="searchForm" class="form-inline">
                 <div class="input-group w-100 mt-3">
@@ -24,7 +56,7 @@
             </form>
         </div>
     </div>
-    <br/>
+    <br/>-->
     <div class="table-responsive" *ngIf="mitigations">
         <table class="table table-striped">
             <thead>

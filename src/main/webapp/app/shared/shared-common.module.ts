@@ -2,9 +2,8 @@ import {NgModule} from '@angular/core';
 
 import {
     HermeneutSharedLibsModule,
-    FindLanguageFromKeyPipe,
     JhiAlertComponent,
-    JhiAlertErrorComponent
+    JhiAlertErrorComponent,
 } from './';
 
 @NgModule({

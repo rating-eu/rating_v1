@@ -121,7 +121,7 @@ export class ResultsOverviewComponent implements OnInit {
             }
         );
 
-        //Random Data
+        // Random Data
         /*this.threatAgentIDs = [1, 2, 3, 4, 5];
 
         this.threatAgentIDs.forEach(id => {

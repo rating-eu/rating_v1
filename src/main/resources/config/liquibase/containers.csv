@@ -1,4 +1,4 @@
 id;name;description;container_type;created
-1;Human;description;HUMAN;${now}
-2;IT;description;IT;${now}
-3;Physical;description;PHYSICAL;${now}
+1;Human;description;HUMAN;now()
+2;IT;description;IT;now()
+3;Physical;description;PHYSICAL;now()

@@ -1,4 +1,4 @@
 id;name;purpose;created;modified
-1;Threat Agents Questionnaire;ID_THREAT_AGENT;${now};${now}
-2;Self Assessment Questionnaire;SELFASSESSMENT;${now};${now}
-3;Identify Assets Questionnaire;ID_ASSETS;${now};${now}
+1;Threat Agents Questionnaire;ID_THREAT_AGENT;now();now()
+2;Self Assessment Questionnaire;SELFASSESSMENT;now();now()
+3;Identify Assets Questionnaire;ID_ASSETS;now();now()

@@ -5,12 +5,12 @@ import {ThreatAgentMgm} from '../entities/threat-agent-mgm';
 import {AnswerMgm} from '../entities/answer-mgm';
 import {QuestionMgm} from '../entities/question-mgm';
 import {QuestionnaireStatusMgm} from '../entities/questionnaire-status-mgm';
-import {Subject} from 'rxjs/Subject';
 import {Observable} from 'rxjs/Observable';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import {AttackStrategyMgm} from '../entities/attack-strategy-mgm';
 import {AttackStrategyUpdate} from '../evaluate-weakness/models/attack-strategy-update.model';
-import { QuestionnaireMgm } from '../entities/questionnaire-mgm';
+import {QuestionnaireMgm} from '../entities/questionnaire-mgm';
+import {Update} from '../layouts/model/Update';
 
 @Injectable()
 export class DatasharingService {
@@ -120,5 +120,19 @@ export class DatasharingService {
             // Set & Broadcast the update for the current AttackStrategy
             this.attackStrategyUpdate = attackStrategyUpdate;
         }
+    }
+
+    private layoutUpdateSubject: BehaviorSubject<Update> = new BehaviorSubject<Update>(null);
+
+    updateLayout(layoutUpdate: Update) {
+        this.layoutUpdateSubject.next(layoutUpdate)
+    }
+
+    getUpdate(): Update {
+        return this.layoutUpdateSubject.getValue();
+    }
+
+    observeUpdate(): Observable<Update> {
+        return this.layoutUpdateSubject.asObservable();
     }
 }
