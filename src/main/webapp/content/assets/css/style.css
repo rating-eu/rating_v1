@@ -695,7 +695,7 @@ body.enlarged.bg-transparent {
 
 body {
     margin: 0;
-    padding-bottom: 60px;
+    padding-bottom: 0;
     overflow-x: hidden;
     color: #797979;
     font-size: 15px;
@@ -5522,4 +5522,8 @@ ul.dropdown-menu.show li a {
 
 .jh-entity-details a {
     color: #1881d2 ;
+}
+
+.card-box h2 {
+    margin-bottom: 0;
 }
