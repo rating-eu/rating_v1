@@ -5,7 +5,10 @@ import {SelfAssessmentMgm, SelfAssessmentMgmService} from '../entities/self-asse
 
 @Component({
     selector: 'jhi-identify-threat-agent',
-    templateUrl: './identify-threat-agent.component.html'
+    templateUrl: './identify-threat-agent.component.html',
+    styleUrls: [
+      'identify-threat-agent.css'
+    ]
 })
 export class IdentifyThreatAgentComponent implements OnInit {
     account: Account;

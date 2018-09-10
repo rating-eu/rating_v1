@@ -1,14 +1,52 @@
 .chips{
-    border-radius: 15px !important;
-    font-size: 20px;
-    width: auto;
+    width: 30px;
+    height: 30px;
+    padding: 6px 0px;
+    border-radius: 15px;
+    text-align: center;
+    font-size: 15px;
+    line-height: 1.42857;
+    cursor:pointer;
   }
-  
+
   .chipsContainer{
     margin-top: 10px;
     margin-bottom: 10px;
   }
-  
+
   .pointer{
     cursor: pointer;
   }
+
+.chips-name {
+    border-radius: 5px;
+    font-size: 15px;
+    width: 100%;
+    text-align: left;
+    padding: 5px;
+    cursor:pointer;
+}
+.badge-primary {
+    background-color: #25a9dc;
+}
+
+.card-body b {
+    font-size: 22px;
+    color: #25a9dc;
+    font-weight: bold;
+}
+
+.badge-light {
+    background-color: #e2e2e2;
+}
+
+question-card {
+    margin-bottom: 20px;
+    display: block;
+}
+
+.card {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
