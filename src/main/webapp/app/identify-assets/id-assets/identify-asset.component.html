@@ -110,11 +110,11 @@ step todo:
 <!-- Compilo i direct -->
 <!-- compilo i indirect -->
 <!-- Attack related cost -->
-<!-- per il salvataggio 
+<!-- per il salvataggio
     1) create su MyAsset >> MyAsset con id (my asset deve essere atomico per un componente)
     2) uguale per i direct (devono essere atomici per la selezione degli indirect)
     3) e per indirect
-    3) 
+    3)
 -->
 <!--
     <div class="table-responsive" *ngIf="assets$">
@@ -192,9 +192,14 @@ step todo:
             [questionnaire]="questionnaries[0]"
             [questionRenderType]="q.name"></question-card>
         </ng-container>
-        <button class="btn btn-primary" (click)="sendAnswerAndSaveMyAssets()">submit</button>
+        <div class="card-box button-box">
+            <button class="btn btn-primary btn-success btn-lg btn-block" (click)="sendAnswerAndSaveMyAssets()"><i class="fas fa-save"></i> Submit</button>
+        </div>
     </ng-container>
+
 </ng-container>
+
+
 <ng-container *ngIf="questionnariesStatus.length > 0">
     <ng-container *ngIf="questionnariesStatus[0].status === 'FULL'">
         <ng-container *ngIf="myDirectAssets">
@@ -223,7 +228,7 @@ step todo:
                     </ng-container>
                 </div>
                 <div *ngIf="isAssetTreeShow(direct)" class="col-md-5">
-                    <div class="card">
+                    <div class="card-box card-margin-top">
                         <div class="card-body">
                             <div *ngIf="directAssetSelected && !indirectAssetSelected">
                                 <h5 class="card-title">{{directAssetSelected.myAsset.asset.name}} details</h5>
@@ -246,6 +251,6 @@ step todo:
     <ng-container *ngIf="questionnariesStatus[0].status === 'PENDING'">
         <p>You already completed the questionnaire!</p>
         <!-- INSERIRE LOGICA DI COMPLETAMENTO -->
-        
+
     </ng-container>
 </ng-container>

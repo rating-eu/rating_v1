@@ -1,11 +1,14 @@
-<span *ngIf="!selectedSelfAssessment" class="alert alert-warning">Please, <a [routerLink]="['../self-assessment-mgm']"> select</a> a self assessment, otherwise, have a look to our taxonomies</span>
-
+<div class="card-box">
+    <h2><span>Evaluate Weakness</span></h2>
+<span *ngIf="!selectedSelfAssessment" class="alert alert-warning">Please, <a [routerLink]="['../self-assessment-mgm']"> select</a>
+    a self assessment, otherwise, have a look to our taxonomies</span>
+<!--
 <button type="submit"
         (click)="previousState()"
         class="btn btn-info">
     <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
 </button>
-<br/><br/>
+<br/><br/> -->
 <table class="table table-striped">
     <thead>
     <tr>
@@ -83,13 +86,16 @@
     </tr>
     </tbody>
 </table>
-
-<div>
-    <button type="button" class="btn btn-dark" [routerLink]="['./questionnaires', 'SELFASSESSMENT']"
-            routerLinkActive="active">
-        <span class="fa fa-eye"></span>
-        <span class="d-none d-md-inline">Questionnaires</span>
-    </button>
 </div>
 
-<router-outlet></router-outlet>
+<div class="card-box">
+    <button type="button" class="btn btn-lg btn-block btn-dark" [routerLink]="['./questionnaires', 'SELFASSESSMENT']"
+            routerLinkActive="active">
+        <span class="fa fa-eye"></span>
+        <span class="d-none d-md-inline">View Questionnaires</span>
+    </button>
+    <router-outlet></router-outlet>
+</div>
+
+
+
