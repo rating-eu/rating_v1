@@ -1,4 +1,15 @@
 <nav *ngIf="isAuthenticated()" class="left side-menu" id="sidebar" [ngClass]="{'sidebar-collapsed': isCollapsed}">
+    <a class="nav-link " (click)="toggleSideBar()"
+        [attr.aria-expanded]="sideBar?.isCollapsed" aria-controls="sidebar">
+         <i *ngIf="isCollapsed" class="fas fa-angle-double-right fa-lg float-right" aria-hidden="true"></i>
+         <span *ngIf="isCollapsed"></span>
+         <span *ngIf="!isCollapsed">Entities</span>
+         <i *ngIf="!isCollapsed" class="fas fa-bars fa-lg float-right" aria-hidden="true"></i>
+
+    </a>
+    <p-slideMenu #sideMenu [popup]="isCollapsed" [model]="items" [style]="{'width':'240px','height':'360px','border':'1px solid #ffffff'}" [viewportHeight]="360"></p-slideMenu>
+    <i *ngIf="isCollapsed" pButton class="fas fa-bars fa-lg float-right" aria-hidden="true" (click)="sideMenu.toggle($event)"></i>
+    <!--
     <ul class="navbar-nav ml-auto" [ngSwitch]="isCollapsed">
         <li class="menu-title nav-item" routerLinkActive="active"
             [routerLinkActiveOptions]="{exact: true}">
@@ -69,74 +80,6 @@
                 <span *ngSwitchCase="false" class="d-none d-md-inline">Results</span>
             </a>
         </li>
-
-        <!-- <li ngbDropdown>
-            <a class="nav-link dropdown-toggle" ngbDropdownToggle id="steps-menu"
-               routerLinkActive="active"
-               [routerLinkActiveOptions]="{ exact: true }">
-                    <span>
-                        <i class="icon-list-ul" aria-hidden="true"></i>
-                        <span>
-                            DropDown
-                        </span>
-                    </span>
-            </a>
-            <ul class="dropdown-menu" ngbDropdownMenu>
-                <li>
-                    <a class="dropdown-item">
-                        Do Nothing 1
-                    </a>
-                </li>
-                <li>
-                    <a class="dropdown-item">
-                        Do Nothing 2
-                    </a>
-                </li>
-                <li>
-                    <a class="dropdown-item">
-                        Do Nothing 3
-                    </a>
-                </li>
-            </ul>
-        </li>
-
-        <ngb-accordion>
-            <ngb-panel title="First panel">
-                <ng-template ngbPanelContent>
-                    <ul>
-                        <li>
-                            <a class="dropdown-item" routerLink="#" routerLinkActive="active"
-                               [routerLinkActiveOptions]="{ exact: true }">
-                                <span class="d-none d-md-inline">A</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a class="dropdown-item" routerLink="results" routerLinkActive="active"
-                               [routerLinkActiveOptions]="{ exact: true }">
-                                <span class="d-none d-md-inline">B</span>
-                            </a>
-                        </li>
-                    </ul>
-                </ng-template>
-            </ngb-panel>
-            <ngb-panel title="Second">
-                <ng-template ngbPanelContent>
-                    <ul>
-                        <li>
-                            <a class="dropdown-item" routerLink="#" routerLinkActive="active"
-                               [routerLinkActiveOptions]="{ exact: true }">
-                                <span class="d-none d-md-inline">A</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a class="dropdown-item" routerLink="results" routerLinkActive="active"
-                               [routerLinkActiveOptions]="{ exact: true }">
-                                <span class="d-none d-md-inline">B</span>
-                            </a>
-                        </li>
-                    </ul>
-                </ng-template>
-            </ngb-panel>
-        </ngb-accordion>-->
     </ul>
+    -->
 </nav>

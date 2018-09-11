@@ -183,6 +183,14 @@ ul li {
     width: 70px;
 }
 
+.ui-slidemenu .ui-menuitem{
+    width: 240px;
+}
+
+.ui-slidemenu-wrapper .ui-slidemenu-content{
+    height: 322px;
+}
+
 .enlarged .side-menu {
     position: absolute;
 }
