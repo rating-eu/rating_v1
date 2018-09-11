@@ -110,7 +110,7 @@
                 <ng-container *ngSwitchCase="'select_indirect_assets'">
                     <ng-container *ngIf="directGuiAssets">
                         <ng-container *ngFor="let direct of directGuiAssets; let i = index">
-                            <p>For <b>{{direct.myAsset.asset.name}}</b> Please select one or more assets from the following list:</p>
+                            <p>For <b>{{direct.myAsset.asset.name}}</b> in {{direct.myAsset.asset.assetcategory.name}} category, please select one or more assets from the following list:</p>
                             <ul class="list-inline" *ngIf="question.answers && allAssets">
                                 <li class="list-inline-item" *ngFor="let ans of question.answers">
                                     <div class="chipsContainer">
@@ -143,7 +143,7 @@
                 <ng-container *ngSwitchCase="'insert_magnitude'">
                     <ul class="list-unstyled" *ngIf="myQuestionAssets.length > 0">
                         <li *ngFor="let asset of myQuestionAssets; let i = index">
-                            <p style="clear: both">Insert estimated value for <b>{{asset.asset.name}}</b> asset.</p>
+                            <p style="clear: both">Insert estimated value for <b>{{asset.asset.name}}</b> asset in {{asset.asset.assetcategory.name}} category.</p>
                             <div class="input-group" style="margin-bottom: 10px">
                                 <input type="text" class="form-control" placeholder="Magnitude"
                                     aria-label="Magnitude" aria-describedby="basic-addon2"
@@ -155,7 +155,7 @@
                 <ng-container *ngSwitchCase="'idetify_costs'">
                     <ng-container *ngIf="directGuiAssets.length > 0">
                         <ng-container *ngFor="let direct of directGuiAssets; let i = index">
-                            <p>For direct asset <b>{{direct.myAsset.asset.name}}</b> identified, please select from the following list:</p>
+                            <p>For direct asset <b>{{direct.myAsset.asset.name}}</b> identified in {{direct.myAsset.asset.assetcategory.name}} category, please select from the following list:</p>
                             <ul class="list-inline" *ngIf="question.answers">
                                 <li class="list-inline-item" *ngFor="let ans of question.answers">
                                     <div class="chipsContainer">
@@ -169,7 +169,7 @@
                     </ng-container>
                     <ng-container *ngIf="indirectGuiAssets.length > 0">
                         <ng-container *ngFor="let indirect of indirectGuiAssets; let i = index">
-                            <p>For indirect asset <b>{{indirect.myAsset.asset.name}}</b> identified from direct asset <i>{{indirect.directAsset.myAsset.asset.name}}</i>, please select from the following list:</p>
+                            <p>For indirect asset <b>{{indirect.myAsset.asset.name}}</b> in {{indirect.myAsset.asset.assetcategory.name}} category, identified from direct asset <i>{{indirect.directAsset.myAsset.asset.name}}</i>, please select from the following list:</p>
                             <ul class="list-inline" *ngIf="question.answers">
                                 <li class="list-inline-item" *ngFor="let ans of question.answers">
                                     <div class="chipsContainer">

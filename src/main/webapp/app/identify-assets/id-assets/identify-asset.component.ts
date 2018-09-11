@@ -23,6 +23,7 @@ import { IndirectAssetMgm } from '../../entities/indirect-asset-mgm';
 import { Status } from '../../entities/enumerations/QuestionnaireStatus.enum';
 import { AssetsOneShot } from '../model/AssetsOneShot.model';
 import { AttackCostMgm, CostType } from '../../entities/attack-cost-mgm';
+import { MyCostType } from '../../entities/enumerations/AttackCostType.enum';
 
 @Component({
     selector: 'jhi-identify-asset',
@@ -51,6 +52,7 @@ export class IdentifyAssetComponent implements OnInit, OnDestroy {
 
     directAssetSelected: DirectAssetMgm;
     indirectAssetSelected: IndirectAssetMgm;
+    attackCostType = MyCostType;
 
     constructor(private jhiAlertService: JhiAlertService,
         private eventManager: JhiEventManager,
@@ -90,7 +92,7 @@ export class IdentifyAssetComponent implements OnInit, OnDestroy {
             } else if (res && res instanceof Array) {
                 this.questionnaries = res;
             }
-            if (this.account['authorities'].includes(MyRole.ROLE_CISO)) {
+            if (this.account['authorities'].includes(MyRole.ROLE_CISO) && this.mySelf) {
                 for (const qs of this.questionnaries) {
                     // controllo esistenza questionnaire status
                     this.questionnaireStatusService.getByRoleSelfAssessmentAndQuestionnaire(MyRole.ROLE_CISO.toString(), this.mySelfAssessmentService.getSelfAssessment().id, qs.id)
@@ -125,45 +127,6 @@ export class IdentifyAssetComponent implements OnInit, OnDestroy {
                                                                         this.ref.detectChanges();
                                                                     });
                                                             });
-                                                        // Eliminare il codice di seguito quando saranno pronti i relativi servizi
-                                                        /*
-                                                        let index = 0;
-                                                        this.myDirectAssets = [];
-                                                        this.myIndirectAssets = [];
-                                                        for (const asset of this.myAssets) {
-                                                            const direct = new DirectAssetMgm();
-                                                            direct.myAsset = asset;
-                                                            direct.id = index;
-                                                            direct.costs = [];
-                                                            const costD = new AttackCostMgm();
-                                                            costD.directAsset = direct;
-                                                            costD.type = CostType.INCREASED_SECURITY;
-                                                            costD.description = 'blablabla direct';
-                                                            direct.costs.push(costD);
-                                                            this.myDirectAssets.push(direct);
-                                                            let index2 = 0;
-                                                            for (const asset2 of this.myAssets) {
-                                                                const indirect = new IndirectAssetMgm();
-                                                                indirect.myAsset = asset2;
-                                                                indirect.id = index2;
-                                                                indirect.directAsset = direct;
-                                                                indirect.costs = [];
-                                                                const costI = new AttackCostMgm();
-                                                                costI.type = CostType.INCREASED_SECURITY;
-                                                                costI.description = 'blablabla indirect';
-                                                                indirect.costs.push(costI);
-                                                                this.myIndirectAssets.push(indirect);
-                                                                index2 ++;
-                                                            }
-                                                            index++;
-                                                        }
-                                                        for (let i = 0; i < this.myDirectAssets.length; i++) {
-                                                            this.myDirectAssets[i].effects =
-                                                                this.idaUtilsService.getSavedIndirectFromDirect(this.myDirectAssets[i], this.myIndirectAssets);
-                                                            console.log(this.myDirectAssets[i].effects);
-                                                        }
-                                                        this.ref.detectChanges();
-                                                        */
                                                     }
                                                 });
                                         }
