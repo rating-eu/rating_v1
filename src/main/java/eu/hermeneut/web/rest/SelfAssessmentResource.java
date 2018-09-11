@@ -90,7 +90,7 @@ public class SelfAssessmentResource {
     public List<SelfAssessment> getAllSelfAssessments() {
         log.debug("REST request to get all SelfAssessments");
         return selfAssessmentService.findAll();
-        }
+    }
 
     /**
      * GET  /self-assessments/:id : get the "id" selfAssessment.

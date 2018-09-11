@@ -155,7 +155,7 @@
                 <ng-container *ngSwitchCase="'idetify_costs'">
                     <ng-container *ngIf="directGuiAssets.length > 0">
                         <ng-container *ngFor="let direct of directGuiAssets; let i = index">
-                            <p>For direct asset <b>{{direct.myAsset.asset.name}}</b>identified, please select from the following list:</p>
+                            <p>For direct asset <b>{{direct.myAsset.asset.name}}</b> identified, please select from the following list:</p>
                             <ul class="list-inline" *ngIf="question.answers">
                                 <li class="list-inline-item" *ngFor="let ans of question.answers">
                                     <div class="chipsContainer">

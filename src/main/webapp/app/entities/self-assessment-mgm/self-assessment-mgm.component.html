@@ -78,43 +78,43 @@
             <tbody>
             <tr *ngFor="let selfAssessment of selfAssessments ;trackBy: trackId">
                 <td><a [routerLink]="['../self-assessment-mgm', selfAssessment.id ]">{{selfAssessment.id}}</a></td>
-                <td><a (click)="selectSelfAssessment(selfAssessment)">{{selfAssessment.name}}</a></td>
-                <td>{{selfAssessment.created | date:'medium'}}</td>
-                <td>{{selfAssessment.modified | date:'medium'}}</td>
-                <td>
+                <td (click)="selectSelfAssessment(selfAssessment)">{{selfAssessment.name}}</td>
+                <td (click)="selectSelfAssessment(selfAssessment)">{{selfAssessment.created | date:'medium'}}</td>
+                <td (click)="selectSelfAssessment(selfAssessment)">{{selfAssessment.modified | date:'medium'}}</td>
+                <td (click)="selectSelfAssessment(selfAssessment)">
                     {{selfAssessment.user?.login}}
                 </td>
-                <td>
+                <td (click)="selectSelfAssessment(selfAssessment)">
                     <span *ngFor="let companyprofiles of selfAssessment.companyprofiles; let last = last">
                             <a class="form-control-static" [routerLink]="['../company-profile-mgm', companyprofiles?.id ]">{{companyprofiles.name}}</a>{{last ? '' : ', '}}
                         </span>
                 </td>
-                <td>
+                <td (click)="selectSelfAssessment(selfAssessment)">
                     <span *ngFor="let companyGroup of selfAssessment.companyGroups; let last = last">
                             <a class="form-control-static" [routerLink]="['../company-group-mgm', companyGroup?.id ]">{{companyGroup.name}}</a>{{last ? '' : ', '}}
                         </span>
                 </td>
-                <td>
+                <td (click)="selectSelfAssessment(selfAssessment)">
                     <span *ngFor="let asset of selfAssessment.assets; let last = last">
                             <a class="form-control-static" [routerLink]="['../asset-mgm', asset?.id ]">{{asset.name}}</a>{{last ? '' : ', '}}
                         </span>
                 </td>
-                <td>
+                <td (click)="selectSelfAssessment(selfAssessment)">
                     <span *ngFor="let threatagent of selfAssessment.threatagents; let last = last">
                             <a class="form-control-static" [routerLink]="['../threat-agent-mgm', threatagent?.id ]">{{threatagent.name}}</a>{{last ? '' : ', '}}
                         </span>
                 </td>
-                <td>
+                <td (click)="selectSelfAssessment(selfAssessment)">
                     <span *ngFor="let attackstrategy of selfAssessment.attackstrategies; let last = last">
                             <a class="form-control-static" [routerLink]="['../attack-strategy-mgm', attackstrategy?.id ]">{{attackstrategy.name}}</a>{{last ? '' : ', '}}
                         </span>
                 </td>
-                <td>
+                <td (click)="selectSelfAssessment(selfAssessment)">
                     <span *ngFor="let externalaudit of selfAssessment.externalaudits; let last = last">
                             <a class="form-control-static" [routerLink]="['../external-audit-mgm', externalaudit?.id ]">{{externalaudit.name}}</a>{{last ? '' : ', '}}
                         </span>
                 </td>
-                <td>
+                <td (click)="selectSelfAssessment(selfAssessment)">
                     <span *ngFor="let questionnaire of selfAssessment.questionnaires; let last = last">
                             <a class="form-control-static" [routerLink]="['../questionnaire-mgm', questionnaire?.id ]">{{questionnaire.name}}</a>{{last ? '' : ', '}}
                         </span>
