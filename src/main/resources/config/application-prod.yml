@@ -54,11 +54,6 @@ spring:
         elasticsearch:
             cluster-name:
             cluster-nodes: localhost:9300
-    mail:
-        host: localhost
-        port: 25
-        username:
-        password:
     thymeleaf:
         cache: true
     zipkin: # Use the "zipkin" Maven profile to have the Spring Cloud Zipkin dependencies
