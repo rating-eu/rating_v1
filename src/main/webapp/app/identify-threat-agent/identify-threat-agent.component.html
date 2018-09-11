@@ -3,11 +3,11 @@
 
 <span *ngIf="!mySelf" class="alert alert-warning">Please, <a [routerLink]="['../self-assessment-mgm']"> select</a> a self assessment, otherwise, have a look to our taxonomies</span>
 
-<button type="submit"
+<!-- <button type="submit"
         (click)="previousState()"
         class="btn btn-info">
     <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
-</button>
+</button> -->
 
 <br/><br/>
 <div class="table-responsive">
@@ -76,11 +76,14 @@
             </td>
             <td class="text-right">
                 <div class="btn-group flex-btn-group-container">
+
                     <button type="submit"
                             [routerLink]="['../self-assessment-mgm', mySelf.id ]"
-                            class="btn btn-info btn-sm">
-                        <span class="fa fa-eye"></span>
-                        <span class="d-none d-md-inline">View</span>
+                            class="btn btn-info btn-sm"
+                            placement="top"
+                            ngbTooltip="View"
+                            container="body">
+                        <i class="fa fa-eye"></i>
                     </button>
                 </div>
             </td>
