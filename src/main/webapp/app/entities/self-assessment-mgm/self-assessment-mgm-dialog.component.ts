@@ -9,8 +9,8 @@ import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
 import { SelfAssessmentMgm } from './self-assessment-mgm.model';
 import { SelfAssessmentMgmPopupService } from './self-assessment-mgm-popup.service';
 import { SelfAssessmentMgmService } from './self-assessment-mgm.service';
-import { User, UserService } from '../../shared';
 import { CompanyProfileMgm, CompanyProfileMgmService } from '../company-profile-mgm';
+import { User, UserService } from '../../shared';
 import { CompanyGroupMgm, CompanyGroupMgmService } from '../company-group-mgm';
 import { AssetMgm, AssetMgmService } from '../asset-mgm';
 import { ThreatAgentMgm, ThreatAgentMgmService } from '../threat-agent-mgm';
@@ -27,9 +27,9 @@ export class SelfAssessmentMgmDialogComponent implements OnInit {
     selfAssessment: SelfAssessmentMgm;
     isSaving: boolean;
 
-    users: User[];
-
     companyprofiles: CompanyProfileMgm[];
+
+    users: User[];
 
     companygroups: CompanyGroupMgm[];
 
@@ -47,8 +47,8 @@ export class SelfAssessmentMgmDialogComponent implements OnInit {
         public activeModal: NgbActiveModal,
         private jhiAlertService: JhiAlertService,
         private selfAssessmentService: SelfAssessmentMgmService,
-        private userService: UserService,
         private companyProfileService: CompanyProfileMgmService,
+        private userService: UserService,
         private companyGroupService: CompanyGroupMgmService,
         private assetService: AssetMgmService,
         private threatAgentService: ThreatAgentMgmService,
@@ -61,10 +61,10 @@ export class SelfAssessmentMgmDialogComponent implements OnInit {
 
     ngOnInit() {
         this.isSaving = false;
-        this.userService.query()
-            .subscribe((res: HttpResponse<User[]>) => { this.users = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
         this.companyProfileService.query()
             .subscribe((res: HttpResponse<CompanyProfileMgm[]>) => { this.companyprofiles = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
+        this.userService.query()
+            .subscribe((res: HttpResponse<User[]>) => { this.users = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
         this.companyGroupService.query()
             .subscribe((res: HttpResponse<CompanyGroupMgm[]>) => { this.companygroups = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
         this.assetService.query()
@@ -113,11 +113,11 @@ export class SelfAssessmentMgmDialogComponent implements OnInit {
         this.jhiAlertService.error(error.message, null, null);
     }
 
-    trackUserById(index: number, item: User) {
+    trackCompanyProfileById(index: number, item: CompanyProfileMgm) {
         return item.id;
     }
 
-    trackCompanyProfileById(index: number, item: CompanyProfileMgm) {
+    trackUserById(index: number, item: User) {
         return item.id;
     }
 

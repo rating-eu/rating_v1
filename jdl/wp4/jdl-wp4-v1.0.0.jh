@@ -263,7 +263,6 @@ relationship ManyToMany {
     ThreatAgent{motivation(name)} to Motivation,
     AttackStrategy{mitigation(name)} to Mitigation,
     Question{attackStrategies(name)} to AttackStrategy,
-    SelfAssessment{companyprofiles(name)} to CompanyProfile,
     SelfAssessment{companyGroup(name)} to CompanyGroup,
     SelfAssessment{asset(name)} to Asset,
     SelfAssessment{threatagent(name)} to ThreatAgent,
@@ -313,6 +312,7 @@ relationship OneToOne{
 relationship ManyToOne{
     CompanyProfile{user(login)} to User,
     CompanyGroup{user(login)} to User,
+    SelfAssessment{companyProfile(name)} to CompanyProfile,
     SelfAssessment{user(login)} to User,
     MyAsset{asset(name)} to Asset,
     MyAsset{selfAssessment(name)} to SelfAssessment,

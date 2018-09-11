@@ -33,6 +33,10 @@
                 <constraints nullable="true" />
             </column>
 
+            <column name="company_profile_id" type="bigint">
+                <constraints nullable="true" />
+            </column>
+
             <column name="user_id" type="bigint">
                 <constraints nullable="true" />
             </column>
@@ -41,17 +45,6 @@
         </createTable>
         <dropDefaultValue tableName="self_assessment" columnName="created" columnDataType="datetime"/>
         <dropDefaultValue tableName="self_assessment" columnName="modified" columnDataType="datetime"/>
-        
-        <createTable tableName="self_assessment_companyprofiles">
-            <column name="companyprofiles_id" type="bigint">
-                <constraints nullable="false"/>
-            </column>
-            <column name="self_assessments_id" type="bigint">
-                <constraints nullable="false"/>
-            </column>
-        </createTable>
-
-        <addPrimaryKey columnNames="self_assessments_id, companyprofiles_id" tableName="self_assessment_companyprofiles"/>
         
         <createTable tableName="self_assessment_company_group">
             <column name="company_groups_id" type="bigint">
