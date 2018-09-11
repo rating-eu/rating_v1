@@ -237,6 +237,9 @@ entity MyAnswer{
     AnswerOffset Integer required
 }
 
+entity MyCompany{
+}
+
 enum AnswerType{
     YESNO, RANGE5, PERC5, RANGE3, PERC3, CUSTOM, ASSET
 }
@@ -286,6 +289,7 @@ relationship OneToMany{
 }
 
 relationship OneToOne{
+    MyCompany{user(login)} to User,
     MyAnswer{answer(name)} to Answer,
     MyAnswer{question(name)} to Question,
     MyAnswer{questionnaire(name)} to Questionnaire,
@@ -310,6 +314,7 @@ relationship OneToOne{
 }
 
 relationship ManyToOne{
+    MyCompany{companyProfile(name)} to CompanyProfile,
     CompanyProfile{user(login)} to User,
     CompanyGroup{user(login)} to User,
     SelfAssessment{companyProfile(name)} to CompanyProfile,
