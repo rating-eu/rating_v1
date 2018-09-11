@@ -1,109 +1,36 @@
-<div class="container">
-    <div class="row">
-        <div class="col-sm-12">
-            <div class="wrapper-page">
-                <div class="account-pages">
-                    <div class="account-box">
-                        <div class="account-logo-box">
-                            <h2 class="text-uppercase text-center">
-                                <a href="index.html" class="text-success">
-                                    <span><img src="../../../content/assets/images/logo-login-rating.png" alt="Rating"></span>
-                                </a>
-                            </h2>
-                            <h6 class="text-uppercase text-center font-bold mt-4">Sign In</h6>
-                        </div>
-                        <ngb-tabset>
-                            <ngb-tab title="Login">
-                                <ng-template ngbTabContent>
-                                    <div class="account-content">
-                                        <form class="form" role="form" (ngSubmit)="login()">
-                                            <div class="form-group m-b-20 row">
-                                                <div class="col-12">
-                                                    <label for="username" jhiTranslate="global.form.username">Login</label>
-                                                    <input type="text" class="form-control" name="username" id="username" placeholder="{{'global.form.username.placeholder' | translate}}"
-                                                           [(ngModel)]="username">
-                                                </div>
-                                            </div>
-                                            <div class="form-group row m-b-20">
-                                                <div class="col-12">
-                                                    <!--href="page-recoverpw.html"-->
-                                                    <a href="javascript:void(0)" class="text-muted pull-right"><small>Forgot your password?</small></a>
-                                                    <label for="password" jhiTranslate="login.form.password">Password</label>
-                                                    <input type="password" class="form-control" name="password" id="password" placeholder="{{'login.form.password.placeholder' | translate}}"
-                                                           [(ngModel)]="password">
-                                                </div>
-                                            </div>
-                                            <div class="form-group row m-b-20">
-                                                <div class="col-12">
-                                                    <div class="checkbox checkbox-success">
-                                                        <label class="form-check-label" for="rememberMe">
-                                                            <input class="form-check-input" type="checkbox" name="rememberMe" id="rememberMe" [(ngModel)]="rememberMe" checked>
-                                                            <span jhiTranslate="login.form.rememberme">Remember me</span>
-                                                        </label>
-                                                    </div>
-
-                                                </div>
-                                            </div>
-                                            <div class="form-group row text-center m-t-10">
-                                                <div class="col-12">
-                                                    <button type="submit" class="btn btn-block btn-gradient waves-effect waves-light" jhiTranslate="login.form.button">Sign in</button>
-                                                </div>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </ng-template>
-                            </ngb-tab>
-                            <ngb-tab>
-                                <ng-template ngbTabTitle><b>Registrer</b> </ng-template>
-                                <ng-template ngbTabContent>
-                                    test Form Register
-                                    <jhi-register></jhi-register>
-                                </ng-template>
-                            </ngb-tab>
-
-                        </ngb-tabset>
-
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<!--
-<div class="row justify-content-center">
-    <div class="col-md-8">
-        <div class="alert alert-danger" *ngIf="authenticationError" jhiTranslate="login.messages.error.authentication">
-            <strong>Failed to sign in!</strong> Please check your credentials and try again.
-        </div>
-    </div>
-    <div class="col-md-8">
-        <form class="form" role="form" (ngSubmit)="login()">
-            <div class="form-group">
+<div class="account-content">
+    <form class="form" role="form" (ngSubmit)="login()">
+        <div class="form-group m-b-20 row">
+            <div class="col-12">
                 <label for="username" jhiTranslate="global.form.username">Login</label>
                 <input type="text" class="form-control" name="username" id="username" placeholder="{{'global.form.username.placeholder' | translate}}"
                        [(ngModel)]="username">
             </div>
-            <div class="form-group">
+        </div>
+        <div class="form-group row m-b-20">
+            <div class="col-12">
+                <!--href="page-recoverpw.html"-->
+                <a (click)="requestResetPassword()" class="text-muted pull-right"><small>Forgot your password?</small></a>
                 <label for="password" jhiTranslate="login.form.password">Password</label>
                 <input type="password" class="form-control" name="password" id="password" placeholder="{{'login.form.password.placeholder' | translate}}"
                        [(ngModel)]="password">
             </div>
-            <div class="form-check">
-                <label class="form-check-label" for="rememberMe">
-                    <input class="form-check-input" type="checkbox" name="rememberMe" id="rememberMe" [(ngModel)]="rememberMe" checked>
-                    <span jhiTranslate="login.form.rememberme">Remember me</span>
-                </label>
-            </div>
-            <button type="submit" class="btn btn-primary" jhiTranslate="login.form.button">Sign in</button>
-        </form>
+        </div>
+        <div class="form-group row m-b-20">
+            <div class="col-12">
+                <div class="checkbox checkbox-success">
+                    <label class="form-check-label" for="rememberMe">
+                        <input class="form-check-input" type="checkbox" name="rememberMe" id="rememberMe" [(ngModel)]="rememberMe" checked>
+                        <span jhiTranslate="login.form.rememberme">Remember me</span>
+                    </label>
+                </div>
 
-        <div class="alert alert-warning">
-            <a class="alert-link" (click)="requestResetPassword()" jhiTranslate="login.password.forgot">Did you forget your password?</a>
+            </div>
         </div>
-        <div class="alert alert-warning">
-            <span jhiTranslate="global.messages.info.register.noaccount">You don't have an account yet?</span>
-            <a class="alert-link" (click)="register()" jhiTranslate="global.messages.info.register.link">Register a new account</a>
+        <div class="form-group row text-center m-t-10">
+            <div class="col-12">
+                <button type="submit" class="btn btn-block btn-gradient waves-effect waves-light" jhiTranslate="login.form.button">Sign in</button>
+            </div>
         </div>
-    </div>
+    </form>
 </div>
--->
