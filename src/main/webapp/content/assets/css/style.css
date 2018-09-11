@@ -5540,9 +5540,6 @@ b.color-b {
     color: #0386e4;
 }
 
-.dynamic-form-component .ng-invalid:not(form):not(mat-radio-button):not(textarea):not(div) {
-    border-left: 0 !important;
-}
 
 .bg1 {
     background: #ddd;
