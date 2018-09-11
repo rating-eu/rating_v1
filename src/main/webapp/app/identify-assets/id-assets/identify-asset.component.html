@@ -1,186 +1,5 @@
-<!--
-identify assets
 
-step todo:
-1) get company profile
-
-2) check identify asset
-- get all assets is done
-
-3) form to check asssets, based on company profile.
-
-
-<div>
-    <span *ngIf="!mySelf" class="alert alert-warning">Please, <a [routerLink]="['../self-assessment-mgm']"> select</a> a self assessment, otherwise, have a look to our taxonomies</span>
-
-    <button type="submit"
-            (click)="previousState()"
-            class="btn btn-info">
-        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
-    </button>
-    <br/><br/>
-    <table class="table table-striped">
-        <thead>
-        <tr>
-            <th><span>Name</span></th>
-            <th><span>Created</span></th>
-            <th><span>Modified</span></th>
-            <th><span>User</span></th>
-            <th><span>Companyprofiles</span></th>
-            <th><span>Groups</span></th>
-            <th><span>Asset</span></th>
-            <th><span>Threatagent</span></th>
-            <th><span>Attackstrategy</span></th>
-            <th><span>Externalaudit</span></th>
-            <th><span>Questionnaire</span></th>
-            <th></th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-            <td><a [routerLink]="['../self-assessment-mgm', mySelf.id ]">{{mySelf.name}}</a></td>
-            <td>{{mySelf.created | date:'medium'}}</td>
-            <td>{{mySelf.modified | date:'medium'}}</td>
-            <td>
-                {{mySelf.user?.login}}
-            </td>
-            <td>
-                    <span *ngFor="let companyprofiles of mySelf.companyprofiles; let last = last">
-                            <a class="form-control-static"
-                               [routerLink]="['../company-profile-mgm', companyprofiles?.id ]">{{companyprofiles.name}}</a>{{last ? '' : ', '}}
-                        </span>
-            </td>
-            <td>
-                    <span *ngFor="let group of mySelf.companyGroups; let last = last">
-                            <a class="form-control-static" [routerLink]="['../company-group-mgm', group?.id ]">{{group.name}}</a>{{last ? '' : ', '}}
-                        </span>
-            </td>
-            <td>
-                    <span *ngFor="let asset of mySelf.assets; let last = last">
-                            <a class="form-control-static"
-                               [routerLink]="['../asset-mgm', asset?.id ]">{{asset.name}}</a>{{last ? '' : ', '}}
-                        </span>
-            </td>
-            <td>
-                    <span *ngFor="let threatagent of mySelf.threatagents; let last = last">
-                            <a class="form-control-static" [routerLink]="['../threat-agent-mgm', threatagent?.id ]">{{threatagent.name}}</a>{{last ? '' : ', '}}
-                        </span>
-            </td>
-            <td>
-                    <span *ngFor="let attackstrategy of mySelf.attackstrategies; let last = last">
-                            <a class="form-control-static"
-                               [routerLink]="['../attack-strategy-mgm', attackstrategy?.id ]">{{attackstrategy.name}}</a>{{last ? '' : ', '}}
-                        </span>
-            </td>
-            <td>
-                    <span *ngFor="let externalaudit of mySelf.externalaudits; let last = last">
-                            <a class="form-control-static" [routerLink]="['../external-audit-mgm', externalaudit?.id ]">{{externalaudit.name}}</a>{{last ? '' : ', '}}
-                        </span>
-            </td>
-            <td>
-                    <span *ngFor="let questionnaire of mySelf.questionnaires; let last = last">
-                            <a class="form-control-static" [routerLink]="['../questionnaire-mgm', questionnaire?.id ]">{{questionnaire.name}}</a>{{last ? '' : ', '}}
-                        </span>
-            </td>
-            <td class="text-right">
-                <div class="btn-group flex-btn-group-container">
-                    <button type="submit"
-                            [routerLink]="['../self-assessment-mgm', mySelf.id ]"
-                            class="btn btn-info btn-sm">
-                        <span class="fa fa-eye"></span>
-                        <span class="d-none d-md-inline">View</span>
-                    </button>
-                </div>
-            </td>
-        </tr>
-        </tbody>
-    </table>
-    <ul>
-        <li>get company profile</li>
-        <li>get self assesment info</li>
-        <li>check if assets are already identified</li>
-        <li>form to select assets</li>
-    </ul>
--->
-
-    <!-- Recupero del SelfAssessment -->
-<!-- Recupero del questionario Questionario -->
-<!-- Recupero degli asset vedi -> getAllAssets() -->
-<!-- Compilo MyAsset -->
-<!-- Compilo i direct -->
-<!-- compilo i indirect -->
-<!-- Attack related cost -->
-<!-- per il salvataggio
-    1) create su MyAsset >> MyAsset con id (my asset deve essere atomico per un componente)
-    2) uguale per i direct (devono essere atomici per la selezione degli indirect)
-    3) e per indirect
-    3)
--->
-<!--
-    <div class="table-responsive" *ngIf="assets$">
-        <table class="table table-striped">
-            <thead>
-            <tr>
-                <th><span>Select</span></th>
-                <th><span>Name</span></th>
-                <th><span>Description</span></th>
-                <th><span>AssetCategory</span></th>
-                <th><span>Containers</span></th>
-                <th><span>Domains</span></th>
-                <th><span>Created</span></th>
-                <th><span>Modified</span></th>
-                <th></th>
-            </tr>
-            </thead>
-
-            <tbody>
-            <tr *ngFor="let asset of assets$ | async ;trackBy: trackId">
-                <td><input type="checkbox" value="{{asset.id}}" name="{{asset.name}}"></td>
-
-                <td>{{asset.name}}</td>
-                <td>{{asset.description}}</td>
-
-                <td>
-                    <a [routerLink]="['/asset-category-mgm', asset.assetcategory.id]">{{asset.assetcategory.name}}</a>
-                </td>
-
-                <td>
-                    <ul *ngFor="let container of asset.containers; let last = last">
-                        <li><a [routerLink]="['/container-mgm', container.id]">{{container.name}}</a></li>
-                    </ul>
-                </td>
-
-                <td>
-                    <ul *ngFor="let domain of asset.domains; let last = last">
-                        <li><a [routerLink]="['/domain-of-influence-mgm', domain.id]">{{domain.name}}</a></li>
-                    </ul>
-                </td>
-
-                <td>
-                    {{asset.created | date:'medium'}}
-                </td>
-
-                <td>
-                    {{asset.modified | date:'medium'}}
-                </td>
-
-                <td class="text-right">
-                    <div class="btn-group flex-btn-group-container">
-                        <button type="submit"
-                                [routerLink]="['../asset-mgm', asset.id ]"
-                                class="btn btn-info btn-sm">
-                            <span class="fa fa-eye"></span>
-                            <span class="d-none d-md-inline">View</span>
-                        </button>
-                    </div>
-                </td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
-</div>
--->
-<ng-container *ngIf="questionnariesStatus.length === 0">
+<ng-container *ngIf="questionnariesStatus.length === 0 && mySelf">
     <ng-container *ngIf="questions.length === 0" class="text-center">
         <div class="loader"></div>
     </ng-container>
@@ -200,7 +19,7 @@ step todo:
 </ng-container>
 
 
-<ng-container *ngIf="questionnariesStatus.length > 0">
+<ng-container *ngIf="questionnariesStatus.length > 0 && mySelf">
     <ng-container *ngIf="questionnariesStatus[0].status === 'FULL'">
         <ng-container *ngIf="myDirectAssets">
             <div class="row" style="margin-bottom: 10px" *ngFor="let direct of myDirectAssets">
@@ -233,13 +52,39 @@ step todo:
                             <div *ngIf="directAssetSelected && !indirectAssetSelected">
                                 <h5 class="card-title">{{directAssetSelected.myAsset.asset.name}} details</h5>
                                 <ng-container class="card-text">
-                                    DETAILS
+                                    <p *ngIf="directAssetSelected.myAsset.asset.assetcategory.name"><b>Category:</b> {{directAssetSelected.myAsset.asset.assetcategory.name}}</p>
+                                    <p *ngIf="directAssetSelected.myAsset.asset.description"><b>Description:</b> {{directAssetSelected.myAsset.asset.description}}</p>
+                                    <p *ngIf="directAssetSelected.myAsset.asset.containers"><b>Containers:</b> {{directAssetSelected.myAsset.asset.containers}}</p>
+                                    <p *ngIf="directAssetSelected.myAsset.asset.domainsOfInfluences"><b>Domains of Influences:</b> {{directAssetSelected.myAsset.asset.domainsOfInfluences}}</p>
+                                    <p *ngIf="directAssetSelected.myAsset.estimated"><b>Estimated:</b> Yes</p>
+                                    <p *ngIf="!directAssetSelected.myAsset.estimated"><b>Estimated:</b> No</p>
+                                    <p *ngIf="directAssetSelected.myAsset.economicValue"><b>Economic Value:</b> {{directAssetSelected.myAsset.economicValue}}</p>
+                                    <p *ngIf="directAssetSelected.myAsset.magnitude"><b>Magnitude:</b> {{directAssetSelected.myAsset.magnitude}}</p>
+                                    <p *ngIf="directAssetSelected.myAsset.ranking"><b>Ranking:</b> {{directAssetSelected.myAsset.ranking}}</p>
+                                    <p *ngIf="directAssetSelected.costs.length > 0"><b>Costs:</b><br>
+                                        <ng-container *ngFor="let cost of directAssetSelected.costs; let last = last;">
+                                            {{attackCostType[cost.type]}}<br *ngIf="!last">
+                                        </ng-container>
+                                    </p>
                                 </ng-container>
                             </div>
                             <div *ngIf="directAssetSelected && indirectAssetSelected">
                                 <h5 class="card-title">{{indirectAssetSelected.myAsset.asset.name}} details</h5>
                                 <ng-container class="card-text">
-                                    DETAILS
+                                    <p *ngIf="indirectAssetSelected.myAsset.asset.assetcategory.name"><b>Category:</b> {{indirectAssetSelected.myAsset.asset.assetcategory.name}}</p>
+                                    <p *ngIf="indirectAssetSelected.myAsset.asset.description"><b>Description:</b> {{indirectAssetSelected.myAsset.asset.description}}</p>
+                                    <p *ngIf="indirectAssetSelected.myAsset.asset.containers"><b>Containers:</b> {{indirectAssetSelected.myAsset.asset.containers}}</p>
+                                    <p *ngIf="indirectAssetSelected.myAsset.asset.domainsOfInfluences"><b>Domains of Influences:</b> {{indirectAssetSelected.myAsset.asset.domainsOfInfluences}}</p>
+                                    <p *ngIf="indirectAssetSelected.myAsset.estimated"><b>Estimated:</b> Yes</p>
+                                    <p *ngIf="!indirectAssetSelected.myAsset.estimated"><b>Estimated:</b> No</p>
+                                    <p *ngIf="indirectAssetSelected.myAsset.economicValue"><b>Economic Value:</b> {{indirectAssetSelected.myAsset.economicValue}}</p>
+                                    <p *ngIf="indirectAssetSelected.myAsset.magnitude"><b>Magnitude:</b> {{indirectAssetSelected.myAsset.magnitude}}</p>
+                                    <p *ngIf="indirectAssetSelected.myAsset.ranking"><b>Ranking:</b> {{indirectAssetSelected.myAsset.ranking}}</p>
+                                    <p *ngIf="indirectAssetSelected.costs.length > 0"><b>Costs:</b><br>
+                                        <ng-container *ngFor="let cost of indirectAssetSelected.costs; let last = last;">
+                                            {{attackCostType[cost.type]}}<br *ngIf="!last">
+                                        </ng-container>
+                                    </p>
                                 </ng-container>
                             </div>
                         </div>
@@ -251,6 +96,5 @@ step todo:
     <ng-container *ngIf="questionnariesStatus[0].status === 'PENDING'">
         <p>You already completed the questionnaire!</p>
         <!-- INSERIRE LOGICA DI COMPLETAMENTO -->
-
     </ng-container>
 </ng-container>
