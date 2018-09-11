@@ -2,10 +2,12 @@
     "fluentMethods": true,
     "relationships": [
         {
-            "relationshipType": "many-to-one",
+            "relationshipType": "one-to-one",
             "relationshipName": "user",
             "otherEntityName": "user",
-            "otherEntityField": "login"
+            "otherEntityField": "login",
+            "ownerSide": true,
+            "otherEntityRelationshipName": "externalAudit"
         }
     ],
     "fields": [

@@ -300,6 +300,7 @@ relationship OneToOne{
     IndirectAsset{myAsset(asset)} to MyAsset,
     Level{container(name)} to Container,
     DomainOfInfluence{container(name)} to Container,
+    ExternalAudit{user(login)} to User,
     /*WP3*/
     EconomicCoefficients{selfAssessment(name)} to SelfAssessment,
     EBIT{selfAssessment(name)} to SelfAssessment,
@@ -312,7 +313,6 @@ relationship OneToOne{
 relationship ManyToOne{
     CompanyProfile{user(login)} to User,
     CompanyGroup{user(login)} to User,
-    ExternalAudit{user(login)} to User,
     SelfAssessment{user(login)} to User,
     MyAsset{asset(name)} to Asset,
     MyAsset{selfAssessment(name)} to SelfAssessment,
