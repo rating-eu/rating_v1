@@ -1,12 +1,12 @@
-<form *ngIf="form" (ngSubmit)="submitDispatcher()" [formGroup]="form" role="form">
+<form *ngIf="form" (ngSubmit)="submitDispatcher()" [formGroup]="form" role="form" class="dynamic-form-component">
 
     <div [ngSwitch]="role">
         <div *ngSwitchCase="roleEnum.ROLE_CISO">
             <div *ngFor="let question of questionsArray; trackBy: trackByID"
-                 [ngClass]="{'ng-valid': isValid(question.id) === true, 'ng-invalid': isValid(question.id) === false}">
+                 [ngClass]="{'ng-valid': isValid(question.id) === true, 'ng-invalid': isValid(question.id) === false}"  class="card-box">
 
-                <label class="form-control-label" [attr.for]="question?.id"><h3>
-                    {{question?.name}}</h3>
+                <label class="form-control-label" [attr.for]="question?.id">
+                    <h3 class="h3-dynamic-form"> {{question?.name}}</h3>
                 </label>
                 <mat-radio-group [formControlName]="question.id" class="radio-group">
                     <mat-radio-button *ngFor="let answer of sort(question.answers)" class="radio-button"
@@ -16,23 +16,30 @@
                 </mat-radio-group>
             </div>
 
-            <div class="form-row">
-                <button class="btn btn-success btn-lg" type="submit" [disabled]="!form.valid">Submit</button>
-                <button class="btn btn-primary btn-lg" type="button" (click)="freezeQuestionnaireStatus()">Freeze
+            <div class="form-row text-right d-block">
+
+                <!-- <button class="btn btn-success btn-lg" type="submit" [disabled]="!form.valid">Submit</button> -->
+                <button class="btn btn-danger waves-light waves-effect w-md" type="reset" (click)="form.reset()">
+                    <span class="fa fa-ban"></span>&nbsp;<span>Reset</span>
                 </button>
-                <button class="btn btn-danger" type="reset" (click)="form.reset()">Reset</button>
+                <button class="btn btn-success waves-light waves-effect w-md" type="submit" [disabled]="!form.valid">
+                    <i class="far fa-save"></i>&nbsp;<span>Submit</span>
+                </button>
+                <!-- <button class="btn btn-primary btn-lg" type="button" (click)="freezeQuestionnaireStatus()">Freeze
+                </button> -->
+                <!-- <button class="btn btn-danger" type="reset" (click)="form.reset()">Reset</button>-->
             </div>
         </div>
 
         <div *ngSwitchCase="roleEnum.ROLE_EXTERNAL_AUDIT">
-            <div *ngIf="questionnaire.purpose === purposeEnum.SELFASSESSMENT">
+            <div *ngIf="questionnaire.purpose === purposeEnum.SELFASSESSMENT" >
                 <div *ngFor="let question of questionsArray; trackBy: trackByID"
-                     [ngClass]="{'ng-valid': isValid(question.id) === true, 'ng-invalid': isValid(question.id) === false}">
-                    <label class="form-control-label" [attr.for]="question?.id"><h3>
-                        {{question?.name}}</h3>
+                     [ngClass]="{'ng-valid': isValid(question.id) === true, 'ng-invalid': isValid(question.id) === false}" class="card-box">
+                    <label class="form-control-label" [attr.for]="question?.id">
+                        <h3 class="h3-dynamic-form"> {{question?.name}}</h3>
                     </label>
                     <div class="row">
-                        <div style="width:20px">
+                        <div class="col-md-1 bg1 text-center">
                             <mat-radio-group [formControlName]="question.id" class="radio-group">
                                 <mat-radio-button *ngFor="let answer of sort(question.answers)" class="radio-button"
                                                   [value]="answer" disabled="disabled">
@@ -40,7 +47,7 @@
                                 </mat-radio-button>
                             </mat-radio-group>
                         </div>
-                        <div class="col-md-9">
+                        <div class="col-md-9 bg2">
                             <mat-radio-group [formControlName]="question.id + '.external'" class="radio-group">
                                 <mat-radio-button *ngFor="let answer of sort(question.answers)" class="radio-button"
                                                   [value]="answer">
@@ -48,7 +55,7 @@
                                 </mat-radio-button>
                             </mat-radio-group>
                         </div>
-                        <div class="col-md-2">
+                        <div class="col-md-2 bg3">
                             <mat-form-field>
                                     <textarea matInput [formControlName]="question.id + '.note'" [rows]="7"
                                               placeholder="Notes"></textarea>
@@ -57,11 +64,18 @@
                     </div>
                 </div>
 
-                <div class="form-row">
-                    <button class="btn btn-success btn-lg" type="submit" [disabled]="!form.valid">Submit</button>
-                    <button class="btn btn-primary btn-lg" type="button" (click)="freezeQuestionnaireStatus()">Freeze
+                <div class="form-row text-right d-block">
+
+                    <!-- <button class="btn btn-success btn-lg" type="submit" [disabled]="!form.valid">Submit</button> -->
+                    <button class="btn btn-danger waves-light waves-effect w-md" type="reset" (click)="form.reset()">
+                        <span class="fa fa-ban"></span>&nbsp;<span>Reset</span>
                     </button>
-                    <button class="btn btn-danger" type="reset" (click)="form.reset()">Reset</button>
+                    <button class="btn btn-success waves-light waves-effect w-md" type="submit" [disabled]="!form.valid">
+                        <i class="far fa-save"></i>&nbsp;<span>Submit</span>
+                    </button>
+                    <!-- <button class="btn btn-primary btn-lg" type="button" (click)="freezeQuestionnaireStatus()">Freeze
+                    </button> -->
+                    <!-- <button class="btn btn-danger" type="reset" (click)="form.reset()">Reset</button>-->
                 </div>
             </div>
         </div>

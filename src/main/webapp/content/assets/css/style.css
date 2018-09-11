@@ -5539,3 +5539,23 @@ b.color-b {
     font-weight: bold;
     color: #0386e4;
 }
+
+.dynamic-form-component .ng-invalid:not(form):not(mat-radio-button):not(textarea):not(div) {
+    border-left: 0 !important;
+}
+
+.bg1 {
+    background: #ddd;
+}
+
+.bg2 {
+    background: #f3f2f2;
+}
+
+.h3-dynamic-form {
+    color: #094a87;
+}
+
+.d-block{
+    display: block;
+}
