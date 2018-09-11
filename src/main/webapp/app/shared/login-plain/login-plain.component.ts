@@ -4,11 +4,14 @@ import { JhiEventManager } from 'ng-jhipster';
 
 import { LoginService } from '../login/login.service';
 import { StateStorageService } from '../auth/state-storage.service';
+import { RegisterComponent } from '../../account/register/register.component';
 
 @Component({
   selector: 'jhi-login-plain',
   templateUrl: './login-plain.component.html',
-  styles: []
+  styleUrls: [
+     'login-plain.css'
+  ]
 })
 export class LoginPlainComponent implements AfterViewInit {
     authenticationError: boolean;

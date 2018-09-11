@@ -1,5 +1,6 @@
 package eu.hermeneut.service.impl;
 
+import eu.hermeneut.domain.ThreatAgent;
 import eu.hermeneut.service.SelfAssessmentService;
 import eu.hermeneut.domain.SelfAssessment;
 import eu.hermeneut.repository.SelfAssessmentRepository;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -56,7 +58,19 @@ public class SelfAssessmentServiceImpl implements SelfAssessmentService {
     @Transactional(readOnly = true)
     public List<SelfAssessment> findAll() {
         log.debug("Request to get all SelfAssessments");
-        return selfAssessmentRepository.findAllWithEagerRelationships();
+        List<SelfAssessment> selfAssessments = selfAssessmentRepository.findAllWithEagerRelationships();
+
+        for (SelfAssessment selfAssessment : selfAssessments) {
+            Set<ThreatAgent> threatAgents = selfAssessment.getThreatagents();
+
+            if (threatAgents != null) {
+                for (ThreatAgent threatAgent : threatAgents) {
+                    threatAgent.setImage(null);
+                }
+            }
+        }
+
+        return selfAssessments;
     }
 
     /**

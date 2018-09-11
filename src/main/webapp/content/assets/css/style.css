@@ -5549,7 +5549,7 @@ b.color-b {
 }
 
 .dynamic-form-component .ng-invalid:not(form):not(mat-radio-button):not(textarea):not(div) {
-    border-left: 0 !important;
+    border-left: 2px solid red !important;
 }
 
 .bg1 {
@@ -5566,4 +5566,9 @@ b.color-b {
 
 .d-block{
     display: block;
+}
+
+.table-hover .table-striped tbody tr:hover {
+    cursor: pointer;
+    background: #e4e4e4;
 }
