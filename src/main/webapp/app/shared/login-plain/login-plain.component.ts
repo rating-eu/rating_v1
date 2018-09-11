@@ -9,7 +9,9 @@ import { RegisterComponent } from '../../account/register/register.component';
 @Component({
   selector: 'jhi-login-plain',
   templateUrl: './login-plain.component.html',
-  styles: []
+  styleUrls: [
+     'login-plain.css'
+  ]
 })
 export class LoginPlainComponent implements AfterViewInit {
     authenticationError: boolean;
