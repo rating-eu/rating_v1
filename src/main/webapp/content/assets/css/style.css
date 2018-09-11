@@ -5559,3 +5559,8 @@ b.color-b {
 .d-block{
     display: block;
 }
+
+.table-hover .table-striped tbody tr:hover {
+    cursor: pointer;
+    background: #e4e4e4;
+}
