@@ -44,5 +44,6 @@ import {
     exports: [
        RegisterComponent
     ],
+
 })
 export class HermeneutAccountModule {}
