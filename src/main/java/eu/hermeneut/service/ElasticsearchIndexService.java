@@ -131,6 +131,10 @@ public class ElasticsearchIndexService {
 
     private final MyAssetSearchRepository myAssetSearchRepository;
 
+    private final MyCompanyRepository myCompanyRepository;
+
+    private final MyCompanySearchRepository myCompanySearchRepository;
+
     private final PhaseRepository phaseRepository;
 
     private final PhaseSearchRepository phaseSearchRepository;
@@ -218,6 +222,8 @@ public class ElasticsearchIndexService {
         MyAnswerSearchRepository myAnswerSearchRepository,
         MyAssetRepository myAssetRepository,
         MyAssetSearchRepository myAssetSearchRepository,
+        MyCompanyRepository myCompanyRepository,
+        MyCompanySearchRepository myCompanySearchRepository,
         PhaseRepository phaseRepository,
         PhaseSearchRepository phaseSearchRepository,
         QuestionRepository questionRepository,
@@ -283,6 +289,8 @@ public class ElasticsearchIndexService {
         this.myAnswerSearchRepository = myAnswerSearchRepository;
         this.myAssetRepository = myAssetRepository;
         this.myAssetSearchRepository = myAssetSearchRepository;
+        this.myCompanyRepository = myCompanyRepository;
+        this.myCompanySearchRepository = myCompanySearchRepository;
         this.phaseRepository = phaseRepository;
         this.phaseSearchRepository = phaseSearchRepository;
         this.questionRepository = questionRepository;
@@ -330,6 +338,7 @@ public class ElasticsearchIndexService {
                 reindexForClass(Motivation.class, motivationRepository, motivationSearchRepository);
                 reindexForClass(MyAnswer.class, myAnswerRepository, myAnswerSearchRepository);
                 reindexForClass(MyAsset.class, myAssetRepository, myAssetSearchRepository);
+                reindexForClass(MyCompany.class, myCompanyRepository, myCompanySearchRepository);
                 reindexForClass(Phase.class, phaseRepository, phaseSearchRepository);
                 reindexForClass(Question.class, questionRepository, questionSearchRepository);
                 reindexForClass(Questionnaire.class, questionnaireRepository, questionnaireSearchRepository);

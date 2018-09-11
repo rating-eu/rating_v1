@@ -39,6 +39,7 @@
                 "criticalLevelMgm": "Critical Level",
                 "likelihoodScaleMgm": "Likelihood Scale",
                 "vulnerabilityScaleMgm": "Vulnerability Scale",
+                "myCompanyMgm": "My Company",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {
