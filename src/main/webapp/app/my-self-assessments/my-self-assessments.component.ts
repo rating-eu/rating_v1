@@ -15,7 +15,7 @@ export class MySelfAssessmentsComponent implements OnInit {
     private static NOT_FOUND = 404;
     private user: User;
     private myCompany: MyCompanyMgm;
-    private mySelfAssessments: SelfAssessmentMgm[];
+    public mySelfAssessments: SelfAssessmentMgm[];
 
 
     constructor(private router: Router,
