@@ -27,7 +27,7 @@ export class SidebarComponent implements OnInit {
     ngOnInit() {
         this.items = [
             {
-                label: '[Company name]',
+                label: 'Company name',
                 items: [
                     {label: 'My Company', icon: 'fa fa-home', routerLink: ['my-company']},
                     {label: 'Utenti censiti', icon: 'fa fa-refresh'},
@@ -35,7 +35,7 @@ export class SidebarComponent implements OnInit {
                 ]
             },
             {
-                label: 'Self Assessment :{nome del self assessment selezionato}',
+                label: 'Self Assessment',
                 items: [
                     {
                         label: 'Likelihood and Vulnerabilities', icon: 'fa fa-plus',
