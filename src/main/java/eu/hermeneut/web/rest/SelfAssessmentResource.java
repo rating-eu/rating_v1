@@ -105,10 +105,10 @@ public class SelfAssessmentResource {
 
     @GetMapping("/self-assessments/by-company/{companyProfileID}")
     @Timed
-    public ResponseEntity<SelfAssessment> getSelfAssessmentByCompanyProfile(@PathVariable Long companyProfileID) {
+    public List<SelfAssessment> getSelfAssessmentByCompanyProfile(@PathVariable Long companyProfileID) {
         log.debug("REST request to get SelfAssessment by company profile: {}", companyProfileID);
-        SelfAssessment selfAssessment = selfAssessmentService.findAllByCompanyProfile(companyProfileID);
-        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(selfAssessment));
+        List<SelfAssessment> selfAssessments = selfAssessmentService.findAllByCompanyProfile(companyProfileID);
+        return selfAssessments;
     }
 
     /**
