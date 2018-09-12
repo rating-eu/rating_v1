@@ -1,3 +1,28 @@
-<h1>
-  my-company works!
-</h1>
+<h1>My Company is:</h1>
+<pre *ngIf="myCompany">{{myCompany.companyProfile?.name}}</pre>
+
+<div *ngIf="!myCompany">
+    <div *ngIf="companyProfiles?.length > 0">
+        <p>No Company found. Select one or create a new one.</p>
+        <select [(ngModel)]="companyProfile">
+            <option [ngValue]="null"></option>
+            <option *ngFor="let companyProfile of companyProfiles" [ngValue]="companyProfile">{{companyProfile.name}}
+            </option>
+        </select>
+
+        <button *ngIf="companyProfile" (click)="saveMyCompany()">Save</button>
+
+        <button *ngIf="!companyProfile" routerLink="/company-profile-mgm">
+            Create Company
+        </button>
+    </div>
+
+    <div *ngIf="companyProfiles?.length === 0">
+        <p>
+            No Company found, create a new one first!
+        </p>
+        <button routerLink="/company-profile-mgm">
+            Create Company
+        </button>
+    </div>
+</div>

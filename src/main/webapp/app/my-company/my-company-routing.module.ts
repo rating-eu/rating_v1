@@ -6,16 +6,6 @@ const routes: Routes = [
     {
         path: '',
         component: MyCompanyComponent,
-        /*children: [
-            {
-                path: 'questionnaires/:purpose',
-                loadChildren: '../questionnaires/questionnaires.module#QuestionnairesModule'
-            },
-            {
-                path: 'result/:statusID',
-                component: ThreatResultComponent
-            }
-        ]*/
     }
 ];
 
@@ -27,6 +17,5 @@ const routes: Routes = [
         RouterModule
     ]
 })
-
 export class MyCompanyRoutingModule {
 }
