@@ -8,6 +8,19 @@
         "messages": {
             "saved": "Salvato correttamente",
             "notfound": "Non trovato"
+        },
+        "identifyThreatAgent": {
+            "page": {
+                "root": {
+                    "title": "Identifica Minacce"
+                },
+                "questionnaires": {
+                    "title": "Identifica Minacce - Questionari"
+                },
+                "result": {
+                    "title": "Identifica Minacce - Risultati"
+                }
+            }
         }
     }
 }
