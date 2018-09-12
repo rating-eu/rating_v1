@@ -112,4 +112,10 @@ public class SelfAssessmentServiceImpl implements SelfAssessmentService {
             .stream(selfAssessmentSearchRepository.search(queryStringQuery(query)).spliterator(), false)
             .collect(Collectors.toList());
     }
+
+    @Override
+    public List<SelfAssessment> findAllByCompanyProfile(Long companyProfileID) {
+        log.debug("Request to get SelfAssessment by CompanyProfile: {}", companyProfileID);
+        return selfAssessmentRepository.findAllByCompanyProfile(companyProfileID);
+    }
 }
