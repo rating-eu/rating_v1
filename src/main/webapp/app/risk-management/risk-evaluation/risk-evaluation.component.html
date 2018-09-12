@@ -82,7 +82,7 @@
                 </div>
                 <div *ngFor="let j of squareRowElement" class="row">
                   <div class="col-md-1 text-right">
-                    <ng-container *ngIf="j!==lastSquareRowElement">{{lastSquareRowElement-j}}</ng-container>
+                    <ng-container *ngIf="j!==lastSquareRowElement">{{(lastSquareRowElement-j)*(lastSquareRowElement-j)}}</ng-container>
                   </div>
                   <ng-container *ngIf="j===lastSquareRowElement">
                     <div *ngFor="let i of squareColumnElement" class="col-md-2 text-center">
