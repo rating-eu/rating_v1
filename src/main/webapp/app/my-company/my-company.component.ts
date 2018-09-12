@@ -65,7 +65,7 @@ export class MyCompanyComponent implements OnInit {
 
         this.myCompanyService.create(this.myCompany).subscribe((response: HttpResponse<MyCompanyMgm>) => {
             this.myCompany = response.body;
-            this.jhiAlertService.success('messages.saved', null, null);
+            this.jhiAlertService.success('hermeneutApp.messages.saved', null, null);
         });
     }
 }
