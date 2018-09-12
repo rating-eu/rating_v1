@@ -50,3 +50,29 @@ body .ui-panelmenu .ui-panelmenu-header > a {
     transition: background-color 0.2s;
     border-bottom: 1px solid #ececec;
 }
+
+body .ui-panelmenu .ui-panelmenu-content .ui-menuitem .ui-menuitem-link {
+    padding: 0.714em 0.857em;
+    color: #313a46;
+}
+body .ui-panelmenu .ui-panelmenu-content {
+    padding: 0;
+    background-color: #f5f5f5;
+    border: none;
+    margin-top: 0;
+    position: static;
+    border-top: none;
+}
+
+body .ui-panelmenu .ui-panelmenu-header.ui-state-active > a {
+    border: 1px solid #4fbde9;
+    background-color: #4fbde9;
+    color: #ffffff;
+}
+
+.ui-panelmenu .ui-menuitem-text {
+    vertical-align: middle;
+    font-weight: normal;
+}
+
+
