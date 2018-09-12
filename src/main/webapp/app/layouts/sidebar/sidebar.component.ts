@@ -71,12 +71,7 @@ export class SidebarComponent implements OnInit {
                                 ]
                             },
                             {
-                                label: 'Results (which are the weakness of my company?)', icon: 'fa fa-plus',
-                                items: [
-                                    {label: 'Initial', icon: 'fa fa-plus', routerLink: ['results']},
-                                    {label: 'Contextual', icon: 'fa fa-plus', routerLink: ['results']},
-                                    {label: 'Refined', icon: 'fa fa-plus', routerLink: ['results']}
-                                ]
+                                label: 'Results (which are the weakness of my company?)', icon: 'fa fa-plus', routerLink: ['results']
                             }
                         ]
                     },
