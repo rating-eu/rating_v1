@@ -1,4 +1,7 @@
 <h1>My Company</h1>
+
+<jhi-alert></jhi-alert>
+
 <button *ngIf="myCompany"
         [routerLink]="['/company-profile-mgm', myCompany?.companyProfile?.id]"
         class="btn btn-info btn-sm">{{myCompany.companyProfile?.name}}

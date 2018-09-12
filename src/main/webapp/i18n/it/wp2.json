@@ -1,9 +1,13 @@
 {
     "hermeneutApp": {
-        "identifyAsset" : {
+        "identifyAsset": {
             "home": {
                 "title": "Identifica gli asset"
             }
+        },
+        "messages": {
+            "saved": "Salvato correttamente",
+            "notfound": "Non trovato"
         }
     }
 }
