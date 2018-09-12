@@ -31,7 +31,7 @@ export class SidebarComponent implements OnInit {
                 items: [
                     {label: 'My Company', icon: 'fa fa-home', routerLink: ['my-company']},
                     {label: 'Utenti censiti', icon: 'fa fa-refresh'},
-                    {label: 'Self assessments dell\'azienda', icon: 'fa fa-repeat', routerLink: ['self-assessment-mgm']}
+                    {label: 'My SelfAssessments', icon: 'fa fa-repeat', routerLink: ['my-self-assessments']}
                 ]
             },
             {
