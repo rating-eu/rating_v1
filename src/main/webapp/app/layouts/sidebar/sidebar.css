@@ -76,3 +76,13 @@ body .ui-panelmenu .ui-panelmenu-header.ui-state-active > a {
 }
 
 
+body .ui-corner-all {
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 0;
+    border-radius: 0;
+}
+
+a.ui-menuitem-link.ui-corner-all.ui-state-active {
+    border-right: 2px solid #4fbde9;
+}
+
