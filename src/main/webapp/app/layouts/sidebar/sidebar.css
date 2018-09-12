@@ -4,14 +4,14 @@ Sidebar
 
 
 .menu-title {
-    padding: 10px 25px;
+    padding: 15px;
     letter-spacing: .05em;
     cursor: default;
     font-size: 15px;
     text-transform: uppercase;
     color: #ffffff;
     font-family: "Roboto", sans-serif;
-    background: #09437f;
+    background: #808080;
 }
 
 
@@ -34,3 +34,55 @@ i.fas.fa-bars.fa-lg.float-right{
 .sidebar-collapsed a.dropdown-item {
     text-align:center;
 }
+
+
+body .ui-panelmenu .ui-panelmenu-header > a {
+    border: none;
+    background-color: #fff;
+    color: #313a46;
+    padding: 0.714em 0.857em;
+    font-weight: 400;
+    position: static;
+    font-size: 14px;
+    -moz-transition: background-color 0.2s;
+    -o-transition: background-color 0.2s;
+    -webkit-transition: background-color 0.2s;
+    transition: background-color 0.2s;
+    border-bottom: 1px solid #ececec;
+}
+
+body .ui-panelmenu .ui-panelmenu-content .ui-menuitem .ui-menuitem-link {
+    padding: 0.714em 0.857em;
+    color: #313a46;
+}
+body .ui-panelmenu .ui-panelmenu-content {
+    padding: 0;
+    background-color: #f5f5f5;
+    border: none;
+    margin-top: 0;
+    position: static;
+    border-top: none;
+}
+
+body .ui-panelmenu .ui-panelmenu-header.ui-state-active > a {
+    border: 1px solid #4fbde9;
+    background-color: #4fbde9;
+    color: #ffffff;
+}
+
+.ui-panelmenu .ui-menuitem-text {
+    vertical-align: middle;
+    font-weight: normal;
+}
+
+
+body .ui-corner-all {
+    -moz-border-radius: 3px;
+    -webkit-border-radius: 0;
+    border-radius: 0;
+}
+
+a.ui-menuitem-link.ui-corner-all.ui-state-active {
+    border-right: 2px solid #4fbde9;
+}
+

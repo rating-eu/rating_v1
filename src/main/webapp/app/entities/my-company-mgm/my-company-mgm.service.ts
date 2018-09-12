@@ -1,51 +1,59 @@
-import { Injectable } from '@angular/core';
-import { HttpClient, HttpResponse } from '@angular/common/http';
-import { Observable } from 'rxjs/Observable';
-import { SERVER_API_URL } from '../../app.constants';
+import {Injectable} from '@angular/core';
+import {HttpClient, HttpResponse} from '@angular/common/http';
+import {Observable} from 'rxjs/Observable';
+import {SERVER_API_URL} from '../../app.constants';
 
-import { MyCompanyMgm } from './my-company-mgm.model';
-import { createRequestOption } from '../../shared';
+import {MyCompanyMgm} from './my-company-mgm.model';
+import {createRequestOption} from '../../shared';
+import {E} from '@angular/core/src/render3';
 
 export type EntityResponseType = HttpResponse<MyCompanyMgm>;
 
 @Injectable()
 export class MyCompanyMgmService {
 
-    private resourceUrl =  SERVER_API_URL + 'api/my-companies';
+    private resourceUrl = SERVER_API_URL + 'api/my-companies';
+    private resourceUrlByUser = SERVER_API_URL + 'api/my-companies/by-user'/*/{userId}*/;
     private resourceSearchUrl = SERVER_API_URL + 'api/_search/my-companies';
 
-    constructor(private http: HttpClient) { }
+    constructor(private http: HttpClient) {
+    }
 
     create(myCompany: MyCompanyMgm): Observable<EntityResponseType> {
         const copy = this.convert(myCompany);
-        return this.http.post<MyCompanyMgm>(this.resourceUrl, copy, { observe: 'response' })
+        return this.http.post<MyCompanyMgm>(this.resourceUrl, copy, {observe: 'response'})
             .map((res: EntityResponseType) => this.convertResponse(res));
     }
 
     update(myCompany: MyCompanyMgm): Observable<EntityResponseType> {
         const copy = this.convert(myCompany);
-        return this.http.put<MyCompanyMgm>(this.resourceUrl, copy, { observe: 'response' })
+        return this.http.put<MyCompanyMgm>(this.resourceUrl, copy, {observe: 'response'})
             .map((res: EntityResponseType) => this.convertResponse(res));
     }
 
     find(id: number): Observable<EntityResponseType> {
-        return this.http.get<MyCompanyMgm>(`${this.resourceUrl}/${id}`, { observe: 'response'})
+        return this.http.get<MyCompanyMgm>(`${this.resourceUrl}/${id}`, {observe: 'response'})
+            .map((res: EntityResponseType) => this.convertResponse(res));
+    }
+
+    findByUser(userID: number): Observable<EntityResponseType> {
+        return this.http.get<MyCompanyMgm>(`${this.resourceUrlByUser}/${userID}`, {observe: 'response'})
             .map((res: EntityResponseType) => this.convertResponse(res));
     }
 
     query(req?: any): Observable<HttpResponse<MyCompanyMgm[]>> {
         const options = createRequestOption(req);
-        return this.http.get<MyCompanyMgm[]>(this.resourceUrl, { params: options, observe: 'response' })
+        return this.http.get<MyCompanyMgm[]>(this.resourceUrl, {params: options, observe: 'response'})
             .map((res: HttpResponse<MyCompanyMgm[]>) => this.convertArrayResponse(res));
     }
 
     delete(id: number): Observable<HttpResponse<any>> {
-        return this.http.delete<any>(`${this.resourceUrl}/${id}`, { observe: 'response'});
+        return this.http.delete<any>(`${this.resourceUrl}/${id}`, {observe: 'response'});
     }
 
     search(req?: any): Observable<HttpResponse<MyCompanyMgm[]>> {
         const options = createRequestOption(req);
-        return this.http.get<MyCompanyMgm[]>(this.resourceSearchUrl, { params: options, observe: 'response' })
+        return this.http.get<MyCompanyMgm[]>(this.resourceSearchUrl, {params: options, observe: 'response'})
             .map((res: HttpResponse<MyCompanyMgm[]>) => this.convertArrayResponse(res));
     }
 
