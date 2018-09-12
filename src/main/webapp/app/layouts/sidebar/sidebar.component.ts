@@ -30,7 +30,7 @@ export class SidebarComponent implements OnInit {
                 label: 'Company name',
                 items: [
                     {label: 'My Company', icon: 'fa fa-home', routerLink: ['my-company']},
-                    {label: 'Utenti censiti', icon: 'fa fa-refresh'},
+                    /*{label: 'Utenti censiti', icon: 'fa fa-refresh'},*/
                     {label: 'My SelfAssessments', icon: 'fa fa-repeat', routerLink: ['my-self-assessments']}
                 ]
             },
