@@ -27,10 +27,9 @@ export class SidebarComponent implements OnInit {
     ngOnInit() {
         this.items = [
             {
-                label: 'Company name',
+                label: 'Company',
                 items: [
                     {label: 'My Company', icon: 'fa fa-home', routerLink: ['my-company']},
-                    /*{label: 'Utenti censiti', icon: 'fa fa-refresh'},*/
                     {label: 'My SelfAssessments', icon: 'fa fa-repeat', routerLink: ['my-self-assessments']}
                 ]
             },
@@ -44,9 +43,9 @@ export class SidebarComponent implements OnInit {
                                 label: 'Assets', icon: '', title: 'What do I own?',
                                 items: [
                                     {
-                                        label: 'View all available assets',
+                                        label: 'View all assets',
                                         icon: '',
-                                        routerLink: ['identify-asset']
+                                        routerLink: ['/asset-mgm']
                                     },
                                     {label: 'Identify Assets', icon: '', routerLink: ['identify-asset']}
                                 ]
@@ -54,7 +53,11 @@ export class SidebarComponent implements OnInit {
                             {
                                 label: 'Threat Agents', icon: '', title: 'who would attack my company? and why?',
                                 items: [
-                                    {label: 'View all available Threat Agents', icon: ''},
+                                    {
+                                        label: 'View all Threat Agents',
+                                        icon: '',
+                                        routerLink: ['/threat-agent-mgm']
+                                    },
                                     {
                                         label: 'Identify Threat Agents',
                                         icon: '',
@@ -65,13 +68,25 @@ export class SidebarComponent implements OnInit {
                             {
                                 label: 'Attack Plans', icon: '', title: 'how my company may be attacked?',
                                 items: [
-                                    {label: 'View All Attack Strategies', icon: ''},
-                                    {label: 'View Countermeasures', icon: ''},
+                                    {
+                                        label: 'View all Attack Strategies',
+                                        icon: '',
+                                        routerLink: ['/attack-strategy-mgm']
+
+                                    },
+                                    {
+                                        label: 'View all Mitigations',
+                                        icon: '',
+                                        routerLink: ['/mitigation-mgm']
+                                    },
                                     {label: 'Evaluate weakness', icon: '', routerLink: ['evaluate-weakness']}
                                 ]
                             },
                             {
-                                label: 'Results', icon: '', title: 'which are the weakness of my company?', routerLink: ['results'],
+                                label: 'Results',
+                                icon: '',
+                                title: 'which are the weakness of my company?',
+                                routerLink: ['results'],
                             }
                         ]
                     },
