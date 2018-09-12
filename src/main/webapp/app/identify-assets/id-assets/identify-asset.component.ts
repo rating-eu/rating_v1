@@ -99,7 +99,7 @@ export class IdentifyAssetComponent implements OnInit, OnDestroy {
                         .toPromise()
                         .then((status) => {
                             if (status.body) {
-                                this.questionnariesStatus.push(status.body as QuestionnaireStatusMgm);
+                                // this.questionnariesStatus.push(status.body as QuestionnaireStatusMgm);
                                 this.ref.detectChanges();
                                 this.myAnswerService.getAllByQuestionnaireStatusID(status.body.id)
                                     .toPromise().then((answers) => {

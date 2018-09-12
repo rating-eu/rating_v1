@@ -9,6 +9,9 @@
             </i>
         </a>
     </div>
+    <div class="topbar-left align-middle" style = "background: none;height: auto; box-shadow: 0px 0px 0px 0">
+        {{navSubTitle}}
+    </div>
     <div class="navbar-collapse collapse" id="navbarResponsive" [ngbCollapse]="isNavbarCollapsed"
          [ngSwitch]="isAuthenticated()">
         <ul class="navbar-nav ml-auto">

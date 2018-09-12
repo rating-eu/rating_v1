@@ -426,7 +426,9 @@ export class IdentifyAssetUtilService {
             (myAnswer) => myAnswer.answer.id === answer.answer.id && myAnswer.question.id === answer.question.id && myAnswer.answerOffset === answer.answerOffset
         );
         // Prevedere pulizia delle linkedAnswer
-        this.myAnswersComplited.splice(index, 1);
+        if (index !== -1) {
+            this.myAnswersComplited.splice(index, 1);
+        }
     }
 
     public updateMyAnswers(answer: MyAnswerMgm) {
