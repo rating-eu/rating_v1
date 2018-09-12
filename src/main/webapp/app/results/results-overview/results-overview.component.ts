@@ -27,7 +27,7 @@ export class ResultsOverviewComponent implements OnInit {
     threatAgentLikelihoodsMap: Map<number/*ThreatAgent ID*/, ThreatAgentLikelihoods>;
     threatAgentIDs: number[];
 
-    maxRefinedVulnerability: number = Number.NEGATIVE_INFINITY;
+    maxVulnerability: number = Number.NEGATIVE_INFINITY;
 
     constructor(private selfAssessmentService: SelfAssessmentMgmService,
                 private resultService: ResultsService) {
@@ -79,9 +79,18 @@ export class ResultsOverviewComponent implements OnInit {
                         likelihood.initialLikelihood = (value / this.maxLikelihood);
                         this.threatAgentLikelihoodsMap.set(threatAgentID, likelihood);
                     }
+
+                    // Update the max
+                    if ((value / this.maxLikelihood) > this.maxVulnerability) {
+                        this.maxVulnerability = (value / this.maxLikelihood);
+                    }
                 });
 
                 // Contextual Likelihood
+                if (contextualVulnerabilityMap.size > 0) {
+                    this.maxVulnerability = Number.NEGATIVE_INFINITY;
+                }
+
                 contextualVulnerabilityMap.forEach((value: number, threatAgentID: number) => {
                     if (this.threatAgentLikelihoodsMap.has(threatAgentID)) {
                         const likelihood: ThreatAgentLikelihoods = this.threatAgentLikelihoodsMap.get(threatAgentID);
@@ -91,9 +100,18 @@ export class ResultsOverviewComponent implements OnInit {
                         likelihood.contextualLikelihood = (value / this.maxLikelihood);
                         this.threatAgentLikelihoodsMap.set(threatAgentID, likelihood);
                     }
+
+                    // Update the max
+                    if ((value / this.maxLikelihood) > this.maxVulnerability) {
+                        this.maxVulnerability = (value / this.maxLikelihood);
+                    }
                 });
 
                 // Refined Likelihood
+                if (refinedVulnerabilityMap.size > 0) {
+                    this.maxVulnerability = Number.NEGATIVE_INFINITY;
+                }
+
                 refinedVulnerabilityMap.forEach((value: number, threatAgentID: number) => {
                     if (this.threatAgentLikelihoodsMap.has(threatAgentID)) {
                         const likelihood: ThreatAgentLikelihoods = this.threatAgentLikelihoodsMap.get(threatAgentID);
@@ -105,8 +123,8 @@ export class ResultsOverviewComponent implements OnInit {
                     }
 
                     // Update the max
-                    if ((value / this.maxLikelihood) > this.maxRefinedVulnerability) {
-                        this.maxRefinedVulnerability = (value / this.maxLikelihood);
+                    if ((value / this.maxLikelihood) > this.maxVulnerability) {
+                        this.maxVulnerability = (value / this.maxLikelihood);
                     }
                 });
 
