@@ -1,3 +1,4 @@
 export class Update {
-    isSidebarCollapsed: boolean = true;
+    isSidebarCollapsed: boolean = false;
+    navSubTitle: string = '';
 }

@@ -9,6 +9,8 @@ import {JhiDateUtils} from 'ng-jhipster';
 import {SelfAssessmentMgm} from './self-assessment-mgm.model';
 import {createRequestOption} from '../../shared';
 import {SessionStorageService} from '../../../../../../node_modules/ngx-webstorage';
+import { Update } from '../../layouts/model/Update';
+import { DatasharingService } from '../../datasharing/datasharing.service';
 
 export type EntityResponseType = HttpResponse<SelfAssessmentMgm>;
 
@@ -17,6 +19,8 @@ export class SelfAssessmentMgmService implements OnInit {
 
     private static readonly SELF_ASSESSMENT_KEY = 'selfAssessment';
     private resourceUrl = SERVER_API_URL + 'api/self-assessments';
+    private static readonly COMPANY_PROFILE_KEY = '{companyProfileID}';
+    private resourceByCompanyUrl = SERVER_API_URL + 'api/self-assessments/by-company/' + SelfAssessmentMgmService.COMPANY_PROFILE_KEY;
     private resourceSearchUrl = SERVER_API_URL + 'api/_search/self-assessments';
     private selfAssessmentSelected: SelfAssessmentMgm;
 
@@ -24,7 +28,9 @@ export class SelfAssessmentMgmService implements OnInit {
         private http: HttpClient,
         private dateUtils: JhiDateUtils,
         private router: Router,
-        private sessionStorage: SessionStorageService) {
+        private sessionStorage: SessionStorageService,
+        private dataSharingService: DatasharingService
+    ) {
     }
 
     ngOnInit() {
@@ -42,6 +48,9 @@ export class SelfAssessmentMgmService implements OnInit {
             return null;
         } else {
             this.selfAssessmentSelected = self;
+            const update: Update = new Update();
+            update.navSubTitle = self.name;
+            this.dataSharingService.updateLayout(update);
             return this.selfAssessmentSelected;
         }
     }
@@ -141,5 +150,10 @@ export class SelfAssessmentMgmService implements OnInit {
 
         copy.modified = this.dateUtils.toDate(selfAssessment.modified + '');
         return copy;
+    }
+
+    getSelfAssessmentsByCompanyProfile(companyProfileID: number): Observable<SelfAssessmentMgm[]> {
+        return this.http.get<SelfAssessmentMgm[]>(
+            this.resourceByCompanyUrl.replace(SelfAssessmentMgmService.COMPANY_PROFILE_KEY, companyProfileID + ''));
     }
 }

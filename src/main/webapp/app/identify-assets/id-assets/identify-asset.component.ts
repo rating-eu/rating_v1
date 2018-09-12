@@ -230,7 +230,8 @@ export class IdentifyAssetComponent implements OnInit, OnDestroy {
                 this.myDirectAssets = savedAssets.directAssets;
                 this.myIndirectAssets = savedAssets.indirectAssets;
             }
-            this.router.navigate(['/']);
+            // TODO Maurizio Inserire un messaggio salvato con successo
+            this.ngOnInit();
         });
     }
 

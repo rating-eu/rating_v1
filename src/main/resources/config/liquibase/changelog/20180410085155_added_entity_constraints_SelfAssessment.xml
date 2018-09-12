@@ -8,23 +8,18 @@
     -->
     <changeSet id="20180410085155-2" author="jhipster">
         
+        <addForeignKeyConstraint baseColumnNames="company_profile_id"
+                                 baseTableName="self_assessment"
+                                 constraintName="fk_self_assessment_company_profile_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="company_profile"/>
+
         <addForeignKeyConstraint baseColumnNames="user_id"
                                  baseTableName="self_assessment"
                                  constraintName="fk_self_assessment_user_id"
                                  referencedColumnNames="id"
                                  referencedTableName="jhi_user"/>
 
-        <addForeignKeyConstraint baseColumnNames="self_assessments_id"
-                                 baseTableName="self_assessment_companyprofiles"
-                                 constraintName="fk_self_assessment_companyprofiles_self_assessments_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="self_assessment"/>
-        <addForeignKeyConstraint baseColumnNames="companyprofiles_id"
-                                 baseTableName="self_assessment_companyprofiles"
-                                 constraintName="fk_self_assessment_companyprofiles_companyprofiles_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="company_profile"/>
-        
         <addForeignKeyConstraint baseColumnNames="self_assessments_id"
                                  baseTableName="self_assessment_company_group"
                                  constraintName="fk_self_assessment_company_group_self_assessments_id"

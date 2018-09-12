@@ -39,6 +39,7 @@
                 "criticalLevelMgm": "Critical Level",
                 "likelihoodScaleMgm": "Likelihood Scale",
                 "vulnerabilityScaleMgm": "Vulnerability Scale",
+                "myCompanyMgm": "My Company",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {
@@ -160,6 +161,10 @@
         "userexists": "Login name already used!",
         "emailexists": "Email is already in use!",
         "idexists": "A new {{entityName}} cannot already have an ID"
+    },
+    "messages": {
+        "success": "Success",
+        "saved": "Saved successfully"
     },
     "footer": "Este é o seu rodapé"
 }

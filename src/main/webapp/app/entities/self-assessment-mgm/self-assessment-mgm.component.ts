@@ -8,6 +8,9 @@ import {SelfAssessmentMgm} from './self-assessment-mgm.model';
 import {SelfAssessmentMgmService} from './self-assessment-mgm.service';
 import {Principal} from '../../shared';
 
+import {DatasharingService} from '../../datasharing/datasharing.service';
+import { Update } from '../../layouts/model/Update';
+
 @Component({
     selector: 'jhi-self-assessment-mgm',
     templateUrl: './self-assessment-mgm.component.html'
@@ -24,7 +27,8 @@ export class SelfAssessmentMgmComponent implements OnInit, OnDestroy {
         private jhiAlertService: JhiAlertService,
         private eventManager: JhiEventManager,
         private activatedRoute: ActivatedRoute,
-        private principal: Principal
+        private principal: Principal,
+        private dataSharingService: DatasharingService
     ) {
         this.currentSearch = this.activatedRoute.snapshot && this.activatedRoute.snapshot.params['search'] ?
             this.activatedRoute.snapshot.params['search'] : '';
@@ -74,6 +78,9 @@ export class SelfAssessmentMgmComponent implements OnInit, OnDestroy {
         this.selfAssessmentService.setSelfAssessment(selfAssessment);
         const link = ['/'];
         // this.mySidemenuService.roomeMenu('collapsed');
+        const update: Update = new Update();
+        update.navSubTitle = selfAssessment.name;
+        this.dataSharingService.updateLayout(update);
         this.router.navigate(link);
     }
 

@@ -14,7 +14,7 @@ export class SelfAssessmentMgm implements BaseEntity {
         public created?: any,
         public modified?: any,
         public user?: User,
-        public companyprofiles?: CompanyProfileMgm[],
+        public companyProfile?: CompanyProfileMgm,
         public companyGroups?: CompanyGroupMgm[],
         public assets?: AssetMgm[],
         public threatagents?: ThreatAgentMgm[],

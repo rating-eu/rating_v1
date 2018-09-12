@@ -237,6 +237,9 @@ entity MyAnswer{
     AnswerOffset Integer required
 }
 
+entity MyCompany{
+}
+
 enum AnswerType{
     YESNO, RANGE5, PERC5, RANGE3, PERC3, CUSTOM, ASSET
 }
@@ -263,7 +266,6 @@ relationship ManyToMany {
     ThreatAgent{motivation(name)} to Motivation,
     AttackStrategy{mitigation(name)} to Mitigation,
     Question{attackStrategies(name)} to AttackStrategy,
-    SelfAssessment{companyprofiles(name)} to CompanyProfile,
     SelfAssessment{companyGroup(name)} to CompanyGroup,
     SelfAssessment{asset(name)} to Asset,
     SelfAssessment{threatagent(name)} to ThreatAgent,
@@ -287,6 +289,7 @@ relationship OneToMany{
 }
 
 relationship OneToOne{
+    MyCompany{user(login)} to User,
     MyAnswer{answer(name)} to Answer,
     MyAnswer{question(name)} to Question,
     MyAnswer{questionnaire(name)} to Questionnaire,
@@ -300,6 +303,7 @@ relationship OneToOne{
     IndirectAsset{myAsset(asset)} to MyAsset,
     Level{container(name)} to Container,
     DomainOfInfluence{container(name)} to Container,
+    ExternalAudit{user(login)} to User,
     /*WP3*/
     EconomicCoefficients{selfAssessment(name)} to SelfAssessment,
     EBIT{selfAssessment(name)} to SelfAssessment,
@@ -310,9 +314,10 @@ relationship OneToOne{
 }
 
 relationship ManyToOne{
+    MyCompany{companyProfile(name)} to CompanyProfile,
     CompanyProfile{user(login)} to User,
     CompanyGroup{user(login)} to User,
-    ExternalAudit{user(login)} to User,
+    SelfAssessment{companyProfile(name)} to CompanyProfile,
     SelfAssessment{user(login)} to User,
     MyAsset{asset(name)} to Asset,
     MyAsset{selfAssessment(name)} to SelfAssessment,

@@ -1,14 +1,18 @@
 <nav *ngIf="isAuthenticated()" class="left side-menu" id="sidebar" [ngClass]="{'sidebar-collapsed': isCollapsed}">
-    <a class="nav-link " (click)="toggleSideBar()"
+    <!-- <a class="nav-link " (click)="toggleSideBar()"
         [attr.aria-expanded]="sideBar?.isCollapsed" aria-controls="sidebar">
          <i *ngIf="isCollapsed" class="fas fa-angle-double-right fa-lg float-right" aria-hidden="true"></i>
          <span *ngIf="isCollapsed"></span>
          <span *ngIf="!isCollapsed">Entities</span>
          <i *ngIf="!isCollapsed" class="fas fa-bars fa-lg float-right" aria-hidden="true"></i>
 
-    </a>
+    </a> -->
+    <div class="menu-title">Menu</div>
+    <p-panelMenu [model]="items" [multiple]="false" [style]="{'width':'240px','height':'360px','border':'1px solid #ffffff'}"></p-panelMenu>
+    <!--
     <p-slideMenu #sideMenu [popup]="isCollapsed" [model]="items" [style]="{'width':'240px','height':'360px','border':'1px solid #ffffff'}" [viewportHeight]="360"></p-slideMenu>
     <i *ngIf="isCollapsed" pButton class="fas fa-bars fa-lg float-right" aria-hidden="true" (click)="sideMenu.toggle($event)"></i>
+    -->
     <!--
     <ul class="navbar-nav ml-auto" [ngSwitch]="isCollapsed">
         <li class="menu-title nav-item" routerLinkActive="active"

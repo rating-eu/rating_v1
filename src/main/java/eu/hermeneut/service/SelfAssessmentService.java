@@ -1,6 +1,7 @@
 package eu.hermeneut.service;
 
 import eu.hermeneut.domain.SelfAssessment;
+
 import java.util.List;
 
 /**
@@ -42,8 +43,9 @@ public interface SelfAssessmentService {
      * Search for the selfAssessment corresponding to the query.
      *
      * @param query the query of the search
-     * 
      * @return the list of entities
      */
     List<SelfAssessment> search(String query);
+
+    List<SelfAssessment> findAllByCompanyProfile(Long companyProfileID);
 }

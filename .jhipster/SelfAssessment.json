@@ -3,17 +3,15 @@
     "relationships": [
         {
             "relationshipType": "many-to-one",
+            "relationshipName": "companyProfile",
+            "otherEntityName": "companyProfile",
+            "otherEntityField": "name"
+        },
+        {
+            "relationshipType": "many-to-one",
             "relationshipName": "user",
             "otherEntityName": "user",
             "otherEntityField": "login"
-        },
-        {
-            "relationshipType": "many-to-many",
-            "otherEntityRelationshipName": "",
-            "relationshipName": "companyprofiles",
-            "otherEntityName": "companyProfile",
-            "otherEntityField": "name",
-            "ownerSide": true
         },
         {
             "relationshipType": "many-to-many",

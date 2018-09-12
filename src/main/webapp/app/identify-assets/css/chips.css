@@ -50,3 +50,6 @@ question-card {
     margin-bottom: 10px;
 }
 
+.badge.chips.badge-secondary.disabled {
+    cursor: no-drop;
+}

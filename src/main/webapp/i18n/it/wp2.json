@@ -1,8 +1,27 @@
 {
     "hermeneutApp": {
-        "identifyAsset" : {
-            "home": {
-                "title": "Identifica gli asset"
+        "identifyAsset": {
+            "page": {
+                "root": {
+                    "title": "Identifica Asset"
+                }
+            }
+        },
+        "messages": {
+            "saved": "Salvato correttamente",
+            "notfound": "Non trovato"
+        },
+        "identifyThreatAgent": {
+            "page": {
+                "root": {
+                    "title": "Identifica Minacce"
+                },
+                "questionnaires": {
+                    "title": "Identifica Minacce - Questionari"
+                },
+                "result": {
+                    "title": "Identifica Minacce - Risultati"
+                }
             }
         }
     }

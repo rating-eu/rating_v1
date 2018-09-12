@@ -18,17 +18,17 @@
         <dd>
             <span>{{selfAssessment.modified | date:'medium'}}</span>
         </dd>
+        <dt><span jhiTranslate="hermeneutApp.selfAssessment.companyProfile">Company Profile</span></dt>
+        <dd>
+            <div *ngIf="selfAssessment.companyProfile">
+                <a [routerLink]="['/company-profile-mgm', selfAssessment.companyProfile?.id]">{{selfAssessment.companyProfile?.name}}</a>
+            </div>
+        </dd>
         <dt><span jhiTranslate="hermeneutApp.selfAssessment.user">User</span></dt>
         <dd>
             {{selfAssessment.user?.login}}
         </dd>
-        <dt><span jhiTranslate="hermeneutApp.selfAssessment.companyprofiles">Companyprofiles</span></dt>
-        <dd>
-            <span *ngFor="let companyprofiles of selfAssessment.companyprofiles; let last = last">
-                <a [routerLink]="['/company-profile-mgm', companyprofiles?.id ]">{{companyprofiles.name}}</a>{{last ? '' : ', '}}
-            </span>
-        </dd>
-        <dt><span jhiTranslate="hermeneutApp.selfAssessment.companyGroup">Group</span></dt>
+        <dt><span jhiTranslate="hermeneutApp.selfAssessment.companyGroup">Company Group</span></dt>
         <dd>
             <span *ngFor="let companyGroup of selfAssessment.companyGroups; let last = last">
                 <a [routerLink]="['/company-group-mgm', companyGroup?.id ]">{{companyGroup.name}}</a>{{last ? '' : ', '}}

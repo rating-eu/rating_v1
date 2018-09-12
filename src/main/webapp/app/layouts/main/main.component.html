@@ -4,8 +4,8 @@
 
 <jhi-sidebar></jhi-sidebar>
 
-<div *ngIf="isAuthenticated  && !loading"
-     [ngClass]="{'content-page-sidenav': !updateLayout.isSidebarCollapsed, 'content-page-no-sidenav': updateLayout.isSidebarCollapsed}">
+<div *ngIf="isAuthenticated  && !loading" class="content-page-sidenav">
+    <!-- [ngClass]="{'content-page-sidenav': !updateLayout.isSidebarCollapsed, 'content-page-no-sidenav': updateLayout.isSidebarCollapsed}" -->
     <!-- Start content -->
     <div class="content">
         <div class="container-fluid">
@@ -13,12 +13,12 @@
             <div class="row">
                 <div class="col-12">
                     <div class="page-title-box">
-                        <h4 class="page-title float-left">Welcome</h4>
+                        <h4 class="page-title float-left">Rating</h4>
 
-                        <ol class="breadcrumb float-right">
+                        <!-- <ol class="breadcrumb float-right">
                             <li class="breadcrumb-item"><a href="#">Pages</a></li>
                             <li class="breadcrumb-item active">Welcome</li>
-                        </ol>
+                        </ol> -->
 
                         <div class="clearfix"></div>
                     </div>
