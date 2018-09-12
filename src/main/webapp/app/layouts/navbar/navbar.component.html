@@ -20,7 +20,7 @@
                     </span>
                 </a>
             </li>
-            <li *jhiHasAnyAuthority="'ROLE_ADMIN'" ngbDropdown class="waves-light waves-effect nav-item dropdown pointer entities-nav "
+            <li ngbDropdown class="waves-light waves-effect nav-item dropdown pointer entities-nav "
                 routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
                 <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="entity-menu">
                         <span>
@@ -252,6 +252,13 @@
                                 jhiTranslate="global.menu.entities.vulnerabilityScaleMgm">Vulnerability Scale Mgm</span>
                         </a>
                     </li>
+                    <li>
+                        <a class="dropdown-item" routerLink="my-company-mgm" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                            <i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
+                            <span jhiTranslate="global.menu.entities.myCompanyMgm">My Company Mgm</span>
+                        </a>
+                    </li>
+                    <!-- jhipster-needle-add-entity-to-menu - JHipster will add entities to the menu here -->
                 </ul>
             </li>
             <li *jhiHasAnyAuthority="'ROLE_ADMIN'" ngbDropdown class="waves-light waves-effect nav-item dropdown pointer"

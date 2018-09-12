@@ -39,8 +39,8 @@ describe('SelfAssessment e2e test', () => {
         expect(selfAssessmentDialogPage.getCreatedInput()).toMatch('2001-12-31T02:30');
         selfAssessmentDialogPage.setModifiedInput(12310020012301);
         expect(selfAssessmentDialogPage.getModifiedInput()).toMatch('2001-12-31T02:30');
+        selfAssessmentDialogPage.companyProfileSelectLastOption();
         selfAssessmentDialogPage.userSelectLastOption();
-        // selfAssessmentDialogPage.companyprofilesSelectLastOption();
         // selfAssessmentDialogPage.companyGroupSelectLastOption();
         // selfAssessmentDialogPage.assetSelectLastOption();
         // selfAssessmentDialogPage.threatagentSelectLastOption();
@@ -76,8 +76,8 @@ export class SelfAssessmentDialogPage {
     nameInput = element(by.css('input#field_name'));
     createdInput = element(by.css('input#field_created'));
     modifiedInput = element(by.css('input#field_modified'));
+    companyProfileSelect = element(by.css('select#field_companyProfile'));
     userSelect = element(by.css('select#field_user'));
-    companyprofilesSelect = element(by.css('select#field_companyprofiles'));
     companyGroupSelect = element(by.css('select#field_companyGroup'));
     assetSelect = element(by.css('select#field_asset'));
     threatagentSelect = element(by.css('select#field_threatagent'));
@@ -113,6 +113,22 @@ export class SelfAssessmentDialogPage {
         return this.modifiedInput.getAttribute('value');
     };
 
+    companyProfileSelectLastOption = function() {
+        this.companyProfileSelect.all(by.tagName('option')).last().click();
+    };
+
+    companyProfileSelectOption = function(option) {
+        this.companyProfileSelect.sendKeys(option);
+    };
+
+    getCompanyProfileSelect = function() {
+        return this.companyProfileSelect;
+    };
+
+    getCompanyProfileSelectedOption = function() {
+        return this.companyProfileSelect.element(by.css('option:checked')).getText();
+    };
+
     userSelectLastOption = function() {
         this.userSelect.all(by.tagName('option')).last().click();
     };
@@ -127,22 +143,6 @@ export class SelfAssessmentDialogPage {
 
     getUserSelectedOption = function() {
         return this.userSelect.element(by.css('option:checked')).getText();
-    };
-
-    companyprofilesSelectLastOption = function() {
-        this.companyprofilesSelect.all(by.tagName('option')).last().click();
-    };
-
-    companyprofilesSelectOption = function(option) {
-        this.companyprofilesSelect.sendKeys(option);
-    };
-
-    getCompanyprofilesSelect = function() {
-        return this.companyprofilesSelect;
-    };
-
-    getCompanyprofilesSelectedOption = function() {
-        return this.companyprofilesSelect.element(by.css('option:checked')).getText();
     };
 
     companyGroupSelectLastOption = function() {

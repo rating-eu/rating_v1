@@ -1,0 +1,24 @@
+
+{
+    "hermeneutApp": {
+        "myCompany" : {
+            "home": {
+                "title": "My Companies",
+                "createLabel": "My Company erstellen",
+                "createOrEditLabel": "My Company erstellen oder bearbeiten",
+                "search": "Suche nach My Company"
+            },
+            "created": "My Company erstellt mit ID {{ param }}",
+            "updated": "My Company aktualisiert mit ID {{ param }}",
+            "deleted": "My Company gelöscht mit ID {{ param }}",
+            "delete": {
+                "question": "Soll My Company {{ id }} wirklich dauerhaft gelöscht werden?"
+            },
+            "detail": {
+                "title": "My Company"
+            },
+            "user": "User",
+            "companyProfile": "Company Profile"
+        }
+    }
+}

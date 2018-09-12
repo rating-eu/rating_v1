@@ -30,7 +30,8 @@ public class ExternalAudit implements Serializable {
     @Column(name = "name", nullable = false)
     private String name;
 
-    @ManyToOne
+    @OneToOne
+    @JoinColumn(unique = true)
     private User user;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove

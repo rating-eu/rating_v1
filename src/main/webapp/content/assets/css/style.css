@@ -5572,3 +5572,8 @@ b.color-b {
     cursor: pointer;
     background: #e4e4e4;
 }
+
+.account-box ul.nav.nav-tabs.justify-content-start {
+    padding-left: 20px;
+    padding-right: 20px;
+}

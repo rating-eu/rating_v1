@@ -1,0 +1,24 @@
+
+{
+    "hermeneutApp": {
+        "myCompany" : {
+            "home": {
+                "title": "MyCompanies",
+                "createLabel": "Créer un nouveau My Company",
+                "createOrEditLabel": "Créer ou éditer un My Company",
+                "search": "Recherche pour My Company"
+            },
+            "created": "Un nouveau My Company a été créé avec l'identifiant {{ param }}",
+            "updated": "Le My Company avec l'identifiant {{ param }} a été mis à jour",
+            "deleted": "Le My Company avec l'identifiant {{ param }} a été supprimé",
+            "delete": {
+                "question": "Etes-vous certain de vouloir supprimer le My Company {{ id }} ?"
+            },
+            "detail": {
+                "title": "My Company"
+            },
+            "user": "User",
+            "companyProfile": "Company Profile"
+        }
+    }
+}

@@ -17,9 +17,6 @@ import java.net.URISyntaxException;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.StreamSupport;
-
-import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
  * REST controller for managing SelfAssessment.
@@ -103,6 +100,14 @@ public class SelfAssessmentResource {
     public ResponseEntity<SelfAssessment> getSelfAssessment(@PathVariable Long id) {
         log.debug("REST request to get SelfAssessment : {}", id);
         SelfAssessment selfAssessment = selfAssessmentService.findOne(id);
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(selfAssessment));
+    }
+
+    @GetMapping("/self-assessments/by-company/{companyProfileID}")
+    @Timed
+    public ResponseEntity<SelfAssessment> getSelfAssessmentByCompanyProfile(@PathVariable Long companyProfileID) {
+        log.debug("REST request to get SelfAssessment by company profile: {}", companyProfileID);
+        SelfAssessment selfAssessment = selfAssessmentService.findAllByCompanyProfile(companyProfileID);
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(selfAssessment));
     }
 

@@ -36,5 +36,39 @@
 </div>
 </div>
 <div class="bg-login-pages" *ngIf="!isAuthenticated && !loading">
-    <jhi-login-plain></jhi-login-plain>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="wrapper-page">
+                    <div class="account-pages">
+                        <div class="account-box">
+                            <div class="account-logo-box">
+                                <h2 class="text-uppercase text-center">
+                                    <a href="index.html" class="text-success">
+                                        <span><img src="../../../content/assets/images/logo-login-rating.png" alt="Rating"></span>
+                                    </a>
+                                </h2>
+                            </div>
+                            <ngb-tabset>
+                                <ngb-tab>
+                                    <ng-template ngbTabTitle><b>Login</b> </ng-template>
+                                    <ng-template ngbTabContent>
+                                        <jhi-login-plain></jhi-login-plain>
+                                    </ng-template>
+                                </ngb-tab>
+                                <ngb-tab>
+                                    <ng-template ngbTabTitle><b>Registrer</b> </ng-template>
+                                    <ng-template ngbTabContent>
+                                        <jhi-register></jhi-register>
+                                    </ng-template>
+                                </ngb-tab>
+
+                            </ngb-tabset>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

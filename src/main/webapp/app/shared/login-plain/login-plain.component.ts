@@ -5,6 +5,9 @@ import { JhiEventManager } from 'ng-jhipster';
 import { LoginService } from '../login/login.service';
 import { StateStorageService } from '../auth/state-storage.service';
 import { RegisterComponent } from '../../account/register/register.component';
+import { PasswordResetInitComponent } from '../../account/password-reset/init/password-reset-init.component';
+
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'jhi-login-plain',
@@ -26,7 +29,8 @@ export class LoginPlainComponent implements AfterViewInit {
             private stateStorageService: StateStorageService,
             private elementRef: ElementRef,
             private renderer: Renderer,
-            private router: Router
+            private router: Router,
+            private modalService: NgbModal
         ) {
             this.credentials = {};
         }
@@ -78,7 +82,8 @@ export class LoginPlainComponent implements AfterViewInit {
         }
 
         requestResetPassword() {
-            this.router.navigate(['/reset', 'request']);
+            const modalRef = this.modalService.open(PasswordResetInitComponent);
+            modalRef.componentInstance.name = 'Password Reset';
         }
 
 }

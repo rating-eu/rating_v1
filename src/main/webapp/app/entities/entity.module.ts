@@ -30,6 +30,7 @@ import { HermeneutSplittingLossMgmModule } from './splitting-loss-mgm/splitting-
 import { HermeneutCriticalLevelMgmModule } from './critical-level-mgm/critical-level-mgm.module';
 import { HermeneutLikelihoodScaleMgmModule } from './likelihood-scale-mgm/likelihood-scale-mgm.module';
 import { HermeneutVulnerabilityScaleMgmModule } from './vulnerability-scale-mgm/vulnerability-scale-mgm.module';
+import { HermeneutMyCompanyMgmModule } from './my-company-mgm/my-company-mgm.module';
 /* jhipster-needle-add-entity-module-import - JHipster will add entity modules imports here */
 
 @NgModule({
@@ -65,6 +66,7 @@ import { HermeneutVulnerabilityScaleMgmModule } from './vulnerability-scale-mgm/
         HermeneutCriticalLevelMgmModule,
         HermeneutLikelihoodScaleMgmModule,
         HermeneutVulnerabilityScaleMgmModule,
+        HermeneutMyCompanyMgmModule,
         /* jhipster-needle-add-entity-module - JHipster will add entity modules here */
     ],
     declarations: [],
