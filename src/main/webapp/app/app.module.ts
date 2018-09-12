@@ -18,8 +18,7 @@ import {HermeneutAccountModule} from './account/account.module';
 import {HermeneutEntityModule} from './entities/entity.module';
 import {PaginationConfig} from './blocks/config/uib-pagination.config';
 
-import { MenuModule } from 'primeng/menu';
-import {SlideMenuModule} from 'primeng/slidemenu';
+import {PanelMenuModule} from 'primeng/panelmenu';
 // jhipster-needle-angular-add-module-import JHipster will add new module here
 
 import {
@@ -53,14 +52,12 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
         DatasharingModule.forRoot(),
         BrowserAnimationsModule,
         MaterialModule,
-        MenuModule,
-        SlideMenuModule
+        PanelMenuModule
         // jhipster-needle-angular-add-module JHipster will add new module here
     ],
     exports: [
         MaterialModule,
-        MenuModule,
-        SlideMenuModule
+        PanelMenuModule
     ],
     declarations: [
         JhiMainComponent,
