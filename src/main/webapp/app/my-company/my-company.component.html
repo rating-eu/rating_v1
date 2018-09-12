@@ -1,5 +1,8 @@
-<h1>My Company is:</h1>
-<pre *ngIf="myCompany">{{myCompany.companyProfile?.name}}</pre>
+<h1>My Company</h1>
+<button *ngIf="myCompany"
+        [routerLink]="['/company-profile-mgm', myCompany?.companyProfile?.id]"
+        class="btn btn-info btn-sm">{{myCompany.companyProfile?.name}}
+</button>
 
 <div *ngIf="!myCompany">
     <div *ngIf="companyProfiles?.length > 0">
