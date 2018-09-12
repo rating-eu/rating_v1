@@ -163,6 +163,7 @@ export class RiskManagementComponent implements OnInit {
     this.criticalLevelService.update(this.criticalLevel).toPromise().then((res) => {
       if (res) {
         this.criticalLevel = res.body;
+        // TODO Maurizio Inserire un messaggio salvato con successo
       }
     });
   }
