@@ -4,6 +4,8 @@ import {MyCompanyMgm, MyCompanyMgmService} from '../entities/my-company-mgm';
 import {SelfAssessmentMgm, SelfAssessmentMgmService} from '../entities/self-assessment-mgm';
 import {HttpResponse} from '@angular/common/http';
 import {Router} from '@angular/router';
+import {Subscription} from 'rxjs/Subscription';
+import {JhiEventManager} from 'ng-jhipster';
 
 @Component({
     selector: 'jhi-my-self-assessments',
@@ -16,13 +18,15 @@ export class MySelfAssessmentsComponent implements OnInit {
     private user: User;
     private myCompany: MyCompanyMgm;
     public mySelfAssessments: SelfAssessmentMgm[];
+    eventSubscriber: Subscription;
 
 
     constructor(private router: Router,
                 private accountService: AccountService,
                 private userService: UserService,
                 private myCompanyService: MyCompanyMgmService,
-                private selfAssessmentService: SelfAssessmentMgmService) {
+                private selfAssessmentService: SelfAssessmentMgmService,
+                private eventManager: JhiEventManager,) {
     }
 
     ngOnInit() {
@@ -35,12 +39,7 @@ export class MySelfAssessmentsComponent implements OnInit {
                     this.myCompanyService.findByUser(this.user.id).subscribe(
                         (response3: HttpResponse<MyCompanyMgm>) => {
                             this.myCompany = response3.body;
-
-                            this.selfAssessmentService.getSelfAssessmentsByCompanyProfile(this.myCompany.companyProfile.id).subscribe(
-                                (response: SelfAssessmentMgm[]) => {
-                                    this.mySelfAssessments = response;
-                                }
-                            );
+                            this.loadMySelfAssessments();
                         },
                         (error: any) => {
 
@@ -52,6 +51,15 @@ export class MySelfAssessmentsComponent implements OnInit {
                 }
             });
         });
+        this.registerChangeInSelfAssessments();
+    }
+
+    private loadMySelfAssessments() {
+        this.selfAssessmentService.getSelfAssessmentsByCompanyProfile(this.myCompany.companyProfile.id).subscribe(
+            (response: SelfAssessmentMgm[]) => {
+                this.mySelfAssessments = response;
+            }
+        );
     }
 
     selectSelfAssessment(selfAssessment: SelfAssessmentMgm) {
@@ -59,5 +67,18 @@ export class MySelfAssessmentsComponent implements OnInit {
         const link = ['/'];
         // this.mySidemenuService.roomeMenu('collapsed');
         this.router.navigate(link);
+    }
+
+    trackId(index: number, item: SelfAssessmentMgm) {
+        return item.id;
+    }
+
+    registerChangeInSelfAssessments() {
+        this.eventSubscriber = this.eventManager.subscribe('selfAssessmentListModification', (response) => {
+            console.log('Changes in SelfAssessments: ' + JSON.stringify(response));
+
+            //Show MySelfAssessments just created
+            this.loadMySelfAssessments();
+        });
     }
 }
