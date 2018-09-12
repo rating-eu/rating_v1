@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
-import {AccountService, User, UserService} from '../../shared';
-import {MyCompanyMgm, MyCompanyMgmService} from '../../entities/my-company-mgm';
+import {AccountService, User, UserService} from '../shared/index';
+import {MyCompanyMgm, MyCompanyMgmService} from '../entities/my-company-mgm/index';
 import {HttpErrorResponse, HttpResponse} from '@angular/common/http';
-import {CompanyProfileMgm, CompanyProfileMgmService} from '../../entities/company-profile-mgm';
+import {CompanyProfileMgm, CompanyProfileMgmService} from '../entities/company-profile-mgm/index';
 
 @Component({
     selector: 'jhi-my-company',
