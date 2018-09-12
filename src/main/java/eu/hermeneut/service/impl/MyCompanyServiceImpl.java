@@ -98,4 +98,10 @@ public class MyCompanyServiceImpl implements MyCompanyService {
             .stream(myCompanySearchRepository.search(queryStringQuery(query)).spliterator(), false)
             .collect(Collectors.toList());
     }
+
+    @Override
+    public MyCompany findOneByUser(Long userID) {
+        log.debug("Request to get MyCompany by user: {}", userID);
+        return myCompanyRepository.findOneByUser(userID);
+    }
 }

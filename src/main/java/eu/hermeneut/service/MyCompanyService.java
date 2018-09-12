@@ -42,8 +42,10 @@ public interface MyCompanyService {
      * Search for the myCompany corresponding to the query.
      *
      * @param query the query of the search
-     * 
+     *
      * @return the list of entities
      */
     List<MyCompany> search(String query);
+
+    MyCompany findOneByUser(Long userId);
 }

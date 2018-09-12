@@ -89,7 +89,7 @@ public class MyCompanyResource {
     public List<MyCompany> getAllMyCompanies() {
         log.debug("REST request to get all MyCompanies");
         return myCompanyService.findAll();
-        }
+    }
 
     /**
      * GET  /my-companies/:id : get the "id" myCompany.
@@ -102,6 +102,14 @@ public class MyCompanyResource {
     public ResponseEntity<MyCompany> getMyCompany(@PathVariable Long id) {
         log.debug("REST request to get MyCompany : {}", id);
         MyCompany myCompany = myCompanyService.findOne(id);
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(myCompany));
+    }
+
+    @GetMapping("/my-companies/by-user/{userId}")
+    @Timed
+    public ResponseEntity<MyCompany> getMyCompanyByUser(@PathVariable Long userId) {
+        log.debug("REST request to get MyCompany by user : {}", userId);
+        MyCompany myCompany = myCompanyService.findOneByUser(userId);
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(myCompany));
     }
 
