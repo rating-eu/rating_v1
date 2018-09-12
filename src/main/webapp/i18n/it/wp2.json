@@ -1,8 +1,10 @@
 {
     "hermeneutApp": {
         "identifyAsset": {
-            "home": {
-                "title": "Identifica gli asset"
+            "page": {
+                "root": {
+                    "title": "Identifica Asset"
+                }
             }
         },
         "messages": {

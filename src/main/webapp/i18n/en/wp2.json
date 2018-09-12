@@ -1,8 +1,10 @@
 {
     "hermeneutApp": {
         "identifyAsset": {
-            "home": {
-                "title": "Identify Asset"
+            "page": {
+                "root": {
+                    "title": "Identify Asset"
+                }
             }
         },
         "identifyThreatAgent": {
