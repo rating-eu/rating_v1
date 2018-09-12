@@ -1,16 +1,16 @@
-import {Injectable} from '@angular/core';
-import {Fraction} from '../utils/fraction.class';
-import {Couple} from '../utils/couple.class';
-import {ThreatAgentMgm} from '../entities/threat-agent-mgm';
-import {AnswerMgm} from '../entities/answer-mgm';
-import {QuestionMgm} from '../entities/question-mgm';
-import {QuestionnaireStatusMgm} from '../entities/questionnaire-status-mgm';
-import {Observable} from 'rxjs/Observable';
-import {BehaviorSubject} from 'rxjs/BehaviorSubject';
-import {AttackStrategyMgm} from '../entities/attack-strategy-mgm';
-import {AttackStrategyUpdate} from '../evaluate-weakness/models/attack-strategy-update.model';
-import {QuestionnaireMgm} from '../entities/questionnaire-mgm';
-import {Update} from '../layouts/model/Update';
+import { Injectable } from '@angular/core';
+import { Fraction } from '../utils/fraction.class';
+import { Couple } from '../utils/couple.class';
+import { ThreatAgentMgm } from '../entities/threat-agent-mgm';
+import { AnswerMgm } from '../entities/answer-mgm';
+import { QuestionMgm } from '../entities/question-mgm';
+import { QuestionnaireStatusMgm } from '../entities/questionnaire-status-mgm';
+import { Observable } from 'rxjs/Observable';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { AttackStrategyMgm } from '../entities/attack-strategy-mgm';
+import { AttackStrategyUpdate } from '../evaluate-weakness/models/attack-strategy-update.model';
+import { QuestionnaireMgm } from '../entities/questionnaire-mgm';
+import { Update } from '../layouts/model/Update';
 
 @Injectable()
 export class DatasharingService {

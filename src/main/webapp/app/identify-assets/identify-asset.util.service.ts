@@ -273,7 +273,14 @@ export class IdentifyAssetUtilService {
         this.sendUpdateForIndirectToSubscriptor(this.myIndirectAssets);
     }
 
-    public removeFromMyIndirectAssetsByDirect(directAsset: DirectAssetMgm) {
+    public removeFromMyIndirectAssetsByDirect(asset: MyAssetMgm) {
+        const indexDirect = _.findIndex(this.myDirectAssets,
+            (myDirectAsset) => (myDirectAsset.myAsset as MyAssetMgm).asset.id === asset.asset.id
+        );
+        if (indexDirect === -1) {
+            return;
+        }
+        const directAsset: DirectAssetMgm = this.myDirectAssets[indexDirect];
         const indirects = _.filter(this.myIndirectAssets, (indirectAsset) =>
             ((indirectAsset.directAsset as DirectAssetMgm).myAsset.asset as AssetMgm).id === (directAsset.myAsset.asset as AssetMgm).id
         );
@@ -426,7 +433,9 @@ export class IdentifyAssetUtilService {
             (myAnswer) => myAnswer.answer.id === answer.answer.id && myAnswer.question.id === answer.question.id && myAnswer.answerOffset === answer.answerOffset
         );
         // Prevedere pulizia delle linkedAnswer
-        this.myAnswersComplited.splice(index, 1);
+        if (index !== -1) {
+            this.myAnswersComplited.splice(index, 1);
+        }
     }
 
     public updateMyAnswers(answer: MyAnswerMgm) {

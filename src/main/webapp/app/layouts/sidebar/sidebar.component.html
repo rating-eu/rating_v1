@@ -8,7 +8,7 @@
 
     </a> -->
     <div class="menu-title">Menu</div>
-    <p-panelMenu [model]="items" [style]="{'width':'240px','height':'360px','border':'1px solid #ffffff'}"></p-panelMenu>
+    <p-panelMenu [model]="items" [multiple]="false" [style]="{'width':'240px','height':'360px','border':'1px solid #ffffff'}"></p-panelMenu>
     <!--
     <p-slideMenu #sideMenu [popup]="isCollapsed" [model]="items" [style]="{'width':'240px','height':'360px','border':'1px solid #ffffff'}" [viewportHeight]="360"></p-slideMenu>
     <i *ngIf="isCollapsed" pButton class="fas fa-bars fa-lg float-right" aria-hidden="true" (click)="sideMenu.toggle($event)"></i>

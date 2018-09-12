@@ -4,8 +4,8 @@
 
 <jhi-sidebar></jhi-sidebar>
 
-<div *ngIf="isAuthenticated  && !loading"
-     [ngClass]="{'content-page-sidenav': !updateLayout.isSidebarCollapsed, 'content-page-no-sidenav': updateLayout.isSidebarCollapsed}">
+<div *ngIf="isAuthenticated  && !loading" class="content-page-sidenav">
+    <!-- [ngClass]="{'content-page-sidenav': !updateLayout.isSidebarCollapsed, 'content-page-no-sidenav': updateLayout.isSidebarCollapsed}" -->
     <!-- Start content -->
     <div class="content">
         <div class="container-fluid">

@@ -9,6 +9,8 @@ import {JhiDateUtils} from 'ng-jhipster';
 import {SelfAssessmentMgm} from './self-assessment-mgm.model';
 import {createRequestOption} from '../../shared';
 import {SessionStorageService} from '../../../../../../node_modules/ngx-webstorage';
+import { Update } from '../../layouts/model/Update';
+import { DatasharingService } from '../../datasharing/datasharing.service';
 
 export type EntityResponseType = HttpResponse<SelfAssessmentMgm>;
 
@@ -26,7 +28,9 @@ export class SelfAssessmentMgmService implements OnInit {
         private http: HttpClient,
         private dateUtils: JhiDateUtils,
         private router: Router,
-        private sessionStorage: SessionStorageService) {
+        private sessionStorage: SessionStorageService,
+        private dataSharingService: DatasharingService
+    ) {
     }
 
     ngOnInit() {
@@ -44,6 +48,9 @@ export class SelfAssessmentMgmService implements OnInit {
             return null;
         } else {
             this.selfAssessmentSelected = self;
+            const update: Update = new Update();
+            update.navSubTitle = self.name;
+            this.dataSharingService.updateLayout(update);
             return this.selfAssessmentSelected;
         }
     }

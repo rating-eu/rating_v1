@@ -447,8 +447,8 @@ export class QuestionComponent implements OnInit, OnDestroy {
                     (myAsset) => myAsset.asset.id === selectedAsset.id
                 );
                 if (indexA !== -1) {
-                    this.idaUtilsService.removeFromMyDirectAssets(myGlobalAssets[indexA]);
                     this.idaUtilsService.removeFromMyIndirectAssetsByDirect(myGlobalAssets[indexA]);
+                    this.idaUtilsService.removeFromMyDirectAssets(myGlobalAssets[indexA]);
                     const indirectMap = _.filter(this.indirectAnswerMap, (ind) =>
                         ind[0] === this.question.id &&
                         ind[1] === this.selectedAnswers[index].id &&
@@ -480,8 +480,8 @@ export class QuestionComponent implements OnInit, OnDestroy {
                         (myAsset) => myAsset.asset.id === ass.id
                     );
                     if (indexA !== -1) {
-                        this.idaUtilsService.removeFromMyDirectAssets(myGlobalAssets[indexA]);
                         this.idaUtilsService.removeFromMyIndirectAssetsByDirect(myGlobalAssets[indexA]);
+                        this.idaUtilsService.removeFromMyDirectAssets(myGlobalAssets[indexA]);
                         const indirectMap = _.filter(this.indirectAnswerMap, (ind) =>
                             ind[0] === this.question.id &&
                             ind[1] === this.selectedAnswers[index].id &&

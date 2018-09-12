@@ -25,6 +25,7 @@ export class NavbarComponent implements OnInit {
     swaggerEnabled: boolean;
     modalRef: NgbModalRef;
     version: string;
+    navSubTitle: string;
 
     constructor(
         private loginService: LoginService,
@@ -34,7 +35,7 @@ export class NavbarComponent implements OnInit {
         private loginModalService: LoginModalService,
         private profileService: ProfileService,
         private router: Router,
-        private dataSharingServive: DatasharingService
+        private dataSharingService: DatasharingService
     ) {
         this.version = VERSION ? 'v' + VERSION : '';
         this.isNavbarCollapsed = true;
@@ -48,6 +49,13 @@ export class NavbarComponent implements OnInit {
         this.profileService.getProfileInfo().then((profileInfo) => {
             this.inProduction = profileInfo.inProduction;
             this.swaggerEnabled = profileInfo.swaggerEnabled;
+        });
+
+        this.navSubTitle = this.dataSharingService.getUpdate() != null ? 'Selected self assessment: ' + this.dataSharingService.getUpdate().navSubTitle : '';
+        this.dataSharingService.observeUpdate().subscribe((update: Update) => {
+            if (update) {
+                this.navSubTitle = 'Selected self assessment: ' + update.navSubTitle;
+            }
         });
     }
 
@@ -71,10 +79,10 @@ export class NavbarComponent implements OnInit {
         this.collapseNavbar();
         this.loginService.logout();
 
-        const update: Update = this.dataSharingServive.getUpdate();
+        const update: Update = this.dataSharingService.getUpdate();
         update.isSidebarCollapsed = true;
 
-        this.dataSharingServive.updateLayout(update);
+        this.dataSharingService.updateLayout(update);
 
         this.router.navigate(['']);
     }
