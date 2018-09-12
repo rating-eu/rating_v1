@@ -1,13 +1,13 @@
 <nav *ngIf="isAuthenticated()" class="left side-menu" id="sidebar" [ngClass]="{'sidebar-collapsed': isCollapsed}">
-    <a class="nav-link " (click)="toggleSideBar()"
+    <!-- <a class="nav-link " (click)="toggleSideBar()"
         [attr.aria-expanded]="sideBar?.isCollapsed" aria-controls="sidebar">
          <i *ngIf="isCollapsed" class="fas fa-angle-double-right fa-lg float-right" aria-hidden="true"></i>
          <span *ngIf="isCollapsed"></span>
          <span *ngIf="!isCollapsed">Entities</span>
          <i *ngIf="!isCollapsed" class="fas fa-bars fa-lg float-right" aria-hidden="true"></i>
 
-    </a>
-    
+    </a> -->
+    <div class="menu-title">Entities</div>
     <p-panelMenu [model]="items" [style]="{'width':'240px','height':'360px','border':'1px solid #ffffff'}"></p-panelMenu>
     <!--
     <p-slideMenu #sideMenu [popup]="isCollapsed" [model]="items" [style]="{'width':'240px','height':'360px','border':'1px solid #ffffff'}" [viewportHeight]="360"></p-slideMenu>
