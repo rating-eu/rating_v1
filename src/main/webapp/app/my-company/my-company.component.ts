@@ -3,6 +3,7 @@ import {AccountService, User, UserService} from '../shared/index';
 import {MyCompanyMgm, MyCompanyMgmService} from '../entities/my-company-mgm/index';
 import {HttpErrorResponse, HttpResponse} from '@angular/common/http';
 import {CompanyProfileMgm, CompanyProfileMgmService} from '../entities/company-profile-mgm/index';
+import {JhiAlertService} from 'ng-jhipster';
 
 @Component({
     selector: 'jhi-my-company',
@@ -22,7 +23,8 @@ export class MyCompanyComponent implements OnInit {
     constructor(private accountService: AccountService,
                 private userService: UserService,
                 private myCompanyService: MyCompanyMgmService,
-                private companyProfileService: CompanyProfileMgmService) {
+                private companyProfileService: CompanyProfileMgmService,
+                private jhiAlertService: JhiAlertService) {
     }
 
     ngOnInit() {
@@ -40,7 +42,7 @@ export class MyCompanyComponent implements OnInit {
                             this.error = error;
 
                             if (this.error.status == MyCompanyComponent.NOT_FOUND) {
-                                this.message = 'You don\'t have a company yet! Create or select one!';
+                                this.jhiAlertService.error(this.error.message, null, null);
 
                                 this.companyProfileService.query().subscribe(
                                     (response4: HttpResponse<CompanyProfileMgm[]>) => {
@@ -63,6 +65,7 @@ export class MyCompanyComponent implements OnInit {
 
         this.myCompanyService.create(this.myCompany).subscribe((response: HttpResponse<MyCompanyMgm>) => {
             this.myCompany = response.body;
+            this.jhiAlertService.success('hermeneutApp.messages.saved', null, null);
         });
     }
 }
