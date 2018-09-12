@@ -1,7 +1,6 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 import {errorRoute, navbarRoute, sidebarRoute} from './layouts';
-import {DEBUG_INFO_ENABLED} from './app.constants';
 
 const routes: Routes = [
     navbarRoute,
@@ -34,6 +33,10 @@ const routes: Routes = [
     {
         path: 'results',
         loadChildren: './results/results.module#ResultsModule'
+    },
+    {
+        path: 'my-company',
+        loadChildren: './my-company/my-company.module#MyCompanyModule'
     }
 ];
 
