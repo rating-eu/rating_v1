@@ -7,14 +7,23 @@ const routes: Routes = [
     {
         path: '',
         component: IdentifyThreatAgentComponent,
+        data: {
+            pageTitle: 'hermeneutApp.identifyThreatAgent.page.root.title'
+        },
         children: [
             {
                 path: 'questionnaires/:purpose',
-                loadChildren: '../questionnaires/questionnaires.module#QuestionnairesModule'
+                loadChildren: '../questionnaires/questionnaires.module#QuestionnairesModule',
+                data: {
+                    pageTitle: 'hermeneutApp.identifyThreatAgent.page.questionnaires.title'
+                }
             },
             {
                 path: 'result/:statusID',
-                component: ThreatResultComponent
+                component: ThreatResultComponent,
+                data: {
+                    pageTitle: 'hermeneutApp.identifyThreatAgent.page.result.title'
+                }
             }
         ]
     }
