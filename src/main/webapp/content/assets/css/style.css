@@ -168,6 +168,7 @@ ul li {
 }
 
 .side-menu {
+    overflow: scroll;
     width: 239px;
     z-index: 10;
     background: #ffffff;
@@ -183,11 +184,11 @@ ul li {
     width: 70px;
 }
 
-.ui-slidemenu .ui-menuitem{
+.ui-slidemenu .ui-menuitem {
     width: 240px;
 }
 
-.ui-slidemenu-wrapper .ui-slidemenu-content{
+.ui-slidemenu-wrapper .ui-slidemenu-content {
     height: 322px;
 }
 
@@ -595,7 +596,7 @@ body.enlarged.bg-transparent {
     position: absolute;
     right: 0;
     left: 240px;
-    background:#ddd;
+    background: #ddd;
     font-size: 12px;
 }
 
@@ -5344,7 +5345,7 @@ canvas {
 
 .page-title-box {
     padding: 8px 20px;
-    margin-top:70px;
+    margin-top: 70px;
 }
 
 .page-title {
@@ -5532,7 +5533,7 @@ ul.dropdown-menu.show li a {
 
 .jh-entity-details a,
 .card-box table td a {
-    color: #1881d2 ;
+    color: #1881d2;
 }
 
 .card-box h2 {
@@ -5564,7 +5565,7 @@ b.color-b {
     color: #094a87;
 }
 
-.d-block{
+.d-block {
     display: block;
 }
 
