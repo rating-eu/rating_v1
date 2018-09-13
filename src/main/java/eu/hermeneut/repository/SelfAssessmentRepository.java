@@ -21,9 +21,9 @@ public interface SelfAssessmentRepository extends JpaRepository<SelfAssessment, 
     @Query("select distinct self_assessment from SelfAssessment self_assessment left join fetch self_assessment.companyGroups left join fetch self_assessment.assets left join fetch self_assessment.threatagents left join fetch self_assessment.attackstrategies left join fetch self_assessment.externalaudits left join fetch self_assessment.questionnaires")
     List<SelfAssessment> findAllWithEagerRelationships();
 
-    @Query("select self_assessment from SelfAssessment self_assessment left join fetch self_assessment.companyGroups left join fetch self_assessment.assets left join fetch self_assessment.threatagents left join fetch self_assessment.attackstrategies left join fetch self_assessment.externalaudits left join fetch self_assessment.questionnaires where self_assessment.id =:id")
+    @Query("select DISTINCT self_assessment from SelfAssessment self_assessment left join fetch self_assessment.companyGroups left join fetch self_assessment.assets left join fetch self_assessment.threatagents left join fetch self_assessment.attackstrategies left join fetch self_assessment.externalaudits left join fetch self_assessment.questionnaires where self_assessment.id =:id")
     SelfAssessment findOneWithEagerRelationships(@Param("id") Long id);
 
-    @Query("SELECT self_assessment FROM SelfAssessment self_assessment left join fetch self_assessment.companyGroups left join fetch self_assessment.assets left join fetch self_assessment.threatagents left join fetch self_assessment.attackstrategies left join fetch self_assessment.externalaudits left join fetch self_assessment.questionnaires WHERE self_assessment.companyProfile.id =:companyProfileID")
+    @Query("SELECT DISTINCT self_assessment FROM SelfAssessment self_assessment left join fetch self_assessment.companyGroups left join fetch self_assessment.assets left join fetch self_assessment.threatagents left join fetch self_assessment.attackstrategies left join fetch self_assessment.externalaudits left join fetch self_assessment.questionnaires WHERE self_assessment.companyProfile.id =:companyProfileID")
     List<SelfAssessment> findAllByCompanyProfile(@Param("companyProfileID") Long companyProfileID);
 }
