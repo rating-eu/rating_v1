@@ -447,30 +447,32 @@ export class QuestionComponent implements OnInit, OnDestroy {
                     (myAsset) => myAsset.asset.id === selectedAsset.id
                 );
                 if (indexA !== -1) {
-                    this.idaUtilsService.removeFromMyIndirectAssetsByDirect(myGlobalAssets[indexA]);
-                    this.idaUtilsService.removeFromMyDirectAssets(myGlobalAssets[indexA]);
                     const indirectMap = _.filter(this.indirectAnswerMap, (ind) =>
-                        ind[0] === this.question.id &&
+                        // ind[0] === this.question.id &&
                         ind[1] === this.selectedAnswers[index].id &&
-                        ind[2] === idOffset &&
-                        ind[4] === myGlobalAssets[indexA]
+                        // ind[2] === idOffset &&
+                        ind[4] === myGlobalAssets[indexA].asset.id
                     );
                     for (const im of indirectMap) {
-                        const indexQT = _.findIndex(this.myQuestionAnswer,
+                        const indexQT = _.findIndex(this.idaUtilsService.getMyAnswersComplited(),
                             (myAnswer) =>
+                                // [this.question.id, ans.id, idOffset, myGlobalAssets[indexA].asset.id, myGlobalAssets[indexDirect].asset.id];
+                                myAnswer.question.id === im[0] &&
                                 myAnswer.answer.id === im[1] &&
                                 myAnswer.answerOffset === im[2]
                         );
                         if (indexQT !== -1) {
-                            this.idaUtilsService.removeFromMyAnswer(this.myQuestionAnswer[indexQT]);
+                            this.idaUtilsService.removeFromMyAnswer(this.idaUtilsService.getMyAnswersComplited()[indexQT]);
                             this.myQuestionAnswer.splice(indexQT, 1);
                         }
                     }
+                    this.idaUtilsService.removeFromMyIndirectAssetsByDirect(myGlobalAssets[indexA]);
+                    this.idaUtilsService.removeFromMyDirectAssets(myGlobalAssets[indexA]);
                     this.indirectAnswerMap = _.filter(this.indirectAnswerMap, (ind) =>
-                        ind[0] === this.question.id &&
+                        // ind[0] === this.question.id &&
                         ind[1] === this.selectedAnswers[index].id &&
-                        ind[2] === idOffset &&
-                        ind[4] !== myGlobalAssets[indexA]
+                        // ind[2] === idOffset &&
+                        ind[4] !== myGlobalAssets[indexA].asset.id
                     );
                     this.idaUtilsService.sendUpdateForIndirectMapToSubscriptor(this.indirectAnswerMap);
                 }
@@ -480,30 +482,31 @@ export class QuestionComponent implements OnInit, OnDestroy {
                         (myAsset) => myAsset.asset.id === ass.id
                     );
                     if (indexA !== -1) {
-                        this.idaUtilsService.removeFromMyIndirectAssetsByDirect(myGlobalAssets[indexA]);
-                        this.idaUtilsService.removeFromMyDirectAssets(myGlobalAssets[indexA]);
                         const indirectMap = _.filter(this.indirectAnswerMap, (ind) =>
-                            ind[0] === this.question.id &&
+                            // ind[0] === this.question.id &&
                             ind[1] === this.selectedAnswers[index].id &&
-                            ind[2] === idOffset &&
-                            ind[4] === myGlobalAssets[indexA]
+                            // ind[2] === idOffset &&
+                            ind[4] === myGlobalAssets[indexA].asset.id
                         );
                         for (const im of indirectMap) {
-                            const indexQT = _.findIndex(this.myQuestionAnswer,
+                            const indexQT = _.findIndex(this.idaUtilsService.getMyAnswersComplited(),
                                 (myAnswer) =>
+                                    myAnswer.question.id === im[0] &&
                                     myAnswer.answer.id === im[1] &&
                                     myAnswer.answerOffset === im[2]
                             );
                             if (indexQT !== -1) {
-                                this.idaUtilsService.removeFromMyAnswer(this.myQuestionAnswer[indexQT]);
+                                this.idaUtilsService.removeFromMyAnswer(this.idaUtilsService.getMyAnswersComplited()[indexQT]);
                                 this.myQuestionAnswer.splice(indexQT, 1);
                             }
                         }
+                        this.idaUtilsService.removeFromMyIndirectAssetsByDirect(myGlobalAssets[indexA]);
+                        this.idaUtilsService.removeFromMyDirectAssets(myGlobalAssets[indexA]);
                         this.indirectAnswerMap = _.filter(this.indirectAnswerMap, (ind) =>
-                            ind[0] === this.question.id &&
+                            // ind[0] === this.question.id &&
                             ind[1] === this.selectedAnswers[index].id &&
-                            ind[2] === idOffset &&
-                            ind[4] !== myGlobalAssets[indexA]
+                            // ind[2] === idOffset &&
+                            ind[4] !== myGlobalAssets[indexA].asset.id
                         );
                         this.idaUtilsService.sendUpdateForIndirectMapToSubscriptor(this.indirectAnswerMap);
                     }
@@ -517,6 +520,7 @@ export class QuestionComponent implements OnInit, OnDestroy {
                 this.myQuestionAnswer.splice(indexQ, 1);
             }
             this.selectedAnswers.splice(index, 1);
+            this.idaUtilsService.sendUpdateForAnswersToSubscriptor(this.idaUtilsService.getMyAnswersComplited());
         } else {
             if (!(selectedAsset instanceof Array)) {
                 const indexA = _.findIndex(myGlobalAssets,

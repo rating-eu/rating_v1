@@ -398,7 +398,7 @@ export class IdentifyAssetUtilService {
             if (answer.answer.asset) {
                 linked = [answer.answer.id, answer.question.id, answer.answerOffset, answer.answer.asset.id];
                 this.myAnswerLinkedMap.push(linked);
-            } else if (answer.answer.asset) {
+            } else if (answer.answer.assetCategory) {
                 // ricerco su myAssets
                 for (const gA of this.myAssets) {
                     if ((gA.asset as AssetMgm).assetcategory.id === answer.answer.assetCategory.id) {
@@ -406,6 +406,7 @@ export class IdentifyAssetUtilService {
                         this.myAnswerLinkedMap.push(linked);
                     }
                 }
+                /*
                 // ricerco su direct
                 for (const dA of this.myDirectAssets) {
                     if ((((dA.myAsset) as MyAssetMgm).asset as AssetMgm).assetcategory.id === answer.answer.assetCategory.id) {
@@ -420,6 +421,7 @@ export class IdentifyAssetUtilService {
                         this.myAnswerLinkedMap.push(linked);
                     }
                 }
+                */
             } else {
                 linked = [answer.answer.id, answer.question.id, answer.answerOffset];
                 this.myAnswerLinkedMap.push(linked);
@@ -435,6 +437,71 @@ export class IdentifyAssetUtilService {
         // Prevedere pulizia delle linkedAnswer
         if (index !== -1) {
             this.myAnswersComplited.splice(index, 1);
+            if (answer.answer.asset) {
+                const indexQ = _.findIndex(this.myAnswerLinkedMap, (linked) =>
+                    linked[0] === answer.answer.id &&
+                    linked[1] === answer.question.id &&
+                    linked[2] === answer.answerOffset &&
+                    linked[3] === answer.answer.asset.id
+                );
+                if (indexQ !== -1) {
+                    this.myAnswerLinkedMap.splice(indexQ, 1);
+                }
+            } else if (answer.answer.assetCategory) {
+                // ricerco su myAssets
+                for (const gA of this.myAssets) {
+                    if ((gA.asset as AssetMgm).assetcategory.id === answer.answer.assetCategory.id) {
+                        const indexQ = _.findIndex(this.myAnswerLinkedMap, (linked) =>
+                            linked[0] === answer.answer.id &&
+                            linked[1] === answer.question.id &&
+                            linked[2] === answer.answerOffset &&
+                            linked[3] === gA.asset.id
+                        );
+                        if (indexQ !== -1) {
+                            this.myAnswerLinkedMap.splice(indexQ, 1);
+                        }
+                    }
+                }
+                /*
+                // ricerco su direct
+                for (const dA of this.myDirectAssets) {
+                    if ((((dA.myAsset) as MyAssetMgm).asset as AssetMgm).assetcategory.id === answer.answer.assetCategory.id) {
+                        const indexQ = _.findIndex(this.myAnswerLinkedMap, (linked) =>
+                            linked[0] === answer.answer.id &&
+                            linked[1] === answer.question.id &&
+                            linked[2] === answer.answerOffset &&
+                            linked[3] === (((dA.myAsset) as MyAssetMgm).asset as AssetMgm).id
+                        );
+                        if (indexQ !== -1) {
+                            this.myAnswerLinkedMap.splice(indexQ, 1);
+                        }
+                    }
+                }
+                // ricerco su indirect
+                for (const dI of this.myIndirectAssets) {
+                    if ((((dI.myAsset) as MyAssetMgm).asset as AssetMgm).assetcategory.id === answer.answer.assetCategory.id) {
+                        const indexQ = _.findIndex(this.myAnswerLinkedMap, (linked) =>
+                            linked[0] === answer.answer.id &&
+                            linked[1] === answer.question.id &&
+                            linked[2] === answer.answerOffset &&
+                            linked[3] === (((dI.myAsset) as MyAssetMgm).asset as AssetMgm).id
+                        );
+                        if (indexQ !== -1) {
+                            this.myAnswerLinkedMap.splice(indexQ, 1);
+                        }
+                    }
+                }
+                */
+            } else {
+                const indexQ = _.findIndex(this.myAnswerLinkedMap, (linked) =>
+                    linked[0] === answer.answer.id &&
+                    linked[1] === answer.question.id &&
+                    linked[2] === answer.answerOffset
+                );
+                if (indexQ !== -1) {
+                    this.myAnswerLinkedMap.splice(indexQ, 1);
+                }
+            }
         }
     }
 

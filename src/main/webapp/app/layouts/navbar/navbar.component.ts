@@ -51,9 +51,9 @@ export class NavbarComponent implements OnInit {
             this.swaggerEnabled = profileInfo.swaggerEnabled;
         });
 
-        this.navSubTitle = this.dataSharingService.getUpdate() != null ? 'Selected self assessment: ' + this.dataSharingService.getUpdate().navSubTitle : '';
+        this.navSubTitle = this.dataSharingService.getUpdate() != null ? 'Selected self assessment: ' + this.dataSharingService.getUpdate().navSubTitle : null;
         this.dataSharingService.observeUpdate().subscribe((update: Update) => {
-            if (update) {
+            if (update && update.navSubTitle) {
                 this.navSubTitle = 'Selected self assessment: ' + update.navSubTitle;
             }
         });
