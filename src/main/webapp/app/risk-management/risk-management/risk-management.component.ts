@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { SelfAssessmentMgm, SelfAssessmentMgmService } from '../../entities/self-assessment-mgm';
 import { RiskManagementService } from '../risk-management.service';
 import { CriticalLevelMgm, CriticalLevelMgmService } from '../../entities/critical-level-mgm';
+import { JhiAlertService } from '../../../../../../node_modules/ng-jhipster';
 
 @Component({
   // tslint:disable-next-line:component-selector
@@ -25,7 +26,8 @@ export class RiskManagementComponent implements OnInit {
   constructor(
     private mySelfAssessmentService: SelfAssessmentMgmService,
     private criticalLevelService: CriticalLevelMgmService,
-    private riskService: RiskManagementService
+    private riskService: RiskManagementService,
+    private jhiAlertService: JhiAlertService
   ) { }
 
   ngOnInit() {
@@ -163,7 +165,7 @@ export class RiskManagementComponent implements OnInit {
     this.criticalLevelService.update(this.criticalLevel).toPromise().then((res) => {
       if (res) {
         this.criticalLevel = res.body;
-        // TODO Maurizio Inserire un messaggio salvato con successo
+        this.jhiAlertService.success('hermeneutApp.messages.saved', null, null);
       }
     });
   }

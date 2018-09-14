@@ -4,7 +4,9 @@ import {SelfAssessmentMgmService, SelfAssessmentMgm} from '../../entities/self-a
 import {CriticalLevelMgm} from '../../entities/critical-level-mgm';
 import {MyAssetMgm} from '../../entities/my-asset-mgm';
 import {MyAssetAttackChance} from '../model/my-asset-attack-chance.model';
-import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
+import { SessionStorageService } from '../../../../../../node_modules/ngx-webstorage';
+import { Router } from '../../../../../../node_modules/@angular/router';
+// import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
     // tslint:disable-next-line:component-selector
@@ -23,14 +25,17 @@ export class RiskEvaluationComponent implements OnInit {
     public selectedColumn: number;
     public mapAssetAttacks: Map<number, MyAssetAttackChance[]> = new Map<number, MyAssetAttackChance[]>();
     public loading = false;
-    public modalContent: string;
+    // public modalContent: string;
+    private selectedAttacksChance: MyAssetAttackChance[];
     private closeResult: string;
     private selectedAsset: MyAssetMgm;
 
     constructor(
         private mySelfAssessmentService: SelfAssessmentMgmService,
         private riskService: RiskManagementService,
-        private modalService: NgbModal
+        private sessionService: SessionStorageService,
+        private router: Router
+        // private modalService: NgbModal
     ) {
     }
 
@@ -123,14 +128,20 @@ export class RiskEvaluationComponent implements OnInit {
     }
 
     public loadContent(row: number, column: number, myAsset: MyAssetMgm, type: string, content: any) {
-        this.modalContent = this.whichContentByCell(row, column, myAsset, type);
+        // this.modalContent = this.whichContentByCell(row, column, myAsset, type);
+        this.selectedAttacksChance = this.whichAttackChanceByCell(row, column, myAsset, type);
+        this.sessionService.store('selectedAttacksChence', this.selectedAttacksChance);
+        this.sessionService.store('selectedAsset', myAsset);
+        this.router.navigate(['/risk-management/risk-mitigation']);
+        /*
         this.modalService.open(content).result.then((result) => {
             this.closeResult = `Closed with: ${result}`;
         }, (reason) => {
             this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
         });
+        */
     }
-
+    /*
     private getDismissReason(reason: any): string {
         if (reason === ModalDismissReasons.ESC) {
             return 'by pressing ESC';
@@ -139,6 +150,37 @@ export class RiskEvaluationComponent implements OnInit {
         } else {
             return `with: ${reason}`;
         }
+    }
+    */
+
+    public whichAttackChanceByCell(row: number, column: number, myAsset: MyAssetMgm, type: string): MyAssetAttackChance[] {
+        const attacks = this.mapAssetAttacks.get(myAsset.id);
+        const level = row * column;
+        const selectedAttacks: MyAssetAttackChance[] = [];
+        if (attacks) {
+            switch (type) {
+                case 'likelihood-vulnerability': {
+                    for (const attack of attacks) {
+                        const likelihoodVulnerability = attack.likelihood * attack.vulnerability;
+                        if (level === likelihoodVulnerability) {
+                            selectedAttacks.push(attack);
+                        }
+                    }
+                    break;
+                }
+                case 'critically-impact': {
+                    for (const attack of attacks) {
+                        const criticallyImpact = attack.critical * attack.impact;
+                        if (level === criticallyImpact) {
+                            selectedAttacks.push(attack);
+                        }
+                    }
+                    break;
+                }
+            }
+        }
+
+        return selectedAttacks;
     }
 
     public whichContentByCell(row: number, column: number, myAsset: MyAssetMgm, type: string): string {
