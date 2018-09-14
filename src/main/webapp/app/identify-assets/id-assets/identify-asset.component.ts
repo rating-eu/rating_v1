@@ -54,7 +54,8 @@ export class IdentifyAssetComponent implements OnInit, OnDestroy {
     indirectAssetSelected: IndirectAssetMgm;
     attackCostType = MyCostType;
 
-    constructor(private jhiAlertService: JhiAlertService,
+    constructor(
+        private jhiAlertService: JhiAlertService,
         private eventManager: JhiEventManager,
         private principal: Principal,
         private mySelfAssessmentService: SelfAssessmentMgmService,
@@ -230,7 +231,7 @@ export class IdentifyAssetComponent implements OnInit, OnDestroy {
                 this.myDirectAssets = savedAssets.directAssets;
                 this.myIndirectAssets = savedAssets.indirectAssets;
             }
-            // TODO Maurizio Inserire un messaggio salvato con successo
+            this.jhiAlertService.success('hermeneutApp.messages.saved', null, null);
             this.ngOnInit();
         });
     }
