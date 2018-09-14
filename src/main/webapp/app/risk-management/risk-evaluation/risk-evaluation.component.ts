@@ -1,3 +1,5 @@
+import * as _ from 'lodash';
+
 import {Component, OnInit} from '@angular/core';
 import {RiskManagementService} from '../risk-management.service';
 import {SelfAssessmentMgmService, SelfAssessmentMgm} from '../../entities/self-assessment-mgm';
@@ -6,6 +8,7 @@ import {MyAssetMgm} from '../../entities/my-asset-mgm';
 import {MyAssetAttackChance} from '../model/my-asset-attack-chance.model';
 import { SessionStorageService } from '../../../../../../node_modules/ngx-webstorage';
 import { Router } from '../../../../../../node_modules/@angular/router';
+
 // import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
@@ -75,6 +78,7 @@ export class RiskEvaluationComponent implements OnInit {
                     this.riskService.getAttackChance(myAsset, this.mySelf).toPromise().then((res2) => {
                         if (res2) {
                             this.mapAssetAttacks.set(myAsset.id, res2);
+                            this.mapAssetAttacks = this.orderMapByAttackCosts(this.mapAssetAttacks);
                         }
                         this.loading = false;
                     });
@@ -102,7 +106,16 @@ export class RiskEvaluationComponent implements OnInit {
             }
         });
     }
-
+    /*
+    private orderMapByAttackCosts(mapAssetAttacks: Map<number, MyAssetAttackChance[]>): Map<number, MyAssetAttackChance[]>{
+        const orderMap: Map<number, MyAssetAttackChance[]> = new Map<number, MyAssetAttackChance[]>();
+        const iterable = mapAssetAttacks.entries();
+        while(iterable.next()){
+            const item1: MyAssetAttackChance[] = iterable.next().value();
+        }
+        return null;
+    }
+    */
     public selectAsset(asset: MyAssetMgm) {
         if (!this.selectedAsset) {
             this.selectedAsset = asset;
