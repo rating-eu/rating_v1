@@ -26,6 +26,9 @@ import * as _ from 'lodash';
     ]
 })
 export class WeaknessResultComponent implements OnInit, OnDestroy {
+    viewDetails: boolean = false;
+    private selectedAugmentedAttackStrategy: AugmentedAttackStrategy = null;
+
     private _subscriptions: Subscription[] = [];
     debug = false;
 
@@ -147,5 +150,24 @@ export class WeaknessResultComponent implements OnInit, OnDestroy {
         this.likelihoodStep = LikelihoodStep[stepName];
 
         console.log('Likelihood Step: ' + this.likelihoodStep);
+    }
+
+    //[routerLink]="['/attack-strategy-mgm', augmentedAttackStrategy.id]"
+
+    selectAttackStrategy(augmentedAttackStrategy: AugmentedAttackStrategy) {
+        this.selectedAugmentedAttackStrategy = augmentedAttackStrategy;
+    }
+
+    showDetails() {
+        if (this.selectedAugmentedAttackStrategy) {
+            this.viewDetails = true;
+        } else {
+            this.viewDetails = false;
+        }
+    }
+
+    hideDetails() {
+        this.selectAttackStrategy(null);
+        this.viewDetails = false;
     }
 }
