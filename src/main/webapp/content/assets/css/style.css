@@ -115,7 +115,7 @@ ul li {
     background: linear-gradient(to top, #0469a7, #0a417d);
     border-radius: 0;
     margin-bottom: 0;
-    padding: 0 10px 0 0;
+    padding: 0 10px 0 0 !Important;
     /*margin-left: 240px;*/
     min-height: 70px;
     box-shadow: 0 0 18px 0 rgba(0, 0, 0, 0.3);
@@ -168,16 +168,17 @@ ul li {
 }
 
 .side-menu {
-    overflow: scroll;
+    overflow-x: hidden;
     width: 239px;
     z-index: 10;
-    background: #ffffff;
+    background: #fff;
     bottom: 0;
     margin-top: 0;
     padding-bottom: 30px;
-    position: fixed;
+    position: absolute;
     top: 70px;
-    box-shadow: 0 0 24px 0 rgba(0, 0, 0, 0.06), 0 1px 0 0 rgba(0, 0, 0, 0.02);
+    box-shadow: 0 0 24px 0 rgba(0,0,0,.06), 0 1px 0 0 rgba(0,0,0,.02);
+    overflow-y: auto;
 }
 
 .sidebar-collapsed {
@@ -5345,7 +5346,6 @@ canvas {
 
 .page-title-box {
     padding: 8px 20px;
-    margin-top: 70px;
 }
 
 .page-title {
