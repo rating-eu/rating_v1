@@ -19,6 +19,8 @@ export class SelfAssessmentMgmService implements OnInit {
 
     private static readonly SELF_ASSESSMENT_KEY = 'selfAssessment';
     private resourceUrl = SERVER_API_URL + 'api/self-assessments';
+    private static readonly COMPANY_PROFILE_KEY = '{companyProfileID}';
+    private resourceByCompanyUrl = SERVER_API_URL + 'api/self-assessments/by-company/' + SelfAssessmentMgmService.COMPANY_PROFILE_KEY;
     private resourceSearchUrl = SERVER_API_URL + 'api/_search/self-assessments';
     private selfAssessmentSelected: SelfAssessmentMgm;
 
@@ -148,5 +150,10 @@ export class SelfAssessmentMgmService implements OnInit {
 
         copy.modified = this.dateUtils.toDate(selfAssessment.modified + '');
         return copy;
+    }
+
+    getSelfAssessmentsByCompanyProfile(companyProfileID: number): Observable<SelfAssessmentMgm[]> {
+        return this.http.get<SelfAssessmentMgm[]>(
+            this.resourceByCompanyUrl.replace(SelfAssessmentMgmService.COMPANY_PROFILE_KEY, companyProfileID + ''));
     }
 }

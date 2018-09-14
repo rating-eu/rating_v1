@@ -1,21 +1,11 @@
 import {NgModule} from '@angular/core';
 import {Routes, RouterModule} from '@angular/router';
-import {MyCompanyComponent} from './my-company/my-company.component';
+import {MyCompanyComponent} from './my-company.component';
 
 const routes: Routes = [
     {
         path: '',
         component: MyCompanyComponent,
-        /*children: [
-            {
-                path: 'questionnaires/:purpose',
-                loadChildren: '../questionnaires/questionnaires.module#QuestionnairesModule'
-            },
-            {
-                path: 'result/:statusID',
-                component: ThreatResultComponent
-            }
-        ]*/
     }
 ];
 
@@ -27,6 +17,5 @@ const routes: Routes = [
         RouterModule
     ]
 })
-
 export class MyCompanyRoutingModule {
 }

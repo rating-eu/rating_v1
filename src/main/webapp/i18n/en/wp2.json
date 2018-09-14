@@ -1,8 +1,23 @@
 {
     "hermeneutApp": {
-        "identifyAsset" : {
-            "home": {
-                "title": "Asset Identify"
+        "identifyAsset": {
+            "page": {
+                "root": {
+                    "title": "Identify Asset"
+                }
+            }
+        },
+        "identifyThreatAgent": {
+            "page": {
+                "root": {
+                    "title": "Identify Threat Agents"
+                },
+                "questionnaires": {
+                    "title": "Identify Threat Agents - Questionnaires"
+                },
+                "result": {
+                    "title": "Identify Threat Agents - Results"
+                }
             }
         }
     }

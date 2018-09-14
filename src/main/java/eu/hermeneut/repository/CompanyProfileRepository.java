@@ -19,7 +19,7 @@ public interface CompanyProfileRepository extends JpaRepository<CompanyProfile, 
     @Query("select distinct company_profile from CompanyProfile company_profile left join fetch company_profile.containers")
     List<CompanyProfile> findAllWithEagerRelationships();
 
-    @Query("select company_profile from CompanyProfile company_profile left join fetch company_profile.containers where company_profile.id =:id")
+    @Query("select DISTINCT company_profile from CompanyProfile company_profile left join fetch company_profile.containers where company_profile.id =:id")
     CompanyProfile findOneWithEagerRelationships(@Param("id") Long id);
 
 }

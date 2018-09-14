@@ -27,71 +27,81 @@ export class SidebarComponent implements OnInit {
     ngOnInit() {
         this.items = [
             {
-                label: '[Company name]',
+                label: 'Company',
                 items: [
                     {label: 'My Company', icon: 'fa fa-home', routerLink: ['my-company']},
-                    {label: 'Utenti censiti', icon: 'fa fa-refresh'},
-                    {label: 'Self assessments dell\'azienda', icon: 'fa fa-repeat', routerLink: ['self-assessment-mgm']}
+                    {label: 'My SelfAssessments', icon: 'fa fa-repeat', routerLink: ['my-self-assessments']}
                 ]
             },
             {
                 label: 'Self Assessment :{nome del self assessment selezionato}',
                 items: [
                     {
-                        label: 'Likelihood and Vulnerabilities', icon: 'fa fa-plus',
+                        label: 'Likelihood and Vulnerabilities', icon: '',
                         items: [
                             {
-                                label: 'Assets(What do I own?)', icon: 'fa fa-plus',
+                                label: 'Assets', icon: '', title: 'What do I own?',
                                 items: [
                                     {
-                                        label: 'View all available assets',
-                                        icon: 'fa fa-plus',
-                                        routerLink: ['identify-asset']
+                                        label: 'View all assets',
+                                        icon: '',
+                                        routerLink: ['/asset-mgm']
                                     },
-                                    {label: 'Identify Assets', icon: 'fa fa-plus', routerLink: ['identify-asset']}
+                                    {label: 'Identify Assets', icon: '', routerLink: ['identify-asset']}
                                 ]
                             },
                             {
-                                label: 'Threat Agents (who would attack my company? and why?)', icon: 'fa fa-plus',
+                                label: 'Threat Agents', icon: '', title: 'who would attack my company? and why?',
                                 items: [
-                                    {label: 'View all available Threat Agents', icon: 'fa fa-plus'},
+                                    {
+                                        label: 'View all Threat Agents',
+                                        icon: '',
+                                        routerLink: ['/threat-agent-mgm']
+                                    },
                                     {
                                         label: 'Identify Threat Agents',
-                                        icon: 'fa fa-plus',
+                                        icon: '',
                                         routerLink: ['identify-threat-agent']
                                     }
                                 ]
                             },
                             {
-                                label: 'Attack Plans (how my company may be attacked?)', icon: 'fa fa-plus',
+                                label: 'Attack Plans', icon: '', title: 'how my company may be attacked?',
                                 items: [
-                                    {label: 'View All Attack Strategies', icon: 'fa fa-plus'},
-                                    {label: 'View Countermeasures', icon: 'fa fa-plus'},
-                                    {label: 'Evaluate weakness', icon: 'fa fa-plus', routerLink: ['evaluate-weakness']}
+                                    {
+                                        label: 'View all Attack Strategies',
+                                        icon: '',
+                                        routerLink: ['/attack-strategy-mgm']
+
+                                    },
+                                    {
+                                        label: 'View all Mitigations',
+                                        icon: '',
+                                        routerLink: ['/mitigation-mgm']
+                                    },
+                                    {label: 'Evaluate weakness', icon: '', routerLink: ['evaluate-weakness']}
                                 ]
                             },
                             {
-                                label: 'Results (which are the weakness of my company?)', icon: 'fa fa-plus',
-                                items: [
-                                    {label: 'Initial', icon: 'fa fa-plus', routerLink: ['results']},
-                                    {label: 'Contextual', icon: 'fa fa-plus', routerLink: ['results']},
-                                    {label: 'Refined', icon: 'fa fa-plus', routerLink: ['results']}
-                                ]
+                                label: 'Results',
+                                icon: '',
+                                title: 'which are the weakness of my company?',
+                                routerLink: ['results'],
                             }
                         ]
                     },
-                    {label: 'Impact Evaluation', icon: 'fa fa-plus', routerLink: ['impact-evaluation']},
+                    {label: 'Impact Evaluation', icon: '', routerLink: ['impact-evaluation']},
                     {
-                        label: 'Risk Management', icon: 'fa fa-plus',
+                        label: 'Risk Management', icon: '',
                         items: [
                             {
                                 label: 'Risk evaluation',
-                                icon: 'fa fa-plus',
+                                icon: '',
                                 routerLink: ['risk-management/risk-evaluation']
                             },
                             {
                                 label: 'Risk Mitigation',
-                                icon: 'fa fa-plus',
+                                icon: '',
                                 routerLink: ['risk-management/risk-mitigation']
                             },
                         ]

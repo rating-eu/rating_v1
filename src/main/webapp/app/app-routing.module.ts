@@ -37,6 +37,10 @@ const routes: Routes = [
     {
         path: 'my-company',
         loadChildren: './my-company/my-company.module#MyCompanyModule'
+    },
+    {
+        path: 'my-self-assessments',
+        loadChildren: './my-self-assessments/my-self-assessments.module#MySelfAssessmentsModule'
     }
 ];
 

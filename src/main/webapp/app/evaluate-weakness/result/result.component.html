@@ -1,5 +1,5 @@
 <div class="card-box">
-    <div class="table-responsive">
+    <div *ngIf="!viewDetails" class="table-responsive">
         <select class="m-1" [(ngModel)]="selectedThreatAgent" (ngModelChange)="threatAgentChanged($event)">
             <option [ngValue]="null" selected></option>
             <option *ngFor="let threatAgent of threatAgents" [ngValue]="threatAgent">
@@ -98,5 +98,27 @@
                 </td>
             </tbody>
         </table>
+    </div>
+
+    <div *ngIf="viewDetails">
+        <div class="row">
+            <div class="col-md-11">
+                <h4>TITLE</h4>
+            </div>
+            <div class="col-md-1">
+                <button (click)="hideDetails()">X</button>
+            </div>
+        </div>
+        <div class="row">
+            DESCRIPTION DETATILS
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                ThreatAgents
+            </div>
+            <div class="col-md-6">
+                Assets
+            </div>
+        </div>
     </div>
 </div>

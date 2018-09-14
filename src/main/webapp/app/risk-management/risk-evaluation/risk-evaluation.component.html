@@ -3,6 +3,7 @@
 </div>
 <div class="container" *ngIf="!loading  && myAssets.length > 0 && mapAssetAttacks.size > 0">
   <ng-container *ngFor="let myAsset of myAssets">
+    <!--
     <ng-template #assetDetail let-c="close" let-d="dismiss">
       <div class="modal-header">
         <h5 class="modal-title">Detail about {{myAsset.asset.name}}!</h5>
@@ -13,12 +14,13 @@
       <div class="modal-body">
         <p>{{modalContent}}</p>
       </div>
-      <!--
+      //TO COMMENT
             <div class="modal-footer">
               <button type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">Close</button>
             </div>
-            -->
+      // END COMMENT
     </ng-template>
+    -->
     <div class="row">
       <div class="col-md-12" *ngIf="criticalLevel">
         <div class="card">
@@ -82,7 +84,7 @@
                 </div>
                 <div *ngFor="let j of squareRowElement" class="row">
                   <div class="col-md-1 text-right">
-                    <ng-container *ngIf="j!==lastSquareRowElement">{{lastSquareRowElement-j}}</ng-container>
+                    <ng-container *ngIf="j!==lastSquareRowElement">{{(lastSquareRowElement-j)*(lastSquareRowElement-j)}}</ng-container>
                   </div>
                   <ng-container *ngIf="j===lastSquareRowElement">
                     <div *ngFor="let i of squareColumnElement" class="col-md-2 text-center">
