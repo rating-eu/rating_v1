@@ -54,9 +54,9 @@ export class RiskEvaluationComponent implements OnInit {
                     this.riskService.getAttackChance(myAsset, this.mySelf).toPromise().then((res2) => {
                         if (res2) {
                             this.mapAssetAttacks.set(myAsset.id, res2);
-                            const ordered = this.orderLevels(this.mapAssetAttacks);
-                            this.mapAssetAttacks = ordered.orderedMap;
-                            this.myAssets = ordered.orderedArray;
+                            // const ordered = this.orderLevels(this.mapAssetAttacks);
+                            // this.mapAssetAttacks = ordered.orderedMap;
+                            // this.myAssets = ordered.orderedArray;
                         }
                         this.loading = false;
                     });
