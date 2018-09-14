@@ -132,7 +132,7 @@ export class RiskEvaluationComponent implements OnInit {
         this.selectedAttacksChance = this.whichAttackChanceByCell(row, column, myAsset, type);
         this.sessionService.store('selectedAttacksChence', this.selectedAttacksChance);
         this.sessionService.store('selectedAsset', myAsset);
-        this.router.navigate(['/risk-mitigation']);
+        this.router.navigate(['/risk-management/risk-mitigation']);
         /*
         this.modalService.open(content).result.then((result) => {
             this.closeResult = `Closed with: ${result}`;
