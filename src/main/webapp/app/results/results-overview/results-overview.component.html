@@ -1,20 +1,20 @@
 <div class="card-box">
-    <div class="row" *ngIf="maxRefinedVulnerability">
+    <div class="row" *ngIf="maxVulnerability">
         <div class="col-md-12 align-middle text-center">
             <mat-progress-spinner
                 style="margin: 0 auto;"
                 [ngClass]="{
-                              'low': maxRefinedVulnerability * 5 > 0 && maxRefinedVulnerability * 5 <= 1,
-                              'low-medium': maxRefinedVulnerability * 5 > 1 && maxRefinedVulnerability * 5 <= 2,
-                              'medium': maxRefinedVulnerability * 5 > 2 && maxRefinedVulnerability * 5 <= 3,
-                              'medium-high': maxRefinedVulnerability * 5 > 3 && maxRefinedVulnerability * 5 <= 4,
-                              'high': maxRefinedVulnerability * 5 > 4 && maxRefinedVulnerability * 5 <= 5
+                              'low': maxVulnerability * 5 > 0 && maxVulnerability * 5 <= 1,
+                              'low-medium': maxVulnerability * 5 > 1 && maxVulnerability * 5 <= 2,
+                              'medium': maxVulnerability * 5 > 2 && maxVulnerability * 5 <= 3,
+                              'medium-high': maxVulnerability * 5 > 3 && maxVulnerability * 5 <= 4,
+                              'high': maxVulnerability * 5 > 4 && maxVulnerability * 5 <= 5
                               }"
-                [value]="maxRefinedVulnerability * 100">
+                [value]="maxVulnerability * 100">
             </mat-progress-spinner>
 
             <div style="top:-60px; z-index:2;position:relative;">
-                {{maxRefinedVulnerability | percent}}
+                {{maxVulnerability | percent}}
             </div>
         </div>
     </div>

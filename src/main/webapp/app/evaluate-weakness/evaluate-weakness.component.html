@@ -1,91 +1,91 @@
 <div class="card-box">
     <h2><span>Evaluate Weakness</span></h2>
-<span *ngIf="!selectedSelfAssessment" class="alert alert-warning">Please, <a [routerLink]="['../self-assessment-mgm']"> select</a>
+    <span *ngIf="!selectedSelfAssessment" class="alert alert-warning">Please, <a
+        [routerLink]="['../self-assessment-mgm']"> select</a>
     a self assessment, otherwise, have a look to our taxonomies</span>
-<!--
-<button type="submit"
-        (click)="previousState()"
-        class="btn btn-info">
-    <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
-</button>
-<br/><br/> -->
-<table class="table table-striped">
-    <thead>
-    <tr>
-        <th><span>Name</span></th>
-        <th><span>Created</span></th>
-        <th><span>Modified</span></th>
-        <th><span>User</span></th>
-        <th><span>Companyprofiles</span></th>
-        <th><span>Groups</span></th>
-        <th><span>Asset</span></th>
-        <th><span>Threatagent</span></th>
-        <th><span>Attackstrategy</span></th>
-        <th><span>Externalaudit</span></th>
-        <th><span>Questionnaire</span></th>
-        <th></th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr>
-        <td><a [routerLink]="['../self-assessment-mgm', selectedSelfAssessment.id ]">{{selectedSelfAssessment.name}}</a>
-        </td>
-        <td>{{selectedSelfAssessment.created | date:'medium'}}</td>
-        <td>{{selectedSelfAssessment.modified | date:'medium'}}</td>
-        <td>
-            {{selectedSelfAssessment.user?.login}}
-        </td>
-        <td>
-                    <span *ngFor="let companyprofiles of selectedSelfAssessment.companyprofiles; let last = last">
-                            <a class="form-control-static"
-                               [routerLink]="['../company-profile-mgm', companyprofiles?.id ]">{{companyprofiles.name}}</a>{{last ? '' : ', '}}
-                        </span>
-        </td>
-        <td>
+    <!--
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+    </button>
+    <br/><br/> -->
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th><span>Name</span></th>
+            <th><span>Created</span></th>
+            <th><span>Modified</span></th>
+            <th><span>User</span></th>
+            <th><span>Companyprofile</span></th>
+            <th><span>Groups</span></th>
+            <th><span>Asset</span></th>
+            <th><span>Threatagent</span></th>
+            <th><span>Attackstrategy</span></th>
+            <th><span>Externalaudit</span></th>
+            <th><span>Questionnaire</span></th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td><a
+                [routerLink]="['../self-assessment-mgm', selectedSelfAssessment.id ]">{{selectedSelfAssessment.name}}</a>
+            </td>
+            <td>{{selectedSelfAssessment.created | date:'medium'}}</td>
+            <td>{{selectedSelfAssessment.modified | date:'medium'}}</td>
+            <td>
+                {{selectedSelfAssessment.user?.login}}
+            </td>
+            <td>
+                <a class="form-control-static"
+                   [routerLink]="['../company-profile-mgm', selectedSelfAssessment.companyProfile?.id ]">{{selectedSelfAssessment.companyProfile.name}}</a>
+            </td>
+            <td>
                     <span *ngFor="let group of selectedSelfAssessment.companyGroups; let last = last">
                             <a class="form-control-static" [routerLink]="['../company-group-mgm', group?.id ]">{{group.name}}</a>{{last ? '' : ', '}}
                         </span>
-        </td>
-        <td>
+            </td>
+            <td>
                     <span *ngFor="let asset of selectedSelfAssessment.assets; let last = last">
                             <a class="form-control-static"
                                [routerLink]="['../asset-mgm', asset?.id ]">{{asset.name}}</a>{{last ? '' : ', '}}
                         </span>
-        </td>
-        <td>
+            </td>
+            <td>
                     <span *ngFor="let threatagent of selectedSelfAssessment.threatagents; let last = last">
                             <a class="form-control-static" [routerLink]="['../threat-agent-mgm', threatagent?.id ]">{{threatagent.name}}</a>{{last ? '' : ', '}}
                         </span>
-        </td>
-        <td>
+            </td>
+            <td>
                     <span *ngFor="let attackstrategy of selectedSelfAssessment.attackstrategies; let last = last">
                             <a class="form-control-static"
                                [routerLink]="['../attack-strategy-mgm', attackstrategy?.id ]">{{attackstrategy.name}}</a>{{last ? '' : ', '}}
                         </span>
-        </td>
-        <td>
+            </td>
+            <td>
                     <span *ngFor="let externalaudit of selectedSelfAssessment.externalaudits; let last = last">
                             <a class="form-control-static" [routerLink]="['../external-audit-mgm', externalaudit?.id ]">{{externalaudit.name}}</a>{{last ? '' : ', '}}
                         </span>
-        </td>
-        <td>
+            </td>
+            <td>
                     <span *ngFor="let questionnaire of selectedSelfAssessment.questionnaires; let last = last">
                             <a class="form-control-static" [routerLink]="['../questionnaire-mgm', questionnaire?.id ]">{{questionnaire.name}}</a>{{last ? '' : ', '}}
                         </span>
-        </td>
-        <td class="text-right">
-            <div class="btn-group flex-btn-group-container">
-                <button type="submit"
-                        [routerLink]="['../self-assessment-mgm', selectedSelfAssessment.id ]"
-                        class="btn btn-info btn-sm"
-                        placement="top" ngbTooltip="View" container="body">
-                    <span class="fa fa-eye"></span>
-                </button>
-            </div>
-        </td>
-    </tr>
-    </tbody>
-</table>
+            </td>
+            <td class="text-right">
+                <div class="btn-group flex-btn-group-container">
+                    <button type="submit"
+                            [routerLink]="['../self-assessment-mgm', selectedSelfAssessment.id ]"
+                            class="btn btn-info btn-sm"
+                            placement="top" ngbTooltip="View" container="body">
+                        <span class="fa fa-eye"></span>
+                    </button>
+                </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
 </div>
 
 <div class="card-box">
