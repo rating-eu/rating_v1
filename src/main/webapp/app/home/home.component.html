@@ -23,12 +23,12 @@
                     <th><span>Name</span></th>
                     <th><span>Created</span></th>
                     <th><span>Modified</span></th>
-                    <th><span>User</span></th>
+                    <!--<span>User</span></th>-->
                     <th><span>Companyprofiles</span></th>
                     <th><span>Groups</span></th>
-                    <th><span>Asset</span></th>
-                    <th><span>Threatagent</span></th>
-                    <th><span>Attackstrategy</span></th>
+                    <!--<th><span>Asset</span></th>-->
+                    <!--<th><span>Threatagent</span></th>
+                    <th><span>Attackstrategy</span></th>-->
                     <th><span>Externalaudit</span></th>
                     <th><span>Questionnaire</span></th>
                     <th></th>
@@ -39,9 +39,9 @@
                     <td><a [routerLink]="['../self-assessment-mgm', mySelf.id ]">{{mySelf.name}}</a></td>
                     <td>{{mySelf.created | date:'medium'}}</td>
                     <td>{{mySelf.modified | date:'medium'}}</td>
-                    <td>
+                    <!--<td>
                         {{mySelf.user?.login}}
-                    </td>
+                    </td>-->
                     <td>
                     <span *ngFor="let companyprofiles of mySelf.companyprofiles; let last = last">
                             <a class="form-control-static"
@@ -53,7 +53,7 @@
                             <a class="form-control-static" [routerLink]="['../company-group-mgm', group?.id ]">{{group.name}}</a>{{last ? '' : ', '}}
                         </span>
                     </td>
-                    <td>
+                    <!--<td>
                     <span *ngFor="let asset of mySelf.assets; let last = last">
                             <a class="form-control-static"
                                [routerLink]="['../asset-mgm', asset?.id ]">{{asset.name}}</a>{{last ? '' : ', '}}
@@ -69,7 +69,7 @@
                             <a class="form-control-static"
                                [routerLink]="['../attack-strategy-mgm', attackstrategy?.id ]">{{attackstrategy.name}}</a>{{last ? '' : ', '}}
                         </span>
-                    </td>
+                    </td>-->
                     <td>
                     <span *ngFor="let externalaudit of mySelf.externalaudits; let last = last">
                             <a class="form-control-static" [routerLink]="['../external-audit-mgm', externalaudit?.id ]">{{externalaudit.name}}</a>{{last ? '' : ', '}}

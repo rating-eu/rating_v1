@@ -1,22 +1,24 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
+import {Component, OnInit, OnDestroy} from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
+import {HttpResponse, HttpErrorResponse} from '@angular/common/http';
 
-import { Observable } from 'rxjs/Observable';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
+import {Observable} from 'rxjs/Observable';
+import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
+import {JhiEventManager, JhiAlertService} from 'ng-jhipster';
 
-import { SelfAssessmentMgm } from './self-assessment-mgm.model';
-import { SelfAssessmentMgmPopupService } from './self-assessment-mgm-popup.service';
-import { SelfAssessmentMgmService } from './self-assessment-mgm.service';
-import { CompanyProfileMgm, CompanyProfileMgmService } from '../company-profile-mgm';
-import { User, UserService } from '../../shared';
-import { CompanyGroupMgm, CompanyGroupMgmService } from '../company-group-mgm';
-import { AssetMgm, AssetMgmService } from '../asset-mgm';
-import { ThreatAgentMgm, ThreatAgentMgmService } from '../threat-agent-mgm';
-import { AttackStrategyMgm, AttackStrategyMgmService } from '../attack-strategy-mgm';
-import { ExternalAuditMgm, ExternalAuditMgmService } from '../external-audit-mgm';
-import { QuestionnaireMgm, QuestionnaireMgmService } from '../questionnaire-mgm';
+import {SelfAssessmentMgm} from './self-assessment-mgm.model';
+import {SelfAssessmentMgmPopupService} from './self-assessment-mgm-popup.service';
+import {SelfAssessmentMgmService} from './self-assessment-mgm.service';
+import {CompanyProfileMgm, CompanyProfileMgmService} from '../company-profile-mgm';
+import {AccountService, User, UserService} from '../../shared';
+import {CompanyGroupMgm, CompanyGroupMgmService} from '../company-group-mgm';
+import {AssetMgm, AssetMgmService} from '../asset-mgm';
+import {ThreatAgentMgm, ThreatAgentMgmService} from '../threat-agent-mgm';
+import {AttackStrategyMgm, AttackStrategyMgmService} from '../attack-strategy-mgm';
+import {ExternalAuditMgm, ExternalAuditMgmService} from '../external-audit-mgm';
+import {QuestionnaireMgm, QuestionnaireMgmService} from '../questionnaire-mgm';
+import {MyCompanyMgm, MyCompanyMgmService} from '../my-company-mgm';
+import {MyCompanyComponent} from '../../my-company/my-company.component';
 
 @Component({
     selector: 'jhi-self-assessment-mgm-dialog',
@@ -43,7 +45,10 @@ export class SelfAssessmentMgmDialogComponent implements OnInit {
 
     questionnaires: QuestionnaireMgm[];
 
+    private myCompanyProfile: CompanyProfileMgm;
+
     constructor(
+        private accountService: AccountService,
         public activeModal: NgbActiveModal,
         private jhiAlertService: JhiAlertService,
         private selfAssessmentService: SelfAssessmentMgmService,
@@ -55,28 +60,66 @@ export class SelfAssessmentMgmDialogComponent implements OnInit {
         private attackStrategyService: AttackStrategyMgmService,
         private externalAuditService: ExternalAuditMgmService,
         private questionnaireService: QuestionnaireMgmService,
-        private eventManager: JhiEventManager
+        private eventManager: JhiEventManager,
+        private myCompanyService: MyCompanyMgmService
     ) {
     }
 
     ngOnInit() {
+        this.accountService.get().subscribe((response1) => {
+            const loggedAccount: Account = response1.body;
+            this.userService.find(loggedAccount['login']).subscribe((response2) => {
+                const user = response2.body;
+
+                if (user) {
+                    this.myCompanyService.findByUser(user.id).subscribe(
+                        (response3: HttpResponse<MyCompanyMgm>) => {
+                            const myCompany: MyCompanyMgm = response3.body;
+                            this.myCompanyProfile = myCompany.companyProfile;
+                        },
+                        (error: any) => {
+                            if (error.status == 404) {
+                                this.jhiAlertService.error(error.message, null, null);
+                            }
+                        }
+                    );
+                }
+            });
+        });
+
         this.isSaving = false;
         this.companyProfileService.query()
-            .subscribe((res: HttpResponse<CompanyProfileMgm[]>) => { this.companyprofiles = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
+            .subscribe((res: HttpResponse<CompanyProfileMgm[]>) => {
+                this.companyprofiles = res.body;
+            }, (res: HttpErrorResponse) => this.onError(res.message));
         this.userService.query()
-            .subscribe((res: HttpResponse<User[]>) => { this.users = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
+            .subscribe((res: HttpResponse<User[]>) => {
+                this.users = res.body;
+            }, (res: HttpErrorResponse) => this.onError(res.message));
         this.companyGroupService.query()
-            .subscribe((res: HttpResponse<CompanyGroupMgm[]>) => { this.companygroups = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
+            .subscribe((res: HttpResponse<CompanyGroupMgm[]>) => {
+                this.companygroups = res.body;
+            }, (res: HttpErrorResponse) => this.onError(res.message));
         this.assetService.query()
-            .subscribe((res: HttpResponse<AssetMgm[]>) => { this.assets = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
+            .subscribe((res: HttpResponse<AssetMgm[]>) => {
+                this.assets = res.body;
+            }, (res: HttpErrorResponse) => this.onError(res.message));
         this.threatAgentService.query()
-            .subscribe((res: HttpResponse<ThreatAgentMgm[]>) => { this.threatagents = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
+            .subscribe((res: HttpResponse<ThreatAgentMgm[]>) => {
+                this.threatagents = res.body;
+            }, (res: HttpErrorResponse) => this.onError(res.message));
         this.attackStrategyService.query()
-            .subscribe((res: HttpResponse<AttackStrategyMgm[]>) => { this.attackstrategies = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
+            .subscribe((res: HttpResponse<AttackStrategyMgm[]>) => {
+                this.attackstrategies = res.body;
+            }, (res: HttpErrorResponse) => this.onError(res.message));
         this.externalAuditService.query()
-            .subscribe((res: HttpResponse<ExternalAuditMgm[]>) => { this.externalaudits = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
+            .subscribe((res: HttpResponse<ExternalAuditMgm[]>) => {
+                this.externalaudits = res.body;
+            }, (res: HttpErrorResponse) => this.onError(res.message));
         this.questionnaireService.query()
-            .subscribe((res: HttpResponse<QuestionnaireMgm[]>) => { this.questionnaires = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
+            .subscribe((res: HttpResponse<QuestionnaireMgm[]>) => {
+                this.questionnaires = res.body;
+            }, (res: HttpErrorResponse) => this.onError(res.message));
     }
 
     clear() {
@@ -86,9 +129,15 @@ export class SelfAssessmentMgmDialogComponent implements OnInit {
     save() {
         this.isSaving = true;
         if (this.selfAssessment.id !== undefined) {
+            if (!this.selfAssessment.companyProfile) {
+                //fetch the company profile of the logged user
+                this.selfAssessment.companyProfile = this.myCompanyProfile;
+            }
+
             this.subscribeToSaveResponse(
                 this.selfAssessmentService.update(this.selfAssessment));
         } else {
+            this.selfAssessment.companyProfile = this.myCompanyProfile;
             this.subscribeToSaveResponse(
                 this.selfAssessmentService.create(this.selfAssessment));
         }
@@ -100,7 +149,7 @@ export class SelfAssessmentMgmDialogComponent implements OnInit {
     }
 
     private onSaveSuccess(result: SelfAssessmentMgm) {
-        this.eventManager.broadcast({ name: 'selfAssessmentListModification', content: 'OK'});
+        this.eventManager.broadcast({name: 'selfAssessmentListModification', content: 'OK'});
         this.isSaving = false;
         this.activeModal.dismiss(result);
     }
@@ -168,11 +217,12 @@ export class SelfAssessmentMgmPopupComponent implements OnInit, OnDestroy {
     constructor(
         private route: ActivatedRoute,
         private selfAssessmentPopupService: SelfAssessmentMgmPopupService
-    ) {}
+    ) {
+    }
 
     ngOnInit() {
         this.routeSub = this.route.params.subscribe((params) => {
-            if ( params['id'] ) {
+            if (params['id']) {
                 this.selfAssessmentPopupService
                     .open(SelfAssessmentMgmDialogComponent as Component, params['id']);
             } else {

@@ -65,11 +65,11 @@
             <th><span jhiTranslate="hermeneutApp.selfAssessment.created">Created</span></th>
             <th><span jhiTranslate="hermeneutApp.selfAssessment.modified">Modified</span></th>
             <th><span jhiTranslate="hermeneutApp.selfAssessment.companyProfile">Company Profile</span></th>
-            <th><span jhiTranslate="hermeneutApp.selfAssessment.user">User</span></th>
+            <!--<th><span jhiTranslate="hermeneutApp.selfAssessment.user">User</span></th>-->
             <th><span jhiTranslate="hermeneutApp.selfAssessment.companyGroup">Company Group</span></th>
-            <th><span jhiTranslate="hermeneutApp.selfAssessment.asset">Asset</span></th>
+            <!--<th><span jhiTranslate="hermeneutApp.selfAssessment.asset">Asset</span></th>
             <th><span jhiTranslate="hermeneutApp.selfAssessment.threatagent">Threatagent</span></th>
-            <th><span jhiTranslate="hermeneutApp.selfAssessment.attackstrategy">Attackstrategy</span></th>
+            <th><span jhiTranslate="hermeneutApp.selfAssessment.attackstrategy">Attackstrategy</span></th>-->
             <th><span jhiTranslate="hermeneutApp.selfAssessment.externalaudit">Externalaudit</span></th>
             <th><span jhiTranslate="hermeneutApp.selfAssessment.questionnaire">Questionnaire</span></th>
             <th></th>
@@ -86,15 +86,15 @@
                         <a [routerLink]="['../company-profile-mgm', selfAssessment.companyProfile?.id ]" >{{selfAssessment.companyProfile?.name}}</a>
                     </div>
                 </td>
-                <td (click)="selectSelfAssessment(selfAssessment)">
+                <!--<td (click)="selectSelfAssessment(selfAssessment)">
                     {{selfAssessment.user?.login}}
-                </td>
+                </td>-->
                 <td (click)="selectSelfAssessment(selfAssessment)">
                     <span *ngFor="let companyGroup of selfAssessment.companyGroups; let last = last">
                             <a class="form-control-static" [routerLink]="['../company-group-mgm', companyGroup?.id ]">{{companyGroup.name}}</a>{{last ? '' : ', '}}
                         </span>
                 </td>
-                <td (click)="selectSelfAssessment(selfAssessment)">
+                <!--<td (click)="selectSelfAssessment(selfAssessment)">
                     <span *ngFor="let asset of selfAssessment.assets; let last = last">
                             <a class="form-control-static" [routerLink]="['../asset-mgm', asset?.id ]">{{asset.name}}</a>{{last ? '' : ', '}}
                         </span>
@@ -108,7 +108,7 @@
                     <span *ngFor="let attackstrategy of selfAssessment.attackstrategies; let last = last">
                             <a class="form-control-static" [routerLink]="['../attack-strategy-mgm', attackstrategy?.id ]">{{attackstrategy.name}}</a>{{last ? '' : ', '}}
                         </span>
-                </td>
+                </td>-->
                 <td (click)="selectSelfAssessment(selfAssessment)">
                     <span *ngFor="let externalaudit of selfAssessment.externalaudits; let last = last">
                             <a class="form-control-static" [routerLink]="['../external-audit-mgm', externalaudit?.id ]">{{externalaudit.name}}</a>{{last ? '' : ', '}}

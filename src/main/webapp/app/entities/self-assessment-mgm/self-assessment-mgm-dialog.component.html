@@ -25,56 +25,56 @@
         </div>
         <div class="form-group">
 
-        <div class="form-group">
+        <!--<div class="form-group">
             <label class="form-control-label" jhiTranslate="hermeneutApp.selfAssessment.companyProfile" for="field_companyProfile">Company Profile</label>
             <select class="form-control" id="field_companyProfile" name="companyProfile" [(ngModel)]="selfAssessment.companyProfile" >
                 <option [ngValue]="null"></option>
                 <option [ngValue]="companyProfileOption.id === selfAssessment.companyProfile?.id ? selfAssessment.companyProfile : companyProfileOption" *ngFor="let companyProfileOption of companyprofiles; trackBy: trackCompanyProfileById">{{companyProfileOption.name}}</option>
             </select>
-        </div>
-        <div class="form-group">
+        </div>-->
+        <!--<div class="form-group">
             <label class="form-control-label" jhiTranslate="hermeneutApp.selfAssessment.user" for="field_user">User</label>
             <select class="form-control" id="field_user" name="user" [(ngModel)]="selfAssessment.user" >
                 <option [ngValue]="null"></option>
                 <option [ngValue]="userOption.id === selfAssessment.user?.id ? selfAssessment.user : userOption" *ngFor="let userOption of users; trackBy: trackUserById">{{userOption.login}}</option>
             </select>
-        </div>
+        </div>-->
         <div class="form-group">
             <label jhiTranslate="hermeneutApp.selfAssessment.companyGroup" for="field_companyGroup">Company Group</label>
             <select class="form-control" id="field_companyGroup" multiple name="companyGroup" [(ngModel)]="selfAssessment.companyGroups">
                 <option [ngValue]="getSelected(selfAssessment.companyGroups, companyGroupOption)" *ngFor="let companyGroupOption of companygroups; trackBy: trackCompanyGroupById">{{companyGroupOption.name}}</option>
             </select>
         </div>
-        <div class="form-group">
+        <!--<div class="form-group">
             <label jhiTranslate="hermeneutApp.selfAssessment.asset" for="field_asset">Asset</label>
             <select class="form-control" id="field_asset" multiple name="asset" [(ngModel)]="selfAssessment.assets">
                 <option [ngValue]="getSelected(selfAssessment.assets, assetOption)" *ngFor="let assetOption of assets; trackBy: trackAssetById">{{assetOption.name}}</option>
             </select>
-        </div>
-        <div class="form-group">
+        </div>-->
+        <!--<div class="form-group">
             <label jhiTranslate="hermeneutApp.selfAssessment.threatagent" for="field_threatagent">Threatagent</label>
             <select class="form-control" id="field_threatagent" multiple name="threatagent" [(ngModel)]="selfAssessment.threatagents">
                 <option [ngValue]="getSelected(selfAssessment.threatagents, threatAgentOption)" *ngFor="let threatAgentOption of threatagents; trackBy: trackThreatAgentById">{{threatAgentOption.name}}</option>
             </select>
-        </div>
-        <div class="form-group">
+        </div>-->
+        <!--<div class="form-group">
             <label jhiTranslate="hermeneutApp.selfAssessment.attackstrategy" for="field_attackstrategy">Attackstrategy</label>
             <select class="form-control" id="field_attackstrategy" multiple name="attackstrategy" [(ngModel)]="selfAssessment.attackstrategies">
                 <option [ngValue]="getSelected(selfAssessment.attackstrategies, attackStrategyOption)" *ngFor="let attackStrategyOption of attackstrategies; trackBy: trackAttackStrategyById">{{attackStrategyOption.name}}</option>
             </select>
-        </div>
+        </div>-->
         <div class="form-group">
             <label jhiTranslate="hermeneutApp.selfAssessment.externalaudit" for="field_externalaudit">Externalaudit</label>
             <select class="form-control" id="field_externalaudit" multiple name="externalaudit" [(ngModel)]="selfAssessment.externalaudits">
                 <option [ngValue]="getSelected(selfAssessment.externalaudits, externalAuditOption)" *ngFor="let externalAuditOption of externalaudits; trackBy: trackExternalAuditById">{{externalAuditOption.name}}</option>
             </select>
         </div>
-        <div class="form-group">
+        <!--<div class="form-group">
             <label jhiTranslate="hermeneutApp.selfAssessment.questionnaire" for="field_questionnaire">Questionnaire</label>
             <select class="form-control" id="field_questionnaire" multiple name="questionnaire" [(ngModel)]="selfAssessment.questionnaires">
                 <option [ngValue]="getSelected(selfAssessment.questionnaires, questionnaireOption)" *ngFor="let questionnaireOption of questionnaires; trackBy: trackQuestionnaireById">{{questionnaireOption.name}}</option>
             </select>
-        </div>
+        </div>-->
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">
