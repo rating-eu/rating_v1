@@ -190,70 +190,136 @@ public class WP4StepsController {
             throw new NotFoundException("NO QuestionaireStatus was found for the SelfAssessment: " + selfAssessmentID);
         }
 
+        QuestionnaireStatus cisoQStatus = questionnaireStatuses.stream().filter(questionnaireStatus -> questionnaireStatus.getRole().equals(Role.ROLE_CISO)).findFirst().orElse(null);
         QuestionnaireStatus externalQStatus = questionnaireStatuses.stream().filter(questionnaireStatus -> questionnaireStatus.getRole().equals(Role.ROLE_EXTERNAL_AUDIT)).findFirst().orElse(null);
 
-        if (externalQStatus == null) {
-            throw new NotFoundException("QuestionnaireStatus for Role ExternalAudit was NOT FOUND!");
-        }
+        if (cisoQStatus == null) {
+            throw new NotFoundException("QuestionnaireStatus for Role CISO was NOT FOUND!");
+        } else {
+            if (externalQStatus == null) {
+                //Use CISO's one
+                Questionnaire questionnaire = cisoQStatus.getQuestionnaire();
+                List<Question> questions = this.questionService.findAllByQuestionnaire(questionnaire);
+                List<Answer> answers = this.answerService.findAll();
+                Map<Long/*AnswerID*/, Answer> answersMap = answers.stream().collect(Collectors.toMap(Answer::getId, Function.identity()));
+                Map<Long/*QuestionID*/, Question> questionsMap = questions.stream().collect(Collectors.toMap(Question::getId, Function.identity()));
 
-        Questionnaire questionnaire = externalQStatus.getQuestionnaire();
-        List<Question> questions = this.questionService.findAllByQuestionnaire(questionnaire);
-        List<Answer> answers = this.answerService.findAll();
-        Map<Long/*AnswerID*/, Answer> answersMap = answers.stream().collect(Collectors.toMap(Answer::getId, Function.identity()));
-        Map<Long/*QuestionID*/, Question> questionsMap = questions.stream().collect(Collectors.toMap(Question::getId, Function.identity()));
+                List<MyAnswer> myAnswers = this.myAnswerService.findAllByQuestionnaireStatus(cisoQStatus.getId());
 
-        List<MyAnswer> myAnswers = this.myAnswerService.findAllByQuestionnaireStatus(externalQStatus.getId());
-
-        if (myAnswers == null || myAnswers.size() == 0) {
-            throw new NotFoundException("MyAnswers not found for QuestionnaireStatus with id: " + externalQStatus.getId());
-        }
-
-        //Group the MyAnswers by AttackStrategy and find the likelihood for each of them.
-        Map<AugmentedAttackStrategy, Set<MyAnswer>> attackAnswersMap = new HashMap<>();
-
-        for (MyAnswer myAnswer : myAnswers) {
-            Question question = myAnswer.getQuestion();
-            log.debug("Question: " + question);
-            Question fullQuestion = questionsMap.get(question.getId());
-            log.debug("Full question: " + fullQuestion);
-
-            Answer answer = myAnswer.getAnswer();
-            log.debug("Answer: " + answer);
-            Answer fullAnswer = answersMap.get(myAnswer.getAnswer().getId());
-            log.debug("FullAnswer: " + fullAnswer);
-
-            myAnswer.setQuestion(fullQuestion);
-            myAnswer.setAnswer(fullAnswer);
-
-            Set<AttackStrategy> attacks = fullQuestion.getAttackStrategies();
-            log.debug("Attacks: " + attacks);
-
-            for (AttackStrategy attackStrategy : attacks) {
-                AugmentedAttackStrategy augmentedAttackStrategy = augmentedAttackStrategyMap.get(attackStrategy.getId());
-
-                if (attackAnswersMap.containsKey(augmentedAttackStrategy)) {
-                    Set<MyAnswer> myAnswerSet = attackAnswersMap.get(augmentedAttackStrategy);
-                    myAnswerSet.add(myAnswer);
-                } else {
-                    Set<MyAnswer> myAnswerSet = new HashSet<>();
-                    myAnswerSet.add(myAnswer);
-                    attackAnswersMap.put(augmentedAttackStrategy, myAnswerSet);
+                if (myAnswers == null || myAnswers.size() == 0) {
+                    throw new NotFoundException("MyAnswers not found for QuestionnaireStatus with id: " + cisoQStatus.getId());
                 }
-            }
-        }
 
-        for (Map.Entry<Long, AugmentedAttackStrategy> entry : augmentedAttackStrategyMap.entrySet()) {
-            AugmentedAttackStrategy augmentedAttackStrategy = entry.getValue();
-            log.debug("AugmentedAttackStrategy: " + augmentedAttackStrategy);
+                //Group the MyAnswers by AttackStrategy and find the likelihood for each of them.
+                Map<AugmentedAttackStrategy, Set<MyAnswer>> attackAnswersMap = new HashMap<>();
 
-            Set<MyAnswer> myAnswerSet = attackAnswersMap.get(augmentedAttackStrategy);
-            log.debug("MyAnswerSet: " + myAnswerSet);
+                for (MyAnswer myAnswer : myAnswers) {
+                    Question question = myAnswer.getQuestion();
+                    log.debug("Question: " + question);
+                    Question fullQuestion = questionsMap.get(question.getId());
+                    log.debug("Full question: " + fullQuestion);
 
-            if (myAnswerSet != null) {
-                augmentedAttackStrategy.setRefinedVulnerability(this.answerCalculator.getAnswersLikelihood(myAnswerSet));
-                augmentedAttackStrategy.setRefinedLikelihood((augmentedAttackStrategy.getInitialLikelihood() + augmentedAttackStrategy.getRefinedVulnerability()) / 2);
+                    Answer answer = myAnswer.getAnswer();
+                    log.debug("Answer: " + answer);
+                    Answer fullAnswer = answersMap.get(myAnswer.getAnswer().getId());
+                    log.debug("FullAnswer: " + fullAnswer);
+
+                    myAnswer.setQuestion(fullQuestion);
+                    myAnswer.setAnswer(fullAnswer);
+
+                    Set<AttackStrategy> attacks = fullQuestion.getAttackStrategies();
+                    log.debug("Attacks: " + attacks);
+
+                    for (AttackStrategy attackStrategy : attacks) {
+                        AugmentedAttackStrategy augmentedAttackStrategy = augmentedAttackStrategyMap.get(attackStrategy.getId());
+
+                        if (attackAnswersMap.containsKey(augmentedAttackStrategy)) {
+                            Set<MyAnswer> myAnswerSet = attackAnswersMap.get(augmentedAttackStrategy);
+                            myAnswerSet.add(myAnswer);
+                        } else {
+                            Set<MyAnswer> myAnswerSet = new HashSet<>();
+                            myAnswerSet.add(myAnswer);
+                            attackAnswersMap.put(augmentedAttackStrategy, myAnswerSet);
+                        }
+                    }
+                }
+
+                for (Map.Entry<Long, AugmentedAttackStrategy> entry : augmentedAttackStrategyMap.entrySet()) {
+                    AugmentedAttackStrategy augmentedAttackStrategy = entry.getValue();
+                    log.debug("AugmentedAttackStrategy: " + augmentedAttackStrategy);
+
+                    Set<MyAnswer> myAnswerSet = attackAnswersMap.get(augmentedAttackStrategy);
+                    log.debug("MyAnswerSet: " + myAnswerSet);
+
+                    if (myAnswerSet != null) {
+                        augmentedAttackStrategy.setContextualVulnerability(this.answerCalculator.getAnswersLikelihood(myAnswerSet));
+                        augmentedAttackStrategy.setContextualLikelihood((augmentedAttackStrategy.getInitialLikelihood() + augmentedAttackStrategy.getRefinedVulnerability()) / 2);
+                    } else {
+                        //TODO same as ContextualLikelihood ???
+                    }
+                }
             } else {
-                //TODO same as ContextualLikelihood ???
+                //Use External's one
+                Questionnaire questionnaire = externalQStatus.getQuestionnaire();
+                List<Question> questions = this.questionService.findAllByQuestionnaire(questionnaire);
+                List<Answer> answers = this.answerService.findAll();
+                Map<Long/*AnswerID*/, Answer> answersMap = answers.stream().collect(Collectors.toMap(Answer::getId, Function.identity()));
+                Map<Long/*QuestionID*/, Question> questionsMap = questions.stream().collect(Collectors.toMap(Question::getId, Function.identity()));
+
+                List<MyAnswer> myAnswers = this.myAnswerService.findAllByQuestionnaireStatus(externalQStatus.getId());
+
+                if (myAnswers == null || myAnswers.size() == 0) {
+                    throw new NotFoundException("MyAnswers not found for QuestionnaireStatus with id: " + externalQStatus.getId());
+                }
+
+                //Group the MyAnswers by AttackStrategy and find the likelihood for each of them.
+                Map<AugmentedAttackStrategy, Set<MyAnswer>> attackAnswersMap = new HashMap<>();
+
+                for (MyAnswer myAnswer : myAnswers) {
+                    Question question = myAnswer.getQuestion();
+                    log.debug("Question: " + question);
+                    Question fullQuestion = questionsMap.get(question.getId());
+                    log.debug("Full question: " + fullQuestion);
+
+                    Answer answer = myAnswer.getAnswer();
+                    log.debug("Answer: " + answer);
+                    Answer fullAnswer = answersMap.get(myAnswer.getAnswer().getId());
+                    log.debug("FullAnswer: " + fullAnswer);
+
+                    myAnswer.setQuestion(fullQuestion);
+                    myAnswer.setAnswer(fullAnswer);
+
+                    Set<AttackStrategy> attacks = fullQuestion.getAttackStrategies();
+                    log.debug("Attacks: " + attacks);
+
+                    for (AttackStrategy attackStrategy : attacks) {
+                        AugmentedAttackStrategy augmentedAttackStrategy = augmentedAttackStrategyMap.get(attackStrategy.getId());
+
+                        if (attackAnswersMap.containsKey(augmentedAttackStrategy)) {
+                            Set<MyAnswer> myAnswerSet = attackAnswersMap.get(augmentedAttackStrategy);
+                            myAnswerSet.add(myAnswer);
+                        } else {
+                            Set<MyAnswer> myAnswerSet = new HashSet<>();
+                            myAnswerSet.add(myAnswer);
+                            attackAnswersMap.put(augmentedAttackStrategy, myAnswerSet);
+                        }
+                    }
+                }
+
+                for (Map.Entry<Long, AugmentedAttackStrategy> entry : augmentedAttackStrategyMap.entrySet()) {
+                    AugmentedAttackStrategy augmentedAttackStrategy = entry.getValue();
+                    log.debug("AugmentedAttackStrategy: " + augmentedAttackStrategy);
+
+                    Set<MyAnswer> myAnswerSet = attackAnswersMap.get(augmentedAttackStrategy);
+                    log.debug("MyAnswerSet: " + myAnswerSet);
+
+                    if (myAnswerSet != null) {
+                        augmentedAttackStrategy.setRefinedVulnerability(this.answerCalculator.getAnswersLikelihood(myAnswerSet));
+                        augmentedAttackStrategy.setRefinedLikelihood((augmentedAttackStrategy.getInitialLikelihood() + augmentedAttackStrategy.getRefinedVulnerability()) / 2);
+                    } else {
+                        //TODO same as ContextualLikelihood ???
+                    }
+                }
             }
         }
 
