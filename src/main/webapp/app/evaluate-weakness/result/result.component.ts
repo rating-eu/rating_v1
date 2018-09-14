@@ -16,6 +16,7 @@ import {WeaknessUtils} from '../utils/weakness-utils';
 import {AttackMapService} from '../attack-map.service';
 import {MatHorizontalStepper} from '@angular/material';
 import {LikelihoodStep} from '../../entities/enumerations/LikelihoodStep.enum';
+import * as _ from 'lodash';
 
 @Component({
     selector: 'jhi-result',
@@ -81,6 +82,13 @@ export class WeaknessResultComponent implements OnInit, OnDestroy {
 
         join$.subscribe((response: [HttpResponse<PhaseMgm[]>, HttpResponse<LevelMgm[]>, Map<Number, Map<Number, AugmentedAttackStrategy>>]) => {
             this.ckc7Phases = response[0].body;
+            //Remove id 7 phase
+            const index = _.findIndex(this.ckc7Phases, (phase) => phase.id === 7);
+
+            if (index !== -1) {
+                this.ckc7Phases.splice(index, 1);
+            }
+
             this.attackLevels = response[1].body;
             this.attacksCKC7Matrix = response[2];
 
