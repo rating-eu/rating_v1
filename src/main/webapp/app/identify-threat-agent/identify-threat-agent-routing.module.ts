@@ -19,7 +19,7 @@ const routes: Routes = [
                 }
             },
             {
-                path: 'result/:statusID',
+                path: 'result',
                 component: ThreatResultComponent,
                 data: {
                     pageTitle: 'hermeneutApp.identifyThreatAgent.page.result.title'
