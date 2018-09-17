@@ -29,85 +29,148 @@ export class SidebarComponent implements OnInit {
             {
                 label: 'Company',
                 items: [
-                    {label: 'My Company', icon: 'fa fa-home', routerLink: ['my-company']},
-                    {label: 'My SelfAssessments', icon: 'fa fa-repeat', routerLink: ['my-self-assessments']}
+                    {label: 'My Company', icon: 'fa fa-home', routerLink: ['/my-company']},
+                    {label: 'My SelfAssessments', icon: 'fa fa-repeat', routerLink: ['/my-self-assessments']}
                 ]
             },
             {
                 label: 'Self Assessment',
                 items: [
                     {
-                        label: 'Likelihood and Vulnerabilities', icon: '',
+                        label: 'My Profile',
                         items: [
                             {
-                                label: 'Assets', icon: '', title: 'What do I own?',
+                                label: 'Assets',
                                 items: [
                                     {
-                                        label: 'View all assets',
-                                        icon: '',
-                                        routerLink: ['/asset-mgm']
+                                        label: 'Clusters',
+                                        routerLink: ['/identify-asset']
                                     },
-                                    {label: 'Identify Assets', icon: '', routerLink: ['identify-asset']}
+                                    {
+                                        label: 'Reports',
+                                        routerLink: ['/identify-asset']
+                                    }
                                 ]
-                            },
+                            }
+                        ]
+                    },
+                    {
+                        label: 'Vulnerabilities',
+                        items: [
                             {
-                                label: 'Threat Agents', icon: '', title: 'who would attack my company? and why?',
+                                label: 'Threat Agents',
                                 items: [
                                     {
-                                        label: 'View all Threat Agents',
-                                        icon: '',
-                                        routerLink: ['/threat-agent-mgm']
+                                        label: 'Identify',
+                                        routerLink: ['/identify-threat-agent/questionnaires/ID_THREAT_AGENT']
                                     },
                                     {
-                                        label: 'Identify Threat Agents',
-                                        icon: '',
-                                        routerLink: ['identify-threat-agent']
+                                        label: 'Matrix',
+                                        routerLink: ['/identify-threat-agent/questionnaires/ID_THREAT_AGENT']
                                     }
                                 ]
                             },
                             {
-                                label: 'Attack Plans', icon: '', title: 'how my company may be attacked?',
+                                label: 'Attack Strategies',
                                 items: [
                                     {
-                                        label: 'View all Attack Strategies',
-                                        icon: '',
-                                        routerLink: ['/attack-strategy-mgm']
-
+                                        label: 'Likelihood Matrix',
+                                        routerLink: ['/evaluate-weakness/result']
                                     },
                                     {
-                                        label: 'View all Mitigations',
-                                        icon: '',
-                                        routerLink: ['/mitigation-mgm']
-                                    },
-                                    {label: 'Evaluate weakness', icon: '', routerLink: ['evaluate-weakness']}
+                                        label: 'Asses Vulnerabilities',
+                                        routerLink: ['/evaluate-weakness/questionnaires/SELFASSESSMENT']
+                                    }
                                 ]
                             },
                             {
                                 label: 'Results',
-                                icon: '',
-                                title: 'which are the weakness of my company?',
-                                routerLink: ['results'],
+                                routerLink: ['/results']
                             }
                         ]
                     },
-                    {label: 'Impact Evaluation', icon: '', routerLink: ['impact-evaluation']},
                     {
-                        label: 'Risk Management', icon: '',
+                        label: 'Consequences',
                         items: [
                             {
-                                label: 'Risk evaluation',
-                                icon: '',
-                                routerLink: ['risk-management/risk-evaluation']
+                                label: 'Loss due to a cyber Attack',
+                                routerLink: ['/impact-evaluation']
+                            }
+                        ]
+                    },
+                    {
+                        label: 'Risk Management',
+                        items: [
+                            {
+                                label: 'Risk Scenarios',
+                                routerLink: ['/risk-management/risk-evaluation']
                             },
                             {
-                                label: 'Risk Mitigation',
-                                icon: '',
-                                routerLink: ['risk-management/risk-mitigation']
-                            },
+                                label: 'Risk Mitigations',
+                                routerLink: ['/risk-management/risk-mitigation']
+                            }
                         ]
                     }
                 ]
-            }];
+            },
+            {
+                label: 'Taxonomies',
+                items: [
+                    {
+                        label: 'Assets',
+                        items: [
+                            {
+                                label: 'Tangible',
+                                routerLink: ['/asset-mgm']
+                            },
+                            {
+                                label: 'Intangible',
+                                routerLink: ['/asset-mgm']
+                            }
+                        ]
+                    },
+                    {
+                        label: 'Threat Agents',
+                        items: [
+                            {
+                                label: 'View',
+                                routerLink: ['/threat-agent-mgm']
+                            },
+                            {
+                                label: 'Update',
+                                routerLink: ['/threat-agent-mgm']
+                            },
+                        ]
+                    },
+                    {
+                        label: 'Attack Strategies',
+                        items: [
+                            {
+                                label: 'View',
+                                routerLink: ['/attack-strategy-mgm']
+                            },
+                            {
+                                label: 'Update',
+                                routerLink: ['/attack-strategy-mgm']
+                            }
+                        ]
+                    },
+                    {
+                        label: 'Mitigations',
+                        items: [
+                            {
+                                label: 'View',
+                                routerLink: ['/mitigation-mgm']
+                            },
+                            {
+                                label: 'Update',
+                                routerLink: ['/mitigation-mgm']
+                            }
+                        ]
+                    }
+                ]
+            }
+        ];
 
         this.isCollapsed = this.dataSharingService.getUpdate() != null ? this.dataSharingService.getUpdate().isSidebarCollapsed : true;
 

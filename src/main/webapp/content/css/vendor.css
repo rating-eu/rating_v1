@@ -5,10 +5,10 @@
 @import '../plugins/responsive-table/css/rwd-table.min.css';
 @import '../plugins/sweet-alert/sweetalert2.min.css';
 @import '../plugins/custombox/css/custombox.min.css';
+@import '../../../../../node_modules/primeng/resources/themes/nova-light/theme.css';
+@import '../../../../../node_modules/primeng/resources/primeng.min.css';
+@import '../../../../../node_modules/primeicons/primeicons.css';
 @import '../assets/css/icons.css';
 @import '../assets/css/flag-icon.css';
 @import '../assets/css/metismenu.min.css';
 @import '../assets/css/style.css';
-@import '../../../../../node_modules/primeng/resources/themes/nova-light/theme.css';
-@import '../../../../../node_modules/primeng/resources/primeng.min.css';
-@import '../../../../../node_modules/primeicons/primeicons.css';
