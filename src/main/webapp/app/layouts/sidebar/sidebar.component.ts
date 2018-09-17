@@ -82,6 +82,10 @@ export class SidebarComponent implements OnInit {
                                         routerLink: ['/evaluate-weakness/questionnaires/SELFASSESSMENT']
                                     }
                                 ]
+                            },
+                            {
+                                label: 'Results',
+                                routerLink: ['/results']
                             }
                         ]
                     },
