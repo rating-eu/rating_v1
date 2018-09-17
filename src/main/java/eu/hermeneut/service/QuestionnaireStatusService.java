@@ -1,6 +1,7 @@
 package eu.hermeneut.service;
 
 import eu.hermeneut.domain.QuestionnaireStatus;
+import eu.hermeneut.domain.enumeration.QuestionnairePurpose;
 
 import java.util.List;
 
@@ -65,4 +66,6 @@ public interface QuestionnaireStatusService {
      * @return the list of entities
      */
     List<QuestionnaireStatus> findAllBySelfAssessment(Long selfAssessmentID);
+
+    List<QuestionnaireStatus> findAllBySelfAssessmentAndQuestionnairePurpose(Long selfAssessmentID, QuestionnairePurpose purpose);
 }

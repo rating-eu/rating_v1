@@ -1,5 +1,6 @@
 package eu.hermeneut.service.impl;
 
+import eu.hermeneut.domain.enumeration.QuestionnairePurpose;
 import eu.hermeneut.domain.enumeration.Role;
 import eu.hermeneut.service.QuestionnaireStatusService;
 import eu.hermeneut.domain.QuestionnaireStatus;
@@ -120,5 +121,11 @@ public class QuestionnaireStatusServiceImpl implements QuestionnaireStatusServic
     public List<QuestionnaireStatus> findAllBySelfAssessment(Long selfAssessmentID) {
         log.debug("Request to get all QuestionnaireStatuses by SelfAssessment and User");
         return questionnaireStatusRepository.findAllBySelfAssessment(selfAssessmentID);
+    }
+
+    @Override
+    public List<QuestionnaireStatus> findAllBySelfAssessmentAndQuestionnairePurpose(Long selfAssessmentID, QuestionnairePurpose purpose) {
+        log.debug("Request to get QuestionnaireStatus by SelfAssessment: {} and QuestionnairePurpose: {}", selfAssessmentID, purpose);
+        return questionnaireStatusRepository.findAllBySelfAssessmentAndQuestionnairePurpose(selfAssessmentID, purpose);
     }
 }
