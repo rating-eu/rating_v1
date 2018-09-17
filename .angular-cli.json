@@ -28,7 +28,6 @@
                 "content/asset/css/flag-icon.css",
                 "content/asset/css/metismenu.min.css",
                 "content/css/vendor.css",
-                "content/css/global.css",
                 "content/asset/css/style.css"
             ],
             "scripts": [

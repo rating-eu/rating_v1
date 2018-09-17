@@ -34,7 +34,7 @@ export class SidebarComponent implements OnInit {
                 ]
             },
             {
-                label: 'Self Assessment',
+                label: 'Self Assessment :{nome del self assessment selezionato}',
                 items: [
                     {
                         label: 'Likelihood and Vulnerabilities', icon: '',
