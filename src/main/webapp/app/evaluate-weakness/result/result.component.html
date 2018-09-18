@@ -8,14 +8,9 @@
         </select>
 
         <mat-horizontal-stepper (selectionChange)="likelihoodStepChange($event)">
-            <mat-step label="Initial Likelihood">
-            </mat-step>
-
-            <mat-step label="Contextual Likelihood">
-            </mat-step>
-
-            <mat-step label="Refined Likelihood">
-            </mat-step>
+            <mat-step [completed]="false" label="Initial Likelihood">&nbsp;</mat-step>
+            <mat-step [completed]="false" label="Contextual Likelihood">&nbsp;</mat-step>
+            <mat-step [completed]="false" label="Refined Likelihood">&nbsp;</mat-step>
         </mat-horizontal-stepper>
 
         <table class="table table-striped table-bordered table-hover">

@@ -2,6 +2,7 @@ package eu.hermeneut.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import eu.hermeneut.domain.QuestionnaireStatus;
+import eu.hermeneut.domain.enumeration.QuestionnairePurpose;
 import eu.hermeneut.service.QuestionnaireStatusService;
 import eu.hermeneut.web.rest.errors.BadRequestAlertException;
 import eu.hermeneut.web.rest.util.HeaderUtil;
@@ -18,9 +19,6 @@ import java.net.URISyntaxException;
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.StreamSupport;
-
-import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
  * REST controller for managing QuestionnaireStatus.
@@ -152,6 +150,20 @@ public class QuestionnaireStatusResource {
         log.debug("REST request to get QuestionnaireStatus : {}", id);
         QuestionnaireStatus questionnaireStatus = questionnaireStatusService.findOne(id);
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(questionnaireStatus));
+    }
+
+    @GetMapping("/questionnaire-statuses/{selfAssessmentID}/{questionnairePurpose}")
+    @Timed
+    public List<QuestionnaireStatus> getQuestionnaireStatusBySelfAssessmentAndQuestionnairePurpose(@PathVariable Long selfAssessmentID, @PathVariable String questionnairePurpose) {
+        log.debug("REST request to get QuestionnaireStatus by selfAssessment and questionnairePurpose");
+        log.debug("SelfAssessment: " + selfAssessmentID);
+        log.debug("QuestionnairePurpose: " + questionnairePurpose);
+
+        QuestionnairePurpose purpose = QuestionnairePurpose.valueOf(questionnairePurpose);
+        log.debug("Purpose enum: " + purpose);
+
+        List<QuestionnaireStatus> questionnaireStatuses = questionnaireStatusService.findAllBySelfAssessmentAndQuestionnairePurpose(selfAssessmentID, purpose);
+        return questionnaireStatuses;
     }
 
     /**

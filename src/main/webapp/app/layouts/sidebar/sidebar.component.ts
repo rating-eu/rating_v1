@@ -66,7 +66,7 @@ export class SidebarComponent implements OnInit {
                                     },
                                     {
                                         label: 'Matrix',
-                                        routerLink: ['/identify-threat-agent/questionnaires/ID_THREAT_AGENT']
+                                        routerLink: ['/identify-threat-agent/result']
                                     }
                                 ]
                             },
