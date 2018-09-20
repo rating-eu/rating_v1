@@ -1,104 +1,88 @@
 <div class="card-box">
-<h1>Identify Threat Agents</h1>
-
-<span *ngIf="!mySelf" class="alert alert-warning">Please, <a [routerLink]="['../self-assessment-mgm']"> select</a> a self assessment, otherwise, have a look to our taxonomies</span>
-
-<!-- <button type="submit"
-        (click)="previousState()"
-        class="btn btn-info">
-    <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
-</button> -->
-
-<br/><br/>
-<div class="table-responsive">
-    <table class="table table-striped">
-        <thead>
-        <tr>
-            <th><span>Name</span></th>
-            <th><span>Created</span></th>
-            <th><span>Modified</span></th>
-            <th><span>User</span></th>
-            <th><span>Companyprofiles</span></th>
-            <th><span>Groups</span></th>
-            <th><span>Asset</span></th>
-            <th><span>Threatagent</span></th>
-            <th><span>Attackstrategy</span></th>
-            <th><span>Externalaudit</span></th>
-            <th><span>Questionnaire</span></th>
-            <th></th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr *ngIf="mySelf">
-            <td><a [routerLink]="['../self-assessment-mgm', mySelf.id ]">{{mySelf.name}}</a></td>
-            <td>{{mySelf.created | date:'medium'}}</td>
-            <td>{{mySelf.modified | date:'medium'}}</td>
-            <td>
-                {{mySelf.user?.login}}
-            </td>
-            <td>
+    <h2><span>Identify Threat Agents</span></h2>
+    <span *ngIf="!mySelf" class="alert alert-warning">Please, <a [routerLink]="['../self-assessment-mgm']"> select</a> a self assessment, otherwise, have a look to our taxonomies</span>
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th><span>Name</span></th>
+                <th><span>Created</span></th>
+                <th><span>Modified</span></th>
+                <th><span>User</span></th>
+                <th><span>Companyprofiles</span></th>
+                <th><span>Groups</span></th>
+                <th><span>Asset</span></th>
+                <th><span>Threatagent</span></th>
+                <th><span>Attackstrategy</span></th>
+                <th><span>Externalaudit</span></th>
+                <th><span>Questionnaire</span></th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngIf="mySelf">
+                <td><a [routerLink]="['../self-assessment-mgm', mySelf.id ]">{{mySelf.name}}</a></td>
+                <td>{{mySelf.created | date:'medium'}}</td>
+                <td>{{mySelf.modified | date:'medium'}}</td>
+                <td>
+                    {{mySelf.user?.login}}
+                </td>
+                <td>
                     <span *ngFor="let companyprofiles of mySelf.companyprofiles; let last = last">
                             <a class="form-control-static"
                                [routerLink]="['../company-profile-mgm', companyprofiles?.id ]">{{companyprofiles.name}}</a>{{last ? '' : ', '}}
                         </span>
-            </td>
-            <td>
+                </td>
+                <td>
                     <span *ngFor="let group of mySelf.companyGroups; let last = last">
                             <a class="form-control-static" [routerLink]="['../company-group-mgm', group?.id ]">{{group.name}}</a>{{last ? '' : ', '}}
                         </span>
-            </td>
-            <td>
+                </td>
+                <td>
                     <span *ngFor="let asset of mySelf.assets; let last = last">
                             <a class="form-control-static"
                                [routerLink]="['../asset-mgm', asset?.id ]">{{asset.name}}</a>{{last ? '' : ', '}}
                         </span>
-            </td>
-            <td>
+                </td>
+                <td>
                     <span *ngFor="let threatagent of mySelf.threatagents; let last = last">
                             <a class="form-control-static" [routerLink]="['../threat-agent-mgm', threatagent?.id ]">{{threatagent.name}}</a>{{last ? '' : ', '}}
                         </span>
-            </td>
-            <td>
+                </td>
+                <td>
                     <span *ngFor="let attackstrategy of mySelf.attackstrategies; let last = last">
                             <a class="form-control-static"
                                [routerLink]="['../attack-strategy-mgm', attackstrategy?.id ]">{{attackstrategy.name}}</a>{{last ? '' : ', '}}
                         </span>
-            </td>
-            <td>
+                </td>
+                <td>
                     <span *ngFor="let externalaudit of mySelf.externalaudits; let last = last">
                             <a class="form-control-static" [routerLink]="['../external-audit-mgm', externalaudit?.id ]">{{externalaudit.name}}</a>{{last ? '' : ', '}}
                         </span>
-            </td>
-            <td>
+                </td>
+                <td>
                     <span *ngFor="let questionnaire of mySelf.questionnaires; let last = last">
                             <a class="form-control-static" [routerLink]="['../questionnaire-mgm', questionnaire?.id ]">{{questionnaire.name}}</a>{{last ? '' : ', '}}
                         </span>
-            </td>
-            <td class="text-right">
-                <div class="btn-group flex-btn-group-container">
+                </td>
+                <td class="text-right">
+                    <div class="btn-group flex-btn-group-container">
 
-                    <button type="submit"
-                            [routerLink]="['../self-assessment-mgm', mySelf.id ]"
-                            class="btn btn-info btn-sm"
-                            placement="top"
-                            ngbTooltip="View"
-                            container="body">
-                        <i class="fa fa-eye"></i>
-                    </button>
-                </div>
-            </td>
-        </tr>
-        </tbody>
-    </table>
+                        <button type="submit"
+                                [routerLink]="['../self-assessment-mgm', mySelf.id ]"
+                                class="btn btn-info btn-sm"
+                                placement="top"
+                                ngbTooltip="View"
+                                container="body">
+                            <i class="fa fa-eye"></i>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 </div>
-
 <div>
-    <button type="button" class="btn btn-dark" [routerLink]="['./questionnaires', 'ID_THREAT_AGENT']"
-            routerLinkActive="active">
-        <span class="fa fa-eye"></span>
-        <span class="d-none d-md-inline">Questionnaires</span>
-    </button>
-</div>
-
-<router-outlet></router-outlet>
+    <router-outlet></router-outlet>
 </div>

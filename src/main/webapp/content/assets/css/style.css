@@ -175,7 +175,7 @@ ul li {
     bottom: 0;
     margin-top: 0;
     padding-bottom: 30px;
-    position: absolute;
+    position: fixed;
     top: 70px;
     box-shadow: 0 0 24px 0 rgba(0,0,0,.06), 0 1px 0 0 rgba(0,0,0,.02);
     overflow-y: auto;
@@ -5577,4 +5577,8 @@ b.color-b {
 .account-box ul.nav.nav-tabs.justify-content-start {
     padding-left: 20px;
     padding-right: 20px;
+}
+
+mat-icon.mat-icon.material-icons {
+    display: none;
 }

@@ -19,6 +19,7 @@ import {Observable} from 'rxjs/Observable';
 import {concatMap, mergeMap} from 'rxjs/operators';
 import * as CryptoJS from 'crypto-js';
 import {forkJoin} from 'rxjs/observable/forkJoin';
+import {SelfAssessmentMgmService} from '../../entities/self-assessment-mgm';
 
 @Component({
     selector: 'jhi-result',
@@ -43,7 +44,7 @@ export class ThreatResultComponent implements OnInit, OnDestroy {
     private defaultThreatAgentsMotivations$: Observable<[HttpResponse<ThreatAgentMgm[]>, HttpResponse<MotivationMgm[]>]>;
 
     // QuestionnaireStatus
-    private questionnaireStatus$: Observable<HttpResponse<QuestionnaireStatusMgm>>;
+    private questionnaireStatuses$: Observable<HttpResponse<QuestionnaireStatusMgm[]>>;
     private questionnaireStatus: QuestionnaireStatusMgm;
 
     // MyAnswers
@@ -62,13 +63,13 @@ export class ThreatResultComponent implements OnInit, OnDestroy {
     private threatAgentsPercentageMap: Map<String, Couple<ThreatAgentMgm, Fraction>>;
     private threatAgentsPercentageArray: Couple<ThreatAgentMgm, Fraction>[];
 
-    constructor(private dataSharingService: DatasharingService,
+    constructor(private selfAssessmentService: SelfAssessmentMgmService,
+                private dataSharingService: DatasharingService,
                 private identifyThreatAgentService: IdentifyThreatAgentService,
                 private myAnswerService: MyAnswerMgmService,
                 private accountService: AccountService,
                 private userService: UserService,
                 private router: Router,
-                private route: ActivatedRoute,
                 private questionService: QuestionMgmService,
                 private questionnairesService: QuestionnairesService,
                 private questionnaireStatusService: QuestionnaireStatusMgmService,
@@ -77,21 +78,14 @@ export class ThreatResultComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
-        // Create the Observable for the QuestionnaireStatus having the ID in the url.
-        this.questionnaireStatus$ = this.route.params.pipe(
-            concatMap((params: Params) => {
-                const questionnaireStatusID: number = params['statusID'];
-                console.log('Route questionnaireStatusID: ' + questionnaireStatusID);
-
-                return this.questionnaireStatusService.find(questionnaireStatusID);
-            })
-        );
+        const selfAssessment = this.selfAssessmentService.getSelfAssessment();
+        this.questionnaireStatuses$ = this.questionnaireStatusService.getAllBySelfAssessmentAndQuestionnairePurpose(selfAssessment.id, 'ID_THREAT_AGENT');
 
         // First Fetch the QuestionnaireStatus with the above observable.
         // Then Create the Observable for the Questions and MyAnswers belonging to the fetched QuestionnaireStatus.
-        this.questionsMyAnswers$ = this.questionnaireStatus$.pipe(
-            mergeMap((questionnaireStatusResponse: HttpResponse<QuestionnaireStatusMgm>) => {
-                this.questionnaireStatus = questionnaireStatusResponse.body;
+        this.questionsMyAnswers$ = this.questionnaireStatuses$.pipe(
+            mergeMap((questionnaireStatusResponse: HttpResponse<QuestionnaireStatusMgm[]>) => {
+                this.questionnaireStatus = questionnaireStatusResponse.body[0];
                 console.log('QuestionnaireStatus: ' + JSON.stringify(this.questionnaireStatus));
                 this.questionnaire = this.questionnaireStatus.questionnaire;
                 console.log('Questionnaire: ' + JSON.stringify(this.questionnaire));

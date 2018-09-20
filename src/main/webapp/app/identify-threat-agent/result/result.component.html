@@ -1,31 +1,33 @@
-<div class="table-responsive">
-    <table class="table table-bordered" *ngIf="motivations, threatAgentsPercentageArray">
-        <thead class="thead-dark">
-        <tr>
-            <th scope="col" class="text-center align-middle">Threat Agent</th>
-            <th scope="col" class="text-center align-middle">Accuracy</th>
+<div class="card-box">
+    <div class="table-responsive text-nowrap">
+        <table class="table table-bordered" *ngIf="motivations, threatAgentsPercentageArray">
+            <thead class="thead-dark">
+            <tr>
+                <th scope="col" class="text-center align-middle">Threat Agent</th>
+                <th scope="col" class="text-center align-middle">Accuracy</th>
 
-            <th scope="col" *ngFor="let motivation of motivations" class="text-center align-middle">
-                {{motivation.name}}
-            </th>
-        </tr>
-        </thead>
+                <th scope="col" *ngFor="let motivation of motivations" class="text-center align-middle">
+                    {{motivation.name}}
+                </th>
+            </tr>
+            </thead>
 
-        <tbody>
-        <!--For rows-->
-        <tr *ngFor="let couple of threatAgentsPercentageArray">
-            <!--For cols-->
-            <th scope="row" class="text-left align-middle table-dark">
-                {{couple.key.name}}
-            </th>
-            <td class="text-center align-middle">
-                {{couple.value.toPercentage()/100 | percent:'1.2-2'}}
-            </td>
+            <tbody>
+            <!--For rows-->
+            <tr *ngFor="let couple of threatAgentsPercentageArray">
+                <!--For cols-->
+                <th scope="row" class="text-left align-middle table-dark">
+                    {{couple.key.name}}
+                </th>
+                <td class="text-center align-middle">
+                    {{couple.value.toPercentage()/100 | percent:'1.2-2'}}
+                </td>
 
-            <td *ngFor="let motivation of motivations" class="text-center align-middle">
-                <span *ngIf="hasMotivation(couple.key, motivation)" class="fa fa-star"></span>
-            </td>
-        </tr>
-        </tbody>
-    </table>
+                <td *ngFor="let motivation of motivations" class="text-center align-middle">
+                    <span *ngIf="hasMotivation(couple.key, motivation)" class="fa fa-star"></span>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 </div>
