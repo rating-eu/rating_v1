@@ -34,6 +34,8 @@ public interface MyAssetService {
      */
     MyAsset findOne(Long id);
 
+    MyAsset findOneByIDAndSelfAssessment(Long myAssetID, Long selfAssessmentID);
+
     /**
      * Delete the "id" myAsset.
      *
