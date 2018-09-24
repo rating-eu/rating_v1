@@ -76,58 +76,6 @@ public class WP4StepsController {
             throw new NotFoundException("The MyAsset " + myAssetID + " of the SelfAssessment with ID: " + selfAssessmentID + " was not found!");
         }
 
-
-        /*List<MyAsset> myAssets = this.myAssetService.findAllBySelfAssessment(selfAssessmentID);
-
-        if (myAssets == null || myAssets.size() == 0) {
-            throw new NotFoundException("The MyAssets of the SelfAssessment with ID: " + selfAssessmentID + " were not found!");
-        }
-
-        Map<Long, MyAsset> myAssetsMap = myAssets
-            .stream()
-            .collect(Collectors.toMap(
-                myAsset -> myAsset.getId(),//KeyMapper
-                Function.identity()//ValueMapper (RealID)
-            ));
-
-        MyAsset myAsset = null;
-
-        if (!myAssetsMap.containsKey(myAssetID)) {
-            throw new NotFoundException("MyAsset with id: " + myAssetID + " was not found for the SelfAssessment " + selfAssessmentID);
-        } else {
-            myAsset = myAssetsMap.get(myAssetID);
-        }*/
-
-        //===Clustering MyAssets 5 by 5===
-        //Sort them by EconomicValue
-        //TODO REMOVE/COMMENT
-        //myAssets.sort(new MyAssetComparator());
-
-        //Map<Integer/*ClusterID*/, List<MyAsset>> myAssetsByCluster = ListSplitter.split(myAssets, 5);
-
-        //Map<Long/*MyAsset.ID*/, Integer/*ClusterID*/> clusterByMyAssetID = new HashMap<>();
-
-        /*for (Map.Entry<Integer/, List<MyAsset>> entry : myAssetsByCluster.entrySet()) {
-            int cluster = entry.getKey();
-            List<MyAsset> assets = entry.getValue();
-
-            for (MyAsset asset : assets) {
-                clusterByMyAssetID.put(asset.getId(), cluster);
-            }
-        }
-
-        final int CLUSTERS = 5;
-        final int CLUSTER_SIZE = myAssets.size() / CLUSTERS;
-
-        for (int cluster = 1, startIndex = 0; cluster <= CLUSTERS; cluster++) {
-            int endIndexPlusOne = startIndex + cluster * CLUSTER_SIZE;
-            if (endIndexPlusOne > myAssets.size()) {
-                endIndexPlusOne = myAssets.size();
-            }
-
-            myAssetsByCluster.put(cluster, myAssets.subList(startIndex, endIndexPlusOne));
-        }*/
-
         // get the identified ThreatAgents
         Set<ThreatAgent> threatAgentSet = selfAssessment.getThreatagents();
         log.debug("ThreatAgents: " + Arrays.toString(threatAgentSet.toArray()));
@@ -280,13 +228,6 @@ public class WP4StepsController {
 
             float critical = attackChance.getLikelihood() * attackChance.getVulnerability();
             attackChance.setCritical(critical);
-
-            /*if (clusterByMyAssetID.containsKey(myAssetID)) {
-                int cluster = clusterByMyAssetID.get(myAssetID);
-                attackChance.setImpact((float) cluster);
-            } else {
-
-            }*/
 
             myAssetAttackChances.add(attackChance);
         }
