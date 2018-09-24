@@ -12,8 +12,6 @@ import eu.hermeneut.utils.attackstrategy.AttackStrategyFilter;
 import eu.hermeneut.utils.likelihood.answer.AnswerCalculator;
 import eu.hermeneut.utils.likelihood.attackstrategy.AttackStrategyCalculator;
 import eu.hermeneut.utils.threatagent.ThreatAgentComparator;
-import eu.hermeneut.utils.wp4.ListSplitter;
-import eu.hermeneut.utils.wp4.MyAssetComparator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -163,54 +161,7 @@ public class WP4StepsController {
             throw new NotFoundException("MyAnswers not found for QuestionnaireStatus with id: " + externalQStatus.getId());
         }
 
-        //Group the MyAnswers by AttackStrategy and find the likelihood for each of them.
-        Map<AugmentedAttackStrategy, Set<MyAnswer>> attackAnswersMap = new HashMap<>();
-
-        for (MyAnswer myAnswer : myAnswers) {
-            Question question = myAnswer.getQuestion();
-            log.debug("Question: " + question);
-            Question fullQuestion = questionsMap.get(question.getId());
-            log.debug("Full question: " + fullQuestion);
-
-            Answer answer = myAnswer.getAnswer();
-            log.debug("Answer: " + answer);
-            Answer fullAnswer = answersMap.get(myAnswer.getAnswer().getId());
-            log.debug("FullAnswer: " + fullAnswer);
-
-            myAnswer.setQuestion(fullQuestion);
-            myAnswer.setAnswer(fullAnswer);
-
-            Set<AttackStrategy> attacks = fullQuestion.getAttackStrategies();
-            log.debug("Attacks: " + attacks);
-
-            for (AttackStrategy attackStrategy : attacks) {
-                AugmentedAttackStrategy augmentedAttackStrategy = augmentedAttackStrategyMap.get(attackStrategy.getId());
-
-                if (attackAnswersMap.containsKey(augmentedAttackStrategy)) {
-                    Set<MyAnswer> myAnswerSet = attackAnswersMap.get(augmentedAttackStrategy);
-                    myAnswerSet.add(myAnswer);
-                } else {
-                    Set<MyAnswer> myAnswerSet = new HashSet<>();
-                    myAnswerSet.add(myAnswer);
-                    attackAnswersMap.put(augmentedAttackStrategy, myAnswerSet);
-                }
-            }
-        }
-
-        for (Map.Entry<Long, AugmentedAttackStrategy> entry : augmentedAttackStrategyMap.entrySet()) {
-            AugmentedAttackStrategy augmentedAttackStrategy = entry.getValue();
-            log.debug("AugmentedAttackStrategy: " + augmentedAttackStrategy);
-
-            Set<MyAnswer> myAnswerSet = attackAnswersMap.get(augmentedAttackStrategy);
-            log.debug("MyAnswerSet: " + myAnswerSet);
-
-            if (myAnswerSet != null) {
-                augmentedAttackStrategy.setRefinedVulnerability(this.answerCalculator.getAnswersLikelihood(myAnswerSet));
-                augmentedAttackStrategy.setRefinedLikelihood((augmentedAttackStrategy.getInitialLikelihood() + augmentedAttackStrategy.getRefinedVulnerability()) / 2);
-            } else {
-                //TODO same as ContextualLikelihood ???
-            }
-        }
+        this.attackStrategyCalculator.calculateRefinedLikelihoods(myAnswers, questionsMap, answersMap, augmentedAttackStrategyMap);
 
         //Building output
         List<MyAssetAttackChance> myAssetAttackChances = new ArrayList<>();
