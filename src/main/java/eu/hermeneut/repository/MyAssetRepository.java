@@ -20,4 +20,9 @@ public interface MyAssetRepository extends JpaRepository<MyAsset, Long> {
         "SELECT DISTINCT my_asset from MyAsset my_asset LEFT JOIN FETCH my_asset.asset asset " +
             "LEFT JOIN FETCH asset.containers WHERE my_asset.selfAssessment.id = :selfAssessmentID")
     List<MyAsset> findAllBySelfAssessment(@Param("selfAssessmentID") Long selfAssessmentID);
+
+    @Query(
+        "SELECT DISTINCT my_asset from MyAsset my_asset LEFT JOIN FETCH my_asset.asset asset " +
+            "LEFT JOIN FETCH asset.containers WHERE my_asset.id = :myAssetID AND my_asset.selfAssessment.id = :selfAssessmentID")
+    MyAsset findOneByIDAndSelfAssessment(@Param("myAssetID") Long myAssetID, @Param("selfAssessmentID") Long selfAssessmentID);
 }
