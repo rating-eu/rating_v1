@@ -3,7 +3,7 @@ package eu.hermeneut.utils.likelihood.overall;
 import eu.hermeneut.domain.*;
 import eu.hermeneut.domain.attackmap.AttackMap;
 import eu.hermeneut.domain.attackmap.AugmentedAttackStrategy;
-import eu.hermeneut.utils.attackstrategy.AttackStrategyFilter;
+import eu.hermeneut.utils.attackstrategy.ThreatAttackFilter;
 import eu.hermeneut.utils.likelihood.attackstrategy.AttackStrategyCalculator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -53,7 +53,7 @@ public class OverallCalculator {
                 Set<AugmentedAttackStrategy> phaseAttackSet = internalEntry.getValue();
                 //Remove attacks that are not feasible by the ThreatAgent
                 //Warning: it may contain no AttackStrategy if the ThreatAgent has low skills.
-                phaseAttackSet = phaseAttackSet.stream().filter(augmentedAttackStrategy -> AttackStrategyFilter.isAttackPossible(threatAgent, augmentedAttackStrategy)).collect(Collectors.toSet());
+                phaseAttackSet = phaseAttackSet.stream().filter(augmentedAttackStrategy -> ThreatAttackFilter.isAttackPossible(threatAgent, augmentedAttackStrategy)).collect(Collectors.toSet());
 
                 //Warning: it may remain NULL if the ThreatAgent has low skills.
                 AugmentedAttackStrategy localMax = null;
@@ -138,7 +138,7 @@ public class OverallCalculator {
                 Set<AugmentedAttackStrategy> phaseAttacksSet = internalEntry.getValue();
                 //Remove attacks that are not feasible by the ThreatAgent
                 //Warning: it may contain no AttackStrategy if the ThreatAgent has low skills.
-                phaseAttacksSet = phaseAttacksSet.stream().filter(augmentedAttackStrategy -> AttackStrategyFilter.isAttackPossible(threatAgent, augmentedAttackStrategy)).collect(Collectors.toSet());
+                phaseAttacksSet = phaseAttacksSet.stream().filter(augmentedAttackStrategy -> ThreatAttackFilter.isAttackPossible(threatAgent, augmentedAttackStrategy)).collect(Collectors.toSet());
 
                 //Warning: it may remain NULL if the ThreatAgent has low skills.
                 AugmentedAttackStrategy localMax = null;
@@ -206,7 +206,7 @@ public class OverallCalculator {
                 Set<AugmentedAttackStrategy> phaseAttacksSet = phaseAttacks.getValue();
                 //Remove attacks that are not feasible by the ThreatAgent
                 //Warning: it may contain no AttackStrategy if the ThreatAgent has low skills.
-                phaseAttacksSet = phaseAttacksSet.stream().filter(augmentedAttackStrategy -> AttackStrategyFilter.isAttackPossible(threatAgent, augmentedAttackStrategy)).collect(Collectors.toSet());
+                phaseAttacksSet = phaseAttacksSet.stream().filter(augmentedAttackStrategy -> ThreatAttackFilter.isAttackPossible(threatAgent, augmentedAttackStrategy)).collect(Collectors.toSet());
 
                 //Warning: it may remain NULL if the ThreatAgent has low skills.
                 AugmentedAttackStrategy localMax = null;

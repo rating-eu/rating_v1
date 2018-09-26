@@ -1425,7 +1425,7 @@ var convert = function() {
 }
 
 for (var func in conversions) {
-  // export Raw versions
+  // overview Raw versions
   convert[func + "Raw"] =  (function(func) {
     // accept array or plain args
     return function(arg) {
@@ -1439,7 +1439,7 @@ for (var func in conversions) {
       from = pair[1],
       to = pair[2];
 
-  // export rgb2hsl and ["rgb"]["hsl"]
+  // overview rgb2hsl and ["rgb"]["hsl"]
   convert[from] = convert[from] || {};
 
   convert[from][to] = convert[func] = (function(func) { 

@@ -7,7 +7,7 @@ import eu.hermeneut.domain.enumeration.Role;
 import eu.hermeneut.domain.output.IntangibleAssetsAttacksLikelihoodTable;
 import eu.hermeneut.domain.attackmap.AugmentedAttackStrategy;
 import eu.hermeneut.service.*;
-import eu.hermeneut.utils.attackstrategy.AttackStrategyFilter;
+import eu.hermeneut.utils.attackstrategy.ThreatAttackFilter;
 import eu.hermeneut.utils.likelihood.answer.AnswerCalculator;
 import eu.hermeneut.utils.likelihood.attackstrategy.AttackStrategyCalculator;
 import eu.hermeneut.utils.threatagent.ThreatAgentComparator;
@@ -113,7 +113,7 @@ public class WP3OutputController {
             //Keep only the attackstrategies that can be performed by the StrongestThreatAgent
             attackStrategies = attackStrategies
                 .stream()
-                .filter(attackStrategy -> AttackStrategyFilter.isAttackPossible(strongestThreatAgent, attackStrategy))
+                .filter(attackStrategy -> ThreatAttackFilter.isAttackPossible(strongestThreatAgent, attackStrategy))
                 .collect(Collectors.toList());
 
             Map<Long, AttackStrategy> attackStrategyMap = attackStrategies.stream().collect(Collectors.toMap(AttackStrategy::getId, attackStrategy -> attackStrategy));

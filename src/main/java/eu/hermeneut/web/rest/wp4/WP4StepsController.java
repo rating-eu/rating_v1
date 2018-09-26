@@ -8,7 +8,7 @@ import eu.hermeneut.domain.wp4.MyAssetAttackChance;
 import eu.hermeneut.exceptions.NotFoundException;
 import eu.hermeneut.exceptions.NullInputException;
 import eu.hermeneut.service.*;
-import eu.hermeneut.utils.attackstrategy.AttackStrategyFilter;
+import eu.hermeneut.utils.attackstrategy.ThreatAttackFilter;
 import eu.hermeneut.utils.likelihood.answer.AnswerCalculator;
 import eu.hermeneut.utils.likelihood.attackstrategy.AttackStrategyCalculator;
 import eu.hermeneut.utils.threatagent.ThreatAgentComparator;
@@ -105,7 +105,7 @@ public class WP4StepsController {
         //Keep only the attackstrategies that can be performed by the Strongest ThreatAgent
         attackStrategies = attackStrategies
             .stream()
-            .filter(attackStrategy -> AttackStrategyFilter.isAttackPossible(strongestThreatAgent, attackStrategy))
+            .filter(attackStrategy -> ThreatAttackFilter.isAttackPossible(strongestThreatAgent, attackStrategy))
             .collect(Collectors.toList());
 
         log.debug("AttackStrategies: " + Arrays.toString(attackStrategies.toArray()));
