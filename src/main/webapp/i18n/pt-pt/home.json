@@ -15,5 +15,8 @@
         },
         "like": "Se gosta do JHipster, não se esqueça de avaliar no",
         "github": "GitHub"
+    },
+    "aboutus": {
+        "title": "About us"
     }
 }

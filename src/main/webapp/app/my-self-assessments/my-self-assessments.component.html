@@ -118,3 +118,39 @@
         </tbody>
     </table>
 </div>
+
+<div *ngIf="overview" class="table-responsive table-hover">
+    <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Asset</th>
+                    <th>Attack Strategy</th>
+                    <th>Vulnerability</th>
+                    <th>Likelihood</th>
+                    <th>Threat Agent</th>
+                    <th>Economic Value</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let item of overview.augmentedMyAssets; let i = index">
+                    <td>{{item.asset.name}}</td>
+                    <td>{{item.augmentedAttackStrategy.name}}</td>
+                    <td *ngIf="item.augmentedAttackStrategy.refinedVulnerability">{{item.augmentedAttackStrategy.refinedVulnerability}}</td>
+                    <td *ngIf="!item.augmentedAttackStrategy.refinedVulnerability && item.augmentedAttackStrategy.contextualVulnerability">{{item.augmentedAttackStrategy.contextualVulnerability}}</td>
+                    <td *ngIf="!item.augmentedAttackStrategy.refinedVulnerability && !item.augmentedAttackStrategy.contextualVulnerability">-</td>
+                    <td *ngIf="item.augmentedAttackStrategy.refinedLikelihood">{{item.augmentedAttackStrategy.refinedLikelihood}}</td>
+                    <td *ngIf="!item.augmentedAttackStrategy.refinedLikelihood && item.augmentedAttackStrategy.contextualLikelihood">{{item.augmentedAttackStrategy.contextualLikelihood}}</td>
+                    <td *ngIf="!item.augmentedAttackStrategy.refinedLikelihood && !item.augmentedAttackStrategy.contextualLikelihood && item.augmentedAttackStrategy.initialLikelihood">{{item.augmentedAttackStrategy.initialLikelihood}}</td>
+                    <td *ngIf="!item.augmentedAttackStrategy.refinedLikelihood && !item.augmentedAttackStrategy.contextualLikelihood && !item.augmentedAttackStrategy.initialLikelihood">-</td>
+                    <td>{{item.threatAgent.name}}</td>
+                    <th>
+                        <div class="input-group mb-1">
+                            <input type="number" class="form-control" name="input{{i}}" placeholder="Economic Value" aria-label="economic-value" aria-describedby="economic-value" [(ngModel)]="item.economicValue">
+                            <div class="input-group-append" (click)="updateMyAsset(item)">
+                                <span class="input-group-text" id="economic-value">OK</span>
+                            </div>
+                        </div>
+                    </th>
+                </tr>
+            </tbody>
+    </div>

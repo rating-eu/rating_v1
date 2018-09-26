@@ -41,7 +41,7 @@ export class MyCompanyComponent implements OnInit {
                         (error: any) => {
                             this.error = error;
 
-                            if (this.error.status == MyCompanyComponent.NOT_FOUND) {
+                            if (this.error.status === MyCompanyComponent.NOT_FOUND) {
                                 this.jhiAlertService.error(this.error.message, null, null);
 
                                 this.companyProfileService.query().subscribe(
