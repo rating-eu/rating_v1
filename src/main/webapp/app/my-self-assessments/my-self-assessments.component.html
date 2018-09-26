@@ -135,12 +135,12 @@
                 <tr *ngFor="let item of overview.augmentedMyAssets; let i = index">
                     <td>{{item.asset.name}}</td>
                     <td>{{item.augmentedAttackStrategy.name}}</td>
-                    <td *ngIf="item.augmentedAttackStrategy.refinedVulnerability">{{item.augmentedAttackStrategy.refinedVulnerability}}</td>
-                    <td *ngIf="!item.augmentedAttackStrategy.refinedVulnerability && item.augmentedAttackStrategy.contextualVulnerability">{{item.augmentedAttackStrategy.contextualVulnerability}}</td>
+                    <td *ngIf="item.augmentedAttackStrategy.refinedVulnerability">{{item.augmentedAttackStrategy.refinedVulnerability | number : '1.1-1'}}</td>
+                    <td *ngIf="!item.augmentedAttackStrategy.refinedVulnerability && item.augmentedAttackStrategy.contextualVulnerability">{{item.augmentedAttackStrategy.contextualVulnerability | number : '1.1-1'}}</td>
                     <td *ngIf="!item.augmentedAttackStrategy.refinedVulnerability && !item.augmentedAttackStrategy.contextualVulnerability">-</td>
-                    <td *ngIf="item.augmentedAttackStrategy.refinedLikelihood">{{item.augmentedAttackStrategy.refinedLikelihood}}</td>
-                    <td *ngIf="!item.augmentedAttackStrategy.refinedLikelihood && item.augmentedAttackStrategy.contextualLikelihood">{{item.augmentedAttackStrategy.contextualLikelihood}}</td>
-                    <td *ngIf="!item.augmentedAttackStrategy.refinedLikelihood && !item.augmentedAttackStrategy.contextualLikelihood && item.augmentedAttackStrategy.initialLikelihood">{{item.augmentedAttackStrategy.initialLikelihood}}</td>
+                    <td *ngIf="item.augmentedAttackStrategy.refinedLikelihood">{{item.augmentedAttackStrategy.refinedLikelihood | number : '1.1-1'}}</td>
+                    <td *ngIf="!item.augmentedAttackStrategy.refinedLikelihood && item.augmentedAttackStrategy.contextualLikelihood">{{item.augmentedAttackStrategy.contextualLikelihood | number : '1.1-1'}}</td>
+                    <td *ngIf="!item.augmentedAttackStrategy.refinedLikelihood && !item.augmentedAttackStrategy.contextualLikelihood && item.augmentedAttackStrategy.initialLikelihood">{{item.augmentedAttackStrategy.initialLikelihood | number : '1.1-1'}}</td>
                     <td *ngIf="!item.augmentedAttackStrategy.refinedLikelihood && !item.augmentedAttackStrategy.contextualLikelihood && !item.augmentedAttackStrategy.initialLikelihood">-</td>
                     <td>{{item.threatAgent.name}}</td>
                     <th>
