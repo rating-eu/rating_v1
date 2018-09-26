@@ -143,28 +143,23 @@ public class WP4StepsController {
             throw new NotFoundException("NO QuestionaireStatus was found for the SelfAssessment: " + selfAssessmentID);
         }
 
-        QuestionnaireStatus cisoQStatus = questionnaireStatuses.stream().filter(questionnaireStatus -> questionnaireStatus.getRole().equals(Role.ROLE_CISO)).findFirst().orElse(null);
         QuestionnaireStatus externalQStatus = questionnaireStatuses.stream().filter(questionnaireStatus -> questionnaireStatus.getRole().equals(Role.ROLE_EXTERNAL_AUDIT)).findFirst().orElse(null);
 
-        if (cisoQStatus == null) {
-            throw new NotFoundException("QuestionnaireStatus for Role CISO was NOT FOUND!");
-        } else {
-            if (externalQStatus == null) {
-                //Use CISO's one
-                Questionnaire questionnaire = cisoQStatus.getQuestionnaire();
-                List<Question> questions = this.questionService.findAllByQuestionnaire(questionnaire);
-                List<Answer> answers = this.answerService.findAll();
-                Map<Long/*AnswerID*/, Answer> answersMap = answers.stream().collect(Collectors.toMap(Answer::getId, Function.identity()));
-                Map<Long/*QuestionID*/, Question> questionsMap = questions.stream().collect(Collectors.toMap(Question::getId, Function.identity()));
+        if (externalQStatus == null) {
+            throw new NotFoundException("QuestionnaireStatus for Role ExternalAudit was NOT FOUND!");
+        }
 
-                List<MyAnswer> myAnswers = this.myAnswerService.findAllByQuestionnaireStatus(cisoQStatus.getId());
+        Questionnaire questionnaire = externalQStatus.getQuestionnaire();
+        List<Question> questions = this.questionService.findAllByQuestionnaire(questionnaire);
+        List<Answer> answers = this.answerService.findAll();
+        Map<Long/*AnswerID*/, Answer> answersMap = answers.stream().collect(Collectors.toMap(Answer::getId, Function.identity()));
+        Map<Long/*QuestionID*/, Question> questionsMap = questions.stream().collect(Collectors.toMap(Question::getId, Function.identity()));
 
-                if (myAnswers == null || myAnswers.size() == 0) {
-                    throw new NotFoundException("MyAnswers not found for QuestionnaireStatus with id: " + cisoQStatus.getId());
-                }
+        List<MyAnswer> myAnswers = this.myAnswerService.findAllByQuestionnaireStatus(externalQStatus.getId());
 
-                //Group the MyAnswers by AttackStrategy and find the likelihood for each of them.
-                Map<AugmentedAttackStrategy, Set<MyAnswer>> attackAnswersMap = new HashMap<>();
+        if (myAnswers == null || myAnswers.size() == 0) {
+            throw new NotFoundException("MyAnswers not found for QuestionnaireStatus with id: " + externalQStatus.getId());
+        }
 
         this.attackStrategyCalculator.calculateRefinedLikelihoods(myAnswers, questionsMap, answersMap, augmentedAttackStrategyMap);
 
