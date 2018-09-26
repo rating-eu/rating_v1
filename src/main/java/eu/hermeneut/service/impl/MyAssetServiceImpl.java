@@ -81,6 +81,12 @@ public class MyAssetServiceImpl implements MyAssetService {
         return myAssetRepository.findOne(id);
     }
 
+    @Override
+    public MyAsset findOneByIDAndSelfAssessment(Long myAssetID, Long selfAssessmentID) {
+        log.debug("Request to get MyAsset by ID: {} and SelfAssessment: {}", myAssetID, selfAssessmentID);
+        return myAssetRepository.findOneByIDAndSelfAssessment(myAssetID, selfAssessmentID);
+    }
+
     /**
      * Delete the myAsset by id.
      *

@@ -1,8 +1,13 @@
 package eu.hermeneut.utils.likelihood.attackstrategy;
 
+import eu.hermeneut.domain.Answer;
 import eu.hermeneut.domain.AttackStrategy;
+import eu.hermeneut.domain.MyAnswer;
+import eu.hermeneut.domain.Question;
+import eu.hermeneut.domain.attackmap.AugmentedAttackStrategy;
 import eu.hermeneut.domain.enumeration.*;
 import eu.hermeneut.service.AnswerWeightService;
+import eu.hermeneut.utils.likelihood.answer.AnswerCalculator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +22,9 @@ public class AttackStrategyCalculator {
 
     //#############INITIAL LIKELIHOOD MATRIX###############
     private AttackStrategyLikelihood[][] initialLikelihoodMatrix;
+
+    @Autowired
+    private AnswerCalculator answerCalculator;
 
     @Autowired
     public AttackStrategyCalculator(AnswerWeightService answerWeightService) {
@@ -38,6 +46,81 @@ public class AttackStrategyCalculator {
 
     private AttackStrategyLikelihood initialLikelihood(Frequency frequency, ResourceLevel resourceLevel) {
         return this.initialLikelihoodMatrix[frequency.getValue() - 1][resourceLevel.getValue() - 1];
+    }
+
+    public void calculateRefinedLikelihoods(List<MyAnswer> myAnswers, Map<Long/*QuestionID*/, Question> questionsMap, Map<Long/*AnswerID*/, Answer> answersMap, Map<Long/*AttackStrategy.ID*/, AugmentedAttackStrategy> augmentedAttackStrategyMap) {
+        //Group the MyAnswers by AttackStrategy and find the likelihood for each of them.
+        Map<AugmentedAttackStrategy, Set<MyAnswer>> attackAnswersMap = new HashMap<>();
+
+        this.buildAttackAnswersMap(myAnswers, questionsMap, answersMap, augmentedAttackStrategyMap, attackAnswersMap);
+
+        for (Map.Entry<Long, AugmentedAttackStrategy> entry : augmentedAttackStrategyMap.entrySet()) {
+            AugmentedAttackStrategy augmentedAttackStrategy = entry.getValue();
+            logger.debug("AugmentedAttackStrategy: " + augmentedAttackStrategy);
+
+            Set<MyAnswer> myAnswerSet = attackAnswersMap.get(augmentedAttackStrategy);
+            logger.debug("MyAnswerSet: " + myAnswerSet);
+
+            if (myAnswerSet != null) {
+                augmentedAttackStrategy.setRefinedVulnerability(this.answerCalculator.getAnswersLikelihood(myAnswerSet));
+                augmentedAttackStrategy.setRefinedLikelihood((augmentedAttackStrategy.getInitialLikelihood() + augmentedAttackStrategy.getRefinedVulnerability()) / 2);
+            }
+        }
+    }
+
+    private void buildAttackAnswersMap(List<MyAnswer> myAnswers, Map<Long, Question> questionsMap, Map<Long, Answer> answersMap, Map<Long, AugmentedAttackStrategy> augmentedAttackStrategyMap, Map<AugmentedAttackStrategy, Set<MyAnswer>> attackAnswersMap) {
+        for (MyAnswer myAnswer : myAnswers) {
+            Question question = myAnswer.getQuestion();
+            logger.debug("Question: " + question);
+            Question fullQuestion = questionsMap.get(question.getId());
+            logger.debug("Full question: " + fullQuestion);
+
+            Answer answer = myAnswer.getAnswer();
+            logger.debug("Answer: " + answer);
+            Answer fullAnswer = answersMap.get(myAnswer.getAnswer().getId());
+            logger.debug("FullAnswer: " + fullAnswer);
+
+            myAnswer.setQuestion(fullQuestion);
+            myAnswer.setAnswer(fullAnswer);
+
+            Set<AttackStrategy> attacks = fullQuestion.getAttackStrategies();
+            logger.debug("Attacks: " + attacks);
+
+            for (AttackStrategy attackStrategy : attacks) {
+                AugmentedAttackStrategy augmentedAttackStrategy = augmentedAttackStrategyMap.get(attackStrategy.getId());
+
+                if (attackAnswersMap.containsKey(augmentedAttackStrategy)) {
+                    Set<MyAnswer> myAnswerSet = attackAnswersMap.get(augmentedAttackStrategy);
+                    myAnswerSet.add(myAnswer);
+                } else {
+                    Set<MyAnswer> myAnswerSet = new HashSet<>();
+                    myAnswerSet.add(myAnswer);
+                    attackAnswersMap.put(augmentedAttackStrategy, myAnswerSet);
+                }
+            }
+        }
+    }
+
+    public void calculateContextualLikelihoods(List<MyAnswer> myAnswers, Map<Long/*QuestionID*/, Question> questionsMap, Map<Long/*AnswerID*/, Answer> answersMap, Map<Long/*AttackStrategy.ID*/, AugmentedAttackStrategy> augmentedAttackStrategyMap){
+        //Group the MyAnswers by AttackStrategy and find the likelihood for each of them.
+        Map<AugmentedAttackStrategy, Set<MyAnswer>> attackAnswersMap = new HashMap<>();
+
+        this.buildAttackAnswersMap(myAnswers, questionsMap, answersMap, augmentedAttackStrategyMap, attackAnswersMap);
+
+        for (Map.Entry<Long, AugmentedAttackStrategy> entry : augmentedAttackStrategyMap.entrySet()) {
+            AugmentedAttackStrategy augmentedAttackStrategy = entry.getValue();
+            logger.debug("AugmentedAttackStrategy: " + augmentedAttackStrategy);
+
+            Set<MyAnswer> myAnswerSet = attackAnswersMap.get(augmentedAttackStrategy);
+            logger.debug("MyAnswerSet: " + myAnswerSet);
+
+            if (myAnswerSet != null) {
+                augmentedAttackStrategy.setContextualVulnerability(this.answerCalculator.getAnswersLikelihood(myAnswerSet));
+                augmentedAttackStrategy.setContextualLikelihood((augmentedAttackStrategy.getInitialLikelihood() + augmentedAttackStrategy.getContextualVulnerability()) / 2);
+            } else {
+                //TODO Same as InitialLikelihood ???
+            }
+        }
     }
 
     //###################################HELPER METHODS###################################
