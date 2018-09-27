@@ -103,6 +103,7 @@ export class SidebarComponent implements OnInit {
                     },
                     {
                         label: 'Risk Management',
+                        routerLink: ['/risk-management'],
                         items: [
                             {
                                 label: 'Risk Scenarios',

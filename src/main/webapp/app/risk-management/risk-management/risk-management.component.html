@@ -1,14 +1,18 @@
 <div class="card-box">
     <div class="container-fluid">
       <div class="row">
-        <div class="col-md-5">
+        <div class="col-md-4">
           <button *ngIf="criticalLevel" type="button" class="btn btn-dark" routerLink="risk-evaluation" routerLinkActive="active">Risk evaluation
           </button>
           <button *ngIf="criticalLevel" type="button" class="btn btn-dark" routerLink="risk-mitigation" routerLinkActive="active">Risk mitigation
           </button>
         </div>
-        <div class="col-md-5">
+        <div class="col-md-7">
           <div class="btn-group" role="group" aria-label="riskHomeBtnGroup">
+            <button type="button" class="btn btn-primary" (click)="switchOnCollapsible('consequence')" [attr.aria-expanded]="!isConsequenceCollapsed"
+              aria-controls="consequenceScale">
+              Consequence rating scale
+            </button>
             <button type="button" class="btn btn-primary" (click)="switchOnCollapsible('likelihood')" [attr.aria-expanded]="!isLikelihoodCollapsed"
               aria-controls="likelihoodScale">
               Likelihood Scale
@@ -23,11 +27,95 @@
             </button>
           </div>
         </div>
-        <div *ngIf="!isCriticalCollapsed || !isVulnerabilityCollapsed || !isLikelihoodCollapsed" class="col-md-1 offset-md-1 text-right align-middle">
+        <div *ngIf="!isConsequenceCollapsed || !isCriticalCollapsed || !isVulnerabilityCollapsed || !isLikelihoodCollapsed" class="col-md-1 text-right align-middle">
           <i class="fa fa-times fa-lg text-secondary" aria-hidden="true" (click)="switchOnCollapsible('none')"></i>
         </div>
       </div>
       <div class="row">
+          <div class="collapse col-md-12" [ngbCollapse]="isConsequenceCollapsed">
+              <div class="card card-body">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th scope="col">Consequence Rating</th>
+                      <th scope="col">Financial Impact</th>
+                      <th scope="col">People Effects</th>
+                      <th scope="col">Reputation</th>
+                      <th scope="col">Service Outputs</th>
+                      <th scope="col">Legal & Compliance</th>
+                      <th scope="col">Management Impact</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <th scope="row">5</th>
+                      <td>
+                        <input type="number" class="form-control" placeholder="Min" [(ngModel)]="impactMinLevelValues[4]" #min>
+                        <input type="number" class="form-control" placeholder="Max" [(ngModel)]="impactMaxLevelValues[4]" #max>
+                        <div class="btn btn-primary" (click)="impactLevelUpdate(5, min.value, max.value)">OK</div>
+                      </td>
+                      <td>One or more fatalities or severe irreversible disability to one or more people</td>
+                      <td>National media coverage; Significant impact on funding  for several years; long-term loss of clients </td>
+                      <td>Total cessation of multiple services for many months</td>
+                      <td>Major litigation costing $&gt;3m; Investigation by regulatory body resulting in long term interruption of operations</td>
+                      <td>Restructuring of organisation with loss of many senior managers </td>
+                    </tr>
+                    <tr>
+                      <th scope="row">4</th>
+                      <td>
+                        <input type="number" class="form-control" placeholder="Min" [(ngModel)]="impactMinLevelValues[3]" #min>
+                        <input type="number" class="form-control" placeholder="Max" [(ngModel)]="impactMaxLevelValues[3]" #max>
+                        <div class="btn btn-primary" (click)="impactLevelUpdate(4, min.value, max.value)">OK</div>
+                      </td>
+                      <td>Extensive injury or impairment to one or more persons</td>
+                      <td>State media coverage; CEO departs affecting funding or causing loss of clients for many months</td>
+                      <td>Disruption of multiple services for several months</td>
+                      <td>Major breach of regulation with punitive fine, and significant litigation involving many weeks of senior management time and up to $3m legal costs</td>
+                      <td>Significant disruption that will require considerable senior management time over several weeks </td>
+                    </tr>
+                    <tr>
+                      <th scope="row">3</th>
+                      <td>
+                        <input type="number" class="form-control" placeholder="Min" [(ngModel)]="impactMinLevelValues[2]" #min>
+                        <input type="number" class="form-control" placeholder="Max" [(ngModel)]="impactMaxLevelValues[2]" #max>
+                        <div class="btn btn-primary" (click)="impactLevelUpdate(3, min.value, max.value)">OK</div>
+                      </td>
+                      <td>Short term disability to one or more persons</td>
+                      <td>Local media coverage over several days; senior managers depart; noticeable loss of clients for many months</td>
+                      <td>Total cessation of one service for a few months</td>
+                      <td>Breach of regulation with investigation by authority and possible moderate fine, and litigation and legal costs up to $999k</td>
+                      <td>Disruption that will require senior management time over several weeks</td>
+                    </tr>
+                    <tr>
+                      <th scope="row">2</th>
+                      <td>
+                        <input type="number" class="form-control" placeholder="Min" [(ngModel)]="impactMinLevelValues[1]" #min>
+                        <input type="number" class="form-control" placeholder="Max" [(ngModel)]="impactMaxLevelValues[1]" #max>
+                        <div class="btn btn-primary" (click)="impactLevelUpdate(2, min.value, max.value)">OK</div>
+                      </td>
+                      <td>Significant medical treatment; lost injury time &lt;2 weeks</td>
+                      <td>Local media coverage, and complaint to management</td>
+                      <td>Some service disruption in the area</td>
+                      <td>Breach of regulations; major fine or legal costs; minor litigation</td>
+                      <td>Will require some senior management time over many days </td>
+                    </tr>
+                    <tr>
+                      <th scope="row">1</th>
+                      <td>
+                        <input type="number" class="form-control" placeholder="Min" [(ngModel)]="impactMinLevelValues[0]" #min>
+                        <input type="number" class="form-control" placeholder="Max" [(ngModel)]="impactMaxLevelValues[0]" #max>
+                        <div class="btn btn-primary" (click)="impactLevelUpdate(1, min.value, max.value)">OK</div>
+                      </td>
+                      <td>First aid or minor medical treatment</td>
+                      <td>No media coverage; complaint to employee</td>
+                      <td>Minimal disruption</td>
+                      <td>Minor legal issues or breach of regulations</td>
+                      <td>Will require some management attention over several days</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
         <div class="collapse col-md-12" [ngbCollapse]="isLikelihoodCollapsed">
           <div class="card card-body">
             <table class="table">

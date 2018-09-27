@@ -15,6 +15,7 @@ export class RiskManagementComponent implements OnInit {
   public isVulnerabilityCollapsed = true;
   public isCriticalCollapsed = true;
   public isLevelsCollapsed = true;
+  public isConsequenceCollapsed = true;
   public selectedRow: number;
   public selectedColumn: number;
   public squareColumnElement: number[];
@@ -22,6 +23,8 @@ export class RiskManagementComponent implements OnInit {
   public lastSquareRowElement: number;
   private mySelf: SelfAssessmentMgm;
   public criticalLevel: CriticalLevelMgm;
+  public impactMinLevelValues: number[] = [];
+  public impactMaxLevelValues: number[] = [];
 
   constructor(
     private mySelfAssessmentService: SelfAssessmentMgmService,
@@ -32,6 +35,11 @@ export class RiskManagementComponent implements OnInit {
 
   ngOnInit() {
     this.mySelf = this.mySelfAssessmentService.getSelfAssessment();
+    // TODO Chiamata per il recupero degli impact level
+    for (let i = 0; i < 5; i++) {
+      this.impactMinLevelValues[i] = Math.random();
+      this.impactMaxLevelValues[i] = Math.random();
+    }
     this.riskService.getCriticalLevel(this.mySelf).toPromise().then((res) => {
       if (res) {
         this.criticalLevel = res;
@@ -62,11 +70,20 @@ export class RiskManagementComponent implements OnInit {
 
   public switchOnCollapsible(collapsible: string) {
     switch (collapsible) {
+      case 'consequence': {
+        this.isVulnerabilityCollapsed = true;
+        this.isCriticalCollapsed = true;
+        this.isLevelsCollapsed = true;
+        this.isLikelihoodCollapsed = true;
+        this.isConsequenceCollapsed = false;
+        break;
+      }
       case 'likelihood': {
         this.isVulnerabilityCollapsed = true;
         this.isCriticalCollapsed = true;
         this.isLevelsCollapsed = true;
         this.isLikelihoodCollapsed = false;
+        this.isConsequenceCollapsed = true;
         break;
       }
       case 'vulnerability': {
@@ -74,6 +91,7 @@ export class RiskManagementComponent implements OnInit {
         this.isCriticalCollapsed = true;
         this.isLevelsCollapsed = true;
         this.isLikelihoodCollapsed = true;
+        this.isConsequenceCollapsed = true;
         break;
       }
       case 'critical-level': {
@@ -81,6 +99,7 @@ export class RiskManagementComponent implements OnInit {
         this.isCriticalCollapsed = false;
         this.isLevelsCollapsed = true;
         this.isLikelihoodCollapsed = true;
+        this.isConsequenceCollapsed = true;
         break;
       }
       case 'none': {
@@ -88,9 +107,18 @@ export class RiskManagementComponent implements OnInit {
         this.isCriticalCollapsed = true;
         this.isLevelsCollapsed = true;
         this.isLikelihoodCollapsed = true;
+        this.isConsequenceCollapsed = true;
         break;
       }
     }
+  }
+
+  public impactLevelUpdate(level: number, valueMin: number, valueMax: number) {
+    console.log(level);
+    console.log(valueMin);
+    console.log(valueMax);
+    console.log(this.impactMinLevelValues);
+    console.log(this.impactMaxLevelValues);
   }
 
   public criticalLevelUpdate(level: string) {
