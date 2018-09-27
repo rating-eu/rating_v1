@@ -12,9 +12,7 @@ import { SelfAssessmentMgm } from '../../../../../../main/webapp/app/entities/se
 import { UserService } from '../../../../../../main/webapp/app/shared';
 import { CompanyProfileMgmService } from '../../../../../../main/webapp/app/entities/company-profile-mgm';
 import { CompanyGroupMgmService } from '../../../../../../main/webapp/app/entities/company-group-mgm';
-import { AssetMgmService } from '../../../../../../main/webapp/app/entities/asset-mgm';
 import { ThreatAgentMgmService } from '../../../../../../main/webapp/app/entities/threat-agent-mgm';
-import { AttackStrategyMgmService } from '../../../../../../main/webapp/app/entities/attack-strategy-mgm';
 import { ExternalAuditMgmService } from '../../../../../../main/webapp/app/entities/external-audit-mgm';
 import { QuestionnaireMgmService } from '../../../../../../main/webapp/app/entities/questionnaire-mgm';
 
@@ -35,9 +33,7 @@ describe('Component Tests', () => {
                     UserService,
                     CompanyProfileMgmService,
                     CompanyGroupMgmService,
-                    AssetMgmService,
                     ThreatAgentMgmService,
-                    AttackStrategyMgmService,
                     ExternalAuditMgmService,
                     QuestionnaireMgmService,
                     SelfAssessmentMgmService

@@ -24,24 +24,8 @@
         {
             "relationshipType": "many-to-many",
             "otherEntityRelationshipName": "",
-            "relationshipName": "asset",
-            "otherEntityName": "asset",
-            "otherEntityField": "name",
-            "ownerSide": true
-        },
-        {
-            "relationshipType": "many-to-many",
-            "otherEntityRelationshipName": "",
             "relationshipName": "threatagent",
             "otherEntityName": "threatAgent",
-            "otherEntityField": "name",
-            "ownerSide": true
-        },
-        {
-            "relationshipType": "many-to-many",
-            "otherEntityRelationshipName": "",
-            "relationshipName": "attackstrategy",
-            "otherEntityName": "attackStrategy",
             "otherEntityField": "name",
             "ownerSide": true
         },
