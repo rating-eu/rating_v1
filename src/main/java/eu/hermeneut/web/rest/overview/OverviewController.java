@@ -1,5 +1,7 @@
 package eu.hermeneut.web.rest.overview;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import eu.hermeneut.domain.*;
 import eu.hermeneut.domain.attackmap.AugmentedAttackStrategy;
 import eu.hermeneut.domain.enumeration.QuestionnairePurpose;
@@ -10,7 +12,6 @@ import eu.hermeneut.service.*;
 import eu.hermeneut.utils.attackstrategy.ThreatAttackFilter;
 import eu.hermeneut.utils.likelihood.answer.AnswerCalculator;
 import eu.hermeneut.utils.likelihood.attackstrategy.AttackStrategyCalculator;
-import eu.hermeneut.web.rest.output.WP3OutputController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -26,7 +31,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api")
 public class OverviewController {
-    private static final Logger LOGGER = LoggerFactory.getLogger(WP3OutputController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(OverviewController.class);
 
     @Autowired
     private SelfAssessmentService selfAssessmentService;
@@ -64,7 +69,7 @@ public class OverviewController {
         SelfAssessmentOverview overview = new SelfAssessmentOverview();
         overview.setSelfAssessmentID(selfAssessmentID);
 
-        Set<AugmentedMyAsset> augmentedMyAssets = new HashSet<>();
+        List<AugmentedMyAsset> augmentedMyAssets = new LinkedList<>();
         overview.setAugmentedMyAssets(augmentedMyAssets);
 
         if (selfAssessment != null) {
@@ -177,6 +182,37 @@ public class OverviewController {
             }
         } else {
 
+        }
+
+        LOGGER.debug("AugmentedMyAssets: " + augmentedMyAssets.size());
+
+        augmentedMyAssets.stream().forEach(augmentedMyAsset -> {
+            LOGGER.debug("AugmentedMyAsset: " + augmentedMyAsset.getId());
+        });
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        /*objectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+        objectMapper.configure(SerializationFeature.FAIL_ON_SELF_REFERENCES, false);
+        objectMapper.configure(SerializationFeature.FAIL_ON_UNWRAPPED_TYPE_IDENTIFIERS, false);*/
+
+        try {
+            File tempJsonFile = File.createTempFile("overview", ".json");
+            objectMapper.writerWithDefaultPrettyPrinter().writeValue(tempJsonFile, overview);
+
+            LOGGER.debug("tempJsonFile size: " + tempJsonFile.length() + "B");
+            LOGGER.debug("tempJsonFile size: " + tempJsonFile.length() / 1024 + "KB");
+            LOGGER.debug("tempJsonFile size: " + tempJsonFile.length() / (1024 * 1024) + "MB");
+            LOGGER.debug("tempJsonFile size: " + tempJsonFile.length() / (1024 * 1024 * 1024) + "GB");
+
+            byte[] encoded = Files.readAllBytes(tempJsonFile.toPath());
+            String json = new String(encoded, Charset.defaultCharset());
+
+            System.out.println("JSON:");
+            System.out.println(json);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
 
         return overview;

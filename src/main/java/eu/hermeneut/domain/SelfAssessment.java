@@ -50,32 +50,32 @@ public class SelfAssessment implements Serializable {
     @ManyToOne
     private User user;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     @JoinTable(name = "self_assessment_company_group",
-               joinColumns = @JoinColumn(name="self_assessments_id", referencedColumnName="id"),
-               inverseJoinColumns = @JoinColumn(name="company_groups_id", referencedColumnName="id"))
+        joinColumns = @JoinColumn(name = "self_assessments_id", referencedColumnName = "id"),
+        inverseJoinColumns = @JoinColumn(name = "company_groups_id", referencedColumnName = "id"))
     private Set<CompanyGroup> companyGroups = new HashSet<>();
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     @JoinTable(name = "self_assessment_threatagent",
-               joinColumns = @JoinColumn(name="self_assessments_id", referencedColumnName="id"),
-               inverseJoinColumns = @JoinColumn(name="threatagents_id", referencedColumnName="id"))
+        joinColumns = @JoinColumn(name = "self_assessments_id", referencedColumnName = "id"),
+        inverseJoinColumns = @JoinColumn(name = "threatagents_id", referencedColumnName = "id"))
     private Set<ThreatAgent> threatagents = new HashSet<>();
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     @JoinTable(name = "self_assessment_externalaudit",
-               joinColumns = @JoinColumn(name="self_assessments_id", referencedColumnName="id"),
-               inverseJoinColumns = @JoinColumn(name="externalaudits_id", referencedColumnName="id"))
+        joinColumns = @JoinColumn(name = "self_assessments_id", referencedColumnName = "id"),
+        inverseJoinColumns = @JoinColumn(name = "externalaudits_id", referencedColumnName = "id"))
     private Set<ExternalAudit> externalaudits = new HashSet<>();
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     @JoinTable(name = "self_assessment_questionnaire",
-               joinColumns = @JoinColumn(name="self_assessments_id", referencedColumnName="id"),
-               inverseJoinColumns = @JoinColumn(name="questionnaires_id", referencedColumnName="id"))
+        joinColumns = @JoinColumn(name = "self_assessments_id", referencedColumnName = "id"),
+        inverseJoinColumns = @JoinColumn(name = "questionnaires_id", referencedColumnName = "id"))
     private Set<Questionnaire> questionnaires = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
