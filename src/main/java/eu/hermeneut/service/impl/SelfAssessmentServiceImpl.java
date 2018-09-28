@@ -11,9 +11,11 @@ import eu.hermeneut.domain.overview.SelfAssessmentOverview;
 import eu.hermeneut.service.*;
 import eu.hermeneut.repository.SelfAssessmentRepository;
 import eu.hermeneut.repository.search.SelfAssessmentSearchRepository;
+import eu.hermeneut.thread.AugmentedMyAssetsCallable;
 import eu.hermeneut.utils.attackstrategy.ThreatAttackFilter;
 import eu.hermeneut.utils.likelihood.answer.AnswerCalculator;
 import eu.hermeneut.utils.likelihood.attackstrategy.AttackStrategyCalculator;
+import eu.hermeneut.utils.wp4.ListSplitter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +27,7 @@ import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.util.*;
+import java.util.concurrent.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -178,8 +181,6 @@ public class SelfAssessmentServiceImpl implements SelfAssessmentService {
             if (threatAgentSet != null && !threatAgentSet.isEmpty()) {
                 List<MyAsset> myAssets = this.myAssetService.findAllBySelfAssessment(selfAssessmentID);
 
-                //TODO Split MyAssets and handle them in different threads
-
                 if (myAssets != null && !myAssets.isEmpty()) {
                     List<QuestionnaireStatus> questionnaireStatuses = this.questionnaireStatusService.findAllBySelfAssessment(selfAssessmentID);
 
@@ -234,54 +235,34 @@ public class SelfAssessmentServiceImpl implements SelfAssessmentService {
                             }
                         }
 
-                        Iterator<MyAsset> myAssetIterator = myAssets.iterator();
+                        //===Split MyAssets and handle them in different THREADS===
+                        final int THREADS_AMOUNT = myAssets.size() / 4 + 1;
 
-                        int count = 0;
+                        Map<Integer, List<MyAsset>> splittedMyAssets = ListSplitter.split(myAssets, THREADS_AMOUNT);
 
-                        //===My Assets===
-                        while (myAssetIterator.hasNext()) {
-                            MyAsset myAsset = myAssetIterator.next();
+                        ExecutorService executor = Executors.newFixedThreadPool(THREADS_AMOUNT);
 
-                            Set<Container> containers = myAsset.getAsset().getContainers();
+                        //create a list to hold the Future object associated with Callable
+                        List<Future<List<AugmentedMyAsset>>> futureList = new ArrayList<Future<List<AugmentedMyAsset>>>();
 
-                            if (containers != null && !containers.isEmpty()) {
-                                Iterator<Container> containerIterator = containers.iterator();
+                        splittedMyAssets.entrySet().stream().forEach((entry) -> {
+                            int cluster = entry.getKey();
+                            List<MyAsset> myAssetsSubset = entry.getValue();
 
-                                while (containerIterator.hasNext()) {
-                                    Container container = containerIterator.next();
-                                    List<AttackStrategy> attackStrategies = this.attackStrategyService.findAllByContainer(container.getId());
+                            AugmentedMyAssetsCallable augmentedMyAssetsCallable = new AugmentedMyAssetsCallable(myAssetsSubset, this.attackStrategyService, augmentedAttackStrategyMap, threatAgentSet);
 
-                                    if (attackStrategies != null && !attackStrategies.isEmpty()) {
-                                        Iterator<AttackStrategy> attackStrategyIterator = attackStrategies.iterator();
+                            //submit Callable tasks to be executed by thread pool
+                            Future<List<AugmentedMyAsset>> future = executor.submit(augmentedMyAssetsCallable);
+                            //add Future to the list, we can get return value using Future
+                            futureList.add(future);
+                        });
 
-                                        while (attackStrategyIterator.hasNext()) {
-                                            AttackStrategy attackStrategy = attackStrategyIterator.next();
-                                            AugmentedAttackStrategy augmentedAttackStrategy = augmentedAttackStrategyMap.get(attackStrategy.getId());
-
-                                            //TODO Filter the ThreatAgents that can perform this attack
-                                            List<ThreatAgent> threatAgentsSubset = threatAgentSet.stream().filter(threatAgent -> ThreatAttackFilter.isAttackPossible(threatAgent, attackStrategy)).collect(Collectors.toList());
-                                            //TODO For each ThreatAgent build an AugmentedMyAsset
-                                            if (threatAgentsSubset != null && !threatAgentsSubset.isEmpty()) {
-                                                Iterator<ThreatAgent> threatAgentIterator = threatAgentsSubset.iterator();
-
-                                                while (threatAgentIterator.hasNext()) {
-                                                    if (count < 10000) {
-                                                        count++;
-                                                        ThreatAgent threatAgent = threatAgentIterator.next();
-
-                                                        AugmentedMyAsset augmentedMyAsset = new AugmentedMyAsset(myAsset);
-                                                        augmentedMyAsset.setAugmentedAttackStrategy(augmentedAttackStrategy);
-                                                        augmentedMyAsset.setThreatAgent(threatAgent);
-
-                                                        augmentedMyAssets.add(augmentedMyAsset);
-                                                    } else {
-                                                        break;
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
+                        for (Future<List<AugmentedMyAsset>> future : futureList) {
+                            try {
+                                //Future.get() waits for task to get completed
+                                augmentedMyAssets.addAll(future.get());
+                            } catch (InterruptedException | ExecutionException e) {
+                                e.printStackTrace();
                             }
                         }
                     }
@@ -295,12 +276,8 @@ public class SelfAssessmentServiceImpl implements SelfAssessmentService {
 
         LOGGER.debug("AugmentedMyAssets: " + augmentedMyAssets.size());
 
-        augmentedMyAssets.stream().forEach(augmentedMyAsset -> {
-            LOGGER.debug("AugmentedMyAsset: " + augmentedMyAsset.getId());
-        });
-
-        ObjectMapper objectMapper = new ObjectMapper();
-        /*objectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+        /*ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
         objectMapper.configure(SerializationFeature.FAIL_ON_SELF_REFERENCES, false);
         objectMapper.configure(SerializationFeature.FAIL_ON_UNWRAPPED_TYPE_IDENTIFIERS, false);*/
 
