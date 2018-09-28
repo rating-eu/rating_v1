@@ -1,17 +1,31 @@
 package eu.hermeneut.service.impl;
 
-import eu.hermeneut.domain.ThreatAgent;
-import eu.hermeneut.service.SelfAssessmentService;
-import eu.hermeneut.domain.SelfAssessment;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import eu.hermeneut.domain.*;
+import eu.hermeneut.domain.attackmap.AugmentedAttackStrategy;
+import eu.hermeneut.domain.enumeration.QuestionnairePurpose;
+import eu.hermeneut.domain.enumeration.Role;
+import eu.hermeneut.domain.overview.AugmentedMyAsset;
+import eu.hermeneut.domain.overview.SelfAssessmentOverview;
+import eu.hermeneut.service.*;
 import eu.hermeneut.repository.SelfAssessmentRepository;
 import eu.hermeneut.repository.search.SelfAssessmentSearchRepository;
+import eu.hermeneut.utils.attackstrategy.ThreatAttackFilter;
+import eu.hermeneut.utils.likelihood.answer.AnswerCalculator;
+import eu.hermeneut.utils.likelihood.attackstrategy.AttackStrategyCalculator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.Set;
+import java.io.File;
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -24,11 +38,38 @@ import static org.elasticsearch.index.query.QueryBuilders.*;
 @Transactional
 public class SelfAssessmentServiceImpl implements SelfAssessmentService {
 
-    private final Logger log = LoggerFactory.getLogger(SelfAssessmentServiceImpl.class);
+    private final Logger LOGGER = LoggerFactory.getLogger(SelfAssessmentServiceImpl.class);
 
     private final SelfAssessmentRepository selfAssessmentRepository;
 
     private final SelfAssessmentSearchRepository selfAssessmentSearchRepository;
+
+    @Autowired
+    private SelfAssessmentService selfAssessmentService;
+
+    @Autowired
+    private MyAssetService myAssetService;
+
+    @Autowired
+    private AttackStrategyService attackStrategyService;
+
+    @Autowired
+    private MyAnswerService myAnswerService;
+
+    @Autowired
+    private QuestionnaireStatusService questionnaireStatusService;
+
+    @Autowired
+    private AttackStrategyCalculator attackStrategyCalculator;
+
+    @Autowired
+    private AnswerCalculator answerCalculator;
+
+    @Autowired
+    private QuestionService questionService;
+
+    @Autowired
+    private AnswerService answerService;
 
     public SelfAssessmentServiceImpl(SelfAssessmentRepository selfAssessmentRepository, SelfAssessmentSearchRepository selfAssessmentSearchRepository) {
         this.selfAssessmentRepository = selfAssessmentRepository;
@@ -43,7 +84,7 @@ public class SelfAssessmentServiceImpl implements SelfAssessmentService {
      */
     @Override
     public SelfAssessment save(SelfAssessment selfAssessment) {
-        log.debug("Request to save SelfAssessment : {}", selfAssessment);
+        LOGGER.debug("Request to save SelfAssessment : {}", selfAssessment);
         SelfAssessment result = selfAssessmentRepository.save(selfAssessment);
         selfAssessmentSearchRepository.save(result);
         return result;
@@ -57,7 +98,7 @@ public class SelfAssessmentServiceImpl implements SelfAssessmentService {
     @Override
     @Transactional(readOnly = true)
     public List<SelfAssessment> findAll() {
-        log.debug("Request to get all SelfAssessments");
+        LOGGER.debug("Request to get all SelfAssessments");
         List<SelfAssessment> selfAssessments = selfAssessmentRepository.findAllWithEagerRelationships();
 
         for (SelfAssessment selfAssessment : selfAssessments) {
@@ -82,7 +123,7 @@ public class SelfAssessmentServiceImpl implements SelfAssessmentService {
     @Override
     @Transactional(readOnly = true)
     public SelfAssessment findOne(Long id) {
-        log.debug("Request to get SelfAssessment : {}", id);
+        LOGGER.debug("Request to get SelfAssessment : {}", id);
         return selfAssessmentRepository.findOneWithEagerRelationships(id);
     }
 
@@ -93,7 +134,7 @@ public class SelfAssessmentServiceImpl implements SelfAssessmentService {
      */
     @Override
     public void delete(Long id) {
-        log.debug("Request to delete SelfAssessment : {}", id);
+        LOGGER.debug("Request to delete SelfAssessment : {}", id);
         selfAssessmentRepository.delete(id);
         selfAssessmentSearchRepository.delete(id);
     }
@@ -107,7 +148,7 @@ public class SelfAssessmentServiceImpl implements SelfAssessmentService {
     @Override
     @Transactional(readOnly = true)
     public List<SelfAssessment> search(String query) {
-        log.debug("Request to search SelfAssessments for query {}", query);
+        LOGGER.debug("Request to search SelfAssessments for query {}", query);
         return StreamSupport
             .stream(selfAssessmentSearchRepository.search(queryStringQuery(query)).spliterator(), false)
             .collect(Collectors.toList());
@@ -115,7 +156,174 @@ public class SelfAssessmentServiceImpl implements SelfAssessmentService {
 
     @Override
     public List<SelfAssessment> findAllByCompanyProfile(Long companyProfileID) {
-        log.debug("Request to get SelfAssessment by CompanyProfile: {}", companyProfileID);
+        LOGGER.debug("Request to get SelfAssessment by CompanyProfile: {}", companyProfileID);
         return selfAssessmentRepository.findAllByCompanyProfile(companyProfileID);
+    }
+
+    @Override
+    public SelfAssessmentOverview getSelfAssessmentOverview(Long selfAssessmentID) {
+        //Get the SelfAssessment by the given ID
+        SelfAssessment selfAssessment = this.findOne(selfAssessmentID);
+        LOGGER.info("SelfAssessment: " + selfAssessment);
+
+        SelfAssessmentOverview overview = new SelfAssessmentOverview();
+        overview.setSelfAssessmentID(selfAssessmentID);
+
+        List<AugmentedMyAsset> augmentedMyAssets = new LinkedList<>();
+        overview.setAugmentedMyAssets(augmentedMyAssets);
+
+        if (selfAssessment != null) {
+            Set<ThreatAgent> threatAgentSet = selfAssessment.getThreatagents();
+
+            if (threatAgentSet != null && !threatAgentSet.isEmpty()) {
+                List<MyAsset> myAssets = this.myAssetService.findAllBySelfAssessment(selfAssessmentID);
+
+                //TODO Split MyAssets and handle them in different threads
+
+                if (myAssets != null && !myAssets.isEmpty()) {
+                    List<QuestionnaireStatus> questionnaireStatuses = this.questionnaireStatusService.findAllBySelfAssessment(selfAssessmentID);
+
+                    if (questionnaireStatuses != null && !questionnaireStatuses.isEmpty()) {
+                        QuestionnaireStatus cisoQStatus = questionnaireStatuses.stream().filter(questionnaireStatus -> questionnaireStatus.getRole().equals(Role.ROLE_CISO) && questionnaireStatus.getQuestionnaire().getPurpose().equals(QuestionnairePurpose.SELFASSESSMENT)).findFirst().orElse(null);
+                        QuestionnaireStatus externalQStatus = questionnaireStatuses.stream().filter(questionnaireStatus -> questionnaireStatus.getRole().equals(Role.ROLE_EXTERNAL_AUDIT) && questionnaireStatus.getQuestionnaire().getPurpose().equals(QuestionnairePurpose.SELFASSESSMENT)).findFirst().orElse(null);
+
+                        Map<Long, AugmentedAttackStrategy> augmentedAttackStrategyMap = this.attackStrategyService.findAll().stream().collect(Collectors.toMap(
+                            AttackStrategy::getId,
+                            attackStrategy -> new AugmentedAttackStrategy(attackStrategy, true)
+                        ));
+
+                        //===INITIAL LIKELIHOOD===
+                        augmentedAttackStrategyMap.values().forEach(augmentedAttackStrategy -> {
+                            augmentedAttackStrategy.setInitialLikelihood(this.attackStrategyCalculator.initialLikelihood(augmentedAttackStrategy).getValue());
+                        });
+
+                        Map<Long, Answer> answerMap = this.answerService.findAll().stream().collect(Collectors.toMap(
+                            Answer::getId,
+                            Function.identity()
+                        ));
+
+                        //===CONTEXTUAL LIKELIHOOD & VULNERABILITY===
+                        if (cisoQStatus != null) {
+                            List<MyAnswer> myAnswers = this.myAnswerService.findAllByQuestionnaireStatus(cisoQStatus.getId());
+
+                            if (myAnswers != null && !myAnswers.isEmpty()) {
+                                List<Question> questions = this.questionService.findAllByQuestionnaire(cisoQStatus.getQuestionnaire());
+
+                                Map<Long, Question> questionMap = questions.stream().collect(Collectors.toMap(
+                                    Question::getId,
+                                    Function.identity()
+                                ));
+
+                                this.attackStrategyCalculator.calculateContextualLikelihoods(myAnswers, questionMap, answerMap, augmentedAttackStrategyMap);
+                            }
+                        }
+
+                        //===REFINED LIKELIHOOD & VULNERABILITY===
+                        if (externalQStatus != null) {
+                            List<MyAnswer> myAnswers = this.myAnswerService.findAllByQuestionnaireStatus(externalQStatus.getId());
+
+                            if (myAnswers != null && !myAnswers.isEmpty()) {
+                                List<Question> questions = this.questionService.findAllByQuestionnaire(externalQStatus.getQuestionnaire());
+
+                                Map<Long, Question> questionMap = questions.stream().collect(Collectors.toMap(
+                                    Question::getId,
+                                    Function.identity()
+                                ));
+
+                                this.attackStrategyCalculator.calculateRefinedLikelihoods(myAnswers, questionMap, answerMap, augmentedAttackStrategyMap);
+                            }
+                        }
+
+                        Iterator<MyAsset> myAssetIterator = myAssets.iterator();
+
+                        int count = 0;
+
+                        //===My Assets===
+                        while (myAssetIterator.hasNext()) {
+                            MyAsset myAsset = myAssetIterator.next();
+
+                            Set<Container> containers = myAsset.getAsset().getContainers();
+
+                            if (containers != null && !containers.isEmpty()) {
+                                Iterator<Container> containerIterator = containers.iterator();
+
+                                while (containerIterator.hasNext()) {
+                                    Container container = containerIterator.next();
+                                    List<AttackStrategy> attackStrategies = this.attackStrategyService.findAllByContainer(container.getId());
+
+                                    if (attackStrategies != null && !attackStrategies.isEmpty()) {
+                                        Iterator<AttackStrategy> attackStrategyIterator = attackStrategies.iterator();
+
+                                        while (attackStrategyIterator.hasNext()) {
+                                            AttackStrategy attackStrategy = attackStrategyIterator.next();
+                                            AugmentedAttackStrategy augmentedAttackStrategy = augmentedAttackStrategyMap.get(attackStrategy.getId());
+
+                                            //TODO Filter the ThreatAgents that can perform this attack
+                                            List<ThreatAgent> threatAgentsSubset = threatAgentSet.stream().filter(threatAgent -> ThreatAttackFilter.isAttackPossible(threatAgent, attackStrategy)).collect(Collectors.toList());
+                                            //TODO For each ThreatAgent build an AugmentedMyAsset
+                                            if (threatAgentsSubset != null && !threatAgentsSubset.isEmpty()) {
+                                                Iterator<ThreatAgent> threatAgentIterator = threatAgentsSubset.iterator();
+
+                                                while (threatAgentIterator.hasNext()) {
+                                                    if (count < 10000) {
+                                                        count++;
+                                                        ThreatAgent threatAgent = threatAgentIterator.next();
+
+                                                        AugmentedMyAsset augmentedMyAsset = new AugmentedMyAsset(myAsset);
+                                                        augmentedMyAsset.setAugmentedAttackStrategy(augmentedAttackStrategy);
+                                                        augmentedMyAsset.setThreatAgent(threatAgent);
+
+                                                        augmentedMyAssets.add(augmentedMyAsset);
+                                                    } else {
+                                                        break;
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                } else {
+
+                }
+            }
+        } else {
+
+        }
+
+        LOGGER.debug("AugmentedMyAssets: " + augmentedMyAssets.size());
+
+        augmentedMyAssets.stream().forEach(augmentedMyAsset -> {
+            LOGGER.debug("AugmentedMyAsset: " + augmentedMyAsset.getId());
+        });
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        /*objectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+        objectMapper.configure(SerializationFeature.FAIL_ON_SELF_REFERENCES, false);
+        objectMapper.configure(SerializationFeature.FAIL_ON_UNWRAPPED_TYPE_IDENTIFIERS, false);*/
+
+        /*try {
+            File tempJsonFile = new File("overview.json");
+            objectMapper.writerWithDefaultPrettyPrinter().writeValue(tempJsonFile, overview);
+
+            LOGGER.debug("tempJsonFile size: " + tempJsonFile.length() + "B");
+            LOGGER.debug("tempJsonFile size: " + tempJsonFile.length() / 1024 + "KB");
+            LOGGER.debug("tempJsonFile size: " + tempJsonFile.length() / (1024 * 1024) + "MB");
+            LOGGER.debug("tempJsonFile size: " + tempJsonFile.length() / (1024 * 1024 * 1024) + "GB");
+
+            byte[] encoded = Files.readAllBytes(tempJsonFile.toPath());
+            String json = new String(encoded, Charset.defaultCharset());
+
+            System.out.println("JSON:");
+            System.out.println(json);
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }*/
+
+        return overview;
     }
 }
