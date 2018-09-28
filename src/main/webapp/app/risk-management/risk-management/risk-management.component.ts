@@ -194,6 +194,7 @@ export class RiskManagementComponent implements OnInit {
       if (res) {
         this.criticalLevel = res.body;
         this.jhiAlertService.success('hermeneutApp.messages.saved', null, null);
+        location.reload();
       }
     });
   }

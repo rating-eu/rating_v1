@@ -143,12 +143,14 @@
                 <ng-container *ngSwitchCase="'insert_magnitude'">
                     <ul class="list-unstyled" *ngIf="myQuestionAssets.length > 0">
                         <li *ngFor="let asset of myQuestionAssets; let i = index">
-                            <p style="clear: both">Insert estimated value for <b>{{asset.asset.name}}</b> asset in {{asset.asset.assetcategory.name}} category.</p>
-                            <div class="input-group" style="margin-bottom: 10px">
-                                <input type="text" class="form-control" placeholder="Magnitude"
-                                    aria-label="Magnitude" aria-describedby="basic-addon2"
-                                    (change)="setMagnitude(asset, i, $event.target.value)">
-                            </div>
+                            <ng-container *ngIf="asset.asset.assetcategory.type === 'INTANGIBLE' && asset.estimated">
+                                <p style="clear: both">Insert estimated value for <b>{{asset.asset.name}}</b> asset in {{asset.asset.assetcategory.name}} category.</p>
+                                <div class="input-group" style="margin-bottom: 10px">
+                                    <input type="text" class="form-control" placeholder="Magnitude"
+                                        aria-label="Magnitude" aria-describedby="basic-addon2"
+                                        (change)="setMagnitude(asset, i, $event.target.value)">
+                                </div>
+                            </ng-container>
                         </li>
                     </ul>
                 </ng-container>
