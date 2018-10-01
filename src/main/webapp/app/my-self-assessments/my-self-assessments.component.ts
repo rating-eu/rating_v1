@@ -1,11 +1,13 @@
-import {Component, OnInit} from '@angular/core';
-import {AccountService, User, UserService} from '../shared';
-import {MyCompanyMgm, MyCompanyMgmService} from '../entities/my-company-mgm';
-import {SelfAssessmentMgm, SelfAssessmentMgmService} from '../entities/self-assessment-mgm';
-import {HttpResponse} from '@angular/common/http';
-import {Router} from '@angular/router';
-import {Subscription} from 'rxjs/Subscription';
-import {JhiEventManager} from 'ng-jhipster';
+import { Component, OnInit } from '@angular/core';
+import { AccountService, User, UserService } from '../shared';
+import { MyCompanyMgm, MyCompanyMgmService } from '../entities/my-company-mgm';
+import { SelfAssessmentMgm, SelfAssessmentMgmService } from '../entities/self-assessment-mgm';
+import { HttpResponse } from '@angular/common/http';
+import { Router } from '@angular/router';
+import { Subscription } from 'rxjs/Subscription';
+import { JhiEventManager } from 'ng-jhipster';
+import { SelfAssessmentOverview } from './models/SelfAssessmentOverview.model';
+import { MyAssetMgm, MyAssetMgmService } from '../entities/my-asset-mgm';
 
 @Component({
     selector: 'jhi-my-self-assessments',
@@ -19,14 +21,16 @@ export class MySelfAssessmentsComponent implements OnInit {
     private myCompany: MyCompanyMgm;
     public mySelfAssessments: SelfAssessmentMgm[];
     eventSubscriber: Subscription;
-
+    public overview: SelfAssessmentOverview;
 
     constructor(private router: Router,
-                private accountService: AccountService,
-                private userService: UserService,
-                private myCompanyService: MyCompanyMgmService,
-                private selfAssessmentService: SelfAssessmentMgmService,
-                private eventManager: JhiEventManager,) {
+        private accountService: AccountService,
+        private userService: UserService,
+        private myCompanyService: MyCompanyMgmService,
+        private selfAssessmentService: SelfAssessmentMgmService,
+        private eventManager: JhiEventManager,
+        private myAssetService: MyAssetMgmService
+    ) {
     }
 
     ngOnInit() {
@@ -43,7 +47,7 @@ export class MySelfAssessmentsComponent implements OnInit {
                         },
                         (error: any) => {
 
-                            if (error.status == MySelfAssessmentsComponent.NOT_FOUND) {
+                            if (error.status === MySelfAssessmentsComponent.NOT_FOUND) {
                                 console.log('MyCompany not found for the user: ' + this.user.login);
                             }
                         }
@@ -60,6 +64,12 @@ export class MySelfAssessmentsComponent implements OnInit {
                 this.mySelfAssessments = response;
             }
         );
+        this.selfAssessmentService.getOverwiew().toPromise().then((res) => {
+            if (res) {
+                this.overview = res;
+                console.log(this.overview);
+            }
+        });
     }
 
     selectSelfAssessment(selfAssessment: SelfAssessmentMgm) {
@@ -76,9 +86,12 @@ export class MySelfAssessmentsComponent implements OnInit {
     registerChangeInSelfAssessments() {
         this.eventSubscriber = this.eventManager.subscribe('selfAssessmentListModification', (response) => {
             console.log('Changes in SelfAssessments: ' + JSON.stringify(response));
-
-            //Show MySelfAssessments just created
+            // Show MySelfAssessments just created
             this.loadMySelfAssessments();
         });
+    }
+
+    updateMyAsset(asset: MyAssetMgm) {
+        this.myAssetService.update(asset).toPromise();
     }
 }

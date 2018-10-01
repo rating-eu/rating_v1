@@ -58,7 +58,7 @@ public class CompanyProfile implements Serializable {
     @ManyToOne
     private User user;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     @JoinTable(name = "company_profile_containers",
                joinColumns = @JoinColumn(name="company_profiles_id", referencedColumnName="id"),

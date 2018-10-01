@@ -1,12 +1,16 @@
-import {Component, OnInit} from '@angular/core';
-import {RiskManagementService} from '../risk-management.service';
-import {SelfAssessmentMgmService, SelfAssessmentMgm} from '../../entities/self-assessment-mgm';
-import {CriticalLevelMgm} from '../../entities/critical-level-mgm';
-import {MyAssetMgm} from '../../entities/my-asset-mgm';
-import {MyAssetAttackChance} from '../model/my-asset-attack-chance.model';
+import { Component, OnInit } from '@angular/core';
+import { RiskManagementService } from '../risk-management.service';
+import { SelfAssessmentMgmService, SelfAssessmentMgm } from '../../entities/self-assessment-mgm';
+import { CriticalLevelMgm } from '../../entities/critical-level-mgm';
+import { MyAssetMgm, MyAssetMgmService } from '../../entities/my-asset-mgm';
+import { MyAssetAttackChance } from '../model/my-asset-attack-chance.model';
 import { SessionStorageService } from '../../../../../../node_modules/ngx-webstorage';
 import { Router } from '../../../../../../node_modules/@angular/router';
+import { ValueTransformer } from '../../../../../../node_modules/@angular/compiler/src/util';
 // import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
+
+import * as _ from 'lodash';
+import { ITEMS_PER_PAGE } from '../../shared';
 
 @Component({
     // tslint:disable-next-line:component-selector
@@ -24,6 +28,7 @@ export class RiskEvaluationComponent implements OnInit {
     public selectedRow: number;
     public selectedColumn: number;
     public mapAssetAttacks: Map<number, MyAssetAttackChance[]> = new Map<number, MyAssetAttackChance[]>();
+    public mapMaxCriticalLevel: Map<number, number[]> = new Map<number, number[]>();
     public loading = false;
     // public modalContent: string;
     private selectedAttacksChance: MyAssetAttackChance[];
@@ -34,7 +39,9 @@ export class RiskEvaluationComponent implements OnInit {
         private mySelfAssessmentService: SelfAssessmentMgmService,
         private riskService: RiskManagementService,
         private sessionService: SessionStorageService,
-        private router: Router
+        private router: Router,
+        private myAssetService: MyAssetMgmService,
+        // private ref: ChangeDetectorRef
         // private modalService: NgbModal
     ) {
     }
@@ -45,36 +52,14 @@ export class RiskEvaluationComponent implements OnInit {
         this.riskService.getMyAssets(this.mySelf).toPromise().then((res) => {
             if (res && res.length > 0) {
                 this.myAssets = res;
-                console.log(this.myAssets);
-
-                /*for (const myAsset of this.myAssets) {
-                  let intIndex = 0;
-                  while (intIndex < 15) {
-                    const attack: MyAssetAttackChance = new MyAssetAttackChance();
-                    attack.attackStrategy = new AttackStrategyMgm();
-                    attack.attackStrategy.name = 'ATTACK' + myAsset.asset.name + intIndex;
-                    attack.critical = Math.floor(Math.random() * this.criticalLevel.side) + 1;
-                    attack.impact = Math.floor(Math.random() * this.criticalLevel.side) + 1;
-                    attack.myAsset = myAsset;
-                    attack.likelihood = Math.floor(Math.random() * this.criticalLevel.side) + 1;
-                    attack.vulnerability = Math.floor(Math.random() * this.criticalLevel.side) + 1;
-                    if (this.mapAssetAttacks.has(myAsset.id)) {
-                      const array = this.mapAssetAttacks.get(myAsset.id);
-                      array.push(attack);
-                      this.mapAssetAttacks.set(myAsset.id, array);
-                    } else {
-                      this.mapAssetAttacks.set(myAsset.id, [attack]);
-                    }
-                    intIndex++;
-                  }
-                }*/
-
-                // TODO codice da decommentare quando rientra la issue relativa al WP4
                 for (const myAsset of this.myAssets) {
                     this.loading = true;
                     this.riskService.getAttackChance(myAsset, this.mySelf).toPromise().then((res2) => {
                         if (res2) {
                             this.mapAssetAttacks.set(myAsset.id, res2);
+                            // const ordered = this.orderLevels(this.mapAssetAttacks);
+                            // this.mapAssetAttacks = ordered.orderedMap;
+                            // this.myAssets = ordered.orderedArray;
                         }
                         this.loading = false;
                     });
@@ -101,6 +86,70 @@ export class RiskEvaluationComponent implements OnInit {
                 this.loading = false;
             }
         });
+    }
+
+    public orderLevels(mapAssetAttacks: Map<number, MyAssetAttackChance[]>): {
+        orderedMap: Map<number, MyAssetAttackChance[]>,
+        orderedArray: MyAssetMgm[]
+    } {
+        const orderedMap: Map<number, MyAssetAttackChance[]> = new Map<number, MyAssetAttackChance[]>();
+        const orderedArray: MyAssetMgm[] = [];
+        const levelsMap: Map<number, number[]> = new Map<number, number[]>();
+        for (let index = 0; index < this.myAssets.length; index++) {
+            let howManyLow = 0; let howManyMedium = 0; let howManyHigh = 0;
+            for (let i = 0; i < this.squareRowElement.length; i++) {
+                for (let j = 0; j < this.squareColumnElement.length; j++) {
+                    const attacksLV = this.whichAttackChanceByCell(i, j, this.myAssets[index], 'likelihood-vulnerability').length;
+                    const attackCI = this.whichAttackChanceByCell(i, j, this.myAssets[index], 'critically-impact').length;
+                    const attacksMax = _.max([attacksLV, attackCI]);
+                    switch (this.whichLevel(i, j)) {
+                        case 'low': {
+                            howManyLow = howManyLow + attacksMax;
+                            break;
+                        }
+                        case 'medium': {
+                            howManyMedium = howManyMedium + attacksMax;
+                            break;
+                        }
+                        case 'high': {
+                            howManyHigh = howManyHigh + attacksMax;
+                            break;
+                        }
+                    }
+                }
+            }
+            levelsMap.set(this.myAssets[index].id, [howManyLow, howManyMedium, howManyHigh]);
+        }
+        mapAssetAttacks.forEach((value, key) => {
+            // find max
+            let max = 0;
+            let maxAssetId = 0;
+            levelsMap.forEach((value2, key2) => {
+                if (value2[2] > max) {
+                    max = value2[2];
+                    maxAssetId = key2;
+                }
+            });
+            orderedMap.set(maxAssetId, value);
+            const index = _.findIndex(this.myAssets, (myAsset) => myAsset.id === maxAssetId);
+            orderedArray.push(this.myAssets[index]);
+            levelsMap.delete(maxAssetId);
+        });
+        return {
+            'orderedMap': orderedMap,
+            'orderedArray': orderedArray
+        };
+    }
+
+    public setMyAssetImpact(myAsset: MyAssetMgm, impact: number) {
+        console.log(myAsset);
+        console.log(impact);
+        // TODO Completare la logica per l'update
+        // Assegnare impact al myAsset
+        // this.myAssetService.update(myAsset).toPromise();
+        myAsset['impact'] = impact; // Rimuovere questa riga di codice quando la funzionalità lato back-end sarà pronta
+        const index = _.findIndex(this.myAssets, { id: myAsset.id });
+        this.myAssets.splice(index, 1, myAsset);
     }
 
     public selectAsset(asset: MyAssetMgm) {
@@ -161,7 +210,7 @@ export class RiskEvaluationComponent implements OnInit {
             switch (type) {
                 case 'likelihood-vulnerability': {
                     for (const attack of attacks) {
-                        const likelihoodVulnerability = attack.likelihood * attack.vulnerability;
+                        const likelihoodVulnerability = Math.round(attack.likelihood * attack.vulnerability);
                         if (level === likelihoodVulnerability) {
                             selectedAttacks.push(attack);
                         }
@@ -183,6 +232,25 @@ export class RiskEvaluationComponent implements OnInit {
         return selectedAttacks;
     }
 
+    public whichCriticalContentByCell(row: number, column: number): string {
+        const level = row * column;
+        let content = '';
+        for (const myAsset of this.myAssets) {
+            if (!myAsset['impact']) {
+                continue;
+            }
+            const attacks = this.mapAssetAttacks.get(myAsset.id);
+            const lStore = this.mapMaxCriticalLevel.get(myAsset.id);
+            for (const attack of attacks) {
+                const likelihoodVulnerability = Math.round(attack.likelihood * attack.vulnerability);
+                if (lStore[0] === likelihoodVulnerability && column === myAsset['impact'] && lStore[1] === row) {
+                    content = content.concat(myAsset.asset.name, ', ');
+                }
+            }
+        }
+        return content;
+    }
+
     public whichContentByCell(row: number, column: number, myAsset: MyAssetMgm, type: string): string {
         const attacks = this.mapAssetAttacks.get(myAsset.id);
         const level = row * column;
@@ -192,8 +260,16 @@ export class RiskEvaluationComponent implements OnInit {
             switch (type) {
                 case 'likelihood-vulnerability': {
                     for (const attack of attacks) {
-                        const likelihoodVulnerability = attack.likelihood * attack.vulnerability;
+                        const likelihoodVulnerability = Math.round(attack.likelihood * attack.vulnerability);
                         if (level === likelihoodVulnerability) {
+                            if (this.mapMaxCriticalLevel.has(myAsset.id)) {
+                                const lStore = this.mapMaxCriticalLevel.get(myAsset.id);
+                                if (lStore[0] < level) {
+                                    this.mapMaxCriticalLevel.set(myAsset.id, [level, row]);
+                                }
+                            } else {
+                                this.mapMaxCriticalLevel.set(myAsset.id, [level, row]);
+                            }
                             content = content.concat(attack.attackStrategy.name, ' ');
                         }
                     }
@@ -210,7 +286,7 @@ export class RiskEvaluationComponent implements OnInit {
                 }
             }
         }
-
+        content = content.trim();
         return content;
     }
 

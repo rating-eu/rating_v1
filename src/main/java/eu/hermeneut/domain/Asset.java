@@ -7,6 +7,7 @@ import javax.persistence.*;
 import javax.validation.constraints.*;
 
 import org.springframework.data.elasticsearch.annotations.Document;
+
 import java.io.Serializable;
 import java.time.ZonedDateTime;
 import java.util.HashSet;
@@ -46,15 +47,15 @@ public class Asset implements Serializable {
     @ManyToMany
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     @JoinTable(name = "asset_container",
-               joinColumns = @JoinColumn(name="assets_id", referencedColumnName="id"),
-               inverseJoinColumns = @JoinColumn(name="containers_id", referencedColumnName="id"))
+        joinColumns = @JoinColumn(name = "assets_id", referencedColumnName = "id"),
+        inverseJoinColumns = @JoinColumn(name = "containers_id", referencedColumnName = "id"))
     private Set<Container> containers = new HashSet<>();
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     @JoinTable(name = "asset_domains_of_influence",
-               joinColumns = @JoinColumn(name="assets_id", referencedColumnName="id"),
-               inverseJoinColumns = @JoinColumn(name="domains_of_influences_id", referencedColumnName="id"))
+        joinColumns = @JoinColumn(name = "assets_id", referencedColumnName = "id"),
+        inverseJoinColumns = @JoinColumn(name = "domains_of_influences_id", referencedColumnName = "id"))
     private Set<DomainOfInfluence> domainsOfInfluences = new HashSet<>();
 
     @ManyToOne
