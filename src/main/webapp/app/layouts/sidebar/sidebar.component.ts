@@ -73,12 +73,12 @@ export class SidebarComponent implements OnInit {
                                 label: 'Attack Strategies',
                                 items: [
                                     {
-                                        label: 'Likelihood Matrix',
-                                        routerLink: ['/evaluate-weakness/result']
-                                    },
-                                    {
                                         label: 'Asses Vulnerabilities',
                                         routerLink: ['/evaluate-weakness/questionnaires/SELFASSESSMENT']
+                                    },
+                                    {
+                                        label: 'Likelihood Matrix',
+                                        routerLink: ['/evaluate-weakness/result']
                                     }
                                 ]
                             },
