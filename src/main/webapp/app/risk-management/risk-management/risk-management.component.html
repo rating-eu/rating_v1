@@ -2,17 +2,13 @@
     <div class="container-fluid">
       <div class="row">
         <div class="col-md-4">
-          <button *ngIf="criticalLevel" type="button" class="btn btn-dark" routerLink="risk-evaluation" routerLinkActive="active">Risk evaluation
+          <button *ngIf="criticalLevel" type="button" class="btn btn-dark" routerLink="risk-evaluation" routerLinkActive="active">Risk Scenarios
           </button>
           <button *ngIf="criticalLevel" type="button" class="btn btn-dark" routerLink="risk-mitigation" routerLinkActive="active">Risk mitigation
           </button>
         </div>
         <div class="col-md-7">
           <div class="btn-group" role="group" aria-label="riskHomeBtnGroup">
-            <button type="button" class="btn btn-primary" (click)="switchOnCollapsible('consequence')" [attr.aria-expanded]="!isConsequenceCollapsed"
-              aria-controls="consequenceScale">
-              Consequence rating scale
-            </button>
             <button type="button" class="btn btn-primary" (click)="switchOnCollapsible('likelihood')" [attr.aria-expanded]="!isLikelihoodCollapsed"
               aria-controls="likelihoodScale">
               Likelihood Scale
@@ -21,6 +17,10 @@
               aria-controls="vulnerabilityScale">
               Vulnerability Scale
             </button>
+              <button type="button" class="btn btn-primary" (click)="switchOnCollapsible('consequence')" [attr.aria-expanded]="!isConsequenceCollapsed"
+                      aria-controls="consequenceScale">
+                  Consequence Scale
+              </button>
             <button type="button" class="btn btn-primary" (click)="switchOnCollapsible('critical-level')" [attr.aria-expanded]="!isCriticalCollapsed"
               aria-controls="criticalLevel">
               Risk Level
