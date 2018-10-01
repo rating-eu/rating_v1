@@ -48,10 +48,6 @@ export class SidebarComponent implements OnInit {
                                     {
                                         label: 'Clusters',
                                         routerLink: ['/identify-asset']
-                                    },
-                                    {
-                                        label: 'Reports',
-                                        routerLink: ['/identify-asset']
                                     }
                                 ]
                             }
