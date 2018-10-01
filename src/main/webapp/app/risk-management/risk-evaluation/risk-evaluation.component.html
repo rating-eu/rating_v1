@@ -26,24 +26,36 @@
         <div class="card">
           <div class="card-body">
             <div class="row">
-                <h5 class="card-title">{{myAsset.asset.name}}</h5>
-                <i *ngIf="!isAssetCollapsed(myAsset)"
-                    class="fa fa-chevron-circle-up fa-lg"
-                    style="margin-left: 10px;margin-top: 5px"
-                    aria-hidden="true" (click)="selectAsset(myAsset)"></i>
-                <i *ngIf="isAssetCollapsed(myAsset)"
-                    class="fa fa-chevron-circle-down fa-lg"
-                    style="margin-left: 10px;margin-top: 5px"
-                    aria-hidden="true" (click)="selectAsset(myAsset)"></i>
+              <h5 class="card-title">{{myAsset.asset.name}}</h5>
+              <i *ngIf="!isAssetCollapsed(myAsset)" class="fa fa-chevron-circle-up fa-lg" style="margin-left: 10px;margin-top: 5px" aria-hidden="true"
+                (click)="selectAsset(myAsset)"></i>
+              <i *ngIf="isAssetCollapsed(myAsset)" class="fa fa-chevron-circle-down fa-lg" style="margin-left: 10px;margin-top: 5px" aria-hidden="true"
+                (click)="selectAsset(myAsset)"></i>
             </div>
-            
+
             <div id="collapseDetail" [ngbCollapse]="isAssetCollapsed(myAsset)">
               <div class="card-text">
                 <div class="row">
                   <div class="col-md-2 text-left">
                     <b>Likelihood</b>
                   </div>
+                  <div class="col-md-3 offset-md-7 text-right">
+                    <div ngbDropdown class="d-inline-block">
+                      <button class="btn btn-outline-primary" id="dropdownBasic1" ngbDropdownToggle>
+                        <ng-container *ngIf="!myAsset.impact">Select impact value</ng-container>
+                        <ng-container *ngIf="myAsset.impact">Selected impact: {{myAsset.impact}}</ng-container>
+                      </button>
+                      <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+                        <button class="dropdown-item" (click)="setMyAssetImpact(myAsset, 5)">5</button>
+                        <button class="dropdown-item" (click)="setMyAssetImpact(myAsset, 4)">4</button>
+                        <button class="dropdown-item" (click)="setMyAssetImpact(myAsset, 3)">3</button>
+                        <button class="dropdown-item" (click)="setMyAssetImpact(myAsset, 2)">2</button>
+                        <button class="dropdown-item" (click)="setMyAssetImpact(myAsset, 1)">1</button>
+                      </div>
+                    </div>
+                  </div>
                 </div>
+                <br>
                 <div *ngFor="let j of squareRowElement" class="row">
                   <div class="col-md-1 text-right">
                     <ng-container *ngIf="j!==lastSquareRowElement">{{lastSquareRowElement-j}}</ng-container>
@@ -63,50 +75,11 @@
                       <div class="text-center" [ngClass]="{'low-level': whichLevel(lastSquareRowElement-j, i) === 'low', 'medium-level': whichLevel(lastSquareRowElement-j, i) === 'medium', 'high-level': whichLevel(lastSquareRowElement-j, i) === 'high'}"
                         (click)="selectedMatrixCell(lastSquareRowElement-j, i)">
                         <ng-container *ngIf="whichContentByCell(lastSquareRowElement-j, i, myAsset, 'likelihood-vulnerability') !== ''">
-                          <a (click)="loadContent(lastSquareRowElement-j, i, myAsset, 'likelihood-vulnerability', assetDetail)">View detail...</a>
+                          <a (click)="loadContent(lastSquareRowElement-j, i, myAsset, 'likelihood-vulnerability', assetDetail)">
+                            {{whichContentByCell(lastSquareRowElement-j, i, myAsset, 'likelihood-vulnerability') | slice:0:13}}...
+                          </a>
                         </ng-container>
-                        <!--
-                      <ng-container *ngIf="whichContentByCell(lastSquareRowElement-j, i, myAsset, 'likelihood-vulnerability') !== ''">{{whichContentByCell(lastSquareRowElement-j, i, myAsset, 'likelihood-vulnerability')}}</ng-container>
-                      -->
                         <ng-container *ngIf="whichContentByCell(lastSquareRowElement-j, i, myAsset, 'likelihood-vulnerability') === ''">&nbsp;</ng-container>
-                      </div>
-                    </div>
-                    <div class="col-md-1"></div>
-                  </ng-container>
-                </div>
-                <div class="row">
-                  <span class="col-md-10 offset-md-1 border-bottom border-secondary">&nbsp;</span>
-                </div>
-                <div class="row">
-                  <div class="col-md-2 text-left">
-                    <b>Critically</b>
-                  </div>
-                </div>
-                <div *ngFor="let j of squareRowElement" class="row">
-                  <div class="col-md-1 text-right">
-                    <ng-container *ngIf="j!==lastSquareRowElement">{{(lastSquareRowElement-j)*(lastSquareRowElement-j)}}</ng-container>
-                  </div>
-                  <ng-container *ngIf="j===lastSquareRowElement">
-                    <div *ngFor="let i of squareColumnElement" class="col-md-2 text-center">
-                      {{i}}
-                    </div>
-                    <div class="row">
-                      <div class="col-md-12 text-right">
-                        <b>Impact</b>
-                      </div>
-                    </div>
-                  </ng-container>
-                  <ng-container *ngIf="j!==lastSquareRowElement">
-                    <div *ngFor="let i of squareColumnElement" class="col-md-2">
-                      <div class="text-center" [ngClass]="{'low-level': whichLevel(lastSquareRowElement-j, i) === 'low', 'medium-level': whichLevel(lastSquareRowElement-j, i) === 'medium', 'high-level': whichLevel(lastSquareRowElement-j, i) === 'high'}"
-                        (click)="selectedMatrixCell(lastSquareRowElement-j, i)">
-                        <ng-container *ngIf="whichContentByCell(lastSquareRowElement-j, i, myAsset, 'critically-impact') !== ''">
-                          <a (click)="loadContent(lastSquareRowElement-j, i, myAsset, 'critically-impact', assetDetail)">View detail...</a>
-                        </ng-container>
-                        <!--
-                      <ng-container *ngIf="whichContentByCell(lastSquareRowElement-j, i, myAsset, 'critically-impact') !== ''">{{whichContentByCell(lastSquareRowElement-j, i, myAsset, 'critically-impact')}}</ng-container>
-                      -->
-                        <ng-container *ngIf="whichContentByCell(lastSquareRowElement-j, i, myAsset, 'critically-impact') === ''">&nbsp;</ng-container>
                       </div>
                     </div>
                     <div class="col-md-1"></div>
@@ -119,4 +92,58 @@
       </div>
     </div>
   </ng-container>
+  <div class="row">
+    <span class="col-md-10 offset-md-1 border-bottom border-secondary">&nbsp;</span>
+  </div>
+  <div class="row">
+    <div class="col-md-2 text-left">
+      <b>Critically</b>
+    </div>
+  </div>
+  <div *ngFor="let j of squareRowElement" class="row">
+    <div class="col-md-1 text-right">
+      <ng-container *ngIf="j!==lastSquareRowElement">{{(lastSquareRowElement-j)*(lastSquareRowElement-j)}}</ng-container>
+    </div>
+    <ng-container *ngIf="j===lastSquareRowElement">
+      <div *ngFor="let i of squareColumnElement" class="col-md-2 text-center">
+        {{i}}
+      </div>
+      <div class="row">
+        <div class="col-md-12 text-right">
+          <b>Impact</b>
+        </div>
+      </div>
+    </ng-container>
+    <ng-container *ngIf="j!==lastSquareRowElement">
+      <div *ngFor="let i of squareColumnElement" class="col-md-2">
+        <div class="text-center" [ngClass]="{'low-level': whichLevel(lastSquareRowElement-j, i) === 'low', 'medium-level': whichLevel(lastSquareRowElement-j, i) === 'medium', 'high-level': whichLevel(lastSquareRowElement-j, i) === 'high'}"
+          (click)="selectedMatrixCell(lastSquareRowElement-j, i)">
+          <ng-container *ngIf="whichCriticalContentByCell(lastSquareRowElement-j, i) !== ''">{{whichCriticalContentByCell(lastSquareRowElement-j, i) | slice:0:13}}...</ng-container>
+          <ng-container *ngIf="whichCriticalContentByCell(lastSquareRowElement-j, i) === ''">&nbsp;</ng-container>
+        </div>
+      </div>
+      <div class="col-md-1"></div>
+    </ng-container>
+  </div>
+  <div class="row">
+      <span class="col-md-10 offset-md-1 border-bottom border-secondary">&nbsp;</span>
+    </div>
+  <div class="collapse col-md-12">
+      <div class="card card-body">
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">Asset</th>
+              <th scope="col">% Risk</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let myAsset of myAssets">
+              <td *ngIf="myAsset.impactPercentage">{{myAsset.asset.name}}</td>
+              <td *ngIf="myAsset.impactPercentage">{{myAsset.impactPercentage}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
 </div>

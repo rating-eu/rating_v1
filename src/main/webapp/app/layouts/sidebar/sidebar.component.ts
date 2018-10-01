@@ -27,6 +27,9 @@ export class SidebarComponent implements OnInit {
     ngOnInit() {
         this.items = [
             {
+                label: 'About-Us', icon: 'fa fa-info', routerLink: ['/about-us']
+            },
+            {
                 label: 'Company',
                 items: [
                     {label: 'My Company', icon: 'fa fa-home', routerLink: ['/my-company']},
@@ -100,6 +103,7 @@ export class SidebarComponent implements OnInit {
                     },
                     {
                         label: 'Risk Management',
+                        routerLink: ['/risk-management'],
                         items: [
                             {
                                 label: 'Risk Scenarios',
