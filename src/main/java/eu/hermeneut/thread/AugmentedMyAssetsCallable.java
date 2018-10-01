@@ -8,17 +8,12 @@ import eu.hermeneut.domain.attackmap.AugmentedAttackStrategy;
 import eu.hermeneut.domain.overview.AugmentedMyAsset;
 import eu.hermeneut.service.AttackStrategyService;
 import eu.hermeneut.utils.attackstrategy.ThreatAttackFilter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.*;
 import java.util.concurrent.Callable;
 import java.util.stream.Collectors;
 
 public class AugmentedMyAssetsCallable implements Callable<List<AugmentedMyAsset>> {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(AugmentedMyAssetsCallable.class);
-
     private List<MyAsset> myAssets;
     private AttackStrategyService attackStrategyService;
     private Map<Long, AugmentedAttackStrategy> augmentedAttackStrategyMap;
@@ -60,9 +55,9 @@ public class AugmentedMyAssetsCallable implements Callable<List<AugmentedMyAsset
                             AttackStrategy attackStrategy = attackStrategyIterator.next();
                             AugmentedAttackStrategy augmentedAttackStrategy = augmentedAttackStrategyMap.get(attackStrategy.getId());
 
-                            //TODO Filter the ThreatAgents that can perform this attack
+                            //Filter the ThreatAgents that can perform this attack
                             List<ThreatAgent> threatAgentsSubset = threatAgentSet.stream().filter(threatAgent -> ThreatAttackFilter.isAttackPossible(threatAgent, attackStrategy)).collect(Collectors.toList());
-                            //TODO For each ThreatAgent build an AugmentedMyAsset
+                            //For each ThreatAgent build an AugmentedMyAsset
                             if (threatAgentsSubset != null && !threatAgentsSubset.isEmpty()) {
                                 Iterator<ThreatAgent> threatAgentIterator = threatAgentsSubset.iterator();
 
@@ -74,7 +69,6 @@ public class AugmentedMyAssetsCallable implements Callable<List<AugmentedMyAsset
                                     augmentedMyAsset.setThreatAgent(threatAgent);
 
                                     augmentedMyAssets.add(augmentedMyAsset);
-                                    LOGGER.debug("Thread: " + Thread.currentThread().getName() + " augmentedMyAssets: " + augmentedMyAssets.size());
                                 }
                             }
                         }

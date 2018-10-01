@@ -1,7 +1,5 @@
 package eu.hermeneut.service.impl;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import eu.hermeneut.domain.*;
 import eu.hermeneut.domain.attackmap.AugmentedAttackStrategy;
 import eu.hermeneut.domain.enumeration.QuestionnairePurpose;
@@ -12,7 +10,6 @@ import eu.hermeneut.service.*;
 import eu.hermeneut.repository.SelfAssessmentRepository;
 import eu.hermeneut.repository.search.SelfAssessmentSearchRepository;
 import eu.hermeneut.thread.AugmentedMyAssetsCallable;
-import eu.hermeneut.utils.attackstrategy.ThreatAttackFilter;
 import eu.hermeneut.utils.likelihood.answer.AnswerCalculator;
 import eu.hermeneut.utils.likelihood.attackstrategy.AttackStrategyCalculator;
 import eu.hermeneut.utils.wp4.ListSplitter;
@@ -22,10 +19,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.charset.Charset;
-import java.nio.file.Files;
 import java.util.*;
 import java.util.concurrent.*;
 import java.util.function.Function;
@@ -182,9 +175,11 @@ public class SelfAssessmentServiceImpl implements SelfAssessmentService {
                 List<MyAsset> myAssets = this.myAssetService.findAllBySelfAssessment(selfAssessmentID);
 
                 if (myAssets != null && !myAssets.isEmpty()) {
+                    LOGGER.debug("MyAssets: " + myAssets.size());
                     List<QuestionnaireStatus> questionnaireStatuses = this.questionnaireStatusService.findAllBySelfAssessment(selfAssessmentID);
 
                     if (questionnaireStatuses != null && !questionnaireStatuses.isEmpty()) {
+                        LOGGER.debug("QuestionnaireStatuses: " + questionnaireStatuses.size());
                         QuestionnaireStatus cisoQStatus = questionnaireStatuses.stream().filter(questionnaireStatus -> questionnaireStatus.getRole().equals(Role.ROLE_CISO) && questionnaireStatus.getQuestionnaire().getPurpose().equals(QuestionnairePurpose.SELFASSESSMENT)).findFirst().orElse(null);
                         QuestionnaireStatus externalQStatus = questionnaireStatuses.stream().filter(questionnaireStatus -> questionnaireStatus.getRole().equals(Role.ROLE_EXTERNAL_AUDIT) && questionnaireStatus.getQuestionnaire().getPurpose().equals(QuestionnairePurpose.SELFASSESSMENT)).findFirst().orElse(null);
 
@@ -236,7 +231,9 @@ public class SelfAssessmentServiceImpl implements SelfAssessmentService {
                         }
 
                         //===Split MyAssets and handle them in different THREADS===
-                        final int THREADS_AMOUNT = myAssets.size() / 4 + 1;
+                        final int MY_ASSETS_PER_SINGLE_THREAD = new Random().nextInt(myAssets.size() / 3) + 2;
+                        final int THREADS_PROPOSAL = myAssets.size() / MY_ASSETS_PER_SINGLE_THREAD + 1;
+                        final int THREADS_AMOUNT = THREADS_PROPOSAL < myAssets.size() ? THREADS_PROPOSAL : myAssets.size();
 
                         Map<Integer, List<MyAsset>> splittedMyAssets = ListSplitter.split(myAssets, THREADS_AMOUNT);
 
@@ -275,31 +272,6 @@ public class SelfAssessmentServiceImpl implements SelfAssessmentService {
         }
 
         LOGGER.debug("AugmentedMyAssets: " + augmentedMyAssets.size());
-
-        /*ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
-        objectMapper.configure(SerializationFeature.FAIL_ON_SELF_REFERENCES, false);
-        objectMapper.configure(SerializationFeature.FAIL_ON_UNWRAPPED_TYPE_IDENTIFIERS, false);*/
-
-        /*try {
-            File tempJsonFile = new File("overview.json");
-            objectMapper.writerWithDefaultPrettyPrinter().writeValue(tempJsonFile, overview);
-
-            LOGGER.debug("tempJsonFile size: " + tempJsonFile.length() + "B");
-            LOGGER.debug("tempJsonFile size: " + tempJsonFile.length() / 1024 + "KB");
-            LOGGER.debug("tempJsonFile size: " + tempJsonFile.length() / (1024 * 1024) + "MB");
-            LOGGER.debug("tempJsonFile size: " + tempJsonFile.length() / (1024 * 1024 * 1024) + "GB");
-
-            byte[] encoded = Files.readAllBytes(tempJsonFile.toPath());
-            String json = new String(encoded, Charset.defaultCharset());
-
-            System.out.println("JSON:");
-            System.out.println(json);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }*/
 
         return overview;
     }
