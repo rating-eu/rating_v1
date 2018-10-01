@@ -92,7 +92,7 @@ export class SidebarComponent implements OnInit {
                         label: 'Consequences',
                         items: [
                             {
-                                label: 'Loss due to a cyber Attack',
+                                label: 'Impact Evaluation',
                                 routerLink: ['/impact-evaluation']
                             }
                         ]
