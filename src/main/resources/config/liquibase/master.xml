@@ -37,6 +37,7 @@
     <include file="config/liquibase/changelog/20180820094757_added_entity_LikelihoodScale.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180820094758_added_entity_VulnerabilityScale.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180911225156_added_entity_MyCompany.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20181002133059_added_entity_ImpactLevel.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
     <include file="config/liquibase/changelog/20180410085152_added_entity_constraints_CompanyProfile.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180410085155_added_entity_constraints_SelfAssessment.xml" relativeToChangelogFile="false"/>
