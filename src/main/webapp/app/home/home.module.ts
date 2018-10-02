@@ -3,17 +3,19 @@ import {RouterModule} from '@angular/router';
 
 import {HermeneutSharedModule} from '../shared';
 
-import {HOME_ROUTE, HomeComponent} from './';
+import {HOME_ROUTES, HomeComponent} from './';
 import {MaterialModule} from '../material/material.module';
+import { AboutUsComponent } from './about.us.component';
 
 @NgModule({
     imports: [
         HermeneutSharedModule,
-        RouterModule.forChild([HOME_ROUTE]),
+        RouterModule.forChild(HOME_ROUTES),
         MaterialModule
     ],
     declarations: [
         HomeComponent,
+        AboutUsComponent
     ],
     entryComponents: [],
     providers: [],

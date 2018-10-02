@@ -95,5 +95,6 @@
     <include file="config/liquibase/changelog/20180820094758_added_entity_constraints_VulnerabilityScale.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180911225156_added_entity_constraints_MyCompany.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180912224356_remove_threat_agent_images.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20180927111037_remove_selfAssessment_assets_attacks.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
 </databaseChangeLog>

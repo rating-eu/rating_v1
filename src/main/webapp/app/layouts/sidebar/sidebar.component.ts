@@ -27,6 +27,9 @@ export class SidebarComponent implements OnInit {
     ngOnInit() {
         this.items = [
             {
+                label: 'About-Us', icon: 'fa fa-info', routerLink: ['/about-us']
+            },
+            {
                 label: 'Company',
                 items: [
                     {label: 'My Company', icon: 'fa fa-home', routerLink: ['/my-company']},
@@ -44,10 +47,6 @@ export class SidebarComponent implements OnInit {
                                 items: [
                                     {
                                         label: 'Clusters',
-                                        routerLink: ['/identify-asset']
-                                    },
-                                    {
-                                        label: 'Reports',
                                         routerLink: ['/identify-asset']
                                     }
                                 ]
@@ -74,12 +73,12 @@ export class SidebarComponent implements OnInit {
                                 label: 'Attack Strategies',
                                 items: [
                                     {
-                                        label: 'Likelihood Matrix',
-                                        routerLink: ['/evaluate-weakness/result']
-                                    },
-                                    {
                                         label: 'Asses Vulnerabilities',
                                         routerLink: ['/evaluate-weakness/questionnaires/SELFASSESSMENT']
+                                    },
+                                    {
+                                        label: 'Likelihood Matrix',
+                                        routerLink: ['/evaluate-weakness/result']
                                     }
                                 ]
                             },
@@ -93,13 +92,14 @@ export class SidebarComponent implements OnInit {
                         label: 'Consequences',
                         items: [
                             {
-                                label: 'Loss due to a cyber Attack',
+                                label: 'Impact Evaluation',
                                 routerLink: ['/impact-evaluation']
                             }
                         ]
                     },
                     {
                         label: 'Risk Management',
+                        routerLink: ['/risk-management'],
                         items: [
                             {
                                 label: 'Risk Scenarios',

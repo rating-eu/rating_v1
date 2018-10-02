@@ -1,6 +1,7 @@
 package eu.hermeneut.service;
 
 import eu.hermeneut.domain.SelfAssessment;
+import eu.hermeneut.domain.overview.SelfAssessmentOverview;
 
 import java.util.List;
 
@@ -48,4 +49,6 @@ public interface SelfAssessmentService {
     List<SelfAssessment> search(String query);
 
     List<SelfAssessment> findAllByCompanyProfile(Long companyProfileID);
+
+    SelfAssessmentOverview getSelfAssessmentOverview(Long selfAssessmentID);
 }

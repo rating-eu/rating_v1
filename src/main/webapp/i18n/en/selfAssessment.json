@@ -23,9 +23,7 @@
             "companyProfile": "Company Profile",
             "user": "User",
             "companyGroup": "Company Group",
-            "asset": "Asset",
             "threatagent": "Threatagent",
-            "attackstrategy": "Attackstrategy",
             "externalaudit": "Externalaudit",
             "questionnaire": "Questionnaire"
         }
