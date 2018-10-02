@@ -40,6 +40,7 @@
                 "likelihoodScaleMgm": "Likelihood Scale",
                 "vulnerabilityScaleMgm": "Vulnerability Scale",
                 "myCompanyMgm": "My Company",
+                "impactLevelMgm": "Impact Level",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {
