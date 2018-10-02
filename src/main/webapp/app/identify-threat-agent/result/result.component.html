@@ -17,7 +17,7 @@
             <tr *ngFor="let couple of threatAgentsPercentageArray">
                 <!--For cols-->
                 <th scope="row" class="text-left align-middle table-dark">
-                    {{couple.key.name}}
+                    <a [routerLink]="['/threat-agent-mgm', couple.key.id]">{{couple.key.name}}</a>
                 </th>
                 <td class="text-center align-middle">
                     {{couple.value.toPercentage()/100 | percent:'1.2-2'}}
