@@ -351,13 +351,13 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
         myAnswersAndDefaultThreatAgentsJoin.push(defaultThreatAgents$);
         const myAnswersAndDefaultThreatAgentsJoin$: Observable<any> = forkJoin(myAnswersAndDefaultThreatAgentsJoin);
 
-        // TODO Update the SelfAssessment with the identified ThreatAgents
+        // Update the SelfAssessment with the identified ThreatAgents
         const selfAssessment$: Observable<HttpResponse<SelfAssessmentMgm>> = myAnswersAndDefaultThreatAgentsJoin$.pipe(
             mergeMap((responses: any[]) => {
 
                 responses.forEach((value: any, index: number) => {
                     switch (index) {
-                        case 0: {// TODO MyAnswers --> IdentifyThreatAgents
+                        case 0: {// MyAnswers --> IdentifyThreatAgents
                             const myAnswersResponses = value as HttpResponse<MyAnswerMgm>[];
 
                             const identifiedThreatAgents: ThreatAgentMgm[] = [];
@@ -416,7 +416,7 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
         console.log('OnSubmit called');
         console.log('Form\'s value is:');
         console.log(JSON.stringify(this.form.value));
-        // TODO get the Questionnaire's Answers, persist them, update the matrix accordingly
+        // Get the Questionnaire's Answers, persist them, update the matrix accordingly
         /**
          * Map representing the submitted form data.
          *
@@ -438,7 +438,7 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
                         questionnaireStatus = statusResponse.body;
                         console.log('QuestionnaireStatus: ' + JSON.stringify(questionnaireStatus));
 
-                        // TODO persist MyAnswers
+                        // Persist MyAnswers
                         return this.createMyAnswersObservable(formDataMap, questionnaireStatus);
                     })
                 .mergeMap(
@@ -471,7 +471,7 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
         console.log('OnSubmit called');
         console.log('Form\'s value is:');
         console.log(JSON.stringify(this.form.value));
-        // TODO get the Questionnaire's Answers, persist them, update the matrix accordingly
+        // Get the Questionnaire's Answers, persist them, update the matrix accordingly
         /**
          * Map representing the submitted form data.
          *
@@ -491,7 +491,7 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
                     questionnaireStatus = statusResponse.body;
                     console.log('QuestionnaireStatus: ' + JSON.stringify(questionnaireStatus));
 
-                    // TODO persist MyAnswers
+                    // Persist MyAnswers
                     return this.createMyRefinementAnswersObservable(formDataMap, questionnaireStatus);
                 });
 
