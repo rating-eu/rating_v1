@@ -1,0 +1,49 @@
+{
+    "fluentMethods": true,
+    "relationships": [],
+    "fields": [
+        {
+            "fieldName": "selfAssessmentID",
+            "fieldType": "Long",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "impact",
+            "fieldType": "Integer",
+            "fieldValidateRules": [
+                "min",
+                "max",
+                "required"
+            ],
+            "fieldValidateRulesMin": 1,
+            "fieldValidateRulesMax": 5
+        },
+        {
+            "fieldName": "minLoss",
+            "fieldType": "Long",
+            "fieldValidateRules": [
+                "min",
+                "required"
+            ],
+            "fieldValidateRulesMin": 0
+        },
+        {
+            "fieldName": "maxLoss",
+            "fieldType": "Long",
+            "fieldValidateRules": [
+                "min",
+                "required"
+            ],
+            "fieldValidateRulesMin": 0
+        }
+    ],
+    "changelogDate": "20181002133059",
+    "entityTableName": "impact_level",
+    "dto": "no",
+    "pagination": "no",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "angularJSSuffix": "mgm"
+}
