@@ -70,7 +70,7 @@ export class IdentifyThreatAgentModule {
     constructor(private languageService: JhiLanguageService, private languageHelper: JhiLanguageHelper) {
         this.languageHelper.language
             .subscribe((languageKey: string) => {
-                this.languageService.changeLanguage(languageKey)
+                this.languageService.changeLanguage(languageKey);
             });
     }
 }

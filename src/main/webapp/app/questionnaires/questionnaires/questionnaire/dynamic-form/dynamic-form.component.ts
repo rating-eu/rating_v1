@@ -25,7 +25,6 @@ import {Observable} from 'rxjs/Observable';
 import {HttpResponse} from '@angular/common/http';
 import {concatMap, mergeMap} from 'rxjs/operators';
 import {QuestionnaireStatusMgmCustomService} from '../../../../entities/questionnaire-status-mgm/questionnaire-status-mgm.custom.service';
-import {not} from 'rxjs/util/not';
 
 @Component({
     selector: 'jhi-dynamic-form',
@@ -37,7 +36,6 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
 
     private static YES = 'YES';
     private static NO = 'NO';
-    private statusEnum = Status;
 
     private static CISO_ROLE = Role[Role.ROLE_CISO];
     private static EXTERNAL_ROLE = Role[Role.ROLE_EXTERNAL_AUDIT];
@@ -96,9 +94,9 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
     }
 
     /*
-    Initialize the directive/component after Angular first displays
-    the data-bound properties and sets the directive/component's
-    input properties. Called once, after the first ngOnChanges().
+     Initialize the directive/component after Angular first displays
+     the data-bound properties and sets the directive/component's
+     input properties. Called once, after the first ngOnChanges().
      */
     ngOnInit() {
         this.selfAssessment = this.selfAssessmentService.getSelfAssessment();
@@ -149,27 +147,27 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
 
                 // Real time matrix update (DONT REMOVE THIS)
                 /*if (this.questionnaire.purpose === QuestionnairePurpose.SELFASSESSMENT) {
-                    for (const key in this.form.controls) {
-                        const formControl = this.form.get(key);
+                 for (const key in this.form.controls) {
+                 const formControl = this.form.get(key);
 
-                        if (formControl) {
-                            formControl.valueChanges.subscribe(
-                                (answer: AnswerMgm) => {
-                                    console.log('Question ' + key + ' Field changes:');
+                 if (formControl) {
+                 formControl.valueChanges.subscribe(
+                 (answer: AnswerMgm) => {
+                 console.log('Question ' + key + ' Field changes:');
 
-                                    const question = this.questionsArrayMap.get(Number(key));
-                                    console.log('Question:');
-                                    console.log(JSON.stringify(question));
+                 const question = this.questionsArrayMap.get(Number(key));
+                 console.log('Question:');
+                 console.log(JSON.stringify(question));
 
-                                    console.log('Answer:');
-                                    console.log(JSON.stringify(answer));
+                 console.log('Answer:');
+                 console.log(JSON.stringify(answer));
 
-                                    this.dataSharingSerivce.answerSelfAssessment(question, answer);
-                                }
-                            );
-                        }
-                    }
-                }*/
+                 this.dataSharingSerivce.answerSelfAssessment(question, answer);
+                 }
+                 );
+                 }
+                 }
+                 }*/
             }
         );
 
@@ -179,10 +177,8 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
                 console.log('User: ' + JSON.stringify(this.user));
 
                 // Fetch the QuestionnaireStatus of the CISO
-                const questionnaireStatus$ = this.questionnaireStatusCustomService
+                return this.questionnaireStatusCustomService
                     .getByRoleSelfAssessmentAndQuestionnaire(DynamicFormComponent.CISO_ROLE, this.selfAssessment.id, this.questionnaire.id);
-
-                return questionnaireStatus$;
             }
         );
 
@@ -193,8 +189,8 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
                 if (this.questionnaireStatus) {
                     this.myAnswerService.getAllByQuestionnaireStatusID(this.questionnaireStatus.id)
                         .toPromise().then(
-                        (response: HttpResponse<MyAnswerMgm[]>) => {
-                            this.myAnswers = response.body;
+                        (response2: HttpResponse<MyAnswerMgm[]>) => {
+                            this.myAnswers = response2.body;
 
                             // Restore the checked status of the Form inputs
                             this.form.patchValue(this.myAnswersToFormValue(this.myAnswers, this.questionsArrayMap));
@@ -230,7 +226,7 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
                         break;
                     }
                     default: {
-                        //DO-NOTHING
+                        // DO-NOTHING
                     }
                 }
 
@@ -333,7 +329,8 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
         console.log('DYNAMIC FORM Shared ThreatAgent Percentage Map size: ', +this.dataSharingSerivce.threatAgentsMap.size);
 
         // #1 Persist QuestionnaireStatus
-        let questionnaireStatus: QuestionnaireStatusMgm = new QuestionnaireStatusMgm(undefined, Status.FULL, null, null, this.selfAssessment, this.questionnaire, this.role, this.user, []);
+        let questionnaireStatus: QuestionnaireStatusMgm =
+            new QuestionnaireStatusMgm(undefined, Status.FULL, null, null, this.selfAssessment, this.questionnaire, this.role, this.user, []);
         const questionnaireStatus$: Observable<HttpResponse<QuestionnaireStatusMgm>> = this.questionnaireStatusService.create(questionnaireStatus);
 
         // #2 Persist MyAnswers
@@ -465,7 +462,8 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
                 this.router.navigate(['/evaluate-weakness/result']);
             });
 
-        // For now don't store the attackStrategies but recalculate them and their likelihood based on the stored MyAnswers
+        // For now don't store the attackStrategies but recalculate them and their likelihood based on the stored
+        // MyAnswers
     }
 
     private externalAuditRefinement() {
@@ -583,9 +581,9 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
             }
             case Status.FULL: {
                 /*
-                DO-NOTHING: at the moment the EDITING of an already submitted form cannot be handled
-                cause this would need to edit also the previously identified threat agents
-                */
+                 DO-NOTHING: at the moment the EDITING of an already submitted form cannot be handled
+                 cause this would need to edit also the previously identified threat agents
+                 */
                 break;
             }
         }
@@ -647,7 +645,7 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
         Observable<HttpResponse<MyAnswerMgm[]>> {
 
         // CREATE the NEW MyAnswers
-        //const createMyAnswersObservable: Observable<HttpResponse<MyAnswerMgm[]>> = [];
+        // const createMyAnswersObservable: Observable<HttpResponse<MyAnswerMgm[]>> = [];
         const myAnswers:
             MyAnswerMgm[] = [];
 
@@ -694,13 +692,13 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
 
     private createMyRefinementAnswersObservable(formDataMap: Map<string, AnswerMgm | string>, questionnaireStatus: QuestionnaireStatusMgm) {
         // CREATE the NEW MyAnswers
-        //const createMyAnswersObservable: Observable<HttpResponse<MyAnswerMgm[]>> = [];
+        // const createMyAnswersObservable: Observable<HttpResponse<MyAnswerMgm[]>> = [];
         const myAnswers: MyAnswerMgm[] = [];
 
-        //Contains the Answers of the External Audit
+        // Contains the Answers of the External Audit
         const refinementMap: Map<number/*Question.ID*/, AnswerMgm> = new Map<number, AnswerMgm>();
 
-        //Contains the notes of the External Audit
+        // Contains the notes of the External Audit
         const notesMap: Map<number/*Qestion.ID*/, string> = new Map<number, string>();
 
         formDataMap.forEach(// Key could be id | id.external | id.note

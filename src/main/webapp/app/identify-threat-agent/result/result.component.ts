@@ -27,8 +27,8 @@ import {SelfAssessmentMgmService} from '../../entities/self-assessment-mgm';
     styles: []
 })
 export class ThreatResultComponent implements OnInit, OnDestroy {
-    private static YES: string = 'YES';
-    private static NO: string = 'NO';
+    private static YES = 'YES';
+    private static NO = 'NO';
 
     private subscriptions: Subscription[] = [];
     private questionnaire: QuestionnaireMgm;
@@ -167,7 +167,9 @@ export class ThreatResultComponent implements OnInit, OnDestroy {
         return map;
     }
 
-    questionsMyAnswersToThreatAgentsPercentageMap(questionsMap: Map<number, QuestionMgm>, myAnswers: MyAnswerMgm[], defaultThreatAgents: ThreatAgentMgm[]): Map<String, Couple<ThreatAgentMgm, Fraction>> {
+    questionsMyAnswersToThreatAgentsPercentageMap(questionsMap: Map<number, QuestionMgm>,
+                                                  myAnswers: MyAnswerMgm[],
+                                                  defaultThreatAgents: ThreatAgentMgm[]): Map<String, Couple<ThreatAgentMgm, Fraction>> {
 
         const map: Map<string, Couple<ThreatAgentMgm, Fraction>> = new Map<string, Couple<ThreatAgentMgm, Fraction>>();
 

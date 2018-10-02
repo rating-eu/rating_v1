@@ -71,7 +71,7 @@ export class IdentifyAssetModule {
             .subscribe((languageKey: string) => {
                 console.log('ID_THREAT_AGENT lang: ' + languageKey);
 
-                this.languageService.changeLanguage(languageKey)
+                this.languageService.changeLanguage(languageKey);
             });
     }
 }
