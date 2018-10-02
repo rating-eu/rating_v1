@@ -31,6 +31,7 @@ import { HermeneutCriticalLevelMgmModule } from './critical-level-mgm/critical-l
 import { HermeneutLikelihoodScaleMgmModule } from './likelihood-scale-mgm/likelihood-scale-mgm.module';
 import { HermeneutVulnerabilityScaleMgmModule } from './vulnerability-scale-mgm/vulnerability-scale-mgm.module';
 import { HermeneutMyCompanyMgmModule } from './my-company-mgm/my-company-mgm.module';
+import { HermeneutImpactLevelMgmModule } from './impact-level-mgm/impact-level-mgm.module';
 /* jhipster-needle-add-entity-module-import - JHipster will add entity modules imports here */
 
 @NgModule({
@@ -67,6 +68,7 @@ import { HermeneutMyCompanyMgmModule } from './my-company-mgm/my-company-mgm.mod
         HermeneutLikelihoodScaleMgmModule,
         HermeneutVulnerabilityScaleMgmModule,
         HermeneutMyCompanyMgmModule,
+        HermeneutImpactLevelMgmModule,
         /* jhipster-needle-add-entity-module - JHipster will add entity modules here */
     ],
     declarations: [],
