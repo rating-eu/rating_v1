@@ -92,7 +92,8 @@ entity MyAsset{
 	Ranking Integer,
     Estimated Boolean,
     /**WP3*/
-    EconomicValue BigDecimal
+    EconomicValue BigDecimal,
+    Impact Integer min(1) max(5)
 }
 
 entity DirectAsset {
@@ -390,4 +391,11 @@ entity VulnerabilityScale{
 	Name String required,
     Description String required,
     Vulnerability Integer min(1) max(5) required
+}
+
+entity ImpactLevel{
+	SelfAssessmentID Long required,
+    Impact Integer min(1) max(5) required,
+    MinLoss Long min(0) required,
+    MaxLoss Long min(0) required
 }
