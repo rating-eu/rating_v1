@@ -35,7 +35,7 @@
             <!--For rows-->
             <tr *ngFor="let threatAgentID of threatAgentIDs">
                 <td class="text-center align-middle">
-                    {{threatAgentLikelihoodsMap.get(threatAgentID).threatAgent.name}}
+                    <a [routerLink]="['/threat-agent-mgm', threatAgentID ]">{{threatAgentLikelihoodsMap.get(threatAgentID).threatAgent.name}}</a>
                 </td>
 
                 <td class="text-center align-middle">
