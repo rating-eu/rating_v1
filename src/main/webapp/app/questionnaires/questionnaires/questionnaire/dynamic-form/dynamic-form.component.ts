@@ -407,7 +407,7 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
                 this.selfAssessment = selfAssessmentResponse.body;
                 this.selfAssessmentService.setSelfAssessment(this.selfAssessment);
 
-                this.router.navigate(['/identify-threat-agent/result', questionnaireStatus.id]);
+                this.router.navigate(['/identify-threat-agent/result']);
             }
         );
 
