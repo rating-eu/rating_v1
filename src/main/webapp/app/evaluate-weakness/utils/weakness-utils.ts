@@ -95,7 +95,10 @@ export class WeaknessUtils {
         return likelihood;
     }
 
-    public static threatAgentChanged(threatAgent: ThreatAgentMgm, augmentedAttackStrategiesMap: Map<number/*AttackStrategy ID*/, AugmentedAttackStrategy/*AttackStrategy likelihoods*/>) {
+    public static threatAgentChanged(
+        threatAgent: ThreatAgentMgm,
+        augmentedAttackStrategiesMap: Map<number/*AttackStrategy ID*/, AugmentedAttackStrategy/*AttackStrategy likelihoods*/>) {
+
         console.log('ThreatAgent Changed: ' + JSON.stringify(threatAgent));
         // Update the enabled status of each AttackStrategy depending on the Skills of
         // the ThreatAgent and the Skills required to perform the attack.

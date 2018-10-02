@@ -15,7 +15,8 @@ export class QuestionnaireStatusMgmCustomService {
     private role = '{role}';
 
     private resourceUrl = SERVER_API_URL + 'api/questionnaire-statuses';
-    private byRoleSelfAssessmentAndQuestionnaireUrl = this.resourceUrl + '/self-assessment/' + this.selfAssessmentID + '/questionnaire/' + this.questionnaireID + '/role/' + this.role;
+    private byRoleSelfAssessmentAndQuestionnaireUrl =
+        this.resourceUrl + '/self-assessment/' + this.selfAssessmentID + '/questionnaire/' + this.questionnaireID + '/role/' + this.role;
 
     constructor(private http: HttpClient, private dateUtils: JhiDateUtils) {
     }

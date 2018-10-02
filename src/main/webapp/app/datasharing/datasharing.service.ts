@@ -73,11 +73,13 @@ export class DatasharingService {
     // ===Observables-BehaviorSubjects===
 
     // Map to keep the previous updated answers.
-    private _attackStrategyUpdatesMap: Map<number/*AttackStrategy ID*/, Couple<AttackStrategyMgm, AttackStrategyUpdate>> = new Map<number, Couple<AttackStrategyMgm, AttackStrategyUpdate>>();
+    private _attackStrategyUpdatesMap: Map<number/*AttackStrategy ID*/, Couple<AttackStrategyMgm, AttackStrategyUpdate>> =
+        new Map<number, Couple<AttackStrategyMgm, AttackStrategyUpdate>>();
     // Single AttackStrategy update
     private _attackStrategyUpdate: AttackStrategyUpdate;
     private _attackStrategyUpdateSubject: BehaviorSubject<AttackStrategyUpdate> = new BehaviorSubject<AttackStrategyUpdate>(this._attackStrategyUpdate);
     private _attackStrategyUpdate$: Observable<AttackStrategyUpdate> = this._attackStrategyUpdateSubject.asObservable();
+    private layoutUpdateSubject: BehaviorSubject<Update> = new BehaviorSubject<Update>(null);
 
     private set attackStrategyUpdate(value: AttackStrategyUpdate) {
         this._attackStrategyUpdate = value;
@@ -122,10 +124,8 @@ export class DatasharingService {
         }
     }
 
-    private layoutUpdateSubject: BehaviorSubject<Update> = new BehaviorSubject<Update>(null);
-
     updateLayout(layoutUpdate: Update) {
-        this.layoutUpdateSubject.next(layoutUpdate)
+        this.layoutUpdateSubject.next(layoutUpdate);
     }
 
     getUpdate(): Update {

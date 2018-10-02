@@ -31,7 +31,7 @@ export class ResultsService {
     private convertResponse(res: EntityResponseType): EntityResponseType {
         const body: Result = res.body;
 
-        //Initial Vulnerability Map
+        // Initial Vulnerability Map
         const initialVulnerabilityMap: Map<number, number> = new Map<number, number>();
 
         Object.keys(body.initialVulnerability)
@@ -41,7 +41,7 @@ export class ResultsService {
 
         body.initialVulnerability = initialVulnerabilityMap;
 
-        //Contextual Vulnerability Map
+        // Contextual Vulnerability Map
         const contextualVulnerabilityMap: Map<number, number> = new Map<number, number>();
 
         Object.keys(body.contextualVulnerability)

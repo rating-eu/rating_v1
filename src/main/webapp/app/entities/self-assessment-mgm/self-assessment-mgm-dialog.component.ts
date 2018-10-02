@@ -18,7 +18,6 @@ import {AttackStrategyMgm, AttackStrategyMgmService} from '../attack-strategy-mg
 import {ExternalAuditMgm, ExternalAuditMgmService} from '../external-audit-mgm';
 import {QuestionnaireMgm, QuestionnaireMgmService} from '../questionnaire-mgm';
 import {MyCompanyMgm, MyCompanyMgmService} from '../my-company-mgm';
-import {MyCompanyComponent} from '../../my-company/my-company.component';
 
 @Component({
     selector: 'jhi-self-assessment-mgm-dialog',
@@ -78,7 +77,7 @@ export class SelfAssessmentMgmDialogComponent implements OnInit {
                             this.myCompanyProfile = myCompany.companyProfile;
                         },
                         (error: any) => {
-                            if (error.status == 404) {
+                            if (error.status === 404) {
                                 this.jhiAlertService.error(error.message, null, null);
                             }
                         }
@@ -130,7 +129,7 @@ export class SelfAssessmentMgmDialogComponent implements OnInit {
         this.isSaving = true;
         if (this.selfAssessment.id !== undefined) {
             if (!this.selfAssessment.companyProfile) {
-                //fetch the company profile of the logged user
+                // fetch the company profile of the logged user
                 this.selfAssessment.companyProfile = this.myCompanyProfile;
             }
 
