@@ -14,7 +14,10 @@ import java.util.Objects;
  * A ImpactLevel.
  */
 @Entity
-@Table(name = "impact_level")
+@Table(
+    name = "impact_level",
+    uniqueConstraints = @UniqueConstraint(columnNames = {"self_assessment_id", "impact"})
+)
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 @Document(indexName = "impactlevel")
 public class ImpactLevel implements Serializable {
