@@ -98,4 +98,11 @@ public class ImpactLevelServiceImpl implements ImpactLevelService {
             .stream(impactLevelSearchRepository.search(queryStringQuery(query)).spliterator(), false)
             .collect(Collectors.toList());
     }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<ImpactLevel> findAllBySelfAssessment(Long selfAssessmentID) {
+        log.debug("Request to get all ImpactLevels by SelfAssessment " + selfAssessmentID);
+        return impactLevelRepository.findAllBySelfAssessment(selfAssessmentID);
+    }
 }

@@ -90,7 +90,19 @@ public class ImpactLevelResource {
     public List<ImpactLevel> getAllImpactLevels() {
         log.debug("REST request to get all ImpactLevels");
         return impactLevelService.findAll();
-        }
+    }
+
+    /**
+     * GET  /impact-levels : get all the impactLevels.
+     *
+     * @return the ResponseEntity with status 200 (OK) and the list of impactLevels in body
+     */
+    @GetMapping("/{selfAssessmentID}/impact-levels")
+    @Timed
+    public List<ImpactLevel> getAllImpactLevelsBySelfAssessment(@PathVariable("selfAssessmentID") Long selfAssessmentID) {
+        log.debug("REST request to get all ImpactLevels");
+        return impactLevelService.findAllBySelfAssessment(selfAssessmentID);
+    }
 
     /**
      * GET  /impact-levels/:id : get the "id" impactLevel.
