@@ -399,3 +399,12 @@ entity ImpactLevel{
     MinLoss Long min(0) required,
     MaxLoss Long min(0) required
 }
+
+entity ImpactLevelDescription{
+    Impact Integer min(1) max(5) required,
+    PeopleEffects String required,
+    Reputation String required,
+    ServiceOutputs String required,
+    LegalAndCompliance String required,
+    ManagementImpact String required
+}
