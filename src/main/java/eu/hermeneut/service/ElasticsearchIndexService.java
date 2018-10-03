@@ -107,6 +107,10 @@ public class ElasticsearchIndexService {
 
     private final ImpactLevelSearchRepository impactLevelSearchRepository;
 
+    private final ImpactLevelDescriptionRepository impactLevelDescriptionRepository;
+
+    private final ImpactLevelDescriptionSearchRepository impactLevelDescriptionSearchRepository;
+
     private final IndirectAssetRepository indirectAssetRepository;
 
     private final IndirectAssetSearchRepository indirectAssetSearchRepository;
@@ -214,6 +218,8 @@ public class ElasticsearchIndexService {
         ExternalAuditSearchRepository externalAuditSearchRepository,
         ImpactLevelRepository impactLevelRepository,
         ImpactLevelSearchRepository impactLevelSearchRepository,
+        ImpactLevelDescriptionRepository impactLevelDescriptionRepository,
+        ImpactLevelDescriptionSearchRepository impactLevelDescriptionSearchRepository,
         IndirectAssetRepository indirectAssetRepository,
         IndirectAssetSearchRepository indirectAssetSearchRepository,
         LevelRepository levelRepository,
@@ -283,6 +289,8 @@ public class ElasticsearchIndexService {
         this.externalAuditSearchRepository = externalAuditSearchRepository;
         this.impactLevelRepository = impactLevelRepository;
         this.impactLevelSearchRepository = impactLevelSearchRepository;
+        this.impactLevelDescriptionRepository = impactLevelDescriptionRepository;
+        this.impactLevelDescriptionSearchRepository = impactLevelDescriptionSearchRepository;
         this.indirectAssetRepository = indirectAssetRepository;
         this.indirectAssetSearchRepository = indirectAssetSearchRepository;
         this.levelRepository = levelRepository;
@@ -340,6 +348,7 @@ public class ElasticsearchIndexService {
                 reindexForClass(EconomicResults.class, economicResultsRepository, economicResultsSearchRepository);
                 reindexForClass(ExternalAudit.class, externalAuditRepository, externalAuditSearchRepository);
                 reindexForClass(ImpactLevel.class, impactLevelRepository, impactLevelSearchRepository);
+                reindexForClass(ImpactLevelDescription.class, impactLevelDescriptionRepository, impactLevelDescriptionSearchRepository);
                 reindexForClass(IndirectAsset.class, indirectAssetRepository, indirectAssetSearchRepository);
                 reindexForClass(Level.class, levelRepository, levelSearchRepository);
                 reindexForClass(LikelihoodScale.class, likelihoodScaleRepository, likelihoodScaleSearchRepository);

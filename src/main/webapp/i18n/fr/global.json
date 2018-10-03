@@ -41,6 +41,7 @@
                 "vulnerabilityScaleMgm": "Vulnerability Scale",
                 "myCompanyMgm": "My Company",
                 "impactLevelMgm": "Impact Level",
+                "impactLevelDescriptionMgm": "Impact Level Description",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {
