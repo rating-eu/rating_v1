@@ -22,7 +22,7 @@
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="impact" type="integer">
-                <constraints nullable="false" />
+                <constraints nullable="false" unique="true"/>
             </column>
 
             <column name="people_effects" type="varchar(255)">
@@ -47,7 +47,7 @@
 
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here, do not remove-->
         </createTable>
-        
+
     </changeSet>
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here, do not remove-->
 </databaseChangeLog>

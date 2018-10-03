@@ -7,6 +7,7 @@ import javax.persistence.*;
 import javax.validation.constraints.*;
 
 import org.springframework.data.elasticsearch.annotations.Document;
+
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -14,7 +15,10 @@ import java.util.Objects;
  * A ImpactLevelDescription.
  */
 @Entity
-@Table(name = "impact_level_description")
+@Table(
+    name = "impact_level_description",
+    uniqueConstraints = @UniqueConstraint(columnNames = {"impact"})
+)
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 @Document(indexName = "impactleveldescription")
 public class ImpactLevelDescription implements Serializable {
