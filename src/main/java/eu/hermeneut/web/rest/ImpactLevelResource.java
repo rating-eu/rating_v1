@@ -58,6 +58,19 @@ public class ImpactLevelResource {
             .body(result);
     }
 
+    @PostMapping("/impact-levels/all")
+    @Timed
+    public List<ImpactLevel> createImpactLevels(@Valid @RequestBody List<ImpactLevel> impactLevels){
+        log.debug("REST request to save all ImpactLevels : {}", impactLevels);
+
+        if (impactLevels.stream().filter(impactLevel -> impactLevel.getId() != null).count() > 0) {
+            throw new BadRequestAlertException("A new myAnswer cannot already have an ID", ENTITY_NAME, "idexists");
+        }
+
+        List<ImpactLevel> result = this.impactLevelService.saveAll(impactLevels);
+        return result;
+    }
+
     /**
      * PUT  /impact-levels : Updates an existing impactLevel.
      *
