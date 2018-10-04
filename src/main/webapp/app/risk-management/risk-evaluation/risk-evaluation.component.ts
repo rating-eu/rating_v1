@@ -266,7 +266,7 @@ export class RiskEvaluationComponent implements OnInit {
                 case 'likelihood-vulnerability': {
                     for (const attack of attacks) {
                         const likelihoodVulnerability = Math.round(attack.likelihood * attack.vulnerability);
-                        if (level === likelihoodVulnerability) {
+                        if (level === likelihoodVulnerability && attack.likelihood === row && column === attack.vulnerability) {
                             if (this.mapMaxCriticalLevel.has(myAsset.id)) {
                                 const lStore = this.mapMaxCriticalLevel.get(myAsset.id);
                                 if (lStore[0] < level) {
@@ -283,7 +283,7 @@ export class RiskEvaluationComponent implements OnInit {
                 case 'critically-impact': {
                     for (const attack of attacks) {
                         const criticallyImpact = attack.critical * attack.impact;
-                        if (level === criticallyImpact) {
+                        if (level === criticallyImpact && attack.critical === row && column === attack.impact) {
                             content = content.concat(attack.attackStrategy.name, ' ');
                         }
                     }
