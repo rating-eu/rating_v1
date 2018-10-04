@@ -146,7 +146,12 @@ export class RiskEvaluationComponent implements OnInit {
         console.log(impact);
         // TODO Completare la logica per l'update
         // Assegnare impact al myAsset
-        // this.myAssetService.update(myAsset).toPromise();
+        /*
+        this.myAssetService.update(myAsset).toPromise().then((res) => {
+            const index = _.findIndex(this.myAssets, { id: res.id });
+            this.myAssets.splice(index, 1, res);
+        });
+        */
         myAsset['impact'] = impact; // Rimuovere questa riga di codice quando la funzionalità lato back-end sarà pronta
         const index = _.findIndex(this.myAssets, { id: myAsset.id });
         this.myAssets.splice(index, 1, myAsset);

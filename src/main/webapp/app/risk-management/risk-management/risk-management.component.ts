@@ -119,6 +119,7 @@ export class RiskManagementComponent implements OnInit {
     console.log(valueMax);
     console.log(this.impactMinLevelValues);
     console.log(this.impactMaxLevelValues);
+    // TODO chiamata per salvare, aggiornare, il valore dell'impatto
   }
 
   public criticalLevelUpdate(level: string) {
