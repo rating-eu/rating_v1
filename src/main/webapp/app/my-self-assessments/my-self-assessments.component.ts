@@ -12,7 +12,7 @@ import { MyAssetMgm, MyAssetMgmService } from '../entities/my-asset-mgm';
 @Component({
     selector: 'jhi-my-self-assessments',
     templateUrl: './my-self-assessments.component.html',
-    styles: []
+    styleUrls: ['./my-self-assessment.component.css'],
 })
 export class MySelfAssessmentsComponent implements OnInit {
 

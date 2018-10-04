@@ -146,7 +146,12 @@ export class RiskEvaluationComponent implements OnInit {
         console.log(impact);
         // TODO Completare la logica per l'update
         // Assegnare impact al myAsset
-        // this.myAssetService.update(myAsset).toPromise();
+        /*
+        this.myAssetService.update(myAsset).toPromise().then((res) => {
+            const index = _.findIndex(this.myAssets, { id: res.id });
+            this.myAssets.splice(index, 1, res);
+        });
+        */
         myAsset['impact'] = impact; // Rimuovere questa riga di codice quando la funzionalità lato back-end sarà pronta
         const index = _.findIndex(this.myAssets, { id: myAsset.id });
         this.myAssets.splice(index, 1, myAsset);
@@ -261,7 +266,7 @@ export class RiskEvaluationComponent implements OnInit {
                 case 'likelihood-vulnerability': {
                     for (const attack of attacks) {
                         const likelihoodVulnerability = Math.round(attack.likelihood * attack.vulnerability);
-                        if (level === likelihoodVulnerability) {
+                        if (level === likelihoodVulnerability && attack.likelihood === row && column === attack.vulnerability) {
                             if (this.mapMaxCriticalLevel.has(myAsset.id)) {
                                 const lStore = this.mapMaxCriticalLevel.get(myAsset.id);
                                 if (lStore[0] < level) {
@@ -278,7 +283,7 @@ export class RiskEvaluationComponent implements OnInit {
                 case 'critically-impact': {
                     for (const attack of attacks) {
                         const criticallyImpact = attack.critical * attack.impact;
-                        if (level === criticallyImpact) {
+                        if (level === criticallyImpact && attack.critical === row && column === attack.impact) {
                             content = content.concat(attack.attackStrategy.name, ' ');
                         }
                     }
