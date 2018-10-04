@@ -105,4 +105,12 @@ public class ImpactLevelServiceImpl implements ImpactLevelService {
         log.debug("Request to get all ImpactLevels by SelfAssessment " + selfAssessmentID);
         return impactLevelRepository.findAllBySelfAssessment(selfAssessmentID);
     }
+
+    @Override
+    public List<ImpactLevel> saveAll(List<ImpactLevel> impactLevels) {
+        log.debug("Request to save ImpactLevel : {}", impactLevels);
+        List<ImpactLevel> result = impactLevelRepository.save(impactLevels);
+        impactLevelSearchRepository.save(result);
+        return result;
+    }
 }

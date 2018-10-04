@@ -26,6 +26,12 @@ export class ImpactLevelMgmService {
             .map((res: EntityResponseType) => this.convertResponse(res));
     }
 
+    createAll(impactLevels: ImpactLevelMgm[]): Observable<HttpResponse<ImpactLevelMgm[]>> {
+        const copy = this.convertArray(impactLevels);
+        return this.http.post<ImpactLevelMgm[]>(this.resourceUrl, copy, {observe: 'response'})
+            .map((res: HttpResponse<ImpactLevelMgm[]>) => this.convertArrayResponse(res));
+    }
+
     update(impactLevel: ImpactLevelMgm): Observable<EntityResponseType> {
         const copy = this.convert(impactLevel);
         return this.http.put<ImpactLevelMgm>(this.resourceUrl, copy, {observe: 'response'})
@@ -89,6 +95,21 @@ export class ImpactLevelMgmService {
      */
     private convert(impactLevel: ImpactLevelMgm): ImpactLevelMgm {
         const copy: ImpactLevelMgm = Object.assign({}, impactLevel);
+        return copy;
+    }
+
+    /**
+     * Convert a ImpactLevelMgm to a JSON which can be sent to the server.
+     */
+    private convertArray(impactLevels: ImpactLevelMgm[]): ImpactLevelMgm[] {
+        const copy: ImpactLevelMgm[] = [];
+
+        if (impactLevels) {
+            impactLevels.forEach((impactLevel: ImpactLevelMgm) => {
+                copy.push(this.convert(impactLevel));
+            });
+        }
+
         return copy;
     }
 }

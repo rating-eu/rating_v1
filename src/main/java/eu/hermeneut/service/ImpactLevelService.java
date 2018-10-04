@@ -48,4 +48,6 @@ public interface ImpactLevelService {
     List<ImpactLevel> search(String query);
 
     List<ImpactLevel> findAllBySelfAssessment(Long selfAssessmentID);
+
+    List<ImpactLevel> saveAll(List<ImpactLevel> impactLevels);
 }
