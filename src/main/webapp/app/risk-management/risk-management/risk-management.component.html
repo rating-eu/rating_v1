@@ -59,10 +59,10 @@
                         <tr *ngFor="let description of impactLevelDescriptions">
                             <th scope="row">{{description.impact}}</th>
                             <td>
-                                <input type="number" class="form-control" placeholder="Min"
+                                <input type="number" class="form-control" style="min-width: 80px;" placeholder="Min"
                                        [(ngModel)]="impactLevelsMap.get(description.impact).minLoss"
                                         #min>
-                                <input type="number" class="form-control" placeholder="Max"
+                                <input type="number" class="form-control" style="min-width: 80px;" placeholder="Max"
                                        [(ngModel)]="impactLevelsMap.get(description.impact).maxLoss"
                                         #max>
                                 <div class="btn btn-primary" (click)="updateImpactLevel(impactLevelsMap.get(description.impact))">OK
