@@ -1,10 +1,10 @@
 package eu.hermeneut.domain.overview;
 
-import java.util.Set;
+import java.util.List;
 
 public class SelfAssessmentOverview {
     private long selfAssessmentID;
-    private Set<AugmentedMyAsset> augmentedMyAssets;
+    private List<AugmentedMyAsset> augmentedMyAssets;
 
     public long getSelfAssessmentID() {
         return selfAssessmentID;
@@ -14,11 +14,11 @@ public class SelfAssessmentOverview {
         this.selfAssessmentID = selfAssessmentID;
     }
 
-    public Set<AugmentedMyAsset> getAugmentedMyAssets() {
+    public List<AugmentedMyAsset> getAugmentedMyAssets() {
         return augmentedMyAssets;
     }
 
-    public void setAugmentedMyAssets(Set<AugmentedMyAsset> augmentedMyAssets) {
+    public void setAugmentedMyAssets(List<AugmentedMyAsset> augmentedMyAssets) {
         this.augmentedMyAssets = augmentedMyAssets;
     }
 }

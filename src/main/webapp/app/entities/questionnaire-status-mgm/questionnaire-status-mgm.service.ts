@@ -20,7 +20,8 @@ export class QuestionnaireStatusMgmService {
     private resourceUrl = SERVER_API_URL + 'api/questionnaire-statuses';
     private resourceSearchUrl = SERVER_API_URL + 'api/_search/questionnaire-statuses';
     private resourceUrlByRoleSelfAssessmentQuestionnaire = SERVER_API_URL + '';
-    private resourceUrlBySelfAssessmentAndQuestionnairePurpose = SERVER_API_URL + 'api/questionnaire-statuses/' + SELF_ASSESSMENT_ID_PLACEHOLDER + '/' + QUESTIONNAIRE_PURPOSE_PLACEHOLDER;
+    private resourceUrlBySelfAssessmentAndQuestionnairePurpose =
+        SERVER_API_URL + 'api/questionnaire-statuses/' + SELF_ASSESSMENT_ID_PLACEHOLDER + '/' + QUESTIONNAIRE_PURPOSE_PLACEHOLDER;
 
     constructor(private http: HttpClient, private dateUtils: JhiDateUtils) {
     }
@@ -101,7 +102,9 @@ export class QuestionnaireStatusMgmService {
     }
 
     getAllBySelfAssessmentAndQuestionnairePurpose(selfAssessmentID: number, questionnairePurpose: string): Observable<HttpResponse<QuestionnaireStatusMgm[]>> {
-        return this.http.get<QuestionnaireStatusMgm[]>(this.resourceUrlBySelfAssessmentAndQuestionnairePurpose.replace(SELF_ASSESSMENT_ID_PLACEHOLDER, selfAssessmentID + '').replace(QUESTIONNAIRE_PURPOSE_PLACEHOLDER, questionnairePurpose), {observe: 'response'})
+        return this.http.get<QuestionnaireStatusMgm[]>(
+            this.resourceUrlBySelfAssessmentAndQuestionnairePurpose.replace(SELF_ASSESSMENT_ID_PLACEHOLDER, selfAssessmentID + '')
+                .replace(QUESTIONNAIRE_PURPOSE_PLACEHOLDER, questionnairePurpose), {observe: 'response'})
             .map((res: HttpResponse<QuestionnaireStatusMgm[]>) => this.convertArrayResponse(res));
     }
 }

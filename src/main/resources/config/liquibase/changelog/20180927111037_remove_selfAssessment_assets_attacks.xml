@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <property name="now" value="now()" dbms="h2"/>
+
+    <property name="now" value="current_timestamp" dbms="postgresql"/>
+
+    <property name="floatType" value="float4" dbms="postgresql, h2"/>
+    <property name="floatType" value="float" dbms="mysql, oracle, mssql"/>
+
+    <!--
+        Remove ThreatAgent SelfAssessment assets and attackStrategies.
+    -->
+    <changeSet id="20180927111037-1" author="developer">
+        <dropForeignKeyConstraint baseTableName="self_assessment_asset"
+                                  constraintName="fk_self_assessment_asset_self_assessments_id"/>
+
+        <dropForeignKeyConstraint baseTableName="self_assessment_asset"
+                                  constraintName="fk_self_assessment_asset_assets_id"/>
+
+        <dropForeignKeyConstraint baseTableName="self_assessment_attackstrategy"
+                                  constraintName="fk_self_assessment_attackstrategy_self_assessments_id"/>
+        <dropForeignKeyConstraint baseTableName="self_assessment_attackstrategy"
+                                  constraintName="fk_self_assessment_attackstrategy_attackstrategies_id"/>
+    </changeSet>
+
+    <changeSet id="20180927111037-2" author="developer">
+        <dropTable tableName="self_assessment_asset"></dropTable>
+        <dropTable tableName="self_assessment_attackstrategy"></dropTable>
+    </changeSet>
+
+    <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here, do not remove-->
+</databaseChangeLog>

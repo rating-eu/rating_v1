@@ -6,7 +6,6 @@ import {AnswerMgm} from '../answer-mgm';
 import {QuestionnaireMgm} from '../questionnaire-mgm';
 import {ThreatAgentMgm} from '../threat-agent-mgm';
 
-
 export class QuestionMgm implements BaseEntity {
     constructor(
         public id?: number,

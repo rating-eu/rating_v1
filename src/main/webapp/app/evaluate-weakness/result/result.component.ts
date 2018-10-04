@@ -26,7 +26,7 @@ import * as _ from 'lodash';
     ]
 })
 export class WeaknessResultComponent implements OnInit, OnDestroy {
-    viewDetails: boolean = false;
+    viewDetails = false;
     private selectedAugmentedAttackStrategy: AugmentedAttackStrategy = null;
 
     private _subscriptions: Subscription[] = [];
@@ -59,7 +59,7 @@ export class WeaknessResultComponent implements OnInit, OnDestroy {
     // Attack Plan Matrix
     attacksCKC7Matrix: Map<Number, Map<Number, AugmentedAttackStrategy>>;
 
-    //Likelihood Steps
+    // Likelihood Steps
     likelihoodStep: LikelihoodStep = LikelihoodStep.INITIAL_LIKELIHOOD;
     likelihoodStepEnum = LikelihoodStep;
 
@@ -85,7 +85,7 @@ export class WeaknessResultComponent implements OnInit, OnDestroy {
 
         join$.subscribe((response: [HttpResponse<PhaseMgm[]>, HttpResponse<LevelMgm[]>, Map<Number, Map<Number, AugmentedAttackStrategy>>]) => {
             this.ckc7Phases = response[0].body;
-            //Remove id 7 phase
+            // Remove id 7 phase
             const index = _.findIndex(this.ckc7Phases, (phase) => phase.id === 7);
 
             if (index !== -1) {
@@ -97,7 +97,7 @@ export class WeaknessResultComponent implements OnInit, OnDestroy {
 
             this.augmentedAttackStrategiesMap = new Map<number, AugmentedAttackStrategy>();
 
-            //Make same ID AttackStrategies point to the same AugmentedAttackStrategy object
+            // Make same ID AttackStrategies point to the same AugmentedAttackStrategy object
             for (const levelID of Object.keys(this.attacksCKC7Matrix)) {
                 console.log('LevelID: ' + levelID);
 
@@ -107,26 +107,26 @@ export class WeaknessResultComponent implements OnInit, OnDestroy {
                     const augmentedAttackStrategies: Array<AugmentedAttackStrategy> = this.attacksCKC7Matrix[Number(levelID)][Number(phaseID)];
                     const augmentedAttackStrategiesByReference: Array<AugmentedAttackStrategy> = [];
 
-                    for (var augmentedAttackStrategy of augmentedAttackStrategies) {
+                    for (let augmentedAttackStrategy of augmentedAttackStrategies) {
                         if (!this.augmentedAttackStrategiesMap.has(augmentedAttackStrategy.id)) {
                             this.augmentedAttackStrategiesMap.set(augmentedAttackStrategy.id, augmentedAttackStrategy);
 
-                            //Each time that we encounter an AttackStrategy we put it in the array by Reference
+                            // Each time that we encounter an AttackStrategy we put it in the array by Reference
                             augmentedAttackStrategiesByReference.push(augmentedAttackStrategy);
                         } else {
                             augmentedAttackStrategy = this.augmentedAttackStrategiesMap.get(augmentedAttackStrategy.id);
-                            //Each time that we encounter an AttackStrategy we put it in the array by Reference
+                            // Each time that we encounter an AttackStrategy we put it in the array by Reference
                             augmentedAttackStrategiesByReference.push(augmentedAttackStrategy);
                         }
                     }
 
-                    //Finally we replace the initial AttackStrategies with those by REFERENCE
-                    //(to allow one-time update for all the occurrences of the same AttackStrategy in different Levels or Phases)
+                    // Finally we replace the initial AttackStrategies with those by REFERENCE
+                    // (to allow one-time update for all the occurrences of the same AttackStrategy in different Levels or Phases)
                     this.attacksCKC7Matrix[Number(levelID)][Number(phaseID)] = augmentedAttackStrategiesByReference;
                 }
             }
 
-            //Set the SelectedThreatAgent (NULL) to make sure all the AttackStrategies are disabled at start.
+            // Set the SelectedThreatAgent (NULL) to make sure all the AttackStrategies are disabled at start.
             this.threatAgentChanged(this.selectedThreatAgent);
         });
     }
@@ -151,8 +151,6 @@ export class WeaknessResultComponent implements OnInit, OnDestroy {
 
         console.log('Likelihood Step: ' + this.likelihoodStep);
     }
-
-    //[routerLink]="['/attack-strategy-mgm', augmentedAttackStrategy.id]"
 
     selectAttackStrategy(augmentedAttackStrategy: AugmentedAttackStrategy) {
         this.selectedAugmentedAttackStrategy = augmentedAttackStrategy;

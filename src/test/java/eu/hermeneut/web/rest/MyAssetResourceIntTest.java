@@ -53,6 +53,9 @@ public class MyAssetResourceIntTest {
     private static final BigDecimal DEFAULT_ECONOMIC_VALUE = new BigDecimal(1);
     private static final BigDecimal UPDATED_ECONOMIC_VALUE = new BigDecimal(2);
 
+    private static final Integer DEFAULT_IMPACT = 1;
+    private static final Integer UPDATED_IMPACT = 2;
+
     @Autowired
     private MyAssetRepository myAssetRepository;
 
@@ -100,7 +103,8 @@ public class MyAssetResourceIntTest {
             .magnitude(DEFAULT_MAGNITUDE)
             .ranking(DEFAULT_RANKING)
             .estimated(DEFAULT_ESTIMATED)
-            .economicValue(DEFAULT_ECONOMIC_VALUE);
+            .economicValue(DEFAULT_ECONOMIC_VALUE)
+            .impact(DEFAULT_IMPACT);
         return myAsset;
     }
 
@@ -129,6 +133,7 @@ public class MyAssetResourceIntTest {
         assertThat(testMyAsset.getRanking()).isEqualTo(DEFAULT_RANKING);
         assertThat(testMyAsset.isEstimated()).isEqualTo(DEFAULT_ESTIMATED);
         assertThat(testMyAsset.getEconomicValue()).isEqualTo(DEFAULT_ECONOMIC_VALUE);
+        assertThat(testMyAsset.getImpact()).isEqualTo(DEFAULT_IMPACT);
 
         // Validate the MyAsset in Elasticsearch
         MyAsset myAssetEs = myAssetSearchRepository.findOne(testMyAsset.getId());
@@ -168,7 +173,8 @@ public class MyAssetResourceIntTest {
             .andExpect(jsonPath("$.[*].magnitude").value(hasItem(DEFAULT_MAGNITUDE.toString())))
             .andExpect(jsonPath("$.[*].ranking").value(hasItem(DEFAULT_RANKING)))
             .andExpect(jsonPath("$.[*].estimated").value(hasItem(DEFAULT_ESTIMATED.booleanValue())))
-            .andExpect(jsonPath("$.[*].economicValue").value(hasItem(DEFAULT_ECONOMIC_VALUE.intValue())));
+            .andExpect(jsonPath("$.[*].economicValue").value(hasItem(DEFAULT_ECONOMIC_VALUE.intValue())))
+            .andExpect(jsonPath("$.[*].impact").value(hasItem(DEFAULT_IMPACT)));
     }
 
     @Test
@@ -185,7 +191,8 @@ public class MyAssetResourceIntTest {
             .andExpect(jsonPath("$.magnitude").value(DEFAULT_MAGNITUDE.toString()))
             .andExpect(jsonPath("$.ranking").value(DEFAULT_RANKING))
             .andExpect(jsonPath("$.estimated").value(DEFAULT_ESTIMATED.booleanValue()))
-            .andExpect(jsonPath("$.economicValue").value(DEFAULT_ECONOMIC_VALUE.intValue()));
+            .andExpect(jsonPath("$.economicValue").value(DEFAULT_ECONOMIC_VALUE.intValue()))
+            .andExpect(jsonPath("$.impact").value(DEFAULT_IMPACT));
     }
 
     @Test
@@ -212,7 +219,8 @@ public class MyAssetResourceIntTest {
             .magnitude(UPDATED_MAGNITUDE)
             .ranking(UPDATED_RANKING)
             .estimated(UPDATED_ESTIMATED)
-            .economicValue(UPDATED_ECONOMIC_VALUE);
+            .economicValue(UPDATED_ECONOMIC_VALUE)
+            .impact(UPDATED_IMPACT);
 
         restMyAssetMockMvc.perform(put("/api/my-assets")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -227,6 +235,7 @@ public class MyAssetResourceIntTest {
         assertThat(testMyAsset.getRanking()).isEqualTo(UPDATED_RANKING);
         assertThat(testMyAsset.isEstimated()).isEqualTo(UPDATED_ESTIMATED);
         assertThat(testMyAsset.getEconomicValue()).isEqualTo(UPDATED_ECONOMIC_VALUE);
+        assertThat(testMyAsset.getImpact()).isEqualTo(UPDATED_IMPACT);
 
         // Validate the MyAsset in Elasticsearch
         MyAsset myAssetEs = myAssetSearchRepository.findOne(testMyAsset.getId());
@@ -287,7 +296,8 @@ public class MyAssetResourceIntTest {
             .andExpect(jsonPath("$.[*].magnitude").value(hasItem(DEFAULT_MAGNITUDE.toString())))
             .andExpect(jsonPath("$.[*].ranking").value(hasItem(DEFAULT_RANKING)))
             .andExpect(jsonPath("$.[*].estimated").value(hasItem(DEFAULT_ESTIMATED.booleanValue())))
-            .andExpect(jsonPath("$.[*].economicValue").value(hasItem(DEFAULT_ECONOMIC_VALUE.intValue())));
+            .andExpect(jsonPath("$.[*].economicValue").value(hasItem(DEFAULT_ECONOMIC_VALUE.intValue())))
+            .andExpect(jsonPath("$.[*].impact").value(hasItem(DEFAULT_IMPACT)));
     }
 
     @Test

@@ -1,0 +1,101 @@
+<form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+
+    <div class="modal-header">
+        <h4 class="modal-title" id="myImpactLevelLabel" jhiTranslate="hermeneutApp.impactLevel.home.createOrEditLabel">Create or edit a Impact Level</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                (click)="clear()">&times;</button>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group" [hidden]="!impactLevel.id">
+            <label for="id" jhiTranslate="global.field.id">ID</label>
+            <input type="text" class="form-control" id="id" name="id"
+                   [(ngModel)]="impactLevel.id" readonly />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="hermeneutApp.impactLevel.selfAssessmentID" for="field_selfAssessmentID">Self Assessment ID</label>
+            <input type="number" class="form-control" name="selfAssessmentID" id="field_selfAssessmentID"
+                [(ngModel)]="impactLevel.selfAssessmentID" required/>
+            <div [hidden]="!(editForm.controls.selfAssessmentID?.dirty && editForm.controls.selfAssessmentID?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.selfAssessmentID?.errors?.required" jhiTranslate="entity.validation.required">
+                   This field is required.
+                </small>
+                <small class="form-text text-danger"
+                    [hidden]="!editForm.controls.selfAssessmentID?.errors?.number" jhiTranslate="entity.validation.number">
+                    This field should be a number.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="hermeneutApp.impactLevel.impact" for="field_impact">Impact</label>
+            <input type="number" class="form-control" name="impact" id="field_impact"
+                [(ngModel)]="impactLevel.impact" required min="1" max="5"/>
+            <div [hidden]="!(editForm.controls.impact?.dirty && editForm.controls.impact?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.impact?.errors?.required" jhiTranslate="entity.validation.required">
+                   This field is required.
+                </small>
+                <small class="form-text text-danger"
+                    [hidden]="!editForm.controls.impact?.errors?.min" jhiTranslate="entity.validation.min" translateValues="{ min: 1 }">
+                    This field should be at least 1.
+                </small>
+                <small class="form-text text-danger"
+                    [hidden]="!editForm.controls.impact?.errors?.max" jhiTranslate="entity.validation.max" translateValues="{ max: 5 }">
+                    This field cannot be more than 5.
+                </small>
+                <small class="form-text text-danger"
+                    [hidden]="!editForm.controls.impact?.errors?.number" jhiTranslate="entity.validation.number">
+                    This field should be a number.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="hermeneutApp.impactLevel.minLoss" for="field_minLoss">Min Loss</label>
+            <input type="number" class="form-control" name="minLoss" id="field_minLoss"
+                [(ngModel)]="impactLevel.minLoss" required min="0"/>
+            <div [hidden]="!(editForm.controls.minLoss?.dirty && editForm.controls.minLoss?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.minLoss?.errors?.required" jhiTranslate="entity.validation.required">
+                   This field is required.
+                </small>
+                <small class="form-text text-danger"
+                    [hidden]="!editForm.controls.minLoss?.errors?.min" jhiTranslate="entity.validation.min" translateValues="{ min: 0 }">
+                    This field should be at least 0.
+                </small>
+                <small class="form-text text-danger"
+                    [hidden]="!editForm.controls.minLoss?.errors?.number" jhiTranslate="entity.validation.number">
+                    This field should be a number.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="hermeneutApp.impactLevel.maxLoss" for="field_maxLoss">Max Loss</label>
+            <input type="number" class="form-control" name="maxLoss" id="field_maxLoss"
+                [(ngModel)]="impactLevel.maxLoss" required min="0"/>
+            <div [hidden]="!(editForm.controls.maxLoss?.dirty && editForm.controls.maxLoss?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.maxLoss?.errors?.required" jhiTranslate="entity.validation.required">
+                   This field is required.
+                </small>
+                <small class="form-text text-danger"
+                    [hidden]="!editForm.controls.maxLoss?.errors?.min" jhiTranslate="entity.validation.min" translateValues="{ min: 0 }">
+                    This field should be at least 0.
+                </small>
+                <small class="form-text text-danger"
+                    [hidden]="!editForm.controls.maxLoss?.errors?.number" jhiTranslate="entity.validation.number">
+                    This field should be a number.
+                </small>
+            </div>
+        </div>
+
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">
+            <span class="fa fa-ban"></span>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+        <button type="submit" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+            <span class="fa fa-save"></span>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+    </div>
+</form>

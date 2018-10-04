@@ -103,6 +103,14 @@ public class ElasticsearchIndexService {
 
     private final ExternalAuditSearchRepository externalAuditSearchRepository;
 
+    private final ImpactLevelRepository impactLevelRepository;
+
+    private final ImpactLevelSearchRepository impactLevelSearchRepository;
+
+    private final ImpactLevelDescriptionRepository impactLevelDescriptionRepository;
+
+    private final ImpactLevelDescriptionSearchRepository impactLevelDescriptionSearchRepository;
+
     private final IndirectAssetRepository indirectAssetRepository;
 
     private final IndirectAssetSearchRepository indirectAssetSearchRepository;
@@ -208,6 +216,10 @@ public class ElasticsearchIndexService {
         EconomicResultsSearchRepository economicResultsSearchRepository,
         ExternalAuditRepository externalAuditRepository,
         ExternalAuditSearchRepository externalAuditSearchRepository,
+        ImpactLevelRepository impactLevelRepository,
+        ImpactLevelSearchRepository impactLevelSearchRepository,
+        ImpactLevelDescriptionRepository impactLevelDescriptionRepository,
+        ImpactLevelDescriptionSearchRepository impactLevelDescriptionSearchRepository,
         IndirectAssetRepository indirectAssetRepository,
         IndirectAssetSearchRepository indirectAssetSearchRepository,
         LevelRepository levelRepository,
@@ -275,6 +287,10 @@ public class ElasticsearchIndexService {
         this.economicResultsSearchRepository = economicResultsSearchRepository;
         this.externalAuditRepository = externalAuditRepository;
         this.externalAuditSearchRepository = externalAuditSearchRepository;
+        this.impactLevelRepository = impactLevelRepository;
+        this.impactLevelSearchRepository = impactLevelSearchRepository;
+        this.impactLevelDescriptionRepository = impactLevelDescriptionRepository;
+        this.impactLevelDescriptionSearchRepository = impactLevelDescriptionSearchRepository;
         this.indirectAssetRepository = indirectAssetRepository;
         this.indirectAssetSearchRepository = indirectAssetSearchRepository;
         this.levelRepository = levelRepository;
@@ -331,6 +347,8 @@ public class ElasticsearchIndexService {
                 reindexForClass(EconomicCoefficients.class, economicCoefficientsRepository, economicCoefficientsSearchRepository);
                 reindexForClass(EconomicResults.class, economicResultsRepository, economicResultsSearchRepository);
                 reindexForClass(ExternalAudit.class, externalAuditRepository, externalAuditSearchRepository);
+                reindexForClass(ImpactLevel.class, impactLevelRepository, impactLevelSearchRepository);
+                reindexForClass(ImpactLevelDescription.class, impactLevelDescriptionRepository, impactLevelDescriptionSearchRepository);
                 reindexForClass(IndirectAsset.class, indirectAssetRepository, indirectAssetSearchRepository);
                 reindexForClass(Level.class, levelRepository, levelSearchRepository);
                 reindexForClass(LikelihoodScale.class, likelihoodScaleRepository, likelihoodScaleSearchRepository);

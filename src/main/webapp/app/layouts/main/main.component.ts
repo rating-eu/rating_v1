@@ -12,7 +12,7 @@ import {Update} from '../model/Update';
 export class JhiMainComponent implements OnInit {
 
     public updateLayout: Update;
-    public isAuthenticated: boolean = false;
+    public isAuthenticated = false;
     public loading = true;
 
     constructor(

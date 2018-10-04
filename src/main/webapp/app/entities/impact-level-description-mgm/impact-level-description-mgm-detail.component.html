@@ -1,0 +1,46 @@
+
+<div *ngIf="impactLevelDescription">
+    <h2><span jhiTranslate="hermeneutApp.impactLevelDescription.detail.title">Impact Level Description</span> {{impactLevelDescription.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="hermeneutApp.impactLevelDescription.impact">Impact</span></dt>
+        <dd>
+            <span>{{impactLevelDescription.impact}}</span>
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.impactLevelDescription.peopleEffects">People Effects</span></dt>
+        <dd>
+            <span>{{impactLevelDescription.peopleEffects}}</span>
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.impactLevelDescription.reputation">Reputation</span></dt>
+        <dd>
+            <span>{{impactLevelDescription.reputation}}</span>
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.impactLevelDescription.serviceOutputs">Service Outputs</span></dt>
+        <dd>
+            <span>{{impactLevelDescription.serviceOutputs}}</span>
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.impactLevelDescription.legalAndCompliance">Legal And Compliance</span></dt>
+        <dd>
+            <span>{{impactLevelDescription.legalAndCompliance}}</span>
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.impactLevelDescription.managementImpact">Management Impact</span></dt>
+        <dd>
+            <span>{{impactLevelDescription.managementImpact}}</span>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'impact-level-description-mgm/'+ impactLevelDescription.id + '/edit'} }]"
+            replaceUrl="true"
+            queryParamsHandling="merge"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+    </button>
+</div>

@@ -5,6 +5,7 @@ import eu.hermeneut.domain.attackmap.AttackMap;
 import eu.hermeneut.domain.attackmap.AugmentedAttackStrategy;
 import eu.hermeneut.utils.attackstrategy.ThreatAttackFilter;
 import eu.hermeneut.utils.likelihood.attackstrategy.AttackStrategyCalculator;
+import org.apache.commons.math3.util.Precision;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -117,7 +118,7 @@ public class OverallCalculator {
         logger.debug("Numerator: " + numerator$);
         logger.debug("Denominator: " + denominator$);
 
-        return numerator / DENOMINATOR;
+        return Precision.round(numerator / DENOMINATOR, 2);
     }
 
     public float overallContextualLikelihoodByThreatAgent(ThreatAgent threatAgent, AttackMap attackMap) {
@@ -185,7 +186,7 @@ public class OverallCalculator {
             denominator += phase.getWeight();
         }
 
-        return numerator / DENOMINATOR;
+        return Precision.round(numerator / DENOMINATOR, 2);
     }
 
     public float overallRefinedLikelihoodByThreatAgent(ThreatAgent threatAgent, AttackMap attackMap) {
@@ -253,6 +254,6 @@ public class OverallCalculator {
             denominator += phase.getWeight();
         }
 
-        return numerator / DENOMINATOR;
+        return Precision.round(numerator / DENOMINATOR, 2);
     }
 }

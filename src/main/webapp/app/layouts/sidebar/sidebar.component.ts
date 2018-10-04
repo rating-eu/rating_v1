@@ -48,10 +48,6 @@ export class SidebarComponent implements OnInit {
                                     {
                                         label: 'Clusters',
                                         routerLink: ['/identify-asset']
-                                    },
-                                    {
-                                        label: 'Reports',
-                                        routerLink: ['/identify-asset']
                                     }
                                 ]
                             }
@@ -77,12 +73,12 @@ export class SidebarComponent implements OnInit {
                                 label: 'Attack Strategies',
                                 items: [
                                     {
-                                        label: 'Likelihood Matrix',
-                                        routerLink: ['/evaluate-weakness/result']
-                                    },
-                                    {
                                         label: 'Asses Vulnerabilities',
                                         routerLink: ['/evaluate-weakness/questionnaires/SELFASSESSMENT']
+                                    },
+                                    {
+                                        label: 'Likelihood Matrix',
+                                        routerLink: ['/evaluate-weakness/result']
                                     }
                                 ]
                             },
@@ -96,7 +92,7 @@ export class SidebarComponent implements OnInit {
                         label: 'Consequences',
                         items: [
                             {
-                                label: 'Loss due to a cyber Attack',
+                                label: 'Impact Evaluation',
                                 routerLink: ['/impact-evaluation']
                             }
                         ]

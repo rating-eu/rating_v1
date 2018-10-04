@@ -1,0 +1,26 @@
+
+{
+    "hermeneutApp": {
+        "impactLevel" : {
+            "home": {
+                "title": "Impact Levels",
+                "createLabel": "Create a new Impact Level",
+                "createOrEditLabel": "Create or edit a Impact Level",
+                "search": "Search for Impact Level"
+            },
+            "created": "A new Impact Level is created with identifier {{ param }}",
+            "updated": "A Impact Level is updated with identifier {{ param }}",
+            "deleted": "A Impact Level is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Impact Level {{ id }}?"
+            },
+            "detail": {
+                "title": "Impact Level"
+            },
+            "selfAssessmentID": "Self Assessment ID",
+            "impact": "Impact",
+            "minLoss": "Min Loss",
+            "maxLoss": "Max Loss"
+        }
+    }
+}

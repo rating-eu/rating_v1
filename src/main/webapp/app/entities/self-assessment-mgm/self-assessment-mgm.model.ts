@@ -1,9 +1,7 @@
 import {BaseEntity, User} from './../../shared';
 import {CompanyProfileMgm} from '../company-profile-mgm';
 import {CompanyGroupMgm} from '../company-group-mgm';
-import {AssetMgm} from '../asset-mgm';
 import {ThreatAgentMgm} from '../threat-agent-mgm';
-import {AttackStrategyMgm} from '../attack-strategy-mgm';
 import {ExternalAuditMgm} from '../external-audit-mgm';
 import {QuestionnaireMgm} from '../questionnaire-mgm';
 
@@ -16,9 +14,7 @@ export class SelfAssessmentMgm implements BaseEntity {
         public user?: User,
         public companyProfile?: CompanyProfileMgm,
         public companyGroups?: CompanyGroupMgm[],
-        public assets?: AssetMgm[],
         public threatagents?: ThreatAgentMgm[],
-        public attackstrategies?: AttackStrategyMgm[],
         public externalaudits?: ExternalAuditMgm[],
         public questionnaires?: QuestionnaireMgm[],
     ) {

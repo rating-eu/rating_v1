@@ -5,6 +5,7 @@ import eu.hermeneut.domain.MyAnswer;
 import eu.hermeneut.domain.enumeration.AnswerLikelihood;
 import eu.hermeneut.domain.enumeration.QuestionType;
 import eu.hermeneut.service.AnswerWeightService;
+import org.apache.commons.math3.util.Precision;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -66,7 +67,7 @@ public class AnswerCalculator {
         }
 
         if (denominator > 0) {
-            return numerator / denominator;
+            return Precision.round(numerator / denominator, 2);
         } else {
             return 0;
         }

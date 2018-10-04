@@ -42,9 +42,7 @@ describe('SelfAssessment e2e test', () => {
         selfAssessmentDialogPage.companyProfileSelectLastOption();
         selfAssessmentDialogPage.userSelectLastOption();
         // selfAssessmentDialogPage.companyGroupSelectLastOption();
-        // selfAssessmentDialogPage.assetSelectLastOption();
         // selfAssessmentDialogPage.threatagentSelectLastOption();
-        // selfAssessmentDialogPage.attackstrategySelectLastOption();
         // selfAssessmentDialogPage.externalauditSelectLastOption();
         // selfAssessmentDialogPage.questionnaireSelectLastOption();
         selfAssessmentDialogPage.save();
@@ -79,9 +77,7 @@ export class SelfAssessmentDialogPage {
     companyProfileSelect = element(by.css('select#field_companyProfile'));
     userSelect = element(by.css('select#field_user'));
     companyGroupSelect = element(by.css('select#field_companyGroup'));
-    assetSelect = element(by.css('select#field_asset'));
     threatagentSelect = element(by.css('select#field_threatagent'));
-    attackstrategySelect = element(by.css('select#field_attackstrategy'));
     externalauditSelect = element(by.css('select#field_externalaudit'));
     questionnaireSelect = element(by.css('select#field_questionnaire'));
 
@@ -161,22 +157,6 @@ export class SelfAssessmentDialogPage {
         return this.companyGroupSelect.element(by.css('option:checked')).getText();
     };
 
-    assetSelectLastOption = function() {
-        this.assetSelect.all(by.tagName('option')).last().click();
-    };
-
-    assetSelectOption = function(option) {
-        this.assetSelect.sendKeys(option);
-    };
-
-    getAssetSelect = function() {
-        return this.assetSelect;
-    };
-
-    getAssetSelectedOption = function() {
-        return this.assetSelect.element(by.css('option:checked')).getText();
-    };
-
     threatagentSelectLastOption = function() {
         this.threatagentSelect.all(by.tagName('option')).last().click();
     };
@@ -191,22 +171,6 @@ export class SelfAssessmentDialogPage {
 
     getThreatagentSelectedOption = function() {
         return this.threatagentSelect.element(by.css('option:checked')).getText();
-    };
-
-    attackstrategySelectLastOption = function() {
-        this.attackstrategySelect.all(by.tagName('option')).last().click();
-    };
-
-    attackstrategySelectOption = function(option) {
-        this.attackstrategySelect.sendKeys(option);
-    };
-
-    getAttackstrategySelect = function() {
-        return this.attackstrategySelect;
-    };
-
-    getAttackstrategySelectedOption = function() {
-        return this.attackstrategySelect.element(by.css('option:checked')).getText();
     };
 
     externalauditSelectLastOption = function() {

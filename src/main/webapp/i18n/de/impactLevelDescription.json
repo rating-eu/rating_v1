@@ -1,0 +1,28 @@
+
+{
+    "hermeneutApp": {
+        "impactLevelDescription" : {
+            "home": {
+                "title": "Impact Level Descriptions",
+                "createLabel": "Impact Level Description erstellen",
+                "createOrEditLabel": "Impact Level Description erstellen oder bearbeiten",
+                "search": "Suche nach Impact Level Description"
+            },
+            "created": "Impact Level Description erstellt mit ID {{ param }}",
+            "updated": "Impact Level Description aktualisiert mit ID {{ param }}",
+            "deleted": "Impact Level Description gelöscht mit ID {{ param }}",
+            "delete": {
+                "question": "Soll Impact Level Description {{ id }} wirklich dauerhaft gelöscht werden?"
+            },
+            "detail": {
+                "title": "Impact Level Description"
+            },
+            "impact": "Impact",
+            "peopleEffects": "People Effects",
+            "reputation": "Reputation",
+            "serviceOutputs": "Service Outputs",
+            "legalAndCompliance": "Legal And Compliance",
+            "managementImpact": "Management Impact"
+        }
+    }
+}

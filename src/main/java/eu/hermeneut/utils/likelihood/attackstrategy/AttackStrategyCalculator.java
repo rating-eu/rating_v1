@@ -8,6 +8,7 @@ import eu.hermeneut.domain.attackmap.AugmentedAttackStrategy;
 import eu.hermeneut.domain.enumeration.*;
 import eu.hermeneut.service.AnswerWeightService;
 import eu.hermeneut.utils.likelihood.answer.AnswerCalculator;
+import org.apache.commons.math3.util.Precision;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,8 +63,8 @@ public class AttackStrategyCalculator {
             logger.debug("MyAnswerSet: " + myAnswerSet);
 
             if (myAnswerSet != null) {
-                augmentedAttackStrategy.setRefinedVulnerability(this.answerCalculator.getAnswersLikelihood(myAnswerSet));
-                augmentedAttackStrategy.setRefinedLikelihood((augmentedAttackStrategy.getInitialLikelihood() + augmentedAttackStrategy.getRefinedVulnerability()) / 2);
+                augmentedAttackStrategy.setRefinedVulnerability(Precision.round(this.answerCalculator.getAnswersLikelihood(myAnswerSet), 2));
+                augmentedAttackStrategy.setRefinedLikelihood(Precision.round((augmentedAttackStrategy.getInitialLikelihood() + augmentedAttackStrategy.getRefinedVulnerability()) / 2, 2));
             }
         }
     }
@@ -101,7 +102,7 @@ public class AttackStrategyCalculator {
         }
     }
 
-    public void calculateContextualLikelihoods(List<MyAnswer> myAnswers, Map<Long/*QuestionID*/, Question> questionsMap, Map<Long/*AnswerID*/, Answer> answersMap, Map<Long/*AttackStrategy.ID*/, AugmentedAttackStrategy> augmentedAttackStrategyMap){
+    public void calculateContextualLikelihoods(List<MyAnswer> myAnswers, Map<Long/*QuestionID*/, Question> questionsMap, Map<Long/*AnswerID*/, Answer> answersMap, Map<Long/*AttackStrategy.ID*/, AugmentedAttackStrategy> augmentedAttackStrategyMap) {
         //Group the MyAnswers by AttackStrategy and find the likelihood for each of them.
         Map<AugmentedAttackStrategy, Set<MyAnswer>> attackAnswersMap = new HashMap<>();
 
@@ -115,8 +116,8 @@ public class AttackStrategyCalculator {
             logger.debug("MyAnswerSet: " + myAnswerSet);
 
             if (myAnswerSet != null) {
-                augmentedAttackStrategy.setContextualVulnerability(this.answerCalculator.getAnswersLikelihood(myAnswerSet));
-                augmentedAttackStrategy.setContextualLikelihood((augmentedAttackStrategy.getInitialLikelihood() + augmentedAttackStrategy.getContextualVulnerability()) / 2);
+                augmentedAttackStrategy.setContextualVulnerability(Precision.round(this.answerCalculator.getAnswersLikelihood(myAnswerSet), 2));
+                augmentedAttackStrategy.setContextualLikelihood(Precision.round((augmentedAttackStrategy.getInitialLikelihood() + augmentedAttackStrategy.getContextualVulnerability()) / 2, 2));
             } else {
                 //TODO Same as InitialLikelihood ???
             }
