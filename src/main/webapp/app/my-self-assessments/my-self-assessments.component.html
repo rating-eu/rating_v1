@@ -127,8 +127,6 @@
                     <th>Attack Strategy</th>
                     <th>Vulnerability</th>
                     <th>Likelihood</th>
-                    <th>Threat Agent</th>
-                    <th>Economic Value</th>
                 </tr>
             </thead>
             <tbody>
@@ -142,15 +140,6 @@
                     <td *ngIf="!item.augmentedAttackStrategy.refinedLikelihood && item.augmentedAttackStrategy.contextualLikelihood">{{item.augmentedAttackStrategy.contextualLikelihood | number : '1.1-1'}}</td>
                     <td *ngIf="!item.augmentedAttackStrategy.refinedLikelihood && !item.augmentedAttackStrategy.contextualLikelihood && item.augmentedAttackStrategy.initialLikelihood">{{item.augmentedAttackStrategy.initialLikelihood | number : '1.1-1'}}</td>
                     <td *ngIf="!item.augmentedAttackStrategy.refinedLikelihood && !item.augmentedAttackStrategy.contextualLikelihood && !item.augmentedAttackStrategy.initialLikelihood">-</td>
-                    <td>{{item.threatAgent.name}}</td>
-                    <th>
-                        <div class="input-group mb-1">
-                            <input type="number" class="form-control" name="input{{i}}" placeholder="Economic Value" aria-label="economic-value" aria-describedby="economic-value" [(ngModel)]="item.economicValue">
-                            <div class="input-group-append" (click)="updateMyAsset(item)">
-                                <span class="input-group-text" id="economic-value">OK</span>
-                            </div>
-                        </div>
-                    </th>
                 </tr>
             </tbody>
     </div>
