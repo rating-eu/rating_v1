@@ -4,6 +4,7 @@ import {DatasharingService} from '../../datasharing/datasharing.service';
 import {Update} from '../model/Update';
 
 import {MenuItem} from 'primeng/api';
+import {MyRole} from '../../entities/enumerations/MyRole.enum';
 
 @Component({
     selector: 'jhi-sidebar',
@@ -15,6 +16,8 @@ export class SidebarComponent implements OnInit {
 
     isCollapsed = true;
     private items: MenuItem[];
+    private isCISO = false;
+    private isExternal = false;
 
     constructor(
         private principal: Principal,
@@ -25,6 +28,61 @@ export class SidebarComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.principal.getAuthenticationState().subscribe((identity) => {
+            if (identity) {
+                this.isCollapsed = !this.isAuthenticated();
+                console.log('Sidebar isAuthenticated: ' + this.isAuthenticated());
+
+                updateLayout = new Update();
+                updateLayout.isSidebarCollapsed = this.isCollapsed;
+
+                this.dataSharingService.updateLayout(updateLayout);
+
+                this.principal.hasAnyAuthority([MyRole[MyRole.ROLE_CISO]]).then((response: boolean) => {
+                    console.log('IsCISO response: ' + response);
+
+                    if (response) {
+                        this.isCISO = response;
+                        this.isExternal = !this.isCISO;
+                        this.createMenuItems(this.isCISO);
+                    } else {
+                        this.principal.hasAnyAuthority([MyRole[MyRole.ROLE_EXTERNAL_AUDIT]]).then((response2: boolean) => {
+                            console.log('IsExternal response: ' + response2);
+                            this.isExternal = response2;
+                            this.isCISO = !this.isExternal;
+                            this.createMenuItems(this.isCISO, this.isExternal);
+                        });
+                    }
+                });
+            } else {
+
+            }
+        });
+
+        console.log('HadAnyAuthority direct CISO: ' + this.principal.hasAnyAuthorityDirect([MyRole[MyRole.ROLE_CISO]]));
+        console.log('Role CISO: ' + MyRole[MyRole.ROLE_CISO]);
+        this.createMenuItems();
+
+        this.isCollapsed = this.dataSharingService.getUpdate() != null ? this.dataSharingService.getUpdate().isSidebarCollapsed : true;
+
+        let updateLayout: Update = this.dataSharingService.getUpdate();
+        if (updateLayout) {
+            this.isCollapsed = updateLayout.isSidebarCollapsed;
+        }
+
+        this.dataSharingService.observeUpdate().subscribe((update: Update) => {
+            if (update) {
+                this.isCollapsed = update.isSidebarCollapsed;
+            }
+        });
+
+        setTimeout(() => {
+            console.log('Menu Items created after timeout:');
+            console.log(JSON.stringify(this.items));
+        }, 100 * 1000);
+    }
+
+    private createMenuItems(isCISO = false, isExternal = false) {
         this.items = [
             {
                 label: 'About-Us', icon: 'fa fa-info', routerLink: ['/about-us']
@@ -61,7 +119,8 @@ export class SidebarComponent implements OnInit {
                                 items: [
                                     {
                                         label: 'Identify',
-                                        routerLink: ['/identify-threat-agent/questionnaires/ID_THREAT_AGENT']
+                                        routerLink: ['/identify-threat-agent/questionnaires/ID_THREAT_AGENT'],
+                                        visible: isCISO
                                     },
                                     {
                                         label: 'Matrix',
@@ -172,32 +231,8 @@ export class SidebarComponent implements OnInit {
             }
         ];
 
-        this.isCollapsed = this.dataSharingService.getUpdate() != null ? this.dataSharingService.getUpdate().isSidebarCollapsed : true;
-
-        let updateLayout: Update = this.dataSharingService.getUpdate();
-        if (updateLayout) {
-            this.isCollapsed = updateLayout.isSidebarCollapsed;
-        }
-
-        this.dataSharingService.observeUpdate().subscribe((update: Update) => {
-            if (update) {
-                this.isCollapsed = update.isSidebarCollapsed;
-            }
-        });
-
-        this.principal.getAuthenticationState().subscribe((identity) => {
-            if (identity) {
-                this.isCollapsed = !this.isAuthenticated();
-                console.log('SIdebar isAuthenticated: ' + this.isAuthenticated());
-
-                updateLayout = new Update();
-                updateLayout.isSidebarCollapsed = this.isCollapsed;
-
-                this.dataSharingService.updateLayout(updateLayout);
-            } else {
-
-            }
-        });
+        console.log('Menu Items created');
+        console.log(JSON.stringify(this.items));
     }
 
     isAuthenticated() {
