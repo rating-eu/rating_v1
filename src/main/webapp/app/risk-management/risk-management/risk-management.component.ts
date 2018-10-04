@@ -1,12 +1,12 @@
-import {Component, OnInit} from '@angular/core';
-import {SelfAssessmentMgm, SelfAssessmentMgmService} from '../../entities/self-assessment-mgm';
-import {RiskManagementService} from '../risk-management.service';
-import {CriticalLevelMgm, CriticalLevelMgmService} from '../../entities/critical-level-mgm';
-import {JhiAlertService} from '../../../../../../node_modules/ng-jhipster';
-import {ImpactLevelDescriptionMgm, ImpactLevelDescriptionMgmService} from '../../entities/impact-level-description-mgm';
-import {ImpactLevelMgm, ImpactLevelMgmService} from '../../entities/impact-level-mgm';
-import {forkJoin} from 'rxjs/observable/forkJoin';
-import {HttpResponse} from '@angular/common/http';
+import { Component, OnInit } from '@angular/core';
+import { SelfAssessmentMgm, SelfAssessmentMgmService } from '../../entities/self-assessment-mgm';
+import { RiskManagementService } from '../risk-management.service';
+import { CriticalLevelMgm, CriticalLevelMgmService } from '../../entities/critical-level-mgm';
+import { JhiAlertService } from '../../../../../../node_modules/ng-jhipster';
+import { ImpactLevelDescriptionMgm, ImpactLevelDescriptionMgmService } from '../../entities/impact-level-description-mgm';
+import { ImpactLevelMgm, ImpactLevelMgmService } from '../../entities/impact-level-mgm';
+import { forkJoin } from 'rxjs/observable/forkJoin';
+import { HttpResponse } from '@angular/common/http';
 
 @Component({
     // tslint:disable-next-line:component-selector
@@ -83,12 +83,12 @@ export class RiskManagementComponent implements OnInit {
                     if (this.needToCreateImpactLevels) {
                         this.impactLevelService.createAll(this.impactLevels)
                             .toPromise()
-                            .then((response: HttpResponse<ImpactLevelMgm[]>) => {
-                                //Update the IDs of the ImpactLevels created locally
-                                if (response) {
-                                    console.log('CreateAll impactLevels response: ' + JSON.stringify(response));
+                            .then((response2: HttpResponse<ImpactLevelMgm[]>) => {
+                                // Update the IDs of the ImpactLevels created locally
+                                if (response2) {
+                                    console.log('CreateAll impactLevels response: ' + JSON.stringify(response2));
 
-                                    response.body.forEach((impactLevel: ImpactLevelMgm) => {
+                                    response2.body.forEach((impactLevel: ImpactLevelMgm) => {
                                         if (this.impactLevelsMap.has(impactLevel.impact)) {
                                             this.impactLevelsMap.get(impactLevel.impact).id = impactLevel.id;
                                         }
