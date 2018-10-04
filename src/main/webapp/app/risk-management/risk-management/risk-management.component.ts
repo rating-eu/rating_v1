@@ -172,12 +172,16 @@ export class RiskManagementComponent implements OnInit {
         }
     }
 
-    public impactLevelUpdate(level: number, valueMin: number, valueMax: number) {
-        console.log(level);
-        console.log(valueMin);
-        console.log(valueMax);
-        console.log(this.impactMinLevelValues);
-        console.log(this.impactMaxLevelValues);
+    public updateImpactLevel(impactLevel: ImpactLevelMgm) {
+        console.log('Update ImpactLevel: ' + JSON.stringify(impactLevel));
+
+        if (impactLevel && impactLevel.id !== undefined) {
+            this.impactLevelService.update(impactLevel)
+                .toPromise()
+                .then((response: HttpResponse<ImpactLevelMgm>) => {
+                    console.log('ImpactLevel updated: ' + JSON.stringify(impactLevel));
+                });
+        }
     }
 
     public criticalLevelUpdate(level: string) {

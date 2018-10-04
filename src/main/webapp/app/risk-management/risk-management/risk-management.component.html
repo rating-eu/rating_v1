@@ -65,7 +65,7 @@
                                 <input type="number" class="form-control" placeholder="Max"
                                        [(ngModel)]="impactLevelsMap.get(description.impact).maxLoss"
                                         #max>
-                                <div class="btn btn-primary" (click)="impactLevelUpdate(5, min.value, max.value)">OK
+                                <div class="btn btn-primary" (click)="updateImpactLevel(impactLevelsMap.get(description.impact))">OK
                                 </div>
                             </td>
                             <td>{{description.peopleEffects}}</td>
