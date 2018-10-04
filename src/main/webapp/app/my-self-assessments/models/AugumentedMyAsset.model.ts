@@ -4,5 +4,4 @@ import { ThreatAgentMgm } from '../../entities/threat-agent-mgm/threat-agent-mgm
 
 export class AugumentedMyAsset extends MyAssetMgm {
     augmentedAttackStrategy: AugmentedAttackStrategy;
-    threatAgent: ThreatAgentMgm;
 }

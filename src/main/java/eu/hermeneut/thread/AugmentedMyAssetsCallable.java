@@ -61,12 +61,14 @@ public class AugmentedMyAssetsCallable implements Callable<List<AugmentedMyAsset
                             if (threatAgentsSubset != null && !threatAgentsSubset.isEmpty()) {
                                 Iterator<ThreatAgent> threatAgentIterator = threatAgentsSubset.iterator();
 
-                                while (threatAgentIterator.hasNext()) {
-                                    ThreatAgent threatAgent = threatAgentIterator.next();
+                                //Run it only once, since the likelihoods & vulnerability would be the same for all
+                                // of them
+                                if (threatAgentIterator.hasNext()) {
+                                    //No need to reference the ThreatAgent since it has no impact on the L&V values
+                                    //ThreatAgent threatAgent = threatAgentIterator.next();
 
                                     AugmentedMyAsset augmentedMyAsset = new AugmentedMyAsset(myAsset);
                                     augmentedMyAsset.setAugmentedAttackStrategy(augmentedAttackStrategy);
-                                    augmentedMyAsset.setThreatAgent(threatAgent);
 
                                     augmentedMyAssets.add(augmentedMyAsset);
                                 }
