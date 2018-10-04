@@ -126,8 +126,14 @@
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let item of overview.augmentedMyAssets; let i = index">
-                    <td>{{item.asset.name}}</td>
+                <tr *ngFor="let item of overview.augmentedMyAssets; let i = index; let first = first">
+                    <ng-container *ngIf="first">
+                        <td>{{item.asset.name}}</td>
+                    </ng-container>
+                    <ng-container *ngIf="!first">
+                        <td *ngIf="overview.augmentedMyAssets[i-1].asset.name !== overview.augmentedMyAssets[i].asset.name">{{item.asset.name}}</td>
+                        <td *ngIf="overview.augmentedMyAssets[i-1].asset.name === overview.augmentedMyAssets[i].asset.name"> </td>
+                    </ng-container>
                     <td>{{item.augmentedAttackStrategy.name}}</td>
                     <td *ngIf="item.augmentedAttackStrategy.refinedVulnerability">{{item.augmentedAttackStrategy.refinedVulnerability | number : '1.1-1'}}</td>
                     <td *ngIf="!item.augmentedAttackStrategy.refinedVulnerability && item.augmentedAttackStrategy.contextualVulnerability">{{item.augmentedAttackStrategy.contextualVulnerability | number : '1.1-1'}}</td>
