@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { SessionStorageService } from '../../../../../../node_modules/ngx-webstorage';
 import { MyAssetAttackChance } from '../model/my-asset-attack-chance.model';
 import { MyAssetMgm } from '../../entities/my-asset-mgm';
+import { Router } from '@angular/router';
 
 @Component({
   // tslint:disable-next-line:component-selector
@@ -10,12 +11,12 @@ import { MyAssetMgm } from '../../entities/my-asset-mgm';
   styles: []
 })
 export class RiskMitigationComponent implements OnInit {
-  public content = '';
   public attacks: MyAssetAttackChance[];
   public asset: MyAssetMgm;
 
   constructor(
-    private sessionStorage: SessionStorageService
+    private sessionStorage: SessionStorageService,
+    private router: Router
   ) { }
 
   ngOnInit() {
@@ -23,9 +24,8 @@ export class RiskMitigationComponent implements OnInit {
     this.asset = this.sessionStorage.retrieve('selectedAsset');
     this.sessionStorage.clear('selectedAttacksChence');
     this.sessionStorage.clear('selectedAsset');
-    for (const attack of this.attacks) {
-      const likelihoodVulnerability = attack.likelihood * attack.vulnerability;
-      this.content = this.content.concat(attack.attackStrategy.name, ' ');
+    if (!this.asset && !this.attacks) {
+      this.router.navigate(['risk-management/risk-evaluation']);
     }
   }
 
