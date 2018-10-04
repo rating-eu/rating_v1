@@ -46,9 +46,9 @@ export class SidebarComponent implements OnInit {
                         this.isExternal = !this.isCISO;
                         this.createMenuItems(this.isCISO);
                     } else {
-                        this.principal.hasAnyAuthority([MyRole[MyRole.ROLE_EXTERNAL_AUDIT]]).then((response: boolean) => {
-                            console.log('IsExternal response: ' + response);
-                            this.isExternal = response;
+                        this.principal.hasAnyAuthority([MyRole[MyRole.ROLE_EXTERNAL_AUDIT]]).then((response2: boolean) => {
+                            console.log('IsExternal response: ' + response2);
+                            this.isExternal = response2;
                             this.isCISO = !this.isExternal;
                             this.createMenuItems(this.isCISO, this.isExternal);
                         });
@@ -82,7 +82,7 @@ export class SidebarComponent implements OnInit {
         }, 100 * 1000);
     }
 
-    private createMenuItems(isCISO: boolean = false, isExternal: boolean = false) {
+    private createMenuItems(isCISO = false, isExternal = false) {
         this.items = [
             {
                 label: 'About-Us', icon: 'fa fa-info', routerLink: ['/about-us']
