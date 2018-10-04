@@ -32,7 +32,7 @@ export class RiskManagementComponent implements OnInit {
     public impactLevelDescriptions: ImpactLevelDescriptionMgm[];
     public impactLevels: ImpactLevelMgm[];
     public impactLevelsMap: Map<number, ImpactLevelMgm>;
-    private createImpactLevels: boolean;
+    private needToCreateImpactLevels: boolean;
 
     constructor(
         private mySelfAssessmentService: SelfAssessmentMgmService,
@@ -57,12 +57,14 @@ export class RiskManagementComponent implements OnInit {
                     this.impactLevelDescriptions = response[0].body;
                     this.impactLevels = response[1].body;
 
+                    // ImpactLevels already exist
                     if (this.impactLevels && this.impactLevels.length > 0) {
                         // No need to create ImpactLevels, just update them.
-                        this.createImpactLevels = false;
+                        this.needToCreateImpactLevels = false;
+
                     } else {
                         // Need to create ImpactLevels for the first time.
-                        this.createImpactLevels = true;
+                        this.needToCreateImpactLevels = true;
                         this.impactLevels = [];
 
                         this.impactLevelDescriptions.forEach((description: ImpactLevelDescriptionMgm) => {
@@ -72,16 +74,28 @@ export class RiskManagementComponent implements OnInit {
 
                     this.impactLevelsMap = new Map<number, ImpactLevelMgm>();
 
-                    console.log('ImpactLevels: ' + this.impactLevels.length);
-
                     this.impactLevels.forEach((impactLevel: ImpactLevelMgm) => {
-                        console.log('ImpactLevel: ' + JSON.stringify(impactLevel));
-                        console.log('Impact: ' + impactLevel.impact);
-
                         this.impactLevelsMap.set(impactLevel.impact, impactLevel);
                     });
 
                     console.log('ImpactLevelsMap: ' + JSON.stringify(Array.from(this.impactLevelsMap.keys())));
+
+                    if (this.needToCreateImpactLevels) {
+                        this.impactLevelService.createAll(this.impactLevels)
+                            .toPromise()
+                            .then((response: HttpResponse<ImpactLevelMgm[]>) => {
+                                //Update the IDs of the ImpactLevels created locally
+                                if (response) {
+                                    console.log('CreateAll impactLevels response: ' + JSON.stringify(response));
+
+                                    response.body.forEach((impactLevel: ImpactLevelMgm) => {
+                                        if (this.impactLevelsMap.has(impactLevel.impact)) {
+                                            this.impactLevelsMap.get(impactLevel.impact).id = impactLevel.id;
+                                        }
+                                    });
+                                }
+                            });
+                    }
                 });
         }
 

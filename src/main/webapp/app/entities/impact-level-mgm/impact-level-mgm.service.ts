@@ -5,6 +5,7 @@ import {SERVER_API_URL} from '../../app.constants';
 
 import {ImpactLevelMgm} from './impact-level-mgm.model';
 import {createRequestOption} from '../../shared';
+import {MyAnswerMgm} from '../my-answer-mgm/my-answer-mgm.model';
 
 export type EntityResponseType = HttpResponse<ImpactLevelMgm>;
 
@@ -14,6 +15,7 @@ const SELF_ASSESSMENT_ID_PLACEHOLDER = '{selfAssessmentID}';
 export class ImpactLevelMgmService {
 
     private resourceUrl = SERVER_API_URL + 'api/impact-levels';
+    private resourceUrlAll = SERVER_API_URL + 'api/impact-levels/all';
     private resourceUrlBySelfAssessment = SERVER_API_URL + 'api/' + SELF_ASSESSMENT_ID_PLACEHOLDER + '/impact-levels';
     private resourceSearchUrl = SERVER_API_URL + 'api/_search/impact-levels';
 
@@ -28,7 +30,7 @@ export class ImpactLevelMgmService {
 
     createAll(impactLevels: ImpactLevelMgm[]): Observable<HttpResponse<ImpactLevelMgm[]>> {
         const copy = this.convertArray(impactLevels);
-        return this.http.post<ImpactLevelMgm[]>(this.resourceUrl, copy, {observe: 'response'})
+        return this.http.post<ImpactLevelMgm[]>(this.resourceUrlAll, copy, {observe: 'response'})
             .map((res: HttpResponse<ImpactLevelMgm[]>) => this.convertArrayResponse(res));
     }
 
@@ -99,17 +101,10 @@ export class ImpactLevelMgmService {
     }
 
     /**
-     * Convert a ImpactLevelMgm to a JSON which can be sent to the server.
+     * Convert the ImpactLevels to a JSON which can be sent to the server.
      */
     private convertArray(impactLevels: ImpactLevelMgm[]): ImpactLevelMgm[] {
-        const copy: ImpactLevelMgm[] = [];
-
-        if (impactLevels) {
-            impactLevels.forEach((impactLevel: ImpactLevelMgm) => {
-                copy.push(this.convert(impactLevel));
-            });
-        }
-
+        const copy: ImpactLevelMgm[] = Object.assign([], impactLevels);
         return copy;
     }
 }
