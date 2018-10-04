@@ -139,8 +139,8 @@
           </thead>
           <tbody>
             <tr *ngFor="let myAsset of myAssets">
-              <td>{{myAsset.asset.name}}</td>
-              <td>{{riskPercentageMap.get(myAsset.id)}}</td>
+              <td *ngIf="riskPercentageMap.get(myAsset.id)">{{myAsset.asset.name}}</td>
+              <td *ngIf="riskPercentageMap.get(myAsset.id)">{{riskPercentageMap.get(myAsset.id)}}</td>
             </tr>
           </tbody>
         </table>
