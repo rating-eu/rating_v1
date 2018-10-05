@@ -34,7 +34,7 @@ export class RiskEvaluationComponent implements OnInit {
     private selectedAttacksChance: MyAssetAttackChance[];
     private closeResult: string;
     private selectedAsset: MyAssetMgm;
-    public riskPercentageMap: Map<number, number> = new Map<number, number>();
+    public riskPercentageMap: Map<number/*MyAsset.ID*/, number/*RiskPercentage*/> = new Map<number, number>();
 
     // TODO think on how to make the following vars dynamic
     private MAX_LIKELIHOOD = 5;
