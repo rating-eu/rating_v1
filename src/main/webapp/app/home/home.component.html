@@ -26,7 +26,7 @@
                     <th><span>Created</span></th>
                     <th><span>Modified</span></th>
                     <!--<span>User</span></th>-->
-                    <th><span>Companyprofiles</span></th>
+                    <th><span>Company Profile</span></th>
                     <th><span>Groups</span></th>
                     <!--<th><span>Asset</span></th>-->
                     <!--<th><span>Threatagent</span></th>
@@ -45,9 +45,8 @@
                         {{mySelf.user?.login}}
                     </td>-->
                     <td>
-                    <span *ngFor="let companyprofiles of mySelf.companyprofiles; let last = last">
-                            <a class="form-control-static"
-                               [routerLink]="['../company-profile-mgm', companyprofiles?.id ]">{{companyprofiles.name}}</a>{{last ? '' : ', '}}
+                        <span *ngIf="mySelf.companyProfile">
+                            <a [routerLink]="['/company-profile-mgm', mySelf.companyProfile?.id ]">{{mySelf.companyProfile?.name}}</a>
                         </span>
                     </td>
                     <td>
