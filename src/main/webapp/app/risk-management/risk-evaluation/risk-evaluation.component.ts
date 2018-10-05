@@ -1,17 +1,17 @@
-import {Component, OnInit} from '@angular/core';
-import {RiskManagementService} from '../risk-management.service';
-import {SelfAssessmentMgmService, SelfAssessmentMgm} from '../../entities/self-assessment-mgm';
-import {CriticalLevelMgm} from '../../entities/critical-level-mgm';
-import {MyAssetMgm, MyAssetMgmService} from '../../entities/my-asset-mgm';
-import {MyAssetAttackChance} from '../model/my-asset-attack-chance.model';
-import {SessionStorageService} from '../../../../../../node_modules/ngx-webstorage';
-import {Router} from '../../../../../../node_modules/@angular/router';
-import {ValueTransformer} from '../../../../../../node_modules/@angular/compiler/src/util';
+import { Component, OnInit } from '@angular/core';
+import { RiskManagementService } from '../risk-management.service';
+import { SelfAssessmentMgmService, SelfAssessmentMgm } from '../../entities/self-assessment-mgm';
+import { CriticalLevelMgm } from '../../entities/critical-level-mgm';
+import { MyAssetMgm, MyAssetMgmService } from '../../entities/my-asset-mgm';
+import { MyAssetAttackChance } from '../model/my-asset-attack-chance.model';
+import { SessionStorageService } from '../../../../../../node_modules/ngx-webstorage';
+import { Router } from '../../../../../../node_modules/@angular/router';
+import { ValueTransformer } from '../../../../../../node_modules/@angular/compiler/src/util';
 // import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 
 import * as _ from 'lodash';
-import {ITEMS_PER_PAGE} from '../../shared';
-import {HttpResponse} from '@angular/common/http';
+import { ITEMS_PER_PAGE } from '../../shared';
+import { HttpResponse } from '@angular/common/http';
 
 @Component({
     // tslint:disable-next-line:component-selector
@@ -152,10 +152,9 @@ export class RiskEvaluationComponent implements OnInit {
         myAsset.impact = impact;
 
         this.myAssetService.update(myAsset).toPromise().then((res: HttpResponse<MyAssetMgm>) => {
-            const myAsset = res.body;
-
-            const index = _.findIndex(this.myAssets, {id: myAsset.id});
-            this.myAssets.splice(index, 1, myAsset);
+            const myAssetRes = res.body;
+            const index = _.findIndex(this.myAssets, { id: myAssetRes.id });
+            this.myAssets.splice(index, 1, myAssetRes);
         });
     }
 
@@ -184,7 +183,7 @@ export class RiskEvaluationComponent implements OnInit {
     }
 
     public loadContent(row: number, column: number, myAsset: MyAssetMgm, type: string, content: any) {
-        // this.modalContent = this.whichContentByCell(row, column, myAsset, type);
+        // this.modalContent = this.(row, column, myAsset, type);
         this.selectedAttacksChance = this.whichAttackChanceByCell(row, column, myAsset, type);
         this.sessionService.store('selectedAttacksChence', this.selectedAttacksChance);
         this.sessionService.store('selectedAsset', myAsset);
@@ -248,6 +247,9 @@ export class RiskEvaluationComponent implements OnInit {
                 continue;
             }
             const attacks = this.mapAssetAttacks.get(myAsset.id);
+            if (!attacks) {
+                return;
+            }
             const lStore = this.mapMaxCriticalLevel.get(myAsset.id);
             for (const attack of attacks) {
                 const likelihoodVulnerability = Math.round(attack.likelihood * attack.vulnerability);
@@ -255,6 +257,9 @@ export class RiskEvaluationComponent implements OnInit {
                     content = content.concat(myAsset.asset.name, ', ');
                 }
             }
+            const critical = lStore[1] * lStore[1];
+            const riskPercentage = this.evaluateRiskPercentage(critical, myAsset);
+            this.riskPercentageMap.set(myAsset.id, riskPercentage);
         }
         return content;
     }
@@ -281,13 +286,6 @@ export class RiskEvaluationComponent implements OnInit {
                             content = content.concat(attack.attackStrategy.name, ' ');
                         }
                     }
-
-                    const critical = this.mapMaxCriticalLevel.get(myAsset.id);
-                    if (critical) {
-                        const riskPercentage = this.evaluateRiskPercentage(critical[0], myAsset);
-                        this.riskPercentageMap.set(myAsset.id, riskPercentage);
-                    }
-
                     break;
                 }
                 case 'critically-impact': {
@@ -318,9 +316,8 @@ export class RiskEvaluationComponent implements OnInit {
     }
 
     private evaluateRiskPercentage(critical: number, myAsset: MyAssetMgm): number {
-        const risk = Math.round(critical * myAsset.impact !== undefined ? myAsset.impact : 0);
+        const risk = Math.round(critical * (myAsset.impact !== undefined ? myAsset.impact : 0));
         const normalizedRisk = Math.round(risk * 100 / 125);
-
         return normalizedRisk;
     }
 }
