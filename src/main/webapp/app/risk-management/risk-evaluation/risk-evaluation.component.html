@@ -83,7 +83,7 @@
                                     </ng-container>
                                     <ng-container *ngIf="j!==lastSquareRowElement">
                                         <div *ngFor="let i of squareColumnElement" class="col-md-2">
-                                            <div class="text-center"
+                                            <div class="text-center boston-square-text"
                                                  [ngClass]="{'low-level': whichLevel(lastSquareRowElement-j, i) === 'low', 'medium-level': whichLevel(lastSquareRowElement-j, i) === 'medium', 'high-level': whichLevel(lastSquareRowElement-j, i) === 'high'}"
                                                  (click)="selectedMatrixCell(lastSquareRowElement-j, i)">
                                                 <ng-container
@@ -134,7 +134,7 @@
         </ng-container>
         <ng-container *ngIf="j!==lastSquareRowElement">
             <div *ngFor="let i of squareColumnElement" class="col-md-2">
-                <div class="text-center"
+                <div class="text-center boston-square-text"
                      [ngClass]="{'low-level': whichLevel(lastSquareRowElement-j, i) === 'low', 'medium-level': whichLevel(lastSquareRowElement-j, i) === 'medium', 'high-level': whichLevel(lastSquareRowElement-j, i) === 'high'}"
                      (click)="selectedMatrixCell(lastSquareRowElement-j, i)">
                     <ng-container *ngIf="whichCriticalContentByCell(lastSquareRowElement-j, i) !== ''">
