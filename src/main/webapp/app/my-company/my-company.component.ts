@@ -42,7 +42,7 @@ export class MyCompanyComponent implements OnInit {
                             this.error = error;
 
                             if (this.error.status === MyCompanyComponent.NOT_FOUND) {
-                                this.jhiAlertService.error(this.error.message, null, null);
+                                this.jhiAlertService.error('http.' + this.error.status, null, null);
 
                                 this.companyProfileService.query().subscribe(
                                     (response4: HttpResponse<CompanyProfileMgm[]>) => {
