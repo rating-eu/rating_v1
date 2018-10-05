@@ -1,17 +1,16 @@
-import { Component, OnInit } from '@angular/core';
-import { RiskManagementService } from '../risk-management.service';
-import { SelfAssessmentMgmService, SelfAssessmentMgm } from '../../entities/self-assessment-mgm';
-import { CriticalLevelMgm } from '../../entities/critical-level-mgm';
-import { MyAssetMgm, MyAssetMgmService } from '../../entities/my-asset-mgm';
-import { MyAssetAttackChance } from '../model/my-asset-attack-chance.model';
-import { SessionStorageService } from '../../../../../../node_modules/ngx-webstorage';
-import { Router } from '../../../../../../node_modules/@angular/router';
-import { ValueTransformer } from '../../../../../../node_modules/@angular/compiler/src/util';
+import {Component, OnInit} from '@angular/core';
+import {RiskManagementService} from '../risk-management.service';
+import {SelfAssessmentMgmService, SelfAssessmentMgm} from '../../entities/self-assessment-mgm';
+import {CriticalLevelMgm} from '../../entities/critical-level-mgm';
+import {MyAssetMgm, MyAssetMgmService} from '../../entities/my-asset-mgm';
+import {MyAssetAttackChance} from '../model/my-asset-attack-chance.model';
+import {SessionStorageService} from 'ngx-webstorage';
+import {Router} from '@angular/router';
 // import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 
 import * as _ from 'lodash';
-import { ITEMS_PER_PAGE } from '../../shared';
-import { HttpResponse } from '@angular/common/http';
+import {ITEMS_PER_PAGE} from '../../shared';
+import {HttpResponse} from '@angular/common/http';
 
 @Component({
     // tslint:disable-next-line:component-selector
@@ -36,6 +35,13 @@ export class RiskEvaluationComponent implements OnInit {
     private closeResult: string;
     private selectedAsset: MyAssetMgm;
     public riskPercentageMap: Map<number, number> = new Map<number, number>();
+
+    // TODO think on how to make the following vars dynamic
+    private MAX_LIKELIHOOD = 5;
+    private MAX_VULNERABILITY = 5;
+    private MAX_CRITICAL = this.MAX_LIKELIHOOD * this.MAX_VULNERABILITY;
+    private MAX_IMPACT = 5;
+    private MAX_RISK = this.MAX_CRITICAL * this.MAX_IMPACT;
 
     constructor(
         private mySelfAssessmentService: SelfAssessmentMgmService,
@@ -153,7 +159,7 @@ export class RiskEvaluationComponent implements OnInit {
 
         this.myAssetService.update(myAsset).toPromise().then((res: HttpResponse<MyAssetMgm>) => {
             const myAssetRes = res.body;
-            const index = _.findIndex(this.myAssets, { id: myAssetRes.id });
+            const index = _.findIndex(this.myAssets, {id: myAssetRes.id});
             this.myAssets.splice(index, 1, myAssetRes);
         });
     }
@@ -316,8 +322,8 @@ export class RiskEvaluationComponent implements OnInit {
     }
 
     private evaluateRiskPercentage(critical: number, myAsset: MyAssetMgm): number {
-        const risk = Math.round(critical * (myAsset.impact !== undefined ? myAsset.impact : 0));
-        const normalizedRisk = Math.round(risk * 100 / 125);
-        return normalizedRisk;
+        const risk = critical * (myAsset.impact !== undefined ? myAsset.impact : 0);
+        const normalizedRisk = risk / this.MAX_RISK;
+        return Number(normalizedRisk.toFixed(2));
     }
 }
