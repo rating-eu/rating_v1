@@ -3,24 +3,6 @@
 </div>
 <div class="container" *ngIf="!loading  && myAssets.length > 0 && mapAssetAttacks.size > 0">
     <ng-container *ngFor="let myAsset of myAssets">
-        <!--
-        <ng-template #assetDetail let-c="close" let-d="dismiss">
-          <div class="modal-header">
-            <h5 class="modal-title">Detail about {{myAsset.asset.name}}!</h5>
-            <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <p>{{modalContent}}</p>
-          </div>
-          //TO COMMENT
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">Close</button>
-                </div>
-          // END COMMENT
-        </ng-template>
-        -->
         <div class="row">
             <div class="col-md-12" *ngIf="criticalLevel">
                 <div class="card">
@@ -86,16 +68,14 @@
                                             <div class="text-center boston-square-text"
                                                  [ngClass]="{'low-level': whichLevel(lastSquareRowElement-j, i) === 'low', 'medium-level': whichLevel(lastSquareRowElement-j, i) === 'medium', 'high-level': whichLevel(lastSquareRowElement-j, i) === 'high'}"
                                                  (click)="selectedMatrixCell(lastSquareRowElement-j, i)">
-                                                <ng-container
-                                                    *ngIf="whichContentByCell(lastSquareRowElement-j, i, myAsset, 'likelihood-vulnerability') !== ''">
+                                                <ng-container *ngIf="mapAssetAttacks.get(myAsset.id)">
                                                     <a (click)="loadContent(lastSquareRowElement-j, i, myAsset, 'likelihood-vulnerability', assetDetail)">
-                                                        {{whichContentByCell(lastSquareRowElement-j, i, myAsset,
-                                                        'likelihood-vulnerability') | slice:0:13}}...
+                                                        <ng-container *ngIf="whichContentByCell(lastSquareRowElement-j, i, myAsset,
+                                                        'likelihood-vulnerability')!==''">{{whichContentByCell(lastSquareRowElement-j, i, myAsset,
+                                                            'likelihood-vulnerability')}}</ng-container>
+                                                        <ng-container *ngIf="whichContentByCell(lastSquareRowElement-j, i, myAsset,
+                                                        'likelihood-vulnerability')===''">&nbsp;</ng-container>
                                                     </a>
-                                                </ng-container>
-                                                <ng-container
-                                                    *ngIf="whichContentByCell(lastSquareRowElement-j, i, myAsset, 'likelihood-vulnerability') === ''">
-                                                    &nbsp;
                                                 </ng-container>
                                             </div>
                                         </div>
@@ -138,7 +118,7 @@
                      [ngClass]="{'low-level': whichLevel(lastSquareRowElement-j, i) === 'low', 'medium-level': whichLevel(lastSquareRowElement-j, i) === 'medium', 'high-level': whichLevel(lastSquareRowElement-j, i) === 'high'}"
                      (click)="selectedMatrixCell(lastSquareRowElement-j, i)">
                     <ng-container *ngIf="whichCriticalContentByCell(lastSquareRowElement-j, i) !== ''">
-                        {{whichCriticalContentByCell(lastSquareRowElement-j, i) | slice:0:13}}...
+                        {{whichCriticalContentByCell(lastSquareRowElement-j, i)}}
                     </ng-container>
                     <ng-container *ngIf="whichCriticalContentByCell(lastSquareRowElement-j, i) === ''">&nbsp;
                     </ng-container>

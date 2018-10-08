@@ -1,16 +1,16 @@
-import {Component, OnInit} from '@angular/core';
-import {RiskManagementService} from '../risk-management.service';
-import {SelfAssessmentMgmService, SelfAssessmentMgm} from '../../entities/self-assessment-mgm';
-import {CriticalLevelMgm} from '../../entities/critical-level-mgm';
-import {MyAssetMgm, MyAssetMgmService} from '../../entities/my-asset-mgm';
-import {MyAssetAttackChance} from '../model/my-asset-attack-chance.model';
-import {SessionStorageService} from 'ngx-webstorage';
-import {Router} from '@angular/router';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { RiskManagementService } from '../risk-management.service';
+import { SelfAssessmentMgmService, SelfAssessmentMgm } from '../../entities/self-assessment-mgm';
+import { CriticalLevelMgm } from '../../entities/critical-level-mgm';
+import { MyAssetMgm, MyAssetMgmService } from '../../entities/my-asset-mgm';
+import { MyAssetAttackChance } from '../model/my-asset-attack-chance.model';
+import { SessionStorageService } from 'ngx-webstorage';
+import { Router } from '@angular/router';
 // import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 
 import * as _ from 'lodash';
-import {ITEMS_PER_PAGE} from '../../shared';
-import {HttpResponse} from '@angular/common/http';
+import { ITEMS_PER_PAGE } from '../../shared';
+import { HttpResponse } from '@angular/common/http';
 
 @Component({
     // tslint:disable-next-line:component-selector
@@ -49,7 +49,7 @@ export class RiskEvaluationComponent implements OnInit {
         private sessionService: SessionStorageService,
         private router: Router,
         private myAssetService: MyAssetMgmService,
-        // private ref: ChangeDetectorRef
+        private ref: ChangeDetectorRef
         // private modalService: NgbModal
     ) {
     }
@@ -57,25 +57,6 @@ export class RiskEvaluationComponent implements OnInit {
     ngOnInit() {
         this.mySelf = this.mySelfAssessmentService.getSelfAssessment();
         this.loading = true;
-        this.riskService.getMyAssets(this.mySelf).toPromise().then((res) => {
-            if (res && res.length > 0) {
-                this.myAssets = res;
-                for (const myAsset of this.myAssets) {
-                    this.loading = true;
-                    this.riskService.getAttackChance(myAsset, this.mySelf).toPromise().then((res2) => {
-                        if (res2) {
-                            this.mapAssetAttacks.set(myAsset.id, res2);
-                            // const ordered = this.orderLevels(this.mapAssetAttacks);
-                            // this.mapAssetAttacks = ordered.orderedMap;
-                            // this.myAssets = ordered.orderedArray;
-                        }
-                        this.loading = false;
-                    });
-                }
-                console.log(this.mapAssetAttacks);
-            }
-            this.loading = false;
-        });
 
         this.riskService.getCriticalLevel(this.mySelf).toPromise().then((res) => {
             if (res) {
@@ -93,6 +74,27 @@ export class RiskEvaluationComponent implements OnInit {
                 }
                 this.loading = false;
             }
+        });
+
+        this.riskService.getMyAssets(this.mySelf).toPromise().then((res) => {
+            if (res && res.length > 0) {
+                this.myAssets = res;
+                for (const myAsset of this.myAssets) {
+                    this.loading = true;
+                    this.riskService.getAttackChance(myAsset, this.mySelf).toPromise().then((res2) => {
+                        if (res2) {
+                            this.mapAssetAttacks.set(myAsset.id, res2);
+                            // const ordered = this.orderLevels(this.mapAssetAttacks);
+                            // this.mapAssetAttacks = ordered.orderedMap;
+                            // this.myAssets = ordered.orderedArray;
+                        }
+                        this.loading = false;
+                    });
+                }
+                this.ref.detectChanges();
+                console.log(this.mapAssetAttacks);
+            }
+            this.loading = false;
         });
     }
 
@@ -159,7 +161,7 @@ export class RiskEvaluationComponent implements OnInit {
 
         this.myAssetService.update(myAsset).toPromise().then((res: HttpResponse<MyAssetMgm>) => {
             const myAssetRes = res.body;
-            const index = _.findIndex(this.myAssets, {id: myAssetRes.id});
+            const index = _.findIndex(this.myAssets, { id: myAssetRes.id });
             this.myAssets.splice(index, 1, myAssetRes);
         });
     }
@@ -223,8 +225,8 @@ export class RiskEvaluationComponent implements OnInit {
             switch (type) {
                 case 'likelihood-vulnerability': {
                     for (const attack of attacks) {
-                        const likelihoodVulnerability = Math.round(attack.likelihood * attack.vulnerability);
-                        if (level === likelihoodVulnerability) {
+                        const likelihoodVulnerability = Math.round(attack.likelihood) * Math.round(attack.vulnerability);
+                        if (level === likelihoodVulnerability && Math.round(attack.likelihood) === row && column === Math.round(attack.vulnerability)) {
                             selectedAttacks.push(attack);
                         }
                     }
@@ -232,8 +234,8 @@ export class RiskEvaluationComponent implements OnInit {
                 }
                 case 'critically-impact': {
                     for (const attack of attacks) {
-                        const criticallyImpact = attack.critical * attack.impact;
-                        if (level === criticallyImpact) {
+                        const criticallyImpact = Math.round(attack.critical) * Math.round(attack.impact);
+                        if (level === criticallyImpact && Math.round(attack.critical) === row && Math.round(attack.impact) === column) {
                             selectedAttacks.push(attack);
                         }
                     }
@@ -248,6 +250,7 @@ export class RiskEvaluationComponent implements OnInit {
     public whichCriticalContentByCell(row: number, column: number): string {
         const level = row * column;
         let content = '';
+        let criticalAsset = 0;
         for (const myAsset of this.myAssets) {
             if (!myAsset['impact']) {
                 continue;
@@ -258,14 +261,25 @@ export class RiskEvaluationComponent implements OnInit {
             }
             const lStore = this.mapMaxCriticalLevel.get(myAsset.id);
             for (const attack of attacks) {
-                const likelihoodVulnerability = Math.round(attack.likelihood * attack.vulnerability);
-                if (lStore[0] === likelihoodVulnerability && column === myAsset['impact'] && lStore[1] === row) {
-                    content = content.concat(myAsset.asset.name, ', ');
+                const likelihoodVulnerability = Math.round(attack.likelihood) * Math.round(attack.vulnerability);
+                if (lStore[0] === likelihoodVulnerability && column === myAsset.impact && lStore[1] === row) {
+                    if (content.length === 0) {
+                        content = myAsset.asset.name;
+                    } else {
+                        criticalAsset++;
+                    }
                 }
             }
             const critical = lStore[1] * lStore[1];
             const riskPercentage = this.evaluateRiskPercentage(critical, myAsset);
             this.riskPercentageMap.set(myAsset.id, riskPercentage);
+        }
+        content = content.trim();
+        if (content.length > 0) {
+            content = content.substr(0, 12);
+            if (criticalAsset > 0) {
+                content = content.concat(' +' + criticalAsset);
+            }
         }
         return content;
     }
@@ -274,13 +288,13 @@ export class RiskEvaluationComponent implements OnInit {
         const attacks = this.mapAssetAttacks.get(myAsset.id);
         const level = row * column;
         let content = '';
-
+        let attackCounter = 0;
         if (attacks) {
             switch (type) {
                 case 'likelihood-vulnerability': {
                     for (const attack of attacks) {
-                        const likelihoodVulnerability = Math.round(attack.likelihood * attack.vulnerability);
-                        if (level === likelihoodVulnerability && attack.likelihood === row && column === attack.vulnerability) {
+                        const likelihoodVulnerability = Math.round(attack.likelihood) * Math.round(attack.vulnerability);
+                        if (level === likelihoodVulnerability && Math.round(attack.likelihood) === row && column === Math.round(attack.vulnerability)) {
                             if (this.mapMaxCriticalLevel.has(myAsset.id)) {
                                 const lStore = this.mapMaxCriticalLevel.get(myAsset.id);
                                 if (lStore[0] < level) {
@@ -289,7 +303,11 @@ export class RiskEvaluationComponent implements OnInit {
                             } else {
                                 this.mapMaxCriticalLevel.set(myAsset.id, [level, row]);
                             }
-                            content = content.concat(attack.attackStrategy.name, ' ');
+                            if (content.length === 0) {
+                                content = attack.attackStrategy.name;
+                            } else {
+                                attackCounter++;
+                            }
                         }
                     }
                     break;
@@ -298,7 +316,11 @@ export class RiskEvaluationComponent implements OnInit {
                     for (const attack of attacks) {
                         const criticallyImpact = attack.critical * attack.impact;
                         if (level === criticallyImpact && attack.critical === row && column === attack.impact) {
-                            content = content.concat(attack.attackStrategy.name, ' ');
+                            if (content.length === 0) {
+                                content = attack.attackStrategy.name;
+                            } else {
+                                attackCounter++;
+                            }
                         }
                     }
                     break;
@@ -306,6 +328,12 @@ export class RiskEvaluationComponent implements OnInit {
             }
         }
         content = content.trim();
+        if (content.length > 0) {
+            content = content.substr(0, 12);
+            if (attackCounter > 0) {
+                content = content.concat(' +' + attackCounter);
+            }
+        }
         return content;
     }
 
