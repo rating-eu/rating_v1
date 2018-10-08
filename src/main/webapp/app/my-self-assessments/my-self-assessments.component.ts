@@ -1,13 +1,13 @@
-import { Component, OnInit } from '@angular/core';
-import { AccountService, User, UserService } from '../shared';
-import { MyCompanyMgm, MyCompanyMgmService } from '../entities/my-company-mgm';
-import { SelfAssessmentMgm, SelfAssessmentMgmService } from '../entities/self-assessment-mgm';
-import { HttpResponse } from '@angular/common/http';
-import { Router } from '@angular/router';
-import { Subscription } from 'rxjs/Subscription';
-import { JhiEventManager } from 'ng-jhipster';
-import { SelfAssessmentOverview } from './models/SelfAssessmentOverview.model';
-import { MyAssetMgm, MyAssetMgmService } from '../entities/my-asset-mgm';
+import {Component, OnInit} from '@angular/core';
+import {AccountService, User, UserService} from '../shared';
+import {MyCompanyMgm, MyCompanyMgmService} from '../entities/my-company-mgm';
+import {SelfAssessmentMgm, SelfAssessmentMgmService} from '../entities/self-assessment-mgm';
+import {HttpResponse} from '@angular/common/http';
+import {Router} from '@angular/router';
+import {Subscription} from 'rxjs/Subscription';
+import {JhiEventManager} from 'ng-jhipster';
+import {SelfAssessmentOverview} from './models/SelfAssessmentOverview.model';
+import {MyAssetMgm, MyAssetMgmService} from '../entities/my-asset-mgm';
 
 @Component({
     selector: 'jhi-my-self-assessments',
@@ -22,14 +22,15 @@ export class MySelfAssessmentsComponent implements OnInit {
     public mySelfAssessments: SelfAssessmentMgm[];
     eventSubscriber: Subscription;
     public overview: SelfAssessmentOverview;
+    public mySelfAssessment = null;
 
     constructor(private router: Router,
-        private accountService: AccountService,
-        private userService: UserService,
-        private myCompanyService: MyCompanyMgmService,
-        private selfAssessmentService: SelfAssessmentMgmService,
-        private eventManager: JhiEventManager,
-        private myAssetService: MyAssetMgmService
+                private accountService: AccountService,
+                private userService: UserService,
+                private myCompanyService: MyCompanyMgmService,
+                private selfAssessmentService: SelfAssessmentMgmService,
+                private eventManager: JhiEventManager,
+                private myAssetService: MyAssetMgmService
     ) {
     }
 
@@ -56,6 +57,12 @@ export class MySelfAssessmentsComponent implements OnInit {
             });
         });
         this.registerChangeInSelfAssessments();
+
+        if (this.selfAssessmentService.isSelfAssessmentSelected()) {
+            this.mySelfAssessment = this.selfAssessmentService.getSelfAssessment();
+        } else {
+            this.mySelfAssessment = null;
+        }
     }
 
     private loadMySelfAssessments() {
