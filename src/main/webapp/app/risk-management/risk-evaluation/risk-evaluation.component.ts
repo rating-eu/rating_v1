@@ -30,6 +30,8 @@ export class RiskEvaluationComponent implements OnInit {
     public mapAssetAttacks: Map<number, MyAssetAttackChance[]> = new Map<number, MyAssetAttackChance[]>();
     public mapMaxCriticalLevel: Map<number, number[]> = new Map<number, number[]>();
     public loading = false;
+    public criticalBostonSquareLoad = true;
+    public page = 1;
     // public modalContent: string;
     private selectedAttacksChance: MyAssetAttackChance[];
     private closeResult: string;
@@ -251,15 +253,21 @@ export class RiskEvaluationComponent implements OnInit {
         const level = row * column;
         let content = '';
         let criticalAsset = 0;
+        if (this.myAssets.length === 0) {
+            return content;
+        }
         for (const myAsset of this.myAssets) {
-            if (!myAsset['impact']) {
+            if (!myAsset.impact) {
                 continue;
             }
             const attacks = this.mapAssetAttacks.get(myAsset.id);
             if (!attacks) {
-                return;
+                continue;
             }
             const lStore = this.mapMaxCriticalLevel.get(myAsset.id);
+            if (!lStore) {
+                continue;
+            }
             for (const attack of attacks) {
                 const likelihoodVulnerability = Math.round(attack.likelihood) * Math.round(attack.vulnerability);
                 if (lStore[0] === likelihoodVulnerability && column === myAsset.impact && lStore[1] === row) {
@@ -302,6 +310,11 @@ export class RiskEvaluationComponent implements OnInit {
                                 }
                             } else {
                                 this.mapMaxCriticalLevel.set(myAsset.id, [level, row]);
+                                if (this.criticalBostonSquareLoad) {
+                                    setInterval(() => {
+                                        this.criticalBostonSquareLoad = false;
+                                    }, 2000);
+                                }
                             }
                             if (content.length === 0) {
                                 content = attack.attackStrategy.name;
