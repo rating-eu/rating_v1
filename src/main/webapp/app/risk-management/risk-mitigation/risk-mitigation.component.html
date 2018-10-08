@@ -1,6 +1,12 @@
-<div class="row">
-  <h4>{{asset.asset.name}}</h4>
-</div>
-<div class="row">
-  {{content}}
-</div>
+<ng-container *ngIf="asset && attacks">
+  <div class="row">
+    <h4>{{asset.asset.name}}</h4>
+  </div>
+  <div class="row">
+    <ul class="list-group">
+      <li *ngFor="let attack of attacks" class="list-group-item">
+        <a [routerLink]="['../../attack-strategy-mgm/'+attack.attackStrategy.id]">{{attack.attackStrategy.name}}</a>
+      </li>
+    </ul>
+  </div>
+</ng-container>

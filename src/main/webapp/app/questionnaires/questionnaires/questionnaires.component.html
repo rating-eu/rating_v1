@@ -11,7 +11,6 @@
             <th>Modified</th>
             <th>Status</th>
             <th></th>
-            <th></th>
         </tr>
         </thead>
         <tbody>
@@ -49,22 +48,6 @@
                         [routerLink]="['./questionnaire']">
                     <span class="fa fa-pencil"></span>
                     <span class="d-none d-md-inline">Answer</span>
-                </button>
-            </td>
-
-            <td *ngIf="statusEnum[questionnaireStatusesMap?.get(questionnaire.id)?.status] &&
-                statusEnum[questionnaireStatusesMap?.get(questionnaire.id)?.status] !== statusEnum.EMPTY"
-                [ngSwitch]="purpose">
-                <button *ngSwitchCase="purposeEnum.ID_THREAT_AGENT" class="btn"
-                        (click)="showThreatAgents(questionnaireStatusesMap?.get(questionnaire.id))">
-                    <span class="fa fa-user-secret"></span>
-                    <span class="d-none d-md-inline">Show Threat Agents</span>
-                </button>
-
-                <button *ngSwitchCase="purposeEnum.SELFASSESSMENT" class="btn"
-                        (click)="showAttackStrategies(questionnaireStatusesMap?.get(questionnaire.id))">
-                    <span class="fa fa-fire"></span>
-                    <span class="d-none d-md-inline">Show Attack Strategies</span>
                 </button>
             </td>
         </tr>

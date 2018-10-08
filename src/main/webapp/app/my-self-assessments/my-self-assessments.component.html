@@ -3,11 +3,12 @@
     </div>
     <div class="col-lg-3 col-md-12">
         <div class="card-box">
-            <button class="btn btn-block btn-primary waves-effect waves-light btn-info jh-create-entity create-self-assessment-mgm" [routerLink]="['/', { outlets: { popup: ['self-assessment-mgm-new'] } }]">
+            <button class="btn btn-block btn-primary waves-effect waves-light btn-info jh-create-entity create-self-assessment-mgm"
+                [routerLink]="['/', { outlets: { popup: ['self-assessment-mgm-new'] } }]">
                 <i class="fas fa-plus"></i>
-                <span class="hidden-sm-down"  jhiTranslate="hermeneutApp.selfAssessment.home.createLabel">
-            Create new Self Assessment
-            </span>
+                <span class="hidden-sm-down" jhiTranslate="hermeneutApp.selfAssessment.home.createLabel">
+                    Create new Self Assessment
+                </span>
             </button>
         </div>
     </div>
@@ -16,110 +17,105 @@
 <div class="table-responsive table-hover" *ngIf="mySelfAssessments">
     <table class="table table-striped">
         <thead>
-        <tr>
-            <th><span jhiTranslate="global.field.id">ID</span></th>
-            <th><span jhiTranslate="hermeneutApp.selfAssessment.name">Name</span></th>
-            <th><span jhiTranslate="hermeneutApp.selfAssessment.created">Created</span></th>
-            <th><span jhiTranslate="hermeneutApp.selfAssessment.modified">Modified</span></th>
-            <th><span jhiTranslate="hermeneutApp.selfAssessment.companyProfile">Company Profile</span></th>
-            <!--<th><span jhiTranslate="hermeneutApp.selfAssessment.user">User</span></th>-->
-            <th><span jhiTranslate="hermeneutApp.selfAssessment.companyGroup">Company Group</span></th>
-            <!--<th><span jhiTranslate="hermeneutApp.selfAssessment.asset">Asset</span></th>-->
-            <!--<th><span jhiTranslate="hermeneutApp.selfAssessment.threatagent">Threatagent</span></th>-->
-            <!--<th><span jhiTranslate="hermeneutApp.selfAssessment.attackstrategy">Attackstrategy</span></th>-->
-            <th><span jhiTranslate="hermeneutApp.selfAssessment.externalaudit">Externalaudit</span></th>
-            <th><span jhiTranslate="hermeneutApp.selfAssessment.questionnaire">Questionnaire</span></th>
-            <th></th>
-        </tr>
+            <tr>
+                <th><span jhiTranslate="global.field.id">ID</span></th>
+                <th><span jhiTranslate="hermeneutApp.selfAssessment.name">Name</span></th>
+                <th><span jhiTranslate="hermeneutApp.selfAssessment.created">Created</span></th>
+                <th><span jhiTranslate="hermeneutApp.selfAssessment.modified">Modified</span></th>
+                <th><span jhiTranslate="hermeneutApp.selfAssessment.companyProfile">Company Profile</span></th>
+                <!--<th><span jhiTranslate="hermeneutApp.selfAssessment.user">User</span></th>-->
+                <th><span jhiTranslate="hermeneutApp.selfAssessment.companyGroup">Company Group</span></th>
+                <!--<th><span jhiTranslate="hermeneutApp.selfAssessment.asset">Asset</span></th>-->
+                <!--<th><span jhiTranslate="hermeneutApp.selfAssessment.threatagent">Threatagent</span></th>-->
+                <!--<th><span jhiTranslate="hermeneutApp.selfAssessment.attackstrategy">Attackstrategy</span></th>-->
+                <th><span jhiTranslate="hermeneutApp.selfAssessment.externalaudit">Externalaudit</span></th>
+                <th><span jhiTranslate="hermeneutApp.selfAssessment.questionnaire">Questionnaire</span></th>
+                <th></th>
+            </tr>
         </thead>
         <tbody>
-        <tr *ngFor="let selfAssessment of mySelfAssessments ;trackBy: trackId">
-            <td><a [routerLink]="['../self-assessment-mgm', selfAssessment.id ]">{{selfAssessment.id}}</a></td>
-            <td (click)="selectSelfAssessment(selfAssessment)">{{selfAssessment.name}}</td>
-            <td (click)="selectSelfAssessment(selfAssessment)">{{selfAssessment.created | date:'medium'}}</td>
-            <td (click)="selectSelfAssessment(selfAssessment)">{{selfAssessment.modified | date:'medium'}}</td>
-            <td (click)="selectSelfAssessment(selfAssessment)">
-                <div *ngIf="selfAssessment.companyProfile">
-                    <a [routerLink]="['../company-profile-mgm', selfAssessment.companyProfile?.id ]">{{selfAssessment.companyProfile?.name}}</a>
-                </div>
-            </td>
-            <!--<td (click)="selectSelfAssessment(selfAssessment)">
+            <tr *ngFor="let selfAssessment of mySelfAssessments ;trackBy: trackId">
+                <td><a [routerLink]="['../self-assessment-mgm', selfAssessment.id ]">{{selfAssessment.id}}</a></td>
+                <td (click)="selectSelfAssessment(selfAssessment)">{{selfAssessment.name}}</td>
+                <td (click)="selectSelfAssessment(selfAssessment)">{{selfAssessment.created | date:'medium'}}</td>
+                <td (click)="selectSelfAssessment(selfAssessment)">{{selfAssessment.modified | date:'medium'}}</td>
+                <td (click)="selectSelfAssessment(selfAssessment)">
+                    <div *ngIf="selfAssessment.companyProfile">
+                        <a [routerLink]="['../company-profile-mgm', selfAssessment.companyProfile?.id ]">{{selfAssessment.companyProfile?.name}}</a>
+                    </div>
+                </td>
+                <!--<td (click)="selectSelfAssessment(selfAssessment)">
                 {{selfAssessment.user?.login}}
             </td>-->
-            <td (click)="selectSelfAssessment(selfAssessment)">
+                <td (click)="selectSelfAssessment(selfAssessment)">
                     <span *ngFor="let companyGroup of selfAssessment.companyGroups; let last = last">
-                            <a class="form-control-static" [routerLink]="['../company-group-mgm', companyGroup?.id ]">{{companyGroup.name}}</a>{{last ? '' : ', '}}
-                        </span>
-            </td>
-            <!--<td (click)="selectSelfAssessment(selfAssessment)">
+                        <a class="form-control-static" [routerLink]="['../company-group-mgm', companyGroup?.id ]">{{companyGroup.name}}</a>{{last
+                        ? '' : ', '}}
+                    </span>
+                </td>
+                <!--<td (click)="selectSelfAssessment(selfAssessment)">
                     <span *ngFor="let asset of selfAssessment.assets; let last = last">
                             <a class="form-control-static"
                                [routerLink]="['../asset-mgm', asset?.id ]">{{asset.name}}</a>{{last ? '' : ', '}}
                         </span>
             </td>-->
-            <!--<td (click)="selectSelfAssessment(selfAssessment)">
+                <!--<td (click)="selectSelfAssessment(selfAssessment)">
                     <span *ngFor="let threatagent of selfAssessment.threatagents; let last = last">
                             <a class="form-control-static" [routerLink]="['../threat-agent-mgm', threatagent?.id ]">{{threatagent.name}}</a>{{last ? '' : ', '}}
                         </span>
             </td>-->
-            <!--<td (click)="selectSelfAssessment(selfAssessment)">
+                <!--<td (click)="selectSelfAssessment(selfAssessment)">
                     <span *ngFor="let attackstrategy of selfAssessment.attackstrategies; let last = last">
                             <a class="form-control-static"
                                [routerLink]="['../attack-strategy-mgm', attackstrategy?.id ]">{{attackstrategy.name}}</a>{{last ? '' : ', '}}
                         </span>
             </td>-->
-            <td (click)="selectSelfAssessment(selfAssessment)">
+                <td (click)="selectSelfAssessment(selfAssessment)">
                     <span *ngFor="let externalaudit of selfAssessment.externalaudits; let last = last">
-                            <a class="form-control-static" [routerLink]="['../external-audit-mgm', externalaudit?.id ]">{{externalaudit.name}}</a>{{last ? '' : ', '}}
-                        </span>
-            </td>
-            <td (click)="selectSelfAssessment(selfAssessment)">
+                        <a class="form-control-static" [routerLink]="['../external-audit-mgm', externalaudit?.id ]">{{externalaudit.name}}</a>{{last
+                        ? '' : ', '}}
+                    </span>
+                </td>
+                <td (click)="selectSelfAssessment(selfAssessment)">
                     <span *ngFor="let questionnaire of selfAssessment.questionnaires; let last = last">
-                            <a class="form-control-static" [routerLink]="['../questionnaire-mgm', questionnaire?.id ]">{{questionnaire.name}}</a>{{last ? '' : ', '}}
-                        </span>
-            </td>
-            <td class="text-right">
-                <div class="btn-group flex-btn-group-container btn-table">
-                    <ng-template #tipButtonView><span jhiTranslate="entity.action.view">View Test</span></ng-template>
-                    <!--<button type="submit"
+                        <a class="form-control-static" [routerLink]="['../questionnaire-mgm', questionnaire?.id ]">{{questionnaire.name}}</a>{{last
+                        ? '' : ', '}}
+                    </span>
+                </td>
+                <td class="text-right">
+                    <div class="btn-group flex-btn-group-container btn-table">
+                        <ng-template #tipButtonView><span jhiTranslate="entity.action.view">View Test</span></ng-template>
+                        <!--<button type="submit"
                             [routerLink]="['../self-assessment-mgm', selfAssessment.id ]"
                             class="btn btn-info btn-sm"
                             ngbTooltip="tipButtonView"
                             container="body">
                         <i class="fas fa-eye"></i>
                         <!-- <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>-->
-                    <!--</button>-->
-                    <ng-template #tipButtonEdit><span jhiTranslate="entity.action.edit">Edit Test</span></ng-template>
-                    <button type="submit"
-                            [routerLink]="['/', { outlets: { popup: 'self-assessment-mgm/'+ selfAssessment.id + '/edit'} }]"
-                            replaceUrl="true"
-                            queryParamsHandling="merge"
-                            class="btn btn-warning btn-sm"
-                            ngbTooltip="tipButtonEdit"
+                        <!--</button>-->
+                        <ng-template #tipButtonEdit><span jhiTranslate="entity.action.edit">Edit Test</span></ng-template>
+                        <button type="submit" [routerLink]="['/', { outlets: { popup: 'self-assessment-mgm/'+ selfAssessment.id + '/edit'} }]"
+                            replaceUrl="true" queryParamsHandling="merge" class="btn btn-warning btn-sm" ngbTooltip="tipButtonEdit"
                             container="body">
-                        <i class="fas fa-edit"></i>
-                        <!-- <span class="d-none d-md-inline" jhiTranslate="entity.action.edit" >Edit</span>-->
-                    </button>
-                    <ng-template #tipButtonDelete><span jhiTranslate="entity.action.delete">Edit Test</span>
-                    </ng-template>
-                    <button type="submit"
-                            [routerLink]="['/', { outlets: { popup: 'self-assessment-mgm/'+ selfAssessment.id + '/delete'} }]"
-                            replaceUrl="true"
-                            queryParamsHandling="merge"
-                            class="btn btn-danger btn-sm"
-                            ngbTooltip="tipButtonDelete"
+                            <i class="fas fa-edit"></i>
+                            <!-- <span class="d-none d-md-inline" jhiTranslate="entity.action.edit" >Edit</span>-->
+                        </button>
+                        <ng-template #tipButtonDelete><span jhiTranslate="entity.action.delete">Edit Test</span>
+                        </ng-template>
+                        <button type="submit" [routerLink]="['/', { outlets: { popup: 'self-assessment-mgm/'+ selfAssessment.id + '/delete'} }]"
+                            replaceUrl="true" queryParamsHandling="merge" class="btn btn-danger btn-sm" ngbTooltip="tipButtonDelete"
                             container="body">
-                        <i class="fas fa-trash"></i>
-                        <!-- <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>-->
-                    </button>
-                </div>
-            </td>
-        </tr>
+                            <i class="fas fa-trash"></i>
+                            <!-- <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>-->
+                        </button>
+                    </div>
+                </td>
+            </tr>
         </tbody>
     </table>
 </div>
 
-<div *ngIf="overview" class="table-responsive table-hover">
+<div *ngIf="overview" class="table-responsive table-hover-no-pointer">
     <table class="table table-striped">
             <thead>
                 <tr>
@@ -127,13 +123,17 @@
                     <th>Attack Strategy</th>
                     <th>Vulnerability</th>
                     <th>Likelihood</th>
-                    <th>Threat Agent</th>
-                    <th>Economic Value</th>
                 </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let item of overview.augmentedMyAssets; let i = index">
-                    <td>{{item.asset.name}}</td>
+                <tr *ngFor="let item of overview.augmentedMyAssets; let i = index; let first = first">
+                    <ng-container *ngIf="first">
+                        <td>{{item.asset.name}}</td>
+                    </ng-container>
+                    <ng-container *ngIf="!first">
+                        <td *ngIf="overview.augmentedMyAssets[i-1].asset.name !== overview.augmentedMyAssets[i].asset.name">{{item.asset.name}}</td>
+                        <td *ngIf="overview.augmentedMyAssets[i-1].asset.name === overview.augmentedMyAssets[i].asset.name"> </td>
+                    </ng-container>
                     <td>{{item.augmentedAttackStrategy.name}}</td>
                     <td *ngIf="item.augmentedAttackStrategy.refinedVulnerability">{{item.augmentedAttackStrategy.refinedVulnerability | number : '1.1-1'}}</td>
                     <td *ngIf="!item.augmentedAttackStrategy.refinedVulnerability && item.augmentedAttackStrategy.contextualVulnerability">{{item.augmentedAttackStrategy.contextualVulnerability | number : '1.1-1'}}</td>
@@ -142,15 +142,7 @@
                     <td *ngIf="!item.augmentedAttackStrategy.refinedLikelihood && item.augmentedAttackStrategy.contextualLikelihood">{{item.augmentedAttackStrategy.contextualLikelihood | number : '1.1-1'}}</td>
                     <td *ngIf="!item.augmentedAttackStrategy.refinedLikelihood && !item.augmentedAttackStrategy.contextualLikelihood && item.augmentedAttackStrategy.initialLikelihood">{{item.augmentedAttackStrategy.initialLikelihood | number : '1.1-1'}}</td>
                     <td *ngIf="!item.augmentedAttackStrategy.refinedLikelihood && !item.augmentedAttackStrategy.contextualLikelihood && !item.augmentedAttackStrategy.initialLikelihood">-</td>
-                    <td>{{item.threatAgent.name}}</td>
-                    <th>
-                        <div class="input-group mb-1">
-                            <input type="number" class="form-control" name="input{{i}}" placeholder="Economic Value" aria-label="economic-value" aria-describedby="economic-value" [(ngModel)]="item.economicValue">
-                            <div class="input-group-append" (click)="updateMyAsset(item)">
-                                <span class="input-group-text" id="economic-value">OK</span>
-                            </div>
-                        </div>
-                    </th>
                 </tr>
             </tbody>
-    </div>
+    </table>
+</div>

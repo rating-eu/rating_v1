@@ -37,6 +37,16 @@
             "fieldName": "economicValue",
             "javadoc": "WP3",
             "fieldType": "BigDecimal"
+        },
+        {
+            "fieldName": "impact",
+            "fieldType": "Integer",
+            "fieldValidateRules": [
+                "min",
+                "max"
+            ],
+            "fieldValidateRulesMin": 1,
+            "fieldValidateRulesMax": 5
         }
     ],
     "changelogDate": "20180727084747",

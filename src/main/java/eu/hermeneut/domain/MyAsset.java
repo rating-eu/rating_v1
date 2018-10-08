@@ -5,6 +5,7 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
+import javax.validation.constraints.*;
 
 import org.springframework.data.elasticsearch.annotations.Document;
 import java.io.Serializable;
@@ -42,6 +43,11 @@ public class MyAsset implements Serializable {
     @ApiModelProperty(value = "WP3")
     @Column(name = "economic_value", precision=10, scale=2)
     private BigDecimal economicValue;
+
+    @Min(value = 1)
+    @Max(value = 5)
+    @Column(name = "impact")
+    private Integer impact;
 
     @ManyToOne
     private Asset asset;
@@ -113,6 +119,19 @@ public class MyAsset implements Serializable {
         this.economicValue = economicValue;
     }
 
+    public Integer getImpact() {
+        return impact;
+    }
+
+    public MyAsset impact(Integer impact) {
+        this.impact = impact;
+        return this;
+    }
+
+    public void setImpact(Integer impact) {
+        this.impact = impact;
+    }
+
     public Asset getAsset() {
         return asset;
     }
@@ -181,6 +200,7 @@ public class MyAsset implements Serializable {
             ", ranking=" + getRanking() +
             ", estimated='" + isEstimated() + "'" +
             ", economicValue=" + getEconomicValue() +
+            ", impact=" + getImpact() +
             "}";
     }
 }

@@ -1,7 +1,6 @@
 package eu.hermeneut.domain.overview;
 
 import eu.hermeneut.domain.MyAsset;
-import eu.hermeneut.domain.ThreatAgent;
 import eu.hermeneut.domain.attackmap.AugmentedAttackStrategy;
 
 public class AugmentedMyAsset extends MyAsset {
@@ -18,7 +17,6 @@ public class AugmentedMyAsset extends MyAsset {
     }
 
     private AugmentedAttackStrategy augmentedAttackStrategy;
-    private ThreatAgent threatAgent;
 
     public AugmentedAttackStrategy getAugmentedAttackStrategy() {
         return augmentedAttackStrategy;
@@ -26,13 +24,5 @@ public class AugmentedMyAsset extends MyAsset {
 
     public void setAugmentedAttackStrategy(AugmentedAttackStrategy augmentedAttackStrategy) {
         this.augmentedAttackStrategy = augmentedAttackStrategy;
-    }
-
-    public ThreatAgent getThreatAgent() {
-        return threatAgent;
-    }
-
-    public void setThreatAgent(ThreatAgent threatAgent) {
-        this.threatAgent = threatAgent;
     }
 }
