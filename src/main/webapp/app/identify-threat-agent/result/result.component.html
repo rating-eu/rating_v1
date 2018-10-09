@@ -20,7 +20,7 @@
                     <a [routerLink]="['/threat-agent-mgm', couple.key.id]">{{couple.key.name}}</a>
                 </th>
                 <td class="text-center align-middle">
-                    {{couple.key.skillLevel}}
+                    {{couple.key.skillLevel | titlecase}}
                 </td>
                 <td class="text-center align-middle">
                     {{couple.value.toPercentage()/100 | percent:'1.0-2'}}
