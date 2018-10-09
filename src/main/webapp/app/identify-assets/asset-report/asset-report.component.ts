@@ -30,7 +30,7 @@ export class AssetReportComponent implements OnInit, OnDestroy {
     public directAssetSelected: DirectAssetMgm;
     public indirectAssetSelected: IndirectAssetMgm;
     public attackCostType = MyCostType;
-    
+
     private questionnaries: QuestionnaireMgm[];
     private account: Account;
     private user: User;

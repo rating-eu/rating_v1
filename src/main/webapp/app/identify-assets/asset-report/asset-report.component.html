@@ -34,7 +34,7 @@
                                         <p *ngIf="directAssetSelected.myAsset.asset.assetcategory.name"><b>Category:</b> {{directAssetSelected.myAsset.asset.assetcategory.name}}</p>
                                         <p *ngIf="directAssetSelected.myAsset.asset.description"><b>Description:</b> {{directAssetSelected.myAsset.asset.description}}</p>
                                         <p *ngIf="directAssetSelected.myAsset.asset.containers"><b>Containers:</b> {{directAssetSelected.myAsset.asset.containers}}</p>
-                                        <p *ngIf="directAssetSelected.myAsset.asset.domainsOfInfluences > 0"><b>Domains of Influences:</b><br>
+                                        <p *ngIf="directAssetSelected.myAsset.asset.domainsOfInfluences.length > 0"><b>Domains of Influences:</b><br>
                                             <ng-container *ngFor="let domain of directAssetSelected.myAsset.asset.domainsOfInfluences; let last = last;">
                                                 {{domain.name}}<br *ngIf="!last">
                                             </ng-container>
@@ -57,7 +57,7 @@
                                         <p *ngIf="indirectAssetSelected.myAsset.asset.assetcategory.name"><b>Category:</b> {{indirectAssetSelected.myAsset.asset.assetcategory.name}}</p>
                                         <p *ngIf="indirectAssetSelected.myAsset.asset.description"><b>Description:</b> {{indirectAssetSelected.myAsset.asset.description}}</p>
                                         <p *ngIf="indirectAssetSelected.myAsset.asset.containers"><b>Containers:</b> {{indirectAssetSelected.myAsset.asset.containers}}</p>
-                                        <p *ngIf="indirectAssetSelected.myAsset.asset.domainsOfInfluences > 0"><b>Domains of Influences:</b><br>
+                                        <p *ngIf="indirectAssetSelected.myAsset.asset.domainsOfInfluences.length > 0"><b>Domains of Influences:</b><br>
                                             <ng-container *ngFor="let domain of indirectAssetSelected.myAsset.asset.domainsOfInfluences; let last = last;">
                                                 {{domain.name}}<br *ngIf="!last">
                                             </ng-container>
