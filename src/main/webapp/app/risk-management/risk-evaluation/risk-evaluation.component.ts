@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import { RiskManagementService } from '../risk-management.service';
 import { SelfAssessmentMgmService, SelfAssessmentMgm } from '../../entities/self-assessment-mgm';
 import { CriticalLevelMgm } from '../../entities/critical-level-mgm';
@@ -11,6 +11,7 @@ import { Router } from '@angular/router';
 import * as _ from 'lodash';
 import { ITEMS_PER_PAGE } from '../../shared';
 import { HttpResponse } from '@angular/common/http';
+import { Subscription } from 'rxjs';
 
 @Component({
     // tslint:disable-next-line:component-selector
@@ -18,10 +19,11 @@ import { HttpResponse } from '@angular/common/http';
     templateUrl: './risk-evaluation.component.html',
     styleUrls: ['./risk-evaluation.component.css'],
 })
-export class RiskEvaluationComponent implements OnInit {
+export class RiskEvaluationComponent implements OnInit, OnDestroy {
     private mySelf: SelfAssessmentMgm;
     public myAssets: MyAssetMgm[] = [];
     public criticalLevel: CriticalLevelMgm;
+    private criticalLevelSubscription: Subscription;
     public squareColumnElement: number[];
     public squareRowElement: number[];
     public lastSquareRowElement: number;
@@ -85,6 +87,12 @@ export class RiskEvaluationComponent implements OnInit {
             }
         });
 
+        this.criticalLevelSubscription = this.riskService.subscribeForCriticalLevel().subscribe((res) => {
+            if (res) {
+                this.criticalLevel = res;
+            }
+        });
+
         this.riskService.getMyAssets(this.mySelf).toPromise().then((res) => {
             if (res && res.length > 0) {
                 this.myAssets = res;
@@ -105,6 +113,10 @@ export class RiskEvaluationComponent implements OnInit {
             }
             this.loading = false;
         });
+    }
+
+    ngOnDestroy() {
+        this.criticalLevelSubscription.unsubscribe();
     }
 
     public orderLevels(mapAssetAttacks: Map<number, MyAssetAttackChance[]>): {
