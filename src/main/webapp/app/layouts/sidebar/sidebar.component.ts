@@ -102,11 +102,24 @@ export class SidebarComponent implements OnInit {
                         items: [
                             {
                                 label: 'Assets',
+                                routerLink: ['/identify-asset'],
                                 items: [
                                     {
-                                        label: 'Clusters',
-                                        routerLink: ['/identify-asset']
-                                    }
+                                        label: 'Asset Clustering',
+                                        routerLink: ['/identify-asset/asset-clustering']
+                                    },
+                                    {
+                                        label: 'Magnitudo',
+                                        routerLink: ['/identify-asset/magnitude']
+                                    },
+                                    {
+                                        label: 'Cascade Effects',
+                                        routerLink: ['/identify-asset/cascade-effects']
+                                    },
+                                    {
+                                        label: 'Asset Report',
+                                        routerLink: ['/identify-asset/asset-report']
+                                    },
                                 ]
                             }
                         ]

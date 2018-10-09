@@ -1,9 +1,21 @@
 {
     "hermeneutApp": {
-        "identifyAsset": {
+        "assetSection": {
             "page": {
-                "root": {
-                    "title": "Identifica Asset"
+                "assetIdentification": {
+                    "title": "Identificazione Asset"
+                },
+                "assetClustering": {
+                    "title": "Identificazione Asset"
+                },
+                "magnitude": {
+                    "title": "Magnitudo"
+                },
+                "cascadeEffects": {
+                    "title": "Effetti secondari"
+                },
+                "assetReport": {
+                    "title": "Asset report"
                 }
             }
         },
