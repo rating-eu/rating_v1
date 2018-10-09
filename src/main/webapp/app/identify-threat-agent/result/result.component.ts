@@ -65,6 +65,9 @@ export class ThreatResultComponent implements OnInit, OnDestroy {
     private threatAgentsPercentageMap: Map<String, Couple<ThreatAgentMgm, Fraction>>;
     private threatAgentsPercentageArray: Couple<ThreatAgentMgm, Fraction>[];
 
+    public selectedThreatAgent: ThreatAgentMgm = null;
+    public page = 1;
+
     constructor(private selfAssessmentService: SelfAssessmentMgmService,
                 private dataSharingService: DatasharingService,
                 private identifyThreatAgentService: IdentifyThreatAgentService,
@@ -143,7 +146,7 @@ export class ThreatResultComponent implements OnInit, OnDestroy {
                         const aStrength: number = aSkill * aAccuracy;
                         const bStrength: number = bSkill * bAccuracy;
 
-                        const result =  (aStrength - bStrength) * -1;
+                        const result = (aStrength - bStrength) * -1;
 
                         return result;
                     }
@@ -242,5 +245,17 @@ export class ThreatResultComponent implements OnInit, OnDestroy {
         });
 
         return map;
+    }
+
+    selectThreatAgent(threatAgent: ThreatAgentMgm) {
+        if (this.selectedThreatAgent) {
+            if (this.selectedThreatAgent.id === threatAgent.id) {
+                this.selectedThreatAgent = null;
+            }else {
+                this.selectedThreatAgent = threatAgent;
+            }
+        } else {
+            this.selectedThreatAgent = threatAgent;
+        }
     }
 }
