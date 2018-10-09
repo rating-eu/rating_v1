@@ -1,1 +1,78 @@
-ASSET REPORT COMPONENT
+<ng-container *ngIf="questionnariesStatus.length > 0 && mySelf">
+        <ng-container *ngIf="questionnariesStatus[0].status === 'FULL'">
+            <ng-container *ngIf="myDirectAssets">
+                <div class="row" style="margin-bottom: 10px" *ngFor="let direct of myDirectAssets">
+                    <div class="col-md-7">
+                        <div class="col-md-12">
+                            <div class="parentAssetBox" (click)="selectDirectAsset(direct)">
+                                {{direct.myAsset.asset.name}}
+                            </div>
+                        </div>
+                        <ng-container *ngIf="isAssetTreeShow(direct) && direct.effects">
+                            <div class="row" style="height:7em" *ngFor="let effect of direct.effects; let last = last;">
+                                <div class="col-md-1">
+                                    <svg>
+                                        <line *ngIf="!last" x1="40" y1="0" x2="40" y2="7em" stroke="black"/>
+                                        <line *ngIf="last" x1="40" y1="0" x2="40" y2="3.3em" stroke="black"/>
+                                        <line stroke="black" x1="40" x2="100" y1="33%" y2="33%"/>
+                                    </svg>
+                                </div>
+                                <div class="col-md-11">
+                                    <div class="childAssetBox" (click)="selectIndirectAsset(effect)">
+                                        {{effect.myAsset.asset.name}}
+                                    </div>
+                                </div>
+                            </div>
+                        </ng-container>
+                    </div>
+                    <div *ngIf="isAssetTreeShow(direct)" class="col-md-5">
+                        <div class="card-box card-margin-top">
+                            <div class="card-body">
+                                <div *ngIf="directAssetSelected && !indirectAssetSelected">
+                                    <h5 class="card-title">{{directAssetSelected.myAsset.asset.name}} details</h5>
+                                    <ng-container class="card-text">
+                                        <p *ngIf="directAssetSelected.myAsset.asset.assetcategory.name"><b>Category:</b> {{directAssetSelected.myAsset.asset.assetcategory.name}}</p>
+                                        <p *ngIf="directAssetSelected.myAsset.asset.description"><b>Description:</b> {{directAssetSelected.myAsset.asset.description}}</p>
+                                        <p *ngIf="directAssetSelected.myAsset.asset.containers"><b>Containers:</b> {{directAssetSelected.myAsset.asset.containers}}</p>
+                                        <p *ngIf="directAssetSelected.myAsset.asset.domainsOfInfluences"><b>Domains of Influences:</b> {{directAssetSelected.myAsset.asset.domainsOfInfluences}}</p>
+                                        <p *ngIf="directAssetSelected.myAsset.estimated"><b>Estimated:</b> Yes</p>
+                                        <p *ngIf="!directAssetSelected.myAsset.estimated"><b>Estimated:</b> No</p>
+                                        <p *ngIf="directAssetSelected.myAsset.economicValue"><b>Economic Value:</b> {{directAssetSelected.myAsset.economicValue}}</p>
+                                        <p *ngIf="directAssetSelected.myAsset.magnitude"><b>Magnitude:</b> {{directAssetSelected.myAsset.magnitude}}</p>
+                                        <p *ngIf="directAssetSelected.myAsset.ranking"><b>Ranking:</b> {{directAssetSelected.myAsset.ranking}}</p>
+                                        <p *ngIf="directAssetSelected.costs.length > 0"><b>Costs:</b><br>
+                                            <ng-container *ngFor="let cost of directAssetSelected.costs; let last = last;">
+                                                {{attackCostType[cost.type]}}<br *ngIf="!last">
+                                            </ng-container>
+                                        </p>
+                                    </ng-container>
+                                </div>
+                                <div *ngIf="directAssetSelected && indirectAssetSelected">
+                                    <h5 class="card-title">{{indirectAssetSelected.myAsset.asset.name}} details</h5>
+                                    <ng-container class="card-text">
+                                        <p *ngIf="indirectAssetSelected.myAsset.asset.assetcategory.name"><b>Category:</b> {{indirectAssetSelected.myAsset.asset.assetcategory.name}}</p>
+                                        <p *ngIf="indirectAssetSelected.myAsset.asset.description"><b>Description:</b> {{indirectAssetSelected.myAsset.asset.description}}</p>
+                                        <p *ngIf="indirectAssetSelected.myAsset.asset.containers"><b>Containers:</b> {{indirectAssetSelected.myAsset.asset.containers}}</p>
+                                        <p *ngIf="indirectAssetSelected.myAsset.asset.domainsOfInfluences"><b>Domains of Influences:</b> {{indirectAssetSelected.myAsset.asset.domainsOfInfluences}}</p>
+                                        <p *ngIf="indirectAssetSelected.myAsset.estimated"><b>Estimated:</b> Yes</p>
+                                        <p *ngIf="!indirectAssetSelected.myAsset.estimated"><b>Estimated:</b> No</p>
+                                        <p *ngIf="indirectAssetSelected.myAsset.economicValue"><b>Economic Value:</b> {{indirectAssetSelected.myAsset.economicValue}}</p>
+                                        <p *ngIf="indirectAssetSelected.myAsset.magnitude"><b>Magnitude:</b> {{indirectAssetSelected.myAsset.magnitude}}</p>
+                                        <p *ngIf="indirectAssetSelected.myAsset.ranking"><b>Ranking:</b> {{indirectAssetSelected.myAsset.ranking}}</p>
+                                        <p *ngIf="indirectAssetSelected.costs.length > 0"><b>Costs:</b><br>
+                                            <ng-container *ngFor="let cost of indirectAssetSelected.costs; let last = last;">
+                                                {{attackCostType[cost.type]}}<br *ngIf="!last">
+                                            </ng-container>
+                                        </p>
+                                    </ng-container>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </ng-container>
+        </ng-container>
+        <ng-container *ngIf="questionnariesStatus[0].status !== 'FULL'">
+            You must complete the questionnaire!
+        </ng-container>
+    </ng-container>
