@@ -11,7 +11,7 @@ import { QuestionnairesService } from '../../questionnaires/questionnaires.servi
 import { QuestionnairePurpose } from '../../entities/enumerations/QuestionnairePurpose.enum';
 import { MyRole } from '../../entities/enumerations/MyRole.enum';
 import { IdentifyAssetUtilService } from '../identify-asset.util.service';
-import { MyAssetMgm } from '../../entities/my-asset-mgm';
+import { MyCostType } from '../../entities/enumerations/AttackCostType.enum';
 import { DirectAssetMgm } from '../../entities/direct-asset-mgm';
 import { IndirectAssetMgm } from '../../entities/indirect-asset-mgm';
 
@@ -29,7 +29,8 @@ export class AssetReportComponent implements OnInit, OnDestroy {
     public myIndirectAssets: IndirectAssetMgm[];
     public directAssetSelected: DirectAssetMgm;
     public indirectAssetSelected: IndirectAssetMgm;
-
+    public attackCostType = MyCostType;
+    
     private questionnaries: QuestionnaireMgm[];
     private account: Account;
     private user: User;
