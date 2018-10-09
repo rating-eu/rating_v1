@@ -6,6 +6,7 @@ import {HttpResponse} from '@angular/common/http';
 import {ThreatAgentLikelihoods} from '../../utils/threatagent.likelihoods.class';
 import {ThreatAgentMgm} from '../../entities/threat-agent-mgm';
 import {Observable} from 'rxjs/Observable';
+import {SelfAssessmentOverview} from '../../my-self-assessments/models/SelfAssessmentOverview.model';
 
 @Component({
     selector: 'jhi-results-overview',
@@ -28,6 +29,9 @@ export class ResultsOverviewComponent implements OnInit {
     threatAgentIDs: number[];
 
     maxVulnerability: number = Number.NEGATIVE_INFINITY;
+
+    // SelfAssessment overview
+    public overview: SelfAssessmentOverview;
 
     constructor(private selfAssessmentService: SelfAssessmentMgmService,
                 private resultService: ResultsService) {
@@ -154,5 +158,14 @@ export class ResultsOverviewComponent implements OnInit {
         });
 
         this.maxRefinedVulnerability = Math.floor(Math.random() * 5) / 5;*/
+
+        // SelfAssessment Overview
+
+        this.selfAssessmentService.getOverwiew().toPromise().then((res: SelfAssessmentOverview) => {
+            if (res) {
+                this.overview = res;
+                console.log(this.overview);
+            }
+        });
     }
 }

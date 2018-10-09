@@ -6,7 +6,6 @@ import {HttpResponse} from '@angular/common/http';
 import {Router} from '@angular/router';
 import {Subscription} from 'rxjs/Subscription';
 import {JhiEventManager} from 'ng-jhipster';
-import {SelfAssessmentOverview} from './models/SelfAssessmentOverview.model';
 import {MyAssetMgm, MyAssetMgmService} from '../entities/my-asset-mgm';
 
 @Component({
@@ -21,7 +20,7 @@ export class MySelfAssessmentsComponent implements OnInit {
     private myCompany: MyCompanyMgm;
     public mySelfAssessments: SelfAssessmentMgm[];
     eventSubscriber: Subscription;
-    public overview: SelfAssessmentOverview;
+
     public mySelfAssessment = null;
 
     constructor(private router: Router,
@@ -71,12 +70,6 @@ export class MySelfAssessmentsComponent implements OnInit {
                 this.mySelfAssessments = response;
             }
         );
-        this.selfAssessmentService.getOverwiew().toPromise().then((res) => {
-            if (res) {
-                this.overview = res;
-                console.log(this.overview);
-            }
-        });
     }
 
     selectSelfAssessment(selfAssessment: SelfAssessmentMgm) {
