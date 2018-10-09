@@ -1,35 +1,51 @@
 <div class="card-box">
     <div class="table-responsive text-nowrap">
-        <table class="table table-bordered" *ngIf="motivations, threatAgentsPercentageArray">
+        <table class="table table-bordered table-hover" *ngIf="motivations, threatAgentsPercentageArray">
             <thead class="thead-dark">
             <tr>
                 <th scope="col" class="text-center align-middle">Threat Agent</th>
                 <th scope="col" class="text-center align-middle"> Skills</th>
                 <th scope="col" class="text-center align-middle">Level of Interest</th>
-                <th scope="col" *ngFor="let motivation of motivations" class="text-center align-middle">
-                    {{motivation.name}}
-                </th>
             </tr>
             </thead>
 
             <tbody>
             <!--For rows-->
-            <tr *ngFor="let couple of threatAgentsPercentageArray">
-                <!--For cols-->
-                <th scope="row" class="text-left align-middle table-dark">
-                    <a [routerLink]="['/threat-agent-mgm', couple.key.id]">{{couple.key.name}}</a>
-                </th>
-                <td class="text-center align-middle">
-                    {{couple.key.skillLevel | titlecase}}
-                </td>
-                <td class="text-center align-middle">
-                    {{couple.value.toPercentage()/100 | percent:'1.0-2'}}
-                </td>
+            <ng-container *ngFor="let couple of threatAgentsPercentageArray">
+                <tr (click)="selectThreatAgent(couple.key)">
+                    <!--For cols-->
+                    <th scope="row" class="text-center align-middle">
+                        <a [routerLink]="['/threat-agent-mgm', couple.key.id]">{{couple.key.name}}</a>
+                    </th>
+                    <td class="text-center align-middle">
+                        {{couple.key.skillLevel | titlecase}}
+                    </td>
+                    <td class="text-center align-middle">
+                        {{couple.value.toPercentage()/100 | percent:'1.0-2'}}
+                    </td>
+                </tr>
+                <tr *ngIf="selectedThreatAgent?.id === couple.key.id">
+                    <td *ngIf="selectedThreatAgent.motivations" colspan="3">
+                        <h5>Motivations</h5>
+                        <ul class="list-group">
+                            <li
+                                *ngFor="let motivation of selectedThreatAgent.motivations | paginate: { itemsPerPage: 4, currentPage: page}"
+                                class="list-group-item">
+                                <a [routerLink]="['/motivation-mgm/'+motivation?.id]">{{motivation.name}}</a>
+                            </li>
+                        </ul>
+                        <div class="text-center">
+                            <pagination-controls (pageChange)="page = $event"></pagination-controls>
+                        </div>
+                    </td>
+                    <td *ngIf="!selectedThreatAgent.motivations" colspan="3">
+                        <p>
+                            Motivations not found.
+                        </p>
+                    </td>
+                </tr>
+            </ng-container>
 
-                <td *ngFor="let motivation of motivations" class="text-center align-middle">
-                    <span *ngIf="hasMotivation(couple.key, motivation)" class="fa fa-star"></span>
-                </td>
-            </tr>
             </tbody>
         </table>
     </div>
