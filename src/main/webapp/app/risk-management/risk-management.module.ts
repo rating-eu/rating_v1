@@ -16,12 +16,14 @@ import {ErrorHandlerInterceptor} from '../blocks/interceptor/errorhandler.interc
 import {JhiEventManager} from '../../../../../node_modules/ng-jhipster';
 import {NotificationInterceptor} from '../blocks/interceptor/notification.interceptor';
 import {JhiLanguageService} from 'ng-jhipster';
+import {NgxPaginationModule} from 'ngx-pagination';
 
 @NgModule({
     imports: [
         HermeneutSharedModule,
         CommonModule,
         RiskManagementRoutingModule,
+        NgxPaginationModule,
         NgbCollapseModule.forRoot()
     ],
     declarations: [RiskManagementComponent, RiskEvaluationComponent, RiskMitigationComponent],
