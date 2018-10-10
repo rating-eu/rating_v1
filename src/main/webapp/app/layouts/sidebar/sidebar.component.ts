@@ -1,10 +1,10 @@
-import {Component, OnInit, ViewEncapsulation} from '@angular/core';
-import {Principal} from '../../shared';
-import {DatasharingService} from '../../datasharing/datasharing.service';
-import {Update} from '../model/Update';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Principal } from '../../shared';
+import { DatasharingService } from '../../datasharing/datasharing.service';
+import { Update } from '../model/Update';
 
-import {MenuItem} from 'primeng/api';
-import {MyRole} from '../../entities/enumerations/MyRole.enum';
+import { MenuItem } from 'primeng/api';
+import { MyRole } from '../../entities/enumerations/MyRole.enum';
 
 @Component({
     selector: 'jhi-sidebar',
@@ -90,38 +90,33 @@ export class SidebarComponent implements OnInit {
             {
                 label: 'Company',
                 items: [
-                    {label: 'My Company', icon: 'fa fa-home', routerLink: ['/my-company']},
-                    {label: 'My SelfAssessments', icon: 'fa fa-repeat', routerLink: ['/my-self-assessments']}
+                    { label: 'My Company', icon: 'fa fa-home', routerLink: ['/my-company'] },
+                    { label: 'My SelfAssessments', icon: 'fa fa-repeat', routerLink: ['/my-self-assessments'] }
                 ]
             },
             {
                 label: 'Self Assessment',
                 items: [
                     {
-                        label: 'My Profile',
+                        label: 'Assets',
+                        routerLink: ['/identify-asset'],
                         items: [
                             {
-                                label: 'Assets',
-                                routerLink: ['/identify-asset'],
-                                items: [
-                                    {
-                                        label: 'Asset Clustering',
-                                        routerLink: ['/identify-asset/asset-clustering']
-                                    },
-                                    {
-                                        label: 'Magnitudo',
-                                        routerLink: ['/identify-asset/magnitude']
-                                    },
-                                    {
-                                        label: 'Cascade Effects',
-                                        routerLink: ['/identify-asset/cascade-effects']
-                                    },
-                                    {
-                                        label: 'Asset Report',
-                                        routerLink: ['/identify-asset/asset-report']
-                                    },
-                                ]
-                            }
+                                label: 'Asset Clustering',
+                                routerLink: ['/identify-asset/asset-clustering']
+                            },
+                            {
+                                label: 'Magnitudo',
+                                routerLink: ['/identify-asset/magnitude']
+                            },
+                            {
+                                label: 'Cascade Effects',
+                                routerLink: ['/identify-asset/cascade-effects']
+                            },
+                            {
+                                label: 'Asset Report',
+                                routerLink: ['/identify-asset/asset-report']
+                            },
                         ]
                     },
                     {
