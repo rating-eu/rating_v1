@@ -26,7 +26,8 @@ import { AttackCostMgm, CostType } from '../../entities/attack-cost-mgm';
 import { MyCostType } from '../../entities/enumerations/AttackCostType.enum';
 
 @Component({
-    selector: 'jhi-identify-asset',
+    // tslint:disable-next-line:component-selector
+    selector: 'identify-asset',
     templateUrl: './identify-asset.component.html',
     styleUrls: ['./identify-asset.component.css'],
     providers: [IdentifyAssetService]

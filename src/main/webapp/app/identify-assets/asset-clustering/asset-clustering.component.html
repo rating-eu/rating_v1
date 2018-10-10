@@ -1,0 +1,107 @@
+ASSET CLUSTERING VIEW WORK IN PROGRESS
+<!--
+<div class="card">
+    <div *ngIf="question" class="card-body">
+        <h5 class="card-title">{{question.name}}</h5>
+        <ng-container class="card-text" *ngIf="question.answers && allAssets">
+            <b style="clear: both">Intangible Assets </b>
+            <br>
+            <ul class="list-unstyled" *ngIf="intangible">
+                <li *ngFor="let ans of intangible">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="chipsContainer">
+                                <div class="badge chips chips-name" [ngClass]="{'badge-light': !isSelected(ans), 'badge-primary': isSelected(ans)}"
+                                    (click)="select(ans)">
+                                    {{ans.name}}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="row">
+                                <ng-container *ngFor="let rank of [1,2,3,4,5,6,7]">
+                                    <div class="col-md-1 chipsContainer">
+                                        <div *ngIf="!isSelectable(ans)" class="badge chips badge-secondary disabled"
+                                            (click)="false">
+                                            {{rank}}
+                                        </div>
+                                        <div *ngIf="isSelectable(ans)" class="badge chips" [ngClass]="{'badge-light': !whichRank(ans, rank), 'badge-primary': whichRank(ans, rank)}"
+                                            (click)="setRank(ans, rank)">
+                                            {{rank}}
+                                        </div>
+                                    </div>
+                                </ng-container>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+            <b>Tangible Assets: </b><i style="clear: both">Current assets</i>
+            <br>
+            <ul class="list-unstyled" *ngIf="tangibleCurrent">
+                <li *ngFor="let ans of tangibleCurrent">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="chipsContainer">
+                                <div class="badge chips chips-name" [ngClass]="{'badge-light': !isSelected(ans), 'badge-primary': isSelected(ans)}"
+                                    (click)="select(ans)">
+                                    {{ans.name}}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="row">
+                                <ng-container *ngFor="let rank of [1,2,3,4,5,6,7,8,9,10]">
+                                    <div class="col-md-1 chipsContainer">
+                                        <div *ngIf="!isSelectable(ans)" class="badge chips badge-secondary disabled"
+                                            (click)="false">
+                                            {{rank}}
+                                        </div>
+                                        <div *ngIf="isSelectable(ans)" class="badge chips" [ngClass]="{'badge-light': !whichRank(ans, rank), 'badge-primary': whichRank(ans, rank)}"
+                                            (click)="setRank(ans, rank)">
+                                            {{rank}}
+                                        </div>
+                                    </div>
+                                </ng-container>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+            <b>Tangible Assets: </b>
+            <i style="clear: both">Fixed assets</i>
+            <br>
+            <ul class="list-unstyled" *ngIf="tangibleFixed">
+                <li *ngFor="let ans of tangibleFixed">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="chipsContainer">
+                                <div class="badge chips chips-name" [ngClass]="{'badge-light': !isSelected(ans), 'badge-primary': isSelected(ans)}"
+                                    (click)="select(ans)">
+                                    {{ans.name}}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="row">
+                                <ng-container *ngFor="let rank of [1,2,3,4,5,6,7,8,9,10]">
+                                    <div class="col-md-1 chipsContainer">
+                                        <div *ngIf="!isSelectable(ans)" class="badge chips badge-secondary disabled"
+                                            (click)="false">
+                                            {{rank}}
+                                        </div>
+                                        <div *ngIf="isSelectable(ans)" class="badge chips" [ngClass]="{'badge-light': !whichRank(ans, rank), 'badge-primary': whichRank(ans, rank)}"
+                                            (click)="setRank(ans, rank)">
+                                            {{rank}}
+                                        </div>
+                                    </div>
+                                </ng-container>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </ng-container>
+    </div>
+</div>
+-->

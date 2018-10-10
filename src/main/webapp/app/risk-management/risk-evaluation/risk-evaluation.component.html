@@ -2,72 +2,77 @@
     <div class="loader"></div>
 </div>
 <div class="container" *ngIf="!loading  && myAssets.length > 0 && mapAssetAttacks.size > 0">
+    <ng-container *ngIf="criticalBostonSquareLoad">
+        <div class="loader"></div>
+    </ng-container>
     <ng-container *ngIf="!criticalBostonSquareLoad">
-    <br>
-    <div class="row">
-        <div class="col-md-2 text-left">
-            <b>Critically</b>
-        </div>
-    </div>
-    <div *ngFor="let j of squareRowElement" class="row">
-        <div class="col-md-1 text-right">
-            <ng-container *ngIf="j!==lastSquareRowElement">{{(lastSquareRowElement-j)*(lastSquareRowElement-j)}}
-            </ng-container>
-        </div>
-        <ng-container *ngIf="j===lastSquareRowElement">
-            <div *ngFor="let i of squareColumnElement" class="col-md-2 text-center">
-                {{i}}
+        <br>
+        <div class="row">
+            <div class="col-md-2 text-left">
+                <b>Critically</b>
             </div>
-            <div class="row">
-                <div class="col-md-12 text-right">
-                    <b>Impact</b>
+        </div>
+        <div *ngFor="let j of squareRowElement" class="row">
+            <div class="col-md-1 text-right">
+                <ng-container *ngIf="j!==lastSquareRowElement">{{(lastSquareRowElement-j)*(lastSquareRowElement-j)}}
+                </ng-container>
+            </div>
+            <ng-container *ngIf="j===lastSquareRowElement">
+                <div *ngFor="let i of squareColumnElement" class="col-md-2 text-center">
+                    {{i}}
                 </div>
-            </div>
-        </ng-container>
-        <ng-container *ngIf="j!==lastSquareRowElement">
-            <div *ngFor="let i of squareColumnElement" class="col-md-2">
-                <div class="text-center boston-square-text" [ngClass]="{'low-level': whichLevel(lastSquareRowElement-j, i) === 'low', 'medium-level': whichLevel(lastSquareRowElement-j, i) === 'medium', 'high-level': whichLevel(lastSquareRowElement-j, i) === 'high'}"
-                    (click)="selectedMatrixCell(lastSquareRowElement-j, i)">
+                <div class="row">
+                    <div class="col-md-12 text-right">
+                        <b>Impact</b>
+                    </div>
+                </div>
+            </ng-container>
+            <ng-container *ngIf="j!==lastSquareRowElement">
+                <div *ngFor="let i of squareColumnElement" class="col-md-2">
+                    <div class="text-center boston-square-text" [ngClass]="{'low-level': whichLevel(lastSquareRowElement-j, i) === 'low', 'medium-level': whichLevel(lastSquareRowElement-j, i) === 'medium', 'high-level': whichLevel(lastSquareRowElement-j, i) === 'high'}"
+                        (click)="selectedMatrixCell(lastSquareRowElement-j, i)" placement="top"
+                        ngbTooltip="{{assetToolTipLoaded ? assetsToolTip.get(concatenateAndParse([lastSquareRowElement-j, i])):''}}">
                         <ng-container *ngIf="whichCriticalContentByCell(lastSquareRowElement-j, i) !== ''">
                             {{whichCriticalContentByCell(lastSquareRowElement-j, i)}}
                         </ng-container>
                         <ng-container *ngIf="whichCriticalContentByCell(lastSquareRowElement-j, i) === ''">
                             &nbsp;
                         </ng-container>
+                    </div>
+                </div>
+                <div class="col-md-1"></div>
+            </ng-container>
+        </div>
+        <div class="row">
+            <span class="col-md-10 offset-md-1 border-bottom border-secondary">&nbsp;</span>
+        </div>
+        <div class="col-md-12">
+            <div class="card card-body table-responsive text-nowrap">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Asset</th>
+                            <th scope="col">Risk</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let myAsset of myAssets | paginate: { itemsPerPage: 7, currentPage: page }">
+                            <td *ngIf="riskPercentageMap.get(myAsset.id)">
+                                <a [routerLink]="['/asset-mgm', myAsset.asset?.id ]">{{myAsset?.asset.name}}</a>
+                            </td>
+                            <td *ngIf="riskPercentageMap.get(myAsset.id)">{{riskPercentageMap.get(myAsset.id) |
+                                percent}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="text-center">
+                    <pagination-controls (pageChange)="page = $event"></pagination-controls>
                 </div>
             </div>
-            <div class="col-md-1"></div>
-        </ng-container>
-    </div>
-    <div class="row">
-        <span class="col-md-10 offset-md-1 border-bottom border-secondary">&nbsp;</span>
-    </div>
-    <div class="col-md-12">
-        <div class="card card-body table-responsive text-nowrap">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th scope="col">Asset</th>
-                        <th scope="col">Risk</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let myAsset of myAssets | paginate: { itemsPerPage: 7, currentPage: page }">
-                        <td *ngIf="riskPercentageMap.get(myAsset.id)">
-                            <a [routerLink]="['/asset-mgm', myAsset.asset?.id ]">{{myAsset?.asset.name}}</a>
-                        </td>
-                        <td *ngIf="riskPercentageMap.get(myAsset.id)">{{riskPercentageMap.get(myAsset.id) | percent}}</td>
-                    </tr>
-                </tbody>
-            </table>
-            <div class="text-center">
-                <pagination-controls (pageChange)="page = $event"></pagination-controls>
-            </div>
         </div>
-    </div>
-    <div class="row">
-        <span class="col-md-10 offset-md-1 border-bottom border-secondary">&nbsp;</span>
-    </div>
+        <div class="row">
+            <span class="col-md-10 offset-md-1 border-bottom border-secondary">&nbsp;</span>
+        </div>
     </ng-container>
     <ng-container *ngFor="let myAsset of myAssets">
         <div class="row">
@@ -131,7 +136,8 @@
                                     <ng-container *ngIf="j!==lastSquareRowElement">
                                         <div *ngFor="let i of squareColumnElement" class="col-md-2">
                                             <div class="text-center boston-square-text" [ngClass]="{'low-level': whichLevel(lastSquareRowElement-j, i) === 'low', 'medium-level': whichLevel(lastSquareRowElement-j, i) === 'medium', 'high-level': whichLevel(lastSquareRowElement-j, i) === 'high'}"
-                                                (click)="selectedMatrixCell(lastSquareRowElement-j, i)">
+                                                (click)="selectedMatrixCell(lastSquareRowElement-j, i)" placement="top"
+                                                ngbTooltip="{{attacksToolTipLoaded ? attacksToolTip.get(concatenateAndParse([myAsset.id,lastSquareRowElement-j, i])) : ''}}">
                                                 <ng-container *ngIf="mapAssetAttacks.get(myAsset.id)">
                                                     <a (click)="loadContent(lastSquareRowElement-j, i, myAsset, 'likelihood-vulnerability', assetDetail)">
                                                         <ng-container *ngIf="whichContentByCell(lastSquareRowElement-j, i, myAsset,

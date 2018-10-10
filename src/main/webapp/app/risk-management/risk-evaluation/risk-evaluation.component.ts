@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import { RiskManagementService } from '../risk-management.service';
 import { SelfAssessmentMgmService, SelfAssessmentMgm } from '../../entities/self-assessment-mgm';
 import { CriticalLevelMgm } from '../../entities/critical-level-mgm';
@@ -11,6 +11,7 @@ import { Router } from '@angular/router';
 import * as _ from 'lodash';
 import { ITEMS_PER_PAGE } from '../../shared';
 import { HttpResponse } from '@angular/common/http';
+import { Subscription } from 'rxjs';
 
 @Component({
     // tslint:disable-next-line:component-selector
@@ -18,10 +19,11 @@ import { HttpResponse } from '@angular/common/http';
     templateUrl: './risk-evaluation.component.html',
     styleUrls: ['./risk-evaluation.component.css'],
 })
-export class RiskEvaluationComponent implements OnInit {
+export class RiskEvaluationComponent implements OnInit, OnDestroy {
     private mySelf: SelfAssessmentMgm;
     public myAssets: MyAssetMgm[] = [];
     public criticalLevel: CriticalLevelMgm;
+    private criticalLevelSubscription: Subscription;
     public squareColumnElement: number[];
     public squareRowElement: number[];
     public lastSquareRowElement: number;
@@ -31,12 +33,19 @@ export class RiskEvaluationComponent implements OnInit {
     public mapMaxCriticalLevel: Map<number, number[]> = new Map<number, number[]>();
     public loading = false;
     public criticalBostonSquareLoad = true;
+    public attacksToolTipLoaded = false;
+    public attacksToolTipLoadedTimer = false;
+    public assetToolTipLoaded = false;
+    public assetToolTipLoadedTimer = false;
     public page = 1;
     // public modalContent: string;
     private selectedAttacksChance: MyAssetAttackChance[];
     private closeResult: string;
     private selectedAsset: MyAssetMgm;
     public riskPercentageMap: Map<number/*MyAsset.ID*/, number/*RiskPercentage*/> = new Map<number, number>();
+
+    public attacksToolTip: Map<number, string> = new Map<number, string>();
+    public assetsToolTip: Map<number, string> = new Map<number, string>();
 
     // TODO think on how to make the following vars dynamic
     private MAX_LIKELIHOOD = 5;
@@ -78,6 +87,12 @@ export class RiskEvaluationComponent implements OnInit {
             }
         });
 
+        this.criticalLevelSubscription = this.riskService.subscribeForCriticalLevel().subscribe((res) => {
+            if (res) {
+                this.criticalLevel = res;
+            }
+        });
+
         this.riskService.getMyAssets(this.mySelf).toPromise().then((res) => {
             if (res && res.length > 0) {
                 this.myAssets = res;
@@ -98,6 +113,10 @@ export class RiskEvaluationComponent implements OnInit {
             }
             this.loading = false;
         });
+    }
+
+    ngOnDestroy() {
+        this.criticalLevelSubscription.unsubscribe();
     }
 
     public orderLevels(mapAssetAttacks: Map<number, MyAssetAttackChance[]>): {
@@ -252,6 +271,7 @@ export class RiskEvaluationComponent implements OnInit {
     public whichCriticalContentByCell(row: number, column: number): string {
         const level = row * column;
         let content = '';
+        let fullContent = '';
         let criticalAsset = 0;
         if (this.myAssets.length === 0) {
             return content;
@@ -276,6 +296,7 @@ export class RiskEvaluationComponent implements OnInit {
                     } else {
                         criticalAsset++;
                     }
+                    fullContent = fullContent.concat(myAsset.asset.name + ', ');
                 }
             }
             const critical = lStore[1] * lStore[1];
@@ -283,6 +304,14 @@ export class RiskEvaluationComponent implements OnInit {
             this.riskPercentageMap.set(myAsset.id, riskPercentage);
         }
         content = content.trim();
+        const key = row.toString() + column.toString();
+        this.assetsToolTip.set(Number(key), fullContent.substr(0, fullContent.length - 2));
+        if (!this.assetToolTipLoaded && !this.assetToolTipLoadedTimer) {
+            this.assetToolTipLoadedTimer = true;
+            setTimeout(() => {
+                this.assetToolTipLoaded = true;
+            }, 1000);
+        }
         if (content.length > 0) {
             content = content.substr(0, 12);
             if (criticalAsset > 0) {
@@ -296,6 +325,7 @@ export class RiskEvaluationComponent implements OnInit {
         const attacks = this.mapAssetAttacks.get(myAsset.id);
         const level = row * column;
         let content = '';
+        let fullContent = '';
         let attackCounter = 0;
         if (attacks) {
             switch (type) {
@@ -311,9 +341,9 @@ export class RiskEvaluationComponent implements OnInit {
                             } else {
                                 this.mapMaxCriticalLevel.set(myAsset.id, [level, row]);
                                 if (this.criticalBostonSquareLoad) {
-                                    setInterval(() => {
+                                    setTimeout(() => {
                                         this.criticalBostonSquareLoad = false;
-                                    }, 2000);
+                                    }, 5000);
                                 }
                             }
                             if (content.length === 0) {
@@ -321,6 +351,7 @@ export class RiskEvaluationComponent implements OnInit {
                             } else {
                                 attackCounter++;
                             }
+                            fullContent = fullContent.concat(attack.attackStrategy.name + ', ');
                         }
                     }
                     break;
@@ -341,6 +372,13 @@ export class RiskEvaluationComponent implements OnInit {
             }
         }
         content = content.trim();
+        this.attacksToolTip.set(Number(myAsset.id.toString() + row.toString() + column.toString()), fullContent.substr(0, fullContent.length - 2));
+        if (!this.attacksToolTipLoaded && !this.attacksToolTipLoadedTimer) {
+            this.attacksToolTipLoadedTimer = true;
+            setTimeout(() => {
+                this.attacksToolTipLoaded = true;
+            }, 2500);
+        }
         if (content.length > 0) {
             content = content.substr(0, 12);
             if (attackCounter > 0) {
@@ -348,6 +386,25 @@ export class RiskEvaluationComponent implements OnInit {
             }
         }
         return content;
+    }
+
+    public concatenateAndParse(numbers: number[]): number {
+        let mapIndex = '';
+        for (const elem of numbers) {
+            mapIndex = mapIndex.concat(elem.toString());
+        }
+        return Number(mapIndex);
+    }
+
+    public getAttacksTooTip(myAssetId: number, row: number, column: number): string {
+        if (this.attacksToolTip.size === 0) {
+            return '';
+        }
+        const key = Number(myAssetId.toString() + row.toString() + column.toString());
+        if (this.attacksToolTip.has(Number(key))) {
+            return this.attacksToolTip.get(Number(key));
+        }
+        return '';
     }
 
     public selectedMatrixCell(row: number, column: number) {

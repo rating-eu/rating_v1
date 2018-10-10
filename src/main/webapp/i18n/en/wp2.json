@@ -1,11 +1,27 @@
 {
     "hermeneutApp": {
-        "identifyAsset": {
+        "assetSection": {
             "page": {
-                "root": {
-                    "title": "Identify Asset"
+                "assetIdentification": {
+                    "title": "Asset identification"
+                },
+                "assetClustering": {
+                    "title": "Asset Clustering"
+                },
+                "magnitude": {
+                    "title": "Magnitude"
+                },
+                "cascadeEffects": {
+                    "title": "Cascade effects"
+                },
+                "assetReport": {
+                    "title": "Asset report"
                 }
             }
+        },
+        "messages": {
+            "saved": "Correctly saved",
+            "notfound": "Not found"
         },
         "identifyThreatAgent": {
             "page": {
