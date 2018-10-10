@@ -1,17 +1,17 @@
-import { Injectable, OnInit } from '@angular/core';
-import { HttpClient, HttpResponse } from '@angular/common/http';
-import { Observable } from 'rxjs/Observable';
-import { SERVER_API_URL } from '../../app.constants';
-import { isUndefined } from 'util';
-import { Router } from '@angular/router';
-import { JhiDateUtils } from 'ng-jhipster';
+import {Injectable, OnInit} from '@angular/core';
+import {HttpClient, HttpResponse} from '@angular/common/http';
+import {Observable} from 'rxjs/Observable';
+import {SERVER_API_URL} from '../../app.constants';
+import {isUndefined} from 'util';
+import {Router} from '@angular/router';
+import {JhiDateUtils} from 'ng-jhipster';
 
-import { SelfAssessmentMgm } from './self-assessment-mgm.model';
-import { createRequestOption } from '../../shared';
-import { SessionStorageService } from '../../../../../../node_modules/ngx-webstorage';
-import { Update } from '../../layouts/model/Update';
-import { DatasharingService } from '../../datasharing/datasharing.service';
-import { SelfAssessmentOverview } from '../../my-self-assessments/models/SelfAssessmentOverview.model';
+import {SelfAssessmentMgm} from './self-assessment-mgm.model';
+import {createRequestOption} from '../../shared';
+import {SessionStorageService} from '../../../../../../node_modules/ngx-webstorage';
+import {Update} from '../../layouts/model/Update';
+import {DatasharingService} from '../../datasharing/datasharing.service';
+import {SelfAssessmentOverview} from '../../my-self-assessments/models/SelfAssessmentOverview.model';
 
 export type EntityResponseType = HttpResponse<SelfAssessmentMgm>;
 
@@ -49,7 +49,7 @@ export class SelfAssessmentMgmService implements OnInit {
             return null;
         }
         const customURL = this.selfAssessmentOverviewUrl.replace('{selfID}', selfId.toString());
-        return this.http.get<SelfAssessmentOverview>(`${customURL}`, { observe: 'response' })
+        return this.http.get<SelfAssessmentOverview>(`${customURL}`, {observe: 'response'})
             .map((res: HttpResponse<SelfAssessmentOverview>) => {
                 return res.body;
             });
@@ -58,7 +58,7 @@ export class SelfAssessmentMgmService implements OnInit {
     getSelfAssessment(): SelfAssessmentMgm {
         const self = this.sessionStorage.retrieve(SelfAssessmentMgmService.SELF_ASSESSMENT_KEY);
         if (!self) {
-            this.router.navigate(['/']);
+            this.router.navigate(['/my-self-assessments']);
             return null;
         } else {
             this.selfAssessmentSelected = self;
@@ -74,19 +74,14 @@ export class SelfAssessmentMgmService implements OnInit {
         this.sessionStorage.store(SelfAssessmentMgmService.SELF_ASSESSMENT_KEY, selfAssessment);
     }
 
-    /*
-    checkSelfAssessment(): boolean {
-        if (this.selfAssessmentSelected == null || isUndefined(this.selfAssessmentSelected)) {
-            return false;
-        } else {
-            return true;
-        }
+    isSelfAssessmentSelected(): boolean {
+        const self = this.sessionStorage.retrieve(SelfAssessmentMgmService.SELF_ASSESSMENT_KEY);
+        return self !== null && self !== undefined;
     }
-    */
 
     create(selfAssessment: SelfAssessmentMgm): Observable<EntityResponseType> {
         const copy = this.convert(selfAssessment);
-        return this.http.post<SelfAssessmentMgm>(this.resourceUrl, copy, { observe: 'response' })
+        return this.http.post<SelfAssessmentMgm>(this.resourceUrl, copy, {observe: 'response'})
             .map((res: EntityResponseType) => this.convertResponse(res));
     }
 
@@ -98,18 +93,18 @@ export class SelfAssessmentMgmService implements OnInit {
             this.sessionStorage.store(SelfAssessmentMgmService.SELF_ASSESSMENT_KEY, copy);
         }
 
-        return this.http.put<SelfAssessmentMgm>(this.resourceUrl, copy, { observe: 'response' })
+        return this.http.put<SelfAssessmentMgm>(this.resourceUrl, copy, {observe: 'response'})
             .map((res: EntityResponseType) => this.convertResponse(res));
     }
 
     find(id: number): Observable<EntityResponseType> {
-        return this.http.get<SelfAssessmentMgm>(`${this.resourceUrl}/${id}`, { observe: 'response' })
+        return this.http.get<SelfAssessmentMgm>(`${this.resourceUrl}/${id}`, {observe: 'response'})
             .map((res: EntityResponseType) => this.convertResponse(res));
     }
 
     query(req?: any): Observable<HttpResponse<SelfAssessmentMgm[]>> {
         const options = createRequestOption(req);
-        return this.http.get<SelfAssessmentMgm[]>(this.resourceUrl, { params: options, observe: 'response' })
+        return this.http.get<SelfAssessmentMgm[]>(this.resourceUrl, {params: options, observe: 'response'})
             .map((res: HttpResponse<SelfAssessmentMgm[]>) => this.convertArrayResponse(res));
     }
 
@@ -119,18 +114,18 @@ export class SelfAssessmentMgmService implements OnInit {
             this.sessionStorage.clear(SelfAssessmentMgmService.SELF_ASSESSMENT_KEY);
         }
 
-        return this.http.delete<any>(`${this.resourceUrl}/${id}`, { observe: 'response' });
+        return this.http.delete<any>(`${this.resourceUrl}/${id}`, {observe: 'response'});
     }
 
     search(req?: any): Observable<HttpResponse<SelfAssessmentMgm[]>> {
         const options = createRequestOption(req);
-        return this.http.get<SelfAssessmentMgm[]>(this.resourceSearchUrl, { params: options, observe: 'response' })
+        return this.http.get<SelfAssessmentMgm[]>(this.resourceSearchUrl, {params: options, observe: 'response'})
             .map((res: HttpResponse<SelfAssessmentMgm[]>) => this.convertArrayResponse(res));
     }
 
     private convertResponse(res: EntityResponseType): EntityResponseType {
         const body: SelfAssessmentMgm = this.convertItemFromServer(res.body);
-        return res.clone({ body });
+        return res.clone({body});
     }
 
     private convertArrayResponse(res: HttpResponse<SelfAssessmentMgm[]>): HttpResponse<SelfAssessmentMgm[]> {
@@ -139,7 +134,7 @@ export class SelfAssessmentMgmService implements OnInit {
         for (let i = 0; i < jsonResponse.length; i++) {
             body.push(this.convertItemFromServer(jsonResponse[i]));
         }
-        return res.clone({ body });
+        return res.clone({body});
     }
 
     /**

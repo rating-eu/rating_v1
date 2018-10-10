@@ -20,6 +20,8 @@ import {concatMap, mergeMap} from 'rxjs/operators';
 import * as CryptoJS from 'crypto-js';
 import {forkJoin} from 'rxjs/observable/forkJoin';
 import {SelfAssessmentMgmService} from '../../entities/self-assessment-mgm';
+import {SkillLevel} from '../../entities/enumerations/SkillLevel.enum';
+import {AnswerLikelihood} from '../../entities/enumerations/AnswerLikelihood.enum';
 
 @Component({
     selector: 'jhi-result',
@@ -128,6 +130,25 @@ export class ThreatResultComponent implements OnInit, OnDestroy {
 
                 this.threatAgentsPercentageMap = this.questionsMyAnswersToThreatAgentsPercentageMap(this.questionsMap, this.myAnswers, this.defaultThreatAgents);
                 this.threatAgentsPercentageArray = Array.from(this.threatAgentsPercentageMap.values());
+
+                // Sort ThreatAgents by Skills * Accuracy
+                this.threatAgentsPercentageArray = this.threatAgentsPercentageArray.sort(
+                    (a: Couple<ThreatAgentMgm, Fraction>, b: Couple<ThreatAgentMgm, Fraction>) => {
+                        const aSkill: number = Number(SkillLevel[a.key.skillLevel]);
+                        const bSkill: number = Number(SkillLevel[b.key.skillLevel]);
+
+                        const aAccuracy: number = Number(a.value.toPercentage().toFixed(2));
+                        const bAccuracy: number = Number(b.value.toPercentage().toFixed(2));
+
+                        const aStrength: number = aSkill * aAccuracy;
+                        const bStrength: number = bSkill * bAccuracy;
+
+                        const result =  (aStrength - bStrength) * -1;
+
+                        return result;
+                    }
+                );
+
                 console.log('ThreatAgentsPercentageArray: ' + JSON.stringify(this.threatAgentsPercentageArray));
             }
         );
