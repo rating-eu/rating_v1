@@ -12,20 +12,32 @@ import {LocalStorageService, SessionStorageService} from 'ngx-webstorage';
 import {ErrorHandlerInterceptor} from '../blocks/interceptor/errorhandler.interceptor';
 import {JhiEventManager, JhiLanguageService} from 'ng-jhipster';
 import {NotificationInterceptor} from '../blocks/interceptor/notification.interceptor';
+import { IdentifyAssetService } from './identify-asset.service';
+import { AssetClusteringComponent } from './asset-clustering/asset-clustering.component';
+import { MagnitudeComponent } from './magnitude/magnitude.component';
+import { CascadeEffectsComponent } from './cascade-effects/cascade-effects.component';
+import { AssetReportComponent } from './asset-report/asset-report.component';
 
 @NgModule({
     imports: [
         HermeneutSharedModule,
         CommonModule,
         IdentifyAssetsRoutingModule
-
     ],
     declarations: [
         IdentifyAssetComponent,
+        AssetClusteringComponent,
+        MagnitudeComponent,
+        CascadeEffectsComponent,
+        AssetReportComponent,
         QuestionComponent
     ],
     exports: [
         IdentifyAssetComponent,
+        AssetClusteringComponent,
+        MagnitudeComponent,
+        CascadeEffectsComponent,
+        AssetReportComponent,
         QuestionComponent
     ],
     providers: [
@@ -62,7 +74,8 @@ import {NotificationInterceptor} from '../blocks/interceptor/notification.interc
                 Injector
             ]
         },
-        IdentifyAssetUtilService
+        IdentifyAssetUtilService,
+        IdentifyAssetService
     ]
 })
 export class IdentifyAssetModule {

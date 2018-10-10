@@ -13,13 +13,15 @@ import {ErrorHandlerInterceptor} from '../blocks/interceptor/errorhandler.interc
 import {JhiEventManager, JhiLanguageService} from 'ng-jhipster';
 import {HermeneutSharedModule, JhiLanguageHelper} from '../shared';
 import {CommonModule} from '@angular/common';
+import {NgxPaginationModule} from 'ngx-pagination';
 
 @NgModule({
     imports: [
         CommonModule,
         HermeneutSharedModule,
         IdentifyThreatAgentRoutingModule,
-        DatasharingModule
+        DatasharingModule,
+        NgxPaginationModule
     ],
     declarations: [
         IdentifyThreatAgentComponent,

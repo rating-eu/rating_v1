@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable } from '../../../../../node_modules/rxjs';
+import { Observable, Subject } from '../../../../../node_modules/rxjs';
 import { SERVER_API_URL } from '../app.constants';
 import { SelfAssessmentMgm } from '../entities/self-assessment-mgm';
 import { CriticalLevelMgm } from '../entities/critical-level-mgm';
@@ -13,9 +13,19 @@ export class RiskManagementService {
   private assetServiceUrl = SERVER_API_URL + 'api/my-assets/self-assessment/';
   private attackChanceServiceUrl = SERVER_API_URL + 'api/{selfAssessmentID}/wp4/my-assets/{myAssetID}/attack-chances/';
 
+  private subscriptorForCriticalLevel: Subject<CriticalLevelMgm> = new Subject<CriticalLevelMgm>();
+
   constructor(
     private http: HttpClient
   ) { }
+
+  public subscribeForCriticalLevel(): Observable<CriticalLevelMgm> {
+    return this.subscriptorForCriticalLevel.asObservable();
+}
+
+  public sendUpdateForCriticalLevelToSubscriptor(level: CriticalLevelMgm) {
+      this.subscriptorForCriticalLevel.next(level);
+  }
 
   public getCriticalLevel(self: SelfAssessmentMgm): Observable<CriticalLevelMgm> {
     const uri = this.criticalLevelServiceUrl + self.id.toString();
