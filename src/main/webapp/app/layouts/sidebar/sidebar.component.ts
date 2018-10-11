@@ -99,11 +99,12 @@ export class SidebarComponent implements OnInit {
                 items: [
                     {
                         label: 'Assets',
-                        routerLink: ['/identify-asset'],
+                        // routerLink: ['/identify-asset'],
                         items: [
                             {
                                 label: 'Asset Clustering',
-                                routerLink: ['/identify-asset/asset-clustering']
+                                // routerLink: ['/identify-asset/asset-clustering']
+                                routerLink: ['/identify-asset'],
                             },
                             {
                                 label: 'Magnitudo',

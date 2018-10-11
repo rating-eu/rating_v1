@@ -68,4 +68,8 @@ export class MyCompanyComponent implements OnInit {
             this.jhiAlertService.success('hermeneutApp.messages.saved', null, null);
         });
     }
+
+    previousState() {
+        window.history.back();
+    }
 }

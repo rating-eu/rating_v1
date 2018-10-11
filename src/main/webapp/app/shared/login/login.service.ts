@@ -49,6 +49,7 @@ export class LoginService {
         this.principal.authenticate(null);
         this.sessionStorage.clear();
         this.localStorage.clear();
+        this.sessionStorage.store('isAfterLogin', true);
     }
 
     checkLogin(): Promise<boolean> {

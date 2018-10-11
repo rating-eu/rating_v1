@@ -11,6 +11,7 @@ import { MyCompanyMgmPopupService } from './my-company-mgm-popup.service';
 import { MyCompanyMgmService } from './my-company-mgm.service';
 import { User, UserService } from '../../shared';
 import { CompanyProfileMgm, CompanyProfileMgmService } from '../company-profile-mgm';
+import { SessionStorageService } from 'ngx-webstorage';
 
 @Component({
     selector: 'jhi-my-company-mgm-dialog',
@@ -64,7 +65,7 @@ export class MyCompanyMgmDialogComponent implements OnInit {
     }
 
     private onSaveSuccess(result: MyCompanyMgm) {
-        this.eventManager.broadcast({ name: 'myCompanyListModification', content: 'OK'});
+        this.eventManager.broadcast({ name: 'myCompanyListModification', content: 'OK' });
         this.isSaving = false;
         this.activeModal.dismiss(result);
     }
@@ -96,22 +97,31 @@ export class MyCompanyMgmPopupComponent implements OnInit, OnDestroy {
 
     constructor(
         private route: ActivatedRoute,
-        private myCompanyPopupService: MyCompanyMgmPopupService
-    ) {}
+        private myCompanyPopupService: MyCompanyMgmPopupService,
+        private sessionStorage: SessionStorageService
+    ) { }
 
     ngOnInit() {
-        this.routeSub = this.route.params.subscribe((params) => {
-            if ( params['id'] ) {
-                this.myCompanyPopupService
-                    .open(MyCompanyMgmDialogComponent as Component, params['id']);
-            } else {
-                this.myCompanyPopupService
-                    .open(MyCompanyMgmDialogComponent as Component);
-            }
-        });
+        const isAfterLogIn = this.sessionStorage.retrieve('isAfterLogin');
+        if (isAfterLogIn) {
+            this.sessionStorage.store('isAfterLogin', false);
+            return;
+        } else {
+            this.routeSub = this.route.params.subscribe((params) => {
+                if (params['id']) {
+                    this.myCompanyPopupService
+                        .open(MyCompanyMgmDialogComponent as Component, params['id']);
+                } else {
+                    this.myCompanyPopupService
+                        .open(MyCompanyMgmDialogComponent as Component);
+                }
+            });
+        }
     }
 
     ngOnDestroy() {
-        this.routeSub.unsubscribe();
+        if (this.routeSub) {
+            this.routeSub.unsubscribe();
+        }
     }
 }

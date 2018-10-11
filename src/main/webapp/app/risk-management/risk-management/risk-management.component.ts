@@ -32,6 +32,7 @@ export class RiskManagementComponent implements OnInit {
     public impactLevelDescriptions: ImpactLevelDescriptionMgm[];
     public impactLevels: ImpactLevelMgm[];
     public impactLevelsMap: Map<number, ImpactLevelMgm>;
+    public selectedImpactLevel: ImpactLevelMgm = null;
     private needToCreateImpactLevels: boolean;
 
     constructor(
@@ -125,6 +126,18 @@ export class RiskManagementComponent implements OnInit {
                 this.squareRowElement.push(i);
             }
         });
+    }
+
+    public selectImpactLevel(impactLevel: ImpactLevelMgm) {
+        if (this.selectedImpactLevel) {
+            if (this.selectedImpactLevel.id === impactLevel.id) {
+                this.selectedImpactLevel = null;
+            } else {
+                this.selectedImpactLevel = impactLevel;
+            }
+        } else {
+            this.selectedImpactLevel = impactLevel;
+        }
     }
 
     public switchOnCollapsible(collapsible: string) {
