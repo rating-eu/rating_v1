@@ -63,7 +63,7 @@ export class AssetClusteringComponent implements OnInit, OnDestroy {
     ) {
     }
     ngOnDestroy() {
-        this.eventManager.destroy(this.eventSubscriber);
+        // this.eventManager.destroy(this.eventSubscriber);
     }
     ngOnInit() {
         /*
