@@ -7,6 +7,7 @@
 -->
 <div *ngIf="myCompany">
         <h2><span jhiTranslate="hermeneutApp.myCompany.detail.title">My Company</span> {{myCompany.id}}</h2>
+        <small *ngIf="myCompany.companyProfile.type"><ng-container><b>Company type: </b></ng-container>{{myCompany.companyProfile.type}}</small>
         <hr>
         <jhi-alert-error></jhi-alert-error>
         <dl class="row-md jh-entity-details">
