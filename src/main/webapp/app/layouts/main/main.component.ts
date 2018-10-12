@@ -1,9 +1,9 @@
-import {Component, OnInit} from '@angular/core';
-import {Router, ActivatedRouteSnapshot, NavigationEnd} from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { Router, ActivatedRouteSnapshot, NavigationEnd } from '@angular/router';
 
-import {JhiLanguageHelper, LoginService, Principal} from '../../shared';
-import {DatasharingService} from '../../datasharing/datasharing.service';
-import {Update} from '../model/Update';
+import { JhiLanguageHelper, LoginService, Principal } from '../../shared';
+import { DatasharingService } from '../../datasharing/datasharing.service';
+import { Update } from '../model/Update';
 
 @Component({
     selector: 'jhi-main',
@@ -42,9 +42,10 @@ export class JhiMainComponent implements OnInit {
 
         this.dataSharingService.observeUpdate().subscribe((update: Update) => {
             if (update) {
-                this.updateLayout = update;
+                setTimeout(() => {
+                    this.updateLayout = update;
+                }, 0);
             }
-
             console.log('Update onInit: ' + JSON.stringify(update));
         });
 
@@ -55,6 +56,10 @@ export class JhiMainComponent implements OnInit {
                 this.isAuthenticated = true;
             } else {
                 this.isAuthenticated = false;
+                const updateLayout: Update = new Update();
+                updateLayout.isSidebarCollapsed = true;
+                updateLayout.isSidebarCollapsedByMe = false;
+                this.dataSharingService.updateLayout(updateLayout);
             }
         });
 
