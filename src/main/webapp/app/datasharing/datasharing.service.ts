@@ -11,6 +11,7 @@ import { AttackStrategyMgm } from '../entities/attack-strategy-mgm';
 import { AttackStrategyUpdate } from '../evaluate-weakness/models/attack-strategy-update.model';
 import { QuestionnaireMgm } from '../entities/questionnaire-mgm';
 import { Update } from '../layouts/model/Update';
+import { SelfAssessmentMgm } from '../entities/self-assessment-mgm';
 
 @Injectable()
 export class DatasharingService {
@@ -80,6 +81,7 @@ export class DatasharingService {
     private _attackStrategyUpdateSubject: BehaviorSubject<AttackStrategyUpdate> = new BehaviorSubject<AttackStrategyUpdate>(this._attackStrategyUpdate);
     private _attackStrategyUpdate$: Observable<AttackStrategyUpdate> = this._attackStrategyUpdateSubject.asObservable();
     private layoutUpdateSubject: BehaviorSubject<Update> = new BehaviorSubject<Update>(null);
+    private mySelfAssessmentSubject: BehaviorSubject<SelfAssessmentMgm> = new BehaviorSubject<SelfAssessmentMgm>(null);
 
     private set attackStrategyUpdate(value: AttackStrategyUpdate) {
         this._attackStrategyUpdate = value;
@@ -134,5 +136,17 @@ export class DatasharingService {
 
     observeUpdate(): Observable<Update> {
         return this.layoutUpdateSubject.asObservable();
+    }
+
+    updateMySelfAssessment(mySelf: SelfAssessmentMgm) {
+        this.mySelfAssessmentSubject.next(mySelf);
+    }
+
+    getMySelfAssessment(): SelfAssessmentMgm {
+        return this.mySelfAssessmentSubject.getValue();
+    }
+
+    observeMySelf(): Observable<SelfAssessmentMgm> {
+        return this.mySelfAssessmentSubject.asObservable();
     }
 }
