@@ -175,6 +175,9 @@ export class RiskEvaluationComponent implements OnInit, OnDestroy {
     }
 
     public setMyAssetImpact(myAsset: MyAssetMgm, impact: number) {
+        this.criticalBostonSquareLoad = true;
+        this.assetToolTipLoaded = false;
+        this.assetToolTipLoadedTimer = false;
         console.log(myAsset);
         console.log(impact);
 
@@ -184,6 +187,13 @@ export class RiskEvaluationComponent implements OnInit, OnDestroy {
             const myAssetRes = res.body;
             const index = _.findIndex(this.myAssets, { id: myAssetRes.id });
             this.myAssets.splice(index, 1, myAssetRes);
+            this.criticalBostonSquareLoad = false;
+            if (!this.assetToolTipLoaded && !this.assetToolTipLoadedTimer) {
+                this.assetToolTipLoadedTimer = true;
+                setTimeout(() => {
+                    this.assetToolTipLoaded = true;
+                }, 1500);
+            }
         });
     }
 
