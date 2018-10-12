@@ -24,8 +24,7 @@ export class MyCompanyComponent implements OnInit {
                 private userService: UserService,
                 private myCompanyService: MyCompanyMgmService,
                 private companyProfileService: CompanyProfileMgmService,
-                private jhiAlertService: JhiAlertService,
-                private location: Location) {
+                private jhiAlertService: JhiAlertService) {
     }
 
     ngOnInit() {
