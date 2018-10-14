@@ -134,9 +134,6 @@ jhipster:
                 # Token is valid 24 hours
                 token-validity-in-seconds: 9999999
                 token-validity-in-seconds-for-remember-me: 99999999999999
-    mail: # specific JHipster mail property, for standard properties see MailProperties
-        from: hermeneut@localhost
-        base-url: http://127.0.0.1:8080
     metrics: # DropWizard Metrics configuration, used by MetricsConfiguration
         jmx.enabled: true
         graphite: # Use the "graphite" Maven profile to have the Graphite dependencies
