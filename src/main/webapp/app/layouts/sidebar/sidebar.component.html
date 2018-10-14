@@ -1,4 +1,4 @@
-<nav *ngIf="isAuthenticated()" class="left side-menu" id="sidebar" [ngClass]="{'sidebar-collapsed': isCollapsed}">
+<nav *ngIf="isAuthenticated() && !isCollapsed" class="left side-menu" id="sidebar"><!-- [ngClass]="{'sidebar-collapsed': isCollapsed}"-->
     <div class="menu-title">Menu</div>
     <p-panelMenu [model]="items" [multiple]="false" [style]="{'width':'240px','height':'360px','border':'1px solid #ffffff'}"></p-panelMenu>
 </nav>

@@ -1,23 +1,24 @@
-import {Component, OnInit, OnDestroy} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
-import {HttpResponse, HttpErrorResponse} from '@angular/common/http';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 
-import {Observable} from 'rxjs/Observable';
-import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
-import {JhiEventManager, JhiAlertService} from 'ng-jhipster';
+import { Observable } from 'rxjs/Observable';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
 
-import {SelfAssessmentMgm} from './self-assessment-mgm.model';
-import {SelfAssessmentMgmPopupService} from './self-assessment-mgm-popup.service';
-import {SelfAssessmentMgmService} from './self-assessment-mgm.service';
-import {CompanyProfileMgm, CompanyProfileMgmService} from '../company-profile-mgm';
-import {AccountService, User, UserService} from '../../shared';
-import {CompanyGroupMgm, CompanyGroupMgmService} from '../company-group-mgm';
-import {AssetMgm, AssetMgmService} from '../asset-mgm';
-import {ThreatAgentMgm, ThreatAgentMgmService} from '../threat-agent-mgm';
-import {AttackStrategyMgm, AttackStrategyMgmService} from '../attack-strategy-mgm';
-import {ExternalAuditMgm, ExternalAuditMgmService} from '../external-audit-mgm';
-import {QuestionnaireMgm, QuestionnaireMgmService} from '../questionnaire-mgm';
-import {MyCompanyMgm, MyCompanyMgmService} from '../my-company-mgm';
+import { SelfAssessmentMgm } from './self-assessment-mgm.model';
+import { SelfAssessmentMgmPopupService } from './self-assessment-mgm-popup.service';
+import { SelfAssessmentMgmService } from './self-assessment-mgm.service';
+import { CompanyProfileMgm, CompanyProfileMgmService } from '../company-profile-mgm';
+import { AccountService, User, UserService } from '../../shared';
+import { CompanyGroupMgm, CompanyGroupMgmService } from '../company-group-mgm';
+import { AssetMgm, AssetMgmService } from '../asset-mgm';
+import { ThreatAgentMgm, ThreatAgentMgmService } from '../threat-agent-mgm';
+import { AttackStrategyMgm, AttackStrategyMgmService } from '../attack-strategy-mgm';
+import { ExternalAuditMgm, ExternalAuditMgmService } from '../external-audit-mgm';
+import { QuestionnaireMgm, QuestionnaireMgmService } from '../questionnaire-mgm';
+import { MyCompanyMgm, MyCompanyMgmService } from '../my-company-mgm';
+import { SessionStorageService } from 'ngx-webstorage';
 
 @Component({
     selector: 'jhi-self-assessment-mgm-dialog',
@@ -148,7 +149,7 @@ export class SelfAssessmentMgmDialogComponent implements OnInit {
     }
 
     private onSaveSuccess(result: SelfAssessmentMgm) {
-        this.eventManager.broadcast({name: 'selfAssessmentListModification', content: 'OK'});
+        this.eventManager.broadcast({ name: 'selfAssessmentListModification', content: 'OK' });
         this.isSaving = false;
         this.activeModal.dismiss(result);
     }
@@ -215,23 +216,32 @@ export class SelfAssessmentMgmPopupComponent implements OnInit, OnDestroy {
 
     constructor(
         private route: ActivatedRoute,
-        private selfAssessmentPopupService: SelfAssessmentMgmPopupService
+        private selfAssessmentPopupService: SelfAssessmentMgmPopupService,
+        private sessionStorage: SessionStorageService
     ) {
     }
 
     ngOnInit() {
-        this.routeSub = this.route.params.subscribe((params) => {
-            if (params['id']) {
-                this.selfAssessmentPopupService
-                    .open(SelfAssessmentMgmDialogComponent as Component, params['id']);
-            } else {
-                this.selfAssessmentPopupService
-                    .open(SelfAssessmentMgmDialogComponent as Component);
-            }
-        });
+        const isAfterLogIn = this.sessionStorage.retrieve('isAfterLogin');
+        if (isAfterLogIn) {
+            this.sessionStorage.store('isAfterLogin', false);
+            return;
+        } else {
+            this.routeSub = this.route.params.subscribe((params) => {
+                if (params['id']) {
+                    this.selfAssessmentPopupService
+                        .open(SelfAssessmentMgmDialogComponent as Component, params['id']);
+                } else {
+                    this.selfAssessmentPopupService
+                        .open(SelfAssessmentMgmDialogComponent as Component);
+                }
+            });
+        }
     }
 
     ngOnDestroy() {
-        this.routeSub.unsubscribe();
+        if (this.routeSub) {
+            this.routeSub.unsubscribe();
+        }
     }
 }

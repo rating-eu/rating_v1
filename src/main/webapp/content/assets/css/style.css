@@ -203,7 +203,7 @@ ul li {
 }
 
 .content-page-no-sidenav {
-    margin-left: 71px;
+    /*margin-left: 71px;*/
     overflow: hidden;
 }
 
@@ -600,6 +600,13 @@ body.enlarged.bg-transparent {
     background: #ddd;
     font-size: 12px;
 }
+
+.footer-no-sidenav {
+    left: 0;
+    overflow: hidden;
+}
+
+
 
 /* Notification */
 
@@ -4905,7 +4912,7 @@ h3.timeline-title {
     }
 
     .navbar-custom {
-        margin-left: 70px !important;
+        margin-left: 0px !important;
     }
 
     .topbar .topbar-left {

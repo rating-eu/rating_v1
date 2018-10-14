@@ -1,15 +1,15 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {Router} from '@angular/router';
-import {NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
-import {JhiLanguageService} from 'ng-jhipster';
+import { Component, Input, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { JhiLanguageService } from 'ng-jhipster';
 
-import {ProfileService} from '../profiles/profile.service';
-import {JhiLanguageHelper, Principal, LoginModalService, LoginService} from '../../shared';
+import { ProfileService } from '../profiles/profile.service';
+import { JhiLanguageHelper, Principal, LoginModalService, LoginService } from '../../shared';
 
-import {VERSION} from '../../app.constants';
-import {SidebarComponent} from '../sidebar/sidebar.component';
-import {DatasharingService} from '../../datasharing/datasharing.service';
-import {Update} from '../model/Update';
+import { VERSION } from '../../app.constants';
+import { SidebarComponent } from '../sidebar/sidebar.component';
+import { DatasharingService } from '../../datasharing/datasharing.service';
+import { Update } from '../model/Update';
 
 @Component({
     selector: 'jhi-navbar',
@@ -67,6 +67,13 @@ export class NavbarComponent implements OnInit {
         this.isNavbarCollapsed = true;
     }
 
+    hideShowSideNav() {
+        const updateLayout: Update = this.dataSharingService.getUpdate();
+        updateLayout.isSidebarCollapsed = !this.dataSharingService.getUpdate().isSidebarCollapsed;
+        updateLayout.isSidebarCollapsedByMe = !this.dataSharingService.getUpdate().isSidebarCollapsedByMe;
+        this.dataSharingService.updateLayout(updateLayout);
+    }
+
     isAuthenticated() {
         return this.principal.isAuthenticated();
     }
@@ -81,6 +88,7 @@ export class NavbarComponent implements OnInit {
 
         const update: Update = this.dataSharingService.getUpdate();
         update.isSidebarCollapsed = true;
+        update.isSidebarCollapsedByMe = false;
 
         this.dataSharingService.updateLayout(update);
 

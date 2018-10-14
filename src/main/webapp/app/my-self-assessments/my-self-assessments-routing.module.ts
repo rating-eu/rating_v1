@@ -5,7 +5,10 @@ import {MySelfAssessmentsComponent} from './my-self-assessments.component';
 const routes: Routes = [
     {
         path: '',
-        component: MySelfAssessmentsComponent
+        component: MySelfAssessmentsComponent,
+        data: {
+            pageTitle: 'hermeneutApp.selfAssessment.home.title'
+        },
     }
 ];
 

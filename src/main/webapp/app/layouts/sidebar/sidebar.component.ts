@@ -1,10 +1,11 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, AfterViewInit, HostListener } from '@angular/core';
 import { Principal } from '../../shared';
 import { DatasharingService } from '../../datasharing/datasharing.service';
 import { Update } from '../model/Update';
 
 import { MenuItem } from 'primeng/api';
 import { MyRole } from '../../entities/enumerations/MyRole.enum';
+import { SelfAssessmentMgm, SelfAssessmentMgmService } from '../../entities/self-assessment-mgm';
 
 @Component({
     selector: 'jhi-sidebar',
@@ -12,26 +13,55 @@ import { MyRole } from '../../entities/enumerations/MyRole.enum';
     styleUrls: ['sidebar.css'],
     encapsulation: ViewEncapsulation.None
 })
-export class SidebarComponent implements OnInit {
+export class SidebarComponent implements OnInit, AfterViewInit {
 
     isCollapsed = true;
+    private isCollapsedByMe = false;
     private items: MenuItem[];
     private isCISO = false;
     private isExternal = false;
+    private mySelf: SelfAssessmentMgm;
+
+    windowWidth: number = window.innerWidth;
 
     constructor(
         private principal: Principal,
-        private dataSharingService: DatasharingService
+        private dataSharingService: DatasharingService,
+        private selfAssessmentService: SelfAssessmentMgmService
     ) {
         this.isCollapsed = true;
-        console.log('DataSharing: ' + JSON.stringify(dataSharingService));
+        this.isSidebarCollapseByTheScreen();
+    }
+
+    @HostListener('window:resize', ['$event'])
+    resize(event) {
+        this.windowWidth = window.innerWidth;
+        this.isSidebarCollapseByTheScreen();
+    }
+
+    private isSidebarCollapseByTheScreen() {
+        let updateLayout: Update = this.dataSharingService.getUpdate();
+        if (updateLayout && updateLayout.isSidebarCollapsedByMe) {
+            return;
+        }
+        if (this.windowWidth < 800) {
+            this.isCollapsed = true;
+        } else {
+            this.isCollapsed = false;
+        }
+        if (updateLayout) {
+            updateLayout.isSidebarCollapsed = this.isCollapsed;
+        } else {
+            updateLayout = new Update();
+            updateLayout.isSidebarCollapsed = this.isCollapsed;
+        }
     }
 
     ngOnInit() {
         this.principal.getAuthenticationState().subscribe((identity) => {
             if (identity) {
                 this.isCollapsed = !this.isAuthenticated();
-                console.log('Sidebar isAuthenticated: ' + this.isAuthenticated());
+                // console.log('Sidebar isAuthenticated: ' + this.isAuthenticated());
 
                 updateLayout = new Update();
                 updateLayout.isSidebarCollapsed = this.isCollapsed;
@@ -39,7 +69,7 @@ export class SidebarComponent implements OnInit {
                 this.dataSharingService.updateLayout(updateLayout);
 
                 this.principal.hasAnyAuthority([MyRole[MyRole.ROLE_CISO]]).then((response: boolean) => {
-                    console.log('IsCISO response: ' + response);
+                    // console.log('IsCISO response: ' + response);
 
                     if (response) {
                         this.isCISO = response;
@@ -59,8 +89,8 @@ export class SidebarComponent implements OnInit {
             }
         });
 
-        console.log('HadAnyAuthority direct CISO: ' + this.principal.hasAnyAuthorityDirect([MyRole[MyRole.ROLE_CISO]]));
-        console.log('Role CISO: ' + MyRole[MyRole.ROLE_CISO]);
+        // console.log('HadAnyAuthority direct CISO: ' + this.principal.hasAnyAuthorityDirect([MyRole[MyRole.ROLE_CISO]]));
+        // console.log('Role CISO: ' + MyRole[MyRole.ROLE_CISO]);
         this.createMenuItems();
 
         this.isCollapsed = this.dataSharingService.getUpdate() != null ? this.dataSharingService.getUpdate().isSidebarCollapsed : true;
@@ -76,13 +106,29 @@ export class SidebarComponent implements OnInit {
             }
         });
 
+        this.dataSharingService.observeMySelf().subscribe((mySelf) => {
+            if (mySelf) {
+                this.createMenuItems();
+            }
+        });
+        /*
         setTimeout(() => {
             console.log('Menu Items created after timeout:');
             console.log(JSON.stringify(this.items));
         }, 100 * 1000);
+        */
+    }
+
+    ngAfterViewInit() {
+        this.windowWidth = window.innerWidth;
     }
 
     private createMenuItems(isCISO = false, isExternal = false) {
+        this.mySelf = this.selfAssessmentService.getSelfAssessment();
+        let visibleByMySelf = false;
+        if (this.mySelf) {
+            visibleByMySelf = true;
+        }
         this.items = [
             {
                 label: 'About-Us', icon: 'fa fa-info', routerLink: ['/about-us']
@@ -96,14 +142,16 @@ export class SidebarComponent implements OnInit {
             },
             {
                 label: 'Self Assessment',
+                visible: visibleByMySelf,
                 items: [
                     {
                         label: 'Assets',
-                        routerLink: ['/identify-asset'],
+                        // routerLink: ['/identify-asset'],
                         items: [
                             {
                                 label: 'Asset Clustering',
-                                routerLink: ['/identify-asset/asset-clustering']
+                                // routerLink: ['/identify-asset/asset-clustering']
+                                routerLink: ['/identify-asset'],
                             },
                             {
                                 label: 'Magnitudo',

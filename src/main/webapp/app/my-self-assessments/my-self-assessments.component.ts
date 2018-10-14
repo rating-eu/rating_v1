@@ -7,6 +7,7 @@ import {Router} from '@angular/router';
 import {Subscription} from 'rxjs/Subscription';
 import {JhiEventManager} from 'ng-jhipster';
 import {MyAssetMgm, MyAssetMgmService} from '../entities/my-asset-mgm';
+import { DatasharingService } from '../datasharing/datasharing.service';
 
 @Component({
     selector: 'jhi-my-self-assessments',
@@ -29,7 +30,8 @@ export class MySelfAssessmentsComponent implements OnInit {
                 private myCompanyService: MyCompanyMgmService,
                 private selfAssessmentService: SelfAssessmentMgmService,
                 private eventManager: JhiEventManager,
-                private myAssetService: MyAssetMgmService
+                private myAssetService: MyAssetMgmService,
+                private dataSharingService: DatasharingService
     ) {
     }
 
@@ -74,6 +76,7 @@ export class MySelfAssessmentsComponent implements OnInit {
 
     selectSelfAssessment(selfAssessment: SelfAssessmentMgm) {
         this.selfAssessmentService.setSelfAssessment(selfAssessment);
+        this.dataSharingService.updateMySelfAssessment(selfAssessment);
         const link = ['/'];
         // this.mySidemenuService.roomeMenu('collapsed');
         this.router.navigate(link);
