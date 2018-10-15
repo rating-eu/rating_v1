@@ -360,6 +360,11 @@
             <artifactId>commons-math3</artifactId>
             <version>3.6.1</version>
         </dependency>
+        <dependency>
+            <groupId>com.coderplus.maven.plugins</groupId>
+            <artifactId>copy-rename-maven-plugin</artifactId>
+            <version>1.0.1</version>
+        </dependency>
         <!-- jhipster-needle-maven-add-dependency -->
     </dependencies>
 
@@ -510,6 +515,24 @@
                                 </resource>
                             </resources>
                         </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>com.coderplus.maven.plugins</groupId>
+                <artifactId>copy-rename-maven-plugin</artifactId>
+                <version>1.0</version>
+                <executions>
+                    <execution>
+                        <id>patch-angular-node_modules</id>
+                        <phase>process-sources</phase>
+                        <configuration>
+                            <sourceFile>patch/node_modules/@angular/router/esm5/router.js</sourceFile>
+                            <destinationFile>node_modules/@angular/router/esm5/router.js</destinationFile>
+                        </configuration>
+                        <goals>
+                            <goal>copy</goal>
+                        </goals>
                     </execution>
                 </executions>
             </plugin>
@@ -825,6 +848,7 @@
                             </webResources>
                         </configuration>
                     </plugin>
+
                 </plugins>
             </build>
             <properties>
@@ -893,6 +917,7 @@
                         <executions>
                             <execution>
                                 <id>install node and yarn</id>
+                                <phase>generate-sources</phase>
                                 <goals>
                                     <goal>install-node-and-yarn</goal>
                                 </goals>
@@ -903,6 +928,7 @@
                             </execution>
                             <execution>
                                 <id>yarn install</id>
+                                <phase>generate-sources</phase>
                                 <goals>
                                     <goal>yarn</goal>
                                 </goals>
