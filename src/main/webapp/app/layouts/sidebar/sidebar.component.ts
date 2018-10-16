@@ -91,7 +91,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
         // console.log('HadAnyAuthority direct CISO: ' + this.principal.hasAnyAuthorityDirect([MyRole[MyRole.ROLE_CISO]]));
         // console.log('Role CISO: ' + MyRole[MyRole.ROLE_CISO]);
-        this.createMenuItems();
+        // this.createMenuItems();
 
         this.isCollapsed = this.dataSharingService.getUpdate() != null ? this.dataSharingService.getUpdate().isSidebarCollapsed : true;
 
@@ -108,7 +108,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
         this.dataSharingService.observeMySelf().subscribe((mySelf) => {
             if (mySelf) {
-                this.createMenuItems();
+                this.createMenuItems(this.isCISO, this.isExternal);
             }
         });
         /*

@@ -3,11 +3,13 @@ import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent, HttpErrorResponse
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/do';
 import { LoginService } from '../../shared/login/login.service';
+import { DatasharingService } from '../../datasharing/datasharing.service';
 
 export class AuthExpiredInterceptor implements HttpInterceptor {
 
     constructor(
-        private injector: Injector
+        private injector: Injector,
+        private dataSharingService: DatasharingService
     ) {}
 
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
@@ -16,6 +18,7 @@ export class AuthExpiredInterceptor implements HttpInterceptor {
                 if (err.status === 401) {
                     const loginService: LoginService = this.injector.get(LoginService);
                     loginService.logout();
+                    this.dataSharingService.clear();
                 }
             }
         });
