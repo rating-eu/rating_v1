@@ -1,12 +1,13 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import {Component, OnInit, OnDestroy} from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
 
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { JhiEventManager } from 'ng-jhipster';
+import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
+import {JhiEventManager} from 'ng-jhipster';
 
-import { EconomicCoefficientsMgm } from './economic-coefficients-mgm.model';
-import { EconomicCoefficientsMgmPopupService } from './economic-coefficients-mgm-popup.service';
-import { EconomicCoefficientsMgmService } from './economic-coefficients-mgm.service';
+import {EconomicCoefficientsMgm} from './economic-coefficients-mgm.model';
+import {EconomicCoefficientsMgmPopupService} from './economic-coefficients-mgm-popup.service';
+import {EconomicCoefficientsMgmService} from './economic-coefficients-mgm.service';
+import {SessionStorageService} from 'ngx-webstorage';
 
 @Component({
     selector: 'jhi-economic-coefficients-mgm-delete-dialog',
@@ -48,17 +49,27 @@ export class EconomicCoefficientsMgmDeletePopupComponent implements OnInit, OnDe
 
     constructor(
         private route: ActivatedRoute,
-        private economicCoefficientsPopupService: EconomicCoefficientsMgmPopupService
-    ) {}
+        private economicCoefficientsPopupService: EconomicCoefficientsMgmPopupService,
+        private sessionStorage: SessionStorageService,
+    ) {
+    }
 
     ngOnInit() {
-        this.routeSub = this.route.params.subscribe((params) => {
-            this.economicCoefficientsPopupService
-                .open(EconomicCoefficientsMgmDeleteDialogComponent as Component, params['id']);
-        });
+        const isAfterLogIn = this.sessionStorage.retrieve('isAfterLogin');
+        if (isAfterLogIn) {
+            this.sessionStorage.store('isAfterLogin', false);
+            return;
+        } else {
+            this.routeSub = this.route.params.subscribe((params) => {
+                this.economicCoefficientsPopupService
+                    .open(EconomicCoefficientsMgmDeleteDialogComponent as Component, params['id']);
+            });
+        }
     }
 
     ngOnDestroy() {
-        this.routeSub.unsubscribe();
+        if (this.routeSub) {
+            this.routeSub.unsubscribe();
+        }
     }
 }

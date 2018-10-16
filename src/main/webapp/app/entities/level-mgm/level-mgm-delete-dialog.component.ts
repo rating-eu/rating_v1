@@ -7,6 +7,7 @@ import { JhiEventManager } from 'ng-jhipster';
 import { LevelMgm } from './level-mgm.model';
 import { LevelMgmPopupService } from './level-mgm-popup.service';
 import { LevelMgmService } from './level-mgm.service';
+import {SessionStorageService} from 'ngx-webstorage';
 
 @Component({
     selector: 'jhi-level-mgm-delete-dialog',
@@ -48,17 +49,26 @@ export class LevelMgmDeletePopupComponent implements OnInit, OnDestroy {
 
     constructor(
         private route: ActivatedRoute,
-        private levelPopupService: LevelMgmPopupService
+        private levelPopupService: LevelMgmPopupService,
+        private sessionStorage: SessionStorageService
     ) {}
 
     ngOnInit() {
-        this.routeSub = this.route.params.subscribe((params) => {
-            this.levelPopupService
-                .open(LevelMgmDeleteDialogComponent as Component, params['id']);
-        });
+        const isAfterLogIn = this.sessionStorage.retrieve('isAfterLogin');
+        if (isAfterLogIn) {
+            this.sessionStorage.store('isAfterLogin', false);
+            return;
+        } else {
+            this.routeSub = this.route.params.subscribe((params) => {
+                this.levelPopupService
+                    .open(LevelMgmDeleteDialogComponent as Component, params['id']);
+            });
+        }
     }
 
     ngOnDestroy() {
-        this.routeSub.unsubscribe();
+        if(this.routeSub){
+            this.routeSub.unsubscribe();
+        }
     }
 }

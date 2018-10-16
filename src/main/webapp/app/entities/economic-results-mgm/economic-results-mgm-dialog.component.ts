@@ -1,15 +1,16 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
+import {Component, OnInit, OnDestroy} from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
+import {HttpResponse, HttpErrorResponse} from '@angular/common/http';
 
-import { Observable } from 'rxjs/Observable';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
+import {Observable} from 'rxjs/Observable';
+import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
+import {JhiEventManager, JhiAlertService} from 'ng-jhipster';
 
-import { EconomicResultsMgm } from './economic-results-mgm.model';
-import { EconomicResultsMgmPopupService } from './economic-results-mgm-popup.service';
-import { EconomicResultsMgmService } from './economic-results-mgm.service';
-import { SelfAssessmentMgm, SelfAssessmentMgmService } from '../self-assessment-mgm';
+import {EconomicResultsMgm} from './economic-results-mgm.model';
+import {EconomicResultsMgmPopupService} from './economic-results-mgm-popup.service';
+import {EconomicResultsMgmService} from './economic-results-mgm.service';
+import {SelfAssessmentMgm, SelfAssessmentMgmService} from '../self-assessment-mgm';
+import {SessionStorageService} from 'ngx-webstorage';
 
 @Component({
     selector: 'jhi-economic-results-mgm-dialog',
@@ -69,7 +70,7 @@ export class EconomicResultsMgmDialogComponent implements OnInit {
     }
 
     private onSaveSuccess(result: EconomicResultsMgm) {
-        this.eventManager.broadcast({ name: 'economicResultsListModification', content: 'OK'});
+        this.eventManager.broadcast({name: 'economicResultsListModification', content: 'OK'});
         this.isSaving = false;
         this.activeModal.dismiss(result);
     }
@@ -97,22 +98,32 @@ export class EconomicResultsMgmPopupComponent implements OnInit, OnDestroy {
 
     constructor(
         private route: ActivatedRoute,
-        private economicResultsPopupService: EconomicResultsMgmPopupService
-    ) {}
+        private economicResultsPopupService: EconomicResultsMgmPopupService,
+        private sessionStorage: SessionStorageService
+    ) {
+    }
 
     ngOnInit() {
-        this.routeSub = this.route.params.subscribe((params) => {
-            if ( params['id'] ) {
-                this.economicResultsPopupService
-                    .open(EconomicResultsMgmDialogComponent as Component, params['id']);
-            } else {
-                this.economicResultsPopupService
-                    .open(EconomicResultsMgmDialogComponent as Component);
-            }
-        });
+        const isAfterLogIn = this.sessionStorage.retrieve('isAfterLogin');
+        if (isAfterLogIn) {
+            this.sessionStorage.store('isAfterLogin', false);
+            return;
+        } else {
+            this.routeSub = this.route.params.subscribe((params) => {
+                if (params['id']) {
+                    this.economicResultsPopupService
+                        .open(EconomicResultsMgmDialogComponent as Component, params['id']);
+                } else {
+                    this.economicResultsPopupService
+                        .open(EconomicResultsMgmDialogComponent as Component);
+                }
+            });
+        }
     }
 
     ngOnDestroy() {
-        this.routeSub.unsubscribe();
+        if(this.routeSub){
+            this.routeSub.unsubscribe();
+        }
     }
 }

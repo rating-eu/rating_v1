@@ -7,6 +7,7 @@ import { JhiEventManager } from 'ng-jhipster';
 import { AttackCostMgm } from './attack-cost-mgm.model';
 import { AttackCostMgmPopupService } from './attack-cost-mgm-popup.service';
 import { AttackCostMgmService } from './attack-cost-mgm.service';
+import {SessionStorageService} from 'ngx-webstorage';
 
 @Component({
     selector: 'jhi-attack-cost-mgm-delete-dialog',
@@ -48,17 +49,26 @@ export class AttackCostMgmDeletePopupComponent implements OnInit, OnDestroy {
 
     constructor(
         private route: ActivatedRoute,
-        private attackCostPopupService: AttackCostMgmPopupService
+        private attackCostPopupService: AttackCostMgmPopupService,
+        private sessionStorage: SessionStorageService
     ) {}
 
     ngOnInit() {
-        this.routeSub = this.route.params.subscribe((params) => {
-            this.attackCostPopupService
-                .open(AttackCostMgmDeleteDialogComponent as Component, params['id']);
-        });
+        const isAfterLogIn = this.sessionStorage.retrieve('isAfterLogin');
+        if (isAfterLogIn) {
+            this.sessionStorage.store('isAfterLogin', false);
+            return;
+        } else {
+            this.routeSub = this.route.params.subscribe((params) => {
+                this.attackCostPopupService
+                    .open(AttackCostMgmDeleteDialogComponent as Component, params['id']);
+            });
+        }
     }
 
     ngOnDestroy() {
-        this.routeSub.unsubscribe();
+        if(this.routeSub){
+            this.routeSub.unsubscribe();
+        }
     }
 }

@@ -11,6 +11,7 @@ import { AttackCostMgmPopupService } from './attack-cost-mgm-popup.service';
 import { AttackCostMgmService } from './attack-cost-mgm.service';
 import { DirectAssetMgm, DirectAssetMgmService } from '../direct-asset-mgm';
 import { IndirectAssetMgm, IndirectAssetMgmService } from '../indirect-asset-mgm';
+import {SessionStorageService} from 'ngx-webstorage';
 
 @Component({
     selector: 'jhi-attack-cost-mgm-dialog',
@@ -96,22 +97,31 @@ export class AttackCostMgmPopupComponent implements OnInit, OnDestroy {
 
     constructor(
         private route: ActivatedRoute,
-        private attackCostPopupService: AttackCostMgmPopupService
+        private attackCostPopupService: AttackCostMgmPopupService,
+        private sessionStorage: SessionStorageService
     ) {}
 
     ngOnInit() {
-        this.routeSub = this.route.params.subscribe((params) => {
-            if ( params['id'] ) {
-                this.attackCostPopupService
-                    .open(AttackCostMgmDialogComponent as Component, params['id']);
-            } else {
-                this.attackCostPopupService
-                    .open(AttackCostMgmDialogComponent as Component);
-            }
-        });
+        const isAfterLogIn = this.sessionStorage.retrieve('isAfterLogin');
+        if (isAfterLogIn) {
+            this.sessionStorage.store('isAfterLogin', false);
+            return;
+        } else {
+            this.routeSub = this.route.params.subscribe((params) => {
+                if ( params['id'] ) {
+                    this.attackCostPopupService
+                        .open(AttackCostMgmDialogComponent as Component, params['id']);
+                } else {
+                    this.attackCostPopupService
+                        .open(AttackCostMgmDialogComponent as Component);
+                }
+            });
+        }
     }
 
     ngOnDestroy() {
-        this.routeSub.unsubscribe();
+        if(this.routeSub){
+            this.routeSub.unsubscribe();
+        }
     }
 }

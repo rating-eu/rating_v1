@@ -1,12 +1,13 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import {Component, OnInit, OnDestroy} from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
 
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { JhiEventManager } from 'ng-jhipster';
+import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
+import {JhiEventManager} from 'ng-jhipster';
 
-import { AssetMgm } from './asset-mgm.model';
-import { AssetMgmPopupService } from './asset-mgm-popup.service';
-import { AssetMgmService } from './asset-mgm.service';
+import {AssetMgm} from './asset-mgm.model';
+import {AssetMgmPopupService} from './asset-mgm-popup.service';
+import {AssetMgmService} from './asset-mgm.service';
+import {SessionStorageService} from 'ngx-webstorage';
 
 @Component({
     selector: 'jhi-asset-mgm-delete-dialog',
@@ -48,17 +49,27 @@ export class AssetMgmDeletePopupComponent implements OnInit, OnDestroy {
 
     constructor(
         private route: ActivatedRoute,
-        private assetPopupService: AssetMgmPopupService
-    ) {}
+        private assetPopupService: AssetMgmPopupService,
+        private sessionStorage: SessionStorageService
+    ) {
+    }
 
     ngOnInit() {
-        this.routeSub = this.route.params.subscribe((params) => {
-            this.assetPopupService
-                .open(AssetMgmDeleteDialogComponent as Component, params['id']);
-        });
+        const isAfterLogIn = this.sessionStorage.retrieve('isAfterLogin');
+        if (isAfterLogIn) {
+            this.sessionStorage.store('isAfterLogin', false);
+            return;
+        } else {
+            this.routeSub = this.route.params.subscribe((params) => {
+                this.assetPopupService
+                    .open(AssetMgmDeleteDialogComponent as Component, params['id']);
+            });
+        }
     }
 
     ngOnDestroy() {
-        this.routeSub.unsubscribe();
+        if(this.routeSub){
+            this.routeSub.unsubscribe();
+        }
     }
 }

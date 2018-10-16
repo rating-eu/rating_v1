@@ -7,6 +7,7 @@ import { JhiEventManager } from 'ng-jhipster';
 import { SelfAssessmentMgm } from './self-assessment-mgm.model';
 import { SelfAssessmentMgmPopupService } from './self-assessment-mgm-popup.service';
 import { SelfAssessmentMgmService } from './self-assessment-mgm.service';
+import {SessionStorageService} from 'ngx-webstorage';
 
 @Component({
     selector: 'jhi-self-assessment-mgm-delete-dialog',
@@ -49,17 +50,27 @@ export class SelfAssessmentMgmDeletePopupComponent implements OnInit, OnDestroy 
 
     constructor(
         private route: ActivatedRoute,
-        private selfAssessmentPopupService: SelfAssessmentMgmPopupService
+        private selfAssessmentPopupService: SelfAssessmentMgmPopupService,
+        private sessionStorage: SessionStorageService
     ) {}
 
     ngOnInit() {
-        this.routeSub = this.route.params.subscribe((params) => {
-            this.selfAssessmentPopupService
-                .open(SelfAssessmentMgmDeleteDialogComponent as Component, params['id']);
-        });
+        const isAfterLogIn = this.sessionStorage.retrieve('isAfterLogin');
+
+        if (isAfterLogIn) {
+            this.sessionStorage.store('isAfterLogin', false);
+            return;
+        } else {
+            this.routeSub = this.route.params.subscribe((params) => {
+                this.selfAssessmentPopupService
+                    .open(SelfAssessmentMgmDeleteDialogComponent as Component, params['id']);
+            });
+        }
     }
 
     ngOnDestroy() {
-        this.routeSub.unsubscribe();
+        if (this.routeSub) {
+            this.routeSub.unsubscribe();
+        }
     }
 }

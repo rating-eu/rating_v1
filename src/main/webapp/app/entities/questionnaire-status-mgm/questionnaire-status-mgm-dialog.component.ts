@@ -12,6 +12,7 @@ import { QuestionnaireStatusMgmService } from './questionnaire-status-mgm.servic
 import { SelfAssessmentMgm, SelfAssessmentMgmService } from '../self-assessment-mgm';
 import { QuestionnaireMgm, QuestionnaireMgmService } from '../questionnaire-mgm';
 import { User, UserService } from '../../shared';
+import {SessionStorageService} from 'ngx-webstorage';
 
 @Component({
     selector: 'jhi-questionnaire-status-mgm-dialog',
@@ -128,22 +129,32 @@ export class QuestionnaireStatusMgmPopupComponent implements OnInit, OnDestroy {
 
     constructor(
         private route: ActivatedRoute,
-        private questionnaireStatusPopupService: QuestionnaireStatusMgmPopupService
+        private questionnaireStatusPopupService: QuestionnaireStatusMgmPopupService,
+        private sessionStorage: SessionStorageService
     ) {}
 
     ngOnInit() {
-        this.routeSub = this.route.params.subscribe((params) => {
-            if ( params['id'] ) {
-                this.questionnaireStatusPopupService
-                    .open(QuestionnaireStatusMgmDialogComponent as Component, params['id']);
-            } else {
-                this.questionnaireStatusPopupService
-                    .open(QuestionnaireStatusMgmDialogComponent as Component);
-            }
-        });
+        const isAfterLogIn = this.sessionStorage.retrieve('isAfterLogin');
+
+        if (isAfterLogIn) {
+            this.sessionStorage.store('isAfterLogin', false);
+            return;
+        } else {
+            this.routeSub = this.route.params.subscribe((params) => {
+                if ( params['id'] ) {
+                    this.questionnaireStatusPopupService
+                        .open(QuestionnaireStatusMgmDialogComponent as Component, params['id']);
+                } else {
+                    this.questionnaireStatusPopupService
+                        .open(QuestionnaireStatusMgmDialogComponent as Component);
+                }
+            });
+        }
     }
 
     ngOnDestroy() {
-        this.routeSub.unsubscribe();
+        if(this.routeSub){
+            this.routeSub.unsubscribe();
+        }
     }
 }

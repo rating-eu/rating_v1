@@ -10,6 +10,7 @@ import { ThreatAgentMgm } from './threat-agent-mgm.model';
 import { ThreatAgentMgmPopupService } from './threat-agent-mgm-popup.service';
 import { ThreatAgentMgmService } from './threat-agent-mgm.service';
 import { MotivationMgm, MotivationMgmService } from '../motivation-mgm';
+import {SessionStorageService} from 'ngx-webstorage';
 
 @Component({
     selector: 'jhi-threat-agent-mgm-dialog',
@@ -115,22 +116,31 @@ export class ThreatAgentMgmPopupComponent implements OnInit, OnDestroy {
 
     constructor(
         private route: ActivatedRoute,
-        private threatAgentPopupService: ThreatAgentMgmPopupService
+        private threatAgentPopupService: ThreatAgentMgmPopupService,
+        private sessionStorage: SessionStorageService
     ) {}
 
     ngOnInit() {
-        this.routeSub = this.route.params.subscribe((params) => {
-            if ( params['id'] ) {
-                this.threatAgentPopupService
-                    .open(ThreatAgentMgmDialogComponent as Component, params['id']);
-            } else {
-                this.threatAgentPopupService
-                    .open(ThreatAgentMgmDialogComponent as Component);
-            }
-        });
+        const isAfterLogIn = this.sessionStorage.retrieve('isAfterLogin');
+        if (isAfterLogIn) {
+            this.sessionStorage.store('isAfterLogin', false);
+            return;
+        } else {
+            this.routeSub = this.route.params.subscribe((params) => {
+                if ( params['id'] ) {
+                    this.threatAgentPopupService
+                        .open(ThreatAgentMgmDialogComponent as Component, params['id']);
+                } else {
+                    this.threatAgentPopupService
+                        .open(ThreatAgentMgmDialogComponent as Component);
+                }
+            });
+        }
     }
 
     ngOnDestroy() {
-        this.routeSub.unsubscribe();
+        if(this.routeSub){
+            this.routeSub.unsubscribe();
+        }
     }
 }

@@ -10,6 +10,7 @@ import { LikelihoodScaleMgm } from './likelihood-scale-mgm.model';
 import { LikelihoodScaleMgmPopupService } from './likelihood-scale-mgm-popup.service';
 import { LikelihoodScaleMgmService } from './likelihood-scale-mgm.service';
 import { SelfAssessmentMgm, SelfAssessmentMgmService } from '../self-assessment-mgm';
+import {SessionStorageService} from 'ngx-webstorage';
 
 @Component({
     selector: 'jhi-likelihood-scale-mgm-dialog',
@@ -86,22 +87,31 @@ export class LikelihoodScaleMgmPopupComponent implements OnInit, OnDestroy {
 
     constructor(
         private route: ActivatedRoute,
-        private likelihoodScalePopupService: LikelihoodScaleMgmPopupService
+        private likelihoodScalePopupService: LikelihoodScaleMgmPopupService,
+        private sessionStorage: SessionStorageService
     ) {}
 
     ngOnInit() {
-        this.routeSub = this.route.params.subscribe((params) => {
-            if ( params['id'] ) {
-                this.likelihoodScalePopupService
-                    .open(LikelihoodScaleMgmDialogComponent as Component, params['id']);
-            } else {
-                this.likelihoodScalePopupService
-                    .open(LikelihoodScaleMgmDialogComponent as Component);
-            }
-        });
+        const isAfterLogIn = this.sessionStorage.retrieve('isAfterLogin');
+        if (isAfterLogIn) {
+            this.sessionStorage.store('isAfterLogin', false);
+            return;
+        } else {
+            this.routeSub = this.route.params.subscribe((params) => {
+                if ( params['id'] ) {
+                    this.likelihoodScalePopupService
+                        .open(LikelihoodScaleMgmDialogComponent as Component, params['id']);
+                } else {
+                    this.likelihoodScalePopupService
+                        .open(LikelihoodScaleMgmDialogComponent as Component);
+                }
+            });
+        }
     }
 
     ngOnDestroy() {
-        this.routeSub.unsubscribe();
+        if(this.routeSub){
+            this.routeSub.unsubscribe();
+        }
     }
 }

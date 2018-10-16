@@ -1,12 +1,13 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import {Component, OnInit, OnDestroy} from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
 
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { JhiEventManager } from 'ng-jhipster';
+import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
+import {JhiEventManager} from 'ng-jhipster';
 
-import { CompanyProfileMgm } from './company-profile-mgm.model';
-import { CompanyProfileMgmPopupService } from './company-profile-mgm-popup.service';
-import { CompanyProfileMgmService } from './company-profile-mgm.service';
+import {CompanyProfileMgm} from './company-profile-mgm.model';
+import {CompanyProfileMgmPopupService} from './company-profile-mgm-popup.service';
+import {CompanyProfileMgmService} from './company-profile-mgm.service';
+import {SessionStorageService} from 'ngx-webstorage';
 
 @Component({
     selector: 'jhi-company-profile-mgm-delete-dialog',
@@ -48,17 +49,27 @@ export class CompanyProfileMgmDeletePopupComponent implements OnInit, OnDestroy 
 
     constructor(
         private route: ActivatedRoute,
-        private companyProfilePopupService: CompanyProfileMgmPopupService
-    ) {}
+        private companyProfilePopupService: CompanyProfileMgmPopupService,
+        private sessionStorage: SessionStorageService
+    ) {
+    }
 
     ngOnInit() {
-        this.routeSub = this.route.params.subscribe((params) => {
-            this.companyProfilePopupService
-                .open(CompanyProfileMgmDeleteDialogComponent as Component, params['id']);
-        });
+        const isAfterLogIn = this.sessionStorage.retrieve('isAfterLogin');
+        if (isAfterLogIn) {
+            this.sessionStorage.store('isAfterLogin', false);
+            return;
+        } else {
+            this.routeSub = this.route.params.subscribe((params) => {
+                this.companyProfilePopupService
+                    .open(CompanyProfileMgmDeleteDialogComponent as Component, params['id']);
+            });
+        }
     }
 
     ngOnDestroy() {
-        this.routeSub.unsubscribe();
+        if(this.routeSub){
+            this.routeSub.unsubscribe();
+        }
     }
 }

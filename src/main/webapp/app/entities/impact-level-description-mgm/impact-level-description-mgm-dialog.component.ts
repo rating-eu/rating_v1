@@ -9,6 +9,7 @@ import { JhiEventManager } from 'ng-jhipster';
 import { ImpactLevelDescriptionMgm } from './impact-level-description-mgm.model';
 import { ImpactLevelDescriptionMgmPopupService } from './impact-level-description-mgm-popup.service';
 import { ImpactLevelDescriptionMgmService } from './impact-level-description-mgm.service';
+import {SessionStorageService} from 'ngx-webstorage';
 
 @Component({
     selector: 'jhi-impact-level-description-mgm-dialog',
@@ -71,22 +72,31 @@ export class ImpactLevelDescriptionMgmPopupComponent implements OnInit, OnDestro
 
     constructor(
         private route: ActivatedRoute,
-        private impactLevelDescriptionPopupService: ImpactLevelDescriptionMgmPopupService
+        private impactLevelDescriptionPopupService: ImpactLevelDescriptionMgmPopupService,
+        private sessionStorage: SessionStorageService
     ) {}
 
     ngOnInit() {
-        this.routeSub = this.route.params.subscribe((params) => {
-            if ( params['id'] ) {
-                this.impactLevelDescriptionPopupService
-                    .open(ImpactLevelDescriptionMgmDialogComponent as Component, params['id']);
-            } else {
-                this.impactLevelDescriptionPopupService
-                    .open(ImpactLevelDescriptionMgmDialogComponent as Component);
-            }
-        });
+        const isAfterLogIn = this.sessionStorage.retrieve('isAfterLogin');
+        if (isAfterLogIn) {
+            this.sessionStorage.store('isAfterLogin', false);
+            return;
+        } else {
+            this.routeSub = this.route.params.subscribe((params) => {
+                if ( params['id'] ) {
+                    this.impactLevelDescriptionPopupService
+                        .open(ImpactLevelDescriptionMgmDialogComponent as Component, params['id']);
+                } else {
+                    this.impactLevelDescriptionPopupService
+                        .open(ImpactLevelDescriptionMgmDialogComponent as Component);
+                }
+            });
+        }
     }
 
     ngOnDestroy() {
-        this.routeSub.unsubscribe();
+        if (this.routeSub) {
+            this.routeSub.unsubscribe();
+        }
     }
 }
