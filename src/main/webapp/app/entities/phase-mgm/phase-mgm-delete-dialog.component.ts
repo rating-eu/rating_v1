@@ -7,6 +7,7 @@ import { JhiEventManager } from 'ng-jhipster';
 import { PhaseMgm } from './phase-mgm.model';
 import { PhaseMgmPopupService } from './phase-mgm-popup.service';
 import { PhaseMgmService } from './phase-mgm.service';
+import {SessionStorageService} from 'ngx-webstorage';
 
 @Component({
     selector: 'jhi-phase-mgm-delete-dialog',
@@ -48,17 +49,26 @@ export class PhaseMgmDeletePopupComponent implements OnInit, OnDestroy {
 
     constructor(
         private route: ActivatedRoute,
-        private phasePopupService: PhaseMgmPopupService
+        private phasePopupService: PhaseMgmPopupService,
+        private sessionStorage: SessionStorageService
     ) {}
 
     ngOnInit() {
-        this.routeSub = this.route.params.subscribe((params) => {
-            this.phasePopupService
-                .open(PhaseMgmDeleteDialogComponent as Component, params['id']);
-        });
+        const isAfterLogIn = this.sessionStorage.retrieve('isAfterLogin');
+        if (isAfterLogIn) {
+            this.sessionStorage.store('isAfterLogin', false);
+            return;
+        } else {
+            this.routeSub = this.route.params.subscribe((params) => {
+                this.phasePopupService
+                    .open(PhaseMgmDeleteDialogComponent as Component, params['id']);
+            });
+        }
     }
 
     ngOnDestroy() {
-        this.routeSub.unsubscribe();
+        if(this.routeSub){
+            this.routeSub.unsubscribe();
+        }
     }
 }

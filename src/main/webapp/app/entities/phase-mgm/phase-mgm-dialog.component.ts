@@ -9,6 +9,7 @@ import { JhiEventManager } from 'ng-jhipster';
 import { PhaseMgm } from './phase-mgm.model';
 import { PhaseMgmPopupService } from './phase-mgm-popup.service';
 import { PhaseMgmService } from './phase-mgm.service';
+import {SessionStorageService} from 'ngx-webstorage';
 
 @Component({
     selector: 'jhi-phase-mgm-dialog',
@@ -71,22 +72,31 @@ export class PhaseMgmPopupComponent implements OnInit, OnDestroy {
 
     constructor(
         private route: ActivatedRoute,
-        private phasePopupService: PhaseMgmPopupService
+        private phasePopupService: PhaseMgmPopupService,
+        private sessionStorage: SessionStorageService
     ) {}
 
     ngOnInit() {
-        this.routeSub = this.route.params.subscribe((params) => {
-            if ( params['id'] ) {
-                this.phasePopupService
-                    .open(PhaseMgmDialogComponent as Component, params['id']);
-            } else {
-                this.phasePopupService
-                    .open(PhaseMgmDialogComponent as Component);
-            }
-        });
+        const isAfterLogIn = this.sessionStorage.retrieve('isAfterLogin');
+        if (isAfterLogIn) {
+            this.sessionStorage.store('isAfterLogin', false);
+            return;
+        } else {
+            this.routeSub = this.route.params.subscribe((params) => {
+                if ( params['id'] ) {
+                    this.phasePopupService
+                        .open(PhaseMgmDialogComponent as Component, params['id']);
+                } else {
+                    this.phasePopupService
+                        .open(PhaseMgmDialogComponent as Component);
+                }
+            });
+        }
     }
 
     ngOnDestroy() {
-        this.routeSub.unsubscribe();
+        if(this.routeSub){
+            this.routeSub.unsubscribe();
+        }
     }
 }

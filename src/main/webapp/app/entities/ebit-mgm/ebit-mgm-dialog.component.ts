@@ -1,15 +1,16 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
+import {Component, OnInit, OnDestroy} from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
+import {HttpResponse, HttpErrorResponse} from '@angular/common/http';
 
-import { Observable } from 'rxjs/Observable';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
+import {Observable} from 'rxjs/Observable';
+import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
+import {JhiEventManager, JhiAlertService} from 'ng-jhipster';
 
-import { EBITMgm } from './ebit-mgm.model';
-import { EBITMgmPopupService } from './ebit-mgm-popup.service';
-import { EBITMgmService } from './ebit-mgm.service';
-import { SelfAssessmentMgm, SelfAssessmentMgmService } from '../self-assessment-mgm';
+import {EBITMgm} from './ebit-mgm.model';
+import {EBITMgmPopupService} from './ebit-mgm-popup.service';
+import {EBITMgmService} from './ebit-mgm.service';
+import {SelfAssessmentMgm, SelfAssessmentMgmService} from '../self-assessment-mgm';
+import {SessionStorageService} from 'ngx-webstorage';
 
 @Component({
     selector: 'jhi-ebit-mgm-dialog',
@@ -69,7 +70,7 @@ export class EBITMgmDialogComponent implements OnInit {
     }
 
     private onSaveSuccess(result: EBITMgm) {
-        this.eventManager.broadcast({ name: 'eBITListModification', content: 'OK'});
+        this.eventManager.broadcast({name: 'eBITListModification', content: 'OK'});
         this.isSaving = false;
         this.activeModal.dismiss(result);
     }
@@ -97,22 +98,32 @@ export class EBITMgmPopupComponent implements OnInit, OnDestroy {
 
     constructor(
         private route: ActivatedRoute,
-        private eBITPopupService: EBITMgmPopupService
-    ) {}
+        private eBITPopupService: EBITMgmPopupService,
+        private sessionStorage: SessionStorageService
+    ) {
+    }
 
     ngOnInit() {
-        this.routeSub = this.route.params.subscribe((params) => {
-            if ( params['id'] ) {
-                this.eBITPopupService
-                    .open(EBITMgmDialogComponent as Component, params['id']);
-            } else {
-                this.eBITPopupService
-                    .open(EBITMgmDialogComponent as Component);
-            }
-        });
+        const isAfterLogIn = this.sessionStorage.retrieve('isAfterLogin');
+        if (isAfterLogIn) {
+            this.sessionStorage.store('isAfterLogin', false);
+            return;
+        } else {
+            this.routeSub = this.route.params.subscribe((params) => {
+                if (params['id']) {
+                    this.eBITPopupService
+                        .open(EBITMgmDialogComponent as Component, params['id']);
+                } else {
+                    this.eBITPopupService
+                        .open(EBITMgmDialogComponent as Component);
+                }
+            });
+        }
     }
 
     ngOnDestroy() {
-        this.routeSub.unsubscribe();
+        if (this.routeSub) {
+            this.routeSub.unsubscribe();
+        }
     }
 }

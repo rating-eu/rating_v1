@@ -14,6 +14,7 @@ import { AnswerMgm, AnswerMgmService } from '../answer-mgm';
 import { QuestionMgm, QuestionMgmService } from '../question-mgm';
 import { QuestionnaireMgm, QuestionnaireMgmService } from '../questionnaire-mgm';
 import { User, UserService } from '../../shared';
+import {SessionStorageService} from 'ngx-webstorage';
 
 @Component({
     selector: 'jhi-my-answer-mgm-dialog',
@@ -159,22 +160,31 @@ export class MyAnswerMgmPopupComponent implements OnInit, OnDestroy {
 
     constructor(
         private route: ActivatedRoute,
-        private myAnswerPopupService: MyAnswerMgmPopupService
+        private myAnswerPopupService: MyAnswerMgmPopupService,
+        private sessionStorage: SessionStorageService
     ) {}
 
     ngOnInit() {
-        this.routeSub = this.route.params.subscribe((params) => {
-            if ( params['id'] ) {
-                this.myAnswerPopupService
-                    .open(MyAnswerMgmDialogComponent as Component, params['id']);
-            } else {
-                this.myAnswerPopupService
-                    .open(MyAnswerMgmDialogComponent as Component);
-            }
-        });
+        const isAfterLogIn = this.sessionStorage.retrieve('isAfterLogin');
+        if (isAfterLogIn) {
+            this.sessionStorage.store('isAfterLogin', false);
+            return;
+        } else {
+            this.routeSub = this.route.params.subscribe((params) => {
+                if ( params['id'] ) {
+                    this.myAnswerPopupService
+                        .open(MyAnswerMgmDialogComponent as Component, params['id']);
+                } else {
+                    this.myAnswerPopupService
+                        .open(MyAnswerMgmDialogComponent as Component);
+                }
+            });
+        }
     }
 
     ngOnDestroy() {
-        this.routeSub.unsubscribe();
+        if(this.routeSub){
+            this.routeSub.unsubscribe();
+        }
     }
 }

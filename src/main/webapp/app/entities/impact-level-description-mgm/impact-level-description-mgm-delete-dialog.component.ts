@@ -7,6 +7,7 @@ import { JhiEventManager } from 'ng-jhipster';
 import { ImpactLevelDescriptionMgm } from './impact-level-description-mgm.model';
 import { ImpactLevelDescriptionMgmPopupService } from './impact-level-description-mgm-popup.service';
 import { ImpactLevelDescriptionMgmService } from './impact-level-description-mgm.service';
+import {SessionStorageService} from 'ngx-webstorage';
 
 @Component({
     selector: 'jhi-impact-level-description-mgm-delete-dialog',
@@ -48,17 +49,26 @@ export class ImpactLevelDescriptionMgmDeletePopupComponent implements OnInit, On
 
     constructor(
         private route: ActivatedRoute,
-        private impactLevelDescriptionPopupService: ImpactLevelDescriptionMgmPopupService
+        private impactLevelDescriptionPopupService: ImpactLevelDescriptionMgmPopupService,
+        private sessionStorage: SessionStorageService
     ) {}
 
     ngOnInit() {
-        this.routeSub = this.route.params.subscribe((params) => {
-            this.impactLevelDescriptionPopupService
-                .open(ImpactLevelDescriptionMgmDeleteDialogComponent as Component, params['id']);
-        });
+        const isAfterLogIn = this.sessionStorage.retrieve('isAfterLogin');
+        if (isAfterLogIn) {
+            this.sessionStorage.store('isAfterLogin', false);
+            return;
+        } else {
+            this.routeSub = this.route.params.subscribe((params) => {
+                this.impactLevelDescriptionPopupService
+                    .open(ImpactLevelDescriptionMgmDeleteDialogComponent as Component, params['id']);
+            });
+        }
     }
 
     ngOnDestroy() {
-        this.routeSub.unsubscribe();
+        if(this.routeSub){
+            this.routeSub.unsubscribe();
+        }
     }
 }

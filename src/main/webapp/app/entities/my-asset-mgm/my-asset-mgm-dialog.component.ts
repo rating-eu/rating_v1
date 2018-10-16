@@ -12,6 +12,7 @@ import { MyAssetMgmService } from './my-asset-mgm.service';
 import { AssetMgm, AssetMgmService } from '../asset-mgm';
 import { SelfAssessmentMgm, SelfAssessmentMgmService } from '../self-assessment-mgm';
 import { QuestionnaireMgm, QuestionnaireMgmService } from '../questionnaire-mgm';
+import {SessionStorageService} from 'ngx-webstorage';
 
 @Component({
     selector: 'jhi-my-asset-mgm-dialog',
@@ -106,22 +107,31 @@ export class MyAssetMgmPopupComponent implements OnInit, OnDestroy {
 
     constructor(
         private route: ActivatedRoute,
-        private myAssetPopupService: MyAssetMgmPopupService
+        private myAssetPopupService: MyAssetMgmPopupService,
+        private sessionStorage: SessionStorageService
     ) {}
 
     ngOnInit() {
-        this.routeSub = this.route.params.subscribe((params) => {
-            if ( params['id'] ) {
-                this.myAssetPopupService
-                    .open(MyAssetMgmDialogComponent as Component, params['id']);
-            } else {
-                this.myAssetPopupService
-                    .open(MyAssetMgmDialogComponent as Component);
-            }
-        });
+        const isAfterLogIn = this.sessionStorage.retrieve('isAfterLogin');
+        if (isAfterLogIn) {
+            this.sessionStorage.store('isAfterLogin', false);
+            return;
+        } else {
+            this.routeSub = this.route.params.subscribe((params) => {
+                if ( params['id'] ) {
+                    this.myAssetPopupService
+                        .open(MyAssetMgmDialogComponent as Component, params['id']);
+                } else {
+                    this.myAssetPopupService
+                        .open(MyAssetMgmDialogComponent as Component);
+                }
+            });
+        }
     }
 
     ngOnDestroy() {
-        this.routeSub.unsubscribe();
+        if(this.routeSub){
+            this.routeSub.unsubscribe();
+        }
     }
 }

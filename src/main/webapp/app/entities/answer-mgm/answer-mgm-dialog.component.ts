@@ -12,6 +12,7 @@ import { AnswerMgmService } from './answer-mgm.service';
 import { AssetMgm, AssetMgmService } from '../asset-mgm';
 import { AssetCategoryMgm, AssetCategoryMgmService } from '../asset-category-mgm';
 import { QuestionMgm, QuestionMgmService } from '../question-mgm';
+import {SessionStorageService} from 'ngx-webstorage';
 
 @Component({
     selector: 'jhi-answer-mgm-dialog',
@@ -139,22 +140,31 @@ export class AnswerMgmPopupComponent implements OnInit, OnDestroy {
 
     constructor(
         private route: ActivatedRoute,
-        private answerPopupService: AnswerMgmPopupService
+        private answerPopupService: AnswerMgmPopupService,
+        private sessionStorage: SessionStorageService
     ) {}
 
     ngOnInit() {
-        this.routeSub = this.route.params.subscribe((params) => {
-            if ( params['id'] ) {
-                this.answerPopupService
-                    .open(AnswerMgmDialogComponent as Component, params['id']);
-            } else {
-                this.answerPopupService
-                    .open(AnswerMgmDialogComponent as Component);
-            }
-        });
+        const isAfterLogIn = this.sessionStorage.retrieve('isAfterLogin');
+        if (isAfterLogIn) {
+            this.sessionStorage.store('isAfterLogin', false);
+            return;
+        } else {
+            this.routeSub = this.route.params.subscribe((params) => {
+                if ( params['id'] ) {
+                    this.answerPopupService
+                        .open(AnswerMgmDialogComponent as Component, params['id']);
+                } else {
+                    this.answerPopupService
+                        .open(AnswerMgmDialogComponent as Component);
+                }
+            });
+        }
     }
 
     ngOnDestroy() {
-        this.routeSub.unsubscribe();
+        if(this.routeSub){
+            this.routeSub.unsubscribe();
+        }
     }
 }
