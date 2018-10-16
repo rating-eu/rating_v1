@@ -1,14 +1,15 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
+import {Component, OnInit, OnDestroy} from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
+import {HttpResponse, HttpErrorResponse} from '@angular/common/http';
 
-import { Observable } from 'rxjs/Observable';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { JhiEventManager } from 'ng-jhipster';
+import {Observable} from 'rxjs/Observable';
+import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
+import {JhiEventManager} from 'ng-jhipster';
 
-import { AssetCategoryMgm } from './asset-category-mgm.model';
-import { AssetCategoryMgmPopupService } from './asset-category-mgm-popup.service';
-import { AssetCategoryMgmService } from './asset-category-mgm.service';
+import {AssetCategoryMgm} from './asset-category-mgm.model';
+import {AssetCategoryMgmPopupService} from './asset-category-mgm-popup.service';
+import {AssetCategoryMgmService} from './asset-category-mgm.service';
+import {SessionStorageService} from 'ngx-webstorage';
 
 @Component({
     selector: 'jhi-asset-category-mgm-dialog',
@@ -51,7 +52,7 @@ export class AssetCategoryMgmDialogComponent implements OnInit {
     }
 
     private onSaveSuccess(result: AssetCategoryMgm) {
-        this.eventManager.broadcast({ name: 'assetCategoryListModification', content: 'OK'});
+        this.eventManager.broadcast({name: 'assetCategoryListModification', content: 'OK'});
         this.isSaving = false;
         this.activeModal.dismiss(result);
     }
@@ -71,22 +72,32 @@ export class AssetCategoryMgmPopupComponent implements OnInit, OnDestroy {
 
     constructor(
         private route: ActivatedRoute,
-        private assetCategoryPopupService: AssetCategoryMgmPopupService
-    ) {}
+        private assetCategoryPopupService: AssetCategoryMgmPopupService,
+        private sessionStorage: SessionStorageService
+    ) {
+    }
 
     ngOnInit() {
-        this.routeSub = this.route.params.subscribe((params) => {
-            if ( params['id'] ) {
-                this.assetCategoryPopupService
-                    .open(AssetCategoryMgmDialogComponent as Component, params['id']);
-            } else {
-                this.assetCategoryPopupService
-                    .open(AssetCategoryMgmDialogComponent as Component);
-            }
-        });
+        const isAfterLogIn = this.sessionStorage.retrieve('isAfterLogin');
+        if (isAfterLogIn) {
+            this.sessionStorage.store('isAfterLogin', false);
+            return;
+        } else {
+            this.routeSub = this.route.params.subscribe((params) => {
+                if (params['id']) {
+                    this.assetCategoryPopupService
+                        .open(AssetCategoryMgmDialogComponent as Component, params['id']);
+                } else {
+                    this.assetCategoryPopupService
+                        .open(AssetCategoryMgmDialogComponent as Component);
+                }
+            });
+        }
     }
 
     ngOnDestroy() {
-        this.routeSub.unsubscribe();
+        if (this.routeSub) {
+            this.routeSub.unsubscribe();
+        }
     }
 }

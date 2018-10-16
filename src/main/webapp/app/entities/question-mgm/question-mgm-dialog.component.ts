@@ -13,6 +13,7 @@ import { AttackStrategyMgm, AttackStrategyMgmService } from '../attack-strategy-
 import { AnswerMgm, AnswerMgmService } from '../answer-mgm';
 import { QuestionnaireMgm, QuestionnaireMgmService } from '../questionnaire-mgm';
 import { ThreatAgentMgm, ThreatAgentMgmService } from '../threat-agent-mgm';
+import {SessionStorageService} from 'ngx-webstorage';
 
 @Component({
     selector: 'jhi-question-mgm-dialog',
@@ -127,22 +128,31 @@ export class QuestionMgmPopupComponent implements OnInit, OnDestroy {
 
     constructor(
         private route: ActivatedRoute,
-        private questionPopupService: QuestionMgmPopupService
+        private questionPopupService: QuestionMgmPopupService,
+        private sessionStorage: SessionStorageService
     ) {}
 
     ngOnInit() {
-        this.routeSub = this.route.params.subscribe((params) => {
-            if ( params['id'] ) {
-                this.questionPopupService
-                    .open(QuestionMgmDialogComponent as Component, params['id']);
-            } else {
-                this.questionPopupService
-                    .open(QuestionMgmDialogComponent as Component);
-            }
-        });
+        const isAfterLogIn = this.sessionStorage.retrieve('isAfterLogin');
+        if (isAfterLogIn) {
+            this.sessionStorage.store('isAfterLogin', false);
+            return;
+        } else {
+            this.routeSub = this.route.params.subscribe((params) => {
+                if ( params['id'] ) {
+                    this.questionPopupService
+                        .open(QuestionMgmDialogComponent as Component, params['id']);
+                } else {
+                    this.questionPopupService
+                        .open(QuestionMgmDialogComponent as Component);
+                }
+            });
+        }
     }
 
     ngOnDestroy() {
-        this.routeSub.unsubscribe();
+        if(this.routeSub){
+            this.routeSub.unsubscribe();
+        }
     }
 }

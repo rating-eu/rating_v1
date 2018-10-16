@@ -9,6 +9,7 @@ import { JhiEventManager } from 'ng-jhipster';
 import { ImpactLevelMgm } from './impact-level-mgm.model';
 import { ImpactLevelMgmPopupService } from './impact-level-mgm-popup.service';
 import { ImpactLevelMgmService } from './impact-level-mgm.service';
+import {SessionStorageService} from 'ngx-webstorage';
 
 @Component({
     selector: 'jhi-impact-level-mgm-dialog',
@@ -71,22 +72,31 @@ export class ImpactLevelMgmPopupComponent implements OnInit, OnDestroy {
 
     constructor(
         private route: ActivatedRoute,
-        private impactLevelPopupService: ImpactLevelMgmPopupService
+        private impactLevelPopupService: ImpactLevelMgmPopupService,
+        private sessionStorage: SessionStorageService
     ) {}
 
     ngOnInit() {
-        this.routeSub = this.route.params.subscribe((params) => {
-            if ( params['id'] ) {
-                this.impactLevelPopupService
-                    .open(ImpactLevelMgmDialogComponent as Component, params['id']);
-            } else {
-                this.impactLevelPopupService
-                    .open(ImpactLevelMgmDialogComponent as Component);
-            }
-        });
+        const isAfterLogIn = this.sessionStorage.retrieve('isAfterLogin');
+        if (isAfterLogIn) {
+            this.sessionStorage.store('isAfterLogin', false);
+            return;
+        } else {
+            this.routeSub = this.route.params.subscribe((params) => {
+                if ( params['id'] ) {
+                    this.impactLevelPopupService
+                        .open(ImpactLevelMgmDialogComponent as Component, params['id']);
+                } else {
+                    this.impactLevelPopupService
+                        .open(ImpactLevelMgmDialogComponent as Component);
+                }
+            });
+        }
     }
 
     ngOnDestroy() {
-        this.routeSub.unsubscribe();
+        if(this.routeSub){
+            this.routeSub.unsubscribe();
+        }
     }
 }

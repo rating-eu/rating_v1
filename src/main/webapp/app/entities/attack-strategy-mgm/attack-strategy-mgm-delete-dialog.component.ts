@@ -7,6 +7,7 @@ import { JhiEventManager } from 'ng-jhipster';
 import { AttackStrategyMgm } from './attack-strategy-mgm.model';
 import { AttackStrategyMgmPopupService } from './attack-strategy-mgm-popup.service';
 import { AttackStrategyMgmService } from './attack-strategy-mgm.service';
+import {SessionStorageService} from 'ngx-webstorage';
 
 @Component({
     selector: 'jhi-attack-strategy-mgm-delete-dialog',
@@ -48,17 +49,26 @@ export class AttackStrategyMgmDeletePopupComponent implements OnInit, OnDestroy 
 
     constructor(
         private route: ActivatedRoute,
-        private attackStrategyPopupService: AttackStrategyMgmPopupService
+        private attackStrategyPopupService: AttackStrategyMgmPopupService,
+        private sessionStorage: SessionStorageService
     ) {}
 
     ngOnInit() {
-        this.routeSub = this.route.params.subscribe((params) => {
-            this.attackStrategyPopupService
-                .open(AttackStrategyMgmDeleteDialogComponent as Component, params['id']);
-        });
+        const isAfterLogIn = this.sessionStorage.retrieve('isAfterLogin');
+        if (isAfterLogIn) {
+            this.sessionStorage.store('isAfterLogin', false);
+            return;
+        } else {
+            this.routeSub = this.route.params.subscribe((params) => {
+                this.attackStrategyPopupService
+                    .open(AttackStrategyMgmDeleteDialogComponent as Component, params['id']);
+            });
+        }
     }
 
     ngOnDestroy() {
-        this.routeSub.unsubscribe();
+        if(this.routeSub){
+            this.routeSub.unsubscribe();
+        }
     }
 }

@@ -10,6 +10,7 @@ import { ExternalAuditMgm } from './external-audit-mgm.model';
 import { ExternalAuditMgmPopupService } from './external-audit-mgm-popup.service';
 import { ExternalAuditMgmService } from './external-audit-mgm.service';
 import { User, UserService } from '../../shared';
+import {SessionStorageService} from 'ngx-webstorage';
 
 @Component({
     selector: 'jhi-external-audit-mgm-dialog',
@@ -86,22 +87,31 @@ export class ExternalAuditMgmPopupComponent implements OnInit, OnDestroy {
 
     constructor(
         private route: ActivatedRoute,
-        private externalAuditPopupService: ExternalAuditMgmPopupService
+        private externalAuditPopupService: ExternalAuditMgmPopupService,
+        private sessionStorage: SessionStorageService
     ) {}
 
     ngOnInit() {
-        this.routeSub = this.route.params.subscribe((params) => {
-            if ( params['id'] ) {
-                this.externalAuditPopupService
-                    .open(ExternalAuditMgmDialogComponent as Component, params['id']);
-            } else {
-                this.externalAuditPopupService
-                    .open(ExternalAuditMgmDialogComponent as Component);
-            }
-        });
+        const isAfterLogIn = this.sessionStorage.retrieve('isAfterLogin');
+        if (isAfterLogIn) {
+            this.sessionStorage.store('isAfterLogin', false);
+            return;
+        } else {
+            this.routeSub = this.route.params.subscribe((params) => {
+                if ( params['id'] ) {
+                    this.externalAuditPopupService
+                        .open(ExternalAuditMgmDialogComponent as Component, params['id']);
+                } else {
+                    this.externalAuditPopupService
+                        .open(ExternalAuditMgmDialogComponent as Component);
+                }
+            });
+        }
     }
 
     ngOnDestroy() {
-        this.routeSub.unsubscribe();
+        if(this.routeSub){
+            this.routeSub.unsubscribe();
+        }
     }
 }

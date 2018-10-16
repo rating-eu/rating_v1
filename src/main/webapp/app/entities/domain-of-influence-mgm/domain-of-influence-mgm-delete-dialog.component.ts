@@ -7,6 +7,7 @@ import { JhiEventManager } from 'ng-jhipster';
 import { DomainOfInfluenceMgm } from './domain-of-influence-mgm.model';
 import { DomainOfInfluenceMgmPopupService } from './domain-of-influence-mgm-popup.service';
 import { DomainOfInfluenceMgmService } from './domain-of-influence-mgm.service';
+import {SessionStorageService} from 'ngx-webstorage';
 
 @Component({
     selector: 'jhi-domain-of-influence-mgm-delete-dialog',
@@ -48,17 +49,26 @@ export class DomainOfInfluenceMgmDeletePopupComponent implements OnInit, OnDestr
 
     constructor(
         private route: ActivatedRoute,
-        private domainOfInfluencePopupService: DomainOfInfluenceMgmPopupService
+        private domainOfInfluencePopupService: DomainOfInfluenceMgmPopupService,
+        private sessionStorage: SessionStorageService
     ) {}
 
     ngOnInit() {
-        this.routeSub = this.route.params.subscribe((params) => {
-            this.domainOfInfluencePopupService
-                .open(DomainOfInfluenceMgmDeleteDialogComponent as Component, params['id']);
-        });
+        const isAfterLogIn = this.sessionStorage.retrieve('isAfterLogin');
+        if (isAfterLogIn) {
+            this.sessionStorage.store('isAfterLogin', false);
+            return;
+        } else {
+            this.routeSub = this.route.params.subscribe((params) => {
+                this.domainOfInfluencePopupService
+                    .open(DomainOfInfluenceMgmDeleteDialogComponent as Component, params['id']);
+            });
+        }
     }
 
     ngOnDestroy() {
-        this.routeSub.unsubscribe();
+        if(this.routeSub){
+            this.routeSub.unsubscribe();
+        }
     }
 }

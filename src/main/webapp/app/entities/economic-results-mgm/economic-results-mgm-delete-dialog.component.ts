@@ -7,6 +7,7 @@ import { JhiEventManager } from 'ng-jhipster';
 import { EconomicResultsMgm } from './economic-results-mgm.model';
 import { EconomicResultsMgmPopupService } from './economic-results-mgm-popup.service';
 import { EconomicResultsMgmService } from './economic-results-mgm.service';
+import {SessionStorageService} from 'ngx-webstorage';
 
 @Component({
     selector: 'jhi-economic-results-mgm-delete-dialog',
@@ -48,17 +49,26 @@ export class EconomicResultsMgmDeletePopupComponent implements OnInit, OnDestroy
 
     constructor(
         private route: ActivatedRoute,
-        private economicResultsPopupService: EconomicResultsMgmPopupService
+        private economicResultsPopupService: EconomicResultsMgmPopupService,
+        private sessionStorage: SessionStorageService
     ) {}
 
     ngOnInit() {
-        this.routeSub = this.route.params.subscribe((params) => {
-            this.economicResultsPopupService
-                .open(EconomicResultsMgmDeleteDialogComponent as Component, params['id']);
-        });
+        const isAfterLogIn = this.sessionStorage.retrieve('isAfterLogin');
+        if (isAfterLogIn) {
+            this.sessionStorage.store('isAfterLogin', false);
+            return;
+        } else {
+            this.routeSub = this.route.params.subscribe((params) => {
+                this.economicResultsPopupService
+                    .open(EconomicResultsMgmDeleteDialogComponent as Component, params['id']);
+            });
+        }
     }
 
     ngOnDestroy() {
-        this.routeSub.unsubscribe();
+        if(this.routeSub){
+            this.routeSub.unsubscribe();
+        }
     }
 }

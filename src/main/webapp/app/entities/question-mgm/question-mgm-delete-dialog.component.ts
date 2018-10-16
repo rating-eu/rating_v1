@@ -7,6 +7,7 @@ import { JhiEventManager } from 'ng-jhipster';
 import { QuestionMgm } from './question-mgm.model';
 import { QuestionMgmPopupService } from './question-mgm-popup.service';
 import { QuestionMgmService } from './question-mgm.service';
+import {SessionStorageService} from 'ngx-webstorage';
 
 @Component({
     selector: 'jhi-question-mgm-delete-dialog',
@@ -48,17 +49,26 @@ export class QuestionMgmDeletePopupComponent implements OnInit, OnDestroy {
 
     constructor(
         private route: ActivatedRoute,
-        private questionPopupService: QuestionMgmPopupService
+        private questionPopupService: QuestionMgmPopupService,
+        private sessionStorage: SessionStorageService
     ) {}
 
     ngOnInit() {
-        this.routeSub = this.route.params.subscribe((params) => {
-            this.questionPopupService
-                .open(QuestionMgmDeleteDialogComponent as Component, params['id']);
-        });
+        const isAfterLogIn = this.sessionStorage.retrieve('isAfterLogin');
+        if (isAfterLogIn) {
+            this.sessionStorage.store('isAfterLogin', false);
+            return;
+        } else {
+            this.routeSub = this.route.params.subscribe((params) => {
+                this.questionPopupService
+                    .open(QuestionMgmDeleteDialogComponent as Component, params['id']);
+            });
+        }
     }
 
     ngOnDestroy() {
-        this.routeSub.unsubscribe();
+        if(this.routeSub){
+            this.routeSub.unsubscribe();
+        }
     }
 }

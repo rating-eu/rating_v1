@@ -10,6 +10,7 @@ import { CriticalLevelMgm } from './critical-level-mgm.model';
 import { CriticalLevelMgmPopupService } from './critical-level-mgm-popup.service';
 import { CriticalLevelMgmService } from './critical-level-mgm.service';
 import { SelfAssessmentMgm, SelfAssessmentMgmService } from '../self-assessment-mgm';
+import {SessionStorageService} from 'ngx-webstorage';
 
 @Component({
     selector: 'jhi-critical-level-mgm-dialog',
@@ -97,22 +98,31 @@ export class CriticalLevelMgmPopupComponent implements OnInit, OnDestroy {
 
     constructor(
         private route: ActivatedRoute,
-        private criticalLevelPopupService: CriticalLevelMgmPopupService
+        private criticalLevelPopupService: CriticalLevelMgmPopupService,
+        private sessionStorage: SessionStorageService
     ) {}
 
     ngOnInit() {
-        this.routeSub = this.route.params.subscribe((params) => {
-            if ( params['id'] ) {
-                this.criticalLevelPopupService
-                    .open(CriticalLevelMgmDialogComponent as Component, params['id']);
-            } else {
-                this.criticalLevelPopupService
-                    .open(CriticalLevelMgmDialogComponent as Component);
-            }
-        });
+        const isAfterLogIn = this.sessionStorage.retrieve('isAfterLogin');
+        if (isAfterLogIn) {
+            this.sessionStorage.store('isAfterLogin', false);
+            return;
+        } else {
+            this.routeSub = this.route.params.subscribe((params) => {
+                if ( params['id'] ) {
+                    this.criticalLevelPopupService
+                        .open(CriticalLevelMgmDialogComponent as Component, params['id']);
+                } else {
+                    this.criticalLevelPopupService
+                        .open(CriticalLevelMgmDialogComponent as Component);
+                }
+            });
+        }
     }
 
     ngOnDestroy() {
-        this.routeSub.unsubscribe();
+        if(this.routeSub){
+            this.routeSub.unsubscribe();
+        }
     }
 }

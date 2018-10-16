@@ -10,6 +10,7 @@ import { LevelMgm } from './level-mgm.model';
 import { LevelMgmPopupService } from './level-mgm-popup.service';
 import { LevelMgmService } from './level-mgm.service';
 import { ContainerMgm, ContainerMgmService } from '../container-mgm';
+import {SessionStorageService} from 'ngx-webstorage';
 
 @Component({
     selector: 'jhi-level-mgm-dialog',
@@ -97,22 +98,31 @@ export class LevelMgmPopupComponent implements OnInit, OnDestroy {
 
     constructor(
         private route: ActivatedRoute,
-        private levelPopupService: LevelMgmPopupService
+        private levelPopupService: LevelMgmPopupService,
+        private sessionStorage: SessionStorageService
     ) {}
 
     ngOnInit() {
-        this.routeSub = this.route.params.subscribe((params) => {
-            if ( params['id'] ) {
-                this.levelPopupService
-                    .open(LevelMgmDialogComponent as Component, params['id']);
-            } else {
-                this.levelPopupService
-                    .open(LevelMgmDialogComponent as Component);
-            }
-        });
+        const isAfterLogIn = this.sessionStorage.retrieve('isAfterLogin');
+        if (isAfterLogIn) {
+            this.sessionStorage.store('isAfterLogin', false);
+            return;
+        } else {
+            this.routeSub = this.route.params.subscribe((params) => {
+                if ( params['id'] ) {
+                    this.levelPopupService
+                        .open(LevelMgmDialogComponent as Component, params['id']);
+                } else {
+                    this.levelPopupService
+                        .open(LevelMgmDialogComponent as Component);
+                }
+            });
+        }
     }
 
     ngOnDestroy() {
-        this.routeSub.unsubscribe();
+        if(this.routeSub){
+            this.routeSub.unsubscribe();
+        }
     }
 }

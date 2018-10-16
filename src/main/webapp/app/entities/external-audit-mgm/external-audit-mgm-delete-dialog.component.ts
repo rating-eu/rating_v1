@@ -7,6 +7,7 @@ import { JhiEventManager } from 'ng-jhipster';
 import { ExternalAuditMgm } from './external-audit-mgm.model';
 import { ExternalAuditMgmPopupService } from './external-audit-mgm-popup.service';
 import { ExternalAuditMgmService } from './external-audit-mgm.service';
+import {SessionStorageService} from 'ngx-webstorage';
 
 @Component({
     selector: 'jhi-external-audit-mgm-delete-dialog',
@@ -48,17 +49,26 @@ export class ExternalAuditMgmDeletePopupComponent implements OnInit, OnDestroy {
 
     constructor(
         private route: ActivatedRoute,
-        private externalAuditPopupService: ExternalAuditMgmPopupService
+        private externalAuditPopupService: ExternalAuditMgmPopupService,
+        private sessionStorage: SessionStorageService
     ) {}
 
     ngOnInit() {
-        this.routeSub = this.route.params.subscribe((params) => {
-            this.externalAuditPopupService
-                .open(ExternalAuditMgmDeleteDialogComponent as Component, params['id']);
-        });
+        const isAfterLogIn = this.sessionStorage.retrieve('isAfterLogin');
+        if (isAfterLogIn) {
+            this.sessionStorage.store('isAfterLogin', false);
+            return;
+        } else {
+            this.routeSub = this.route.params.subscribe((params) => {
+                this.externalAuditPopupService
+                    .open(ExternalAuditMgmDeleteDialogComponent as Component, params['id']);
+            });
+        }
     }
 
     ngOnDestroy() {
-        this.routeSub.unsubscribe();
+        if(this.routeSub){
+            this.routeSub.unsubscribe();
+        }
     }
 }

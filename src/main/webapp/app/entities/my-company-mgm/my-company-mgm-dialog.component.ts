@@ -120,7 +120,7 @@ export class MyCompanyMgmPopupComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy() {
-        if (this.routeSub) {
+        if(this.routeSub){
             this.routeSub.unsubscribe();
         }
     }

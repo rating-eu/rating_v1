@@ -11,6 +11,7 @@ import { IndirectAssetMgmPopupService } from './indirect-asset-mgm-popup.service
 import { IndirectAssetMgmService } from './indirect-asset-mgm.service';
 import { DirectAssetMgm, DirectAssetMgmService } from '../direct-asset-mgm';
 import { MyAssetMgm, MyAssetMgmService } from '../my-asset-mgm';
+import {SessionStorageService} from 'ngx-webstorage';
 
 @Component({
     selector: 'jhi-indirect-asset-mgm-dialog',
@@ -107,22 +108,31 @@ export class IndirectAssetMgmPopupComponent implements OnInit, OnDestroy {
 
     constructor(
         private route: ActivatedRoute,
-        private indirectAssetPopupService: IndirectAssetMgmPopupService
+        private indirectAssetPopupService: IndirectAssetMgmPopupService,
+        private sessionStorage: SessionStorageService
     ) {}
 
     ngOnInit() {
-        this.routeSub = this.route.params.subscribe((params) => {
-            if ( params['id'] ) {
-                this.indirectAssetPopupService
-                    .open(IndirectAssetMgmDialogComponent as Component, params['id']);
-            } else {
-                this.indirectAssetPopupService
-                    .open(IndirectAssetMgmDialogComponent as Component);
-            }
-        });
+        const isAfterLogIn = this.sessionStorage.retrieve('isAfterLogin');
+        if (isAfterLogIn) {
+            this.sessionStorage.store('isAfterLogin', false);
+            return;
+        } else {
+            this.routeSub = this.route.params.subscribe((params) => {
+                if ( params['id'] ) {
+                    this.indirectAssetPopupService
+                        .open(IndirectAssetMgmDialogComponent as Component, params['id']);
+                } else {
+                    this.indirectAssetPopupService
+                        .open(IndirectAssetMgmDialogComponent as Component);
+                }
+            });
+        }
     }
 
     ngOnDestroy() {
-        this.routeSub.unsubscribe();
+        if(this.routeSub){
+            this.routeSub.unsubscribe();
+        }
     }
 }

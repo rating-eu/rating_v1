@@ -9,6 +9,7 @@ import { JhiEventManager } from 'ng-jhipster';
 import { MitigationMgm } from './mitigation-mgm.model';
 import { MitigationMgmPopupService } from './mitigation-mgm-popup.service';
 import { MitigationMgmService } from './mitigation-mgm.service';
+import {SessionStorageService} from 'ngx-webstorage';
 
 @Component({
     selector: 'jhi-mitigation-mgm-dialog',
@@ -71,22 +72,31 @@ export class MitigationMgmPopupComponent implements OnInit, OnDestroy {
 
     constructor(
         private route: ActivatedRoute,
-        private mitigationPopupService: MitigationMgmPopupService
+        private mitigationPopupService: MitigationMgmPopupService,
+        private sessionStorage: SessionStorageService
     ) {}
 
     ngOnInit() {
-        this.routeSub = this.route.params.subscribe((params) => {
-            if ( params['id'] ) {
-                this.mitigationPopupService
-                    .open(MitigationMgmDialogComponent as Component, params['id']);
-            } else {
-                this.mitigationPopupService
-                    .open(MitigationMgmDialogComponent as Component);
-            }
-        });
+        const isAfterLogIn = this.sessionStorage.retrieve('isAfterLogin');
+        if (isAfterLogIn) {
+            this.sessionStorage.store('isAfterLogin', false);
+            return;
+        } else {
+            this.routeSub = this.route.params.subscribe((params) => {
+                if ( params['id'] ) {
+                    this.mitigationPopupService
+                        .open(MitigationMgmDialogComponent as Component, params['id']);
+                } else {
+                    this.mitigationPopupService
+                        .open(MitigationMgmDialogComponent as Component);
+                }
+            });
+        }
     }
 
     ngOnDestroy() {
-        this.routeSub.unsubscribe();
+        if(this.routeSub){
+            this.routeSub.unsubscribe();
+        }
     }
 }

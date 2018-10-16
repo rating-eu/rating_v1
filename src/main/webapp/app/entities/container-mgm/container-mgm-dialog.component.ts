@@ -9,6 +9,7 @@ import { JhiEventManager } from 'ng-jhipster';
 import { ContainerMgm } from './container-mgm.model';
 import { ContainerMgmPopupService } from './container-mgm-popup.service';
 import { ContainerMgmService } from './container-mgm.service';
+import {SessionStorageService} from 'ngx-webstorage';
 
 @Component({
     selector: 'jhi-container-mgm-dialog',
@@ -71,22 +72,31 @@ export class ContainerMgmPopupComponent implements OnInit, OnDestroy {
 
     constructor(
         private route: ActivatedRoute,
-        private containerPopupService: ContainerMgmPopupService
+        private containerPopupService: ContainerMgmPopupService,
+        private sessionStorage: SessionStorageService
     ) {}
 
     ngOnInit() {
-        this.routeSub = this.route.params.subscribe((params) => {
-            if ( params['id'] ) {
-                this.containerPopupService
-                    .open(ContainerMgmDialogComponent as Component, params['id']);
-            } else {
-                this.containerPopupService
-                    .open(ContainerMgmDialogComponent as Component);
-            }
-        });
+        const isAfterLogIn = this.sessionStorage.retrieve('isAfterLogin');
+        if (isAfterLogIn) {
+            this.sessionStorage.store('isAfterLogin', false);
+            return;
+        } else {
+            this.routeSub = this.route.params.subscribe((params) => {
+                if ( params['id'] ) {
+                    this.containerPopupService
+                        .open(ContainerMgmDialogComponent as Component, params['id']);
+                } else {
+                    this.containerPopupService
+                        .open(ContainerMgmDialogComponent as Component);
+                }
+            });
+        }
     }
 
     ngOnDestroy() {
-        this.routeSub.unsubscribe();
+        if(this.routeSub){
+            this.routeSub.unsubscribe();
+        }
     }
 }

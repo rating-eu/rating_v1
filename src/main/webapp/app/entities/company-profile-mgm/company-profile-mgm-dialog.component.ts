@@ -1,16 +1,17 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
+import {Component, OnInit, OnDestroy} from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
+import {HttpResponse, HttpErrorResponse} from '@angular/common/http';
 
-import { Observable } from 'rxjs/Observable';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
+import {Observable} from 'rxjs/Observable';
+import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
+import {JhiEventManager, JhiAlertService} from 'ng-jhipster';
 
-import { CompanyProfileMgm } from './company-profile-mgm.model';
-import { CompanyProfileMgmPopupService } from './company-profile-mgm-popup.service';
-import { CompanyProfileMgmService } from './company-profile-mgm.service';
-import { User, UserService } from '../../shared';
-import { ContainerMgm, ContainerMgmService } from '../container-mgm';
+import {CompanyProfileMgm} from './company-profile-mgm.model';
+import {CompanyProfileMgmPopupService} from './company-profile-mgm-popup.service';
+import {CompanyProfileMgmService} from './company-profile-mgm.service';
+import {User, UserService} from '../../shared';
+import {ContainerMgm, ContainerMgmService} from '../container-mgm';
+import {SessionStorageService} from 'ngx-webstorage';
 
 @Component({
     selector: 'jhi-company-profile-mgm-dialog',
@@ -38,9 +39,13 @@ export class CompanyProfileMgmDialogComponent implements OnInit {
     ngOnInit() {
         this.isSaving = false;
         this.userService.query()
-            .subscribe((res: HttpResponse<User[]>) => { this.users = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
+            .subscribe((res: HttpResponse<User[]>) => {
+                this.users = res.body;
+            }, (res: HttpErrorResponse) => this.onError(res.message));
         this.containerService.query()
-            .subscribe((res: HttpResponse<ContainerMgm[]>) => { this.containers = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
+            .subscribe((res: HttpResponse<ContainerMgm[]>) => {
+                this.containers = res.body;
+            }, (res: HttpErrorResponse) => this.onError(res.message));
     }
 
     clear() {
@@ -64,7 +69,7 @@ export class CompanyProfileMgmDialogComponent implements OnInit {
     }
 
     private onSaveSuccess(result: CompanyProfileMgm) {
-        this.eventManager.broadcast({ name: 'companyProfileListModification', content: 'OK'});
+        this.eventManager.broadcast({name: 'companyProfileListModification', content: 'OK'});
         this.isSaving = false;
         this.activeModal.dismiss(result);
     }
@@ -107,22 +112,32 @@ export class CompanyProfileMgmPopupComponent implements OnInit, OnDestroy {
 
     constructor(
         private route: ActivatedRoute,
-        private companyProfilePopupService: CompanyProfileMgmPopupService
-    ) {}
+        private companyProfilePopupService: CompanyProfileMgmPopupService,
+        private sessionStorage: SessionStorageService
+    ) {
+    }
 
     ngOnInit() {
-        this.routeSub = this.route.params.subscribe((params) => {
-            if ( params['id'] ) {
-                this.companyProfilePopupService
-                    .open(CompanyProfileMgmDialogComponent as Component, params['id']);
-            } else {
-                this.companyProfilePopupService
-                    .open(CompanyProfileMgmDialogComponent as Component);
-            }
-        });
+        const isAfterLogIn = this.sessionStorage.retrieve('isAfterLogin');
+        if (isAfterLogIn) {
+            this.sessionStorage.store('isAfterLogin', false);
+            return;
+        } else {
+            this.routeSub = this.route.params.subscribe((params) => {
+                if (params['id']) {
+                    this.companyProfilePopupService
+                        .open(CompanyProfileMgmDialogComponent as Component, params['id']);
+                } else {
+                    this.companyProfilePopupService
+                        .open(CompanyProfileMgmDialogComponent as Component);
+                }
+            });
+        }
     }
 
     ngOnDestroy() {
-        this.routeSub.unsubscribe();
+        if (this.routeSub) {
+            this.routeSub.unsubscribe();
+        }
     }
 }
