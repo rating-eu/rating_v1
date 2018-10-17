@@ -17,10 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 import java.time.ZonedDateTime;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -359,10 +356,16 @@ public class WP3StepsController {
                 throw new NotFoundException("The EconomicResults for SelfAssessment " + selfAssessmentID + " was not found!");
             }
 
-            BigDecimal intangibleLossByAttacks = existingEconomicResults.getIntangibleLossByAttacks();
+            BigDecimal lossValue = existingEconomicResults.getIntangibleLossByAttacks();
 
-            if (intangibleLossByAttacks == null) {
-                throw new NullInputException("IntangibleLossByAttacks (from DB) can NOT be NULL!");
+            if (lossValue == null) {
+                //Use IntangibleCapital
+                if (existingEconomicResults.getIntangibleCapital() == null) {
+                    throw new NullInputException("IntangibleLossByAttacks and IntangibleCapital (from DB) can NOT be " +
+                        "NULL!");
+                }
+
+                lossValue = existingEconomicResults.getIntangibleCapital();
             }
 
             SectorType sectorType = wp3InputBundle.getSectorType();
@@ -377,19 +380,30 @@ public class WP3StepsController {
 
             //Create NEW ones
             splittingLosses = new ArrayList<>();
+            List<SectorType> sectorTypes = new ArrayList<>();
+            List<CategoryType> categoryTypes = new ArrayList<>();
 
-            if (sectorType == null) {//means GLOBAL
-                sectorType = SectorType.GLOBAL;
+
+            if (sectorType == null || sectorType == SectorType.GLOBAL) {
+                sectorTypes.add(SectorType.GLOBAL);
+            } else {
+                //Calculate the Splitting Lossess for the specified SectorType and for the GLOBAL SectorType
+                sectorTypes.add(sectorType);
+                sectorTypes.add(SectorType.GLOBAL);
             }
 
-            if (categoryType == null) {//SplittingLosses for ALL CategoryTypes
-                for (CategoryType catType : CategoryType.values()) {
-                    SplittingLoss splittingLoss = createNewSplittingLoss(selfAssessment, intangibleLossByAttacks, sectorType, catType);
+            if (categoryType == null) {
+                categoryTypes.addAll(Arrays.asList(CategoryType.values()));
+            } else {
+                categoryTypes.add(categoryType);
+            }
+
+            for (SectorType sType : sectorTypes) {
+                for (CategoryType cType : categoryTypes) {
+                    SplittingLoss splittingLoss = createNewSplittingLoss(selfAssessment, lossValue,
+                        sType, cType);
                     splittingLosses.add(splittingLoss);
                 }
-            } else {//SplittingLoss ONLY for that CategoryType
-                SplittingLoss splittingLoss = createNewSplittingLoss(selfAssessment, intangibleLossByAttacks, sectorType, categoryType);
-                splittingLosses.add(splittingLoss);
             }
 
             //Persist the NEW SplittingLosses
