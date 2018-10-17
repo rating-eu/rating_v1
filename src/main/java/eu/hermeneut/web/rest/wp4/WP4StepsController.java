@@ -2,6 +2,7 @@ package eu.hermeneut.web.rest.wp4;
 
 import com.codahale.metrics.annotation.Timed;
 import eu.hermeneut.domain.*;
+import eu.hermeneut.domain.enumeration.QuestionnairePurpose;
 import eu.hermeneut.domain.enumeration.Role;
 import eu.hermeneut.domain.attackmap.AugmentedAttackStrategy;
 import eu.hermeneut.domain.wp4.MyAssetAttackChance;
@@ -143,30 +144,57 @@ public class WP4StepsController {
             throw new NotFoundException("NO QuestionaireStatus was found for the SelfAssessment: " + selfAssessmentID);
         }
 
-        QuestionnaireStatus externalQStatus = questionnaireStatuses.stream().filter(questionnaireStatus -> questionnaireStatus.getRole().equals(Role.ROLE_EXTERNAL_AUDIT)).findFirst().orElse(null);
+        QuestionnaireStatus cisoQStatus = questionnaireStatuses.stream().filter(questionnaireStatus ->
+            questionnaireStatus.getRole().equals(Role.ROLE_CISO) && questionnaireStatus.getQuestionnaire().getPurpose
+                ().equals(QuestionnairePurpose.SELFASSESSMENT))
+            .findFirst().orElse(null);
+        QuestionnaireStatus externalQStatus = questionnaireStatuses.stream().filter(questionnaireStatus ->
+            questionnaireStatus.getRole().equals(Role.ROLE_EXTERNAL_AUDIT) && questionnaireStatus.getQuestionnaire().getPurpose
+                ().equals(QuestionnairePurpose.SELFASSESSMENT)).findFirst().orElse(null);
 
-        if (externalQStatus == null) {
-            throw new NotFoundException("QuestionnaireStatus for Role ExternalAudit was NOT FOUND!");
+        Questionnaire questionnaire;// = externalQStatus.getQuestionnaire();
+        List<Question> questions;// = this.questionService.findAllByQuestionnaire(questionnaire);
+        List<Answer> answers;// = this.answerService.findAll();
+        Map<Long/*AnswerID*/, Answer> answersMap;// = answers.stream().collect(Collectors.toMap(Answer::getId, Function.identity()));
+        Map<Long/*QuestionID*/, Question> questionsMap;// = questions.stream().collect(Collectors.toMap(Question::getId, Function.identity()));
+        List<MyAnswer> myAnswers;// = this.myAnswerService.findAllByQuestionnaireStatus(externalQStatus.getId());
+
+        if (externalQStatus != null) {
+            //Use cisoQStatus
+            questionnaire = externalQStatus.getQuestionnaire();
+            myAnswers = this.myAnswerService.findAllByQuestionnaireStatus(externalQStatus.getId());
+
+            if (myAnswers == null || myAnswers.size() == 0) {
+                throw new NotFoundException("MyAnswers not found for QuestionnaireStatus with id: " + externalQStatus.getId());
+            }
+        } else if (cisoQStatus != null) {
+            //Use externalQStatus
+            questionnaire = cisoQStatus.getQuestionnaire();
+            myAnswers = this.myAnswerService.findAllByQuestionnaireStatus(cisoQStatus.getId());
+
+            if (myAnswers == null || myAnswers.size() == 0) {
+                throw new NotFoundException("MyAnswers not found for QuestionnaireStatus with id: " + cisoQStatus.getId());
+            }
+        } else {
+            throw new NotFoundException("QuestionnaireStatuses for Role ExternalAudit and CISO NOT FOUND!");
         }
 
-        Questionnaire questionnaire = externalQStatus.getQuestionnaire();
-        List<Question> questions = this.questionService.findAllByQuestionnaire(questionnaire);
-        List<Answer> answers = this.answerService.findAll();
-        Map<Long/*AnswerID*/, Answer> answersMap = answers.stream().collect(Collectors.toMap(Answer::getId, Function.identity()));
-        Map<Long/*QuestionID*/, Question> questionsMap = questions.stream().collect(Collectors.toMap(Question::getId, Function.identity()));
+        questions = this.questionService.findAllByQuestionnaire(questionnaire);
+        answers = this.answerService.findAll();
+        answersMap = answers.stream().collect(Collectors.toMap(Answer::getId, Function.identity()));
+        questionsMap = questions.stream().collect(Collectors.toMap(Question::getId, Function.identity()));
 
-        List<MyAnswer> myAnswers = this.myAnswerService.findAllByQuestionnaireStatus(externalQStatus.getId());
-
-        if (myAnswers == null || myAnswers.size() == 0) {
-            throw new NotFoundException("MyAnswers not found for QuestionnaireStatus with id: " + externalQStatus.getId());
+        if (externalQStatus != null) {
+            this.attackStrategyCalculator.calculateRefinedLikelihoods(myAnswers, questionsMap, answersMap, augmentedAttackStrategyMap);
+        } else if (cisoQStatus != null) {
+            this.attackStrategyCalculator.calculateContextualLikelihoods(myAnswers, questionsMap, answersMap, augmentedAttackStrategyMap);
         }
-
-        this.attackStrategyCalculator.calculateRefinedLikelihoods(myAnswers, questionsMap, answersMap, augmentedAttackStrategyMap);
 
         //Building output
         List<MyAssetAttackChance> myAssetAttackChances = new ArrayList<>();
 
         for (Map.Entry<Long, AugmentedAttackStrategy> entry : augmentedAttackStrategyMap.entrySet()) {
+
             AugmentedAttackStrategy augmentedAttackStrategy = entry.getValue();
             AttackStrategy attackStrategy = augmentedAttackStrategy;
 
@@ -174,8 +202,13 @@ public class WP4StepsController {
             attackChance.setMyAsset(myAsset);
             attackChance.setAttackStrategy(attackStrategy);
 
-            attackChance.setLikelihood(augmentedAttackStrategy.getRefinedLikelihood());
-            attackChance.setVulnerability(augmentedAttackStrategy.getRefinedVulnerability());
+            if (externalQStatus != null) {
+                attackChance.setLikelihood(augmentedAttackStrategy.getRefinedLikelihood());
+                attackChance.setVulnerability(augmentedAttackStrategy.getRefinedVulnerability());
+            } else if (cisoQStatus != null) {
+                attackChance.setLikelihood(augmentedAttackStrategy.getContextualLikelihood());
+                attackChance.setVulnerability(augmentedAttackStrategy.getContextualVulnerability());
+            }
 
             float critical = attackChance.getLikelihood() * attackChance.getVulnerability();
             attackChance.setCritical(critical);
