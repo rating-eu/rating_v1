@@ -11,6 +11,7 @@ import {EBITMgmPopupService} from './ebit-mgm-popup.service';
 import {EBITMgmService} from './ebit-mgm.service';
 import {SelfAssessmentMgm, SelfAssessmentMgmService} from '../self-assessment-mgm';
 import {SessionStorageService} from 'ngx-webstorage';
+import { PopUpService } from '../../shared/pop-up-services/pop-up.service';
 
 @Component({
     selector: 'jhi-ebit-mgm-dialog',
@@ -99,14 +100,12 @@ export class EBITMgmPopupComponent implements OnInit, OnDestroy {
     constructor(
         private route: ActivatedRoute,
         private eBITPopupService: EBITMgmPopupService,
-        private sessionStorage: SessionStorageService
+        private popUpService: PopUpService
     ) {
     }
 
     ngOnInit() {
-        const isAfterLogIn = this.sessionStorage.retrieve('isAfterLogin');
-        if (isAfterLogIn) {
-            this.sessionStorage.store('isAfterLogin', false);
+        if (!this.popUpService.canOpen()) {
             return;
         } else {
             this.routeSub = this.route.params.subscribe((params) => {

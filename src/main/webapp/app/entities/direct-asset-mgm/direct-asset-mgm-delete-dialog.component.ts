@@ -8,6 +8,7 @@ import {DirectAssetMgm} from './direct-asset-mgm.model';
 import {DirectAssetMgmPopupService} from './direct-asset-mgm-popup.service';
 import {DirectAssetMgmService} from './direct-asset-mgm.service';
 import {SessionStorageService} from 'ngx-webstorage';
+import { PopUpService } from '../../shared/pop-up-services/pop-up.service';
 
 @Component({
     selector: 'jhi-direct-asset-mgm-delete-dialog',
@@ -50,14 +51,12 @@ export class DirectAssetMgmDeletePopupComponent implements OnInit, OnDestroy {
     constructor(
         private route: ActivatedRoute,
         private directAssetPopupService: DirectAssetMgmPopupService,
-        private sessionStorage: SessionStorageService
+        private popUpService: PopUpService
     ) {
     }
 
     ngOnInit() {
-        const isAfterLogIn = this.sessionStorage.retrieve('isAfterLogin');
-        if (isAfterLogIn) {
-            this.sessionStorage.store('isAfterLogin', false);
+        if (!this.popUpService.canOpen()) {
             return;
         } else {
             this.routeSub = this.route.params.subscribe((params) => {

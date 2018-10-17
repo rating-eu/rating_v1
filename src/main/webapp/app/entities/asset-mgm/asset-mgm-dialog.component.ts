@@ -12,7 +12,8 @@ import { AssetMgmService } from './asset-mgm.service';
 import { ContainerMgm, ContainerMgmService } from '../container-mgm';
 import { DomainOfInfluenceMgm, DomainOfInfluenceMgmService } from '../domain-of-influence-mgm';
 import { AssetCategoryMgm, AssetCategoryMgmService } from '../asset-category-mgm';
-import {SessionStorageService} from 'ngx-webstorage';
+import { SessionStorageService } from 'ngx-webstorage';
+import { PopUpService } from '../../shared/pop-up-services/pop-up.service';
 
 @Component({
     selector: 'jhi-asset-mgm-dialog',
@@ -71,7 +72,7 @@ export class AssetMgmDialogComponent implements OnInit {
     }
 
     private onSaveSuccess(result: AssetMgm) {
-        this.eventManager.broadcast({ name: 'assetListModification', content: 'OK'});
+        this.eventManager.broadcast({ name: 'assetListModification', content: 'OK' });
         this.isSaving = false;
         this.activeModal.dismiss(result);
     }
@@ -119,17 +120,16 @@ export class AssetMgmPopupComponent implements OnInit, OnDestroy {
     constructor(
         private route: ActivatedRoute,
         private assetPopupService: AssetMgmPopupService,
-        private sessionStorage: SessionStorageService
-    ) {}
+        private sessionStorage: SessionStorageService,
+        private popUpService: PopUpService
+    ) { }
 
     ngOnInit() {
-        const isAfterLogIn = this.sessionStorage.retrieve('isAfterLogin');
-        if (isAfterLogIn) {
-            this.sessionStorage.store('isAfterLogin', false);
+        if (!this.popUpService.canOpen()) {
             return;
         } else {
             this.routeSub = this.route.params.subscribe((params) => {
-                if ( params['id'] ) {
+                if (params['id']) {
                     this.assetPopupService
                         .open(AssetMgmDialogComponent as Component, params['id']);
                 } else {
@@ -141,7 +141,7 @@ export class AssetMgmPopupComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy() {
-        if(this.routeSub){
+        if (this.routeSub) {
             this.routeSub.unsubscribe();
         }
     }

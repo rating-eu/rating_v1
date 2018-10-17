@@ -123,6 +123,7 @@
                     <div class="btn-group flex-btn-group-container btn-table">
                         <ng-template #tipButtonView><span jhiTranslate="entity.action.view">View Test</span></ng-template>
                         <button type="submit"
+                                (click)="popUpService.setOnUserBehaviour()"
                                 [routerLink]="['../self-assessment-mgm', selfAssessment.id ]"
                                 class="btn btn-info btn-sm"
                                 [ngbTooltip]="tipButtonView"
@@ -132,6 +133,7 @@
                         </button>
                         <ng-template #tipButtonEdit><span jhiTranslate="entity.action.edit">Edit Test</span></ng-template>
                         <button type="submit"
+                                (click)="popUpService.setOnUserBehaviour()"
                                 [routerLink]="['/', { outlets: { popup: 'self-assessment-mgm/'+ selfAssessment.id + '/edit'} }]"
                                 replaceUrl="true"
                                 queryParamsHandling="merge"
@@ -143,6 +145,7 @@
                         </button>
                         <ng-template #tipButtonDelete><span jhiTranslate="entity.action.delete">Edit Test</span></ng-template>
                         <button type="submit"
+                                (click)="popUpService.setOnUserBehaviour()"
                                 [routerLink]="['/', { outlets: { popup: 'self-assessment-mgm/'+ selfAssessment.id + '/delete'} }]"
                                 replaceUrl="true"
                                 queryParamsHandling="merge"

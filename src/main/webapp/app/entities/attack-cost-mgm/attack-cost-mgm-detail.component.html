@@ -37,6 +37,7 @@
     </button>
 
     <button type="button"
+            (click)="popUpService.setOnUserBehaviour()"
             [routerLink]="['/', { outlets: { popup: 'attack-cost-mgm/'+ attackCost.id + '/edit'} }]"
             replaceUrl="true"
             queryParamsHandling="merge"

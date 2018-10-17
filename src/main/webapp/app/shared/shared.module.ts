@@ -21,6 +21,7 @@ import {
 
 import {Title} from '@angular/platform-browser';
 import {LoginPlainComponent} from './index';
+import { PopUpService } from './pop-up-services/pop-up.service';
 
 @NgModule({
     imports: [
@@ -69,6 +70,7 @@ export class HermeneutSharedModule {
                 UserService,
                 AccountService,
                 StateStorageService,
+                PopUpService,
                 LoginModalService,
                 Title,
                 {

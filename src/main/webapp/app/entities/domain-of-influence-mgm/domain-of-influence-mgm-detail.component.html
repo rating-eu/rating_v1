@@ -27,6 +27,7 @@
     </button>
 
     <button type="button"
+            (click)="popUpService.setOnUserBehaviour()"
             [routerLink]="['/', { outlets: { popup: 'domain-of-influence-mgm/'+ domainOfInfluence.id + '/edit'} }]"
             replaceUrl="true"
             queryParamsHandling="merge"

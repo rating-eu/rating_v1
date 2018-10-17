@@ -6,6 +6,7 @@ import { JhiEventManager } from 'ng-jhipster';
 
 import { EconomicResultsMgm } from './economic-results-mgm.model';
 import { EconomicResultsMgmService } from './economic-results-mgm.service';
+import { PopUpService } from '../../shared/pop-up-services/pop-up.service';
 
 @Component({
     selector: 'jhi-economic-results-mgm-detail',
@@ -20,7 +21,8 @@ export class EconomicResultsMgmDetailComponent implements OnInit, OnDestroy {
     constructor(
         private eventManager: JhiEventManager,
         private economicResultsService: EconomicResultsMgmService,
-        private route: ActivatedRoute
+        private route: ActivatedRoute,
+        public popUpService: PopUpService
     ) {
     }
 

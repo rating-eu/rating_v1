@@ -8,6 +8,7 @@ import {EconomicCoefficientsMgm} from './economic-coefficients-mgm.model';
 import {EconomicCoefficientsMgmPopupService} from './economic-coefficients-mgm-popup.service';
 import {EconomicCoefficientsMgmService} from './economic-coefficients-mgm.service';
 import {SessionStorageService} from 'ngx-webstorage';
+import { PopUpService } from '../../shared/pop-up-services/pop-up.service';
 
 @Component({
     selector: 'jhi-economic-coefficients-mgm-delete-dialog',
@@ -50,14 +51,12 @@ export class EconomicCoefficientsMgmDeletePopupComponent implements OnInit, OnDe
     constructor(
         private route: ActivatedRoute,
         private economicCoefficientsPopupService: EconomicCoefficientsMgmPopupService,
-        private sessionStorage: SessionStorageService,
+        private popUpService: PopUpService
     ) {
     }
 
     ngOnInit() {
-        const isAfterLogIn = this.sessionStorage.retrieve('isAfterLogin');
-        if (isAfterLogIn) {
-            this.sessionStorage.store('isAfterLogin', false);
+        if (!this.popUpService.canOpen()) {
             return;
         } else {
             this.routeSub = this.route.params.subscribe((params) => {

@@ -7,6 +7,7 @@ import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
 import { AssetCategoryMgm } from './asset-category-mgm.model';
 import { AssetCategoryMgmService } from './asset-category-mgm.service';
 import { Principal } from '../../shared';
+import { PopUpService } from '../../shared/pop-up-services/pop-up.service';
 
 @Component({
     selector: 'jhi-asset-category-mgm',
@@ -23,7 +24,8 @@ assetCategories: AssetCategoryMgm[];
         private jhiAlertService: JhiAlertService,
         private eventManager: JhiEventManager,
         private activatedRoute: ActivatedRoute,
-        private principal: Principal
+        private principal: Principal,
+        private popUpService: PopUpService
     ) {
         this.currentSearch = this.activatedRoute.snapshot && this.activatedRoute.snapshot.params['search'] ?
             this.activatedRoute.snapshot.params['search'] : '';

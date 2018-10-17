@@ -12,6 +12,7 @@ import {CompanyGroupMgmService} from './company-group-mgm.service';
 import {User, UserService} from '../../shared';
 import {CompanyProfileMgm, CompanyProfileMgmService} from '../company-profile-mgm';
 import {SessionStorageService} from 'ngx-webstorage';
+import { PopUpService } from '../../shared/pop-up-services/pop-up.service';
 
 @Component({
     selector: 'jhi-company-group-mgm-dialog',
@@ -102,14 +103,13 @@ export class CompanyGroupMgmPopupComponent implements OnInit, OnDestroy {
     constructor(
         private route: ActivatedRoute,
         private companyGroupPopupService: CompanyGroupMgmPopupService,
-        private sessionStorage: SessionStorageService
+        private sessionStorage: SessionStorageService,
+        private popUpService: PopUpService
     ) {
     }
 
     ngOnInit() {
-        const isAfterLogIn = this.sessionStorage.retrieve('isAfterLogin');
-        if (isAfterLogIn) {
-            this.sessionStorage.store('isAfterLogin', false);
+        if (!this.popUpService.canOpen()) {
             return;
         } else {
             this.routeSub = this.route.params.subscribe((params) => {

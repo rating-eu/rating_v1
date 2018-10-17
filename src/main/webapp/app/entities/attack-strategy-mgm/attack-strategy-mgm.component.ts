@@ -7,6 +7,7 @@ import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
 import { AttackStrategyMgm } from './attack-strategy-mgm.model';
 import { AttackStrategyMgmService } from './attack-strategy-mgm.service';
 import { Principal } from '../../shared';
+import { PopUpService } from '../../shared/pop-up-services/pop-up.service';
 
 @Component({
     selector: 'jhi-attack-strategy-mgm',
@@ -23,7 +24,8 @@ attackStrategies: AttackStrategyMgm[];
         private jhiAlertService: JhiAlertService,
         private eventManager: JhiEventManager,
         private activatedRoute: ActivatedRoute,
-        private principal: Principal
+        private principal: Principal,
+        private popUpService: PopUpService
     ) {
         this.currentSearch = this.activatedRoute.snapshot && this.activatedRoute.snapshot.params['search'] ?
             this.activatedRoute.snapshot.params['search'] : '';

@@ -39,6 +39,7 @@
     </button>
 
     <button type="button"
+            (click)="popUpService.setOnUserBehaviour()"
             [routerLink]="['/', { outlets: { popup: 'company-group-mgm/'+ companyGroup.id + '/edit'} }]"
             replaceUrl="true"
             queryParamsHandling="merge"
