@@ -28,6 +28,7 @@
     </button>
 
     <button type="button"
+            (click)="popUpService.setOnUserBehaviour()"
             [routerLink]="['/', { outlets: { popup: 'questionnaire-mgm/'+ questionnaire.id + '/edit'} }]"
             replaceUrl="true"
             queryParamsHandling="merge"

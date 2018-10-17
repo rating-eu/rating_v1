@@ -9,7 +9,8 @@ import { JhiEventManager } from 'ng-jhipster';
 import { MitigationMgm } from './mitigation-mgm.model';
 import { MitigationMgmPopupService } from './mitigation-mgm-popup.service';
 import { MitigationMgmService } from './mitigation-mgm.service';
-import {SessionStorageService} from 'ngx-webstorage';
+import { SessionStorageService } from 'ngx-webstorage';
+import { PopUpService } from '../../shared/pop-up-services/pop-up.service';
 
 @Component({
     selector: 'jhi-mitigation-mgm-dialog',
@@ -52,7 +53,7 @@ export class MitigationMgmDialogComponent implements OnInit {
     }
 
     private onSaveSuccess(result: MitigationMgm) {
-        this.eventManager.broadcast({ name: 'mitigationListModification', content: 'OK'});
+        this.eventManager.broadcast({ name: 'mitigationListModification', content: 'OK' });
         this.isSaving = false;
         this.activeModal.dismiss(result);
     }
@@ -73,17 +74,15 @@ export class MitigationMgmPopupComponent implements OnInit, OnDestroy {
     constructor(
         private route: ActivatedRoute,
         private mitigationPopupService: MitigationMgmPopupService,
-        private sessionStorage: SessionStorageService
-    ) {}
+        private popUpService: PopUpService
+    ) { }
 
     ngOnInit() {
-        const isAfterLogIn = this.sessionStorage.retrieve('isAfterLogin');
-        if (isAfterLogIn) {
-            this.sessionStorage.store('isAfterLogin', false);
+        if (!this.popUpService.canOpen()) {
             return;
         } else {
             this.routeSub = this.route.params.subscribe((params) => {
-                if ( params['id'] ) {
+                if (params['id']) {
                     this.mitigationPopupService
                         .open(MitigationMgmDialogComponent as Component, params['id']);
                 } else {
@@ -95,7 +94,7 @@ export class MitigationMgmPopupComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy() {
-        if(this.routeSub){
+        if (this.routeSub) {
             this.routeSub.unsubscribe();
         }
     }

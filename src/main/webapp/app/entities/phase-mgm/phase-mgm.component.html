@@ -4,9 +4,10 @@
         <div class="card-box">
             <div class="form-search-table">
 
-                <form name="searchForm"role="search" class="">
+                <form name="searchForm" role="search" class="">
                     <div class="input-group w-100">
-                        <input type="text" class="form-control" [(ngModel)]="currentSearch" id="currentSearch" name="currentSearch" placeholder="{{ 'hermeneutApp.phase.home.search' | translate }}">
+                        <input type="text" class="form-control" [(ngModel)]="currentSearch" id="currentSearch" name="currentSearch"
+                            placeholder="{{ 'hermeneutApp.phase.home.search' | translate }}">
                         <button class="input-group-append btn btn-info" (click)="search(currentSearch)">
                             <span class="fa fa-search"></span>
                         </button>
@@ -20,11 +21,13 @@
     </div>
     <div class="col-lg-3 col-md-12">
         <div class="card-box">
-            <button class="btn btn-block btn-primary waves-effect waves-light btn-info jh-create-entity create-phase-mgm" [routerLink]="['/', { outlets: { popup: ['phase-mgm-new'] } }]">
+            <button class="btn btn-block btn-primary waves-effect waves-light btn-info jh-create-entity create-phase-mgm"
+                (click)="popUpService.setOnUserBehaviour()"
+                [routerLink]="['/', { outlets: { popup: ['phase-mgm-new'] } }]">
                 <i class="fas fa-plus"></i>
-                <span class="hidden-sm-down"  jhiTranslate="hermeneutApp.phase.home.createLabel">
-            Create new Phase
-            </span>
+                <span class="hidden-sm-down" jhiTranslate="hermeneutApp.phase.home.createLabel">
+                    Create new Phase
+                </span>
             </button>
         </div>
     </div>
@@ -60,47 +63,43 @@
     <div class="table-responsive" *ngIf="phases">
         <table class="table table-striped">
             <thead>
-            <tr>
-            <th><span jhiTranslate="global.field.id">ID</span></th>
-            <th><span jhiTranslate="hermeneutApp.phase.name">Name</span></th>
-            <th><span jhiTranslate="hermeneutApp.phase.description">Description</span></th>
-            <th><span jhiTranslate="hermeneutApp.phase.weight">Weight</span></th>
-            <th></th>
-            </tr>
+                <tr>
+                    <th><span jhiTranslate="global.field.id">ID</span></th>
+                    <th><span jhiTranslate="hermeneutApp.phase.name">Name</span></th>
+                    <th><span jhiTranslate="hermeneutApp.phase.description">Description</span></th>
+                    <th><span jhiTranslate="hermeneutApp.phase.weight">Weight</span></th>
+                    <th></th>
+                </tr>
             </thead>
             <tbody>
-            <tr *ngFor="let phase of phases ;trackBy: trackId">
-                <td><a [routerLink]="['../phase-mgm', phase.id ]">{{phase.id}}</a></td>
-                <td>{{phase.name}}</td>
-                <td>{{phase.description}}</td>
-                <td>{{phase.weight}}</td>
-                <td class="text-right">
-                    <div class="btn-group flex-btn-group-container">
-                        <button type="submit"
-                                [routerLink]="['../phase-mgm', phase.id ]"
-                                class="btn btn-info btn-sm">
-                            <span class="fa fa-eye"></span>
-                            <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
-                        </button>
-                        <button type="submit"
+                <tr *ngFor="let phase of phases ;trackBy: trackId">
+                    <td><a [routerLink]="['../phase-mgm', phase.id ]">{{phase.id}}</a></td>
+                    <td>{{phase.name}}</td>
+                    <td>{{phase.description}}</td>
+                    <td>{{phase.weight}}</td>
+                    <td class="text-right">
+                        <div class="btn-group flex-btn-group-container">
+                            <button type="submit" [routerLink]="['../phase-mgm', phase.id ]" class="btn btn-info btn-sm">
+                                <span class="fa fa-eye"></span>
+                                <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                            </button>
+                            <button type="submit" 
+                                (click)="popUpService.setOnUserBehaviour()"
                                 [routerLink]="['/', { outlets: { popup: 'phase-mgm/'+ phase.id + '/edit'} }]"
-                                replaceUrl="true"
-                                queryParamsHandling="merge"
-                                class="btn btn-primary btn-sm">
-                            <span class="fa fa-pencil"></span>
-                            <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
-                        </button>
-                        <button type="submit"
+                                replaceUrl="true" queryParamsHandling="merge" class="btn btn-primary btn-sm">
+                                <span class="fa fa-pencil"></span>
+                                <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                            </button>
+                            <button type="submit" 
+                                (click)="popUpService.setOnUserBehaviour()"
                                 [routerLink]="['/', { outlets: { popup: 'phase-mgm/'+ phase.id + '/delete'} }]"
-                                replaceUrl="true"
-                                queryParamsHandling="merge"
-                                class="btn btn-danger btn-sm">
-                            <span class="fa fa-remove"></span>
-                            <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
-                        </button>
-                    </div>
-                </td>
-            </tr>
+                                replaceUrl="true" queryParamsHandling="merge" class="btn btn-danger btn-sm">
+                                <span class="fa fa-remove"></span>
+                                <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
             </tbody>
         </table>
     </div>

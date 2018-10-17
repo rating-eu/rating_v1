@@ -3,9 +3,10 @@
         <div class="card-box">
             <div class="form-search-table">
 
-                <form name="searchForm"role="search" class="">
+                <form name="searchForm" role="search" class="">
                     <div class="input-group w-100">
-                        <input type="text" class="form-control" [(ngModel)]="currentSearch" id="currentSearch" name="currentSearch" placeholder="{{ 'hermeneutApp.questionnaire.home.search' | translate }}">
+                        <input type="text" class="form-control" [(ngModel)]="currentSearch" id="currentSearch" name="currentSearch"
+                            placeholder="{{ 'hermeneutApp.questionnaire.home.search' | translate }}">
                         <button class="input-group-append btn btn-info" (click)="search(currentSearch)">
                             <span class="fa fa-search"></span>
                         </button>
@@ -19,11 +20,13 @@
     </div>
     <div class="col-lg-3 col-md-12">
         <div class="card-box">
-            <button class="btn btn-block btn-primary waves-effect waves-light btn-info jh-create-entity create-questionnaire-mgm" [routerLink]="['/', { outlets: { popup: ['questionnaire-mgm-new'] } }]">
+            <button class="btn btn-block btn-primary waves-effect waves-light btn-info jh-create-entity create-questionnaire-mgm"
+                (click)="popUpService.setOnUserBehaviour()"
+                [routerLink]="['/', { outlets: { popup: ['questionnaire-mgm-new'] } }]">
                 <i class="fas fa-plus"></i>
                 <span class="hidden-sm-down" jhiTranslate="hermeneutApp.questionnaire.home.createLabel">
-            Create new Questionnaire
-            </span>
+                    Create new Questionnaire
+                </span>
             </button>
         </div>
     </div>
@@ -59,49 +62,45 @@
     <div class="table-responsive" *ngIf="questionnaires">
         <table class="table table-striped">
             <thead>
-            <tr>
-            <th><span jhiTranslate="global.field.id">ID</span></th>
-            <th><span jhiTranslate="hermeneutApp.questionnaire.name">Name</span></th>
-            <th><span jhiTranslate="hermeneutApp.questionnaire.purpose">Purpose</span></th>
-            <th><span jhiTranslate="hermeneutApp.questionnaire.created">Created</span></th>
-            <th><span jhiTranslate="hermeneutApp.questionnaire.modified">Modified</span></th>
-            <th></th>
-            </tr>
+                <tr>
+                    <th><span jhiTranslate="global.field.id">ID</span></th>
+                    <th><span jhiTranslate="hermeneutApp.questionnaire.name">Name</span></th>
+                    <th><span jhiTranslate="hermeneutApp.questionnaire.purpose">Purpose</span></th>
+                    <th><span jhiTranslate="hermeneutApp.questionnaire.created">Created</span></th>
+                    <th><span jhiTranslate="hermeneutApp.questionnaire.modified">Modified</span></th>
+                    <th></th>
+                </tr>
             </thead>
             <tbody>
-            <tr *ngFor="let questionnaire of questionnaires ;trackBy: trackId">
-                <td><a [routerLink]="['../questionnaire-mgm', questionnaire.id ]">{{questionnaire.id}}</a></td>
-                <td>{{questionnaire.name}}</td>
-                <td jhiTranslate="{{'hermeneutApp.QuestionnairePurpose.' + questionnaire.purpose}}">{{questionnaire.purpose}}</td>
-                <td>{{questionnaire.created | date:'medium'}}</td>
-                <td>{{questionnaire.modified | date:'medium'}}</td>
-                <td class="text-right">
-                    <div class="btn-group flex-btn-group-container">
-                        <button type="submit"
-                                [routerLink]="['../questionnaire-mgm', questionnaire.id ]"
-                                class="btn btn-info btn-sm">
-                            <span class="fa fa-eye"></span>
-                            <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
-                        </button>
-                        <button type="submit"
+                <tr *ngFor="let questionnaire of questionnaires ;trackBy: trackId">
+                    <td><a [routerLink]="['../questionnaire-mgm', questionnaire.id ]">{{questionnaire.id}}</a></td>
+                    <td>{{questionnaire.name}}</td>
+                    <td jhiTranslate="{{'hermeneutApp.QuestionnairePurpose.' + questionnaire.purpose}}">{{questionnaire.purpose}}</td>
+                    <td>{{questionnaire.created | date:'medium'}}</td>
+                    <td>{{questionnaire.modified | date:'medium'}}</td>
+                    <td class="text-right">
+                        <div class="btn-group flex-btn-group-container">
+                            <button type="submit" [routerLink]="['../questionnaire-mgm', questionnaire.id ]" class="btn btn-info btn-sm">
+                                <span class="fa fa-eye"></span>
+                                <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                            </button>
+                            <button type="submit" 
+                                (click)="popUpService.setOnUserBehaviour()"
                                 [routerLink]="['/', { outlets: { popup: 'questionnaire-mgm/'+ questionnaire.id + '/edit'} }]"
-                                replaceUrl="true"
-                                queryParamsHandling="merge"
-                                class="btn btn-primary btn-sm">
-                            <span class="fa fa-pencil"></span>
-                            <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
-                        </button>
-                        <button type="submit"
+                                replaceUrl="true" queryParamsHandling="merge" class="btn btn-primary btn-sm">
+                                <span class="fa fa-pencil"></span>
+                                <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                            </button>
+                            <button type="submit" 
+                                (click)="popUpService.setOnUserBehaviour()"
                                 [routerLink]="['/', { outlets: { popup: 'questionnaire-mgm/'+ questionnaire.id + '/delete'} }]"
-                                replaceUrl="true"
-                                queryParamsHandling="merge"
-                                class="btn btn-danger btn-sm">
-                            <span class="fa fa-remove"></span>
-                            <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
-                        </button>
-                    </div>
-                </td>
-            </tr>
+                                replaceUrl="true" queryParamsHandling="merge" class="btn btn-danger btn-sm">
+                                <span class="fa fa-remove"></span>
+                                <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
             </tbody>
         </table>
     </div>

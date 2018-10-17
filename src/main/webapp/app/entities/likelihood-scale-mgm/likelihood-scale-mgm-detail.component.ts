@@ -6,6 +6,7 @@ import { JhiEventManager } from 'ng-jhipster';
 
 import { LikelihoodScaleMgm } from './likelihood-scale-mgm.model';
 import { LikelihoodScaleMgmService } from './likelihood-scale-mgm.service';
+import { PopUpService } from '../../shared/pop-up-services/pop-up.service';
 
 @Component({
     selector: 'jhi-likelihood-scale-mgm-detail',
@@ -20,7 +21,8 @@ export class LikelihoodScaleMgmDetailComponent implements OnInit, OnDestroy {
     constructor(
         private eventManager: JhiEventManager,
         private likelihoodScaleService: LikelihoodScaleMgmService,
-        private route: ActivatedRoute
+        private route: ActivatedRoute,
+        public popUpService: PopUpService
     ) {
     }
 

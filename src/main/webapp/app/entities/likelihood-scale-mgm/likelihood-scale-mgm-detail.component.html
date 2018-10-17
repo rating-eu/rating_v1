@@ -35,6 +35,7 @@
     </button>
 
     <button type="button"
+            (click)="popUpService.setOnUserBehaviour()"
             [routerLink]="['/', { outlets: { popup: 'likelihood-scale-mgm/'+ likelihoodScale.id + '/edit'} }]"
             replaceUrl="true"
             queryParamsHandling="merge"
