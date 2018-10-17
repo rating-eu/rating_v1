@@ -2,6 +2,7 @@ package eu.hermeneut.web.rest.wp4;
 
 import com.codahale.metrics.annotation.Timed;
 import eu.hermeneut.domain.*;
+import eu.hermeneut.domain.enumeration.QuestionnairePurpose;
 import eu.hermeneut.domain.enumeration.Role;
 import eu.hermeneut.domain.attackmap.AugmentedAttackStrategy;
 import eu.hermeneut.domain.wp4.MyAssetAttackChance;
@@ -144,8 +145,12 @@ public class WP4StepsController {
         }
 
         QuestionnaireStatus cisoQStatus = questionnaireStatuses.stream().filter(questionnaireStatus ->
-            questionnaireStatus.getRole().equals(Role.ROLE_CISO)).findFirst().orElse(null);
-        QuestionnaireStatus externalQStatus = questionnaireStatuses.stream().filter(questionnaireStatus -> questionnaireStatus.getRole().equals(Role.ROLE_EXTERNAL_AUDIT)).findFirst().orElse(null);
+            questionnaireStatus.getRole().equals(Role.ROLE_CISO) && questionnaireStatus.getQuestionnaire().getPurpose
+                ().equals(QuestionnairePurpose.SELFASSESSMENT))
+            .findFirst().orElse(null);
+        QuestionnaireStatus externalQStatus = questionnaireStatuses.stream().filter(questionnaireStatus ->
+            questionnaireStatus.getRole().equals(Role.ROLE_EXTERNAL_AUDIT) && questionnaireStatus.getQuestionnaire().getPurpose
+                ().equals(QuestionnairePurpose.SELFASSESSMENT)).findFirst().orElse(null);
 
         Questionnaire questionnaire;// = externalQStatus.getQuestionnaire();
         List<Question> questions;// = this.questionService.findAllByQuestionnaire(questionnaire);
@@ -179,10 +184,10 @@ public class WP4StepsController {
         answersMap = answers.stream().collect(Collectors.toMap(Answer::getId, Function.identity()));
         questionsMap = questions.stream().collect(Collectors.toMap(Question::getId, Function.identity()));
 
-        if (cisoQStatus != null) {
-            this.attackStrategyCalculator.calculateContextualLikelihoods(myAnswers, questionsMap, answersMap, augmentedAttackStrategyMap);
-        } else if (externalQStatus != null) {
+        if (externalQStatus != null) {
             this.attackStrategyCalculator.calculateRefinedLikelihoods(myAnswers, questionsMap, answersMap, augmentedAttackStrategyMap);
+        } else if (cisoQStatus != null) {
+            this.attackStrategyCalculator.calculateContextualLikelihoods(myAnswers, questionsMap, answersMap, augmentedAttackStrategyMap);
         }
 
         //Building output
@@ -197,12 +202,12 @@ public class WP4StepsController {
             attackChance.setMyAsset(myAsset);
             attackChance.setAttackStrategy(attackStrategy);
 
-            if (cisoQStatus != null) {
-                attackChance.setLikelihood(augmentedAttackStrategy.getContextualLikelihood());
-                attackChance.setVulnerability(augmentedAttackStrategy.getContextualVulnerability());
-            } else if (externalQStatus != null) {
+            if (externalQStatus != null) {
                 attackChance.setLikelihood(augmentedAttackStrategy.getRefinedLikelihood());
                 attackChance.setVulnerability(augmentedAttackStrategy.getRefinedVulnerability());
+            } else if (cisoQStatus != null) {
+                attackChance.setLikelihood(augmentedAttackStrategy.getContextualLikelihood());
+                attackChance.setVulnerability(augmentedAttackStrategy.getContextualVulnerability());
             }
 
             float critical = attackChance.getLikelihood() * attackChance.getVulnerability();
