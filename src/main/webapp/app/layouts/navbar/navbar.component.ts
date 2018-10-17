@@ -85,8 +85,8 @@ export class NavbarComponent implements OnInit {
     logout() {
         this.collapseNavbar();
         this.loginService.logout();
-
         const update: Update = this.dataSharingService.getUpdate();
+        this.dataSharingService.clear();
         update.isSidebarCollapsed = true;
         update.isSidebarCollapsedByMe = false;
 

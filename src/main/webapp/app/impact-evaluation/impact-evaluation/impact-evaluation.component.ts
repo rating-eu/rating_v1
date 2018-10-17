@@ -13,6 +13,7 @@ import { EconomicCoefficientsMgm } from '../../entities/economic-coefficients-mg
 import { SectorType, CategoryType } from '../../entities/splitting-loss-mgm';
 import { MyCategoryType } from '../../entities/enumerations/MyCategoryType.enum';
 import { Router } from '../../../../../../node_modules/@angular/router';
+import { MySectorType } from '../../entities/enumerations/MySectorType.enum';
 
 @Component({
   // tslint:disable-next-line:component-selector
@@ -37,6 +38,9 @@ export class ImpactEvaluationComponent implements OnInit {
   public impactOnOrgCapital: number;
   public impactOnKeyComp: number;
   public impactOnIP: number;
+  public impactOnSectorialOrgCapital: number;
+  public impactOnSectorialKeyComp: number;
+  public impactOnSectorialIP: number;
   public impactOnFinanceAndInsuranceSector: number[];
   public impactOnHealthCareSector: number[];
   public impactOnInformationSector: number[];
@@ -289,7 +293,7 @@ export class ImpactEvaluationComponent implements OnInit {
       console.log(inputs);
       this.impactService.evaluateStepOne(inputs, this.mySelf).toPromise().then((res) => {
         if (res) {
-          this.economicPerformance = res.economicResults.economicPerformance;
+          this.economicPerformance = Math.round(res.economicResults.economicPerformance * 100) / 100;
         }
       });
       // this.economicPerformance = Math.random() * 100;
@@ -339,17 +343,17 @@ export class ImpactEvaluationComponent implements OnInit {
       console.log(inputs);
       this.impactService.evaluateStepTwo(inputs, this.mySelf).toPromise().then((res) => {
         if (res) {
-          this.intangibleDrivingEarnings = res.economicResults.intangibleDrivingEarnings;
-          this.intangibleCapitalValuation = res.economicResults.intangibleCapital;
+          this.intangibleDrivingEarnings = Math.round(res.economicResults.intangibleDrivingEarnings * 100) / 100;
+          this.intangibleCapitalValuation = Math.round(res.economicResults.intangibleCapital * 100) / 100;
         }
       });
-      /*
-      this.intangibleDrivingEarnings = Math.random() * 100;
-      this.intangibleCapitalValuation = Math.random() * 100;
-      */
     }
   }
   public evaluateStepThree() {
+    if (this.impactFormStepThree.invalid) {
+      // gestire l'errore con un messaggio sul campo input
+      return;
+    }
     console.log('EVALUATE STEP THREE');
     let lossOfIntangiblePercentage = 18.29;
     if (this.impactFormStepThree.get('lossOfIntangiblePercentage').value &&
@@ -367,10 +371,9 @@ export class ImpactEvaluationComponent implements OnInit {
       console.log(inputs);
       this.impactService.evaluateStepThree(inputs, this.mySelf).toPromise().then((res) => {
         if (res) {
-          this.lossOnintangibleAssetsDueToCyberattacks = res.economicResults.intangibleLossByAttacks;
+          this.lossOnintangibleAssetsDueToCyberattacks = Math.round(res.economicResults.intangibleLossByAttacks * 100) / 100;
         }
       });
-      // this.lossOnintangibleAssetsDueToCyberattacks = Math.random() * 100;
     }
   }
 
@@ -383,26 +386,42 @@ export class ImpactEvaluationComponent implements OnInit {
     }
     */
     const inputs: Wp3BundleInput = new Wp3BundleInput();
+    inputs.sectorType = SectorType.GLOBAL;
+    /*
     if (this.isGlobal) {
       inputs.sectorType = SectorType.GLOBAL;
     } else {
       inputs.sectorType = this.choosedSectorType;
     }
+    */
     console.log(inputs);
     this.impactService.evaluateStepFour(inputs, this.mySelf).toPromise().then((res) => {
       if (res) {
+        // 6 elementi 3 per global e 3 per sector
         for (const impactOn of res.splittingLosses) {
           switch (impactOn.categoryType.toString()) {
             case MyCategoryType.IP.toString(): {
-              this.impactOnIP = impactOn.loss;
+              if (impactOn.sectorType.toString() === MySectorType.GLOBAL.toString()) {
+                this.impactOnIP = Math.round(impactOn.loss * 100) / 100;
+              } else {
+                this.impactOnSectorialIP = Math.round(impactOn.loss * 100) / 100;
+              }
               break;
             }
             case MyCategoryType.KEY_COMP.toString(): {
-              this.impactOnKeyComp = impactOn.loss;
+              if (impactOn.sectorType.toString() === MySectorType.GLOBAL.toString()) {
+                this.impactOnKeyComp = Math.round(impactOn.loss * 100) / 100;
+              } else {
+                this.impactOnSectorialKeyComp = Math.round(impactOn.loss * 100) / 100;
+              }
               break;
             }
             case MyCategoryType.ORG_CAPITAL.toString(): {
-              this.impactOnOrgCapital = impactOn.loss;
+              if (impactOn.sectorType.toString() === MySectorType.GLOBAL.toString()) {
+                this.impactOnOrgCapital = Math.round(impactOn.loss * 100) / 100;
+              } else {
+                this.impactOnSectorialOrgCapital = Math.round(impactOn.loss * 100) / 100;
+              }
               break;
             }
           }
@@ -437,8 +456,12 @@ export class ImpactEvaluationComponent implements OnInit {
           return;
         }
         this.evaluateStepTwo();
+        if (this.isGlobal) {
+          this.evaluateStepFour();
+        }
         break;
       }
+      /*
       case 4: {
         if (this.impactFormStepThree.invalid) {
           return;
@@ -449,6 +472,7 @@ export class ImpactEvaluationComponent implements OnInit {
         }
         break;
       }
+      */
     }
     this.witchStep = step;
   }

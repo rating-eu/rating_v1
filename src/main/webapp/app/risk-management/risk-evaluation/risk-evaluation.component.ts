@@ -307,6 +307,7 @@ export class RiskEvaluationComponent implements OnInit, OnDestroy {
                         criticalAsset++;
                     }
                     fullContent = fullContent.concat(myAsset.asset.name + ', ');
+                    break;
                 }
             }
             const critical = lStore[1] * lStore[1];
