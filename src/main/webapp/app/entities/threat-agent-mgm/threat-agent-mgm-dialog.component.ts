@@ -11,6 +11,7 @@ import { ThreatAgentMgmPopupService } from './threat-agent-mgm-popup.service';
 import { ThreatAgentMgmService } from './threat-agent-mgm.service';
 import { MotivationMgm, MotivationMgmService } from '../motivation-mgm';
 import {SessionStorageService} from 'ngx-webstorage';
+import {PopUpService} from '../../shared/pop-up-services/pop-up.service';
 
 @Component({
     selector: 'jhi-threat-agent-mgm-dialog',
@@ -117,13 +118,11 @@ export class ThreatAgentMgmPopupComponent implements OnInit, OnDestroy {
     constructor(
         private route: ActivatedRoute,
         private threatAgentPopupService: ThreatAgentMgmPopupService,
-        private sessionStorage: SessionStorageService
+        private popUpService: PopUpService
     ) {}
 
     ngOnInit() {
-        const isAfterLogIn = this.sessionStorage.retrieve('isAfterLogin');
-        if (isAfterLogIn) {
-            this.sessionStorage.store('isAfterLogin', false);
+        if (!this.popUpService.canOpen()) {
             return;
         } else {
             this.routeSub = this.route.params.subscribe((params) => {
