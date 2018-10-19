@@ -1,6 +1,6 @@
 import * as _ from 'lodash';
 
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '../../../../../../node_modules/@angular/forms';
 import { SelfAssessmentMgmService, SelfAssessmentMgm } from '../../entities/self-assessment-mgm';
 import { MyAssetMgm } from '../../entities/my-asset-mgm';
@@ -19,7 +19,7 @@ import { MySectorType } from '../../entities/enumerations/MySectorType.enum';
   // tslint:disable-next-line:component-selector
   selector: 'impact-evaluation',
   templateUrl: './impact-evaluation.component.html',
-  styles: []
+  styleUrls: ['./impact-evaluation.component.css']
 })
 export class ImpactEvaluationComponent implements OnInit {
 
@@ -82,10 +82,13 @@ export class ImpactEvaluationComponent implements OnInit {
     private mySelfAssessmentService: SelfAssessmentMgmService,
     private assetService: AssetMgmService,
     private impactService: ImpactEvaluationService,
-    private router: Router
+    private router: Router,
+    private ref: ChangeDetectorRef
   ) { }
 
   ngOnInit() {
+    this.sectorChoosed = 'health_care_and_social_assistance';
+    this.choosedSectorType = SectorType.HEALTH_CARE_AND_SOCIAL_ASSISTANCE;
     this.firstYear = (new Date().getFullYear()) - 2;
     this.lastYear = (new Date().getFullYear()) + 3;
     let year = this.firstYear;
@@ -208,6 +211,7 @@ export class ImpactEvaluationComponent implements OnInit {
       ])),
     });
     */
+   this.ref.detectChanges();
   }
 
   public trackByFn(index: number, value: any) {
@@ -375,6 +379,8 @@ export class ImpactEvaluationComponent implements OnInit {
         }
       });
     }
+    // Next call is present because we chose of collapse step 3 and 4 in same view
+    this.evaluateStepFour();
   }
 
   public evaluateStepFour() {
@@ -386,14 +392,11 @@ export class ImpactEvaluationComponent implements OnInit {
     }
     */
     const inputs: Wp3BundleInput = new Wp3BundleInput();
-    inputs.sectorType = SectorType.GLOBAL;
-    /*
-    if (this.isGlobal) {
+    if (!this.choosedSectorType) {
       inputs.sectorType = SectorType.GLOBAL;
     } else {
       inputs.sectorType = this.choosedSectorType;
     }
-    */
     console.log(inputs);
     this.impactService.evaluateStepFour(inputs, this.mySelf).toPromise().then((res) => {
       if (res) {

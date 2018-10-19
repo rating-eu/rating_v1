@@ -168,7 +168,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                         ]
                     },
                     {
-                        label: 'Vulnerabilities',
+                        label: 'Vulnerability Assessment',
                         items: [
                             {
                                 label: 'Threat Agents',
@@ -179,7 +179,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                                         visible: isCISO
                                     },
                                     {
-                                        label: 'Matrix',
+                                        label: 'Results',
                                         routerLink: ['/identify-threat-agent/result']
                                     }
                                 ]
@@ -192,7 +192,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                                         routerLink: ['/evaluate-weakness/questionnaires/SELFASSESSMENT']
                                     },
                                     {
-                                        label: 'Likelihood Matrix',
+                                        label: 'Likelihood Results',
                                         routerLink: ['/evaluate-weakness/result']
                                     }
                                 ]

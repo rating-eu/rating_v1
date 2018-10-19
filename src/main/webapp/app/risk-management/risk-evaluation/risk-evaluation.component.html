@@ -55,7 +55,10 @@
                             <th scope="col">Risk</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody *ngIf="riskPercentageMap.size === 0">
+                        Your assets doesn't have any impact value assigned, please: select one impact value for every asset witch you analize!
+                    </tbody>
+                    <tbody *ngIf="riskPercentageMap.size > 0">
                         <tr *ngFor="let myAsset of myAssets | paginate: { itemsPerPage: 7, currentPage: page }">
                             <td *ngIf="riskPercentageMap.get(myAsset.id)">
                                 <a [routerLink]="['/asset-mgm', myAsset.asset?.id ]">{{myAsset?.asset.name}}</a>

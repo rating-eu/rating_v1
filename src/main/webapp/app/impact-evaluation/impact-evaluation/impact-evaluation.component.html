@@ -15,48 +15,56 @@
             </div>
             <div class="input-group" style="margin-bottom: 10px">
               <div class="input-group-prepend">
-                <span class="input-group-text" id="ebit0Prepend">{{ebitLabel[0]}} €</span>
+                <span class="input-group-text past-year" id="ebit0Prepend">{{ebitLabel[0]}} €</span>
               </div>
               <input type="text" class="form-control" placeholder="{{ebitLabel[0]}}" aria-label="Ebit1"
                 aria-describedby="basic-addon2" formControlName="ebit1">
             </div>
             <div class="input-group" style="margin-bottom: 10px">
               <div class="input-group-prepend">
-                <span class="input-group-text" id="ebit1Prepend">{{ebitLabel[1]}} €</span>
+                <span class="input-group-text past-year" id="ebit1Prepend">{{ebitLabel[1]}} €</span>
               </div>
               <input type="text" class="form-control" placeholder="{{ebitLabel[1]}}" aria-label="Ebit2"
                 aria-describedby="basic-addon2" formControlName="ebit2">
             </div>
             <div class="input-group" style="margin-bottom: 10px">
               <div class="input-group-prepend">
-                <span class="input-group-text" id="ebit2Prepend">{{ebitLabel[2]}} €</span>
+                <span class="input-group-text this-year" id="ebit2Prepend">{{ebitLabel[2]}} €</span>
               </div>
               <input type="text" class="form-control" placeholder="{{ebitLabel[2]}}" aria-label="Ebit3"
                 aria-describedby="basic-addon2" formControlName="ebit3">
             </div>
             <div class="input-group" style="margin-bottom: 10px">
               <div class="input-group-prepend">
-                <span class="input-group-text" id="ebit3Prepend">{{ebitLabel[3]}} €</span>
+                <span class="input-group-text future-year" id="ebit3Prepend">{{ebitLabel[3]}} €</span>
               </div>
               <input type="text" class="form-control" placeholder="{{ebitLabel[3]}}" aria-label="Ebit4"
                 aria-describedby="basic-addon2" formControlName="ebit4">
             </div>
             <div class="input-group" style="margin-bottom: 10px">
               <div class="input-group-prepend">
-                <span class="input-group-text" id="ebit4Prepend">{{ebitLabel[4]}} €</span>
+                <span class="input-group-text future-year" id="ebit4Prepend">{{ebitLabel[4]}} €</span>
               </div>
               <input type="text" class="form-control" placeholder="{{ebitLabel[4]}}" aria-label="Ebit5"
                 aria-describedby="basic-addon2" formControlName="ebit5">
             </div>
             <div class="input-group" style="margin-bottom: 10px">
               <div class="input-group-prepend">
-                <span class="input-group-text" id="ebit5Prepend">{{ebitLabel[5]}} €</span>
+                <span class="input-group-text future-year" id="ebit5Prepend">{{ebitLabel[5]}} €</span>
               </div>
               <input type="text" class="form-control" placeholder="{{ebitLabel[5]}}" aria-label="Ebit6"
                 aria-describedby="basic-addon2" formControlName="ebit6">
             </div>
           </form>
         </div>
+      </div>
+      <div class="row" style="height: 20px; margin-left: 5px">
+        <div class="col-md-1 past-year">&nbsp;</div>
+        <div class="col-md-2">: Previous year color</div>
+        <div class="col-md-1 this-year">&nbsp;</div>
+        <div class="col-md-2">: Current year color</div>
+        <div class="col-md-1 future-year">&nbsp;</div>
+        <div class="col-md-2">: Next year color</div>
       </div>
       <div class="row">
         <div class="col-md-12">
@@ -142,7 +150,8 @@
               <ng-container *ngIf="intangibleDrivingEarnings">{{intangibleDrivingEarnings}}</ng-container>
               <ng-container *ngIf="!intangibleDrivingEarnings"> - </ng-container>
               €
-            </b>, Intangible Capital =
+            </b><br>
+            Intangible Capital =
             <b class="color-b">
               <ng-container *ngIf="intangibleCapitalValuation">{{intangibleCapitalValuation}}</ng-container>
               <ng-container *ngIf="!intangibleCapitalValuation"> - </ng-container>
@@ -164,7 +173,7 @@
         </form>
         <button class="btn btn-light" style="height:38px" (click)="evaluateStepThree()">Loss evaluation</button>
         <div class="col-md-5 text-center">
-          <p>Loss On Intangible Assets Due To Cyberattacks = <b class="color-b">
+          <p>Loss On Intangible Assets Due To Cyberattacks<br><b class="color-b">
               <ng-container *ngIf="lossOnintangibleAssetsDueToCyberattacks">{{lossOnintangibleAssetsDueToCyberattacks}}</ng-container>
               <ng-container *ngIf="!lossOnintangibleAssetsDueToCyberattacks"> - </ng-container>
               €
@@ -179,41 +188,38 @@
             <div class="row" style="margin-top: 5px">
               <h4>Global</h4>
             </div>
-            <div class="row"  style="margin-top: 5px">
-              <div class="col-md-4 text-center" style="background-color: #64ffda">
-                <div class="col-md-12">
-                  <h3>IP</h3>
-                </div>
-                <div class="col-md-12">
-                  <h4>
+            <div class="row" style="margin-top: 5px">
+              <div class="col-md-4">
+                <div class="tile-stats">
+                  <div class="icon"><i class="fa fa-money"></i></div>
+                  <div class="count">
                     <ng-container *ngIf="impactOnIP">{{impactOnIP}}</ng-container>
                     <ng-container *ngIf="!impactOnIP"> - </ng-container>
                     €
-                  </h4>
+                  </div>
+                  <h3>IP</h3>
                 </div>
               </div>
-              <div class="col-md-4 text-center" style="background-color: #e1bee7">
-                <div class="col-md-12">
-                  <h3>Key Comp</h3>
-                </div>
-                <div class="col-md-12">
-                  <h4>
+              <div class="col-md-4">
+                <div class="tile-stats">
+                  <div class="icon"><i class="fa fa-money"></i></div>
+                  <div class="count">
                     <ng-container *ngIf="impactOnKeyComp">{{impactOnKeyComp}}</ng-container>
                     <ng-container *ngIf="!impactOnKeyComp"> - </ng-container>
                     €
-                  </h4>
+                  </div>
+                  <h3>Key Comp</h3>
                 </div>
               </div>
-              <div class="col-md-4 text-center" style="background-color: #a5d6a7">
-                <div class="col-md-12">
-                  <h3>Org Capital</h3>
-                </div>
-                <div class="col-md-12">
-                  <h4>
+              <div class="col-md-4">
+                <div class="tile-stats">
+                  <div class="icon"><i class="fa fa-money"></i></div>
+                  <div class="count">
                     <ng-container *ngIf="impactOnOrgCapital">{{impactOnOrgCapital}}</ng-container>
                     <ng-container *ngIf="!impactOnOrgCapital"> - </ng-container>
                     €
-                  </h4>
+                  </div>
+                  <h3>Org Capital</h3>
                 </div>
               </div>
             </div>
@@ -241,46 +247,44 @@
                 </label>
               </div>
             </div>
-            <div class="row"  style="margin-top: 5px">
-              <div class="col-md-4 text-center" style="background-color: #64ffda">
-                <div class="col-md-12">
-                  <h3>IP</h3>
-                </div>
-                <div class="col-md-12">
-                  <h4>
+            <div class="row" style="margin-top: 5px">
+              <div class="col-md-4">
+                <div class="tile-stats">
+                  <div class="icon"><i class="fa fa-money"></i></div>
+                  <div class="count">
                     <ng-container *ngIf="impactOnSectorialIP">{{impactOnSectorialIP}}</ng-container>
                     <ng-container *ngIf="!impactOnSectorialIP"> - </ng-container>
                     €
-                  </h4>
+                  </div>
+                  <h3>IP</h3>
                 </div>
               </div>
-              <div class="col-md-4 text-center" style="background-color: #e1bee7">
-                <div class="col-md-12">
-                  <h3>Key Comp</h3>
-                </div>
-                <div class="col-md-12">
-                  <h4>
+              <div class="col-md-4">
+                <div class="tile-stats">
+                  <div class="icon"><i class="fa fa-money"></i></div>
+                  <div class="count">
                     <ng-container *ngIf="impactOnSectorialKeyComp">{{impactOnSectorialKeyComp}}</ng-container>
                     <ng-container *ngIf="!impactOnSectorialKeyComp"> - </ng-container>
                     €
-                  </h4>
+                  </div>
+                  <h3>Key Comp</h3>
                 </div>
               </div>
-              <div class="col-md-4 text-center" style="background-color: #a5d6a7">
-                <div class="col-md-12">
-                  <h3>Org Capital</h3>
-                </div>
-                <div class="col-md-12">
-                  <h4>
+              <div class="col-md-4">
+                <div class="tile-stats">
+                  <div class="icon"><i class="fa fa-money"></i></div>
+                  <div class="count">
                     <ng-container *ngIf="impactOnSectorialOrgCapital">{{impactOnSectorialOrgCapital}}</ng-container>
                     <ng-container *ngIf="!impactOnSectorialOrgCapital"> - </ng-container>
                     €
-                  </h4>
+                  </div>
+                  <h3>Org Capital</h3>
                 </div>
               </div>
             </div>
           </ng-container>
         </div>
+
       </div>
       <div class="row">
         <div class="col-md-12">
