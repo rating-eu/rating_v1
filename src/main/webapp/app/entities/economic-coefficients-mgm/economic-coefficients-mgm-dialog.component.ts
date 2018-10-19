@@ -100,7 +100,7 @@ export class EconomicCoefficientsMgmPopupComponent implements OnInit, OnDestroy 
     constructor(
         private route: ActivatedRoute,
         private economicCoefficientsPopupService: EconomicCoefficientsMgmPopupService,
-        private popUpService: PopUpService
+        public popUpService: PopUpService
     ) {}
 
     ngOnInit() {

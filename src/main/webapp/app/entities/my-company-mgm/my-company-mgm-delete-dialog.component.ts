@@ -51,7 +51,7 @@ export class MyCompanyMgmDeletePopupComponent implements OnInit, OnDestroy {
     constructor(
         private route: ActivatedRoute,
         private myCompanyPopupService: MyCompanyMgmPopupService,
-        private popUpService: PopUpService
+        public popUpService: PopUpService
     ) { }
 
     ngOnInit() {

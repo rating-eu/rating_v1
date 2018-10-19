@@ -51,7 +51,7 @@ export class CriticalLevelMgmDeletePopupComponent implements OnInit, OnDestroy {
     constructor(
         private route: ActivatedRoute,
         private criticalLevelPopupService: CriticalLevelMgmPopupService,
-        private popUpService: PopUpService
+        public popUpService: PopUpService
     ) {
     }
 

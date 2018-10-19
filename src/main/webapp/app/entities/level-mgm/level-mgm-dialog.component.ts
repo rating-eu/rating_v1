@@ -100,7 +100,7 @@ export class LevelMgmPopupComponent implements OnInit, OnDestroy {
     constructor(
         private route: ActivatedRoute,
         private levelPopupService: LevelMgmPopupService,
-        private popUpService: PopUpService
+        public popUpService: PopUpService
     ) { }
 
     ngOnInit() {

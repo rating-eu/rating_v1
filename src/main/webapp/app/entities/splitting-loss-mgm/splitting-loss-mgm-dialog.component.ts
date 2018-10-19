@@ -100,7 +100,7 @@ export class SplittingLossMgmPopupComponent implements OnInit, OnDestroy {
     constructor(
         private route: ActivatedRoute,
         private splittingLossPopupService: SplittingLossMgmPopupService,
-        private popUpService: PopUpService
+        public popUpService: PopUpService
     ) {}
 
     ngOnInit() {

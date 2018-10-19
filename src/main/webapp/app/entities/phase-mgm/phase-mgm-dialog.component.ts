@@ -74,7 +74,7 @@ export class PhaseMgmPopupComponent implements OnInit, OnDestroy {
     constructor(
         private route: ActivatedRoute,
         private phasePopupService: PhaseMgmPopupService,
-        private popUpService: PopUpService
+        public popUpService: PopUpService
     ) { }
 
     ngOnInit() {

@@ -74,7 +74,7 @@ export class MotivationMgmPopupComponent implements OnInit, OnDestroy {
     constructor(
         private route: ActivatedRoute,
         private motivationPopupService: MotivationMgmPopupService,
-        private popUpService: PopUpService
+        public popUpService: PopUpService
     ) { }
 
     ngOnInit() {

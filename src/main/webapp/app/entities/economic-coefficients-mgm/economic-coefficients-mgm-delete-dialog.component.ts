@@ -51,7 +51,7 @@ export class EconomicCoefficientsMgmDeletePopupComponent implements OnInit, OnDe
     constructor(
         private route: ActivatedRoute,
         private economicCoefficientsPopupService: EconomicCoefficientsMgmPopupService,
-        private popUpService: PopUpService
+        public popUpService: PopUpService
     ) {
     }
 

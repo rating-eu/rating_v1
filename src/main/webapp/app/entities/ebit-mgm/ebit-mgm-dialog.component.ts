@@ -100,7 +100,7 @@ export class EBITMgmPopupComponent implements OnInit, OnDestroy {
     constructor(
         private route: ActivatedRoute,
         private eBITPopupService: EBITMgmPopupService,
-        private popUpService: PopUpService
+        public popUpService: PopUpService
     ) {
     }
 

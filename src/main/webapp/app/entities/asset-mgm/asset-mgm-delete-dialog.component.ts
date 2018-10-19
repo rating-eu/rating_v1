@@ -51,7 +51,7 @@ export class AssetMgmDeletePopupComponent implements OnInit, OnDestroy {
     constructor(
         private route: ActivatedRoute,
         private assetPopupService: AssetMgmPopupService,
-        private popUpService: PopUpService
+        public popUpService: PopUpService
     ) {
     }
 

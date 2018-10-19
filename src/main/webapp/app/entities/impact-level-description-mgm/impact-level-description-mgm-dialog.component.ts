@@ -74,7 +74,7 @@ export class ImpactLevelDescriptionMgmPopupComponent implements OnInit, OnDestro
     constructor(
         private route: ActivatedRoute,
         private impactLevelDescriptionPopupService: ImpactLevelDescriptionMgmPopupService,
-        private popUpService: PopUpService
+        public popUpService: PopUpService
     ) {}
 
     ngOnInit() {

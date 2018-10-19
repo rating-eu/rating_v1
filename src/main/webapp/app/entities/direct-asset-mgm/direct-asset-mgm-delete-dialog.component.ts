@@ -51,7 +51,7 @@ export class DirectAssetMgmDeletePopupComponent implements OnInit, OnDestroy {
     constructor(
         private route: ActivatedRoute,
         private directAssetPopupService: DirectAssetMgmPopupService,
-        private popUpService: PopUpService
+        public popUpService: PopUpService
     ) {
     }
 

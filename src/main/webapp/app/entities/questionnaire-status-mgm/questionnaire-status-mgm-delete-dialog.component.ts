@@ -51,7 +51,7 @@ export class QuestionnaireStatusMgmDeletePopupComponent implements OnInit, OnDes
     constructor(
         private route: ActivatedRoute,
         private questionnaireStatusPopupService: QuestionnaireStatusMgmPopupService,
-        private popUpService: PopUpService
+        public popUpService: PopUpService
     ) {}
 
     ngOnInit() {

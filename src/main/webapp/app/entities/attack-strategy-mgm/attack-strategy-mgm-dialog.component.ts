@@ -126,7 +126,7 @@ export class AttackStrategyMgmPopupComponent implements OnInit, OnDestroy {
     constructor(
         private route: ActivatedRoute,
         private attackStrategyPopupService: AttackStrategyMgmPopupService,
-        private popUpService: PopUpService
+        public popUpService: PopUpService
     ) {
     }
 

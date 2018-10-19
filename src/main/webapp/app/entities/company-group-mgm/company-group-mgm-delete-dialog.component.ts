@@ -51,7 +51,7 @@ export class CompanyGroupMgmDeletePopupComponent implements OnInit, OnDestroy {
     constructor(
         private route: ActivatedRoute,
         private companyGroupPopupService: CompanyGroupMgmPopupService,
-        private popUpService: PopUpService
+        public popUpService: PopUpService
     ) {
     }
 

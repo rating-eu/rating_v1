@@ -118,7 +118,7 @@ export class ThreatAgentMgmPopupComponent implements OnInit, OnDestroy {
     constructor(
         private route: ActivatedRoute,
         private threatAgentPopupService: ThreatAgentMgmPopupService,
-        private popUpService: PopUpService
+        public popUpService: PopUpService
     ) {}
 
     ngOnInit() {

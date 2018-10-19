@@ -121,7 +121,7 @@ export class AssetMgmPopupComponent implements OnInit, OnDestroy {
         private route: ActivatedRoute,
         private assetPopupService: AssetMgmPopupService,
         private sessionStorage: SessionStorageService,
-        private popUpService: PopUpService
+        public popUpService: PopUpService
     ) { }
 
     ngOnInit() {

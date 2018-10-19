@@ -51,7 +51,7 @@ export class DomainOfInfluenceMgmDeletePopupComponent implements OnInit, OnDestr
     constructor(
         private route: ActivatedRoute,
         private domainOfInfluencePopupService: DomainOfInfluenceMgmPopupService,
-        private popUpService: PopUpService
+        public popUpService: PopUpService
     ) { }
 
     ngOnInit() {

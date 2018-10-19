@@ -131,7 +131,7 @@ export class QuestionnaireStatusMgmPopupComponent implements OnInit, OnDestroy {
     constructor(
         private route: ActivatedRoute,
         private questionnaireStatusPopupService: QuestionnaireStatusMgmPopupService,
-        private popUpService: PopUpService
+        public popUpService: PopUpService
     ) {}
 
     ngOnInit() {

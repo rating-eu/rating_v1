@@ -38,7 +38,7 @@ export class AnswerMgmDialogComponent implements OnInit {
         private assetCategoryService: AssetCategoryMgmService,
         private questionService: QuestionMgmService,
         private eventManager: JhiEventManager,
-        private popUpService: PopUpService
+        public popUpService: PopUpService
     ) {
     }
 
@@ -143,7 +143,7 @@ export class AnswerMgmPopupComponent implements OnInit, OnDestroy {
     constructor(
         private route: ActivatedRoute,
         private answerPopupService: AnswerMgmPopupService,
-        private popUpService: PopUpService
+        public popUpService: PopUpService
     ) { }
 
     ngOnInit() {

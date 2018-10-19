@@ -100,7 +100,7 @@ export class DomainOfInfluenceMgmPopupComponent implements OnInit, OnDestroy {
     constructor(
         private route: ActivatedRoute,
         private domainOfInfluencePopupService: DomainOfInfluenceMgmPopupService,
-        private popUpService: PopUpService
+        public popUpService: PopUpService
     ) { }
 
     ngOnInit() {

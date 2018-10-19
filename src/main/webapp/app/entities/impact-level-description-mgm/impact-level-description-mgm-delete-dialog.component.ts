@@ -51,7 +51,7 @@ export class ImpactLevelDescriptionMgmDeletePopupComponent implements OnInit, On
     constructor(
         private route: ActivatedRoute,
         private impactLevelDescriptionPopupService: ImpactLevelDescriptionMgmPopupService,
-        private popUpService: PopUpService
+        public popUpService: PopUpService
     ) { }
 
     ngOnInit() {

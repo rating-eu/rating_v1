@@ -53,7 +53,7 @@ export class SelfAssessmentMgmDeletePopupComponent implements OnInit, OnDestroy 
         private route: ActivatedRoute,
         private selfAssessmentPopupService: SelfAssessmentMgmPopupService,
         private sessionStorage: SessionStorageService,
-        private popUpService: PopUpService
+        public popUpService: PopUpService
     ) { }
 
     ngOnInit() {

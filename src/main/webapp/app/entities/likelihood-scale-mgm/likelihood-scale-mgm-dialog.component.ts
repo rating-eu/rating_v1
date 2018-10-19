@@ -89,7 +89,7 @@ export class LikelihoodScaleMgmPopupComponent implements OnInit, OnDestroy {
     constructor(
         private route: ActivatedRoute,
         private likelihoodScalePopupService: LikelihoodScaleMgmPopupService,
-        private popUpService: PopUpService
+        public popUpService: PopUpService
     ) { }
 
     ngOnInit() {

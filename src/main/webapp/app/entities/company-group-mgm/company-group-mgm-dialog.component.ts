@@ -104,7 +104,7 @@ export class CompanyGroupMgmPopupComponent implements OnInit, OnDestroy {
         private route: ActivatedRoute,
         private companyGroupPopupService: CompanyGroupMgmPopupService,
         private sessionStorage: SessionStorageService,
-        private popUpService: PopUpService
+        public popUpService: PopUpService
     ) {
     }
 
