@@ -1,12 +1,14 @@
-import {Component, OnInit} from '@angular/core';
-import {SelfAssessmentMgm, SelfAssessmentMgmService} from '../../entities/self-assessment-mgm';
-import {ResultsService} from '../results.service';
-import {Result} from '../models/result.model';
-import {HttpResponse} from '@angular/common/http';
-import {ThreatAgentLikelihoods} from '../../utils/threatagent.likelihoods.class';
-import {ThreatAgentMgm} from '../../entities/threat-agent-mgm';
-import {Observable} from 'rxjs/Observable';
-import {SelfAssessmentOverview} from '../../my-self-assessments/models/SelfAssessmentOverview.model';
+import { Component, OnInit } from '@angular/core';
+import { SelfAssessmentMgm, SelfAssessmentMgmService } from '../../entities/self-assessment-mgm';
+import { ResultsService } from '../results.service';
+import { Result } from '../models/result.model';
+import { HttpResponse } from '@angular/common/http';
+import { ThreatAgentLikelihoods } from '../../utils/threatagent.likelihoods.class';
+import { ThreatAgentMgm } from '../../entities/threat-agent-mgm';
+import { Observable } from 'rxjs/Observable';
+import { SelfAssessmentOverview } from '../../my-self-assessments/models/SelfAssessmentOverview.model';
+import { AugmentedMyAsset } from '../../my-self-assessments/models/AugmentedMyAsset.model';
+import { AugmentedAttackStrategy } from '../../evaluate-weakness/models/augmented-attack-strategy.model';
 
 @Component({
     selector: 'jhi-results-overview',
@@ -14,7 +16,13 @@ import {SelfAssessmentOverview} from '../../my-self-assessments/models/SelfAsses
     styleUrls: ['../results.css']
 })
 export class ResultsOverviewComponent implements OnInit {
-
+    public page = 1;
+    public assetAttacksNumbMap: Map<number, number> = new Map<number, number>();
+    public assets: AugmentedMyAsset[];
+    public selectedAsset: AugmentedMyAsset;
+    public selectedAttacks: AugmentedAttackStrategy[];
+    public loading = false;
+    public loadingAttacksTable = false;
     selfAssessment: SelfAssessmentMgm;
     threatAgents: ThreatAgentMgm[];
     threatAgentsMap: Map<number, ThreatAgentMgm>;
@@ -34,12 +42,11 @@ export class ResultsOverviewComponent implements OnInit {
     public overview: SelfAssessmentOverview;
 
     constructor(private selfAssessmentService: SelfAssessmentMgmService,
-                private resultService: ResultsService) {
+        private resultService: ResultsService) {
     }
 
     ngOnInit() {
         this.selfAssessment = this.selfAssessmentService.getSelfAssessment();
-        console.log('SelfAssessment: ' + this.selfAssessment.id);
         this.threatAgents = this.selfAssessment.threatagents;
         this.threatAgentsMap = new Map<number, ThreatAgentMgm>();
         this.threatAgents.forEach((value: ThreatAgentMgm) => {
@@ -61,14 +68,14 @@ export class ResultsOverviewComponent implements OnInit {
         this.result$.subscribe(
             (response: HttpResponse<Result>) => {
                 this.result = response.body;
-                console.log('Result: ' + JSON.stringify(this.result));
+                // console.log('Result: ' + JSON.stringify(this.result));
 
                 const initialVulnerabilityMap: Map<number, number> = this.result.initialVulnerability as Map<number, number>;
-                console.log('TypeOf initialVulnerabilityMap: ' + typeof initialVulnerabilityMap);
+                // console.log('TypeOf initialVulnerabilityMap: ' + typeof initialVulnerabilityMap);
 
-                console.log('InitialVulnerabilityMap: ' + initialVulnerabilityMap.size);
-                console.log('InitialVulnerabilityKeys: ' + JSON.stringify(Array.from(initialVulnerabilityMap.keys())));
-                console.log('InitialVulnerabiltyValues: ' + JSON.stringify(Array.from(initialVulnerabilityMap.values())));
+                // console.log('InitialVulnerabilityMap: ' + initialVulnerabilityMap.size);
+                // console.log('InitialVulnerabilityKeys: ' + JSON.stringify(Array.from(initialVulnerabilityMap.keys())));
+                // console.log('InitialVulnerabiltyValues: ' + JSON.stringify(Array.from(initialVulnerabilityMap.values())));
 
                 const contextualVulnerabilityMap: Map<number/*ThreatAgentID*/, number> = this.result.contextualVulnerability as Map<number, number>;
                 const refinedVulnerabilityMap: Map<number, number> = this.result.refinedVulnerability as Map<number, number>;
@@ -137,9 +144,11 @@ export class ResultsOverviewComponent implements OnInit {
                     this.threatAgentIDs.push(key);
                 });
 
+                /*
                 this.threatAgentIDs.forEach((value: number) => {
                     console.log('ThreatAgent ID: ' + value);
                 });
+                */
             }
         );
 
@@ -163,9 +172,40 @@ export class ResultsOverviewComponent implements OnInit {
 
         this.selfAssessmentService.getOverwiew().toPromise().then((res: SelfAssessmentOverview) => {
             if (res) {
+                this.loading = true;
                 this.overview = res;
-                console.log(this.overview);
+                this.assets = [];
+                for (const item of this.overview.augmentedMyAssets) {
+                    if (this.assetAttacksNumbMap.has(item.asset.id)) {
+                        this.assetAttacksNumbMap.set(
+                            item.asset.id,
+                            this.assetAttacksNumbMap.get(item.asset.id) + 1
+                        );
+                    } else {
+                        this.assetAttacksNumbMap.set(item.asset.id, 1);
+                        this.assets.push(item);
+                    }
+                }
+                this.loading = false;
             }
         });
+    }
+
+    public selectAsset(asset: AugmentedMyAsset) {
+        if (this.selectedAsset) {
+            if (this.selectedAsset.asset.id === asset.asset.id) {
+                this.selectedAsset = null;
+                return;
+            }
+        }
+        this.selectedAsset = asset;
+        this.selectedAttacks = [];
+        this.loadingAttacksTable = true;
+        for (const item of this.overview.augmentedMyAssets) {
+            if (item.asset.id === this.selectedAsset.asset.id) {
+                this.selectedAttacks.push(item.augmentedAttackStrategy);
+            }
+        }
+        this.loadingAttacksTable = false;
     }
 }

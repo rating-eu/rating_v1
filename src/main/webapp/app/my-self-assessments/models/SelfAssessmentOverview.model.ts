@@ -1,6 +1,6 @@
-import { AugumentedMyAsset } from './AugumentedMyAsset.model';
+import { AugmentedMyAsset } from './AugmentedMyAsset.model';
 
 export class SelfAssessmentOverview {
     selfAssessmentID: number;
-    augmentedMyAssets: AugumentedMyAsset[];
+    augmentedMyAssets: AugmentedMyAsset[];
 }
