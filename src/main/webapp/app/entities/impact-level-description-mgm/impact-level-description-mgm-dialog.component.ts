@@ -9,6 +9,8 @@ import { JhiEventManager } from 'ng-jhipster';
 import { ImpactLevelDescriptionMgm } from './impact-level-description-mgm.model';
 import { ImpactLevelDescriptionMgmPopupService } from './impact-level-description-mgm-popup.service';
 import { ImpactLevelDescriptionMgmService } from './impact-level-description-mgm.service';
+import {SessionStorageService} from 'ngx-webstorage';
+import { PopUpService } from '../../shared/pop-up-services/pop-up.service';
 
 @Component({
     selector: 'jhi-impact-level-description-mgm-dialog',
@@ -71,22 +73,29 @@ export class ImpactLevelDescriptionMgmPopupComponent implements OnInit, OnDestro
 
     constructor(
         private route: ActivatedRoute,
-        private impactLevelDescriptionPopupService: ImpactLevelDescriptionMgmPopupService
+        private impactLevelDescriptionPopupService: ImpactLevelDescriptionMgmPopupService,
+        public popUpService: PopUpService
     ) {}
 
     ngOnInit() {
-        this.routeSub = this.route.params.subscribe((params) => {
-            if ( params['id'] ) {
-                this.impactLevelDescriptionPopupService
-                    .open(ImpactLevelDescriptionMgmDialogComponent as Component, params['id']);
-            } else {
-                this.impactLevelDescriptionPopupService
-                    .open(ImpactLevelDescriptionMgmDialogComponent as Component);
-            }
-        });
+        if (!this.popUpService.canOpen()) {
+            return;
+        } else {
+            this.routeSub = this.route.params.subscribe((params) => {
+                if ( params['id'] ) {
+                    this.impactLevelDescriptionPopupService
+                        .open(ImpactLevelDescriptionMgmDialogComponent as Component, params['id']);
+                } else {
+                    this.impactLevelDescriptionPopupService
+                        .open(ImpactLevelDescriptionMgmDialogComponent as Component);
+                }
+            });
+        }
     }
 
     ngOnDestroy() {
-        this.routeSub.unsubscribe();
+        if (this.routeSub) {
+            this.routeSub.unsubscribe();
+        }
     }
 }

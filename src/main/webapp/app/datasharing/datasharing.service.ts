@@ -149,4 +149,10 @@ export class DatasharingService {
     observeMySelf(): Observable<SelfAssessmentMgm> {
         return this.mySelfAssessmentSubject.asObservable();
     }
+
+    clear() {
+        this.mySelfAssessmentSubject.next(null);
+        this.layoutUpdateSubject.next(null);
+        this._attackStrategyUpdateSubject.next(null);
+    }
 }

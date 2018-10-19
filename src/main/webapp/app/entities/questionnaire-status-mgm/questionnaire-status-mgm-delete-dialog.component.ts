@@ -7,6 +7,8 @@ import { JhiEventManager } from 'ng-jhipster';
 import { QuestionnaireStatusMgm } from './questionnaire-status-mgm.model';
 import { QuestionnaireStatusMgmPopupService } from './questionnaire-status-mgm-popup.service';
 import { QuestionnaireStatusMgmService } from './questionnaire-status-mgm.service';
+import {SessionStorageService} from 'ngx-webstorage';
+import {PopUpService} from '../../shared/pop-up-services/pop-up.service';
 
 @Component({
     selector: 'jhi-questionnaire-status-mgm-delete-dialog',
@@ -48,17 +50,24 @@ export class QuestionnaireStatusMgmDeletePopupComponent implements OnInit, OnDes
 
     constructor(
         private route: ActivatedRoute,
-        private questionnaireStatusPopupService: QuestionnaireStatusMgmPopupService
+        private questionnaireStatusPopupService: QuestionnaireStatusMgmPopupService,
+        public popUpService: PopUpService
     ) {}
 
     ngOnInit() {
-        this.routeSub = this.route.params.subscribe((params) => {
-            this.questionnaireStatusPopupService
-                .open(QuestionnaireStatusMgmDeleteDialogComponent as Component, params['id']);
-        });
+        if (!this.popUpService.canOpen()) {
+            return;
+        } else {
+            this.routeSub = this.route.params.subscribe((params) => {
+                this.questionnaireStatusPopupService
+                    .open(QuestionnaireStatusMgmDeleteDialogComponent as Component, params['id']);
+            });
+        }
     }
 
     ngOnDestroy() {
-        this.routeSub.unsubscribe();
+        if(this.routeSub){
+            this.routeSub.unsubscribe();
+        }
     }
 }

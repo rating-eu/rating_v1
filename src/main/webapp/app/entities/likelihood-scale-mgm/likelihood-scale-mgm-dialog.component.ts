@@ -10,6 +10,8 @@ import { LikelihoodScaleMgm } from './likelihood-scale-mgm.model';
 import { LikelihoodScaleMgmPopupService } from './likelihood-scale-mgm-popup.service';
 import { LikelihoodScaleMgmService } from './likelihood-scale-mgm.service';
 import { SelfAssessmentMgm, SelfAssessmentMgmService } from '../self-assessment-mgm';
+import { SessionStorageService } from 'ngx-webstorage';
+import { PopUpService } from '../../shared/pop-up-services/pop-up.service';
 
 @Component({
     selector: 'jhi-likelihood-scale-mgm-dialog',
@@ -58,7 +60,7 @@ export class LikelihoodScaleMgmDialogComponent implements OnInit {
     }
 
     private onSaveSuccess(result: LikelihoodScaleMgm) {
-        this.eventManager.broadcast({ name: 'likelihoodScaleListModification', content: 'OK'});
+        this.eventManager.broadcast({ name: 'likelihoodScaleListModification', content: 'OK' });
         this.isSaving = false;
         this.activeModal.dismiss(result);
     }
@@ -86,22 +88,29 @@ export class LikelihoodScaleMgmPopupComponent implements OnInit, OnDestroy {
 
     constructor(
         private route: ActivatedRoute,
-        private likelihoodScalePopupService: LikelihoodScaleMgmPopupService
-    ) {}
+        private likelihoodScalePopupService: LikelihoodScaleMgmPopupService,
+        public popUpService: PopUpService
+    ) { }
 
     ngOnInit() {
-        this.routeSub = this.route.params.subscribe((params) => {
-            if ( params['id'] ) {
-                this.likelihoodScalePopupService
-                    .open(LikelihoodScaleMgmDialogComponent as Component, params['id']);
-            } else {
-                this.likelihoodScalePopupService
-                    .open(LikelihoodScaleMgmDialogComponent as Component);
-            }
-        });
+        if (!this.popUpService.canOpen()) {
+            return;
+        } else {
+            this.routeSub = this.route.params.subscribe((params) => {
+                if (params['id']) {
+                    this.likelihoodScalePopupService
+                        .open(LikelihoodScaleMgmDialogComponent as Component, params['id']);
+                } else {
+                    this.likelihoodScalePopupService
+                        .open(LikelihoodScaleMgmDialogComponent as Component);
+                }
+            });
+        }
     }
 
     ngOnDestroy() {
-        this.routeSub.unsubscribe();
+        if (this.routeSub) {
+            this.routeSub.unsubscribe();
+        }
     }
 }

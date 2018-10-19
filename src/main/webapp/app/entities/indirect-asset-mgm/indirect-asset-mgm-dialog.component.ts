@@ -11,6 +11,8 @@ import { IndirectAssetMgmPopupService } from './indirect-asset-mgm-popup.service
 import { IndirectAssetMgmService } from './indirect-asset-mgm.service';
 import { DirectAssetMgm, DirectAssetMgmService } from '../direct-asset-mgm';
 import { MyAssetMgm, MyAssetMgmService } from '../my-asset-mgm';
+import { SessionStorageService } from 'ngx-webstorage';
+import { PopUpService } from '../../shared/pop-up-services/pop-up.service';
 
 @Component({
     selector: 'jhi-indirect-asset-mgm-dialog',
@@ -40,7 +42,7 @@ export class IndirectAssetMgmDialogComponent implements OnInit {
         this.directAssetService.query()
             .subscribe((res: HttpResponse<DirectAssetMgm[]>) => { this.directassets = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
         this.myAssetService
-            .query({filter: 'indirectasset-is-null'})
+            .query({ filter: 'indirectasset-is-null' })
             .subscribe((res: HttpResponse<MyAssetMgm[]>) => {
                 if (!this.indirectAsset.myAsset || !this.indirectAsset.myAsset.id) {
                     this.myassets = res.body;
@@ -75,7 +77,7 @@ export class IndirectAssetMgmDialogComponent implements OnInit {
     }
 
     private onSaveSuccess(result: IndirectAssetMgm) {
-        this.eventManager.broadcast({ name: 'indirectAssetListModification', content: 'OK'});
+        this.eventManager.broadcast({ name: 'indirectAssetListModification', content: 'OK' });
         this.isSaving = false;
         this.activeModal.dismiss(result);
     }
@@ -107,22 +109,29 @@ export class IndirectAssetMgmPopupComponent implements OnInit, OnDestroy {
 
     constructor(
         private route: ActivatedRoute,
-        private indirectAssetPopupService: IndirectAssetMgmPopupService
-    ) {}
+        private indirectAssetPopupService: IndirectAssetMgmPopupService,
+        public popUpService: PopUpService
+    ) { }
 
     ngOnInit() {
-        this.routeSub = this.route.params.subscribe((params) => {
-            if ( params['id'] ) {
-                this.indirectAssetPopupService
-                    .open(IndirectAssetMgmDialogComponent as Component, params['id']);
-            } else {
-                this.indirectAssetPopupService
-                    .open(IndirectAssetMgmDialogComponent as Component);
-            }
-        });
+        if (!this.popUpService.canOpen()) {
+            return;
+        } else {
+            this.routeSub = this.route.params.subscribe((params) => {
+                if (params['id']) {
+                    this.indirectAssetPopupService
+                        .open(IndirectAssetMgmDialogComponent as Component, params['id']);
+                } else {
+                    this.indirectAssetPopupService
+                        .open(IndirectAssetMgmDialogComponent as Component);
+                }
+            });
+        }
     }
 
     ngOnDestroy() {
-        this.routeSub.unsubscribe();
+        if (this.routeSub) {
+            this.routeSub.unsubscribe();
+        }
     }
 }

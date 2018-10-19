@@ -12,6 +12,8 @@ import { AssetMgmService } from './asset-mgm.service';
 import { ContainerMgm, ContainerMgmService } from '../container-mgm';
 import { DomainOfInfluenceMgm, DomainOfInfluenceMgmService } from '../domain-of-influence-mgm';
 import { AssetCategoryMgm, AssetCategoryMgmService } from '../asset-category-mgm';
+import { SessionStorageService } from 'ngx-webstorage';
+import { PopUpService } from '../../shared/pop-up-services/pop-up.service';
 
 @Component({
     selector: 'jhi-asset-mgm-dialog',
@@ -70,7 +72,7 @@ export class AssetMgmDialogComponent implements OnInit {
     }
 
     private onSaveSuccess(result: AssetMgm) {
-        this.eventManager.broadcast({ name: 'assetListModification', content: 'OK'});
+        this.eventManager.broadcast({ name: 'assetListModification', content: 'OK' });
         this.isSaving = false;
         this.activeModal.dismiss(result);
     }
@@ -117,22 +119,30 @@ export class AssetMgmPopupComponent implements OnInit, OnDestroy {
 
     constructor(
         private route: ActivatedRoute,
-        private assetPopupService: AssetMgmPopupService
-    ) {}
+        private assetPopupService: AssetMgmPopupService,
+        private sessionStorage: SessionStorageService,
+        public popUpService: PopUpService
+    ) { }
 
     ngOnInit() {
-        this.routeSub = this.route.params.subscribe((params) => {
-            if ( params['id'] ) {
-                this.assetPopupService
-                    .open(AssetMgmDialogComponent as Component, params['id']);
-            } else {
-                this.assetPopupService
-                    .open(AssetMgmDialogComponent as Component);
-            }
-        });
+        if (!this.popUpService.canOpen()) {
+            return;
+        } else {
+            this.routeSub = this.route.params.subscribe((params) => {
+                if (params['id']) {
+                    this.assetPopupService
+                        .open(AssetMgmDialogComponent as Component, params['id']);
+                } else {
+                    this.assetPopupService
+                        .open(AssetMgmDialogComponent as Component);
+                }
+            });
+        }
     }
 
     ngOnDestroy() {
-        this.routeSub.unsubscribe();
+        if (this.routeSub) {
+            this.routeSub.unsubscribe();
+        }
     }
 }

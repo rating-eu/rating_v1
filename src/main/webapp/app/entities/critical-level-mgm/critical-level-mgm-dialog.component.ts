@@ -10,6 +10,8 @@ import { CriticalLevelMgm } from './critical-level-mgm.model';
 import { CriticalLevelMgmPopupService } from './critical-level-mgm-popup.service';
 import { CriticalLevelMgmService } from './critical-level-mgm.service';
 import { SelfAssessmentMgm, SelfAssessmentMgmService } from '../self-assessment-mgm';
+import { SessionStorageService } from 'ngx-webstorage';
+import { PopUpService } from '../../shared/pop-up-services/pop-up.service';
 
 @Component({
     selector: 'jhi-critical-level-mgm-dialog',
@@ -34,7 +36,7 @@ export class CriticalLevelMgmDialogComponent implements OnInit {
     ngOnInit() {
         this.isSaving = false;
         this.selfAssessmentService
-            .query({filter: 'criticallevel-is-null'})
+            .query({ filter: 'criticallevel-is-null' })
             .subscribe((res: HttpResponse<SelfAssessmentMgm[]>) => {
                 if (!this.criticalLevel.selfAssessment || !this.criticalLevel.selfAssessment.id) {
                     this.selfassessments = res.body;
@@ -69,7 +71,7 @@ export class CriticalLevelMgmDialogComponent implements OnInit {
     }
 
     private onSaveSuccess(result: CriticalLevelMgm) {
-        this.eventManager.broadcast({ name: 'criticalLevelListModification', content: 'OK'});
+        this.eventManager.broadcast({ name: 'criticalLevelListModification', content: 'OK' });
         this.isSaving = false;
         this.activeModal.dismiss(result);
     }
@@ -97,22 +99,29 @@ export class CriticalLevelMgmPopupComponent implements OnInit, OnDestroy {
 
     constructor(
         private route: ActivatedRoute,
-        private criticalLevelPopupService: CriticalLevelMgmPopupService
-    ) {}
+        private criticalLevelPopupService: CriticalLevelMgmPopupService,
+        public popUpService: PopUpService
+    ) { }
 
     ngOnInit() {
-        this.routeSub = this.route.params.subscribe((params) => {
-            if ( params['id'] ) {
-                this.criticalLevelPopupService
-                    .open(CriticalLevelMgmDialogComponent as Component, params['id']);
-            } else {
-                this.criticalLevelPopupService
-                    .open(CriticalLevelMgmDialogComponent as Component);
-            }
-        });
+        if (!this.popUpService.canOpen()) {
+            return;
+        } else {
+            this.routeSub = this.route.params.subscribe((params) => {
+                if (params['id']) {
+                    this.criticalLevelPopupService
+                        .open(CriticalLevelMgmDialogComponent as Component, params['id']);
+                } else {
+                    this.criticalLevelPopupService
+                        .open(CriticalLevelMgmDialogComponent as Component);
+                }
+            });
+        }
     }
 
     ngOnDestroy() {
-        this.routeSub.unsubscribe();
+        if (this.routeSub) {
+            this.routeSub.unsubscribe();
+        }
     }
 }

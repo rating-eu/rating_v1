@@ -7,6 +7,7 @@ import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
 import { DirectAssetMgm } from './direct-asset-mgm.model';
 import { DirectAssetMgmService } from './direct-asset-mgm.service';
 import { Principal } from '../../shared';
+import { PopUpService } from '../../shared/pop-up-services/pop-up.service';
 
 @Component({
     selector: 'jhi-direct-asset-mgm',
@@ -23,7 +24,8 @@ directAssets: DirectAssetMgm[];
         private jhiAlertService: JhiAlertService,
         private eventManager: JhiEventManager,
         private activatedRoute: ActivatedRoute,
-        private principal: Principal
+        private principal: Principal,
+        public popUpService: PopUpService
     ) {
         this.currentSearch = this.activatedRoute.snapshot && this.activatedRoute.snapshot.params['search'] ?
             this.activatedRoute.snapshot.params['search'] : '';

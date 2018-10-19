@@ -14,6 +14,8 @@ import { AnswerMgm, AnswerMgmService } from '../answer-mgm';
 import { QuestionMgm, QuestionMgmService } from '../question-mgm';
 import { QuestionnaireMgm, QuestionnaireMgmService } from '../questionnaire-mgm';
 import { User, UserService } from '../../shared';
+import { SessionStorageService } from 'ngx-webstorage';
+import { PopUpService } from '../../shared/pop-up-services/pop-up.service';
 
 @Component({
     selector: 'jhi-my-answer-mgm-dialog',
@@ -52,7 +54,7 @@ export class MyAnswerMgmDialogComponent implements OnInit {
         this.questionnaireStatusService.query()
             .subscribe((res: HttpResponse<QuestionnaireStatusMgm[]>) => { this.questionnairestatuses = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
         this.answerService
-            .query({filter: 'myanswer-is-null'})
+            .query({ filter: 'myanswer-is-null' })
             .subscribe((res: HttpResponse<AnswerMgm[]>) => {
                 if (!this.myAnswer.answer || !this.myAnswer.answer.id) {
                     this.answers = res.body;
@@ -65,7 +67,7 @@ export class MyAnswerMgmDialogComponent implements OnInit {
                 }
             }, (res: HttpErrorResponse) => this.onError(res.message));
         this.questionService
-            .query({filter: 'myanswer-is-null'})
+            .query({ filter: 'myanswer-is-null' })
             .subscribe((res: HttpResponse<QuestionMgm[]>) => {
                 if (!this.myAnswer.question || !this.myAnswer.question.id) {
                     this.questions = res.body;
@@ -78,7 +80,7 @@ export class MyAnswerMgmDialogComponent implements OnInit {
                 }
             }, (res: HttpErrorResponse) => this.onError(res.message));
         this.questionnaireService
-            .query({filter: 'myanswer-is-null'})
+            .query({ filter: 'myanswer-is-null' })
             .subscribe((res: HttpResponse<QuestionnaireMgm[]>) => {
                 if (!this.myAnswer.questionnaire || !this.myAnswer.questionnaire.id) {
                     this.questionnaires = res.body;
@@ -115,7 +117,7 @@ export class MyAnswerMgmDialogComponent implements OnInit {
     }
 
     private onSaveSuccess(result: MyAnswerMgm) {
-        this.eventManager.broadcast({ name: 'myAnswerListModification', content: 'OK'});
+        this.eventManager.broadcast({ name: 'myAnswerListModification', content: 'OK' });
         this.isSaving = false;
         this.activeModal.dismiss(result);
     }
@@ -159,22 +161,29 @@ export class MyAnswerMgmPopupComponent implements OnInit, OnDestroy {
 
     constructor(
         private route: ActivatedRoute,
-        private myAnswerPopupService: MyAnswerMgmPopupService
-    ) {}
+        private myAnswerPopupService: MyAnswerMgmPopupService,
+        public popUpService: PopUpService
+    ) { }
 
     ngOnInit() {
-        this.routeSub = this.route.params.subscribe((params) => {
-            if ( params['id'] ) {
-                this.myAnswerPopupService
-                    .open(MyAnswerMgmDialogComponent as Component, params['id']);
-            } else {
-                this.myAnswerPopupService
-                    .open(MyAnswerMgmDialogComponent as Component);
-            }
-        });
+        if (!this.popUpService.canOpen()) {
+            return;
+        } else {
+            this.routeSub = this.route.params.subscribe((params) => {
+                if (params['id']) {
+                    this.myAnswerPopupService
+                        .open(MyAnswerMgmDialogComponent as Component, params['id']);
+                } else {
+                    this.myAnswerPopupService
+                        .open(MyAnswerMgmDialogComponent as Component);
+                }
+            });
+        }
     }
 
     ngOnDestroy() {
-        this.routeSub.unsubscribe();
+        if (this.routeSub) {
+            this.routeSub.unsubscribe();
+        }
     }
 }

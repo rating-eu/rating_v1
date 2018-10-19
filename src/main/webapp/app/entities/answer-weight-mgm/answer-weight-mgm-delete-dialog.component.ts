@@ -7,6 +7,8 @@ import { JhiEventManager } from 'ng-jhipster';
 import { AnswerWeightMgm } from './answer-weight-mgm.model';
 import { AnswerWeightMgmPopupService } from './answer-weight-mgm-popup.service';
 import { AnswerWeightMgmService } from './answer-weight-mgm.service';
+import { SessionStorageService } from 'ngx-webstorage';
+import { PopUpService } from '../../shared/pop-up-services/pop-up.service';
 
 @Component({
     selector: 'jhi-answer-weight-mgm-delete-dialog',
@@ -48,17 +50,24 @@ export class AnswerWeightMgmDeletePopupComponent implements OnInit, OnDestroy {
 
     constructor(
         private route: ActivatedRoute,
-        private answerWeightPopupService: AnswerWeightMgmPopupService
-    ) {}
+        private answerWeightPopupService: AnswerWeightMgmPopupService,
+        public popUpService: PopUpService
+    ) { }
 
     ngOnInit() {
-        this.routeSub = this.route.params.subscribe((params) => {
-            this.answerWeightPopupService
-                .open(AnswerWeightMgmDeleteDialogComponent as Component, params['id']);
-        });
+        if (!this.popUpService.canOpen()) {
+            return;
+        } else {
+            this.routeSub = this.route.params.subscribe((params) => {
+                this.answerWeightPopupService
+                    .open(AnswerWeightMgmDeleteDialogComponent as Component, params['id']);
+            });
+        }
     }
 
     ngOnDestroy() {
-        this.routeSub.unsubscribe();
+        if (this.routeSub) {
+            this.routeSub.unsubscribe();
+        }
     }
 }

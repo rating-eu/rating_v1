@@ -12,6 +12,8 @@ import { AnswerMgmService } from './answer-mgm.service';
 import { AssetMgm, AssetMgmService } from '../asset-mgm';
 import { AssetCategoryMgm, AssetCategoryMgmService } from '../asset-category-mgm';
 import { QuestionMgm, QuestionMgmService } from '../question-mgm';
+import { SessionStorageService } from 'ngx-webstorage';
+import { PopUpService } from '../../shared/pop-up-services/pop-up.service';
 
 @Component({
     selector: 'jhi-answer-mgm-dialog',
@@ -35,14 +37,15 @@ export class AnswerMgmDialogComponent implements OnInit {
         private assetService: AssetMgmService,
         private assetCategoryService: AssetCategoryMgmService,
         private questionService: QuestionMgmService,
-        private eventManager: JhiEventManager
+        private eventManager: JhiEventManager,
+        public popUpService: PopUpService
     ) {
     }
 
     ngOnInit() {
         this.isSaving = false;
         this.assetService
-            .query({filter: 'answer-is-null'})
+            .query({ filter: 'answer-is-null' })
             .subscribe((res: HttpResponse<AssetMgm[]>) => {
                 if (!this.answer.asset || !this.answer.asset.id) {
                     this.assets = res.body;
@@ -55,7 +58,7 @@ export class AnswerMgmDialogComponent implements OnInit {
                 }
             }, (res: HttpErrorResponse) => this.onError(res.message));
         this.assetCategoryService
-            .query({filter: 'answer-is-null'})
+            .query({ filter: 'answer-is-null' })
             .subscribe((res: HttpResponse<AssetCategoryMgm[]>) => {
                 if (!this.answer.assetCategory || !this.answer.assetCategory.id) {
                     this.assetcategories = res.body;
@@ -92,7 +95,7 @@ export class AnswerMgmDialogComponent implements OnInit {
     }
 
     private onSaveSuccess(result: AnswerMgm) {
-        this.eventManager.broadcast({ name: 'answerListModification', content: 'OK'});
+        this.eventManager.broadcast({ name: 'answerListModification', content: 'OK' });
         this.isSaving = false;
         this.activeModal.dismiss(result);
     }
@@ -139,22 +142,29 @@ export class AnswerMgmPopupComponent implements OnInit, OnDestroy {
 
     constructor(
         private route: ActivatedRoute,
-        private answerPopupService: AnswerMgmPopupService
-    ) {}
+        private answerPopupService: AnswerMgmPopupService,
+        public popUpService: PopUpService
+    ) { }
 
     ngOnInit() {
-        this.routeSub = this.route.params.subscribe((params) => {
-            if ( params['id'] ) {
-                this.answerPopupService
-                    .open(AnswerMgmDialogComponent as Component, params['id']);
-            } else {
-                this.answerPopupService
-                    .open(AnswerMgmDialogComponent as Component);
-            }
-        });
+        if (!this.popUpService.canOpen()) {
+            return;
+        } else {
+            this.routeSub = this.route.params.subscribe((params) => {
+                if (params['id']) {
+                    this.answerPopupService
+                        .open(AnswerMgmDialogComponent as Component, params['id']);
+                } else {
+                    this.answerPopupService
+                        .open(AnswerMgmDialogComponent as Component);
+                }
+            });
+        }
     }
 
     ngOnDestroy() {
-        this.routeSub.unsubscribe();
+        if (this.routeSub) {
+            this.routeSub.unsubscribe();
+        }
     }
 }

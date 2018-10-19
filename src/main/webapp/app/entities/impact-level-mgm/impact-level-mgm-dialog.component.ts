@@ -9,6 +9,8 @@ import { JhiEventManager } from 'ng-jhipster';
 import { ImpactLevelMgm } from './impact-level-mgm.model';
 import { ImpactLevelMgmPopupService } from './impact-level-mgm-popup.service';
 import { ImpactLevelMgmService } from './impact-level-mgm.service';
+import { SessionStorageService } from 'ngx-webstorage';
+import { PopUpService } from '../../shared/pop-up-services/pop-up.service';
 
 @Component({
     selector: 'jhi-impact-level-mgm-dialog',
@@ -51,7 +53,7 @@ export class ImpactLevelMgmDialogComponent implements OnInit {
     }
 
     private onSaveSuccess(result: ImpactLevelMgm) {
-        this.eventManager.broadcast({ name: 'impactLevelListModification', content: 'OK'});
+        this.eventManager.broadcast({ name: 'impactLevelListModification', content: 'OK' });
         this.isSaving = false;
         this.activeModal.dismiss(result);
     }
@@ -71,22 +73,29 @@ export class ImpactLevelMgmPopupComponent implements OnInit, OnDestroy {
 
     constructor(
         private route: ActivatedRoute,
-        private impactLevelPopupService: ImpactLevelMgmPopupService
-    ) {}
+        private impactLevelPopupService: ImpactLevelMgmPopupService,
+        public popUpService: PopUpService
+    ) { }
 
     ngOnInit() {
-        this.routeSub = this.route.params.subscribe((params) => {
-            if ( params['id'] ) {
-                this.impactLevelPopupService
-                    .open(ImpactLevelMgmDialogComponent as Component, params['id']);
-            } else {
-                this.impactLevelPopupService
-                    .open(ImpactLevelMgmDialogComponent as Component);
-            }
-        });
+        if (!this.popUpService.canOpen()) {
+            return;
+        } else {
+            this.routeSub = this.route.params.subscribe((params) => {
+                if (params['id']) {
+                    this.impactLevelPopupService
+                        .open(ImpactLevelMgmDialogComponent as Component, params['id']);
+                } else {
+                    this.impactLevelPopupService
+                        .open(ImpactLevelMgmDialogComponent as Component);
+                }
+            });
+        }
     }
 
     ngOnDestroy() {
-        this.routeSub.unsubscribe();
+        if (this.routeSub) {
+            this.routeSub.unsubscribe();
+        }
     }
 }

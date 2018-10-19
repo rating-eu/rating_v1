@@ -1,15 +1,17 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
+import {Component, OnInit, OnDestroy} from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
+import {HttpResponse, HttpErrorResponse} from '@angular/common/http';
 
-import { Observable } from 'rxjs/Observable';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
+import {Observable} from 'rxjs/Observable';
+import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
+import {JhiEventManager, JhiAlertService} from 'ng-jhipster';
 
-import { DirectAssetMgm } from './direct-asset-mgm.model';
-import { DirectAssetMgmPopupService } from './direct-asset-mgm-popup.service';
-import { DirectAssetMgmService } from './direct-asset-mgm.service';
-import { MyAssetMgm, MyAssetMgmService } from '../my-asset-mgm';
+import {DirectAssetMgm} from './direct-asset-mgm.model';
+import {DirectAssetMgmPopupService} from './direct-asset-mgm-popup.service';
+import {DirectAssetMgmService} from './direct-asset-mgm.service';
+import {MyAssetMgm, MyAssetMgmService} from '../my-asset-mgm';
+import {SessionStorageService} from 'ngx-webstorage';
+import { PopUpService } from '../../shared/pop-up-services/pop-up.service';
 
 @Component({
     selector: 'jhi-direct-asset-mgm-dialog',
@@ -69,7 +71,7 @@ export class DirectAssetMgmDialogComponent implements OnInit {
     }
 
     private onSaveSuccess(result: DirectAssetMgm) {
-        this.eventManager.broadcast({ name: 'directAssetListModification', content: 'OK'});
+        this.eventManager.broadcast({name: 'directAssetListModification', content: 'OK'});
         this.isSaving = false;
         this.activeModal.dismiss(result);
     }
@@ -97,22 +99,30 @@ export class DirectAssetMgmPopupComponent implements OnInit, OnDestroy {
 
     constructor(
         private route: ActivatedRoute,
-        private directAssetPopupService: DirectAssetMgmPopupService
-    ) {}
+        private directAssetPopupService: DirectAssetMgmPopupService,
+        public popUpService: PopUpService
+    ) {
+    }
 
     ngOnInit() {
-        this.routeSub = this.route.params.subscribe((params) => {
-            if ( params['id'] ) {
-                this.directAssetPopupService
-                    .open(DirectAssetMgmDialogComponent as Component, params['id']);
-            } else {
-                this.directAssetPopupService
-                    .open(DirectAssetMgmDialogComponent as Component);
-            }
-        });
+        if (!this.popUpService.canOpen()) {
+            return;
+        } else {
+            this.routeSub = this.route.params.subscribe((params) => {
+                if (params['id']) {
+                    this.directAssetPopupService
+                        .open(DirectAssetMgmDialogComponent as Component, params['id']);
+                } else {
+                    this.directAssetPopupService
+                        .open(DirectAssetMgmDialogComponent as Component);
+                }
+            });
+        }
     }
 
     ngOnDestroy() {
-        this.routeSub.unsubscribe();
+        if (this.routeSub) {
+            this.routeSub.unsubscribe();
+        }
     }
 }

@@ -9,6 +9,8 @@ import { JhiEventManager } from 'ng-jhipster';
 import { AnswerWeightMgm } from './answer-weight-mgm.model';
 import { AnswerWeightMgmPopupService } from './answer-weight-mgm-popup.service';
 import { AnswerWeightMgmService } from './answer-weight-mgm.service';
+import { SessionStorageService } from 'ngx-webstorage';
+import { PopUpService } from '../../shared/pop-up-services/pop-up.service';
 
 @Component({
     selector: 'jhi-answer-weight-mgm-dialog',
@@ -51,7 +53,7 @@ export class AnswerWeightMgmDialogComponent implements OnInit {
     }
 
     private onSaveSuccess(result: AnswerWeightMgm) {
-        this.eventManager.broadcast({ name: 'answerWeightListModification', content: 'OK'});
+        this.eventManager.broadcast({ name: 'answerWeightListModification', content: 'OK' });
         this.isSaving = false;
         this.activeModal.dismiss(result);
     }
@@ -71,22 +73,30 @@ export class AnswerWeightMgmPopupComponent implements OnInit, OnDestroy {
 
     constructor(
         private route: ActivatedRoute,
-        private answerWeightPopupService: AnswerWeightMgmPopupService
-    ) {}
+        private answerWeightPopupService: AnswerWeightMgmPopupService,
+        public popUpService: PopUpService
+    ) {
+    }
 
     ngOnInit() {
-        this.routeSub = this.route.params.subscribe((params) => {
-            if ( params['id'] ) {
-                this.answerWeightPopupService
-                    .open(AnswerWeightMgmDialogComponent as Component, params['id']);
-            } else {
-                this.answerWeightPopupService
-                    .open(AnswerWeightMgmDialogComponent as Component);
-            }
-        });
+        if (!this.popUpService.canOpen()) {
+            return;
+        } else {
+            this.routeSub = this.route.params.subscribe((params) => {
+                if (params['id']) {
+                    this.answerWeightPopupService
+                        .open(AnswerWeightMgmDialogComponent as Component, params['id']);
+                } else {
+                    this.answerWeightPopupService
+                        .open(AnswerWeightMgmDialogComponent as Component);
+                }
+            });
+        }
     }
 
     ngOnDestroy() {
-        this.routeSub.unsubscribe();
+        if (this.routeSub) {
+            this.routeSub.unsubscribe();
+        }
     }
 }

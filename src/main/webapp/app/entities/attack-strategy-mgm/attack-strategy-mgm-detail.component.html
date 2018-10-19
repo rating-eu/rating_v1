@@ -1,4 +1,3 @@
-
 <div class="card-box" *ngIf="attackStrategy">
     <h2><span jhiTranslate="hermeneutApp.attackStrategy.detail.title">Attack Strategy</span> {{attackStrategy.id}}</h2>
     <hr>
@@ -56,17 +55,14 @@
         </dd>
     </dl>
 
-    <button type="submit"
-            (click)="previousState()"
-            class="btn btn-info">
+    <button type="submit" (click)="previousState()" class="btn btn-info">
         <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
     </button>
 
-    <button type="button"
-            [routerLink]="['/', { outlets: { popup: 'attack-strategy-mgm/'+ attackStrategy.id + '/edit'} }]"
-            replaceUrl="true"
-            queryParamsHandling="merge"
-            class="btn btn-primary">
+    <button type="button" 
+        (click)="popUpService.setOnUserBehaviour()"
+        [routerLink]="['/', { outlets: { popup: 'attack-strategy-mgm/'+ attackStrategy.id + '/edit'} }]"
+        replaceUrl="true" queryParamsHandling="merge" class="btn btn-primary">
         <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
     </button>
 </div>

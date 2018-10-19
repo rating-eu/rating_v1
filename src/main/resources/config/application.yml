@@ -70,18 +70,6 @@ spring:
         multipart:
           max-file-size: 100MB
           max-request-size: 100MB
-    mail:
-        host: smtp.gmail.com
-        port: 587
-        username: ${EMAIL_USERNAME}
-        password: ${EMAIL_PASSWORD}
-        protocol: smtp
-        tls: true
-        auth: true
-        properties.mail.smtp:
-            auth: true
-            starttls.enable: true
-            ssl.trust: smtp.gmail.com
 security:
     basic:
         enabled: false
@@ -114,8 +102,9 @@ jhipster:
         #exposed-headers: "Authorization,Link,X-Total-Count"
         #allow-credentials: true
         #max-age: 1800
-    mail:
-        from: hermeneut@localhost
+    mail: # specific JHipster mail property, for standard properties see MailProperties
+        from: ${EMAIL_USERNAME}
+        base-url: ${SERVER_URL}
     swagger:
         default-include-pattern: /api/.*
         title: hermeneut API

@@ -1,10 +1,12 @@
 <div>
     <h2>
         <span jhiTranslate="hermeneutApp.impactLevelDescription.home.title">Impact Level Descriptions</span>
-        <button class="btn btn-primary float-right jh-create-entity create-impact-level-description-mgm" [routerLink]="['/', { outlets: { popup: ['impact-level-description-mgm-new'] } }]">
+        <button class="btn btn-primary float-right jh-create-entity create-impact-level-description-mgm" 
+            (click)="popUpService.setOnUserBehaviour()"
+            [routerLink]="['/', { outlets: { popup: ['impact-level-description-mgm-new'] } }]">
             <span class="fa fa-plus"></span>
-            <span class="hidden-sm-down"  jhiTranslate="hermeneutApp.impactLevelDescription.home.createLabel">
-            Create new Impact Level Description
+            <span class="hidden-sm-down" jhiTranslate="hermeneutApp.impactLevelDescription.home.createLabel">
+                Create new Impact Level Description
             </span>
         </button>
     </h2>
@@ -13,7 +15,8 @@
         <div class="col-sm-12">
             <form name="searchForm" class="form-inline">
                 <div class="input-group w-100 mt-3">
-                    <input type="text" class="form-control" [(ngModel)]="currentSearch" id="currentSearch" name="currentSearch" placeholder="{{ 'hermeneutApp.impactLevelDescription.home.search' | translate }}">
+                    <input type="text" class="form-control" [(ngModel)]="currentSearch" id="currentSearch" name="currentSearch"
+                        placeholder="{{ 'hermeneutApp.impactLevelDescription.home.search' | translate }}">
                     <button class="input-group-append btn btn-info" (click)="search(currentSearch)">
                         <span class="fa fa-search"></span>
                     </button>
@@ -24,57 +27,55 @@
             </form>
         </div>
     </div>
-    <br/>
+    <br />
     <div class="table-responsive" *ngIf="impactLevelDescriptions">
         <table class="table table-striped">
             <thead>
-            <tr>
-            <th><span jhiTranslate="global.field.id">ID</span></th>
-            <th><span jhiTranslate="hermeneutApp.impactLevelDescription.impact">Impact</span></th>
-            <th><span jhiTranslate="hermeneutApp.impactLevelDescription.peopleEffects">People Effects</span></th>
-            <th><span jhiTranslate="hermeneutApp.impactLevelDescription.reputation">Reputation</span></th>
-            <th><span jhiTranslate="hermeneutApp.impactLevelDescription.serviceOutputs">Service Outputs</span></th>
-            <th><span jhiTranslate="hermeneutApp.impactLevelDescription.legalAndCompliance">Legal And Compliance</span></th>
-            <th><span jhiTranslate="hermeneutApp.impactLevelDescription.managementImpact">Management Impact</span></th>
-            <th></th>
-            </tr>
+                <tr>
+                    <th><span jhiTranslate="global.field.id">ID</span></th>
+                    <th><span jhiTranslate="hermeneutApp.impactLevelDescription.impact">Impact</span></th>
+                    <th><span jhiTranslate="hermeneutApp.impactLevelDescription.peopleEffects">People Effects</span></th>
+                    <th><span jhiTranslate="hermeneutApp.impactLevelDescription.reputation">Reputation</span></th>
+                    <th><span jhiTranslate="hermeneutApp.impactLevelDescription.serviceOutputs">Service Outputs</span></th>
+                    <th><span jhiTranslate="hermeneutApp.impactLevelDescription.legalAndCompliance">Legal And
+                            Compliance</span></th>
+                    <th><span jhiTranslate="hermeneutApp.impactLevelDescription.managementImpact">Management Impact</span></th>
+                    <th></th>
+                </tr>
             </thead>
             <tbody>
-            <tr *ngFor="let impactLevelDescription of impactLevelDescriptions ;trackBy: trackId">
-                <td><a [routerLink]="['../impact-level-description-mgm', impactLevelDescription.id ]">{{impactLevelDescription.id}}</a></td>
-                <td>{{impactLevelDescription.impact}}</td>
-                <td>{{impactLevelDescription.peopleEffects}}</td>
-                <td>{{impactLevelDescription.reputation}}</td>
-                <td>{{impactLevelDescription.serviceOutputs}}</td>
-                <td>{{impactLevelDescription.legalAndCompliance}}</td>
-                <td>{{impactLevelDescription.managementImpact}}</td>
-                <td class="text-right">
-                    <div class="btn-group flex-btn-group-container">
-                        <button type="submit"
-                                [routerLink]="['../impact-level-description-mgm', impactLevelDescription.id ]"
+                <tr *ngFor="let impactLevelDescription of impactLevelDescriptions ;trackBy: trackId">
+                    <td><a [routerLink]="['../impact-level-description-mgm', impactLevelDescription.id ]">{{impactLevelDescription.id}}</a></td>
+                    <td>{{impactLevelDescription.impact}}</td>
+                    <td>{{impactLevelDescription.peopleEffects}}</td>
+                    <td>{{impactLevelDescription.reputation}}</td>
+                    <td>{{impactLevelDescription.serviceOutputs}}</td>
+                    <td>{{impactLevelDescription.legalAndCompliance}}</td>
+                    <td>{{impactLevelDescription.managementImpact}}</td>
+                    <td class="text-right">
+                        <div class="btn-group flex-btn-group-container">
+                            <button type="submit" [routerLink]="['../impact-level-description-mgm', impactLevelDescription.id ]"
                                 class="btn btn-info btn-sm">
-                            <span class="fa fa-eye"></span>
-                            <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
-                        </button>
-                        <button type="submit"
+                                <span class="fa fa-eye"></span>
+                                <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                            </button>
+                            <button type="submit" 
+                                (click)="popUpService.setOnUserBehaviour()"
                                 [routerLink]="['/', { outlets: { popup: 'impact-level-description-mgm/'+ impactLevelDescription.id + '/edit'} }]"
-                                replaceUrl="true"
-                                queryParamsHandling="merge"
-                                class="btn btn-primary btn-sm">
-                            <span class="fa fa-pencil"></span>
-                            <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
-                        </button>
-                        <button type="submit"
+                                replaceUrl="true" queryParamsHandling="merge" class="btn btn-primary btn-sm">
+                                <span class="fa fa-pencil"></span>
+                                <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                            </button>
+                            <button type="submit" 
+                                (click)="popUpService.setOnUserBehaviour()"
                                 [routerLink]="['/', { outlets: { popup: 'impact-level-description-mgm/'+ impactLevelDescription.id + '/delete'} }]"
-                                replaceUrl="true"
-                                queryParamsHandling="merge"
-                                class="btn btn-danger btn-sm">
-                            <span class="fa fa-remove"></span>
-                            <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
-                        </button>
-                    </div>
-                </td>
-            </tr>
+                                replaceUrl="true" queryParamsHandling="merge" class="btn btn-danger btn-sm">
+                                <span class="fa fa-remove"></span>
+                                <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
             </tbody>
         </table>
     </div>

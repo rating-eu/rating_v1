@@ -10,6 +10,8 @@ import { ThreatAgentMgm } from './threat-agent-mgm.model';
 import { ThreatAgentMgmPopupService } from './threat-agent-mgm-popup.service';
 import { ThreatAgentMgmService } from './threat-agent-mgm.service';
 import { MotivationMgm, MotivationMgmService } from '../motivation-mgm';
+import {SessionStorageService} from 'ngx-webstorage';
+import {PopUpService} from '../../shared/pop-up-services/pop-up.service';
 
 @Component({
     selector: 'jhi-threat-agent-mgm-dialog',
@@ -115,22 +117,29 @@ export class ThreatAgentMgmPopupComponent implements OnInit, OnDestroy {
 
     constructor(
         private route: ActivatedRoute,
-        private threatAgentPopupService: ThreatAgentMgmPopupService
+        private threatAgentPopupService: ThreatAgentMgmPopupService,
+        public popUpService: PopUpService
     ) {}
 
     ngOnInit() {
-        this.routeSub = this.route.params.subscribe((params) => {
-            if ( params['id'] ) {
-                this.threatAgentPopupService
-                    .open(ThreatAgentMgmDialogComponent as Component, params['id']);
-            } else {
-                this.threatAgentPopupService
-                    .open(ThreatAgentMgmDialogComponent as Component);
-            }
-        });
+        if (!this.popUpService.canOpen()) {
+            return;
+        } else {
+            this.routeSub = this.route.params.subscribe((params) => {
+                if ( params['id'] ) {
+                    this.threatAgentPopupService
+                        .open(ThreatAgentMgmDialogComponent as Component, params['id']);
+                } else {
+                    this.threatAgentPopupService
+                        .open(ThreatAgentMgmDialogComponent as Component);
+                }
+            });
+        }
     }
 
     ngOnDestroy() {
-        this.routeSub.unsubscribe();
+        if(this.routeSub){
+            this.routeSub.unsubscribe();
+        }
     }
 }

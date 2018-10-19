@@ -10,6 +10,8 @@ import { ExternalAuditMgm } from './external-audit-mgm.model';
 import { ExternalAuditMgmPopupService } from './external-audit-mgm-popup.service';
 import { ExternalAuditMgmService } from './external-audit-mgm.service';
 import { User, UserService } from '../../shared';
+import { SessionStorageService } from 'ngx-webstorage';
+import { PopUpService } from '../../shared/pop-up-services/pop-up.service';
 
 @Component({
     selector: 'jhi-external-audit-mgm-dialog',
@@ -58,7 +60,7 @@ export class ExternalAuditMgmDialogComponent implements OnInit {
     }
 
     private onSaveSuccess(result: ExternalAuditMgm) {
-        this.eventManager.broadcast({ name: 'externalAuditListModification', content: 'OK'});
+        this.eventManager.broadcast({ name: 'externalAuditListModification', content: 'OK' });
         this.isSaving = false;
         this.activeModal.dismiss(result);
     }
@@ -86,22 +88,29 @@ export class ExternalAuditMgmPopupComponent implements OnInit, OnDestroy {
 
     constructor(
         private route: ActivatedRoute,
-        private externalAuditPopupService: ExternalAuditMgmPopupService
-    ) {}
+        private externalAuditPopupService: ExternalAuditMgmPopupService,
+        public popUpService: PopUpService
+    ) { }
 
     ngOnInit() {
-        this.routeSub = this.route.params.subscribe((params) => {
-            if ( params['id'] ) {
-                this.externalAuditPopupService
-                    .open(ExternalAuditMgmDialogComponent as Component, params['id']);
-            } else {
-                this.externalAuditPopupService
-                    .open(ExternalAuditMgmDialogComponent as Component);
-            }
-        });
+        if (!this.popUpService.canOpen()) {
+            return;
+        } else {
+            this.routeSub = this.route.params.subscribe((params) => {
+                if (params['id']) {
+                    this.externalAuditPopupService
+                        .open(ExternalAuditMgmDialogComponent as Component, params['id']);
+                } else {
+                    this.externalAuditPopupService
+                        .open(ExternalAuditMgmDialogComponent as Component);
+                }
+            });
+        }
     }
 
     ngOnDestroy() {
-        this.routeSub.unsubscribe();
+        if (this.routeSub) {
+            this.routeSub.unsubscribe();
+        }
     }
 }

@@ -7,6 +7,8 @@ import { JhiEventManager } from 'ng-jhipster';
 import { LikelihoodScaleMgm } from './likelihood-scale-mgm.model';
 import { LikelihoodScaleMgmPopupService } from './likelihood-scale-mgm-popup.service';
 import { LikelihoodScaleMgmService } from './likelihood-scale-mgm.service';
+import { SessionStorageService } from 'ngx-webstorage';
+import { PopUpService } from '../../shared/pop-up-services/pop-up.service';
 
 @Component({
     selector: 'jhi-likelihood-scale-mgm-delete-dialog',
@@ -48,17 +50,24 @@ export class LikelihoodScaleMgmDeletePopupComponent implements OnInit, OnDestroy
 
     constructor(
         private route: ActivatedRoute,
-        private likelihoodScalePopupService: LikelihoodScaleMgmPopupService
-    ) {}
+        private likelihoodScalePopupService: LikelihoodScaleMgmPopupService,
+        public popUpService: PopUpService
+    ) { }
 
     ngOnInit() {
-        this.routeSub = this.route.params.subscribe((params) => {
-            this.likelihoodScalePopupService
-                .open(LikelihoodScaleMgmDeleteDialogComponent as Component, params['id']);
-        });
+        if (!this.popUpService.canOpen()) {
+            return;
+        } else {
+            this.routeSub = this.route.params.subscribe((params) => {
+                this.likelihoodScalePopupService
+                    .open(LikelihoodScaleMgmDeleteDialogComponent as Component, params['id']);
+            });
+        }
     }
 
     ngOnDestroy() {
-        this.routeSub.unsubscribe();
+        if (this.routeSub) {
+            this.routeSub.unsubscribe();
+        }
     }
 }

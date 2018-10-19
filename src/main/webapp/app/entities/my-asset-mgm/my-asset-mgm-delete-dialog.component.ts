@@ -7,6 +7,8 @@ import { JhiEventManager } from 'ng-jhipster';
 import { MyAssetMgm } from './my-asset-mgm.model';
 import { MyAssetMgmPopupService } from './my-asset-mgm-popup.service';
 import { MyAssetMgmService } from './my-asset-mgm.service';
+import { SessionStorageService } from 'ngx-webstorage';
+import { PopUpService } from '../../shared/pop-up-services/pop-up.service';
 
 @Component({
     selector: 'jhi-my-asset-mgm-delete-dialog',
@@ -48,17 +50,24 @@ export class MyAssetMgmDeletePopupComponent implements OnInit, OnDestroy {
 
     constructor(
         private route: ActivatedRoute,
-        private myAssetPopupService: MyAssetMgmPopupService
-    ) {}
+        private myAssetPopupService: MyAssetMgmPopupService,
+        public popUpService: PopUpService
+    ) { }
 
     ngOnInit() {
-        this.routeSub = this.route.params.subscribe((params) => {
-            this.myAssetPopupService
-                .open(MyAssetMgmDeleteDialogComponent as Component, params['id']);
-        });
+        if (!this.popUpService.canOpen()) {
+            return;
+        } else {
+            this.routeSub = this.route.params.subscribe((params) => {
+                this.myAssetPopupService
+                    .open(MyAssetMgmDeleteDialogComponent as Component, params['id']);
+            });
+        }
     }
 
     ngOnDestroy() {
-        this.routeSub.unsubscribe();
+        if (this.routeSub) {
+            this.routeSub.unsubscribe();
+        }
     }
 }

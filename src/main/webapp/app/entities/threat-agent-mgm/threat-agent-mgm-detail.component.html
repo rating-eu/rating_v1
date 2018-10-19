@@ -59,6 +59,7 @@
     </button>
 
     <button type="button"
+            (click)="popUpService.setOnUserBehaviour()"
             [routerLink]="['/', { outlets: { popup: 'threat-agent-mgm/'+ threatAgent.id + '/edit'} }]"
             replaceUrl="true"
             queryParamsHandling="merge"

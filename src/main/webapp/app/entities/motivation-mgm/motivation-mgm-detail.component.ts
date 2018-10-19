@@ -6,6 +6,7 @@ import { JhiEventManager } from 'ng-jhipster';
 
 import { MotivationMgm } from './motivation-mgm.model';
 import { MotivationMgmService } from './motivation-mgm.service';
+import { PopUpService } from '../../shared/pop-up-services/pop-up.service';
 
 @Component({
     selector: 'jhi-motivation-mgm-detail',
@@ -20,7 +21,8 @@ export class MotivationMgmDetailComponent implements OnInit, OnDestroy {
     constructor(
         private eventManager: JhiEventManager,
         private motivationService: MotivationMgmService,
-        private route: ActivatedRoute
+        private route: ActivatedRoute,
+        public popUpService: PopUpService
     ) {
     }
 

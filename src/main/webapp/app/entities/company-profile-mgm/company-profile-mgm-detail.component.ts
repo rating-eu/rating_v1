@@ -6,6 +6,7 @@ import { JhiEventManager } from 'ng-jhipster';
 
 import { CompanyProfileMgm } from './company-profile-mgm.model';
 import { CompanyProfileMgmService } from './company-profile-mgm.service';
+import { PopUpService } from '../../shared/pop-up-services/pop-up.service';
 
 @Component({
     selector: 'jhi-company-profile-mgm-detail',
@@ -20,7 +21,8 @@ export class CompanyProfileMgmDetailComponent implements OnInit, OnDestroy {
     constructor(
         private eventManager: JhiEventManager,
         private companyProfileService: CompanyProfileMgmService,
-        private route: ActivatedRoute
+        private route: ActivatedRoute,
+        public popUpService: PopUpService
     ) {
     }
 

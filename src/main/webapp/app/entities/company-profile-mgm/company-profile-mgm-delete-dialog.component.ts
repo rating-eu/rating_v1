@@ -7,6 +7,8 @@ import { JhiEventManager } from 'ng-jhipster';
 import { CompanyProfileMgm } from './company-profile-mgm.model';
 import { CompanyProfileMgmPopupService } from './company-profile-mgm-popup.service';
 import { CompanyProfileMgmService } from './company-profile-mgm.service';
+import { SessionStorageService } from 'ngx-webstorage';
+import { PopUpService } from '../../shared/pop-up-services/pop-up.service';
 
 @Component({
     selector: 'jhi-company-profile-mgm-delete-dialog',
@@ -48,17 +50,25 @@ export class CompanyProfileMgmDeletePopupComponent implements OnInit, OnDestroy 
 
     constructor(
         private route: ActivatedRoute,
-        private companyProfilePopupService: CompanyProfileMgmPopupService
-    ) {}
+        private companyProfilePopupService: CompanyProfileMgmPopupService,
+        public popUpService: PopUpService
+    ) {
+    }
 
     ngOnInit() {
-        this.routeSub = this.route.params.subscribe((params) => {
-            this.companyProfilePopupService
-                .open(CompanyProfileMgmDeleteDialogComponent as Component, params['id']);
-        });
+        if (!this.popUpService.canOpen()) {
+            return;
+        } else {
+            this.routeSub = this.route.params.subscribe((params) => {
+                this.companyProfilePopupService
+                    .open(CompanyProfileMgmDeleteDialogComponent as Component, params['id']);
+            });
+        }
     }
 
     ngOnDestroy() {
-        this.routeSub.unsubscribe();
+        if (this.routeSub) {
+            this.routeSub.unsubscribe();
+        }
     }
 }

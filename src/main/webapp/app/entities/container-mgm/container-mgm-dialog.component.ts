@@ -9,6 +9,8 @@ import { JhiEventManager } from 'ng-jhipster';
 import { ContainerMgm } from './container-mgm.model';
 import { ContainerMgmPopupService } from './container-mgm-popup.service';
 import { ContainerMgmService } from './container-mgm.service';
+import { SessionStorageService } from 'ngx-webstorage';
+import { PopUpService } from '../../shared/pop-up-services/pop-up.service';
 
 @Component({
     selector: 'jhi-container-mgm-dialog',
@@ -51,7 +53,7 @@ export class ContainerMgmDialogComponent implements OnInit {
     }
 
     private onSaveSuccess(result: ContainerMgm) {
-        this.eventManager.broadcast({ name: 'containerListModification', content: 'OK'});
+        this.eventManager.broadcast({ name: 'containerListModification', content: 'OK' });
         this.isSaving = false;
         this.activeModal.dismiss(result);
     }
@@ -71,22 +73,29 @@ export class ContainerMgmPopupComponent implements OnInit, OnDestroy {
 
     constructor(
         private route: ActivatedRoute,
-        private containerPopupService: ContainerMgmPopupService
-    ) {}
+        private containerPopupService: ContainerMgmPopupService,
+        public popUpService: PopUpService
+    ) { }
 
     ngOnInit() {
-        this.routeSub = this.route.params.subscribe((params) => {
-            if ( params['id'] ) {
-                this.containerPopupService
-                    .open(ContainerMgmDialogComponent as Component, params['id']);
-            } else {
-                this.containerPopupService
-                    .open(ContainerMgmDialogComponent as Component);
-            }
-        });
+        if (!this.popUpService.canOpen()) {
+            return;
+        } else {
+            this.routeSub = this.route.params.subscribe((params) => {
+                if (params['id']) {
+                    this.containerPopupService
+                        .open(ContainerMgmDialogComponent as Component, params['id']);
+                } else {
+                    this.containerPopupService
+                        .open(ContainerMgmDialogComponent as Component);
+                }
+            });
+        }
     }
 
     ngOnDestroy() {
-        this.routeSub.unsubscribe();
+        if (this.routeSub) {
+            this.routeSub.unsubscribe();
+        }
     }
 }

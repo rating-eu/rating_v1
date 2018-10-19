@@ -6,6 +6,7 @@ import { JhiEventManager } from 'ng-jhipster';
 
 import { QuestionnaireStatusMgm } from './questionnaire-status-mgm.model';
 import { QuestionnaireStatusMgmService } from './questionnaire-status-mgm.service';
+import {PopUpService} from '../../shared/pop-up-services/pop-up.service';
 
 @Component({
     selector: 'jhi-questionnaire-status-mgm-detail',
@@ -20,7 +21,8 @@ export class QuestionnaireStatusMgmDetailComponent implements OnInit, OnDestroy 
     constructor(
         private eventManager: JhiEventManager,
         private questionnaireStatusService: QuestionnaireStatusMgmService,
-        private route: ActivatedRoute
+        private route: ActivatedRoute,
+        public popUpService: PopUpService
     ) {
     }
 

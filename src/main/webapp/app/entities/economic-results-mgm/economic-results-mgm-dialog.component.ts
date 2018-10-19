@@ -10,6 +10,8 @@ import { EconomicResultsMgm } from './economic-results-mgm.model';
 import { EconomicResultsMgmPopupService } from './economic-results-mgm-popup.service';
 import { EconomicResultsMgmService } from './economic-results-mgm.service';
 import { SelfAssessmentMgm, SelfAssessmentMgmService } from '../self-assessment-mgm';
+import { SessionStorageService } from 'ngx-webstorage';
+import { PopUpService } from '../../shared/pop-up-services/pop-up.service';
 
 @Component({
     selector: 'jhi-economic-results-mgm-dialog',
@@ -34,7 +36,7 @@ export class EconomicResultsMgmDialogComponent implements OnInit {
     ngOnInit() {
         this.isSaving = false;
         this.selfAssessmentService
-            .query({filter: 'economicresults-is-null'})
+            .query({ filter: 'economicresults-is-null' })
             .subscribe((res: HttpResponse<SelfAssessmentMgm[]>) => {
                 if (!this.economicResults.selfAssessment || !this.economicResults.selfAssessment.id) {
                     this.selfassessments = res.body;
@@ -69,7 +71,7 @@ export class EconomicResultsMgmDialogComponent implements OnInit {
     }
 
     private onSaveSuccess(result: EconomicResultsMgm) {
-        this.eventManager.broadcast({ name: 'economicResultsListModification', content: 'OK'});
+        this.eventManager.broadcast({ name: 'economicResultsListModification', content: 'OK' });
         this.isSaving = false;
         this.activeModal.dismiss(result);
     }
@@ -97,22 +99,30 @@ export class EconomicResultsMgmPopupComponent implements OnInit, OnDestroy {
 
     constructor(
         private route: ActivatedRoute,
-        private economicResultsPopupService: EconomicResultsMgmPopupService
-    ) {}
+        private economicResultsPopupService: EconomicResultsMgmPopupService,
+        public popUpService: PopUpService
+    ) {
+    }
 
     ngOnInit() {
-        this.routeSub = this.route.params.subscribe((params) => {
-            if ( params['id'] ) {
-                this.economicResultsPopupService
-                    .open(EconomicResultsMgmDialogComponent as Component, params['id']);
-            } else {
-                this.economicResultsPopupService
-                    .open(EconomicResultsMgmDialogComponent as Component);
-            }
-        });
+        if (!this.popUpService.canOpen()) {
+            return;
+        } else {
+            this.routeSub = this.route.params.subscribe((params) => {
+                if (params['id']) {
+                    this.economicResultsPopupService
+                        .open(EconomicResultsMgmDialogComponent as Component, params['id']);
+                } else {
+                    this.economicResultsPopupService
+                        .open(EconomicResultsMgmDialogComponent as Component);
+                }
+            });
+        }
     }
 
     ngOnDestroy() {
-        this.routeSub.unsubscribe();
+        if (this.routeSub) {
+            this.routeSub.unsubscribe();
+        }
     }
 }

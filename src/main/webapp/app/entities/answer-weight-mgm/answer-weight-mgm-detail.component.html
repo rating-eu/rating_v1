@@ -25,6 +25,7 @@
     </button>
 
     <button type="button"
+            (click)="popUpService.setOnUserBehaviour()"
             [routerLink]="['/', { outlets: { popup: 'answer-weight-mgm/'+ answerWeight.id + '/edit'} }]"
             replaceUrl="true"
             queryParamsHandling="merge"

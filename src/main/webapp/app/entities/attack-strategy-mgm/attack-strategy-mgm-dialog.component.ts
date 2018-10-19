@@ -12,6 +12,8 @@ import { AttackStrategyMgmService } from './attack-strategy-mgm.service';
 import { MitigationMgm, MitigationMgmService } from '../mitigation-mgm';
 import { LevelMgm, LevelMgmService } from '../level-mgm';
 import { PhaseMgm, PhaseMgmService } from '../phase-mgm';
+import { SessionStorageService } from 'ngx-webstorage';
+import { PopUpService } from '../../shared/pop-up-services/pop-up.service';
 
 @Component({
     selector: 'jhi-attack-strategy-mgm-dialog',
@@ -42,11 +44,17 @@ export class AttackStrategyMgmDialogComponent implements OnInit {
     ngOnInit() {
         this.isSaving = false;
         this.mitigationService.query()
-            .subscribe((res: HttpResponse<MitigationMgm[]>) => { this.mitigations = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
+            .subscribe((res: HttpResponse<MitigationMgm[]>) => {
+                this.mitigations = res.body;
+            }, (res: HttpErrorResponse) => this.onError(res.message));
         this.levelService.query()
-            .subscribe((res: HttpResponse<LevelMgm[]>) => { this.levels = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
+            .subscribe((res: HttpResponse<LevelMgm[]>) => {
+                this.levels = res.body;
+            }, (res: HttpErrorResponse) => this.onError(res.message));
         this.phaseService.query()
-            .subscribe((res: HttpResponse<PhaseMgm[]>) => { this.phases = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
+            .subscribe((res: HttpResponse<PhaseMgm[]>) => {
+                this.phases = res.body;
+            }, (res: HttpErrorResponse) => this.onError(res.message));
     }
 
     clear() {
@@ -70,7 +78,7 @@ export class AttackStrategyMgmDialogComponent implements OnInit {
     }
 
     private onSaveSuccess(result: AttackStrategyMgm) {
-        this.eventManager.broadcast({ name: 'attackStrategyListModification', content: 'OK'});
+        this.eventManager.broadcast({ name: 'attackStrategyListModification', content: 'OK' });
         this.isSaving = false;
         this.activeModal.dismiss(result);
     }
@@ -117,22 +125,30 @@ export class AttackStrategyMgmPopupComponent implements OnInit, OnDestroy {
 
     constructor(
         private route: ActivatedRoute,
-        private attackStrategyPopupService: AttackStrategyMgmPopupService
-    ) {}
+        private attackStrategyPopupService: AttackStrategyMgmPopupService,
+        public popUpService: PopUpService
+    ) {
+    }
 
     ngOnInit() {
-        this.routeSub = this.route.params.subscribe((params) => {
-            if ( params['id'] ) {
-                this.attackStrategyPopupService
-                    .open(AttackStrategyMgmDialogComponent as Component, params['id']);
-            } else {
-                this.attackStrategyPopupService
-                    .open(AttackStrategyMgmDialogComponent as Component);
-            }
-        });
+        if (!this.popUpService.canOpen()) {
+            return;
+        } else {
+            this.routeSub = this.route.params.subscribe((params) => {
+                if (params['id']) {
+                    this.attackStrategyPopupService
+                        .open(AttackStrategyMgmDialogComponent as Component, params['id']);
+                } else {
+                    this.attackStrategyPopupService
+                        .open(AttackStrategyMgmDialogComponent as Component);
+                }
+            });
+        }
     }
 
     ngOnDestroy() {
-        this.routeSub.unsubscribe();
+        if (this.routeSub) {
+            this.routeSub.unsubscribe();
+        }
     }
 }

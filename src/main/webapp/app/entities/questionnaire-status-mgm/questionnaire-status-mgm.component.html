@@ -101,6 +101,7 @@
                             <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
                         </button>
                         <button type="submit"
+                                (click)="popUpService.setOnUserBehaviour()"
                                 [routerLink]="['/', { outlets: { popup: 'questionnaire-status-mgm/'+ questionnaireStatus.id + '/edit'} }]"
                                 replaceUrl="true"
                                 queryParamsHandling="merge"
@@ -109,6 +110,7 @@
                             <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
                         </button>
                         <button type="submit"
+                                (click)="popUpService.setOnUserBehaviour()"
                                 [routerLink]="['/', { outlets: { popup: 'questionnaire-status-mgm/'+ questionnaireStatus.id + '/delete'} }]"
                                 replaceUrl="true"
                                 queryParamsHandling="merge"

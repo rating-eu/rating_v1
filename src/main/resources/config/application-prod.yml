@@ -50,6 +50,18 @@ spring:
             hibernate.cache.hazelcast.instance_name: hermeneut
             hibernate.cache.use_minimal_puts: true
             hibernate.cache.hazelcast.use_lite_member: true
+    mail:
+        host: ${EMAIL_HOST}
+        port: ${EMAIL_PORT}
+        username: ${EMAIL_USERNAME}
+        password: ${EMAIL_PASSWORD}
+        protocol: ${EMAIL_PROTOCOL}
+        tls: ${EMAIL_TLS}
+        auth: ${EMAIL_AUTH}
+        properties.mail.smtp:
+            auth: ${EMAIL_AUTH}
+            starttls.enable: ${EMAIL_TLS}
+            ssl.trust: ${EMAIL_HOST}
     data:
         elasticsearch:
             cluster-name:
@@ -118,9 +130,6 @@ jhipster:
                 # Token is valid 24 hours
                 token-validity-in-seconds: 86400
                 token-validity-in-seconds-for-remember-me: 2592000
-    mail: # specific JHipster mail property, for standard properties see MailProperties
-        from: hermeneut@localhost
-        base-url: http://my-server-url-to-change # Modify according to your server's URL
     metrics: # DropWizard Metrics configuration, used by MetricsConfiguration
         jmx.enabled: true
         graphite:

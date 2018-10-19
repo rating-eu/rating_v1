@@ -7,6 +7,7 @@ import { JhiEventManager, JhiAlertService, JhiDataUtils } from 'ng-jhipster';
 import { ThreatAgentMgm } from './threat-agent-mgm.model';
 import { ThreatAgentMgmService } from './threat-agent-mgm.service';
 import { Principal } from '../../shared';
+import {PopUpService} from '../../shared/pop-up-services/pop-up.service';
 
 @Component({
     selector: 'jhi-threat-agent-mgm',
@@ -24,7 +25,8 @@ threatAgents: ThreatAgentMgm[];
         private dataUtils: JhiDataUtils,
         private eventManager: JhiEventManager,
         private activatedRoute: ActivatedRoute,
-        private principal: Principal
+        private principal: Principal,
+        public popUpService: PopUpService
     ) {
         this.currentSearch = this.activatedRoute.snapshot && this.activatedRoute.snapshot.params['search'] ?
             this.activatedRoute.snapshot.params['search'] : '';

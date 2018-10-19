@@ -7,6 +7,8 @@ import { JhiEventManager } from 'ng-jhipster';
 import { SplittingLossMgm } from './splitting-loss-mgm.model';
 import { SplittingLossMgmPopupService } from './splitting-loss-mgm-popup.service';
 import { SplittingLossMgmService } from './splitting-loss-mgm.service';
+import {SessionStorageService} from 'ngx-webstorage';
+import {PopUpService} from '../../shared/pop-up-services/pop-up.service';
 
 @Component({
     selector: 'jhi-splitting-loss-mgm-delete-dialog',
@@ -48,17 +50,24 @@ export class SplittingLossMgmDeletePopupComponent implements OnInit, OnDestroy {
 
     constructor(
         private route: ActivatedRoute,
-        private splittingLossPopupService: SplittingLossMgmPopupService
+        private splittingLossPopupService: SplittingLossMgmPopupService,
+        public popUpService: PopUpService
     ) {}
 
     ngOnInit() {
-        this.routeSub = this.route.params.subscribe((params) => {
-            this.splittingLossPopupService
-                .open(SplittingLossMgmDeleteDialogComponent as Component, params['id']);
-        });
+        if (!this.popUpService.canOpen()) {
+            return;
+        }  else {
+            this.routeSub = this.route.params.subscribe((params) => {
+                this.splittingLossPopupService
+                    .open(SplittingLossMgmDeleteDialogComponent as Component, params['id']);
+            });
+        }
     }
 
     ngOnDestroy() {
-        this.routeSub.unsubscribe();
+        if(this.routeSub){
+            this.routeSub.unsubscribe();
+        }
     }
 }

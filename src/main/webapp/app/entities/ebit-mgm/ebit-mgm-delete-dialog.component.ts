@@ -1,12 +1,14 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import {Component, OnInit, OnDestroy} from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
 
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { JhiEventManager } from 'ng-jhipster';
+import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
+import {JhiEventManager} from 'ng-jhipster';
 
-import { EBITMgm } from './ebit-mgm.model';
-import { EBITMgmPopupService } from './ebit-mgm-popup.service';
-import { EBITMgmService } from './ebit-mgm.service';
+import {EBITMgm} from './ebit-mgm.model';
+import {EBITMgmPopupService} from './ebit-mgm-popup.service';
+import {EBITMgmService} from './ebit-mgm.service';
+import {SessionStorageService} from 'ngx-webstorage';
+import { PopUpService } from '../../shared/pop-up-services/pop-up.service';
 
 @Component({
     selector: 'jhi-ebit-mgm-delete-dialog',
@@ -48,17 +50,25 @@ export class EBITMgmDeletePopupComponent implements OnInit, OnDestroy {
 
     constructor(
         private route: ActivatedRoute,
-        private eBITPopupService: EBITMgmPopupService
-    ) {}
+        private eBITPopupService: EBITMgmPopupService,
+        public popUpService: PopUpService
+    ) {
+    }
 
     ngOnInit() {
-        this.routeSub = this.route.params.subscribe((params) => {
-            this.eBITPopupService
-                .open(EBITMgmDeleteDialogComponent as Component, params['id']);
-        });
+        if (!this.popUpService.canOpen()) {
+            return;
+        } else {
+            this.routeSub = this.route.params.subscribe((params) => {
+                this.eBITPopupService
+                    .open(EBITMgmDeleteDialogComponent as Component, params['id']);
+            });
+        }
     }
 
     ngOnDestroy() {
-        this.routeSub.unsubscribe();
+        if (this.routeSub) {
+            this.routeSub.unsubscribe();
+        }
     }
 }

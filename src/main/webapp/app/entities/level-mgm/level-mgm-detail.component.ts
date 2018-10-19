@@ -6,6 +6,7 @@ import { JhiEventManager } from 'ng-jhipster';
 
 import { LevelMgm } from './level-mgm.model';
 import { LevelMgmService } from './level-mgm.service';
+import { PopUpService } from '../../shared/pop-up-services/pop-up.service';
 
 @Component({
     selector: 'jhi-level-mgm-detail',
@@ -20,7 +21,8 @@ export class LevelMgmDetailComponent implements OnInit, OnDestroy {
     constructor(
         private eventManager: JhiEventManager,
         private levelService: LevelMgmService,
-        private route: ActivatedRoute
+        private route: ActivatedRoute,
+        public popUpService: PopUpService
     ) {
     }
 

@@ -6,6 +6,7 @@ import { JhiEventManager } from 'ng-jhipster';
 
 import { SplittingLossMgm } from './splitting-loss-mgm.model';
 import { SplittingLossMgmService } from './splitting-loss-mgm.service';
+import {PopUpService} from '../../shared/pop-up-services/pop-up.service';
 
 @Component({
     selector: 'jhi-splitting-loss-mgm-detail',
@@ -20,7 +21,8 @@ export class SplittingLossMgmDetailComponent implements OnInit, OnDestroy {
     constructor(
         private eventManager: JhiEventManager,
         private splittingLossService: SplittingLossMgmService,
-        private route: ActivatedRoute
+        private route: ActivatedRoute,
+        public popUpService: PopUpService
     ) {
     }
 

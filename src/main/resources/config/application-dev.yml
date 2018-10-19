@@ -56,6 +56,11 @@ spring:
             hibernate.cache.hazelcast.instance_name: hermeneut
             hibernate.cache.use_minimal_puts: true
             hibernate.cache.hazelcast.use_lite_member: true
+    mail:
+        host: localhost
+        port: 25
+        username:
+        password:
     data:
         elasticsearch:
             cluster-name:
@@ -134,9 +139,6 @@ jhipster:
                 # Token is valid 24 hours
                 token-validity-in-seconds: 9999999
                 token-validity-in-seconds-for-remember-me: 99999999999999
-    mail: # specific JHipster mail property, for standard properties see MailProperties
-        from: hermeneut@localhost
-        base-url: http://127.0.0.1:8080
     metrics: # DropWizard Metrics configuration, used by MetricsConfiguration
         jmx.enabled: true
         graphite: # Use the "graphite" Maven profile to have the Graphite dependencies

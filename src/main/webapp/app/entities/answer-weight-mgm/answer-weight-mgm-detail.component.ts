@@ -6,6 +6,7 @@ import { JhiEventManager } from 'ng-jhipster';
 
 import { AnswerWeightMgm } from './answer-weight-mgm.model';
 import { AnswerWeightMgmService } from './answer-weight-mgm.service';
+import { PopUpService } from '../../shared/pop-up-services/pop-up.service';
 
 @Component({
     selector: 'jhi-answer-weight-mgm-detail',
@@ -20,7 +21,8 @@ export class AnswerWeightMgmDetailComponent implements OnInit, OnDestroy {
     constructor(
         private eventManager: JhiEventManager,
         private answerWeightService: AnswerWeightMgmService,
-        private route: ActivatedRoute
+        private route: ActivatedRoute,
+        public popUpService: PopUpService
     ) {
     }
 

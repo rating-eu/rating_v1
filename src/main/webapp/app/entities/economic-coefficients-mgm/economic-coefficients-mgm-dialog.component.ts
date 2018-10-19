@@ -10,6 +10,8 @@ import { EconomicCoefficientsMgm } from './economic-coefficients-mgm.model';
 import { EconomicCoefficientsMgmPopupService } from './economic-coefficients-mgm-popup.service';
 import { EconomicCoefficientsMgmService } from './economic-coefficients-mgm.service';
 import { SelfAssessmentMgm, SelfAssessmentMgmService } from '../self-assessment-mgm';
+import {SessionStorageService} from 'ngx-webstorage';
+import { PopUpService } from '../../shared/pop-up-services/pop-up.service';
 
 @Component({
     selector: 'jhi-economic-coefficients-mgm-dialog',
@@ -97,22 +99,29 @@ export class EconomicCoefficientsMgmPopupComponent implements OnInit, OnDestroy 
 
     constructor(
         private route: ActivatedRoute,
-        private economicCoefficientsPopupService: EconomicCoefficientsMgmPopupService
+        private economicCoefficientsPopupService: EconomicCoefficientsMgmPopupService,
+        public popUpService: PopUpService
     ) {}
 
     ngOnInit() {
-        this.routeSub = this.route.params.subscribe((params) => {
-            if ( params['id'] ) {
-                this.economicCoefficientsPopupService
-                    .open(EconomicCoefficientsMgmDialogComponent as Component, params['id']);
-            } else {
-                this.economicCoefficientsPopupService
-                    .open(EconomicCoefficientsMgmDialogComponent as Component);
-            }
-        });
+        if (!this.popUpService.canOpen()) {
+            return;
+        } else {
+            this.routeSub = this.route.params.subscribe((params) => {
+                if ( params['id'] ) {
+                    this.economicCoefficientsPopupService
+                        .open(EconomicCoefficientsMgmDialogComponent as Component, params['id']);
+                } else {
+                    this.economicCoefficientsPopupService
+                        .open(EconomicCoefficientsMgmDialogComponent as Component);
+                }
+            });
+        }
     }
 
     ngOnDestroy() {
-        this.routeSub.unsubscribe();
+        if (this.routeSub) {
+            this.routeSub.unsubscribe();
+        }
     }
 }

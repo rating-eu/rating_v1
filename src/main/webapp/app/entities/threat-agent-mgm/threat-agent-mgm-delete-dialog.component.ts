@@ -7,6 +7,8 @@ import { JhiEventManager } from 'ng-jhipster';
 import { ThreatAgentMgm } from './threat-agent-mgm.model';
 import { ThreatAgentMgmPopupService } from './threat-agent-mgm-popup.service';
 import { ThreatAgentMgmService } from './threat-agent-mgm.service';
+import {SessionStorageService} from 'ngx-webstorage';
+import {PopUpService} from '../../shared/pop-up-services/pop-up.service';
 
 @Component({
     selector: 'jhi-threat-agent-mgm-delete-dialog',
@@ -48,17 +50,24 @@ export class ThreatAgentMgmDeletePopupComponent implements OnInit, OnDestroy {
 
     constructor(
         private route: ActivatedRoute,
-        private threatAgentPopupService: ThreatAgentMgmPopupService
+        private threatAgentPopupService: ThreatAgentMgmPopupService,
+        public popUpService: PopUpService
     ) {}
 
     ngOnInit() {
-        this.routeSub = this.route.params.subscribe((params) => {
-            this.threatAgentPopupService
-                .open(ThreatAgentMgmDeleteDialogComponent as Component, params['id']);
-        });
+        if (!this.popUpService.canOpen()) {
+            return;
+        } else {
+            this.routeSub = this.route.params.subscribe((params) => {
+                this.threatAgentPopupService
+                    .open(ThreatAgentMgmDeleteDialogComponent as Component, params['id']);
+            });
+        }
     }
 
     ngOnDestroy() {
-        this.routeSub.unsubscribe();
+        if(this.routeSub){
+            this.routeSub.unsubscribe();
+        }
     }
 }

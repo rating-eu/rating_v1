@@ -7,6 +7,8 @@ import { JhiEventManager } from 'ng-jhipster';
 import { MitigationMgm } from './mitigation-mgm.model';
 import { MitigationMgmPopupService } from './mitigation-mgm-popup.service';
 import { MitigationMgmService } from './mitigation-mgm.service';
+import { SessionStorageService } from 'ngx-webstorage';
+import { PopUpService } from '../../shared/pop-up-services/pop-up.service';
 
 @Component({
     selector: 'jhi-mitigation-mgm-delete-dialog',
@@ -48,17 +50,24 @@ export class MitigationMgmDeletePopupComponent implements OnInit, OnDestroy {
 
     constructor(
         private route: ActivatedRoute,
-        private mitigationPopupService: MitigationMgmPopupService
-    ) {}
+        private mitigationPopupService: MitigationMgmPopupService,
+        public popUpService: PopUpService
+    ) { }
 
     ngOnInit() {
-        this.routeSub = this.route.params.subscribe((params) => {
-            this.mitigationPopupService
-                .open(MitigationMgmDeleteDialogComponent as Component, params['id']);
-        });
+        if (!this.popUpService.canOpen()) {
+            return;
+        } else {
+            this.routeSub = this.route.params.subscribe((params) => {
+                this.mitigationPopupService
+                    .open(MitigationMgmDeleteDialogComponent as Component, params['id']);
+            });
+        }
     }
 
     ngOnDestroy() {
-        this.routeSub.unsubscribe();
+        if (this.routeSub) {
+            this.routeSub.unsubscribe();
+        }
     }
 }

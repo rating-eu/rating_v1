@@ -1,16 +1,18 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
+import {Component, OnInit, OnDestroy} from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
+import {HttpResponse, HttpErrorResponse} from '@angular/common/http';
 
-import { Observable } from 'rxjs/Observable';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
+import {Observable} from 'rxjs/Observable';
+import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
+import {JhiEventManager, JhiAlertService} from 'ng-jhipster';
 
-import { CompanyGroupMgm } from './company-group-mgm.model';
-import { CompanyGroupMgmPopupService } from './company-group-mgm-popup.service';
-import { CompanyGroupMgmService } from './company-group-mgm.service';
-import { User, UserService } from '../../shared';
-import { CompanyProfileMgm, CompanyProfileMgmService } from '../company-profile-mgm';
+import {CompanyGroupMgm} from './company-group-mgm.model';
+import {CompanyGroupMgmPopupService} from './company-group-mgm-popup.service';
+import {CompanyGroupMgmService} from './company-group-mgm.service';
+import {User, UserService} from '../../shared';
+import {CompanyProfileMgm, CompanyProfileMgmService} from '../company-profile-mgm';
+import {SessionStorageService} from 'ngx-webstorage';
+import { PopUpService } from '../../shared/pop-up-services/pop-up.service';
 
 @Component({
     selector: 'jhi-company-group-mgm-dialog',
@@ -38,9 +40,13 @@ export class CompanyGroupMgmDialogComponent implements OnInit {
     ngOnInit() {
         this.isSaving = false;
         this.userService.query()
-            .subscribe((res: HttpResponse<User[]>) => { this.users = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
+            .subscribe((res: HttpResponse<User[]>) => {
+                this.users = res.body;
+            }, (res: HttpErrorResponse) => this.onError(res.message));
         this.companyProfileService.query()
-            .subscribe((res: HttpResponse<CompanyProfileMgm[]>) => { this.companyprofiles = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
+            .subscribe((res: HttpResponse<CompanyProfileMgm[]>) => {
+                this.companyprofiles = res.body;
+            }, (res: HttpErrorResponse) => this.onError(res.message));
     }
 
     clear() {
@@ -64,7 +70,7 @@ export class CompanyGroupMgmDialogComponent implements OnInit {
     }
 
     private onSaveSuccess(result: CompanyGroupMgm) {
-        this.eventManager.broadcast({ name: 'companyGroupListModification', content: 'OK'});
+        this.eventManager.broadcast({name: 'companyGroupListModification', content: 'OK'});
         this.isSaving = false;
         this.activeModal.dismiss(result);
     }
@@ -96,22 +102,31 @@ export class CompanyGroupMgmPopupComponent implements OnInit, OnDestroy {
 
     constructor(
         private route: ActivatedRoute,
-        private companyGroupPopupService: CompanyGroupMgmPopupService
-    ) {}
+        private companyGroupPopupService: CompanyGroupMgmPopupService,
+        private sessionStorage: SessionStorageService,
+        public popUpService: PopUpService
+    ) {
+    }
 
     ngOnInit() {
-        this.routeSub = this.route.params.subscribe((params) => {
-            if ( params['id'] ) {
-                this.companyGroupPopupService
-                    .open(CompanyGroupMgmDialogComponent as Component, params['id']);
-            } else {
-                this.companyGroupPopupService
-                    .open(CompanyGroupMgmDialogComponent as Component);
-            }
-        });
+        if (!this.popUpService.canOpen()) {
+            return;
+        } else {
+            this.routeSub = this.route.params.subscribe((params) => {
+                if (params['id']) {
+                    this.companyGroupPopupService
+                        .open(CompanyGroupMgmDialogComponent as Component, params['id']);
+                } else {
+                    this.companyGroupPopupService
+                        .open(CompanyGroupMgmDialogComponent as Component);
+                }
+            });
+        }
     }
 
     ngOnDestroy() {
-        this.routeSub.unsubscribe();
+        if (this.routeSub) {
+            this.routeSub.unsubscribe();
+        }
     }
 }

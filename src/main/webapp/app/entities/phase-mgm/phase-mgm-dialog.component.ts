@@ -9,6 +9,8 @@ import { JhiEventManager } from 'ng-jhipster';
 import { PhaseMgm } from './phase-mgm.model';
 import { PhaseMgmPopupService } from './phase-mgm-popup.service';
 import { PhaseMgmService } from './phase-mgm.service';
+import { SessionStorageService } from 'ngx-webstorage';
+import { PopUpService } from '../../shared/pop-up-services/pop-up.service';
 
 @Component({
     selector: 'jhi-phase-mgm-dialog',
@@ -51,7 +53,7 @@ export class PhaseMgmDialogComponent implements OnInit {
     }
 
     private onSaveSuccess(result: PhaseMgm) {
-        this.eventManager.broadcast({ name: 'phaseListModification', content: 'OK'});
+        this.eventManager.broadcast({ name: 'phaseListModification', content: 'OK' });
         this.isSaving = false;
         this.activeModal.dismiss(result);
     }
@@ -71,22 +73,29 @@ export class PhaseMgmPopupComponent implements OnInit, OnDestroy {
 
     constructor(
         private route: ActivatedRoute,
-        private phasePopupService: PhaseMgmPopupService
-    ) {}
+        private phasePopupService: PhaseMgmPopupService,
+        public popUpService: PopUpService
+    ) { }
 
     ngOnInit() {
-        this.routeSub = this.route.params.subscribe((params) => {
-            if ( params['id'] ) {
-                this.phasePopupService
-                    .open(PhaseMgmDialogComponent as Component, params['id']);
-            } else {
-                this.phasePopupService
-                    .open(PhaseMgmDialogComponent as Component);
-            }
-        });
+        if (!this.popUpService.canOpen()) {
+            return;
+        } else {
+            this.routeSub = this.route.params.subscribe((params) => {
+                if (params['id']) {
+                    this.phasePopupService
+                        .open(PhaseMgmDialogComponent as Component, params['id']);
+                } else {
+                    this.phasePopupService
+                        .open(PhaseMgmDialogComponent as Component);
+                }
+            });
+        }
     }
 
     ngOnDestroy() {
-        this.routeSub.unsubscribe();
+        if (this.routeSub) {
+            this.routeSub.unsubscribe();
+        }
     }
 }

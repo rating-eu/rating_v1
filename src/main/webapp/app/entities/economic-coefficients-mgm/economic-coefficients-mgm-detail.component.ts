@@ -6,6 +6,7 @@ import { JhiEventManager } from 'ng-jhipster';
 
 import { EconomicCoefficientsMgm } from './economic-coefficients-mgm.model';
 import { EconomicCoefficientsMgmService } from './economic-coefficients-mgm.service';
+import { PopUpService } from '../../shared/pop-up-services/pop-up.service';
 
 @Component({
     selector: 'jhi-economic-coefficients-mgm-detail',
@@ -20,7 +21,8 @@ export class EconomicCoefficientsMgmDetailComponent implements OnInit, OnDestroy
     constructor(
         private eventManager: JhiEventManager,
         private economicCoefficientsService: EconomicCoefficientsMgmService,
-        private route: ActivatedRoute
+        private route: ActivatedRoute,
+        public popUpService: PopUpService
     ) {
     }
 

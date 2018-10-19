@@ -9,6 +9,8 @@ import { JhiEventManager } from 'ng-jhipster';
 import { MotivationMgm } from './motivation-mgm.model';
 import { MotivationMgmPopupService } from './motivation-mgm-popup.service';
 import { MotivationMgmService } from './motivation-mgm.service';
+import { SessionStorageService } from 'ngx-webstorage';
+import { PopUpService } from '../../shared/pop-up-services/pop-up.service';
 
 @Component({
     selector: 'jhi-motivation-mgm-dialog',
@@ -51,7 +53,7 @@ export class MotivationMgmDialogComponent implements OnInit {
     }
 
     private onSaveSuccess(result: MotivationMgm) {
-        this.eventManager.broadcast({ name: 'motivationListModification', content: 'OK'});
+        this.eventManager.broadcast({ name: 'motivationListModification', content: 'OK' });
         this.isSaving = false;
         this.activeModal.dismiss(result);
     }
@@ -71,22 +73,29 @@ export class MotivationMgmPopupComponent implements OnInit, OnDestroy {
 
     constructor(
         private route: ActivatedRoute,
-        private motivationPopupService: MotivationMgmPopupService
-    ) {}
+        private motivationPopupService: MotivationMgmPopupService,
+        public popUpService: PopUpService
+    ) { }
 
     ngOnInit() {
-        this.routeSub = this.route.params.subscribe((params) => {
-            if ( params['id'] ) {
-                this.motivationPopupService
-                    .open(MotivationMgmDialogComponent as Component, params['id']);
-            } else {
-                this.motivationPopupService
-                    .open(MotivationMgmDialogComponent as Component);
-            }
-        });
+        if (!this.popUpService.canOpen()) {
+            return;
+        } else {
+            this.routeSub = this.route.params.subscribe((params) => {
+                if (params['id']) {
+                    this.motivationPopupService
+                        .open(MotivationMgmDialogComponent as Component, params['id']);
+                } else {
+                    this.motivationPopupService
+                        .open(MotivationMgmDialogComponent as Component);
+                }
+            });
+        }
     }
 
     ngOnDestroy() {
-        this.routeSub.unsubscribe();
+        if (this.routeSub) {
+            this.routeSub.unsubscribe();
+        }
     }
 }

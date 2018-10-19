@@ -13,6 +13,8 @@ import { AttackStrategyMgm, AttackStrategyMgmService } from '../attack-strategy-
 import { AnswerMgm, AnswerMgmService } from '../answer-mgm';
 import { QuestionnaireMgm, QuestionnaireMgmService } from '../questionnaire-mgm';
 import { ThreatAgentMgm, ThreatAgentMgmService } from '../threat-agent-mgm';
+import { SessionStorageService } from 'ngx-webstorage';
+import { PopUpService } from '../../shared/pop-up-services/pop-up.service';
 
 @Component({
     selector: 'jhi-question-mgm-dialog',
@@ -76,7 +78,7 @@ export class QuestionMgmDialogComponent implements OnInit {
     }
 
     private onSaveSuccess(result: QuestionMgm) {
-        this.eventManager.broadcast({ name: 'questionListModification', content: 'OK'});
+        this.eventManager.broadcast({ name: 'questionListModification', content: 'OK' });
         this.isSaving = false;
         this.activeModal.dismiss(result);
     }
@@ -127,22 +129,29 @@ export class QuestionMgmPopupComponent implements OnInit, OnDestroy {
 
     constructor(
         private route: ActivatedRoute,
-        private questionPopupService: QuestionMgmPopupService
-    ) {}
+        private questionPopupService: QuestionMgmPopupService,
+        public popUpService: PopUpService
+    ) { }
 
     ngOnInit() {
-        this.routeSub = this.route.params.subscribe((params) => {
-            if ( params['id'] ) {
-                this.questionPopupService
-                    .open(QuestionMgmDialogComponent as Component, params['id']);
-            } else {
-                this.questionPopupService
-                    .open(QuestionMgmDialogComponent as Component);
-            }
-        });
+        if (!this.popUpService.canOpen()) {
+            return;
+        } else {
+            this.routeSub = this.route.params.subscribe((params) => {
+                if (params['id']) {
+                    this.questionPopupService
+                        .open(QuestionMgmDialogComponent as Component, params['id']);
+                } else {
+                    this.questionPopupService
+                        .open(QuestionMgmDialogComponent as Component);
+                }
+            });
+        }
     }
 
     ngOnDestroy() {
-        this.routeSub.unsubscribe();
+        if (this.routeSub) {
+            this.routeSub.unsubscribe();
+        }
     }
 }
