@@ -70,18 +70,6 @@ spring:
         multipart:
           max-file-size: 100MB
           max-request-size: 100MB
-    mail:
-        host: ${EMAIL_HOST}
-        port: ${EMAIL_PORT}
-        username: ${EMAIL_USERNAME}
-        password: ${EMAIL_PASSWORD}
-        protocol: ${EMAIL_PROTOCOL}
-        tls: ${EMAIL_TLS}
-        auth: ${EMAIL_AUTH}
-        properties.mail.smtp:
-            auth: ${EMAIL_AUTH}
-            starttls.enable: ${EMAIL_TLS}
-            ssl.trust: ${EMAIL_HOST}
 security:
     basic:
         enabled: false
