@@ -1,26 +1,11 @@
 import { BaseEntity, User } from './../../shared';
 
 export const enum CompType {
+    'OTHER',
+    'FINANCE_AND_INSURANCE',
+    'HEALTH_CARE_AND_SOCIAL_ASSISTANCE',
     'INFORMATION',
-    'HEALTHCARE',
-    'FINANCE',
-    'ACCOMODATION',
-    'ADMINISTRATIVE',
-    'AGRICOLTURE',
-    'CONSTRUCTION',
-    'EDUCATION',
-    'ENTERTAINMENT',
-    'MANAGEMENT',
-    'MANUFACTURING',
-    'MINING',
-    'OTHERSERVICES',
-    'PROFESSIONAL',
-    'PUBLIC',
-    'REALESTATE',
-    'RETAILS',
-    'TRADE',
-    'TRANSPORTATION',
-    'UTILITIES'
+    'PROFESSIONAL_SCIENTIFIC_AND_TECHNICAL_SERVICE'
 }
 
 export class CompanyProfileMgm implements BaseEntity {

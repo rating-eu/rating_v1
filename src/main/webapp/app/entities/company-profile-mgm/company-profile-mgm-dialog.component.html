@@ -51,26 +51,11 @@
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="hermeneutApp.companyProfile.type" for="field_type">Type</label>
             <select class="form-control" name="type" [(ngModel)]="companyProfile.type" id="field_type" >
+                <option value="OTHER">{{'hermeneutApp.CompType.OTHER' | translate}}</option>
+                <option value="FINANCE_AND_INSURANCE">{{'hermeneutApp.CompType.FINANCE_AND_INSURANCE' | translate}}</option>
+                <option value="HEALTH_CARE_AND_SOCIAL_ASSISTANCE">{{'hermeneutApp.CompType.HEALTH_CARE_AND_SOCIAL_ASSISTANCE' | translate}}</option>
                 <option value="INFORMATION">{{'hermeneutApp.CompType.INFORMATION' | translate}}</option>
-                <option value="HEALTHCARE">{{'hermeneutApp.CompType.HEALTHCARE' | translate}}</option>
-                <option value="FINANCE">{{'hermeneutApp.CompType.FINANCE' | translate}}</option>
-                <option value="ACCOMODATION">{{'hermeneutApp.CompType.ACCOMODATION' | translate}}</option>
-                <option value="ADMINISTRATIVE">{{'hermeneutApp.CompType.ADMINISTRATIVE' | translate}}</option>
-                <option value="AGRICOLTURE">{{'hermeneutApp.CompType.AGRICOLTURE' | translate}}</option>
-                <option value="CONSTRUCTION">{{'hermeneutApp.CompType.CONSTRUCTION' | translate}}</option>
-                <option value="EDUCATION">{{'hermeneutApp.CompType.EDUCATION' | translate}}</option>
-                <option value="ENTERTAINMENT">{{'hermeneutApp.CompType.ENTERTAINMENT' | translate}}</option>
-                <option value="MANAGEMENT">{{'hermeneutApp.CompType.MANAGEMENT' | translate}}</option>
-                <option value="MANUFACTURING">{{'hermeneutApp.CompType.MANUFACTURING' | translate}}</option>
-                <option value="MINING">{{'hermeneutApp.CompType.MINING' | translate}}</option>
-                <option value="OTHERSERVICES">{{'hermeneutApp.CompType.OTHERSERVICES' | translate}}</option>
-                <option value="PROFESSIONAL">{{'hermeneutApp.CompType.PROFESSIONAL' | translate}}</option>
-                <option value="PUBLIC">{{'hermeneutApp.CompType.PUBLIC' | translate}}</option>
-                <option value="REALESTATE">{{'hermeneutApp.CompType.REALESTATE' | translate}}</option>
-                <option value="RETAILS">{{'hermeneutApp.CompType.RETAILS' | translate}}</option>
-                <option value="TRADE">{{'hermeneutApp.CompType.TRADE' | translate}}</option>
-                <option value="TRANSPORTATION">{{'hermeneutApp.CompType.TRANSPORTATION' | translate}}</option>
-                <option value="UTILITIES">{{'hermeneutApp.CompType.UTILITIES' | translate}}</option>
+                <option value="PROFESSIONAL_SCIENTIFIC_AND_TECHNICAL_SERVICE">{{'hermeneutApp.CompType.PROFESSIONAL_SCIENTIFIC_AND_TECHNICAL_SERVICE' | translate}}</option>
             </select>
         </div>
 

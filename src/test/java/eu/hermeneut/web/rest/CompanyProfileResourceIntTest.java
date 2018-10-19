@@ -58,8 +58,8 @@ public class CompanyProfileResourceIntTest {
     private static final ZonedDateTime DEFAULT_MODIFIED = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
     private static final ZonedDateTime UPDATED_MODIFIED = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
 
-    private static final CompType DEFAULT_TYPE = CompType.INFORMATION;
-    private static final CompType UPDATED_TYPE = CompType.HEALTHCARE;
+    private static final CompType DEFAULT_TYPE = CompType.OTHER;
+    private static final CompType UPDATED_TYPE = CompType.FINANCE_AND_INSURANCE;
 
     @Autowired
     private CompanyProfileRepository companyProfileRepository;

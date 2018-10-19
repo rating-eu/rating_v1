@@ -2,26 +2,11 @@
     "hermeneutApp": {
         "CompType" : {
             "null": "",
+            "OTHER": "OTHER",
+            "FINANCE_AND_INSURANCE": "FINANCE_AND_INSURANCE",
+            "HEALTH_CARE_AND_SOCIAL_ASSISTANCE": "HEALTH_CARE_AND_SOCIAL_ASSISTANCE",
             "INFORMATION": "INFORMATION",
-            "HEALTHCARE": "HEALTHCARE",
-            "FINANCE": "FINANCE",
-            "ACCOMODATION": "ACCOMODATION",
-            "ADMINISTRATIVE": "ADMINISTRATIVE",
-            "AGRICOLTURE": "AGRICOLTURE",
-            "CONSTRUCTION": "CONSTRUCTION",
-            "EDUCATION": "EDUCATION",
-            "ENTERTAINMENT": "ENTERTAINMENT",
-            "MANAGEMENT": "MANAGEMENT",
-            "MANUFACTURING": "MANUFACTURING",
-            "MINING": "MINING",
-            "OTHERSERVICES": "OTHERSERVICES",
-            "PROFESSIONAL": "PROFESSIONAL",
-            "PUBLIC": "PUBLIC",
-            "REALESTATE": "REALESTATE",
-            "RETAILS": "RETAILS",
-            "TRADE": "TRADE",
-            "TRANSPORTATION": "TRANSPORTATION",
-            "UTILITIES": "UTILITIES"
+            "PROFESSIONAL_SCIENTIFIC_AND_TECHNICAL_SERVICE": "PROFESSIONAL_SCIENTIFIC_AND_TECHNICAL_SERVICE"
         }
     }
 }
