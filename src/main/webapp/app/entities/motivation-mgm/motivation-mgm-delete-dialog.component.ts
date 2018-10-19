@@ -7,7 +7,8 @@ import { JhiEventManager } from 'ng-jhipster';
 import { MotivationMgm } from './motivation-mgm.model';
 import { MotivationMgmPopupService } from './motivation-mgm-popup.service';
 import { MotivationMgmService } from './motivation-mgm.service';
-import {SessionStorageService} from 'ngx-webstorage';
+import { SessionStorageService } from 'ngx-webstorage';
+import { PopUpService } from '../../shared/pop-up-services/pop-up.service';
 
 @Component({
     selector: 'jhi-motivation-mgm-delete-dialog',
@@ -50,13 +51,11 @@ export class MotivationMgmDeletePopupComponent implements OnInit, OnDestroy {
     constructor(
         private route: ActivatedRoute,
         private motivationPopupService: MotivationMgmPopupService,
-        private sessionStorage: SessionStorageService
-    ) {}
+        private popUpService: PopUpService
+    ) { }
 
     ngOnInit() {
-        const isAfterLogIn = this.sessionStorage.retrieve('isAfterLogin');
-        if (isAfterLogIn) {
-            this.sessionStorage.store('isAfterLogin', false);
+        if (!this.popUpService.canOpen()) {
             return;
         } else {
             this.routeSub = this.route.params.subscribe((params) => {
@@ -67,7 +66,7 @@ export class MotivationMgmDeletePopupComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy() {
-        if(this.routeSub){
+        if (this.routeSub) {
             this.routeSub.unsubscribe();
         }
     }

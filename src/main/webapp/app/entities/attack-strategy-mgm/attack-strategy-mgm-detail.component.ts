@@ -6,6 +6,7 @@ import { JhiEventManager } from 'ng-jhipster';
 
 import { AttackStrategyMgm } from './attack-strategy-mgm.model';
 import { AttackStrategyMgmService } from './attack-strategy-mgm.service';
+import { PopUpService } from '../../shared/pop-up-services/pop-up.service';
 
 @Component({
     selector: 'jhi-attack-strategy-mgm-detail',
@@ -20,7 +21,8 @@ export class AttackStrategyMgmDetailComponent implements OnInit, OnDestroy {
     constructor(
         private eventManager: JhiEventManager,
         private attackStrategyService: AttackStrategyMgmService,
-        private route: ActivatedRoute
+        private route: ActivatedRoute,
+        public popUpService: PopUpService
     ) {
     }
 

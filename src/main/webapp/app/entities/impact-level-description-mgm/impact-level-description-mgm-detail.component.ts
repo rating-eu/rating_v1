@@ -6,6 +6,7 @@ import { JhiEventManager } from 'ng-jhipster';
 
 import { ImpactLevelDescriptionMgm } from './impact-level-description-mgm.model';
 import { ImpactLevelDescriptionMgmService } from './impact-level-description-mgm.service';
+import { PopUpService } from '../../shared/pop-up-services/pop-up.service';
 
 @Component({
     selector: 'jhi-impact-level-description-mgm-detail',
@@ -20,7 +21,8 @@ export class ImpactLevelDescriptionMgmDetailComponent implements OnInit, OnDestr
     constructor(
         private eventManager: JhiEventManager,
         private impactLevelDescriptionService: ImpactLevelDescriptionMgmService,
-        private route: ActivatedRoute
+        private route: ActivatedRoute,
+        public popUpService: PopUpService
     ) {
     }
 

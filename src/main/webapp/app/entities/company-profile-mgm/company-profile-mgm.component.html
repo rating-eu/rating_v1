@@ -4,9 +4,10 @@
         <div class="card-box">
             <div class="form-search-table">
 
-                <form name="searchForm"role="search" class="">
+                <form name="searchForm" role="search" class="">
                     <div class="input-group w-100">
-                        <input type="text" class="form-control" [(ngModel)]="currentSearch" id="currentSearch" name="currentSearch" placeholder="{{ 'hermeneutApp.companyProfile.home.search' | translate }}">
+                        <input type="text" class="form-control" [(ngModel)]="currentSearch" id="currentSearch" name="currentSearch"
+                            placeholder="{{ 'hermeneutApp.companyProfile.home.search' | translate }}">
                         <button class="input-group-append btn btn-info" (click)="search(currentSearch)">
                             <span class="fa fa-search"></span>
                         </button>
@@ -20,11 +21,13 @@
     </div>
     <div class="col-lg-3 col-md-12">
         <div class="card-box">
-            <button class="btn btn-block btn-primary waves-effect waves-light btn-info jh-create-entity create-company-profile-mgm" [routerLink]="['/', { outlets: { popup: ['company-profile-mgm-new'] } }]">
+            <button class="btn btn-block btn-primary waves-effect waves-light btn-info jh-create-entity create-company-profile-mgm"
+                (click)="popUpService.setOnUserBehaviour()"
+                [routerLink]="['/', { outlets: { popup: ['company-profile-mgm-new'] } }]">
                 <i class="fas fa-plus"></i>
-            <span class="hidden-sm-down"  jhiTranslate="hermeneutApp.companyProfile.home.createLabel">
-                Create new Company Profile
-            </span>
+                <span class="hidden-sm-down" jhiTranslate="hermeneutApp.companyProfile.home.createLabel">
+                    Create new Company Profile
+                </span>
             </button>
         </div>
     </div>
@@ -34,7 +37,7 @@
 <div class="card-box">
     <h2>
         <span jhiTranslate="hermeneutApp.companyProfile.home.title">Company Profiles</span>
-       <!--  <button class="btn btn-primary float-right jh-create-entity create-company-profile-mgm" [routerLink]="['/', { outlets: { popup: ['company-profile-mgm-new'] } }]">
+        <!--  <button class="btn btn-primary float-right jh-create-entity create-company-profile-mgm" [routerLink]="['/', { outlets: { popup: ['company-profile-mgm-new'] } }]">
             <span class="fa fa-plus"></span>
             <span class="hidden-sm-down"  jhiTranslate="hermeneutApp.companyProfile.home.createLabel">
             Create new Company Profile
@@ -61,61 +64,58 @@
     <div class="table-responsive" *ngIf="companyProfiles">
         <table class="table table-striped">
             <thead>
-            <tr>
-            <th><span jhiTranslate="global.field.id">ID</span></th>
-            <th><span jhiTranslate="hermeneutApp.companyProfile.name">Name</span></th>
-            <th><span jhiTranslate="hermeneutApp.companyProfile.description">Description</span></th>
-            <th><span jhiTranslate="hermeneutApp.companyProfile.created">Created</span></th>
-            <th><span jhiTranslate="hermeneutApp.companyProfile.modified">Modified</span></th>
-            <th><span jhiTranslate="hermeneutApp.companyProfile.type">Type</span></th>
-            <th><span jhiTranslate="hermeneutApp.companyProfile.user">User</span></th>
-            <th><span jhiTranslate="hermeneutApp.companyProfile.containers">Containers</span></th>
-            <th></th>
-            </tr>
+                <tr>
+                    <th><span jhiTranslate="global.field.id">ID</span></th>
+                    <th><span jhiTranslate="hermeneutApp.companyProfile.name">Name</span></th>
+                    <th><span jhiTranslate="hermeneutApp.companyProfile.description">Description</span></th>
+                    <th><span jhiTranslate="hermeneutApp.companyProfile.created">Created</span></th>
+                    <th><span jhiTranslate="hermeneutApp.companyProfile.modified">Modified</span></th>
+                    <th><span jhiTranslate="hermeneutApp.companyProfile.type">Type</span></th>
+                    <th><span jhiTranslate="hermeneutApp.companyProfile.user">User</span></th>
+                    <th><span jhiTranslate="hermeneutApp.companyProfile.containers">Containers</span></th>
+                    <th></th>
+                </tr>
             </thead>
             <tbody>
-            <tr *ngFor="let companyProfile of companyProfiles ;trackBy: trackId">
-                <td><a [routerLink]="['../company-profile-mgm', companyProfile.id ]">{{companyProfile.id}}</a></td>
-                <td>{{companyProfile.name}}</td>
-                <td>{{companyProfile.description}}</td>
-                <td>{{companyProfile.created | date:'medium'}}</td>
-                <td>{{companyProfile.modified | date:'medium'}}</td>
-                <td jhiTranslate="{{'hermeneutApp.CompType.' + companyProfile.type}}">{{companyProfile.type}}</td>
-                <td>
-                    {{companyProfile.user?.login}}
-                </td>
-                <td>
-                    <span *ngFor="let containers of companyProfile.containers; let last = last">
-                            <a class="form-control-static" [routerLink]="['../container-mgm', containers?.id ]">{{containers.name}}</a>{{last ? '' : ', '}}
+                <tr *ngFor="let companyProfile of companyProfiles ;trackBy: trackId">
+                    <td><a [routerLink]="['../company-profile-mgm', companyProfile.id ]">{{companyProfile.id}}</a></td>
+                    <td>{{companyProfile.name}}</td>
+                    <td>{{companyProfile.description}}</td>
+                    <td>{{companyProfile.created | date:'medium'}}</td>
+                    <td>{{companyProfile.modified | date:'medium'}}</td>
+                    <td jhiTranslate="{{'hermeneutApp.CompType.' + companyProfile.type}}">{{companyProfile.type}}</td>
+                    <td>
+                        {{companyProfile.user?.login}}
+                    </td>
+                    <td>
+                        <span *ngFor="let containers of companyProfile.containers; let last = last">
+                            <a class="form-control-static" [routerLink]="['../container-mgm', containers?.id ]">{{containers.name}}</a>{{last
+                            ? '' : ', '}}
                         </span>
-                </td>
-                <td class="text-right">
-                    <div class="btn-group flex-btn-group-container">
-                        <button type="submit"
-                                [routerLink]="['../company-profile-mgm', companyProfile.id ]"
-                                class="btn btn-info btn-sm">
-                            <span class="fa fa-eye"></span>
-                            <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
-                        </button>
-                        <button type="submit"
+                    </td>
+                    <td class="text-right">
+                        <div class="btn-group flex-btn-group-container">
+                            <button type="submit" [routerLink]="['../company-profile-mgm', companyProfile.id ]" class="btn btn-info btn-sm">
+                                <span class="fa fa-eye"></span>
+                                <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                            </button>
+                            <button type="submit"
+                                (click)="popUpService.setOnUserBehaviour()" 
                                 [routerLink]="['/', { outlets: { popup: 'company-profile-mgm/'+ companyProfile.id + '/edit'} }]"
-                                replaceUrl="true"
-                                queryParamsHandling="merge"
-                                class="btn btn-primary btn-sm">
-                            <span class="fa fa-pencil"></span>
-                            <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
-                        </button>
-                        <button type="submit"
+                                replaceUrl="true" queryParamsHandling="merge" class="btn btn-primary btn-sm">
+                                <span class="fa fa-pencil"></span>
+                                <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                            </button>
+                            <button type="submit" 
+                                (click)="popUpService.setOnUserBehaviour()"
                                 [routerLink]="['/', { outlets: { popup: 'company-profile-mgm/'+ companyProfile.id + '/delete'} }]"
-                                replaceUrl="true"
-                                queryParamsHandling="merge"
-                                class="btn btn-danger btn-sm">
-                            <span class="fa fa-remove"></span>
-                            <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
-                        </button>
-                    </div>
-                </td>
-            </tr>
+                                replaceUrl="true" queryParamsHandling="merge" class="btn btn-danger btn-sm">
+                                <span class="fa fa-remove"></span>
+                                <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
             </tbody>
         </table>
     </div>

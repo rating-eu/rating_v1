@@ -6,6 +6,7 @@ import { JhiEventManager } from 'ng-jhipster';
 
 import { DirectAssetMgm } from './direct-asset-mgm.model';
 import { DirectAssetMgmService } from './direct-asset-mgm.service';
+import { PopUpService } from '../../shared/pop-up-services/pop-up.service';
 
 @Component({
     selector: 'jhi-direct-asset-mgm-detail',
@@ -20,7 +21,8 @@ export class DirectAssetMgmDetailComponent implements OnInit, OnDestroy {
     constructor(
         private eventManager: JhiEventManager,
         private directAssetService: DirectAssetMgmService,
-        private route: ActivatedRoute
+        private route: ActivatedRoute,
+        public popUpService: PopUpService
     ) {
     }
 

@@ -1,18 +1,19 @@
-import {Component, OnInit, OnDestroy} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
-import {HttpResponse, HttpErrorResponse} from '@angular/common/http';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 
-import {Observable} from 'rxjs/Observable';
-import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
-import {JhiEventManager, JhiAlertService} from 'ng-jhipster';
+import { Observable } from 'rxjs/Observable';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
 
-import {AttackStrategyMgm} from './attack-strategy-mgm.model';
-import {AttackStrategyMgmPopupService} from './attack-strategy-mgm-popup.service';
-import {AttackStrategyMgmService} from './attack-strategy-mgm.service';
-import {MitigationMgm, MitigationMgmService} from '../mitigation-mgm';
-import {LevelMgm, LevelMgmService} from '../level-mgm';
-import {PhaseMgm, PhaseMgmService} from '../phase-mgm';
-import {SessionStorageService} from 'ngx-webstorage';
+import { AttackStrategyMgm } from './attack-strategy-mgm.model';
+import { AttackStrategyMgmPopupService } from './attack-strategy-mgm-popup.service';
+import { AttackStrategyMgmService } from './attack-strategy-mgm.service';
+import { MitigationMgm, MitigationMgmService } from '../mitigation-mgm';
+import { LevelMgm, LevelMgmService } from '../level-mgm';
+import { PhaseMgm, PhaseMgmService } from '../phase-mgm';
+import { SessionStorageService } from 'ngx-webstorage';
+import { PopUpService } from '../../shared/pop-up-services/pop-up.service';
 
 @Component({
     selector: 'jhi-attack-strategy-mgm-dialog',
@@ -77,7 +78,7 @@ export class AttackStrategyMgmDialogComponent implements OnInit {
     }
 
     private onSaveSuccess(result: AttackStrategyMgm) {
-        this.eventManager.broadcast({name: 'attackStrategyListModification', content: 'OK'});
+        this.eventManager.broadcast({ name: 'attackStrategyListModification', content: 'OK' });
         this.isSaving = false;
         this.activeModal.dismiss(result);
     }
@@ -125,14 +126,12 @@ export class AttackStrategyMgmPopupComponent implements OnInit, OnDestroy {
     constructor(
         private route: ActivatedRoute,
         private attackStrategyPopupService: AttackStrategyMgmPopupService,
-        private sessionStorage: SessionStorageService
+        private popUpService: PopUpService
     ) {
     }
 
     ngOnInit() {
-        const isAfterLogIn = this.sessionStorage.retrieve('isAfterLogin');
-        if (isAfterLogIn) {
-            this.sessionStorage.store('isAfterLogin', false);
+        if (!this.popUpService.canOpen()) {
             return;
         } else {
             this.routeSub = this.route.params.subscribe((params) => {
@@ -148,7 +147,7 @@ export class AttackStrategyMgmPopupComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy() {
-        if(this.routeSub){
+        if (this.routeSub) {
             this.routeSub.unsubscribe();
         }
     }

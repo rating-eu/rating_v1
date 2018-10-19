@@ -4,9 +4,10 @@
         <div class="card-box">
             <div class="form-search-table">
 
-                <form name="searchForm"role="search" class="">
+                <form name="searchForm" role="search" class="">
                     <div class="input-group w-100">
-                        <input type="text" class="form-control" [(ngModel)]="currentSearch" id="currentSearch" name="currentSearch" placeholder="{{ 'hermeneutApp.economicCoefficients.home.search' | translate }}">
+                        <input type="text" class="form-control" [(ngModel)]="currentSearch" id="currentSearch" name="currentSearch"
+                            placeholder="{{ 'hermeneutApp.economicCoefficients.home.search' | translate }}">
                         <button class="input-group-append btn btn-info" (click)="search(currentSearch)">
                             <span class="fa fa-search"></span>
                         </button>
@@ -20,11 +21,13 @@
     </div>
     <div class="col-lg-3 col-md-12">
         <div class="card-box">
-            <button class="btn btn-block btn-primary waves-effect waves-light btn-info jh-create-entity create-economic-coefficients-mgm" [routerLink]="['/', { outlets: { popup: ['economic-coefficients-mgm-new'] } }]">
+            <button class="btn btn-block btn-primary waves-effect waves-light btn-info jh-create-entity create-economic-coefficients-mgm"
+                (click)="popUpService.setOnUserBehaviour()"
+                [routerLink]="['/', { outlets: { popup: ['economic-coefficients-mgm-new'] } }]">
                 <i class="fas fa-plus"></i>
-                <span class="hidden-sm-down"   jhiTranslate="hermeneutApp.economicCoefficients.home.createLabel">
-            Create new Economic Coefficients
-            </span>
+                <span class="hidden-sm-down" jhiTranslate="hermeneutApp.economicCoefficients.home.createLabel">
+                    Create new Economic Coefficients
+                </span>
             </button>
         </div>
     </div>
@@ -41,7 +44,7 @@
         </button> -->
     </h2>
     <jhi-alert></jhi-alert>
-   <!-- <div class="row">
+    <!-- <div class="row">
         <div class="col-sm-12">
             <form name="searchForm" class="form-inline">
                 <div class="input-group w-100 mt-3">
@@ -60,55 +63,54 @@
     <div class="table-responsive" *ngIf="economicCoefficients">
         <table class="table table-striped">
             <thead>
-            <tr>
-            <th><span jhiTranslate="global.field.id">ID</span></th>
-            <th><span jhiTranslate="hermeneutApp.economicCoefficients.discountingRate">Discounting Rate</span></th>
-            <th><span jhiTranslate="hermeneutApp.economicCoefficients.physicalAssetsReturn">Physical Assets Return</span></th>
-            <th><span jhiTranslate="hermeneutApp.economicCoefficients.financialAssetsReturn">Financial Assets Return</span></th>
-            <th><span jhiTranslate="hermeneutApp.economicCoefficients.lossOfIntangible">Loss Of Intangible</span></th>
-            <th><span jhiTranslate="hermeneutApp.economicCoefficients.selfAssessment">Self Assessment</span></th>
-            <th></th>
-            </tr>
+                <tr>
+                    <th><span jhiTranslate="global.field.id">ID</span></th>
+                    <th><span jhiTranslate="hermeneutApp.economicCoefficients.discountingRate">Discounting Rate</span></th>
+                    <th><span jhiTranslate="hermeneutApp.economicCoefficients.physicalAssetsReturn">Physical Assets
+                            Return</span></th>
+                    <th><span jhiTranslate="hermeneutApp.economicCoefficients.financialAssetsReturn">Financial Assets
+                            Return</span></th>
+                    <th><span jhiTranslate="hermeneutApp.economicCoefficients.lossOfIntangible">Loss Of Intangible</span></th>
+                    <th><span jhiTranslate="hermeneutApp.economicCoefficients.selfAssessment">Self Assessment</span></th>
+                    <th></th>
+                </tr>
             </thead>
             <tbody>
-            <tr *ngFor="let economicCoefficients of economicCoefficients ;trackBy: trackId">
-                <td><a [routerLink]="['../economic-coefficients-mgm', economicCoefficients.id ]">{{economicCoefficients.id}}</a></td>
-                <td>{{economicCoefficients.discountingRate}}</td>
-                <td>{{economicCoefficients.physicalAssetsReturn}}</td>
-                <td>{{economicCoefficients.financialAssetsReturn}}</td>
-                <td>{{economicCoefficients.lossOfIntangible}}</td>
-                <td>
-                    <div *ngIf="economicCoefficients.selfAssessment">
-                        <a [routerLink]="['../self-assessment-mgm', economicCoefficients.selfAssessment?.id ]" >{{economicCoefficients.selfAssessment?.name}}</a>
-                    </div>
-                </td>
-                <td class="text-right">
-                    <div class="btn-group flex-btn-group-container">
-                        <button type="submit"
-                                [routerLink]="['../economic-coefficients-mgm', economicCoefficients.id ]"
+                <tr *ngFor="let economicCoefficients of economicCoefficients ;trackBy: trackId">
+                    <td><a [routerLink]="['../economic-coefficients-mgm', economicCoefficients.id ]">{{economicCoefficients.id}}</a></td>
+                    <td>{{economicCoefficients.discountingRate}}</td>
+                    <td>{{economicCoefficients.physicalAssetsReturn}}</td>
+                    <td>{{economicCoefficients.financialAssetsReturn}}</td>
+                    <td>{{economicCoefficients.lossOfIntangible}}</td>
+                    <td>
+                        <div *ngIf="economicCoefficients.selfAssessment">
+                            <a [routerLink]="['../self-assessment-mgm', economicCoefficients.selfAssessment?.id ]">{{economicCoefficients.selfAssessment?.name}}</a>
+                        </div>
+                    </td>
+                    <td class="text-right">
+                        <div class="btn-group flex-btn-group-container">
+                            <button type="submit" [routerLink]="['../economic-coefficients-mgm', economicCoefficients.id ]"
                                 class="btn btn-info btn-sm">
-                            <span class="fa fa-eye"></span>
-                            <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
-                        </button>
-                        <button type="submit"
+                                <span class="fa fa-eye"></span>
+                                <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                            </button>
+                            <button type="submit" 
+                                (click)="popUpService.setOnUserBehaviour()"
                                 [routerLink]="['/', { outlets: { popup: 'economic-coefficients-mgm/'+ economicCoefficients.id + '/edit'} }]"
-                                replaceUrl="true"
-                                queryParamsHandling="merge"
-                                class="btn btn-primary btn-sm">
-                            <span class="fa fa-pencil"></span>
-                            <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
-                        </button>
-                        <button type="submit"
+                                replaceUrl="true" queryParamsHandling="merge" class="btn btn-primary btn-sm">
+                                <span class="fa fa-pencil"></span>
+                                <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                            </button>
+                            <button type="submit" 
+                                (click)="popUpService.setOnUserBehaviour()"
                                 [routerLink]="['/', { outlets: { popup: 'economic-coefficients-mgm/'+ economicCoefficients.id + '/delete'} }]"
-                                replaceUrl="true"
-                                queryParamsHandling="merge"
-                                class="btn btn-danger btn-sm">
-                            <span class="fa fa-remove"></span>
-                            <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
-                        </button>
-                    </div>
-                </td>
-            </tr>
+                                replaceUrl="true" queryParamsHandling="merge" class="btn btn-danger btn-sm">
+                                <span class="fa fa-remove"></span>
+                                <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
             </tbody>
         </table>
     </div>

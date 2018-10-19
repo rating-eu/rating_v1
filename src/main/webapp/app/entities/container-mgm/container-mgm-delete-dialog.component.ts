@@ -8,6 +8,7 @@ import {ContainerMgm} from './container-mgm.model';
 import {ContainerMgmPopupService} from './container-mgm-popup.service';
 import {ContainerMgmService} from './container-mgm.service';
 import {SessionStorageService} from 'ngx-webstorage';
+import { PopUpService } from '../../shared/pop-up-services/pop-up.service';
 
 @Component({
     selector: 'jhi-container-mgm-delete-dialog',
@@ -50,14 +51,12 @@ export class ContainerMgmDeletePopupComponent implements OnInit, OnDestroy {
     constructor(
         private route: ActivatedRoute,
         private containerPopupService: ContainerMgmPopupService,
-        private sessionStorage: SessionStorageService
+        private popUpService: PopUpService
     ) {
     }
 
     ngOnInit() {
-        const isAfterLogIn = this.sessionStorage.retrieve('isAfterLogin');
-        if (isAfterLogIn) {
-            this.sessionStorage.store('isAfterLogin', false);
+        if (!this.popUpService.canOpen()) {
             return;
         } else {
             this.routeSub = this.route.params.subscribe((params) => {

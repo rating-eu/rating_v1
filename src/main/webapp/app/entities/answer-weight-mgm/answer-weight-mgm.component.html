@@ -21,7 +21,8 @@
     <div class="col-lg-3 col-md-12">
         <div class="card-box">
             <button class="btn btn-block btn-primary waves-effect waves-light btn-info jh-create-entity create-answer-weight-mgm"
-                    [routerLink]="['/', { outlets: { popup: ['answer-weight-mgm-new'] } }]">
+                (click)="popUpService.setOnUserBehaviour()"
+                [routerLink]="['/', { outlets: { popup: ['answer-weight-mgm-new'] } }]">
                 <i class="fas fa-plus"></i>
                 <span class="hidden-sm-down"  jhiTranslate="hermeneutApp.answerWeight.home.createLabel">
             Create new Answer Weight
@@ -204,6 +205,7 @@
                                     <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
                                 </button>
                                 <button type="submit"
+                                        (click)="popUpService.setOnUserBehaviour()"
                                         [routerLink]="['/', { outlets: { popup: 'answer-weight-mgm/'+ answerWeight.id + '/edit'} }]"
                                         replaceUrl="true"
                                         queryParamsHandling="merge"
@@ -212,6 +214,7 @@
                                     <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
                                 </button>
                                 <button type="submit"
+                                        (click)="popUpService.setOnUserBehaviour()"
                                         [routerLink]="['/', { outlets: { popup: 'answer-weight-mgm/'+ answerWeight.id + '/delete'} }]"
                                         replaceUrl="true"
                                         queryParamsHandling="merge"

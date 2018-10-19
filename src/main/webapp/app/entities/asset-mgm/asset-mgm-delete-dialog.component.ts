@@ -1,13 +1,14 @@
-import {Component, OnInit, OnDestroy} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
-import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
-import {JhiEventManager} from 'ng-jhipster';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { JhiEventManager } from 'ng-jhipster';
 
-import {AssetMgm} from './asset-mgm.model';
-import {AssetMgmPopupService} from './asset-mgm-popup.service';
-import {AssetMgmService} from './asset-mgm.service';
-import {SessionStorageService} from 'ngx-webstorage';
+import { AssetMgm } from './asset-mgm.model';
+import { AssetMgmPopupService } from './asset-mgm-popup.service';
+import { AssetMgmService } from './asset-mgm.service';
+import { SessionStorageService } from 'ngx-webstorage';
+import { PopUpService } from '../../shared/pop-up-services/pop-up.service';
 
 @Component({
     selector: 'jhi-asset-mgm-delete-dialog',
@@ -50,14 +51,12 @@ export class AssetMgmDeletePopupComponent implements OnInit, OnDestroy {
     constructor(
         private route: ActivatedRoute,
         private assetPopupService: AssetMgmPopupService,
-        private sessionStorage: SessionStorageService
+        private popUpService: PopUpService
     ) {
     }
 
     ngOnInit() {
-        const isAfterLogIn = this.sessionStorage.retrieve('isAfterLogin');
-        if (isAfterLogIn) {
-            this.sessionStorage.store('isAfterLogin', false);
+        if (!this.popUpService.canOpen()) {
             return;
         } else {
             this.routeSub = this.route.params.subscribe((params) => {
@@ -68,7 +67,7 @@ export class AssetMgmDeletePopupComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy() {
-        if(this.routeSub){
+        if (this.routeSub) {
             this.routeSub.unsubscribe();
         }
     }

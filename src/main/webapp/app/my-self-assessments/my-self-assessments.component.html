@@ -101,7 +101,9 @@
                         <!-- <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>-->
                         <!--</button>-->
                         <ng-template #tipButtonEdit><span jhiTranslate="entity.action.edit">Edit Test</span></ng-template>
-                        <button type="submit" [routerLink]="['/', { outlets: { popup: 'self-assessment-mgm/'+ selfAssessment.id + '/edit'} }]"
+                        <button type="submit" 
+                            (click)="popUpService.setOnUserBehaviour()"
+                            [routerLink]="['/', { outlets: { popup: 'self-assessment-mgm/'+ selfAssessment.id + '/edit'} }]"
                             replaceUrl="true" queryParamsHandling="merge" class="btn btn-warning btn-sm" ngbTooltip="tipButtonEdit"
                             container="body">
                             <i class="fas fa-edit"></i>
@@ -109,7 +111,9 @@
                         </button>
                         <ng-template #tipButtonDelete><span jhiTranslate="entity.action.delete">Edit Test</span>
                         </ng-template>
-                        <button type="submit" [routerLink]="['/', { outlets: { popup: 'self-assessment-mgm/'+ selfAssessment.id + '/delete'} }]"
+                        <button type="submit" 
+                            (click)="popUpService.setOnUserBehaviour()"
+                            [routerLink]="['/', { outlets: { popup: 'self-assessment-mgm/'+ selfAssessment.id + '/delete'} }]"
                             replaceUrl="true" queryParamsHandling="merge" class="btn btn-danger btn-sm" ngbTooltip="tipButtonDelete"
                             container="body">
                             <i class="fas fa-trash"></i>

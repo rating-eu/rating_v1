@@ -1,10 +1,12 @@
 <div>
     <h2>
         <span jhiTranslate="hermeneutApp.myCompany.home.title">My Companies</span>
-        <button class="btn btn-primary float-right jh-create-entity create-my-company-mgm" [routerLink]="['/', { outlets: { popup: ['my-company-mgm-new'] } }]">
+        <button class="btn btn-primary float-right jh-create-entity create-my-company-mgm"
+            (click)="popUpService.setOnUserBehaviour()"
+            [routerLink]="['/', { outlets: { popup: ['my-company-mgm-new'] } }]">
             <span class="fa fa-plus"></span>
-            <span class="hidden-sm-down"  jhiTranslate="hermeneutApp.myCompany.home.createLabel">
-            Create new My Company
+            <span class="hidden-sm-down" jhiTranslate="hermeneutApp.myCompany.home.createLabel">
+                Create new My Company
             </span>
         </button>
     </h2>
@@ -13,7 +15,8 @@
         <div class="col-sm-12">
             <form name="searchForm" class="form-inline">
                 <div class="input-group w-100 mt-3">
-                    <input type="text" class="form-control" [(ngModel)]="currentSearch" id="currentSearch" name="currentSearch" placeholder="{{ 'hermeneutApp.myCompany.home.search' | translate }}">
+                    <input type="text" class="form-control" [(ngModel)]="currentSearch" id="currentSearch" name="currentSearch"
+                        placeholder="{{ 'hermeneutApp.myCompany.home.search' | translate }}">
                     <button class="input-group-append btn btn-info" (click)="search(currentSearch)">
                         <span class="fa fa-search"></span>
                     </button>
@@ -24,55 +27,51 @@
             </form>
         </div>
     </div>
-    <br/>
+    <br />
     <div class="table-responsive" *ngIf="myCompanies">
         <table class="table table-striped">
             <thead>
-            <tr>
-            <th><span jhiTranslate="global.field.id">ID</span></th>
-            <th><span jhiTranslate="hermeneutApp.myCompany.user">User</span></th>
-            <th><span jhiTranslate="hermeneutApp.myCompany.companyProfile">Company Profile</span></th>
-            <th></th>
-            </tr>
+                <tr>
+                    <th><span jhiTranslate="global.field.id">ID</span></th>
+                    <th><span jhiTranslate="hermeneutApp.myCompany.user">User</span></th>
+                    <th><span jhiTranslate="hermeneutApp.myCompany.companyProfile">Company Profile</span></th>
+                    <th></th>
+                </tr>
             </thead>
             <tbody>
-            <tr *ngFor="let myCompany of myCompanies ;trackBy: trackId">
-                <td><a [routerLink]="['../my-company-mgm', myCompany.id ]">{{myCompany.id}}</a></td>
-                <td>
-                    {{myCompany.user?.login}}
-                </td>
-                <td>
-                    <div *ngIf="myCompany.companyProfile">
-                        <a [routerLink]="['../company-profile-mgm', myCompany.companyProfile?.id ]" >{{myCompany.companyProfile?.name}}</a>
-                    </div>
-                </td>
-                <td class="text-right">
-                    <div class="btn-group flex-btn-group-container">
-                        <button type="submit"
-                                [routerLink]="['../my-company-mgm', myCompany.id ]"
-                                class="btn btn-info btn-sm">
-                            <span class="fa fa-eye"></span>
-                            <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
-                        </button>
-                        <button type="submit"
+                <tr *ngFor="let myCompany of myCompanies ;trackBy: trackId">
+                    <td><a [routerLink]="['../my-company-mgm', myCompany.id ]">{{myCompany.id}}</a></td>
+                    <td>
+                        {{myCompany.user?.login}}
+                    </td>
+                    <td>
+                        <div *ngIf="myCompany.companyProfile">
+                            <a [routerLink]="['../company-profile-mgm', myCompany.companyProfile?.id ]">{{myCompany.companyProfile?.name}}</a>
+                        </div>
+                    </td>
+                    <td class="text-right">
+                        <div class="btn-group flex-btn-group-container">
+                            <button type="submit" [routerLink]="['../my-company-mgm', myCompany.id ]" class="btn btn-info btn-sm">
+                                <span class="fa fa-eye"></span>
+                                <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                            </button>
+                            <button type="submit" 
+                                (click)="popUpService.setOnUserBehaviour()"
                                 [routerLink]="['/', { outlets: { popup: 'my-company-mgm/'+ myCompany.id + '/edit'} }]"
-                                replaceUrl="true"
-                                queryParamsHandling="merge"
-                                class="btn btn-primary btn-sm">
-                            <span class="fa fa-pencil"></span>
-                            <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
-                        </button>
-                        <button type="submit"
+                                replaceUrl="true" queryParamsHandling="merge" class="btn btn-primary btn-sm">
+                                <span class="fa fa-pencil"></span>
+                                <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                            </button>
+                            <button type="submit" 
+                                (click)="popUpService.setOnUserBehaviour()"
                                 [routerLink]="['/', { outlets: { popup: 'my-company-mgm/'+ myCompany.id + '/delete'} }]"
-                                replaceUrl="true"
-                                queryParamsHandling="merge"
-                                class="btn btn-danger btn-sm">
-                            <span class="fa fa-remove"></span>
-                            <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
-                        </button>
-                    </div>
-                </td>
-            </tr>
+                                replaceUrl="true" queryParamsHandling="merge" class="btn btn-danger btn-sm">
+                                <span class="fa fa-remove"></span>
+                                <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
             </tbody>
         </table>
     </div>

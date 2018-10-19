@@ -11,6 +11,7 @@ import { EconomicCoefficientsMgmPopupService } from './economic-coefficients-mgm
 import { EconomicCoefficientsMgmService } from './economic-coefficients-mgm.service';
 import { SelfAssessmentMgm, SelfAssessmentMgmService } from '../self-assessment-mgm';
 import {SessionStorageService} from 'ngx-webstorage';
+import { PopUpService } from '../../shared/pop-up-services/pop-up.service';
 
 @Component({
     selector: 'jhi-economic-coefficients-mgm-dialog',
@@ -99,14 +100,11 @@ export class EconomicCoefficientsMgmPopupComponent implements OnInit, OnDestroy 
     constructor(
         private route: ActivatedRoute,
         private economicCoefficientsPopupService: EconomicCoefficientsMgmPopupService,
-        private sessionStorage: SessionStorageService
+        private popUpService: PopUpService
     ) {}
 
     ngOnInit() {
-        const isAfterLogIn = this.sessionStorage.retrieve('isAfterLogin');
-
-        if (isAfterLogIn) {
-            this.sessionStorage.store('isAfterLogin', false);
+        if (!this.popUpService.canOpen()) {
             return;
         } else {
             this.routeSub = this.route.params.subscribe((params) => {

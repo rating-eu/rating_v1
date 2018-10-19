@@ -8,6 +8,7 @@ import {EBITMgm} from './ebit-mgm.model';
 import {EBITMgmPopupService} from './ebit-mgm-popup.service';
 import {EBITMgmService} from './ebit-mgm.service';
 import {SessionStorageService} from 'ngx-webstorage';
+import { PopUpService } from '../../shared/pop-up-services/pop-up.service';
 
 @Component({
     selector: 'jhi-ebit-mgm-delete-dialog',
@@ -50,14 +51,12 @@ export class EBITMgmDeletePopupComponent implements OnInit, OnDestroy {
     constructor(
         private route: ActivatedRoute,
         private eBITPopupService: EBITMgmPopupService,
-        private sessionStorage: SessionStorageService
+        private popUpService: PopUpService
     ) {
     }
 
     ngOnInit() {
-        const isAfterLogIn = this.sessionStorage.retrieve('isAfterLogin');
-        if (isAfterLogIn) {
-            this.sessionStorage.store('isAfterLogin', false);
+        if (!this.popUpService.canOpen()) {
             return;
         } else {
             this.routeSub = this.route.params.subscribe((params) => {

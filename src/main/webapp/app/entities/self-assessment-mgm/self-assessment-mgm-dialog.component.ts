@@ -19,6 +19,8 @@ import { ExternalAuditMgm, ExternalAuditMgmService } from '../external-audit-mgm
 import { QuestionnaireMgm, QuestionnaireMgmService } from '../questionnaire-mgm';
 import { MyCompanyMgm, MyCompanyMgmService } from '../my-company-mgm';
 import { SessionStorageService } from 'ngx-webstorage';
+import { PopupService } from '@ng-bootstrap/ng-bootstrap/util/popup';
+import { PopUpService } from '../../shared/pop-up-services/pop-up.service';
 
 @Component({
     selector: 'jhi-self-assessment-mgm-dialog',
@@ -217,14 +219,13 @@ export class SelfAssessmentMgmPopupComponent implements OnInit, OnDestroy {
     constructor(
         private route: ActivatedRoute,
         private selfAssessmentPopupService: SelfAssessmentMgmPopupService,
-        private sessionStorage: SessionStorageService
+        private sessionStorage: SessionStorageService,
+        private popUpService: PopUpService
     ) {
     }
 
     ngOnInit() {
-        const isAfterLogIn = this.sessionStorage.retrieve('isAfterLogin');
-        if (isAfterLogIn) {
-            this.sessionStorage.store('isAfterLogin', false);
+        if (!this.popUpService.canOpen()) {
             return;
         } else {
             this.routeSub = this.route.params.subscribe((params) => {

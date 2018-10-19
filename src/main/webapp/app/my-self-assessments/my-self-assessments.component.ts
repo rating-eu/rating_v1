@@ -1,13 +1,15 @@
-import {Component, OnInit} from '@angular/core';
-import {AccountService, User, UserService} from '../shared';
-import {MyCompanyMgm, MyCompanyMgmService} from '../entities/my-company-mgm';
-import {SelfAssessmentMgm, SelfAssessmentMgmService} from '../entities/self-assessment-mgm';
-import {HttpResponse} from '@angular/common/http';
-import {Router} from '@angular/router';
-import {Subscription} from 'rxjs/Subscription';
-import {JhiEventManager} from 'ng-jhipster';
-import {MyAssetMgm, MyAssetMgmService} from '../entities/my-asset-mgm';
+import { Component, OnInit } from '@angular/core';
+import { AccountService, User, UserService } from '../shared';
+import { MyCompanyMgm, MyCompanyMgmService } from '../entities/my-company-mgm';
+import { SelfAssessmentMgm, SelfAssessmentMgmService } from '../entities/self-assessment-mgm';
+import { HttpResponse } from '@angular/common/http';
+import { Router } from '@angular/router';
+import { Subscription } from 'rxjs/Subscription';
+import { JhiEventManager } from 'ng-jhipster';
+import { MyAssetMgm, MyAssetMgmService } from '../entities/my-asset-mgm';
 import { DatasharingService } from '../datasharing/datasharing.service';
+import { SessionStorageService } from 'ngx-webstorage';
+import { PopUpService } from '../shared/pop-up-services/pop-up.service';
 
 @Component({
     selector: 'jhi-my-self-assessments',
@@ -25,13 +27,15 @@ export class MySelfAssessmentsComponent implements OnInit {
     public mySelfAssessment = null;
 
     constructor(private router: Router,
-                private accountService: AccountService,
-                private userService: UserService,
-                private myCompanyService: MyCompanyMgmService,
-                private selfAssessmentService: SelfAssessmentMgmService,
-                private eventManager: JhiEventManager,
-                private myAssetService: MyAssetMgmService,
-                private dataSharingService: DatasharingService
+        private accountService: AccountService,
+        private userService: UserService,
+        private myCompanyService: MyCompanyMgmService,
+        private selfAssessmentService: SelfAssessmentMgmService,
+        private eventManager: JhiEventManager,
+        private myAssetService: MyAssetMgmService,
+        private dataSharingService: DatasharingService,
+        private sessionStorage: SessionStorageService,
+        public popUpService: PopUpService
     ) {
     }
 

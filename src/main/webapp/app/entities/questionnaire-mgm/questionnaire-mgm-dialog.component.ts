@@ -9,7 +9,8 @@ import { JhiEventManager } from 'ng-jhipster';
 import { QuestionnaireMgm } from './questionnaire-mgm.model';
 import { QuestionnaireMgmPopupService } from './questionnaire-mgm-popup.service';
 import { QuestionnaireMgmService } from './questionnaire-mgm.service';
-import {SessionStorageService} from 'ngx-webstorage';
+import { SessionStorageService } from 'ngx-webstorage';
+import { PopUpService } from '../../shared/pop-up-services/pop-up.service';
 
 @Component({
     selector: 'jhi-questionnaire-mgm-dialog',
@@ -52,7 +53,7 @@ export class QuestionnaireMgmDialogComponent implements OnInit {
     }
 
     private onSaveSuccess(result: QuestionnaireMgm) {
-        this.eventManager.broadcast({ name: 'questionnaireListModification', content: 'OK'});
+        this.eventManager.broadcast({ name: 'questionnaireListModification', content: 'OK' });
         this.isSaving = false;
         this.activeModal.dismiss(result);
     }
@@ -73,17 +74,15 @@ export class QuestionnaireMgmPopupComponent implements OnInit, OnDestroy {
     constructor(
         private route: ActivatedRoute,
         private questionnairePopupService: QuestionnaireMgmPopupService,
-        private sessionStorage: SessionStorageService
-    ) {}
+        private popUpService: PopUpService
+    ) { }
 
     ngOnInit() {
-        const isAfterLogIn = this.sessionStorage.retrieve('isAfterLogin');
-        if (isAfterLogIn) {
-            this.sessionStorage.store('isAfterLogin', false);
+        if (!this.popUpService.canOpen()) {
             return;
         } else {
             this.routeSub = this.route.params.subscribe((params) => {
-                if ( params['id'] ) {
+                if (params['id']) {
                     this.questionnairePopupService
                         .open(QuestionnaireMgmDialogComponent as Component, params['id']);
                 } else {
@@ -95,7 +94,7 @@ export class QuestionnaireMgmPopupComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy() {
-        if(this.routeSub){
+        if (this.routeSub) {
             this.routeSub.unsubscribe();
         }
     }

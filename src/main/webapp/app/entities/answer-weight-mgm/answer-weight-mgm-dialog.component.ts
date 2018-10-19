@@ -1,15 +1,16 @@
-import {Component, OnInit, OnDestroy} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
-import {HttpResponse, HttpErrorResponse} from '@angular/common/http';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
 
-import {Observable} from 'rxjs/Observable';
-import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
-import {JhiEventManager} from 'ng-jhipster';
+import { Observable } from 'rxjs/Observable';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { JhiEventManager } from 'ng-jhipster';
 
-import {AnswerWeightMgm} from './answer-weight-mgm.model';
-import {AnswerWeightMgmPopupService} from './answer-weight-mgm-popup.service';
-import {AnswerWeightMgmService} from './answer-weight-mgm.service';
-import {SessionStorageService} from 'ngx-webstorage';
+import { AnswerWeightMgm } from './answer-weight-mgm.model';
+import { AnswerWeightMgmPopupService } from './answer-weight-mgm-popup.service';
+import { AnswerWeightMgmService } from './answer-weight-mgm.service';
+import { SessionStorageService } from 'ngx-webstorage';
+import { PopUpService } from '../../shared/pop-up-services/pop-up.service';
 
 @Component({
     selector: 'jhi-answer-weight-mgm-dialog',
@@ -52,7 +53,7 @@ export class AnswerWeightMgmDialogComponent implements OnInit {
     }
 
     private onSaveSuccess(result: AnswerWeightMgm) {
-        this.eventManager.broadcast({name: 'answerWeightListModification', content: 'OK'});
+        this.eventManager.broadcast({ name: 'answerWeightListModification', content: 'OK' });
         this.isSaving = false;
         this.activeModal.dismiss(result);
     }
@@ -73,14 +74,12 @@ export class AnswerWeightMgmPopupComponent implements OnInit, OnDestroy {
     constructor(
         private route: ActivatedRoute,
         private answerWeightPopupService: AnswerWeightMgmPopupService,
-        private sessionStorage: SessionStorageService
+        private popUpService: PopUpService
     ) {
     }
 
     ngOnInit() {
-        const isAfterLogIn = this.sessionStorage.retrieve('isAfterLogin');
-        if (isAfterLogIn) {
-            this.sessionStorage.store('isAfterLogin', false);
+        if (!this.popUpService.canOpen()) {
             return;
         } else {
             this.routeSub = this.route.params.subscribe((params) => {
@@ -96,7 +95,7 @@ export class AnswerWeightMgmPopupComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy() {
-        if(this.routeSub){
+        if (this.routeSub) {
             this.routeSub.unsubscribe();
         }
     }

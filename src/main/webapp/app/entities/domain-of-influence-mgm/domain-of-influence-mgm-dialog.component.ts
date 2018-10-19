@@ -10,7 +10,8 @@ import { DomainOfInfluenceMgm } from './domain-of-influence-mgm.model';
 import { DomainOfInfluenceMgmPopupService } from './domain-of-influence-mgm-popup.service';
 import { DomainOfInfluenceMgmService } from './domain-of-influence-mgm.service';
 import { ContainerMgm, ContainerMgmService } from '../container-mgm';
-import {SessionStorageService} from 'ngx-webstorage';
+import { SessionStorageService } from 'ngx-webstorage';
+import { PopUpService } from '../../shared/pop-up-services/pop-up.service';
 
 @Component({
     selector: 'jhi-domain-of-influence-mgm-dialog',
@@ -35,7 +36,7 @@ export class DomainOfInfluenceMgmDialogComponent implements OnInit {
     ngOnInit() {
         this.isSaving = false;
         this.containerService
-            .query({filter: 'domainofinfluence-is-null'})
+            .query({ filter: 'domainofinfluence-is-null' })
             .subscribe((res: HttpResponse<ContainerMgm[]>) => {
                 if (!this.domainOfInfluence.container || !this.domainOfInfluence.container.id) {
                     this.containers = res.body;
@@ -70,7 +71,7 @@ export class DomainOfInfluenceMgmDialogComponent implements OnInit {
     }
 
     private onSaveSuccess(result: DomainOfInfluenceMgm) {
-        this.eventManager.broadcast({ name: 'domainOfInfluenceListModification', content: 'OK'});
+        this.eventManager.broadcast({ name: 'domainOfInfluenceListModification', content: 'OK' });
         this.isSaving = false;
         this.activeModal.dismiss(result);
     }
@@ -99,17 +100,15 @@ export class DomainOfInfluenceMgmPopupComponent implements OnInit, OnDestroy {
     constructor(
         private route: ActivatedRoute,
         private domainOfInfluencePopupService: DomainOfInfluenceMgmPopupService,
-        private sessionStorage: SessionStorageService
-    ) {}
+        private popUpService: PopUpService
+    ) { }
 
     ngOnInit() {
-        const isAfterLogIn = this.sessionStorage.retrieve('isAfterLogin');
-        if (isAfterLogIn) {
-            this.sessionStorage.store('isAfterLogin', false);
+        if (!this.popUpService.canOpen()) {
             return;
         } else {
             this.routeSub = this.route.params.subscribe((params) => {
-                if ( params['id'] ) {
+                if (params['id']) {
                     this.domainOfInfluencePopupService
                         .open(DomainOfInfluenceMgmDialogComponent as Component, params['id']);
                 } else {
@@ -121,7 +120,7 @@ export class DomainOfInfluenceMgmPopupComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy() {
-        if(this.routeSub){
+        if (this.routeSub) {
             this.routeSub.unsubscribe();
         }
     }

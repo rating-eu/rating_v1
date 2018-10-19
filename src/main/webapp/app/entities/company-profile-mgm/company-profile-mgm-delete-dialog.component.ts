@@ -1,13 +1,14 @@
-import {Component, OnInit, OnDestroy} from '@angular/core';
-import {ActivatedRoute} from '@angular/router';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
-import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
-import {JhiEventManager} from 'ng-jhipster';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { JhiEventManager } from 'ng-jhipster';
 
-import {CompanyProfileMgm} from './company-profile-mgm.model';
-import {CompanyProfileMgmPopupService} from './company-profile-mgm-popup.service';
-import {CompanyProfileMgmService} from './company-profile-mgm.service';
-import {SessionStorageService} from 'ngx-webstorage';
+import { CompanyProfileMgm } from './company-profile-mgm.model';
+import { CompanyProfileMgmPopupService } from './company-profile-mgm-popup.service';
+import { CompanyProfileMgmService } from './company-profile-mgm.service';
+import { SessionStorageService } from 'ngx-webstorage';
+import { PopUpService } from '../../shared/pop-up-services/pop-up.service';
 
 @Component({
     selector: 'jhi-company-profile-mgm-delete-dialog',
@@ -50,14 +51,12 @@ export class CompanyProfileMgmDeletePopupComponent implements OnInit, OnDestroy 
     constructor(
         private route: ActivatedRoute,
         private companyProfilePopupService: CompanyProfileMgmPopupService,
-        private sessionStorage: SessionStorageService
+        private popUpService: PopUpService
     ) {
     }
 
     ngOnInit() {
-        const isAfterLogIn = this.sessionStorage.retrieve('isAfterLogin');
-        if (isAfterLogIn) {
-            this.sessionStorage.store('isAfterLogin', false);
+        if (!this.popUpService.canOpen()) {
             return;
         } else {
             this.routeSub = this.route.params.subscribe((params) => {
@@ -68,7 +67,7 @@ export class CompanyProfileMgmDeletePopupComponent implements OnInit, OnDestroy 
     }
 
     ngOnDestroy() {
-        if(this.routeSub){
+        if (this.routeSub) {
             this.routeSub.unsubscribe();
         }
     }

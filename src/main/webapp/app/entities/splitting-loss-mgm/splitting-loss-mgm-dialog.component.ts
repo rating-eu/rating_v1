@@ -11,6 +11,7 @@ import { SplittingLossMgmPopupService } from './splitting-loss-mgm-popup.service
 import { SplittingLossMgmService } from './splitting-loss-mgm.service';
 import { SelfAssessmentMgm, SelfAssessmentMgmService } from '../self-assessment-mgm';
 import {SessionStorageService} from 'ngx-webstorage';
+import {PopUpService} from '../../shared/pop-up-services/pop-up.service';
 
 @Component({
     selector: 'jhi-splitting-loss-mgm-dialog',
@@ -99,15 +100,13 @@ export class SplittingLossMgmPopupComponent implements OnInit, OnDestroy {
     constructor(
         private route: ActivatedRoute,
         private splittingLossPopupService: SplittingLossMgmPopupService,
-        private sessionStorage: SessionStorageService
+        private popUpService: PopUpService
     ) {}
 
     ngOnInit() {
-        const isAfterLogIn = this.sessionStorage.retrieve('isAfterLogin');
-        if (isAfterLogIn) {
-            this.sessionStorage.store('isAfterLogin', false);
+        if (!this.popUpService.canOpen()) {
             return;
-        } else {
+        }  else {
             this.routeSub = this.route.params.subscribe((params) => {
                 if ( params['id'] ) {
                     this.splittingLossPopupService

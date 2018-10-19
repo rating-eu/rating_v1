@@ -6,6 +6,7 @@ import { JhiEventManager } from 'ng-jhipster';
 
 import { ExternalAuditMgm } from './external-audit-mgm.model';
 import { ExternalAuditMgmService } from './external-audit-mgm.service';
+import { PopUpService } from '../../shared/pop-up-services/pop-up.service';
 
 @Component({
     selector: 'jhi-external-audit-mgm-detail',
@@ -20,7 +21,8 @@ export class ExternalAuditMgmDetailComponent implements OnInit, OnDestroy {
     constructor(
         private eventManager: JhiEventManager,
         private externalAuditService: ExternalAuditMgmService,
-        private route: ActivatedRoute
+        private route: ActivatedRoute,
+        public popUpService: PopUpService
     ) {
     }
 

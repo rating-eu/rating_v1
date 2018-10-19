@@ -6,6 +6,7 @@ import { JhiEventManager } from 'ng-jhipster';
 
 import { DomainOfInfluenceMgm } from './domain-of-influence-mgm.model';
 import { DomainOfInfluenceMgmService } from './domain-of-influence-mgm.service';
+import { PopUpService } from '../../shared/pop-up-services/pop-up.service';
 
 @Component({
     selector: 'jhi-domain-of-influence-mgm-detail',
@@ -20,7 +21,8 @@ export class DomainOfInfluenceMgmDetailComponent implements OnInit, OnDestroy {
     constructor(
         private eventManager: JhiEventManager,
         private domainOfInfluenceService: DomainOfInfluenceMgmService,
-        private route: ActivatedRoute
+        private route: ActivatedRoute,
+        public popUpService: PopUpService
     ) {
     }
 

@@ -6,6 +6,7 @@ import { JhiEventManager } from 'ng-jhipster';
 
 import { AnswerMgm } from './answer-mgm.model';
 import { AnswerMgmService } from './answer-mgm.service';
+import { PopUpService } from '../../shared/pop-up-services/pop-up.service';
 
 @Component({
     selector: 'jhi-answer-mgm-detail',
@@ -20,7 +21,8 @@ export class AnswerMgmDetailComponent implements OnInit, OnDestroy {
     constructor(
         private eventManager: JhiEventManager,
         private answerService: AnswerMgmService,
-        private route: ActivatedRoute
+        private route: ActivatedRoute,
+        public popUpService: PopUpService
     ) {
     }
 

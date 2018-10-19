@@ -7,7 +7,8 @@ import { JhiEventManager } from 'ng-jhipster';
 import { AttackCostMgm } from './attack-cost-mgm.model';
 import { AttackCostMgmPopupService } from './attack-cost-mgm-popup.service';
 import { AttackCostMgmService } from './attack-cost-mgm.service';
-import {SessionStorageService} from 'ngx-webstorage';
+import { SessionStorageService } from 'ngx-webstorage';
+import { PopUpService } from '../../shared/pop-up-services/pop-up.service';
 
 @Component({
     selector: 'jhi-attack-cost-mgm-delete-dialog',
@@ -50,13 +51,11 @@ export class AttackCostMgmDeletePopupComponent implements OnInit, OnDestroy {
     constructor(
         private route: ActivatedRoute,
         private attackCostPopupService: AttackCostMgmPopupService,
-        private sessionStorage: SessionStorageService
-    ) {}
+        private popUpService: PopUpService
+    ) { }
 
     ngOnInit() {
-        const isAfterLogIn = this.sessionStorage.retrieve('isAfterLogin');
-        if (isAfterLogIn) {
-            this.sessionStorage.store('isAfterLogin', false);
+        if (!this.popUpService.canOpen()) {
             return;
         } else {
             this.routeSub = this.route.params.subscribe((params) => {
@@ -67,7 +66,7 @@ export class AttackCostMgmDeletePopupComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy() {
-        if(this.routeSub){
+        if (this.routeSub) {
             this.routeSub.unsubscribe();
         }
     }

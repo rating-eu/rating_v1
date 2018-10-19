@@ -6,6 +6,7 @@ import { JhiEventManager } from 'ng-jhipster';
 
 import { AttackCostMgm } from './attack-cost-mgm.model';
 import { AttackCostMgmService } from './attack-cost-mgm.service';
+import { PopUpService } from '../../shared/pop-up-services/pop-up.service';
 
 @Component({
     selector: 'jhi-attack-cost-mgm-detail',
@@ -20,7 +21,8 @@ export class AttackCostMgmDetailComponent implements OnInit, OnDestroy {
     constructor(
         private eventManager: JhiEventManager,
         private attackCostService: AttackCostMgmService,
-        private route: ActivatedRoute
+        private route: ActivatedRoute,
+        public popUpService: PopUpService
     ) {
     }
 

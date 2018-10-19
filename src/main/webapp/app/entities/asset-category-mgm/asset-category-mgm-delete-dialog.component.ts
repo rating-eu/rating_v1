@@ -8,6 +8,7 @@ import {AssetCategoryMgm} from './asset-category-mgm.model';
 import {AssetCategoryMgmPopupService} from './asset-category-mgm-popup.service';
 import {AssetCategoryMgmService} from './asset-category-mgm.service';
 import {SessionStorageService} from 'ngx-webstorage';
+import { PopUpService } from '../../shared/pop-up-services/pop-up.service';
 
 @Component({
     selector: 'jhi-asset-category-mgm-delete-dialog',
@@ -50,14 +51,12 @@ export class AssetCategoryMgmDeletePopupComponent implements OnInit, OnDestroy {
     constructor(
         private route: ActivatedRoute,
         private assetCategoryPopupService: AssetCategoryMgmPopupService,
-        private sessionStorage: SessionStorageService
+        private popUpService: PopUpService
     ) {
     }
 
     ngOnInit() {
-        const isAfterLogIn = this.sessionStorage.retrieve('isAfterLogin');
-        if (isAfterLogIn) {
-            this.sessionStorage.store('isAfterLogin', false);
+        if (!this.popUpService.canOpen()) {
             return;
         } else {
             this.routeSub = this.route.params.subscribe((params) => {

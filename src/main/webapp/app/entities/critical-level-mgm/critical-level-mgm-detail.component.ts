@@ -6,6 +6,7 @@ import { JhiEventManager } from 'ng-jhipster';
 
 import { CriticalLevelMgm } from './critical-level-mgm.model';
 import { CriticalLevelMgmService } from './critical-level-mgm.service';
+import { PopUpService } from '../../shared/pop-up-services/pop-up.service';
 
 @Component({
     selector: 'jhi-critical-level-mgm-detail',
@@ -20,7 +21,8 @@ export class CriticalLevelMgmDetailComponent implements OnInit, OnDestroy {
     constructor(
         private eventManager: JhiEventManager,
         private criticalLevelService: CriticalLevelMgmService,
-        private route: ActivatedRoute
+        private route: ActivatedRoute,
+        public popUpService: PopUpService
     ) {
     }
 

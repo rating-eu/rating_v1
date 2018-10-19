@@ -6,6 +6,7 @@ import { JhiEventManager } from 'ng-jhipster';
 
 import { AssetCategoryMgm } from './asset-category-mgm.model';
 import { AssetCategoryMgmService } from './asset-category-mgm.service';
+import { PopUpService } from '../../shared/pop-up-services/pop-up.service';
 
 @Component({
     selector: 'jhi-asset-category-mgm-detail',
@@ -20,7 +21,8 @@ export class AssetCategoryMgmDetailComponent implements OnInit, OnDestroy {
     constructor(
         private eventManager: JhiEventManager,
         private assetCategoryService: AssetCategoryMgmService,
-        private route: ActivatedRoute
+        private route: ActivatedRoute,
+        public popUpService: PopUpService
     ) {
     }
 

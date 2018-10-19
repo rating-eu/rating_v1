@@ -6,6 +6,7 @@ import { JhiEventManager } from 'ng-jhipster';
 
 import { MitigationMgm } from './mitigation-mgm.model';
 import { MitigationMgmService } from './mitigation-mgm.service';
+import { PopUpService } from '../../shared/pop-up-services/pop-up.service';
 
 @Component({
     selector: 'jhi-mitigation-mgm-detail',
@@ -20,7 +21,8 @@ export class MitigationMgmDetailComponent implements OnInit, OnDestroy {
     constructor(
         private eventManager: JhiEventManager,
         private mitigationService: MitigationMgmService,
-        private route: ActivatedRoute
+        private route: ActivatedRoute,
+        public popUpService: PopUpService
     ) {
     }
 

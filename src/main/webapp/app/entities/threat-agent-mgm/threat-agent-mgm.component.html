@@ -106,6 +106,7 @@
                         </button>
                         <button *jhiHasAnyAuthority="'ROLE_ADMIN'"
                                 type="submit"
+                                (click)="popUpService.setOnUserBehaviour()"
                                 [routerLink]="['/', { outlets: { popup: 'threat-agent-mgm/'+ threatAgent.id + '/edit'} }]"
                                 replaceUrl="true"
                                 queryParamsHandling="merge"
@@ -115,6 +116,7 @@
                         </button>
                         <button *jhiHasAnyAuthority="'ROLE_ADMIN'"
                                 type="submit"
+                                (click)="popUpService.setOnUserBehaviour()"
                                 [routerLink]="['/', { outlets: { popup: 'threat-agent-mgm/'+ threatAgent.id + '/delete'} }]"
                                 replaceUrl="true"
                                 queryParamsHandling="merge"

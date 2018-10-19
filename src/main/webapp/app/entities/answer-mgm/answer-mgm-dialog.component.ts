@@ -12,7 +12,8 @@ import { AnswerMgmService } from './answer-mgm.service';
 import { AssetMgm, AssetMgmService } from '../asset-mgm';
 import { AssetCategoryMgm, AssetCategoryMgmService } from '../asset-category-mgm';
 import { QuestionMgm, QuestionMgmService } from '../question-mgm';
-import {SessionStorageService} from 'ngx-webstorage';
+import { SessionStorageService } from 'ngx-webstorage';
+import { PopUpService } from '../../shared/pop-up-services/pop-up.service';
 
 @Component({
     selector: 'jhi-answer-mgm-dialog',
@@ -36,14 +37,15 @@ export class AnswerMgmDialogComponent implements OnInit {
         private assetService: AssetMgmService,
         private assetCategoryService: AssetCategoryMgmService,
         private questionService: QuestionMgmService,
-        private eventManager: JhiEventManager
+        private eventManager: JhiEventManager,
+        private popUpService: PopUpService
     ) {
     }
 
     ngOnInit() {
         this.isSaving = false;
         this.assetService
-            .query({filter: 'answer-is-null'})
+            .query({ filter: 'answer-is-null' })
             .subscribe((res: HttpResponse<AssetMgm[]>) => {
                 if (!this.answer.asset || !this.answer.asset.id) {
                     this.assets = res.body;
@@ -56,7 +58,7 @@ export class AnswerMgmDialogComponent implements OnInit {
                 }
             }, (res: HttpErrorResponse) => this.onError(res.message));
         this.assetCategoryService
-            .query({filter: 'answer-is-null'})
+            .query({ filter: 'answer-is-null' })
             .subscribe((res: HttpResponse<AssetCategoryMgm[]>) => {
                 if (!this.answer.assetCategory || !this.answer.assetCategory.id) {
                     this.assetcategories = res.body;
@@ -93,7 +95,7 @@ export class AnswerMgmDialogComponent implements OnInit {
     }
 
     private onSaveSuccess(result: AnswerMgm) {
-        this.eventManager.broadcast({ name: 'answerListModification', content: 'OK'});
+        this.eventManager.broadcast({ name: 'answerListModification', content: 'OK' });
         this.isSaving = false;
         this.activeModal.dismiss(result);
     }
@@ -141,17 +143,15 @@ export class AnswerMgmPopupComponent implements OnInit, OnDestroy {
     constructor(
         private route: ActivatedRoute,
         private answerPopupService: AnswerMgmPopupService,
-        private sessionStorage: SessionStorageService
-    ) {}
+        private popUpService: PopUpService
+    ) { }
 
     ngOnInit() {
-        const isAfterLogIn = this.sessionStorage.retrieve('isAfterLogin');
-        if (isAfterLogIn) {
-            this.sessionStorage.store('isAfterLogin', false);
+        if (!this.popUpService.canOpen()) {
             return;
         } else {
             this.routeSub = this.route.params.subscribe((params) => {
-                if ( params['id'] ) {
+                if (params['id']) {
                     this.answerPopupService
                         .open(AnswerMgmDialogComponent as Component, params['id']);
                 } else {
@@ -163,7 +163,7 @@ export class AnswerMgmPopupComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy() {
-        if(this.routeSub){
+        if (this.routeSub) {
             this.routeSub.unsubscribe();
         }
     }

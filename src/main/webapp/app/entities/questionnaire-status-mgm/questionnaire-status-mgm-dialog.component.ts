@@ -13,6 +13,7 @@ import { SelfAssessmentMgm, SelfAssessmentMgmService } from '../self-assessment-
 import { QuestionnaireMgm, QuestionnaireMgmService } from '../questionnaire-mgm';
 import { User, UserService } from '../../shared';
 import {SessionStorageService} from 'ngx-webstorage';
+import {PopUpService} from '../../shared/pop-up-services/pop-up.service';
 
 @Component({
     selector: 'jhi-questionnaire-status-mgm-dialog',
@@ -130,16 +131,13 @@ export class QuestionnaireStatusMgmPopupComponent implements OnInit, OnDestroy {
     constructor(
         private route: ActivatedRoute,
         private questionnaireStatusPopupService: QuestionnaireStatusMgmPopupService,
-        private sessionStorage: SessionStorageService
+        private popUpService: PopUpService
     ) {}
 
     ngOnInit() {
-        const isAfterLogIn = this.sessionStorage.retrieve('isAfterLogin');
-
-        if (isAfterLogIn) {
-            this.sessionStorage.store('isAfterLogin', false);
+        if (!this.popUpService.canOpen()) {
             return;
-        } else {
+        }else {
             this.routeSub = this.route.params.subscribe((params) => {
                 if ( params['id'] ) {
                     this.questionnaireStatusPopupService

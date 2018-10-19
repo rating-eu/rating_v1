@@ -6,6 +6,7 @@ import { JhiEventManager } from 'ng-jhipster';
 
 import { EBITMgm } from './ebit-mgm.model';
 import { EBITMgmService } from './ebit-mgm.service';
+import { PopUpService } from '../../shared/pop-up-services/pop-up.service';
 
 @Component({
     selector: 'jhi-ebit-mgm-detail',
@@ -20,7 +21,8 @@ export class EBITMgmDetailComponent implements OnInit, OnDestroy {
     constructor(
         private eventManager: JhiEventManager,
         private eBITService: EBITMgmService,
-        private route: ActivatedRoute
+        private route: ActivatedRoute,
+        public popUpService: PopUpService
     ) {
     }
 

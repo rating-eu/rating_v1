@@ -6,6 +6,7 @@ import { JhiEventManager, JhiDataUtils } from 'ng-jhipster';
 
 import { ThreatAgentMgm } from './threat-agent-mgm.model';
 import { ThreatAgentMgmService } from './threat-agent-mgm.service';
+import {PopUpService} from '../../shared/pop-up-services/pop-up.service';
 
 @Component({
     selector: 'jhi-threat-agent-mgm-detail',
@@ -21,7 +22,8 @@ export class ThreatAgentMgmDetailComponent implements OnInit, OnDestroy {
         private eventManager: JhiEventManager,
         private dataUtils: JhiDataUtils,
         private threatAgentService: ThreatAgentMgmService,
-        private route: ActivatedRoute
+        private route: ActivatedRoute,
+        public popUpService: PopUpService
     ) {
     }
 
