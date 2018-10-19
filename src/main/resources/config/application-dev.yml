@@ -56,6 +56,11 @@ spring:
             hibernate.cache.hazelcast.instance_name: hermeneut
             hibernate.cache.use_minimal_puts: true
             hibernate.cache.hazelcast.use_lite_member: true
+    mail:
+        host: localhost
+        port: 25
+        username:
+        password:
     data:
         elasticsearch:
             cluster-name:
