@@ -16,15 +16,17 @@
     <!--
         Added the entity ExternalAudit.
     -->
-    <changeSet id="20180530172823-1" author="developer">
-        <loadData catalogName="question"
-                  encoding="UTF-8"
-                  file="config/liquibase/questions_attack_strategies.csv"
-                  schemaName="public"
-                  separator=";"
-                  quotchar="'"
-                  tableName="question">
-        </loadData>
+    <changeSet id="20180530172823-1" author="developer" runOnChange="true">
+        <loadUpdateData
+            primaryKey="id"
+            catalogName="question"
+            encoding="UTF-8"
+            file="config/liquibase/questions_attack_strategies.csv"
+            schemaName="public"
+            separator=";"
+            quotchar="'"
+            tableName="question">
+        </loadUpdateData>
     </changeSet>
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here, do not remove-->
 </databaseChangeLog>
