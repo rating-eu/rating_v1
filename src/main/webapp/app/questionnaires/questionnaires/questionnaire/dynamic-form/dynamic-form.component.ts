@@ -416,6 +416,7 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
     }
 
     private evaluateWeakness() {
+        this.loading = true;
         console.log('ENTER ==> Evaluating wekness...');
         console.log('OnSubmit called');
         console.log('Form\'s value is:');
@@ -458,19 +459,24 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
                     }
                 );
 
-        selfAssessment$.subscribe(
-            (selfAssessmentResponse: HttpResponse<SelfAssessmentMgm>) => {
+        selfAssessment$.toPromise()
+            .then((selfAssessmentResponse: HttpResponse<SelfAssessmentMgm>) => {
                 this.selfAssessment = selfAssessmentResponse.body;
                 this.selfAssessmentService.setSelfAssessment(this.selfAssessment);
 
+                this.loading = false;
                 this.router.navigate(['/evaluate-weakness/result']);
-            });
+            }).catch(() => {
+            // TODO Error management
+            this.loading = false;
+        });
 
         // For now don't store the attackStrategies but recalculate them and their likelihood based on the stored
         // MyAnswers
     }
 
     private externalAuditRefinement() {
+        this.loading = true;
         console.log('ENTER ==> Evaluating wekness...');
         console.log('OnSubmit called');
         console.log('Form\'s value is:');
@@ -499,9 +505,12 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
                     return this.createMyRefinementAnswersObservable(formDataMap, questionnaireStatus);
                 });
 
-        myRefinementAnswers.subscribe((response: HttpResponse<MyAnswerMgm[]>) => {
+        myRefinementAnswers.toPromise().then((response: HttpResponse<MyAnswerMgm[]>) => {
             console.log('MyAnswers: ' + JSON.stringify(response));
             this.router.navigate(['/evaluate-weakness/result']);
+        }).catch(() => {
+            // TODO Error management
+            this.loading = false;
         });
     }
 
