@@ -1,9 +1,9 @@
 
 <ng-container *ngIf="questionnariesStatus.length === 0 && mySelf">
-    <ng-container *ngIf="questions.length === 0" class="text-center">
+    <ng-container *ngIf="questions.length === 0 && loading" class="text-center">
         <div class="loader"></div>
     </ng-container>
-    <ng-container *ngIf="questions.length > 0">
+    <ng-container *ngIf="questions.length > 0  && !loading">
         <ng-container *ngFor="let q of questions">
             <question-card
             [question]="q"
@@ -19,8 +19,8 @@
 </ng-container>
 
 
-<ng-container *ngIf="questionnariesStatus.length > 0 && mySelf">
-    <ng-container *ngIf="questionnariesStatus[0].status === 'FULL'">
+<ng-container *ngIf="questionnariesStatus.length > 0 && mySelf  && loading">
+    <ng-container *ngIf="questionnariesStatus[0].status === 'FULL'  && !loading">
         <ng-container *ngIf="myDirectAssets">
             <div class="row" style="margin-bottom: 10px" *ngFor="let direct of myDirectAssets">
                 <div class="col-md-7">
