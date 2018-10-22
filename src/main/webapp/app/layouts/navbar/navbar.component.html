@@ -10,7 +10,7 @@
         </a>
     </div>
     <div *ngIf="navSubTitle" class="nav-self-assessment">
-        {{navSubTitle}}
+        {{navSubTitle}}<a [routerLink]="['../self-assessment-mgm', selfAssessmentId ]" style="color: #4fbde9">{{selfAssessmentName}}</a>
     </div>
     <div class="navbar-collapse collapse" id="navbarResponsive" [ngbCollapse]="isNavbarCollapsed"
          [ngSwitch]="isAuthenticated()">

@@ -46,12 +46,11 @@ export class JhiMainComponent implements OnInit {
                     this.updateLayout = update;
                 }, 0);
             }
-            console.log('Update onInit: ' + JSON.stringify(update));
+            // console.log('Update onInit: ' + JSON.stringify(update));
         });
 
         this.principal.getAuthenticationState().subscribe((authentication: any) => {
-            console.log('AuthenticationState: ' + JSON.stringify(authentication));
-
+            // console.log('AuthenticationState: ' + JSON.stringify(authentication));
             if (authentication) {
                 this.isAuthenticated = true;
             } else {
@@ -64,8 +63,6 @@ export class JhiMainComponent implements OnInit {
         });
 
         this.loginService.checkLogin().then((check: boolean) => {
-            console.log('Check login: ' + check);
-
             this.isAuthenticated = check;
             this.loading = false;
         });
