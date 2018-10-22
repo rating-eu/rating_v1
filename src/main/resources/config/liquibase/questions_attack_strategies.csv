@@ -2,7 +2,7 @@ id;name;created;modified;jhi_order;question_type;answer_type;questionnaire_id
 19;How many employees are aware of the risks of sharing “personal” or ”work related” information on social networks?;now();now();1;REGULAR;PERC5;2
 20;Is the company able to monitor its reputation level on the Internet?;now();now();2;REGULAR;RANGE5;2
 21;How many employees can recognise Social Engineering tricks and react to this threat? e.g. phishing attempt, spam, fake telephone calls (vishing), fake websites or malicious USBs dropped on the walkway;now();now();3;RELEVANT;PERC5;2
-22;How many employees are trained with simulated phishing campaigns and constant awareness program?;now();now();4;REGULAR;PERC5;2
+22;How many employees are trained with simulated phishing campaigns and regular awareness program?;now();now();4;REGULAR;PERC5;2
 23;How many employees are trained to be able to identify and correctly protect sensitive and non-sensitive data?;now();now();5;REGULAR;PERC5;2
 24;How many employees are trained to recognize a legitimate warning message (requesting permission for update, or from fake antivirus) and to properly notify the security team if something bad or questionable has happened?;now();now();6;REGULAR;PERC5;2
 25;Are the physical security measures in line with the best practices? (e.g. registry of guests, guest escorting procedure, segregate internal areas, etc.);now();now();7;REGULAR;RANGE5;2
