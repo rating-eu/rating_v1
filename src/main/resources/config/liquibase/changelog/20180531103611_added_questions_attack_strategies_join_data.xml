@@ -16,13 +16,18 @@
     <!--
         Added the entity ExternalAudit.
     -->
-    <changeSet id="20180531103611-1" author="developer">
+    <changeSet id="20180531103611-1" author="developer" runOnChange="true">
+        <delete catalogName="cat"
+                schemaName="public"
+                tableName="question_attack_strategies">
+            <where>true</where>
+        </delete>
         <loadData encoding="UTF-8"
-                  file="config/liquibase/questions_attack_strategies_join.csv"
-                  schemaName="public"
-                  separator=";"
-                  quotchar="'"
-                  tableName="question_attack_strategies">
+                        file="config/liquibase/questions_attack_strategies_join.csv"
+                        schemaName="public"
+                        separator=";"
+                        quotchar="'"
+                        tableName="question_attack_strategies">
         </loadData>
     </changeSet>
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here, do not remove-->
