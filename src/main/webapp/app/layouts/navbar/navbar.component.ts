@@ -26,6 +26,8 @@ export class NavbarComponent implements OnInit {
     modalRef: NgbModalRef;
     version: string;
     navSubTitle: string;
+    selfAssessmentId: string;
+    selfAssessmentName: string;
 
     constructor(
         private loginService: LoginService,
@@ -54,7 +56,9 @@ export class NavbarComponent implements OnInit {
         this.navSubTitle = this.dataSharingService.getUpdate() != null ? 'Selected self assessment: ' + this.dataSharingService.getUpdate().navSubTitle : null;
         this.dataSharingService.observeUpdate().subscribe((update: Update) => {
             if (update && update.navSubTitle) {
-                this.navSubTitle = 'Selected self assessment: ' + update.navSubTitle;
+                this.navSubTitle = 'Selected self assessment: ';
+                this.selfAssessmentName = update.navSubTitle;
+                this.selfAssessmentId = update.selfAssessmentId;
             }
         });
     }

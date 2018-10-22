@@ -24,6 +24,7 @@ import { MySectorType } from '../../entities/enumerations/MySectorType.enum';
 export class ImpactEvaluationComponent implements OnInit {
 
   public witchStep = 1;
+  public isDescriptionCollapsed = true;
   public isGlobal = true;
   public sectorChoosed: string;
   public impactFormStepOne: FormGroup;
@@ -446,6 +447,7 @@ export class ImpactEvaluationComponent implements OnInit {
   }
 
   public selectStep(step: number) {
+    this.isDescriptionCollapsed  = true;
     switch (step) {
       case 2: {
         if (this.impactFormStepOne.invalid) {

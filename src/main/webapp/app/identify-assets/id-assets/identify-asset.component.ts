@@ -39,6 +39,8 @@ export class IdentifyAssetComponent implements OnInit, OnDestroy {
     eventSubscriber: Subscription;
     currentSearch: string;
     mySelf: SelfAssessmentMgm = {};
+    public loading = false;
+    public loadWithErrors = false;
     // assets$: Observable<AssetMgm[]>;
     user: User;
 
@@ -88,6 +90,7 @@ export class IdentifyAssetComponent implements OnInit, OnDestroy {
         // await this.assets$ = this.assetService.findAll();
         this.questionnaries = [];
         this.myAnswers = [];
+        this.loading = true;
         this.questionnairesService.getAllQuestionnairesByPurpose(QuestionnairePurpose.ID_ASSETS).toPromise().then((res) => {
             if (res && res instanceof QuestionnaireMgm) {
                 this.questionnaries.push(res);
@@ -127,6 +130,11 @@ export class IdentifyAssetComponent implements OnInit, OnDestroy {
                                                                         console.log(this.myDirectAssets);
                                                                         console.log(this.myIndirectAssets);
                                                                         this.ref.detectChanges();
+                                                                        this.loading = false;
+                                                                        this.loadWithErrors = false;
+                                                                    }).catch(() => {
+                                                                        this.loading = false;
+                                                                        this.loadWithErrors = true;
                                                                     });
                                                             });
                                                     }
@@ -192,6 +200,7 @@ export class IdentifyAssetComponent implements OnInit, OnDestroy {
     }
 
     public sendAnswerAndSaveMyAssets() {
+        this.loading = true;
         this.myAnswers = this.idaUtilsService.getMyAnswersComplited();
         this.myAssets = this.idaUtilsService.getMyAssets();
         this.myDirectAssets = this.idaUtilsService.getMyDirectAsset();
@@ -233,7 +242,12 @@ export class IdentifyAssetComponent implements OnInit, OnDestroy {
                 this.myIndirectAssets = savedAssets.indirectAssets;
             }
             this.jhiAlertService.success('hermeneutApp.messages.saved', null, null);
+            this.loading = false;
+            this.loadWithErrors = false;
             this.ngOnInit();
+        }).catch(() => {
+            this.loading = false;
+            this.loadWithErrors = true;
         });
     }
 

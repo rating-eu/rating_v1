@@ -1,9 +1,7 @@
 <div class="card-box">
     <div class="row" *ngIf="maxVulnerability">
         <div class="col-md-12 align-middle text-center">
-            <mat-progress-spinner
-                style="margin: 0 auto;"
-                [ngClass]="{
+            <mat-progress-spinner style="margin: 0 auto;" [ngClass]="{
                               'low': maxVulnerability * 5 > 0 && maxVulnerability * 5 <= 1,
                               'low-medium': maxVulnerability * 5 > 1 && maxVulnerability * 5 <= 2,
                               'medium': maxVulnerability * 5 > 2 && maxVulnerability * 5 <= 3,
@@ -20,116 +18,137 @@
     </div>
 </div>
 <div class="card-box">
-    <ngb-tabset type="pills">
+    <ngb-tabset>
         <ngb-tab title="Most Dangerous Threat Agents">
             <ng-template ngbTabContent>
                 <div class="table-responsive">
                     <table class="table table-bordered" *ngIf="threatAgentLikelihoodsMap && threatAgentIDs">
                         <thead class="thead-dark">
-                        <tr>
-                            <th scope="col" class="text-center align-middle">Threat Agent</th>
-                            <th scope="col" class="text-center align-middle">Initial Likelihood</th>
-                            <th scope="col" class="text-center align-middle">Contextual Likelihood</th>
-                            <th scope="col" class="text-center align-middle">Refined Likelihood</th>
-                        </tr>
+                            <tr>
+                                <th scope="col" class="text-center align-middle">Threat Agent</th>
+                                <th scope="col" class="text-center align-middle">Initial Likelihood</th>
+                                <th scope="col" class="text-center align-middle">Contextual Likelihood</th>
+                                <th scope="col" class="text-center align-middle">Refined Likelihood</th>
+                            </tr>
                         </thead>
 
                         <tbody>
-                        <!--For rows-->
-                        <tr *ngFor="let threatAgentID of threatAgentIDs">
-                            <td class="text-center align-middle">
-                                <a [routerLink]="['/threat-agent-mgm', threatAgentID ]">{{threatAgentLikelihoodsMap.get(threatAgentID).threatAgent.name}}</a>
-                            </td>
+                            <!--For rows-->
+                            <tr *ngFor="let threatAgentID of threatAgentIDs">
+                                <td class="text-center align-middle">
+                                    <a [routerLink]="['/threat-agent-mgm', threatAgentID ]">{{threatAgentLikelihoodsMap.get(threatAgentID).threatAgent.name}}</a>
+                                </td>
 
-                            <td class="text-center align-middle">
-                                <mat-progress-spinner
-                                    style="margin:0 auto;"
-                                    [ngClass]="{
+                                <td class="text-center align-middle">
+                                    <mat-progress-spinner style="margin:0 auto;" [ngClass]="{
                               'low': threatAgentLikelihoodsMap.get(threatAgentID).initialLikelihood * 5 > 0 && threatAgentLikelihoodsMap.get(threatAgentID).initialLikelihood * 5 <= 1,
                               'low-medium': threatAgentLikelihoodsMap.get(threatAgentID).initialLikelihood * 5 > 1 && threatAgentLikelihoodsMap.get(threatAgentID).initialLikelihood * 5 <= 2,
                               'medium': threatAgentLikelihoodsMap.get(threatAgentID).initialLikelihood * 5 > 2 && threatAgentLikelihoodsMap.get(threatAgentID).initialLikelihood * 5 <= 3,
                               'medium-high': threatAgentLikelihoodsMap.get(threatAgentID).initialLikelihood * 5 > 3 && threatAgentLikelihoodsMap.get(threatAgentID).initialLikelihood * 5 <= 4,
                               'high': threatAgentLikelihoodsMap.get(threatAgentID).initialLikelihood * 5 > 4 && threatAgentLikelihoodsMap.get(threatAgentID).initialLikelihood * 5 <= 5
                               }"
-                                    [value]="threatAgentLikelihoodsMap.get(threatAgentID).initialLikelihood * 100">
-                                </mat-progress-spinner>
-                                <div style="top:-60px; z-index:2;position:relative;">
-                                    {{threatAgentLikelihoodsMap.get(threatAgentID).initialLikelihood | percent}}
-                                </div>
-                            </td>
+                                        [value]="threatAgentLikelihoodsMap.get(threatAgentID).initialLikelihood * 100">
+                                    </mat-progress-spinner>
+                                    <div style="top:-60px; z-index:2;position:relative;">
+                                        {{threatAgentLikelihoodsMap.get(threatAgentID).initialLikelihood | percent}}
+                                    </div>
+                                </td>
 
-                            <td class="text-center align-middle">
-                                <mat-progress-spinner
-                                    style="margin:0 auto;"
-                                    [ngClass]="{
+                                <td class="text-center align-middle">
+                                    <mat-progress-spinner style="margin:0 auto;" [ngClass]="{
                               'low': threatAgentLikelihoodsMap.get(threatAgentID).contextualLikelihood * 5 > 0 && threatAgentLikelihoodsMap.get(threatAgentID).contextualLikelihood * 5 <= 1,
                               'low-medium': threatAgentLikelihoodsMap.get(threatAgentID).contextualLikelihood * 5 > 1 && threatAgentLikelihoodsMap.get(threatAgentID).contextualLikelihood * 5 <= 2,
                               'medium': threatAgentLikelihoodsMap.get(threatAgentID).contextualLikelihood * 5 > 2 && threatAgentLikelihoodsMap.get(threatAgentID).contextualLikelihood * 5 <= 3,
                               'medium-high': threatAgentLikelihoodsMap.get(threatAgentID).contextualLikelihood * 5 > 3 && threatAgentLikelihoodsMap.get(threatAgentID).contextualLikelihood * 5 <= 4,
                               'high': threatAgentLikelihoodsMap.get(threatAgentID).contextualLikelihood * 5 > 4 && threatAgentLikelihoodsMap.get(threatAgentID).contextualLikelihood * 5 <= 5
                               }"
-                                    [value]="threatAgentLikelihoodsMap.get(threatAgentID).contextualLikelihood * 100">
-                                </mat-progress-spinner>
-                                <div style="top:-60px; z-index:2;position:relative;">
-                                    {{threatAgentLikelihoodsMap.get(threatAgentID).contextualLikelihood | percent}}
-                                </div>
-                            </td>
+                                        [value]="threatAgentLikelihoodsMap.get(threatAgentID).contextualLikelihood * 100">
+                                    </mat-progress-spinner>
+                                    <div style="top:-60px; z-index:2;position:relative;">
+                                        {{threatAgentLikelihoodsMap.get(threatAgentID).contextualLikelihood | percent}}
+                                    </div>
+                                </td>
 
-                            <td class="text-center align-middle">
-                                <mat-progress-spinner
-                                    style="margin:0 auto;"
-                                    [ngClass]="{
+                                <td class="text-center align-middle">
+                                    <mat-progress-spinner style="margin:0 auto;" [ngClass]="{
                               'low': threatAgentLikelihoodsMap.get(threatAgentID).refinedLikelihood * 5 > 0 && threatAgentLikelihoodsMap.get(threatAgentID).refinedLikelihood * 5 <= 1,
                               'low-medium': threatAgentLikelihoodsMap.get(threatAgentID).refinedLikelihood * 5 > 1 && threatAgentLikelihoodsMap.get(threatAgentID).refinedLikelihood * 5 <= 2,
                               'medium': threatAgentLikelihoodsMap.get(threatAgentID).refinedLikelihood * 5 > 2 && threatAgentLikelihoodsMap.get(threatAgentID).refinedLikelihood * 5 <= 3,
                               'medium-high': threatAgentLikelihoodsMap.get(threatAgentID).refinedLikelihood * 5 > 3 && threatAgentLikelihoodsMap.get(threatAgentID).refinedLikelihood * 5 <= 4,
                               'high': threatAgentLikelihoodsMap.get(threatAgentID).refinedLikelihood * 5 > 4 && threatAgentLikelihoodsMap.get(threatAgentID).refinedLikelihood * 5 <= 5
                               }"
-                                    [value]="threatAgentLikelihoodsMap.get(threatAgentID).refinedLikelihood * 100">
-                                </mat-progress-spinner>
-                                <div style="top:-60px; z-index:2;position:relative;">
-                                    {{threatAgentLikelihoodsMap.get(threatAgentID).refinedLikelihood | percent}}
-                                </div>
+                                        [value]="threatAgentLikelihoodsMap.get(threatAgentID).refinedLikelihood * 100">
+                                    </mat-progress-spinner>
+                                    <div style="top:-60px; z-index:2;position:relative;">
+                                        {{threatAgentLikelihoodsMap.get(threatAgentID).refinedLikelihood | percent}}
+                                    </div>
 
-                            </td>
-                        </tr>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
             </ng-template>
         </ngb-tab>
-        <ngb-tab title="Most Vulnerable MyAssets">
+        <ngb-tab title="Most Vulnerable Assets">
             <ng-template ngbTabContent>
-                <div *ngIf="overview" class="table-responsive table-hover-no-pointer">
+                <ng-container *ngIf="loading">
+                    <div class="loader"></div>
+                </ng-container>
+                <div *ngIf="overview && !loading" class="table-responsive table-hover-no-pointer">
                     <table class="table table-striped">
                         <thead>
-                        <tr>
-                            <th>Asset</th>
-                            <th>Attack Strategy</th>
-                            <th>Vulnerability</th>
-                            <th>Likelihood</th>
-                        </tr>
+                            <tr>
+                                <th>Asset</th>
+                                <th># Attack Strategy</th>
+                            </tr>
                         </thead>
                         <tbody>
-                        <tr *ngFor="let item of overview.augmentedMyAssets; let i = index; let first = first">
-                            <ng-container *ngIf="first">
-                                <td>{{item.asset.name}}</td>
+                            <ng-container *ngFor="let item of assets">
+                                <tr>
+                                    <th scope="row"><a href="javascript:void(0)" (click)="selectAsset(item)">{{item.asset.name}}</a></th>
+                                    <td>{{assetAttacksNumbMap.get(item.asset.id)}}</td>
+                                </tr>
+                                <ng-container *ngIf="selectedAsset">
+                                    <tr *ngIf="selectedAsset.asset.id === item.asset.id">
+                                        <td colspan="2">
+                                            <ng-container *ngIf="loadingAttacksTable">
+                                                <div class="loader"></div>
+                                            </ng-container>
+                                            <table *ngIf="!loadingAttacksTable" class="table table-striped">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Attack Strategy</th>
+                                                        <th>Vulnerability</th>
+                                                        <th>Likelihood</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr *ngFor="let attack of selectedAttacks | paginate: { itemsPerPage: 7, currentPage: page }">
+                                                        <td>{{attack.name}}</td>
+                                                        <td *ngIf="attack.refinedVulnerability">{{attack.refinedVulnerability
+                                                            | number : '1.1-1'}}</td>
+                                                        <td *ngIf="!attack.refinedVulnerability && attack.contextualVulnerability">{{attack.contextualVulnerability
+                                                            | number : '1.1-1'}}</td>
+                                                        <td *ngIf="!attack.refinedVulnerability && !attack.contextualVulnerability">-</td>
+                                                        <td *ngIf="attack.refinedLikelihood">{{attack.refinedLikelihood |
+                                                            number : '1.1-1'}}</td>
+                                                        <td *ngIf="!attack.refinedLikelihood && attack.contextualLikelihood">{{attack.contextualLikelihood
+                                                            | number : '1.1-1'}}</td>
+                                                        <td *ngIf="!attack.refinedLikelihood && !attack.contextualLikelihood && attack.initialLikelihood">{{attack.initialLikelihood
+                                                            | number : '1.1-1'}}</td>
+                                                        <td *ngIf="!attack.refinedLikelihood && !attack.contextualLikelihood && !attack.initialLikelihood">-</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            <div class="text-center">
+                                                <pagination-controls (pageChange)="page = $event"></pagination-controls>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </ng-container>
                             </ng-container>
-                            <ng-container *ngIf="!first">
-                                <td *ngIf="overview.augmentedMyAssets[i-1].asset.name !== overview.augmentedMyAssets[i].asset.name">{{item.asset.name}}</td>
-                                <td *ngIf="overview.augmentedMyAssets[i-1].asset.name === overview.augmentedMyAssets[i].asset.name"> </td>
-                            </ng-container>
-                            <td>{{item.augmentedAttackStrategy.name}}</td>
-                            <td *ngIf="item.augmentedAttackStrategy.refinedVulnerability">{{item.augmentedAttackStrategy.refinedVulnerability | number : '1.1-1'}}</td>
-                            <td *ngIf="!item.augmentedAttackStrategy.refinedVulnerability && item.augmentedAttackStrategy.contextualVulnerability">{{item.augmentedAttackStrategy.contextualVulnerability | number : '1.1-1'}}</td>
-                            <td *ngIf="!item.augmentedAttackStrategy.refinedVulnerability && !item.augmentedAttackStrategy.contextualVulnerability">-</td>
-                            <td *ngIf="item.augmentedAttackStrategy.refinedLikelihood">{{item.augmentedAttackStrategy.refinedLikelihood | number : '1.1-1'}}</td>
-                            <td *ngIf="!item.augmentedAttackStrategy.refinedLikelihood && item.augmentedAttackStrategy.contextualLikelihood">{{item.augmentedAttackStrategy.contextualLikelihood | number : '1.1-1'}}</td>
-                            <td *ngIf="!item.augmentedAttackStrategy.refinedLikelihood && !item.augmentedAttackStrategy.contextualLikelihood && item.augmentedAttackStrategy.initialLikelihood">{{item.augmentedAttackStrategy.initialLikelihood | number : '1.1-1'}}</td>
-                            <td *ngIf="!item.augmentedAttackStrategy.refinedLikelihood && !item.augmentedAttackStrategy.contextualLikelihood && !item.augmentedAttackStrategy.initialLikelihood">-</td>
-                        </tr>
                         </tbody>
-                    </table>
                 </div>
             </ng-template>
         </ngb-tab>

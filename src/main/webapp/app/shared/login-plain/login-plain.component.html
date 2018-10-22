@@ -32,5 +32,8 @@
                 <button type="submit" class="btn btn-block btn-gradient waves-effect waves-light" jhiTranslate="login.form.button">Sign in</button>
             </div>
         </div>
+        <div *ngIf="authenticationError" class="row text-center m-t-10">
+            <jhi-alert-error></jhi-alert-error>
+        </div>
     </form>
 </div>

@@ -1,6 +1,6 @@
 import { Component, AfterViewInit, Renderer, ElementRef } from '@angular/core';
 import { Router } from '@angular/router';
-import { JhiEventManager } from 'ng-jhipster';
+import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
 
 import { LoginService } from '../login/login.service';
 import { StateStorageService } from '../auth/state-storage.service';
@@ -30,7 +30,8 @@ export class LoginPlainComponent implements AfterViewInit {
             private elementRef: ElementRef,
             private renderer: Renderer,
             private router: Router,
-            private modalService: NgbModal
+            private modalService: NgbModal,
+            private jhiAlertService: JhiAlertService
         ) {
             this.credentials = {};
         }

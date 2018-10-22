@@ -31,13 +31,19 @@ export class RiskEvaluationComponent implements OnInit, OnDestroy {
     public selectedColumn: number;
     public mapAssetAttacks: Map<number, MyAssetAttackChance[]> = new Map<number, MyAssetAttackChance[]>();
     public mapMaxCriticalLevel: Map<number, number[]> = new Map<number, number[]>();
-    public loading = false;
+    public noRiskInMap = false;
+    public loadingRiskLevel = false;
+    public loadingAssetsAndAttacks = false;
     public criticalBostonSquareLoad = true;
     public attacksToolTipLoaded = false;
     public attacksToolTipLoadedTimer = false;
     public assetToolTipLoaded = false;
     public assetToolTipLoadedTimer = false;
-    public page = 1;
+    public riskPaginator = {
+        id: 'risk_paginator',
+        itemsPerPage: 7,
+        currentPage: 1
+    };
     // public modalContent: string;
     private selectedAttacksChance: MyAssetAttackChance[];
     private closeResult: string;
@@ -65,13 +71,16 @@ export class RiskEvaluationComponent implements OnInit, OnDestroy {
     ) {
     }
 
+    onRiskPageChange(number: number) {
+        this.riskPaginator.currentPage = number;
+    }
+
     ngOnInit() {
         this.mySelf = this.mySelfAssessmentService.getSelfAssessment();
-        this.loading = true;
 
         this.riskService.getCriticalLevel(this.mySelf).toPromise().then((res) => {
             if (res) {
-                this.loading = true;
+                this.loadingRiskLevel = true;
                 this.criticalLevel = res;
                 console.log(this.criticalLevel);
                 this.squareColumnElement = [];
@@ -83,7 +92,7 @@ export class RiskEvaluationComponent implements OnInit, OnDestroy {
                 for (let i = 1; i <= this.criticalLevel.side + 1; i++) {
                     this.squareRowElement.push(i);
                 }
-                this.loading = false;
+                this.loadingRiskLevel = false;
             }
         });
 
@@ -96,8 +105,8 @@ export class RiskEvaluationComponent implements OnInit, OnDestroy {
         this.riskService.getMyAssets(this.mySelf).toPromise().then((res) => {
             if (res && res.length > 0) {
                 this.myAssets = res;
+                this.loadingAssetsAndAttacks = true;
                 for (const myAsset of this.myAssets) {
-                    this.loading = true;
                     this.riskService.getAttackChance(myAsset, this.mySelf).toPromise().then((res2) => {
                         if (res2) {
                             this.mapAssetAttacks.set(myAsset.id, res2);
@@ -105,13 +114,12 @@ export class RiskEvaluationComponent implements OnInit, OnDestroy {
                             // this.mapAssetAttacks = ordered.orderedMap;
                             // this.myAssets = ordered.orderedArray;
                         }
-                        this.loading = false;
                     });
                 }
-                this.ref.detectChanges();
+                this.loadingAssetsAndAttacks = false;
+                // this.ref.detectChanges();
                 console.log(this.mapAssetAttacks);
             }
-            this.loading = false;
         });
     }
 
@@ -313,6 +321,9 @@ export class RiskEvaluationComponent implements OnInit, OnDestroy {
             const critical = lStore[1] * lStore[1];
             const riskPercentage = this.evaluateRiskPercentage(critical, myAsset);
             this.riskPercentageMap.set(myAsset.id, riskPercentage);
+        }
+        if (this.riskPercentageMap.size === 0) {
+            this.noRiskInMap = true;
         }
         content = content.trim();
         const key = row.toString() + column.toString();

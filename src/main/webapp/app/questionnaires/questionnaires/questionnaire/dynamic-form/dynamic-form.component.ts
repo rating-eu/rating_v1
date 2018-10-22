@@ -29,7 +29,7 @@ import {QuestionnaireStatusMgmCustomService} from '../../../../entities/question
 @Component({
     selector: 'jhi-dynamic-form',
     templateUrl: './dynamic-form.component.html',
-    styleUrls: ['../../../css/radio.css'],
+    styleUrls: ['../../../css/radio.css', 'dynamic-form.css'],
     providers: [QuestionControlService]
 })
 export class DynamicFormComponent implements OnInit, OnDestroy {
@@ -40,6 +40,7 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
     private static CISO_ROLE = Role[Role.ROLE_CISO];
     private static EXTERNAL_ROLE = Role[Role.ROLE_EXTERNAL_AUDIT];
 
+    loading = false;
     debug = false;
     roleEnum = Role;
     purposeEnum = QuestionnairePurpose;
@@ -245,6 +246,7 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
     }
 
     private identifyThreatAgents() {
+        this.loading = true;
         console.log('ENTER ==> Identify Threat-agents...');
 
         console.log('OnSubmit called');
@@ -399,19 +401,22 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
             })
         );
 
-        selfAssessment$.subscribe(
+        selfAssessment$.toPromise().then(
             (selfAssessmentResponse: HttpResponse<SelfAssessmentMgm>) => {
                 this.selfAssessment = selfAssessmentResponse.body;
                 this.selfAssessmentService.setSelfAssessment(this.selfAssessment);
-
+                this.loading = false;
                 this.router.navigate(['/identify-threat-agent/result']);
             }
-        );
-
+        ).catch(() => {
+            // TODO Error management
+            this.loading = false;
+        });
         console.log('EXIT ==> Identify Threat-agents...');
     }
 
     private evaluateWeakness() {
+        this.loading = true;
         console.log('ENTER ==> Evaluating wekness...');
         console.log('OnSubmit called');
         console.log('Form\'s value is:');
@@ -454,19 +459,24 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
                     }
                 );
 
-        selfAssessment$.subscribe(
-            (selfAssessmentResponse: HttpResponse<SelfAssessmentMgm>) => {
+        selfAssessment$.toPromise()
+            .then((selfAssessmentResponse: HttpResponse<SelfAssessmentMgm>) => {
                 this.selfAssessment = selfAssessmentResponse.body;
                 this.selfAssessmentService.setSelfAssessment(this.selfAssessment);
 
+                this.loading = false;
                 this.router.navigate(['/evaluate-weakness/result']);
-            });
+            }).catch(() => {
+            // TODO Error management
+            this.loading = false;
+        });
 
         // For now don't store the attackStrategies but recalculate them and their likelihood based on the stored
         // MyAnswers
     }
 
     private externalAuditRefinement() {
+        this.loading = true;
         console.log('ENTER ==> Evaluating wekness...');
         console.log('OnSubmit called');
         console.log('Form\'s value is:');
@@ -495,9 +505,12 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
                     return this.createMyRefinementAnswersObservable(formDataMap, questionnaireStatus);
                 });
 
-        myRefinementAnswers.subscribe((response: HttpResponse<MyAnswerMgm[]>) => {
+        myRefinementAnswers.toPromise().then((response: HttpResponse<MyAnswerMgm[]>) => {
             console.log('MyAnswers: ' + JSON.stringify(response));
             this.router.navigate(['/evaluate-weakness/result']);
+        }).catch(() => {
+            // TODO Error management
+            this.loading = false;
         });
     }
 
@@ -589,7 +602,7 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
         }
     }
 
-// ==========HELPER METHODS============
+    // ==========HELPER METHODS============
 
     sort(answers: AnswerMgm[]): AnswerMgm[] {
         return answers.sort((a, b) => {
@@ -677,7 +690,7 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
     private deleteMyAnswersObservable(myAnswers: MyAnswerMgm[]):
 
         Observable<HttpResponse<MyAnswerMgm>>[] {// DELETE the OLD MyAnswers
-        const deleteMyAnswerObservable: Observable<HttpResponse<MyAnswerMgm>> [] = [];
+        const deleteMyAnswerObservable: Observable<HttpResponse<MyAnswerMgm>>[] = [];
 
         myAnswers.forEach(
             (myAnswer) => {

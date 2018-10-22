@@ -13,12 +13,14 @@ import {AuthInterceptor} from '../blocks/interceptor/auth.interceptor';
 import {JhiEventManager} from 'ng-jhipster';
 import {NotificationInterceptor} from '../blocks/interceptor/notification.interceptor';
 import {HTTP_INTERCEPTORS} from '@angular/common/http';
+import {NgxPaginationModule} from 'ngx-pagination';
 
 @NgModule({
     imports: [
         HermeneutSharedModule,
         CommonModule,
         ResultsRoutingModule,
+        NgxPaginationModule,
         MaterialModule
     ],
     declarations: [ResultsOverviewComponent],
