@@ -1,30 +1,30 @@
-import {Component, Input, OnDestroy, OnInit, Self} from '@angular/core';
-import {QuestionControlService} from './services/question-control.service';
-import {AbstractControl, FormGroup} from '@angular/forms';
-import {QuestionMgm, QuestionMgmService} from '../../../../entities/question-mgm';
-import {AnswerMgm, AnswerMgmService} from '../../../../entities/answer-mgm';
-import {ThreatAgentMgm, ThreatAgentMgmService} from '../../../../entities/threat-agent-mgm';
-import {Fraction} from '../../../../utils/fraction.class';
+import { Component, Input, OnDestroy, OnInit, Self } from '@angular/core';
+import { QuestionControlService } from './services/question-control.service';
+import { AbstractControl, FormGroup } from '@angular/forms';
+import { QuestionMgm, QuestionMgmService } from '../../../../entities/question-mgm';
+import { AnswerMgm, AnswerMgmService } from '../../../../entities/answer-mgm';
+import { ThreatAgentMgm, ThreatAgentMgmService } from '../../../../entities/threat-agent-mgm';
+import { Fraction } from '../../../../utils/fraction.class';
 import * as CryptoJS from 'crypto-js';
-import {Couple} from '../../../../utils/couple.class';
-import {DatasharingService} from '../../../../datasharing/datasharing.service';
-import {Router} from '@angular/router';
+import { Couple } from '../../../../utils/couple.class';
+import { DatasharingService } from '../../../../datasharing/datasharing.service';
+import { Router } from '@angular/router';
 import {
     QuestionnaireStatusMgm, QuestionnaireStatusMgmService, Role
 } from '../../../../entities/questionnaire-status-mgm';
-import {Status} from '../../../../entities/enumerations/QuestionnaireStatus.enum';
-import {QuestionnaireMgm} from '../../../../entities/questionnaire-mgm';
-import {QuestionnairePurpose} from '../../../../entities/enumerations/QuestionnairePurpose.enum';
-import {MyAnswerMgm, MyAnswerMgmService} from '../../../../entities/my-answer-mgm';
-import {AccountService, Principal, User, UserService} from '../../../../shared';
-import {SelfAssessmentMgm, SelfAssessmentMgmService} from '../../../../entities/self-assessment-mgm';
-import {Subscription} from 'rxjs/Subscription';
-import {FormUtils} from '../../../utils/FormUtils';
-import {forkJoin} from 'rxjs/observable/forkJoin';
-import {Observable} from 'rxjs/Observable';
-import {HttpResponse} from '@angular/common/http';
-import {concatMap, mergeMap} from 'rxjs/operators';
-import {QuestionnaireStatusMgmCustomService} from '../../../../entities/questionnaire-status-mgm/questionnaire-status-mgm.custom.service';
+import { Status } from '../../../../entities/enumerations/QuestionnaireStatus.enum';
+import { QuestionnaireMgm } from '../../../../entities/questionnaire-mgm';
+import { QuestionnairePurpose } from '../../../../entities/enumerations/QuestionnairePurpose.enum';
+import { MyAnswerMgm, MyAnswerMgmService } from '../../../../entities/my-answer-mgm';
+import { AccountService, Principal, User, UserService } from '../../../../shared';
+import { SelfAssessmentMgm, SelfAssessmentMgmService } from '../../../../entities/self-assessment-mgm';
+import { Subscription } from 'rxjs/Subscription';
+import { FormUtils } from '../../../utils/FormUtils';
+import { forkJoin } from 'rxjs/observable/forkJoin';
+import { Observable } from 'rxjs/Observable';
+import { HttpResponse } from '@angular/common/http';
+import { concatMap, mergeMap } from 'rxjs/operators';
+import { QuestionnaireStatusMgmCustomService } from '../../../../entities/questionnaire-status-mgm/questionnaire-status-mgm.custom.service';
 
 @Component({
     selector: 'jhi-dynamic-form',
@@ -40,6 +40,7 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
     private static CISO_ROLE = Role[Role.ROLE_CISO];
     private static EXTERNAL_ROLE = Role[Role.ROLE_EXTERNAL_AUDIT];
 
+    loading = false;
     debug = false;
     roleEnum = Role;
     purposeEnum = QuestionnairePurpose;
@@ -62,17 +63,17 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
     private _questionnaire: QuestionnaireMgm;
 
     constructor(private questionControlService: QuestionControlService,
-                private dataSharingSerivce: DatasharingService,
-                private router: Router,
-                private myAnswerService: MyAnswerMgmService,
-                private answerService: AnswerMgmService,
-                private selfAssessmentService: SelfAssessmentMgmService,
-                private questionnaireStatusService: QuestionnaireStatusMgmService,
-                private questionnaireStatusCustomService: QuestionnaireStatusMgmCustomService,
-                private accountService: AccountService,
-                private userService: UserService,
-                private questionService: QuestionMgmService,
-                private threatAgentService: ThreatAgentMgmService) {
+        private dataSharingSerivce: DatasharingService,
+        private router: Router,
+        private myAnswerService: MyAnswerMgmService,
+        private answerService: AnswerMgmService,
+        private selfAssessmentService: SelfAssessmentMgmService,
+        private questionnaireStatusService: QuestionnaireStatusMgmService,
+        private questionnaireStatusCustomService: QuestionnaireStatusMgmCustomService,
+        private accountService: AccountService,
+        private userService: UserService,
+        private questionService: QuestionMgmService,
+        private threatAgentService: ThreatAgentMgmService) {
     }
 
     @Input()
@@ -189,13 +190,13 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
                 if (this.questionnaireStatus) {
                     this.myAnswerService.getAllByQuestionnaireStatusID(this.questionnaireStatus.id)
                         .toPromise().then(
-                        (response2: HttpResponse<MyAnswerMgm[]>) => {
-                            this.myAnswers = response2.body;
+                            (response2: HttpResponse<MyAnswerMgm[]>) => {
+                                this.myAnswers = response2.body;
 
-                            // Restore the checked status of the Form inputs
-                            this.form.patchValue(this.myAnswersToFormValue(this.myAnswers, this.questionsArrayMap));
-                        }
-                    );
+                                // Restore the checked status of the Form inputs
+                                this.form.patchValue(this.myAnswersToFormValue(this.myAnswers, this.questionsArrayMap));
+                            }
+                        );
                 }
             }
         );
@@ -245,6 +246,7 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
     }
 
     private identifyThreatAgents() {
+        this.loading = true;
         console.log('ENTER ==> Identify Threat-agents...');
 
         console.log('OnSubmit called');
@@ -399,15 +401,17 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
             })
         );
 
-        selfAssessment$.subscribe(
+        selfAssessment$.toPromise().then(
             (selfAssessmentResponse: HttpResponse<SelfAssessmentMgm>) => {
                 this.selfAssessment = selfAssessmentResponse.body;
                 this.selfAssessmentService.setSelfAssessment(this.selfAssessment);
-
+                this.loading = false;
                 this.router.navigate(['/identify-threat-agent/result']);
             }
-        );
-
+        ).catch(() => {
+            // TODO Error management
+            this.loading = false;
+        });
         console.log('EXIT ==> Identify Threat-agents...');
     }
 
@@ -589,12 +593,12 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
         }
     }
 
-// ==========HELPER METHODS============
+    // ==========HELPER METHODS============
 
     sort(answers: AnswerMgm[]): AnswerMgm[] {
         return answers.sort((a, b) => {
-                return a.order - b.order;
-            }
+            return a.order - b.order;
+        }
         );
     }
 
@@ -677,7 +681,7 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
     private deleteMyAnswersObservable(myAnswers: MyAnswerMgm[]):
 
         Observable<HttpResponse<MyAnswerMgm>>[] {// DELETE the OLD MyAnswers
-        const deleteMyAnswerObservable: Observable<HttpResponse<MyAnswerMgm>> [] = [];
+        const deleteMyAnswerObservable: Observable<HttpResponse<MyAnswerMgm>>[] = [];
 
         myAnswers.forEach(
             (myAnswer) => {
