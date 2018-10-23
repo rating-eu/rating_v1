@@ -65,7 +65,6 @@ export class AssetReportComponent implements OnInit, OnDestroy {
                             this.tangibleCategoryKeys = [];
                             this.intangibleCategoryKeys = [];
                             for (const myAsset of this.myAssets) {
-                                myAsset.asset.name
                                 if (myAsset.asset.assetcategory.type.toString() === AssetType.INTANGIBLE.toString()) {
                                     this.intangible.push(myAsset);
                                     if (this.intangibleCategoryMap.has(myAsset.asset.assetcategory.name)) {

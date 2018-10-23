@@ -522,6 +522,6 @@ export class ImpactEvaluationComponent implements OnInit {
   }
 
   public close() {
-    this.router.navigate(['./']);
+    this.router.navigate(['/dashboard']);
   }
 }
