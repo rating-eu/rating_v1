@@ -19,7 +19,7 @@ id;name;created;modified;jhi_order;question_type;answer_type;questionnaire_id
 36;What percentage of software and applications are updated within a well-defined process? E.g. internally developed coding best practices to improve security of the applications.;now();now();18;RELEVANT;PERC5;2
 37;Are custom (e.g. internally developed) applications used? Are there custom applications accessible via Internet?;now();now();19;REGULAR;RANGE3;2
 38;What percentage of custom applications has been carried out according to the “Secure Coding” practices? E.g. recognised best practices such as Common Criteria or Secure software development lifecycle (OWASP).;now();now();20;REGULAR;PERC5;2
-39;If custom applications are used, in order to prevent tampering the main obfuscation techniques are used?;now();now();21;REGULAR;RANGE5;2
+39;Accoriding to GDPR law, in case of custom application development, are you using security-by-design and privacy-by-design best practices?;now();now();21;REGULAR;RANGE5;2
 40;Does your company distribute software to third parties? (e.g. mobile apps);now();now();22;REGULAR;RANGE3;2
 41;What percentage of the IT developers are aware of the set of general software security coding practices during the development lifecycle (e.g. OWASP Secure Coding Practices)?;now();now();23;REGULAR;PERC5;2
 42;How many legacy network protocols/services are used in the company that not guarantee security features (e.g. authentication, authorization, encryption)?;now();now();24;RELEVANT;PERC5;2
