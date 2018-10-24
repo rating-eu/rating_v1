@@ -1,5 +1,6 @@
 package eu.hermeneut.service.impl;
 
+import eu.hermeneut.domain.enumeration.AssetType;
 import eu.hermeneut.service.MyAssetService;
 import eu.hermeneut.domain.MyAsset;
 import eu.hermeneut.repository.MyAssetRepository;
@@ -118,5 +119,11 @@ public class MyAssetServiceImpl implements MyAssetService {
     public List<MyAsset> findAllBySelfAssessment(Long selfAssessmentID) {
         log.debug("Request to get all MyAssets by SelfAssessment ID");
         return myAssetRepository.findAllBySelfAssessment(selfAssessmentID);
+    }
+
+    @Override
+    public List<MyAsset> findAllBySelfAssessmentAndAssetType(Long selfAssessmentID, AssetType assetType) {
+        log.debug("Request to get all MyAssets by SelfAssessment ID and AssetType: " + assetType);
+        return this.myAssetRepository.findAllBySelfAssessmentAndAssetType(selfAssessmentID, assetType);
     }
 }

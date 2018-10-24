@@ -1,6 +1,7 @@
 package eu.hermeneut.service;
 
 import eu.hermeneut.domain.MyAsset;
+import eu.hermeneut.domain.enumeration.AssetType;
 
 import java.util.List;
 
@@ -52,4 +53,6 @@ public interface MyAssetService {
     List<MyAsset> search(String query);
 
     List<MyAsset> findAllBySelfAssessment(Long selfAssessmentID);
+
+    List<MyAsset> findAllBySelfAssessmentAndAssetType(Long selfAssessmentID, AssetType assetType);
 }
