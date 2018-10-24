@@ -575,6 +575,9 @@ span.badge.badge-secondary.date-box-container-detail-view {
 span.badge.badge-secondary.date-box-container-detail-view span {
     color: #393a3c;
 }
+.content-with-margin{
+    margin-top:70px;
+}
 
 .page-title-box {
     padding: 10px 20px;
