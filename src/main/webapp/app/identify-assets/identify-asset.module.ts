@@ -82,8 +82,7 @@ export class IdentifyAssetModule {
     constructor(private languageService: JhiLanguageService, private languageHelper: JhiLanguageHelper) {
         this.languageHelper.language
             .subscribe((languageKey: string) => {
-                console.log('ID_THREAT_AGENT lang: ' + languageKey);
-
+                // console.log('ID_THREAT_AGENT lang: ' + languageKey);
                 this.languageService.changeLanguage(languageKey);
             });
     }

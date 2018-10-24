@@ -6,7 +6,6 @@ const routes: Routes = [
     navbarRoute,
     sidebarRoute,
     ...errorRoute,
-
     {
         path: 'dashboard',
         loadChildren: './dashboard/dashboard.module#DashboardModule'
