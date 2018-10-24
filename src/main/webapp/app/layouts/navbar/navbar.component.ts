@@ -1,15 +1,19 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { JhiLanguageService } from 'ng-jhipster';
+import { JhiLanguageService, JhiAlertService } from 'ng-jhipster';
 
 import { ProfileService } from '../profiles/profile.service';
-import { JhiLanguageHelper, Principal, LoginModalService, LoginService } from '../../shared';
+import { JhiLanguageHelper, Principal, LoginModalService, LoginService, User, AccountService, UserService } from '../../shared';
 
 import { VERSION } from '../../app.constants';
 import { SidebarComponent } from '../sidebar/sidebar.component';
 import { DatasharingService } from '../../datasharing/datasharing.service';
 import { Update } from '../model/Update';
+import { MyCompanyMgm, MyCompanyMgmService } from '../../entities/my-company-mgm';
+import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
+import { CompanyProfileMgm, CompanyProfileMgmService } from '../../entities/company-profile-mgm';
+import { MyCompanyComponent } from '../../my-company/my-company.component';
 
 @Component({
     selector: 'jhi-navbar',
@@ -19,6 +23,14 @@ import { Update } from '../model/Update';
     ]
 })
 export class NavbarComponent implements OnInit {
+    private static NOT_FOUND = 404;
+    private user: User;
+    private myCompany: MyCompanyMgm;
+    private error: HttpErrorResponse;
+    private message: string;
+    private companyProfiles: CompanyProfileMgm[];
+    private companyProfile: CompanyProfileMgm;
+
     inProduction: boolean;
     isNavbarCollapsed: boolean;
     languages: any[];
@@ -28,6 +40,8 @@ export class NavbarComponent implements OnInit {
     navSubTitle: string;
     selfAssessmentId: string;
     selfAssessmentName: string;
+    sidebarCollapsed: boolean;
+    companyName: string;
 
     constructor(
         private loginService: LoginService,
@@ -37,7 +51,12 @@ export class NavbarComponent implements OnInit {
         private loginModalService: LoginModalService,
         private profileService: ProfileService,
         private router: Router,
-        private dataSharingService: DatasharingService
+        private dataSharingService: DatasharingService,
+        private accountService: AccountService,
+        private userService: UserService,
+        private myCompanyService: MyCompanyMgmService,
+        private companyProfileService: CompanyProfileMgmService,
+        private jhiAlertService: JhiAlertService
     ) {
         this.version = VERSION ? 'v' + VERSION : '';
         this.isNavbarCollapsed = true;
@@ -59,7 +78,38 @@ export class NavbarComponent implements OnInit {
                 this.navSubTitle = 'Selected self assessment: ';
                 this.selfAssessmentName = update.navSubTitle;
                 this.selfAssessmentId = update.selfAssessmentId;
+                this.sidebarCollapsed = update.isSidebarCollapsed;
             }
+        });
+
+        this.accountService.get().subscribe((response1) => {
+            const loggedAccount: Account = response1.body;
+            this.userService.find(loggedAccount['login']).subscribe((response2) => {
+                this.user = response2.body;
+
+                if (this.user) {
+                    this.myCompanyService.findByUser(this.user.id).subscribe(
+                        (response3: HttpResponse<MyCompanyMgm>) => {
+                            this.myCompany = response3.body;
+                            this.companyName = this.myCompany.companyProfile.name;
+                        }/*,
+                        (error: any) => {
+                            this.error = error;
+
+                            if (this.error.status === NavbarComponent.NOT_FOUND) {
+                                this.jhiAlertService.error('http.' + this.error.status, null, null);
+
+                                this.companyProfileService.query().subscribe(
+                                    (response4: HttpResponse<CompanyProfileMgm[]>) => {
+                                        this.companyProfiles = response4.body;
+                                    }
+                                );
+                            }
+                        }
+                        */
+                    );
+                }
+            });
         });
     }
 
@@ -74,6 +124,7 @@ export class NavbarComponent implements OnInit {
     hideShowSideNav() {
         const updateLayout: Update = this.dataSharingService.getUpdate();
         updateLayout.isSidebarCollapsed = !this.dataSharingService.getUpdate().isSidebarCollapsed;
+        this.sidebarCollapsed = updateLayout.isSidebarCollapsed;
         updateLayout.isSidebarCollapsedByMe = !this.dataSharingService.getUpdate().isSidebarCollapsedByMe;
         this.dataSharingService.updateLayout(updateLayout);
     }

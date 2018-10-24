@@ -1,5 +1,12 @@
 {
     "hermeneutApp": {
+        "dashboardSection": {
+            "page": {
+                "dashboard": {
+                    "title": "Dashboard"
+                }
+            }
+        },
         "assetSection": {
             "page": {
                 "assetIdentification": {

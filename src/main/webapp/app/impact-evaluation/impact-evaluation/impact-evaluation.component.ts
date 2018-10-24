@@ -101,7 +101,7 @@ export class ImpactEvaluationComponent implements OnInit {
     this.mySelf = this.mySelfAssessmentService.getSelfAssessment();
     this.impactService.getMyAssets(this.mySelf).toPromise().then((res) => {
       if (res && res.length > 0) {
-        // Recuperare tutti gli intangible;
+        // Recuperare tutti i tangible;
         for (const asset of res) {
           if ((asset.asset as AssetMgm).assetcategory.type.toString() === AssetType.TANGIBLE.toString()) {
             this.tangibleAssets.push(asset);
@@ -522,6 +522,6 @@ export class ImpactEvaluationComponent implements OnInit {
   }
 
   public close() {
-    this.router.navigate(['./']);
+    this.router.navigate(['/dashboard']);
   }
 }
