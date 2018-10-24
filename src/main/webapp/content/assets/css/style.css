@@ -71,6 +71,7 @@ ul li {
 
 .topbar {
     left: 0;
+    margin-left: 240px;
     position: fixed;
     right: 0;
     top: 0;
@@ -78,12 +79,13 @@ ul li {
 }
 
 .topbar .topbar-left {
-    background: #0a417d;
-    background: linear-gradient(to top, #0469a7, #0a417d);
-    box-shadow: -12px 0px 18px 0 rgba(0, 0, 0, 0.3);
+    /*background: #0a417d;*/
+    /*background: linear-gradient(to top, #0469a7, #0a417d);*/
+    /*box-shadow: -12px 0px 18px 0 rgba(0, 0, 0, 0.3);*/
     float: left;
+    /*margin-left: 240px;*/
     text-align: center;
-    height: 70px;
+    /*height: 70px;*/
     position: relative;
     width: 240px;
     z-index: 1;
@@ -116,9 +118,13 @@ ul li {
     border-radius: 0;
     margin-bottom: 0;
     padding: 0 10px 0 0 !Important;
-    /*margin-left: 240px;*/
+    margin-left: 240px;
     min-height: 70px;
     box-shadow: 0 0 18px 0 rgba(0, 0, 0, 0.3);
+}
+
+.navbar-custom-no-sidenav {
+    margin-left: 0;
 }
 
 .navbar-custom .nav-link {
@@ -176,7 +182,7 @@ ul li {
     margin-top: 0;
     padding-bottom: 30px;
     position: fixed;
-    top: 70px;
+    top: 0px;
     box-shadow: 0 0 24px 0 rgba(0,0,0,.06), 0 1px 0 0 rgba(0,0,0,.02);
     overflow-y: auto;
 }
@@ -457,8 +463,14 @@ ul li {
 
 .enlarged #wrapper .topbar .topbar-left .logo i {
     display: block;
-    line-height: 70px;
+    font-size: 2em;
+    font-weight: normal;
+    /*line-height: 70px;*/
     color: #3c86d8;
+}
+.enlarged #wrapper .topbar .topbar-left .logo h2 {
+    font-size: 20px;
+    font-weight: 700;
 }
 
 .enlarged #wrapper #sidebar-menu > ul > li:hover > a.open:after {
@@ -562,6 +574,9 @@ span.badge.badge-secondary.date-box-container-detail-view {
 
 span.badge.badge-secondary.date-box-container-detail-view span {
     color: #393a3c;
+}
+.content-with-margin{
+    margin-top:70px;
 }
 
 .page-title-box {
