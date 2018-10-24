@@ -465,12 +465,14 @@ ul li {
     display: block;
     font-size: 2em;
     font-weight: normal;
+    display: inline;
     /*line-height: 70px;*/
     color: #3c86d8;
 }
 .enlarged #wrapper .topbar .topbar-left .logo h2 {
     font-size: 20px;
     font-weight: 700;
+    display: inline;
 }
 
 .enlarged #wrapper #sidebar-menu > ul > li:hover > a.open:after {
@@ -4920,12 +4922,12 @@ h3.timeline-title {
     .topbar-left span {
         display: none;
     }
-
+/*
     .topbar-left i {
         display: block !important;
         line-height: 70px;
     }
-
+*/
     .navbar-custom {
         margin-left: 0px !important;
     }

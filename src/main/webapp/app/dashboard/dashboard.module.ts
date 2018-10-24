@@ -23,6 +23,7 @@ import {JhiEventManager, JhiLanguageService} from 'ng-jhipster';
 import {NotificationInterceptor} from '../blocks/interceptor/notification.interceptor';
 import {DashboardUtilsService} from './dashboard-utils.service';
 import {DashboardService} from './dashboard.service';
+import { IdentifyAssetUtilService } from '../identify-assets/identify-asset.util.service';
 
 @NgModule({
     imports: [
@@ -78,7 +79,8 @@ import {DashboardService} from './dashboard.service';
             ]
         },
         DashboardUtilsService,
-        DashboardService
+        DashboardService,
+        IdentifyAssetUtilService
     ]
 })
 export class DashboardModule {

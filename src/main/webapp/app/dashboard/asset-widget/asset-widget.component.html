@@ -1,3 +1,145 @@
-<p>
-  asset-widget works!
-</p>
+<div class="col-md-12" *ngIf="loading">
+  <div class="loader"></div>
+</div>
+<div class="col-md-12" *ngIf="!loading">
+  <div class="tile-stats">
+    <!--<div class="icon"><i class="fa fa-comments-o"></i></div>-->
+    <div class="count" *ngIf="myAssets">{{myAssets.length}}</div>
+    <h3>Assets</h3>
+    <p><a (click)="open(tangibleAssetsDetails)">tangible</a> | <a (click)="open(intangibleAssetsDetails)">intangible</a></p>
+  </div>
+</div>
+
+<ng-template #tangibleAssetsDetails let-d="dismiss">
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Tangible</h4>
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">Asset category</th>
+          <th scope="col">Assent in category</th>
+        </tr>
+      </thead>
+      <tbody>
+        <ng-container *ngFor="let key of tangibleCategoryKeys">
+          <tr>
+            <th scope="row"><a href="javascript:void(0)" (click)="selectAssetCategory(key)">{{key}}</a></th>
+            <td>
+              {{tangibleCategoryMap.get(key).length}}
+            </td>
+          </tr>
+          <ng-container *ngIf="selectedCategory">
+            <tr *ngIf="selectedCategory === key">
+              <td colspan="2">
+                <table class="col-md-12">
+                  <thead>
+                    <tr>
+                      <th scope="col" class="text-center align-middle">Asset</th>
+                      <th scope="col" class="text-center align-middle">Weight on company</th>
+                      <th scope="col" class="text-center align-middle">Estimated</th>
+                      <th scope="col" class="text-center align-middle">Magnitude</th>
+                      <th scope="col" class="text-center align-middle">Economic Value</th>
+                      <th scope="col" class="text-center align-middle">Impact</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let myAsset of selectedAssetsByCategory" class="text-center align-middle">
+                      <td>{{myAsset.asset.name}}</td>
+                      <td *ngIf="myAsset.ranking">{{myAsset.ranking}}</td>
+                      <td *ngIf="!myAsset.ranking"> - </td>
+                      <td *ngIf="myAsset.estimated">Yes</td>
+                      <td *ngIf="!myAsset.estimated">No</td>
+                      <td *ngIf="myAsset.magnitude">{{myAsset.magnitude}}</td>
+                      <td *ngIf="!myAsset.magnitude"> - </td>
+                      <td *ngIf="myAsset.economicValue">{{myAsset.economicValue}}</td>
+                      <td *ngIf="!myAsset.economicValue"> - </td>
+                      <td *ngIf="myAsset.impact">{{myAsset.impact}}</td>
+                      <td *ngIf="!myAsset.impact"> - </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </td>
+            </tr>
+          </ng-container>
+        </ng-container>
+      </tbody>
+    </table>
+  </div>
+  <!--
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Save</button>
+      </div>
+      -->
+</ng-template>
+
+<ng-template #intangibleAssetsDetails let-d="dismiss">
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Intangible</h4>
+    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">Asset category</th>
+          <th scope="col">Assent in category</th>
+        </tr>
+      </thead>
+      <tbody>
+        <ng-container *ngFor="let key of intangibleCategoryKeys">
+          <tr>
+            <th scope="row"><a href="javascript:void(0)" (click)="selectAssetCategory(key)">{{key}}</a></th>
+            <td>
+              {{intangibleCategoryMap.get(key).length}}
+            </td>
+          </tr>
+          <ng-container *ngIf="selectedCategory">
+            <tr *ngIf="selectedCategory === key">
+              <td colspan="2">
+                <table class="col-md-12">
+                  <thead>
+                    <tr>
+                      <th scope="col" class="text-center align-middle">Asset</th>
+                      <th scope="col" class="text-center align-middle">Weight on company</th>
+                      <th scope="col" class="text-center align-middle">Estimated</th>
+                      <th scope="col" class="text-center align-middle">Magnitude</th>
+                      <th scope="col" class="text-center align-middle">Economic Value</th>
+                      <th scope="col" class="text-center align-middle">Impact</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let myAsset of selectedAssetsByCategory" class="text-center align-middle">
+                      <td>{{myAsset.asset.name}}</td>
+                      <td *ngIf="myAsset.ranking">{{myAsset.ranking}}</td>
+                      <td *ngIf="!myAsset.ranking"> - </td>
+                      <td *ngIf="myAsset.estimated">Yes</td>
+                      <td *ngIf="!myAsset.estimated">No</td>
+                      <td *ngIf="myAsset.magnitude">{{myAsset.magnitude}}</td>
+                      <td *ngIf="!myAsset.magnitude"> - </td>
+                      <td *ngIf="myAsset.economicValue">{{myAsset.economicValue}}</td>
+                      <td *ngIf="!myAsset.economicValue"> - </td>
+                      <td *ngIf="myAsset.impact">{{myAsset.impact}}</td>
+                      <td *ngIf="!myAsset.impact"> - </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </td>
+            </tr>
+          </ng-container>
+        </ng-container>
+      </tbody>
+    </table>
+  </div>
+  <!--
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Save</button>
+        </div>
+        -->
+</ng-template>
