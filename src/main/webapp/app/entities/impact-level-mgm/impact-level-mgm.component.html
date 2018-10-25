@@ -42,7 +42,7 @@
             </thead>
             <tbody>
                 <tr *ngFor="let impactLevel of impactLevels ;trackBy: trackId">
-                    <td><a [routerLink]="['../impact-level-mgm', impactLevel.id ]">{{impactLevel.id}}</a></td>
+                    <!--<td><a [routerLink]="['../impact-level-mgm', impactLevel.id ]">{{impactLevel.id}}</a></td>-->
                     <td>{{impactLevel.selfAssessmentID}}</td>
                     <td>{{impactLevel.impact}}</td>
                     <td>{{impactLevel.minLoss}}</td>

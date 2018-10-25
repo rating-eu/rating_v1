@@ -74,7 +74,7 @@
             </thead>
             <tbody>
                 <tr *ngFor="let assetCategory of assetCategories ;trackBy: trackId">
-                    <td><a [routerLink]="['../asset-category-mgm', assetCategory.id ]">{{assetCategory.id}}</a></td>
+                    <!--<td><a [routerLink]="['../asset-category-mgm', assetCategory.id ]">{{assetCategory.id}}</a></td>-->
                     <td>{{assetCategory.name}}</td>
                     <td>{{assetCategory.description}}</td>
                     <td jhiTranslate="{{'hermeneutApp.AssetType.' + assetCategory.type}}">{{assetCategory.type}}</td>

@@ -80,7 +80,7 @@
             </thead>
             <tbody>
                 <tr *ngFor="let question of questions ;trackBy: trackId">
-                    <td><a [routerLink]="['../question-mgm', question.id ]">{{question.id}}</a></td>
+                    <!--<td><a [routerLink]="['../question-mgm', question.id ]">{{question.id}}</a></td>-->
                     <td>{{question.name}}</td>
                     <td>{{question.created | date:'medium'}}</td>
                     <td>{{question.modified | date:'medium'}}</td>

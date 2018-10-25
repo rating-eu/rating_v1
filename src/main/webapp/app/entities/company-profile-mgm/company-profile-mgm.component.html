@@ -78,7 +78,7 @@
             </thead>
             <tbody>
                 <tr *ngFor="let companyProfile of companyProfiles ;trackBy: trackId">
-                    <td><a [routerLink]="['../company-profile-mgm', companyProfile.id ]">{{companyProfile.id}}</a></td>
+                    <!--<td><a [routerLink]="['../company-profile-mgm', companyProfile.id ]">{{companyProfile.id}}</a></td>-->
                     <td>{{companyProfile.name}}</td>
                     <td>{{companyProfile.description}}</td>
                     <td>{{companyProfile.created | date:'medium'}}</td>

@@ -78,7 +78,7 @@
             </thead>
             <tbody>
                 <tr *ngFor="let myAsset of myAssets ;trackBy: trackId">
-                    <td><a [routerLink]="['../my-asset-mgm', myAsset.id ]">{{myAsset.id}}</a></td>
+                    <!--<td><a [routerLink]="['../my-asset-mgm', myAsset.id ]">{{myAsset.id}}</a></td>-->
                     <td>{{myAsset.magnitude}}</td>
                     <td>{{myAsset.ranking}}</td>
                     <td>{{myAsset.estimated}}</td>

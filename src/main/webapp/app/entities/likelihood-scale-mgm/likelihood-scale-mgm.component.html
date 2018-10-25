@@ -75,7 +75,7 @@
             </thead>
             <tbody>
                 <tr *ngFor="let likelihoodScale of likelihoodScales ;trackBy: trackId">
-                    <td><a [routerLink]="['../likelihood-scale-mgm', likelihoodScale.id ]">{{likelihoodScale.id}}</a></td>
+                    <!--<td><a [routerLink]="['../likelihood-scale-mgm', likelihoodScale.id ]">{{likelihoodScale.id}}</a></td>-->
                     <td>{{likelihoodScale.name}}</td>
                     <td>{{likelihoodScale.description}}</td>
                     <td>{{likelihoodScale.likelihood}}</td>

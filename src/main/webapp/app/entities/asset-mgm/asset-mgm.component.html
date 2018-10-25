@@ -75,7 +75,7 @@
             </thead>
             <tbody>
             <tr *ngFor="let asset of assets ;trackBy: trackId">
-                <td><a [routerLink]="['../asset-mgm', asset.id ]">{{asset.id}}</a></td>
+                <!--<td><a [routerLink]="['../asset-mgm', asset.id ]">{{asset.id}}</a></td>-->
                 <td>{{asset.name}}</td>
                 <td>{{asset.description}}</td>
                 <td>{{asset.created | date:'medium'}}</td>

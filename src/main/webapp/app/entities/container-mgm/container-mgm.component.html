@@ -74,7 +74,7 @@
             </thead>
             <tbody>
                 <tr *ngFor="let container of containers ;trackBy: trackId">
-                    <td><a [routerLink]="['../container-mgm', container.id ]">{{container.id}}</a></td>
+                    <!--<td><a [routerLink]="['../container-mgm', container.id ]">{{container.id}}</a></td>-->
                     <td>{{container.name}}</td>
                     <td>{{container.description}}</td>
                     <td jhiTranslate="{{'hermeneutApp.ContainerType.' + container.containerType}}">{{container.containerType}}</td>

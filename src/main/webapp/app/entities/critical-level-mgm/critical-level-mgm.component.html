@@ -75,7 +75,7 @@
             </thead>
             <tbody>
                 <tr *ngFor="let criticalLevel of criticalLevels ;trackBy: trackId">
-                    <td><a [routerLink]="['../critical-level-mgm', criticalLevel.id ]">{{criticalLevel.id}}</a></td>
+                    <!--<td><a [routerLink]="['../critical-level-mgm', criticalLevel.id ]">{{criticalLevel.id}}</a></td>-->
                     <td>{{criticalLevel.side}}</td>
                     <td>{{criticalLevel.lowLimit}}</td>
                     <td>{{criticalLevel.mediumLimit}}</td>

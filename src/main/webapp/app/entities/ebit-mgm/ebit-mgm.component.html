@@ -74,7 +74,7 @@
             </thead>
             <tbody>
                 <tr *ngFor="let eBIT of eBITS ;trackBy: trackId">
-                    <td><a [routerLink]="['../ebit-mgm', eBIT.id ]">{{eBIT.id}}</a></td>
+                    <!--<td><a [routerLink]="['../ebit-mgm', eBIT.id ]">{{eBIT.id}}</a></td>-->
                     <td>{{eBIT.year}}</td>
                     <td>{{eBIT.value}}</td>
                     <td>{{eBIT.created | date:'medium'}}</td>

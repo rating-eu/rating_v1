@@ -76,7 +76,7 @@
             </thead>
             <tbody>
             <tr *ngFor="let mitigation of mitigations ;trackBy: trackId">
-                <td><a [routerLink]="['../mitigation-mgm', mitigation.id ]">{{mitigation.id}}</a></td>
+                <!--<td><a [routerLink]="['../mitigation-mgm', mitigation.id ]">{{mitigation.id}}</a></td>-->
                 <td>{{mitigation.name}}</td>
                 <td>{{mitigation.description}}</td>
                 <td>{{mitigation.created | date:'medium'}}</td>

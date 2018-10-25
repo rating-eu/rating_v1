@@ -40,7 +40,7 @@
             </thead>
             <tbody>
                 <tr *ngFor="let myCompany of myCompanies ;trackBy: trackId">
-                    <td><a [routerLink]="['../my-company-mgm', myCompany.id ]">{{myCompany.id}}</a></td>
+                    <!--<td><a [routerLink]="['../my-company-mgm', myCompany.id ]">{{myCompany.id}}</a></td>-->
                     <td>
                         {{myCompany.user?.login}}
                     </td>

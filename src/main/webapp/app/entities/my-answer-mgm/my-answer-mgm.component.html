@@ -77,7 +77,7 @@
             </thead>
             <tbody>
                 <tr *ngFor="let myAnswer of myAnswers ;trackBy: trackId">
-                    <td><a [routerLink]="['../my-answer-mgm', myAnswer.id ]">{{myAnswer.id}}</a></td>
+                    <!--<td><a [routerLink]="['../my-answer-mgm', myAnswer.id ]">{{myAnswer.id}}</a></td>-->
                     <td>{{myAnswer.note}}</td>
                     <td>{{myAnswer.answerOffset}}</td>
                     <td>

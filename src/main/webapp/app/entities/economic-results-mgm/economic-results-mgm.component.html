@@ -77,7 +77,7 @@
             </thead>
             <tbody>
                 <tr *ngFor="let economicResults of economicResults ;trackBy: trackId">
-                    <td><a [routerLink]="['../economic-results-mgm', economicResults.id ]">{{economicResults.id}}</a></td>
+                    <!--<td><a [routerLink]="['../economic-results-mgm', economicResults.id ]">{{economicResults.id}}</a></td>-->
                     <td>{{economicResults.economicPerformance}}</td>
                     <td>{{economicResults.intangibleDrivingEarnings}}</td>
                     <td>{{economicResults.intangibleCapital}}</td>

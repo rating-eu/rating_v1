@@ -74,7 +74,7 @@
             </thead>
             <tbody>
                 <tr *ngFor="let motivation of motivations ;trackBy: trackId">
-                    <td><a [routerLink]="['../motivation-mgm', motivation.id ]">{{motivation.id}}</a></td>
+                    <!--<td><a [routerLink]="['../motivation-mgm', motivation.id ]">{{motivation.id}}</a></td>-->
                     <td>{{motivation.name}}</td>
                     <td>{{motivation.description}}</td>
                     <td>{{motivation.created | date:'medium'}}</td>

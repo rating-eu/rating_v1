@@ -75,7 +75,7 @@
             </thead>
             <tbody>
                 <tr *ngFor="let attackCost of attackCosts ;trackBy: trackId">
-                    <td><a [routerLink]="['../attack-cost-mgm', attackCost.id ]">{{attackCost.id}}</a></td>
+                    <!--<td><a [routerLink]="['../attack-cost-mgm', attackCost.id ]">{{attackCost.id}}</a></td>-->
                     <td jhiTranslate="{{'hermeneutApp.CostType.' + attackCost.type}}">{{attackCost.type}}</td>
                     <td>{{attackCost.description}}</td>
                     <td>{{attackCost.costs}}</td>

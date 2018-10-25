@@ -42,7 +42,7 @@
         </thead>
         <tbody>
             <tr *ngFor="let selfAssessment of mySelfAssessments ;trackBy: trackId">
-                <td><a [routerLink]="['../self-assessment-mgm', selfAssessment.id ]">{{selfAssessment.id}}</a></td>
+                <!--<td><a [routerLink]="['../self-assessment-mgm', selfAssessment.id ]">{{selfAssessment.id}}</a></td>-->
                 <td (click)="selectSelfAssessment(selfAssessment)">{{selfAssessment.name}}</td>
                 <td (click)="selectSelfAssessment(selfAssessment)">{{selfAssessment.created | date:'medium'}}</td>
                 <td (click)="selectSelfAssessment(selfAssessment)">{{selfAssessment.modified | date:'medium'}}</td>

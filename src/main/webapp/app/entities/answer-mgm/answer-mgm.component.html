@@ -77,7 +77,7 @@
             </thead>
             <tbody>
                 <tr *ngFor="let answer of answers ;trackBy: trackId">
-                    <td><a [routerLink]="['../answer-mgm', answer.id ]">{{answer.id}}</a></td>
+                    <!--<td><a [routerLink]="['../answer-mgm', answer.id ]">{{answer.id}}</a></td>-->
                     <td>{{answer.name}}</td>
                     <td>{{answer.created | date:'medium'}}</td>
                     <td>{{answer.modified | date:'medium'}}</td>

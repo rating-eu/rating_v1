@@ -83,7 +83,7 @@
             </thead>
             <tbody>
             <tr *ngFor="let attackStrategy of attackStrategies ;trackBy: trackId">
-                <td><a [routerLink]="['../attack-strategy-mgm', attackStrategy.id ]">{{attackStrategy.id}}</a></td>
+                <!--<td><a [routerLink]="['../attack-strategy-mgm', attackStrategy.id ]">{{attackStrategy.id}}</a></td>-->
                 <td>{{attackStrategy.name}}</td>
                 <td>{{attackStrategy.description}}</td>
                 <td jhiTranslate="{{'hermeneutApp.Frequency.' + attackStrategy.frequency}}">

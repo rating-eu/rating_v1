@@ -77,7 +77,7 @@
             </thead>
             <tbody>
             <tr *ngFor="let threatAgent of threatAgents ;trackBy: trackId">
-                <td><a [routerLink]="['../threat-agent-mgm', threatAgent.id ]">{{threatAgent.id}}</a></td>
+                <!--<td><a [routerLink]="['../threat-agent-mgm', threatAgent.id ]">{{threatAgent.id}}</a></td>-->
                 <td>{{threatAgent.name}}</td>
                 <td>{{threatAgent.description}}</td>
                 <td>

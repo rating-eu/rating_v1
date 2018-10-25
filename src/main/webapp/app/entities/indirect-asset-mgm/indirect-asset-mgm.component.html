@@ -72,7 +72,7 @@
             </thead>
             <tbody>
                 <tr *ngFor="let indirectAsset of indirectAssets ;trackBy: trackId">
-                    <td><a [routerLink]="['../indirect-asset-mgm', indirectAsset.id ]">{{indirectAsset.id}}</a></td>
+                    <!--<td><a [routerLink]="['../indirect-asset-mgm', indirectAsset.id ]">{{indirectAsset.id}}</a></td>-->
                     <td>
                         <div *ngIf="indirectAsset.directAsset">
                             <a [routerLink]="['../direct-asset-mgm', indirectAsset.directAsset?.id ]">{{indirectAsset.directAsset?.id}}</a>
