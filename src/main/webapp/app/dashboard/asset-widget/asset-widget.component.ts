@@ -9,7 +9,7 @@ import { AssetType } from '../../entities/enumerations/AssetType.enum';
 import { MyAssetMgm } from '../../entities/my-asset-mgm';
 import { Subscription } from 'rxjs';
 import { JhiEventManager } from 'ng-jhipster';
-import { NgbModal, ModalDismissReasons, NgbModalOptions } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'jhi-asset-widget',

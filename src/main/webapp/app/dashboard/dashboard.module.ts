@@ -24,12 +24,19 @@ import {NotificationInterceptor} from '../blocks/interceptor/notification.interc
 import {DashboardUtilsService} from './dashboard-utils.service';
 import {DashboardService} from './dashboard.service';
 import { IdentifyAssetUtilService } from '../identify-assets/identify-asset.util.service';
+import { RiskManagementService } from '../risk-management/risk-management.service';
+import { MaterialModule } from '../material/material.module';
+import { AttackMapService } from '../evaluate-weakness/attack-map.service';
+import { SelfAssessmentMgmService } from '../entities/self-assessment-mgm';
+import { LevelMgmService } from '../entities/level-mgm';
+import { PhaseMgmService } from '../entities/phase-mgm';
 
 @NgModule({
     imports: [
         CommonModule,
         HermeneutSharedModule,
-        DashboardRoutingModule
+        DashboardRoutingModule,
+        MaterialModule
     ],
     declarations: [
         CompanyWidgetComponent,
@@ -80,7 +87,12 @@ import { IdentifyAssetUtilService } from '../identify-assets/identify-asset.util
         },
         DashboardUtilsService,
         DashboardService,
-        IdentifyAssetUtilService
+        IdentifyAssetUtilService,
+        RiskManagementService,
+        AttackMapService,
+        SelfAssessmentMgmService,
+        LevelMgmService,
+        PhaseMgmService
     ]
 })
 export class DashboardModule {

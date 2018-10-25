@@ -1,1 +1,75 @@
 @import "../dashboard.module.css";
+
+.btn{
+    font-size: 14px !important;
+    font-weight: 400 !important;
+    font-family: "Helvetica Neue",Roboto,Arial,"Droid Sans",sans-serif !important;
+    white-space: normal !important;
+}
+
+.center-block{
+    display: block;
+    /* margin-right: auto !important; */
+    margin-left: auto !important;
+}
+
+.table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th{
+    padding: 8px !important;
+    line-height: 1.42857143 !important;
+    vertical-align: top !important;
+}
+
+.table{
+    font-size: 13px !important;
+    font-weight: 400 !important;
+    font-family: "Helvetica Neue",Roboto,Arial,"Droid Sans",sans-serif !important;
+}
+
+table{
+    font-family: "Helvetica Neue",Roboto,Arial,"Droid Sans",sans-serif !important;
+    width: 100%;
+    max-width: 100%;
+    margin-bottom: 20px;
+}
+
+table th{
+    font-family: "Helvetica Neue",Roboto,Arial,"Droid Sans",sans-serif !important;
+}
+
+.table-responsive{
+    border: 0px solid #ddd !important;
+    border-top-width: 0px !important;
+    border-right-width: 0px !important;
+    border-bottom-width: 0px !important;
+    border-left-width: 0px !important;
+}
+
+.low {
+    background-color: #00FF00;
+    color: black;
+}
+
+.low-medium {
+    background-color: #FFFF00;
+    color: black;
+}
+
+.medium {
+    background-color: #FFBB00;
+    color: black;
+}
+
+.medium-high {
+    background-color: #FF7700;
+    color: black;
+}
+
+.high {
+    background-color: #FF0000;
+    color: black;
+}
+
+.disabled {
+    background-color: #808080;
+    color: white;
+}
