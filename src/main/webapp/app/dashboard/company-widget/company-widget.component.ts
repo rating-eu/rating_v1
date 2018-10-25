@@ -10,7 +10,7 @@ import { HttpResponse } from '@angular/common/http';
 })
 export class CompanyWidgetComponent implements OnInit {
   private user: User;
-  private myCompany: MyCompanyMgm;
+  public myCompany: MyCompanyMgm;
   public companyName: string;
   public companySector: string;
 
