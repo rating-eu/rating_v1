@@ -96,11 +96,7 @@ export class AttackMapWidgetComponent implements OnInit, OnDestroy {
 
       // Make same ID AttackStrategies point to the same AugmentedAttackStrategy object
       for (const levelID of Object.keys(this.attacksCKC7Matrix)) {
-        console.log('LevelID: ' + levelID);
-
         for (const phaseID of Object.keys(this.attacksCKC7Matrix[levelID])) {
-          console.log('PhaseID: ' + phaseID);
-
           const augmentedAttackStrategies: Array<AugmentedAttackStrategy> = this.attacksCKC7Matrix[Number(levelID)][Number(phaseID)];
           const augmentedAttackStrategiesByReference: Array<AugmentedAttackStrategy> = [];
 
@@ -140,14 +136,14 @@ export class AttackMapWidgetComponent implements OnInit, OnDestroy {
   }
 
   likelihoodStepChange($event: MatHorizontalStepper) {
-    console.log('Likelihood Step Change...');
-    console.log('SelectedIndex: ' + $event.selectedIndex);
+
+
 
     const stepNumber: number = $event.selectedIndex;
     const stepName: string = LikelihoodStep[stepNumber];
     this.likelihoodStep = LikelihoodStep[stepName];
 
-    console.log('Likelihood Step: ' + this.likelihoodStep);
+
   }
 
   selectAttackStrategy(augmentedAttackStrategy: AugmentedAttackStrategy) {
