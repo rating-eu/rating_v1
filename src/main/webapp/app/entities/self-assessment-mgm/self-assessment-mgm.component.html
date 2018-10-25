@@ -60,7 +60,7 @@
         <table class="table table-striped">
             <thead>
             <tr>
-            <th><span jhiTranslate="global.field.id">ID</span></th>
+            <!--<th><span jhiTranslate="global.field.id">ID</span></th>-->
             <th><span jhiTranslate="hermeneutApp.selfAssessment.name">Name</span></th>
             <th><span jhiTranslate="hermeneutApp.selfAssessment.created">Created</span></th>
             <th><span jhiTranslate="hermeneutApp.selfAssessment.modified">Modified</span></th>
@@ -77,7 +77,7 @@
             </thead>
             <tbody>
             <tr *ngFor="let selfAssessment of selfAssessments ;trackBy: trackId">
-                <td><a [routerLink]="['../self-assessment-mgm', selfAssessment.id ]">{{selfAssessment.id}}</a></td>
+                <!--<td><a [routerLink]="['../self-assessment-mgm', selfAssessment.id ]">{{selfAssessment.id}}</a></td>-->
                 <td (click)="selectSelfAssessment(selfAssessment)">{{selfAssessment.name}}</td>
                 <td (click)="selectSelfAssessment(selfAssessment)">{{selfAssessment.created | date:'medium'}}</td>
                 <td (click)="selectSelfAssessment(selfAssessment)">{{selfAssessment.modified | date:'medium'}}</td>

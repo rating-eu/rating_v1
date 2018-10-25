@@ -66,7 +66,7 @@
         <table class="table table-striped">
             <thead>
             <tr>
-                <th><span jhiTranslate="global.field.id">ID</span></th>
+                <!--<th><span jhiTranslate="global.field.id">ID</span></th>-->
                 <th><span jhiTranslate="hermeneutApp.mitigation.name">Name</span></th>
                 <th><span jhiTranslate="hermeneutApp.mitigation.description">Description</span></th>
                 <th><span jhiTranslate="hermeneutApp.mitigation.created">Created</span></th>
@@ -76,7 +76,7 @@
             </thead>
             <tbody>
             <tr *ngFor="let mitigation of mitigations ;trackBy: trackId">
-                <td><a [routerLink]="['../mitigation-mgm', mitigation.id ]">{{mitigation.id}}</a></td>
+                <!--<td><a [routerLink]="['../mitigation-mgm', mitigation.id ]">{{mitigation.id}}</a></td>-->
                 <td>{{mitigation.name}}</td>
                 <td>{{mitigation.description}}</td>
                 <td>{{mitigation.created | date:'medium'}}</td>
