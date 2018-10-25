@@ -1,12 +1,12 @@
-<div class="col-md-12" *ngIf="loading">
+<div class="container" *ngIf="loading">
   <div class="loader"></div>
 </div>
-<div class="col-md-12" *ngIf="!loading">
+<div class="container" *ngIf="!loading">
   <div class="x_panel" style="padding:0px !important;">
     <div class="x_title" style="padding:0px !important;">
       <h2 style="padding: 10px;">Attack Plan</h2>
       <ul class="nav navbar-right panel_toolbox">
-        <li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
+        <li><a class="collapse-link" (click)="isCollapsed = !isCollapsed"><i class="fa fa-chevron-up"></i></a>
         </li>
         <!--
         <li class="dropdown">
@@ -20,7 +20,7 @@
       </ul>
       <div class="clearfix"></div>
     </div>
-    <div class="table-responsive x_content" style="padding:0px !important;">
+    <div class="table-responsive x_content" style="padding:0px !important;" [ngbCollapse]="isCollapsed">
 
       <p style="padding: 10px;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam laoreet sit amet magna
         vel consectetur. Cras iaculis condimentum consequat. Maecenas elementum mauris nisi, eleifend vestibulum lacus
@@ -59,9 +59,9 @@
               </th>
 
               <td *ngFor="let ckc7Phase of ckc7Phases">
-                <div class="container-fluid" [ngSwitch]="likelihoodStep">
+                <ng-container [ngSwitch]="likelihoodStep">
                   <span *ngSwitchCase="likelihoodStepEnum.INITIAL_LIKELIHOOD">
-                    <button type="button" class="btn btn-secondary m-1" *ngFor="let augmentedAttackStrategy of attacksCKC7Matrix[attackLevel.id][ckc7Phase.id];
+                    <button type="button" class="btn center-block btn-secondary" *ngFor="let augmentedAttackStrategy of attacksCKC7Matrix[attackLevel.id][ckc7Phase.id];
                             trackBy: trackByID"
                       [routerLink]="['/attack-strategy-mgm', augmentedAttackStrategy.id]" [disabled]="!selectedThreatAgent || !augmentedAttackStrategy.enabled"
                       [ngClass]="{
@@ -77,7 +77,7 @@
                   </span>
 
                   <span *ngSwitchCase="likelihoodStepEnum.CONTEXTUAL_LIKELIHOOD">
-                    <button type="button" class="btn btn-secondary m-1" *ngFor="let augmentedAttackStrategy of attacksCKC7Matrix[attackLevel.id][ckc7Phase.id];
+                    <button type="button" class="btn center-block btn-secondary" *ngFor="let augmentedAttackStrategy of attacksCKC7Matrix[attackLevel.id][ckc7Phase.id];
                             trackBy: trackByID"
                       [routerLink]="['/attack-strategy-mgm', augmentedAttackStrategy.id]" [disabled]="!selectedThreatAgent || !augmentedAttackStrategy.enabled"
                       [ngClass]="{
@@ -93,7 +93,7 @@
                   </span>
 
                   <span *ngSwitchCase="likelihoodStepEnum.REFINED_LIKELIHOOD">
-                    <button type="button" class="btn btn-secondary m-1" *ngFor="let augmentedAttackStrategy of attacksCKC7Matrix[attackLevel.id][ckc7Phase.id];
+                    <button type="button" class="btn center-block btn-secondary" *ngFor="let augmentedAttackStrategy of attacksCKC7Matrix[attackLevel.id][ckc7Phase.id];
                             trackBy: trackByID"
                       [routerLink]="['/attack-strategy-mgm', augmentedAttackStrategy.id]" [disabled]="!selectedThreatAgent || !augmentedAttackStrategy.enabled"
                       [ngClass]="{
@@ -107,7 +107,7 @@
                       {{augmentedAttackStrategy.name}}
                     </button>
                   </span>
-                </div>
+                </ng-container>
               </td>
           </tbody>
         </table>

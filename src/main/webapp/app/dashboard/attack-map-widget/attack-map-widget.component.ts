@@ -18,11 +18,12 @@ import { MatHorizontalStepper } from '@angular/material';
 @Component({
   selector: 'jhi-attack-map-widget',
   templateUrl: './attack-map-widget.component.html',
-  styles: []
+  styleUrls: ['attack-map-widget.component.css']
 })
 
 export class AttackMapWidgetComponent implements OnInit, OnDestroy {
   public loading = false;
+  public isCollapsed = false;
   viewDetails = false;
   private selectedAugmentedAttackStrategy: AugmentedAttackStrategy = null;
 
