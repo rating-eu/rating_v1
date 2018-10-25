@@ -64,7 +64,7 @@
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th><span jhiTranslate="global.field.id">ID</span></th>
+                    <!--<th><span jhiTranslate="global.field.id">ID</span></th>-->
                     <th><span jhiTranslate="hermeneutApp.criticalLevel.side">Side</span></th>
                     <th><span jhiTranslate="hermeneutApp.criticalLevel.lowLimit">Low Limit</span></th>
                     <th><span jhiTranslate="hermeneutApp.criticalLevel.mediumLimit">Medium Limit</span></th>
@@ -91,7 +91,7 @@
                                 <span class="fa fa-eye"></span>
                                 <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
                             </button>
-                            <button type="submit" 
+                            <button type="submit"
                                 (click)="popUpService.setOnUserBehaviour()"
                                 [routerLink]="['/', { outlets: { popup: 'critical-level-mgm/'+ criticalLevel.id + '/edit'} }]"
                                 replaceUrl="true" queryParamsHandling="merge" class="btn btn-primary btn-sm">
