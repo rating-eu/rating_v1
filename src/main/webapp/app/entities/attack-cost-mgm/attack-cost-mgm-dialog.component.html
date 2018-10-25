@@ -7,11 +7,11 @@
     </div>
     <div class="modal-body">
         <jhi-alert-error></jhi-alert-error>
-        <div class="form-group" [hidden]="!attackCost.id">
+        <!--<div class="form-group" [hidden]="!attackCost.id">
             <label for="id" jhiTranslate="global.field.id">ID</label>
             <input type="text" class="form-control" id="id" name="id"
                    [(ngModel)]="attackCost.id" readonly />
-        </div>
+        </div>-->
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="hermeneutApp.attackCost.type" for="field_type">Type</label>
             <select class="form-control" name="type" [(ngModel)]="attackCost.type" id="field_type"  required>
