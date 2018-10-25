@@ -10,3 +10,11 @@
     -webkit-animation: spin 2s linear infinite; /* Safari */
     animation: spin 2s linear infinite;
   }
+
+.tile-stats h3{
+    font-size: 24px;
+}
+
+.tiles-first-row{
+    height: 122px;
+}

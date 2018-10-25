@@ -24,6 +24,7 @@ import {NotificationInterceptor} from '../blocks/interceptor/notification.interc
 import {DashboardUtilsService} from './dashboard-utils.service';
 import {DashboardService} from './dashboard.service';
 import { IdentifyAssetUtilService } from '../identify-assets/identify-asset.util.service';
+import { RiskManagementService } from '../risk-management/risk-management.service';
 
 @NgModule({
     imports: [
@@ -80,7 +81,8 @@ import { IdentifyAssetUtilService } from '../identify-assets/identify-asset.util
         },
         DashboardUtilsService,
         DashboardService,
-        IdentifyAssetUtilService
+        IdentifyAssetUtilService,
+        RiskManagementService
     ]
 })
 export class DashboardModule {
