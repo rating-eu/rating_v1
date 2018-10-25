@@ -32,6 +32,7 @@ import { LevelMgmService } from '../entities/level-mgm';
 import { PhaseMgmService } from '../entities/phase-mgm';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
+import { ResultsService } from '../results/results.service';
 
 @NgModule({
     imports: [
@@ -96,7 +97,8 @@ import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
         AttackMapService,
         SelfAssessmentMgmService,
         LevelMgmService,
-        PhaseMgmService
+        PhaseMgmService,
+        ResultsService
     ]
 })
 export class DashboardModule {
