@@ -40,8 +40,11 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
     private static CISO_ROLE = Role[Role.ROLE_CISO];
     private static EXTERNAL_ROLE = Role[Role.ROLE_EXTERNAL_AUDIT];
 
-    loading = false;
-    debug = false;
+    public loading = false;
+    public debug = false;
+    public cisoEditMode: boolean;
+    public externalAuditEditMode: boolean;
+
     roleEnum = Role;
     purposeEnum = QuestionnairePurpose;
 
@@ -51,9 +54,11 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
      */
     questionsArrayMap: Map<number, QuestionMgm>;
     form: FormGroup;
-    questionnaireStatus: QuestionnaireStatusMgm;
+    cisoQuestionnaireStatus: QuestionnaireStatusMgm;
+    externalQuestionnaireStatus: QuestionnaireStatusMgm;
 
-    myAnswers: MyAnswerMgm[];
+    cisoMyAnswers: MyAnswerMgm[];
+    externalMyAnswers: MyAnswerMgm[];
 
     private account: Account;
     private role: Role;
@@ -100,6 +105,9 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
      input properties. Called once, after the first ngOnChanges().
      */
     ngOnInit() {
+        this.cisoEditMode = false;
+        this.externalAuditEditMode = false;
+
         this.selfAssessment = this.selfAssessmentService.getSelfAssessment();
 
         // 1) Here all the input properties are expected to be set!!!
@@ -172,7 +180,7 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
             }
         );
 
-        const questionnaireStatus$ = user$.mergeMap(
+        const cisoQuestionnaireStatus$ = user$.mergeMap(
             (response: HttpResponse<User>) => {
                 this.user = response.body;
                 console.log('User: ' + JSON.stringify(this.user));
@@ -183,20 +191,55 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
             }
         );
 
-        questionnaireStatus$.subscribe(
+        cisoQuestionnaireStatus$.subscribe(
             (response: HttpResponse<QuestionnaireStatusMgm>) => {
-                this.questionnaireStatus = response.body;
+                this.cisoQuestionnaireStatus = response.body;
 
-                if (this.questionnaireStatus) {
-                    this.myAnswerService.getAllByQuestionnaireStatusID(this.questionnaireStatus.id)
+                if (this.cisoQuestionnaireStatus) {
+                    this.myAnswerService.getAllByQuestionnaireStatusID(this.cisoQuestionnaireStatus.id)
                         .toPromise().then(
                         (response2: HttpResponse<MyAnswerMgm[]>) => {
-                            this.myAnswers = response2.body;
+                            this.cisoMyAnswers = response2.body;
 
                             // Restore the checked status of the Form inputs
-                            this.form.patchValue(this.myAnswersToFormValue(this.myAnswers, this.questionsArrayMap));
+                            this.form.patchValue(this.myAnswersToFormValue(this.cisoMyAnswers, this.questionsArrayMap));
                         }
                     );
+                } else {
+                    // Enable the edit mode only if there is no QuestionnaireStatus in DB
+                    this.cisoEditMode = true;
+                }
+            }
+        );
+
+        const externalQuestionnaireStatus$ = user$.mergeMap(
+            (response: HttpResponse<User>) => {
+                this.user = response.body;
+                console.log('User: ' + JSON.stringify(this.user));
+
+                // Fetch the QuestionnaireStatus of the CISO
+                return this.questionnaireStatusCustomService
+                    .getByRoleSelfAssessmentAndQuestionnaire(DynamicFormComponent.EXTERNAL_ROLE, this.selfAssessment.id, this.questionnaire.id);
+            }
+        );
+
+        externalQuestionnaireStatus$.subscribe(
+            (response: HttpResponse<QuestionnaireStatusMgm>) => {
+                this.externalQuestionnaireStatus = response.body;
+
+                if (this.externalQuestionnaireStatus) {
+                    this.myAnswerService.getAllByQuestionnaireStatusID(this.externalQuestionnaireStatus.id)
+                        .toPromise().then(
+                        (response2: HttpResponse<MyAnswerMgm[]>) => {
+                            this.externalMyAnswers = response2.body;
+
+                            // Restore the checked status of the Form inputs
+                            this.form.patchValue(this.myAnswersToFormValue(this.externalMyAnswers, this.questionsArrayMap, false));
+                        }
+                    );
+                } else {
+                    // Enable the edit mode only if there is no QuestionnaireStatus in DB
+                    this.externalAuditEditMode = true;
                 }
             }
         );
@@ -527,22 +570,22 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
         console.log('FormData: ' + formDataMap);
         console.log('FormDataMap Size: ' + formDataMap.size);
 
-        switch (this.questionnaireStatus.status) {
+        switch (this.cisoQuestionnaireStatus.status) {
             case Status.EMPTY: {// create a new QuestionnaireStatus && create MyAnswers
                 /**
                  * The PENDING status for the questionnaire.
                  * @type {QuestionnaireStatusMgm}
                  */
-                this.questionnaireStatus = new QuestionnaireStatusMgm(undefined, Status.PENDING, null, null, this.selfAssessment, this._questionnaire, this.role, this.user, []);
+                this.cisoQuestionnaireStatus = new QuestionnaireStatusMgm(undefined, Status.PENDING, null, null, this.selfAssessment, this._questionnaire, this.role, this.user, []);
 
                 // Getting the id of the above QuestionnaireStatus
                 this.subscriptions.push(
-                    this.questionnaireStatusService.create(this.questionnaireStatus).subscribe(
+                    this.questionnaireStatusService.create(this.cisoQuestionnaireStatus).subscribe(
                         (statusResponse) => {
-                            this.questionnaireStatus = statusResponse.body;
+                            this.cisoQuestionnaireStatus = statusResponse.body;
 
                             // CREATE the NEW MyAnswers
-                            const createObservables: Observable<HttpResponse<MyAnswerMgm[]>> = this.createMyAnswersObservable(formDataMap, this.questionnaireStatus);
+                            const createObservables: Observable<HttpResponse<MyAnswerMgm[]>> = this.createMyAnswersObservable(formDataMap, this.cisoQuestionnaireStatus);
 
                             createObservables.subscribe(
                                 (myAnswersResponse: HttpResponse<MyAnswerMgm[]>) => {
@@ -565,7 +608,7 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
             case Status.PENDING: {// no need to update the existing QuestionnaireStatus, just delete old MyAnswers, create new MyAnswers
 
                 // DELETE the OLD MyAnswers
-                const deleteObservables: Observable<HttpResponse<MyAnswerMgm>>[] = this.deleteMyAnswersObservable(this.myAnswers);
+                const deleteObservables: Observable<HttpResponse<MyAnswerMgm>>[] = this.deleteMyAnswersObservable(this.cisoMyAnswers);
 
                 forkJoin(deleteObservables).subscribe(
                     (responses: HttpResponse<any>[]) => {
@@ -580,7 +623,7 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
                 );
 
                 // CREATE the NEW MyAnswers
-                const createObservables: Observable<HttpResponse<MyAnswerMgm[]>> = this.createMyAnswersObservable(formDataMap, this.questionnaireStatus);
+                const createObservables: Observable<HttpResponse<MyAnswerMgm[]>> = this.createMyAnswersObservable(formDataMap, this.cisoQuestionnaireStatus);
 
                 createObservables.subscribe(
                     (myAnswersResponse: HttpResponse<MyAnswerMgm[]>) => {
@@ -611,7 +654,7 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
         );
     }
 
-    private myAnswersToFormValue(myAnswers: MyAnswerMgm[], questionsMap: Map<number, QuestionMgm>) {
+    private myAnswersToFormValue(myAnswers: MyAnswerMgm[], questionsMap: Map<number, QuestionMgm>, ciso: boolean = true) {
         console.log('MyAnswers to FormValue...');
         console.log('MyAnswers: ' + JSON.stringify(myAnswers));
         console.log('QuestionsMap size: ' + questionsMap.size);
@@ -644,7 +687,12 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
 
                 console.log('Exact Answer: ' + JSON.stringify(exactAnswer));
 
-                value[String(myAnswer.question.id)] = exactAnswer;
+                if (ciso) {
+                    value[String(myAnswer.question.id)] = exactAnswer;
+                } else {
+                    value[String(myAnswer.question.id + '.external')] = exactAnswer;
+                    value[String(myAnswer.question.id + '.note')] = myAnswer.note;
+                }
             }
         );
 
