@@ -1,8 +1,10 @@
-<div class="col-md-12">
+<div class="col-md-12" *ngIf="!myCompany">
+  <div class="loader"></div>
+</div>
+<div class="col-md-12" *ngIf="myCompany">
   <div class="tile-stats">
-    <!--<div class="icon"><i class="fa fa-caret-square-o-right"></i></div>-->
-    <div class="count">Health Care</div>
-    <h3></h3>
-    <p>edit</p>
+      <div class="count"></div>
+    <h3>{{companySector}}</h3>
+    <p><a [routerLink]="['/', { outlets: { popup: 'my-company-mgm/'+ myCompany.id + '/edit'} }]">edit</a></p>
   </div>
 </div>
