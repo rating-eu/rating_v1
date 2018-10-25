@@ -66,7 +66,7 @@
         <table class="table table-striped">
             <thead>
             <tr>
-                <th><span jhiTranslate="global.field.id">ID</span></th>
+                <!--<th><span jhiTranslate="global.field.id">ID</span></th>-->
                 <th><span jhiTranslate="hermeneutApp.attackStrategy.name">Name</span></th>
                 <th><span jhiTranslate="hermeneutApp.attackStrategy.description">Description</span></th>
                 <th><span jhiTranslate="hermeneutApp.attackStrategy.frequency">Frequency</span></th>
@@ -83,7 +83,7 @@
             </thead>
             <tbody>
             <tr *ngFor="let attackStrategy of attackStrategies ;trackBy: trackId">
-                <td><a [routerLink]="['../attack-strategy-mgm', attackStrategy.id ]">{{attackStrategy.id}}</a></td>
+                <!--<td><a [routerLink]="['../attack-strategy-mgm', attackStrategy.id ]">{{attackStrategy.id}}</a></td>-->
                 <td>{{attackStrategy.name}}</td>
                 <td>{{attackStrategy.description}}</td>
                 <td jhiTranslate="{{'hermeneutApp.Frequency.' + attackStrategy.frequency}}">

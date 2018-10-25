@@ -61,7 +61,7 @@
         <table class="table table-striped">
             <thead>
             <tr>
-            <th><span jhiTranslate="global.field.id">ID</span></th>
+            <!--<th><span jhiTranslate="global.field.id">ID</span></th>-->
             <th><span jhiTranslate="hermeneutApp.questionnaireStatus.status">Status</span></th>
             <th><span jhiTranslate="hermeneutApp.questionnaireStatus.created">Created</span></th>
             <th><span jhiTranslate="hermeneutApp.questionnaireStatus.modified">Modified</span></th>
@@ -74,7 +74,7 @@
             </thead>
             <tbody>
             <tr *ngFor="let questionnaireStatus of questionnaireStatuses ;trackBy: trackId">
-                <td><a [routerLink]="['../questionnaire-status-mgm', questionnaireStatus.id ]">{{questionnaireStatus.id}}</a></td>
+                <!--<td><a [routerLink]="['../questionnaire-status-mgm', questionnaireStatus.id ]">{{questionnaireStatus.id}}</a></td>-->
                 <td jhiTranslate="{{'hermeneutApp.Status.' + questionnaireStatus.status}}">{{questionnaireStatus.status}}</td>
                 <td>{{questionnaireStatus.created | date:'medium'}}</td>
                 <td>{{questionnaireStatus.modified | date:'medium'}}</td>
