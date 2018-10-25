@@ -30,13 +30,17 @@ import { AttackMapService } from '../evaluate-weakness/attack-map.service';
 import { SelfAssessmentMgmService } from '../entities/self-assessment-mgm';
 import { LevelMgmService } from '../entities/level-mgm';
 import { PhaseMgmService } from '../entities/phase-mgm';
+import { NgxPaginationModule } from 'ngx-pagination';
+import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
     imports: [
         CommonModule,
         HermeneutSharedModule,
         DashboardRoutingModule,
-        MaterialModule
+        MaterialModule,
+        NgxPaginationModule,
+        NgbCollapseModule.forRoot()
     ],
     declarations: [
         CompanyWidgetComponent,
