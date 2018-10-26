@@ -84,19 +84,19 @@ public class WP3StepsController {
             if (existingEbits != null) {
                 //Drop the OLD EBITs
                 this.ebitService.delete(existingEbits);
-            } else {
-                //Save new EBITs
-                ZonedDateTime now = ZonedDateTime.now();
-
-                for (EBIT ebit : ebits) {
-                    ebit.setId(null);
-                    ebit.setSelfAssessment(selfAssessment);
-                    ebit.setCreated(now);
-                }
-
-                //Save the EBITs
-                ebits = this.ebitService.save(ebits);
             }
+
+            //Save new EBITs
+            ZonedDateTime now = ZonedDateTime.now();
+
+            for (EBIT ebit : ebits) {
+                ebit.setId(null);
+                ebit.setSelfAssessment(selfAssessment);
+                ebit.setCreated(now);
+            }
+
+            //Save the EBITs
+            ebits = this.ebitService.save(ebits);
 
             EconomicCoefficients economicCoefficients = wp3InputBundle.getEconomicCoefficients();
 
