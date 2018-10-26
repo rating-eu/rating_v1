@@ -1,15 +1,14 @@
+import * as _ from 'lodash';
+
 import { Component, OnInit } from '@angular/core';
 import { User, AccountService, UserService } from '../../shared';
 import { MyCompanyMgm, MyCompanyMgmService } from '../../entities/my-company-mgm';
 import { HttpResponse } from '@angular/common/http';
 import { ImpactEvaluationService } from '../../impact-evaluation/impact-evaluation.service';
-import _ = require('lodash');
-import { SectorType } from '../../entities/splitting-loss-mgm';
 import { MyCategoryType } from '../../entities/enumerations/MyCategoryType.enum';
 import { MySectorType } from '../../entities/enumerations/MySectorType.enum';
 import { SelfAssessmentMgmService, SelfAssessmentMgm } from '../../entities/self-assessment-mgm';
 import { ImpactEvaluationStatus } from '../../impact-evaluation/model/impact-evaluation-status.model';
-import { MyAssetMgm } from '../../entities/my-asset-mgm';
 
 @Component({
   selector: 'jhi-splitting-widget',
@@ -65,8 +64,8 @@ export class SplittingWidgetComponent implements OnInit {
             case MyCategoryType.IP.toString(): {
               if (impact.sectorType.toString() !== MySectorType.GLOBAL.toString()) {
                 this.tableInfo.push({
-                  splitting : 'Intellectual Properties',
-                  value : Math.round(impact.loss * 100) / 100
+                  splitting: 'Intellectual Properties',
+                  value: Math.round(impact.loss * 100) / 100
                 });
               }
               break;
@@ -74,8 +73,8 @@ export class SplittingWidgetComponent implements OnInit {
             case MyCategoryType.KEY_COMP.toString(): {
               if (impact.sectorType.toString() !== MySectorType.GLOBAL.toString()) {
                 this.tableInfo.push({
-                  splitting : 'Key Competences',
-                  value : Math.round(impact.loss * 100) / 100
+                  splitting: 'Key Competences',
+                  value: Math.round(impact.loss * 100) / 100
                 });
               }
               break;
@@ -83,8 +82,8 @@ export class SplittingWidgetComponent implements OnInit {
             case MyCategoryType.ORG_CAPITAL.toString(): {
               if (impact.sectorType.toString() !== MySectorType.GLOBAL.toString()) {
                 this.tableInfo.push({
-                  splitting : 'Organizational Capital (Reputation & Brand included )',
-                  value : Math.round(impact.loss * 100) / 100
+                  splitting: 'Organizational Capital (Reputation & Brand included )',
+                  value: Math.round(impact.loss * 100) / 100
                 });
               }
               break;
