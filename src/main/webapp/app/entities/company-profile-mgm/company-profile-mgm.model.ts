@@ -1,6 +1,6 @@
 import { BaseEntity, User } from './../../shared';
 
-export const enum CompType {
+export enum CompType {
     'OTHER',
     'FINANCE_AND_INSURANCE',
     'HEALTH_CARE_AND_SOCIAL_ASSISTANCE',

@@ -26,16 +26,16 @@ export class WeaknessUtils {
         answerWeights.forEach((answerWeight: AnswerWeightMgm) => {
             const questionType: QuestionType = answerWeight.questionType;
             const questionTypeValue: number = Number(QuestionType[questionType]);
-            console.log('QuestionType: ' + questionType);
-            console.log('QuestionType value: ' + questionTypeValue);
+            // console.log('QuestionType: ' + questionType);
+            // console.log('QuestionType value: ' + questionTypeValue);
 
             const answerLikelihood: AnswerLikelihood = answerWeight.likelihood;
             const answerLikelihoodValue: number = Number(AnswerLikelihood[answerLikelihood]);
-            console.log('AnswerLikelihood: ' + answerLikelihood);
-            console.log('AnswerLikelihood value: ' + answerLikelihoodValue);
+            // console.log('AnswerLikelihood: ' + answerLikelihood);
+            // console.log('AnswerLikelihood value: ' + answerLikelihoodValue);
 
             const weight: number = answerWeight.weight;
-            console.log('Weight: ' + weight);
+            // console.log('Weight: ' + weight);
 
             if (answerWeightMap.has(questionTypeValue)) {// REGULAR, RELEVANT
                 // LOW, LOW_MEDIUM, MEDIUM, MEDIUM_HIGH, HIGH
@@ -70,15 +70,15 @@ export class WeaknessUtils {
 
     public static isAttackPossible(threatAgentSkills: SkillLevel, attackStrategyDifficulty: SkillLevel): boolean {
 
-        console.log('ENTER isAttackPossible...');
+        // console.log('ENTER isAttackPossible...');
 
-        console.log(threatAgentSkills); // String
+        // console.log(threatAgentSkills); // String
         const threatAgentSkillsValue = SkillLevel[threatAgentSkills];
-        console.log(threatAgentSkillsValue); // Number
+        // console.log(threatAgentSkillsValue); // Number
 
-        console.log(attackStrategyDifficulty); // String
+        // console.log(attackStrategyDifficulty); // String
         const attackStrategyDifficultyValue = SkillLevel[attackStrategyDifficulty];
-        console.log(attackStrategyDifficultyValue); // Number
+        // console.log(attackStrategyDifficultyValue); // Number
 
         return threatAgentSkillsValue >= attackStrategyDifficultyValue;
     }
@@ -86,11 +86,11 @@ export class WeaknessUtils {
     public static numberToAttackStrategyLikelihood(likelihoodNumber: number): AttackStrategyLikelihood {
         // Round it to the nearest integer value
         const integerLikelihood: number = Math.round(likelihoodNumber);
-        console.log('Integer LikelihoodNumber: ' + integerLikelihood);
+        // console.log('Integer LikelihoodNumber: ' + integerLikelihood);
 
         // Get the corresponding Likelihood enum entry
         const likelihood: AttackStrategyLikelihood = AttackStrategyLikelihood[AttackStrategyLikelihood[integerLikelihood]];
-        console.log('Likelihood enum: ' + likelihood);
+        // console.log('Likelihood enum: ' + likelihood);
 
         return likelihood;
     }
@@ -99,12 +99,12 @@ export class WeaknessUtils {
         threatAgent: ThreatAgentMgm,
         augmentedAttackStrategiesMap: Map<number/*AttackStrategy ID*/, AugmentedAttackStrategy/*AttackStrategy likelihoods*/>) {
 
-        console.log('ThreatAgent Changed: ' + JSON.stringify(threatAgent));
+        // console.log('ThreatAgent Changed: ' + JSON.stringify(threatAgent));
         // Update the enabled status of each AttackStrategy depending on the Skills of
         // the ThreatAgent and the Skills required to perform the attack.
         augmentedAttackStrategiesMap.forEach((augmentedAttackStrategy: AugmentedAttackStrategy) => {
             const attackStrategy: AttackStrategyMgm = augmentedAttackStrategy;
-            console.log('AttackStrategy: ' + JSON.stringify(attackStrategy));
+            // console.log('AttackStrategy: ' + JSON.stringify(attackStrategy));
 
             // Check if the ThreatAgent is defined or not
             if (threatAgent) {
@@ -113,7 +113,7 @@ export class WeaknessUtils {
                 augmentedAttackStrategy.enabled = false;
             }
 
-            console.log('Enabled: ' + augmentedAttackStrategy.enabled);
+            // console.log('Enabled: ' + augmentedAttackStrategy.enabled);
         });
     }
 
@@ -139,12 +139,12 @@ export class WeaknessUtils {
             }
         };
 
-        console.log('Matrix:');
-        console.log(JSON.stringify(attackStrategyInitialLikelihoodMatrix));
+        // console.log('Matrix:');
+        // console.log(JSON.stringify(attackStrategyInitialLikelihoodMatrix));
 
         // Reducing matrix index by one, since it's zero-based
         const likelihood: AttackStrategyLikelihood = attackStrategyInitialLikelihoodMatrix[frequencyValue][resourcesValue];
-        console.log('Likelihood: ' + likelihood);
+        // console.log('Likelihood: ' + likelihood);
 
         return likelihood;
     }

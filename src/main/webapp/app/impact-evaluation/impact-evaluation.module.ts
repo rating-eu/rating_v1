@@ -14,6 +14,7 @@ import { ErrorHandlerInterceptor } from '../blocks/interceptor/errorhandler.inte
 import { JhiEventManager } from '../../../../../node_modules/ng-jhipster';
 import { NotificationInterceptor } from '../blocks/interceptor/notification.interceptor';
 import {JhiLanguageService} from 'ng-jhipster';
+import { MyCompanyMgmService } from '../entities/my-company-mgm';
 
 @NgModule({
   imports: [
@@ -63,7 +64,8 @@ import {JhiLanguageService} from 'ng-jhipster';
         Injector
       ]
     },
-    ImpactEvaluationService
+    ImpactEvaluationService,
+    MyCompanyMgmService
   ]
 })
 export class ImpactEvaluationModule {
