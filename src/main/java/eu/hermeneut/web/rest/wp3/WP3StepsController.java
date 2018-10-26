@@ -41,6 +41,9 @@ public class WP3StepsController {
     @Autowired
     private SplittingLossService splittingLossService;
 
+    @Autowired
+    private MyAssetService myAssetService;
+
     private static final Map<Long, Object> SELF_ASSESSMENT_LOCK = new HashMap<>();
 
     @PostMapping("{selfAssessmentID}/wp3/step-one")
@@ -187,6 +190,8 @@ public class WP3StepsController {
         if (myAssets.size() == 0) {
             throw new IllegalInputException("MyAssets can NOT have size equal to ZERO!");
         }
+
+        this.myAssetService.saveAll(myAssets);
 
         //===SelfAssessment Lock===
         Object lock = null;
