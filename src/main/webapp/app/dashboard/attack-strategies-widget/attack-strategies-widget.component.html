@@ -1,8 +1,11 @@
-<div class="col-md-12">
-    <div class="tile-stats">
+<div class="container" *ngIf="loading">
+    <div class="loader"></div>
+  </div>
+  <div class="container" *ngIf="!loading">
+    <div class="tile-stats tiles-first-row">
       <!--<div class="icon"><i class="fa fa-check-square-o"></i></div>-->
-      <div class="count">15</div>
+      <div class="count" *ngIf="attacksMapCounter">{{attacksMapCounter}}</div>
       <h3>Attack strategies</h3>
-      <p>details</p>
+      <!--<p>details</p>-->
     </div>
   </div>

@@ -11,6 +11,7 @@
     <div class="col-lg-3 col-md-12">
         <div class="card-box">
             <button class="btn btn-block btn-primary waves-effect waves-light btn-info jh-create-entity create-self-assessment-mgm"
+                (click)="popUpService.setOnUserBehaviour()"
                 [routerLink]="['/', { outlets: { popup: ['self-assessment-mgm-new'] } }]">
                 <i class="fas fa-plus"></i>
                 <span class="hidden-sm-down" jhiTranslate="hermeneutApp.selfAssessment.home.createLabel">
