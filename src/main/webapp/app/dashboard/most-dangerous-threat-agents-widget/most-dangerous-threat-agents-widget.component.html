@@ -36,11 +36,11 @@
                       <ng-container *ngFor="let item of mdtaEntities | paginate: threatAgentsPaginator">
                           <tr>
                               <td>{{item.threatAgent}}</td>
-                              <td *ngIf="item.initial">{{item.initial | number : '1.1-1'}}</td>
+                              <td *ngIf="item.initial">{{item.initial}}%</td>
                               <td *ngIf="!item.initial">-</td>
-                              <td *ngIf="item.contextual">{{item.contextual | number : '1.1-1'}}</td>
+                              <td *ngIf="item.contextual">{{item.contextual}}%</td>
                               <td *ngIf="!item.contextual">-</td>
-                              <td *ngIf="item.refined">{{item.refined | number : '1.1-1'}}</td>
+                              <td *ngIf="item.refined">{{item.refined}}%</td>
                               <td *ngIf="!item.refined">-</td>
                           </tr>
                       </ng-container>

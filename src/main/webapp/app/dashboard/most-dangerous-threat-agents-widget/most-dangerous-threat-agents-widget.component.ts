@@ -30,7 +30,7 @@ export class MostDangerousThreatAgentsWidgetComponent implements OnInit {
   public mdtaEntities: MdtaEntity[];
   public threatAgentsPaginator = {
     id: 'threat_agents_paginator',
-    itemsPerPage: 8,
+    itemsPerPage: 7,
     currentPage: 1
   };
 
@@ -62,6 +62,7 @@ export class MostDangerousThreatAgentsWidgetComponent implements OnInit {
           this.addInfo(this.mySelf.threatagents[tIndex].id, item, ValueType.REFINED);
         });
         this.mdtaEntities = _.orderBy(this.mdtaEntities, ['initial', 'contextual', 'refined'], ['desc', 'desc', 'desc']);
+        this.percentageTransformation();
         this.loading = false;
       } else {
         this.loading = false;
@@ -108,6 +109,14 @@ export class MostDangerousThreatAgentsWidgetComponent implements OnInit {
           break;
         }
       }
+    }
+  }
+
+  private percentageTransformation() {
+    for (const elem of this.mdtaEntities) {
+      elem.initial = Math.round((elem.initial / 5) * 100);
+      elem.contextual = Math.round((elem.contextual / 5) * 100);
+      elem.refined = Math.round((elem.refined / 5) * 100);
     }
   }
 
