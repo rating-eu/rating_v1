@@ -34,6 +34,7 @@ import { NgxPaginationModule } from 'ngx-pagination';
 import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
 import { ResultsService } from '../results/results.service';
 import { ChartsModule } from 'ng2-charts';
+import { ImpactEvaluationService } from '../impact-evaluation/impact-evaluation.service';
 
 @NgModule({
     imports: [
@@ -100,7 +101,8 @@ import { ChartsModule } from 'ng2-charts';
         SelfAssessmentMgmService,
         LevelMgmService,
         PhaseMgmService,
-        ResultsService
+        ResultsService,
+        ImpactEvaluationService
     ]
 })
 export class DashboardModule {
