@@ -7,11 +7,13 @@ import { MyAssetMgm } from '../entities/my-asset-mgm';
 import { EBITMgm } from '../entities/ebit-mgm';
 import { Wp3BundleInput } from './model/wp3-bundle-input.model';
 import { Wp3BundleOutput } from './model/wp3-bundle-output.model';
+import { ImpactEvaluationStatus } from './model/impact-evaluation-status.model';
 
 @Injectable()
 export class ImpactEvaluationService {
   private assetServiceUrl = SERVER_API_URL + 'api/my-assets/self-assessment/';
   private wp3ServiceUrl = SERVER_API_URL + 'api/{selfAssessmentID}';
+  private wp3StatusUrl = SERVER_API_URL + 'api/{selfAssessmentID}/dashboard/impact-evaluation-status';
   private operationStepOne = '/wp3/step-one/';
   private operationStepTwo = '/wp3/step-two/';
   private operationStepThree = '/wp3/step-three/';
@@ -19,7 +21,16 @@ export class ImpactEvaluationService {
 
   constructor(
     private http: HttpClient
-  ) {}
+  ) { }
+
+  getStatus(self: SelfAssessmentMgm): Observable<ImpactEvaluationStatus> {
+    return this.http.get<ImpactEvaluationStatus>(
+      this.wp3StatusUrl.replace('{selfAssessmentID}', String(self.id)),
+      { observe: 'response' })
+      .map((res: HttpResponse<ImpactEvaluationStatus>) => {
+        return res.body;
+      });
+  }
 
   getMyAssets(self: SelfAssessmentMgm): Observable<MyAssetMgm[]> {
     const uri = this.assetServiceUrl + self.id.toString();
@@ -34,9 +45,9 @@ export class ImpactEvaluationService {
       this.wp3ServiceUrl.replace('{selfAssessmentID}', String(self.id)) + this.operationStepOne,
       bundle,
       { observe: 'response' })
-            .map((res: HttpResponse<Wp3BundleOutput>) => {
-                return res.body;
-            });
+      .map((res: HttpResponse<Wp3BundleOutput>) => {
+        return res.body;
+      });
   }
 
   evaluateStepTwo(bundle: Wp3BundleInput, self: SelfAssessmentMgm): Observable<Wp3BundleOutput> {
@@ -44,9 +55,9 @@ export class ImpactEvaluationService {
       this.wp3ServiceUrl.replace('{selfAssessmentID}', String(self.id)) + this.operationStepTwo,
       bundle,
       { observe: 'response' })
-            .map((res: HttpResponse<Wp3BundleOutput>) => {
-                return res.body;
-            });
+      .map((res: HttpResponse<Wp3BundleOutput>) => {
+        return res.body;
+      });
   }
 
   evaluateStepThree(bundle: Wp3BundleInput, self: SelfAssessmentMgm): Observable<Wp3BundleOutput> {
@@ -54,9 +65,9 @@ export class ImpactEvaluationService {
       this.wp3ServiceUrl.replace('{selfAssessmentID}', String(self.id)) + this.operationStepThree,
       bundle,
       { observe: 'response' })
-            .map((res: HttpResponse<Wp3BundleOutput>) => {
-                return res.body;
-            });
+      .map((res: HttpResponse<Wp3BundleOutput>) => {
+        return res.body;
+      });
   }
 
   evaluateStepFour(bundle: Wp3BundleInput, self: SelfAssessmentMgm): Observable<Wp3BundleOutput> {
@@ -64,9 +75,9 @@ export class ImpactEvaluationService {
       this.wp3ServiceUrl.replace('{selfAssessmentID}', String(self.id)) + this.operationStepFour,
       bundle,
       { observe: 'response' })
-            .map((res: HttpResponse<Wp3BundleOutput>) => {
-                return res.body;
-            });
+      .map((res: HttpResponse<Wp3BundleOutput>) => {
+        return res.body;
+      });
   }
 
 }

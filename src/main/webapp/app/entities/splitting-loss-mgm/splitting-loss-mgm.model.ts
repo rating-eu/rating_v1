@@ -1,6 +1,6 @@
 import { BaseEntity } from './../../shared';
 
-export const enum SectorType {
+export enum SectorType {
     'GLOBAL',
     'FINANCE_AND_INSURANCE',
     'HEALTH_CARE_AND_SOCIAL_ASSISTANCE',
@@ -8,7 +8,7 @@ export const enum SectorType {
     'PROFESSIONAL_SCIENTIFIC_AND_TECHNICAL_SERVICE'
 }
 
-export const enum CategoryType {
+export enum CategoryType {
     'IP',
     'KEY_COMP',
     'ORG_CAPITAL'

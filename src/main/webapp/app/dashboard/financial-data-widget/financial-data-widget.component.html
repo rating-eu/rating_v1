@@ -1,3 +1,49 @@
-<p>
-  financial-data-widget works!
-</p>
+<div class="container" *ngIf="loading">
+    <div class="loader"></div>
+  </div>
+  <div class="container" *ngIf="!loading">
+    <div class="x_panel" style="padding:0px !important;">
+      <div class="x_title" style="padding:0px !important;">
+        <h2 style="padding: 10px;">Financial Data</h2>
+        <ul class="nav navbar-right panel_toolbox">
+          <li>
+            <a class="collapse-link" (click)="isCollapsed = !isCollapsed"><i class="fa fa-chevron-up"></i></a>
+          </li>
+          <!--
+                <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                  <ul class="dropdown-menu" role="menu">
+                    <li><a href="#">Export</a>
+                    </li>
+                  </ul>
+                </li>
+                -->
+        </ul>
+        <div class="clearfix"></div>
+      </div>
+      <div class="table-responsive x_content" style="padding:0px !important;" [ngbCollapse]="isCollapsed">
+          <div *ngIf="assets" class="table-responsive table-hover-no-pointer">
+              <table class="table table-striped">
+                  <thead>
+                      <tr>
+                          <th>Name</th>
+                          <th>Value</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                      <ng-container *ngFor="let item of assets | paginate: assetsPaginator">
+                          <tr>
+                              <td>{{item.asset.name}}</td>
+                              <td *ngIf="item.economicValue">{{item.economicValue}}</td>
+                              <td *ngIf="!item.economicValue">-</td>
+                          </tr>
+                      </ng-container>
+                  </tbody>
+                </table>
+                <div class="text-center">
+                    <pagination-controls (pageChange)="onAssetsPageChange($event)" [id]="assetsPaginator.id"></pagination-controls>
+                </div>
+          </div>
+      </div>
+    </div>
+  </div>
