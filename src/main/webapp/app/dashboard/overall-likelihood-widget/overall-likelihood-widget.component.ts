@@ -66,7 +66,7 @@ export class OverallLikelihoodWidgetComponent implements OnInit {
     });
   }
 
-  private initDataForGraph(){
+  private initDataForGraph() {
     this.contextualData = [];
     this.initialData = [];
     this.refinedData = [];

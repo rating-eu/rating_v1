@@ -22,6 +22,34 @@
         <div class="clearfix"></div>
       </div>
       <div class="table-responsive x_content" style="padding:0px !important;" [ngbCollapse]="isCollapsed">
+          <div *ngIf="mdtaEntities" class="table-responsive table-hover-no-pointer">
+              <table class="table table-striped">
+                  <thead>
+                      <tr>
+                          <th>Title</th>
+                          <th>Initial Likelihood</th>
+                          <th>Contextual Likelihood</th>
+                          <th>Refined Likelihood</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                      <ng-container *ngFor="let item of mdtaEntities | paginate: threatAgentsPaginator">
+                          <tr>
+                              <td>{{item.threatAgent}}</td>
+                              <td *ngIf="item.initial">{{item.initial | number : '1.1-1'}}</td>
+                              <td *ngIf="!item.initial">-</td>
+                              <td *ngIf="item.contextual">{{item.contextual | number : '1.1-1'}}</td>
+                              <td *ngIf="!item.contextual">-</td>
+                              <td *ngIf="item.refined">{{item.refined | number : '1.1-1'}}</td>
+                              <td *ngIf="!item.refined">-</td>
+                          </tr>
+                      </ng-container>
+                  </tbody>
+                </table>
+                <div class="text-center">
+                    <pagination-controls (pageChange)="onThreatAgentsPageChange($event)" [id]="threatAgentsPaginator.id"></pagination-controls>
+                </div>
+          </div>
       </div>
     </div>
   </div>
