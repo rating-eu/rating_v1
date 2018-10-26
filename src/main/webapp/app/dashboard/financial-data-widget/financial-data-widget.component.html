@@ -34,7 +34,7 @@
                       <ng-container *ngFor="let item of assets | paginate: assetsPaginator">
                           <tr>
                               <td>{{item.asset.name}}</td>
-                              <td *ngIf="item.economicValue">{{item.economicValue}}</td>
+                              <td *ngIf="item.economicValue">{{item.economicValue | currency:'EUR'}}</td>
                               <td *ngIf="!item.economicValue">-</td>
                           </tr>
                       </ng-container>
