@@ -33,6 +33,7 @@ import { PhaseMgmService } from '../entities/phase-mgm';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
 import { ResultsService } from '../results/results.service';
+import { ChartsModule } from 'ng2-charts';
 
 @NgModule({
     imports: [
@@ -41,7 +42,8 @@ import { ResultsService } from '../results/results.service';
         DashboardRoutingModule,
         MaterialModule,
         NgxPaginationModule,
-        NgbCollapseModule.forRoot()
+        NgbCollapseModule.forRoot(),
+        ChartsModule
     ],
     declarations: [
         CompanyWidgetComponent,
