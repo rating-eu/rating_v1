@@ -35,7 +35,7 @@ id;name;created;modified;jhi_order;question_type;answer_type;questionnaire_id
 52;Are tools for perimeter security with anomaly behavior and sandboxing used in your company?;now();now();34;REGULAR;RANGE5;2
 53;What percentage of software and applications are updated with a well-defined process?;now();now();35;REGULAR;PERC5;2
 54;What percentage of passwords used internally are under policies that require a minimum length, a combination of numbers and special characters and an expiration date?;now();now();36;REGULAR;PERC5;2
-55;What percentage of web-applications are protected with a WAF (Web Application Firewall) deployed to detect and block unauthorized connections or scanning attempts?;now();now();37;REGULAR;PERC5;2
+55;What percentage of web-applications are protected with a WAF (Web Application Firewall) deployed to detect and block unauthorized connections or scanning attempts? Either on internet or intranet.;now();now();37;REGULAR;PERC5;2
 56;What percentage of web-applications are following a continuous patching during their life-cycle?;now();now();38;RELEVANT;PERC5;2
 57;What percentage of web-applications follows regularly penetration testing?;now();now();39;RELEVANT;PERC5;2
 58;Are antivirus solutions configured following known best practices or standards, and used company-wide?;now();now();40;RELEVANT;RANGE5;2
