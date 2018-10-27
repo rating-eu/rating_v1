@@ -65,7 +65,7 @@
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th><span jhiTranslate="global.field.id">ID</span></th>
+                    <!--<th><span jhiTranslate="global.field.id">ID</span></th>-->
                     <th><span jhiTranslate="hermeneutApp.domainOfInfluence.name">Name</span></th>
                     <th><span jhiTranslate="hermeneutApp.domainOfInfluence.description">Description</span></th>
                     <th><span jhiTranslate="hermeneutApp.domainOfInfluence.container">Container</span></th>
@@ -74,7 +74,7 @@
             </thead>
             <tbody>
                 <tr *ngFor="let domainOfInfluence of domainOfInfluences ;trackBy: trackId">
-                    <td><a [routerLink]="['../domain-of-influence-mgm', domainOfInfluence.id ]">{{domainOfInfluence.id}}</a></td>
+                    <!--<td><a [routerLink]="['../domain-of-influence-mgm', domainOfInfluence.id ]">{{domainOfInfluence.id}}</a></td>-->
                     <td>{{domainOfInfluence.name}}</td>
                     <td>{{domainOfInfluence.description}}</td>
                     <td>
@@ -89,14 +89,14 @@
                                 <span class="fa fa-eye"></span>
                                 <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
                             </button>
-                            <button type="submit" 
+                            <button type="submit"
                                 (click)="popUpService.setOnUserBehaviour()"
                                 [routerLink]="['/', { outlets: { popup: 'domain-of-influence-mgm/'+ domainOfInfluence.id + '/edit'} }]"
                                 replaceUrl="true" queryParamsHandling="merge" class="btn btn-primary btn-sm">
                                 <span class="fa fa-pencil"></span>
                                 <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
                             </button>
-                            <button type="submit" 
+                            <button type="submit"
                                 (click)="popUpService.setOnUserBehaviour()"
                                 [routerLink]="['/', { outlets: { popup: 'domain-of-influence-mgm/'+ domainOfInfluence.id + '/delete'} }]"
                                 replaceUrl="true" queryParamsHandling="merge" class="btn btn-danger btn-sm">

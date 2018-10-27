@@ -64,7 +64,7 @@
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th><span jhiTranslate="global.field.id">ID</span></th>
+                    <!--<th><span jhiTranslate="global.field.id">ID</span></th>-->
                     <th><span jhiTranslate="hermeneutApp.economicCoefficients.discountingRate">Discounting Rate</span></th>
                     <th><span jhiTranslate="hermeneutApp.economicCoefficients.physicalAssetsReturn">Physical Assets
                             Return</span></th>
@@ -77,7 +77,7 @@
             </thead>
             <tbody>
                 <tr *ngFor="let economicCoefficients of economicCoefficients ;trackBy: trackId">
-                    <td><a [routerLink]="['../economic-coefficients-mgm', economicCoefficients.id ]">{{economicCoefficients.id}}</a></td>
+                    <!--<td><a [routerLink]="['../economic-coefficients-mgm', economicCoefficients.id ]">{{economicCoefficients.id}}</a></td>-->
                     <td>{{economicCoefficients.discountingRate}}</td>
                     <td>{{economicCoefficients.physicalAssetsReturn}}</td>
                     <td>{{economicCoefficients.financialAssetsReturn}}</td>
@@ -94,14 +94,14 @@
                                 <span class="fa fa-eye"></span>
                                 <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
                             </button>
-                            <button type="submit" 
+                            <button type="submit"
                                 (click)="popUpService.setOnUserBehaviour()"
                                 [routerLink]="['/', { outlets: { popup: 'economic-coefficients-mgm/'+ economicCoefficients.id + '/edit'} }]"
                                 replaceUrl="true" queryParamsHandling="merge" class="btn btn-primary btn-sm">
                                 <span class="fa fa-pencil"></span>
                                 <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
                             </button>
-                            <button type="submit" 
+                            <button type="submit"
                                 (click)="popUpService.setOnUserBehaviour()"
                                 [routerLink]="['/', { outlets: { popup: 'economic-coefficients-mgm/'+ economicCoefficients.id + '/delete'} }]"
                                 replaceUrl="true" queryParamsHandling="merge" class="btn btn-danger btn-sm">

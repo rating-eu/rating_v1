@@ -26,7 +26,8 @@ export class MySelfAssessmentsComponent implements OnInit {
 
     public mySelfAssessment = null;
 
-    constructor(private router: Router,
+    constructor(
+        private router: Router,
         private accountService: AccountService,
         private userService: UserService,
         private myCompanyService: MyCompanyMgmService,

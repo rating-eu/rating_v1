@@ -29,7 +29,7 @@
                         </div>
                     </div>
                     <ng-container *ngIf="isAssetTreeShow(direct) && direct.effects">
-                        <div class="row" style="height:7em" *ngFor="let effect of direct.effects; let last = last;">
+                        <div class="col-md-12" style="height:7em" *ngFor="let effect of direct.effects; let last = last;">
                             <div class="col-md-1">
                                 <svg>
                                     <line *ngIf="!last" x1="40" y1="0" x2="40" y2="7em" stroke="black" />

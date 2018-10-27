@@ -65,7 +65,7 @@
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th><span jhiTranslate="global.field.id">ID</span></th>
+                    <!--<th><span jhiTranslate="global.field.id">ID</span></th>-->
                     <th><span jhiTranslate="hermeneutApp.assetCategory.name">Name</span></th>
                     <th><span jhiTranslate="hermeneutApp.assetCategory.description">Description</span></th>
                     <th><span jhiTranslate="hermeneutApp.assetCategory.type">Type</span></th>
@@ -74,7 +74,7 @@
             </thead>
             <tbody>
                 <tr *ngFor="let assetCategory of assetCategories ;trackBy: trackId">
-                    <td><a [routerLink]="['../asset-category-mgm', assetCategory.id ]">{{assetCategory.id}}</a></td>
+                    <!--<td><a [routerLink]="['../asset-category-mgm', assetCategory.id ]">{{assetCategory.id}}</a></td>-->
                     <td>{{assetCategory.name}}</td>
                     <td>{{assetCategory.description}}</td>
                     <td jhiTranslate="{{'hermeneutApp.AssetType.' + assetCategory.type}}">{{assetCategory.type}}</td>

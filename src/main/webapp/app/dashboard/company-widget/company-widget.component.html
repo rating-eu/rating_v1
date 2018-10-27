@@ -1,0 +1,10 @@
+<div class="container" *ngIf="!myCompany">
+  <div class="loader"></div>
+</div>
+<div class="container" *ngIf="myCompany">
+  <div class="tile-stats tiles-first-row">
+    <div class="count">&nbsp;</div>
+    <h3>{{companySector}}</h3>
+    <p><a [routerLink]="['/', { outlets: { popup: 'my-company-mgm/'+ myCompany.id + '/edit'} }]">edit</a></p>
+  </div>
+</div>

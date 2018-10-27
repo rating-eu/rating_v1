@@ -41,6 +41,9 @@ public class WP3StepsController {
     @Autowired
     private SplittingLossService splittingLossService;
 
+    @Autowired
+    private MyAssetService myAssetService;
+
     private static final Map<Long, Object> SELF_ASSESSMENT_LOCK = new HashMap<>();
 
     @PostMapping("{selfAssessmentID}/wp3/step-one")
@@ -84,19 +87,19 @@ public class WP3StepsController {
             if (existingEbits != null) {
                 //Drop the OLD EBITs
                 this.ebitService.delete(existingEbits);
-            } else {
-                //Save new EBITs
-                ZonedDateTime now = ZonedDateTime.now();
-
-                for (EBIT ebit : ebits) {
-                    ebit.setId(null);
-                    ebit.setSelfAssessment(selfAssessment);
-                    ebit.setCreated(now);
-                }
-
-                //Save the EBITs
-                ebits = this.ebitService.save(ebits);
             }
+
+            //Save new EBITs
+            ZonedDateTime now = ZonedDateTime.now();
+
+            for (EBIT ebit : ebits) {
+                ebit.setId(null);
+                ebit.setSelfAssessment(selfAssessment);
+                ebit.setCreated(now);
+            }
+
+            //Save the EBITs
+            ebits = this.ebitService.save(ebits);
 
             EconomicCoefficients economicCoefficients = wp3InputBundle.getEconomicCoefficients();
 
@@ -187,6 +190,8 @@ public class WP3StepsController {
         if (myAssets.size() == 0) {
             throw new IllegalInputException("MyAssets can NOT have size equal to ZERO!");
         }
+
+        this.myAssetService.saveAll(myAssets);
 
         //===SelfAssessment Lock===
         Object lock = null;

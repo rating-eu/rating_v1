@@ -114,6 +114,12 @@ export class IdentifyAssetComponent implements OnInit, OnDestroy {
                                                 .toPromise()
                                                 .then((mySavedAssets) => {
                                                     if (mySavedAssets) {
+                                                        console.log(mySavedAssets);
+                                                        if (mySavedAssets.length === 0) {
+                                                            this.loading = false;
+                                                            this.loadWithErrors = false;
+                                                            return;
+                                                        }
                                                         this.myAssets = mySavedAssets;
                                                         // Decommentare il codice di seguito quando saranno pronti i relativi servizi
                                                         this.idaUtilsService.getMySavedDirectAssets(this.mySelf)
@@ -137,11 +143,20 @@ export class IdentifyAssetComponent implements OnInit, OnDestroy {
                                                                         this.loadWithErrors = true;
                                                                     });
                                                             });
+                                                    } else {
+                                                        this.loading = false;
+                                                        this.loadWithErrors = false;
                                                     }
                                                 });
                                         }
                                     });
+                            } else {
+                                this.loading = false;
+                                this.loadWithErrors = false;
                             }
+                        }).catch(() => {
+                            this.loading = false;
+                            this.loadWithErrors = false;
                         });
                 }
             }

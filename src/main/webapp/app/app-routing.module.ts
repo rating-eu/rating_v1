@@ -7,6 +7,10 @@ const routes: Routes = [
     sidebarRoute,
     ...errorRoute,
     {
+        path: 'dashboard',
+        loadChildren: './dashboard/dashboard.module#DashboardModule'
+    },
+    {
         path: 'risk-management',
         loadChildren: './risk-management/risk-management.module#RiskManagementModule'
     },

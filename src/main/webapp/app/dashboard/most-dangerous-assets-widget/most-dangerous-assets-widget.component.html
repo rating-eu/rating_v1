@@ -1,0 +1,92 @@
+<div class="container" *ngIf="loading">
+  <div class="loader"></div>
+</div>
+<div class="container" *ngIf="!loading">
+  <div class="x_panel" style="padding:0px !important;">
+    <div class="x_title" style="padding:0px !important;">
+      <h2 style="padding: 10px;">Most Vulnerable Asset</h2>
+      <ul class="nav navbar-right panel_toolbox">
+        <li>
+          <a class="collapse-link" (click)="isCollapsed = !isCollapsed"><i class="fa fa-chevron-up"></i></a>
+        </li>
+        <!--
+              <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
+                <ul class="dropdown-menu" role="menu">
+                  <li><a href="#">Export</a>
+                  </li>
+                </ul>
+              </li>
+              -->
+      </ul>
+      <div class="clearfix"></div>
+    </div>
+    <div class="table-responsive x_content" style="padding:0px !important;" [ngbCollapse]="isCollapsed">
+        <div *ngIf="mdawEntities" class="table-responsive table-hover-no-pointer">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Asset</th>
+                        <th>Attack Strategy</th>
+                        <th>Likelihood</th>
+                        <th>Vulnerability</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <ng-container *ngFor="let item of mdawEntities | paginate: assetsPaginator">
+                        <tr>
+                            <th scope="row"><a href="javascript:void(0)" (click)="selectAsset(item.asset)">{{item.asset.asset.name}}</a></th>
+                            <td>{{item.mostDangerousAttack}} +{{item.howManyAttacks}}!</td>
+                            <td>{{item.mostDangerousAttackValue.likelihood}}</td>
+                            <td *ngIf="item.mostDangerousAttackValue.vulnerability !== undefined">{{item.mostDangerousAttackValue.vulnerability}}</td>
+                            <td *ngIf="item.mostDangerousAttackValue.vulnerability === undefined">-</td>
+                        </tr>
+                        <ng-container *ngIf="selectedAsset">
+                            <tr *ngIf="selectedAsset.asset.id === item.asset.asset.id">
+                                <td colspan="4">
+                                    <ng-container *ngIf="loadingAttacksTable">
+                                        <div class="loader"></div>
+                                    </ng-container>
+                                    <table *ngIf="!loadingAttacksTable" class="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>Attack Strategy</th>
+                                                <th>Likelihood</th>
+                                                <th>Vulnerability</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr *ngFor="let attack of selectedAttacks | paginate: attacksPaginator">
+                                                <td>{{attack.name}}</td>
+                                                <td *ngIf="attack.refinedLikelihood">{{attack.refinedLikelihood |
+                                                    number : '1.1-1'}}</td>
+                                                <td *ngIf="!attack.refinedLikelihood && attack.contextualLikelihood">{{attack.contextualLikelihood
+                                                    | number : '1.1-1'}}</td>
+                                                <td *ngIf="!attack.refinedLikelihood && !attack.contextualLikelihood && attack.initialLikelihood">{{attack.initialLikelihood
+                                                    | number : '1.1-1'}}</td>
+                                                <td *ngIf="!attack.refinedLikelihood && !attack.contextualLikelihood && !attack.initialLikelihood">-</td>
+                                                <td *ngIf="attack.refinedVulnerability">{{attack.refinedVulnerability
+                                                    | number : '1.1-1'}}</td>
+                                                <td *ngIf="!attack.refinedVulnerability && attack.contextualVulnerability">{{attack.contextualVulnerability
+                                                    | number : '1.1-1'}}</td>
+                                                <td *ngIf="!attack.refinedVulnerability && !attack.contextualVulnerability">-</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <div class="text-center">
+                                        <pagination-controls (pageChange)="onAttacksPageChange($event)" [id]="attacksPaginator.id"></pagination-controls>
+                                    </div>
+                                </td>
+                            </tr>
+                        </ng-container>
+                    </ng-container>
+                </tbody>
+              </table>
+              <div class="text-center">
+                  <pagination-controls (pageChange)="onAssetsPageChange($event)" [id]="assetsPaginator.id"></pagination-controls>
+              </div>
+        </div>
+    </div>
+  </div>
+
+</div>

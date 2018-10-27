@@ -63,7 +63,7 @@
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th><span jhiTranslate="global.field.id">ID</span></th>
+                    <!--<th><span jhiTranslate="global.field.id">ID</span></th>-->
                     <th><span jhiTranslate="hermeneutApp.questionnaire.name">Name</span></th>
                     <th><span jhiTranslate="hermeneutApp.questionnaire.purpose">Purpose</span></th>
                     <th><span jhiTranslate="hermeneutApp.questionnaire.created">Created</span></th>
@@ -73,7 +73,7 @@
             </thead>
             <tbody>
                 <tr *ngFor="let questionnaire of questionnaires ;trackBy: trackId">
-                    <td><a [routerLink]="['../questionnaire-mgm', questionnaire.id ]">{{questionnaire.id}}</a></td>
+                    <!--<td><a [routerLink]="['../questionnaire-mgm', questionnaire.id ]">{{questionnaire.id}}</a></td>-->
                     <td>{{questionnaire.name}}</td>
                     <td jhiTranslate="{{'hermeneutApp.QuestionnairePurpose.' + questionnaire.purpose}}">{{questionnaire.purpose}}</td>
                     <td>{{questionnaire.created | date:'medium'}}</td>
@@ -84,14 +84,14 @@
                                 <span class="fa fa-eye"></span>
                                 <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
                             </button>
-                            <button type="submit" 
+                            <button type="submit"
                                 (click)="popUpService.setOnUserBehaviour()"
                                 [routerLink]="['/', { outlets: { popup: 'questionnaire-mgm/'+ questionnaire.id + '/edit'} }]"
                                 replaceUrl="true" queryParamsHandling="merge" class="btn btn-primary btn-sm">
                                 <span class="fa fa-pencil"></span>
                                 <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
                             </button>
-                            <button type="submit" 
+                            <button type="submit"
                                 (click)="popUpService.setOnUserBehaviour()"
                                 [routerLink]="['/', { outlets: { popup: 'questionnaire-mgm/'+ questionnaire.id + '/delete'} }]"
                                 replaceUrl="true" queryParamsHandling="merge" class="btn btn-danger btn-sm">

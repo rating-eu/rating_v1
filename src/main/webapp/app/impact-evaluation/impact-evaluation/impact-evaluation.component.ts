@@ -14,6 +14,11 @@ import { SectorType, CategoryType } from '../../entities/splitting-loss-mgm';
 import { MyCategoryType } from '../../entities/enumerations/MyCategoryType.enum';
 import { Router } from '../../../../../../node_modules/@angular/router';
 import { MySectorType } from '../../entities/enumerations/MySectorType.enum';
+import { ImpactEvaluationStatus } from '../model/impact-evaluation-status.model';
+import { AccountService, UserService, User } from '../../shared';
+import { MyCompanyMgmService, MyCompanyMgm } from '../../entities/my-company-mgm';
+import { HttpResponse } from '@angular/common/http';
+import { CompType } from '../../entities/company-profile-mgm';
 
 @Component({
   // tslint:disable-next-line:component-selector
@@ -23,10 +28,12 @@ import { MySectorType } from '../../entities/enumerations/MySectorType.enum';
 })
 export class ImpactEvaluationComponent implements OnInit {
 
+  public wp3Status: ImpactEvaluationStatus;
   public witchStep = 1;
   public isDescriptionCollapsed = true;
   public isGlobal = true;
   public sectorChoosed: string;
+  public selectedCategory: CategoryType;
   public impactFormStepOne: FormGroup;
   public impactFormStepTwo: FormGroup;
   public impactFormStepThree: FormGroup;
@@ -47,7 +54,6 @@ export class ImpactEvaluationComponent implements OnInit {
   public impactOnInformationSector: number[];
   public impactOnProfessionalSector: number[];
 
-  public tangibleAssets: MyAssetMgm[] = [];
   public financialAssetsAkaCurrent: MyAssetMgm[] = [];
   public physicalAssetsAkaFixed: MyAssetMgm[] = [];
   public ebitLabel: string[] = [];
@@ -56,6 +62,9 @@ export class ImpactEvaluationComponent implements OnInit {
   private firstYear: number;
   private lastYear: number;
   private choosedSectorType: SectorType;
+
+  private user: User;
+  private myCompany: MyCompanyMgm;
 
   public sectorialPercentageMatrix: any[] = [
     {
@@ -81,15 +90,54 @@ export class ImpactEvaluationComponent implements OnInit {
   ];
   constructor(
     private mySelfAssessmentService: SelfAssessmentMgmService,
-    private assetService: AssetMgmService,
     private impactService: ImpactEvaluationService,
     private router: Router,
-    private ref: ChangeDetectorRef
+    private ref: ChangeDetectorRef,
+    private accountService: AccountService,
+    private userService: UserService,
+    private myCompanyService: MyCompanyMgmService,
   ) { }
 
   ngOnInit() {
-    this.sectorChoosed = 'health_care_and_social_assistance';
-    this.choosedSectorType = SectorType.HEALTH_CARE_AND_SOCIAL_ASSISTANCE;
+    this.accountService.get().subscribe((response1) => {
+      const loggedAccount: Account = response1.body;
+      this.userService.find(loggedAccount['login']).subscribe((response2) => {
+        this.user = response2.body;
+        if (this.user) {
+          this.myCompanyService.findByUser(this.user.id).subscribe(
+            (response3: HttpResponse<MyCompanyMgm>) => {
+              this.myCompany = response3.body;
+              switch (this.myCompany.companyProfile.type.toString()) {
+                case CompType[CompType.FINANCE_AND_INSURANCE]: {
+                  this.choosedSectorType = SectorType.FINANCE_AND_INSURANCE;
+                  this.sectorChoosed = 'finance_and_insurance';
+                  break;
+                }
+                case CompType[CompType.HEALTH_CARE_AND_SOCIAL_ASSISTANCE]: {
+                  this.choosedSectorType = SectorType.HEALTH_CARE_AND_SOCIAL_ASSISTANCE;
+                  this.sectorChoosed = 'health_care_and_social_assistance';
+                  break;
+                }
+                case CompType[CompType.INFORMATION]: {
+                  this.choosedSectorType = SectorType.INFORMATION;
+                  this.sectorChoosed = 'information';
+                  break;
+                }
+                case CompType[CompType.PROFESSIONAL_SCIENTIFIC_AND_TECHNICAL_SERVICE]: {
+                  this.choosedSectorType = SectorType.PROFESSIONAL_SCIENTIFIC_AND_TECHNICAL_SERVICE;
+                  this.sectorChoosed = 'professional_scientific_and_technical_service';
+                  break;
+                }
+                case CompType[CompType.OTHER]: {
+                  this.choosedSectorType = SectorType.GLOBAL;
+                  this.sectorChoosed = '';
+                }
+              }
+            }
+          );
+        }
+      });
+    });
     this.firstYear = (new Date().getFullYear()) - 2;
     this.lastYear = (new Date().getFullYear()) + 3;
     let year = this.firstYear;
@@ -97,28 +145,6 @@ export class ImpactEvaluationComponent implements OnInit {
       this.ebitLabel.push('Ebit for ' + year.toString());
       year++;
     }
-    // TODO chiamata per recuperare tutti i MyAssets a partire dal selfAssessment
-    this.mySelf = this.mySelfAssessmentService.getSelfAssessment();
-    this.impactService.getMyAssets(this.mySelf).toPromise().then((res) => {
-      if (res && res.length > 0) {
-        // Recuperare tutti gli intangible;
-        for (const asset of res) {
-          if ((asset.asset as AssetMgm).assetcategory.type.toString() === AssetType.TANGIBLE.toString()) {
-            this.tangibleAssets.push(asset);
-            if ((asset.asset as AssetMgm).assetcategory.name === 'Current Assets') {
-              this.financialAssetsAkaCurrent.push(asset);
-            } else if ((asset.asset as AssetMgm).assetcategory.name === 'Fixed Assets') {
-              this.physicalAssetsAkaFixed.push(asset);
-            }
-          }
-        }
-        console.log(this.tangibleAssets);
-        console.log(this.financialAssetsAkaCurrent);
-        console.log(this.physicalAssetsAkaFixed);
-      }
-    });
-
-    this.tangibleAssets = [];
     this.impactFormStepOne = new FormGroup({
       ebit1: new FormControl(undefined, Validators.compose([
         Validators.required,
@@ -183,6 +209,106 @@ export class ImpactEvaluationComponent implements OnInit {
         Validators.pattern('[0-9]+,[0-9]+|[0-9]+.[0-9]+|[0-9]+')
       ])),
     });
+    // TODO chiamata per recuperare tutti i MyAssets a partire dal selfAssessment
+    this.mySelf = this.mySelfAssessmentService.getSelfAssessment();
+    this.impactService.getMyAssets(this.mySelf).toPromise().then((res) => {
+      if (res && res.length > 0) {
+        // Recuperare tutti i tangible;
+        for (const asset of res) {
+          if ((asset.asset as AssetMgm).assetcategory.type.toString() === AssetType.TANGIBLE.toString()) {
+            if ((asset.asset as AssetMgm).assetcategory.name === 'Current Assets') {
+              this.financialAssetsAkaCurrent.push(asset);
+            } else if ((asset.asset as AssetMgm).assetcategory.name === 'Fixed Assets') {
+              this.physicalAssetsAkaFixed.push(asset);
+            }
+          }
+        }
+        // Retrieve the wp3 status from server
+        this.impactService.getStatus(this.mySelf).toPromise().then((status) => {
+          if (status) {
+            this.wp3Status = status;
+            this.wp3Status.ebits = _.orderBy(this.wp3Status.ebits, ['year'], ['asc']);
+            this.ebitLabel = [];
+            let index = 1;
+            for (const ebit of this.wp3Status.ebits) {
+              this.impactFormStepOne.controls['ebit' + index.toString()].setValue(ebit.value);
+              this.ebitLabel.push(ebit.year.toString());
+              index++;
+            }
+            for (const asset of this.wp3Status.myTangibleAssets) {
+              const fixedIndex = _.findIndex(this.physicalAssetsAkaFixed, { id: asset.id });
+              const currentIndex = _.findIndex(this.financialAssetsAkaCurrent, { id: asset.id });
+              if (fixedIndex !== -1) {
+                this.physicalAssetsAkaFixed.splice(fixedIndex, 1, _.clone(asset));
+              } else if (currentIndex !== -1) {
+                this.financialAssetsAkaCurrent.splice(currentIndex, 1, _.clone(asset));
+              }
+            }
+            this.impactFormStepOne.controls['discountingRate'].setValue(this.wp3Status.economicCoefficients.discountingRate);
+            this.impactFormStepTwo.controls['physicalAssetsReturn'].setValue(this.wp3Status.economicCoefficients.physicalAssetsReturn);
+            this.impactFormStepTwo.controls['financialAssetsReturn'].setValue(this.wp3Status.economicCoefficients.financialAssetsReturn);
+            this.impactFormStepThree.controls['lossOfIntangiblePercentage'].setValue(this.wp3Status.economicCoefficients.lossOfIntangible);
+            this.choosedSectorType = this.wp3Status.sectorType;
+            switch (this.choosedSectorType.toString()) {
+              case SectorType[SectorType.FINANCE_AND_INSURANCE]: {
+                this.sectorChoosed = 'finance_and_insurance';
+                break;
+              }
+              case SectorType[SectorType.HEALTH_CARE_AND_SOCIAL_ASSISTANCE]: {
+                this.sectorChoosed = 'health_care_and_social_assistance';
+                break;
+              }
+              case SectorType[SectorType.INFORMATION]: {
+                this.sectorChoosed = 'information';
+                break;
+              }
+              case SectorType[SectorType.PROFESSIONAL_SCIENTIFIC_AND_TECHNICAL_SERVICE]: {
+                this.sectorChoosed = 'professional_scientific_and_technical_service';
+                break;
+              }
+              case SectorType[SectorType.GLOBAL]: {
+                this.sectorChoosed = '';
+                break;
+              }
+            }
+            this.selectedCategory = this.wp3Status.categoryType;
+            this.economicPerformance = this.wp3Status.economicResults.economicPerformance;
+            this.intangibleCapitalValuation = this.wp3Status.economicResults.intangibleCapital;
+            this.intangibleDrivingEarnings = this.wp3Status.economicResults.intangibleDrivingEarnings;
+            this.lossOnintangibleAssetsDueToCyberattacks = this.wp3Status.economicResults.intangibleLossByAttacks;
+            for (const impact of this.wp3Status.splittingLosses) {
+              switch (impact.categoryType.toString()) {
+                case MyCategoryType.IP.toString(): {
+                  if (impact.sectorType.toString() === MySectorType.GLOBAL.toString()) {
+                    this.impactOnIP = Math.round(impact.loss * 100) / 100;
+                  } else {
+                    this.impactOnSectorialIP = Math.round(impact.loss * 100) / 100;
+                  }
+                  break;
+                }
+                case MyCategoryType.KEY_COMP.toString(): {
+                  if (impact.sectorType.toString() === MySectorType.GLOBAL.toString()) {
+                    this.impactOnKeyComp = Math.round(impact.loss * 100) / 100;
+                  } else {
+                    this.impactOnSectorialKeyComp = Math.round(impact.loss * 100) / 100;
+                  }
+                  break;
+                }
+                case MyCategoryType.ORG_CAPITAL.toString(): {
+                  if (impact.sectorType.toString() === MySectorType.GLOBAL.toString()) {
+                    this.impactOnOrgCapital = Math.round(impact.loss * 100) / 100;
+                  } else {
+                    this.impactOnSectorialOrgCapital = Math.round(impact.loss * 100) / 100;
+                  }
+                  break;
+                }
+              }
+            }
+          }
+        });
+      }
+    });
+
     // NON PIù NECESSARIO, I PARAMETRI PERCENTUALI SONO PRESTABILITI E NON MODIFICABILI
     /*
     this.impactFormStepFour = new FormGroup({
@@ -212,7 +338,7 @@ export class ImpactEvaluationComponent implements OnInit {
       ])),
     });
     */
-   this.ref.detectChanges();
+    this.ref.detectChanges();
   }
 
   public trackByFn(index: number, value: any) {
@@ -447,7 +573,7 @@ export class ImpactEvaluationComponent implements OnInit {
   }
 
   public selectStep(step: number) {
-    this.isDescriptionCollapsed  = true;
+    this.isDescriptionCollapsed = true;
     switch (step) {
       case 2: {
         if (this.impactFormStepOne.invalid) {
@@ -522,6 +648,6 @@ export class ImpactEvaluationComponent implements OnInit {
   }
 
   public close() {
-    this.router.navigate(['./']);
+    this.router.navigate(['/dashboard']);
   }
 }

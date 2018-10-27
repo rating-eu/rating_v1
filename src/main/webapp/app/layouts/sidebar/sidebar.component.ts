@@ -77,7 +77,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                         this.createMenuItems(this.isCISO);
                     } else {
                         this.principal.hasAnyAuthority([MyRole[MyRole.ROLE_EXTERNAL_AUDIT]]).then((response2: boolean) => {
-                            console.log('IsExternal response: ' + response2);
+                            // console.log('IsExternal response: ' + response2);
                             this.isExternal = response2;
                             this.isCISO = !this.isExternal;
                             this.createMenuItems(this.isCISO, this.isExternal);
@@ -286,9 +286,10 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                 ]
             }
         ];
-
+        /*
         console.log('Menu Items created');
         console.log(JSON.stringify(this.items));
+        */
     }
 
     isAuthenticated() {

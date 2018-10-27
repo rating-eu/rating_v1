@@ -1,4 +1,11 @@
-<nav *ngIf="isAuthenticated() && !isCollapsed" class="left side-menu" id="sidebar"><!-- [ngClass]="{'sidebar-collapsed': isCollapsed}"-->
-    <div class="menu-title">Menu</div>
+<nav *ngIf="isAuthenticated() && !isCollapsed" class="left side-menu" id="sidebar">
+    <!-- [ngClass]="{'sidebar-collapsed': isCollapsed}"-->
+    <div class="menu-title">
+        <div class="logo">
+            <span>
+                <img src="../../../content/assets/images/logo-horizontal-white.png" alt="" class="img-fluid">
+            </span>
+        </div>
+    </div>
     <p-panelMenu [model]="items" [multiple]="false" [style]="{'width':'240px','height':'360px','border':'1px solid #ffffff'}"></p-panelMenu>
 </nav>

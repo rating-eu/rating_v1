@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { JhiEventManager } from 'ng-jhipster';
 
@@ -21,7 +22,8 @@ export class HomeComponent implements OnInit {
         private principal: Principal,
         private loginModalService: LoginModalService,
         private eventManager: JhiEventManager,
-        private mySelfAssessmentService: SelfAssessmentMgmService
+        private mySelfAssessmentService: SelfAssessmentMgmService,
+        private router: Router,
     ) {
     }
 
@@ -31,6 +33,7 @@ export class HomeComponent implements OnInit {
         });
         this.registerAuthenticationSuccess();
         this.mySelf = this.mySelfAssessmentService.getSelfAssessment();
+        this.router.navigate(['/dashboard']);
     }
 
     registerAuthenticationSuccess() {
