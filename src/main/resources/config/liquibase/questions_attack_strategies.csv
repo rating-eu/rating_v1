@@ -57,4 +57,4 @@ id;name;created;modified;jhi_order;question_type;answer_type;questionnaire_id
 74;Are sensitive documents and digital supports properly disposed of?;now();now();56;REGULAR;RANGE5;2
 75;What percentage of employees has undergone a background check (considering also cleaners staff)?;now();now();57;REGULAR;PERC5;2
 76;What percentage of workstations and mobile devices use “full data encryption”?;now();now();58;REGULAR;PERC5;2
-78;What percentage of employees are aware of the risks of insert an unauthorized device on the personal workstation? (e.g. USB drive found near the company building);now();now();60;REGULAR;PERC5;2
+78;What percentage of employees are aware of the risks derived from the insertion of an unauthorised device (e.g. USB drive found near the company building) into a system of the company (e.g., personal workstation or dedicated laptops)?;now();now();60;REGULAR;PERC5;2
