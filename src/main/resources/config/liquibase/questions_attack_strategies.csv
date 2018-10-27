@@ -42,7 +42,7 @@ id;name;created;modified;jhi_order;question_type;answer_type;questionnaire_id
 59;What are the percentages of systems on company that are not receiving constantly security updates?;now();now();41;REGULAR;PERC5;2
 60;How often the configurations of business critical systems are checked?;now();now();42;RELEVANT;RANGE5;2
 61;How often the administrative users are regularly checked?;now();now();43;REGULAR;RANGE5;2
-62;Is the company prepared for a ransomware event with an incident response plan?;now();now();44;REGULAR;RANGE5;2
+62;Is the company prepared for a ransomware event with an incident response plan? E.g. mitigation measures specific to contrast the ransomware threat.;now();now();44;REGULAR;RANGE5;2
 63;What is the coverage of systems regularly backed-up?;now();now();45;REGULAR;RANGE5;2
 64;Is the principle of “network segmentation” applied? E.g. DMZ, zero trust networks, ...;now();now();46;RELEVANT;RANGE5;2
 65;Is the principle of “minimum privilege” applied? E.g. Remove all the unused user or services on a server; run applications without administration rights (where possible); users are not the admin of their machines.;now();now();47;RELEVANT;RANGE5;2
