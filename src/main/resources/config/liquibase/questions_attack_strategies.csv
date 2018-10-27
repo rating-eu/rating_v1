@@ -45,7 +45,7 @@ id;name;created;modified;jhi_order;question_type;answer_type;questionnaire_id
 62;Is the company prepared for a ransomware event with an incident response plan?;now();now();44;REGULAR;RANGE5;2
 63;What is the coverage of systems regularly backed-up?;now();now();45;REGULAR;RANGE5;2
 64;Is the principle of “network segmentation” applied?;now();now();46;RELEVANT;RANGE5;2
-65;Is the principle of “minimum privilege” applied?;now();now();47;RELEVANT;RANGE5;2
+65;Is the principle of “minimum privilege” applied? E.g. Remove all the unused user or services on a server; run applications without administration rights (where possible); users are not the admin of their machines.;now();now();47;RELEVANT;RANGE5;2
 66;What is the percentage of systems with antivirus and anti-spam solutions installed and managed?;now();now();48;REGULAR;RANGE5;2
 67;Are firewalls and IDS deployed to detect and block unauthorized connections or scanning attempts?;now();now();49;REGULAR;RANGE5;2
 68;Are the logs files of firewalls and IDS periodically checked against security threats?;now();now();50;REGULAR;RANGE5;2
