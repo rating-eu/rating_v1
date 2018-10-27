@@ -49,7 +49,7 @@ id;name;created;modified;jhi_order;question_type;answer_type;questionnaire_id
 66;What is the percentage of systems with antivirus and anti-spam solutions installed and managed?;now();now();48;REGULAR;RANGE5;2
 67;Are firewalls and IDS deployed to detect and block unauthorized connections or scanning attempts?;now();now();49;REGULAR;RANGE5;2
 68;Are the logs files of firewalls and IDS periodically checked?;now();now();50;REGULAR;RANGE5;2
-69;Is there a SIEM?;now();now();51;REGULAR;RANGE5;2
+69;Is there a security information and event management (SIEM)?;now();now();51;REGULAR;RANGE5;2
 70;Is there a Service Operation Centre (SOC)?;now();now();52;REGULAR;RANGE5;2
 71;Is there a continuous monitoring of security events at network’s level? E.g., Intrusion Prevention System.;now();now();53;REGULAR;RANGE5;2
 72;Are the policies and procedures to the physical access authorization processes to the working places well-defined?;now();now();54;REGULAR;RANGE5;2
