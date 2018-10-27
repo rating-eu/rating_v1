@@ -38,7 +38,7 @@ id;name;created;modified;jhi_order;question_type;answer_type;questionnaire_id
 55;What percentage of web-applications are protected with a WAF (Web Application Firewall) deployed to detect and block unauthorized connections or scanning attempts?;now();now();37;REGULAR;PERC5;2
 56;What percentage of web-applications are following a continuous patching during their life-cycle?;now();now();38;RELEVANT;PERC5;2
 57;What percentage of web-applications follows regularly penetration testing?;now();now();39;RELEVANT;PERC5;2
-58;Are antivirus solutions well configured and used on each system inside the company?;now();now();40;RELEVANT;RANGE5;2
+58;Are antivirus solutions configured following known best practices or standards, and used company-wide?;now();now();40;RELEVANT;RANGE5;2
 59;What are the percentages of systems on company that are not receiving constantly security updates?;now();now();41;REGULAR;PERC5;2
 60;How often the configurations of business critical systems are checked?;now();now();42;RELEVANT;RANGE5;2
 61;How often the administrative users are regularly checked? E.g. check that the admins present in a system are still meaningful.;now();now();43;REGULAR;RANGE5;2
