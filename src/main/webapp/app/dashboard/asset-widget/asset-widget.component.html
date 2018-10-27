@@ -56,7 +56,7 @@
                       <td *ngIf="!myAsset.estimated">No</td>
                       <td *ngIf="myAsset.magnitude">{{myAsset.magnitude}}</td>
                       <td *ngIf="!myAsset.magnitude"> - </td>
-                      <td *ngIf="myAsset.economicValue">{{myAsset.economicValue}}</td>
+                      <td *ngIf="myAsset.economicValue">{{myAsset.economicValue | currency:'EUR'}}</td>
                       <td *ngIf="!myAsset.economicValue"> - </td>
                       <td *ngIf="myAsset.impact">{{myAsset.impact}}</td>
                       <td *ngIf="!myAsset.impact"> - </td>
