@@ -17,6 +17,24 @@
         Added the entity ExternalAudit.
     -->
     <changeSet id="20180530172823-1" author="developer" runOnChange="true">
+        <delete
+            catalogName="cat"
+            tableName="my_answer">
+            <where>question_id=77</where>
+        </delete>
+
+        <delete
+            catalogName="cat"
+            tableName="question_answers">
+            <where>questions_id=77</where>
+        </delete>
+
+        <delete
+            catalogName="cat"
+            tableName="question">
+            <where>id=77</where>
+        </delete>
+
         <loadUpdateData
             primaryKey="id"
             catalogName="question"
