@@ -50,11 +50,10 @@ id;name;created;modified;jhi_order;question_type;answer_type;questionnaire_id
 69;Is there a security information and event management (SIEM)?;now();now();52;REGULAR;RANGE5;2
 70;Is there a Service Operation Centre (SOC)?;now();now();53;REGULAR;RANGE5;2
 71;Is there a continuous monitoring of security events at network’s level? E.g., Intrusion Prevention System.;now();now();54;REGULAR;RANGE5;2
-72;Are the policies and procedures to the physical access authorization processes to the working places well-defined?;now();now();54;REGULAR;RANGE5;2
+72;Are the policies and procedures to regulate the physical access to sensible areas (such as door lock to data server rooms or video monitoring of sensible spaces) well defined?;now();now();7;REGULAR;RANGE5;2
 73;Are the policies and procedures to the areas of control physical access, secure areas such as door locks, access control systems or video monitoring well-defined?;now();now();55;REGULAR;RANGE5;2
 74;Are sensitive documents and digital supports properly disposed of? E.g. documents of terminated or archived projects, draft documents and intermediary results.;now();now();13;REGULAR;RANGE5;2
 75;Which percentage of employees regularly receives scrutiny on security (all the employees, considering also for example cleaners staff)?;now();now();55;REGULAR;PERC5;2
 76;What percentage of workstations and mobile devices use “full data encryption”?;now();now();56;REGULAR;PERC5;2
 78;What percentage of employees are aware of the risks derived from the insertion of an unauthorised device (e.g. USB drive found near the company building) into a system of the company (e.g., personal workstation or dedicated laptops)?;now();now();57;REGULAR;PERC5;2
-79;Are the policies and procedures to regulate the physical access to sensible areas (such as door lock to data server rooms or video monitoring of sensible spaces) well defined?;now();now();7;REGULAR;RANGE5;2
 80;Is the concept of “Data Classification” applied within the company’s supply-chain?;now();now();11;REGULAR;RANGE5;2
