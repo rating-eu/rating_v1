@@ -131,6 +131,10 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
                 }
 
                 this.questionsArray = response[1].body;
+                this.questionsArray.sort((a: QuestionMgm, b: QuestionMgm) => {
+                    return a.order - b.order;
+                });
+
                 this.questionsArrayMap = FormUtils.questionsToMap(this.questionsArray);
 
                 // Generate the form according to the Role
