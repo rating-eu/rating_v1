@@ -20,25 +20,25 @@
         <delete
             catalogName="cat"
             tableName="my_answer">
-            <where>question_id=77 OR question_id=35</where>
+            <where>question_id=77 OR question_id=35 OR question_id=73</where>
         </delete>
 
         <delete
             catalogName="cat"
             tableName="question_answers">
-            <where>questions_id=77 OR questions_id=35</where>
+            <where>questions_id=77 OR questions_id=35 OR questions_id=73</where>
         </delete>
 
         <delete catalogName="cat"
                 schemaName="public"
                 tableName="question_attack_strategies">
-            <where>questions_id=77 OR questions_id=35</where>
+            <where>questions_id=77 OR questions_id=35 OR questions_id=73</where>
         </delete>
 
         <delete
             catalogName="cat"
             tableName="question">
-            <where>id=77 OR id=35</where>
+            <where>id=77 OR id=35 OR id=73</where>
         </delete>
 
         <loadUpdateData
