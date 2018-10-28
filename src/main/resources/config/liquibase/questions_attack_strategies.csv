@@ -58,3 +58,4 @@ id;name;created;modified;jhi_order;question_type;answer_type;questionnaire_id
 75;Which percentage of employees regularly receives scrutiny on security (all the employees, considering also for example cleaners staff)?;now();now();57;REGULAR;PERC5;2
 76;What percentage of workstations and mobile devices use “full data encryption”?;now();now();58;REGULAR;PERC5;2
 78;What percentage of employees are aware of the risks derived from the insertion of an unauthorised device (e.g. USB drive found near the company building) into a system of the company (e.g., personal workstation or dedicated laptops)?;now();now();60;REGULAR;PERC5;2
+79;Are the policies and procedures to regulate the physical access to sensible areas (such as door lock to data server rooms or video monitoring of sensible spaces) well defined?;now();now();7;REGULAR;RANGE5;2

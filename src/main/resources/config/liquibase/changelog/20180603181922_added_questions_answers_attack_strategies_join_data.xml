@@ -16,7 +16,13 @@
     <!--
         Added AttackStrategies Questions' Answers.
     -->
-    <changeSet id="20180508153623-1" author="developer">
+    <changeSet id="20180508153623-1" author="developer" runOnChange="true">
+        <delete catalogName="cat"
+                schemaName="public"
+                tableName="question_answers">
+            <where>true</where>
+        </delete>
+
         <loadData catalogName="answer"
                   encoding="UTF-8"
                   file="config/liquibase/questions_answers_attack_strategies_join.csv"
