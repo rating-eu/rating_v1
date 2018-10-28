@@ -47,7 +47,7 @@ id;name;created;modified;jhi_order;question_type;answer_type;questionnaire_id
 64;Is the principle of “network segmentation” applied? E.g. DMZ, zero trust networks, ...;now();now();48;RELEVANT;RANGE5;2
 65;Is the principle of “minimum privilege” applied? E.g. Remove all the unused user or services on a server, run applications without administration rights (where possible), users are not the admin of their machines.;now();now();49;RELEVANT;RANGE5;2
 66;What is the percentage of systems with antivirus and anti-spam solutions installed and managed?;now();now();42;REGULAR;RANGE5;2
-67;Are firewalls and IDS deployed to detect and block unauthorized connections or scanning attempts?;now();now();49;REGULAR;RANGE5;2
+67;Are firewalls and Intrusion Detection System (IDS) deployed following best practices? E.g., Common Criteria or other best practices used to block the unauthorised connection or scanning attempts.;now();now();50;REGULAR;RANGE5;2
 68;Are the logs files of firewalls and IDS periodically checked against security threats?;now();now();51;REGULAR;RANGE5;2
 69;Is there a security information and event management (SIEM)?;now();now();52;REGULAR;RANGE5;2
 70;Is there a Service Operation Centre (SOC)?;now();now();53;REGULAR;RANGE5;2
