@@ -103,7 +103,7 @@ jhipster:
         #allow-credentials: true
         #max-age: 1800
     mail: # specific JHipster mail property, for standard properties see MailProperties
-        from: ${EMAIL_USERNAME}
+        from: ${EMAIL_ADDRESS}
         base-url: ${SERVER_URL}
     swagger:
         default-include-pattern: /api/.*
