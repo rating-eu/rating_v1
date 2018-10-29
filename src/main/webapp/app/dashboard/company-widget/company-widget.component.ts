@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { AccountService, UserService, User } from '../../shared';
 import { MyCompanyMgmService, MyCompanyMgm } from '../../entities/my-company-mgm';
 import { HttpResponse } from '@angular/common/http';
+import { PopUpService } from '../../shared/pop-up-services/pop-up.service';
+import { SelfAssessmentMgmService, SelfAssessmentMgm } from '../../entities/self-assessment-mgm';
 
 @Component({
   selector: 'jhi-company-widget',
@@ -10,14 +12,18 @@ import { HttpResponse } from '@angular/common/http';
 })
 export class CompanyWidgetComponent implements OnInit {
   private user: User;
+  private mySelf: SelfAssessmentMgm;
   public myCompany: MyCompanyMgm;
   public companyName: string;
   public companySector: string;
+  public selfAssessmentName: string;
 
   constructor(
     private accountService: AccountService,
     private userService: UserService,
     private myCompanyService: MyCompanyMgmService,
+    private selfAssessmentService: SelfAssessmentMgmService,
+    public popUpService: PopUpService
   ) { }
 
   ngOnInit() {
@@ -36,7 +42,9 @@ export class CompanyWidgetComponent implements OnInit {
               );
           }
       });
-  });
+    });
+    this.mySelf = this.selfAssessmentService.getSelfAssessment();
+    this.selfAssessmentName = this.mySelf.name;
   }
 
 }

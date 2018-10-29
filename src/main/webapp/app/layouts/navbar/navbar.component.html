@@ -2,7 +2,6 @@
     <!-- [ngClass]="{'sidebar-collapsed': isCollapsed}"-->
     <div class="topbar-left logo">
         <i class="fa fa-bars fa-2x col-md-2" (click)="hideShowSideNav()"></i>
-        <p class="col-md-10">{{companyName}}</p>
         <!--routerLink="/"-->
         <!--
         <a href="javascript:void(0)" class="logo" (click)="hideShowSideNav()"> 
@@ -15,9 +14,11 @@
         </a>
         -->
     </div>
+    <!--
     <div *ngIf="navSubTitle" class="nav-self-assessment">
         {{navSubTitle}}<a [routerLink]="['../self-assessment-mgm', selfAssessmentId ]" style="color: #4fbde9">{{selfAssessmentName}}</a>
     </div>
+    -->
     <div class="navbar-collapse collapse" id="navbarResponsive" [ngbCollapse]="isNavbarCollapsed" [ngSwitch]="isAuthenticated()">
         <ul class="navbar-nav ml-auto">
             <!--

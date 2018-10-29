@@ -23,13 +23,6 @@ import { MyCompanyComponent } from '../../my-company/my-company.component';
     ]
 })
 export class NavbarComponent implements OnInit {
-    private static NOT_FOUND = 404;
-    private user: User;
-    private myCompany: MyCompanyMgm;
-    private error: HttpErrorResponse;
-    private message: string;
-    private companyProfiles: CompanyProfileMgm[];
-    private companyProfile: CompanyProfileMgm;
 
     inProduction: boolean;
     isNavbarCollapsed: boolean;
@@ -51,12 +44,7 @@ export class NavbarComponent implements OnInit {
         private loginModalService: LoginModalService,
         private profileService: ProfileService,
         private router: Router,
-        private dataSharingService: DatasharingService,
-        private accountService: AccountService,
-        private userService: UserService,
-        private myCompanyService: MyCompanyMgmService,
-        private companyProfileService: CompanyProfileMgmService,
-        private jhiAlertService: JhiAlertService
+        private dataSharingService: DatasharingService
     ) {
         this.version = VERSION ? 'v' + VERSION : '';
         this.isNavbarCollapsed = true;
@@ -80,36 +68,6 @@ export class NavbarComponent implements OnInit {
                 this.selfAssessmentId = update.selfAssessmentId;
                 this.sidebarCollapsed = update.isSidebarCollapsed;
             }
-        });
-
-        this.accountService.get().subscribe((response1) => {
-            const loggedAccount: Account = response1.body;
-            this.userService.find(loggedAccount['login']).subscribe((response2) => {
-                this.user = response2.body;
-
-                if (this.user) {
-                    this.myCompanyService.findByUser(this.user.id).subscribe(
-                        (response3: HttpResponse<MyCompanyMgm>) => {
-                            this.myCompany = response3.body;
-                            this.companyName = this.myCompany.companyProfile.name;
-                        }/*,
-                        (error: any) => {
-                            this.error = error;
-
-                            if (this.error.status === NavbarComponent.NOT_FOUND) {
-                                this.jhiAlertService.error('http.' + this.error.status, null, null);
-
-                                this.companyProfileService.query().subscribe(
-                                    (response4: HttpResponse<CompanyProfileMgm[]>) => {
-                                        this.companyProfiles = response4.body;
-                                    }
-                                );
-                            }
-                        }
-                        */
-                    );
-                }
-            });
         });
     }
 

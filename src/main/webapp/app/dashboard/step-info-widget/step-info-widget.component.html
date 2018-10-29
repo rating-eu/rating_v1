@@ -1,0 +1,98 @@
+<div class="container" *ngIf="loading">
+  <div class="loader"></div>
+</div>
+<div class="row col-md-12" *ngIf="!loading">
+  <div class="x_panel" style="padding:0px !important;">
+    <div class="x_title" style="padding:0px !important;">
+      <h2 style="padding: 10px;">Check your progress</h2>
+      <ul class="nav navbar-right panel_toolbox">
+        <li>
+          <a class="collapse-link" (click)="isCollapsed = !isCollapsed">
+            <i *ngIf="!isCollapsed" class="fa fa-chevron-up"></i>
+            <i *ngIf="isCollapsed" class="fa fa-chevron-down"></i>
+          </a>
+        </li>
+      </ul>
+      <div class="clearfix"></div>
+    </div>
+    <div class="table-responsive x_content" style="padding:0px !important;" [ngbCollapse]="isCollapsed">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Steps</th>
+            <th>Description</th>
+            <th>Status</th>
+            <th>Link</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Asset Clustering</td>
+            <td>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam laoreet sit amet magna vel
+              consectetur. Cras iaculis condimentum consequat. Maecenas elementum mauris nisi, eleifend vestibulum
+              lacus tristique ac. Morbi euismod, massa in convallis tempor, orci massa eleifend neque, in convallis
+              nibh nisi eu arcu. Nullam sodales suscipit arcu id imperdiet. In ullamcorper condimentum magna, vel
+              fermentum orci semper vitae.</td>
+            <td class="text-center">
+              <i *ngIf="assetClusteringStatus" style="color: green" class="fa fa-check" aria-hidden="true"></i>
+              <i *ngIf="!assetClusteringStatus" style="color: red" class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+            </td>
+            <td class="text-center"><a [routerLink]="['/identify-asset']">perform</a></td>
+          </tr>
+          <tr>
+            <td>Identify Threat Agents</td>
+            <td>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam laoreet sit amet magna vel
+              consectetur. Cras iaculis condimentum consequat. Maecenas elementum mauris nisi, eleifend vestibulum
+              lacus tristique ac. Morbi euismod, massa in convallis tempor, orci massa eleifend neque, in convallis
+              nibh nisi eu arcu. Nullam sodales suscipit arcu id imperdiet. In ullamcorper condimentum magna, vel
+              fermentum orci semper vitae.</td>
+            <td class="text-center">
+              <i *ngIf="identifyThreatAgentsStatus" style="color: green" class="fa fa-check" aria-hidden="true"></i>
+              <i *ngIf="!identifyThreatAgentsStatus" style="color: red" class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+            </td>
+            <td class="text-center"><a [routerLink]="['/identify-threat-agent/questionnaires/ID_THREAT_AGENT']">perform</a></td>
+          </tr>
+          <tr>
+            <td>Assess Vulnerablities</td>
+            <td>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam laoreet sit amet magna vel
+              consectetur. Cras iaculis condimentum consequat. Maecenas elementum mauris nisi, eleifend vestibulum
+              lacus tristique ac. Morbi euismod, massa in convallis tempor, orci massa eleifend neque, in convallis
+              nibh nisi eu arcu. Nullam sodales suscipit arcu id imperdiet. In ullamcorper condimentum magna, vel
+              fermentum orci semper vitae.</td>
+            <td class="text-center">
+              <i *ngIf="assessVulnerablitiesStatus" style="color: green" class="fa fa-check" aria-hidden="true"></i>
+              <i *ngIf="!assessVulnerablitiesStatus" style="color: red" class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+            </td>
+            <td class="text-center"><a [routerLink]="['/evaluate-weakness/questionnaires/SELFASSESSMENT']">perform</a></td>
+          </tr>
+          <tr>
+            <td>Impact Evaluation</td>
+            <td>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam laoreet sit amet magna vel
+              consectetur. Cras iaculis condimentum consequat. Maecenas elementum mauris nisi, eleifend vestibulum
+              lacus tristique ac. Morbi euismod, massa in convallis tempor, orci massa eleifend neque, in convallis
+              nibh nisi eu arcu. Nullam sodales suscipit arcu id imperdiet. In ullamcorper condimentum magna, vel
+              fermentum orci semper vitae.</td>
+            <td class="text-center">
+              <i *ngIf="impactEvaluationStatus" style="color: green" class="fa fa-check" aria-hidden="true"></i>
+              <i *ngIf="!impactEvaluationStatus" style="color: red" class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+            </td>
+            <td class="text-center"><a [routerLink]="['/impact-evaluation']">perform</a></td>
+          </tr>
+          <tr>
+            <td>Risk Evaluation</td>
+            <td>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam laoreet sit amet magna vel
+              consectetur. Cras iaculis condimentum consequat. Maecenas elementum mauris nisi, eleifend vestibulum
+              lacus tristique ac. Morbi euismod, massa in convallis tempor, orci massa eleifend neque, in convallis
+              nibh nisi eu arcu. Nullam sodales suscipit arcu id imperdiet. In ullamcorper condimentum magna, vel
+              fermentum orci semper vitae.</td>
+            <td class="text-center">
+              <i *ngIf="riskEvaluationStatus" style="color: green" class="fa fa-check" aria-hidden="true"></i>
+              <i *ngIf="!riskEvaluationStatus" style="color: red" class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+            </td>
+            <td class="text-center"><a [routerLink]="['/risk-management/risk-evaluation']">perform</a></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

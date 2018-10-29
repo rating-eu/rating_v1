@@ -19,6 +19,10 @@
     height: 122px;
 }
 
+.tile-stats .tiles-first-row p a{
+    cursor: pointer;
+}
+
 .center-block{
     display: block;
     /* margin-right: auto !important; */

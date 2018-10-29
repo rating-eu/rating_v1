@@ -35,6 +35,8 @@ import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
 import { ResultsService } from '../results/results.service';
 import { ChartsModule } from 'ng2-charts';
 import { ImpactEvaluationService } from '../impact-evaluation/impact-evaluation.service';
+import { PopUpService } from '../shared/pop-up-services/pop-up.service';
+import { StepInfoWidgetComponent } from './step-info-widget/step-info-widget.component';
 
 @NgModule({
     imports: [
@@ -57,7 +59,8 @@ import { ImpactEvaluationService } from '../impact-evaluation/impact-evaluation.
         AttackMapWidgetComponent,
         FinancialDataWidgetComponent,
         SplittingWidgetComponent,
-        DashboardOneComponent
+        DashboardOneComponent,
+        StepInfoWidgetComponent
     ],
     providers: [
         {
@@ -102,7 +105,8 @@ import { ImpactEvaluationService } from '../impact-evaluation/impact-evaluation.
         LevelMgmService,
         PhaseMgmService,
         ResultsService,
-        ImpactEvaluationService
+        ImpactEvaluationService,
+        PopUpService
     ]
 })
 export class DashboardModule {
