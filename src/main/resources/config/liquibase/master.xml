@@ -101,5 +101,6 @@
     <include file="config/liquibase/changelog/20181002155659_added_my_asset_impact_column.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20181002174026_added_entity_constraints_ImpactLevel.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20181003171023_load_impact_level_description_data.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20181029163259_remove_default_ciso_external.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
 </databaseChangeLog>
