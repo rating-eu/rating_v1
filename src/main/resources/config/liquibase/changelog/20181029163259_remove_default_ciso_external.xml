@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <property name="now" value="now()" dbms="h2"/>
+
+    <property name="now" value="current_timestamp" dbms="postgresql"/>
+
+    <property name="floatType" value="float4" dbms="postgresql, h2"/>
+    <property name="floatType" value="float" dbms="mysql, oracle, mssql"/>
+
+    <!--
+        Added AttackStrategies Questions' Answers.
+    -->
+    <changeSet id="20181029163259-1" author="developer">
+        <update tableName="self_assessment">
+            <column name="user_id" value="null"/>
+            <where>user_id=5 OR user_id=6</where>
+        </update>
+
+        <delete tableName="my_answer">
+            <where>user_id=5 OR user_id=6</where>
+        </delete>
+
+        <delete tableName="questionnaire_status">
+            <where>user_id=5 OR user_id=6</where>
+        </delete>
+
+        <delete tableName="my_company">
+            <where>user_id=5 OR user_id=6</where>
+        </delete>
+
+        <delete tableName="jhi_user_authority">
+            <where>user_id=5 OR user_id=6</where>
+        </delete>
+
+        <delete tableName="jhi_user">
+            <where>id=5 OR id=6</where>
+        </delete>
+    </changeSet>
+</databaseChangeLog>
