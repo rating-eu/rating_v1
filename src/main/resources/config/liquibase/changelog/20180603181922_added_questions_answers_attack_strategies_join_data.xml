@@ -23,7 +23,16 @@
             <where>true</where>
         </delete>
 
-        <loadData catalogName="answer"
+        <loadData catalogName="cat"
+                  encoding="UTF-8"
+                  file="config/liquibase/questions_answers_threat_agents_join.csv"
+                  schemaName="public"
+                  separator=";"
+                  quotchar="'"
+                  tableName="question_answers">
+        </loadData>
+
+        <loadData catalogName="cat"
                   encoding="UTF-8"
                   file="config/liquibase/questions_answers_attack_strategies_join.csv"
                   schemaName="public"
@@ -31,6 +40,34 @@
                   quotchar="'"
                   tableName="question_answers">
         </loadData>
+
+        <!--NEW Identify Assets Questions with higher IDs to avoid interleaving-->
+        <delete
+            catalogName="cat"
+            schemaName="public"
+            tableName="question">
+            <where>answer_type='ASSET'</where>
+        </delete>
+
+        <loadData catalogName="answer"
+                  encoding="UTF-8"
+                  file="config/liquibase/question_id_assets_new.csv"
+                  schemaName="public"
+                  separator=";"
+                  quotchar="'"
+                  tableName="question">
+        </loadData>
+
+        <loadData catalogName="answer"
+                  encoding="UTF-8"
+                  file="config/liquibase/questions_answers_id_assets_join_new.csv"
+                  schemaName="public"
+                  separator=";"
+                  quotchar="'"
+                  tableName="question_answers">
+        </loadData>
+
+
     </changeSet>
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here, do not remove-->
 </databaseChangeLog>
