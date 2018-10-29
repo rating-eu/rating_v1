@@ -36,6 +36,7 @@ import { ResultsService } from '../results/results.service';
 import { ChartsModule } from 'ng2-charts';
 import { ImpactEvaluationService } from '../impact-evaluation/impact-evaluation.service';
 import { PopUpService } from '../shared/pop-up-services/pop-up.service';
+import { StepInfoWidgetComponent } from './step-info-widget/step-info-widget.component';
 
 @NgModule({
     imports: [
@@ -58,7 +59,8 @@ import { PopUpService } from '../shared/pop-up-services/pop-up.service';
         AttackMapWidgetComponent,
         FinancialDataWidgetComponent,
         SplittingWidgetComponent,
-        DashboardOneComponent
+        DashboardOneComponent,
+        StepInfoWidgetComponent
     ],
     providers: [
         {
