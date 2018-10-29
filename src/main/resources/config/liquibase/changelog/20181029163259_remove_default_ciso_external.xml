@@ -16,7 +16,7 @@
     <!--
         Added AttackStrategies Questions' Answers.
     -->
-    <changeSet id="20181029163259-1" author="developer">
+    <changeSet id="20181029163259-1" author="developer" runOnChange="true">
         <update tableName="self_assessment">
             <column name="user_id" value="null"/>
             <where>user_id=5 OR user_id=6</where>
@@ -33,6 +33,20 @@
         <delete tableName="my_company">
             <where>user_id=5 OR user_id=6</where>
         </delete>
+
+        <delete tableName="external_audit">
+            <where>user_id=5 OR user_id=6</where>
+        </delete>
+
+        <update tableName="company_profile">
+            <column name="user_id" value="null"/>
+            <where>user_id=5 OR user_id=6</where>
+        </update>
+
+        <update tableName="company_group">
+            <column name="user_id" value="null"/>
+            <where>user_id=5 OR user_id=6</where>
+        </update>
 
         <delete tableName="jhi_user_authority">
             <where>user_id=5 OR user_id=6</where>
