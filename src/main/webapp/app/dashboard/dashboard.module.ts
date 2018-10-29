@@ -35,6 +35,7 @@ import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
 import { ResultsService } from '../results/results.service';
 import { ChartsModule } from 'ng2-charts';
 import { ImpactEvaluationService } from '../impact-evaluation/impact-evaluation.service';
+import { PopUpService } from '../shared/pop-up-services/pop-up.service';
 
 @NgModule({
     imports: [
@@ -102,7 +103,8 @@ import { ImpactEvaluationService } from '../impact-evaluation/impact-evaluation.
         LevelMgmService,
         PhaseMgmService,
         ResultsService,
-        ImpactEvaluationService
+        ImpactEvaluationService,
+        PopUpService
     ]
 })
 export class DashboardModule {
