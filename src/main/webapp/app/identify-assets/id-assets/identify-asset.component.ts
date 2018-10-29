@@ -259,7 +259,8 @@ export class IdentifyAssetComponent implements OnInit, OnDestroy {
             this.jhiAlertService.success('hermeneutApp.messages.saved', null, null);
             this.loading = false;
             this.loadWithErrors = false;
-            this.ngOnInit();
+            // this.ngOnInit();
+            this.router.navigate(['/dashboard']);
         }).catch(() => {
             this.loading = false;
             this.loadWithErrors = true;

@@ -128,6 +128,13 @@ export class MostDangerousAssetsWidgetComponent implements OnInit {
         this.selectedAttacks.push(item.augmentedAttackStrategy);
       }
     }
+    if (this.selectedAttacks[0].refinedLikelihood) {
+      this.selectedAttacks = _.orderBy(this.selectedAttacks, ['refinedLikelihood', 'refinedVulnerability'], ['desc', 'desc']);
+    } else if (this.selectedAttacks[0].contextualLikelihood) {
+      this.selectedAttacks = _.orderBy(this.selectedAttacks, ['contextualLikelihood', 'contextualVulnerability'], ['desc', 'desc']);
+    } else {
+      this.selectedAttacks = _.orderBy(this.selectedAttacks, ['likelihood'], ['desc']);
+    }
     this.loadingAttacksTable = false;
   }
 

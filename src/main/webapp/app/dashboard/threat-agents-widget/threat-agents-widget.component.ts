@@ -17,6 +17,7 @@ import { BaseEntity } from '../../shared';
 import { AnswerMgm } from '../../entities/answer-mgm';
 import * as CryptoJS from 'crypto-js';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
+import { DashboardService, DashboardStatus } from '../dashboard.service';
 
 @Component({
   selector: 'jhi-threat-agents-widget',
@@ -66,6 +67,8 @@ export class ThreatAgentsWidgetComponent implements OnInit, OnDestroy {
   private threatAgentsPercentageMap: Map<String, Couple<ThreatAgentMgm, Fraction>>;
   private threatAgentsPercentageArray: Couple<ThreatAgentMgm, Fraction>[];
 
+  private status: DashboardStatus;
+
   constructor(
     private selfAssessmentService: SelfAssessmentMgmService,
     private myAnswerService: MyAnswerMgmService,
@@ -73,11 +76,14 @@ export class ThreatAgentsWidgetComponent implements OnInit, OnDestroy {
     private questionnaireStatusService: QuestionnaireStatusMgmService,
     private motivationsService: MotivationMgmService,
     private threatAgentService: ThreatAgentMgmService,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private dashService: DashboardService
   ) { }
 
   ngOnInit() {
     this.loading = true;
+    // identifyThreatAgentsStatus checker
+    this.status = this.dashService.getStatus();
 
     // The below code is been copy and customized from the resul.component of the identify-threat-agents module
     this.selfAssessment = this.selfAssessmentService.getSelfAssessment();
@@ -141,6 +147,18 @@ export class ThreatAgentsWidgetComponent implements OnInit, OnDestroy {
             return result;
           }
         );
+        if (!this.selfAssessment.threatagents || !this.motivations || !this.threatAgentsPercentageArray) {
+          this.status.identifyThreatAgentsStatus = false;
+          this.dashService.updateStatus(this.status);
+        } else {
+          if (this.selfAssessment.threatagents.length !== 0 && this.motivations.length !== 0 && this.threatAgentsPercentageArray.length !== 0) {
+            this.status.identifyThreatAgentsStatus = true;
+            this.dashService.updateStatus(this.status);
+          } else {
+            this.status.identifyThreatAgentsStatus = false;
+            this.dashService.updateStatus(this.status);
+          }
+        }
         this.loading = false;
         // console.log('ThreatAgentsPercentageArray: ' + JSON.stringify(this.threatAgentsPercentageArray));
       }

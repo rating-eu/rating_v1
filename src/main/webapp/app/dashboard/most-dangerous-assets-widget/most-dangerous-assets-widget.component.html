@@ -1,13 +1,16 @@
 <div class="container" *ngIf="loading">
   <div class="loader"></div>
 </div>
-<div class="container" *ngIf="!loading">
+<div class="row col-md-12" *ngIf="!loading">
   <div class="x_panel" style="padding:0px !important;">
     <div class="x_title" style="padding:0px !important;">
       <h2 style="padding: 10px;">Most Vulnerable Asset</h2>
       <ul class="nav navbar-right panel_toolbox">
         <li>
-          <a class="collapse-link" (click)="isCollapsed = !isCollapsed"><i class="fa fa-chevron-up"></i></a>
+            <a class="collapse-link" (click)="isCollapsed = !isCollapsed">
+                <i *ngIf="!isCollapsed" class="fa fa-chevron-up"></i>
+                <i *ngIf="isCollapsed" class="fa fa-chevron-down"></i>
+            </a>
         </li>
         <!--
               <li class="dropdown">
@@ -36,7 +39,7 @@
                     <ng-container *ngFor="let item of mdawEntities | paginate: assetsPaginator">
                         <tr>
                             <th scope="row"><a href="javascript:void(0)" (click)="selectAsset(item.asset)">{{item.asset.asset.name}}</a></th>
-                            <td>{{item.mostDangerousAttack}} +{{item.howManyAttacks}}!</td>
+                            <td placement="top" container="body" ngbTooltip="Click on Asset name for more details">{{item.mostDangerousAttack}} +{{item.howManyAttacks}}!</td>
                             <td>{{item.mostDangerousAttackValue.likelihood}}</td>
                             <td *ngIf="item.mostDangerousAttackValue.vulnerability !== undefined">{{item.mostDangerousAttackValue.vulnerability}}</td>
                             <td *ngIf="item.mostDangerousAttackValue.vulnerability === undefined">-</td>

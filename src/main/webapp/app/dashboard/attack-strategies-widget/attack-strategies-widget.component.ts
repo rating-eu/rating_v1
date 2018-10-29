@@ -6,6 +6,7 @@ import { SelfAssessmentMgmService, SelfAssessmentMgm } from '../../entities/self
 import { MyAssetMgm } from '../../entities/my-asset-mgm';
 import { MyAssetAttackChance } from '../../risk-management/model/my-asset-attack-chance.model';
 import { AttackStrategyMgm } from '../../entities/attack-strategy-mgm';
+import { DashboardService, DashboardStatus } from '../dashboard.service';
 
 @Component({
   selector: 'jhi-attack-strategies-widget',
@@ -20,14 +21,18 @@ export class AttackStrategiesWidgetComponent implements OnInit {
 
   private attacksMap: Map<number /*AttackStrategyID*/, AttackStrategyMgm> = new Map<number, AttackStrategyMgm>();
   private mySelf: SelfAssessmentMgm;
+  private status: DashboardStatus;
 
   constructor(
     private riskService: RiskManagementService,
     private mySelfAssessmentService: SelfAssessmentMgmService,
+    private dashService: DashboardService
   ) { }
 
   ngOnInit() {
     this.loading = true;
+    // assessVulnerablitiesStatus checker
+    this.status = this.dashService.getStatus();
     this.mySelf = this.mySelfAssessmentService.getSelfAssessment();
 
     this.riskService.getMyAssets(this.mySelf).toPromise().then((res) => {
@@ -47,11 +52,17 @@ export class AttackStrategiesWidgetComponent implements OnInit {
           });
         }
         this.loading = false;
+        this.status.assessVulnerablitiesStatus = true;
+        this.dashService.updateStatus(this.status);
       } else {
         this.loading = false;
+        this.status.assessVulnerablitiesStatus = false;
+        this.dashService.updateStatus(this.status);
       }
     }).catch(() => {
       this.loading = false;
+      this.status.assessVulnerablitiesStatus = false;
+      this.dashService.updateStatus(this.status);
     });
   }
 

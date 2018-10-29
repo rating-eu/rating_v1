@@ -188,7 +188,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                                 label: 'Attack Strategies',
                                 items: [
                                     {
-                                        label: 'Asses Vulnerabilities',
+                                        label: 'Assess Vulnerabilities',
                                         routerLink: ['/evaluate-weakness/questionnaires/SELFASSESSMENT']
                                     },
                                     {
