@@ -7,7 +7,10 @@
       <h2 style="padding: 10px;">Most Vulnerable Asset</h2>
       <ul class="nav navbar-right panel_toolbox">
         <li>
-          <a class="collapse-link" (click)="isCollapsed = !isCollapsed"><i class="fa fa-chevron-up"></i></a>
+            <a class="collapse-link" (click)="isCollapsed = !isCollapsed">
+                <i *ngIf="!isCollapsed" class="fa fa-chevron-up"></i>
+                <i *ngIf="isCollapsed" class="fa fa-chevron-down"></i>
+            </a>
         </li>
         <!--
               <li class="dropdown">

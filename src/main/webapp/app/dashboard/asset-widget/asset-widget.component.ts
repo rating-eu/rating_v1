@@ -10,6 +10,7 @@ import { MyAssetMgm } from '../../entities/my-asset-mgm';
 import { Subscription } from 'rxjs';
 import { JhiEventManager } from 'ng-jhipster';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
+import { DashboardService, DashboardStatus } from '../dashboard.service';
 
 @Component({
   selector: 'jhi-asset-widget',
@@ -35,17 +36,21 @@ export class AssetWidgetComponent implements OnInit, OnDestroy {
 
   private account: Account;
   private eventSubscriber: Subscription;
+  private status: DashboardStatus;
 
   constructor(
     private principal: Principal,
     private mySelfAssessmentService: SelfAssessmentMgmService,
     private idaUtilsService: IdentifyAssetUtilService,
     private eventManager: JhiEventManager,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private dashService: DashboardService
   ) { }
 
   ngOnInit() {
     this.loading = true;
+    // assetClusteringStatus checker
+    this.status = this.dashService.getStatus();
     this.principal.identity().then((account) => {
       this.account = account;
       this.mySelf = this.mySelfAssessmentService.getSelfAssessment();
@@ -57,6 +62,8 @@ export class AssetWidgetComponent implements OnInit, OnDestroy {
             if (mySavedAssets) {
               if (mySavedAssets.length === 0) {
                 this.loading = false;
+                this.status.assetClusteringStatus = false;
+                this.dashService.updateStatus(this.status);
                 return;
               }
               this.myAssets = mySavedAssets;
@@ -92,15 +99,23 @@ export class AssetWidgetComponent implements OnInit, OnDestroy {
               this.intangibleCategoryMapLoaded = true;
               this.tangibleCategoryMapLoaded = true;
               this.loading = false;
+              this.status.assetClusteringStatus = true;
+              this.dashService.updateStatus(this.status);
             } else {
               this.loading = false;
+              this.status.assetClusteringStatus = false;
+              this.dashService.updateStatus(this.status);
             }
           }).catch(() => {
             this.loading = false;
+            this.status.assetClusteringStatus = false;
+              this.dashService.updateStatus(this.status);
           });
       }
     }).catch(() => {
       this.loading = false;
+      this.status.assetClusteringStatus = false;
+      this.dashService.updateStatus(this.status);
     });
   }
 
