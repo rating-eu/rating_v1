@@ -127,7 +127,9 @@ export class AttackMapWidgetComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this._subscriptions.forEach((subscription: Subscription) => {
-      subscription.unsubscribe();
+      if(subscription){
+          subscription.unsubscribe();
+      }
     });
   }
 
