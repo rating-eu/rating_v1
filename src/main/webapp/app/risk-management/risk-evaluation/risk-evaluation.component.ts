@@ -93,7 +93,11 @@ export class RiskEvaluationComponent implements OnInit, OnDestroy {
                     this.squareRowElement.push(i);
                 }
                 this.loadingRiskLevel = false;
+            } else {
+                this.loadingRiskLevel = false;
             }
+        }).catch(() => {
+            this.loadingRiskLevel = false;
         });
 
         this.criticalLevelSubscription = this.riskService.subscribeForCriticalLevel().subscribe((res) => {
@@ -119,7 +123,11 @@ export class RiskEvaluationComponent implements OnInit, OnDestroy {
                 this.loadingAssetsAndAttacks = false;
                 // this.ref.detectChanges();
                 console.log(this.mapAssetAttacks);
+            } else {
+                this.loadingAssetsAndAttacks = false;
             }
+        }).catch(() => {
+            this.loadingAssetsAndAttacks = false;
         });
     }
 

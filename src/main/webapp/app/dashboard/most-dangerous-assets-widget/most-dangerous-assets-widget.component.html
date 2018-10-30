@@ -25,7 +25,7 @@
       <div class="clearfix"></div>
     </div>
     <div class="table-responsive x_content" style="padding:0px !important;" [ngbCollapse]="isCollapsed">
-        <div *ngIf="mdawEntities" class="table-responsive table-hover-no-pointer">
+        <div *ngIf="mdawEntities.length>0" class="table-responsive table-hover-no-pointer">
             <table class="table table-striped">
                 <thead>
                     <tr>
@@ -89,7 +89,7 @@
                   <pagination-controls (pageChange)="onAssetsPageChange($event)" [id]="assetsPaginator.id"></pagination-controls>
               </div>
         </div>
-        <div *ngIf="!mdawEntities" class="text-center">
+        <div *ngIf="mdawEntities.length===0" class="text-center">
             No Assets counted or no questionnaire was complited
         </div>
     </div>
