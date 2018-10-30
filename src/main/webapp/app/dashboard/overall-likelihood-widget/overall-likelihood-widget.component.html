@@ -46,12 +46,12 @@
           </div>
         </div>
         <div class="col-md-12">
+          <h4 class="text-center">Refined</h4>
           <div style="display: block" *ngIf="refinedData.length > 0">
-            <h4 class="text-center">Refined</h4>
             <canvas baseChart [data]="refinedData" [labels]="refinedLabels" [chartType]="type" [legend]="legend"
               [colors]="color"></canvas>
           </div>
-          <div style="display: block" *ngIf="refinedData.length === 0">
+          <div style="display: block" class="text-center" *ngIf="refinedData.length === 0">
             <p>No data available, please contact your external auditor!</p>
           </div>
         </div>

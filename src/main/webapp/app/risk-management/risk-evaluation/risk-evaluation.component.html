@@ -2,6 +2,10 @@
     <div class="loader"></div>
 </div>
 <div class="container-fluid" *ngIf="!loadingRiskLevel  && !loadingAssetsAndAttacks">
+    <ng-container *ngIf="myAssets.length===0">
+        No Assets counted or no questionnaire was complited
+    </ng-container>
+    <ng-container *ngIf="myAssets.length>0">
     <ng-container *ngIf="criticalBostonSquareLoad">
         <div class="loader"></div>
     </ng-container>
@@ -165,5 +169,6 @@
                 </div>
             </div>
         </div>
+    </ng-container>
     </ng-container>
 </div>

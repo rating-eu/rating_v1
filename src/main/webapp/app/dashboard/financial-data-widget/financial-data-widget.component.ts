@@ -14,7 +14,7 @@ import { DashboardService, DashboardStatus } from '../dashboard.service';
 export class FinancialDataWidgetComponent implements OnInit {
   public loading = false;
   public isCollapsed = false;
-  public assets: MyAssetMgm[] = [];
+  public assets: MyAssetMgm[];
   public assetsPaginator = {
     id: 'asset_paginator',
     itemsPerPage: 7,
