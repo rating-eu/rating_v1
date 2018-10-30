@@ -168,7 +168,9 @@ export class ThreatAgentsWidgetComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     if (this.subscriptions) {
       this.subscriptions.forEach((subscription: Subscription) => {
-        subscription.unsubscribe();
+          if(subscription){
+              subscription.unsubscribe();
+          }
       });
     }
   }

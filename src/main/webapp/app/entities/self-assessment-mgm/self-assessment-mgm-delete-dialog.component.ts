@@ -1,14 +1,15 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute, Route, Router } from '@angular/router';
+import {Component, OnInit, OnDestroy} from '@angular/core';
+import {ActivatedRoute, Route, Router} from '@angular/router';
 
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { JhiEventManager } from 'ng-jhipster';
+import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
+import {JhiEventManager} from 'ng-jhipster';
 
-import { SelfAssessmentMgm } from './self-assessment-mgm.model';
-import { SelfAssessmentMgmPopupService } from './self-assessment-mgm-popup.service';
-import { SelfAssessmentMgmService } from './self-assessment-mgm.service';
-import { SessionStorageService } from 'ngx-webstorage';
-import { PopUpService } from '../../shared/pop-up-services/pop-up.service';
+import {SelfAssessmentMgm} from './self-assessment-mgm.model';
+import {SelfAssessmentMgmPopupService} from './self-assessment-mgm-popup.service';
+import {SelfAssessmentMgmService} from './self-assessment-mgm.service';
+import {SessionStorageService} from 'ngx-webstorage';
+import {PopUpService} from '../../shared/pop-up-services/pop-up.service';
+import {DatasharingService} from '../../datasharing/datasharing.service';
 
 @Component({
     selector: 'jhi-self-assessment-mgm-delete-dialog',
@@ -22,7 +23,8 @@ export class SelfAssessmentMgmDeleteDialogComponent {
         private selfAssessmentService: SelfAssessmentMgmService,
         public activeModal: NgbActiveModal,
         private eventManager: JhiEventManager,
-        private router: Router
+        private router: Router,
+        private dataSharingService: DatasharingService
     ) {
     }
 
@@ -32,10 +34,15 @@ export class SelfAssessmentMgmDeleteDialogComponent {
 
     confirmDelete(id: number) {
         this.selfAssessmentService.delete(id).subscribe((response) => {
+
             this.eventManager.broadcast({
                 name: 'selfAssessmentListModification',
                 content: 'Deleted an selfAssessment'
             });
+
+            // TODO think of an alternative method only for update view events
+            this.dataSharingService.updateMySelfAssessment(null);
+
             this.activeModal.dismiss(true);
         });
     }
@@ -54,7 +61,8 @@ export class SelfAssessmentMgmDeletePopupComponent implements OnInit, OnDestroy 
         private selfAssessmentPopupService: SelfAssessmentMgmPopupService,
         private sessionStorage: SessionStorageService,
         public popUpService: PopUpService
-    ) { }
+    ) {
+    }
 
     ngOnInit() {
         if (!this.popUpService.canOpen()) {

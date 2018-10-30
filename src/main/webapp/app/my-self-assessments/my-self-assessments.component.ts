@@ -1,15 +1,15 @@
-import { Component, OnInit } from '@angular/core';
-import { AccountService, User, UserService } from '../shared';
-import { MyCompanyMgm, MyCompanyMgmService } from '../entities/my-company-mgm';
-import { SelfAssessmentMgm, SelfAssessmentMgmService } from '../entities/self-assessment-mgm';
-import { HttpResponse } from '@angular/common/http';
-import { Router } from '@angular/router';
-import { Subscription } from 'rxjs/Subscription';
-import { JhiEventManager } from 'ng-jhipster';
-import { MyAssetMgm, MyAssetMgmService } from '../entities/my-asset-mgm';
-import { DatasharingService } from '../datasharing/datasharing.service';
-import { SessionStorageService } from 'ngx-webstorage';
-import { PopUpService } from '../shared/pop-up-services/pop-up.service';
+import {Component, OnInit} from '@angular/core';
+import {AccountService, User, UserService} from '../shared';
+import {MyCompanyMgm, MyCompanyMgmService} from '../entities/my-company-mgm';
+import {SelfAssessmentMgm, SelfAssessmentMgmService} from '../entities/self-assessment-mgm';
+import {HttpResponse} from '@angular/common/http';
+import {Router} from '@angular/router';
+import {Subscription} from 'rxjs/Subscription';
+import {JhiEventManager} from 'ng-jhipster';
+import {MyAssetMgm, MyAssetMgmService} from '../entities/my-asset-mgm';
+import {DatasharingService} from '../datasharing/datasharing.service';
+import {SessionStorageService} from 'ngx-webstorage';
+import {PopUpService} from '../shared/pop-up-services/pop-up.service';
 
 @Component({
     selector: 'jhi-my-self-assessments',
@@ -51,6 +51,7 @@ export class MySelfAssessmentsComponent implements OnInit {
                         (response3: HttpResponse<MyCompanyMgm>) => {
                             this.myCompany = response3.body;
                             this.loadMySelfAssessments();
+                            this.registerChangeInSelfAssessments();
                         },
                         (error: any) => {
 
@@ -62,7 +63,6 @@ export class MySelfAssessmentsComponent implements OnInit {
                 }
             });
         });
-        this.registerChangeInSelfAssessments();
 
         if (this.selfAssessmentService.isSelfAssessmentSelected()) {
             this.mySelfAssessment = this.selfAssessmentService.getSelfAssessment();
@@ -92,10 +92,16 @@ export class MySelfAssessmentsComponent implements OnInit {
     }
 
     registerChangeInSelfAssessments() {
-        this.eventSubscriber = this.eventManager.subscribe('selfAssessmentListModification', (response) => {
-            console.log('Changes in SelfAssessments: ' + JSON.stringify(response));
-            // Show MySelfAssessments just created
-            this.loadMySelfAssessments();
+        /*this.eventSubscriber = this.eventManager.subscribe('selfAssessmentListModification', (response) => {
+         console.log('Changes in SelfAssessments: ' + JSON.stringify(response));
+         // Show MySelfAssessments just created
+         this.loadMySelfAssessments();
+         });*/
+
+        this.dataSharingService.observeMySelf().subscribe((value: SelfAssessmentMgm) => {
+            //if (value) {
+                this.loadMySelfAssessments();
+            //}
         });
     }
 
