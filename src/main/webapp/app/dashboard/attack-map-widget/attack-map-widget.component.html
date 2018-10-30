@@ -9,7 +9,7 @@
         <li><a class="collapse-link" (click)="isCollapsed = !isCollapsed">
             <i *ngIf="!isCollapsed" class="fa fa-chevron-up"></i>
             <i *ngIf="isCollapsed" class="fa fa-chevron-down"></i>
-        </a>
+          </a>
         </li>
         <!--
         <li class="dropdown">
@@ -30,44 +30,48 @@
         tristique ac. Morbi euismod, massa in convallis tempor, orci massa eleifend neque, in convallis nibh nisi eu
         arcu. Nullam sodales suscipit arcu id imperdiet. In ullamcorper condimentum magna, vel fermentum orci semper
         vitae. </p>
-      <div *ngIf="!viewDetails" class="table-responsive">
-        <select class="m-1" [(ngModel)]="selectedThreatAgent" (ngModelChange)="threatAgentChanged($event)">
-          <option [ngValue]="null" selected></option>
-          <option *ngFor="let threatAgent of threatAgents" [ngValue]="threatAgent">
-            {{threatAgent.name}}
-          </option>
-        </select>
+      <ng-container *ngIf="threatAgents.length===0">
+        <div><p class="text-center">No Threat Agents founded for draw an Attack Plan matrix</p></div>
+      </ng-container>
+      <ng-container *ngIf="threatAgents.length>0">
+        <div *ngIf="!viewDetails" class="table-responsive">
+          <select class="m-1" [(ngModel)]="selectedThreatAgent" (ngModelChange)="threatAgentChanged($event)">
+            <option [ngValue]="null" selected></option>
+            <option *ngFor="let threatAgent of threatAgents" [ngValue]="threatAgent">
+              {{threatAgent.name}}
+            </option>
+          </select>
 
-        <mat-horizontal-stepper (selectionChange)="likelihoodStepChange($event)">
-          <mat-step [completed]="false" label="Initial Likelihood">&nbsp;</mat-step>
-          <mat-step [completed]="false" label="Contextual Likelihood">&nbsp;</mat-step>
-          <mat-step [completed]="false" label="Refined Likelihood">&nbsp;</mat-step>
-        </mat-horizontal-stepper>
+          <mat-horizontal-stepper (selectionChange)="likelihoodStepChange($event)">
+            <mat-step [completed]="false" label="Initial Likelihood">&nbsp;</mat-step>
+            <mat-step [completed]="false" label="Contextual Likelihood">&nbsp;</mat-step>
+            <mat-step [completed]="false" label="Refined Likelihood">&nbsp;</mat-step>
+          </mat-horizontal-stepper>
 
-        <table class="table table-striped table-bordered table-hover">
-          <thead class="align-middle" style="background: #cce6ff">
-            <tr>
-              <th class="border-0" style="background-color: #ffffff"></th>
-              <th class="text-center align-middle" *ngFor="let ckc7Phase of ckc7Phases">
-                <a [routerLink]="['/phase-mgm', ckc7Phase.id]">{{ckc7Phase.name}}</a>
-              </th>
-            </tr>
-          </thead>
+          <table class="table table-striped table-bordered table-hover">
+            <thead class="align-middle" style="background: #cce6ff">
+              <tr>
+                <th class="border-0" style="background-color: #ffffff"></th>
+                <th class="text-center align-middle" *ngFor="let ckc7Phase of ckc7Phases">
+                  <a [routerLink]="['/phase-mgm', ckc7Phase.id]">{{ckc7Phase.name}}</a>
+                </th>
+              </tr>
+            </thead>
 
-          <tbody>
+            <tbody>
 
-            <tr *ngFor="let attackLevel of attackLevels">
-              <th class="text-center align-middle" style="background: #cc99ff">
-                <a [routerLink]="['/level-mgm', attackLevel.id]">{{attackLevel.name}}</a>
-              </th>
+              <tr *ngFor="let attackLevel of attackLevels">
+                <th class="text-center align-middle" style="background: #cc99ff">
+                  <a [routerLink]="['/level-mgm', attackLevel.id]">{{attackLevel.name}}</a>
+                </th>
 
-              <td *ngFor="let ckc7Phase of ckc7Phases">
-                <ng-container [ngSwitch]="likelihoodStep">
-                  <span *ngSwitchCase="likelihoodStepEnum.INITIAL_LIKELIHOOD">
-                    <button type="button" class="btn center-block btn-secondary" *ngFor="let augmentedAttackStrategy of attacksCKC7Matrix[attackLevel.id][ckc7Phase.id];
+                <td *ngFor="let ckc7Phase of ckc7Phases">
+                  <ng-container [ngSwitch]="likelihoodStep">
+                    <span *ngSwitchCase="likelihoodStepEnum.INITIAL_LIKELIHOOD">
+                      <button type="button" class="btn center-block btn-secondary" *ngFor="let augmentedAttackStrategy of attacksCKC7Matrix[attackLevel.id][ckc7Phase.id];
                             trackBy: trackByID"
-                      [routerLink]="['/attack-strategy-mgm', augmentedAttackStrategy.id]" [disabled]="!selectedThreatAgent || !augmentedAttackStrategy.enabled"
-                      [ngClass]="{
+                        [routerLink]="['/attack-strategy-mgm', augmentedAttackStrategy.id]" [disabled]="!selectedThreatAgent || !augmentedAttackStrategy.enabled"
+                        [ngClass]="{
                                   'low': augmentedAttackStrategy.initialLikelihood > 0 && augmentedAttackStrategy.initialLikelihood <= 1,
                                   'low-medium': augmentedAttackStrategy.initialLikelihood > 1 && augmentedAttackStrategy.initialLikelihood <= 2,
                                   'medium': augmentedAttackStrategy.initialLikelihood > 2 && augmentedAttackStrategy.initialLikelihood <= 3,
@@ -75,15 +79,15 @@
                                   'high': augmentedAttackStrategy.initialLikelihood > 4 && augmentedAttackStrategy.initialLikelihood <= 5,
                                   'disabled': !augmentedAttackStrategy.enabled
                                  }">
-                      {{augmentedAttackStrategy.name}}
-                    </button>
-                  </span>
+                        {{augmentedAttackStrategy.name}}
+                      </button>
+                    </span>
 
-                  <span *ngSwitchCase="likelihoodStepEnum.CONTEXTUAL_LIKELIHOOD">
-                    <button type="button" class="btn center-block btn-secondary" *ngFor="let augmentedAttackStrategy of attacksCKC7Matrix[attackLevel.id][ckc7Phase.id];
+                    <span *ngSwitchCase="likelihoodStepEnum.CONTEXTUAL_LIKELIHOOD">
+                      <button type="button" class="btn center-block btn-secondary" *ngFor="let augmentedAttackStrategy of attacksCKC7Matrix[attackLevel.id][ckc7Phase.id];
                             trackBy: trackByID"
-                      [routerLink]="['/attack-strategy-mgm', augmentedAttackStrategy.id]" [disabled]="!selectedThreatAgent || !augmentedAttackStrategy.enabled"
-                      [ngClass]="{
+                        [routerLink]="['/attack-strategy-mgm', augmentedAttackStrategy.id]" [disabled]="!selectedThreatAgent || !augmentedAttackStrategy.enabled"
+                        [ngClass]="{
                                   'low': augmentedAttackStrategy.contextualLikelihood > 0 && augmentedAttackStrategy.contextualLikelihood <= 1,
                                   'low-medium': augmentedAttackStrategy.contextualLikelihood > 1 && augmentedAttackStrategy.contextualLikelihood <= 2,
                                   'medium': augmentedAttackStrategy.contextualLikelihood > 2 && augmentedAttackStrategy.contextualLikelihood <= 3,
@@ -91,15 +95,15 @@
                                   'high': augmentedAttackStrategy.contextualLikelihood > 4 && augmentedAttackStrategy.contextualLikelihood <= 5,
                                   'disabled': !augmentedAttackStrategy.enabled
                                  }">
-                      {{augmentedAttackStrategy.name}}
-                    </button>
-                  </span>
+                        {{augmentedAttackStrategy.name}}
+                      </button>
+                    </span>
 
-                  <span *ngSwitchCase="likelihoodStepEnum.REFINED_LIKELIHOOD">
-                    <button type="button" class="btn center-block btn-secondary" *ngFor="let augmentedAttackStrategy of attacksCKC7Matrix[attackLevel.id][ckc7Phase.id];
+                    <span *ngSwitchCase="likelihoodStepEnum.REFINED_LIKELIHOOD">
+                      <button type="button" class="btn center-block btn-secondary" *ngFor="let augmentedAttackStrategy of attacksCKC7Matrix[attackLevel.id][ckc7Phase.id];
                             trackBy: trackByID"
-                      [routerLink]="['/attack-strategy-mgm', augmentedAttackStrategy.id]" [disabled]="!selectedThreatAgent || !augmentedAttackStrategy.enabled"
-                      [ngClass]="{
+                        [routerLink]="['/attack-strategy-mgm', augmentedAttackStrategy.id]" [disabled]="!selectedThreatAgent || !augmentedAttackStrategy.enabled"
+                        [ngClass]="{
                                   'low': augmentedAttackStrategy.refinedLikelihood > 0 && augmentedAttackStrategy.refinedLikelihood <= 1,
                                   'low-medium': augmentedAttackStrategy.refinedLikelihood > 1 && augmentedAttackStrategy.refinedLikelihood <= 2,
                                   'medium': augmentedAttackStrategy.refinedLikelihood > 2 && augmentedAttackStrategy.refinedLikelihood <= 3,
@@ -107,36 +111,37 @@
                                   'high': augmentedAttackStrategy.refinedLikelihood > 4 && augmentedAttackStrategy.refinedLikelihood <= 5,
                                   'disabled': !augmentedAttackStrategy.enabled
                                  }">
-                      {{augmentedAttackStrategy.name}}
-                    </button>
-                  </span>
-                </ng-container>
-              </td>
-          </tbody>
-        </table>
-      </div>
+                        {{augmentedAttackStrategy.name}}
+                      </button>
+                    </span>
+                  </ng-container>
+                </td>
+            </tbody>
+          </table>
+        </div>
 
-      <div *ngIf="viewDetails">
-        <div class="row">
-          <div class="col-md-11">
-            <h4>TITLE</h4>
+        <div *ngIf="viewDetails">
+          <div class="row">
+            <div class="col-md-11">
+              <h4>TITLE</h4>
+            </div>
+            <div class="col-md-1">
+              <button (click)="hideDetails()">X</button>
+            </div>
           </div>
-          <div class="col-md-1">
-            <button (click)="hideDetails()">X</button>
+          <div class="row">
+            DESCRIPTION DETATILS
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              ThreatAgents
+            </div>
+            <div class="col-md-6">
+              Assets
+            </div>
           </div>
         </div>
-        <div class="row">
-          DESCRIPTION DETATILS
-        </div>
-        <div class="row">
-          <div class="col-md-6">
-            ThreatAgents
-          </div>
-          <div class="col-md-6">
-            Assets
-          </div>
-        </div>
-      </div>
+      </ng-container>
     </div>
   </div>
 </div>

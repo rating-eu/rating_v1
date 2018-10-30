@@ -127,8 +127,8 @@ export class AttackMapWidgetComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this._subscriptions.forEach((subscription: Subscription) => {
-      if(subscription){
-          subscription.unsubscribe();
+      if (subscription) {
+        subscription.unsubscribe();
       }
     });
   }
@@ -138,14 +138,9 @@ export class AttackMapWidgetComponent implements OnInit, OnDestroy {
   }
 
   likelihoodStepChange($event: MatHorizontalStepper) {
-
-
-
     const stepNumber: number = $event.selectedIndex;
     const stepName: string = LikelihoodStep[stepNumber];
     this.likelihoodStep = LikelihoodStep[stepName];
-
-
   }
 
   selectAttackStrategy(augmentedAttackStrategy: AugmentedAttackStrategy) {

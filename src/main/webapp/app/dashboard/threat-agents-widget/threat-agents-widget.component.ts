@@ -94,6 +94,9 @@ export class ThreatAgentsWidgetComponent implements OnInit, OnDestroy {
     this.questionsMyAnswers$ = this.questionnaireStatuses$.pipe(
       mergeMap((questionnaireStatusResponse: HttpResponse<QuestionnaireStatusMgm[]>) => {
         this.questionnaireStatus = questionnaireStatusResponse.body[0];
+        if (!this.questionnaireStatus) {
+          return forkJoin(Observable.of(null), Observable.of(null));
+        }
         // console.log('QuestionnaireStatus: ' + JSON.stringify(this.questionnaireStatus));
         this.questionnaire = this.questionnaireStatus.questionnaire;
         // console.log('Questionnaire: ' + JSON.stringify(this.questionnaire));
@@ -110,6 +113,9 @@ export class ThreatAgentsWidgetComponent implements OnInit, OnDestroy {
     this.defaultThreatAgentsMotivations$ =
       this.questionsMyAnswers$.mergeMap(
         (response: [HttpResponse<QuestionMgm[]>, HttpResponse<MyAnswerMgm[]>]) => {
+          if (!response[0] || !response[1]) {
+            return forkJoin(Observable.of(null), Observable.of(null));
+          }
           this.questions = response[0].body;
           // console.log('Questions: ' + JSON.stringify(this.questions));
           this.myAnswers = response[1].body;
@@ -119,6 +125,10 @@ export class ThreatAgentsWidgetComponent implements OnInit, OnDestroy {
       );
     this.defaultThreatAgentsMotivations$.subscribe(
       (response: [HttpResponse<ThreatAgentMgm[]>, HttpResponse<MotivationMgm[]>]) => {
+        if (!response[0] || !response[1]) {
+          this.loading = false;
+          return;
+        }
         this.defaultThreatAgents = response[0].body;
         // console.log('DefaultThreatAgents: ' + JSON.stringify(this.defaultThreatAgents));
 
@@ -168,9 +178,9 @@ export class ThreatAgentsWidgetComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     if (this.subscriptions) {
       this.subscriptions.forEach((subscription: Subscription) => {
-          if(subscription){
-              subscription.unsubscribe();
-          }
+        if (subscription) {
+          subscription.unsubscribe();
+        }
       });
     }
   }

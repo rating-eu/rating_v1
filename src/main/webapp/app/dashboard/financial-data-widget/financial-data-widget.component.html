@@ -47,6 +47,9 @@
                     <pagination-controls (pageChange)="onAssetsPageChange($event)" [id]="assetsPaginator.id"></pagination-controls>
                 </div>
           </div>
+          <div *ngIf="!assets" class="text-center">
+             No Assets counted or impact evaluation step is not completed
+          </div>
       </div>
     </div>
   </div>
