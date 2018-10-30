@@ -109,7 +109,7 @@ export class AssetWidgetComponent implements OnInit, OnDestroy {
           }).catch(() => {
             this.loading = false;
             this.status.assetClusteringStatus = false;
-              this.dashService.updateStatus(this.status);
+            this.dashService.updateStatus(this.status);
           });
       }
     }).catch(() => {
@@ -120,7 +120,9 @@ export class AssetWidgetComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.eventManager.destroy(this.eventSubscriber);
+    if (this.eventManager) {
+      this.eventManager.destroy(this.eventSubscriber);
+    }
   }
 
   registerChangeIdentifyAssets() {

@@ -30,21 +30,23 @@ export class CompanyWidgetComponent implements OnInit {
     this.accountService.get().subscribe((response1) => {
       const loggedAccount: Account = response1.body;
       this.userService.find(loggedAccount['login']).subscribe((response2) => {
-          this.user = response2.body;
+        this.user = response2.body;
 
-          if (this.user) {
-              this.myCompanyService.findByUser(this.user.id).subscribe(
-                  (response3: HttpResponse<MyCompanyMgm>) => {
-                      this.myCompany = response3.body;
-                      this.companyName = this.myCompany.companyProfile.name;
-                      this.companySector = this.myCompany.companyProfile.type.toString();
-                  }
-              );
-          }
+        if (this.user) {
+          this.myCompanyService.findByUser(this.user.id).subscribe(
+            (response3: HttpResponse<MyCompanyMgm>) => {
+              this.myCompany = response3.body;
+              this.companyName = this.myCompany.companyProfile.name;
+              this.companySector = this.myCompany.companyProfile.type.toString();
+            }
+          );
+        }
       });
     });
     this.mySelf = this.selfAssessmentService.getSelfAssessment();
-    this.selfAssessmentName = this.mySelf.name;
+    if (this.mySelf) {
+      this.selfAssessmentName = this.mySelf.name;
+    }
   }
 
 }
