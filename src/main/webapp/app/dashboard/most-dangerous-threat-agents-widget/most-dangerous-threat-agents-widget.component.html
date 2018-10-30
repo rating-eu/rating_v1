@@ -53,6 +53,9 @@
                     <pagination-controls (pageChange)="onThreatAgentsPageChange($event)" [id]="threatAgentsPaginator.id"></pagination-controls>
                 </div>
           </div>
+          <div *ngIf="!mdtaEntities" class="text-center">
+            No Threat Agents founded
+          </div>
       </div>
     </div>
   </div>

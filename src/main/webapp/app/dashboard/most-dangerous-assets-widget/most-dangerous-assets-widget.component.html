@@ -89,6 +89,9 @@
                   <pagination-controls (pageChange)="onAssetsPageChange($event)" [id]="assetsPaginator.id"></pagination-controls>
               </div>
         </div>
+        <div *ngIf="!mdawEntities" class="text-center">
+            No Assets counted or no questionnaire was complited
+        </div>
     </div>
   </div>
 
