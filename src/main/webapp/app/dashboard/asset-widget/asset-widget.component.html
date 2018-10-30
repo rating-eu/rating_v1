@@ -5,8 +5,9 @@
   <div class="tile-stats tiles-first-row">
     <!--<div class="icon"><i class="fa fa-comments-o"></i></div>-->
     <div class="count" *ngIf="myAssets">{{myAssets.length}}</div>
-    <h3>Assets</h3>
-    <p><a (click)="open(tangibleAssetsDetails)">tangible</a> | <a (click)="open(intangibleAssetsDetails)">intangible</a></p>
+    <h3 *ngIf="myAssets">Assets</h3>
+    <h3 *ngIf="!myAssets">No Assets counted</h3>
+    <p *ngIf="myAssets"><a (click)="open(tangibleAssetsDetails)">tangible</a> | <a (click)="open(intangibleAssetsDetails)">intangible</a></p>
   </div>
 </div>
 
