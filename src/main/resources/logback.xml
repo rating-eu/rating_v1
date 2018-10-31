@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <appender name="FILE_APPENDER"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+
+        <file>${HERMENEUT_LOG_DIR}/logs/hermeneut.log</file>
+
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <Pattern>
+                %d{yyyy-MM-dd HH:mm:ss.SSS} [%-5level] - %msg%n
+            </Pattern>
+        </encoder>
+
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <!-- rollover hourly -->
+            <fileNamePattern>${HERMENEUT_LOG_DIR}/logs/hermeneut_%d{yyyy-MM-dd_HH}.chunk%i.log.gz</fileNamePattern>
+
+            <!-- split log files in chunks of this size -->
+            <maxFileSize>${HERMENEUT_LOG_MAX_FILE_SIZE}</maxFileSize>
+
+            <!-- keep 30 days' worth of history -->
+            <!-- 30D * 24H = 720H-->
+            <maxHistory>${HERMENEUT_LOG_MAX_HISTORY_HOURS}</maxHistory>
+        </rollingPolicy>
+    </appender>
+
+    <appender name="STDOUT_APPENDER" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <Pattern>
+                %d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n
+            </Pattern>
+        </encoder>
+    </appender>
+
+    <root level="${HERMENEUT_LOG_LEVEL}">
+        <appender-ref ref="FILE_APPENDER"/>
+        <appender-ref ref="STDOUT_APPENDER"/>
+    </root>
+
+</configuration>
