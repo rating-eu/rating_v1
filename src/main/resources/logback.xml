@@ -3,7 +3,7 @@
     <appender name="FILE_APPENDER"
               class="ch.qos.logback.core.rolling.RollingFileAppender">
 
-        <file>${HERMENEUT_LOG_DIR}/logs/hermeneut.log</file>
+        <file>${user.dir}/logs/hermeneut.log</file>
 
         <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
             <Pattern>
@@ -13,7 +13,7 @@
 
         <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
             <!-- rollover hourly -->
-            <fileNamePattern>${HERMENEUT_LOG_DIR}/logs/hermeneut_%d{yyyy-MM-dd_HH}.chunk%i.log.gz</fileNamePattern>
+            <fileNamePattern>${user.dir}/logs/hermeneut_%d{yyyy-MM-dd_HH}.chunk%i.log.gz</fileNamePattern>
 
             <!-- split log files in chunks of this size -->
             <maxFileSize>${HERMENEUT_LOG_MAX_FILE_SIZE}</maxFileSize>
