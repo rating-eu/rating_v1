@@ -54,15 +54,16 @@
             </span>
         </dd>
     </dl>
+    <ng-container *ngIf="isButtonVisible">
+        <button type="submit" (click)="previousState()" class="btn btn-info">
+            <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+        </button>
 
-    <button type="submit" (click)="previousState()" class="btn btn-info">
-        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
-    </button>
-
-    <button type="button" 
-        (click)="popUpService.setOnUserBehaviour()"
-        [routerLink]="['/', { outlets: { popup: 'attack-strategy-mgm/'+ attackStrategy.id + '/edit'} }]"
-        replaceUrl="true" queryParamsHandling="merge" class="btn btn-primary">
-        <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
-    </button>
+        <button type="button" 
+            (click)="popUpService.setOnUserBehaviour()"
+            [routerLink]="['/', { outlets: { popup: 'attack-strategy-mgm/'+ attackStrategy.id + '/edit'} }]"
+            replaceUrl="true" queryParamsHandling="merge" class="btn btn-primary">
+            <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+        </button>
+    </ng-container>
 </div>

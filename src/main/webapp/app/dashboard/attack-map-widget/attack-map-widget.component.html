@@ -70,7 +70,8 @@
                     <span *ngSwitchCase="likelihoodStepEnum.INITIAL_LIKELIHOOD">
                       <button type="button" class="btn center-block btn-secondary" *ngFor="let augmentedAttackStrategy of attacksCKC7Matrix[attackLevel.id][ckc7Phase.id];
                             trackBy: trackByID"
-                        [routerLink]="['/attack-strategy-mgm', augmentedAttackStrategy.id]" [disabled]="!selectedThreatAgent || !augmentedAttackStrategy.enabled"
+                        (click)="viewDivDetails(augmentedAttackStrategy.id)"
+                        [disabled]="!selectedThreatAgent || !augmentedAttackStrategy.enabled"
                         [ngClass]="{
                                   'low': augmentedAttackStrategy.initialLikelihood > 0 && augmentedAttackStrategy.initialLikelihood <= 1,
                                   'low-medium': augmentedAttackStrategy.initialLikelihood > 1 && augmentedAttackStrategy.initialLikelihood <= 2,
@@ -86,7 +87,8 @@
                     <span *ngSwitchCase="likelihoodStepEnum.CONTEXTUAL_LIKELIHOOD">
                       <button type="button" class="btn center-block btn-secondary" *ngFor="let augmentedAttackStrategy of attacksCKC7Matrix[attackLevel.id][ckc7Phase.id];
                             trackBy: trackByID"
-                        [routerLink]="['/attack-strategy-mgm', augmentedAttackStrategy.id]" [disabled]="!selectedThreatAgent || !augmentedAttackStrategy.enabled"
+                        (click)="viewDivDetails(augmentedAttackStrategy.id)"
+                        [disabled]="!selectedThreatAgent || !augmentedAttackStrategy.enabled"
                         [ngClass]="{
                                   'low': augmentedAttackStrategy.contextualLikelihood > 0 && augmentedAttackStrategy.contextualLikelihood <= 1,
                                   'low-medium': augmentedAttackStrategy.contextualLikelihood > 1 && augmentedAttackStrategy.contextualLikelihood <= 2,
@@ -102,7 +104,8 @@
                     <span *ngSwitchCase="likelihoodStepEnum.REFINED_LIKELIHOOD">
                       <button type="button" class="btn center-block btn-secondary" *ngFor="let augmentedAttackStrategy of attacksCKC7Matrix[attackLevel.id][ckc7Phase.id];
                             trackBy: trackByID"
-                        [routerLink]="['/attack-strategy-mgm', augmentedAttackStrategy.id]" [disabled]="!selectedThreatAgent || !augmentedAttackStrategy.enabled"
+                        [disabled]="!selectedThreatAgent || !augmentedAttackStrategy.enabled"
+                        (click)="viewDivDetails(augmentedAttackStrategy.id)"
                         [ngClass]="{
                                   'low': augmentedAttackStrategy.refinedLikelihood > 0 && augmentedAttackStrategy.refinedLikelihood <= 1,
                                   'low-medium': augmentedAttackStrategy.refinedLikelihood > 1 && augmentedAttackStrategy.refinedLikelihood <= 2,
@@ -113,6 +116,7 @@
                                  }">
                         {{augmentedAttackStrategy.name}}
                       </button>
+                      <!--[routerLink]="['/attack-strategy-mgm', augmentedAttackStrategy.id]" -->
                     </span>
                   </ng-container>
                 </td>
@@ -120,7 +124,7 @@
           </table>
         </div>
 
-        <div *ngIf="viewDetails">
+        <div *ngIf="isDetailVisible">
           <div class="row">
             <div class="col-md-11">
               <h4>TITLE</h4>
@@ -141,6 +145,14 @@
             </div>
           </div>
         </div>
+        <ng-container *ngIf="isViewDivDetailsVisible">
+          <div class="col-md-12">
+            <a (click)="isViewDivDetailsVisible = false">Close details</a>
+          </div>
+          <div class="col-md-12">
+            <jhi-attack-strategy-mgm-detail [id] = "datailParam" [isButtonVisible] = "false"></jhi-attack-strategy-mgm-detail>
+          </div>
+        </ng-container>
       </ng-container>
     </div>
   </div>

@@ -25,6 +25,14 @@ const ENTITY_STATES = [
         HermeneutSharedModule,
         RouterModule.forChild(ENTITY_STATES)
     ],
+    exports: [
+        AttackStrategyMgmComponent,
+        AttackStrategyMgmDetailComponent,
+        AttackStrategyMgmDialogComponent,
+        AttackStrategyMgmPopupComponent,
+        AttackStrategyMgmDeletePopupComponent,
+        AttackStrategyMgmDeleteDialogComponent,
+    ],
     declarations: [
         AttackStrategyMgmComponent,
         AttackStrategyMgmDetailComponent,

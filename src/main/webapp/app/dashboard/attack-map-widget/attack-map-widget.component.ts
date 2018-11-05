@@ -25,6 +25,8 @@ export class AttackMapWidgetComponent implements OnInit, OnDestroy {
   public loading = false;
   public isCollapsed = true;
   viewDetails = false;
+  isViewDivDetailsVisible = false;
+  datailParam: number;
   private selectedAugmentedAttackStrategy: AugmentedAttackStrategy = null;
 
   private _subscriptions: Subscription[] = [];
@@ -131,6 +133,11 @@ export class AttackMapWidgetComponent implements OnInit, OnDestroy {
         subscription.unsubscribe();
       }
     });
+  }
+
+  viewDivDetails(id: number) {
+    this.datailParam = id;
+    this.isViewDivDetailsVisible = true;
   }
 
   threatAgentChanged(threatAgent: ThreatAgentMgm) {
