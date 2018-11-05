@@ -38,10 +38,8 @@
               <i *ngIf="!assetClusteringStatus" style="color: red" class="fa fa-exclamation-triangle" aria-hidden="true"></i>
             </td>
             <td class="text-center">
-              <a [routerLink]="['/identify-asset']">
-                <ng-container *ngIf="assetClusteringStatus">edit</ng-container>
-                <ng-container *ngIf="!assetClusteringStatus">perform</ng-container>
-              </a>
+              <a *ngIf="!assetClusteringStatus" [routerLink]="['/identify-asset']">perform</a>
+              <a *ngIf="assetClusteringStatus" (click)="open(alert,'/identify-asset')">edit</a>
             </td>
           </tr>
           <tr>
@@ -56,10 +54,8 @@
               <i *ngIf="!identifyThreatAgentsStatus" style="color: red" class="fa fa-exclamation-triangle" aria-hidden="true"></i>
             </td>
             <td class="text-center">
-              <a [routerLink]="['/identify-threat-agent/questionnaires/ID_THREAT_AGENT']">
-                <ng-container *ngIf="identifyThreatAgentsStatus">edit</ng-container>
-                <ng-container *ngIf="!identifyThreatAgentsStatus">perform</ng-container>
-              </a>
+              <a *ngIf="!identifyThreatAgentsStatus" [routerLink]="['/identify-threat-agent/questionnaires/ID_THREAT_AGENT']">perform</a>
+              <a *ngIf="identifyThreatAgentsStatus" (click)="open(alert,'/identify-threat-agent/questionnaires/ID_THREAT_AGENT')">edit</a>
             </td>
           </tr>
           <tr>
@@ -74,10 +70,8 @@
               <i *ngIf="!assessVulnerablitiesStatus" style="color: red" class="fa fa-exclamation-triangle" aria-hidden="true"></i>
             </td>
             <td class="text-center">
-              <a [routerLink]="['/evaluate-weakness/questionnaires/SELFASSESSMENT']">
-                <ng-container *ngIf="assessVulnerablitiesStatus">edit</ng-container>
-                <ng-container *ngIf="!assessVulnerablitiesStatus">perform</ng-container>
-              </a>
+              <a *ngIf="!assessVulnerablitiesStatus" [routerLink]="['/evaluate-weakness/questionnaires/SELFASSESSMENT']">perform</a>
+              <a *ngIf="assessVulnerablitiesStatus" (click)="open(alert,'/evaluate-weakness/questionnaires/SELFASSESSMENT')">edit</a>
             </td>
           </tr>
           <tr>
@@ -92,10 +86,8 @@
               <i *ngIf="!impactEvaluationStatus" style="color: red" class="fa fa-exclamation-triangle" aria-hidden="true"></i>
             </td>
             <td class="text-center">
-              <a [routerLink]="['/impact-evaluation']">
-                <ng-container *ngIf="impactEvaluationStatus">edit</ng-container>
-                <ng-container *ngIf="!impactEvaluationStatus">perform</ng-container>
-              </a>
+              <a *ngIf="!impactEvaluationStatus" [routerLink]="['/impact-evaluation']">perform</a>
+              <a *ngIf="impactEvaluationStatus" (click)="open(alert,'/impact-evaluation')">edit</a>
             </td>
           </tr>
           <tr>
@@ -110,14 +102,26 @@
               <i *ngIf="!riskEvaluationStatus" style="color: red" class="fa fa-exclamation-triangle" aria-hidden="true"></i>
             </td>
             <td class="text-center">
-              <a [routerLink]="['/risk-management/risk-evaluation']">
-                <ng-container *ngIf="riskEvaluationStatus">edit</ng-container>
-                <ng-container *ngIf="!riskEvaluationStatus">perform</ng-container>
-              </a>
+              <a *ngIf="!riskEvaluationStatus" [routerLink]="['/risk-management/risk-evaluation']">perform</a>
+              <a *ngIf="riskEvaluationStatus" (click)="open(alert,'/risk-management/risk-evaluation')">edit</a>
             </td>
           </tr>
         </tbody>
       </table>
+      <ng-template #alert let-d="dismiss" let-c="close">
+          <div class="modal-header">
+            <h4 class="modal-title" id="modal-basic-title">Edit notification</h4>
+            <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            If you continue you erase previous saved data. Do you want to proceed?
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-outline-dark" (click)="c('Save click')">OK</button>
+          </div>
+        </ng-template>
     </div>
   </div>
 </div>

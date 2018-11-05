@@ -45,15 +45,17 @@ export class AttackStrategiesWidgetComponent implements OnInit {
               for (const elem of res2) {
                 if (!this.attacksMap.has(elem.attackStrategy.id)) {
                   this.attacksMap.set(elem.attackStrategy.id, elem.attackStrategy);
-                  this.attacksMapCounter ++;
+                  this.attacksMapCounter++;
                 }
+              }
+              if (!this.status.assessVulnerablitiesStatus) {
+                this.status.assessVulnerablitiesStatus = true;
+                this.dashService.updateStatus(this.status);
               }
             }
           });
         }
         this.loading = false;
-        this.status.assessVulnerablitiesStatus = true;
-        this.dashService.updateStatus(this.status);
       } else {
         this.loading = false;
         this.status.assessVulnerablitiesStatus = false;
