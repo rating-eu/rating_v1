@@ -14,12 +14,15 @@ import { ImpactEvaluationStatus } from '../../impact-evaluation/model/impact-eva
 })
 export class SplittingWidgetComponent implements OnInit {
   public loading = false;
-  public isCollapsed = false;
+  public isCollapsed = true;
   public companySector: string;
   public tableInfo: {
     splitting: string,
-    value: number
+    value: number,
+    type: string
   }[];
+  public selectedSplitting: string;
+  public selectedSplittingElement: string[];
 
   private wp3Status: ImpactEvaluationStatus;
   private mySelf: SelfAssessmentMgm;
@@ -45,7 +48,8 @@ export class SplittingWidgetComponent implements OnInit {
               if (impact.sectorType.toString() !== MySectorType.GLOBAL.toString()) {
                 this.tableInfo.push({
                   splitting: 'Intellectual Properties',
-                  value: Math.round(impact.loss * 100) / 100
+                  value: Math.round(impact.loss * 100) / 100,
+                  type: 'IP'
                 });
               }
               break;
@@ -54,7 +58,8 @@ export class SplittingWidgetComponent implements OnInit {
               if (impact.sectorType.toString() !== MySectorType.GLOBAL.toString()) {
                 this.tableInfo.push({
                   splitting: 'Key Competences',
-                  value: Math.round(impact.loss * 100) / 100
+                  value: Math.round(impact.loss * 100) / 100,
+                  type: 'KEY_COMP'
                 });
               }
               break;
@@ -63,7 +68,8 @@ export class SplittingWidgetComponent implements OnInit {
               if (impact.sectorType.toString() !== MySectorType.GLOBAL.toString()) {
                 this.tableInfo.push({
                   splitting: 'Organizational Capital (Reputation & Brand included )',
-                  value: Math.round(impact.loss * 100) / 100
+                  value: Math.round(impact.loss * 100) / 100,
+                  type: 'ORG_CAPITAL'
                 });
               }
               break;
@@ -75,4 +81,48 @@ export class SplittingWidgetComponent implements OnInit {
     });
   }
 
+  public selectSplitting(splittingType: string) {
+    if (this.selectedSplitting === splittingType) {
+      this.selectedSplitting = undefined;
+    } else {
+      this.selectedSplitting = splittingType;
+    }
+    this.selectedSplittingElement = [];
+    switch (splittingType) {
+      case ('IP'): {
+        this.selectedSplittingElement.push('IP asset / IP in progress either internally or with offices');
+        this.selectedSplittingElement.push('Trade / business secrets');
+        this.selectedSplittingElement.push('Industial process');
+        this.selectedSplittingElement.push('On-going R&D innovation projects');
+        this.selectedSplittingElement.push('On-going new product and new services');
+        this.selectedSplittingElement.push('On-going new business models projects');
+        break;
+      }
+      case ('ORG_CAPITAL'): {
+        this.selectedSplittingElement.push('Digital supported process');
+        this.selectedSplittingElement.push('Non-digitised functional and interfunctional processes');
+        this.selectedSplittingElement.push('Eco-system\'s processes');
+        this.selectedSplittingElement.push('Firm / organisation\'s strategic capabilities');
+        break;
+      }
+      case ('KEY_COMP'): {
+        this.selectedSplittingElement.push('Firm\'s personnel key competences (tacit knowledge)');
+        this.selectedSplittingElement.push('Personnel moral and trust in the organisation');
+        this.selectedSplittingElement.push('Peronnel learning capabilities');
+        break;
+      }
+      case ('DATA'): {
+        this.selectedSplittingElement.push('Digitised data on clients');
+        this.selectedSplittingElement.push('Digitised data on personnel');
+        this.selectedSplittingElement.push('Digitised data on suppliers and ecosystems');
+        this.selectedSplittingElement.push('Digitised data on functions (HR, finance and fiscal)');
+        break;
+      }
+      case ('REPUTATION'): {
+        this.selectedSplittingElement.push('Reputation with clients, stakeholders and firm\'s ecosystems');
+        this.selectedSplittingElement.push('Brand value with customers, stakeholders and firm / organisation\'s ecosystem');
+        break;
+      }
+    }
+  }
 }

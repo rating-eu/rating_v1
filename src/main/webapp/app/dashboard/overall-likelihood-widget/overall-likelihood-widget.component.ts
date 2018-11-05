@@ -13,7 +13,7 @@ import { HttpResponse } from '@angular/common/http';
 })
 export class OverallLikelihoodWidgetComponent implements OnInit {
   public loading = false;
-  public isCollapsed = false;
+  public isCollapsed = true;
   public type = 'doughnut';
   public legend = false;
   public initialLabels: string[] = [];

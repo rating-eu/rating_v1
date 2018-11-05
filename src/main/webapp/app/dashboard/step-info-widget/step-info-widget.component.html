@@ -1,7 +1,7 @@
 <div class="container" *ngIf="loading">
   <div class="loader"></div>
 </div>
-<div class="row col-md-12" *ngIf="!loading">
+<div class="" *ngIf="!loading">
   <div class="x_panel" style="padding:0px !important;">
     <div class="x_title" style="padding:0px !important;">
       <h2 style="padding: 10px;">Check your progress</h2>
@@ -37,7 +37,12 @@
               <i *ngIf="assetClusteringStatus" style="color: green" class="fa fa-check" aria-hidden="true"></i>
               <i *ngIf="!assetClusteringStatus" style="color: red" class="fa fa-exclamation-triangle" aria-hidden="true"></i>
             </td>
-            <td class="text-center"><a [routerLink]="['/identify-asset']">perform</a></td>
+            <td class="text-center">
+              <a [routerLink]="['/identify-asset']">
+                <ng-container *ngIf="assetClusteringStatus">edit</ng-container>
+                <ng-container *ngIf="!assetClusteringStatus">perform</ng-container>
+              </a>
+            </td>
           </tr>
           <tr>
             <td>Identify Threat Agents</td>
@@ -50,7 +55,12 @@
               <i *ngIf="identifyThreatAgentsStatus" style="color: green" class="fa fa-check" aria-hidden="true"></i>
               <i *ngIf="!identifyThreatAgentsStatus" style="color: red" class="fa fa-exclamation-triangle" aria-hidden="true"></i>
             </td>
-            <td class="text-center"><a [routerLink]="['/identify-threat-agent/questionnaires/ID_THREAT_AGENT']">perform</a></td>
+            <td class="text-center">
+              <a [routerLink]="['/identify-threat-agent/questionnaires/ID_THREAT_AGENT']">
+                <ng-container *ngIf="identifyThreatAgentsStatus">edit</ng-container>
+                <ng-container *ngIf="!identifyThreatAgentsStatus">perform</ng-container>
+              </a>
+            </td>
           </tr>
           <tr>
             <td>Assess Vulnerablities</td>
@@ -63,7 +73,12 @@
               <i *ngIf="assessVulnerablitiesStatus" style="color: green" class="fa fa-check" aria-hidden="true"></i>
               <i *ngIf="!assessVulnerablitiesStatus" style="color: red" class="fa fa-exclamation-triangle" aria-hidden="true"></i>
             </td>
-            <td class="text-center"><a [routerLink]="['/evaluate-weakness/questionnaires/SELFASSESSMENT']">perform</a></td>
+            <td class="text-center">
+              <a [routerLink]="['/evaluate-weakness/questionnaires/SELFASSESSMENT']">
+                <ng-container *ngIf="assessVulnerablitiesStatus">edit</ng-container>
+                <ng-container *ngIf="!assessVulnerablitiesStatus">perform</ng-container>
+              </a>
+            </td>
           </tr>
           <tr>
             <td>Impact Evaluation</td>
@@ -76,7 +91,12 @@
               <i *ngIf="impactEvaluationStatus" style="color: green" class="fa fa-check" aria-hidden="true"></i>
               <i *ngIf="!impactEvaluationStatus" style="color: red" class="fa fa-exclamation-triangle" aria-hidden="true"></i>
             </td>
-            <td class="text-center"><a [routerLink]="['/impact-evaluation']">perform</a></td>
+            <td class="text-center">
+              <a [routerLink]="['/impact-evaluation']">
+                <ng-container *ngIf="impactEvaluationStatus">edit</ng-container>
+                <ng-container *ngIf="!impactEvaluationStatus">perform</ng-container>
+              </a>
+            </td>
           </tr>
           <tr>
             <td>Risk Evaluation</td>
@@ -89,7 +109,12 @@
               <i *ngIf="riskEvaluationStatus" style="color: green" class="fa fa-check" aria-hidden="true"></i>
               <i *ngIf="!riskEvaluationStatus" style="color: red" class="fa fa-exclamation-triangle" aria-hidden="true"></i>
             </td>
-            <td class="text-center"><a [routerLink]="['/risk-management/risk-evaluation']">perform</a></td>
+            <td class="text-center">
+              <a [routerLink]="['/risk-management/risk-evaluation']">
+                <ng-container *ngIf="riskEvaluationStatus">edit</ng-container>
+                <ng-container *ngIf="!riskEvaluationStatus">perform</ng-container>
+              </a>
+            </td>
           </tr>
         </tbody>
       </table>

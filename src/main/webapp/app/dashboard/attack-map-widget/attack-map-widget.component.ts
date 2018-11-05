@@ -23,7 +23,7 @@ import { MatHorizontalStepper } from '@angular/material';
 
 export class AttackMapWidgetComponent implements OnInit, OnDestroy {
   public loading = false;
-  public isCollapsed = false;
+  public isCollapsed = true;
   viewDetails = false;
   private selectedAugmentedAttackStrategy: AugmentedAttackStrategy = null;
 

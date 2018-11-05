@@ -26,7 +26,7 @@ enum ValueType {
 })
 export class MostDangerousThreatAgentsWidgetComponent implements OnInit {
   public loading = false;
-  public isCollapsed = false;
+  public isCollapsed = true;
   public mdtaEntities: MdtaEntity[];
   public threatAgentsPaginator = {
     id: 'threat_agents_paginator',

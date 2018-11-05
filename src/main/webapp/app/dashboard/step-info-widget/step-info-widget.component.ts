@@ -36,7 +36,7 @@ export class StepInfoWidgetComponent implements OnInit {
       this.identifyThreatAgentsStatus = status.identifyThreatAgentsStatus;
       this.assessVulnerablitiesStatus = status.assessVulnerablitiesStatus;
       this.impactEvaluationStatus = status.impactEvaluationStatus;
-      this.riskEvaluationStatus = status.impactEvaluationStatus;
+      this.riskEvaluationStatus = status.riskEvaluationStatus;
     }
   }
 
