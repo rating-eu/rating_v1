@@ -28,11 +28,8 @@
         <tbody>
           <tr>
             <td>Asset Clustering</td>
-            <td>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam laoreet sit amet magna vel
-              consectetur. Cras iaculis condimentum consequat. Maecenas elementum mauris nisi, eleifend vestibulum
-              lacus tristique ac. Morbi euismod, massa in convallis tempor, orci massa eleifend neque, in convallis
-              nibh nisi eu arcu. Nullam sodales suscipit arcu id imperdiet. In ullamcorper condimentum magna, vel
-              fermentum orci semper vitae.</td>
+            <td>First step of the process that aims at describing the company domain in terms of owned assets. In other
+              terms this phase responds to the question "What do I own?”</td>
             <td class="text-center">
               <i *ngIf="assetClusteringStatus" style="color: green" class="fa fa-check" aria-hidden="true"></i>
               <i *ngIf="!assetClusteringStatus" style="color: red" class="fa fa-exclamation-triangle" aria-hidden="true"></i>
@@ -44,11 +41,9 @@
           </tr>
           <tr>
             <td>Identify Threat Agents</td>
-            <td>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam laoreet sit amet magna vel
-              consectetur. Cras iaculis condimentum consequat. Maecenas elementum mauris nisi, eleifend vestibulum
-              lacus tristique ac. Morbi euismod, massa in convallis tempor, orci massa eleifend neque, in convallis
-              nibh nisi eu arcu. Nullam sodales suscipit arcu id imperdiet. In ullamcorper condimentum magna, vel
-              fermentum orci semper vitae.</td>
+            <td>Aims at identifying who may be interested in performing the attack against the company and why, using
+              as a base what emerged from asset clustering. This phase responds to the questions: “Who would attack my
+              company?” and “Why somebody should attack my company?”</td>
             <td class="text-center">
               <i *ngIf="identifyThreatAgentsStatus" style="color: green" class="fa fa-check" aria-hidden="true"></i>
               <i *ngIf="!identifyThreatAgentsStatus" style="color: red" class="fa fa-exclamation-triangle" aria-hidden="true"></i>
@@ -60,11 +55,8 @@
           </tr>
           <tr>
             <td>Assess Vulnerablities</td>
-            <td>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam laoreet sit amet magna vel
-              consectetur. Cras iaculis condimentum consequat. Maecenas elementum mauris nisi, eleifend vestibulum
-              lacus tristique ac. Morbi euismod, massa in convallis tempor, orci massa eleifend neque, in convallis
-              nibh nisi eu arcu. Nullam sodales suscipit arcu id imperdiet. In ullamcorper condimentum magna, vel
-              fermentum orci semper vitae.</td>
+            <td>Measures the weak points of company surface through self-assessment (cyber maturity questionnaire). It
+              responds to the question: “Which are the weaknesses of my company?”</td>
             <td class="text-center">
               <i *ngIf="assessVulnerablitiesStatus" style="color: green" class="fa fa-check" aria-hidden="true"></i>
               <i *ngIf="!assessVulnerablitiesStatus" style="color: red" class="fa fa-exclamation-triangle" aria-hidden="true"></i>
@@ -76,11 +68,7 @@
           </tr>
           <tr>
             <td>Impact Evaluation</td>
-            <td>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam laoreet sit amet magna vel
-              consectetur. Cras iaculis condimentum consequat. Maecenas elementum mauris nisi, eleifend vestibulum
-              lacus tristique ac. Morbi euismod, massa in convallis tempor, orci massa eleifend neque, in convallis
-              nibh nisi eu arcu. Nullam sodales suscipit arcu id imperdiet. In ullamcorper condimentum magna, vel
-              fermentum orci semper vitae.</td>
+            <td>Measuring the impact; "Measuring the impact of cyberattacks on firms' intangible assets"</td>
             <td class="text-center">
               <i *ngIf="impactEvaluationStatus" style="color: green" class="fa fa-check" aria-hidden="true"></i>
               <i *ngIf="!impactEvaluationStatus" style="color: red" class="fa fa-exclamation-triangle" aria-hidden="true"></i>
@@ -109,19 +97,19 @@
         </tbody>
       </table>
       <ng-template #alert let-d="dismiss" let-c="close">
-          <div class="modal-header">
-            <h4 class="modal-title" id="modal-basic-title">Edit notification</h4>
-            <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            If you continue you erase previous saved data. Do you want to proceed?
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-outline-dark" (click)="c('Save click')">OK</button>
-          </div>
-        </ng-template>
+        <div class="modal-header">
+          <h4 class="modal-title" id="modal-basic-title">Edit notification</h4>
+          <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          If you continue you erase previous saved data. Do you want to proceed?
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-dark" (click)="c('Save click')">OK</button>
+        </div>
+      </ng-template>
     </div>
   </div>
 </div>

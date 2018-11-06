@@ -19,7 +19,7 @@
     </button>
   </div>
   <div class="modal-body">
-    <table class="table">
+    <table class="table" *ngIf="tangibleCategoryKeys">
       <thead>
         <tr>
           <th scope="col">Asset category</th>
@@ -29,7 +29,7 @@
       <tbody>
         <ng-container *ngFor="let key of tangibleCategoryKeys">
           <tr>
-            <th scope="row"><a href="javascript:void(0)" (click)="selectAssetCategory(key)">{{key}}</a></th>
+            <th scope="row"><a ngbTooltip="Click on Asset category for more details" href="javascript:void(0)" (click)="selectAssetCategory(key)">{{key}}</a></th>
             <td>
               {{tangibleCategoryMap.get(key).length}}
             </td>
@@ -70,6 +70,9 @@
         </ng-container>
       </tbody>
     </table>
+    <div class="text-center" *ngIf="!tangibleCategoryKeys">
+      <p>You don't have any tangible asset!</p>
+    </div>
   </div>
   <!--
       <div class="modal-footer">
@@ -86,7 +89,7 @@
     </button>
   </div>
   <div class="modal-body">
-    <table class="table">
+    <table class="table" *ngIf="intangibleCategoryKeys">
       <thead>
         <tr>
           <th scope="col">Asset category</th>
@@ -96,7 +99,7 @@
       <tbody>
         <ng-container *ngFor="let key of intangibleCategoryKeys">
           <tr>
-            <th scope="row"><a href="javascript:void(0)" (click)="selectAssetCategory(key)">{{key}}</a></th>
+            <th scope="row"><a ngbTooltip="Click on Asset category for more details" href="javascript:void(0)" (click)="selectAssetCategory(key)">{{key}}</a></th>
             <td>
               {{intangibleCategoryMap.get(key).length}}
             </td>
@@ -137,6 +140,9 @@
         </ng-container>
       </tbody>
     </table>
+    <div class="text-center" *ngIf="!intangibleCategoryKeys">
+        <p>You don't have any intangible asset!</p>
+      </div>
   </div>
   <!--
         <div class="modal-footer">
