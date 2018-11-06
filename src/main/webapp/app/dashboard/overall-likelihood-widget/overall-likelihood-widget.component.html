@@ -25,7 +25,7 @@
       <div class="clearfix"></div>
     </div>
     <div class="table-responsive x_content" style="padding:0px !important;" [ngbCollapse]="isCollapsed">
-        <div class="col-md-6">
+        <div class="col-md-4">
           <h4 class="text-center">Initial</h4>
           <div style="display: block" *ngIf="initialData.length > 0">
             <canvas baseChart [data]="initialData" [labels]="initialLabels" [chartType]="type" [legend]="legend"
@@ -35,7 +35,7 @@
             <p>No data available, please complete the relative questionnaire!</p>
           </div>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-4">
           <h4 class="text-center">Contextual</h4>
           <div style="display: block" *ngIf="contextualData.length > 0">
             <canvas baseChart [data]="contextualData" [labels]="contextualLabels" [chartType]="type" [legend]="legend"
@@ -45,7 +45,7 @@
             <p>No data available, please complete the relative questionnaire!</p>
           </div>
         </div>
-        <div class="col-md-12">
+        <div class="col-md-4">
           <h4 class="text-center">Refined</h4>
           <div style="display: block" *ngIf="refinedData.length > 0">
             <canvas baseChart [data]="refinedData" [labels]="refinedLabels" [chartType]="type" [legend]="legend"
