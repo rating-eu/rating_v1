@@ -17,6 +17,7 @@ import {JhiEventManager} from '../../../../../node_modules/ng-jhipster';
 import {NotificationInterceptor} from '../blocks/interceptor/notification.interceptor';
 import {JhiLanguageService} from 'ng-jhipster';
 import {NgxPaginationModule} from 'ngx-pagination';
+import { HermeneutMitigationMgmModule } from '../entities/mitigation-mgm/mitigation-mgm.module';
 
 @NgModule({
     imports: [
@@ -24,7 +25,8 @@ import {NgxPaginationModule} from 'ngx-pagination';
         CommonModule,
         RiskManagementRoutingModule,
         NgxPaginationModule,
-        NgbCollapseModule.forRoot()
+        NgbCollapseModule.forRoot(),
+        HermeneutMitigationMgmModule
     ],
     declarations: [RiskManagementComponent, RiskEvaluationComponent, RiskMitigationComponent],
     providers: [

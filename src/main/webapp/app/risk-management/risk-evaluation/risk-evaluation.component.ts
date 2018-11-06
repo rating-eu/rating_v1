@@ -9,7 +9,6 @@ import { Router } from '@angular/router';
 // import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 
 import * as _ from 'lodash';
-import { ITEMS_PER_PAGE } from '../../shared';
 import { HttpResponse } from '@angular/common/http';
 import { Subscription } from 'rxjs';
 

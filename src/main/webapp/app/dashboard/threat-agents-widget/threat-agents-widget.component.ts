@@ -127,6 +127,8 @@ export class ThreatAgentsWidgetComponent implements OnInit, OnDestroy {
       (response: [HttpResponse<ThreatAgentMgm[]>, HttpResponse<MotivationMgm[]>]) => {
         if (!response[0] || !response[1]) {
           this.loading = false;
+          this.status.identifyThreatAgentsStatus = false;
+          this.dashService.updateStatus(this.status);
           return;
         }
         this.defaultThreatAgents = response[0].body;

@@ -25,6 +25,14 @@ const ENTITY_STATES = [
         HermeneutSharedModule,
         RouterModule.forChild(ENTITY_STATES)
     ],
+    exports: [
+        MitigationMgmComponent,
+        MitigationMgmDetailComponent,
+        MitigationMgmDialogComponent,
+        MitigationMgmPopupComponent,
+        MitigationMgmDeletePopupComponent,
+        MitigationMgmDeleteDialogComponent
+    ],
     declarations: [
         MitigationMgmComponent,
         MitigationMgmDetailComponent,

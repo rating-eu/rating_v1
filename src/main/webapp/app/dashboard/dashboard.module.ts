@@ -37,6 +37,7 @@ import { ChartsModule } from 'ng2-charts';
 import { ImpactEvaluationService } from '../impact-evaluation/impact-evaluation.service';
 import { PopUpService } from '../shared/pop-up-services/pop-up.service';
 import { StepInfoWidgetComponent } from './step-info-widget/step-info-widget.component';
+import { HermeneutAttackStrategyMgmModule } from '../entities/attack-strategy-mgm/attack-strategy-mgm.module';
 
 @NgModule({
     imports: [
@@ -46,7 +47,8 @@ import { StepInfoWidgetComponent } from './step-info-widget/step-info-widget.com
         MaterialModule,
         NgxPaginationModule,
         NgbCollapseModule.forRoot(),
-        ChartsModule
+        ChartsModule,
+        HermeneutAttackStrategyMgmModule
     ],
     declarations: [
         CompanyWidgetComponent,
