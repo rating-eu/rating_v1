@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { HttpResponse } from '@angular/common/http';
 import { Subscription } from 'rxjs/Subscription';
@@ -12,11 +12,13 @@ import { PopUpService } from '../../shared/pop-up-services/pop-up.service';
     selector: 'jhi-mitigation-mgm-detail',
     templateUrl: './mitigation-mgm-detail.component.html'
 })
-export class MitigationMgmDetailComponent implements OnInit, OnDestroy {
+export class MitigationMgmDetailComponent implements OnInit, OnDestroy, OnChanges {
 
     mitigation: MitigationMgm;
     private subscription: Subscription;
     private eventSubscriber: Subscription;
+    @Input('id') id: number;
+    @Input('isButtonVisible') isButtonVisible;
 
     constructor(
         private eventManager: JhiEventManager,
@@ -28,9 +30,32 @@ export class MitigationMgmDetailComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.subscription = this.route.params.subscribe((params) => {
-            this.load(params['id']);
+            if (params['id']) {
+                this.load(params['id']);
+                this.isButtonVisible = true;
+            }
         });
+        if (this.id) {
+            this.load(this.id);
+        }
         this.registerChangeInMitigations();
+    }
+
+    ngOnChanges(changes: SimpleChanges) {
+        for (const propName in changes) {
+            if (propName) {
+                const change = changes[propName];
+                const curVal = change.currentValue;
+                const prevVal = change.previousValue;
+                if (propName === 'id') {
+                    this.id = curVal as number;
+                    this.load(this.id);
+                }
+                if (propName === 'isButtonVisible') {
+                    this.isButtonVisible = curVal as boolean;
+                }
+            }
+        }
     }
 
     load(id) {

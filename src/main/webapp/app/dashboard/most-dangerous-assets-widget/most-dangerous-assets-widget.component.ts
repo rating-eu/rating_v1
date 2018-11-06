@@ -22,7 +22,7 @@ interface MdawEntity {
   styleUrls: ['most-dangerous-assets-widget.component.css']
 })
 export class MostDangerousAssetsWidgetComponent implements OnInit {
-  public isCollapsed = false;
+  public isCollapsed = true;
   public loading = false;
   public loadingAttacksTable = false;
   public selectedAsset: AugmentedMyAsset;
