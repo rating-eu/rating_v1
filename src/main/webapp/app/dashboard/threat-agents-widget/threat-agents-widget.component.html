@@ -32,7 +32,7 @@
         <tbody>
           <!--For rows-->
           <ng-container *ngFor="let couple of threatAgentsPercentageArray">
-            <tr (click)="selectThreatAgent(couple.key)">
+            <tr (click)="selectThreatAgent(couple.key)" style="cursor: pointer">
               <!--For cols-->
               <th scope="row" class="text-center align-middle">
                 {{couple.key.name}}

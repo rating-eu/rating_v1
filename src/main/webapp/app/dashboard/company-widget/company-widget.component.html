@@ -3,10 +3,10 @@
 </div>
 <div class="container" *ngIf="myCompany">
   <div class="tile-stats tiles-first-row">
-    <!--<div class="count">&nbsp;</div>-->
+    <div class="count" style="font-size:25px;">&nbsp;</div>
     <h3>{{companyName}}</h3>
     <p>{{companySector}}</p>
     <p>{{selfAssessmentName}}</p>
-    <p><a (click)="popUpService.setOnUserBehaviour()" [routerLink]="['/', { outlets: { popup: 'my-company-mgm/'+ myCompany.id + '/edit'} }]">edit</a></p>
+    <!--<p><a (click)="popUpService.setOnUserBehaviour()" [routerLink]="['/', { outlets: { popup: 'my-company-mgm/'+ myCompany.id + '/edit'} }]">edit</a></p>-->
   </div>
 </div>
