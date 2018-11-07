@@ -17,7 +17,8 @@ export class StepInfoWidgetComponent implements OnInit {
   public assessVulnerablitiesStatus = false;
   public impactEvaluationStatus = false;
   public riskEvaluationStatus = false;
-
+  public alertMessage: string;
+  
   private closeResult: string;
   private linkAfterModal: string;
 
@@ -47,11 +48,16 @@ export class StepInfoWidgetComponent implements OnInit {
     }
   }
 
-  open(content, link) {
+  open(content, link, message) {
     this.linkAfterModal = link;
+    this.alertMessage = message;
     this.modalService.open(content, {}).result.then((result) => {
       this.closeResult = `Closed with: ${result}`;
-      this.router.navigate([this.linkAfterModal]);
+      if (this.linkAfterModal) {
+        this.router.navigate([this.linkAfterModal]);
+      } else {
+        console.log('WORK IN PROGRESS');
+      }
     }, (reason) => {
       this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
     });
@@ -63,7 +69,7 @@ export class StepInfoWidgetComponent implements OnInit {
     } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
       return 'by clicking on a backdrop';
     } else {
-      return  `with: ${reason}`;
+      return `with: ${reason}`;
     }
   }
 }
