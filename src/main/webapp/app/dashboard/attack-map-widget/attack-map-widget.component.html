@@ -8,7 +8,7 @@
       <ul class="nav navbar-right panel_toolbox">
         <li style="width: 24px; cursor: default"></li>
         <li style="width: 24px; cursor: default"></li>
-        <li><a class="collapse-link" (click)="isCollapsed = !isCollapsed">
+        <li><a href="javascript:void(0)" class="collapse-link" (click)="isCollapsed = !isCollapsed">
             <i *ngIf="!isCollapsed" class="fa fa-chevron-up"></i>
             <i *ngIf="isCollapsed" class="fa fa-chevron-down"></i>
           </a>
@@ -148,7 +148,7 @@
         </div>
         <ng-container *ngIf="isViewDivDetailsVisible">
           <div class="col-md-12">
-            <a (click)="isViewDivDetailsVisible = false">Close details</a>
+            <a href="javascript:void(0)" (click)="isViewDivDetailsVisible = false">Close details</a>
           </div>
           <div class="col-md-12">
             <jhi-attack-strategy-mgm-detail [id]="datailParam" [isButtonVisible]="false"></jhi-attack-strategy-mgm-detail>
