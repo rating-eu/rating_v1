@@ -1,12 +1,15 @@
 <div class="card-box" *ngIf="attackStrategy">
-    <h2><span jhiTranslate="hermeneutApp.attackStrategy.detail.title">Attack Strategy</span> {{attackStrategy.id}}</h2>
+    <h2>{{attackStrategy.name}}</h2>
+    <!--<h2><span jhiTranslate="hermeneutApp.attackStrategy.detail.title">Attack Strategy</span> {{attackStrategy.id}}</h2>-->
     <hr>
     <jhi-alert-error></jhi-alert-error>
     <dl class="row-md jh-entity-details">
+        <!--
         <dt><span jhiTranslate="hermeneutApp.attackStrategy.name">Name</span></dt>
         <dd>
             <span>{{attackStrategy.name}}</span>
         </dd>
+        -->
         <dt><span jhiTranslate="hermeneutApp.attackStrategy.description">Description</span></dt>
         <dd>
             <span>{{attackStrategy.description}}</span>

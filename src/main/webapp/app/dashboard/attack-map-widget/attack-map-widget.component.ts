@@ -138,6 +138,9 @@ export class AttackMapWidgetComponent implements OnInit, OnDestroy {
   viewDivDetails(id: number) {
     this.datailParam = id;
     this.isViewDivDetailsVisible = true;
+    setTimeout(() => {
+      document.getElementById('details').scrollIntoView();
+    }, 250);
   }
 
   threatAgentChanged(threatAgent: ThreatAgentMgm) {

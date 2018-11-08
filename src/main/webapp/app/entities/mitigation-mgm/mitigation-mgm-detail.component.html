@@ -1,13 +1,16 @@
 
 <div class="card-box" *ngIf="mitigation">
-    <h2><span jhiTranslate="hermeneutApp.mitigation.detail.title">Mitigation</span> {{mitigation.id}}</h2>
+    <h2>{{mitigation.name}}</h2>
+    <!--<h2><span jhiTranslate="hermeneutApp.mitigation.detail.title">Mitigation</span> {{mitigation.id}}</h2>-->
     <hr>
     <jhi-alert-error></jhi-alert-error>
     <dl class="row-md jh-entity-details">
+        <!--
         <dt><span jhiTranslate="hermeneutApp.mitigation.name">Name</span></dt>
         <dd>
             <span>{{mitigation.name}}</span>
         </dd>
+        -->
         <dt><span jhiTranslate="hermeneutApp.mitigation.description">Description</span></dt>
         <dd>
             <span>{{mitigation.description}}</span>
