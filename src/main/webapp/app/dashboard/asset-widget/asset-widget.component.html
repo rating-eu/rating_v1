@@ -7,7 +7,7 @@
     <div class="count" *ngIf="myAssets">{{myAssets.length}}</div>
     <h3 *ngIf="myAssets">Assets</h3>
     <h3 *ngIf="!myAssets">No Assets counted</h3>
-    <p *ngIf="myAssets"><a (click)="open(tangibleAssetsDetails)">tangible</a> | <a (click)="open(intangibleAssetsDetails)">intangible</a></p>
+    <p *ngIf="myAssets"><a href="javascript:void(0)" (click)="open(tangibleAssetsDetails)">tangible</a> | <a href="javascript:void(0)" (click)="open(intangibleAssetsDetails)">intangible</a></p>
   </div>
 </div>
 

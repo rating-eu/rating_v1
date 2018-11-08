@@ -7,7 +7,7 @@
     <div class="count" *ngIf="selfAssessment.threatagents.length>0">{{selfAssessment.threatagents.length}}</div>
     <h3 *ngIf="selfAssessment.threatagents.length>0">Threat Agents</h3>
     <h3 *ngIf="selfAssessment.threatagents.length===0">No Threat Agents founded</h3>
-    <p *ngIf="selfAssessment.threatagents.length>0"><a (click)="open(threatAgentsDetails)">details</a></p>
+    <p *ngIf="selfAssessment.threatagents.length>0"><a href="javascript:void(0)" (click)="open(threatAgentsDetails)">details</a></p>
   </div>
 </div>
 
