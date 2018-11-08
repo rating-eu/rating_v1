@@ -4,7 +4,7 @@
 <div class="col-md-12" *ngIf="!loading">
   <div class="x_panel" style="padding:0px !important;">
     <div class="x_title" style="padding:0px !important;">
-      <h2 style="padding: 10px;">Attack Plan</h2>
+      <h2 style="padding: 10px;">Attack Plans</h2>
       <ul class="nav navbar-right panel_toolbox">
         <li style="width: 24px; cursor: default"></li>
         <li style="width: 24px; cursor: default"></li>
@@ -146,14 +146,14 @@
             </div>
           </div>
         </div>
-        <ng-container *ngIf="isViewDivDetailsVisible">
-          <div class="col-md-12">
-            <a href="javascript:void(0)" (click)="isViewDivDetailsVisible = false">Close details</a>
+        <div *ngIf="isViewDivDetailsVisible" id="details">
+          <div class="col-md-12 text-right">
+            <a href="javascript:void(0)" (click)="isViewDivDetailsVisible = false"><i class="fa fa-times fa-lg" aria-hidden="true"></i></a>
           </div>
           <div class="col-md-12">
             <jhi-attack-strategy-mgm-detail [id]="datailParam" [isButtonVisible]="false"></jhi-attack-strategy-mgm-detail>
           </div>
-        </ng-container>
+        </div>
       </ng-container>
     </div>
   </div>
