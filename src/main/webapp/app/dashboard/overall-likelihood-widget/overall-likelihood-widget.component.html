@@ -4,10 +4,15 @@
 <div class="container" *ngIf="!loading">
   <div class="x_panel" style="padding:0px !important;">
     <div class="x_title" style="padding:0px !important;">
-      <h2 style="padding: 10px;">Overall Likelihood</h2>
+      <h2 style="padding: 10px;">
+        Overall Likelihood
+        <small>based on 0 to 5 scale</small>
+      </h2>
       <ul class="nav navbar-right panel_toolbox">
+        <li style="width: 24px; cursor: default"></li>
+        <li style="width: 24px; cursor: default"></li>
         <li>
-          <a class="collapse-link" (click)="isCollapsed = !isCollapsed">
+          <a href="javascript:void(0)" class="collapse-link" (click)="isCollapsed = !isCollapsed">
             <i *ngIf="!isCollapsed" class="fa fa-chevron-up"></i>
             <i *ngIf="isCollapsed" class="fa fa-chevron-down"></i>
           </a>
@@ -25,36 +30,34 @@
       <div class="clearfix"></div>
     </div>
     <div class="table-responsive x_content" style="padding:0px !important;" [ngbCollapse]="isCollapsed">
-        <div class="col-md-4">
-          <h4 class="text-center">Initial</h4>
-          <div style="display: block" *ngIf="initialData.length > 0">
-            <canvas baseChart [data]="initialData" [labels]="initialLabels" [chartType]="type" [legend]="legend"
-              [colors]="color"></canvas>
-          </div>
-          <div style="display: block" *ngIf="initialData.length === 0" class="text-center">
-            <p>No data available, please complete the relative questionnaire!</p>
-          </div>
+      <div class="col-md-4">
+        <h4 class="text-center">Initial</h4>
+        <div style="display: block" *ngIf="initialData.length > 0">
+          <canvas baseChart [data]="initialData" [labels]="initialLabels" [chartType]="type" [legend]="legend" [colors]="color"></canvas>
         </div>
-        <div class="col-md-4">
-          <h4 class="text-center">Contextual</h4>
-          <div style="display: block" *ngIf="contextualData.length > 0">
-            <canvas baseChart [data]="contextualData" [labels]="contextualLabels" [chartType]="type" [legend]="legend"
-              [colors]="color"></canvas>
-          </div>
-          <div style="display: block" *ngIf="contextualData.length === 0" class="text-center">
-            <p>No data available, please complete the relative questionnaire!</p>
-          </div>
+        <div style="display: block" *ngIf="initialData.length === 0" class="text-center">
+          <p>No data available, please complete the relative questionnaire!</p>
         </div>
-        <div class="col-md-4">
-          <h4 class="text-center">Refined</h4>
-          <div style="display: block" *ngIf="refinedData.length > 0">
-            <canvas baseChart [data]="refinedData" [labels]="refinedLabels" [chartType]="type" [legend]="legend"
-              [colors]="color"></canvas>
-          </div>
-          <div style="display: block" class="text-center" *ngIf="refinedData.length === 0">
-            <p>No data available, please contact your external auditor!</p>
-          </div>
+      </div>
+      <div class="col-md-4">
+        <h4 class="text-center">Contextual</h4>
+        <div style="display: block" *ngIf="contextualData.length > 0">
+          <canvas baseChart [data]="contextualData" [labels]="contextualLabels" [chartType]="type" [legend]="legend"
+            [colors]="color"></canvas>
         </div>
+        <div style="display: block" *ngIf="contextualData.length === 0" class="text-center">
+          <p>No data available, please complete the relative questionnaire!</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <h4 class="text-center">Refined</h4>
+        <div style="display: block" *ngIf="refinedData.length > 0">
+          <canvas baseChart [data]="refinedData" [labels]="refinedLabels" [chartType]="type" [legend]="legend" [colors]="color"></canvas>
+        </div>
+        <div style="display: block" class="text-center" *ngIf="refinedData.length === 0">
+          <p>No data available, please contact your external auditor!</p>
+        </div>
+      </div>
     </div>
   </div>
 </div>
