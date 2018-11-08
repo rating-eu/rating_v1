@@ -149,7 +149,7 @@
                                                 (click)="selectedMatrixCell(lastSquareRowElement-j, i)" placement="top"
                                                 ngbTooltip="{{attacksToolTipLoaded ? attacksToolTip.get(concatenateAndParse([myAsset.id,lastSquareRowElement-j, i])) : ''}}">
                                                 <ng-container *ngIf="mapAssetAttacks.get(myAsset.id)">
-                                                    <a (click)="loadContent(lastSquareRowElement-j, i, myAsset, 'likelihood-vulnerability', assetDetail)">
+                                                    <a style="color: black" href="javascript:void(0)" (click)="loadContent(lastSquareRowElement-j, i, myAsset, 'likelihood-vulnerability', assetDetail)">
                                                         <ng-container *ngIf="whichContentByCell(lastSquareRowElement-j, i, myAsset,
                                                         'likelihood-vulnerability')!==''">{{whichContentByCell(lastSquareRowElement-j,
                                                             i, myAsset,
