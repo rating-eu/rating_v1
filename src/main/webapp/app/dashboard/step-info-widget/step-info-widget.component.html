@@ -63,7 +63,7 @@
               <a *ngIf="!identifyThreatAgentsStatus" [routerLink]="['/identify-threat-agent/questionnaires/ID_THREAT_AGENT']"><i
                   class="fa fa-plus-square" placement="top" ngbTooltip="Create" aria-hidden="true"></i></a>
               <ng-container *ngIf="identifyThreatAgentsStatus">
-                <a href="javascript:void(0)" (click)="console.log('WORK IN PROGRESS');"><i placement="top" ngbTooltip="View"
+                <a href="javascript:void(0)" (click)="return false;"><i placement="top" ngbTooltip="View"
                     class="fa fa-eye" aria-hidden="true"></i></a>
                 <a href="javascript:void(0)" (click)="open(alert,'/identify-asset', 'If you continue you erase previous saved data. Do you want to proceed?')"><i
                     placement="top" ngbTooltip="Edit" class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
