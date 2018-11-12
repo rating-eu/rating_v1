@@ -150,8 +150,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                         items: [
                             {
                                 label: 'Asset Clustering',
-                                // routerLink: ['/identify-asset/asset-clustering']
-                                routerLink: ['/identify-asset'],
+                                routerLink: ['/identify-asset/asset-clustering']
                             },
                             {
                                 label: 'Magnitudo',
