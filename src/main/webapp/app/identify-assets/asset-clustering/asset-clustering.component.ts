@@ -160,26 +160,34 @@ export class AssetClusteringComponent implements OnInit, OnDestroy {
         if (selectedAsset instanceof Array) {
             const assetInSelection = this.howManyAssetInSelection(categoryId);
             // const indexCategory = _.findIndex(this.categories, { id: categoryId });
-            for (const asset of selectedAsset) {
-                const i = _.findIndex(this.myAssets,
-                    (myAsset) => myAsset.asset.id === asset.id
-                );
-                if (i !== -1 && assetInSelection !== 0) {
-                    this.myAssets.splice(i, 1);
-                    this.updateMyAssets = true;
-                } else {
-                    const newAsset: MyAssetMgm = {};
-                    newAsset.asset = asset;
-                    // TODO pensare ad una politica futura di selezione del questionario
-                    newAsset.questionnaire = this.questionnaries[0];
-                    newAsset.selfAssessment = this.mySelf;
-                    newAsset.economicValue = undefined;
-                    newAsset.estimated = undefined;
-                    newAsset.impact = undefined;
-                    newAsset.magnitude = undefined;
-                    newAsset.ranking = undefined;
-                    this.myAssets.push(newAsset);
-                    this.updateMyAssets = true;
+            if (assetInSelection !== 0) {
+                for (const asset of selectedAsset) {
+                    const i = _.findIndex(this.myAssets,
+                        (myAsset) => myAsset.asset.id === asset.id
+                    );
+                    if (i !== -1) {
+                        this.myAssets.splice(i, 1);
+                        this.updateMyAssets = true;
+                    }
+                }
+            } else {
+                for (const asset of selectedAsset) {
+                    const i = _.findIndex(this.myAssets,
+                        (myAsset) => myAsset.asset.id === asset.id
+                    );
+                    if (i === -1) {
+                        const newAsset: MyAssetMgm = {};
+                        newAsset.asset = asset;
+                        newAsset.questionnaire = this.questionnaries[0];
+                        newAsset.selfAssessment = this.mySelf;
+                        newAsset.economicValue = undefined;
+                        newAsset.estimated = undefined;
+                        newAsset.impact = undefined;
+                        newAsset.magnitude = undefined;
+                        newAsset.ranking = undefined;
+                        this.myAssets.push(newAsset);
+                        this.updateMyAssets = true;
+                    }
                 }
             }
         } else {
@@ -255,5 +263,6 @@ export class AssetClusteringComponent implements OnInit, OnDestroy {
 
     public saveMyAsset() {
         console.log(this.myAssets);
+        // write function to save all myAssets
     }
 }

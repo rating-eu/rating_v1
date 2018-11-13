@@ -76,6 +76,7 @@ export class IdentifyAssetUtilService {
             });
     }
 
+    // Function to check
     public getSavedIndirectFromDirect(direct: DirectAssetMgm, receivedIndirects: IndirectAssetMgm[]): IndirectAssetMgm[] {
         const indirects: IndirectAssetMgm[] = [];
         for (const ind of receivedIndirects) {
