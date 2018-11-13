@@ -12,13 +12,6 @@
 # Full reference is available at:
 # http://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html
 # ===================================================================
-
-logging:
-    level:
-        ROOT: INFO
-        eu.hermeneut: INFO
-        io.github.jhipster: INFO
-
 eureka:
     instance:
         prefer-ip-address: true
