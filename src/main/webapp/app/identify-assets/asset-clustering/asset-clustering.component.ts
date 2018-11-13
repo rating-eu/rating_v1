@@ -1,6 +1,6 @@
 import * as _ from 'lodash';
 
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { Principal, LoginModalService, AccountService, UserService, User } from '../../shared';
 import { SelfAssessmentMgm, SelfAssessmentMgmService } from '../../entities/self-assessment-mgm';
 import { Subscription } from 'rxjs/Subscription';
@@ -10,8 +10,7 @@ import { QuestionnairePurpose } from '../../entities/enumerations/QuestionnaireP
 import { QuestionnairesService } from '../../questionnaires/questionnaires.service';
 import { IdentifyAssetUtilService } from '../identify-asset.util.service';
 import { MyAssetMgm } from '../../entities/my-asset-mgm';
-import { DirectAssetMgm } from '../../entities/direct-asset-mgm';
-import { IndirectAssetMgm } from '../../entities/indirect-asset-mgm';
+import { AssetCategoryMgm } from './../../entities/asset-category-mgm/asset-category-mgm.model';
 import { QuestionnaireStatusMgmService, QuestionnaireStatusMgm, Role, QuestionnaireStatusMgmCustomService } from '../../entities/questionnaire-status-mgm';
 import { MyRole } from '../../entities/enumerations/MyRole.enum';
 import { AssetMgm } from '../../entities/asset-mgm';
@@ -21,6 +20,7 @@ import { AssetMgm } from '../../entities/asset-mgm';
     selector: 'asset-clustering',
     templateUrl: './asset-clustering.component.html',
     styleUrls: ['./asset-clustering.component.css'],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 
 export class AssetClusteringComponent implements OnInit, OnDestroy {
@@ -32,11 +32,10 @@ export class AssetClusteringComponent implements OnInit, OnDestroy {
 
     public mySelf: SelfAssessmentMgm = {};
     public assets: AssetMgm[];
-    public loading = false;
-    public loadWithErrors = false;
     public myAssets: MyAssetMgm[];
-    public myDirectAssets: DirectAssetMgm[];
-    public myIndirectAssets: IndirectAssetMgm[];
+    public categoryToAssets: Map<AssetCategoryMgm, AssetMgm[]> = new Map<AssetCategoryMgm, AssetMgm[]>();
+    public categories: AssetCategoryMgm[];
+    public selectedCategory: AssetCategoryMgm;
 
     constructor(
         private principal: Principal,
@@ -48,6 +47,7 @@ export class AssetClusteringComponent implements OnInit, OnDestroy {
         private questionnairesService: QuestionnairesService,
         private questionnaireStatusService: QuestionnaireStatusMgmCustomService,
         private questionnaireStatusServices: QuestionnaireStatusMgmService,
+        private ref: ChangeDetectorRef
     ) { }
 
     ngOnDestroy() {
@@ -67,23 +67,35 @@ export class AssetClusteringComponent implements OnInit, OnDestroy {
 
         this.registerChangeIdentifyAssets();
         this.questionnaries = [];
-        this.loading = true;
-        this.idaUtilsService.getMySavedAssets(this.mySelf)
-            .toPromise()
-            .then((mySavedAssets) => {
-                if (mySavedAssets) {
-                    console.log(mySavedAssets);
-                    if (mySavedAssets.length === 0) {
-                        this.loading = false;
-                        this.loadWithErrors = false;
-                        return;
+        this.idaUtilsService.getAllAssets().toPromise().then((systemAssets) => {
+            if (systemAssets) {
+                this.assets = systemAssets;
+                for (const asset of this.assets) {
+                    let find = false;
+                    this.categoryToAssets.forEach((v, k) => {
+                        if (k.id === asset.assetcategory.id) {
+                            const items = this.categoryToAssets.get(k);
+                            items.push(asset);
+                            this.categoryToAssets.set(k, items);
+                            find = true;
+                        }
+                    });
+                    if (!find) {
+                        this.categoryToAssets.set(asset.assetcategory, [asset]);
                     }
-                    this.myAssets = mySavedAssets;
-                } else {
-                    this.loading = false;
-                    this.loadWithErrors = false;
                 }
-            });
+                this.categories = Array.from(this.categoryToAssets.keys());
+                this.idaUtilsService.getMySavedAssets(this.mySelf).toPromise().then((mySavedAssets) => {
+                    if (mySavedAssets) {
+                        this.myAssets = mySavedAssets;
+                    }
+                    this.ref.detectChanges();
+                }).catch(() => {
+                    this.ref.detectChanges();
+                });
+            }
+        });
+
         this.questionnairesService.getAllQuestionnairesByPurpose(QuestionnairePurpose.ID_ASSETS).toPromise().then((res) => {
             if (res && res instanceof QuestionnaireMgm) {
                 this.questionnaries.push(res);
@@ -98,14 +110,7 @@ export class AssetClusteringComponent implements OnInit, OnDestroy {
                         .then((status) => {
                             if (status.body) {
                                 this.questionnariesStatus.push(status.body as QuestionnaireStatusMgm);
-                                // this.ref.detectChanges();
-                            } else {
-                                this.loading = false;
-                                this.loadWithErrors = false;
                             }
-                        }).catch(() => {
-                            this.loading = false;
-                            this.loadWithErrors = false;
                         });
                 }
             }
@@ -129,6 +134,21 @@ export class AssetClusteringComponent implements OnInit, OnDestroy {
             return assetsByCategory as AssetMgm[];
         }
         return undefined;
+    }
+
+    public selectCategory(category: AssetCategoryMgm) {
+        if (category) {
+            if (this.selectedCategory) {
+                if (this.selectedCategory.id === category.id) {
+                    this.selectedCategory = null;
+                } else {
+                    this.selectedCategory = category;
+                }
+            } else {
+                this.selectedCategory = category;
+            }
+        }
+        this.ref.detectChanges();
     }
 
     public select(assetId?: number, categoryId?: number) {
@@ -174,9 +194,52 @@ export class AssetClusteringComponent implements OnInit, OnDestroy {
                 this.myAssets.push(newAsset);
             }
         }
+        this.ref.detectChanges();
+    }
+    public howManyAssetInSelection(categoryId: number): number {
+        let categoryAssets: AssetMgm[] = [];
+        this.categoryToAssets.forEach((v, k) => {
+            if (k.id === categoryId) {
+                categoryAssets = v;
+            }
+        });
+        let howManyAsset = 0;
+        for (const myAsset of this.myAssets) {
+            const index = _.findIndex(categoryAssets, { id: myAsset.asset.id });
+            if (index !== -1) {
+                howManyAsset++;
+            }
+        }
+        return howManyAsset;
     }
 
-    public isSelect(assetId?: number, categoryId?: number):boolean{
-
+    public isSelect(assetId?: number, categoryId?: number): boolean {
+        if (assetId) {
+            for (const myAsset of this.myAssets) {
+                if (myAsset.asset.id === assetId) {
+                    return true;
+                }
+            }
+        } else if (categoryId) {
+            let categoryAssets: AssetMgm[] = [];
+            this.categoryToAssets.forEach((v, k) => {
+                if (k.id === categoryId) {
+                    categoryAssets = v;
+                }
+            });
+            let howManyAsset = 0;
+            for (const myAsset of this.myAssets) {
+                const index = _.findIndex(categoryAssets, { id: myAsset.asset.id });
+                if (index !== -1) {
+                    howManyAsset++;
+                }
+            }
+            if (howManyAsset === categoryAssets.length) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+        return false;
     }
 }

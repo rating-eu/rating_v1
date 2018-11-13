@@ -39,6 +39,7 @@ export class IdentifyAssetUtilService {
     private assetServiceUrl = SERVER_API_URL + 'api/my-assets/self-assessment/';
     private directUrl = SERVER_API_URL + 'api/{selfAssessmentID}/direct-assets';
     private indirectUrl = SERVER_API_URL + 'api/{selfAssessmentID}/indirect-assets';
+    private allAsset = SERVER_API_URL + 'api/assets';
 
     constructor(
         private http: HttpClient
@@ -64,6 +65,13 @@ export class IdentifyAssetUtilService {
         const uri = this.assetServiceUrl + self.id.toString();
         return this.http.get<MyAssetMgm[]>(uri, { observe: 'response' })
             .map((res: HttpResponse<MyAssetMgm[]>) => {
+                return res.body;
+            });
+    }
+
+    public getAllAssets(): Observable<AssetMgm[]> {
+        return this.http.get<AssetMgm[]>(this.allAsset, { observe: 'response' })
+            .map((res: HttpResponse<AssetMgm[]>) => {
                 return res.body;
             });
     }
