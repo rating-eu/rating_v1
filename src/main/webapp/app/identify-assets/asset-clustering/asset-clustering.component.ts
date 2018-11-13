@@ -36,6 +36,7 @@ export class AssetClusteringComponent implements OnInit, OnDestroy {
     public categoryToAssets: Map<AssetCategoryMgm, AssetMgm[]> = new Map<AssetCategoryMgm, AssetMgm[]>();
     public categories: AssetCategoryMgm[];
     public selectedCategory: AssetCategoryMgm;
+    public updateMyAssets = false;
 
     constructor(
         private principal: Principal,
@@ -153,13 +154,19 @@ export class AssetClusteringComponent implements OnInit, OnDestroy {
 
     public select(assetId?: number, categoryId?: number) {
         const selectedAsset: AssetMgm | AssetMgm[] = this.findAsset(assetId, categoryId);
+        if (!this.myAssets) {
+            this.myAssets = [];
+        }
         if (selectedAsset instanceof Array) {
+            const assetInSelection = this.howManyAssetInSelection(categoryId);
+            // const indexCategory = _.findIndex(this.categories, { id: categoryId });
             for (const asset of selectedAsset) {
                 const i = _.findIndex(this.myAssets,
                     (myAsset) => myAsset.asset.id === asset.id
                 );
-                if (i !== -1) {
+                if (i !== -1 && assetInSelection !== 0) {
                     this.myAssets.splice(i, 1);
+                    this.updateMyAssets = true;
                 } else {
                     const newAsset: MyAssetMgm = {};
                     newAsset.asset = asset;
@@ -172,6 +179,7 @@ export class AssetClusteringComponent implements OnInit, OnDestroy {
                     newAsset.magnitude = undefined;
                     newAsset.ranking = undefined;
                     this.myAssets.push(newAsset);
+                    this.updateMyAssets = true;
                 }
             }
         } else {
@@ -180,6 +188,7 @@ export class AssetClusteringComponent implements OnInit, OnDestroy {
             );
             if (index !== -1) {
                 this.myAssets.splice(index, 1);
+                this.updateMyAssets = true;
             } else {
                 const newAsset: MyAssetMgm = {};
                 newAsset.asset = selectedAsset;
@@ -192,6 +201,7 @@ export class AssetClusteringComponent implements OnInit, OnDestroy {
                 newAsset.magnitude = undefined;
                 newAsset.ranking = undefined;
                 this.myAssets.push(newAsset);
+                this.updateMyAssets = true;
             }
         }
         this.ref.detectChanges();
@@ -241,5 +251,9 @@ export class AssetClusteringComponent implements OnInit, OnDestroy {
             }
         }
         return false;
+    }
+
+    public saveMyAsset() {
+        console.log(this.myAssets);
     }
 }
