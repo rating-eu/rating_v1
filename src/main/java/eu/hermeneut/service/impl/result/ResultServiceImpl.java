@@ -191,4 +191,29 @@ public class ResultServiceImpl implements ResultService {
 
         return result;
     }
+
+    @Override
+    public Float getOverallLikelihood(Long selfAssessmentID) {
+        Float overallLikelihood = -1F;
+
+        if (selfAssessmentID != null) {
+            Result result = this.getResult(selfAssessmentID);
+
+            if (result != null) {
+                Map<Long, Float> initialVulnerability = result.getInitialVulnerability();
+                Map<Long, Float> contextualVulnerability = result.getContextualVulnerability();
+                Map<Long, Float> refinedVulnerability = result.getRefinedVulnerability();
+
+                if (refinedVulnerability != null && !refinedVulnerability.isEmpty()) {
+                    overallLikelihood = Collections.max(refinedVulnerability.entrySet(), Comparator.comparingDouble(Map.Entry::getValue)).getValue();
+                } else if (contextualVulnerability != null && !contextualVulnerability.isEmpty()) {
+                    overallLikelihood = Collections.max(contextualVulnerability.entrySet(), Comparator.comparingDouble(Map.Entry::getValue)).getValue();
+                } else if (initialVulnerability != null && !initialVulnerability.isEmpty()) {
+                    overallLikelihood = Collections.max(initialVulnerability.entrySet(), Comparator.comparingDouble(Map.Entry::getValue)).getValue();
+                }
+            }
+        }
+
+        return overallLikelihood;
+    }
 }

@@ -42,8 +42,9 @@ public class RiskProfileServiceImpl implements RiskProfileService {
 
         Random random = new Random();
 
-        //TODO calculate it
-        riskProfile.setOverallLikelihood(random.nextFloat());
+        //OK
+        Float overallLikelihood = this.resultService.getOverallLikelihood(selfAssessmentID);
+        riskProfile.setOverallLikelihood(overallLikelihood);
 
         Set<AssetRisk> assetRisks = new HashSet<>();
         //TODO calculate it
