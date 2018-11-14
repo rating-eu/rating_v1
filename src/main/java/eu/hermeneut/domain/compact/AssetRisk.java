@@ -31,8 +31,8 @@ public class AssetRisk implements Serializable, MaxValues {
     }
 
     public void setRisk(Float risk) {
-        if (risk > 1) {
-            risk = risk / MAX_LIKELIHOOD;
+        if (risk < 0 || risk > 1) {
+            throw new IllegalArgumentException("Risk must be normalized to a value between 0 and 1");
         }
 
         this.risk = risk;

@@ -1,5 +1,6 @@
 package eu.hermeneut.service.impl.compact;
 
+import eu.hermeneut.constant.MaxValues;
 import eu.hermeneut.domain.SelfAssessment;
 import eu.hermeneut.domain.attackmap.AugmentedAttackStrategy;
 import eu.hermeneut.domain.compact.AssetRisk;
@@ -20,12 +21,11 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.validation.constraints.NotNull;
 import java.util.HashSet;
 import java.util.Map;
-import java.util.Random;
 import java.util.Set;
 
 @Service
 @Transactional
-public class RiskProfileServiceImpl implements RiskProfileService {
+public class RiskProfileServiceImpl implements RiskProfileService, MaxValues {
     @Autowired
     private SelfAssessmentService selfAssessmentService;
 
@@ -77,11 +77,11 @@ public class RiskProfileServiceImpl implements RiskProfileService {
             float initialLikelihood = augmentedAttackStrategy.getInitialLikelihood();
 
             if (refinedLikelihood > 0) {
-                attackStrategyRisk.setRisk(refinedLikelihood);
+                attackStrategyRisk.setRisk(refinedLikelihood / MAX_LIKELIHOOD);
             } else if (contextualLikelihood > 0) {
-                attackStrategyRisk.setRisk(contextualLikelihood);
+                attackStrategyRisk.setRisk(contextualLikelihood / MAX_LIKELIHOOD);
             } else if (initialLikelihood > 0) {
-                attackStrategyRisk.setRisk(initialLikelihood);
+                attackStrategyRisk.setRisk(initialLikelihood / MAX_LIKELIHOOD);
             }
 
             attackStrategyRisks.add(attackStrategyRisk);

@@ -2,9 +2,10 @@ package eu.hermeneut.domain.compact;
 
 import eu.hermeneut.constant.MaxValues;
 import eu.hermeneut.domain.AttackStrategy;
+import eu.hermeneut.domain.attackmap.AugmentedAttackStrategy;
 
 public class AttackStrategyRisk implements MaxValues {
-    private AttackStrategy attackStrategy;
+    private AugmentedAttackStrategy attackStrategy;
     /**
      * Initial, Refined or Contextual likelihood associated to the AttackStrategy.
      * The rightmost is preferred if available.
@@ -18,7 +19,7 @@ public class AttackStrategyRisk implements MaxValues {
         this.risk = null;
     }
 
-    public AttackStrategyRisk(AttackStrategy attackStrategy, Float risk) {
+    public AttackStrategyRisk(AugmentedAttackStrategy attackStrategy, Float risk) {
         this.attackStrategy = attackStrategy;
         this.risk = risk;
     }
@@ -27,7 +28,7 @@ public class AttackStrategyRisk implements MaxValues {
         return attackStrategy;
     }
 
-    public void setAttackStrategy(AttackStrategy attackStrategy) {
+    public void setAttackStrategy(AugmentedAttackStrategy attackStrategy) {
         this.attackStrategy = attackStrategy;
     }
 
@@ -36,8 +37,8 @@ public class AttackStrategyRisk implements MaxValues {
     }
 
     public void setRisk(Float risk) {
-        if (risk > 1) {
-            risk = risk / MAX_LIKELIHOOD;
+        if (risk < 0 || risk > 1) {
+            throw new IllegalArgumentException("Risk must be normalized to a value between 0 and 1");
         }
         this.risk = risk;
     }
