@@ -1,3 +1,8 @@
+import { AssetType } from './../../entities/enumerations/AssetType.enum';
+import { MyAssetMgm } from './../../entities/my-asset-mgm/my-asset-mgm.model';
+import { SelfAssessmentMgmService } from './../../entities/self-assessment-mgm/self-assessment-mgm.service';
+import { SelfAssessmentMgm } from './../../entities/self-assessment-mgm/self-assessment-mgm.model';
+import { IdentifyAssetUtilService } from './../identify-asset.util.service';
 import * as _ from 'lodash';
 
 import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
@@ -10,9 +15,57 @@ import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 })
 
 export class MagnitudeComponent implements OnInit, OnDestroy {
+    private mySelf: SelfAssessmentMgm = {};
+    public myAssets: MyAssetMgm[];
+    public selectedAsset: MyAssetMgm;
+    public isMyAssetUpdated = false;
+    public isIntangible = false;
+
+    constructor(
+        private idaUtilsService: IdentifyAssetUtilService,
+        private mySelfAssessmentService: SelfAssessmentMgmService
+    ) {
+
+    }
+
     ngOnDestroy(): void {
     }
+
     ngOnInit(): void {
+        this.mySelf = this.mySelfAssessmentService.getSelfAssessment();
+        this.idaUtilsService.getMySavedAssets(this.mySelf).toPromise().then((mySavedAssets) => {
+            if (mySavedAssets) {
+                this.myAssets = mySavedAssets;
+            }
+            // this.ref.detectChanges();
+        }).catch(() => {
+            // this.ref.detectChanges();
+        });
+    }
+
+    public selectAsset(myAsset: MyAssetMgm) {
+        if (myAsset) {
+            if (this.selectedAsset) {
+                if (this.selectedAsset.id === myAsset.id) {
+                    this.selectedAsset = null;
+                } else {
+                    this.selectedAsset = myAsset;
+                    if (this.selectedAsset.asset.assetcategory.type.toString() === AssetType.INTANGIBLE.toString()) {
+                        this.isIntangible = true;
+                    }
+                }
+            } else {
+                this.selectedAsset = myAsset;
+                if (this.selectedAsset.asset.assetcategory.type.toString() === AssetType.INTANGIBLE.toString()) {
+                    this.isIntangible = true;
+                }
+            }
+        }
+    }
+
+    public updateMyAsset() {
+        console.log(this.selectedAsset);
+        this.idaUtilsService.updateAsset(this.selectedAsset);
     }
 
     /*

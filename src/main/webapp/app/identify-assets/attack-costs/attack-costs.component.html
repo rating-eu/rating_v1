@@ -1,10 +1,10 @@
 <div class="card">
     <div class="card-body">
-        <h5 class="card-title">Priority and Magnitudo definition.</h5>
+        <h5 class="card-title">Attack Costs.</h5>
         <ng-container class="card-text" *ngIf="!myAssets">
             <div class="loader"></div>
         </ng-container>
-        <ng-container class="card-text" *ngIf="myAssets">
+        <ng-container class="card-text"  *ngIf="myAssets">
             <div class="col-md-3">
                 <div class="list-group">
                     <ng-container *ngFor="let myAsset of myAssets">
@@ -15,17 +15,7 @@
             </div>
             <div class="col-md-9">
                 <ng-container *ngIf="selectedAsset">
-                    <div class="row">
-                        <h5>Considering your organization, please assign priorities to the <b>{{selectedAsset.asset.name}}</b> according to its relevance in your organization</h5>
-                    </div>
-                    <div class="row">
-                        SELECT PRYORITY VALUE
-                    </div>
-                    <ng-container *ngIf="isIntangible">
-                            <div class="row">
-                                    <h5>Have you ever quantified the estimated value of this asset?</h5>
-                                </div>
-                    </ng-container>                    
+                    CONTENT
                     <div class="col-md-3">
                         <div class="button-box">
                             <button *ngIf="selectedAsset && isMyAssetUpdated" class="btn btn-success btn-lg btn-block"
@@ -46,14 +36,14 @@
             </div>
             <div class="col-md-12 text-center">
                 <div class="col-md-3">
-                    <button class="btn btn-primary btn-lg btn-block" [routerLink]="['../asset-clustering']"><i class="fa fa-arrow-left fa-lg"
+                    <button class="btn btn-primary btn-lg btn-block" [routerLink]="['../cascade-effects']"><i class="fa fa-arrow-left fa-lg"
                             aria-hidden="true"></i>
                         Prev</button>
                 </div>
                 <div class="col-md-3 offset-md-6">
-                    <button class="btn btn-primary btn-lg btn-block" [routerLink]="['../cascade-effects']"><i class="fa fa-arrow-right fa-lg"
+                    <button class="btn btn-primary btn-lg btn-block" [routerLink]="['../dashboard']"><i class="fa fa-times fa-lg"
                             aria-hidden="true"></i>
-                        Next</button>
+                        Close</button>
                 </div>
             </div>
         </ng-container>

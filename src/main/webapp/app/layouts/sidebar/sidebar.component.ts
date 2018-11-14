@@ -161,6 +161,10 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                                 routerLink: ['/identify-asset/cascade-effects']
                             },
                             {
+                                label: 'Attack Costs',
+                                routerLink: ['/identify-asset/attack-costs']
+                            },
+                            {
                                 label: 'Asset Report',
                                 routerLink: ['/identify-asset/asset-report']
                             },

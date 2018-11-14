@@ -1,6 +1,10 @@
+import { SelfAssessmentMgmService } from './../../entities/self-assessment-mgm/self-assessment-mgm.service';
+import { IdentifyAssetUtilService } from './../identify-asset.util.service';
+import { MyAssetMgm } from './../../entities/my-asset-mgm/my-asset-mgm.model';
+import { SelfAssessmentMgm } from './../../entities/self-assessment-mgm/self-assessment-mgm.model';
 import * as _ from 'lodash';
 
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
     // tslint:disable-next-line:component-selector
@@ -9,32 +13,47 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
     styleUrls: ['./cascade-effects.component.css'],
 })
 
-export class CascadeEffectsComponent implements OnInit, OnDestroy {
-    ngOnDestroy(): void {
+export class CascadeEffectsComponent implements OnInit {
+    private mySelf: SelfAssessmentMgm = {};
+    public myAssets: MyAssetMgm[];
+    public selectedAsset: MyAssetMgm;
+    public isMyAssetUpdated = false;
+
+    constructor(
+        private idaUtilsService: IdentifyAssetUtilService,
+        private mySelfAssessmentService: SelfAssessmentMgmService
+    ) {
+
     }
+
     ngOnInit(): void {
-        /*
-         this.idaUtilsService.getMySavedDirectAssets(this.mySelf)
-                        .toPromise().then((mySavedDirects) => {
-                            this.myDirectAssets = mySavedDirects;
-                            console.log(this.myDirectAssets);
-                            this.idaUtilsService.getMySavedIndirectAssets(this.mySelf)
-                                .toPromise().then((mySavedIndirects) => {
-                                    this.myIndirectAssets = mySavedIndirects;
-                                    for (let i = 0; i < this.myDirectAssets.length; i++) {
-                                        this.myDirectAssets[i].effects =
-                                            this.idaUtilsService.getSavedIndirectFromDirect(this.myDirectAssets[i], this.myIndirectAssets);
-                                    }
-                                    console.log(this.myDirectAssets);
-                                    console.log(this.myIndirectAssets);
-                                    // this.ref.detectChanges();
-                                    this.loading = false;
-                                    this.loadWithErrors = false;
-                                }).catch(() => {
-                                    this.loading = false;
-                                    this.loadWithErrors = true;
-                                });
-                        });
-        */
+        this.mySelf = this.mySelfAssessmentService.getSelfAssessment();
+        this.idaUtilsService.getMySavedAssets(this.mySelf).toPromise().then((mySavedAssets) => {
+            if (mySavedAssets) {
+                this.myAssets = mySavedAssets;
+            }
+            // this.ref.detectChanges();
+        }).catch(() => {
+            // this.ref.detectChanges();
+        });
+    }
+
+    public selectAsset(myAsset: MyAssetMgm) {
+        if (myAsset) {
+            if (this.selectedAsset) {
+                if (this.selectedAsset.id === myAsset.id) {
+                    this.selectedAsset = null;
+                } else {
+                    this.selectedAsset = myAsset;
+                }
+            } else {
+                this.selectedAsset = myAsset;
+            }
+        }
+    }
+
+    public updateMyAsset() {
+        console.log(this.selectedAsset);
+        this.idaUtilsService.updateAsset(this.selectedAsset);
     }
 }
