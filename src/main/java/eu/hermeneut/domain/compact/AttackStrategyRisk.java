@@ -17,6 +17,11 @@ public class AttackStrategyRisk {
     @Max(1)
     private Float risk;
 
+    public AttackStrategyRisk() {
+        this.attackStrategy = null;
+        this.risk = null;
+    }
+
     public AttackStrategyRisk(AttackStrategy attackStrategy, Float risk) {
         this.attackStrategy = attackStrategy;
         this.risk = risk;
