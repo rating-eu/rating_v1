@@ -44,6 +44,7 @@ export class MagnitudeComponent implements OnInit, OnDestroy {
     }
 
     public selectAsset(myAsset: MyAssetMgm) {
+        this.isIntangible = false;
         if (myAsset) {
             if (this.selectedAsset) {
                 if (this.selectedAsset.id === myAsset.id) {
