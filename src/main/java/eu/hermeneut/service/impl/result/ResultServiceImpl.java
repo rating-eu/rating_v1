@@ -13,7 +13,6 @@ import eu.hermeneut.utils.likelihood.attackstrategy.AttackStrategyCalculator;
 import eu.hermeneut.utils.likelihood.overall.OverallCalculator;
 import eu.hermeneut.utils.threatagent.ThreatAgentComparator;
 import eu.hermeneut.web.rest.AssetResource;
-import eu.hermeneut.web.rest.result.ResultController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

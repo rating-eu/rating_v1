@@ -44,6 +44,10 @@ public class RiskProfile implements Serializable {
         this.selfAssessmentID = selfAssessmentID;
     }
 
+    public Long getSelfAssessmentID() {
+        return selfAssessmentID;
+    }
+
     public Float getOverallLikelihood() {
         return overallLikelihood;
     }
