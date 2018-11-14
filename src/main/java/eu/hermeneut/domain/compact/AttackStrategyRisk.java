@@ -1,8 +1,9 @@
 package eu.hermeneut.domain.compact;
 
+import eu.hermeneut.constant.MaxValues;
 import eu.hermeneut.domain.AttackStrategy;
 
-public class AttackStrategyRisk {
+public class AttackStrategyRisk implements MaxValues {
     private AttackStrategy attackStrategy;
     /**
      * Initial, Refined or Contextual likelihood associated to the AttackStrategy.
@@ -35,6 +36,9 @@ public class AttackStrategyRisk {
     }
 
     public void setRisk(Float risk) {
+        if (risk > 1) {
+            risk = risk / MAX_LIKELIHOOD;
+        }
         this.risk = risk;
     }
 }
