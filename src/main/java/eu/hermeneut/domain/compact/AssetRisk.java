@@ -2,8 +2,6 @@ package eu.hermeneut.domain.compact;
 
 import eu.hermeneut.domain.Asset;
 
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
 import java.io.Serializable;
 
 public class AssetRisk implements Serializable {
@@ -17,8 +15,6 @@ public class AssetRisk implements Serializable {
      * This field represents a percentage value,
      * hence it assumes values between 0 and 1.
      */
-    @Min(0)
-    @Max(1)
     private Float risk;
 
     public Asset getAsset() {

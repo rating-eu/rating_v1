@@ -2,9 +2,6 @@ package eu.hermeneut.domain.compact;
 
 import eu.hermeneut.domain.AttackStrategy;
 
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-
 public class AttackStrategyRisk {
     private AttackStrategy attackStrategy;
     /**
@@ -13,8 +10,6 @@ public class AttackStrategyRisk {
      * This field represents a percentage value,
      * hence it assumes values between 0 and 1.
      */
-    @Min(0)
-    @Max(1)
     private Float risk;
 
     public AttackStrategyRisk() {
