@@ -24,16 +24,9 @@ public class KafkaController {
 
             if (riskProfile != null) {
                 kafkaProducer.send(topicName, riskProfile);
-                System.out.println("Risk profile: " + riskProfile + " sent to topic: " + topicName);
             }
-
         } catch (NotFoundException e) {
             e.printStackTrace();
         }
     }
-
-    /*@PostMapping("/kafka/{topicName}")
-    public void sendToTopic(@PathVariable String topicName, @RequestBody String message) {
-        kafkaProducer.send(topicName, message);
-    }*/
 }
