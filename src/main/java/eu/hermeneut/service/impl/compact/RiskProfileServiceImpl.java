@@ -59,12 +59,20 @@ public class RiskProfileServiceImpl implements RiskProfileService {
         riskProfile.setOverallLikelihood(overallLikelihood);
 
         //OK
-        Set<AssetRisk> assetRisks = this.assetRiskService.getAssetRisks(selfAssessmentID);
-        riskProfile.setAssetRisks(assetRisks);
+        try {
+            Set<AssetRisk> assetRisks = this.assetRiskService.getAssetRisks(selfAssessmentID);
+            riskProfile.setAssetRisks(assetRisks);
+        } catch (NotFoundException e) {
+            e.printStackTrace();
+        }
 
         //OK
-        final Set<AttackStrategyRisk> attackStrategyRisks = this.attackStrategyRiskService.getAttackStrategyRisks(selfAssessmentID);
-        riskProfile.setAttackStrategyRisks(attackStrategyRisks);
+        try {
+            final Set<AttackStrategyRisk> attackStrategyRisks = this.attackStrategyRiskService.getAttackStrategyRisks(selfAssessmentID);
+            riskProfile.setAttackStrategyRisks(attackStrategyRisks);
+        } catch (NotFoundException e) {
+            e.printStackTrace();
+        }
 
         Result result = this.resultService.getResult(selfAssessmentID);
         riskProfile.setVulnerabilities(result);
