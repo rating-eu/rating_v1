@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class KafkaController {
     @Autowired
-    private KafkaProducer kafkaProducer;
+    private KafkaProducer<RiskProfile> kafkaProducer;
 
     @Autowired
     private RiskProfileService riskProfileService;

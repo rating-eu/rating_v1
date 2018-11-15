@@ -1,6 +1,5 @@
 package eu.hermeneut.kafka.producer;
 
-import eu.hermeneut.domain.compact.RiskProfile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,14 +7,14 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
 
 @Component
-public class KafkaProducer {
+public class KafkaProducer<T> {
     private static final Logger LOGGER = LoggerFactory.getLogger(KafkaProducer.class);
 
     @Autowired
-    private KafkaTemplate<String, RiskProfile> kafkaObjectTemplate;
+    private KafkaTemplate<String, T> kafkaObjectTemplate;
 
-    public void send(String topic, RiskProfile riskProfile) {
-        kafkaObjectTemplate.send(topic, riskProfile);
-        LOGGER.info("Message: " + riskProfile + " sent to topic: " + topic);
+    public void send(String topic, T object) {
+        kafkaObjectTemplate.send(topic, object);
+        LOGGER.info("Message: " + object + " sent to topic: " + topic);
     }
 }
