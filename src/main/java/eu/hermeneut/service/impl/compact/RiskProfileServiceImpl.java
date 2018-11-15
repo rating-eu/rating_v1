@@ -1,6 +1,7 @@
 package eu.hermeneut.service.impl.compact;
 
 import eu.hermeneut.constant.MaxValues;
+import eu.hermeneut.domain.CompanyProfile;
 import eu.hermeneut.domain.SelfAssessment;
 import eu.hermeneut.domain.attackmap.AugmentedAttackStrategy;
 import eu.hermeneut.domain.compact.AssetRisk;
@@ -53,6 +54,13 @@ public class RiskProfileServiceImpl implements RiskProfileService, MaxValues {
         RiskProfile riskProfile = new RiskProfile();
 
         riskProfile.setSelfAssessmentID(selfAssessmentID);
+
+        CompanyProfile companyProfile = selfAssessment.getCompanyProfile();
+
+        if (companyProfile != null) {
+            riskProfile.setCompanyID(companyProfile.getId());
+            riskProfile.setCompanyName(companyProfile.getName());
+        }
 
         //OK
         Float overallLikelihood = this.resultService.getOverallLikelihood(selfAssessmentID);

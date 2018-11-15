@@ -1,5 +1,6 @@
 package eu.hermeneut.domain.compact;
 
+import eu.hermeneut.domain.CompanyProfile;
 import eu.hermeneut.domain.result.Result;
 
 import javax.validation.constraints.Max;
@@ -11,6 +12,10 @@ public class RiskProfile implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private Long selfAssessmentID;
+
+    private Long companyID;
+
+    private String companyName;
 
     /**
      * The Overall Likelihood value that
@@ -46,6 +51,26 @@ public class RiskProfile implements Serializable {
 
     public Long getSelfAssessmentID() {
         return selfAssessmentID;
+    }
+
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
+    }
+
+    public Long getCompanyID() {
+        return companyID;
+    }
+
+    public void setCompanyID(Long companyID) {
+        this.companyID = companyID;
+    }
+
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
     }
 
     public Float getOverallLikelihood() {
