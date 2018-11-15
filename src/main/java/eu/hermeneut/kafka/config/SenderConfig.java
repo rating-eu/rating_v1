@@ -1,7 +1,6 @@
 package eu.hermeneut.kafka.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import eu.hermeneut.domain.compact.RiskProfile;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +36,7 @@ public class SenderConfig {
     }
 
     @Bean
-    public ProducerFactory<String, RiskProfile> producerFactory() {
+    public <T> ProducerFactory<String, T> producerFactory() {
         return new DefaultKafkaProducerFactory<>(
             producerConfigs(),
             new StringSerializer(),
@@ -46,7 +45,7 @@ public class SenderConfig {
     }
 
     @Bean
-    public KafkaTemplate<String, RiskProfile> kafkaTemplate() {
+    public <T> KafkaTemplate<String, T> kafkaTemplate() {
         return new KafkaTemplate<>(producerFactory());
     }
 }
