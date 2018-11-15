@@ -17,7 +17,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.constraints.NotNull;
-import java.util.HashSet;
 import java.util.Set;
 
 @Service
@@ -59,8 +58,8 @@ public class RiskProfileServiceImpl implements RiskProfileService {
         Float overallLikelihood = this.resultService.getOverallLikelihood(selfAssessmentID);
         riskProfile.setOverallLikelihood(overallLikelihood);
 
-        Set<AssetRisk> assetRisks = new HashSet<>();
-        //TODO calculate it
+        //OK
+        Set<AssetRisk> assetRisks = this.assetRiskService.getAssetRisks(selfAssessmentID);
         riskProfile.setAssetRisks(assetRisks);
 
         //OK

@@ -2,6 +2,7 @@ package eu.hermeneut.domain.compact;
 
 import eu.hermeneut.constant.MaxValues;
 import eu.hermeneut.domain.Asset;
+import org.apache.commons.math3.util.Precision;
 
 import java.io.Serializable;
 
@@ -35,6 +36,6 @@ public class AssetRisk implements Serializable, MaxValues {
             throw new IllegalArgumentException("Risk must be normalized to a value between 0 and 1");
         }
 
-        this.risk = risk;
+        this.risk = Precision.round(risk, 2);
     }
 }

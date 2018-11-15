@@ -3,6 +3,7 @@ package eu.hermeneut.domain.compact;
 import eu.hermeneut.constant.MaxValues;
 import eu.hermeneut.domain.AttackStrategy;
 import eu.hermeneut.domain.attackmap.AugmentedAttackStrategy;
+import org.apache.commons.math3.util.Precision;
 
 public class AttackStrategyRisk implements MaxValues {
     private AugmentedAttackStrategy attackStrategy;
@@ -40,6 +41,7 @@ public class AttackStrategyRisk implements MaxValues {
         if (risk < 0 || risk > 1) {
             throw new IllegalArgumentException("Risk must be normalized to a value between 0 and 1");
         }
-        this.risk = risk;
+
+        this.risk = Precision.round(risk, 2);
     }
 }
