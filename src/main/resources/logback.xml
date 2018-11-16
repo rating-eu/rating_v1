@@ -16,11 +16,11 @@
             <fileNamePattern>${user.dir}/logs/hermeneut_%d{yyyy-MM-dd_HH}.chunk%i.log.gz</fileNamePattern>
 
             <!-- split log files in chunks of this size -->
-            <maxFileSize>${HERMENEUT_LOG_MAX_FILE_SIZE}</maxFileSize>
+            <maxFileSize>${HERMENEUT_LOG_MAX_FILE_SIZE:-5MB}</maxFileSize>
 
-            <!-- keep 30 days' worth of history -->
-            <!-- 30D * 24H = 720H-->
-            <maxHistory>${HERMENEUT_LOG_MAX_HISTORY_HOURS}</maxHistory>
+            <!-- keep 7 days' worth of history -->
+            <!-- 7D * 24H = 168H-->
+            <maxHistory>${HERMENEUT_LOG_MAX_HISTORY_HOURS:-168}</maxHistory>
         </rollingPolicy>
     </appender>
 
@@ -32,7 +32,15 @@
         </encoder>
     </appender>
 
-    <root level="${HERMENEUT_LOG_LEVEL}">
+    <!--
+        OFF (output no logs)
+        ERROR
+        WARN
+        INFO
+        DEBUG
+        TRACE
+    -->
+    <root level="${HERMENEUT_LOG_LEVEL:-info}">
         <appender-ref ref="FILE_APPENDER"/>
         <appender-ref ref="STDOUT_APPENDER"/>
     </root>
