@@ -2,6 +2,7 @@ package eu.hermeneut.domain.compact;
 
 import eu.hermeneut.constant.MaxValues;
 import eu.hermeneut.domain.Asset;
+import eu.hermeneut.domain.AssetCategory;
 import org.apache.commons.math3.util.Precision;
 
 import java.io.Serializable;
@@ -9,7 +10,13 @@ import java.io.Serializable;
 public class AssetRisk implements Serializable, MaxValues {
     private static final long serialVersionUID = 1L;
 
-    private Asset asset;
+    private Long id;
+
+    private String name;
+
+    private String description;
+
+    private AssetCategory assetCategory;
 
     /**
      * The risk value that the asset could cause
@@ -19,12 +26,37 @@ public class AssetRisk implements Serializable, MaxValues {
      */
     private Float risk;
 
-    public Asset getAsset() {
-        return asset;
+
+    public Long getId() {
+        return id;
     }
 
-    public void setAsset(Asset asset) {
-        this.asset = asset;
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public AssetCategory getAssetCategory() {
+        return assetCategory;
+    }
+
+    public void setAssetCategory(AssetCategory assetCategory) {
+        this.assetCategory = assetCategory;
     }
 
     public Float getRisk() {

@@ -124,7 +124,12 @@ public class AssetRiskServiceImpl implements AssetRiskService, MaxValues {
                 risk = risk / MAX_RISK;
 
                 AssetRisk assetRisk = new AssetRisk();
-                assetRisk.setAsset(myAsset.getAsset());
+
+                assetRisk.setId(myAsset.getAsset().getId());
+                assetRisk.setName(myAsset.getAsset().getName());
+                assetRisk.setDescription(myAsset.getAsset().getDescription());
+                assetRisk.setAssetCategory(myAsset.getAsset().getAssetcategory());
+
                 assetRisk.setRisk(risk);
 
                 assetRisks.add(assetRisk);
