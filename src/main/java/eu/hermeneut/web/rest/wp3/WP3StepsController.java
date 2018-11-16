@@ -6,7 +6,6 @@ import eu.hermeneut.domain.enumeration.CategoryType;
 import eu.hermeneut.domain.enumeration.SectorType;
 import eu.hermeneut.domain.wp3.WP3InputBundle;
 import eu.hermeneut.domain.wp3.WP3OutputBundle;
-import eu.hermeneut.exceptions.DuplicateValueException;
 import eu.hermeneut.exceptions.IllegalInputException;
 import eu.hermeneut.exceptions.NotFoundException;
 import eu.hermeneut.exceptions.NullInputException;
@@ -18,8 +17,6 @@ import org.springframework.web.bind.annotation.*;
 import java.math.BigDecimal;
 import java.time.ZonedDateTime;
 import java.util.*;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api")
