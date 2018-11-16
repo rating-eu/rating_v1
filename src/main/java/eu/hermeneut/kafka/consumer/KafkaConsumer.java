@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 public class KafkaConsumer {
     private static final Logger LOGGER = LoggerFactory.getLogger(KafkaConsumer.class);
 
-    @KafkaListener(topics = "risk-profile")
+    @KafkaListener(topics = "${kafka.topic.risk-profile}")
     public void receiveRiskProfile(RiskProfile riskProfile) {
         LOGGER.info("Message received on RiskProfile: " + riskProfile);
     }
