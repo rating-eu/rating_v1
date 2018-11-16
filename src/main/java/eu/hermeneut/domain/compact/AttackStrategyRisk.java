@@ -1,12 +1,20 @@
 package eu.hermeneut.domain.compact;
 
 import eu.hermeneut.constant.MaxValues;
-import eu.hermeneut.domain.AttackStrategy;
-import eu.hermeneut.domain.attackmap.AugmentedAttackStrategy;
+import eu.hermeneut.domain.enumeration.Frequency;
+import eu.hermeneut.domain.enumeration.ResourceLevel;
+import eu.hermeneut.domain.enumeration.SkillLevel;
 import org.apache.commons.math3.util.Precision;
 
 public class AttackStrategyRisk implements MaxValues {
-    private AugmentedAttackStrategy attackStrategy;
+
+    private Long id;
+    private String name;
+    private String description;
+    private SkillLevel skill;
+    private Frequency frequency;
+    private ResourceLevel resources;
+
     /**
      * Initial, Refined or Contextual likelihood associated to the AttackStrategy.
      * The rightmost is preferred if available.
@@ -15,22 +23,53 @@ public class AttackStrategyRisk implements MaxValues {
      */
     private Float risk;
 
-    public AttackStrategyRisk() {
-        this.attackStrategy = null;
-        this.risk = null;
+
+    public Long getId() {
+        return id;
     }
 
-    public AttackStrategyRisk(AugmentedAttackStrategy attackStrategy, Float risk) {
-        this.attackStrategy = attackStrategy;
-        this.risk = risk;
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    public AttackStrategy getAttackStrategy() {
-        return attackStrategy;
+    public String getName() {
+        return name;
     }
 
-    public void setAttackStrategy(AugmentedAttackStrategy attackStrategy) {
-        this.attackStrategy = attackStrategy;
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public SkillLevel getSkill() {
+        return skill;
+    }
+
+    public void setSkill(SkillLevel skill) {
+        this.skill = skill;
+    }
+
+    public Frequency getFrequency() {
+        return frequency;
+    }
+
+    public void setFrequency(Frequency frequency) {
+        this.frequency = frequency;
+    }
+
+    public ResourceLevel getResources() {
+        return resources;
+    }
+
+    public void setResources(ResourceLevel resources) {
+        this.resources = resources;
     }
 
     public Float getRisk() {

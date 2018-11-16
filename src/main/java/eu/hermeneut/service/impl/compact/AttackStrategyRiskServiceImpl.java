@@ -30,7 +30,12 @@ public class AttackStrategyRiskServiceImpl implements AttackStrategyRiskService,
             final AugmentedAttackStrategy augmentedAttackStrategy = entry.getValue();
 
             final AttackStrategyRisk attackStrategyRisk = new AttackStrategyRisk();
-            attackStrategyRisk.setAttackStrategy(augmentedAttackStrategy);
+            attackStrategyRisk.setId(augmentedAttackStrategy.getId());
+            attackStrategyRisk.setName(augmentedAttackStrategy.getName());
+            attackStrategyRisk.setDescription(augmentedAttackStrategy.getDescription());
+            attackStrategyRisk.setSkill(augmentedAttackStrategy.getSkill());
+            attackStrategyRisk.setFrequency(augmentedAttackStrategy.getFrequency());
+            attackStrategyRisk.setResources(augmentedAttackStrategy.getResources());
 
             float refinedLikelihood = augmentedAttackStrategy.getRefinedLikelihood();
             float contextualLikelihood = augmentedAttackStrategy.getContextualLikelihood();
