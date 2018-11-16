@@ -235,12 +235,12 @@ public class WP3StepsController {
 
             BigDecimal economicPerformance = existingEconomicResults.getEconomicPerformance();
 
-            BigDecimal intangibleDriningEarnings = Calculator.calculateIntangibleDrivingEarnings(economicPerformance, physicalAssetsReturn, financialAssetsReturn, myAssets);
+            BigDecimal intangibleDrivingEarnings = Calculator.calculateIntangibleDrivingEarnings(economicPerformance, physicalAssetsReturn, financialAssetsReturn, myAssets);
 
-            BigDecimal intangibleCapital = Calculator.calculateIntangibleCapital(intangibleDriningEarnings, discountingRate);
+            BigDecimal intangibleCapital = Calculator.calculateIntangibleCapital(intangibleDrivingEarnings, discountingRate);
 
             //Update fields
-            existingEconomicResults.setIntangibleDrivingEarnings(intangibleDriningEarnings);
+            existingEconomicResults.setIntangibleDrivingEarnings(intangibleDrivingEarnings);
             existingEconomicResults.setIntangibleCapital(intangibleCapital);
 
             //Update entity
