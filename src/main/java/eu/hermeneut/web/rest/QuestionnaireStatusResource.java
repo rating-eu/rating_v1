@@ -3,12 +3,16 @@ package eu.hermeneut.web.rest;
 import com.codahale.metrics.annotation.Timed;
 import eu.hermeneut.domain.QuestionnaireStatus;
 import eu.hermeneut.domain.enumeration.QuestionnairePurpose;
+import eu.hermeneut.exceptions.NotFoundException;
+import eu.hermeneut.exceptions.NullInputException;
+import eu.hermeneut.kafka.service.MessageSenderService;
 import eu.hermeneut.service.QuestionnaireStatusService;
 import eu.hermeneut.web.rest.errors.BadRequestAlertException;
 import eu.hermeneut.web.rest.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,6 +36,9 @@ public class QuestionnaireStatusResource {
     private static final String ENTITY_NAME = "questionnaireStatus";
 
     private final QuestionnaireStatusService questionnaireStatusService;
+
+    @Autowired
+    private MessageSenderService messageSenderService;
 
     public QuestionnaireStatusResource(QuestionnaireStatusService questionnaireStatusService) {
         this.questionnaireStatusService = questionnaireStatusService;
@@ -58,6 +65,15 @@ public class QuestionnaireStatusResource {
         questionnaireStatus.setModified(now);
 
         QuestionnaireStatus result = questionnaireStatusService.save(questionnaireStatus);
+
+        try {
+            this.messageSenderService.sendRiskProfile(questionnaireStatus.getSelfAssessment().getId());
+        } catch (NullInputException e) {
+            e.printStackTrace();
+        } catch (NotFoundException e) {
+            e.printStackTrace();
+        }
+
         return ResponseEntity.created(new URI("/api/questionnaire-statuses/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
