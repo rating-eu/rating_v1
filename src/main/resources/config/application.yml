@@ -68,8 +68,8 @@ spring:
         mode: XHTML
     http:
         multipart:
-          max-file-size: 100MB
-          max-request-size: 100MB
+            max-file-size: 100MB
+            max-request-size: 100MB
 security:
     basic:
         enabled: false
@@ -94,8 +94,8 @@ jhipster:
         core-pool-size: 2
         max-pool-size: 50
         queue-capacity: 10000
-    # By default CORS is disabled. Uncomment to enable.
-    #cors:
+        # By default CORS is disabled. Uncomment to enable.
+        #cors:
         #allowed-origins: "*"
         #allowed-methods: "*"
         #allowed-headers: "*"
@@ -118,6 +118,13 @@ jhipster:
         license-url:
     ribbon:
         display-on-active-profiles: dev
+
+# ===================================================================
+# Kafka specific properties
+# ===================================================================
+kafka:
+    topic:
+        risk-profile: ${RISK_PROFILE_TOPIC:risk-profile-topic}
 
 # ===================================================================
 # Application specific properties
