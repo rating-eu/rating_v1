@@ -15,6 +15,9 @@ public class AugmentedAttackStrategy extends AttackStrategy {
 
     private float refinedLikelihood;
 
+    public AugmentedAttackStrategy() {
+    }
+
     public AugmentedAttackStrategy(AttackStrategy attackStrategy) {
         super();
         this.id = attackStrategy.getId();
