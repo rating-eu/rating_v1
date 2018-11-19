@@ -72,11 +72,6 @@ spring:
         locator:
             discovery:
                 enabled: true
-    kafka:
-        consumer:
-            group-id: hermeneut-consumer
-            bootstrap-servers: localhost:9092
-
 liquibase:
     contexts: dev
 
