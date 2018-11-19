@@ -6,7 +6,6 @@ import eu.hermeneut.domain.enumeration.CategoryType;
 import eu.hermeneut.domain.enumeration.SectorType;
 import eu.hermeneut.domain.wp3.WP3InputBundle;
 import eu.hermeneut.domain.wp3.WP3OutputBundle;
-import eu.hermeneut.exceptions.DuplicateValueException;
 import eu.hermeneut.exceptions.IllegalInputException;
 import eu.hermeneut.exceptions.NotFoundException;
 import eu.hermeneut.exceptions.NullInputException;
@@ -18,8 +17,6 @@ import org.springframework.web.bind.annotation.*;
 import java.math.BigDecimal;
 import java.time.ZonedDateTime;
 import java.util.*;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api")
@@ -235,12 +232,12 @@ public class WP3StepsController {
 
             BigDecimal economicPerformance = existingEconomicResults.getEconomicPerformance();
 
-            BigDecimal intangibleDriningEarnings = Calculator.calculateIntangibleDrivingEarnings(economicPerformance, physicalAssetsReturn, financialAssetsReturn, myAssets);
+            BigDecimal intangibleDrivingEarnings = Calculator.calculateIntangibleDrivingEarnings(economicPerformance, physicalAssetsReturn, financialAssetsReturn, myAssets);
 
-            BigDecimal intangibleCapital = Calculator.calculateIntangibleCapital(intangibleDriningEarnings, discountingRate);
+            BigDecimal intangibleCapital = Calculator.calculateIntangibleCapital(intangibleDrivingEarnings, discountingRate);
 
             //Update fields
-            existingEconomicResults.setIntangibleDrivingEarnings(intangibleDriningEarnings);
+            existingEconomicResults.setIntangibleDrivingEarnings(intangibleDrivingEarnings);
             existingEconomicResults.setIntangibleCapital(intangibleCapital);
 
             //Update entity
