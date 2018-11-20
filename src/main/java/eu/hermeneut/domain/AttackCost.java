@@ -42,10 +42,10 @@ public class AttackCost implements Serializable {
     @Column(name = "costs", precision=10, scale=2)
     private BigDecimal costs;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.REMOVE)
     private DirectAsset directAsset;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.REMOVE)
     private IndirectAsset indirectAsset;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
