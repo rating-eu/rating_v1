@@ -1,3 +1,4 @@
+import { Priority } from './../model/enumeration/priority.enum';
 import { AssetType } from './../../entities/enumerations/AssetType.enum';
 import { MyAssetMgm } from './../../entities/my-asset-mgm/my-asset-mgm.model';
 import { SelfAssessmentMgmService } from './../../entities/self-assessment-mgm/self-assessment-mgm.service';
@@ -20,6 +21,7 @@ export class MagnitudeComponent implements OnInit, OnDestroy {
     public selectedAsset: MyAssetMgm;
     public isMyAssetUpdated = false;
     public isIntangible = false;
+    public priorities = ['Not Available', 'Low', 'Low medium', 'Medium', 'Medium high', 'High'];
 
     constructor(
         private idaUtilsService: IdentifyAssetUtilService,
@@ -37,9 +39,7 @@ export class MagnitudeComponent implements OnInit, OnDestroy {
             if (mySavedAssets) {
                 this.myAssets = mySavedAssets;
             }
-            // this.ref.detectChanges();
         }).catch(() => {
-            // this.ref.detectChanges();
         });
     }
 
@@ -65,64 +65,92 @@ export class MagnitudeComponent implements OnInit, OnDestroy {
     }
 
     public updateMyAsset() {
-        console.log(this.selectedAsset);
-        this.idaUtilsService.updateAsset(this.selectedAsset);
+        this.idaUtilsService.updateAsset(this.selectedAsset).toPromise().then((updatedAssets) => {
+            this.selectedAsset = updatedAssets;
+        });
     }
 
-    /*
-    public setRank(ans: AnswerMgm, rank: number) {
-            const selectedAsset = this.findAsset(ans);
-            if (!(selectedAsset instanceof Array)) {
-                const indexA = _.findIndex(this.myQuestionAssets,
-                    (myAsset) => myAsset.asset.id === selectedAsset.id
-                );
-                if (indexA !== -1) {
-                    this.myQuestionAssets[indexA].ranking = rank;
-                    this.idaUtilsService.updateMyAssets(this.myQuestionAssets[indexA], 'ranking');
-                }
-            } else {
-                for (const sA of selectedAsset) {
-                    const indexA = _.findIndex(this.myQuestionAssets,
-                        (myAsset) => myAsset.asset.id === sA.id
-                    );
-                    if (indexA !== -1) {
-                        this.myQuestionAssets[indexA].ranking = rank;
-                        this.idaUtilsService.updateMyAssets(this.myQuestionAssets[indexA], 'ranking');
+    public setSelectedAssetPriority(priority: String) {
+        if (priority) {
+            switch (priority) {
+                case Priority.NOT_AVAILABLE.toString().replace('_', ' ').substring(0, 1) +
+                    Priority.NOT_AVAILABLE.toString().replace('_', ' ').substring(1).toLowerCase(): {
+                        this.selectedAsset.ranking = 0;
+                        break;
                     }
+                case Priority.LOW.toString().replace('_', ' ').substring(0, 1) +
+                    Priority.LOW.toString().replace('_', ' ').substring(1).toLowerCase(): {
+                        this.selectedAsset.ranking = 1;
+                        break;
+                    }
+                case Priority.LOW_MEDIUM.toString().replace('_', ' ').substring(0, 1) +
+                    Priority.LOW_MEDIUM.toString().replace('_', ' ').substring(1).toLowerCase(): {
+                        this.selectedAsset.ranking = 2;
+                        break;
+                    }
+                case Priority.MEDIUM.toString().replace('_', ' ').substring(0, 1) +
+                    Priority.MEDIUM.toString().replace('_', ' ').substring(1).toLowerCase(): {
+                        this.selectedAsset.ranking = 3;
+                        break;
+                    }
+                case Priority.MEDIUM_HIGH.toString().replace('_', ' ').substring(0, 1) +
+                    Priority.MEDIUM_HIGH.toString().replace('_', ' ').substring(1).toLowerCase(): {
+                        this.selectedAsset.ranking = 4;
+                        break;
+                    }
+                case Priority.HIGH.toString().replace('_', ' ').substring(0, 1) +
+                    Priority.HIGH.toString().replace('_', ' ').substring(1).toLowerCase(): {
+                        this.selectedAsset.ranking = 5;
+                        break;
+                    }
+                default: {
+                    this.selectedAsset.ranking = 0;
+                    break;
                 }
             }
-            // console.log(this.idaUtilsService.getMyAssets());
+            this.isMyAssetUpdated = true;
         }
+    }
 
-        public whichRank(ans: AnswerMgm, rank: number): boolean {
-            const selectedAsset = this.findAsset(ans);
-            if (!(selectedAsset instanceof Array)) {
-                const indexA = _.findIndex(this.myQuestionAssets,
-                    (myAsset) => myAsset.asset.id === selectedAsset.id
-                );
-                if (indexA !== -1) {
-                    if (this.myQuestionAssets[indexA].ranking === rank) {
-                        return true;
-                    } else {
-                        return false;
+    public setSelectedAssetMagnitudo(priority: String) {
+        if (priority) {
+            switch (priority) {
+                case Priority.NOT_AVAILABLE.toString().replace('_', ' ').substring(0, 1) +
+                    Priority.NOT_AVAILABLE.toString().replace('_', ' ').substring(1).toLowerCase(): {
+                        this.selectedAsset.magnitude = '0';
+                        break;
                     }
-                } else {
-                    return false;
-                }
-            } else {
-                const indexA = _.findIndex(this.myQuestionAssets,
-                    (myAsset) => myAsset.asset.id === selectedAsset[0].id
-                );
-                if (indexA !== -1) {
-                    if (this.myQuestionAssets[indexA].ranking === rank) {
-                        return true;
-                    } else {
-                        return false;
+                case Priority.LOW.toString().replace('_', ' ').substring(0, 1) +
+                    Priority.LOW.toString().replace('_', ' ').substring(1).toLowerCase(): {
+                        this.selectedAsset.magnitude = '1';
+                        break;
                     }
-                } else {
-                    return false;
+                case Priority.LOW_MEDIUM.toString().replace('_', ' ').substring(0, 1) +
+                    Priority.LOW_MEDIUM.toString().replace('_', ' ').substring(1).toLowerCase(): {
+                        this.selectedAsset.magnitude = '2';
+                        break;
+                    }
+                case Priority.MEDIUM.toString().replace('_', ' ').substring(0, 1) +
+                    Priority.MEDIUM.toString().replace('_', ' ').substring(1).toLowerCase(): {
+                        this.selectedAsset.magnitude = '3';
+                        break;
+                    }
+                case Priority.MEDIUM_HIGH.toString().replace('_', ' ').substring(0, 1) +
+                    Priority.MEDIUM_HIGH.toString().replace('_', ' ').substring(1).toLowerCase(): {
+                        this.selectedAsset.magnitude = '4';
+                        break;
+                    }
+                case Priority.HIGH.toString().replace('_', ' ').substring(0, 1) +
+                    Priority.HIGH.toString().replace('_', ' ').substring(1).toLowerCase(): {
+                        this.selectedAsset.magnitude = '5';
+                        break;
+                    }
+                default: {
+                    this.selectedAsset.magnitude = '0';
+                    break;
                 }
             }
+            this.isMyAssetUpdated = true;
         }
-    */
+    }
 }
