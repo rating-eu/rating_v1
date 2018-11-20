@@ -13,16 +13,20 @@
     <property name="floatType" value="float4" dbms="postgresql, h2"/>
     <property name="floatType" value="float" dbms="mysql, oracle, mssql"/>
 
-    <changeSet id="20180523150559-1" author="developer" runOnChange="true">
-        <loadUpdateData encoding="UTF-8"
-                        file="config/liquibase/assets.csv"
-                        schemaName="public"
-                        separator=";"
-                        quotchar="'"
-                        tableName="asset"
-                        primaryKey="id"
-        >
-        </loadUpdateData>
+    <!--
+        Added AttackStrategies Questions' Answers.
+    -->
+    <changeSet id="20181116103125-1" author="developer">
+        <delete tableName="my_answer">
+            <where>question_id=10</where>
+        </delete>
+
+        <delete tableName="question_answers">
+            <where>questions_id=10</where>
+        </delete>
+
+        <delete tableName="question">
+            <where>id=10</where>
+        </delete>
     </changeSet>
-    <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here, do not remove-->
 </databaseChangeLog>

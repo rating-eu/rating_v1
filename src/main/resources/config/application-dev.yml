@@ -12,13 +12,6 @@
 # Full reference is available at:
 # http://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html
 # ===================================================================
-
-logging:
-    level:
-        ROOT: DEBUG
-        eu.hermeneut: DEBUG
-        io.github.jhipster: DEBUG
-
 eureka:
     instance:
         prefer-ip-address: true
@@ -79,7 +72,6 @@ spring:
         locator:
             discovery:
                 enabled: true
-
 liquibase:
     contexts: dev
 
@@ -158,7 +150,6 @@ jhipster:
             host: localhost
             port: 5000
             queue-size: 512
-
 
 # ===================================================================
 # Application specific properties

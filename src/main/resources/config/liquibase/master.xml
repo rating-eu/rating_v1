@@ -102,5 +102,7 @@
     <include file="config/liquibase/changelog/20181002174026_added_entity_constraints_ImpactLevel.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20181003171023_load_impact_level_description_data.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20181029163259_remove_default_ciso_external.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20181116103125_remove_id-ta-scada-duplicate.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20181120153723_update_my_assets_fk_constraints.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
 </databaseChangeLog>
