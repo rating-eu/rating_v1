@@ -45,7 +45,19 @@
                                  onDelete="CASCADE"
         />
 
-        
+        <!--Indirect Asset -> DirectAsset-->
+        <dropForeignKeyConstraint
+            baseTableName="indirect_asset"
+            constraintName="fk_indirect_asset_direct_asset_id"
+        />
+
+        <addForeignKeyConstraint baseColumnNames="direct_asset_id"
+                                 baseTableName="indirect_asset"
+                                 constraintName="fk_indirect_asset_direct_asset_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="direct_asset"
+                                 onDelete="CASCADE"
+        />
 
         <!--Attack Costs-->
         <dropForeignKeyConstraint
