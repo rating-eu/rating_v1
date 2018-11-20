@@ -15,15 +15,19 @@
             </div>
             <div class="col-md-9">
                 <ng-container *ngIf="selectedAsset">
-                    CONTENT
-                    <div class="col-md-3">
-                        <div class="button-box">
-                            <button *ngIf="selectedAsset && isMyAssetUpdated" class="btn btn-success btn-lg btn-block"
-                                (click)="updateMyAsset()"><i class="fas fa-save"></i>
-                                Submit</button>
-                            <button *ngIf="!selectedAsset || !isMyAssetUpdated" class="btn btn-secondary btn-lg btn-block"><i
-                                    class="fas fa-save"></i>
-                                Submit</button>
+                    <div class="row">
+                        
+                    </div>
+                    <div class="row" style="margin-top: 100px">
+                        <div class="col-md-4 offset-md-4">
+                            <div class="button-box">
+                                <button *ngIf="selectedAsset && isMyAssetUpdated" class="btn btn-success btn-lg btn-block"
+                                    (click)="updateMyAsset()"><i class="fas fa-save"></i>
+                                    Submit</button>
+                                <button *ngIf="!selectedAsset || !isMyAssetUpdated" class="btn btn-secondary btn-lg btn-block"><i
+                                        class="fas fa-save"></i>
+                                    Submit</button>
+                            </div>
                         </div>
                     </div>
                 </ng-container>

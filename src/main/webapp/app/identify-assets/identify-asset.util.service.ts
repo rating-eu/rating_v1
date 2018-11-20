@@ -41,6 +41,8 @@ export class IdentifyAssetUtilService {
     private indirectUrl = SERVER_API_URL + 'api/{selfAssessmentID}/indirect-assets';
     private allAsset = SERVER_API_URL + 'api/assets';
     private updateAssetUri = SERVER_API_URL + 'api/my-assets';
+    private updateDirectAssetUri = SERVER_API_URL + 'api/direct-asset';
+    private updateIndirectAssetUri = SERVER_API_URL + 'api/indirect-asset';
 
     constructor(
         private http: HttpClient
@@ -84,15 +86,11 @@ export class IdentifyAssetUtilService {
             });
     }
 
-    // Function to check
-    public getSavedIndirectFromDirect(direct: DirectAssetMgm, receivedIndirects: IndirectAssetMgm[]): IndirectAssetMgm[] {
-        const indirects: IndirectAssetMgm[] = [];
-        for (const ind of receivedIndirects) {
-            if (direct.id === ind.directAsset.id) {
-                indirects.push(ind);
-            }
-        }
-        return indirects;
+    public updateDirectAsset(myDirect: DirectAssetMgm): Observable<DirectAssetMgm> {
+        return this.http.put<DirectAssetMgm>(this.updateDirectAssetUri, myDirect, { observe: 'response' })
+            .map((res: HttpResponse<DirectAssetMgm>) => {
+                return res.body;
+            });
     }
 
     public getMySavedDirectAssets(self: SelfAssessmentMgm): Observable<DirectAssetMgm[]> {
@@ -109,6 +107,17 @@ export class IdentifyAssetUtilService {
             .map((res: HttpResponse<IndirectAssetMgm[]>) => {
                 return res.body;
             });
+    }
+
+    // Function to check
+    public getSavedIndirectFromDirect(direct: DirectAssetMgm, receivedIndirects: IndirectAssetMgm[]): IndirectAssetMgm[] {
+        const indirects: IndirectAssetMgm[] = [];
+        for (const ind of receivedIndirects) {
+            if (direct.id === ind.directAsset.id) {
+                indirects.push(ind);
+            }
+        }
+        return indirects;
     }
 
     oneShotSave(bundle: AssetsOneShot): Observable<AssetsOneShot> {
