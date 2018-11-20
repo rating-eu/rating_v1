@@ -2,6 +2,8 @@ package eu.hermeneut.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import eu.hermeneut.domain.MyAsset;
+import eu.hermeneut.exceptions.IllegalInputException;
+import eu.hermeneut.exceptions.NullInputException;
 import eu.hermeneut.service.MyAssetService;
 import eu.hermeneut.web.rest.errors.BadRequestAlertException;
 import eu.hermeneut.web.rest.util.HeaderUtil;
@@ -57,6 +59,32 @@ public class MyAssetResource {
             .body(result);
     }
 
+    @PostMapping("/{selfAssessmentID}/my-assets/all")
+    @Timed
+    public List<MyAsset> createMyAssets(@PathVariable("selfAssessmentID") Long selfAssessmentID, @RequestBody List<MyAsset> myAssets) throws IllegalInputException, NullInputException {
+        log.debug("REST request to save MyAssets : {}", myAssets);
+
+        if (selfAssessmentID == null) {
+            throw new NullInputException("SelfAssessmentID CANNOT be NULL!");
+        }
+
+        if (myAssets == null || myAssets.isEmpty()) {
+            throw new IllegalInputException("MyAssets parameter CANNOT be NULL or EMPTY!");
+        }
+
+        for (MyAsset myAsset : myAssets) {
+            if (myAsset.getSelfAssessment().getId() != selfAssessmentID) {
+                throw new IllegalInputException("MyAssets MUST belong to the input SelfAssessment ID");
+            }
+
+            if (myAsset.getId() != null) {
+                this.myAssetService.delete(myAsset.getId());
+            }
+        }
+
+        return this.myAssetService.saveAll(myAssets);
+    }
+
     /**
      * PUT  /my-assets : Updates an existing myAsset.
      *
@@ -93,7 +121,7 @@ public class MyAssetResource {
 
     @GetMapping("/my-assets/self-assessment/{selfAssessmentID}")
     @Timed
-    public List<MyAsset> getMyAssetsBySelfAssessment(@PathVariable Long selfAssessmentID){
+    public List<MyAsset> getMyAssetsBySelfAssessment(@PathVariable Long selfAssessmentID) {
         log.debug("REST request to get all MyAssets by SelfAssessment ID");
         return myAssetService.findAllBySelfAssessment(selfAssessmentID);
     }
