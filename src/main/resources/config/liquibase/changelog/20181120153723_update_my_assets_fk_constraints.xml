@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <property name="now" value="now()" dbms="h2"/>
+
+    <property name="now" value="current_timestamp" dbms="postgresql"/>
+
+    <property name="floatType" value="float4" dbms="postgresql, h2"/>
+    <property name="floatType" value="float" dbms="mysql, oracle, mssql"/>
+
+    <!--
+        Added AttackStrategies Questions' Answers.
+    -->
+    <changeSet id="20181120153723-1" author="developer" runOnChange="true">
+        <!--Direct Assets-->
+        <dropForeignKeyConstraint
+            baseTableName="direct_asset"
+            constraintName="fk_direct_asset_my_asset_id"
+        />
+
+        <addForeignKeyConstraint baseColumnNames="my_asset_id"
+                                 baseTableName="direct_asset"
+                                 constraintName="fk_direct_asset_my_asset_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="my_asset"
+                                 onDelete="CASCADE"
+        />
+
+        <!--Indirect Assets-->
+        <dropForeignKeyConstraint
+            baseTableName="indirect_asset"
+            constraintName="fk_indirect_asset_my_asset_id"
+        />
+
+        <addForeignKeyConstraint baseColumnNames="my_asset_id"
+                                 baseTableName="indirect_asset"
+                                 constraintName="fk_indirect_asset_my_asset_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="my_asset"
+                                 onDelete="CASCADE"
+        />
+
+        
+
+        <!--Attack Costs-->
+        <dropForeignKeyConstraint
+            baseTableName="attack_cost"
+            constraintName="fk_attack_cost_direct_asset_id"
+        />
+
+        <addForeignKeyConstraint baseColumnNames="direct_asset_id"
+                                 baseTableName="attack_cost"
+                                 constraintName="fk_attack_cost_direct_asset_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="direct_asset"
+                                 onDelete="CASCADE"
+        />
+
+        <dropForeignKeyConstraint
+            baseTableName="attack_cost"
+            constraintName="fk_attack_cost_indirect_asset_id"
+        />
+
+        <addForeignKeyConstraint baseColumnNames="indirect_asset_id"
+                                 baseTableName="attack_cost"
+                                 constraintName="fk_attack_cost_indirect_asset_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="indirect_asset"
+                                 onDelete="CASCADE"
+        />
+    </changeSet>
+</databaseChangeLog>
