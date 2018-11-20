@@ -263,6 +263,10 @@ export class AssetClusteringComponent implements OnInit, OnDestroy {
 
     public saveMyAsset() {
         console.log(this.myAssets);
-        // write function to save all myAssets
+        this.idaUtilsService.createUpdateMyAssets(this.mySelf, this.myAssets).toPromise().then((myAssets) => {
+            if (myAssets) {
+                this.myAssets = myAssets;
+            }
+        });
     }
 }

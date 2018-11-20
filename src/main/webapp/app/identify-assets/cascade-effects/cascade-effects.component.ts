@@ -60,22 +60,25 @@ export class CascadeEffectsComponent implements OnInit {
                     this.selectedAsset = null;
                 } else {
                     this.selectedAsset = myAsset;
-                    const index = _.findIndex(this.myDirects, (myDirect) => myDirect.myAsset.id === myAsset.id);
-                    if (index !== -1) {
-                        this.isDirect = true;
-                        this.selectedDirectAsset = _.cloneDeep(this.myDirects[index]);
-                    } else {
-                        this.isDirect = false;
-                    }
                 }
             } else {
                 this.selectedAsset = myAsset;
+            }
+            if (this.selectedAsset) {
                 const index = _.findIndex(this.myDirects, (myDirect) => myDirect.myAsset.id === myAsset.id);
                 if (index !== -1) {
                     this.isDirect = true;
                     this.selectedDirectAsset = _.cloneDeep(this.myDirects[index]);
                 } else {
                     this.isDirect = false;
+                }
+                if (!this.selectedIndirectAssets) {
+                    this.selectedIndirectAssets = [];
+                }
+                for (const indirect of this.myIndirects) {
+                    if (indirect.myAsset.id === this.selectedAsset.id) {
+                        this.selectedIndirectAssets.push(_.cloneDeep(indirect));
+                    }
                 }
             }
         }
