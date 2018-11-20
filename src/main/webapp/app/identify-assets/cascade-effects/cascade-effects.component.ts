@@ -18,12 +18,13 @@ import { Component, OnInit } from '@angular/core';
 export class CascadeEffectsComponent implements OnInit {
     private mySelf: SelfAssessmentMgm = {};
     public myAssets: MyAssetMgm[];
-    public myDirects: DirectAssetMgm[];
-    public myIndirects: IndirectAssetMgm[];
-    public selectedDirectAsset: DirectAssetMgm;
     public selectedAsset: MyAssetMgm;
     public isDirect = false;
     public isMyAssetUpdated = false;
+    private myDirects: DirectAssetMgm[];
+    private myIndirects: IndirectAssetMgm[];
+    private selectedDirectAsset: DirectAssetMgm;
+    private selectedIndirectAssets: IndirectAssetMgm[];
 
     constructor(
         private idaUtilsService: IdentifyAssetUtilService,
@@ -34,6 +35,7 @@ export class CascadeEffectsComponent implements OnInit {
 
     ngOnInit(): void {
         this.mySelf = this.mySelfAssessmentService.getSelfAssessment();
+        // TODO pensare ad una funzionalità per recuperare gli asset a partire dal questionario
         this.idaUtilsService.getMySavedAssets(this.mySelf).toPromise().then((mySavedAssets) => {
             if (mySavedAssets) {
                 this.myAssets = mySavedAssets;
@@ -61,7 +63,7 @@ export class CascadeEffectsComponent implements OnInit {
                     const index = _.findIndex(this.myDirects, (myDirect) => myDirect.myAsset.id === myAsset.id);
                     if (index !== -1) {
                         this.isDirect = true;
-                        this.selectedDirectAsset = this.myDirects[index];
+                        this.selectedDirectAsset = _.cloneDeep(this.myDirects[index]);
                     } else {
                         this.isDirect = false;
                     }
@@ -71,7 +73,7 @@ export class CascadeEffectsComponent implements OnInit {
                 const index = _.findIndex(this.myDirects, (myDirect) => myDirect.myAsset.id === myAsset.id);
                 if (index !== -1) {
                     this.isDirect = true;
-                    this.selectedDirectAsset = this.myDirects[index];
+                    this.selectedDirectAsset = _.cloneDeep(this.myDirects[index]);
                 } else {
                     this.isDirect = false;
                 }
@@ -100,13 +102,55 @@ export class CascadeEffectsComponent implements OnInit {
                 this.selectedDirectAsset.myAsset = undefined;
             }
         }
+        this.isMyAssetUpdated = true;
         console.log(this.selectedDirectAsset);
+    }
+
+    public setIndirectAsset(myAsset: MyAssetMgm) {
+        const index = _.findIndex(this.myIndirects, (myIndirect) => myIndirect.myAsset.id === myAsset.id);
+        this.isMyAssetUpdated = true;
+        if (!this.selectedIndirectAssets) {
+            this.selectedIndirectAssets = [];
+        }
+        if (index !== -1) {
+            const myIndex = _.findIndex(this.selectedIndirectAssets, { id: this.myIndirects[index].id });
+            if (myIndex !== -1) {
+                this.selectedIndirectAssets.push(_.cloneDeep(this.myIndirects[index]));
+            } else {
+                this.selectedIndirectAssets.splice(myIndex, 1);
+            }
+        } else {
+            const myIndex = _.findIndex(this.selectedIndirectAssets, (indirect) => indirect.myAsset.id === myAsset.id);
+            if (myIndex !== -1) {
+                this.selectedIndirectAssets.splice(myIndex, 1);
+            } else {
+                const indirect = new IndirectAssetMgm();
+                indirect.costs = undefined;
+                indirect.directAsset = undefined;
+                indirect.myAsset = myAsset;
+                this.selectedIndirectAssets.push(_.cloneDeep(indirect));
+            }
+        }
+        console.log(this.selectedIndirectAssets);
+    }
+
+    public isIndirect(myAsset: MyAssetMgm): boolean {
+        if (this.myIndirects) {
+            const index = _.findIndex(this.myIndirects, (myIndirect) => myIndirect.myAsset.id === myAsset.id);
+            if (index !== -1) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public updateMyAsset() {
         console.log(this.selectedAsset);
         console.log(this.selectedDirectAsset);
         // this.idaUtilsService.updateAsset(this.selectedAsset);
+        if (this.selectedIndirectAssets) {
+            this.selectedDirectAsset.effects = this.selectedIndirectAssets;
+        }
         this.idaUtilsService.updateDirectAsset(this.selectedDirectAsset).toPromise().then((myDirectAsset) => {
             if (myDirectAsset) {
                 this.selectedDirectAsset = myDirectAsset;
@@ -116,6 +160,7 @@ export class CascadeEffectsComponent implements OnInit {
                 } else {
                     this.myDirects.push(_.cloneDeep(this.selectedDirectAsset));
                 }
+                this.isMyAssetUpdated = false;
             }
         });
     }

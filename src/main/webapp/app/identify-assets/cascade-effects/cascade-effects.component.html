@@ -37,16 +37,37 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row" *ngIf="isDirect">
+                    <div class="row" *ngIf="isDirect" style="margin-top: 25px">
                         <div class="col-md-12">
                             <h5>Now, please identify which are the other assets that could be indirectly
                                 compromised/damaged/devalued.</h5>
                         </div>
                         <div class="col-md-12">
-                            OTHER ASSETS LIST IN YOUR POSSESSION
+                            <div class="col-md-6">
+                                <ng-container *ngFor="let myAsset of myAssets; let isOdd=odd">
+                                    <ng-container *ngIf="isOdd">
+                                        <div class="row">
+                                            <label><input type="checkbox" [checked]="isIndirect(myAsset)" (change)="setIndirectAsset(myAsset)"
+                                                    aria-label="myAsset.asset.name">
+                                                {{myAsset.asset.name}}</label>
+                                        </div>
+                                    </ng-container>
+                                </ng-container>
+                            </div>
+                            <div class="col-md-6">
+                                <ng-container *ngFor="let myAsset of myAssets; let isEven=even">
+                                    <ng-container *ngIf="isEven">
+                                        <div class="row">
+                                            <label><input type="checkbox" [checked]="isIndirect(myAsset)" (change)="setIndirectAsset(myAsset)"
+                                                    aria-label="myAsset.asset.name">
+                                                {{myAsset.asset.name}}</label>
+                                        </div>
+                                    </ng-container>
+                                </ng-container>
+                            </div>
                         </div>
                     </div>
-                    <div class="row" style="margin-top: 100px">
+                    <div class="row" style="margin-top: 25px">
                         <div class="col-md-4 offset-md-4">
                             <div class="button-box">
                                 <button *ngIf="selectedAsset && isMyAssetUpdated" class="btn btn-success btn-lg btn-block"
