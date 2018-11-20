@@ -43,7 +43,7 @@
                                 <div class="col-md-1">
                                     <div class="chipsContainer">
                                         <div class="badge chips chips-name" [ngClass]="{'badge-light': !selectedAsset.estimated, 'badge-primary': selectedAsset.estimated}"
-                                            (click)="selectedAsset.estimated = true">
+                                            (click)="selectedAsset.estimated = true; isMyAssetUpdated = true;">
                                             YES
                                         </div>
                                     </div>
@@ -51,7 +51,7 @@
                                 <div class="col-md-1">
                                     <div class="chipsContainer">
                                         <div class="badge chips chips-name" [ngClass]="{'badge-light': selectedAsset.estimated, 'badge-primary': !selectedAsset.estimated}"
-                                            (click)="selectedAsset.estimated = false">
+                                            (click)="selectedAsset.estimated = false; isMyAssetUpdated = true;">
                                             NO
                                         </div>
                                     </div>

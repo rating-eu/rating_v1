@@ -65,8 +65,14 @@ export class MagnitudeComponent implements OnInit, OnDestroy {
     }
 
     public updateMyAsset() {
+        if (!this.selectedAsset.estimated) {
+            this.selectedAsset.magnitude = undefined;
+        }
         this.idaUtilsService.updateAsset(this.selectedAsset).toPromise().then((updatedAssets) => {
             this.selectedAsset = updatedAssets;
+            const index = _.findIndex(this.myAssets, { id: this.selectedAsset.id });
+            this.myAssets.splice(index, 1, this.selectedAsset);
+            this.isMyAssetUpdated = false;
         });
     }
 
