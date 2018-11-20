@@ -40,8 +40,8 @@ export class IdentifyAssetUtilService {
     private indirectUrl = SERVER_API_URL + 'api/{selfAssessmentID}/indirect-assets';
     private allAsset = SERVER_API_URL + 'api/assets';
     private updateAssetUri = SERVER_API_URL + 'api/my-assets';
-    private updateDirectAssetUri = SERVER_API_URL + 'api/direct-asset';
-    private updateIndirectAssetUri = SERVER_API_URL + 'api/indirect-asset';
+    private updateDirectAssetUri = SERVER_API_URL + '/api/direct-assets';
+    private updateIndirectAssetUri = SERVER_API_URL + 'api/indirect-assets';
     private createMyAssets = SERVER_API_URL + 'api/{selfAssessmentID}/my-assets/all';
 
     constructor(

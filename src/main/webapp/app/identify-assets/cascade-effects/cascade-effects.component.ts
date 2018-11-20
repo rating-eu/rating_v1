@@ -46,6 +46,7 @@ export class CascadeEffectsComponent implements OnInit {
                 this.myDirects = mySavedDirect;
             }
         });
+        // TODO Questa richiesta potrebbe essere superflua a reggime gli indirect dovrebbero essere nei direct -> effects
         this.idaUtilsService.getMySavedIndirectAssets(this.mySelf).toPromise().then((mySavedIndirect) => {
             if (mySavedIndirect) {
                 this.myIndirects = mySavedIndirect;
@@ -72,12 +73,17 @@ export class CascadeEffectsComponent implements OnInit {
                 } else {
                     this.isDirect = false;
                 }
-                if (!this.selectedIndirectAssets) {
-                    this.selectedIndirectAssets = [];
+                this.selectedIndirectAssets = [];
+                if (this.selectedDirectAsset.effects) {
+                    this.selectedIndirectAssets = this.selectedDirectAsset.effects;
                 }
+                // TODO Questo ciclo FOR potrebbe essere superfluo a reggime
                 for (const indirect of this.myIndirects) {
-                    if (indirect.myAsset.id === this.selectedAsset.id) {
-                        this.selectedIndirectAssets.push(_.cloneDeep(indirect));
+                    if (indirect.directAsset.id === this.selectedDirectAsset.id) {
+                        const indIndex = _.findIndex(this.selectedIndirectAssets, (myIndirect) => myIndirect.directAsset.id === indirect.directAsset.id);
+                        if (indIndex === -1) {
+                            this.selectedIndirectAssets.push(_.cloneDeep(indirect));
+                        }
                     }
                 }
             }
@@ -110,17 +116,28 @@ export class CascadeEffectsComponent implements OnInit {
     }
 
     public setIndirectAsset(myAsset: MyAssetMgm) {
-        const index = _.findIndex(this.myIndirects, (myIndirect) => myIndirect.myAsset.id === myAsset.id);
-        this.isMyAssetUpdated = true;
-        if (!this.selectedIndirectAssets) {
-            this.selectedIndirectAssets = [];
+        let indirects: IndirectAssetMgm[] = [];
+        if (this.selectedDirectAsset.effects) {
+            indirects = this.selectedDirectAsset.effects;
         }
+        // TODO Questo ciclo FOR potrebbe essere superfluo a reggime
+        for (const indirect of this.myIndirects) {
+            if (indirect.directAsset.id === this.selectedDirectAsset.id) {
+                const indIndex = _.findIndex(indirects, (myIndirect) => myIndirect.directAsset.id === indirect.directAsset.id);
+                if (indIndex === -1) {
+                    indirects.push(_.cloneDeep(indirect));
+                }
+            }
+        }
+        // const index = _.findIndex(this.myIndirects, (myIndirect) => myIndirect.myAsset.id === myAsset.id);
+        const index = _.findIndex(indirects, (myIndirect) => myIndirect.myAsset.id === myAsset.id);
+        this.isMyAssetUpdated = true;
         if (index !== -1) {
             const myIndex = _.findIndex(this.selectedIndirectAssets, { id: this.myIndirects[index].id });
             if (myIndex !== -1) {
-                this.selectedIndirectAssets.push(_.cloneDeep(this.myIndirects[index]));
-            } else {
                 this.selectedIndirectAssets.splice(myIndex, 1);
+            } else {
+                this.selectedIndirectAssets.push(_.cloneDeep(this.myIndirects[index]));
             }
         } else {
             const myIndex = _.findIndex(this.selectedIndirectAssets, (indirect) => indirect.myAsset.id === myAsset.id);
@@ -138,8 +155,8 @@ export class CascadeEffectsComponent implements OnInit {
     }
 
     public isIndirect(myAsset: MyAssetMgm): boolean {
-        if (this.myIndirects) {
-            const index = _.findIndex(this.myIndirects, (myIndirect) => myIndirect.myAsset.id === myAsset.id);
+        if (this.selectedIndirectAssets) {
+            const index = _.findIndex(this.selectedIndirectAssets, (myIndirect) => myIndirect.myAsset.id === myAsset.id);
             if (index !== -1) {
                 return true;
             }
