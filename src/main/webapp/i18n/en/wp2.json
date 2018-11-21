@@ -21,6 +21,9 @@
                 "cascadeEffects": {
                     "title": "Cascade effects"
                 },
+                "attackCosts": {
+                    "title": "Attack costs"
+                },
                 "assetReport": {
                     "title": "Asset report"
                 }

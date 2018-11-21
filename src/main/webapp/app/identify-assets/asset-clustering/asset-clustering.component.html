@@ -1,107 +1,81 @@
-ASSET CLUSTERING VIEW WORK IN PROGRESS
-<!--
 <div class="card">
-    <div *ngIf="question" class="card-body">
-        <h5 class="card-title">{{question.name}}</h5>
-        <ng-container class="card-text" *ngIf="question.answers && allAssets">
-            <b style="clear: both">Intangible Assets </b>
-            <br>
-            <ul class="list-unstyled" *ngIf="intangible">
-                <li *ngFor="let ans of intangible">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="chipsContainer">
-                                <div class="badge chips chips-name" [ngClass]="{'badge-light': !isSelected(ans), 'badge-primary': isSelected(ans)}"
-                                    (click)="select(ans)">
-                                    {{ans.name}}
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="row">
-                                <ng-container *ngFor="let rank of [1,2,3,4,5,6,7]">
-                                    <div class="col-md-1 chipsContainer">
-                                        <div *ngIf="!isSelectable(ans)" class="badge chips badge-secondary disabled"
-                                            (click)="false">
-                                            {{rank}}
-                                        </div>
-                                        <div *ngIf="isSelectable(ans)" class="badge chips" [ngClass]="{'badge-light': !whichRank(ans, rank), 'badge-primary': whichRank(ans, rank)}"
-                                            (click)="setRank(ans, rank)">
-                                            {{rank}}
-                                        </div>
-                                    </div>
-                                </ng-container>
-                            </div>
-                        </div>
-                    </div>
-                </li>
-            </ul>
-            <b>Tangible Assets: </b><i style="clear: both">Current assets</i>
-            <br>
-            <ul class="list-unstyled" *ngIf="tangibleCurrent">
-                <li *ngFor="let ans of tangibleCurrent">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="chipsContainer">
-                                <div class="badge chips chips-name" [ngClass]="{'badge-light': !isSelected(ans), 'badge-primary': isSelected(ans)}"
-                                    (click)="select(ans)">
-                                    {{ans.name}}
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="row">
-                                <ng-container *ngFor="let rank of [1,2,3,4,5,6,7,8,9,10]">
-                                    <div class="col-md-1 chipsContainer">
-                                        <div *ngIf="!isSelectable(ans)" class="badge chips badge-secondary disabled"
-                                            (click)="false">
-                                            {{rank}}
-                                        </div>
-                                        <div *ngIf="isSelectable(ans)" class="badge chips" [ngClass]="{'badge-light': !whichRank(ans, rank), 'badge-primary': whichRank(ans, rank)}"
-                                            (click)="setRank(ans, rank)">
-                                            {{rank}}
-                                        </div>
-                                    </div>
-                                </ng-container>
-                            </div>
-                        </div>
-                    </div>
-                </li>
-            </ul>
-            <b>Tangible Assets: </b>
-            <i style="clear: both">Fixed assets</i>
-            <br>
-            <ul class="list-unstyled" *ngIf="tangibleFixed">
-                <li *ngFor="let ans of tangibleFixed">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="chipsContainer">
-                                <div class="badge chips chips-name" [ngClass]="{'badge-light': !isSelected(ans), 'badge-primary': isSelected(ans)}"
-                                    (click)="select(ans)">
-                                    {{ans.name}}
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="row">
-                                <ng-container *ngFor="let rank of [1,2,3,4,5,6,7,8,9,10]">
-                                    <div class="col-md-1 chipsContainer">
-                                        <div *ngIf="!isSelectable(ans)" class="badge chips badge-secondary disabled"
-                                            (click)="false">
-                                            {{rank}}
-                                        </div>
-                                        <div *ngIf="isSelectable(ans)" class="badge chips" [ngClass]="{'badge-light': !whichRank(ans, rank), 'badge-primary': whichRank(ans, rank)}"
-                                            (click)="setRank(ans, rank)">
-                                            {{rank}}
-                                        </div>
-                                    </div>
-                                </ng-container>
-                            </div>
-                        </div>
-                    </div>
-                </li>
-            </ul>
+    <div class="card-body">
+        <h5 class="card-title">Considering your organization, please select which are the asset or category in your
+            possession.</h5>
+        <ng-container class="card-text" *ngIf="categoryToAssets.size === 0">
+            <div class="loader"></div>
         </ng-container>
+        <ng-container class="card-text" *ngIf="categoryToAssets.size > 0">
+            <table class="table table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th style="width: 45%">Asset Category</th>
+                        <th>Asset in category</th>
+                        <th>Selection</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <ng-container *ngFor="let item of categoryToAssets.values(); let i=index">
+                        <tr>
+                            <th scope="row"><a href="javascript:void(0)" (click)="selectCategory(categories[i])">{{categories[i].name}}</a></th>
+                            <td placement="top" container="body" ngbTooltip="Click on Category name for more details">{{item.length}}</td>
+                            <td *ngIf="!isSelect(undefined, categories[i].id) && howManyAssetInSelection(categories[i].id)===0"><a
+                                    href="javascript:void(0)" (click)="select(undefined, categories[i].id)"><i class="fa fa-square-o fa-lg"
+                                        aria-hidden="true"></i></a></td>
+                            <td *ngIf="!isSelect(undefined, categories[i].id) && howManyAssetInSelection(categories[i].id)!==0"><a
+                                    href="javascript:void(0)" (click)="select(undefined, categories[i].id)"><i class="fa fa-minus-square-o fa-lg"
+                                        aria-hidden="true"></i></a></td>
+                            <td *ngIf="isSelect(undefined, categories[i].id) && howManyAssetInSelection(categories[i].id)===item.length"><a
+                                    href="javascript:void(0)" (click)="select(undefined, categories[i].id)"><i class="fa fa-check-square-o fa-lg"
+                                        aria-hidden="true"></i></a></td>
+                        </tr>
+                        <ng-container *ngIf="selectedCategory">
+                            <tr *ngIf="selectedCategory.id === categories[i].id">
+                                <td colspan="3">
+                                    <table class="table table-striped table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>Asset</th>
+                                                <!--<th>Description</th>-->
+                                                <th>Selection</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr *ngFor="let asset of item">
+                                                <td>{{asset.name}}</td>
+                                                <td *ngIf="!isSelect(asset.id, undefined)"><a href="javascript:void(0)"
+                                                        (click)="select(asset.id, undefined)"><i class="fa fa-square-o fa-lg"
+                                                            aria-hidden="true"></i></a></td>
+                                                <td *ngIf="isSelect(asset.id, undefined)"><a href="javascript:void(0)"
+                                                        (click)="select(asset.id, undefined)"><i class="fa fa-check-square-o fa-lg"
+                                                            aria-hidden="true"></i></a></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                        </ng-container>
+                    </ng-container>
+                </tbody>
+            </table>
+            <div class="col-md-12 text-center">
+                <div class="col-md-3">
+                </div>
+                <div class="col-md-3 offset-md-1">
+                        <div class="button-box">
+                                <button *ngIf="myAssets && updateMyAssets" class="btn btn-success btn-lg btn-block" (click)="saveMyAsset()"><i
+                                        class="fas fa-save"></i>
+                                    Submit</button>
+                                <button *ngIf="!myAssets || !updateMyAssets" class="btn btn-secondary btn-lg btn-block"><i class="fas fa-save"></i>
+                                    Submit</button>
+                            </div>
+                </div>
+                <div class="col-md-3 offset-md-2">
+                        <button *ngIf="myAssets || updateMyAssets" class="btn btn-primary btn-lg btn-block" [routerLink]="['../magnitude']"><i class="fa fa-arrow-right fa-lg" aria-hidden="true"></i>
+                        Next</button>
+                </div>
+            </div>
+        </ng-container>
+        
     </div>
 </div>
--->

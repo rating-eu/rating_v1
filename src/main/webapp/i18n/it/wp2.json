@@ -21,6 +21,9 @@
                 "cascadeEffects": {
                     "title": "Effetti secondari"
                 },
+                "attackCosts": {
+                    "title": "Costi"
+                },
                 "assetReport": {
                     "title": "Asset report"
                 }

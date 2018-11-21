@@ -8,6 +8,13 @@
     -webkit-animation: spin 2s linear infinite; /* Safari */
     animation: spin 2s linear infinite;
   }
+
+.list-group{
+    max-height: 400px;
+    margin-bottom: 10px;
+    overflow-y: scroll;
+    -webkit-overflow-scrolling: touch;
+}
   
   /* Safari */
   @-webkit-keyframes spin {

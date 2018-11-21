@@ -1,3 +1,4 @@
+import { AttackCostsComponent } from './attack-costs/attack-costs.component';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { IdentifyAssetComponent } from './id-assets/identify-asset.component';
@@ -33,6 +34,13 @@ const routes: Routes = [
         component: CascadeEffectsComponent,
         data: {
             pageTitle: 'hermeneutApp.assetSection.page.cascadeEffects.title'
+        }
+    },
+    {
+        path: 'attack-costs',
+        component: AttackCostsComponent,
+        data: {
+            pageTitle: 'hermeneutApp.assetSection.page.attackCosts.title'
         }
     },
     {

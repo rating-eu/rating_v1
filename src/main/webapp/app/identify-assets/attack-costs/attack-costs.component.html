@@ -1,0 +1,63 @@
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">Attack Costs.</h5>
+        <ng-container class="card-text" *ngIf="!myAssets">
+            <div class="loader"></div>
+        </ng-container>
+        <ng-container class="card-text"  *ngIf="myAssets">
+            <div class="col-md-3">
+                <h6>Direct Assets</h6>
+                <div class="list-group">
+                    <!--
+                    <ng-container *ngFor="let myAsset of myAssets">
+                        <a href="javascript:void(0)" (click)="selectAsset(myAsset)" class="list-group-item list-group-item-action"
+                            [ngClass]="{'active': selectedAsset && myAsset.id === selectedAsset.id}">{{myAsset.asset.name}}</a>
+                    </ng-container>
+                    -->
+                    <ng-container *ngFor="let myDirect of myDirects">
+                        <a href="javascript:void(0)" (click)="selectDirect(myDirect)" class="list-group-item list-group-item-action"
+                            [ngClass]="{'active': selectedDirect && myDirect.id === selectedDirect.id}">{{myDirect.myAsset.asset.name}}</a>
+                    </ng-container>
+                    
+                </div>
+            </div>
+            <div class="col-md-9">
+                <ng-container *ngIf="selectedDirect">
+                    <div class="row">
+                        
+                    </div>
+                    <div class="row" style="margin-top: 100px">
+                        <div class="col-md-4 offset-md-4">
+                            <div class="button-box">
+                                <button *ngIf="selectedDirect && isMyAssetUpdated" class="btn btn-success btn-lg btn-block"
+                                    (click)="updateMyAsset()"><i class="fas fa-save"></i>
+                                    Submit</button>
+                                <button *ngIf="!selectedDirect || !isMyAssetUpdated" class="btn btn-secondary btn-lg btn-block"><i
+                                        class="fas fa-save"></i>
+                                    Submit</button>
+                            </div>
+                        </div>
+                    </div>
+                </ng-container>
+                <ng-container *ngIf="!selectedDirect">
+                    <div class="text-center" style="margin-top: 50px">
+                        <p style="color: orange"><i class="fa fa-exclamation-triangle fa-4x" aria-hidden="true"></i></p>
+                        <p style="color: grey">Please select one direct asset from the list at left of the screen!</p>
+                    </div>
+                </ng-container>
+            </div>
+            <div class="col-md-12 text-center">
+                <div class="col-md-3">
+                    <button class="btn btn-primary btn-lg btn-block" [routerLink]="['../cascade-effects']"><i class="fa fa-arrow-left fa-lg"
+                            aria-hidden="true"></i>
+                        Prev</button>
+                </div>
+                <div class="col-md-3 offset-md-6">
+                    <button class="btn btn-primary btn-lg btn-block" [routerLink]="['../dashboard']"><i class="fa fa-times fa-lg"
+                            aria-hidden="true"></i>
+                        Close</button>
+                </div>
+            </div>
+        </ng-container>
+    </div>
+</div>
