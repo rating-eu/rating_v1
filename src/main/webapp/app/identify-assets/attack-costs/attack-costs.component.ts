@@ -1,3 +1,5 @@
+import * as _ from 'lodash';
+import { DirectAssetMgm } from './../../entities/direct-asset-mgm/direct-asset-mgm.model';
 import { SelfAssessmentMgmService } from './../../entities/self-assessment-mgm/self-assessment-mgm.service';
 import { IdentifyAssetUtilService } from './../identify-asset.util.service';
 import { MyAssetMgm } from './../../entities/my-asset-mgm/my-asset-mgm.model';
@@ -14,7 +16,9 @@ import { Component, OnInit } from '@angular/core';
 export class AttackCostsComponent implements OnInit {
   private mySelf: SelfAssessmentMgm = {};
   public myAssets: MyAssetMgm[];
+  public myDirects: DirectAssetMgm[];
   public selectedAsset: MyAssetMgm;
+  public selectedDirect: DirectAssetMgm;
   public isMyAssetUpdated = false;
 
   constructor(
@@ -30,10 +34,12 @@ export class AttackCostsComponent implements OnInit {
       if (mySavedAssets) {
         this.myAssets = mySavedAssets;
       }
-      // this.ref.detectChanges();
-    }).catch(() => {
-      // this.ref.detectChanges();
     });
+    this.idaUtilsService.getMySavedDirectAssets(this.mySelf).toPromise().then((mySavedDirect) => {
+      if (mySavedDirect) {
+          this.myDirects = mySavedDirect;
+      }
+  });
   }
 
   public selectAsset(myAsset: MyAssetMgm) {
@@ -46,6 +52,20 @@ export class AttackCostsComponent implements OnInit {
         }
       } else {
         this.selectedAsset = myAsset;
+      }
+    }
+  }
+
+  public selectDirect(myDirect: DirectAssetMgm) {
+    if (myDirect) {
+      if (this.selectedDirect) {
+        if (this.selectedDirect.id === myDirect.id) {
+          this.selectedDirect = null;
+        } else {
+          this.selectedDirect = myDirect;
+        }
+      } else {
+        this.selectedDirect = myDirect;
       }
     }
   }

@@ -65,6 +65,7 @@ export class MagnitudeComponent implements OnInit, OnDestroy {
     }
 
     public updateMyAsset() {
+        // constraint su pryority level
         if (!this.selectedAsset.estimated) {
             this.selectedAsset.magnitude = undefined;
         }

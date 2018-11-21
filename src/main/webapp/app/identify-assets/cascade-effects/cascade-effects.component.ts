@@ -72,9 +72,10 @@ export class CascadeEffectsComponent implements OnInit {
                     this.selectedDirectAsset = _.cloneDeep(this.myDirects[index]);
                 } else {
                     this.isDirect = false;
+                    this.selectedDirectAsset = null;
                 }
                 this.selectedIndirectAssets = [];
-                if (this.selectedDirectAsset.effects) {
+                if (this.selectedDirectAsset && this.selectedDirectAsset.effects) {
                     this.selectedIndirectAssets = this.selectedDirectAsset.effects;
                 }
                 // TODO Questo ciclo FOR potrebbe essere superfluo a reggime
