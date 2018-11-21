@@ -10,7 +10,6 @@ import eu.hermeneut.web.rest.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -77,16 +76,16 @@ public class MyAssetResource {
             if (myAsset.getSelfAssessment().getId() != (long) selfAssessmentID) {
                 throw new IllegalInputException("MyAssets MUST belong to the input SelfAssessment ID");
             }
-
-            if (myAsset.getId() != null) {
-                try {
-                    this.myAssetService.delete(myAsset.getId());
-                } catch (EmptyResultDataAccessException ex) {
-                    //the current my asset did not exist.
-                }
-            }
         }
 
+        //Delete the old ones
+        List<MyAsset> myExistingAssets = this.myAssetService.findAllBySelfAssessment(selfAssessmentID);
+
+        for (MyAsset myAsset : myExistingAssets) {
+            this.myAssetService.delete(myAsset.getId());
+        }
+
+        //Save the new ones
         return this.myAssetService.saveAll(myAssets);
     }
 

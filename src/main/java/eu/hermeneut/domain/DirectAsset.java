@@ -7,6 +7,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import javax.persistence.*;
 
 import org.springframework.data.elasticsearch.annotations.Document;
+
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
@@ -32,11 +33,11 @@ public class DirectAsset implements Serializable {
     @JoinColumn(unique = true)
     private MyAsset myAsset;
 
-    @OneToMany(mappedBy = "directAsset", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "directAsset", fetch = FetchType.EAGER, cascade = {CascadeType.ALL, CascadeType.PERSIST, CascadeType.MERGE})
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<AttackCost> costs = new HashSet<>();
 
-    @OneToMany(mappedBy = "directAsset")
+    @OneToMany(mappedBy = "directAsset", fetch = FetchType.EAGER, cascade = {CascadeType.ALL, CascadeType.PERSIST, CascadeType.MERGE})
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<IndirectAsset> effects = new HashSet<>();
 
@@ -87,7 +88,6 @@ public class DirectAsset implements Serializable {
         this.costs = attackCosts;
     }
 
-    @JsonIgnore
     public Set<IndirectAsset> getEffects() {
         return effects;
     }

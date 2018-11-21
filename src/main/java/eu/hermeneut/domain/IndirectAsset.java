@@ -38,7 +38,7 @@ public class IndirectAsset implements Serializable {
     @OneToOne(cascade = CascadeType.REMOVE)
     private MyAsset myAsset;
 
-    @OneToMany(mappedBy = "indirectAsset", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "indirectAsset", fetch = FetchType.EAGER, cascade = {CascadeType.ALL, CascadeType.PERSIST, CascadeType.MERGE})
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<AttackCost> costs = new HashSet<>();
 
