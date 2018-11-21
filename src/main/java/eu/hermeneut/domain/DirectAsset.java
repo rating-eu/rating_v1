@@ -37,7 +37,7 @@ public class DirectAsset implements Serializable {
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<AttackCost> costs = new HashSet<>();
 
-    @OneToMany(mappedBy = "directAsset", cascade = {CascadeType.ALL, CascadeType.PERSIST, CascadeType.MERGE})
+    @OneToMany(mappedBy = "directAsset", fetch = FetchType.EAGER, cascade = {CascadeType.ALL, CascadeType.PERSIST, CascadeType.MERGE})
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<IndirectAsset> effects = new HashSet<>();
 
@@ -88,7 +88,6 @@ public class DirectAsset implements Serializable {
         this.costs = attackCosts;
     }
 
-    @JsonIgnore
     public Set<IndirectAsset> getEffects() {
         return effects;
     }
