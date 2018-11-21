@@ -73,6 +73,7 @@ export class AttackCostsComponent implements OnInit {
   }
 
   public setCostOnDirect(cost: string) {
+    /*
     if (this.selectedDirect && !this.selectedDirect.costs) {
       this.selectedDirect.costs = [];
     }
@@ -82,15 +83,18 @@ export class AttackCostsComponent implements OnInit {
     } else {
       this.selectedDirect.costs.push(_.cloneDeep(cost));
     }
+    */
   }
 
   public isDirectCostSelected(cost: string): boolean {
+    /*
     if (this.selectedDirect && this.selectedDirect.costs) {
       const index = _.findIndex(this.selectedDirect.costs, { id: cost.id });
       if (index !== -1) {
         return true;
       }
     }
+    */
     return false;
   }
 
