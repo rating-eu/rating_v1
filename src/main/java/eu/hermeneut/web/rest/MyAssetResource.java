@@ -10,6 +10,7 @@ import eu.hermeneut.web.rest.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -73,12 +74,16 @@ public class MyAssetResource {
         }
 
         for (MyAsset myAsset : myAssets) {
-            if (myAsset.getSelfAssessment().getId() != selfAssessmentID) {
+            if (myAsset.getSelfAssessment().getId() != (long) selfAssessmentID) {
                 throw new IllegalInputException("MyAssets MUST belong to the input SelfAssessment ID");
             }
 
             if (myAsset.getId() != null) {
-                this.myAssetService.delete(myAsset.getId());
+                try {
+                    this.myAssetService.delete(myAsset.getId());
+                } catch (EmptyResultDataAccessException ex) {
+                    //the current my asset did not exist.
+                }
             }
         }
 
