@@ -45,7 +45,7 @@
                         <div class="col-md-12">
                             <div class="col-md-6">
                                 <ng-container *ngFor="let myAsset of myAssets; let isOdd=odd">
-                                    <ng-container *ngIf="isOdd">
+                                    <ng-container *ngIf="isOdd && myAsset.asset.id !== selectedDirectAsset.myAsset.asset.id">
                                         <div class="row">
                                             <label><input type="checkbox" [checked]="isIndirect(myAsset)" (change)="setIndirectAsset(myAsset)"
                                                     aria-label="myAsset.asset.name">
@@ -56,7 +56,7 @@
                             </div>
                             <div class="col-md-6">
                                 <ng-container *ngFor="let myAsset of myAssets; let isEven=even">
-                                    <ng-container *ngIf="isEven">
+                                    <ng-container *ngIf="isEven && myAsset.asset.id !== selectedDirectAsset.myAsset.asset.id">
                                         <div class="row">
                                             <label><input type="checkbox" [checked]="isIndirect(myAsset)" (change)="setIndirectAsset(myAsset)"
                                                     aria-label="myAsset.asset.name">

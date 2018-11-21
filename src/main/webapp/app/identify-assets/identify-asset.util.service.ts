@@ -43,6 +43,7 @@ export class IdentifyAssetUtilService {
     private updateDirectAssetUri = SERVER_API_URL + '/api/direct-assets';
     private updateIndirectAssetUri = SERVER_API_URL + 'api/indirect-assets';
     private createMyAssets = SERVER_API_URL + 'api/{selfAssessmentID}/my-assets/all';
+    private allAttackCost = SERVER_API_URL + 'api/attack-costs';
 
     constructor(
         private http: HttpClient
@@ -114,6 +115,13 @@ export class IdentifyAssetUtilService {
         const copy: MyAssetMgm[] = this.convertArray(myAssets);
         return this.http.post<MyAssetMgm[]>(uri, copy, { observe: 'response' })
             .map((res: HttpResponse<MyAssetMgm[]>) => this.convertArrayResponse(res).body);
+    }
+
+    public getAllSystemAttackCosts(): Observable<AttackCostMgm[]> {
+        return this.http.get<AttackCostMgm[]>(this.allAttackCost, { observe: 'response' })
+            .map((res: HttpResponse<AttackCostMgm[]>) => {
+                return res.body;
+            });
     }
 
     private convertArrayResponse(res: HttpResponse<MyAssetMgm[]>): HttpResponse<MyAssetMgm[]> {

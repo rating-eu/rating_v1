@@ -21,9 +21,9 @@ export class CascadeEffectsComponent implements OnInit {
     public selectedAsset: MyAssetMgm;
     public isDirect = false;
     public isMyAssetUpdated = false;
+    public selectedDirectAsset: DirectAssetMgm;
     private myDirects: DirectAssetMgm[];
     private myIndirects: IndirectAssetMgm[];
-    private selectedDirectAsset: DirectAssetMgm;
     private selectedIndirectAssets: IndirectAssetMgm[];
 
     constructor(
