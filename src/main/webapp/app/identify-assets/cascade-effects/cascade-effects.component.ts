@@ -21,9 +21,9 @@ export class CascadeEffectsComponent implements OnInit {
     public selectedAsset: MyAssetMgm;
     public isDirect = false;
     public isMyAssetUpdated = false;
+    public selectedDirectAsset: DirectAssetMgm;
     private myDirects: DirectAssetMgm[];
-    private myIndirects: IndirectAssetMgm[];
-    private selectedDirectAsset: DirectAssetMgm;
+    // private myIndirects: IndirectAssetMgm[];
     private selectedIndirectAssets: IndirectAssetMgm[];
 
     constructor(
@@ -47,11 +47,13 @@ export class CascadeEffectsComponent implements OnInit {
             }
         });
         // TODO Questa richiesta potrebbe essere superflua a reggime gli indirect dovrebbero essere nei direct -> effects
+        /*
         this.idaUtilsService.getMySavedIndirectAssets(this.mySelf).toPromise().then((mySavedIndirect) => {
             if (mySavedIndirect) {
                 this.myIndirects = mySavedIndirect;
             }
         });
+        */
     }
 
     public selectAsset(myAsset: MyAssetMgm) {
@@ -79,6 +81,7 @@ export class CascadeEffectsComponent implements OnInit {
                     this.selectedIndirectAssets = this.selectedDirectAsset.effects;
                 }
                 // TODO Questo ciclo FOR potrebbe essere superfluo a reggime
+                /*
                 for (const indirect of this.myIndirects) {
                     if (indirect.directAsset.id === this.selectedDirectAsset.id) {
                         const indIndex = _.findIndex(this.selectedIndirectAssets, (myIndirect) => myIndirect.directAsset.id === indirect.directAsset.id);
@@ -87,6 +90,7 @@ export class CascadeEffectsComponent implements OnInit {
                         }
                     }
                 }
+                */
             }
         }
     }
@@ -122,6 +126,7 @@ export class CascadeEffectsComponent implements OnInit {
             indirects = this.selectedDirectAsset.effects;
         }
         // TODO Questo ciclo FOR potrebbe essere superfluo a reggime
+        /*
         for (const indirect of this.myIndirects) {
             if (indirect.directAsset.id === this.selectedDirectAsset.id) {
                 const indIndex = _.findIndex(indirects, (myIndirect) => myIndirect.directAsset.id === indirect.directAsset.id);
@@ -130,15 +135,16 @@ export class CascadeEffectsComponent implements OnInit {
                 }
             }
         }
+        */
         // const index = _.findIndex(this.myIndirects, (myIndirect) => myIndirect.myAsset.id === myAsset.id);
         const index = _.findIndex(indirects, (myIndirect) => myIndirect.myAsset.id === myAsset.id);
         this.isMyAssetUpdated = true;
         if (index !== -1) {
-            const myIndex = _.findIndex(this.selectedIndirectAssets, { id: this.myIndirects[index].id });
+            const myIndex = _.findIndex(this.selectedIndirectAssets, { id: indirects[index].id });
             if (myIndex !== -1) {
                 this.selectedIndirectAssets.splice(myIndex, 1);
             } else {
-                this.selectedIndirectAssets.push(_.cloneDeep(this.myIndirects[index]));
+                this.selectedIndirectAssets.push(_.cloneDeep(indirects[index]));
             }
         } else {
             const myIndex = _.findIndex(this.selectedIndirectAssets, (indirect) => indirect.myAsset.id === myAsset.id);
@@ -147,7 +153,7 @@ export class CascadeEffectsComponent implements OnInit {
             } else {
                 const indirect = new IndirectAssetMgm();
                 indirect.costs = undefined;
-                indirect.directAsset = undefined;
+                indirect.directAsset = this.selectedDirectAsset;
                 indirect.myAsset = myAsset;
                 this.selectedIndirectAssets.push(_.cloneDeep(indirect));
             }

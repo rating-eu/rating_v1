@@ -1,3 +1,4 @@
+import { AttackCostMgm } from './../../entities/attack-cost-mgm/attack-cost-mgm.model';
 import * as _ from 'lodash';
 import { DirectAssetMgm } from './../../entities/direct-asset-mgm/direct-asset-mgm.model';
 import { SelfAssessmentMgmService } from './../../entities/self-assessment-mgm/self-assessment-mgm.service';
@@ -20,6 +21,7 @@ export class AttackCostsComponent implements OnInit {
   public selectedAsset: MyAssetMgm;
   public selectedDirect: DirectAssetMgm;
   public isMyAssetUpdated = false;
+  public costs: string[];
 
   constructor(
     private idaUtilsService: IdentifyAssetUtilService,
@@ -37,9 +39,9 @@ export class AttackCostsComponent implements OnInit {
     });
     this.idaUtilsService.getMySavedDirectAssets(this.mySelf).toPromise().then((mySavedDirect) => {
       if (mySavedDirect) {
-          this.myDirects = mySavedDirect;
+        this.myDirects = mySavedDirect;
       }
-  });
+    });
   }
 
   public selectAsset(myAsset: MyAssetMgm) {
@@ -68,6 +70,32 @@ export class AttackCostsComponent implements OnInit {
         this.selectedDirect = myDirect;
       }
     }
+  }
+
+  public setCostOnDirect(cost: string) {
+    /*
+    if (this.selectedDirect && !this.selectedDirect.costs) {
+      this.selectedDirect.costs = [];
+    }
+    const index = _.findIndex(this.selectedDirect.costs, { id: cost.id });
+    if (index !== -1) {
+      this.selectedDirect.costs.splice(index, 1);
+    } else {
+      this.selectedDirect.costs.push(_.cloneDeep(cost));
+    }
+    */
+  }
+
+  public isDirectCostSelected(cost: string): boolean {
+    /*
+    if (this.selectedDirect && this.selectedDirect.costs) {
+      const index = _.findIndex(this.selectedDirect.costs, { id: cost.id });
+      if (index !== -1) {
+        return true;
+      }
+    }
+    */
+    return false;
   }
 
   public updateMyAsset() {

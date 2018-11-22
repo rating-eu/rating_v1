@@ -4,7 +4,7 @@
         <ng-container class="card-text" *ngIf="!myAssets">
             <div class="loader"></div>
         </ng-container>
-        <ng-container class="card-text"  *ngIf="myAssets">
+        <ng-container class="card-text" *ngIf="myAssets">
             <div class="col-md-3">
                 <h6>Direct Assets</h6>
                 <div class="list-group">
@@ -18,13 +18,36 @@
                         <a href="javascript:void(0)" (click)="selectDirect(myDirect)" class="list-group-item list-group-item-action"
                             [ngClass]="{'active': selectedDirect && myDirect.id === selectedDirect.id}">{{myDirect.myAsset.asset.name}}</a>
                     </ng-container>
-                    
+
                 </div>
             </div>
             <div class="col-md-9">
                 <ng-container *ngIf="selectedDirect">
                     <div class="row">
-                        
+                        <div class="col-md-12">
+                            <div class="col-md-6">
+                                <ng-container *ngFor="let cost of costs; let isOdd=odd">
+                                    <ng-container *ngIf="isOdd">
+                                        <div class="row">
+                                            <label><input type="checkbox" [checked]="isDirectCostSelected(cost)" (change)="setCostOnDirect(cost)"
+                                                    aria-label="myAsset.asset.name">
+                                                {{myAsset.asset.name}}</label>
+                                        </div>
+                                    </ng-container>
+                                </ng-container>
+                            </div>
+                            <div class="col-md-6">
+                                <ng-container *ngFor="let myAsset of myAssets; let isEven=even">
+                                    <ng-container *ngIf="isEven && myAsset.asset.id !== selectedDirectAsset.myAsset.asset.id">
+                                        <div class="row">
+                                            <label><input type="checkbox" [checked]="isIndirect(myAsset)" (change)="setIndirectAsset(myAsset)"
+                                                    aria-label="myAsset.asset.name">
+                                                {{myAsset.asset.name}}</label>
+                                        </div>
+                                    </ng-container>
+                                </ng-container>
+                            </div>
+                        </div>
                     </div>
                     <div class="row" style="margin-top: 100px">
                         <div class="col-md-4 offset-md-4">
