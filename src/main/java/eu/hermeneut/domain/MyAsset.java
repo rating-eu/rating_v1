@@ -8,6 +8,7 @@ import javax.persistence.*;
 import javax.validation.constraints.*;
 
 import org.springframework.data.elasticsearch.annotations.Document;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Objects;
@@ -41,7 +42,7 @@ public class MyAsset implements Serializable {
      * WP3
      */
     @ApiModelProperty(value = "WP3")
-    @Column(name = "economic_value", precision=10, scale=2)
+    @Column(name = "economic_value", precision = 10, scale = 2)
     private BigDecimal economicValue;
 
     @Min(value = 1)
@@ -52,7 +53,7 @@ public class MyAsset implements Serializable {
     @ManyToOne
     private Asset asset;
 
-    @ManyToOne
+    @OneToOne(cascade = CascadeType.REMOVE)
     private SelfAssessment selfAssessment;
 
     @ManyToOne

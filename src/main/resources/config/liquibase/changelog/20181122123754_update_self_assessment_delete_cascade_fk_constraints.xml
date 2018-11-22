@@ -30,5 +30,19 @@
                                  referencedTableName="self_assessment"
                                  onDelete="CASCADE"
         />
+
+        <!--MyAsset-->
+        <dropForeignKeyConstraint
+            baseTableName="my_asset"
+            constraintName="fk_my_asset_self_assessment_id"
+        />
+
+        <addForeignKeyConstraint baseColumnNames="self_assessment_id"
+                                 baseTableName="my_asset"
+                                 constraintName="fk_my_asset_self_assessment_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="self_assessment"
+                                 onDelete="CASCADE"
+        />
     </changeSet>
 </databaseChangeLog>
