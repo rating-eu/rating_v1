@@ -150,8 +150,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                         items: [
                             {
                                 label: 'Asset Clustering',
-                                // routerLink: ['/identify-asset/asset-clustering']
-                                routerLink: ['/identify-asset'],
+                                routerLink: ['/identify-asset/asset-clustering']
                             },
                             {
                                 label: 'Magnitudo',
@@ -160,6 +159,10 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                             {
                                 label: 'Cascade Effects',
                                 routerLink: ['/identify-asset/cascade-effects']
+                            },
+                            {
+                                label: 'Attack Costs',
+                                routerLink: ['/identify-asset/attack-costs']
                             },
                             {
                                 label: 'Asset Report',

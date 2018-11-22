@@ -30,15 +30,15 @@ public class IndirectAsset implements Serializable {
     @SequenceGenerator(name = "sequenceGenerator")
     private Long id;
 
-    @NotNull
+    // @NotNull
     @ManyToOne(cascade = CascadeType.REMOVE)
     private DirectAsset directAsset;
 
-    @NotNull
+    // @NotNull
     @OneToOne(cascade = CascadeType.REMOVE)
     private MyAsset myAsset;
 
-    @OneToMany(mappedBy = "indirectAsset", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "indirectAsset", fetch = FetchType.EAGER, cascade = {CascadeType.ALL, CascadeType.PERSIST, CascadeType.MERGE})
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<AttackCost> costs = new HashSet<>();
 
@@ -51,6 +51,7 @@ public class IndirectAsset implements Serializable {
         this.id = id;
     }
 
+	@JsonIgnore
     public DirectAsset getDirectAsset() {
         return directAsset;
     }
@@ -59,7 +60,7 @@ public class IndirectAsset implements Serializable {
         this.directAsset = directAsset;
         return this;
     }
-
+	
     public void setDirectAsset(DirectAsset directAsset) {
         this.directAsset = directAsset;
     }
