@@ -54,7 +54,7 @@ public class QuestionnaireStatus implements Serializable {
     @Column(name = "jhi_role", nullable = false)
     private Role role;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "self_assessment_id")
     private SelfAssessment selfAssessment;
 
