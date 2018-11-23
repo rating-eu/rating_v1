@@ -8,9 +8,21 @@
         </select>
 
         <mat-horizontal-stepper (selectionChange)="likelihoodStepChange($event)">
-            <mat-step [completed]="false" label="Initial Likelihood">&nbsp;</mat-step>
-            <mat-step [completed]="false" label="Contextual Likelihood">&nbsp;</mat-step>
-            <mat-step [completed]="false" label="Refined Likelihood">&nbsp;</mat-step>
+            <mat-step [completed]="false" label="Initial Likelihood">&nbsp;
+                <i *ngIf="!likelihoodStepEnabled.get(likelihoodStepEnum.INITIAL_LIKELIHOOD)"
+                   class="fa fa-warning">&nbsp;Data needed for this step is not available. Please fill and submit the
+                    corresponding questionnaire.</i>
+            </mat-step>
+            <mat-step [completed]="false" label="Contextual Likelihood">&nbsp;
+                <i *ngIf="!likelihoodStepEnabled.get(likelihoodStepEnum.CONTEXTUAL_LIKELIHOOD)"
+                   class="fa fa-warning">&nbsp;Data needed for this step is not available. Please fill and submit the
+                    corresponding questionnaire.</i>
+            </mat-step>
+            <mat-step [completed]="false" label="Refined Likelihood">&nbsp;
+                <i *ngIf="!likelihoodStepEnabled.get(likelihoodStepEnum.REFINED_LIKELIHOOD)"
+                   class="fa fa-warning">&nbsp;Data needed for this step is not available. Please fill and submit the
+                    corresponding questionnaire.</i>
+            </mat-step>
         </mat-horizontal-stepper>
 
         <table class="table table-striped table-bordered table-hover">

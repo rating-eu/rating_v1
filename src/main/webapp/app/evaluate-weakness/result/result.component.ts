@@ -63,6 +63,8 @@ export class WeaknessResultComponent implements OnInit, OnDestroy {
     likelihoodStep: LikelihoodStep = LikelihoodStep.INITIAL_LIKELIHOOD;
     likelihoodStepEnum = LikelihoodStep;
 
+    likelihoodStepEnabled: Map<number/*Step-Number*/, boolean>;
+
     constructor(private route: ActivatedRoute,
                 private selfAssessmentService: SelfAssessmentMgmService,
                 private questionnaireStatusService: QuestionnaireStatusMgmService,
@@ -73,6 +75,11 @@ export class WeaknessResultComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
+        this.likelihoodStepEnabled = new Map();
+        this,this.likelihoodStepEnabled.set(LikelihoodStep.INITIAL_LIKELIHOOD, true);
+        this,this.likelihoodStepEnabled.set(LikelihoodStep.CONTEXTUAL_LIKELIHOOD, true);
+        this,this.likelihoodStepEnabled.set(LikelihoodStep.REFINED_LIKELIHOOD, false);
+
         this.selfAssessment = this.selfAssessmentService.getSelfAssessment();
         this.threatAgents = this.selfAssessment.threatagents;
 
