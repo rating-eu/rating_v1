@@ -8,6 +8,7 @@ import { CascadeEffectsComponent } from './cascade-effects/cascade-effects.compo
 import { AssetReportComponent } from './asset-report/asset-report.component';
 
 const routes: Routes = [
+    /*
     {
         path: '',
         component: IdentifyAssetComponent,
@@ -15,6 +16,7 @@ const routes: Routes = [
             pageTitle: 'hermeneutApp.assetSection.page.assetIdentification.title'
         }
     },
+    */
     {
         path: 'asset-clustering',
         component: AssetClusteringComponent,
