@@ -56,7 +56,7 @@ public class EBIT implements Serializable {
     private ZonedDateTime created;
 
     @NotNull
-    @OneToOne
+    @OneToOne(cascade = CascadeType.REMOVE)
     private SelfAssessment selfAssessment;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove

@@ -49,7 +49,7 @@ public class CriticalLevel implements Serializable {
      * WP4
      */
     @ApiModelProperty(value = "WP4")
-    @OneToOne
+    @OneToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(unique = true)
     private SelfAssessment selfAssessment;
 

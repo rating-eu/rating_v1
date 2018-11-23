@@ -104,12 +104,7 @@ public class DashboardServiceImpl implements DashboardService {
         impactEvaluationStatus.setCategoryType(null);
 
         List<SplittingLoss> splittingLosses = this.splittingLossService.findAllBySelfAssessmentID(selfAssessmentID);
-        if (splittingLosses == null || splittingLosses.size() == 0) {
-            throw new NotFoundException("SplittingLosses for SelfAssessment with ID " + selfAssessmentID + " not" +
-                " found!");
-        } else {
-            impactEvaluationStatus.setSplittingLosses(new HashSet<>(splittingLosses));
-        }
+        impactEvaluationStatus.setSplittingLosses(new HashSet<>(splittingLosses));
 
         return impactEvaluationStatus;
     }

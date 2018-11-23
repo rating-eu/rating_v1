@@ -1,1 +1,115 @@
-MAGNITUDE COMPONENT VIEW
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">Priority and Magnitude definition.</h5>
+        <ng-container class="card-text" *ngIf="!myAssets">
+            <div class="loader"></div>
+        </ng-container>
+        <ng-container class="card-text" *ngIf="myAssets">
+            <div class="col-md-3">
+                <div class="list-group">
+                    <ng-container *ngFor="let myAsset of myAssets">
+                        <a href="javascript:void(0)" (click)="selectAsset(myAsset)" class="list-group-item list-group-item-action"
+                            [ngClass]="{'active': selectedAsset && myAsset.id === selectedAsset.id}">{{myAsset.asset.name}}</a>
+                    </ng-container>
+                </div>
+            </div>
+            <div class="col-md-9">
+                <ng-container *ngIf="selectedAsset">
+                    <div class="row">
+                        <h5>Considering your organization, please assign priorities to the <b>{{selectedAsset.asset.name}}</b>
+                            according to its relevance in your organization</h5>
+                        <div class="col-md-12 text-center">
+                            <div class="col-md-4 offset-md-4">
+                                <div ngbDropdown class="d-inline-block">
+                                    <button *ngIf="selectedAsset.ranking" class="btn btn-outline-primary" id="priorityDrop"
+                                        ngbDropdownToggle>{{priorities[selectedAsset.ranking]}}</button>
+                                    <button *ngIf="!selectedAsset.ranking" class="btn btn-outline-primary" id="priorityDrop"
+                                        ngbDropdownToggle>Chose priority level</button>
+                                    <div ngbDropdownMenu aria-labelledby="priorityDrop">
+                                        <ng-container *ngFor="let rankLevel of priorities">
+                                            <button class="dropdown-item" (click)="setSelectedAssetPriority(rankLevel)">{{rankLevel}}</button>
+                                        </ng-container>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <ng-container *ngIf="isIntangible">
+                            <div class="row">
+                                <div class="col-md-10">
+                                    <h5>Have you ever quantified the estimated value of this asset?</h5>
+                                </div>
+                                <div class="col-md-1">
+                                    <div class="chipsContainer">
+                                        <div class="badge chips chips-name" [ngClass]="{'badge-light': !selectedAsset.estimated, 'badge-primary': selectedAsset.estimated}"
+                                            (click)="selectedAsset.estimated = true; isMyAssetUpdated = true;">
+                                            YES
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-1">
+                                    <div class="chipsContainer">
+                                        <div class="badge chips chips-name" [ngClass]="{'badge-light': selectedAsset.estimated, 'badge-primary': !selectedAsset.estimated}"
+                                            (click)="selectedAsset.estimated = false; isMyAssetUpdated = true;">
+                                            NO
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12" *ngIf="selectedAsset.estimated">
+                                    <h5>If you have this information, are you available to share the order of magnitude
+                                        of this asset?</h5>
+                                    <div class="col-md-4 offset-md-4 text-center">
+                                        <div ngbDropdown class="d-inline-block">
+                                            <button *ngIf="selectedAsset.magnitude" class="btn btn-outline-primary" id="magnitudeDrop"
+                                                ngbDropdownToggle>{{priorities[selectedAsset.magnitude]}}</button>
+                                            <button *ngIf="!selectedAsset.magnitude" class="btn btn-outline-primary" id="magnitudeDrop"
+                                                ngbDropdownToggle>Chose magnitude level</button>
+                                            <div ngbDropdownMenu aria-labelledby="magnitudeDrop">
+                                                <ng-container *ngFor="let magnitudeLevel of priorities">
+                                                    <button class="dropdown-item" (click)="setSelectedAssetMagnitudo(magnitudeLevel)">{{magnitudeLevel}}</button>
+                                                </ng-container>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </ng-container>
+                    </div>
+                    <div class="row" style="margin-top: 100px">
+                        <div class="col-md-4 offset-md-4">
+                            <div class="button-box">
+                                <button *ngIf="selectedAsset && isMyAssetUpdated" class="btn btn-success btn-lg btn-block"
+                                    (click)="updateMyAsset()"><i class="fas fa-save"></i>
+                                    Submit</button>
+                                <button *ngIf="!selectedAsset || !isMyAssetUpdated" class="btn btn-secondary btn-lg btn-block"><i
+                                        class="fas fa-save"></i>
+                                    Submit</button>
+                            </div>
+                        </div>
+                    </div>
+                </ng-container>
+                <ng-container *ngIf="!selectedAsset">
+                    <div class="text-center" style="margin-top: 50px">
+                        <p style="color: orange"><i class="fa fa-exclamation-triangle fa-4x" aria-hidden="true"></i></p>
+                        <p style="color: grey">Please select one asset from the list at left of the screen!</p>
+                    </div>
+                </ng-container>
+            </div>
+            <div class="col-md-12 text-center">
+                <div class="col-md-3">
+                    <button class="btn btn-primary btn-lg btn-block" [routerLink]="['../asset-clustering']"><i class="fa fa-arrow-left fa-lg"
+                            aria-hidden="true"></i>
+                        Prev</button>
+                </div>
+                <div class="col-md-3 offset-md-6">
+                    <button class="btn btn-primary btn-lg btn-block" [routerLink]="['../cascade-effects']"><i class="fa fa-arrow-right fa-lg"
+                            aria-hidden="true"></i>
+                        Next</button>
+                </div>
+            </div>
+        </ng-container>
+    </div>
+</div>
