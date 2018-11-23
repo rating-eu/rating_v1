@@ -114,5 +114,19 @@
                                  referencedTableName="self_assessment"
                                  onDelete="CASCADE"
         />
+
+        <!--MyAnswers-->
+        <dropForeignKeyConstraint
+            baseTableName="my_answer"
+            constraintName="fk_my_answer_questionnaire_status_id"
+        />
+
+        <addForeignKeyConstraint baseColumnNames="questionnaire_status_id"
+                                 baseTableName="my_answer"
+                                 constraintName="fk_my_answer_questionnaire_status_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="questionnaire_status"
+                                 onDelete="CASCADE"
+        />
     </changeSet>
 </databaseChangeLog>
