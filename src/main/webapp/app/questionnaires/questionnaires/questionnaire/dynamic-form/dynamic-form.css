@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css?family=Lato:400,400i,700");
+
 .loader {
     border: 16px solid #f3f3f3;
     border-radius: 50%;
@@ -5,6 +7,37 @@
     margin-left: 45%;
     width: 120px;
     height: 120px;
-    -webkit-animation: spin 2s linear infinite; / Safari /
-    animation: spin 2s linear infinite;
+    -webkit-animation: spin 2s linear infinite;
+/ Safari / animation: spin 2 s linear infinite;
+}
+
+ol {
+    counter-reset: my-awesome-counter;
+    list-style: none;
+    padding-left: 40px;
+}
+
+ol li {
+    margin: 0 0 0.5rem 0;
+    counter-increment: my-awesome-counter;
+    position: relative;
+}
+
+ol li::before {
+    content: counter(my-awesome-counter);
+    color: #fcd000;
+    font-size: 1.5rem;
+    font-weight: bold;
+    position: absolute;
+    --size: 32px;
+    left: calc(-1 * var(--size) - 10px);
+    line-height: var(--size);
+    width: var(--size);
+    height: var(--size);
+    top: 0;
+    transform: rotate(-10deg);
+    background: black;
+    border-radius: 50%;
+    text-align: center;
+    box-shadow: 1px 1px 0 #999;
 }

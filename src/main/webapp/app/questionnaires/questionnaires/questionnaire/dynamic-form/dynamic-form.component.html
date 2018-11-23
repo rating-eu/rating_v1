@@ -6,28 +6,34 @@
 
     <div [ngSwitch]="role">
         <div *ngSwitchCase="roleEnum.ROLE_CISO">
-            <div *ngFor="let question of questionsArray; trackBy: trackByID"
-                 [ngClass]="{'ng-valid': isValid(question.id) === true, 'ng-invalid': isValid(question.id) === false}"
-                 class="card-box">
+            <ol>
+                <li *ngFor="let question of questionsArray; trackBy: trackByID">
+                    <div
+                        [ngClass]="{'ng-valid': isValid(question.id) === true, 'ng-invalid': isValid(question.id) === false}"
+                        class="card-box">
 
-                <label class="form-control-label" [attr.for]="question?.id">
-                    <h3 class="h3-dynamic-form"> {{question?.name}}</h3>
-                </label>
-                <mat-radio-group [formControlName]="question.id" class="radio-group">
-                    <mat-radio-button *ngFor="let answer of sort(question.answers)" class="radio-button"
-                                      [value]="answer" [disabled]="!cisoEditMode">
-                        {{answer.name}}
-                    </mat-radio-button>
-                </mat-radio-group>
-            </div>
+                        <label class="form-control-label" [attr.for]="question?.id">
+                            <h3 class="h3-dynamic-form"> {{question?.name}}</h3>
+                        </label>
+                        <mat-radio-group [formControlName]="question.id" class="radio-group">
+                            <mat-radio-button *ngFor="let answer of sort(question.answers)" class="radio-button"
+                                              [value]="answer" [disabled]="!cisoEditMode">
+                                {{answer.name}}
+                            </mat-radio-button>
+                        </mat-radio-group>
+                    </div>
+                </li>
+            </ol>
 
             <div *ngIf="cisoEditMode" class="form-row text-right d-block">
 
                 <!-- <button class="btn btn-success btn-lg" type="submit" [disabled]="!form.valid">Submit</button> -->
-                <button class="btn btn-danger waves-light waves-effect w-md" type="reset" (click)="form.reset()">
+                <button class="btn btn-danger waves-light waves-effect w-md" type="reset"
+                        (click)="form.reset()">
                     <span class="fa fa-ban"></span>&nbsp;<span>Reset</span>
                 </button>
-                <button class="btn btn-success waves-light waves-effect w-md" type="submit" [disabled]="!form.valid">
+                <button class="btn btn-success waves-light waves-effect w-md" type="submit"
+                        [disabled]="!form.valid">
                     <i class="far fa-save"></i>&nbsp;<span>Submit</span>
                 </button>
                 <!-- <button class="btn btn-primary btn-lg" type="button" (click)="freezeQuestionnaireStatus()">Freeze
