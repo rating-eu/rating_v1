@@ -44,5 +44,89 @@
                                  referencedTableName="self_assessment"
                                  onDelete="CASCADE"
         />
+
+        <!--Economic Coefficients-->
+        <dropForeignKeyConstraint
+            baseTableName="economic_coefficients"
+            constraintName="fk_economic_coefficients_self_assessment_id"
+        />
+
+        <addForeignKeyConstraint baseColumnNames="self_assessment_id"
+                                 baseTableName="economic_coefficients"
+                                 constraintName="fk_economic_coefficients_self_assessment_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="self_assessment"
+                                 onDelete="CASCADE"
+        />
+
+        <!--Ebits-->
+        <dropForeignKeyConstraint
+            baseTableName="ebit"
+            constraintName="fk_ebit_self_assessment_id"
+        />
+
+        <addForeignKeyConstraint baseColumnNames="self_assessment_id"
+                                 baseTableName="ebit"
+                                 constraintName="fk_ebit_self_assessment_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="self_assessment"
+                                 onDelete="CASCADE"
+        />
+
+        <!--Economic Results-->
+        <dropForeignKeyConstraint
+            baseTableName="economic_results"
+            constraintName="fk_economic_results_self_assessment_id"
+        />
+
+        <addForeignKeyConstraint baseColumnNames="self_assessment_id"
+                                 baseTableName="economic_results"
+                                 constraintName="fk_economic_results_self_assessment_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="self_assessment"
+                                 onDelete="CASCADE"
+        />
+
+        <!--Splitting Loss-->
+        <dropForeignKeyConstraint
+            baseTableName="splitting_loss"
+            constraintName="fk_splitting_loss_self_assessment_id"
+        />
+
+        <addForeignKeyConstraint baseColumnNames="self_assessment_id"
+                                 baseTableName="splitting_loss"
+                                 constraintName="fk_splitting_loss_self_assessment_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="self_assessment"
+                                 onDelete="CASCADE"
+        />
+
+        <!--Critical Level-->
+        <dropForeignKeyConstraint
+            baseTableName="critical_level"
+            constraintName="fk_critical_level_self_assessment_id"
+        />
+
+        <addForeignKeyConstraint baseColumnNames="self_assessment_id"
+                                 baseTableName="critical_level"
+                                 constraintName="fk_critical_level_self_assessment_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="self_assessment"
+                                 onDelete="CASCADE"
+        />
+
+        <!--MyAnswers-->
+        <dropForeignKeyConstraint
+            baseTableName="my_answer"
+            constraintName="fk_my_answer_questionnaire_status_id"
+        />
+
+        <addForeignKeyConstraint baseColumnNames="questionnaire_status_id"
+                                 baseTableName="my_answer"
+                                 constraintName="fk_my_answer_questionnaire_status_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="questionnaire_status"
+                                 onDelete="CASCADE"
+        />
     </changeSet>
 </databaseChangeLog>

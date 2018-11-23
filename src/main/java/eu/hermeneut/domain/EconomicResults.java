@@ -38,7 +38,7 @@ public class EconomicResults implements Serializable {
     @Column(name = "intangible_loss_by_attacks", precision=10, scale=2)
     private BigDecimal intangibleLossByAttacks;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(unique = true)
     private SelfAssessment selfAssessment;
 
