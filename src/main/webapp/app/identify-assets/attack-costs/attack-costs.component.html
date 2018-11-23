@@ -8,61 +8,98 @@
             <div class="col-md-3">
                 <h6>Direct Assets</h6>
                 <div class="list-group">
-                    <!--
-                    <ng-container *ngFor="let myAsset of myAssets">
-                        <a href="javascript:void(0)" (click)="selectAsset(myAsset)" class="list-group-item list-group-item-action"
-                            [ngClass]="{'active': selectedAsset && myAsset.id === selectedAsset.id}">{{myAsset.asset.name}}</a>
-                    </ng-container>
-                    -->
                     <ng-container *ngFor="let myDirect of myDirects">
                         <a href="javascript:void(0)" (click)="selectDirect(myDirect)" class="list-group-item list-group-item-action"
-                            [ngClass]="{'active': selectedDirect && myDirect.id === selectedDirect.id}">{{myDirect.myAsset.asset.name}}</a>
+                            [ngClass]="{'active': selectedDirectAsset && myDirect.id === selectedDirectAsset.id}">{{myDirect.myAsset.asset.name}}</a>
                     </ng-container>
-
                 </div>
             </div>
             <div class="col-md-9">
-                <ng-container *ngIf="selectedDirect">
+                <ng-container *ngIf="selectedDirectAsset">
+                    <div class="row">
+                        <h5>For <b>{{selectedDirectAsset.myAsset.asset.name}}</b> asset, select the generated costs in case of attack.</h5>
+                    </div>
                     <div class="row">
                         <div class="col-md-12">
                             <div class="col-md-6">
                                 <ng-container *ngFor="let cost of costs; let isOdd=odd">
                                     <ng-container *ngIf="isOdd">
                                         <div class="row">
-                                            <label><input type="checkbox" [checked]="isDirectCostSelected(cost)" (change)="setCostOnDirect(cost)"
-                                                    aria-label="myAsset.asset.name">
-                                                {{myAsset.asset.name}}</label>
+                                            <label><input type="checkbox" [checked]="isDirectCostSelected(cost)"
+                                                    (change)="setCostOnDirect(cost)" id="{{cost}}">
+                                                {{cost}}</label>
                                         </div>
                                     </ng-container>
                                 </ng-container>
                             </div>
                             <div class="col-md-6">
-                                <ng-container *ngFor="let myAsset of myAssets; let isEven=even">
-                                    <ng-container *ngIf="isEven && myAsset.asset.id !== selectedDirectAsset.myAsset.asset.id">
+                                <ng-container *ngFor="let cost of costs; let isEven=even">
+                                    <ng-container *ngIf="isEven">
                                         <div class="row">
-                                            <label><input type="checkbox" [checked]="isIndirect(myAsset)" (change)="setIndirectAsset(myAsset)"
-                                                    aria-label="myAsset.asset.name">
-                                                {{myAsset.asset.name}}</label>
+                                            <label><input type="checkbox" [checked]="isDirectCostSelected(cost)"
+                                                    (change)="setCostOnDirect(cost)" id="{{cost}}">
+                                                {{cost}}</label>
                                         </div>
                                     </ng-container>
                                 </ng-container>
                             </div>
                         </div>
                     </div>
+                    <div class="row">
+                        <h5>For effects of <b>{{selectedDirectAsset.myAsset.asset.name}}</b> asset attack select the generated costs.</h5>
+                    </div>
+                    <div class="row">
+                        <ng-container *ngFor="let indirect of selectedDirectAsset.effects">
+                            <div class="col-md-3">
+                                <div class="chipsContainer">
+                                    <div class="badge chips chips-name" [ngClass]="{'badge-light': selectedIndirectAsset && indirect.id !== selectedIndirectAsset.id, 'badge-primary': selectedIndirectAsset && indirect.id === selectedIndirectAsset.id}"
+                                        (click)="selectIndirect(indirect)">
+                                        {{indirect.myAsset.asset.name}}
+                                    </div>
+                                </div>
+                            </div>
+                        </ng-container>
+                    </div>
+                    <div class="row" *ngIf="selectedIndirectAsset">
+                            <div class="col-md-12">
+                                    <div class="col-md-6">
+                                        <ng-container *ngFor="let cost of costs; let isOdd=odd">
+                                            <ng-container *ngIf="isOdd">
+                                                <div class="row">
+                                                    <label><input type="checkbox" [checked]="isIndirectCostSelected(cost)"
+                                                            (change)="setCostOnIndirect(cost)" id="{{cost}}">
+                                                        {{cost}}</label>
+                                                </div>
+                                            </ng-container>
+                                        </ng-container>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <ng-container *ngFor="let cost of costs; let isEven=even">
+                                            <ng-container *ngIf="isEven">
+                                                <div class="row">
+                                                    <label><input type="checkbox" [checked]="isIndirectCostSelected(cost)"
+                                                            (change)="setCostOnIndirect(cost)" id="{{cost}}">
+                                                        {{cost}}</label>
+                                                </div>
+                                            </ng-container>
+                                        </ng-container>
+                                    </div>
+                                </div>
+                    </div>
                     <div class="row" style="margin-top: 100px">
                         <div class="col-md-4 offset-md-4">
                             <div class="button-box">
-                                <button *ngIf="selectedDirect && isMyAssetUpdated" class="btn btn-success btn-lg btn-block"
+                                <button *ngIf="selectedDirectAsset && isMyAssetUpdated" class="btn btn-success btn-lg btn-block"
                                     (click)="updateMyAsset()"><i class="fas fa-save"></i>
                                     Submit</button>
-                                <button *ngIf="!selectedDirect || !isMyAssetUpdated" class="btn btn-secondary btn-lg btn-block"><i
+                                <button *ngIf="!selectedDirectAsset || !isMyAssetUpdated" class="btn btn-secondary btn-lg btn-block"><i
                                         class="fas fa-save"></i>
                                     Submit</button>
                             </div>
                         </div>
                     </div>
                 </ng-container>
-                <ng-container *ngIf="!selectedDirect">
+                <ng-container *ngIf="!selectedDirectAsset">
                     <div class="text-center" style="margin-top: 50px">
                         <p style="color: orange"><i class="fa fa-exclamation-triangle fa-4x" aria-hidden="true"></i></p>
                         <p style="color: grey">Please select one direct asset from the list at left of the screen!</p>

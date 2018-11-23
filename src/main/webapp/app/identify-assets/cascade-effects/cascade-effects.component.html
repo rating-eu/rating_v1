@@ -48,7 +48,7 @@
                                     <ng-container *ngIf="isOdd && myAsset.asset.id !== selectedDirectAsset.myAsset.asset.id">
                                         <div class="row">
                                             <label><input type="checkbox" [checked]="isIndirect(myAsset)" (change)="setIndirectAsset(myAsset)"
-                                                    aria-label="myAsset.asset.name">
+                                                   id="{{myAsset.asset.name}}">
                                                 {{myAsset.asset.name}}</label>
                                         </div>
                                     </ng-container>
@@ -59,7 +59,7 @@
                                     <ng-container *ngIf="isEven && myAsset.asset.id !== selectedDirectAsset.myAsset.asset.id">
                                         <div class="row">
                                             <label><input type="checkbox" [checked]="isIndirect(myAsset)" (change)="setIndirectAsset(myAsset)"
-                                                    aria-label="myAsset.asset.name">
+                                                    id="{{myAsset.asset.name}}">
                                                 {{myAsset.asset.name}}</label>
                                         </div>
                                     </ng-container>
