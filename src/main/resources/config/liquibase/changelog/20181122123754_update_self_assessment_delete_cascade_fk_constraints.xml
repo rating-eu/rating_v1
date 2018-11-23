@@ -44,5 +44,19 @@
                                  referencedTableName="self_assessment"
                                  onDelete="CASCADE"
         />
+
+        <!--Economic Coefficients-->
+        <dropForeignKeyConstraint
+            baseTableName="economic_coefficients"
+            constraintName="fk_economic_coefficients_self_assessment_id"
+        />
+
+        <addForeignKeyConstraint baseColumnNames="self_assessment_id"
+                                 baseTableName="economic_coefficients"
+                                 constraintName="fk_economic_coefficients_self_assessment_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="self_assessment"
+                                 onDelete="CASCADE"
+        />
     </changeSet>
 </databaseChangeLog>
