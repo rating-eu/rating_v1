@@ -50,7 +50,7 @@
                     </div>
                     <div class="row">
                         <ng-container *ngFor="let indirect of selectedDirectAsset.effects">
-                            <div class="col-md-3">
+                            <div class="col">
                                 <div class="chipsContainer">
                                     <div class="badge chips chips-name" [ngClass]="{'badge-light': selectedIndirectAsset && indirect.id !== selectedIndirectAsset.id, 'badge-primary': selectedIndirectAsset && indirect.id === selectedIndirectAsset.id}"
                                         (click)="selectIndirect(indirect)">

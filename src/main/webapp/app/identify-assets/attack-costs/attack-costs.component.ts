@@ -273,12 +273,19 @@ export class AttackCostsComponent implements OnInit {
             break;
           }
       }
+      for (const iCost of this.selectedDirectAsset.costs) {
+        if (iCost.type.toString() === (CostType[selectedCost] as String)) {
+          return true;
+        }
+      }
+      /*
       const index = _.findIndex(this.selectedDirectAsset.costs, { type: selectedCost });
       if (index !== -1) {
         return true;
       } else {
         return false;
       }
+      */
     }
     return false;
   }
@@ -456,12 +463,19 @@ export class AttackCostsComponent implements OnInit {
             break;
           }
       }
+      for (const iCost of this.selectedIndirectAsset.costs) {
+        if (iCost.type.toString() === (CostType[selectedCost] as String)) {
+          return true;
+        }
+      }
+      /*
       const index = _.findIndex(this.selectedIndirectAsset.costs, { type: selectedCost });
       if (index !== -1) {
         return true;
       } else {
         return false;
       }
+      */
     }
     return false;
   }
