@@ -1,5 +1,7 @@
 package eu.hermeneut.service.impl;
 
+import eu.hermeneut.domain.AttackCost;
+import eu.hermeneut.domain.IndirectAsset;
 import eu.hermeneut.service.DirectAssetService;
 import eu.hermeneut.domain.DirectAsset;
 import eu.hermeneut.repository.DirectAssetRepository;
@@ -10,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -43,9 +46,19 @@ public class DirectAssetServiceImpl implements DirectAssetService {
     public DirectAsset save(DirectAsset directAsset) {
         log.debug("Request to save DirectAsset : {}", directAsset);
 
-        if (directAsset.getEffects() != null && !directAsset.getEffects().isEmpty()) {
-            directAsset.getEffects().stream().forEach((indirectAsset) -> {
+        Set<IndirectAsset> effects = directAsset.getEffects();
+
+        if (effects != null && !effects.isEmpty()) {
+            effects.stream().forEach((indirectAsset) -> {
                 indirectAsset.setDirectAsset(directAsset);
+
+                Set<AttackCost> indirectCosts = indirectAsset.getCosts();
+
+                if (indirectCosts != null && !indirectCosts.isEmpty()) {
+                    indirectCosts.stream().forEach((attackCost) -> {
+                        attackCost.setIndirectAsset(indirectAsset);
+                    });
+                }
             });
         }
 
