@@ -58,5 +58,19 @@
                                  referencedTableName="self_assessment"
                                  onDelete="CASCADE"
         />
+
+        <!--Ebits-->
+        <dropForeignKeyConstraint
+            baseTableName="ebit"
+            constraintName="fk_ebit_self_assessment_id"
+        />
+
+        <addForeignKeyConstraint baseColumnNames="self_assessment_id"
+                                 baseTableName="ebit"
+                                 constraintName="fk_ebit_self_assessment_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="self_assessment"
+                                 onDelete="CASCADE"
+        />
     </changeSet>
 </databaseChangeLog>
