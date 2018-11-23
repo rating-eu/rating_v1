@@ -100,5 +100,19 @@
                                  referencedTableName="self_assessment"
                                  onDelete="CASCADE"
         />
+
+        <!--Critical Level-->
+        <dropForeignKeyConstraint
+            baseTableName="critical_level"
+            constraintName="fk_critical_level_self_assessment_id"
+        />
+
+        <addForeignKeyConstraint baseColumnNames="self_assessment_id"
+                                 baseTableName="critical_level"
+                                 constraintName="fk_critical_level_self_assessment_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="self_assessment"
+                                 onDelete="CASCADE"
+        />
     </changeSet>
 </databaseChangeLog>
