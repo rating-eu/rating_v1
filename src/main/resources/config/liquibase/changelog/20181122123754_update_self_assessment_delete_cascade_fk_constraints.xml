@@ -86,5 +86,19 @@
                                  referencedTableName="self_assessment"
                                  onDelete="CASCADE"
         />
+
+        <!--Splitting Loss-->
+        <dropForeignKeyConstraint
+            baseTableName="splitting_loss"
+            constraintName="fk_splitting_loss_self_assessment_id"
+        />
+
+        <addForeignKeyConstraint baseColumnNames="self_assessment_id"
+                                 baseTableName="splitting_loss"
+                                 constraintName="fk_splitting_loss_self_assessment_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="self_assessment"
+                                 onDelete="CASCADE"
+        />
     </changeSet>
 </databaseChangeLog>

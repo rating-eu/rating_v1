@@ -46,7 +46,7 @@ public class SplittingLoss implements Serializable {
     @Column(name = "loss", precision = 10, scale = 2)
     private BigDecimal loss;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.REMOVE)
     @NotNull
     private SelfAssessment selfAssessment;
 
