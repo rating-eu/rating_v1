@@ -42,8 +42,20 @@ public class DirectAssetServiceImpl implements DirectAssetService {
     @Override
     public DirectAsset save(DirectAsset directAsset) {
         log.debug("Request to save DirectAsset : {}", directAsset);
+
+        if (directAsset.getEffects() != null && !directAsset.getEffects().isEmpty()) {
+            directAsset.getEffects().stream().forEach((indirectAsset) -> {
+                indirectAsset.setDirectAsset(directAsset);
+            });
+        }
+
+        if (directAsset.getCosts() != null && !directAsset.getCosts().isEmpty()) {
+            directAsset.getCosts().stream().forEach((attackCost) -> {
+                attackCost.setDirectAsset(directAsset);
+            });
+        }
+
         DirectAsset result = directAssetRepository.save(directAsset);
-        //directAssetSearchRepository.save(result);
         return result;
     }
 

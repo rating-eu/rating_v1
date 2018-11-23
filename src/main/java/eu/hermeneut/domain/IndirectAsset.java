@@ -30,11 +30,11 @@ public class IndirectAsset implements Serializable {
     @SequenceGenerator(name = "sequenceGenerator")
     private Long id;
 
-    // @NotNull
+    @NotNull
     @ManyToOne(cascade = CascadeType.REMOVE)
     private DirectAsset directAsset;
 
-    // @NotNull
+    @NotNull
     @OneToOne(cascade = CascadeType.REMOVE)
     private MyAsset myAsset;
 

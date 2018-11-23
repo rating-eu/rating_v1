@@ -23,5 +23,12 @@
                                columnName="direct_asset_id"
                                columnDataType="bigint"
         />
+        <!--Revert-->
+        <addNotNullConstraint catalogName="cat"
+                               schemaName="public"
+                               tableName="indirect_asset"
+                               columnName="direct_asset_id"
+                               columnDataType="bigint"
+        />
     </changeSet>
 </databaseChangeLog>
