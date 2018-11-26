@@ -8,7 +8,7 @@
         <i [ngbCollapse]="isDescriptionCollapsed">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at neque
                 malesuada, placerat ipsum eu, molestie urna. Integer sollicitudin sollicitudin diam, sit amet sagittis enim
                 laoreet eget. Aenean pulvinar maximus ex sit amet tempus. Suspendisse vehicula arcu ante, non facilisis
-                magna dictum ut.</i>
+                magna dictum ut.<br></i>
         <ng-container class="card-text" *ngIf="!myAssets">
             <div class="loader"></div>
         </ng-container>
@@ -89,20 +89,6 @@
                     <div class="row">
                         <jhi-alert></jhi-alert>
                     </div>
-                    <!--
-                    <div class="row" style="margin-top: 100px">
-                        <div class="col-md-4 offset-md-4">
-                            <div class="button-box">
-                                <button *ngIf="selectedAsset && isMyAssetUpdated" class="btn btn-success btn-lg btn-block"
-                                    (click)="updateMyAsset()"><i class="fas fa-save"></i>
-                                    Submit</button>
-                                <button *ngIf="!selectedAsset || !isMyAssetUpdated" class="btn btn-secondary btn-lg btn-block"><i
-                                        class="fas fa-save"></i>
-                                    Submit</button>
-                            </div>
-                        </div>
-                    </div>
-                    -->
                 </ng-container>
                 <ng-container *ngIf="!selectedAsset">
                     <div class="text-center" style="margin-top: 50px">

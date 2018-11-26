@@ -1,3 +1,5 @@
+import { JhiAlertService } from 'ng-jhipster';
+import { Router } from '@angular/router';
 import { IndirectAssetMgm } from './../../entities/indirect-asset-mgm/indirect-asset-mgm.model';
 import { MyCostType } from './../model/enumeration/AttackCostType.enum';
 import { AttackCostMgm, CostType } from './../../entities/attack-cost-mgm/attack-cost-mgm.model';
@@ -20,10 +22,11 @@ export class AttackCostsComponent implements OnInit {
   private mySelf: SelfAssessmentMgm = {};
   public myAssets: MyAssetMgm[];
   public myDirects: DirectAssetMgm[];
-  public selectedAsset: MyAssetMgm;
   public selectedDirectAsset: DirectAssetMgm;
   public selectedIndirectAsset: IndirectAssetMgm;
   public isMyAssetUpdated = false;
+  public isDescriptionCollapsed = true;
+  public loading = false;
   public costs: string[] = [
     'Before the attack status restoration',
     'Increased security',
@@ -43,7 +46,9 @@ export class AttackCostsComponent implements OnInit {
 
   constructor(
     private idaUtilsService: IdentifyAssetUtilService,
-    private mySelfAssessmentService: SelfAssessmentMgmService
+    private mySelfAssessmentService: SelfAssessmentMgmService,
+    private router: Router,
+    private jhiAlertService: JhiAlertService,
   ) {
 
   }
@@ -62,20 +67,6 @@ export class AttackCostsComponent implements OnInit {
     });
   }
 
-  public selectAsset(myAsset: MyAssetMgm) {
-    if (myAsset) {
-      if (this.selectedAsset) {
-        if (this.selectedAsset.id === myAsset.id) {
-          this.selectedAsset = null;
-        } else {
-          this.selectedAsset = myAsset;
-        }
-      } else {
-        this.selectedAsset = myAsset;
-      }
-    }
-  }
-
   public selectIndirect(myIndirect: IndirectAssetMgm) {
     if (myIndirect) {
       if (this.selectedIndirectAsset) {
@@ -92,6 +83,7 @@ export class AttackCostsComponent implements OnInit {
 
   public selectDirect(myDirect: DirectAssetMgm) {
     if (myDirect) {
+      this.selectedIndirectAsset = null;
       if (this.selectedDirectAsset) {
         if (this.selectedDirectAsset.id === myDirect.id) {
           this.selectedDirectAsset = null;
@@ -278,14 +270,6 @@ export class AttackCostsComponent implements OnInit {
           return true;
         }
       }
-      /*
-      const index = _.findIndex(this.selectedDirectAsset.costs, { type: selectedCost });
-      if (index !== -1) {
-        return true;
-      } else {
-        return false;
-      }
-      */
     }
     return false;
   }
@@ -468,33 +452,21 @@ export class AttackCostsComponent implements OnInit {
           return true;
         }
       }
-      /*
-      const index = _.findIndex(this.selectedIndirectAsset.costs, { type: selectedCost });
-      if (index !== -1) {
-        return true;
-      } else {
-        return false;
-      }
-      */
     }
     return false;
   }
 
   public updateMyAsset() {
-    console.log(this.selectedAsset);
     console.log(this.selectedDirectAsset);
-    // this.idaUtilsService.updateAsset(this.selectedAsset);
-    /*
-    if (this.selectedIndirectAssets) {
-      this.selectedDirectAsset.effects = this.selectedIndirectAssets;
-    }
-    */
+    this.loading = true;
     this.idaUtilsService.updateDirectAsset(this.selectedDirectAsset).toPromise().then((myDirectAsset) => {
       if (myDirectAsset) {
         this.selectedDirectAsset = myDirectAsset;
-        const indIndex = _.findIndex(this.selectedDirectAsset.effects, { id: this.selectedIndirectAsset.id });
-        if (indIndex !== -1) {
-          this.selectedIndirectAsset = this.selectedDirectAsset.effects[indIndex];
+        if (this.selectedIndirectAsset) {
+          const indIndex = _.findIndex(this.selectedDirectAsset.effects, { id: this.selectedIndirectAsset.id });
+          if (indIndex !== -1) {
+            this.selectedIndirectAsset = this.selectedDirectAsset.effects[indIndex];
+          }
         }
         const index = _.findIndex(this.myDirects, { id: this.selectedDirectAsset.id });
         if (index !== -1) {
@@ -503,7 +475,12 @@ export class AttackCostsComponent implements OnInit {
           this.myDirects.push(_.cloneDeep(this.selectedDirectAsset));
         }
         this.isMyAssetUpdated = false;
+        this.loading = false;
+        this.jhiAlertService.success('hermeneutApp.messages.saved', null, null);
       }
+    }).catch(() => {
+      this.loading = false;
+      this.jhiAlertService.error('hermeneutApp.messages.error', null, null);
     });
   }
 

@@ -45,9 +45,22 @@ export class MagnitudeComponent implements OnInit, OnDestroy {
         this.idaUtilsService.getMySavedAssets(this.mySelf).toPromise().then((mySavedAssets) => {
             if (mySavedAssets) {
                 this.myAssets = mySavedAssets;
+                this.priorityCheck();
             }
         }).catch(() => {
         });
+    }
+
+    private priorityCheck() {
+        let pryorityCounter = 0;
+        for (const asset of this.myAssets) {
+            if (asset.ranking >= 0) {
+                pryorityCounter++;
+            }
+        }
+        if (pryorityCounter === this.myAssets.length) {
+            this.isFull = true;
+        }
     }
 
     public selectAsset(myAsset: MyAssetMgm) {
@@ -73,7 +86,11 @@ export class MagnitudeComponent implements OnInit, OnDestroy {
 
     public updateMyAsset(onNext: boolean) {
         if (!this.selectedAsset) {
-            return;
+            if (onNext) {
+                this.router.navigate(['/identify-asset/cascade-effects']);
+            } else {
+                return;
+            }
         }
         this.loading = true;
         if (!this.selectedAsset.estimated) {
@@ -82,8 +99,8 @@ export class MagnitudeComponent implements OnInit, OnDestroy {
         if (this.isMyAssetUpdated) {
             this.idaUtilsService.updateAsset(this.selectedAsset).toPromise().then((updatedAssets) => {
                 // this.selectedAsset = updatedAssets;
-                const index = _.findIndex(this.myAssets, { id: this.selectedAsset.id });
-                this.myAssets.splice(index, 1, this.selectedAsset);
+                const index = _.findIndex(this.myAssets, { id: updatedAssets.id });
+                this.myAssets.splice(index, 1, _.cloneDeep(updatedAssets));
                 this.isMyAssetUpdated = false;
                 this.loading = false;
                 this.jhiAlertService.success('hermeneutApp.messages.saved', null, null);
@@ -92,7 +109,7 @@ export class MagnitudeComponent implements OnInit, OnDestroy {
                 }
             }).catch(() => {
                 this.loading = false;
-                this.jhiAlertService.success('hermeneutApp.messages.error', null, null);
+                this.jhiAlertService.error('hermeneutApp.messages.error', null, null);
             });
         } else {
             this.loading = false;
@@ -100,7 +117,6 @@ export class MagnitudeComponent implements OnInit, OnDestroy {
                 this.router.navigate(['/identify-asset/cascade-effects']);
             }
         }
-
     }
 
     public setSelectedAssetPriority(priority: String) {
@@ -141,15 +157,7 @@ export class MagnitudeComponent implements OnInit, OnDestroy {
                     break;
                 }
             }
-            let pryorityCounter = 0;
-            for (const asset of this.myAssets) {
-                if (asset.ranking >= 0) {
-                    pryorityCounter++;
-                }
-            }
-            if (pryorityCounter === this.myAssets.length) {
-                this.isFull = true;
-            }
+            this.priorityCheck();
             this.isMyAssetUpdated = true;
         }
     }
