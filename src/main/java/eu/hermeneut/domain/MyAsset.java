@@ -53,7 +53,6 @@ public class MyAsset implements Serializable {
     @ManyToOne
     private Asset asset;
 
-    @OneToOne(cascade = CascadeType.REMOVE)
     private SelfAssessment selfAssessment;
 
     @ManyToOne
