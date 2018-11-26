@@ -1,6 +1,7 @@
 import * as _ from 'lodash';
 
 import { Component, OnInit, OnDestroy, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+import { Router } from '@angular/router';
 import { Principal, LoginModalService, AccountService, UserService, User } from '../../shared';
 import { SelfAssessmentMgm, SelfAssessmentMgmService } from '../../entities/self-assessment-mgm';
 import { Subscription } from 'rxjs/Subscription';
@@ -37,6 +38,7 @@ export class AssetClusteringComponent implements OnInit, OnDestroy {
     public categories: AssetCategoryMgm[];
     public selectedCategory: AssetCategoryMgm;
     public updateMyAssets = false;
+    public isDescriptionCollapsed = true;
 
     constructor(
         private principal: Principal,
@@ -48,7 +50,8 @@ export class AssetClusteringComponent implements OnInit, OnDestroy {
         private questionnairesService: QuestionnairesService,
         private questionnaireStatusService: QuestionnaireStatusMgmCustomService,
         private questionnaireStatusServices: QuestionnaireStatusMgmService,
-        private ref: ChangeDetectorRef
+        private ref: ChangeDetectorRef,
+        private router: Router
     ) { }
 
     ngOnDestroy() {
@@ -267,6 +270,8 @@ export class AssetClusteringComponent implements OnInit, OnDestroy {
             if (myAssets) {
                 this.myAssets = myAssets;
             }
+            this.router.navigate(['../magnitude']);
+            // [routerLink]="['../magnitude']"
         });
     }
 }
