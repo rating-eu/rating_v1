@@ -31,6 +31,7 @@
         },
         "messages": {
             "saved": "Salvato correttamente",
+            "error": "Errore",
             "notfound": "Non trovato"
         },
         "identifyThreatAgent": {
