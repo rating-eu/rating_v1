@@ -149,6 +149,7 @@ export class CascadeEffectsComponent implements OnInit {
         if (!this.selectedDirectAsset) {
             if (onNext) {
                 this.router.navigate(['/identify-asset/attack-costs']);
+                return;
             } else {
                 return;
             }

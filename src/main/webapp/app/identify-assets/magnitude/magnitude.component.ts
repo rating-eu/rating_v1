@@ -88,6 +88,7 @@ export class MagnitudeComponent implements OnInit, OnDestroy {
         if (!this.selectedAsset) {
             if (onNext) {
                 this.router.navigate(['/identify-asset/cascade-effects']);
+                return;
             } else {
                 return;
             }
