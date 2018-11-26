@@ -13,14 +13,16 @@
     <property name="floatType" value="float4" dbms="postgresql, h2"/>
     <property name="floatType" value="float" dbms="mysql, oracle, mssql"/>
 
-    <changeSet id="20180523150559-1" author="developer">
-        <loadData encoding="UTF-8"
-                  file="config/liquibase/assets.csv"
-                  schemaName="public"
-                  separator=";"
-                  quotchar="'"
-                  tableName="asset">
-        </loadData>
+    <changeSet id="20180523150559-1" author="developer" runOnChange="true">
+        <loadUpdateData encoding="UTF-8"
+                        file="config/liquibase/assets.csv"
+                        schemaName="public"
+                        separator=";"
+                        quotchar="'"
+                        tableName="asset"
+                        primaryKey="id"
+        >
+        </loadUpdateData>
     </changeSet>
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here, do not remove-->
 </databaseChangeLog>

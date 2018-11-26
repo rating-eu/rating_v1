@@ -1,6 +1,6 @@
 import { BaseEntity } from './../../shared';
 
-export const enum CostType {
+export enum CostType {
     'BEFORE_THE_ATTACK_STATUS_RESTORATION',
     'INCREASED_SECURITY',
     'LEGAL_LITIGATION_COSTS_AND_ATTORNEY_FEES',

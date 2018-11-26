@@ -35,7 +35,7 @@ public class MyAnswer implements Serializable {
     @Column(name = "answer_offset", nullable = false)
     private Integer answerOffset;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.REMOVE)
     private QuestionnaireStatus questionnaireStatus;
 
     @OneToOne

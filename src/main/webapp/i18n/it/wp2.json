@@ -21,6 +21,9 @@
                 "cascadeEffects": {
                     "title": "Effetti secondari"
                 },
+                "attackCosts": {
+                    "title": "Costi"
+                },
                 "assetReport": {
                     "title": "Asset report"
                 }
@@ -28,6 +31,7 @@
         },
         "messages": {
             "saved": "Salvato correttamente",
+            "error": "Errore",
             "notfound": "Non trovato"
         },
         "identifyThreatAgent": {

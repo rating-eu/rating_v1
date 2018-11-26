@@ -1,11 +1,11 @@
 package eu.hermeneut.web.rest.assets;
 
 import com.codahale.metrics.annotation.Timed;
-import eu.hermeneut.domain.AttackCost;
-import eu.hermeneut.domain.DirectAsset;
-import eu.hermeneut.domain.IndirectAsset;
-import eu.hermeneut.domain.MyAsset;
+import eu.hermeneut.domain.*;
 import eu.hermeneut.domain.assets.AssetsOneShot;
+import eu.hermeneut.exceptions.NotFoundException;
+import eu.hermeneut.exceptions.NullInputException;
+import eu.hermeneut.kafka.service.MessageSenderService;
 import eu.hermeneut.service.AttackCostService;
 import eu.hermeneut.service.DirectAssetService;
 import eu.hermeneut.service.IndirectAssetService;
@@ -38,6 +38,9 @@ public class AssetsOneShotResource {
 
     @Autowired
     private AttackCostService attackCostService;
+
+    @Autowired
+    private MessageSenderService messageSenderService;
 
     @PostMapping("/my-assets-one-shot/")
     @Timed
@@ -335,6 +338,20 @@ public class AssetsOneShotResource {
         result.setMyAssets(updatedMyAssets);
         result.setDirectAssets(updatedDirectAssets);
         result.setAttackCosts(attackCosts);
+
+        if (myAssets != null && !myAssets.isEmpty()) {
+            SelfAssessment selfAssessment = myAssets.get(0).getSelfAssessment();
+
+            if (selfAssessment != null) {
+                try {
+                    this.messageSenderService.sendRiskProfile(selfAssessment.getId());
+                } catch (NullInputException e) {
+                    e.printStackTrace();
+                } catch (NotFoundException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
 
         return result;
     }
