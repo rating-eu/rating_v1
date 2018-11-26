@@ -492,6 +492,10 @@ export class AttackCostsComponent implements OnInit {
     this.idaUtilsService.updateDirectAsset(this.selectedDirectAsset).toPromise().then((myDirectAsset) => {
       if (myDirectAsset) {
         this.selectedDirectAsset = myDirectAsset;
+        const indIndex = _.findIndex(this.selectedDirectAsset.effects, { id: this.selectedIndirectAsset.id });
+        if (indIndex !== -1) {
+          this.selectedIndirectAsset = this.selectedDirectAsset.effects[indIndex];
+        }
         const index = _.findIndex(this.myDirects, { id: this.selectedDirectAsset.id });
         if (index !== -1) {
           this.myDirects.splice(index, 1, this.selectedDirectAsset);
