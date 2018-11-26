@@ -39,6 +39,7 @@ export class AssetClusteringComponent implements OnInit, OnDestroy {
     public selectedCategory: AssetCategoryMgm;
     public updateMyAssets = false;
     public isDescriptionCollapsed = true;
+    public loading = false;
 
     constructor(
         private principal: Principal,
@@ -272,16 +273,19 @@ export class AssetClusteringComponent implements OnInit, OnDestroy {
 
     public saveMyAsset() {
         console.log(this.myAssets);
+        this.loading = true;
         if (this.updateMyAssets) {
             this.idaUtilsService.createUpdateMyAssets(this.mySelf, this.myAssets).toPromise().then((myAssets) => {
                 if (myAssets) {
                     this.myAssets = myAssets;
                 }
-                this.router.navigate(['../magnitude']);
+                this.loading = false;
+                this.router.navigate(['/identify-asset/magnitude']);
                 // [routerLink]="['../magnitude']"
             });
         } else {
-            this.router.navigate(['../magnitude']);
+            this.loading = false;
+            this.router.navigate(['/identify-asset/magnitude']);
             // [routerLink]="['../magnitude']"
         }
     }
