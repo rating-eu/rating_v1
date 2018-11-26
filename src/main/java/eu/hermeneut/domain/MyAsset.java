@@ -53,6 +53,7 @@ public class MyAsset implements Serializable {
     @ManyToOne
     private Asset asset;
 
+    @OneToOne
     private SelfAssessment selfAssessment;
 
     @ManyToOne
