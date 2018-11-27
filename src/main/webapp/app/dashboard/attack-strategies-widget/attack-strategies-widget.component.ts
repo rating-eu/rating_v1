@@ -48,8 +48,13 @@ export class AttackStrategiesWidgetComponent implements OnInit {
                   this.attacksMapCounter++;
                 }
               }
-              if (!this.status.assessVulnerablitiesStatus) {
+              /* TODO Il server dovrebbe restituire un valore pari a null quando non fornisce risultati altrimenti non
+              si riesce a disambiguare il caso assenza di informazioni dal caso assenza di vulnerabilità*/
+              if (!this.status.assessVulnerablitiesStatus && res2.length > 0) {
                 this.status.assessVulnerablitiesStatus = true;
+                this.dashService.updateStatus(this.status);
+              } else if (!this.status.assessVulnerablitiesStatus && res2.length === 0) {
+                this.status.assessVulnerablitiesStatus = false;
                 this.dashService.updateStatus(this.status);
               }
             }
