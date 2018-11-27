@@ -80,6 +80,8 @@ export class SelfAssessmentMgmDialogComponent implements OnInit {
                         (response3: HttpResponse<MyCompanyMgm>) => {
                             const myCompany: MyCompanyMgm = response3.body;
                             this.myCompanyProfile = myCompany.companyProfile;
+                            this.companyprofiles = [this.myCompanyProfile];
+                            this.selfAssessment.companyProfile = this.myCompanyProfile;
                         },
                         (error: any) => {
                             if (error.status === 404) {
@@ -92,10 +94,14 @@ export class SelfAssessmentMgmDialogComponent implements OnInit {
         });
 
         this.isSaving = false;
-        this.companyProfileService.query()
+
+        // No need to fetch all the CompanyProfiles since we already have the MyCompanyProfile of the logged user.
+        /*this.companyProfileService.query()
             .subscribe((res: HttpResponse<CompanyProfileMgm[]>) => {
                 this.companyprofiles = res.body;
-            }, (res: HttpErrorResponse) => this.onError(res.message));
+                // Keep only the CompanyProfile for which there is a MyCompany in DB associated with the logged user.
+            }, (res: HttpErrorResponse) => this.onError(res.message));*/
+
         this.userService.query()
             .subscribe((res: HttpResponse<User[]>) => {
                 this.users = res.body;
