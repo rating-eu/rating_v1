@@ -28,7 +28,7 @@ public class DirectAsset implements Serializable {
     @SequenceGenerator(name = "sequenceGenerator")
     private Long id;
 
-    @OneToOne(cascade = CascadeType.REMOVE)
+    @OneToOne
     @JoinColumn(unique = true)
     private MyAsset myAsset;
 
