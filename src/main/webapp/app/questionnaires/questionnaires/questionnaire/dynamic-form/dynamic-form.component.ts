@@ -392,6 +392,11 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
             })
         );
 
+        // Send RiskProfile to kafka
+        this.dataSharingSerivce.sendRsikProfileToKafka(this.selfAssessment.id).toPromise().then(
+            (response) => {
+            });
+
         // #3 Get the default ThreatAgents
         const defaultThreatAgents$: Observable<HttpResponse<ThreatAgentMgm[]>> = this.threatAgentService.getDefaultThreatAgents();
 
