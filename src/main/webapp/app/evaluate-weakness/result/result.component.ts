@@ -63,6 +63,8 @@ export class WeaknessResultComponent implements OnInit, OnDestroy {
     likelihoodStep: LikelihoodStep = LikelihoodStep.INITIAL_LIKELIHOOD;
     likelihoodStepEnum = LikelihoodStep;
 
+    likelihoodStepEnabled: Map<number/*Step-Number*/, boolean>;
+
     constructor(private route: ActivatedRoute,
                 private selfAssessmentService: SelfAssessmentMgmService,
                 private questionnaireStatusService: QuestionnaireStatusMgmService,
@@ -73,6 +75,11 @@ export class WeaknessResultComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
+        this.likelihoodStepEnabled = new Map();
+        this, this.likelihoodStepEnabled.set(LikelihoodStep.INITIAL_LIKELIHOOD, false);
+        this, this.likelihoodStepEnabled.set(LikelihoodStep.CONTEXTUAL_LIKELIHOOD, false);
+        this, this.likelihoodStepEnabled.set(LikelihoodStep.REFINED_LIKELIHOOD, false);
+
         this.selfAssessment = this.selfAssessmentService.getSelfAssessment();
         this.threatAgents = this.selfAssessment.threatagents;
 
@@ -123,6 +130,25 @@ export class WeaknessResultComponent implements OnInit, OnDestroy {
                     // Finally we replace the initial AttackStrategies with those by REFERENCE
                     // (to allow one-time update for all the occurrences of the same AttackStrategy in different Levels or Phases)
                     this.attacksCKC7Matrix[Number(levelID)][Number(phaseID)] = augmentedAttackStrategiesByReference;
+                }
+            }
+
+            // Check which steps (INITIAL, CONTEXTUAL, REFINED) are available.
+            const augmentedAttackStrategies: AugmentedAttackStrategy[] = Array.from(this.augmentedAttackStrategiesMap.values());
+
+            if (augmentedAttackStrategies && augmentedAttackStrategies.length > 0) {
+                const augmentedAttackStrategy: AugmentedAttackStrategy = augmentedAttackStrategies[0];
+
+                if (augmentedAttackStrategy.initialLikelihood > 0) {
+                    this.likelihoodStepEnabled.set(LikelihoodStep.INITIAL_LIKELIHOOD, true);
+                }
+
+                if (augmentedAttackStrategy.contextualLikelihood > 0) {
+                    this.likelihoodStepEnabled.set(LikelihoodStep.CONTEXTUAL_LIKELIHOOD, true);
+                }
+
+                if (augmentedAttackStrategy.refinedLikelihood > 0) {
+                    this.likelihoodStepEnabled.set(LikelihoodStep.REFINED_LIKELIHOOD, true);
                 }
             }
 
