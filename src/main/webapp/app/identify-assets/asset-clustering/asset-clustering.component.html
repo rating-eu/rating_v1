@@ -9,7 +9,7 @@
         <i [ngbCollapse]="isDescriptionCollapsed">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at neque
             malesuada, placerat ipsum eu, molestie urna. Integer sollicitudin sollicitudin diam, sit amet sagittis enim
             laoreet eget. Aenean pulvinar maximus ex sit amet tempus. Suspendisse vehicula arcu ante, non facilisis
-            magna dictum ut.</i>
+            magna dictum ut.<br></i>
         <ng-container class="card-text" *ngIf="categoryToAssets.size === 0">
             <div class="loader"></div>
         </ng-container>
@@ -70,25 +70,13 @@
             <div class="col-md-12 text-center">
                 <div class="col-md-3">
                 </div>
-                <!--
-                <div class="col-md-3 offset-md-1">
-                    <div class="button-box">
-                        <button *ngIf="myAssets && updateMyAssets" class="btn btn-success btn-lg btn-block" (click)="saveMyAsset()"><i
-                                class="fas fa-save"></i>
-                            Submit</button>
-                        <button *ngIf="!myAssets || !updateMyAssets" class="btn btn-secondary btn-lg btn-block"><i
-                                class="fas fa-save"></i>
-                            Submit</button>
-                    </div>
-                </div>
-                -->
                 <div class="col-md-3 offset-md-6">
                     <ng-container *ngIf="!myAssets">
                         <button class="btn btn-secondary btn-lg btn-block"><i class="fa fa-arrow-right fa-lg"
                                 aria-hidden="true"></i> Next</button>
                     </ng-container>
                     <ng-container *ngIf="myAssets">
-                        <button class="btn btn-secondary btn-lg btn-block" [ngClass]="{'btn-primary': myAssets.length>0, 'btn-secondary': myAssets.length === 0}"
+                        <button class="btn btn-lg btn-block" [ngClass]="{'btn-primary': myAssets.length>0, 'btn-secondary': myAssets.length === 0}"
                             (click)="saveMyAsset()">
                             Next 
                             <i *ngIf="!loading" class="fa fa-arrow-right fa-lg" aria-hidden="true"></i>

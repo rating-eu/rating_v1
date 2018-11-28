@@ -1,3 +1,5 @@
+import { JhiAlertService } from 'ng-jhipster';
+import { Router } from '@angular/router';
 import { IndirectAssetMgm } from './../../entities/indirect-asset-mgm/indirect-asset-mgm.model';
 import { DirectAssetMgm } from './../../entities/direct-asset-mgm/direct-asset-mgm.model';
 import { SelfAssessmentMgmService } from './../../entities/self-assessment-mgm/self-assessment-mgm.service';
@@ -21,14 +23,17 @@ export class CascadeEffectsComponent implements OnInit {
     public selectedAsset: MyAssetMgm;
     public isDirect = false;
     public isMyAssetUpdated = false;
+    public loading = false;
+    public isDescriptionCollapsed = true;
     public selectedDirectAsset: DirectAssetMgm;
     private myDirects: DirectAssetMgm[];
-    // private myIndirects: IndirectAssetMgm[];
     private selectedIndirectAssets: IndirectAssetMgm[];
 
     constructor(
         private idaUtilsService: IdentifyAssetUtilService,
-        private mySelfAssessmentService: SelfAssessmentMgmService
+        private mySelfAssessmentService: SelfAssessmentMgmService,
+        private router: Router,
+        private jhiAlertService: JhiAlertService,
     ) {
 
     }
@@ -46,14 +51,6 @@ export class CascadeEffectsComponent implements OnInit {
                 this.myDirects = mySavedDirect;
             }
         });
-        // TODO Questa richiesta potrebbe essere superflua a reggime gli indirect dovrebbero essere nei direct -> effects
-        /*
-        this.idaUtilsService.getMySavedIndirectAssets(this.mySelf).toPromise().then((mySavedIndirect) => {
-            if (mySavedIndirect) {
-                this.myIndirects = mySavedIndirect;
-            }
-        });
-        */
     }
 
     public selectAsset(myAsset: MyAssetMgm) {
@@ -80,17 +77,6 @@ export class CascadeEffectsComponent implements OnInit {
                 if (this.selectedDirectAsset && this.selectedDirectAsset.effects) {
                     this.selectedIndirectAssets = this.selectedDirectAsset.effects;
                 }
-                // TODO Questo ciclo FOR potrebbe essere superfluo a reggime
-                /*
-                for (const indirect of this.myIndirects) {
-                    if (indirect.directAsset.id === this.selectedDirectAsset.id) {
-                        const indIndex = _.findIndex(this.selectedIndirectAssets, (myIndirect) => myIndirect.directAsset.id === indirect.directAsset.id);
-                        if (indIndex === -1) {
-                            this.selectedIndirectAssets.push(_.cloneDeep(indirect));
-                        }
-                    }
-                }
-                */
             }
         }
     }
@@ -125,18 +111,6 @@ export class CascadeEffectsComponent implements OnInit {
         if (this.selectedDirectAsset.effects) {
             indirects = this.selectedDirectAsset.effects;
         }
-        // TODO Questo ciclo FOR potrebbe essere superfluo a reggime
-        /*
-        for (const indirect of this.myIndirects) {
-            if (indirect.directAsset.id === this.selectedDirectAsset.id) {
-                const indIndex = _.findIndex(indirects, (myIndirect) => myIndirect.directAsset.id === indirect.directAsset.id);
-                if (indIndex === -1) {
-                    indirects.push(_.cloneDeep(indirect));
-                }
-            }
-        }
-        */
-        // const index = _.findIndex(this.myIndirects, (myIndirect) => myIndirect.myAsset.id === myAsset.id);
         const index = _.findIndex(indirects, (myIndirect) => myIndirect.myAsset.id === myAsset.id);
         this.isMyAssetUpdated = true;
         if (index !== -1) {
@@ -171,24 +145,45 @@ export class CascadeEffectsComponent implements OnInit {
         return false;
     }
 
-    public updateMyAsset() {
-        console.log(this.selectedAsset);
-        console.log(this.selectedDirectAsset);
-        // this.idaUtilsService.updateAsset(this.selectedAsset);
+    public updateMyAsset(onNext: boolean) {
+        if (!this.selectedDirectAsset) {
+            if (onNext) {
+                this.router.navigate(['/identify-asset/attack-costs']);
+                return;
+            } else {
+                return;
+            }
+        }
+        this.loading = true;
         if (this.selectedIndirectAssets) {
             this.selectedDirectAsset.effects = this.selectedIndirectAssets;
         }
-        this.idaUtilsService.updateDirectAsset(this.selectedDirectAsset).toPromise().then((myDirectAsset) => {
-            if (myDirectAsset) {
-                this.selectedDirectAsset = myDirectAsset;
-                const index = _.findIndex(this.myDirects, { id: this.selectedDirectAsset.id });
-                if (index !== -1) {
-                    this.myDirects.splice(index, 1, this.selectedDirectAsset);
-                } else {
-                    this.myDirects.push(_.cloneDeep(this.selectedDirectAsset));
+        if (this.isMyAssetUpdated) {
+            this.idaUtilsService.updateDirectAsset(this.selectedDirectAsset).toPromise().then((myDirectAsset) => {
+                if (myDirectAsset) {
+                    // this.selectedDirectAsset = myDirectAsset;
+                    const index = _.findIndex(this.myDirects, { id: myDirectAsset.id });
+                    if (index !== -1) {
+                        this.myDirects.splice(index, 1, myDirectAsset);
+                    } else {
+                        this.myDirects.push(_.cloneDeep(myDirectAsset));
+                    }
+                    this.isMyAssetUpdated = false;
+                    this.loading = false;
+                    this.jhiAlertService.success('hermeneutApp.messages.saved', null, null);
+                    if (onNext) {
+                        this.router.navigate(['/identify-asset/attack-costs']);
+                    }
                 }
-                this.isMyAssetUpdated = false;
+            }).catch(() => {
+                this.loading = false;
+                this.jhiAlertService.error('hermeneutApp.messages.error', null, null);
+            });
+        } else {
+            this.loading = false;
+            if (onNext) {
+                this.router.navigate(['/identify-asset/attack-costs']);
             }
-        });
+        }
     }
 }

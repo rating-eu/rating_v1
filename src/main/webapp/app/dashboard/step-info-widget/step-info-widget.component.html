@@ -60,7 +60,7 @@
                 aria-hidden="true"></i>
             </td>
             <td class="text-center">
-              <a *ngIf="!identifyThreatAgentsStatus" [routerLink]="['/identify-threat-agent/questionnaires/ID_THREAT_AGENT']"><i
+              <a *ngIf="!identifyThreatAgentsStatus && assetClusteringStatus" [routerLink]="['/identify-threat-agent/questionnaires/ID_THREAT_AGENT']"><i
                   class="fa fa-plus-square" placement="top" ngbTooltip="Create" aria-hidden="true"></i></a>
               <ng-container *ngIf="identifyThreatAgentsStatus">
                 <a href="javascript:void(0)"><i placement="top" ngbTooltip="View"
@@ -82,7 +82,7 @@
                 aria-hidden="true"></i>
             </td>
             <td class="text-center">
-              <a *ngIf="!assessVulnerablitiesStatus" [routerLink]="['/evaluate-weakness/questionnaires/SELFASSESSMENT']"><i
+              <a *ngIf="!assessVulnerablitiesStatus && identifyThreatAgentsStatus" [routerLink]="['/evaluate-weakness/questionnaires/SELFASSESSMENT']"><i
                   class="fa fa-plus-square" placement="top" ngbTooltip="Create" aria-hidden="true"></i></a>
               <ng-container *ngIf="assessVulnerablitiesStatus">
                 <a href="javascript:void(0)"><i placement="top" ngbTooltip="View"
@@ -102,7 +102,7 @@
               <i *ngIf="!impactEvaluationStatus" style="color: orange" class="fa fa-exclamation-triangle" aria-hidden="true"></i>
             </td>
             <td class="text-center">
-              <a *ngIf="!impactEvaluationStatus" [routerLink]="['/impact-evaluation']"><i class="fa fa-plus-square"
+              <a *ngIf="!impactEvaluationStatus && assessVulnerablitiesStatus" [routerLink]="['/impact-evaluation']"><i class="fa fa-plus-square"
                   placement="top" ngbTooltip="Create" aria-hidden="true"></i></a>
               <ng-container *ngIf="impactEvaluationStatus">
                 <a href="javascript:void(0)"><i placement="top" ngbTooltip="View"
@@ -123,7 +123,7 @@
               <i *ngIf="!riskEvaluationStatus" style="color: orange" class="fa fa-exclamation-triangle" aria-hidden="true"></i>
             </td>
             <td class="text-center">
-              <a *ngIf="!riskEvaluationStatus" [routerLink]="['/risk-management/risk-evaluation']"><i class="fa fa-plus-square"
+              <a *ngIf="!riskEvaluationStatus && impactEvaluationStatus" [routerLink]="['/risk-management/risk-evaluation']"><i class="fa fa-plus-square"
                   placement="top" ngbTooltip="Create" aria-hidden="true"></i></a>
               <ng-container *ngIf="riskEvaluationStatus">
                 <a href="javascript:void(0)"><i placement="top" ngbTooltip="View"
