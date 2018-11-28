@@ -1,9 +1,11 @@
+import { Router } from '@angular/router';
 import { Priority } from './../model/enumeration/priority.enum';
 import { AssetType } from './../../entities/enumerations/AssetType.enum';
 import { MyAssetMgm } from './../../entities/my-asset-mgm/my-asset-mgm.model';
 import { SelfAssessmentMgmService } from './../../entities/self-assessment-mgm/self-assessment-mgm.service';
 import { SelfAssessmentMgm } from './../../entities/self-assessment-mgm/self-assessment-mgm.model';
 import { IdentifyAssetUtilService } from './../identify-asset.util.service';
+import { JhiAlertService } from '../../../../../../node_modules/ng-jhipster';
 import * as _ from 'lodash';
 
 import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
@@ -21,11 +23,16 @@ export class MagnitudeComponent implements OnInit, OnDestroy {
     public selectedAsset: MyAssetMgm;
     public isMyAssetUpdated = false;
     public isIntangible = false;
-    public priorities = ['Not Available', 'Low', 'Low medium', 'Medium', 'Medium high', 'High'];
+    public loading = false;
+    public isFull = false;
+    public isDescriptionCollapsed = true;
+    public priorities = ['Not available', 'Low', 'Low medium', 'Medium', 'Medium high', 'High'];
 
     constructor(
         private idaUtilsService: IdentifyAssetUtilService,
-        private mySelfAssessmentService: SelfAssessmentMgmService
+        private mySelfAssessmentService: SelfAssessmentMgmService,
+        private router: Router,
+        private jhiAlertService: JhiAlertService,
     ) {
 
     }
@@ -38,9 +45,22 @@ export class MagnitudeComponent implements OnInit, OnDestroy {
         this.idaUtilsService.getMySavedAssets(this.mySelf).toPromise().then((mySavedAssets) => {
             if (mySavedAssets) {
                 this.myAssets = mySavedAssets;
+                this.priorityCheck();
             }
         }).catch(() => {
         });
+    }
+
+    private priorityCheck() {
+        let pryorityCounter = 0;
+        for (const asset of this.myAssets) {
+            if (asset.ranking >= 0) {
+                pryorityCounter++;
+            }
+        }
+        if (pryorityCounter === this.myAssets.length) {
+            this.isFull = true;
+        }
     }
 
     public selectAsset(myAsset: MyAssetMgm) {
@@ -64,17 +84,40 @@ export class MagnitudeComponent implements OnInit, OnDestroy {
         }
     }
 
-    public updateMyAsset() {
-        // constraint su pryority level
+    public updateMyAsset(onNext: boolean) {
+        if (!this.selectedAsset) {
+            if (onNext) {
+                this.router.navigate(['/identify-asset/cascade-effects']);
+                return;
+            } else {
+                return;
+            }
+        }
+        this.loading = true;
         if (!this.selectedAsset.estimated) {
             this.selectedAsset.magnitude = undefined;
         }
-        this.idaUtilsService.updateAsset(this.selectedAsset).toPromise().then((updatedAssets) => {
-            this.selectedAsset = updatedAssets;
-            const index = _.findIndex(this.myAssets, { id: this.selectedAsset.id });
-            this.myAssets.splice(index, 1, this.selectedAsset);
-            this.isMyAssetUpdated = false;
-        });
+        if (this.isMyAssetUpdated) {
+            this.idaUtilsService.updateAsset(this.selectedAsset).toPromise().then((updatedAssets) => {
+                // this.selectedAsset = updatedAssets;
+                const index = _.findIndex(this.myAssets, { id: updatedAssets.id });
+                this.myAssets.splice(index, 1, _.cloneDeep(updatedAssets));
+                this.isMyAssetUpdated = false;
+                this.loading = false;
+                this.jhiAlertService.success('hermeneutApp.messages.saved', null, null);
+                if (onNext) {
+                    this.router.navigate(['/identify-asset/cascade-effects']);
+                }
+            }).catch(() => {
+                this.loading = false;
+                this.jhiAlertService.error('hermeneutApp.messages.error', null, null);
+            });
+        } else {
+            this.loading = false;
+            if (onNext) {
+                this.router.navigate(['/identify-asset/cascade-effects']);
+            }
+        }
     }
 
     public setSelectedAssetPriority(priority: String) {
@@ -115,6 +158,7 @@ export class MagnitudeComponent implements OnInit, OnDestroy {
                     break;
                 }
             }
+            this.priorityCheck();
             this.isMyAssetUpdated = true;
         }
     }

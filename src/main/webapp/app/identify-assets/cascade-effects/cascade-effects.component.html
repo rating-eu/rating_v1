@@ -1,6 +1,14 @@
 <div class="card">
     <div class="card-body">
+        <a href="javascript:void(0)" (click)="isDescriptionCollapsed = !isDescriptionCollapsed" [attr.aria-expanded]="!isDescriptionCollapsed"
+            aria-controls="descriptionCollapsible" class="float-right">
+            <i class="fa fa-question-circle fa-lg" aria-hidden="true"></i>
+        </a>
         <h5 class="card-title">Cascade Effects.</h5>
+        <i [ngbCollapse]="isDescriptionCollapsed">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at neque
+            malesuada, placerat ipsum eu, molestie urna. Integer sollicitudin sollicitudin diam, sit amet sagittis enim
+            laoreet eget. Aenean pulvinar maximus ex sit amet tempus. Suspendisse vehicula arcu ante, non facilisis
+            magna dictum ut.<br></i>
         <ng-container class="card-text" *ngIf="!myAssets">
             <div class="loader"></div>
         </ng-container>
@@ -8,7 +16,7 @@
             <div class="col-md-3">
                 <div class="list-group">
                     <ng-container *ngFor="let myAsset of myAssets">
-                        <a href="javascript:void(0)" (click)="selectAsset(myAsset)" class="list-group-item list-group-item-action"
+                        <a href="javascript:void(0)" (click)="updateMyAsset(false); selectAsset(myAsset)" class="list-group-item list-group-item-action"
                             [ngClass]="{'active': selectedAsset && myAsset.id === selectedAsset.id}">{{myAsset.asset.name}}</a>
                     </ng-container>
                 </div>
@@ -48,7 +56,7 @@
                                     <ng-container *ngIf="isOdd && myAsset.asset.id !== selectedDirectAsset.myAsset.asset.id">
                                         <div class="row">
                                             <label><input type="checkbox" [checked]="isIndirect(myAsset)" (change)="setIndirectAsset(myAsset)"
-                                                   id="{{myAsset.asset.name}}">
+                                                    id="{{myAsset.asset.name}}">
                                                 {{myAsset.asset.name}}</label>
                                         </div>
                                     </ng-container>
@@ -67,17 +75,8 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row" style="margin-top: 25px">
-                        <div class="col-md-4 offset-md-4">
-                            <div class="button-box">
-                                <button *ngIf="selectedAsset && isMyAssetUpdated" class="btn btn-success btn-lg btn-block"
-                                    (click)="updateMyAsset()"><i class="fas fa-save"></i>
-                                    Submit</button>
-                                <button *ngIf="!selectedAsset || !isMyAssetUpdated" class="btn btn-secondary btn-lg btn-block"><i
-                                        class="fas fa-save"></i>
-                                    Submit</button>
-                            </div>
-                        </div>
+                    <div class="row">
+                        <jhi-alert></jhi-alert>
                     </div>
                 </ng-container>
                 <ng-container *ngIf="!selectedAsset">
@@ -94,9 +93,16 @@
                         Prev</button>
                 </div>
                 <div class="col-md-3 offset-md-6">
+                    <!--
                     <button class="btn btn-primary btn-lg btn-block" [routerLink]="['../attack-costs']"><i class="fa fa-arrow-right fa-lg"
                             aria-hidden="true"></i>
                         Next</button>
+                        -->
+                    <button class="btn btn-primary btn-lg btn-block" (click)="updateMyAsset(true)">
+                        Next
+                        <i *ngIf="!loading" class="fa fa-arrow-right fa-lg" aria-hidden="true"></i>
+                        <i *ngIf="loading" class="fa fa-circle-o-notch fa-spin fa-lg fa-fw"></i>
+                    </button>
                 </div>
             </div>
         </ng-container>
