@@ -1,7 +1,15 @@
 <div class="card">
     <div class="card-body">
+        <a href="javascript:void(0)" (click)="isDescriptionCollapsed = !isDescriptionCollapsed" [attr.aria-expanded]="!isDescriptionCollapsed"
+            aria-controls="descriptionCollapsible" class="float-right">
+            <i class="fa fa-question-circle fa-lg" aria-hidden="true"></i>
+        </a>
         <h5 class="card-title">Considering your organization, please select which are the asset or category in your
             possession.</h5>
+        <i [ngbCollapse]="isDescriptionCollapsed">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at neque
+            malesuada, placerat ipsum eu, molestie urna. Integer sollicitudin sollicitudin diam, sit amet sagittis enim
+            laoreet eget. Aenean pulvinar maximus ex sit amet tempus. Suspendisse vehicula arcu ante, non facilisis
+            magna dictum ut.</i>
         <ng-container class="card-text" *ngIf="categoryToAssets.size === 0">
             <div class="loader"></div>
         </ng-container>
@@ -10,7 +18,7 @@
                 <thead>
                     <tr>
                         <th style="width: 45%">Asset Category</th>
-                        <th>Asset in category</th>
+                        <th>Selected Asset / Asset in category</th>
                         <th>Selection</th>
                     </tr>
                 </thead>
@@ -18,7 +26,7 @@
                     <ng-container *ngFor="let item of categoryToAssets.values(); let i=index">
                         <tr>
                             <th scope="row"><a href="javascript:void(0)" (click)="selectCategory(categories[i])">{{categories[i].name}}</a></th>
-                            <td placement="top" container="body" ngbTooltip="Click on Category name for more details">{{item.length}}</td>
+                            <td placement="top" container="body" ngbTooltip="Click on Category name for more details">{{howManyAssetInSelection(categories[i].id)}} / {{item.length}}</td>
                             <td *ngIf="!isSelect(undefined, categories[i].id) && howManyAssetInSelection(categories[i].id)===0"><a
                                     href="javascript:void(0)" (click)="select(undefined, categories[i].id)"><i class="fa fa-square-o fa-lg"
                                         aria-hidden="true"></i></a></td>
@@ -36,13 +44,14 @@
                                         <thead>
                                             <tr>
                                                 <th>Asset</th>
-                                                <!--<th>Description</th>-->
+                                                <th>Description</th>
                                                 <th>Selection</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <tr *ngFor="let asset of item">
                                                 <td>{{asset.name}}</td>
+                                                <td>{{asset.description}}</td>
                                                 <td *ngIf="!isSelect(asset.id, undefined)"><a href="javascript:void(0)"
                                                         (click)="select(asset.id, undefined)"><i class="fa fa-square-o fa-lg"
                                                             aria-hidden="true"></i></a></td>
@@ -61,21 +70,34 @@
             <div class="col-md-12 text-center">
                 <div class="col-md-3">
                 </div>
+                <!--
                 <div class="col-md-3 offset-md-1">
-                        <div class="button-box">
-                                <button *ngIf="myAssets && updateMyAssets" class="btn btn-success btn-lg btn-block" (click)="saveMyAsset()"><i
-                                        class="fas fa-save"></i>
-                                    Submit</button>
-                                <button *ngIf="!myAssets || !updateMyAssets" class="btn btn-secondary btn-lg btn-block"><i class="fas fa-save"></i>
-                                    Submit</button>
-                            </div>
+                    <div class="button-box">
+                        <button *ngIf="myAssets && updateMyAssets" class="btn btn-success btn-lg btn-block" (click)="saveMyAsset()"><i
+                                class="fas fa-save"></i>
+                            Submit</button>
+                        <button *ngIf="!myAssets || !updateMyAssets" class="btn btn-secondary btn-lg btn-block"><i
+                                class="fas fa-save"></i>
+                            Submit</button>
+                    </div>
                 </div>
-                <div class="col-md-3 offset-md-2">
-                        <button *ngIf="myAssets || updateMyAssets" class="btn btn-primary btn-lg btn-block" [routerLink]="['../magnitude']"><i class="fa fa-arrow-right fa-lg" aria-hidden="true"></i>
-                        Next</button>
+                -->
+                <div class="col-md-3 offset-md-6">
+                    <ng-container *ngIf="!myAssets">
+                        <button class="btn btn-secondary btn-lg btn-block"><i class="fa fa-arrow-right fa-lg"
+                                aria-hidden="true"></i> Next</button>
+                    </ng-container>
+                    <ng-container *ngIf="myAssets">
+                        <button class="btn btn-secondary btn-lg btn-block" [ngClass]="{'btn-primary': myAssets.length>0, 'btn-secondary': myAssets.length === 0}"
+                            (click)="saveMyAsset()">
+                            Next 
+                            <i *ngIf="!loading" class="fa fa-arrow-right fa-lg" aria-hidden="true"></i>
+                            <i *ngIf="loading" class="fa fa-circle-o-notch fa-spin fa-lg fa-fw"></i>
+                        </button>
+                    </ng-container>
                 </div>
             </div>
         </ng-container>
-        
+
     </div>
 </div>

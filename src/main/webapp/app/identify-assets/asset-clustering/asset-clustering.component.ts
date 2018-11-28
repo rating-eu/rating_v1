@@ -1,6 +1,7 @@
 import * as _ from 'lodash';
 
 import { Component, OnInit, OnDestroy, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+import { Router } from '@angular/router';
 import { Principal, LoginModalService, AccountService, UserService, User } from '../../shared';
 import { SelfAssessmentMgm, SelfAssessmentMgmService } from '../../entities/self-assessment-mgm';
 import { Subscription } from 'rxjs/Subscription';
@@ -37,6 +38,8 @@ export class AssetClusteringComponent implements OnInit, OnDestroy {
     public categories: AssetCategoryMgm[];
     public selectedCategory: AssetCategoryMgm;
     public updateMyAssets = false;
+    public isDescriptionCollapsed = true;
+    public loading = false;
 
     constructor(
         private principal: Principal,
@@ -48,7 +51,8 @@ export class AssetClusteringComponent implements OnInit, OnDestroy {
         private questionnairesService: QuestionnairesService,
         private questionnaireStatusService: QuestionnaireStatusMgmCustomService,
         private questionnaireStatusServices: QuestionnaireStatusMgmService,
-        private ref: ChangeDetectorRef
+        private ref: ChangeDetectorRef,
+        private router: Router
     ) { }
 
     ngOnDestroy() {
@@ -215,6 +219,9 @@ export class AssetClusteringComponent implements OnInit, OnDestroy {
         this.ref.detectChanges();
     }
     public howManyAssetInSelection(categoryId: number): number {
+        if (!this.myAssets) {
+            return 0;
+        }
         let categoryAssets: AssetMgm[] = [];
         this.categoryToAssets.forEach((v, k) => {
             if (k.id === categoryId) {
@@ -232,6 +239,9 @@ export class AssetClusteringComponent implements OnInit, OnDestroy {
     }
 
     public isSelect(assetId?: number, categoryId?: number): boolean {
+        if (!this.myAssets) {
+            return false;
+        }
         if (assetId) {
             for (const myAsset of this.myAssets) {
                 if (myAsset.asset.id === assetId) {
@@ -263,10 +273,20 @@ export class AssetClusteringComponent implements OnInit, OnDestroy {
 
     public saveMyAsset() {
         console.log(this.myAssets);
-        this.idaUtilsService.createUpdateMyAssets(this.mySelf, this.myAssets).toPromise().then((myAssets) => {
-            if (myAssets) {
-                this.myAssets = myAssets;
-            }
-        });
+        this.loading = true;
+        if (this.updateMyAssets) {
+            this.idaUtilsService.createUpdateMyAssets(this.mySelf, this.myAssets).toPromise().then((myAssets) => {
+                if (myAssets) {
+                    this.myAssets = myAssets;
+                }
+                this.loading = false;
+                this.router.navigate(['/identify-asset/magnitude']);
+                // [routerLink]="['../magnitude']"
+            });
+        } else {
+            this.loading = false;
+            this.router.navigate(['/identify-asset/magnitude']);
+            // [routerLink]="['../magnitude']"
+        }
     }
 }
