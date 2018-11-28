@@ -31,11 +31,11 @@ public class IndirectAsset implements Serializable {
     private Long id;
 
     @NotNull
-    @ManyToOne(cascade = CascadeType.REMOVE)
+    @ManyToOne
     private DirectAsset directAsset;
 
     @NotNull
-    @OneToOne(cascade = CascadeType.REMOVE)
+    @OneToOne
     private MyAsset myAsset;
 
     @OneToMany(mappedBy = "indirectAsset", fetch = FetchType.EAGER, cascade = {CascadeType.ALL, CascadeType.PERSIST, CascadeType.MERGE})
