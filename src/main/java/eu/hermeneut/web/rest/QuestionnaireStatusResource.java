@@ -66,14 +66,6 @@ public class QuestionnaireStatusResource {
 
         QuestionnaireStatus result = questionnaireStatusService.save(questionnaireStatus);
 
-        try {
-            this.messageSenderService.sendRiskProfile(questionnaireStatus.getSelfAssessment().getId());
-        } catch (NullInputException e) {
-            e.printStackTrace();
-        } catch (NotFoundException e) {
-            e.printStackTrace();
-        }
-
         return ResponseEntity.created(new URI("/api/questionnaire-statuses/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))
             .body(result);
