@@ -33,7 +33,7 @@ public class MessageSenderServiceImpl implements MessageSenderService {
     @Async
     @Override
     public void sendRiskProfile(Long selfAssessmentID) throws NullInputException, NotFoundException {
-        if (selfAssessmentID == null) {
+        /*if (selfAssessmentID == null) {
             throw new NullInputException("SelfAssessmentID CANNOT BE NULL!");
         }
 
@@ -45,6 +45,6 @@ public class MessageSenderServiceImpl implements MessageSenderService {
 
         RiskProfile riskProfile = this.riskProfileService.getRiskProfile(selfAssessmentID);
 
-        this.kafkaProducer.send(this.kafkaTopic.getRiskProfile(), riskProfile);
+        this.kafkaProducer.send(this.kafkaTopic.getRiskProfile(), riskProfile);*/
     }
 }

@@ -23,8 +23,8 @@ public class RiskProfileController {
     @Autowired
     private RiskProfileService riskProfileService;
 
-    @Autowired
-    private MessageSenderService messageSenderService;
+    //@Autowired
+    //private MessageSenderService messageSenderService;
 
     @GetMapping("{selfAssessmentID}/risk-profile")
     @Timed
@@ -32,7 +32,7 @@ public class RiskProfileController {
         return this.riskProfileService.getRiskProfile(selfAssessmentID);
     }
 
-    @GetMapping("{selfAssessmentID}/risk-profile/kafka")
+    /*@GetMapping("{selfAssessmentID}/risk-profile/kafka")
     @Timed
     public void sendRiskProfile(@PathVariable("selfAssessmentID") Long selfAssessmentID) {
         RiskProfile riskProfile = null;
@@ -45,5 +45,5 @@ public class RiskProfileController {
         } catch (NullInputException e) {
             e.printStackTrace();
         }
-    }
+    }*/
 }
