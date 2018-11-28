@@ -91,7 +91,7 @@ export class DatasharingService {
     private layoutUpdateSubject: BehaviorSubject<Update> = new BehaviorSubject<Update>(null);
     private mySelfAssessmentSubject: BehaviorSubject<SelfAssessmentMgm> = new BehaviorSubject<SelfAssessmentMgm>(null);
 
-    private sendRiskProfileToKafkaUrl = SERVER_API_URL + "api/{selfAssessmentID}/risk-profile/kafka";
+    //private sendRiskProfileToKafkaUrl = SERVER_API_URL + "api/{selfAssessmentID}/risk-profile/kafka";
 
     private set attackStrategyUpdate(value: AttackStrategyUpdate) {
         this._attackStrategyUpdate = value;
@@ -166,10 +166,10 @@ export class DatasharingService {
         this._attackStrategyUpdateSubject.next(null);
     }
 
-    sendRsikProfileToKafka(selfAssessmentID: number): Observable<HttpResponse<void>> {
+    /*sendRsikProfileToKafka(selfAssessmentID: number): Observable<HttpResponse<void>> {
         const uri = this.sendRiskProfileToKafkaUrl.replace('{selfAssessmentID}', String(selfAssessmentID));
 
         return this.http.get<void>(uri, {observe: 'response'})
             .map((res: HttpResponse<void>) => res);
-    }
+    }*/
 }

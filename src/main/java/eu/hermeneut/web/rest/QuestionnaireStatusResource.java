@@ -37,9 +37,6 @@ public class QuestionnaireStatusResource {
 
     private final QuestionnaireStatusService questionnaireStatusService;
 
-    @Autowired
-    private MessageSenderService messageSenderService;
-
     public QuestionnaireStatusResource(QuestionnaireStatusService questionnaireStatusService) {
         this.questionnaireStatusService = questionnaireStatusService;
     }
