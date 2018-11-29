@@ -1,20 +1,28 @@
-import { Injectable } from '@angular/core';
-import { Fraction } from '../utils/fraction.class';
-import { Couple } from '../utils/couple.class';
-import { ThreatAgentMgm } from '../entities/threat-agent-mgm';
-import { AnswerMgm } from '../entities/answer-mgm';
-import { QuestionMgm } from '../entities/question-mgm';
-import { QuestionnaireStatusMgm } from '../entities/questionnaire-status-mgm';
-import { Observable } from 'rxjs/Observable';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { AttackStrategyMgm } from '../entities/attack-strategy-mgm';
-import { AttackStrategyUpdate } from '../evaluate-weakness/models/attack-strategy-update.model';
-import { QuestionnaireMgm } from '../entities/questionnaire-mgm';
-import { Update } from '../layouts/model/Update';
-import { SelfAssessmentMgm } from '../entities/self-assessment-mgm';
+import {Injectable} from '@angular/core';
+import {Fraction} from '../utils/fraction.class';
+import {Couple} from '../utils/couple.class';
+import {ThreatAgentMgm} from '../entities/threat-agent-mgm';
+import {AnswerMgm} from '../entities/answer-mgm';
+import {QuestionMgm} from '../entities/question-mgm';
+import {QuestionnaireStatusMgm} from '../entities/questionnaire-status-mgm';
+import {Observable} from 'rxjs/Observable';
+import {BehaviorSubject} from 'rxjs/BehaviorSubject';
+import {AttackStrategyMgm} from '../entities/attack-strategy-mgm';
+import {AttackStrategyUpdate} from '../evaluate-weakness/models/attack-strategy-update.model';
+import {QuestionnaireMgm} from '../entities/questionnaire-mgm';
+import {Update} from '../layouts/model/Update';
+import {SelfAssessmentMgm} from '../entities/self-assessment-mgm';
+import {MyAssetMgm} from "../entities/my-asset-mgm";
+import {HttpClient, HttpResponse} from "@angular/common/http";
+import {SERVER_API_URL} from "../app.constants";
+import {IndirectAssetMgm} from "../entities/indirect-asset-mgm";
 
 @Injectable()
 export class DatasharingService {
+
+    constructor(private http: HttpClient) {
+
+    }
 
     private _threatAgentsMap: Map<String, Couple<ThreatAgentMgm, Fraction>>;
 
@@ -82,6 +90,8 @@ export class DatasharingService {
     private _attackStrategyUpdate$: Observable<AttackStrategyUpdate> = this._attackStrategyUpdateSubject.asObservable();
     private layoutUpdateSubject: BehaviorSubject<Update> = new BehaviorSubject<Update>(null);
     private mySelfAssessmentSubject: BehaviorSubject<SelfAssessmentMgm> = new BehaviorSubject<SelfAssessmentMgm>(null);
+
+    //private sendRiskProfileToKafkaUrl = SERVER_API_URL + "api/{selfAssessmentID}/risk-profile/kafka";
 
     private set attackStrategyUpdate(value: AttackStrategyUpdate) {
         this._attackStrategyUpdate = value;
@@ -155,4 +165,11 @@ export class DatasharingService {
         this.layoutUpdateSubject.next(null);
         this._attackStrategyUpdateSubject.next(null);
     }
+
+    /*sendRsikProfileToKafka(selfAssessmentID: number): Observable<HttpResponse<void>> {
+        const uri = this.sendRiskProfileToKafkaUrl.replace('{selfAssessmentID}', String(selfAssessmentID));
+
+        return this.http.get<void>(uri, {observe: 'response'})
+            .map((res: HttpResponse<void>) => res);
+    }*/
 }

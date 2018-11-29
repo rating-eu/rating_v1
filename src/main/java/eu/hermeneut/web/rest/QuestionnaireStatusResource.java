@@ -37,9 +37,6 @@ public class QuestionnaireStatusResource {
 
     private final QuestionnaireStatusService questionnaireStatusService;
 
-    @Autowired
-    private MessageSenderService messageSenderService;
-
     public QuestionnaireStatusResource(QuestionnaireStatusService questionnaireStatusService) {
         this.questionnaireStatusService = questionnaireStatusService;
     }
@@ -65,14 +62,6 @@ public class QuestionnaireStatusResource {
         questionnaireStatus.setModified(now);
 
         QuestionnaireStatus result = questionnaireStatusService.save(questionnaireStatus);
-
-        try {
-            this.messageSenderService.sendRiskProfile(questionnaireStatus.getSelfAssessment().getId());
-        } catch (NullInputException e) {
-            e.printStackTrace();
-        } catch (NotFoundException e) {
-            e.printStackTrace();
-        }
 
         return ResponseEntity.created(new URI("/api/questionnaire-statuses/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(ENTITY_NAME, result.getId().toString()))

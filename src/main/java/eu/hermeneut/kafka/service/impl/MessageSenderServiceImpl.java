@@ -10,6 +10,7 @@ import eu.hermeneut.kafka.service.MessageSenderService;
 import eu.hermeneut.service.SelfAssessmentService;
 import eu.hermeneut.service.compact.RiskProfileService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,9 +30,10 @@ public class MessageSenderServiceImpl implements MessageSenderService {
     @Autowired
     private KafkaProducer<RiskProfile> kafkaProducer;
 
+    @Async
     @Override
     public void sendRiskProfile(Long selfAssessmentID) throws NullInputException, NotFoundException {
-        if (selfAssessmentID == null) {
+        /*if (selfAssessmentID == null) {
             throw new NullInputException("SelfAssessmentID CANNOT BE NULL!");
         }
 
@@ -43,6 +45,6 @@ public class MessageSenderServiceImpl implements MessageSenderService {
 
         RiskProfile riskProfile = this.riskProfileService.getRiskProfile(selfAssessmentID);
 
-        this.kafkaProducer.send(this.kafkaTopic.getRiskProfile(), riskProfile);
+        this.kafkaProducer.send(this.kafkaTopic.getRiskProfile(), riskProfile);*/
     }
 }

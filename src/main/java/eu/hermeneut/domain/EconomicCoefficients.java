@@ -56,7 +56,7 @@ public class EconomicCoefficients implements Serializable {
      * WP3
      */
     @ApiModelProperty(value = "WP3")
-    @OneToOne(cascade = CascadeType.REMOVE)
+    @OneToOne
     @JoinColumn(unique = true)
     private SelfAssessment selfAssessment;
 

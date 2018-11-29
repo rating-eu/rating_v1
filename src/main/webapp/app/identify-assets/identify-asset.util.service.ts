@@ -13,7 +13,6 @@ import { Subject } from 'rxjs';
 import { AssetMgm } from '../entities/asset-mgm';
 import { AttackCostMgm } from '../entities/attack-cost-mgm';
 import { SERVER_API_URL } from '../app.constants';
-import { AssetsOneShot } from './model/AssetsOneShot.model';
 import { SelfAssessmentMgm } from '../entities/self-assessment-mgm';
 
 @Injectable()
@@ -34,7 +33,6 @@ export class IdentifyAssetUtilService {
     private subscriptorForAnswersComplited: Subject<MyAnswerMgm[]> = new Subject<MyAnswerMgm[]>();
     private subscriptorForIndirectMap: Subject<any> = new Subject<any>();
 
-    private resourceUrl = SERVER_API_URL + 'api/my-assets-one-shot/';
     private assetServiceUrl = SERVER_API_URL + 'api/my-assets/self-assessment/';
     private directUrl = SERVER_API_URL + 'api/{selfAssessmentID}/direct-assets';
     private indirectUrl = SERVER_API_URL + 'api/{selfAssessmentID}/indirect-assets';
