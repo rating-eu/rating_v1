@@ -588,7 +588,9 @@ export class ImpactEvaluationComponent implements OnInit {
         }
         this.evaluateStepTwo();
         if (this.isGlobal) {
-          this.evaluateStepFour();
+            setTimeout(()=>{
+                this.evaluateStepFour();
+            }, 250);
         }
         break;
       }
