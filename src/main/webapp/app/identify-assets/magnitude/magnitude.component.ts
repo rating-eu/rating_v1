@@ -20,6 +20,7 @@ import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 export class MagnitudeComponent implements OnInit, OnDestroy {
     private mySelf: SelfAssessmentMgm = {};
     public myAssets: MyAssetMgm[];
+    public myAssetStatus: Map<number, string> = new Map<number, string>();
     public selectedAsset: MyAssetMgm;
     public isMyAssetUpdated = false;
     public isIntangible = false;
@@ -45,6 +46,13 @@ export class MagnitudeComponent implements OnInit, OnDestroy {
         this.idaUtilsService.getMySavedAssets(this.mySelf).toPromise().then((mySavedAssets) => {
             if (mySavedAssets) {
                 this.myAssets = mySavedAssets;
+                this.myAssets.forEach((myAsset) => {
+                    if (myAsset.ranking !== null && myAsset.ranking >= 0) {
+                        this.myAssetStatus.set(myAsset.id, 'COMPLETED');
+                    } else {
+                        this.myAssetStatus.set(myAsset.id, 'NOT COMPLETED');
+                    }
+                });
                 this.priorityCheck();
             }
         }).catch(() => {
@@ -54,7 +62,7 @@ export class MagnitudeComponent implements OnInit, OnDestroy {
     private priorityCheck() {
         let pryorityCounter = 0;
         for (const asset of this.myAssets) {
-            if (asset.ranking >= 0) {
+            if (asset.ranking !== null && asset.ranking >= 0) {
                 pryorityCounter++;
             }
         }
@@ -94,23 +102,36 @@ export class MagnitudeComponent implements OnInit, OnDestroy {
             }
         }
         this.loading = true;
+        const idMyAsset = this.selectedAsset.id;
+        const asset = this.selectedAsset;
         if (!this.selectedAsset.estimated) {
             this.selectedAsset.magnitude = undefined;
         }
         if (this.isMyAssetUpdated) {
+            this.myAssetStatus.set(idMyAsset, 'IN EVALUATION');
             this.idaUtilsService.updateAsset(this.selectedAsset).toPromise().then((updatedAssets) => {
                 // this.selectedAsset = updatedAssets;
                 const index = _.findIndex(this.myAssets, { id: updatedAssets.id });
                 this.myAssets.splice(index, 1, _.cloneDeep(updatedAssets));
+                if (updatedAssets.ranking !== null && updatedAssets.ranking !== undefined) {
+                    this.myAssetStatus.set(updatedAssets.id, 'COMPLETED');
+                } else {
+                    this.myAssetStatus.set(updatedAssets.id, 'NOT COMPLETED');
+                }
                 this.isMyAssetUpdated = false;
                 this.loading = false;
-                this.jhiAlertService.success('hermeneutApp.messages.saved', null, null);
+                // this.jhiAlertService.success('hermeneutApp.messages.saved', null, null);
                 if (onNext) {
                     this.router.navigate(['/identify-asset/cascade-effects']);
                 }
             }).catch(() => {
                 this.loading = false;
-                this.jhiAlertService.error('hermeneutApp.messages.error', null, null);
+                if (asset.ranking !== null && asset.ranking !== undefined) {
+                    this.myAssetStatus.set(idMyAsset, 'COMPLETED');
+                } else {
+                    this.myAssetStatus.set(idMyAsset, 'NOT COMPLETED');
+                }
+                // this.jhiAlertService.error('hermeneutApp.messages.error', null, null);
             });
         } else {
             this.loading = false;
