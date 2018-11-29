@@ -21,8 +21,10 @@ export class CascadeEffectsComponent implements OnInit {
     private mySelf: SelfAssessmentMgm = {};
     public myAssets: MyAssetMgm[];
     public selectedAsset: MyAssetMgm;
+    public myAssetStatus: Map<number, string> = new Map<number, string>();
     public isDirect = false;
     public isMyAssetUpdated = false;
+    public idMyAsset: number;
     public loading = false;
     public isDescriptionCollapsed = true;
     public selectedDirectAsset: DirectAssetMgm;
@@ -44,11 +46,17 @@ export class CascadeEffectsComponent implements OnInit {
         this.idaUtilsService.getMySavedAssets(this.mySelf).toPromise().then((mySavedAssets) => {
             if (mySavedAssets) {
                 this.myAssets = mySavedAssets;
-            }
-        });
-        this.idaUtilsService.getMySavedDirectAssets(this.mySelf).toPromise().then((mySavedDirect) => {
-            if (mySavedDirect) {
-                this.myDirects = mySavedDirect;
+                this.myAssets.forEach((myAsset) => {
+                    this.myAssetStatus.set(myAsset.id, 'NOT COMPLETED');
+                });
+                this.idaUtilsService.getMySavedDirectAssets(this.mySelf).toPromise().then((mySavedDirect) => {
+                    if (mySavedDirect) {
+                        this.myDirects = mySavedDirect;
+                        this.myDirects.forEach((myDirect) => {
+                            this.myAssetStatus.set(myDirect.myAsset.id, 'COMPLETED');
+                        });
+                    }
+                });
             }
         });
     }
@@ -88,15 +96,17 @@ export class CascadeEffectsComponent implements OnInit {
             if (index !== -1) {
                 this.selectedDirectAsset = _.cloneDeep(this.myDirects[index]);
             }
-            if (!this.selectedDirectAsset) {
+            if (!this.selectedDirectAsset || !this.selectedDirectAsset.myAsset) {
                 this.selectedDirectAsset = new DirectAssetMgm();
                 this.selectedDirectAsset.costs = undefined;
                 this.selectedDirectAsset.effects = undefined;
                 this.selectedDirectAsset.myAsset = myAsset;
             }
+            this.idMyAsset = this.selectedDirectAsset.myAsset.id;
         } else {
             this.isDirect = false;
             if (this.selectedDirectAsset) {
+                this.idMyAsset = this.selectedDirectAsset.myAsset.id;
                 this.selectedDirectAsset.costs = undefined;
                 this.selectedDirectAsset.effects = undefined;
                 this.selectedDirectAsset.myAsset = undefined;
@@ -155,30 +165,43 @@ export class CascadeEffectsComponent implements OnInit {
             }
         }
         this.loading = true;
-        if (this.selectedIndirectAssets) {
+        const idDirect = this.selectedDirectAsset.id;
+        if (this.selectedIndirectAssets && this.selectedDirectAsset.myAsset) {
             this.selectedDirectAsset.effects = this.selectedIndirectAssets;
         }
         if (this.isMyAssetUpdated) {
-            this.idaUtilsService.updateDirectAsset(this.selectedDirectAsset).toPromise().then((myDirectAsset) => {
-                if (myDirectAsset) {
-                    // this.selectedDirectAsset = myDirectAsset;
-                    const index = _.findIndex(this.myDirects, { id: myDirectAsset.id });
-                    if (index !== -1) {
-                        this.myDirects.splice(index, 1, myDirectAsset);
-                    } else {
-                        this.myDirects.push(_.cloneDeep(myDirectAsset));
-                    }
-                    this.isMyAssetUpdated = false;
-                    this.loading = false;
-                    this.jhiAlertService.success('hermeneutApp.messages.saved', null, null);
-                    if (onNext) {
-                        this.router.navigate(['/identify-asset/attack-costs']);
-                    }
-                }
-            }).catch(() => {
+            this.myAssetStatus.set(this.idMyAsset, 'IN EVALUATION');
+            if (this.selectedDirectAsset.costs === undefined && this.selectedDirectAsset.effects === undefined && this.selectedDirectAsset.myAsset === undefined) {
+                this.idaUtilsService.deleteDirectAsset(this.selectedDirectAsset).toPromise();
+                const index = _.findIndex(this.myDirects, { id: idDirect });
+                this.myDirects.splice(index, 1);
+                this.isMyAssetUpdated = false;
                 this.loading = false;
-                this.jhiAlertService.error('hermeneutApp.messages.error', null, null);
-            });
+                this.myAssetStatus.set(this.idMyAsset, 'NOT COMPLETED');
+            } else {
+                this.idaUtilsService.updateDirectAsset(this.selectedDirectAsset).toPromise().then((myDirectAsset) => {
+                    if (myDirectAsset) {
+                        // this.selectedDirectAsset = myDirectAsset;
+                        const index = _.findIndex(this.myDirects, { id: myDirectAsset.id });
+                        if (index !== -1) {
+                            this.myDirects.splice(index, 1, myDirectAsset);
+                        } else {
+                            this.myDirects.push(_.cloneDeep(myDirectAsset));
+                        }
+                        this.isMyAssetUpdated = false;
+                        this.loading = false;
+                        this.myAssetStatus.set(this.idMyAsset, 'COMPLETED');
+                        // this.jhiAlertService.success('hermeneutApp.messages.saved', null, null);
+                        if (onNext) {
+                            this.router.navigate(['/identify-asset/attack-costs']);
+                        }
+                    }
+                }).catch(() => {
+                    this.loading = false;
+                    this.myAssetStatus.set(this.idMyAsset, 'NOT COMPLETED');
+                    // this.jhiAlertService.error('hermeneutApp.messages.error', null, null);
+                });
+            }
         } else {
             this.loading = false;
             if (onNext) {
