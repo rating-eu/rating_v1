@@ -11,6 +11,8 @@ import eu.hermeneut.exceptions.NotFoundException;
 import eu.hermeneut.exceptions.NullInputException;
 import eu.hermeneut.service.*;
 import eu.hermeneut.utils.wp3.Calculator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,6 +23,8 @@ import java.util.*;
 @RestController
 @RequestMapping("/api")
 public class WP3StepsController {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(WP3StepsController.class);
 
     public static final BigDecimal DEFAULT_LOSS_OF_INTANGIBLE = new BigDecimal("18.29");
     @Autowired
@@ -162,6 +166,8 @@ public class WP3StepsController {
 
     @PostMapping("{selfAssessmentID}/wp3/step-two")
     public WP3OutputBundle stepTwoIntangibleDrivingEarningsAndCapital(@PathVariable("selfAssessmentID") Long selfAssessmentID, @RequestBody WP3InputBundle wp3InputBundle) throws NullInputException, NotFoundException, IllegalInputException {
+        LOGGER.info("Step 2 entering: " + System.currentTimeMillis());
+
         SelfAssessment selfAssessment = null;
 
         if (selfAssessmentID != null) {
@@ -199,6 +205,8 @@ public class WP3StepsController {
             SELF_ASSESSMENT_LOCK.put(selfAssessmentID, lock);
         }
 
+        LOGGER.info("Step 2 Lock: " + lock);
+
         synchronized (lock) {
             EconomicCoefficients economicCoefficients = wp3InputBundle.getEconomicCoefficients();
 
@@ -221,7 +229,8 @@ public class WP3StepsController {
                 discountingRate = existingEconomicCoefficients.getDiscountingRate();
 
                 //Update
-                this.economicCoefficientsService.save(existingEconomicCoefficients);
+                economicCoefficients = this.economicCoefficientsService.save(existingEconomicCoefficients);
+                LOGGER.info("Step 2 EconomicCoefficients after save: " + economicCoefficients);
             }
 
             EconomicResults existingEconomicResults = this.economicResultsService.findOneBySelfAssessmentID(selfAssessmentID);
@@ -241,13 +250,15 @@ public class WP3StepsController {
             existingEconomicResults.setIntangibleCapital(intangibleCapital);
 
             //Update entity
-            this.economicResultsService.save(existingEconomicResults);
+            EconomicResults economicResults = this.economicResultsService.save(existingEconomicResults);
+            LOGGER.info("Step 2 EconomicResults after save: " + economicResults);
 
             //OUTPUT
             WP3OutputBundle wp3OutputBundle = new WP3OutputBundle();
             wp3OutputBundle.setEconomicCoefficients(existingEconomicCoefficients);
             wp3OutputBundle.setEconomicResults(existingEconomicResults);
 
+            LOGGER.info("Step 2 exiting: " + System.currentTimeMillis());
             return wp3OutputBundle;
         }
     }
@@ -326,6 +337,7 @@ public class WP3StepsController {
 
     @PostMapping("{selfAssessmentID}/wp3/step-four")
     public WP3OutputBundle stepFourSplittingLosses(@PathVariable("selfAssessmentID") Long selfAssessmentID, @RequestBody WP3InputBundle wp3InputBundle) throws NullInputException, NotFoundException, IllegalInputException {
+        LOGGER.info("Step 4 entering: " + System.currentTimeMillis());
         SelfAssessment selfAssessment = null;
 
         if (selfAssessmentID != null) {
@@ -351,8 +363,11 @@ public class WP3StepsController {
             SELF_ASSESSMENT_LOCK.put(selfAssessmentID, lock);
         }
 
+        LOGGER.info("Step 4 Lock: " + lock);
+
         synchronized (lock) {
             EconomicResults existingEconomicResults = this.economicResultsService.findOneBySelfAssessmentID(selfAssessmentID);
+            LOGGER.info("Step 4 ExistingEconomicResults: " + existingEconomicResults);
 
             if (existingEconomicResults == null) {
                 throw new NotFoundException("The EconomicResults for SelfAssessment " + selfAssessmentID + " was not found!");
@@ -416,6 +431,7 @@ public class WP3StepsController {
             wp3OutputBundle.setEconomicCoefficients(null);//Not used in this step, if needed may be fetched and returned.
             wp3OutputBundle.setSplittingLosses(splittingLosses);
 
+            LOGGER.info("Step 4 exiting: " + System.currentTimeMillis());
             return wp3OutputBundle;
         }
     }

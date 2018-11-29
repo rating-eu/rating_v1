@@ -92,6 +92,10 @@ export class IdentifyAssetUtilService {
             });
     }
 
+    public deleteDirectAsset(myDirect: DirectAssetMgm): Observable<HttpResponse<any>> {
+        return this.http.delete<any>(this.updateDirectAssetUri + '/' + myDirect.id, { observe: 'response' });
+    }
+
     public getMySavedDirectAssets(self: SelfAssessmentMgm): Observable<DirectAssetMgm[]> {
         const uri = this.directUrl.replace('{selfAssessmentID}', String(self.id));
         return this.http.get<DirectAssetMgm[]>(uri, { observe: 'response' })

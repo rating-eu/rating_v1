@@ -17,13 +17,22 @@
                 <h6>Direct Assets</h6>
                 <div class="list-group">
                     <ng-container *ngFor="let myDirect of myDirects">
-                        <a href="javascript:void(0)" (click)="selectDirect(myDirect)" class="list-group-item list-group-item-action"
-                            [ngClass]="{'active': selectedDirectAsset && myDirect.id === selectedDirectAsset.id}">{{myDirect.myAsset.asset.name}}</a>
+                        <a href="javascript:void(0)" (click)="updateMyAsset(false);selectDirect(myDirect)" class="list-group-item list-group-item-action"
+                            [ngClass]="{'active': selectedDirectAsset && myDirect.id === selectedDirectAsset.id}">
+                            <i *ngIf="myAssetStatus.get(myDirect.myAsset.id) === 'COMPLETED'" class="fa fa-check fa-lg"
+                                aria-hidden="true" style="color: green"></i>
+                            <i *ngIf="loading && myAssetStatus.get(myDirect.myAsset.id) === 'IN EVALUATION'" class="fa fa-circle-o-notch fa-spin fa-lg fa-fw"></i>
+                            <i *ngIf="myAssetStatus.get(myDirect.myAsset.id) === 'NOT COMPLETED'" class="fa fa-minus"
+                                aria-hidden="true" style="color: grey"></i>
+                            {{myDirect.myAsset.asset.name}}</a>
                     </ng-container>
                 </div>
             </div>
             <div class="col-md-9">
-                <ng-container *ngIf="selectedDirectAsset">
+                <ng-container *ngIf="refresh">
+                    <div class="loader"></div>
+                </ng-container>
+                <ng-container *ngIf="selectedDirectAsset && !refresh">
                     <div class="row">
                         <h5>For <b>{{selectedDirectAsset.myAsset.asset.name}}</b> asset, select the generated costs in
                             case of attack.</h5>
@@ -35,7 +44,7 @@
                                     <ng-container *ngIf="isOdd">
                                         <div class="row">
                                             <label><input type="checkbox" [checked]="isDirectCostSelected(cost)"
-                                                    (change)="setCostOnDirect(cost)" id="{{cost}}">
+                                                    (change)="setCostOnDirect(cost)" id="{{cost}}-direct-{{selectedDirectAsset.myAsset.asset.name}}">
                                                 {{cost}}</label>
                                         </div>
                                     </ng-container>
@@ -46,7 +55,7 @@
                                     <ng-container *ngIf="isEven">
                                         <div class="row">
                                             <label><input type="checkbox" [checked]="isDirectCostSelected(cost)"
-                                                    (change)="setCostOnDirect(cost)" id="{{cost}}">
+                                                    (change)="setCostOnDirect(cost)" id="{{cost}}-direct-{{selectedDirectAsset.myAsset.asset.name}}">
                                                 {{cost}}</label>
                                         </div>
                                     </ng-container>
@@ -65,21 +74,24 @@
                                 <div class="col">
                                     <div class="chipsContainer">
                                         <div class="badge chips chips-name" [ngClass]="{'badge-light': selectedIndirectAsset && indirect.id !== selectedIndirectAsset.id, 'badge-primary': selectedIndirectAsset && indirect.id === selectedIndirectAsset.id}"
-                                            (click)="selectIndirect(indirect)">
+                                            (click)="updateMyAsset(false);selectIndirect(indirect)">
                                             {{indirect.myAsset.asset.name}}
                                         </div>
                                     </div>
                                 </div>
                             </ng-container>
                         </div>
-                        <div class="row" *ngIf="selectedIndirectAsset">
+                        <div class="row" *ngIf="refreshIndirect">
+                            <div class="loader"></div>
+                        </div>
+                        <div class="row" *ngIf="selectedIndirectAsset && !refreshIndirect">
                             <div class="col-md-12">
                                 <div class="col-md-6">
                                     <ng-container *ngFor="let cost of costs; let isOdd=odd">
                                         <ng-container *ngIf="isOdd">
                                             <div class="row">
                                                 <label><input type="checkbox" [checked]="isIndirectCostSelected(cost)"
-                                                        (change)="setCostOnIndirect(cost)" id="{{cost}}">
+                                                        (change)="setCostOnIndirect(cost)" id="{{cost}}-{{selectedIndirectAsset.myAsset.asset.name}}">
                                                     {{cost}}</label>
                                             </div>
                                         </ng-container>
@@ -90,7 +102,7 @@
                                         <ng-container *ngIf="isEven">
                                             <div class="row">
                                                 <label><input type="checkbox" [checked]="isIndirectCostSelected(cost)"
-                                                        (change)="setCostOnIndirect(cost)" id="{{cost}}">
+                                                        (change)="setCostOnIndirect(cost)" id="{{cost}}-{{selectedIndirectAsset.myAsset.asset.name}}">
                                                     {{cost}}</label>
                                             </div>
                                         </ng-container>
@@ -99,6 +111,7 @@
                             </div>
                         </div>
                     </ng-container>
+                    <!--
                     <div class="row" style="margin-top: 100px">
                         <div class="col-md-4 offset-md-4">
                             <div class="button-box">
@@ -111,11 +124,14 @@
                             </div>
                         </div>
                     </div>
+                    -->
+                    <!--
                     <div class="row">
                         <jhi-alert></jhi-alert>
                     </div>
+                    -->
                 </ng-container>
-                <ng-container *ngIf="!selectedDirectAsset">
+                <ng-container *ngIf="!selectedDirectAsset && !refresh">
                     <div class="text-center" style="margin-top: 50px">
                         <p style="color: orange"><i class="fa fa-exclamation-triangle fa-4x" aria-hidden="true"></i></p>
                         <p style="color: grey">Please select one direct asset from the list at left of the screen!</p>
@@ -129,7 +145,8 @@
                         Prev</button>
                 </div>
                 <div class="col-md-3 offset-md-6">
-                    <button class="btn btn-primary btn-lg btn-block" [routerLink]="['/dashboard']">
+                    <!-- [routerLink]="['/dashboard']" -->
+                    <button class="btn btn-primary btn-lg btn-block" (click)="updateMyAsset(true)">
                         Close <i *ngIf="!loading" class="fa fa-times fa-lg" aria-hidden="true"></i><i *ngIf="loading"
                             class="fa fa-circle-o-notch fa-spin fa-lg fa-fw"></i>
                     </button>

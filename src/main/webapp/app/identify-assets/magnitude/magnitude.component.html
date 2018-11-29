@@ -17,7 +17,11 @@
                 <div class="list-group">
                     <ng-container *ngFor="let myAsset of myAssets">
                         <a href="javascript:void(0)" (click)="updateMyAsset(false);selectAsset(myAsset)" class="list-group-item list-group-item-action"
-                            [ngClass]="{'active': selectedAsset && myAsset.id === selectedAsset.id}">{{myAsset.asset.name}}</a>
+                            [ngClass]="{'active': selectedAsset && myAsset.id === selectedAsset.id}">
+                            <i *ngIf="myAssetStatus.get(myAsset.id) === 'COMPLETED'" class="fa fa-check fa-lg" aria-hidden="true" style="color: green"></i>
+                            <i *ngIf="loading && myAssetStatus.get(myAsset.id) === 'IN EVALUATION'" class="fa fa-circle-o-notch fa-spin fa-lg fa-fw"></i>
+                            <i *ngIf="myAssetStatus.get(myAsset.id) === 'NOT COMPLETED'" class="fa fa-minus" aria-hidden="true" style="color: grey"></i>
+                            {{myAsset.asset.name}}</a>
                     </ng-container>
                 </div>
             </div>
@@ -86,9 +90,11 @@
                             </div>
                         </ng-container>
                     </div>
+                    <!--
                     <div class="row">
                         <jhi-alert></jhi-alert>
                     </div>
+                    -->
                 </ng-container>
                 <ng-container *ngIf="!selectedAsset">
                     <div class="text-center" style="margin-top: 50px">

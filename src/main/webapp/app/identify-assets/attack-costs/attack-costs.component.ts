@@ -9,7 +9,7 @@ import { SelfAssessmentMgmService } from './../../entities/self-assessment-mgm/s
 import { IdentifyAssetUtilService } from './../identify-asset.util.service';
 import { MyAssetMgm } from './../../entities/my-asset-mgm/my-asset-mgm.model';
 import { SelfAssessmentMgm } from './../../entities/self-assessment-mgm/self-assessment-mgm.model';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 
 @Component({
   // tslint:disable-next-line:component-selector
@@ -21,16 +21,19 @@ import { Component, OnInit } from '@angular/core';
 export class AttackCostsComponent implements OnInit {
   private mySelf: SelfAssessmentMgm = {};
   public myAssets: MyAssetMgm[];
+  public myAssetStatus: Map<number, string> = new Map<number, string>();
   public myDirects: DirectAssetMgm[];
   public selectedDirectAsset: DirectAssetMgm;
   public selectedIndirectAsset: IndirectAssetMgm;
   public isMyAssetUpdated = false;
   public isDescriptionCollapsed = true;
   public loading = false;
+  public refresh = false;
+  public refreshIndirect = false;
   public costs: string[] = [
     'Before the attack status restoration',
     'Increased security',
-    'Legal litigation costs and attorney fees',
+    'Legal or litigation costs and attorney fees',
     'Notification and regulatory compliance costs',
     'Liability costs',
     'Customer breach notification costs',
@@ -49,6 +52,7 @@ export class AttackCostsComponent implements OnInit {
     private mySelfAssessmentService: SelfAssessmentMgmService,
     private router: Router,
     private jhiAlertService: JhiAlertService,
+    private ref: ChangeDetectorRef
   ) {
 
   }
@@ -58,41 +62,73 @@ export class AttackCostsComponent implements OnInit {
     this.idaUtilsService.getMySavedAssets(this.mySelf).toPromise().then((mySavedAssets) => {
       if (mySavedAssets) {
         this.myAssets = mySavedAssets;
-      }
-    });
-    this.idaUtilsService.getMySavedDirectAssets(this.mySelf).toPromise().then((mySavedDirect) => {
-      if (mySavedDirect) {
-        this.myDirects = mySavedDirect;
+        this.myAssets.forEach((myAsset) => {
+          this.myAssetStatus.set(myAsset.id, 'NOT COMPLETED');
+        });
+        this.idaUtilsService.getMySavedDirectAssets(this.mySelf).toPromise().then((mySavedDirect) => {
+          if (mySavedDirect) {
+            this.myDirects = mySavedDirect;
+            this.myDirects.forEach((myDirect) => {
+              if (myDirect.costs !== null && myDirect.costs.length > 0) {
+                this.myAssetStatus.set(myDirect.myAsset.id, 'COMPLETED');
+              } else {
+                this.myAssetStatus.set(myDirect.myAsset.id, 'NOT COMPLETED');
+                for (const indirect of myDirect.effects) {
+                  if (indirect.costs && indirect.costs.length > 0) {
+                    this.myAssetStatus.set(myDirect.myAsset.id, 'COMPLETED');
+                    break;
+                  }
+                }
+              }
+            });
+          }
+        });
       }
     });
   }
 
   public selectIndirect(myIndirect: IndirectAssetMgm) {
     if (myIndirect) {
-      if (this.selectedIndirectAsset) {
-        if (this.selectedIndirectAsset.id === myIndirect.id) {
-          this.selectedIndirectAsset = null;
+      this.refreshIndirect = true;
+      setTimeout(() => {
+        const indDirect = _.findIndex(this.myDirects, {id: this.selectedDirectAsset.id});
+        this.selectedDirectAsset = _.cloneDeep(this.myDirects[indDirect]);
+        if (this.selectedIndirectAsset) {
+          if (this.selectedIndirectAsset.id === myIndirect.id) {
+            this.selectedIndirectAsset = null;
+          } else {
+            this.selectedIndirectAsset = null;
+            this.selectedIndirectAsset = myIndirect;
+            this.ref.detectChanges();
+          }
         } else {
+          this.selectedIndirectAsset = null;
           this.selectedIndirectAsset = myIndirect;
+          this.ref.detectChanges();
         }
-      } else {
-        this.selectedIndirectAsset = myIndirect;
-      }
+        this.refreshIndirect = false;
+      }, 250);
     }
   }
 
   public selectDirect(myDirect: DirectAssetMgm) {
     if (myDirect) {
       this.selectedIndirectAsset = null;
-      if (this.selectedDirectAsset) {
-        if (this.selectedDirectAsset.id === myDirect.id) {
-          this.selectedDirectAsset = null;
+      this.refresh = true;
+      setTimeout(() => {
+        if (this.selectedDirectAsset) {
+          if (this.selectedDirectAsset.id === myDirect.id) {
+            this.selectedDirectAsset = null;
+          } else {
+            this.selectedDirectAsset = null;
+            this.selectedDirectAsset = myDirect;
+          }
         } else {
+          this.selectedDirectAsset = null;
           this.selectedDirectAsset = myDirect;
         }
-      } else {
-        this.selectedDirectAsset = myDirect;
-      }
+        this.refresh = false;
+      }, 250);
     }
   }
 
@@ -265,9 +301,11 @@ export class AttackCostsComponent implements OnInit {
             break;
           }
       }
-      for (const iCost of this.selectedDirectAsset.costs) {
-        if (iCost.type.toString() === (CostType[selectedCost] as String)) {
-          return true;
+      if (this.selectedDirectAsset.costs && this.selectedDirectAsset.costs.length > 0) {
+        for (const iCost of this.selectedDirectAsset.costs) {
+          if (iCost.type.toString() === (CostType[selectedCost] as String)) {
+            return true;
+          }
         }
       }
     }
@@ -447,41 +485,79 @@ export class AttackCostsComponent implements OnInit {
             break;
           }
       }
-      for (const iCost of this.selectedIndirectAsset.costs) {
-        if (iCost.type.toString() === (CostType[selectedCost] as String)) {
-          return true;
+      if (this.selectedIndirectAsset.costs && this.selectedIndirectAsset.costs.length > 0) {
+        for (const iCost of this.selectedIndirectAsset.costs) {
+          if (iCost.type.toString() === (CostType[selectedCost] as String)) {
+            return true;
+          }
         }
       }
     }
     return false;
   }
 
-  public updateMyAsset() {
-    console.log(this.selectedDirectAsset);
+  public updateMyAsset(onNext: boolean) {
+    if (!this.selectedDirectAsset) {
+      if (onNext) {
+        this.router.navigate(['/dashboard']);
+        return;
+      } else {
+        return;
+      }
+    }
     this.loading = true;
-    this.idaUtilsService.updateDirectAsset(this.selectedDirectAsset).toPromise().then((myDirectAsset) => {
-      if (myDirectAsset) {
-        this.selectedDirectAsset = myDirectAsset;
-        if (this.selectedIndirectAsset) {
-          const indIndex = _.findIndex(this.selectedDirectAsset.effects, { id: this.selectedIndirectAsset.id });
-          if (indIndex !== -1) {
-            this.selectedIndirectAsset = this.selectedDirectAsset.effects[indIndex];
+    const idMyAsset = this.selectedDirectAsset.myAsset.id;
+    if (this.isMyAssetUpdated) {
+      this.myAssetStatus.set(idMyAsset, 'IN EVALUATION');
+      this.idaUtilsService.updateDirectAsset(this.selectedDirectAsset).toPromise().then((myDirectAsset) => {
+        if (myDirectAsset) {
+          /* this.selectedDirectAsset = myDirectAsset;
+          if (this.selectedIndirectAsset) {
+            const indIndex = _.findIndex(this.selectedDirectAsset.effects, { id: this.selectedIndirectAsset.id });
+            if (indIndex !== -1) {
+              this.selectedIndirectAsset = this.selectedDirectAsset.effects[indIndex];
+            }
+          }
+          */
+          const index = _.findIndex(this.myDirects, { id: myDirectAsset.id });
+          if (index !== -1) {
+            this.myDirects.splice(index, 1, myDirectAsset);
+          } else {
+            this.myDirects.push(_.cloneDeep(myDirectAsset));
+          }
+          this.isMyAssetUpdated = false;
+          this.loading = false;
+          if (myDirectAsset.costs && myDirectAsset.costs.length > 0) {
+            this.myAssetStatus.set(idMyAsset, 'COMPLETED');
+          } else {
+            for (const indirect of myDirectAsset.effects) {
+              if (indirect.costs && indirect.costs.length > 0) {
+                this.myAssetStatus.set(idMyAsset, 'COMPLETED');
+                break;
+              }
+            }
+            if (this.myAssetStatus.get(idMyAsset) === 'IN EVALUATION') {
+              this.myAssetStatus.set(idMyAsset, 'NOT COMPLETED');
+            }
+          }
+          // this.jhiAlertService.success('hermeneutApp.messages.saved', null, null);
+          if (onNext) {
+            this.router.navigate(['/identify-asset/attack-costs']);
           }
         }
-        const index = _.findIndex(this.myDirects, { id: this.selectedDirectAsset.id });
-        if (index !== -1) {
-          this.myDirects.splice(index, 1, this.selectedDirectAsset);
-        } else {
-          this.myDirects.push(_.cloneDeep(this.selectedDirectAsset));
-        }
-        this.isMyAssetUpdated = false;
+        this.ref.detectChanges();
+      }).catch(() => {
         this.loading = false;
-        this.jhiAlertService.success('hermeneutApp.messages.saved', null, null);
-      }
-    }).catch(() => {
+        this.router.navigate(['/dashboard']);
+        // this.jhiAlertService.error('hermeneutApp.messages.error', null, null);
+      });
+    } else {
       this.loading = false;
-      this.jhiAlertService.error('hermeneutApp.messages.error', null, null);
-    });
+      this.ref.detectChanges();
+      if (onNext) {
+        this.router.navigate(['/dashboard']);
+      }
+    }
   }
 
 }
