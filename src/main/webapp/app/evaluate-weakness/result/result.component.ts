@@ -76,9 +76,9 @@ export class WeaknessResultComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.likelihoodStepEnabled = new Map();
-        this, this.likelihoodStepEnabled.set(LikelihoodStep.INITIAL_LIKELIHOOD, false);
-        this, this.likelihoodStepEnabled.set(LikelihoodStep.CONTEXTUAL_LIKELIHOOD, false);
-        this, this.likelihoodStepEnabled.set(LikelihoodStep.REFINED_LIKELIHOOD, false);
+        this.likelihoodStepEnabled.set(LikelihoodStep.INITIAL_LIKELIHOOD, false);
+        this.likelihoodStepEnabled.set(LikelihoodStep.CONTEXTUAL_LIKELIHOOD, false);
+        this.likelihoodStepEnabled.set(LikelihoodStep.REFINED_LIKELIHOOD, false);
 
         this.selfAssessment = this.selfAssessmentService.getSelfAssessment();
         this.threatAgents = this.selfAssessment.threatagents;
