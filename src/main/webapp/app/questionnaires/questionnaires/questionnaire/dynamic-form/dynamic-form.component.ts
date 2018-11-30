@@ -453,7 +453,7 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
                 this.selfAssessment = selfAssessmentResponse.body;
                 this.selfAssessmentService.setSelfAssessment(this.selfAssessment);
                 this.loading = false;
-                this.router.navigate(['/identify-threat-agent/result']);
+                this.router.navigate(['/dashboard']);
             }
         ).catch(() => {
             // TODO Error management
@@ -512,7 +512,7 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
                 this.selfAssessmentService.setSelfAssessment(this.selfAssessment);
 
                 this.loading = false;
-                this.router.navigate(['/evaluate-weakness/result']);
+                this.router.navigate(['/dashboard']);
             }).catch(() => {
             // TODO Error management
             this.loading = false;
@@ -554,7 +554,7 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
 
         myRefinementAnswers.toPromise().then((response: HttpResponse<MyAnswerMgm[]>) => {
             console.log('MyAnswers: ' + JSON.stringify(response));
-            this.router.navigate(['/evaluate-weakness/result']);
+            this.router.navigate(['/dashboard']);
         }).catch(() => {
             // TODO Error management
             this.loading = false;
