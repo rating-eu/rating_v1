@@ -79,8 +79,9 @@ export class AssetClusteringComponent implements OnInit, OnDestroy {
                     let find = false;
                     this.categoryToAssets.forEach((v, k) => {
                         if (k.id === asset.assetcategory.id) {
-                            const items = this.categoryToAssets.get(k);
+                            let items = this.categoryToAssets.get(k);
                             items.push(asset);
+                            items = _.orderBy(items, ['name'], ['asc']);
                             this.categoryToAssets.set(k, items);
                             find = true;
                         }
@@ -90,6 +91,12 @@ export class AssetClusteringComponent implements OnInit, OnDestroy {
                     }
                 }
                 this.categories = Array.from(this.categoryToAssets.keys());
+                this.categories = _.orderBy(this.categories, ['name'], ['asc']);
+                const tempMap: Map<AssetCategoryMgm, AssetMgm[]> = new Map<AssetCategoryMgm, AssetMgm[]>();
+                this.categories.forEach((category) => {
+                    tempMap.set(category, this.categoryToAssets.get(category));
+                });
+                this.categoryToAssets = tempMap;
                 this.idaUtilsService.getMySavedAssets(this.mySelf).toPromise().then((mySavedAssets) => {
                     if (mySavedAssets) {
                         this.myAssets = mySavedAssets;
