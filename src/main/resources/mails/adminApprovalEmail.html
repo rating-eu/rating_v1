@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title th:text="#{email.approval.title}">RATING account approval</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <link rel="shortcut icon" th:href="@{|${baseUrl}/favicon.ico|}"/>
+    </head>
+    <body>
+        <p th:text="#{email.approval.greeting}">
+            Dear Admin
+        </p>
+        <p th:text="#{email.approval.text1(${user.login})}">
+            A new account, {0}, is waiting for your approval. You can do it in you Administration menu.
+        </p>
+        <p>
+            <span th:text="#{email.approval.text2}">Regards, </span>
+            <br/>
+            <em th:text="#{email.signature}">RATING Staff</em>
+        </p>
+    </body>
+</html>
