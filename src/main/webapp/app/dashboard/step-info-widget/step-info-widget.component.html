@@ -123,7 +123,8 @@
               <i *ngIf="!riskEvaluationStatus" style="color: orange" class="fa fa-exclamation-triangle" aria-hidden="true"></i>
             </td>
             <td class="text-center">
-              <a *ngIf="!riskEvaluationStatus && impactEvaluationStatus" [routerLink]="['/risk-management/risk-evaluation']"><i class="fa fa-plus-square"
+              <!-- impactEvaluationStatus -->
+              <a *ngIf="!riskEvaluationStatus && assessVulnerablitiesStatus" [routerLink]="['/risk-management/risk-evaluation']"><i class="fa fa-plus-square"
                   placement="top" ngbTooltip="Create" aria-hidden="true"></i></a>
               <ng-container *ngIf="riskEvaluationStatus">
                 <a href="javascript:void(0)"><i placement="top" ngbTooltip="View"
