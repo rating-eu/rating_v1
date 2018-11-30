@@ -62,12 +62,14 @@ export class AttackCostsComponent implements OnInit {
     this.idaUtilsService.getMySavedAssets(this.mySelf).toPromise().then((mySavedAssets) => {
       if (mySavedAssets) {
         this.myAssets = mySavedAssets;
+        this.myAssets = _.orderBy(this.myAssets, ['asset.name'], ['asc']);
         this.myAssets.forEach((myAsset) => {
           this.myAssetStatus.set(myAsset.id, 'NOT COMPLETED');
         });
         this.idaUtilsService.getMySavedDirectAssets(this.mySelf).toPromise().then((mySavedDirect) => {
           if (mySavedDirect) {
             this.myDirects = mySavedDirect;
+            this.myDirects = _.orderBy(this.myDirects, ['myAsset.asset.name'], ['asc']);
             this.myDirects.forEach((myDirect) => {
               if (myDirect.costs !== null && myDirect.costs.length > 0) {
                 this.myAssetStatus.set(myDirect.myAsset.id, 'COMPLETED');

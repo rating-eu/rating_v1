@@ -46,6 +46,7 @@ export class MagnitudeComponent implements OnInit, OnDestroy {
         this.idaUtilsService.getMySavedAssets(this.mySelf).toPromise().then((mySavedAssets) => {
             if (mySavedAssets) {
                 this.myAssets = mySavedAssets;
+                this.myAssets = _.orderBy(this.myAssets, ['asset.name'], ['asc']);
                 this.myAssets.forEach((myAsset) => {
                     if (myAsset.ranking !== null && myAsset.ranking >= 0) {
                         this.myAssetStatus.set(myAsset.id, 'COMPLETED');
