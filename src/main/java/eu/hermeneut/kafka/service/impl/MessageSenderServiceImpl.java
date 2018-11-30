@@ -1,6 +1,5 @@
 package eu.hermeneut.kafka.service.impl;
 
-import eu.hermeneut.domain.SelfAssessment;
 import eu.hermeneut.domain.compact.RiskProfile;
 import eu.hermeneut.exceptions.NotFoundException;
 import eu.hermeneut.exceptions.NullInputException;
@@ -10,10 +9,12 @@ import eu.hermeneut.kafka.service.MessageSenderService;
 import eu.hermeneut.service.SelfAssessmentService;
 import eu.hermeneut.service.compact.RiskProfileService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+@Profile("kafka")
 @Service
 @Transactional
 public class MessageSenderServiceImpl implements MessageSenderService {
