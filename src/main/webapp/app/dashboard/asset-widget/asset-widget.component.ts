@@ -1,3 +1,4 @@
+import { DashboardStepEnum } from './../models/enumeration/dashboard-step.enum';
 import * as _ from 'lodash';
 
 import { Component, OnInit, OnDestroy } from '@angular/core';
@@ -37,6 +38,7 @@ export class AssetWidgetComponent implements OnInit, OnDestroy {
   private account: Account;
   private eventSubscriber: Subscription;
   private status: DashboardStatus;
+  private dashboardStatus = DashboardStepEnum;
 
   constructor(
     private principal: Principal,
@@ -62,8 +64,8 @@ export class AssetWidgetComponent implements OnInit, OnDestroy {
             if (mySavedAssets) {
               if (mySavedAssets.length === 0) {
                 this.loading = false;
-                this.status.assetClusteringStatus = false;
-                this.dashService.updateStatus(this.status);
+                // this.status.assetClusteringStatus = false;
+                // this.dashService.updateStatus(this.status);
                 return;
               }
               this.myAssets = mySavedAssets;
@@ -99,23 +101,28 @@ export class AssetWidgetComponent implements OnInit, OnDestroy {
               this.intangibleCategoryMapLoaded = true;
               this.tangibleCategoryMapLoaded = true;
               this.loading = false;
-              this.status.assetClusteringStatus = true;
-              this.dashService.updateStatus(this.status);
+              // this.status.assetClusteringStatus = true;
+              // this.dashService.updateStatus(this.status);
             } else {
               this.loading = false;
-              this.status.assetClusteringStatus = false;
-              this.dashService.updateStatus(this.status);
+              // this.status.assetClusteringStatus = false;
+              // this.dashService.updateStatus(this.status);
             }
           }).catch(() => {
             this.loading = false;
-            this.status.assetClusteringStatus = false;
-            this.dashService.updateStatus(this.status);
+            // this.status.assetClusteringStatus = false;
+            // this.dashService.updateStatus(this.status);
+          });
+
+          this.dashService.getStatusFromServer(this.mySelf, this.dashboardStatus.ASSET_CLUSTERING).toPromise().then((res) => {
+              this.status.assetClusteringStatus = res;
+              this.dashService.updateStatus(this.status);
           });
       }
     }).catch(() => {
       this.loading = false;
-      this.status.assetClusteringStatus = false;
-      this.dashService.updateStatus(this.status);
+      // this.status.assetClusteringStatus = false;
+      // this.dashService.updateStatus(this.status);
     });
   }
 

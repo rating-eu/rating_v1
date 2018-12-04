@@ -1,3 +1,4 @@
+import { DashboardStepEnum } from './../models/enumeration/dashboard-step.enum';
 import * as _ from 'lodash';
 import { Component, OnInit } from '@angular/core';
 import { SelfAssessmentMgm, SelfAssessmentMgmService } from '../../entities/self-assessment-mgm';
@@ -24,6 +25,7 @@ export class FinancialDataWidgetComponent implements OnInit {
   private mySelf: SelfAssessmentMgm;
   private wp3Status: ImpactEvaluationStatus;
   private status: DashboardStatus;
+  private dashboardStatus = DashboardStepEnum;
 
   constructor(
     private impactService: ImpactEvaluationService,
@@ -43,16 +45,21 @@ export class FinancialDataWidgetComponent implements OnInit {
         this.assets = this.wp3Status.myTangibleAssets;
         this.assets = _.orderBy(this.assets, ['economicValue'], ['desc']);
         this.loading = false;
-        this.status.impactEvaluationStatus = true;
-        this.dashService.updateStatus(this.status);
+        // this.status.impactEvaluationStatus = true;
+        // this.dashService.updateStatus(this.status);
       } else {
         this.loading = false;
-        this.status.impactEvaluationStatus = false;
-        this.dashService.updateStatus(this.status);
+        // this.status.impactEvaluationStatus = false;
+        // this.dashService.updateStatus(this.status);
       }
     }).catch(() => {
       this.loading = false;
-      this.status.impactEvaluationStatus = false;
+      // this.status.impactEvaluationStatus = false;
+      // this.dashService.updateStatus(this.status);
+    });
+
+    this.dashService.getStatusFromServer(this.mySelf, this.dashboardStatus.IMPACT_EVALUATION).toPromise().then((res) => {
+      this.status.impactEvaluationStatus = res;
       this.dashService.updateStatus(this.status);
     });
   }

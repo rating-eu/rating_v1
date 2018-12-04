@@ -1,3 +1,4 @@
+import { DashboardStepEnum } from './../models/enumeration/dashboard-step.enum';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { SelfAssessmentMgmService, SelfAssessmentMgm } from '../../entities/self-assessment-mgm';
 import { MyAnswerMgmService, MyAnswerMgm } from '../../entities/my-answer-mgm';
@@ -68,6 +69,7 @@ export class ThreatAgentsWidgetComponent implements OnInit, OnDestroy {
   private threatAgentsPercentageArray: Couple<ThreatAgentMgm, Fraction>[];
 
   private status: DashboardStatus;
+  private dashboardStatus = DashboardStepEnum;
 
   constructor(
     private selfAssessmentService: SelfAssessmentMgmService,
@@ -127,8 +129,8 @@ export class ThreatAgentsWidgetComponent implements OnInit, OnDestroy {
       (response: [HttpResponse<ThreatAgentMgm[]>, HttpResponse<MotivationMgm[]>]) => {
         if (!response[0] || !response[1]) {
           this.loading = false;
-          this.status.identifyThreatAgentsStatus = false;
-          this.dashService.updateStatus(this.status);
+          // this.status.identifyThreatAgentsStatus = false;
+          // this.dashService.updateStatus(this.status);
           return;
         }
         this.defaultThreatAgents = response[0].body;
@@ -159,6 +161,7 @@ export class ThreatAgentsWidgetComponent implements OnInit, OnDestroy {
             return result;
           }
         );
+        /*
         if (!this.selfAssessment.threatagents || !this.motivations || !this.threatAgentsPercentageArray) {
           this.status.identifyThreatAgentsStatus = false;
           this.dashService.updateStatus(this.status);
@@ -170,11 +173,16 @@ export class ThreatAgentsWidgetComponent implements OnInit, OnDestroy {
             this.status.identifyThreatAgentsStatus = false;
             this.dashService.updateStatus(this.status);
           }
-        }
+        }*/
         this.loading = false;
         // console.log('ThreatAgentsPercentageArray: ' + JSON.stringify(this.threatAgentsPercentageArray));
       }
     );
+
+    this.dashService.getStatusFromServer(this.selfAssessment, this.dashboardStatus.IDENTIFY_THREAT_AGENTS).toPromise().then((res) => {
+      this.status.identifyThreatAgentsStatus = res;
+      this.dashService.updateStatus(this.status);
+    });
   }
 
   ngOnDestroy() {
