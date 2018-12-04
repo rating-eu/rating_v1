@@ -408,7 +408,7 @@ export class ImpactEvaluationComponent implements OnInit {
     } else {
       ebit6.value = Math.round(Number(this.impactFormStepOne.get('ebit6').value as string) * 100) / 100;
     }
-    ebits.push(ebit5);
+    ebits.push(ebit6);
     // prepare discounting rate
     let discounting: number;
     if (String(this.impactFormStepOne.get('discountingRate').value).includes(',')) {
@@ -588,9 +588,9 @@ export class ImpactEvaluationComponent implements OnInit {
         }
         this.evaluateStepTwo();
         if (this.isGlobal) {
-            setTimeout(()=>{
-                this.evaluateStepFour();
-            }, 250);
+          setTimeout(() => {
+            this.evaluateStepFour();
+          }, 250);
         }
         break;
       }
