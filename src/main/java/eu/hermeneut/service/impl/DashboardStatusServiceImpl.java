@@ -2,6 +2,7 @@ package eu.hermeneut.service.impl;
 
 import eu.hermeneut.domain.*;
 import eu.hermeneut.domain.enumeration.QuestionnairePurpose;
+import eu.hermeneut.domain.enumeration.Role;
 import eu.hermeneut.domain.enumeration.Status;
 import eu.hermeneut.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,10 +36,8 @@ public class DashboardStatusServiceImpl implements DashboardStatusService {
 
         if (selfAssessment != null) {
             List<MyAsset> myAssets = this.myAssetService.findAllBySelfAssessment(selfAssessmentID);
-            List<DirectAsset> directAssets = this.directAssetService.findAllBySelfAssessment(selfAssessmentID);
-            List<IndirectAsset> indirectAssets = this.indirectAssetService.findAllBySelfAssessment(selfAssessmentID);
 
-            isDone = !(myAssets.isEmpty() || directAssets.isEmpty() || indirectAssets.isEmpty());
+            isDone = !myAssets.isEmpty();
         }
 
         return isDone;
@@ -60,7 +59,16 @@ public class DashboardStatusServiceImpl implements DashboardStatusService {
 
     @Override
     public boolean isAssessVulnerabilitiesDone(Long selfAssessmentID) {
-        return false;
+        boolean isDone = false;
+        SelfAssessment selfAssessment = this.selfAssessmentService.findOne(selfAssessmentID);
+
+        if (selfAssessment != null) {
+            QuestionnaireStatus questionnaireStatus = this.questionnaireStatusService.findBySelfAssessmentRoleAndQuestionnairePurpose(selfAssessmentID, Role.ROLE_CISO, QuestionnairePurpose.SELFASSESSMENT);
+
+            isDone = questionnaireStatus != null && questionnaireStatus.getStatus().equals(Status.FULL);
+        }
+
+        return isDone;
     }
 
     @Override
