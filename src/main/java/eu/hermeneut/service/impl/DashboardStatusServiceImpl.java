@@ -1,9 +1,12 @@
 package eu.hermeneut.service.impl;
 
 import eu.hermeneut.domain.*;
+import eu.hermeneut.domain.dashboard.ImpactEvaluationStatus;
 import eu.hermeneut.domain.enumeration.QuestionnairePurpose;
 import eu.hermeneut.domain.enumeration.Role;
 import eu.hermeneut.domain.enumeration.Status;
+import eu.hermeneut.exceptions.NotFoundException;
+import eu.hermeneut.exceptions.NullInputException;
 import eu.hermeneut.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,6 +31,9 @@ public class DashboardStatusServiceImpl implements DashboardStatusService {
 
     @Autowired
     private QuestionnaireStatusService questionnaireStatusService;
+
+    @Autowired
+    private DashboardService dashboardService;
 
     @Override
     public boolean isAssetClusteringDone(Long selfAssessmentID) {
@@ -73,16 +79,42 @@ public class DashboardStatusServiceImpl implements DashboardStatusService {
 
     @Override
     public boolean isRefineVulnerabilitiesDone(Long selfAssessmentID) {
-        return false;
+        boolean isDone = false;
+        SelfAssessment selfAssessment = this.selfAssessmentService.findOne(selfAssessmentID);
+
+        if (selfAssessment != null) {
+            QuestionnaireStatus questionnaireStatus = this.questionnaireStatusService.findBySelfAssessmentRoleAndQuestionnairePurpose(selfAssessmentID, Role.ROLE_EXTERNAL_AUDIT, QuestionnairePurpose.SELFASSESSMENT);
+
+            isDone = questionnaireStatus != null && questionnaireStatus.getStatus().equals(Status.FULL);
+        }
+
+        return isDone;
     }
 
     @Override
     public boolean isImpactEvaluationDone(Long selfAssessmentID) {
-        return false;
+        //ImpactEvaluationStatus exists
+        boolean isDone = false;
+        SelfAssessment selfAssessment = this.selfAssessmentService.findOne(selfAssessmentID);
+
+        if (selfAssessment != null) {
+            try {
+                ImpactEvaluationStatus impactEvaluationStatus = this.dashboardService.getImpactEvaluationStatus(selfAssessmentID);
+
+                isDone = impactEvaluationStatus != null;
+            } catch (NullInputException e) {
+                e.printStackTrace();
+            } catch (NotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return isDone;
     }
 
     @Override
     public boolean isRiskEvaluationDone(Long selfAssessmentID) {
+        //Waiting for Risk Mitigations, return false for now.
         return false;
     }
 }
