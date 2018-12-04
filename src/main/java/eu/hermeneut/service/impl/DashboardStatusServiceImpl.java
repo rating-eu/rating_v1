@@ -1,6 +1,8 @@
 package eu.hermeneut.service.impl;
 
 import eu.hermeneut.domain.*;
+import eu.hermeneut.domain.enumeration.QuestionnairePurpose;
+import eu.hermeneut.domain.enumeration.Status;
 import eu.hermeneut.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,6 +25,9 @@ public class DashboardStatusServiceImpl implements DashboardStatusService {
     @Autowired
     private IndirectAssetService indirectAssetService;
 
+    @Autowired
+    private QuestionnaireStatusService questionnaireStatusService;
+
     @Override
     public boolean isAssetClusteringDone(Long selfAssessmentID) {
         boolean isDone = false;
@@ -41,7 +46,16 @@ public class DashboardStatusServiceImpl implements DashboardStatusService {
 
     @Override
     public boolean isIdentifyThreatAgentsDone(Long selfAssessmentID) {
-        return false;
+        boolean isDone = false;
+        SelfAssessment selfAssessment = this.selfAssessmentService.findOne(selfAssessmentID);
+
+        if (selfAssessment != null) {
+            QuestionnaireStatus questionnaireStatus = this.questionnaireStatusService.findAllBySelfAssessmentAndQuestionnairePurpose(selfAssessmentID, QuestionnairePurpose.ID_THREAT_AGENT).stream().findFirst().orElse(null);
+
+            isDone = questionnaireStatus != null && questionnaireStatus.getStatus().equals(Status.FULL);
+        }
+
+        return isDone;
     }
 
     @Override
