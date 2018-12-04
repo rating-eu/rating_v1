@@ -10,6 +10,7 @@ import eu.hermeneut.exceptions.IllegalInputException;
 import eu.hermeneut.exceptions.NotFoundException;
 import eu.hermeneut.exceptions.NullInputException;
 import eu.hermeneut.service.*;
+import eu.hermeneut.utils.comparator.EBITComparator;
 import eu.hermeneut.utils.wp3.Calculator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -71,6 +72,21 @@ public class WP3StepsController {
             throw new NullInputException("The list of ebits is NULL");
         } else if (ebits.size() != 6) {
             throw new IllegalInputException("The number of ebits MUST be EXACTLY 6!");
+        } else {
+            ebits.sort(new EBITComparator());
+            EBIT previous = null;
+
+            for (EBIT ebit : ebits) {
+                if (previous == null) {
+                    previous = ebit;
+                } else {
+                    if ((ebit.getYear() - previous.getYear()) != 1) {
+                        throw new IllegalInputException("EBITs years must be consecutive and without duplicates!");
+                    } else {
+                        previous = ebit;
+                    }
+                }
+            }
         }
 
         //===SelfAssessment Lock===
