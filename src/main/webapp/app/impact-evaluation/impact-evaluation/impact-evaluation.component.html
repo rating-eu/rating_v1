@@ -1,8 +1,10 @@
 <ng-container *ngIf="financialAssetsAkaCurrent.length === 0 && physicalAssetsAkaFixed.length === 0">
-    <div class="text-center" style="margin-top: 50px">
-        <p style="color: orange"><i class="fa fa-exclamation-triangle fa-4x" aria-hidden="true"></i></p>
-        <p style="color: grey">In your organization are not present tangible asset, if this is a mistake please return in <a href="javascript:void(0)" [routerLink]="['/identify-asset/asset-clustering']">asset-clustering</a> section and modify your answers!</p>
-    </div>
+  <div class="text-center" style="margin-top: 50px">
+    <p style="color: orange"><i class="fa fa-exclamation-triangle fa-4x" aria-hidden="true"></i></p>
+    <p style="color: grey">In your organization are not present tangible asset, if this is a mistake please return in
+      <a href="javascript:void(0)" [routerLink]="['/identify-asset/asset-clustering']">asset-clustering</a> section and
+      modify your answers!</p>
+  </div>
 </ng-container>
 <ng-container *ngIf="financialAssetsAkaCurrent.length > 0 || physicalAssetsAkaFixed.length > 0">
   <div class="card-box">
@@ -118,7 +120,7 @@
             <h4>Loss of intangible percentage</h4>
             <p><small>(in %)</small></p>
             <p>In this section, the end-user is requested to estimate the percentage of losses related to intangible
-              assets. According to our results within WP3, we estimate that losses are up to 18.29% from global
+              assets. According to our results within WP3, we estimate that losses are up to 18,29% from global
               intangible assets’ valuation.</p>
           </div>
           <div class="col-md-6" style="border-left:1px solid #eceff1;">
@@ -126,6 +128,63 @@
             <p><small>(in million €)</small></p>
             <p>The loss on intangible assets due to cyberattacks represent a monetary estimation of loss based on
               intangible capital valuation and the percentage of losses in intangibles</p>
+          </div>
+          <div class="col-md-12">
+            <h5>Input</h5>
+            <h6>Global percentage</h6>
+            <table>
+              <thead>
+                <tr>
+                  <th>IP</th>
+                  <th>Key Comp</th>
+                  <th>Org Capital</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>19,89</td>
+                  <td>42,34</td>
+                  <td>37,77</td>
+                </tr>
+              </tbody>
+            </table>
+            <h6>Sectorial percentage</h6>
+            <table>
+              <thead>
+                <tr>
+                  <th></th>
+                  <th>IP</th>
+                  <th>Key Comp</th>
+                  <th>Org Capital</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Finance and insurance</td>
+                  <td>13,6</td>
+                  <td>45,3</td>
+                  <td>41,1</td>
+                </tr>
+                <tr>
+                  <td>Healtcare and social assistance</td>
+                  <td>14,7</td>
+                  <td>63,3</td>
+                  <td>22</td>
+                </tr>
+                <tr>
+                  <td>Information</td>
+                  <td>27,5</td>
+                  <td>27,8</td>
+                  <td>44,7</td>
+                </tr>
+                <tr>
+                  <td>Professional scientific and technical service</td>
+                  <td>6,1</td>
+                  <td>53,7</td>
+                  <td>40,2</td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </div>
       </div>
@@ -139,7 +198,7 @@
             <form [formGroup]="impactFormStepOne">
               <div class="input-group" style="margin-bottom: 10px">
                 <div class="input-group-prepend">
-                  <span class="input-group-text" id="discountingRatePrepend">Discountig Rate % [0-1]</span>
+                  <span class="input-group-text" id="discountingRatePrepend">Discounting Rate % [0-1]</span>
                 </div>
                 <input type="text" class="form-control" placeholder="Discounting rate" aria-label="discounting"
                   aria-describedby="basic-addon2" formControlName="discountingRate">
