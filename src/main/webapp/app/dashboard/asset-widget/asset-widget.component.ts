@@ -113,15 +113,16 @@ export class AssetWidgetComponent implements OnInit, OnDestroy {
             // this.status.assetClusteringStatus = false;
             // this.dashService.updateStatus(this.status);
           });
+
+          this.dashService.getStatusFromServer(this.mySelf, this.dashboardStatus.ASSET_CLUSTERING).toPromise().then((res) => {
+              this.status.assetClusteringStatus = res;
+              this.dashService.updateStatus(this.status);
+          });
       }
     }).catch(() => {
       this.loading = false;
       // this.status.assetClusteringStatus = false;
       // this.dashService.updateStatus(this.status);
-    });
-    this.dashService.getStatusFromServer(this.mySelf, this.dashboardStatus.ASSET_CLUSTERING).toPromise().then((res) => {
-      this.status.assetClusteringStatus = res;
-      this.dashService.updateStatus(this.status);
     });
   }
 
