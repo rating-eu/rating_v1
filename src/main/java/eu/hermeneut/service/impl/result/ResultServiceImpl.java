@@ -33,6 +33,9 @@ public class ResultServiceImpl implements ResultService {
     private SelfAssessmentService selfAssessmentService;
 
     @Autowired
+    private ThreatAgentService threatAgentService;
+
+    @Autowired
     private AttackStrategyService attackStrategyService;
 
     @Autowired
@@ -262,6 +265,17 @@ public class ResultServiceImpl implements ResultService {
                     });
                 }
             }
+        }
+
+        //Add the threat agents identified by default with Level of Interest = 100%
+        List<ThreatAgent> defaultThreatAgents = this.threatAgentService.findAllDefault();
+
+        if (defaultThreatAgents != null && !defaultThreatAgents.isEmpty()) {
+            defaultThreatAgents.stream().forEach((threatAgent) -> {
+                if (threatAgent.isIdentifiedByDefault()) {
+                    threatAgentLevelsOfInterest.put(threatAgent.getId(), 1F);
+                }
+            });
         }
 
         return threatAgentLevelsOfInterest;
