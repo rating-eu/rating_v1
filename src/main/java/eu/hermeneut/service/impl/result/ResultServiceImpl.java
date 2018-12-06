@@ -100,8 +100,6 @@ public class ResultServiceImpl implements ResultService {
                 List<AttackStrategy> attackStrategies = this.attackStrategyService.findAll();
                 log.debug("AttackStrategies: " + Arrays.toString(attackStrategies.toArray()));
 
-                Map<Long, AttackStrategy> attackStrategyMap = attackStrategies.stream().collect(Collectors.toMap(AttackStrategy::getId, attackStrategy -> attackStrategy));
-
                 //Map used to update the likelihood of an AttackStrategy in time O(1).
                 Map<Long/*AttackStrategy.ID*/, AugmentedAttackStrategy> augmentedAttackStrategyMap = attackStrategies.stream().collect(Collectors.toMap(AttackStrategy::getId, attackStrategy -> new AugmentedAttackStrategy(attackStrategy)));
 
@@ -118,13 +116,13 @@ public class ResultServiceImpl implements ResultService {
                 log.debug("END ############AttackMap############...");
 
                 //#Output 1 ==> OVERALL INITIAL LIKELIHOOD
-                //result.setInitialVulnerability(this.overallCalculator.overallInitialLikelihoodByThreatAgent(strongestThreatAgent, attackMap));
                 result.setInitialVulnerability(new HashMap<Long, Float>() {
                     {
                         for (ThreatAgent threatAgent : ascendingThreatAgentSkills) {
                             log.debug("Skills: " + threatAgent.getSkillLevel().getValue());
+                            float levelOfInterest = levelsOfInterest.getOrDefault(threatAgent.getId(), 0F);
 
-                            put(threatAgent.getId(), ResultServiceImpl.this.overallCalculator.overallInitialLikelihoodByThreatAgent(threatAgent, attackMap));
+                            put(threatAgent.getId(), levelOfInterest * ResultServiceImpl.this.overallCalculator.overallInitialLikelihoodByThreatAgent(threatAgent, attackMap));
                         }
                     }
                 });
@@ -156,7 +154,8 @@ public class ResultServiceImpl implements ResultService {
                     result.setContextualVulnerability(new HashMap<Long, Float>() {
                         {
                             for (ThreatAgent threatAgent : ascendingThreatAgentSkills) {
-                                put(threatAgent.getId(), ResultServiceImpl.this.overallCalculator.overallContextualLikelihoodByThreatAgent(threatAgent, attackMap));
+                                float levelOfInterest = levelsOfInterest.getOrDefault(threatAgent.getId(), 0F);
+                                put(threatAgent.getId(), levelOfInterest * ResultServiceImpl.this.overallCalculator.overallContextualLikelihoodByThreatAgent(threatAgent, attackMap));
                             }
                         }
                     });
@@ -183,7 +182,8 @@ public class ResultServiceImpl implements ResultService {
                     result.setRefinedVulnerability(new HashMap<Long, Float>() {
                         {
                             for (ThreatAgent threatAgent : ascendingThreatAgentSkills) {
-                                put(threatAgent.getId(), ResultServiceImpl.this.overallCalculator.overallRefinedLikelihoodByThreatAgent(threatAgent, attackMap));
+                                float levelOfInterest = levelsOfInterest.getOrDefault(threatAgent.getId(), 0F);
+                                put(threatAgent.getId(), levelOfInterest * ResultServiceImpl.this.overallCalculator.overallRefinedLikelihoodByThreatAgent(threatAgent, attackMap));
                             }
                         }
                     });
