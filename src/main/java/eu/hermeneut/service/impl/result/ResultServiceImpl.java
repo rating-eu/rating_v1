@@ -122,7 +122,7 @@ public class ResultServiceImpl implements ResultService {
                             log.debug("Skills: " + threatAgent.getSkillLevel().getValue());
                             float levelOfInterest = levelsOfInterest.getOrDefault(threatAgent.getId(), 0F);
 
-                            put(threatAgent.getId(), levelOfInterest * ResultServiceImpl.this.overallCalculator.overallInitialLikelihoodByThreatAgent(threatAgent, attackMap));
+                            put(threatAgent.getId(), Precision.round(levelOfInterest * ResultServiceImpl.this.overallCalculator.overallInitialLikelihoodByThreatAgent(threatAgent, attackMap), 2));
                         }
                     }
                 });
@@ -155,7 +155,7 @@ public class ResultServiceImpl implements ResultService {
                         {
                             for (ThreatAgent threatAgent : ascendingThreatAgentSkills) {
                                 float levelOfInterest = levelsOfInterest.getOrDefault(threatAgent.getId(), 0F);
-                                put(threatAgent.getId(), levelOfInterest * ResultServiceImpl.this.overallCalculator.overallContextualLikelihoodByThreatAgent(threatAgent, attackMap));
+                                put(threatAgent.getId(), Precision.round(levelOfInterest * ResultServiceImpl.this.overallCalculator.overallContextualLikelihoodByThreatAgent(threatAgent, attackMap), 2));
                             }
                         }
                     });
@@ -183,7 +183,7 @@ public class ResultServiceImpl implements ResultService {
                         {
                             for (ThreatAgent threatAgent : ascendingThreatAgentSkills) {
                                 float levelOfInterest = levelsOfInterest.getOrDefault(threatAgent.getId(), 0F);
-                                put(threatAgent.getId(), levelOfInterest * ResultServiceImpl.this.overallCalculator.overallRefinedLikelihoodByThreatAgent(threatAgent, attackMap));
+                                put(threatAgent.getId(), Precision.round(levelOfInterest * ResultServiceImpl.this.overallCalculator.overallRefinedLikelihoodByThreatAgent(threatAgent, attackMap), 2));
                             }
                         }
                     });
