@@ -492,7 +492,7 @@ export class ImpactEvaluationComponent implements OnInit {
         lossOfIntangiblePercentage = Math.round(Number(this.impactFormStepThree.get('lossOfIntangiblePercentage').value as string) * 100) / 100;
       }
     }
-    if (lossOfIntangiblePercentage) {
+    if (lossOfIntangiblePercentage !== undefined && lossOfIntangiblePercentage !== null) {
       const inputs: Wp3BundleInput = new Wp3BundleInput();
       inputs.economicCoefficients = new EconomicCoefficientsMgm();
       inputs.economicCoefficients.lossOfIntangible = lossOfIntangiblePercentage;
@@ -500,11 +500,11 @@ export class ImpactEvaluationComponent implements OnInit {
       this.impactService.evaluateStepThree(inputs, this.mySelf).toPromise().then((res) => {
         if (res) {
           this.lossOnintangibleAssetsDueToCyberattacks = Math.round(res.economicResults.intangibleLossByAttacks * 100) / 100;
+          // Next call is present because we chose of collapse step 3 and 4 in same view
+          this.evaluateStepFour();
         }
       });
     }
-    // Next call is present because we chose of collapse step 3 and 4 in same view
-    this.evaluateStepFour();
   }
 
   public evaluateStepFour() {
