@@ -350,31 +350,140 @@
           </p>
         </div>
         <div class="row">
-          <form [formGroup]="impactFormStepThree" class="col-md-5">
-            <div class="col-md-12">
-              <div class="input-group" style="margin-bottom: 10px">
-                <div class="input-group-prepend">
-                  <span class="input-group-text" id="">Loss of intangible percentage %</span>
-                </div>
-                <input type="text" class="form-control" placeholder="Loss of intangible percentage" aria-label="lossOfIntangiblePercentage"
-                  aria-describedby="basic-addon2" formControlName="lossOfIntangiblePercentage">
-              </div>
+          <div class="col-md-12">
+            <p>Sector selector:</p>
+          </div>
+          <div class="col-md-12" style="margin-top: 5px; margin-bottom: 15px">
+            <div class="btn-group btn-group-toggle col-md-12" data-toggle="buttons">
+              <label class="btn" [ngClass]="{'badge-secondary': !isSectorSelected('finance_and_insurance'), 'badge-primary active': isSectorSelected('finance_and_insurance')}">
+                <input type="radio" name="options" id="finance_and_insurance" autocomplete="off" (click)="setSector('finance_and_insurance')">
+                Finance and Insurance
+              </label>
+              <label class="btn" [ngClass]="{'badge-secondary': !isSectorSelected('health_care_and_social_assistance'), 'badge-primary active': isSectorSelected('health_care_and_social_assistance')}">
+                <input type="radio" name="options" id="health_care_and_social_assistance" autocomplete="off" (click)="setSector('health_care_and_social_assistance')">
+                Health care and social assistance
+              </label>
+              <label class="btn" [ngClass]="{'badge-secondary': !isSectorSelected('information'), 'badge-primary active': isSectorSelected('information')}">
+                <input type="radio" name="options" id="information" autocomplete="off" (click)="setSector('information')">
+                Information
+              </label>
+              <label class="btn" [ngClass]="{'badge-secondary': !isSectorSelected('professional_scientific_and_technical_service'), 'badge-primary active': isSectorSelected('professional_scientific_and_technical_service')}">
+                <input type="radio" name="options" id="professional_scientific_and_technical_service" autocomplete="off"
+                  (click)="setSector('professional_scientific_and_technical_service')"> Professional Scientific and
+                Technical Service
+              </label>
             </div>
-          </form>
-          <button class="btn btn-light" style="height:38px" (click)="evaluateStepThree()">Loss evaluation</button>
-          <div class="col-md-5 text-center">
-            <p>Loss On Intangible Assets Due To Cyberattacks<br><b class="color-b">
-                <ng-container *ngIf="lossOnintangibleAssetsDueToCyberattacks">{{lossOnintangibleAssetsDueToCyberattacks}}</ng-container>
-                <ng-container *ngIf="!lossOnintangibleAssetsDueToCyberattacks"> - </ng-container>
-                €
-              </b>
-            </p>
           </div>
         </div>
         <div class="row">
           <div class="card col-md-12">
-            <h2 class="card-title text-center">Splitting</h2>
+            <h2 class="card-title text-center">Splittings</h2>
             <ng-container class="card-text">
+              <div class="row" style="margin-top: 5px">
+                <h4>Global</h4>
+              </div>
+              <div class="row" style="margin-top: 5px">
+                <div class="col-md-4">
+                  <div class="tile-stats">
+                    <div class="icon"><i class="fa fa-money"></i></div>
+                    <div class="count">
+                      <ng-container *ngIf="splittingOnIP">{{splittingOnIP}}</ng-container>
+                      <ng-container *ngIf="!splittingOnIP"> - </ng-container>
+                      €
+                    </div>
+                    <h3>IP</h3>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="tile-stats">
+                    <div class="icon"><i class="fa fa-money"></i></div>
+                    <div class="count">
+                      <ng-container *ngIf="splittingOnKeyComp">{{splittingOnKeyComp}}</ng-container>
+                      <ng-container *ngIf="!splittingOnKeyComp"> - </ng-container>
+                      €
+                    </div>
+                    <h3>Key Comp</h3>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="tile-stats">
+                    <div class="icon"><i class="fa fa-money"></i></div>
+                    <div class="count">
+                      <ng-container *ngIf="splittingOnOrgCapital">{{splittingOnOrgCapital}}</ng-container>
+                      <ng-container *ngIf="!splittingOnOrgCapital"> - </ng-container>
+                      €
+                    </div>
+                    <h3>Org Capital</h3>
+                  </div>
+                </div>
+              </div>
+              <div class="row" style="margin-top: 5px">
+                <h4>Sectorial</h4>
+              </div>
+              <div class="row" style="margin-top: 5px">
+                <div class="col-md-4">
+                  <div class="tile-stats">
+                    <div class="icon"><i class="fa fa-money"></i></div>
+                    <div class="count">
+                      <ng-container *ngIf="splittingOnSectorialIP">{{splittingOnSectorialIP}}</ng-container>
+                      <ng-container *ngIf="!splittingOnSectorialIP"> - </ng-container>
+                      €
+                    </div>
+                    <h3>IP</h3>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="tile-stats">
+                    <div class="icon"><i class="fa fa-money"></i></div>
+                    <div class="count">
+                      <ng-container *ngIf="splittingOnSectorialKeyComp">{{splittingOnSectorialKeyComp}}</ng-container>
+                      <ng-container *ngIf="!splittingOnSectorialKeyComp"> - </ng-container>
+                      €
+                    </div>
+                    <h3>Key Comp</h3>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="tile-stats">
+                    <div class="icon"><i class="fa fa-money"></i></div>
+                    <div class="count">
+                      <ng-container *ngIf="splittingOnSectorialOrgCapital">{{splittingOnSectorialOrgCapital}}</ng-container>
+                      <ng-container *ngIf="!splittingOnSectorialOrgCapital"> - </ng-container>
+                      €
+                    </div>
+                    <h3>Org Capital</h3>
+                  </div>
+                </div>
+              </div>
+            </ng-container>
+          </div>
+        </div>
+        <div class="row">
+          <div class="card col-md-12">
+            <h2 class="card-title text-center">Loss Simulation</h2>
+            <ng-container class="card-text">
+              <div class="row" style="margin-top: 15px">
+                <form [formGroup]="impactFormStepThree" class="col-md-5">
+                  <div class="col-md-12">
+                    <div class="input-group" style="margin-bottom: 10px">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text" id="">Loss of intangible percentage %</span>
+                      </div>
+                      <input type="text" class="form-control" placeholder="Loss of intangible percentage" aria-label="lossOfIntangiblePercentage"
+                        aria-describedby="basic-addon2" formControlName="lossOfIntangiblePercentage">
+                    </div>
+                  </div>
+                </form>
+                <button class="btn btn-light" style="height:38px" (click)="evaluateStepThree()">Loss evaluation</button>
+                <div class="col-md-5 text-center">
+                  <p>Loss On Intangible Assets Due To Cyberattacks<br><b class="color-b">
+                      <ng-container *ngIf="lossOnintangibleAssetsDueToCyberattacks">{{lossOnintangibleAssetsDueToCyberattacks}}</ng-container>
+                      <ng-container *ngIf="!lossOnintangibleAssetsDueToCyberattacks"> - </ng-container>
+                      €
+                    </b>
+                  </p>
+                </div>
+              </div>
               <div class="row" style="margin-top: 5px">
                 <h4>Global</h4>
               </div>
@@ -417,28 +526,6 @@
                 <h4>Sectorial</h4>
               </div>
               <div class="row" style="margin-top: 5px">
-                <div class="btn-group btn-group-toggle col-md-12" data-toggle="buttons">
-                  <label class="btn" [ngClass]="{'badge-secondary': !isSectorSelected('finance_and_insurance'), 'badge-primary active': isSectorSelected('finance_and_insurance')}">
-                    <input type="radio" name="options" id="finance_and_insurance" autocomplete="off" (click)="setSector('finance_and_insurance')">
-                    Finance and Insurance
-                  </label>
-                  <label class="btn" [ngClass]="{'badge-secondary': !isSectorSelected('health_care_and_social_assistance'), 'badge-primary active': isSectorSelected('health_care_and_social_assistance')}">
-                    <input type="radio" name="options" id="health_care_and_social_assistance" autocomplete="off"
-                      (click)="setSector('health_care_and_social_assistance')">
-                    Health care and social assistance
-                  </label>
-                  <label class="btn" [ngClass]="{'badge-secondary': !isSectorSelected('information'), 'badge-primary active': isSectorSelected('information')}">
-                    <input type="radio" name="options" id="information" autocomplete="off" (click)="setSector('information')">
-                    Information
-                  </label>
-                  <label class="btn" [ngClass]="{'badge-secondary': !isSectorSelected('professional_scientific_and_technical_service'), 'badge-primary active': isSectorSelected('professional_scientific_and_technical_service')}">
-                    <input type="radio" name="options" id="professional_scientific_and_technical_service" autocomplete="off"
-                      (click)="setSector('professional_scientific_and_technical_service')"> Professional Scientific and
-                    Technical Service
-                  </label>
-                </div>
-              </div>
-              <div class="row" style="margin-top: 5px">
                 <div class="col-md-4">
                   <div class="tile-stats">
                     <div class="icon"><i class="fa fa-money"></i></div>
@@ -475,68 +562,14 @@
               </div>
             </ng-container>
           </div>
-
         </div>
         <div class="row">
           <div class="col-md-12">
-            <!--<button class="btn btn-primary float-right" style="margin-left: 10px" (click)="selectStep(4)">Next</button>-->
             <button class="btn btn-secondary float-right" style="margin-left: 10px" (click)="close()">Close</button>
             <button class="btn btn-light float-right" (click)="selectStep(2)">Prev</button>
           </div>
         </div>
       </div>
-      <!--
-        <div *ngSwitchCase="4" class="container-fluid">
-          <div class="row">
-            <p>
-              <h2>Loss On Intangible Assets Due To Cyberattacks = <b class="color-b">
-                <ng-container *ngIf="lossOnintangibleAssetsDueToCyberattacks">{{lossOnintangibleAssetsDueToCyberattacks}}</ng-container>
-                <ng-container *ngIf="!lossOnintangibleAssetsDueToCyberattacks"> - </ng-container>
-                 €</b>
-              </h2>
-            </p>
-          </div>
-          <div class="row">
-            <div class="col-md-12">
-              <div class="row">
-                GLOBAL<i class="fa fa-lg" style="color: #007bff" [ngClass]="{'fa-toggle-off': isGlobal, 'fa-toggle-on': !isGlobal}"
-                  aria-hidden="true" (click)="setIsGlobal()"></i>SECTORIAL
-              </div>
-              <div class="row" *ngIf="!isGlobal">
-                <div class="btn-group btn-group-toggle" data-toggle="buttons">
-                  <label class="btn" [ngClass]="{'badge-secondary': !isSectorSelected('finance_and_insurance'), 'badge-primary active': isSectorSelected('finance_and_insurance')}">
-                    <input type="radio" name="options" id="finance_and_insurance" autocomplete="off" (click)="setSector('finance_and_insurance')">
-                    Finance and Insurance
-                  </label>
-                  <label class="btn" [ngClass]="{'badge-secondary': !isSectorSelected('health_care_and_social_assistance'), 'badge-primary active': isSectorSelected('health_care_and_social_assistance')}">
-                    <input type="radio" name="options" id="health_care_and_social_assistance" autocomplete="off" (click)="setSector('health_care_and_social_assistance')">
-                    Health care and social assistance
-                  </label>
-                  <label class="btn" [ngClass]="{'badge-secondary': !isSectorSelected('information'), 'badge-primary active': isSectorSelected('information')}">
-                    <input type="radio" name="options" id="information" autocomplete="off" (click)="setSector('information')">
-                    Information
-                  </label>
-                  <label class="btn" [ngClass]="{'badge-secondary': !isSectorSelected('professional_scientific_and_technical_service'), 'badge-primary active': isSectorSelected('professional_scientific_and_technical_service')}">
-                    <input type="radio" name="options" id="professional_scientific_and_technical_service" autocomplete="off"
-                      (click)="setSector('professional_scientific_and_technical_service')"> Professional Scientific and
-                    Technical Service
-                  </label>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="row">
-            <p>IP: <b class="color-b">{{impactOnIP}}</b>, Key Comp: <b class="color-b">{{impactOnKeyComp}}</b>, Org
-              Capital: <b class="color-b">{{impactOnOrgCapital}}<b class="color-b"></p>
-          </div>
-          <div class="row">
-            <div class="col-md-12">
-              <button class="btn btn-secondary float-right" style="margin-left: 10px" (click)="close()">Close</button>
-              <button class="btn btn-light float-right" (click)="selectStep(3)">Prev</button>
-            </div>
-          </div>
-        </div>
-        -->
     </ng-container>
   </div>
 </ng-container>

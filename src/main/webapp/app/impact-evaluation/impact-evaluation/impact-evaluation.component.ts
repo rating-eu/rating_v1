@@ -53,6 +53,16 @@ export class ImpactEvaluationComponent implements OnInit {
   public impactOnHealthCareSector: number[];
   public impactOnInformationSector: number[];
   public impactOnProfessionalSector: number[];
+  public splittingOnIP: number;
+  public splittingOnKeyComp: number;
+  public splittingOnOrgCapital: number;
+  public splittingOnSectorialIP: number;
+  public splittingOnSectorialKeyComp: number;
+  public splittingOnSectorialOrgCapital: number;
+  public splittingOnFinanceAndInsuranceSector: number[];
+  public splittingOnHealthCareSector: number[];
+  public splittingOnInformationSector: number[];
+  public splittingOnProfessionalSector: number[];
 
   public financialAssetsAkaCurrent: MyAssetMgm[] = [];
   public physicalAssetsAkaFixed: MyAssetMgm[] = [];
@@ -299,6 +309,35 @@ export class ImpactEvaluationComponent implements OnInit {
                     this.impactOnOrgCapital = Math.round(impact.loss * 100) / 100;
                   } else {
                     this.impactOnSectorialOrgCapital = Math.round(impact.loss * 100) / 100;
+                  }
+                  break;
+                }
+              }
+            }
+            // TODO mod in splittingValues and value
+            for (const splitting of this.wp3Status.splittingValues) {
+              switch (splitting.categoryType.toString()) {
+                case MyCategoryType.IP.toString(): {
+                  if (splitting.sectorType.toString() === MySectorType.GLOBAL.toString()) {
+                    this.splittingOnIP = Math.round(splitting.value * 100) / 100;
+                  } else {
+                    this.splittingOnSectorialIP = Math.round(splitting.value * 100) / 100;
+                  }
+                  break;
+                }
+                case MyCategoryType.KEY_COMP.toString(): {
+                  if (splitting.sectorType.toString() === MySectorType.GLOBAL.toString()) {
+                    this.splittingOnKeyComp = Math.round(splitting.value * 100) / 100;
+                  } else {
+                    this.splittingOnSectorialKeyComp = Math.round(splitting.value * 100) / 100;
+                  }
+                  break;
+                }
+                case MyCategoryType.ORG_CAPITAL.toString(): {
+                  if (splitting.sectorType.toString() === MySectorType.GLOBAL.toString()) {
+                    this.splittingOnOrgCapital = Math.round(splitting.value * 100) / 100;
+                  } else {
+                    this.splittingOnSectorialOrgCapital = Math.round(splitting.value * 100) / 100;
                   }
                   break;
                 }
@@ -564,6 +603,61 @@ export class ImpactEvaluationComponent implements OnInit {
     this.impactOnIP = Math.random() * 100;
     */
   }
+  public evaluateStepFive() {
+    console.log('STEP FIVE');
+    console.log('EVALUATE STEP FOUR');
+    /*
+    if (this.impactFormStepFour.invalid) {
+      // gestire l'errore
+      return;
+    }
+    */
+    const inputs: Wp3BundleInput = new Wp3BundleInput();
+    if (!this.choosedSectorType) {
+      inputs.sectorType = SectorType.GLOBAL;
+    } else {
+      inputs.sectorType = this.choosedSectorType;
+    }
+    console.log(inputs);
+    this.impactService.evaluateStepFive(inputs, this.mySelf).toPromise().then((res) => {
+      if (res) {
+        // 6 elementi 3 per global e 3 per sector
+        for (const splitting of this.wp3Status.splittingValues) {
+          switch (splitting.categoryType.toString()) {
+            case MyCategoryType.IP.toString(): {
+              if (splitting.sectorType.toString() === MySectorType.GLOBAL.toString()) {
+                this.splittingOnIP = Math.round(splitting.value * 100) / 100;
+              } else {
+                this.splittingOnSectorialIP = Math.round(splitting.value * 100) / 100;
+              }
+              break;
+            }
+            case MyCategoryType.KEY_COMP.toString(): {
+              if (splitting.sectorType.toString() === MySectorType.GLOBAL.toString()) {
+                this.splittingOnKeyComp = Math.round(splitting.value * 100) / 100;
+              } else {
+                this.splittingOnSectorialKeyComp = Math.round(splitting.value * 100) / 100;
+              }
+              break;
+            }
+            case MyCategoryType.ORG_CAPITAL.toString(): {
+              if (splitting.sectorType.toString() === MySectorType.GLOBAL.toString()) {
+                this.splittingOnOrgCapital = Math.round(splitting.value * 100) / 100;
+              } else {
+                this.splittingOnSectorialOrgCapital = Math.round(splitting.value * 100) / 100;
+              }
+              break;
+            }
+          }
+        }
+      }
+    });
+    /*
+    this.impactOnOrgCapital = Math.random() * 100;
+    this.impactOnKeyComp = Math.random() * 100;
+    this.impactOnIP = Math.random() * 100;
+    */
+  }
 
   public isSectorSelected(sector: string): boolean {
     if (this.sectorChoosed === sector) {
@@ -589,8 +683,14 @@ export class ImpactEvaluationComponent implements OnInit {
         this.evaluateStepTwo();
         if (this.isGlobal) {
           setTimeout(() => {
-            this.evaluateStepFour();
-          }, 250);
+            this.evaluateStepFive();
+            setTimeout(() => {
+              this.evaluateStepThree();
+              setTimeout(() => {
+                this.evaluateStepFour();
+              }, 200);
+            }, 200);
+          }, 200);
         }
         break;
       }
@@ -647,6 +747,7 @@ export class ImpactEvaluationComponent implements OnInit {
       }
     }
     this.evaluateStepFour();
+    this.evaluateStepFive();
   }
 
   public close() {
