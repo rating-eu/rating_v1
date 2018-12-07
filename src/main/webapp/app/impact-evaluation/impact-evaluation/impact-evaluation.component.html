@@ -267,8 +267,8 @@
         <div class="row">
           <p>
             <h2>Evaluated Economic Performance = <b class="color-b">
-                <ng-container *ngIf="economicPerformance">{{economicPerformance}}</ng-container>
-                <ng-container *ngIf="!economicPerformance">-</ng-container> €
+                <ng-container *ngIf="economicPerformance">{{economicPerformance | currency:'EUR'}}</ng-container>
+                <ng-container *ngIf="!economicPerformance">-</ng-container>
               </b></h2>
           </p>
         </div>
@@ -337,15 +337,13 @@
         <div class="row">
           <p>
             <h3>Intangible Driving Earnings = <b class="color-b">
-                <ng-container *ngIf="intangibleDrivingEarnings">{{intangibleDrivingEarnings}}</ng-container>
+                <ng-container *ngIf="intangibleDrivingEarnings">{{intangibleDrivingEarnings | currency:'EUR'}}</ng-container>
                 <ng-container *ngIf="!intangibleDrivingEarnings"> - </ng-container>
-                €
               </b><br>
               Intangible Capital =
               <b class="color-b">
-                <ng-container *ngIf="intangibleCapitalValuation">{{intangibleCapitalValuation}}</ng-container>
+                <ng-container *ngIf="intangibleCapitalValuation">{{intangibleCapitalValuation | currency:'EUR'}}</ng-container>
                 <ng-container *ngIf="!intangibleCapitalValuation"> - </ng-container>
-                €
               </b></h3>
           </p>
         </div>
@@ -387,35 +385,73 @@
                   <div class="tile-stats">
                     <div class="icon"><i class="fa fa-money"></i></div>
                     <div class="count">
-                      <ng-container *ngIf="splittingOnIP">{{splittingOnIP}}</ng-container>
+                      <ng-container *ngIf="splittingOnIP">{{splittingOnIP | currency:'EUR'}}</ng-container>
                       <ng-container *ngIf="!splittingOnIP"> - </ng-container>
-                      €
                     </div>
-                    <h3>IP</h3>
+                    <h3><a href="javascript:void(0)" (click)="setAssetCategory('IP')">IP</a></h3>
                   </div>
                 </div>
                 <div class="col-md-4">
                   <div class="tile-stats">
                     <div class="icon"><i class="fa fa-money"></i></div>
                     <div class="count">
-                      <ng-container *ngIf="splittingOnKeyComp">{{splittingOnKeyComp}}</ng-container>
+                      <ng-container *ngIf="splittingOnKeyComp">{{splittingOnKeyComp | currency:'EUR'}}</ng-container>
                       <ng-container *ngIf="!splittingOnKeyComp"> - </ng-container>
-                      €
                     </div>
-                    <h3>Key Comp</h3>
+                    <h3><a href="javascript:void(0)" (click)="setAssetCategory('KEY_COMP')">Key Comp</a></h3>
                   </div>
                 </div>
                 <div class="col-md-4">
                   <div class="tile-stats">
                     <div class="icon"><i class="fa fa-money"></i></div>
                     <div class="count">
-                      <ng-container *ngIf="splittingOnOrgCapital">{{splittingOnOrgCapital}}</ng-container>
+                      <ng-container *ngIf="splittingOnOrgCapital">{{splittingOnOrgCapital | currency:'EUR'}}</ng-container>
                       <ng-container *ngIf="!splittingOnOrgCapital"> - </ng-container>
-                      €
                     </div>
-                    <h3>Org Capital</h3>
+                    <h3><a href="javascript:void(0)" (click)="setAssetCategory('ORG_CAPITAL')">Org Capital</a></h3>
                   </div>
                 </div>
+              </div>
+              <div class="row" style="margin-top: 5px" *ngIf="!collapseSplittings">
+                <div class="col-md-10 offset-md-1" style="border: 1px solid #E4E4E4; border-radius: 5px;">
+                    <i class="float-right fa fa-times fa-lg" style="margin-top: 5px" (click)="collapseSplittings = true" aria-hidden="true"></i>
+                    <h4 style="margin-left: 5px">{{selectedAssetCategory}} {{selectedAssetSplitting | currency:'EUR'}}</h4>
+                    <table class="table">
+                      <thead>
+                        <tr>
+                          <th scope="col">Asset</th>
+                          <th scope="col">Priority</th>
+                          <th scope="col">Economic value</th>
+                        </tr>
+                      </thead>
+                      <tbody *ngIf="assetsBySelectedCategory.length > 0">
+                        <ng-container *ngFor="let asset of assetsBySelectedCategory">
+                          <tr>
+                            <th scope="row">{{asset.asset.name}}</th>
+                            <td>
+                              <div ngbDropdown class="d-inline-block">
+                                <button *ngIf="asset.ranking !== null && asset.ranking !== undefined && asset.ranking >= 0"
+                                  class="btn btn-outline-primary" id="priorityDrop" ngbDropdownToggle>{{priorities[asset.ranking-1]}}:
+                                  {{asset.ranking}}</button>
+                                <button *ngIf="asset.ranking === null || asset.ranking === undefined" class="btn btn-outline-primary"
+                                  id="priorityDrop" ngbDropdownToggle>Chose priority level</button>
+                                <div ngbDropdownMenu aria-labelledby="priorityDrop">
+                                  <ng-container *ngFor="let rankLevel of priorities; let i = index">
+                                    <button class="dropdown-item" (click)="setSelectedAssetPriority(rankLevel, asset)">{{rankLevel}}:
+                                      {{i+1}}</button>
+                                  </ng-container>
+                                </div>
+                              </div>
+                            </td>
+                            <td>{{asset.economicValue | currency:'EUR'}}</td>
+                          </tr>
+                        </ng-container>
+                      </tbody>
+                      <tbody *ngIf="assetsBySelectedCategory.length === 0">
+                        <tr>No assets found in selected category!</tr>
+                      </tbody>
+                    </table>
+                  </div>
               </div>
               <div class="row" style="margin-top: 5px">
                 <h4>Sectorial</h4>
@@ -425,9 +461,8 @@
                   <div class="tile-stats">
                     <div class="icon"><i class="fa fa-money"></i></div>
                     <div class="count">
-                      <ng-container *ngIf="splittingOnSectorialIP">{{splittingOnSectorialIP}}</ng-container>
+                      <ng-container *ngIf="splittingOnSectorialIP">{{splittingOnSectorialIP | currency:'EUR'}}</ng-container>
                       <ng-container *ngIf="!splittingOnSectorialIP"> - </ng-container>
-                      €
                     </div>
                     <h3>IP</h3>
                   </div>
@@ -436,9 +471,9 @@
                   <div class="tile-stats">
                     <div class="icon"><i class="fa fa-money"></i></div>
                     <div class="count">
-                      <ng-container *ngIf="splittingOnSectorialKeyComp">{{splittingOnSectorialKeyComp}}</ng-container>
+                      <ng-container *ngIf="splittingOnSectorialKeyComp">{{splittingOnSectorialKeyComp |
+                        currency:'EUR'}}</ng-container>
                       <ng-container *ngIf="!splittingOnSectorialKeyComp"> - </ng-container>
-                      €
                     </div>
                     <h3>Key Comp</h3>
                   </div>
@@ -447,9 +482,9 @@
                   <div class="tile-stats">
                     <div class="icon"><i class="fa fa-money"></i></div>
                     <div class="count">
-                      <ng-container *ngIf="splittingOnSectorialOrgCapital">{{splittingOnSectorialOrgCapital}}</ng-container>
+                      <ng-container *ngIf="splittingOnSectorialOrgCapital">{{splittingOnSectorialOrgCapital |
+                        currency:'EUR'}}</ng-container>
                       <ng-container *ngIf="!splittingOnSectorialOrgCapital"> - </ng-container>
-                      €
                     </div>
                     <h3>Org Capital</h3>
                   </div>
@@ -477,9 +512,9 @@
                 <button class="btn btn-light" style="height:38px" (click)="evaluateStepThree()">Loss evaluation</button>
                 <div class="col-md-5 text-center">
                   <p>Loss On Intangible Assets Due To Cyberattacks<br><b class="color-b">
-                      <ng-container *ngIf="lossOnintangibleAssetsDueToCyberattacks">{{lossOnintangibleAssetsDueToCyberattacks}}</ng-container>
+                      <ng-container *ngIf="lossOnintangibleAssetsDueToCyberattacks">{{lossOnintangibleAssetsDueToCyberattacks
+                        | currency:'EUR'}}</ng-container>
                       <ng-container *ngIf="!lossOnintangibleAssetsDueToCyberattacks"> - </ng-container>
-                      €
                     </b>
                   </p>
                 </div>
@@ -492,9 +527,8 @@
                   <div class="tile-stats">
                     <div class="icon"><i class="fa fa-money"></i></div>
                     <div class="count">
-                      <ng-container *ngIf="impactOnIP">{{impactOnIP}}</ng-container>
+                      <ng-container *ngIf="impactOnIP">{{impactOnIP | currency:'EUR'}}</ng-container>
                       <ng-container *ngIf="!impactOnIP"> - </ng-container>
-                      €
                     </div>
                     <h3>IP</h3>
                   </div>
@@ -503,9 +537,8 @@
                   <div class="tile-stats">
                     <div class="icon"><i class="fa fa-money"></i></div>
                     <div class="count">
-                      <ng-container *ngIf="impactOnKeyComp">{{impactOnKeyComp}}</ng-container>
+                      <ng-container *ngIf="impactOnKeyComp">{{impactOnKeyComp | currency:'EUR'}}</ng-container>
                       <ng-container *ngIf="!impactOnKeyComp"> - </ng-container>
-                      €
                     </div>
                     <h3>Key Comp</h3>
                   </div>
@@ -514,9 +547,8 @@
                   <div class="tile-stats">
                     <div class="icon"><i class="fa fa-money"></i></div>
                     <div class="count">
-                      <ng-container *ngIf="impactOnOrgCapital">{{impactOnOrgCapital}}</ng-container>
+                      <ng-container *ngIf="impactOnOrgCapital">{{impactOnOrgCapital | currency:'EUR'}}</ng-container>
                       <ng-container *ngIf="!impactOnOrgCapital"> - </ng-container>
-                      €
                     </div>
                     <h3>Org Capital</h3>
                   </div>
@@ -530,9 +562,8 @@
                   <div class="tile-stats">
                     <div class="icon"><i class="fa fa-money"></i></div>
                     <div class="count">
-                      <ng-container *ngIf="impactOnSectorialIP">{{impactOnSectorialIP}}</ng-container>
+                      <ng-container *ngIf="impactOnSectorialIP">{{impactOnSectorialIP | currency:'EUR'}}</ng-container>
                       <ng-container *ngIf="!impactOnSectorialIP"> - </ng-container>
-                      €
                     </div>
                     <h3>IP</h3>
                   </div>
@@ -541,9 +572,8 @@
                   <div class="tile-stats">
                     <div class="icon"><i class="fa fa-money"></i></div>
                     <div class="count">
-                      <ng-container *ngIf="impactOnSectorialKeyComp">{{impactOnSectorialKeyComp}}</ng-container>
+                      <ng-container *ngIf="impactOnSectorialKeyComp">{{impactOnSectorialKeyComp | currency:'EUR'}}</ng-container>
                       <ng-container *ngIf="!impactOnSectorialKeyComp"> - </ng-container>
-                      €
                     </div>
                     <h3>Key Comp</h3>
                   </div>
@@ -552,9 +582,9 @@
                   <div class="tile-stats">
                     <div class="icon"><i class="fa fa-money"></i></div>
                     <div class="count">
-                      <ng-container *ngIf="impactOnSectorialOrgCapital">{{impactOnSectorialOrgCapital}}</ng-container>
+                      <ng-container *ngIf="impactOnSectorialOrgCapital">{{impactOnSectorialOrgCapital |
+                        currency:'EUR'}}</ng-container>
                       <ng-container *ngIf="!impactOnSectorialOrgCapital"> - </ng-container>
-                      €
                     </div>
                     <h3>Org Capital</h3>
                   </div>

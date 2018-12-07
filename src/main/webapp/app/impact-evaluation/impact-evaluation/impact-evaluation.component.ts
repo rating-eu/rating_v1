@@ -1,10 +1,12 @@
+import { IdentifyAssetUtilService } from './../../identify-assets/identify-asset.util.service';
+import { Priority } from './../../identify-assets/model/enumeration/priority.enum';
 import * as _ from 'lodash';
 
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '../../../../../../node_modules/@angular/forms';
 import { SelfAssessmentMgmService, SelfAssessmentMgm } from '../../entities/self-assessment-mgm';
 import { MyAssetMgm } from '../../entities/my-asset-mgm';
-import { AssetMgmService, AssetMgm } from '../../entities/asset-mgm';
+import { AssetMgm } from '../../entities/asset-mgm';
 import { AssetType } from '../../entities/enumerations/AssetType.enum';
 import { ImpactEvaluationService } from '../impact-evaluation.service';
 import { EBITMgm } from '../../entities/ebit-mgm';
@@ -32,13 +34,14 @@ export class ImpactEvaluationComponent implements OnInit {
   public witchStep = 1;
   public isDescriptionCollapsed = true;
   public isGlobal = true;
-  public sectorChoosed: string;
-  public selectedCategory: CategoryType;
   public impactFormStepOne: FormGroup;
   public impactFormStepTwo: FormGroup;
   public impactFormStepThree: FormGroup;
-  // public impactFormStepFour: FormGroup;
-
+  public collapseSplittings = true;
+  public assetsBySelectedCategory: MyAssetMgm[] = [];
+  public myAssets: MyAssetMgm[] = [];
+  public selectedAssetCategory: string;
+  public selectedAssetSplitting: number;
   public economicPerformance: number;
   public intangibleDrivingEarnings: number;
   public intangibleCapitalValuation: number;
@@ -63,19 +66,20 @@ export class ImpactEvaluationComponent implements OnInit {
   public splittingOnHealthCareSector: number[];
   public splittingOnInformationSector: number[];
   public splittingOnProfessionalSector: number[];
-
   public financialAssetsAkaCurrent: MyAssetMgm[] = [];
   public physicalAssetsAkaFixed: MyAssetMgm[] = [];
   public ebitLabel: string[] = [];
-
   private mySelf: SelfAssessmentMgm;
   private firstYear: number;
   private lastYear: number;
   private choosedSectorType: SectorType;
-
   private user: User;
   private myCompany: MyCompanyMgm;
+  public priorities = ['Low', 'Low medium', 'Medium', 'Medium high', 'High'];
 
+  private sectorChoosed: string;
+  private selectedCategory: CategoryType;
+  /*
   public sectorialPercentageMatrix: any[] = [
     {
       ipSectorialPercentage: [] = [
@@ -98,6 +102,8 @@ export class ImpactEvaluationComponent implements OnInit {
       ],
     }
   ];
+  */
+
   constructor(
     private mySelfAssessmentService: SelfAssessmentMgmService,
     private impactService: ImpactEvaluationService,
@@ -106,6 +112,7 @@ export class ImpactEvaluationComponent implements OnInit {
     private accountService: AccountService,
     private userService: UserService,
     private myCompanyService: MyCompanyMgmService,
+    private idaUtilService: IdentifyAssetUtilService
   ) { }
 
   ngOnInit() {
@@ -180,16 +187,6 @@ export class ImpactEvaluationComponent implements OnInit {
         Validators.required,
         Validators.pattern('[0-9]+,[0-9]+|[0-9]+.[0-9]+')
       ])),
-      /*
-      firstYear: new FormControl(firstYear, Validators.compose([
-        Validators.required,
-        Validators.pattern('[0-9]')
-      ])),
-      lastYear: new FormControl(lastYear, Validators.compose([
-        Validators.required,
-        Validators.pattern('[0-9]')
-      ])),
-      */
       discountingRate: new FormControl(undefined, Validators.compose([
         Validators.required,
         Validators.min(0),
@@ -219,10 +216,10 @@ export class ImpactEvaluationComponent implements OnInit {
         Validators.pattern('[0-9]+,[0-9]+|[0-9]+.[0-9]+|[0-9]+')
       ])),
     });
-    // TODO chiamata per recuperare tutti i MyAssets a partire dal selfAssessment
     this.mySelf = this.mySelfAssessmentService.getSelfAssessment();
     this.impactService.getMyAssets(this.mySelf).toPromise().then((res) => {
       if (res && res.length > 0) {
+        this.myAssets = res;
         // Recuperare tutti i tangible;
         for (const asset of res) {
           if ((asset.asset as AssetMgm).assetcategory.type.toString() === AssetType.TANGIBLE.toString()) {
@@ -314,7 +311,8 @@ export class ImpactEvaluationComponent implements OnInit {
                 }
               }
             }
-            // TODO mod in splittingValues and value
+            // TODO mod in splittingValues and value da decommentare
+            /*
             for (const splitting of this.wp3Status.splittingValues) {
               switch (splitting.categoryType.toString()) {
                 case MyCategoryType.IP.toString(): {
@@ -343,40 +341,11 @@ export class ImpactEvaluationComponent implements OnInit {
                 }
               }
             }
+            */
           }
         });
       }
     });
-
-    // NON PIù NECESSARIO, I PARAMETRI PERCENTUALI SONO PRESTABILITI E NON MODIFICABILI
-    /*
-    this.impactFormStepFour = new FormGroup({
-      globalPercentageIP: new FormControl(19.89, Validators.compose([
-        Validators.required,
-        Validators.min(0),
-        Validators.max(100),
-        Validators.pattern('[0-9]+,[0-9]+|[0-9]+.[0-9]+')
-      ])),
-      globalPercentageKeyComp: new FormControl(42.34, Validators.compose([
-        Validators.required,
-        Validators.min(0),
-        Validators.max(100),
-        Validators.pattern('[0-9]+,[0-9]+|[0-9]+.[0-9]+')
-      ])),
-      globalPercentageOrgCapital: new FormControl(37.77, Validators.compose([
-        Validators.required,
-        Validators.min(0),
-        Validators.max(100),
-        Validators.pattern('[0-9]+,[0-9]+|[0-9]+.[0-9]+')
-      ])),
-      sectorialPercentage: new FormControl(undefined, Validators.compose([
-        Validators.required,
-        Validators.min(0),
-        Validators.max(100),
-        Validators.pattern('[0-9]+,[0-9]+|[0-9]+.[0-9]+')
-      ])),
-    });
-    */
     this.ref.detectChanges();
   }
 
@@ -385,10 +354,7 @@ export class ImpactEvaluationComponent implements OnInit {
   }
 
   public evaluateStepOne() {
-    console.log('EVALUATE STEP ONE');
     const ebits: EBITMgm[] = [];
-    const dataChange = false;
-    // prepare ebit 1
     const ebit1: EBITMgm = new EBITMgm();
     ebit1.selfAssessment = this.mySelf;
     ebit1.year = this.firstYear;
@@ -398,7 +364,6 @@ export class ImpactEvaluationComponent implements OnInit {
       ebit1.value = Math.round(Number(this.impactFormStepOne.get('ebit1').value as string) * 100) / 100;
     }
     ebits.push(ebit1);
-    // prepare ebit 2
     const ebit2: EBITMgm = new EBITMgm();
     ebit2.selfAssessment = this.mySelf;
     ebit2.year = this.firstYear + 1;
@@ -408,7 +373,6 @@ export class ImpactEvaluationComponent implements OnInit {
       ebit2.value = Math.round(Number(this.impactFormStepOne.get('ebit2').value as string) * 100) / 100;
     }
     ebits.push(ebit2);
-    // prepare ebit 3
     const ebit3: EBITMgm = new EBITMgm();
     ebit3.selfAssessment = this.mySelf;
     ebit3.year = this.firstYear + 2;
@@ -418,7 +382,6 @@ export class ImpactEvaluationComponent implements OnInit {
       ebit3.value = Math.round(Number(this.impactFormStepOne.get('ebit3').value as string) * 100) / 100;
     }
     ebits.push(ebit3);
-    // prepare ebit 4
     const ebit4: EBITMgm = new EBITMgm();
     ebit4.selfAssessment = this.mySelf;
     ebit4.year = this.firstYear + 3;
@@ -428,7 +391,6 @@ export class ImpactEvaluationComponent implements OnInit {
       ebit4.value = Math.round(Number(this.impactFormStepOne.get('ebit4').value as string) * 100) / 100;
     }
     ebits.push(ebit4);
-    // prepare ebit 5
     const ebit5: EBITMgm = new EBITMgm();
     ebit5.selfAssessment = this.mySelf;
     ebit5.year = this.firstYear + 4;
@@ -438,7 +400,6 @@ export class ImpactEvaluationComponent implements OnInit {
       ebit5.value = Math.round(Number(this.impactFormStepOne.get('ebit5').value as string) * 100) / 100;
     }
     ebits.push(ebit5);
-    // prepare ebit 6
     const ebit6: EBITMgm = new EBITMgm();
     ebit6.selfAssessment = this.mySelf;
     ebit6.year = this.firstYear + 5;
@@ -448,7 +409,6 @@ export class ImpactEvaluationComponent implements OnInit {
       ebit6.value = Math.round(Number(this.impactFormStepOne.get('ebit6').value as string) * 100) / 100;
     }
     ebits.push(ebit6);
-    // prepare discounting rate
     let discounting: number;
     if (String(this.impactFormStepOne.get('discountingRate').value).includes(',')) {
       discounting = Math.round(Number((this.impactFormStepOne.get('discountingRate').value as string).replace(/,/g, '.')) * 100) / 100;
@@ -466,11 +426,9 @@ export class ImpactEvaluationComponent implements OnInit {
           this.economicPerformance = Math.round(res.economicResults.economicPerformance * 100) / 100;
         }
       });
-      // this.economicPerformance = Math.random() * 100;
     }
   }
   public evaluateStepTwo() {
-    console.log('EVALUATE STEP TWO');
     let dataIsOk = true;
     for (const asset of this.physicalAssetsAkaFixed) {
       if (isNaN(parseFloat(asset.economicValue.toString()))) {
@@ -550,23 +508,14 @@ export class ImpactEvaluationComponent implements OnInit {
   }
 
   public evaluateStepFour() {
-    console.log('EVALUATE STEP FOUR');
-    /*
-    if (this.impactFormStepFour.invalid) {
-      // gestire l'errore
-      return;
-    }
-    */
     const inputs: Wp3BundleInput = new Wp3BundleInput();
     if (!this.choosedSectorType) {
       inputs.sectorType = SectorType.GLOBAL;
     } else {
       inputs.sectorType = this.choosedSectorType;
     }
-    console.log(inputs);
     this.impactService.evaluateStepFour(inputs, this.mySelf).toPromise().then((res) => {
       if (res) {
-        // 6 elementi 3 per global e 3 per sector
         for (const impactOn of res.splittingLosses) {
           switch (impactOn.categoryType.toString()) {
             case MyCategoryType.IP.toString(): {
@@ -597,21 +546,11 @@ export class ImpactEvaluationComponent implements OnInit {
         }
       }
     });
-    /*
-    this.impactOnOrgCapital = Math.random() * 100;
-    this.impactOnKeyComp = Math.random() * 100;
-    this.impactOnIP = Math.random() * 100;
-    */
   }
+
   public evaluateStepFive() {
     console.log('STEP FIVE');
-    console.log('EVALUATE STEP FOUR');
-    /*
-    if (this.impactFormStepFour.invalid) {
-      // gestire l'errore
-      return;
-    }
-    */
+    console.log('EVALUATE STEP FIVE');
     const inputs: Wp3BundleInput = new Wp3BundleInput();
     if (!this.choosedSectorType) {
       inputs.sectorType = SectorType.GLOBAL;
@@ -619,10 +558,10 @@ export class ImpactEvaluationComponent implements OnInit {
       inputs.sectorType = this.choosedSectorType;
     }
     console.log(inputs);
+    /*
     this.impactService.evaluateStepFive(inputs, this.mySelf).toPromise().then((res) => {
       if (res) {
-        // 6 elementi 3 per global e 3 per sector
-        for (const splitting of this.wp3Status.splittingValues) {
+        for (const splitting of res.splittingValues) {
           switch (splitting.categoryType.toString()) {
             case MyCategoryType.IP.toString(): {
               if (splitting.sectorType.toString() === MySectorType.GLOBAL.toString()) {
@@ -652,11 +591,104 @@ export class ImpactEvaluationComponent implements OnInit {
         }
       }
     });
-    /*
-    this.impactOnOrgCapital = Math.random() * 100;
-    this.impactOnKeyComp = Math.random() * 100;
-    this.impactOnIP = Math.random() * 100;
     */
+    this.splittingOnOrgCapital = Math.round(Math.random() * 10000) / 100;
+    this.splittingOnKeyComp = Math.round(Math.random() * 10000) / 100;
+    this.splittingOnIP = Math.round(Math.random() * 10000) / 100;
+    this.splittingOnSectorialIP = Math.round(Math.random() * 10000) / 100;
+    this.splittingOnSectorialKeyComp = Math.round(Math.random() * 10000) / 100;
+    this.splittingOnSectorialOrgCapital = Math.round(Math.random() * 10000) / 100;
+  }
+
+  public setAssetCategory(category: string) {
+    this.assetsBySelectedCategory = [];
+    switch (category) {
+      case 'ORG_CAPITAL': {
+        for (const asset of this.myAssets) {
+          if (asset.asset.assetcategory.name === 'Organisational capital' ||
+            asset.asset.assetcategory.name === 'Reputation' ||
+            asset.asset.assetcategory.name === 'Brand') {
+            this.assetsBySelectedCategory.push(asset);
+          }
+        }
+        this.selectedAssetCategory = 'Org Capital';
+        this.selectedAssetSplitting = this.splittingOnOrgCapital;
+        break;
+      }
+      case 'KEY_COMP': {
+        for (const asset of this.myAssets) {
+          if (asset.asset.assetcategory.name === 'Key competences and human capital') {
+            this.assetsBySelectedCategory.push(asset);
+          }
+        }
+        this.selectedAssetCategory = 'Key Comp';
+        this.selectedAssetSplitting = this.splittingOnKeyComp;
+        break;
+      }
+      case 'IP': {
+        for (const asset of this.myAssets) {
+          if (asset.asset.assetcategory.name === 'Intellectual Property (IPR)' ||
+            asset.asset.assetcategory.name === 'Innovation') {
+            this.assetsBySelectedCategory.push(asset);
+          }
+        }
+        this.selectedAssetCategory = 'IP';
+        this.selectedAssetSplitting = this.splittingOnIP;
+        break;
+      }
+    }
+    this.collapseSplittings = false;
+  }
+
+  public setSelectedAssetPriority(priority: String, asset: MyAssetMgm) {
+    if (priority) {
+      switch (priority) {
+        case Priority.LOW.toString().replace('_', ' ').substring(0, 1) +
+          Priority.LOW.toString().replace('_', ' ').substring(1).toLowerCase(): {
+            asset.ranking = 1;
+            break;
+          }
+        case Priority.LOW_MEDIUM.toString().replace('_', ' ').substring(0, 1) +
+          Priority.LOW_MEDIUM.toString().replace('_', ' ').substring(1).toLowerCase(): {
+            asset.ranking = 2;
+            break;
+          }
+        case Priority.MEDIUM.toString().replace('_', ' ').substring(0, 1) +
+          Priority.MEDIUM.toString().replace('_', ' ').substring(1).toLowerCase(): {
+            asset.ranking = 3;
+            break;
+          }
+        case Priority.MEDIUM_HIGH.toString().replace('_', ' ').substring(0, 1) +
+          Priority.MEDIUM_HIGH.toString().replace('_', ' ').substring(1).toLowerCase(): {
+            asset.ranking = 4;
+            break;
+          }
+        case Priority.HIGH.toString().replace('_', ' ').substring(0, 1) +
+          Priority.HIGH.toString().replace('_', ' ').substring(1).toLowerCase(): {
+            asset.ranking = 5;
+            break;
+          }
+        default: {
+          asset.ranking = 0;
+          break;
+        }
+      }
+      // TODO calcolare con la formula di maurizio
+      asset.economicValue = Math.round(Math.random() * 1000000) / 100;
+      this.idaUtilService.updateAsset(asset).toPromise().then((res) => {
+        if (res) {
+          asset = res;
+          const indexTemp = _.findIndex(this.assetsBySelectedCategory, { id: asset.id });
+          const index = _.findIndex(this.myAssets, { id: asset.id });
+          if (index !== -1) {
+            this.myAssets.splice(index, 1, asset);
+          }
+          if (indexTemp !== -1) {
+            this.assetsBySelectedCategory.splice(indexTemp, 1, asset);
+          }
+        }
+      });
+    }
   }
 
   public isSectorSelected(sector: string): boolean {
@@ -747,7 +779,9 @@ export class ImpactEvaluationComponent implements OnInit {
       }
     }
     this.evaluateStepFour();
-    this.evaluateStepFive();
+    setTimeout(() => {
+      this.evaluateStepFive();
+    }, 250);
   }
 
   public close() {
