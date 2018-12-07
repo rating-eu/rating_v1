@@ -2,7 +2,6 @@ import { AttackCostsComponent } from './attack-costs/attack-costs.component';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { AssetClusteringComponent } from './asset-clustering/asset-clustering.component';
-import { MagnitudeComponent } from './magnitude/magnitude.component';
 import { CascadeEffectsComponent } from './cascade-effects/cascade-effects.component';
 import { AssetReportComponent } from './asset-report/asset-report.component';
 
@@ -12,13 +11,6 @@ const routes: Routes = [
         component: AssetClusteringComponent,
         data: {
             pageTitle: 'hermeneutApp.assetSection.page.assetClustering.title'
-        }
-    },
-    {
-        path: 'magnitude',
-        component: MagnitudeComponent,
-        data: {
-            pageTitle: 'hermeneutApp.assetSection.page.magnitude.title'
         }
     },
     {

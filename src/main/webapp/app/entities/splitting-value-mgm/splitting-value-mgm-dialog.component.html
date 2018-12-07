@@ -1,0 +1,55 @@
+<form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+
+    <div class="modal-header">
+        <h4 class="modal-title" id="mySplittingValueLabel" jhiTranslate="hermeneutApp.splittingValue.home.createOrEditLabel">Create or edit a Splitting Value</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                (click)="clear()">&times;</button>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group" [hidden]="!splittingValue.id">
+            <label for="id" jhiTranslate="global.field.id">ID</label>
+            <input type="text" class="form-control" id="id" name="id"
+                   [(ngModel)]="splittingValue.id" readonly />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="hermeneutApp.splittingValue.sectorType" for="field_sectorType">Sector Type</label>
+            <select class="form-control" name="sectorType" [(ngModel)]="splittingValue.sectorType" id="field_sectorType" >
+                <option value="GLOBAL">{{'hermeneutApp.SectorType.GLOBAL' | translate}}</option>
+                <option value="FINANCE_AND_INSURANCE">{{'hermeneutApp.SectorType.FINANCE_AND_INSURANCE' | translate}}</option>
+                <option value="HEALTH_CARE_AND_SOCIAL_ASSISTANCE">{{'hermeneutApp.SectorType.HEALTH_CARE_AND_SOCIAL_ASSISTANCE' | translate}}</option>
+                <option value="INFORMATION">{{'hermeneutApp.SectorType.INFORMATION' | translate}}</option>
+                <option value="PROFESSIONAL_SCIENTIFIC_AND_TECHNICAL_SERVICE">{{'hermeneutApp.SectorType.PROFESSIONAL_SCIENTIFIC_AND_TECHNICAL_SERVICE' | translate}}</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="hermeneutApp.splittingValue.categoryType" for="field_categoryType">Category Type</label>
+            <select class="form-control" name="categoryType" [(ngModel)]="splittingValue.categoryType" id="field_categoryType" >
+                <option value="IP">{{'hermeneutApp.CategoryType.IP' | translate}}</option>
+                <option value="KEY_COMP">{{'hermeneutApp.CategoryType.KEY_COMP' | translate}}</option>
+                <option value="ORG_CAPITAL">{{'hermeneutApp.CategoryType.ORG_CAPITAL' | translate}}</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="hermeneutApp.splittingValue.value" for="field_value">Value</label>
+            <input type="number" class="form-control" name="value" id="field_value"
+                [(ngModel)]="splittingValue.value" />
+        </div>
+
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="hermeneutApp.splittingValue.selfAssessment" for="field_selfAssessment">Self Assessment</label>
+            <select class="form-control" id="field_selfAssessment" name="selfAssessment" [(ngModel)]="splittingValue.selfAssessment">
+                <option [ngValue]="null"></option>
+                <option [ngValue]="selfAssessmentOption.id === splittingValue.selfAssessment?.id ? splittingValue.selfAssessment : selfAssessmentOption" *ngFor="let selfAssessmentOption of selfassessments; trackBy: trackSelfAssessmentById">{{selfAssessmentOption.name}}</option>
+            </select>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">
+            <span class="fa fa-ban"></span>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+        <button type="submit" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+            <span class="fa fa-save"></span>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+    </div>
+</form>
