@@ -1,0 +1,26 @@
+
+{
+    "hermeneutApp": {
+        "splittingValue" : {
+            "home": {
+                "title": "Splitting Values",
+                "createLabel": "Criar um(a) novo(a) Splitting Value",
+                "createOrEditLabel": "Criar ou editar um(a) Splitting Value",
+                "search": "Search for Splitting Value"
+            },
+            "created": "A new Splitting Value is created with identifier {{ param }}",
+            "updated": "A Splitting Value is updated with identifier {{ param }}",
+            "deleted": "A Splitting Value is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Tem a certeza que pretende eliminar o(a) Splitting Value {{ id }}?"
+            },
+            "detail": {
+                "title": "Splitting Value"
+            },
+            "sectorType": "Sector Type",
+            "categoryType": "Category Type",
+            "value": "Value",
+            "selfAssessment": "Self Assessment"
+        }
+    }
+}
