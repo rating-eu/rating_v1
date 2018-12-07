@@ -17,42 +17,42 @@ public class Calculator {
 
     public static final String CURRENT_ASSETS_CATEGORY_NAME = "Current Assets";
     public static final String FIXED_ASSETS_CATEGORY_NAME = "Fixed Assets";
-    private static Map<SectorType, Map<CategoryType, BigDecimal>> lossPercentageMap;
+    private static Map<SectorType, Map<CategoryType, BigDecimal>> splittingPercentageMap;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Calculator.class);
 
     static {
-        Calculator.lossPercentageMap = new HashMap<>();
+        Calculator.splittingPercentageMap = new HashMap<>();
 
         Map<CategoryType, BigDecimal> globalSectorMap = new HashMap<>();
         globalSectorMap.put(CategoryType.IP, new BigDecimal("19.89"));
         globalSectorMap.put(CategoryType.KEY_COMP, new BigDecimal("42.34"));
         globalSectorMap.put(CategoryType.ORG_CAPITAL, new BigDecimal("37.77"));
-        lossPercentageMap.put(SectorType.GLOBAL, globalSectorMap);
+        splittingPercentageMap.put(SectorType.GLOBAL, globalSectorMap);
 
         Map<CategoryType, BigDecimal> financeAndInsuranceSectorMap = new HashMap<>();
         financeAndInsuranceSectorMap.put(CategoryType.IP, new BigDecimal("13.6"));
         financeAndInsuranceSectorMap.put(CategoryType.KEY_COMP, new BigDecimal("45.3"));
         financeAndInsuranceSectorMap.put(CategoryType.ORG_CAPITAL, new BigDecimal("41.1"));
-        lossPercentageMap.put(SectorType.FINANCE_AND_INSURANCE, financeAndInsuranceSectorMap);
+        splittingPercentageMap.put(SectorType.FINANCE_AND_INSURANCE, financeAndInsuranceSectorMap);
 
         Map<CategoryType, BigDecimal> healthCareAndSocialAssistanceSectorMap = new HashMap<>();
         healthCareAndSocialAssistanceSectorMap.put(CategoryType.IP, new BigDecimal("14.7"));
         healthCareAndSocialAssistanceSectorMap.put(CategoryType.KEY_COMP, new BigDecimal("63.3"));
         healthCareAndSocialAssistanceSectorMap.put(CategoryType.ORG_CAPITAL, new BigDecimal("22.0"));
-        lossPercentageMap.put(SectorType.HEALTH_CARE_AND_SOCIAL_ASSISTANCE, healthCareAndSocialAssistanceSectorMap);
+        splittingPercentageMap.put(SectorType.HEALTH_CARE_AND_SOCIAL_ASSISTANCE, healthCareAndSocialAssistanceSectorMap);
 
         Map<CategoryType, BigDecimal> informationSectorMap = new HashMap<>();
         informationSectorMap.put(CategoryType.IP, new BigDecimal("27.5"));
         informationSectorMap.put(CategoryType.KEY_COMP, new BigDecimal("27.8"));
         informationSectorMap.put(CategoryType.ORG_CAPITAL, new BigDecimal("44.7"));
-        lossPercentageMap.put(SectorType.INFORMATION, informationSectorMap);
+        splittingPercentageMap.put(SectorType.INFORMATION, informationSectorMap);
 
         Map<CategoryType, BigDecimal> professionalScientificAndTechnicalServiceSectorMap = new HashMap<>();
         professionalScientificAndTechnicalServiceSectorMap.put(CategoryType.IP, new BigDecimal("6.1"));
         professionalScientificAndTechnicalServiceSectorMap.put(CategoryType.KEY_COMP, new BigDecimal("53.7"));
         professionalScientificAndTechnicalServiceSectorMap.put(CategoryType.ORG_CAPITAL, new BigDecimal("40.2"));
-        lossPercentageMap.put(SectorType.PROFESSIONAL_SCIENTIFIC_AND_TECHNICAL_SERVICE, professionalScientificAndTechnicalServiceSectorMap);
+        splittingPercentageMap.put(SectorType.PROFESSIONAL_SCIENTIFIC_AND_TECHNICAL_SERVICE, professionalScientificAndTechnicalServiceSectorMap);
     }
 
 
@@ -176,14 +176,14 @@ public class Calculator {
     }
 
     public static BigDecimal calculateSplittingLoss(BigDecimal intangibleLossByAttacks, CategoryType categoryType, SectorType sectorType) {
-        BigDecimal percentage = calculateSplittingLossPercentage(categoryType, sectorType);
+        BigDecimal percentage = calculateSplittingPercentage(categoryType, sectorType);
         LOGGER.debug("Percentage: " + percentage);
         LOGGER.debug("IntangibleLossByAttacks: " + intangibleLossByAttacks);
 
         return intangibleLossByAttacks.multiply(percentage).divide(new BigDecimal(100), 3, RoundingMode.HALF_UP);
     }
 
-    public static BigDecimal calculateSplittingLossPercentage(CategoryType categoryType, SectorType sectorType/*Optional field*/) {
+    public static BigDecimal calculateSplittingPercentage(CategoryType categoryType, SectorType sectorType/*Optional field*/) {
         if (categoryType == null) {
             throw new IllegalArgumentException("CategoryType can NOT be NULL!");
         }
@@ -200,7 +200,7 @@ public class Calculator {
             case HEALTH_CARE_AND_SOCIAL_ASSISTANCE:
             case INFORMATION:
             case PROFESSIONAL_SCIENTIFIC_AND_TECHNICAL_SERVICE: {
-                percentage = lossPercentageMap.get(sectorType).get(categoryType);
+                percentage = splittingPercentageMap.get(sectorType).get(categoryType);
                 break;
             }
         }

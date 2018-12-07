@@ -1,5 +1,6 @@
 package eu.hermeneut.service.impl;
 
+import eu.hermeneut.domain.SplittingLoss;
 import eu.hermeneut.service.SplittingValueService;
 import eu.hermeneut.domain.SplittingValue;
 import eu.hermeneut.repository.SplittingValueRepository;
@@ -43,6 +44,14 @@ public class SplittingValueServiceImpl implements SplittingValueService {
     public SplittingValue save(SplittingValue splittingValue) {
         log.debug("Request to save SplittingValue : {}", splittingValue);
         SplittingValue result = splittingValueRepository.save(splittingValue);
+        splittingValueSearchRepository.save(result);
+        return result;
+    }
+
+    @Override
+    public List<SplittingValue> save(List<SplittingValue> splittingValues) {
+        log.debug("Request to save SplittingValues : {}", splittingValues.size());
+        List<SplittingValue> result = splittingValueRepository.save(splittingValues);
         splittingValueSearchRepository.save(result);
         return result;
     }
@@ -97,5 +106,18 @@ public class SplittingValueServiceImpl implements SplittingValueService {
         return StreamSupport
             .stream(splittingValueSearchRepository.search(queryStringQuery(query)).spliterator(), false)
             .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<SplittingValue> findAllBySelfAssessmentID(Long selfAssessmentID) {
+        log.debug("Request to get all SplittingLosses by SelfAssessment ID: " + selfAssessmentID);
+        return splittingValueRepository.findAllBySelfAssessmentID(selfAssessmentID);
+    }
+
+    @Override
+    public void delete(List<SplittingValue> splittingValues) {
+        log.debug("Request to delete SplittingValues : {}", splittingValues);
+        splittingValueRepository.delete(splittingValues);
+        splittingValueRepository.delete(splittingValues);
     }
 }

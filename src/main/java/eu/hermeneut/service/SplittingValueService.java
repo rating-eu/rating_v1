@@ -46,4 +46,10 @@ public interface SplittingValueService {
      * @return the list of entities
      */
     List<SplittingValue> search(String query);
+
+    List<SplittingValue> findAllBySelfAssessmentID(Long selfAssessmentID);
+
+    void delete(List<SplittingValue> splittingValues);
+
+    List<SplittingValue> save(List<SplittingValue> splittingValues);
 }
