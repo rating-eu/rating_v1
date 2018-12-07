@@ -293,6 +293,7 @@ relationship OneToOne{
     EBIT{selfAssessment(name)} to SelfAssessment,
     EconomicResults{selfAssessment(name)} to SelfAssessment,
     SplittingLoss{selfAssessment(name)} to SelfAssessment,
+    SplittingValue{selfAssessment(name)} to SelfAssessment,
     /*WP4*/
     CriticalLevel{selfAssessment(name)} to SelfAssessment
 }
@@ -355,6 +356,12 @@ entity SplittingLoss{
     CategoryType CategoryType,
     LossPercentage BigDecimal,
     Loss BigDecimal
+}
+
+entity SplittingValue{
+	SectorType SectorType,
+    CategoryType CategoryType,
+    Value BigDecimal
 }
 
 /*=======WP4=======*/
