@@ -6,7 +6,6 @@ import {QuestionnaireMgm} from '../questionnaire-mgm';
 export class MyAssetMgm implements BaseEntity {
     constructor(
         public id?: number,
-        public magnitude?: string,
         public ranking?: number,
         public estimated?: boolean,
         public asset?: AssetMgm,

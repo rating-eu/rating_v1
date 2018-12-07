@@ -4,5 +4,5 @@ export enum Priority {
     'MEDIUM' = <any>'MEDIUM',
     'MEDIUM_HIGH' = <any>'MEDIUM_HIGH',
     'HIGH' = <any>'HIGH',
-    'NOT_AVAILABLE' = <any>'NOT_AVAILABLE'
+    // 'NOT_AVAILABLE' = <any>'NOT_AVAILABLE'
 }
