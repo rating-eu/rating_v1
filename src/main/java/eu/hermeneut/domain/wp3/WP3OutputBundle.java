@@ -3,6 +3,7 @@ package eu.hermeneut.domain.wp3;
 import eu.hermeneut.domain.EconomicCoefficients;
 import eu.hermeneut.domain.EconomicResults;
 import eu.hermeneut.domain.SplittingLoss;
+import eu.hermeneut.domain.SplittingValue;
 
 import java.util.List;
 
@@ -10,6 +11,7 @@ public class WP3OutputBundle {
     private EconomicResults economicResults;
     private EconomicCoefficients economicCoefficients;
     private List<SplittingLoss> splittingLosses;
+    private List<SplittingValue> splittingValues;
 
     public EconomicResults getEconomicResults() {
         return economicResults;
@@ -33,5 +35,13 @@ public class WP3OutputBundle {
 
     public void setSplittingLosses(List<SplittingLoss> splittingLosses) {
         this.splittingLosses = splittingLosses;
+    }
+
+    public List<SplittingValue> getSplittingValues() {
+        return splittingValues;
+    }
+
+    public void setSplittingValues(List<SplittingValue> splittingValues) {
+        this.splittingValues = splittingValues;
     }
 }
