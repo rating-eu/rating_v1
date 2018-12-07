@@ -11,10 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.constraints.NotNull;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 @Service
 @Transactional
@@ -70,12 +67,16 @@ public class ThreatAgentInterestServiceImpl implements ThreatAgentInterestServic
         //Keep only the ThreatAgents that can perform at least one of the above AttackStrategies
         for (int i = 0; i < threatAgents.size(); i++) {
             ThreatAgent threatAgent = threatAgents.get(i);
+            final ThreatAgentInterest threatAgentInterest = new ThreatAgentInterest(threatAgent);
+            threatAgentInterest.setAttackStrategies(new HashSet<>());
+
             boolean canAttackThisAsset = false;
 
             for (AttackStrategy attackStrategy : attackStrategies) {
                 if (ThreatAttackFilter.isAttackPossible(threatAgent, attackStrategy)) {
                     canAttackThisAsset = true;
-                    break;
+
+                    threatAgentInterest.getAttackStrategies().add(attackStrategy);
                 }
             }
 
@@ -83,7 +84,6 @@ public class ThreatAgentInterestServiceImpl implements ThreatAgentInterestServic
                 threatAgents.remove(i);
                 i--;
             } else {
-                final ThreatAgentInterest threatAgentInterest = new ThreatAgentInterest(threatAgent);
                 threatAgentInterest.setLevelOfInterest(levelsOfInterestMap.getOrDefault(threatAgent.getId(), 0F));
 
                 threatAgentInterests.add(threatAgentInterest);

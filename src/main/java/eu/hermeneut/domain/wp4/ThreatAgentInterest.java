@@ -1,6 +1,9 @@
 package eu.hermeneut.domain.wp4;
 
+import eu.hermeneut.domain.AttackStrategy;
 import eu.hermeneut.domain.ThreatAgent;
+
+import java.util.Set;
 
 public class ThreatAgentInterest extends ThreatAgent {
 
@@ -23,11 +26,21 @@ public class ThreatAgentInterest extends ThreatAgent {
 
     private float levelOfInterest;
 
+    private Set<AttackStrategy> attackStrategies;
+
     public float getLevelOfInterest() {
         return levelOfInterest;
     }
 
     public void setLevelOfInterest(float levelOfInterest) {
         this.levelOfInterest = levelOfInterest;
+    }
+
+    public Set<AttackStrategy> getAttackStrategies() {
+        return attackStrategies;
+    }
+
+    public void setAttackStrategies(Set<AttackStrategy> attackStrategies) {
+        this.attackStrategies = attackStrategies;
     }
 }
