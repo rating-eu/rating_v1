@@ -64,8 +64,6 @@
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <!--<th><span jhiTranslate="global.field.id">ID</span></th>-->
-                    <th><span jhiTranslate="hermeneutApp.myAsset.magnitude">Magnitude</span></th>
                     <th><span jhiTranslate="hermeneutApp.myAsset.ranking">Ranking</span></th>
                     <th><span jhiTranslate="hermeneutApp.myAsset.estimated">Estimated</span></th>
                     <th><span jhiTranslate="hermeneutApp.myAsset.economicValue">Economic Value</span></th>
@@ -78,8 +76,6 @@
             </thead>
             <tbody>
                 <tr *ngFor="let myAsset of myAssets ;trackBy: trackId">
-                    <!--<td><a [routerLink]="['../my-asset-mgm', myAsset.id ]">{{myAsset.id}}</a></td>-->
-                    <td>{{myAsset.magnitude}}</td>
                     <td>{{myAsset.ranking}}</td>
                     <td>{{myAsset.estimated}}</td>
                     <td>{{myAsset.economicValue}}</td>

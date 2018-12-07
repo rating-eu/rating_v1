@@ -145,11 +145,13 @@ export class MagnitudeComponent implements OnInit, OnDestroy {
     public setSelectedAssetPriority(priority: String) {
         if (priority) {
             switch (priority) {
+                /*
                 case Priority.NOT_AVAILABLE.toString().replace('_', ' ').substring(0, 1) +
                     Priority.NOT_AVAILABLE.toString().replace('_', ' ').substring(1).toLowerCase(): {
                         this.selectedAsset.ranking = 0;
                         break;
                     }
+                    */
                 case Priority.LOW.toString().replace('_', ' ').substring(0, 1) +
                     Priority.LOW.toString().replace('_', ' ').substring(1).toLowerCase(): {
                         this.selectedAsset.ranking = 1;
@@ -188,11 +190,13 @@ export class MagnitudeComponent implements OnInit, OnDestroy {
     public setSelectedAssetMagnitudo(priority: String) {
         if (priority) {
             switch (priority) {
+                /*
                 case Priority.NOT_AVAILABLE.toString().replace('_', ' ').substring(0, 1) +
                     Priority.NOT_AVAILABLE.toString().replace('_', ' ').substring(1).toLowerCase(): {
                         this.selectedAsset.magnitude = '0';
                         break;
                     }
+                    */
                 case Priority.LOW.toString().replace('_', ' ').substring(0, 1) +
                     Priority.LOW.toString().replace('_', ' ').substring(1).toLowerCase(): {
                         this.selectedAsset.magnitude = '1';

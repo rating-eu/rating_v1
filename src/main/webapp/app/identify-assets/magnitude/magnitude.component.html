@@ -39,7 +39,7 @@
                                         ngbDropdownToggle>Chose priority level</button>
                                     <div ngbDropdownMenu aria-labelledby="priorityDrop">
                                         <ng-container *ngFor="let rankLevel of priorities; let i = index">
-                                            <button class="dropdown-item" (click)="setSelectedAssetPriority(rankLevel)">{{rankLevel}}: {{i}}</button>
+                                            <button class="dropdown-item" (click)="setSelectedAssetPriority(rankLevel)">{{rankLevel}}: {{i+1}}</button>
                                         </ng-container>
                                     </div>
                                 </div>
@@ -81,7 +81,7 @@
                                                 ngbDropdownToggle>Chose magnitude level</button>
                                             <div ngbDropdownMenu aria-labelledby="magnitudeDrop">
                                                 <ng-container *ngFor="let magnitudeLevel of priorities; let i = index">
-                                                    <button class="dropdown-item" (click)="setSelectedAssetMagnitudo(magnitudeLevel)">{{magnitudeLevel}}: {{i}}</button>
+                                                    <button class="dropdown-item" (click)="setSelectedAssetMagnitudo(magnitudeLevel)">{{magnitudeLevel}}: {{i+1}}</button>
                                                 </ng-container>
                                             </div>
                                         </div>
