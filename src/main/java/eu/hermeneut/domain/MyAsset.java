@@ -8,7 +8,6 @@ import javax.persistence.*;
 import javax.validation.constraints.*;
 
 import org.springframework.data.elasticsearch.annotations.Document;
-
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Objects;
@@ -28,9 +27,6 @@ public class MyAsset implements Serializable {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
     @SequenceGenerator(name = "sequenceGenerator")
     private Long id;
-
-    @Column(name = "magnitude")
-    private String magnitude;
 
     @Column(name = "ranking")
     private Integer ranking;
@@ -53,7 +49,7 @@ public class MyAsset implements Serializable {
     @ManyToOne
     private Asset asset;
 
-    @OneToOne
+    @ManyToOne
     private SelfAssessment selfAssessment;
 
     @ManyToOne
@@ -66,19 +62,6 @@ public class MyAsset implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getMagnitude() {
-        return magnitude;
-    }
-
-    public MyAsset magnitude(String magnitude) {
-        this.magnitude = magnitude;
-        return this;
-    }
-
-    public void setMagnitude(String magnitude) {
-        this.magnitude = magnitude;
     }
 
     public Integer getRanking() {
@@ -197,7 +180,6 @@ public class MyAsset implements Serializable {
     public String toString() {
         return "MyAsset{" +
             "id=" + getId() +
-            ", magnitude='" + getMagnitude() + "'" +
             ", ranking=" + getRanking() +
             ", estimated='" + isEstimated() + "'" +
             ", economicValue=" + getEconomicValue() +
