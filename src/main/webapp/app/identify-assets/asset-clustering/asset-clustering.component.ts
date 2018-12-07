@@ -194,8 +194,7 @@ export class AssetClusteringComponent implements OnInit, OnDestroy {
                         newAsset.economicValue = undefined;
                         newAsset.estimated = undefined;
                         newAsset.impact = undefined;
-                        newAsset.magnitude = undefined;
-                        newAsset.ranking = undefined;
+                        newAsset.ranking = 1;
                         this.myAssets.push(newAsset);
                         this.updateMyAssets = true;
                     }
@@ -217,8 +216,7 @@ export class AssetClusteringComponent implements OnInit, OnDestroy {
                 newAsset.economicValue = undefined;
                 newAsset.estimated = undefined;
                 newAsset.impact = undefined;
-                newAsset.magnitude = undefined;
-                newAsset.ranking = undefined;
+                newAsset.ranking = 1;
                 this.myAssets.push(newAsset);
                 this.updateMyAssets = true;
             }
@@ -287,13 +285,11 @@ export class AssetClusteringComponent implements OnInit, OnDestroy {
                     this.myAssets = myAssets;
                 }
                 this.loading = false;
-                this.router.navigate(['/identify-asset/magnitude']);
-                // [routerLink]="['../magnitude']"
+                this.router.navigate(['/identify-asset/cascade-effects']);
             });
         } else {
             this.loading = false;
-            this.router.navigate(['/identify-asset/magnitude']);
-            // [routerLink]="['../magnitude']"
+            this.router.navigate(['/identify-asset/cascade-effects']);
         }
     }
 }

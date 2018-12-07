@@ -20,9 +20,9 @@ import { DashboardService, DashboardStatus } from '../dashboard.service';
 })
 export class AssetWidgetComponent implements OnInit, OnDestroy {
   private mySelf: SelfAssessmentMgm = {};
-  private myAssets: MyAssetMgm[];
   private closeResult: string;
 
+  public myAssets: MyAssetMgm[];
   public loading = false;
   public selectedCategory: string;
   public selectedAssetsByCategory: MyAssetMgm[];
@@ -114,10 +114,10 @@ export class AssetWidgetComponent implements OnInit, OnDestroy {
             // this.dashService.updateStatus(this.status);
           });
 
-          this.dashService.getStatusFromServer(this.mySelf, this.dashboardStatus.ASSET_CLUSTERING).toPromise().then((res) => {
-              this.status.assetClusteringStatus = res;
-              this.dashService.updateStatus(this.status);
-          });
+        this.dashService.getStatusFromServer(this.mySelf, this.dashboardStatus.ASSET_CLUSTERING).toPromise().then((res) => {
+          this.status.assetClusteringStatus = res;
+          this.dashService.updateStatus(this.status);
+        });
       }
     }).catch(() => {
       this.loading = false;
