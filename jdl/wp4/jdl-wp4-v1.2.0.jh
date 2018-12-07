@@ -73,7 +73,6 @@ entity Asset{
 }
 
 entity MyAsset{
-	Magnitude String,
 	Ranking Integer,
     Estimated Boolean,
     /**WP3*/
