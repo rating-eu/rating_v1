@@ -74,7 +74,7 @@ public class RiskProfileServiceImpl implements RiskProfileService {
             e.printStackTrace();
         }
 
-        Result result = this.resultService.getResult(selfAssessmentID);
+        Result result = this.resultService.getThreatAgentsResult(selfAssessmentID);
         riskProfile.setVulnerabilities(result);
 
         return riskProfile;
