@@ -12,5 +12,13 @@
                     schemaName="public"
                     tableName="my_asset">
         </dropColumn>
+
+        <rollback>
+            <addColumn catalogName="cat" schemaName="public" tableName="my_asset">
+                <column name="magnitude" type="varchar(255)">
+                    <constraints nullable="true"/>
+                </column>
+            </addColumn>
+        </rollback>
     </changeSet>
 </databaseChangeLog>
