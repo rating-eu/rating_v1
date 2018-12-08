@@ -108,5 +108,6 @@
     <include file="config/liquibase/changelog/20181122100237_update_indirect_assets_constraints.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20181122123754_update_self_assessment_delete_cascade_fk_constraints.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20181207142117_added_entity_constraints_SplittingValue.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20181207205423_removed_my_asset_magnitude_column.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
 </databaseChangeLog>

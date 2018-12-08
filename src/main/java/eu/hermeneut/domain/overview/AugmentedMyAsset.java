@@ -11,7 +11,6 @@ public class AugmentedMyAsset extends MyAsset {
         this.setRanking(myAsset.getRanking());
         this.setEconomicValue(myAsset.getEconomicValue());
         this.setEstimated(myAsset.isEstimated());
-        this.setMagnitude(myAsset.getMagnitude());
         this.setSelfAssessment(myAsset.getSelfAssessment());
         this.setQuestionnaire(myAsset.getQuestionnaire());
     }
