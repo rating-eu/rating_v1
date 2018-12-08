@@ -20,9 +20,13 @@ import { Subscription } from 'rxjs';
 })
 export class RiskEvaluationComponent implements OnInit, OnDestroy {
     private mySelf: SelfAssessmentMgm;
+    private criticalLevelSubscription: Subscription;
+    private selectedAttacksChance: MyAssetAttackChance[];
+    private closeResult: string;
+
+    public selectedAsset: MyAssetMgm;
     public myAssets: MyAssetMgm[] = [];
     public criticalLevel: CriticalLevelMgm;
-    private criticalLevelSubscription: Subscription;
     public squareColumnElement: number[];
     public squareRowElement: number[];
     public lastSquareRowElement: number;
@@ -32,6 +36,7 @@ export class RiskEvaluationComponent implements OnInit, OnDestroy {
     public mapMaxCriticalLevel: Map<number, number[]> = new Map<number, number[]>();
     public noRiskInMap = false;
     public loadingRiskLevel = false;
+    public detailsLoading = false;
     public loadingAssetsAndAttacks = false;
     public criticalBostonSquareLoad = true;
     public attacksToolTipLoaded = false;
@@ -44,9 +49,6 @@ export class RiskEvaluationComponent implements OnInit, OnDestroy {
         currentPage: 1
     };
     // public modalContent: string;
-    private selectedAttacksChance: MyAssetAttackChance[];
-    private closeResult: string;
-    private selectedAsset: MyAssetMgm;
     public riskPercentageMap: Map<number/*MyAsset.ID*/, number/*RiskPercentage*/> = new Map<number, number>();
 
     public attacksToolTip: Map<number, string> = new Map<number, string>();
@@ -113,13 +115,22 @@ export class RiskEvaluationComponent implements OnInit, OnDestroy {
                     this.riskService.getAttackChance(myAsset, this.mySelf).toPromise().then((res2) => {
                         if (res2) {
                             this.mapAssetAttacks.set(myAsset.id, res2);
+                            for (let i = 1; i <= 5; i++) {
+                                for (let j = 1; j <= 5; j++) {
+                                    this.whichContentByCell(i, j, myAsset, 'likelihood-vulnerability');
+                                }
+                            }
                             // const ordered = this.orderLevels(this.mapAssetAttacks);
                             // this.mapAssetAttacks = ordered.orderedMap;
                             // this.myAssets = ordered.orderedArray;
                         }
                     });
                 }
-                this.loadingAssetsAndAttacks = false;
+                if (this.loadingAssetsAndAttacks) {
+                    setTimeout(() => {
+                        this.loadingAssetsAndAttacks = false;
+                    }, 5000);
+                }
                 // this.ref.detectChanges();
                 console.log(this.mapAssetAttacks);
             } else {
@@ -213,6 +224,7 @@ export class RiskEvaluationComponent implements OnInit, OnDestroy {
     }
 
     public selectAsset(asset: MyAssetMgm) {
+        this.detailsLoading = true;
         if (!this.selectedAsset) {
             this.selectedAsset = asset;
         } else if (this.selectedAsset.id === asset.id) {
@@ -220,6 +232,9 @@ export class RiskEvaluationComponent implements OnInit, OnDestroy {
         } else {
             this.selectedAsset = asset;
         }
+        setTimeout(() => {
+            this.detailsLoading = false;
+        }, 500);
     }
 
     public isAssetCollapsed(asset: MyAssetMgm): boolean {
@@ -331,6 +346,8 @@ export class RiskEvaluationComponent implements OnInit, OnDestroy {
         }
         if (this.riskPercentageMap.size === 0) {
             this.noRiskInMap = true;
+        }else{
+            this.noRiskInMap = false;
         }
         content = content.trim();
         const key = row.toString() + column.toString();
@@ -409,7 +426,7 @@ export class RiskEvaluationComponent implements OnInit, OnDestroy {
             }, 2500);
         }
         if (content.length > 0) {
-            content = content.substr(0, 12);
+            content = content.substr(0, 10);
             if (attackCounter > 0) {
                 content = content.concat(' +' + attackCounter);
             }
