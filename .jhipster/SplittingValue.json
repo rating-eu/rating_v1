@@ -2,12 +2,10 @@
     "fluentMethods": true,
     "relationships": [
         {
-            "relationshipType": "one-to-one",
+            "relationshipType": "many-to-one",
             "relationshipName": "selfAssessment",
             "otherEntityName": "selfAssessment",
-            "otherEntityField": "name",
-            "ownerSide": true,
-            "otherEntityRelationshipName": "splittingValue"
+            "otherEntityField": "name"
         }
     ],
     "fields": [
