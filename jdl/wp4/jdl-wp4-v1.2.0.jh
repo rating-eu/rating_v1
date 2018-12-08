@@ -292,7 +292,6 @@ relationship OneToOne{
     EBIT{selfAssessment(name)} to SelfAssessment,
     EconomicResults{selfAssessment(name)} to SelfAssessment,
     SplittingLoss{selfAssessment(name)} to SelfAssessment,
-    SplittingValue{selfAssessment(name)} to SelfAssessment,
     /*WP4*/
     CriticalLevel{selfAssessment(name)} to SelfAssessment
 }
@@ -308,7 +307,8 @@ relationship ManyToOne{
     MyAsset{questionnaire(name)} to Questionnaire,
     /*WP4*/
     LikelihoodScale{selfAssessment(name)} to SelfAssessment,
-    VulnerabilityScale{selfAssessment(name)} to SelfAssessment
+    VulnerabilityScale{selfAssessment(name)} to SelfAssessment,
+    SplittingValue{selfAssessment(name)} to SelfAssessment
 }
 
 service all with serviceImpl
