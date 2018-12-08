@@ -23,6 +23,9 @@
                         primaryKey="id"
         >
         </loadUpdateData>
+        
+        <rollback>
+        </rollback>
     </changeSet>
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here, do not remove-->
 </databaseChangeLog>
