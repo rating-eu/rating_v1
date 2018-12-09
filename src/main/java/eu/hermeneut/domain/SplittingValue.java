@@ -41,8 +41,7 @@ public class SplittingValue implements Serializable {
     @Column(name = "jhi_value", precision=10, scale=2)
     private BigDecimal value;
 
-    @OneToOne
-    @JoinColumn(unique = true)
+    @ManyToOne
     private SelfAssessment selfAssessment;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
