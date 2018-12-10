@@ -19,12 +19,6 @@ public class MyAssetComparator implements Comparator<MyAsset> {
 
         if (myAsset.getEconomicValue() != null) {
             value = myAsset.getEconomicValue();
-        } else if (myAsset.getMagnitude() != null) {
-            try {
-                value = new BigDecimal(Double.parseDouble(myAsset.getMagnitude()));
-            } catch (NumberFormatException e) {
-                value = BigDecimal.ZERO;
-            }
         }
 
         return value;
