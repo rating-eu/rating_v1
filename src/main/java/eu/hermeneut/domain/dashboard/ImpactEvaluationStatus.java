@@ -17,11 +17,12 @@ public class ImpactEvaluationStatus {
      * Splitting Losses both for GLOBAL & for SectorType
      */
     private Set<SplittingLoss> splittingLosses;
+    private Set<SplittingValue> splittingValues;
 
     public ImpactEvaluationStatus() {
     }
 
-    public ImpactEvaluationStatus(Set<EBIT> ebits, EconomicCoefficients economicCoefficients, EconomicResults economicResults, Set<MyAsset> myTangibleAssets, SectorType sectorType, CategoryType categoryType, Set<SplittingLoss> splittingLosses) {
+    public ImpactEvaluationStatus(Set<EBIT> ebits, EconomicCoefficients economicCoefficients, EconomicResults economicResults, Set<MyAsset> myTangibleAssets, SectorType sectorType, CategoryType categoryType, Set<SplittingLoss> splittingLosses, Set<SplittingValue> splittingValues) {
         this.ebits = ebits;
         this.economicCoefficients = economicCoefficients;
         this.economicResults = economicResults;
@@ -29,6 +30,7 @@ public class ImpactEvaluationStatus {
         this.sectorType = sectorType;
         this.categoryType = categoryType;
         this.splittingLosses = splittingLosses;
+        this.splittingValues = splittingValues;
     }
 
     public Set<EBIT> getEbits() {
@@ -85,5 +87,13 @@ public class ImpactEvaluationStatus {
 
     public void setSplittingLosses(Set<SplittingLoss> splittingLosses) {
         this.splittingLosses = splittingLosses;
+    }
+
+    public Set<SplittingValue> getSplittingValues() {
+        return splittingValues;
+    }
+
+    public void setSplittingValues(Set<SplittingValue> splittingValues) {
+        this.splittingValues = splittingValues;
     }
 }
