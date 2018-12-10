@@ -79,6 +79,7 @@ export class ImpactEvaluationComponent implements OnInit {
 
   private sectorChoosed: string;
   private selectedCategory: CategoryType;
+  private selectedAssetCategoryCode: string;
   /*
   public sectorialPercentageMatrix: any[] = [
     {
@@ -558,7 +559,6 @@ export class ImpactEvaluationComponent implements OnInit {
       inputs.sectorType = this.choosedSectorType;
     }
     console.log(inputs);
-    /*
     this.impactService.evaluateStepFive(inputs, this.mySelf).toPromise().then((res) => {
       if (res) {
         for (const splitting of res.splittingValues) {
@@ -569,6 +569,9 @@ export class ImpactEvaluationComponent implements OnInit {
               } else {
                 this.splittingOnSectorialIP = Math.round(splitting.value * 100) / 100;
               }
+              if (this.splittingOnIP) {
+                this.evaluateSplittingValue('IP');
+              }
               break;
             }
             case MyCategoryType.KEY_COMP.toString(): {
@@ -576,6 +579,9 @@ export class ImpactEvaluationComponent implements OnInit {
                 this.splittingOnKeyComp = Math.round(splitting.value * 100) / 100;
               } else {
                 this.splittingOnSectorialKeyComp = Math.round(splitting.value * 100) / 100;
+              }
+              if (this.splittingOnKeyComp) {
+                this.evaluateSplittingValue('KEY_COMP');
               }
               break;
             }
@@ -585,22 +591,77 @@ export class ImpactEvaluationComponent implements OnInit {
               } else {
                 this.splittingOnSectorialOrgCapital = Math.round(splitting.value * 100) / 100;
               }
+              if (this.splittingOnOrgCapital) {
+                this.evaluateSplittingValue('ORG_CAPITAL');
+              }
               break;
             }
           }
         }
       }
     });
-    */
-    this.splittingOnOrgCapital = Math.round(Math.random() * 10000) / 100;
-    this.splittingOnKeyComp = Math.round(Math.random() * 10000) / 100;
-    this.splittingOnIP = Math.round(Math.random() * 10000) / 100;
-    this.splittingOnSectorialIP = Math.round(Math.random() * 10000) / 100;
-    this.splittingOnSectorialKeyComp = Math.round(Math.random() * 10000) / 100;
-    this.splittingOnSectorialOrgCapital = Math.round(Math.random() * 10000) / 100;
+    /*
+     this.splittingOnOrgCapital = Math.round(Math.random() * 10000) / 100;
+     this.splittingOnKeyComp = Math.round(Math.random() * 10000) / 100;
+     this.splittingOnIP = Math.round(Math.random() * 10000) / 100;
+     this.splittingOnSectorialIP = Math.round(Math.random() * 10000) / 100;
+     this.splittingOnSectorialKeyComp = Math.round(Math.random() * 10000) / 100;
+     this.splittingOnSectorialOrgCapital = Math.round(Math.random() * 10000) / 100;
+     */
   }
 
-  public setAssetCategory(category: string) {
+  private evaluateSplittingValue(category: string, evaluatedAsset?: MyAssetMgm) {
+    this.setAssetCategory(category, false);
+    let totalRank = 0;
+    let value = 0;
+    switch (category) {
+      case 'IP': {
+        value = this.splittingOnIP;
+        break;
+      }
+      case 'KEY_COMP': {
+        value = this.splittingOnKeyComp;
+        break;
+      }
+      case 'ORG_CAPITAL': {
+        value = this.splittingOnOrgCapital;
+        break;
+      }
+    }
+    for (const asset of this.assetsBySelectedCategory) {
+      if (asset.ranking && asset.ranking > 0) {
+        totalRank = totalRank + asset.ranking;
+      }
+    }
+    if (evaluatedAsset) {
+      const indexTemp = _.findIndex(this.assetsBySelectedCategory, { id: evaluatedAsset.id });
+      if (indexTemp !== -1) {
+        this.assetsBySelectedCategory.splice(indexTemp, 1, evaluatedAsset);
+      }
+    }
+    for (const asset of this.assetsBySelectedCategory) {
+      if (asset.ranking && asset.ranking > 0) {
+        // (asset_priority / sum_of_asset_priorities) * Category_Value
+        asset.economicValue = (asset.ranking / totalRank) * value;
+        this.idaUtilService.updateAsset(asset).toPromise().then((res) => {
+          if (res) {
+            const updatedAsset = res;
+            const indexTemp = _.findIndex(this.assetsBySelectedCategory, { id: updatedAsset.id });
+            const index = _.findIndex(this.myAssets, { id: updatedAsset.id });
+            if (index !== -1) {
+              this.myAssets.splice(index, 1, updatedAsset);
+            }
+            if (indexTemp !== -1) {
+              this.assetsBySelectedCategory.splice(indexTemp, 1, updatedAsset);
+            }
+          }
+        });
+      }
+    }
+
+  }
+
+  public setAssetCategory(category: string, show: boolean) {
     this.assetsBySelectedCategory = [];
     switch (category) {
       case 'ORG_CAPITAL': {
@@ -612,6 +673,7 @@ export class ImpactEvaluationComponent implements OnInit {
           }
         }
         this.selectedAssetCategory = 'Org Capital';
+        this.selectedAssetCategoryCode = 'ORG_CAPITAL';
         this.selectedAssetSplitting = this.splittingOnOrgCapital;
         break;
       }
@@ -622,6 +684,7 @@ export class ImpactEvaluationComponent implements OnInit {
           }
         }
         this.selectedAssetCategory = 'Key Comp';
+        this.selectedAssetCategoryCode = 'KEY_COMP';
         this.selectedAssetSplitting = this.splittingOnKeyComp;
         break;
       }
@@ -633,11 +696,14 @@ export class ImpactEvaluationComponent implements OnInit {
           }
         }
         this.selectedAssetCategory = 'IP';
+        this.selectedAssetCategoryCode = 'IP';
         this.selectedAssetSplitting = this.splittingOnIP;
         break;
       }
     }
-    this.collapseSplittings = false;
+    if (show) {
+      this.collapseSplittings = false;
+    }
   }
 
   public setSelectedAssetPriority(priority: String, asset: MyAssetMgm) {
@@ -673,7 +739,9 @@ export class ImpactEvaluationComponent implements OnInit {
           break;
         }
       }
+      this.evaluateSplittingValue(this.selectedAssetCategoryCode, asset);
       // TODO calcolare con la formula di maurizio
+      /*
       asset.economicValue = Math.round(Math.random() * 1000000) / 100;
       this.idaUtilService.updateAsset(asset).toPromise().then((res) => {
         if (res) {
@@ -688,6 +756,7 @@ export class ImpactEvaluationComponent implements OnInit {
           }
         }
       });
+      */
     }
   }
 

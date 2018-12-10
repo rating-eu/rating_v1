@@ -388,7 +388,7 @@
                       <ng-container *ngIf="splittingOnIP">{{splittingOnIP | currency:'EUR'}}</ng-container>
                       <ng-container *ngIf="!splittingOnIP"> - </ng-container>
                     </div>
-                    <h3><a href="javascript:void(0)" (click)="setAssetCategory('IP')">IP</a></h3>
+                    <h3><a href="javascript:void(0)" (click)="setAssetCategory('IP', true)">IP</a></h3>
                   </div>
                 </div>
                 <div class="col-md-4">
@@ -398,7 +398,7 @@
                       <ng-container *ngIf="splittingOnKeyComp">{{splittingOnKeyComp | currency:'EUR'}}</ng-container>
                       <ng-container *ngIf="!splittingOnKeyComp"> - </ng-container>
                     </div>
-                    <h3><a href="javascript:void(0)" (click)="setAssetCategory('KEY_COMP')">Key Comp</a></h3>
+                    <h3><a href="javascript:void(0)" (click)="setAssetCategory('KEY_COMP', true)">Key Comp</a></h3>
                   </div>
                 </div>
                 <div class="col-md-4">
@@ -408,7 +408,7 @@
                       <ng-container *ngIf="splittingOnOrgCapital">{{splittingOnOrgCapital | currency:'EUR'}}</ng-container>
                       <ng-container *ngIf="!splittingOnOrgCapital"> - </ng-container>
                     </div>
-                    <h3><a href="javascript:void(0)" (click)="setAssetCategory('ORG_CAPITAL')">Org Capital</a></h3>
+                    <h3><a href="javascript:void(0)" (click)="setAssetCategory('ORG_CAPITAL', true)">Org Capital</a></h3>
                   </div>
                 </div>
               </div>
