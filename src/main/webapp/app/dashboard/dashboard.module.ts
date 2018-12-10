@@ -38,6 +38,7 @@ import { ImpactEvaluationService } from '../impact-evaluation/impact-evaluation.
 import { PopUpService } from '../shared/pop-up-services/pop-up.service';
 import { StepInfoWidgetComponent } from './step-info-widget/step-info-widget.component';
 import { HermeneutAttackStrategyMgmModule } from '../entities/attack-strategy-mgm/attack-strategy-mgm.module';
+import { AssetAtRiskWidgetComponent } from './asset-at-risk-widget/asset-at-risk-widget.component';
 
 @NgModule({
     imports: [
@@ -62,7 +63,8 @@ import { HermeneutAttackStrategyMgmModule } from '../entities/attack-strategy-mg
         FinancialDataWidgetComponent,
         SplittingWidgetComponent,
         DashboardOneComponent,
-        StepInfoWidgetComponent
+        StepInfoWidgetComponent,
+        AssetAtRiskWidgetComponent
     ],
     providers: [
         {
