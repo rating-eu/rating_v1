@@ -313,7 +313,6 @@ export class ImpactEvaluationComponent implements OnInit {
               }
             }
             // TODO mod in splittingValues and value da decommentare
-            /*
             for (const splitting of this.wp3Status.splittingValues) {
               switch (splitting.categoryType.toString()) {
                 case MyCategoryType.IP.toString(): {
@@ -342,7 +341,6 @@ export class ImpactEvaluationComponent implements OnInit {
                 }
               }
             }
-            */
           }
         });
       }
