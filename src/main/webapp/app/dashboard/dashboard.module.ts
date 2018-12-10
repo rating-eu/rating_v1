@@ -110,7 +110,8 @@ import { AssetAtRiskWidgetComponent } from './asset-at-risk-widget/asset-at-risk
         PhaseMgmService,
         ResultsService,
         ImpactEvaluationService,
-        PopUpService
+        PopUpService,
+        RiskManagementService
     ]
 })
 export class DashboardModule {

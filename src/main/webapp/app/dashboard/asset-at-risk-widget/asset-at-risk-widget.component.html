@@ -1,3 +1,34 @@
-<p>
-  ASSET AT RISK WIDGET WORK IN PROGRESS
-</p>
+<div class="container" *ngIf="loading">
+  <ng-container *ngIf="loading">
+    <div class="loader"></div>
+  </ng-container>
+</div>
+<div class="container" *ngIf="!loading">
+  <div class="card card-body table-responsive text-nowrap">
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col">Asset</th>
+          <th scope="col">Risk</th>
+        </tr>
+      </thead>
+      <tbody *ngIf="noRiskInMap">
+        <p>Your assets doesn't have any impact value assigned, please: select one impact value
+          for
+          every
+          asset witch you analize!</p>
+      </tbody>
+      <tbody *ngIf="!noRiskInMap">
+        <tr *ngFor="let myAsset of myAssets | paginate: riskPaginator">
+          <td *ngIf="riskPercentageMap.get(myAsset.id)">
+            <a [routerLink]="['/asset-mgm', myAsset.asset?.id ]">{{myAsset?.asset.name}}</a>
+          </td>
+          <td *ngIf="riskPercentageMap.get(myAsset.id)">{{riskPercentageMap.get(myAsset.id) | percent}}</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="text-center">
+      <pagination-controls (pageChange)="onRiskPageChange($event)" [id]="riskPaginator.id"></pagination-controls>
+    </div>
+  </div>
+</div>
