@@ -37,6 +37,9 @@ public class DashboardServiceImpl implements DashboardService {
     @Autowired
     private SplittingLossService splittingLossService;
 
+    @Autowired
+    private SplittingValueService splittingValueService;
+
     @Override
     public ImpactEvaluationStatus getImpactEvaluationStatus(Long selfAssessmentID) throws NullInputException, NotFoundException {
         if (selfAssessmentID == null) {
@@ -105,6 +108,9 @@ public class DashboardServiceImpl implements DashboardService {
 
         List<SplittingLoss> splittingLosses = this.splittingLossService.findAllBySelfAssessmentID(selfAssessmentID);
         impactEvaluationStatus.setSplittingLosses(new HashSet<>(splittingLosses));
+
+        List<SplittingValue> splittingValues = this.splittingValueService.findAllBySelfAssessmentID(selfAssessmentID);
+        impactEvaluationStatus.setSplittingValues(new HashSet<>(splittingValues));
 
         return impactEvaluationStatus;
     }
