@@ -168,18 +168,60 @@
 
                 </div>
                 <div class="row">
-                    <ngb-tabset>
-                        <ngb-tab title="Level of interest > 75%">
-                            <ng-template ngbTabContent>
-                                <p>max 75% content</p>
-                            </ng-template>
-                        </ngb-tab>
-                        <ngb-tab title="Level of interest < 75%">
-                            <ng-template ngbTabContent>
-                                <p>min 75% content</p>
-                            </ng-template>
-                        </ngb-tab>
-                    </ngb-tabset>
+                    <div class="col-md-12">
+                        <ngb-tabset>
+                            <ngb-tab title="Level of interest >= 75%">
+                                <ng-template ngbTabContent>
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">Threat Agent</th>
+                                                <th scope="col">Level of interest</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody *ngIf="threatAgentInterest.length === 0">
+                                            <p>No data found!</p>
+                                        </tbody>
+                                        <tbody *ngIf="threatAgentInterest.length > 0">
+                                            <tr *ngFor="let threat of threatAgentInterest">
+                                                <td *ngIf="(threat.levelOfInterest * 100) >= 75">
+                                                    {{threat.name}}
+                                                </td>
+                                                <td *ngIf="(threat.levelOfInterest * 100) >= 75">
+                                                    {{threat.levelOfInterest | percent}}
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </ng-template>
+                            </ngb-tab>
+                            <ngb-tab title="Level of interest < 75%">
+                                <ng-template ngbTabContent>
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">Threat Agent</th>
+                                                <th scope="col">Level of interest</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody *ngIf="threatAgentInterest.length === 0">
+                                            <p>No data found!</p>
+                                        </tbody>
+                                        <tbody *ngIf="threatAgentInterest.length > 0">
+                                            <tr *ngFor="let threat of threatAgentInterest">
+                                                <td *ngIf="(threat.levelOfInterest * 100) < 75">
+                                                    {{threat.name}}
+                                                </td>
+                                                <td *ngIf="(threat.levelOfInterest * 100) < 75">
+                                                    {{threat.levelOfInterest | percent}}
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </ng-template>
+                            </ngb-tab>
+                        </ngb-tabset>
+                    </div>
                 </div>
             </div>
         </div>

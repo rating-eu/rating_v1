@@ -1,3 +1,4 @@
+import { ThreatAgentInterest } from './model/threat-agent-interest.model';
 import { Injectable } from '@angular/core';
 import { Observable, Subject } from '../../../../../node_modules/rxjs';
 import { SERVER_API_URL } from '../app.constants';
@@ -12,6 +13,7 @@ export class RiskManagementService {
   private criticalLevelServiceUrl = SERVER_API_URL + 'api/critical-levels/self-assessment/';
   private assetServiceUrl = SERVER_API_URL + 'api/my-assets/self-assessment/';
   private attackChanceServiceUrl = SERVER_API_URL + 'api/{selfAssessmentID}/wp4/my-assets/{myAssetID}/attack-chances/';
+  private threatAgentsInterestsServiceUrl = SERVER_API_URL + 'api/{selfAssessmentID}/wp4/my-assets/{myAssetID}/threat-agent-interests';
 
   private subscriptorForCriticalLevel: Subject<CriticalLevelMgm> = new Subject<CriticalLevelMgm>();
 
@@ -21,10 +23,10 @@ export class RiskManagementService {
 
   public subscribeForCriticalLevel(): Observable<CriticalLevelMgm> {
     return this.subscriptorForCriticalLevel.asObservable();
-}
+  }
 
   public sendUpdateForCriticalLevelToSubscriptor(level: CriticalLevelMgm) {
-      this.subscriptorForCriticalLevel.next(level);
+    this.subscriptorForCriticalLevel.next(level);
   }
 
   public getCriticalLevel(self: SelfAssessmentMgm): Observable<CriticalLevelMgm> {
@@ -50,6 +52,14 @@ export class RiskManagementService {
     const uri = this.attackChanceServiceUrl.replace('{selfAssessmentID}', String(self.id)).replace('{myAssetID}', String(myAsset.id));
     return this.http.get<MyAssetAttackChance[]>(uri, { observe: 'response' })
       .map((res: HttpResponse<MyAssetAttackChance[]>) => {
+        return res.body;
+      });
+  }
+
+  public getThreatAgentsInterests(myAsset: MyAssetMgm, self: SelfAssessmentMgm): Observable<ThreatAgentInterest[]> {
+    const uri = this.threatAgentsInterestsServiceUrl.replace('{selfAssessmentID}', String(self.id)).replace('{myAssetID}', String(myAsset.id));
+    return this.http.get<ThreatAgentInterest[]>(uri, { observe: 'response' })
+      .map((res: HttpResponse<ThreatAgentInterest[]>) => {
         return res.body;
       });
   }

@@ -1,3 +1,4 @@
+import { ThreatAgentInterest } from './../model/threat-agent-interest.model';
 import { Component, OnInit, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import { RiskManagementService } from '../risk-management.service';
 import { SelfAssessmentMgmService, SelfAssessmentMgm } from '../../entities/self-assessment-mgm';
@@ -33,6 +34,8 @@ export class RiskEvaluationComponent implements OnInit, OnDestroy {
     public selectedRow: number;
     public selectedColumn: number;
     public mapAssetAttacks: Map<number, MyAssetAttackChance[]> = new Map<number, MyAssetAttackChance[]>();
+    private mapAssetThreats: Map<number, ThreatAgentInterest[]> = new Map<number, ThreatAgentInterest[]>();
+    public threatAgentInterest: ThreatAgentInterest[] = [];
     public mapMaxCriticalLevel: Map<number, number[]> = new Map<number, number[]>();
     public noRiskInMap = false;
     public loadingRiskLevel = false;
@@ -123,6 +126,11 @@ export class RiskEvaluationComponent implements OnInit, OnDestroy {
                             // const ordered = this.orderLevels(this.mapAssetAttacks);
                             // this.mapAssetAttacks = ordered.orderedMap;
                             // this.myAssets = ordered.orderedArray;
+                        }
+                    });
+                    this.riskService.getThreatAgentsInterests(myAsset, this.mySelf).toPromise().then((res3) => {
+                        if (res3) {
+                            this.mapAssetThreats.set(myAsset.id, res3);
                         }
                     });
                 }
@@ -227,10 +235,12 @@ export class RiskEvaluationComponent implements OnInit, OnDestroy {
         this.detailsLoading = true;
         if (!this.selectedAsset) {
             this.selectedAsset = asset;
+            this.threatAgentInterest = this.mapAssetThreats.get(asset.id);
         } else if (this.selectedAsset.id === asset.id) {
             this.selectedAsset = null;
         } else {
             this.selectedAsset = asset;
+            this.threatAgentInterest = this.mapAssetThreats.get(asset.id);
         }
         setTimeout(() => {
             this.detailsLoading = false;
@@ -346,7 +356,7 @@ export class RiskEvaluationComponent implements OnInit, OnDestroy {
         }
         if (this.riskPercentageMap.size === 0) {
             this.noRiskInMap = true;
-        }else{
+        } else {
             this.noRiskInMap = false;
         }
         content = content.trim();
