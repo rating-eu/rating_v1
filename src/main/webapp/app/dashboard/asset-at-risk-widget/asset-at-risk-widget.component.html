@@ -38,7 +38,7 @@
                 asset witch you analize!</p>
             </tbody>
             <tbody *ngIf="!noRiskInMap">
-              <tr *ngFor="let myAsset of myAssets | paginate: riskPaginator">
+              <tr *ngFor="let myAsset of myAssets | paginate: assetAtRiskPaginator">
                 <td *ngIf="riskPercentageMap.get(myAsset.id)">
                   <a [routerLink]="['/asset-mgm', myAsset.asset?.id ]">{{myAsset?.asset.name}}</a>
                 </td>
@@ -47,7 +47,7 @@
             </tbody>
           </table>
           <div class="text-center">
-            <pagination-controls (pageChange)="onRiskPageChange($event)" [id]="riskPaginator.id"></pagination-controls>
+            <pagination-controls (pageChange)="onRiskPageChange($event)" [id]="assetAtRiskPaginator.id"></pagination-controls>
           </div>
         </div>
       </div>
