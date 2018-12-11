@@ -5,6 +5,7 @@ import eu.hermeneut.domain.dashboard.ImpactEvaluationStatus;
 import eu.hermeneut.domain.enumeration.QuestionnairePurpose;
 import eu.hermeneut.domain.enumeration.Role;
 import eu.hermeneut.domain.enumeration.Status;
+import eu.hermeneut.domain.wp4.MyAssetAttackChance;
 import eu.hermeneut.exceptions.NotFoundException;
 import eu.hermeneut.exceptions.NullInputException;
 import eu.hermeneut.service.*;
@@ -34,6 +35,9 @@ public class DashboardStatusServiceImpl implements DashboardStatusService {
 
     @Autowired
     private DashboardService dashboardService;
+
+    @Autowired
+    private WP4StepsService wp4StepsService;
 
     @Override
     public boolean isAssetClusteringDone(Long selfAssessmentID) {
@@ -114,7 +118,31 @@ public class DashboardStatusServiceImpl implements DashboardStatusService {
 
     @Override
     public boolean isRiskEvaluationDone(Long selfAssessmentID) {
-        //Waiting for Risk Mitigations, return false for now.
-        return false;
+        //There exists 1+ MyAsset with impact != null && MyAsset.attackChances.size > 0
+        boolean isDone = false;
+        SelfAssessment selfAssessment = this.selfAssessmentService.findOne(selfAssessmentID);
+
+        if (selfAssessment != null) {
+            List<MyAsset> myAssets = this.myAssetService.findAllBySelfAssessment(selfAssessmentID);
+
+            if (myAssets != null && !myAssets.isEmpty()) {
+                for (MyAsset myAsset : myAssets) {
+                    if (myAsset.getImpact() != null && myAsset.getImpact() > 0) {
+                        try {
+                            List<MyAssetAttackChance> myAssetAttackChances = this.wp4StepsService.getAttackChances(selfAssessmentID, myAsset.getId());
+
+                            if (myAssetAttackChances != null && !myAssetAttackChances.isEmpty()) {
+                                isDone = true;
+                                break;
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }
+        }
+
+        return isDone;
     }
 }
