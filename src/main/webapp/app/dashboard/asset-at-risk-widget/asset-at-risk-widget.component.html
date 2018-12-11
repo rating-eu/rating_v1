@@ -1,55 +1,56 @@
 <div class="container" *ngIf="loading">
-  <ng-container *ngIf="loading">
-    <div class="loader"></div>
-  </ng-container>
+    <ng-container *ngIf="loading">
+        <div class="loader"></div>
+    </ng-container>
 </div>
-<div class="container" *ngIf="!loading">
-  <div class="container" *ngIf="!loading">
+<div class="col-md-12" *ngIf="!loading">
     <div class="x_panel" style="padding:0px !important;">
-      <div class="x_title" style="padding:0px !important;">
-        <h2 style="padding: 10px;">
-          Asset at risk
-        </h2>
-        <ul class="nav navbar-right panel_toolbox">
-          <li style="width: 24px; cursor: default"></li>
-          <li style="width: 24px; cursor: default"></li>
-          <li>
-            <a href="javascript:void(0)" class="collapse-link" (click)="isCollapsed = !isCollapsed">
-              <i *ngIf="!isCollapsed" class="fa fa-chevron-up"></i>
-              <i *ngIf="isCollapsed" class="fa fa-chevron-down"></i>
-            </a>
-          </li>
-        </ul>
-        <div class="clearfix"></div>
-      </div>
-      <div class="table-responsive x_content" style="padding:0px !important;" [ngbCollapse]="isCollapsed">
-        <div class="card card-body table-responsive text-nowrap">
-          <table class="table">
-            <thead>
-              <tr>
-                <th scope="col">Asset</th>
-                <th scope="col">Risk</th>
-              </tr>
-            </thead>
-            <tbody *ngIf="noRiskInMap">
-              <p>Your assets doesn't have any impact value assigned, please: select one impact value
-                for
-                every
-                asset witch you analize!</p>
-            </tbody>
-            <tbody *ngIf="!noRiskInMap">
-              <tr *ngFor="let myAsset of myAssets | paginate: assetAtRiskPaginator">
-                <td *ngIf="riskPercentageMap.get(myAsset.id)">
-                  <a [routerLink]="['/asset-mgm', myAsset.asset?.id ]">{{myAsset?.asset.name}}</a>
-                </td>
-                <td *ngIf="riskPercentageMap.get(myAsset.id)">{{riskPercentageMap.get(myAsset.id) | percent}}</td>
-              </tr>
-            </tbody>
-          </table>
-          <div class="text-center">
-            <pagination-controls (pageChange)="onRiskPageChange($event)" [id]="assetAtRiskPaginator.id"></pagination-controls>
-          </div>
+        <div class="x_title" style="padding:0px !important;">
+            <h2 style="padding: 10px;">
+                Asset at risk
+            </h2>
+            <ul class="nav navbar-right panel_toolbox">
+                <li style="width: 24px; cursor: default"></li>
+                <li style="width: 24px; cursor: default"></li>
+                <li>
+                    <a href="javascript:void(0)" class="collapse-link" (click)="isCollapsed = !isCollapsed">
+                        <i *ngIf="!isCollapsed" class="fa fa-chevron-up"></i>
+                        <i *ngIf="isCollapsed" class="fa fa-chevron-down"></i>
+                    </a>
+                </li>
+            </ul>
+            <div class="clearfix"></div>
         </div>
-      </div>
-
+        <div class="table-responsive x_content" style="padding:0px !important;" [ngbCollapse]="isCollapsed">
+            <div class="card card-body table-responsive text-nowrap">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th scope="col">Asset</th>
+                        <th scope="col">Risk</th>
+                    </tr>
+                    </thead>
+                    <tbody *ngIf="noRiskInMap">
+                    <p>Your assets doesn't have any impact value assigned, please: select one impact value
+                        for
+                        every
+                        asset witch you analize!</p>
+                    </tbody>
+                    <tbody *ngIf="!noRiskInMap">
+                    <tr *ngFor="let myAsset of myAssets | paginate: assetAtRiskPaginator">
+                        <td *ngIf="riskPercentageMap.get(myAsset.id)">
+                            <a [routerLink]="['/asset-mgm', myAsset.asset?.id ]">{{myAsset?.asset.name}}</a>
+                        </td>
+                        <td *ngIf="riskPercentageMap.get(myAsset.id)">{{riskPercentageMap.get(myAsset.id) | percent}}
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <div class="text-center">
+                    <pagination-controls (pageChange)="onRiskPageChange($event)"
+                                         [id]="assetAtRiskPaginator.id"></pagination-controls>
+                </div>
+            </div>
+        </div>
     </div>
+</div>
