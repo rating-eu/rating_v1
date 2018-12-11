@@ -68,11 +68,6 @@ export class AssetAtRiskWidgetComponent implements OnInit {
               this.noRiskInMap = true;
             } else {
               this.noRiskInMap = false;
-              // TODO Rimuovere quando sarà pronto il servizio di verifica dello stato
-              if (!this.status.riskEvaluationStatus) {
-                this.status.riskEvaluationStatus = true;
-                this.dashService.updateStatus(this.status);
-              }
             }
           });
         }
@@ -87,12 +82,10 @@ export class AssetAtRiskWidgetComponent implements OnInit {
     }).catch(() => {
       this.loading = false;
     });
-    /*
     this.dashService.getStatusFromServer(this.mySelf, this.dashboardStatus.RISK_EVALUATION).toPromise().then((res) => {
       this.status.riskEvaluationStatus = res;
       this.dashService.updateStatus(this.status);
     });
-    */
   }
 
   onRiskPageChange(number: number) {
