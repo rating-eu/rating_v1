@@ -268,7 +268,8 @@ relationship OneToMany{
     QuestionnaireStatus{answers} to MyAnswer,
     DirectAsset{costs(type)} to AttackCost,
     IndirectAsset{costs(type)} to AttackCost,
-    DirectAsset{effects(name)} to IndirectAsset
+    DirectAsset{effects(name)} to IndirectAsset,
+    MyAsset{costs(type)} to AttackCost
 }
 
 relationship OneToOne{
