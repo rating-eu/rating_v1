@@ -16,6 +16,7 @@ export class AssetAtRiskWidgetComponent implements OnInit {
   private mySelf: SelfAssessmentMgm;
   public noRiskInMap = false;
   public loading = false;
+  public isCollapsed = true;
   public riskPercentageMap: Map<number/*MyAsset.ID*/, number/*RiskPercentage*/> = new Map<number, number>();
   public mapAssetAttacks: Map<number, MyAssetAttackChance[]> = new Map<number, MyAssetAttackChance[]>();
   public mapMaxCriticalLevel: Map<number, number[]> = new Map<number, number[]>();
@@ -43,6 +44,7 @@ export class AssetAtRiskWidgetComponent implements OnInit {
   ngOnInit() {
     this.loading = true;
     this.mySelf = this.mySelfAssessmentService.getSelfAssessment();
+    this.status = this.dashService.getStatus();
     this.riskService.getMyAssets(this.mySelf).toPromise().then((res) => {
       if (res && res.length > 0) {
         this.myAssets = res;
@@ -66,6 +68,11 @@ export class AssetAtRiskWidgetComponent implements OnInit {
               this.noRiskInMap = true;
             } else {
               this.noRiskInMap = false;
+              // TODO Rimuovere quando sarà pronto il servizio di verifica dello stato
+              if (!this.status.riskEvaluationStatus) {
+                this.status.riskEvaluationStatus = true;
+                this.dashService.updateStatus(this.status);
+              }
             }
           });
         }
@@ -80,10 +87,12 @@ export class AssetAtRiskWidgetComponent implements OnInit {
     }).catch(() => {
       this.loading = false;
     });
+    /*
     this.dashService.getStatusFromServer(this.mySelf, this.dashboardStatus.RISK_EVALUATION).toPromise().then((res) => {
       this.status.riskEvaluationStatus = res;
       this.dashService.updateStatus(this.status);
     });
+    */
   }
 
   onRiskPageChange(number: number) {
