@@ -30,8 +30,8 @@ export class AssetAtRiskWidgetComponent implements OnInit {
   private MAX_IMPACT = 5;
   private MAX_RISK = this.MAX_CRITICAL * this.MAX_IMPACT;
 
-  public riskPaginator = {
-    id: 'risk_paginator',
+  public assetAtRiskPaginator = {
+    id: 'asset_at_risk_paginator',
     itemsPerPage: 7,
     currentPage: 1
   };
@@ -89,7 +89,7 @@ export class AssetAtRiskWidgetComponent implements OnInit {
   }
 
   onRiskPageChange(number: number) {
-    this.riskPaginator.currentPage = number;
+    this.assetAtRiskPaginator.currentPage = number;
   }
 
   private evaluateRiskPercentage(critical: number, myAsset: MyAssetMgm): number {
