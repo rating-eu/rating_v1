@@ -7,6 +7,8 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.data.elasticsearch.annotations.Document;
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -42,10 +44,16 @@ public class AttackCost implements Serializable {
     @Column(name = "costs", precision=10, scale=2)
     private BigDecimal costs;
 
-    @ManyToOne(cascade = CascadeType.REMOVE)
+    @ManyToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private MyAsset myAsset;
+
+    @ManyToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private DirectAsset directAsset;
 
-    @ManyToOne(cascade = CascadeType.REMOVE)
+    @ManyToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private IndirectAsset indirectAsset;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
@@ -94,6 +102,19 @@ public class AttackCost implements Serializable {
 
     public void setCosts(BigDecimal costs) {
         this.costs = costs;
+    }
+
+    public MyAsset getMyAsset() {
+        return myAsset;
+    }
+
+    public AttackCost myAsset(MyAsset myAsset) {
+        this.myAsset = myAsset;
+        return this;
+    }
+
+    public void setMyAsset(MyAsset myAsset) {
+        this.myAsset = myAsset;
     }
 
     @JsonIgnore
