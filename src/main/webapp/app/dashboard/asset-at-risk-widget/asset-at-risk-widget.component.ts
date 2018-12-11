@@ -30,8 +30,8 @@ export class AssetAtRiskWidgetComponent implements OnInit {
   private MAX_IMPACT = 5;
   private MAX_RISK = this.MAX_CRITICAL * this.MAX_IMPACT;
 
-  public riskPaginator = {
-    id: 'risk_paginator',
+  public assetAtRiskPaginator = {
+    id: 'asset_at_risk_paginator',
     itemsPerPage: 7,
     currentPage: 1
   };
@@ -68,11 +68,6 @@ export class AssetAtRiskWidgetComponent implements OnInit {
               this.noRiskInMap = true;
             } else {
               this.noRiskInMap = false;
-              // TODO Rimuovere quando sarà pronto il servizio di verifica dello stato
-              if (!this.status.riskEvaluationStatus) {
-                this.status.riskEvaluationStatus = true;
-                this.dashService.updateStatus(this.status);
-              }
             }
           });
         }
@@ -87,16 +82,14 @@ export class AssetAtRiskWidgetComponent implements OnInit {
     }).catch(() => {
       this.loading = false;
     });
-    /*
     this.dashService.getStatusFromServer(this.mySelf, this.dashboardStatus.RISK_EVALUATION).toPromise().then((res) => {
       this.status.riskEvaluationStatus = res;
       this.dashService.updateStatus(this.status);
     });
-    */
   }
 
   onRiskPageChange(number: number) {
-    this.riskPaginator.currentPage = number;
+    this.assetAtRiskPaginator.currentPage = number;
   }
 
   private evaluateRiskPercentage(critical: number, myAsset: MyAssetMgm): number {
