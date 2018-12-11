@@ -18,7 +18,7 @@ export class StepInfoWidgetComponent implements OnInit {
   public impactEvaluationStatus = false;
   public riskEvaluationStatus = false;
   public alertMessage: string;
-  
+
   private closeResult: string;
   private linkAfterModal: string;
 
