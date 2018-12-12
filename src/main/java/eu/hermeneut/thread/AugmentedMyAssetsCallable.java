@@ -18,16 +18,20 @@ public class AugmentedMyAssetsCallable implements Callable<List<AugmentedMyAsset
     private AttackStrategyService attackStrategyService;
     private Map<Long, AugmentedAttackStrategy> augmentedAttackStrategyMap;
     private Set<ThreatAgent> threatAgentSet;
+    private Map<Long, Float> levelsOfInterestMap;
 
     public AugmentedMyAssetsCallable(
         List<MyAsset> myAssets,
         AttackStrategyService attackStrategyService,
-        Map<Long, AugmentedAttackStrategy> augmentedAttackStrategyMap, Set<ThreatAgent> threatAgentSet) {
+        Map<Long, AugmentedAttackStrategy> augmentedAttackStrategyMap,
+        Set<ThreatAgent> threatAgentSet,
+        Map<Long, Float> levelsOfInterestMap) {
 
         this.myAssets = myAssets;
         this.attackStrategyService = attackStrategyService;
         this.augmentedAttackStrategyMap = augmentedAttackStrategyMap;
         this.threatAgentSet = threatAgentSet;
+        this.levelsOfInterestMap = levelsOfInterestMap;
     }
 
     @Override
@@ -61,17 +65,81 @@ public class AugmentedMyAssetsCallable implements Callable<List<AugmentedMyAsset
                             if (threatAgentsSubset != null && !threatAgentsSubset.isEmpty()) {
                                 Iterator<ThreatAgent> threatAgentIterator = threatAgentsSubset.iterator();
 
-                                //Run it only once, since the likelihoods & vulnerability would be the same for all
-                                // of them
-                                if (threatAgentIterator.hasNext()) {
-                                    //No need to reference the ThreatAgent since it has no impact on the L&V values
-                                    //ThreatAgent threatAgent = threatAgentIterator.next();
+                                //SUM Vulnerability * LevelOfInterest of each ThreatAgent
+                                float initialVulnerabilityNumerator = 0F;
+                                float contextualVulnerabilityNumerator = 0F;
+                                float refinedVulnerabilityNumerator = 0F;
 
-                                    AugmentedMyAsset augmentedMyAsset = new AugmentedMyAsset(myAsset);
-                                    augmentedMyAsset.setAugmentedAttackStrategy(augmentedAttackStrategy);
+                                //SUM Vulnerability * LevelOfInterest of each ThreatAgent
+                                float initialLikelihoodNumerator = 0F;
+                                float contextualLikelihoodNumerator = 0F;
+                                float refinedLikelihoodNumerator = 0F;
 
-                                    augmentedMyAssets.add(augmentedMyAsset);
+                                //Number of ThreatAgents
+                                int denominator = threatAgentsSubset.size();
+
+                                while (threatAgentIterator.hasNext()) {
+                                    ThreatAgent threatAgent = threatAgentIterator.next();
+
+                                    Float levelOfInterest = levelsOfInterestMap.getOrDefault(threatAgent.getId(), 0F);
+
+                                    Float initialVulnerability = 0F;
+                                    Float contextualVulnerability = 0F;
+                                    Float refinedVulnerability = 0F;
+
+                                    Float initialLikelihood = 0F;
+                                    Float contextualLikelihood = 0F;
+                                    Float refinedLikelihood = 0F;
+
+                                    if (augmentedAttackStrategy.getInitialLikelihood() > 0) {
+                                        initialVulnerability = augmentedAttackStrategy.getInitialLikelihood();
+                                        initialLikelihood = augmentedAttackStrategy.getInitialLikelihood();
+
+                                        initialVulnerabilityNumerator += initialVulnerability * levelOfInterest;
+                                        initialLikelihoodNumerator += initialLikelihood * levelOfInterest;
+                                    }
+
+                                    if (augmentedAttackStrategy.getContextualVulnerability() > 0 && augmentedAttackStrategy.getContextualLikelihood() > 0) {
+                                        contextualVulnerability = augmentedAttackStrategy.getContextualVulnerability();
+                                        contextualLikelihood = augmentedAttackStrategy.getContextualLikelihood();
+
+                                        contextualVulnerabilityNumerator += contextualVulnerability * levelOfInterest;
+                                        contextualLikelihoodNumerator += contextualLikelihood * levelOfInterest;
+                                    }
+
+                                    if (augmentedAttackStrategy.getRefinedVulnerability() > 0 && augmentedAttackStrategy.getRefinedLikelihood() > 0) {
+                                        refinedVulnerability = augmentedAttackStrategy.getRefinedVulnerability();
+                                        refinedLikelihood = augmentedAttackStrategy.getRefinedLikelihood();
+
+                                        refinedVulnerabilityNumerator += refinedVulnerability * levelOfInterest;
+                                        refinedLikelihoodNumerator += refinedLikelihood * levelOfInterest;
+                                    }
                                 }
+
+                                float averageInitialVulnerability = initialVulnerabilityNumerator / denominator;
+                                float averageInitialLikelihood = initialLikelihoodNumerator / denominator;
+
+                                float averageContextualVulnerability = contextualVulnerabilityNumerator / denominator;
+                                float averageContextualLikelihood = contextualLikelihoodNumerator / denominator;
+
+                                float averageRefinedVulnerability = refinedVulnerabilityNumerator / denominator;
+                                float averageRefinedLikelihood = refinedLikelihoodNumerator / denominator;
+
+                                //Update the likelihood and vulnerabilities of the attack strategy with the averaged values
+                                //among all the threat agents.
+                                augmentedAttackStrategy.setInitialLikelihood(averageInitialLikelihood);
+
+                                augmentedAttackStrategy.setContextualVulnerability(averageContextualVulnerability);
+                                augmentedAttackStrategy.setContextualLikelihood(averageContextualLikelihood);
+
+                                augmentedAttackStrategy.setRefinedVulnerability(averageRefinedVulnerability);
+                                augmentedAttackStrategy.setRefinedLikelihood(averageRefinedLikelihood);
+
+                                //Create the augmented my asset
+                                AugmentedMyAsset augmentedMyAsset = new AugmentedMyAsset(myAsset);
+                                augmentedMyAsset.setAugmentedAttackStrategy(augmentedAttackStrategy);
+
+                                augmentedMyAssets.add(augmentedMyAsset);
                             }
                         }
                     }
