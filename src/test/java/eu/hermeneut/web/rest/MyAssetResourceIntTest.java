@@ -41,9 +41,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(classes = HermeneutApp.class)
 public class MyAssetResourceIntTest {
 
-    private static final String DEFAULT_MAGNITUDE = "AAAAAAAAAA";
-    private static final String UPDATED_MAGNITUDE = "BBBBBBBBBB";
-
     private static final Integer DEFAULT_RANKING = 1;
     private static final Integer UPDATED_RANKING = 2;
 
@@ -100,7 +97,6 @@ public class MyAssetResourceIntTest {
      */
     public static MyAsset createEntity(EntityManager em) {
         MyAsset myAsset = new MyAsset()
-            .magnitude(DEFAULT_MAGNITUDE)
             .ranking(DEFAULT_RANKING)
             .estimated(DEFAULT_ESTIMATED)
             .economicValue(DEFAULT_ECONOMIC_VALUE)
@@ -129,7 +125,6 @@ public class MyAssetResourceIntTest {
         List<MyAsset> myAssetList = myAssetRepository.findAll();
         assertThat(myAssetList).hasSize(databaseSizeBeforeCreate + 1);
         MyAsset testMyAsset = myAssetList.get(myAssetList.size() - 1);
-        assertThat(testMyAsset.getMagnitude()).isEqualTo(DEFAULT_MAGNITUDE);
         assertThat(testMyAsset.getRanking()).isEqualTo(DEFAULT_RANKING);
         assertThat(testMyAsset.isEstimated()).isEqualTo(DEFAULT_ESTIMATED);
         assertThat(testMyAsset.getEconomicValue()).isEqualTo(DEFAULT_ECONOMIC_VALUE);
@@ -170,7 +165,6 @@ public class MyAssetResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(myAsset.getId().intValue())))
-            .andExpect(jsonPath("$.[*].magnitude").value(hasItem(DEFAULT_MAGNITUDE.toString())))
             .andExpect(jsonPath("$.[*].ranking").value(hasItem(DEFAULT_RANKING)))
             .andExpect(jsonPath("$.[*].estimated").value(hasItem(DEFAULT_ESTIMATED.booleanValue())))
             .andExpect(jsonPath("$.[*].economicValue").value(hasItem(DEFAULT_ECONOMIC_VALUE.intValue())))
@@ -188,7 +182,6 @@ public class MyAssetResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(myAsset.getId().intValue()))
-            .andExpect(jsonPath("$.magnitude").value(DEFAULT_MAGNITUDE.toString()))
             .andExpect(jsonPath("$.ranking").value(DEFAULT_RANKING))
             .andExpect(jsonPath("$.estimated").value(DEFAULT_ESTIMATED.booleanValue()))
             .andExpect(jsonPath("$.economicValue").value(DEFAULT_ECONOMIC_VALUE.intValue()))
@@ -216,7 +209,6 @@ public class MyAssetResourceIntTest {
         // Disconnect from session so that the updates on updatedMyAsset are not directly saved in db
         em.detach(updatedMyAsset);
         updatedMyAsset
-            .magnitude(UPDATED_MAGNITUDE)
             .ranking(UPDATED_RANKING)
             .estimated(UPDATED_ESTIMATED)
             .economicValue(UPDATED_ECONOMIC_VALUE)
@@ -231,7 +223,6 @@ public class MyAssetResourceIntTest {
         List<MyAsset> myAssetList = myAssetRepository.findAll();
         assertThat(myAssetList).hasSize(databaseSizeBeforeUpdate);
         MyAsset testMyAsset = myAssetList.get(myAssetList.size() - 1);
-        assertThat(testMyAsset.getMagnitude()).isEqualTo(UPDATED_MAGNITUDE);
         assertThat(testMyAsset.getRanking()).isEqualTo(UPDATED_RANKING);
         assertThat(testMyAsset.isEstimated()).isEqualTo(UPDATED_ESTIMATED);
         assertThat(testMyAsset.getEconomicValue()).isEqualTo(UPDATED_ECONOMIC_VALUE);
@@ -293,7 +284,6 @@ public class MyAssetResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(myAsset.getId().intValue())))
-            .andExpect(jsonPath("$.[*].magnitude").value(hasItem(DEFAULT_MAGNITUDE.toString())))
             .andExpect(jsonPath("$.[*].ranking").value(hasItem(DEFAULT_RANKING)))
             .andExpect(jsonPath("$.[*].estimated").value(hasItem(DEFAULT_ESTIMATED.booleanValue())))
             .andExpect(jsonPath("$.[*].economicValue").value(hasItem(DEFAULT_ECONOMIC_VALUE.intValue())))

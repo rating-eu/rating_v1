@@ -195,7 +195,7 @@ public class CalculatorUnitTest {
 
     @Test
     public void calculateSplittingLossPercentage() {
-        BigDecimal splittingLossPercentage = Calculator.calculateSplittingLossPercentage(this.ipCategory, this.globalSector);
+        BigDecimal splittingLossPercentage = Calculator.calculateSplittingPercentage(this.ipCategory, this.globalSector);
 
         Assert.assertEquals(GLOBAL_IP_SPLITTING_LOSS_PERCENTAGE, splittingLossPercentage);
     }

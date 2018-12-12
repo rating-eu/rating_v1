@@ -153,10 +153,6 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                                 routerLink: ['/identify-asset/asset-clustering']
                             },
                             {
-                                label: 'Magnitudo',
-                                routerLink: ['/identify-asset/magnitude']
-                            },
-                            {
                                 label: 'Cascade Effects',
                                 routerLink: ['/identify-asset/cascade-effects']
                             },

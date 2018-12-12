@@ -18,6 +18,7 @@ export class ImpactEvaluationService {
   private operationStepTwo = '/wp3/step-two/';
   private operationStepThree = '/wp3/step-three/';
   private operationStepFour = '/wp3/step-four/';
+  private operationStepFive = '/wp3/step-five/';
 
   constructor(
     private http: HttpClient
@@ -73,6 +74,16 @@ export class ImpactEvaluationService {
   evaluateStepFour(bundle: Wp3BundleInput, self: SelfAssessmentMgm): Observable<Wp3BundleOutput> {
     return this.http.post<Wp3BundleOutput>(
       this.wp3ServiceUrl.replace('{selfAssessmentID}', String(self.id)) + this.operationStepFour,
+      bundle,
+      { observe: 'response' })
+      .map((res: HttpResponse<Wp3BundleOutput>) => {
+        return res.body;
+      });
+  }
+
+  evaluateStepFive(bundle: Wp3BundleInput, self: SelfAssessmentMgm): Observable<Wp3BundleOutput> {
+    return this.http.post<Wp3BundleOutput>(
+      this.wp3ServiceUrl.replace('{selfAssessmentID}', String(self.id)) + this.operationStepFive,
       bundle,
       { observe: 'response' })
       .map((res: HttpResponse<Wp3BundleOutput>) => {

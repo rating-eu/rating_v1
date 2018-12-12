@@ -2,6 +2,12 @@
     "fluentMethods": true,
     "relationships": [
         {
+            "relationshipType": "one-to-many",
+            "relationshipName": "costs",
+            "otherEntityName": "attackCost",
+            "otherEntityRelationshipName": "myAsset"
+        },
+        {
             "relationshipType": "many-to-one",
             "relationshipName": "asset",
             "otherEntityName": "asset",
@@ -21,10 +27,6 @@
         }
     ],
     "fields": [
-        {
-            "fieldName": "magnitude",
-            "fieldType": "String"
-        },
         {
             "fieldName": "ranking",
             "fieldType": "Integer"

@@ -25,7 +25,7 @@
                 <tbody>
                     <ng-container *ngFor="let item of categoryToAssets.values(); let i=index">
                         <tr>
-                            <th scope="row"><a href="javascript:void(0)" (click)="selectCategory(categories[i])">{{categories[i].name}}</a></th>
+                            <th scope="row"><a href="javascript:void(0)" ngbTooltip="{{categories[i].description}}" placement="right" (click)="selectCategory(categories[i])">{{categories[i].name}}</a></th>
                             <td placement="top" container="body" ngbTooltip="Click on Category name for more details">{{howManyAssetInSelection(categories[i].id)}} / {{item.length}}</td>
                             <td *ngIf="!isSelect(undefined, categories[i].id) && howManyAssetInSelection(categories[i].id)===0"><a
                                     href="javascript:void(0)" (click)="select(undefined, categories[i].id)"><i class="fa fa-square-o fa-lg"
