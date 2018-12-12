@@ -55,6 +55,13 @@
         </div>
 
         <div class="form-group">
+            <label class="form-control-label" jhiTranslate="hermeneutApp.attackCost.myAsset" for="field_myAsset">My Asset</label>
+            <select class="form-control" id="field_myAsset" name="myAsset" [(ngModel)]="attackCost.myAsset" >
+                <option [ngValue]="null"></option>
+                <option [ngValue]="myAssetOption.id === attackCost.myAsset?.id ? attackCost.myAsset : myAssetOption" *ngFor="let myAssetOption of myassets; trackBy: trackMyAssetById">{{myAssetOption.id}}</option>
+            </select>
+        </div>
+        <div class="form-group">
             <label class="form-control-label" jhiTranslate="hermeneutApp.attackCost.directAsset" for="field_directAsset">Direct Asset</label>
             <select class="form-control" id="field_directAsset" name="directAsset" [(ngModel)]="attackCost.directAsset" >
                 <option [ngValue]="null"></option>

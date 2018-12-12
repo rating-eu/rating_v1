@@ -9,6 +9,7 @@ import { HermeneutTestModule } from '../../../test.module';
 import { AttackCostMgmDialogComponent } from '../../../../../../main/webapp/app/entities/attack-cost-mgm/attack-cost-mgm-dialog.component';
 import { AttackCostMgmService } from '../../../../../../main/webapp/app/entities/attack-cost-mgm/attack-cost-mgm.service';
 import { AttackCostMgm } from '../../../../../../main/webapp/app/entities/attack-cost-mgm/attack-cost-mgm.model';
+import { MyAssetMgmService } from '../../../../../../main/webapp/app/entities/my-asset-mgm';
 import { DirectAssetMgmService } from '../../../../../../main/webapp/app/entities/direct-asset-mgm';
 import { IndirectAssetMgmService } from '../../../../../../main/webapp/app/entities/indirect-asset-mgm';
 
@@ -26,6 +27,7 @@ describe('Component Tests', () => {
                 imports: [HermeneutTestModule],
                 declarations: [AttackCostMgmDialogComponent],
                 providers: [
+                    MyAssetMgmService,
                     DirectAssetMgmService,
                     IndirectAssetMgmService,
                     AttackCostMgmService

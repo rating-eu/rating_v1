@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <changeSet id="20181211182657-1" author="developer">
+        <addColumn catalogName="cat"
+                   schemaName="public"
+                   tableName="attack_cost">
+            <column name="my_asset_id" type="bigint">
+                <constraints nullable="true"/>
+            </column>
+        </addColumn>
+
+        <rollback>
+            <dropColumn catalogName="cat"
+                        schemaName="public"
+                        tableName="attack_cost"
+                        columnName="my_asset_id"
+            >
+            </dropColumn>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="20181211182657-2" author="developer">
+        <addForeignKeyConstraint
+            baseTableName="attack_cost"
+            baseColumnNames="my_asset_id"
+            constraintName="fk_attack_cost_my_asset_id"
+            referencedColumnNames="id"
+            referencedTableName="my_asset"/>
+
+        <rollback>
+            <dropForeignKeyConstraint
+                baseTableName="attack_cost"
+                constraintName="fk_attack_cost_my_asset_id"
+            />
+        </rollback>
+    </changeSet>
+</databaseChangeLog>
