@@ -51,20 +51,6 @@ public class DirectAssetServiceImpl implements DirectAssetService {
         if (effects != null && !effects.isEmpty()) {
             effects.stream().forEach((indirectAsset) -> {
                 indirectAsset.setDirectAsset(directAsset);
-
-                Set<AttackCost> indirectCosts = indirectAsset.getCosts();
-
-                if (indirectCosts != null && !indirectCosts.isEmpty()) {
-                    indirectCosts.stream().forEach((attackCost) -> {
-                        attackCost.setIndirectAsset(indirectAsset);
-                    });
-                }
-            });
-        }
-
-        if (directAsset.getCosts() != null && !directAsset.getCosts().isEmpty()) {
-            directAsset.getCosts().stream().forEach((attackCost) -> {
-                attackCost.setDirectAsset(directAsset);
             });
         }
 
