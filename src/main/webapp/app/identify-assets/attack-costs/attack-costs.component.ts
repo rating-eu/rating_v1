@@ -143,9 +143,10 @@ export class AttackCostsComponent implements OnInit {
 
   public setCostOnDirect(cost: string) {
     if (cost) {
-      if (!this.selectedDirectAsset.costs) {
+        // TODO check this
+      /*if (!this.selectedDirectAsset.costs) {
         this.selectedDirectAsset.costs = [];
-      }
+      }*/
       let selectedCost: CostType;
       switch (cost) {
         case MyCostType.BEFORE_THE_ATTACK_STATUS_RESTORATION.toString().replace('_', ' ').substring(0, 1) +
@@ -330,9 +331,10 @@ export class AttackCostsComponent implements OnInit {
 
   public setCostOnIndirect(cost: string) {
     if (cost) {
-      if (!this.selectedIndirectAsset.costs) {
+        // TODO check this
+      /*if (!this.selectedIndirectAsset.costs) {
         this.selectedIndirectAsset.costs = [];
-      }
+      }*/
       let selectedCost: CostType;
       switch (cost) {
         case MyCostType.BEFORE_THE_ATTACK_STATUS_RESTORATION.toString().replace('_', ' ').substring(0, 1) +

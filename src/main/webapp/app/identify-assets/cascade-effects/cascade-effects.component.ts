@@ -100,7 +100,8 @@ export class CascadeEffectsComponent implements OnInit {
             }
             if (!this.selectedDirectAsset || !this.selectedDirectAsset.myAsset) {
                 this.selectedDirectAsset = new DirectAssetMgm();
-                this.selectedDirectAsset.costs = undefined;
+                // TODO check this
+                // this.selectedDirectAsset.costs = undefined;
                 this.selectedDirectAsset.effects = undefined;
                 this.selectedDirectAsset.myAsset = myAsset;
             }
@@ -109,7 +110,8 @@ export class CascadeEffectsComponent implements OnInit {
             this.isDirect = false;
             if (this.selectedDirectAsset) {
                 this.idMyAsset = this.selectedDirectAsset.myAsset.id;
-                this.selectedDirectAsset.costs = undefined;
+                // TODO check this
+                // this.selectedDirectAsset.costs = undefined;
                 this.selectedDirectAsset.effects = undefined;
                 this.selectedDirectAsset.myAsset = undefined;
             }
@@ -138,7 +140,8 @@ export class CascadeEffectsComponent implements OnInit {
                 this.selectedIndirectAssets.splice(myIndex, 1);
             } else {
                 const indirect = new IndirectAssetMgm();
-                indirect.costs = undefined;
+                // TODO check this
+                // indirect.costs = undefined;
                 indirect.directAsset = this.selectedDirectAsset;
                 indirect.myAsset = myAsset;
                 this.selectedIndirectAssets.push(_.cloneDeep(indirect));
@@ -173,7 +176,7 @@ export class CascadeEffectsComponent implements OnInit {
         }
         if (this.isMyAssetUpdated) {
             this.myAssetStatus.set(this.idMyAsset, 'IN EVALUATION');
-            if (this.selectedDirectAsset.costs === undefined && this.selectedDirectAsset.effects === undefined && this.selectedDirectAsset.myAsset === undefined) {
+            if (/*TODO check this*//*this.selectedDirectAsset.costs === undefined && */this.selectedDirectAsset.effects === undefined && this.selectedDirectAsset.myAsset === undefined) {
                 this.idaUtilsService.deleteDirectAsset(this.selectedDirectAsset).toPromise();
                 const index = _.findIndex(this.myDirects, { id: idDirect });
                 this.myDirects.splice(index, 1);
