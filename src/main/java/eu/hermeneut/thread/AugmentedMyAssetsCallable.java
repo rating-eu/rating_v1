@@ -57,7 +57,7 @@ public class AugmentedMyAssetsCallable implements Callable<List<AugmentedMyAsset
 
                         while (attackStrategyIterator.hasNext()) {
                             AttackStrategy attackStrategy = attackStrategyIterator.next();
-                            AugmentedAttackStrategy augmentedAttackStrategy = augmentedAttackStrategyMap.get(attackStrategy.getId());
+                            AugmentedAttackStrategy augmentedAttackStrategy = (AugmentedAttackStrategy) augmentedAttackStrategyMap.get(attackStrategy.getId()).clone();
 
                             //Filter the ThreatAgents that can perform this attack
                             List<ThreatAgent> threatAgentsSubset = threatAgentSet.stream().filter(threatAgent -> ThreatAttackFilter.isAttackPossible(threatAgent, attackStrategy)).collect(Collectors.toList());
@@ -77,6 +77,15 @@ public class AugmentedMyAssetsCallable implements Callable<List<AugmentedMyAsset
 
                                 //Number of ThreatAgents
                                 int denominator = threatAgentsSubset.size();
+
+                                float averageInitialVulnerability = 0F;
+                                float averageInitialLikelihood = 0F;
+
+                                float averageContextualVulnerability = 0F;
+                                float averageContextualLikelihood = 0F;
+
+                                float averageRefinedVulnerability = 0F;
+                                float averageRefinedLikelihood = 0F;
 
                                 while (threatAgentIterator.hasNext()) {
                                     ThreatAgent threatAgent = threatAgentIterator.next();
@@ -116,14 +125,14 @@ public class AugmentedMyAssetsCallable implements Callable<List<AugmentedMyAsset
                                     }
                                 }
 
-                                float averageInitialVulnerability = initialVulnerabilityNumerator / denominator;
-                                float averageInitialLikelihood = initialLikelihoodNumerator / denominator;
+                                averageInitialVulnerability = initialVulnerabilityNumerator / denominator;
+                                averageInitialLikelihood = initialLikelihoodNumerator / denominator;
 
-                                float averageContextualVulnerability = contextualVulnerabilityNumerator / denominator;
-                                float averageContextualLikelihood = contextualLikelihoodNumerator / denominator;
+                                averageContextualVulnerability = contextualVulnerabilityNumerator / denominator;
+                                averageContextualLikelihood = contextualLikelihoodNumerator / denominator;
 
-                                float averageRefinedVulnerability = refinedVulnerabilityNumerator / denominator;
-                                float averageRefinedLikelihood = refinedLikelihoodNumerator / denominator;
+                                averageRefinedVulnerability = refinedVulnerabilityNumerator / denominator;
+                                averageRefinedLikelihood = refinedLikelihoodNumerator / denominator;
 
                                 //Update the likelihood and vulnerabilities of the attack strategy with the averaged values
                                 //among all the threat agents.
