@@ -9,6 +9,7 @@ import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
 import { AttackCostMgm } from './attack-cost-mgm.model';
 import { AttackCostMgmPopupService } from './attack-cost-mgm-popup.service';
 import { AttackCostMgmService } from './attack-cost-mgm.service';
+import { MyAssetMgm, MyAssetMgmService } from '../my-asset-mgm';
 import { DirectAssetMgm, DirectAssetMgmService } from '../direct-asset-mgm';
 import { IndirectAssetMgm, IndirectAssetMgmService } from '../indirect-asset-mgm';
 import { SessionStorageService } from 'ngx-webstorage';
@@ -23,6 +24,8 @@ export class AttackCostMgmDialogComponent implements OnInit {
     attackCost: AttackCostMgm;
     isSaving: boolean;
 
+    myassets: MyAssetMgm[];
+
     directassets: DirectAssetMgm[];
 
     indirectassets: IndirectAssetMgm[];
@@ -31,6 +34,7 @@ export class AttackCostMgmDialogComponent implements OnInit {
         public activeModal: NgbActiveModal,
         private jhiAlertService: JhiAlertService,
         private attackCostService: AttackCostMgmService,
+        private myAssetService: MyAssetMgmService,
         private directAssetService: DirectAssetMgmService,
         private indirectAssetService: IndirectAssetMgmService,
         private eventManager: JhiEventManager
@@ -39,6 +43,8 @@ export class AttackCostMgmDialogComponent implements OnInit {
 
     ngOnInit() {
         this.isSaving = false;
+        this.myAssetService.query()
+            .subscribe((res: HttpResponse<MyAssetMgm[]>) => { this.myassets = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
         this.directAssetService.query()
             .subscribe((res: HttpResponse<DirectAssetMgm[]>) => { this.directassets = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
         this.indirectAssetService.query()
@@ -66,7 +72,7 @@ export class AttackCostMgmDialogComponent implements OnInit {
     }
 
     private onSaveSuccess(result: AttackCostMgm) {
-        this.eventManager.broadcast({ name: 'attackCostListModification', content: 'OK' });
+        this.eventManager.broadcast({ name: 'attackCostListModification', content: 'OK'});
         this.isSaving = false;
         this.activeModal.dismiss(result);
     }
@@ -77,6 +83,10 @@ export class AttackCostMgmDialogComponent implements OnInit {
 
     private onError(error: any) {
         this.jhiAlertService.error(error.message, null, null);
+    }
+
+    trackMyAssetById(index: number, item: MyAssetMgm) {
+        return item.id;
     }
 
     trackDirectAssetById(index: number, item: DirectAssetMgm) {
