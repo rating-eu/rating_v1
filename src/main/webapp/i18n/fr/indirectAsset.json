@@ -18,8 +18,7 @@
                 "title": "Indirect Asset"
             },
             "directAsset": "Direct Asset",
-            "myAsset": "My Asset",
-            "costs": "Costs"
+            "myAsset": "My Asset"
         }
     }
 }
