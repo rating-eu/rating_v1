@@ -44,6 +44,13 @@ public class MyAssetServiceImpl implements MyAssetService {
     @Override
     public MyAsset save(MyAsset myAsset) {
         log.debug("Request to save MyAsset : {}", myAsset);
+
+        if (myAsset.getCosts() != null && !myAsset.getCosts().isEmpty()) {
+            myAsset.getCosts().stream().forEach((attackCost) -> {
+                attackCost.setMyAsset(myAsset);
+            });
+        }
+
         MyAsset result = myAssetRepository.save(myAsset);
         myAssetSearchRepository.save(result);
         return result;
@@ -52,6 +59,15 @@ public class MyAssetServiceImpl implements MyAssetService {
     @Override
     public List<MyAsset> saveAll(List<MyAsset> myAssets) {
         log.debug("Request to save all MyAssets : {}", Arrays.toString(myAssets.toArray()));
+
+        myAssets.stream().filter((myAsset) -> myAsset.getCosts() != null && !myAsset.getCosts().isEmpty()).forEach(
+            (myAsset) -> {
+                myAsset.getCosts().forEach((attackCost) -> {
+                    attackCost.setMyAsset(myAsset);
+                });
+            }
+        );
+
         List<MyAsset> result = myAssetRepository.save(myAssets);
         myAssetSearchRepository.save(result);
         return result;
