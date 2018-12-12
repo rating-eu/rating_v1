@@ -24,8 +24,6 @@ export class AttackCostMgm implements BaseEntity {
         public description?: string,
         public costs?: number,
         public myAsset?: BaseEntity,
-        public directAsset?: BaseEntity,
-        public indirectAsset?: BaseEntity,
     ) {
     }
 }
