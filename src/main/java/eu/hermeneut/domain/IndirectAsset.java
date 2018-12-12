@@ -77,31 +77,6 @@ public class IndirectAsset implements Serializable {
     public void setMyAsset(MyAsset myAsset) {
         this.myAsset = myAsset;
     }
-
-    public Set<AttackCost> getCosts() {
-        return costs;
-    }
-
-    public IndirectAsset costs(Set<AttackCost> attackCosts) {
-        this.costs = attackCosts;
-        return this;
-    }
-
-    public IndirectAsset addCosts(AttackCost attackCost) {
-        this.costs.add(attackCost);
-        attackCost.setIndirectAsset(this);
-        return this;
-    }
-
-    public IndirectAsset removeCosts(AttackCost attackCost) {
-        this.costs.remove(attackCost);
-        attackCost.setIndirectAsset(null);
-        return this;
-    }
-
-    public void setCosts(Set<AttackCost> attackCosts) {
-        this.costs = attackCosts;
-    }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
     @Override
