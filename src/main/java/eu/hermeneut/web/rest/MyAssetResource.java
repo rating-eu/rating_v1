@@ -1,6 +1,7 @@
 package eu.hermeneut.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import eu.hermeneut.domain.AttackCost;
 import eu.hermeneut.domain.MyAsset;
 import eu.hermeneut.exceptions.IllegalInputException;
 import eu.hermeneut.exceptions.NullInputException;
@@ -105,6 +106,13 @@ public class MyAssetResource {
         if (myAsset.getId() == null) {
             return createMyAsset(myAsset);
         }
+
+        if (myAsset.getCosts() != null && !myAsset.getCosts().isEmpty()) {
+            for (AttackCost attackCost : myAsset.getCosts()) {
+                attackCost.setMyAsset(myAsset);
+            }
+        }
+
         MyAsset result = myAssetService.save(myAsset);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, myAsset.getId().toString()))
