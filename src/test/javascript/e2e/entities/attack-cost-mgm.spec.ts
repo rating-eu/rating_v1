@@ -38,6 +38,7 @@ describe('AttackCost e2e test', () => {
         expect(attackCostDialogPage.getDescriptionInput()).toMatch('description');
         attackCostDialogPage.setCostsInput('5');
         expect(attackCostDialogPage.getCostsInput()).toMatch('5');
+        attackCostDialogPage.myAssetSelectLastOption();
         attackCostDialogPage.directAssetSelectLastOption();
         attackCostDialogPage.indirectAssetSelectLastOption();
         attackCostDialogPage.save();
@@ -69,6 +70,7 @@ export class AttackCostDialogPage {
     typeSelect = element(by.css('select#field_type'));
     descriptionInput = element(by.css('input#field_description'));
     costsInput = element(by.css('input#field_costs'));
+    myAssetSelect = element(by.css('select#field_myAsset'));
     directAssetSelect = element(by.css('select#field_directAsset'));
     indirectAssetSelect = element(by.css('select#field_indirectAsset'));
 
@@ -101,6 +103,22 @@ export class AttackCostDialogPage {
 
     getCostsInput = function() {
         return this.costsInput.getAttribute('value');
+    };
+
+    myAssetSelectLastOption = function() {
+        this.myAssetSelect.all(by.tagName('option')).last().click();
+    };
+
+    myAssetSelectOption = function(option) {
+        this.myAssetSelect.sendKeys(option);
+    };
+
+    getMyAssetSelect = function() {
+        return this.myAssetSelect;
+    };
+
+    getMyAssetSelectedOption = function() {
+        return this.myAssetSelect.element(by.css('option:checked')).getText();
     };
 
     directAssetSelectLastOption = function() {

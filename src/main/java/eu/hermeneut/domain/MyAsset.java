@@ -1,5 +1,6 @@
 package eu.hermeneut.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModelProperty;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -10,6 +11,8 @@ import javax.validation.constraints.*;
 import org.springframework.data.elasticsearch.annotations.Document;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.Objects;
 
 /**
@@ -38,13 +41,17 @@ public class MyAsset implements Serializable {
      * WP3
      */
     @ApiModelProperty(value = "WP3")
-    @Column(name = "economic_value", precision = 10, scale = 2)
+    @Column(name = "economic_value", precision=10, scale=2)
     private BigDecimal economicValue;
 
     @Min(value = 1)
     @Max(value = 5)
     @Column(name = "impact")
     private Integer impact;
+
+    @OneToMany(mappedBy = "myAsset", fetch = FetchType.EAGER, cascade = {CascadeType.ALL, CascadeType.PERSIST, CascadeType.MERGE})
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    private Set<AttackCost> costs = new HashSet<>();
 
     @ManyToOne
     private Asset asset;
@@ -114,6 +121,31 @@ public class MyAsset implements Serializable {
 
     public void setImpact(Integer impact) {
         this.impact = impact;
+    }
+
+    public Set<AttackCost> getCosts() {
+        return costs;
+    }
+
+    public MyAsset costs(Set<AttackCost> attackCosts) {
+        this.costs = attackCosts;
+        return this;
+    }
+
+    public MyAsset addCosts(AttackCost attackCost) {
+        this.costs.add(attackCost);
+        attackCost.setMyAsset(this);
+        return this;
+    }
+
+    public MyAsset removeCosts(AttackCost attackCost) {
+        this.costs.remove(attackCost);
+        attackCost.setMyAsset(null);
+        return this;
+    }
+
+    public void setCosts(Set<AttackCost> attackCosts) {
+        this.costs = attackCosts;
     }
 
     public Asset getAsset() {
