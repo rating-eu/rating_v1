@@ -266,8 +266,6 @@ relationship OneToMany{
     CompanyProfile{companyGroups(name)} to CompanyGroup{companyprofile(name)},
     ThreatAgent{questions} to Question{threatAgent(name)}
     QuestionnaireStatus{answers} to MyAnswer,
-    DirectAsset{costs(type)} to AttackCost,
-    IndirectAsset{costs(type)} to AttackCost,
     DirectAsset{effects(name)} to IndirectAsset,
     MyAsset{costs(type)} to AttackCost
 }
