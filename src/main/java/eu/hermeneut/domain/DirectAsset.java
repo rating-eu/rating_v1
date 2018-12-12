@@ -62,31 +62,6 @@ public class DirectAsset implements Serializable {
         this.myAsset = myAsset;
     }
 
-    public Set<AttackCost> getCosts() {
-        return costs;
-    }
-
-    public DirectAsset costs(Set<AttackCost> attackCosts) {
-        this.costs = attackCosts;
-        return this;
-    }
-
-    public DirectAsset addCosts(AttackCost attackCost) {
-        this.costs.add(attackCost);
-        attackCost.setDirectAsset(this);
-        return this;
-    }
-
-    public DirectAsset removeCosts(AttackCost attackCost) {
-        this.costs.remove(attackCost);
-        attackCost.setDirectAsset(null);
-        return this;
-    }
-
-    public void setCosts(Set<AttackCost> attackCosts) {
-        this.costs = attackCosts;
-    }
-
     public Set<IndirectAsset> getEffects() {
         return effects;
     }
