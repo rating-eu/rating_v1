@@ -562,6 +562,20 @@ export class AttackCostsComponent implements OnInit {
         this.loading = false;
         this.router.navigate(['/dashboard']);
       });
+      if (this.selectedIndirectAsset) {
+        const myAssetIndexIndirect = _.findIndex(this.myAssets, { id: this.selectedIndirectAsset.myAsset.id });
+        this.idaUtilsService.updateAsset(this.myAssets[myAssetIndexIndirect]).toPromise().then((myAsset) => {
+          if (myAsset) {
+            const index = _.findIndex(this.myAssets, { id: myAsset.id });
+            if (index !== -1) {
+              this.myAssets.splice(index, 1, myAsset);
+            } else {
+              this.myAssets.push(_.cloneDeep(myAsset));
+            }
+          }
+          this.ref.detectChanges();
+        });
+      }
       /*
       this.idaUtilsService.updateDirectAsset(this.selectedDirectAsset).toPromise().then((myDirectAsset) => {
         if (myDirectAsset) {
