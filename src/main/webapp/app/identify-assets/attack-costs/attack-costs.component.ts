@@ -228,7 +228,7 @@ export class AttackCostsComponent implements OnInit {
         this.myAssets[myAssetIndex].costs.splice(costIndex, 1);
       } else {
         const newCost = new AttackCostMgm();
-        newCost.directAsset = this.selectedDirectAsset;
+        newCost.myAsset = this.myAssets[myAssetIndex];
         newCost.type = selectedCost;
         // this.selectedDirectAsset.costs.push(_.cloneDeep(newCost));
         this.myAssets[myAssetIndex].costs.push(_.cloneDeep(newCost));
@@ -416,7 +416,8 @@ export class AttackCostsComponent implements OnInit {
         this.myAssets[myAssetIndex].costs.splice(costIndex, 1);
       } else {
         const newCost = new AttackCostMgm();
-        newCost.indirectAsset = this.selectedIndirectAsset;
+        // newCost.indirectAsset = this.selectedIndirectAsset;
+        newCost.myAsset = this.myAssets[myAssetIndex];
         newCost.type = selectedCost;
         // this.selectedIndirectAsset.costs.push(_.cloneDeep(newCost));
         this.myAssets[myAssetIndex].costs.push(_.cloneDeep(newCost));
