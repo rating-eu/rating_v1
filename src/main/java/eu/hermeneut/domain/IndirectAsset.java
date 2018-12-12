@@ -38,10 +38,6 @@ public class IndirectAsset implements Serializable {
     @OneToOne
     private MyAsset myAsset;
 
-    @OneToMany(mappedBy = "indirectAsset", fetch = FetchType.EAGER, cascade = {CascadeType.ALL, CascadeType.PERSIST, CascadeType.MERGE})
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private Set<AttackCost> costs = new HashSet<>();
-
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
         return id;
