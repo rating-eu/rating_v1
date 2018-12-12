@@ -104,6 +104,7 @@ public class AttackCost implements Serializable {
         this.costs = costs;
     }
 
+    @JsonIgnore
     public MyAsset getMyAsset() {
         return myAsset;
     }
