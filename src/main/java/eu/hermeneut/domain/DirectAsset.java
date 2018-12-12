@@ -32,9 +32,6 @@ public class DirectAsset implements Serializable {
     @JoinColumn(unique = true)
     private MyAsset myAsset;
 
-    @OneToMany(mappedBy = "directAsset", fetch = FetchType.EAGER, cascade = {CascadeType.ALL, CascadeType.PERSIST, CascadeType.MERGE})
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private Set<AttackCost> costs = new HashSet<>();
 
     @OneToMany(mappedBy = "directAsset", fetch = FetchType.EAGER, cascade = {CascadeType.ALL, CascadeType.PERSIST, CascadeType.MERGE})
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
