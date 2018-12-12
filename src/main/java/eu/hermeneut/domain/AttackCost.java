@@ -48,14 +48,6 @@ public class AttackCost implements Serializable {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private MyAsset myAsset;
 
-    @ManyToOne
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    private DirectAsset directAsset;
-
-    @ManyToOne
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    private IndirectAsset indirectAsset;
-
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
         return id;
