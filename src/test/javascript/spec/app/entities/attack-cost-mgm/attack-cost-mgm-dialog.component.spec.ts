@@ -10,8 +10,6 @@ import { AttackCostMgmDialogComponent } from '../../../../../../main/webapp/app/
 import { AttackCostMgmService } from '../../../../../../main/webapp/app/entities/attack-cost-mgm/attack-cost-mgm.service';
 import { AttackCostMgm } from '../../../../../../main/webapp/app/entities/attack-cost-mgm/attack-cost-mgm.model';
 import { MyAssetMgmService } from '../../../../../../main/webapp/app/entities/my-asset-mgm';
-import { DirectAssetMgmService } from '../../../../../../main/webapp/app/entities/direct-asset-mgm';
-import { IndirectAssetMgmService } from '../../../../../../main/webapp/app/entities/indirect-asset-mgm';
 
 describe('Component Tests', () => {
 
@@ -28,8 +26,6 @@ describe('Component Tests', () => {
                 declarations: [AttackCostMgmDialogComponent],
                 providers: [
                     MyAssetMgmService,
-                    DirectAssetMgmService,
-                    IndirectAssetMgmService,
                     AttackCostMgmService
                 ]
             })
