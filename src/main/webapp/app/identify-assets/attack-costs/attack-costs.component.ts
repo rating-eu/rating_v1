@@ -64,12 +64,18 @@ export class AttackCostsComponent implements OnInit {
         this.myAssets = mySavedAssets;
         this.myAssets = _.orderBy(this.myAssets, ['asset.name'], ['asc']);
         this.myAssets.forEach((myAsset) => {
-          this.myAssetStatus.set(myAsset.id, 'NOT COMPLETED');
+          // this.myAssetStatus.set(myAsset.id, 'NOT COMPLETED');
+          if (myAsset.costs !== null && myAsset.costs.length > 0) {
+            this.myAssetStatus.set(myAsset.id, 'COMPLETED');
+          } else {
+            this.myAssetStatus.set(myAsset.id, 'NOT COMPLETED');
+          }
         });
         this.idaUtilsService.getMySavedDirectAssets(this.mySelf).toPromise().then((mySavedDirect) => {
           if (mySavedDirect) {
             this.myDirects = mySavedDirect;
             this.myDirects = _.orderBy(this.myDirects, ['myAsset.asset.name'], ['asc']);
+            /*
             this.myDirects.forEach((myDirect) => {
               if (myDirect.costs !== null && myDirect.costs.length > 0) {
                 this.myAssetStatus.set(myDirect.myAsset.id, 'COMPLETED');
@@ -83,6 +89,7 @@ export class AttackCostsComponent implements OnInit {
                 }
               }
             });
+            */
           }
         });
       }
@@ -93,7 +100,7 @@ export class AttackCostsComponent implements OnInit {
     if (myIndirect) {
       this.refreshIndirect = true;
       setTimeout(() => {
-        const indDirect = _.findIndex(this.myDirects, {id: this.selectedDirectAsset.id});
+        const indDirect = _.findIndex(this.myDirects, { id: this.selectedDirectAsset.id });
         this.selectedDirectAsset = _.cloneDeep(this.myDirects[indDirect]);
         if (this.selectedIndirectAsset) {
           if (this.selectedIndirectAsset.id === myIndirect.id) {
@@ -213,23 +220,29 @@ export class AttackCostsComponent implements OnInit {
           }
       }
       this.isMyAssetUpdated = true;
-      const index = _.findIndex(this.selectedDirectAsset.costs, { type: selectedCost });
-      if (index !== -1) {
-        this.selectedDirectAsset.costs.splice(index, 1);
+      // const index = _.findIndex(this.selectedDirectAsset.costs, { type: selectedCost });
+      const myAssetIndex = _.findIndex(this.myAssets, { id: this.selectedDirectAsset.myAsset.id });
+      const costIndex = _.findIndex(this.myAssets[myAssetIndex].costs, { type: selectedCost });
+      if (costIndex !== -1) {
+        // this.selectedDirectAsset.costs.splice(index, 1);
+        this.myAssets[myAssetIndex].costs.splice(costIndex, 1);
       } else {
         const newCost = new AttackCostMgm();
-        newCost.directAsset = this.selectedDirectAsset;
+        newCost.myAsset = this.myAssets[myAssetIndex];
         newCost.type = selectedCost;
-        this.selectedDirectAsset.costs.push(_.cloneDeep(newCost));
+        // this.selectedDirectAsset.costs.push(_.cloneDeep(newCost));
+        this.myAssets[myAssetIndex].costs.push(_.cloneDeep(newCost));
       }
     }
   }
 
   public isDirectCostSelected(cost: string): boolean {
     if (cost) {
+      /*
       if (!this.selectedDirectAsset.costs) {
         return false;
       }
+      */
       let selectedCost: CostType;
       switch (cost) {
         case MyCostType.BEFORE_THE_ATTACK_STATUS_RESTORATION.toString().replace('_', ' ').substring(0, 1) +
@@ -303,8 +316,9 @@ export class AttackCostsComponent implements OnInit {
             break;
           }
       }
-      if (this.selectedDirectAsset.costs && this.selectedDirectAsset.costs.length > 0) {
-        for (const iCost of this.selectedDirectAsset.costs) {
+      const myAssetIndex = _.findIndex(this.myAssets, { id: this.selectedDirectAsset.myAsset.id });
+      if (this.myAssets[myAssetIndex].costs && this.myAssets[myAssetIndex].costs.length > 0) {
+        for (const iCost of this.myAssets[myAssetIndex].costs) {
           if (iCost.type.toString() === (CostType[selectedCost] as String)) {
             return true;
           }
@@ -392,28 +406,38 @@ export class AttackCostsComponent implements OnInit {
             break;
           }
       }
+
       this.isMyAssetUpdated = true;
-      const index = _.findIndex(this.selectedIndirectAsset.costs, { type: selectedCost });
-      if (index !== -1) {
-        this.selectedIndirectAsset.costs.splice(index, 1);
+      // const index = _.findIndex(this.selectedIndirectAsset.costs, { type: selectedCost });
+      const myAssetIndex = _.findIndex(this.myAssets, { id: this.selectedIndirectAsset.myAsset.id });
+      const costIndex = _.findIndex(this.myAssets[myAssetIndex].costs, { type: selectedCost });
+      if (costIndex !== -1) {
+        // this.selectedIndirectAsset.costs.splice(index, 1);
+        this.myAssets[myAssetIndex].costs.splice(costIndex, 1);
       } else {
         const newCost = new AttackCostMgm();
-        newCost.indirectAsset = this.selectedIndirectAsset;
+        // newCost.indirectAsset = this.selectedIndirectAsset;
+        newCost.myAsset = this.myAssets[myAssetIndex];
         newCost.type = selectedCost;
-        this.selectedIndirectAsset.costs.push(_.cloneDeep(newCost));
+        // this.selectedIndirectAsset.costs.push(_.cloneDeep(newCost));
+        this.myAssets[myAssetIndex].costs.push(_.cloneDeep(newCost));
       }
+      /*
       const iIndex = _.findIndex(this.selectedDirectAsset.effects, { id: this.selectedIndirectAsset.id });
       if (iIndex !== -1) {
         this.selectedDirectAsset.effects.splice(iIndex, 1, this.selectedIndirectAsset);
       }
+      */
     }
   }
 
   public isIndirectCostSelected(cost: string): boolean {
     if (cost) {
+      /*
       if (!this.selectedIndirectAsset.costs) {
         return false;
       }
+      */
       let selectedCost: CostType;
       switch (cost) {
         case MyCostType.BEFORE_THE_ATTACK_STATUS_RESTORATION.toString().replace('_', ' ').substring(0, 1) +
@@ -487,8 +511,10 @@ export class AttackCostsComponent implements OnInit {
             break;
           }
       }
-      if (this.selectedIndirectAsset.costs && this.selectedIndirectAsset.costs.length > 0) {
-        for (const iCost of this.selectedIndirectAsset.costs) {
+
+      const myAssetIndex = _.findIndex(this.myAssets, { id: this.selectedIndirectAsset.myAsset.id });
+      if (this.myAssets[myAssetIndex].costs && this.myAssets[myAssetIndex].costs.length > 0) {
+        for (const iCost of this.myAssets[myAssetIndex].costs) {
           if (iCost.type.toString() === (CostType[selectedCost] as String)) {
             return true;
           }
@@ -511,16 +537,34 @@ export class AttackCostsComponent implements OnInit {
     const idMyAsset = this.selectedDirectAsset.myAsset.id;
     if (this.isMyAssetUpdated) {
       this.myAssetStatus.set(idMyAsset, 'IN EVALUATION');
+      const myAssetIndex = _.findIndex(this.myAssets, { id: this.selectedDirectAsset.myAsset.id });
+      this.idaUtilsService.updateAsset(this.myAssets[myAssetIndex]).toPromise().then((myAsset) => {
+        if (myAsset) {
+          const index = _.findIndex(this.myAssets, { id: myAsset.id });
+          if (index !== -1) {
+            this.myAssets.splice(index, 1, myAsset);
+          } else {
+            this.myAssets.push(_.cloneDeep(myAsset));
+          }
+          this.isMyAssetUpdated = false;
+          this.loading = false;
+          if (myAsset.costs && myAsset.costs.length > 0) {
+            this.myAssetStatus.set(idMyAsset, 'COMPLETED');
+          } else {
+            this.myAssetStatus.set(idMyAsset, 'NOT COMPLETED');
+          }
+          if (onNext) {
+            this.router.navigate(['/identify-asset/attack-costs']);
+          }
+        }
+        this.ref.detectChanges();
+      }).catch(() => {
+        this.loading = false;
+        this.router.navigate(['/dashboard']);
+      });
+      /*
       this.idaUtilsService.updateDirectAsset(this.selectedDirectAsset).toPromise().then((myDirectAsset) => {
         if (myDirectAsset) {
-          /* this.selectedDirectAsset = myDirectAsset;
-          if (this.selectedIndirectAsset) {
-            const indIndex = _.findIndex(this.selectedDirectAsset.effects, { id: this.selectedIndirectAsset.id });
-            if (indIndex !== -1) {
-              this.selectedIndirectAsset = this.selectedDirectAsset.effects[indIndex];
-            }
-          }
-          */
           const index = _.findIndex(this.myDirects, { id: myDirectAsset.id });
           if (index !== -1) {
             this.myDirects.splice(index, 1, myDirectAsset);
@@ -542,7 +586,6 @@ export class AttackCostsComponent implements OnInit {
               this.myAssetStatus.set(idMyAsset, 'NOT COMPLETED');
             }
           }
-          // this.jhiAlertService.success('hermeneutApp.messages.saved', null, null);
           if (onNext) {
             this.router.navigate(['/identify-asset/attack-costs']);
           }
@@ -551,8 +594,8 @@ export class AttackCostsComponent implements OnInit {
       }).catch(() => {
         this.loading = false;
         this.router.navigate(['/dashboard']);
-        // this.jhiAlertService.error('hermeneutApp.messages.error', null, null);
       });
+      */
     } else {
       this.loading = false;
       this.ref.detectChanges();
