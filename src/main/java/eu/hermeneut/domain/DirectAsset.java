@@ -33,7 +33,8 @@ public class DirectAsset implements Serializable {
     private MyAsset myAsset;
 
 
-    @OneToMany(mappedBy = "directAsset", fetch = FetchType.EAGER, cascade = {CascadeType.ALL, CascadeType.PERSIST, CascadeType.MERGE})
+    @OneToMany(mappedBy = "directAsset", fetch = FetchType.EAGER,
+        cascade = {CascadeType.ALL, CascadeType.PERSIST, CascadeType.MERGE}, orphanRemoval = true)
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<IndirectAsset> effects = new HashSet<>();
 
