@@ -6,18 +6,6 @@
             "otherEntityName": "myAsset",
             "relationshipType": "many-to-one",
             "otherEntityField": "id"
-        },
-        {
-            "relationshipName": "directAsset",
-            "otherEntityName": "directAsset",
-            "relationshipType": "many-to-one",
-            "otherEntityField": "id"
-        },
-        {
-            "relationshipName": "indirectAsset",
-            "otherEntityName": "indirectAsset",
-            "relationshipType": "many-to-one",
-            "otherEntityField": "id"
         }
     ],
     "fields": [

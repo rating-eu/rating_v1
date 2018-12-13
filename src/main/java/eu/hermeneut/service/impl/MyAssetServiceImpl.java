@@ -45,6 +45,16 @@ public class MyAssetServiceImpl implements MyAssetService {
     public MyAsset save(MyAsset myAsset) {
         log.debug("Request to save MyAsset : {}", myAsset);
 
+        if (myAsset.getId() != null) {
+            MyAsset existingMyAsset = this.myAssetRepository.findOne(myAsset.getId());
+
+            if (existingMyAsset != null) {
+                //clear its collections in order to keep only the new data
+                existingMyAsset.getCosts().clear();
+                this.myAssetRepository.save(existingMyAsset);
+            }
+        }
+
         if (myAsset.getCosts() != null && !myAsset.getCosts().isEmpty()) {
             myAsset.getCosts().stream().forEach((attackCost) -> {
                 attackCost.setMyAsset(myAsset);
