@@ -44,8 +44,8 @@
                                     <ng-container *ngIf="isOdd">
                                         <div class="row">
                                             <label><input type="checkbox" [checked]="isDirectCostSelected(cost)"
-                                                    (change)="setCostOnDirect(cost)" id="{{cost}}-direct-{{selectedDirectAsset.myAsset.asset.name}}">
-                                                {{cost}}</label>
+                                                    (change)="setCostOnDirect(cost)" id="{{cost.toString()}}-direct-{{selectedDirectAsset.myAsset.asset.name}}">
+                                                {{cost.toString() | replaceUnderscore}}</label>
                                         </div>
                                     </ng-container>
                                 </ng-container>
@@ -56,7 +56,7 @@
                                         <div class="row">
                                             <label><input type="checkbox" [checked]="isDirectCostSelected(cost)"
                                                     (change)="setCostOnDirect(cost)" id="{{cost}}-direct-{{selectedDirectAsset.myAsset.asset.name}}">
-                                                {{cost}}</label>
+                                                {{cost.toString() | replaceUnderscore}}</label>
                                         </div>
                                     </ng-container>
                                 </ng-container>
@@ -91,8 +91,8 @@
                                         <ng-container *ngIf="isOdd">
                                             <div class="row">
                                                 <label><input type="checkbox" [checked]="isIndirectCostSelected(cost)"
-                                                        (change)="setCostOnIndirect(cost)" id="{{cost}}-{{selectedIndirectAsset.myAsset.asset.name}}">
-                                                    {{cost}}</label>
+                                                        (change)="setCostOnIndirect(cost)" id="{{cost.toString()}}-{{selectedIndirectAsset.myAsset.asset.name}}">
+                                                    {{cost.toString() | replaceUnderscore}}</label>
                                             </div>
                                         </ng-container>
                                     </ng-container>
@@ -102,8 +102,8 @@
                                         <ng-container *ngIf="isEven">
                                             <div class="row">
                                                 <label><input type="checkbox" [checked]="isIndirectCostSelected(cost)"
-                                                        (change)="setCostOnIndirect(cost)" id="{{cost}}-{{selectedIndirectAsset.myAsset.asset.name}}">
-                                                    {{cost}}</label>
+                                                        (change)="setCostOnIndirect(cost)" id="{{cost.toString()}}-{{selectedIndirectAsset.myAsset.asset.name}}">
+                                                    {{cost.toString() | replaceUnderscore}}</label>
                                             </div>
                                         </ng-container>
                                     </ng-container>
