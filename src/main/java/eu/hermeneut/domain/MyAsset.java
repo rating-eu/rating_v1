@@ -49,7 +49,8 @@ public class MyAsset implements Serializable {
     @Column(name = "impact")
     private Integer impact;
 
-    @OneToMany(mappedBy = "myAsset", fetch = FetchType.EAGER, cascade = {CascadeType.ALL, CascadeType.PERSIST, CascadeType.MERGE})
+    @OneToMany(mappedBy = "myAsset", fetch = FetchType.EAGER,
+        cascade = {CascadeType.ALL, CascadeType.PERSIST, CascadeType.MERGE}, orphanRemoval = true)
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<AttackCost> costs = new HashSet<>();
 
