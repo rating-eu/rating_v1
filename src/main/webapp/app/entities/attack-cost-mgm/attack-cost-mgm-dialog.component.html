@@ -61,20 +61,6 @@
                 <option [ngValue]="myAssetOption.id === attackCost.myAsset?.id ? attackCost.myAsset : myAssetOption" *ngFor="let myAssetOption of myassets; trackBy: trackMyAssetById">{{myAssetOption.id}}</option>
             </select>
         </div>
-        <div class="form-group">
-            <label class="form-control-label" jhiTranslate="hermeneutApp.attackCost.directAsset" for="field_directAsset">Direct Asset</label>
-            <select class="form-control" id="field_directAsset" name="directAsset" [(ngModel)]="attackCost.directAsset" >
-                <option [ngValue]="null"></option>
-                <option [ngValue]="directAssetOption.id === attackCost.directAsset?.id ? attackCost.directAsset : directAssetOption" *ngFor="let directAssetOption of directassets; trackBy: trackDirectAssetById">{{directAssetOption.id}}</option>
-            </select>
-        </div>
-        <div class="form-group">
-            <label class="form-control-label" jhiTranslate="hermeneutApp.attackCost.indirectAsset" for="field_indirectAsset">Indirect Asset</label>
-            <select class="form-control" id="field_indirectAsset" name="indirectAsset" [(ngModel)]="attackCost.indirectAsset" >
-                <option [ngValue]="null"></option>
-                <option [ngValue]="indirectAssetOption.id === attackCost.indirectAsset?.id ? attackCost.indirectAsset : indirectAssetOption" *ngFor="let indirectAssetOption of indirectassets; trackBy: trackIndirectAssetById">{{indirectAssetOption.id}}</option>
-            </select>
-        </div>
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">

@@ -28,5 +28,9 @@
             />
             <where>indirect_asset_id IS NOT NULL</where>
         </update>
+
+        <rollback>
+            <!--Do nothing-->
+        </rollback>
     </changeSet>
 </databaseChangeLog>

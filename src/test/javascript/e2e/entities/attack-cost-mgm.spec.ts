@@ -39,8 +39,6 @@ describe('AttackCost e2e test', () => {
         attackCostDialogPage.setCostsInput('5');
         expect(attackCostDialogPage.getCostsInput()).toMatch('5');
         attackCostDialogPage.myAssetSelectLastOption();
-        attackCostDialogPage.directAssetSelectLastOption();
-        attackCostDialogPage.indirectAssetSelectLastOption();
         attackCostDialogPage.save();
         expect(attackCostDialogPage.getSaveButton().isPresent()).toBeFalsy();
     });
@@ -71,8 +69,6 @@ export class AttackCostDialogPage {
     descriptionInput = element(by.css('input#field_description'));
     costsInput = element(by.css('input#field_costs'));
     myAssetSelect = element(by.css('select#field_myAsset'));
-    directAssetSelect = element(by.css('select#field_directAsset'));
-    indirectAssetSelect = element(by.css('select#field_indirectAsset'));
 
     getModalTitle() {
         return this.modalTitle.getAttribute('jhiTranslate');
@@ -119,38 +115,6 @@ export class AttackCostDialogPage {
 
     getMyAssetSelectedOption = function() {
         return this.myAssetSelect.element(by.css('option:checked')).getText();
-    };
-
-    directAssetSelectLastOption = function() {
-        this.directAssetSelect.all(by.tagName('option')).last().click();
-    };
-
-    directAssetSelectOption = function(option) {
-        this.directAssetSelect.sendKeys(option);
-    };
-
-    getDirectAssetSelect = function() {
-        return this.directAssetSelect;
-    };
-
-    getDirectAssetSelectedOption = function() {
-        return this.directAssetSelect.element(by.css('option:checked')).getText();
-    };
-
-    indirectAssetSelectLastOption = function() {
-        this.indirectAssetSelect.all(by.tagName('option')).last().click();
-    };
-
-    indirectAssetSelectOption = function(option) {
-        this.indirectAssetSelect.sendKeys(option);
-    };
-
-    getIndirectAssetSelect = function() {
-        return this.indirectAssetSelect;
-    };
-
-    getIndirectAssetSelectedOption = function() {
-        return this.indirectAssetSelect.element(by.css('option:checked')).getText();
     };
 
     save() {

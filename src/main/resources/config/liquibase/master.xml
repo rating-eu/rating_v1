@@ -111,5 +111,6 @@
     <include file="config/liquibase/changelog/20181207205423_removed_my_asset_magnitude_column.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20181211182657_my_asset_attack_costs_pt1.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20181211221234_my_asset_attack_cost_migration.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20181213161257_drop_attack_cost_direct_and_indirect.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
 </databaseChangeLog>
