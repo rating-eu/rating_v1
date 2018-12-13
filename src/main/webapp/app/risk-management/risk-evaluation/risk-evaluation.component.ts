@@ -1,3 +1,4 @@
+import { ThreatAgentInterest } from './../model/threat-agent-interest.model';
 import { Component, OnInit, ChangeDetectorRef, OnDestroy } from '@angular/core';
 import { RiskManagementService } from '../risk-management.service';
 import { SelfAssessmentMgmService, SelfAssessmentMgm } from '../../entities/self-assessment-mgm';
@@ -20,18 +21,25 @@ import { Subscription } from 'rxjs';
 })
 export class RiskEvaluationComponent implements OnInit, OnDestroy {
     private mySelf: SelfAssessmentMgm;
+    private criticalLevelSubscription: Subscription;
+    private selectedAttacksChance: MyAssetAttackChance[];
+    private closeResult: string;
+
+    public selectedAsset: MyAssetMgm;
     public myAssets: MyAssetMgm[] = [];
     public criticalLevel: CriticalLevelMgm;
-    private criticalLevelSubscription: Subscription;
     public squareColumnElement: number[];
     public squareRowElement: number[];
     public lastSquareRowElement: number;
     public selectedRow: number;
     public selectedColumn: number;
     public mapAssetAttacks: Map<number, MyAssetAttackChance[]> = new Map<number, MyAssetAttackChance[]>();
+    private mapAssetThreats: Map<number, ThreatAgentInterest[]> = new Map<number, ThreatAgentInterest[]>();
+    public threatAgentInterest: ThreatAgentInterest[] = [];
     public mapMaxCriticalLevel: Map<number, number[]> = new Map<number, number[]>();
     public noRiskInMap = false;
     public loadingRiskLevel = false;
+    public detailsLoading = false;
     public loadingAssetsAndAttacks = false;
     public criticalBostonSquareLoad = true;
     public attacksToolTipLoaded = false;
@@ -44,9 +52,6 @@ export class RiskEvaluationComponent implements OnInit, OnDestroy {
         currentPage: 1
     };
     // public modalContent: string;
-    private selectedAttacksChance: MyAssetAttackChance[];
-    private closeResult: string;
-    private selectedAsset: MyAssetMgm;
     public riskPercentageMap: Map<number/*MyAsset.ID*/, number/*RiskPercentage*/> = new Map<number, number>();
 
     public attacksToolTip: Map<number, string> = new Map<number, string>();
@@ -113,13 +118,27 @@ export class RiskEvaluationComponent implements OnInit, OnDestroy {
                     this.riskService.getAttackChance(myAsset, this.mySelf).toPromise().then((res2) => {
                         if (res2) {
                             this.mapAssetAttacks.set(myAsset.id, res2);
+                            for (let i = 1; i <= 5; i++) {
+                                for (let j = 1; j <= 5; j++) {
+                                    this.whichContentByCell(i, j, myAsset, 'likelihood-vulnerability');
+                                }
+                            }
                             // const ordered = this.orderLevels(this.mapAssetAttacks);
                             // this.mapAssetAttacks = ordered.orderedMap;
                             // this.myAssets = ordered.orderedArray;
                         }
                     });
+                    this.riskService.getThreatAgentsInterests(myAsset, this.mySelf).toPromise().then((res3) => {
+                        if (res3) {
+                            this.mapAssetThreats.set(myAsset.id, res3);
+                        }
+                    });
                 }
-                this.loadingAssetsAndAttacks = false;
+                if (this.loadingAssetsAndAttacks) {
+                    setTimeout(() => {
+                        this.loadingAssetsAndAttacks = false;
+                    }, 5000);
+                }
                 // this.ref.detectChanges();
                 console.log(this.mapAssetAttacks);
             } else {
@@ -213,13 +232,19 @@ export class RiskEvaluationComponent implements OnInit, OnDestroy {
     }
 
     public selectAsset(asset: MyAssetMgm) {
+        this.detailsLoading = true;
         if (!this.selectedAsset) {
             this.selectedAsset = asset;
+            this.threatAgentInterest = this.mapAssetThreats.get(asset.id);
         } else if (this.selectedAsset.id === asset.id) {
             this.selectedAsset = null;
         } else {
             this.selectedAsset = asset;
+            this.threatAgentInterest = this.mapAssetThreats.get(asset.id);
         }
+        setTimeout(() => {
+            this.detailsLoading = false;
+        }, 500);
     }
 
     public isAssetCollapsed(asset: MyAssetMgm): boolean {
@@ -331,6 +356,8 @@ export class RiskEvaluationComponent implements OnInit, OnDestroy {
         }
         if (this.riskPercentageMap.size === 0) {
             this.noRiskInMap = true;
+        } else {
+            this.noRiskInMap = false;
         }
         content = content.trim();
         const key = row.toString() + column.toString();
@@ -409,7 +436,7 @@ export class RiskEvaluationComponent implements OnInit, OnDestroy {
             }, 2500);
         }
         if (content.length > 0) {
-            content = content.substr(0, 12);
+            content = content.substr(0, 10);
             if (attackCounter > 0) {
                 content = content.concat(' +' + attackCounter);
             }

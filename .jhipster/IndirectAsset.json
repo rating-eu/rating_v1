@@ -14,12 +14,6 @@
             "otherEntityField": "asset",
             "ownerSide": true,
             "otherEntityRelationshipName": "indirectAsset"
-        },
-        {
-            "relationshipType": "one-to-many",
-            "relationshipName": "costs",
-            "otherEntityName": "attackCost",
-            "otherEntityRelationshipName": "indirectAsset"
         }
     ],
     "fields": [],

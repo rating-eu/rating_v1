@@ -46,25 +46,21 @@ public class DirectAssetServiceImpl implements DirectAssetService {
     public DirectAsset save(DirectAsset directAsset) {
         log.debug("Request to save DirectAsset : {}", directAsset);
 
+        if (directAsset.getId() != null) {
+            DirectAsset existingDirectAsset = this.directAssetRepository.findOne(directAsset.getId());
+
+            if (existingDirectAsset != null) {
+                //clear its collections in order to keep only the new data
+                existingDirectAsset.getEffects().clear();
+                this.directAssetRepository.save(existingDirectAsset);
+            }
+        }
+
         Set<IndirectAsset> effects = directAsset.getEffects();
 
         if (effects != null && !effects.isEmpty()) {
             effects.stream().forEach((indirectAsset) -> {
                 indirectAsset.setDirectAsset(directAsset);
-
-                Set<AttackCost> indirectCosts = indirectAsset.getCosts();
-
-                if (indirectCosts != null && !indirectCosts.isEmpty()) {
-                    indirectCosts.stream().forEach((attackCost) -> {
-                        attackCost.setIndirectAsset(indirectAsset);
-                    });
-                }
-            });
-        }
-
-        if (directAsset.getCosts() != null && !directAsset.getCosts().isEmpty()) {
-            directAsset.getCosts().stream().forEach((attackCost) -> {
-                attackCost.setDirectAsset(directAsset);
             });
         }
 

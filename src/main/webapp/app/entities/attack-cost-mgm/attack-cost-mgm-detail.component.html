@@ -16,16 +16,10 @@
         <dd>
             <span>{{attackCost.costs}}</span>
         </dd>
-        <dt><span jhiTranslate="hermeneutApp.attackCost.directAsset">Direct Asset</span></dt>
+        <dt><span jhiTranslate="hermeneutApp.attackCost.myAsset">My Asset</span></dt>
         <dd>
-            <div *ngIf="attackCost.directAsset">
-                <a [routerLink]="['/direct-asset-mgm', attackCost.directAsset?.id]">{{attackCost.directAsset?.id}}</a>
-            </div>
-        </dd>
-        <dt><span jhiTranslate="hermeneutApp.attackCost.indirectAsset">Indirect Asset</span></dt>
-        <dd>
-            <div *ngIf="attackCost.indirectAsset">
-                <a [routerLink]="['/indirect-asset-mgm', attackCost.indirectAsset?.id]">{{attackCost.indirectAsset?.id}}</a>
+            <div *ngIf="attackCost.myAsset">
+                <a [routerLink]="['/my-asset-mgm', attackCost.myAsset?.id]">{{attackCost.myAsset?.id}}</a>
             </div>
         </dd>
     </dl>

@@ -2,14 +2,8 @@
     "fluentMethods": true,
     "relationships": [
         {
-            "relationshipName": "directAsset",
-            "otherEntityName": "directAsset",
-            "relationshipType": "many-to-one",
-            "otherEntityField": "id"
-        },
-        {
-            "relationshipName": "indirectAsset",
-            "otherEntityName": "indirectAsset",
+            "relationshipName": "myAsset",
+            "otherEntityName": "myAsset",
             "relationshipType": "many-to-one",
             "otherEntityField": "id"
         }
