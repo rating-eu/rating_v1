@@ -1,15 +1,15 @@
-import { Component, OnInit, OnDestroy, ElementRef } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
+import {Component, OnInit, OnDestroy, ElementRef} from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
+import {HttpResponse, HttpErrorResponse} from '@angular/common/http';
 
-import { Observable } from 'rxjs/Observable';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { JhiEventManager, JhiAlertService, JhiDataUtils } from 'ng-jhipster';
+import {Observable} from 'rxjs/Observable';
+import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
+import {JhiEventManager, JhiAlertService, JhiDataUtils} from 'ng-jhipster';
 
-import { ThreatAgentMgm } from './threat-agent-mgm.model';
-import { ThreatAgentMgmPopupService } from './threat-agent-mgm-popup.service';
-import { ThreatAgentMgmService } from './threat-agent-mgm.service';
-import { MotivationMgm, MotivationMgmService } from '../motivation-mgm';
+import {ThreatAgentMgm} from './threat-agent-mgm.model';
+import {ThreatAgentMgmPopupService} from './threat-agent-mgm-popup.service';
+import {ThreatAgentMgmService} from './threat-agent-mgm.service';
+import {MotivationMgm, MotivationMgmService} from '../motivation-mgm';
 import {SessionStorageService} from 'ngx-webstorage';
 import {PopUpService} from '../../shared/pop-up-services/pop-up.service';
 
@@ -38,7 +38,9 @@ export class ThreatAgentMgmDialogComponent implements OnInit {
     ngOnInit() {
         this.isSaving = false;
         this.motivationService.query()
-            .subscribe((res: HttpResponse<MotivationMgm[]>) => { this.motivations = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
+            .subscribe((res: HttpResponse<MotivationMgm[]>) => {
+                this.motivations = res.body;
+            }, (res: HttpErrorResponse) => this.onError(res.message));
     }
 
     byteSize(field) {
@@ -78,7 +80,7 @@ export class ThreatAgentMgmDialogComponent implements OnInit {
     }
 
     private onSaveSuccess(result: ThreatAgentMgm) {
-        this.eventManager.broadcast({ name: 'threatAgentListModification', content: 'OK'});
+        this.eventManager.broadcast({name: 'threatAgentListModification', content: 'OK'});
         this.isSaving = false;
         this.activeModal.dismiss(result);
     }
@@ -119,14 +121,15 @@ export class ThreatAgentMgmPopupComponent implements OnInit, OnDestroy {
         private route: ActivatedRoute,
         private threatAgentPopupService: ThreatAgentMgmPopupService,
         public popUpService: PopUpService
-    ) {}
+    ) {
+    }
 
     ngOnInit() {
         if (!this.popUpService.canOpen()) {
             return;
         } else {
             this.routeSub = this.route.params.subscribe((params) => {
-                if ( params['id'] ) {
+                if (params['id']) {
                     this.threatAgentPopupService
                         .open(ThreatAgentMgmDialogComponent as Component, params['id']);
                 } else {
@@ -138,7 +141,7 @@ export class ThreatAgentMgmPopupComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy() {
-        if(this.routeSub){
+        if (this.routeSub) {
             this.routeSub.unsubscribe();
         }
     }

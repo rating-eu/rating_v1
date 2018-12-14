@@ -580,7 +580,8 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
                  * The PENDING status for the questionnaire.
                  * @type {QuestionnaireStatusMgm}
                  */
-                this.cisoQuestionnaireStatus = new QuestionnaireStatusMgm(undefined, Status.PENDING, null, null, this.selfAssessment, this._questionnaire, this.role, this.user, []);
+                this.cisoQuestionnaireStatus = new QuestionnaireStatusMgm(undefined, Status.PENDING, null,
+                    null, this.selfAssessment, this._questionnaire, this.role, this.user, []);
 
                 // Getting the id of the above QuestionnaireStatus
                 this.subscriptions.push(
@@ -658,7 +659,7 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
         );
     }
 
-    private myAnswersToFormValue(myAnswers: MyAnswerMgm[], questionsMap: Map<number, QuestionMgm>, ciso: boolean = true) {
+    private myAnswersToFormValue(myAnswers: MyAnswerMgm[], questionsMap: Map<number, QuestionMgm>, ciso = true) {
         console.log('MyAnswers to FormValue...');
         console.log('MyAnswers: ' + JSON.stringify(myAnswers));
         console.log('QuestionsMap size: ' + questionsMap.size);
