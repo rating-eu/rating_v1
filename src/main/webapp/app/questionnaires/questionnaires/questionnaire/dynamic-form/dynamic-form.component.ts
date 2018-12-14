@@ -737,7 +737,7 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
             }
         );
 
-        return this.myAnswerService.createAll(myAnswers);
+        return this.myAnswerService.createAll(this.selfAssessment.id, myAnswers);
     }
 
     private deleteMyAnswersObservable(myAnswers: MyAnswerMgm[]):
@@ -798,6 +798,6 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
             myAnswers.push(myAnswer);
         });
 
-        return this.myAnswerService.createAll(myAnswers);
+        return this.myAnswerService.createAll(this.selfAssessment.id, myAnswers);
     }
 }

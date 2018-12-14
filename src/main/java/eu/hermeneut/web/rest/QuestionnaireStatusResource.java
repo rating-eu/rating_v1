@@ -3,16 +3,12 @@ package eu.hermeneut.web.rest;
 import com.codahale.metrics.annotation.Timed;
 import eu.hermeneut.domain.QuestionnaireStatus;
 import eu.hermeneut.domain.enumeration.QuestionnairePurpose;
-import eu.hermeneut.exceptions.NotFoundException;
-import eu.hermeneut.exceptions.NullInputException;
-import eu.hermeneut.kafka.service.MessageSenderService;
 import eu.hermeneut.service.QuestionnaireStatusService;
 import eu.hermeneut.web.rest.errors.BadRequestAlertException;
 import eu.hermeneut.web.rest.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
