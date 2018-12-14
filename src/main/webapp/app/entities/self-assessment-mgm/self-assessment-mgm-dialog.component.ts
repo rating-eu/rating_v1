@@ -155,12 +155,12 @@ export class SelfAssessmentMgmDialogComponent implements OnInit {
 
     private subscribeToSaveResponse(result: Observable<HttpResponse<SelfAssessmentMgm>>) {
         result.subscribe((res: HttpResponse<SelfAssessmentMgm>) => {
-            this.onSaveSuccess(res.body), (res: HttpErrorResponse) => {
+                this.onSaveSuccess(res.body);
+                this.dataSharingService.updateMySelfAssessment(res.body);
+            }, (res: HttpErrorResponse) => {
                 this.onSaveError();
-            };
-
-            this.dataSharingService.updateMySelfAssessment(res.body);
-        });
+            }
+        );
     }
 
     private onSaveSuccess(result: SelfAssessmentMgm) {

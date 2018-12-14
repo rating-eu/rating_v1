@@ -12,19 +12,32 @@ import {AttackStrategyUpdate} from '../evaluate-weakness/models/attack-strategy-
 import {QuestionnaireMgm} from '../entities/questionnaire-mgm';
 import {Update} from '../layouts/model/Update';
 import {SelfAssessmentMgm} from '../entities/self-assessment-mgm';
-import {MyAssetMgm} from "../entities/my-asset-mgm";
-import {HttpClient, HttpResponse} from "@angular/common/http";
-import {SERVER_API_URL} from "../app.constants";
-import {IndirectAssetMgm} from "../entities/indirect-asset-mgm";
+import {HttpClient} from '@angular/common/http';
 
 @Injectable()
 export class DatasharingService {
 
+    private _threatAgentsMap: Map<String, Couple<ThreatAgentMgm, Fraction>>;
+    private _identifyThreatAgentsFormDataMap: Map<String, AnswerMgm>;
+    private _currentQuestionnaire: QuestionnaireMgm;
+    private _questionnaireStatusesMap: Map<number, QuestionnaireStatusMgm>;
+    private _questionnaireStatus: QuestionnaireStatusMgm;
+
+    // ===Observables-BehaviorSubjects===
+
+    // Map to keep the previous updated answers.
+    private _attackStrategyUpdatesMap: Map<number/*AttackStrategy ID*/, Couple<AttackStrategyMgm, AttackStrategyUpdate>> =
+        new Map<number, Couple<AttackStrategyMgm, AttackStrategyUpdate>>();
+    // Single AttackStrategy update
+    private _attackStrategyUpdate: AttackStrategyUpdate;
+    private _attackStrategyUpdateSubject: BehaviorSubject<AttackStrategyUpdate> = new BehaviorSubject<AttackStrategyUpdate>(this._attackStrategyUpdate);
+    private _attackStrategyUpdate$: Observable<AttackStrategyUpdate> = this._attackStrategyUpdateSubject.asObservable();
+    private layoutUpdateSubject: BehaviorSubject<Update> = new BehaviorSubject<Update>(null);
+    private mySelfAssessmentSubject: BehaviorSubject<SelfAssessmentMgm> = new BehaviorSubject<SelfAssessmentMgm>(null);
+
     constructor(private http: HttpClient) {
 
     }
-
-    private _threatAgentsMap: Map<String, Couple<ThreatAgentMgm, Fraction>>;
 
     set threatAgentsMap(threatAgents: Map<String, Couple<ThreatAgentMgm, Fraction>>) {
         console.log('ThreatAgents param was: ' + JSON.stringify(threatAgents));
@@ -39,8 +52,6 @@ export class DatasharingService {
         return this._threatAgentsMap;
     }
 
-    private _identifyThreatAgentsFormDataMap: Map<String, AnswerMgm>;
-
     get identifyThreatAgentsFormDataMap(): Map<String, AnswerMgm> {
         return this._identifyThreatAgentsFormDataMap;
     }
@@ -48,8 +59,6 @@ export class DatasharingService {
     set identifyThreatAgentsFormDataMap(value: Map<String, AnswerMgm>) {
         this._identifyThreatAgentsFormDataMap = value;
     }
-
-    private _currentQuestionnaire: QuestionnaireMgm;
 
     get currentQuestionnaire(): QuestionnaireMgm {
         return this._currentQuestionnaire;
@@ -59,8 +68,6 @@ export class DatasharingService {
         this._currentQuestionnaire = value;
     }
 
-    private _questionnaireStatusesMap: Map<number, QuestionnaireStatusMgm>;
-
     get questionnaireStatusesMap(): Map<number, QuestionnaireStatusMgm> {
         return this._questionnaireStatusesMap;
     }
@@ -68,8 +75,6 @@ export class DatasharingService {
     set questionnaireStatusesMap(statusesMap: Map<number, QuestionnaireStatusMgm>) {
         this._questionnaireStatusesMap = statusesMap;
     }
-
-    private _questionnaireStatus: QuestionnaireStatusMgm;
 
     get questionnaireStatus(): QuestionnaireStatusMgm {
         return this._questionnaireStatus;
@@ -79,19 +84,7 @@ export class DatasharingService {
         this._questionnaireStatus = value;
     }
 
-    // ===Observables-BehaviorSubjects===
-
-    // Map to keep the previous updated answers.
-    private _attackStrategyUpdatesMap: Map<number/*AttackStrategy ID*/, Couple<AttackStrategyMgm, AttackStrategyUpdate>> =
-        new Map<number, Couple<AttackStrategyMgm, AttackStrategyUpdate>>();
-    // Single AttackStrategy update
-    private _attackStrategyUpdate: AttackStrategyUpdate;
-    private _attackStrategyUpdateSubject: BehaviorSubject<AttackStrategyUpdate> = new BehaviorSubject<AttackStrategyUpdate>(this._attackStrategyUpdate);
-    private _attackStrategyUpdate$: Observable<AttackStrategyUpdate> = this._attackStrategyUpdateSubject.asObservable();
-    private layoutUpdateSubject: BehaviorSubject<Update> = new BehaviorSubject<Update>(null);
-    private mySelfAssessmentSubject: BehaviorSubject<SelfAssessmentMgm> = new BehaviorSubject<SelfAssessmentMgm>(null);
-
-    //private sendRiskProfileToKafkaUrl = SERVER_API_URL + "api/{selfAssessmentID}/risk-profile/kafka";
+    // private sendRiskProfileToKafkaUrl = SERVER_API_URL + "api/{selfAssessmentID}/risk-profile/kafka";
 
     private set attackStrategyUpdate(value: AttackStrategyUpdate) {
         this._attackStrategyUpdate = value;

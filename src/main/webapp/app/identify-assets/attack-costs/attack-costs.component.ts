@@ -28,7 +28,7 @@ export class AttackCostsComponent implements OnInit {
     public loading = false;
     public refresh = false;
     public refreshIndirect = false;
-    public costs: CostType[] = Object.keys(CostType).filter(key => !isNaN(Number(key))).map(type => CostType[type]);
+    public costs: CostType[] = Object.keys(CostType).filter((key) => !isNaN(Number(key))).map((type) => CostType[type]);
 
     constructor(
         private idaUtilsService: IdentifyAssetUtilService,
@@ -138,11 +138,11 @@ export class AttackCostsComponent implements OnInit {
                 this.myAssets[myAssetIndex].costs = [];
             }
 
-            let selectedCostType: CostType = costType;
+            const selectedCostType: CostType = costType;
 
             this.isMyAssetUpdated = true;
 
-            let costIndex = _.findIndex(this.myAssets[myAssetIndex].costs, {type: selectedCostType});
+            const costIndex = _.findIndex(this.myAssets[myAssetIndex].costs, {type: selectedCostType});
             console.log('Cost Index: ' + costIndex);
 
             if (costIndex !== -1) {
@@ -180,7 +180,7 @@ export class AttackCostsComponent implements OnInit {
                 this.myAssets[myAssetIndex].costs = [];
             }
 
-            let selectedCost: CostType = costType;
+            const selectedCost: CostType = costType;
 
             this.isMyAssetUpdated = true;
 

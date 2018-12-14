@@ -92,16 +92,8 @@ export class MySelfAssessmentsComponent implements OnInit {
     }
 
     registerChangeInSelfAssessments() {
-        /*this.eventSubscriber = this.eventManager.subscribe('selfAssessmentListModification', (response) => {
-         console.log('Changes in SelfAssessments: ' + JSON.stringify(response));
-         // Show MySelfAssessments just created
-         this.loadMySelfAssessments();
-         });*/
-
         this.dataSharingService.observeMySelf().subscribe((value: SelfAssessmentMgm) => {
-            //if (value) {
-                this.loadMySelfAssessments();
-            //}
+            this.loadMySelfAssessments();
         });
     }
 

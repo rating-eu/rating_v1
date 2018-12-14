@@ -129,10 +129,10 @@ export class AttackMapWidgetComponent implements OnInit, OnDestroy {
             }
 
             // Check which steps (INITIAL, CONTEXTUAL, REFINED) are available.
-            const augmentedAttackStrategies: AugmentedAttackStrategy[] = Array.from(this.augmentedAttackStrategiesMap.values());
+            const allAugmentedAttackStrategies: AugmentedAttackStrategy[] = Array.from(this.augmentedAttackStrategiesMap.values());
 
-            if (augmentedAttackStrategies && augmentedAttackStrategies.length > 0) {
-                const augmentedAttackStrategy: AugmentedAttackStrategy = augmentedAttackStrategies[0];
+            if (allAugmentedAttackStrategies && allAugmentedAttackStrategies.length > 0) {
+                const augmentedAttackStrategy: AugmentedAttackStrategy = allAugmentedAttackStrategies[0];
 
                 if (augmentedAttackStrategy.initialLikelihood > 0) {
                     this.likelihoodStepEnabled.set(LikelihoodStep.INITIAL_LIKELIHOOD, true);
