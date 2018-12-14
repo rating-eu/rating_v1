@@ -10,7 +10,9 @@ export type EntityResponseType = HttpResponse<MyAnswerMgm>;
 
 @Injectable()
 export class MyAnswerMgmService {
+    private selfAssessmentIDPlaceHolder = '{selfAssessmentID}';
     private resourceUrl = SERVER_API_URL + 'api/my-answers';
+    private resourceUrlAllAnswers = SERVER_API_URL + 'api/{selfAssessmentID}/my-answers/all';
     private resourceSearchUrl = SERVER_API_URL + 'api/_search/my-answers';
 
     constructor(private http: HttpClient) {
@@ -22,9 +24,9 @@ export class MyAnswerMgmService {
             .map((res: EntityResponseType) => this.convertResponse(res));
     }
 
-    createAll(myAnswers: MyAnswerMgm[]): Observable<HttpResponse<MyAnswerMgm[]>> {
+    createAll(selfAssessmentID: number, myAnswers: MyAnswerMgm[]): Observable<HttpResponse<MyAnswerMgm[]>> {
         const copy: MyAnswerMgm[] = this.convertArray(myAnswers);
-        return this.http.post<MyAnswerMgm[]>(this.resourceUrl + '/all', copy, {observe: 'response'})
+        return this.http.post<MyAnswerMgm[]>(this.resourceUrlAllAnswers.replace(this.selfAssessmentIDPlaceHolder, selfAssessmentID + ''), copy, {observe: 'response'})
             .map((res: HttpResponse<MyAnswerMgm[]>) => this.convertArrayResponse(res));
     }
 

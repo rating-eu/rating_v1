@@ -1,5 +1,6 @@
 package eu.hermeneut.kafka.service.impl;
 
+import eu.hermeneut.domain.SelfAssessment;
 import eu.hermeneut.domain.compact.RiskProfile;
 import eu.hermeneut.exceptions.NotFoundException;
 import eu.hermeneut.exceptions.NullInputException;
@@ -34,7 +35,7 @@ public class MessageSenderServiceImpl implements MessageSenderService {
     @Async
     @Override
     public void sendRiskProfile(Long selfAssessmentID) throws NullInputException, NotFoundException {
-        /*if (selfAssessmentID == null) {
+        if (selfAssessmentID == null) {
             throw new NullInputException("SelfAssessmentID CANNOT BE NULL!");
         }
 
@@ -46,6 +47,6 @@ public class MessageSenderServiceImpl implements MessageSenderService {
 
         RiskProfile riskProfile = this.riskProfileService.getRiskProfile(selfAssessmentID);
 
-        this.kafkaProducer.send(this.kafkaTopic.getRiskProfile(), riskProfile);*/
+        this.kafkaProducer.send(this.kafkaTopic.getRiskProfile(), riskProfile);
     }
 }

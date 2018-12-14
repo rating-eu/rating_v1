@@ -1,6 +1,8 @@
 package eu.hermeneut.aop.kafka;
 
+import eu.hermeneut.domain.SelfAssessment;
 import eu.hermeneut.kafka.service.MessageSenderService;
+import eu.hermeneut.service.SelfAssessmentService;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
@@ -8,15 +10,20 @@ import org.aspectj.lang.annotation.Pointcut;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 @Aspect
 @Component
+@Profile("kafka")
 public class KafkaMessagingAspect {
     private final Logger logger = LoggerFactory.getLogger(KafkaMessagingAspect.class);
 
     @Autowired
     private MessageSenderService messageSenderService;
+
+    @Autowired
+    private SelfAssessmentService selfAssessmentService;
 
     /**
      * Pointcut for methods annotated with KafkaRiskProfileHook.
@@ -32,9 +39,25 @@ public class KafkaMessagingAspect {
      */
     @AfterReturning("kafkaRiskProfileHook()")
     public void sendRiskProfileToKafka(JoinPoint joinPoint) {
+        logger.debug("SENDING RISK PROFILE AOP...");
 
-        System.out.println("SENDING RISK PROFILE WORKS...");
-        System.out.println("JoinPoint: " + joinPoint.getSignature());
-        System.out.println("MessageService: " + this.messageSenderService);
+        SelfAssessment selfAssessment = null;
+
+        Object[] args = joinPoint.getArgs();
+
+        if (args != null && args.length > 0) {
+            //The first parameter must be the ID of the SelfAssessment
+            if (args[0] instanceof Long) {
+                selfAssessment = this.selfAssessmentService.findOne((Long) args[0]);
+            }
+        }
+
+        if (selfAssessment != null) {
+            try {
+                this.messageSenderService.sendRiskProfile(selfAssessment.getId());
+            } catch (Exception e) {
+                logger.warn(e.getMessage());
+            }
+        }
     }
 }
