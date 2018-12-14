@@ -5,10 +5,12 @@ import eu.hermeneut.exceptions.NotFoundException;
 import eu.hermeneut.kafka.producer.KafkaProducer;
 import eu.hermeneut.service.compact.RiskProfileService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+@Profile("kafka")
 @RestController
 public class KafkaController {
     @Autowired
