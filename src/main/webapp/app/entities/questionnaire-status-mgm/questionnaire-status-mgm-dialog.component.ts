@@ -1,18 +1,17 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
+import {Component, OnInit, OnDestroy} from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
+import {HttpResponse, HttpErrorResponse} from '@angular/common/http';
 
-import { Observable } from 'rxjs/Observable';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
+import {Observable} from 'rxjs/Observable';
+import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
+import {JhiEventManager, JhiAlertService} from 'ng-jhipster';
 
-import { QuestionnaireStatusMgm } from './questionnaire-status-mgm.model';
-import { QuestionnaireStatusMgmPopupService } from './questionnaire-status-mgm-popup.service';
-import { QuestionnaireStatusMgmService } from './questionnaire-status-mgm.service';
-import { SelfAssessmentMgm, SelfAssessmentMgmService } from '../self-assessment-mgm';
-import { QuestionnaireMgm, QuestionnaireMgmService } from '../questionnaire-mgm';
-import { User, UserService } from '../../shared';
-import {SessionStorageService} from 'ngx-webstorage';
+import {QuestionnaireStatusMgm} from './questionnaire-status-mgm.model';
+import {QuestionnaireStatusMgmPopupService} from './questionnaire-status-mgm-popup.service';
+import {QuestionnaireStatusMgmService} from './questionnaire-status-mgm.service';
+import {SelfAssessmentMgm, SelfAssessmentMgmService} from '../self-assessment-mgm';
+import {QuestionnaireMgm, QuestionnaireMgmService} from '../questionnaire-mgm';
+import {User, UserService} from '../../shared';
 import {PopUpService} from '../../shared/pop-up-services/pop-up.service';
 
 @Component({
@@ -70,7 +69,9 @@ export class QuestionnaireStatusMgmDialogComponent implements OnInit {
                 }
             }, (res: HttpErrorResponse) => this.onError(res.message));
         this.userService.query()
-            .subscribe((res: HttpResponse<User[]>) => { this.users = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
+            .subscribe((res: HttpResponse<User[]>) => {
+                this.users = res.body;
+            }, (res: HttpErrorResponse) => this.onError(res.message));
     }
 
     clear() {
@@ -94,7 +95,7 @@ export class QuestionnaireStatusMgmDialogComponent implements OnInit {
     }
 
     private onSaveSuccess(result: QuestionnaireStatusMgm) {
-        this.eventManager.broadcast({ name: 'questionnaireStatusListModification', content: 'OK'});
+        this.eventManager.broadcast({name: 'questionnaireStatusListModification', content: 'OK'});
         this.isSaving = false;
         this.activeModal.dismiss(result);
     }
@@ -132,14 +133,15 @@ export class QuestionnaireStatusMgmPopupComponent implements OnInit, OnDestroy {
         private route: ActivatedRoute,
         private questionnaireStatusPopupService: QuestionnaireStatusMgmPopupService,
         public popUpService: PopUpService
-    ) {}
+    ) {
+    }
 
     ngOnInit() {
         if (!this.popUpService.canOpen()) {
             return;
-        }else {
+        } else {
             this.routeSub = this.route.params.subscribe((params) => {
-                if ( params['id'] ) {
+                if (params['id']) {
                     this.questionnaireStatusPopupService
                         .open(QuestionnaireStatusMgmDialogComponent as Component, params['id']);
                 } else {
@@ -151,7 +153,7 @@ export class QuestionnaireStatusMgmPopupComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy() {
-        if(this.routeSub){
+        if (this.routeSub) {
             this.routeSub.unsubscribe();
         }
     }

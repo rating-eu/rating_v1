@@ -104,7 +104,7 @@ export class CascadeEffectsComponent implements OnInit {
                 this.selectedDirectAsset.myAsset = myAsset;
                 // TODO check this
                 // this.selectedDirectAsset.costs = undefined;
-                this.selectedDirectAsset.myAsset.costs = undefined;// new
+                this.selectedDirectAsset.myAsset.costs = undefined;
             }
             this.idMyAsset = this.selectedDirectAsset.myAsset.id;
         } else {
@@ -145,7 +145,7 @@ export class CascadeEffectsComponent implements OnInit {
                 indirect.myAsset = myAsset;
                 // TODO check this
                 // indirect.costs = undefined;
-                indirect.myAsset.costs = undefined;// new
+                indirect.myAsset.costs = undefined;
                 this.selectedIndirectAssets.push(_.cloneDeep(indirect));
             }
         }

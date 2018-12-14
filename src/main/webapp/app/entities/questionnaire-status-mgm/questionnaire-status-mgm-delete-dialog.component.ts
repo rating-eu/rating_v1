@@ -1,12 +1,12 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import {Component, OnInit, OnDestroy} from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
 
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { JhiEventManager } from 'ng-jhipster';
+import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
+import {JhiEventManager} from 'ng-jhipster';
 
-import { QuestionnaireStatusMgm } from './questionnaire-status-mgm.model';
-import { QuestionnaireStatusMgmPopupService } from './questionnaire-status-mgm-popup.service';
-import { QuestionnaireStatusMgmService } from './questionnaire-status-mgm.service';
+import {QuestionnaireStatusMgm} from './questionnaire-status-mgm.model';
+import {QuestionnaireStatusMgmPopupService} from './questionnaire-status-mgm-popup.service';
+import {QuestionnaireStatusMgmService} from './questionnaire-status-mgm.service';
 import {SessionStorageService} from 'ngx-webstorage';
 import {PopUpService} from '../../shared/pop-up-services/pop-up.service';
 
@@ -52,7 +52,8 @@ export class QuestionnaireStatusMgmDeletePopupComponent implements OnInit, OnDes
         private route: ActivatedRoute,
         private questionnaireStatusPopupService: QuestionnaireStatusMgmPopupService,
         public popUpService: PopUpService
-    ) {}
+    ) {
+    }
 
     ngOnInit() {
         if (!this.popUpService.canOpen()) {
@@ -66,7 +67,7 @@ export class QuestionnaireStatusMgmDeletePopupComponent implements OnInit, OnDes
     }
 
     ngOnDestroy() {
-        if(this.routeSub){
+        if (this.routeSub) {
             this.routeSub.unsubscribe();
         }
     }

@@ -107,10 +107,7 @@ export class WeaknessResultComponent implements OnInit, OnDestroy {
             // Make same ID AttackStrategies point to the same AugmentedAttackStrategy object
             for (const levelID of Object.keys(this.attacksCKC7Matrix)) {
 
-
                 for (const phaseID of Object.keys(this.attacksCKC7Matrix[levelID])) {
-
-
                     const augmentedAttackStrategies: Array<AugmentedAttackStrategy> = this.attacksCKC7Matrix[Number(levelID)][Number(phaseID)];
                     const augmentedAttackStrategiesByReference: Array<AugmentedAttackStrategy> = [];
 
@@ -134,10 +131,10 @@ export class WeaknessResultComponent implements OnInit, OnDestroy {
             }
 
             // Check which steps (INITIAL, CONTEXTUAL, REFINED) are available.
-            const augmentedAttackStrategies: AugmentedAttackStrategy[] = Array.from(this.augmentedAttackStrategiesMap.values());
+            const allAugmentedAttackStrategies: AugmentedAttackStrategy[] = Array.from(this.augmentedAttackStrategiesMap.values());
 
-            if (augmentedAttackStrategies && augmentedAttackStrategies.length > 0) {
-                const augmentedAttackStrategy: AugmentedAttackStrategy = augmentedAttackStrategies[0];
+            if (allAugmentedAttackStrategies && allAugmentedAttackStrategies.length > 0) {
+                const augmentedAttackStrategy: AugmentedAttackStrategy = allAugmentedAttackStrategies[0];
 
                 if (augmentedAttackStrategy.initialLikelihood > 0) {
                     this.likelihoodStepEnabled.set(LikelihoodStep.INITIAL_LIKELIHOOD, true);
