@@ -90,7 +90,7 @@ public class LogoResource {
     public List<Logo> getAllLogos() {
         log.debug("REST request to get all Logos");
         return logoService.findAll();
-        }
+    }
 
     /**
      * GET  /logos/:id : get the "id" logo.
@@ -103,6 +103,15 @@ public class LogoResource {
     public ResponseEntity<Logo> getLogo(@PathVariable Long id) {
         log.debug("REST request to get Logo : {}", id);
         Logo logo = logoService.findOne(id);
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(logo));
+    }
+
+    @GetMapping("/logos/secondary")
+    @Timed
+    public ResponseEntity<Logo> getSecondaryLogo() {
+        /*No need for input ID since in the DB there is at most one Secondary Logo*/
+        log.debug("REST request to get Secondary Logo");
+        Logo logo = logoService.getSecondaryLogo();
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(logo));
     }
 

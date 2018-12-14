@@ -98,4 +98,10 @@ public class LogoServiceImpl implements LogoService {
             .stream(logoSearchRepository.search(queryStringQuery(query)).spliterator(), false)
             .collect(Collectors.toList());
     }
+
+    @Override
+    public Logo getSecondaryLogo() {
+        log.debug("Request to get Secondary Logo");
+        return logoRepository.findSecondaryLogo();
+    }
 }

@@ -13,4 +13,6 @@ import org.springframework.data.jpa.repository.*;
 @Repository
 public interface LogoRepository extends JpaRepository<Logo, Long> {
 
+    @Query("SELECT logo from Logo logo WHERE logo.primary=false")
+    Logo findSecondaryLogo();
 }

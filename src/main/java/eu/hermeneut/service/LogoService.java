@@ -46,4 +46,11 @@ public interface LogoService {
      * @return the list of entities
      */
     List<Logo> search(String query);
+
+    /**
+     * Get the "Secondary" logo of the system.
+     *
+     * @return the entity
+     */
+    Logo getSecondaryLogo();
 }
