@@ -1,0 +1,24 @@
+
+{
+    "hermeneutApp": {
+        "logo" : {
+            "home": {
+                "title": "Logos",
+                "createLabel": "Genera un nuovo Logo",
+                "createOrEditLabel": "Genera o modifica un Logo",
+                "search": "Cerca Logo"
+            },
+            "created": "&Egrave; stato generato un nuovo Logo con identificatore {{ param }}",
+            "updated": "&Egrave; stato aggiornato Logo identificato da {{ param }}",
+            "deleted": "&Egrave; stato eliminato Logo con identificatore {{ param }}",
+            "delete": {
+                "question": "Sei sicuro di volere eliminare Logo {{ id }}?"
+            },
+            "detail": {
+                "title": "Logo"
+            },
+            "primary": "Primary",
+            "image": "Image"
+        }
+    }
+}
