@@ -123,6 +123,10 @@ public class ElasticsearchIndexService {
 
     private final LikelihoodScaleSearchRepository likelihoodScaleSearchRepository;
 
+    private final LogoRepository logoRepository;
+
+    private final LogoSearchRepository logoSearchRepository;
+
     private final MitigationRepository mitigationRepository;
 
     private final MitigationSearchRepository mitigationSearchRepository;
@@ -230,6 +234,8 @@ public class ElasticsearchIndexService {
         LevelSearchRepository levelSearchRepository,
         LikelihoodScaleRepository likelihoodScaleRepository,
         LikelihoodScaleSearchRepository likelihoodScaleSearchRepository,
+        LogoRepository logoRepository,
+        LogoSearchRepository logoSearchRepository,
         MitigationRepository mitigationRepository,
         MitigationSearchRepository mitigationSearchRepository,
         MotivationRepository motivationRepository,
@@ -303,6 +309,8 @@ public class ElasticsearchIndexService {
         this.levelSearchRepository = levelSearchRepository;
         this.likelihoodScaleRepository = likelihoodScaleRepository;
         this.likelihoodScaleSearchRepository = likelihoodScaleSearchRepository;
+        this.logoRepository = logoRepository;
+        this.logoSearchRepository = logoSearchRepository;
         this.mitigationRepository = mitigationRepository;
         this.mitigationSearchRepository = mitigationSearchRepository;
         this.motivationRepository = motivationRepository;
@@ -360,6 +368,7 @@ public class ElasticsearchIndexService {
                 reindexForClass(IndirectAsset.class, indirectAssetRepository, indirectAssetSearchRepository);
                 reindexForClass(Level.class, levelRepository, levelSearchRepository);
                 reindexForClass(LikelihoodScale.class, likelihoodScaleRepository, likelihoodScaleSearchRepository);
+                reindexForClass(Logo.class, logoRepository, logoSearchRepository);
                 reindexForClass(Mitigation.class, mitigationRepository, mitigationSearchRepository);
                 reindexForClass(Motivation.class, motivationRepository, motivationSearchRepository);
                 reindexForClass(MyAnswer.class, myAnswerRepository, myAnswerSearchRepository);
