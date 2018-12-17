@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.ZonedDateTime;
 import java.util.*;
 
@@ -564,7 +565,7 @@ public class WP3StepsController {
             throw new NotFoundException("EconomicCoefficients NOT FOUND for SelfAssessment with ID: " + selfAssessment.getId());
         }
 
-        BigDecimal lossOfIntangiblePercentagwe = economicCoefficients.getLossOfIntangible();
+        BigDecimal lossOfIntangiblePercentage = economicCoefficients.getLossOfIntangible();
 
         List<MyAsset> myAssets = this.myAssetService.findAllBySelfAssessment(selfAssessment.getId());
 
@@ -574,7 +575,7 @@ public class WP3StepsController {
 
         for (MyAsset myAsset : myAssets) {
             if (myAsset.getRanking() != null && myAsset.getEconomicValue() != null) {
-                BigDecimal lossValue = myAsset.getEconomicValue().multiply(lossOfIntangiblePercentagwe);
+                BigDecimal lossValue = myAsset.getEconomicValue().multiply(lossOfIntangiblePercentage).divide(new BigDecimal(100), 2, RoundingMode.HALF_UP);
                 myAsset.setLossValue(lossValue);
             }
         }
