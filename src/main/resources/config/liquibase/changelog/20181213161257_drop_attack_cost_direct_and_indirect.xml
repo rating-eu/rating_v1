@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <changeSet id="20181213161257-1" author="developer" runOnChange="true">
+        <preConditions>
+            <columnExists tableName="attack_cost" columnName="direct_asset_id"></columnExists>
+            <columnExists tableName="attack_cost" columnName="indirect_asset_id"></columnExists>
+            <foreignKeyConstraintExists foreignKeyName="fk_attack_cost_direct_asset_id"></foreignKeyConstraintExists>
+            <foreignKeyConstraintExists foreignKeyName="fk_attack_cost_indirect_asset_id"></foreignKeyConstraintExists>
+        </preConditions>
+
+        <dropForeignKeyConstraint
+            baseTableName="attack_cost"
+            constraintName="fk_attack_cost_direct_asset_id"
+        />
+
+        <dropForeignKeyConstraint
+            baseTableName="attack_cost"
+            constraintName="fk_attack_cost_indirect_asset_id"
+        />
+
+        <dropColumn tableName="attack_cost">
+            <column name="direct_asset_id"></column>
+            <column name="indirect_asset_id"></column>
+        </dropColumn>
+
+        <rollback>
+            <addColumn tableName="">
+                <column name="direct_asset_id" type="bigint">
+                    <constraints nullable="true"/>
+                </column>
+
+                <column name="indirect_asset_id" type="bigint">
+                    <constraints nullable="true"/>
+                </column>
+            </addColumn>
+
+            <addForeignKeyConstraint baseColumnNames="direct_asset_id"
+                                     baseTableName="attack_cost"
+                                     constraintName="fk_attack_cost_direct_asset_id"
+                                     referencedColumnNames="id"
+                                     referencedTableName="direct_asset"/>
+
+            <addForeignKeyConstraint baseColumnNames="indirect_asset_id"
+                                     baseTableName="attack_cost"
+                                     constraintName="fk_attack_cost_indirect_asset_id"
+                                     referencedColumnNames="id"
+                                     referencedTableName="indirect_asset"/>
+        </rollback>
+    </changeSet>
+</databaseChangeLog>

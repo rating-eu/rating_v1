@@ -48,14 +48,6 @@ public class AttackCost implements Serializable {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private MyAsset myAsset;
 
-    @ManyToOne
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    private DirectAsset directAsset;
-
-    @ManyToOne
-    @OnDelete(action = OnDeleteAction.CASCADE)
-    private IndirectAsset indirectAsset;
-
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
         return id;
@@ -116,34 +108,6 @@ public class AttackCost implements Serializable {
 
     public void setMyAsset(MyAsset myAsset) {
         this.myAsset = myAsset;
-    }
-
-    @JsonIgnore
-    public DirectAsset getDirectAsset() {
-        return directAsset;
-    }
-
-    public AttackCost directAsset(DirectAsset directAsset) {
-        this.directAsset = directAsset;
-        return this;
-    }
-
-    public void setDirectAsset(DirectAsset directAsset) {
-        this.directAsset = directAsset;
-    }
-
-    @JsonIgnore
-    public IndirectAsset getIndirectAsset() {
-        return indirectAsset;
-    }
-
-    public AttackCost indirectAsset(IndirectAsset indirectAsset) {
-        this.indirectAsset = indirectAsset;
-        return this;
-    }
-
-    public void setIndirectAsset(IndirectAsset indirectAsset) {
-        this.indirectAsset = indirectAsset;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 

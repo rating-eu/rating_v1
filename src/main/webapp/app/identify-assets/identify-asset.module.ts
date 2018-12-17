@@ -15,6 +15,7 @@ import { AssetClusteringComponent } from './asset-clustering/asset-clustering.co
 import { CascadeEffectsComponent } from './cascade-effects/cascade-effects.component';
 import { AssetReportComponent } from './asset-report/asset-report.component';
 import { AttackCostsComponent } from './attack-costs/attack-costs.component';
+import {ReplacePipe} from './pipe/replace.pipe';
 
 @NgModule({
     imports: [
@@ -26,7 +27,8 @@ import { AttackCostsComponent } from './attack-costs/attack-costs.component';
         AssetClusteringComponent,
         CascadeEffectsComponent,
         AssetReportComponent,
-        AttackCostsComponent
+        AttackCostsComponent,
+        ReplacePipe
     ],
     exports: [
         AssetClusteringComponent,

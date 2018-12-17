@@ -1,13 +1,12 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import {Component, OnInit, OnDestroy} from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
 
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { JhiEventManager } from 'ng-jhipster';
+import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
+import {JhiEventManager} from 'ng-jhipster';
 
-import { SplittingLossMgm } from './splitting-loss-mgm.model';
-import { SplittingLossMgmPopupService } from './splitting-loss-mgm-popup.service';
-import { SplittingLossMgmService } from './splitting-loss-mgm.service';
-import {SessionStorageService} from 'ngx-webstorage';
+import {SplittingLossMgm} from './splitting-loss-mgm.model';
+import {SplittingLossMgmPopupService} from './splitting-loss-mgm-popup.service';
+import {SplittingLossMgmService} from './splitting-loss-mgm.service';
 import {PopUpService} from '../../shared/pop-up-services/pop-up.service';
 
 @Component({
@@ -52,12 +51,13 @@ export class SplittingLossMgmDeletePopupComponent implements OnInit, OnDestroy {
         private route: ActivatedRoute,
         private splittingLossPopupService: SplittingLossMgmPopupService,
         public popUpService: PopUpService
-    ) {}
+    ) {
+    }
 
     ngOnInit() {
         if (!this.popUpService.canOpen()) {
             return;
-        }  else {
+        } else {
             this.routeSub = this.route.params.subscribe((params) => {
                 this.splittingLossPopupService
                     .open(SplittingLossMgmDeleteDialogComponent as Component, params['id']);
@@ -66,7 +66,7 @@ export class SplittingLossMgmDeletePopupComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy() {
-        if(this.routeSub){
+        if (this.routeSub) {
             this.routeSub.unsubscribe();
         }
     }

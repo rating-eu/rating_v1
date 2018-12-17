@@ -2,7 +2,7 @@ import { BaseEntity } from './../../shared';
 import {AssetMgm} from '../asset-mgm';
 import {SelfAssessmentMgm} from '../self-assessment-mgm';
 import {QuestionnaireMgm} from '../questionnaire-mgm';
-import {AttackCostMgm} from "../attack-cost-mgm";
+import {AttackCostMgm} from '../attack-cost-mgm';
 
 export class MyAssetMgm implements BaseEntity {
     constructor(

@@ -1,11 +1,13 @@
-import { Component, OnInit, ViewEncapsulation, AfterViewInit, HostListener } from '@angular/core';
-import { Principal } from '../../shared';
-import { DatasharingService } from '../../datasharing/datasharing.service';
-import { Update } from '../model/Update';
+import {Component, OnInit, ViewEncapsulation, AfterViewInit, HostListener} from '@angular/core';
+import {Principal} from '../../shared';
+import {DatasharingService} from '../../datasharing/datasharing.service';
+import {Update} from '../model/Update';
 
-import { MenuItem } from 'primeng/api';
-import { MyRole } from '../../entities/enumerations/MyRole.enum';
-import { SelfAssessmentMgm, SelfAssessmentMgmService } from '../../entities/self-assessment-mgm';
+import {MenuItem} from 'primeng/api';
+import {MyRole} from '../../entities/enumerations/MyRole.enum';
+import {SelfAssessmentMgm, SelfAssessmentMgmService} from '../../entities/self-assessment-mgm';
+import {LogoMgm, LogoMgmService} from '../../entities/logo-mgm';
+import {HttpResponse} from '@angular/common/http';
 
 @Component({
     selector: 'jhi-sidebar',
@@ -21,13 +23,15 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     private isCISO = false;
     private isExternal = false;
     private mySelf: SelfAssessmentMgm;
+    public secondaryLogo: LogoMgm = null;
 
     windowWidth: number = window.innerWidth;
 
     constructor(
         private principal: Principal,
         private dataSharingService: DatasharingService,
-        private selfAssessmentService: SelfAssessmentMgmService
+        private selfAssessmentService: SelfAssessmentMgmService,
+        private logoService: LogoMgmService
     ) {
         this.isCollapsed = true;
         this.isSidebarCollapseByTheScreen();
@@ -67,6 +71,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                 updateLayout.isSidebarCollapsed = this.isCollapsed;
 
                 this.dataSharingService.updateLayout(updateLayout);
+                this.fetchSecondaryLogo();
 
                 this.principal.hasAnyAuthority([MyRole[MyRole.ROLE_CISO]]).then((response: boolean) => {
                     // console.log('IsCISO response: ' + response);
@@ -119,6 +124,12 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         */
     }
 
+    private fetchSecondaryLogo() {
+        this.logoService.getSecondaryLogo().subscribe((logo: HttpResponse<LogoMgm>) => {
+            this.secondaryLogo = logo.body;
+        });
+    }
+
     ngAfterViewInit() {
         this.windowWidth = window.innerWidth;
     }
@@ -136,8 +147,8 @@ export class SidebarComponent implements OnInit, AfterViewInit {
             {
                 label: 'Company',
                 items: [
-                    { label: 'My Company', icon: 'fa fa-home', routerLink: ['/my-company'] },
-                    { label: 'My SelfAssessments', icon: 'fa fa-repeat', routerLink: ['/my-self-assessments'] }
+                    {label: 'My Company', icon: 'fa fa-home', routerLink: ['/my-company']},
+                    {label: 'My SelfAssessments', icon: 'fa fa-repeat', routerLink: ['/my-self-assessments']}
                 ]
             },
             {

@@ -69,8 +69,6 @@
                     <th><span jhiTranslate="hermeneutApp.attackCost.description">Description</span></th>
                     <th><span jhiTranslate="hermeneutApp.attackCost.costs">Costs</span></th>
                     <th><span jhiTranslate="hermeneutApp.attackCost.myAsset">My Asset</span></th>
-                    <th><span jhiTranslate="hermeneutApp.attackCost.directAsset">Direct Asset</span></th>
-                    <th><span jhiTranslate="hermeneutApp.attackCost.indirectAsset">Indirect Asset</span></th>
                     <th></th>
                 </tr>
             </thead>
@@ -83,16 +81,6 @@
                     <td>
                         <div *ngIf="attackCost.myAsset">
                             <a [routerLink]="['../my-asset-mgm', attackCost.myAsset?.id ]" >{{attackCost.myAsset?.id}}</a>
-                        </div>
-                    </td>
-                    <td>
-                        <div *ngIf="attackCost.directAsset">
-                            <a [routerLink]="['../direct-asset-mgm', attackCost.directAsset?.id ]">{{attackCost.directAsset?.id}}</a>
-                        </div>
-                    </td>
-                    <td>
-                        <div *ngIf="attackCost.indirectAsset">
-                            <a [routerLink]="['../indirect-asset-mgm', attackCost.indirectAsset?.id ]">{{attackCost.indirectAsset?.id}}</a>
                         </div>
                     </td>
                     <td class="text-right">

@@ -1,0 +1,35 @@
+
+<div *ngIf="logo">
+    <h2><span jhiTranslate="hermeneutApp.logo.detail.title">Logo</span> {{logo.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="hermeneutApp.logo.primary">Primary</span></dt>
+        <dd>
+            <span>{{logo.primary}}</span>
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.logo.image">Image</span></dt>
+        <dd>
+            <div *ngIf="logo.image">
+                <a (click)="openFile(logo.imageContentType, logo.image)">
+                    <img [src]="'data:' + logo.imageContentType + ';base64,' + logo.image" style="max-width: 100%;" alt="logo image"/>
+                </a>
+                {{logo.imageContentType}}, {{byteSize(logo.image)}}
+            </div>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'logo-mgm/'+ logo.id + '/edit'} }]"
+            replaceUrl="true"
+            queryParamsHandling="merge"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+    </button>
+</div>

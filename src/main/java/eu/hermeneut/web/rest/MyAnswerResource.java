@@ -1,6 +1,7 @@
 package eu.hermeneut.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import eu.hermeneut.aop.annotation.KafkaRiskProfileHook;
 import eu.hermeneut.domain.MyAnswer;
 import eu.hermeneut.service.MyAnswerService;
 import eu.hermeneut.web.rest.errors.BadRequestAlertException;
@@ -58,9 +59,10 @@ public class MyAnswerResource {
             .body(result);
     }
 
-    @PostMapping("/my-answers/all")
+    @PostMapping("/{selfAssessmentID}/my-answers/all")
     @Timed
-    public List<MyAnswer> createMyAnswers(@RequestBody List<MyAnswer> myAnswers) {
+    @KafkaRiskProfileHook
+    public List<MyAnswer> createMyAnswers(@PathVariable Long selfAssessmentID, @RequestBody List<MyAnswer> myAnswers) {
         log.debug("REST request to save MyAnswers : {}", myAnswers);
 
         if (myAnswers.stream().filter(myAnswer -> myAnswer.getId() != null).count() > 0) {

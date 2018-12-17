@@ -7,7 +7,7 @@
                         http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
 
     <changeSet id="20181211221234-1" author="developer" runAlways="true" runOnChange="true">
-        <preConditions>
+        <preConditions onFail="MARK_RAN">
             <columnExists tableName="attack_cost" columnName="direct_asset_id"></columnExists>
             <columnExists tableName="attack_cost" columnName="indirect_asset_id"></columnExists>
             <columnExists tableName="attack_cost" columnName="my_asset_id"></columnExists>
@@ -28,5 +28,9 @@
             />
             <where>indirect_asset_id IS NOT NULL</where>
         </update>
+
+        <rollback>
+            <!--Do nothing-->
+        </rollback>
     </changeSet>
 </databaseChangeLog>
