@@ -49,6 +49,9 @@ public class MyAsset implements Serializable {
     @Column(name = "impact")
     private Integer impact;
 
+    @Column(name = "loss_value", precision=10, scale=2)
+    private BigDecimal lossValue;
+
     @OneToMany(mappedBy = "myAsset", fetch = FetchType.EAGER,
         cascade = {CascadeType.ALL, CascadeType.PERSIST, CascadeType.MERGE}, orphanRemoval = true)
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
