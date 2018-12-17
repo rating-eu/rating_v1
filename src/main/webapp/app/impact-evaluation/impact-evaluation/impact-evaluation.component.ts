@@ -736,7 +736,7 @@ export class ImpactEvaluationComponent implements OnInit {
   }
 
   public viewLosses(category: string, show: boolean) {
-    // inserire chiamata all'evaluation loss on myAsset
+    // TODO inserire chiamata all'evaluation loss on myAsset
     this.assetsBySelectedCategory = [];
     switch (category) {
       case 'ORG_CAPITAL': {
@@ -794,6 +794,7 @@ export class ImpactEvaluationComponent implements OnInit {
   }
 
   public setSelectedAssetPriority(priority: String, asset: MyAssetMgm) {
+    this.collapseLosses = true;
     if (priority) {
       switch (priority) {
         case Priority.LOW.toString().replace('_', ' ').substring(0, 1) +
