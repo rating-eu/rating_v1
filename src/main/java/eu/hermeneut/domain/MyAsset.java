@@ -124,6 +124,19 @@ public class MyAsset implements Serializable {
         this.impact = impact;
     }
 
+    public BigDecimal getLossValue() {
+        return lossValue;
+    }
+
+    public MyAsset lossValue(BigDecimal lossValue) {
+        this.lossValue = lossValue;
+        return this;
+    }
+
+    public void setLossValue(BigDecimal lossValue) {
+        this.lossValue = lossValue;
+    }
+
     public Set<AttackCost> getCosts() {
         return costs;
     }
@@ -217,6 +230,7 @@ public class MyAsset implements Serializable {
             ", estimated='" + isEstimated() + "'" +
             ", economicValue=" + getEconomicValue() +
             ", impact=" + getImpact() +
+            ", lossValue=" + getLossValue() +
             "}";
     }
 }
