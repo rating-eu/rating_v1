@@ -41,6 +41,11 @@
                 </small>
             </div>
         </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="hermeneutApp.myAsset.lossValue" for="field_lossValue">Loss Value</label>
+            <input type="number" class="form-control" name="lossValue" id="field_lossValue"
+                [(ngModel)]="myAsset.lossValue" />
+        </div>
 
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="hermeneutApp.myAsset.asset" for="field_asset">Asset</label>

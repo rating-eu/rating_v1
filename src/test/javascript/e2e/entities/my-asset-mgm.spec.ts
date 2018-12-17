@@ -48,6 +48,8 @@ describe('MyAsset e2e test', () => {
         expect(myAssetDialogPage.getEconomicValueInput()).toMatch('5');
         myAssetDialogPage.setImpactInput('5');
         expect(myAssetDialogPage.getImpactInput()).toMatch('5');
+        myAssetDialogPage.setLossValueInput('5');
+        expect(myAssetDialogPage.getLossValueInput()).toMatch('5');
         myAssetDialogPage.assetSelectLastOption();
         myAssetDialogPage.selfAssessmentSelectLastOption();
         myAssetDialogPage.questionnaireSelectLastOption();
@@ -81,6 +83,7 @@ export class MyAssetDialogPage {
     estimatedInput = element(by.css('input#field_estimated'));
     economicValueInput = element(by.css('input#field_economicValue'));
     impactInput = element(by.css('input#field_impact'));
+    lossValueInput = element(by.css('input#field_lossValue'));
     assetSelect = element(by.css('select#field_asset'));
     selfAssessmentSelect = element(by.css('select#field_selfAssessment'));
     questionnaireSelect = element(by.css('select#field_questionnaire'));
@@ -114,6 +117,14 @@ export class MyAssetDialogPage {
 
     getImpactInput = function() {
         return this.impactInput.getAttribute('value');
+    };
+
+    setLossValueInput = function(lossValue) {
+        this.lossValueInput.sendKeys(lossValue);
+    };
+
+    getLossValueInput = function() {
+        return this.lossValueInput.getAttribute('value');
     };
 
     assetSelectLastOption = function() {
