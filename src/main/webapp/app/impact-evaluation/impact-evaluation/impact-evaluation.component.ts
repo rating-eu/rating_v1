@@ -737,6 +737,11 @@ export class ImpactEvaluationComponent implements OnInit {
 
   public viewLosses(category: string, show: boolean) {
     // TODO inserire chiamata all'evaluation loss on myAsset
+      //Chiamata GET EvaluationLoss in impact evaluationService
+      //Observable<MyAsset[]>
+      //Then --> this.myAssets = new MyAssetsResponse
+      //Copy the following code after this.myAssets = response
+
     this.assetsBySelectedCategory = [];
     switch (category) {
       case 'ORG_CAPITAL': {
