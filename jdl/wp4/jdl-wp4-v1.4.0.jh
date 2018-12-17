@@ -77,7 +77,8 @@ entity MyAsset{
     Estimated Boolean,
     /**WP3*/
     EconomicValue BigDecimal,
-    Impact Integer min(1) max(5)
+    Impact Integer min(1) max(5),
+    LossValue BigDecimal
 }
 
 entity DirectAsset {
