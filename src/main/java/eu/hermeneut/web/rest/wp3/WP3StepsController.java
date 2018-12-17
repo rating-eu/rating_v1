@@ -547,6 +547,42 @@ public class WP3StepsController {
         }
     }
 
+    @GetMapping("{selfAssessmentID}/wp3/economic-losses")
+    public Set<MyAsset> evaluateEconomicLosses(@PathVariable("selfAssessmentID") Long selfAssessmentID) throws NullInputException, NotFoundException {
+        LOGGER.info("Step 5 entering: " + System.currentTimeMillis());
+        SelfAssessment selfAssessment = null;
+
+        if (selfAssessmentID != null) {
+            selfAssessment = this.selfAssessmentService.findOne(selfAssessmentID);
+        } else {
+            throw new NullInputException("The selfAssessmentID can NOT be NULL!");
+        }
+
+        EconomicCoefficients economicCoefficients = this.economicCoefficientsService.findOneBySelfAssessmentID(selfAssessment.getId());
+
+        if (economicCoefficients == null) {
+            throw new NotFoundException("EconomicCoefficients NOT FOUND for SelfAssessment with ID: " + selfAssessment.getId());
+        }
+
+        BigDecimal lossOfIntangiblePercentagwe = economicCoefficients.getLossOfIntangible();
+
+        List<MyAsset> myAssets = this.myAssetService.findAllBySelfAssessment(selfAssessment.getId());
+
+        if (myAssets == null || myAssets.isEmpty()) {
+            throw new NotFoundException("MyAssets NOT FOUND for SelfAssessment with ID: " + selfAssessment.getId());
+        }
+
+        for (MyAsset myAsset : myAssets) {
+            if (myAsset.getRanking() != null && myAsset.getEconomicValue() != null) {
+                BigDecimal lossValue = myAsset.getEconomicValue().multiply(lossOfIntangiblePercentagwe);
+                myAsset.setLossValue(lossValue);
+            }
+        }
+
+        List<MyAsset> myAssetList = this.myAssetService.saveAll(myAssets);
+        return new HashSet<>(myAssetList);
+    }
+
     private SplittingLoss createNewSplittingLoss(SelfAssessment selfAssessment, BigDecimal intangibleLossByAttacks, SectorType sectorType, CategoryType catType) {
         BigDecimal splittingLossPercentage = Calculator.calculateSplittingPercentage(catType, sectorType);
         BigDecimal splittingLossValue = Calculator.calculateSplittingLoss(intangibleLossByAttacks, catType, sectorType);
