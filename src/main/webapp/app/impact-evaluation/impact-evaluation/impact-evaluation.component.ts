@@ -38,10 +38,12 @@ export class ImpactEvaluationComponent implements OnInit {
   public impactFormStepTwo: FormGroup;
   public impactFormStepThree: FormGroup;
   public collapseSplittings = true;
+  public collapseLosses = true;
   public assetsBySelectedCategory: MyAssetMgm[] = [];
   public myAssets: MyAssetMgm[] = [];
   public selectedAssetCategory: string;
   public selectedAssetSplitting: number;
+  public selectedAssetLosses: number;
   public economicPerformance: number;
   public intangibleDrivingEarnings: number;
   public intangibleCapitalValuation: number;
@@ -260,22 +262,27 @@ export class ImpactEvaluationComponent implements OnInit {
             switch (this.choosedSectorType.toString()) {
               case SectorType[SectorType.FINANCE_AND_INSURANCE]: {
                 this.sectorChoosed = 'finance_and_insurance';
+                this.isGlobal = false;
                 break;
               }
               case SectorType[SectorType.HEALTH_CARE_AND_SOCIAL_ASSISTANCE]: {
                 this.sectorChoosed = 'health_care_and_social_assistance';
+                this.isGlobal = false;
                 break;
               }
               case SectorType[SectorType.INFORMATION]: {
                 this.sectorChoosed = 'information';
+                this.isGlobal = false;
                 break;
               }
               case SectorType[SectorType.PROFESSIONAL_SCIENTIFIC_AND_TECHNICAL_SERVICE]: {
                 this.sectorChoosed = 'professional_scientific_and_technical_service';
+                this.isGlobal = false;
                 break;
               }
               case SectorType[SectorType.GLOBAL]: {
                 this.sectorChoosed = '';
+                this.isGlobal = true;
                 break;
               }
             }
@@ -614,15 +621,27 @@ export class ImpactEvaluationComponent implements OnInit {
     let value = 0;
     switch (category) {
       case 'IP': {
-        value = this.splittingOnIP;
+        if (this.isGlobal) {
+          value = this.splittingOnIP;
+        } else {
+          value = this.splittingOnSectorialIP;
+        }
         break;
       }
       case 'KEY_COMP': {
-        value = this.splittingOnKeyComp;
+        if (this.isGlobal) {
+          value = this.splittingOnKeyComp;
+        } else {
+          value = this.splittingOnSectorialKeyComp;
+        }
         break;
       }
       case 'ORG_CAPITAL': {
-        value = this.splittingOnOrgCapital;
+        if (this.isGlobal) {
+          value = this.splittingOnOrgCapital;
+        } else {
+          value = this.splittingOnSectorialOrgCapital;
+        }
         break;
       }
     }
@@ -672,7 +691,11 @@ export class ImpactEvaluationComponent implements OnInit {
         }
         this.selectedAssetCategory = 'Org Capital';
         this.selectedAssetCategoryCode = 'ORG_CAPITAL';
-        this.selectedAssetSplitting = this.splittingOnOrgCapital;
+        if (this.isGlobal) {
+          this.selectedAssetSplitting = this.splittingOnOrgCapital;
+        } else {
+          this.selectedAssetSplitting = this.splittingOnSectorialOrgCapital;
+        }
         break;
       }
       case 'KEY_COMP': {
@@ -683,7 +706,11 @@ export class ImpactEvaluationComponent implements OnInit {
         }
         this.selectedAssetCategory = 'Key Comp';
         this.selectedAssetCategoryCode = 'KEY_COMP';
-        this.selectedAssetSplitting = this.splittingOnKeyComp;
+        if (this.isGlobal) {
+          this.selectedAssetSplitting = this.splittingOnKeyComp;
+        } else {
+          this.selectedAssetSplitting = this.splittingOnSectorialKeyComp;
+        }
         break;
       }
       case 'IP': {
@@ -695,12 +722,74 @@ export class ImpactEvaluationComponent implements OnInit {
         }
         this.selectedAssetCategory = 'IP';
         this.selectedAssetCategoryCode = 'IP';
-        this.selectedAssetSplitting = this.splittingOnIP;
+        if (this.isGlobal) {
+          this.selectedAssetSplitting = this.splittingOnIP;
+        } else {
+          this.selectedAssetSplitting = this.splittingOnSectorialIP;
+        }
         break;
       }
     }
     if (show) {
       this.collapseSplittings = false;
+    }
+  }
+
+  public viewLosses(category: string, show: boolean) {
+    // inserire chiamata all'evaluation loss on myAsset
+    this.assetsBySelectedCategory = [];
+    switch (category) {
+      case 'ORG_CAPITAL': {
+        for (const asset of this.myAssets) {
+          if (asset.asset.assetcategory.name === 'Organisational capital' ||
+            asset.asset.assetcategory.name === 'Reputation' ||
+            asset.asset.assetcategory.name === 'Brand') {
+            this.assetsBySelectedCategory.push(asset);
+          }
+        }
+        this.selectedAssetCategory = 'Org Capital';
+        this.selectedAssetCategoryCode = 'ORG_CAPITAL';
+        if (this.isGlobal) {
+          this.selectedAssetLosses = this.impactOnOrgCapital;
+        } else {
+          this.selectedAssetLosses = this.impactOnSectorialOrgCapital;
+        }
+        break;
+      }
+      case 'KEY_COMP': {
+        for (const asset of this.myAssets) {
+          if (asset.asset.assetcategory.name === 'Key competences and human capital') {
+            this.assetsBySelectedCategory.push(asset);
+          }
+        }
+        this.selectedAssetCategory = 'Key Comp';
+        this.selectedAssetCategoryCode = 'KEY_COMP';
+        if (this.isGlobal) {
+          this.selectedAssetLosses = this.impactOnKeyComp;
+        } else {
+          this.selectedAssetLosses = this.impactOnSectorialKeyComp;
+        }
+        break;
+      }
+      case 'IP': {
+        for (const asset of this.myAssets) {
+          if (asset.asset.assetcategory.name === 'Intellectual Property (IPR)' ||
+            asset.asset.assetcategory.name === 'Innovation') {
+            this.assetsBySelectedCategory.push(asset);
+          }
+        }
+        this.selectedAssetCategory = 'IP';
+        this.selectedAssetCategoryCode = 'IP';
+        if (this.isGlobal) {
+          this.selectedAssetLosses = this.impactOnIP;
+        } else {
+          this.selectedAssetLosses = this.impactOnSectorialIP;
+        }
+        break;
+      }
+    }
+    if (show) {
+      this.collapseLosses = false;
     }
   }
 
@@ -780,17 +869,15 @@ export class ImpactEvaluationComponent implements OnInit {
           return;
         }
         this.evaluateStepTwo();
-        if (this.isGlobal) {
+        setTimeout(() => {
+          this.evaluateStepFive();
           setTimeout(() => {
-            this.evaluateStepFive();
+            this.evaluateStepThree();
             setTimeout(() => {
-              this.evaluateStepThree();
-              setTimeout(() => {
-                this.evaluateStepFour();
-              }, 200);
+              this.evaluateStepFour();
             }, 200);
           }, 200);
-        }
+        }, 200);
         break;
       }
       /*
@@ -811,19 +898,55 @@ export class ImpactEvaluationComponent implements OnInit {
 
   public setIsGlobal() {
     this.isGlobal = !this.isGlobal;
+    this.collapseSplittings = true;
+    this.collapseLosses = true;
     if (this.isGlobal) {
-      this.evaluateStepFour();
+      this.sectorChoosed = '';
+      this.choosedSectorType = SectorType.GLOBAL;
+      this.evaluateStepFive();
+      setTimeout(() => {
+        this.evaluateStepFour();
+      }, 250);
     } else {
-      this.resetStepFourRes();
+      this.choosedSectorType = this.wp3Status.sectorType;
+      switch (this.choosedSectorType.toString()) {
+        case SectorType[SectorType.FINANCE_AND_INSURANCE]: {
+          this.sectorChoosed = 'finance_and_insurance';
+          break;
+        }
+        case SectorType[SectorType.HEALTH_CARE_AND_SOCIAL_ASSISTANCE]: {
+          this.sectorChoosed = 'health_care_and_social_assistance';
+          break;
+        }
+        case SectorType[SectorType.INFORMATION]: {
+          this.sectorChoosed = 'information';
+          break;
+        }
+        case SectorType[SectorType.PROFESSIONAL_SCIENTIFIC_AND_TECHNICAL_SERVICE]: {
+          this.sectorChoosed = 'professional_scientific_and_technical_service';
+          break;
+        }
+        case SectorType[SectorType.GLOBAL]: {
+          this.sectorChoosed = '';
+          break;
+        }
+      }
+      this.selectedCategory = this.wp3Status.categoryType;
+      this.evaluateStepFive();
+      setTimeout(() => {
+        this.evaluateStepFour();
+      }, 250);
     }
   }
 
+  /*
   private resetStepFourRes() {
     this.choosedSectorType = null;
     this.impactOnOrgCapital = undefined;
     this.impactOnKeyComp = undefined;
     this.impactOnIP = undefined;
   }
+  */
 
   public setSector(sector: string) {
     this.sectorChoosed = sector;
