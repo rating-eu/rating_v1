@@ -425,7 +425,7 @@ public class WP3StepsController {
             } else {
                 //Calculate the Splitting Lossess for the specified SectorType and for the GLOBAL SectorType
                 sectorTypes.add(sectorType);
-                sectorTypes.add(SectorType.GLOBAL);
+                //sectorTypes.add(SectorType.GLOBAL);
             }
 
             if (categoryType == null) {
@@ -515,9 +515,9 @@ public class WP3StepsController {
             if (sectorType == null || sectorType == SectorType.GLOBAL) {
                 sectorTypes.add(SectorType.GLOBAL);
             } else {
-                //Calculate the Splitting Lossess for the specified SectorType and for the GLOBAL SectorType
+                //Calculate the Splitting Values for the specified SectorType and for the GLOBAL SectorType
                 sectorTypes.add(sectorType);
-                sectorTypes.add(SectorType.GLOBAL);
+                //sectorTypes.add(SectorType.GLOBAL);
             }
 
             if (categoryType == null) {
