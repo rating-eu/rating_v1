@@ -799,7 +799,7 @@ export class ImpactEvaluationComponent implements OnInit {
                     this.collapseLosses = false;
                 }
             }
-        )
+        );
     }
 
     public setSelectedAssetPriority(priority: String, asset: MyAssetMgm) {
