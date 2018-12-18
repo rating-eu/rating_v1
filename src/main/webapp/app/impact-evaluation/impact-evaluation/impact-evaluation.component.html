@@ -357,6 +357,9 @@
                                         </div>
                                         <input type="number" min="0" max="100" class="form-control"
                                                placeholder="Physical Assets Return"
+                                               [(ngModel)]="physicalAssetsReturn"
+                                               (keyup)="physicalAssetsReturn = clamp(physicalAssetsReturn, 0, 100)"
+                                               (keydown)="physicalAssetsReturn = clamp(physicalAssetsReturn, 0, 100)"
                                                aria-label="physicalAssetsReturn"
                                                aria-describedby="basic-addon2" formControlName="physicalAssetsReturn">
                                     </div>
@@ -366,7 +369,11 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text" id="">Financial Assets Return %</span>
                                         </div>
-                                        <input type="number" min="0" max="100" class="form-control" placeholder="Financial Assets Return"
+                                        <input type="number" min="0" max="100" class="form-control"
+                                               placeholder="Financial Assets Return"
+                                               [(ngModel)]="financialAssetsReturn"
+                                               (keyup)="financialAssetsReturn = clamp(financialAssetsReturn, 0, 100)"
+                                               (keydown)="financialAssetsReturn = clamp(financialAssetsReturn, 0, 100)"
                                                aria-label="financialAssetsReturn"
                                                aria-describedby="basic-addon2" formControlName="financialAssetsReturn">
                                     </div>
