@@ -353,9 +353,10 @@
                                 <div class="col-md-6">
                                     <div class="input-group" style="margin-bottom: 10px">
                                         <div class="input-group-prepend">
-                                            <span class="input-group-text" id="">Physical Assets Return %</span>
+                                            <span class="input-group-text">Physical Assets Return %</span>
                                         </div>
-                                        <input type="text" class="form-control" placeholder="Physical Assets Return"
+                                        <input type="number" min="0" max="100" class="form-control"
+                                               placeholder="Physical Assets Return"
                                                aria-label="physicalAssetsReturn"
                                                aria-describedby="basic-addon2" formControlName="physicalAssetsReturn">
                                     </div>
@@ -365,7 +366,7 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text" id="">Financial Assets Return %</span>
                                         </div>
-                                        <input type="text" class="form-control" placeholder="Financial Assets Return"
+                                        <input type="number" min="0" max="100" class="form-control" placeholder="Financial Assets Return"
                                                aria-label="financialAssetsReturn"
                                                aria-describedby="basic-addon2" formControlName="financialAssetsReturn">
                                     </div>
@@ -384,7 +385,7 @@
                     Valutation of {{asset.asset.name}} €
                   </span>
                                 </div>
-                                <input type="text" class="form-control"
+                                <input type="number" class="form-control"
                                        placeholder="Insert economic valutation of {{asset.asset.name}}"
                                        aria-label="economicValue" aria-describedby="basic-addon2" pattern="[0-9]+"
                                        [(ngModel)]="asset.economicValue">
@@ -399,7 +400,7 @@
                                 <div class="input-group-prepend">
                                     <span class="input-group-text" id="">Valutation of {{asset.asset.name}} €</span>
                                 </div>
-                                <input type="text" class="form-control"
+                                <input type="number" class="form-control"
                                        placeholder="Insert economic valutation of {{asset.asset.name}}"
                                        aria-label="economicValue" aria-describedby="basic-addon2" pattern="[0-9]+"
                                        [(ngModel)]="asset.economicValue">
