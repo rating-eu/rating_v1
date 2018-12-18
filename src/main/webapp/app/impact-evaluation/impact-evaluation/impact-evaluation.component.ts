@@ -204,13 +204,13 @@ export class ImpactEvaluationComponent implements OnInit {
                 // Validators.required,
                 Validators.min(0),
                 Validators.max(100),
-                Validators.pattern('[0-9]+,[0-9]+|[0-9]+.[0-9]+|[0-9]+')
+                Validators.pattern('^[1-9][0-9]?$|^100$')
             ])),
             financialAssetsReturn: new FormControl(5.0, Validators.compose([
                 // Validators.required,
                 Validators.min(0),
                 Validators.max(100),
-                Validators.pattern('[0-9]+,[0-9]+|[0-9]+.[0-9]+|[0-9]+')
+                Validators.pattern('^[1-9][0-9]?$|^100$')
             ])),
         });
         this.impactFormStepThree = new FormGroup({
@@ -218,7 +218,7 @@ export class ImpactEvaluationComponent implements OnInit {
                 Validators.required,
                 Validators.min(0),
                 Validators.max(100),
-                Validators.pattern('[0-9]+,[0-9]+|[0-9]+.[0-9]+|[0-9]+')
+                Validators.pattern('^[1-9][0-9]?$|^100$')
             ])),
         });
         this.mySelf = this.mySelfAssessmentService.getSelfAssessment();
