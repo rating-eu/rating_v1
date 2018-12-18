@@ -49,6 +49,10 @@
             ],
             "fieldValidateRulesMin": 1,
             "fieldValidateRulesMax": 5
+        },
+        {
+            "fieldName": "lossValue",
+            "fieldType": "BigDecimal"
         }
     ],
     "changelogDate": "20180727084747",
