@@ -147,8 +147,17 @@ export class SidebarComponent implements OnInit, AfterViewInit {
             {
                 label: 'Company',
                 items: [
-                    {label: 'My Company', icon: 'fa fa-home', routerLink: ['/my-company']},
-                    {label: 'My SelfAssessments', icon: 'fa fa-repeat', routerLink: ['/my-self-assessments']}
+                    {
+                        label: 'My Company',
+                        icon: 'fa fa-home',
+                        routerLink: ['/my-company'],
+                        visible: isCISO
+                    },
+                    {
+                        label: 'My SelfAssessments',
+                        icon: 'fa fa-repeat',
+                        routerLink: ['/my-self-assessments']
+                    }
                 ]
             },
             {

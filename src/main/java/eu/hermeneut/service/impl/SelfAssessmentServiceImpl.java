@@ -285,4 +285,10 @@ public class SelfAssessmentServiceImpl implements SelfAssessmentService {
 
         return overview;
     }
+
+    @Override
+    public List<SelfAssessment> findAllByExternalAudit(ExternalAudit externalAudit) {
+        LOGGER.debug("Request to get SelfAssessment by ExternalAudit: {}", externalAudit.getName());
+        return selfAssessmentRepository.findAllByExternalAudit(externalAudit);
+    }
 }

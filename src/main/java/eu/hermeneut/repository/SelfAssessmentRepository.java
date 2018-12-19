@@ -1,5 +1,6 @@
 package eu.hermeneut.repository;
 
+import eu.hermeneut.domain.ExternalAudit;
 import eu.hermeneut.domain.SelfAssessment;
 import org.springframework.stereotype.Repository;
 
@@ -26,4 +27,7 @@ public interface SelfAssessmentRepository extends JpaRepository<SelfAssessment, 
 
     @Query("SELECT DISTINCT self_assessment FROM SelfAssessment self_assessment left join fetch self_assessment.companyGroups left join fetch self_assessment.threatagents left join fetch self_assessment.externalaudits left join fetch self_assessment.questionnaires WHERE self_assessment.companyProfile.id =:companyProfileID")
     List<SelfAssessment> findAllByCompanyProfile(@Param("companyProfileID") Long companyProfileID);
+
+    @Query("SELECT DISTINCT self_assessment FROM SelfAssessment self_assessment left join fetch self_assessment.companyGroups left join fetch self_assessment.threatagents left join fetch self_assessment.externalaudits left join fetch self_assessment.questionnaires WHERE self_assessment.companyProfile.id =:companyProfileID")
+    List<SelfAssessment> findAllByExternalAudit(ExternalAudit externalAudit);
 }

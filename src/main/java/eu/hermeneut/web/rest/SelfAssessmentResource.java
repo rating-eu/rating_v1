@@ -1,13 +1,20 @@
 package eu.hermeneut.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import eu.hermeneut.domain.ExternalAudit;
 import eu.hermeneut.domain.SelfAssessment;
+import eu.hermeneut.domain.User;
+import eu.hermeneut.security.AuthoritiesConstants;
+import eu.hermeneut.security.SecurityUtils;
+import eu.hermeneut.service.ExternalAuditService;
 import eu.hermeneut.service.SelfAssessmentService;
+import eu.hermeneut.service.UserService;
 import eu.hermeneut.web.rest.errors.BadRequestAlertException;
 import eu.hermeneut.web.rest.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,6 +22,7 @@ import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,8 +39,14 @@ public class SelfAssessmentResource {
 
     private final SelfAssessmentService selfAssessmentService;
 
-    public SelfAssessmentResource(SelfAssessmentService selfAssessmentService) {
+    private final UserService userService;
+
+    private final ExternalAuditService externalAuditService;
+
+    public SelfAssessmentResource(SelfAssessmentService selfAssessmentService, UserService userService, ExternalAuditService externalAuditService) {
         this.selfAssessmentService = selfAssessmentService;
+        this.userService = userService;
+        this.externalAuditService = externalAuditService;
     }
 
     /**
@@ -101,6 +115,37 @@ public class SelfAssessmentResource {
         log.debug("REST request to get SelfAssessment : {}", id);
         SelfAssessment selfAssessment = selfAssessmentService.findOne(id);
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(selfAssessment));
+    }
+
+    /**
+     * GET  /my-self-assessments: get the SelfAssessments of the current User.
+     *
+     * @return the SelfAssessments of the current User.
+     */
+    @GetMapping("/my-self-assessments")
+    @Timed
+    public List<SelfAssessment> getMySelfAssessments() {
+        log.debug("REST request to get MySelfAssessments fro logged user.");
+        List<SelfAssessment> selfAssessments = new ArrayList<>();
+
+        //Get the current user
+        User currentUser = this.userService.getUserWithAuthorities().orElse(null);
+
+        if (currentUser != null) {
+            if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.CISO)) {
+                //GET the SelfAssessments by SelfAssessment.CompanyProfile == User.MyCompany
+
+            } else if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.EXTERNAL_AUDIT)) {
+                //GET the SelfAssessments by SelfAssessment.externalAudit
+                ExternalAudit externalAudit = this.externalAuditService.getByUser(currentUser);
+
+                if (externalAudit != null) {
+                    selfAssessments = this.selfAssessmentService.findAllByExternalAudit(externalAudit);
+                }
+            }
+        }
+
+        return selfAssessments;
     }
 
     @GetMapping("/self-assessments/by-company/{companyProfileID}")

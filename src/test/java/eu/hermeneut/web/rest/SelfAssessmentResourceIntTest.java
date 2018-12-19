@@ -4,8 +4,10 @@ import eu.hermeneut.HermeneutApp;
 
 import eu.hermeneut.domain.SelfAssessment;
 import eu.hermeneut.repository.SelfAssessmentRepository;
+import eu.hermeneut.service.ExternalAuditService;
 import eu.hermeneut.service.SelfAssessmentService;
 import eu.hermeneut.repository.search.SelfAssessmentSearchRepository;
+import eu.hermeneut.service.UserService;
 import eu.hermeneut.web.rest.errors.ExceptionTranslator;
 
 import org.junit.Before;
@@ -61,6 +63,12 @@ public class SelfAssessmentResourceIntTest {
     private SelfAssessmentService selfAssessmentService;
 
     @Autowired
+    private UserService userService;
+
+    @Autowired
+    private ExternalAuditService externalAuditService;
+
+    @Autowired
     private SelfAssessmentSearchRepository selfAssessmentSearchRepository;
 
     @Autowired
@@ -82,7 +90,7 @@ public class SelfAssessmentResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final SelfAssessmentResource selfAssessmentResource = new SelfAssessmentResource(selfAssessmentService);
+        final SelfAssessmentResource selfAssessmentResource = new SelfAssessmentResource(selfAssessmentService, userService, externalAuditService);
         this.restSelfAssessmentMockMvc = MockMvcBuilders.standaloneSetup(selfAssessmentResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
@@ -92,7 +100,7 @@ public class SelfAssessmentResourceIntTest {
 
     /**
      * Create an entity for this test.
-     *
+     * <p>
      * This is a static method, as tests for other entities might also need it,
      * if they test an entity which requires the current entity.
      */
