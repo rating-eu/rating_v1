@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <property name="now" value="now()" dbms="h2"/>
+
+    <property name="now" value="current_timestamp" dbms="postgresql"/>
+
+    <property name="floatType" value="float4" dbms="postgresql, h2"/>
+    <property name="floatType" value="float" dbms="mysql, oracle, mssql"/>
+
+    <!--
+        Added MyAsset loss value
+    -->
+    <changeSet id="20181219141927-1" author="developer">
+        <!--Add new column for the External Audit ID-->
+        <addColumn tableName="self_assessment">
+            <column name="external_audit_id" type="bigint">
+                <constraints nullable="true"/>
+            </column>
+        </addColumn>
+
+        <!--Add FK SelfAssessment -> ExternalAudit-->
+        <addForeignKeyConstraint baseColumnNames="external_audit_id"
+                                 baseTableName="self_assessment"
+                                 constraintName="fk_self_assessment_external_audit_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="external_audit"/>
+
+        <!--Restore/Keep the old links (Only the First)-->
+        <update tableName="self_assessment">
+            <column name="external_audit_id"
+                    valueComputed="
+                        (
+                            SELECT self_external.externalaudits_id
+                            FROM self_assessment_externalaudit self_external
+                            WHERE self_external.self_assessments_id=id
+                            LIMIT 1
+                        )"
+            />
+        </update>
+
+        <!--Drop FK Self-ExternalAudits-->
+        <dropForeignKeyConstraint
+            baseTableName="self_assessment_externalaudit"
+            constraintName="fk_self_assessment_externalaudit_self_assessments_id"
+        />
+        <dropForeignKeyConstraint
+            baseTableName="self_assessment_externalaudit"
+            constraintName="fk_self_assessment_externalaudit_externalaudits_id"
+        />
+
+        <!--Drop table SelfAssessment-ExternalAudit-->
+        <dropTable tableName="self_assessment_externalaudit"/>
+    </changeSet>
+    <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here, do not remove-->
+</databaseChangeLog>
