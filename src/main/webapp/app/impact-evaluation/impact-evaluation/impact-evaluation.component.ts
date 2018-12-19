@@ -83,6 +83,8 @@ export class ImpactEvaluationComponent implements OnInit {
     private sectorChoosed: string;
     private selectedCategory: CategoryType;
     private selectedAssetCategoryCode: string;
+
+    public discountingRate = 0.5;
     public physicalAssetsReturn = 7.1;
     public financialAssetsReturn = 5.0;
     public lossOfIntangiblePercentage = 18.29;
@@ -260,10 +262,17 @@ export class ImpactEvaluationComponent implements OnInit {
                                 this.financialAssetsAkaCurrent.splice(currentIndex, 1, _.clone(asset));
                             }
                         }
-                        this.impactFormStepOne.controls['discountingRate'].setValue(this.wp3Status.economicCoefficients.discountingRate);
-                        this.impactFormStepTwo.controls['physicalAssetsReturn'].setValue(this.wp3Status.economicCoefficients.physicalAssetsReturn);
-                        this.impactFormStepTwo.controls['financialAssetsReturn'].setValue(this.wp3Status.economicCoefficients.financialAssetsReturn);
-                        this.impactFormStepThree.controls['lossOfIntangiblePercentage'].setValue(this.wp3Status.economicCoefficients.lossOfIntangible);
+
+                        // this.impactFormStepOne.controls['discountingRate'].setValue(this.wp3Status.economicCoefficients.discountingRate);
+                        // this.impactFormStepTwo.controls['physicalAssetsReturn'].setValue(this.wp3Status.economicCoefficients.physicalAssetsReturn);
+                        // this.impactFormStepTwo.controls['financialAssetsReturn'].setValue(this.wp3Status.economicCoefficients.financialAssetsReturn);
+                        // this.impactFormStepThree.controls['lossOfIntangiblePercentage'].setValue(this.wp3Status.economicCoefficients.lossOfIntangible);
+
+                        this.discountingRate = this.wp3Status.economicCoefficients.discountingRate;
+                        this.physicalAssetsReturn = this.wp3Status.economicCoefficients.physicalAssetsReturn;
+                        this.financialAssetsReturn = this.wp3Status.economicCoefficients.financialAssetsReturn;
+                        this.lossOfIntangiblePercentage = this.wp3Status.economicCoefficients.lossOfIntangible;
+
                         this.choosedSectorType = this.wp3Status.sectorType;
                         switch (this.choosedSectorType.toString()) {
                             case SectorType[SectorType.FINANCE_AND_INSURANCE]: {
