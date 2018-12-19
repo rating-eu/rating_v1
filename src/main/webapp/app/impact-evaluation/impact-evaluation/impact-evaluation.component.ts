@@ -21,6 +21,7 @@ import {AccountService, UserService, User} from '../../shared';
 import {MyCompanyMgmService, MyCompanyMgm} from '../../entities/my-company-mgm';
 import {HttpResponse} from '@angular/common/http';
 import {CompType} from '../../entities/company-profile-mgm';
+import {RegExpUtility} from '../../utils/regexp.utility.class';
 
 @Component({
     // tslint:disable-next-line:component-selector
@@ -82,6 +83,11 @@ export class ImpactEvaluationComponent implements OnInit {
     private sectorChoosed: string;
     private selectedCategory: CategoryType;
     private selectedAssetCategoryCode: string;
+
+    public discountingRate = 0.5;
+    public physicalAssetsReturn = 7.1;
+    public financialAssetsReturn = 5.0;
+    public lossOfIntangiblePercentage = 18.29;
 
     /*
     public sectorialPercentageMatrix: any[] = [
@@ -204,13 +210,13 @@ export class ImpactEvaluationComponent implements OnInit {
                 // Validators.required,
                 Validators.min(0),
                 Validators.max(100),
-                Validators.pattern('[0-9]+,[0-9]+|[0-9]+.[0-9]+|[0-9]+')
+                Validators.pattern(RegExpUtility.from0to100DecimalsRegExp)
             ])),
             financialAssetsReturn: new FormControl(5.0, Validators.compose([
                 // Validators.required,
                 Validators.min(0),
                 Validators.max(100),
-                Validators.pattern('[0-9]+,[0-9]+|[0-9]+.[0-9]+|[0-9]+')
+                Validators.pattern(RegExpUtility.from0to100DecimalsRegExp)
             ])),
         });
         this.impactFormStepThree = new FormGroup({
@@ -218,7 +224,7 @@ export class ImpactEvaluationComponent implements OnInit {
                 Validators.required,
                 Validators.min(0),
                 Validators.max(100),
-                Validators.pattern('[0-9]+,[0-9]+|[0-9]+.[0-9]+|[0-9]+')
+                Validators.pattern(RegExpUtility.from0to100DecimalsRegExp)
             ])),
         });
         this.mySelf = this.mySelfAssessmentService.getSelfAssessment();
@@ -256,10 +262,17 @@ export class ImpactEvaluationComponent implements OnInit {
                                 this.financialAssetsAkaCurrent.splice(currentIndex, 1, _.clone(asset));
                             }
                         }
-                        this.impactFormStepOne.controls['discountingRate'].setValue(this.wp3Status.economicCoefficients.discountingRate);
-                        this.impactFormStepTwo.controls['physicalAssetsReturn'].setValue(this.wp3Status.economicCoefficients.physicalAssetsReturn);
-                        this.impactFormStepTwo.controls['financialAssetsReturn'].setValue(this.wp3Status.economicCoefficients.financialAssetsReturn);
-                        this.impactFormStepThree.controls['lossOfIntangiblePercentage'].setValue(this.wp3Status.economicCoefficients.lossOfIntangible);
+
+                        // this.impactFormStepOne.controls['discountingRate'].setValue(this.wp3Status.economicCoefficients.discountingRate);
+                        // this.impactFormStepTwo.controls['physicalAssetsReturn'].setValue(this.wp3Status.economicCoefficients.physicalAssetsReturn);
+                        // this.impactFormStepTwo.controls['financialAssetsReturn'].setValue(this.wp3Status.economicCoefficients.financialAssetsReturn);
+                        // this.impactFormStepThree.controls['lossOfIntangiblePercentage'].setValue(this.wp3Status.economicCoefficients.lossOfIntangible);
+
+                        this.discountingRate = this.wp3Status.economicCoefficients.discountingRate;
+                        this.physicalAssetsReturn = this.wp3Status.economicCoefficients.physicalAssetsReturn;
+                        this.financialAssetsReturn = this.wp3Status.economicCoefficients.financialAssetsReturn;
+                        this.lossOfIntangiblePercentage = this.wp3Status.economicCoefficients.lossOfIntangible;
+
                         this.choosedSectorType = this.wp3Status.sectorType;
                         switch (this.choosedSectorType.toString()) {
                             case SectorType[SectorType.FINANCE_AND_INSURANCE]: {
@@ -452,9 +465,9 @@ export class ImpactEvaluationComponent implements OnInit {
         if (!dataIsOk) {
             return;
         }
-        let physicalAssetsReturn = 7.1;
-        let financialAssetsReturn = 5.0;
-        if (this.impactFormStepTwo.get('physicalAssetsReturn').value &&
+        /*let physicalAssetsReturn = 7.1;
+        let financialAssetsReturn = 5.0;*/
+        /*if (this.impactFormStepTwo.get('physicalAssetsReturn').value &&
             !isNaN(parseFloat(this.impactFormStepTwo.get('physicalAssetsReturn').value))) {
             if (String(this.impactFormStepTwo.get('physicalAssetsReturn').value).includes(',')) {
                 physicalAssetsReturn = Math.round(Number((this.impactFormStepTwo.get('physicalAssetsReturn').value as string).replace(/,/g, '.')) * 100) / 100;
@@ -469,12 +482,12 @@ export class ImpactEvaluationComponent implements OnInit {
             } else {
                 financialAssetsReturn = Math.round(Number(String(this.impactFormStepTwo.get('financialAssetsReturn').value)) * 100) / 100;
             }
-        }
-        if (this.financialAssetsAkaCurrent && this.physicalAssetsAkaFixed && financialAssetsReturn && physicalAssetsReturn) {
+        }*/
+        if (this.financialAssetsAkaCurrent && this.physicalAssetsAkaFixed && this.financialAssetsReturn && this.physicalAssetsReturn) {
             const inputs: Wp3BundleInput = new Wp3BundleInput();
             inputs.economicCoefficients = new EconomicCoefficientsMgm();
-            inputs.economicCoefficients.physicalAssetsReturn = physicalAssetsReturn;
-            inputs.economicCoefficients.financialAssetsReturn = financialAssetsReturn;
+            inputs.economicCoefficients.physicalAssetsReturn = this.physicalAssetsReturn;
+            inputs.economicCoefficients.financialAssetsReturn = this.financialAssetsReturn;
             inputs.myAssets = [];
             inputs.myAssets = this.financialAssetsAkaCurrent.concat(this.physicalAssetsAkaFixed);
             console.log(inputs);
@@ -493,19 +506,19 @@ export class ImpactEvaluationComponent implements OnInit {
             return;
         }
         console.log('EVALUATE STEP THREE');
-        let lossOfIntangiblePercentage = 18.29;
-        if (this.impactFormStepThree.get('lossOfIntangiblePercentage').value &&
+        // let lossOfIntangiblePercentage = 18.29;
+        /*if (this.impactFormStepThree.get('lossOfIntangiblePercentage').value &&
             !isNaN(parseFloat(this.impactFormStepThree.get('lossOfIntangiblePercentage').value))) {
             if (String(this.impactFormStepThree.get('lossOfIntangiblePercentage').value).includes(',')) {
                 lossOfIntangiblePercentage = Math.round(Number((this.impactFormStepThree.get('lossOfIntangiblePercentage').value as string).replace(/,/g, '.')) * 100) / 100;
             } else {
                 lossOfIntangiblePercentage = Math.round(Number(this.impactFormStepThree.get('lossOfIntangiblePercentage').value as string) * 100) / 100;
             }
-        }
-        if (lossOfIntangiblePercentage !== undefined && lossOfIntangiblePercentage !== null) {
+        }*/
+        if (this.lossOfIntangiblePercentage !== undefined && this.lossOfIntangiblePercentage !== null) {
             const inputs: Wp3BundleInput = new Wp3BundleInput();
             inputs.economicCoefficients = new EconomicCoefficientsMgm();
-            inputs.economicCoefficients.lossOfIntangible = lossOfIntangiblePercentage;
+            inputs.economicCoefficients.lossOfIntangible = this.lossOfIntangiblePercentage;
             console.log(inputs);
             this.impactService.evaluateStepThree(inputs, this.mySelf).toPromise().then((res) => {
                 if (res) {
@@ -742,7 +755,7 @@ export class ImpactEvaluationComponent implements OnInit {
     public viewLosses(category: string, show: boolean) {
         this.impactService.evaluateMyAssetsEconomicLosses(this.mySelf).toPromise().then(
             (myAssetsEconomicLosses: MyAssetMgm[]) => {
-              this.myAssets = myAssetsEconomicLosses;
+                this.myAssets = myAssetsEconomicLosses;
 
                 this.assetsBySelectedCategory = [];
                 switch (category) {
@@ -799,7 +812,7 @@ export class ImpactEvaluationComponent implements OnInit {
                     this.collapseLosses = false;
                 }
             }
-        )
+        );
     }
 
     public setSelectedAssetPriority(priority: String, asset: MyAssetMgm) {
@@ -986,5 +999,19 @@ export class ImpactEvaluationComponent implements OnInit {
 
     public close() {
         this.router.navigate(['/dashboard']);
+    }
+
+    clamp(value: number, min: number, max: number): number {
+        if (isNaN(value)) {
+            if (!isNaN(min)) {
+                return min;
+            } else if (!isNaN(max)) {
+                return max;
+            } else {
+                return undefined;
+            }
+        } else {
+            return _.clamp(value, min, max);
+        }
     }
 }
