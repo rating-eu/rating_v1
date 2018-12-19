@@ -405,7 +405,7 @@
                             *ngFor="let asset of financialAssetsAkaCurrent; let i = index; trackBy: trackByFn">
                             <div class="input-group" style="margin-bottom: 10px">
                                 <div class="input-group-prepend">
-                                    <span class="input-group-text" id="">Valutation of {{asset.asset.name}} €</span>
+                                    <span class="input-group-text">Valutation of {{asset.asset.name}} €</span>
                                 </div>
                                 <input type="number" class="form-control"
                                        placeholder="Insert economic valutation of {{asset.asset.name}}"
@@ -708,10 +708,14 @@
                                     <div class="col-md-12">
                                         <div class="input-group" style="margin-bottom: 10px">
                                             <div class="input-group-prepend">
-                                                <span class="input-group-text"
-                                                      id="">Loss of intangible percentage %</span>
+                                                <span class="input-group-text">Loss of intangible percentage %</span>
                                             </div>
-                                            <input type="text" class="form-control"
+                                            <input type="number" class="form-control"
+                                                   min="0"
+                                                   max="100"
+                                                   [(ngModel)]="lossOfIntangiblePercentage"
+                                                   (keyup)="lossOfIntangiblePercentage = clamp(lossOfIntangiblePercentage, 0, 100)"
+                                                   (keydown)="lossOfIntangiblePercentage = clamp(lossOfIntangiblePercentage, 0, 100)"
                                                    placeholder="Loss of intangible percentage"
                                                    aria-label="lossOfIntangiblePercentage"
                                                    aria-describedby="basic-addon2"

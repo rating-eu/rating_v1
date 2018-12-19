@@ -21,6 +21,7 @@ import {AccountService, UserService, User} from '../../shared';
 import {MyCompanyMgmService, MyCompanyMgm} from '../../entities/my-company-mgm';
 import {HttpResponse} from '@angular/common/http';
 import {CompType} from '../../entities/company-profile-mgm';
+import {RegExpUtility} from '../../utils/regexp.utility.class';
 
 @Component({
     // tslint:disable-next-line:component-selector
@@ -84,6 +85,7 @@ export class ImpactEvaluationComponent implements OnInit {
     private selectedAssetCategoryCode: string;
     public physicalAssetsReturn = 7.1;
     public financialAssetsReturn = 5.0;
+    public lossOfIntangiblePercentage = 18.29;
 
     /*
     public sectorialPercentageMatrix: any[] = [
@@ -206,13 +208,13 @@ export class ImpactEvaluationComponent implements OnInit {
                 // Validators.required,
                 Validators.min(0),
                 Validators.max(100),
-                Validators.pattern('^[1-9][0-9]?$|^100$')
+                Validators.pattern(RegExpUtility.from0to100DecimalsRegExp)
             ])),
             financialAssetsReturn: new FormControl(5.0, Validators.compose([
                 // Validators.required,
                 Validators.min(0),
                 Validators.max(100),
-                Validators.pattern('^[1-9][0-9]?$|^100$')
+                Validators.pattern(RegExpUtility.from0to100DecimalsRegExp)
             ])),
         });
         this.impactFormStepThree = new FormGroup({
@@ -220,7 +222,7 @@ export class ImpactEvaluationComponent implements OnInit {
                 Validators.required,
                 Validators.min(0),
                 Validators.max(100),
-                Validators.pattern('^[1-9][0-9]?$|^100$')
+                Validators.pattern(RegExpUtility.from0to100DecimalsRegExp)
             ])),
         });
         this.mySelf = this.mySelfAssessmentService.getSelfAssessment();
@@ -495,19 +497,19 @@ export class ImpactEvaluationComponent implements OnInit {
             return;
         }
         console.log('EVALUATE STEP THREE');
-        let lossOfIntangiblePercentage = 18.29;
-        if (this.impactFormStepThree.get('lossOfIntangiblePercentage').value &&
+        // let lossOfIntangiblePercentage = 18.29;
+        /*if (this.impactFormStepThree.get('lossOfIntangiblePercentage').value &&
             !isNaN(parseFloat(this.impactFormStepThree.get('lossOfIntangiblePercentage').value))) {
             if (String(this.impactFormStepThree.get('lossOfIntangiblePercentage').value).includes(',')) {
                 lossOfIntangiblePercentage = Math.round(Number((this.impactFormStepThree.get('lossOfIntangiblePercentage').value as string).replace(/,/g, '.')) * 100) / 100;
             } else {
                 lossOfIntangiblePercentage = Math.round(Number(this.impactFormStepThree.get('lossOfIntangiblePercentage').value as string) * 100) / 100;
             }
-        }
-        if (lossOfIntangiblePercentage !== undefined && lossOfIntangiblePercentage !== null) {
+        }*/
+        if (this.lossOfIntangiblePercentage !== undefined && this.lossOfIntangiblePercentage !== null) {
             const inputs: Wp3BundleInput = new Wp3BundleInput();
             inputs.economicCoefficients = new EconomicCoefficientsMgm();
-            inputs.economicCoefficients.lossOfIntangible = lossOfIntangiblePercentage;
+            inputs.economicCoefficients.lossOfIntangible = this.lossOfIntangiblePercentage;
             console.log(inputs);
             this.impactService.evaluateStepThree(inputs, this.mySelf).toPromise().then((res) => {
                 if (res) {
