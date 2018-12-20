@@ -5,6 +5,7 @@ import eu.hermeneut.HermeneutApp;
 import eu.hermeneut.domain.SelfAssessment;
 import eu.hermeneut.repository.SelfAssessmentRepository;
 import eu.hermeneut.service.ExternalAuditService;
+import eu.hermeneut.service.MyCompanyService;
 import eu.hermeneut.service.SelfAssessmentService;
 import eu.hermeneut.repository.search.SelfAssessmentSearchRepository;
 import eu.hermeneut.service.UserService;
@@ -69,6 +70,9 @@ public class SelfAssessmentResourceIntTest {
     private ExternalAuditService externalAuditService;
 
     @Autowired
+    private MyCompanyService myCompanyService;
+
+    @Autowired
     private SelfAssessmentSearchRepository selfAssessmentSearchRepository;
 
     @Autowired
@@ -90,7 +94,7 @@ public class SelfAssessmentResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final SelfAssessmentResource selfAssessmentResource = new SelfAssessmentResource(selfAssessmentService, userService, externalAuditService);
+        final SelfAssessmentResource selfAssessmentResource = new SelfAssessmentResource(selfAssessmentService, userService, externalAuditService, myCompanyService);
         this.restSelfAssessmentMockMvc = MockMvcBuilders.standaloneSetup(selfAssessmentResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)

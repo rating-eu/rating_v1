@@ -1,14 +1,10 @@
 package eu.hermeneut.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
-import eu.hermeneut.domain.ExternalAudit;
-import eu.hermeneut.domain.SelfAssessment;
-import eu.hermeneut.domain.User;
+import eu.hermeneut.domain.*;
 import eu.hermeneut.security.AuthoritiesConstants;
 import eu.hermeneut.security.SecurityUtils;
-import eu.hermeneut.service.ExternalAuditService;
-import eu.hermeneut.service.SelfAssessmentService;
-import eu.hermeneut.service.UserService;
+import eu.hermeneut.service.*;
 import eu.hermeneut.web.rest.errors.BadRequestAlertException;
 import eu.hermeneut.web.rest.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
@@ -43,10 +39,13 @@ public class SelfAssessmentResource {
 
     private final ExternalAuditService externalAuditService;
 
-    public SelfAssessmentResource(SelfAssessmentService selfAssessmentService, UserService userService, ExternalAuditService externalAuditService) {
+    private final MyCompanyService myCompanyService;
+
+    public SelfAssessmentResource(SelfAssessmentService selfAssessmentService, UserService userService, ExternalAuditService externalAuditService, MyCompanyService myCompanyService) {
         this.selfAssessmentService = selfAssessmentService;
         this.userService = userService;
         this.externalAuditService = externalAuditService;
+        this.myCompanyService = myCompanyService;
     }
 
     /**
@@ -134,7 +133,14 @@ public class SelfAssessmentResource {
         if (currentUser != null) {
             if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.CISO)) {
                 //GET the SelfAssessments by SelfAssessment.CompanyProfile == User.MyCompany
+                MyCompany myCompany = this.myCompanyService.findOneByUser(currentUser.getId());
 
+                if (myCompany != null) {
+                    CompanyProfile companyProfile = myCompany.getCompanyProfile();
+                    if (companyProfile != null) {
+                        selfAssessments = this.selfAssessmentService.findAllByCompanyProfile(companyProfile.getId());
+                    }
+                }
             } else if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.EXTERNAL_AUDIT)) {
                 //GET the SelfAssessments by SelfAssessment.externalAudit
                 ExternalAudit externalAudit = this.externalAuditService.getByUser(currentUser);

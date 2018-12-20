@@ -2,7 +2,6 @@ import {Injectable, OnInit} from '@angular/core';
 import {HttpClient, HttpResponse} from '@angular/common/http';
 import {Observable} from 'rxjs/Observable';
 import {SERVER_API_URL} from '../../app.constants';
-import {isUndefined} from 'util';
 import {Router} from '@angular/router';
 import {JhiDateUtils} from 'ng-jhipster';
 
@@ -21,6 +20,7 @@ export class SelfAssessmentMgmService implements OnInit {
     private static readonly SELF_ASSESSMENT_KEY = 'selfAssessment';
     private static readonly COMPANY_PROFILE_KEY = '{companyProfileID}';
     private resourceUrl = SERVER_API_URL + 'api/self-assessments';
+    private mySelfAssessmentsUrl = SERVER_API_URL + 'api//my-self-assessments';
     private selfAssessmentOverviewUrl = SERVER_API_URL + 'api/{selfID}/overview';
     private resourceByCompanyUrl = SERVER_API_URL + 'api/self-assessments/by-company/' + SelfAssessmentMgmService.COMPANY_PROFILE_KEY;
     private resourceSearchUrl = SERVER_API_URL + 'api/_search/self-assessments';
@@ -162,8 +162,8 @@ export class SelfAssessmentMgmService implements OnInit {
         return copy;
     }
 
-    getSelfAssessmentsByCompanyProfile(companyProfileID: number): Observable<SelfAssessmentMgm[]> {
+    getMySelfAssessments(): Observable<SelfAssessmentMgm[]> {
         return this.http.get<SelfAssessmentMgm[]>(
-            this.resourceByCompanyUrl.replace(SelfAssessmentMgmService.COMPANY_PROFILE_KEY, companyProfileID + ''));
+            this.mySelfAssessmentsUrl);
     }
 }
