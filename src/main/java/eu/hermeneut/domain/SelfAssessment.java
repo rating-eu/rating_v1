@@ -64,12 +64,8 @@ public class SelfAssessment implements Serializable {
         inverseJoinColumns = @JoinColumn(name = "threatagents_id", referencedColumnName = "id"))
     private Set<ThreatAgent> threatagents = new HashSet<>();
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    @JoinTable(name = "self_assessment_externalaudit",
-        joinColumns = @JoinColumn(name = "self_assessments_id", referencedColumnName = "id"),
-        inverseJoinColumns = @JoinColumn(name = "externalaudits_id", referencedColumnName = "id"))
-    private Set<ExternalAudit> externalaudits = new HashSet<>();
+    @ManyToOne
+    private ExternalAudit externalAudit;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
@@ -152,6 +148,19 @@ public class SelfAssessment implements Serializable {
         this.user = user;
     }
 
+    public ExternalAudit getExternalAudit() {
+        return externalAudit;
+    }
+
+    public SelfAssessment externalAudit(ExternalAudit externalAudit) {
+        this.externalAudit = externalAudit;
+        return this;
+    }
+
+    public void setExternalAudit(ExternalAudit externalAudit) {
+        this.externalAudit = externalAudit;
+    }
+
     public Set<CompanyGroup> getCompanyGroups() {
         return companyGroups;
     }
@@ -196,29 +205,6 @@ public class SelfAssessment implements Serializable {
 
     public void setThreatagents(Set<ThreatAgent> threatAgents) {
         this.threatagents = threatAgents;
-    }
-
-    public Set<ExternalAudit> getExternalaudits() {
-        return externalaudits;
-    }
-
-    public SelfAssessment externalaudits(Set<ExternalAudit> externalAudits) {
-        this.externalaudits = externalAudits;
-        return this;
-    }
-
-    public SelfAssessment addExternalaudit(ExternalAudit externalAudit) {
-        this.externalaudits.add(externalAudit);
-        return this;
-    }
-
-    public SelfAssessment removeExternalaudit(ExternalAudit externalAudit) {
-        this.externalaudits.remove(externalAudit);
-        return this;
-    }
-
-    public void setExternalaudits(Set<ExternalAudit> externalAudits) {
-        this.externalaudits = externalAudits;
     }
 
     public Set<Questionnaire> getQuestionnaires() {

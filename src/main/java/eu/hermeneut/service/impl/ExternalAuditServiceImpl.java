@@ -1,5 +1,6 @@
 package eu.hermeneut.service.impl;
 
+import eu.hermeneut.domain.User;
 import eu.hermeneut.service.ExternalAuditService;
 import eu.hermeneut.domain.ExternalAudit;
 import eu.hermeneut.repository.ExternalAuditRepository;
@@ -97,5 +98,12 @@ public class ExternalAuditServiceImpl implements ExternalAuditService {
         return StreamSupport
             .stream(externalAuditSearchRepository.search(queryStringQuery(query)).spliterator(), false)
             .collect(Collectors.toList());
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public ExternalAudit getByUser(User user) {
+        log.debug("Request to get ExternalAudit for user: {}", user.getLogin());
+        return externalAuditRepository.findByUser(user);
     }
 }
