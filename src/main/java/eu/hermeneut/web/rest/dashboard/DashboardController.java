@@ -4,8 +4,6 @@ import eu.hermeneut.domain.dashboard.ImpactEvaluationStatus;
 import eu.hermeneut.exceptions.NotFoundException;
 import eu.hermeneut.exceptions.NullInputException;
 import eu.hermeneut.service.DashboardService;
-import eu.hermeneut.service.EBITService;
-import eu.hermeneut.service.SelfAssessmentService;
 import eu.hermeneut.web.rest.overview.OverviewController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,6 +26,11 @@ public class DashboardController {
     @GetMapping("{selfAssessmentID}/dashboard/impact-evaluation-status")
     public ImpactEvaluationStatus getSelfAssessmentOverview(@PathVariable Long selfAssessmentID) throws
         NullInputException, NotFoundException {
-        return this.dashboardService.getImpactEvaluationStatus(selfAssessmentID);
+
+        try {
+            return this.dashboardService.getImpactEvaluationStatus(selfAssessmentID);
+        } catch (NullInputException | NotFoundException e) {
+            throw e;
+        }
     }
 }
