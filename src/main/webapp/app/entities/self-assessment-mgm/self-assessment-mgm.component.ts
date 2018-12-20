@@ -9,7 +9,8 @@ import {SelfAssessmentMgmService} from './self-assessment-mgm.service';
 import {Principal} from '../../shared';
 
 import {DatasharingService} from '../../datasharing/datasharing.service';
-import { Update } from '../../layouts/model/Update';
+import {Update} from '../../layouts/model/Update';
+import {PopUpService} from '../../shared/pop-up-services/pop-up.service';
 
 @Component({
     selector: 'jhi-self-assessment-mgm',
@@ -28,6 +29,7 @@ export class SelfAssessmentMgmComponent implements OnInit, OnDestroy {
         private eventManager: JhiEventManager,
         private activatedRoute: ActivatedRoute,
         private principal: Principal,
+        public popUpService: PopUpService,
         private dataSharingService: DatasharingService
     ) {
         this.currentSearch = this.activatedRoute.snapshot && this.activatedRoute.snapshot.params['search'] ?
