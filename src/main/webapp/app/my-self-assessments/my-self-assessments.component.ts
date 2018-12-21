@@ -41,7 +41,10 @@ export class MySelfAssessmentsComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.accountService.get().subscribe((response1) => {
+        this.loadMySelfAssessments();
+        this.registerChangeInSelfAssessments();
+
+        /*this.accountService.get().subscribe((response1) => {
             const loggedAccount: Account = response1.body;
             this.userService.find(loggedAccount['login']).subscribe((response2) => {
                 this.user = response2.body;
@@ -62,7 +65,7 @@ export class MySelfAssessmentsComponent implements OnInit {
                     );
                 }
             });
-        });
+        });*/
 
         if (this.selfAssessmentService.isSelfAssessmentSelected()) {
             this.mySelfAssessment = this.selfAssessmentService.getSelfAssessment();
@@ -72,7 +75,13 @@ export class MySelfAssessmentsComponent implements OnInit {
     }
 
     private loadMySelfAssessments() {
-        this.selfAssessmentService.getSelfAssessmentsByCompanyProfile(this.myCompany.companyProfile.id).subscribe(
+        /*this.selfAssessmentService.getSelfAssessmentsByCompanyProfile(this.myCompany.companyProfile.id).subscribe(
+            (response: SelfAssessmentMgm[]) => {
+                this.mySelfAssessments = response;
+            }
+        );*/
+
+        this.selfAssessmentService.getMySelfAssessments().toPromise().then(
             (response: SelfAssessmentMgm[]) => {
                 this.mySelfAssessments = response;
             }

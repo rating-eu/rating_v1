@@ -21,6 +21,7 @@
             "estimated": "Estimated",
             "economicValue": "Economic Value",
             "impact": "Impact",
+            "lossValue": "Loss Value",
             "costs": "Costs",
             "asset": "Asset",
             "selfAssessment": "Self Assessment",

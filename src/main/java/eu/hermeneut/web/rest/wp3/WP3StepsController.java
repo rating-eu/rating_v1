@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.ZonedDateTime;
 import java.util.*;
 
@@ -545,6 +546,42 @@ public class WP3StepsController {
             LOGGER.info("Step 5 exiting: " + System.currentTimeMillis());
             return wp3OutputBundle;
         }
+    }
+
+    @GetMapping("{selfAssessmentID}/wp3/economic-losses")
+    public Set<MyAsset> evaluateEconomicLosses(@PathVariable("selfAssessmentID") Long selfAssessmentID) throws NullInputException, NotFoundException {
+        LOGGER.info("Step 5 entering: " + System.currentTimeMillis());
+        SelfAssessment selfAssessment = null;
+
+        if (selfAssessmentID != null) {
+            selfAssessment = this.selfAssessmentService.findOne(selfAssessmentID);
+        } else {
+            throw new NullInputException("The selfAssessmentID can NOT be NULL!");
+        }
+
+        EconomicCoefficients economicCoefficients = this.economicCoefficientsService.findOneBySelfAssessmentID(selfAssessment.getId());
+
+        if (economicCoefficients == null) {
+            throw new NotFoundException("EconomicCoefficients NOT FOUND for SelfAssessment with ID: " + selfAssessment.getId());
+        }
+
+        BigDecimal lossOfIntangiblePercentage = economicCoefficients.getLossOfIntangible();
+
+        List<MyAsset> myAssets = this.myAssetService.findAllBySelfAssessment(selfAssessment.getId());
+
+        if (myAssets == null || myAssets.isEmpty()) {
+            throw new NotFoundException("MyAssets NOT FOUND for SelfAssessment with ID: " + selfAssessment.getId());
+        }
+
+        for (MyAsset myAsset : myAssets) {
+            if (myAsset.getRanking() != null && myAsset.getEconomicValue() != null) {
+                BigDecimal lossValue = myAsset.getEconomicValue().multiply(lossOfIntangiblePercentage).divide(new BigDecimal(100), 2, RoundingMode.HALF_UP);
+                myAsset.setLossValue(lossValue);
+            }
+        }
+
+        List<MyAsset> myAssetList = this.myAssetService.saveAll(myAssets);
+        return new HashSet<>(myAssetList);
     }
 
     private SplittingLoss createNewSplittingLoss(SelfAssessment selfAssessment, BigDecimal intangibleLossByAttacks, SectorType sectorType, CategoryType catType) {

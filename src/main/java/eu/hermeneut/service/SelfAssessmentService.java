@@ -1,5 +1,6 @@
 package eu.hermeneut.service;
 
+import eu.hermeneut.domain.ExternalAudit;
 import eu.hermeneut.domain.SelfAssessment;
 import eu.hermeneut.domain.overview.SelfAssessmentOverview;
 
@@ -51,4 +52,6 @@ public interface SelfAssessmentService {
     List<SelfAssessment> findAllByCompanyProfile(Long companyProfileID);
 
     SelfAssessmentOverview getSelfAssessmentOverview(Long selfAssessmentID);
+
+    List<SelfAssessment> findAllByExternalAudit(ExternalAudit externalAudit);
 }

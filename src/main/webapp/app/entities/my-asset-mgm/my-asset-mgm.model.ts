@@ -14,6 +14,7 @@ export class MyAssetMgm implements BaseEntity {
         public questionnaire?: QuestionnaireMgm,
         public economicValue?: number,
         public impact?: number,
+        public lossValue?: number,
         public costs?: AttackCostMgm[]
     ) {
     }
