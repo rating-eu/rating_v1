@@ -65,8 +65,6 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         this.principal.getAuthenticationState().subscribe((identity) => {
             if (identity) {
                 this.isCollapsed = !this.isAuthenticated();
-                // console.log('Sidebar isAuthenticated: ' + this.isAuthenticated());
-
                 updateLayout = new Update();
                 updateLayout.isSidebarCollapsed = this.isCollapsed;
 
@@ -74,15 +72,12 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                 this.fetchSecondaryLogo();
 
                 this.principal.hasAnyAuthority([MyRole[MyRole.ROLE_CISO]]).then((response: boolean) => {
-                    // console.log('IsCISO response: ' + response);
-
                     if (response) {
                         this.isCISO = response;
                         this.isExternal = !this.isCISO;
                         this.createMenuItems(this.isCISO);
                     } else {
                         this.principal.hasAnyAuthority([MyRole[MyRole.ROLE_EXTERNAL_AUDIT]]).then((response2: boolean) => {
-                            // console.log('IsExternal response: ' + response2);
                             this.isExternal = response2;
                             this.isCISO = !this.isExternal;
                             this.createMenuItems(this.isCISO, this.isExternal);
@@ -93,11 +88,6 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
             }
         });
-
-        // console.log('HadAnyAuthority direct CISO: ' + this.principal.hasAnyAuthorityDirect([MyRole[MyRole.ROLE_CISO]]));
-        // console.log('Role CISO: ' + MyRole[MyRole.ROLE_CISO]);
-        // this.createMenuItems();
-
         this.isCollapsed = this.dataSharingService.getUpdate() != null ? this.dataSharingService.getUpdate().isSidebarCollapsed : true;
 
         let updateLayout: Update = this.dataSharingService.getUpdate();
@@ -116,12 +106,6 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                 this.createMenuItems(this.isCISO, this.isExternal);
             }
         });
-        /*
-        setTimeout(() => {
-            console.log('Menu Items created after timeout:');
-            console.log(JSON.stringify(this.items));
-        }, 100 * 1000);
-        */
     }
 
     private fetchSecondaryLogo() {
@@ -305,10 +289,6 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                 ]
             }
         ];
-        /*
-        console.log('Menu Items created');
-        console.log(JSON.stringify(this.items));
-        */
     }
 
     isAuthenticated() {

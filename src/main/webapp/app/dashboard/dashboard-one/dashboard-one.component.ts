@@ -21,13 +21,6 @@ export class DashboardOneComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    /*
-    this.principal.identity().then((account) => {
-      this.account = account;
-    });
-    this.registerAuthenticationSuccess();
-    */
-    // this.mySelf = this.mySelfAssessmentService.getSelfAssessment();
   }
 
   registerAuthenticationSuccess() {

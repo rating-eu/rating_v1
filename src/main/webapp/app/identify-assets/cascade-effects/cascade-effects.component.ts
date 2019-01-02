@@ -42,7 +42,6 @@ export class CascadeEffectsComponent implements OnInit {
 
     ngOnInit(): void {
         this.mySelf = this.mySelfAssessmentService.getSelfAssessment();
-        // TODO pensare ad una funzionalità per recuperare gli asset a partire dal questionario
         this.idaUtilsService.getMySavedAssets(this.mySelf).toPromise().then((mySavedAssets) => {
             if (mySavedAssets) {
                 this.myAssets = mySavedAssets;
@@ -118,7 +117,6 @@ export class CascadeEffectsComponent implements OnInit {
             }
         }
         this.isMyAssetUpdated = true;
-        console.log(this.selectedDirectAsset);
     }
 
     public setIndirectAsset(myAsset: MyAssetMgm) {
@@ -149,7 +147,6 @@ export class CascadeEffectsComponent implements OnInit {
                 this.selectedIndirectAssets.push(_.cloneDeep(indirect));
             }
         }
-        console.log(this.selectedIndirectAssets);
     }
 
     public isIndirect(myAsset: MyAssetMgm): boolean {
@@ -190,7 +187,6 @@ export class CascadeEffectsComponent implements OnInit {
             } else {
                 this.idaUtilsService.updateDirectAsset(this.selectedDirectAsset).toPromise().then((myDirectAsset) => {
                     if (myDirectAsset) {
-                        // this.selectedDirectAsset = myDirectAsset;
                         const index = _.findIndex(this.myDirects, {id: myDirectAsset.id});
                         if (index !== -1) {
                             this.myDirects.splice(index, 1, myDirectAsset);
@@ -200,7 +196,6 @@ export class CascadeEffectsComponent implements OnInit {
                         this.isMyAssetUpdated = false;
                         this.loading = false;
                         this.myAssetStatus.set(this.idMyAsset, 'COMPLETED');
-                        // this.jhiAlertService.success('hermeneutApp.messages.saved', null, null);
                         if (onNext) {
                             this.router.navigate(['/identify-asset/attack-costs']);
                         }
@@ -208,7 +203,6 @@ export class CascadeEffectsComponent implements OnInit {
                 }).catch(() => {
                     this.loading = false;
                     this.myAssetStatus.set(this.idMyAsset, 'NOT COMPLETED');
-                    // this.jhiAlertService.error('hermeneutApp.messages.error', null, null);
                 });
             }
         } else {

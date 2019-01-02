@@ -34,7 +34,6 @@ export class SplittingWidgetComponent implements OnInit {
 
   ngOnInit() {
     this.mySelf = this.mySelfAssessmentService.getSelfAssessment();
-    // Retrieve the wp3 status from server
     this.impactService.getStatus(this.mySelf).toPromise().then((status) => {
       if (status) {
         this.wp3Status = status;

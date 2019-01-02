@@ -51,7 +51,6 @@ export class AssetWidgetComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.loading = true;
-    // assetClusteringStatus checker
     this.status = this.dashService.getStatus();
     this.principal.identity().then((account) => {
       this.account = account;
@@ -64,8 +63,6 @@ export class AssetWidgetComponent implements OnInit, OnDestroy {
             if (mySavedAssets) {
               if (mySavedAssets.length === 0) {
                 this.loading = false;
-                // this.status.assetClusteringStatus = false;
-                // this.dashService.updateStatus(this.status);
                 return;
               }
               this.myAssets = mySavedAssets;
@@ -101,17 +98,11 @@ export class AssetWidgetComponent implements OnInit, OnDestroy {
               this.intangibleCategoryMapLoaded = true;
               this.tangibleCategoryMapLoaded = true;
               this.loading = false;
-              // this.status.assetClusteringStatus = true;
-              // this.dashService.updateStatus(this.status);
             } else {
               this.loading = false;
-              // this.status.assetClusteringStatus = false;
-              // this.dashService.updateStatus(this.status);
             }
           }).catch(() => {
             this.loading = false;
-            // this.status.assetClusteringStatus = false;
-            // this.dashService.updateStatus(this.status);
           });
 
         this.dashService.getStatusFromServer(this.mySelf, this.dashboardStatus.ASSET_CLUSTERING).toPromise().then((res) => {
@@ -121,8 +112,6 @@ export class AssetWidgetComponent implements OnInit, OnDestroy {
       }
     }).catch(() => {
       this.loading = false;
-      // this.status.assetClusteringStatus = false;
-      // this.dashService.updateStatus(this.status);
     });
   }
 

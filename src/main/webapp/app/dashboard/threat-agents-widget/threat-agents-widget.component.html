@@ -3,7 +3,6 @@
 </div>
 <div class="container" *ngIf="!loading">
   <div class="tile-stats tiles-first-row">
-    <!--                  <div class="icon"><i class="fa fa-sort-amount-desc"></i></div>-->
     <div class="count" *ngIf="selfAssessment.threatagents.length>0">{{selfAssessment.threatagents.length}}</div>
     <h3 *ngIf="selfAssessment.threatagents.length>0">Threat Agents</h3>
     <h3 *ngIf="selfAssessment.threatagents.length===0">No Threat Agents founded</h3>
@@ -36,7 +35,6 @@
               <!--For cols-->
               <th scope="row" class="text-center align-middle">
                 {{couple.key.name}}
-                <!--<a [routerLink]="['/threat-agent-mgm', couple.key.id]">{{couple.key.name}}</a>-->
               </th>
               <td class="text-center align-middle">
                 {{couple.key.skillLevel | titlecase}}

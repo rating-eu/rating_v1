@@ -46,11 +46,9 @@ export class JhiMainComponent implements OnInit {
                     this.updateLayout = update;
                 }, 0);
             }
-            // console.log('Update onInit: ' + JSON.stringify(update));
         });
 
         this.principal.getAuthenticationState().subscribe((authentication: any) => {
-            // console.log('AuthenticationState: ' + JSON.stringify(authentication));
             if (authentication) {
                 this.isAuthenticated = true;
             } else {

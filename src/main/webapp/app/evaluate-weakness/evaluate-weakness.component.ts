@@ -58,7 +58,6 @@ export class EvaluateWeaknessComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
-        console.log('Evaluate weakness onInit');
         this.principal.identity().then((account) => {
             this.account = account;
         });
