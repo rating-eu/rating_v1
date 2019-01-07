@@ -115,5 +115,6 @@
     <include file="config/liquibase/changelog/20181213161257_drop_attack_cost_direct_and_indirect.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20181217152132_added_my_asset_loss_value.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20181219141927_self_assessment_external_audit.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190107171032_self_assessment_delete_cascade.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
 </databaseChangeLog>
