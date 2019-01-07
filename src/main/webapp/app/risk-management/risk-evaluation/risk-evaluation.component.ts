@@ -7,7 +7,6 @@ import { MyAssetMgm, MyAssetMgmService } from '../../entities/my-asset-mgm';
 import { MyAssetAttackChance } from '../model/my-asset-attack-chance.model';
 import { SessionStorageService } from 'ngx-webstorage';
 import { Router } from '@angular/router';
-// import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 
 import * as _ from 'lodash';
 import { HttpResponse } from '@angular/common/http';
@@ -71,7 +70,6 @@ export class RiskEvaluationComponent implements OnInit, OnDestroy {
         private router: Router,
         private myAssetService: MyAssetMgmService,
         private ref: ChangeDetectorRef
-        // private modalService: NgbModal
     ) {
     }
 
@@ -86,7 +84,6 @@ export class RiskEvaluationComponent implements OnInit, OnDestroy {
             if (res) {
                 this.loadingRiskLevel = true;
                 this.criticalLevel = res;
-                console.log(this.criticalLevel);
                 this.squareColumnElement = [];
                 this.squareRowElement = [];
                 this.lastSquareRowElement = this.criticalLevel.side + 1;
@@ -123,9 +120,6 @@ export class RiskEvaluationComponent implements OnInit, OnDestroy {
                                     this.whichContentByCell(i, j, myAsset, 'likelihood-vulnerability');
                                 }
                             }
-                            // const ordered = this.orderLevels(this.mapAssetAttacks);
-                            // this.mapAssetAttacks = ordered.orderedMap;
-                            // this.myAssets = ordered.orderedArray;
                         }
                     });
                     this.riskService.getThreatAgentsInterests(myAsset, this.mySelf).toPromise().then((res3) => {
@@ -139,8 +133,6 @@ export class RiskEvaluationComponent implements OnInit, OnDestroy {
                         this.loadingAssetsAndAttacks = false;
                     }, 5000);
                 }
-                // this.ref.detectChanges();
-                console.log(this.mapAssetAttacks);
             } else {
                 this.loadingAssetsAndAttacks = false;
             }
@@ -212,9 +204,6 @@ export class RiskEvaluationComponent implements OnInit, OnDestroy {
         this.criticalBostonSquareLoad = true;
         this.assetToolTipLoaded = false;
         this.assetToolTipLoadedTimer = false;
-        console.log(myAsset);
-        console.log(impact);
-
         myAsset.impact = impact;
 
         this.myAssetService.update(myAsset).toPromise().then((res: HttpResponse<MyAssetMgm>) => {

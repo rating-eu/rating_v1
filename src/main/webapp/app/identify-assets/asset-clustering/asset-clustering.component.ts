@@ -170,7 +170,6 @@ export class AssetClusteringComponent implements OnInit, OnDestroy {
         }
         if (selectedAsset instanceof Array) {
             const assetInSelection = this.howManyAssetInSelection(categoryId);
-            // const indexCategory = _.findIndex(this.categories, { id: categoryId });
             if (assetInSelection !== 0) {
                 for (const asset of selectedAsset) {
                     const i = _.findIndex(this.myAssets,
@@ -277,7 +276,6 @@ export class AssetClusteringComponent implements OnInit, OnDestroy {
     }
 
     public saveMyAsset() {
-        console.log(this.myAssets);
         this.loading = true;
         if (this.updateMyAssets) {
             this.idaUtilsService.createUpdateMyAssets(this.mySelf, this.myAssets).toPromise().then((myAssets) => {

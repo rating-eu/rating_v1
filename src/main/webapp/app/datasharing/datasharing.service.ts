@@ -40,15 +40,10 @@ export class DatasharingService {
     }
 
     set threatAgentsMap(threatAgents: Map<String, Couple<ThreatAgentMgm, Fraction>>) {
-        console.log('ThreatAgents param was: ' + JSON.stringify(threatAgents));
-
         this._threatAgentsMap = threatAgents;
-        console.log('ThreatAgents SET to ' + JSON.stringify(this._threatAgentsMap));
     }
 
     get threatAgentsMap(): Map<String, Couple<ThreatAgentMgm, Fraction>> {
-        console.log('ThreatAgents GET to ' + JSON.stringify(this._threatAgentsMap));
-
         return this._threatAgentsMap;
     }
 
@@ -97,12 +92,7 @@ export class DatasharingService {
     }
 
     answerSelfAssessment(question: QuestionMgm, answer: AnswerMgm) {
-        console.log('ENTER answer SelfAssessment...');
-        console.log('Question: ' + JSON.stringify(question));
-
         for (const attackStrategy of question.attackStrategies) {
-            console.log('AttackStrategy: ' + JSON.stringify(attackStrategy));
-
             // Placeholder for the new update
             let attackStrategyUpdate: AttackStrategyUpdate;
 
@@ -117,13 +107,10 @@ export class DatasharingService {
 
             if (questionsAnswerMap.has(question.id)) {//
                 const oldAnswer: AnswerMgm = questionsAnswerMap.get(question.id).value;
-                console.log('The old answer was: ' + JSON.stringify(oldAnswer));
             } else {
-                console.log('First time answering this quesion...');
             }
 
             questionsAnswerMap.set(question.id, new Couple<QuestionMgm, AnswerMgm>(question, answer));
-            console.log('Answer was updated: ' + JSON.stringify(answer));
             // Set & Broadcast the update for the current AttackStrategy
             this.attackStrategyUpdate = attackStrategyUpdate;
         }
@@ -158,11 +145,4 @@ export class DatasharingService {
         this.layoutUpdateSubject.next(null);
         this._attackStrategyUpdateSubject.next(null);
     }
-
-    /*sendRsikProfileToKafka(selfAssessmentID: number): Observable<HttpResponse<void>> {
-        const uri = this.sendRiskProfileToKafkaUrl.replace('{selfAssessmentID}', String(selfAssessmentID));
-
-        return this.http.get<void>(uri, {observe: 'response'})
-            .map((res: HttpResponse<void>) => res);
-    }*/
 }

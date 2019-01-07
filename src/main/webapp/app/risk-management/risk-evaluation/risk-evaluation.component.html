@@ -105,9 +105,11 @@
             </div>
             <div class="col-md-9" *ngIf="selectedAsset && criticalLevel && !detailsLoading">
                 <div class="row">
+                    <!--
                     <div class="col-md-12">
                         <h5>{{selectedAsset.asset.name}}</h5>
                     </div>
+                    -->
                     <div class="col-md-12">
                         <div class="col-md-2 text-left">
                             <b>Likelihood</b>
@@ -177,92 +179,94 @@
                         </ng-container>
                     </div>
                 </div>
-                <!--TA LevelOfInterest Table-->
-                <div class="row">
-                    <div class="col-md-12">
-                        <h5 class="text-center">Threat Agents</h5>
-                        <ngb-tabset>
-                            <ngb-tab title="Level of interest >= 75%">
-                                <ng-template ngbTabContent>
-                                    <table class="table">
-                                        <thead>
-                                        <tr>
-                                            <th scope="col">Threat Agent</th>
-                                            <th scope="col">Level of interest</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody *ngIf="threatAgentInterest.length === 0">
-                                        <p>No data found!</p>
-                                        </tbody>
-                                        <tbody *ngIf="threatAgentInterest.length > 0">
-                                        <tr *ngFor="let threat of threatAgentInterest">
-                                            <td *ngIf="(threat.levelOfInterest * 100) >= 75">
-                                                {{threat.name}}
-                                            </td>
-                                            <td *ngIf="(threat.levelOfInterest * 100) >= 75">
-                                                {{threat.levelOfInterest | percent}}
-                                            </td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
+                <ngb-accordion #acc="ngbAccordion" activeIds="ngb-panel-0">
+                        <ngb-panel>
+                        <ng-template ngbPanelTitle>
+                                <h5>Threat Agents</h5>
+                        </ng-template>
+                          <ng-template ngbPanelContent>
+                                <ngb-tabset>
+                                        <ngb-tab title="Level of interest >= 75%">
+                                            <ng-template ngbTabContent>
+                                                <table class="table">
+                                                    <thead>
+                                                    <tr>
+                                                        <th scope="col">Threat Agent</th>
+                                                        <th scope="col">Level of interest</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody *ngIf="threatAgentInterest.length === 0">
+                                                    <p>No data found!</p>
+                                                    </tbody>
+                                                    <tbody *ngIf="threatAgentInterest.length > 0">
+                                                    <tr *ngFor="let threat of threatAgentInterest">
+                                                        <td *ngIf="(threat.levelOfInterest * 100) >= 75">
+                                                            {{threat.name}}
+                                                        </td>
+                                                        <td *ngIf="(threat.levelOfInterest * 100) >= 75">
+                                                            {{threat.levelOfInterest | percent}}
+                                                        </td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </ng-template>
+                                        </ngb-tab>
+                                        <ngb-tab title="Level of interest < 75%">
+                                            <ng-template ngbTabContent>
+                                                <table class="table">
+                                                    <thead>
+                                                    <tr>
+                                                        <th scope="col">Threat Agent</th>
+                                                        <th scope="col">Level of interest</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody *ngIf="threatAgentInterest.length === 0">
+                                                    <p>No data found!</p>
+                                                    </tbody>
+                                                    <tbody *ngIf="threatAgentInterest.length > 0">
+                                                    <tr *ngFor="let threat of threatAgentInterest">
+                                                        <td *ngIf="(threat.levelOfInterest * 100) < 75">
+                                                            {{threat.name}}
+                                                        </td>
+                                                        <td *ngIf="(threat.levelOfInterest * 100) < 75">
+                                                            {{threat.levelOfInterest | percent}}
+                                                        </td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </ng-template>
+                                        </ngb-tab>
+                                    </ngb-tabset>
+                          </ng-template>
+                        </ngb-panel>
+                        <ngb-panel>
+                                <ng-template ngbPanelTitle>
+                                        <h5>Attack Strategies</h5>
                                 </ng-template>
-                            </ngb-tab>
-                            <ngb-tab title="Level of interest < 75%">
-                                <ng-template ngbTabContent>
-                                    <table class="table">
-                                        <thead>
-                                        <tr>
-                                            <th scope="col">Threat Agent</th>
-                                            <th scope="col">Level of interest</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody *ngIf="threatAgentInterest.length === 0">
-                                        <p>No data found!</p>
-                                        </tbody>
-                                        <tbody *ngIf="threatAgentInterest.length > 0">
-                                        <tr *ngFor="let threat of threatAgentInterest">
-                                            <td *ngIf="(threat.levelOfInterest * 100) < 75">
-                                                {{threat.name}}
-                                            </td>
-                                            <td *ngIf="(threat.levelOfInterest * 100) < 75">
-                                                {{threat.levelOfInterest | percent}}
-                                            </td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
-                                </ng-template>
-                            </ngb-tab>
-                        </ngb-tabset>
-                    </div>
-                </div>
-                <!--AttackStrategies - Mitigations Table-->
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="card card-body table-responsive text-nowrap">
-                            <h5 class="text-center">Attack Strategies</h5>
-                            <table class="table" *ngIf="mapAssetAttacks.get(selectedAsset.id)">
-                                <thead>
-                                <tr>
-                                    <th>Attack Strategy</th>
-                                    <th>Mitigations</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr *ngFor="let attackChance of mapAssetAttacks.get(selectedAsset.id)">
-                                    <td>{{attackChance.attackStrategy.name}}</td>
-                                    <td>
-                                    <span
-                                        *ngFor="let mitigation of attackChance.attackStrategy.mitigations; let last = last">
-                                        <a class="form-control-static"
-                                           [routerLink]="['../mitigation-mgm', mitigation?.id ]">{{mitigation.name}}</a>{{last ? '' : ', '}}
-                                    </span>
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
+                                  <ng-template ngbPanelContent>
+                                        <table class="table" *ngIf="mapAssetAttacks.get(selectedAsset.id)">
+                                                <thead>
+                                                <tr>
+                                                    <th>Attack Strategy</th>
+                                                    <th>Mitigations</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                <tr *ngFor="let attackChance of mapAssetAttacks.get(selectedAsset.id)">
+                                                    <td>{{attackChance.attackStrategy.name}}</td>
+                                                    <td>
+                                                    <span
+                                                        *ngFor="let mitigation of attackChance.attackStrategy.mitigations; let last = last">
+                                                        <a class="form-control-static"
+                                                           [routerLink]="['../mitigation-mgm', mitigation?.id ]">{{mitigation.name}}</a>{{last ? '' : ', '}}
+                                                    </span>
+                                                    </td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                      </ng-template>
+                                    </ngb-panel>
+                        </ngb-accordion>
             </div>
         </div>
         <!--

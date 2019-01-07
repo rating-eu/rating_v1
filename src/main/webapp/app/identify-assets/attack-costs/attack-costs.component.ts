@@ -41,16 +41,12 @@ export class AttackCostsComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        console.log('CostTyep keys');
-        console.log(JSON.stringify(Object.keys(CostType)));
-
         this.mySelf = this.mySelfAssessmentService.getSelfAssessment();
         this.idaUtilsService.getMySavedAssets(this.mySelf).toPromise().then((mySavedAssets) => {
             if (mySavedAssets) {
                 this.myAssets = mySavedAssets;
                 this.myAssets = _.orderBy(this.myAssets, ['asset.name'], ['asc']);
                 this.myAssets.forEach((myAsset) => {
-                    // this.myAssetStatus.set(myAsset.id, 'NOT COMPLETED');
                     if (myAsset.costs !== null && myAsset.costs.length > 0) {
                         this.myAssetStatus.set(myAsset.id, 'COMPLETED');
                     } else {
@@ -61,21 +57,6 @@ export class AttackCostsComponent implements OnInit {
                     if (mySavedDirect) {
                         this.myDirects = mySavedDirect;
                         this.myDirects = _.orderBy(this.myDirects, ['myAsset.asset.name'], ['asc']);
-                        /*
-                        this.myDirects.forEach((myDirect) => {
-                          if (myDirect.costs !== null && myDirect.costs.length > 0) {
-                            this.myAssetStatus.set(myDirect.myAsset.id, 'COMPLETED');
-                          } else {
-                            this.myAssetStatus.set(myDirect.myAsset.id, 'NOT COMPLETED');
-                            for (const indirect of myDirect.effects) {
-                              if (indirect.costs && indirect.costs.length > 0) {
-                                this.myAssetStatus.set(myDirect.myAsset.id, 'COMPLETED');
-                                break;
-                              }
-                            }
-                          }
-                        });
-                        */
                     }
                 });
             }
@@ -128,9 +109,6 @@ export class AttackCostsComponent implements OnInit {
     }
 
     public setCostOnDirect(costType: CostType) {
-        console.log('Set COST on DIRECT');
-        console.log('CostType: ' + costType);
-
         if (costType) {
             const myAssetIndex = _.findIndex(this.myAssets, {id: this.selectedDirectAsset.myAsset.id});
 
@@ -143,8 +121,6 @@ export class AttackCostsComponent implements OnInit {
             this.isMyAssetUpdated = true;
 
             const costIndex = _.findIndex(this.myAssets[myAssetIndex].costs, {type: selectedCostType});
-            console.log('Cost Index: ' + costIndex);
-
             if (costIndex !== -1) {
                 // Remove the existing AttackCost inplace
                 this.myAssets[myAssetIndex].costs.splice(costIndex, 1);
@@ -264,40 +240,6 @@ export class AttackCostsComponent implements OnInit {
                     this.ref.detectChanges();
                 });
             }
-            /*
-            this.idaUtilsService.updateDirectAsset(this.selectedDirectAsset).toPromise().then((myDirectAsset) => {
-              if (myDirectAsset) {
-                const index = _.findIndex(this.myDirects, { id: myDirectAsset.id });
-                if (index !== -1) {
-                  this.myDirects.splice(index, 1, myDirectAsset);
-                } else {
-                  this.myDirects.push(_.cloneDeep(myDirectAsset));
-                }
-                this.isMyAssetUpdated = false;
-                this.loading = false;
-                if (myDirectAsset.costs && myDirectAsset.costs.length > 0) {
-                  this.myAssetStatus.set(idMyAsset, 'COMPLETED');
-                } else {
-                  for (const indirect of myDirectAsset.effects) {
-                    if (indirect.costs && indirect.costs.length > 0) {
-                      this.myAssetStatus.set(idMyAsset, 'COMPLETED');
-                      break;
-                    }
-                  }
-                  if (this.myAssetStatus.get(idMyAsset) === 'IN EVALUATION') {
-                    this.myAssetStatus.set(idMyAsset, 'NOT COMPLETED');
-                  }
-                }
-                if (onNext) {
-                  this.router.navigate(['/identify-asset/attack-costs']);
-                }
-              }
-              this.ref.detectChanges();
-            }).catch(() => {
-              this.loading = false;
-              this.router.navigate(['/dashboard']);
-            });
-            */
         } else {
             this.loading = false;
             this.ref.detectChanges();

@@ -51,8 +51,6 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
             this.route.params.subscribe(
                 (params: Params) => {
                     const routeQuestionnairePurpose = params['purpose'];
-                    console.log('Route purpose: ' + routeQuestionnairePurpose);
-
                     switch (routeQuestionnairePurpose) {
                         case QuestionnairePurpose[QuestionnairePurpose.ID_THREAT_AGENT]: {
                             this.purpose = QuestionnairePurpose.ID_THREAT_AGENT;
@@ -71,34 +69,6 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
                 }
             )
         );
-
-        // this.selfAssessment = this.selfAssessmentService.getSelfAssessment();
-        /*
-        this.subscriptions.push(
-            this.accountService.get().subscribe((response1) => {
-                this.account = response1.body;
-
-                this.subscriptions.push(
-                    this.userService.find(this.account['login']).subscribe((response2) => {
-                        this.user = response2.body;
-
-                        this.subscriptions.push(
-                            this.questionnairesService.getQuestionnaireStatusesBySelfAssessmentAndUser(this.selfAssessment, this.user)
-                                .subscribe((response: QuestionnaireStatusMgm[]) => {
-                                    this.questionnaireStatuses = response;
-                                    this.questionnaireStatusesMap = new Map<number, QuestionnaireStatusMgm>();
-                                    this.questionnaireStatuses.forEach((questionnaireStatus: QuestionnaireStatusMgm) => {
-                                        this.questionnaireStatusesMap.set(questionnaireStatus.questionnaire.id, questionnaireStatus);
-                                    });
-
-                                    this.dataSharingService.questionnaireStatusesMap = this.questionnaireStatusesMap;
-                                })
-                        );
-                    })
-                );
-            })
-        );
-        */
     }
 
     private async loadQuestionnaire() {
@@ -168,19 +138,11 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
     }
 
     showThreatAgents(questionnaireStatus: QuestionnaireStatusMgm) {
-        console.log('Show Threat Agents...');
-        console.log('Status...');
-        console.log(JSON.stringify(questionnaireStatus));
-
         // delegate the routing stuff to the service inside the ThreatAgents module.
         this.identifyThreatAgentsService.showThreatAgentsResult(questionnaireStatus);
     }
 
     showAttackStrategies(questionnaireStatus: QuestionnaireStatusMgm) {
-        console.log('Show Attack Strategies...');
-        console.log('Status...');
-        console.log(JSON.stringify(questionnaireStatus));
-
         this.evaluateWeaknessService.showEvaluatedAttackStrategies(questionnaireStatus);
     }
 }

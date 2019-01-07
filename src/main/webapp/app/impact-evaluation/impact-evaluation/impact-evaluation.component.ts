@@ -89,31 +89,6 @@ export class ImpactEvaluationComponent implements OnInit {
     public financialAssetsReturn = 5.0;
     public lossOfIntangiblePercentage = 18.29;
 
-    /*
-    public sectorialPercentageMatrix: any[] = [
-      {
-        ipSectorialPercentage: [] = [
-          { financeAmdInsurence: 13.6 },
-          { healthCareAndSocialAssistance: 14.7 },
-          { information: 27.5 },
-          { professionalScientificAndTechnicalService: 6.1 }
-        ],
-        keyCompSectorialPercentage: [] = [
-          { financeAmdInsurence: 45.3 },
-          { healthCareAndSocialAssistance: 63.3 },
-          { information: 27.8 },
-          { professionalScientificAndTechnicalService: 53.7 }
-        ],
-        orgCapitalSectorialPercentage: [] = [
-          { financeAmdInsurence: 41.1 },
-          { healthCareAndSocialAssistance: 22 },
-          { information: 44.7 },
-          { professionalScientificAndTechnicalService: 40.2 }
-        ],
-      }
-    ];
-    */
-
     constructor(
         private mySelfAssessmentService: SelfAssessmentMgmService,
         private impactService: ImpactEvaluationService,
@@ -262,11 +237,6 @@ export class ImpactEvaluationComponent implements OnInit {
                                 this.financialAssetsAkaCurrent.splice(currentIndex, 1, _.clone(asset));
                             }
                         }
-
-                        // this.impactFormStepOne.controls['discountingRate'].setValue(this.wp3Status.economicCoefficients.discountingRate);
-                        // this.impactFormStepTwo.controls['physicalAssetsReturn'].setValue(this.wp3Status.economicCoefficients.physicalAssetsReturn);
-                        // this.impactFormStepTwo.controls['financialAssetsReturn'].setValue(this.wp3Status.economicCoefficients.financialAssetsReturn);
-                        // this.impactFormStepThree.controls['lossOfIntangiblePercentage'].setValue(this.wp3Status.economicCoefficients.lossOfIntangible);
 
                         this.discountingRate = this.wp3Status.economicCoefficients.discountingRate;
                         this.physicalAssetsReturn = this.wp3Status.economicCoefficients.physicalAssetsReturn;
@@ -441,7 +411,6 @@ export class ImpactEvaluationComponent implements OnInit {
             inputs.ebits = ebits;
             inputs.economicCoefficients = new EconomicCoefficientsMgm();
             inputs.economicCoefficients.discountingRate = discounting;
-            console.log(inputs);
             this.impactService.evaluateStepOne(inputs, this.mySelf).toPromise().then((res) => {
                 if (res) {
                     this.economicPerformance = Math.round(res.economicResults.economicPerformance * 100) / 100;
@@ -465,24 +434,6 @@ export class ImpactEvaluationComponent implements OnInit {
         if (!dataIsOk) {
             return;
         }
-        /*let physicalAssetsReturn = 7.1;
-        let financialAssetsReturn = 5.0;*/
-        /*if (this.impactFormStepTwo.get('physicalAssetsReturn').value &&
-            !isNaN(parseFloat(this.impactFormStepTwo.get('physicalAssetsReturn').value))) {
-            if (String(this.impactFormStepTwo.get('physicalAssetsReturn').value).includes(',')) {
-                physicalAssetsReturn = Math.round(Number((this.impactFormStepTwo.get('physicalAssetsReturn').value as string).replace(/,/g, '.')) * 100) / 100;
-            } else {
-                physicalAssetsReturn = Math.round(Number(this.impactFormStepTwo.get('physicalAssetsReturn').value as string) * 100) / 100;
-            }
-        }
-        if (this.impactFormStepTwo.get('financialAssetsReturn').value &&
-            !isNaN(parseFloat(this.impactFormStepTwo.get('financialAssetsReturn').value))) {
-            if (String(this.impactFormStepTwo.get('financialAssetsReturn').value).includes(',')) {
-                financialAssetsReturn = Math.round(Number(String(this.impactFormStepTwo.get('financialAssetsReturn').value).replace(/,/g, '.')) * 100) / 100;
-            } else {
-                financialAssetsReturn = Math.round(Number(String(this.impactFormStepTwo.get('financialAssetsReturn').value)) * 100) / 100;
-            }
-        }*/
         if (this.financialAssetsAkaCurrent && this.physicalAssetsAkaFixed && this.financialAssetsReturn && this.physicalAssetsReturn) {
             const inputs: Wp3BundleInput = new Wp3BundleInput();
             inputs.economicCoefficients = new EconomicCoefficientsMgm();
@@ -490,7 +441,6 @@ export class ImpactEvaluationComponent implements OnInit {
             inputs.economicCoefficients.financialAssetsReturn = this.financialAssetsReturn;
             inputs.myAssets = [];
             inputs.myAssets = this.financialAssetsAkaCurrent.concat(this.physicalAssetsAkaFixed);
-            console.log(inputs);
             this.impactService.evaluateStepTwo(inputs, this.mySelf).toPromise().then((res) => {
                 if (res) {
                     this.intangibleDrivingEarnings = Math.round(res.economicResults.intangibleDrivingEarnings * 100) / 100;
@@ -505,21 +455,10 @@ export class ImpactEvaluationComponent implements OnInit {
             // gestire l'errore con un messaggio sul campo input
             return;
         }
-        console.log('EVALUATE STEP THREE');
-        // let lossOfIntangiblePercentage = 18.29;
-        /*if (this.impactFormStepThree.get('lossOfIntangiblePercentage').value &&
-            !isNaN(parseFloat(this.impactFormStepThree.get('lossOfIntangiblePercentage').value))) {
-            if (String(this.impactFormStepThree.get('lossOfIntangiblePercentage').value).includes(',')) {
-                lossOfIntangiblePercentage = Math.round(Number((this.impactFormStepThree.get('lossOfIntangiblePercentage').value as string).replace(/,/g, '.')) * 100) / 100;
-            } else {
-                lossOfIntangiblePercentage = Math.round(Number(this.impactFormStepThree.get('lossOfIntangiblePercentage').value as string) * 100) / 100;
-            }
-        }*/
         if (this.lossOfIntangiblePercentage !== undefined && this.lossOfIntangiblePercentage !== null) {
             const inputs: Wp3BundleInput = new Wp3BundleInput();
             inputs.economicCoefficients = new EconomicCoefficientsMgm();
             inputs.economicCoefficients.lossOfIntangible = this.lossOfIntangiblePercentage;
-            console.log(inputs);
             this.impactService.evaluateStepThree(inputs, this.mySelf).toPromise().then((res) => {
                 if (res) {
                     this.lossOnintangibleAssetsDueToCyberattacks = Math.round(res.economicResults.intangibleLossByAttacks * 100) / 100;
@@ -572,15 +511,12 @@ export class ImpactEvaluationComponent implements OnInit {
     }
 
     public evaluateStepFive() {
-        console.log('STEP FIVE');
-        console.log('EVALUATE STEP FIVE');
         const inputs: Wp3BundleInput = new Wp3BundleInput();
         if (!this.choosedSectorType) {
             inputs.sectorType = SectorType.GLOBAL;
         } else {
             inputs.sectorType = this.choosedSectorType;
         }
-        console.log(inputs);
         this.impactService.evaluateStepFive(inputs, this.mySelf).toPromise().then((res) => {
             if (res) {
                 for (const splitting of res.splittingValues) {
@@ -622,14 +558,6 @@ export class ImpactEvaluationComponent implements OnInit {
                 }
             }
         });
-        /*
-         this.splittingOnOrgCapital = Math.round(Math.random() * 10000) / 100;
-         this.splittingOnKeyComp = Math.round(Math.random() * 10000) / 100;
-         this.splittingOnIP = Math.round(Math.random() * 10000) / 100;
-         this.splittingOnSectorialIP = Math.round(Math.random() * 10000) / 100;
-         this.splittingOnSectorialKeyComp = Math.round(Math.random() * 10000) / 100;
-         this.splittingOnSectorialOrgCapital = Math.round(Math.random() * 10000) / 100;
-         */
     }
 
     private evaluateSplittingValue(category: string, evaluatedAsset?: MyAssetMgm) {

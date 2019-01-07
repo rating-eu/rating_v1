@@ -24,45 +24,45 @@ import {MatHorizontalStepper} from '@angular/material';
 export class AttackMapWidgetComponent implements OnInit, OnDestroy {
     public loading = false;
     public isCollapsed = true;
-    viewDetails = false;
-    isViewDivDetailsVisible = false;
-    datailParam: number;
+    public viewDetails = false;
+    public isViewDivDetailsVisible = false;
+    public datailParam: number;
     private selectedAugmentedAttackStrategy: AugmentedAttackStrategy = null;
 
     private _subscriptions: Subscription[] = [];
-    debug = false;
+    public debug = false;
 
-    selfAssessment: SelfAssessmentMgm;
+    public selfAssessment: SelfAssessmentMgm;
 
     // ThreatAgents
-    threatAgents: ThreatAgentMgm[];
-    selectedThreatAgent: ThreatAgentMgm;
+    public threatAgents: ThreatAgentMgm[];
+    public selectedThreatAgent: ThreatAgentMgm;
 
     // CyberKillChain7 Phases
-    ckc7Phases$: Observable<HttpResponse<PhaseMgm[]>>;
-    ckc7Phases: PhaseMgm[];
+    public ckc7Phases$: Observable<HttpResponse<PhaseMgm[]>>;
+    public ckc7Phases: PhaseMgm[];
 
     // Attack Levels
-    attackLevels$: Observable<HttpResponse<LevelMgm[]>>;
-    attackLevels: LevelMgm[];
+    public attackLevels$: Observable<HttpResponse<LevelMgm[]>>;
+    public attackLevels: LevelMgm[];
 
     // AttackStrategies
-    attackStrategies$: Observable<HttpResponse<AttackStrategyMgm[]>>;
-    attackStrategies: AttackStrategyMgm[];
+    public attackStrategies$: Observable<HttpResponse<AttackStrategyMgm[]>>;
+    public attackStrategies: AttackStrategyMgm[];
     /**
      * Map used to update the likelihoods of each AttackStrategy in time O(1).
      */
-    augmentedAttackStrategiesMap: Map<number/*AttackStrategy ID*/, AugmentedAttackStrategy/*AttackStrategy likelihoods*/>;
+    public augmentedAttackStrategiesMap: Map<number/*AttackStrategy ID*/, AugmentedAttackStrategy/*AttackStrategy likelihoods*/>;
 
-    attackMatrix$: Observable<Map<Number, Map<Number, AugmentedAttackStrategy>>>;
+    public attackMatrix$: Observable<Map<Number, Map<Number, AugmentedAttackStrategy>>>;
 
     // Attack Plan Matrix
-    attacksCKC7Matrix: Map<Number, Map<Number, AugmentedAttackStrategy>>;
+    public attacksCKC7Matrix: Map<Number, Map<Number, AugmentedAttackStrategy>>;
 
     // Likelihood Steps
-    likelihoodStep: LikelihoodStep = LikelihoodStep.INITIAL_LIKELIHOOD;
-    likelihoodStepEnum = LikelihoodStep;
-    likelihoodStepEnabled: Map<number/*Step-Number*/, boolean>;
+    public likelihoodStep: LikelihoodStep = LikelihoodStep.INITIAL_LIKELIHOOD;
+    public likelihoodStepEnum = LikelihoodStep;
+    public likelihoodStepEnabled: Map<number/*Step-Number*/, boolean>;
 
     constructor(
         private selfAssessmentService: SelfAssessmentMgmService,
@@ -73,15 +73,12 @@ export class AttackMapWidgetComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.loading = true;
-
         this.likelihoodStepEnabled = new Map();
         this.likelihoodStepEnabled.set(LikelihoodStep.INITIAL_LIKELIHOOD, false);
         this.likelihoodStepEnabled.set(LikelihoodStep.CONTEXTUAL_LIKELIHOOD, false);
         this.likelihoodStepEnabled.set(LikelihoodStep.REFINED_LIKELIHOOD, false);
-
         this.selfAssessment = this.selfAssessmentService.getSelfAssessment();
         this.threatAgents = this.selfAssessment.threatagents;
-
         this.ckc7Phases$ = this.phaseService.query();
         this.attackLevels$ = this.levelService.query();
         this.attackMatrix$ = this.attackMapService.getAttackCKC7Matrix(this.selfAssessment.id);
@@ -121,27 +118,22 @@ export class AttackMapWidgetComponent implements OnInit, OnDestroy {
                             augmentedAttackStrategiesByReference.push(augmentedAttackStrategy);
                         }
                     }
-
                     // Finally we replace the initial AttackStrategies with those by REFERENCE
                     // (to allow one-time update for all the occurrences of the same AttackStrategy in different Levels or Phases)
                     this.attacksCKC7Matrix[Number(levelID)][Number(phaseID)] = augmentedAttackStrategiesByReference;
                 }
             }
-
             // Check which steps (INITIAL, CONTEXTUAL, REFINED) are available.
             const allAugmentedAttackStrategies: AugmentedAttackStrategy[] = Array.from(this.augmentedAttackStrategiesMap.values());
 
             if (allAugmentedAttackStrategies && allAugmentedAttackStrategies.length > 0) {
                 const augmentedAttackStrategy: AugmentedAttackStrategy = allAugmentedAttackStrategies[0];
-
                 if (augmentedAttackStrategy.initialLikelihood > 0) {
                     this.likelihoodStepEnabled.set(LikelihoodStep.INITIAL_LIKELIHOOD, true);
                 }
-
                 if (augmentedAttackStrategy.contextualLikelihood > 0) {
                     this.likelihoodStepEnabled.set(LikelihoodStep.CONTEXTUAL_LIKELIHOOD, true);
                 }
-
                 if (augmentedAttackStrategy.refinedLikelihood > 0) {
                     this.likelihoodStepEnabled.set(LikelihoodStep.REFINED_LIKELIHOOD, true);
                 }
