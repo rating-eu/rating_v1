@@ -79,7 +79,7 @@ export class SplittingWidgetComponent implements OnInit {
       }
     });
   }
-
+  /*
   public selectSplitting(splittingType: string) {
     if (this.selectedSplitting === splittingType) {
       this.selectedSplitting = undefined;
@@ -124,4 +124,5 @@ export class SplittingWidgetComponent implements OnInit {
       }
     }
   }
+  */
 }

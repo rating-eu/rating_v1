@@ -37,15 +37,11 @@
               <i *ngIf="!assetClusteringStatus" style="color: orange" class="fa fa-exclamation-triangle" aria-hidden="true"></i>
             </td>
             <td class="text-center">
-              <a *ngIf="!assetClusteringStatus" [routerLink]="['/identify-asset/asset-clustering']"><i class="fa fa-plus-square"
+              <a *ngIf="!assetClusteringStatus" [routerLink]="['/identify-asset/asset-clustering']"><i class="fa fa-plus-square fa-lg"
                   placement="top" ngbTooltip="Create" aria-hidden="true"></i></a>
               <ng-container *ngIf="assetClusteringStatus">
-                <a href="javascript:void(0)"><i placement="top" ngbTooltip="View"
-                    class="fa fa-eye" aria-hidden="true"></i></a>
                 <a href="javascript:void(0)" (click)="open(alert,'/identify-asset/asset-clustering', 'If you continue you erase previous saved data. Do you want to proceed?')"><i
-                    placement="top" ngbTooltip="Edit" class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
-                <a href="javascript:void(0)" (click)="open(alert, undefined, 'If you continue you erase saved data. Do you want to proceed?')"><i
-                    placement="top" ngbTooltip="Delete" class="fa fa-trash" aria-hidden="true"></i></a>
+                    placement="top" ngbTooltip="Edit" class="fa fa-pencil-square-o fa-lg" aria-hidden="true"></i></a>
               </ng-container>
             </td>
           </tr>
@@ -61,14 +57,10 @@
             </td>
             <td class="text-center">
               <a *ngIf="!identifyThreatAgentsStatus && assetClusteringStatus" [routerLink]="['/identify-threat-agent/questionnaires/ID_THREAT_AGENT']"><i
-                  class="fa fa-plus-square" placement="top" ngbTooltip="Create" aria-hidden="true"></i></a>
+                  class="fa fa-plus-square fa-lg" placement="top" ngbTooltip="Create" aria-hidden="true"></i></a>
               <ng-container *ngIf="identifyThreatAgentsStatus">
-                <a href="javascript:void(0)"><i placement="top" ngbTooltip="View"
-                    class="fa fa-eye" aria-hidden="true"></i></a>
                 <a href="javascript:void(0)" (click)="open(alert,'/identify-threat-agent/questionnaires/ID_THREAT_AGENT', 'If you continue you erase previous saved data. Do you want to proceed?')"><i
-                    placement="top" ngbTooltip="Edit" class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
-                <a href="javascript:void(0)" (click)="open(alert, undefined, 'If you continue you erase saved data. Do you want to proceed?')"><i
-                    placement="top" ngbTooltip="Delete" class="fa fa-trash" aria-hidden="true"></i></a>
+                    placement="top" ngbTooltip="Edit" class="fa fa-pencil-square-o fa-lg" aria-hidden="true"></i></a>
               </ng-container>
             </td>
           </tr>
@@ -83,14 +75,10 @@
             </td>
             <td class="text-center">
               <a *ngIf="!assessVulnerablitiesStatus && identifyThreatAgentsStatus" [routerLink]="['/evaluate-weakness/questionnaires/SELFASSESSMENT']"><i
-                  class="fa fa-plus-square" placement="top" ngbTooltip="Create" aria-hidden="true"></i></a>
+                  class="fa fa-plus-square fa-lg" placement="top" ngbTooltip="Create" aria-hidden="true"></i></a>
               <ng-container *ngIf="assessVulnerablitiesStatus">
-                <a href="javascript:void(0)"><i placement="top" ngbTooltip="View"
-                    class="fa fa-eye" aria-hidden="true"></i></a>
                 <a href="javascript:void(0)" (click)="open(alert,'/evaluate-weakness/questionnaires/SELFASSESSMENT', 'If you continue you erase previous saved data. Do you want to proceed?')"><i
-                    placement="top" ngbTooltip="Edit" class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
-                <a href="javascript:void(0)" (click)="open(alert, undefined, 'If you continue you erase saved data. Do you want to proceed?')"><i
-                    placement="top" ngbTooltip="Delete" class="fa fa-trash" aria-hidden="true"></i></a>
+                    placement="top" ngbTooltip="Edit" class="fa fa-pencil-square-o fa-lg" aria-hidden="true"></i></a>
               </ng-container>
             </td>
           </tr>
@@ -102,15 +90,11 @@
               <i *ngIf="!impactEvaluationStatus" style="color: orange" class="fa fa-exclamation-triangle" aria-hidden="true"></i>
             </td>
             <td class="text-center">
-              <a *ngIf="!impactEvaluationStatus && assessVulnerablitiesStatus" [routerLink]="['/impact-evaluation']"><i class="fa fa-plus-square"
+              <a *ngIf="!impactEvaluationStatus && assessVulnerablitiesStatus" [routerLink]="['/impact-evaluation']"><i class="fa fa-plus-square fa-lg"
                   placement="top" ngbTooltip="Create" aria-hidden="true"></i></a>
               <ng-container *ngIf="impactEvaluationStatus">
-                <a href="javascript:void(0)"><i placement="top" ngbTooltip="View"
-                    class="fa fa-eye" aria-hidden="true"></i></a>
                 <a href="javascript:void(0)" (click)="open(alert,'/impact-evaluation', 'If you continue you erase previous saved data. Do you want to proceed?')"><i
-                    placement="top" ngbTooltip="Edit" class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
-                <a href="javascript:void(0)" (click)="open(alert, undefined, 'If you continue you erase saved data. Do you want to proceed?')"><i
-                    placement="top" ngbTooltip="Delete" class="fa fa-trash" aria-hidden="true"></i></a>
+                    placement="top" ngbTooltip="Edit" class="fa fa-pencil-square-o fa-lg" aria-hidden="true"></i></a>
               </ng-container>
             </td>
           </tr>
@@ -123,15 +107,11 @@
               <i *ngIf="!riskEvaluationStatus" style="color: orange" class="fa fa-exclamation-triangle" aria-hidden="true"></i>
             </td>
             <td class="text-center">
-              <a *ngIf="!riskEvaluationStatus && assessVulnerablitiesStatus" [routerLink]="['/risk-management/risk-evaluation']"><i class="fa fa-plus-square"
+              <a *ngIf="!riskEvaluationStatus && assessVulnerablitiesStatus" [routerLink]="['/risk-management/risk-evaluation']"><i class="fa fa-plus-square fa-lg"
                   placement="top" ngbTooltip="Create" aria-hidden="true"></i></a>
               <ng-container *ngIf="riskEvaluationStatus">
-                <a href="javascript:void(0)"><i placement="top" ngbTooltip="View"
-                    class="fa fa-eye" aria-hidden="true"></i></a>
                 <a href="javascript:void(0)" (click)="open(alert,'/risk-management/risk-evaluation', 'If you continue you erase previous saved data. Do you want to proceed?')"><i
-                    placement="top" ngbTooltip="Edit" class="fa fa-pencil-square-o" aria-hidden="true"></i></a>
-                <a href="javascript:void(0)" (click)="open(alert, undefined, 'If you continue you erase saved data. Do you want to proceed?')"><i
-                    placement="top" ngbTooltip="Delete" class="fa fa-trash" aria-hidden="true"></i></a>
+                    placement="top" ngbTooltip="Edit" class="fa fa-pencil-square-o fa-lg" aria-hidden="true"></i></a>
               </ng-container>
             </td>
           </tr>
