@@ -58,11 +58,7 @@ export class MyCompanyComponent implements OnInit {
     }
 
     saveMyCompany() {
-        console.log('CompanyProfile: ' + JSON.stringify(this.companyProfile));
-
         this.myCompany = new MyCompanyMgm(undefined, this.user, this.companyProfile);
-        console.log('MyCompany: ' + JSON.stringify(this.myCompany));
-
         this.myCompanyService.create(this.myCompany).subscribe((response: HttpResponse<MyCompanyMgm>) => {
             this.myCompany = response.body;
             this.jhiAlertService.success('hermeneutApp.messages.saved', null, null);

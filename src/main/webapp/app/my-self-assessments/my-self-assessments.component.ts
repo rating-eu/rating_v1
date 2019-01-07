@@ -2,7 +2,6 @@ import {Component, OnInit} from '@angular/core';
 import {AccountService, User, UserService} from '../shared';
 import {MyCompanyMgm, MyCompanyMgmService} from '../entities/my-company-mgm';
 import {SelfAssessmentMgm, SelfAssessmentMgmService} from '../entities/self-assessment-mgm';
-import {HttpResponse} from '@angular/common/http';
 import {Router} from '@angular/router';
 import {Subscription} from 'rxjs/Subscription';
 import {JhiEventManager} from 'ng-jhipster';
@@ -43,30 +42,6 @@ export class MySelfAssessmentsComponent implements OnInit {
     ngOnInit() {
         this.loadMySelfAssessments();
         this.registerChangeInSelfAssessments();
-
-        /*this.accountService.get().subscribe((response1) => {
-            const loggedAccount: Account = response1.body;
-            this.userService.find(loggedAccount['login']).subscribe((response2) => {
-                this.user = response2.body;
-
-                if (this.user) {
-                    this.myCompanyService.findByUser(this.user.id).subscribe(
-                        (response3: HttpResponse<MyCompanyMgm>) => {
-                            this.myCompany = response3.body;
-                            this.loadMySelfAssessments();
-                            this.registerChangeInSelfAssessments();
-                        },
-                        (error: any) => {
-
-                            if (error.status === MySelfAssessmentsComponent.NOT_FOUND) {
-                                console.log('MyCompany not found for the user: ' + this.user.login);
-                            }
-                        }
-                    );
-                }
-            });
-        });*/
-
         if (this.selfAssessmentService.isSelfAssessmentSelected()) {
             this.mySelfAssessment = this.selfAssessmentService.getSelfAssessment();
         } else {
@@ -75,12 +50,6 @@ export class MySelfAssessmentsComponent implements OnInit {
     }
 
     private loadMySelfAssessments() {
-        /*this.selfAssessmentService.getSelfAssessmentsByCompanyProfile(this.myCompany.companyProfile.id).subscribe(
-            (response: SelfAssessmentMgm[]) => {
-                this.mySelfAssessments = response;
-            }
-        );*/
-
         this.selfAssessmentService.getMySelfAssessments().toPromise().then(
             (response: SelfAssessmentMgm[]) => {
                 this.mySelfAssessments = response;
@@ -92,7 +61,6 @@ export class MySelfAssessmentsComponent implements OnInit {
         this.selfAssessmentService.setSelfAssessment(selfAssessment);
         this.dataSharingService.updateMySelfAssessment(selfAssessment);
         const link = ['/'];
-        // this.mySidemenuService.roomeMenu('collapsed');
         this.router.navigate(link);
     }
 

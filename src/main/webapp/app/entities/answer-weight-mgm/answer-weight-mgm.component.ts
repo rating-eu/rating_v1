@@ -87,9 +87,6 @@ export class AnswerWeightMgmComponent implements OnInit, OnDestroy {
     }
 
     tabClick(event: MatTabChangeEvent) {
-        console.log('Tab clicked...');
-        console.log(event.tab.textLabel);
-
         this.currentSearch = event.tab.textLabel;
         this.search(this.currentSearch);
     }

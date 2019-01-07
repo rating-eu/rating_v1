@@ -36,26 +36,18 @@ export class FinancialDataWidgetComponent implements OnInit {
   ngOnInit() {
     this.loading = true;
     this.mySelf = this.mySelfAssessmentService.getSelfAssessment();
-    // impactEvaluationStatus checker
     this.status = this.dashService.getStatus();
-    // Retrieve the wp3 status from server
     this.impactService.getStatus(this.mySelf).toPromise().then((status) => {
       if (status) {
         this.wp3Status = status;
         this.assets = this.wp3Status.myTangibleAssets;
         this.assets = _.orderBy(this.assets, ['economicValue'], ['desc']);
         this.loading = false;
-        // this.status.impactEvaluationStatus = true;
-        // this.dashService.updateStatus(this.status);
       } else {
         this.loading = false;
-        // this.status.impactEvaluationStatus = false;
-        // this.dashService.updateStatus(this.status);
       }
     }).catch(() => {
       this.loading = false;
-      // this.status.impactEvaluationStatus = false;
-      // this.dashService.updateStatus(this.status);
     });
 
     this.dashService.getStatusFromServer(this.mySelf, this.dashboardStatus.IMPACT_EVALUATION).toPromise().then((res) => {

@@ -44,8 +44,6 @@ export class RiskMitigationComponent implements OnInit {
       this.loading = false;
       return;
     }
-    console.log(this.asset);
-    console.log(this.attacks);
     this.loading = false;
   }
 

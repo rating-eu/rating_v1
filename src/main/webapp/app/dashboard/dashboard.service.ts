@@ -4,7 +4,6 @@ import { DashboardStepEnum } from './models/enumeration/dashboard-step.enum';
 import { SelfAssessmentMgm } from './../entities/self-assessment-mgm/self-assessment-mgm.model';
 import { Injectable } from '@angular/core';
 import { Observable, BehaviorSubject } from 'rxjs';
-import { MyAnswerMgm } from '../entities/my-answer-mgm';
 
 export interface DashboardStatus {
   assetClusteringStatus: boolean;
