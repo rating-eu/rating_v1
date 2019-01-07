@@ -45,6 +45,21 @@
                                  onDelete="CASCADE"
         />
 
+        <!--AttackCost-->
+        <dropForeignKeyConstraint
+            baseTableName="attack_cost"
+            constraintName="fk_attack_cost_my_asset_id"
+        />
+
+        <addForeignKeyConstraint
+            baseTableName="attack_cost"
+            baseColumnNames="my_asset_id"
+            constraintName="fk_attack_cost_my_asset_id"
+            referencedColumnNames="id"
+            referencedTableName="my_asset"
+            onDelete="CASCADE"
+        />
+
         <!--Economic Coefficients-->
         <dropForeignKeyConstraint
             baseTableName="economic_coefficients"

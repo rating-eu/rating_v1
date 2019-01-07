@@ -8,27 +8,27 @@
 }
 
 .low {
-    background-color: #00FF00;
+    background-color: greenyellow;
     color: black;
 }
 
 .low-medium {
-    background-color: #FFFF00;
+    background-color: yellow;
     color: black;
 }
 
 .medium {
-    background-color: #FFBB00;
+    background-color: orange;
     color: black;
 }
 
 .medium-high {
-    background-color: #FF7700;
+    background-color: orangered;
     color: black;
 }
 
 .high {
-    background-color: #FF0000;
+    background-color:red;
     color: black;
 }
 
