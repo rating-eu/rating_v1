@@ -254,7 +254,6 @@ relationship ManyToMany {
     Question{attackStrategies(name)} to AttackStrategy,
     SelfAssessment{companyGroup(name)} to CompanyGroup,
     SelfAssessment{threatagent(name)} to ThreatAgent,
-    SelfAssessment{questionnaire(name)} to Questionnaire,
     AttackStrategy{level(name)} to Level,
     AttackStrategy{phase(name)} to Phase,
     Question{answers(name)} to Answer{question(name)}
