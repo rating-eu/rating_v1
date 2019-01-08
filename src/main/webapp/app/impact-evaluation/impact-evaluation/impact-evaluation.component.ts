@@ -832,12 +832,13 @@ export class ImpactEvaluationComponent implements OnInit {
                     return;
                 }
                 this.evaluateStepTwo();
+                // TODO testare timing
                 setTimeout(() => {
-                    this.evaluateStepFive();
+                    this.evaluateStepThree();
                     setTimeout(() => {
-                        this.evaluateStepThree();
+                        this.evaluateStepFour();
                         setTimeout(() => {
-                            this.evaluateStepFour();
+                            this.evaluateStepFive();
                         }, 200);
                     }, 200);
                 }, 200);
