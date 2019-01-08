@@ -9,19 +9,40 @@
 
         <mat-horizontal-stepper (selectionChange)="likelihoodStepChange($event)">
             <mat-step [completed]="false" label="Initial Likelihood">&nbsp;
-                <i *ngIf="!likelihoodStepEnabled.get(likelihoodStepEnum.INITIAL_LIKELIHOOD)"
-                   class="fa fa-warning">&nbsp;Data needed for this step is not available. Please fill and submit the
-                    corresponding questionnaire.</i>
+                <div class="text-center" style="margin-top: 50px"
+                     *ngIf="!likelihoodStepEnabled.get(likelihoodStepEnum.INITIAL_LIKELIHOOD)">
+                    <p style="color: orange">
+                        <i class="fa fa-exclamation-triangle fa-4x" aria-hidden="true"></i>
+                    </p>
+                    <p style="color: grey">
+                        <i>Data needed for this step is not available. Please fill
+                            and submit the corresponding questionnaire.</i>
+                    </p>
+                </div>
             </mat-step>
             <mat-step [completed]="false" label="Contextual Likelihood">&nbsp;
-                <i *ngIf="!likelihoodStepEnabled.get(likelihoodStepEnum.CONTEXTUAL_LIKELIHOOD)"
-                   class="fa fa-warning">&nbsp;Data needed for this step is not available. Please fill and submit the
-                    corresponding questionnaire.</i>
+                <div class="text-center" style="margin-top: 50px"
+                     *ngIf="!likelihoodStepEnabled.get(likelihoodStepEnum.CONTEXTUAL_LIKELIHOOD)">
+                    <p style="color: orange">
+                        <i class="fa fa-exclamation-triangle fa-4x" aria-hidden="true"></i>
+                    </p>
+                    <p style="color: grey">
+                        <i>Data needed for this step is not available. Please fill
+                            and submit the corresponding questionnaire.</i>
+                    </p>
+                </div>
             </mat-step>
             <mat-step [completed]="false" label="Refined Likelihood">&nbsp;
-                <i *ngIf="!likelihoodStepEnabled.get(likelihoodStepEnum.REFINED_LIKELIHOOD)"
-                   class="fa fa-warning">&nbsp;Data needed for this step is not available. Please fill and submit the
-                    corresponding questionnaire.</i>
+                <div class="text-center" style="margin-top: 50px"
+                     *ngIf="!likelihoodStepEnabled.get(likelihoodStepEnum.REFINED_LIKELIHOOD)">
+                    <p style="color: orange">
+                        <i class="fa fa-exclamation-triangle fa-4x" aria-hidden="true"></i>
+                    </p>
+                    <p style="color: grey">
+                        <i>Data needed for this step is not available. Please fill
+                            and submit the corresponding questionnaire.</i>
+                    </p>
+                </div>
             </mat-step>
         </mat-horizontal-stepper>
 
