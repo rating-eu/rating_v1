@@ -33,7 +33,7 @@
                 </div>
             </ng-container>
             <ng-container *ngIf="threatAgents.length>0">
-                <div *ngIf="!viewDetails" class="table-responsive">
+                <div class="table-responsive">
                     <select class="m-1" [(ngModel)]="selectedThreatAgent" (ngModelChange)="threatAgentChanged($event)">
                         <option [ngValue]="null" selected></option>
                         <option *ngFor="let threatAgent of threatAgents" [ngValue]="threatAgent">
@@ -160,28 +160,6 @@
                             </td>
                         </tbody>
                     </table>
-                </div>
-
-                <div *ngIf="isDetailVisible">
-                    <div class="row">
-                        <div class="col-md-11">
-                            <h4>TITLE</h4>
-                        </div>
-                        <div class="col-md-1">
-                            <button (click)="hideDetails()">X</button>
-                        </div>
-                    </div>
-                    <div class="row">
-                        DESCRIPTION DETATILS
-                    </div>
-                    <div class="row">
-                        <div class="col-md-6">
-                            ThreatAgents
-                        </div>
-                        <div class="col-md-6">
-                            Assets
-                        </div>
-                    </div>
                 </div>
                 <div *ngIf="isViewDivDetailsVisible" id="details">
                     <div class="col-md-12 text-right">

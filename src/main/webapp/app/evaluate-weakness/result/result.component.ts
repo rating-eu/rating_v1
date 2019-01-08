@@ -26,7 +26,8 @@ import * as _ from 'lodash';
     ]
 })
 export class WeaknessResultComponent implements OnInit, OnDestroy {
-    viewDetails = false;
+    public isViewDivDetailsVisible = false;
+    public datailParam: number;
     private selectedAugmentedAttackStrategy: AugmentedAttackStrategy = null;
 
     private _subscriptions: Subscription[] = [];
@@ -174,16 +175,11 @@ export class WeaknessResultComponent implements OnInit, OnDestroy {
         this.selectedAugmentedAttackStrategy = augmentedAttackStrategy;
     }
 
-    showDetails() {
-        if (this.selectedAugmentedAttackStrategy) {
-            this.viewDetails = true;
-        } else {
-            this.viewDetails = false;
-        }
-    }
-
-    hideDetails() {
-        this.selectAttackStrategy(null);
-        this.viewDetails = false;
+    viewDivDetails(id: number) {
+        this.datailParam = id;
+        this.isViewDivDetailsVisible = true;
+        setTimeout(() => {
+            document.getElementById('details').scrollIntoView();
+        }, 250);
     }
 }

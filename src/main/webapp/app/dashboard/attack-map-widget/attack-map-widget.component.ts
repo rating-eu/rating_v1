@@ -24,7 +24,6 @@ import {MatHorizontalStepper} from '@angular/material';
 export class AttackMapWidgetComponent implements OnInit, OnDestroy {
     public loading = false;
     public isCollapsed = true;
-    public viewDetails = false;
     public isViewDivDetailsVisible = false;
     public datailParam: number;
     private selectedAugmentedAttackStrategy: AugmentedAttackStrategy = null;
@@ -173,18 +172,5 @@ export class AttackMapWidgetComponent implements OnInit, OnDestroy {
 
     selectAttackStrategy(augmentedAttackStrategy: AugmentedAttackStrategy) {
         this.selectedAugmentedAttackStrategy = augmentedAttackStrategy;
-    }
-
-    showDetails() {
-        if (this.selectedAugmentedAttackStrategy) {
-            this.viewDetails = true;
-        } else {
-            this.viewDetails = false;
-        }
-    }
-
-    hideDetails() {
-        this.selectAttackStrategy(null);
-        this.viewDetails = false;
     }
 }
