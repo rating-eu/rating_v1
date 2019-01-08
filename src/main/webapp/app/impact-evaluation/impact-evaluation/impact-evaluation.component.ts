@@ -79,6 +79,7 @@ export class ImpactEvaluationComponent implements OnInit {
     private user: User;
     private myCompany: MyCompanyMgm;
     public priorities = ['Low', 'Low medium', 'Medium', 'Medium high', 'High'];
+    public sectorString: string;
 
     private sectorChoosed: string;
     private selectedCategory: CategoryType;
@@ -114,26 +115,31 @@ export class ImpactEvaluationComponent implements OnInit {
                                 case CompType[CompType.FINANCE_AND_INSURANCE]: {
                                     this.choosedSectorType = SectorType.FINANCE_AND_INSURANCE;
                                     this.sectorChoosed = 'finance_and_insurance';
+                                    this.sectorString = 'Finance and Insurance';
                                     break;
                                 }
                                 case CompType[CompType.HEALTH_CARE_AND_SOCIAL_ASSISTANCE]: {
                                     this.choosedSectorType = SectorType.HEALTH_CARE_AND_SOCIAL_ASSISTANCE;
                                     this.sectorChoosed = 'health_care_and_social_assistance';
+                                    this.sectorString = 'Health care and social assistance';
                                     break;
                                 }
                                 case CompType[CompType.INFORMATION]: {
                                     this.choosedSectorType = SectorType.INFORMATION;
                                     this.sectorChoosed = 'information';
+                                    this.sectorString = 'Information';
                                     break;
                                 }
                                 case CompType[CompType.PROFESSIONAL_SCIENTIFIC_AND_TECHNICAL_SERVICE]: {
                                     this.choosedSectorType = SectorType.PROFESSIONAL_SCIENTIFIC_AND_TECHNICAL_SERVICE;
                                     this.sectorChoosed = 'professional_scientific_and_technical_service';
+                                    this.sectorString = 'Professional Scientific and Technical Service';
                                     break;
                                 }
                                 case CompType[CompType.OTHER]: {
                                     this.choosedSectorType = SectorType.GLOBAL;
                                     this.sectorChoosed = '';
+                                    this.sectorString = '';
                                 }
                             }
                         }
@@ -247,21 +253,25 @@ export class ImpactEvaluationComponent implements OnInit {
                         switch (this.choosedSectorType.toString()) {
                             case SectorType[SectorType.FINANCE_AND_INSURANCE]: {
                                 this.sectorChoosed = 'finance_and_insurance';
+                                this.sectorString = 'Finance and Insurance';
                                 this.isGlobal = false;
                                 break;
                             }
                             case SectorType[SectorType.HEALTH_CARE_AND_SOCIAL_ASSISTANCE]: {
                                 this.sectorChoosed = 'health_care_and_social_assistance';
+                                this.sectorString = 'Health care and social assistance';
                                 this.isGlobal = false;
                                 break;
                             }
                             case SectorType[SectorType.INFORMATION]: {
                                 this.sectorChoosed = 'information';
+                                this.sectorString = 'Information';
                                 this.isGlobal = false;
                                 break;
                             }
                             case SectorType[SectorType.PROFESSIONAL_SCIENTIFIC_AND_TECHNICAL_SERVICE]: {
                                 this.sectorChoosed = 'professional_scientific_and_technical_service';
+                                this.sectorString = 'Professional Scientific and Technical Service';
                                 this.isGlobal = false;
                                 break;
                             }
@@ -863,22 +873,27 @@ export class ImpactEvaluationComponent implements OnInit {
             switch (this.choosedSectorType.toString()) {
                 case SectorType[SectorType.FINANCE_AND_INSURANCE]: {
                     this.sectorChoosed = 'finance_and_insurance';
+                    this.sectorString = 'Finance and Insurance';
                     break;
                 }
                 case SectorType[SectorType.HEALTH_CARE_AND_SOCIAL_ASSISTANCE]: {
                     this.sectorChoosed = 'health_care_and_social_assistance';
+                    this.sectorString = 'Health care and social assistance';
                     break;
                 }
                 case SectorType[SectorType.INFORMATION]: {
                     this.sectorChoosed = 'information';
+                    this.sectorString = 'Information';
                     break;
                 }
                 case SectorType[SectorType.PROFESSIONAL_SCIENTIFIC_AND_TECHNICAL_SERVICE]: {
                     this.sectorChoosed = 'professional_scientific_and_technical_service';
+                    this.sectorString = 'Professional Scientific and Technical Service';
                     break;
                 }
                 case SectorType[SectorType.GLOBAL]: {
                     this.sectorChoosed = '';
+                    this.sectorString = '';
                     break;
                 }
             }
@@ -904,18 +919,26 @@ export class ImpactEvaluationComponent implements OnInit {
         switch (sector) {
             case 'finance_and_insurance': {
                 this.choosedSectorType = SectorType.FINANCE_AND_INSURANCE;
+                this.sectorChoosed = 'finance_and_insurance';
+                this.sectorString = 'Finance and Insurance';
                 break;
             }
             case 'health_care_and_social_assistance': {
                 this.choosedSectorType = SectorType.HEALTH_CARE_AND_SOCIAL_ASSISTANCE;
+                this.sectorChoosed = 'health_care_and_social_assistance';
+                this.sectorString = 'Health care and social assistance';
                 break;
             }
             case 'information': {
                 this.choosedSectorType = SectorType.INFORMATION;
+                this.sectorChoosed = 'information';
+                this.sectorString = 'Information';
                 break;
             }
             case 'professional_scientific_and_technical_service': {
                 this.choosedSectorType = SectorType.PROFESSIONAL_SCIENTIFIC_AND_TECHNICAL_SERVICE;
+                this.sectorChoosed = 'professional_scientific_and_technical_service';
+                this.sectorString = 'Professional Scientific and Technical Service';
                 break;
             }
         }
