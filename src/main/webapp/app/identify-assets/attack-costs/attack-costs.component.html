@@ -40,22 +40,22 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="col-md-6">
-                                <ng-container *ngFor="let cost of costs; let isOdd=odd">
-                                    <ng-container *ngIf="isOdd">
+                                <ng-container *ngFor="let cost of costs; let isEven=even">
+                                    <ng-container *ngIf="isEven">
                                         <div class="row">
                                             <label><input type="checkbox" [checked]="isDirectCostSelected(cost)"
-                                                    (change)="setCostOnDirect(cost)" id="{{cost.toString()}}-direct-{{selectedDirectAsset.myAsset.asset.name}}">
+                                                    (change)="setCostOnDirect(cost)" id="{{cost}}-direct-{{selectedDirectAsset.myAsset.asset.name}}">
                                                 {{cost.toString() | replace:'_':' '}}</label>
                                         </div>
                                     </ng-container>
                                 </ng-container>
                             </div>
                             <div class="col-md-6">
-                                <ng-container *ngFor="let cost of costs; let isEven=even">
-                                    <ng-container *ngIf="isEven">
+                                <ng-container *ngFor="let cost of costs; let isOdd=odd">
+                                    <ng-container *ngIf="isOdd">
                                         <div class="row">
                                             <label><input type="checkbox" [checked]="isDirectCostSelected(cost)"
-                                                    (change)="setCostOnDirect(cost)" id="{{cost}}-direct-{{selectedDirectAsset.myAsset.asset.name}}">
+                                                          (change)="setCostOnDirect(cost)" id="{{cost.toString()}}-direct-{{selectedDirectAsset.myAsset.asset.name}}">
                                                 {{cost.toString() | replace:'_':' '}}</label>
                                         </div>
                                     </ng-container>
