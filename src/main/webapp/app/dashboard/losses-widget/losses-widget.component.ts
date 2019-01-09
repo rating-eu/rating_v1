@@ -8,11 +8,11 @@ import { SelfAssessmentMgmService, SelfAssessmentMgm } from '../../entities/self
 import { ImpactEvaluationStatus } from '../../impact-evaluation/model/impact-evaluation-status.model';
 
 @Component({
-  selector: 'jhi-splitting-widget',
-  templateUrl: './splitting-widget.component.html',
-  styleUrls: ['splitting-widget.component.css']
+  selector: 'jhi-losses-widget',
+  templateUrl: './losses-widget.component.html',
+  styleUrls: ['losses-widget.component.css']
 })
-export class SplittingWidgetComponent implements OnInit {
+export class LossesWidgetComponent implements OnInit {
   public loading = false;
   public isCollapsed = true;
   public companySector: string;

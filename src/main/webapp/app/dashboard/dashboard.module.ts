@@ -10,8 +10,8 @@ import {MostDangerousAssetsWidgetComponent} from './most-dangerous-assets-widget
 import {OverallLikelihoodWidgetComponent} from './overall-likelihood-widget/overall-likelihood-widget.component';
 import {MostDangerousThreatAgentsWidgetComponent} from './most-dangerous-threat-agents-widget/most-dangerous-threat-agents-widget.component';
 import {AttackMapWidgetComponent} from './attack-map-widget/attack-map-widget.component';
-import {FinancialDataWidgetComponent} from './financial-data-widget/financial-data-widget.component';
-import {SplittingWidgetComponent} from './splitting-widget/splitting-widget.component';
+import {TangibleFinancialWidgetComponent} from './tangible-financial-widget/tangible-financial-widget.component';
+import {LossesWidgetComponent} from './losses-widget/losses-widget.component';
 import {DashboardOneComponent} from './dashboard-one/dashboard-one.component';
 import {HermeneutSharedModule, JhiLanguageHelper} from '../shared';
 import {HTTP_INTERCEPTORS} from '@angular/common/http';
@@ -39,6 +39,9 @@ import { PopUpService } from '../shared/pop-up-services/pop-up.service';
 import { StepInfoWidgetComponent } from './step-info-widget/step-info-widget.component';
 import { HermeneutAttackStrategyMgmModule } from '../entities/attack-strategy-mgm/attack-strategy-mgm.module';
 import { AssetAtRiskWidgetComponent } from './asset-at-risk-widget/asset-at-risk-widget.component';
+import { EbitsWidgetComponent } from './ebits-widget/ebits-widget.component';
+import { IntangibleFinancialWidgetComponent } from './intangible-financial-widget/intangible-financial-widget.component';
+import { ImpactWidgetComponent } from './impact-widget/impact-widget.component';
 
 @NgModule({
     imports: [
@@ -60,11 +63,14 @@ import { AssetAtRiskWidgetComponent } from './asset-at-risk-widget/asset-at-risk
         OverallLikelihoodWidgetComponent,
         MostDangerousThreatAgentsWidgetComponent,
         AttackMapWidgetComponent,
-        FinancialDataWidgetComponent,
-        SplittingWidgetComponent,
+        TangibleFinancialWidgetComponent,
+        LossesWidgetComponent,
         DashboardOneComponent,
         StepInfoWidgetComponent,
-        AssetAtRiskWidgetComponent
+        AssetAtRiskWidgetComponent,
+        EbitsWidgetComponent,
+        IntangibleFinancialWidgetComponent,
+        ImpactWidgetComponent
     ],
     providers: [
         {

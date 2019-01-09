@@ -27,6 +27,7 @@ export class AssetWidgetComponent implements OnInit, OnDestroy {
   public selectedCategory: string;
   public selectedAssetsByCategory: MyAssetMgm[];
   public intangible: MyAssetMgm[];
+  public priorities = ['Low', 'Low medium', 'Medium', 'Medium high', 'High'];
   public tangible: MyAssetMgm[];
   public intangibleCategoryMap: Map<string, number[]>;
   public tangibleCategoryMap: Map<string, number[]>;

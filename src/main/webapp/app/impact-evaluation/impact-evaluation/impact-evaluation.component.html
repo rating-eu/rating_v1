@@ -188,8 +188,8 @@
                             <thead>
                                 <tr>
                                     <th class="col-md-4">Intellectual Property</th>
-                                    <th class="col-md-4">Key competences and human capital</th>
-                                    <th class="col-md-4">Organisational capital</th>
+                                    <th class="col-md-4">Key Competences and Human Capital</th>
+                                    <th class="col-md-4">Organisational Capital</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -206,13 +206,13 @@
                                 <tr>
                                     <th class="col-md-3">Sector</th>
                                     <th class="col-md-3">Intellectual Property</th>
-                                    <th class="col-md-3">Key competences and human capital</th>
-                                    <th class="col-md-3">Organisational capital</th>
+                                    <th class="col-md-3">Key Competences and Human Capital</th>
+                                    <th class="col-md-3">Organisational Capital</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td class="col-md-3">Finance and insurance</td>
+                                    <td class="col-md-3">Finance and Insurance</td>
                                     <td class="col-md-3">13,6</td>
                                     <td class="col-md-3">45,3</td>
                                     <td class="col-md-3">41,1</td>
@@ -419,10 +419,10 @@
                                     <ng-container *ngIf="!intangibleDrivingEarnings"> -</ng-container>
                                 </td>
                                 <td>
-                                    <ng-container *ngIf="intangibleDrivingEarnings">{{intangibleDrivingEarnings |
+                                    <ng-container *ngIf="intangibleCapitalValuation">{{intangibleCapitalValuation |
                                         currency:'EUR'}}
                                     </ng-container>
-                                    <ng-container *ngIf="!intangibleDrivingEarnings"> -</ng-container>
+                                    <ng-container *ngIf="!intangibleCapitalValuation"> -</ng-container>
                                 </td>
                             </tr>
                         </tbody>
@@ -443,7 +443,9 @@
                             <h2>Sectorial</h2>
                         </div>
                     </div>
-                    <div class="col-md-6" style="margin-top: 5px; margin-bottom: 15px" *ngIf="!isGlobal">
+                </div>
+                <div class="row" *ngIf="!isGlobal">
+                    <div class="col-md-6" style="margin-top: 5px; margin-bottom: 15px">
                         <div ngbDropdown class="d-inline-block" ngbTooltip="Select one sector">
                             <button *ngIf="sectorChoosed !== null && sectorChoosed !== undefined && sectorChoosed !== ''"
                                 class="btn btn-outline-primary" id="sectorDrop" ngbDropdownToggle>{{sectorString}}
@@ -527,7 +529,18 @@
                                                 <div class="col-md-12" style="border: 1px solid #E4E4E4; border-radius: 5px;">
                                                     <i class="float-right fa fa-times fa-lg" style="margin-top: 5px"
                                                         (click)="collapseSplittings = true" aria-hidden="true"></i>
-                                                    <table class="table">
+                                                    <div class="text-center" style="margin-top: 50px" *ngIf="assetsBySelectedCategory.length === 0">
+                                                        <p style="color: orange">
+                                                            <i class="fa fa-exclamation-triangle fa-4x" aria-hidden="true"></i>
+                                                        </p>
+                                                        <p style="color: grey">No assets found in selected category! If
+                                                            this is a mistake please return
+                                                            in
+                                                            <a href="javascript:void(0)" [routerLink]="['/identify-asset/asset-clustering']">asset-clustering</a>
+                                                            section and
+                                                            modify your answers!</p>
+                                                    </div>
+                                                    <table class="table" *ngIf="assetsBySelectedCategory.length > 0">
                                                         <thead>
                                                             <tr>
                                                                 <th scope="col">Asset</th>
@@ -535,7 +548,7 @@
                                                                 <th scope="col">Economic value</th>
                                                             </tr>
                                                         </thead>
-                                                        <tbody *ngIf="assetsBySelectedCategory.length > 0">
+                                                        <tbody>
                                                             <ng-container *ngFor="let asset of assetsBySelectedCategory">
                                                                 <tr>
                                                                     <th scope="row">{{asset.asset.name}}</th>
@@ -565,9 +578,6 @@
                                                                     <td>{{asset.economicValue | currency:'EUR'}}</td>
                                                                 </tr>
                                                             </ng-container>
-                                                        </tbody>
-                                                        <tbody *ngIf="assetsBySelectedCategory.length === 0">
-                                                            <tr>No assets found in selected category!</tr>
                                                         </tbody>
                                                     </table>
                                                 </div>
@@ -623,7 +633,18 @@
                                                 <div class="col-md-12" style="border: 1px solid #E4E4E4; border-radius: 5px;">
                                                     <i class="float-right fa fa-times fa-lg" style="margin-top: 5px"
                                                         (click)="collapseSplittings = true" aria-hidden="true"></i>
-                                                    <table class="table">
+                                                    <div class="text-center" style="margin-top: 50px" *ngIf="assetsBySelectedCategory.length === 0">
+                                                        <p style="color: orange">
+                                                            <i class="fa fa-exclamation-triangle fa-4x" aria-hidden="true"></i>
+                                                        </p>
+                                                        <p style="color: grey">No assets found in selected category! If
+                                                            this is a mistake please return
+                                                            in
+                                                            <a href="javascript:void(0)" [routerLink]="['/identify-asset/asset-clustering']">asset-clustering</a>
+                                                            section and
+                                                            modify your answers!</p>
+                                                    </div>
+                                                    <table class="table" *ngIf="assetsBySelectedCategory.length > 0">
                                                         <thead>
                                                             <tr>
                                                                 <th scope="col">Asset</th>
@@ -631,7 +652,7 @@
                                                                 <th scope="col">Economic value</th>
                                                             </tr>
                                                         </thead>
-                                                        <tbody *ngIf="assetsBySelectedCategory.length > 0">
+                                                        <tbody>
                                                             <ng-container *ngFor="let asset of assetsBySelectedCategory">
                                                                 <tr>
                                                                     <th scope="row">{{asset.asset.name}}</th>
@@ -661,9 +682,6 @@
                                                                     <td>{{asset.economicValue | currency:'EUR'}}</td>
                                                                 </tr>
                                                             </ng-container>
-                                                        </tbody>
-                                                        <tbody *ngIf="assetsBySelectedCategory.length === 0">
-                                                            <tr>No assets found in selected category!</tr>
                                                         </tbody>
                                                     </table>
                                                 </div>
@@ -758,7 +776,18 @@
                                                 <div class="col-md-12" style="border: 1px solid #E4E4E4; border-radius: 5px;">
                                                     <i class="float-right fa fa-times fa-lg" style="margin-top: 5px"
                                                         (click)="collapseLosses = true" aria-hidden="true"></i>
-                                                    <table class="table">
+                                                    <div class="text-center" style="margin-top: 50px" *ngIf="assetsBySelectedCategory.length === 0">
+                                                        <p style="color: orange">
+                                                            <i class="fa fa-exclamation-triangle fa-4x" aria-hidden="true"></i>
+                                                        </p>
+                                                        <p style="color: grey">No assets found in selected category! If
+                                                            this is a mistake please return
+                                                            in
+                                                            <a href="javascript:void(0)" [routerLink]="['/identify-asset/asset-clustering']">asset-clustering</a>
+                                                            section and
+                                                            modify your answers!</p>
+                                                    </div>
+                                                    <table class="table" *ngIf="assetsBySelectedCategory.length > 0">
                                                         <thead>
                                                             <tr>
                                                                 <th scope="col">Asset</th>
@@ -766,7 +795,7 @@
                                                                 <th scope="col">Loss value</th>
                                                             </tr>
                                                         </thead>
-                                                        <tbody *ngIf="assetsBySelectedCategory.length > 0">
+                                                        <tbody>
                                                             <ng-container *ngFor="let asset of assetsBySelectedCategory">
                                                                 <tr>
                                                                     <th scope="row">{{asset.asset.name}}</th>
@@ -775,9 +804,6 @@
                                                                     <td>{{asset.lossValue | currency:'EUR'}}</td>
                                                                 </tr>
                                                             </ng-container>
-                                                        </tbody>
-                                                        <tbody *ngIf="assetsBySelectedCategory.length === 0">
-                                                            <tr>No assets found in selected category!</tr>
                                                         </tbody>
                                                     </table>
                                                 </div>
@@ -833,7 +859,18 @@
                                                 <div class="col-md-12" style="border: 1px solid #E4E4E4; border-radius: 5px;">
                                                     <i class="float-right fa fa-times fa-lg" style="margin-top: 5px"
                                                         (click)="collapseLosses = true" aria-hidden="true"></i>
-                                                    <table class="table">
+                                                    <div class="text-center" style="margin-top: 50px" *ngIf="assetsBySelectedCategory.length === 0">
+                                                        <p style="color: orange">
+                                                            <i class="fa fa-exclamation-triangle fa-4x" aria-hidden="true"></i>
+                                                        </p>
+                                                        <p style="color: grey">No assets found in selected category! If
+                                                            this is a mistake please return
+                                                            in
+                                                            <a href="javascript:void(0)" [routerLink]="['/identify-asset/asset-clustering']">asset-clustering</a>
+                                                            section and
+                                                            modify your answers!</p>
+                                                    </div>
+                                                    <table class="table" *ngIf="assetsBySelectedCategory.length > 0">
                                                         <thead>
                                                             <tr>
                                                                 <th scope="col">Asset</th>
@@ -841,7 +878,7 @@
                                                                 <th scope="col">Loss value</th>
                                                             </tr>
                                                         </thead>
-                                                        <tbody *ngIf="assetsBySelectedCategory.length > 0">
+                                                        <tbody>
                                                             <ng-container *ngFor="let asset of assetsBySelectedCategory">
                                                                 <tr>
                                                                     <th scope="row">{{asset.asset.name}}</th>
@@ -850,9 +887,6 @@
                                                                     <td>{{asset.lossValue | currency:'EUR'}}</td>
                                                                 </tr>
                                                             </ng-container>
-                                                        </tbody>
-                                                        <tbody *ngIf="assetsBySelectedCategory.length === 0">
-                                                            <tr>No assets found in selected category!</tr>
                                                         </tbody>
                                                     </table>
                                                 </div>
