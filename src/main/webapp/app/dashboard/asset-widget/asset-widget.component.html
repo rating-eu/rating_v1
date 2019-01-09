@@ -3,7 +3,6 @@
 </div>
 <div class="container" *ngIf="!loading">
   <div class="tile-stats tiles-first-row">
-    <!--<div class="icon"><i class="fa fa-comments-o"></i></div>-->
     <div class="count" *ngIf="myAssets">{{myAssets.length}}</div>
     <h3 *ngIf="myAssets">Assets</h3>
     <h3 *ngIf="!myAssets">No Assets counted</h3>
@@ -42,9 +41,7 @@
                     <tr>
                       <th scope="col" class="text-center align-middle">Asset</th>
                       <th scope="col" class="text-center align-middle">Priority</th>
-                      <!--<th scope="col" class="text-center align-middle">Estimated</th>-->
                       <th scope="col" class="text-center align-middle">Economic Value</th>
-                      <!--<th scope="col" class="text-center align-middle">Impact</th>-->
                     </tr>
                   </thead>
                   <tbody>
@@ -52,12 +49,8 @@
                       <td>{{myAsset.asset.name}}</td>
                       <td *ngIf="myAsset.ranking">{{priorities[myAsset.ranking-1]}}: {{myAsset.ranking}}</td>
                       <td *ngIf="!myAsset.ranking"> - </td>
-                      <!--<td *ngIf="myAsset.estimated">Yes</td>
-                      <td *ngIf="!myAsset.estimated">No</td>-->
                       <td *ngIf="myAsset.economicValue">{{myAsset.economicValue | currency:'EUR'}}</td>
                       <td *ngIf="!myAsset.economicValue"> - </td>
-                      <!--<td *ngIf="myAsset.impact">{{myAsset.impact}}</td>
-                      <td *ngIf="!myAsset.impact"> - </td>-->
                     </tr>
                   </tbody>
                 </table>
@@ -104,9 +97,7 @@
                     <tr>
                       <th scope="col" class="text-center align-middle">Asset</th>
                       <th scope="col" class="text-center align-middle">Priority</th>
-                      <!--<th scope="col" class="text-center align-middle">Estimated</th>-->
                       <th scope="col" class="text-center align-middle">Economic Value</th>
-                      <!--<th scope="col" class="text-center align-middle">Impact</th>-->
                     </tr>
                   </thead>
                   <tbody>
@@ -114,12 +105,8 @@
                       <td>{{myAsset.asset.name}}</td>
                       <td *ngIf="myAsset.ranking">{{priorities[myAsset.ranking-1]}}: {{myAsset.ranking}}</td>
                       <td *ngIf="!myAsset.ranking"> - </td>
-                      <!--<td *ngIf="myAsset.estimated">Yes</td>
-                      <td *ngIf="!myAsset.estimated">No</td>-->
-                      <td *ngIf="myAsset.economicValue">{{myAsset.economicValue}}</td>
+                      <td *ngIf="myAsset.economicValue">{{myAsset.economicValue | currency:'EUR'}}</td>
                       <td *ngIf="!myAsset.economicValue"> - </td>
-                      <!--<td *ngIf="myAsset.impact">{{myAsset.impact}}</td>
-                      <td *ngIf="!myAsset.impact"> - </td>-->
                     </tr>
                   </tbody>
                 </table>
