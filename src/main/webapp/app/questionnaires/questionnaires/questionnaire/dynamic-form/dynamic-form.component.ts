@@ -382,7 +382,6 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
                     }
                 });
 
-                this.selfAssessment.questionnaires = Array.from(new Set<QuestionnaireMgm>(this.selfAssessment.questionnaires.concat(this.questionnaire)));
                 this.selfAssessment.user = this.user;
 
                 return this.selfAssessmentService.update(this.selfAssessment);
@@ -429,7 +428,6 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
                 .mergeMap(
                     (myAnswersResponse: HttpResponse<MyAnswerMgm[]>) => {
                         const myAnswers: MyAnswerMgm[] = myAnswersResponse.body;
-                        this.selfAssessment.questionnaires = Array.from(new Set<QuestionnaireMgm>(this.selfAssessment.questionnaires.concat(this.questionnaire)));
                         this.selfAssessment.user = this.user;
 
                         return this.selfAssessmentService.update(this.selfAssessment);

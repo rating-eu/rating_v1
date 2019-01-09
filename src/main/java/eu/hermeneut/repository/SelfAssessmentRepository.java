@@ -19,15 +19,15 @@ public interface SelfAssessmentRepository extends JpaRepository<SelfAssessment, 
     @Query("select self_assessment from SelfAssessment self_assessment where self_assessment.user.login = ?#{principal.username}")
     List<SelfAssessment> findByUserIsCurrentUser();
 
-    @Query("select distinct self_assessment from SelfAssessment self_assessment left join fetch self_assessment.companyGroups left join fetch self_assessment.threatagents left join fetch self_assessment.questionnaires")
+    @Query("select distinct self_assessment from SelfAssessment self_assessment left join fetch self_assessment.companyGroups left join fetch self_assessment.threatagents")
     List<SelfAssessment> findAllWithEagerRelationships();
 
-    @Query("select DISTINCT self_assessment from SelfAssessment self_assessment left join fetch self_assessment.companyGroups left join fetch self_assessment.threatagents left join fetch self_assessment.questionnaires where self_assessment.id =:id")
+    @Query("select DISTINCT self_assessment from SelfAssessment self_assessment left join fetch self_assessment.companyGroups left join fetch self_assessment.threatagents where self_assessment.id =:id")
     SelfAssessment findOneWithEagerRelationships(@Param("id") Long id);
 
-    @Query("SELECT DISTINCT self_assessment FROM SelfAssessment self_assessment left join fetch self_assessment.companyGroups left join fetch self_assessment.threatagents left join fetch self_assessment.questionnaires WHERE self_assessment.companyProfile.id =:companyProfileID")
+    @Query("SELECT DISTINCT self_assessment FROM SelfAssessment self_assessment left join fetch self_assessment.companyGroups left join fetch self_assessment.threatagents WHERE self_assessment.companyProfile.id =:companyProfileID")
     List<SelfAssessment> findAllByCompanyProfile(@Param("companyProfileID") Long companyProfileID);
 
-    @Query("SELECT DISTINCT self_assessment FROM SelfAssessment self_assessment left join fetch self_assessment.companyGroups left join fetch self_assessment.threatagents left join fetch self_assessment.questionnaires WHERE self_assessment.externalAudit =:externalAudit")
+    @Query("SELECT DISTINCT self_assessment FROM SelfAssessment self_assessment left join fetch self_assessment.companyGroups left join fetch self_assessment.threatagents WHERE self_assessment.externalAudit =:externalAudit")
     List<SelfAssessment> findAllByExternalAudit(@Param("externalAudit") ExternalAudit externalAudit);
 }

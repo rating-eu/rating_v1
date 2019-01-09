@@ -34,14 +34,6 @@
             "otherEntityName": "threatAgent",
             "otherEntityField": "name",
             "ownerSide": true
-        },
-        {
-            "relationshipType": "many-to-many",
-            "otherEntityRelationshipName": "",
-            "relationshipName": "questionnaire",
-            "otherEntityName": "questionnaire",
-            "otherEntityField": "name",
-            "ownerSide": true
         }
     ],
     "fields": [
