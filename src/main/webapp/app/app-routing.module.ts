@@ -45,6 +45,10 @@ const routes: Routes = [
     {
         path: 'my-self-assessments',
         loadChildren: './my-self-assessments/my-self-assessments.module#MySelfAssessmentsModule'
+    },
+    {
+        path: 'pages',
+        loadChildren: './service-pages/service-pages.module#ServicePagesModule'
     }
 ];
 

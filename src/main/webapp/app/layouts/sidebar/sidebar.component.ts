@@ -239,7 +239,8 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                         items: [
                             {
                                 label: 'Add',
-                                icon: 'fa fa-plus'
+                                icon: 'fa fa-plus',
+                                routerLink: ['/pages/coming-soon']
                             },
                             {
                                 label: 'Tangible',
@@ -256,7 +257,8 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                         items: [
                             {
                                 label: 'Add',
-                                icon: 'fa fa-plus'
+                                icon: 'fa fa-plus',
+                                routerLink: ['/pages/coming-soon']
                             },
                             {
                                 label: 'View',
@@ -273,7 +275,8 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                         items: [
                             {
                                 label: 'Add',
-                                icon: 'fa fa-plus'
+                                icon: 'fa fa-plus',
+                                routerLink: ['/pages/coming-soon']
                             },
                             {
                                 label: 'View',
@@ -290,7 +293,8 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                         items: [
                             {
                                 label: 'Add',
-                                icon: 'fa fa-plus'
+                                icon: 'fa fa-plus',
+                                routerLink: ['/pages/coming-soon']
                             },
                             {
                                 label: 'View',
