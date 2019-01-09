@@ -54,16 +54,16 @@ public class QuestionnaireStatus implements Serializable {
     @Column(name = "jhi_role", nullable = false)
     private Role role;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "self_assessment_id")
     private SelfAssessment selfAssessment;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "questionnaire_id")
     private Questionnaire questionnaire;
 
-    @OneToOne
-    @JoinColumn(unique = true)
+    @ManyToOne
+    @JoinColumn(name = "user_id")
     private User user;
 
     @OneToMany(mappedBy = "questionnaireStatus")
