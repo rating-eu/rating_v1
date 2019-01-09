@@ -431,7 +431,7 @@ export class ImpactEvaluationComponent implements OnInit {
         }
     }
 
-    public async evaluateStepTwo() {
+    public evaluateStepTwo() {
         let dataIsOk = true;
         for (const asset of this.physicalAssetsAkaFixed) {
             if (isNaN(parseFloat(asset.economicValue.toString()))) {
@@ -453,7 +453,7 @@ export class ImpactEvaluationComponent implements OnInit {
             inputs.economicCoefficients.financialAssetsReturn = this.financialAssetsReturn;
             inputs.myAssets = [];
             inputs.myAssets = this.financialAssetsAkaCurrent.concat(this.physicalAssetsAkaFixed);
-            await this.impactService.evaluateStepTwo(inputs, this.mySelf).toPromise().then((res) => {
+            this.impactService.evaluateStepTwo(inputs, this.mySelf).toPromise().then((res) => {
                 if (res) {
                     this.intangibleDrivingEarnings = Math.round(res.economicResults.intangibleDrivingEarnings * 100) / 100;
                     this.intangibleCapitalValuation = Math.round(res.economicResults.intangibleCapital * 100) / 100;
@@ -462,7 +462,7 @@ export class ImpactEvaluationComponent implements OnInit {
         }
     }
 
-    public async evaluateStepThree() {
+    public evaluateStepThree() {
         if (this.impactFormStepThree.invalid) {
             // gestire l'errore con un messaggio sul campo input
             return;
@@ -471,7 +471,7 @@ export class ImpactEvaluationComponent implements OnInit {
             const inputs: Wp3BundleInput = new Wp3BundleInput();
             inputs.economicCoefficients = new EconomicCoefficientsMgm();
             inputs.economicCoefficients.lossOfIntangible = this.lossOfIntangiblePercentage;
-            await this.impactService.evaluateStepThree(inputs, this.mySelf).toPromise().then((res) => {
+            this.impactService.evaluateStepThree(inputs, this.mySelf).toPromise().then((res) => {
                 if (res) {
                     this.lossOnintangibleAssetsDueToCyberattacks = Math.round(res.economicResults.intangibleLossByAttacks * 100) / 100;
                     // Next call is present because we chose of collapse step 3 and 4 in same view
@@ -481,14 +481,14 @@ export class ImpactEvaluationComponent implements OnInit {
         }
     }
 
-    public async evaluateStepFour() {
+    public evaluateStepFour() {
         const inputs: Wp3BundleInput = new Wp3BundleInput();
         if (!this.choosedSectorType) {
             inputs.sectorType = SectorType.GLOBAL;
         } else {
             inputs.sectorType = this.choosedSectorType;
         }
-        await this.impactService.evaluateStepFour(inputs, this.mySelf).toPromise().then((res) => {
+        this.impactService.evaluateStepFour(inputs, this.mySelf).toPromise().then((res) => {
             if (res) {
                 for (const impactOn of res.splittingLosses) {
                     switch (impactOn.categoryType.toString()) {
@@ -522,14 +522,14 @@ export class ImpactEvaluationComponent implements OnInit {
         });
     }
 
-    public async evaluateStepFive() {
+    public evaluateStepFive() {
         const inputs: Wp3BundleInput = new Wp3BundleInput();
         if (!this.choosedSectorType) {
             inputs.sectorType = SectorType.GLOBAL;
         } else {
             inputs.sectorType = this.choosedSectorType;
         }
-        await this.impactService.evaluateStepFive(inputs, this.mySelf).toPromise().then((res) => {
+        this.impactService.evaluateStepFive(inputs, this.mySelf).toPromise().then((res) => {
             if (res) {
                 for (const splitting of res.splittingValues) {
                     switch (splitting.categoryType.toString()) {
@@ -817,7 +817,7 @@ export class ImpactEvaluationComponent implements OnInit {
         return false;
     }
 
-    public async selectStep(step: number) {
+    public selectStep(step: number) {
         this.isDescriptionCollapsed = true;
         switch (step) {
             case 2: {
@@ -831,14 +831,14 @@ export class ImpactEvaluationComponent implements OnInit {
                 if (this.impactFormStepTwo.invalid) {
                     return;
                 }
-                await this.evaluateStepTwo();
+                this.evaluateStepTwo();
                 // TODO testare timing
-                setTimeout(() => async function(){
-                    await this.evaluateStepThree();
-                    setTimeout(() => async function(){
-                        await this.evaluateStepFour();
-                        setTimeout(() => async function(){
-                            await this.evaluateStepFive();
+                setTimeout(() => {
+                    this.evaluateStepThree();
+                    setTimeout(() => {
+                        this.evaluateStepFour();
+                        setTimeout(() => {
+                            this.evaluateStepFive();
                         }, 200);
                     }, 200);
                 }, 200);
