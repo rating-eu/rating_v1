@@ -8,6 +8,7 @@ import { MitigationMgm } from './mitigation-mgm.model';
 import { MitigationMgmService } from './mitigation-mgm.service';
 import { Principal } from '../../shared';
 import { PopUpService } from '../../shared/pop-up-services/pop-up.service';
+import {MyRole} from "../enumerations/MyRole.enum";
 
 @Component({
     selector: 'jhi-mitigation-mgm',
@@ -18,6 +19,7 @@ mitigations: MitigationMgm[];
     currentAccount: any;
     eventSubscriber: Subscription;
     currentSearch: string;
+    private isADMIN: boolean;
 
     constructor(
         private mitigationService: MitigationMgmService,
@@ -66,6 +68,13 @@ mitigations: MitigationMgm[];
         this.loadAll();
         this.principal.identity().then((account) => {
             this.currentAccount = account;
+        });
+        this.principal.hasAnyAuthority([MyRole[MyRole.ROLE_ADMIN]]).then((response: boolean) => {
+            if (response) {
+                this.isADMIN = response;
+            } else {
+                this.isADMIN = false;
+            }
         });
         this.registerChangeInMitigations();
     }

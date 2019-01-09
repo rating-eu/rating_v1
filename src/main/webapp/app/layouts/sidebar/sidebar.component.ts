@@ -238,6 +238,10 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                         label: 'Assets',
                         items: [
                             {
+                                label: 'Add',
+                                icon: 'fa fa-plus'
+                            },
+                            {
                                 label: 'Tangible',
                                 routerLink: ['/asset-mgm']
                             },
@@ -250,6 +254,10 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                     {
                         label: 'Threat Agents',
                         items: [
+                            {
+                                label: 'Add',
+                                icon: 'fa fa-plus'
+                            },
                             {
                                 label: 'View',
                                 routerLink: ['/threat-agent-mgm']
@@ -264,6 +272,10 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                         label: 'Attack Strategies',
                         items: [
                             {
+                                label: 'Add',
+                                icon: 'fa fa-plus'
+                            },
+                            {
                                 label: 'View',
                                 routerLink: ['/attack-strategy-mgm']
                             },
@@ -276,6 +288,10 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                     {
                         label: 'Mitigations',
                         items: [
+                            {
+                                label: 'Add',
+                                icon: 'fa fa-plus'
+                            },
                             {
                                 label: 'View',
                                 routerLink: ['/mitigation-mgm']

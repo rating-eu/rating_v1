@@ -1,6 +1,6 @@
 <div class="row">
 
-    <div class="col-lg-9 col-md-12">
+    <div [ngClass]="{'col-lg-9 col-md-12':isADMIN, 'col-lg-12 col-md-12':!isADMIN}">
         <div class="card-box">
             <div class="form-search-table">
 
@@ -20,7 +20,7 @@
             </div>
         </div>
     </div>
-    <div class="col-lg-3 col-md-12">
+    <div *ngIf="isADMIN" [ngClass]="{'col-lg-3 col-md-12':isADMIN}">
         <div class="card-box">
             <button
                 class="btn btn-block btn-primary waves-effect waves-light btn-info jh-create-entity create-mitigation-mgm"
