@@ -443,7 +443,9 @@
                             <h2>Sectorial</h2>
                         </div>
                     </div>
-                    <div class="col-md-6" style="margin-top: 5px; margin-bottom: 15px" *ngIf="!isGlobal">
+                </div>
+                <div class="row" *ngIf="!isGlobal">
+                    <div class="col-md-6" style="margin-top: 5px; margin-bottom: 15px">
                         <div ngbDropdown class="d-inline-block" ngbTooltip="Select one sector">
                             <button *ngIf="sectorChoosed !== null && sectorChoosed !== undefined && sectorChoosed !== ''"
                                 class="btn btn-outline-primary" id="sectorDrop" ngbDropdownToggle>{{sectorString}}
