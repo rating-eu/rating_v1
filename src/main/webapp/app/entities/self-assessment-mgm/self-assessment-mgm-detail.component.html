@@ -46,12 +46,6 @@
                 <a [routerLink]="['/threat-agent-mgm', threatagent?.id ]">{{threatagent.name}}</a>{{last ? '' : ', '}}
             </span>
         </dd>
-        <dt><span jhiTranslate="hermeneutApp.selfAssessment.questionnaire">Questionnaire</span></dt>
-        <dd>
-            <span *ngFor="let questionnaire of selfAssessment.questionnaires; let last = last">
-                <a [routerLink]="['/questionnaire-mgm', questionnaire?.id ]">{{questionnaire.name}}</a>{{last ? '' : ', '}}
-            </span>
-        </dd>
     </dl>
 
     <button type="submit"

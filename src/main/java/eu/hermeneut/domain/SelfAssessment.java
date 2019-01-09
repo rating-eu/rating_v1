@@ -67,13 +67,6 @@ public class SelfAssessment implements Serializable {
     @ManyToOne
     private ExternalAudit externalAudit;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    @JoinTable(name = "self_assessment_questionnaire",
-        joinColumns = @JoinColumn(name = "self_assessments_id", referencedColumnName = "id"),
-        inverseJoinColumns = @JoinColumn(name = "questionnaires_id", referencedColumnName = "id"))
-    private Set<Questionnaire> questionnaires = new HashSet<>();
-
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
         return id;
@@ -205,29 +198,6 @@ public class SelfAssessment implements Serializable {
 
     public void setThreatagents(Set<ThreatAgent> threatAgents) {
         this.threatagents = threatAgents;
-    }
-
-    public Set<Questionnaire> getQuestionnaires() {
-        return questionnaires;
-    }
-
-    public SelfAssessment questionnaires(Set<Questionnaire> questionnaires) {
-        this.questionnaires = questionnaires;
-        return this;
-    }
-
-    public SelfAssessment addQuestionnaire(Questionnaire questionnaire) {
-        this.questionnaires.add(questionnaire);
-        return this;
-    }
-
-    public SelfAssessment removeQuestionnaire(Questionnaire questionnaire) {
-        this.questionnaires.remove(questionnaire);
-        return this;
-    }
-
-    public void setQuestionnaires(Set<Questionnaire> questionnaires) {
-        this.questionnaires = questionnaires;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
