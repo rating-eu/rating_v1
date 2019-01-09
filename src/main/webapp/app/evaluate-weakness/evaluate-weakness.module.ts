@@ -16,6 +16,7 @@ import {WeaknessResultComponent} from './result/result.component';
 import {EvaluateService} from './evaluate-weakness.service';
 import {AttackMapService} from './attack-map.service';
 import {MaterialModule} from '../material/material.module';
+import { HermeneutAttackStrategyMgmModule } from '../entities/attack-strategy-mgm/attack-strategy-mgm.module';
 
 @NgModule({
     imports: [
@@ -23,7 +24,8 @@ import {MaterialModule} from '../material/material.module';
         HermeneutSharedModule,
         EvaluateWeaknessRoutingModule,
         DatasharingModule,
-        MaterialModule
+        MaterialModule,
+        HermeneutAttackStrategyMgmModule
     ],
     declarations: [
         EvaluateWeaknessComponent,

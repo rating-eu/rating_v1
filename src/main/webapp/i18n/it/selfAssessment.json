@@ -24,8 +24,7 @@
             "user": "User",
             "externalAudit": "External Audit",
             "companyGroup": "Company Group",
-            "threatagent": "Threatagent",
-            "questionnaire": "Questionnaire"
+            "threatagent": "Threatagent"
         }
     }
 }

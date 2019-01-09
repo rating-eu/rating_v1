@@ -1,27 +1,27 @@
-import {IdentifyAssetUtilService} from './../../identify-assets/identify-asset.util.service';
-import {Priority} from './../../identify-assets/model/enumeration/priority.enum';
+import { IdentifyAssetUtilService } from './../../identify-assets/identify-asset.util.service';
+import { Priority } from './../../identify-assets/model/enumeration/priority.enum';
 import * as _ from 'lodash';
 
-import {Component, OnInit, ChangeDetectorRef} from '@angular/core';
-import {FormGroup, FormControl, Validators} from '../../../../../../node_modules/@angular/forms';
-import {SelfAssessmentMgmService, SelfAssessmentMgm} from '../../entities/self-assessment-mgm';
-import {MyAssetMgm} from '../../entities/my-asset-mgm';
-import {AssetMgm} from '../../entities/asset-mgm';
-import {AssetType} from '../../entities/enumerations/AssetType.enum';
-import {ImpactEvaluationService} from '../impact-evaluation.service';
-import {EBITMgm} from '../../entities/ebit-mgm';
-import {Wp3BundleInput} from '../model/wp3-bundle-input.model';
-import {EconomicCoefficientsMgm} from '../../entities/economic-coefficients-mgm';
-import {SectorType, CategoryType} from '../../entities/splitting-loss-mgm';
-import {MyCategoryType} from '../../entities/enumerations/MyCategoryType.enum';
-import {Router} from '../../../../../../node_modules/@angular/router';
-import {MySectorType} from '../../entities/enumerations/MySectorType.enum';
-import {ImpactEvaluationStatus} from '../model/impact-evaluation-status.model';
-import {AccountService, UserService, User} from '../../shared';
-import {MyCompanyMgmService, MyCompanyMgm} from '../../entities/my-company-mgm';
-import {HttpResponse} from '@angular/common/http';
-import {CompType} from '../../entities/company-profile-mgm';
-import {RegExpUtility} from '../../utils/regexp.utility.class';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { FormGroup, FormControl, Validators } from '../../../../../../node_modules/@angular/forms';
+import { SelfAssessmentMgmService, SelfAssessmentMgm } from '../../entities/self-assessment-mgm';
+import { MyAssetMgm } from '../../entities/my-asset-mgm';
+import { AssetMgm } from '../../entities/asset-mgm';
+import { AssetType } from '../../entities/enumerations/AssetType.enum';
+import { ImpactEvaluationService } from '../impact-evaluation.service';
+import { EBITMgm } from '../../entities/ebit-mgm';
+import { Wp3BundleInput } from '../model/wp3-bundle-input.model';
+import { EconomicCoefficientsMgm } from '../../entities/economic-coefficients-mgm';
+import { SectorType, CategoryType } from '../../entities/splitting-loss-mgm';
+import { MyCategoryType } from '../../entities/enumerations/MyCategoryType.enum';
+import { Router } from '../../../../../../node_modules/@angular/router';
+import { MySectorType } from '../../entities/enumerations/MySectorType.enum';
+import { ImpactEvaluationStatus } from '../model/impact-evaluation-status.model';
+import { AccountService, UserService, User } from '../../shared';
+import { MyCompanyMgmService, MyCompanyMgm } from '../../entities/my-company-mgm';
+import { HttpResponse } from '@angular/common/http';
+import { CompType } from '../../entities/company-profile-mgm';
+import { RegExpUtility } from '../../utils/regexp.utility.class';
 
 @Component({
     // tslint:disable-next-line:component-selector
@@ -79,6 +79,7 @@ export class ImpactEvaluationComponent implements OnInit {
     private user: User;
     private myCompany: MyCompanyMgm;
     public priorities = ['Low', 'Low medium', 'Medium', 'Medium high', 'High'];
+    public sectorString: string;
 
     private sectorChoosed: string;
     private selectedCategory: CategoryType;
@@ -114,26 +115,31 @@ export class ImpactEvaluationComponent implements OnInit {
                                 case CompType[CompType.FINANCE_AND_INSURANCE]: {
                                     this.choosedSectorType = SectorType.FINANCE_AND_INSURANCE;
                                     this.sectorChoosed = 'finance_and_insurance';
+                                    this.sectorString = 'Finance and Insurance';
                                     break;
                                 }
                                 case CompType[CompType.HEALTH_CARE_AND_SOCIAL_ASSISTANCE]: {
                                     this.choosedSectorType = SectorType.HEALTH_CARE_AND_SOCIAL_ASSISTANCE;
                                     this.sectorChoosed = 'health_care_and_social_assistance';
+                                    this.sectorString = 'Health care and social assistance';
                                     break;
                                 }
                                 case CompType[CompType.INFORMATION]: {
                                     this.choosedSectorType = SectorType.INFORMATION;
                                     this.sectorChoosed = 'information';
+                                    this.sectorString = 'Information';
                                     break;
                                 }
                                 case CompType[CompType.PROFESSIONAL_SCIENTIFIC_AND_TECHNICAL_SERVICE]: {
                                     this.choosedSectorType = SectorType.PROFESSIONAL_SCIENTIFIC_AND_TECHNICAL_SERVICE;
                                     this.sectorChoosed = 'professional_scientific_and_technical_service';
+                                    this.sectorString = 'Professional Scientific and Technical Service';
                                     break;
                                 }
                                 case CompType[CompType.OTHER]: {
                                     this.choosedSectorType = SectorType.GLOBAL;
                                     this.sectorChoosed = '';
+                                    this.sectorString = '';
                                 }
                             }
                         }
@@ -229,8 +235,8 @@ export class ImpactEvaluationComponent implements OnInit {
                             index++;
                         }
                         for (const asset of this.wp3Status.myTangibleAssets) {
-                            const fixedIndex = _.findIndex(this.physicalAssetsAkaFixed, {id: asset.id});
-                            const currentIndex = _.findIndex(this.financialAssetsAkaCurrent, {id: asset.id});
+                            const fixedIndex = _.findIndex(this.physicalAssetsAkaFixed, { id: asset.id });
+                            const currentIndex = _.findIndex(this.financialAssetsAkaCurrent, { id: asset.id });
                             if (fixedIndex !== -1) {
                                 this.physicalAssetsAkaFixed.splice(fixedIndex, 1, _.clone(asset));
                             } else if (currentIndex !== -1) {
@@ -247,21 +253,25 @@ export class ImpactEvaluationComponent implements OnInit {
                         switch (this.choosedSectorType.toString()) {
                             case SectorType[SectorType.FINANCE_AND_INSURANCE]: {
                                 this.sectorChoosed = 'finance_and_insurance';
+                                this.sectorString = 'Finance and Insurance';
                                 this.isGlobal = false;
                                 break;
                             }
                             case SectorType[SectorType.HEALTH_CARE_AND_SOCIAL_ASSISTANCE]: {
                                 this.sectorChoosed = 'health_care_and_social_assistance';
+                                this.sectorString = 'Health care and social assistance';
                                 this.isGlobal = false;
                                 break;
                             }
                             case SectorType[SectorType.INFORMATION]: {
                                 this.sectorChoosed = 'information';
+                                this.sectorString = 'Information';
                                 this.isGlobal = false;
                                 break;
                             }
                             case SectorType[SectorType.PROFESSIONAL_SCIENTIFIC_AND_TECHNICAL_SERVICE]: {
                                 this.sectorChoosed = 'professional_scientific_and_technical_service';
+                                this.sectorString = 'Professional Scientific and Technical Service';
                                 this.isGlobal = false;
                                 break;
                             }
@@ -334,10 +344,12 @@ export class ImpactEvaluationComponent implements OnInit {
                             }
                         }
                     }
+                }).catch(() => {
+                    this.isGlobal = true;
                 });
             }
         });
-        this.ref.detectChanges();
+        // this.ref.detectChanges();
     }
 
     public trackByFn(index: number, value: any) {
@@ -596,7 +608,7 @@ export class ImpactEvaluationComponent implements OnInit {
             }
         }
         if (evaluatedAsset) {
-            const indexTemp = _.findIndex(this.assetsBySelectedCategory, {id: evaluatedAsset.id});
+            const indexTemp = _.findIndex(this.assetsBySelectedCategory, { id: evaluatedAsset.id });
             if (indexTemp !== -1) {
                 this.assetsBySelectedCategory.splice(indexTemp, 1, evaluatedAsset);
             }
@@ -608,8 +620,8 @@ export class ImpactEvaluationComponent implements OnInit {
                 this.idaUtilService.updateAsset(asset).toPromise().then((res) => {
                     if (res) {
                         const updatedAsset = res;
-                        const indexTemp = _.findIndex(this.assetsBySelectedCategory, {id: updatedAsset.id});
-                        const index = _.findIndex(this.myAssets, {id: updatedAsset.id});
+                        const indexTemp = _.findIndex(this.assetsBySelectedCategory, { id: updatedAsset.id });
+                        const index = _.findIndex(this.myAssets, { id: updatedAsset.id });
                         if (index !== -1) {
                             this.myAssets.splice(index, 1, updatedAsset);
                         }
@@ -748,30 +760,30 @@ export class ImpactEvaluationComponent implements OnInit {
         if (priority) {
             switch (priority) {
                 case Priority.LOW.toString().replace('_', ' ').substring(0, 1) +
-                Priority.LOW.toString().replace('_', ' ').substring(1).toLowerCase(): {
-                    asset.ranking = 1;
-                    break;
-                }
+                    Priority.LOW.toString().replace('_', ' ').substring(1).toLowerCase(): {
+                        asset.ranking = 1;
+                        break;
+                    }
                 case Priority.LOW_MEDIUM.toString().replace('_', ' ').substring(0, 1) +
-                Priority.LOW_MEDIUM.toString().replace('_', ' ').substring(1).toLowerCase(): {
-                    asset.ranking = 2;
-                    break;
-                }
+                    Priority.LOW_MEDIUM.toString().replace('_', ' ').substring(1).toLowerCase(): {
+                        asset.ranking = 2;
+                        break;
+                    }
                 case Priority.MEDIUM.toString().replace('_', ' ').substring(0, 1) +
-                Priority.MEDIUM.toString().replace('_', ' ').substring(1).toLowerCase(): {
-                    asset.ranking = 3;
-                    break;
-                }
+                    Priority.MEDIUM.toString().replace('_', ' ').substring(1).toLowerCase(): {
+                        asset.ranking = 3;
+                        break;
+                    }
                 case Priority.MEDIUM_HIGH.toString().replace('_', ' ').substring(0, 1) +
-                Priority.MEDIUM_HIGH.toString().replace('_', ' ').substring(1).toLowerCase(): {
-                    asset.ranking = 4;
-                    break;
-                }
+                    Priority.MEDIUM_HIGH.toString().replace('_', ' ').substring(1).toLowerCase(): {
+                        asset.ranking = 4;
+                        break;
+                    }
                 case Priority.HIGH.toString().replace('_', ' ').substring(0, 1) +
-                Priority.HIGH.toString().replace('_', ' ').substring(1).toLowerCase(): {
-                    asset.ranking = 5;
-                    break;
-                }
+                    Priority.HIGH.toString().replace('_', ' ').substring(1).toLowerCase(): {
+                        asset.ranking = 5;
+                        break;
+                    }
                 default: {
                     asset.ranking = 0;
                     break;
@@ -820,12 +832,13 @@ export class ImpactEvaluationComponent implements OnInit {
                     return;
                 }
                 this.evaluateStepTwo();
+                // TODO testare timing
                 setTimeout(() => {
-                    this.evaluateStepFive();
+                    this.evaluateStepThree();
                     setTimeout(() => {
-                        this.evaluateStepThree();
+                        this.evaluateStepFour();
                         setTimeout(() => {
-                            this.evaluateStepFour();
+                            this.evaluateStepFive();
                         }, 200);
                     }, 200);
                 }, 200);
@@ -863,22 +876,27 @@ export class ImpactEvaluationComponent implements OnInit {
             switch (this.choosedSectorType.toString()) {
                 case SectorType[SectorType.FINANCE_AND_INSURANCE]: {
                     this.sectorChoosed = 'finance_and_insurance';
+                    this.sectorString = 'Finance and Insurance';
                     break;
                 }
                 case SectorType[SectorType.HEALTH_CARE_AND_SOCIAL_ASSISTANCE]: {
                     this.sectorChoosed = 'health_care_and_social_assistance';
+                    this.sectorString = 'Health care and social assistance';
                     break;
                 }
                 case SectorType[SectorType.INFORMATION]: {
                     this.sectorChoosed = 'information';
+                    this.sectorString = 'Information';
                     break;
                 }
                 case SectorType[SectorType.PROFESSIONAL_SCIENTIFIC_AND_TECHNICAL_SERVICE]: {
                     this.sectorChoosed = 'professional_scientific_and_technical_service';
+                    this.sectorString = 'Professional Scientific and Technical Service';
                     break;
                 }
                 case SectorType[SectorType.GLOBAL]: {
                     this.sectorChoosed = '';
+                    this.sectorString = '';
                     break;
                 }
             }
@@ -904,18 +922,26 @@ export class ImpactEvaluationComponent implements OnInit {
         switch (sector) {
             case 'finance_and_insurance': {
                 this.choosedSectorType = SectorType.FINANCE_AND_INSURANCE;
+                this.sectorChoosed = 'finance_and_insurance';
+                this.sectorString = 'Finance and Insurance';
                 break;
             }
             case 'health_care_and_social_assistance': {
                 this.choosedSectorType = SectorType.HEALTH_CARE_AND_SOCIAL_ASSISTANCE;
+                this.sectorChoosed = 'health_care_and_social_assistance';
+                this.sectorString = 'Health care and social assistance';
                 break;
             }
             case 'information': {
                 this.choosedSectorType = SectorType.INFORMATION;
+                this.sectorChoosed = 'information';
+                this.sectorString = 'Information';
                 break;
             }
             case 'professional_scientific_and_technical_service': {
                 this.choosedSectorType = SectorType.PROFESSIONAL_SCIENTIFIC_AND_TECHNICAL_SERVICE;
+                this.sectorChoosed = 'professional_scientific_and_technical_service';
+                this.sectorString = 'Professional Scientific and Technical Service';
                 break;
             }
         }
