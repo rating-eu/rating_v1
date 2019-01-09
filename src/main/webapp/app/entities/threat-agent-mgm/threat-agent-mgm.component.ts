@@ -8,7 +8,7 @@ import {ThreatAgentMgm} from './threat-agent-mgm.model';
 import {ThreatAgentMgmService} from './threat-agent-mgm.service';
 import {Principal} from '../../shared';
 import {PopUpService} from '../../shared/pop-up-services/pop-up.service';
-import {MyRole} from "../enumerations/MyRole.enum";
+import {MyRole} from '../enumerations/MyRole.enum';
 
 @Component({
     selector: 'jhi-threat-agent-mgm',

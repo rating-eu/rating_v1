@@ -7,7 +7,7 @@ import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
 import { AssetMgm } from './asset-mgm.model';
 import { AssetMgmService } from './asset-mgm.service';
 import { Principal } from '../../shared';
-import {MyRole} from "../enumerations/MyRole.enum";
+import {MyRole} from '../enumerations/MyRole.enum';
 
 @Component({
     selector: 'jhi-asset-mgm',
