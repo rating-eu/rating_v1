@@ -2,7 +2,7 @@ import { IdentifyAssetUtilService } from './../../identify-assets/identify-asset
 import { Priority } from './../../identify-assets/model/enumeration/priority.enum';
 import * as _ from 'lodash';
 
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '../../../../../../node_modules/@angular/forms';
 import { SelfAssessmentMgmService, SelfAssessmentMgm } from '../../entities/self-assessment-mgm';
 import { MyAssetMgm } from '../../entities/my-asset-mgm';
@@ -94,7 +94,6 @@ export class ImpactEvaluationComponent implements OnInit {
         private mySelfAssessmentService: SelfAssessmentMgmService,
         private impactService: ImpactEvaluationService,
         private router: Router,
-        private ref: ChangeDetectorRef,
         private accountService: AccountService,
         private userService: UserService,
         private myCompanyService: MyCompanyMgmService,
@@ -323,6 +322,7 @@ export class ImpactEvaluationComponent implements OnInit {
                                     } else {
                                         this.splittingOnSectorialIP = Math.round(splitting.value * 100) / 100;
                                     }
+                                    this.evaluateSplittingValue('IP');
                                     break;
                                 }
                                 case MyCategoryType.KEY_COMP.toString(): {
@@ -331,6 +331,7 @@ export class ImpactEvaluationComponent implements OnInit {
                                     } else {
                                         this.splittingOnSectorialKeyComp = Math.round(splitting.value * 100) / 100;
                                     }
+                                    this.evaluateSplittingValue('KEY_COMP');
                                     break;
                                 }
                                 case MyCategoryType.ORG_CAPITAL.toString(): {
@@ -339,6 +340,7 @@ export class ImpactEvaluationComponent implements OnInit {
                                     } else {
                                         this.splittingOnSectorialOrgCapital = Math.round(splitting.value * 100) / 100;
                                     }
+                                    this.evaluateSplittingValue('ORG_CAPITAL');
                                     break;
                                 }
                             }
@@ -349,7 +351,6 @@ export class ImpactEvaluationComponent implements OnInit {
                 });
             }
         });
-        // this.ref.detectChanges();
     }
 
     public trackByFn(index: number, value: any) {
@@ -468,6 +469,9 @@ export class ImpactEvaluationComponent implements OnInit {
             return;
         }
         if (this.lossOfIntangiblePercentage !== undefined && this.lossOfIntangiblePercentage !== null) {
+            if (!this.collapseLosses) {
+                this.collapseLosses = true;
+            }
             const inputs: Wp3BundleInput = new Wp3BundleInput();
             inputs.economicCoefficients = new EconomicCoefficientsMgm();
             inputs.economicCoefficients.lossOfIntangible = this.lossOfIntangiblePercentage;
@@ -539,9 +543,7 @@ export class ImpactEvaluationComponent implements OnInit {
                             } else {
                                 this.splittingOnSectorialIP = Math.round(splitting.value * 100) / 100;
                             }
-                            if (this.splittingOnIP) {
-                                this.evaluateSplittingValue('IP');
-                            }
+                            this.evaluateSplittingValue('IP');
                             break;
                         }
                         case MyCategoryType.KEY_COMP.toString(): {
@@ -550,9 +552,7 @@ export class ImpactEvaluationComponent implements OnInit {
                             } else {
                                 this.splittingOnSectorialKeyComp = Math.round(splitting.value * 100) / 100;
                             }
-                            if (this.splittingOnKeyComp) {
-                                this.evaluateSplittingValue('KEY_COMP');
-                            }
+                            this.evaluateSplittingValue('KEY_COMP');
                             break;
                         }
                         case MyCategoryType.ORG_CAPITAL.toString(): {
@@ -561,9 +561,7 @@ export class ImpactEvaluationComponent implements OnInit {
                             } else {
                                 this.splittingOnSectorialOrgCapital = Math.round(splitting.value * 100) / 100;
                             }
-                            if (this.splittingOnOrgCapital) {
-                                this.evaluateSplittingValue('ORG_CAPITAL');
-                            }
+                            this.evaluateSplittingValue('ORG_CAPITAL');
                             break;
                         }
                     }

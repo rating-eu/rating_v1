@@ -1,4 +1,4 @@
-import { DashboardStepEnum } from './../models/enumeration/dashboard-step.enum';
+import { DashboardStepEnum } from '../models/enumeration/dashboard-step.enum';
 import * as _ from 'lodash';
 import { Component, OnInit } from '@angular/core';
 import { SelfAssessmentMgm, SelfAssessmentMgmService } from '../../entities/self-assessment-mgm';
@@ -8,11 +8,11 @@ import { MyAssetMgm } from '../../entities/my-asset-mgm';
 import { DashboardService, DashboardStatus } from '../dashboard.service';
 
 @Component({
-  selector: 'jhi-financial-data-widget',
-  templateUrl: './financial-data-widget.component.html',
-  styleUrls: ['financial-data-widget.component.css']
+  selector: 'jhi-tangible-financial-widget',
+  templateUrl: './tangible-financial-widget.component.html',
+  styleUrls: ['tangible-financial-widget.component.css']
 })
-export class FinancialDataWidgetComponent implements OnInit {
+export class TangibleFinancialWidgetComponent implements OnInit {
   public loading = false;
   public isCollapsed = true;
   public assets: MyAssetMgm[];
