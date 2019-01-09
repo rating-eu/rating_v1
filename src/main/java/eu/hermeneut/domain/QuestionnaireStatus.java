@@ -54,14 +54,17 @@ public class QuestionnaireStatus implements Serializable {
     @Column(name = "jhi_role", nullable = false)
     private Role role;
 
+    @NotNull
     @ManyToOne
     @JoinColumn(name = "self_assessment_id")
     private SelfAssessment selfAssessment;
 
+    @NotNull
     @ManyToOne
     @JoinColumn(name = "questionnaire_id")
     private Questionnaire questionnaire;
 
+    @NotNull
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
