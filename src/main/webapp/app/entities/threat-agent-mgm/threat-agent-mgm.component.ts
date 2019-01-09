@@ -1,23 +1,25 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
-import { ActivatedRoute } from '@angular/router';
-import { Subscription } from 'rxjs/Subscription';
-import { JhiEventManager, JhiAlertService, JhiDataUtils } from 'ng-jhipster';
+import {Component, OnInit, OnDestroy} from '@angular/core';
+import {HttpResponse, HttpErrorResponse} from '@angular/common/http';
+import {ActivatedRoute} from '@angular/router';
+import {Subscription} from 'rxjs/Subscription';
+import {JhiEventManager, JhiAlertService, JhiDataUtils} from 'ng-jhipster';
 
-import { ThreatAgentMgm } from './threat-agent-mgm.model';
-import { ThreatAgentMgmService } from './threat-agent-mgm.service';
-import { Principal } from '../../shared';
+import {ThreatAgentMgm} from './threat-agent-mgm.model';
+import {ThreatAgentMgmService} from './threat-agent-mgm.service';
+import {Principal} from '../../shared';
 import {PopUpService} from '../../shared/pop-up-services/pop-up.service';
+import {MyRole} from "../enumerations/MyRole.enum";
 
 @Component({
     selector: 'jhi-threat-agent-mgm',
     templateUrl: './threat-agent-mgm.component.html'
 })
 export class ThreatAgentMgmComponent implements OnInit, OnDestroy {
-threatAgents: ThreatAgentMgm[];
+    threatAgents: ThreatAgentMgm[];
     currentAccount: any;
     eventSubscriber: Subscription;
     currentSearch: string;
+    public isADMIN: boolean;
 
     constructor(
         private threatAgentService: ThreatAgentMgmService,
@@ -36,12 +38,12 @@ threatAgents: ThreatAgentMgm[];
         if (this.currentSearch) {
             this.threatAgentService.search({
                 query: this.currentSearch,
-                }).subscribe(
-                    (res: HttpResponse<ThreatAgentMgm[]>) => this.threatAgents = res.body,
-                    (res: HttpErrorResponse) => this.onError(res.message)
-                );
+            }).subscribe(
+                (res: HttpResponse<ThreatAgentMgm[]>) => this.threatAgents = res.body,
+                (res: HttpErrorResponse) => this.onError(res.message)
+            );
             return;
-       }
+        }
         this.threatAgentService.query().subscribe(
             (res: HttpResponse<ThreatAgentMgm[]>) => {
                 this.threatAgents = res.body;
@@ -63,10 +65,18 @@ threatAgents: ThreatAgentMgm[];
         this.currentSearch = '';
         this.loadAll();
     }
+
     ngOnInit() {
         this.loadAll();
         this.principal.identity().then((account) => {
             this.currentAccount = account;
+        });
+        this.principal.hasAnyAuthority([MyRole[MyRole.ROLE_ADMIN]]).then((response: boolean) => {
+            if (response) {
+                this.isADMIN = response;
+            } else {
+                this.isADMIN = false;
+            }
         });
         this.registerChangeInThreatAgents();
     }
@@ -86,6 +96,7 @@ threatAgents: ThreatAgentMgm[];
     openFile(contentType, field) {
         return this.dataUtils.openFile(contentType, field);
     }
+
     registerChangeInThreatAgents() {
         this.eventSubscriber = this.eventManager.subscribe('threatAgentListModification', (response) => this.loadAll());
     }
