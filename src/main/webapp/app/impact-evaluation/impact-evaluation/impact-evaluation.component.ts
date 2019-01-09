@@ -1,5 +1,5 @@
-import { IdentifyAssetUtilService } from './../../identify-assets/identify-asset.util.service';
-import { Priority } from './../../identify-assets/model/enumeration/priority.enum';
+import {IdentifyAssetUtilService} from './../../identify-assets/identify-asset.util.service';
+import {Priority} from './../../identify-assets/model/enumeration/priority.enum';
 import * as _ from 'lodash';
 
 import { Component, OnInit } from '@angular/core';
@@ -234,8 +234,8 @@ export class ImpactEvaluationComponent implements OnInit {
                             index++;
                         }
                         for (const asset of this.wp3Status.myTangibleAssets) {
-                            const fixedIndex = _.findIndex(this.physicalAssetsAkaFixed, { id: asset.id });
-                            const currentIndex = _.findIndex(this.financialAssetsAkaCurrent, { id: asset.id });
+                            const fixedIndex = _.findIndex(this.physicalAssetsAkaFixed, {id: asset.id});
+                            const currentIndex = _.findIndex(this.financialAssetsAkaCurrent, {id: asset.id});
                             if (fixedIndex !== -1) {
                                 this.physicalAssetsAkaFixed.splice(fixedIndex, 1, _.clone(asset));
                             } else if (currentIndex !== -1) {
@@ -348,6 +348,7 @@ export class ImpactEvaluationComponent implements OnInit {
                     }
                 }).catch(() => {
                     this.isGlobal = true;
+                    this.wp3Status = null;
                 });
             }
         });
@@ -566,6 +567,10 @@ export class ImpactEvaluationComponent implements OnInit {
                         }
                     }
                 }
+
+                if (!this.wp3Status) {
+                    this.ngOnInit();
+                }
             }
         });
     }
@@ -606,7 +611,7 @@ export class ImpactEvaluationComponent implements OnInit {
             }
         }
         if (evaluatedAsset) {
-            const indexTemp = _.findIndex(this.assetsBySelectedCategory, { id: evaluatedAsset.id });
+            const indexTemp = _.findIndex(this.assetsBySelectedCategory, {id: evaluatedAsset.id});
             if (indexTemp !== -1) {
                 this.assetsBySelectedCategory.splice(indexTemp, 1, evaluatedAsset);
             }
@@ -618,8 +623,8 @@ export class ImpactEvaluationComponent implements OnInit {
                 this.idaUtilService.updateAsset(asset).toPromise().then((res) => {
                     if (res) {
                         const updatedAsset = res;
-                        const indexTemp = _.findIndex(this.assetsBySelectedCategory, { id: updatedAsset.id });
-                        const index = _.findIndex(this.myAssets, { id: updatedAsset.id });
+                        const indexTemp = _.findIndex(this.assetsBySelectedCategory, {id: updatedAsset.id});
+                        const index = _.findIndex(this.myAssets, {id: updatedAsset.id});
                         if (index !== -1) {
                             this.myAssets.splice(index, 1, updatedAsset);
                         }
@@ -758,30 +763,30 @@ export class ImpactEvaluationComponent implements OnInit {
         if (priority) {
             switch (priority) {
                 case Priority.LOW.toString().replace('_', ' ').substring(0, 1) +
-                    Priority.LOW.toString().replace('_', ' ').substring(1).toLowerCase(): {
-                        asset.ranking = 1;
-                        break;
-                    }
+                Priority.LOW.toString().replace('_', ' ').substring(1).toLowerCase(): {
+                    asset.ranking = 1;
+                    break;
+                }
                 case Priority.LOW_MEDIUM.toString().replace('_', ' ').substring(0, 1) +
-                    Priority.LOW_MEDIUM.toString().replace('_', ' ').substring(1).toLowerCase(): {
-                        asset.ranking = 2;
-                        break;
-                    }
+                Priority.LOW_MEDIUM.toString().replace('_', ' ').substring(1).toLowerCase(): {
+                    asset.ranking = 2;
+                    break;
+                }
                 case Priority.MEDIUM.toString().replace('_', ' ').substring(0, 1) +
-                    Priority.MEDIUM.toString().replace('_', ' ').substring(1).toLowerCase(): {
-                        asset.ranking = 3;
-                        break;
-                    }
+                Priority.MEDIUM.toString().replace('_', ' ').substring(1).toLowerCase(): {
+                    asset.ranking = 3;
+                    break;
+                }
                 case Priority.MEDIUM_HIGH.toString().replace('_', ' ').substring(0, 1) +
-                    Priority.MEDIUM_HIGH.toString().replace('_', ' ').substring(1).toLowerCase(): {
-                        asset.ranking = 4;
-                        break;
-                    }
+                Priority.MEDIUM_HIGH.toString().replace('_', ' ').substring(1).toLowerCase(): {
+                    asset.ranking = 4;
+                    break;
+                }
                 case Priority.HIGH.toString().replace('_', ' ').substring(0, 1) +
-                    Priority.HIGH.toString().replace('_', ' ').substring(1).toLowerCase(): {
-                        asset.ranking = 5;
-                        break;
-                    }
+                Priority.HIGH.toString().replace('_', ' ').substring(1).toLowerCase(): {
+                    asset.ranking = 5;
+                    break;
+                }
                 default: {
                     asset.ranking = 0;
                     break;
@@ -832,9 +837,9 @@ export class ImpactEvaluationComponent implements OnInit {
                 this.evaluateStepTwo();
                 // TODO testare timing
                 setTimeout(() => {
-                    this.evaluateStepThree();
+                    this.evaluateStepFour();
                     setTimeout(() => {
-                        this.evaluateStepFour();
+                        this.evaluateStepThree();
                         setTimeout(() => {
                             this.evaluateStepFive();
                         }, 200);
