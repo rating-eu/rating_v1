@@ -8,7 +8,7 @@ import { AttackStrategyMgm } from './attack-strategy-mgm.model';
 import { AttackStrategyMgmService } from './attack-strategy-mgm.service';
 import { Principal } from '../../shared';
 import { PopUpService } from '../../shared/pop-up-services/pop-up.service';
-import {MyRole} from "../enumerations/MyRole.enum";
+import {MyRole} from '../enumerations/MyRole.enum';
 
 @Component({
     selector: 'jhi-attack-strategy-mgm',
@@ -19,7 +19,7 @@ attackStrategies: AttackStrategyMgm[];
     currentAccount: any;
     eventSubscriber: Subscription;
     currentSearch: string;
-    private isADMIN: boolean;
+    public isADMIN: boolean;
 
     constructor(
         private attackStrategyService: AttackStrategyMgmService,
