@@ -14,7 +14,6 @@ import { CompanyProfileMgmService } from '../../../../../../main/webapp/app/enti
 import { CompanyGroupMgmService } from '../../../../../../main/webapp/app/entities/company-group-mgm';
 import { ThreatAgentMgmService } from '../../../../../../main/webapp/app/entities/threat-agent-mgm';
 import { ExternalAuditMgmService } from '../../../../../../main/webapp/app/entities/external-audit-mgm';
-import { QuestionnaireMgmService } from '../../../../../../main/webapp/app/entities/questionnaire-mgm';
 
 describe('Component Tests', () => {
 
@@ -35,7 +34,6 @@ describe('Component Tests', () => {
                     CompanyGroupMgmService,
                     ThreatAgentMgmService,
                     ExternalAuditMgmService,
-                    QuestionnaireMgmService,
                     SelfAssessmentMgmService
                 ]
             })
