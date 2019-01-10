@@ -1,3 +1,4 @@
+import { DashboardStepEnum } from './../models/enumeration/dashboard-step.enum';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { SelfAssessmentMgmService, SelfAssessmentMgm } from '../../entities/self-assessment-mgm';
 import { MyAnswerMgmService, MyAnswerMgm } from '../../entities/my-answer-mgm';
@@ -68,6 +69,7 @@ export class ThreatAgentsWidgetComponent implements OnInit, OnDestroy {
   private threatAgentsPercentageArray: Couple<ThreatAgentMgm, Fraction>[];
 
   private status: DashboardStatus;
+  private dashboardStatus = DashboardStepEnum;
 
   constructor(
     private selfAssessmentService: SelfAssessmentMgmService,
@@ -82,7 +84,6 @@ export class ThreatAgentsWidgetComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.loading = true;
-    // identifyThreatAgentsStatus checker
     this.status = this.dashService.getStatus();
 
     // The below code is been copy and customized from the resul.component of the identify-threat-agents module
@@ -97,9 +98,7 @@ export class ThreatAgentsWidgetComponent implements OnInit, OnDestroy {
         if (!this.questionnaireStatus) {
           return forkJoin(Observable.of(null), Observable.of(null));
         }
-        // console.log('QuestionnaireStatus: ' + JSON.stringify(this.questionnaireStatus));
         this.questionnaire = this.questionnaireStatus.questionnaire;
-        // console.log('Questionnaire: ' + JSON.stringify(this.questionnaire));
         this.questions$ = this.questionService.getQuestionsByQuestionnaire(this.questionnaire.id);
         this.myAnswers$ = this.myAnswerService.getAllByQuestionnaireStatusID(this.questionnaireStatus.id);
         return forkJoin(this.questions$, this.myAnswers$);
@@ -117,9 +116,7 @@ export class ThreatAgentsWidgetComponent implements OnInit, OnDestroy {
             return forkJoin(Observable.of(null), Observable.of(null));
           }
           this.questions = response[0].body;
-          // console.log('Questions: ' + JSON.stringify(this.questions));
           this.myAnswers = response[1].body;
-          // console.log('MyAnswers: ' + JSON.stringify(this.myAnswers));
           return forkJoin(this.defaultThreatAgents$, this.motivations$);
         }
       );
@@ -127,18 +124,11 @@ export class ThreatAgentsWidgetComponent implements OnInit, OnDestroy {
       (response: [HttpResponse<ThreatAgentMgm[]>, HttpResponse<MotivationMgm[]>]) => {
         if (!response[0] || !response[1]) {
           this.loading = false;
-          this.status.identifyThreatAgentsStatus = false;
-          this.dashService.updateStatus(this.status);
           return;
         }
         this.defaultThreatAgents = response[0].body;
-        // console.log('DefaultThreatAgents: ' + JSON.stringify(this.defaultThreatAgents));
-
         this.motivations = response[1].body;
-        // console.log('Motivations: ' + JSON.stringify(this.motivations));
-
         this.questionsMap = this.arrayToMap<QuestionMgm>(this.questions);
-
         this.threatAgentsPercentageMap = this.questionsMyAnswersToThreatAgentsPercentageMap(this.questionsMap, this.myAnswers, this.defaultThreatAgents);
         this.threatAgentsPercentageArray = Array.from(this.threatAgentsPercentageMap.values());
 
@@ -159,22 +149,14 @@ export class ThreatAgentsWidgetComponent implements OnInit, OnDestroy {
             return result;
           }
         );
-        if (!this.selfAssessment.threatagents || !this.motivations || !this.threatAgentsPercentageArray) {
-          this.status.identifyThreatAgentsStatus = false;
-          this.dashService.updateStatus(this.status);
-        } else {
-          if (this.selfAssessment.threatagents.length !== 0 && this.motivations.length !== 0 && this.threatAgentsPercentageArray.length !== 0) {
-            this.status.identifyThreatAgentsStatus = true;
-            this.dashService.updateStatus(this.status);
-          } else {
-            this.status.identifyThreatAgentsStatus = false;
-            this.dashService.updateStatus(this.status);
-          }
-        }
         this.loading = false;
-        // console.log('ThreatAgentsPercentageArray: ' + JSON.stringify(this.threatAgentsPercentageArray));
       }
     );
+
+    this.dashService.getStatusFromServer(this.selfAssessment, this.dashboardStatus.IDENTIFY_THREAT_AGENTS).toPromise().then((res) => {
+      this.status.identifyThreatAgentsStatus = res;
+      this.dashService.updateStatus(this.status);
+    });
   }
 
   ngOnDestroy() {
@@ -238,31 +220,24 @@ export class ThreatAgentsWidgetComponent implements OnInit, OnDestroy {
       const threatAgentHash: string = CryptoJS.SHA256(JSON.stringify(threatAgent)).toString();
 
       if (map.has(threatAgentHash)) {// a question identifying this threat agent has already been encountered.
-        // console.log('Threat agent already processed...');
         // fraction = #YES/#Questions
         const fraction: Fraction = map.get(threatAgentHash).value;
         // increment the number of questions identifying this threat-agent
         fraction.whole++;
         if (answer.name.toUpperCase() === ThreatAgentsWidgetComponent.YES) {
-          // console.log('Warning: you answered YES');
           fraction.part++;
         } else if (answer.name.toUpperCase() === ThreatAgentsWidgetComponent.NO) {
-          // console.log('Good, you answered NO');
         }
       } else {// first time
-        // console.log('First Time processing this threat agent');
         const fraction = new Fraction(0, 1);
         map.set(threatAgentHash, new Couple<ThreatAgentMgm, Fraction>(threatAgent, fraction));
         if (answer.name.toUpperCase() === ThreatAgentsWidgetComponent.YES) {
-          // console.log('Warning: you answered YES');
           fraction.part++;
         } else if (answer.name.toUpperCase() === ThreatAgentsWidgetComponent.NO) {
-          // console.log('Good, you answered NO');
         }
       }
     });
 
-    // Default ThreatAgents
     defaultThreatAgents.forEach((threatAgent: ThreatAgentMgm) => {
       // The hash of the ThreatAgent JSON is used as the Key of the Map.
       const threatAgentHash: string = CryptoJS.SHA256(JSON.stringify(threatAgent)).toString();

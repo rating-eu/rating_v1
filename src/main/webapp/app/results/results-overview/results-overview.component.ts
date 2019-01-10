@@ -68,15 +68,7 @@ export class ResultsOverviewComponent implements OnInit {
         this.result$.subscribe(
             (response: HttpResponse<Result>) => {
                 this.result = response.body;
-                // console.log('Result: ' + JSON.stringify(this.result));
-
                 const initialVulnerabilityMap: Map<number, number> = this.result.initialVulnerability as Map<number, number>;
-                // console.log('TypeOf initialVulnerabilityMap: ' + typeof initialVulnerabilityMap);
-
-                // console.log('InitialVulnerabilityMap: ' + initialVulnerabilityMap.size);
-                // console.log('InitialVulnerabilityKeys: ' + JSON.stringify(Array.from(initialVulnerabilityMap.keys())));
-                // console.log('InitialVulnerabiltyValues: ' + JSON.stringify(Array.from(initialVulnerabilityMap.values())));
-
                 const contextualVulnerabilityMap: Map<number/*ThreatAgentID*/, number> = this.result.contextualVulnerability as Map<number, number>;
                 const refinedVulnerabilityMap: Map<number, number> = this.result.refinedVulnerability as Map<number, number>;
 
@@ -143,33 +135,8 @@ export class ResultsOverviewComponent implements OnInit {
                 this.threatAgentLikelihoodsMap.forEach((value: ThreatAgentLikelihoods, key: number) => {
                     this.threatAgentIDs.push(key);
                 });
-
-                /*
-                this.threatAgentIDs.forEach((value: number) => {
-                    console.log('ThreatAgent ID: ' + value);
-                });
-                */
             }
         );
-
-        // Random Data
-        /*this.threatAgentIDs = [1, 2, 3, 4, 5];
-
-        this.threatAgentIDs.forEach(id => {
-            const threatAgent = new ThreatAgentMgm(id, 'ThreatAgent: ' + id);
-
-            const likelihoods = new ThreatAgentLikelihoods(threatAgent);
-            likelihoods.initialLikelihood = (Math.floor(Math.random() * 5) + 1) / 5;
-            likelihoods.contextualLikelihood = (Math.floor(Math.random() * 5) + 1) / 5;
-            likelihoods.refinedLikelihood = (Math.floor(Math.random() * 5) + 1) / 5;
-
-            this.threatAgentLikelihoodsMap.set(id, likelihoods);
-        });
-
-        this.maxRefinedVulnerability = Math.floor(Math.random() * 5) / 5;*/
-
-        // SelfAssessment Overview
-
         this.selfAssessmentService.getOverwiew().toPromise().then((res: SelfAssessmentOverview) => {
             if (res) {
                 this.loading = true;

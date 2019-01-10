@@ -1,3 +1,4 @@
+import { SplittingValueMgm } from './../../entities/splitting-value-mgm/splitting-value-mgm.model';
 import { EconomicResultsMgm } from '../../entities/economic-results-mgm';
 import { MyAssetMgm } from '../../entities/my-asset-mgm';
 import { EconomicCoefficientsMgm } from '../../entities/economic-coefficients-mgm';
@@ -12,4 +13,5 @@ export class ImpactEvaluationStatus {
     sectorType: SectorType;
     categoryType: CategoryType;
     splittingLosses: SplittingLossMgm[]; // Both for GLOBAL & fro SectorType
+    splittingValues: SplittingValueMgm[]; // Both for GLOBAL & fro SectorType
 }

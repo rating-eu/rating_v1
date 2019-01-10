@@ -17,15 +17,6 @@
                         <i *ngIf="isCollapsed" class="fa fa-chevron-down"></i>
                     </a>
                 </li>
-                <!--
-              <li class="dropdown">
-                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
-                <ul class="dropdown-menu" role="menu">
-                  <li><a href="#">Export</a>
-                  </li>
-                </ul>
-              </li>
-              -->
             </ul>
             <div class="clearfix"></div>
         </div>
@@ -46,8 +37,8 @@
                                 <th scope="row"><a href="javascript:void(0)" (click)="selectAsset(item.asset)">{{item.asset.asset.name}}</a></th>
                                 <td placement="top" container="body" ngbTooltip="Click on Asset name for more details">{{item.mostDangerousAttack}}
                                     and other {{item.howManyAttacks}} attack strategies</td>
-                                <td>{{item.mostDangerousAttackValue.likelihood}}</td>
-                                <td *ngIf="item.mostDangerousAttackValue.vulnerability !== undefined">{{item.mostDangerousAttackValue.vulnerability}}</td>
+                                <td>{{item.mostDangerousAttackValue.likelihood | number : '1.1-1'}}</td>
+                                <td *ngIf="item.mostDangerousAttackValue.vulnerability !== undefined">{{item.mostDangerousAttackValue.vulnerability | number : '1.1-1'}}</td>
                                 <td *ngIf="item.mostDangerousAttackValue.vulnerability === undefined">-</td>
                             </tr>
                             <ng-container *ngIf="selectedAsset">

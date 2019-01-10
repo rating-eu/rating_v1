@@ -33,8 +33,6 @@ describe('MyAsset e2e test', () => {
 
     it('should create and save MyAssets', () => {
         myAssetComponentsPage.clickOnCreateButton();
-        myAssetDialogPage.setMagnitudeInput('magnitude');
-        expect(myAssetDialogPage.getMagnitudeInput()).toMatch('magnitude');
         myAssetDialogPage.setRankingInput('5');
         expect(myAssetDialogPage.getRankingInput()).toMatch('5');
         myAssetDialogPage.getEstimatedInput().isSelected().then((selected) => {
@@ -50,6 +48,8 @@ describe('MyAsset e2e test', () => {
         expect(myAssetDialogPage.getEconomicValueInput()).toMatch('5');
         myAssetDialogPage.setImpactInput('5');
         expect(myAssetDialogPage.getImpactInput()).toMatch('5');
+        myAssetDialogPage.setLossValueInput('5');
+        expect(myAssetDialogPage.getLossValueInput()).toMatch('5');
         myAssetDialogPage.assetSelectLastOption();
         myAssetDialogPage.selfAssessmentSelectLastOption();
         myAssetDialogPage.questionnaireSelectLastOption();
@@ -79,11 +79,11 @@ export class MyAssetDialogPage {
     modalTitle = element(by.css('h4#myMyAssetLabel'));
     saveButton = element(by.css('.modal-footer .btn.btn-primary'));
     closeButton = element(by.css('button.close'));
-    magnitudeInput = element(by.css('input#field_magnitude'));
     rankingInput = element(by.css('input#field_ranking'));
     estimatedInput = element(by.css('input#field_estimated'));
     economicValueInput = element(by.css('input#field_economicValue'));
     impactInput = element(by.css('input#field_impact'));
+    lossValueInput = element(by.css('input#field_lossValue'));
     assetSelect = element(by.css('select#field_asset'));
     selfAssessmentSelect = element(by.css('select#field_selfAssessment'));
     questionnaireSelect = element(by.css('select#field_questionnaire'));
@@ -91,14 +91,6 @@ export class MyAssetDialogPage {
     getModalTitle() {
         return this.modalTitle.getAttribute('jhiTranslate');
     }
-
-    setMagnitudeInput = function(magnitude) {
-        this.magnitudeInput.sendKeys(magnitude);
-    };
-
-    getMagnitudeInput = function() {
-        return this.magnitudeInput.getAttribute('value');
-    };
 
     setRankingInput = function(ranking) {
         this.rankingInput.sendKeys(ranking);
@@ -125,6 +117,14 @@ export class MyAssetDialogPage {
 
     getImpactInput = function() {
         return this.impactInput.getAttribute('value');
+    };
+
+    setLossValueInput = function(lossValue) {
+        this.lossValueInput.sendKeys(lossValue);
+    };
+
+    getLossValueInput = function() {
+        return this.lossValueInput.getAttribute('value');
     };
 
     assetSelectLastOption = function() {

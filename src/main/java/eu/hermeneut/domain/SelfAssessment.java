@@ -64,19 +64,8 @@ public class SelfAssessment implements Serializable {
         inverseJoinColumns = @JoinColumn(name = "threatagents_id", referencedColumnName = "id"))
     private Set<ThreatAgent> threatagents = new HashSet<>();
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    @JoinTable(name = "self_assessment_externalaudit",
-        joinColumns = @JoinColumn(name = "self_assessments_id", referencedColumnName = "id"),
-        inverseJoinColumns = @JoinColumn(name = "externalaudits_id", referencedColumnName = "id"))
-    private Set<ExternalAudit> externalaudits = new HashSet<>();
-
-    @ManyToMany(fetch = FetchType.EAGER)
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    @JoinTable(name = "self_assessment_questionnaire",
-        joinColumns = @JoinColumn(name = "self_assessments_id", referencedColumnName = "id"),
-        inverseJoinColumns = @JoinColumn(name = "questionnaires_id", referencedColumnName = "id"))
-    private Set<Questionnaire> questionnaires = new HashSet<>();
+    @ManyToOne
+    private ExternalAudit externalAudit;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -152,6 +141,19 @@ public class SelfAssessment implements Serializable {
         this.user = user;
     }
 
+    public ExternalAudit getExternalAudit() {
+        return externalAudit;
+    }
+
+    public SelfAssessment externalAudit(ExternalAudit externalAudit) {
+        this.externalAudit = externalAudit;
+        return this;
+    }
+
+    public void setExternalAudit(ExternalAudit externalAudit) {
+        this.externalAudit = externalAudit;
+    }
+
     public Set<CompanyGroup> getCompanyGroups() {
         return companyGroups;
     }
@@ -196,52 +198,6 @@ public class SelfAssessment implements Serializable {
 
     public void setThreatagents(Set<ThreatAgent> threatAgents) {
         this.threatagents = threatAgents;
-    }
-
-    public Set<ExternalAudit> getExternalaudits() {
-        return externalaudits;
-    }
-
-    public SelfAssessment externalaudits(Set<ExternalAudit> externalAudits) {
-        this.externalaudits = externalAudits;
-        return this;
-    }
-
-    public SelfAssessment addExternalaudit(ExternalAudit externalAudit) {
-        this.externalaudits.add(externalAudit);
-        return this;
-    }
-
-    public SelfAssessment removeExternalaudit(ExternalAudit externalAudit) {
-        this.externalaudits.remove(externalAudit);
-        return this;
-    }
-
-    public void setExternalaudits(Set<ExternalAudit> externalAudits) {
-        this.externalaudits = externalAudits;
-    }
-
-    public Set<Questionnaire> getQuestionnaires() {
-        return questionnaires;
-    }
-
-    public SelfAssessment questionnaires(Set<Questionnaire> questionnaires) {
-        this.questionnaires = questionnaires;
-        return this;
-    }
-
-    public SelfAssessment addQuestionnaire(Questionnaire questionnaire) {
-        this.questionnaires.add(questionnaire);
-        return this;
-    }
-
-    public SelfAssessment removeQuestionnaire(Questionnaire questionnaire) {
-        this.questionnaires.remove(questionnaire);
-        return this;
-    }
-
-    public void setQuestionnaires(Set<Questionnaire> questionnaires) {
-        this.questionnaires = questionnaires;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 

@@ -14,32 +14,32 @@ id;name;description;created;modified;assetcategory_id
 13;Copyright;Copyright guarantees the protection of drawn, written or photographic descriptions of an idea against unauthorized copying or adapting. Unlike patent, copyright rises automatically without fees. However, it does not protect the underlying idea. Nevertheless, copyright may be an effective way of protection for computer code. Copyright arises automatically and is free. It is important because it can easily establish dates of origin of an idea, or of changes to an idea. However, it gives no protection against someone who independently comes up with the same or a similar idea (i.e. a competitor may say that his idea is similar by coincidence, or that others idea is a copy of his).;now();now();3
 14;Patent;The patent systems aim to encourage the development of new technologies. A patent offers a legal monopoly granted by government through patent offices in return for public disclosure of innovations and inventions. Observation of the patent literature show that patenting an idea will not necessarily generate additional value for the underlying invention (i.e. if no one is interested on protected invention, a patent is unlikely to make any difference. But if an invention has commercial potential, a patent may ensure a financial benefit). The cost and complexity of patenting can be a problem for many inventors. Therefore, a decision to apply for a patent should never be taken without careful consideration of several factors since patents last for 20 years (under condition of renewal fees payment).;now();now();3
 15;Blueprint;Introduced in the 19th century, the blueprint process allowed rapid and accurate reproduction of documents used in construction and industry. A blueprint is a reproduction of a technical drawing (documenting an architecture or an engineering design for example) characterized by light-colored lines on a blue background using a contact print process on light-sensitive sheets.;now();now();3
-16;Intellectual Property (IP) in progress;Waiting for description;now();now();3
-17;Trade or business secrets;Waiting for description;now();now();4
+16;Intellectual Property (IP) in progress;Patents, copyrights and other IPs still under finalisation and formal approval.;now();now();3
+17;Trade or business secrets;A trade or business secret can be a formula, practice, process, design, instrument, pattern, commercial method, or compilation of information not generally known or reasonably ascertainable by others by which a business can obtain an economic advantage over competitors or customers.;now();now();4
 18;Industrial process;Industrial process refers to a systematic series of electrical, mechanical, physical or chemical operations in support of items manufacturing. Industrial processes are a key component for a very large-scale production (specially for chemical and heavy industries).;now();now();4
-19;On-going R&D innovation projects;Waiting for description;now();now();4
-20;On-going new product and new services;Waiting for description;now();now();4
-21;Business models;Waiting for description;now();now();4
-22;Data on clients and partners;Waiting for description;now();now();5
-23;Data on personnel;Waiting for description;now();now();5
-24;Data on suppliers and ecosystems;Waiting for description;now();now();5
-25;Data on functions (HR, commercial, finance, fiscal, etc.);Waiting for description;now();now();5
-26;Organisation Reputation with clients, stakeholders and firm''s ecosystems;Waiting for description;now();now();6
-27;Reputation of managers and employees;Waiting for description;now();now();6
-28;Cyber-trustworthy;Waiting for description;now();now();6
-29;Brand value with customers, stakeholders and firm or organisation''s ecosystem;Waiting for description;now();now();7
-30;Brand Reputation;Waiting for description;now();now();7
-31;Firm''s personnel technical and business key competences;Waiting for description;now();now();8
-32;Firm''s personnel soft-skills;Waiting for description;now();now();8
-33;Organisational knowledge;Waiting for description;now();now();8
-34;Personnel motivation and satisfaction;Waiting for description;now();now();8
-35;Personnel trust in the organisation;Waiting for description;now();now();8
-36;Personnel learning capabilities;Waiting for description;now();now();8
-37;Digital supported process;Waiting for description;now();now();9
-38;Non-digitised functional and interfunctional processes;Waiting for description;now();now();9
-39;Continuous Learning and Training Opportunities;Waiting for description;now();now();9
-40;Firm or organisation''s strategic capabilities;Waiting for description;now();now();9
-41;Eco-system''s processes;Waiting for description;now();now();9
-42;Commercial and Stakeholders'' Network;Waiting for description;now();now();9
+19;On-going R&D innovation projects;Research and development internal or external projects under development.;now();now();4
+20;On-going new product and new services;New products or services still under ideation, definition or implementation.;now();now();4
+21;Business models;A business model is a company''s plan for how it will generate revenues and make a profit. It explains what products or services the business plans to manufacture and market, and how it plans to do so, including what expenses it will incur.;now();now();4
+22;Data on clients and partners;Personal data releted to organisation partners and clients.;now();now();5
+23;Data on personnel;Personal data of organisation staff.;now();now();5
+24;Data on suppliers and ecosystems;Personel and organisation data related to suppliers and other relevant stakeholders (e.g., service providers, partners, etc.);now();now();5
+25;Data on functions (HR, commercial, finance, fiscal, etc.);Data related to the different functions in the organisations: HR, commercial, finance, fiscal, IT, operations, etc.;now();now();5
+26;Organisation Reputation with clients, stakeholders and firm''s ecosystems;Beliefs and/or opinions that are generally held about the organisation by its clients, stakeholders and the whole eco system, mainly based on quality of services, past interactions, communication campaigns, also influenced by the opinion of others.;now();now();6
+27;Reputation of managers and employees;Beliefs and/or opinions that are generally held about themanagers and employees of the  organisation by its clients, stakeholders and the whole eco system, mainly based on, past interactions and also influenced by the opinion of others.;now();now();6
+28;Cyber-trustworthy;Organisation credibility and reputation with respect to cyber-security.;now();now();6
+29;Brand value with customers, stakeholders and firm or organisation''s ecosystem;The financial valueof having customers, stakeholders etc. who will pay more for a particular brand, with no specific assessment of the quality of the product/service.;now();now();7
+30;Brand Reputation;The market is highly competitive, with a limited number of players, so eputation (i.e. beliefs or opinions that are generally held about someone or company) is critical to securing a leading role. Some companies rely on their patent portfolios to build their reputations. In this sense, reputation is considered of the essence for developing a competitive edge boosted by a solid IP portfolio and a strength R&D activity.;now();now();7
+31;Firm''s personnel technical and business key competences;Key  competencies are the resources and/or strategic advantages of a business, including the combination of pooled knowledge and technical capacities, that allow it to be competitive in the marketplace. They are what the company does best and consist of the combined activities, operations, and resources that distinguish the company from competitors.;now();now();8
+32;Firm''s personnel soft-skills;Soft skills are a combination of social skills, communication skills, character of personality traits, attitudes, career attribute, social intelligence and emotional intelligence quotients among others that enable people to navigate their environment, work well with others, perform well, and achieve their goals with complementing hard skills.;now();now();8
+33;Organisational knowledge;Common values, language, procedures, know-how, workpractices shared in an organisation. They are a source of learning and a repository for tacit, explicit, and embedded knowledge.;now();now();8
+34;Personnel motivation and satisfaction;Job satisfaction refers to the pleasure or reassurance that a job provides a person. A person who is satisfied with his job is said to have high job satisfaction. By contrast, motivation refers only to the reasons a person performs a job, regardless of whether the job brings him pleasure.;now();now();8
+35;Personnel trust in the organisation;Trust of staff in the organisation linked to the sarin of objectives and values.;now();now();8
+36;Personnel learning capabilities;Learning capability is defined as the individual, organizational and managerial characteristics of factors that encourage learning process or enable an organisation to learn. Knowledge performance can be explained as an ability of individual, group and organisation to understand what they have learned and re-use it during daily work.;now();now();8
+37;Digital supported process;Business and organisational processes and procedures recorded and supported on digital means.;now();now();9
+38;Non-digitised functional and interfunctional processes;Business processes within a single area of business/activity of the organisation and/or more than one.They are formalised on paper or just in the tacit knowledge of the organisation, but not recorded on digital supports.;now();now();9
+39;Continuous Learning and Training Opportunities;Opportunities for formal and informale training, both through digital means that in traditional formats.;now();now();9
+40;Firm or organisation''s strategic capabilities;A strategic capability is what a company needs to do to execute its business strategy. Strategic Capabilities that a firm might possess are Core Capabilities, Enabling Capabilities and Supplemental Capabilities. Core Capabilities are defined as those "built up over time", that "cannot be easily imitated" and therefore "constitute a competitive advantage for a firm". They are distinct from the other types of capability and sufficiently superior to similar capabilities in competitor organizations to provide a "sustainable competitive advantage". It is implied that such core capabilities are the product of sustained, long organizational learning. Supplemental Capabilities are defined as those that "add value to core capabilities but that could be imitated". Enabling Capabilities are defined as those that "are necessary but not sufficient in themselves to competitively distinguish a company." In other words, enabling capabilities are those which a firm has to do, in support of its normal operations and core capabilities, but which are not themselves core capabilities.;now();now();9
+41;Eco-system''s processes;Formalised or informal business procedure and practices within the organisation or with clients, suppliers, partners.;now();now();9
+42;Commercial and Stakeholders'' Network;Set of commercial, partnership and supplier contacts.;now();now();9
 43;Royalty; Royalty refers to the sum perceived by a patentee for the use of a patent or by an author or a composer for each copy of a book sold or for each public performance of a work.;now();now();9
-44;Cooperation and Commercial Agreements;Waiting for description;now();now();9
+44;Cooperation and Commercial Agreements;Cooperation and Commercial Agreements already signed with partners, clients and suppliers.;now();now();9

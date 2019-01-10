@@ -13,6 +13,7 @@ import eu.hermeneut.utils.likelihood.attackstrategy.AttackStrategyCalculator;
 import eu.hermeneut.utils.likelihood.overall.OverallCalculator;
 import eu.hermeneut.utils.threatagent.ThreatAgentComparator;
 import eu.hermeneut.web.rest.AssetResource;
+import org.apache.commons.math3.util.Precision;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,9 @@ public class ResultServiceImpl implements ResultService {
 
     @Autowired
     private SelfAssessmentService selfAssessmentService;
+
+    @Autowired
+    private ThreatAgentService threatAgentService;
 
     @Autowired
     private AttackStrategyService attackStrategyService;
@@ -65,7 +69,7 @@ public class ResultServiceImpl implements ResultService {
     private AnswerCalculator answerCalculator;
 
     @Override
-    public Result getResult(Long selfAssessmentID) {
+    public Result getThreatAgentsResult(Long selfAssessmentID) {
         log.debug("REST request to get the RESULT");
         log.debug("SelfAssessmentID: " + selfAssessmentID);
 
@@ -88,13 +92,13 @@ public class ResultServiceImpl implements ResultService {
                     log.debug("Skills: " + threatAgent.getSkillLevel().getValue());
                 }
 
+                Map<Long, Float> levelsOfInterest = this.getLevelsOfInterest(selfAssessmentID);
+
                 ThreatAgent strongestThreatAgent = ascendingThreatAgentSkills.get(0);
                 log.debug("Strongest ThreatAgent: " + strongestThreatAgent);
 
                 List<AttackStrategy> attackStrategies = this.attackStrategyService.findAll();
                 log.debug("AttackStrategies: " + Arrays.toString(attackStrategies.toArray()));
-
-                Map<Long, AttackStrategy> attackStrategyMap = attackStrategies.stream().collect(Collectors.toMap(AttackStrategy::getId, attackStrategy -> attackStrategy));
 
                 //Map used to update the likelihood of an AttackStrategy in time O(1).
                 Map<Long/*AttackStrategy.ID*/, AugmentedAttackStrategy> augmentedAttackStrategyMap = attackStrategies.stream().collect(Collectors.toMap(AttackStrategy::getId, attackStrategy -> new AugmentedAttackStrategy(attackStrategy)));
@@ -112,13 +116,13 @@ public class ResultServiceImpl implements ResultService {
                 log.debug("END ############AttackMap############...");
 
                 //#Output 1 ==> OVERALL INITIAL LIKELIHOOD
-                //result.setInitialVulnerability(this.overallCalculator.overallInitialLikelihoodByThreatAgent(strongestThreatAgent, attackMap));
                 result.setInitialVulnerability(new HashMap<Long, Float>() {
                     {
                         for (ThreatAgent threatAgent : ascendingThreatAgentSkills) {
                             log.debug("Skills: " + threatAgent.getSkillLevel().getValue());
+                            float levelOfInterest = levelsOfInterest.getOrDefault(threatAgent.getId(), 0F);
 
-                            put(threatAgent.getId(), ResultServiceImpl.this.overallCalculator.overallInitialLikelihoodByThreatAgent(threatAgent, attackMap));
+                            put(threatAgent.getId(), Precision.round(levelOfInterest * ResultServiceImpl.this.overallCalculator.overallInitialLikelihoodByThreatAgent(threatAgent, attackMap), 2));
                         }
                     }
                 });
@@ -150,7 +154,8 @@ public class ResultServiceImpl implements ResultService {
                     result.setContextualVulnerability(new HashMap<Long, Float>() {
                         {
                             for (ThreatAgent threatAgent : ascendingThreatAgentSkills) {
-                                put(threatAgent.getId(), ResultServiceImpl.this.overallCalculator.overallContextualLikelihoodByThreatAgent(threatAgent, attackMap));
+                                float levelOfInterest = levelsOfInterest.getOrDefault(threatAgent.getId(), 0F);
+                                put(threatAgent.getId(), Precision.round(levelOfInterest * ResultServiceImpl.this.overallCalculator.overallContextualLikelihoodByThreatAgent(threatAgent, attackMap), 2));
                             }
                         }
                     });
@@ -177,7 +182,8 @@ public class ResultServiceImpl implements ResultService {
                     result.setRefinedVulnerability(new HashMap<Long, Float>() {
                         {
                             for (ThreatAgent threatAgent : ascendingThreatAgentSkills) {
-                                put(threatAgent.getId(), ResultServiceImpl.this.overallCalculator.overallRefinedLikelihoodByThreatAgent(threatAgent, attackMap));
+                                float levelOfInterest = levelsOfInterest.getOrDefault(threatAgent.getId(), 0F);
+                                put(threatAgent.getId(), Precision.round(levelOfInterest * ResultServiceImpl.this.overallCalculator.overallRefinedLikelihoodByThreatAgent(threatAgent, attackMap), 2));
                             }
                         }
                     });
@@ -197,7 +203,7 @@ public class ResultServiceImpl implements ResultService {
         Float overallLikelihood = -1F;
 
         if (selfAssessmentID != null) {
-            Result result = this.getResult(selfAssessmentID);
+            Result result = this.getThreatAgentsResult(selfAssessmentID);
 
             if (result != null) {
                 Map<Long, Float> initialVulnerability = result.getInitialVulnerability();
@@ -215,5 +221,74 @@ public class ResultServiceImpl implements ResultService {
         }
 
         return overallLikelihood;
+    }
+
+    @Override
+    public Map<Long, Float> getLevelsOfInterest(Long selfAssessmentID) {
+        //ThreatAgent-ID --> x-Value
+        Map<Long, Integer> threatAgentQuestionsCount = new HashMap<>();
+        Map<Long, Integer> threatAgentYesCount = new HashMap<>();
+        Map<Long, Float> threatAgentLevelsOfInterest = new HashMap<>();
+
+        if (selfAssessmentID != null) {
+            SelfAssessment selfAssessment = this.selfAssessmentService.findOne(selfAssessmentID);
+
+            if (selfAssessment != null) {
+                QuestionnaireStatus questionnaireStatus = this.questionnaireStatusService.findBySelfAssessmentRoleAndQuestionnairePurpose(selfAssessmentID, Role.ROLE_CISO, QuestionnairePurpose.ID_THREAT_AGENT);
+
+                if (questionnaireStatus != null) {
+                    List<MyAnswer> myAnswers = this.myAnswerService.findAllByQuestionnaireStatus(questionnaireStatus.getId());
+
+                    for (MyAnswer myAnswer : myAnswers) {
+                        Question question = myAnswer.getQuestion();
+                        ThreatAgent threatAgent = question.getThreatAgent();
+                        Answer answer = myAnswer.getAnswer();
+
+                        if (question != null && threatAgent != null && answer != null) {
+                            //Count the question
+                            this.initOrIncrement(threatAgentQuestionsCount, threatAgent);
+
+                            //Count the YES answers
+                            if (answer.getName().equals("Yes")) {
+                                this.initOrIncrement(threatAgentYesCount, threatAgent);
+                            }
+                        }
+                    }
+
+                    //Calculate the Level of Interest
+                    threatAgentQuestionsCount.keySet().stream().forEach(threatAgentID -> {
+                        float questionsCount = threatAgentQuestionsCount.getOrDefault(threatAgentID, 0);
+                        float yesCount = threatAgentYesCount.getOrDefault(threatAgentID, 0);
+                        float levelOfInterest = questionsCount != 0F ? Precision.round(yesCount / questionsCount, 2) : 0F;
+
+                        threatAgentLevelsOfInterest.put(threatAgentID, levelOfInterest);
+                    });
+                }
+            }
+        }
+
+        //Add the threat agents identified by default with Level of Interest = 100%
+        List<ThreatAgent> defaultThreatAgents = this.threatAgentService.findAllDefault();
+
+        if (defaultThreatAgents != null && !defaultThreatAgents.isEmpty()) {
+            defaultThreatAgents.stream().forEach((threatAgent) -> {
+                if (threatAgent.isIdentifiedByDefault()) {
+                    threatAgentLevelsOfInterest.put(threatAgent.getId(), 1F);
+                }
+            });
+        }
+
+        return threatAgentLevelsOfInterest;
+    }
+
+    private void initOrIncrement(Map<Long, Integer> threatAgentPropertyCount, ThreatAgent threatAgent) {
+        if (threatAgentPropertyCount.containsKey(threatAgent.getId())) {
+            Integer currentCount = threatAgentPropertyCount.get(threatAgent.getId());
+
+            currentCount = currentCount + 1;
+            threatAgentPropertyCount.put(threatAgent.getId(), currentCount);
+        } else {
+            threatAgentPropertyCount.put(threatAgent.getId(), 1);
+        }
     }
 }

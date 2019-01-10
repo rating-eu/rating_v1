@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <changeSet id="20181211221234-1" author="developer" runAlways="true" runOnChange="true">
+        <preConditions onFail="MARK_RAN">
+            <columnExists tableName="attack_cost" columnName="direct_asset_id"></columnExists>
+            <columnExists tableName="attack_cost" columnName="indirect_asset_id"></columnExists>
+            <columnExists tableName="attack_cost" columnName="my_asset_id"></columnExists>
+        </preConditions>
+
+        <update tableName="attack_cost">
+            <column
+                name="my_asset_id"
+                valueComputed="(SELECT direct.my_asset_id FROM direct_asset direct WHERE direct.id=direct_asset_id)"
+            />
+            <where>direct_asset_id IS NOT NULL</where>
+        </update>
+
+        <update tableName="attack_cost">
+            <column
+                name="my_asset_id"
+                valueComputed="(SELECT indirect.my_asset_id FROM indirect_asset indirect WHERE indirect.id=indirect_asset_id)"
+            />
+            <where>indirect_asset_id IS NOT NULL</where>
+        </update>
+
+        <rollback>
+            <!--Do nothing-->
+        </rollback>
+    </changeSet>
+</databaseChangeLog>

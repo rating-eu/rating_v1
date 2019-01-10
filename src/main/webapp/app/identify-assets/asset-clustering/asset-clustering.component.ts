@@ -79,8 +79,9 @@ export class AssetClusteringComponent implements OnInit, OnDestroy {
                     let find = false;
                     this.categoryToAssets.forEach((v, k) => {
                         if (k.id === asset.assetcategory.id) {
-                            const items = this.categoryToAssets.get(k);
+                            let items = this.categoryToAssets.get(k);
                             items.push(asset);
+                            items = _.orderBy(items, ['name'], ['asc']);
                             this.categoryToAssets.set(k, items);
                             find = true;
                         }
@@ -90,6 +91,12 @@ export class AssetClusteringComponent implements OnInit, OnDestroy {
                     }
                 }
                 this.categories = Array.from(this.categoryToAssets.keys());
+                this.categories = _.orderBy(this.categories, ['name'], ['asc']);
+                const tempMap: Map<AssetCategoryMgm, AssetMgm[]> = new Map<AssetCategoryMgm, AssetMgm[]>();
+                this.categories.forEach((category) => {
+                    tempMap.set(category, this.categoryToAssets.get(category));
+                });
+                this.categoryToAssets = tempMap;
                 this.idaUtilsService.getMySavedAssets(this.mySelf).toPromise().then((mySavedAssets) => {
                     if (mySavedAssets) {
                         this.myAssets = mySavedAssets;
@@ -163,7 +170,6 @@ export class AssetClusteringComponent implements OnInit, OnDestroy {
         }
         if (selectedAsset instanceof Array) {
             const assetInSelection = this.howManyAssetInSelection(categoryId);
-            // const indexCategory = _.findIndex(this.categories, { id: categoryId });
             if (assetInSelection !== 0) {
                 for (const asset of selectedAsset) {
                     const i = _.findIndex(this.myAssets,
@@ -187,8 +193,7 @@ export class AssetClusteringComponent implements OnInit, OnDestroy {
                         newAsset.economicValue = undefined;
                         newAsset.estimated = undefined;
                         newAsset.impact = undefined;
-                        newAsset.magnitude = undefined;
-                        newAsset.ranking = undefined;
+                        newAsset.ranking = 1;
                         this.myAssets.push(newAsset);
                         this.updateMyAssets = true;
                     }
@@ -210,8 +215,7 @@ export class AssetClusteringComponent implements OnInit, OnDestroy {
                 newAsset.economicValue = undefined;
                 newAsset.estimated = undefined;
                 newAsset.impact = undefined;
-                newAsset.magnitude = undefined;
-                newAsset.ranking = undefined;
+                newAsset.ranking = 1;
                 this.myAssets.push(newAsset);
                 this.updateMyAssets = true;
             }
@@ -272,7 +276,6 @@ export class AssetClusteringComponent implements OnInit, OnDestroy {
     }
 
     public saveMyAsset() {
-        console.log(this.myAssets);
         this.loading = true;
         if (this.updateMyAssets) {
             this.idaUtilsService.createUpdateMyAssets(this.mySelf, this.myAssets).toPromise().then((myAssets) => {
@@ -280,13 +283,11 @@ export class AssetClusteringComponent implements OnInit, OnDestroy {
                     this.myAssets = myAssets;
                 }
                 this.loading = false;
-                this.router.navigate(['/identify-asset/magnitude']);
-                // [routerLink]="['../magnitude']"
+                this.router.navigate(['/identify-asset/cascade-effects']);
             });
         } else {
             this.loading = false;
-            this.router.navigate(['/identify-asset/magnitude']);
-            // [routerLink]="['../magnitude']"
+            this.router.navigate(['/identify-asset/cascade-effects']);
         }
     }
 }

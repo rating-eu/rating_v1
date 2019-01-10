@@ -11,12 +11,6 @@
         },
         {
             "relationshipType": "one-to-many",
-            "relationshipName": "costs",
-            "otherEntityName": "attackCost",
-            "otherEntityRelationshipName": "directAsset"
-        },
-        {
-            "relationshipType": "one-to-many",
             "relationshipName": "effects",
             "otherEntityName": "indirectAsset",
             "otherEntityRelationshipName": "directAsset"

@@ -35,8 +35,6 @@ export class QuestionnaireComponent implements OnInit {
             const purpose = this.localStorage.retrieve('purpose');
             this.router.navigate(['./identify-threat-agent/questionnaires/' + purpose]);
         }
-        console.log('QuestionnaireStatus: ' + this.questionnaireStatus);
-
         this.questions$ = this.questionnairesService.getAllQuestionsByQuestionnaire(this.questionnaire);
     }
 }

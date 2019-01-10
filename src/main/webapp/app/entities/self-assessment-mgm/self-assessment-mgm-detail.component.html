@@ -28,6 +28,12 @@
         <dd>
             {{selfAssessment.user?.login}}
         </dd>
+        <dt><span jhiTranslate="hermeneutApp.selfAssessment.externalAudit">External Audit</span></dt>
+        <dd>
+            <div *ngIf="selfAssessment.externalAudit">
+                <a [routerLink]="['/external-audit-mgm', selfAssessment.externalAudit?.id]">{{selfAssessment.externalAudit?.name}}</a>
+            </div>
+        </dd>
         <dt><span jhiTranslate="hermeneutApp.selfAssessment.companyGroup">Company Group</span></dt>
         <dd>
             <span *ngFor="let companyGroup of selfAssessment.companyGroups; let last = last">
@@ -38,18 +44,6 @@
         <dd>
             <span *ngFor="let threatagent of selfAssessment.threatagents; let last = last">
                 <a [routerLink]="['/threat-agent-mgm', threatagent?.id ]">{{threatagent.name}}</a>{{last ? '' : ', '}}
-            </span>
-        </dd>
-        <dt><span jhiTranslate="hermeneutApp.selfAssessment.externalaudit">Externalaudit</span></dt>
-        <dd>
-            <span *ngFor="let externalaudit of selfAssessment.externalaudits; let last = last">
-                <a [routerLink]="['/external-audit-mgm', externalaudit?.id ]">{{externalaudit.name}}</a>{{last ? '' : ', '}}
-            </span>
-        </dd>
-        <dt><span jhiTranslate="hermeneutApp.selfAssessment.questionnaire">Questionnaire</span></dt>
-        <dd>
-            <span *ngFor="let questionnaire of selfAssessment.questionnaires; let last = last">
-                <a [routerLink]="['/questionnaire-mgm', questionnaire?.id ]">{{questionnaire.name}}</a>{{last ? '' : ', '}}
             </span>
         </dd>
     </dl>

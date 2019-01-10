@@ -2,7 +2,7 @@ package eu.hermeneut.domain.attackmap;
 
 import eu.hermeneut.domain.AttackStrategy;
 
-public class AugmentedAttackStrategy extends AttackStrategy {
+public class AugmentedAttackStrategy extends AttackStrategy implements Cloneable {
     private boolean enabled = false;
 
     private float initialLikelihood;
@@ -108,6 +108,11 @@ public class AugmentedAttackStrategy extends AttackStrategy {
             return 0;
         }
         return refinedLikelihood;
+    }
+
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone();
     }
 
     public void setRefinedLikelihood(float refinedLikelihood) {

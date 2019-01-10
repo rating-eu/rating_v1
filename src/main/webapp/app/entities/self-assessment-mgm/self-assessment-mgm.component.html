@@ -3,9 +3,11 @@
     <div class="col-lg-9 col-md-12">
         <div class="card-box">
             <div class="form-search-table">
-                <form name="searchForm"role="search" class="">
+                <form name="searchForm" role="search" class="">
                     <div class="input-group w-100">
-                        <input type="text" class="form-control" [(ngModel)]="currentSearch" id="currentSearch" name="currentSearch" placeholder="{{ 'hermeneutApp.selfAssessment.home.search' | translate }}">
+                        <input type="text" class="form-control" [(ngModel)]="currentSearch" id="currentSearch"
+                               name="currentSearch"
+                               placeholder="{{ 'hermeneutApp.selfAssessment.home.search' | translate }}">
                         <button class="input-group-append btn btn-info" (click)="search(currentSearch)">
                             <span class="fa fa-search"></span>
                         </button>
@@ -19,9 +21,11 @@
     </div>
     <div class="col-lg-3 col-md-12">
         <div class="card-box">
-            <button class="btn btn-block btn-primary waves-effect waves-light btn-info jh-create-entity create-self-assessment-mgm" [routerLink]="['/', { outlets: { popup: ['self-assessment-mgm-new'] } }]">
+            <button
+                class="btn btn-block btn-primary waves-effect waves-light btn-info jh-create-entity create-self-assessment-mgm"
+                [routerLink]="['/', { outlets: { popup: ['self-assessment-mgm-new'] } }]">
                 <i class="fas fa-plus"></i>
-                <span class="hidden-sm-down"  jhiTranslate="hermeneutApp.selfAssessment.home.createLabel">
+                <span class="hidden-sm-down" jhiTranslate="hermeneutApp.selfAssessment.home.createLabel">
             Create new Self Assessment
             </span>
             </button>
@@ -60,19 +64,19 @@
         <table class="table table-striped">
             <thead>
             <tr>
-            <!--<th><span jhiTranslate="global.field.id">ID</span></th>-->
-            <th><span jhiTranslate="hermeneutApp.selfAssessment.name">Name</span></th>
-            <th><span jhiTranslate="hermeneutApp.selfAssessment.created">Created</span></th>
-            <th><span jhiTranslate="hermeneutApp.selfAssessment.modified">Modified</span></th>
-            <th><span jhiTranslate="hermeneutApp.selfAssessment.companyProfile">Company Profile</span></th>
-            <!--<th><span jhiTranslate="hermeneutApp.selfAssessment.user">User</span></th>-->
-            <th><span jhiTranslate="hermeneutApp.selfAssessment.companyGroup">Company Group</span></th>
-            <!--<th><span jhiTranslate="hermeneutApp.selfAssessment.asset">Asset</span></th>
-            <th><span jhiTranslate="hermeneutApp.selfAssessment.threatagent">Threatagent</span></th>
-            <th><span jhiTranslate="hermeneutApp.selfAssessment.attackstrategy">Attackstrategy</span></th>-->
-            <th><span jhiTranslate="hermeneutApp.selfAssessment.externalaudit">Externalaudit</span></th>
-            <th><span jhiTranslate="hermeneutApp.selfAssessment.questionnaire">Questionnaire</span></th>
-            <th></th>
+                <!--<th><span jhiTranslate="global.field.id">ID</span></th>-->
+                <th><span jhiTranslate="hermeneutApp.selfAssessment.name">Name</span></th>
+                <th><span jhiTranslate="hermeneutApp.selfAssessment.created">Created</span></th>
+                <th><span jhiTranslate="hermeneutApp.selfAssessment.modified">Modified</span></th>
+                <th><span jhiTranslate="hermeneutApp.selfAssessment.companyProfile">Company Profile</span></th>
+                <!--<th><span jhiTranslate="hermeneutApp.selfAssessment.user">User</span></th>-->
+                <th><span jhiTranslate="hermeneutApp.selfAssessment.companyGroup">Company Group</span></th>
+                <!--<th><span jhiTranslate="hermeneutApp.selfAssessment.asset">Asset</span></th>
+                <th><span jhiTranslate="hermeneutApp.selfAssessment.threatagent">Threatagent</span></th>
+                <th><span jhiTranslate="hermeneutApp.selfAssessment.attackstrategy">Attackstrategy</span></th>-->
+                <th><span jhiTranslate="hermeneutApp.selfAssessment.externalAudit">External Audit</span></th>
+                <!--<th><span jhiTranslate="hermeneutApp.selfAssessment.questionnaire">Questionnaire</span></th>-->
+                <th></th>
             </tr>
             </thead>
             <tbody>
@@ -83,7 +87,7 @@
                 <td (click)="selectSelfAssessment(selfAssessment)">{{selfAssessment.modified | date:'medium'}}</td>
                 <td (click)="selectSelfAssessment(selfAssessment)">
                     <div *ngIf="selfAssessment.companyProfile">
-                        <a [routerLink]="['../company-profile-mgm', selfAssessment.companyProfile?.id ]" >{{selfAssessment.companyProfile?.name}}</a>
+                        <a [routerLink]="['../company-profile-mgm', selfAssessment.companyProfile?.id ]">{{selfAssessment.companyProfile?.name}}</a>
                     </div>
                 </td>
                 <!--<td (click)="selectSelfAssessment(selfAssessment)">
@@ -110,18 +114,19 @@
                         </span>
                 </td>-->
                 <td (click)="selectSelfAssessment(selfAssessment)">
-                    <span *ngFor="let externalaudit of selfAssessment.externalaudits; let last = last">
-                            <a class="form-control-static" [routerLink]="['../external-audit-mgm', externalaudit?.id ]">{{externalaudit.name}}</a>{{last ? '' : ', '}}
-                        </span>
+                    <div *ngIf="selfAssessment.externalAudit">
+                        <a [routerLink]="['../external-audit-mgm', selfAssessment.externalAudit?.id ]">{{selfAssessment.externalAudit?.name}}</a>
+                    </div>
                 </td>
-                <td (click)="selectSelfAssessment(selfAssessment)">
+                <!--<td (click)="selectSelfAssessment(selfAssessment)">
                     <span *ngFor="let questionnaire of selfAssessment.questionnaires; let last = last">
                             <a class="form-control-static" [routerLink]="['../questionnaire-mgm', questionnaire?.id ]">{{questionnaire.name}}</a>{{last ? '' : ', '}}
                         </span>
-                </td>
+                </td>-->
                 <td class="text-right">
                     <div class="btn-group flex-btn-group-container btn-table">
-                        <ng-template #tipButtonView><span jhiTranslate="entity.action.view">View Test</span></ng-template>
+                        <ng-template #tipButtonView><span jhiTranslate="entity.action.view">View Test</span>
+                        </ng-template>
                         <button type="submit"
                                 (click)="popUpService.setOnUserBehaviour()"
                                 [routerLink]="['../self-assessment-mgm', selfAssessment.id ]"
@@ -131,7 +136,8 @@
                             <i class="fas fa-eye"></i>
                             <!-- <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>-->
                         </button>
-                        <ng-template #tipButtonEdit><span jhiTranslate="entity.action.edit">Edit Test</span></ng-template>
+                        <ng-template #tipButtonEdit><span jhiTranslate="entity.action.edit">Edit Test</span>
+                        </ng-template>
                         <button type="submit"
                                 (click)="popUpService.setOnUserBehaviour()"
                                 [routerLink]="['/', { outlets: { popup: 'self-assessment-mgm/'+ selfAssessment.id + '/edit'} }]"
@@ -143,7 +149,8 @@
                             <i class="fas fa-edit"></i>
                             <!-- <span class="d-none d-md-inline" jhiTranslate="entity.action.edit" >Edit</span>-->
                         </button>
-                        <ng-template #tipButtonDelete><span jhiTranslate="entity.action.delete">Edit Test</span></ng-template>
+                        <ng-template #tipButtonDelete><span jhiTranslate="entity.action.delete">Edit Test</span>
+                        </ng-template>
                         <button type="submit"
                                 (click)="popUpService.setOnUserBehaviour()"
                                 [routerLink]="['/', { outlets: { popup: 'self-assessment-mgm/'+ selfAssessment.id + '/delete'} }]"
@@ -153,7 +160,7 @@
                                 [ngbTooltip]="tipButtonDelete"
                                 container="body">
                             <i class="fas fa-trash"></i>
-                           <!-- <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>-->
+                            <!-- <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>-->
                         </button>
                     </div>
                 </td>

@@ -12,10 +12,10 @@ import {JhiEventManager, JhiLanguageService} from 'ng-jhipster';
 import {NotificationInterceptor} from '../blocks/interceptor/notification.interceptor';
 import { IdentifyAssetService } from './identify-asset.service';
 import { AssetClusteringComponent } from './asset-clustering/asset-clustering.component';
-import { MagnitudeComponent } from './magnitude/magnitude.component';
 import { CascadeEffectsComponent } from './cascade-effects/cascade-effects.component';
 import { AssetReportComponent } from './asset-report/asset-report.component';
 import { AttackCostsComponent } from './attack-costs/attack-costs.component';
+import {ReplacePipe} from './pipe/replace.pipe';
 
 @NgModule({
     imports: [
@@ -25,14 +25,13 @@ import { AttackCostsComponent } from './attack-costs/attack-costs.component';
     ],
     declarations: [
         AssetClusteringComponent,
-        MagnitudeComponent,
         CascadeEffectsComponent,
         AssetReportComponent,
-        AttackCostsComponent
+        AttackCostsComponent,
+        ReplacePipe
     ],
     exports: [
         AssetClusteringComponent,
-        MagnitudeComponent,
         CascadeEffectsComponent,
         AssetReportComponent,
     ],
@@ -78,7 +77,6 @@ export class IdentifyAssetModule {
     constructor(private languageService: JhiLanguageService, private languageHelper: JhiLanguageHelper) {
         this.languageHelper.language
             .subscribe((languageKey: string) => {
-                // console.log('ID_THREAT_AGENT lang: ' + languageKey);
                 this.languageService.changeLanguage(languageKey);
             });
     }

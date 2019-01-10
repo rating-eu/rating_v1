@@ -1,11 +1,13 @@
-import { Component, OnInit, ViewEncapsulation, AfterViewInit, HostListener } from '@angular/core';
-import { Principal } from '../../shared';
-import { DatasharingService } from '../../datasharing/datasharing.service';
-import { Update } from '../model/Update';
+import {Component, OnInit, ViewEncapsulation, AfterViewInit, HostListener} from '@angular/core';
+import {Principal} from '../../shared';
+import {DatasharingService} from '../../datasharing/datasharing.service';
+import {Update} from '../model/Update';
 
-import { MenuItem } from 'primeng/api';
-import { MyRole } from '../../entities/enumerations/MyRole.enum';
-import { SelfAssessmentMgm, SelfAssessmentMgmService } from '../../entities/self-assessment-mgm';
+import {MenuItem} from 'primeng/api';
+import {MyRole} from '../../entities/enumerations/MyRole.enum';
+import {SelfAssessmentMgm, SelfAssessmentMgmService} from '../../entities/self-assessment-mgm';
+import {LogoMgm, LogoMgmService} from '../../entities/logo-mgm';
+import {HttpResponse} from '@angular/common/http';
 
 @Component({
     selector: 'jhi-sidebar',
@@ -21,13 +23,15 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     private isCISO = false;
     private isExternal = false;
     private mySelf: SelfAssessmentMgm;
+    public secondaryLogo: LogoMgm = null;
 
     windowWidth: number = window.innerWidth;
 
     constructor(
         private principal: Principal,
         private dataSharingService: DatasharingService,
-        private selfAssessmentService: SelfAssessmentMgmService
+        private selfAssessmentService: SelfAssessmentMgmService,
+        private logoService: LogoMgmService
     ) {
         this.isCollapsed = true;
         this.isSidebarCollapseByTheScreen();
@@ -61,23 +65,19 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         this.principal.getAuthenticationState().subscribe((identity) => {
             if (identity) {
                 this.isCollapsed = !this.isAuthenticated();
-                // console.log('Sidebar isAuthenticated: ' + this.isAuthenticated());
-
                 updateLayout = new Update();
                 updateLayout.isSidebarCollapsed = this.isCollapsed;
 
                 this.dataSharingService.updateLayout(updateLayout);
+                this.fetchSecondaryLogo();
 
                 this.principal.hasAnyAuthority([MyRole[MyRole.ROLE_CISO]]).then((response: boolean) => {
-                    // console.log('IsCISO response: ' + response);
-
                     if (response) {
                         this.isCISO = response;
                         this.isExternal = !this.isCISO;
                         this.createMenuItems(this.isCISO);
                     } else {
                         this.principal.hasAnyAuthority([MyRole[MyRole.ROLE_EXTERNAL_AUDIT]]).then((response2: boolean) => {
-                            // console.log('IsExternal response: ' + response2);
                             this.isExternal = response2;
                             this.isCISO = !this.isExternal;
                             this.createMenuItems(this.isCISO, this.isExternal);
@@ -88,11 +88,6 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
             }
         });
-
-        // console.log('HadAnyAuthority direct CISO: ' + this.principal.hasAnyAuthorityDirect([MyRole[MyRole.ROLE_CISO]]));
-        // console.log('Role CISO: ' + MyRole[MyRole.ROLE_CISO]);
-        // this.createMenuItems();
-
         this.isCollapsed = this.dataSharingService.getUpdate() != null ? this.dataSharingService.getUpdate().isSidebarCollapsed : true;
 
         let updateLayout: Update = this.dataSharingService.getUpdate();
@@ -111,12 +106,12 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                 this.createMenuItems(this.isCISO, this.isExternal);
             }
         });
-        /*
-        setTimeout(() => {
-            console.log('Menu Items created after timeout:');
-            console.log(JSON.stringify(this.items));
-        }, 100 * 1000);
-        */
+    }
+
+    private fetchSecondaryLogo() {
+        this.logoService.getSecondaryLogo().subscribe((logo: HttpResponse<LogoMgm>) => {
+            this.secondaryLogo = logo.body;
+        });
     }
 
     ngAfterViewInit() {
@@ -136,8 +131,17 @@ export class SidebarComponent implements OnInit, AfterViewInit {
             {
                 label: 'Company',
                 items: [
-                    { label: 'My Company', icon: 'fa fa-home', routerLink: ['/my-company'] },
-                    { label: 'My SelfAssessments', icon: 'fa fa-repeat', routerLink: ['/my-self-assessments'] }
+                    {
+                        label: 'My Company',
+                        icon: 'fa fa-home',
+                        routerLink: ['/my-company'],
+                        visible: isCISO
+                    },
+                    {
+                        label: 'My SelfAssessments',
+                        icon: 'fa fa-repeat',
+                        routerLink: ['/my-self-assessments']
+                    }
                 ]
             },
             {
@@ -151,10 +155,6 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                             {
                                 label: 'Asset Clustering',
                                 routerLink: ['/identify-asset/asset-clustering']
-                            },
-                            {
-                                label: 'Magnitudo',
-                                routerLink: ['/identify-asset/magnitude']
                             },
                             {
                                 label: 'Cascade Effects',
@@ -238,6 +238,11 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                         label: 'Assets',
                         items: [
                             {
+                                label: 'Add',
+                                icon: 'fa fa-plus',
+                                routerLink: ['/pages/coming-soon']
+                            },
+                            {
                                 label: 'Tangible',
                                 routerLink: ['/asset-mgm']
                             },
@@ -251,12 +256,19 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                         label: 'Threat Agents',
                         items: [
                             {
+                                label: 'Add',
+                                icon: 'fa fa-plus',
+                                routerLink: ['/pages/coming-soon']
+                            },
+                            {
                                 label: 'View',
+                                icon: 'far fa-eye',
                                 routerLink: ['/threat-agent-mgm']
                             },
                             {
                                 label: 'Update',
-                                routerLink: ['/threat-agent-mgm']
+                                icon: 'fas fa-pen-fancy',
+                                routerLink: ['/pages/coming-soon']
                             },
                         ]
                     },
@@ -264,12 +276,19 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                         label: 'Attack Strategies',
                         items: [
                             {
+                                label: 'Add',
+                                icon: 'fa fa-plus',
+                                routerLink: ['/pages/coming-soon']
+                            },
+                            {
                                 label: 'View',
+                                icon: 'far fa-eye',
                                 routerLink: ['/attack-strategy-mgm']
                             },
                             {
                                 label: 'Update',
-                                routerLink: ['/attack-strategy-mgm']
+                                icon: 'fas fa-pen-fancy',
+                                routerLink: ['/pages/coming-soon']
                             }
                         ]
                     },
@@ -277,11 +296,18 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                         label: 'Mitigations',
                         items: [
                             {
+                                label: 'Add',
+                                icon: 'fa fa-plus',
+                                routerLink: ['/pages/coming-soon']
+                            },
+                            {
                                 label: 'View',
+                                icon: 'far fa-eye',
                                 routerLink: ['/mitigation-mgm']
                             },
                             {
                                 label: 'Update',
+                                icon: 'fas fa-pen-fancy',
                                 routerLink: ['/mitigation-mgm']
                             }
                         ]
@@ -289,10 +315,6 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                 ]
             }
         ];
-        /*
-        console.log('Menu Items created');
-        console.log(JSON.stringify(this.items));
-        */
     }
 
     isAuthenticated() {

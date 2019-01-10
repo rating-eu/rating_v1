@@ -10,6 +10,7 @@ import eu.hermeneut.exceptions.IllegalInputException;
 import eu.hermeneut.exceptions.NotFoundException;
 import eu.hermeneut.exceptions.NullInputException;
 import eu.hermeneut.service.*;
+import eu.hermeneut.utils.comparator.EBITComparator;
 import eu.hermeneut.utils.wp3.Calculator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.ZonedDateTime;
 import java.util.*;
 
@@ -41,6 +43,9 @@ public class WP3StepsController {
 
     @Autowired
     private SplittingLossService splittingLossService;
+
+    @Autowired
+    private SplittingValueService splittingValueService;
 
     @Autowired
     private MyAssetService myAssetService;
@@ -71,6 +76,21 @@ public class WP3StepsController {
             throw new NullInputException("The list of ebits is NULL");
         } else if (ebits.size() != 6) {
             throw new IllegalInputException("The number of ebits MUST be EXACTLY 6!");
+        } else {
+            ebits.sort(new EBITComparator());
+            EBIT previous = null;
+
+            for (EBIT ebit : ebits) {
+                if (previous == null) {
+                    previous = ebit;
+                } else {
+                    if ((ebit.getYear() - previous.getYear()) != 1) {
+                        throw new IllegalInputException("EBITs years must be consecutive and without duplicates!");
+                    } else {
+                        previous = ebit;
+                    }
+                }
+            }
         }
 
         //===SelfAssessment Lock===
@@ -406,7 +426,7 @@ public class WP3StepsController {
             } else {
                 //Calculate the Splitting Lossess for the specified SectorType and for the GLOBAL SectorType
                 sectorTypes.add(sectorType);
-                sectorTypes.add(SectorType.GLOBAL);
+                //sectorTypes.add(SectorType.GLOBAL);
             }
 
             if (categoryType == null) {
@@ -436,8 +456,136 @@ public class WP3StepsController {
         }
     }
 
+    @PostMapping("{selfAssessmentID}/wp3/step-five")
+    public WP3OutputBundle stepFiveSplittingValues(@PathVariable("selfAssessmentID") Long selfAssessmentID, @RequestBody WP3InputBundle wp3InputBundle) throws NullInputException, NotFoundException, IllegalInputException {
+        LOGGER.info("Step 5 entering: " + System.currentTimeMillis());
+        SelfAssessment selfAssessment = null;
+
+        if (selfAssessmentID != null) {
+            selfAssessment = this.selfAssessmentService.findOne(selfAssessmentID);
+        } else {
+            throw new NullInputException("The selfAssessmentID can NOT be NULL!");
+        }
+
+        if (selfAssessment == null) {
+            throw new NotFoundException("The selfAssessment with ID: " + selfAssessmentID + " was not found!");
+        }
+
+        if (wp3InputBundle == null) {
+            throw new IllegalInputException("WP3InputBundle can NOT be NULL!");
+        }
+
+        //===SelfAssessment Lock===
+        Object lock = null;
+        if (SELF_ASSESSMENT_LOCK.containsKey(selfAssessmentID)) {
+            lock = SELF_ASSESSMENT_LOCK.get(selfAssessmentID);
+        } else {
+            lock = new Object();
+            SELF_ASSESSMENT_LOCK.put(selfAssessmentID, lock);
+        }
+
+        LOGGER.info("Step 5 Lock: " + lock);
+
+        synchronized (lock) {
+            EconomicResults existingEconomicResults = this.economicResultsService.findOneBySelfAssessmentID(selfAssessmentID);
+            LOGGER.info("Step 5 ExistingEconomicResults: " + existingEconomicResults);
+
+            if (existingEconomicResults == null) {
+                throw new NotFoundException("The EconomicResults for SelfAssessment " + selfAssessmentID + " was not found!");
+            }
+
+            BigDecimal intangibleCapital = existingEconomicResults.getIntangibleCapital();
+
+            SectorType sectorType = wp3InputBundle.getSectorType();
+            CategoryType categoryType = wp3InputBundle.getCategoryType();
+
+            //New code
+            List<SplittingValue> splittingValues = this.splittingValueService.findAllBySelfAssessmentID(selfAssessmentID);
+
+            if (splittingValues != null) {//Already exists
+                //Remove OLD ones
+                this.splittingValueService.delete(splittingValues);
+            }
+
+            //Create NEW ones
+            splittingValues = new ArrayList<>();
+            List<SectorType> sectorTypes = new ArrayList<>();
+            List<CategoryType> categoryTypes = new ArrayList<>();
+
+
+            if (sectorType == null || sectorType == SectorType.GLOBAL) {
+                sectorTypes.add(SectorType.GLOBAL);
+            } else {
+                //Calculate the Splitting Values for the specified SectorType and for the GLOBAL SectorType
+                sectorTypes.add(sectorType);
+                //sectorTypes.add(SectorType.GLOBAL);
+            }
+
+            if (categoryType == null) {
+                categoryTypes.addAll(Arrays.asList(CategoryType.values()));
+            } else {
+                categoryTypes.add(categoryType);
+            }
+
+            for (SectorType sType : sectorTypes) {
+                for (CategoryType cType : categoryTypes) {
+                    SplittingValue splittingValue = createNewSplittingValue(selfAssessment, intangibleCapital,
+                        sType, cType);
+                    splittingValues.add(splittingValue);
+                }
+            }
+
+            //Persist the NEW SplittingLosses
+            splittingValues = this.splittingValueService.save(splittingValues);
+
+            WP3OutputBundle wp3OutputBundle = new WP3OutputBundle();
+            wp3OutputBundle.setEconomicResults(existingEconomicResults);
+            wp3OutputBundle.setEconomicCoefficients(null);//Not used in this step, if needed may be fetched and returned.
+            wp3OutputBundle.setSplittingValues(splittingValues);
+
+            LOGGER.info("Step 5 exiting: " + System.currentTimeMillis());
+            return wp3OutputBundle;
+        }
+    }
+
+    @GetMapping("{selfAssessmentID}/wp3/economic-losses")
+    public Set<MyAsset> evaluateEconomicLosses(@PathVariable("selfAssessmentID") Long selfAssessmentID) throws NullInputException, NotFoundException {
+        LOGGER.info("Step 5 entering: " + System.currentTimeMillis());
+        SelfAssessment selfAssessment = null;
+
+        if (selfAssessmentID != null) {
+            selfAssessment = this.selfAssessmentService.findOne(selfAssessmentID);
+        } else {
+            throw new NullInputException("The selfAssessmentID can NOT be NULL!");
+        }
+
+        EconomicCoefficients economicCoefficients = this.economicCoefficientsService.findOneBySelfAssessmentID(selfAssessment.getId());
+
+        if (economicCoefficients == null) {
+            throw new NotFoundException("EconomicCoefficients NOT FOUND for SelfAssessment with ID: " + selfAssessment.getId());
+        }
+
+        BigDecimal lossOfIntangiblePercentage = economicCoefficients.getLossOfIntangible();
+
+        List<MyAsset> myAssets = this.myAssetService.findAllBySelfAssessment(selfAssessment.getId());
+
+        if (myAssets == null || myAssets.isEmpty()) {
+            throw new NotFoundException("MyAssets NOT FOUND for SelfAssessment with ID: " + selfAssessment.getId());
+        }
+
+        for (MyAsset myAsset : myAssets) {
+            if (myAsset.getRanking() != null && myAsset.getEconomicValue() != null) {
+                BigDecimal lossValue = myAsset.getEconomicValue().multiply(lossOfIntangiblePercentage).divide(new BigDecimal(100), 2, RoundingMode.HALF_UP);
+                myAsset.setLossValue(lossValue);
+            }
+        }
+
+        List<MyAsset> myAssetList = this.myAssetService.saveAll(myAssets);
+        return new HashSet<>(myAssetList);
+    }
+
     private SplittingLoss createNewSplittingLoss(SelfAssessment selfAssessment, BigDecimal intangibleLossByAttacks, SectorType sectorType, CategoryType catType) {
-        BigDecimal splittingLossPercentage = Calculator.calculateSplittingLossPercentage(catType, sectorType);
+        BigDecimal splittingLossPercentage = Calculator.calculateSplittingPercentage(catType, sectorType);
         BigDecimal splittingLossValue = Calculator.calculateSplittingLoss(intangibleLossByAttacks, catType, sectorType);
 
         SplittingLoss splittingLoss = new SplittingLoss();
@@ -452,5 +600,21 @@ public class WP3StepsController {
         splittingLoss = this.splittingLossService.save(splittingLoss);
 
         return splittingLoss;
+    }
+
+    private SplittingValue createNewSplittingValue(SelfAssessment selfAssessment, BigDecimal intangibleCapital, SectorType sectorType, CategoryType catType) {
+        BigDecimal valueSplitting = Calculator.calculateSplittingLoss(intangibleCapital, catType, sectorType);
+
+        SplittingValue splittingValue = new SplittingValue();
+        splittingValue.setId(null);//new entity
+        splittingValue.setSectorType(sectorType);
+        splittingValue.setCategoryType(catType);
+        splittingValue.setSelfAssessment(selfAssessment);
+        splittingValue.setValue(valueSplitting);
+
+        //Save it and get the NEW ID
+        splittingValue = this.splittingValueService.save(splittingValue);
+
+        return splittingValue;
     }
 }

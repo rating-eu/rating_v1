@@ -1,3 +1,4 @@
+import { IdentifyAssetUtilService } from './../identify-assets/identify-asset.util.service';
 import { NgModule, Injector } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
@@ -65,7 +66,8 @@ import { MyCompanyMgmService } from '../entities/my-company-mgm';
       ]
     },
     ImpactEvaluationService,
-    MyCompanyMgmService
+    MyCompanyMgmService,
+    IdentifyAssetUtilService
   ]
 })
 export class ImpactEvaluationModule {

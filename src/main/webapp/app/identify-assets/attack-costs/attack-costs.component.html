@@ -40,23 +40,23 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="col-md-6">
-                                <ng-container *ngFor="let cost of costs; let isOdd=odd">
-                                    <ng-container *ngIf="isOdd">
-                                        <div class="row">
-                                            <label><input type="checkbox" [checked]="isDirectCostSelected(cost)"
-                                                    (change)="setCostOnDirect(cost)" id="{{cost}}-direct-{{selectedDirectAsset.myAsset.asset.name}}">
-                                                {{cost}}</label>
-                                        </div>
-                                    </ng-container>
-                                </ng-container>
-                            </div>
-                            <div class="col-md-6">
                                 <ng-container *ngFor="let cost of costs; let isEven=even">
                                     <ng-container *ngIf="isEven">
                                         <div class="row">
                                             <label><input type="checkbox" [checked]="isDirectCostSelected(cost)"
                                                     (change)="setCostOnDirect(cost)" id="{{cost}}-direct-{{selectedDirectAsset.myAsset.asset.name}}">
-                                                {{cost}}</label>
+                                                {{cost.toString() | replace:'_':' '}}</label>
+                                        </div>
+                                    </ng-container>
+                                </ng-container>
+                            </div>
+                            <div class="col-md-6">
+                                <ng-container *ngFor="let cost of costs; let isOdd=odd">
+                                    <ng-container *ngIf="isOdd">
+                                        <div class="row">
+                                            <label><input type="checkbox" [checked]="isDirectCostSelected(cost)"
+                                                          (change)="setCostOnDirect(cost)" id="{{cost.toString()}}-direct-{{selectedDirectAsset.myAsset.asset.name}}">
+                                                {{cost.toString() | replace:'_':' '}}</label>
                                         </div>
                                     </ng-container>
                                 </ng-container>
@@ -91,8 +91,8 @@
                                         <ng-container *ngIf="isOdd">
                                             <div class="row">
                                                 <label><input type="checkbox" [checked]="isIndirectCostSelected(cost)"
-                                                        (change)="setCostOnIndirect(cost)" id="{{cost}}-{{selectedIndirectAsset.myAsset.asset.name}}">
-                                                    {{cost}}</label>
+                                                        (change)="setCostOnIndirect(cost)" id="{{cost.toString()}}-{{selectedIndirectAsset.myAsset.asset.name}}">
+                                                    {{cost.toString() | replace:'_':' '}}</label>
                                             </div>
                                         </ng-container>
                                     </ng-container>
@@ -102,8 +102,8 @@
                                         <ng-container *ngIf="isEven">
                                             <div class="row">
                                                 <label><input type="checkbox" [checked]="isIndirectCostSelected(cost)"
-                                                        (change)="setCostOnIndirect(cost)" id="{{cost}}-{{selectedIndirectAsset.myAsset.asset.name}}">
-                                                    {{cost}}</label>
+                                                        (change)="setCostOnIndirect(cost)" id="{{cost.toString()}}-{{selectedIndirectAsset.myAsset.asset.name}}">
+                                                    {{cost.toString() | replace:'_':' '}}</label>
                                             </div>
                                         </ng-container>
                                     </ng-container>
@@ -111,25 +111,6 @@
                             </div>
                         </div>
                     </ng-container>
-                    <!--
-                    <div class="row" style="margin-top: 100px">
-                        <div class="col-md-4 offset-md-4">
-                            <div class="button-box">
-                                <button *ngIf="selectedDirectAsset && isMyAssetUpdated" class="btn btn-success btn-lg btn-block"
-                                    (click)="updateMyAsset()"><i class="fas fa-save"></i>
-                                    Submit</button>
-                                <button *ngIf="!selectedDirectAsset || !isMyAssetUpdated" class="btn btn-secondary btn-lg btn-block"><i
-                                        class="fas fa-save"></i>
-                                    Submit</button>
-                            </div>
-                        </div>
-                    </div>
-                    -->
-                    <!--
-                    <div class="row">
-                        <jhi-alert></jhi-alert>
-                    </div>
-                    -->
                 </ng-container>
                 <ng-container *ngIf="!selectedDirectAsset && !refresh">
                     <div class="text-center" style="margin-top: 50px">
@@ -145,7 +126,6 @@
                         Prev</button>
                 </div>
                 <div class="col-md-3 offset-md-6">
-                    <!-- [routerLink]="['/dashboard']" -->
                     <button class="btn btn-primary btn-lg btn-block" (click)="updateMyAsset(true)">
                         Close <i *ngIf="!loading" class="fa fa-times fa-lg" aria-hidden="true"></i><i *ngIf="loading"
                             class="fa fa-circle-o-notch fa-spin fa-lg fa-fw"></i>

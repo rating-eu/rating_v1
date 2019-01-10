@@ -1,6 +1,7 @@
 package eu.hermeneut.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import eu.hermeneut.domain.AttackCost;
 import eu.hermeneut.domain.MyAsset;
 import eu.hermeneut.exceptions.IllegalInputException;
 import eu.hermeneut.exceptions.NullInputException;
@@ -16,8 +17,9 @@ import org.springframework.web.bind.annotation.*;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 import static org.elasticsearch.index.query.QueryBuilders.*;
@@ -78,10 +80,32 @@ public class MyAssetResource {
             }
         }
 
-        //Delete the old ones
+        //We can't simply DELETE all the old ones, otherwise all the existing relations would be lost.
+        //Instead we need to delete the difference between the old and the new ones.
         List<MyAsset> myExistingAssets = this.myAssetService.findAllBySelfAssessment(selfAssessmentID);
 
-        for (MyAsset myAsset : myExistingAssets) {
+        //Only the MyAssets to DELETE will remain in this map.
+        Map<Long, MyAsset> myExistingAssetsDiffMap = myExistingAssets
+            .stream()
+            .collect(Collectors.toMap(
+                myAsset -> myAsset.getId(),
+                Function.identity()
+            ));
+
+        //Remove the "Confirmed MyAssets" (ID != null) from the diff map.
+        myAssets
+            .stream()
+            .filter(myAsset -> myAsset.getId() != null)
+            .forEach((myAsset) -> {
+                myExistingAssetsDiffMap.remove(myAsset.getId());
+            });
+
+        List<MyAsset> myAssetsDiff = myExistingAssetsDiffMap
+            .values()
+            .stream()
+            .collect(Collectors.toList());
+
+        for (MyAsset myAsset : myAssetsDiff) {
             this.myAssetService.delete(myAsset.getId());
         }
 
@@ -105,6 +129,7 @@ public class MyAssetResource {
         if (myAsset.getId() == null) {
             return createMyAsset(myAsset);
         }
+
         MyAsset result = myAssetService.save(myAsset);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, myAsset.getId().toString()))

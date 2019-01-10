@@ -42,6 +42,8 @@
                 "myCompanyMgm": "My Company",
                 "impactLevelMgm": "Impact Level",
                 "impactLevelDescriptionMgm": "Impact Level Description",
+                "splittingValueMgm": "Splitting Value",
+                "logoMgm": "Logo",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {

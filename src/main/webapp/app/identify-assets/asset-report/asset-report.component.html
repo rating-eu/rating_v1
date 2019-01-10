@@ -30,7 +30,6 @@
                                                     <th scope="col" class="text-center align-middle">Asset</th>
                                                     <th scope="col" class="text-center align-middle">Weight on company</th>
                                                     <th scope="col" class="text-center align-middle">Estimated</th>
-                                                    <th scope="col" class="text-center align-middle">Magnitude</th>
                                                     <th scope="col" class="text-center align-middle">Economic Value</th>
                                                     <th scope="col" class="text-center align-middle">Impact</th>
                                                 </tr>
@@ -42,8 +41,6 @@
                                                     <td *ngIf="!myAsset.ranking"> - </td>
                                                     <td *ngIf="myAsset.estimated">Yes</td>
                                                     <td *ngIf="!myAsset.estimated">No</td>
-                                                    <td *ngIf="myAsset.magnitude">{{myAsset.magnitude}}</td>
-                                                    <td *ngIf="!myAsset.magnitude"> - </td>
                                                     <td *ngIf="myAsset.economicValue">{{myAsset.economicValue}}</td>
                                                     <td *ngIf="!myAsset.economicValue"> - </td>
                                                     <td *ngIf="myAsset.impact">{{myAsset.impact}}</td>
@@ -86,7 +83,6 @@
                                                             <th scope="col" class="text-center align-middle">Asset</th>
                                                             <th scope="col" class="text-center align-middle">Weight on company</th>
                                                             <th scope="col" class="text-center align-middle">Estimated</th>
-                                                            <th scope="col" class="text-center align-middle">Magnitude</th>
                                                             <th scope="col" class="text-center align-middle">Economic Value</th>
                                                             <th scope="col" class="text-center align-middle">Impact</th>
                                                         </tr>
@@ -98,8 +94,6 @@
                                                             <td *ngIf="!myAsset.ranking"> - </td>
                                                             <td *ngIf="myAsset.estimated">Yes</td>
                                                             <td *ngIf="!myAsset.estimated">No</td>
-                                                            <td *ngIf="myAsset.magnitude">{{myAsset.magnitude}}</td>
-                                                            <td *ngIf="!myAsset.magnitude"> - </td>
                                                             <td *ngIf="myAsset.economicValue">{{myAsset.economicValue}}</td>
                                                             <td *ngIf="!myAsset.economicValue"> - </td>
                                                             <td *ngIf="myAsset.impact">{{myAsset.impact}}</td>

@@ -2,6 +2,12 @@
     "fluentMethods": true,
     "relationships": [
         {
+            "relationshipType": "one-to-many",
+            "relationshipName": "costs",
+            "otherEntityName": "attackCost",
+            "otherEntityRelationshipName": "myAsset"
+        },
+        {
             "relationshipType": "many-to-one",
             "relationshipName": "asset",
             "otherEntityName": "asset",
@@ -21,10 +27,6 @@
         }
     ],
     "fields": [
-        {
-            "fieldName": "magnitude",
-            "fieldType": "String"
-        },
         {
             "fieldName": "ranking",
             "fieldType": "Integer"
@@ -47,6 +49,10 @@
             ],
             "fieldValidateRulesMin": 1,
             "fieldValidateRulesMax": 5
+        },
+        {
+            "fieldName": "lossValue",
+            "fieldType": "BigDecimal"
         }
     ],
     "changelogDate": "20180727084747",

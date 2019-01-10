@@ -1,5 +1,6 @@
 package eu.hermeneut.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModelProperty;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -8,9 +9,10 @@ import javax.persistence.*;
 import javax.validation.constraints.*;
 
 import org.springframework.data.elasticsearch.annotations.Document;
-
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.Objects;
 
 /**
@@ -29,9 +31,6 @@ public class MyAsset implements Serializable {
     @SequenceGenerator(name = "sequenceGenerator")
     private Long id;
 
-    @Column(name = "magnitude")
-    private String magnitude;
-
     @Column(name = "ranking")
     private Integer ranking;
 
@@ -42,7 +41,7 @@ public class MyAsset implements Serializable {
      * WP3
      */
     @ApiModelProperty(value = "WP3")
-    @Column(name = "economic_value", precision = 10, scale = 2)
+    @Column(name = "economic_value", precision=10, scale=2)
     private BigDecimal economicValue;
 
     @Min(value = 1)
@@ -50,10 +49,18 @@ public class MyAsset implements Serializable {
     @Column(name = "impact")
     private Integer impact;
 
+    @Column(name = "loss_value", precision=10, scale=2)
+    private BigDecimal lossValue;
+
+    @OneToMany(mappedBy = "myAsset", fetch = FetchType.EAGER,
+        cascade = {CascadeType.ALL, CascadeType.PERSIST, CascadeType.MERGE}, orphanRemoval = true)
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    private Set<AttackCost> costs = new HashSet<>();
+
     @ManyToOne
     private Asset asset;
 
-    @OneToOne
+    @ManyToOne
     private SelfAssessment selfAssessment;
 
     @ManyToOne
@@ -66,19 +73,6 @@ public class MyAsset implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getMagnitude() {
-        return magnitude;
-    }
-
-    public MyAsset magnitude(String magnitude) {
-        this.magnitude = magnitude;
-        return this;
-    }
-
-    public void setMagnitude(String magnitude) {
-        this.magnitude = magnitude;
     }
 
     public Integer getRanking() {
@@ -131,6 +125,44 @@ public class MyAsset implements Serializable {
 
     public void setImpact(Integer impact) {
         this.impact = impact;
+    }
+
+    public BigDecimal getLossValue() {
+        return lossValue;
+    }
+
+    public MyAsset lossValue(BigDecimal lossValue) {
+        this.lossValue = lossValue;
+        return this;
+    }
+
+    public void setLossValue(BigDecimal lossValue) {
+        this.lossValue = lossValue;
+    }
+
+    public Set<AttackCost> getCosts() {
+        return costs;
+    }
+
+    public MyAsset costs(Set<AttackCost> attackCosts) {
+        this.costs = attackCosts;
+        return this;
+    }
+
+    public MyAsset addCosts(AttackCost attackCost) {
+        this.costs.add(attackCost);
+        attackCost.setMyAsset(this);
+        return this;
+    }
+
+    public MyAsset removeCosts(AttackCost attackCost) {
+        this.costs.remove(attackCost);
+        attackCost.setMyAsset(null);
+        return this;
+    }
+
+    public void setCosts(Set<AttackCost> attackCosts) {
+        this.costs = attackCosts;
     }
 
     public Asset getAsset() {
@@ -197,11 +229,11 @@ public class MyAsset implements Serializable {
     public String toString() {
         return "MyAsset{" +
             "id=" + getId() +
-            ", magnitude='" + getMagnitude() + "'" +
             ", ranking=" + getRanking() +
             ", estimated='" + isEstimated() + "'" +
             ", economicValue=" + getEconomicValue() +
             ", impact=" + getImpact() +
+            ", lossValue=" + getLossValue() +
             "}";
     }
 }

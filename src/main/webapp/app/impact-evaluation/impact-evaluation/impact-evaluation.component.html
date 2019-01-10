@@ -1,452 +1,912 @@
-<div class="card-box">
-    <a (click)="isDescriptionCollapsed = !isDescriptionCollapsed" [attr.aria-expanded]="!isDescriptionCollapsed"
-    aria-controls="descriptionCollapsible" class="float-right">
-    <i class="fa fa-question-circle fa-lg" aria-hidden="true"></i>
-  </a>
-  <h3>Impact Evaluation</h3>
-  <ng-container [ngSwitch]="witchStep">
-    <div *ngSwitchCase="1" class="container-fluid">
-      <div id="descriptionCollapsible" class="row" [ngbCollapse]="isDescriptionCollapsed">
-        <div class="col-md-6">
-          <h4>Earnings Before Interest and Taxes (EBIT)</h4>
-          <p><small>(in million €) (Income statement)</small></p>
-          <p>"A financial measure defined as revenues less cost of goods sold and selling, general, and administrative
-            expenses. In other words, operating and non-operating profit before the deduction of interest and income
-            taxes."</p>
-          <p><a href="https://www.nasdaq.com/investing/glossary/e/earnings-before-interest-and-taxes">https://www.nasdaq.com/investing/glossary/e/earnings-before-interest-and-taxes</a></p>
-        </div>
-        <div class="col-md-6" style="border-left:1px solid #eceff1;">
-          <h4>Discounting rate</h4>
-          <p>Usually, the discounted rate used refers to risk free rate (comprise between 0 and 1) in the financial
-            market.</p>
-        </div>
-      </div>
+<ng-container *ngIf="financialAssetsAkaCurrent.length === 0 && physicalAssetsAkaFixed.length === 0">
+    <div class="text-center" style="margin-top: 50px">
+        <p style="color: orange"><i class="fa fa-exclamation-triangle fa-4x" aria-hidden="true"></i></p>
+        <p style="color: grey">In your organization are not present tangible asset, if this is a mistake please return
+            in
+            <a href="javascript:void(0)" [routerLink]="['/identify-asset/asset-clustering']">asset-clustering</a>
+            section and
+            modify your answers!</p>
     </div>
-    <div *ngSwitchCase="2" class="container-fluid">
-      <div id="descriptionCollapsible" class="row" [ngbCollapse]="isDescriptionCollapsed">
-        <div class="col-md-6">
-          <h4>Physical assets</h4>
-          <p><small>(in million €)</small></p>
-          <p>"Actual property such as precious metals or real estate. Also called real or tangible assets."</p>
-          <p><a href="https://www.nasdaq.com/investing/glossary/p/physical-asset">https://www.nasdaq.com/investing/glossary/p/physical-asset</a></p>
-          <p>Physical assets include:</p>
-          <ul>
-            <li><i class="fa fa-circle text-center align-middle" aria-hidden="true" style="font-size:7px"></i>Inventories: (Balance sheet)</li>
-            <li><i class="fa fa-circle text-center align-middle" aria-hidden="true" style="font-size:7px"></i>Property, plant and equipment, net: (Balance sheet)</li>
-            <li><i class="fa fa-circle text-center align-middle" aria-hidden="true" style="font-size:7px"></i>Long term liabilities: (Balance sheet)
-              <ul>
-                <li><i class="fa fa-chevron-right text-center align-middle" aria-hidden="true" style="font-size:7px"></i>Deferred revenue, non-current</li>
-                <li><i class="fa fa-chevron-right text-center align-middle" aria-hidden="true" style="font-size:7px"></i>Long term debt</li>
-                <li><i class="fa fa-chevron-right text-center align-middle" aria-hidden="true" style="font-size:7px"></i>Other non-current liabilities</li>
-              </ul>
-            </li>
-          </ul>
-        </div>
-        <div class="col-md-6" style="border-left:1px solid #eceff1;">
-          <h4>Financial assets</h4>
-          <p><small>(in million €)</small></p>
-          <p>Financial assets include:</p>
-          <ul>
-            <li><i class="fa fa-circle text-center align-middle" aria-hidden="true" style="font-size:7px"></i>Current assets - other than inventories: (Balance sheet)
-              <ul>
-                <li><i class="fa fa-chevron-right text-center align-middle" aria-hidden="true" style="font-size:7px"></i>Cash and cash equivalents</li>
-                <li><i class="fa fa-chevron-right text-center align-middle" aria-hidden="true" style="font-size:7px"></i>Short term marketable securities</li>
-                <li><i class="fa fa-chevron-right text-center align-middle" aria-hidden="true" style="font-size:7px"></i>Accounts receivable (less allowances)</li>
-                <li><i class="fa fa-chevron-right text-center align-middle" aria-hidden="true" style="font-size:7px"></i>Vendor non-trade receivables</li>
-                <li><i class="fa fa-chevron-right text-center align-middle" aria-hidden="true" style="font-size:7px"></i>Other current assets</li>
-              </ul>
-            </li>
-            <li><i class="fa fa-circle text-center align-middle" aria-hidden="true" style="font-size:7px"></i>Current liabilities: (Balance sheet)
-              <ul>
-                <li><i class="fa fa-chevron-right text-center align-middle" aria-hidden="true" style="font-size:7px"></i>Account payable</li>
-                <li><i class="fa fa-chevron-right text-center align-middle" aria-hidden="true" style="font-size:7px"></i>Accrued expenses</li>
-                <li><i class="fa fa-chevron-right text-center align-middle" aria-hidden="true" style="font-size:7px"></i>Deferred revenue</li>
-                <li><i class="fa fa-chevron-right text-center align-middle" aria-hidden="true" style="font-size:7px"></i>Current portion of long term debt</li>
-              </ul>
-            </li>
-          </ul>
-        </div>
-        <div class="col-md-6">
-          <h4>Physical assets return</h4>
-          <p>(The OCDE evaluate physical asset return to 7,1%)</p>
-        </div>
-        <div class="col-md-6" style="border-left:1px solid #eceff1;">
-          <h4>Financial assets return</h4>
-          <p>(The OCDE evaluate financial asset return to 5%)</p>
-        </div>
-      </div>
-    </div>
-    <div *ngSwitchCase="3" class="container-fluid">
-      <div id="descriptionCollapsible" class="row" [ngbCollapse]="isDescriptionCollapsed">
-        <div class="col-md-6">
-          <h4>Intangible Driving Earnings</h4>
-          <p><small>(in million €)</small></p>
-          <p>Based on tangible and financial assets valuation and returns, we estimated through the residual approach earnings driven by intangible assets holded.</p>
-        </div>
-        <div class="col-md-6" style="border-left:1px solid #eceff1;">
-          <h4>Intangible Capital</h4>
-          <p><small>(in million €)</small></p>
-          <p>By considering intangible driving earnings, we estimated the global value of intangible capital.</p>
-        </div>
-        <div class="col-md-6">
-            <h4>Loss of intangible percentage</h4>
-            <p><small>(in %)</small></p>
-            <p>In this section, the end-user is requested to estimate the percentage of losses related to intangible assets. According to our results within WP3, we estimate that losses are up to 18.29% from global intangible assets’ valuation.</p>
-          </div>
-          <div class="col-md-6" style="border-left:1px solid #eceff1;">
-            <h4>Loss on intangible assets due to cyberattacks</h4>
-            <p><small>(in million €)</small></p>
-            <p>The loss on intangible assets due to cyberattacks represent a monetary estimation of loss based on intangible capital valuation and the percentage of losses in intangibles</p>
-          </div>
-      </div>
-    </div>
-  </ng-container>
+</ng-container>
+<ng-container *ngIf="financialAssetsAkaCurrent.length > 0 || physicalAssetsAkaFixed.length > 0">
+    <div class="card-box">
+        <a (click)="isDescriptionCollapsed = !isDescriptionCollapsed" [attr.aria-expanded]="!isDescriptionCollapsed"
+            aria-controls="descriptionCollapsible" class="float-right">
+            <i class="fa fa-question-circle fa-lg" aria-hidden="true"></i>
+        </a>
+        <h3>Impact Evaluation</h3>
+        <ng-container [ngSwitch]="witchStep">
+            <div *ngSwitchCase="1" class="container-fluid">
+                <div id="descriptionCollapsible" class="row" [ngbCollapse]="isDescriptionCollapsed">
+                    <div class="col-md-6">
+                        <h4>Earnings Before Interest and Taxes (EBIT)</h4>
+                        <p>
+                            <small>(in million €) (Income statement)</small>
+                        </p>
+                        <p>"A financial measure defined as revenues less cost of goods sold and selling, general, and
+                            administrative
+                            expenses. In other words, operating and non-operating profit before the deduction of
+                            interest and income
+                            taxes."</p>
+                        <p><a href="https://www.nasdaq.com/investing/glossary/e/earnings-before-interest-and-taxes">https://www.nasdaq.com/investing/glossary/e/earnings-before-interest-and-taxes</a>
+                        </p>
+                    </div>
+                    <div class="col-md-6" style="border-left:1px solid #eceff1;">
+                        <h4>Discounting rate</h4>
+                        <p>Usually, the discounted rate used refers to risk free rate (comprise between 0 and 1) in the
+                            financial
+                            market.</p>
+                    </div>
+                </div>
+            </div>
+            <div *ngSwitchCase="2" class="container-fluid">
+                <div id="descriptionCollapsible" class="row" [ngbCollapse]="isDescriptionCollapsed">
+                    <div class="col-md-6">
+                        <h4>Physical assets</h4>
+                        <p>
+                            <small>(in million €)</small>
+                        </p>
+                        <p>"Actual property such as precious metals or real estate. Also called real or tangible
+                            assets."</p>
+                        <p><a href="https://www.nasdaq.com/investing/glossary/p/physical-asset">https://www.nasdaq.com/investing/glossary/p/physical-asset</a>
+                        </p>
+                        <p>Physical assets include:</p>
+                        <ul>
+                            <li><i class="fa fa-circle text-center align-middle" aria-hidden="true" style="font-size:7px"></i>Inventories:
+                                (Balance sheet)
+                            </li>
+                            <li><i class="fa fa-circle text-center align-middle" aria-hidden="true" style="font-size:7px"></i>Property,
+                                plant and equipment, net: (Balance sheet)
+                            </li>
+                            <li><i class="fa fa-circle text-center align-middle" aria-hidden="true" style="font-size:7px"></i>Long
+                                term liabilities: (Balance sheet)
+                                <ul>
+                                    <li><i class="fa fa-chevron-right text-center align-middle" aria-hidden="true"
+                                            style="font-size:7px"></i>Deferred
+                                        revenue, non-current
+                                    </li>
+                                    <li><i class="fa fa-chevron-right text-center align-middle" aria-hidden="true"
+                                            style="font-size:7px"></i>Long
+                                        term debt
+                                    </li>
+                                    <li><i class="fa fa-chevron-right text-center align-middle" aria-hidden="true"
+                                            style="font-size:7px"></i>Other
+                                        non-current liabilities
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6" style="border-left:1px solid #eceff1;">
+                        <h4>Financial assets</h4>
+                        <p>
+                            <small>(in million €)</small>
+                        </p>
+                        <p>Financial assets include:</p>
+                        <ul>
+                            <li><i class="fa fa-circle text-center align-middle" aria-hidden="true" style="font-size:7px"></i>Current
+                                assets - other than inventories: (Balance sheet)
+                                <ul>
+                                    <li><i class="fa fa-chevron-right text-center align-middle" aria-hidden="true"
+                                            style="font-size:7px"></i>Cash
+                                        and cash equivalents
+                                    </li>
+                                    <li><i class="fa fa-chevron-right text-center align-middle" aria-hidden="true"
+                                            style="font-size:7px"></i>Short
+                                        term marketable securities
+                                    </li>
+                                    <li><i class="fa fa-chevron-right text-center align-middle" aria-hidden="true"
+                                            style="font-size:7px"></i>Accounts
+                                        receivable (less allowances)
+                                    </li>
+                                    <li><i class="fa fa-chevron-right text-center align-middle" aria-hidden="true"
+                                            style="font-size:7px"></i>Vendor
+                                        non-trade receivables
+                                    </li>
+                                    <li><i class="fa fa-chevron-right text-center align-middle" aria-hidden="true"
+                                            style="font-size:7px"></i>Other
+                                        current assets
+                                    </li>
+                                </ul>
+                            </li>
+                            <li><i class="fa fa-circle text-center align-middle" aria-hidden="true" style="font-size:7px"></i>Current
+                                liabilities: (Balance sheet)
+                                <ul>
+                                    <li><i class="fa fa-chevron-right text-center align-middle" aria-hidden="true"
+                                            style="font-size:7px"></i>Account
+                                        payable
+                                    </li>
+                                    <li><i class="fa fa-chevron-right text-center align-middle" aria-hidden="true"
+                                            style="font-size:7px"></i>Accrued
+                                        expenses
+                                    </li>
+                                    <li><i class="fa fa-chevron-right text-center align-middle" aria-hidden="true"
+                                            style="font-size:7px"></i>Deferred
+                                        revenue
+                                    </li>
+                                    <li><i class="fa fa-chevron-right text-center align-middle" aria-hidden="true"
+                                            style="font-size:7px"></i>Current
+                                        portion of long term debt
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <h4>Physical assets return</h4>
+                        <p>(The OCDE evaluate physical asset return to 7,1%)</p>
+                    </div>
+                    <div class="col-md-6" style="border-left:1px solid #eceff1;">
+                        <h4>Financial assets return</h4>
+                        <p>(The OCDE evaluate financial asset return to 5%)</p>
+                    </div>
+                </div>
+            </div>
+            <div *ngSwitchCase="3" class="container-fluid">
+                <div id="descriptionCollapsible" class="row" [ngbCollapse]="isDescriptionCollapsed">
+                    <div class="col-md-6">
+                        <h4>Intangible Driving Earnings</h4>
+                        <p>
+                            <small>(in million €)</small>
+                        </p>
+                        <p>Based on tangible and financial assets valuation and returns, we estimated through the
+                            residual approach
+                            earnings driven by intangible assets holded.</p>
+                    </div>
+                    <div class="col-md-6" style="border-left:1px solid #eceff1;">
+                        <h4>Intangible Capital</h4>
+                        <p>
+                            <small>(in million €)</small>
+                        </p>
+                        <p>By considering intangible driving earnings, we estimated the global value of intangible
+                            capital.</p>
+                    </div>
+                    <div class="col-md-6">
+                        <h4>Loss of intangible percentage</h4>
+                        <p>
+                            <small>(in %)</small>
+                        </p>
+                        <p>In this section, the end-user is requested to estimate the percentage of losses related to
+                            intangible
+                            assets. According to our results within WP3, we estimate that losses are up to 18,29% from
+                            global
+                            intangible assets’ valuation.</p>
+                    </div>
+                    <div class="col-md-6" style="border-left:1px solid #eceff1;">
+                        <h4>Loss on intangible assets due to cyberattacks</h4>
+                        <p>
+                            <small>(in million €)</small>
+                        </p>
+                        <p>The loss on intangible assets due to cyberattacks represent a monetary estimation of loss
+                            based on
+                            intangible capital valuation and the percentage of losses in intangibles</p>
+                    </div>
+                    <div class="col-md-12">
+                        <h5>Input</h5>
+                        <h6>Global percentage</h6>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th class="col-md-4">Intellectual Property</th>
+                                    <th class="col-md-4">Key Competences and Human Capital</th>
+                                    <th class="col-md-4">Organisational Capital</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="col-md-4">19,89</td>
+                                    <td class="col-md-4">42,34</td>
+                                    <td class="col-md-4">37,77</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <h6>Sectorial percentage</h6>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th class="col-md-3">Sector</th>
+                                    <th class="col-md-3">Intellectual Property</th>
+                                    <th class="col-md-3">Key Competences and Human Capital</th>
+                                    <th class="col-md-3">Organisational Capital</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="col-md-3">Finance and Insurance</td>
+                                    <td class="col-md-3">13,6</td>
+                                    <td class="col-md-3">45,3</td>
+                                    <td class="col-md-3">41,1</td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-3">Healtcare and social assistance</td>
+                                    <td class="col-md-3">14,7</td>
+                                    <td class="col-md-3">63,3</td>
+                                    <td class="col-md-3">22</td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-3">Information</td>
+                                    <td class="col-md-3">27,5</td>
+                                    <td class="col-md-3">27,8</td>
+                                    <td class="col-md-3">44,7</td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-3">Professional scientific and technical service</td>
+                                    <td class="col-md-3">6,1</td>
+                                    <td class="col-md-3">53,7</td>
+                                    <td class="col-md-3">40,2</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </ng-container>
 
-  <ng-container [ngSwitch]="witchStep">
-    <div *ngSwitchCase="1" class="container-fluid">
-      <h2>EBIT And Discount Rate</h2>
-      <div class="row">
-        <div class="col-md-12">
-          <form [formGroup]="impactFormStepOne">
-            <div class="input-group" style="margin-bottom: 10px">
-              <div class="input-group-prepend">
-                <span class="input-group-text" id="discountingRatePrepend">Discountig Rate % [0-1]</span>
-              </div>
-              <input type="text" class="form-control" placeholder="Discounting rate" aria-label="discounting"
-                aria-describedby="basic-addon2" formControlName="discountingRate">
+        <ng-container [ngSwitch]="witchStep">
+            <div *ngSwitchCase="1" class="container-fluid">
+                <h2>EBIT And Discount Rate</h2>
+                <div class="row">
+                    <div class="col-md-12">
+                        <form [formGroup]="impactFormStepOne">
+                            <div class="input-group" style="margin-bottom: 10px">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="discountingRatePrepend">Discounting Rate %
+                                        {{this.impactFormStepOne.get('discountingRate').value | number : '1.0-2'}}
+                                    </span>
+                                </div>
+                                <div class="col-lg-3">
+                                    <input type="range" min="0" max="1" step="any" class="form-control col-3"
+                                        [(ngModel)]="discountingRate" placeholder="Discounting rate" aria-label="discounting"
+                                        aria-describedby="basic-addon2" formControlName="discountingRate" />
+                                </div>
+                            </div>
+                            <div class="input-group" style="margin-bottom: 10px">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text past-year" id="ebit0Prepend">{{ebitLabel[0]}} €</span>
+                                </div>
+                                <input type="number" class="form-control" placeholder="{{ebitLabel[0]}}" aria-label="Ebit1"
+                                    aria-describedby="basic-addon2" formControlName="ebit1">
+                            </div>
+                            <div class="input-group" style="margin-bottom: 10px">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text past-year" id="ebit1Prepend">{{ebitLabel[1]}} €</span>
+                                </div>
+                                <input type="number" class="form-control" placeholder="{{ebitLabel[1]}}" aria-label="Ebit2"
+                                    aria-describedby="basic-addon2" formControlName="ebit2">
+                            </div>
+                            <div class="input-group" style="margin-bottom: 10px">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text this-year" id="ebit2Prepend">{{ebitLabel[2]}} €</span>
+                                </div>
+                                <input type="number" class="form-control" placeholder="{{ebitLabel[2]}}" aria-label="Ebit3"
+                                    aria-describedby="basic-addon2" formControlName="ebit3">
+                            </div>
+                            <div class="input-group" style="margin-bottom: 10px">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text future-year" id="ebit3Prepend">{{ebitLabel[3]}} €</span>
+                                </div>
+                                <input type="number" class="form-control" placeholder="{{ebitLabel[3]}}" aria-label="Ebit4"
+                                    aria-describedby="basic-addon2" formControlName="ebit4">
+                            </div>
+                            <div class="input-group" style="margin-bottom: 10px">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text future-year" id="ebit4Prepend">{{ebitLabel[4]}} €</span>
+                                </div>
+                                <input type="number" class="form-control" placeholder="{{ebitLabel[4]}}" aria-label="Ebit5"
+                                    aria-describedby="basic-addon2" formControlName="ebit5">
+                            </div>
+                            <div class="input-group" style="margin-bottom: 10px">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text future-year" id="ebit5Prepend">{{ebitLabel[5]}} €</span>
+                                </div>
+                                <input type="number" class="form-control" placeholder="{{ebitLabel[5]}}" aria-label="Ebit6"
+                                    aria-describedby="basic-addon2" formControlName="ebit6">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="row" style="height: 20px; margin-left: 5px">
+                    <div class="col-md-1 past-year">&nbsp;</div>
+                    <div class="col-md-2">: Previous year color</div>
+                    <div class="col-md-1 this-year">&nbsp;</div>
+                    <div class="col-md-2">: Current year color</div>
+                    <div class="col-md-1 future-year">&nbsp;</div>
+                    <div class="col-md-2">: Next year color</div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <button class="btn btn-primary float-right" style="margin-left: 10px" (click)="selectStep(2)">
+                            Next
+                        </button>
+                        <button class="btn btn-secondary float-right" (click)="false">Prev</button>
+                    </div>
+                </div>
             </div>
-            <div class="input-group" style="margin-bottom: 10px">
-              <div class="input-group-prepend">
-                <span class="input-group-text past-year" id="ebit0Prepend">{{ebitLabel[0]}} €</span>
-              </div>
-              <input type="text" class="form-control" placeholder="{{ebitLabel[0]}}" aria-label="Ebit1"
-                aria-describedby="basic-addon2" formControlName="ebit1">
+            <div *ngSwitchCase="2" class="container-fluid">
+                <div class="row">
+                    <p>
+                        <h2>Evaluated Economic Performance = <b class="color-b">
+                                <ng-container *ngIf="economicPerformance">{{economicPerformance | currency:'EUR'}}
+                                </ng-container>
+                                <ng-container *ngIf="!economicPerformance">-</ng-container>
+                            </b></h2>
+                    </p>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <form [formGroup]="impactFormStepTwo">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="input-group" style="margin-bottom: 10px">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">Physical Assets Return %</span>
+                                        </div>
+                                        <input type="number" min="0" max="100" class="form-control" placeholder="Physical Assets Return"
+                                            [(ngModel)]="physicalAssetsReturn" (keyup)="physicalAssetsReturn = clamp(physicalAssetsReturn, 0, 100)"
+                                            (keydown)="physicalAssetsReturn = clamp(physicalAssetsReturn, 0, 100)"
+                                            aria-label="physicalAssetsReturn" aria-describedby="basic-addon2"
+                                            formControlName="physicalAssetsReturn">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="input-group" style="margin-bottom: 10px">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text" id="">Financial Assets Return %</span>
+                                        </div>
+                                        <input type="number" min="0" max="100" class="form-control" placeholder="Financial Assets Return"
+                                            [(ngModel)]="financialAssetsReturn" (keyup)="financialAssetsReturn = clamp(financialAssetsReturn, 0, 100)"
+                                            (keydown)="financialAssetsReturn = clamp(financialAssetsReturn, 0, 100)"
+                                            aria-label="financialAssetsReturn" aria-describedby="basic-addon2"
+                                            formControlName="financialAssetsReturn">
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="row">
+                    <div *ngIf="physicalAssetsAkaFixed.length > 0" class="col-md-6">
+                        <h6>Physical Assets</h6>
+                        <ng-container *ngFor="let asset of physicalAssetsAkaFixed; let i = index;  trackBy: trackByFn">
+                            <div class="input-group" style="margin-bottom: 10px">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="">
+                                        Valutation of {{asset.asset.name}} €
+                                    </span>
+                                </div>
+                                <input type="number" class="form-control" placeholder="Insert economic valutation of {{asset.asset.name}}"
+                                    aria-label="economicValue" aria-describedby="basic-addon2" pattern="[0-9]+"
+                                    [(ngModel)]="asset.economicValue">
+                            </div>
+                        </ng-container>
+                    </div>
+                    <div *ngIf="financialAssetsAkaCurrent.length > 0" class="col-md-6">
+                        <h6>Financial Assets</h6>
+                        <ng-container *ngFor="let asset of financialAssetsAkaCurrent; let i = index; trackBy: trackByFn">
+                            <div class="input-group" style="margin-bottom: 10px">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">Valutation of {{asset.asset.name}} €</span>
+                                </div>
+                                <input type="number" class="form-control" placeholder="Insert economic valutation of {{asset.asset.name}}"
+                                    aria-label="economicValue" aria-describedby="basic-addon2" pattern="[0-9]+"
+                                    [(ngModel)]="asset.economicValue">
+                            </div>
+                        </ng-container>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <button class="btn btn-primary float-right" style="margin-left: 10px" (click)="selectStep(3)">
+                            Next
+                        </button>
+                        <button class="btn btn-light float-right" (click)="selectStep(1)">Prev</button>
+                    </div>
+                </div>
             </div>
-            <div class="input-group" style="margin-bottom: 10px">
-              <div class="input-group-prepend">
-                <span class="input-group-text past-year" id="ebit1Prepend">{{ebitLabel[1]}} €</span>
-              </div>
-              <input type="text" class="form-control" placeholder="{{ebitLabel[1]}}" aria-label="Ebit2"
-                aria-describedby="basic-addon2" formControlName="ebit2">
+            <div *ngSwitchCase="3" class="container-fluid">
+                <div class="row">
+                    <table class="table table-striped">
+                        <thead class="text-center">
+                            <th scope="col" width="50%">Intangible Driving Earnings</th>
+                            <th scope="col">Intangible Capital</th>
+                        </thead>
+                        <tbody>
+                            <tr class="text-center align-middle">
+                                <td>
+                                    <ng-container *ngIf="intangibleDrivingEarnings">{{intangibleDrivingEarnings |
+                                        currency:'EUR'}}
+                                    </ng-container>
+                                    <ng-container *ngIf="!intangibleDrivingEarnings"> -</ng-container>
+                                </td>
+                                <td>
+                                    <ng-container *ngIf="intangibleCapitalValuation">{{intangibleCapitalValuation |
+                                        currency:'EUR'}}
+                                    </ng-container>
+                                    <ng-container *ngIf="!intangibleCapitalValuation"> -</ng-container>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="col-md-2">
+                            <h2>Global</h2>
+                        </div>
+                        <div class="col-md-1 text-center" style="bottom: -5px">
+                            <i class="fa fa-toggle-off fa-lg" style="font-size: 2em" aria-hidden="true" (click)="setIsGlobal()"
+                                *ngIf="isGlobal"></i>
+                            <i class="fa fa-toggle-on fa-lg" style="font-size: 2em" aria-hidden="true" (click)="setIsGlobal()"
+                                *ngIf="!isGlobal"></i>
+                        </div>
+                        <div class="col-md-2">
+                            <h2>Sectorial</h2>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" *ngIf="!isGlobal">
+                    <div class="col-md-6" style="margin-top: 5px; margin-bottom: 15px">
+                        <div ngbDropdown class="d-inline-block" ngbTooltip="Select one sector">
+                            <button *ngIf="sectorChoosed !== null && sectorChoosed !== undefined && sectorChoosed !== ''"
+                                class="btn btn-outline-primary" id="sectorDrop" ngbDropdownToggle>{{sectorString}}
+                            </button>
+                            <button *ngIf="sectorChoosed === null || sectorChoosed === undefined || sectorChoosed === ''"
+                                class="btn btn-outline-primary" id="sectorDrop" ngbDropdownToggle>Select sector
+                                company
+                            </button>
+                            <div ngbDropdownMenu aria-labelledby="sectorDrop">
+                                <button class="dropdown-item" (click)="setSector('professional_scientific_and_technical_service')">
+                                    Professional Scientific and Technical Service
+                                </button>
+                                <button class="dropdown-item" (click)="setSector('information')">
+                                    Information
+                                </button>
+                                <button class="dropdown-item" (click)="setSector('health_care_and_social_assistance')">
+                                    Health care and social assistance
+                                </button>
+                                <button class="dropdown-item" (click)="setSector('finance_and_insurance')">
+                                    Finance and Insurance
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="margin-top:3%">
+                    <div class="col-md-12">
+                        <ngb-tabset>
+                            <ngb-tab>
+                                <ng-template ngbTabTitle>
+                                    <h2>Splittings</h2>
+                                </ng-template>
+                                <ng-template ngbTabContent>
+                                    <ng-container class="card-text">
+                                        <!--GLOBAL SPLITTINGS-->
+                                        <ng-container *ngIf="isGlobal">
+                                            <div class="row" style="margin-top: 5px">
+                                                <div class="col-md-4">
+                                                    <div class="tile-stats">
+                                                        <!--<div class="icon"><i class="fa fa-money"></i></div>-->
+                                                        <div class="count">
+                                                            <ng-container *ngIf="splittingOnIP">{{splittingOnIP |
+                                                                currency:'EUR'}}
+                                                            </ng-container>
+                                                            <ng-container *ngIf="!splittingOnIP"> -</ng-container>
+                                                        </div>
+                                                        <h3><a href="javascript:void(0)" (click)="setAssetCategory('IP', true)">Intellectual
+                                                                Property</a></h3>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="tile-stats">
+                                                        <!--<div class="icon"><i class="fa fa-money"></i></div>-->
+                                                        <div class="count">
+                                                            <ng-container *ngIf="splittingOnKeyComp">{{splittingOnKeyComp
+                                                                |
+                                                                currency:'EUR'}}
+                                                            </ng-container>
+                                                            <ng-container *ngIf="!splittingOnKeyComp"> -</ng-container>
+                                                        </div>
+                                                        <h3><a href="javascript:void(0)" (click)="setAssetCategory('KEY_COMP', true)">Key
+                                                                Competences and Human Capital</a></h3>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="tile-stats">
+                                                        <!--<div class="icon"><i class="fa fa-money"></i></div>-->
+                                                        <div class="count">
+                                                            <ng-container *ngIf="splittingOnOrgCapital">{{splittingOnOrgCapital
+                                                                |
+                                                                currency:'EUR'}}
+                                                            </ng-container>
+                                                            <ng-container *ngIf="!splittingOnOrgCapital"> -</ng-container>
+                                                        </div>
+                                                        <h3><a href="javascript:void(0)" (click)="setAssetCategory('ORG_CAPITAL', true)">Organisational
+                                                                Capital</a></h3>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row" style="margin-top: 5px" *ngIf="!collapseSplittings">
+                                                <div class="col-md-12" style="border: 1px solid #E4E4E4; border-radius: 5px;">
+                                                    <i class="float-right fa fa-times fa-lg" style="margin-top: 5px"
+                                                        (click)="collapseSplittings = true" aria-hidden="true"></i>
+                                                    <div class="text-center" style="margin-top: 50px" *ngIf="assetsBySelectedCategory.length === 0">
+                                                        <p style="color: orange">
+                                                            <i class="fa fa-exclamation-triangle fa-4x" aria-hidden="true"></i>
+                                                        </p>
+                                                        <p style="color: grey">No assets found in selected category! If
+                                                            this is a mistake please return
+                                                            in
+                                                            <a href="javascript:void(0)" [routerLink]="['/identify-asset/asset-clustering']">asset-clustering</a>
+                                                            section and
+                                                            modify your answers!</p>
+                                                    </div>
+                                                    <table class="table" *ngIf="assetsBySelectedCategory.length > 0">
+                                                        <thead>
+                                                            <tr>
+                                                                <th scope="col">Asset</th>
+                                                                <th scope="col">Priority</th>
+                                                                <th scope="col">Economic value</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <ng-container *ngFor="let asset of assetsBySelectedCategory">
+                                                                <tr>
+                                                                    <th scope="row">{{asset.asset.name}}</th>
+                                                                    <td>
+                                                                        <div ngbDropdown class="d-inline-block"
+                                                                            ngbTooltip="Select priority">
+                                                                            <button *ngIf="asset.ranking !== null && asset.ranking !== undefined && asset.ranking >= 0"
+                                                                                class="btn btn-outline-primary" id="priorityDrop"
+                                                                                ngbDropdownToggle>{{priorities[asset.ranking-1]}}:
+                                                                                {{asset.ranking}}
+                                                                            </button>
+                                                                            <button *ngIf="asset.ranking === null || asset.ranking === undefined"
+                                                                                class="btn btn-outline-primary" id="priorityDrop"
+                                                                                ngbDropdownToggle>Chose priority level
+                                                                            </button>
+                                                                            <div ngbDropdownMenu aria-labelledby="priorityDrop">
+                                                                                <ng-container *ngFor="let rankLevel of priorities; let i = index">
+                                                                                    <button class="dropdown-item"
+                                                                                        (click)="setSelectedAssetPriority(rankLevel, asset)">
+                                                                                        {{rankLevel}}:
+                                                                                        {{i+1}}
+                                                                                    </button>
+                                                                                </ng-container>
+                                                                            </div>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td>{{asset.economicValue | currency:'EUR'}}</td>
+                                                                </tr>
+                                                            </ng-container>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </ng-container>
+                                        <!--SECTORIAL SPLITTINGS-->
+                                        <ng-container *ngIf="!isGlobal">
+                                            <div class="row" style="margin-top: 5px">
+                                                <div class="col-md-4">
+                                                    <div class="tile-stats">
+                                                        <!--<div class="icon"><i class="fa fa-money"></i></div>-->
+                                                        <div class="count">
+                                                            <ng-container *ngIf="splittingOnSectorialIP">{{splittingOnSectorialIP
+                                                                |
+                                                                currency:'EUR'}}
+                                                            </ng-container>
+                                                            <ng-container *ngIf="!splittingOnSectorialIP"> -</ng-container>
+                                                        </div>
+                                                        <h3><a href="javascript:void(0)" (click)="setAssetCategory('IP', true)">Intellectual
+                                                                Property</a></h3>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="tile-stats">
+                                                        <!--<div class="icon"><i class="fa fa-money"></i></div>-->
+                                                        <div class="count">
+                                                            <ng-container *ngIf="splittingOnSectorialKeyComp">
+                                                                {{splittingOnSectorialKeyComp |
+                                                                currency:'EUR'}}
+                                                            </ng-container>
+                                                            <ng-container *ngIf="!splittingOnSectorialKeyComp"> -</ng-container>
+                                                        </div>
+                                                        <h3><a href="javascript:void(0)" (click)="setAssetCategory('KEY_COMP', true)">Key
+                                                                Competences and Human Capital</a></h3>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="tile-stats">
+                                                        <!--<div class="icon"><i class="fa fa-money"></i></div>-->
+                                                        <div class="count">
+                                                            <ng-container *ngIf="splittingOnSectorialOrgCapital">
+                                                                {{splittingOnSectorialOrgCapital |
+                                                                currency:'EUR'}}
+                                                            </ng-container>
+                                                            <ng-container *ngIf="!splittingOnSectorialOrgCapital"> -</ng-container>
+                                                        </div>
+                                                        <h3><a href="javascript:void(0)" (click)="setAssetCategory('ORG_CAPITAL', true)">Organisational
+                                                                Capital</a></h3>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row" style="margin-top: 5px" *ngIf="!collapseSplittings">
+                                                <div class="col-md-12" style="border: 1px solid #E4E4E4; border-radius: 5px;">
+                                                    <i class="float-right fa fa-times fa-lg" style="margin-top: 5px"
+                                                        (click)="collapseSplittings = true" aria-hidden="true"></i>
+                                                    <div class="text-center" style="margin-top: 50px" *ngIf="assetsBySelectedCategory.length === 0">
+                                                        <p style="color: orange">
+                                                            <i class="fa fa-exclamation-triangle fa-4x" aria-hidden="true"></i>
+                                                        </p>
+                                                        <p style="color: grey">No assets found in selected category! If
+                                                            this is a mistake please return
+                                                            in
+                                                            <a href="javascript:void(0)" [routerLink]="['/identify-asset/asset-clustering']">asset-clustering</a>
+                                                            section and
+                                                            modify your answers!</p>
+                                                    </div>
+                                                    <table class="table" *ngIf="assetsBySelectedCategory.length > 0">
+                                                        <thead>
+                                                            <tr>
+                                                                <th scope="col">Asset</th>
+                                                                <th scope="col">Priority</th>
+                                                                <th scope="col">Economic value</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <ng-container *ngFor="let asset of assetsBySelectedCategory">
+                                                                <tr>
+                                                                    <th scope="row">{{asset.asset.name}}</th>
+                                                                    <td>
+                                                                        <div ngbDropdown class="d-inline-block"
+                                                                            ngbTooltip="Select priority">
+                                                                            <button *ngIf="asset.ranking !== null && asset.ranking !== undefined && asset.ranking >= 0"
+                                                                                class="btn btn-outline-primary" id="priorityDrop"
+                                                                                ngbDropdownToggle>{{priorities[asset.ranking-1]}}:
+                                                                                {{asset.ranking}}
+                                                                            </button>
+                                                                            <button *ngIf="asset.ranking === null || asset.ranking === undefined"
+                                                                                class="btn btn-outline-primary" id="priorityDrop"
+                                                                                ngbDropdownToggle>Chose priority level
+                                                                            </button>
+                                                                            <div ngbDropdownMenu aria-labelledby="priorityDrop">
+                                                                                <ng-container *ngFor="let rankLevel of priorities; let i = index">
+                                                                                    <button class="dropdown-item"
+                                                                                        (click)="setSelectedAssetPriority(rankLevel, asset)">
+                                                                                        {{rankLevel}}:
+                                                                                        {{i+1}}
+                                                                                    </button>
+                                                                                </ng-container>
+                                                                            </div>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td>{{asset.economicValue | currency:'EUR'}}</td>
+                                                                </tr>
+                                                            </ng-container>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </ng-container>
+                                    </ng-container>
+                                </ng-template>
+                            </ngb-tab>
+                            <ngb-tab>
+                                <ng-template ngbTabTitle>
+                                    <h2>Loss Simulation</h2>
+                                </ng-template>
+                                <ng-template ngbTabContent>
+                                    <ng-container class="card-text">
+                                        <div class="row" style="margin-top: 15px">
+                                            <form [formGroup]="impactFormStepThree" class="col-md-5">
+                                                <div class="col-md-12">
+                                                    <div class="input-group" style="margin-bottom: 10px">
+                                                        <div class="input-group-prepend">
+                                                            <span class="input-group-text">Loss of intangible
+                                                                percentage %</span>
+                                                        </div>
+                                                        <input type="number" class="form-control" min="0" max="100"
+                                                            [(ngModel)]="lossOfIntangiblePercentage" (keyup)="lossOfIntangiblePercentage = clamp(lossOfIntangiblePercentage, 0, 100)"
+                                                            (keydown)="lossOfIntangiblePercentage = clamp(lossOfIntangiblePercentage, 0, 100)"
+                                                            placeholder="Loss of intangible percentage" aria-label="lossOfIntangiblePercentage"
+                                                            aria-describedby="basic-addon2" formControlName="lossOfIntangiblePercentage">
+                                                    </div>
+                                                </div>
+                                            </form>
+                                            <button class="btn btn-light" style="height:38px" (click)="evaluateStepThree()">Loss
+                                                evaluation
+                                            </button>
+                                            <div class="col-md-5 text-center">
+                                                <p>Loss On Intangible Assets Due To Cyberattacks<br><b class="color-b">
+                                                        <ng-container *ngIf="lossOnintangibleAssetsDueToCyberattacks">
+                                                            {{lossOnintangibleAssetsDueToCyberattacks
+                                                            | currency:'EUR'}}
+                                                        </ng-container>
+                                                        <ng-container *ngIf="!lossOnintangibleAssetsDueToCyberattacks">
+                                                            -</ng-container>
+                                                    </b>
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <!--GLOBAL LOSS-->
+                                        <ng-container *ngIf="isGlobal">
+                                            <div class="row" style="margin-top: 5px">
+                                                <div class="col-md-4">
+                                                    <div class="tile-stats">
+                                                        <!--<div class="icon"><i class="fa fa-money"></i></div>-->
+                                                        <div class="count">
+                                                            <ng-container *ngIf="impactOnIP">{{impactOnIP |
+                                                                currency:'EUR'}}
+                                                            </ng-container>
+                                                            <ng-container *ngIf="!impactOnIP"> -</ng-container>
+                                                        </div>
+                                                        <h3><a href="javascript:void(0)" (click)="viewLosses('IP', true)">Intellectual
+                                                                Property</a>
+                                                        </h3>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="tile-stats">
+                                                        <!--<div class="icon"><i class="fa fa-money"></i></div>-->
+                                                        <div class="count">
+                                                            <ng-container *ngIf="impactOnKeyComp">{{impactOnKeyComp |
+                                                                currency:'EUR'}}
+                                                            </ng-container>
+                                                            <ng-container *ngIf="!impactOnKeyComp"> -</ng-container>
+                                                        </div>
+                                                        <h3><a href="javascript:void(0)" (click)="viewLosses('KEY_COMP', true)">Key
+                                                                Competences and Human Capital</a></h3>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="tile-stats">
+                                                        <!--<div class="icon"><i class="fa fa-money"></i></div>-->
+                                                        <div class="count">
+                                                            <ng-container *ngIf="impactOnOrgCapital">{{impactOnOrgCapital
+                                                                |
+                                                                currency:'EUR'}}
+                                                            </ng-container>
+                                                            <ng-container *ngIf="!impactOnOrgCapital"> -</ng-container>
+                                                        </div>
+                                                        <h3><a href="javascript:void(0)" (click)="viewLosses('ORG_CAPITAL', true)">Organisational
+                                                                Capital</a></h3>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row" style="margin-top: 5px" *ngIf="!collapseLosses">
+                                                <div class="col-md-12" style="border: 1px solid #E4E4E4; border-radius: 5px;">
+                                                    <i class="float-right fa fa-times fa-lg" style="margin-top: 5px"
+                                                        (click)="collapseLosses = true" aria-hidden="true"></i>
+                                                    <div class="text-center" style="margin-top: 50px" *ngIf="assetsBySelectedCategory.length === 0">
+                                                        <p style="color: orange">
+                                                            <i class="fa fa-exclamation-triangle fa-4x" aria-hidden="true"></i>
+                                                        </p>
+                                                        <p style="color: grey">No assets found in selected category! If
+                                                            this is a mistake please return
+                                                            in
+                                                            <a href="javascript:void(0)" [routerLink]="['/identify-asset/asset-clustering']">asset-clustering</a>
+                                                            section and
+                                                            modify your answers!</p>
+                                                    </div>
+                                                    <table class="table" *ngIf="assetsBySelectedCategory.length > 0">
+                                                        <thead>
+                                                            <tr>
+                                                                <th scope="col">Asset</th>
+                                                                <th scope="col">Priority</th>
+                                                                <th scope="col">Loss value</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <ng-container *ngFor="let asset of assetsBySelectedCategory">
+                                                                <tr>
+                                                                    <th scope="row">{{asset.asset.name}}</th>
+                                                                    <td>{{priorities[asset.ranking-1]}}:
+                                                                        {{asset.ranking}}</td>
+                                                                    <td>{{asset.lossValue | currency:'EUR'}}</td>
+                                                                </tr>
+                                                            </ng-container>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </ng-container>
+                                        <!--SECTORIAL LOSS-->
+                                        <ng-container *ngIf="!isGlobal">
+                                            <div class="row" style="margin-top: 5px">
+                                                <div class="col-md-4">
+                                                    <div class="tile-stats">
+                                                        <!--<div class="icon"><i class="fa fa-money"></i></div>-->
+                                                        <div class="count">
+                                                            <ng-container *ngIf="impactOnSectorialIP">{{impactOnSectorialIP
+                                                                |
+                                                                currency:'EUR'}}
+                                                            </ng-container>
+                                                            <ng-container *ngIf="!impactOnSectorialIP"> -</ng-container>
+                                                        </div>
+                                                        <h3><a href="javascript:void(0)" (click)="viewLosses('IP', true)">Intellectual
+                                                                Property</a>
+                                                        </h3>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="tile-stats">
+                                                        <!--<div class="icon"><i class="fa fa-money"></i></div>-->
+                                                        <div class="count">
+                                                            <ng-container *ngIf="impactOnSectorialKeyComp">
+                                                                {{impactOnSectorialKeyComp | currency:'EUR'}}
+                                                            </ng-container>
+                                                            <ng-container *ngIf="!impactOnSectorialKeyComp"> -</ng-container>
+                                                        </div>
+                                                        <h3><a href="javascript:void(0)" (click)="viewLosses('KEY_COMP', true)">Key
+                                                                Competences and Human Capital</a></h3>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="tile-stats">
+                                                        <!--<div class="icon"><i class="fa fa-money"></i></div>-->
+                                                        <div class="count">
+                                                            <ng-container *ngIf="impactOnSectorialOrgCapital">
+                                                                {{impactOnSectorialOrgCapital |
+                                                                currency:'EUR'}}
+                                                            </ng-container>
+                                                            <ng-container *ngIf="!impactOnSectorialOrgCapital"> -</ng-container>
+                                                        </div>
+                                                        <h3><a href="javascript:void(0)" (click)="viewLosses('ORG_CAPITAL', true)">Organisational
+                                                                Capital</a></h3>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row" style="margin-top: 5px" *ngIf="!collapseLosses">
+                                                <div class="col-md-12" style="border: 1px solid #E4E4E4; border-radius: 5px;">
+                                                    <i class="float-right fa fa-times fa-lg" style="margin-top: 5px"
+                                                        (click)="collapseLosses = true" aria-hidden="true"></i>
+                                                    <div class="text-center" style="margin-top: 50px" *ngIf="assetsBySelectedCategory.length === 0">
+                                                        <p style="color: orange">
+                                                            <i class="fa fa-exclamation-triangle fa-4x" aria-hidden="true"></i>
+                                                        </p>
+                                                        <p style="color: grey">No assets found in selected category! If
+                                                            this is a mistake please return
+                                                            in
+                                                            <a href="javascript:void(0)" [routerLink]="['/identify-asset/asset-clustering']">asset-clustering</a>
+                                                            section and
+                                                            modify your answers!</p>
+                                                    </div>
+                                                    <table class="table" *ngIf="assetsBySelectedCategory.length > 0">
+                                                        <thead>
+                                                            <tr>
+                                                                <th scope="col">Asset</th>
+                                                                <th scope="col">Priority</th>
+                                                                <th scope="col">Loss value</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <ng-container *ngFor="let asset of assetsBySelectedCategory">
+                                                                <tr>
+                                                                    <th scope="row">{{asset.asset.name}}</th>
+                                                                    <td>{{priorities[asset.ranking-1]}}:
+                                                                        {{asset.ranking}}</td>
+                                                                    <td>{{asset.lossValue | currency:'EUR'}}</td>
+                                                                </tr>
+                                                            </ng-container>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </ng-container>
+                                    </ng-container>
+                                </ng-template>
+                            </ngb-tab>
+                        </ngb-tabset>
+                    </div>
+                </div>
+                <div class="row" style="margin-top: 2%">
+                    <div class="col-md-12">
+                        <button class="btn btn-secondary float-right" style="margin-left: 10px" (click)="close()">
+                            Close
+                        </button>
+                        <button class="btn btn-light float-right" (click)="selectStep(2)">Prev</button>
+                    </div>
+                </div>
             </div>
-            <div class="input-group" style="margin-bottom: 10px">
-              <div class="input-group-prepend">
-                <span class="input-group-text this-year" id="ebit2Prepend">{{ebitLabel[2]}} €</span>
-              </div>
-              <input type="text" class="form-control" placeholder="{{ebitLabel[2]}}" aria-label="Ebit3"
-                aria-describedby="basic-addon2" formControlName="ebit3">
-            </div>
-            <div class="input-group" style="margin-bottom: 10px">
-              <div class="input-group-prepend">
-                <span class="input-group-text future-year" id="ebit3Prepend">{{ebitLabel[3]}} €</span>
-              </div>
-              <input type="text" class="form-control" placeholder="{{ebitLabel[3]}}" aria-label="Ebit4"
-                aria-describedby="basic-addon2" formControlName="ebit4">
-            </div>
-            <div class="input-group" style="margin-bottom: 10px">
-              <div class="input-group-prepend">
-                <span class="input-group-text future-year" id="ebit4Prepend">{{ebitLabel[4]}} €</span>
-              </div>
-              <input type="text" class="form-control" placeholder="{{ebitLabel[4]}}" aria-label="Ebit5"
-                aria-describedby="basic-addon2" formControlName="ebit5">
-            </div>
-            <div class="input-group" style="margin-bottom: 10px">
-              <div class="input-group-prepend">
-                <span class="input-group-text future-year" id="ebit5Prepend">{{ebitLabel[5]}} €</span>
-              </div>
-              <input type="text" class="form-control" placeholder="{{ebitLabel[5]}}" aria-label="Ebit6"
-                aria-describedby="basic-addon2" formControlName="ebit6">
-            </div>
-          </form>
-        </div>
-      </div>
-      <div class="row" style="height: 20px; margin-left: 5px">
-        <div class="col-md-1 past-year">&nbsp;</div>
-        <div class="col-md-2">: Previous year color</div>
-        <div class="col-md-1 this-year">&nbsp;</div>
-        <div class="col-md-2">: Current year color</div>
-        <div class="col-md-1 future-year">&nbsp;</div>
-        <div class="col-md-2">: Next year color</div>
-      </div>
-      <div class="row">
-        <div class="col-md-12">
-          <button class="btn btn-primary float-right" style="margin-left: 10px" (click)="selectStep(2)">Next</button>
-          <button class="btn btn-secondary float-right" (click)="false">Prev</button>
-        </div>
-      </div>
+        </ng-container>
     </div>
-    <div *ngSwitchCase="2" class="container-fluid">
-      <div class="row">
-        <p>
-          <h2>Evaluated Economic Performance = <b class="color-b">
-              <ng-container *ngIf="economicPerformance">{{economicPerformance}}</ng-container>
-              <ng-container *ngIf="!economicPerformance">-</ng-container> €
-            </b></h2>
-        </p>
-      </div>
-      <div class="row">
-        <div class="col-md-12">
-          <form [formGroup]="impactFormStepTwo">
-            <div class="row">
-              <div class="col-md-6">
-                <div class="input-group" style="margin-bottom: 10px">
-                  <div class="input-group-prepend">
-                    <span class="input-group-text" id="">Physical Assets Return %</span>
-                  </div>
-                  <input type="text" class="form-control" placeholder="Physical Assets Return" aria-label="physicalAssetsReturn"
-                    aria-describedby="basic-addon2" formControlName="physicalAssetsReturn">
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="input-group" style="margin-bottom: 10px">
-                  <div class="input-group-prepend">
-                    <span class="input-group-text" id="">Financial Assets Return %</span>
-                  </div>
-                  <input type="text" class="form-control" placeholder="Financial Assets Return" aria-label="financialAssetsReturn"
-                    aria-describedby="basic-addon2" formControlName="financialAssetsReturn">
-                </div>
-              </div>
-            </div>
-          </form>
-        </div>
-      </div>
-      <div class="row">
-        <div *ngIf="physicalAssetsAkaFixed.length > 0" class="col-md-6">
-          <h6>Physical Assets</h6>
-          <ng-container *ngFor="let asset of physicalAssetsAkaFixed; let i = index;  trackBy: trackByFn">
-            <div class="input-group" style="margin-bottom: 10px">
-              <div class="input-group-prepend">
-                <span class="input-group-text" id="">
-                  Valutation of {{asset.asset.name}} €
-                </span>
-              </div>
-              <input type="text" class="form-control" placeholder="Insert economic valutation of {{asset.asset.name}}"
-                aria-label="economicValue" aria-describedby="basic-addon2" pattern="[0-9]+" [(ngModel)]="asset.economicValue">
-            </div>
-          </ng-container>
-        </div>
-        <div *ngIf="financialAssetsAkaCurrent.length > 0" class="col-md-6">
-          <h6>Financial Assets</h6>
-          <ng-container *ngFor="let asset of financialAssetsAkaCurrent; let i = index; trackBy: trackByFn">
-            <div class="input-group" style="margin-bottom: 10px">
-              <div class="input-group-prepend">
-                <span class="input-group-text" id="">Valutation of {{asset.asset.name}} €</span>
-              </div>
-              <input type="text" class="form-control" placeholder="Insert economic valutation of {{asset.asset.name}}"
-                aria-label="economicValue" aria-describedby="basic-addon2" pattern="[0-9]+" [(ngModel)]="asset.economicValue">
-            </div>
-          </ng-container>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-md-12">
-          <button class="btn btn-primary float-right" style="margin-left: 10px" (click)="selectStep(3)">Next</button>
-          <button class="btn btn-light float-right" (click)="selectStep(1)">Prev</button>
-        </div>
-      </div>
-    </div>
-    <div *ngSwitchCase="3" class="container-fluid">
-      <div class="row">
-        <p>
-          <h3>Intangible Driving Earnings = <b class="color-b">
-              <ng-container *ngIf="intangibleDrivingEarnings">{{intangibleDrivingEarnings}}</ng-container>
-              <ng-container *ngIf="!intangibleDrivingEarnings"> - </ng-container>
-              €
-            </b><br>
-            Intangible Capital =
-            <b class="color-b">
-              <ng-container *ngIf="intangibleCapitalValuation">{{intangibleCapitalValuation}}</ng-container>
-              <ng-container *ngIf="!intangibleCapitalValuation"> - </ng-container>
-              €
-            </b></h3>
-        </p>
-      </div>
-      <div class="row">
-        <form [formGroup]="impactFormStepThree" class="col-md-5">
-          <div class="col-md-12">
-            <div class="input-group" style="margin-bottom: 10px">
-              <div class="input-group-prepend">
-                <span class="input-group-text" id="">Loss of intangible percentage %</span>
-              </div>
-              <input type="text" class="form-control" placeholder="Loss of intangible percentage" aria-label="lossOfIntangiblePercentage"
-                aria-describedby="basic-addon2" formControlName="lossOfIntangiblePercentage">
-            </div>
-          </div>
-        </form>
-        <button class="btn btn-light" style="height:38px" (click)="evaluateStepThree()">Loss evaluation</button>
-        <div class="col-md-5 text-center">
-          <p>Loss On Intangible Assets Due To Cyberattacks<br><b class="color-b">
-              <ng-container *ngIf="lossOnintangibleAssetsDueToCyberattacks">{{lossOnintangibleAssetsDueToCyberattacks}}</ng-container>
-              <ng-container *ngIf="!lossOnintangibleAssetsDueToCyberattacks"> - </ng-container>
-              €
-            </b>
-          </p>
-        </div>
-      </div>
-      <div class="row">
-        <div class="card col-md-12">
-          <h2 class="card-title text-center">Splitting</h2>
-          <ng-container class="card-text">
-            <div class="row" style="margin-top: 5px">
-              <h4>Global</h4>
-            </div>
-            <div class="row" style="margin-top: 5px">
-              <div class="col-md-4">
-                <div class="tile-stats">
-                  <div class="icon"><i class="fa fa-money"></i></div>
-                  <div class="count">
-                    <ng-container *ngIf="impactOnIP">{{impactOnIP}}</ng-container>
-                    <ng-container *ngIf="!impactOnIP"> - </ng-container>
-                    €
-                  </div>
-                  <h3>IP</h3>
-                </div>
-              </div>
-              <div class="col-md-4">
-                <div class="tile-stats">
-                  <div class="icon"><i class="fa fa-money"></i></div>
-                  <div class="count">
-                    <ng-container *ngIf="impactOnKeyComp">{{impactOnKeyComp}}</ng-container>
-                    <ng-container *ngIf="!impactOnKeyComp"> - </ng-container>
-                    €
-                  </div>
-                  <h3>Key Comp</h3>
-                </div>
-              </div>
-              <div class="col-md-4">
-                <div class="tile-stats">
-                  <div class="icon"><i class="fa fa-money"></i></div>
-                  <div class="count">
-                    <ng-container *ngIf="impactOnOrgCapital">{{impactOnOrgCapital}}</ng-container>
-                    <ng-container *ngIf="!impactOnOrgCapital"> - </ng-container>
-                    €
-                  </div>
-                  <h3>Org Capital</h3>
-                </div>
-              </div>
-            </div>
-            <div class="row" style="margin-top: 5px">
-              <h4>Sectorial</h4>
-            </div>
-            <div class="row" style="margin-top: 5px">
-              <div class="btn-group btn-group-toggle col-md-12" data-toggle="buttons">
-                <label class="btn" [ngClass]="{'badge-secondary': !isSectorSelected('finance_and_insurance'), 'badge-primary active': isSectorSelected('finance_and_insurance')}">
-                  <input type="radio" name="options" id="finance_and_insurance" autocomplete="off" (click)="setSector('finance_and_insurance')">
-                  Finance and Insurance
-                </label>
-                <label class="btn" [ngClass]="{'badge-secondary': !isSectorSelected('health_care_and_social_assistance'), 'badge-primary active': isSectorSelected('health_care_and_social_assistance')}">
-                  <input type="radio" name="options" id="health_care_and_social_assistance" autocomplete="off" (click)="setSector('health_care_and_social_assistance')">
-                  Health care and social assistance
-                </label>
-                <label class="btn" [ngClass]="{'badge-secondary': !isSectorSelected('information'), 'badge-primary active': isSectorSelected('information')}">
-                  <input type="radio" name="options" id="information" autocomplete="off" (click)="setSector('information')">
-                  Information
-                </label>
-                <label class="btn" [ngClass]="{'badge-secondary': !isSectorSelected('professional_scientific_and_technical_service'), 'badge-primary active': isSectorSelected('professional_scientific_and_technical_service')}">
-                  <input type="radio" name="options" id="professional_scientific_and_technical_service" autocomplete="off"
-                    (click)="setSector('professional_scientific_and_technical_service')"> Professional Scientific and
-                  Technical Service
-                </label>
-              </div>
-            </div>
-            <div class="row" style="margin-top: 5px">
-              <div class="col-md-4">
-                <div class="tile-stats">
-                  <div class="icon"><i class="fa fa-money"></i></div>
-                  <div class="count">
-                    <ng-container *ngIf="impactOnSectorialIP">{{impactOnSectorialIP}}</ng-container>
-                    <ng-container *ngIf="!impactOnSectorialIP"> - </ng-container>
-                    €
-                  </div>
-                  <h3>IP</h3>
-                </div>
-              </div>
-              <div class="col-md-4">
-                <div class="tile-stats">
-                  <div class="icon"><i class="fa fa-money"></i></div>
-                  <div class="count">
-                    <ng-container *ngIf="impactOnSectorialKeyComp">{{impactOnSectorialKeyComp}}</ng-container>
-                    <ng-container *ngIf="!impactOnSectorialKeyComp"> - </ng-container>
-                    €
-                  </div>
-                  <h3>Key Comp</h3>
-                </div>
-              </div>
-              <div class="col-md-4">
-                <div class="tile-stats">
-                  <div class="icon"><i class="fa fa-money"></i></div>
-                  <div class="count">
-                    <ng-container *ngIf="impactOnSectorialOrgCapital">{{impactOnSectorialOrgCapital}}</ng-container>
-                    <ng-container *ngIf="!impactOnSectorialOrgCapital"> - </ng-container>
-                    €
-                  </div>
-                  <h3>Org Capital</h3>
-                </div>
-              </div>
-            </div>
-          </ng-container>
-        </div>
-
-      </div>
-      <div class="row">
-        <div class="col-md-12">
-          <!--<button class="btn btn-primary float-right" style="margin-left: 10px" (click)="selectStep(4)">Next</button>-->
-          <button class="btn btn-secondary float-right" style="margin-left: 10px" (click)="close()">Close</button>
-          <button class="btn btn-light float-right" (click)="selectStep(2)">Prev</button>
-        </div>
-      </div>
-    </div>
-    <!--
-    <div *ngSwitchCase="4" class="container-fluid">
-      <div class="row">
-        <p>
-          <h2>Loss On Intangible Assets Due To Cyberattacks = <b class="color-b">
-            <ng-container *ngIf="lossOnintangibleAssetsDueToCyberattacks">{{lossOnintangibleAssetsDueToCyberattacks}}</ng-container>
-            <ng-container *ngIf="!lossOnintangibleAssetsDueToCyberattacks"> - </ng-container>
-             €</b>
-          </h2>
-        </p>
-      </div>
-      <div class="row">
-        <div class="col-md-12">
-          <div class="row">
-            GLOBAL<i class="fa fa-lg" style="color: #007bff" [ngClass]="{'fa-toggle-off': isGlobal, 'fa-toggle-on': !isGlobal}"
-              aria-hidden="true" (click)="setIsGlobal()"></i>SECTORIAL
-          </div>
-          <div class="row" *ngIf="!isGlobal">
-            <div class="btn-group btn-group-toggle" data-toggle="buttons">
-              <label class="btn" [ngClass]="{'badge-secondary': !isSectorSelected('finance_and_insurance'), 'badge-primary active': isSectorSelected('finance_and_insurance')}">
-                <input type="radio" name="options" id="finance_and_insurance" autocomplete="off" (click)="setSector('finance_and_insurance')">
-                Finance and Insurance
-              </label>
-              <label class="btn" [ngClass]="{'badge-secondary': !isSectorSelected('health_care_and_social_assistance'), 'badge-primary active': isSectorSelected('health_care_and_social_assistance')}">
-                <input type="radio" name="options" id="health_care_and_social_assistance" autocomplete="off" (click)="setSector('health_care_and_social_assistance')">
-                Health care and social assistance
-              </label>
-              <label class="btn" [ngClass]="{'badge-secondary': !isSectorSelected('information'), 'badge-primary active': isSectorSelected('information')}">
-                <input type="radio" name="options" id="information" autocomplete="off" (click)="setSector('information')">
-                Information
-              </label>
-              <label class="btn" [ngClass]="{'badge-secondary': !isSectorSelected('professional_scientific_and_technical_service'), 'badge-primary active': isSectorSelected('professional_scientific_and_technical_service')}">
-                <input type="radio" name="options" id="professional_scientific_and_technical_service" autocomplete="off"
-                  (click)="setSector('professional_scientific_and_technical_service')"> Professional Scientific and
-                Technical Service
-              </label>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="row">
-        <p>IP: <b class="color-b">{{impactOnIP}}</b>, Key Comp: <b class="color-b">{{impactOnKeyComp}}</b>, Org
-          Capital: <b class="color-b">{{impactOnOrgCapital}}<b class="color-b"></p>
-      </div>
-      <div class="row">
-        <div class="col-md-12">
-          <button class="btn btn-secondary float-right" style="margin-left: 10px" (click)="close()">Close</button>
-          <button class="btn btn-light float-right" (click)="selectStep(3)">Prev</button>
-        </div>
-      </div>
-    </div>
-    -->
-  </ng-container>
-</div>
+</ng-container>

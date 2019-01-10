@@ -9,6 +9,7 @@ import eu.hermeneut.domain.overview.SelfAssessmentOverview;
 import eu.hermeneut.service.*;
 import eu.hermeneut.repository.SelfAssessmentRepository;
 import eu.hermeneut.repository.search.SelfAssessmentSearchRepository;
+import eu.hermeneut.service.result.ResultService;
 import eu.hermeneut.thread.AugmentedMyAssetsCallable;
 import eu.hermeneut.utils.likelihood.answer.AnswerCalculator;
 import eu.hermeneut.utils.likelihood.attackstrategy.AttackStrategyCalculator;
@@ -66,6 +67,9 @@ public class SelfAssessmentServiceImpl implements SelfAssessmentService {
 
     @Autowired
     private AnswerService answerService;
+
+    @Autowired
+    private ResultService resultService;
 
     public SelfAssessmentServiceImpl(SelfAssessmentRepository selfAssessmentRepository, SelfAssessmentSearchRepository selfAssessmentSearchRepository) {
         this.selfAssessmentRepository = selfAssessmentRepository;
@@ -242,17 +246,23 @@ public class SelfAssessmentServiceImpl implements SelfAssessmentService {
                         //create a list to hold the Future object associated with Callable
                         List<Future<List<AugmentedMyAsset>>> futureList = new ArrayList<Future<List<AugmentedMyAsset>>>();
 
-                        splittedMyAssets.entrySet().stream().forEach((entry) -> {
-                            int cluster = entry.getKey();
-                            List<MyAsset> myAssetsSubset = entry.getValue();
 
-                            AugmentedMyAssetsCallable augmentedMyAssetsCallable = new AugmentedMyAssetsCallable(myAssetsSubset, this.attackStrategyService, augmentedAttackStrategyMap, threatAgentSet);
+                        Map<Long, Float> levelsOfInterestMap = this.resultService.getLevelsOfInterest(selfAssessmentID);
 
-                            //submit Callable tasks to be executed by thread pool
-                            Future<List<AugmentedMyAsset>> future = executor.submit(augmentedMyAssetsCallable);
-                            //add Future to the list, we can get return value using Future
-                            futureList.add(future);
-                        });
+                        if (levelsOfInterestMap != null && !levelsOfInterestMap.isEmpty()) {
+
+                            splittedMyAssets.entrySet().stream().forEach((entry) -> {
+                                int cluster = entry.getKey();
+                                List<MyAsset> myAssetsSubset = entry.getValue();
+
+                                AugmentedMyAssetsCallable augmentedMyAssetsCallable = new AugmentedMyAssetsCallable(myAssetsSubset, this.attackStrategyService, augmentedAttackStrategyMap, threatAgentSet, levelsOfInterestMap);
+
+                                //submit Callable tasks to be executed by thread pool
+                                Future<List<AugmentedMyAsset>> future = executor.submit(augmentedMyAssetsCallable);
+                                //add Future to the list, we can get return value using Future
+                                futureList.add(future);
+                            });
+                        }
 
                         for (Future<List<AugmentedMyAsset>> future : futureList) {
                             try {
@@ -274,5 +284,11 @@ public class SelfAssessmentServiceImpl implements SelfAssessmentService {
         LOGGER.debug("AugmentedMyAssets: " + augmentedMyAssets.size());
 
         return overview;
+    }
+
+    @Override
+    public List<SelfAssessment> findAllByExternalAudit(ExternalAudit externalAudit) {
+        LOGGER.debug("Request to get SelfAssessment by ExternalAudit: {}", externalAudit.getName());
+        return selfAssessmentRepository.findAllByExternalAudit(externalAudit);
     }
 }

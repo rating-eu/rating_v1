@@ -8,28 +8,32 @@
 }
 
 .low {
-    background-color: #00FF00;
+    background-color: #2ecc71;
     color: black;
 }
 
 .low-medium {
-    background-color: #FFFF00;
+    background-color: #f1c40f;
     color: black;
 }
 
 .medium {
-    background-color: #FFBB00;
+    background-color: #f39c12;
     color: black;
 }
 
 .medium-high {
-    background-color: #FF7700;
+    background-color: #d35400;
     color: black;
 }
 
 .high {
-    background-color: #FF0000;
+    background-color:#c0392b;
     color: black;
+}
+
+.level{
+    background: #cc99ff4d;
 }
 
 .disabled {

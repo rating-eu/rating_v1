@@ -18,7 +18,7 @@ export class StepInfoWidgetComponent implements OnInit {
   public impactEvaluationStatus = false;
   public riskEvaluationStatus = false;
   public alertMessage: string;
-  
+
   private closeResult: string;
   private linkAfterModal: string;
 
@@ -48,9 +48,13 @@ export class StepInfoWidgetComponent implements OnInit {
     }
   }
 
-  open(content, link, message) {
+  open(content, link, message?) {
     this.linkAfterModal = link;
-    this.alertMessage = message;
+    if (message) {
+      this.alertMessage = message;
+    }else{
+      this.alertMessage = null;
+    }
     this.modalService.open(content, {}).result.then((result) => {
       this.closeResult = `Closed with: ${result}`;
       if (this.linkAfterModal) {

@@ -14,6 +14,12 @@
             "otherEntityField": "login"
         },
         {
+            "relationshipType": "many-to-one",
+            "relationshipName": "externalAudit",
+            "otherEntityName": "externalAudit",
+            "otherEntityField": "name"
+        },
+        {
             "relationshipType": "many-to-many",
             "otherEntityRelationshipName": "",
             "relationshipName": "companyGroup",
@@ -26,22 +32,6 @@
             "otherEntityRelationshipName": "",
             "relationshipName": "threatagent",
             "otherEntityName": "threatAgent",
-            "otherEntityField": "name",
-            "ownerSide": true
-        },
-        {
-            "relationshipType": "many-to-many",
-            "otherEntityRelationshipName": "",
-            "relationshipName": "externalaudit",
-            "otherEntityName": "externalAudit",
-            "otherEntityField": "name",
-            "ownerSide": true
-        },
-        {
-            "relationshipType": "many-to-many",
-            "otherEntityRelationshipName": "",
-            "relationshipName": "questionnaire",
-            "otherEntityName": "questionnaire",
             "otherEntityField": "name",
             "ownerSide": true
         }

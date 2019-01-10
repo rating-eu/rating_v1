@@ -20,8 +20,7 @@
             "type": "Type",
             "description": "Description",
             "costs": "Costs",
-            "directAsset": "Direct Asset",
-            "indirectAsset": "Indirect Asset"
+            "myAsset": "My Asset"
         }
     }
 }

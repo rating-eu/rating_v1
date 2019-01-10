@@ -22,10 +22,9 @@
             "modified": "Modified",
             "companyProfile": "Company Profile",
             "user": "User",
+            "externalAudit": "External Audit",
             "companyGroup": "Company Group",
-            "threatagent": "Threatagent",
-            "externalaudit": "Externalaudit",
-            "questionnaire": "Questionnaire"
+            "threatagent": "Threatagent"
         }
     }
 }

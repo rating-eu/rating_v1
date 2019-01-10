@@ -53,8 +53,6 @@ export class RiskManagementComponent implements OnInit {
                 this.impactLevelService.findAllBySelfAssessment(this.mySelf.id)
             ).toPromise()
                 .then((response: [HttpResponse<ImpactLevelDescriptionMgm[]>, HttpResponse<ImpactLevelMgm[]>]) => {
-                    console.log('Response: ' + JSON.stringify(response));
-
                     this.impactLevelDescriptions = response[0].body;
                     this.impactLevels = response[1].body;
 
@@ -79,16 +77,12 @@ export class RiskManagementComponent implements OnInit {
                         this.impactLevelsMap.set(impactLevel.impact, impactLevel);
                     });
 
-                    console.log('ImpactLevelsMap: ' + JSON.stringify(Array.from(this.impactLevelsMap.keys())));
-
                     if (this.needToCreateImpactLevels) {
                         this.impactLevelService.createAll(this.impactLevels)
                             .toPromise()
                             .then((response2: HttpResponse<ImpactLevelMgm[]>) => {
                                 // Update the IDs of the ImpactLevels created locally
                                 if (response2) {
-                                    console.log('CreateAll impactLevels response: ' + JSON.stringify(response2));
-
                                     response2.body.forEach((impactLevel: ImpactLevelMgm) => {
                                         if (this.impactLevelsMap.has(impactLevel.impact)) {
                                             this.impactLevelsMap.get(impactLevel.impact).id = impactLevel.id;
@@ -186,8 +180,6 @@ export class RiskManagementComponent implements OnInit {
     }
 
     public updateImpactLevel(impactLevel: ImpactLevelMgm) {
-        console.log('Update ImpactLevel: ' + JSON.stringify(impactLevel));
-
         if (impactLevel && impactLevel.id !== undefined) {
             this.impactLevelService.update(impactLevel)
                 .toPromise()
@@ -198,9 +190,6 @@ export class RiskManagementComponent implements OnInit {
     }
 
     public criticalLevelUpdate(level: string) {
-        console.log(this.selectedRow);
-        console.log(this.selectedColumn);
-        console.log(level);
         const newLimit = this.selectedRow * this.selectedColumn;
         // setto il nuovo limite
         switch (level) {
@@ -263,9 +252,6 @@ export class RiskManagementComponent implements OnInit {
                 break;
             }
         }
-        console.log(this.criticalLevel.lowLimit);
-        console.log(this.criticalLevel.mediumLimit);
-        console.log(this.criticalLevel.highLimit);
         this.criticalLevelService.update(this.criticalLevel).toPromise().then((res) => {
             if (res) {
                 this.criticalLevel = res.body;

@@ -7,6 +7,8 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.data.elasticsearch.annotations.Document;
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -42,11 +44,9 @@ public class AttackCost implements Serializable {
     @Column(name = "costs", precision=10, scale=2)
     private BigDecimal costs;
 
-    @ManyToOne(cascade = CascadeType.REMOVE)
-    private DirectAsset directAsset;
-
-    @ManyToOne(cascade = CascadeType.REMOVE)
-    private IndirectAsset indirectAsset;
+    @ManyToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private MyAsset myAsset;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -97,31 +97,17 @@ public class AttackCost implements Serializable {
     }
 
     @JsonIgnore
-    public DirectAsset getDirectAsset() {
-        return directAsset;
+    public MyAsset getMyAsset() {
+        return myAsset;
     }
 
-    public AttackCost directAsset(DirectAsset directAsset) {
-        this.directAsset = directAsset;
+    public AttackCost myAsset(MyAsset myAsset) {
+        this.myAsset = myAsset;
         return this;
     }
 
-    public void setDirectAsset(DirectAsset directAsset) {
-        this.directAsset = directAsset;
-    }
-
-    @JsonIgnore
-    public IndirectAsset getIndirectAsset() {
-        return indirectAsset;
-    }
-
-    public AttackCost indirectAsset(IndirectAsset indirectAsset) {
-        this.indirectAsset = indirectAsset;
-        return this;
-    }
-
-    public void setIndirectAsset(IndirectAsset indirectAsset) {
-        this.indirectAsset = indirectAsset;
+    public void setMyAsset(MyAsset myAsset) {
+        this.myAsset = myAsset;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 

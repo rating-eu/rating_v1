@@ -1,0 +1,48 @@
+<div class="container" *ngIf="loading">
+    <div class="loader"></div>
+</div>
+<div class="container" *ngIf="!loading">
+    <div class="x_panel" style="padding:0px !important;">
+        <div class="x_title" style="padding:0px !important;">
+            <h2 style="padding: 10px;">Economic Value of Intangible Assets</h2>
+            <ul class="nav navbar-right panel_toolbox">
+                <li style="width: 24px; cursor: default"></li>
+                <li style="width: 24px; cursor: default"></li>
+                <li>
+                    <a href="javascript:void(0)" class="collapse-link" (click)="isCollapsed = !isCollapsed">
+                        <i *ngIf="!isCollapsed" class="fa fa-chevron-up"></i>
+                        <i *ngIf="isCollapsed" class="fa fa-chevron-down"></i>
+                    </a>
+                </li>
+            </ul>
+            <div class="clearfix"></div>
+        </div>
+        <div class="table-responsive x_content" style="padding:0px !important;" [ngbCollapse]="isCollapsed">
+            <div *ngIf="intangible" class="table-responsive table-hover-no-pointer">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Value</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <ng-container *ngFor="let item of intangible | paginate: assetsPaginator">
+                            <tr>
+                                <td>{{item.asset.name}}</td>
+                                <td *ngIf="item.economicValue">{{item.economicValue | currency:'EUR'}}</td>
+                                <td *ngIf="!item.economicValue">-</td>
+                            </tr>
+                        </ng-container>
+                    </tbody>
+                </table>
+                <div class="text-center">
+                    <pagination-controls (pageChange)="onAssetsPageChange($event)" [id]="assetsPaginator.id"></pagination-controls>
+                </div>
+            </div>
+            <div *ngIf="!intangible" class="text-center">
+                No Intangible Assets counted or asset clustering step is not completed
+            </div>
+        </div>
+    </div>
+</div>

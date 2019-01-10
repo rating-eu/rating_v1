@@ -2,7 +2,6 @@ package eu.hermeneut.web.rest.result;
 
 import eu.hermeneut.domain.enumeration.*;
 import eu.hermeneut.domain.result.Result;
-import eu.hermeneut.service.impl.result.ResultServiceImpl;
 import eu.hermeneut.service.result.ResultService;
 import eu.hermeneut.utils.likelihood.overall.OverallCalculator;
 import eu.hermeneut.web.rest.AssetResource;
@@ -33,6 +32,6 @@ public class ResultController {
 
     @GetMapping("/result/{selfAssessmentID}")
     public Result getResult(@PathVariable Long selfAssessmentID) {
-        return this.resultService.getResult(selfAssessmentID);
+        return this.resultService.getThreatAgentsResult(selfAssessmentID);
     }
 }

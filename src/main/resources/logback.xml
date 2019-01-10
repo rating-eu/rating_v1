@@ -21,13 +21,16 @@
             <!-- keep 7 days' worth of history -->
             <!-- 7D * 24H = 168H-->
             <maxHistory>${HERMENEUT_LOG_MAX_HISTORY_HOURS:-168}</maxHistory>
+
+            <!-- limited to 3GB total size-->
+            <totalSizeCap>${HERMENEUT_LOG_MAX_CAPACITY:-3GB}</totalSizeCap>
         </rollingPolicy>
     </appender>
 
     <appender name="STDOUT_APPENDER" class="ch.qos.logback.core.ConsoleAppender">
         <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
             <Pattern>
-                %d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n
+                %d{yyyy-MM-dd HH:mm:ss} [%thread] %highlight([%-5level]) %logger{36} - %msg%n
             </Pattern>
         </encoder>
     </appender>
@@ -40,7 +43,10 @@
         DEBUG
         TRACE
     -->
-    <root level="${HERMENEUT_LOG_LEVEL:-info}">
+    <!-- custom logging levels -->
+    <logger name="eu.hermeneut.HermeneutApp" level="INFO"/>
+
+    <root level="${HERMENEUT_LOG_LEVEL:-WARN}">
         <appender-ref ref="FILE_APPENDER"/>
         <appender-ref ref="STDOUT_APPENDER"/>
     </root>

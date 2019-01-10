@@ -37,6 +37,9 @@ public class DashboardServiceImpl implements DashboardService {
     @Autowired
     private SplittingLossService splittingLossService;
 
+    @Autowired
+    private SplittingValueService splittingValueService;
+
     @Override
     public ImpactEvaluationStatus getImpactEvaluationStatus(Long selfAssessmentID) throws NullInputException, NotFoundException {
         if (selfAssessmentID == null) {
@@ -85,16 +88,13 @@ public class DashboardServiceImpl implements DashboardService {
             impactEvaluationStatus.setMyTangibleAssets(new HashSet<>(myAssets));
         }
 
-        CompanyProfile companyProfile = selfAssessment.getCompanyProfile();
-        if (companyProfile != null) {
-            CompType compType = companyProfile.getType();
+        List<SplittingLoss> splittingLosses = splittingLossService.findAllBySelfAssessmentID(selfAssessmentID);
 
-            if (compType != null) {
-                SectorType sectorType = SectorType.byValue(compType.getValue());
+        if(splittingLosses != null && !splittingLosses.isEmpty()){
+            SectorType sectorType = splittingLosses.get(0).getSectorType();
 
-                if (sectorType != null) {
-                    impactEvaluationStatus.setSectorType(sectorType);
-                }
+            if (sectorType != null) {
+                impactEvaluationStatus.setSectorType(sectorType);
             }
         }
 
@@ -103,8 +103,10 @@ public class DashboardServiceImpl implements DashboardService {
          */
         impactEvaluationStatus.setCategoryType(null);
 
-        List<SplittingLoss> splittingLosses = this.splittingLossService.findAllBySelfAssessmentID(selfAssessmentID);
         impactEvaluationStatus.setSplittingLosses(new HashSet<>(splittingLosses));
+
+        List<SplittingValue> splittingValues = this.splittingValueService.findAllBySelfAssessmentID(selfAssessmentID);
+        impactEvaluationStatus.setSplittingValues(new HashSet<>(splittingValues));
 
         return impactEvaluationStatus;
     }

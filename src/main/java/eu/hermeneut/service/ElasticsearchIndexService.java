@@ -123,6 +123,10 @@ public class ElasticsearchIndexService {
 
     private final LikelihoodScaleSearchRepository likelihoodScaleSearchRepository;
 
+    private final LogoRepository logoRepository;
+
+    private final LogoSearchRepository logoSearchRepository;
+
     private final MitigationRepository mitigationRepository;
 
     private final MitigationSearchRepository mitigationSearchRepository;
@@ -166,6 +170,10 @@ public class ElasticsearchIndexService {
     private final SplittingLossRepository splittingLossRepository;
 
     private final SplittingLossSearchRepository splittingLossSearchRepository;
+
+    private final SplittingValueRepository splittingValueRepository;
+
+    private final SplittingValueSearchRepository splittingValueSearchRepository;
 
     private final ThreatAgentRepository threatAgentRepository;
 
@@ -226,6 +234,8 @@ public class ElasticsearchIndexService {
         LevelSearchRepository levelSearchRepository,
         LikelihoodScaleRepository likelihoodScaleRepository,
         LikelihoodScaleSearchRepository likelihoodScaleSearchRepository,
+        LogoRepository logoRepository,
+        LogoSearchRepository logoSearchRepository,
         MitigationRepository mitigationRepository,
         MitigationSearchRepository mitigationSearchRepository,
         MotivationRepository motivationRepository,
@@ -248,6 +258,8 @@ public class ElasticsearchIndexService {
         SelfAssessmentSearchRepository selfAssessmentSearchRepository,
         SplittingLossRepository splittingLossRepository,
         SplittingLossSearchRepository splittingLossSearchRepository,
+        SplittingValueRepository splittingValueRepository,
+        SplittingValueSearchRepository splittingValueSearchRepository,
         ThreatAgentRepository threatAgentRepository,
         ThreatAgentSearchRepository threatAgentSearchRepository,
         VulnerabilityScaleRepository vulnerabilityScaleRepository,
@@ -297,6 +309,8 @@ public class ElasticsearchIndexService {
         this.levelSearchRepository = levelSearchRepository;
         this.likelihoodScaleRepository = likelihoodScaleRepository;
         this.likelihoodScaleSearchRepository = likelihoodScaleSearchRepository;
+        this.logoRepository = logoRepository;
+        this.logoSearchRepository = logoSearchRepository;
         this.mitigationRepository = mitigationRepository;
         this.mitigationSearchRepository = mitigationSearchRepository;
         this.motivationRepository = motivationRepository;
@@ -319,6 +333,8 @@ public class ElasticsearchIndexService {
         this.selfAssessmentSearchRepository = selfAssessmentSearchRepository;
         this.splittingLossRepository = splittingLossRepository;
         this.splittingLossSearchRepository = splittingLossSearchRepository;
+        this.splittingValueRepository = splittingValueRepository;
+        this.splittingValueSearchRepository = splittingValueSearchRepository;
         this.threatAgentRepository = threatAgentRepository;
         this.threatAgentSearchRepository = threatAgentSearchRepository;
         this.vulnerabilityScaleRepository = vulnerabilityScaleRepository;
@@ -352,6 +368,7 @@ public class ElasticsearchIndexService {
                 reindexForClass(IndirectAsset.class, indirectAssetRepository, indirectAssetSearchRepository);
                 reindexForClass(Level.class, levelRepository, levelSearchRepository);
                 reindexForClass(LikelihoodScale.class, likelihoodScaleRepository, likelihoodScaleSearchRepository);
+                reindexForClass(Logo.class, logoRepository, logoSearchRepository);
                 reindexForClass(Mitigation.class, mitigationRepository, mitigationSearchRepository);
                 reindexForClass(Motivation.class, motivationRepository, motivationSearchRepository);
                 reindexForClass(MyAnswer.class, myAnswerRepository, myAnswerSearchRepository);
@@ -363,6 +380,7 @@ public class ElasticsearchIndexService {
                 reindexForClass(QuestionnaireStatus.class, questionnaireStatusRepository, questionnaireStatusSearchRepository);
                 reindexForClass(SelfAssessment.class, selfAssessmentRepository, selfAssessmentSearchRepository);
                 reindexForClass(SplittingLoss.class, splittingLossRepository, splittingLossSearchRepository);
+                reindexForClass(SplittingValue.class, splittingValueRepository, splittingValueSearchRepository);
                 reindexForClass(ThreatAgent.class, threatAgentRepository, threatAgentSearchRepository);
                 reindexForClass(VulnerabilityScale.class, vulnerabilityScaleRepository, vulnerabilityScaleSearchRepository);
                 reindexForClass(User.class, userRepository, userSearchRepository);

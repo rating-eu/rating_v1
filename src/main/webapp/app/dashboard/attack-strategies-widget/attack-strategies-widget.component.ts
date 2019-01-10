@@ -1,3 +1,4 @@
+import { DashboardStepEnum } from './../models/enumeration/dashboard-step.enum';
 import * as _ from 'lodash';
 
 import { Component, OnInit } from '@angular/core';
@@ -22,6 +23,7 @@ export class AttackStrategiesWidgetComponent implements OnInit {
   private attacksMap: Map<number /*AttackStrategyID*/, AttackStrategyMgm> = new Map<number, AttackStrategyMgm>();
   private mySelf: SelfAssessmentMgm;
   private status: DashboardStatus;
+  private dashboardStatus = DashboardStepEnum;
 
   constructor(
     private riskService: RiskManagementService,
@@ -31,7 +33,6 @@ export class AttackStrategiesWidgetComponent implements OnInit {
 
   ngOnInit() {
     this.loading = true;
-    // assessVulnerablitiesStatus checker
     this.status = this.dashService.getStatus();
     this.mySelf = this.mySelfAssessmentService.getSelfAssessment();
 
@@ -48,27 +49,19 @@ export class AttackStrategiesWidgetComponent implements OnInit {
                   this.attacksMapCounter++;
                 }
               }
-              /* TODO Il server dovrebbe restituire un valore pari a null quando non fornisce risultati altrimenti non
-              si riesce a disambiguare il caso assenza di informazioni dal caso assenza di vulnerabilità*/
-              if (!this.status.assessVulnerablitiesStatus && res2.length > 0) {
-                this.status.assessVulnerablitiesStatus = true;
-                this.dashService.updateStatus(this.status);
-              } else if (!this.status.assessVulnerablitiesStatus && res2.length === 0) {
-                this.status.assessVulnerablitiesStatus = false;
-                this.dashService.updateStatus(this.status);
-              }
             }
           });
         }
         this.loading = false;
       } else {
         this.loading = false;
-        this.status.assessVulnerablitiesStatus = false;
-        this.dashService.updateStatus(this.status);
       }
     }).catch(() => {
       this.loading = false;
-      this.status.assessVulnerablitiesStatus = false;
+    });
+
+    this.dashService.getStatusFromServer(this.mySelf, this.dashboardStatus.ASSESS_VULNERABILITIES).toPromise().then((res) => {
+      this.status.assessVulnerablitiesStatus = res;
       this.dashService.updateStatus(this.status);
     });
   }

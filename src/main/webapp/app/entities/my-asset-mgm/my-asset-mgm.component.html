@@ -64,12 +64,11 @@
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <!--<th><span jhiTranslate="global.field.id">ID</span></th>-->
-                    <th><span jhiTranslate="hermeneutApp.myAsset.magnitude">Magnitude</span></th>
                     <th><span jhiTranslate="hermeneutApp.myAsset.ranking">Ranking</span></th>
                     <th><span jhiTranslate="hermeneutApp.myAsset.estimated">Estimated</span></th>
                     <th><span jhiTranslate="hermeneutApp.myAsset.economicValue">Economic Value</span></th>
                     <th><span jhiTranslate="hermeneutApp.myAsset.impact">Impact</span></th>
+                    <th><span jhiTranslate="hermeneutApp.myAsset.lossValue">Loss Value</span></th>
                     <th><span jhiTranslate="hermeneutApp.myAsset.asset">Asset</span></th>
                     <th><span jhiTranslate="hermeneutApp.myAsset.selfAssessment">Self Assessment</span></th>
                     <th><span jhiTranslate="hermeneutApp.myAsset.questionnaire">Questionnaire</span></th>
@@ -78,12 +77,11 @@
             </thead>
             <tbody>
                 <tr *ngFor="let myAsset of myAssets ;trackBy: trackId">
-                    <!--<td><a [routerLink]="['../my-asset-mgm', myAsset.id ]">{{myAsset.id}}</a></td>-->
-                    <td>{{myAsset.magnitude}}</td>
                     <td>{{myAsset.ranking}}</td>
                     <td>{{myAsset.estimated}}</td>
                     <td>{{myAsset.economicValue}}</td>
                     <td>{{myAsset.impact}}</td>
+                    <td>{{myAsset.lossValue}}</td>
                     <td>
                         <div *ngIf="myAsset.asset">
                             <a [routerLink]="['../asset-mgm', myAsset.asset?.id ]">{{myAsset.asset?.name}}</a>

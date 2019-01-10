@@ -10,7 +10,6 @@ export class IdentifyThreatAgentService {
     }
 
     showThreatAgentsResult(questionnaireStatus: QuestionnaireStatusMgm) {
-        console.log('IdentifyThreatAgents QuestionnaireStatus: ' + JSON.stringify(questionnaireStatus));
         this.router.navigate(['/identify-threat-agent/result', questionnaireStatus.id]);
     }
 }

@@ -26,7 +26,8 @@ import * as _ from 'lodash';
     ]
 })
 export class WeaknessResultComponent implements OnInit, OnDestroy {
-    viewDetails = false;
+    public isViewDivDetailsVisible = false;
+    public datailParam: number;
     private selectedAugmentedAttackStrategy: AugmentedAttackStrategy = null;
 
     private _subscriptions: Subscription[] = [];
@@ -76,9 +77,9 @@ export class WeaknessResultComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.likelihoodStepEnabled = new Map();
-        this, this.likelihoodStepEnabled.set(LikelihoodStep.INITIAL_LIKELIHOOD, false);
-        this, this.likelihoodStepEnabled.set(LikelihoodStep.CONTEXTUAL_LIKELIHOOD, false);
-        this, this.likelihoodStepEnabled.set(LikelihoodStep.REFINED_LIKELIHOOD, false);
+        this.likelihoodStepEnabled.set(LikelihoodStep.INITIAL_LIKELIHOOD, false);
+        this.likelihoodStepEnabled.set(LikelihoodStep.CONTEXTUAL_LIKELIHOOD, false);
+        this.likelihoodStepEnabled.set(LikelihoodStep.REFINED_LIKELIHOOD, false);
 
         this.selfAssessment = this.selfAssessmentService.getSelfAssessment();
         this.threatAgents = this.selfAssessment.threatagents;
@@ -107,10 +108,7 @@ export class WeaknessResultComponent implements OnInit, OnDestroy {
             // Make same ID AttackStrategies point to the same AugmentedAttackStrategy object
             for (const levelID of Object.keys(this.attacksCKC7Matrix)) {
 
-
                 for (const phaseID of Object.keys(this.attacksCKC7Matrix[levelID])) {
-
-
                     const augmentedAttackStrategies: Array<AugmentedAttackStrategy> = this.attacksCKC7Matrix[Number(levelID)][Number(phaseID)];
                     const augmentedAttackStrategiesByReference: Array<AugmentedAttackStrategy> = [];
 
@@ -134,10 +132,10 @@ export class WeaknessResultComponent implements OnInit, OnDestroy {
             }
 
             // Check which steps (INITIAL, CONTEXTUAL, REFINED) are available.
-            const augmentedAttackStrategies: AugmentedAttackStrategy[] = Array.from(this.augmentedAttackStrategiesMap.values());
+            const allAugmentedAttackStrategies: AugmentedAttackStrategy[] = Array.from(this.augmentedAttackStrategiesMap.values());
 
-            if (augmentedAttackStrategies && augmentedAttackStrategies.length > 0) {
-                const augmentedAttackStrategy: AugmentedAttackStrategy = augmentedAttackStrategies[0];
+            if (allAugmentedAttackStrategies && allAugmentedAttackStrategies.length > 0) {
+                const augmentedAttackStrategy: AugmentedAttackStrategy = allAugmentedAttackStrategies[0];
 
                 if (augmentedAttackStrategy.initialLikelihood > 0) {
                     this.likelihoodStepEnabled.set(LikelihoodStep.INITIAL_LIKELIHOOD, true);
@@ -177,16 +175,11 @@ export class WeaknessResultComponent implements OnInit, OnDestroy {
         this.selectedAugmentedAttackStrategy = augmentedAttackStrategy;
     }
 
-    showDetails() {
-        if (this.selectedAugmentedAttackStrategy) {
-            this.viewDetails = true;
-        } else {
-            this.viewDetails = false;
-        }
-    }
-
-    hideDetails() {
-        this.selectAttackStrategy(null);
-        this.viewDetails = false;
+    viewDivDetails(id: number) {
+        this.datailParam = id;
+        this.isViewDivDetailsVisible = true;
+        setTimeout(() => {
+            document.getElementById('details').scrollIntoView();
+        }, 250);
     }
 }

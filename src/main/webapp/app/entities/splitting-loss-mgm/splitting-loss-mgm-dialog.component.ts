@@ -1,16 +1,15 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { HttpResponse, HttpErrorResponse } from '@angular/common/http';
+import {Component, OnInit, OnDestroy} from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
+import {HttpResponse, HttpErrorResponse} from '@angular/common/http';
 
-import { Observable } from 'rxjs/Observable';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
+import {Observable} from 'rxjs/Observable';
+import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
+import {JhiEventManager, JhiAlertService} from 'ng-jhipster';
 
-import { SplittingLossMgm } from './splitting-loss-mgm.model';
-import { SplittingLossMgmPopupService } from './splitting-loss-mgm-popup.service';
-import { SplittingLossMgmService } from './splitting-loss-mgm.service';
-import { SelfAssessmentMgm, SelfAssessmentMgmService } from '../self-assessment-mgm';
-import {SessionStorageService} from 'ngx-webstorage';
+import {SplittingLossMgm} from './splitting-loss-mgm.model';
+import {SplittingLossMgmPopupService} from './splitting-loss-mgm-popup.service';
+import {SplittingLossMgmService} from './splitting-loss-mgm.service';
+import {SelfAssessmentMgm, SelfAssessmentMgmService} from '../self-assessment-mgm';
 import {PopUpService} from '../../shared/pop-up-services/pop-up.service';
 
 @Component({
@@ -71,7 +70,7 @@ export class SplittingLossMgmDialogComponent implements OnInit {
     }
 
     private onSaveSuccess(result: SplittingLossMgm) {
-        this.eventManager.broadcast({ name: 'splittingLossListModification', content: 'OK'});
+        this.eventManager.broadcast({name: 'splittingLossListModification', content: 'OK'});
         this.isSaving = false;
         this.activeModal.dismiss(result);
     }
@@ -101,14 +100,15 @@ export class SplittingLossMgmPopupComponent implements OnInit, OnDestroy {
         private route: ActivatedRoute,
         private splittingLossPopupService: SplittingLossMgmPopupService,
         public popUpService: PopUpService
-    ) {}
+    ) {
+    }
 
     ngOnInit() {
         if (!this.popUpService.canOpen()) {
             return;
-        }  else {
+        } else {
             this.routeSub = this.route.params.subscribe((params) => {
-                if ( params['id'] ) {
+                if (params['id']) {
                     this.splittingLossPopupService
                         .open(SplittingLossMgmDialogComponent as Component, params['id']);
                 } else {
@@ -120,7 +120,7 @@ export class SplittingLossMgmPopupComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy() {
-        if(this.routeSub){
+        if (this.routeSub) {
             this.routeSub.unsubscribe();
         }
     }

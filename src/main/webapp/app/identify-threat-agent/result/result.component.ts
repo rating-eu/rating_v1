@@ -91,13 +91,9 @@ export class ThreatResultComponent implements OnInit, OnDestroy {
         this.questionsMyAnswers$ = this.questionnaireStatuses$.pipe(
             mergeMap((questionnaireStatusResponse: HttpResponse<QuestionnaireStatusMgm[]>) => {
                 this.questionnaireStatus = questionnaireStatusResponse.body[0];
-                console.log('QuestionnaireStatus: ' + JSON.stringify(this.questionnaireStatus));
                 this.questionnaire = this.questionnaireStatus.questionnaire;
-                console.log('Questionnaire: ' + JSON.stringify(this.questionnaire));
-
                 this.questions$ = this.questionService.getQuestionsByQuestionnaire(this.questionnaire.id);
                 this.myAnswers$ = this.myAnswerService.getAllByQuestionnaireStatusID(this.questionnaireStatus.id);
-
                 return forkJoin(this.questions$, this.myAnswers$);
             })
         );
@@ -113,10 +109,7 @@ export class ThreatResultComponent implements OnInit, OnDestroy {
             this.questionsMyAnswers$.mergeMap(
                 (response: [HttpResponse<QuestionMgm[]>, HttpResponse<MyAnswerMgm[]>]) => {
                     this.questions = response[0].body;
-                    console.log('Questions: ' + JSON.stringify(this.questions));
                     this.myAnswers = response[1].body;
-                    console.log('MyAnswers: ' + JSON.stringify(this.myAnswers));
-
                     return forkJoin(this.defaultThreatAgents$, this.motivations$);
                 }
             );
@@ -124,11 +117,7 @@ export class ThreatResultComponent implements OnInit, OnDestroy {
         this.defaultThreatAgentsMotivations$.subscribe(
             (response: [HttpResponse<ThreatAgentMgm[]>, HttpResponse<MotivationMgm[]>]) => {
                 this.defaultThreatAgents = response[0].body;
-                console.log('DefaultThreatAgents: ' + JSON.stringify(this.defaultThreatAgents));
-
                 this.motivations = response[1].body;
-                console.log('Motivations: ' + JSON.stringify(this.motivations));
-
                 this.questionsMap = this.arrayToMap<QuestionMgm>(this.questions);
 
                 this.threatAgentsPercentageMap = this.questionsMyAnswersToThreatAgentsPercentageMap(this.questionsMap, this.myAnswers, this.defaultThreatAgents);
@@ -151,8 +140,6 @@ export class ThreatResultComponent implements OnInit, OnDestroy {
                         return result;
                     }
                 );
-
-                console.log('ThreatAgentsPercentageArray: ' + JSON.stringify(this.threatAgentsPercentageArray));
             }
         );
     }
@@ -206,30 +193,22 @@ export class ThreatResultComponent implements OnInit, OnDestroy {
             const threatAgentHash: string = CryptoJS.SHA256(JSON.stringify(threatAgent)).toString();
 
             if (map.has(threatAgentHash)) {// a question identifying this threat agent has already been encountered.
-                console.log('Threat agent already processed...');
-
                 // fraction = #YES/#Questions
                 const fraction: Fraction = map.get(threatAgentHash).value;
                 // increment the number of questions identifying this threat-agent
                 fraction.whole++;
 
                 if (answer.name.toUpperCase() === ThreatResultComponent.YES) {
-                    console.log('Warning: you answered YES');
                     fraction.part++;
                 } else if (answer.name.toUpperCase() === ThreatResultComponent.NO) {
-                    console.log('Good, you answered NO');
                 }
             } else {// first time
-                console.log('First Time processing this threat agent');
-
                 const fraction = new Fraction(0, 1);
                 map.set(threatAgentHash, new Couple<ThreatAgentMgm, Fraction>(threatAgent, fraction));
 
                 if (answer.name.toUpperCase() === ThreatResultComponent.YES) {
-                    console.log('Warning: you answered YES');
                     fraction.part++;
                 } else if (answer.name.toUpperCase() === ThreatResultComponent.NO) {
-                    console.log('Good, you answered NO');
                 }
             }
         });

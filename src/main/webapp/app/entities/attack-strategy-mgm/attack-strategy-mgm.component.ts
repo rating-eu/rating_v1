@@ -8,6 +8,7 @@ import { AttackStrategyMgm } from './attack-strategy-mgm.model';
 import { AttackStrategyMgmService } from './attack-strategy-mgm.service';
 import { Principal } from '../../shared';
 import { PopUpService } from '../../shared/pop-up-services/pop-up.service';
+import {MyRole} from '../enumerations/MyRole.enum';
 
 @Component({
     selector: 'jhi-attack-strategy-mgm',
@@ -18,6 +19,7 @@ attackStrategies: AttackStrategyMgm[];
     currentAccount: any;
     eventSubscriber: Subscription;
     currentSearch: string;
+    public isADMIN: boolean;
 
     constructor(
         private attackStrategyService: AttackStrategyMgmService,
@@ -66,6 +68,13 @@ attackStrategies: AttackStrategyMgm[];
         this.loadAll();
         this.principal.identity().then((account) => {
             this.currentAccount = account;
+        });
+        this.principal.hasAnyAuthority([MyRole[MyRole.ROLE_ADMIN]]).then((response: boolean) => {
+            if (response) {
+                this.isADMIN = response;
+            } else {
+                this.isADMIN = false;
+            }
         });
         this.registerChangeInAttackStrategies();
     }

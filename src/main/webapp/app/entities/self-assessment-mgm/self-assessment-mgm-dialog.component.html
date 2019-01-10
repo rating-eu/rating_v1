@@ -64,9 +64,9 @@
             </select>
         </div>-->
         <div class="form-group">
-            <label jhiTranslate="hermeneutApp.selfAssessment.externalaudit" for="field_externalaudit">Externalaudit</label>
-            <select class="form-control" id="field_externalaudit" multiple name="externalaudit" [(ngModel)]="selfAssessment.externalaudits">
-                <option [ngValue]="getSelected(selfAssessment.externalaudits, externalAuditOption)" *ngFor="let externalAuditOption of externalaudits; trackBy: trackExternalAuditById">{{externalAuditOption.name}}</option>
+            <label jhiTranslate="hermeneutApp.selfAssessment.externalAudit" for="field_external_audit">External Audit</label>
+            <select class="form-control" id="field_external_audit" name="externalaudit" [(ngModel)]="selfAssessment.externalAudit">
+                <option [ngValue]="getSelected(selfAssessment.externalAudit, externalAuditOption)" *ngFor="let externalAuditOption of externalaudits; trackBy: trackExternalAuditById">{{externalAuditOption.name}}</option>
             </select>
         </div>
         <!--<div class="form-group">

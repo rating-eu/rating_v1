@@ -12,72 +12,16 @@ import {AttackStrategyUpdate} from '../evaluate-weakness/models/attack-strategy-
 import {QuestionnaireMgm} from '../entities/questionnaire-mgm';
 import {Update} from '../layouts/model/Update';
 import {SelfAssessmentMgm} from '../entities/self-assessment-mgm';
-import {MyAssetMgm} from "../entities/my-asset-mgm";
-import {HttpClient, HttpResponse} from "@angular/common/http";
-import {SERVER_API_URL} from "../app.constants";
-import {IndirectAssetMgm} from "../entities/indirect-asset-mgm";
+import {HttpClient} from '@angular/common/http';
 
 @Injectable()
 export class DatasharingService {
 
-    constructor(private http: HttpClient) {
-
-    }
-
     private _threatAgentsMap: Map<String, Couple<ThreatAgentMgm, Fraction>>;
-
-    set threatAgentsMap(threatAgents: Map<String, Couple<ThreatAgentMgm, Fraction>>) {
-        console.log('ThreatAgents param was: ' + JSON.stringify(threatAgents));
-
-        this._threatAgentsMap = threatAgents;
-        console.log('ThreatAgents SET to ' + JSON.stringify(this._threatAgentsMap));
-    }
-
-    get threatAgentsMap(): Map<String, Couple<ThreatAgentMgm, Fraction>> {
-        console.log('ThreatAgents GET to ' + JSON.stringify(this._threatAgentsMap));
-
-        return this._threatAgentsMap;
-    }
-
     private _identifyThreatAgentsFormDataMap: Map<String, AnswerMgm>;
-
-    get identifyThreatAgentsFormDataMap(): Map<String, AnswerMgm> {
-        return this._identifyThreatAgentsFormDataMap;
-    }
-
-    set identifyThreatAgentsFormDataMap(value: Map<String, AnswerMgm>) {
-        this._identifyThreatAgentsFormDataMap = value;
-    }
-
     private _currentQuestionnaire: QuestionnaireMgm;
-
-    get currentQuestionnaire(): QuestionnaireMgm {
-        return this._currentQuestionnaire;
-    }
-
-    set currentQuestionnaire(value: QuestionnaireMgm) {
-        this._currentQuestionnaire = value;
-    }
-
     private _questionnaireStatusesMap: Map<number, QuestionnaireStatusMgm>;
-
-    get questionnaireStatusesMap(): Map<number, QuestionnaireStatusMgm> {
-        return this._questionnaireStatusesMap;
-    }
-
-    set questionnaireStatusesMap(statusesMap: Map<number, QuestionnaireStatusMgm>) {
-        this._questionnaireStatusesMap = statusesMap;
-    }
-
     private _questionnaireStatus: QuestionnaireStatusMgm;
-
-    get questionnaireStatus(): QuestionnaireStatusMgm {
-        return this._questionnaireStatus;
-    }
-
-    set questionnaireStatus(value: QuestionnaireStatusMgm) {
-        this._questionnaireStatus = value;
-    }
 
     // ===Observables-BehaviorSubjects===
 
@@ -91,7 +35,51 @@ export class DatasharingService {
     private layoutUpdateSubject: BehaviorSubject<Update> = new BehaviorSubject<Update>(null);
     private mySelfAssessmentSubject: BehaviorSubject<SelfAssessmentMgm> = new BehaviorSubject<SelfAssessmentMgm>(null);
 
-    //private sendRiskProfileToKafkaUrl = SERVER_API_URL + "api/{selfAssessmentID}/risk-profile/kafka";
+    constructor(private http: HttpClient) {
+
+    }
+
+    set threatAgentsMap(threatAgents: Map<String, Couple<ThreatAgentMgm, Fraction>>) {
+        this._threatAgentsMap = threatAgents;
+    }
+
+    get threatAgentsMap(): Map<String, Couple<ThreatAgentMgm, Fraction>> {
+        return this._threatAgentsMap;
+    }
+
+    get identifyThreatAgentsFormDataMap(): Map<String, AnswerMgm> {
+        return this._identifyThreatAgentsFormDataMap;
+    }
+
+    set identifyThreatAgentsFormDataMap(value: Map<String, AnswerMgm>) {
+        this._identifyThreatAgentsFormDataMap = value;
+    }
+
+    get currentQuestionnaire(): QuestionnaireMgm {
+        return this._currentQuestionnaire;
+    }
+
+    set currentQuestionnaire(value: QuestionnaireMgm) {
+        this._currentQuestionnaire = value;
+    }
+
+    get questionnaireStatusesMap(): Map<number, QuestionnaireStatusMgm> {
+        return this._questionnaireStatusesMap;
+    }
+
+    set questionnaireStatusesMap(statusesMap: Map<number, QuestionnaireStatusMgm>) {
+        this._questionnaireStatusesMap = statusesMap;
+    }
+
+    get questionnaireStatus(): QuestionnaireStatusMgm {
+        return this._questionnaireStatus;
+    }
+
+    set questionnaireStatus(value: QuestionnaireStatusMgm) {
+        this._questionnaireStatus = value;
+    }
+
+    // private sendRiskProfileToKafkaUrl = SERVER_API_URL + "api/{selfAssessmentID}/risk-profile/kafka";
 
     private set attackStrategyUpdate(value: AttackStrategyUpdate) {
         this._attackStrategyUpdate = value;
@@ -104,12 +92,7 @@ export class DatasharingService {
     }
 
     answerSelfAssessment(question: QuestionMgm, answer: AnswerMgm) {
-        console.log('ENTER answer SelfAssessment...');
-        console.log('Question: ' + JSON.stringify(question));
-
         for (const attackStrategy of question.attackStrategies) {
-            console.log('AttackStrategy: ' + JSON.stringify(attackStrategy));
-
             // Placeholder for the new update
             let attackStrategyUpdate: AttackStrategyUpdate;
 
@@ -124,13 +107,10 @@ export class DatasharingService {
 
             if (questionsAnswerMap.has(question.id)) {//
                 const oldAnswer: AnswerMgm = questionsAnswerMap.get(question.id).value;
-                console.log('The old answer was: ' + JSON.stringify(oldAnswer));
             } else {
-                console.log('First time answering this quesion...');
             }
 
             questionsAnswerMap.set(question.id, new Couple<QuestionMgm, AnswerMgm>(question, answer));
-            console.log('Answer was updated: ' + JSON.stringify(answer));
             // Set & Broadcast the update for the current AttackStrategy
             this.attackStrategyUpdate = attackStrategyUpdate;
         }
@@ -165,11 +145,4 @@ export class DatasharingService {
         this.layoutUpdateSubject.next(null);
         this._attackStrategyUpdateSubject.next(null);
     }
-
-    /*sendRsikProfileToKafka(selfAssessmentID: number): Observable<HttpResponse<void>> {
-        const uri = this.sendRiskProfileToKafkaUrl.replace('{selfAssessmentID}', String(selfAssessmentID));
-
-        return this.http.get<void>(uri, {observe: 'response'})
-            .map((res: HttpResponse<void>) => res);
-    }*/
 }

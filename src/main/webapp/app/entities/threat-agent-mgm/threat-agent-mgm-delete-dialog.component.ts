@@ -1,12 +1,12 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import {Component, OnInit, OnDestroy} from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
 
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { JhiEventManager } from 'ng-jhipster';
+import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
+import {JhiEventManager} from 'ng-jhipster';
 
-import { ThreatAgentMgm } from './threat-agent-mgm.model';
-import { ThreatAgentMgmPopupService } from './threat-agent-mgm-popup.service';
-import { ThreatAgentMgmService } from './threat-agent-mgm.service';
+import {ThreatAgentMgm} from './threat-agent-mgm.model';
+import {ThreatAgentMgmPopupService} from './threat-agent-mgm-popup.service';
+import {ThreatAgentMgmService} from './threat-agent-mgm.service';
 import {SessionStorageService} from 'ngx-webstorage';
 import {PopUpService} from '../../shared/pop-up-services/pop-up.service';
 
@@ -52,7 +52,8 @@ export class ThreatAgentMgmDeletePopupComponent implements OnInit, OnDestroy {
         private route: ActivatedRoute,
         private threatAgentPopupService: ThreatAgentMgmPopupService,
         public popUpService: PopUpService
-    ) {}
+    ) {
+    }
 
     ngOnInit() {
         if (!this.popUpService.canOpen()) {
@@ -66,7 +67,7 @@ export class ThreatAgentMgmDeletePopupComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy() {
-        if(this.routeSub){
+        if (this.routeSub) {
             this.routeSub.unsubscribe();
         }
     }
