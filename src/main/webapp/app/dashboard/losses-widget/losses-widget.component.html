@@ -22,36 +22,37 @@
         <table class="table table-striped">
           <thead>
             <tr>
-              <th>Name</th>
+              <th width="50%">Category</th>
               <th>Value</th>
             </tr>
           </thead>
           <tbody>
             <ng-container *ngFor="let item of tableInfo">
               <tr>
-                <td>{{item.splitting}}</td>
-                <!--<a href="javascript:void(0)" (click)="selectSplitting(item.type)">{{item.splitting}}</a>-->
+                <td><a href="javascript:void(0)" (click)="setAssetCategory(item.type)">{{item.splitting}}</a></td>
                 <td *ngIf="item.value">{{item.value | currency:'EUR'}}</td>
                 <td *ngIf="!item.value">-</td>
               </tr>
-              <!--
-              <ng-container *ngIf="selectedSplitting">
-                <tr *ngIf="selectedSplitting === item.type">
+              <ng-container *ngIf="selectedCategory">
+                <tr *ngIf="selectedCategory === item.type">
                   <td colspan="2">
                     <table class="table table-striped">
                       <thead>
                         <tr>
-                          <th>Asset in category</th>
+                          <th width="50%">Asset</th>
+                          <th>Value</th>
                         </tr>
                       </thead>
                       <tbody>
-                        <tr *ngFor="let elem of selectedSplittingElement">{{elem}}</tr>
+                        <tr *ngFor="let asset of assetsBySelectedCategory">
+                          <td>{{asset.asset.name}}</td>
+                          <td>{{asset.lossValue | currency:'EUR'}}</td>
+                        </tr>
                       </tbody>
                     </table>
                   </td>
                 </tr>
               </ng-container>
-              -->
             </ng-container>
           </tbody>
         </table>

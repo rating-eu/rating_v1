@@ -45,7 +45,6 @@ export class EbitsWidgetComponent implements OnInit {
             });
           index++;
         }
-        console.log(this.ebitInfo);
         this.loading = false;
       }
     }).catch(() => {

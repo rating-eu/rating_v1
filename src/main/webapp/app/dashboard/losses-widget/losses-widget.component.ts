@@ -1,3 +1,5 @@
+import { AssetMgm } from './../../entities/asset-mgm/asset-mgm.model';
+import { MyAssetMgm } from './../../entities/my-asset-mgm/my-asset-mgm.model';
 import * as _ from 'lodash';
 
 import { Component, OnInit } from '@angular/core';
@@ -21,9 +23,10 @@ export class LossesWidgetComponent implements OnInit {
     value: number,
     type: string
   }[];
-  public selectedSplitting: string;
-  public selectedSplittingElement: string[];
+  public selectedCategory: string;
+  public assetsBySelectedCategory: MyAssetMgm[] = [];
 
+  private myAssets: MyAssetMgm[] = [];
   private wp3Status: ImpactEvaluationStatus;
   private mySelf: SelfAssessmentMgm;
 
@@ -34,6 +37,11 @@ export class LossesWidgetComponent implements OnInit {
 
   ngOnInit() {
     this.mySelf = this.mySelfAssessmentService.getSelfAssessment();
+    this.impactService.getMyAssets(this.mySelf).toPromise().then((res) => {
+      if (res && res.length > 0) {
+        this.myAssets = res;
+      }
+    });
     this.impactService.getStatus(this.mySelf).toPromise().then((status) => {
       if (status) {
         this.wp3Status = status;
@@ -79,50 +87,42 @@ export class LossesWidgetComponent implements OnInit {
       }
     });
   }
-  /*
-  public selectSplitting(splittingType: string) {
-    if (this.selectedSplitting === splittingType) {
-      this.selectedSplitting = undefined;
+
+  public setAssetCategory(category: string) {
+    if (this.selectedCategory === category) {
+      this.selectedCategory = undefined;
     } else {
-      this.selectedSplitting = splittingType;
+      this.selectedCategory = category;
     }
-    this.selectedSplittingElement = [];
-    switch (splittingType) {
-      case ('IP'): {
-        this.selectedSplittingElement.push('IP asset / IP in progress either internally or with offices');
-        this.selectedSplittingElement.push('Trade / business secrets');
-        this.selectedSplittingElement.push('Industial process');
-        this.selectedSplittingElement.push('On-going R&D innovation projects');
-        this.selectedSplittingElement.push('On-going new product and new services');
-        this.selectedSplittingElement.push('On-going new business models projects');
+    this.assetsBySelectedCategory = [];
+    switch (category) {
+      case 'ORG_CAPITAL': {
+        for (const asset of this.myAssets) {
+          if (asset.asset.assetcategory.name === 'Organisational capital' ||
+            asset.asset.assetcategory.name === 'Reputation' ||
+            asset.asset.assetcategory.name === 'Brand') {
+            this.assetsBySelectedCategory.push(asset);
+          }
+        }
         break;
       }
-      case ('ORG_CAPITAL'): {
-        this.selectedSplittingElement.push('Digital supported process');
-        this.selectedSplittingElement.push('Non-digitised functional and interfunctional processes');
-        this.selectedSplittingElement.push('Eco-system\'s processes');
-        this.selectedSplittingElement.push('Firm / organisation\'s strategic capabilities');
+      case 'KEY_COMP': {
+        for (const asset of this.myAssets) {
+          if (asset.asset.assetcategory.name === 'Key competences and human capital') {
+            this.assetsBySelectedCategory.push(asset);
+          }
+        }
         break;
       }
-      case ('KEY_COMP'): {
-        this.selectedSplittingElement.push('Firm\'s personnel key competences (tacit knowledge)');
-        this.selectedSplittingElement.push('Personnel moral and trust in the organisation');
-        this.selectedSplittingElement.push('Peronnel learning capabilities');
-        break;
-      }
-      case ('DATA'): {
-        this.selectedSplittingElement.push('Digitised data on clients');
-        this.selectedSplittingElement.push('Digitised data on personnel');
-        this.selectedSplittingElement.push('Digitised data on suppliers and ecosystems');
-        this.selectedSplittingElement.push('Digitised data on functions (HR, finance and fiscal)');
-        break;
-      }
-      case ('REPUTATION'): {
-        this.selectedSplittingElement.push('Reputation with clients, stakeholders and firm\'s ecosystems');
-        this.selectedSplittingElement.push('Brand value with customers, stakeholders and firm / organisation\'s ecosystem');
+      case 'IP': {
+        for (const asset of this.myAssets) {
+          if (asset.asset.assetcategory.name === 'Intellectual Property (IPR)' ||
+            asset.asset.assetcategory.name === 'Innovation') {
+            this.assetsBySelectedCategory.push(asset);
+          }
+        }
         break;
       }
     }
   }
-  */
 }
