@@ -18,7 +18,7 @@ export class IntangibleFinancialWidgetComponent implements OnInit {
   public loading = false;
   public isCollapsed = true;
   public assetsPaginator = {
-    id: 'asset_paginator',
+    id: 'intangible_financial_paginator',
     itemsPerPage: 7,
     currentPage: 1
   };

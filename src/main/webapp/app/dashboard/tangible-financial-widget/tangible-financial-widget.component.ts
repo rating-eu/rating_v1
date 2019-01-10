@@ -17,7 +17,7 @@ export class TangibleFinancialWidgetComponent implements OnInit {
   public isCollapsed = true;
   public assets: MyAssetMgm[];
   public assetsPaginator = {
-    id: 'asset_paginator',
+    id: 'tangible_financial_paginator',
     itemsPerPage: 7,
     currentPage: 1
   };

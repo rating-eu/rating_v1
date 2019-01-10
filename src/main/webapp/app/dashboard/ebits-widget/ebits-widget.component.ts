@@ -17,6 +17,7 @@ export class EbitsWidgetComponent implements OnInit {
   private mySelf: SelfAssessmentMgm;
   public ebitInfo: {
     year: string,
+    thisYear: boolean,
     value: number
   }[];
 
@@ -34,14 +35,17 @@ export class EbitsWidgetComponent implements OnInit {
         this.ebitInfo = [];
         this.wp3Status.ebits = _.orderBy(this.wp3Status.ebits, ['year'], ['asc']);
         let index = 1;
+        const year = (new Date()).getFullYear();
         for (const ebit of this.wp3Status.ebits) {
           this.ebitInfo.push(
             {
               year: ebit.year.toString(),
+              thisYear: ebit.year ===  year,
               value: ebit.value
             });
           index++;
         }
+        console.log(this.ebitInfo);
         this.loading = false;
       }
     }).catch(() => {

@@ -1,19 +1,21 @@
+import { DashboardStepEnum } from './../models/enumeration/dashboard-step.enum';
+import { DashboardStatus, DashboardService } from './../dashboard.service';
 import * as _ from 'lodash';
 
-import {Component, OnInit, OnDestroy} from '@angular/core';
-import {AugmentedAttackStrategy} from '../../evaluate-weakness/models/augmented-attack-strategy.model';
-import {Subscription, Observable} from 'rxjs';
-import {SelfAssessmentMgm, SelfAssessmentMgmService} from '../../entities/self-assessment-mgm';
-import {ThreatAgentMgm} from '../../entities/threat-agent-mgm';
-import {HttpResponse} from '@angular/common/http';
-import {PhaseMgm, PhaseMgmService} from '../../entities/phase-mgm';
-import {LevelMgm, LevelMgmService} from '../../entities/level-mgm';
-import {AttackStrategyMgm} from '../../entities/attack-strategy-mgm';
-import {LikelihoodStep} from '../../entities/enumerations/LikelihoodStep.enum';
-import {AttackMapService} from '../../evaluate-weakness/attack-map.service';
-import {forkJoin} from 'rxjs/observable/forkJoin';
-import {WeaknessUtils} from '../../evaluate-weakness/utils/weakness-utils';
-import {MatHorizontalStepper} from '@angular/material';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { AugmentedAttackStrategy } from '../../evaluate-weakness/models/augmented-attack-strategy.model';
+import { Subscription, Observable } from 'rxjs';
+import { SelfAssessmentMgm, SelfAssessmentMgmService } from '../../entities/self-assessment-mgm';
+import { ThreatAgentMgm } from '../../entities/threat-agent-mgm';
+import { HttpResponse } from '@angular/common/http';
+import { PhaseMgm, PhaseMgmService } from '../../entities/phase-mgm';
+import { LevelMgm, LevelMgmService } from '../../entities/level-mgm';
+import { AttackStrategyMgm } from '../../entities/attack-strategy-mgm';
+import { LikelihoodStep } from '../../entities/enumerations/LikelihoodStep.enum';
+import { AttackMapService } from '../../evaluate-weakness/attack-map.service';
+import { forkJoin } from 'rxjs/observable/forkJoin';
+import { WeaknessUtils } from '../../evaluate-weakness/utils/weakness-utils';
+import { MatHorizontalStepper } from '@angular/material';
 
 @Component({
     selector: 'jhi-attack-map-widget',
@@ -22,6 +24,8 @@ import {MatHorizontalStepper} from '@angular/material';
 })
 
 export class AttackMapWidgetComponent implements OnInit, OnDestroy {
+    private status: DashboardStatus;
+    private dashboardStatus = DashboardStepEnum;
     public loading = false;
     public isCollapsed = true;
     public isViewDivDetailsVisible = false;
@@ -67,16 +71,22 @@ export class AttackMapWidgetComponent implements OnInit, OnDestroy {
         private selfAssessmentService: SelfAssessmentMgmService,
         private levelService: LevelMgmService,
         private phaseService: PhaseMgmService,
-        private attackMapService: AttackMapService) {
+        private attackMapService: AttackMapService,
+        private dashService: DashboardService) {
     }
 
     ngOnInit() {
+        this.selfAssessment = this.selfAssessmentService.getSelfAssessment();
+        this.status = this.dashService.getStatus();
+        this.dashService.getStatusFromServer(this.selfAssessment, this.dashboardStatus.ASSESS_VULNERABILITIES).toPromise().then((res) => {
+            this.status.assessVulnerablitiesStatus = res;
+            this.dashService.updateStatus(this.status);
+        });
         this.loading = true;
         this.likelihoodStepEnabled = new Map();
         this.likelihoodStepEnabled.set(LikelihoodStep.INITIAL_LIKELIHOOD, false);
         this.likelihoodStepEnabled.set(LikelihoodStep.CONTEXTUAL_LIKELIHOOD, false);
         this.likelihoodStepEnabled.set(LikelihoodStep.REFINED_LIKELIHOOD, false);
-        this.selfAssessment = this.selfAssessmentService.getSelfAssessment();
         this.threatAgents = this.selfAssessment.threatagents;
         this.ckc7Phases$ = this.phaseService.query();
         this.attackLevels$ = this.levelService.query();
