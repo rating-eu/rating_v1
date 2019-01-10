@@ -239,7 +239,8 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                         items: [
                             {
                                 label: 'Add',
-                                icon: 'fa fa-plus'
+                                icon: 'fa fa-plus',
+                                routerLink: ['/pages/coming-soon']
                             },
                             {
                                 label: 'Tangible',
@@ -256,15 +257,18 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                         items: [
                             {
                                 label: 'Add',
-                                icon: 'fa fa-plus'
+                                icon: 'fa fa-plus',
+                                routerLink: ['/pages/coming-soon']
                             },
                             {
                                 label: 'View',
+                                icon: 'far fa-eye',
                                 routerLink: ['/threat-agent-mgm']
                             },
                             {
                                 label: 'Update',
-                                routerLink: ['/threat-agent-mgm']
+                                icon: 'fas fa-pen-fancy',
+                                routerLink: ['/pages/coming-soon']
                             },
                         ]
                     },
@@ -273,15 +277,18 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                         items: [
                             {
                                 label: 'Add',
-                                icon: 'fa fa-plus'
+                                icon: 'fa fa-plus',
+                                routerLink: ['/pages/coming-soon']
                             },
                             {
                                 label: 'View',
+                                icon: 'far fa-eye',
                                 routerLink: ['/attack-strategy-mgm']
                             },
                             {
                                 label: 'Update',
-                                routerLink: ['/attack-strategy-mgm']
+                                icon: 'fas fa-pen-fancy',
+                                routerLink: ['/pages/coming-soon']
                             }
                         ]
                     },
@@ -290,14 +297,17 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                         items: [
                             {
                                 label: 'Add',
-                                icon: 'fa fa-plus'
+                                icon: 'fa fa-plus',
+                                routerLink: ['/pages/coming-soon']
                             },
                             {
                                 label: 'View',
+                                icon: 'far fa-eye',
                                 routerLink: ['/mitigation-mgm']
                             },
                             {
                                 label: 'Update',
+                                icon: 'fas fa-pen-fancy',
                                 routerLink: ['/mitigation-mgm']
                             }
                         ]

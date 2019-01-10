@@ -8,7 +8,7 @@ import { MitigationMgm } from './mitigation-mgm.model';
 import { MitigationMgmService } from './mitigation-mgm.service';
 import { Principal } from '../../shared';
 import { PopUpService } from '../../shared/pop-up-services/pop-up.service';
-import {MyRole} from "../enumerations/MyRole.enum";
+import {MyRole} from '../enumerations/MyRole.enum';
 
 @Component({
     selector: 'jhi-mitigation-mgm',
@@ -19,7 +19,7 @@ mitigations: MitigationMgm[];
     currentAccount: any;
     eventSubscriber: Subscription;
     currentSearch: string;
-    private isADMIN: boolean;
+    public isADMIN: boolean;
 
     constructor(
         private mitigationService: MitigationMgmService,
