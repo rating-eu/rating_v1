@@ -36,6 +36,7 @@ export class LossesWidgetComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    this.loading = true;
     this.mySelf = this.mySelfAssessmentService.getSelfAssessment();
     this.impactService.getMyAssets(this.mySelf).toPromise().then((res) => {
       if (res && res.length > 0) {
@@ -83,8 +84,14 @@ export class LossesWidgetComponent implements OnInit {
             }
             // TODO case with Data (calculated by D4.3 methodology)
           }
+          this.tableInfo = _.orderBy(this.tableInfo, ['value'], ['desc']);
+          this.loading = false;
         }
+      } else {
+        this.loading = false;
       }
+    }).catch(() => {
+      this.loading = false;
     });
   }
 
