@@ -2,8 +2,8 @@ import {Component, OnInit} from '@angular/core';
 import {AccountService, User, UserService} from '../shared/index';
 import {MyCompanyMgm, MyCompanyMgmService} from '../entities/my-company-mgm/index';
 import {HttpErrorResponse, HttpResponse} from '@angular/common/http';
-import {CompanyProfileMgm, CompanyProfileMgmService} from '../entities/company-profile-mgm/index';
-import {JhiAlertService} from 'ng-jhipster';
+// import {CompanyProfileMgm, CompanyProfileMgmService} from '../entities/company-profile-mgm/index';
+// import {JhiAlertService} from 'ng-jhipster';
 
 @Component({
     selector: 'jhi-my-company',
@@ -17,14 +17,14 @@ export class MyCompanyComponent implements OnInit {
     public myCompany: MyCompanyMgm;
     public error: HttpErrorResponse;
     public message: string;
-    public companyProfiles: CompanyProfileMgm[];
-    public companyProfile: CompanyProfileMgm;
+    // public companyProfiles: CompanyProfileMgm[];
+    // public companyProfile: CompanyProfileMgm;
 
     constructor(private accountService: AccountService,
                 private userService: UserService,
                 private myCompanyService: MyCompanyMgmService,
-                private companyProfileService: CompanyProfileMgmService,
-                private jhiAlertService: JhiAlertService) {
+                /*private companyProfileService: CompanyProfileMgmService,
+                private jhiAlertService: JhiAlertService*/) {
     }
 
     ngOnInit() {
@@ -41,7 +41,7 @@ export class MyCompanyComponent implements OnInit {
                         (error: any) => {
                             this.error = error;
 
-                            if (this.error.status === MyCompanyComponent.NOT_FOUND) {
+                            /*if (this.error.status === MyCompanyComponent.NOT_FOUND) {
                                 this.jhiAlertService.error('http.' + this.error.status, null, null);
 
                                 this.companyProfileService.query().subscribe(
@@ -49,7 +49,7 @@ export class MyCompanyComponent implements OnInit {
                                         this.companyProfiles = response4.body;
                                     }
                                 );
-                            }
+                            }*/
                         }
                     );
                 }
@@ -57,15 +57,15 @@ export class MyCompanyComponent implements OnInit {
         });
     }
 
-    saveMyCompany() {
+    /*saveMyCompany() {
         this.myCompany = new MyCompanyMgm(undefined, this.user, this.companyProfile);
         this.myCompanyService.create(this.myCompany).subscribe((response: HttpResponse<MyCompanyMgm>) => {
             this.myCompany = response.body;
             this.jhiAlertService.success('hermeneutApp.messages.saved', null, null);
         });
-    }
+    }*/
 
-    previousState() {
+    /*previousState() {
         window.history.back();
-    }
+    }*/
 }
