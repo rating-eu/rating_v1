@@ -13,7 +13,7 @@
     <property name="floatType" value="float4" dbms="postgresql, h2"/>
     <property name="floatType" value="float" dbms="mysql, oracle, mssql"/>
 
-    <changeSet id="20181122123754-1" author="developer" runOnChange="true">
+    <changeSet id="20190111171134-1" author="developer" runOnChange="true">
         <preConditions onFail="MARK_RAN">
             <foreignKeyConstraintExists
                 foreignKeyName="fk_questionnaire_status_self_assessment_id"
@@ -35,7 +35,7 @@
         />
     </changeSet>
 
-    <changeSet id="20181122123754-2" author="developer" runOnChange="true">
+    <changeSet id="20190111171134-2" author="developer" runOnChange="true">
         <preConditions onFail="MARK_RAN">
             <foreignKeyConstraintExists
                 foreignKeyName="fk_my_asset_self_assessment_id"
@@ -57,7 +57,7 @@
         />
     </changeSet>
 
-    <changeSet id="20181122123754-3" author="developer" runOnChange="true">
+    <changeSet id="20190111171134-3" author="developer" runOnChange="true">
         <preConditions onFail="MARK_RAN">
             <foreignKeyConstraintExists
                 foreignKeyName="fk_attack_cost_my_asset_id"
@@ -80,7 +80,7 @@
         />
     </changeSet>
 
-    <changeSet id="20181122123754-4" author="developer" runOnChange="true">
+    <changeSet id="20190111171134-4" author="developer" runOnChange="true">
         <preConditions onFail="MARK_RAN">
             <foreignKeyConstraintExists
                 foreignKeyName="fk_economic_coefficients_self_assessment_id"
@@ -102,7 +102,7 @@
         />
     </changeSet>
 
-    <changeSet id="20181122123754-5" author="developer" runOnChange="true">
+    <changeSet id="20190111171134-5" author="developer" runOnChange="true">
         <preConditions onFail="MARK_RAN">
             <foreignKeyConstraintExists
                 foreignKeyName="fk_ebit_self_assessment_id"
@@ -124,7 +124,7 @@
         />
     </changeSet>
 
-    <changeSet id="20181122123754-6" author="developer" runOnChange="true">
+    <changeSet id="20190111171134-6" author="developer" runOnChange="true">
         <preConditions onFail="MARK_RAN">
             <foreignKeyConstraintExists
                 foreignKeyName="fk_economic_results_self_assessment_id"
@@ -146,7 +146,7 @@
         />
     </changeSet>
 
-    <changeSet id="20181122123754-7" author="developer" runOnChange="true">
+    <changeSet id="20190111171134-7" author="developer" runOnChange="true">
         <preConditions onFail="MARK_RAN">
             <foreignKeyConstraintExists
                 foreignKeyName="fk_splitting_loss_self_assessment_id"
@@ -168,7 +168,7 @@
         />
     </changeSet>
 
-    <changeSet id="20181122123754-8" author="developer" runOnChange="true">
+    <changeSet id="20190111171134-8" author="developer" runOnChange="true">
         <preConditions onFail="MARK_RAN">
             <foreignKeyConstraintExists
                 foreignKeyName="fk_critical_level_self_assessment_id"
@@ -190,7 +190,7 @@
         />
     </changeSet>
 
-    <changeSet id="20181122123754-9" author="developer" runOnChange="true">
+    <changeSet id="20190111171134-9" author="developer" runOnChange="true">
         <preConditions onFail="MARK_RAN">
             <foreignKeyConstraintExists
                 foreignKeyName="fk_my_answer_questionnaire_status_id"
