@@ -6,6 +6,7 @@ export class RegisterAccount {
     lastName: string;
     companyName: string;
     companySector: CompType;
+    companyWebsite: string;
     email: string;
     password: string;
     langKey: string;
