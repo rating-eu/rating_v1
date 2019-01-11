@@ -36,7 +36,7 @@
                                             </thead>
                                             <tbody>
                                                 <tr *ngFor="let myAsset of selectedAssetsByCategory" class="text-center align-middle">
-                                                    <td>{{myAsset.asset.name}}</td>
+                                                    <td ngbTooltip="{{myAsset.asset.description}}" placement="right">{{myAsset.asset.name}}</td>
                                                     <td *ngIf="myAsset.ranking">{{myAsset.ranking}}</td>
                                                     <td *ngIf="!myAsset.ranking"> - </td>
                                                     <td *ngIf="myAsset.estimated">Yes</td>

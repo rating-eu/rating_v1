@@ -28,7 +28,9 @@ public class MailService {
 
     private final Logger log = LoggerFactory.getLogger(MailService.class);
 
-    private static final String USER = "user";
+    public static final String ADMIN = "admin";
+
+    public static final String USER = "user";
 
     private static final String BASE_URL = "baseUrl";
 
@@ -41,7 +43,7 @@ public class MailService {
     private final SpringTemplateEngine templateEngine;
 
     public MailService(JHipsterProperties jHipsterProperties, JavaMailSender javaMailSender,
-            MessageSource messageSource, SpringTemplateEngine templateEngine) {
+                       MessageSource messageSource, SpringTemplateEngine templateEngine) {
 
         this.jHipsterProperties = jHipsterProperties;
         this.javaMailSender = javaMailSender;
@@ -82,13 +84,30 @@ public class MailService {
         String content = templateEngine.process(templateName, context);
         String subject = messageSource.getMessage(titleKey, null, locale);
         sendEmail(user.getEmail(), subject, content, false, true);
+    }
 
+    @Async
+    public void sendEmailFromTemplateToAdmin(User admin, User user, String templateName, String titleKey) {
+        Locale locale = Locale.forLanguageTag(user.getLangKey());
+        Context context = new Context(locale);
+        context.setVariable(ADMIN, admin);
+        context.setVariable(USER, user);
+        context.setVariable(BASE_URL, jHipsterProperties.getMail().getBaseUrl());
+        String content = templateEngine.process(templateName, context);
+        String subject = messageSource.getMessage(titleKey, null, locale);
+        sendEmail(admin.getEmail(), subject, content, false, true);
     }
 
     @Async
     public void sendActivationEmail(User user) {
         log.debug("Sending activation email to '{}'", user.getEmail());
         sendEmailFromTemplate(user, "activationEmail", "email.activation.title");
+    }
+
+    @Async
+    public void sendAdminApprovalEmail(User admin, User user) {
+        log.debug("Sending approval email for {} to '{}'", user.getLogin(), admin.getEmail());
+        sendEmailFromTemplateToAdmin(admin, user, "adminApprovalEmail", "email.approval.title");
     }
 
     @Async

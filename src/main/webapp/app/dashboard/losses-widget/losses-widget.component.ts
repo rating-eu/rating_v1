@@ -18,6 +18,7 @@ export class LossesWidgetComponent implements OnInit {
   public loading = false;
   public isCollapsed = true;
   public companySector: string;
+  public lossesPercentage: number;
   public tableInfo: {
     splitting: string,
     value: number,
@@ -47,6 +48,7 @@ export class LossesWidgetComponent implements OnInit {
       if (status) {
         this.wp3Status = status;
         this.tableInfo = [];
+        this.lossesPercentage = this.wp3Status.economicCoefficients.lossOfIntangible ? this.wp3Status.economicCoefficients.lossOfIntangible / 100 : undefined;
         for (const impact of this.wp3Status.splittingLosses) {
           if (!this.companySector && impact.sectorType.toString() !== MySectorType.GLOBAL.toString()) {
             this.companySector = impact.sectorType.toString().charAt(0).toUpperCase() + impact.sectorType.toString().slice(1).toLowerCase();
