@@ -74,12 +74,22 @@
         "form": {
             "username": "Username",
             "username.placeholder": "Your username",
+            "name": "Name",
+            "name.placeholder": "Your name",
+            "surname": "Surname",
+            "surname.placeholder": "Your surname",
             "newpassword": "New password",
             "newpassword.placeholder": "New password",
             "confirmpassword": "New password confirmation",
             "confirmpassword.placeholder": "Confirm the new password",
-            "email": "Email",
-            "email.placeholder": "Your email"
+            "email": "Company Email",
+            "email.placeholder": "Your Company email",
+            "company.name": "Company name",
+            "company.name.placeholder": "Your Company name",
+            "company.website": "Company website",
+            "company.website.placeholder": "Your Company website",
+            "company.sector": "Company sector",
+            "company.sector.placeholder": "Your Company sector"
         },
         "messages": {
             "info": {

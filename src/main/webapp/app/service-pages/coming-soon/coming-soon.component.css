@@ -2,15 +2,15 @@
     margin-top: 10px;
     width: 100%;
     height: 100vh;
-    background-image: linear-gradient(to right bottom, #301a80, #8e0076, #c7005d, #e6463c, #eb8312);
+    /*background-image: linear-gradient(to right bottom, #301a80, #8e0076, #c7005d, #e6463c, #eb8312);*/
     /* Add position: relative to enable absolutely positioned elements inside the image (place text) */
     position: relative;
     /* Add a white text color to all elements inside the .bgimg container */
-    color: white;
+    color: gray;
     /* Add a font */
     font-family: "Courier New", Courier, monospace;
     /* Set the font-size to 25 pixels */
-    font-size: 25px;
+    /*font-size: 25px;*/
 }
 
 /* Position text in the middle */

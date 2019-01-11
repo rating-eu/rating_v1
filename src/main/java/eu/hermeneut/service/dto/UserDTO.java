@@ -31,6 +31,12 @@ public class UserDTO {
     @Size(max = 50)
     private String lastName;
 
+    @Size(max = 50)
+    private String companyName;
+
+    @Size(max = 50)
+    private String companySector;
+
     @Email
     @Size(min = 5, max = 100)
     private String email;
@@ -62,6 +68,8 @@ public class UserDTO {
         this.login = user.getLogin();
         this.firstName = user.getFirstName();
         this.lastName = user.getLastName();
+        this.companyName = user.getCompanyName();
+        this.companySector = user.getCompanySector();
         this.email = user.getEmail();
         this.activated = user.getActivated();
         this.imageUrl = user.getImageUrl();
@@ -105,6 +113,22 @@ public class UserDTO {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
+    }
+
+    public String getCompanySector() {
+        return companySector;
+    }
+
+    public void setCompanySector(String companySector) {
+        this.companySector = companySector;
     }
 
     public String getEmail() {
@@ -185,6 +209,8 @@ public class UserDTO {
             "login='" + login + '\'' +
             ", firstName='" + firstName + '\'' +
             ", lastName='" + lastName + '\'' +
+            ", companyName='" + companyName + '\'' +
+            ", companySector='" + companySector + '\'' +
             ", email='" + email + '\'' +
             ", imageUrl='" + imageUrl + '\'' +
             ", activated=" + activated +
