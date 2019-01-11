@@ -16,6 +16,7 @@ import { JhiEventManager } from '../../../../../node_modules/ng-jhipster';
 import { NotificationInterceptor } from '../blocks/interceptor/notification.interceptor';
 import {JhiLanguageService} from 'ng-jhipster';
 import { MyCompanyMgmService } from '../entities/my-company-mgm';
+import { AttackRelatedCostsEstimationComponent } from './attack-related-costs-estimation/attack-related-costs-estimation.component';
 
 @NgModule({
   imports: [
@@ -26,7 +27,8 @@ import { MyCompanyMgmService } from '../entities/my-company-mgm';
     FormsModule
   ],
   declarations: [
-    ImpactEvaluationComponent
+    ImpactEvaluationComponent,
+    AttackRelatedCostsEstimationComponent
   ],
   exports: [
     ImpactEvaluationComponent

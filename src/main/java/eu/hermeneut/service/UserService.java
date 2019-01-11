@@ -1,6 +1,5 @@
 package eu.hermeneut.service;
 
-import eu.hermeneut.config.CacheConfiguration;
 import eu.hermeneut.domain.Authority;
 import eu.hermeneut.domain.User;
 import eu.hermeneut.repository.AuthorityRepository;
@@ -107,6 +106,9 @@ public class UserService {
         newUser.setPassword(encryptedPassword);
         newUser.setFirstName(userDTO.getFirstName());
         newUser.setLastName(userDTO.getLastName());
+        newUser.setCompanyName(userDTO.getCompanyName());
+        newUser.setCompanySector(userDTO.getCompanySector());
+        newUser.setCompanyWebsite(userDTO.getCompanyWebsite());
         newUser.setEmail(userDTO.getEmail());
         newUser.setImageUrl(userDTO.getImageUrl());
         newUser.setLangKey(userDTO.getLangKey());

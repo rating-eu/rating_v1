@@ -1,40 +1,44 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title th:text="#{email.activation.title}">JHipster activation</title>
+    <title th:text="#{email.approval.title}">RATING account approval</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <link rel="shortcut icon" th:href="@{|${baseUrl}/favicon.ico|}"/>
 </head>
 <body>
-<p th:text="#{email.activation.greeting(${user.firstName}, ${user.lastName})}">
-    Dear {0} {1},
+<p th:text="#{email.approval.greeting(${admin.lastName})}">
+    Dear {0},
 </p>
-<p th:text="#{email.activation.text1(${user.companyName})}">
-    This email is to notify you that we have received a registration request for the Organization {0}:
+<p th:text="#{email.approval.text1(${user.companyName})}">
+    This email is to notify you that, the Organization {0} has requested an account to access to RATING.
+    Please, in order to allow the organization to access to the tool, it's important to verify and approve such
+    information:
 </p>
-
 <ul>
-    <li th:text="#{email.activation.company.name(${user.companyName})}">Company: {0}</li>
-    <li th:text="#{email.activation.company.website(${user.companyName})}">Website: {0}</li>
-    <li th:text="#{email.activation.company.sector(${user.companySector})}">Company Sector: {0}</li>
+    <li th:text="#{email.approval.company.name(${user.companyName})}">Company: {0}</li>
+    <li th:text="#{email.approval.company.website(${user.companyWebsite})}">Website: {0}</li>
+    <li th:text="#{email.approval.company.sector(${user.companySector})}">Company Sector: {0}</li>
 </ul>
 
 <ul>
-    <li th:text="#{email.activation.user.name(${user.firstName})}">Name: {0}</li>
-    <li th:text="#{email.activation.user.surname(${user.lastName})}">Surname: {0}</li>
-    <li th:text="#{email.activation.user.email(${user.email})}">Email: {0}</li>
+    <li th:text="#{email.approval.user.name(${user.firstName})}">Name: {0}</li>
+    <li th:text="#{email.approval.user.surname(${user.lastName})}">Surname: {0}</li>
+    <li th:text="#{email.approval.user.email(${user.email})}">Email: {0}</li>
 </ul>
 
-<p th:text="#{email.activation.text2}">
-    An email will notify you once the account has been activated.
+<p th:text="#{email.approval.text2}">
+    Once verified, please access to the RATING admin panel and:
 </p>
 
-<p th:text="#{email.activation.text3}">
-    Please do not hesitate to contact us for any questions or issues.
-</p>
+<ol>
+    <li>Create the company</li>
+    <li>Set the company sector</li>
+    <li>Join the user to the company</li>
+    <li>Activate the user</li>
+</ol>
 
 <p>
-    <span th:text="#{email.activation.text4}">Regards, </span>
+    <span th:text="#{email.approval.text3}">Regards, </span>
     <br/>
     <em th:text="#{email.signature}">RATING Staff</em>
     <br/>

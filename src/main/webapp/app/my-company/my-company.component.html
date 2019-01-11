@@ -6,43 +6,48 @@
 </button>
 -->
 <div *ngIf="myCompany">
-        <h2><span jhiTranslate="hermeneutApp.myCompany.detail.title">My Company</span> {{myCompany.id}}</h2>
-        <small *ngIf="myCompany.companyProfile.type"><ng-container><b>Company type: </b></ng-container>{{myCompany.companyProfile.type}}</small>
-        <hr>
-        <jhi-alert-error></jhi-alert-error>
-        <dl class="row-md jh-entity-details">
-            <dt><span jhiTranslate="hermeneutApp.myCompany.user">User</span></dt>
-            <dd>
-                {{myCompany.user?.login}}
-            </dd>
-            <dt><span jhiTranslate="hermeneutApp.myCompany.companyProfile">Company Profile</span></dt>
-            <dd>
-                <div *ngIf="myCompany.companyProfile">
-                    <a [routerLink]="['/company-profile-mgm', myCompany.companyProfile?.id]">{{myCompany.companyProfile?.name}}</a>
-                </div>
-            </dd>
-        </dl>
-    
-        <button type="submit"
-                (click)="previousState()"
-                class="btn btn-info">
-            <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
-        </button>
-    
-        <button type="button"
-                [routerLink]="['/', { outlets: { popup: 'my-company-mgm/'+ myCompany.id + '/edit'} }]"
-                replaceUrl="true"
-                queryParamsHandling="merge"
-                class="btn btn-primary">
-            <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
-        </button>
+    <h2><span jhiTranslate="hermeneutApp.myCompany.detail.title">My Company</span></h2>
+    <small *ngIf="myCompany.companyProfile.type">
+        <ng-container><b>Company type: </b></ng-container>
+        {{myCompany.companyProfile.type}}
+    </small>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <!--<dt><span jhiTranslate="hermeneutApp.myCompany.user">User</span></dt>
+        <dd>
+            {{myCompany.user?.login}}
+        </dd>-->
+        <dt><span jhiTranslate="hermeneutApp.myCompany.companyProfile">Company Profile</span></dt>
+        <dd>
+            <div *ngIf="myCompany.companyProfile">
+                <!--<a [routerLink]="['/company-profile-mgm', myCompany.companyProfile?.id]">{{myCompany.companyProfile?.name}}</a>-->
+                <p>{{myCompany.companyProfile?.name}}</p>
+            </div>
+        </dd>
+    </dl>
+
+    <!--<button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'my-company-mgm/'+ myCompany.id + '/edit'} }]"
+            replaceUrl="true"
+            queryParamsHandling="merge"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+    </button>-->
 </div>
 
 <div *ngIf="!myCompany">
-    <div class="row">
-        <h1>My Company</h1>
-    </div>
-    <div *ngIf="companyProfiles?.length > 0">
+    <h2><span jhiTranslate="hermeneutApp.myCompany.detail.title">My Company</span></h2>
+    <p>
+        Your Company has not been set yet by the Administrator.
+    </p>
+    <!--<div *ngIf="companyProfiles?.length > 0">
         <p>No Company found. Select one or create a new one.</p>
         <select [(ngModel)]="companyProfile">
             <option [ngValue]="null"></option>
@@ -64,5 +69,5 @@
         <button routerLink="/company-profile-mgm">
             Create Company
         </button>
-    </div>
+    </div>-->
 </div>
