@@ -119,9 +119,9 @@
                 </div>
 
                 <div class="form-group">
-                    <label class="form-control-label" jhiTranslate="hermeneutApp.companyProfile.type" for="field_type">Company
+                    <label class="form-control-label" for="company.sector" jhiTranslate="global.form.company.sector">Company
                         Sector</label>
-                    <select class="form-control" name="type" id="field_type"
+                    <select class="form-control" name="company.sector" id="company.sector"
                             [(ngModel)]="registerAccount.companySector">
                         <option value="OTHER">{{'hermeneutApp.CompType.OTHER' | translate}}</option>
                         <option value="FINANCE_AND_INSURANCE">{{'hermeneutApp.CompType.FINANCE_AND_INSURANCE' |
@@ -135,6 +135,33 @@
                             {{'hermeneutApp.CompType.PROFESSIONAL_SCIENTIFIC_AND_TECHNICAL_SERVICE' | translate}}
                         </option>
                     </select>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" for="company.website" jhiTranslate="global.form.company.website">Company
+                        Website</label>
+                    <input type="text" class="form-control" id="company.website" name="company.website"
+                           #company_website="ngModel"
+                           placeholder="{{'global.form.company.website.placeholder' | translate}}"
+                           [(ngModel)]="registerAccount.companyWebsite" minlength=5 maxlength=100 required>
+                    <div *ngIf="company_website.dirty && company_website.invalid">
+                        <small class="form-text text-danger" *ngIf="company_website.errors.required"
+                               jhiTranslate="global.messages.validate.company.website.required">
+                            Your Company website is required.
+                        </small>
+                        <small class="form-text text-danger" *ngIf="company_website.errors.invalid"
+                               jhiTranslate="global.messages.validate.company.website.invalid">
+                            Your Company website is invalid.
+                        </small>
+                        <small class="form-text text-danger" *ngIf="company_website.errors.minlength"
+                               jhiTranslate="global.messages.validate.company.website.minlength">
+                            Your Company website is required to be at least 5 characters.
+                        </small>
+                        <small class="form-text text-danger" *ngIf="company_website.errors.maxlength"
+                               jhiTranslate="global.messages.validate.company.website.maxlength">
+                            Your Company website cannot be longer than 100 characters.
+                        </small>
+                    </div>
                 </div>
 
                 <div class="form-group">

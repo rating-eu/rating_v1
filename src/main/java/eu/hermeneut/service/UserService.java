@@ -108,6 +108,7 @@ public class UserService {
         newUser.setLastName(userDTO.getLastName());
         newUser.setCompanyName(userDTO.getCompanyName());
         newUser.setCompanySector(userDTO.getCompanySector());
+        newUser.setCompanyWebsite(userDTO.getCompanyWebsite());
         newUser.setEmail(userDTO.getEmail());
         newUser.setImageUrl(userDTO.getImageUrl());
         newUser.setLangKey(userDTO.getLangKey());

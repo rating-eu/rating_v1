@@ -123,6 +123,12 @@
                     "invalid": "Your email is invalid.",
                     "minlength": "Your email is required to be at least 5 characters.",
                     "maxlength": "Your email cannot be longer than 50 characters."
+                },
+                "company.website": {
+                    "required": "Your Company website is required.",
+                    "invalid": "Your Company website is invalid.",
+                    "minlength": "Your Company website is required to be at least 5 characters.",
+                    "maxlength": "Your Company website cannot be longer than 50 characters."
                 }
             }
         },
