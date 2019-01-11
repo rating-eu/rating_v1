@@ -26,8 +26,8 @@
     <li th:text="#{email.approval.user.email(${user.email})}">Email: {0}</li>
 </ul>
 
-<p>
-    Once verified, please access the RATING admin panel and:
+<p th:text="#{email.approval.text2}">
+    Once verified, please access to the RATING admin panel and:
 </p>
 
 <ol>
@@ -38,7 +38,7 @@
 </ol>
 
 <p>
-    <span th:text="#{email.approval.text2}">Regards, </span>
+    <span th:text="#{email.approval.text3}">Regards, </span>
     <br/>
     <em th:text="#{email.signature}">RATING Staff</em>
     <br/>
