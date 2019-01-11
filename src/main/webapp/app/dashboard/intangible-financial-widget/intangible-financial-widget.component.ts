@@ -30,11 +30,6 @@ export class IntangibleFinancialWidgetComponent implements OnInit {
   }[];
   public selectedCategory: string;
   public assetsBySelectedCategory: MyAssetMgm[] = [];
-  public assetsPaginator = {
-    id: 'intangible_financial_paginator',
-    itemsPerPage: 7,
-    currentPage: 1
-  };
 
   constructor(
     private mySelfAssessmentService: SelfAssessmentMgmService,
@@ -116,10 +111,6 @@ export class IntangibleFinancialWidgetComponent implements OnInit {
       }).catch(() => {
         this.loading = false;
       });
-  }
-
-  onAssetsPageChange(number: number) {
-    this.assetsPaginator.currentPage = number;
   }
 
   public setAssetCategory(category: string) {

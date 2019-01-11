@@ -4,6 +4,11 @@
             "home": {
                 "title": "Impact evaluation"
             }
+        },
+        "attackRelatedCostsEstimation" : {
+            "home": {
+                "title": "Estimation of the AttackRelatedCosts"
+            }
         }
     }
 }
