@@ -18,11 +18,6 @@ export class TangibleFinancialWidgetComponent implements OnInit {
   public loading = false;
   public isCollapsed = true;
   public assets: MyAssetMgm[];
-  public assetsPaginator = {
-    id: 'tangible_financial_paginator',
-    itemsPerPage: 7,
-    currentPage: 1
-  };
   public tableInfo: {
     splitting: string,
     value: number,
@@ -88,10 +83,6 @@ export class TangibleFinancialWidgetComponent implements OnInit {
       this.status.impactEvaluationStatus = res;
       this.dashService.updateStatus(this.status);
     });
-  }
-
-  onAssetsPageChange(number: number) {
-    this.assetsPaginator.currentPage = number;
   }
 
   public setAssetCategory(category: string) {

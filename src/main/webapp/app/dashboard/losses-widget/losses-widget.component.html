@@ -4,7 +4,11 @@
 <div class="container" *ngIf="!loading">
   <div class="x_panel" style="padding:0px !important;">
     <div class="x_title" style="padding:0px !important;">
-      <h2 style="padding: 10px;">Simulation Losses</h2>
+      <h2 style="padding: 10px;">Simulation Losses (
+        <ng-container *ngIf="lossesPercentage">{{lossesPercentage | percent}}</ng-container>
+        <ng-container *ngIf="!lossesPercentage">-</ng-container>
+          )
+      </h2>
       <ul class="nav navbar-right panel_toolbox">
         <li style="width: 24px; cursor: default"></li>
         <li style="width: 24px; cursor: default"></li>
@@ -54,6 +58,10 @@
                 </tr>
               </ng-container>
             </ng-container>
+            <tr>
+              <td>Data</td>
+              <td>-</td>
+            </tr>
           </tbody>
         </table>
       </div>

@@ -4,6 +4,11 @@
             "home": {
                 "title": "Valutazione dell'impatto"
             }
+        },
+        "attackRelatedCostsEstimation" : {
+            "home": {
+                "title": "Valutazione dei costi relativi all'attacco"
+            }
         }
     }
 }
