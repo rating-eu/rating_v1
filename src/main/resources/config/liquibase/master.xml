@@ -119,5 +119,6 @@
     <include file="config/liquibase/changelog/20190109091913_removed_self_assessment_questionnaires.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20190111102426_added_user_company_name_and_company_sector.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20190111131907_added_user_company_website.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190111171134_redo_update_self_assessment_delete_cascade_fk_constraints.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
 </databaseChangeLog>
