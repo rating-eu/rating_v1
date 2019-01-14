@@ -104,7 +104,7 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
      input properties. Called once, after the first ngOnChanges().
      */
     ngOnInit() {
-        this.cisoEditMode = false;
+        this.cisoEditMode = true;
         this.externalAuditEditMode = false;
 
         this.selfAssessment = this.selfAssessmentService.getSelfAssessment();
@@ -174,7 +174,7 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
                     this.form.patchValue(this.myAnswersToFormValue(this.cisoMyAnswers, this.questionsArrayMap));
                 } else {
                     // Enable the edit mode only if there is no QuestionnaireStatus in DB
-                    this.cisoEditMode = true;
+                    // this.cisoEditMode = true;
                 }
             }
         );
@@ -289,17 +289,29 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
 
         this.dataSharingSerivce.threatAgentsMap = threatAgentsPercentageMap;
 
-        // #1 Create the QuestionnaireStatus
-        let questionnaireStatus: QuestionnaireStatusMgm =
-            new QuestionnaireStatusMgm(undefined, Status.FULL, null, null, this.selfAssessment, this.questionnaire, this.role, this.user, []);
+        // #1 Create the QuestionnaireStatus or Update the existing one
+        let questionnaireStatus: QuestionnaireStatusMgm = null;
+        if (!this.cisoQuestionnaireStatus) {
+            questionnaireStatus = new QuestionnaireStatusMgm(undefined, Status.FULL, null, null,
+                this.selfAssessment, this.questionnaire, this.role, this.user, []);
+        } else {
+            questionnaireStatus = this.cisoQuestionnaireStatus;
+        }
 
         // #2 Create the MyAnswers
         const myAnswers: MyAnswerMgm[] = this.createMyAnswers(formDataMap);
-
         // #3 Set the MyAnswers
         questionnaireStatus.answers = myAnswers;
 
-        const questionnaireStatus$: Observable<HttpResponse<QuestionnaireStatusMgm>> = this.questionnaireStatusService.create(questionnaireStatus);
+        let questionnaireStatus$: Observable<HttpResponse<QuestionnaireStatusMgm>> = null;
+
+        if (!this.cisoQuestionnaireStatus) {
+            // Create a new QStatus
+            questionnaireStatus$ = this.questionnaireStatusService.create(questionnaireStatus);
+        } else {
+            // Update the existing QStatus
+            questionnaireStatus$ = this.questionnaireStatusService.update(questionnaireStatus);
+        }
 
         questionnaireStatus$.toPromise().then(
             (statusResponse: HttpResponse<QuestionnaireStatusMgm>) => {
@@ -328,8 +340,8 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
                     }
                 });
 
-                const uniqueThreatAgentsSet: Set<ThreatAgentMgm> = new Set<ThreatAgentMgm>(defaultThreatAgents
-                    .concat(identifiedThreatAgents).concat(this.selfAssessment.threatagents));
+                const uniqueThreatAgentsSet: Set<ThreatAgentMgm> = new Set<ThreatAgentMgm>(
+                    defaultThreatAgents.concat(identifiedThreatAgents));
                 const uniqueThreatAgentsArray: ThreatAgentMgm[] = Array.from(uniqueThreatAgentsSet);
                 this.selfAssessment.threatagents = uniqueThreatAgentsArray;
 

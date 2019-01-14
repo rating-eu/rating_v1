@@ -3,13 +3,16 @@ package eu.hermeneut.service.impl;
 import eu.hermeneut.domain.SelfAssessment;
 import eu.hermeneut.domain.enumeration.QuestionnairePurpose;
 import eu.hermeneut.domain.enumeration.Role;
+import eu.hermeneut.service.MyAnswerService;
 import eu.hermeneut.service.QuestionnaireStatusService;
 import eu.hermeneut.domain.QuestionnaireStatus;
 import eu.hermeneut.repository.QuestionnaireStatusRepository;
 import eu.hermeneut.repository.search.QuestionnaireStatusSearchRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -22,7 +25,6 @@ import static org.elasticsearch.index.query.QueryBuilders.*;
  * Service Implementation for managing QuestionnaireStatus.
  */
 @Service
-@Transactional
 public class QuestionnaireStatusServiceImpl implements QuestionnaireStatusService {
 
     private final Logger log = LoggerFactory.getLogger(QuestionnaireStatusServiceImpl.class);
@@ -51,9 +53,7 @@ public class QuestionnaireStatusServiceImpl implements QuestionnaireStatusServic
                 .findOne(questionnaireStatus.getId());
 
             if (existingQStatus != null) {
-                //clear its collections in order to keep only the new data
-                existingQStatus.getAnswers().clear();
-                this.questionnaireStatusRepository.save(existingQStatus);
+                this.delete(existingQStatus.getId());
             }
         }
 
