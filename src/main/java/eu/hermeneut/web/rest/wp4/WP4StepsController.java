@@ -2,26 +2,17 @@ package eu.hermeneut.web.rest.wp4;
 
 import com.codahale.metrics.annotation.Timed;
 import eu.hermeneut.domain.*;
-import eu.hermeneut.domain.enumeration.QuestionnairePurpose;
-import eu.hermeneut.domain.enumeration.Role;
-import eu.hermeneut.domain.attackmap.AugmentedAttackStrategy;
 import eu.hermeneut.domain.wp4.MyAssetAttackChance;
 import eu.hermeneut.domain.wp4.ThreatAgentInterest;
 import eu.hermeneut.exceptions.NotFoundException;
 import eu.hermeneut.exceptions.NullInputException;
 import eu.hermeneut.service.*;
-import eu.hermeneut.utils.attackstrategy.ThreatAttackFilter;
-import eu.hermeneut.utils.likelihood.answer.AnswerCalculator;
-import eu.hermeneut.utils.likelihood.attackstrategy.AttackStrategyCalculator;
-import eu.hermeneut.utils.threatagent.ThreatAgentComparator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api")
