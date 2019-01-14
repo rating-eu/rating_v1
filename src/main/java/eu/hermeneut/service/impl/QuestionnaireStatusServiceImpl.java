@@ -45,6 +45,24 @@ public class QuestionnaireStatusServiceImpl implements QuestionnaireStatusServic
     @Override
     public QuestionnaireStatus save(QuestionnaireStatus questionnaireStatus) {
         log.debug("Request to save QuestionnaireStatus : {}", questionnaireStatus);
+
+        if (questionnaireStatus.getId() != null) {
+            QuestionnaireStatus existingQStatus = this.questionnaireStatusRepository
+                .findOne(questionnaireStatus.getId());
+
+            if (existingQStatus != null) {
+                //clear its collections in order to keep only the new data
+                existingQStatus.getAnswers().clear();
+                this.questionnaireStatusRepository.save(existingQStatus);
+            }
+        }
+
+        if (questionnaireStatus.getAnswers() != null && !questionnaireStatus.getAnswers().isEmpty()) {
+            questionnaireStatus.getAnswers().stream().forEach((myAnswer) -> {
+                myAnswer.setQuestionnaireStatus(questionnaireStatus);
+            });
+        }
+
         QuestionnaireStatus result = questionnaireStatusRepository.save(questionnaireStatus);
         questionnaireStatusSearchRepository.save(result);
         return result;
