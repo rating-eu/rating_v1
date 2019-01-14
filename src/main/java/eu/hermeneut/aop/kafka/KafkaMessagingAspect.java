@@ -1,5 +1,6 @@
 package eu.hermeneut.aop.kafka;
 
+import eu.hermeneut.domain.MyAsset;
 import eu.hermeneut.domain.SelfAssessment;
 import eu.hermeneut.kafka.service.MessageSenderService;
 import eu.hermeneut.service.SelfAssessmentService;
@@ -49,6 +50,11 @@ public class KafkaMessagingAspect {
             //The first parameter must be the ID of the SelfAssessment
             if (args[0] instanceof Long) {
                 selfAssessment = this.selfAssessmentService.findOne((Long) args[0]);
+            } else if (args[0] instanceof MyAsset) {
+                MyAsset myAsset = (MyAsset) args[0];
+                if (myAsset.getImpact() != null && myAsset.getImpact() > 0) {
+                    selfAssessment = ((MyAsset) args[0]).getSelfAssessment();
+                }
             }
         }
 

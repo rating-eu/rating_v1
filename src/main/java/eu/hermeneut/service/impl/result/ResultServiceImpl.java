@@ -80,8 +80,8 @@ public class ResultServiceImpl implements ResultService {
         log.debug("SelfAssessment: " + selfAssessment);
 
         if (selfAssessment != null) {
-            //#2 get the identified ThreatAgents
-            Set<ThreatAgent> threatAgentSet = selfAssessment.getThreatagents();
+            //#2 Calculate the identified threat agents from the MyAnswers
+            Set<ThreatAgent> threatAgentSet = this.getThreatAgents(selfAssessmentID);
             log.debug("ThreatAgents: " + Arrays.toString(threatAgentSet.toArray()));
 
             if (threatAgentSet != null && !threatAgentSet.isEmpty()) {
@@ -224,7 +224,7 @@ public class ResultServiceImpl implements ResultService {
     }
 
     @Override
-    public Map<Long, Float> getLevelsOfInterest(Long selfAssessmentID) {
+    public Map<Long/*ThreatAgentID*/, Float/*LevelOfInterest*/> getLevelsOfInterest(Long selfAssessmentID) {
         //ThreatAgent-ID --> x-Value
         Map<Long, Integer> threatAgentQuestionsCount = new HashMap<>();
         Map<Long, Integer> threatAgentYesCount = new HashMap<>();
@@ -279,6 +279,30 @@ public class ResultServiceImpl implements ResultService {
         }
 
         return threatAgentLevelsOfInterest;
+    }
+
+    public Set<ThreatAgent> getThreatAgents(Long selfAssessmentID) {
+        //Get the levels of interest
+        Map<Long/*ThreatAgentID*/, Float/*LevelOfInterest*/> levelOfInterests = this.getLevelsOfInterest(selfAssessmentID);
+
+        //Fetch all threat-agents
+        List<ThreatAgent> threatAgents = this.threatAgentService.findAll();
+
+        //ThreatAgent.ID --> ThreatAgent
+        Map<Long, ThreatAgent> allThreatAgentsMap = threatAgents.stream().collect(Collectors.toMap(
+            (thratAgent) -> thratAgent.getId(),
+            Function.identity()
+        ));
+
+        //Keep only the ones interested (>0)
+        levelOfInterests.entrySet()
+            .stream()
+            .filter((entry) -> entry.getValue() <= 0)
+            .forEach((entry) -> {
+                allThreatAgentsMap.remove(entry.getKey());
+            });
+
+        return allThreatAgentsMap.values().stream().collect(Collectors.toSet());
     }
 
     private void initOrIncrement(Map<Long, Integer> threatAgentPropertyCount, ThreatAgent threatAgent) {
