@@ -291,6 +291,7 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
 
         // #1 Create the QuestionnaireStatus or Update the existing one
         let questionnaireStatus: QuestionnaireStatusMgm = null;
+
         if (!this.cisoQuestionnaireStatus) {
             questionnaireStatus = new QuestionnaireStatusMgm(undefined, Status.FULL, null, null,
                 this.selfAssessment, this.questionnaire, this.role, this.user, []);
@@ -373,27 +374,41 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
          */
         const formDataMap: Map<string, AnswerMgm> = FormUtils.formToMap<AnswerMgm>(this.form);
 
-        // #1 Create the QuestionnaireStatus
-        let questionnaireStatus = new QuestionnaireStatusMgm(undefined, Status.FULL, null, null, this.selfAssessment, this.questionnaire, this.role, this.user, []);
+        // #1 Create the QuestionnaireStatus or update the existing one
+        let questionnaireStatus = null;
+
+        if (!this.cisoQuestionnaireStatus) {
+            questionnaireStatus = new QuestionnaireStatusMgm(undefined, Status.FULL, null, null, this.selfAssessment, this.questionnaire, this.role, this.user, []);
+        } else {
+            questionnaireStatus = this.cisoQuestionnaireStatus;
+        }
 
         // #2 Create the MyAnswers
         const myAnswers: MyAnswerMgm[] = this.createMyAnswers(formDataMap);
-
         // #3 Set the MyAnswers
         questionnaireStatus.answers = myAnswers;
 
-        const questionnaireStatus$: Observable<HttpResponse<QuestionnaireStatusMgm>> = this.questionnaireStatusService.create(questionnaireStatus);
+        let questionnaireStatus$: Observable<HttpResponse<QuestionnaireStatusMgm>> = null;
 
-        // #4 Persist the QuestionnaireStatus
-        const selfAssessment$: Observable<HttpResponse<SelfAssessmentMgm>> =
-            this.questionnaireStatusService.create(questionnaireStatus)
-                .mergeMap(
-                    (statusResponse: HttpResponse<QuestionnaireStatusMgm>) => {
-                        questionnaireStatus = statusResponse.body;
+        if (!this.cisoQuestionnaireStatus) {
+            // Create a new QStatus
+            questionnaireStatus$ = this.questionnaireStatusService.create(questionnaireStatus);
+        } else {
+            // Update the existing QStatus
+            questionnaireStatus$ = this.questionnaireStatusService.update(questionnaireStatus);
+        }
 
-                        this.selfAssessment.user = this.user;
-                        return this.selfAssessmentService.update(this.selfAssessment);
-                    });
+        questionnaireStatus$.toPromise().then(
+            (statusResponse: HttpResponse<QuestionnaireStatusMgm>) => {
+                // update the questionnaire status with the ID from the DB
+                questionnaireStatus = statusResponse.body;
+            }
+        );
+
+        // #4 Update the SelfAssessment
+        this.selfAssessment.user = this.user;
+
+        const selfAssessment$: Observable<HttpResponse<SelfAssessmentMgm>> = this.selfAssessmentService.update(this.selfAssessment);
 
         selfAssessment$.toPromise()
             .then((selfAssessmentResponse: HttpResponse<SelfAssessmentMgm>) => {
