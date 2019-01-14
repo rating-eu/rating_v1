@@ -5,7 +5,7 @@
   <div class="x_panel" style="padding:0px !important;">
     <div class="x_title" style="padding:0px !important;">
       <h2 style="padding: 10px;">Simulation Losses (
-        <ng-container *ngIf="lossesPercentage">{{lossesPercentage | percent}}</ng-container>
+        <ng-container *ngIf="lossesPercentage">{{lossesPercentage | percent:'1.0-2'}}</ng-container>
         <ng-container *ngIf="!lossesPercentage">-</ng-container>
           )
       </h2>
