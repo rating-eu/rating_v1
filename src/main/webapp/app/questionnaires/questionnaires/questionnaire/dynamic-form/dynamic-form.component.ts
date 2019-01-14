@@ -410,23 +410,25 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
          * @type {Map<string, AnswerMgm>}
          */
         const formDataMap: Map<string, AnswerMgm | string> = FormUtils.formToMap<AnswerMgm | string>(this.form);
-        // Create the status of the questionnaire
+        // #1 Create the status of the questionnaire
         let questionnaireStatus = new QuestionnaireStatusMgm(undefined, Status.FULL, null, null, this.selfAssessment, this.questionnaire, this.role, this.user, []);
 
-        const myRefinementAnswers: Observable<HttpResponse<MyAnswerMgm[]>> = this.questionnaireStatusService.create(questionnaireStatus)
-            .mergeMap(
-                (statusResponse: HttpResponse<QuestionnaireStatusMgm>) => {
-                    questionnaireStatus = statusResponse.body;
-                    // Persist MyAnswers
-                    return this.createMyRefinementAnswersObservable(formDataMap, questionnaireStatus);
-                });
+        // #2 Create MyAnswers for refinement
+        const myRefinementAnswers: MyAnswerMgm[] = this.createMyRefinementAnswers(formDataMap);
 
-        myRefinementAnswers.toPromise().then((response: HttpResponse<MyAnswerMgm[]>) => {
-            this.router.navigate(['/dashboard']);
-        }).catch(() => {
-            // TODO Error management
-            this.loading = false;
-        });
+        // #3 Set the MyAnswers
+        questionnaireStatus.answers = myRefinementAnswers;
+
+        // #4 Persist the QuestionnaireStatus
+        this.questionnaireStatusService.create(questionnaireStatus).toPromise()
+            .then((response: HttpResponse<QuestionnaireStatusMgm>) => {
+                questionnaireStatus = response.body;
+
+                this.selfAssessmentService.setSelfAssessment(this.selfAssessment);
+
+                this.loading = false;
+                this.router.navigate(['/dashboard']);
+            });
     }
 
     freezeQuestionnaireStatus() {
@@ -647,5 +649,46 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
         });
 
         return this.myAnswerService.createAll(this.selfAssessment.id, myAnswers);
+    }
+
+    private createMyRefinementAnswers(formDataMap: Map<string, AnswerMgm | string>): MyAnswerMgm[] {
+        // CREATE the NEW MyAnswers
+        // const createMyAnswersObservable: Observable<HttpResponse<MyAnswerMgm[]>> = [];
+        const myAnswers: MyAnswerMgm[] = [];
+
+        // Contains the Answers of the External Audit
+        const refinementMap: Map<number/*Question.ID*/, AnswerMgm> = new Map<number, AnswerMgm>();
+
+        // Contains the notes of the External Audit
+        const notesMap: Map<number/*Qestion.ID*/, string> = new Map<number, string>();
+
+        formDataMap.forEach(// Key could be id | id.external | id.note
+            (value: AnswerMgm | string, key: string) => {
+
+                if (key.endsWith('.external')) {
+                    const answer: AnswerMgm = value as AnswerMgm;
+                    const questionID: number = Number(key.replace('.external', ''));
+                    const question: QuestionMgm = this.questionsArrayMap.get(questionID);
+
+                    refinementMap.set(question.id, answer);
+                } else if (key.endsWith('.note')) {
+                    const note: string = value as string;
+                    const questionID: number = Number(key.replace('.note', ''));
+                    const question: QuestionMgm = this.questionsArrayMap.get(questionID);
+
+                    notesMap.set(questionID, note);
+                }
+            }
+        );
+
+        this.questionsArrayMap.forEach((question: QuestionMgm, key: number) => {
+            const note: string = notesMap.get(question.id);
+            const refinedAnswer: AnswerMgm = refinementMap.get(question.id);
+
+            const myAnswer: MyAnswerMgm = new MyAnswerMgm(undefined, note, 0, refinedAnswer, question, question.questionnaire, undefined, this.user);
+            myAnswers.push(myAnswer);
+        });
+
+        return myAnswers;
     }
 }
