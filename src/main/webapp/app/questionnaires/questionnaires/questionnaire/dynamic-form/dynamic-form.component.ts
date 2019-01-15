@@ -1,6 +1,6 @@
-import {Component, Input, OnDestroy, OnInit, Self} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {QuestionControlService} from './services/question-control.service';
-import {AbstractControl, FormGroup} from '@angular/forms';
+import {FormGroup} from '@angular/forms';
 import {QuestionMgm, QuestionMgmService} from '../../../../entities/question-mgm';
 import {AnswerMgm, AnswerMgmService} from '../../../../entities/answer-mgm';
 import {ThreatAgentMgm, ThreatAgentMgmService} from '../../../../entities/threat-agent-mgm';
@@ -10,20 +10,21 @@ import {Couple} from '../../../../utils/couple.class';
 import {DatasharingService} from '../../../../datasharing/datasharing.service';
 import {Router} from '@angular/router';
 import {
-    QuestionnaireStatusMgm, QuestionnaireStatusMgmService, Role
+    QuestionnaireStatusMgm,
+    QuestionnaireStatusMgmService,
+    Role
 } from '../../../../entities/questionnaire-status-mgm';
 import {Status} from '../../../../entities/enumerations/QuestionnaireStatus.enum';
 import {QuestionnaireMgm} from '../../../../entities/questionnaire-mgm';
 import {QuestionnairePurpose} from '../../../../entities/enumerations/QuestionnairePurpose.enum';
 import {MyAnswerMgm, MyAnswerMgmService} from '../../../../entities/my-answer-mgm';
-import {AccountService, Principal, User, UserService} from '../../../../shared';
+import {AccountService, User, UserService} from '../../../../shared';
 import {SelfAssessmentMgm, SelfAssessmentMgmService} from '../../../../entities/self-assessment-mgm';
 import {Subscription} from 'rxjs/Subscription';
 import {FormUtils} from '../../../utils/FormUtils';
 import {forkJoin} from 'rxjs/observable/forkJoin';
 import {Observable} from 'rxjs/Observable';
 import {HttpResponse} from '@angular/common/http';
-import {concatMap, mergeMap} from 'rxjs/operators';
 import {QuestionnaireStatusMgmCustomService} from '../../../../entities/questionnaire-status-mgm/questionnaire-status-mgm.custom.service';
 
 @Component({
@@ -42,8 +43,6 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
 
     public loading = false;
     public debug = false;
-    public cisoEditMode: boolean;
-    public externalAuditEditMode: boolean;
 
     roleEnum = Role;
     purposeEnum = QuestionnairePurpose;
@@ -104,8 +103,8 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
      input properties. Called once, after the first ngOnChanges().
      */
     ngOnInit() {
-        this.cisoEditMode = false;
-        this.externalAuditEditMode = false;
+        // this.cisoEditMode = true;
+        // this.externalAuditEditMode = true;
 
         this.selfAssessment = this.selfAssessmentService.getSelfAssessment();
 
@@ -150,85 +149,58 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
                 }
 
                 return this.userService.find(this.account['login']);
-
-                // Real time matrix update (DONT REMOVE THIS)
-                /*if (this.questionnaire.purpose === QuestionnairePurpose.SELFASSESSMENT) {
-                 for (const key in this.form.controls) {
-                 const formControl = this.form.get(key);
-
-                 if (formControl) {
-                 formControl.valueChanges.subscribe(
-                 (answer: AnswerMgm) => {
-
-                 const question = this.questionsArrayMap.get(Number(key));
-
-                 this.dataSharingSerivce.answerSelfAssessment(question, answer);
-                 }
-                 );
-                 }
-                 }
-                 }*/
             }
         );
 
-        const cisoQuestionnaireStatus$ = user$.mergeMap(
+        user$.toPromise().then(
             (response: HttpResponse<User>) => {
                 this.user = response.body;
 
-                // Fetch the QuestionnaireStatus of the CISO
-                return this.questionnaireStatusCustomService
-                    .getByRoleSelfAssessmentAndQuestionnaire(DynamicFormComponent.CISO_ROLE, this.selfAssessment.id, this.questionnaire.id);
-            }
-        );
+                this.questionnaireStatusCustomService
+                    .getByRoleSelfAssessmentAndQuestionnaire(DynamicFormComponent.CISO_ROLE, this.selfAssessment.id, this.questionnaire.id)
+                    .toPromise()
+                    .then(
+                        (response2: HttpResponse<QuestionnaireStatusMgm>) => {
+                            this.cisoQuestionnaireStatus = response2.body;
 
-        cisoQuestionnaireStatus$.subscribe(
-            (response: HttpResponse<QuestionnaireStatusMgm>) => {
-                this.cisoQuestionnaireStatus = response.body;
+                            if (this.cisoQuestionnaireStatus && this.cisoQuestionnaireStatus.answers && this.cisoQuestionnaireStatus.answers.length > 0) {
+                                this.cisoMyAnswers = this.cisoQuestionnaireStatus.answers;
 
-                if (this.cisoQuestionnaireStatus) {
-                    this.myAnswerService.getAllByQuestionnaireStatusID(this.cisoQuestionnaireStatus.id)
-                        .toPromise().then(
-                        (response2: HttpResponse<MyAnswerMgm[]>) => {
-                            this.cisoMyAnswers = response2.body;
+                                // Restore the checked status of the Form inputs
+                                this.form.patchValue(this.myAnswersToFormValue(this.cisoMyAnswers, this.questionsArrayMap));
+                            }
 
-                            // Restore the checked status of the Form inputs
-                            this.form.patchValue(this.myAnswersToFormValue(this.cisoMyAnswers, this.questionsArrayMap));
+                            if (this.questionnaire.purpose === QuestionnairePurpose.SELFASSESSMENT) {
+
+                                this.questionnaireStatusCustomService
+                                    .getByRoleSelfAssessmentAndQuestionnaire(DynamicFormComponent.EXTERNAL_ROLE, this.selfAssessment.id, this.questionnaire.id).toPromise()
+                                    .then(
+                                        (response3: HttpResponse<QuestionnaireStatusMgm>) => {
+                                            this.externalQuestionnaireStatus = response3.body;
+
+                                            if (this.externalQuestionnaireStatus &&
+                                                this.externalQuestionnaireStatus.answers &&
+                                                this.externalQuestionnaireStatus.answers.length > 0) {
+                                                this.externalMyAnswers = this.externalQuestionnaireStatus.answers;
+
+                                                console.log('CISOMyAnswers:');
+                                                console.log(this.cisoMyAnswers);
+
+                                                console.log('ExternalMyAnswers:');
+                                                console.log(this.externalMyAnswers);
+
+                                                const formValue: {} = this.myAnswersToFormValue(this.cisoMyAnswers, this.questionsArrayMap, this.externalMyAnswers);
+                                                console.log('FormValue:');
+                                                console.log(formValue);
+
+                                                // Restore the checked status of the Form inputs
+                                                this.form.patchValue(formValue);
+                                            }
+                                        }
+                                    );
+                            }
                         }
                     );
-                } else {
-                    // Enable the edit mode only if there is no QuestionnaireStatus in DB
-                    this.cisoEditMode = true;
-                }
-            }
-        );
-
-        const externalQuestionnaireStatus$ = user$.mergeMap(
-            (response: HttpResponse<User>) => {
-                this.user = response.body;
-                // Fetch the QuestionnaireStatus of the CISO
-                return this.questionnaireStatusCustomService
-                    .getByRoleSelfAssessmentAndQuestionnaire(DynamicFormComponent.EXTERNAL_ROLE, this.selfAssessment.id, this.questionnaire.id);
-            }
-        );
-
-        externalQuestionnaireStatus$.subscribe(
-            (response: HttpResponse<QuestionnaireStatusMgm>) => {
-                this.externalQuestionnaireStatus = response.body;
-
-                if (this.externalQuestionnaireStatus) {
-                    this.myAnswerService.getAllByQuestionnaireStatusID(this.externalQuestionnaireStatus.id)
-                        .toPromise().then(
-                        (response2: HttpResponse<MyAnswerMgm[]>) => {
-                            this.externalMyAnswers = response2.body;
-
-                            // Restore the checked status of the Form inputs
-                            this.form.patchValue(this.myAnswersToFormValue(this.externalMyAnswers, this.questionsArrayMap, false));
-                        }
-                    );
-                } else {
-                    // Enable the edit mode only if there is no QuestionnaireStatus in DB
-                    this.externalAuditEditMode = true;
-                }
             }
         );
     }
@@ -314,79 +286,68 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
                 }
             }
         });
-        /*
-        threatAgentsPercentageMap.forEach((value, key) => {
-            console.log('ThreatAgent:' + key + ' ==> ' + value.key.name + '\t' + value.value.toPercentage() + '\%');
-        });
-        */
+
         this.dataSharingSerivce.threatAgentsMap = threatAgentsPercentageMap;
 
-        // #1 Persist QuestionnaireStatus
-        let questionnaireStatus: QuestionnaireStatusMgm =
-            new QuestionnaireStatusMgm(undefined, Status.FULL, null, null, this.selfAssessment, this.questionnaire, this.role, this.user, []);
-        const questionnaireStatus$: Observable<HttpResponse<QuestionnaireStatusMgm>> = this.questionnaireStatusService.create(questionnaireStatus);
+        // #1 Create the QuestionnaireStatus or Update the existing one
+        let questionnaireStatus: QuestionnaireStatusMgm = null;
 
-        // #2 Persist MyAnswers
-        const myAnswers$: Observable<HttpResponse<MyAnswerMgm[]>> = questionnaireStatus$.pipe(
-            concatMap((statusResponse: HttpResponse<QuestionnaireStatusMgm>) => {
+        if (!this.cisoQuestionnaireStatus) {
+            questionnaireStatus = new QuestionnaireStatusMgm(undefined, Status.FULL, null, null,
+                this.selfAssessment, this.questionnaire, this.role, this.user, []);
+        } else {
+            questionnaireStatus = this.cisoQuestionnaireStatus;
+        }
+
+        // #2 Create the MyAnswers
+        const myAnswers: MyAnswerMgm[] = this.createMyAnswers(formDataMap);
+        // #3 Set the MyAnswers
+        questionnaireStatus.answers = myAnswers;
+
+        let questionnaireStatus$: Observable<HttpResponse<QuestionnaireStatusMgm>> = null;
+
+        if (!this.cisoQuestionnaireStatus) {
+            // Create a new QStatus
+            questionnaireStatus$ = this.questionnaireStatusService.create(questionnaireStatus);
+        } else {
+            // Update the existing QStatus
+            questionnaireStatus$ = this.questionnaireStatusService.update(questionnaireStatus);
+        }
+
+        questionnaireStatus$.toPromise().then(
+            (statusResponse: HttpResponse<QuestionnaireStatusMgm>) => {
                 // update the questionnaire status with the ID from the DB
                 questionnaireStatus = statusResponse.body;
-
-                return this.createMyAnswersObservable(formDataMap, questionnaireStatus);
-            })
+            }
         );
 
-        // #3 Get the default ThreatAgents
+        // #4 Get the default ThreatAgents
         const defaultThreatAgents$: Observable<HttpResponse<ThreatAgentMgm[]>> = this.threatAgentService.getDefaultThreatAgents();
 
-        const myAnswersAndDefaultThreatAgentsJoin: Observable<any>[] = [];
-        myAnswersAndDefaultThreatAgentsJoin.push(myAnswers$);
-        myAnswersAndDefaultThreatAgentsJoin.push(defaultThreatAgents$);
-        const myAnswersAndDefaultThreatAgentsJoin$: Observable<any> = forkJoin(myAnswersAndDefaultThreatAgentsJoin);
+        const selfAssessment$: Observable<HttpResponse<SelfAssessmentMgm>> = defaultThreatAgents$
+            .mergeMap((response: HttpResponse<ThreatAgentMgm[]>) => {
+                const defaultThreatAgents: ThreatAgentMgm[] = response.body;
 
-        // Update the SelfAssessment with the identified ThreatAgents
-        const selfAssessment$: Observable<HttpResponse<SelfAssessmentMgm>> = myAnswersAndDefaultThreatAgentsJoin$.pipe(
-            mergeMap((responses: any[]) => {
+                const myAnswersResponses = myAnswers;
 
-                responses.forEach((value: any, index: number) => {
-                    switch (index) {
-                        case 0: {// MyAnswers --> IdentifyThreatAgents
-                            const myAnswersResponses = value as HttpResponse<MyAnswerMgm>[];
+                const identifiedThreatAgents: ThreatAgentMgm[] = [];
+                const threatAgentsPercentageArray: Couple<ThreatAgentMgm, Fraction>[] = Array.from(threatAgentsPercentageMap.values());
 
-                            const identifiedThreatAgents: ThreatAgentMgm[] = [];
-                            const threatAgentsPercentageArray: Couple<ThreatAgentMgm, Fraction>[] = Array.from(threatAgentsPercentageMap.values());
-
-                            threatAgentsPercentageArray.forEach((couple: Couple<ThreatAgentMgm, Fraction>) => {
-                                const threatAgent: ThreatAgentMgm = couple.key;
-                                const likelihood: Fraction = couple.value;
-                                if (likelihood.toPercentage() > 0) {
-                                    identifiedThreatAgents.push(threatAgent);
-                                }
-                            });
-
-                            const uniqueThreatAgentsSet: Set<ThreatAgentMgm> = new Set<ThreatAgentMgm>(identifiedThreatAgents.concat(this.selfAssessment.threatagents));
-                            const uniqueThreatAgentsArray: ThreatAgentMgm[] = Array.from(uniqueThreatAgentsSet);
-                            this.selfAssessment.threatagents = uniqueThreatAgentsArray;
-
-                            break;
-                        }
-                        case 1: {// Default ThreatAgents
-                            const defaultThreatAgents: ThreatAgentMgm[] = (responses[index] as HttpResponse<ThreatAgentMgm[]>).body;
-
-                            const uniqueThreatAgentsSet: Set<ThreatAgentMgm> = new Set<ThreatAgentMgm>(defaultThreatAgents.concat(this.selfAssessment.threatagents));
-                            const uniqueThreatAgentsArray: ThreatAgentMgm[] = Array.from(uniqueThreatAgentsSet);
-                            this.selfAssessment.threatagents = uniqueThreatAgentsArray;
-
-                            break;
-                        }
+                threatAgentsPercentageArray.forEach((couple: Couple<ThreatAgentMgm, Fraction>) => {
+                    const threatAgent: ThreatAgentMgm = couple.key;
+                    const likelihood: Fraction = couple.value;
+                    if (likelihood.toPercentage() > 0) {
+                        identifiedThreatAgents.push(threatAgent);
                     }
                 });
 
-                this.selfAssessment.user = this.user;
+                const uniqueThreatAgentsSet: Set<ThreatAgentMgm> = new Set<ThreatAgentMgm>(
+                    defaultThreatAgents.concat(identifiedThreatAgents));
+                const uniqueThreatAgentsArray: ThreatAgentMgm[] = Array.from(uniqueThreatAgentsSet);
+                this.selfAssessment.threatagents = uniqueThreatAgentsArray;
 
                 return this.selfAssessmentService.update(this.selfAssessment);
-            })
-        );
+            });
 
         selfAssessment$.toPromise().then(
             (selfAssessmentResponse: HttpResponse<SelfAssessmentMgm>) => {
@@ -413,26 +374,41 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
          */
         const formDataMap: Map<string, AnswerMgm> = FormUtils.formToMap<AnswerMgm>(this.form);
 
-        // Update the status of the questionnaire
-        let questionnaireStatus = new QuestionnaireStatusMgm(undefined, Status.FULL, null, null, this.selfAssessment, this.questionnaire, this.role, this.user, []);
+        // #1 Create the QuestionnaireStatus or update the existing one
+        let questionnaireStatus = null;
 
-        // Persist the QuestionnaireStatus
-        const selfAssessment$: Observable<HttpResponse<SelfAssessmentMgm>> =
-            this.questionnaireStatusService.create(questionnaireStatus)
-                .mergeMap(
-                    (statusResponse: HttpResponse<QuestionnaireStatusMgm>) => {
-                        questionnaireStatus = statusResponse.body;
-                        // Persist MyAnswers
-                        return this.createMyAnswersObservable(formDataMap, questionnaireStatus);
-                    })
-                .mergeMap(
-                    (myAnswersResponse: HttpResponse<MyAnswerMgm[]>) => {
-                        const myAnswers: MyAnswerMgm[] = myAnswersResponse.body;
-                        this.selfAssessment.user = this.user;
+        if (!this.cisoQuestionnaireStatus) {
+            questionnaireStatus = new QuestionnaireStatusMgm(undefined, Status.FULL, null, null, this.selfAssessment, this.questionnaire, this.role, this.user, []);
+        } else {
+            questionnaireStatus = this.cisoQuestionnaireStatus;
+        }
 
-                        return this.selfAssessmentService.update(this.selfAssessment);
-                    }
-                );
+        // #2 Create the MyAnswers
+        const myAnswers: MyAnswerMgm[] = this.createMyAnswers(formDataMap);
+        // #3 Set the MyAnswers
+        questionnaireStatus.answers = myAnswers;
+
+        let questionnaireStatus$: Observable<HttpResponse<QuestionnaireStatusMgm>> = null;
+
+        if (!this.cisoQuestionnaireStatus) {
+            // Create a new QStatus
+            questionnaireStatus$ = this.questionnaireStatusService.create(questionnaireStatus);
+        } else {
+            // Update the existing QStatus
+            questionnaireStatus$ = this.questionnaireStatusService.update(questionnaireStatus);
+        }
+
+        questionnaireStatus$.toPromise().then(
+            (statusResponse: HttpResponse<QuestionnaireStatusMgm>) => {
+                // update the questionnaire status with the ID from the DB
+                questionnaireStatus = statusResponse.body;
+            }
+        );
+
+        // #4 Update the SelfAssessment
+        this.selfAssessment.user = this.user;
+
+        const selfAssessment$: Observable<HttpResponse<SelfAssessmentMgm>> = this.selfAssessmentService.update(this.selfAssessment);
 
         selfAssessment$.toPromise()
             .then((selfAssessmentResponse: HttpResponse<SelfAssessmentMgm>) => {
@@ -461,105 +437,44 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
          * @type {Map<string, AnswerMgm>}
          */
         const formDataMap: Map<string, AnswerMgm | string> = FormUtils.formToMap<AnswerMgm | string>(this.form);
-        // Create the status of the questionnaire
-        let questionnaireStatus = new QuestionnaireStatusMgm(undefined, Status.FULL, null, null, this.selfAssessment, this.questionnaire, this.role, this.user, []);
 
-        const myRefinementAnswers: Observable<HttpResponse<MyAnswerMgm[]>> = this.questionnaireStatusService.create(questionnaireStatus)
-            .mergeMap(
-                (statusResponse: HttpResponse<QuestionnaireStatusMgm>) => {
-                    questionnaireStatus = statusResponse.body;
-                    // Persist MyAnswers
-                    return this.createMyRefinementAnswersObservable(formDataMap, questionnaireStatus);
-                });
+        // #1 Create the QuestionnaireStatus or update the existing one
+        let questionnaireStatus = null;
 
-        myRefinementAnswers.toPromise().then((response: HttpResponse<MyAnswerMgm[]>) => {
-            this.router.navigate(['/dashboard']);
-        }).catch(() => {
-            // TODO Error management
-            this.loading = false;
-        });
-    }
-
-    freezeQuestionnaireStatus() {
-        /**
-         * Map representing the submitted form data.
-         *
-         * The key: string is the ID of the Question
-         * The value: AnswerMgm is the selected Answer
-         * @type {Map<string, AnswerMgm>}
-         */
-        const formDataMap: Map<string, AnswerMgm> = FormUtils.formToMap<AnswerMgm>(this.form);
-        switch (this.cisoQuestionnaireStatus.status) {
-            case Status.EMPTY: {// create a new QuestionnaireStatus && create MyAnswers
-                /**
-                 * The PENDING status for the questionnaire.
-                 * @type {QuestionnaireStatusMgm}
-                 */
-                this.cisoQuestionnaireStatus = new QuestionnaireStatusMgm(undefined, Status.PENDING, null,
-                    null, this.selfAssessment, this._questionnaire, this.role, this.user, []);
-
-                // Getting the id of the above QuestionnaireStatus
-                this.subscriptions.push(
-                    this.questionnaireStatusService.create(this.cisoQuestionnaireStatus).subscribe(
-                        (statusResponse) => {
-                            this.cisoQuestionnaireStatus = statusResponse.body;
-
-                            // CREATE the NEW MyAnswers
-                            const createObservables: Observable<HttpResponse<MyAnswerMgm[]>> = this.createMyAnswersObservable(formDataMap, this.cisoQuestionnaireStatus);
-
-                            createObservables.subscribe(
-                                (myAnswersResponse: HttpResponse<MyAnswerMgm[]>) => {
-                                    const myAnswers: MyAnswerMgm[] = myAnswersResponse.body;
-                                }
-                            );
-                        },
-                        (error: any) => {
-                            console.log(error);
-                        },
-                        () => {
-                            this.router.navigate(['identify-threat-agent/questionnaires']);
-                        })
-                );
-
-                break;
-            }
-            case Status.PENDING: {// no need to update the existing QuestionnaireStatus, just delete old MyAnswers, create new MyAnswers
-
-                // DELETE the OLD MyAnswers
-                const deleteObservables: Observable<HttpResponse<MyAnswerMgm>>[] = this.deleteMyAnswersObservable(this.cisoMyAnswers);
-
-                forkJoin(deleteObservables).subscribe(
-                    (responses: HttpResponse<any>[]) => {
-                        console.log('Old my answers deleted: ' + JSON.stringify(responses));
-                    },
-                    (error) => {
-
-                    },
-                    () => {
-                        console.log('Delete Observables completed...');
-                    }
-                );
-
-                // CREATE the NEW MyAnswers
-                const createObservables: Observable<HttpResponse<MyAnswerMgm[]>> = this.createMyAnswersObservable(formDataMap, this.cisoQuestionnaireStatus);
-
-                createObservables.subscribe(
-                    (myAnswersResponse: HttpResponse<MyAnswerMgm[]>) => {
-                        console.log('New MyAnswers created: ');
-                        const myAnswers: MyAnswerMgm[] = myAnswersResponse.body;
-                    }
-                );
-
-                break;
-            }
-            case Status.FULL: {
-                /*
-                 DO-NOTHING: at the moment the EDITING of an already submitted form cannot be handled
-                 cause this would need to edit also the previously identified threat agents
-                 */
-                break;
-            }
+        if (!this.externalQuestionnaireStatus) {
+            questionnaireStatus = new QuestionnaireStatusMgm(undefined, Status.FULL, null, null, this.selfAssessment, this.questionnaire, this.role, this.user, []);
+        } else {
+            questionnaireStatus = this.externalQuestionnaireStatus;
         }
+
+        // #2 Create MyAnswers for refinement
+        const myRefinementAnswers: MyAnswerMgm[] = this.createMyRefinementAnswers(formDataMap);
+        console.log('MyRefinement answers');
+        console.log(myRefinementAnswers);
+
+        // #3 Set the MyAnswers
+        questionnaireStatus.answers = myRefinementAnswers;
+
+        let questionnaireStatus$: Observable<HttpResponse<QuestionnaireStatusMgm>> = null;
+
+        if (!this.externalQuestionnaireStatus) {
+            // Create a new QStatus
+            questionnaireStatus$ = this.questionnaireStatusService.create(questionnaireStatus);
+        } else {
+            // Update the existing QStatus
+            questionnaireStatus$ = this.questionnaireStatusService.update(questionnaireStatus);
+        }
+
+        // #4 Persist the QuestionnaireStatus
+        questionnaireStatus$.toPromise()
+            .then((response: HttpResponse<QuestionnaireStatusMgm>) => {
+                questionnaireStatus = response.body;
+
+                this.selfAssessmentService.setSelfAssessment(this.selfAssessment);
+
+                this.loading = false;
+                this.router.navigate(['/dashboard']);
+            });
     }
 
     // ==========HELPER METHODS============
@@ -571,41 +486,60 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
         );
     }
 
-    private myAnswersToFormValue(myAnswers: MyAnswerMgm[], questionsMap: Map<number, QuestionMgm>, ciso = true) {
+    private myAnswersToFormValue(myCISOAnswers: MyAnswerMgm[], questionsMap: Map<number, QuestionMgm>, myEXTERNALAnswers?: MyAnswerMgm[]) {
         const value = {};
 
-        myAnswers.forEach(
-            (myAnswer) => {
-                // Get the "exact" QUESTION used in the form generation
-                const question = questionsMap.get(myAnswer.question.id);
-                // Get the "exact" ANSWERS used as [VALUE] for the question
-                const answers: AnswerMgm[] = question.answers;
-                let exactAnswer: AnswerMgm;
-                for (const answer of answers) {
-                    if (answer.id === myAnswer.answer.id) {
-                        exactAnswer = answer;
-                        break;
+        if (myCISOAnswers) {
+            myCISOAnswers.forEach(
+                (myAnswer) => {
+                    // Get the "exact" QUESTION used in the form generation
+                    const question = questionsMap.get(myAnswer.question.id);
+                    // Get the "exact" ANSWERS used as [VALUE] for the question
+                    const answers: AnswerMgm[] = question.answers;
+                    let exactAnswer: AnswerMgm;
+                    for (const answer of answers) {
+                        if (answer.id === myAnswer.answer.id) {
+                            exactAnswer = answer;
+                            break;
+                        }
                     }
-                }
-                if (ciso) {
+
+                    // The CISO's answer
                     value[String(myAnswer.question.id)] = exactAnswer;
-                } else {
+                }
+            );
+        }
+
+        if (myEXTERNALAnswers) {
+            myEXTERNALAnswers.forEach(
+                (myAnswer) => {
+                    // Get the "exact" QUESTION used in the form generation
+                    const question = questionsMap.get(myAnswer.question.id);
+                    // Get the "exact" ANSWERS used as [VALUE] for the question
+                    const answers: AnswerMgm[] = question.answers;
+                    let exactAnswer: AnswerMgm;
+                    for (const answer of answers) {
+                        if (answer.id === myAnswer.answer.id) {
+                            exactAnswer = answer;
+                            break;
+                        }
+                    }
+
+                    // The EXTERNAL's answer
                     value[String(myAnswer.question.id + '.external')] = exactAnswer;
                     value[String(myAnswer.question.id + '.note')] = myAnswer.note;
                 }
-            }
-        );
+            );
+        }
+
         return value;
     }
 
-    private createMyAnswersObservable(formDataMap: Map<string, AnswerMgm>, questionnaireStatus: QuestionnaireStatusMgm):
-
-        Observable<HttpResponse<MyAnswerMgm[]>> {
+    private createMyAnswers(formDataMap: Map<string, AnswerMgm>): MyAnswerMgm[] {
 
         // CREATE the NEW MyAnswers
         // const createMyAnswersObservable: Observable<HttpResponse<MyAnswerMgm[]>> = [];
-        const myAnswers:
-            MyAnswerMgm[] = [];
+        const myAnswers: MyAnswerMgm[] = [];
 
         formDataMap.forEach(
             (value: AnswerMgm, key: string) => {
@@ -613,32 +547,16 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
                 if (answer) {// check if the the user answered this question
                     const question: QuestionMgm = this.questionsArrayMap.get(Number(key));
                     const questionnaire: QuestionnaireMgm = question.questionnaire;
-                    const myAnser: MyAnswerMgm = new MyAnswerMgm(undefined, 'Checked', 0, answer, question, questionnaire, questionnaireStatus, this.user);
+                    const myAnser: MyAnswerMgm = new MyAnswerMgm(undefined, undefined, 0, answer, question, questionnaire, undefined, this.user);
                     myAnswers.push(myAnser);
                 }
             }
         );
 
-        return this.myAnswerService.createAll(this.selfAssessment.id, myAnswers);
+        return myAnswers;
     }
 
-    private deleteMyAnswersObservable(myAnswers: MyAnswerMgm[]):
-
-        Observable<HttpResponse<MyAnswerMgm>>[] {// DELETE the OLD MyAnswers
-        const deleteMyAnswerObservable: Observable<HttpResponse<MyAnswerMgm>>[] = [];
-
-        myAnswers.forEach(
-            (myAnswer) => {
-                deleteMyAnswerObservable.push(
-                    this.myAnswerService.delete(myAnswer.id)
-                );
-            }
-        );
-
-        return deleteMyAnswerObservable;
-    }
-
-    private createMyRefinementAnswersObservable(formDataMap: Map<string, AnswerMgm | string>, questionnaireStatus: QuestionnaireStatusMgm) {
+    private createMyRefinementAnswers(formDataMap: Map<string, AnswerMgm | string>): MyAnswerMgm[] {
         // CREATE the NEW MyAnswers
         // const createMyAnswersObservable: Observable<HttpResponse<MyAnswerMgm[]>> = [];
         const myAnswers: MyAnswerMgm[] = [];
@@ -654,16 +572,22 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
 
                 if (key.endsWith('.external')) {
                     const answer: AnswerMgm = value as AnswerMgm;
-                    const questionID: number = Number(key.replace('.external', ''));
-                    const question: QuestionMgm = this.questionsArrayMap.get(questionID);
 
-                    refinementMap.set(question.id, answer);
+                    if (answer) {// check if the the user answered this question
+                        const questionID: number = Number(key.replace('.external', ''));
+                        const question: QuestionMgm = this.questionsArrayMap.get(questionID);
+
+                        refinementMap.set(question.id, answer);
+                    }
                 } else if (key.endsWith('.note')) {
                     const note: string = value as string;
-                    const questionID: number = Number(key.replace('.note', ''));
-                    const question: QuestionMgm = this.questionsArrayMap.get(questionID);
 
-                    notesMap.set(questionID, note);
+                    if (note) {// check if the the user answered this question
+                        const questionID: number = Number(key.replace('.note', ''));
+                        const question: QuestionMgm = this.questionsArrayMap.get(questionID);
+
+                        notesMap.set(questionID, note);
+                    }
                 }
             }
         );
@@ -672,10 +596,12 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
             const note: string = notesMap.get(question.id);
             const refinedAnswer: AnswerMgm = refinementMap.get(question.id);
 
-            const myAnswer: MyAnswerMgm = new MyAnswerMgm(undefined, note, 0, refinedAnswer, question, question.questionnaire, questionnaireStatus, this.user);
-            myAnswers.push(myAnswer);
+            if (refinedAnswer) {
+                const myAnswer: MyAnswerMgm = new MyAnswerMgm(undefined, note, 0, refinedAnswer, question, question.questionnaire, undefined, this.user);
+                myAnswers.push(myAnswer);
+            }
         });
 
-        return this.myAnswerService.createAll(this.selfAssessment.id, myAnswers);
+        return myAnswers;
     }
 }

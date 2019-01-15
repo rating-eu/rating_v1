@@ -3,13 +3,16 @@ package eu.hermeneut.service.impl;
 import eu.hermeneut.domain.SelfAssessment;
 import eu.hermeneut.domain.enumeration.QuestionnairePurpose;
 import eu.hermeneut.domain.enumeration.Role;
+import eu.hermeneut.service.MyAnswerService;
 import eu.hermeneut.service.QuestionnaireStatusService;
 import eu.hermeneut.domain.QuestionnaireStatus;
 import eu.hermeneut.repository.QuestionnaireStatusRepository;
 import eu.hermeneut.repository.search.QuestionnaireStatusSearchRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -22,7 +25,6 @@ import static org.elasticsearch.index.query.QueryBuilders.*;
  * Service Implementation for managing QuestionnaireStatus.
  */
 @Service
-@Transactional
 public class QuestionnaireStatusServiceImpl implements QuestionnaireStatusService {
 
     private final Logger log = LoggerFactory.getLogger(QuestionnaireStatusServiceImpl.class);
@@ -45,6 +47,22 @@ public class QuestionnaireStatusServiceImpl implements QuestionnaireStatusServic
     @Override
     public QuestionnaireStatus save(QuestionnaireStatus questionnaireStatus) {
         log.debug("Request to save QuestionnaireStatus : {}", questionnaireStatus);
+
+        if (questionnaireStatus.getId() != null) {
+            QuestionnaireStatus existingQStatus = this.questionnaireStatusRepository
+                .findOne(questionnaireStatus.getId());
+
+            if (existingQStatus != null) {
+                this.delete(existingQStatus.getId());
+            }
+        }
+
+        if (questionnaireStatus.getAnswers() != null && !questionnaireStatus.getAnswers().isEmpty()) {
+            questionnaireStatus.getAnswers().stream().forEach((myAnswer) -> {
+                myAnswer.setQuestionnaireStatus(questionnaireStatus);
+            });
+        }
+
         QuestionnaireStatus result = questionnaireStatusRepository.save(questionnaireStatus);
         questionnaireStatusSearchRepository.save(result);
         return result;

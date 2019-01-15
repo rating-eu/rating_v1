@@ -7,7 +7,10 @@ export class FormUtils {
         const formData = formGroup.value;
 
         Object.keys(formData).forEach((key: string) => {
-            m.set(key, formData[key] as V);
+            // Ignore missing answers
+            if (formData[key]) {
+                m.set(key, formData[key] as V);
+            }
         });
 
         return m;
