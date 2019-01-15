@@ -1,11 +1,14 @@
 package eu.hermeneut.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.data.elasticsearch.annotations.Document;
 import java.io.Serializable;
 import java.util.Objects;
@@ -35,7 +38,8 @@ public class MyAnswer implements Serializable {
     @Column(name = "answer_offset", nullable = false)
     private Integer answerOffset;
 
-    @ManyToOne(cascade = CascadeType.REMOVE)
+    @ManyToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private QuestionnaireStatus questionnaireStatus;
 
     @OneToOne
@@ -85,6 +89,7 @@ public class MyAnswer implements Serializable {
         this.answerOffset = answerOffset;
     }
 
+    @JsonIgnore
     public QuestionnaireStatus getQuestionnaireStatus() {
         return questionnaireStatus;
     }

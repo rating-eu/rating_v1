@@ -1,6 +1,7 @@
 package eu.hermeneut.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import eu.hermeneut.aop.annotation.KafkaRiskProfileHook;
 import eu.hermeneut.domain.AttackCost;
 import eu.hermeneut.domain.MyAsset;
 import eu.hermeneut.exceptions.IllegalInputException;
@@ -124,6 +125,7 @@ public class MyAssetResource {
      */
     @PutMapping("/my-assets")
     @Timed
+    @KafkaRiskProfileHook
     public ResponseEntity<MyAsset> updateMyAsset(@RequestBody MyAsset myAsset) throws URISyntaxException {
         log.debug("REST request to update MyAsset : {}", myAsset);
         if (myAsset.getId() == null) {
