@@ -61,7 +61,7 @@ public class DashboardStatusServiceImpl implements DashboardStatusService {
         if (selfAssessment != null) {
             QuestionnaireStatus questionnaireStatus = this.questionnaireStatusService.findAllBySelfAssessmentAndQuestionnairePurpose(selfAssessmentID, QuestionnairePurpose.ID_THREAT_AGENT).stream().findFirst().orElse(null);
 
-            isDone = questionnaireStatus != null && questionnaireStatus.getStatus().equals(Status.FULL);
+            isDone = questionnaireStatus != null && (questionnaireStatus.getStatus().equals(Status.FULL) || questionnaireStatus.getStatus().equals(Status.PENDING));
         }
 
         return isDone;
@@ -75,7 +75,7 @@ public class DashboardStatusServiceImpl implements DashboardStatusService {
         if (selfAssessment != null) {
             QuestionnaireStatus questionnaireStatus = this.questionnaireStatusService.findBySelfAssessmentRoleAndQuestionnairePurpose(selfAssessmentID, Role.ROLE_CISO, QuestionnairePurpose.SELFASSESSMENT);
 
-            isDone = questionnaireStatus != null && questionnaireStatus.getStatus().equals(Status.FULL);
+            isDone = questionnaireStatus != null && (questionnaireStatus.getStatus().equals(Status.FULL) || questionnaireStatus.getStatus().equals(Status.PENDING));
         }
 
         return isDone;
@@ -89,7 +89,7 @@ public class DashboardStatusServiceImpl implements DashboardStatusService {
         if (selfAssessment != null) {
             QuestionnaireStatus questionnaireStatus = this.questionnaireStatusService.findBySelfAssessmentRoleAndQuestionnairePurpose(selfAssessmentID, Role.ROLE_EXTERNAL_AUDIT, QuestionnairePurpose.SELFASSESSMENT);
 
-            isDone = questionnaireStatus != null && questionnaireStatus.getStatus().equals(Status.FULL);
+            isDone = questionnaireStatus != null && (questionnaireStatus.getStatus().equals(Status.FULL) || questionnaireStatus.getStatus().equals(Status.PENDING));
         }
 
         return isDone;
