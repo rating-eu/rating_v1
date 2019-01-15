@@ -23,7 +23,6 @@ import {FormUtils} from '../../../utils/FormUtils';
 import {forkJoin} from 'rxjs/observable/forkJoin';
 import {Observable} from 'rxjs/Observable';
 import {HttpResponse} from '@angular/common/http';
-import {concatMap, mergeMap} from 'rxjs/operators';
 import {QuestionnaireStatusMgmCustomService} from '../../../../entities/questionnaire-status-mgm/questionnaire-status-mgm.custom.service';
 
 @Component({
@@ -42,8 +41,8 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
 
     public loading = false;
     public debug = false;
-    public cisoEditMode: boolean;
-    public externalAuditEditMode: boolean;
+    // public cisoEditMode: boolean;
+    // public externalAuditEditMode: boolean;
 
     roleEnum = Role;
     purposeEnum = QuestionnairePurpose;
@@ -104,8 +103,8 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
      input properties. Called once, after the first ngOnChanges().
      */
     ngOnInit() {
-        this.cisoEditMode = true;
-        this.externalAuditEditMode = true;
+        // this.cisoEditMode = true;
+        // this.externalAuditEditMode = true;
 
         this.selfAssessment = this.selfAssessmentService.getSelfAssessment();
 
@@ -197,9 +196,6 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
 
                     // Restore the checked status of the Form inputs
                     this.form.patchValue(this.myAnswersToFormValue(this.externalMyAnswers, this.questionsArrayMap, false));
-                } else {
-                    // Enable the edit mode only if there is no QuestionnaireStatus in DB
-                    this.externalAuditEditMode = true;
                 }
             }
         );
