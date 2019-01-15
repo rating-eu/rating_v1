@@ -489,43 +489,16 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
                         break;
                     }
                 }
-                if (!myEXTERNALAnswers) {
+                if (myCISOAnswers && !myEXTERNALAnswers) {
                     value[String(myAnswer.question.id)] = exactAnswer;
-                } else {
+                } else if (myCISOAnswers && myEXTERNALAnswers) {
                     value[String(myAnswer.question.id)] = exactAnswer;
                     value[String(myAnswer.question.id + '.external')] = exactAnswer;
                     value[String(myAnswer.question.id + '.note')] = myAnswer.note;
-
-                    console.log('Else --> FormValue:');
-                    console.log(value);
                 }
             }
         );
         return value;
-    }
-
-    private createMyAnswersObservable(formDataMap: Map<string, AnswerMgm>, questionnaireStatus: QuestionnaireStatusMgm):
-
-        Observable<HttpResponse<MyAnswerMgm[]>> {
-
-        // CREATE the NEW MyAnswers
-        // const createMyAnswersObservable: Observable<HttpResponse<MyAnswerMgm[]>> = [];
-        const myAnswers:
-            MyAnswerMgm[] = [];
-
-        formDataMap.forEach(
-            (value: AnswerMgm, key: string) => {
-                const answer: AnswerMgm = value;
-                if (answer) {// check if the the user answered this question
-                    const question: QuestionMgm = this.questionsArrayMap.get(Number(key));
-                    const questionnaire: QuestionnaireMgm = question.questionnaire;
-                    const myAnser: MyAnswerMgm = new MyAnswerMgm(undefined, 'Checked', 0, answer, question, questionnaire, questionnaireStatus, this.user);
-                    myAnswers.push(myAnser);
-                }
-            }
-        );
-
-        return this.myAnswerService.createAll(this.selfAssessment.id, myAnswers);
     }
 
     private createMyAnswers(formDataMap: Map<string, AnswerMgm>): MyAnswerMgm[] {
@@ -549,63 +522,6 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
         return myAnswers;
     }
 
-    private deleteMyAnswersObservable(myAnswers: MyAnswerMgm[]):
-
-        Observable<HttpResponse<MyAnswerMgm>>[] {// DELETE the OLD MyAnswers
-        const deleteMyAnswerObservable: Observable<HttpResponse<MyAnswerMgm>>[] = [];
-
-        myAnswers.forEach(
-            (myAnswer) => {
-                deleteMyAnswerObservable.push(
-                    this.myAnswerService.delete(myAnswer.id)
-                );
-            }
-        );
-
-        return deleteMyAnswerObservable;
-    }
-
-    private createMyRefinementAnswersObservable(formDataMap: Map<string, AnswerMgm | string>, questionnaireStatus: QuestionnaireStatusMgm) {
-        // CREATE the NEW MyAnswers
-        // const createMyAnswersObservable: Observable<HttpResponse<MyAnswerMgm[]>> = [];
-        const myAnswers: MyAnswerMgm[] = [];
-
-        // Contains the Answers of the External Audit
-        const refinementMap: Map<number/*Question.ID*/, AnswerMgm> = new Map<number, AnswerMgm>();
-
-        // Contains the notes of the External Audit
-        const notesMap: Map<number/*Qestion.ID*/, string> = new Map<number, string>();
-
-        formDataMap.forEach(// Key could be id | id.external | id.note
-            (value: AnswerMgm | string, key: string) => {
-
-                if (key.endsWith('.external')) {
-                    const answer: AnswerMgm = value as AnswerMgm;
-                    const questionID: number = Number(key.replace('.external', ''));
-                    const question: QuestionMgm = this.questionsArrayMap.get(questionID);
-
-                    refinementMap.set(question.id, answer);
-                } else if (key.endsWith('.note')) {
-                    const note: string = value as string;
-                    const questionID: number = Number(key.replace('.note', ''));
-                    const question: QuestionMgm = this.questionsArrayMap.get(questionID);
-
-                    notesMap.set(questionID, note);
-                }
-            }
-        );
-
-        this.questionsArrayMap.forEach((question: QuestionMgm, key: number) => {
-            const note: string = notesMap.get(question.id);
-            const refinedAnswer: AnswerMgm = refinementMap.get(question.id);
-
-            const myAnswer: MyAnswerMgm = new MyAnswerMgm(undefined, note, 0, refinedAnswer, question, question.questionnaire, questionnaireStatus, this.user);
-            myAnswers.push(myAnswer);
-        });
-
-        return this.myAnswerService.createAll(this.selfAssessment.id, myAnswers);
-    }
-
     private createMyRefinementAnswers(formDataMap: Map<string, AnswerMgm | string>): MyAnswerMgm[] {
         // CREATE the NEW MyAnswers
         // const createMyAnswersObservable: Observable<HttpResponse<MyAnswerMgm[]>> = [];
@@ -622,16 +538,22 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
 
                 if (key.endsWith('.external')) {
                     const answer: AnswerMgm = value as AnswerMgm;
-                    const questionID: number = Number(key.replace('.external', ''));
-                    const question: QuestionMgm = this.questionsArrayMap.get(questionID);
 
-                    refinementMap.set(question.id, answer);
+                    if (answer) {// check if the the user answered this question
+                        const questionID: number = Number(key.replace('.external', ''));
+                        const question: QuestionMgm = this.questionsArrayMap.get(questionID);
+
+                        refinementMap.set(question.id, answer);
+                    }
                 } else if (key.endsWith('.note')) {
                     const note: string = value as string;
-                    const questionID: number = Number(key.replace('.note', ''));
-                    const question: QuestionMgm = this.questionsArrayMap.get(questionID);
 
-                    notesMap.set(questionID, note);
+                    if (note) {// check if the the user answered this question
+                        const questionID: number = Number(key.replace('.note', ''));
+                        const question: QuestionMgm = this.questionsArrayMap.get(questionID);
+
+                        notesMap.set(questionID, note);
+                    }
                 }
             }
         );
