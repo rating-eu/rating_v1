@@ -183,8 +183,18 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
                                                 this.externalQuestionnaireStatus.answers.length > 0) {
                                                 this.externalMyAnswers = this.externalQuestionnaireStatus.answers;
 
+                                                console.log('CISOMyAnswers:');
+                                                console.log(this.cisoMyAnswers);
+
+                                                console.log('ExternalMyAnswers:');
+                                                console.log(this.externalMyAnswers);
+
+                                                const formValue: {} = this.myAnswersToFormValue(this.cisoMyAnswers, this.questionsArrayMap, this.externalMyAnswers);
+                                                console.log('FormValue:');
+                                                console.log(formValue);
+
                                                 // Restore the checked status of the Form inputs
-                                                this.form.patchValue(this.myAnswersToFormValue(this.cisoMyAnswers, this.questionsArrayMap, this.externalMyAnswers));
+                                                this.form.patchValue(formValue);
                                             }
                                         }
                                     );
@@ -439,6 +449,9 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
 
         // #2 Create MyAnswers for refinement
         const myRefinementAnswers: MyAnswerMgm[] = this.createMyRefinementAnswers(formDataMap);
+        console.log('MyRefinement answers');
+        console.log(myRefinementAnswers);
+
         // #3 Set the MyAnswers
         questionnaireStatus.answers = myRefinementAnswers;
 
@@ -476,28 +489,49 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
     private myAnswersToFormValue(myCISOAnswers: MyAnswerMgm[], questionsMap: Map<number, QuestionMgm>, myEXTERNALAnswers?: MyAnswerMgm[]) {
         const value = {};
 
-        myCISOAnswers.forEach(
-            (myAnswer) => {
-                // Get the "exact" QUESTION used in the form generation
-                const question = questionsMap.get(myAnswer.question.id);
-                // Get the "exact" ANSWERS used as [VALUE] for the question
-                const answers: AnswerMgm[] = question.answers;
-                let exactAnswer: AnswerMgm;
-                for (const answer of answers) {
-                    if (answer.id === myAnswer.answer.id) {
-                        exactAnswer = answer;
-                        break;
+        if (myCISOAnswers) {
+            myCISOAnswers.forEach(
+                (myAnswer) => {
+                    // Get the "exact" QUESTION used in the form generation
+                    const question = questionsMap.get(myAnswer.question.id);
+                    // Get the "exact" ANSWERS used as [VALUE] for the question
+                    const answers: AnswerMgm[] = question.answers;
+                    let exactAnswer: AnswerMgm;
+                    for (const answer of answers) {
+                        if (answer.id === myAnswer.answer.id) {
+                            exactAnswer = answer;
+                            break;
+                        }
                     }
+
+                    // The CISO's answer
+                    value[String(myAnswer.question.id)] = exactAnswer;
                 }
-                if (myCISOAnswers && !myEXTERNALAnswers) {
-                    value[String(myAnswer.question.id)] = exactAnswer;
-                } else if (myCISOAnswers && myEXTERNALAnswers) {
-                    value[String(myAnswer.question.id)] = exactAnswer;
+            );
+        }
+
+        if (myEXTERNALAnswers) {
+            myEXTERNALAnswers.forEach(
+                (myAnswer) => {
+                    // Get the "exact" QUESTION used in the form generation
+                    const question = questionsMap.get(myAnswer.question.id);
+                    // Get the "exact" ANSWERS used as [VALUE] for the question
+                    const answers: AnswerMgm[] = question.answers;
+                    let exactAnswer: AnswerMgm;
+                    for (const answer of answers) {
+                        if (answer.id === myAnswer.answer.id) {
+                            exactAnswer = answer;
+                            break;
+                        }
+                    }
+
+                    // The EXTERNAL's answer
                     value[String(myAnswer.question.id + '.external')] = exactAnswer;
                     value[String(myAnswer.question.id + '.note')] = myAnswer.note;
                 }
-            }
-        );
+            );
+        }
+
         return value;
     }
 
@@ -513,7 +547,7 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
                 if (answer) {// check if the the user answered this question
                     const question: QuestionMgm = this.questionsArrayMap.get(Number(key));
                     const questionnaire: QuestionnaireMgm = question.questionnaire;
-                    const myAnser: MyAnswerMgm = new MyAnswerMgm(undefined, 'Checked', 0, answer, question, questionnaire, undefined, this.user);
+                    const myAnser: MyAnswerMgm = new MyAnswerMgm(undefined, undefined, 0, answer, question, questionnaire, undefined, this.user);
                     myAnswers.push(myAnser);
                 }
             }
@@ -562,8 +596,10 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
             const note: string = notesMap.get(question.id);
             const refinedAnswer: AnswerMgm = refinementMap.get(question.id);
 
-            const myAnswer: MyAnswerMgm = new MyAnswerMgm(undefined, note, 0, refinedAnswer, question, question.questionnaire, undefined, this.user);
-            myAnswers.push(myAnswer);
+            if (refinedAnswer) {
+                const myAnswer: MyAnswerMgm = new MyAnswerMgm(undefined, note, 0, refinedAnswer, question, question.questionnaire, undefined, this.user);
+                myAnswers.push(myAnswer);
+            }
         });
 
         return myAnswers;
