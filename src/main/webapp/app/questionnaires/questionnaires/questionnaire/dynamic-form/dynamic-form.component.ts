@@ -166,7 +166,6 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
                             if (this.cisoQuestionnaireStatus && this.cisoQuestionnaireStatus.answers && this.cisoQuestionnaireStatus.answers.length > 0) {
                                 this.cisoMyAnswers = this.cisoQuestionnaireStatus.answers;
 
-                                console.log('Patching values of CISO');
                                 // Restore the checked status of the Form inputs
                                 this.form.patchValue(this.myAnswersToFormValue(this.cisoMyAnswers, this.questionsArrayMap));
                             }
@@ -176,15 +175,14 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
                                 this.questionnaireStatusCustomService
                                     .getByRoleSelfAssessmentAndQuestionnaire(DynamicFormComponent.EXTERNAL_ROLE, this.selfAssessment.id, this.questionnaire.id).toPromise()
                                     .then(
-                                        (response2: HttpResponse<QuestionnaireStatusMgm>) => {
-                                            this.externalQuestionnaireStatus = response2.body;
+                                        (response3: HttpResponse<QuestionnaireStatusMgm>) => {
+                                            this.externalQuestionnaireStatus = response3.body;
 
                                             if (this.externalQuestionnaireStatus &&
                                                 this.externalQuestionnaireStatus.answers &&
                                                 this.externalQuestionnaireStatus.answers.length > 0) {
                                                 this.externalMyAnswers = this.externalQuestionnaireStatus.answers;
 
-                                                console.log('Patching values of EXTERNAL');
                                                 // Restore the checked status of the Form inputs
                                                 this.form.patchValue(this.myAnswersToFormValue(this.cisoMyAnswers, this.questionsArrayMap, this.externalMyAnswers));
                                             }
