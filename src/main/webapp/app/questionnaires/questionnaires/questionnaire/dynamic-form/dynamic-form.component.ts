@@ -183,15 +183,7 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
                                                 this.externalQuestionnaireStatus.answers.length > 0) {
                                                 this.externalMyAnswers = this.externalQuestionnaireStatus.answers;
 
-                                                console.log('CISOMyAnswers:');
-                                                console.log(this.cisoMyAnswers);
-
-                                                console.log('ExternalMyAnswers:');
-                                                console.log(this.externalMyAnswers);
-
                                                 const formValue: {} = this.myAnswersToFormValue(this.cisoMyAnswers, this.questionsArrayMap, this.externalMyAnswers);
-                                                console.log('FormValue:');
-                                                console.log(formValue);
 
                                                 // Restore the checked status of the Form inputs
                                                 this.form.patchValue(formValue);
@@ -304,6 +296,14 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
         // #3 Set the MyAnswers
         questionnaireStatus.answers = myAnswers;
 
+        // Calculate the Status of the Questionnaire
+        const status: Status = !(questionnaireStatus.answers) || questionnaireStatus.answers.length === 0 ? Status.EMPTY
+            : questionnaireStatus.answers.length === this.questionsArray.length ? Status.FULL
+                : Status.PENDING;
+
+        // Set the status of the Questionnaire
+        questionnaireStatus.status = status;
+
         let questionnaireStatus$: Observable<HttpResponse<QuestionnaireStatusMgm>> = null;
 
         if (!this.cisoQuestionnaireStatus) {
@@ -388,6 +388,14 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
         // #3 Set the MyAnswers
         questionnaireStatus.answers = myAnswers;
 
+        // Calculate the Status of the Questionnaire
+        const status: Status = !(questionnaireStatus.answers) || questionnaireStatus.answers.length === 0 ? Status.EMPTY
+            : questionnaireStatus.answers.length === this.questionsArray.length ? Status.FULL
+                : Status.PENDING;
+
+        // Set the status of the Questionnaire
+        questionnaireStatus.status = status;
+
         let questionnaireStatus$: Observable<HttpResponse<QuestionnaireStatusMgm>> = null;
 
         if (!this.cisoQuestionnaireStatus) {
@@ -449,11 +457,17 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
 
         // #2 Create MyAnswers for refinement
         const myRefinementAnswers: MyAnswerMgm[] = this.createMyRefinementAnswers(formDataMap);
-        console.log('MyRefinement answers');
-        console.log(myRefinementAnswers);
 
         // #3 Set the MyAnswers
         questionnaireStatus.answers = myRefinementAnswers;
+
+        // Calculate the Status of the Questionnaire
+        const status: Status = !(questionnaireStatus.answers) || questionnaireStatus.answers.length === 0 ? Status.EMPTY
+            : questionnaireStatus.answers.length === this.questionsArray.length ? Status.FULL
+                : Status.PENDING;
+
+        // Set the status of the Questionnaire
+        questionnaireStatus.status = status;
 
         let questionnaireStatus$: Observable<HttpResponse<QuestionnaireStatusMgm>> = null;
 
