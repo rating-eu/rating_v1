@@ -297,8 +297,8 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
         questionnaireStatus.answers = myAnswers;
 
         // Calculate the Status of the Questionnaire
-        const status: Status = this.cisoQuestionnaireStatus.answers.length === 0 ? Status.EMPTY
-            : this.cisoQuestionnaireStatus.answers.length === this.questionsArray.length ? Status.FULL
+        const status: Status = !(questionnaireStatus.answers) || questionnaireStatus.answers.length === 0 ? Status.EMPTY
+            : questionnaireStatus.answers.length === this.questionsArray.length ? Status.FULL
                 : Status.PENDING;
 
         // Set the status of the Questionnaire
@@ -389,8 +389,8 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
         questionnaireStatus.answers = myAnswers;
 
         // Calculate the Status of the Questionnaire
-        const status: Status = this.cisoQuestionnaireStatus.answers.length === 0 ? Status.EMPTY
-            : this.cisoQuestionnaireStatus.answers.length === this.questionsArray.length ? Status.FULL
+        const status: Status = !(questionnaireStatus.answers) || questionnaireStatus.answers.length === 0 ? Status.EMPTY
+            : questionnaireStatus.answers.length === this.questionsArray.length ? Status.FULL
                 : Status.PENDING;
 
         // Set the status of the Questionnaire
@@ -462,8 +462,8 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
         questionnaireStatus.answers = myRefinementAnswers;
 
         // Calculate the Status of the Questionnaire
-        const status: Status = this.externalQuestionnaireStatus.answers.length === 0 ? Status.EMPTY
-            : this.externalQuestionnaireStatus.answers.length === this.questionsArray.length ? Status.FULL
+        const status: Status = !(questionnaireStatus.answers) || questionnaireStatus.answers.length === 0 ? Status.EMPTY
+            : questionnaireStatus.answers.length === this.questionsArray.length ? Status.FULL
                 : Status.PENDING;
 
         // Set the status of the Questionnaire
