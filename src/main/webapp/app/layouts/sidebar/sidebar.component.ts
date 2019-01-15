@@ -214,7 +214,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                                 routerLink: ['/impact-evaluation']
                             },
                             {
-                                label: 'Estimation of the AttackRelatedCosts',
+                                label: 'Estimation of the Attack Related Costs',
                                 routerLink: ['/impact-evaluation/attack-related-costs-estimation']
                             }
                         ]
