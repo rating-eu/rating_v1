@@ -304,6 +304,14 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
         // #3 Set the MyAnswers
         questionnaireStatus.answers = myAnswers;
 
+        // Calculate the Status of the Questionnaire
+        const status: Status = this.cisoQuestionnaireStatus.answers.length === 0 ? Status.EMPTY
+            : this.cisoQuestionnaireStatus.answers.length === this.questionsArray.length ? Status.FULL
+                : Status.PENDING;
+
+        // Set the status of the Questionnaire
+        questionnaireStatus.status = status;
+
         let questionnaireStatus$: Observable<HttpResponse<QuestionnaireStatusMgm>> = null;
 
         if (!this.cisoQuestionnaireStatus) {
@@ -388,6 +396,14 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
         // #3 Set the MyAnswers
         questionnaireStatus.answers = myAnswers;
 
+        // Calculate the Status of the Questionnaire
+        const status: Status = this.cisoQuestionnaireStatus.answers.length === 0 ? Status.EMPTY
+            : this.cisoQuestionnaireStatus.answers.length === this.questionsArray.length ? Status.FULL
+                : Status.PENDING;
+
+        // Set the status of the Questionnaire
+        questionnaireStatus.status = status;
+
         let questionnaireStatus$: Observable<HttpResponse<QuestionnaireStatusMgm>> = null;
 
         if (!this.cisoQuestionnaireStatus) {
@@ -454,6 +470,14 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
 
         // #3 Set the MyAnswers
         questionnaireStatus.answers = myRefinementAnswers;
+
+        // Calculate the Status of the Questionnaire
+        const status: Status = this.externalQuestionnaireStatus.answers.length === 0 ? Status.EMPTY
+            : this.externalQuestionnaireStatus.answers.length === this.questionsArray.length ? Status.FULL
+                : Status.PENDING;
+
+        // Set the status of the Questionnaire
+        questionnaireStatus.status = status;
 
         let questionnaireStatus$: Observable<HttpResponse<QuestionnaireStatusMgm>> = null;
 
