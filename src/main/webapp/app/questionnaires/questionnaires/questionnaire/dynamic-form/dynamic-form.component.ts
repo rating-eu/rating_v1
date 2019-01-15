@@ -105,7 +105,7 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
      */
     ngOnInit() {
         this.cisoEditMode = true;
-        this.externalAuditEditMode = false;
+        this.externalAuditEditMode = true;
 
         this.selfAssessment = this.selfAssessmentService.getSelfAssessment();
 
@@ -437,17 +437,33 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
          * @type {Map<string, AnswerMgm>}
          */
         const formDataMap: Map<string, AnswerMgm | string> = FormUtils.formToMap<AnswerMgm | string>(this.form);
-        // #1 Create the status of the questionnaire
-        let questionnaireStatus = new QuestionnaireStatusMgm(undefined, Status.FULL, null, null, this.selfAssessment, this.questionnaire, this.role, this.user, []);
+
+        // #1 Create the QuestionnaireStatus or update the existing one
+        let questionnaireStatus = null;
+
+        if (!this.externalQuestionnaireStatus) {
+            questionnaireStatus = new QuestionnaireStatusMgm(undefined, Status.FULL, null, null, this.selfAssessment, this.questionnaire, this.role, this.user, []);
+        } else {
+            questionnaireStatus = this.externalQuestionnaireStatus;
+        }
 
         // #2 Create MyAnswers for refinement
         const myRefinementAnswers: MyAnswerMgm[] = this.createMyRefinementAnswers(formDataMap);
-
         // #3 Set the MyAnswers
         questionnaireStatus.answers = myRefinementAnswers;
 
+        let questionnaireStatus$: Observable<HttpResponse<QuestionnaireStatusMgm>> = null;
+
+        if (!this.externalQuestionnaireStatus) {
+            // Create a new QStatus
+            questionnaireStatus$ = this.questionnaireStatusService.create(questionnaireStatus);
+        } else {
+            // Update the existing QStatus
+            questionnaireStatus$ = this.questionnaireStatusService.update(questionnaireStatus);
+        }
+
         // #4 Persist the QuestionnaireStatus
-        this.questionnaireStatusService.create(questionnaireStatus).toPromise()
+        questionnaireStatus$.toPromise()
             .then((response: HttpResponse<QuestionnaireStatusMgm>) => {
                 questionnaireStatus = response.body;
 
