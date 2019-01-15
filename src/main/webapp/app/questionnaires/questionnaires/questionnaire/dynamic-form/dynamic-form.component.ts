@@ -1,6 +1,6 @@
-import {Component, Input, OnDestroy, OnInit, Self} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {QuestionControlService} from './services/question-control.service';
-import {AbstractControl, FormGroup} from '@angular/forms';
+import {FormGroup} from '@angular/forms';
 import {QuestionMgm, QuestionMgmService} from '../../../../entities/question-mgm';
 import {AnswerMgm, AnswerMgmService} from '../../../../entities/answer-mgm';
 import {ThreatAgentMgm, ThreatAgentMgmService} from '../../../../entities/threat-agent-mgm';
@@ -10,13 +10,15 @@ import {Couple} from '../../../../utils/couple.class';
 import {DatasharingService} from '../../../../datasharing/datasharing.service';
 import {Router} from '@angular/router';
 import {
-    QuestionnaireStatusMgm, QuestionnaireStatusMgmService, Role
+    QuestionnaireStatusMgm,
+    QuestionnaireStatusMgmService,
+    Role
 } from '../../../../entities/questionnaire-status-mgm';
 import {Status} from '../../../../entities/enumerations/QuestionnaireStatus.enum';
 import {QuestionnaireMgm} from '../../../../entities/questionnaire-mgm';
 import {QuestionnairePurpose} from '../../../../entities/enumerations/QuestionnairePurpose.enum';
 import {MyAnswerMgm, MyAnswerMgmService} from '../../../../entities/my-answer-mgm';
-import {AccountService, Principal, User, UserService} from '../../../../shared';
+import {AccountService, User, UserService} from '../../../../shared';
 import {SelfAssessmentMgm, SelfAssessmentMgmService} from '../../../../entities/self-assessment-mgm';
 import {Subscription} from 'rxjs/Subscription';
 import {FormUtils} from '../../../utils/FormUtils';
@@ -41,8 +43,6 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
 
     public loading = false;
     public debug = false;
-    // public cisoEditMode: boolean;
-    // public externalAuditEditMode: boolean;
 
     roleEnum = Role;
     purposeEnum = QuestionnairePurpose;
@@ -152,51 +152,47 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
             }
         );
 
-        const cisoQuestionnaireStatus$ = user$.mergeMap(
+        user$.toPromise().then(
             (response: HttpResponse<User>) => {
                 this.user = response.body;
 
-                // Fetch the QuestionnaireStatus of the CISO
-                return this.questionnaireStatusCustomService
-                    .getByRoleSelfAssessmentAndQuestionnaire(DynamicFormComponent.CISO_ROLE, this.selfAssessment.id, this.questionnaire.id);
-            }
-        );
+                this.questionnaireStatusCustomService
+                    .getByRoleSelfAssessmentAndQuestionnaire(DynamicFormComponent.CISO_ROLE, this.selfAssessment.id, this.questionnaire.id)
+                    .toPromise()
+                    .then(
+                        (response2: HttpResponse<QuestionnaireStatusMgm>) => {
+                            this.cisoQuestionnaireStatus = response2.body;
 
-        cisoQuestionnaireStatus$.subscribe(
-            (response: HttpResponse<QuestionnaireStatusMgm>) => {
-                this.cisoQuestionnaireStatus = response.body;
+                            if (this.cisoQuestionnaireStatus && this.cisoQuestionnaireStatus.answers && this.cisoQuestionnaireStatus.answers.length > 0) {
+                                this.cisoMyAnswers = this.cisoQuestionnaireStatus.answers;
 
-                if (this.cisoQuestionnaireStatus && this.cisoQuestionnaireStatus.answers) {
-                    this.cisoMyAnswers = this.cisoQuestionnaireStatus.answers;
+                                console.log('Patching values of CISO');
+                                // Restore the checked status of the Form inputs
+                                this.form.patchValue(this.myAnswersToFormValue(this.cisoMyAnswers, this.questionsArrayMap));
+                            }
 
-                    // Restore the checked status of the Form inputs
-                    this.form.patchValue(this.myAnswersToFormValue(this.cisoMyAnswers, this.questionsArrayMap));
-                } else {
-                    // Enable the edit mode only if there is no QuestionnaireStatus in DB
-                    // this.cisoEditMode = true;
-                }
-            }
-        );
+                            if (this.questionnaire.purpose === QuestionnairePurpose.SELFASSESSMENT) {
 
-        const externalQuestionnaireStatus$ = user$.mergeMap(
-            (response: HttpResponse<User>) => {
-                this.user = response.body;
-                // Fetch the QuestionnaireStatus of the CISO
-                return this.questionnaireStatusCustomService
-                    .getByRoleSelfAssessmentAndQuestionnaire(DynamicFormComponent.EXTERNAL_ROLE, this.selfAssessment.id, this.questionnaire.id);
-            }
-        );
+                                this.questionnaireStatusCustomService
+                                    .getByRoleSelfAssessmentAndQuestionnaire(DynamicFormComponent.EXTERNAL_ROLE, this.selfAssessment.id, this.questionnaire.id).toPromise()
+                                    .then(
+                                        (response2: HttpResponse<QuestionnaireStatusMgm>) => {
+                                            this.externalQuestionnaireStatus = response2.body;
 
-        externalQuestionnaireStatus$.subscribe(
-            (response: HttpResponse<QuestionnaireStatusMgm>) => {
-                this.externalQuestionnaireStatus = response.body;
+                                            if (this.externalQuestionnaireStatus &&
+                                                this.externalQuestionnaireStatus.answers &&
+                                                this.externalQuestionnaireStatus.answers.length > 0) {
+                                                this.externalMyAnswers = this.externalQuestionnaireStatus.answers;
 
-                if (this.externalQuestionnaireStatus && this.externalQuestionnaireStatus.answers) {
-                    this.externalMyAnswers = this.externalQuestionnaireStatus.answers;
-
-                    // Restore the checked status of the Form inputs
-                    this.form.patchValue(this.myAnswersToFormValue(this.externalMyAnswers, this.questionsArrayMap, false));
-                }
+                                                console.log('Patching values of EXTERNAL');
+                                                // Restore the checked status of the Form inputs
+                                                this.form.patchValue(this.myAnswersToFormValue(this.cisoMyAnswers, this.questionsArrayMap, this.externalMyAnswers));
+                                            }
+                                        }
+                                    );
+                            }
+                        }
+                    );
             }
         );
     }
@@ -561,10 +557,10 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
         );
     }
 
-    private myAnswersToFormValue(myAnswers: MyAnswerMgm[], questionsMap: Map<number, QuestionMgm>, ciso = true) {
+    private myAnswersToFormValue(myCISOAnswers: MyAnswerMgm[], questionsMap: Map<number, QuestionMgm>, myEXTERNALAnswers?: MyAnswerMgm[]) {
         const value = {};
 
-        myAnswers.forEach(
+        myCISOAnswers.forEach(
             (myAnswer) => {
                 // Get the "exact" QUESTION used in the form generation
                 const question = questionsMap.get(myAnswer.question.id);
@@ -577,11 +573,15 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
                         break;
                     }
                 }
-                if (ciso) {
+                if (!myEXTERNALAnswers) {
                     value[String(myAnswer.question.id)] = exactAnswer;
                 } else {
+                    value[String(myAnswer.question.id)] = exactAnswer;
                     value[String(myAnswer.question.id + '.external')] = exactAnswer;
                     value[String(myAnswer.question.id + '.note')] = myAnswer.note;
+
+                    console.log('Else --> FormValue:');
+                    console.log(value);
                 }
             }
         );
