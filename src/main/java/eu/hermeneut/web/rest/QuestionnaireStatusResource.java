@@ -1,6 +1,7 @@
 package eu.hermeneut.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import eu.hermeneut.aop.annotation.KafkaRiskProfileHook;
 import eu.hermeneut.domain.QuestionnaireStatus;
 import eu.hermeneut.domain.enumeration.QuestionnairePurpose;
 import eu.hermeneut.service.QuestionnaireStatusService;
@@ -46,6 +47,7 @@ public class QuestionnaireStatusResource {
      */
     @PostMapping("/questionnaire-statuses")
     @Timed
+    @KafkaRiskProfileHook
     public ResponseEntity<QuestionnaireStatus> createQuestionnaireStatus(@Valid @RequestBody QuestionnaireStatus questionnaireStatus) throws URISyntaxException {
         log.debug("REST request to save QuestionnaireStatus : {}", questionnaireStatus);
         if (questionnaireStatus.getId() != null) {
@@ -75,6 +77,7 @@ public class QuestionnaireStatusResource {
      */
     @PutMapping("/questionnaire-statuses")
     @Timed
+    @KafkaRiskProfileHook
     public ResponseEntity<QuestionnaireStatus> updateQuestionnaireStatus(@Valid @RequestBody QuestionnaireStatus questionnaireStatus) throws URISyntaxException {
         log.debug("REST request to update QuestionnaireStatus : {}", questionnaireStatus);
         if (questionnaireStatus.getId() == null) {

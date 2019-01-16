@@ -1,7 +1,9 @@
 package eu.hermeneut.aop.kafka;
 
 import eu.hermeneut.domain.MyAsset;
+import eu.hermeneut.domain.QuestionnaireStatus;
 import eu.hermeneut.domain.SelfAssessment;
+import eu.hermeneut.domain.enumeration.Status;
 import eu.hermeneut.kafka.service.MessageSenderService;
 import eu.hermeneut.service.SelfAssessmentService;
 import org.aspectj.lang.JoinPoint;
@@ -52,8 +54,15 @@ public class KafkaMessagingAspect {
                 selfAssessment = this.selfAssessmentService.findOne((Long) args[0]);
             } else if (args[0] instanceof MyAsset) {
                 MyAsset myAsset = (MyAsset) args[0];
+
                 if (myAsset.getImpact() != null && myAsset.getImpact() > 0) {
-                    selfAssessment = ((MyAsset) args[0]).getSelfAssessment();
+                    selfAssessment = myAsset.getSelfAssessment();
+                }
+            } else if (args[0] instanceof QuestionnaireStatus) {
+                QuestionnaireStatus questionnaireStatus = (QuestionnaireStatus) args[0];
+
+                if (questionnaireStatus.getStatus().equals(Status.PENDING) || questionnaireStatus.getStatus().equals(Status.PENDING)) {
+                    selfAssessment = questionnaireStatus.getSelfAssessment();
                 }
             }
         }
