@@ -90,7 +90,14 @@ public class AttackCostResource {
     public List<AttackCost> getAllAttackCosts() {
         log.debug("REST request to get all AttackCosts");
         return attackCostService.findAll();
-        }
+    }
+
+    @GetMapping("/attack-costs/self-assessment/{selfAssessmentID}")
+    @Timed
+    public List<AttackCost> getAttackCostsBySelfAssessment(@PathVariable Long selfAssessmentID) {
+        log.debug("REST request to get all AttackCosts by SelfAssessment ID");
+        return attackCostService.findAllBySelfAssessment(selfAssessmentID);
+    }
 
     /**
      * GET  /attack-costs/:id : get the "id" attackCost.
