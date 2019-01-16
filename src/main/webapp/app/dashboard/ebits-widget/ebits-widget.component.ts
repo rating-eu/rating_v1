@@ -49,6 +49,7 @@ export class EbitsWidgetComponent implements OnInit {
       }
     }).catch(() => {
       this.wp3Status = null;
+      this.loading = false;
       this.ebitInfo = [];
     });
   }
