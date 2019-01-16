@@ -52,6 +52,8 @@ export class LossesWidgetComponent implements OnInit {
         for (const impact of this.wp3Status.splittingLosses) {
           if (!this.companySector && impact.sectorType.toString() !== MySectorType.GLOBAL.toString()) {
             this.companySector = impact.sectorType.toString().charAt(0).toUpperCase() + impact.sectorType.toString().slice(1).toLowerCase();
+          } else {
+            this.companySector = 'Global';
           }
           switch (impact.categoryType.toString()) {
             case MyCategoryType.IP.toString(): {
