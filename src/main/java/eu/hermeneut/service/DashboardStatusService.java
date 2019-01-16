@@ -1,15 +1,17 @@
 package eu.hermeneut.service;
 
+import eu.hermeneut.domain.enumeration.Status;
+
 public interface DashboardStatusService {
-    boolean isAssetClusteringDone(Long selfAssessmentID);
+    Status getAssetClusteringStatus(Long selfAssessmentID);
 
-    boolean isIdentifyThreatAgentsDone(Long selfAssessmentID);
+    Status getIdentifyThreatAgentsStatus(Long selfAssessmentID);
 
-    boolean isAssessVulnerabilitiesDone(Long selfAssessmentID);
+    Status getAssessVulnerabilitiesStatus(Long selfAssessmentID);
 
-    boolean isRefineVulnerabilitiesDone(Long selfAssessmentID);
+    Status getRefineVulnerabilitiesStatus(Long selfAssessmentID);
 
-    boolean isImpactEvaluationDone(Long selfAssessmentID);
+    Status getImpactEvaluationStatus(Long selfAssessmentID);
 
-    boolean isRiskEvaluationDone(Long selfAssessmentID);
+    Status getRiskEvaluationStatus(Long selfAssessmentID);
 }

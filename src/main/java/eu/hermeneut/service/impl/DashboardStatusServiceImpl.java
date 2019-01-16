@@ -25,12 +25,6 @@ public class DashboardStatusServiceImpl implements DashboardStatusService {
     private MyAssetService myAssetService;
 
     @Autowired
-    private DirectAssetService directAssetService;
-
-    @Autowired
-    private IndirectAssetService indirectAssetService;
-
-    @Autowired
     private QuestionnaireStatusService questionnaireStatusService;
 
     @Autowired
@@ -40,72 +34,72 @@ public class DashboardStatusServiceImpl implements DashboardStatusService {
     private WP4StepsService wp4StepsService;
 
     @Override
-    public boolean isAssetClusteringDone(Long selfAssessmentID) {
-        boolean isDone = false;
+    public Status getAssetClusteringStatus(Long selfAssessmentID) {
+        Status status = Status.EMPTY;
         SelfAssessment selfAssessment = this.selfAssessmentService.findOne(selfAssessmentID);
 
         if (selfAssessment != null) {
             List<MyAsset> myAssets = this.myAssetService.findAllBySelfAssessment(selfAssessmentID);
 
-            isDone = !myAssets.isEmpty();
+            status = !myAssets.isEmpty() ? Status.FULL : Status.EMPTY;
         }
 
-        return isDone;
+        return status;
     }
 
     @Override
-    public boolean isIdentifyThreatAgentsDone(Long selfAssessmentID) {
-        boolean isDone = false;
+    public Status getIdentifyThreatAgentsStatus(Long selfAssessmentID) {
+        Status status = Status.EMPTY;
         SelfAssessment selfAssessment = this.selfAssessmentService.findOne(selfAssessmentID);
 
         if (selfAssessment != null) {
             QuestionnaireStatus questionnaireStatus = this.questionnaireStatusService.findAllBySelfAssessmentAndQuestionnairePurpose(selfAssessmentID, QuestionnairePurpose.ID_THREAT_AGENT).stream().findFirst().orElse(null);
 
-            isDone = questionnaireStatus != null && (questionnaireStatus.getStatus().equals(Status.FULL) || questionnaireStatus.getStatus().equals(Status.PENDING));
+            status = questionnaireStatus != null ? questionnaireStatus.getStatus() : Status.EMPTY;
         }
 
-        return isDone;
+        return status;
     }
 
     @Override
-    public boolean isAssessVulnerabilitiesDone(Long selfAssessmentID) {
-        boolean isDone = false;
+    public Status getAssessVulnerabilitiesStatus(Long selfAssessmentID) {
+        Status status = Status.EMPTY;
         SelfAssessment selfAssessment = this.selfAssessmentService.findOne(selfAssessmentID);
 
         if (selfAssessment != null) {
             QuestionnaireStatus questionnaireStatus = this.questionnaireStatusService.findBySelfAssessmentRoleAndQuestionnairePurpose(selfAssessmentID, Role.ROLE_CISO, QuestionnairePurpose.SELFASSESSMENT);
 
-            isDone = questionnaireStatus != null && (questionnaireStatus.getStatus().equals(Status.FULL) || questionnaireStatus.getStatus().equals(Status.PENDING));
+            status = questionnaireStatus != null ? questionnaireStatus.getStatus() : Status.EMPTY;
         }
 
-        return isDone;
+        return status;
     }
 
     @Override
-    public boolean isRefineVulnerabilitiesDone(Long selfAssessmentID) {
-        boolean isDone = false;
+    public Status getRefineVulnerabilitiesStatus(Long selfAssessmentID) {
+        Status status = Status.EMPTY;
         SelfAssessment selfAssessment = this.selfAssessmentService.findOne(selfAssessmentID);
 
         if (selfAssessment != null) {
             QuestionnaireStatus questionnaireStatus = this.questionnaireStatusService.findBySelfAssessmentRoleAndQuestionnairePurpose(selfAssessmentID, Role.ROLE_EXTERNAL_AUDIT, QuestionnairePurpose.SELFASSESSMENT);
 
-            isDone = questionnaireStatus != null && (questionnaireStatus.getStatus().equals(Status.FULL) || questionnaireStatus.getStatus().equals(Status.PENDING));
+            status = questionnaireStatus != null ? questionnaireStatus.getStatus() : Status.EMPTY;
         }
 
-        return isDone;
+        return status;
     }
 
     @Override
-    public boolean isImpactEvaluationDone(Long selfAssessmentID) {
+    public Status getImpactEvaluationStatus(Long selfAssessmentID) {
         //ImpactEvaluationStatus exists
-        boolean isDone = false;
+        Status status = Status.EMPTY;
         SelfAssessment selfAssessment = this.selfAssessmentService.findOne(selfAssessmentID);
 
         if (selfAssessment != null) {
             try {
                 ImpactEvaluationStatus impactEvaluationStatus = this.dashboardService.getImpactEvaluationStatus(selfAssessmentID);
 
-                isDone = impactEvaluationStatus != null;
+                status = impactEvaluationStatus != null ? Status.FULL : Status.EMPTY;
             } catch (NullInputException e) {
                 e.printStackTrace();
             } catch (NotFoundException e) {
@@ -113,13 +107,13 @@ public class DashboardStatusServiceImpl implements DashboardStatusService {
             }
         }
 
-        return isDone;
+        return status;
     }
 
     @Override
-    public boolean isRiskEvaluationDone(Long selfAssessmentID) {
+    public Status getRiskEvaluationStatus(Long selfAssessmentID) {
         //There exists 1+ MyAsset with impact != null && MyAsset.attackChances.size > 0
-        boolean isDone = false;
+        Status status = Status.EMPTY;
         SelfAssessment selfAssessment = this.selfAssessmentService.findOne(selfAssessmentID);
 
         if (selfAssessment != null) {
@@ -132,7 +126,7 @@ public class DashboardStatusServiceImpl implements DashboardStatusService {
                             List<MyAssetAttackChance> myAssetAttackChances = this.wp4StepsService.getAttackChances(selfAssessmentID, myAsset.getId());
 
                             if (myAssetAttackChances != null && !myAssetAttackChances.isEmpty()) {
-                                isDone = true;
+                                status = Status.FULL;
                                 break;
                             }
                         } catch (Exception e) {
@@ -143,6 +137,6 @@ public class DashboardStatusServiceImpl implements DashboardStatusService {
             }
         }
 
-        return isDone;
+        return status;
     }
 }
