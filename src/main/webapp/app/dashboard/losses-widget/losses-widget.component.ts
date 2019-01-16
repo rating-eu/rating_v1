@@ -57,33 +57,27 @@ export class LossesWidgetComponent implements OnInit {
           }
           switch (impact.categoryType.toString()) {
             case MyCategoryType.IP.toString(): {
-              if (impact.sectorType.toString() !== MySectorType.GLOBAL.toString()) {
-                this.tableInfo.push({
-                  splitting: 'Intellectual Properties',
-                  value: Math.round(impact.loss * 100) / 100,
-                  type: 'IP'
-                });
-              }
+              this.tableInfo.push({
+                splitting: 'Intellectual Properties',
+                value: Math.round(impact.loss * 100) / 100,
+                type: 'IP'
+              });
               break;
             }
             case MyCategoryType.KEY_COMP.toString(): {
-              if (impact.sectorType.toString() !== MySectorType.GLOBAL.toString()) {
-                this.tableInfo.push({
-                  splitting: 'Key Competences',
-                  value: Math.round(impact.loss * 100) / 100,
-                  type: 'KEY_COMP'
-                });
-              }
+              this.tableInfo.push({
+                splitting: 'Key Competences',
+                value: Math.round(impact.loss * 100) / 100,
+                type: 'KEY_COMP'
+              });
               break;
             }
             case MyCategoryType.ORG_CAPITAL.toString(): {
-              if (impact.sectorType.toString() !== MySectorType.GLOBAL.toString()) {
-                this.tableInfo.push({
-                  splitting: 'Organizational Capital (Reputation & Brand included )',
-                  value: Math.round(impact.loss * 100) / 100,
-                  type: 'ORG_CAPITAL'
-                });
-              }
+              this.tableInfo.push({
+                splitting: 'Organizational Capital (Reputation & Brand included )',
+                value: Math.round(impact.loss * 100) / 100,
+                type: 'ORG_CAPITAL'
+              });
               break;
             }
             // TODO case with Data (calculated by D4.3 methodology)
