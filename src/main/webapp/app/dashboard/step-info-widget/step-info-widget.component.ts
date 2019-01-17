@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { DashboardService, DashboardStatus } from '../dashboard.service';
+import { DashboardService, DashboardStatus, Status } from '../dashboard.service';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
@@ -12,11 +12,11 @@ export class StepInfoWidgetComponent implements OnInit {
   public loading = false;
   public isCollapsed = false;
 
-  public assetClusteringStatus = false;
-  public identifyThreatAgentsStatus = false;
-  public assessVulnerablitiesStatus = false;
-  public impactEvaluationStatus = false;
-  public riskEvaluationStatus = false;
+  public assetClusteringStatus: string;
+  public identifyThreatAgentsStatus: string;
+  public assessVulnerablitiesStatus: string;
+  public impactEvaluationStatus: string;
+  public riskEvaluationStatus: string;
   public alertMessage: string;
 
   private closeResult: string;
@@ -40,11 +40,11 @@ export class StepInfoWidgetComponent implements OnInit {
 
   private updateStatus(status: DashboardStatus) {
     if (status) {
-      this.assetClusteringStatus = status.assetClusteringStatus;
-      this.identifyThreatAgentsStatus = status.identifyThreatAgentsStatus;
-      this.assessVulnerablitiesStatus = status.assessVulnerablitiesStatus;
-      this.impactEvaluationStatus = status.impactEvaluationStatus;
-      this.riskEvaluationStatus = status.riskEvaluationStatus;
+      this.assetClusteringStatus = status.assetClusteringStatus ? status.assetClusteringStatus.toString() : Status.EMPTY.toString();
+      this.identifyThreatAgentsStatus = status.identifyThreatAgentsStatus ? status.identifyThreatAgentsStatus.toString() : Status.EMPTY.toString();
+      this.assessVulnerablitiesStatus = status.assessVulnerablitiesStatus ? status.assessVulnerablitiesStatus.toString() : Status.EMPTY.toString();
+      this.impactEvaluationStatus = status.impactEvaluationStatus ? status.impactEvaluationStatus.toString() : Status.EMPTY.toString();
+      this.riskEvaluationStatus = status.riskEvaluationStatus ? status.riskEvaluationStatus.toString() : Status.EMPTY.toString();
     }
   }
 
@@ -52,7 +52,7 @@ export class StepInfoWidgetComponent implements OnInit {
     this.linkAfterModal = link;
     if (message) {
       this.alertMessage = message;
-    }else{
+    } else {
       this.alertMessage = null;
     }
     this.modalService.open(content, {}).result.then((result) => {

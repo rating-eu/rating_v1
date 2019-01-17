@@ -18,7 +18,7 @@ import { BaseEntity } from '../../shared';
 import { AnswerMgm } from '../../entities/answer-mgm';
 import * as CryptoJS from 'crypto-js';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
-import { DashboardService, DashboardStatus } from '../dashboard.service';
+import { DashboardService, DashboardStatus, Status } from '../dashboard.service';
 
 @Component({
   selector: 'jhi-threat-agents-widget',
@@ -154,7 +154,8 @@ export class ThreatAgentsWidgetComponent implements OnInit, OnDestroy {
     );
 
     this.dashService.getStatusFromServer(this.selfAssessment, this.dashboardStatus.IDENTIFY_THREAT_AGENTS).toPromise().then((res) => {
-      this.status.identifyThreatAgentsStatus = res;
+      this.status.identifyThreatAgentsStatus = Status[res];
+      console.log(this.status.identifyThreatAgentsStatus);
       this.dashService.updateStatus(this.status);
     });
   }

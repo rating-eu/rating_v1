@@ -33,13 +33,13 @@
             <td>First step of the process that aims at describing the company domain in terms of owned assets. In other
               terms this phase responds to the question "What do I own?”</td>
             <td class="text-center">
-              <i *ngIf="assetClusteringStatus" style="color: green" class="fa fa-check" aria-hidden="true"></i>
-              <i *ngIf="!assetClusteringStatus" style="color: orange" class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+              <i *ngIf="assetClusteringStatus === 'FULL'" style="color: green" class="fa fa-check" aria-hidden="true"></i>
+              <i *ngIf="assetClusteringStatus === 'EMPTY' || assetClusteringStatus === 'PENDING'" style="color: orange" class="fa fa-exclamation-triangle" aria-hidden="true"></i>
             </td>
             <td class="text-center">
-              <a *ngIf="!assetClusteringStatus" [routerLink]="['/identify-asset/asset-clustering']"><i class="fa fa-plus-square fa-lg"
+              <a *ngIf="assetClusteringStatus === 'EMPTY'" [routerLink]="['/identify-asset/asset-clustering']"><i class="fa fa-plus-square fa-lg"
                   placement="top" ngbTooltip="Create" aria-hidden="true"></i></a>
-              <ng-container *ngIf="assetClusteringStatus">
+              <ng-container *ngIf="assetClusteringStatus === 'PENDING' || assetClusteringStatus === 'FULL'">
                 <a href="javascript:void(0)" (click)="open(alert,'/identify-asset/asset-clustering')"><i
                     placement="top" ngbTooltip="Edit" class="fa fa-pencil-square-o fa-lg" aria-hidden="true"></i></a>
               </ng-container>
@@ -51,14 +51,14 @@
               as a base what emerged from asset clustering. This phase responds to the questions: “Who would attack my
               company?” and “Why somebody should attack my company?”</td>
             <td class="text-center">
-              <i *ngIf="identifyThreatAgentsStatus" style="color: green" class="fa fa-check" aria-hidden="true"></i>
-              <i *ngIf="!identifyThreatAgentsStatus" style="color: orange" class="fa fa-exclamation-triangle"
+              <i *ngIf="identifyThreatAgentsStatus === 'FULL'" style="color: green" class="fa fa-check" aria-hidden="true"></i>
+              <i *ngIf="identifyThreatAgentsStatus === 'EMPTY' || identifyThreatAgentsStatus === 'PENDING'" style="color: orange" class="fa fa-exclamation-triangle"
                 aria-hidden="true"></i>
             </td>
             <td class="text-center">
-              <a *ngIf="!identifyThreatAgentsStatus && assetClusteringStatus" [routerLink]="['/identify-threat-agent/questionnaires/ID_THREAT_AGENT']"><i
+              <a *ngIf="identifyThreatAgentsStatus === 'EMPTY' && assetClusteringStatus === 'FULL'" [routerLink]="['/identify-threat-agent/questionnaires/ID_THREAT_AGENT']"><i
                   class="fa fa-plus-square fa-lg" placement="top" ngbTooltip="Create" aria-hidden="true"></i></a>
-              <ng-container *ngIf="identifyThreatAgentsStatus">
+              <ng-container *ngIf="identifyThreatAgentsStatus === 'PENDING' || identifyThreatAgentsStatus === 'FULL'">
                 <a href="javascript:void(0)" (click)="open(alert,'/identify-threat-agent/questionnaires/ID_THREAT_AGENT')"><i
                     placement="top" ngbTooltip="Edit" class="fa fa-pencil-square-o fa-lg" aria-hidden="true"></i></a>
               </ng-container>
@@ -69,14 +69,14 @@
             <td>Measures the weak points of company surface through self-assessment (cyber maturity questionnaire). It
               responds to the question: “Which are the weaknesses of my company?”</td>
             <td class="text-center">
-              <i *ngIf="assessVulnerablitiesStatus" style="color: green" class="fa fa-check" aria-hidden="true"></i>
-              <i *ngIf="!assessVulnerablitiesStatus" style="color: orange" class="fa fa-exclamation-triangle"
+              <i *ngIf="assessVulnerablitiesStatus === 'FULL'" style="color: green" class="fa fa-check" aria-hidden="true"></i>
+              <i *ngIf="assessVulnerablitiesStatus === 'EMPTY' || assessVulnerablitiesStatus === 'PENDING'" style="color: orange" class="fa fa-exclamation-triangle"
                 aria-hidden="true"></i>
             </td>
             <td class="text-center">
-              <a *ngIf="!assessVulnerablitiesStatus && identifyThreatAgentsStatus" [routerLink]="['/evaluate-weakness/questionnaires/SELFASSESSMENT']"><i
+              <a *ngIf="assessVulnerablitiesStatus === 'EMPTY' && identifyThreatAgentsStatus === 'FULL'" [routerLink]="['/evaluate-weakness/questionnaires/SELFASSESSMENT']"><i
                   class="fa fa-plus-square fa-lg" placement="top" ngbTooltip="Create" aria-hidden="true"></i></a>
-              <ng-container *ngIf="assessVulnerablitiesStatus">
+              <ng-container *ngIf="assessVulnerablitiesStatus === 'PENDING' || assessVulnerablitiesStatus === 'FULL'">
                 <a href="javascript:void(0)" (click)="open(alert,'/evaluate-weakness/questionnaires/SELFASSESSMENT')"><i
                     placement="top" ngbTooltip="Edit" class="fa fa-pencil-square-o fa-lg" aria-hidden="true"></i></a>
               </ng-container>
@@ -86,13 +86,13 @@
             <td>Impact Evaluation</td>
             <td>Measuring the impact; "Measuring the impact of cyberattacks on firms' intangible assets"</td>
             <td class="text-center">
-              <i *ngIf="impactEvaluationStatus" style="color: green" class="fa fa-check" aria-hidden="true"></i>
-              <i *ngIf="!impactEvaluationStatus" style="color: orange" class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+              <i *ngIf="impactEvaluationStatus === 'FULL'" style="color: green" class="fa fa-check" aria-hidden="true"></i>
+              <i *ngIf="impactEvaluationStatus === 'EMPTY' || impactEvaluationStatus === 'PENDING'" style="color: orange" class="fa fa-exclamation-triangle" aria-hidden="true"></i>
             </td>
             <td class="text-center">
-              <a *ngIf="!impactEvaluationStatus && assessVulnerablitiesStatus" [routerLink]="['/impact-evaluation']"><i class="fa fa-plus-square fa-lg"
+              <a *ngIf="impactEvaluationStatus === 'EMPTY' && assessVulnerablitiesStatus === 'FULL'" [routerLink]="['/impact-evaluation']"><i class="fa fa-plus-square fa-lg"
                   placement="top" ngbTooltip="Create" aria-hidden="true"></i></a>
-              <ng-container *ngIf="impactEvaluationStatus">
+              <ng-container *ngIf="impactEvaluationStatus === 'PENDING' || impactEvaluationStatus === 'FULL'">
                 <a href="javascript:void(0)" (click)="open(alert,'/impact-evaluation')"><i
                     placement="top" ngbTooltip="Edit" class="fa fa-pencil-square-o fa-lg" aria-hidden="true"></i></a>
               </ng-container>
@@ -103,13 +103,13 @@
             <td>Manage your risk based on cost benefit analisys. The general approach includes both qualitative and
               quantitative metodologies based on risk definition (ISO31000) and risk management (ISO31010).</td>
             <td class="text-center">
-              <i *ngIf="riskEvaluationStatus" style="color: green" class="fa fa-check" aria-hidden="true"></i>
-              <i *ngIf="!riskEvaluationStatus" style="color: orange" class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+              <i *ngIf="riskEvaluationStatus === 'FULL'" style="color: green" class="fa fa-check" aria-hidden="true"></i>
+              <i *ngIf="riskEvaluationStatus === 'EMPTY' || riskEvaluationStatus === 'PENDING'" style="color: orange" class="fa fa-exclamation-triangle" aria-hidden="true"></i>
             </td>
             <td class="text-center">
-              <a *ngIf="!riskEvaluationStatus && assessVulnerablitiesStatus" [routerLink]="['/risk-management/risk-evaluation']"><i class="fa fa-plus-square fa-lg"
+              <a *ngIf="riskEvaluationStatus === 'EMPTY' && assessVulnerablitiesStatus === 'FULL'" [routerLink]="['/risk-management/risk-evaluation']"><i class="fa fa-plus-square fa-lg"
                   placement="top" ngbTooltip="Create" aria-hidden="true"></i></a>
-              <ng-container *ngIf="riskEvaluationStatus">
+              <ng-container *ngIf="riskEvaluationStatus === 'PENDING' || riskEvaluationStatus === 'FULL'">
                 <a href="javascript:void(0)" (click)="open(alert,'/risk-management/risk-evaluation')"><i
                     placement="top" ngbTooltip="Edit" class="fa fa-pencil-square-o fa-lg" aria-hidden="true"></i></a>
               </ng-container>
