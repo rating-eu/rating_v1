@@ -8,6 +8,7 @@ import { ImpactEvaluationStatus } from '../../impact-evaluation/model/impact-eva
 import { MyAssetMgm } from '../../entities/my-asset-mgm';
 import { DashboardService, DashboardStatus } from '../dashboard.service';
 import { AssetType } from '../../entities/enumerations/AssetType.enum';
+import { Status } from '../../entities/enumerations/QuestionnaireStatus.enum';
 
 @Component({
   selector: 'jhi-tangible-financial-widget',
@@ -80,7 +81,8 @@ export class TangibleFinancialWidgetComponent implements OnInit {
     });
 
     this.dashService.getStatusFromServer(this.mySelf, this.dashboardStatus.IMPACT_EVALUATION).toPromise().then((res) => {
-      this.status.impactEvaluationStatus = res;
+      this.status.impactEvaluationStatus = Status[res];
+      console.log(this.status.impactEvaluationStatus);
       this.dashService.updateStatus(this.status);
     });
   }

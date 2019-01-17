@@ -11,7 +11,7 @@ import { MyAssetMgm } from '../../entities/my-asset-mgm';
 import { Subscription } from 'rxjs';
 import { JhiEventManager } from 'ng-jhipster';
 import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
-import { DashboardService, DashboardStatus } from '../dashboard.service';
+import { DashboardService, DashboardStatus, Status } from '../dashboard.service';
 
 @Component({
   selector: 'jhi-asset-widget',
@@ -107,7 +107,8 @@ export class AssetWidgetComponent implements OnInit, OnDestroy {
           });
 
         this.dashService.getStatusFromServer(this.mySelf, this.dashboardStatus.ASSET_CLUSTERING).toPromise().then((res) => {
-          this.status.assetClusteringStatus = res;
+          this.status.assetClusteringStatus = Status[res];
+          console.log(this.status.assetClusteringStatus);
           this.dashService.updateStatus(this.status);
         });
       }
