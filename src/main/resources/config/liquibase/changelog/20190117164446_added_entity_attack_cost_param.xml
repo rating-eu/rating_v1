@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <changeSet author="izio (generated)" id="1547743493602-1">
+        <createTable tableName="attack_cost_param">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="attack_cost_paramPK"/>
+            </column>
+            <column name="param_type" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="value" type="numeric(19, 2)"/>
+            <column name="self_assessment_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="izio (generated)" id="1547743493602-2">
+        <addForeignKeyConstraint baseColumnNames="self_assessment_id"
+                                 baseTableName="attack_cost_param"
+                                 constraintName="fk_attack_cost_params_self_asessment"
+                                 deferrable="false"
+                                 initiallyDeferred="false"
+                                 referencedColumnNames="id"
+                                 referencedTableName="self_assessment"
+                                 onDelete="CASCADE"
+        />
+    </changeSet>
+
+    <changeSet author="izio (generated)" id="1547743493602-3">
+        <addUniqueConstraint columnNames="self_assessment_id, param_type"
+                             constraintName="UK_self_assessment_param_type"
+                             tableName="attack_cost_param"/>
+    </changeSet>
+</databaseChangeLog>
