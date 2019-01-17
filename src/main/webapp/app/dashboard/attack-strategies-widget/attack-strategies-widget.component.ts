@@ -62,7 +62,6 @@ export class AttackStrategiesWidgetComponent implements OnInit {
 
     this.dashService.getStatusFromServer(this.mySelf, this.dashboardStatus.ASSESS_VULNERABILITIES).toPromise().then((res) => {
       this.status.assessVulnerablitiesStatus = Status[res];
-      console.log(this.status.assessVulnerablitiesStatus);
       this.dashService.updateStatus(this.status);
     });
   }

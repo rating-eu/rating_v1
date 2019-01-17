@@ -155,7 +155,6 @@ export class ThreatAgentsWidgetComponent implements OnInit, OnDestroy {
 
     this.dashService.getStatusFromServer(this.selfAssessment, this.dashboardStatus.IDENTIFY_THREAT_AGENTS).toPromise().then((res) => {
       this.status.identifyThreatAgentsStatus = Status[res];
-      console.log(this.status.identifyThreatAgentsStatus);
       this.dashService.updateStatus(this.status);
     });
   }
