@@ -26,7 +26,7 @@ import {forkJoin} from 'rxjs/observable/forkJoin';
 import {Observable} from 'rxjs/Observable';
 import {HttpResponse} from '@angular/common/http';
 import {QuestionnaireStatusMgmCustomService} from '../../../../entities/questionnaire-status-mgm/questionnaire-status-mgm.custom.service';
-import {switchMap} from "rxjs/operators";
+import {switchMap} from 'rxjs/operators';
 
 @Component({
     selector: 'jhi-dynamic-form',
@@ -402,17 +402,16 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
             questionnaireStatus$ = this.questionnaireStatusService.update(questionnaireStatus);
         }
 
-        questionnaireStatus$.toPromise().then(
-            (statusResponse: HttpResponse<QuestionnaireStatusMgm>) => {
-                // update the questionnaire status with the ID from the DB
-                questionnaireStatus = statusResponse.body;
-            }
+        const selfAssessment$: Observable<HttpResponse<SelfAssessmentMgm>> = questionnaireStatus$.pipe(
+            switchMap((qStatusResponse: HttpResponse<QuestionnaireStatusMgm>) => {
+                questionnaireStatus = qStatusResponse.body;
+
+                // #4 Update the SelfAssessment
+                this.selfAssessment.user = this.user;
+
+                return this.selfAssessmentService.update(this.selfAssessment);
+            })
         );
-
-        // #4 Update the SelfAssessment
-        this.selfAssessment.user = this.user;
-
-        const selfAssessment$: Observable<HttpResponse<SelfAssessmentMgm>> = this.selfAssessmentService.update(this.selfAssessment);
 
         selfAssessment$.toPromise()
             .then((selfAssessmentResponse: HttpResponse<SelfAssessmentMgm>) => {
