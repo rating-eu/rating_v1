@@ -92,7 +92,7 @@ export class LossesWidgetComponent implements OnInit {
       this.loading = false;
     });
   }
-  
+
   public setAssetCategory(category: string) {
     if (this.selectedCategory === category) {
       this.selectedCategory = undefined;

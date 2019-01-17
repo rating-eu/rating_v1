@@ -1,6 +1,7 @@
 package eu.hermeneut.web.rest.dashboard;
 
 import eu.hermeneut.domain.dashboard.DashboardStep;
+import eu.hermeneut.domain.enumeration.Status;
 import eu.hermeneut.service.DashboardStatusService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,32 +20,32 @@ public class DashboardStatusController {
     private DashboardStatusService statusService;
 
     @GetMapping("{selfAssessmentID}/dashboard/status/{step}")
-    public boolean getDashboardStepStatus(@PathVariable Long selfAssessmentID, @PathVariable DashboardStep step) {
+    public Status getDashboardStepStatus(@PathVariable Long selfAssessmentID, @PathVariable DashboardStep step) {
         LOGGER.info("GET Dashboard Step Status");
         LOGGER.info("SelfAssessmentID: " + selfAssessmentID);
         LOGGER.info("Step: " + step);
 
         switch (step) {
             case ASSET_CLUSTERING: {
-                return this.statusService.isAssetClusteringDone(selfAssessmentID);
+                return this.statusService.getAssetClusteringStatus(selfAssessmentID);
             }
             case IDENTIFY_THREAT_AGENTS: {
-                return this.statusService.isIdentifyThreatAgentsDone(selfAssessmentID);
+                return this.statusService.getIdentifyThreatAgentsStatus(selfAssessmentID);
             }
             case ASSESS_VULNERABILITIES: {
-                return this.statusService.isAssessVulnerabilitiesDone(selfAssessmentID);
+                return this.statusService.getAssessVulnerabilitiesStatus(selfAssessmentID);
             }
             case REFINE_VULNERABILITIES: {
-                return this.statusService.isRefineVulnerabilitiesDone(selfAssessmentID);
+                return this.statusService.getRefineVulnerabilitiesStatus(selfAssessmentID);
             }
             case IMPACT_EVALUATION: {
-                return this.statusService.isImpactEvaluationDone(selfAssessmentID);
+                return this.statusService.getImpactEvaluationStatus(selfAssessmentID);
             }
             case RISK_EVALUATION: {
-                return this.statusService.isRiskEvaluationDone(selfAssessmentID);
+                return this.statusService.getRiskEvaluationStatus(selfAssessmentID);
             }
             default: {
-                return false;
+                return Status.EMPTY;
             }
         }
     }
