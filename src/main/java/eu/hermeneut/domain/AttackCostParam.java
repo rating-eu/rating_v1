@@ -57,12 +57,22 @@ public class AttackCostParam implements Serializable {
         this.id = id;
     }
 
+    public AttackCostParam type(AttackCostParamType type) {
+        this.type = type;
+        return this;
+    }
+
     public AttackCostParamType getType() {
         return type;
     }
 
     public void setType(AttackCostParamType type) {
         this.type = type;
+    }
+
+    public AttackCostParam value(BigDecimal value) {
+        this.value = value;
+        return this;
     }
 
     public BigDecimal getValue() {

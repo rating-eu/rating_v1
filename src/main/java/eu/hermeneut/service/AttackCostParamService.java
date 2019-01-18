@@ -46,4 +46,6 @@ public interface AttackCostParamService {
      * @return the list of entities
      */
     List<AttackCostParam> search(String query);
+
+    List<AttackCostParam> findAllBySelfAssessment(Long selfAssessmentID);
 }

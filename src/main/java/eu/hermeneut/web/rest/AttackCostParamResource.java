@@ -93,6 +93,18 @@ public class AttackCostParamResource {
         }
 
     /**
+     * GET  /attack-cost-params : get all the attackCostParams.
+     *
+     * @return the ResponseEntity with status 200 (OK) and the list of attackCostParams in body
+     */
+    @GetMapping("/{selfAssessmentID}/attack-cost-params")
+    @Timed
+    public List<AttackCostParam> getAllAttackCostParamsBySelfAssessment(@PathVariable Long selfAssessmentID) {
+        log.debug("REST request to get all AttackCostParams by SelfAsssessmentID");
+        return attackCostParamService.findAllBySelfAssessment(selfAssessmentID);
+    }
+
+    /**
      * GET  /attack-cost-params/:id : get the "id" attackCostParam.
      *
      * @param id the id of the attackCostParam to retrieve

@@ -48,4 +48,6 @@ public interface AttackCostService {
      * @return the list of entities
      */
     List<AttackCost> search(String query);
+
+    List<AttackCost> findAllBySelfAssessment(Long selfAssessmentID);
 }
