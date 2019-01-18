@@ -63,51 +63,43 @@ export class AttackRelatedCostsEstimationComponent implements OnInit {
                     let index = _.findIndex(this.attackCostParams, {type: AttackCostParamType.NUMBER_OF_CUSTOMERS});
                     if (index !== -1) {
                         this.customers = this.attackCostParams[index].value;
-                        console.log('OK');
                     }
 
                     index = _.findIndex(this.attackCostParams, {type: AttackCostParamType.NOTIFICATION_COST_PER_CUSTOMER});
                     if (index !== -1) {
                         this.notificationMin = this.attackCostParams[index].min;
                         this.notificationMax = this.attackCostParams[index].max;
-                        console.log('OK');
                     }
 
                     index = _.findIndex(this.attackCostParams, {type: AttackCostParamType.PROTECTION_COST_PER_CUSTOMER});
                     if (index !== -1) {
                         this.protectionMin = this.attackCostParams[index].min;
                         this.protectionMax = this.attackCostParams[index].max;
-                        console.log('OK');
                     }
 
                     index = _.findIndex(this.attackCostParams, {type: AttackCostParamType.EMPLOYEE_COST_PER_HOUR});
                     if (index !== -1) {
                         this.employeeCosts = this.attackCostParams[index].value;
-                        console.log('OK');
                     }
 
                     index = _.findIndex(this.attackCostParams, {type: AttackCostParamType.FRACTION_OF_EMPLOYEES_AFFECTED_BY_OUTAGE});
                     if (index !== -1) {
                         this.fractionEmployee = this.attackCostParams[index].value;
-                        console.log('OK');
                     }
 
                     index = _.findIndex(this.attackCostParams, {type: AttackCostParamType.AVERAGE_REVENUE_PER_HOUR});
                     if (index !== -1) {
                         this.averageRevenue = this.attackCostParams[index].value;
-                        console.log('OK');
                     }
 
                     index = _.findIndex(this.attackCostParams, {type: AttackCostParamType.FRACTION_OF_REVENUE_AFFECTED_BY_OUTAGE});
                     if (index !== -1) {
                         this.fractionRevenue = this.attackCostParams[index].value;
-                        console.log('OK');
                     }
 
                     index = _.findIndex(this.attackCostParams, {type: AttackCostParamType.RECOVERY_COST});
                     if (index !== -1) {
                         this.recoveryCost = this.attackCostParams[index].value;
-                        console.log('OK');
                     }
 
                     this.loadingParams = false;
@@ -265,10 +257,5 @@ export class AttackRelatedCostsEstimationComponent implements OnInit {
             }).catch(() => {
 
         });
-        /*
-        console.log(CostType.COST_OF_IT_DOWNTIME);
-        console.log(this.costs[CostType.COST_OF_IT_DOWNTIME]);
-        */
     }
-
 }
