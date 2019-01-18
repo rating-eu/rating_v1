@@ -42,7 +42,7 @@ public class AttackCostsController {
     @CostQualifier(type = CostType.COST_OF_IT_DOWNTIME)
     private AttackCostCalculator costOfITDowntime;
 
-    @PostMapping("/{selfAssessmentID}/calculate/cost/{type}")
+    @PostMapping("/{selfAssessmentID}/{type}/evaluate-attack-cost")
     @Timed
     @ResponseStatus(HttpStatus.CREATED)
     public AttackCost calculateCost(@PathVariable Long selfAssessmentID, @PathVariable CostType type, @Valid @RequestBody List<AttackCostParam> params) throws IllegalInputException, NotImplementedYetException {
@@ -55,7 +55,7 @@ public class AttackCostsController {
         switch (type) {
             case POST_BREACH_CUSTOMER_PROTECTION_OR_CARE_COSTS: {
                 AttackCost attackCost = this.postBreachCustomerProtection.calculate(params);
-                List<AttackCost> costsByType = this.attackCostService.findAllBySelfAssessmentAndCostType(selfAssessmentID, type);
+                List<AttackCost> costsByType = this.attackCostService.findAllBySelfAssessmentAndCostTypeWithDuplicateTypes(selfAssessmentID, type);
 
                 costsByType.stream().forEach((cost) -> {
                     cost.setCosts(attackCost.getCosts());
@@ -67,7 +67,7 @@ public class AttackCostsController {
             }
             case CUSTOMER_BREACH_NOTIFICATION_COSTS: {
                 AttackCost attackCost = this.customerBreachNotificationCosts.calculate(params);
-                List<AttackCost> costsByType = this.attackCostService.findAllBySelfAssessmentAndCostType(selfAssessmentID, type);
+                List<AttackCost> costsByType = this.attackCostService.findAllBySelfAssessmentAndCostTypeWithDuplicateTypes(selfAssessmentID, type);
 
                 costsByType.stream().forEach((cost) -> {
                     cost.setCosts(attackCost.getCosts());
@@ -79,7 +79,7 @@ public class AttackCostsController {
             }
             case COST_OF_IT_DOWNTIME: {
                 AttackCost attackCost = this.costOfITDowntime.calculate(params);
-                List<AttackCost> costsByType = this.attackCostService.findAllBySelfAssessmentAndCostType(selfAssessmentID, type);
+                List<AttackCost> costsByType = this.attackCostService.findAllBySelfAssessmentAndCostTypeWithDuplicateTypes(selfAssessmentID, type);
 
                 costsByType.stream().forEach((cost) -> {
                     cost.setCosts(attackCost.getCosts());

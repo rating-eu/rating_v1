@@ -50,7 +50,7 @@ public interface AttackCostService {
      */
     List<AttackCost> search(String query);
 
-    List<AttackCost> findAllBySelfAssessment(Long selfAssessmentID);
+    List<AttackCost> findAllUniqueTypesBySelfAssessmentWithNulledID(Long selfAssessmentID);
 
-    List<AttackCost> findAllBySelfAssessmentAndCostType(Long selfAssessmentID, CostType costType);
+    List<AttackCost> findAllBySelfAssessmentAndCostTypeWithDuplicateTypes(Long selfAssessmentID, CostType costType);
 }
