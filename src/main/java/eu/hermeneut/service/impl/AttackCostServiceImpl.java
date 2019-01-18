@@ -1,6 +1,7 @@
 package eu.hermeneut.service.impl;
 
 import eu.hermeneut.domain.MyAsset;
+import eu.hermeneut.domain.enumeration.CostType;
 import eu.hermeneut.service.AttackCostService;
 import eu.hermeneut.domain.AttackCost;
 import eu.hermeneut.repository.AttackCostRepository;
@@ -133,5 +134,14 @@ public class AttackCostServiceImpl implements AttackCostService {
         }));
 
         return attackCosts;
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<AttackCost> findAllBySelfAssessmentAndCostType(Long selfAssessmentID, CostType costType) {
+        log.debug("Request to get all AttackCosts by SelfAssessment ID");
+        List<AttackCost> attackCosts = this.findAllBySelfAssessment(selfAssessmentID);
+
+        return attackCosts.stream().filter((attackCost) -> attackCost.getType().equals(costType)).collect(Collectors.toList());
     }
 }
