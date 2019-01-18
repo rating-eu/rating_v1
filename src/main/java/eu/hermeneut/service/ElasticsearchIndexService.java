@@ -59,6 +59,10 @@ public class ElasticsearchIndexService {
 
     private final AttackCostSearchRepository attackCostSearchRepository;
 
+    private final AttackCostParamRepository attackCostParamRepository;
+
+    private final AttackCostParamSearchRepository attackCostParamSearchRepository;
+
     private final AttackStrategyRepository attackStrategyRepository;
 
     private final AttackStrategySearchRepository attackStrategySearchRepository;
@@ -202,6 +206,8 @@ public class ElasticsearchIndexService {
         AssetCategorySearchRepository assetCategorySearchRepository,
         AttackCostRepository attackCostRepository,
         AttackCostSearchRepository attackCostSearchRepository,
+        AttackCostParamRepository attackCostParamRepository,
+        AttackCostParamSearchRepository attackCostParamSearchRepository,
         AttackStrategyRepository attackStrategyRepository,
         AttackStrategySearchRepository attackStrategySearchRepository,
         CompanyGroupRepository companyGroupRepository,
@@ -277,6 +283,8 @@ public class ElasticsearchIndexService {
         this.assetCategorySearchRepository = assetCategorySearchRepository;
         this.attackCostRepository = attackCostRepository;
         this.attackCostSearchRepository = attackCostSearchRepository;
+        this.attackCostParamRepository = attackCostParamRepository;
+        this.attackCostParamSearchRepository = attackCostParamSearchRepository;
         this.attackStrategyRepository = attackStrategyRepository;
         this.attackStrategySearchRepository = attackStrategySearchRepository;
         this.companyGroupRepository = companyGroupRepository;
@@ -352,6 +360,7 @@ public class ElasticsearchIndexService {
                 reindexForClass(Asset.class, assetRepository, assetSearchRepository);
                 reindexForClass(AssetCategory.class, assetCategoryRepository, assetCategorySearchRepository);
                 reindexForClass(AttackCost.class, attackCostRepository, attackCostSearchRepository);
+                reindexForClass(AttackCostParam.class, attackCostParamRepository, attackCostParamSearchRepository);
                 reindexForClass(AttackStrategy.class, attackStrategyRepository, attackStrategySearchRepository);
                 reindexForClass(CompanyGroup.class, companyGroupRepository, companyGroupSearchRepository);
                 reindexForClass(CompanyProfile.class, companyProfileRepository, companyProfileSearchRepository);
