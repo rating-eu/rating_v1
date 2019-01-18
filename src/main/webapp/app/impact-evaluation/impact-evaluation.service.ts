@@ -19,7 +19,7 @@ export class ImpactEvaluationService {
     private attackCostParamsUrl = SERVER_API_URL + 'api/{selfAssessmentID}/attack-cost-params';
     private updateAttackCostParamsUrl = SERVER_API_URL + 'api/attack-cost-params';
     private evaluateAttackCostUrl = SERVER_API_URL + 'api/{selfAssessmentID}/{costType}/evaluate-attack-cost';
-    private updateAttackCostUrl = SERVER_API_URL + 'api/{selfAssessmentID}/attack-cost';
+    private updateAttackCostUrl = SERVER_API_URL + 'api/{selfAssessmentID}/attack-costs';
     private operationStepOne = '/wp3/step-one/';
     private operationStepTwo = '/wp3/step-two/';
     private operationStepThree = '/wp3/step-three/';

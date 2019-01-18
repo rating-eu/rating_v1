@@ -6,6 +6,7 @@ import eu.hermeneut.domain.AttackCost;
 import eu.hermeneut.repository.AttackCostRepository;
 import eu.hermeneut.service.AttackCostService;
 import eu.hermeneut.repository.search.AttackCostSearchRepository;
+import eu.hermeneut.service.SelfAssessmentService;
 import eu.hermeneut.web.rest.errors.ExceptionTranslator;
 
 import org.junit.Before;
@@ -58,6 +59,9 @@ public class AttackCostResourceIntTest {
     private AttackCostService attackCostService;
 
     @Autowired
+    private SelfAssessmentService selfAssessmentService;
+
+    @Autowired
     private AttackCostSearchRepository attackCostSearchRepository;
 
     @Autowired
@@ -79,7 +83,7 @@ public class AttackCostResourceIntTest {
     @Before
     public void setup() {
         MockitoAnnotations.initMocks(this);
-        final AttackCostResource attackCostResource = new AttackCostResource(attackCostService);
+        final AttackCostResource attackCostResource = new AttackCostResource(attackCostService, selfAssessmentService);
         this.restAttackCostMockMvc = MockMvcBuilders.standaloneSetup(attackCostResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
             .setControllerAdvice(exceptionTranslator)
