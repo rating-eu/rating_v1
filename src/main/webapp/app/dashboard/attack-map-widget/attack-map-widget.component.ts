@@ -80,7 +80,6 @@ export class AttackMapWidgetComponent implements OnInit, OnDestroy {
         this.status = this.dashService.getStatus();
         this.dashService.getStatusFromServer(this.selfAssessment, this.dashboardStatus.ASSESS_VULNERABILITIES).toPromise().then((res) => {
             this.status.assessVulnerablitiesStatus = Status[res];
-            console.log(this.status.assessVulnerablitiesStatus);
             this.dashService.updateStatus(this.status);
         });
         this.loading = true;

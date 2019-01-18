@@ -84,7 +84,6 @@ export class AssetAtRiskWidgetComponent implements OnInit {
     });
     this.dashService.getStatusFromServer(this.mySelf, this.dashboardStatus.RISK_EVALUATION).toPromise().then((res) => {
       this.status.riskEvaluationStatus = Status[res];
-      console.log(this.status.riskEvaluationStatus);
       this.dashService.updateStatus(this.status);
     });
   }
