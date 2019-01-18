@@ -1,5 +1,6 @@
 package eu.hermeneut.service.impl;
 
+import eu.hermeneut.domain.enumeration.AttackCostParamType;
 import eu.hermeneut.service.AttackCostParamService;
 import eu.hermeneut.domain.AttackCostParam;
 import eu.hermeneut.repository.AttackCostParamRepository;
@@ -9,7 +10,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -22,6 +26,10 @@ import static org.elasticsearch.index.query.QueryBuilders.*;
 @Transactional
 public class AttackCostParamServiceImpl implements AttackCostParamService {
 
+    public static final int MIN_PROTECTION_COST_PER_CUSTOMER = 10;
+    public static final int MAX_PROTECTION_COST_PER_CUSTOMER = 30;
+    public static final float MIN_NOTIFICATION_COST_PER_CUSTOMER = 0.5F;
+    public static final int MAX_NOTIFICATION_COST_PER_CUSTOMER = 5;
     private final Logger log = LoggerFactory.getLogger(AttackCostParamServiceImpl.class);
 
     private final AttackCostParamRepository attackCostParamRepository;
@@ -64,7 +72,38 @@ public class AttackCostParamServiceImpl implements AttackCostParamService {
     @Transactional(readOnly = true)
     public List<AttackCostParam> findAllBySelfAssessment(Long selfAssessmentID) {
         log.debug("Request to get all AttackCostParams by SelfAssessment");
-        return attackCostParamRepository.findAllBySelfAssessment(selfAssessmentID);
+        List<AttackCostParam> params = attackCostParamRepository.findAllBySelfAssessment(selfAssessmentID);
+
+        Map<AttackCostParamType, AttackCostParam> paramMap = params.stream().collect(Collectors.toMap(
+            (param) -> param.getType(),
+            Function.identity()
+        ));
+
+        if (paramMap.containsKey(AttackCostParamType.PROTECTION_COST_PER_CUSTOMER)) {
+            paramMap.get(AttackCostParamType.PROTECTION_COST_PER_CUSTOMER)
+                .type(AttackCostParamType.PROTECTION_COST_PER_CUSTOMER)
+                .min(new BigDecimal(MIN_PROTECTION_COST_PER_CUSTOMER))
+                .max(new BigDecimal(MAX_PROTECTION_COST_PER_CUSTOMER));
+        } else {
+            paramMap.put(AttackCostParamType.PROTECTION_COST_PER_CUSTOMER, new AttackCostParam())
+                .type(AttackCostParamType.PROTECTION_COST_PER_CUSTOMER)
+                .min(new BigDecimal(MIN_PROTECTION_COST_PER_CUSTOMER))
+                .max(new BigDecimal(MAX_PROTECTION_COST_PER_CUSTOMER));
+        }
+
+        if (paramMap.containsKey(AttackCostParamType.NOTIFICATION_COST_PER_CUSTOMER)) {
+            paramMap.get(AttackCostParamType.NOTIFICATION_COST_PER_CUSTOMER)
+                .type(AttackCostParamType.NOTIFICATION_COST_PER_CUSTOMER)
+                .min(new BigDecimal(MIN_NOTIFICATION_COST_PER_CUSTOMER))
+                .max(new BigDecimal(MAX_NOTIFICATION_COST_PER_CUSTOMER));
+        } else {
+            paramMap.put(AttackCostParamType.NOTIFICATION_COST_PER_CUSTOMER, new AttackCostParam())
+                .type(AttackCostParamType.NOTIFICATION_COST_PER_CUSTOMER)
+                .min(new BigDecimal(MIN_NOTIFICATION_COST_PER_CUSTOMER))
+                .max(new BigDecimal(MAX_NOTIFICATION_COST_PER_CUSTOMER));
+        }
+
+        return paramMap.values().stream().collect(Collectors.toList());
     }
 
     /**

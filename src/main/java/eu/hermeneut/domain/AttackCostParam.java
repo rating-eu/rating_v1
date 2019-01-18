@@ -91,12 +91,22 @@ public class AttackCostParam implements Serializable {
         this.min = min;
     }
 
+    public AttackCostParam min(BigDecimal min) {
+        this.min = min;
+        return this;
+    }
+
     public BigDecimal getMax() {
         return max;
     }
 
     public void setMax(BigDecimal max) {
         this.max = max;
+    }
+
+    public AttackCostParam max(BigDecimal max) {
+        this.max = max;
+        return this;
     }
 
     public SelfAssessment getSelfAssessment() {
