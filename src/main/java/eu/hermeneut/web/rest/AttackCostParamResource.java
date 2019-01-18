@@ -2,6 +2,7 @@ package eu.hermeneut.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import eu.hermeneut.domain.AttackCostParam;
+import eu.hermeneut.exceptions.NotFoundException;
 import eu.hermeneut.service.AttackCostParamService;
 import eu.hermeneut.web.rest.errors.BadRequestAlertException;
 import eu.hermeneut.web.rest.util.HeaderUtil;
@@ -90,7 +91,7 @@ public class AttackCostParamResource {
     public List<AttackCostParam> getAllAttackCostParams() {
         log.debug("REST request to get all AttackCostParams");
         return attackCostParamService.findAll();
-        }
+    }
 
     /**
      * GET  /attack-cost-params : get all the attackCostParams.
@@ -99,7 +100,7 @@ public class AttackCostParamResource {
      */
     @GetMapping("/{selfAssessmentID}/attack-cost-params")
     @Timed
-    public List<AttackCostParam> getAllAttackCostParamsBySelfAssessment(@PathVariable Long selfAssessmentID) {
+    public List<AttackCostParam> getAllAttackCostParamsBySelfAssessment(@PathVariable Long selfAssessmentID) throws NotFoundException {
         log.debug("REST request to get all AttackCostParams by SelfAsssessmentID");
         return attackCostParamService.findAllBySelfAssessment(selfAssessmentID);
     }

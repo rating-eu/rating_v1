@@ -152,4 +152,9 @@ public class AttackCostParam implements Serializable {
             ", selfAssessment=" + selfAssessment +
             '}';
     }
+
+    public AttackCostParam selfAssessment(SelfAssessment selfAssessment) {
+        this.selfAssessment = selfAssessment;
+        return this;
+    }
 }

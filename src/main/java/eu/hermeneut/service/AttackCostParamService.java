@@ -1,6 +1,8 @@
 package eu.hermeneut.service;
 
 import eu.hermeneut.domain.AttackCostParam;
+import eu.hermeneut.exceptions.NotFoundException;
+
 import java.util.List;
 
 /**
@@ -47,5 +49,5 @@ public interface AttackCostParamService {
      */
     List<AttackCostParam> search(String query);
 
-    List<AttackCostParam> findAllBySelfAssessment(Long selfAssessmentID);
+    List<AttackCostParam> findAllBySelfAssessment(Long selfAssessmentID) throws NotFoundException;
 }
