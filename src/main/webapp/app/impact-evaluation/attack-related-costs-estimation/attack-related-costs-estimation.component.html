@@ -2,12 +2,97 @@
   <div class="loader"></div>
 </div>
 <div class="container" *ngIf="!loadingCosts && !loadingParams">
+  <ng-container *ngIf="attackCosts.length === 0">
     <div class="text-center" style="margin-top: 50px">
-        <p style="color: orange">
-          <i class="fa fa-exclamation-triangle fa-4x" aria-hidden="true"></i>
-        </p>
-        <p style="color: grey">
-          <i>Work in progress!</i>
-        </p>
+      <p style="color: orange">
+        <i class="fa fa-exclamation-triangle fa-4x" aria-hidden="true"></i>
+      </p>
+      <p style="color: grey">
+        <i>No Attack Costs declared in <a href="javascript:void(0)" [routerLink]="['/identify-asset/attack-costs']">Attack
+            Costs</a> section, please go in section and declare it!</i>
+      </p>
+    </div>
+  </ng-container>
+  <ng-container class="row" *ngIf="attackCosts.length > 0">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">Attack Related Costs</h5>
+        <div class="card-text">
+          <div class="col-md-4">
+            <h6>Declared Costs</h6>
+            <div class="list-group">
+              <ng-container *ngFor="let cost of attackCosts">
+                <a href="javascript:void(0)" (click)="selectCost(cost)" class="list-group-item list-group-item-action"
+                  [ngClass]="{'active': selectedCost && cost.type === selectedCost.type}">
+                  {{cost.type | replace:'_':' ' | titlecase}}</a>
+              </ng-container>
+            </div>
+          </div>
+          <div class="col-md-8" *ngIf="selectedCost">
+            <div class="row">
+              <h5>{{selectedCost.type | replace:'_':' ' | titlecase}}</h5>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <div class="row">
+                  <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text">€</span>
+                    </div>
+                    <input type="number" min="0.01" step="0.01" class="form-control" placeholder="Insert economic value"
+                      aria-label="Insert economic value" aria-describedby="button-addon2" [(ngModel)]="selectedCost.costs">
+                    <div class="input-group-append">
+                      <button class="btn btn-outline-secondary" type="button" id="save_update_btn" (click)="updateAttackCost(selectedCost)">
+                        <ng-container *ngIf="selectedCost">Submit</ng-container>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <ng-container *ngIf="selectedCost.type.toString() === 'POST_BREACH_CUSTOMER_PROTECTION_OR_CARE_COSTS' || selectedCost.type.toString() === 'CUSTOMER_BREACH_NOTIFICATION_COSTS' || selectedCost.type.toString() === 'COST_OF_IT_DOWNTIME' || selectedCost.type.toString() === 'BEFORE_THE_ATTACK_STATUS_RESTORATION'">
+                  <div class="x_panel" style="padding:0px !important;">
+                    <div class="x_title" style="padding:0px !important;">
+                      <h2 style="padding: 10px;">Evaluation</h2>
+                      <ul class="nav navbar-right panel_toolbox">
+                        <li style="width: 24px; cursor: default"></li>
+                        <li style="width: 24px; cursor: default"></li>
+                        <li>
+                          <a href="javascript:void(0)" class="collapse-link" (click)="isCollapsed = !isCollapsed">
+                            <i *ngIf="!isCollapsed" class="fa fa-chevron-up"></i>
+                            <i *ngIf="isCollapsed" class="fa fa-chevron-down"></i>
+                          </a>
+                        </li>
+                      </ul>
+                      <div class="clearfix"></div>
+                    </div>
+                    <div class="table-responsive x_content" style="padding:0px !important;" [ngbCollapse]="isCollapsed">
+                      <div id="evaluation" [ngbCollapse]="isCollapsed">
+                        <ng-container [ngSwitch]="selectedCost.type">
+                          <ng-container *ngSwitchCase="'POST_BREACH_CUSTOMER_PROTECTION_OR_CARE_COSTS'">
+                            WORK IN PROGRESS!!!
+                          </ng-container>
+                          <ng-container *ngSwitchCase="'CUSTOMER_BREACH_NOTIFICATION_COSTS'">
+                            WORK IN PROGRESS!!!
+                          </ng-container>
+                          <ng-container *ngSwitchCase="'COST_OF_IT_DOWNTIME'">
+                            WORK IN PROGRESS!!!
+                          </ng-container>
+                          <ng-container *ngSwitchCase="'BEFORE_THE_ATTACK_STATUS_RESTORATION'">
+                            WORK IN PROGRESS!!!
+                          </ng-container>
+                          <ng-container *ngSwitchDefault></ng-container>
+                        </ng-container>
+                      </div>
+                    </div>
+                  </div>
+                </ng-container>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-8 text-center" *ngIf="!selectedCost" style="margin-top: 200px">
+            <i>Select one item from the left screen list!</i>
+          </div>
+        </div>
       </div>
+    </div>
+  </ng-container>
 </div>

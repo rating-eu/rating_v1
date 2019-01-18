@@ -15,11 +15,13 @@ import { AttackCostParam } from '../model/attack-cost-param.model';
 export class AttackRelatedCostsEstimationComponent implements OnInit {
   public loadingCosts = false;
   public loadingParams = false;
+  public isCollapsed = true;
   public customareNumb: number;
-  public attackCosts: AttackCostMgm[];
+  public attackCosts: AttackCostMgm[] = [];
   public attackCostParams: AttackCostParam[];
-  private mySelf: SelfAssessmentMgm;
+  public selectedCost: AttackCostMgm;
   public costs: CostType[] = Object.keys(CostType).filter((key) => !isNaN(Number(key))).map((type) => CostType[type]);
+  private mySelf: SelfAssessmentMgm;
 
   constructor(
     private mySelfAssessmentService: SelfAssessmentMgmService,
@@ -31,8 +33,6 @@ export class AttackRelatedCostsEstimationComponent implements OnInit {
     this.loadingCosts = true;
     this.loadingParams = true;
     this.mySelf = this.mySelfAssessmentService.getSelfAssessment();
-    // TODO: decommentare quando i servizi saranno pronti
-    /*
     this.impactService.getAttackCost(this.mySelf).toPromise().then((res) => {
       if (res) {
         this.attackCosts = res;
@@ -53,14 +53,43 @@ export class AttackRelatedCostsEstimationComponent implements OnInit {
     }).catch(() => {
       this.loadingParams = false;
     });
-    */
   }
 
   public close() {
     this.router.navigate(['/dashboard']);
   }
 
-  evaluateAttackCost(costType: CostType) {
+  public selectCost(cost: AttackCostMgm) {
+    this.isCollapsed = true;
+    if (this.selectedCost) {
+      if (this.selectedCost.type === cost.type) {
+        this.selectedCost = null;
+      } else {
+        this.selectedCost = cost;
+      }
+    } else {
+      this.selectedCost = cost;
+    }
+
+  }
+
+  public updateAttackCost(cost: AttackCostMgm) {
+    console.log(cost);
+    /*
+    this.impactService.updateAttackCost(this.mySelf, cost)
+      .toPromise()
+      .then((res) => {
+        if (res) {
+          const index = _.findIndex(this.attackCosts, { type: res.type });
+          this.attackCosts.splice(index, 1, res);
+        }
+      }).catch(() => {
+
+      });
+      */
+  }
+
+  public evaluateAttackCost(costType: CostType) {
     this.impactService.evaluateAttackCost(this.mySelf, this.costs[costType].toString(), this.attackCostParams)
       .toPromise()
       .then((res) => {

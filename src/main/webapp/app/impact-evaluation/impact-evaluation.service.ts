@@ -18,6 +18,7 @@ export class ImpactEvaluationService {
     private attackCostUrl = SERVER_API_URL + 'api/{selfAssessmentID}/attack-costs';
     private attackCostParamsUrl = SERVER_API_URL + 'api/{selfAssessmentID}/attack-cost-params';
     private evaluateAttackCostUrl = SERVER_API_URL + 'api/{selfAssessmentID}/{costType}/evaluate-attack-cost';
+    private updateAttackCostUrl = SERVER_API_URL + 'api/{selfAssessmentID}/attack-cost';
     private operationStepOne = '/wp3/step-one/';
     private operationStepTwo = '/wp3/step-two/';
     private operationStepThree = '/wp3/step-three/';
@@ -33,7 +34,16 @@ export class ImpactEvaluationService {
     /*
     API: POST evaluateParam(ParamType (url), AttackCostParam[] (BODY)) --> AttackCostParam;
     API: POST evaluateAttackCost(CostType (url), AttackCostParam[] (BODY)) --> AttackCost(ID=NULL)
+    API: PUT api/{selfAssessmentID}/attack-cost --> AttackCost
     */
+   updateAttackCost(self: SelfAssessmentMgm, cost: AttackCostMgm): Observable<AttackCostMgm> {
+    const uri = this.updateAttackCostUrl.replace('{selfAssessmentID}', String(self.id));
+    return this.http.put<AttackCostMgm>(uri, cost, { observe: 'response' })
+        .map((res: HttpResponse<AttackCostMgm>) => {
+            return res.body;
+        });
+    }
+
     evaluateAttackCost(self: SelfAssessmentMgm, attackCostType: string, params: AttackCostParam[]): Observable<AttackCostMgm> {
         let uri = this.evaluateAttackCostUrl.replace('{selfAssessmentID}', String(self.id));
         uri = uri.replace('{costType}', attackCostType);
