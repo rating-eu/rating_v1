@@ -1,6 +1,7 @@
 package eu.hermeneut.service;
 
 import eu.hermeneut.domain.AttackCost;
+import eu.hermeneut.domain.enumeration.CostType;
 
 import java.util.List;
 
@@ -50,4 +51,6 @@ public interface AttackCostService {
     List<AttackCost> search(String query);
 
     List<AttackCost> findAllBySelfAssessment(Long selfAssessmentID);
+
+    List<AttackCost> findAllBySelfAssessmentAndCostType(Long selfAssessmentID, CostType costType);
 }

@@ -2,6 +2,7 @@ package eu.hermeneut.exceptions.handler;
 
 import eu.hermeneut.exceptions.IllegalInputException;
 import eu.hermeneut.exceptions.NotFoundException;
+import eu.hermeneut.exceptions.NotImplementedYetException;
 import eu.hermeneut.exceptions.NullInputException;
 import eu.hermeneut.priority.PriorityOrder;
 import org.slf4j.Logger;
@@ -36,5 +37,15 @@ public class GlobalExceptionHandler {
 
         return new ResponseEntity<>(
             exception.getMessage(), new HttpHeaders(), HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler({NotImplementedYetException.class})
+    public ResponseEntity<Object> notImplementedYetHandler(Exception exception, WebRequest webRequest) {
+        logger.warn(exception.getClass().getName());
+        logger.warn(exception.getMessage());
+
+        return new ResponseEntity<>(
+            exception.getMessage(), new HttpHeaders(), HttpStatus.NOT_IMPLEMENTED
+        );
     }
 }
