@@ -20,6 +20,8 @@ export class AttackCostParamMgm implements BaseEntity {
         public id?: number,
         public type?: AttackCostParamType,
         public value?: number,
+        public min?: number,
+        public max?: number,
         public selfAssessment?: BaseEntity,
     ) {
     }
