@@ -65,7 +65,7 @@ public class CostOfItDowntimeImpl implements AttackCostCalculator {
             float recoveryCost = RECOVERY_COST.getValue().floatValue();
 
             AttackCost attackCost = new AttackCost()
-                .type(CostType.POST_BREACH_CUSTOMER_PROTECTION_OR_CARE_COSTS)
+                .type(CostType.COST_OF_IT_DOWNTIME)
                 .costs(new BigDecimal(employeeCostPerHour * fractionOfEmployeesAffectedByOutage +
                     averageRevenuePerHour * fractionOfRevenueAffectedByOutage + recoveryCost));
 
