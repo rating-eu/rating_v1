@@ -18,6 +18,10 @@ export class AttackRelatedCostsEstimationComponent implements OnInit {
   public loadingParams = false;
   public isCollapsed = true;
   public customers: number;
+  public protectionMin: number;
+  public protectionMax: number;
+  public notificationMin: number;
+  public notificationMax: number;
   public employeeCosts: number;
   public fractionEmployee: number;
   public averageRevenue: number;
@@ -52,37 +56,51 @@ export class AttackRelatedCostsEstimationComponent implements OnInit {
     this.impactService.getAttackCostParams(this.mySelf).toPromise().then((res) => {
       if (res) {
         this.attackCostParams = res;
-        let index = _.findIndex(this.attackCostParams, function(elem){
+        let index = _.findIndex(this.attackCostParams, function(elem) {
           return elem.type.toString() === AttackCostParamType[AttackCostParamType.NUMBER_OF_CUSTOMERS];
         });
         if (index !== -1) {
           this.customers = this.attackCostParams[index].value;
         }
-        index = _.findIndex(this.attackCostParams, function(elem){
+        index = _.findIndex(this.attackCostParams, function(elem) {
+          return elem.type.toString() === AttackCostParamType[AttackCostParamType.NOTIFICATION_COST_PER_CUSTOMER];
+        });
+        if (index !== -1) {
+          this.notificationMin = this.attackCostParams[index].min;
+          this.notificationMax = this.attackCostParams[index].max;
+        }
+        index = _.findIndex(this.attackCostParams, function(elem) {
+          return elem.type.toString() === AttackCostParamType[AttackCostParamType.PROTECTION_COST_PER_CUSTOMER];
+        });
+        if (index !== -1) {
+          this.protectionMin = this.attackCostParams[index].min;
+          this.protectionMax = this.attackCostParams[index].max;
+        }
+        index = _.findIndex(this.attackCostParams, function(elem) {
           return elem.type.toString() === AttackCostParamType[AttackCostParamType.EMPLOYEE_COST_PER_HOUR];
         });
         if (index !== -1) {
           this.employeeCosts = this.attackCostParams[index].value;
         }
-        index = _.findIndex(this.attackCostParams, function(elem){
+        index = _.findIndex(this.attackCostParams, function(elem) {
           return elem.type.toString() === AttackCostParamType[AttackCostParamType.FRACTION_OF_EMPLOYEES_AFFECTED_BY_OUTAGE];
         });
         if (index !== -1) {
           this.fractionEmployee = this.attackCostParams[index].value;
         }
-        index = _.findIndex(this.attackCostParams, function(elem){
+        index = _.findIndex(this.attackCostParams, function(elem) {
           return elem.type.toString() === AttackCostParamType[AttackCostParamType.AVERAGE_REVENUE_PER_HOUR];
         });
         if (index !== -1) {
           this.averageRevenue = this.attackCostParams[index].value;
         }
-        index = _.findIndex(this.attackCostParams, function(elem){
+        index = _.findIndex(this.attackCostParams, function(elem) {
           return elem.type.toString() === AttackCostParamType[AttackCostParamType.FRACTION_OF_REVENUE_AFFECTED_BY_OUTAGE];
         });
         if (index !== -1) {
           this.fractionRevenue = this.attackCostParams[index].value;
         }
-        index = _.findIndex(this.attackCostParams, function(elem){
+        index = _.findIndex(this.attackCostParams, function(elem) {
           return elem.type.toString() === AttackCostParamType[AttackCostParamType.RECOVERY_COST];
         });
         if (index !== -1) {
@@ -117,7 +135,6 @@ export class AttackRelatedCostsEstimationComponent implements OnInit {
 
   public updateAttackCost(cost: AttackCostMgm) {
     console.log(cost);
-    /*
     this.impactService.updateAttackCost(this.mySelf, cost)
       .toPromise()
       .then((res) => {
@@ -128,12 +145,11 @@ export class AttackRelatedCostsEstimationComponent implements OnInit {
       }).catch(() => {
 
       });
-      */
   }
 
   public updateCreateAttackCostParam(value: number, type: string) {
     const paramType: AttackCostParamType = AttackCostParamType[type];
-    const index = _.findIndex(this.attackCostParams, function(elem){
+    const index = _.findIndex(this.attackCostParams, function(elem) {
       return elem.type.toString() === AttackCostParamType[paramType].toString();
     });
     if (index !== -1) {
@@ -176,7 +192,7 @@ export class AttackRelatedCostsEstimationComponent implements OnInit {
       }
     }
     if (costType === CostType.COST_OF_IT_DOWNTIME) {
-      let index = _.findIndex(this.attackCostParams, function(elem){
+      let index = _.findIndex(this.attackCostParams, function(elem) {
         return elem.type.toString() === AttackCostParamType[AttackCostParamType.EMPLOYEE_COST_PER_HOUR];
       });
       if (index !== -1) {
@@ -188,7 +204,7 @@ export class AttackRelatedCostsEstimationComponent implements OnInit {
         param.selfAssessment = this.mySelf;
         this.attackCostParams.push(param);
       }
-      index = _.findIndex(this.attackCostParams, function(elem){
+      index = _.findIndex(this.attackCostParams, function(elem) {
         return elem.type.toString() === AttackCostParamType[AttackCostParamType.FRACTION_OF_EMPLOYEES_AFFECTED_BY_OUTAGE];
       });
       if (index !== -1) {
@@ -200,7 +216,7 @@ export class AttackRelatedCostsEstimationComponent implements OnInit {
         param.selfAssessment = this.mySelf;
         this.attackCostParams.push(param);
       }
-      index = _.findIndex(this.attackCostParams, function(elem){
+      index = _.findIndex(this.attackCostParams, function(elem) {
         return elem.type.toString() === AttackCostParamType[AttackCostParamType.AVERAGE_REVENUE_PER_HOUR];
       });
       if (index !== -1) {
@@ -212,7 +228,7 @@ export class AttackRelatedCostsEstimationComponent implements OnInit {
         param.selfAssessment = this.mySelf;
         this.attackCostParams.push(param);
       }
-      index = _.findIndex(this.attackCostParams, function(elem){
+      index = _.findIndex(this.attackCostParams, function(elem) {
         return elem.type.toString() === AttackCostParamType[AttackCostParamType.FRACTION_OF_REVENUE_AFFECTED_BY_OUTAGE];
       });
       if (index !== -1) {
@@ -224,7 +240,7 @@ export class AttackRelatedCostsEstimationComponent implements OnInit {
         param.selfAssessment = this.mySelf;
         this.attackCostParams.push(param);
       }
-      index = _.findIndex(this.attackCostParams, function(elem){
+      index = _.findIndex(this.attackCostParams, function(elem) {
         return elem.type.toString() === AttackCostParamType[AttackCostParamType.RECOVERY_COST];
       });
       if (index !== -1) {
@@ -242,18 +258,18 @@ export class AttackRelatedCostsEstimationComponent implements OnInit {
     console.log('PARAMS: ');
     console.log(this.attackCostParams);
     console.log(this.costs[costType].toString());
-    /*
     this.impactService.evaluateAttackCost(this.mySelf, this.costs[costType].toString(), this.attackCostParams)
       .toPromise()
       .then((res) => {
         if (res) {
-          const index = _.findIndex(this.attackCosts, { type: res.type });
+          const index = _.findIndex(this.attackCosts, function(elem) {
+            return elem.type.toString() === res.type.toString();
+          });
           this.attackCosts.splice(index, 1, res);
         }
       }).catch(() => {
 
       });
-      */
     /*
     console.log(CostType.COST_OF_IT_DOWNTIME);
     console.log(this.costs[CostType.COST_OF_IT_DOWNTIME]);

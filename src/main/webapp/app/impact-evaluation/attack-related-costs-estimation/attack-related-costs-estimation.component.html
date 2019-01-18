@@ -84,15 +84,15 @@
                           <ng-container *ngSwitchCase="'POST_BREACH_CUSTOMER_PROTECTION_OR_CARE_COSTS'">
                             <div class="col-md-12">
                               <p>DESCRIPTION</p>
-                              <p>PROTECTION_COST_PER_CUSTOMER MIN</p>
-                              <p>PROTECTION_COST_PER_CUSTOMER MAX</p>
+                              <p>PROTECTION_COST_PER_CUSTOMER MIN = {{protectionMin}}</p>
+                              <p>PROTECTION_COST_PER_CUSTOMER MAX = {{protectionMax}}</p>
                             </div>
                           </ng-container>
                           <ng-container *ngSwitchCase="'CUSTOMER_BREACH_NOTIFICATION_COSTS'">
                             <div class="col-md-12">
                               <p>DESCRIPTION</p>
-                              <p>NOTIFICATION_COST_PER_CUSTOMER MIN</p>
-                              <p>NOTIFICATION_COST_PER_CUSTOMER MAX</p>
+                              <p>NOTIFICATION_COST_PER_CUSTOMER MIN = {{notificationMin}}</p>
+                              <p>NOTIFICATION_COST_PER_CUSTOMER MAX = {{notificationMax}}</p>
                             </div>
                           </ng-container>
                           <ng-container *ngSwitchCase="'COST_OF_IT_DOWNTIME'">
