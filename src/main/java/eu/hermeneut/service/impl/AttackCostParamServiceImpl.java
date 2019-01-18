@@ -59,6 +59,14 @@ public class AttackCostParamServiceImpl implements AttackCostParamService {
         return attackCostParamRepository.findAll();
     }
 
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<AttackCostParam> findAllBySelfAssessment(Long selfAssessmentID) {
+        log.debug("Request to get all AttackCostParams by SelfAssessment");
+        return attackCostParamRepository.findAllBySelfAssessment(selfAssessmentID);
+    }
+
     /**
      * Get one attackCostParam by id.
      *
