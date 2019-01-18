@@ -44,6 +44,7 @@
                 "impactLevelDescriptionMgm": "Impact Level Description",
                 "splittingValueMgm": "Splitting Value",
                 "logoMgm": "Logo",
+                "attackCostParamMgm": "Attack Cost Param",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {
