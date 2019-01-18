@@ -79,29 +79,24 @@ public class AttackCostParamServiceImpl implements AttackCostParamService {
             Function.identity()
         ));
 
-        if (paramMap.containsKey(AttackCostParamType.PROTECTION_COST_PER_CUSTOMER)) {
-            paramMap.get(AttackCostParamType.PROTECTION_COST_PER_CUSTOMER)
-                .type(AttackCostParamType.PROTECTION_COST_PER_CUSTOMER)
-                .min(new BigDecimal(MIN_PROTECTION_COST_PER_CUSTOMER))
-                .max(new BigDecimal(MAX_PROTECTION_COST_PER_CUSTOMER));
-        } else {
-            paramMap.put(AttackCostParamType.PROTECTION_COST_PER_CUSTOMER, new AttackCostParam())
-                .type(AttackCostParamType.PROTECTION_COST_PER_CUSTOMER)
-                .min(new BigDecimal(MIN_PROTECTION_COST_PER_CUSTOMER))
-                .max(new BigDecimal(MAX_PROTECTION_COST_PER_CUSTOMER));
+        if (!paramMap.containsKey(AttackCostParamType.PROTECTION_COST_PER_CUSTOMER)) {
+            paramMap.put(AttackCostParamType.PROTECTION_COST_PER_CUSTOMER, new AttackCostParam());
         }
 
-        if (paramMap.containsKey(AttackCostParamType.NOTIFICATION_COST_PER_CUSTOMER)) {
-            paramMap.get(AttackCostParamType.NOTIFICATION_COST_PER_CUSTOMER)
-                .type(AttackCostParamType.NOTIFICATION_COST_PER_CUSTOMER)
-                .min(new BigDecimal(MIN_NOTIFICATION_COST_PER_CUSTOMER))
-                .max(new BigDecimal(MAX_NOTIFICATION_COST_PER_CUSTOMER));
-        } else {
-            paramMap.put(AttackCostParamType.NOTIFICATION_COST_PER_CUSTOMER, new AttackCostParam())
-                .type(AttackCostParamType.NOTIFICATION_COST_PER_CUSTOMER)
-                .min(new BigDecimal(MIN_NOTIFICATION_COST_PER_CUSTOMER))
-                .max(new BigDecimal(MAX_NOTIFICATION_COST_PER_CUSTOMER));
+        paramMap.get(AttackCostParamType.PROTECTION_COST_PER_CUSTOMER)
+            .type(AttackCostParamType.PROTECTION_COST_PER_CUSTOMER)
+            .min(new BigDecimal(MIN_PROTECTION_COST_PER_CUSTOMER))
+            .max(new BigDecimal(MAX_PROTECTION_COST_PER_CUSTOMER));
+
+
+        if (!paramMap.containsKey(AttackCostParamType.NOTIFICATION_COST_PER_CUSTOMER)) {
+            paramMap.put(AttackCostParamType.NOTIFICATION_COST_PER_CUSTOMER, new AttackCostParam());
         }
+
+        paramMap.get(AttackCostParamType.NOTIFICATION_COST_PER_CUSTOMER)
+            .type(AttackCostParamType.NOTIFICATION_COST_PER_CUSTOMER)
+            .min(new BigDecimal(MIN_NOTIFICATION_COST_PER_CUSTOMER))
+            .max(new BigDecimal(MAX_NOTIFICATION_COST_PER_CUSTOMER));
 
         return paramMap.values().stream().collect(Collectors.toList());
     }

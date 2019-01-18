@@ -1,5 +1,7 @@
 package eu.hermeneut.domain;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import eu.hermeneut.domain.enumeration.AttackCostParamType;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Cache;
@@ -37,9 +39,13 @@ public class AttackCostParam implements Serializable {
     private BigDecimal value;
 
     @Transient
+    @JsonSerialize
+    @JsonDeserialize
     private BigDecimal min;
 
     @Transient
+    @JsonSerialize
+    @JsonDeserialize
     private BigDecimal max;
 
     @NotNull
