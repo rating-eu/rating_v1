@@ -1,14 +1,14 @@
-import { AttackCostMgm } from './../entities/attack-cost-mgm/attack-cost-mgm.model';
-import { Injectable } from '@angular/core';
-import { HttpClient, HttpResponse, HttpParams } from '../../../../../node_modules/@angular/common/http';
-import { SelfAssessmentMgm } from '../entities/self-assessment-mgm';
-import { SERVER_API_URL } from '../app.constants';
-import { Observable } from '../../../../../node_modules/rxjs';
-import { MyAssetMgm } from '../entities/my-asset-mgm';
-import { Wp3BundleInput } from './model/wp3-bundle-input.model';
-import { Wp3BundleOutput } from './model/wp3-bundle-output.model';
-import { ImpactEvaluationStatus } from './model/impact-evaluation-status.model';
-import { AttackCostParam } from './model/attack-cost-param.model';
+import {AttackCostMgm, CostType} from './../entities/attack-cost-mgm/attack-cost-mgm.model';
+import {Injectable} from '@angular/core';
+import {HttpClient, HttpResponse, HttpParams} from '../../../../../node_modules/@angular/common/http';
+import {SelfAssessmentMgm} from '../entities/self-assessment-mgm';
+import {SERVER_API_URL} from '../app.constants';
+import {Observable} from '../../../../../node_modules/rxjs';
+import {MyAssetMgm} from '../entities/my-asset-mgm';
+import {Wp3BundleInput} from './model/wp3-bundle-input.model';
+import {Wp3BundleOutput} from './model/wp3-bundle-output.model';
+import {ImpactEvaluationStatus} from './model/impact-evaluation-status.model';
+import {AttackCostParamMgm} from '../entities/attack-cost-param-mgm';
 
 @Injectable()
 export class ImpactEvaluationService {
@@ -39,23 +39,23 @@ export class ImpactEvaluationService {
     */
     updateAttackCost(self: SelfAssessmentMgm, cost: AttackCostMgm): Observable<AttackCostMgm> {
         const uri = this.updateAttackCostUrl.replace('{selfAssessmentID}', String(self.id));
-        return this.http.put<AttackCostMgm>(uri, cost, { observe: 'response' })
+        return this.http.put<AttackCostMgm>(uri, cost, {observe: 'response'})
             .map((res: HttpResponse<AttackCostMgm>) => {
                 return res.body;
             });
     }
 
-    updateCreateAttackCostParam(param: AttackCostParam): Observable<AttackCostParam> {
-        return this.http.put<AttackCostParam>(this.updateAttackCostParamsUrl, param, { observe: 'response' })
-            .map((res: HttpResponse<AttackCostParam>) => {
+    updateCreateAttackCostParam(param: AttackCostParamMgm): Observable<AttackCostParamMgm> {
+        return this.http.put<AttackCostParamMgm>(this.updateAttackCostParamsUrl, param, {observe: 'response'})
+            .map((res: HttpResponse<AttackCostParamMgm>) => {
                 return res.body;
             });
     }
 
-    evaluateAttackCost(self: SelfAssessmentMgm, attackCostType: string, params: AttackCostParam[]): Observable<AttackCostMgm> {
+    evaluateAttackCost(self: SelfAssessmentMgm, attackCostType: CostType, params: AttackCostParamMgm[]): Observable<AttackCostMgm> {
         let uri = this.evaluateAttackCostUrl.replace('{selfAssessmentID}', String(self.id));
-        uri = uri.replace('{costType}', attackCostType);
-        return this.http.post<AttackCostMgm>(uri, params, { observe: 'response' })
+        uri = uri.replace('{costType}', CostType[attackCostType]);
+        return this.http.post<AttackCostMgm>(uri, params, {observe: 'response'})
             .map((res: HttpResponse<AttackCostMgm>) => {
                 return res.body;
             });
@@ -64,17 +64,17 @@ export class ImpactEvaluationService {
     getAttackCost(self: SelfAssessmentMgm): Observable<AttackCostMgm[]> {
         return this.http.get<AttackCostMgm[]>(
             this.attackCostUrl.replace('{selfAssessmentID}', String(self.id)),
-            { observe: 'response' })
+            {observe: 'response'})
             .map((res: HttpResponse<AttackCostMgm[]>) => {
                 return res.body;
             });
     }
 
-    getAttackCostParams(self: SelfAssessmentMgm): Observable<AttackCostParam[]> {
-        return this.http.get<AttackCostParam[]>(
+    getAttackCostParams(self: SelfAssessmentMgm): Observable<AttackCostParamMgm[]> {
+        return this.http.get<AttackCostParamMgm[]>(
             this.attackCostParamsUrl.replace('{selfAssessmentID}', String(self.id)),
-            { observe: 'response' })
-            .map((res: HttpResponse<AttackCostParam[]>) => {
+            {observe: 'response'})
+            .map((res: HttpResponse<AttackCostParamMgm[]>) => {
                 return res.body;
             });
     }
@@ -82,7 +82,7 @@ export class ImpactEvaluationService {
     getStatus(self: SelfAssessmentMgm): Observable<ImpactEvaluationStatus> {
         return this.http.get<ImpactEvaluationStatus>(
             this.wp3StatusUrl.replace('{selfAssessmentID}', String(self.id)),
-            { observe: 'response' })
+            {observe: 'response'})
             .map((res: HttpResponse<ImpactEvaluationStatus>) => {
                 return res.body;
             });
@@ -90,7 +90,7 @@ export class ImpactEvaluationService {
 
     getMyAssets(self: SelfAssessmentMgm): Observable<MyAssetMgm[]> {
         const uri = this.assetServiceUrl + self.id.toString();
-        return this.http.get<MyAssetMgm[]>(uri, { observe: 'response' })
+        return this.http.get<MyAssetMgm[]>(uri, {observe: 'response'})
             .map((res: HttpResponse<MyAssetMgm[]>) => {
                 return res.body;
             });
@@ -100,7 +100,7 @@ export class ImpactEvaluationService {
         return this.http.post<Wp3BundleOutput>(
             this.wp3ServiceUrl.replace('{selfAssessmentID}', String(self.id)) + this.operationStepOne,
             bundle,
-            { observe: 'response' })
+            {observe: 'response'})
             .map((res: HttpResponse<Wp3BundleOutput>) => {
                 return res.body;
             });
@@ -110,7 +110,7 @@ export class ImpactEvaluationService {
         return this.http.post<Wp3BundleOutput>(
             this.wp3ServiceUrl.replace('{selfAssessmentID}', String(self.id)) + this.operationStepTwo,
             bundle,
-            { observe: 'response' })
+            {observe: 'response'})
             .map((res: HttpResponse<Wp3BundleOutput>) => {
                 return res.body;
             });
@@ -120,7 +120,7 @@ export class ImpactEvaluationService {
         return this.http.post<Wp3BundleOutput>(
             this.wp3ServiceUrl.replace('{selfAssessmentID}', String(self.id)) + this.operationStepThree,
             bundle,
-            { observe: 'response' })
+            {observe: 'response'})
             .map((res: HttpResponse<Wp3BundleOutput>) => {
                 return res.body;
             });
@@ -130,7 +130,7 @@ export class ImpactEvaluationService {
         return this.http.post<Wp3BundleOutput>(
             this.wp3ServiceUrl.replace('{selfAssessmentID}', String(self.id)) + this.operationStepFour,
             bundle,
-            { observe: 'response' })
+            {observe: 'response'})
             .map((res: HttpResponse<Wp3BundleOutput>) => {
                 return res.body;
             });
@@ -140,14 +140,14 @@ export class ImpactEvaluationService {
         return this.http.post<Wp3BundleOutput>(
             this.wp3ServiceUrl.replace('{selfAssessmentID}', String(self.id)) + this.operationStepFive,
             bundle,
-            { observe: 'response' })
+            {observe: 'response'})
             .map((res: HttpResponse<Wp3BundleOutput>) => {
                 return res.body;
             });
     }
 
     evaluateMyAssetsEconomicLosses(self: SelfAssessmentMgm): Observable<MyAssetMgm[]> {
-        return this.http.get<MyAssetMgm[]>(this.wp3ServiceUrl.replace('{selfAssessmentID}', self.id + '') + this.myAssetsEconomicLossesEvaluationStep, { observe: 'response' })
+        return this.http.get<MyAssetMgm[]>(this.wp3ServiceUrl.replace('{selfAssessmentID}', self.id + '') + this.myAssetsEconomicLossesEvaluationStep, {observe: 'response'})
             .map((res: HttpResponse<MyAssetMgm[]>) => {
                 return res.body;
             });
