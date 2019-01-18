@@ -118,7 +118,7 @@ public class AttackCostServiceImpl implements AttackCostService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<AttackCost> findAllBySelfAssessment(Long selfAssessmentID) {
+    public List<AttackCost> findAllUniqueTypesBySelfAssessmentWithNulledID(Long selfAssessmentID) {
         log.debug("Request to get all AttackCosts by SelfAssessment ID");
         List<MyAsset> myAssets = this.myAssetService.findAllBySelfAssessment(selfAssessmentID);
         List<AttackCost> attackCosts = new ArrayList<>();
@@ -138,9 +138,13 @@ public class AttackCostServiceImpl implements AttackCostService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<AttackCost> findAllBySelfAssessmentAndCostType(Long selfAssessmentID, CostType costType) {
+    public List<AttackCost> findAllBySelfAssessmentAndCostTypeWithDuplicateTypes(Long selfAssessmentID, CostType costType) {
         log.debug("Request to get all AttackCosts by SelfAssessment ID");
-        List<AttackCost> attackCosts = this.findAllBySelfAssessment(selfAssessmentID);
+        List<MyAsset> myAssets = this.myAssetService.findAllBySelfAssessment(selfAssessmentID);
+        List<AttackCost> attackCosts = new ArrayList<>();
+        for (MyAsset myAsset : myAssets) {
+            attackCosts.addAll(myAsset.getCosts());
+        }
 
         return attackCosts.stream().filter((attackCost) -> attackCost.getType().equals(costType)).collect(Collectors.toList());
     }

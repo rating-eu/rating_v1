@@ -17,9 +17,6 @@ import java.net.URISyntaxException;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.StreamSupport;
-
-import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
  * REST controller for managing AttackCost.
@@ -96,7 +93,7 @@ public class AttackCostResource {
     @Timed
     public List<AttackCost> getAttackCostsBySelfAssessment(@PathVariable Long selfAssessmentID) {
         log.debug("REST request to get all AttackCosts by SelfAssessment ID");
-        return attackCostService.findAllBySelfAssessment(selfAssessmentID);
+        return attackCostService.findAllUniqueTypesBySelfAssessmentWithNulledID(selfAssessmentID);
     }
 
     /**
