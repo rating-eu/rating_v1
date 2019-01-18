@@ -92,7 +92,7 @@ public class AttackCostResource {
         return attackCostService.findAll();
     }
 
-    @GetMapping("/attack-costs/self-assessment/{selfAssessmentID}")
+    @GetMapping("/{selfAssessmentID}/attack-costs")
     @Timed
     public List<AttackCost> getAttackCostsBySelfAssessment(@PathVariable Long selfAssessmentID) {
         log.debug("REST request to get all AttackCosts by SelfAssessment ID");

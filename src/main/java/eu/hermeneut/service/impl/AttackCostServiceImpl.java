@@ -6,16 +6,15 @@ import eu.hermeneut.domain.AttackCost;
 import eu.hermeneut.repository.AttackCostRepository;
 import eu.hermeneut.repository.search.AttackCostSearchRepository;
 import eu.hermeneut.service.MyAssetService;
+import org.eclipse.collections.impl.block.factory.HashingStrategies;
+import org.eclipse.collections.impl.utility.ListIterate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -117,15 +116,22 @@ public class AttackCostServiceImpl implements AttackCostService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<AttackCost> findAllBySelfAssessment(Long selfAssessmentID) {
         log.debug("Request to get all AttackCosts by SelfAssessment ID");
         List<MyAsset> myAssets = this.myAssetService.findAllBySelfAssessment(selfAssessmentID);
-        Set<AttackCost> attackCosts = new HashSet<>();
+        List<AttackCost> attackCosts = new ArrayList<>();
 
-        myAssets.forEach((myAsset) -> {
+        for (MyAsset myAsset : myAssets) {
             attackCosts.addAll(myAsset.getCosts());
-        });
+        }
 
-        return attackCosts.stream().collect(Collectors.toList());
+        attackCosts = ListIterate.distinct(attackCosts, HashingStrategies.fromFunction(AttackCost::getType));
+
+        attackCosts.stream().forEach((attackCost -> {
+            attackCost.setId(null);
+        }));
+
+        return attackCosts;
     }
 }
