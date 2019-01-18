@@ -42,7 +42,7 @@ public class AttackCostsController {
     @CostQualifier(type = CostType.COST_OF_IT_DOWNTIME)
     private AttackCostCalculator costOfITDowntime;
 
-    @PostMapping("/{selfAssessmentID}/calculate/cost/{type}")
+    @PostMapping("/{selfAssessmentID}/{type}/evaluate-attack-cost")
     @Timed
     @ResponseStatus(HttpStatus.CREATED)
     public AttackCost calculateCost(@PathVariable Long selfAssessmentID, @PathVariable CostType type, @Valid @RequestBody List<AttackCostParam> params) throws IllegalInputException, NotImplementedYetException {
