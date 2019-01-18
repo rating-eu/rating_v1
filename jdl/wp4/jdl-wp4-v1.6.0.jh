@@ -246,6 +246,26 @@ enum Role{
     ROLE_CISO
 }
 
+enum AttackCostParamType {
+    NUMBER_OF_CUSTOMERS,
+    PROTECTION_COST_PER_CUSTOMER,
+    NOTIFICATION_COST_PER_CUSTOMER,
+    EMPLOYEE_COST_PER_HOUR,
+    FRACTION_OF_EMPLOYEES_AFFECTED_BY_OUTAGE,
+    AVERAGE_REVENUE_PER_HOUR,
+    FRACTION_OF_REVENUE_AFFECTED_BY_OUTAGE,
+    RECOVERY_COST,
+    REPAIR_SERVICES,
+    REPLACEMENT_PARTS,
+    LOST_DATA_RECOVERY,
+    OTHER_COSTS
+}
+
+entity AttackCostParam {
+    Type AttackCostParamType required,
+    Value BigDecimal
+}
+
 relationship ManyToMany {
     CompanyProfile{containers(name)} to Container,
     Asset{container(name)} to Container,
@@ -308,7 +328,8 @@ relationship ManyToOne{
     /*WP4*/
     LikelihoodScale{selfAssessment(name)} to SelfAssessment,
     VulnerabilityScale{selfAssessment(name)} to SelfAssessment,
-    SplittingValue{selfAssessment(name)} to SelfAssessment
+    SplittingValue{selfAssessment(name)} to SelfAssessment,
+    AttackCostParam{selfAssessment(name)} to SelfAssessment
 }
 
 service all with serviceImpl
