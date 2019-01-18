@@ -17,6 +17,7 @@ export class ImpactEvaluationService {
     private wp3StatusUrl = SERVER_API_URL + 'api/{selfAssessmentID}/dashboard/impact-evaluation-status';
     private attackCostUrl = SERVER_API_URL + 'api/{selfAssessmentID}/attack-costs';
     private attackCostParamsUrl = SERVER_API_URL + 'api/{selfAssessmentID}/attack-cost-params';
+    private updateAttackCostParamsUrl = SERVER_API_URL + 'api/attack-cost-params';
     private evaluateAttackCostUrl = SERVER_API_URL + 'api/{selfAssessmentID}/{costType}/evaluate-attack-cost';
     private updateAttackCostUrl = SERVER_API_URL + 'api/{selfAssessmentID}/attack-cost';
     private operationStepOne = '/wp3/step-one/';
@@ -36,12 +37,19 @@ export class ImpactEvaluationService {
     API: POST evaluateAttackCost(CostType (url), AttackCostParam[] (BODY)) --> AttackCost(ID=NULL)
     API: PUT api/{selfAssessmentID}/attack-cost --> AttackCost
     */
-   updateAttackCost(self: SelfAssessmentMgm, cost: AttackCostMgm): Observable<AttackCostMgm> {
-    const uri = this.updateAttackCostUrl.replace('{selfAssessmentID}', String(self.id));
-    return this.http.put<AttackCostMgm>(uri, cost, { observe: 'response' })
-        .map((res: HttpResponse<AttackCostMgm>) => {
-            return res.body;
-        });
+    updateAttackCost(self: SelfAssessmentMgm, cost: AttackCostMgm): Observable<AttackCostMgm> {
+        const uri = this.updateAttackCostUrl.replace('{selfAssessmentID}', String(self.id));
+        return this.http.put<AttackCostMgm>(uri, cost, { observe: 'response' })
+            .map((res: HttpResponse<AttackCostMgm>) => {
+                return res.body;
+            });
+    }
+
+    updateCreateAttackCostParam(param: AttackCostParam): Observable<AttackCostParam> {
+        return this.http.put<AttackCostParam>(this.updateAttackCostParamsUrl, param, { observe: 'response' })
+            .map((res: HttpResponse<AttackCostParam>) => {
+                return res.body;
+            });
     }
 
     evaluateAttackCost(self: SelfAssessmentMgm, attackCostType: string, params: AttackCostParam[]): Observable<AttackCostMgm> {
