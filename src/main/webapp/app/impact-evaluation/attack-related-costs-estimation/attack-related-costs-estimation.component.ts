@@ -90,6 +90,11 @@ export class AttackRelatedCostsEstimationComponent implements OnInit {
   }
 
   public evaluateAttackCost(costType: CostType) {
+    console.log('SelfAssessment: ' + this.mySelf.id);
+    console.log('CostType: ' + this.costs[costType].toString());
+    console.log('PARAMS: ');
+    console.log(this.attackCostParams);
+    /*
     this.impactService.evaluateAttackCost(this.mySelf, this.costs[costType].toString(), this.attackCostParams)
       .toPromise()
       .then((res) => {
@@ -100,6 +105,7 @@ export class AttackRelatedCostsEstimationComponent implements OnInit {
       }).catch(() => {
 
       });
+      */
     /*
     console.log(CostType.COST_OF_IT_DOWNTIME);
     console.log(this.costs[CostType.COST_OF_IT_DOWNTIME]);
