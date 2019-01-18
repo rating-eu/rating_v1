@@ -1,0 +1,32 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "selfAssessment",
+            "otherEntityName": "selfAssessment",
+            "otherEntityField": "name"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "type",
+            "fieldType": "AttackCostParamType",
+            "fieldValues": "NUMBER_OF_CUSTOMERS,PROTECTION_COST_PER_CUSTOMER,NOTIFICATION_COST_PER_CUSTOMER,EMPLOYEE_COST_PER_HOUR,FRACTION_OF_EMPLOYEES_AFFECTED_BY_OUTAGE,AVERAGE_REVENUE_PER_HOUR,FRACTION_OF_REVENUE_AFFECTED_BY_OUTAGE,RECOVERY_COST,REPAIR_SERVICES,REPLACEMENT_PARTS,LOST_DATA_RECOVERY,OTHER_COSTS",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "value",
+            "fieldType": "BigDecimal"
+        }
+    ],
+    "changelogDate": "20190118090709",
+    "entityTableName": "attack_cost_param",
+    "dto": "no",
+    "pagination": "no",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "angularJSSuffix": "mgm"
+}
