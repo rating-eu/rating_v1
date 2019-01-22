@@ -38,7 +38,7 @@ public class SplittingValue implements Serializable {
     @Column(name = "category_type")
     private CategoryType categoryType;
 
-    @Column(name = "jhi_value", precision=10, scale=2)
+    @Column(name = "jhi_value", precision=20, scale=2)
     private BigDecimal value;
 
     @ManyToOne

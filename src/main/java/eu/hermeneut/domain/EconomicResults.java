@@ -26,16 +26,16 @@ public class EconomicResults implements Serializable {
     @SequenceGenerator(name = "sequenceGenerator")
     private Long id;
 
-    @Column(name = "economic_performance", precision=10, scale=2)
+    @Column(name = "economic_performance", precision=20, scale=2)
     private BigDecimal economicPerformance;
 
-    @Column(name = "intangible_driving_earnings", precision=10, scale=2)
+    @Column(name = "intangible_driving_earnings", precision=20, scale=2)
     private BigDecimal intangibleDrivingEarnings;
 
-    @Column(name = "intangible_capital", precision=10, scale=2)
+    @Column(name = "intangible_capital", precision=20, scale=2)
     private BigDecimal intangibleCapital;
 
-    @Column(name = "intangible_loss_by_attacks", precision=10, scale=2)
+    @Column(name = "intangible_loss_by_attacks", precision=20, scale=2)
     private BigDecimal intangibleLossByAttacks;
 
     @OneToOne

@@ -41,7 +41,7 @@ public class MyAsset implements Serializable {
      * WP3
      */
     @ApiModelProperty(value = "WP3")
-    @Column(name = "economic_value", precision=10, scale=2)
+    @Column(name = "economic_value", precision=20, scale=2)
     private BigDecimal economicValue;
 
     @Min(value = 1)
@@ -49,7 +49,7 @@ public class MyAsset implements Serializable {
     @Column(name = "impact")
     private Integer impact;
 
-    @Column(name = "loss_value", precision=10, scale=2)
+    @Column(name = "loss_value", precision=20, scale=2)
     private BigDecimal lossValue;
 
     @OneToMany(mappedBy = "myAsset", fetch = FetchType.EAGER,

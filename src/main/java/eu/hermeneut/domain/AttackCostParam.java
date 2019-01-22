@@ -36,6 +36,7 @@ public class AttackCostParam implements Serializable {
     private AttackCostParamType type;
 
     @NotNull
+    @Column(precision = 20, scale = 2)
     private BigDecimal value;
 
     @Transient
