@@ -67,14 +67,24 @@ export class AttackRelatedCostsEstimationComponent implements OnInit {
 
                 index = _.findIndex(this.attackCostParams, { type: AttackCostParamType.NOTIFICATION_COST_PER_CUSTOMER });
                 if (index !== -1) {
-                    this.notificationMin = this.attackCostParams[index].min;
-                    this.notificationMax = this.attackCostParams[index].max;
+                    if (this.customers) {
+                        this.notificationMin = this.attackCostParams[index].min * this.customers;;
+                        this.notificationMax = this.attackCostParams[index].max * this.customers;;
+                    } else {
+                        this.notificationMin = this.attackCostParams[index].min;
+                        this.notificationMax = this.attackCostParams[index].max;
+                    }
                 }
 
                 index = _.findIndex(this.attackCostParams, { type: AttackCostParamType.PROTECTION_COST_PER_CUSTOMER });
                 if (index !== -1) {
-                    this.protectionMin = this.attackCostParams[index].min;
-                    this.protectionMax = this.attackCostParams[index].max;
+                    if (this.customers) {
+                        this.protectionMin = this.attackCostParams[index].min * this.customers;
+                        this.protectionMax = this.attackCostParams[index].max * this.customers;
+                    } else {
+                        this.protectionMin = this.attackCostParams[index].min;
+                        this.protectionMax = this.attackCostParams[index].max;
+                    }
                 }
 
                 index = _.findIndex(this.attackCostParams, { type: AttackCostParamType.EMPLOYEE_COST_PER_HOUR });
