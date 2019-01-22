@@ -7,7 +7,7 @@ import { SelfAssessmentMgmService, SelfAssessmentMgm } from '../../entities/self
 import { MyAssetMgm } from '../../entities/my-asset-mgm';
 import { MyAssetAttackChance } from '../../risk-management/model/my-asset-attack-chance.model';
 import { AttackStrategyMgm } from '../../entities/attack-strategy-mgm';
-import { DashboardService, DashboardStatus } from '../dashboard.service';
+import { DashboardService, DashboardStatus, Status } from '../dashboard.service';
 
 @Component({
   selector: 'jhi-attack-strategies-widget',
@@ -61,7 +61,7 @@ export class AttackStrategiesWidgetComponent implements OnInit {
     });
 
     this.dashService.getStatusFromServer(this.mySelf, this.dashboardStatus.ASSESS_VULNERABILITIES).toPromise().then((res) => {
-      this.status.assessVulnerablitiesStatus = res;
+      this.status.assessVulnerablitiesStatus = Status[res];
       this.dashService.updateStatus(this.status);
     });
   }

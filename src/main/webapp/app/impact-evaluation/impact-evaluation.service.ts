@@ -1,19 +1,25 @@
+import {AttackCostMgm, CostType} from './../entities/attack-cost-mgm/attack-cost-mgm.model';
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpResponse, HttpParams} from '../../../../../node_modules/@angular/common/http';
 import {SelfAssessmentMgm} from '../entities/self-assessment-mgm';
 import {SERVER_API_URL} from '../app.constants';
 import {Observable} from '../../../../../node_modules/rxjs';
 import {MyAssetMgm} from '../entities/my-asset-mgm';
-import {EBITMgm} from '../entities/ebit-mgm';
 import {Wp3BundleInput} from './model/wp3-bundle-input.model';
 import {Wp3BundleOutput} from './model/wp3-bundle-output.model';
 import {ImpactEvaluationStatus} from './model/impact-evaluation-status.model';
+import {AttackCostParamMgm} from '../entities/attack-cost-param-mgm';
 
 @Injectable()
 export class ImpactEvaluationService {
     private assetServiceUrl = SERVER_API_URL + 'api/my-assets/self-assessment/';
     private wp3ServiceUrl = SERVER_API_URL + 'api/{selfAssessmentID}';
     private wp3StatusUrl = SERVER_API_URL + 'api/{selfAssessmentID}/dashboard/impact-evaluation-status';
+    private attackCostUrl = SERVER_API_URL + 'api/{selfAssessmentID}/attack-costs';
+    private attackCostParamsUrl = SERVER_API_URL + 'api/{selfAssessmentID}/attack-cost-params';
+    private updateAttackCostParamsUrl = SERVER_API_URL + 'api/attack-cost-params';
+    private evaluateAttackCostUrl = SERVER_API_URL + 'api/{selfAssessmentID}/{costType}/evaluate-attack-cost';
+    private updateAttackCostUrl = SERVER_API_URL + 'api/{selfAssessmentID}/attack-costs';
     private operationStepOne = '/wp3/step-one/';
     private operationStepTwo = '/wp3/step-two/';
     private operationStepThree = '/wp3/step-three/';
@@ -24,6 +30,53 @@ export class ImpactEvaluationService {
     constructor(
         private http: HttpClient
     ) {
+    }
+
+    /*
+    API: POST evaluateParam(ParamType (url), AttackCostParam[] (BODY)) --> AttackCostParam;
+    API: POST evaluateAttackCost(CostType (url), AttackCostParam[] (BODY)) --> AttackCost(ID=NULL)
+    API: PUT api/{selfAssessmentID}/attack-cost --> AttackCost
+    */
+    updateAttackCost(self: SelfAssessmentMgm, cost: AttackCostMgm): Observable<AttackCostMgm> {
+        const uri = this.updateAttackCostUrl.replace('{selfAssessmentID}', String(self.id));
+        return this.http.put<AttackCostMgm>(uri, cost, {observe: 'response'})
+            .map((res: HttpResponse<AttackCostMgm>) => {
+                return res.body;
+            });
+    }
+
+    updateCreateAttackCostParam(param: AttackCostParamMgm): Observable<AttackCostParamMgm> {
+        return this.http.put<AttackCostParamMgm>(this.updateAttackCostParamsUrl, param, {observe: 'response'})
+            .map((res: HttpResponse<AttackCostParamMgm>) => {
+                return res.body;
+            });
+    }
+
+    evaluateAttackCost(self: SelfAssessmentMgm, attackCostType: CostType, params: AttackCostParamMgm[]): Observable<AttackCostMgm> {
+        let uri = this.evaluateAttackCostUrl.replace('{selfAssessmentID}', String(self.id));
+        uri = uri.replace('{costType}', CostType[attackCostType]);
+        return this.http.post<AttackCostMgm>(uri, params, {observe: 'response'})
+            .map((res: HttpResponse<AttackCostMgm>) => {
+                return res.body;
+            });
+    }
+
+    getAttackCost(self: SelfAssessmentMgm): Observable<AttackCostMgm[]> {
+        return this.http.get<AttackCostMgm[]>(
+            this.attackCostUrl.replace('{selfAssessmentID}', String(self.id)),
+            {observe: 'response'})
+            .map((res: HttpResponse<AttackCostMgm[]>) => {
+                return res.body;
+            });
+    }
+
+    getAttackCostParams(self: SelfAssessmentMgm): Observable<AttackCostParamMgm[]> {
+        return this.http.get<AttackCostParamMgm[]>(
+            this.attackCostParamsUrl.replace('{selfAssessmentID}', String(self.id)),
+            {observe: 'response'})
+            .map((res: HttpResponse<AttackCostParamMgm[]>) => {
+                return res.body;
+            });
     }
 
     getStatus(self: SelfAssessmentMgm): Observable<ImpactEvaluationStatus> {

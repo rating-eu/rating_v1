@@ -1,5 +1,5 @@
 import { DashboardStepEnum } from './../models/enumeration/dashboard-step.enum';
-import { DashboardService, DashboardStatus } from './../dashboard.service';
+import { DashboardService, DashboardStatus, Status } from './../dashboard.service';
 import { MyAssetAttackChance } from './../../risk-management/model/my-asset-attack-chance.model';
 import { RiskManagementService } from './../../risk-management/risk-management.service';
 import { SelfAssessmentMgm } from './../../entities/self-assessment-mgm/self-assessment-mgm.model';
@@ -83,7 +83,7 @@ export class AssetAtRiskWidgetComponent implements OnInit {
       this.loading = false;
     });
     this.dashService.getStatusFromServer(this.mySelf, this.dashboardStatus.RISK_EVALUATION).toPromise().then((res) => {
-      this.status.riskEvaluationStatus = res;
+      this.status.riskEvaluationStatus = Status[res];
       this.dashService.updateStatus(this.status);
     });
   }

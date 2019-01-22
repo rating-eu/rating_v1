@@ -26,6 +26,7 @@ import {forkJoin} from 'rxjs/observable/forkJoin';
 import {Observable} from 'rxjs/Observable';
 import {HttpResponse} from '@angular/common/http';
 import {QuestionnaireStatusMgmCustomService} from '../../../../entities/questionnaire-status-mgm/questionnaire-status-mgm.custom.service';
+import {switchMap} from 'rxjs/operators';
 
 @Component({
     selector: 'jhi-dynamic-form',
@@ -314,40 +315,35 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
             questionnaireStatus$ = this.questionnaireStatusService.update(questionnaireStatus);
         }
 
-        questionnaireStatus$.toPromise().then(
-            (statusResponse: HttpResponse<QuestionnaireStatusMgm>) => {
-                // update the questionnaire status with the ID from the DB
-                questionnaireStatus = statusResponse.body;
-            }
-        );
+        const selfAssessment$: Observable<HttpResponse<SelfAssessmentMgm>> = questionnaireStatus$
+            .pipe(
+                switchMap((qStatusResponse: HttpResponse<QuestionnaireStatusMgm>) => {
+                    questionnaireStatus = qStatusResponse.body;
+                    return this.threatAgentService.getDefaultThreatAgents();
+                })
+            ).pipe(
+                switchMap((defaultsResponse: HttpResponse<ThreatAgentMgm[]>) => {
+                    const defaultThreatAgents: ThreatAgentMgm[] = defaultsResponse.body;
 
-        // #4 Get the default ThreatAgents
-        const defaultThreatAgents$: Observable<HttpResponse<ThreatAgentMgm[]>> = this.threatAgentService.getDefaultThreatAgents();
+                    const identifiedThreatAgents: ThreatAgentMgm[] = [];
+                    const threatAgentsPercentageArray: Couple<ThreatAgentMgm, Fraction>[] = Array.from(threatAgentsPercentageMap.values());
 
-        const selfAssessment$: Observable<HttpResponse<SelfAssessmentMgm>> = defaultThreatAgents$
-            .mergeMap((response: HttpResponse<ThreatAgentMgm[]>) => {
-                const defaultThreatAgents: ThreatAgentMgm[] = response.body;
+                    threatAgentsPercentageArray.forEach((couple: Couple<ThreatAgentMgm, Fraction>) => {
+                        const threatAgent: ThreatAgentMgm = couple.key;
+                        const likelihood: Fraction = couple.value;
+                        if (likelihood.toPercentage() > 0) {
+                            identifiedThreatAgents.push(threatAgent);
+                        }
+                    });
 
-                const myAnswersResponses = myAnswers;
+                    const uniqueThreatAgentsSet: Set<ThreatAgentMgm> = new Set<ThreatAgentMgm>(
+                        defaultThreatAgents.concat(identifiedThreatAgents));
+                    const uniqueThreatAgentsArray: ThreatAgentMgm[] = Array.from(uniqueThreatAgentsSet);
+                    this.selfAssessment.threatagents = uniqueThreatAgentsArray;
 
-                const identifiedThreatAgents: ThreatAgentMgm[] = [];
-                const threatAgentsPercentageArray: Couple<ThreatAgentMgm, Fraction>[] = Array.from(threatAgentsPercentageMap.values());
-
-                threatAgentsPercentageArray.forEach((couple: Couple<ThreatAgentMgm, Fraction>) => {
-                    const threatAgent: ThreatAgentMgm = couple.key;
-                    const likelihood: Fraction = couple.value;
-                    if (likelihood.toPercentage() > 0) {
-                        identifiedThreatAgents.push(threatAgent);
-                    }
-                });
-
-                const uniqueThreatAgentsSet: Set<ThreatAgentMgm> = new Set<ThreatAgentMgm>(
-                    defaultThreatAgents.concat(identifiedThreatAgents));
-                const uniqueThreatAgentsArray: ThreatAgentMgm[] = Array.from(uniqueThreatAgentsSet);
-                this.selfAssessment.threatagents = uniqueThreatAgentsArray;
-
-                return this.selfAssessmentService.update(this.selfAssessment);
-            });
+                    return this.selfAssessmentService.update(this.selfAssessment);
+                })
+            );
 
         selfAssessment$.toPromise().then(
             (selfAssessmentResponse: HttpResponse<SelfAssessmentMgm>) => {
@@ -406,17 +402,16 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
             questionnaireStatus$ = this.questionnaireStatusService.update(questionnaireStatus);
         }
 
-        questionnaireStatus$.toPromise().then(
-            (statusResponse: HttpResponse<QuestionnaireStatusMgm>) => {
-                // update the questionnaire status with the ID from the DB
-                questionnaireStatus = statusResponse.body;
-            }
+        const selfAssessment$: Observable<HttpResponse<SelfAssessmentMgm>> = questionnaireStatus$.pipe(
+            switchMap((qStatusResponse: HttpResponse<QuestionnaireStatusMgm>) => {
+                questionnaireStatus = qStatusResponse.body;
+
+                // #4 Update the SelfAssessment
+                this.selfAssessment.user = this.user;
+
+                return this.selfAssessmentService.update(this.selfAssessment);
+            })
         );
-
-        // #4 Update the SelfAssessment
-        this.selfAssessment.user = this.user;
-
-        const selfAssessment$: Observable<HttpResponse<SelfAssessmentMgm>> = this.selfAssessmentService.update(this.selfAssessment);
 
         selfAssessment$.toPromise()
             .then((selfAssessmentResponse: HttpResponse<SelfAssessmentMgm>) => {

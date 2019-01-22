@@ -478,15 +478,15 @@
                         <ngb-tabset>
                             <ngb-tab>
                                 <ng-template ngbTabTitle>
-                                    <h2>Splittings</h2>
+                                    <h2>Splitting</h2>
                                 </ng-template>
                                 <ng-template ngbTabContent>
                                     <ng-container class="card-text">
-                                        <!--GLOBAL SPLITTINGS-->
+                                        <!--GLOBAL SPLITTING-->
                                         <ng-container *ngIf="isGlobal">
                                             <div class="row" style="margin-top: 5px">
                                                 <div class="col-md-4">
-                                                    <div class="tile-stats">
+                                                    <div class="tile-stats" [ngClass]="{'not-selected': selectedAssetCategoryCode !== 'IP', 'selected': selectedAssetCategoryCode === 'IP'}">
                                                         <!--<div class="icon"><i class="fa fa-money"></i></div>-->
                                                         <div class="count">
                                                             <ng-container *ngIf="splittingOnIP">{{splittingOnIP |
@@ -499,7 +499,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="col-md-4">
-                                                    <div class="tile-stats">
+                                                    <div class="tile-stats" [ngClass]="{'not-selected': selectedAssetCategoryCode !== 'KEY_COMP', 'selected': selectedAssetCategoryCode === 'KEY_COMP'}">
                                                         <!--<div class="icon"><i class="fa fa-money"></i></div>-->
                                                         <div class="count">
                                                             <ng-container *ngIf="splittingOnKeyComp">{{splittingOnKeyComp
@@ -513,7 +513,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="col-md-4">
-                                                    <div class="tile-stats">
+                                                    <div class="tile-stats" [ngClass]="{'not-selected': selectedAssetCategoryCode !== 'ORG_CAPITAL', 'selected': selectedAssetCategoryCode === 'ORG_CAPITAL'}">
                                                         <!--<div class="icon"><i class="fa fa-money"></i></div>-->
                                                         <div class="count">
                                                             <ng-container *ngIf="splittingOnOrgCapital">{{splittingOnOrgCapital
@@ -530,7 +530,7 @@
                                             <div class="row" style="margin-top: 5px" *ngIf="!collapseSplittings">
                                                 <div class="col-md-12" style="border: 1px solid #E4E4E4; border-radius: 5px;">
                                                     <i class="float-right fa fa-times fa-lg" style="margin-top: 5px"
-                                                        (click)="collapseSplittings = true" aria-hidden="true"></i>
+                                                        (click)="collapseSplittings = true; selectedAssetCategoryCode = '';" aria-hidden="true"></i>
                                                     <div class="text-center" style="margin-top: 50px" *ngIf="assetsBySelectedCategory.length === 0">
                                                         <p style="color: orange">
                                                             <i class="fa fa-exclamation-triangle fa-4x" aria-hidden="true"></i>
@@ -585,11 +585,11 @@
                                                 </div>
                                             </div>
                                         </ng-container>
-                                        <!--SECTORIAL SPLITTINGS-->
+                                        <!--SECTORIAL SPLITTING-->
                                         <ng-container *ngIf="!isGlobal">
                                             <div class="row" style="margin-top: 5px">
                                                 <div class="col-md-4">
-                                                    <div class="tile-stats">
+                                                    <div class="tile-stats" [ngClass]="{'not-selected': selectedAssetCategoryCode !== 'IP', 'selected': selectedAssetCategoryCode === 'IP'}">
                                                         <!--<div class="icon"><i class="fa fa-money"></i></div>-->
                                                         <div class="count">
                                                             <ng-container *ngIf="splittingOnSectorialIP">{{splittingOnSectorialIP
@@ -603,7 +603,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="col-md-4">
-                                                    <div class="tile-stats">
+                                                    <div class="tile-stats" [ngClass]="{'not-selected': selectedAssetCategoryCode !== 'KEY_COMP', 'selected': selectedAssetCategoryCode === 'KEY_COMP'}">
                                                         <!--<div class="icon"><i class="fa fa-money"></i></div>-->
                                                         <div class="count">
                                                             <ng-container *ngIf="splittingOnSectorialKeyComp">
@@ -617,7 +617,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="col-md-4">
-                                                    <div class="tile-stats">
+                                                    <div class="tile-stats" [ngClass]="{'not-selected': selectedAssetCategoryCode !== 'ORG_CAPITAL', 'selected': selectedAssetCategoryCode === 'ORG_CAPITAL'}">
                                                         <!--<div class="icon"><i class="fa fa-money"></i></div>-->
                                                         <div class="count">
                                                             <ng-container *ngIf="splittingOnSectorialOrgCapital">
@@ -634,7 +634,7 @@
                                             <div class="row" style="margin-top: 5px" *ngIf="!collapseSplittings">
                                                 <div class="col-md-12" style="border: 1px solid #E4E4E4; border-radius: 5px;">
                                                     <i class="float-right fa fa-times fa-lg" style="margin-top: 5px"
-                                                        (click)="collapseSplittings = true" aria-hidden="true"></i>
+                                                        (click)="collapseSplittings = true; selectedAssetCategoryCode = '';" aria-hidden="true"></i>
                                                     <div class="text-center" style="margin-top: 50px" *ngIf="assetsBySelectedCategory.length === 0">
                                                         <p style="color: orange">
                                                             <i class="fa fa-exclamation-triangle fa-4x" aria-hidden="true"></i>
@@ -733,7 +733,7 @@
                                         <ng-container *ngIf="isGlobal">
                                             <div class="row" style="margin-top: 5px">
                                                 <div class="col-md-4">
-                                                    <div class="tile-stats">
+                                                    <div class="tile-stats" [ngClass]="{'not-selected': selectedAssetCategoryCode !== 'IP', 'selected': selectedAssetCategoryCode === 'IP'}">
                                                         <!--<div class="icon"><i class="fa fa-money"></i></div>-->
                                                         <div class="count">
                                                             <ng-container *ngIf="impactOnIP">{{impactOnIP |
@@ -747,7 +747,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="col-md-4">
-                                                    <div class="tile-stats">
+                                                    <div class="tile-stats" [ngClass]="{'not-selected': selectedAssetCategoryCode !== 'KEY_COMP', 'selected': selectedAssetCategoryCode === 'KEY_COMP'}">
                                                         <!--<div class="icon"><i class="fa fa-money"></i></div>-->
                                                         <div class="count">
                                                             <ng-container *ngIf="impactOnKeyComp">{{impactOnKeyComp |
@@ -760,7 +760,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="col-md-4">
-                                                    <div class="tile-stats">
+                                                    <div class="tile-stats" [ngClass]="{'not-selected': selectedAssetCategoryCode !== 'ORG_CAPITAL', 'selected': selectedAssetCategoryCode === 'ORG_CAPITAL'}">
                                                         <!--<div class="icon"><i class="fa fa-money"></i></div>-->
                                                         <div class="count">
                                                             <ng-container *ngIf="impactOnOrgCapital">{{impactOnOrgCapital
@@ -777,7 +777,7 @@
                                             <div class="row" style="margin-top: 5px" *ngIf="!collapseLosses">
                                                 <div class="col-md-12" style="border: 1px solid #E4E4E4; border-radius: 5px;">
                                                     <i class="float-right fa fa-times fa-lg" style="margin-top: 5px"
-                                                        (click)="collapseLosses = true" aria-hidden="true"></i>
+                                                        (click)="collapseLosses = true; selectedAssetCategoryCode = '';" aria-hidden="true"></i>
                                                     <div class="text-center" style="margin-top: 50px" *ngIf="assetsBySelectedCategory.length === 0">
                                                         <p style="color: orange">
                                                             <i class="fa fa-exclamation-triangle fa-4x" aria-hidden="true"></i>
@@ -815,7 +815,7 @@
                                         <ng-container *ngIf="!isGlobal">
                                             <div class="row" style="margin-top: 5px">
                                                 <div class="col-md-4">
-                                                    <div class="tile-stats">
+                                                    <div class="tile-stats" [ngClass]="{'not-selected': selectedAssetCategoryCode !== 'IP', 'selected': selectedAssetCategoryCode === 'IP'}">
                                                         <!--<div class="icon"><i class="fa fa-money"></i></div>-->
                                                         <div class="count">
                                                             <ng-container *ngIf="impactOnSectorialIP">{{impactOnSectorialIP
@@ -830,7 +830,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="col-md-4">
-                                                    <div class="tile-stats">
+                                                    <div class="tile-stats" [ngClass]="{'not-selected': selectedAssetCategoryCode !== 'KEY_COMP', 'selected': selectedAssetCategoryCode === 'KEY_COMP'}">
                                                         <!--<div class="icon"><i class="fa fa-money"></i></div>-->
                                                         <div class="count">
                                                             <ng-container *ngIf="impactOnSectorialKeyComp">
@@ -843,7 +843,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="col-md-4">
-                                                    <div class="tile-stats">
+                                                    <div class="tile-stats" [ngClass]="{'not-selected': selectedAssetCategoryCode !== 'ORG_CAPITAL', 'selected': selectedAssetCategoryCode === 'ORG_CAPITAL'}">
                                                         <!--<div class="icon"><i class="fa fa-money"></i></div>-->
                                                         <div class="count">
                                                             <ng-container *ngIf="impactOnSectorialOrgCapital">
@@ -860,7 +860,7 @@
                                             <div class="row" style="margin-top: 5px" *ngIf="!collapseLosses">
                                                 <div class="col-md-12" style="border: 1px solid #E4E4E4; border-radius: 5px;">
                                                     <i class="float-right fa fa-times fa-lg" style="margin-top: 5px"
-                                                        (click)="collapseLosses = true" aria-hidden="true"></i>
+                                                        (click)="collapseLosses = true; selectedAssetCategoryCode = '';" aria-hidden="true"></i>
                                                     <div class="text-center" style="margin-top: 50px" *ngIf="assetsBySelectedCategory.length === 0">
                                                         <p style="color: orange">
                                                             <i class="fa fa-exclamation-triangle fa-4x" aria-hidden="true"></i>

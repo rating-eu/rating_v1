@@ -2,24 +2,26 @@ package eu.hermeneut.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import eu.hermeneut.domain.AttackCost;
+import eu.hermeneut.domain.SelfAssessment;
+import eu.hermeneut.exceptions.NotFoundException;
 import eu.hermeneut.service.AttackCostService;
+import eu.hermeneut.service.SelfAssessmentService;
 import eu.hermeneut.web.rest.errors.BadRequestAlertException;
 import eu.hermeneut.web.rest.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.net.URI;
 import java.net.URISyntaxException;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.StreamSupport;
-
-import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
  * REST controller for managing AttackCost.
@@ -34,8 +36,11 @@ public class AttackCostResource {
 
     private final AttackCostService attackCostService;
 
-    public AttackCostResource(AttackCostService attackCostService) {
+    private final SelfAssessmentService selfAssessmentService;
+
+    public AttackCostResource(AttackCostService attackCostService, SelfAssessmentService selfAssessmentService) {
         this.attackCostService = attackCostService;
+        this.selfAssessmentService = selfAssessmentService;
     }
 
     /**
@@ -80,6 +85,34 @@ public class AttackCostResource {
             .body(result);
     }
 
+    @PutMapping("/{selfAssessmentID}/attack-costs")
+    @Timed
+    public ResponseEntity<AttackCost> updateAttackCostsBySelfAssessment(@PathVariable Long selfAssessmentID, @NotNull @Valid @RequestBody AttackCost attackCost) throws NotFoundException {
+        log.debug("REST request to update all AttackCosts of type : {} for SelfAssessment : {}", attackCost.getType());
+
+        SelfAssessment selfAssessment = this.selfAssessmentService.findOne(selfAssessmentID);
+        if (selfAssessment == null) {
+            throw new NotFoundException("SelfAssessment with ID : " + selfAssessmentID + " NOT FOUND!");
+        }
+
+        List<AttackCost> attackCosts = this.attackCostService.findAllBySelfAssessmentAndCostTypeWithDuplicateTypes(selfAssessmentID, attackCost.getType());
+
+        if (attackCosts != null && !attackCosts.isEmpty()) {
+            attackCosts.stream().forEach((aCost) -> {
+                aCost.setCosts(attackCost.getCosts());
+            });
+
+            List<AttackCost> result = this.attackCostService.save(attackCosts);
+            AttackCost first = result.get(0);
+            first.setId(null);
+
+            return ResponseEntity.ok()
+                .body(first);
+        } else {
+            return ResponseEntity.status(HttpStatus.FAILED_DEPENDENCY).body(attackCost);
+        }
+    }
+
     /**
      * GET  /attack-costs : get all the attackCosts.
      *
@@ -90,7 +123,14 @@ public class AttackCostResource {
     public List<AttackCost> getAllAttackCosts() {
         log.debug("REST request to get all AttackCosts");
         return attackCostService.findAll();
-        }
+    }
+
+    @GetMapping("/{selfAssessmentID}/attack-costs")
+    @Timed
+    public List<AttackCost> getAttackCostsBySelfAssessment(@PathVariable Long selfAssessmentID) {
+        log.debug("REST request to get all AttackCosts by SelfAssessment ID");
+        return attackCostService.findAllUniqueTypesBySelfAssessmentWithNulledID(selfAssessmentID);
+    }
 
     /**
      * GET  /attack-costs/:id : get the "id" attackCost.

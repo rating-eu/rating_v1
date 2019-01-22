@@ -8,6 +8,7 @@ import { ImpactEvaluationStatus } from '../../impact-evaluation/model/impact-eva
 import { MyAssetMgm } from '../../entities/my-asset-mgm';
 import { DashboardService, DashboardStatus } from '../dashboard.service';
 import { AssetType } from '../../entities/enumerations/AssetType.enum';
+import { Status } from '../../entities/enumerations/QuestionnaireStatus.enum';
 
 @Component({
   selector: 'jhi-tangible-financial-widget',
@@ -25,6 +26,7 @@ export class TangibleFinancialWidgetComponent implements OnInit {
   }[];
   public selectedCategory: string;
   public assetsBySelectedCategory: MyAssetMgm[] = [];
+  public priorities = ['Low', 'Low medium', 'Medium', 'Medium high', 'High'];
 
   private mySelf: SelfAssessmentMgm;
   private wp3Status: ImpactEvaluationStatus;
@@ -80,7 +82,7 @@ export class TangibleFinancialWidgetComponent implements OnInit {
     });
 
     this.dashService.getStatusFromServer(this.mySelf, this.dashboardStatus.IMPACT_EVALUATION).toPromise().then((res) => {
-      this.status.impactEvaluationStatus = res;
+      this.status.impactEvaluationStatus = Status[res];
       this.dashService.updateStatus(this.status);
     });
   }

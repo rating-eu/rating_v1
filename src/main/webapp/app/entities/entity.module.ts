@@ -35,6 +35,7 @@ import { HermeneutImpactLevelMgmModule } from './impact-level-mgm/impact-level-m
 import { HermeneutImpactLevelDescriptionMgmModule } from './impact-level-description-mgm/impact-level-description-mgm.module';
 import { HermeneutSplittingValueMgmModule } from './splitting-value-mgm/splitting-value-mgm.module';
 import { HermeneutLogoMgmModule } from './logo-mgm/logo-mgm.module';
+import { HermeneutAttackCostParamMgmModule } from './attack-cost-param-mgm/attack-cost-param-mgm.module';
 /* jhipster-needle-add-entity-module-import - JHipster will add entity modules imports here */
 
 @NgModule({
@@ -75,6 +76,7 @@ import { HermeneutLogoMgmModule } from './logo-mgm/logo-mgm.module';
         HermeneutImpactLevelDescriptionMgmModule,
         HermeneutSplittingValueMgmModule,
         HermeneutLogoMgmModule,
+        HermeneutAttackCostParamMgmModule,
         /* jhipster-needle-add-entity-module - JHipster will add entity modules here */
     ],
     declarations: [],

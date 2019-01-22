@@ -1,5 +1,5 @@
 import { DashboardStepEnum } from './../models/enumeration/dashboard-step.enum';
-import { DashboardStatus, DashboardService } from './../dashboard.service';
+import { DashboardStatus, DashboardService, Status } from './../dashboard.service';
 import * as _ from 'lodash';
 
 import { Component, OnInit, OnDestroy } from '@angular/core';
@@ -79,7 +79,7 @@ export class AttackMapWidgetComponent implements OnInit, OnDestroy {
         this.selfAssessment = this.selfAssessmentService.getSelfAssessment();
         this.status = this.dashService.getStatus();
         this.dashService.getStatusFromServer(this.selfAssessment, this.dashboardStatus.ASSESS_VULNERABILITIES).toPromise().then((res) => {
-            this.status.assessVulnerablitiesStatus = res;
+            this.status.assessVulnerablitiesStatus = Status[res];
             this.dashService.updateStatus(this.status);
         });
         this.loading = true;

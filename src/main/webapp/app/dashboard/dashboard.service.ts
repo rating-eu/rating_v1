@@ -5,12 +5,18 @@ import { SelfAssessmentMgm } from './../entities/self-assessment-mgm/self-assess
 import { Injectable } from '@angular/core';
 import { Observable, BehaviorSubject } from 'rxjs';
 
+export enum Status {
+  'EMPTY' = 'EMPTY',
+  'PENDING' = 'PENDING',
+  'FULL' = 'FULL'
+}
+
 export interface DashboardStatus {
-  assetClusteringStatus: boolean;
-  identifyThreatAgentsStatus: boolean;
-  assessVulnerablitiesStatus: boolean;
-  impactEvaluationStatus: boolean;
-  riskEvaluationStatus: boolean;
+  assetClusteringStatus: Status;
+  identifyThreatAgentsStatus: Status;
+  assessVulnerablitiesStatus: Status;
+  impactEvaluationStatus: Status;
+  riskEvaluationStatus: Status;
 }
 
 @Injectable()
@@ -34,11 +40,11 @@ export class DashboardService {
     return this.subscribeForStatus.asObservable();
   }
 
-  public getStatusFromServer(self: SelfAssessmentMgm, requestedStatus: DashboardStepEnum): Observable<boolean> {
+  public getStatusFromServer(self: SelfAssessmentMgm, requestedStatus: DashboardStepEnum): Observable<string> {
     let uri = this.dashboardStatusUri.replace('{selfAssessmentID}', String(self.id));
     uri = uri.replace('{requestedStatus}', requestedStatus.toString());
-    return this.http.get<boolean>(uri, { observe: 'response' })
-      .map((res: HttpResponse<boolean>) => {
+    return this.http.get<string>(uri, { observe: 'response' })
+      .map((res: HttpResponse<string>) => {
         return res.body;
       });
   }

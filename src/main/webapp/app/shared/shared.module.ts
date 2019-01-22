@@ -22,6 +22,7 @@ import {
 import {Title} from '@angular/platform-browser';
 import {LoginPlainComponent} from './index';
 import { PopUpService } from './pop-up-services/pop-up.service';
+import { ReplacePipe } from './pipe/replace.pipe';
 
 @NgModule({
     imports: [
@@ -32,7 +33,8 @@ import { PopUpService } from './pop-up-services/pop-up.service';
         JhiLoginModalComponent,
         HasAnyAuthorityDirective,
         FindLanguageFromKeyPipe,
-        LoginPlainComponent
+        LoginPlainComponent,
+        ReplacePipe
     ],
     providers: [
         LoginService,
@@ -52,7 +54,8 @@ import { PopUpService } from './pop-up-services/pop-up.service';
         FindLanguageFromKeyPipe,
         HasAnyAuthorityDirective,
         DatePipe,
-        LoginPlainComponent
+        LoginPlainComponent,
+        ReplacePipe
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 
