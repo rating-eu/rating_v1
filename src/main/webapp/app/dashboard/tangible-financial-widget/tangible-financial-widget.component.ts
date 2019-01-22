@@ -26,6 +26,7 @@ export class TangibleFinancialWidgetComponent implements OnInit {
   }[];
   public selectedCategory: string;
   public assetsBySelectedCategory: MyAssetMgm[] = [];
+  public priorities = ['Low', 'Low medium', 'Medium', 'Medium high', 'High'];
 
   private mySelf: SelfAssessmentMgm;
   private wp3Status: ImpactEvaluationStatus;
@@ -82,7 +83,6 @@ export class TangibleFinancialWidgetComponent implements OnInit {
 
     this.dashService.getStatusFromServer(this.mySelf, this.dashboardStatus.IMPACT_EVALUATION).toPromise().then((res) => {
       this.status.impactEvaluationStatus = Status[res];
-      console.log(this.status.impactEvaluationStatus);
       this.dashService.updateStatus(this.status);
     });
   }

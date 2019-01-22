@@ -1,8 +1,188 @@
-<div class="text-center" style="margin-top: 50px">
-  <p style="color: orange">
-    <i class="fa fa-exclamation-triangle fa-4x" aria-hidden="true"></i>
-  </p>
-  <p style="color: grey">
-    <i>Work in progress!</i>
-  </p>
+<div class="container" *ngIf="loadingCosts && loadingParams">
+  <div class="loader"></div>
+</div>
+<div class="container" *ngIf="!loadingCosts && !loadingParams">
+  <ng-container *ngIf="attackCosts.length === 0">
+    <div class="text-center" style="margin-top: 50px">
+      <p style="color: orange">
+        <i class="fa fa-exclamation-triangle fa-4x" aria-hidden="true"></i>
+      </p>
+      <p style="color: grey">
+        <i>No Attack Costs declared in <a href="javascript:void(0)" [routerLink]="['/identify-asset/attack-costs']">Attack
+            Costs</a> section, please go in section and declare it!</i>
+      </p>
+    </div>
+  </ng-container>
+  <ng-container class="row" *ngIf="attackCosts.length > 0">
+    <div class="card">
+      <div class="card-body">
+        <h5 class="card-title">Attack Related Costs</h5>
+        <div class="card-text">
+          <div class="row">
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <span class="input-group-text">Customare number</span>
+              </div>
+              <input type="number" min="1" step="1" class="form-control" placeholder="Insert number of company customers"
+                aria-label="Insert number of company customers" aria-describedby="customare" [(ngModel)]="customers">
+              <div class="input-group-append">
+                <button class="btn btn-outline-secondary" type="button" id="save_update_customare_btn" (click)="updateCreateAttackCostParam(customers, attackCostParamTypeEnum.NUMBER_OF_CUSTOMERS)">
+                  <ng-container>Submit</ng-container>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <h6>Declared Costs</h6>
+            <div class="list-group">
+              <ng-container *ngFor="let cost of attackCosts">
+                <a href="javascript:void(0)" (click)="selectCost(cost)" class="list-group-item list-group-item-action"
+                  [ngClass]="{'active': selectedCost && cost.type === selectedCost.type}">
+                  {{cost.type | replace:'_':' ' | titlecase}}</a>
+              </ng-container>
+            </div>
+          </div>
+          <div class="col-md-8" *ngIf="selectedCost">
+            <div class="row">
+              <h5>{{selectedCost.type | replace:'_':' ' | titlecase}}</h5>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <div class="row">
+                  <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                      <span class="input-group-text">€</span>
+                    </div>
+                    <input type="number" min="0.01" step="0.01" class="form-control" placeholder="Insert economic value"
+                      aria-label="Insert economic value" aria-describedby="button-addon2" [(ngModel)]="selectedCost.costs">
+                    <div class="input-group-append">
+                      <button class="btn btn-outline-secondary" type="button" id="save_update_btn" (click)="updateAttackCost(selectedCost)">
+                        <ng-container *ngIf="selectedCost">Submit</ng-container>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <ng-container class="row" *ngIf="selectedCost.type.toString() === 'POST_BREACH_CUSTOMER_PROTECTION_OR_CARE_COSTS' || selectedCost.type.toString() === 'CUSTOMER_BREACH_NOTIFICATION_COSTS' || selectedCost.type.toString() === 'COST_OF_IT_DOWNTIME' || selectedCost.type.toString() === 'BEFORE_THE_ATTACK_STATUS_RESTORATION'">
+                  <div class="x_panel" style="padding:0px !important;">
+                    <div class="x_title" style="padding:0px !important;">
+                      <h2 style="padding: 10px;">Evaluation</h2>
+                      <ul class="nav navbar-right panel_toolbox">
+                        <li style="width: 24px; cursor: default"></li>
+                        <li style="width: 24px; cursor: default"></li>
+                        <li>
+                          <a href="javascript:void(0)" class="collapse-link" (click)="isCollapsed = !isCollapsed">
+                            <i *ngIf="!isCollapsed" class="fa fa-chevron-up"></i>
+                            <i *ngIf="isCollapsed" class="fa fa-chevron-down"></i>
+                          </a>
+                        </li>
+                      </ul>
+                      <div class="clearfix"></div>
+                    </div>
+                    <div class="table-responsive x_content" style="padding:0px !important;" [ngbCollapse]="isCollapsed">
+                      <div id="evaluation" [ngbCollapse]="isCollapsed">
+                        <ng-container [ngSwitch]="selectedCost.type">
+                          <ng-container *ngSwitchCase="'POST_BREACH_CUSTOMER_PROTECTION_OR_CARE_COSTS'">
+                            <div class="col-md-12">
+                              <p>DESCRIPTION</p>
+                              <p>PROTECTION_COST_PER_CUSTOMER MIN = {{protectionMin | currency: 'EUR'}}</p>
+                              <p>PROTECTION_COST_PER_CUSTOMER MAX = {{protectionMax | currency: 'EUR'}}</p>
+                            </div>
+                          </ng-container>
+                          <ng-container *ngSwitchCase="'CUSTOMER_BREACH_NOTIFICATION_COSTS'">
+                            <div class="col-md-12">
+                              <p>DESCRIPTION</p>
+                              <p>NOTIFICATION_COST_PER_CUSTOMER MIN = {{notificationMin | currency: 'EUR'}}</p>
+                              <p>NOTIFICATION_COST_PER_CUSTOMER MAX = {{notificationMax | currency: 'EUR'}}</p>
+                            </div>
+                          </ng-container>
+                          <ng-container *ngSwitchCase="'COST_OF_IT_DOWNTIME'">
+                            <div class="col-md-12">
+                              <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                  <span class="input-group-text">Employee Costs per Hour €</span>
+                                </div>
+                                <input type="number" min="0.01" step="0.01" class="form-control" placeholder="Employee Costs per Hour"
+                                  aria-label="Insert Employee Costs per Hour" aria-describedby="employee_costs"
+                                  [(ngModel)]="employeeCosts">
+                              </div>
+                              <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                  <span class="input-group-text">Fraction Employees Affected by Outage</span>
+                                </div>
+                                <input type="number" min="1" step="1" class="form-control" placeholder="Insert Fraction Employees Affected by Outage"
+                                  aria-label="Insert Fraction Employees Affected by Outage" aria-describedby="fraction_employee"
+                                  [(ngModel)]="fractionEmployee">
+                              </div>
+                              <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                  <span class="input-group-text">Average Revenue per Hour €</span>
+                                </div>
+                                <input type="number" min="0.01" step="0.01" class="form-control" placeholder="Insert Average Revenue per Hour"
+                                  aria-label="Insert Average Revenue per Hour" aria-describedby="average_revenue"
+                                  [(ngModel)]="averageRevenue">
+                              </div>
+                              <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                  <span class="input-group-text">Fraction Revenue Affected by Outage</span>
+                                </div>
+                                <input type="number" min="1" step="1" class="form-control" placeholder="Insert Fraction Revenue Affected by Outage"
+                                  aria-label="Insert Fraction Revenue Affected by Outage" aria-describedby="fraction_revenue"
+                                  [(ngModel)]="fractionRevenue">
+                              </div>
+                              <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                  <span class="input-group-text">Recovery cost €</span>
+                                </div>
+                                <input type="number" min="0.01" step="0.01" class="form-control" placeholder="Insert Recovery Cost"
+                                  aria-label="Insert Recovery Cost" aria-describedby="recovery_cost" [(ngModel)]="recoveryCost">
+                              </div>
+                              <div class="col-md-12">
+                                  <button class="btn btn-outline-secondary" type="button" id="evaluate" (click)="evaluateAttackCost(costTypeEnum.COST_OF_IT_DOWNTIME)">
+                                      <ng-container>Evaluate</ng-container>
+                                    </button>
+                              </div>
+                            </div>
+                            <div class="col-md-12">
+                              <p><b>Cost of Downtime</b> = Employee Costs per Hour * Fraction Employees Affected by
+                                Outage + Average Revenue per
+                                Hour * Fraction Revenue Affected by Outage + Recovery cost</p>
+                              <ul>
+                                <li>
+                                  Employee Costs per Hour: total salaries and benefits of employees per week divided by
+                                  the average number of working hours
+                                </li>
+                                <li>
+                                  Average Revenue per Hour: total revenue per week divided by average number of open
+                                  hours
+                                </li>
+                                <li>
+                                  “Fraction Employees Affected by Outage” and “Fraction Revenue Affected by Outage” are
+                                  just educated guesses or plausible ranges
+                                </li>
+                                <li>
+                                  Recovery Costs = (Repair services + Replacement parts + Lost data recovery (how many
+                                  records and value of each record) + Other costs due to loss of data)
+                                </li>
+                              </ul>
+                            </div>
+                          </ng-container>
+                          <ng-container *ngSwitchCase="'BEFORE_THE_ATTACK_STATUS_RESTORATION'">
+                            WORK IN PROGRESS!!!
+                          </ng-container>
+                          <ng-container *ngSwitchDefault></ng-container>
+                        </ng-container>
+                      </div>
+                    </div>
+                  </div>
+                </ng-container>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-8 text-center" *ngIf="!selectedCost" style="margin-top: 200px">
+            <i>Select one item from the left screen list!</i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-container>
 </div>

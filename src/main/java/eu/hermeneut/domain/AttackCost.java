@@ -41,7 +41,7 @@ public class AttackCost implements Serializable {
     @Column(name = "description", length = 2000)
     private String description;
 
-    @Column(name = "costs", precision=10, scale=2)
+    @Column(name = "costs", precision=20, scale=2)
     private BigDecimal costs;
 
     @ManyToOne

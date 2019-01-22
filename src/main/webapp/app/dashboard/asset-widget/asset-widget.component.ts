@@ -108,7 +108,6 @@ export class AssetWidgetComponent implements OnInit, OnDestroy {
 
         this.dashService.getStatusFromServer(this.mySelf, this.dashboardStatus.ASSET_CLUSTERING).toPromise().then((res) => {
           this.status.assetClusteringStatus = Status[res];
-          console.log(this.status.assetClusteringStatus);
           this.dashService.updateStatus(this.status);
         });
       }

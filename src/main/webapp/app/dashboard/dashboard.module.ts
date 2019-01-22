@@ -42,6 +42,7 @@ import { AssetAtRiskWidgetComponent } from './asset-at-risk-widget/asset-at-risk
 import { EbitsWidgetComponent } from './ebits-widget/ebits-widget.component';
 import { IntangibleFinancialWidgetComponent } from './intangible-financial-widget/intangible-financial-widget.component';
 import { ImpactWidgetComponent } from './impact-widget/impact-widget.component';
+import { FinancialValueWidgetComponent } from './financial-value-widget/financial-value-widget.component';
 
 @NgModule({
     imports: [
@@ -70,7 +71,8 @@ import { ImpactWidgetComponent } from './impact-widget/impact-widget.component';
         AssetAtRiskWidgetComponent,
         EbitsWidgetComponent,
         IntangibleFinancialWidgetComponent,
-        ImpactWidgetComponent
+        ImpactWidgetComponent,
+        FinancialValueWidgetComponent
     ],
     providers: [
         {

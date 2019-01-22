@@ -1,0 +1,30 @@
+.list-group{
+    max-height: 400px;
+    margin-bottom: 10px;
+    overflow-y: scroll;
+    -webkit-overflow-scrolling: touch;
+}
+
+.table-responsive {
+    border: 0px solid #fff;
+}
+
+.form-control {
+    height: 42px;
+}
+
+:host ::ng-deep .bs-tooltip-right .tooltip-inner {
+    width: 400px;
+    max-width: 400px;
+}
+
+.loader {
+    border: 16px solid #f3f3f3;
+    border-radius: 50%;
+    border-top: 16px solid #3498db;
+    margin-left: 45%;
+    width: 120px;
+    height: 120px;
+    -webkit-animation: spin 2s linear infinite; /* Safari */
+    animation: spin 2s linear infinite;
+  }

@@ -30,6 +30,7 @@ export class IntangibleFinancialWidgetComponent implements OnInit {
   }[];
   public selectedCategory: string;
   public assetsBySelectedCategory: MyAssetMgm[] = [];
+  public priorities = ['Low', 'Low medium', 'Medium', 'Medium high', 'High'];
 
   constructor(
     private mySelfAssessmentService: SelfAssessmentMgmService,

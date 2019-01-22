@@ -345,6 +345,7 @@ export class ImpactEvaluationComponent implements OnInit {
                                 }
                             }
                         }
+                        this.selectedAssetCategoryCode = '';
                     }
                 }).catch(() => {
                     this.isGlobal = true;
@@ -567,7 +568,7 @@ export class ImpactEvaluationComponent implements OnInit {
                         }
                     }
                 }
-
+                this.selectedAssetCategoryCode = '';
                 if (!this.wp3Status) {
                     this.ngOnInit();
                 }

@@ -1,0 +1,60 @@
+<form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+
+    <div class="modal-header">
+        <h4 class="modal-title" id="myAttackCostParamLabel" jhiTranslate="hermeneutApp.attackCostParam.home.createOrEditLabel">Create or edit a Attack Cost Param</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                (click)="clear()">&times;</button>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group" [hidden]="!attackCostParam.id">
+            <label for="id" jhiTranslate="global.field.id">ID</label>
+            <input type="text" class="form-control" id="id" name="id"
+                   [(ngModel)]="attackCostParam.id" readonly />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="hermeneutApp.attackCostParam.type" for="field_type">Type</label>
+            <select class="form-control" name="type" [(ngModel)]="attackCostParam.type" id="field_type"  required>
+                <option value="NUMBER_OF_CUSTOMERS">{{'hermeneutApp.AttackCostParamType.NUMBER_OF_CUSTOMERS' | translate}}</option>
+                <option value="PROTECTION_COST_PER_CUSTOMER">{{'hermeneutApp.AttackCostParamType.PROTECTION_COST_PER_CUSTOMER' | translate}}</option>
+                <option value="NOTIFICATION_COST_PER_CUSTOMER">{{'hermeneutApp.AttackCostParamType.NOTIFICATION_COST_PER_CUSTOMER' | translate}}</option>
+                <option value="EMPLOYEE_COST_PER_HOUR">{{'hermeneutApp.AttackCostParamType.EMPLOYEE_COST_PER_HOUR' | translate}}</option>
+                <option value="FRACTION_OF_EMPLOYEES_AFFECTED_BY_OUTAGE">{{'hermeneutApp.AttackCostParamType.FRACTION_OF_EMPLOYEES_AFFECTED_BY_OUTAGE' | translate}}</option>
+                <option value="AVERAGE_REVENUE_PER_HOUR">{{'hermeneutApp.AttackCostParamType.AVERAGE_REVENUE_PER_HOUR' | translate}}</option>
+                <option value="FRACTION_OF_REVENUE_AFFECTED_BY_OUTAGE">{{'hermeneutApp.AttackCostParamType.FRACTION_OF_REVENUE_AFFECTED_BY_OUTAGE' | translate}}</option>
+                <option value="RECOVERY_COST">{{'hermeneutApp.AttackCostParamType.RECOVERY_COST' | translate}}</option>
+                <option value="REPAIR_SERVICES">{{'hermeneutApp.AttackCostParamType.REPAIR_SERVICES' | translate}}</option>
+                <option value="REPLACEMENT_PARTS">{{'hermeneutApp.AttackCostParamType.REPLACEMENT_PARTS' | translate}}</option>
+                <option value="LOST_DATA_RECOVERY">{{'hermeneutApp.AttackCostParamType.LOST_DATA_RECOVERY' | translate}}</option>
+                <option value="OTHER_COSTS">{{'hermeneutApp.AttackCostParamType.OTHER_COSTS' | translate}}</option>
+            </select>
+            <div [hidden]="!(editForm.controls.type?.dirty && editForm.controls.type?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.type?.errors?.required" jhiTranslate="entity.validation.required">
+                   This field is required.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="hermeneutApp.attackCostParam.value" for="field_value">Value</label>
+            <input type="number" class="form-control" name="value" id="field_value"
+                [(ngModel)]="attackCostParam.value" />
+        </div>
+
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="hermeneutApp.attackCostParam.selfAssessment" for="field_selfAssessment">Self Assessment</label>
+            <select class="form-control" id="field_selfAssessment" name="selfAssessment" [(ngModel)]="attackCostParam.selfAssessment" >
+                <option [ngValue]="null"></option>
+                <option [ngValue]="selfAssessmentOption.id === attackCostParam.selfAssessment?.id ? attackCostParam.selfAssessment : selfAssessmentOption" *ngFor="let selfAssessmentOption of selfassessments; trackBy: trackSelfAssessmentById">{{selfAssessmentOption.name}}</option>
+            </select>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">
+            <span class="fa fa-ban"></span>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+        <button type="submit" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+            <span class="fa fa-save"></span>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+    </div>
+</form>

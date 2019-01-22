@@ -1,0 +1,25 @@
+
+{
+    "hermeneutApp": {
+        "attackCostParam" : {
+            "home": {
+                "title": "AttackCostParams",
+                "createLabel": "Genera un nuovo Attack Cost Param",
+                "createOrEditLabel": "Genera o modifica un Attack Cost Param",
+                "search": "Cerca Attack Cost Param"
+            },
+            "created": "&Egrave; stato generato un nuovo Attack Cost Param con identificatore {{ param }}",
+            "updated": "&Egrave; stato aggiornato Attack Cost Param identificato da {{ param }}",
+            "deleted": "&Egrave; stato eliminato Attack Cost Param con identificatore {{ param }}",
+            "delete": {
+                "question": "Sei sicuro di volere eliminare Attack Cost Param {{ id }}?"
+            },
+            "detail": {
+                "title": "Attack Cost Param"
+            },
+            "type": "Type",
+            "value": "Value",
+            "selfAssessment": "Self Assessment"
+        }
+    }
+}
