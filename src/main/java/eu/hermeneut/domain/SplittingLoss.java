@@ -43,7 +43,7 @@ public class SplittingLoss implements Serializable {
     @Column(name = "loss_percentage", precision = 10, scale = 2)
     private BigDecimal lossPercentage;
 
-    @Column(name = "loss", precision = 10, scale = 2)
+    @Column(name = "loss", precision = 20, scale = 2)
     private BigDecimal loss;
 
     @OneToOne
