@@ -7,7 +7,9 @@ import javax.persistence.*;
 import javax.validation.constraints.*;
 
 import org.springframework.data.elasticsearch.annotations.Document;
+
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Objects;
 
 /**
@@ -41,13 +43,13 @@ public class ImpactLevel implements Serializable {
 
     @NotNull
     @Min(value = 0L)
-    @Column(name = "min_loss", nullable = false)
-    private Long minLoss;
+    @Column(name = "min_loss", nullable = false, precision = 20, scale = 2)
+    private BigDecimal minLoss;
 
     @NotNull
     @Min(value = 0L)
-    @Column(name = "max_loss", nullable = false)
-    private Long maxLoss;
+    @Column(name = "max_loss", nullable = false, precision = 20, scale = 2)
+    private BigDecimal maxLoss;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -84,29 +86,29 @@ public class ImpactLevel implements Serializable {
         this.impact = impact;
     }
 
-    public Long getMinLoss() {
+    public BigDecimal getMinLoss() {
         return minLoss;
     }
 
-    public ImpactLevel minLoss(Long minLoss) {
+    public ImpactLevel minLoss(BigDecimal minLoss) {
         this.minLoss = minLoss;
         return this;
     }
 
-    public void setMinLoss(Long minLoss) {
+    public void setMinLoss(BigDecimal minLoss) {
         this.minLoss = minLoss;
     }
 
-    public Long getMaxLoss() {
+    public BigDecimal getMaxLoss() {
         return maxLoss;
     }
 
-    public ImpactLevel maxLoss(Long maxLoss) {
+    public ImpactLevel maxLoss(BigDecimal maxLoss) {
         this.maxLoss = maxLoss;
         return this;
     }
 
-    public void setMaxLoss(Long maxLoss) {
+    public void setMaxLoss(BigDecimal maxLoss) {
         this.maxLoss = maxLoss;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
