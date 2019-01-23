@@ -23,6 +23,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
+import java.math.BigDecimal;
 import java.util.List;
 
 import static eu.hermeneut.web.rest.TestUtil.createFormattingConversionService;
@@ -46,11 +47,11 @@ public class ImpactLevelResourceIntTest {
     private static final Integer DEFAULT_IMPACT = 1;
     private static final Integer UPDATED_IMPACT = 2;
 
-    private static final Long DEFAULT_MIN_LOSS = 0L;
-    private static final Long UPDATED_MIN_LOSS = 1L;
+    private static final BigDecimal DEFAULT_MIN_LOSS = BigDecimal.ZERO;
+    private static final BigDecimal UPDATED_MIN_LOSS = BigDecimal.ONE;
 
-    private static final Long DEFAULT_MAX_LOSS = 0L;
-    private static final Long UPDATED_MAX_LOSS = 1L;
+    private static final BigDecimal DEFAULT_MAX_LOSS = BigDecimal.ZERO;
+    private static final BigDecimal UPDATED_MAX_LOSS = BigDecimal.ONE;
 
     @Autowired
     private ImpactLevelRepository impactLevelRepository;
@@ -90,7 +91,7 @@ public class ImpactLevelResourceIntTest {
 
     /**
      * Create an entity for this test.
-     *
+     * <p>
      * This is a static method, as tests for other entities might also need it,
      * if they test an entity which requires the current entity.
      */
