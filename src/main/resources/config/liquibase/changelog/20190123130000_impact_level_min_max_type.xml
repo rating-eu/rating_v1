@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+    <changeSet author="developer" id="20190123130000-1">
+        <!--ImpactLevel-->
+        <modifyDataType catalogName="cat"
+                        schemaName="public"
+                        tableName="impact_level"
+                        columnName="min_loss"
+                        newDataType="numeric(20, 2)"
+        />
+
+        <modifyDataType catalogName="cat"
+                        schemaName="public"
+                        tableName="impact_level"
+                        columnName="max_loss"
+                        newDataType="numeric(20, 2)"
+        />
+    </changeSet>
+</databaseChangeLog>
