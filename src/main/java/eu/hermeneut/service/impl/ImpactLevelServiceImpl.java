@@ -108,7 +108,7 @@ public class ImpactLevelServiceImpl implements ImpactLevelService {
     }
 
     @Override
-    @Transactional(readOnly = true)
+    @Transactional
     public List<ImpactLevel> findAllBySelfAssessment(Long selfAssessmentID) {
         log.debug("Request to get all ImpactLevels by SelfAssessment " + selfAssessmentID);
         List<ImpactLevel> levels = impactLevelRepository.findAllBySelfAssessment(selfAssessmentID);
@@ -124,7 +124,7 @@ public class ImpactLevelServiceImpl implements ImpactLevelService {
 
                 for (int impact = 1; impact <= IMPACT_LEVELS; impact++) {
                     final ImpactLevel level = new ImpactLevel();
-                    
+
                     level.setImpact(impact);
                     level.setSelfAssessmentID(selfAssessmentID);
 
