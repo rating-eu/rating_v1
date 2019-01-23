@@ -129,8 +129,7 @@ public class ImpactLevelServiceImpl implements ImpactLevelService {
                     level.setSelfAssessmentID(selfAssessmentID);
 
                     final BigDecimal MIN = IC.multiply(new BigDecimal(impact - 1))
-                        .divide(new BigDecimal(IMPACT_LEVELS))
-                        .add(BigDecimal.ONE);
+                        .divide(new BigDecimal(IMPACT_LEVELS));
 
                     final BigDecimal MAX = IC.multiply(new BigDecimal(impact))
                         .divide(new BigDecimal(IMPACT_LEVELS));
