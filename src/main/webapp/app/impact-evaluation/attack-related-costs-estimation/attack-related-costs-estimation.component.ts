@@ -16,12 +16,16 @@ import { AttackCostParamType } from '../../entities/attack-cost-param-mgm';
 export class AttackRelatedCostsEstimationComponent implements OnInit {
     public loadingCosts = false;
     public loadingParams = false;
-    public isCollapsed = true;
+    public uploadOrEvaluation = false;
     public customers: number;
     public protectionMin: number;
     public protectionMax: number;
     public notificationMin: number;
     public notificationMax: number;
+    public protectionMinPerCustomer: number;
+    public protectionMaxPerCustomer: number;
+    public notificationMinPerCustomer: number;
+    public notificationMaxPerCustomer: number;
     public employeeCosts: number;
     public fractionEmployee: number;
     public averageRevenue: number;
@@ -30,6 +34,7 @@ export class AttackRelatedCostsEstimationComponent implements OnInit {
     public attackCosts: AttackCostMgm[] = [];
     public attackCostParams: AttackCostParamMgm[];
     public selectedCost: AttackCostMgm;
+    public evaluatingCost: AttackCostMgm;
     public costs: CostType[] = Object.keys(CostType).filter((key) => !isNaN(Number(key))).map((type) => CostType[type]);
     private mySelf: SelfAssessmentMgm;
     public readonly attackCostParamTypeEnum = AttackCostParamType;
@@ -67,9 +72,11 @@ export class AttackRelatedCostsEstimationComponent implements OnInit {
 
                 index = _.findIndex(this.attackCostParams, { type: AttackCostParamType.NOTIFICATION_COST_PER_CUSTOMER });
                 if (index !== -1) {
+                    this.notificationMinPerCustomer = this.attackCostParams[index].min;
+                    this.notificationMaxPerCustomer = this.attackCostParams[index].max;
                     if (this.customers) {
-                        this.notificationMin = this.attackCostParams[index].min * this.customers;;
-                        this.notificationMax = this.attackCostParams[index].max * this.customers;;
+                        this.notificationMin = this.attackCostParams[index].min * this.customers;
+                        this.notificationMax = this.attackCostParams[index].max * this.customers;
                     } else {
                         this.notificationMin = this.attackCostParams[index].min;
                         this.notificationMax = this.attackCostParams[index].max;
@@ -78,6 +85,8 @@ export class AttackRelatedCostsEstimationComponent implements OnInit {
 
                 index = _.findIndex(this.attackCostParams, { type: AttackCostParamType.PROTECTION_COST_PER_CUSTOMER });
                 if (index !== -1) {
+                    this.protectionMinPerCustomer = this.attackCostParams[index].min;
+                    this.protectionMaxPerCustomer = this.attackCostParams[index].max;
                     if (this.customers) {
                         this.protectionMin = this.attackCostParams[index].min * this.customers;
                         this.protectionMax = this.attackCostParams[index].max * this.customers;
@@ -127,7 +136,6 @@ export class AttackRelatedCostsEstimationComponent implements OnInit {
     }
 
     public selectCost(cost: AttackCostMgm) {
-        this.isCollapsed = true;
         if (this.selectedCost) {
             if (this.selectedCost.type === cost.type) {
                 this.selectedCost = null;
@@ -149,32 +157,43 @@ export class AttackRelatedCostsEstimationComponent implements OnInit {
     }
 
     public updateAttackCost(cost: AttackCostMgm) {
-        console.log(cost);
+        this.uploadOrEvaluation = true;
+        this.evaluatingCost = cost;
         this.impactService.updateAttackCost(this.mySelf, cost)
             .toPromise()
             .then((res) => {
                 if (res) {
                     const index = _.findIndex(this.attackCosts, { type: res.type });
                     this.attackCosts.splice(index, 1, res);
+                    this.uploadOrEvaluation = false;
+                } else {
+                    this.uploadOrEvaluation = false;
                 }
             }).catch(() => {
-
+                this.uploadOrEvaluation = false;
             });
     }
 
     public updateCreateAttackCostParam(value: number, type: AttackCostParamType) {
         const paramType: AttackCostParamType = type;
         const index = _.findIndex(this.attackCostParams, { type: paramType });
+        this.uploadOrEvaluation = true;
+        this.evaluatingCost = this.selectedCost;
         if (index !== -1) {
             this.attackCostParams[index].value = value;
             this.impactService.updateCreateAttackCostParam(this.attackCostParams[index]).toPromise().then((res) => {
                 if (res) {
                     const ind = _.findIndex(this.attackCostParams, { id: res.id });
                     this.attackCostParams.splice(ind, 1, res);
+                    this.uploadOrEvaluation = false;
                     if (paramType === AttackCostParamType.NUMBER_OF_CUSTOMERS) {
                         this.ngOnInit();
                     }
+                } else {
+                    this.uploadOrEvaluation = false;
                 }
+            }).catch(() => {
+                this.uploadOrEvaluation = false;
             });
         } else {
             const param: AttackCostParamMgm = new AttackCostParamMgm();
@@ -184,10 +203,15 @@ export class AttackRelatedCostsEstimationComponent implements OnInit {
             this.impactService.updateCreateAttackCostParam(param).toPromise().then((res) => {
                 if (res) {
                     this.attackCostParams.push(res);
+                    this.uploadOrEvaluation = false;
                     if (paramType === AttackCostParamType.NUMBER_OF_CUSTOMERS) {
                         this.ngOnInit();
                     }
+                } else {
+                    this.uploadOrEvaluation = false;
                 }
+            }).catch(() => {
+                this.uploadOrEvaluation = false;
             });
         }
 
@@ -195,6 +219,8 @@ export class AttackRelatedCostsEstimationComponent implements OnInit {
 
     public evaluateAttackCost(type: CostType) {
         const costType: CostType = type;
+        this.uploadOrEvaluation = true;
+        this.evaluatingCost = this.selectedCost;
         for (const param of this.attackCostParams) {
             if (!param.selfAssessment) {
                 param.selfAssessment = this.mySelf;
@@ -260,11 +286,6 @@ export class AttackRelatedCostsEstimationComponent implements OnInit {
                 this.attackCostParams.push(param);
             }
         }
-        console.log('SelfAssessment: ' + this.mySelf.id);
-        console.log('CostType: ' + this.costs[costType].toString());
-        console.log('PARAMS: ');
-        console.log(this.attackCostParams);
-        console.log(this.costs[costType].toString());
         this.impactService.evaluateAttackCost(this.mySelf, costType, this.attackCostParams)
             .toPromise()
             .then((res) => {
@@ -272,9 +293,12 @@ export class AttackRelatedCostsEstimationComponent implements OnInit {
                     const index = _.findIndex(this.attackCosts, { type: this.costs[costType] });
                     this.attackCosts.splice(index, 1, res);
                     this.updateSelectedCost(this.attackCosts[index]);
+                    this.uploadOrEvaluation = false;
+                } else {
+                    this.uploadOrEvaluation = false;
                 }
             }).catch(() => {
-
+                this.uploadOrEvaluation = false;
             });
     }
 }
