@@ -123,5 +123,6 @@
     <include file="config/liquibase/changelog/20190117164446_added_entity_attack_cost_param.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20190122134808_updated_decimal_precision_scale.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20190123130000_impact_level_min_max_type.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190124104033_questions_not_applicable_answers_attack_strategies.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
 </databaseChangeLog>
