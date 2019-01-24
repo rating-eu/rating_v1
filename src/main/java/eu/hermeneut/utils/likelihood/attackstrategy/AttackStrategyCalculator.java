@@ -63,7 +63,15 @@ public class AttackStrategyCalculator {
             logger.debug("MyAnswerSet: " + myAnswerSet);
 
             if (myAnswerSet != null) {
-                augmentedAttackStrategy.setRefinedVulnerability(Precision.round(this.answerCalculator.getAnswersLikelihood(myAnswerSet), 2));
+
+                final float refinedVulnerability = this.answerCalculator.getAnswersLikelihood(myAnswerSet);
+
+                if (refinedVulnerability != 0F) {
+                    augmentedAttackStrategy.setRefinedVulnerability(Precision.round(refinedVulnerability, 2));
+                } else {
+                    augmentedAttackStrategy.setRefinedVulnerability(Precision.round(augmentedAttackStrategy.getInitialLikelihood(), 2));
+                }
+
                 augmentedAttackStrategy.setRefinedLikelihood(Precision.round((augmentedAttackStrategy.getInitialLikelihood() + augmentedAttackStrategy.getRefinedVulnerability()) / 2, 2));
             }
         }
@@ -116,7 +124,14 @@ public class AttackStrategyCalculator {
             logger.debug("MyAnswerSet: " + myAnswerSet);
 
             if (myAnswerSet != null) {
-                augmentedAttackStrategy.setContextualVulnerability(Precision.round(this.answerCalculator.getAnswersLikelihood(myAnswerSet), 2));
+                final float contextualVulnerability = this.answerCalculator.getAnswersLikelihood(myAnswerSet);
+
+                if (contextualVulnerability != 0F) {
+                    augmentedAttackStrategy.setContextualVulnerability(Precision.round(contextualVulnerability, 2));
+                } else {
+                    augmentedAttackStrategy.setContextualVulnerability(Precision.round(augmentedAttackStrategy.getInitialLikelihood(), 2));
+                }
+
                 augmentedAttackStrategy.setContextualLikelihood(Precision.round((augmentedAttackStrategy.getInitialLikelihood() + augmentedAttackStrategy.getContextualVulnerability()) / 2, 2));
             } else {
                 //TODO Same as InitialLikelihood ???
