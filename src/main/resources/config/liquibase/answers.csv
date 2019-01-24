@@ -64,3 +64,4 @@ id;name;created;modified;jhi_order;likelihood
 63;Only on critical systems, sustained with a strategic plan and a well-defined procedure and documentation;now();now();3;MEDIUM
 64;Yes, sustained with a strategic plan and a well-defined procedure and documentation and with extended coverage;now();now();4;MEDIUM_HIGH
 65;Yes, the process and the documentation are proactively developed and maintained with constant effort and continuous improvement;now();now();5;HIGH
+66;Not applicable;now();now();6;NOT_APPLICABLE
