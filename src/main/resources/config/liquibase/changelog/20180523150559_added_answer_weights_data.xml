@@ -14,13 +14,14 @@
     <property name="floatType" value="float" dbms="mysql, oracle, mssql"/>
 
     <changeSet id="20180523150559-1" author="developer">
-        <loadData encoding="UTF-8"
-                  file="config/liquibase/answer_weights.csv"
-                  schemaName="public"
-                  separator=";"
-                  quotchar="'"
-                  tableName="answer_weight">
-        </loadData>
+        <loadUpdateData encoding="UTF-8"
+                        file="config/liquibase/answer_weights.csv"
+                        schemaName="public"
+                        separator=";"
+                        quotchar="'"
+                        tableName="answer_weight"
+                        primaryKey="id">
+        </loadUpdateData>
     </changeSet>
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here, do not remove-->
 </databaseChangeLog>

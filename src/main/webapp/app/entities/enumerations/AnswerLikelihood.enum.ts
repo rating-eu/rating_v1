@@ -4,5 +4,5 @@ export enum AnswerLikelihood {
     'MEDIUM' = 3,
     'MEDIUM_HIGH' = 2,
     'HIGH' = 1,
-    'NOT_AVAILABLE' = 0
+    'NOT_APPLICABLE' = 0
 }
