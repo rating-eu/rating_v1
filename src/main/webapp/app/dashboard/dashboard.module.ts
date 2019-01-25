@@ -43,6 +43,7 @@ import { EbitsWidgetComponent } from './ebits-widget/ebits-widget.component';
 import { IntangibleFinancialWidgetComponent } from './intangible-financial-widget/intangible-financial-widget.component';
 import { ImpactWidgetComponent } from './impact-widget/impact-widget.component';
 import { FinancialValueWidgetComponent } from './financial-value-widget/financial-value-widget.component';
+import { CustomersWidgetComponent } from './customers-widget/customers-widget.component';
 
 @NgModule({
     imports: [
@@ -72,7 +73,8 @@ import { FinancialValueWidgetComponent } from './financial-value-widget/financia
         EbitsWidgetComponent,
         IntangibleFinancialWidgetComponent,
         ImpactWidgetComponent,
-        FinancialValueWidgetComponent
+        FinancialValueWidgetComponent,
+        CustomersWidgetComponent
     ],
     providers: [
         {
