@@ -5,7 +5,7 @@ import {JhiLanguageService} from 'ng-jhipster';
 
 import {Register} from './register.service';
 import {LoginModalService, EMAIL_ALREADY_USED_TYPE, LOGIN_ALREADY_USED_TYPE} from '../../shared';
-import {RegisterAccount} from "./register.account.model";
+import {RegisterAccount} from './register.account.model';
 
 @Component({
     selector: 'jhi-register',
