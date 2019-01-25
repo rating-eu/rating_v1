@@ -1,7 +1,7 @@
 <div class="container" *ngIf="loading">
   <div class="loader"></div>
 </div>
-<div class="container" *ngIf="!loading">
+<ng-container *ngIf="!loading">
   <div class="col-md-3">
     <div class="tile-stats tiles-first-row">
       <div class="count" *ngIf="ide">{{ide | currency: 'EUR'}}</div>
@@ -30,4 +30,4 @@
       <small *ngIf="!financialReturn">The Impact evaluation step was not completed</small>
     </div>
   </div>
-</div>
+</ng-container>
