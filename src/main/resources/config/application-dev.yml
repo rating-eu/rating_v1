@@ -50,17 +50,17 @@ spring:
             hibernate.cache.use_minimal_puts: true
             hibernate.cache.hazelcast.use_lite_member: true
     mail:
-        host: ${EMAIL_HOST}
-        port: ${EMAIL_PORT}
+        host: ${EMAIL_HOST:localhost}
+        port: ${EMAIL_PORT:25}
         username: ${EMAIL_USERNAME}
         password: ${EMAIL_PASSWORD}
-        protocol: ${EMAIL_PROTOCOL}
-        tls: ${EMAIL_TLS}
-        auth: ${EMAIL_AUTH}
+        protocol: ${EMAIL_PROTOCOL:smtp}
+        tls: ${EMAIL_TLS:true}
+        auth: ${EMAIL_AUTH:true}
         properties.mail.smtp:
-            auth: ${EMAIL_AUTH}
-            starttls.enable: ${EMAIL_TLS}
-            ssl.trust: ${EMAIL_HOST}
+            auth: ${EMAIL_AUTH:true}
+            starttls.enable: ${EMAIL_TLS:true}
+            ssl.trust: ${EMAIL_HOST:localhost}
     data:
         elasticsearch:
             cluster-name:

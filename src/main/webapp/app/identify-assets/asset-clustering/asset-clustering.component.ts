@@ -114,7 +114,7 @@ export class AssetClusteringComponent implements OnInit, OnDestroy {
             } else if (res && res instanceof Array) {
                 this.questionnaries = res;
             }
-            if (this.account['authorities'].includes(MyRole.ROLE_CISO) && this.mySelf) {
+            /*if (this.account['authorities'].includes(MyRole.ROLE_CISO) && this.mySelf) {
                 for (const qs of this.questionnaries) {
                     // controllo esistenza questionnaire status
                     this.questionnaireStatusService.getByRoleSelfAssessmentAndQuestionnaire(MyRole.ROLE_CISO.toString(), this.mySelfAssessmentService.getSelfAssessment().id, qs.id)
@@ -125,7 +125,7 @@ export class AssetClusteringComponent implements OnInit, OnDestroy {
                             }
                         });
                 }
-            }
+            }*/
         });
     }
 
