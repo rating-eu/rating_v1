@@ -4,6 +4,8 @@ import eu.hermeneut.domain.*;
 import eu.hermeneut.exceptions.NotFoundException;
 import eu.hermeneut.service.*;
 import eu.hermeneut.service.impact.ImpactService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,6 +37,8 @@ public class ImpactServiceImpl implements ImpactService {
 
     @Autowired
     private ImpactLevelService impactLevelService;
+
+    private Logger logger = LoggerFactory.getLogger(ImpactServiceImpl.class);
 
     @Override
     public List<MyAsset> calculateEconomicImpacts(@NotNull Long selfAssessmentID) throws NotFoundException {
@@ -74,28 +78,37 @@ public class ImpactServiceImpl implements ImpactService {
 
             if (myAsset != null) { //Check if MyAsset exists
                 BigDecimal economicImpact = BigDecimal.ZERO;
+                logger.debug("EconomicImpact: " + economicImpact);
 
                 BigDecimal lossValue = myAsset.getLossValue();
+                logger.debug("LossValue: " + lossValue);
 
                 if (lossValue != null) {// Check if MyAsset has a LossValue set
-                    economicImpact.add(lossValue);
+                    economicImpact = economicImpact.add(lossValue);
+                    logger.debug("EconomicImpact: " + economicImpact);
                 }
 
                 Set<AttackCost> directCosts = myAsset.getCosts();
+                logger.debug("DirectCosts size: " + directCosts.size());
 
-                this.sumAttackCosts(economicImpact, directCosts);
+                economicImpact = economicImpact.add(this.sumAttackCosts(directCosts));
+                logger.debug("DIRECT EconomicImpact: " + economicImpact);
 
                 DirectAsset directAsset = this.directAssetService.findOneByMyAssetID(selfAssessmentID, myAssetID);
+                logger.debug("DIRECT ASSET: " + directAsset);
 
                 if (directAsset != null) {//If it is a DIRECT asset, sum also the costs of the indirects
                     Set<IndirectAsset> indirectAssets = directAsset.getEffects();
+                    logger.debug("INDIRECT ASSETS: " + indirectAssets.size());
 
                     if (indirectAssets != null && !indirectAssets.isEmpty()) {
-                        indirectAssets.stream().forEach((indirect) -> {
+                        for (IndirectAsset indirect : indirectAssets) {
                             Set<AttackCost> indirectCosts = indirect.getMyAsset().getCosts();
+                            logger.debug("INDIRECT COSTS size: " + indirectCosts.size());
 
-                            this.sumAttackCosts(economicImpact, indirectCosts);
-                        });
+                            economicImpact = economicImpact.add(this.sumAttackCosts(indirectCosts));
+                            logger.debug("FOR EconomicImpact: " + economicImpact);
+                        }
                     }
                 } else {
                     /*
@@ -105,11 +118,16 @@ public class ImpactServiceImpl implements ImpactService {
                 }
 
                 myAsset.setEconomicImpact(economicImpact);
+                logger.debug("EconomicImpact: " + myAsset.getEconomicImpact());
 
                 List<ImpactLevel> impactLevels = this.impactLevelService.findAllBySelfAssessment(selfAssessmentID);
 
                 if (impactLevels != null && !impactLevels.isEmpty()) {
-                    impactLevels.stream().forEach((impactLevel) -> {
+                    for (ImpactLevel impactLevel : impactLevels) {
+                        logger.debug("EconomicImpact: " + myAsset.getEconomicImpact());
+                        logger.debug("Impact: " + impactLevel.getImpact());
+                        logger.debug("Min: " + impactLevel.getMinLoss());
+                        logger.debug("Max: " + impactLevel.getMaxLoss());
                         //A > B ---> 1
                         //A == B ---> 0
                         //A < B ---> -1
@@ -117,11 +135,14 @@ public class ImpactServiceImpl implements ImpactService {
                             economicImpact.compareTo((impactLevel.getMaxLoss())) <= 0) {
 
                             myAsset.setImpact(impactLevel.getImpact());
+                            logger.debug("NEW IMPACT: " + myAsset.getImpact());
                         }
-                    });
+                    }
                 }
 
-                return this.myAssetService.save(myAsset);
+                MyAsset result = this.myAssetService.save(myAsset);
+                logger.debug("MyAsset.EconomicImpact: " + myAsset.getEconomicImpact());
+                return result;
             } else {
                 throw new NotFoundException("MyAsset NOT FOUND!");
             }
@@ -133,18 +154,23 @@ public class ImpactServiceImpl implements ImpactService {
     /**
      * Sum the value of the AttackCosts to the EconomicImpact total.
      *
-     * @param economicImpact
      * @param attackCosts
      */
-    private void sumAttackCosts(BigDecimal economicImpact, Set<AttackCost> attackCosts) {
-        if (economicImpact != null && attackCosts != null && !attackCosts.isEmpty()) {
-            attackCosts.stream().forEach((attackCost) -> {
+    private BigDecimal sumAttackCosts(Set<AttackCost> attackCosts) {
+        BigDecimal result = BigDecimal.ZERO;
+
+        if (attackCosts != null && !attackCosts.isEmpty()) {
+            for (AttackCost attackCost : attackCosts) {
                 BigDecimal costValue = attackCost.getCosts();
+                logger.debug("COST VALUE: " + costValue);
 
                 if (costValue != null) {
-                    economicImpact.add(costValue);
+                    result = result.add(costValue);
+                    logger.debug("RESULT: " + result);
                 }
-            });
+            }
         }
+
+        return result;
     }
 }
