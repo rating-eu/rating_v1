@@ -21,4 +21,17 @@ public interface IndirectAssetRepository extends JpaRepository<IndirectAsset, Lo
 
     @Query("SELECT DISTINCT indirectAsset FROM IndirectAsset indirectAsset LEFT JOIN FETCH indirectAsset.myAsset as myAsset LEFT JOIN FETCH myAsset.asset WHERE myAsset.selfAssessment.id = :selfAssessmentID")
     List<IndirectAsset> findAllbySelfAssessment(@Param("selfAssessmentID") Long selfAssessmentID);
+
+    /**
+     * A MyAsset can be the Indirect of multiple direct assets.
+     *
+     * @param selfAssessmentID
+     * @param myAssetID
+     * @return
+     */
+    @Query("SELECT DISTINCT indirectAsset FROM IndirectAsset indirectAsset LEFT JOIN FETCH indirectAsset.myAsset as myAsset " +
+        "LEFT JOIN FETCH myAsset.asset LEFT JOIN FETCH myAsset.costs " +
+        "WHERE myAsset.id = :myAssetID AND myAsset.selfAssessment.id = :selfAssessmentID"
+    )
+    List<IndirectAsset> findAllByMyAssetID(@Param("selfAssessmentID") Long selfAssessmentID, @Param("myAssetID") Long myAssetID);
 }
