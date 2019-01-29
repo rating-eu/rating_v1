@@ -1,17 +1,30 @@
 package eu.hermeneut.service.impl;
 
+import eu.hermeneut.domain.AttackCost;
+import eu.hermeneut.domain.AttackCostParam;
 import eu.hermeneut.domain.enumeration.AssetType;
+import eu.hermeneut.exceptions.IllegalInputException;
+import eu.hermeneut.exceptions.NotFoundException;
+import eu.hermeneut.exceptions.NotImplementedYetException;
+import eu.hermeneut.service.AttackCostParamService;
+import eu.hermeneut.service.AttackCostService;
 import eu.hermeneut.service.MyAssetService;
 import eu.hermeneut.domain.MyAsset;
 import eu.hermeneut.repository.MyAssetRepository;
 import eu.hermeneut.repository.search.MyAssetSearchRepository;
+import eu.hermeneut.service.attack.cost.AttackCostSwitch;
+import org.hibernate.cfg.NotYetImplementedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -30,10 +43,20 @@ public class MyAssetServiceImpl implements MyAssetService {
 
     private final MyAssetSearchRepository myAssetSearchRepository;
 
+    @Autowired
+    private AttackCostService attackCostService;
+
+    @Autowired
+    private AttackCostParamService attackCostParamService;
+
+    @Autowired
+    private AttackCostSwitch attackCostSwitch;
+
     public MyAssetServiceImpl(MyAssetRepository myAssetRepository, MyAssetSearchRepository myAssetSearchRepository) {
         this.myAssetRepository = myAssetRepository;
         this.myAssetSearchRepository = myAssetSearchRepository;
     }
+
 
     /**
      * Save a myAsset.
@@ -49,9 +72,23 @@ public class MyAssetServiceImpl implements MyAssetService {
             MyAsset existingMyAsset = this.myAssetRepository.findOne(myAsset.getId());
 
             if (existingMyAsset != null) {
-                //clear its collections in order to keep only the new data
-                existingMyAsset.getCosts().clear();
-                this.myAssetRepository.save(existingMyAsset);
+                Map<Long, AttackCost> existingCostsByID = existingMyAsset.getCosts().stream()
+                    .collect(Collectors.toMap(o -> o.getId(), Function.identity()));
+
+                // ConfirmedCosts (id != null)
+                Map<Long, AttackCost> confirmedCostsByID = myAsset.getCosts().stream()
+                    .filter((attackCost) -> attackCost.getId() != null)
+                    .collect(Collectors.toMap(o -> o.getId(), Function.identity()));
+
+                //Deleted costs
+                Map<Long, AttackCost> deletedCostsByID = existingCostsByID.values().stream()
+                    .filter((attackCost -> !confirmedCostsByID.containsKey(attackCost.getId())))
+                    .collect(Collectors.toMap(o -> o.getId(), Function.identity()));
+
+                // Delete the costs not present anymore.
+                deletedCostsByID.values().stream().forEach((attackCost) -> {
+                    this.attackCostService.delete(attackCost.getId());
+                });
             }
         }
 
@@ -63,6 +100,34 @@ public class MyAssetServiceImpl implements MyAssetService {
 
         MyAsset result = myAssetRepository.save(myAsset);
         myAssetSearchRepository.save(result);
+
+        if (result != null) {
+            Set<AttackCost> costs = result.getCosts();
+            Long selfID = result.getSelfAssessment().getId();
+
+            if (costs != null) {
+                try {
+                    List<AttackCostParam> attackCostParams = this.attackCostParamService.findAllBySelfAssessment(selfID);
+
+                    if (attackCostParams != null && !attackCostParams.isEmpty()) {
+                        for (AttackCost cost : costs) {
+                            try {
+                                //Updates siblings too.
+                                this.attackCostSwitch.calculateCost(selfID, cost.getType(), attackCostParams);
+                            } catch (IllegalInputException e) {
+                                e.printStackTrace();
+                            } catch (NotImplementedYetException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                } catch (NotFoundException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }
+
         return result;
     }
 
