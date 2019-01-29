@@ -9,6 +9,7 @@ import javax.persistence.*;
 import javax.validation.constraints.*;
 
 import org.springframework.data.elasticsearch.annotations.Document;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.HashSet;
@@ -41,7 +42,7 @@ public class MyAsset implements Serializable {
      * WP3
      */
     @ApiModelProperty(value = "WP3")
-    @Column(name = "economic_value", precision=20, scale=2)
+    @Column(name = "economic_value", precision = 20, scale = 2)
     private BigDecimal economicValue;
 
     @Min(value = 1)
@@ -49,7 +50,10 @@ public class MyAsset implements Serializable {
     @Column(name = "impact")
     private Integer impact;
 
-    @Column(name = "loss_value", precision=20, scale=2)
+    @Column(name = "economic_impact", precision = 20, scale = 2)
+    private BigDecimal economicImpact;
+
+    @Column(name = "loss_value", precision = 20, scale = 2)
     private BigDecimal lossValue;
 
     @OneToMany(mappedBy = "myAsset", fetch = FetchType.EAGER,
@@ -125,6 +129,19 @@ public class MyAsset implements Serializable {
 
     public void setImpact(Integer impact) {
         this.impact = impact;
+    }
+
+    public BigDecimal getEconomicImpact() {
+        return economicImpact;
+    }
+
+    public void setEconomicImpact(BigDecimal economicImpact) {
+        this.economicImpact = economicImpact;
+    }
+
+    public MyAsset economicImpact(BigDecimal economicImpact) {
+        this.economicImpact = economicImpact;
+        return this;
     }
 
     public BigDecimal getLossValue() {

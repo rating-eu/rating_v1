@@ -117,5 +117,6 @@
     <include file="config/liquibase/changelog/20190122134808_updated_decimal_precision_scale.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20190123130000_impact_level_min_max_type.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20190124104033_questions_not_applicable_answers_attack_strategies.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190128154403_added_my_asset_economic_impact_column.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
 </databaseChangeLog>

@@ -31,6 +31,8 @@ public interface DirectAssetService {
      */
     DirectAsset findOne(Long id);
 
+    DirectAsset findOneByMyAssetID(Long selfAssessmentID, Long myAssetID);
+
     /**
      * Delete the "id" directAsset.
      *

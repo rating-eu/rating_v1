@@ -16,6 +16,14 @@ import java.util.List;
 @Repository
 public interface DirectAssetRepository extends JpaRepository<DirectAsset, Long> {
 
-    @Query("SELECT DISTINCT directAsset FROM DirectAsset directAsset LEFT JOIN FETCH directAsset.myAsset as myAsset LEFT JOIN FETCH myAsset.asset LEFT JOIN FETCH directAsset.effects WHERE myAsset.selfAssessment.id = :selfAssessmentID")
+    @Query("SELECT DISTINCT directAsset FROM DirectAsset directAsset LEFT JOIN FETCH directAsset.myAsset as myAsset " +
+        "LEFT JOIN FETCH myAsset.asset LEFT JOIN FETCH myAsset.costs LEFT JOIN FETCH directAsset.effects " +
+        "WHERE myAsset.selfAssessment.id = :selfAssessmentID")
     List<DirectAsset> findAllBySelfAssessment(@Param("selfAssessmentID") Long selfAssessmentID);
+
+    @Query("SELECT DISTINCT directAsset FROM DirectAsset directAsset LEFT JOIN FETCH directAsset.myAsset as myAsset " +
+        "LEFT JOIN FETCH myAsset.asset LEFT JOIN FETCH myAsset.costs LEFT JOIN FETCH directAsset.effects " +
+        "WHERE myAsset.id = :myAssetID AND myAsset.selfAssessment.id = :selfAssessmentID"
+    )
+    DirectAsset findOneByMyAssetID(@Param("selfAssessmentID") Long selfAssessmentID, @Param("myAssetID") Long myAssetID);
 }
