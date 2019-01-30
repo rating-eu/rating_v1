@@ -23,14 +23,15 @@
             <where>true</where>
         </delete>
 
-        <loadData catalogName="cat"
-                  encoding="UTF-8"
-                  file="config/liquibase/questions_answers_threat_agents_join.csv"
-                  schemaName="public"
-                  separator=";"
-                  quotchar="'"
-                  tableName="question_answers">
-        </loadData>
+        <loadUpdateData catalogName="cat"
+                        encoding="UTF-8"
+                        file="config/liquibase/questions_answers_threat_agents_join.csv"
+                        schemaName="public"
+                        separator=";"
+                        quotchar="'"
+                        tableName="question_answers"
+                        primaryKey="questions_id,answers_id">
+        </loadUpdateData>
 
         <loadData catalogName="cat"
                   encoding="UTF-8"
