@@ -93,6 +93,12 @@ public class DirectAssetServiceImpl implements DirectAssetService {
         return directAssetRepository.findOne(id);
     }
 
+    @Override
+    public DirectAsset findOneByMyAssetID(Long selfAssessmentID, Long myAssetID) {
+        log.debug("Request to get DirectAsset by SelfAssessment ID: {} and andMyAsset ID: {}", selfAssessmentID, myAssetID);
+        return directAssetRepository.findOneByMyAssetID(selfAssessmentID, myAssetID);
+    }
+
     /**
      * Delete the directAsset by id.
      *
