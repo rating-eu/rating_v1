@@ -108,7 +108,7 @@ export class ImpactEvaluationComponent implements OnInit {
             if (event instanceof NavigationStart) {
                 if (this.mySelf) {
                     console.log('Send start impacts Evaluation request!');
-                    this.impactService.getImpacts(this.mySelf);
+                    this.impactService.getImpacts(this.mySelf).toPromise();
                 }
             }
         });

@@ -35,7 +35,7 @@ export class ImpactEvaluationService {
     }
 
     getImpacts(self: SelfAssessmentMgm): Observable<MyAssetMgm[]> {
-        const uri = this.evaluateAttackCostUrl.replace('{selfAssessmentID}', String(self.id));
+        const uri = this.getImpactsBySelfAssessment.replace('{selfAssessmentID}', String(self.id));
         return this.http.get<MyAssetMgm[]>(uri, { observe: 'response' })
             .map((res: HttpResponse<MyAssetMgm[]>) => {
                 return res.body;
@@ -43,7 +43,7 @@ export class ImpactEvaluationService {
     }
 
     getImpact(self: SelfAssessmentMgm, myAsset: MyAssetMgm): Observable<MyAssetMgm> {
-        let uri = this.evaluateAttackCostUrl.replace('{selfAssessmentID}', String(self.id));
+        let uri = this.getImpactOfAssetBySelfAssessment.replace('{selfAssessmentID}', String(self.id));
         uri = uri.replace('{myAssetID}', String(myAsset.id));
         return this.http.get<MyAssetMgm>(uri, { observe: 'response' })
             .map((res: HttpResponse<MyAssetMgm>) => {
