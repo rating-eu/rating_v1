@@ -40,14 +40,12 @@
                                             <thead>
                                                 <tr>
                                                     <th>Asset</th>
-                                                    <th>Priority</th>
                                                     <th>Value</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 <tr *ngFor="let asset of assetsBySelectedCategory">
                                                     <td>{{asset.asset.name}}</td>
-                                                    <td>{{priorities[asset.ranking-1]}}: {{asset.ranking}}</td>
                                                     <td>{{asset.economicValue | currency:'EUR'}}</td>
                                                 </tr>
                                             </tbody>

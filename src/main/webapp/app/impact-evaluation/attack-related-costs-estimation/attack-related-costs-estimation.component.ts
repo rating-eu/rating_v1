@@ -4,7 +4,7 @@ import { AttackCostMgm, CostType } from './../../entities/attack-cost-mgm/attack
 import { ImpactEvaluationService } from './../impact-evaluation.service';
 import { Component, OnInit } from '@angular/core';
 import { SelfAssessmentMgmService, SelfAssessmentMgm } from '../../entities/self-assessment-mgm';
-import { Router } from '@angular/router';
+import { Router, NavigationStart } from '@angular/router';
 import { AttackCostParamMgm } from '../../entities/attack-cost-param-mgm';
 import { AttackCostParamType } from '../../entities/attack-cost-param-mgm';
 
@@ -45,6 +45,14 @@ export class AttackRelatedCostsEstimationComponent implements OnInit {
         private impactService: ImpactEvaluationService,
         private router: Router
     ) {
+        this.router.events.subscribe((event) => {
+            if (event instanceof NavigationStart) {
+                if (this.mySelf) {
+                    console.log('Send start impacts Evaluation request!');
+                    this.impactService.getImpacts(this.mySelf);
+                }
+            }
+        });
     }
 
     ngOnInit() {
