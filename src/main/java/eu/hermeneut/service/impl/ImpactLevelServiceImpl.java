@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -132,11 +133,11 @@ public class ImpactLevelServiceImpl implements ImpactLevelService {
                     level.setSelfAssessmentID(selfAssessmentID);
 
                     final BigDecimal MIN = INTANGIBLE_CAPITAL
-                        .divide(new BigDecimal(TIGHT_LEVELS))
+                        .divide(new BigDecimal(TIGHT_LEVELS), 2, RoundingMode.HALF_UP)
                         .multiply(new BigDecimal(impact - 1));
 
                     final BigDecimal MAX = INTANGIBLE_CAPITAL
-                        .divide(new BigDecimal(TIGHT_LEVELS))
+                        .divide(new BigDecimal(TIGHT_LEVELS), 2, RoundingMode.HALF_UP)
                         .multiply(new BigDecimal(impact));
 
                     level.setMinLoss(MIN);
@@ -153,11 +154,11 @@ public class ImpactLevelServiceImpl implements ImpactLevelService {
                     level.setSelfAssessmentID(selfAssessmentID);
 
                     final BigDecimal MIN = INTANGIBLE_CAPITAL
-                        .divide(new BigDecimal(WIDE_LEVELS))
+                        .divide(new BigDecimal(WIDE_LEVELS), 2, RoundingMode.HALF_UP)
                         .multiply(new BigDecimal(impact - 1 - 1));
 
                     final BigDecimal MAX = INTANGIBLE_CAPITAL
-                        .divide(new BigDecimal(WIDE_LEVELS))
+                        .divide(new BigDecimal(WIDE_LEVELS), 2, RoundingMode.HALF_UP)
                         .multiply(new BigDecimal(impact - 1));
 
                     level.setMinLoss(MIN);
