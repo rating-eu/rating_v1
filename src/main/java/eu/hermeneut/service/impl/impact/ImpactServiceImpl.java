@@ -20,6 +20,7 @@ import java.util.Set;
 @Transactional
 public class ImpactServiceImpl implements ImpactService {
 
+    public static final int HIGHEST_IMPACT = 5;
     @Autowired
     private SelfAssessmentService selfAssessmentService;
 
@@ -118,7 +119,6 @@ public class ImpactServiceImpl implements ImpactService {
                 }
 
                 myAsset.setEconomicImpact(economicImpact);
-                logger.debug("EconomicImpact: " + myAsset.getEconomicImpact());
 
                 List<ImpactLevel> impactLevels = this.impactLevelService.findAllBySelfAssessment(selfAssessmentID);
 
@@ -137,6 +137,10 @@ public class ImpactServiceImpl implements ImpactService {
                             myAsset.setImpact(impactLevel.getImpact());
                             logger.debug("NEW IMPACT: " + myAsset.getImpact());
                         }
+                    }
+
+                    if (myAsset.getImpact() == null) {
+                        myAsset.setImpact(HIGHEST_IMPACT);
                     }
                 }
 

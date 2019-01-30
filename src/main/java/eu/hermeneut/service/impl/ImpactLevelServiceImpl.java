@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -119,20 +120,46 @@ public class ImpactLevelServiceImpl implements ImpactLevelService {
             EconomicResults results = this.economicResultsService.findOneBySelfAssessmentID(selfAssessmentID);
 
             if (results != null && results.getIntangibleCapital() != null) {
-                final BigDecimal IC = results.getIntangibleCapital();
-                final int IMPACT_LEVELS = 5;
+                final BigDecimal INTANGIBLE_CAPITAL = results.getIntangibleCapital(); //IC
+                final int TIGHT_LEVELS = 3;//K
+                final int WIDE_LEVELS = 2;//W
+                final int LEVELS = TIGHT_LEVELS + WIDE_LEVELS; //N
 
-                for (int impact = 1; impact <= IMPACT_LEVELS; impact++) {
+                //Tight Impact Levels
+                for (int impact = 1; impact <= TIGHT_LEVELS; impact++) {
                     final ImpactLevel level = new ImpactLevel();
 
                     level.setImpact(impact);
                     level.setSelfAssessmentID(selfAssessmentID);
 
-                    final BigDecimal MIN = IC.multiply(new BigDecimal(impact - 1))
-                        .divide(new BigDecimal(IMPACT_LEVELS));
+                    final BigDecimal MIN = INTANGIBLE_CAPITAL
+                        .divide(new BigDecimal(TIGHT_LEVELS), 2, RoundingMode.HALF_UP)
+                        .multiply(new BigDecimal(impact - 1));
 
-                    final BigDecimal MAX = IC.multiply(new BigDecimal(impact))
-                        .divide(new BigDecimal(IMPACT_LEVELS));
+                    final BigDecimal MAX = INTANGIBLE_CAPITAL
+                        .divide(new BigDecimal(TIGHT_LEVELS), 2, RoundingMode.HALF_UP)
+                        .multiply(new BigDecimal(impact));
+
+                    level.setMinLoss(MIN);
+                    level.setMaxLoss(MAX);
+
+                    levels.add(level);
+                }
+
+                //Wide Impact Levels
+                for (int impact = 4; impact <= LEVELS; impact++) {
+                    final ImpactLevel level = new ImpactLevel();
+
+                    level.setImpact(impact);
+                    level.setSelfAssessmentID(selfAssessmentID);
+
+                    final BigDecimal MIN = INTANGIBLE_CAPITAL
+                        .divide(new BigDecimal(WIDE_LEVELS), 2, RoundingMode.HALF_UP)
+                        .multiply(new BigDecimal(impact - 1 - 1));
+
+                    final BigDecimal MAX = INTANGIBLE_CAPITAL
+                        .divide(new BigDecimal(WIDE_LEVELS), 2, RoundingMode.HALF_UP)
+                        .multiply(new BigDecimal(impact - 1));
 
                     level.setMinLoss(MIN);
                     level.setMaxLoss(MAX);
