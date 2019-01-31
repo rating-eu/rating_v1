@@ -13,6 +13,7 @@ export class JhiMainComponent implements OnInit {
 
     public updateLayout: Update;
     public isAuthenticated = false;
+    public isResetUrl = false;
 
     constructor(
         private principal: Principal,
@@ -36,6 +37,12 @@ export class JhiMainComponent implements OnInit {
         this.router.events.subscribe((event) => {
             if (event instanceof NavigationEnd) {
                 this.jhiLanguageHelper.updateTitle(this.getPageTitle(this.router.routerState.snapshot.root));
+
+                if (this.router.url.indexOf('reset/finish') !== -1) {
+                    this.isResetUrl = true;
+                } else {
+                    this.isResetUrl = false;
+                }
             }
         });
 

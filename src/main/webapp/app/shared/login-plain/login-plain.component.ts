@@ -82,7 +82,7 @@ export class LoginPlainComponent implements AfterViewInit {
             this.router.navigate(['/register']);
         }
 
-        requestResetPassword() {
+        requestResetPassword() {// TODO Check
             const modalRef = this.modalService.open(PasswordResetInitComponent);
             modalRef.componentInstance.name = 'Password Reset';
         }
