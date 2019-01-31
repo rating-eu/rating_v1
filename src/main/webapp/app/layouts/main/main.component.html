@@ -4,7 +4,7 @@
 
 <jhi-sidebar></jhi-sidebar>
 
-<div *ngIf="isAuthenticated  && !loading" [ngClass]="{'content-page-sidenav': !updateLayout.isSidebarCollapsed, 'content-page-no-sidenav': updateLayout.isSidebarCollapsed}">
+<div *ngIf="isAuthenticated" [ngClass]="{'content-page-sidenav': !updateLayout.isSidebarCollapsed, 'content-page-no-sidenav': updateLayout.isSidebarCollapsed}">
     <!-- [ngClass]="{'content-page-sidenav': !updateLayout.isSidebarCollapsed, 'content-page-no-sidenav': updateLayout.isSidebarCollapsed}" -->
     <!-- Start content -->
     <div class="content">
@@ -34,8 +34,7 @@
     </div>
     <jhi-footer></jhi-footer>
 </div>
-</div>
-<div class="bg-login-pages" *ngIf="!isAuthenticated && !loading">
+<div class="bg-login-pages" *ngIf="!isAuthenticated">
     <div class="container">
         <div class="row">
             <div class="col-sm-12">

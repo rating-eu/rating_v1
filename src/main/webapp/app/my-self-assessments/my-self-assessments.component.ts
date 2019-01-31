@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {AccountService, User, UserService} from '../shared';
 import {MyCompanyMgm, MyCompanyMgmService} from '../entities/my-company-mgm';
 import {SelfAssessmentMgm, SelfAssessmentMgmService} from '../entities/self-assessment-mgm';
@@ -15,13 +15,14 @@ import {PopUpService} from '../shared/pop-up-services/pop-up.service';
     templateUrl: './my-self-assessments.component.html',
     styleUrls: ['./my-self-assessment.component.css'],
 })
-export class MySelfAssessmentsComponent implements OnInit {
+export class MySelfAssessmentsComponent implements OnInit, OnDestroy {
 
     private static NOT_FOUND = 404;
     private user: User;
     private myCompany: MyCompanyMgm;
     public mySelfAssessments: SelfAssessmentMgm[];
     eventSubscriber: Subscription;
+    private subscription: Subscription;
 
     public mySelfAssessment = null;
 
@@ -69,12 +70,18 @@ export class MySelfAssessmentsComponent implements OnInit {
     }
 
     registerChangeInSelfAssessments() {
-        this.dataSharingService.observeMySelf().subscribe((value: SelfAssessmentMgm) => {
+        this.subscription = this.dataSharingService.observeMySelf().subscribe((value: SelfAssessmentMgm) => {
             this.loadMySelfAssessments();
         });
     }
 
     updateMyAsset(asset: MyAssetMgm) {
         this.myAssetService.update(asset).toPromise();
+    }
+
+    ngOnDestroy(): void {
+        if (this.subscription) {
+            this.subscription.unsubscribe();
+        }
     }
 }

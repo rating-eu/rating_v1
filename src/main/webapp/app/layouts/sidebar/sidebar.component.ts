@@ -7,7 +7,7 @@ import {MenuItem} from 'primeng/api';
 import {MyRole} from '../../entities/enumerations/MyRole.enum';
 import {SelfAssessmentMgm, SelfAssessmentMgmService} from '../../entities/self-assessment-mgm';
 import {LogoMgm, LogoMgmService} from '../../entities/logo-mgm';
-import {HttpResponse} from '@angular/common/http';
+import {HttpErrorResponse, HttpResponse} from '@angular/common/http';
 
 @Component({
     selector: 'jhi-sidebar',
@@ -110,8 +110,13 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
     private fetchSecondaryLogo() {
         this.logoService.getSecondaryLogo().subscribe((logo: HttpResponse<LogoMgm>) => {
-            this.secondaryLogo = logo.body;
-        });
+                this.secondaryLogo = logo.body;
+            },
+            (error: HttpErrorResponse) => {
+                if (error.status === 404) {
+                    console.warn('Secondary logo not found!');
+                }
+            });
     }
 
     ngAfterViewInit() {
