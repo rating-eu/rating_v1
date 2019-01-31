@@ -35,7 +35,7 @@
     <jhi-footer></jhi-footer>
 </div>
 <div class="bg-login-pages" *ngIf="!isAuthenticated">
-    <div class="container">
+    <div *ngIf="!isResetUrl" class="container">
         <div class="row">
             <div class="col-sm-12">
                 <div class="wrapper-page">
@@ -69,5 +69,19 @@
                 </div>
             </div>
         </div>
+    </div>
+
+    <div *ngIf="isResetUrl" [ngClass]="{'content-page-sidenav': !updateLayout.isSidebarCollapsed, 'content-page-no-sidenav': updateLayout.isSidebarCollapsed}">
+        <div class="content">
+            <div class="container-fluid content-with-margin">
+                <div class="row">
+                    <div class="col-md-12">
+                        <router-outlet></router-outlet>
+                        <router-outlet name="popup"></router-outlet>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <jhi-footer></jhi-footer>
     </div>
 </div>
