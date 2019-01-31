@@ -543,7 +543,7 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
 
                     // The EXTERNAL's answer
                     value[String(myAnswer.question.id + '.external')] = exactAnswer;
-                    value[String(myAnswer.question.id + '.note')] = myAnswer.note;
+                    value[String(myAnswer.question.id + '.external.note')] = myAnswer.note;
                 }
             );
         }
@@ -622,11 +622,11 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
 
                         refinementMap.set(question.id, answer);
                     }
-                } else if (key.endsWith('.note')) {
+                } else if (key.endsWith('.external.note')) {
                     const note: string = value as string;
 
                     if (note) {// check if the the user answered this question
-                        const questionID: number = Number(key.replace('.note', ''));
+                        const questionID: number = Number(key.replace('.external.note', ''));
                         const question: QuestionMgm = this.questionsArrayMap.get(questionID);
 
                         notesMap.set(questionID, note);

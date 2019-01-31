@@ -41,8 +41,9 @@ export class QuestionControlService {
 
         questions.forEach((question) => {
             group[question.id] = new FormControl('');
+            group[question.id + '.ciso.note'] = new FormControl('');
             group[question.id + '.external'] = new FormControl('');
-            group[question.id + '.note'] = new FormControl('');
+            group[question.id + '.external.note'] = new FormControl('');
         });
 
         setTimeout(() => {
