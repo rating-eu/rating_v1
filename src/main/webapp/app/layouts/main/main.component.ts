@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRouteSnapshot, NavigationEnd } from '@angular/router';
+import {Component, OnInit} from '@angular/core';
+import {Router, ActivatedRouteSnapshot, NavigationEnd} from '@angular/router';
 
-import { JhiLanguageHelper, LoginService, Principal } from '../../shared';
-import { DatasharingService } from '../../datasharing/datasharing.service';
-import { Update } from '../model/Update';
+import {JhiLanguageHelper, LoginService, Principal} from '../../shared';
+import {DatasharingService} from '../../datasharing/datasharing.service';
+import {Update} from '../model/Update';
 
 @Component({
     selector: 'jhi-main',
@@ -13,7 +13,6 @@ export class JhiMainComponent implements OnInit {
 
     public updateLayout: Update;
     public isAuthenticated = false;
-    public loading = true;
 
     constructor(
         private principal: Principal,
@@ -62,7 +61,6 @@ export class JhiMainComponent implements OnInit {
 
         this.loginService.checkLogin().then((check: boolean) => {
             this.isAuthenticated = check;
-            this.loading = false;
         });
     }
 }
