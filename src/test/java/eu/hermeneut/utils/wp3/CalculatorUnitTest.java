@@ -116,7 +116,7 @@ public class CalculatorUnitTest {
 
         //Data to calculate the Intangible Capital
         this.intangibleDrivingEarnings = ZERO_INTANGIBLE_DRIVING_EARNINGS;
-        this.discountingRateForIntangibleCapital = new BigDecimal("0.5");
+        this.discountingRateForIntangibleCapital = new BigDecimal("50");
 
         //Data to calculate the SplittingLoss percentage
         this.globalSector = SectorType.GLOBAL;
@@ -133,7 +133,7 @@ public class CalculatorUnitTest {
 
     @Test
     public void calculateEconomicPerformanceWithOneDiscountingRate() {
-        this.discountingRate = BigDecimal.ONE;
+        this.discountingRate = new BigDecimal(100);
         BigDecimal economicPerformance = Calculator.calculateEconomicPerformance(this.ebits, this.discountingRate);
 
         Assert.assertEquals(ONE_ECONOMIC_PERFORMANCE, economicPerformance);
@@ -141,7 +141,7 @@ public class CalculatorUnitTest {
 
     @Test
     public void calculateEconomicPerformanceWithOneDiscountingRateStepByStep() {
-        BigDecimal discountingRate = BigDecimal.ONE;
+        BigDecimal discountingRate = new BigDecimal(100);
         BigDecimal economicPerformance = BigDecimal.ZERO;
 
         BigDecimal economicPerformance2011 = Calculator.economicPerformanceHelper(this.ebits, discountingRate, -2, 2);
