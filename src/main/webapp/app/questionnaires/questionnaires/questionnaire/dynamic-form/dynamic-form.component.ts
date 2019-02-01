@@ -9,11 +9,7 @@ import * as CryptoJS from 'crypto-js';
 import {Couple} from '../../../../utils/couple.class';
 import {DatasharingService} from '../../../../datasharing/datasharing.service';
 import {Router} from '@angular/router';
-import {
-    QuestionnaireStatusMgm,
-    QuestionnaireStatusMgmService,
-    Role
-} from '../../../../entities/questionnaire-status-mgm';
+import {QuestionnaireStatusMgm, QuestionnaireStatusMgmService, Role} from '../../../../entities/questionnaire-status-mgm';
 import {Status} from '../../../../entities/enumerations/QuestionnaireStatus.enum';
 import {QuestionnaireMgm} from '../../../../entities/questionnaire-mgm';
 import {QuestionnairePurpose} from '../../../../entities/enumerations/QuestionnairePurpose.enum';
@@ -137,7 +133,17 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
                 // Generate the form according to the Role
                 switch (this.role) {
                     case Role.ROLE_CISO: {
-                        this.form = this.questionControlService.toFormGroupCISO(this.questionsArray);
+                        switch (this.questionnaire.purpose) {
+                            case QuestionnairePurpose.ID_THREAT_AGENT: {
+                                this.form = this.questionControlService.toFormGroupCISOIdentifyThreatAgents(this.questionsArray);
+                                break;
+                            }
+                            case QuestionnairePurpose.SELFASSESSMENT: {
+                                this.form = this.questionControlService.toFormGroupCISOSelfAssessment(this.questionsArray);
+                                break;
+                            }
+                        }
+
                         break;
                     }
                     case Role.ROLE_EXTERNAL_AUDIT: {
@@ -515,6 +521,7 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
 
                     // The CISO's answer
                     value[String(myAnswer.question.id)] = exactAnswer;
+                    value[String(myAnswer.question.id + '.ciso.note')] = myAnswer.note;
                 }
             );
         }
@@ -536,7 +543,7 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
 
                     // The EXTERNAL's answer
                     value[String(myAnswer.question.id + '.external')] = exactAnswer;
-                    value[String(myAnswer.question.id + '.note')] = myAnswer.note;
+                    value[String(myAnswer.question.id + '.external.note')] = myAnswer.note;
                 }
             );
         }
@@ -550,17 +557,44 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
         // const createMyAnswersObservable: Observable<HttpResponse<MyAnswerMgm[]>> = [];
         const myAnswers: MyAnswerMgm[] = [];
 
+        // Contains the Answers of the External Audit
+        const evaluationMap: Map<number/*Question.ID*/, AnswerMgm> = new Map<number, AnswerMgm>();
+
+        // Contains the notes of the External Audit
+        const notesMap: Map<number/*Question.ID*/, string> = new Map<number, string>();
+
         formDataMap.forEach(
-            (value: AnswerMgm, key: string) => {
-                const answer: AnswerMgm = value;
-                if (answer) {// check if the the user answered this question
-                    const question: QuestionMgm = this.questionsArrayMap.get(Number(key));
-                    const questionnaire: QuestionnaireMgm = question.questionnaire;
-                    const myAnser: MyAnswerMgm = new MyAnswerMgm(undefined, undefined, 0, answer, question, questionnaire, undefined, this.user);
-                    myAnswers.push(myAnser);
+            (value: AnswerMgm | string, key: string) => {
+
+                if (key.endsWith('.ciso.note')) {
+                    const note: string = value as string;
+
+                    if (note) {
+                        const questionID: number = Number(key.replace('.ciso.note', ''));
+                        notesMap.set(questionID, note);
+                    }
+                } else {
+                    const answer: AnswerMgm = value as AnswerMgm;
+
+                    if (answer) {// check if the the user answered this question
+                        const question: QuestionMgm = this.questionsArrayMap.get(Number(key));
+                        const questionnaire: QuestionnaireMgm = question.questionnaire;
+
+                        evaluationMap.set(question.id, answer);
+                    }
                 }
             }
         );
+
+        this.questionsArrayMap.forEach((question: QuestionMgm, key: number) => {
+            const note: string = notesMap.get(question.id);
+            const evaluationAnswer: AnswerMgm = evaluationMap.get(question.id);
+
+            if (evaluationAnswer) {
+                const myAnswer: MyAnswerMgm = new MyAnswerMgm(undefined, note, 0, evaluationAnswer, question, question.questionnaire, undefined, this.user);
+                myAnswers.push(myAnswer);
+            }
+        });
 
         return myAnswers;
     }
@@ -574,7 +608,7 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
         const refinementMap: Map<number/*Question.ID*/, AnswerMgm> = new Map<number, AnswerMgm>();
 
         // Contains the notes of the External Audit
-        const notesMap: Map<number/*Qestion.ID*/, string> = new Map<number, string>();
+        const notesMap: Map<number/*Question.ID*/, string> = new Map<number, string>();
 
         formDataMap.forEach(// Key could be id | id.external | id.note
             (value: AnswerMgm | string, key: string) => {
@@ -588,11 +622,11 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
 
                         refinementMap.set(question.id, answer);
                     }
-                } else if (key.endsWith('.note')) {
+                } else if (key.endsWith('.external.note')) {
                     const note: string = value as string;
 
                     if (note) {// check if the the user answered this question
-                        const questionID: number = Number(key.replace('.note', ''));
+                        const questionID: number = Number(key.replace('.external.note', ''));
                         const question: QuestionMgm = this.questionsArrayMap.get(questionID);
 
                         notesMap.set(questionID, note);
