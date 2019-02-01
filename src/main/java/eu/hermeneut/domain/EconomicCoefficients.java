@@ -31,7 +31,7 @@ public class EconomicCoefficients implements Serializable {
     private Long id;
 
     @DecimalMin(value = "0")
-    @DecimalMax(value = "1")
+    @DecimalMax(value = "100")
     @Column(name = "discounting_rate", precision=20, scale=2)
     private BigDecimal discountingRate;
 

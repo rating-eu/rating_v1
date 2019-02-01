@@ -1,32 +1,32 @@
-import { IdentifyAssetUtilService } from './../../identify-assets/identify-asset.util.service';
-import { Priority } from './../../identify-assets/model/enumeration/priority.enum';
+import {IdentifyAssetUtilService} from './../../identify-assets/identify-asset.util.service';
+import {Priority} from './../../identify-assets/model/enumeration/priority.enum';
 import * as _ from 'lodash';
 
-import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '../../../../../../node_modules/@angular/forms';
-import { SelfAssessmentMgmService, SelfAssessmentMgm } from '../../entities/self-assessment-mgm';
-import { MyAssetMgm } from '../../entities/my-asset-mgm';
-import { AssetMgm } from '../../entities/asset-mgm';
-import { AssetType } from '../../entities/enumerations/AssetType.enum';
-import { ImpactEvaluationService } from '../impact-evaluation.service';
-import { EBITMgm } from '../../entities/ebit-mgm';
-import { Wp3BundleInput } from '../model/wp3-bundle-input.model';
-import { EconomicCoefficientsMgm } from '../../entities/economic-coefficients-mgm';
-import { SectorType, CategoryType } from '../../entities/splitting-loss-mgm';
-import { MyCategoryType } from '../../entities/enumerations/MyCategoryType.enum';
-import { Router, NavigationStart } from '../../../../../../node_modules/@angular/router';
-import { MySectorType } from '../../entities/enumerations/MySectorType.enum';
-import { ImpactEvaluationStatus } from '../model/impact-evaluation-status.model';
-import { AccountService, UserService, User } from '../../shared';
-import { MyCompanyMgmService, MyCompanyMgm } from '../../entities/my-company-mgm';
-import { HttpResponse } from '@angular/common/http';
-import { CompType } from '../../entities/company-profile-mgm';
-import { RegExpUtility } from '../../utils/regexp.utility.class';
-import { Wp3BundleOutput } from '../model/wp3-bundle-output.model';
-import { Observable } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
-import { of } from 'rxjs/observable/of';
-import { forkJoin } from 'rxjs/observable/forkJoin';
+import {Component, OnInit} from '@angular/core';
+import {FormGroup, FormControl, Validators} from '../../../../../../node_modules/@angular/forms';
+import {SelfAssessmentMgmService, SelfAssessmentMgm} from '../../entities/self-assessment-mgm';
+import {MyAssetMgm} from '../../entities/my-asset-mgm';
+import {AssetMgm} from '../../entities/asset-mgm';
+import {AssetType} from '../../entities/enumerations/AssetType.enum';
+import {ImpactEvaluationService} from '../impact-evaluation.service';
+import {EBITMgm} from '../../entities/ebit-mgm';
+import {Wp3BundleInput} from '../model/wp3-bundle-input.model';
+import {EconomicCoefficientsMgm} from '../../entities/economic-coefficients-mgm';
+import {SectorType, CategoryType} from '../../entities/splitting-loss-mgm';
+import {MyCategoryType} from '../../entities/enumerations/MyCategoryType.enum';
+import {Router, NavigationStart} from '../../../../../../node_modules/@angular/router';
+import {MySectorType} from '../../entities/enumerations/MySectorType.enum';
+import {ImpactEvaluationStatus} from '../model/impact-evaluation-status.model';
+import {AccountService, UserService, User} from '../../shared';
+import {MyCompanyMgmService, MyCompanyMgm} from '../../entities/my-company-mgm';
+import {HttpResponse} from '@angular/common/http';
+import {CompType} from '../../entities/company-profile-mgm';
+import {RegExpUtility} from '../../utils/regexp.utility.class';
+import {Wp3BundleOutput} from '../model/wp3-bundle-output.model';
+import {Observable} from 'rxjs';
+import {switchMap} from 'rxjs/operators';
+import {of} from 'rxjs/observable/of';
+import {forkJoin} from 'rxjs/observable/forkJoin';
 
 @Component({
     // tslint:disable-next-line:component-selector
@@ -90,7 +90,7 @@ export class ImpactEvaluationComponent implements OnInit {
     private selectedCategory: CategoryType;
     private selectedAssetCategoryCode: string;
 
-    public discountingRate = 0.5;
+    public discountingRate = 10;
     public physicalAssetsReturn = 7.1;
     public financialAssetsReturn = 5.0;
     public lossOfIntangiblePercentage = 18.29;
@@ -194,8 +194,8 @@ export class ImpactEvaluationComponent implements OnInit {
             discountingRate: new FormControl(undefined, Validators.compose([
                 Validators.required,
                 Validators.min(0),
-                Validators.max(1),
-                Validators.pattern('[0-9]+,[0-9]+|[0-9]+.[0-9]+|[0-1]+')
+                Validators.max(100),
+                Validators.pattern(RegExpUtility.from0to100DecimalsRegExp)
             ])),
         });
         this.impactFormStepTwo = new FormGroup({
@@ -247,8 +247,8 @@ export class ImpactEvaluationComponent implements OnInit {
                             index++;
                         }
                         for (const asset of this.wp3Status.myTangibleAssets) {
-                            const fixedIndex = _.findIndex(this.physicalAssetsAkaFixed, { id: asset.id });
-                            const currentIndex = _.findIndex(this.financialAssetsAkaCurrent, { id: asset.id });
+                            const fixedIndex = _.findIndex(this.physicalAssetsAkaFixed, {id: asset.id});
+                            const currentIndex = _.findIndex(this.financialAssetsAkaCurrent, {id: asset.id});
                             if (fixedIndex !== -1) {
                                 this.physicalAssetsAkaFixed.splice(fixedIndex, 1, _.clone(asset));
                             } else if (currentIndex !== -1) {
@@ -761,7 +761,7 @@ export class ImpactEvaluationComponent implements OnInit {
             }
         }
         if (evaluatedAsset) {
-            const indexTemp = _.findIndex(this.assetsBySelectedCategory, { id: evaluatedAsset.id });
+            const indexTemp = _.findIndex(this.assetsBySelectedCategory, {id: evaluatedAsset.id});
             if (indexTemp !== -1) {
                 this.assetsBySelectedCategory.splice(indexTemp, 1, evaluatedAsset);
             }
@@ -797,8 +797,8 @@ export class ImpactEvaluationComponent implements OnInit {
                 if (updates) {
                     updates.forEach((updatedAsset: MyAssetMgm) => {
                         // const updatedAsset = res;
-                        const indexTemp = _.findIndex(this.assetsBySelectedCategory, { id: updatedAsset.id });
-                        const index = _.findIndex(this.myAssets, { id: updatedAsset.id });
+                        const indexTemp = _.findIndex(this.assetsBySelectedCategory, {id: updatedAsset.id});
+                        const index = _.findIndex(this.myAssets, {id: updatedAsset.id});
                         if (index !== -1) {
                             this.myAssets.splice(index, 1, updatedAsset);
                         }
@@ -817,6 +817,7 @@ export class ImpactEvaluationComponent implements OnInit {
         return result;
     }
 
+    //TODO read
     public setAssetCategory(category: string, show: boolean) {
         this.assetsBySelectedCategory = [];
         switch (category) {
@@ -942,30 +943,30 @@ export class ImpactEvaluationComponent implements OnInit {
         if (priority) {
             switch (priority) {
                 case Priority.LOW.toString().replace('_', ' ').substring(0, 1) +
-                    Priority.LOW.toString().replace('_', ' ').substring(1).toLowerCase(): {
-                        asset.ranking = 1;
-                        break;
-                    }
+                Priority.LOW.toString().replace('_', ' ').substring(1).toLowerCase(): {
+                    asset.ranking = 1;
+                    break;
+                }
                 case Priority.LOW_MEDIUM.toString().replace('_', ' ').substring(0, 1) +
-                    Priority.LOW_MEDIUM.toString().replace('_', ' ').substring(1).toLowerCase(): {
-                        asset.ranking = 2;
-                        break;
-                    }
+                Priority.LOW_MEDIUM.toString().replace('_', ' ').substring(1).toLowerCase(): {
+                    asset.ranking = 2;
+                    break;
+                }
                 case Priority.MEDIUM.toString().replace('_', ' ').substring(0, 1) +
-                    Priority.MEDIUM.toString().replace('_', ' ').substring(1).toLowerCase(): {
-                        asset.ranking = 3;
-                        break;
-                    }
+                Priority.MEDIUM.toString().replace('_', ' ').substring(1).toLowerCase(): {
+                    asset.ranking = 3;
+                    break;
+                }
                 case Priority.MEDIUM_HIGH.toString().replace('_', ' ').substring(0, 1) +
-                    Priority.MEDIUM_HIGH.toString().replace('_', ' ').substring(1).toLowerCase(): {
-                        asset.ranking = 4;
-                        break;
-                    }
+                Priority.MEDIUM_HIGH.toString().replace('_', ' ').substring(1).toLowerCase(): {
+                    asset.ranking = 4;
+                    break;
+                }
                 case Priority.HIGH.toString().replace('_', ' ').substring(0, 1) +
-                    Priority.HIGH.toString().replace('_', ' ').substring(1).toLowerCase(): {
-                        asset.ranking = 5;
-                        break;
-                    }
+                Priority.HIGH.toString().replace('_', ' ').substring(1).toLowerCase(): {
+                    asset.ranking = 5;
+                    break;
+                }
                 default: {
                     asset.ranking = 0;
                     break;
@@ -1174,12 +1175,12 @@ export class ImpactEvaluationComponent implements OnInit {
     }
 
     clamp(value
-        :
-        number, min
-            :
-            number, max
-            :
-            number
+              :
+              number, min
+              :
+              number, max
+              :
+              number
     ):
         number {
         if (isNaN(value)) {

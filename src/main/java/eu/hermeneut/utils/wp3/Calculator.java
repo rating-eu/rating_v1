@@ -61,8 +61,8 @@ public class Calculator {
             throw new IllegalArgumentException("Ebits' size must be 6");
         }
 
-        if (discountingRate.compareTo(BigDecimal.ZERO) < 0 || discountingRate.compareTo(BigDecimal.ONE) > 1) {
-            throw new IllegalArgumentException("DiscountingRate must be between 0 and 1 (edges included), but it is: " + discountingRate);
+        if (discountingRate.compareTo(BigDecimal.ZERO) < 0 || discountingRate.compareTo(new BigDecimal(100)) > 1) {
+            throw new IllegalArgumentException("DiscountingRate must be between 0 and 100 (edges included), but it is: " + discountingRate);
         }
 
         //Sort from year 1 (-2) to year 6(+3)
@@ -97,7 +97,7 @@ public class Calculator {
         EBIT ebit = ebits.get(ebitIndex);
         BigDecimal result = BigDecimal.ZERO;
 
-        BigDecimal base = BigDecimal.ONE.add(discountingRate);//1 + discountingRate
+        BigDecimal base = BigDecimal.ONE.add(discountingRate.divide(new BigDecimal(100)));//1 + discountingRate
         int exponent = -year;
 
         if (exponent < 0) {
@@ -166,7 +166,7 @@ public class Calculator {
     public static BigDecimal calculateIntangibleCapital(BigDecimal intangibleDrivingEarnings, BigDecimal discountingRate) {
         BigDecimal intangibleCapital = BigDecimal.ZERO;
 
-        intangibleCapital = intangibleCapital.add(intangibleDrivingEarnings.divide(BigDecimal.ONE.add(discountingRate), 3, RoundingMode.HALF_UP));
+        intangibleCapital = intangibleCapital.add(intangibleDrivingEarnings.divide(BigDecimal.ONE.add(discountingRate.divide(new BigDecimal(100))), 3, RoundingMode.HALF_UP));
 
         return intangibleCapital;
     }
