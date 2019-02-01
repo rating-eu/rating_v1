@@ -1,4 +1,4 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, HostListener, Input, OnDestroy, OnInit} from '@angular/core';
 import {QuestionControlService} from './services/question-control.service';
 import {FormGroup} from '@angular/forms';
 import {QuestionMgm, QuestionMgmService} from '../../../../entities/question-mgm';
@@ -195,6 +195,8 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
                                                 // Restore the checked status of the Form inputs
                                                 this.form.patchValue(formValue);
                                             }
+
+                                            this.resizeAnswerHeighs();
                                         }
                                     );
                             }
@@ -646,5 +648,24 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
         });
 
         return myAnswers;
+    }
+
+    @HostListener('window:resize', ['$event'])
+    onResize(event) {
+        this.resizeAnswerHeighs();
+    }
+
+    private resizeAnswerHeighs() {
+        this.questionsArray.forEach((question) => {
+
+            question.answers.forEach((answer, index) => {
+                const cisoRadioButton: HTMLElement = document.getElementById(question.id + '' + answer.id + '');
+                const externalRadioButton: HTMLElement = document.getElementById(question.id + '' + answer.id + '.external');
+
+                const externalHeight = externalRadioButton.clientHeight;
+
+                cisoRadioButton.style.height = externalHeight + 'px';
+            });
+        });
     }
 }
