@@ -42,6 +42,6 @@ ol li::before {
     box-shadow: 1px 1px 0 #999;
 }
 
-.mat-radio-label {
+:host ::ng-deep .radio-button .mat-radio-label .mat-radio-label-content {
     white-space: normal !important;
 }
