@@ -1,9 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRouteSnapshot, NavigationEnd } from '@angular/router';
+import {Component, OnInit} from '@angular/core';
+import {Router, ActivatedRouteSnapshot, NavigationEnd} from '@angular/router';
 
-import { JhiLanguageHelper, LoginService, Principal } from '../../shared';
-import { DatasharingService } from '../../datasharing/datasharing.service';
-import { Update } from '../model/Update';
+import {JhiLanguageHelper, LoginService, Principal} from '../../shared';
+import {DatasharingService} from '../../datasharing/datasharing.service';
+import {Update} from '../model/Update';
 
 @Component({
     selector: 'jhi-main',
@@ -13,7 +13,7 @@ export class JhiMainComponent implements OnInit {
 
     public updateLayout: Update;
     public isAuthenticated = false;
-    public loading = true;
+    public isResetUrl = false;
 
     constructor(
         private principal: Principal,
@@ -37,6 +37,12 @@ export class JhiMainComponent implements OnInit {
         this.router.events.subscribe((event) => {
             if (event instanceof NavigationEnd) {
                 this.jhiLanguageHelper.updateTitle(this.getPageTitle(this.router.routerState.snapshot.root));
+
+                if (this.router.url.indexOf('reset/finish') !== -1) {
+                    this.isResetUrl = true;
+                } else {
+                    this.isResetUrl = false;
+                }
             }
         });
 
@@ -62,7 +68,6 @@ export class JhiMainComponent implements OnInit {
 
         this.loginService.checkLogin().then((check: boolean) => {
             this.isAuthenticated = check;
-            this.loading = false;
         });
     }
 }

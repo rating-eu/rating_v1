@@ -57,9 +57,13 @@ export class LoginService {
         return Promise.resolve(principal.identity().then((account) => {
             if (account) {
                 return true;
-            } else {
+            }else{
                 return false;
             }
+        }).catch((error: any) => {
+            console.log('Error');
+            console.log(error);
+            return false;
         }));
     }
 }
