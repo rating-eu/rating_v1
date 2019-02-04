@@ -16,6 +16,7 @@ export interface DashboardStatus {
   identifyThreatAgentsStatus: Status;
   assessVulnerablitiesStatus: Status;
   impactEvaluationStatus: Status;
+  attackRelatedCostEstimationStatus: Status;
   riskEvaluationStatus: Status;
 }
 
