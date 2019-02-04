@@ -110,6 +110,7 @@ export class RiskEvaluationComponent implements OnInit, OnDestroy {
         this.riskService.getMyAssets(this.mySelf).toPromise().then((res) => {
             if (res && res.length > 0) {
                 this.myAssets = res;
+                this.myAssets = _.orderBy(this.myAssets, ['ranking'], ['desc']);
                 this.loadingAssetsAndAttacks = true;
                 for (const myAsset of this.myAssets) {
                     this.riskService.getAttackChance(myAsset, this.mySelf).toPromise().then((res2) => {
