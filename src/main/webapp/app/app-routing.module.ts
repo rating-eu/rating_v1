@@ -56,14 +56,6 @@ const routes: Routes = [
         canActivate: [UserRouteAccessService]
     },
     {
-        path: 'external-audit',
-        loadChildren: './external-audit/external-audit.module#ExternalAuditModule',
-        data: {
-            authorities: ['ROLE_EXTERNAL_AUDIT'],
-        },
-        canActivate: [UserRouteAccessService]
-    },
-    {
         path: 'results',
         loadChildren: './results/results.module#ResultsModule',
         data: {
