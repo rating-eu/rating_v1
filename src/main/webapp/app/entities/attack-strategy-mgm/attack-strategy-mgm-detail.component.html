@@ -62,7 +62,8 @@
             <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
         </button>
 
-        <button type="button" 
+        <button *jhiHasAnyAuthority="'ROLE_ADMIN'"
+            type="button"
             (click)="popUpService.setOnUserBehaviour()"
             [routerLink]="['/', { outlets: { popup: 'attack-strategy-mgm/'+ attackStrategy.id + '/edit'} }]"
             replaceUrl="true" queryParamsHandling="merge" class="btn btn-primary">
