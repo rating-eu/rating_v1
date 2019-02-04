@@ -46,7 +46,8 @@ export class MySelfAssessmentsComponent implements OnInit, OnDestroy {
         } else {
             this.mySelfAssessment = null;
         }
-        this.principal.hasAnyAuthority([MyRole[MyRole.ROLE_ADMIN]]).then((response: boolean) => {
+
+        this.principal.hasAnyAuthority([MyRole[MyRole.ROLE_EXTERNAL_AUDIT]]).then((response: boolean) => {
             if (response) {
                 this.isExternal = response;
             } else {

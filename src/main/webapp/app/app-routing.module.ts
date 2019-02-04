@@ -51,7 +51,7 @@ const routes: Routes = [
         path: 'evaluate-weakness',
         loadChildren: './evaluate-weakness/evaluate-weakness.module#EvaluateWeaknessModule',
         data: {
-            authorities: ['ROLE_CISO', 'ROLE_EXTERNAL'],
+            authorities: ['ROLE_CISO', 'ROLE_EXTERNAL_AUDIT'],
         },
         canActivate: [UserRouteAccessService]
     },
@@ -59,7 +59,7 @@ const routes: Routes = [
         path: 'external-audit',
         loadChildren: './external-audit/external-audit.module#ExternalAuditModule',
         data: {
-            authorities: ['ROLE_EXTERNAL'],
+            authorities: ['ROLE_EXTERNAL_AUDIT'],
         },
         canActivate: [UserRouteAccessService]
     },
@@ -83,7 +83,7 @@ const routes: Routes = [
         path: 'my-self-assessments',
         loadChildren: './my-self-assessments/my-self-assessments.module#MySelfAssessmentsModule',
         data: {
-            authorities: ['ROLE_CISO', 'ROLE_EXTERNAL'],
+            authorities: ['ROLE_CISO', 'ROLE_EXTERNAL_AUDIT'],
         },
         canActivate: [UserRouteAccessService]
     },

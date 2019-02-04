@@ -12,7 +12,7 @@ const routes: Routes = [
                 path: 'questionnaires/:purpose',
                 loadChildren: '../questionnaires/questionnaires.module#QuestionnairesModule',
                 data: {
-                    authorities: ['ROLE_EXTERNAL'],
+                    authorities: ['ROLE_EXTERNAL_AUDIT'],
                 },
                 canActivate: [UserRouteAccessService]
             }

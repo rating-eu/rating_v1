@@ -14,6 +14,7 @@ import { MyCompanyMgm, MyCompanyMgmService } from '../../entities/my-company-mgm
 import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
 import { CompanyProfileMgm, CompanyProfileMgmService } from '../../entities/company-profile-mgm';
 import { MyCompanyComponent } from '../../my-company/my-company.component';
+import {MyRole} from '../../entities/enumerations/MyRole.enum';
 
 @Component({
     selector: 'jhi-navbar',
@@ -35,6 +36,8 @@ export class NavbarComponent implements OnInit {
     selfAssessmentName: string;
     sidebarCollapsed: boolean;
     companyName: string;
+    public isAuthenticatedValue = false;
+    public isExternal = false;
 
     constructor(
         private loginService: LoginService,
@@ -67,6 +70,20 @@ export class NavbarComponent implements OnInit {
                 this.selfAssessmentName = update.navSubTitle;
                 this.selfAssessmentId = update.selfAssessmentId;
                 this.sidebarCollapsed = update.isSidebarCollapsed;
+            }
+        });
+
+        this.loginService.checkLogin().then((check: boolean) => {
+            this.isAuthenticatedValue = check;
+
+            if (this.isAuthenticated) {
+                this.principal.hasAnyAuthority([MyRole[MyRole.ROLE_EXTERNAL_AUDIT]]).then((response: boolean) => {
+                    if (response) {
+                        this.isExternal = response;
+                    } else {
+                        this.isExternal = false;
+                    }
+                });
             }
         });
     }
