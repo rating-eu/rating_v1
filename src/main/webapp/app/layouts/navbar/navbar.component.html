@@ -1,4 +1,4 @@
-<nav *ngIf="isAuthenticated()" class="navbar navbar-custom navbar-expand-md topbar" [ngClass]="{'navbar-custom-no-sidenav': sidebarCollapsed}">
+<nav *ngIf="isAuthenticated()" class="navbar navbar-custom navbar-expand-md topbar" [ngClass]="{'navbar-custom-no-sidenav': sidebarCollapsed || isExternal}">
     <!-- [ngClass]="{'sidebar-collapsed': isCollapsed}"-->
     <div class="topbar-left logo">
         <i class="fa fa-bars fa-2x col-md-2" (click)="hideShowSideNav()" *jhiHasAnyAuthority="'ROLE_CISO'"></i>

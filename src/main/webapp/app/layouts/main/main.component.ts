@@ -4,6 +4,7 @@ import {Router, ActivatedRouteSnapshot, NavigationEnd} from '@angular/router';
 import {JhiLanguageHelper, LoginService, Principal} from '../../shared';
 import {DatasharingService} from '../../datasharing/datasharing.service';
 import {Update} from '../model/Update';
+import {MyRole} from '../../entities/enumerations/MyRole.enum';
 
 @Component({
     selector: 'jhi-main',
@@ -14,6 +15,7 @@ export class JhiMainComponent implements OnInit {
     public updateLayout: Update;
     public isAuthenticated = false;
     public isResetUrl = false;
+    public isExternal = false;
 
     constructor(
         private principal: Principal,
@@ -68,6 +70,16 @@ export class JhiMainComponent implements OnInit {
 
         this.loginService.checkLogin().then((check: boolean) => {
             this.isAuthenticated = check;
+
+            if (this.isAuthenticated) {
+                this.principal.hasAnyAuthority([MyRole[MyRole.ROLE_EXTERNAL_AUDIT]]).then((response: boolean) => {
+                    if (response) {
+                        this.isExternal = response;
+                    } else {
+                        this.isExternal = false;
+                    }
+                });
+            }
         });
     }
 }

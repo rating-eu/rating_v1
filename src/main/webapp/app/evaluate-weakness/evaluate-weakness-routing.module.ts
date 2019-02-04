@@ -13,7 +13,7 @@ const routes: Routes = [
                 path: 'questionnaires/:purpose',
                 loadChildren: '../questionnaires/questionnaires.module#QuestionnairesModule',
                 data: {
-                    authorities: ['ROLE_CISO', 'ROLE_EXTERNAL'],
+                    authorities: ['ROLE_CISO', 'ROLE_EXTERNAL_AUDIT'],
                 },
                 canActivate: [UserRouteAccessService]
             },
@@ -21,7 +21,7 @@ const routes: Routes = [
                 path: 'result',
                 component: WeaknessResultComponent,
                 data: {
-                    authorities: ['ROLE_CISO', 'ROLE_EXTERNAL'],
+                    authorities: ['ROLE_CISO', 'ROLE_EXTERNAL_AUDIT'],
                 },
                 canActivate: [UserRouteAccessService]
             }
