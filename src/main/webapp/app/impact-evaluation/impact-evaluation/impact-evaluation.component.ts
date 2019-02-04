@@ -727,6 +727,10 @@ export class ImpactEvaluationComponent implements OnInit {
 
     private evaluateSplittingValue(category: string, evaluatedAsset?: MyAssetMgm): Observable<boolean> {
         this.setAssetCategory(category, false);
+        this.selectedAssetCategory = '';
+        this.selectedAssetCategoryCode = '';
+        this.selectedAssetSplitting = undefined;
+        this.selectedAssetLosses = undefined;
         let totalRank = 0;
         let value = 0;
         switch (category) {
