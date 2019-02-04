@@ -99,6 +99,22 @@
             </td>
           </tr>
           <tr>
+            <td>Estimation of the Attack Related Costs</td>
+            <td>Estimate the attack related costs; "Communicate or evaluate the costs of the declared attack costs"</td>
+            <td class="text-center">
+              <i *ngIf="attackRelatedCostEstimationStatus === 'FULL'" style="color: green" class="fa fa-check" aria-hidden="true"></i>
+              <i *ngIf="attackRelatedCostEstimationStatus === 'EMPTY' || attackRelatedCostEstimationStatus === 'PENDING'" style="color: orange" class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+            </td>
+            <td class="text-center">
+              <a *ngIf="attackRelatedCostEstimationStatus === 'EMPTY' && impactEvaluationStatus === 'FULL'" [routerLink]="['/impact-evaluation/attack-related-costs-estimation']"><i class="fa fa-plus-square fa-lg"
+                  placement="top" ngbTooltip="Create" aria-hidden="true"></i></a>
+              <ng-container *ngIf="attackRelatedCostEstimationStatus === 'PENDING' || attackRelatedCostEstimationStatus === 'FULL'">
+                <a href="javascript:void(0)" (click)="open(alert,'/impact-evaluation/attack-related-costs-estimation')"><i
+                    placement="top" ngbTooltip="Edit" class="fa fa-pencil-square-o fa-lg" aria-hidden="true"></i></a>
+              </ng-container>
+            </td>
+          </tr>
+          <tr>
             <td>Risk Evaluation</td>
             <td>Manage your risk based on cost benefit analisys. The general approach includes both qualitative and
               quantitative metodologies based on risk definition (ISO31000) and risk management (ISO31010).</td>
@@ -107,7 +123,7 @@
               <i *ngIf="riskEvaluationStatus === 'EMPTY' || riskEvaluationStatus === 'PENDING'" style="color: orange" class="fa fa-exclamation-triangle" aria-hidden="true"></i>
             </td>
             <td class="text-center">
-              <a *ngIf="riskEvaluationStatus === 'EMPTY' && assessVulnerablitiesStatus === 'FULL'" [routerLink]="['/risk-management/risk-evaluation']"><i class="fa fa-plus-square fa-lg"
+              <a *ngIf="riskEvaluationStatus === 'EMPTY' && attackRelatedCostEstimationStatus === 'FULL'" [routerLink]="['/risk-management/risk-evaluation']"><i class="fa fa-plus-square fa-lg"
                   placement="top" ngbTooltip="Create" aria-hidden="true"></i></a>
               <ng-container *ngIf="riskEvaluationStatus === 'PENDING' || riskEvaluationStatus === 'FULL'">
                 <a href="javascript:void(0)" (click)="open(alert,'/risk-management/risk-evaluation')"><i

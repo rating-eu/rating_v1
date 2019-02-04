@@ -3,3 +3,10 @@
 .boston-square-text{
     color: black;
 }
+
+.list-group{
+    max-height: 400px;
+    margin-bottom: 10px;
+    overflow-y: scroll;
+    -webkit-overflow-scrolling: touch;
+}
