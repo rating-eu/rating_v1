@@ -132,8 +132,8 @@ public class WP3StepsController {
 
             if (discountingRate == null) {
                 throw new NullInputException("The discountingRate can NOT be NULL!");
-            } else if (discountingRate.compareTo(BigDecimal.ZERO) < 0 || discountingRate.compareTo(BigDecimal.ONE) > 0) {
-                throw new IllegalInputException("The value of DiscountingRate MUST BE BETWEEN 0 and 1 (edges included)!");
+            } else if (discountingRate.compareTo(BigDecimal.ZERO) < 0 || discountingRate.compareTo(new BigDecimal(100)) > 0) {
+                throw new IllegalInputException("The value of DiscountingRate MUST BE BETWEEN 0 and 100 (edges included)!");
             }
 
             //Find existing data by SelfAssessmentID
