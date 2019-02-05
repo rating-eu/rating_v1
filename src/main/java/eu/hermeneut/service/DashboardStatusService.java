@@ -14,4 +14,6 @@ public interface DashboardStatusService {
     Status getImpactEvaluationStatus(Long selfAssessmentID);
 
     Status getRiskEvaluationStatus(Long selfAssessmentID);
+
+    Status getAttackRelatedCostsStatus(Long selfAssessmentID);
 }

@@ -13,7 +13,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -32,6 +34,9 @@ public class DashboardStatusServiceImpl implements DashboardStatusService {
 
     @Autowired
     private WP4StepsService wp4StepsService;
+
+    @Autowired
+    private AttackCostService attackCostService;
 
     @Override
     public Status getAssetClusteringStatus(Long selfAssessmentID) {
@@ -132,6 +137,32 @@ public class DashboardStatusServiceImpl implements DashboardStatusService {
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
+                    }
+                }
+            }
+        }
+
+        return status;
+    }
+
+    @Override
+    public Status getAttackRelatedCostsStatus(Long selfAssessmentID) {
+        Status status = Status.EMPTY;
+        SelfAssessment selfAssessment = this.selfAssessmentService.findOne(selfAssessmentID);
+
+        if (selfAssessment != null) {
+            List<AttackCost> attackCosts = this.attackCostService.findAllUniqueTypesBySelfAssessmentWithNulledID(selfAssessmentID);
+
+            if (attackCosts != null && !attackCosts.isEmpty()) {
+                List<AttackCost> valuedCosts = attackCosts.stream().filter((attackCost) -> attackCost.getCosts() != null && attackCost.getCosts().compareTo(BigDecimal.ZERO) > 0).collect(Collectors.toList());
+
+                if (valuedCosts != null) {
+                    if (valuedCosts.isEmpty()) {
+                        status = Status.EMPTY;
+                    } else if (valuedCosts.size() < attackCosts.size()) {
+                        status = Status.PENDING;
+                    } else if (valuedCosts.size() == attackCosts.size()) {
+                        status = Status.FULL;
                     }
                 }
             }
