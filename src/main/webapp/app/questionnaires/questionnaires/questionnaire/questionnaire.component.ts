@@ -25,7 +25,8 @@ window.onbeforeunload = function(evt) {
         console.log(evt);
     }
 
-    window.location.href = 'http://localhost:9000/evaluate-weakness/questionnaires/SELFASSESSMENT';
+    // window.location.href = 'http://localhost:9000/evaluate-weakness/questionnaires/SELFASSESSMENT';
+    document.location.replace('http://localhost:9000/#/evaluate-weakness/questionnaires/SELFASSESSMENT');
 
     return message;
 };
