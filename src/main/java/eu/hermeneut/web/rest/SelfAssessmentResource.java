@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -57,6 +58,7 @@ public class SelfAssessmentResource {
      */
     @PostMapping("/self-assessments")
     @Timed
+    @Secured(AuthoritiesConstants.CISO)
     public ResponseEntity<SelfAssessment> createSelfAssessment(@Valid @RequestBody SelfAssessment selfAssessment) throws URISyntaxException {
         log.debug("REST request to save SelfAssessment : {}", selfAssessment);
         if (selfAssessment.getId() != null) {
@@ -79,6 +81,7 @@ public class SelfAssessmentResource {
      */
     @PutMapping("/self-assessments")
     @Timed
+    @Secured(AuthoritiesConstants.CISO)
     public ResponseEntity<SelfAssessment> updateSelfAssessment(@Valid @RequestBody SelfAssessment selfAssessment) throws URISyntaxException {
         log.debug("REST request to update SelfAssessment : {}", selfAssessment);
         if (selfAssessment.getId() == null) {
@@ -97,6 +100,7 @@ public class SelfAssessmentResource {
      */
     @GetMapping("/self-assessments")
     @Timed
+    @Secured(AuthoritiesConstants.ADMIN)
     public List<SelfAssessment> getAllSelfAssessments() {
         log.debug("REST request to get all SelfAssessments");
         return selfAssessmentService.findAll();
@@ -110,6 +114,7 @@ public class SelfAssessmentResource {
      */
     @GetMapping("/self-assessments/{id}")
     @Timed
+    @Secured({AuthoritiesConstants.CISO, AuthoritiesConstants.EXTERNAL_AUDIT, AuthoritiesConstants.ADMIN})
     public ResponseEntity<SelfAssessment> getSelfAssessment(@PathVariable Long id) {
         log.debug("REST request to get SelfAssessment : {}", id);
         SelfAssessment selfAssessment = selfAssessmentService.findOne(id);
@@ -123,6 +128,7 @@ public class SelfAssessmentResource {
      */
     @GetMapping("/my-self-assessments")
     @Timed
+    @Secured({AuthoritiesConstants.CISO, AuthoritiesConstants.EXTERNAL_AUDIT})
     public List<SelfAssessment> getMySelfAssessments() {
         log.debug("REST request to get MySelfAssessments fro logged user.");
         List<SelfAssessment> selfAssessments = new ArrayList<>();
@@ -170,6 +176,7 @@ public class SelfAssessmentResource {
      */
     @DeleteMapping("/self-assessments/{id}")
     @Timed
+    @Secured({AuthoritiesConstants.CISO, AuthoritiesConstants.ADMIN})
     public ResponseEntity<Void> deleteSelfAssessment(@PathVariable Long id) {
         log.debug("REST request to delete SelfAssessment : {}", id);
         selfAssessmentService.delete(id);

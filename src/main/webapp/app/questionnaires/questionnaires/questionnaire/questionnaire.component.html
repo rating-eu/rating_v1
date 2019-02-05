@@ -1,3 +1,5 @@
-<h2 class="text-center">{{questionnaire.name}}</h2>
+<pre>Questionnaire: {{questionnaire | json}}</pre>
 
-<jhi-dynamic-form  [questionnaire]="questionnaire"></jhi-dynamic-form>
+<h2 *ngIf="questionnaire" class="text-center">{{questionnaire.name}}</h2>
+
+<jhi-dynamic-form *ngIf="questionnaire" [questionnaire]="questionnaire"></jhi-dynamic-form>

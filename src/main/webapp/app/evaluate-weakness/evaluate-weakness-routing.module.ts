@@ -7,6 +7,10 @@ import { UserRouteAccessService } from '../shared';
 const routes: Routes = [
     {
         path: '',
+        data: {
+            authorities: ['ROLE_CISO', 'ROLE_EXTERNAL_AUDIT'],
+        },
+        canActivate: [UserRouteAccessService],
         component: EvaluateWeaknessComponent,
         children: [
             {

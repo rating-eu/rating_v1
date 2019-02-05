@@ -1,16 +1,15 @@
-import { Principal } from './../shared/auth/principal.service';
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { AccountService, User, UserService } from '../shared';
-import { MyCompanyMgm, MyCompanyMgmService } from '../entities/my-company-mgm';
-import { SelfAssessmentMgm, SelfAssessmentMgmService } from '../entities/self-assessment-mgm';
-import { Router } from '@angular/router';
-import { Subscription } from 'rxjs/Subscription';
-import { JhiEventManager } from 'ng-jhipster';
-import { MyAssetMgm, MyAssetMgmService } from '../entities/my-asset-mgm';
-import { DatasharingService } from '../datasharing/datasharing.service';
-import { SessionStorageService } from 'ngx-webstorage';
-import { PopUpService } from '../shared/pop-up-services/pop-up.service';
-import { MyRole } from '../entities/enumerations/MyRole.enum';
+import {Principal} from './../shared/auth/principal.service';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {AccountService, LoginService, User, UserService} from '../shared';
+import {MyCompanyMgm, MyCompanyMgmService} from '../entities/my-company-mgm';
+import {SelfAssessmentMgm, SelfAssessmentMgmService} from '../entities/self-assessment-mgm';
+import {Router} from '@angular/router';
+import {Subscription} from 'rxjs/Subscription';
+import {JhiEventManager} from 'ng-jhipster';
+import {MyAssetMgm, MyAssetMgmService} from '../entities/my-asset-mgm';
+import {DatasharingService} from '../datasharing/datasharing.service';
+import {PopUpService} from '../shared/pop-up-services/pop-up.service';
+import {MyRole} from '../entities/enumerations/MyRole.enum';
 
 @Component({
     selector: 'jhi-my-self-assessments',
@@ -25,7 +24,9 @@ export class MySelfAssessmentsComponent implements OnInit, OnDestroy {
     public mySelfAssessments: SelfAssessmentMgm[];
     eventSubscriber: Subscription;
     private subscription: Subscription;
+    public isAuthenticated = false;
     public isExternal = false;
+    public isCISO = false;
     public mySelfAssessment = null;
 
     constructor(
@@ -34,7 +35,8 @@ export class MySelfAssessmentsComponent implements OnInit, OnDestroy {
         private myAssetService: MyAssetMgmService,
         private dataSharingService: DatasharingService,
         public popUpService: PopUpService,
-        private principal: Principal
+        private principal: Principal,
+        private loginService: LoginService
     ) {
     }
 
@@ -47,12 +49,16 @@ export class MySelfAssessmentsComponent implements OnInit, OnDestroy {
             this.mySelfAssessment = null;
         }
 
-        this.principal.hasAnyAuthority([MyRole[MyRole.ROLE_EXTERNAL_AUDIT]]).then((response: boolean) => {
-            if (response) {
-                this.isExternal = response;
-            } else {
-                this.isExternal = false;
-            }
+        this.loginService.checkLogin().then((check: boolean) => {
+            this.isAuthenticated = check;
+
+            this.principal.hasAnyAuthority([MyRole[MyRole.ROLE_EXTERNAL_AUDIT]]).then((response: boolean) => {
+                if (response) {
+                    this.isExternal = response;
+                } else {
+                    this.isExternal = false;
+                }
+            });
         });
     }
 
@@ -67,13 +73,22 @@ export class MySelfAssessmentsComponent implements OnInit, OnDestroy {
     selectSelfAssessment(selfAssessment: SelfAssessmentMgm) {
         this.selfAssessmentService.setSelfAssessment(selfAssessment);
         this.dataSharingService.updateMySelfAssessment(selfAssessment);
-        let link: string[];
-        if (!this.isExternal) {
-            link = ['/'];
-        } else {
-            link = ['/evaluate-weakness'];
-        }
-        this.router.navigate(link);
+
+        this.principal.hasAnyAuthority([MyRole[MyRole.ROLE_CISO]]).then((response: boolean) => {
+            this.isCISO = response;
+
+            if (this.isCISO) {
+                this.router.navigate(['/']);
+            }
+        });
+
+        this.principal.hasAnyAuthority([MyRole[MyRole.ROLE_EXTERNAL_AUDIT]]).then((response: boolean) => {
+            this.isExternal = response;
+
+            if (this.isExternal) {
+                this.router.navigate(['/evaluate-weakness/questionnaires/SELFASSESSMENT']);
+            }
+        });
     }
 
     trackId(index: number, item: SelfAssessmentMgm) {

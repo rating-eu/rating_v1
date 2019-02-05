@@ -1,11 +1,12 @@
 <div class="card-box">
     <h2><span>My SelfAssessments</span></h2>
     <span *ngIf="!mySelfAssessment">
-        <p>Please select a SelfAssessment or create a new one</p>
+        <p *jhiHasAnyAuthority="'ROLE_CISO'">Please select a SelfAssessment or create a new one.</p>
+        <p *jhiHasAnyAuthority="'ROLE_EXTERNAL_AUDIT'">Currently there is no SelfAssessment to review. Please, come back later.</p>
     </span>
 </div>
 
-<div class="row">
+<div *jhiHasAnyAuthority="'ROLE_CISO'" class="row">
     <div class="col-lg-9 col-md-12">
     </div>
     <div class="col-lg-3 col-md-12">
@@ -58,7 +59,8 @@
         </td>-->
             <td (click)="selectSelfAssessment(selfAssessment)">
                     <span *ngFor="let companyGroup of selfAssessment.companyGroups; let last = last">
-                        <a class="form-control-static" [routerLink]="['../company-group-mgm', companyGroup?.id ]">{{companyGroup.name}}</a>{{last
+                        <a class="form-control-static"
+                           [routerLink]="['../company-group-mgm', companyGroup?.id ]">{{companyGroup.name}}</a>{{last
                         ? '' : ', '}}
                     </span>
             </td>

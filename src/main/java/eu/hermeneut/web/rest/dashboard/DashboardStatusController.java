@@ -44,6 +44,9 @@ public class DashboardStatusController {
             case RISK_EVALUATION: {
                 return this.statusService.getRiskEvaluationStatus(selfAssessmentID);
             }
+            case ATTACK_RELATED_COSTS:{
+                return this.statusService.getAttackRelatedCostsStatus(selfAssessmentID);
+            }
             default: {
                 return Status.EMPTY;
             }

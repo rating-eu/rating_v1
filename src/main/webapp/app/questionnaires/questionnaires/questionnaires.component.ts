@@ -1,19 +1,19 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { QuestionnairesService } from '../questionnaires.service';
-import { QuestionnaireMgm } from '../../entities/questionnaire-mgm';
-import { Observable } from 'rxjs/Observable';
-import { DatasharingService } from '../../datasharing/datasharing.service';
-import { QuestionnaireStatusMgm } from '../../entities/questionnaire-status-mgm';
-import { Status } from '../../entities/enumerations/QuestionnaireStatus.enum';
-import { SelfAssessmentMgm, SelfAssessmentMgmService } from '../../entities/self-assessment-mgm';
-import { AccountService, User, UserService } from '../../shared';
-import { Subscription } from 'rxjs/Subscription';
-import { ActivatedRoute, Params, Router } from '@angular/router';
-import { QuestionnairePurpose } from '../../entities/enumerations/QuestionnairePurpose.enum';
-import { MyAnswerMgmService } from '../../entities/my-answer-mgm';
-import { IdentifyThreatAgentService } from '../../identify-threat-agent/identify-threat-agent.service';
-import { EvaluateService } from '../../evaluate-weakness/evaluate-weakness.service';
-import { LocalStorageService } from 'ngx-webstorage';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {QuestionnairesService} from '../questionnaires.service';
+import {QuestionnaireMgm} from '../../entities/questionnaire-mgm';
+import {Observable} from 'rxjs/Observable';
+import {DatasharingService} from '../../datasharing/datasharing.service';
+import {QuestionnaireStatusMgm} from '../../entities/questionnaire-status-mgm';
+import {Status} from '../../entities/enumerations/QuestionnaireStatus.enum';
+import {SelfAssessmentMgm, SelfAssessmentMgmService} from '../../entities/self-assessment-mgm';
+import {AccountService, User, UserService} from '../../shared';
+import {Subscription} from 'rxjs/Subscription';
+import {ActivatedRoute, Params, Router} from '@angular/router';
+import {QuestionnairePurpose} from '../../entities/enumerations/QuestionnairePurpose.enum';
+import {MyAnswerMgmService} from '../../entities/my-answer-mgm';
+import {IdentifyThreatAgentService} from '../../identify-threat-agent/identify-threat-agent.service';
+import {EvaluateService} from '../../evaluate-weakness/evaluate-weakness.service';
+import {LocalStorageService} from 'ngx-webstorage';
 
 @Component({
     selector: 'jhi-questionnaires',
@@ -34,19 +34,21 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
     private questionnaireStatusesMap: Map<number, QuestionnaireStatusMgm>;
 
     constructor(private route: ActivatedRoute,
-        private router: Router,
-        private questionnairesService: QuestionnairesService,
-        private dataSharingService: DatasharingService,
-        private selfAssessmentService: SelfAssessmentMgmService,
-        private accountService: AccountService,
-        private userService: UserService,
-        private myAnswerService: MyAnswerMgmService,
-        private identifyThreatAgentsService: IdentifyThreatAgentService,
-        private evaluateWeaknessService: EvaluateService,
-        private localStorage: LocalStorageService) {
+                private router: Router,
+                private questionnairesService: QuestionnairesService,
+                private dataSharingService: DatasharingService,
+                private selfAssessmentService: SelfAssessmentMgmService,
+                private accountService: AccountService,
+                private userService: UserService,
+                private myAnswerService: MyAnswerMgmService,
+                private identifyThreatAgentsService: IdentifyThreatAgentService,
+                private evaluateWeaknessService: EvaluateService,
+                private localStorage: LocalStorageService) {
     }
 
     ngOnInit() {
+        console.log('Questionnaires ON INIT:');
+
         this.subscriptions.push(
             this.route.params.subscribe(
                 (params: Params) => {
@@ -73,11 +75,28 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
 
     private async loadQuestionnaire() {
         const questionnaires = await this.questionnairesService.getAllQuestionnairesByPurpose(this.purpose).toPromise();
+        console.log('Questionnaires: ');
+        console.log(questionnaires);
+
         this.selfAssessment = await this.selfAssessmentService.getSelfAssessment();
         this.account = (await this.accountService.get().toPromise()).body;
         this.user = (await this.userService.find(this.account['login']).toPromise()).body;
         await this.setCurrentQuestionnaireAsyncVersion(questionnaires[0]);
-        this.router.navigate(['./identify-threat-agent/questionnaires/' + this.purpose + '/questionnaire']);
+
+        if (questionnaires) {
+            this.dataSharingService.currentQuestionnaire = questionnaires[0];
+
+            switch (this.purpose) {
+                case QuestionnairePurpose.ID_THREAT_AGENT: {
+                    this.router.navigate(['./identify-threat-agent/questionnaires/' + this.purpose + '/questionnaire']);
+                    break;
+                }
+                case QuestionnairePurpose.SELFASSESSMENT: {
+                    this.router.navigate(['./evaluate-weakness/questionnaires/' + this.purpose + '/questionnaire']);
+                    break;
+                }
+            }
+        }
     }
 
     ngOnDestroy() {
@@ -107,6 +126,8 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
             this.dataSharingService.questionnaireStatus = emptyQStatus;
         }
         this.localStorage.store('purpose', this.purpose);
+
+        console.log('Async purpose: ' + this.purpose);
     }
 
     setCurrentQuestionnaire(questionnaire: QuestionnaireMgm) {
@@ -135,14 +156,5 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
             const emptyQStatus: QuestionnaireStatusMgm = new QuestionnaireStatusMgm(undefined, Status.EMPTY, this.selfAssessment, questionnaire, this.user, questionnaire);
             this.dataSharingService.questionnaireStatus = emptyQStatus;
         }
-    }
-
-    showThreatAgents(questionnaireStatus: QuestionnaireStatusMgm) {
-        // delegate the routing stuff to the service inside the ThreatAgents module.
-        this.identifyThreatAgentsService.showThreatAgentsResult(questionnaireStatus);
-    }
-
-    showAttackStrategies(questionnaireStatus: QuestionnaireStatusMgm) {
-        this.evaluateWeaknessService.showEvaluatedAttackStrategies(questionnaireStatus);
     }
 }
