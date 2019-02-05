@@ -11,8 +11,9 @@ import {LocalStorageService} from 'ngx-webstorage';
 import {QuestionnairePurpose} from '../../../entities/enumerations/QuestionnairePurpose.enum';
 import {SelfAssessmentMgm, SelfAssessmentMgmService} from '../../../entities/self-assessment-mgm';
 import {AccountService, User, UserService} from '../../../shared';
+import {SERVER_API_URL} from '../../../app.constants';
 
-window.onbeforeunload = function(evt) {
+window.onbeforeunload = (evt) => {
     console.log('before unload');
     const message = 'Are you sure you want to leave?';
     if (typeof evt === undefined) {
@@ -26,7 +27,7 @@ window.onbeforeunload = function(evt) {
     }
 
     // window.location.href = 'http://localhost:9000/evaluate-weakness/questionnaires/SELFASSESSMENT';
-    document.location.replace('http://localhost:9000/#/evaluate-weakness/questionnaires/SELFASSESSMENT');
+    document.location.replace(SERVER_API_URL + 'evaluate-weakness/questionnaires/SELFASSESSMENT');
 
     return message;
 };
