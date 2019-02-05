@@ -435,17 +435,14 @@
                 </div>
                 <div class="row">
                     <div class="col-md-6">
-                        <div class="col-md-2">
-                            <h2>Global</h2>
+                        <div class="col-md-4">
+                            <h2>Global / Sectorial</h2>
                         </div>
                         <div class="col-md-1 text-center" style="bottom: -5px">
                             <i class="fa fa-toggle-off fa-lg" style="font-size: 2em" aria-hidden="true" (click)="setIsGlobal()"
                                 *ngIf="isGlobal"></i>
                             <i class="fa fa-toggle-on fa-lg" style="font-size: 2em" aria-hidden="true" (click)="setIsGlobal()"
                                 *ngIf="!isGlobal"></i>
-                        </div>
-                        <div class="col-md-2">
-                            <h2>Sectorial</h2>
                         </div>
                     </div>
                 </div>
@@ -486,7 +483,9 @@
                                 <ng-template ngbTabContent>
                                     <ng-container class="card-text">
                                         <!--GLOBAL SPLITTING-->
-                                        <p>DESCRIPTION SPLITTINGS</p>
+                                        <h2>Intangible valuation</h2>
+                                        <p>The obtained value of intangible capital can then be splitted based on the global or sectorial splitting percentage (the table is reported by clicking on the ? button).
+                                            Please, select your splitting percentage to estimate the economic value of the intangibles and, once calculated the splittings, click on the specific category of intangible to set the "priority" level (from 1-low to 5-high) to estimate the economic value of each asset.</p>
                                         <ng-container *ngIf="isGlobal">
                                             <div class="row" style="margin-top: 5px">
                                                 <div class="col-md-4">
@@ -714,7 +713,8 @@
                                     <ng-container class="card-text">
                                         <div class="row" style="margin-top: 15px">
                                             <div class="col-md-12">
-                                                <p>DESCRIPTION LOSSESS</p>
+                                                <h2>Loss Simulation</h2>
+                                                <p>To simulate the loss of the intagible, based on the obtained economic value, please set the percentage of losses (by default 18.29%) and click on "loss evaluation". the system will apply such percentage to each the intangibles.</p>
                                             </div>
                                         </div>
                                         <div class="row" style="margin-top: 5px">

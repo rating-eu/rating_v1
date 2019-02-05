@@ -12,6 +12,25 @@ import {QuestionnairePurpose} from '../../../entities/enumerations/Questionnaire
 import {SelfAssessmentMgm, SelfAssessmentMgmService} from '../../../entities/self-assessment-mgm';
 import {AccountService, User, UserService} from '../../../shared';
 
+window.onbeforeunload = function(evt) {
+    console.log('before unload');
+    const message = 'Are you sure you want to leave?';
+    if (typeof evt === undefined) {
+        evt = window.event;
+    }
+    if (evt) {
+        evt.returnValue = message;
+
+        console.log('Event');
+        console.log(evt);
+    }
+
+    // window.location.href = 'http://localhost:9000/evaluate-weakness/questionnaires/SELFASSESSMENT';
+    document.location.replace('http://localhost:9000/#/evaluate-weakness/questionnaires/SELFASSESSMENT');
+
+    return message;
+};
+
 @Component({
     selector: 'jhi-questionnaire',
     templateUrl: './questionnaire.component.html',
@@ -38,23 +57,6 @@ export class QuestionnaireComponent implements OnInit {
         private userService: UserService,
         private router: Router,
         private localStorage: LocalStorageService) {
-
-        window.onbeforeunload = function(evt) {
-            const message = 'Are you sure you want to leave?';
-            if (typeof evt === undefined) {
-                evt = window.event;
-            }
-            if (evt) {
-                evt.returnValue = message;
-
-                console.log('Event');
-                console.log(evt);
-            }
-
-            window.location.href = 'http://localhos:9000/evaluate-weakness/questionnaires/SELFASSESSMENT';
-
-            return message;
-        };
     }
 
     ngOnInit() {
