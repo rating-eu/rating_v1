@@ -16,6 +16,8 @@ export class JhiMainComponent implements OnInit {
     public isAuthenticated = false;
     public isResetUrl = false;
     public isExternal = false;
+    public isCISO = false;
+    public isAdmin = false;
 
     constructor(
         private principal: Principal,
@@ -56,30 +58,51 @@ export class JhiMainComponent implements OnInit {
             }
         });
 
+        // Get notified each time authentication state changes.
         this.principal.getAuthenticationState().subscribe((authentication: any) => {
             if (authentication) {
                 this.isAuthenticated = true;
+
+                this.updateRole();
             } else {
                 this.isAuthenticated = false;
                 const updateLayout: Update = new Update();
                 updateLayout.isSidebarCollapsed = true;
                 updateLayout.isSidebarCollapsedByMe = false;
                 this.dataSharingService.updateLayout(updateLayout);
+
+                this.updateRole();
             }
         });
 
         this.loginService.checkLogin().then((check: boolean) => {
             this.isAuthenticated = check;
+        });
+    }
 
-            if (this.isAuthenticated) {
-                this.principal.hasAnyAuthority([MyRole[MyRole.ROLE_EXTERNAL_AUDIT]]).then((response: boolean) => {
-                    if (response) {
-                        this.isExternal = response;
-                    } else {
-                        this.isExternal = false;
-                    }
-                });
-            }
+    private updateRole() {
+        const ROLE_EXTERNAL_AUDIT: string = MyRole[MyRole.ROLE_EXTERNAL_AUDIT];
+        console.log('Role string: ' + ROLE_EXTERNAL_AUDIT);
+
+        const ROLE_CISO: string = MyRole[MyRole.ROLE_CISO];
+        console.log('Role string: ' + ROLE_CISO);
+
+        const ROLE_ADMIN: string = MyRole[MyRole.ROLE_ADMIN];
+        console.log('Role admin: ' + ROLE_ADMIN);
+
+        this.principal.hasAuthority(ROLE_EXTERNAL_AUDIT).then((response: boolean) => {
+            this.isExternal = response;
+            console.log('is External RESPONSE: ' + response);
+        });
+
+        this.principal.hasAuthority(ROLE_CISO).then((response: boolean) => {
+            this.isCISO = response;
+            console.log('is CISO RESPONSE: ' + response);
+        });
+
+        this.principal.hasAuthority(ROLE_ADMIN).then((response: boolean) => {
+            this.isAdmin = response;
+            console.log('is ADMIN RESPONSE: ' + response);
         });
     }
 }

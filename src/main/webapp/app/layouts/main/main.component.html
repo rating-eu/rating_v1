@@ -4,6 +4,13 @@
 
 <jhi-sidebar></jhi-sidebar>
 
+<pre style="float: right;">
+    <div>IS AUTHENTICATED: {{isAuthenticated}}</div>
+    <div>IS Admin: {{isAdmin}}</div>
+    <div>IS CISO: {{isCISO}}</div>
+    <div>IS EXTERNAL: {{isExternal}}</div>
+</pre>
+
 <div *ngIf="isAuthenticated"
      [ngClass]="{'content-page-sidenav': !updateLayout.isSidebarCollapsed && !isExternal, 'content-page-no-sidenav': updateLayout.isSidebarCollapsed || isExternal}">
     <!-- [ngClass]="{'content-page-sidenav': !updateLayout.isSidebarCollapsed, 'content-page-no-sidenav': updateLayout.isSidebarCollapsed}" -->

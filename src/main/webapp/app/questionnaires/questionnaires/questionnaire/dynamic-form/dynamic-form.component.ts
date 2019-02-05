@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, ElementRef, HostListener, Input, OnDestroy, OnInit} from '@angular/core';
+import {Component, HostListener, Input, OnDestroy, OnInit} from '@angular/core';
 import {QuestionControlService} from './services/question-control.service';
 import {FormGroup} from '@angular/forms';
 import {QuestionMgm, QuestionMgmService} from '../../../../entities/question-mgm';
@@ -656,16 +656,18 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
     }
 
     private resizeAnswerHeighs() {
-        this.questionsArray.forEach((question) => {
+        if (this.role && this.role === Role.ROLE_EXTERNAL_AUDIT) {
+            this.questionsArray.forEach((question) => {
 
-            question.answers.forEach((answer, index) => {
-                const cisoRadioButton: HTMLElement = document.getElementById(question.id + '' + answer.id + '');
-                const externalRadioButton: HTMLElement = document.getElementById(question.id + '' + answer.id + '.external');
+                question.answers.forEach((answer, index) => {
+                    const cisoRadioButton: HTMLElement = document.getElementById(question.id + '' + answer.id + '');
+                    const externalRadioButton: HTMLElement = document.getElementById(question.id + '' + answer.id + '.external');
 
-                const externalHeight = externalRadioButton.clientHeight;
+                    const externalHeight = externalRadioButton.clientHeight;
 
-                cisoRadioButton.style.height = externalHeight + 'px';
+                    cisoRadioButton.style.height = externalHeight + 'px';
+                });
             });
-        });
+        }
     }
 }
