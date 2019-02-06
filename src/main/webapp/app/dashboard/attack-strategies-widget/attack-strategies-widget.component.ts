@@ -1,13 +1,12 @@
-import { DashboardStepEnum } from './../models/enumeration/dashboard-step.enum';
-import * as _ from 'lodash';
+import {DashboardStepEnum} from './../models/enumeration/dashboard-step.enum';
 
-import { Component, OnInit } from '@angular/core';
-import { RiskManagementService } from '../../risk-management/risk-management.service';
-import { SelfAssessmentMgmService, SelfAssessmentMgm } from '../../entities/self-assessment-mgm';
-import { MyAssetMgm } from '../../entities/my-asset-mgm';
-import { MyAssetAttackChance } from '../../risk-management/model/my-asset-attack-chance.model';
-import { AttackStrategyMgm } from '../../entities/attack-strategy-mgm';
-import { DashboardService, DashboardStatus, Status } from '../dashboard.service';
+import {Component, OnInit} from '@angular/core';
+import {RiskManagementService} from '../../risk-management/risk-management.service';
+import {SelfAssessmentMgm, SelfAssessmentMgmService} from '../../entities/self-assessment-mgm';
+import {MyAssetMgm} from '../../entities/my-asset-mgm';
+import {MyAssetAttackChance} from '../../risk-management/model/my-asset-attack-chance.model';
+import {AttackStrategyMgm} from '../../entities/attack-strategy-mgm';
+import {DashboardService, DashboardStatus, Status} from '../dashboard.service';
 
 @Component({
   selector: 'jhi-attack-strategies-widget',
@@ -62,7 +61,7 @@ export class AttackStrategiesWidgetComponent implements OnInit {
 
     this.dashService.getStatusFromServer(this.mySelf, this.dashboardStatus.ASSESS_VULNERABILITIES).toPromise().then((res) => {
       this.status.assessVulnerablitiesStatus = Status[res];
-      this.dashService.updateStatus(this.status);
+      this.dashService.updateStepStatus(DashboardStepEnum.ASSESS_VULNERABILITIES, this.status.assessVulnerablitiesStatus);
     });
   }
 

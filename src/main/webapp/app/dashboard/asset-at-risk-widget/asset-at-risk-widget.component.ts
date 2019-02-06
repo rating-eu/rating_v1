@@ -1,11 +1,11 @@
-import { DashboardStepEnum } from './../models/enumeration/dashboard-step.enum';
-import { DashboardService, DashboardStatus, Status } from './../dashboard.service';
-import { MyAssetAttackChance } from './../../risk-management/model/my-asset-attack-chance.model';
-import { RiskManagementService } from './../../risk-management/risk-management.service';
-import { SelfAssessmentMgm } from './../../entities/self-assessment-mgm/self-assessment-mgm.model';
-import { MyAssetMgm } from './../../entities/my-asset-mgm/my-asset-mgm.model';
-import { SelfAssessmentMgmService } from './../../entities/self-assessment-mgm/self-assessment-mgm.service';
-import { Component, OnInit } from '@angular/core';
+import {DashboardStepEnum} from './../models/enumeration/dashboard-step.enum';
+import {DashboardService, DashboardStatus, Status} from './../dashboard.service';
+import {MyAssetAttackChance} from './../../risk-management/model/my-asset-attack-chance.model';
+import {RiskManagementService} from './../../risk-management/risk-management.service';
+import {SelfAssessmentMgm} from './../../entities/self-assessment-mgm/self-assessment-mgm.model';
+import {MyAssetMgm} from './../../entities/my-asset-mgm/my-asset-mgm.model';
+import {SelfAssessmentMgmService} from './../../entities/self-assessment-mgm/self-assessment-mgm.service';
+import {Component, OnInit} from '@angular/core';
 
 @Component({
   selector: 'jhi-asset-at-risk-widget',
@@ -84,7 +84,7 @@ export class AssetAtRiskWidgetComponent implements OnInit {
     });
     this.dashService.getStatusFromServer(this.mySelf, this.dashboardStatus.RISK_EVALUATION).toPromise().then((res) => {
       this.status.riskEvaluationStatus = Status[res];
-      this.dashService.updateStatus(this.status);
+      this.dashService.updateStepStatus(DashboardStepEnum.RISK_EVALUATION, this.status.riskEvaluationStatus);
     });
   }
 
