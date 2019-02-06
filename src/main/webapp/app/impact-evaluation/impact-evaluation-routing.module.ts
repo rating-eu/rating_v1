@@ -2,21 +2,26 @@ import { AttackRelatedCostsEstimationComponent } from './attack-related-costs-es
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { ImpactEvaluationComponent } from './impact-evaluation/impact-evaluation.component';
+import { UserRouteAccessService } from '../shared';
 
 const routes: Routes = [
   {
     path: '',
     component: ImpactEvaluationComponent,
     data: {
-      pageTitle: 'hermeneutApp.impactEvaluation.home.title'
-    }
+      pageTitle: 'hermeneutApp.impactEvaluation.home.title',
+      authorities: ['ROLE_CISO'],
+    },
+    canActivate: [UserRouteAccessService]
   },
   {
     path: 'attack-related-costs-estimation',
     component: AttackRelatedCostsEstimationComponent,
     data: {
-      pageTitle: 'hermeneutApp.attackRelatedCostsEstimation.home.title'
-    }
+      pageTitle: 'hermeneutApp.attackRelatedCostsEstimation.home.title',
+      authorities: ['ROLE_CISO'],
+    },
+    canActivate: [UserRouteAccessService]
   }
 ];
 

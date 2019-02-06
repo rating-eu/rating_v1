@@ -1,15 +1,16 @@
-<nav *ngIf="isAuthenticated() && !isCollapsed" class="left side-menu" id="sidebar">
-    <!-- [ngClass]="{'sidebar-collapsed': isCollapsed}"-->
-    <div class="menu-title">
-        <div class="logo" style="display: inline-block;">
-            <span>
-                <img style="display: inline; margin: 0 5px;"
-                     src="../../../content/assets/images/logo-horizontal-white.png" alt="" class="img-fluid">
-            </span>
+<ng-container *jhiHasAnyAuthority="'ROLE_CISO'">
+    <nav *ngIf="isAuthenticated() && !isCollapsed" class="left side-menu" id="sidebar">
+        <!-- [ngClass]="{'sidebar-collapsed': isCollapsed}"-->
+        <div class="menu-title">
+            <div class="logo" style="display: inline-block;">
+                <span>
+                    <img style="display: inline; margin: 0 5px;" src="../../../content/assets/images/logo-horizontal-white.png"
+                        alt="" class="img-fluid">
+                </span>
+            </div>
         </div>
-    </div>
-    <p-panelMenu [model]="items" [multiple]="false"
-                 [style]="{'width':'240px','height':'360px','border':'1px solid #ffffff'}"></p-panelMenu>
-    <img *ngIf="secondaryLogo" [src]="'data:' + secondaryLogo.imageContentType + ';base64,' + secondaryLogo.image"
-                 style="max-height: 40px; bottom: 0px; padding: 10px 30px 5px; position: fixed; z-index: -1;" alt="logo image"/>
-</nav>
+        <p-panelMenu [model]="items" [multiple]="false" [style]="{'width':'240px','height':'360px','border':'1px solid #ffffff'}"></p-panelMenu>
+        <img *ngIf="secondaryLogo" [src]="'data:' + secondaryLogo.imageContentType + ';base64,' + secondaryLogo.image"
+            style="max-height: 40px; bottom: 0px; padding: 10px 30px 5px; position: fixed; z-index: -1;" alt="logo image" />
+    </nav>
+</ng-container>

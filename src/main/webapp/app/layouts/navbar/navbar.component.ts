@@ -1,19 +1,15 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { JhiLanguageService, JhiAlertService } from 'ng-jhipster';
+import {Component, OnInit} from '@angular/core';
+import {Router} from '@angular/router';
+import {NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
+import {JhiLanguageService} from 'ng-jhipster';
 
-import { ProfileService } from '../profiles/profile.service';
-import { JhiLanguageHelper, Principal, LoginModalService, LoginService, User, AccountService, UserService } from '../../shared';
+import {ProfileService} from '../profiles/profile.service';
+import {JhiLanguageHelper, LoginModalService, LoginService, Principal} from '../../shared';
 
-import { VERSION } from '../../app.constants';
-import { SidebarComponent } from '../sidebar/sidebar.component';
-import { DatasharingService } from '../../datasharing/datasharing.service';
-import { Update } from '../model/Update';
-import { MyCompanyMgm, MyCompanyMgmService } from '../../entities/my-company-mgm';
-import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
-import { CompanyProfileMgm, CompanyProfileMgmService } from '../../entities/company-profile-mgm';
-import { MyCompanyComponent } from '../../my-company/my-company.component';
+import {VERSION} from '../../app.constants';
+import {DatasharingService} from '../../datasharing/datasharing.service';
+import {Update} from '../model/Update';
+import {MyRole} from '../../entities/enumerations/MyRole.enum';
 
 @Component({
     selector: 'jhi-navbar',
@@ -35,6 +31,8 @@ export class NavbarComponent implements OnInit {
     selfAssessmentName: string;
     sidebarCollapsed: boolean;
     companyName: string;
+    public isAuthenticatedValue = false;
+    public isExternal = false;
 
     constructor(
         private loginService: LoginService,
@@ -67,6 +65,32 @@ export class NavbarComponent implements OnInit {
                 this.selfAssessmentName = update.navSubTitle;
                 this.selfAssessmentId = update.selfAssessmentId;
                 this.sidebarCollapsed = update.isSidebarCollapsed;
+            }
+        });
+
+        this.dataSharingService.observeRole().subscribe((role: MyRole) => {
+            if (role) {
+                switch (role) {
+                    case MyRole.ROLE_CISO: {
+                        this.isAuthenticatedValue = true;
+                        this.isExternal = false;
+                        break;
+                    }
+                    case MyRole.ROLE_EXTERNAL_AUDIT: {
+                        this.isAuthenticatedValue = true;
+                        this.isExternal = true;
+                        break;
+                    }
+                    case MyRole.ROLE_ADMIN: {
+                        this.isAuthenticatedValue = true;
+                        this.isExternal = false;
+                        break;
+                    }
+                    default: {
+                        this.isAuthenticatedValue = false;
+                        this.isExternal = false;
+                    }
+                }
             }
         });
     }

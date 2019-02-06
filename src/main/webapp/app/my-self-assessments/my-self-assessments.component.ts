@@ -1,14 +1,14 @@
+import {Principal} from './../shared/auth/principal.service';
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {AccountService, User, UserService} from '../shared';
-import {MyCompanyMgm, MyCompanyMgmService} from '../entities/my-company-mgm';
+import {User} from '../shared';
+import {MyCompanyMgm} from '../entities/my-company-mgm';
 import {SelfAssessmentMgm, SelfAssessmentMgmService} from '../entities/self-assessment-mgm';
 import {Router} from '@angular/router';
 import {Subscription} from 'rxjs/Subscription';
-import {JhiEventManager} from 'ng-jhipster';
 import {MyAssetMgm, MyAssetMgmService} from '../entities/my-asset-mgm';
 import {DatasharingService} from '../datasharing/datasharing.service';
-import {SessionStorageService} from 'ngx-webstorage';
 import {PopUpService} from '../shared/pop-up-services/pop-up.service';
+import {MyRole} from '../entities/enumerations/MyRole.enum';
 
 @Component({
     selector: 'jhi-my-self-assessments',
@@ -23,20 +23,19 @@ export class MySelfAssessmentsComponent implements OnInit, OnDestroy {
     public mySelfAssessments: SelfAssessmentMgm[];
     eventSubscriber: Subscription;
     private subscription: Subscription;
-
+    public isAuthenticated = false;
+    public isAdmin = false;
+    public isCISO = false;
+    public isExternal = false;
     public mySelfAssessment = null;
 
     constructor(
         private router: Router,
-        private accountService: AccountService,
-        private userService: UserService,
-        private myCompanyService: MyCompanyMgmService,
         private selfAssessmentService: SelfAssessmentMgmService,
-        private eventManager: JhiEventManager,
         private myAssetService: MyAssetMgmService,
         private dataSharingService: DatasharingService,
-        private sessionStorage: SessionStorageService,
-        public popUpService: PopUpService
+        public popUpService: PopUpService,
+        private principal: Principal
     ) {
     }
 
@@ -48,6 +47,30 @@ export class MySelfAssessmentsComponent implements OnInit, OnDestroy {
         } else {
             this.mySelfAssessment = null;
         }
+
+        // Get notified each time authentication state changes.
+        this.dataSharingService.observeRole().subscribe((role: MyRole) => {
+            switch (role) {
+                case MyRole.ROLE_ADMIN: {
+                    this.isAdmin = true;
+                    break;
+                }
+                case MyRole.ROLE_CISO: {
+                    this.isCISO = true;
+                    break;
+                }
+                case MyRole.ROLE_EXTERNAL_AUDIT: {
+                    this.isExternal = true;
+                    break;
+                }
+                case null: {
+                    this.isAuthenticated = false;
+                    this.isCISO = false;
+                    this.isExternal = false;
+                    this.isAdmin = false;
+                }
+            }
+        });
     }
 
     private loadMySelfAssessments() {
@@ -61,8 +84,14 @@ export class MySelfAssessmentsComponent implements OnInit, OnDestroy {
     selectSelfAssessment(selfAssessment: SelfAssessmentMgm) {
         this.selfAssessmentService.setSelfAssessment(selfAssessment);
         this.dataSharingService.updateMySelfAssessment(selfAssessment);
-        const link = ['/'];
-        this.router.navigate(link);
+
+        if (this.isCISO) {
+            this.router.navigate(['/']);
+        }
+
+        if (this.isExternal) {
+            this.router.navigate(['/evaluate-weakness/questionnaires/SELFASSESSMENT']);
+        }
     }
 
     trackId(index: number, item: SelfAssessmentMgm) {
