@@ -4,7 +4,6 @@ import {Couple} from '../utils/couple.class';
 import {ThreatAgentMgm} from '../entities/threat-agent-mgm';
 import {AnswerMgm} from '../entities/answer-mgm';
 import {QuestionMgm} from '../entities/question-mgm';
-import {QuestionnaireStatusMgm} from '../entities/questionnaire-status-mgm';
 import {Observable} from 'rxjs/Observable';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import {AttackStrategyMgm} from '../entities/attack-strategy-mgm';
@@ -13,6 +12,7 @@ import {QuestionnaireMgm} from '../entities/questionnaire-mgm';
 import {Update} from '../layouts/model/Update';
 import {SelfAssessmentMgm} from '../entities/self-assessment-mgm';
 import {HttpClient} from '@angular/common/http';
+import {MyRole} from '../entities/enumerations/MyRole.enum';
 
 @Injectable()
 export class DatasharingService {
@@ -20,8 +20,8 @@ export class DatasharingService {
     private _threatAgentsMap: Map<String, Couple<ThreatAgentMgm, Fraction>>;
     private _identifyThreatAgentsFormDataMap: Map<String, AnswerMgm>;
     private _currentQuestionnaire: QuestionnaireMgm;
-    private _questionnaireStatusesMap: Map<number, QuestionnaireStatusMgm>;
-    private _questionnaireStatus: QuestionnaireStatusMgm;
+    // private _questionnaireStatusesMap: Map<number, QuestionnaireStatusMgm>;
+    // private _questionnaireStatus: QuestionnaireStatusMgm;
 
     // ===Observables-BehaviorSubjects===
 
@@ -34,6 +34,7 @@ export class DatasharingService {
     private _attackStrategyUpdate$: Observable<AttackStrategyUpdate> = this._attackStrategyUpdateSubject.asObservable();
     private layoutUpdateSubject: BehaviorSubject<Update> = new BehaviorSubject<Update>(null);
     private mySelfAssessmentSubject: BehaviorSubject<SelfAssessmentMgm> = new BehaviorSubject<SelfAssessmentMgm>(null);
+    private roleSubject: BehaviorSubject<MyRole> = new BehaviorSubject<MyRole>(null);
 
     constructor(private http: HttpClient) {
 
@@ -63,21 +64,21 @@ export class DatasharingService {
         this._currentQuestionnaire = value;
     }
 
-    get questionnaireStatusesMap(): Map<number, QuestionnaireStatusMgm> {
+    /*get questionnaireStatusesMap(): Map<number, QuestionnaireStatusMgm> {
         return this._questionnaireStatusesMap;
-    }
+    }*/
 
-    set questionnaireStatusesMap(statusesMap: Map<number, QuestionnaireStatusMgm>) {
+    /*set questionnaireStatusesMap(statusesMap: Map<number, QuestionnaireStatusMgm>) {
         this._questionnaireStatusesMap = statusesMap;
-    }
+    }*/
 
-    get questionnaireStatus(): QuestionnaireStatusMgm {
+    /*get questionnaireStatus(): QuestionnaireStatusMgm {
         return this._questionnaireStatus;
-    }
+    }*/
 
-    set questionnaireStatus(value: QuestionnaireStatusMgm) {
+    /*set questionnaireStatus(value: QuestionnaireStatusMgm) {
         this._questionnaireStatus = value;
-    }
+    }*/
 
     // private sendRiskProfileToKafkaUrl = SERVER_API_URL + "api/{selfAssessmentID}/risk-profile/kafka";
 
@@ -140,9 +141,18 @@ export class DatasharingService {
         return this.mySelfAssessmentSubject.asObservable();
     }
 
+    observeRole(): Observable<MyRole> {
+        return this.roleSubject.asObservable();
+    }
+
+    updateRole(role: MyRole) {
+        this.roleSubject.next(role);
+    }
+
     clear() {
         this.mySelfAssessmentSubject.next(null);
         this.layoutUpdateSubject.next(null);
         this._attackStrategyUpdateSubject.next(null);
+        this.roleSubject.next(null);
     }
 }

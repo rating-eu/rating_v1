@@ -108,7 +108,7 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
     }
 
     async setCurrentQuestionnaireAsyncVersion(questionnaire: QuestionnaireMgm) {
-        if (!this.questionnaireStatusesMap) {
+        /*if (!this.questionnaireStatusesMap) {
             this.questionnaireStatuses = await this.questionnairesService.getQuestionnaireStatusesBySelfAssessmentAndUser(this.selfAssessment, this.user).toPromise();
             this.questionnaireStatusesMap = new Map<number, QuestionnaireStatusMgm>();
             this.questionnaireStatuses.forEach((questionnaireStatus: QuestionnaireStatusMgm) => {
@@ -117,14 +117,16 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
             this.dataSharingService.questionnaireStatusesMap = this.questionnaireStatusesMap;
         } else {
             // TODO
-        }
+        }*/
+
         this.dataSharingService.currentQuestionnaire = questionnaire;
-        if (this.questionnaireStatusesMap.has(questionnaire.id)) {
+
+        /*if (this.questionnaireStatusesMap.has(questionnaire.id)) {
             this.dataSharingService.questionnaireStatus = this.questionnaireStatusesMap.get(questionnaire.id);
         } else {
             const emptyQStatus: QuestionnaireStatusMgm = new QuestionnaireStatusMgm(undefined, Status.EMPTY, this.selfAssessment, questionnaire, this.user, questionnaire);
             this.dataSharingService.questionnaireStatus = emptyQStatus;
-        }
+        }*/
         this.localStorage.store('purpose', this.purpose);
 
         console.log('Async purpose: ' + this.purpose);
@@ -141,7 +143,7 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
                             this.questionnaireStatusesMap.set(questionnaireStatus.questionnaire.id, questionnaireStatus);
                         });
 
-                        this.dataSharingService.questionnaireStatusesMap = this.questionnaireStatusesMap;
+                        // this.dataSharingService.questionnaireStatusesMap = this.questionnaireStatusesMap;
                     })
             );
         } else {
@@ -150,11 +152,11 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
 
         this.dataSharingService.currentQuestionnaire = questionnaire;
 
-        if (this.questionnaireStatusesMap.has(questionnaire.id)) {
+        /*if (this.questionnaireStatusesMap.has(questionnaire.id)) {
             this.dataSharingService.questionnaireStatus = this.questionnaireStatusesMap.get(questionnaire.id);
         } else {
             const emptyQStatus: QuestionnaireStatusMgm = new QuestionnaireStatusMgm(undefined, Status.EMPTY, this.selfAssessment, questionnaire, this.user, questionnaire);
             this.dataSharingService.questionnaireStatus = emptyQStatus;
-        }
+        }*/
     }
 }

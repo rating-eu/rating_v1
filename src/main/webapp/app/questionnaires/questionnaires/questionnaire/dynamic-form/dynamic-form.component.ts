@@ -413,6 +413,7 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
         const selfAssessment$: Observable<HttpResponse<SelfAssessmentMgm>> = questionnaireStatus$.pipe(
             switchMap((qStatusResponse: HttpResponse<QuestionnaireStatusMgm>) => {
                 questionnaireStatus = qStatusResponse.body;
+                this.cisoQuestionnaireStatus = questionnaireStatus;
 
                 // #4 Update the SelfAssessment
                 this.selfAssessment.user = this.user;
@@ -486,11 +487,12 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
         questionnaireStatus$.toPromise()
             .then((response: HttpResponse<QuestionnaireStatusMgm>) => {
                 questionnaireStatus = response.body;
+                this.externalQuestionnaireStatus = questionnaireStatus;
 
                 this.selfAssessmentService.setSelfAssessment(this.selfAssessment);
 
                 this.loading = false;
-                this.router.navigate(['/dashboard']);
+                this.router.navigate(['/']);
             });
     }
 
