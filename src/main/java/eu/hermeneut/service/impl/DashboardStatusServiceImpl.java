@@ -146,6 +146,7 @@ public class DashboardStatusServiceImpl implements DashboardStatusService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Status getAttackRelatedCostsStatus(Long selfAssessmentID) {
         Status status = Status.EMPTY;
         SelfAssessment selfAssessment = this.selfAssessmentService.findOne(selfAssessmentID);
