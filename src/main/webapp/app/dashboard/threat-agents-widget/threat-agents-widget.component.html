@@ -4,8 +4,8 @@
 <div class="container" *ngIf="!loading">
   <div class="tile-stats tiles-first-row">
     <div class="count" *ngIf="selfAssessment.threatagents.length>0">{{selfAssessment.threatagents.length}}</div>
-    <h3 *ngIf="selfAssessment.threatagents.length>0">Threat Agents</h3>
-    <h3 *ngIf="selfAssessment.threatagents.length===0">No Threat Agents founded</h3>
+    <h3 *ngIf="selfAssessment.threatagents.length>0"><a [routerLink]="['/identify-threat-agent/result']">Threat Agents</a></h3><!--/identify-threat-agent/result-->
+    <h3 *ngIf="selfAssessment.threatagents.length===0"><a [routerLink]="['/identify-threat-agent/questionnaires/ID_THREAT_AGENT/questionnaire']">No Threat Agents founded</a></h3>
     <p *ngIf="selfAssessment.threatagents.length>0"><a href="javascript:void(0)" (click)="open(threatAgentsDetails)">details</a></p>
   </div>
 </div>

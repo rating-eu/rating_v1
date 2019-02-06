@@ -4,7 +4,7 @@
   <div class="container" *ngIf="!loading">
     <div class="tile-stats tiles-first-row">
       <div class="count" *ngIf="customers>0">{{customers}}</div>
-      <h3 *ngIf="customers>0">Customers</h3>
-      <h3 *ngIf="customers===0">No customers defined</h3>
+      <h3 *ngIf="customers>0"><a [routerLink]="['/impact-evaluation/attack-related-costs-estimation']">Customers</a></h3>
+      <h3 *ngIf="customers===0"><a [routerLink]="['/impact-evaluation/attack-related-costs-estimation']">No customers defined</a></h3>
     </div>
   </div>
