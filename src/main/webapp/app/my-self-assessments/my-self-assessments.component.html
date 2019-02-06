@@ -1,18 +1,16 @@
 <div class="card-box">
     <h2><span>My SelfAssessments</span></h2>
-    <span *ngIf="!mySelfAssessment">
-        <p *jhiHasAnyAuthority="'ROLE_CISO'">Please select a SelfAssessment or create a new one.</p>
-        <p *jhiHasAnyAuthority="'ROLE_EXTERNAL_AUDIT'">Currently there is no SelfAssessment to review. Please, come back later.</p>
+    <span *ngIf="isCISO">
+        <p *ngIf="!mySelfAssessments">Please create a new SelfAssessment</p>
+        <p *ngIf="!mySelfAssessment">Please select a SelfAssessment</p>
     </span>
-    <pre *ngIf="false" style="float: right;">
-    <div>IS AUTHENTICATED: {{isAuthenticated}}</div>
-    <div>IS Admin: {{isAdmin}}</div>
-    <div>IS CISO: {{isCISO}}</div>
-    <div>IS EXTERNAL: {{isExternal}}</div>
-</pre>
+    <span *ngIf="isExternal">
+        <p *ngIf="!mySelfAssessments">Currently there is no SelfAssessment to review. Please, come back later.</p>
+        <p *ngIf="!mySelfAssessment">Please select a SelfAssessment to review</p>
+    </span>
 </div>
 
-<div class="row">
+<div *ngIf="isCISO" class="row">
     <div class="col-lg-9 col-md-12">
     </div>
     <div class="col-lg-3 col-md-12">
@@ -46,7 +44,7 @@
             <!--<th><span jhiTranslate="hermeneutApp.selfAssessment.attackstrategy">Attackstrategy</span></th>-->
             <th><span jhiTranslate="hermeneutApp.selfAssessment.externalAudit">External Audit</span></th>
             <!--<th><span jhiTranslate="hermeneutApp.selfAssessment.questionnaire">Questionnaire</span></th>-->
-            <th></th>
+            <th *ngIf="isCISO"></th>
         </tr>
         </thead>
         <tbody>
@@ -98,7 +96,7 @@
                         ? '' : ', '}}
                     </span>
             </td>-->
-            <td class="text-right">
+            <td *ngIf="isCISO" class="text-right">
                 <div class="btn-group flex-btn-group-container btn-table">
                     <ng-template #tipButtonView><span jhiTranslate="entity.action.view">View Test</span></ng-template>
                     <!--<button type="submit"
