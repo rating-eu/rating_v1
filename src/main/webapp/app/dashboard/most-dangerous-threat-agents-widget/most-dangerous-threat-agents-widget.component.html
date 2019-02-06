@@ -4,7 +4,9 @@
 <div class="container" *ngIf="!loading">
     <div class="x_panel" style="padding:0px !important;">
         <div class="x_title" style="padding:0px !important;">
-            <h2 style="padding: 10px;">Most Dangerous Threat Agents</h2>
+            <h2 style="padding: 10px;">
+                <a [routerLink]="['/identify-threat-agent/questionnaires/ID_THREAT_AGENT/questionnaire']" *ngIf="mdtaEntities">Most Dangerous Threat Agents</a>
+                <a [routerLink]="['/identify-threat-agent/result']" *ngIf="!mdtaEntities">Most Dangerous Threat Agents</a></h2>
             <ul class="nav navbar-right panel_toolbox">
                 <li style="width: 24px; cursor: default"></li>
                 <li style="width: 24px; cursor: default"></li>

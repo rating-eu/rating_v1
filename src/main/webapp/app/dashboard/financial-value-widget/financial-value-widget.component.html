@@ -5,28 +5,28 @@
   <div class="col-md-3">
     <div class="tile-stats tiles-first-row">
       <div class="count" *ngIf="ide">{{ide | currency: 'EUR'}}</div>
-      <h3>Intangible Driving Earnings</h3>
+      <h3><a [routerLink]="['/impact-evaluation']">Intangible Driving Earnings</a></h3>
       <small *ngIf="!ide">The Impact evaluation step was not completed</small>
     </div>
   </div>
   <div class="col-md-3">
     <div class="tile-stats tiles-first-row">
       <div class="count" *ngIf="intangibleCapital">{{intangibleCapital | currency: 'EUR'}}</div>
-      <h3>Intangible Capital</h3>
+      <h3><a [routerLink]="['/impact-evaluation']">Intangible Capital</a></h3>
       <small *ngIf="!intangibleCapital">The Impact evaluation step was not completed</small>
     </div>
   </div>
   <div class="col-md-3">
     <div class="tile-stats tiles-first-row">
       <div class="count" *ngIf="physicalReturn">{{physicalReturn/100 | percent:'1.0-2'}}</div>
-      <h3>Physical Asset Return</h3>
+      <h3><a [routerLink]="['/impact-evaluation']">Physical Asset Return</a></h3>
       <small *ngIf="!physicalReturn">The Impact evaluation step was not completed</small>
     </div>
   </div>
   <div class="col-md-3">
     <div class="tile-stats tiles-first-row">
       <div class="count" *ngIf="financialReturn">{{financialReturn/100 | percent:'1.0-2'}}</div>
-      <h3>Financial Asset Return</h3>
+      <h3><a [routerLink]="['/impact-evaluation']">Financial Asset Return</a></h3>
       <small *ngIf="!financialReturn">The Impact evaluation step was not completed</small>
     </div>
   </div>
