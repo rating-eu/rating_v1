@@ -1,16 +1,16 @@
 import {DashboardStepEnum} from './../models/enumeration/dashboard-step.enum';
 import * as _ from 'lodash';
 
-import {Component, OnInit, OnDestroy} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Principal} from '../../shared';
-import {SelfAssessmentMgmService, SelfAssessmentMgm} from '../../entities/self-assessment-mgm';
+import {SelfAssessmentMgm, SelfAssessmentMgmService} from '../../entities/self-assessment-mgm';
 import {IdentifyAssetUtilService} from '../../identify-assets/identify-asset.util.service';
 import {MyRole} from '../../entities/enumerations/MyRole.enum';
 import {AssetType} from '../../entities/enumerations/AssetType.enum';
 import {MyAssetMgm} from '../../entities/my-asset-mgm';
 import {Subscription} from 'rxjs';
 import {JhiEventManager} from 'ng-jhipster';
-import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
+import {ModalDismissReasons, NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {DashboardService, DashboardStatus, Status} from '../dashboard.service';
 
 @Component({
@@ -109,7 +109,7 @@ export class AssetWidgetComponent implements OnInit, OnDestroy {
 
                 this.dashService.getStatusFromServer(this.mySelf, this.dashboardStatus.ASSET_CLUSTERING).toPromise().then((res) => {
                     this.status.assetClusteringStatus = Status[res];
-                    this.dashService.updateStatus(this.status);
+                    this.dashService.updateStepStatus(DashboardStepEnum.ASSET_CLUSTERING, this.status.assetClusteringStatus);
                 });
             }
         }).catch(() => {
