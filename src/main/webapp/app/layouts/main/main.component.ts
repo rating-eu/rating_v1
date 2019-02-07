@@ -100,7 +100,7 @@ export class JhiMainComponent implements OnInit {
 
                     if (this.isCISO) {
                         this.dataSharingService.updateRole(MyRole.ROLE_CISO);
-                        updateLayout.isSidebarCollapsed = true;
+                        updateLayout.isSidebarCollapsed = false;
                         updateLayout.isSidebarCollapsedByMe = false;
                         this.dataSharingService.updateLayout(updateLayout);
                     }
@@ -125,7 +125,7 @@ export class JhiMainComponent implements OnInit {
                     this.isAdmin = response;
 
                     if (this.isAdmin) {
-                        updateLayout.isSidebarCollapsed = false;
+                        updateLayout.isSidebarCollapsed = true;
                         updateLayout.isSidebarCollapsedByMe = false;
                         this.dataSharingService.updateLayout(updateLayout);
                         this.dataSharingService.updateRole(MyRole.ROLE_ADMIN);
