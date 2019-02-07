@@ -33,14 +33,26 @@
                         primaryKey="questions_id,answers_id">
         </loadUpdateData>
 
-        <loadData catalogName="cat"
-                  encoding="UTF-8"
-                  file="config/liquibase/questions_answers_attack_strategies_join.csv"
-                  schemaName="public"
-                  separator=";"
-                  quotchar="'"
-                  tableName="question_answers">
-        </loadData>
+        <loadUpdateData catalogName="cat"
+                        encoding="UTF-8"
+                        file="config/liquibase/questions_answers_attack_strategies_join.csv"
+                        schemaName="public"
+                        separator=";"
+                        quotchar="'"
+                        tableName="question_answers"
+                        primaryKey="questions_id,answers_id">
+        </loadUpdateData>
+
+        <!--Added not applicable answers for Attack-Strategies SelfAssessment-->
+        <loadUpdateData catalogName="cat"
+                        encoding="UTF-8"
+                        file="config/liquibase/questions_answers_not_applicable_attack_strategies_join.csv"
+                        schemaName="public"
+                        separator=";"
+                        quotchar="'"
+                        tableName="question_answers"
+                        primaryKey="questions_id,answers_id">
+        </loadUpdateData>
     </changeSet>
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here, do not remove-->
 </databaseChangeLog>
