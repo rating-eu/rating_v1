@@ -1,24 +1,24 @@
-import { DashboardStepEnum } from './../models/enumeration/dashboard-step.enum';
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { SelfAssessmentMgmService, SelfAssessmentMgm } from '../../entities/self-assessment-mgm';
-import { MyAnswerMgmService, MyAnswerMgm } from '../../entities/my-answer-mgm';
-import { QuestionMgmService, QuestionMgm } from '../../entities/question-mgm';
-import { QuestionnaireStatusMgm, QuestionnaireStatusMgmService } from '../../entities/questionnaire-status-mgm';
-import { HttpResponse } from '@angular/common/http';
-import { MotivationMgmService, MotivationMgm } from '../../entities/motivation-mgm';
-import { ThreatAgentMgmService, ThreatAgentMgm } from '../../entities/threat-agent-mgm';
-import { mergeMap } from 'rxjs/operators';
-import { forkJoin } from 'rxjs/observable/forkJoin';
-import { Couple } from '../../utils/couple.class';
-import { Fraction } from '../../utils/fraction.class';
-import { SkillLevel } from '../../entities/enumerations/SkillLevel.enum';
-import { Subscription, Observable } from 'rxjs';
-import { QuestionnaireMgm } from '../../entities/questionnaire-mgm';
-import { BaseEntity } from '../../shared';
-import { AnswerMgm } from '../../entities/answer-mgm';
+import {DashboardStepEnum} from './../models/enumeration/dashboard-step.enum';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {SelfAssessmentMgm, SelfAssessmentMgmService} from '../../entities/self-assessment-mgm';
+import {MyAnswerMgm, MyAnswerMgmService} from '../../entities/my-answer-mgm';
+import {QuestionMgm, QuestionMgmService} from '../../entities/question-mgm';
+import {QuestionnaireStatusMgm, QuestionnaireStatusMgmService} from '../../entities/questionnaire-status-mgm';
+import {HttpResponse} from '@angular/common/http';
+import {MotivationMgm, MotivationMgmService} from '../../entities/motivation-mgm';
+import {ThreatAgentMgm, ThreatAgentMgmService} from '../../entities/threat-agent-mgm';
+import {mergeMap} from 'rxjs/operators';
+import {forkJoin} from 'rxjs/observable/forkJoin';
+import {Couple} from '../../utils/couple.class';
+import {Fraction} from '../../utils/fraction.class';
+import {SkillLevel} from '../../entities/enumerations/SkillLevel.enum';
+import {Observable, Subscription} from 'rxjs';
+import {QuestionnaireMgm} from '../../entities/questionnaire-mgm';
+import {BaseEntity} from '../../shared';
+import {AnswerMgm} from '../../entities/answer-mgm';
 import * as CryptoJS from 'crypto-js';
-import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
-import { DashboardService, DashboardStatus, Status } from '../dashboard.service';
+import {ModalDismissReasons, NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {DashboardService, DashboardStatus, Status} from '../dashboard.service';
 
 @Component({
   selector: 'jhi-threat-agents-widget',
@@ -155,7 +155,7 @@ export class ThreatAgentsWidgetComponent implements OnInit, OnDestroy {
 
     this.dashService.getStatusFromServer(this.selfAssessment, this.dashboardStatus.IDENTIFY_THREAT_AGENTS).toPromise().then((res) => {
       this.status.identifyThreatAgentsStatus = Status[res];
-      this.dashService.updateStatus(this.status);
+      this.dashService.updateStepStatus(DashboardStepEnum.IDENTIFY_THREAT_AGENTS, this.status.identifyThreatAgentsStatus);
     });
   }
 

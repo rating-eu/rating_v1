@@ -1087,7 +1087,7 @@ export class ImpactEvaluationComponent implements OnInit {
             })
         );
 
-        if (this.isGlobal || !this.wp3Status.sectorType) {
+        if (this.isGlobal || !this.wp3Status || !this.wp3Status.sectorType) {
             this.sectorChoosed = '';
             this.choosedSectorType = SectorType.GLOBAL;
         } else {
