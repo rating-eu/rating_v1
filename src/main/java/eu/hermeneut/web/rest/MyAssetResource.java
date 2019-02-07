@@ -135,7 +135,7 @@ public class MyAssetResource {
     @PutMapping("/my-assets")
     @Timed
     @KafkaRiskProfileHook
-    @PreAuthorize("@myAssetGuardian.isCISO(#myAssets.get(0)) || hasRole('ROLE_ADMIN')")
+    @PreAuthorize("@myAssetGuardian.isCISO(#myAsset) || hasRole('ROLE_ADMIN')")
     @Secured({AuthoritiesConstants.CISO, AuthoritiesConstants.ADMIN})
     public ResponseEntity<MyAsset> updateMyAsset(@RequestBody @NotNull MyAsset myAsset) throws URISyntaxException {
         log.debug("REST request to update MyAsset : {}", myAsset);
@@ -164,7 +164,7 @@ public class MyAssetResource {
 
     @GetMapping("/my-assets/self-assessment/{selfAssessmentID}")
     @Timed
-    @PreAuthorize("@myAssetGuardian.isCISO(#myAssets.get(0)) || hasRole('ROLE_ADMIN')")
+    @PreAuthorize("@selfAssessmentGuardian.isCISO(#selfAssessmentID) || hasRole('ROLE_ADMIN')")
     @Secured({AuthoritiesConstants.CISO, AuthoritiesConstants.ADMIN})
     public List<MyAsset> getMyAssetsBySelfAssessment(@PathVariable Long selfAssessmentID) {
         log.debug("REST request to get all MyAssets by SelfAssessment ID");
@@ -179,7 +179,7 @@ public class MyAssetResource {
      */
     @GetMapping("/my-assets/{id}")
     @Timed
-    @PreAuthorize("@myAssetGuardian.isCISO(#myAssets.get(0)) || hasRole('ROLE_ADMIN')")
+    @PreAuthorize("@myAssetGuardian.isCISO(#id) || hasRole('ROLE_ADMIN')")
     @Secured({AuthoritiesConstants.CISO, AuthoritiesConstants.ADMIN})
     public ResponseEntity<MyAsset> getMyAsset(@PathVariable Long id) {
         log.debug("REST request to get MyAsset : {}", id);
@@ -195,7 +195,7 @@ public class MyAssetResource {
      */
     @DeleteMapping("/my-assets/{id}")
     @Timed
-    @PreAuthorize("@myAssetGuardian.isCISO(#myAssets.get(0)) || hasRole('ROLE_ADMIN')")
+    @PreAuthorize("@myAssetGuardian.isCISO(#id) || hasRole('ROLE_ADMIN')")
     @Secured({AuthoritiesConstants.CISO, AuthoritiesConstants.ADMIN})
     public ResponseEntity<Void> deleteMyAsset(@PathVariable Long id) {
         log.debug("REST request to delete MyAsset : {}", id);
