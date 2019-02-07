@@ -1,13 +1,14 @@
-import {Component, OnInit, ViewEncapsulation, AfterViewInit, HostListener} from '@angular/core';
-import {Principal} from '../../shared';
-import {DatasharingService} from '../../datasharing/datasharing.service';
-import {Update} from '../model/Update';
+import { Component, OnInit, ViewEncapsulation, AfterViewInit, HostListener } from '@angular/core';
+import { Principal } from '../../shared';
+import { DatasharingService } from '../../datasharing/datasharing.service';
+import { Update } from '../model/Update';
 
-import {MenuItem} from 'primeng/api';
-import {MyRole} from '../../entities/enumerations/MyRole.enum';
-import {SelfAssessmentMgm, SelfAssessmentMgmService} from '../../entities/self-assessment-mgm';
-import {LogoMgm, LogoMgmService} from '../../entities/logo-mgm';
-import {HttpErrorResponse, HttpResponse} from '@angular/common/http';
+import { MenuItem } from 'primeng/api';
+import { MyRole } from '../../entities/enumerations/MyRole.enum';
+import { SelfAssessmentMgm, SelfAssessmentMgmService } from '../../entities/self-assessment-mgm';
+import { LogoMgm, LogoMgmService } from '../../entities/logo-mgm';
+import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'jhi-sidebar',
@@ -31,7 +32,8 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         private principal: Principal,
         private dataSharingService: DatasharingService,
         private selfAssessmentService: SelfAssessmentMgmService,
-        private logoService: LogoMgmService
+        private logoService: LogoMgmService,
+        private router: Router
     ) {
         this.isCollapsed = true;
         this.isSidebarCollapseByTheScreen();
@@ -78,9 +80,23 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                         this.createMenuItems(this.isCISO);
                     } else {
                         this.principal.hasAnyAuthority([MyRole[MyRole.ROLE_EXTERNAL_AUDIT]]).then((response2: boolean) => {
-                            this.isExternal = response2;
-                            this.isCISO = !this.isExternal;
-                            this.createMenuItems(this.isCISO, this.isExternal);
+                            if (response2) {
+                                this.isExternal = response2;
+                                this.isCISO = !this.isExternal;
+                                updateLayout.isSidebarCollapsed = true;
+                                updateLayout.isSidebarCollapsedByMe = false;
+                                this.dataSharingService.updateLayout(updateLayout);
+                                this.createMenuItems(this.isCISO, this.isExternal);
+                            } else {
+                                this.principal.hasAnyAuthority([MyRole[MyRole.ROLE_ADMIN]]).then((response3: boolean) => {
+                                    if (response3) {
+                                        updateLayout.isSidebarCollapsed = true;
+                                        updateLayout.isSidebarCollapsedByMe = false;
+                                        this.dataSharingService.updateLayout(updateLayout);
+                                        this.router.navigate(['/jhi-metrics']);
+                                    }
+                                });
+                            }
                         });
                     }
                 });
@@ -110,8 +126,8 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
     private fetchSecondaryLogo() {
         this.logoService.getSecondaryLogo().subscribe((logo: HttpResponse<LogoMgm>) => {
-                this.secondaryLogo = logo.body;
-            },
+            this.secondaryLogo = logo.body;
+        },
             (error: HttpErrorResponse) => {
                 if (error.status === 404) {
                     console.warn('Secondary logo not found!');
