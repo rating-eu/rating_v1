@@ -235,7 +235,7 @@ public class SelfAssessmentServiceImpl implements SelfAssessmentService {
                         }
 
                         //===Split MyAssets and handle them in different THREADS===
-                        final int MY_ASSETS_PER_SINGLE_THREAD = new Random().nextInt(myAssets.size() / 3) + 2;
+                        final int MY_ASSETS_PER_SINGLE_THREAD = new Random().nextInt(myAssets.size() / 3 + 1) + 2;
                         final int THREADS_PROPOSAL = myAssets.size() / MY_ASSETS_PER_SINGLE_THREAD + 1;
                         final int THREADS_AMOUNT = THREADS_PROPOSAL < myAssets.size() ? THREADS_PROPOSAL : myAssets.size();
 
