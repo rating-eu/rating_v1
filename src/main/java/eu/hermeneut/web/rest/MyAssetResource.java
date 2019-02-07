@@ -6,15 +6,20 @@ import eu.hermeneut.domain.AttackCost;
 import eu.hermeneut.domain.MyAsset;
 import eu.hermeneut.exceptions.IllegalInputException;
 import eu.hermeneut.exceptions.NullInputException;
+import eu.hermeneut.security.AuthoritiesConstants;
 import eu.hermeneut.service.MyAssetService;
 import eu.hermeneut.web.rest.errors.BadRequestAlertException;
 import eu.hermeneut.web.rest.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
+import org.hibernate.validator.constraints.NotEmpty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.constraints.NotNull;
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -51,6 +56,8 @@ public class MyAssetResource {
      */
     @PostMapping("/my-assets")
     @Timed
+    @PreAuthorize("@myAssetGuardian.isCISO(#myAsset) || hasRole('ROLE_ADMIN')")
+    @Secured({AuthoritiesConstants.CISO, AuthoritiesConstants.ADMIN})
     public ResponseEntity<MyAsset> createMyAsset(@RequestBody MyAsset myAsset) throws URISyntaxException {
         log.debug("REST request to save MyAsset : {}", myAsset);
         if (myAsset.getId() != null) {
@@ -64,7 +71,9 @@ public class MyAssetResource {
 
     @PostMapping("/{selfAssessmentID}/my-assets/all")
     @Timed
-    public List<MyAsset> createMyAssets(@PathVariable("selfAssessmentID") Long selfAssessmentID, @RequestBody List<MyAsset> myAssets) throws IllegalInputException, NullInputException {
+    @PreAuthorize("@selfAssessmentGuardian.isCISO(#selfAssessmentID) || hasRole('ROLE_ADMIN')")
+    @Secured({AuthoritiesConstants.CISO, AuthoritiesConstants.ADMIN})
+    public List<MyAsset> createMyAssets(@PathVariable("selfAssessmentID") Long selfAssessmentID, @RequestBody @NotEmpty List<MyAsset> myAssets) throws IllegalInputException, NullInputException {
         log.debug("REST request to save MyAssets : {}", myAssets);
 
         if (selfAssessmentID == null) {
@@ -126,7 +135,9 @@ public class MyAssetResource {
     @PutMapping("/my-assets")
     @Timed
     @KafkaRiskProfileHook
-    public ResponseEntity<MyAsset> updateMyAsset(@RequestBody MyAsset myAsset) throws URISyntaxException {
+    @PreAuthorize("@myAssetGuardian.isCISO(#myAssets.get(0)) || hasRole('ROLE_ADMIN')")
+    @Secured({AuthoritiesConstants.CISO, AuthoritiesConstants.ADMIN})
+    public ResponseEntity<MyAsset> updateMyAsset(@RequestBody @NotNull MyAsset myAsset) throws URISyntaxException {
         log.debug("REST request to update MyAsset : {}", myAsset);
         if (myAsset.getId() == null) {
             return createMyAsset(myAsset);
@@ -145,6 +156,7 @@ public class MyAssetResource {
      */
     @GetMapping("/my-assets")
     @Timed
+    @Secured(AuthoritiesConstants.ADMIN)
     public List<MyAsset> getAllMyAssets() {
         log.debug("REST request to get all MyAssets");
         return myAssetService.findAll();
@@ -152,6 +164,8 @@ public class MyAssetResource {
 
     @GetMapping("/my-assets/self-assessment/{selfAssessmentID}")
     @Timed
+    @PreAuthorize("@myAssetGuardian.isCISO(#myAssets.get(0)) || hasRole('ROLE_ADMIN')")
+    @Secured({AuthoritiesConstants.CISO, AuthoritiesConstants.ADMIN})
     public List<MyAsset> getMyAssetsBySelfAssessment(@PathVariable Long selfAssessmentID) {
         log.debug("REST request to get all MyAssets by SelfAssessment ID");
         return myAssetService.findAllBySelfAssessment(selfAssessmentID);
@@ -165,6 +179,8 @@ public class MyAssetResource {
      */
     @GetMapping("/my-assets/{id}")
     @Timed
+    @PreAuthorize("@myAssetGuardian.isCISO(#myAssets.get(0)) || hasRole('ROLE_ADMIN')")
+    @Secured({AuthoritiesConstants.CISO, AuthoritiesConstants.ADMIN})
     public ResponseEntity<MyAsset> getMyAsset(@PathVariable Long id) {
         log.debug("REST request to get MyAsset : {}", id);
         MyAsset myAsset = myAssetService.findOne(id);
@@ -179,6 +195,8 @@ public class MyAssetResource {
      */
     @DeleteMapping("/my-assets/{id}")
     @Timed
+    @PreAuthorize("@myAssetGuardian.isCISO(#myAssets.get(0)) || hasRole('ROLE_ADMIN')")
+    @Secured({AuthoritiesConstants.CISO, AuthoritiesConstants.ADMIN})
     public ResponseEntity<Void> deleteMyAsset(@PathVariable Long id) {
         log.debug("REST request to delete MyAsset : {}", id);
         myAssetService.delete(id);
@@ -194,6 +212,7 @@ public class MyAssetResource {
      */
     @GetMapping("/_search/my-assets")
     @Timed
+    @Secured(AuthoritiesConstants.ADMIN)
     public List<MyAsset> searchMyAssets(@RequestParam String query) {
         log.debug("REST request to search MyAssets for query {}", query);
         return myAssetService.search(query);
