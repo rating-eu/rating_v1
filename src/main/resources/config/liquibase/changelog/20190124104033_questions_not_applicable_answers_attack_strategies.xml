@@ -4,15 +4,16 @@
                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
 
-    <changeSet author="developer" id="20190124104033-1">
+    <changeSet author="developer" id="20190124104033-1" runOnChange="true">
         <!--Added not applicable answers for Attack-Strategies SelfAssessment-->
-        <loadData catalogName="cat"
-                  encoding="UTF-8"
-                  file="config/liquibase/questions_answers_not_applicable_attack_strategies_join.csv"
-                  schemaName="public"
-                  separator=";"
-                  quotchar="'"
-                  tableName="question_answers">
-        </loadData>
+        <loadUpdateData catalogName="cat"
+                        encoding="UTF-8"
+                        file="config/liquibase/questions_answers_not_applicable_attack_strategies_join.csv"
+                        schemaName="public"
+                        separator=";"
+                        quotchar="'"
+                        tableName="question_answers"
+                        primaryKey="questions_id,answers_id">
+        </loadUpdateData>
     </changeSet>
 </databaseChangeLog>
