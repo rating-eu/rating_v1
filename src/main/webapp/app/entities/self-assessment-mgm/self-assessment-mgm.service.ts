@@ -18,11 +18,9 @@ export type EntityResponseType = HttpResponse<SelfAssessmentMgm>;
 export class SelfAssessmentMgmService implements OnInit {
 
     private static readonly SELF_ASSESSMENT_KEY = 'selfAssessment';
-    private static readonly COMPANY_PROFILE_KEY = '{companyProfileID}';
     private resourceUrl = SERVER_API_URL + 'api/self-assessments';
     private mySelfAssessmentsUrl = SERVER_API_URL + 'api/my-self-assessments';
     private selfAssessmentOverviewUrl = SERVER_API_URL + 'api/{selfID}/overview';
-    private resourceByCompanyUrl = SERVER_API_URL + 'api/self-assessments/by-company/' + SelfAssessmentMgmService.COMPANY_PROFILE_KEY;
     private resourceSearchUrl = SERVER_API_URL + 'api/_search/self-assessments';
     private selfAssessmentSelected: SelfAssessmentMgm;
 
