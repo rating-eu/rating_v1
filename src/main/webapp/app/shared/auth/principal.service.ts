@@ -1,17 +1,21 @@
-import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import { Subject } from 'rxjs/Subject';
-import { AccountService } from './account.service';
+import {Injectable} from '@angular/core';
+import {Observable} from 'rxjs/Observable';
+import {Subject} from 'rxjs/Subject';
+import {AccountService} from './account.service';
+import {AuthServerProvider} from './auth-jwt.service';
 
 @Injectable()
 export class Principal {
+    private jwt: any;
     private userIdentity: any;
     private authenticated = false;
     private authenticationState = new Subject<any>();
 
     constructor(
-        private account: AccountService
-    ) {}
+        private account: AccountService,
+        private authServerProvider: AuthServerProvider
+    ) {
+    }
 
     authenticate(identity) {
         this.userIdentity = identity;
@@ -39,7 +43,7 @@ export class Principal {
 
     hasAuthority(authority: string): Promise<boolean> {
         if (!this.authenticated) {
-           return Promise.resolve(false);
+            return Promise.resolve(false);
         }
 
         return this.identity().then((id) => {
@@ -81,6 +85,12 @@ export class Principal {
     }
 
     isAuthenticated(): boolean {
+        this.jwt = this.authServerProvider.getToken();
+
+        if (this.jwt) {
+            this.authenticated = true;
+        }
+
         return this.authenticated;
     }
 
