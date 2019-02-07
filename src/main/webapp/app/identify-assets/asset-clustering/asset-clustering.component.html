@@ -23,46 +23,98 @@
                     </tr>
                 </thead>
                 <tbody>
+                    <tr align="center"><th colspan="3">Tangible assets</th></tr>
                     <ng-container *ngFor="let item of categoryToAssets.values(); let i=index">
-                        <tr>
-                            <th scope="row"><a href="javascript:void(0)" ngbTooltip="{{categories[i].description}}" placement="right" (click)="selectCategory(categories[i])">{{categories[i].name}}</a></th>
-                            <td placement="top" container="body" ngbTooltip="Click on Category name for more details">{{howManyAssetInSelection(categories[i].id)}} / {{item.length}}</td>
-                            <td *ngIf="!isSelect(undefined, categories[i].id) && howManyAssetInSelection(categories[i].id)===0"><a
-                                    href="javascript:void(0)" (click)="select(undefined, categories[i].id)"><i class="fa fa-square-o fa-lg"
-                                        aria-hidden="true"></i></a></td>
-                            <td *ngIf="!isSelect(undefined, categories[i].id) && howManyAssetInSelection(categories[i].id)!==0"><a
-                                    href="javascript:void(0)" (click)="select(undefined, categories[i].id)"><i class="fa fa-minus-square-o fa-lg"
-                                        aria-hidden="true"></i></a></td>
-                            <td *ngIf="isSelect(undefined, categories[i].id) && howManyAssetInSelection(categories[i].id)===item.length"><a
-                                    href="javascript:void(0)" (click)="select(undefined, categories[i].id)"><i class="fa fa-check-square-o fa-lg"
-                                        aria-hidden="true"></i></a></td>
-                        </tr>
-                        <ng-container *ngIf="selectedCategory">
-                            <tr *ngIf="selectedCategory.id === categories[i].id">
-                                <td colspan="3">
-                                    <table class="table table-striped table-hover">
-                                        <thead>
-                                            <tr>
-                                                <th>Asset</th>
-                                                <th>Description</th>
-                                                <th>Selection</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr *ngFor="let asset of item">
-                                                <td>{{asset.name}}</td>
-                                                <td>{{asset.description}}</td>
-                                                <td *ngIf="!isSelect(asset.id, undefined)"><a href="javascript:void(0)"
-                                                        (click)="select(asset.id, undefined)"><i class="fa fa-square-o fa-lg"
-                                                            aria-hidden="true"></i></a></td>
-                                                <td *ngIf="isSelect(asset.id, undefined)"><a href="javascript:void(0)"
-                                                        (click)="select(asset.id, undefined)"><i class="fa fa-check-square-o fa-lg"
-                                                            aria-hidden="true"></i></a></td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </td>
+                        <ng-container *ngIf="categories[i].type === 'TANGIBLE'">
+                            <tr>
+                                <th scope="row"><a href="javascript:void(0)" ngbTooltip="{{categories[i].description}}"
+                                        placement="right" (click)="selectCategory(categories[i])">{{categories[i].name}}</a></th>
+                                <td placement="top" container="body" ngbTooltip="Click on Category name for more details">{{howManyAssetInSelection(categories[i].id)}}
+                                    / {{item.length}}</td>
+                                <td *ngIf="!isSelect(undefined, categories[i].id) && howManyAssetInSelection(categories[i].id)===0"><a
+                                        href="javascript:void(0)" (click)="select(undefined, categories[i].id)"><i
+                                            class="fa fa-square-o fa-lg" aria-hidden="true"></i></a></td>
+                                <td *ngIf="!isSelect(undefined, categories[i].id) && howManyAssetInSelection(categories[i].id)!==0"><a
+                                        href="javascript:void(0)" (click)="select(undefined, categories[i].id)"><i
+                                            class="fa fa-minus-square-o fa-lg" aria-hidden="true"></i></a></td>
+                                <td *ngIf="isSelect(undefined, categories[i].id) && howManyAssetInSelection(categories[i].id)===item.length"><a
+                                        href="javascript:void(0)" (click)="select(undefined, categories[i].id)"><i
+                                            class="fa fa-check-square-o fa-lg" aria-hidden="true"></i></a></td>
                             </tr>
+                            <ng-container *ngIf="selectedCategory">
+                                <tr *ngIf="selectedCategory.id === categories[i].id">
+                                    <td colspan="3">
+                                        <table class="table table-striped table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th>Asset</th>
+                                                    <th>Description</th>
+                                                    <th>Selection</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr *ngFor="let asset of item">
+                                                    <td>{{asset.name}}</td>
+                                                    <td>{{asset.description}}</td>
+                                                    <td *ngIf="!isSelect(asset.id, undefined)"><a href="javascript:void(0)"
+                                                            (click)="select(asset.id, undefined)"><i class="fa fa-square-o fa-lg"
+                                                                aria-hidden="true"></i></a></td>
+                                                    <td *ngIf="isSelect(asset.id, undefined)"><a href="javascript:void(0)"
+                                                            (click)="select(asset.id, undefined)"><i class="fa fa-check-square-o fa-lg"
+                                                                aria-hidden="true"></i></a></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </ng-container>
+                        </ng-container>
+                    </ng-container>
+                    <tr align="center"><th colspan="3">Intangible assets</th></tr>
+                    <ng-container *ngFor="let item of categoryToAssets.values(); let i=index">
+                        <ng-container *ngIf="categories[i].type === 'INTANGIBLE'">
+                            <tr>
+                                <th scope="row"><a href="javascript:void(0)" ngbTooltip="{{categories[i].description}}"
+                                        placement="right" (click)="selectCategory(categories[i])">{{categories[i].name}}</a></th>
+                                <td placement="top" container="body" ngbTooltip="Click on Category name for more details">{{howManyAssetInSelection(categories[i].id)}}
+                                    / {{item.length}}</td>
+                                <td *ngIf="!isSelect(undefined, categories[i].id) && howManyAssetInSelection(categories[i].id)===0"><a
+                                        href="javascript:void(0)" (click)="select(undefined, categories[i].id)"><i
+                                            class="fa fa-square-o fa-lg" aria-hidden="true"></i></a></td>
+                                <td *ngIf="!isSelect(undefined, categories[i].id) && howManyAssetInSelection(categories[i].id)!==0"><a
+                                        href="javascript:void(0)" (click)="select(undefined, categories[i].id)"><i
+                                            class="fa fa-minus-square-o fa-lg" aria-hidden="true"></i></a></td>
+                                <td *ngIf="isSelect(undefined, categories[i].id) && howManyAssetInSelection(categories[i].id)===item.length"><a
+                                        href="javascript:void(0)" (click)="select(undefined, categories[i].id)"><i
+                                            class="fa fa-check-square-o fa-lg" aria-hidden="true"></i></a></td>
+                            </tr>
+                            <ng-container *ngIf="selectedCategory">
+                                <tr *ngIf="selectedCategory.id === categories[i].id">
+                                    <td colspan="3">
+                                        <table class="table table-striped table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th>Asset</th>
+                                                    <th>Description</th>
+                                                    <th>Selection</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr *ngFor="let asset of item">
+                                                    <td>{{asset.name}}</td>
+                                                    <td>{{asset.description}}</td>
+                                                    <td *ngIf="!isSelect(asset.id, undefined)"><a href="javascript:void(0)"
+                                                            (click)="select(asset.id, undefined)"><i class="fa fa-square-o fa-lg"
+                                                                aria-hidden="true"></i></a></td>
+                                                    <td *ngIf="isSelect(asset.id, undefined)"><a href="javascript:void(0)"
+                                                            (click)="select(asset.id, undefined)"><i class="fa fa-check-square-o fa-lg"
+                                                                aria-hidden="true"></i></a></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </ng-container>
                         </ng-container>
                     </ng-container>
                 </tbody>
@@ -78,7 +130,7 @@
                     <ng-container *ngIf="myAssets">
                         <button class="btn btn-lg btn-block" [ngClass]="{'btn-primary': myAssets.length>0, 'btn-secondary': myAssets.length === 0}"
                             (click)="saveMyAsset()">
-                            Next 
+                            Next
                             <i *ngIf="!loading" class="fa fa-arrow-right fa-lg" aria-hidden="true"></i>
                             <i *ngIf="loading" class="fa fa-circle-o-notch fa-spin fa-lg fa-fw"></i>
                         </button>

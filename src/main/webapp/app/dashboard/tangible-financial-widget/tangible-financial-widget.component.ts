@@ -85,10 +85,6 @@ export class TangibleFinancialWidgetComponent implements OnInit {
       this.status.impactEvaluationStatus = Status[res];
       this.dashService.updateStepStatus(DashboardStepEnum.IMPACT_EVALUATION, this.status.impactEvaluationStatus);
     });
-    this.dashService.getStatusFromServer(this.mySelf, this.dashboardStatus.ATTACK_RELATED_COSTS).toPromise().then((res) => {
-      this.status.attackRelatedCostEstimationStatus = Status[res];
-      this.dashService.updateStepStatus(DashboardStepEnum.ATTACK_RELATED_COSTS, this.status.attackRelatedCostEstimationStatus);
-    });
   }
 
   public setAssetCategory(category: string) {
