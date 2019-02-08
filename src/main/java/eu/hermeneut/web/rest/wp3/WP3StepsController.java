@@ -9,12 +9,15 @@ import eu.hermeneut.domain.wp3.WP3OutputBundle;
 import eu.hermeneut.exceptions.IllegalInputException;
 import eu.hermeneut.exceptions.NotFoundException;
 import eu.hermeneut.exceptions.NullInputException;
+import eu.hermeneut.security.AuthoritiesConstants;
 import eu.hermeneut.service.*;
 import eu.hermeneut.utils.comparator.EBITComparator;
 import eu.hermeneut.utils.wp3.Calculator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
@@ -54,6 +57,8 @@ public class WP3StepsController {
 
     @PostMapping("{selfAssessmentID}/wp3/step-one")
     @Timed
+    @PreAuthorize("@selfAssessmentGuardian.isCISO(#selfAssessmentID)")
+    @Secured(AuthoritiesConstants.CISO)
     public WP3OutputBundle stepOneEconomicPerformance(@PathVariable("selfAssessmentID") Long selfAssessmentID, @RequestBody WP3InputBundle wp3InputBundle) throws NullInputException, NotFoundException, IllegalInputException {
         SelfAssessment selfAssessment = null;
 
@@ -185,6 +190,9 @@ public class WP3StepsController {
     }
 
     @PostMapping("{selfAssessmentID}/wp3/step-two")
+    @Timed
+    @PreAuthorize("@selfAssessmentGuardian.isCISO(#selfAssessmentID)")
+    @Secured(AuthoritiesConstants.CISO)
     public WP3OutputBundle stepTwoIntangibleDrivingEarningsAndCapital(@PathVariable("selfAssessmentID") Long selfAssessmentID, @RequestBody WP3InputBundle wp3InputBundle) throws NullInputException, NotFoundException, IllegalInputException {
         LOGGER.info("Step 2 entering: " + System.currentTimeMillis());
 
@@ -284,6 +292,9 @@ public class WP3StepsController {
     }
 
     @PostMapping("{selfAssessmentID}/wp3/step-three")
+    @Timed
+    @PreAuthorize("@selfAssessmentGuardian.isCISO(#selfAssessmentID)")
+    @Secured(AuthoritiesConstants.CISO)
     public WP3OutputBundle stepThreeIntangibleLossByAttacks(@PathVariable("selfAssessmentID") Long selfAssessmentID, @RequestBody WP3InputBundle wp3InputBundle) throws NullInputException, NotFoundException, IllegalInputException {
         SelfAssessment selfAssessment = null;
 
@@ -356,6 +367,9 @@ public class WP3StepsController {
     }
 
     @PostMapping("{selfAssessmentID}/wp3/step-four")
+    @Timed
+    @PreAuthorize("@selfAssessmentGuardian.isCISO(#selfAssessmentID)")
+    @Secured(AuthoritiesConstants.CISO)
     public WP3OutputBundle stepFourSplittingLosses(@PathVariable("selfAssessmentID") Long selfAssessmentID, @RequestBody WP3InputBundle wp3InputBundle) throws NullInputException, NotFoundException, IllegalInputException {
         LOGGER.info("Step 4 entering: " + System.currentTimeMillis());
         SelfAssessment selfAssessment = null;
@@ -457,6 +471,9 @@ public class WP3StepsController {
     }
 
     @PostMapping("{selfAssessmentID}/wp3/step-five")
+    @Timed
+    @PreAuthorize("@selfAssessmentGuardian.isCISO(#selfAssessmentID)")
+    @Secured(AuthoritiesConstants.CISO)
     public WP3OutputBundle stepFiveSplittingValues(@PathVariable("selfAssessmentID") Long selfAssessmentID, @RequestBody WP3InputBundle wp3InputBundle) throws NullInputException, NotFoundException, IllegalInputException {
         LOGGER.info("Step 5 entering: " + System.currentTimeMillis());
         SelfAssessment selfAssessment = null;
@@ -549,6 +566,9 @@ public class WP3StepsController {
     }
 
     @GetMapping("{selfAssessmentID}/wp3/economic-losses")
+    @Timed
+    @PreAuthorize("@selfAssessmentGuardian.isCISO(#selfAssessmentID)")
+    @Secured(AuthoritiesConstants.CISO)
     public Set<MyAsset> evaluateEconomicLosses(@PathVariable("selfAssessmentID") Long selfAssessmentID) throws NullInputException, NotFoundException {
         LOGGER.info("Step 5 entering: " + System.currentTimeMillis());
         SelfAssessment selfAssessment = null;
