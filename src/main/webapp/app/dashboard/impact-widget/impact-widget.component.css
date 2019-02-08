@@ -1,21 +1,51 @@
 @import "../dashboard.module.css";
 
 .impact-five{
-    background-color: red;
+    background-color: #e74c3c;
+    color: black;
+}
+
+.impact-five:hover *{
+    background-color: #ff8f83;
+    color: black;
 }
 
 .impact-four{
-    background-color: orange;
+    background-color: #e67e22;
+    color: black;
+}
+
+.impact-four:hover *{
+    background-color: #e9974f;
+    color: black;
 }
 
 .impact-three{
-    background-color: yellow;
+    background-color: #f1c40f;
+    color: black;
+}
+
+.impact-three:hover *{
+    background-color: #eccb47;
+    color: black;
 }
 
 .impact-two{
-    background-color: greenyellow;
+    background-color: #1abc9c;
+    color: black;
+}
+
+.impact-two:hover *{
+    background-color: #4ec0a9;
+    color: black;
 }
 
 .impact-one{
-    background-color: green;
+    background-color: #2ecc71;
+    color: black;
+}
+
+.impact-one:hover *{
+    background-color: #5cca8a;
+    color: black;
 }

@@ -19,7 +19,7 @@
       </div>
       <div class="table-responsive x_content" style="padding:0px !important;" [ngbCollapse]="isCollapsed">
           <div *ngIf="widgetElements.length > 0" class="table-responsive table-hover-no-pointer">
-              <table class="table table-striped">
+              <table class="table">
                   <thead>
                       <tr>
                           <th>Impact value</th>
@@ -30,32 +30,34 @@
                   <tbody>
                       <ng-container *ngFor="let item of widgetElements">
                           <tr [ngClass]="{
-                            'impact-five': item.impact === 5,
-                            'impact-four': item.impact === 4,
-                            'impact-three': item.impact === 3,
-                            'impact-two': item.impact === 2,
-                            'impact-one': item.impact === 1
-                           }">
-                              <td><a href="javascript:void(0)" (click)="setImpact(item.impact)">{{item.impact}}</a></td>
+                              'impact-five': item.impact === 5,
+                              'impact-four': item.impact === 4,
+                              'impact-three': item.impact === 3,
+                              'impact-two': item.impact === 2,
+                              'impact-one': item.impact === 1
+                            }"
+                            style="cursor: pointer"
+                            (click)="setImpact(item.impact)">
+                              <td>{{item.impact}}</td>
                               <td *ngIf="item.economicValueMin">{{item.economicValueMin | currency:'EUR'}}</td>
                               <td *ngIf="!item.economicValueMin">-</td>
                               <td *ngIf="item.economicValueMax">{{item.economicValueMax | currency:'EUR'}}</td>
                               <td *ngIf="!item.economicValueMax">-</td>
                           </tr>
                           <ng-container *ngIf="selectedImpact">
-                              <tr *ngIf="selectedImpact === item.impact">
+                              <tr *ngIf="selectedImpact === item.impact" class="tr-not-bright">
                                   <td colspan="3">
                                       <table class="table table-striped">
                                           <thead>
                                               <tr>
                                                   <th>Asset</th>
-                                                  <th>Economic value</th>
+                                                  <th>Economic impact</th>
                                               </tr>
                                           </thead>
                                           <tbody>
                                               <tr *ngFor="let asset of item.assets">
                                                   <td>{{asset.asset.name}}</td>
-                                                  <td>{{asset.economicValue | currency:'EUR'}}</td>
+                                                  <td>{{asset.economicImpact | currency:'EUR'}}</td>
                                               </tr>
                                           </tbody>
                                       </table>

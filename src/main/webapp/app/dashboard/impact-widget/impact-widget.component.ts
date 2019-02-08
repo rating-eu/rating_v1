@@ -65,6 +65,7 @@ export class ImpactWidgetComponent implements OnInit {
               this.widgetElements[index].economicValueMax = this.widgetElements[index].economicValueMax > value.economicImpact ?
                 this.widgetElements[index].economicValueMax : value.economicImpact;
               this.widgetElements[index].assets.push(_.cloneDeep(value));
+              this.widgetElements[index].assets = _.orderBy(this.widgetElements[index].assets, ['economicImpact'], ['desc']);
             } else {
               const element = {
                 impact: value.impact,
