@@ -100,7 +100,7 @@ export class MostDangerousAssetsWidgetComponent implements OnInit {
       mdaw.mostDangerousAttackValue.likelihood = mostDangerousAttack.contextualLikelihood;
       mdaw.mostDangerousAttackValue.vulnerability = mostDangerousAttack.contextualVulnerability;
     } else {
-      mdaw.mostDangerousAttackValue.likelihood = mostDangerousAttack.likelihood;
+      mdaw.mostDangerousAttackValue.likelihood = mostDangerousAttack.initialLikelihood;
       mdaw.mostDangerousAttackValue.vulnerability = undefined;
     }
     return mdaw;

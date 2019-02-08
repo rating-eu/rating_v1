@@ -62,9 +62,15 @@ export class SelfAssessmentMgmService implements OnInit {
             return null;
         } else {
             this.selfAssessmentSelected = self;
-            const update: Update = this.dataSharingService.getUpdate();
+            let update: Update = this.dataSharingService.getUpdate();
+
+            if (!update) {
+                update = new Update();
+            }
+
             update.selfAssessmentId = this.selfAssessmentSelected.id.toString();
             update.navSubTitle = self.name;
+
             this.dataSharingService.updateLayout(update);
             return this.selfAssessmentSelected;
         }
