@@ -1,3 +1,74 @@
-<p>
-  impact-widget Work in progress!
-</p>
+<div class="container" *ngIf="loading">
+  <div class="loader"></div>
+</div>
+<div class="container" *ngIf="!loading">
+  <div class="x_panel" style="padding:0px !important;">
+      <div class="x_title" style="padding:0px !important;">
+          <h2 style="padding: 10px;"><a [routerLink]="['/impact-evaluation/attack-related-costs-estimation']">Impact on Assets</a></h2>
+          <ul class="nav navbar-right panel_toolbox">
+              <li style="width: 24px; cursor: default"></li>
+              <li style="width: 24px; cursor: default"></li>
+              <li>
+                  <a href="javascript:void(0)" class="collapse-link" (click)="isCollapsed = !isCollapsed">
+                      <i *ngIf="!isCollapsed" class="fa fa-chevron-up"></i>
+                      <i *ngIf="isCollapsed" class="fa fa-chevron-down"></i>
+                  </a>
+              </li>
+          </ul>
+          <div class="clearfix"></div>
+      </div>
+      <div class="table-responsive x_content" style="padding:0px !important;" [ngbCollapse]="isCollapsed">
+          <div *ngIf="widgetElements.length > 0" class="table-responsive table-hover-no-pointer">
+              <table class="table table-striped">
+                  <thead>
+                      <tr>
+                          <th>Impact value</th>
+                          <th>Economic impact from</th>
+                          <th>Economic impact to</th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                      <ng-container *ngFor="let item of widgetElements">
+                          <tr [ngClass]="{
+                            'impact-five': item.impact === 5,
+                            'impact-four': item.impact === 4,
+                            'impact-three': item.impact === 3,
+                            'impact-two': item.impact === 2,
+                            'impact-one': item.impact === 1
+                           }">
+                              <td><a href="javascript:void(0)" (click)="setImpact(item.impact)">{{item.impact}}</a></td>
+                              <td *ngIf="item.economicValueMin">{{item.economicValueMin | currency:'EUR'}}</td>
+                              <td *ngIf="!item.economicValueMin">-</td>
+                              <td *ngIf="item.economicValueMax">{{item.economicValueMax | currency:'EUR'}}</td>
+                              <td *ngIf="!item.economicValueMax">-</td>
+                          </tr>
+                          <ng-container *ngIf="selectedImpact">
+                              <tr *ngIf="selectedImpact === item.impact">
+                                  <td colspan="3">
+                                      <table class="table table-striped">
+                                          <thead>
+                                              <tr>
+                                                  <th>Asset</th>
+                                                  <th>Economic value</th>
+                                              </tr>
+                                          </thead>
+                                          <tbody>
+                                              <tr *ngFor="let asset of item.assets">
+                                                  <td>{{asset.asset.name}}</td>
+                                                  <td>{{asset.economicValue | currency:'EUR'}}</td>
+                                              </tr>
+                                          </tbody>
+                                      </table>
+                                  </td>
+                              </tr>
+                          </ng-container>
+                      </ng-container>
+                  </tbody>
+              </table>
+          </div>
+          <div *ngIf="widgetElements.length === 0" class="text-center">
+              No attack related costs estimated
+          </div>
+      </div>
+  </div>
+</div>

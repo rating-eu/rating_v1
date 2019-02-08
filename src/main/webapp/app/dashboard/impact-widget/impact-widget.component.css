@@ -1,1 +1,21 @@
 @import "../dashboard.module.css";
+
+.impact-five{
+    background-color: red;
+}
+
+.impact-four{
+    background-color: orange;
+}
+
+.impact-three{
+    background-color: yellow;
+}
+
+.impact-two{
+    background-color: greenyellow;
+}
+
+.impact-one{
+    background-color: green;
+}
