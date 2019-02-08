@@ -31,12 +31,6 @@ public class ImpactServiceImpl implements ImpactService {
     private DirectAssetService directAssetService;
 
     @Autowired
-    private IndirectAssetService indirectAssetService;
-
-    @Autowired
-    private AttackCostService attackCostService;
-
-    @Autowired
     private ImpactLevelService impactLevelService;
 
     private Logger logger = LoggerFactory.getLogger(ImpactServiceImpl.class);
