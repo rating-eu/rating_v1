@@ -1,6 +1,7 @@
 package eu.hermeneut.service.impl.attack.cost;
 
 import eu.hermeneut.aop.annotation.CostQualifier;
+import eu.hermeneut.config.ApplicationProperties;
 import eu.hermeneut.domain.AttackCost;
 import eu.hermeneut.domain.AttackCostParam;
 import eu.hermeneut.domain.enumeration.AttackCostParamType;
@@ -27,6 +28,9 @@ public class CostOfItDowntimeImpl implements AttackCostCalculator, AttackCostFor
 
     @Autowired
     private AttackCostParamService attackCostParamService;
+
+    @Autowired
+    private ApplicationProperties properties;
 
     @Override
     public AttackCost calculate(@NotNull List<AttackCostParam> params) throws IllegalInputException {
@@ -111,7 +115,7 @@ public class CostOfItDowntimeImpl implements AttackCostCalculator, AttackCostFor
         formula.append(AttackCostParamType.EMPLOYEE_COST_PER_HOUR.name());
         formula.append("(");
         formula.append(employeeCostPerHour);
-        formula.append(")");
+        formula.append(this.properties.getCurrency() + ")");
 
         formula.append(" X ");
 
@@ -125,7 +129,7 @@ public class CostOfItDowntimeImpl implements AttackCostCalculator, AttackCostFor
         formula.append(AttackCostParamType.AVERAGE_REVENUE_PER_HOUR.name());
         formula.append("(");
         formula.append(averageRevenuePerHour);
-        formula.append(")");
+        formula.append(this.properties.getCurrency() + ")");
 
         formula.append(" X ");
 
@@ -139,10 +143,11 @@ public class CostOfItDowntimeImpl implements AttackCostCalculator, AttackCostFor
         formula.append(AttackCostParamType.RECOVERY_COST.name());
         formula.append("(");
         formula.append(recoveryCost);
-        formula.append(")");
+        formula.append(this.properties.getCurrency() + ")");
 
         formula.append(" = ");
         formula.append(attackCostFormula.getAttackCost().getCosts());
+        formula.append(this.properties.getCurrency());
 
         attackCostFormula.setFormula(formula.toString());
 

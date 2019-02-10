@@ -1,6 +1,7 @@
 package eu.hermeneut.service.impl.attack.cost;
 
 import eu.hermeneut.aop.annotation.CostQualifier;
+import eu.hermeneut.config.ApplicationProperties;
 import eu.hermeneut.domain.AttackCost;
 import eu.hermeneut.domain.AttackCostParam;
 import eu.hermeneut.domain.enumeration.AttackCostParamType;
@@ -27,6 +28,9 @@ public class CustomerBreachNotificationCostsImpl implements AttackCostCalculator
 
     @Autowired
     private AttackCostParamService attackCostParamService;
+
+    @Autowired
+    private ApplicationProperties properties;
 
     @Override
     public AttackCost calculate(@NotNull List<AttackCostParam> params) throws IllegalInputException {
@@ -95,10 +99,11 @@ public class CustomerBreachNotificationCostsImpl implements AttackCostCalculator
         formula.append(AttackCostParamType.NOTIFICATION_COST_PER_CUSTOMER.name());
         formula.append("(");
         formula.append(notificationCost);
-        formula.append(")");
+        formula.append(this.properties.getCurrency() + ")");
 
         formula.append(" = ");
         formula.append(attackCostFormula.getAttackCost().getCosts());
+        formula.append(this.properties.getCurrency());
 
         attackCostFormula.setFormula(formula.toString());
 
