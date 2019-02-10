@@ -1,5 +1,6 @@
 package eu.hermeneut.service.impl.impact;
 
+import eu.hermeneut.config.ApplicationProperties;
 import eu.hermeneut.domain.*;
 import eu.hermeneut.domain.enumeration.CostType;
 import eu.hermeneut.exceptions.NotFoundException;
@@ -20,6 +21,7 @@ import java.util.*;
 public class ImpactServiceImpl implements ImpactService {
 
     public static final int HIGHEST_IMPACT = 5;
+
     @Autowired
     private SelfAssessmentService selfAssessmentService;
 
@@ -33,6 +35,9 @@ public class ImpactServiceImpl implements ImpactService {
     private ImpactLevelService impactLevelService;
 
     private Logger logger = LoggerFactory.getLogger(ImpactServiceImpl.class);
+
+    @Autowired
+    private ApplicationProperties properties;
 
     @Override
     public List<MyAsset> calculateEconomicImpacts(@NotNull Long selfAssessmentID) throws NotFoundException {
@@ -83,42 +88,7 @@ public class ImpactServiceImpl implements ImpactService {
                 }
 
                 //Map to avoid duplicated CostTypes
-                Map<CostType, AttackCost> uniqueCostTypes = new HashMap<>();
-
-                Set<AttackCost> directCosts = myAsset.getCosts();
-                logger.debug("DirectCosts size: " + directCosts.size());
-
-                if (directCosts != null && !directCosts.isEmpty()) {
-                    for (AttackCost directCost : directCosts) {
-                        uniqueCostTypes.put(directCost.getType(), directCost);
-                    }
-                }
-
-                DirectAsset directAsset = this.directAssetService.findOneByMyAssetID(selfAssessmentID, myAssetID);
-                logger.debug("DIRECT ASSET: " + directAsset);
-
-                if (directAsset != null) {//If it is a DIRECT asset, sum also the costs of the indirects
-                    Set<IndirectAsset> indirectAssets = directAsset.getEffects();
-                    logger.debug("INDIRECT ASSETS: " + indirectAssets.size());
-
-                    if (indirectAssets != null && !indirectAssets.isEmpty()) {
-                        for (IndirectAsset indirect : indirectAssets) {
-                            Set<AttackCost> indirectCosts = indirect.getMyAsset().getCosts();
-                            logger.debug("INDIRECT COSTS size: " + indirectCosts.size());
-
-                            if (indirectCosts != null && !indirectCosts.isEmpty()) {
-                                for (AttackCost indirectCost : indirectCosts) {
-                                    uniqueCostTypes.put(indirectCost.getType(), indirectCost);
-                                }
-                            }
-                        }
-                    }
-                } else {
-                    /*
-                    DO NOTHING
-                    If it is an INDIRECT ASSET we have already summed the loss value and te attack costs.
-                     */
-                }
+                Map<CostType, AttackCost> uniqueCostTypes = toUniqueCostTypes(selfAssessment, myAsset);
 
                 for (AttackCost uniqueCost : uniqueCostTypes.values()) {
                     economicImpact = economicImpact.add(uniqueCost.getCosts());
@@ -161,26 +131,80 @@ public class ImpactServiceImpl implements ImpactService {
         }
     }
 
-    /**
-     * Sum the value of the AttackCosts to the EconomicImpact total.
-     *
-     * @param attackCosts
-     */
-    private BigDecimal sumAttackCosts(Set<AttackCost> attackCosts) {
-        BigDecimal result = BigDecimal.ZERO;
+    @Override
+    public String formulateImpact(Long selfAssessmentID, Long myAssetID) throws NotFoundException {
+        SelfAssessment selfAssessment = this.selfAssessmentService.findOne(selfAssessmentID);
 
-        if (attackCosts != null && !attackCosts.isEmpty()) {
-            for (AttackCost attackCost : attackCosts) {
-                BigDecimal costValue = attackCost.getCosts();
-                logger.debug("COST VALUE: " + costValue);
+        if (selfAssessment == null) {
+            throw new NotFoundException("SelfAssessment NOT FOUND!");
+        }
 
-                if (costValue != null) {
-                    result = result.add(costValue);
-                    logger.debug("RESULT: " + result);
+        MyAsset myAsset = this.myAssetService.findOne(myAssetID);
+
+        if (myAsset == null) {
+            throw new NotFoundException("MyAsset NOT FOUND!");
+        }
+
+        myAsset = this.calculateEconomicImpact(selfAssessmentID, myAssetID);
+
+        //Map to avoid duplicated CostTypes
+        Map<CostType, AttackCost> uniqueCostTypes = toUniqueCostTypes(selfAssessment, myAsset);
+
+        StringBuilder formula = new StringBuilder();
+
+        BigDecimal lossValue = myAsset.getLossValue() != null ? myAsset.getLossValue() : BigDecimal.ZERO;
+
+        formula.append("LOSS_VALUE(");
+        formula.append(lossValue);
+        formula.append(this.properties.getCurrency() + ")");
+
+        for (AttackCost attackCost : uniqueCostTypes.values()) {
+            formula.append(" + ");
+            formula.append(attackCost.getType().name());
+            formula.append("(");
+            formula.append(attackCost.getCosts());
+            formula.append(this.properties.getCurrency() + ")");
+        }
+
+        formula.append(" = ");
+        formula.append(myAsset.getEconomicImpact());
+        formula.append(this.properties.getCurrency());
+
+        return formula.toString();
+    }
+
+    private Map<CostType, AttackCost> toUniqueCostTypes(SelfAssessment selfAssessment, MyAsset myAsset) {
+        //Map to avoid duplicated CostTypes
+        Map<CostType, AttackCost> uniqueCostTypes = new HashMap<>();
+
+        Set<AttackCost> directCosts = myAsset.getCosts();
+
+        if (directCosts != null && !directCosts.isEmpty()) {
+            //Add direct costs
+            for (AttackCost directCost : directCosts) {
+                uniqueCostTypes.put(directCost.getType(), directCost);
+            }
+        }
+
+        DirectAsset directAsset = this.directAssetService.findOneByMyAssetID(selfAssessment.getId(), myAsset.getId());
+
+        if (directAsset != null) {//If it is a DIRECT asset, sum also the costs of the indirects
+            Set<IndirectAsset> indirectAssets = directAsset.getEffects();
+
+            if (indirectAssets != null && !indirectAssets.isEmpty()) {
+                for (IndirectAsset indirect : indirectAssets) {
+                    Set<AttackCost> indirectCosts = indirect.getMyAsset().getCosts();
+
+                    if (indirectCosts != null && !indirectCosts.isEmpty()) {
+                        //Add indirect costs
+                        for (AttackCost indirectCost : indirectCosts) {
+                            uniqueCostTypes.put(indirectCost.getType(), indirectCost);
+                        }
+                    }
                 }
             }
         }
 
-        return result;
+        return uniqueCostTypes;
     }
 }

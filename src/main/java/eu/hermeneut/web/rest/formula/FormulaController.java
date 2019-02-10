@@ -12,6 +12,7 @@ import eu.hermeneut.service.DirectAssetService;
 import eu.hermeneut.service.MyAssetService;
 import eu.hermeneut.service.SelfAssessmentService;
 import eu.hermeneut.service.formula.AttackCostFormulatorSwitch;
+import eu.hermeneut.service.formula.ImpactFormulator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -37,6 +38,9 @@ public class FormulaController {
 
     @Autowired
     private AttackCostFormulatorSwitch attackCostFormulatorSwitch;
+
+    @Autowired
+    private ImpactFormulator impactFormulator;
 
     @GetMapping("/{selfAssessmentID}/formula/attack-costs/{myAssetID}")
     @Timed
@@ -91,15 +95,13 @@ public class FormulaController {
         MyAsset myAsset = this.myAssetService.findOne(myAssetID);
         this.checkIfNotFound(selfAssessment, myAsset);
 
-
-        return null;
+        return this.impactFormulator.formulateImpact(selfAssessmentID, myAssetID);
     }
 
     private void checkIfNotFound(SelfAssessment selfAssessment, MyAsset myAsset) throws NotFoundException {
         if (selfAssessment == null) {
             throw new NotFoundException("SelfAssessment not found!!!");
         }
-
 
         if (myAsset == null) {
             throw new NotFoundException("MyAsset not found!!!");
