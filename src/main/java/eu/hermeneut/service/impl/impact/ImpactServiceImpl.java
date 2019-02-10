@@ -1,6 +1,7 @@
 package eu.hermeneut.service.impl.impact;
 
 import eu.hermeneut.domain.*;
+import eu.hermeneut.domain.enumeration.CostType;
 import eu.hermeneut.exceptions.NotFoundException;
 import eu.hermeneut.service.*;
 import eu.hermeneut.service.impact.ImpactService;
@@ -12,9 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Service
 @Transactional
@@ -83,11 +82,17 @@ public class ImpactServiceImpl implements ImpactService {
                     logger.debug("EconomicImpact: " + economicImpact);
                 }
 
+                //Map to avoid duplicated CostTypes
+                Map<CostType, AttackCost> uniqueCostTypes = new HashMap<>();
+
                 Set<AttackCost> directCosts = myAsset.getCosts();
                 logger.debug("DirectCosts size: " + directCosts.size());
 
-                economicImpact = economicImpact.add(this.sumAttackCosts(directCosts));
-                logger.debug("DIRECT EconomicImpact: " + economicImpact);
+                if (directCosts != null && !directCosts.isEmpty()) {
+                    for (AttackCost directCost : directCosts) {
+                        uniqueCostTypes.put(directCost.getType(), directCost);
+                    }
+                }
 
                 DirectAsset directAsset = this.directAssetService.findOneByMyAssetID(selfAssessmentID, myAssetID);
                 logger.debug("DIRECT ASSET: " + directAsset);
@@ -101,8 +106,11 @@ public class ImpactServiceImpl implements ImpactService {
                             Set<AttackCost> indirectCosts = indirect.getMyAsset().getCosts();
                             logger.debug("INDIRECT COSTS size: " + indirectCosts.size());
 
-                            economicImpact = economicImpact.add(this.sumAttackCosts(indirectCosts));
-                            logger.debug("FOR EconomicImpact: " + economicImpact);
+                            if (indirectCosts != null && !indirectCosts.isEmpty()) {
+                                for (AttackCost indirectCost : indirectCosts) {
+                                    uniqueCostTypes.put(indirectCost.getType(), indirectCost);
+                                }
+                            }
                         }
                     }
                 } else {
@@ -110,6 +118,10 @@ public class ImpactServiceImpl implements ImpactService {
                     DO NOTHING
                     If it is an INDIRECT ASSET we have already summed the loss value and te attack costs.
                      */
+                }
+
+                for (AttackCost uniqueCost : uniqueCostTypes.values()) {
+                    economicImpact = economicImpact.add(uniqueCost.getCosts());
                 }
 
                 myAsset.setEconomicImpact(economicImpact);
