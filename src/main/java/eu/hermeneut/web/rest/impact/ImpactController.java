@@ -35,14 +35,12 @@ public class ImpactController {
      * @param selfAssessmentID the id of the SelfAssessment of the economicResults to retrieve
      * @return the ResponseEntity with status 200 (OK) and with body the economicResults, or with status 404 (Not Found)
      */
-    @GetMapping("/{selfAssessmentID}/economic-impact/{myAssetID}")
+    @GetMapping("/{selfAssessmentID}/economic-impact")
     @Timed
-    public ResponseEntity<MyAsset> getImpactByMyAsset(@PathVariable Long selfAssessmentID, @PathVariable Long myAssetID) throws NotFoundException {
-        log.debug("REST request to get the impact by selfAssessmentID: {} and myAssetID: {}", selfAssessmentID, myAssetID);
+    public List<MyAsset> getImpactsBySelfAssessment(@PathVariable Long selfAssessmentID) throws NotFoundException {
+        log.debug("REST request to get the impact by selfAssessmentID: {}", selfAssessmentID);
 
-        MyAsset myAsset = this.impactService.calculateEconomicImpact(selfAssessmentID, myAssetID);
-
-        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(myAsset));
+        return this.impactService.calculateEconomicImpacts(selfAssessmentID);
     }
 
     /**
@@ -51,11 +49,13 @@ public class ImpactController {
      * @param selfAssessmentID the id of the SelfAssessment of the economicResults to retrieve
      * @return the ResponseEntity with status 200 (OK) and with body the economicResults, or with status 404 (Not Found)
      */
-    @GetMapping("/{selfAssessmentID}/economic-impact")
+    @GetMapping("/{selfAssessmentID}/economic-impact/{myAssetID}")
     @Timed
-    public List<MyAsset> getImpactsBySelfAssessment(@PathVariable Long selfAssessmentID) throws NotFoundException {
-        log.debug("REST request to get the impact by selfAssessmentID: {}", selfAssessmentID);
+    public ResponseEntity<MyAsset> getImpactByMyAsset(@PathVariable Long selfAssessmentID, @PathVariable Long myAssetID) throws NotFoundException {
+        log.debug("REST request to get the impact by selfAssessmentID: {} and myAssetID: {}", selfAssessmentID, myAssetID);
 
-        return this.impactService.calculateEconomicImpacts(selfAssessmentID);
+        MyAsset myAsset = this.impactService.calculateEconomicImpact(selfAssessmentID, myAssetID);
+
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(myAsset));
     }
 }
