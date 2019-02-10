@@ -11,7 +11,7 @@ import eu.hermeneut.service.AttackCostParamService;
 import eu.hermeneut.service.AttackCostService;
 import eu.hermeneut.service.SelfAssessmentService;
 import eu.hermeneut.service.formula.AttackCostFormulator;
-import eu.hermeneut.service.formula.FormulatorSwitch;
+import eu.hermeneut.service.formula.AttackCostFormulatorSwitch;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,7 +21,7 @@ import java.util.List;
 
 @Service
 @Transactional
-public class FormulatorSwitchImpl implements FormulatorSwitch {
+public class AttackCostFormulatorSwitchImpl implements AttackCostFormulatorSwitch {
 
     @Autowired
     private SelfAssessmentService selfAssessmentService;

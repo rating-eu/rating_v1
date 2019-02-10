@@ -5,6 +5,6 @@ import eu.hermeneut.domain.formula.AttackCostFormula;
 import eu.hermeneut.exceptions.IllegalInputException;
 import eu.hermeneut.exceptions.NotFoundException;
 
-public interface FormulatorSwitch {
+public interface AttackCostFormulatorSwitch {
     AttackCostFormula formulateCost(Long selfAssessmentID, AttackCost attackCost) throws NotFoundException, IllegalInputException;
 }

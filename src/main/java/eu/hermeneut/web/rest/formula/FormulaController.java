@@ -11,7 +11,7 @@ import eu.hermeneut.exceptions.NotFoundException;
 import eu.hermeneut.service.DirectAssetService;
 import eu.hermeneut.service.MyAssetService;
 import eu.hermeneut.service.SelfAssessmentService;
-import eu.hermeneut.service.formula.FormulatorSwitch;
+import eu.hermeneut.service.formula.AttackCostFormulatorSwitch;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -36,7 +36,7 @@ public class FormulaController {
     private DirectAssetService directAssetService;
 
     @Autowired
-    private FormulatorSwitch formulatorSwitch;
+    private AttackCostFormulatorSwitch attackCostFormulatorSwitch;
 
     @GetMapping("/{selfAssessmentID}/formula/attack-costs/{myAssetID}")
     @Timed
@@ -52,7 +52,7 @@ public class FormulaController {
         if (directCosts != null && !directCosts.isEmpty()) {
             for (AttackCost directCost : directCosts) {
                 try {
-                    final AttackCostFormula attackCostFormula = formulatorSwitch.formulateCost(selfAssessmentID, directCost);
+                    final AttackCostFormula attackCostFormula = attackCostFormulatorSwitch.formulateCost(selfAssessmentID, directCost);
                     attackCostFormula.setDirect(true);
 
                     costFormulas.add(attackCostFormula);
@@ -70,7 +70,7 @@ public class FormulaController {
             if (indirectCosts != null && !indirectCosts.isEmpty()) {
                 for (AttackCost indirectCost : indirectCosts) {
                     try {
-                        final AttackCostFormula attackCostFormula = formulatorSwitch.formulateCost(selfAssessmentID, indirectCost);
+                        final AttackCostFormula attackCostFormula = attackCostFormulatorSwitch.formulateCost(selfAssessmentID, indirectCost);
                         attackCostFormula.setDirect(false);
 
                         costFormulas.add(attackCostFormula);
