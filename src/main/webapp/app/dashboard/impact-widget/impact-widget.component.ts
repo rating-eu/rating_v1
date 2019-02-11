@@ -15,9 +15,9 @@ interface WidgetItem {
 }
 
 @Component({
-  selector: 'jhi-impact-widget',
-  templateUrl: './impact-widget.component.html',
-  styleUrls: ['impact-widget.component.css']
+    selector: 'jhi-impact-widget',
+    templateUrl: './impact-widget.component.html',
+    styleUrls: ['impact-widget.component.css']
 })
 export class ImpactWidgetComponent implements OnInit {
   public loading = false;
@@ -30,11 +30,12 @@ export class ImpactWidgetComponent implements OnInit {
   private dashboardStatus = DashboardStepEnum;
   private myAssets: MyAssetMgm[] = [];
 
-  constructor(
-    private impactService: ImpactEvaluationService,
-    private mySelfAssessmentService: SelfAssessmentMgmService,
-    private dashService: DashboardService
-  ) { }
+    constructor(
+        private impactService: ImpactEvaluationService,
+        private mySelfAssessmentService: SelfAssessmentMgmService,
+        private dashService: DashboardService
+    ) {
+    }
 
   ngOnInit() {
     this.loading = true;
