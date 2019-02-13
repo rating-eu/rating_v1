@@ -91,7 +91,9 @@ public class ImpactServiceImpl implements ImpactService {
                 Map<CostType, AttackCost> uniqueCostTypes = toUniqueCostTypes(selfAssessment, myAsset);
 
                 for (AttackCost uniqueCost : uniqueCostTypes.values()) {
-                    economicImpact = economicImpact.add(uniqueCost.getCosts());
+                    if (uniqueCost != null && uniqueCost.getCosts() != null) {
+                        economicImpact = economicImpact.add(uniqueCost.getCosts());
+                    }
                 }
 
                 myAsset.setEconomicImpact(economicImpact);
