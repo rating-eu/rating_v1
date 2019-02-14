@@ -1,5 +1,9 @@
+import { AttackCostFormula } from './../model/attack-cost-formula.model';
+import * as _ from 'lodash';
+import { DashboardStepEnum } from './../../dashboard/models/enumeration/dashboard-step.enum';
+import { DashboardService } from './../../dashboard/dashboard.service';
 import { ThreatAgentInterest } from './../model/threat-agent-interest.model';
-import { Component, OnInit, ChangeDetectorRef, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { RiskManagementService } from '../risk-management.service';
 import { SelfAssessmentMgmService, SelfAssessmentMgm } from '../../entities/self-assessment-mgm';
 import { CriticalLevelMgm } from '../../entities/critical-level-mgm';
@@ -7,10 +11,13 @@ import { MyAssetMgm, MyAssetMgmService } from '../../entities/my-asset-mgm';
 import { MyAssetAttackChance } from '../model/my-asset-attack-chance.model';
 import { SessionStorageService } from 'ngx-webstorage';
 import { Router } from '@angular/router';
-
-import * as _ from 'lodash';
-import { HttpResponse } from '@angular/common/http';
+import { Status } from '../../entities/enumerations/QuestionnaireStatus.enum';
 import { Subscription } from 'rxjs';
+
+interface RiskPercentageElement {
+    asset: MyAssetMgm;
+    percentage: number;
+}
 
 @Component({
     // tslint:disable-next-line:component-selector
@@ -22,10 +29,20 @@ export class RiskEvaluationComponent implements OnInit, OnDestroy {
     private mySelf: SelfAssessmentMgm;
     private criticalLevelSubscription: Subscription;
     private selectedAttacksChance: MyAssetAttackChance[];
-    private closeResult: string;
+    private dashboardStatus = DashboardStepEnum;
+    private mapAssetThreats: Map<number, ThreatAgentInterest[]> = new Map<number, ThreatAgentInterest[]>();
+    private impactTable: AttackCostFormula[] = [];
+    // TODO think on how to make the following vars dynamic
+    private MAX_LIKELIHOOD = 5;
+    private MAX_VULNERABILITY = 5;
+    private MAX_CRITICAL = this.MAX_LIKELIHOOD * this.MAX_VULNERABILITY;
+    private MAX_IMPACT = 5;
+    private MAX_RISK = this.MAX_CRITICAL * this.MAX_IMPACT;
 
+    public attackCosts = false;
     public selectedAsset: MyAssetMgm;
     public myAssets: MyAssetMgm[] = [];
+    public mySearchedAssets: MyAssetMgm[] = [];
     public criticalLevel: CriticalLevelMgm;
     public squareColumnElement: number[];
     public squareRowElement: number[];
@@ -33,7 +50,6 @@ export class RiskEvaluationComponent implements OnInit, OnDestroy {
     public selectedRow: number;
     public selectedColumn: number;
     public mapAssetAttacks: Map<number, MyAssetAttackChance[]> = new Map<number, MyAssetAttackChance[]>();
-    private mapAssetThreats: Map<number, ThreatAgentInterest[]> = new Map<number, ThreatAgentInterest[]>();
     public threatAgentInterest: ThreatAgentInterest[] = [];
     public mapMaxCriticalLevel: Map<number, number[]> = new Map<number, number[]>();
     public noRiskInMap = false;
@@ -45,23 +61,19 @@ export class RiskEvaluationComponent implements OnInit, OnDestroy {
     public attacksToolTipLoadedTimer = false;
     public assetToolTipLoaded = false;
     public assetToolTipLoadedTimer = false;
+    public loadingImpactTable = false;
     public riskPaginator = {
         id: 'risk_paginator',
         itemsPerPage: 7,
         currentPage: 1
     };
-    // public modalContent: string;
-    public riskPercentageMap: Map<number/*MyAsset.ID*/, number/*RiskPercentage*/> = new Map<number, number>();
-
+    public risks: RiskPercentageElement[] = [];
     public attacksToolTip: Map<number, string> = new Map<number, string>();
     public assetsToolTip: Map<number, string> = new Map<number, string>();
-
-    // TODO think on how to make the following vars dynamic
-    private MAX_LIKELIHOOD = 5;
-    private MAX_VULNERABILITY = 5;
-    private MAX_CRITICAL = this.MAX_LIKELIHOOD * this.MAX_VULNERABILITY;
-    private MAX_IMPACT = 5;
-    private MAX_RISK = this.MAX_CRITICAL * this.MAX_IMPACT;
+    public directImpactTable: AttackCostFormula[] = [];
+    public indirectImpactTable: AttackCostFormula[] = [];
+    public selectedImpact: AttackCostFormula;
+    public impactFormula: string;
 
     constructor(
         private mySelfAssessmentService: SelfAssessmentMgmService,
@@ -69,7 +81,7 @@ export class RiskEvaluationComponent implements OnInit, OnDestroy {
         private sessionService: SessionStorageService,
         private router: Router,
         private myAssetService: MyAssetMgmService,
-        private ref: ChangeDetectorRef
+        private dashService: DashboardService
     ) {
     }
 
@@ -78,11 +90,12 @@ export class RiskEvaluationComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
+        this.loadingRiskLevel = true;
+        this.loadingAssetsAndAttacks = true;
         this.mySelf = this.mySelfAssessmentService.getSelfAssessment();
 
         this.riskService.getCriticalLevel(this.mySelf).toPromise().then((res) => {
             if (res) {
-                this.loadingRiskLevel = true;
                 this.criticalLevel = res;
                 this.squareColumnElement = [];
                 this.squareRowElement = [];
@@ -110,8 +123,8 @@ export class RiskEvaluationComponent implements OnInit, OnDestroy {
         this.riskService.getMyAssets(this.mySelf).toPromise().then((res) => {
             if (res && res.length > 0) {
                 this.myAssets = res;
+                this.mySearchedAssets = res;
                 this.myAssets = _.orderBy(this.myAssets, ['ranking'], ['desc']);
-                this.loadingAssetsAndAttacks = true;
                 for (const myAsset of this.myAssets) {
                     this.riskService.getAttackChance(myAsset, this.mySelf).toPromise().then((res2) => {
                         if (res2) {
@@ -140,85 +153,35 @@ export class RiskEvaluationComponent implements OnInit, OnDestroy {
         }).catch(() => {
             this.loadingAssetsAndAttacks = false;
         });
+
+        this.dashService.getStatusFromServer(this.mySelf, this.dashboardStatus.ATTACK_RELATED_COSTS).toPromise().then((res) => {
+            if (Status[res] === Status.EMPTY || Status[res] === Status.PENDING) {
+                this.attackCosts = false;
+            } else {
+                this.attackCosts = true;
+            }
+        });
     }
 
     ngOnDestroy() {
         this.criticalLevelSubscription.unsubscribe();
     }
 
-    public orderLevels(mapAssetAttacks: Map<number, MyAssetAttackChance[]>): {
-        orderedMap: Map<number, MyAssetAttackChance[]>,
-        orderedArray: MyAssetMgm[]
-    } {
-        const orderedMap: Map<number, MyAssetAttackChance[]> = new Map<number, MyAssetAttackChance[]>();
-        const orderedArray: MyAssetMgm[] = [];
-        const levelsMap: Map<number, number[]> = new Map<number, number[]>();
-        for (let index = 0; index < this.myAssets.length; index++) {
-            let howManyLow = 0;
-            let howManyMedium = 0;
-            let howManyHigh = 0;
-            for (let i = 0; i < this.squareRowElement.length; i++) {
-                for (let j = 0; j < this.squareColumnElement.length; j++) {
-                    const attacksLV = this.whichAttackChanceByCell(i, j, this.myAssets[index], 'likelihood-vulnerability').length;
-                    const attackCI = this.whichAttackChanceByCell(i, j, this.myAssets[index], 'critically-impact').length;
-                    const attacksMax = _.max([attacksLV, attackCI]);
-                    switch (this.whichLevel(i, j)) {
-                        case 'low': {
-                            howManyLow = howManyLow + attacksMax;
-                            break;
-                        }
-                        case 'medium': {
-                            howManyMedium = howManyMedium + attacksMax;
-                            break;
-                        }
-                        case 'high': {
-                            howManyHigh = howManyHigh + attacksMax;
-                            break;
-                        }
+    public search(searchString: string) {
+        if (searchString) {
+            if (searchString.length < 3) {
+                return;
+            } else {
+                this.mySearchedAssets = [];
+                this.myAssets.forEach((item) => {
+                    if (item.asset.name.toLowerCase().search(searchString.toLowerCase()) !== -1) {
+                        this.mySearchedAssets.push(_.clone(item));
                     }
-                }
+                });
             }
-            levelsMap.set(this.myAssets[index].id, [howManyLow, howManyMedium, howManyHigh]);
+        } else {
+            this.mySearchedAssets = this.myAssets;
         }
-        mapAssetAttacks.forEach((value, key) => {
-            // find max
-            let max = 0;
-            let maxAssetId = 0;
-            levelsMap.forEach((value2, key2) => {
-                if (value2[2] > max) {
-                    max = value2[2];
-                    maxAssetId = key2;
-                }
-            });
-            orderedMap.set(maxAssetId, value);
-            const index = _.findIndex(this.myAssets, (myAsset) => myAsset.id === maxAssetId);
-            orderedArray.push(this.myAssets[index]);
-            levelsMap.delete(maxAssetId);
-        });
-        return {
-            'orderedMap': orderedMap,
-            'orderedArray': orderedArray
-        };
-    }
-
-    public setMyAssetImpact(myAsset: MyAssetMgm, impact: number) {
-        this.criticalBostonSquareLoad = true;
-        this.assetToolTipLoaded = false;
-        this.assetToolTipLoadedTimer = false;
-        myAsset.impact = impact;
-
-        this.myAssetService.update(myAsset).toPromise().then((res: HttpResponse<MyAssetMgm>) => {
-            const myAssetRes = res.body;
-            const index = _.findIndex(this.myAssets, { id: myAssetRes.id });
-            this.myAssets.splice(index, 1, myAssetRes);
-            this.criticalBostonSquareLoad = false;
-            if (!this.assetToolTipLoaded && !this.assetToolTipLoadedTimer) {
-                this.assetToolTipLoadedTimer = true;
-                setTimeout(() => {
-                    this.assetToolTipLoaded = true;
-                }, 1500);
-            }
-        });
     }
 
     public selectAsset(asset: MyAssetMgm) {
@@ -226,15 +189,77 @@ export class RiskEvaluationComponent implements OnInit, OnDestroy {
         if (!this.selectedAsset) {
             this.selectedAsset = asset;
             this.threatAgentInterest = this.mapAssetThreats.get(asset.id);
+            this.getImpactFormula(this.selectedAsset);
+            this.getImpactInfo(this.selectedAsset);
         } else if (this.selectedAsset.id === asset.id) {
             this.selectedAsset = null;
         } else {
             this.selectedAsset = asset;
             this.threatAgentInterest = this.mapAssetThreats.get(asset.id);
+            this.getImpactFormula(this.selectedAsset);
+            this.getImpactInfo(this.selectedAsset);
         }
         setTimeout(() => {
             this.detailsLoading = false;
         }, 500);
+    }
+
+    public selectAttackCost(impact: AttackCostFormula) {
+        if (!this.selectedImpact) {
+            this.selectedImpact = impact;
+        } else {
+            if (this.selectedImpact.attackCost.id === impact.attackCost.id) {
+                this.selectedImpact = null;
+            } else {
+                this.selectedImpact = impact;
+            }
+        }
+    }
+    public isMoney(type: string): boolean {
+        if (type.toLowerCase().indexOf('cost') !== -1 || type.toLowerCase().indexOf('revenue') !== -1) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public isFraction(type: string): boolean {
+        if (type.toLowerCase().indexOf('fraction') !== -1) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    private getImpactFormula(myAsset: MyAssetMgm) {
+        this.riskService.getImpactFormulaByMyAsset(this.mySelf, myAsset).toPromise().then((res) => {
+            if (res) {
+                this.impactFormula = res.toString();
+            } else {
+                this.impactFormula = '';
+            }
+        });
+    }
+
+    private getImpactInfo(myAsset: MyAssetMgm) {
+        this.loadingImpactTable = true;
+        this.riskService.getAttackCostsFormulaByMyAsset(this.mySelf, myAsset).toPromise().then((res) => {
+            if (res) {
+                this.impactTable = res;
+                this.impactTable.forEach((item) => {
+                    if (item.direct) {
+                        this.directImpactTable.push(item);
+                    } else {
+                        this.indirectImpactTable.push(item);
+                    }
+                });
+                this.loadingImpactTable = false;
+            } else {
+                this.loadingImpactTable = false;
+            }
+        }).catch(() => {
+            this.loadingImpactTable = false;
+        });
     }
 
     public isAssetCollapsed(asset: MyAssetMgm): boolean {
@@ -257,26 +282,7 @@ export class RiskEvaluationComponent implements OnInit, OnDestroy {
         this.sessionService.store('selectedAttacksChence', this.selectedAttacksChance);
         this.sessionService.store('selectedAsset', myAsset);
         this.router.navigate(['/risk-management/risk-mitigation']);
-        /*
-         this.modalService.open(content).result.then((result) => {
-         this.closeResult = `Closed with: ${result}`;
-         }, (reason) => {
-         this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-         });
-         */
     }
-
-    /*
-     private getDismissReason(reason: any): string {
-     if (reason === ModalDismissReasons.ESC) {
-     return 'by pressing ESC';
-     } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
-     return 'by clicking on a backdrop';
-     } else {
-     return `with: ${reason}`;
-     }
-     }
-     */
 
     public whichAttackChanceByCell(row: number, column: number, myAsset: MyAssetMgm, type: string): MyAssetAttackChance[] {
         const attacks = this.mapAssetAttacks.get(myAsset.id);
@@ -342,9 +348,25 @@ export class RiskEvaluationComponent implements OnInit, OnDestroy {
             }
             const critical = lStore[1] * lStore[1];
             const riskPercentage = this.evaluateRiskPercentage(critical, myAsset);
-            this.riskPercentageMap.set(myAsset.id, riskPercentage);
+            const risk: RiskPercentageElement = {
+                asset: myAsset,
+                percentage: riskPercentage
+            };
+            if (this.risks.length === 0) {
+                this.risks.push(_.cloneDeep(risk));
+            } else {
+                const index = _.findIndex(this.risks, (elem) => {
+                    return elem.asset.id === myAsset.id;
+                });
+                if (index !== -1) {
+                    this.risks.splice(index, 1, _.cloneDeep(risk));
+                } else {
+                    this.risks.push(_.cloneDeep(risk));
+                }
+            }
+            this.risks = _.orderBy(this.risks, ['percentage'], ['desc']);
         }
-        if (this.riskPercentageMap.size === 0) {
+        if (this.risks.length === 0) {
             this.noRiskInMap = true;
         } else {
             this.noRiskInMap = false;

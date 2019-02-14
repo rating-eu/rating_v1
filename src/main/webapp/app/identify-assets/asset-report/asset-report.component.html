@@ -40,11 +40,11 @@
                                                     <td ngbTooltip="{{myAsset.asset.description}}" placement="right">{{myAsset.asset.name}}</td>
                                                     <td *ngIf="myAsset.ranking">{{myAsset.ranking}}</td>
                                                     <td *ngIf="!myAsset.ranking"> - </td>
-                                                    <td *ngIf="myAsset.economicValue">{{myAsset.economicValue}}</td>
+                                                    <td *ngIf="myAsset.economicValue">{{myAsset.economicValue | currency:'EUR'}}</td>
                                                     <td *ngIf="!myAsset.economicValue"> - </td>
-                                                    <td *ngIf="myAsset.economicImpact">{{myAsset.economicImpact}}</td>
+                                                    <td *ngIf="myAsset.economicImpact">{{myAsset.economicImpact | currency:'EUR'}}</td>
                                                     <td *ngIf="!myAsset.economicImpact"> - </td>
-                                                    <td *ngIf="myAsset.lossValue">{{myAsset.lossValue}}</td>
+                                                    <td *ngIf="myAsset.lossValue">{{myAsset.lossValue | currency:'EUR'}}</td>
                                                     <td *ngIf="!myAsset.lossValue"> - </td>
                                                     <td *ngIf="myAsset.impact">{{myAsset.impact}}</td>
                                                     <td *ngIf="!myAsset.impact"> - </td>
@@ -96,11 +96,11 @@
                                                     <td ngbTooltip="{{myAsset.asset.description}}" placement="right">{{myAsset.asset.name}}</td>
                                                     <td *ngIf="myAsset.ranking">{{myAsset.ranking}}</td>
                                                     <td *ngIf="!myAsset.ranking"> - </td>
-                                                    <td *ngIf="myAsset.economicValue">{{myAsset.economicValue}}</td>
+                                                    <td *ngIf="myAsset.economicValue">{{myAsset.economicValue | currency:'EUR'}}</td>
                                                     <td *ngIf="!myAsset.economicValue"> - </td>
-                                                    <td *ngIf="myAsset.economicImpact">{{myAsset.economicImpact}}</td>
+                                                    <td *ngIf="myAsset.economicImpact">{{myAsset.economicImpact | currency:'EUR'}}</td>
                                                     <td *ngIf="!myAsset.economicImpact"> - </td>
-                                                    <td *ngIf="myAsset.lossValue">{{myAsset.lossValue}}</td>
+                                                    <td *ngIf="myAsset.lossValue">{{myAsset.lossValue | currency:'EUR'}}</td>
                                                     <td *ngIf="!myAsset.lossValue"> - </td>
                                                     <td *ngIf="myAsset.impact">{{myAsset.impact}}</td>
                                                     <td *ngIf="!myAsset.impact"> - </td>
