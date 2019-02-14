@@ -1,9 +1,9 @@
-<div class="container" *ngIf="loading">
+<ng-container class="container" *ngIf="loading">
     <ng-container *ngIf="loading">
         <div class="loader"></div>
     </ng-container>
-</div>
-<div class="col-md-12" *ngIf="!loading">
+</ng-container>
+<ng-container class="container-fluid" *ngIf="!loading">
     <div class="x_panel" style="padding:0px !important;">
         <div class="x_title" style="padding:0px !important;">
             <h2 style="padding: 10px;">
@@ -37,13 +37,13 @@
                         asset witch you analize!</p>
                     </tbody>
                     <tbody *ngIf="!noRiskInMap">
-                    <tr *ngFor="let myAsset of myAssets | paginate: assetAtRiskPaginator">
-                        <td *ngIf="riskPercentageMap.get(myAsset.id)">
-                            <a [routerLink]="['/asset-mgm', myAsset.asset?.id ]">{{myAsset?.asset.name}}</a>
-                        </td>
-                        <td *ngIf="riskPercentageMap.get(myAsset.id)">{{riskPercentageMap.get(myAsset.id) | percent}}
-                        </td>
-                    </tr>
+                        <tr *ngFor="let risk of risks | paginate: assetAtRiskPaginator">
+                            <td>
+                                <a [routerLink]="['/asset-mgm', risk.asset.asset?.id ]">{{risk.asset?.asset.name}}</a>
+                            </td>
+                            <td>{{risk.percentage | percent}}
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
                 <div class="text-center">
@@ -53,4 +53,4 @@
             </div>
         </div>
     </div>
-</div>
+</ng-container>

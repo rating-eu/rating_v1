@@ -42,7 +42,7 @@ export class ImpactWidgetComponent implements OnInit {
     this.mySelf = this.mySelfAssessmentService.getSelfAssessment();
     this.status = this.dashService.getStatus();
     this.dashService.getStatusFromServer(this.mySelf, this.dashboardStatus.ATTACK_RELATED_COSTS).toPromise().then((res) => {
-      this.status.impactEvaluationStatus = Status[res];
+      this.status.attackRelatedCostEstimationStatus = Status[res];
       this.dashService.updateStepStatus(DashboardStepEnum.ATTACK_RELATED_COSTS, this.status.attackRelatedCostEstimationStatus);
     });
 

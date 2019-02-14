@@ -1,3 +1,4 @@
+import { DashboardService } from './../dashboard/dashboard.service';
 import {NgModule, Injector} from '@angular/core';
 import {CommonModule} from '@angular/common';
 
@@ -65,7 +66,8 @@ import { NgbAccordionModule } from '../../../../../node_modules/@ng-bootstrap/ng
                 Injector
             ]
         },
-        RiskManagementService
+        RiskManagementService,
+        DashboardService
     ]
 })
 export class RiskManagementModule {

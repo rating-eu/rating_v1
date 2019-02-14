@@ -1,7 +1,7 @@
 <div class="container" *ngIf="loading">
   <div class="loader"></div>
 </div>
-<ng-container *ngIf="!loading">
+<ng-container class="container-fluid" *ngIf="!loading">
   <div class="col-md-3">
     <div class="tile-stats tiles-first-row">
       <div class="count" *ngIf="ide">{{ide | currency: 'EUR'}}</div>

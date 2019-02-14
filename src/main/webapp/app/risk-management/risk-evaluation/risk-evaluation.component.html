@@ -3,9 +3,22 @@
 </div>
 <div class="container-fluid" *ngIf="!loadingRiskLevel  && !loadingAssetsAndAttacks">
     <ng-container *ngIf="myAssets.length===0">
-        No Assets counted or no questionnaire was complited
+        <div class="text-center" style="margin-top: 50px">
+            <p style="color: orange"><i class="fa fa-exclamation-triangle fa-4x" aria-hidden="true"></i></p>
+            <p style="color: grey">No Assets counted or no questionnaire was complited!</p>
+        </div>
     </ng-container>
-    <ng-container *ngIf="myAssets.length>0">
+    <ng-container *ngIf="myAssets.length>0 && !attackCosts">
+        <div class="text-center" style="margin-top: 50px">
+            <p style="color: orange"><i class="fa fa-exclamation-triangle fa-4x" aria-hidden="true"></i></p>
+            <p style="color: grey">No <a href="javascript:void(0)"
+                    [routerLink]="['/identify-asset/attack-costs']">Attack
+                    Costs</a> defined or no <a href="javascript:void(0)"
+                    [routerLink]="['/impact-evaluation/attack-related-costs-estimation']">Economic
+                    estimate</a> complited!</p>
+        </div>
+    </ng-container>
+    <ng-container *ngIf="myAssets.length>0 && attackCosts">
         <ng-container *ngIf="criticalBostonSquareLoad">
             <div class="loader"></div>
         </ng-container>
@@ -33,8 +46,10 @@
                 </ng-container>
                 <ng-container *ngIf="j!==lastSquareRowElement">
                     <div *ngFor="let i of squareColumnElement" class="col-md-2">
-                        <div class="text-center boston-square-text" [ngClass]="{'low-level': whichLevel(lastSquareRowElement-j, i) === 'low', 'medium-level': whichLevel(lastSquareRowElement-j, i) === 'medium', 'high-level': whichLevel(lastSquareRowElement-j, i) === 'high'}"
-                            (click)="selectedMatrixCell(lastSquareRowElement-j, i)" placement="top" ngbTooltip="{{assetToolTipLoaded ? assetsToolTip.get(concatenateAndParse([lastSquareRowElement-j, i])):''}}">
+                        <div class="text-center boston-square-text"
+                            [ngClass]="{'low-level': whichLevel(lastSquareRowElement-j, i) === 'low', 'medium-level': whichLevel(lastSquareRowElement-j, i) === 'medium', 'high-level': whichLevel(lastSquareRowElement-j, i) === 'high'}"
+                            (click)="selectedMatrixCell(lastSquareRowElement-j, i)" placement="top"
+                            ngbTooltip="{{assetToolTipLoaded ? assetsToolTip.get(concatenateAndParse([lastSquareRowElement-j, i])):''}}">
                             <ng-container *ngIf="whichCriticalContentByCell(lastSquareRowElement-j, i) !== ''">
                                 {{whichCriticalContentByCell(lastSquareRowElement-j, i)}}
                             </ng-container>
@@ -66,18 +81,19 @@
                                     asset witch you analize!</p>
                             </tbody>
                             <tbody *ngIf="!noRiskInMap">
-                                <tr *ngFor="let myAsset of myAssets | paginate: riskPaginator">
-                                    <td *ngIf="riskPercentageMap.get(myAsset.id)">
-                                        <a [routerLink]="['/asset-mgm', myAsset.asset?.id ]">{{myAsset?.asset.name}}</a>
+                                <tr *ngFor="let risk of risks | paginate: riskPaginator">
+                                    <td>
+                                        <a
+                                            [routerLink]="['/asset-mgm', risk.asset.asset?.id ]">{{risk.asset?.asset.name}}</a>
                                     </td>
-                                    <td *ngIf="riskPercentageMap.get(myAsset.id)">{{riskPercentageMap.get(myAsset.id) |
-                                        percent}}
+                                    <td>{{risk.percentage | percent}}
                                     </td>
                                 </tr>
                             </tbody>
                         </table>
                         <div class="text-center">
-                            <pagination-controls (pageChange)="onRiskPageChange($event)" [id]="riskPaginator.id"></pagination-controls>
+                            <pagination-controls (pageChange)="onRiskPageChange($event)" [id]="riskPaginator.id">
+                            </pagination-controls>
                         </div>
                     </div>
                 </div>
@@ -88,266 +104,313 @@
         </ng-container>
         <div class="row" style="margin-top: 25px">
             <div class="col-md-3">
-                <div class="list-group">
-                    <ng-container *ngFor="let myAsset of myAssets">
-                        <a href="javascript:void(0)" (click)="selectAsset(myAsset)" class="list-group-item list-group-item-action"
-                            [ngClass]="{'active': selectedAsset && myAsset.id === selectedAsset.id}">
-                            {{myAsset.asset.name}}</a>
-                    </ng-container>
-                </div>
+                <ng-container class="col-md-12">
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-search"><i class="fa fa-search" aria-hidden="true"></i></span>
+                        </div>
+                        <input type="text" class="form-control" placeholder="Search" aria-label="Search" aria-describedby="basic-search" (input)="search($event.target.value)">
+                    </div>
+                </ng-container>
+                <ng-container class="col-md-12">
+                        <div class="list-group">
+                                <ng-container *ngFor="let myAsset of mySearchedAssets">
+                                    <a href="javascript:void(0)" (click)="selectAsset(myAsset)"
+                                        class="list-group-item list-group-item-action"
+                                        [ngClass]="{'active': selectedAsset && myAsset.id === selectedAsset.id}">
+                                        {{myAsset.asset.name}}</a>
+                                </ng-container>
+                            </div>
+                </ng-container>
             </div>
             <div class="col-md-9" *ngIf="detailsLoading">
                 <div class="loader"></div>
             </div>
             <div class="col-md-9" *ngIf="selectedAsset && criticalLevel && !detailsLoading">
-                <div class="row">
-                    <!--
-                    <div class="col-md-12">
-                        <h5>{{selectedAsset.asset.name}}</h5>
-                    </div>
-                    -->
-                    <div class="col-md-12">
-                        <div class="col-md-2 text-left">
-                            <b>Likelihood</b>
+                <div class="card">
+                    <div class="row">
+                        <div class="col-md-12" style="margin-top:15px">
+                            <div class="col-md-2 text-left">
+                                <b>Likelihood</b>
+                            </div>
                         </div>
-                        <div class="col-md-3 offset-md-7 text-right">
-                            <div ngbDropdown class="d-inline-block">
-                                <button class="btn btn-outline-primary" id="dropdownBasic1" ngbDropdownToggle>
-                                    <ng-container *ngIf="!selectedAsset.impact">Select impact value</ng-container>
-                                    <ng-container *ngIf="selectedAsset.impact">Selected impact:
-                                        {{selectedAsset.impact}}
-                                    </ng-container>
-                                </button>
-                                <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
-                                    <button class="dropdown-item" (click)="setMyAssetImpact(selectedAsset, 5)">5
-                                    </button>
-                                    <button class="dropdown-item" (click)="setMyAssetImpact(selectedAsset, 4)">4
-                                    </button>
-                                    <button class="dropdown-item" (click)="setMyAssetImpact(selectedAsset, 3)">3
-                                    </button>
-                                    <button class="dropdown-item" (click)="setMyAssetImpact(selectedAsset, 2)">2
-                                    </button>
-                                    <button class="dropdown-item" (click)="setMyAssetImpact(selectedAsset, 1)">1
-                                    </button>
+                        <br>
+                        <div *ngFor="let j of squareRowElement" class="col-md-12">
+                            <div class="col-md-1 text-right">
+                                <ng-container *ngIf="j!==lastSquareRowElement">{{lastSquareRowElement-j}}
+                                </ng-container>
+                            </div>
+                            <ng-container *ngIf="j===lastSquareRowElement">
+                                <div *ngFor="let i of squareColumnElement" class="col-md-2 text-center">
+                                    {{i}}
                                 </div>
-                            </div>
-                        </div>
-                    </div>
-                    <br>
-                    <div *ngFor="let j of squareRowElement" class="col-md-12">
-                        <div class="col-md-1 text-right">
-                            <ng-container *ngIf="j!==lastSquareRowElement">{{lastSquareRowElement-j}}
-                            </ng-container>
-                        </div>
-                        <ng-container *ngIf="j===lastSquareRowElement">
-                            <div *ngFor="let i of squareColumnElement" class="col-md-2 text-center">
-                                {{i}}
-                            </div>
-                            <div class="row">
-                                <div class="col-md-12 text-right">
+                                <div class="col-md-12 text-right" style="margin-bottom: 15px">
                                     <b>Vulnerability</b>
                                 </div>
-                            </div>
-                        </ng-container>
-                        <ng-container *ngIf="j!==lastSquareRowElement">
-                            <div *ngFor="let i of squareColumnElement" class="col-md-2">
-                                <div class="text-center boston-square-text" [ngClass]="{'low-level': whichLevel(lastSquareRowElement-j, i) === 'low', 'medium-level': whichLevel(lastSquareRowElement-j, i) === 'medium', 'high-level': whichLevel(lastSquareRowElement-j, i) === 'high'}"
-                                    (click)="selectedMatrixCell(lastSquareRowElement-j, i)" placement="top" ngbTooltip="{{attacksToolTipLoaded ? attacksToolTip.get(concatenateAndParse([selectedAsset.id,lastSquareRowElement-j, i])) : ''}}">
-                                    <ng-container *ngIf="mapAssetAttacks.get(selectedAsset.id)">
-                                        <a style="color: black" href="javascript:void(0)" (click)="loadContent(lastSquareRowElement-j, i, selectedAsset, 'likelihood-vulnerability')">
-                                            <ng-container *ngIf="whichContentByCell(lastSquareRowElement-j, i, selectedAsset,
-                                                            'likelihood-vulnerability')!==''">
-                                                {{whichContentByCell(lastSquareRowElement-j,
-                                                i, selectedAsset,
-                                                'likelihood-vulnerability')}}
-                                            </ng-container>
-                                            <ng-container *ngIf="whichContentByCell(lastSquareRowElement-j, i, selectedAsset,
-                                                            'likelihood-vulnerability')===''">&nbsp;
-                                            </ng-container>
-                                        </a>
-                                    </ng-container>
-                                </div>
-                            </div>
-                            <div class="col-md-1"></div>
-                        </ng-container>
-                    </div>
-                </div>
-                <ngb-accordion #acc="ngbAccordion" activeIds="ngb-panel-0">
-                    <ngb-panel>
-                        <ng-template ngbPanelTitle>
-                            <h5>Threat Agents</h5>
-                        </ng-template>
-                        <ng-template ngbPanelContent>
-                            <ngb-tabset>
-                                <ngb-tab title="Level of interest >= 75%">
-                                    <ng-template ngbTabContent>
-                                        <table class="table">
-                                            <thead>
-                                                <tr>
-                                                    <th scope="col">Threat Agent</th>
-                                                    <th scope="col">Level of interest</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody *ngIf="threatAgentInterest.length === 0">
-                                                <p>No data found!</p>
-                                            </tbody>
-                                            <tbody *ngIf="threatAgentInterest.length > 0">
-                                                <tr *ngFor="let threat of threatAgentInterest">
-                                                    <td *ngIf="(threat.levelOfInterest * 100) >= 75">
-                                                        {{threat.name}}
-                                                    </td>
-                                                    <td *ngIf="(threat.levelOfInterest * 100) >= 75">
-                                                        {{threat.levelOfInterest | percent}}
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </ng-template>
-                                </ngb-tab>
-                                <ngb-tab title="Level of interest < 75%">
-                                    <ng-template ngbTabContent>
-                                        <table class="table">
-                                            <thead>
-                                                <tr>
-                                                    <th scope="col">Threat Agent</th>
-                                                    <th scope="col">Level of interest</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody *ngIf="threatAgentInterest.length === 0">
-                                                <p>No data found!</p>
-                                            </tbody>
-                                            <tbody *ngIf="threatAgentInterest.length > 0">
-                                                <tr *ngFor="let threat of threatAgentInterest">
-                                                    <td *ngIf="(threat.levelOfInterest * 100) < 75">
-                                                        {{threat.name}}
-                                                    </td>
-                                                    <td *ngIf="(threat.levelOfInterest * 100) < 75">
-                                                        {{threat.levelOfInterest | percent}}
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </ng-template>
-                                </ngb-tab>
-                            </ngb-tabset>
-                        </ng-template>
-                    </ngb-panel>
-                    <ngb-panel>
-                        <ng-template ngbPanelTitle>
-                            <h5>Attack Strategies</h5>
-                        </ng-template>
-                        <ng-template ngbPanelContent>
-                            <table class="table" *ngIf="mapAssetAttacks.get(selectedAsset.id)">
-                                <thead>
-                                    <tr>
-                                        <th>Attack Strategy</th>
-                                        <th>Mitigations</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr *ngFor="let attackChance of mapAssetAttacks.get(selectedAsset.id)">
-                                        <td>{{attackChance.attackStrategy.name}}</td>
-                                        <td>
-                                            <span *ngFor="let mitigation of attackChance.attackStrategy.mitigations; let last = last">
-                                                <a class="form-control-static" [routerLink]="['../mitigation-mgm', mitigation?.id ]">{{mitigation.name}}</a>{{last
-                                                ? '' : ', '}}
-                                            </span>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </ng-template>
-                    </ngb-panel>
-                </ngb-accordion>
-            </div>
-        </div>
-        <!--
-    <ng-container *ngFor="let myAsset of myAssets">
-        <div class="row">
-            <div class="col-md-12" *ngIf="criticalLevel">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="row">
-                            <h5 class="card-title">{{myAsset.asset.name}}</h5>
-                            <i *ngIf="!isAssetCollapsed(myAsset)" class="fa fa-chevron-circle-up fa-lg" style="margin-left: 10px;margin-top: 5px"
-                                aria-hidden="true" (click)="selectAsset(myAsset)"></i>
-                            <i *ngIf="isAssetCollapsed(myAsset)" class="fa fa-chevron-circle-down fa-lg" style="margin-left: 10px;margin-top: 5px"
-                                aria-hidden="true" (click)="selectAsset(myAsset)"></i>
-                        </div>
-
-                        <div id="collapseDetail" [ngbCollapse]="isAssetCollapsed(myAsset)">
-                            <div class="card-text">
-                                <div class="row">
-                                    <div class="col-md-2 text-left">
-                                        <b>Likelihood</b>
-                                    </div>
-                                    <div class="col-md-3 offset-md-7 text-right">
-                                        <div ngbDropdown class="d-inline-block">
-                                            <button class="btn btn-outline-primary" id="dropdownBasic1"
-                                                ngbDropdownToggle>
-                                                <ng-container *ngIf="!myAsset.impact">Select impact value</ng-container>
-                                                <ng-container *ngIf="myAsset.impact">Selected impact:
-                                                    {{myAsset.impact}}
+                            </ng-container>
+                            <ng-container *ngIf="j!==lastSquareRowElement">
+                                <div *ngFor="let i of squareColumnElement" class="col-md-2">
+                                    <div class="text-center boston-square-text"
+                                        [ngClass]="{'low-level': whichLevel(lastSquareRowElement-j, i) === 'low', 'medium-level': whichLevel(lastSquareRowElement-j, i) === 'medium', 'high-level': whichLevel(lastSquareRowElement-j, i) === 'high'}"
+                                        (click)="selectedMatrixCell(lastSquareRowElement-j, i)" placement="top"
+                                        ngbTooltip="{{attacksToolTipLoaded ? attacksToolTip.get(concatenateAndParse([selectedAsset.id,lastSquareRowElement-j, i])) : ''}}">
+                                        <ng-container *ngIf="mapAssetAttacks.get(selectedAsset.id)">
+                                            <a style="color: black" href="javascript:void(0)"
+                                                (click)="loadContent(lastSquareRowElement-j, i, selectedAsset, 'likelihood-vulnerability')">
+                                                <ng-container *ngIf="whichContentByCell(lastSquareRowElement-j, i, selectedAsset,
+                                                                                    'likelihood-vulnerability')!==''">
+                                                    {{whichContentByCell(lastSquareRowElement-j,
+                                                    i, selectedAsset,
+                                                    'likelihood-vulnerability')}}
                                                 </ng-container>
-                                            </button>
-                                            <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
-                                                <button class="dropdown-item" (click)="setMyAssetImpact(myAsset, 5)">5
-                                                </button>
-                                                <button class="dropdown-item" (click)="setMyAssetImpact(myAsset, 4)">4
-                                                </button>
-                                                <button class="dropdown-item" (click)="setMyAssetImpact(myAsset, 3)">3
-                                                </button>
-                                                <button class="dropdown-item" (click)="setMyAssetImpact(myAsset, 2)">2
-                                                </button>
-                                                <button class="dropdown-item" (click)="setMyAssetImpact(myAsset, 1)">1
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <br>
-                                <div *ngFor="let j of squareRowElement" class="row">
-                                    <div class="col-md-1 text-right">
-                                        <ng-container *ngIf="j!==lastSquareRowElement">{{lastSquareRowElement-j}}
+                                                <ng-container *ngIf="whichContentByCell(lastSquareRowElement-j, i, selectedAsset,
+                                                                                    'likelihood-vulnerability')===''">
+                                                    &nbsp;
+                                                </ng-container>
+                                            </a>
                                         </ng-container>
                                     </div>
-                                    <ng-container *ngIf="j===lastSquareRowElement">
-                                        <div *ngFor="let i of squareColumnElement" class="col-md-2 text-center">
-                                            {{i}}
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-12 text-right">
-                                                <b>Vulnerability</b>
-                                            </div>
-                                        </div>
-                                    </ng-container>
-                                    <ng-container *ngIf="j!==lastSquareRowElement">
-                                        <div *ngFor="let i of squareColumnElement" class="col-md-2">
-                                            <div class="text-center boston-square-text" [ngClass]="{'low-level': whichLevel(lastSquareRowElement-j, i) === 'low', 'medium-level': whichLevel(lastSquareRowElement-j, i) === 'medium', 'high-level': whichLevel(lastSquareRowElement-j, i) === 'high'}"
-                                                (click)="selectedMatrixCell(lastSquareRowElement-j, i)" placement="top"
-                                                ngbTooltip="{{attacksToolTipLoaded ? attacksToolTip.get(concatenateAndParse([myAsset.id,lastSquareRowElement-j, i])) : ''}}">
-                                                <ng-container *ngIf="mapAssetAttacks.get(myAsset.id)">
-                                                    <a style="color: black" href="javascript:void(0)" (click)="loadContent(lastSquareRowElement-j, i, myAsset, 'likelihood-vulnerability', assetDetail)">
-                                                        <ng-container *ngIf="whichContentByCell(lastSquareRowElement-j, i, myAsset,
-                                                        'likelihood-vulnerability')!==''">{{whichContentByCell(lastSquareRowElement-j,
-                                                            i, myAsset,
-                                                            'likelihood-vulnerability')}}</ng-container>
-                                                        <ng-container *ngIf="whichContentByCell(lastSquareRowElement-j, i, myAsset,
-                                                        'likelihood-vulnerability')===''">&nbsp;</ng-container>
-                                                    </a>
-                                                </ng-container>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-1"></div>
-                                    </ng-container>
                                 </div>
-                            </div>
+                                <div class="col-md-1"></div>
+                            </ng-container>
                         </div>
                     </div>
                 </div>
+                <div class="card">
+                    <div class="card-body">
+                        <ngb-accordion #acc="ngbAccordion" [closeOthers]="true">
+                            <ngb-panel>
+                                <ng-template ngbPanelTitle>
+                                    <h5>Impact: {{selectedAsset.impact}}</h5>
+                                </ng-template>
+                                <ng-template ngbPanelContent>
+                                    <ng-container *ngIf="loadingImpactTable">
+                                        <div class="loader"></div>
+                                    </ng-container>
+                                    <ng-container *ngIf="!loadingImpactTable">
+                                        <p>This impact value was evaluated by this formula: <b>{{impactFormula | replace:'_':' ' | titlecase}}</b></p>
+                                        <ngb-tabset>
+                                            <ngb-tab title="Direct Cost">
+                                                <ng-template ngbTabContent>
+                                                    <div class="col-md-12" *ngIf="directImpactTable.length === 0">
+                                                        <p>No attack cost was defined for this asset yet!</p>
+                                                        <p>If you want, you can define them in the <a href="javascript:void(0)" [routerLink]="['/identify-asset/asset-clustering']">Asset Clustering</a> section!</p>
+                                                    </div>
+                                                    <table class="table" *ngIf="directImpactTable.length > 0">
+                                                        <thead>
+                                                            <tr>
+                                                                <th scope="col" width="30%">Attack Cost</th>
+                                                                <th scope="col">Economic Impact</th>
+                                                                <th scope="col">Formula</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <ng-container *ngFor="let impact of directImpactTable">
+                                                                <tr *ngIf="impact.direct">
+                                                                    <th scope="row" *ngIf="impact.attackCostParams"><a href="javascript:void(0)" (click)="selectAttackCost(impact)">{{impact.attackCost.type | replace:'_':' ' | titlecase}}</a></th>
+                                                                    <td *ngIf="!impact.attackCostParams">{{impact.attackCost.type | replace:'_':' ' | titlecase}}</td>
+                                                                    <td>{{impact.attackCost.costs | currency:'EUR'}}</td>
+                                                                    <td *ngIf="impact.formula">{{impact.formula | replace:'_':' ' | titlecase}}</td>
+                                                                    <td *ngIf="!impact.formula">-</td>
+                                                                </tr>
+                                                                <ng-container *ngIf="selectedImpact && selectedImpact.direct">
+                                                                    <tr *ngIf="selectedImpact.attackCost.id === impact.attackCost.id">
+                                                                        <td colspan="3">
+                                                                            <table class="col-md-12">
+                                                                                <thead>
+                                                                                    <tr>
+                                                                                        <th scope="col" class="text-center align-middle">Param</th>
+                                                                                        <th scope="col" class="text-center align-middle">Value</th>
+                                                                                        <th scope="col" class="text-center align-middle">Value min</th>
+                                                                                        <th scope="col" class="text-center align-middle">Value max</th>
+                                                                                    </tr>
+                                                                                </thead>
+                                                                                <tbody>
+                                                                                    <tr *ngFor="let param of selectedImpact.attackCostParams" class="text-center align-middle">
+                                                                                        <td>{{param.type | replace:'_':' ' | titlecase}}</td>
+                                                                                        <td *ngIf="isMoney(param.type)">{{param.value | currency:'EUR'}}</td>
+                                                                                        <td *ngIf="isFraction(param.type)">{{param.value | number : '1.1-1'}}%</td>
+                                                                                        <td *ngIf="!isMoney(param.type) && !isFraction(param.type)">{{param.value}}</td>
+                                                                                        <td *ngIf="isMoney(param.type) && param.min">{{param.min | currency:'EUR'}}</td>
+                                                                                        <td *ngIf="isFraction(param.type) && param.min">{{param.min}}%</td>
+                                                                                        <td *ngIf="!isMoney(param.type) && !isFraction(param.type) && param.min">{{param.min}}</td>
+                                                                                        <td *ngIf="!param.min">-</td>
+                                                                                        <td *ngIf="isMoney(param.type) && param.max">{{param.max | currency:'EUR'}}</td>
+                                                                                        <td *ngIf="isFraction(param.type) && param.max">{{param.max}}%</td>
+                                                                                        <td *ngIf="!isMoney(param.type) && !isFraction(param.type) && param.max">{{param.max}}</td>
+                                                                                        <td *ngIf="!param.max">-</td>
+                                                                                    </tr>
+                                                                                </tbody>
+                                                                            </table>
+                                                                        </td>
+                                                                    </tr>
+                                                                </ng-container>
+                                                            </ng-container>
+                                                        </tbody>
+                                                    </table>
+                                                </ng-template>
+                                            </ngb-tab>
+                                            <ngb-tab title="Indirect Cost">
+                                                <ng-template ngbTabContent>
+                                                        <div class="col-md-12" *ngIf="indirectImpactTable.length === 0">
+                                                            <p>No attack cost was defined for this asset yet!</p>
+                                                            <p>If you want, you can define them in the <a href="javascript:void(0)" [routerLink]="['/identify-asset/asset-clustering']">Asset Clustering</a> section!</p>
+                                                        </div>
+                                                        <table class="table" *ngIf="indirectImpactTable.length > 0">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th scope="col" width="30%">Attack Cost</th>
+                                                                        <th scope="col">Economic Impact</th>
+                                                                        <th scope="col">Formula</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    <ng-container *ngFor="let impact of indirectImpactTable">
+                                                                        <tr *ngIf="!impact.direct">
+                                                                            <th scope="row" *ngIf="impact.attackCostParams"><a href="javascript:void(0)" (click)="selectAttackCost(impact)">{{impact.attackCost.type | replace:'_':' ' | titlecase}}</a></th>
+                                                                            <td *ngIf="!impact.attackCostParams">{{impact.attackCost.type | replace:'_':' ' | titlecase}}</td>
+                                                                            <td>{{impact.attackCost.costs | currency:'EUR'}}</td>
+                                                                            <td *ngIf="impact.formula">{{impact.formula | replace:'_':' ' | titlecase}}</td>
+                                                                            <td *ngIf="!impact.formula">-</td>
+                                                                        </tr>
+                                                                        <ng-container *ngIf="selectedImpact && !selectedImpact.direct">
+                                                                            <tr *ngIf="selectedImpact.attackCost.id === impact.attackCost.id">
+                                                                                <td colspan="3">
+                                                                                    <table class="col-md-12">
+                                                                                        <thead>
+                                                                                            <tr>
+                                                                                                <th scope="col" class="text-center align-middle">Param</th>
+                                                                                                <th scope="col" class="text-center align-middle">Value</th>
+                                                                                                <th scope="col" class="text-center align-middle">Value min</th>
+                                                                                                <th scope="col" class="text-center align-middle">Value max</th>
+                                                                                            </tr>
+                                                                                        </thead>
+                                                                                        <tbody>
+                                                                                            <tr *ngFor="let param of selectedImpact.attackCostParams" class="text-center align-middle">
+                                                                                                <td>{{param.type | replace:'_':' ' | titlecase}}</td>
+                                                                                                <td *ngIf="isMoney(param.type)">{{param.value | currency:'EUR'}}</td>
+                                                                                                <td *ngIf="isFraction(param.type)">{{param.value | number : '1.1-1'}}%</td>
+                                                                                                <td *ngIf="!isMoney(param.type) && !isFraction(param.type)">{{param.value}}</td>
+                                                                                                <td *ngIf="isMoney(param.type) && param.min">{{param.min | currency:'EUR'}}</td>
+                                                                                                <td *ngIf="isFraction(param.type) && param.min">{{param.min}}%</td>
+                                                                                                <td *ngIf="!isMoney(param.type) && !isFraction(param.type) && param.min">{{param.min}}</td>
+                                                                                                <td *ngIf="!param.min">-</td>
+                                                                                                <td *ngIf="isMoney(param.type) && param.max">{{param.max | currency:'EUR'}}</td>
+                                                                                                <td *ngIf="isFraction(param.type) && param.max">{{param.max}}%</td>
+                                                                                                <td *ngIf="!isMoney(param.type) && !isFraction(param.type) && param.max">{{param.max}}</td>
+                                                                                                <td *ngIf="!param.max">-</td>
+                                                                                            </tr>
+                                                                                        </tbody>
+                                                                                    </table>
+                                                                                </td>
+                                                                            </tr>
+                                                                        </ng-container>
+                                                                    </ng-container>
+                                                                </tbody>
+                                                            </table>
+                                                </ng-template>
+                                            </ngb-tab>
+                                        </ngb-tabset>
+                                    </ng-container>
+                                </ng-template>
+                            </ngb-panel>
+                            <ngb-panel>
+                                <ng-template ngbPanelTitle>
+                                    <h5>Threat Agents</h5>
+                                </ng-template>
+                                <ng-template ngbPanelContent>
+                                    <ngb-tabset>
+                                        <ngb-tab title="Level of interest >= 75%">
+                                            <ng-template ngbTabContent>
+                                                <table class="table">
+                                                    <thead>
+                                                        <tr>
+                                                            <th scope="col">Threat Agent</th>
+                                                            <th scope="col">Level of interest</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody *ngIf="threatAgentInterest.length === 0">
+                                                        <p>No data found!</p>
+                                                    </tbody>
+                                                    <tbody *ngIf="threatAgentInterest.length > 0">
+                                                        <tr *ngFor="let threat of threatAgentInterest">
+                                                            <td *ngIf="(threat.levelOfInterest * 100) >= 75">
+                                                                {{threat.name}}
+                                                            </td>
+                                                            <td *ngIf="(threat.levelOfInterest * 100) >= 75">
+                                                                {{threat.levelOfInterest | percent}}
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </ng-template>
+                                        </ngb-tab>
+                                        <ngb-tab title="Level of interest < 75%">
+                                            <ng-template ngbTabContent>
+                                                <table class="table">
+                                                    <thead>
+                                                        <tr>
+                                                            <th scope="col">Threat Agent</th>
+                                                            <th scope="col">Level of interest</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody *ngIf="threatAgentInterest.length === 0">
+                                                        <p>No data found!</p>
+                                                    </tbody>
+                                                    <tbody *ngIf="threatAgentInterest.length > 0">
+                                                        <tr *ngFor="let threat of threatAgentInterest">
+                                                            <td *ngIf="(threat.levelOfInterest * 100) < 75">
+                                                                {{threat.name}}
+                                                            </td>
+                                                            <td *ngIf="(threat.levelOfInterest * 100) < 75">
+                                                                {{threat.levelOfInterest | percent}}
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </ng-template>
+                                        </ngb-tab>
+                                    </ngb-tabset>
+                                </ng-template>
+                            </ngb-panel>
+                            <ngb-panel>
+                                <ng-template ngbPanelTitle>
+                                    <h5>Attack Strategies</h5>
+                                </ng-template>
+                                <ng-template ngbPanelContent>
+                                    <table class="table" *ngIf="mapAssetAttacks.get(selectedAsset.id)">
+                                        <thead>
+                                            <tr>
+                                                <th>Attack Strategy</th>
+                                                <th>Mitigations</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr *ngFor="let attackChance of mapAssetAttacks.get(selectedAsset.id)">
+                                                <td>{{attackChance.attackStrategy.name}}</td>
+                                                <td>
+                                                    <span
+                                                        *ngFor="let mitigation of attackChance.attackStrategy.mitigations; let last = last">
+                                                        <a class="form-control-static"
+                                                            [routerLink]="['../mitigation-mgm', mitigation?.id ]">{{mitigation.name}}</a>{{last
+                                                        ? '' : ', '}}
+                                                    </span>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </ng-template>
+                            </ngb-panel>
+                        </ngb-accordion>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-9" *ngIf="!selectedAsset && criticalLevel && !detailsLoading">
+                <div class="text-center" style="margin-top: 50px">
+                    <p style="color: orange"><i class="fa fa-exclamation-triangle fa-4x" aria-hidden="true"></i></p>
+                    <p style="color: grey">Please select one asset from the list at left of the screen!</p>
+                </div>
             </div>
         </div>
-    </ng-container>
-    -->
     </ng-container>
 </div>
