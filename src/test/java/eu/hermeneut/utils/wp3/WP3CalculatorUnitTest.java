@@ -142,20 +142,6 @@ public class WP3CalculatorUnitTest {
         Assert.assertEquals(ORG_CAPITAL_SPLITTING_VALUE, orgSplittingValue);
     }
 
-    /*@Test
-    public void calculateSplittingLossPercentage() {
-        BigDecimal splittingLossPercentage = Calculator.calculateSplittingPercentage(this.ipCategory, this.globalSector);
-
-        Assert.assertEquals(GLOBAL_IP_SPLITTING_LOSS_PERCENTAGE, splittingLossPercentage);
-    }
-
-    @Test
-    public void calculateSplittingLoss() {
-        BigDecimal splittingLoss = Calculator.calculateSplittingLoss(INTANGIBLE_LOSS_BY_ATTACKS, this.ipCategory, this.globalSector);
-
-        Assert.assertEquals(SPLITTING_LOSS_OF_INTANGIBLE, splittingLoss);
-    }*/
-
     public static List<MyAsset> getFixedAssets() {
         List<MyAsset> fixedAssets = new ArrayList<>();
 
@@ -188,10 +174,10 @@ public class WP3CalculatorUnitTest {
         plantsAndMachinery.setEconomicValue(new BigDecimal("400000"));
         fixedAssets.add(plantsAndMachinery);
 
-        MyAsset fornitureAndOfficeSupplies = new MyAsset();
-        fornitureAndOfficeSupplies.setAsset(fixedAsset);
-        fornitureAndOfficeSupplies.setEconomicValue(new BigDecimal("250000"));
-        fixedAssets.add(fornitureAndOfficeSupplies);
+        MyAsset furnitureAndOfficeSupplies = new MyAsset();
+        furnitureAndOfficeSupplies.setAsset(fixedAsset);
+        furnitureAndOfficeSupplies.setEconomicValue(new BigDecimal("250000"));
+        fixedAssets.add(furnitureAndOfficeSupplies);
 
         return fixedAssets;
 
