@@ -1,0 +1,64 @@
+<ng-container class="container" *ngIf="criticalBostonSquareLoad">
+  <div class="loader"></div>
+</ng-container>
+<ng-container class="container-fluid" *ngIf="!criticalBostonSquareLoad">
+  <div class="x_panel" style="padding:0px !important;">
+    <div class="x_title" style="padding:0px !important;">
+      <h2 style="padding: 10px;">
+        <a [routerLink]="['/risk-management/risk-evaluation' ]">Risk square</a>
+      </h2>
+      <ul class="nav navbar-right panel_toolbox">
+        <li style="width: 24px; cursor: default"></li>
+        <li style="width: 24px; cursor: default"></li>
+        <li>
+          <a href="javascript:void(0)" class="collapse-link" (click)="isCollapsed = !isCollapsed">
+            <i *ngIf="!isCollapsed" class="fa fa-chevron-up"></i>
+            <i *ngIf="isCollapsed" class="fa fa-chevron-down"></i>
+          </a>
+        </li>
+      </ul>
+      <div class="clearfix"></div>
+    </div>
+    <div class="table-responsive x_content" style="padding:0px !important;" [ngbCollapse]="isCollapsed">
+      <div class="card card-body table-responsive text-nowrap">
+          <div class="row">
+              <div class="col-md-2 text-left">
+                  <b>Critically</b>
+              </div>
+          </div>
+          <div *ngFor="let j of squareRowElement" class="row">
+              <div class="col-md-1 text-right">
+                  <ng-container *ngIf="j!==lastSquareRowElement">{{(lastSquareRowElement-j)*(lastSquareRowElement-j)}}
+                  </ng-container>
+              </div>
+              <ng-container *ngIf="j===lastSquareRowElement">
+                  <div *ngFor="let i of squareColumnElement" class="col-md-2 text-center">
+                      {{i}}
+                  </div>
+                  <div class="row">
+                      <div class="col-md-12 text-right">
+                          <b>Impact</b>
+                      </div>
+                  </div>
+              </ng-container>
+              <ng-container *ngIf="j!==lastSquareRowElement">
+                  <div *ngFor="let i of squareColumnElement" class="col-md-2">
+                      <div class="text-center boston-square-text"
+                          [ngClass]="{'low-level': whichLevel(lastSquareRowElement-j, i) === 'low', 'medium-level': whichLevel(lastSquareRowElement-j, i) === 'medium', 'high-level': whichLevel(lastSquareRowElement-j, i) === 'high'}" 
+                          placement="left"
+                          ngbTooltip="{{assetToolTipLoaded ? assetsToolTip.get(concatenateAndParse([lastSquareRowElement-j, i])):''}}">
+                          <ng-container *ngIf="whichCriticalContentByCell(lastSquareRowElement-j, i) !== ''">
+                              {{whichCriticalContentByCell(lastSquareRowElement-j, i)}}
+                          </ng-container>
+                          <ng-container *ngIf="whichCriticalContentByCell(lastSquareRowElement-j, i) === ''">
+                              &nbsp;
+                          </ng-container>
+                      </div>
+                  </div>
+                  <div class="col-md-1"></div>
+              </ng-container>
+          </div>
+      </div>
+    </div>
+  </div>
+</ng-container>

@@ -10,9 +10,9 @@ import eu.hermeneut.web.rest.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -58,7 +58,7 @@ public class SelfAssessmentResource {
      */
     @PostMapping("/self-assessments")
     @Timed
-    @Secured(AuthoritiesConstants.CISO)
+    @Secured({AuthoritiesConstants.CISO, AuthoritiesConstants.ADMIN})
     public ResponseEntity<SelfAssessment> createSelfAssessment(@Valid @RequestBody SelfAssessment selfAssessment) throws URISyntaxException {
         log.debug("REST request to save SelfAssessment : {}", selfAssessment);
         if (selfAssessment.getId() != null) {
@@ -81,7 +81,8 @@ public class SelfAssessmentResource {
      */
     @PutMapping("/self-assessments")
     @Timed
-    @Secured(AuthoritiesConstants.CISO)
+    @PreAuthorize("@selfAssessmentGuardian.isCISO(#selfAssessment) || hasRole('ROLE_ADMIN')")
+    @Secured({AuthoritiesConstants.CISO, AuthoritiesConstants.ADMIN})
     public ResponseEntity<SelfAssessment> updateSelfAssessment(@Valid @RequestBody SelfAssessment selfAssessment) throws URISyntaxException {
         log.debug("REST request to update SelfAssessment : {}", selfAssessment);
         if (selfAssessment.getId() == null) {
@@ -114,6 +115,7 @@ public class SelfAssessmentResource {
      */
     @GetMapping("/self-assessments/{id}")
     @Timed
+    @PreAuthorize("@selfAssessmentGuardian.isCISO(#id) || @selfAssessmentGuardian.isExternal(#id) || hasRole('ROLE_ADMIN')")
     @Secured({AuthoritiesConstants.CISO, AuthoritiesConstants.EXTERNAL_AUDIT, AuthoritiesConstants.ADMIN})
     public ResponseEntity<SelfAssessment> getSelfAssessment(@PathVariable Long id) {
         log.debug("REST request to get SelfAssessment : {}", id);
@@ -160,14 +162,6 @@ public class SelfAssessmentResource {
         return selfAssessments;
     }
 
-    @GetMapping("/self-assessments/by-company/{companyProfileID}")
-    @Timed
-    public List<SelfAssessment> getSelfAssessmentsByCompanyProfile(@PathVariable Long companyProfileID) {
-        log.debug("REST request to get SelfAssessment by company profile: {}", companyProfileID);
-        List<SelfAssessment> selfAssessments = selfAssessmentService.findAllByCompanyProfile(companyProfileID);
-        return selfAssessments;
-    }
-
     /**
      * DELETE  /self-assessments/:id : delete the "id" selfAssessment.
      *
@@ -176,6 +170,7 @@ public class SelfAssessmentResource {
      */
     @DeleteMapping("/self-assessments/{id}")
     @Timed
+    @PreAuthorize("@selfAssessmentGuardian.isCISO(#id) || hasRole('ROLE_ADMIN')")
     @Secured({AuthoritiesConstants.CISO, AuthoritiesConstants.ADMIN})
     public ResponseEntity<Void> deleteSelfAssessment(@PathVariable Long id) {
         log.debug("REST request to delete SelfAssessment : {}", id);
@@ -192,9 +187,9 @@ public class SelfAssessmentResource {
      */
     @GetMapping("/_search/self-assessments")
     @Timed
+    @Secured(AuthoritiesConstants.ADMIN)
     public List<SelfAssessment> searchSelfAssessments(@RequestParam String query) {
         log.debug("REST request to search SelfAssessments for query {}", query);
         return selfAssessmentService.search(query);
     }
-
 }

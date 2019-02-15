@@ -1,11 +1,17 @@
-import {DashboardStepEnum} from './../models/enumeration/dashboard-step.enum';
-import {DashboardService, DashboardStatus, Status} from './../dashboard.service';
-import {MyAssetAttackChance} from './../../risk-management/model/my-asset-attack-chance.model';
-import {RiskManagementService} from './../../risk-management/risk-management.service';
-import {SelfAssessmentMgm} from './../../entities/self-assessment-mgm/self-assessment-mgm.model';
-import {MyAssetMgm} from './../../entities/my-asset-mgm/my-asset-mgm.model';
-import {SelfAssessmentMgmService} from './../../entities/self-assessment-mgm/self-assessment-mgm.service';
-import {Component, OnInit} from '@angular/core';
+import * as _ from 'lodash';
+import { DashboardStepEnum } from './../models/enumeration/dashboard-step.enum';
+import { DashboardService, DashboardStatus, Status } from './../dashboard.service';
+import { MyAssetAttackChance } from './../../risk-management/model/my-asset-attack-chance.model';
+import { RiskManagementService } from './../../risk-management/risk-management.service';
+import { SelfAssessmentMgm } from './../../entities/self-assessment-mgm/self-assessment-mgm.model';
+import { MyAssetMgm } from './../../entities/my-asset-mgm/my-asset-mgm.model';
+import { SelfAssessmentMgmService } from './../../entities/self-assessment-mgm/self-assessment-mgm.service';
+import { Component, OnInit } from '@angular/core';
+
+interface RiskPercentageElement {
+  asset: MyAssetMgm;
+  percentage: number;
+}
 
 @Component({
   selector: 'jhi-asset-at-risk-widget',
@@ -17,7 +23,7 @@ export class AssetAtRiskWidgetComponent implements OnInit {
   public noRiskInMap = false;
   public loading = false;
   public isCollapsed = true;
-  public riskPercentageMap: Map<number/*MyAsset.ID*/, number/*RiskPercentage*/> = new Map<number, number>();
+  public risks: RiskPercentageElement[] = [];
   public mapAssetAttacks: Map<number, MyAssetAttackChance[]> = new Map<number, MyAssetAttackChance[]>();
   public mapMaxCriticalLevel: Map<number, number[]> = new Map<number, number[]>();
   public myAssets: MyAssetMgm[] = [];
@@ -61,10 +67,26 @@ export class AssetAtRiskWidgetComponent implements OnInit {
               if (myAsset.impact && lStore) {
                 const critical = lStore[1] * lStore[1];
                 const riskPercentage = this.evaluateRiskPercentage(critical, myAsset);
-                this.riskPercentageMap.set(myAsset.id, riskPercentage);
+                const risk: RiskPercentageElement = {
+                  asset: myAsset,
+                  percentage: riskPercentage
+                };
+                if (this.risks.length === 0) {
+                  this.risks.push(_.cloneDeep(risk));
+                } else {
+                  const index = _.findIndex(this.risks, (elem) => {
+                    return elem.asset.id === myAsset.id;
+                  });
+                  if (index !== -1) {
+                    this.risks.splice(index, 1, _.cloneDeep(risk));
+                  } else {
+                    this.risks.push(_.cloneDeep(risk));
+                  }
+                }
+                this.risks = _.orderBy(this.risks, ['percentage'], ['desc']);
               }
             }
-            if (this.riskPercentageMap.size === 0) {
+            if (this.risks.length === 0) {
               this.noRiskInMap = true;
             } else {
               this.noRiskInMap = false;

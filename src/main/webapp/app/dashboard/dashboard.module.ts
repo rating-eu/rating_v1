@@ -44,6 +44,7 @@ import { IntangibleFinancialWidgetComponent } from './intangible-financial-widge
 import { ImpactWidgetComponent } from './impact-widget/impact-widget.component';
 import { FinancialValueWidgetComponent } from './financial-value-widget/financial-value-widget.component';
 import { CustomersWidgetComponent } from './customers-widget/customers-widget.component';
+import { RiskSquareWidgetComponent } from './risk-square-widget/risk-square-widget.component';
 
 @NgModule({
     imports: [
@@ -74,7 +75,8 @@ import { CustomersWidgetComponent } from './customers-widget/customers-widget.co
         IntangibleFinancialWidgetComponent,
         ImpactWidgetComponent,
         FinancialValueWidgetComponent,
-        CustomersWidgetComponent
+        CustomersWidgetComponent,
+        RiskSquareWidgetComponent
     ],
     providers: [
         {

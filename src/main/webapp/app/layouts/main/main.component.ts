@@ -91,6 +91,7 @@ export class JhiMainComponent implements OnInit {
 
     private checkRole(role: MyRole) {
         const ROLE_STRING: string = MyRole[role];
+        const updateLayout: Update = new Update();
 
         switch (role) {
             case MyRole.ROLE_CISO: {
@@ -99,6 +100,9 @@ export class JhiMainComponent implements OnInit {
 
                     if (this.isCISO) {
                         this.dataSharingService.updateRole(MyRole.ROLE_CISO);
+                        updateLayout.isSidebarCollapsed = false;
+                        updateLayout.isSidebarCollapsedByMe = false;
+                        this.dataSharingService.updateLayout(updateLayout);
                     }
                 });
                 break;
@@ -109,6 +113,9 @@ export class JhiMainComponent implements OnInit {
 
                     if (this.isExternal) {
                         this.dataSharingService.updateRole(MyRole.ROLE_EXTERNAL_AUDIT);
+                        updateLayout.isSidebarCollapsed = true;
+                        updateLayout.isSidebarCollapsedByMe = false;
+                        this.dataSharingService.updateLayout(updateLayout);
                     }
                 });
                 break;
@@ -118,6 +125,9 @@ export class JhiMainComponent implements OnInit {
                     this.isAdmin = response;
 
                     if (this.isAdmin) {
+                        updateLayout.isSidebarCollapsed = true;
+                        updateLayout.isSidebarCollapsedByMe = false;
+                        this.dataSharingService.updateLayout(updateLayout);
                         this.dataSharingService.updateRole(MyRole.ROLE_ADMIN);
                     }
                 });

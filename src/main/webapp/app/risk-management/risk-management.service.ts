@@ -7,6 +7,7 @@ import { CriticalLevelMgm } from '../entities/critical-level-mgm';
 import { HttpClient, HttpResponse, HttpErrorResponse } from '../../../../../node_modules/@angular/common/http';
 import { MyAssetMgm } from '../entities/my-asset-mgm';
 import { MyAssetAttackChance } from './model/my-asset-attack-chance.model';
+import { AttackCostFormula } from './model/attack-cost-formula.model';
 
 @Injectable()
 export class RiskManagementService {
@@ -14,7 +15,8 @@ export class RiskManagementService {
   private assetServiceUrl = SERVER_API_URL + 'api/my-assets/self-assessment/';
   private attackChanceServiceUrl = SERVER_API_URL + 'api/{selfAssessmentID}/wp4/my-assets/{myAssetID}/attack-chances/';
   private threatAgentsInterestsServiceUrl = SERVER_API_URL + 'api/{selfAssessmentID}/wp4/my-assets/{myAssetID}/threat-agent-interests';
-
+  private attackCostsFormulaByMyAssetUrl = SERVER_API_URL + '/api/{selfAssessmentID}/formula/attack-costs/{myAssetID}';
+  private impactFormulaByMyAssetUrl = SERVER_API_URL + '/api/{selfAssessmentID}/formula/impact/{myAssetID}';
   private subscriptorForCriticalLevel: Subject<CriticalLevelMgm> = new Subject<CriticalLevelMgm>();
 
   constructor(
@@ -27,6 +29,28 @@ export class RiskManagementService {
 
   public sendUpdateForCriticalLevelToSubscriptor(level: CriticalLevelMgm) {
     this.subscriptorForCriticalLevel.next(level);
+  }
+
+  public getImpactFormulaByMyAsset(self: SelfAssessmentMgm, myAsset: MyAssetMgm): Observable<string> {
+    const uri = this.impactFormulaByMyAssetUrl.replace('{selfAssessmentID}', String(self.id)).replace('{myAssetID}', String(myAsset.id));
+    return this.http.get(uri, {responseType: 'text'})
+      .map((res) => {
+        return res;
+      }).catch((err) => {
+        console.error('An error occurred:', err);
+        return Observable.empty<string>();
+      });
+  }
+
+  public getAttackCostsFormulaByMyAsset(self: SelfAssessmentMgm, myAsset: MyAssetMgm): Observable<AttackCostFormula[]> {
+    const uri = this.attackCostsFormulaByMyAssetUrl.replace('{selfAssessmentID}', String(self.id)).replace('{myAssetID}', String(myAsset.id));
+    return this.http.get<AttackCostFormula[]>(uri, { observe: 'response' })
+      .map((res: HttpResponse<AttackCostFormula[]>) => {
+        return res.body;
+      }).catch((err: HttpErrorResponse) => {
+        console.error('An error occurred:', err.status);
+        return Observable.empty<AttackCostFormula[]>();
+      });
   }
 
   public getCriticalLevel(self: SelfAssessmentMgm): Observable<CriticalLevelMgm> {

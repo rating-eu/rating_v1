@@ -5,7 +5,7 @@
 <jhi-sidebar></jhi-sidebar>
 
 <div *ngIf="isAuthenticated"
-     [ngClass]="{'content-page-sidenav': !updateLayout.isSidebarCollapsed && !isExternal, 'content-page-no-sidenav': updateLayout.isSidebarCollapsed || isExternal}">
+     [ngClass]="{'content-page-sidenav': !updateLayout.isSidebarCollapsed && !isExternal && !isAdmin, 'content-page-no-sidenav': updateLayout.isSidebarCollapsed || isExternal || isAdmin}">
     <!-- [ngClass]="{'content-page-sidenav': !updateLayout.isSidebarCollapsed, 'content-page-no-sidenav': updateLayout.isSidebarCollapsed}" -->
     <!-- Start content -->
     <div class="content">

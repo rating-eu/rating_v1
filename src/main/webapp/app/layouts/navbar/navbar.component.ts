@@ -33,6 +33,7 @@ export class NavbarComponent implements OnInit {
     companyName: string;
     public isAuthenticatedValue = false;
     public isExternal = false;
+    public isAdmin = false;
 
     constructor(
         private loginService: LoginService,
@@ -73,21 +74,25 @@ export class NavbarComponent implements OnInit {
                 switch (role) {
                     case MyRole.ROLE_CISO: {
                         this.isAuthenticatedValue = true;
+                        this.isAdmin = false;
                         this.isExternal = false;
                         break;
                     }
                     case MyRole.ROLE_EXTERNAL_AUDIT: {
                         this.isAuthenticatedValue = true;
+                        this.isAdmin = false;
                         this.isExternal = true;
                         break;
                     }
                     case MyRole.ROLE_ADMIN: {
                         this.isAuthenticatedValue = true;
+                        this.isAdmin = true;
                         this.isExternal = false;
                         break;
                     }
                     default: {
                         this.isAuthenticatedValue = false;
+                        this.isAdmin = false;
                         this.isExternal = false;
                     }
                 }
