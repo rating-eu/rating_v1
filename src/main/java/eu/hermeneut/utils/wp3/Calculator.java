@@ -97,23 +97,43 @@ public class Calculator {
         EBIT ebit = ebits.get(ebitIndex);
         BigDecimal result = BigDecimal.ZERO;
 
+        LOGGER.debug("");
+        LOGGER.debug("Year: " + ebit.getYear());
+        LOGGER.debug("EBIT: " + ebit.getValue());
+
         BigDecimal base = BigDecimal.ONE.add(discountingRate.divide(new BigDecimal(100)));//1 + discountingRate
+        LOGGER.debug("Base: " + base);
+
         int exponent = -year;
+        LOGGER.debug("Exponent: " + exponent);
 
         if (exponent < 0) {
             exponent *= -1;//Make it positive
 
             BigDecimal power = base.pow(exponent).setScale(2, RoundingMode.HALF_UP);
             power = BigDecimal.ONE.divide(power, 2, RoundingMode.HALF_UP);//Make the inverse
+            LOGGER.debug("Power: " + power);
 
             BigDecimal product = ebit.getValue().multiply(power);
+            LOGGER.debug("Product: " + product);
 
             result = result.add(product);
         } else {
-            BigDecimal product = ebit.getValue().multiply(base.pow(exponent));
+            BigDecimal power = base.pow(exponent);
+            LOGGER.debug("Power: " + power);
+
+            BigDecimal product = ebit.getValue().multiply(power);
+            LOGGER.debug("Product: " + product);
             result = result.add(product);
         }
-        return result.setScale(2, RoundingMode.HALF_UP);
+
+        result = result.setScale(2, RoundingMode.HALF_UP);
+        LOGGER.debug("Result: " + result);
+
+
+        LOGGER.debug("Ebit per 1 + discounting rate: " + result);
+
+        return result;
     }
 
     public static BigDecimal calculateIntangibleDrivingEarnings(BigDecimal economicPerformance, BigDecimal physicalAssetsReturn, BigDecimal financialAssetsReturn, List<MyAsset> myAssets) {
