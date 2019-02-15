@@ -183,6 +183,14 @@ public class Calculator {
         return intangibleLossByAttacks.multiply(percentage).divide(new BigDecimal(100), 2, RoundingMode.HALF_UP);
     }
 
+    public static BigDecimal calculateSplittingValue(BigDecimal intangibleCapital, CategoryType categoryType, SectorType sectorType) {
+        BigDecimal percentage = calculateSplittingPercentage(categoryType, sectorType);
+        LOGGER.debug("Percentage: " + percentage);
+        LOGGER.debug("IntangibleLossByAttacks: " + intangibleCapital);
+
+        return intangibleCapital.multiply(percentage).divide(new BigDecimal(100), 2, RoundingMode.HALF_UP);
+    }
+
     public static BigDecimal calculateSplittingPercentage(CategoryType categoryType, SectorType sectorType/*Optional field*/) {
         if (categoryType == null) {
             throw new IllegalArgumentException("CategoryType can NOT be NULL!");
