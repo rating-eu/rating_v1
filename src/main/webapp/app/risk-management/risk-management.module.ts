@@ -20,6 +20,7 @@ import {JhiLanguageService} from 'ng-jhipster';
 import {NgxPaginationModule} from 'ngx-pagination';
 import { HermeneutMitigationMgmModule } from '../entities/mitigation-mgm/mitigation-mgm.module';
 import { NgbAccordionModule } from '../../../../../node_modules/@ng-bootstrap/ng-bootstrap';
+import { DashboardModule } from '../dashboard/dashboard.module';
 
 @NgModule({
     imports: [
