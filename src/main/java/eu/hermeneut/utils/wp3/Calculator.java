@@ -75,7 +75,7 @@ public class Calculator {
 
         //=======Calculate the Economic Performance=======
 
-        BigDecimal economicPerformance = BigDecimal.ZERO.setScale(3, RoundingMode.HALF_UP);
+        BigDecimal economicPerformance = BigDecimal.ZERO.setScale(2, RoundingMode.HALF_UP);
 
         //First 3 years
         for (int year = -2, time = +2; year <= 0; year++) {
@@ -87,7 +87,7 @@ public class Calculator {
             economicPerformance = economicPerformance.add(economicPerformanceHelper(ebits, discountingRate, year, time));
         }
 
-        economicPerformance = economicPerformance.divide(new BigDecimal("6"), 3, RoundingMode.HALF_UP);
+        economicPerformance = economicPerformance.divide(new BigDecimal("6"), 2, RoundingMode.HALF_UP);
 
         return economicPerformance;
     }
@@ -97,23 +97,43 @@ public class Calculator {
         EBIT ebit = ebits.get(ebitIndex);
         BigDecimal result = BigDecimal.ZERO;
 
+        LOGGER.debug("");
+        LOGGER.debug("Year: " + ebit.getYear());
+        LOGGER.debug("EBIT: " + ebit.getValue());
+
         BigDecimal base = BigDecimal.ONE.add(discountingRate.divide(new BigDecimal(100)));//1 + discountingRate
+        LOGGER.debug("Base: " + base);
+
         int exponent = -year;
+        LOGGER.debug("Exponent: " + exponent);
 
         if (exponent < 0) {
             exponent *= -1;//Make it positive
 
-            BigDecimal power = base.pow(exponent).setScale(3, RoundingMode.HALF_UP);
-            power = BigDecimal.ONE.divide(power, 3, RoundingMode.HALF_UP);//Make the inverse
+            BigDecimal power = base.pow(exponent).setScale(2, RoundingMode.HALF_UP);
+            power = BigDecimal.ONE.divide(power, 2, RoundingMode.HALF_UP);//Make the inverse
+            LOGGER.debug("Power: " + power);
 
             BigDecimal product = ebit.getValue().multiply(power);
+            LOGGER.debug("Product: " + product);
 
             result = result.add(product);
         } else {
-            BigDecimal product = ebit.getValue().multiply(base.pow(exponent));
+            BigDecimal power = base.pow(exponent);
+            LOGGER.debug("Power: " + power);
+
+            BigDecimal product = ebit.getValue().multiply(power);
+            LOGGER.debug("Product: " + product);
             result = result.add(product);
         }
-        return result.setScale(3, RoundingMode.HALF_UP);
+
+        result = result.setScale(2, RoundingMode.HALF_UP);
+        LOGGER.debug("Result: " + result);
+
+
+        LOGGER.debug("Ebit per 1 + discounting rate: " + result);
+
+        return result;
     }
 
     public static BigDecimal calculateIntangibleDrivingEarnings(BigDecimal economicPerformance, BigDecimal physicalAssetsReturn, BigDecimal financialAssetsReturn, List<MyAsset> myAssets) {
@@ -157,8 +177,8 @@ public class Calculator {
             financialAssetsValuation = financialAssetsValuation.add(financialAsset.getEconomicValue());
         }
 
-        intangibleDrivingEarnings = intangibleDrivingEarnings.subtract(physicalAssetsReturn.multiply(physicalAssetsValuation).divide(new BigDecimal("100"), 3, RoundingMode.HALF_UP));
-        intangibleDrivingEarnings = intangibleDrivingEarnings.subtract(financialAssetsReturn.multiply(financialAssetsValuation).divide(new BigDecimal("100"), 3, RoundingMode.HALF_UP));
+        intangibleDrivingEarnings = intangibleDrivingEarnings.subtract(physicalAssetsReturn.multiply(physicalAssetsValuation).divide(new BigDecimal("100"), 2, RoundingMode.HALF_UP));
+        intangibleDrivingEarnings = intangibleDrivingEarnings.subtract(financialAssetsReturn.multiply(financialAssetsValuation).divide(new BigDecimal("100"), 2, RoundingMode.HALF_UP));
 
         return intangibleDrivingEarnings;
     }
@@ -166,13 +186,13 @@ public class Calculator {
     public static BigDecimal calculateIntangibleCapital(BigDecimal intangibleDrivingEarnings, BigDecimal discountingRate) {
         BigDecimal intangibleCapital = BigDecimal.ZERO;
 
-        intangibleCapital = intangibleCapital.add(intangibleDrivingEarnings.divide(BigDecimal.ONE.add(discountingRate.divide(new BigDecimal(100))), 3, RoundingMode.HALF_UP));
+        intangibleCapital = intangibleCapital.add(intangibleDrivingEarnings.divide(BigDecimal.ONE.add(discountingRate.divide(new BigDecimal(100))), 2, RoundingMode.HALF_UP));
 
         return intangibleCapital;
     }
 
     public static BigDecimal calculateIntangibleLossByAttacks(BigDecimal intangibleCapital, BigDecimal lossOfIntangiblePercentage) {
-        return intangibleCapital.multiply(lossOfIntangiblePercentage).divide(new BigDecimal("100"), 3, RoundingMode.HALF_UP);
+        return intangibleCapital.multiply(lossOfIntangiblePercentage).divide(new BigDecimal("100"), 2, RoundingMode.HALF_UP);
     }
 
     public static BigDecimal calculateSplittingLoss(BigDecimal intangibleLossByAttacks, CategoryType categoryType, SectorType sectorType) {
@@ -180,7 +200,15 @@ public class Calculator {
         LOGGER.debug("Percentage: " + percentage);
         LOGGER.debug("IntangibleLossByAttacks: " + intangibleLossByAttacks);
 
-        return intangibleLossByAttacks.multiply(percentage).divide(new BigDecimal(100), 3, RoundingMode.HALF_UP);
+        return intangibleLossByAttacks.multiply(percentage).divide(new BigDecimal(100), 2, RoundingMode.HALF_UP);
+    }
+
+    public static BigDecimal calculateSplittingValue(BigDecimal intangibleCapital, CategoryType categoryType, SectorType sectorType) {
+        BigDecimal percentage = calculateSplittingPercentage(categoryType, sectorType);
+        LOGGER.debug("Percentage: " + percentage);
+        LOGGER.debug("IntangibleLossByAttacks: " + intangibleCapital);
+
+        return intangibleCapital.multiply(percentage).divide(new BigDecimal(100), 2, RoundingMode.HALF_UP);
     }
 
     public static BigDecimal calculateSplittingPercentage(CategoryType categoryType, SectorType sectorType/*Optional field*/) {

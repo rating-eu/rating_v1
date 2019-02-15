@@ -44,11 +44,13 @@
                     <i *ngIf="!cost.costs" class="fa fa-minus" aria-hidden="true" style="color: grey"></i>
                   </ng-container>
                   <ng-container *ngIf="uploadOrEvaluation">
-                      <i *ngIf="cost.costs && evaluatingCost.type !== cost.type" class="fa fa-check fa-lg" aria-hidden="true" style="color: green"></i>
-                      <i *ngIf="!cost.costs && evaluatingCost.type !== cost.type" class="fa fa-minus" aria-hidden="true" style="color: grey"></i>
-                      <i *ngIf="evaluatingCost.type === cost.type" class="fa fa-circle-o-notch fa-spin fa-lg fa-fw"></i>
+                    <i *ngIf="cost.costs && evaluatingCost.type !== cost.type" class="fa fa-check fa-lg" aria-hidden="true"
+                      style="color: green"></i>
+                    <i *ngIf="!cost.costs && evaluatingCost.type !== cost.type" class="fa fa-minus" aria-hidden="true"
+                      style="color: grey"></i>
+                    <i *ngIf="evaluatingCost.type === cost.type" class="fa fa-circle-o-notch fa-spin fa-lg fa-fw"></i>
                   </ng-container>
-                  
+
                   {{cost.type | replace:'_':' ' | titlecase}}
                 </a>
               </ng-container>
@@ -147,7 +149,7 @@
                       <input type="number" min="0.01" step="0.01" class="form-control" placeholder="Insert Recovery Cost"
                         aria-label="Insert Recovery Cost" aria-describedby="recovery_cost" [(ngModel)]="recoveryCost">
                     </div>
-                    <div class="col-md-12">
+                    <div class="col-md-2 float-md-right" style="margin-top:15px; margin-bottom: 15px">
                       <button class="btn btn-outline-secondary" type="button" id="evaluate" (click)="evaluateAttackCost(costTypeEnum.COST_OF_IT_DOWNTIME)">
                         <ng-container>Evaluate</ng-container>
                       </button>
@@ -173,20 +175,20 @@
                   </div>
                 </ng-container>
                 <ng-container *ngSwitchDefault>
-                    <div class="text-center" style="margin-top: 50px">
-                      <p style="color: orange">
-                        <i class="fa fa-exclamation-triangle fa-4x" aria-hidden="true"></i>
-                      </p>
-                      <p style="color: grey">
-                        <i>WARNING: Currently, there is no evaluation method implemented for this attack-related cost.
-                          If you already have such estimated value, please, set it in the following form. It will be
-                          used to estimate the impact of the attacks.</i>
-                      </p>
-                    </div>
+                  <div class="text-center" style="margin-top: 50px">
+                    <p style="color: orange">
+                      <i class="fa fa-exclamation-triangle fa-4x" aria-hidden="true"></i>
+                    </p>
+                    <p style="color: grey">
+                      <i>WARNING: Currently, there is no evaluation method implemented for this attack-related cost.
+                        If you already have such estimated value, please, set it in the following form. It will be
+                        used to estimate the impact of the attacks.</i>
+                    </p>
+                  </div>
                 </ng-container>
               </ng-container>
             </div>
-            <div class="row">
+            <div class="row" style="margin-bottom: 15px">
               <div class="col-md-6">
                 <div class="input-group mb-3">
                   <div class="input-group-prepend">

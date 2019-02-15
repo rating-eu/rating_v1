@@ -2,10 +2,13 @@ package eu.hermeneut.web.rest.dashboard;
 
 import eu.hermeneut.domain.dashboard.DashboardStep;
 import eu.hermeneut.domain.enumeration.Status;
+import eu.hermeneut.security.AuthoritiesConstants;
 import eu.hermeneut.service.DashboardStatusService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,6 +23,8 @@ public class DashboardStatusController {
     private DashboardStatusService statusService;
 
     @GetMapping("{selfAssessmentID}/dashboard/status/{step}")
+    @PreAuthorize("@selfAssessmentGuardian.isCISO(#selfAssessmentID) || hasRole('ROLE_ADMIN')")
+    @Secured({AuthoritiesConstants.CISO, AuthoritiesConstants.ADMIN})
     public Status getDashboardStepStatus(@PathVariable Long selfAssessmentID, @PathVariable DashboardStep step) {
         LOGGER.info("GET Dashboard Step Status");
         LOGGER.info("SelfAssessmentID: " + selfAssessmentID);
@@ -43,6 +48,9 @@ public class DashboardStatusController {
             }
             case RISK_EVALUATION: {
                 return this.statusService.getRiskEvaluationStatus(selfAssessmentID);
+            }
+            case ATTACK_RELATED_COSTS: {
+                return this.statusService.getAttackRelatedCostsStatus(selfAssessmentID);
             }
             default: {
                 return Status.EMPTY;

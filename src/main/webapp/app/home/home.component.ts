@@ -1,10 +1,12 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import { JhiEventManager } from 'ng-jhipster';
+import {Component, OnInit} from '@angular/core';
+import {Router} from '@angular/router';
+import {NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
+import {JhiEventManager} from 'ng-jhipster';
 
-import { Account, LoginModalService, Principal } from '../shared';
+import {Account, LoginModalService, Principal} from '../shared';
 import {SelfAssessmentMgm, SelfAssessmentMgmService} from '../entities/self-assessment-mgm';
+import {DatasharingService} from '../datasharing/datasharing.service';
+import {MyRole} from '../entities/enumerations/MyRole.enum';
 
 @Component({
     selector: 'jhi-home',
@@ -18,12 +20,14 @@ export class HomeComponent implements OnInit {
     account: Account;
     modalRef: NgbModalRef;
     mySelf: SelfAssessmentMgm = {};
+
     constructor(
         private principal: Principal,
         private loginModalService: LoginModalService,
         private eventManager: JhiEventManager,
         private mySelfAssessmentService: SelfAssessmentMgmService,
         private router: Router,
+        private dataSharingService: DatasharingService
     ) {
     }
 
@@ -33,7 +37,21 @@ export class HomeComponent implements OnInit {
         });
         this.registerAuthenticationSuccess();
         this.mySelf = this.mySelfAssessmentService.getSelfAssessment();
-        this.router.navigate(['/dashboard']);
+
+        const role: MyRole = this.dataSharingService.getRole();
+
+        if (role) {
+            switch (role) {
+                case MyRole.ROLE_CISO: {
+                    this.router.navigate(['/dashboard']);
+                    break;
+                }
+                case MyRole.ROLE_EXTERNAL_AUDIT: {
+                    this.router.navigate(['/my-self-assessments']);
+                    break;
+                }
+            }
+        }
     }
 
     registerAuthenticationSuccess() {

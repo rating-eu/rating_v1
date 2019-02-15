@@ -16,6 +16,7 @@ export class StepInfoWidgetComponent implements OnInit {
   public identifyThreatAgentsStatus: string;
   public assessVulnerablitiesStatus: string;
   public impactEvaluationStatus: string;
+  public attackRelatedCostEstimationStatus: string;
   public riskEvaluationStatus: string;
   public alertMessage: string;
 
@@ -44,6 +45,7 @@ export class StepInfoWidgetComponent implements OnInit {
       this.identifyThreatAgentsStatus = status.identifyThreatAgentsStatus ? status.identifyThreatAgentsStatus.toString() : Status.EMPTY.toString();
       this.assessVulnerablitiesStatus = status.assessVulnerablitiesStatus ? status.assessVulnerablitiesStatus.toString() : Status.EMPTY.toString();
       this.impactEvaluationStatus = status.impactEvaluationStatus ? status.impactEvaluationStatus.toString() : Status.EMPTY.toString();
+      this.attackRelatedCostEstimationStatus = status.attackRelatedCostEstimationStatus ? status.attackRelatedCostEstimationStatus.toString() : Status.EMPTY.toString();
       this.riskEvaluationStatus = status.riskEvaluationStatus ? status.riskEvaluationStatus.toString() : Status.EMPTY.toString();
     }
   }

@@ -14,9 +14,17 @@ export class FooterComponent implements OnInit {
     ) { }
 
     ngOnInit() {
+        this.updateLayout = this.dataSharingService.getUpdate();
+        if (!this.updateLayout) {
+            this.updateLayout = new Update();
+            this.updateLayout.isSidebarCollapsed = false;
+            this.updateLayout.isSidebarCollapsedByMe = false;
+        }
         this.dataSharingService.observeUpdate().subscribe((update: Update) => {
             if (update) {
-                this.updateLayout = update;
+                setTimeout(() => {
+                    this.updateLayout = update;
+                }, 0);
             }
         });
     }

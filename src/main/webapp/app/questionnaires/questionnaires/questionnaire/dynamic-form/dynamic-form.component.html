@@ -1,6 +1,7 @@
 <ng-container *ngIf="loading">
     <div class="loader"></div>
 </ng-container>
+
 <form *ngIf="form && !loading" (ngSubmit)="submitDispatcher()" [formGroup]="form" role="form"
       class="dynamic-form-component">
 

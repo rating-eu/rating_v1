@@ -4,7 +4,8 @@
 
 <jhi-sidebar></jhi-sidebar>
 
-<div *ngIf="isAuthenticated" [ngClass]="{'content-page-sidenav': !updateLayout.isSidebarCollapsed, 'content-page-no-sidenav': updateLayout.isSidebarCollapsed}">
+<div *ngIf="isAuthenticated"
+     [ngClass]="{'content-page-sidenav': !updateLayout.isSidebarCollapsed && !isExternal && !isAdmin, 'content-page-no-sidenav': updateLayout.isSidebarCollapsed || isExternal || isAdmin}">
     <!-- [ngClass]="{'content-page-sidenav': !updateLayout.isSidebarCollapsed, 'content-page-no-sidenav': updateLayout.isSidebarCollapsed}" -->
     <!-- Start content -->
     <div class="content">
@@ -44,19 +45,20 @@
                             <div class="account-logo-box">
                                 <h2 class="text-uppercase text-center">
                                     <a href="index.html" class="text-success">
-                                        <span><img src="../../../content/assets/images/logo-login-rating.png" alt="Rating"></span>
+                                        <span><img src="../../../content/assets/images/logo-login-rating.png"
+                                                   alt="Rating"></span>
                                     </a>
                                 </h2>
                             </div>
                             <ngb-tabset>
                                 <ngb-tab>
-                                    <ng-template ngbTabTitle><b>Login</b> </ng-template>
+                                    <ng-template ngbTabTitle><b>Login</b></ng-template>
                                     <ng-template ngbTabContent>
                                         <jhi-login-plain></jhi-login-plain>
                                     </ng-template>
                                 </ngb-tab>
                                 <ngb-tab>
-                                    <ng-template ngbTabTitle><b>Register</b> </ng-template>
+                                    <ng-template ngbTabTitle><b>Register</b></ng-template>
                                     <ng-template ngbTabContent>
                                         <jhi-register></jhi-register>
                                     </ng-template>
@@ -71,7 +73,8 @@
         </div>
     </div>
 
-    <div *ngIf="isResetUrl" [ngClass]="{'content-page-sidenav': !updateLayout.isSidebarCollapsed, 'content-page-no-sidenav': updateLayout.isSidebarCollapsed}">
+    <div *ngIf="isResetUrl"
+         [ngClass]="{'content-page-sidenav': !updateLayout.isSidebarCollapsed, 'content-page-no-sidenav': updateLayout.isSidebarCollapsed}">
         <div class="content">
             <div class="container-fluid content-with-margin">
                 <div class="row">

@@ -1,9 +1,10 @@
 import {Component, OnInit} from '@angular/core';
-import {Router, ActivatedRouteSnapshot, NavigationEnd} from '@angular/router';
+import {ActivatedRouteSnapshot, NavigationEnd, Router} from '@angular/router';
 
 import {JhiLanguageHelper, LoginService, Principal} from '../../shared';
 import {DatasharingService} from '../../datasharing/datasharing.service';
 import {Update} from '../model/Update';
+import {MyRole} from '../../entities/enumerations/MyRole.enum';
 
 @Component({
     selector: 'jhi-main',
@@ -14,6 +15,9 @@ export class JhiMainComponent implements OnInit {
     public updateLayout: Update;
     public isAuthenticated = false;
     public isResetUrl = false;
+    public isExternal = false;
+    public isCISO = false;
+    public isAdmin = false;
 
     constructor(
         private principal: Principal,
@@ -54,20 +58,91 @@ export class JhiMainComponent implements OnInit {
             }
         });
 
+        // Get notified each time authentication state changes.
         this.principal.getAuthenticationState().subscribe((authentication: any) => {
             if (authentication) {
                 this.isAuthenticated = true;
+
+                this.updateRole();
             } else {
                 this.isAuthenticated = false;
                 const updateLayout: Update = new Update();
                 updateLayout.isSidebarCollapsed = true;
                 updateLayout.isSidebarCollapsedByMe = false;
                 this.dataSharingService.updateLayout(updateLayout);
+
+                this.resetRole();
             }
         });
 
-        this.loginService.checkLogin().then((check: boolean) => {
-            this.isAuthenticated = check;
-        });
+        if (this.principal.isAuthenticated()) {
+            this.isAuthenticated = this.principal.isAuthenticated();
+            this.updateRole();
+        }
+    }
+
+    private updateRole() {
+        this.checkRole(MyRole.ROLE_EXTERNAL_AUDIT);
+
+        this.checkRole(MyRole.ROLE_CISO);
+
+        this.checkRole(MyRole.ROLE_ADMIN);
+    }
+
+    private checkRole(role: MyRole) {
+        const ROLE_STRING: string = MyRole[role];
+        const updateLayout: Update = new Update();
+
+        switch (role) {
+            case MyRole.ROLE_CISO: {
+                this.principal.hasAuthority(ROLE_STRING).then((response: boolean) => {
+                    this.isCISO = response;
+
+                    if (this.isCISO) {
+                        this.dataSharingService.updateRole(MyRole.ROLE_CISO);
+                        updateLayout.isSidebarCollapsed = false;
+                        updateLayout.isSidebarCollapsedByMe = false;
+                        this.dataSharingService.updateLayout(updateLayout);
+                    }
+                });
+                break;
+            }
+            case MyRole.ROLE_EXTERNAL_AUDIT: {
+                this.principal.hasAuthority(ROLE_STRING).then((response: boolean) => {
+                    this.isExternal = response;
+
+                    if (this.isExternal) {
+                        this.dataSharingService.updateRole(MyRole.ROLE_EXTERNAL_AUDIT);
+                        updateLayout.isSidebarCollapsed = true;
+                        updateLayout.isSidebarCollapsedByMe = false;
+                        this.dataSharingService.updateLayout(updateLayout);
+                    }
+                });
+                break;
+            }
+            case MyRole.ROLE_ADMIN: {
+                this.principal.hasAuthority(ROLE_STRING).then((response: boolean) => {
+                    this.isAdmin = response;
+
+                    if (this.isAdmin) {
+                        updateLayout.isSidebarCollapsed = true;
+                        updateLayout.isSidebarCollapsedByMe = false;
+                        this.dataSharingService.updateLayout(updateLayout);
+                        this.dataSharingService.updateRole(MyRole.ROLE_ADMIN);
+                    }
+                });
+                break;
+            }
+        }
+
+    }
+
+    private resetRole() {
+        this.isAuthenticated = false;
+        this.isAdmin = false;
+        this.isExternal = false;
+        this.isCISO = false;
+
+        this.dataSharingService.updateRole(null);
     }
 }

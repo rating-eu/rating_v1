@@ -1,7 +1,7 @@
-<nav *ngIf="isAuthenticated()" class="navbar navbar-custom navbar-expand-md topbar" [ngClass]="{'navbar-custom-no-sidenav': sidebarCollapsed}">
+<nav *ngIf="isAuthenticated()" class="navbar navbar-custom navbar-expand-md topbar" [ngClass]="{'navbar-custom-no-sidenav': sidebarCollapsed || isExternal || isAdmin}">
     <!-- [ngClass]="{'sidebar-collapsed': isCollapsed}"-->
     <div class="topbar-left logo">
-        <i class="fa fa-bars fa-2x col-md-2" (click)="hideShowSideNav()"></i>
+        <i class="fa fa-bars fa-2x col-md-2" (click)="hideShowSideNav()" *jhiHasAnyAuthority="'ROLE_CISO'"></i>
         <!--routerLink="/"-->
         <!--
         <a href="javascript:void(0)" class="logo" (click)="hideShowSideNav()"> 
@@ -32,7 +32,7 @@
                 </a>
             </li>
             -->
-            <li class="waves-light waves-effect nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+            <li *jhiHasAnyAuthority="'ROLE_CISO'" class="waves-light waves-effect nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
                 <a class="nav-link" routerLink="/dashboard" (click)="collapseNavbar()">
                     <span>
                         <i class="fa fa-dashboard" aria-hidden="true"></i>
@@ -390,6 +390,14 @@
                 </ul>
             </li>
             -->
+            <li *jhiHasAnyAuthority="['ROLE_EXTERNAL_AUDIT']">
+                <a class="nav-link" routerLink="/my-self-assessments" (click)="collapseNavbar()">
+                    <span>
+                        <i class="fa fa-dashboard" aria-hidden="true"></i>
+                        <span>Self-Assessments</span>
+                    </span>
+                </a>
+            </li>
             <li ngbDropdown class="waves-light waves-effect nav-item dropdown pointer" placement="bottom-right"
                 routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
                 <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="account-menu">

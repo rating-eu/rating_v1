@@ -1,14 +1,14 @@
-import { AssetMgm } from './../../entities/asset-mgm/asset-mgm.model';
-import { DashboardStepEnum } from '../models/enumeration/dashboard-step.enum';
+import {AssetMgm} from './../../entities/asset-mgm/asset-mgm.model';
+import {DashboardStepEnum} from '../models/enumeration/dashboard-step.enum';
 import * as _ from 'lodash';
-import { Component, OnInit } from '@angular/core';
-import { SelfAssessmentMgm, SelfAssessmentMgmService } from '../../entities/self-assessment-mgm';
-import { ImpactEvaluationService } from '../../impact-evaluation/impact-evaluation.service';
-import { ImpactEvaluationStatus } from '../../impact-evaluation/model/impact-evaluation-status.model';
-import { MyAssetMgm } from '../../entities/my-asset-mgm';
-import { DashboardService, DashboardStatus } from '../dashboard.service';
-import { AssetType } from '../../entities/enumerations/AssetType.enum';
-import { Status } from '../../entities/enumerations/QuestionnaireStatus.enum';
+import {Component, OnInit} from '@angular/core';
+import {SelfAssessmentMgm, SelfAssessmentMgmService} from '../../entities/self-assessment-mgm';
+import {ImpactEvaluationService} from '../../impact-evaluation/impact-evaluation.service';
+import {ImpactEvaluationStatus} from '../../impact-evaluation/model/impact-evaluation-status.model';
+import {MyAssetMgm} from '../../entities/my-asset-mgm';
+import {DashboardService, DashboardStatus} from '../dashboard.service';
+import {AssetType} from '../../entities/enumerations/AssetType.enum';
+import {Status} from '../../entities/enumerations/QuestionnaireStatus.enum';
 
 @Component({
   selector: 'jhi-tangible-financial-widget',
@@ -83,7 +83,7 @@ export class TangibleFinancialWidgetComponent implements OnInit {
 
     this.dashService.getStatusFromServer(this.mySelf, this.dashboardStatus.IMPACT_EVALUATION).toPromise().then((res) => {
       this.status.impactEvaluationStatus = Status[res];
-      this.dashService.updateStatus(this.status);
+      this.dashService.updateStepStatus(DashboardStepEnum.IMPACT_EVALUATION, this.status.impactEvaluationStatus);
     });
   }
 
