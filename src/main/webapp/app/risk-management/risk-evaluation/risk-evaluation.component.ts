@@ -13,9 +13,11 @@ import { SessionStorageService } from 'ngx-webstorage';
 import { Router } from '@angular/router';
 import { Status } from '../../entities/enumerations/QuestionnaireStatus.enum';
 import { Subscription } from 'rxjs';
+import { MitigationMgm } from '../../entities/mitigation-mgm';
 
 interface RiskPercentageElement {
     asset: MyAssetMgm;
+    critical: number;
     percentage: number;
 }
 
@@ -50,6 +52,7 @@ export class RiskEvaluationComponent implements OnInit, OnDestroy {
     public selectedRow: number;
     public selectedColumn: number;
     public mapAssetAttacks: Map<number, MyAssetAttackChance[]> = new Map<number, MyAssetAttackChance[]>();
+    public riskMitigationMap: Map<number, MitigationMgm[]> = new Map<number, MitigationMgm[]>();
     public threatAgentInterest: ThreatAgentInterest[] = [];
     public mapMaxCriticalLevel: Map<number, number[]> = new Map<number, number[]>();
     public noRiskInMap = false;
@@ -62,12 +65,18 @@ export class RiskEvaluationComponent implements OnInit, OnDestroy {
     public assetToolTipLoaded = false;
     public assetToolTipLoadedTimer = false;
     public loadingImpactTable = false;
-    public riskPaginator = {
-        id: 'risk_paginator',
+    public tangibleAssetAtRiskPaginator = {
+        id: 'tangible_asset_at_risk_paginator',
         itemsPerPage: 7,
         currentPage: 1
     };
-    public risks: RiskPercentageElement[] = [];
+    public intangibleAssetAtRiskPaginator = {
+        id: 'intangible_asset_at_risk_paginator',
+        itemsPerPage: 7,
+        currentPage: 1
+    };
+    public risksTangible: RiskPercentageElement[] = [];
+    public risksIntangible: RiskPercentageElement[] = [];
     public attacksToolTip: Map<number, string> = new Map<number, string>();
     public assetsToolTip: Map<number, string> = new Map<number, string>();
     public directImpactTable: AttackCostFormula[] = [];
@@ -85,8 +94,12 @@ export class RiskEvaluationComponent implements OnInit, OnDestroy {
     ) {
     }
 
-    onRiskPageChange(number: number) {
-        this.riskPaginator.currentPage = number;
+    onIntangibleRiskPageChange(number: number) {
+        this.intangibleAssetAtRiskPaginator.currentPage = number;
+    }
+
+    onTangibleRiskPageChange(number: number) {
+        this.tangibleAssetAtRiskPaginator.currentPage = number;
     }
 
     ngOnInit() {
@@ -129,6 +142,27 @@ export class RiskEvaluationComponent implements OnInit, OnDestroy {
                     this.riskService.getAttackChance(myAsset, this.mySelf).toPromise().then((res2) => {
                         if (res2) {
                             this.mapAssetAttacks.set(myAsset.id, res2);
+                            let mitigations: MitigationMgm[] = [];
+                            res2.forEach((item) => {
+                                if (mitigations.length === 0) {
+                                    mitigations = item.attackStrategy.mitigations;
+                                } else {
+                                    mitigations.concat(mitigations, item.attackStrategy.mitigations);
+                                }
+                                mitigations = _.uniqBy(mitigations, 'id');
+                            });
+                            if (this.riskMitigationMap.size === 0) {
+                                this.riskMitigationMap.set(myAsset.id, mitigations);
+                            } else {
+                                let tempArray: MitigationMgm[] = this.riskMitigationMap.get(myAsset.id);
+                                if (tempArray) {
+                                    tempArray.concat(tempArray, mitigations);
+                                    tempArray = _.uniqBy(tempArray, 'id');
+                                    this.riskMitigationMap.set(myAsset.id, tempArray);
+                                } else {
+                                    this.riskMitigationMap.set(myAsset.id, mitigations);
+                                }
+                            }
                             for (let i = 1; i <= 5; i++) {
                                 for (let j = 1; j <= 5; j++) {
                                     this.whichContentByCell(i, j, myAsset, 'likelihood-vulnerability');
@@ -346,27 +380,44 @@ export class RiskEvaluationComponent implements OnInit, OnDestroy {
                     break;
                 }
             }
-            const critical = lStore[1] * lStore[1];
-            const riskPercentage = this.evaluateRiskPercentage(critical, myAsset);
+            const criticalValue = lStore[1] * lStore[1];
+            const riskPercentage = this.evaluateRiskPercentage(criticalValue, myAsset);
             const risk: RiskPercentageElement = {
                 asset: myAsset,
+                critical: criticalValue,
                 percentage: riskPercentage
             };
-            if (this.risks.length === 0) {
-                this.risks.push(_.cloneDeep(risk));
-            } else {
-                const index = _.findIndex(this.risks, (elem) => {
-                    return elem.asset.id === myAsset.id;
-                });
-                if (index !== -1) {
-                    this.risks.splice(index, 1, _.cloneDeep(risk));
+            if (risk.asset.asset.assetcategory.type.toString() === 'TANGIBLE') {
+                if (this.risksTangible.length === 0) {
+                    this.risksTangible.push(_.cloneDeep(risk));
                 } else {
-                    this.risks.push(_.cloneDeep(risk));
+                    const index = _.findIndex(this.risksTangible, (elem) => {
+                        return elem.asset.id === myAsset.id;
+                    });
+                    if (index !== -1) {
+                        this.risksTangible.splice(index, 1, _.cloneDeep(risk));
+                    } else {
+                        this.risksTangible.push(_.cloneDeep(risk));
+                    }
                 }
+                this.risksTangible = _.orderBy(this.risksTangible, ['percentage'], ['desc']);
+            } else {
+                if (this.risksIntangible.length === 0) {
+                    this.risksIntangible.push(_.cloneDeep(risk));
+                } else {
+                    const index = _.findIndex(this.risksIntangible, (elem) => {
+                        return elem.asset.id === myAsset.id;
+                    });
+                    if (index !== -1) {
+                        this.risksIntangible.splice(index, 1, _.cloneDeep(risk));
+                    } else {
+                        this.risksIntangible.push(_.cloneDeep(risk));
+                    }
+                }
+                this.risksIntangible = _.orderBy(this.risksIntangible, ['percentage'], ['desc']);
             }
-            this.risks = _.orderBy(this.risks, ['percentage'], ['desc']);
         }
-        if (this.risks.length === 0) {
+        if (this.risksIntangible.length === 0 && this.risksTangible.length === 0) {
             this.noRiskInMap = true;
         } else {
             this.noRiskInMap = false;
