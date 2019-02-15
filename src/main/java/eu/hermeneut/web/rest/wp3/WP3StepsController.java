@@ -623,7 +623,7 @@ public class WP3StepsController {
     }
 
     private SplittingValue createNewSplittingValue(SelfAssessment selfAssessment, BigDecimal intangibleCapital, SectorType sectorType, CategoryType catType) {
-        BigDecimal valueSplitting = Calculator.calculateSplittingLoss(intangibleCapital, catType, sectorType);
+        BigDecimal valueSplitting = Calculator.calculateSplittingValue(intangibleCapital, catType, sectorType);
 
         SplittingValue splittingValue = new SplittingValue();
         splittingValue.setId(null);//new entity
