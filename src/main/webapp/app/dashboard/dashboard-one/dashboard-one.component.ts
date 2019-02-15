@@ -11,7 +11,7 @@ import {NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
 })
 export class DashboardOneComponent implements OnInit {
     private account: Account;
-    private mySelf: SelfAssessmentMgm = {};
+    public mySelf: SelfAssessmentMgm = {};
 
     constructor(
         private principal: Principal,
