@@ -101,6 +101,8 @@ public class ImpactServiceImpl implements ImpactService {
                 List<ImpactLevel> impactLevels = this.impactLevelService.findAllBySelfAssessment(selfAssessmentID);
 
                 if (impactLevels != null && !impactLevels.isEmpty()) {
+                    boolean outOfBounds = true;
+
                     for (ImpactLevel impactLevel : impactLevels) {
                         logger.debug("EconomicImpact: " + myAsset.getEconomicImpact());
                         logger.debug("Impact: " + impactLevel.getImpact());
@@ -111,13 +113,14 @@ public class ImpactServiceImpl implements ImpactService {
                         //A < B ---> -1
                         if (economicImpact.compareTo(impactLevel.getMinLoss()) >= 0 &&
                             economicImpact.compareTo((impactLevel.getMaxLoss())) <= 0) {
+                            outOfBounds = false;
 
                             myAsset.setImpact(impactLevel.getImpact());
                             logger.debug("NEW IMPACT: " + myAsset.getImpact());
                         }
                     }
 
-                    if (myAsset.getImpact() == null) {
+                    if (outOfBounds) {
                         myAsset.setImpact(HIGHEST_IMPACT);
                     }
                 }
