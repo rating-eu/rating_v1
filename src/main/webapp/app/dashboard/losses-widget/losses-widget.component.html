@@ -1,7 +1,7 @@
 <div class="container" *ngIf="loading">
   <div class="loader"></div>
 </div>
-<div class="container" *ngIf="!loading">
+<ng-container *ngIf="!loading">
   <div class="x_panel" style="padding:0px !important;">
     <div class="x_title" style="padding:0px !important;">
       <h2 style="padding: 10px;"><a [routerLink]="['/impact-evaluation']">Simulation Losses</a> (
@@ -70,4 +70,4 @@
       </div>
     </div>
   </div>
-</div>
+</ng-container>
