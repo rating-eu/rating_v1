@@ -1,3 +1,4 @@
+import { MitigationMgm } from './../../entities/mitigation-mgm/mitigation-mgm.model';
 import * as _ from 'lodash';
 import { DashboardStepEnum } from './../models/enumeration/dashboard-step.enum';
 import { DashboardService, DashboardStatus, Status } from './../dashboard.service';
@@ -7,9 +8,11 @@ import { SelfAssessmentMgm } from './../../entities/self-assessment-mgm/self-ass
 import { MyAssetMgm } from './../../entities/my-asset-mgm/my-asset-mgm.model';
 import { SelfAssessmentMgmService } from './../../entities/self-assessment-mgm/self-assessment-mgm.service';
 import { Component, OnInit } from '@angular/core';
+import { AssetType } from '../../entities/asset-category-mgm';
 
 interface RiskPercentageElement {
   asset: MyAssetMgm;
+  critical: number;
   percentage: number;
 }
 
@@ -23,8 +26,10 @@ export class AssetAtRiskWidgetComponent implements OnInit {
   public noRiskInMap = false;
   public loading = false;
   public isCollapsed = true;
-  public risks: RiskPercentageElement[] = [];
+  public risksTangible: RiskPercentageElement[] = [];
+  public risksIntangible: RiskPercentageElement[] = [];
   public mapAssetAttacks: Map<number, MyAssetAttackChance[]> = new Map<number, MyAssetAttackChance[]>();
+  public riskMitigationMap: Map<number, MitigationMgm[]> = new Map<number, MitigationMgm[]>();
   public mapMaxCriticalLevel: Map<number, number[]> = new Map<number, number[]>();
   public myAssets: MyAssetMgm[] = [];
   private status: DashboardStatus;
@@ -36,8 +41,13 @@ export class AssetAtRiskWidgetComponent implements OnInit {
   private MAX_IMPACT = 5;
   private MAX_RISK = this.MAX_CRITICAL * this.MAX_IMPACT;
 
-  public assetAtRiskPaginator = {
-    id: 'asset_at_risk_paginator',
+  public tangibleAssetAtRiskPaginator = {
+    id: 'tangible_asset_at_risk_paginator',
+    itemsPerPage: 7,
+    currentPage: 1
+  };
+  public intangibleAssetAtRiskPaginator = {
+    id: 'intangible_asset_at_risk_paginator',
     itemsPerPage: 7,
     currentPage: 1
   };
@@ -65,28 +75,66 @@ export class AssetAtRiskWidgetComponent implements OnInit {
               }
               const lStore = this.mapMaxCriticalLevel.get(myAsset.id);
               if (myAsset.impact && lStore) {
-                const critical = lStore[1] * lStore[1];
-                const riskPercentage = this.evaluateRiskPercentage(critical, myAsset);
+                const criticalValue = lStore[1] * lStore[1];
+                const riskPercentage = this.evaluateRiskPercentage(criticalValue, myAsset);
                 const risk: RiskPercentageElement = {
                   asset: myAsset,
+                  critical: criticalValue,
                   percentage: riskPercentage
                 };
-                if (this.risks.length === 0) {
-                  this.risks.push(_.cloneDeep(risk));
-                } else {
-                  const index = _.findIndex(this.risks, (elem) => {
-                    return elem.asset.id === myAsset.id;
-                  });
-                  if (index !== -1) {
-                    this.risks.splice(index, 1, _.cloneDeep(risk));
+                let mitigations: MitigationMgm[] = [];
+                res2.forEach((item) => {
+                  if (mitigations.length === 0) {
+                    mitigations = item.attackStrategy.mitigations;
                   } else {
-                    this.risks.push(_.cloneDeep(risk));
+                    mitigations.concat(mitigations, item.attackStrategy.mitigations);
+                  }
+                  mitigations = _.uniqBy(mitigations, 'id');
+                });
+                if (this.riskMitigationMap.size === 0) {
+                  this.riskMitigationMap.set(myAsset.id, mitigations);
+                } else {
+                  let tempArray: MitigationMgm[] = this.riskMitigationMap.get(myAsset.id);
+                  if (tempArray) {
+                    tempArray.concat(tempArray, mitigations);
+                    tempArray = _.uniqBy(tempArray, 'id');
+                    this.riskMitigationMap.set(myAsset.id, tempArray);
+                  } else {
+                    this.riskMitigationMap.set(myAsset.id, mitigations);
                   }
                 }
-                this.risks = _.orderBy(this.risks, ['percentage'], ['desc']);
+                if (risk.asset.asset.assetcategory.type.toString() === 'TANGIBLE') {
+                  if (this.risksTangible.length === 0) {
+                    this.risksTangible.push(_.cloneDeep(risk));
+                  } else {
+                    const index = _.findIndex(this.risksTangible, (elem) => {
+                      return elem.asset.id === myAsset.id;
+                    });
+                    if (index !== -1) {
+                      this.risksTangible.splice(index, 1, _.cloneDeep(risk));
+                    } else {
+                      this.risksTangible.push(_.cloneDeep(risk));
+                    }
+                  }
+                  this.risksTangible = _.orderBy(this.risksTangible, ['percentage'], ['desc']);
+                } else {
+                  if (this.risksIntangible.length === 0) {
+                    this.risksIntangible.push(_.cloneDeep(risk));
+                  } else {
+                    const index = _.findIndex(this.risksIntangible, (elem) => {
+                      return elem.asset.id === myAsset.id;
+                    });
+                    if (index !== -1) {
+                      this.risksIntangible.splice(index, 1, _.cloneDeep(risk));
+                    } else {
+                      this.risksIntangible.push(_.cloneDeep(risk));
+                    }
+                  }
+                  this.risksIntangible = _.orderBy(this.risksIntangible, ['percentage'], ['desc']);
+                }
               }
             }
-            if (this.risks.length === 0) {
+            if (this.risksIntangible.length === 0 && this.risksTangible.length === 0) {
               this.noRiskInMap = true;
             } else {
               this.noRiskInMap = false;
@@ -110,8 +158,12 @@ export class AssetAtRiskWidgetComponent implements OnInit {
     });
   }
 
-  onRiskPageChange(number: number) {
-    this.assetAtRiskPaginator.currentPage = number;
+  onIntangibleRiskPageChange(number: number) {
+    this.intangibleAssetAtRiskPaginator.currentPage = number;
+  }
+
+  onTangibleRiskPageChange(number: number) {
+    this.tangibleAssetAtRiskPaginator.currentPage = number;
   }
 
   private evaluateRiskPercentage(critical: number, myAsset: MyAssetMgm): number {

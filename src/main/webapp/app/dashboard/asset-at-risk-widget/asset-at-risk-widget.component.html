@@ -22,34 +22,119 @@
             <div class="clearfix"></div>
         </div>
         <div class="table-responsive x_content" style="padding:0px !important;" [ngbCollapse]="isCollapsed">
-            <div class="card card-body table-responsive text-nowrap">
-                <table class="table">
-                    <thead>
-                    <tr>
-                        <th scope="col">Asset</th>
-                        <th scope="col">Risk</th>
-                    </tr>
-                    </thead>
-                    <tbody *ngIf="noRiskInMap">
-                    <p>Your assets doesn't have any impact value assigned, please: select one impact value
-                        for
-                        every
-                        asset witch you analize!</p>
-                    </tbody>
-                    <tbody *ngIf="!noRiskInMap">
-                        <tr *ngFor="let risk of risks | paginate: assetAtRiskPaginator">
-                            <td>
-                                <a [routerLink]="['/asset-mgm', risk.asset.asset?.id ]">{{risk.asset?.asset.name}}</a>
-                            </td>
-                            <td>{{risk.percentage | percent}}
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-                <div class="text-center">
-                    <pagination-controls (pageChange)="onRiskPageChange($event)"
-                                         [id]="assetAtRiskPaginator.id"></pagination-controls>
-                </div>
+            <div class="card card-body table-responsive">
+                <ngb-tabset>
+                    <ngb-tab title="Tangible">
+                        <ng-template ngbTabContent>
+                            <ng-container *ngIf="risksTangible.length > 0">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Category</th>
+                                            <th>Asset</th>
+                                            <th>Description</th>
+                                            <th>Impact</th>
+                                            <th>Critical</th>
+                                            <th>Risk</th>
+                                            <th>Mitigations</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody *ngIf="noRiskInMap">
+                                        <p>Your assets doesn't have any impact value assigned, please: select one impact
+                                            value
+                                            for
+                                            every
+                                            asset witch you analize!</p>
+                                    </tbody>
+                                    <tbody *ngIf="!noRiskInMap">
+                                        <ng-container
+                                            *ngFor="let risk of risksTangible | paginate: tangibleAssetAtRiskPaginator">
+                                            <tr>
+                                                <td>{{risk.asset.asset.assetcategory.name}}</td>
+                                                <td>
+                                                    <a
+                                                        [routerLink]="['/asset-mgm', risk.asset.asset?.id ]">{{risk.asset?.asset.name}}</a>
+                                                </td>
+                                                <td>{{risk.asset.asset.description}}</td>
+                                                <td>{{risk.asset.impact}}</td>
+                                                <td>{{risk.critical}}</td>
+                                                <td>{{risk.percentage | percent}}</td>
+                                                <td>
+                                                    <ng-container
+                                                        *ngFor="let mitigation of riskMitigationMap.get(risk.asset.id); let last=last">
+                                                        {{mitigation.name}}<ng-container *ngIf="!last">, </ng-container>
+                                                    </ng-container>
+                                                </td>
+                                            </tr>
+                                        </ng-container>
+                                    </tbody>
+                                </table>
+                                <div class="text-center">
+                                    <pagination-controls (pageChange)="onTangibleRiskPageChange($event)"
+                                        [id]="tangibleAssetAtRiskPaginator.id"></pagination-controls>
+                                </div>
+                            </ng-container>
+                            <ng-container *ngIf="risksTangible.length === 0">
+                                You don't have any tangible assets!
+                            </ng-container>
+                        </ng-template>
+                    </ngb-tab>
+                    <ngb-tab title="Intangible">
+                        <ng-template ngbTabContent>
+                            <ng-container *ngIf="risksIntangible.length > 0">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Category</th>
+                                            <th>Asset</th>
+                                            <th>Description</th>
+                                            <th>Impact</th>
+                                            <th>Critical</th>
+                                            <th>Risk</th>
+                                            <th>Mitigations</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody *ngIf="noRiskInMap">
+                                        <p>Your assets doesn't have any impact value assigned, please: select one impact
+                                            value
+                                            for
+                                            every
+                                            asset witch you analize!</p>
+                                    </tbody>
+                                    <tbody *ngIf="!noRiskInMap">
+                                        <ng-container
+                                            *ngFor="let risk of risksIntangible | paginate: intangibleAssetAtRiskPaginator">
+                                            <tr>
+                                                <td>{{risk.asset.asset.assetcategory.name}}</td>
+                                                <td>
+                                                    <a
+                                                        [routerLink]="['/asset-mgm', risk.asset.asset?.id ]">{{risk.asset?.asset.name}}</a>
+                                                </td>
+                                                <td>{{risk.asset.asset.description}}</td>
+                                                <td>{{risk.asset.impact}}</td>
+                                                <td>{{risk.critical}}</td>
+                                                <td>{{risk.percentage | percent}}</td>
+                                                <td>
+                                                    <ng-container
+                                                        *ngFor="let mitigation of riskMitigationMap.get(risk.asset.id); let last=last">
+                                                        {{mitigation.name}}<ng-container *ngIf="!last">, </ng-container>
+                                                    </ng-container>
+                                                </td>
+                                            </tr>
+                                        </ng-container>
+                                    </tbody>
+                                </table>
+                                <div class="text-center">
+                                    <pagination-controls (pageChange)="onIntangibleRiskPageChange($event)"
+                                        [id]="intangibleAssetAtRiskPaginator.id"></pagination-controls>
+                                </div>
+                            </ng-container>
+                            <ng-container *ngIf="risksIntangible.length === 0">
+                                You don't have any intangible assets!
+                            </ng-container>
+                        </ng-template>
+                    </ngb-tab>
+                </ngb-tabset>
             </div>
         </div>
     </div>
