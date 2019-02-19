@@ -275,6 +275,11 @@ export class AssetAtRiskWidgetComponent implements OnInit {
       }
     } else {
       this.resetOrder('INTANGIBLE');
+      if (desc) {
+        this.orderTangibleBy.type = 'desc';
+      } else {
+        this.orderTangibleBy.type = 'asc';
+      }
       switch (orderColumn.toLowerCase()) {
         case ('category'): {
           this.orderIntangibleBy.category = true;
