@@ -4,7 +4,8 @@
 <div class="container" *ngIf="!loading">
     <div class="x_panel" style="padding:0px !important;">
         <div class="x_title" style="padding:0px !important;">
-            <h2 style="padding: 10px;"><a [routerLink]="['/impact-evaluation']">Economic Values for Intangible Assets</a></h2>
+            <h2 style="padding: 10px;"><a [routerLink]="['/impact-evaluation']">Economic Values for Intangible
+                    Assets</a></h2>
             <ul class="nav navbar-right panel_toolbox">
                 <li style="width: 24px; cursor: default"></li>
                 <li style="width: 24px; cursor: default"></li>
@@ -22,14 +23,33 @@
                 <table class="table table-striped">
                     <thead>
                         <tr>
-                            <th>Name</th>
-                            <th>Value</th>
+                            <th>Name
+                                <i *ngIf="!orderBy.category" (click)=" tableOrderBy('category', true)"
+                                    class="fa fa-sort" aria-hidden="true"></i>
+                                <i *ngIf="orderBy.category && orderBy.type === 'desc'"
+                                    (click)=" tableOrderBy('category', false)" class="fa fa-chevron-down"
+                                    aria-hidden="true"></i>
+                                <i *ngIf="orderBy.category && orderBy.type === 'asc'"
+                                    (click)=" tableOrderBy('category', true)" class="fa fa-chevron-up"
+                                    aria-hidden="true"></i>
+                            </th>
+                            <th>Value
+                                <i *ngIf="!orderBy.value" (click)=" tableOrderBy('value', true)" class="fa fa-sort"
+                                    aria-hidden="true"></i>
+                                <i *ngIf="orderBy.value && orderBy.type === 'desc'"
+                                    (click)=" tableOrderBy('value', false)" class="fa fa-chevron-down"
+                                    aria-hidden="true"></i>
+                                <i *ngIf="orderBy.value && orderBy.type === 'asc'"
+                                    (click)=" tableOrderBy('value', true)" class="fa fa-chevron-up"
+                                    aria-hidden="true"></i>
+                            </th>
                         </tr>
                     </thead>
                     <tbody>
                         <ng-container *ngFor="let item of tableInfo">
                             <tr>
-                                <td><a href="javascript:void(0)" (click)="setAssetCategory(item.type)">{{item.splitting}}</a></td>
+                                <td><a href="javascript:void(0)"
+                                        (click)="setAssetCategory(item.type)">{{item.splitting}}</a></td>
                                 <td *ngIf="item.value">{{item.value | currency:'EUR'}}</td>
                                 <td *ngIf="!item.value">-</td>
                             </tr>

@@ -22,9 +22,30 @@
               <table class="table">
                   <thead>
                       <tr>
-                          <th width="33.33%">Impact value</th>
-                          <th width="33.33%">Economic impact from</th>
-                          <th width="33.33%">Economic impact to</th>
+                          <th width="33.33%">Impact value
+                                <i *ngIf="!orderBy.impact" (click)=" tableOrderBy('impact', true)"
+                                class="fa fa-sort" aria-hidden="true"></i>
+                              <i *ngIf="orderBy.impact && orderBy.type === 'desc'"
+                                (click)=" tableOrderBy('impact', false)" class="fa fa-chevron-down" aria-hidden="true"></i>
+                              <i *ngIf="orderBy.impact && orderBy.type === 'asc'"
+                                (click)=" tableOrderBy('impact', true)" class="fa fa-chevron-up" aria-hidden="true"></i>
+                          </th>
+                          <th width="33.33%">from 
+                                <i *ngIf="!orderBy.from" (click)=" tableOrderBy('from', true)"
+                                class="fa fa-sort" aria-hidden="true"></i>
+                              <i *ngIf="orderBy.from && orderBy.type === 'desc'"
+                                (click)=" tableOrderBy('from', false)" class="fa fa-chevron-down" aria-hidden="true"></i>
+                              <i *ngIf="orderBy.from && orderBy.type === 'asc'"
+                                (click)=" tableOrderBy('from', true)" class="fa fa-chevron-up" aria-hidden="true"></i>
+                          </th>
+                          <th width="33.33%">to 
+                                <i *ngIf="!orderBy.to" (click)=" tableOrderBy('to', true)"
+                                class="fa fa-sort" aria-hidden="true"></i>
+                              <i *ngIf="orderBy.to && orderBy.type === 'desc'"
+                                (click)=" tableOrderBy('to', false)" class="fa fa-chevron-down" aria-hidden="true"></i>
+                              <i *ngIf="orderBy.to && orderBy.type === 'asc'"
+                                (click)=" tableOrderBy('to', true)" class="fa fa-chevron-up" aria-hidden="true"></i>
+                          </th>
                       </tr>
                   </thead>
                   <tbody>
@@ -51,12 +72,14 @@
                                           <thead>
                                               <tr>
                                                   <th width="50%">Asset</th>
+                                                  <th>Impact</th>
                                                   <th>Economic impact</th>
                                               </tr>
                                           </thead>
                                           <tbody>
                                               <tr *ngFor="let asset of item.assets">
                                                   <td>{{asset.asset.name}}</td>
+                                                  <td>{{asset.impact}}</td>
                                                   <td>{{asset.economicImpact | currency:'EUR'}}</td>
                                               </tr>
                                           </tbody>

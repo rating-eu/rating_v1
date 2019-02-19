@@ -1,14 +1,20 @@
-import {AssetMgm} from './../../entities/asset-mgm/asset-mgm.model';
-import {DashboardStepEnum} from '../models/enumeration/dashboard-step.enum';
+import { AssetMgm } from './../../entities/asset-mgm/asset-mgm.model';
+import { DashboardStepEnum } from '../models/enumeration/dashboard-step.enum';
 import * as _ from 'lodash';
-import {Component, OnInit} from '@angular/core';
-import {SelfAssessmentMgm, SelfAssessmentMgmService} from '../../entities/self-assessment-mgm';
-import {ImpactEvaluationService} from '../../impact-evaluation/impact-evaluation.service';
-import {ImpactEvaluationStatus} from '../../impact-evaluation/model/impact-evaluation-status.model';
-import {MyAssetMgm} from '../../entities/my-asset-mgm';
-import {DashboardService, DashboardStatus} from '../dashboard.service';
-import {AssetType} from '../../entities/enumerations/AssetType.enum';
-import {Status} from '../../entities/enumerations/QuestionnaireStatus.enum';
+import { Component, OnInit } from '@angular/core';
+import { SelfAssessmentMgm, SelfAssessmentMgmService } from '../../entities/self-assessment-mgm';
+import { ImpactEvaluationService } from '../../impact-evaluation/impact-evaluation.service';
+import { ImpactEvaluationStatus } from '../../impact-evaluation/model/impact-evaluation-status.model';
+import { MyAssetMgm } from '../../entities/my-asset-mgm';
+import { DashboardService, DashboardStatus } from '../dashboard.service';
+import { AssetType } from '../../entities/enumerations/AssetType.enum';
+import { Status } from '../../entities/enumerations/QuestionnaireStatus.enum';
+
+interface OrderBy {
+  category: boolean;
+  value: boolean;
+  type: string;
+}
 
 @Component({
   selector: 'jhi-tangible-financial-widget',
@@ -24,6 +30,7 @@ export class TangibleFinancialWidgetComponent implements OnInit {
     value: number,
     type: string
   }[];
+  public orderBy: OrderBy;
   public selectedCategory: string;
   public assetsBySelectedCategory: MyAssetMgm[] = [];
   public priorities = ['Low', 'Low medium', 'Medium', 'Medium high', 'High'];
@@ -44,6 +51,11 @@ export class TangibleFinancialWidgetComponent implements OnInit {
     this.mySelf = this.mySelfAssessmentService.getSelfAssessment();
     this.status = this.dashService.getStatus();
     this.tableInfo = [];
+    this.orderBy = {
+      category: false,
+      value: false,
+      type: 'desc'
+    };
     this.impactService.getStatus(this.mySelf).toPromise().then((status) => {
       if (status) {
         this.wp3Status = status;
@@ -108,6 +120,41 @@ export class TangibleFinancialWidgetComponent implements OnInit {
           if (asset.asset.assetcategory.name === 'Fixed Assets') {
             this.assetsBySelectedCategory.push(asset);
           }
+        }
+        break;
+      }
+    }
+  }
+
+  private resetOrder() {
+    this.orderBy.category = false;
+    this.orderBy.value = false;
+    this.orderBy.type = 'desc';
+  }
+
+  public tableOrderBy(orderColumn: string, desc: boolean) {
+    this.resetOrder();
+    if (desc) {
+      this.orderBy.type = 'desc';
+    } else {
+      this.orderBy.type = 'asc';
+    }
+    switch (orderColumn.toLowerCase()) {
+      case ('category'): {
+        this.orderBy.category = true;
+        if (desc) {
+          this.tableInfo = _.orderBy(this.tableInfo, ['splitting'], ['desc']);
+        } else {
+          this.tableInfo = _.orderBy(this.tableInfo, ['splitting'], ['asc']);
+        }
+        break;
+      }
+      case ('value'): {
+        this.orderBy.value = true;
+        if (desc) {
+          this.tableInfo = _.orderBy(this.tableInfo, ['value'], ['desc']);
+        } else {
+          this.tableInfo = _.orderBy(this.tableInfo, ['value'], ['asc']);
         }
         break;
       }
