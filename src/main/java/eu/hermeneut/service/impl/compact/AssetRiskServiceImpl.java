@@ -83,42 +83,32 @@ public class AssetRiskServiceImpl implements AssetRiskService, MaxValues {
             int impact = myAsset.getImpact() != null ? myAsset.getImpact() : 0;
             float critical = 0;
 
-            Set<Container> containers = myAsset.getAsset().getContainers();
+            final Set<Container> containers = myAsset.getAsset().getContainers() != null ? myAsset.getAsset().getContainers() : new HashSet<>();
+            final Set<DomainOfInfluence> domainsOfInfluence = myAsset.getAsset().getDomainsOfInfluences() != null ? myAsset.getAsset().getDomainsOfInfluences() : new HashSet<>();
+
+            if (containers.isEmpty()) {
+                if (domainsOfInfluence.isEmpty()) {
+                    throw new NotFoundException("Containers and Domains of Influence NOT Found!!!");
+                } else {//Only Domains of Influence as Containers
+                    domainsOfInfluence.stream().parallel().forEach(domainOfInfluence -> {
+                        containers.add(domainOfInfluence.getContainer());
+                    });
+                }
+            } else {// Both container and Domains of Influence as Containers
+                if (!domainsOfInfluence.isEmpty()) {
+                    domainsOfInfluence.stream().parallel().forEach(domainOfInfluence -> {
+                        containers.add(domainOfInfluence.getContainer());
+                    });
+                }
+            }
+
+            if (containers.isEmpty()) {
+                throw new NotFoundException("Containers NOT Found!!!");
+            }
 
             if (containers != null && !containers.isEmpty()) {
                 //For each container
-                for (Container container : containers) {
-                    List<AttackStrategy> attackStrategies = this.attackStrategyService.findAllByContainer(container.getId());
-
-                    //For each attack strategy
-                    for (AttackStrategy attackStrategy : attackStrategies) {
-                        AugmentedAttackStrategy augmentedAttackStrategy = augmentedAttackStrategyMap.get(attackStrategy.getId());
-
-                        if (augmentedAttackStrategy != null) {
-                            float currentCritical = 0;
-
-                            float refinedVulnerability = augmentedAttackStrategy.getRefinedVulnerability();
-                            float refinedLikelihood = augmentedAttackStrategy.getRefinedLikelihood();
-
-                            float contextualVulnerability = augmentedAttackStrategy.getContextualVulnerability();
-                            float contextualLikelihood = augmentedAttackStrategy.getContextualLikelihood();
-
-                            float initialLikelihood = augmentedAttackStrategy.getInitialLikelihood();
-
-                            if (refinedLikelihood > 0 && refinedLikelihood > 0) {
-                                currentCritical = refinedLikelihood * refinedVulnerability;
-                            } else if (contextualLikelihood > 0 && contextualVulnerability > 0) {
-                                currentCritical = contextualLikelihood * contextualVulnerability;
-                            } else if (initialLikelihood > 0) {
-                                currentCritical = initialLikelihood * initialLikelihood;
-                            }
-
-                            if (currentCritical > critical) {
-                                critical = currentCritical;
-                            }
-                        }
-                    }
-                }
+                critical = getCritical(augmentedAttackStrategyMap, containers);
 
                 float risk = critical * impact;
                 risk = risk / MAX_RISK;
@@ -137,5 +127,44 @@ public class AssetRiskServiceImpl implements AssetRiskService, MaxValues {
         }
 
         return assetRisks;
+    }
+
+    public float getCritical(Map<Long, AugmentedAttackStrategy> augmentedAttackStrategyMap, Set<Container> containers) {
+        float critical = 0F;
+
+        for (Container container : containers) {
+            List<AttackStrategy> attackStrategies = this.attackStrategyService.findAllByContainer(container.getId());
+
+            //For each attack strategy
+            for (AttackStrategy attackStrategy : attackStrategies) {
+                AugmentedAttackStrategy augmentedAttackStrategy = augmentedAttackStrategyMap.get(attackStrategy.getId());
+
+                if (augmentedAttackStrategy != null) {
+                    float currentCritical = 0;
+
+                    float refinedVulnerability = augmentedAttackStrategy.getRefinedVulnerability();
+                    float refinedLikelihood = augmentedAttackStrategy.getRefinedLikelihood();
+
+                    float contextualVulnerability = augmentedAttackStrategy.getContextualVulnerability();
+                    float contextualLikelihood = augmentedAttackStrategy.getContextualLikelihood();
+
+                    float initialLikelihood = augmentedAttackStrategy.getInitialLikelihood();
+
+                    if (refinedLikelihood > 0 && refinedLikelihood > 0) {
+                        currentCritical = refinedLikelihood * refinedVulnerability;
+                    } else if (contextualLikelihood > 0 && contextualVulnerability > 0) {
+                        currentCritical = contextualLikelihood * contextualVulnerability;
+                    } else if (initialLikelihood > 0) {
+                        currentCritical = initialLikelihood * initialLikelihood;
+                    }
+
+                    if (currentCritical > critical) {
+                        critical = currentCritical;
+                    }
+                }
+            }
+        }
+
+        return critical;
     }
 }
