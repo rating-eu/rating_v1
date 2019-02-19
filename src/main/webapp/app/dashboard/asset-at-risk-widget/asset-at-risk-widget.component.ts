@@ -16,6 +16,16 @@ interface RiskPercentageElement {
   percentage: number;
 }
 
+interface OrderBy {
+  category: boolean;
+  asset: boolean;
+  description: boolean;
+  impact: boolean;
+  critical: boolean;
+  risk: boolean;
+  type: string;
+}
+
 @Component({
   selector: 'jhi-asset-at-risk-widget',
   templateUrl: './asset-at-risk-widget.component.html',
@@ -32,9 +42,10 @@ export class AssetAtRiskWidgetComponent implements OnInit {
   public riskMitigationMap: Map<number, MitigationMgm[]> = new Map<number, MitigationMgm[]>();
   public mapMaxCriticalLevel: Map<number, number[]> = new Map<number, number[]>();
   public myAssets: MyAssetMgm[] = [];
+  public orderIntangibleBy: OrderBy;
+  public orderTangibleBy: OrderBy;
   private status: DashboardStatus;
   private dashboardStatus = DashboardStepEnum;
-
   private MAX_LIKELIHOOD = 5;
   private MAX_VULNERABILITY = 5;
   private MAX_CRITICAL = this.MAX_LIKELIHOOD * this.MAX_VULNERABILITY;
@@ -61,6 +72,24 @@ export class AssetAtRiskWidgetComponent implements OnInit {
     this.loading = true;
     this.mySelf = this.mySelfAssessmentService.getSelfAssessment();
     this.status = this.dashService.getStatus();
+    this.orderIntangibleBy = {
+      category: false,
+      asset: false,
+      description: false,
+      impact: false,
+      critical: false,
+      risk: false,
+      type: 'desc'
+    };
+    this.orderTangibleBy = {
+      category: false,
+      asset: false,
+      description: false,
+      impact: false,
+      critical: false,
+      risk: false,
+      type: 'desc'
+    };
     this.riskService.getMyAssets(this.mySelf).toPromise().then((res) => {
       if (res && res.length > 0) {
         this.myAssets = res;
@@ -117,6 +146,8 @@ export class AssetAtRiskWidgetComponent implements OnInit {
                     }
                   }
                   this.risksTangible = _.orderBy(this.risksTangible, ['percentage'], ['desc']);
+                  this.orderTangibleBy.risk = true;
+                  this.orderTangibleBy.type = 'desc';
                 } else {
                   if (this.risksIntangible.length === 0) {
                     this.risksIntangible.push(_.cloneDeep(risk));
@@ -131,6 +162,8 @@ export class AssetAtRiskWidgetComponent implements OnInit {
                     }
                   }
                   this.risksIntangible = _.orderBy(this.risksIntangible, ['percentage'], ['desc']);
+                  this.orderIntangibleBy.risk = true;
+                  this.orderIntangibleBy.type = 'desc';
                 }
               }
             }
@@ -156,6 +189,148 @@ export class AssetAtRiskWidgetComponent implements OnInit {
       this.status.riskEvaluationStatus = Status[res];
       this.dashService.updateStepStatus(DashboardStepEnum.RISK_EVALUATION, this.status.riskEvaluationStatus);
     });
+  }
+  private resetOrder(witchCategory: string) {
+    if (witchCategory === 'TANGIBLE') {
+      this.orderTangibleBy.asset = false;
+      this.orderTangibleBy.category = false;
+      this.orderTangibleBy.critical = false;
+      this.orderTangibleBy.description = false;
+      this.orderTangibleBy.impact = false;
+      this.orderTangibleBy.risk = false;
+      this.orderTangibleBy.type = 'desc';
+    } else {
+      this.orderIntangibleBy.asset = false;
+      this.orderIntangibleBy.category = false;
+      this.orderIntangibleBy.critical = false;
+      this.orderIntangibleBy.description = false;
+      this.orderIntangibleBy.impact = false;
+      this.orderIntangibleBy.risk = false;
+      this.orderIntangibleBy.type = 'desc';
+    }
+  }
+  public tableOrderBy(orderColumn: string, category: string, desc: boolean) {
+    if (category === 'TANGIBLE') {
+      this.resetOrder('TANGIBLE');
+      if (desc) {
+        this.orderTangibleBy.type = 'desc';
+      } else {
+        this.orderTangibleBy.type = 'asc';
+      }
+      switch (orderColumn.toLowerCase()) {
+        case ('category'): {
+          this.orderTangibleBy.category = true;
+          if (desc) {
+            this.risksTangible = _.orderBy(this.risksTangible, (elem: RiskPercentageElement) => elem.asset.asset.assetcategory.name, ['desc']);
+          } else {
+            this.risksTangible = _.orderBy(this.risksTangible, (elem: RiskPercentageElement) => elem.asset.asset.assetcategory.name, ['asc']);
+          }
+          break;
+        }
+        case ('asset'): {
+          this.orderTangibleBy.asset = true;
+          if (desc) {
+            this.risksTangible = _.orderBy(this.risksTangible, (elem: RiskPercentageElement) => elem.asset.asset.name, ['desc']);
+          } else {
+            this.risksTangible = _.orderBy(this.risksTangible, (elem: RiskPercentageElement) => elem.asset.asset.name, ['asc']);
+          }
+          break;
+        }
+        case ('description'): {
+          this.orderTangibleBy.description = true;
+          if (desc) {
+            this.risksTangible = _.orderBy(this.risksTangible, (elem: RiskPercentageElement) => elem.asset.asset.description, ['desc']);
+          } else {
+            this.risksTangible = _.orderBy(this.risksTangible, (elem: RiskPercentageElement) => elem.asset.asset.description, ['asc']);
+          }
+          break;
+        }
+        case ('impact'): {
+          this.orderTangibleBy.impact = true;
+          if (desc) {
+            this.risksTangible = _.orderBy(this.risksTangible, (elem: RiskPercentageElement) => elem.asset.impact, ['desc']);
+          } else {
+            this.risksTangible = _.orderBy(this.risksTangible, (elem: RiskPercentageElement) => elem.asset.impact, ['asc']);
+          }
+          break;
+        }
+        case ('critical'): {
+          this.orderTangibleBy.critical = true;
+          if (desc) {
+            this.risksTangible = _.orderBy(this.risksTangible, ['critical'], ['desc']);
+          } else {
+            this.risksTangible = _.orderBy(this.risksTangible, ['critical'], ['asc']);
+          }
+          break;
+        }
+        case ('risk'): {
+          this.orderTangibleBy.risk = true;
+          if (desc) {
+            this.risksTangible = _.orderBy(this.risksTangible, ['percentage'], ['desc']);
+          } else {
+            this.risksTangible = _.orderBy(this.risksTangible, ['percentage'], ['asc']);
+          }
+          break;
+        }
+      }
+    } else {
+      switch (orderColumn.toLowerCase()) {
+        case ('category'): {
+          this.orderIntangibleBy.category = true;
+          if (desc) {
+            this.risksIntangible = _.orderBy(this.risksIntangible, (elem: RiskPercentageElement) => elem.asset.asset.assetcategory.name, ['desc']);
+          } else {
+            this.risksIntangible = _.orderBy(this.risksIntangible, (elem: RiskPercentageElement) => elem.asset.asset.assetcategory.name, ['asc']);
+          }
+          break;
+        }
+        case ('asset'): {
+          this.orderIntangibleBy.asset = true;
+          if (desc) {
+            this.risksIntangible = _.orderBy(this.risksIntangible, (elem: RiskPercentageElement) => elem.asset.asset.name, ['desc']);
+          } else {
+            this.risksIntangible = _.orderBy(this.risksIntangible, (elem: RiskPercentageElement) => elem.asset.asset.name, ['asc']);
+          }
+          break;
+        }
+        case ('description'): {
+          this.orderIntangibleBy.description = true;
+          if (desc) {
+            this.risksIntangible = _.orderBy(this.risksIntangible, (elem: RiskPercentageElement) => elem.asset.asset.description, ['desc']);
+          } else {
+            this.risksIntangible = _.orderBy(this.risksIntangible, (elem: RiskPercentageElement) => elem.asset.asset.description, ['asc']);
+          }
+          break;
+        }
+        case ('impact'): {
+          this.orderIntangibleBy.impact = true;
+          if (desc) {
+            this.risksIntangible = _.orderBy(this.risksIntangible, (elem: RiskPercentageElement) => elem.asset.impact, ['desc']);
+          } else {
+            this.risksIntangible = _.orderBy(this.risksIntangible, (elem: RiskPercentageElement) => elem.asset.impact, ['asc']);
+          }
+          break;
+        }
+        case ('critical'): {
+          this.orderIntangibleBy.critical = true;
+          if (desc) {
+            this.risksIntangible = _.orderBy(this.risksIntangible, ['critical'], ['desc']);
+          } else {
+            this.risksIntangible = _.orderBy(this.risksIntangible, ['critical'], ['asc']);
+          }
+          break;
+        }
+        case ('risk'): {
+          this.orderIntangibleBy.risk = true;
+          if (desc) {
+            this.risksIntangible = _.orderBy(this.risksIntangible, ['percentage'], ['desc']);
+          } else {
+            this.risksIntangible = _.orderBy(this.risksIntangible, ['percentage'], ['asc']);
+          }
+          break;
+        }
+      }
+    }
   }
 
   onIntangibleRiskPageChange(number: number) {
