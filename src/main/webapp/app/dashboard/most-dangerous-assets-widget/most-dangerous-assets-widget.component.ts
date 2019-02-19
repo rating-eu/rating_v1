@@ -250,9 +250,9 @@ export class MostDangerousAssetsWidgetComponent implements OnInit {
     } else {
       this.resetOrder('INTANGIBLE');
       if (desc) {
-        this.orderTangibleBy.type = 'desc';
+        this.orderIntangibleBy.type = 'desc';
       } else {
-        this.orderTangibleBy.type = 'asc';
+        this.orderIntangibleBy.type = 'asc';
       }
       switch (orderColumn.toLowerCase()) {
         case ('asset'): {
