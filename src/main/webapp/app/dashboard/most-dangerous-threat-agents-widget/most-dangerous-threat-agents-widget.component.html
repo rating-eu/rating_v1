@@ -24,10 +24,38 @@
                 <table class="table table-striped">
                     <thead>
                         <tr>
-                            <th>Title</th>
-                            <th>Initial Likelihood</th>
-                            <th>Contextual Likelihood</th>
-                            <th>Refined Likelihood</th>
+                            <th>Threat Agent 
+                                    <i *ngIf="!orderBy.threatAgent" (click)=" tableOrderBy('threat_agent', true)"
+                                    class="fa fa-sort" aria-hidden="true"></i>
+                                  <i *ngIf="orderBy.threatAgent && orderBy.type === 'desc'"
+                                    (click)=" tableOrderBy('threat_agent', false)" class="fa fa-chevron-down" aria-hidden="true"></i>
+                                  <i *ngIf="orderBy.threatAgent && orderBy.type === 'asc'"
+                                    (click)=" tableOrderBy('threat_agent', true)" class="fa fa-chevron-up" aria-hidden="true"></i>
+                            </th>
+                            <th>Initial Likelihood 
+                                    <i *ngIf="!orderBy.initial" (click)=" tableOrderBy('initial', true)"
+                                    class="fa fa-sort" aria-hidden="true"></i>
+                                  <i *ngIf="orderBy.initial && orderBy.type === 'desc'"
+                                    (click)=" tableOrderBy('initial', false)" class="fa fa-chevron-down" aria-hidden="true"></i>
+                                  <i *ngIf="orderBy.initial && orderBy.type === 'asc'"
+                                    (click)=" tableOrderBy('initial', true)" class="fa fa-chevron-up" aria-hidden="true"></i>
+                            </th>
+                            <th>Contextual Likelihood 
+                                    <i *ngIf="!orderBy.contextual" (click)=" tableOrderBy('contextual', true)"
+                                    class="fa fa-sort" aria-hidden="true"></i>
+                                  <i *ngIf="orderBy.contextual && orderBy.type === 'desc'"
+                                    (click)=" tableOrderBy('contextual', false)" class="fa fa-chevron-down" aria-hidden="true"></i>
+                                  <i *ngIf="orderBy.contextual && orderBy.type === 'asc'"
+                                    (click)=" tableOrderBy('contextual', true)" class="fa fa-chevron-up" aria-hidden="true"></i>
+                            </th>
+                            <th>Refined Likelihood 
+                                    <i *ngIf="!orderBy.refined" (click)=" tableOrderBy('refined', true)"
+                                    class="fa fa-sort" aria-hidden="true"></i>
+                                  <i *ngIf="orderBy.refined && orderBy.type === 'desc'"
+                                    (click)=" tableOrderBy('refined', false)" class="fa fa-chevron-down" aria-hidden="true"></i>
+                                  <i *ngIf="orderBy.refined && orderBy.type === 'asc'"
+                                    (click)=" tableOrderBy('refined', true)" class="fa fa-chevron-up" aria-hidden="true"></i>
+                            </th>
                         </tr>
                     </thead>
                     <tbody>
