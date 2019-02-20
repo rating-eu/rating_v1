@@ -1,3 +1,4 @@
+import * as _ from 'lodash';
 import {DashboardStepEnum} from './../models/enumeration/dashboard-step.enum';
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {SelfAssessmentMgm, SelfAssessmentMgmService} from '../../entities/self-assessment-mgm';
@@ -20,6 +21,13 @@ import * as CryptoJS from 'crypto-js';
 import {ModalDismissReasons, NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {DashboardService, DashboardStatus, Status} from '../dashboard.service';
 
+interface OrderBy {
+  threatAgents: boolean;
+  skills: boolean;
+  interest: boolean;
+  type: string;
+}
+
 @Component({
   selector: 'jhi-threat-agents-widget',
   templateUrl: './threat-agents-widget.component.html',
@@ -37,6 +45,7 @@ export class ThreatAgentsWidgetComponent implements OnInit, OnDestroy {
   public selectedThreatAgent: ThreatAgentMgm = null;
   public selfAssessment: SelfAssessmentMgm;
   public loading = false;
+  public orderBy: OrderBy;
 
   // ThreatAgents
   private defaultThreatAgents$: Observable<HttpResponse<ThreatAgentMgm[]>>;
@@ -66,7 +75,7 @@ export class ThreatAgentsWidgetComponent implements OnInit, OnDestroy {
 
   // ThreatAgents Percentage Map
   private threatAgentsPercentageMap: Map<String, Couple<ThreatAgentMgm, Fraction>>;
-  private threatAgentsPercentageArray: Couple<ThreatAgentMgm, Fraction>[];
+  public threatAgentsPercentageArray: Couple<ThreatAgentMgm, Fraction>[];
 
   private status: DashboardStatus;
   private dashboardStatus = DashboardStepEnum;
@@ -85,7 +94,12 @@ export class ThreatAgentsWidgetComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.loading = true;
     this.status = this.dashService.getStatus();
-
+    this.orderBy = {
+      threatAgents: false,
+      skills: false,
+      interest: false,
+      type: 'desc'
+    };
     // The below code is been copy and customized from the resul.component of the identify-threat-agents module
     this.selfAssessment = this.selfAssessmentService.getSelfAssessment();
     this.questionnaireStatuses$ = this.questionnaireStatusService.getAllBySelfAssessmentAndQuestionnairePurpose(this.selfAssessment.id, 'ID_THREAT_AGENT');
@@ -259,6 +273,51 @@ export class ThreatAgentsWidgetComponent implements OnInit, OnDestroy {
       }
     } else {
       this.selectedThreatAgent = threatAgent;
+    }
+  }
+
+  private resetOrder() {
+    this.orderBy.threatAgents = false;
+    this.orderBy.skills = false;
+    this.orderBy.interest = false;
+    this.orderBy.type = 'desc';
+  }
+
+  public tableOrderBy(orderColumn: string, desc: boolean) {
+    this.resetOrder();
+    if (desc) {
+      this.orderBy.type = 'desc';
+    } else {
+      this.orderBy.type = 'asc';
+    }
+    switch (orderColumn.toLowerCase()) {
+      case ('threat_agents'): {
+        this.orderBy.threatAgents = true;
+        if (desc) {
+          this.threatAgentsPercentageArray = _.orderBy(this.threatAgentsPercentageArray, (elem: Couple<ThreatAgentMgm, Fraction>) => elem.key.name, ['desc']);
+        } else {
+          this.threatAgentsPercentageArray = _.orderBy(this.threatAgentsPercentageArray, (elem: Couple<ThreatAgentMgm, Fraction>) => elem.key.name, ['asc']);
+        }
+        break;
+      }
+      case ('skills'): {
+        this.orderBy.skills = true;
+        if (desc) {
+          this.threatAgentsPercentageArray = _.orderBy(this.threatAgentsPercentageArray, (elem: Couple<ThreatAgentMgm, Fraction>) => elem.key.skillLevel, ['desc']);
+        } else {
+          this.threatAgentsPercentageArray = _.orderBy(this.threatAgentsPercentageArray, (elem: Couple<ThreatAgentMgm, Fraction>) => elem.key.skillLevel, ['asc']);
+        }
+        break;
+      }
+      case ('interest'): {
+        this.orderBy.interest = true;
+        if (desc) {
+          this.threatAgentsPercentageArray = _.orderBy(this.threatAgentsPercentageArray, (elem: Couple<ThreatAgentMgm, Fraction>) => elem.value.toPercentage(), ['desc']);
+        } else {
+          this.threatAgentsPercentageArray = _.orderBy(this.threatAgentsPercentageArray, (elem: Couple<ThreatAgentMgm, Fraction>) => elem.value.toPercentage(), ['asc']);
+        }
+        break;
+      }
     }
   }
 }

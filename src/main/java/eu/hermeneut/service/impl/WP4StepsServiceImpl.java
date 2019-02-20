@@ -99,7 +99,7 @@ public class WP4StepsServiceImpl implements WP4StepsService {
                     )
                 );
 
-            //Get AttackStrategies fro each Container
+            //Get AttackStrategies for each Container
             List<AttackStrategy> attackStrategies = new ArrayList<>();
 
             for (Container container : containers) {

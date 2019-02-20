@@ -9,6 +9,12 @@ import { MySectorType } from '../../entities/enumerations/MySectorType.enum';
 import { SelfAssessmentMgmService, SelfAssessmentMgm } from '../../entities/self-assessment-mgm';
 import { ImpactEvaluationStatus } from '../../impact-evaluation/model/impact-evaluation-status.model';
 
+interface OrderBy {
+  category: boolean;
+  value: boolean;
+  type: string;
+}
+
 @Component({
   selector: 'jhi-losses-widget',
   templateUrl: './losses-widget.component.html',
@@ -24,6 +30,7 @@ export class LossesWidgetComponent implements OnInit {
     value: number,
     type: string
   }[];
+  public orderBy: OrderBy;
   public selectedCategory: string;
   public assetsBySelectedCategory: MyAssetMgm[] = [];
 
@@ -39,6 +46,11 @@ export class LossesWidgetComponent implements OnInit {
   ngOnInit() {
     this.loading = true;
     this.mySelf = this.mySelfAssessmentService.getSelfAssessment();
+    this.orderBy = {
+      category: false,
+      value: false,
+      type: 'desc'
+    };
     this.impactService.getMyAssets(this.mySelf).toPromise().then((res) => {
       if (res && res.length > 0) {
         this.myAssets = res;
@@ -125,6 +137,41 @@ export class LossesWidgetComponent implements OnInit {
             asset.asset.assetcategory.name === 'Innovation') {
             this.assetsBySelectedCategory.push(asset);
           }
+        }
+        break;
+      }
+    }
+  }
+
+  private resetOrder() {
+    this.orderBy.category = false;
+    this.orderBy.value = false;
+    this.orderBy.type = 'desc';
+  }
+
+  public tableOrderBy(orderColumn: string, desc: boolean) {
+    this.resetOrder();
+    if (desc) {
+      this.orderBy.type = 'desc';
+    } else {
+      this.orderBy.type = 'asc';
+    }
+    switch (orderColumn.toLowerCase()) {
+      case ('category'): {
+        this.orderBy.category = true;
+        if (desc) {
+          this.tableInfo = _.orderBy(this.tableInfo, ['splitting'], ['desc']);
+        } else {
+          this.tableInfo = _.orderBy(this.tableInfo, ['splitting'], ['asc']);
+        }
+        break;
+      }
+      case ('value'): {
+        this.orderBy.value = true;
+        if (desc) {
+          this.tableInfo = _.orderBy(this.tableInfo, ['value'], ['desc']);
+        } else {
+          this.tableInfo = _.orderBy(this.tableInfo, ['value'], ['asc']);
         }
         break;
       }

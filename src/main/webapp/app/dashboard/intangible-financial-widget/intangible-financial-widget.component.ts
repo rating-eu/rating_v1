@@ -10,6 +10,12 @@ import { AssetType } from '../../entities/enumerations/AssetType.enum';
 import { MyCategoryType } from '../../entities/enumerations/MyCategoryType.enum';
 import { MySectorType } from '../../entities/enumerations/MySectorType.enum';
 
+interface OrderBy {
+  category: boolean;
+  value: boolean;
+  type: string;
+}
+
 @Component({
   selector: 'jhi-intangible-financial-widget',
   templateUrl: './intangible-financial-widget.component.html',
@@ -28,6 +34,7 @@ export class IntangibleFinancialWidgetComponent implements OnInit {
     value: number,
     type: string
   }[];
+  public orderBy: OrderBy;
   public selectedCategory: string;
   public assetsBySelectedCategory: MyAssetMgm[] = [];
   public priorities = ['Low', 'Low medium', 'Medium', 'Medium high', 'High'];
@@ -41,6 +48,11 @@ export class IntangibleFinancialWidgetComponent implements OnInit {
   ngOnInit() {
     this.mySelf = this.mySelfAssessmentService.getSelfAssessment();
     this.loading = true;
+    this.orderBy = {
+      category: false,
+      value: false,
+      type: 'desc'
+    };
     this.idaUtilsService.getMySavedAssets(this.mySelf)
       .toPromise()
       .then((mySavedAssets) => {
@@ -68,27 +80,27 @@ export class IntangibleFinancialWidgetComponent implements OnInit {
                 }
                 switch (impact.categoryType.toString()) {
                   case MyCategoryType.IP.toString(): {
-                      this.tableInfo.push({
-                        splitting: 'Intellectual Properties',
-                        value: Math.round(impact.value * 100) / 100,
-                        type: 'IP'
-                      });
+                    this.tableInfo.push({
+                      splitting: 'Intellectual Properties',
+                      value: Math.round(impact.value * 100) / 100,
+                      type: 'IP'
+                    });
                     break;
                   }
                   case MyCategoryType.KEY_COMP.toString(): {
-                      this.tableInfo.push({
-                        splitting: 'Key Competences',
-                        value: Math.round(impact.value * 100) / 100,
-                        type: 'KEY_COMP'
-                      });
+                    this.tableInfo.push({
+                      splitting: 'Key Competences',
+                      value: Math.round(impact.value * 100) / 100,
+                      type: 'KEY_COMP'
+                    });
                     break;
                   }
                   case MyCategoryType.ORG_CAPITAL.toString(): {
-                      this.tableInfo.push({
-                        splitting: 'Organizational Capital (Reputation & Brand included )',
-                        value: Math.round(impact.value * 100) / 100,
-                        type: 'ORG_CAPITAL'
-                      });
+                    this.tableInfo.push({
+                      splitting: 'Organizational Capital (Reputation & Brand included )',
+                      value: Math.round(impact.value * 100) / 100,
+                      type: 'ORG_CAPITAL'
+                    });
                     break;
                   }
                 }
@@ -142,6 +154,41 @@ export class IntangibleFinancialWidgetComponent implements OnInit {
             asset.asset.assetcategory.name === 'Innovation') {
             this.assetsBySelectedCategory.push(asset);
           }
+        }
+        break;
+      }
+    }
+  }
+
+  private resetOrder() {
+    this.orderBy.category = false;
+    this.orderBy.value = false;
+    this.orderBy.type = 'desc';
+  }
+
+  public tableOrderBy(orderColumn: string, desc: boolean) {
+    this.resetOrder();
+    if (desc) {
+      this.orderBy.type = 'desc';
+    } else {
+      this.orderBy.type = 'asc';
+    }
+    switch (orderColumn.toLowerCase()) {
+      case ('category'): {
+        this.orderBy.category = true;
+        if (desc) {
+          this.tableInfo = _.orderBy(this.tableInfo, ['splitting'], ['desc']);
+        } else {
+          this.tableInfo = _.orderBy(this.tableInfo, ['splitting'], ['asc']);
+        }
+        break;
+      }
+      case ('value'): {
+        this.orderBy.value = true;
+        if (desc) {
+          this.tableInfo = _.orderBy(this.tableInfo, ['value'], ['desc']);
+        } else {
+          this.tableInfo = _.orderBy(this.tableInfo, ['value'], ['asc']);
         }
         break;
       }

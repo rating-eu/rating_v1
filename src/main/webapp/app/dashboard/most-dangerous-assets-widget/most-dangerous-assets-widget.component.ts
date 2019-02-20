@@ -16,6 +16,14 @@ interface MdawEntity {
   };
 }
 
+interface OrderBy {
+  asset: boolean;
+  attackStrategy: boolean;
+  likelihood: boolean;
+  vulnerability: boolean;
+  type: string;
+}
+
 @Component({
   selector: 'jhi-most-dangerous-assets-widget',
   templateUrl: './most-dangerous-assets-widget.component.html',
@@ -27,8 +35,13 @@ export class MostDangerousAssetsWidgetComponent implements OnInit {
   public loadingAttacksTable = false;
   public selectedAsset: AugmentedMyAsset;
   public selectedAttacks: AugmentedAttackStrategy[];
-  public assetsPaginator = {
-    id: 'asset_paginator',
+  public tangibleAssetsPaginator = {
+    id: 'intangible_asset_paginator',
+    itemsPerPage: 7,
+    currentPage: 1
+  };
+  public intangibleAssetsPaginator = {
+    id: 'tangible_asset_paginator',
     itemsPerPage: 7,
     currentPage: 1
   };
@@ -37,7 +50,10 @@ export class MostDangerousAssetsWidgetComponent implements OnInit {
     itemsPerPage: 7,
     currentPage: 1
   };
-  public mdawEntities: MdawEntity[];
+  public mdawTangibleEntities: MdawEntity[];
+  public mdawIntangibleEntities: MdawEntity[];
+  public orderIntangibleBy: OrderBy;
+  public orderTangibleBy: OrderBy;
 
   private overview: SelfAssessmentOverview;
   // high; medium-high ; medium; medium low; low
@@ -49,20 +65,48 @@ export class MostDangerousAssetsWidgetComponent implements OnInit {
 
   ngOnInit() {
     this.loading = true;
+    this.orderTangibleBy = {
+      asset: false,
+      vulnerability: false,
+      likelihood: false,
+      attackStrategy: false,
+      type: 'desc'
+    };
+    this.orderIntangibleBy = {
+      asset: false,
+      vulnerability: false,
+      likelihood: false,
+      attackStrategy: false,
+      type: 'desc'
+    };
     this.selfAssessmentService.getOverwiew().toPromise().then((res: SelfAssessmentOverview) => {
       if (res) {
         this.overview = res;
-        this.mdawEntities = [];
+        this.mdawTangibleEntities = [];
+        this.mdawIntangibleEntities = [];
         for (const item of this.overview.augmentedMyAssets) {
-          const index = _.findIndex(this.mdawEntities, (elem) => {
-            return elem.asset.asset.id === item.asset.id;
-          });
-          if (index === -1) {
-            this.mdawEntities.push(
-              _.clone(this.getMostDangerousAttack(item))
-            );
+          if (item.asset.assetcategory.type.toString() === 'TANGIBLE') {
+            const index = _.findIndex(this.mdawTangibleEntities, (elem) => {
+              return elem.asset.asset.id === item.asset.id;
+            });
+            if (index === -1) {
+              this.mdawTangibleEntities.push(
+                _.clone(this.getMostDangerousAttack(item))
+              );
+            } else {
+              continue;
+            }
           } else {
-            continue;
+            const index = _.findIndex(this.mdawIntangibleEntities, (elem) => {
+              return elem.asset.asset.id === item.asset.id;
+            });
+            if (index === -1) {
+              this.mdawIntangibleEntities.push(
+                _.clone(this.getMostDangerousAttack(item))
+              );
+            } else {
+              continue;
+            }
           }
         }
         this.loading = false;
@@ -109,8 +153,12 @@ export class MostDangerousAssetsWidgetComponent implements OnInit {
     this.attacksPaginator.currentPage = number;
   }
 
-  onAssetsPageChange(number: number) {
-    this.assetsPaginator.currentPage = number;
+  onIntangibleAssetsPageChange(number: number) {
+    this.intangibleAssetsPaginator.currentPage = number;
+  }
+
+  onTangibleAssetsPageChange(number: number) {
+    this.tangibleAssetsPaginator.currentPage = number;
   }
 
   public selectAsset(asset: AugmentedMyAsset) {
@@ -136,6 +184,115 @@ export class MostDangerousAssetsWidgetComponent implements OnInit {
       this.selectedAttacks = _.orderBy(this.selectedAttacks, ['likelihood'], ['desc']);
     }
     this.loadingAttacksTable = false;
+  }
+
+  private resetOrder(witchCategory: string) {
+    if (witchCategory === 'TANGIBLE') {
+      this.orderTangibleBy.asset = false;
+      this.orderTangibleBy.vulnerability = false;
+      this.orderTangibleBy.likelihood = false;
+      this.orderTangibleBy.attackStrategy = false;
+      this.orderTangibleBy.type = 'desc';
+    } else {
+      this.orderIntangibleBy.asset = false;
+      this.orderIntangibleBy.vulnerability = false;
+      this.orderIntangibleBy.likelihood = false;
+      this.orderIntangibleBy.attackStrategy = false;
+      this.orderIntangibleBy.type = 'desc';
+    }
+  }
+  public tableOrderBy(orderColumn: string, category: string, desc: boolean) {
+    if (category === 'TANGIBLE') {
+      this.resetOrder('TANGIBLE');
+      if (desc) {
+        this.orderTangibleBy.type = 'desc';
+      } else {
+        this.orderTangibleBy.type = 'asc';
+      }
+      switch (orderColumn.toLowerCase()) {
+        case ('asset'): {
+          this.orderTangibleBy.asset = true;
+          if (desc) {
+            this.mdawTangibleEntities = _.orderBy(this.mdawTangibleEntities, (elem: MdawEntity) => elem.asset.asset.name, ['desc']);
+          } else {
+            this.mdawTangibleEntities = _.orderBy(this.mdawTangibleEntities, (elem: MdawEntity) => elem.asset.asset.name, ['asc']);
+          }
+          break;
+        }
+        case ('vulnerability'): {
+          this.orderTangibleBy.vulnerability = true;
+          if (desc) {
+            this.mdawTangibleEntities = _.orderBy(this.mdawTangibleEntities, (elem: MdawEntity) => elem.mostDangerousAttackValue.vulnerability, ['desc']);
+          } else {
+            this.mdawTangibleEntities = _.orderBy(this.mdawTangibleEntities, (elem: MdawEntity) => elem.mostDangerousAttackValue.vulnerability, ['asc']);
+          }
+          break;
+        }
+        case ('likelihood'): {
+          this.orderTangibleBy.likelihood = true;
+          if (desc) {
+            this.mdawTangibleEntities = _.orderBy(this.mdawTangibleEntities, (elem: MdawEntity) => elem.mostDangerousAttackValue.likelihood, ['desc']);
+          } else {
+            this.mdawTangibleEntities = _.orderBy(this.mdawTangibleEntities, (elem: MdawEntity) => elem.mostDangerousAttackValue.likelihood, ['asc']);
+          }
+          break;
+        }
+        case ('attack_strategy'): {
+          this.orderTangibleBy.attackStrategy = true;
+          if (desc) {
+            this.mdawTangibleEntities = _.orderBy(this.mdawTangibleEntities, (elem: MdawEntity) => elem.howManyAttacks, ['desc']);
+          } else {
+            this.mdawTangibleEntities = _.orderBy(this.mdawTangibleEntities, (elem: MdawEntity) => elem.howManyAttacks, ['asc']);
+          }
+          break;
+        }
+      }
+    } else {
+      this.resetOrder('INTANGIBLE');
+      if (desc) {
+        this.orderIntangibleBy.type = 'desc';
+      } else {
+        this.orderIntangibleBy.type = 'asc';
+      }
+      switch (orderColumn.toLowerCase()) {
+        case ('asset'): {
+          this.orderIntangibleBy.asset = true;
+          if (desc) {
+            this.mdawIntangibleEntities = _.orderBy(this.mdawIntangibleEntities, (elem: MdawEntity) => elem.asset.asset.name, ['desc']);
+          } else {
+            this.mdawIntangibleEntities = _.orderBy(this.mdawIntangibleEntities, (elem: MdawEntity) => elem.asset.asset.name, ['asc']);
+          }
+          break;
+        }
+        case ('vulnerability'): {
+          this.orderIntangibleBy.vulnerability = true;
+          if (desc) {
+            this.mdawIntangibleEntities = _.orderBy(this.mdawIntangibleEntities, (elem: MdawEntity) => elem.mostDangerousAttackValue.vulnerability, ['desc']);
+          } else {
+            this.mdawIntangibleEntities = _.orderBy(this.mdawIntangibleEntities, (elem: MdawEntity) => elem.mostDangerousAttackValue.vulnerability, ['asc']);
+          }
+          break;
+        }
+        case ('likelihood'): {
+          this.orderIntangibleBy.likelihood = true;
+          if (desc) {
+            this.mdawIntangibleEntities = _.orderBy(this.mdawIntangibleEntities, (elem: MdawEntity) => elem.mostDangerousAttackValue.likelihood, ['desc']);
+          } else {
+            this.mdawIntangibleEntities = _.orderBy(this.mdawIntangibleEntities, (elem: MdawEntity) => elem.mostDangerousAttackValue.likelihood, ['asc']);
+          }
+          break;
+        }
+        case ('attack_strategy'): {
+          this.orderIntangibleBy.attackStrategy = true;
+          if (desc) {
+            this.mdawIntangibleEntities = _.orderBy(this.mdawIntangibleEntities, (elem: MdawEntity) => elem.howManyAttacks, ['desc']);
+          } else {
+            this.mdawIntangibleEntities = _.orderBy(this.mdawIntangibleEntities, (elem: MdawEntity) => elem.howManyAttacks, ['asc']);
+          }
+          break;
+        }
+      }
+    }
   }
 
 }

@@ -28,6 +28,14 @@ import { switchMap } from 'rxjs/operators';
 import { of } from 'rxjs/observable/of';
 import { forkJoin } from 'rxjs/observable/forkJoin';
 
+interface OrderBy {
+    asset: boolean;
+    priority: boolean;
+    value: boolean;
+    valueLoss: boolean;
+    type: string;
+}
+
 @Component({
     // tslint:disable-next-line:component-selector
     selector: 'impact-evaluation',
@@ -77,6 +85,8 @@ export class ImpactEvaluationComponent implements OnInit {
     public financialAssetsAkaCurrent: MyAssetMgm[] = [];
     public physicalAssetsAkaFixed: MyAssetMgm[] = [];
     public ebitLabel: string[] = [];
+    public orderBy: OrderBy;
+
     private mySelf: SelfAssessmentMgm;
     private firstYear: number;
     private lastYear: number;
@@ -115,6 +125,13 @@ export class ImpactEvaluationComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.orderBy = {
+            asset: false,
+            priority: false,
+            value: false,
+            valueLoss: false,
+            type: 'desc'
+        };
         this.accountService.get().subscribe((response1) => {
             const loggedAccount: Account = response1.body;
             this.userService.find(loggedAccount['login']).subscribe((response2) => {
@@ -1200,6 +1217,61 @@ export class ImpactEvaluationComponent implements OnInit {
             }
         } else {
             return _.clamp(value, min, max);
+        }
+    }
+
+    private resetOrder() {
+        this.orderBy.asset = false;
+        this.orderBy.priority = false;
+        this.orderBy.value = false;
+        this.orderBy.valueLoss = false;
+        this.orderBy.type = 'desc';
+    }
+
+    public tableOrderBy(orderColumn: string, desc: boolean) {
+        this.resetOrder();
+        if (desc) {
+            this.orderBy.type = 'desc';
+        } else {
+            this.orderBy.type = 'asc';
+        }
+        switch (orderColumn.toLowerCase()) {
+            case ('asset'): {
+                this.orderBy.asset = true;
+                if (desc) {
+                    this.assetsBySelectedCategory = _.orderBy(this.assetsBySelectedCategory, (elem: MyAssetMgm) => elem.asset.name, ['desc']);
+                } else {
+                    this.assetsBySelectedCategory = _.orderBy(this.assetsBySelectedCategory, (elem: MyAssetMgm) => elem.asset.name, ['asc']);
+                }
+                break;
+            }
+            case ('priority'): {
+                this.orderBy.priority = true;
+                if (desc) {
+                    this.assetsBySelectedCategory = _.orderBy(this.assetsBySelectedCategory, (elem: MyAssetMgm) => elem.ranking, ['desc']);
+                } else {
+                    this.assetsBySelectedCategory = _.orderBy(this.assetsBySelectedCategory, (elem: MyAssetMgm) => elem.ranking, ['asc']);
+                }
+                break;
+            }
+            case ('value'): {
+                this.orderBy.value = true;
+                if (desc) {
+                    this.assetsBySelectedCategory = _.orderBy(this.assetsBySelectedCategory, (elem: MyAssetMgm) => elem.economicValue, ['desc']);
+                } else {
+                    this.assetsBySelectedCategory = _.orderBy(this.assetsBySelectedCategory, (elem: MyAssetMgm) => elem.economicValue, ['asc']);
+                }
+                break;
+            }
+            case ('value_loss'): {
+                this.orderBy.valueLoss = true;
+                if (desc) {
+                    this.assetsBySelectedCategory = _.orderBy(this.assetsBySelectedCategory, (elem: MyAssetMgm) => elem.lossValue, ['desc']);
+                } else {
+                    this.assetsBySelectedCategory = _.orderBy(this.assetsBySelectedCategory, (elem: MyAssetMgm) => elem.lossValue, ['asc']);
+                }
+                break;
+            }
         }
     }
 }

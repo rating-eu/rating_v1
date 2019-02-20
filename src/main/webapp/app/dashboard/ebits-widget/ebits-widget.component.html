@@ -22,8 +22,22 @@
         <table class="table table-striped">
           <thead>
             <tr>
-              <th width="50%">Year</th>
-              <th width="50%">Value</th>
+              <th width="50%">Year 
+                  <i *ngIf="!ebitOrderBy.year" (click)=" tableOrderBy('year', true)"
+                  class="fa fa-sort" aria-hidden="true"></i>
+                <i *ngIf="ebitOrderBy.year && ebitOrderBy.type === 'desc'"
+                  (click)=" tableOrderBy('year', false)" class="fa fa-chevron-down" aria-hidden="true"></i>
+                <i *ngIf="ebitOrderBy.year && ebitOrderBy.type === 'asc'"
+                  (click)=" tableOrderBy('year', true)" class="fa fa-chevron-up" aria-hidden="true"></i>
+              </th>
+              <th width="50%">Value 
+                  <i *ngIf="!ebitOrderBy.value" (click)=" tableOrderBy('value', true)"
+                  class="fa fa-sort" aria-hidden="true"></i>
+                <i *ngIf="ebitOrderBy.value && ebitOrderBy.type === 'desc'"
+                  (click)=" tableOrderBy('value', false)" class="fa fa-chevron-down" aria-hidden="true"></i>
+                <i *ngIf="ebitOrderBy.value && ebitOrderBy.type === 'asc'"
+                  (click)=" tableOrderBy('value', true)" class="fa fa-chevron-up" aria-hidden="true"></i>
+              </th>
             </tr>
           </thead>
           <tbody>
