@@ -1,7 +1,7 @@
 <div class="container" *ngIf="loading || loadingRiskLevel">
   <div class="loader"></div>
 </div>
-<div class="container-fluid" *ngIf="selectedAsset && criticalLevel && !detailsLoading && !loadingRiskLevel">
+<div class="container-fluid" *ngIf="selectedAsset && criticalLevel && !loading && !loadingRiskLevel">
   <div class="card">
     <div class="card-body">
       <h5 class="card-title">{{selectedAsset.asset.name}}</h5>
