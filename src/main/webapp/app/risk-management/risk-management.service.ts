@@ -1,3 +1,5 @@
+import { MyAssetRisk } from './model/my-asset-risk.model';
+import { MyAssetMgm } from './../entities/my-asset-mgm/my-asset-mgm.model';
 import { ThreatAgentInterest } from './model/threat-agent-interest.model';
 import { Injectable } from '@angular/core';
 import { Observable, Subject } from '../../../../../node_modules/rxjs';
@@ -5,7 +7,6 @@ import { SERVER_API_URL } from '../app.constants';
 import { SelfAssessmentMgm } from '../entities/self-assessment-mgm';
 import { CriticalLevelMgm } from '../entities/critical-level-mgm';
 import { HttpClient, HttpResponse, HttpErrorResponse } from '../../../../../node_modules/@angular/common/http';
-import { MyAssetMgm } from '../entities/my-asset-mgm';
 import { MyAssetAttackChance } from './model/my-asset-attack-chance.model';
 import { AttackCostFormula } from './model/attack-cost-formula.model';
 
@@ -17,6 +18,7 @@ export class RiskManagementService {
   private threatAgentsInterestsServiceUrl = SERVER_API_URL + 'api/{selfAssessmentID}/wp4/my-assets/{myAssetID}/threat-agent-interests';
   private attackCostsFormulaByMyAssetUrl = SERVER_API_URL + '/api/{selfAssessmentID}/formula/attack-costs/{myAssetID}';
   private impactFormulaByMyAssetUrl = SERVER_API_URL + '/api/{selfAssessmentID}/formula/impact/{myAssetID}';
+  private assetsAtRiskUrl = SERVER_API_URL + 'api/{selfAssessmentID}/wp4/my-asset-risks';
   private subscriptorForCriticalLevel: Subject<CriticalLevelMgm> = new Subject<CriticalLevelMgm>();
 
   constructor(
@@ -31,9 +33,20 @@ export class RiskManagementService {
     this.subscriptorForCriticalLevel.next(level);
   }
 
+  public getMyAssetsAtRisk(self: SelfAssessmentMgm): Observable<MyAssetRisk[]> {
+    const uri = this.assetsAtRiskUrl.replace('{selfAssessmentID}', String(self.id));
+    return this.http.get<MyAssetRisk[]>(uri, { observe: 'response' })
+      .map((res: HttpResponse<MyAssetRisk[]>) => {
+        return res.body;
+      }).catch((err: HttpErrorResponse) => {
+        console.error('An error occurred:', err.status);
+        return Observable.empty<MyAssetRisk[]>();
+      });
+  }
+
   public getImpactFormulaByMyAsset(self: SelfAssessmentMgm, myAsset: MyAssetMgm): Observable<string> {
     const uri = this.impactFormulaByMyAssetUrl.replace('{selfAssessmentID}', String(self.id)).replace('{myAssetID}', String(myAsset.id));
-    return this.http.get(uri, {responseType: 'text'})
+    return this.http.get(uri, { responseType: 'text' })
       .map((res) => {
         return res;
       }).catch((err) => {
