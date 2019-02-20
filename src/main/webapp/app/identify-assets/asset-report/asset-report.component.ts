@@ -10,6 +10,11 @@ import { IdentifyAssetUtilService } from '../identify-asset.util.service';
 import { MyAssetMgm } from '../../entities/my-asset-mgm';
 import { AssetType } from '../../entities/enumerations/AssetType.enum';
 
+interface OrderBy {
+    category: boolean;
+    type: string;
+}
+
 @Component({
     // tslint:disable-next-line:component-selector
     selector: 'asset-report',
@@ -29,6 +34,8 @@ export class AssetReportComponent implements OnInit, OnDestroy {
     public tangibleCategoryMap: Map<string, number[]>;
     public tangibleCategoryKeys: string[];
     public intangibleCategoryKeys: string[];
+    public orderIntangibleBy: OrderBy;
+    public orderTangibleBy: OrderBy;
     public intangibleCategoryMapLoaded = false;
     public tangibleCategoryMapLoaded = false;
 
@@ -48,6 +55,14 @@ export class AssetReportComponent implements OnInit, OnDestroy {
         this.eventManager.destroy(this.eventSubscriber);
     }
     ngOnInit() {
+        this.orderIntangibleBy = {
+            category: false,
+            type: 'desc'
+        };
+        this.orderTangibleBy = {
+            category: false,
+            type: 'desc'
+        };
         this.principal.identity().then((account) => {
             this.account = account;
             this.mySelf = this.mySelfAssessmentService.getSelfAssessment();
@@ -117,6 +132,55 @@ export class AssetReportComponent implements OnInit, OnDestroy {
             const index = _.findIndex(this.myAssets, { id: id as number });
             if (index !== -1) {
                 this.selectedAssetsByCategory.push(this.myAssets[index]);
+            }
+        }
+    }
+
+    private resetOrder(witchCategory: string) {
+        if (witchCategory === 'TANGIBLE') {
+            this.orderTangibleBy.category = false;
+            this.orderTangibleBy.type = 'desc';
+        } else {
+            this.orderIntangibleBy.category = false;
+            this.orderIntangibleBy.type = 'desc';
+        }
+    }
+    public tableOrderBy(orderColumn: string, category: string, desc: boolean) {
+        if (category === 'TANGIBLE') {
+            this.resetOrder('TANGIBLE');
+            if (desc) {
+                this.orderTangibleBy.type = 'desc';
+            } else {
+                this.orderTangibleBy.type = 'asc';
+            }
+            switch (orderColumn.toLowerCase()) {
+                case ('category'): {
+                    this.orderTangibleBy.category = true;
+                    if (desc) {
+                        this.tangibleCategoryKeys = _.orderBy(this.tangibleCategoryKeys, [], ['desc']);
+                    } else {
+                        this.tangibleCategoryKeys = _.orderBy(this.tangibleCategoryKeys, [], ['asc']);
+                    }
+                    break;
+                }
+            }
+        } else {
+            this.resetOrder('INTANGIBLE');
+            if (desc) {
+                this.orderIntangibleBy.type = 'desc';
+            } else {
+                this.orderIntangibleBy.type = 'asc';
+            }
+            switch (orderColumn.toLowerCase()) {
+                case ('category'): {
+                    this.orderIntangibleBy.category = true;
+                    if (desc) {
+                        this.intangibleCategoryKeys = _.orderBy(this.intangibleCategoryKeys, [], ['desc']);
+                    } else {
+                        this.intangibleCategoryKeys = _.orderBy(this.intangibleCategoryKeys, [], ['asc']);
+                    }
+                    break;
+                }
             }
         }
     }

@@ -9,14 +9,25 @@
                 <table class="table">
                     <thead>
                         <tr>
-                            <th scope="col">Asset category</th>
+                            <th scope="col">Asset category
+                                <i *ngIf="!orderTangibleBy.category"
+                                    (click)=" tableOrderBy('category', 'TANGIBLE', true)" class="fa fa-sort"
+                                    aria-hidden="true"></i>
+                                <i *ngIf="orderTangibleBy.category && orderTangibleBy.type === 'desc'"
+                                    (click)=" tableOrderBy('category', 'TANGIBLE', false)" class="fa fa-chevron-down"
+                                    aria-hidden="true"></i>
+                                <i *ngIf="orderTangibleBy.category && orderTangibleBy.type === 'asc'"
+                                    (click)=" tableOrderBy('category', 'TANGIBLE', true)" class="fa fa-chevron-up"
+                                    aria-hidden="true"></i>
+                            </th>
                             <th scope="col">Assent in category</th>
                         </tr>
                     </thead>
                     <tbody>
                         <ng-container *ngFor="let key of tangibleCategoryKeys">
                             <tr>
-                                <th scope="row"><a href="javascript:void(0)" (click)="selectAssetCategory(key)">{{key}}</a></th>
+                                <th scope="row"><a href="javascript:void(0)"
+                                        (click)="selectAssetCategory(key)">{{key}}</a></th>
                                 <td>
                                     {{tangibleCategoryMap.get(key).length}}
                                 </td>
@@ -30,21 +41,27 @@
                                                     <th scope="col" class="text-center align-middle">Asset</th>
                                                     <th scope="col" class="text-center align-middle">Priority</th>
                                                     <th scope="col" class="text-center align-middle">Economic Value</th>
-                                                    <th scope="col" class="text-center align-middle">Economic Impact</th>
+                                                    <th scope="col" class="text-center align-middle">Economic Impact
+                                                    </th>
                                                     <th scope="col" class="text-center align-middle">Losses</th>
                                                     <th scope="col" class="text-center align-middle">Impact</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr *ngFor="let myAsset of selectedAssetsByCategory" class="text-center align-middle">
-                                                    <td ngbTooltip="{{myAsset.asset.description}}" placement="right">{{myAsset.asset.name}}</td>
+                                                <tr *ngFor="let myAsset of selectedAssetsByCategory"
+                                                    class="text-center align-middle">
+                                                    <td ngbTooltip="{{myAsset.asset.description}}" placement="right">
+                                                        {{myAsset.asset.name}}</td>
                                                     <td *ngIf="myAsset.ranking">{{myAsset.ranking}}</td>
                                                     <td *ngIf="!myAsset.ranking"> - </td>
-                                                    <td *ngIf="myAsset.economicValue">{{myAsset.economicValue | currency:'EUR'}}</td>
+                                                    <td *ngIf="myAsset.economicValue">
+                                                        {{myAsset.economicValue | currency:'EUR'}}</td>
                                                     <td *ngIf="!myAsset.economicValue"> - </td>
-                                                    <td *ngIf="myAsset.economicImpact">{{myAsset.economicImpact | currency:'EUR'}}</td>
+                                                    <td *ngIf="myAsset.economicImpact">
+                                                        {{myAsset.economicImpact | currency:'EUR'}}</td>
                                                     <td *ngIf="!myAsset.economicImpact"> - </td>
-                                                    <td *ngIf="myAsset.lossValue">{{myAsset.lossValue | currency:'EUR'}}</td>
+                                                    <td *ngIf="myAsset.lossValue">{{myAsset.lossValue | currency:'EUR'}}
+                                                    </td>
                                                     <td *ngIf="!myAsset.lossValue"> - </td>
                                                     <td *ngIf="myAsset.impact">{{myAsset.impact}}</td>
                                                     <td *ngIf="!myAsset.impact"> - </td>
@@ -65,14 +82,25 @@
                 <table class="table">
                     <thead>
                         <tr>
-                            <th scope="col">Asset category</th>
+                            <th scope="col">Asset category
+                                <i *ngIf="!orderIntangibleBy.category"
+                                    (click)=" tableOrderBy('category', 'INTANGIBLE', true)" class="fa fa-sort"
+                                    aria-hidden="true"></i>
+                                <i *ngIf="orderIntangibleBy.category && orderIntangibleBy.type === 'desc'"
+                                    (click)=" tableOrderBy('category', 'INTANGIBLE', false)" class="fa fa-chevron-down"
+                                    aria-hidden="true"></i>
+                                <i *ngIf="orderIntangibleBy.category && orderIntangibleBy.type === 'asc'"
+                                    (click)=" tableOrderBy('category', 'INTANGIBLE', true)" class="fa fa-chevron-up"
+                                    aria-hidden="true"></i>
+                            </th>
                             <th scope="col">Assent in category</th>
                         </tr>
                     </thead>
                     <tbody>
                         <ng-container *ngFor="let key of intangibleCategoryKeys">
                             <tr>
-                                <th scope="row"><a href="javascript:void(0)" (click)="selectAssetCategory(key)">{{key}}</a></th>
+                                <th scope="row"><a href="javascript:void(0)"
+                                        (click)="selectAssetCategory(key)">{{key}}</a></th>
                                 <td>
                                     {{intangibleCategoryMap.get(key).length}}
                                 </td>
@@ -86,21 +114,27 @@
                                                     <th scope="col" class="text-center align-middle">Asset</th>
                                                     <th scope="col" class="text-center align-middle">Priority</th>
                                                     <th scope="col" class="text-center align-middle">Economic Value</th>
-                                                    <th scope="col" class="text-center align-middle">Economic Impact</th>
+                                                    <th scope="col" class="text-center align-middle">Economic Impact
+                                                    </th>
                                                     <th scope="col" class="text-center align-middle">Losses</th>
                                                     <th scope="col" class="text-center align-middle">Impact</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <tr *ngFor="let myAsset of selectedAssetsByCategory" class="text-center align-middle">
-                                                    <td ngbTooltip="{{myAsset.asset.description}}" placement="right">{{myAsset.asset.name}}</td>
+                                                <tr *ngFor="let myAsset of selectedAssetsByCategory"
+                                                    class="text-center align-middle">
+                                                    <td ngbTooltip="{{myAsset.asset.description}}" placement="right">
+                                                        {{myAsset.asset.name}}</td>
                                                     <td *ngIf="myAsset.ranking">{{myAsset.ranking}}</td>
                                                     <td *ngIf="!myAsset.ranking"> - </td>
-                                                    <td *ngIf="myAsset.economicValue">{{myAsset.economicValue | currency:'EUR'}}</td>
+                                                    <td *ngIf="myAsset.economicValue">
+                                                        {{myAsset.economicValue | currency:'EUR'}}</td>
                                                     <td *ngIf="!myAsset.economicValue"> - </td>
-                                                    <td *ngIf="myAsset.economicImpact">{{myAsset.economicImpact | currency:'EUR'}}</td>
+                                                    <td *ngIf="myAsset.economicImpact">
+                                                        {{myAsset.economicImpact | currency:'EUR'}}</td>
                                                     <td *ngIf="!myAsset.economicImpact"> - </td>
-                                                    <td *ngIf="myAsset.lossValue">{{myAsset.lossValue | currency:'EUR'}}</td>
+                                                    <td *ngIf="myAsset.lossValue">{{myAsset.lossValue | currency:'EUR'}}
+                                                    </td>
                                                     <td *ngIf="!myAsset.lossValue"> - </td>
                                                     <td *ngIf="myAsset.impact">{{myAsset.impact}}</td>
                                                     <td *ngIf="!myAsset.impact"> - </td>
