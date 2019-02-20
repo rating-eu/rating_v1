@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { RiskManagementComponent } from './risk-management/risk-management.component';
 import { RiskEvaluationComponent } from './risk-evaluation/risk-evaluation.component';
-import { RiskMitigationComponent } from './risk-mitigation/risk-mitigation.component';
+import { RiskDetailsComponent } from './risk-details/risk-details.component';
 
 const routes: Routes = [
     {
@@ -20,8 +20,8 @@ const routes: Routes = [
                 }
             },
             {
-                path: 'risk-mitigation',
-                component: RiskMitigationComponent,
+                path: 'risk-details/:assetId',
+                component: RiskDetailsComponent,
                 data: {
                     pageTitle: 'hermeneutApp.riskManagement.riskMitigation.title'
                 }

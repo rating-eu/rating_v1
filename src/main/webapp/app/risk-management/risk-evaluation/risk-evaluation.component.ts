@@ -6,7 +6,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { RiskManagementService } from '../risk-management.service';
 import { SelfAssessmentMgmService, SelfAssessmentMgm } from '../../entities/self-assessment-mgm';
 import { CriticalLevelMgm } from '../../entities/critical-level-mgm';
-import { MyAssetMgm, MyAssetMgmService } from '../../entities/my-asset-mgm';
+import { MyAssetMgm } from '../../entities/my-asset-mgm';
 import { Status } from '../../entities/enumerations/QuestionnaireStatus.enum';
 import { Subscription } from 'rxjs';
 import { MitigationMgm } from '../../entities/mitigation-mgm';
@@ -66,7 +66,7 @@ export class RiskEvaluationComponent implements OnInit, OnDestroy {
         itemsPerPage: 7,
         currentPage: 1
     };
-    
+
     constructor(
         private mySelfAssessmentService: SelfAssessmentMgmService,
         private riskService: RiskManagementService,
