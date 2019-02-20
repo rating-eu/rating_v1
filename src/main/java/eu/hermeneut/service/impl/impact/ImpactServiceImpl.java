@@ -164,11 +164,13 @@ public class ImpactServiceImpl implements ImpactService {
         formula.append(this.properties.getCurrency() + ")");
 
         for (AttackCost attackCost : uniqueCostTypes.values()) {
-            formula.append(" + ");
-            formula.append(attackCost.getType().name());
-            formula.append("(");
-            formula.append(attackCost.getCosts());
-            formula.append(this.properties.getCurrency() + ")");
+            if (attackCost != null && attackCost.getCosts() != null) {
+                formula.append(" + ");
+                formula.append(attackCost.getType().name());
+                formula.append("(");
+                formula.append(attackCost.getCosts());
+                formula.append(this.properties.getCurrency() + ")");
+            }
         }
 
         formula.append(" = ");
