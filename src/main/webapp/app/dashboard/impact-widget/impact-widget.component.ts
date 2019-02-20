@@ -7,6 +7,13 @@ import { SelfAssessmentMgmService, SelfAssessmentMgm } from '../../entities/self
 import { Status } from '../../entities/enumerations/QuestionnaireStatus.enum';
 import { MyAssetMgm } from '../../entities/my-asset-mgm';
 
+interface OrderBy {
+  impact: boolean;
+  from: boolean;
+  to: boolean;
+  type: string;
+}
+
 interface WidgetItem {
   impact: number;
   economicValueMin: number;
@@ -15,31 +22,38 @@ interface WidgetItem {
 }
 
 @Component({
-    selector: 'jhi-impact-widget',
-    templateUrl: './impact-widget.component.html',
-    styleUrls: ['impact-widget.component.css']
+  selector: 'jhi-impact-widget',
+  templateUrl: './impact-widget.component.html',
+  styleUrls: ['impact-widget.component.css']
 })
 export class ImpactWidgetComponent implements OnInit {
   public loading = false;
   public isCollapsed = true;
   public widgetElements: WidgetItem[] = [];
   public selectedImpact: number;
+  public orderBy: OrderBy;
 
   private mySelf: SelfAssessmentMgm;
   private status: DashboardStatus;
   private dashboardStatus = DashboardStepEnum;
   private myAssets: MyAssetMgm[] = [];
 
-    constructor(
-        private impactService: ImpactEvaluationService,
-        private mySelfAssessmentService: SelfAssessmentMgmService,
-        private dashService: DashboardService
-    ) {
-    }
+  constructor(
+    private impactService: ImpactEvaluationService,
+    private mySelfAssessmentService: SelfAssessmentMgmService,
+    private dashService: DashboardService
+  ) {
+  }
 
   ngOnInit() {
     this.loading = true;
     this.mySelf = this.mySelfAssessmentService.getSelfAssessment();
+    this.orderBy = {
+      impact: false,
+      from: false,
+      to: false,
+      type: 'desc'
+    };
     this.status = this.dashService.getStatus();
     this.dashService.getStatusFromServer(this.mySelf, this.dashboardStatus.ATTACK_RELATED_COSTS).toPromise().then((res) => {
       this.status.attackRelatedCostEstimationStatus = Status[res];
@@ -81,6 +95,51 @@ export class ImpactWidgetComponent implements OnInit {
         this.loading = false;
       }
     });
+  }
+
+  private resetOrder() {
+    this.orderBy.from = false;
+    this.orderBy.to = false;
+    this.orderBy.impact = false;
+    this.orderBy.type = 'desc';
+  }
+
+  public tableOrderBy(orderColumn: string, desc: boolean) {
+    this.resetOrder();
+    if (desc) {
+      this.orderBy.type = 'desc';
+    } else {
+      this.orderBy.type = 'asc';
+    }
+    switch (orderColumn.toLowerCase()) {
+      case ('impact'): {
+        this.orderBy.impact = true;
+        if (desc) {
+          this.widgetElements = _.orderBy(this.widgetElements, ['impact'], ['desc']);
+        } else {
+          this.widgetElements = _.orderBy(this.widgetElements, ['impact'], ['asc']);
+        }
+        break;
+      }
+      case ('from'): {
+        this.orderBy.from = true;
+        if (desc) {
+          this.widgetElements = _.orderBy(this.widgetElements, ['economicValueMin'], ['desc']);
+        } else {
+          this.widgetElements = _.orderBy(this.widgetElements, ['economicValueMin'], ['asc']);
+        }
+        break;
+      }
+      case ('to'): {
+        this.orderBy.to = true;
+        if (desc) {
+          this.widgetElements = _.orderBy(this.widgetElements, ['economicValueMax'], ['desc']);
+        } else {
+          this.widgetElements = _.orderBy(this.widgetElements, ['economicValueMax'], ['asc']);
+        }
+        break;
+      }
+    }
   }
 
   public setImpact(impact: number) {

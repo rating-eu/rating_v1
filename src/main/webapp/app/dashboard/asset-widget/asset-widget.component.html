@@ -6,7 +6,8 @@
     <div class="count" *ngIf="myAssets">{{myAssets.length}}</div>
     <h3 *ngIf="myAssets"><a [routerLink]="['/identify-asset/asset-clustering']">Assets</a></h3>
     <h3 *ngIf="!myAssets"><a [routerLink]="['/identify-asset/asset-clustering']">No Assets counted</a></h3>
-    <p *ngIf="myAssets"><a href="javascript:void(0)" (click)="open(tangibleAssetsDetails)">tangible</a> | <a href="javascript:void(0)" (click)="open(intangibleAssetsDetails)">intangible</a></p>
+    <p *ngIf="myAssets"><a href="javascript:void(0)" (click)="open(tangibleAssetsDetails)">tangible</a> | <a
+        href="javascript:void(0)" (click)="open(intangibleAssetsDetails)">intangible</a></p>
   </div>
 </div>
 
@@ -21,20 +22,36 @@
     <table class="table" *ngIf="tangibleCategoryKeys">
       <thead>
         <tr>
-          <th scope="col">Asset category</th>
-          <th scope="col">Assent in category</th>
+          <th scope="col">Asset category
+            <i *ngIf="!orderTangibleBy.category" (click)=" tableOrderBy('category', 'TANGIBLE', true)"
+              class="fa fa-sort" aria-hidden="true"></i>
+            <i *ngIf="orderTangibleBy.category && orderTangibleBy.type === 'desc'"
+              (click)=" tableOrderBy('category', 'TANGIBLE', false)" class="fa fa-chevron-down" aria-hidden="true"></i>
+            <i *ngIf="orderTangibleBy.category && orderTangibleBy.type === 'asc'"
+              (click)=" tableOrderBy('category', 'TANGIBLE', true)" class="fa fa-chevron-up" aria-hidden="true"></i>
+          </th>
+          <th scope="col">Assent in category
+            <i *ngIf="!orderTangibleBy.assetNumber" (click)=" tableOrderBy('asset_number', 'TANGIBLE', true)"
+              class="fa fa-sort" aria-hidden="true"></i>
+            <i *ngIf="orderTangibleBy.assetNumber && orderTangibleBy.type === 'desc'"
+              (click)=" tableOrderBy('asset_number', 'TANGIBLE', false)" class="fa fa-chevron-down"
+              aria-hidden="true"></i>
+            <i *ngIf="orderTangibleBy.assetNumber && orderTangibleBy.type === 'asc'"
+              (click)=" tableOrderBy('asset_number', 'TANGIBLE', true)" class="fa fa-chevron-up" aria-hidden="true"></i>
+          </th>
         </tr>
       </thead>
       <tbody>
-        <ng-container *ngFor="let key of tangibleCategoryKeys">
+        <ng-container *ngFor="let key of tableTangibleInfo">
           <tr>
-            <th scope="row"><a ngbTooltip="Click on Asset category for more details" href="javascript:void(0)" (click)="selectAssetCategory(key)">{{key}}</a></th>
+            <th scope="row"><a ngbTooltip="Click on Asset category for more details" href="javascript:void(0)"
+                (click)="selectAssetCategory(key.category)">{{key.category}}</a></th>
             <td>
-              {{tangibleCategoryMap.get(key).length}}
+              {{key.assetNumber}}
             </td>
           </tr>
           <ng-container *ngIf="selectedCategory">
-            <tr *ngIf="selectedCategory === key">
+            <tr *ngIf="selectedCategory === key.category">
               <td colspan="2">
                 <table class="col-md-12">
                   <thead>
@@ -77,20 +94,36 @@
     <table class="table" *ngIf="intangibleCategoryKeys">
       <thead>
         <tr>
-          <th scope="col">Asset category</th>
-          <th scope="col">Assent in category</th>
+            <th scope="col">Asset category
+                <i *ngIf="!orderIntangibleBy.category" (click)=" tableOrderBy('category', 'INTANGIBLE', true)"
+                  class="fa fa-sort" aria-hidden="true"></i>
+                <i *ngIf="orderIntangibleBy.category && orderIntangibleBy.type === 'desc'"
+                  (click)=" tableOrderBy('category', 'INTANGIBLE', false)" class="fa fa-chevron-down" aria-hidden="true"></i>
+                <i *ngIf="orderIntangibleBy.category && orderIntangibleBy.type === 'asc'"
+                  (click)=" tableOrderBy('category', 'INTANGIBLE', true)" class="fa fa-chevron-up" aria-hidden="true"></i>
+              </th>
+              <th scope="col">Assent in category
+                <i *ngIf="!orderIntangibleBy.assetNumber" (click)=" tableOrderBy('asset_number', 'INTANGIBLE', true)"
+                  class="fa fa-sort" aria-hidden="true"></i>
+                <i *ngIf="orderIntangibleBy.assetNumber && orderIntangibleBy.type === 'desc'"
+                  (click)=" tableOrderBy('asset_number', 'INTANGIBLE', false)" class="fa fa-chevron-down"
+                  aria-hidden="true"></i>
+                <i *ngIf="orderIntangibleBy.assetNumber && orderIntangibleBy.type === 'asc'"
+                  (click)=" tableOrderBy('asset_number', 'INTANGIBLE', true)" class="fa fa-chevron-up" aria-hidden="true"></i>
+              </th>
         </tr>
       </thead>
       <tbody>
-        <ng-container *ngFor="let key of intangibleCategoryKeys">
+        <ng-container *ngFor="let key of tableIntangibleInfo">
           <tr>
-            <th scope="row"><a ngbTooltip="Click on Asset category for more details" href="javascript:void(0)" (click)="selectAssetCategory(key)">{{key}}</a></th>
+            <th scope="row"><a ngbTooltip="Click on Asset category for more details" href="javascript:void(0)"
+                (click)="selectAssetCategory(key.category)">{{key.category}}</a></th>
             <td>
-              {{intangibleCategoryMap.get(key).length}}
+              {{key.assetNumber}}
             </td>
           </tr>
           <ng-container *ngIf="selectedCategory">
-            <tr *ngIf="selectedCategory === key">
+            <tr *ngIf="selectedCategory === key.category">
               <td colspan="2">
                 <table class="col-md-12">
                   <thead>
@@ -117,7 +150,7 @@
       </tbody>
     </table>
     <div class="text-center" *ngIf="!intangibleCategoryKeys">
-        <p>You don't have any intangible asset!</p>
-      </div>
+      <p>You don't have any intangible asset!</p>
+    </div>
   </div>
 </ng-template>

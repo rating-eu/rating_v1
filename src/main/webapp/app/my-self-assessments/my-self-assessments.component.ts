@@ -1,14 +1,22 @@
-import {Principal} from './../shared/auth/principal.service';
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {User} from '../shared';
-import {MyCompanyMgm} from '../entities/my-company-mgm';
-import {SelfAssessmentMgm, SelfAssessmentMgmService} from '../entities/self-assessment-mgm';
-import {Router} from '@angular/router';
-import {Subscription} from 'rxjs/Subscription';
-import {MyAssetMgm, MyAssetMgmService} from '../entities/my-asset-mgm';
-import {DatasharingService} from '../datasharing/datasharing.service';
-import {PopUpService} from '../shared/pop-up-services/pop-up.service';
-import {MyRole} from '../entities/enumerations/MyRole.enum';
+import * as _ from 'lodash';
+import { Principal } from './../shared/auth/principal.service';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { User } from '../shared';
+import { MyCompanyMgm } from '../entities/my-company-mgm';
+import { SelfAssessmentMgm, SelfAssessmentMgmService } from '../entities/self-assessment-mgm';
+import { Router } from '@angular/router';
+import { Subscription } from 'rxjs/Subscription';
+import { MyAssetMgm, MyAssetMgmService } from '../entities/my-asset-mgm';
+import { DatasharingService } from '../datasharing/datasharing.service';
+import { PopUpService } from '../shared/pop-up-services/pop-up.service';
+import { MyRole } from '../entities/enumerations/MyRole.enum';
+
+interface OrderBy {
+    name: boolean;
+    created: boolean;
+    modified: boolean;
+    type: string;
+}
 
 @Component({
     selector: 'jhi-my-self-assessments',
@@ -28,6 +36,7 @@ export class MySelfAssessmentsComponent implements OnInit, OnDestroy {
     public isCISO = false;
     public isExternal = false;
     public mySelfAssessment = null;
+    public orderBy: OrderBy;
 
     constructor(
         private router: Router,
@@ -40,6 +49,12 @@ export class MySelfAssessmentsComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
+        this.orderBy = {
+            name: false,
+            created: false,
+            modified: false,
+            type: 'desc'
+        };
         this.loadMySelfAssessments();
         this.registerChangeInSelfAssessments();
         if (this.selfAssessmentService.isSelfAssessmentSelected()) {
@@ -111,6 +126,51 @@ export class MySelfAssessmentsComponent implements OnInit, OnDestroy {
     ngOnDestroy(): void {
         if (this.subscription) {
             this.subscription.unsubscribe();
+        }
+    }
+
+    private resetOrder() {
+        this.orderBy.name = false;
+        this.orderBy.created = false;
+        this.orderBy.modified = false;
+        this.orderBy.type = 'desc';
+    }
+
+    public tableOrderBy(orderColumn: string, desc: boolean) {
+        this.resetOrder();
+        if (desc) {
+            this.orderBy.type = 'desc';
+        } else {
+            this.orderBy.type = 'asc';
+        }
+        switch (orderColumn.toLowerCase()) {
+            case ('name'): {
+                this.orderBy.name = true;
+                if (desc) {
+                    this.mySelfAssessments = _.orderBy(this.mySelfAssessments, ['name'], ['desc']);
+                } else {
+                    this.mySelfAssessments = _.orderBy(this.mySelfAssessments, ['name'], ['asc']);
+                }
+                break;
+            }
+            case ('created'): {
+                this.orderBy.created = true;
+                if (desc) {
+                    this.mySelfAssessments = _.orderBy(this.mySelfAssessments, ['created'], ['desc']);
+                } else {
+                    this.mySelfAssessments = _.orderBy(this.mySelfAssessments, ['created'], ['asc']);
+                }
+                break;
+            }
+            case ('modified'): {
+                this.orderBy.modified = true;
+                if (desc) {
+                    this.mySelfAssessments = _.orderBy(this.mySelfAssessments, ['modified'], ['desc']);
+                } else {
+                    this.mySelfAssessments = _.orderBy(this.mySelfAssessments, ['modified'], ['asc']);
+                }
+                break;
+            }
         }
     }
 }

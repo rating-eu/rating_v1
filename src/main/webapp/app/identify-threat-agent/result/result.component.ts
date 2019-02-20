@@ -1,27 +1,35 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {DatasharingService} from '../../datasharing/datasharing.service';
-import {ThreatAgentMgm, ThreatAgentMgmService} from '../../entities/threat-agent-mgm';
-import {Couple} from '../../utils/couple.class';
-import {Fraction} from '../../utils/fraction.class';
-import {IdentifyThreatAgentService} from '../identify-threat-agent.service';
-import {MotivationMgm, MotivationMgmService} from '../../entities/motivation-mgm';
-import {AnswerMgm} from '../../entities/answer-mgm';
-import {AccountService, BaseEntity, UserService} from '../../shared';
-import {QuestionMgm, QuestionMgmService} from '../../entities/question-mgm';
-import {QuestionnaireMgm} from '../../entities/questionnaire-mgm';
-import {MyAnswerMgm, MyAnswerMgmService} from '../../entities/my-answer-mgm';
-import {ActivatedRoute, Params, Router} from '@angular/router';
-import {Subscription} from 'rxjs/Subscription';
-import {QuestionnairesService} from '../../questionnaires/questionnaires.service';
-import {QuestionnaireStatusMgm, QuestionnaireStatusMgmService} from '../../entities/questionnaire-status-mgm';
-import {HttpResponse} from '@angular/common/http';
-import {Observable} from 'rxjs/Observable';
-import {concatMap, mergeMap} from 'rxjs/operators';
+import * as _ from 'lodash';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { DatasharingService } from '../../datasharing/datasharing.service';
+import { ThreatAgentMgm, ThreatAgentMgmService } from '../../entities/threat-agent-mgm';
+import { Couple } from '../../utils/couple.class';
+import { Fraction } from '../../utils/fraction.class';
+import { IdentifyThreatAgentService } from '../identify-threat-agent.service';
+import { MotivationMgm, MotivationMgmService } from '../../entities/motivation-mgm';
+import { AnswerMgm } from '../../entities/answer-mgm';
+import { AccountService, BaseEntity, UserService } from '../../shared';
+import { QuestionMgm, QuestionMgmService } from '../../entities/question-mgm';
+import { QuestionnaireMgm } from '../../entities/questionnaire-mgm';
+import { MyAnswerMgm, MyAnswerMgmService } from '../../entities/my-answer-mgm';
+import { ActivatedRoute, Params, Router } from '@angular/router';
+import { Subscription } from 'rxjs/Subscription';
+import { QuestionnairesService } from '../../questionnaires/questionnaires.service';
+import { QuestionnaireStatusMgm, QuestionnaireStatusMgmService } from '../../entities/questionnaire-status-mgm';
+import { HttpResponse } from '@angular/common/http';
+import { Observable } from 'rxjs/Observable';
+import { concatMap, mergeMap } from 'rxjs/operators';
 import * as CryptoJS from 'crypto-js';
-import {forkJoin} from 'rxjs/observable/forkJoin';
-import {SelfAssessmentMgmService} from '../../entities/self-assessment-mgm';
-import {SkillLevel} from '../../entities/enumerations/SkillLevel.enum';
-import {AnswerLikelihood} from '../../entities/enumerations/AnswerLikelihood.enum';
+import { forkJoin } from 'rxjs/observable/forkJoin';
+import { SelfAssessmentMgmService } from '../../entities/self-assessment-mgm';
+import { SkillLevel } from '../../entities/enumerations/SkillLevel.enum';
+import { AnswerLikelihood } from '../../entities/enumerations/AnswerLikelihood.enum';
+
+interface OrderBy {
+    threatAgents: boolean;
+    skills: boolean;
+    interest: boolean;
+    type: string;
+}
 
 @Component({
     selector: 'jhi-result',
@@ -63,27 +71,34 @@ export class ThreatResultComponent implements OnInit, OnDestroy {
 
     // ThreatAgents Percentage Map
     private threatAgentsPercentageMap: Map<String, Couple<ThreatAgentMgm, Fraction>>;
-    private threatAgentsPercentageArray: Couple<ThreatAgentMgm, Fraction>[];
+    public threatAgentsPercentageArray: Couple<ThreatAgentMgm, Fraction>[];
+    public orderBy: OrderBy;
 
     public selectedThreatAgent: ThreatAgentMgm = null;
     public page = 1;
 
     constructor(private selfAssessmentService: SelfAssessmentMgmService,
-                private dataSharingService: DatasharingService,
-                private identifyThreatAgentService: IdentifyThreatAgentService,
-                private myAnswerService: MyAnswerMgmService,
-                private accountService: AccountService,
-                private userService: UserService,
-                private router: Router,
-                private questionService: QuestionMgmService,
-                private questionnairesService: QuestionnairesService,
-                private questionnaireStatusService: QuestionnaireStatusMgmService,
-                private motivationsService: MotivationMgmService,
-                private threatAgentService: ThreatAgentMgmService) {
+        private dataSharingService: DatasharingService,
+        private identifyThreatAgentService: IdentifyThreatAgentService,
+        private myAnswerService: MyAnswerMgmService,
+        private accountService: AccountService,
+        private userService: UserService,
+        private router: Router,
+        private questionService: QuestionMgmService,
+        private questionnairesService: QuestionnairesService,
+        private questionnaireStatusService: QuestionnaireStatusMgmService,
+        private motivationsService: MotivationMgmService,
+        private threatAgentService: ThreatAgentMgmService) {
     }
 
     ngOnInit() {
         const selfAssessment = this.selfAssessmentService.getSelfAssessment();
+        this.orderBy = {
+            threatAgents: false,
+            skills: false,
+            interest: false,
+            type: 'desc'
+        };
         this.questionnaireStatuses$ = this.questionnaireStatusService.getAllBySelfAssessmentAndQuestionnairePurpose(selfAssessment.id, 'ID_THREAT_AGENT');
 
         // First Fetch the QuestionnaireStatus with the above observable.
@@ -179,8 +194,8 @@ export class ThreatResultComponent implements OnInit, OnDestroy {
     }
 
     questionsMyAnswersToThreatAgentsPercentageMap(questionsMap: Map<number, QuestionMgm>,
-                                                  myAnswers: MyAnswerMgm[],
-                                                  defaultThreatAgents: ThreatAgentMgm[]): Map<String, Couple<ThreatAgentMgm, Fraction>> {
+        myAnswers: MyAnswerMgm[],
+        defaultThreatAgents: ThreatAgentMgm[]): Map<String, Couple<ThreatAgentMgm, Fraction>> {
 
         const map: Map<string, Couple<ThreatAgentMgm, Fraction>> = new Map<string, Couple<ThreatAgentMgm, Fraction>>();
 
@@ -230,11 +245,56 @@ export class ThreatResultComponent implements OnInit, OnDestroy {
         if (this.selectedThreatAgent) {
             if (this.selectedThreatAgent.id === threatAgent.id) {
                 this.selectedThreatAgent = null;
-            }else {
+            } else {
                 this.selectedThreatAgent = threatAgent;
             }
         } else {
             this.selectedThreatAgent = threatAgent;
+        }
+    }
+
+    private resetOrder() {
+        this.orderBy.threatAgents = false;
+        this.orderBy.skills = false;
+        this.orderBy.interest = false;
+        this.orderBy.type = 'desc';
+    }
+
+    public tableOrderBy(orderColumn: string, desc: boolean) {
+        this.resetOrder();
+        if (desc) {
+            this.orderBy.type = 'desc';
+        } else {
+            this.orderBy.type = 'asc';
+        }
+        switch (orderColumn.toLowerCase()) {
+            case ('threat_agents'): {
+                this.orderBy.threatAgents = true;
+                if (desc) {
+                    this.threatAgentsPercentageArray = _.orderBy(this.threatAgentsPercentageArray, (elem: Couple<ThreatAgentMgm, Fraction>) => elem.key.name, ['desc']);
+                } else {
+                    this.threatAgentsPercentageArray = _.orderBy(this.threatAgentsPercentageArray, (elem: Couple<ThreatAgentMgm, Fraction>) => elem.key.name, ['asc']);
+                }
+                break;
+            }
+            case ('skills'): {
+                this.orderBy.skills = true;
+                if (desc) {
+                    this.threatAgentsPercentageArray = _.orderBy(this.threatAgentsPercentageArray, (elem: Couple<ThreatAgentMgm, Fraction>) => elem.key.skillLevel, ['desc']);
+                } else {
+                    this.threatAgentsPercentageArray = _.orderBy(this.threatAgentsPercentageArray, (elem: Couple<ThreatAgentMgm, Fraction>) => elem.key.skillLevel, ['asc']);
+                }
+                break;
+            }
+            case ('interest'): {
+                this.orderBy.interest = true;
+                if (desc) {
+                    this.threatAgentsPercentageArray = _.orderBy(this.threatAgentsPercentageArray, (elem: Couple<ThreatAgentMgm, Fraction>) => elem.value.toPercentage(), ['desc']);
+                } else {
+                    this.threatAgentsPercentageArray = _.orderBy(this.threatAgentsPercentageArray, (elem: Couple<ThreatAgentMgm, Fraction>) => elem.value.toPercentage(), ['asc']);
+                }
+                break;
+            }
         }
     }
 }

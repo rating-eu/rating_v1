@@ -5,6 +5,12 @@ import { ImpactEvaluationStatus } from './../../impact-evaluation/model/impact-e
 import { ImpactEvaluationService } from './../../impact-evaluation/impact-evaluation.service';
 import { Component, OnInit } from '@angular/core';
 
+interface OrderBy {
+  year: boolean;
+  value: boolean;
+  type: string;
+}
+
 @Component({
   selector: 'jhi-ebits-widget',
   templateUrl: './ebits-widget.component.html',
@@ -15,6 +21,7 @@ export class EbitsWidgetComponent implements OnInit {
   public isCollapsed = true;
   private wp3Status: ImpactEvaluationStatus;
   private mySelf: SelfAssessmentMgm;
+  public ebitOrderBy: OrderBy;
   public ebitInfo: {
     year: string,
     thisYear: boolean,
@@ -29,6 +36,11 @@ export class EbitsWidgetComponent implements OnInit {
   ngOnInit() {
     this.loading = true;
     this.mySelf = this.mySelfAssessmentService.getSelfAssessment();
+    this.ebitOrderBy = {
+      year: false,
+      value: false,
+      type: 'desc'
+    };
     this.impactService.getStatus(this.mySelf).toPromise().then((status) => {
       if (status) {
         this.wp3Status = status;
@@ -40,7 +52,7 @@ export class EbitsWidgetComponent implements OnInit {
           this.ebitInfo.push(
             {
               year: ebit.year.toString(),
-              thisYear: ebit.year ===  year,
+              thisYear: ebit.year === year,
               value: ebit.value
             });
           index++;
@@ -52,6 +64,41 @@ export class EbitsWidgetComponent implements OnInit {
       this.loading = false;
       this.ebitInfo = [];
     });
+  }
+
+  private resetOrder() {
+    this.ebitOrderBy.year = false;
+    this.ebitOrderBy.value = false;
+    this.ebitOrderBy.type = 'desc';
+  }
+
+  public tableOrderBy(orderColumn: string, desc: boolean) {
+    this.resetOrder();
+    if (desc) {
+      this.ebitOrderBy.type = 'desc';
+    } else {
+      this.ebitOrderBy.type = 'asc';
+    }
+    switch (orderColumn.toLowerCase()) {
+      case ('year'): {
+        this.ebitOrderBy.year = true;
+        if (desc) {
+          this.ebitInfo = _.orderBy(this.ebitInfo, ['year'], ['desc']);
+        } else {
+          this.ebitInfo = _.orderBy(this.ebitInfo, ['year'], ['asc']);
+        }
+        break;
+      }
+      case ('value'): {
+        this.ebitOrderBy.value = true;
+        if (desc) {
+          this.ebitInfo = _.orderBy(this.ebitInfo, ['value'], ['desc']);
+        } else {
+          this.ebitInfo = _.orderBy(this.ebitInfo, ['value'], ['asc']);
+        }
+        break;
+      }
+    }
   }
 
 }

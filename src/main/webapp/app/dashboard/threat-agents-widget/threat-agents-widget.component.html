@@ -19,12 +19,33 @@
   </div>
   <div class="modal-body">
     <div class="table-responsive table-hover">
-      <table class="table table-bordered" *ngIf="motivations, threatAgentsPercentageArray">
-        <thead class="thead-dark">
+      <table class="table" *ngIf="motivations, threatAgentsPercentageArray">
+        <thead>
           <tr>
-            <th scope="col" class="text-center align-middle">Threat Agent</th>
-            <th scope="col" class="text-center align-middle"> Skills</th>
-            <th scope="col" class="text-center align-middle">Level of Interest</th>
+            <th scope="col" class="text-center align-middle">Threat Agent 
+                <i *ngIf="!orderBy.threatAgents" (click)=" tableOrderBy('threat_agents', true)"
+                class="fa fa-sort" aria-hidden="true"></i>
+              <i *ngIf="orderBy.threatAgents && orderBy.type === 'desc'"
+                (click)=" tableOrderBy('threat_agents', false)" class="fa fa-chevron-down" aria-hidden="true"></i>
+              <i *ngIf="orderBy.threatAgents && orderBy.type === 'asc'"
+                (click)=" tableOrderBy('threat_agents', true)" class="fa fa-chevron-up" aria-hidden="true"></i>
+            </th>
+            <th scope="col" class="text-center align-middle">Skills 
+                <i *ngIf="!orderBy.skills" (click)=" tableOrderBy('skills', true)"
+                class="fa fa-sort" aria-hidden="true"></i>
+              <i *ngIf="orderBy.skills && orderBy.type === 'desc'"
+                (click)=" tableOrderBy('skills', false)" class="fa fa-chevron-down" aria-hidden="true"></i>
+              <i *ngIf="orderBy.skills && orderBy.type === 'asc'"
+                (click)=" tableOrderBy('skills', true)" class="fa fa-chevron-up" aria-hidden="true"></i>
+            </th>
+            <th scope="col" class="text-center align-middle">Level of Interest 
+                <i *ngIf="!orderBy.interest" (click)=" tableOrderBy('interest', true)"
+                class="fa fa-sort" aria-hidden="true"></i>
+              <i *ngIf="orderBy.interest && orderBy.type === 'desc'"
+                (click)=" tableOrderBy('interest', false)" class="fa fa-chevron-down" aria-hidden="true"></i>
+              <i *ngIf="orderBy.interest && orderBy.type === 'asc'"
+                (click)=" tableOrderBy('interest', true)" class="fa fa-chevron-up" aria-hidden="true"></i>
+            </th>
           </tr>
         </thead>
 

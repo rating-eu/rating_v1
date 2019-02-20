@@ -550,9 +550,36 @@
                                                     <table class="table" *ngIf="assetsBySelectedCategory.length > 0">
                                                         <thead>
                                                             <tr>
-                                                                <th scope="col">Asset</th>
-                                                                <th scope="col">Priority</th>
-                                                                <th scope="col">Economic value</th>
+                                                                <th scope="col">Asset
+                                                                        <i *ngIf="!orderBy.asset" (click)=" tableOrderBy('asset', true)" class="fa fa-sort"
+                                                                        aria-hidden="true"></i>
+                                                                    <i *ngIf="orderBy.asset && orderBy.type === 'desc'"
+                                                                        (click)=" tableOrderBy('asset', false)" class="fa fa-chevron-down"
+                                                                        aria-hidden="true"></i>
+                                                                    <i *ngIf="orderBy.asset && orderBy.type === 'asc'"
+                                                                        (click)=" tableOrderBy('asset', true)" class="fa fa-chevron-up"
+                                                                        aria-hidden="true"></i>
+                                                                </th>
+                                                                <th scope="col">Priority
+                                                                        <i *ngIf="!orderBy.priority" (click)=" tableOrderBy('priority', true)" class="fa fa-sort"
+                                                                        aria-hidden="true"></i>
+                                                                    <i *ngIf="orderBy.priority && orderBy.type === 'desc'"
+                                                                        (click)=" tableOrderBy('priority', false)" class="fa fa-chevron-down"
+                                                                        aria-hidden="true"></i>
+                                                                    <i *ngIf="orderBy.priority && orderBy.type === 'asc'"
+                                                                        (click)=" tableOrderBy('priority', true)" class="fa fa-chevron-up"
+                                                                        aria-hidden="true"></i>
+                                                                </th>
+                                                                <th scope="col">Economic value
+                                                                        <i *ngIf="!orderBy.value" (click)=" tableOrderBy('value', true)" class="fa fa-sort"
+                                                                        aria-hidden="true"></i>
+                                                                    <i *ngIf="orderBy.value && orderBy.type === 'desc'"
+                                                                        (click)=" tableOrderBy('value', false)" class="fa fa-chevron-down"
+                                                                        aria-hidden="true"></i>
+                                                                    <i *ngIf="orderBy.value && orderBy.type === 'asc'"
+                                                                        (click)=" tableOrderBy('value', true)" class="fa fa-chevron-up"
+                                                                        aria-hidden="true"></i>
+                                                                </th>
                                                             </tr>
                                                         </thead>
                                                         <tbody>
@@ -660,9 +687,36 @@
                                                     <table class="table" *ngIf="assetsBySelectedCategory.length > 0">
                                                         <thead>
                                                             <tr>
-                                                                <th scope="col">Asset</th>
-                                                                <th scope="col">Priority</th>
-                                                                <th scope="col">Economic value</th>
+                                                                <th scope="col">Asset
+                                                                        <i *ngIf="!orderBy.asset" (click)=" tableOrderBy('asset', true)" class="fa fa-sort"
+                                                                        aria-hidden="true"></i>
+                                                                    <i *ngIf="orderBy.asset && orderBy.type === 'desc'"
+                                                                        (click)=" tableOrderBy('asset', false)" class="fa fa-chevron-down"
+                                                                        aria-hidden="true"></i>
+                                                                    <i *ngIf="orderBy.asset && orderBy.type === 'asc'"
+                                                                        (click)=" tableOrderBy('asset', true)" class="fa fa-chevron-up"
+                                                                        aria-hidden="true"></i>
+                                                                </th>
+                                                                <th scope="col">Priority
+                                                                        <i *ngIf="!orderBy.priority" (click)=" tableOrderBy('priority', true)" class="fa fa-sort"
+                                                                        aria-hidden="true"></i>
+                                                                    <i *ngIf="orderBy.priority && orderBy.type === 'desc'"
+                                                                        (click)=" tableOrderBy('priority', false)" class="fa fa-chevron-down"
+                                                                        aria-hidden="true"></i>
+                                                                    <i *ngIf="orderBy.priority && orderBy.type === 'asc'"
+                                                                        (click)=" tableOrderBy('priority', true)" class="fa fa-chevron-up"
+                                                                        aria-hidden="true"></i>
+                                                                </th>
+                                                                <th scope="col">Economic value
+                                                                        <i *ngIf="!orderBy.value" (click)=" tableOrderBy('value', true)" class="fa fa-sort"
+                                                                        aria-hidden="true"></i>
+                                                                    <i *ngIf="orderBy.value && orderBy.type === 'desc'"
+                                                                        (click)=" tableOrderBy('value', false)" class="fa fa-chevron-down"
+                                                                        aria-hidden="true"></i>
+                                                                    <i *ngIf="orderBy.value && orderBy.type === 'asc'"
+                                                                        (click)=" tableOrderBy('value', true)" class="fa fa-chevron-up"
+                                                                        aria-hidden="true"></i>
+                                                                </th>
                                                             </tr>
                                                         </thead>
                                                         <tbody>
@@ -813,9 +867,36 @@
                                                     <table class="table" *ngIf="assetsBySelectedCategory.length > 0">
                                                         <thead>
                                                             <tr>
-                                                                <th scope="col">Asset</th>
-                                                                <th scope="col">Priority</th>
-                                                                <th scope="col">Loss value</th>
+                                                                    <th scope="col">Asset
+                                                                            <i *ngIf="!orderBy.asset" (click)=" tableOrderBy('asset', true)" class="fa fa-sort"
+                                                                            aria-hidden="true"></i>
+                                                                        <i *ngIf="orderBy.asset && orderBy.type === 'desc'"
+                                                                            (click)=" tableOrderBy('asset', false)" class="fa fa-chevron-down"
+                                                                            aria-hidden="true"></i>
+                                                                        <i *ngIf="orderBy.asset && orderBy.type === 'asc'"
+                                                                            (click)=" tableOrderBy('asset', true)" class="fa fa-chevron-up"
+                                                                            aria-hidden="true"></i>
+                                                                    </th>
+                                                                    <th scope="col">Priority
+                                                                            <i *ngIf="!orderBy.priority" (click)=" tableOrderBy('priority', true)" class="fa fa-sort"
+                                                                            aria-hidden="true"></i>
+                                                                        <i *ngIf="orderBy.priority && orderBy.type === 'desc'"
+                                                                            (click)=" tableOrderBy('priority', false)" class="fa fa-chevron-down"
+                                                                            aria-hidden="true"></i>
+                                                                        <i *ngIf="orderBy.priority && orderBy.type === 'asc'"
+                                                                            (click)=" tableOrderBy('priority', true)" class="fa fa-chevron-up"
+                                                                            aria-hidden="true"></i>
+                                                                    </th>
+                                                                    <th scope="col">Loss value
+                                                                            <i *ngIf="!orderBy.valueLoss" (click)=" tableOrderBy('value_loss', true)" class="fa fa-sort"
+                                                                            aria-hidden="true"></i>
+                                                                        <i *ngIf="orderBy.valueLoss && orderBy.type === 'desc'"
+                                                                            (click)=" tableOrderBy('value_loss', false)" class="fa fa-chevron-down"
+                                                                            aria-hidden="true"></i>
+                                                                        <i *ngIf="orderBy.valueLoss && orderBy.type === 'asc'"
+                                                                            (click)=" tableOrderBy('value_loss', true)" class="fa fa-chevron-up"
+                                                                            aria-hidden="true"></i>
+                                                                    </th>
                                                             </tr>
                                                         </thead>
                                                         <tbody>
@@ -899,9 +980,36 @@
                                                     <table class="table" *ngIf="assetsBySelectedCategory.length > 0">
                                                         <thead>
                                                             <tr>
-                                                                <th scope="col">Asset</th>
-                                                                <th scope="col">Priority</th>
-                                                                <th scope="col">Loss value</th>
+                                                                    <th scope="col">Asset
+                                                                            <i *ngIf="!orderBy.asset" (click)=" tableOrderBy('asset', true)" class="fa fa-sort"
+                                                                            aria-hidden="true"></i>
+                                                                        <i *ngIf="orderBy.asset && orderBy.type === 'desc'"
+                                                                            (click)=" tableOrderBy('asset', false)" class="fa fa-chevron-down"
+                                                                            aria-hidden="true"></i>
+                                                                        <i *ngIf="orderBy.asset && orderBy.type === 'asc'"
+                                                                            (click)=" tableOrderBy('asset', true)" class="fa fa-chevron-up"
+                                                                            aria-hidden="true"></i>
+                                                                    </th>
+                                                                    <th scope="col">Priority
+                                                                            <i *ngIf="!orderBy.priority" (click)=" tableOrderBy('priority', true)" class="fa fa-sort"
+                                                                            aria-hidden="true"></i>
+                                                                        <i *ngIf="orderBy.priority && orderBy.type === 'desc'"
+                                                                            (click)=" tableOrderBy('priority', false)" class="fa fa-chevron-down"
+                                                                            aria-hidden="true"></i>
+                                                                        <i *ngIf="orderBy.priority && orderBy.type === 'asc'"
+                                                                            (click)=" tableOrderBy('priority', true)" class="fa fa-chevron-up"
+                                                                            aria-hidden="true"></i>
+                                                                    </th>
+                                                                    <th scope="col">Loss value
+                                                                            <i *ngIf="!orderBy.valueLoss" (click)=" tableOrderBy('value_loss', true)" class="fa fa-sort"
+                                                                            aria-hidden="true"></i>
+                                                                        <i *ngIf="orderBy.valueLoss && orderBy.type === 'desc'"
+                                                                            (click)=" tableOrderBy('value_loss', false)" class="fa fa-chevron-down"
+                                                                            aria-hidden="true"></i>
+                                                                        <i *ngIf="orderBy.valueLoss && orderBy.type === 'asc'"
+                                                                            (click)=" tableOrderBy('value_loss', true)" class="fa fa-chevron-up"
+                                                                            aria-hidden="true"></i>
+                                                                    </th>
                                                             </tr>
                                                         </thead>
                                                         <tbody>
