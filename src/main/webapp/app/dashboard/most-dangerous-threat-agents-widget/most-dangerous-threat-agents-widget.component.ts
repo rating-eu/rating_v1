@@ -6,6 +6,14 @@ import {ResultsService} from '../../results/results.service';
 import {HttpResponse} from '@angular/common/http';
 import {Couple} from '../../utils/couple.class';
 
+interface OrderBy {
+  threatAgent: boolean;
+  initial: boolean;
+  contextual: boolean;
+  refined: boolean;
+  type: string;
+}
+
 interface MdtaEntity {
     threatAgentID: number;
     threatAgent: string;
