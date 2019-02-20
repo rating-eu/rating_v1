@@ -1,14 +1,16 @@
-import { Component, OnInit } from '@angular/core';
-import { SelfAssessmentMgm, SelfAssessmentMgmService } from '../../entities/self-assessment-mgm';
-import { ResultsService } from '../results.service';
-import { Result } from '../models/result.model';
-import { HttpResponse } from '@angular/common/http';
-import { ThreatAgentLikelihoods } from '../../utils/threatagent.likelihoods.class';
-import { ThreatAgentMgm } from '../../entities/threat-agent-mgm';
-import { Observable } from 'rxjs/Observable';
-import { SelfAssessmentOverview } from '../../my-self-assessments/models/SelfAssessmentOverview.model';
-import { AugmentedMyAsset } from '../../my-self-assessments/models/AugmentedMyAsset.model';
-import { AugmentedAttackStrategy } from '../../evaluate-weakness/models/augmented-attack-strategy.model';
+import {Component, OnInit} from '@angular/core';
+import {SelfAssessmentMgm, SelfAssessmentMgmService} from '../../entities/self-assessment-mgm';
+import {ResultsService} from '../results.service';
+import {Result} from '../models/result.model';
+import {HttpResponse} from '@angular/common/http';
+import {ThreatAgentLikelihoods} from '../../utils/threatagent.likelihoods.class';
+import {ThreatAgentMgm} from '../../entities/threat-agent-mgm';
+import {Observable} from 'rxjs/Observable';
+import {SelfAssessmentOverview} from '../../my-self-assessments/models/SelfAssessmentOverview.model';
+import {AugmentedMyAsset} from '../../my-self-assessments/models/AugmentedMyAsset.model';
+import {AugmentedAttackStrategy} from '../../evaluate-weakness/models/augmented-attack-strategy.model';
+import {Couple} from '../../utils/couple.class';
+import * as _ from 'lodash';
 
 @Component({
     selector: 'jhi-results-overview',
@@ -16,6 +18,11 @@ import { AugmentedAttackStrategy } from '../../evaluate-weakness/models/augmente
     styleUrls: ['../results.css']
 })
 export class ResultsOverviewComponent implements OnInit {
+    public readonly THREAT_AGENT_NAME = 'name';
+    public readonly INITIAL_LIKELIHOOD = 'initial';
+    public readonly CONTEXTUAL_LIKELIHOOD = 'contextual';
+    public readonly REFINED_LIKELIHOOD = 'refined';
+
     public page = 1;
     public assetAttacksNumbMap: Map<number, number> = new Map<number, number>();
     public assets: AugmentedMyAsset[];
@@ -41,11 +48,15 @@ export class ResultsOverviewComponent implements OnInit {
     // SelfAssessment overview
     public overview: SelfAssessmentOverview;
 
+    // Sorting
+    public sortedBy: Map<string, Couple<boolean/*sorted*/, boolean/*ascending*/>>;
+
     constructor(private selfAssessmentService: SelfAssessmentMgmService,
-        private resultService: ResultsService) {
+                private resultService: ResultsService) {
     }
 
     ngOnInit() {
+        this.sortedBy = new Map();
         this.selfAssessment = this.selfAssessmentService.getSelfAssessment();
         this.threatAgents = this.selfAssessment.threatagents;
         this.threatAgentsMap = new Map<number, ThreatAgentMgm>();
@@ -174,5 +185,51 @@ export class ResultsOverviewComponent implements OnInit {
             }
         }
         this.loadingAttacksTable = false;
+    }
+
+    public sortTableBy(orderColumn: string, asc: boolean) {
+
+        switch (orderColumn) {
+            case this.THREAT_AGENT_NAME: {
+                if (asc) {
+                    this.threatAgentIDs = _.orderBy(this.threatAgentIDs, (threatAgentID: number) => this.threatAgentsMap.get(threatAgentID).name, ['asc']);
+                } else {
+                    this.threatAgentIDs = _.orderBy(this.threatAgentIDs, (threatAgentID: number) => this.threatAgentsMap.get(threatAgentID).name, ['desc']);
+                }
+
+                this.sortedBy.set(this.THREAT_AGENT_NAME, new Couple(true, asc));
+                break;
+            }
+            case this.INITIAL_LIKELIHOOD: {
+                if (asc) {
+                    this.threatAgentIDs = _.orderBy(this.threatAgentIDs, (threatAgentID: number) => this.threatAgentLikelihoodsMap.get(threatAgentID).initialLikelihood, ['asc']);
+                } else {
+                    this.threatAgentIDs = _.orderBy(this.threatAgentIDs, (threatAgentID: number) => this.threatAgentLikelihoodsMap.get(threatAgentID).initialLikelihood, ['desc']);
+                }
+
+                this.sortedBy.set(this.INITIAL_LIKELIHOOD, new Couple(true, asc));
+                break;
+            }
+            case this.CONTEXTUAL_LIKELIHOOD: {
+                if (asc) {
+                    this.threatAgentIDs = _.orderBy(this.threatAgentIDs, (threatAgentID: number) => this.threatAgentLikelihoodsMap.get(threatAgentID).contextualLikelihood, ['asc']);
+                } else {
+                    this.threatAgentIDs = _.orderBy(this.threatAgentIDs, (threatAgentID: number) => this.threatAgentLikelihoodsMap.get(threatAgentID).contextualLikelihood, ['desc']);
+                }
+
+                this.sortedBy.set(this.CONTEXTUAL_LIKELIHOOD, new Couple(true, asc));
+                break;
+            }
+            case this.REFINED_LIKELIHOOD: {
+                if (asc) {
+                    this.threatAgentIDs = _.orderBy(this.threatAgentIDs, (threatAgentID: number) => this.threatAgentLikelihoodsMap.get(threatAgentID).refinedLikelihood, ['asc']);
+                } else {
+                    this.threatAgentIDs = _.orderBy(this.threatAgentIDs, (threatAgentID: number) => this.threatAgentLikelihoodsMap.get(threatAgentID).refinedLikelihood, ['desc']);
+                }
+
+                this.sortedBy.set(this.REFINED_LIKELIHOOD, new Couple(true, asc));
+                break;
+            }
+        }
     }
 }
