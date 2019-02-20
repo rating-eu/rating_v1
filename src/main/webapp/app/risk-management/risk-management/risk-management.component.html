@@ -36,7 +36,8 @@
             </div>
             <div *ngIf="!isConsequenceCollapsed || !isCriticalCollapsed || !isVulnerabilityCollapsed || !isLikelihoodCollapsed"
                 class="col-md-1 text-right align-middle">
-                <i class="fa fa-times fa-lg text-secondary" aria-hidden="true" (click)="switchOnCollapsible('none')"></i>
+                <i class="fa fa-times fa-lg text-secondary" aria-hidden="true"
+                    (click)="switchOnCollapsible('none')"></i>
             </div>
         </div>
         <div class="row">
@@ -47,32 +48,24 @@
                             <tr>
                                 <th scope="col">Consequence Rating</th>
                                 <th scope="col">Financial Impact</th>
-                                <!--
-                            <th scope="col">People Effects</th>
-                            <th scope="col">Reputation</th>
-                            <th scope="col">Service Outputs</th>
-                            <th scope="col">Legal & Compliance</th>
-                            <th scope="col">Management Impact</th>
-                            -->
                             </tr>
                         </thead>
                         <tbody>
                             <ng-container *ngFor="let description of impactLevelDescriptions">
                                 <tr>
-                                    <th scope="row"><a href="javascript:void(0)" (click)="selectImpactLevel(description)">{{description.impact}}</a></th>
+                                    <th scope="row"><a href="javascript:void(0)"
+                                            (click)="selectImpactLevel(description)">{{description.impact}}</a></th>
                                     <td>
                                         <div class="col-md-12 input-group">
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text" id="">Min and Max value(€)</span>
                                             </div>
                                             <input type="number" class="form-control" style="min-width: 80px;"
-                                                placeholder="Min" [(ngModel)]="impactLevelsMap.get(description.impact).minLoss"
-                                                #min>
+                                                placeholder="Min"
+                                                [(ngModel)]="impactLevelsMap.get(description.impact).minLoss" #min>
                                             <input type="number" class="form-control" style="min-width: 80px;"
-                                                placeholder="Max" [(ngModel)]="impactLevelsMap.get(description.impact).maxLoss"
-                                                #max>
-                                            <div class="col-md-2 btn btn-primary" (click)="updateImpactLevel(impactLevelsMap.get(description.impact))">OK
-                                            </div>
+                                                placeholder="Max"
+                                                [(ngModel)]="impactLevelsMap.get(description.impact).maxLoss" #max>
                                         </div>
                                     </td>
                                 </tr>
@@ -80,15 +73,6 @@
                                     <tr *ngIf="selectedImpactLevel.id === description.id">
                                         <td colspan="2">
                                             <table class="col-md-12">
-                                                <!--
-                                                <thead>
-                                                    <th scope="col" class="text-center align-middle">People Effects</th>
-                                                    <th scope="col" class="text-center align-middle">Reputation</th>
-                                                    <th scope="col" class="text-center align-middle">Service Outputs</th>
-                                                    <th scope="col" class="text-center align-middle">Legal & Compliance</th>
-                                                    <th scope="col" class="text-center align-middle">Management Impact</th>
-                                                </thead>
-                                                -->
                                                 <tbody>
                                                     <tr>
                                                         <td><b>People Effects</b></td>
@@ -126,6 +110,12 @@
                                     </tr>
                                 </ng-container>
                             </ng-container>
+                            <tr>
+                                <td colspan="2">
+                                    <div class="col-md-2 offset-md-10 btn btn-primary" (click)="updateImpactLevels()">OK
+                                    </div>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
@@ -151,7 +141,8 @@
                             <tr>
                                 <th scope="row">4</th>
                                 <td>Likely</td>
-                                <td>The event has occurred several times or more throughout history of the organization</td>
+                                <td>The event has occurred several times or more throughout history of the organization
+                                </td>
                                 <td>Every three years</td>
                             </tr>
                             <tr>
@@ -254,7 +245,8 @@
                                             </small>
                                         </div>
                                         <div class="col-md-1 offset-md-5 text-right">
-                                            <i class="fa fa-times fa-lg text-secondary" aria-hidden="true" (click)="closeLevelSelection()"></i>
+                                            <i class="fa fa-times fa-lg text-secondary" aria-hidden="true"
+                                                (click)="closeLevelSelection()"></i>
                                         </div>
                                     </div>
                                     <div class="row">

@@ -8,7 +8,8 @@
         <i class="fa fa-exclamation-triangle fa-4x" aria-hidden="true"></i>
       </p>
       <p style="color: grey">
-        <i>No Attack Costs declared in <a href="javascript:void(0)" [routerLink]="['/identify-asset/attack-costs']">Attack
+        <i>No Attack Costs declared in <a href="javascript:void(0)"
+            [routerLink]="['/identify-asset/attack-costs']">Attack
             Costs</a> section, please go in section and declare it!</i>
       </p>
     </div>
@@ -28,8 +29,9 @@
               <div class="input-group-prepend">
                 <span class="input-group-text">Number of Customers</span>
               </div>
-              <input type="number" min="1" step="1" class="form-control" placeholder="Insert number of company customers"
-                aria-label="Insert number of company customers" aria-describedby="customer" [(ngModel)]="customers"
+              <input type="number" min="1" step="1" class="form-control"
+                placeholder="Insert number of company customers" aria-label="Insert number of company customers"
+                aria-describedby="customer" [(ngModel)]="customers"
                 (focusout)="updateCreateAttackCostParam(customers, attackCostParamTypeEnum.NUMBER_OF_CUSTOMERS)">
             </div>
           </div>
@@ -44,8 +46,8 @@
                     <i *ngIf="!cost.costs" class="fa fa-minus" aria-hidden="true" style="color: grey"></i>
                   </ng-container>
                   <ng-container *ngIf="uploadOrEvaluation">
-                    <i *ngIf="cost.costs && evaluatingCost.type !== cost.type" class="fa fa-check fa-lg" aria-hidden="true"
-                      style="color: green"></i>
+                    <i *ngIf="cost.costs && evaluatingCost.type !== cost.type" class="fa fa-check fa-lg"
+                      aria-hidden="true" style="color: green"></i>
                     <i *ngIf="!cost.costs && evaluatingCost.type !== cost.type" class="fa fa-minus" aria-hidden="true"
                       style="color: grey"></i>
                     <i *ngIf="evaluatingCost.type === cost.type" class="fa fa-circle-o-notch fa-spin fa-lg fa-fw"></i>
@@ -64,7 +66,8 @@
               <ng-container [ngSwitch]="selectedCost.type">
                 <ng-container *ngSwitchCase="'POST_BREACH_CUSTOMER_PROTECTION_OR_CARE_COSTS'">
                   <div class="col-md-12">
-                    <p><a href="https://www.zurich.com/_/media/dbe/corporate/docs/whitepapers/the-good-the-bad-and-the-careless-december-2014.pdf?la=en&hash=22DCDBFC210C82B86CBDD05A8ED7A33CED7883F3"
+                    <p><a
+                        href="https://www.zurich.com/_/media/dbe/corporate/docs/whitepapers/the-good-the-bad-and-the-careless-december-2014.pdf?la=en&hash=22DCDBFC210C82B86CBDD05A8ED7A33CED7883F3"
                         target="_blank">According to Zurich insurance company</a>, the post-breach customer protection
                       cost ranges in the interval 10$ - 30$] per customer. The post-breach customer protection consists
                       in monitoring the use of stolen personal data and restore them in case they have been
@@ -78,7 +81,8 @@
                 <ng-container *ngSwitchCase="'CUSTOMER_BREACH_NOTIFICATION_COSTS'">
                   <div class="col-md-12">
                     <p>In many cases of personal data breaches, it becomes mandatory the notification of the owners of
-                      the data breached. <a href="https://www.zurich.com/_/media/dbe/corporate/docs/whitepapers/the-good-the-bad-and-the-careless-december-2014.pdf?la=en&hash=22DCDBFC210C82B86CBDD05A8ED7A33CED7883F3"
+                      the data breached. <a
+                        href="https://www.zurich.com/_/media/dbe/corporate/docs/whitepapers/the-good-the-bad-and-the-careless-december-2014.pdf?la=en&hash=22DCDBFC210C82B86CBDD05A8ED7A33CED7883F3"
                         target="_blank">According to Zurich insurance company</a>, the customer breach notification
                       costs are varying in the interval [5 $; 50 $]
                       per customer</p>
@@ -91,7 +95,8 @@
                 <ng-container *ngSwitchCase="'COST_OF_IT_DOWNTIME'">
                   <div class="col-md-12">
                     <p>Beyond the monetary costs, IT downtime can wear on your business’s productivity levels.</p>
-                    <p>According to <a href="https://www.zdnet.com/article/the-astonishing-hidden-and-personal-costs-of-it-downtime-and-how-predictive-analytics-might-help/"
+                    <p>According to <a
+                        href="https://www.zdnet.com/article/the-astonishing-hidden-and-personal-costs-of-it-downtime-and-how-predictive-analytics-might-help/"
                         target="_blank">Gartner</a>,
                       The average cost of network downtime is around $5,600 per minute. That is around $300,000 per
                       hour. For any business, $300,000/hr is a lot on the line.</p>
@@ -108,7 +113,8 @@
                         Replacement parts + Lost data recovery (how many records and value of each record) + Other
                         costs due to loss of data)</li>
                     </ul>
-                    <p>For more details please follow this link = <a href="https://www.itondemand.com/2018/05/29/costs-of-downtime/"
+                    <p>For more details please follow this link = <a
+                        href="https://www.itondemand.com/2018/05/29/costs-of-downtime/"
                         target="_blank">https://www.itondemand.com/2018/05/29/costs-of-downtime/</a></p>
                   </div>
                   <div class="col-md-12">
@@ -116,14 +122,16 @@
                       <div class="input-group-prepend">
                         <span class="input-group-text">Employee Costs per Hour €</span>
                       </div>
-                      <input type="number" min="0.01" step="0.01" class="form-control" placeholder="Employee Costs per Hour"
-                        aria-label="Insert Employee Costs per Hour" aria-describedby="employee_costs" [(ngModel)]="employeeCosts">
+                      <input type="number" min="0.01" step="0.01" class="form-control"
+                        placeholder="Employee Costs per Hour" aria-label="Insert Employee Costs per Hour"
+                        aria-describedby="employee_costs" [(ngModel)]="employeeCosts">
                     </div>
                     <div class="input-group mb-3">
                       <div class="input-group-prepend">
                         <span class="input-group-text">Fraction Employees Affected by Outage</span>
                       </div>
-                      <input type="number" min="1" step="1" class="form-control" placeholder="Insert Fraction Employees Affected by Outage"
+                      <input type="number" min="1" step="1" class="form-control"
+                        placeholder="Insert Fraction Employees Affected by Outage"
                         aria-label="Insert Fraction Employees Affected by Outage" aria-describedby="fraction_employee"
                         [(ngModel)]="fractionEmployee">
                     </div>
@@ -131,14 +139,16 @@
                       <div class="input-group-prepend">
                         <span class="input-group-text">Average Revenue per Hour €</span>
                       </div>
-                      <input type="number" min="0.01" step="0.01" class="form-control" placeholder="Insert Average Revenue per Hour"
-                        aria-label="Insert Average Revenue per Hour" aria-describedby="average_revenue" [(ngModel)]="averageRevenue">
+                      <input type="number" min="0.01" step="0.01" class="form-control"
+                        placeholder="Insert Average Revenue per Hour" aria-label="Insert Average Revenue per Hour"
+                        aria-describedby="average_revenue" [(ngModel)]="averageRevenue">
                     </div>
                     <div class="input-group mb-3">
                       <div class="input-group-prepend">
                         <span class="input-group-text">Fraction Revenue Affected by Outage</span>
                       </div>
-                      <input type="number" min="1" step="1" class="form-control" placeholder="Insert Fraction Revenue Affected by Outage"
+                      <input type="number" min="1" step="1" class="form-control"
+                        placeholder="Insert Fraction Revenue Affected by Outage"
                         aria-label="Insert Fraction Revenue Affected by Outage" aria-describedby="fraction_revenue"
                         [(ngModel)]="fractionRevenue">
                     </div>
@@ -146,11 +156,13 @@
                       <div class="input-group-prepend">
                         <span class="input-group-text">Recovery cost €</span>
                       </div>
-                      <input type="number" min="0.01" step="0.01" class="form-control" placeholder="Insert Recovery Cost"
-                        aria-label="Insert Recovery Cost" aria-describedby="recovery_cost" [(ngModel)]="recoveryCost">
+                      <input type="number" min="0.01" step="0.01" class="form-control"
+                        placeholder="Insert Recovery Cost" aria-label="Insert Recovery Cost"
+                        aria-describedby="recovery_cost" [(ngModel)]="recoveryCost">
                     </div>
                     <div class="col-md-2 float-md-right" style="margin-top:15px; margin-bottom: 15px">
-                      <button class="btn btn-outline-secondary" type="button" id="evaluate" (click)="evaluateAttackCost(costTypeEnum.COST_OF_IT_DOWNTIME)">
+                      <button class="btn btn-outline-secondary" type="button" id="evaluate"
+                        (click)="evaluateAttackCost(costTypeEnum.COST_OF_IT_DOWNTIME)">
                         <ng-container>Evaluate</ng-container>
                       </button>
                     </div>
@@ -160,15 +172,16 @@
                   <div class="col-md-12">
                     <p>
                       Reputational risk, is a risk of loss resulting from damages to a firm's reputation, in lost
-                      revenue; increased operating, capital or regulatory costs; or destruction of <a href="https://en.wikipedia.org/wiki/Shareholder_value"
-                        target="_blank">shareholder
+                      revenue; increased operating, capital or regulatory costs; or destruction of <a
+                        href="https://en.wikipedia.org/wiki/Shareholder_value" target="_blank">shareholder
                         value</a>, consequent to an adverse or potentially criminal event even if the company is not
                       found guilty. Adverse events typically associated with reputation risk include ethics, safety,
                       security, sustainability, quality, and innovation. Reputational risk can be a matter of corporate
                       trust.
                     </p>
                     <p>
-                      For more details, please follow this link ="<a href="https://devcentral.f5.com/articles/quantifying-reputation-loss-from-a-breach"
+                      For more details, please follow this link ="<a
+                        href="https://devcentral.f5.com/articles/quantifying-reputation-loss-from-a-breach"
                         target="_blank">https://devcentral.f5.com/articles/quantifying-reputation-loss-from-a-breach</a>
                     </p>
                     <p>WORK IN PROGRESS!!!</p>
@@ -203,6 +216,11 @@
           </div>
           <div class="col-md-8 text-center" *ngIf="!selectedCost" style="margin-top: 200px">
             <i>Select one item from the left screen list!</i>
+          </div>
+          <div class="col-md-12" style="margin-top: 2%; margin-bottom: 2%">
+            <button class="btn btn-secondary float-right" style="margin-left: 10px" (click)="close()">
+              Close
+            </button>
           </div>
         </div>
       </div>

@@ -189,6 +189,19 @@ export class RiskManagementComponent implements OnInit {
         }
     }
 
+    public updateImpactLevels() {
+        this.impactLevelsMap.forEach((elem) => {
+            if (elem && elem.id !== undefined) {
+                this.impactLevelService.update(elem)
+                    .toPromise()
+                    .then((response: HttpResponse<ImpactLevelMgm>) => {
+                        console.log('ImpactLevel updated: ' + JSON.stringify(elem));
+                        window.location.reload();
+                    });
+            }
+        });
+    }
+
     public criticalLevelUpdate(level: string) {
         const newLimit = this.selectedRow * this.selectedColumn;
         // setto il nuovo limite

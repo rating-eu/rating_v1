@@ -247,10 +247,6 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                             {
                                 label: 'Risk Scenarios',
                                 routerLink: ['/risk-management/risk-evaluation']
-                            },
-                            {
-                                label: 'Risk Mitigations',
-                                routerLink: ['/risk-management/risk-mitigation']
                             }
                         ]
                     }

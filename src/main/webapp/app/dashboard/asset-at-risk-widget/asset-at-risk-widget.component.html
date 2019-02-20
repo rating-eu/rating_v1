@@ -1,13 +1,11 @@
-<ng-container class="container" *ngIf="loading">
-    <ng-container *ngIf="loading">
-        <div class="loader"></div>
-    </ng-container>
+<ng-container class="container" *ngIf="loadingAssetsAndAttacks">
+    <div class="loader"></div>
 </ng-container>
-<ng-container class="container-fluid" *ngIf="!loading">
+<ng-container class="container-fluid" *ngIf="!loadingAssetsAndAttacks">
     <div class="x_panel" style="padding:0px !important;">
         <div class="x_title" style="padding:0px !important;">
             <h2 style="padding: 10px;">
-                <a [routerLink]="['/risk-management/risk-evaluation' ]">Assets at risk</a>
+                <a [routerLink]="['/risk-management/risk-evaluation' ]">Assets at risk: Details</a>
             </h2>
             <ul class="nav navbar-right panel_toolbox">
                 <li style="width: 24px; cursor: default"></li>
@@ -30,7 +28,7 @@
                                 <table class="table">
                                     <thead>
                                         <tr>
-                                            <th width="8%">Category
+                                            <th width="9%">Category
                                                 <i *ngIf="!orderTangibleBy.category"
                                                     (click)=" tableOrderBy('category', 'TANGIBLE', true)"
                                                     class="fa fa-sort" aria-hidden="true"></i>
@@ -52,8 +50,8 @@
                                                     (click)=" tableOrderBy('asset', 'TANGIBLE', true)"
                                                     class="fa fa-chevron-up" aria-hidden="true"></i>
                                             </th>
-                                            <th>Description</th>
-                                            <th width="6%">Impact
+                                            <th width="40%">Description</th>
+                                            <th width="8%">Impact
                                                 <i *ngIf="!orderTangibleBy.impact"
                                                     (click)=" tableOrderBy('impact', 'TANGIBLE', true)"
                                                     class="fa fa-sort" aria-hidden="true"></i>
@@ -64,7 +62,7 @@
                                                     (click)=" tableOrderBy('impact', 'TANGIBLE', true)"
                                                     class="fa fa-chevron-up" aria-hidden="true"></i>
                                             </th>
-                                            <th width="6%">Critical
+                                            <th width="8%">Critical
                                                 <i *ngIf="!orderTangibleBy.critical"
                                                     (click)=" tableOrderBy('critical', 'TANGIBLE', true)"
                                                     class="fa fa-sort" aria-hidden="true"></i>
@@ -75,7 +73,7 @@
                                                     (click)=" tableOrderBy('critical', 'TANGIBLE', true)"
                                                     class="fa fa-chevron-up" aria-hidden="true"></i>
                                             </th>
-                                            <th width="6%">Risk
+                                            <th width="8%">Risk
                                                 <i *ngIf="!orderTangibleBy.risk"
                                                     (click)=" tableOrderBy('risk', 'TANGIBLE', true)" class="fa fa-sort"
                                                     aria-hidden="true"></i>
@@ -90,7 +88,8 @@
                                         </tr>
                                     </thead>
                                     <tbody *ngIf="noRiskInMap">
-                                        <p>Your assets doesn't have any impact value assigned, please: select one impact
+                                        <p>Your assets doesn't have any impact value assigned, please: select
+                                            one impact
                                             value
                                             for
                                             every
@@ -103,16 +102,19 @@
                                                 <td>{{risk.asset.asset.assetcategory.name}}</td>
                                                 <td>
                                                     <a
-                                                        [routerLink]="['/asset-mgm', risk.asset.asset?.id ]">{{risk.asset?.asset.name}}</a>
+                                                        [routerLink]="['/risk-management/risk-details', risk.asset?.id ]">{{risk.asset?.asset.name}}</a>
                                                 </td>
                                                 <td>{{risk.asset.asset.description}}</td>
                                                 <td>{{risk.asset.impact}}</td>
                                                 <td>{{risk.critical}}</td>
-                                                <td>{{risk.percentage | percent}}</td>
+                                                <td>{{risk.percentage/100 | percent}}</td>
                                                 <td>
                                                     <ng-container
                                                         *ngFor="let mitigation of riskMitigationMap.get(risk.asset.id); let last=last">
-                                                        {{mitigation.name}}<ng-container *ngIf="!last">, </ng-container>
+                                                        <a
+                                                            [routerLink]="['/mitigation-mgm', mitigation?.id]">{{mitigation.name}}</a>
+                                                        <ng-container *ngIf="!last">,
+                                                        </ng-container>
                                                     </ng-container>
                                                 </td>
                                             </tr>
@@ -135,7 +137,7 @@
                                 <table class="table">
                                     <thead>
                                         <tr>
-                                            <th width="8%">Category
+                                            <th width="9%">Category
                                                 <i *ngIf="!orderIntangibleBy.category"
                                                     (click)=" tableOrderBy('category', 'INTANGIBLE', true)"
                                                     class="fa fa-sort" aria-hidden="true"></i>
@@ -157,8 +159,8 @@
                                                     (click)=" tableOrderBy('asset', 'INTANGIBLE', true)"
                                                     class="fa fa-chevron-up" aria-hidden="true"></i>
                                             </th>
-                                            <th>Description</th>
-                                            <th width="6%">Impact
+                                            <th width="40%">Description</th>
+                                            <th width="8%">Impact
                                                 <i *ngIf="!orderIntangibleBy.impact"
                                                     (click)=" tableOrderBy('impact', 'INTANGIBLE', true)"
                                                     class="fa fa-sort" aria-hidden="true"></i>
@@ -169,7 +171,7 @@
                                                     (click)=" tableOrderBy('impact', 'INTANGIBLE', true)"
                                                     class="fa fa-chevron-up" aria-hidden="true"></i>
                                             </th>
-                                            <th width="6%">Critical
+                                            <th width="8%">Critical
                                                 <i *ngIf="!orderIntangibleBy.critical"
                                                     (click)=" tableOrderBy('critical', 'INTANGIBLE', true)"
                                                     class="fa fa-sort" aria-hidden="true"></i>
@@ -180,10 +182,10 @@
                                                     (click)=" tableOrderBy('critical', 'INTANGIBLE', true)"
                                                     class="fa fa-chevron-up" aria-hidden="true"></i>
                                             </th>
-                                            <th width="6%">Risk
+                                            <th width="8%">Risk
                                                 <i *ngIf="!orderIntangibleBy.risk"
-                                                    (click)=" tableOrderBy('risk', 'INTANGIBLE', true)" class="fa fa-sort"
-                                                    aria-hidden="true"></i>
+                                                    (click)=" tableOrderBy('risk', 'INTANGIBLE', true)"
+                                                    class="fa fa-sort" aria-hidden="true"></i>
                                                 <i *ngIf="orderIntangibleBy.risk && orderIntangibleBy.type === 'desc'"
                                                     (click)=" tableOrderBy('risk', 'INTANGIBLE', false)"
                                                     class="fa fa-chevron-down" aria-hidden="true"></i>
@@ -195,7 +197,8 @@
                                         </tr>
                                     </thead>
                                     <tbody *ngIf="noRiskInMap">
-                                        <p>Your assets doesn't have any impact value assigned, please: select one impact
+                                        <p>Your assets doesn't have any impact value assigned, please: select
+                                            one impact
                                             value
                                             for
                                             every
@@ -213,11 +216,14 @@
                                                 <td>{{risk.asset.asset.description}}</td>
                                                 <td>{{risk.asset.impact}}</td>
                                                 <td>{{risk.critical}}</td>
-                                                <td>{{risk.percentage | percent}}</td>
+                                                <td>{{risk.percentage/100 | percent}}</td>
                                                 <td>
                                                     <ng-container
                                                         *ngFor="let mitigation of riskMitigationMap.get(risk.asset.id); let last=last">
-                                                        {{mitigation.name}}<ng-container *ngIf="!last">, </ng-container>
+                                                        <a
+                                                            [routerLink]="['/mitigation-mgm', mitigation?.id]">{{mitigation.name}}</a>
+                                                        <ng-container *ngIf="!last">,
+                                                        </ng-container>
                                                     </ng-container>
                                                 </td>
                                             </tr>

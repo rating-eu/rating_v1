@@ -6,7 +6,6 @@ import {RiskManagementRoutingModule} from './risk-management-routing.module';
 import {RiskManagementComponent} from './risk-management/risk-management.component';
 import {RiskManagementService} from './risk-management.service';
 import {RiskEvaluationComponent} from './risk-evaluation/risk-evaluation.component';
-import {RiskMitigationComponent} from './risk-mitigation/risk-mitigation.component';
 import {NgbCollapseModule} from '../../../../../node_modules/@ng-bootstrap/ng-bootstrap';
 import {HermeneutSharedModule, JhiLanguageHelper} from '../shared';
 import {HTTP_INTERCEPTORS} from '../../../../../node_modules/@angular/common/http';
@@ -20,7 +19,7 @@ import {JhiLanguageService} from 'ng-jhipster';
 import {NgxPaginationModule} from 'ngx-pagination';
 import { HermeneutMitigationMgmModule } from '../entities/mitigation-mgm/mitigation-mgm.module';
 import { NgbAccordionModule } from '../../../../../node_modules/@ng-bootstrap/ng-bootstrap';
-import { DashboardModule } from '../dashboard/dashboard.module';
+import { RiskDetailsComponent } from './risk-details/risk-details.component';
 
 @NgModule({
     imports: [
@@ -32,7 +31,11 @@ import { DashboardModule } from '../dashboard/dashboard.module';
         NgbAccordionModule.forRoot(),
         HermeneutMitigationMgmModule
     ],
-    declarations: [RiskManagementComponent, RiskEvaluationComponent, RiskMitigationComponent],
+    declarations: [
+        RiskManagementComponent,
+        RiskEvaluationComponent,
+        RiskDetailsComponent
+    ],
     providers: [
         {
             provide: HTTP_INTERCEPTORS,
