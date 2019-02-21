@@ -73,6 +73,7 @@
                                         <table class="table table-striped">
                                             <thead>
                                                 <tr>
+                                                    <th>Category</th>
                                                     <th width="50%">Asset</th>
                                                     <th>Impact</th>
                                                     <th>Economic impact</th>
@@ -80,6 +81,7 @@
                                             </thead>
                                             <tbody>
                                                 <tr *ngFor="let asset of item.assets">
+                                                    <td>{{asset.asset.assetcategory.name}}</td>
                                                     <td>{{asset.asset.name}}</td>
                                                     <td>{{asset.impact}}</td>
                                                     <td>{{asset.economicImpact | currency:'EUR'}}</td>
