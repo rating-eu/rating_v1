@@ -5,6 +5,7 @@ import eu.hermeneut.domain.AttackCost;
 import eu.hermeneut.domain.DirectAsset;
 import eu.hermeneut.domain.MyAsset;
 import eu.hermeneut.domain.SelfAssessment;
+import eu.hermeneut.domain.enumeration.CostType;
 import eu.hermeneut.domain.formula.AttackCostFormula;
 import eu.hermeneut.exceptions.IllegalInputException;
 import eu.hermeneut.exceptions.NotFoundException;
@@ -19,9 +20,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api")
@@ -49,9 +49,9 @@ public class FormulaController {
         MyAsset myAsset = this.myAssetService.findOne(myAssetID);
         this.checkIfNotFound(selfAssessment, myAsset);
 
-        List<AttackCostFormula> costFormulas = new ArrayList<>();
-
         Set<AttackCost> directCosts = myAsset.getCosts();
+
+        Map<CostType, AttackCostFormula> costTypeFormulaMap = new HashMap<>();
 
         if (directCosts != null && !directCosts.isEmpty()) {
             for (AttackCost directCost : directCosts) {
@@ -59,7 +59,7 @@ public class FormulaController {
                     final AttackCostFormula attackCostFormula = attackCostFormulatorSwitch.formulateCost(selfAssessmentID, directCost);
                     attackCostFormula.setDirect(true);
 
-                    costFormulas.add(attackCostFormula);
+                    costTypeFormulaMap.put(directCost.getType(), attackCostFormula);
                 } catch (IllegalInputException e) {
                     e.printStackTrace();
                 }
@@ -73,19 +73,23 @@ public class FormulaController {
 
             if (indirectCosts != null && !indirectCosts.isEmpty()) {
                 for (AttackCost indirectCost : indirectCosts) {
-                    try {
-                        final AttackCostFormula attackCostFormula = attackCostFormulatorSwitch.formulateCost(selfAssessmentID, indirectCost);
-                        attackCostFormula.setDirect(false);
 
-                        costFormulas.add(attackCostFormula);
-                    } catch (IllegalInputException e) {
-                        e.printStackTrace();
+                    //Check if the same type has been identified also as direct
+                    if (!costTypeFormulaMap.containsKey(indirectCost.getType())) {
+                        try {
+                            final AttackCostFormula attackCostFormula = attackCostFormulatorSwitch.formulateCost(selfAssessmentID, indirectCost);
+                            attackCostFormula.setDirect(false);
+
+                            costTypeFormulaMap.put(indirectCost.getType(), attackCostFormula);
+                        } catch (IllegalInputException e) {
+                            e.printStackTrace();
+                        }
                     }
                 }
             }
         }
 
-        return costFormulas;
+        return costTypeFormulaMap.values().stream().collect(Collectors.toList());
     }
 
     @GetMapping("/{selfAssessmentID}/formula/impact/{myAssetID}")
