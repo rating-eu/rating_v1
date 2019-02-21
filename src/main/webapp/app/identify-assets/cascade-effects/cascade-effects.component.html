@@ -1,7 +1,7 @@
 <div class="card">
     <div class="card-body">
-        <a href="javascript:void(0)" (click)="isDescriptionCollapsed = !isDescriptionCollapsed" [attr.aria-expanded]="!isDescriptionCollapsed"
-            aria-controls="descriptionCollapsible" class="float-right">
+        <a href="javascript:void(0)" (click)="isDescriptionCollapsed = !isDescriptionCollapsed"
+            [attr.aria-expanded]="!isDescriptionCollapsed" aria-controls="descriptionCollapsible" class="float-right">
             <i class="fa fa-question-circle fa-lg" aria-hidden="true"></i>
         </a>
         <h5 class="card-title">Cascade Effects.</h5>
@@ -16,12 +16,14 @@
             <div class="col-md-3">
                 <div class="list-group">
                     <ng-container *ngFor="let myAsset of myAssets">
-                        <a href="javascript:void(0)" (click)="updateMyAsset(false);selectAsset(myAsset)" class="list-group-item list-group-item-action"
+                        <a href="javascript:void(0)" (click)="updateMyAsset(false);selectAsset(myAsset)"
+                            class="list-group-item list-group-item-action"
                             [ngClass]="{'active': selectedAsset && myAsset.id === selectedAsset.id}"
                             ngbTooltip="{{myAsset.asset.description}}" placement="right">
                             <i *ngIf="myAssetStatus.get(myAsset.id) === 'COMPLETED'" class="fa fa-check fa-lg"
                                 aria-hidden="true" style="color: green"></i>
-                            <i *ngIf="loading && myAssetStatus.get(myAsset.id) === 'IN EVALUATION'" class="fa fa-circle-o-notch fa-spin fa-lg fa-fw"></i>
+                            <i *ngIf="loading && myAssetStatus.get(myAsset.id) === 'IN EVALUATION'"
+                                class="fa fa-circle-o-notch fa-spin fa-lg fa-fw"></i>
                             <i *ngIf="myAssetStatus.get(myAsset.id) === 'NOT COMPLETED'" class="fa fa-minus"
                                 aria-hidden="true" style="color: grey"></i>
                             {{myAsset.asset.name}}</a>
@@ -37,7 +39,8 @@
                         </div>
                         <div class="col-md-1">
                             <div class="chipsContainer">
-                                <div class="badge chips chips-name" [ngClass]="{'badge-light': !isDirect, 'badge-primary': isDirect}"
+                                <div class="badge chips chips-name"
+                                    [ngClass]="{'badge-light': !isDirect, 'badge-primary': isDirect}"
                                     (click)="setDirectAsset(selectedAsset, true)">
                                     YES
                                 </div>
@@ -45,7 +48,8 @@
                         </div>
                         <div class="col-md-1">
                             <div class="chipsContainer">
-                                <div class="badge chips chips-name" [ngClass]="{'badge-light': isDirect, 'badge-primary': !isDirect}"
+                                <div class="badge chips chips-name"
+                                    [ngClass]="{'badge-light': isDirect, 'badge-primary': !isDirect}"
                                     (click)="setDirectAsset(selectedAsset, false)">
                                     NO
                                 </div>
@@ -57,13 +61,17 @@
                             <h5>Now, please identify which are the other assets that could be indirectly
                                 compromised/damaged/devalued by the lost of the currently-selected asset</h5>
                         </div>
-                        <div class="col-md-12">
+                        <div class="col-md-12" style="margin-top: 15px">
+                            <div class="row">
+                                <h5>Tangible</h5>
+                            </div>
                             <div class="col-md-6">
                                 <ng-container *ngFor="let myAsset of myAssets; let isOdd=odd">
-                                    <ng-container *ngIf="isOdd && myAsset.asset.id !== selectedDirectAsset.myAsset.asset.id">
+                                    <ng-container
+                                        *ngIf="isOdd && myAsset.asset.assetcategory.type.toString() === 'TANGIBLE' && myAsset.asset.id !== selectedDirectAsset.myAsset.asset.id">
                                         <div class="row">
-                                            <label><input type="checkbox" [checked]="isIndirect(myAsset)" (change)="setIndirectAsset(myAsset)"
-                                                    id="{{myAsset.asset.name}}">
+                                            <label><input type="checkbox" [checked]="isIndirect(myAsset)"
+                                                    (change)="setIndirectAsset(myAsset)" id="{{myAsset.asset.name}}">
                                                 {{myAsset.asset.name}}</label>
                                         </div>
                                     </ng-container>
@@ -71,10 +79,40 @@
                             </div>
                             <div class="col-md-6">
                                 <ng-container *ngFor="let myAsset of myAssets; let isEven=even">
-                                    <ng-container *ngIf="isEven && myAsset.asset.id !== selectedDirectAsset.myAsset.asset.id">
+                                    <ng-container
+                                        *ngIf="isEven && myAsset.asset.assetcategory.type.toString() === 'TANGIBLE' && myAsset.asset.id !== selectedDirectAsset.myAsset.asset.id">
                                         <div class="row">
-                                            <label><input type="checkbox" [checked]="isIndirect(myAsset)" (change)="setIndirectAsset(myAsset)"
-                                                    id="{{myAsset.asset.name}}">
+                                            <label><input type="checkbox" [checked]="isIndirect(myAsset)"
+                                                    (change)="setIndirectAsset(myAsset)" id="{{myAsset.asset.name}}">
+                                                {{myAsset.asset.name}}</label>
+                                        </div>
+                                    </ng-container>
+                                </ng-container>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="row">
+                                <h5>Intangible</h5>
+                            </div>
+                            <div class="col-md-6">
+                                <ng-container *ngFor="let myAsset of myAssets; let isOdd=odd">
+                                    <ng-container
+                                        *ngIf="isOdd && myAsset.asset.assetcategory.type.toString() === 'INTANGIBLE' && myAsset.asset.id !== selectedDirectAsset.myAsset.asset.id">
+                                        <div class="row">
+                                            <label><input type="checkbox" [checked]="isIndirect(myAsset)"
+                                                    (change)="setIndirectAsset(myAsset)" id="{{myAsset.asset.name}}">
+                                                {{myAsset.asset.name}}</label>
+                                        </div>
+                                    </ng-container>
+                                </ng-container>
+                            </div>
+                            <div class="col-md-6">
+                                <ng-container *ngFor="let myAsset of myAssets; let isEven=even">
+                                    <ng-container
+                                        *ngIf="isEven && myAsset.asset.assetcategory.type.toString() === 'INTANGIBLE' && myAsset.asset.id !== selectedDirectAsset.myAsset.asset.id">
+                                        <div class="row">
+                                            <label><input type="checkbox" [checked]="isIndirect(myAsset)"
+                                                    (change)="setIndirectAsset(myAsset)" id="{{myAsset.asset.name}}">
                                                 {{myAsset.asset.name}}</label>
                                         </div>
                                     </ng-container>
@@ -92,12 +130,13 @@
             </div>
             <div class="col-md-12 text-center">
                 <div class="col-md-3">
-                    <button class="btn btn-primary btn-lg btn-block" [routerLink]="['../asset-clustering']"><i class="fa fa-arrow-left fa-lg"
-                            aria-hidden="true"></i>
+                    <button style="margin-bottom:25px" class="btn btn-primary btn-lg btn-block"
+                        [routerLink]="['../asset-clustering']"><i class="fa fa-arrow-left fa-lg" aria-hidden="true"></i>
                         Prev</button>
                 </div>
                 <div class="col-md-3 offset-md-6">
-                    <button class="btn btn-primary btn-lg btn-block" (click)="updateMyAsset(true)">
+                    <button style="margin-bottom:25px" class="btn btn-primary btn-lg btn-block"
+                        (click)="updateMyAsset(true)">
                         Next
                         <i *ngIf="!loading" class="fa fa-arrow-right fa-lg" aria-hidden="true"></i>
                         <i *ngIf="loading" class="fa fa-circle-o-notch fa-spin fa-lg fa-fw"></i>

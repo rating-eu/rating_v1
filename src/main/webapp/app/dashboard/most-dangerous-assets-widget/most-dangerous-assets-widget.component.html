@@ -5,7 +5,9 @@
     <div class="x_panel" style="padding:0px !important;">
         <div class="x_title" style="padding:0px !important;">
             <h2 style="padding: 10px;">
-                <a [routerLink]="['/results']" *ngIf="mdawTangibleEntities.length!==0 || mdawIntangibleEntities.length !== 0">Most Vulnerable Assets</a>
+                <a [routerLink]="['/results']"
+                    *ngIf="mdawTangibleEntities.length!==0 || mdawIntangibleEntities.length !== 0">Most Vulnerable
+                    Assets</a>
                 <small>based on 0 to 5 scale</small>
             </h2>
             <ul class="nav navbar-right panel_toolbox">
@@ -29,7 +31,18 @@
                                 <table class="table table-striped">
                                     <thead>
                                         <tr>
-                                            <th style="width: 45%">Asset
+                                            <th style="width: 20%">Category
+                                                <i *ngIf="!orderTangibleBy.category"
+                                                    (click)=" tableOrderBy('category', 'TANGIBLE', true)"
+                                                    class="fa fa-sort" aria-hidden="true"></i>
+                                                <i *ngIf="orderTangibleBy.category && orderTangibleBy.type === 'desc'"
+                                                    (click)=" tableOrderBy('category', 'TANGIBLE', false)"
+                                                    class="fa fa-chevron-down" aria-hidden="true"></i>
+                                                <i *ngIf="orderTangibleBy.category && orderTangibleBy.type === 'asc'"
+                                                    (click)=" tableOrderBy('category', 'TANGIBLE', true)"
+                                                    class="fa fa-chevron-up" aria-hidden="true"></i>
+                                            </th>
+                                            <th style="width: 20%">Asset
                                                 <i *ngIf="!orderTangibleBy.asset"
                                                     (click)=" tableOrderBy('asset', 'TANGIBLE', true)"
                                                     class="fa fa-sort" aria-hidden="true"></i>
@@ -79,6 +92,7 @@
                                         <ng-container
                                             *ngFor="let item of mdawTangibleEntities | paginate: tangibleAssetsPaginator">
                                             <tr>
+                                                <td>{{item.asset.asset.assetcategory.name}}</td>
                                                 <th scope="row"><a href="javascript:void(0)"
                                                         (click)="selectAsset(item.asset)">{{item.asset.asset.name}}</a>
                                                 </th>
@@ -162,7 +176,18 @@
                                 <table class="table table-striped">
                                     <thead>
                                         <tr>
-                                            <th style="width: 45%">Asset
+                                            <th style="width: 20%">Category
+                                                <i *ngIf="!orderIntangibleBy.category"
+                                                    (click)=" tableOrderBy('category', 'INTANGIBLE', true)"
+                                                    class="fa fa-sort" aria-hidden="true"></i>
+                                                <i *ngIf="orderIntangibleBy.category && orderIntangibleBy.type === 'desc'"
+                                                    (click)=" tableOrderBy('category', 'INTANGIBLE', false)"
+                                                    class="fa fa-chevron-down" aria-hidden="true"></i>
+                                                <i *ngIf="orderIntangibleBy.category && orderIntangibleBy.type === 'asc'"
+                                                    (click)=" tableOrderBy('category', 'INTANGIBLE', true)"
+                                                    class="fa fa-chevron-up" aria-hidden="true"></i>
+                                            </th>
+                                            <th style="width: 20%">Asset
                                                 <i *ngIf="!orderIntangibleBy.asset"
                                                     (click)=" tableOrderBy('asset', 'INTANGIBLE', true)"
                                                     class="fa fa-sort" aria-hidden="true"></i>
@@ -212,6 +237,7 @@
                                         <ng-container
                                             *ngFor="let item of mdawIntangibleEntities | paginate: intangibleAssetsPaginator">
                                             <tr>
+                                                <td>{{item.asset.asset.assetcategory.name}}</td>
                                                 <th scope="row"><a href="javascript:void(0)"
                                                         (click)="selectAsset(item.asset)">{{item.asset.asset.name}}</a>
                                                 </th>

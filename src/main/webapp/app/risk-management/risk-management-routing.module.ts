@@ -23,7 +23,7 @@ const routes: Routes = [
                 path: 'risk-details/:assetId',
                 component: RiskDetailsComponent,
                 data: {
-                    pageTitle: 'hermeneutApp.riskManagement.riskMitigation.title'
+                    pageTitle: 'hermeneutApp.riskManagement.riskDetails.title'
                 }
             }
         ]

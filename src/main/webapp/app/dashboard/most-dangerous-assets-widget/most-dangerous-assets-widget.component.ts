@@ -17,6 +17,7 @@ interface MdawEntity {
 }
 
 interface OrderBy {
+  category: boolean;
   asset: boolean;
   attackStrategy: boolean;
   likelihood: boolean;
@@ -66,6 +67,7 @@ export class MostDangerousAssetsWidgetComponent implements OnInit {
   ngOnInit() {
     this.loading = true;
     this.orderTangibleBy = {
+      category: false,
       asset: false,
       vulnerability: false,
       likelihood: false,
@@ -73,6 +75,7 @@ export class MostDangerousAssetsWidgetComponent implements OnInit {
       type: 'desc'
     };
     this.orderIntangibleBy = {
+      category: false,
       asset: false,
       vulnerability: false,
       likelihood: false,
@@ -188,12 +191,14 @@ export class MostDangerousAssetsWidgetComponent implements OnInit {
 
   private resetOrder(witchCategory: string) {
     if (witchCategory === 'TANGIBLE') {
+      this.orderTangibleBy.category = false;
       this.orderTangibleBy.asset = false;
       this.orderTangibleBy.vulnerability = false;
       this.orderTangibleBy.likelihood = false;
       this.orderTangibleBy.attackStrategy = false;
       this.orderTangibleBy.type = 'desc';
     } else {
+      this.orderIntangibleBy.category = false;
       this.orderIntangibleBy.asset = false;
       this.orderIntangibleBy.vulnerability = false;
       this.orderIntangibleBy.likelihood = false;
@@ -210,6 +215,15 @@ export class MostDangerousAssetsWidgetComponent implements OnInit {
         this.orderTangibleBy.type = 'asc';
       }
       switch (orderColumn.toLowerCase()) {
+        case ('category'): {
+          this.orderTangibleBy.category = true;
+          if (desc) {
+            this.mdawTangibleEntities = _.orderBy(this.mdawTangibleEntities, (elem: MdawEntity) => elem.asset.asset.assetcategory.name, ['desc']);
+          } else {
+            this.mdawTangibleEntities = _.orderBy(this.mdawTangibleEntities, (elem: MdawEntity) => elem.asset.asset.assetcategory.name, ['asc']);
+          }
+          break;
+        }
         case ('asset'): {
           this.orderTangibleBy.asset = true;
           if (desc) {
@@ -255,6 +269,15 @@ export class MostDangerousAssetsWidgetComponent implements OnInit {
         this.orderIntangibleBy.type = 'asc';
       }
       switch (orderColumn.toLowerCase()) {
+        case ('category'): {
+          this.orderIntangibleBy.category = true;
+          if (desc) {
+            this.mdawIntangibleEntities = _.orderBy(this.mdawIntangibleEntities, (elem: MdawEntity) => elem.asset.asset.assetcategory.name, ['desc']);
+          } else {
+            this.mdawIntangibleEntities = _.orderBy(this.mdawIntangibleEntities, (elem: MdawEntity) => elem.asset.asset.assetcategory.name, ['asc']);
+          }
+          break;
+        }
         case ('asset'): {
           this.orderIntangibleBy.asset = true;
           if (desc) {
