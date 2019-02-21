@@ -1,5 +1,10 @@
 @import "../dashboard.module.css";
 
+.disabled{
+    background-color:grey;
+    color: black;
+}
+
 .impact-five{
     background-color:#c0392b;
     color: black;

@@ -4,9 +4,8 @@
 <div class="container-fluid" *ngIf="selectedAsset && criticalLevel && !loading && !loadingRiskLevel">
   <div class="card">
     <div class="card-body">
-      <h2 class="card-title">Likelihood and Vulnerabilities</h2>
+      <h2 class="card-title">Likelihood and Vulnerabilities: {{selectedAsset.asset.name}}</h2>
       <ng-container class="card-text">
-        <h5>{{selectedAsset.asset.name}}</h5>
         <div class="row">
           <div class="col-md-12" style="margin-top:15px">
             <div class="col-md-2 text-left">
@@ -146,9 +145,9 @@
   </div>
   <div class="card">
     <div class="card-body">
-      <h2 class="card-title">Consequence</h2>
+      <h5 class="card-title">Impact: {{selectedAsset.impact}}</h5>
       <ng-container class="card-text">
-        <h5>Impact: {{selectedAsset.impact}}</h5>
+
         <ng-container>
           <p>This impact value was evaluated by this formula:
             <b *ngIf="impactFormula">{{impactFormula | replace:'_':' ' | titlecase}}</b>
@@ -334,6 +333,13 @@
           </ngb-tabset>
         </ng-container>
       </ng-container>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-3 offset-md-6">
+      <button type="submit" (click)="previousState()" class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+      </button>
     </div>
   </div>
 </div>
