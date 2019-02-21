@@ -249,8 +249,7 @@
                                                 <tr>
                                                     <td>{{risk.asset.asset.assetcategory.name}}</td>
                                                     <td>
-                                                        <a
-                                                            [routerLink]="['/asset-mgm', risk.asset.asset?.id ]">{{risk.asset?.asset.name}}</a>
+                                                        <a [routerLink]="['/risk-management/risk-details', risk.asset?.id ]">{{risk.asset?.asset.name}}</a>
                                                     </td>
                                                     <td>{{risk.asset.asset.description}}</td>
                                                     <td>{{risk.asset.impact}}</td>
