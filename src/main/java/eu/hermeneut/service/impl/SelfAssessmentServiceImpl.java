@@ -6,9 +6,11 @@ import eu.hermeneut.domain.enumeration.QuestionnairePurpose;
 import eu.hermeneut.domain.enumeration.Role;
 import eu.hermeneut.domain.overview.AugmentedMyAsset;
 import eu.hermeneut.domain.overview.SelfAssessmentOverview;
+import eu.hermeneut.exceptions.NotFoundException;
 import eu.hermeneut.service.*;
 import eu.hermeneut.repository.SelfAssessmentRepository;
 import eu.hermeneut.repository.search.SelfAssessmentSearchRepository;
+import eu.hermeneut.service.attackmap.AugmentedAttackStrategyService;
 import eu.hermeneut.service.result.ResultService;
 import eu.hermeneut.thread.AugmentedMyAssetsCallable;
 import eu.hermeneut.utils.likelihood.answer.AnswerCalculator;
@@ -51,22 +53,7 @@ public class SelfAssessmentServiceImpl implements SelfAssessmentService {
     private AttackStrategyService attackStrategyService;
 
     @Autowired
-    private MyAnswerService myAnswerService;
-
-    @Autowired
-    private QuestionnaireStatusService questionnaireStatusService;
-
-    @Autowired
-    private AttackStrategyCalculator attackStrategyCalculator;
-
-    @Autowired
-    private AnswerCalculator answerCalculator;
-
-    @Autowired
-    private QuestionService questionService;
-
-    @Autowired
-    private AnswerService answerService;
+    private AugmentedAttackStrategyService augmentedAttackStrategyService;
 
     @Autowired
     private ResultService resultService;
@@ -180,59 +167,9 @@ public class SelfAssessmentServiceImpl implements SelfAssessmentService {
 
                 if (myAssets != null && !myAssets.isEmpty()) {
                     LOGGER.debug("MyAssets: " + myAssets.size());
-                    List<QuestionnaireStatus> questionnaireStatuses = this.questionnaireStatusService.findAllBySelfAssessment(selfAssessmentID);
 
-                    if (questionnaireStatuses != null && !questionnaireStatuses.isEmpty()) {
-                        LOGGER.debug("QuestionnaireStatuses: " + questionnaireStatuses.size());
-                        QuestionnaireStatus cisoQStatus = questionnaireStatuses.stream().filter(questionnaireStatus -> questionnaireStatus.getRole().equals(Role.ROLE_CISO) && questionnaireStatus.getQuestionnaire().getPurpose().equals(QuestionnairePurpose.SELFASSESSMENT)).findFirst().orElse(null);
-                        QuestionnaireStatus externalQStatus = questionnaireStatuses.stream().filter(questionnaireStatus -> questionnaireStatus.getRole().equals(Role.ROLE_EXTERNAL_AUDIT) && questionnaireStatus.getQuestionnaire().getPurpose().equals(QuestionnairePurpose.SELFASSESSMENT)).findFirst().orElse(null);
-
-                        Map<Long, AugmentedAttackStrategy> augmentedAttackStrategyMap = this.attackStrategyService.findAll().stream().collect(Collectors.toMap(
-                            AttackStrategy::getId,
-                            attackStrategy -> new AugmentedAttackStrategy(attackStrategy, true)
-                        ));
-
-                        //===INITIAL LIKELIHOOD===
-                        augmentedAttackStrategyMap.values().forEach(augmentedAttackStrategy -> {
-                            augmentedAttackStrategy.setInitialLikelihood(this.attackStrategyCalculator.initialLikelihood(augmentedAttackStrategy).getValue());
-                        });
-
-                        Map<Long, Answer> answerMap = this.answerService.findAll().stream().collect(Collectors.toMap(
-                            Answer::getId,
-                            Function.identity()
-                        ));
-
-                        //===CONTEXTUAL LIKELIHOOD & VULNERABILITY===
-                        if (cisoQStatus != null) {
-                            List<MyAnswer> myAnswers = this.myAnswerService.findAllByQuestionnaireStatus(cisoQStatus.getId());
-
-                            if (myAnswers != null && !myAnswers.isEmpty()) {
-                                List<Question> questions = this.questionService.findAllByQuestionnaire(cisoQStatus.getQuestionnaire());
-
-                                Map<Long, Question> questionMap = questions.stream().collect(Collectors.toMap(
-                                    Question::getId,
-                                    Function.identity()
-                                ));
-
-                                this.attackStrategyCalculator.calculateContextualLikelihoods(myAnswers, questionMap, answerMap, augmentedAttackStrategyMap);
-                            }
-                        }
-
-                        //===REFINED LIKELIHOOD & VULNERABILITY===
-                        if (externalQStatus != null) {
-                            List<MyAnswer> myAnswers = this.myAnswerService.findAllByQuestionnaireStatus(externalQStatus.getId());
-
-                            if (myAnswers != null && !myAnswers.isEmpty()) {
-                                List<Question> questions = this.questionService.findAllByQuestionnaire(externalQStatus.getQuestionnaire());
-
-                                Map<Long, Question> questionMap = questions.stream().collect(Collectors.toMap(
-                                    Question::getId,
-                                    Function.identity()
-                                ));
-
-                                this.attackStrategyCalculator.calculateRefinedLikelihoods(myAnswers, questionMap, answerMap, augmentedAttackStrategyMap);
-                            }
-                        }
+                    try {
+                        Map<Long, AugmentedAttackStrategy> augmentedAttackStrategyMap = this.augmentedAttackStrategyService.weightAugmentedAttackStrategyMap(selfAssessmentID, this.augmentedAttackStrategyService.getAugmentedAttackStrategyMap(selfAssessmentID));
 
                         //===Split MyAssets and handle them in different THREADS===
                         final int MY_ASSETS_PER_SINGLE_THREAD = new Random().nextInt(myAssets.size() / 3 + 1) + 2;
@@ -255,7 +192,7 @@ public class SelfAssessmentServiceImpl implements SelfAssessmentService {
                                 int cluster = entry.getKey();
                                 List<MyAsset> myAssetsSubset = entry.getValue();
 
-                                AugmentedMyAssetsCallable augmentedMyAssetsCallable = new AugmentedMyAssetsCallable(myAssetsSubset, this.attackStrategyService, augmentedAttackStrategyMap, threatAgentSet, levelsOfInterestMap);
+                                AugmentedMyAssetsCallable augmentedMyAssetsCallable = new AugmentedMyAssetsCallable(myAssetsSubset, this.attackStrategyService, augmentedAttackStrategyMap, threatAgentSet);
 
                                 //submit Callable tasks to be executed by thread pool
                                 Future<List<AugmentedMyAsset>> future = executor.submit(augmentedMyAssetsCallable);
@@ -272,6 +209,8 @@ public class SelfAssessmentServiceImpl implements SelfAssessmentService {
                                 e.printStackTrace();
                             }
                         }
+                    } catch (NotFoundException e) {
+                        e.printStackTrace();
                     }
                 } else {
 
