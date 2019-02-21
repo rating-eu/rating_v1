@@ -151,7 +151,9 @@
         <h5>Impact: {{selectedAsset.impact}}</h5>
         <ng-container>
           <p>This impact value was evaluated by this formula:
-            <b>{{impactFormula | replace:'_':' ' | titlecase}}</b></p>
+            <b *ngIf="impactFormula">{{impactFormula | replace:'_':' ' | titlecase}}</b>
+            <ng-container *ngIf="!impactFormula">N/A</ng-container>
+          </p>
           <ngb-tabset>
             <ngb-tab title="Direct Cost">
               <ng-template ngbTabContent>
