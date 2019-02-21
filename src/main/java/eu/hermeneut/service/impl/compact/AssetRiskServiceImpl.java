@@ -12,6 +12,7 @@ import eu.hermeneut.service.attackmap.AugmentedAttackStrategyService;
 import eu.hermeneut.service.compact.AssetRiskService;
 import eu.hermeneut.utils.attackstrategy.ThreatAttackFilter;
 import eu.hermeneut.utils.threatagent.ThreatAgentComparator;
+import eu.hermeneut.utils.tuple.Triad;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -108,7 +109,7 @@ public class AssetRiskServiceImpl implements AssetRiskService, MaxValues {
 
             if (containers != null && !containers.isEmpty()) {
                 //For each container
-                critical = getCritical(augmentedAttackStrategyMap, containers);
+                critical = getLikelihoodVulnerabilityCritical(augmentedAttackStrategyMap, containers).getC();
 
                 float risk = critical * impact;
                 risk = risk / MAX_RISK;
@@ -129,8 +130,9 @@ public class AssetRiskServiceImpl implements AssetRiskService, MaxValues {
         return assetRisks;
     }
 
-    public float getCritical(Map<Long, AugmentedAttackStrategy> augmentedAttackStrategyMap, Set<Container> containers) {
-        float critical = 0F;
+    public Triad<Float> getLikelihoodVulnerabilityCritical(Map<Long, AugmentedAttackStrategy> augmentedAttackStrategyMap, Set<Container> containers) {
+        //(Likelihood, Vulnerability, Critical)
+        Triad<Float> likelihoodVulnerabilityCritical = new Triad<>(0F, 0F, 0F);
 
         for (Container container : containers) {
             List<AttackStrategy> attackStrategies = this.attackStrategyService.findAllByContainer(container.getId());
@@ -140,6 +142,8 @@ public class AssetRiskServiceImpl implements AssetRiskService, MaxValues {
                 AugmentedAttackStrategy augmentedAttackStrategy = augmentedAttackStrategyMap.get(attackStrategy.getId());
 
                 if (augmentedAttackStrategy != null) {
+                    float currentLikelihood = 0;
+                    float currentVulnerability = 0;
                     float currentCritical = 0;
 
                     float refinedVulnerability = augmentedAttackStrategy.getRefinedVulnerability();
@@ -151,20 +155,34 @@ public class AssetRiskServiceImpl implements AssetRiskService, MaxValues {
                     float initialLikelihood = augmentedAttackStrategy.getInitialLikelihood();
 
                     if (refinedLikelihood > 0 && refinedLikelihood > 0) {
+                        currentLikelihood = refinedLikelihood;
+                        currentVulnerability = refinedVulnerability;
                         currentCritical = refinedLikelihood * refinedVulnerability;
                     } else if (contextualLikelihood > 0 && contextualVulnerability > 0) {
+                        currentLikelihood = contextualLikelihood;
+                        currentVulnerability = contextualVulnerability;
                         currentCritical = contextualLikelihood * contextualVulnerability;
                     } else if (initialLikelihood > 0) {
+                        currentLikelihood = initialLikelihood;
+                        currentVulnerability = initialLikelihood;
                         currentCritical = initialLikelihood * initialLikelihood;
                     }
 
-                    if (currentCritical > critical) {
-                        critical = currentCritical;
+                    if (currentLikelihood > likelihoodVulnerabilityCritical.getA()) {
+                        likelihoodVulnerabilityCritical.setA(currentLikelihood);
+                    }
+
+                    if (currentVulnerability > likelihoodVulnerabilityCritical.getB()) {
+                        likelihoodVulnerabilityCritical.setB(contextualVulnerability);
+                    }
+
+                    if (currentCritical > likelihoodVulnerabilityCritical.getC()) {
+                        likelihoodVulnerabilityCritical.setC(currentCritical);
                     }
                 }
             }
         }
 
-        return critical;
+        return likelihoodVulnerabilityCritical;
     }
 }

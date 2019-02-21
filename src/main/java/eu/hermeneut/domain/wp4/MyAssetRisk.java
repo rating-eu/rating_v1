@@ -7,6 +7,10 @@ import java.util.List;
 
 public class MyAssetRisk extends MyAsset {
 
+    private float likelihood;
+
+    private float vulnerability;
+
     private int critical;
 
     private int risk;
@@ -25,6 +29,22 @@ public class MyAssetRisk extends MyAsset {
         this.setAsset(myAsset.getAsset());
         this.setSelfAssessment(myAsset.getSelfAssessment());
         this.setQuestionnaire(myAsset.getQuestionnaire());
+    }
+
+    public float getLikelihood() {
+        return likelihood;
+    }
+
+    public void setLikelihood(float likelihood) {
+        this.likelihood = likelihood;
+    }
+
+    public float getVulnerability() {
+        return vulnerability;
+    }
+
+    public void setVulnerability(float vulnerability) {
+        this.vulnerability = vulnerability;
     }
 
     public int getCritical() {
