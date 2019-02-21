@@ -55,11 +55,12 @@
                     <tbody>
                         <ng-container *ngFor="let item of widgetElements">
                             <tr [ngClass]="{
-                              'impact-five': item.impact === 5,
-                              'impact-four': item.impact === 4,
-                              'impact-three': item.impact === 3,
-                              'impact-two': item.impact === 2,
-                              'impact-one': item.impact === 1
+                              'impact-five': item.impact === 5 && item.assets.length > 0,
+                              'impact-four': item.impact === 4 && item.assets.length > 0,
+                              'impact-three': item.impact === 3 && item.assets.length > 0,
+                              'impact-two': item.impact === 2 && item.assets.length > 0,
+                              'impact-one': item.impact === 1 && item.assets.length > 0,
+                              'disabled': item.assets.length === 0
                             }" style="cursor: pointer" (click)="setImpact(item.impact)">
                                 <td>{{item.impact}}</td>
                                 <td *ngIf="item.economicValueMin">{{item.economicValueMin | currency:'EUR'}}</td>
@@ -67,7 +68,7 @@
                                 <td *ngIf="item.economicValueMax">{{item.economicValueMax | currency:'EUR'}}</td>
                                 <td *ngIf="!item.economicValueMax">-</td>
                             </tr>
-                            <ng-container *ngIf="selectedImpact">
+                            <ng-container *ngIf="selectedImpact && item.assets.length > 0">
                                 <tr *ngIf="selectedImpact === item.impact" class="tr-not-bright">
                                     <td colspan="3">
                                         <table class="table table-striped">
