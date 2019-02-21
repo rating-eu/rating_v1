@@ -9,6 +9,9 @@
             },
             "riskMitigation": {
                 "title": "Risk mitigation"
+            },
+            "riskDetails": {
+                "title": "Risk details"
             }
         }
     }

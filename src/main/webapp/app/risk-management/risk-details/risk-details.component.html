@@ -4,7 +4,7 @@
 <div class="container-fluid" *ngIf="selectedAsset && criticalLevel && !loading && !loadingRiskLevel">
   <div class="card">
     <div class="card-body">
-      <h5 class="card-title">{{selectedAsset.asset.name}}</h5>
+      <h2 class="card-title">Likelihood and Vulnerabilities: {{selectedAsset.asset.name}}</h2>
       <ng-container class="card-text">
         <div class="row">
           <div class="col-md-12" style="margin-top:15px">
@@ -54,195 +54,6 @@
   <div class="card">
     <div class="card-body">
       <ngb-accordion #acc="ngbAccordion" [closeOthers]="true">
-        <ngb-panel>
-          <ng-template ngbPanelTitle>
-            <h5>Impact: {{selectedAsset.impact}}</h5>
-          </ng-template>
-          <ng-template ngbPanelContent>
-            <ng-container>
-              <p>This impact value was evaluated by this formula:
-                <b>{{impactFormula | replace:'_':' ' | titlecase}}</b></p>
-              <ngb-tabset>
-                <ngb-tab title="Direct Cost">
-                  <ng-template ngbTabContent>
-                    <div class="col-md-12" *ngIf="directImpactTable.length === 0">
-                      <p>No attack cost was defined for this asset yet!</p>
-                      <p>If you want, you can define them in the <a href="javascript:void(0)"
-                          [routerLink]="['/identify-asset/asset-clustering']">Asset
-                          Clustering</a> section!</p>
-                    </div>
-                    <table class="table" *ngIf="directImpactTable.length > 0">
-                      <thead>
-                        <tr>
-                          <th scope="col" width="30%">Attack Cost</th>
-                          <th scope="col">Economic Impact</th>
-                          <th scope="col">Formula</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <ng-container *ngFor="let impact of directImpactTable">
-                          <tr *ngIf="impact.direct">
-                            <th scope="row" *ngIf="impact.attackCostParams"><a href="javascript:void(0)"
-                                (click)="selectAttackCost(impact)">{{impact.attackCost.type | replace:'_':' ' | titlecase}}</a>
-                            </th>
-                            <td *ngIf="!impact.attackCostParams">
-                              {{impact.attackCost.type | replace:'_':' ' | titlecase}}
-                            </td>
-                            <td>{{impact.attackCost.costs | currency:'EUR'}}
-                            </td>
-                            <td *ngIf="impact.formula">
-                              {{impact.formula | replace:'_':' ' | titlecase}}
-                            </td>
-                            <td *ngIf="!impact.formula">-</td>
-                          </tr>
-                          <ng-container *ngIf="selectedImpact && selectedImpact.direct">
-                            <tr *ngIf="selectedImpact.attackCost.id === impact.attackCost.id">
-                              <td colspan="3">
-                                <table class="col-md-12">
-                                  <thead>
-                                    <tr>
-                                      <th scope="col" class="text-center align-middle">
-                                        Param</th>
-                                      <th scope="col" class="text-center align-middle">
-                                        Value</th>
-                                      <th scope="col" class="text-center align-middle">
-                                        Value min</th>
-                                      <th scope="col" class="text-center align-middle">
-                                        Value max</th>
-                                    </tr>
-                                  </thead>
-                                  <tbody>
-                                    <tr *ngFor="let param of selectedImpact.attackCostParams"
-                                      class="text-center align-middle">
-                                      <td>{{param.type | replace:'_':' ' | titlecase}}
-                                      </td>
-                                      <td *ngIf="isMoney(param.type)">
-                                        {{param.value | currency:'EUR'}}
-                                      </td>
-                                      <td *ngIf="isFraction(param.type)">
-                                        {{param.value | number : '1.1-1'}}%
-                                      </td>
-                                      <td *ngIf="!isMoney(param.type) && !isFraction(param.type)">
-                                        {{param.value}}</td>
-                                      <td *ngIf="isMoney(param.type) && param.min">
-                                        {{param.min | currency:'EUR'}}
-                                      </td>
-                                      <td *ngIf="isFraction(param.type) && param.min">
-                                        {{param.min}}%</td>
-                                      <td *ngIf="!isMoney(param.type) && !isFraction(param.type) && param.min">
-                                        {{param.min}}</td>
-                                      <td *ngIf="!param.min">-</td>
-                                      <td *ngIf="isMoney(param.type) && param.max">
-                                        {{param.max | currency:'EUR'}}
-                                      </td>
-                                      <td *ngIf="isFraction(param.type) && param.max">
-                                        {{param.max}}%</td>
-                                      <td *ngIf="!isMoney(param.type) && !isFraction(param.type) && param.max">
-                                        {{param.max}}</td>
-                                      <td *ngIf="!param.max">-</td>
-                                    </tr>
-                                  </tbody>
-                                </table>
-                              </td>
-                            </tr>
-                          </ng-container>
-                        </ng-container>
-                      </tbody>
-                    </table>
-                  </ng-template>
-                </ngb-tab>
-                <ngb-tab title="Indirect Cost">
-                  <ng-template ngbTabContent>
-                    <div class="col-md-12" *ngIf="indirectImpactTable.length === 0">
-                      <p>No attack cost was defined for this asset yet!</p>
-                      <p>If you want, you can define them in the <a href="javascript:void(0)"
-                          [routerLink]="['/identify-asset/asset-clustering']">Asset
-                          Clustering</a> section!</p>
-                    </div>
-                    <table class="table" *ngIf="indirectImpactTable.length > 0">
-                      <thead>
-                        <tr>
-                          <th scope="col" width="30%">Attack Cost</th>
-                          <th scope="col">Economic Impact</th>
-                          <th scope="col">Formula</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <ng-container *ngFor="let impact of indirectImpactTable">
-                          <tr *ngIf="!impact.direct">
-                            <th scope="row" *ngIf="impact.attackCostParams"><a href="javascript:void(0)"
-                                (click)="selectAttackCost(impact)">{{impact.attackCost.type | replace:'_':' ' | titlecase}}</a>
-                            </th>
-                            <td *ngIf="!impact.attackCostParams">
-                              {{impact.attackCost.type | replace:'_':' ' | titlecase}}
-                            </td>
-                            <td>{{impact.attackCost.costs | currency:'EUR'}}
-                            </td>
-                            <td *ngIf="impact.formula">
-                              {{impact.formula | replace:'_':' ' | titlecase}}
-                            </td>
-                            <td *ngIf="!impact.formula">-</td>
-                          </tr>
-                          <ng-container *ngIf="selectedImpact && !selectedImpact.direct">
-                            <tr *ngIf="selectedImpact.attackCost.id === impact.attackCost.id">
-                              <td colspan="3">
-                                <table class="col-md-12">
-                                  <thead>
-                                    <tr>
-                                      <th scope="col" class="text-center align-middle">
-                                        Param</th>
-                                      <th scope="col" class="text-center align-middle">
-                                        Value</th>
-                                      <th scope="col" class="text-center align-middle">
-                                        Value min</th>
-                                      <th scope="col" class="text-center align-middle">
-                                        Value max</th>
-                                    </tr>
-                                  </thead>
-                                  <tbody>
-                                    <tr *ngFor="let param of selectedImpact.attackCostParams"
-                                      class="text-center align-middle">
-                                      <td>{{param.type | replace:'_':' ' | titlecase}}
-                                      </td>
-                                      <td *ngIf="isMoney(param.type)">
-                                        {{param.value | currency:'EUR'}}
-                                      </td>
-                                      <td *ngIf="isFraction(param.type)">
-                                        {{param.value | number : '1.1-1'}}%
-                                      </td>
-                                      <td *ngIf="!isMoney(param.type) && !isFraction(param.type)">
-                                        {{param.value}}</td>
-                                      <td *ngIf="isMoney(param.type) && param.min">
-                                        {{param.min | currency:'EUR'}}
-                                      </td>
-                                      <td *ngIf="isFraction(param.type) && param.min">
-                                        {{param.min}}%</td>
-                                      <td *ngIf="!isMoney(param.type) && !isFraction(param.type) && param.min">
-                                        {{param.min}}</td>
-                                      <td *ngIf="!param.min">-</td>
-                                      <td *ngIf="isMoney(param.type) && param.max">
-                                        {{param.max | currency:'EUR'}}
-                                      </td>
-                                      <td *ngIf="isFraction(param.type) && param.max">
-                                        {{param.max}}%</td>
-                                      <td *ngIf="!isMoney(param.type) && !isFraction(param.type) && param.max">
-                                        {{param.max}}</td>
-                                      <td *ngIf="!param.max">-</td>
-                                    </tr>
-                                  </tbody>
-                                </table>
-                              </td>
-                            </tr>
-                          </ng-container>
-                        </ng-container>
-                      </tbody>
-                    </table>
-                  </ng-template>
-                </ngb-tab>
-              </ngb-tabset>
-            </ng-container>
-          </ng-template>
-        </ngb-panel>
         <ngb-panel>
           <ng-template ngbPanelTitle>
             <h5>Threat Agents</h5>
@@ -330,6 +141,205 @@
           </ng-template>
         </ngb-panel>
       </ngb-accordion>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-body">
+      <h5 class="card-title">Impact: {{selectedAsset.impact}}</h5>
+      <ng-container class="card-text">
+
+        <ng-container>
+          <p>This impact value was evaluated by this formula:
+            <b *ngIf="impactFormula">{{impactFormula | replace:'_':' ' | titlecase}}</b>
+            <ng-container *ngIf="!impactFormula">N/A</ng-container>
+          </p>
+          <ngb-tabset>
+            <ngb-tab title="Direct Cost">
+              <ng-template ngbTabContent>
+                <div class="col-md-12" *ngIf="directImpactTable.length === 0">
+                  <p>No attack cost was defined for this asset yet!</p>
+                  <p>If you want, you can define them in the <a href="javascript:void(0)"
+                      [routerLink]="['/identify-asset/asset-clustering']">Asset
+                      Clustering</a> section!</p>
+                </div>
+                <table class="table" *ngIf="directImpactTable.length > 0">
+                  <thead>
+                    <tr>
+                      <th scope="col" width="30%">Attack Cost</th>
+                      <th scope="col">Economic Impact</th>
+                      <th scope="col">Formula</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <ng-container *ngFor="let impact of directImpactTable">
+                      <tr *ngIf="impact.direct">
+                        <th scope="row" *ngIf="impact.attackCostParams"><a href="javascript:void(0)"
+                            (click)="selectAttackCost(impact)">{{impact.attackCost.type | replace:'_':' ' | titlecase}}</a>
+                        </th>
+                        <td *ngIf="!impact.attackCostParams">
+                          {{impact.attackCost.type | replace:'_':' ' | titlecase}}
+                        </td>
+                        <td>{{impact.attackCost.costs | currency:'EUR'}}
+                        </td>
+                        <td *ngIf="impact.formula">
+                          {{impact.formula | replace:'_':' ' | titlecase}}
+                        </td>
+                        <td *ngIf="!impact.formula">-</td>
+                      </tr>
+                      <ng-container *ngIf="selectedImpact && selectedImpact.direct">
+                        <tr *ngIf="selectedImpact.attackCost.id === impact.attackCost.id">
+                          <td colspan="3">
+                            <table class="col-md-12">
+                              <thead>
+                                <tr>
+                                  <th scope="col" class="text-center align-middle">
+                                    Param</th>
+                                  <th scope="col" class="text-center align-middle">
+                                    Value</th>
+                                  <th scope="col" class="text-center align-middle">
+                                    Value min</th>
+                                  <th scope="col" class="text-center align-middle">
+                                    Value max</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <tr *ngFor="let param of selectedImpact.attackCostParams"
+                                  class="text-center align-middle">
+                                  <td>{{param.type | replace:'_':' ' | titlecase}}
+                                  </td>
+                                  <td *ngIf="isMoney(param.type)">
+                                    {{param.value | currency:'EUR'}}
+                                  </td>
+                                  <td *ngIf="isFraction(param.type)">
+                                    {{param.value | number : '1.1-1'}}%
+                                  </td>
+                                  <td *ngIf="!isMoney(param.type) && !isFraction(param.type)">
+                                    {{param.value}}</td>
+                                  <td *ngIf="isMoney(param.type) && param.min">
+                                    {{param.min | currency:'EUR'}}
+                                  </td>
+                                  <td *ngIf="isFraction(param.type) && param.min">
+                                    {{param.min}}%</td>
+                                  <td *ngIf="!isMoney(param.type) && !isFraction(param.type) && param.min">
+                                    {{param.min}}</td>
+                                  <td *ngIf="!param.min">-</td>
+                                  <td *ngIf="isMoney(param.type) && param.max">
+                                    {{param.max | currency:'EUR'}}
+                                  </td>
+                                  <td *ngIf="isFraction(param.type) && param.max">
+                                    {{param.max}}%</td>
+                                  <td *ngIf="!isMoney(param.type) && !isFraction(param.type) && param.max">
+                                    {{param.max}}</td>
+                                  <td *ngIf="!param.max">-</td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </td>
+                        </tr>
+                      </ng-container>
+                    </ng-container>
+                  </tbody>
+                </table>
+              </ng-template>
+            </ngb-tab>
+            <ngb-tab title="Indirect Cost">
+              <ng-template ngbTabContent>
+                <div class="col-md-12" *ngIf="indirectImpactTable.length === 0">
+                  <p>No attack cost was defined for this asset yet!</p>
+                  <p>If you want, you can define them in the <a href="javascript:void(0)"
+                      [routerLink]="['/identify-asset/asset-clustering']">Asset
+                      Clustering</a> section!</p>
+                </div>
+                <table class="table" *ngIf="indirectImpactTable.length > 0">
+                  <thead>
+                    <tr>
+                      <th scope="col" width="30%">Attack Cost</th>
+                      <th scope="col">Economic Impact</th>
+                      <th scope="col">Formula</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <ng-container *ngFor="let impact of indirectImpactTable">
+                      <tr *ngIf="!impact.direct">
+                        <th scope="row" *ngIf="impact.attackCostParams"><a href="javascript:void(0)"
+                            (click)="selectAttackCost(impact)">{{impact.attackCost.type | replace:'_':' ' | titlecase}}</a>
+                        </th>
+                        <td *ngIf="!impact.attackCostParams">
+                          {{impact.attackCost.type | replace:'_':' ' | titlecase}}
+                        </td>
+                        <td>{{impact.attackCost.costs | currency:'EUR'}}
+                        </td>
+                        <td *ngIf="impact.formula">
+                          {{impact.formula | replace:'_':' ' | titlecase}}
+                        </td>
+                        <td *ngIf="!impact.formula">-</td>
+                      </tr>
+                      <ng-container *ngIf="selectedImpact && !selectedImpact.direct">
+                        <tr *ngIf="selectedImpact.attackCost.id === impact.attackCost.id">
+                          <td colspan="3">
+                            <table class="col-md-12">
+                              <thead>
+                                <tr>
+                                  <th scope="col" class="text-center align-middle">
+                                    Param</th>
+                                  <th scope="col" class="text-center align-middle">
+                                    Value</th>
+                                  <th scope="col" class="text-center align-middle">
+                                    Value min</th>
+                                  <th scope="col" class="text-center align-middle">
+                                    Value max</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <tr *ngFor="let param of selectedImpact.attackCostParams"
+                                  class="text-center align-middle">
+                                  <td>{{param.type | replace:'_':' ' | titlecase}}
+                                  </td>
+                                  <td *ngIf="isMoney(param.type)">
+                                    {{param.value | currency:'EUR'}}
+                                  </td>
+                                  <td *ngIf="isFraction(param.type)">
+                                    {{param.value | number : '1.1-1'}}%
+                                  </td>
+                                  <td *ngIf="!isMoney(param.type) && !isFraction(param.type)">
+                                    {{param.value}}</td>
+                                  <td *ngIf="isMoney(param.type) && param.min">
+                                    {{param.min | currency:'EUR'}}
+                                  </td>
+                                  <td *ngIf="isFraction(param.type) && param.min">
+                                    {{param.min}}%</td>
+                                  <td *ngIf="!isMoney(param.type) && !isFraction(param.type) && param.min">
+                                    {{param.min}}</td>
+                                  <td *ngIf="!param.min">-</td>
+                                  <td *ngIf="isMoney(param.type) && param.max">
+                                    {{param.max | currency:'EUR'}}
+                                  </td>
+                                  <td *ngIf="isFraction(param.type) && param.max">
+                                    {{param.max}}%</td>
+                                  <td *ngIf="!isMoney(param.type) && !isFraction(param.type) && param.max">
+                                    {{param.max}}</td>
+                                  <td *ngIf="!param.max">-</td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </td>
+                        </tr>
+                      </ng-container>
+                    </ng-container>
+                  </tbody>
+                </table>
+              </ng-template>
+            </ngb-tab>
+          </ngb-tabset>
+        </ng-container>
+      </ng-container>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-3 offset-md-6">
+      <button type="submit" (click)="previousState()" class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+      </button>
     </div>
   </div>
 </div>

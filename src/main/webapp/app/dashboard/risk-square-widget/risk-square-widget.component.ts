@@ -1,5 +1,5 @@
 import { DashboardStepEnum } from './../models/enumeration/dashboard-step.enum';
-import { DashboardService } from './../dashboard.service';
+import { DashboardService, DashboardStatus } from './../dashboard.service';
 import { MyAssetRisk } from './../../risk-management/model/my-asset-risk.model';
 import * as _ from 'lodash';
 import { CriticalLevelMgm } from './../../entities/critical-level-mgm/critical-level-mgm.model';
@@ -20,6 +20,7 @@ export class RiskSquareWidgetComponent implements OnInit {
   public attackCosts = false;
   public isCollapsed = true;
   private mySelf: SelfAssessmentMgm;
+  private status: DashboardStatus;
   public criticalLevel: CriticalLevelMgm;
   public myAssetsAtRisk: MyAssetRisk[];
   public squareColumnElement: number[];
@@ -42,6 +43,7 @@ export class RiskSquareWidgetComponent implements OnInit {
     this.loadingRiskLevel = true;
     this.loadingAssetsAndAttacks = true;
     this.mySelf = this.mySelfAssessmentService.getSelfAssessment();
+    this.status = this.dashService.getStatus();
     this.riskService.getCriticalLevel(this.mySelf).toPromise().then((res) => {
       if (res) {
         this.criticalLevel = res;
@@ -78,6 +80,8 @@ export class RiskSquareWidgetComponent implements OnInit {
       } else {
         this.attackCosts = true;
       }
+      this.status.riskEvaluationStatus = Status[res];
+      this.dashService.updateStepStatus(DashboardStepEnum.RISK_EVALUATION, this.status.riskEvaluationStatus);
     });
   }
 

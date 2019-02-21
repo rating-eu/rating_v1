@@ -1,16 +1,21 @@
-import {Component, OnInit} from '@angular/core';
-import {SelfAssessmentMgm, SelfAssessmentMgmService} from '../../entities/self-assessment-mgm';
-import {ResultsService} from '../results.service';
-import {Result} from '../models/result.model';
-import {HttpResponse} from '@angular/common/http';
-import {ThreatAgentLikelihoods} from '../../utils/threatagent.likelihoods.class';
-import {ThreatAgentMgm} from '../../entities/threat-agent-mgm';
-import {Observable} from 'rxjs/Observable';
-import {SelfAssessmentOverview} from '../../my-self-assessments/models/SelfAssessmentOverview.model';
-import {AugmentedMyAsset} from '../../my-self-assessments/models/AugmentedMyAsset.model';
-import {AugmentedAttackStrategy} from '../../evaluate-weakness/models/augmented-attack-strategy.model';
-import {Couple} from '../../utils/couple.class';
+import { Component, OnInit } from '@angular/core';
+import { SelfAssessmentMgm, SelfAssessmentMgmService } from '../../entities/self-assessment-mgm';
+import { ResultsService } from '../results.service';
+import { Result } from '../models/result.model';
+import { HttpResponse } from '@angular/common/http';
+import { ThreatAgentLikelihoods } from '../../utils/threatagent.likelihoods.class';
+import { ThreatAgentMgm } from '../../entities/threat-agent-mgm';
+import { Observable } from 'rxjs/Observable';
+import { SelfAssessmentOverview } from '../../my-self-assessments/models/SelfAssessmentOverview.model';
+import { AugmentedMyAsset } from '../../my-self-assessments/models/AugmentedMyAsset.model';
+import { AugmentedAttackStrategy } from '../../evaluate-weakness/models/augmented-attack-strategy.model';
+import { Couple } from '../../utils/couple.class';
 import * as _ from 'lodash';
+
+interface OrderBy {
+    asset: boolean;
+    type: string;
+}
 
 @Component({
     selector: 'jhi-results-overview',
@@ -26,6 +31,8 @@ export class ResultsOverviewComponent implements OnInit {
     public page = 1;
     public assetAttacksNumbMap: Map<number, number> = new Map<number, number>();
     public assets: AugmentedMyAsset[];
+    public tangibleAssets: AugmentedMyAsset[];
+    public intangibleAssets: AugmentedMyAsset[];
     public selectedAsset: AugmentedMyAsset;
     public selectedAttacks: AugmentedAttackStrategy[];
     public loading = false;
@@ -51,12 +58,23 @@ export class ResultsOverviewComponent implements OnInit {
     // Sorting
     public sortedBy: Map<string, Couple<boolean/*sorted*/, boolean/*ascending*/>>;
 
+    public orderIntangibleBy: OrderBy;
+    public orderTangibleBy: OrderBy;
+
     constructor(private selfAssessmentService: SelfAssessmentMgmService,
-                private resultService: ResultsService) {
+        private resultService: ResultsService) {
     }
 
     ngOnInit() {
         this.sortedBy = new Map();
+        this.orderTangibleBy = {
+            asset: false,
+            type: 'desc'
+        };
+        this.orderIntangibleBy = {
+            asset: false,
+            type: 'desc'
+        };
         this.selfAssessment = this.selfAssessmentService.getSelfAssessment();
         this.threatAgents = this.selfAssessment.threatagents;
         this.threatAgentsMap = new Map<number, ThreatAgentMgm>();
@@ -153,6 +171,8 @@ export class ResultsOverviewComponent implements OnInit {
                 this.loading = true;
                 this.overview = res;
                 this.assets = [];
+                this.tangibleAssets = [];
+                this.intangibleAssets = [];
                 for (const item of this.overview.augmentedMyAssets) {
                     if (this.assetAttacksNumbMap.has(item.asset.id)) {
                         this.assetAttacksNumbMap.set(
@@ -162,6 +182,11 @@ export class ResultsOverviewComponent implements OnInit {
                     } else {
                         this.assetAttacksNumbMap.set(item.asset.id, 1);
                         this.assets.push(item);
+                        if (item.asset.assetcategory.type.toString() === 'TANGIBLE') {
+                            this.tangibleAssets.push(item);
+                        } else {
+                            this.intangibleAssets.push(item);
+                        }
                     }
                 }
                 this.loading = false;
@@ -212,9 +237,15 @@ export class ResultsOverviewComponent implements OnInit {
             }
             case this.CONTEXTUAL_LIKELIHOOD: {
                 if (asc) {
-                    this.threatAgentIDs = _.orderBy(this.threatAgentIDs, (threatAgentID: number) => this.threatAgentLikelihoodsMap.get(threatAgentID).contextualLikelihood, ['asc']);
+                    this.threatAgentIDs = _.orderBy(
+                        this.threatAgentIDs,
+                        (threatAgentID: number) => this.threatAgentLikelihoodsMap.get(threatAgentID).contextualLikelihood,
+                        ['asc']);
                 } else {
-                    this.threatAgentIDs = _.orderBy(this.threatAgentIDs, (threatAgentID: number) => this.threatAgentLikelihoodsMap.get(threatAgentID).contextualLikelihood, ['desc']);
+                    this.threatAgentIDs = _.orderBy(
+                        this.threatAgentIDs,
+                        (threatAgentID: number) => this.threatAgentLikelihoodsMap.get(threatAgentID).contextualLikelihood,
+                        ['desc']);
                 }
 
                 this.sortedBy.set(this.CONTEXTUAL_LIKELIHOOD, new Couple(true, asc));
@@ -229,6 +260,55 @@ export class ResultsOverviewComponent implements OnInit {
 
                 this.sortedBy.set(this.REFINED_LIKELIHOOD, new Couple(true, asc));
                 break;
+            }
+        }
+    }
+
+    private resetOrder(witchCategory: string) {
+        if (witchCategory === 'TANGIBLE') {
+            this.orderTangibleBy.asset = false;
+            this.orderTangibleBy.type = 'desc';
+        } else {
+            this.orderIntangibleBy.asset = false;
+            this.orderIntangibleBy.type = 'desc';
+        }
+    }
+    public tableOrderBy(orderColumn: string, category: string, desc: boolean) {
+        if (category === 'TANGIBLE') {
+            this.resetOrder('TANGIBLE');
+            if (desc) {
+                this.orderTangibleBy.type = 'desc';
+            } else {
+                this.orderTangibleBy.type = 'asc';
+            }
+            switch (orderColumn.toLowerCase()) {
+                case ('asset'): {
+                    this.orderTangibleBy.asset = true;
+                    if (desc) {
+                        this.tangibleAssets = _.orderBy(this.tangibleAssets, (elem: AugmentedMyAsset) => elem.asset.name, ['desc']);
+                    } else {
+                        this.tangibleAssets = _.orderBy(this.tangibleAssets, (elem: AugmentedMyAsset) => elem.asset.name, ['asc']);
+                    }
+                    break;
+                }
+            }
+        } else {
+            this.resetOrder('INTANGIBLE');
+            if (desc) {
+                this.orderIntangibleBy.type = 'desc';
+            } else {
+                this.orderIntangibleBy.type = 'asc';
+            }
+            switch (orderColumn.toLowerCase()) {
+                case ('asset'): {
+                    this.orderIntangibleBy.asset = true;
+                    if (desc) {
+                        this.intangibleAssets = _.orderBy(this.intangibleAssets, (elem: AugmentedMyAsset) => elem.asset.name, ['desc']);
+                    } else {
+                        this.intangibleAssets = _.orderBy(this.intangibleAssets, (elem: AugmentedMyAsset) => elem.asset.name, ['asc']);
+                    }
+                    break;
+                }
             }
         }
     }

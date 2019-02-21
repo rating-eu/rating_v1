@@ -14,6 +14,8 @@ import { MitigationMgm } from '../../entities/mitigation-mgm';
 interface RiskPercentageElement {
     asset: MyAssetMgm;
     critical: number;
+    likelihood: number;
+    vulnerability: number;
     percentage: number;
 }
 
@@ -23,6 +25,8 @@ interface OrderBy {
     description: boolean;
     impact: boolean;
     critical: boolean;
+    likelihood: boolean;
+    vulnerability: boolean;
     risk: boolean;
     type: string;
 }
@@ -91,6 +95,8 @@ export class RiskEvaluationComponent implements OnInit, OnDestroy {
             description: false,
             impact: false,
             critical: false,
+            likelihood: false,
+            vulnerability: false,
             risk: false,
             type: 'desc'
         };
@@ -100,6 +106,8 @@ export class RiskEvaluationComponent implements OnInit, OnDestroy {
             description: false,
             impact: false,
             critical: false,
+            likelihood: false,
+            vulnerability: false,
             risk: false,
             type: 'desc'
         };
@@ -187,6 +195,8 @@ export class RiskEvaluationComponent implements OnInit, OnDestroy {
             const risk: RiskPercentageElement = {
                 asset: myAsset,
                 critical: myAsset.critical,
+                likelihood: myAsset.likelihood,
+                vulnerability: myAsset.vulnerability,
                 percentage: myAsset.risk
             };
             if (risk.asset.asset.assetcategory.type.toString() === 'TANGIBLE') {
@@ -261,6 +271,8 @@ export class RiskEvaluationComponent implements OnInit, OnDestroy {
             this.orderTangibleBy.critical = false;
             this.orderTangibleBy.description = false;
             this.orderTangibleBy.impact = false;
+            this.orderTangibleBy.likelihood = false;
+            this.orderTangibleBy.vulnerability = false;
             this.orderTangibleBy.risk = false;
             this.orderTangibleBy.type = 'desc';
         } else {
@@ -269,6 +281,8 @@ export class RiskEvaluationComponent implements OnInit, OnDestroy {
             this.orderIntangibleBy.critical = false;
             this.orderIntangibleBy.description = false;
             this.orderIntangibleBy.impact = false;
+            this.orderIntangibleBy.likelihood = false;
+            this.orderIntangibleBy.vulnerability = false;
             this.orderIntangibleBy.risk = false;
             this.orderIntangibleBy.type = 'desc';
         }
@@ -324,6 +338,24 @@ export class RiskEvaluationComponent implements OnInit, OnDestroy {
                         this.risksTangible = _.orderBy(this.risksTangible, ['critical'], ['desc']);
                     } else {
                         this.risksTangible = _.orderBy(this.risksTangible, ['critical'], ['asc']);
+                    }
+                    break;
+                }
+                case ('likelihood'): {
+                    this.orderTangibleBy.likelihood = true;
+                    if (desc) {
+                        this.risksTangible = _.orderBy(this.risksTangible, ['likelihood'], ['desc']);
+                    } else {
+                        this.risksTangible = _.orderBy(this.risksTangible, ['likelihood'], ['asc']);
+                    }
+                    break;
+                }
+                case ('vulnerability'): {
+                    this.orderTangibleBy.vulnerability = true;
+                    if (desc) {
+                        this.risksTangible = _.orderBy(this.risksTangible, ['vulnerability'], ['desc']);
+                    } else {
+                        this.risksTangible = _.orderBy(this.risksTangible, ['vulnerability'], ['asc']);
                     }
                     break;
                 }
@@ -387,6 +419,24 @@ export class RiskEvaluationComponent implements OnInit, OnDestroy {
                         this.risksIntangible = _.orderBy(this.risksIntangible, ['critical'], ['desc']);
                     } else {
                         this.risksIntangible = _.orderBy(this.risksIntangible, ['critical'], ['asc']);
+                    }
+                    break;
+                }
+                case ('likelihood'): {
+                    this.orderIntangibleBy.likelihood = true;
+                    if (desc) {
+                        this.risksIntangible = _.orderBy(this.risksIntangible, ['likelihood'], ['desc']);
+                    } else {
+                        this.risksIntangible = _.orderBy(this.risksIntangible, ['likelihood'], ['asc']);
+                    }
+                    break;
+                }
+                case ('vulnerability'): {
+                    this.orderIntangibleBy.vulnerability = true;
+                    if (desc) {
+                        this.risksIntangible = _.orderBy(this.risksIntangible, ['vulnerability'], ['desc']);
+                    } else {
+                        this.risksIntangible = _.orderBy(this.risksIntangible, ['vulnerability'], ['asc']);
                     }
                     break;
                 }

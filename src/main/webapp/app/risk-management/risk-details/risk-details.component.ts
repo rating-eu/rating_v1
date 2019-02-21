@@ -215,4 +215,8 @@ export class RiskDetailsComponent implements OnInit, OnDestroy {
     return this.riskService.whichLevel(row, column, this.criticalLevel);
   }
 
+  public previousState() {
+    window.history.back();
+  }
+
 }
