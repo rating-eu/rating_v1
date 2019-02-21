@@ -25,7 +25,7 @@
             <div style="display: block" *ngIf="data.length > 0">
               <canvas baseChart [datasets]="data" [labels]="stackedLables" [chartType]="type" [legend]="legend" [options]="options"></canvas>
             </div>
-            <div style="display: block" *ngIf="data.length === 0 class="text-center">
+            <div style="display: block" *ngIf="data.length === 0" class="text-center">
               <p>No data available, please complete the relative questionnaire!</p>
             </div>
           </div>
