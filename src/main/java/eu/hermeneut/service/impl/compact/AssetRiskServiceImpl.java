@@ -87,29 +87,23 @@ public class AssetRiskServiceImpl implements AssetRiskService, MaxValues {
             final Set<Container> containers = myAsset.getAsset().getContainers() != null ? myAsset.getAsset().getContainers() : new HashSet<>();
             final Set<DomainOfInfluence> domainsOfInfluence = myAsset.getAsset().getDomainsOfInfluences() != null ? myAsset.getAsset().getDomainsOfInfluences() : new HashSet<>();
 
-            if (containers.isEmpty()) {
-                if (domainsOfInfluence.isEmpty()) {
-                    throw new NotFoundException("Containers and Domains of Influence NOT Found!!!");
-                } else {//Only Domains of Influence as Containers
-                    domainsOfInfluence.stream().parallel().forEach(domainOfInfluence -> {
-                        containers.add(domainOfInfluence.getContainer());
-                    });
-                }
-            } else {// Both container and Domains of Influence as Containers
-                if (!domainsOfInfluence.isEmpty()) {
-                    domainsOfInfluence.stream().parallel().forEach(domainOfInfluence -> {
-                        containers.add(domainOfInfluence.getContainer());
-                    });
-                }
-            }
+            Map<Long, Container> containerMap = new HashMap<>();
 
-            if (containers.isEmpty()) {
+            containers.stream().parallel().forEach(container -> {
+                containerMap.put(container.getId(), container);
+            });
+
+            domainsOfInfluence.stream().parallel().forEach(domainOfInfluence -> {
+                containerMap.put(domainOfInfluence.getContainer().getId(), domainOfInfluence.getContainer());
+            });
+
+            if (containerMap.isEmpty()) {
                 throw new NotFoundException("Containers NOT Found!!!");
             }
 
-            if (containers != null && !containers.isEmpty()) {
+            if (containerMap != null && !containerMap.isEmpty()) {
                 //For each container
-                critical = getLikelihoodVulnerabilityCritical(augmentedAttackStrategyMap, containers).getC();
+                critical = getLikelihoodVulnerabilityCritical(augmentedAttackStrategyMap, containerMap).getC();
 
                 float risk = critical * impact;
                 risk = risk / MAX_RISK;
@@ -130,11 +124,11 @@ public class AssetRiskServiceImpl implements AssetRiskService, MaxValues {
         return assetRisks;
     }
 
-    public Triad<Float> getLikelihoodVulnerabilityCritical(Map<Long, AugmentedAttackStrategy> augmentedAttackStrategyMap, Set<Container> containers) {
+    public Triad<Float> getLikelihoodVulnerabilityCritical(Map<Long, AugmentedAttackStrategy> augmentedAttackStrategyMap, Map<Long, Container> containers) {
         //(Likelihood, Vulnerability, Critical)
         Triad<Float> likelihoodVulnerabilityCritical = new Triad<>(0F, 0F, 0F);
 
-        for (Container container : containers) {
+        for (Container container : containers.values()) {
             List<AttackStrategy> attackStrategies = this.attackStrategyService.findAllByContainer(container.getId());
 
             //For each attack strategy
@@ -154,7 +148,7 @@ public class AssetRiskServiceImpl implements AssetRiskService, MaxValues {
 
                     float initialLikelihood = augmentedAttackStrategy.getInitialLikelihood();
 
-                    if (refinedLikelihood > 0 && refinedLikelihood > 0) {
+                    if (refinedLikelihood > 0 && refinedVulnerability > 0) {
                         currentLikelihood = refinedLikelihood;
                         currentVulnerability = refinedVulnerability;
                         currentCritical = refinedLikelihood * refinedVulnerability;
@@ -173,7 +167,7 @@ public class AssetRiskServiceImpl implements AssetRiskService, MaxValues {
                     }
 
                     if (currentVulnerability > likelihoodVulnerabilityCritical.getB()) {
-                        likelihoodVulnerabilityCritical.setB(contextualVulnerability);
+                        likelihoodVulnerabilityCritical.setB(currentVulnerability);
                     }
 
                     if (currentCritical > likelihoodVulnerabilityCritical.getC()) {
