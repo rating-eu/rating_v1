@@ -100,21 +100,15 @@ public class MyAssetRiskServiceImpl implements MyAssetRiskService, MaxValues {
             final Set<Container> containers = myAsset.getAsset().getContainers() != null ? myAsset.getAsset().getContainers() : new HashSet<>();
             final Set<DomainOfInfluence> domainsOfInfluence = myAsset.getAsset().getDomainsOfInfluences() != null ? myAsset.getAsset().getDomainsOfInfluences() : new HashSet<>();
 
-            if (containers.isEmpty()) {
-                if (domainsOfInfluence.isEmpty()) {
-                    throw new NotFoundException("Containers and Domains of Influence NOT Found!!!");
-                } else {//Only Domains of Influence as Containers
-                    domainsOfInfluence.stream().parallel().forEach(domainOfInfluence -> {
-                        containers.add(domainOfInfluence.getContainer());
-                    });
-                }
-            } else {// Both container and Domains of Influence as Containers
-                if (!domainsOfInfluence.isEmpty()) {
-                    domainsOfInfluence.stream().parallel().forEach(domainOfInfluence -> {
-                        containers.add(domainOfInfluence.getContainer());
-                    });
-                }
-            }
+            Map<Long, Container> containerMap = new HashMap<>();
+
+            containers.stream().parallel().forEach(container -> {
+                containerMap.put(container.getId(), container);
+            });
+
+            domainsOfInfluence.stream().parallel().forEach(domainOfInfluence -> {
+                containerMap.put(domainOfInfluence.getContainer().getId(), domainOfInfluence.getContainer());
+            });
 
             if (containers.isEmpty()) {
                 throw new NotFoundException("Containers NOT Found!!!");
@@ -128,11 +122,11 @@ public class MyAssetRiskServiceImpl implements MyAssetRiskService, MaxValues {
 
                 int riskInteger = Math.round(risk);
 
-                Triad<Float> likelihoodVUlnerabilityCritical = this.assetRiskService.getLikelihoodVulnerabilityCritical(augmentedAttackStrategyMap, containers);
+                Triad<Float> likelihoodVulnerabilityCritical = this.assetRiskService.getLikelihoodVulnerabilityCritical(augmentedAttackStrategyMap, containerMap);
 
-                float likelihood = likelihoodVUlnerabilityCritical.getA();
-                float vulnerability = likelihoodVUlnerabilityCritical.getB();
-                int critical = Math.round(this.assetRiskService.getLikelihoodVulnerabilityCritical(augmentedAttackStrategyMap, containers).getC());
+                float likelihood = likelihoodVulnerabilityCritical.getA();
+                float vulnerability = likelihoodVulnerabilityCritical.getB();
+                int critical = Math.round(likelihoodVulnerabilityCritical.getC());
 
                 myAssetRisk.setLikelihood(likelihood);
                 myAssetRisk.setVulnerability(vulnerability);
