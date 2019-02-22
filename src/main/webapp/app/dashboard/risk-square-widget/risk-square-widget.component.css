@@ -1,17 +1,17 @@
 @import "../dashboard.module.css";
 
 .low-level{
-    background: green;
+    background: #2ecc71;
     width: 100%;
     margin-bottom: 2px;
 }
 .medium-level{
-    background: yellow;
+    background: #f39c12;
     width: 100%;
     margin-bottom: 2px;
 }
 .high-level{
-    background: red;
+    background: #c0392b;
     width: 100%;
     margin-bottom: 2px;
 }

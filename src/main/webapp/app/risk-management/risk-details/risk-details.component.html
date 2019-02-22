@@ -30,7 +30,7 @@
               <div *ngFor="let i of squareColumnElement" class="col-md-2">
                 <div class="text-center boston-square-text"
                   [ngClass]="{'low-level': whichLevel(lastSquareRowElement-j, i) === 'low', 'medium-level': whichLevel(lastSquareRowElement-j, i) === 'medium', 'high-level': whichLevel(lastSquareRowElement-j, i) === 'high'}"
-                  placement="top"
+                  placement="bottom"
                   ngbTooltip="{{attacksToolTipLoaded ? attacksToolTip.get(concatenateAndParse([selectedAsset.id,lastSquareRowElement-j, i])) : ''}}">
                   <ng-container *ngIf="whichContentByCell(lastSquareRowElement-j, i, selectedAsset,
                                                                         'likelihood-vulnerability')!==''">
@@ -122,12 +122,16 @@
               <thead>
                 <tr>
                   <th>Attack Strategy</th>
+                  <th>Likelihood</th>
+                  <th>Vulnerability</th>
                   <th>Mitigations</th>
                 </tr>
               </thead>
               <tbody>
                 <tr *ngFor="let attackChance of attackChances">
                   <td>{{attackChance.attackStrategy.name}}</td>
+                  <td>{{attackChance.likelihood | number : '1.1-1'}}</td>
+                    <td>{{attackChance.vulnerability | number : '1.1-1'}}</td>
                   <td>
                     <span *ngFor="let mitigation of attackChance.attackStrategy.mitigations; let last = last">
                       <a class="form-control-static"
@@ -165,9 +169,8 @@
                 <table class="table" *ngIf="directImpactTable.length > 0">
                   <thead>
                     <tr>
-                      <th scope="col" width="30%">Attack Cost</th>
+                      <th scope="col" width="55%">Attack Cost</th>
                       <th scope="col">Economic Impact</th>
-                      <th scope="col">Formula</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -177,14 +180,11 @@
                             (click)="selectAttackCost(impact)">{{impact.attackCost.type | replace:'_':' ' | titlecase}}</a>
                         </th>
                         <td *ngIf="!impact.attackCostParams">
-                          {{impact.attackCost.type | replace:'_':' ' | titlecase}}
+                          <ng-container *ngIf="impact.attackCost.type.toString() !== 'COST_OF_IT_DOWNTIME'">{{impact.attackCost.type | replace:'_':' ' | titlecase}}</ng-container>
+                          <ng-container *ngIf="impact.attackCost.type.toString() === 'COST_OF_IT_DOWNTIME'">Cost of IT Downtime</ng-container>
                         </td>
                         <td>{{impact.attackCost.costs | currency:'EUR'}}
                         </td>
-                        <td *ngIf="impact.formula">
-                          {{impact.formula | replace:'_':' ' | titlecase}}
-                        </td>
-                        <td *ngIf="!impact.formula">-</td>
                       </tr>
                       <ng-container *ngIf="selectedImpact && selectedImpact.direct">
                         <tr *ngIf="selectedImpact.attackCost.id === impact.attackCost.id">
@@ -253,9 +253,8 @@
                 <table class="table" *ngIf="indirectImpactTable.length > 0">
                   <thead>
                     <tr>
-                      <th scope="col" width="30%">Attack Cost</th>
+                      <th scope="col" width="55%">Attack Cost</th>
                       <th scope="col">Economic Impact</th>
-                      <th scope="col">Formula</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -265,14 +264,11 @@
                             (click)="selectAttackCost(impact)">{{impact.attackCost.type | replace:'_':' ' | titlecase}}</a>
                         </th>
                         <td *ngIf="!impact.attackCostParams">
-                          {{impact.attackCost.type | replace:'_':' ' | titlecase}}
+                          <ng-container *ngIf="impact.attackCost.type.toString() !== 'COST_OF_IT_DOWNTIME'">{{impact.attackCost.type | replace:'_':' ' | titlecase}}</ng-container>
+                          <ng-container *ngIf="impact.attackCost.type.toString() === 'COST_OF_IT_DOWNTIME'">Cost of IT Downtime</ng-container>
                         </td>
                         <td>{{impact.attackCost.costs | currency:'EUR'}}
                         </td>
-                        <td *ngIf="impact.formula">
-                          {{impact.formula | replace:'_':' ' | titlecase}}
-                        </td>
-                        <td *ngIf="!impact.formula">-</td>
                       </tr>
                       <ng-container *ngIf="selectedImpact && !selectedImpact.direct">
                         <tr *ngIf="selectedImpact.attackCost.id === impact.attackCost.id">
@@ -336,8 +332,8 @@
     </div>
   </div>
   <div class="row">
-    <div class="col-md-3 offset-md-6">
-      <button type="submit" (click)="previousState()" class="btn btn-info">
+    <div class="col-md-12">
+      <button type="submit" (click)="previousState()" class="btn btn-info float-right">
         <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
       </button>
     </div>
