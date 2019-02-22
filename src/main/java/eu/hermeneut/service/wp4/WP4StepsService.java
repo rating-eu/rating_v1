@@ -1,4 +1,4 @@
-package eu.hermeneut.service;
+package eu.hermeneut.service.wp4;
 
 import eu.hermeneut.domain.wp4.MyAssetAttackChance;
 import eu.hermeneut.exceptions.NotFoundException;
