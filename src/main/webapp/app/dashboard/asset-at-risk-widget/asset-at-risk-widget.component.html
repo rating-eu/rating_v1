@@ -5,16 +5,13 @@
     <div class="x_panel" style="padding:0px !important;">
         <div class="x_title" style="padding:0px !important;">
             <h2 style="padding: 10px;">
-                <a [routerLink]="['/risk-management/risk-evaluation' ]">Assets at risk: Details</a>
+                <a href="javascript:void(0)" class="collapse-link" (click)="isCollapsed = !isCollapsed">Assets at risk: Details</a>
             </h2>
             <ul class="nav navbar-right panel_toolbox">
                 <li style="width: 24px; cursor: default"></li>
                 <li style="width: 24px; cursor: default"></li>
                 <li>
-                    <a href="javascript:void(0)" class="collapse-link" (click)="isCollapsed = !isCollapsed">
-                        <i *ngIf="!isCollapsed" class="fa fa-chevron-up"></i>
-                        <i *ngIf="isCollapsed" class="fa fa-chevron-down"></i>
-                    </a>
+                    <a [routerLink]="['/risk-management/risk-evaluation' ]"><i class="fa fa-link fa-lg" aria-hidden="true"></i></a>
                 </li>
             </ul>
             <div class="clearfix"></div>
@@ -62,17 +59,6 @@
                                                     (click)=" tableOrderBy('impact', 'TANGIBLE', true)"
                                                     class="fa fa-chevron-up" aria-hidden="true"></i>
                                             </th>
-                                            <th width="9%">Critical
-                                                <i *ngIf="!orderTangibleBy.critical"
-                                                    (click)=" tableOrderBy('critical', 'TANGIBLE', true)"
-                                                    class="fa fa-sort" aria-hidden="true"></i>
-                                                <i *ngIf="orderTangibleBy.critical && orderTangibleBy.type === 'desc'"
-                                                    (click)=" tableOrderBy('critical', 'TANGIBLE', false)"
-                                                    class="fa fa-chevron-down" aria-hidden="true"></i>
-                                                <i *ngIf="orderTangibleBy.critical && orderTangibleBy.type === 'asc'"
-                                                    (click)=" tableOrderBy('critical', 'TANGIBLE', true)"
-                                                    class="fa fa-chevron-up" aria-hidden="true"></i>
-                                            </th>
                                             <th width="11%">Likelihood
                                                 <i *ngIf="!orderTangibleBy.likelihood"
                                                     (click)=" tableOrderBy('likelihood', 'TANGIBLE', true)"
@@ -93,6 +79,17 @@
                                                     class="fa fa-chevron-down" aria-hidden="true"></i>
                                                 <i *ngIf="orderTangibleBy.vulnerability && orderTangibleBy.type === 'asc'"
                                                     (click)=" tableOrderBy('vulnerability', 'TANGIBLE', true)"
+                                                    class="fa fa-chevron-up" aria-hidden="true"></i>
+                                            </th>
+                                            <th width="9%">Critical
+                                                <i *ngIf="!orderTangibleBy.critical"
+                                                    (click)=" tableOrderBy('critical', 'TANGIBLE', true)"
+                                                    class="fa fa-sort" aria-hidden="true"></i>
+                                                <i *ngIf="orderTangibleBy.critical && orderTangibleBy.type === 'desc'"
+                                                    (click)=" tableOrderBy('critical', 'TANGIBLE', false)"
+                                                    class="fa fa-chevron-down" aria-hidden="true"></i>
+                                                <i *ngIf="orderTangibleBy.critical && orderTangibleBy.type === 'asc'"
+                                                    (click)=" tableOrderBy('critical', 'TANGIBLE', true)"
                                                     class="fa fa-chevron-up" aria-hidden="true"></i>
                                             </th>
                                             <th width="8%">Risk
@@ -128,9 +125,9 @@
                                                 </td>
                                                 <td>{{risk.asset.asset.description}}</td>
                                                 <td>{{risk.asset.impact}}</td>
-                                                <td>{{risk.critical}}</td>
                                                 <td>{{risk.likelihood}}</td>
                                                 <td>{{risk.vulnerability}}</td>
+                                                <td>{{risk.critical}}</td>
                                                 <td>{{risk.percentage/100 | percent}}</td>
                                                 <td>
                                                     <ng-container
@@ -195,17 +192,6 @@
                                                     (click)=" tableOrderBy('impact', 'INTANGIBLE', true)"
                                                     class="fa fa-chevron-up" aria-hidden="true"></i>
                                             </th>
-                                            <th width="9%">Critical
-                                                <i *ngIf="!orderIntangibleBy.critical"
-                                                    (click)=" tableOrderBy('critical', 'INTANGIBLE', true)"
-                                                    class="fa fa-sort" aria-hidden="true"></i>
-                                                <i *ngIf="orderIntangibleBy.critical && orderIntangibleBy.type === 'desc'"
-                                                    (click)=" tableOrderBy('critical', 'INTANGIBLE', false)"
-                                                    class="fa fa-chevron-down" aria-hidden="true"></i>
-                                                <i *ngIf="orderIntangibleBy.critical && orderIntangibleBy.type === 'asc'"
-                                                    (click)=" tableOrderBy('critical', 'INTANGIBLE', true)"
-                                                    class="fa fa-chevron-up" aria-hidden="true"></i>
-                                            </th>
                                             <th width="11%">Likelihood
                                                 <i *ngIf="!orderIntangibleBy.likelihood"
                                                     (click)=" tableOrderBy('likelihood', 'INTANGIBLE', true)"
@@ -226,6 +212,17 @@
                                                     class="fa fa-chevron-down" aria-hidden="true"></i>
                                                 <i *ngIf="orderIntangibleBy.vulnerability && orderIntangibleBy.type === 'asc'"
                                                     (click)=" tableOrderBy('vulnerability', 'INTANGIBLE', true)"
+                                                    class="fa fa-chevron-up" aria-hidden="true"></i>
+                                            </th>
+                                            <th width="9%">Critical
+                                                <i *ngIf="!orderIntangibleBy.critical"
+                                                    (click)=" tableOrderBy('critical', 'INTANGIBLE', true)"
+                                                    class="fa fa-sort" aria-hidden="true"></i>
+                                                <i *ngIf="orderIntangibleBy.critical && orderIntangibleBy.type === 'desc'"
+                                                    (click)=" tableOrderBy('critical', 'INTANGIBLE', false)"
+                                                    class="fa fa-chevron-down" aria-hidden="true"></i>
+                                                <i *ngIf="orderIntangibleBy.critical && orderIntangibleBy.type === 'asc'"
+                                                    (click)=" tableOrderBy('critical', 'INTANGIBLE', true)"
                                                     class="fa fa-chevron-up" aria-hidden="true"></i>
                                             </th>
                                             <th width="8%">Risk
@@ -257,13 +254,13 @@
                                                 <td>{{risk.asset.asset.assetcategory.name}}</td>
                                                 <td>
                                                     <a
-                                                        [routerLink]="['/asset-mgm', risk.asset.asset?.id ]">{{risk.asset?.asset.name}}</a>
+                                                        [routerLink]="['/risk-management/risk-details', risk.asset?.id ]">{{risk.asset?.asset.name}}</a>
                                                 </td>
                                                 <td>{{risk.asset.asset.description}}</td>
                                                 <td>{{risk.asset.impact}}</td>
-                                                <td>{{risk.critical}}</td>
                                                 <td>{{risk.likelihood}}</td>
                                                 <td>{{risk.vulnerability}}</td>
+                                                <td>{{risk.critical}}</td>
                                                 <td>{{risk.percentage/100 | percent}}</td>
                                                 <td>
                                                     <ng-container

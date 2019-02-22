@@ -16,12 +16,12 @@ export class OverallLikelihoodWidgetComponent implements OnInit {
   public isCollapsed = true;
   public type = 'bar';
   public legend = false;
-  public initialLabels: string[] = [];
-  public initialData: number[] = [];
-  public contextualLabels: string[] = [];
-  public contextualData: number[] = [];
-  public refinedLabels: string[] = [];
-  public refinedData: number[] = [];
+  // public initialLabels: string[] = [];
+  // public initialData: number[] = [];
+  // public contextualLabels: string[] = [];
+  // public contextualData: number[] = [];
+  // public refinedLabels: string[] = [];
+  // public refinedData: number[] = [];
   public color = {
     'backgroundColor': ['#ac6e6e', '#7aaa8b', '#779bc0', '#cccb71', '#8480bd', '#ee6055', '#60d394', '#aaf683', '#ffd97d', '#ff9b85', '#674770'],
     'hoverBackgroundColor': ['#ac6e6e', '#7aaa8b', '#779bc0', '#cccb71', '#8480bd', '#ee6055', '#60d394', '#aaf683', '#ffd97d', '#ff9b85', '#674770']
@@ -56,64 +56,64 @@ export class OverallLikelihoodWidgetComponent implements OnInit {
         this.results = res.body;
         if (this.results.initialVulnerability.size > 0) {
           let iIndex = 0;
+          const iLabels: string[] = [];
+          const iLocalData: number[] = [];
           this.results.initialVulnerability.forEach((item, key, map) => {
             const tIndex = _.findIndex(this.mySelf.threatagents, { id: key });
-            this.initialLabels.push(this.mySelf.threatagents[tIndex].name);
-            this.initialData.push(item);
+            iLabels.push(this.mySelf.threatagents[tIndex].name);
+            iLocalData.push(item);
             if (iIndex === map.size - 1) {
-              this.stackedLables = this.initialLabels;
+              this.stackedLables = iLabels;
               const iElem = {
                 label: 'Initial',
                 backgroundColor: '#ac6e6e',
-                data: this.initialData
+                data: iLocalData
               };
               this.data.push(iElem);
-              console.log('initial');
-              console.log(this.data);
             }
             iIndex++;
           });
         }
         if (this.results.contextualVulnerability.size > 0) {
           let cIndex = 0;
+          const cLabels: string[] = [];
+          const cLocalData: number[] = [];
           this.results.contextualVulnerability.forEach((item, key, map) => {
             const tIndex = _.findIndex(this.mySelf.threatagents, { id: key });
-            this.contextualLabels.push(this.mySelf.threatagents[tIndex].name);
-            this.contextualData.push(item);
+            cLabels.push(this.mySelf.threatagents[tIndex].name);
+            cLocalData.push(item);
             if (cIndex === map.size - 1) {
               if (this.stackedLables.length === 0) {
-                this.stackedLables = this.contextualLabels;
+                this.stackedLables = cLabels;
               }
               const cElem = {
                 label: 'Contextual',
                 backgroundColor: '#7aaa8b',
-                data: this.contextualData
+                data: cLocalData
               };
               this.data.push(cElem);
-              console.log('contextual');
-              console.log(this.data);
             }
             cIndex++;
           });
         }
         if (this.results.refinedVulnerability.size > 0) {
           let rIndex = 0;
+          const rLabels: string[] = [];
+          const rLocalData: number[] = [];
           this.results.refinedVulnerability.forEach((item, key, map) => {
             const tIndex = _.findIndex(this.mySelf.threatagents, { id: key });
-            this.refinedLabels.push(this.mySelf.threatagents[tIndex].name);
-            this.refinedData.push(item);
+            rLabels.push(this.mySelf.threatagents[tIndex].name);
+            rLocalData.push(item);
             if (rIndex === map.size - 1) {
               if (this.stackedLables.length === 0) {
-                this.stackedLables = this.refinedLabels;
+                this.stackedLables = rLabels;
               }
               const rElem = {
                 label: 'Refined',
                 backgroundColor: '#779bc0',
-                data: this.refinedData
+                data: rLocalData
               };
               this.data.push(rElem);
-              console.log('refined');
-              console.log(this.data);
             }
             rIndex++;
           });
@@ -128,12 +128,8 @@ export class OverallLikelihoodWidgetComponent implements OnInit {
   }
 
   private initDataForGraph() {
-    this.contextualData = [];
-    this.initialData = [];
-    this.refinedData = [];
-    this.initialLabels = [];
-    this.refinedLabels = [];
-    this.contextualLabels = [];
+    this.stackedLables = [];
+    this.data = [];
   }
 
 }
