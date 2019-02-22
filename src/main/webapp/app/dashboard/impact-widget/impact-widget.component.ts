@@ -63,7 +63,7 @@ export class ImpactWidgetComponent implements OnInit {
     this.impactService.getMyAssets(this.mySelf).toPromise().then((res) => {
       if (res && res.length > 0) {
         this.myAssets = res;
-        this.myAssets.forEach((value) => {
+        this.myAssets.forEach((value, counter, array) => {
           if (this.widgetElements.length === 0) {
             const element = {
               impact: value.impact,
@@ -90,6 +90,21 @@ export class ImpactWidgetComponent implements OnInit {
               };
               this.widgetElements.push(_.cloneDeep(element));
             }
+          }
+          if (counter === array.length - 1) {
+            for (let i = 1; i <= 5; i++) {
+              const iIndex = _.findIndex(this.widgetElements, { impact: i });
+              if (iIndex === -1) {
+                const emptyElement = {
+                  impact: i,
+                  economicValueMin: undefined,
+                  economicValueMax: undefined,
+                  assets: []
+                };
+                this.widgetElements.push(_.cloneDeep(emptyElement));
+              }
+            }
+            this.widgetElements = _.orderBy(this.widgetElements, ['impact'], ['desc']);
           }
         });
         this.loading = false;

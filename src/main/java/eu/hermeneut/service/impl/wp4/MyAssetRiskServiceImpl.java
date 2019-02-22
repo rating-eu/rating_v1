@@ -15,6 +15,7 @@ import eu.hermeneut.service.compact.AssetRiskService;
 import eu.hermeneut.service.wp4.MyAssetRiskService;
 import eu.hermeneut.utils.attackstrategy.ThreatAttackFilter;
 import eu.hermeneut.utils.threatagent.ThreatAgentComparator;
+import eu.hermeneut.utils.tuple.Triad;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -127,8 +128,14 @@ public class MyAssetRiskServiceImpl implements MyAssetRiskService, MaxValues {
 
                 int riskInteger = Math.round(risk);
 
-                int critical = Math.round(this.assetRiskService.getCritical(augmentedAttackStrategyMap, containers));
+                Triad<Float> likelihoodVUlnerabilityCritical = this.assetRiskService.getLikelihoodVulnerabilityCritical(augmentedAttackStrategyMap, containers);
 
+                float likelihood = likelihoodVUlnerabilityCritical.getA();
+                float vulnerability = likelihoodVUlnerabilityCritical.getB();
+                int critical = Math.round(this.assetRiskService.getLikelihoodVulnerabilityCritical(augmentedAttackStrategyMap, containers).getC());
+
+                myAssetRisk.setLikelihood(likelihood);
+                myAssetRisk.setVulnerability(vulnerability);
                 myAssetRisk.setRisk(riskInteger);
                 myAssetRisk.setCritical(critical);
             }

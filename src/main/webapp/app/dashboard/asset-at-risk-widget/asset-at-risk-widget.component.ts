@@ -8,28 +8,32 @@ import { SelfAssessmentMgmService } from './../../entities/self-assessment-mgm/s
 import { Component, OnInit } from '@angular/core';
 
 interface RiskPercentageElement {
-  asset: MyAssetMgm;
-  critical: number;
-  percentage: number;
+    asset: MyAssetMgm;
+    critical: number;
+    likelihood: number;
+    vulnerability: number;
+    percentage: number;
 }
 
 interface OrderBy {
-  category: boolean;
-  asset: boolean;
-  description: boolean;
-  impact: boolean;
-  critical: boolean;
-  risk: boolean;
-  type: string;
+    category: boolean;
+    asset: boolean;
+    description: boolean;
+    impact: boolean;
+    critical: boolean;
+    likelihood: boolean;
+    vulnerability: boolean;
+    risk: boolean;
+    type: string;
 }
 
 @Component({
-  selector: 'jhi-asset-at-risk-widget',
-  templateUrl: './asset-at-risk-widget.component.html',
-  styleUrls: ['asset-at-risk-widget.component.css']
+    selector: 'jhi-asset-at-risk-widget',
+    templateUrl: './asset-at-risk-widget.component.html',
+    styleUrls: ['asset-at-risk-widget.component.css']
 })
 export class AssetAtRiskWidgetComponent implements OnInit {
-  public loadingRiskLevel = false;
+    public loadingRiskLevel = false;
     public loadingAssetsAndAttacks = false;
     public isCollapsed = true;
     private mySelf: SelfAssessmentMgm;
@@ -83,6 +87,8 @@ export class AssetAtRiskWidgetComponent implements OnInit {
             description: false,
             impact: false,
             critical: false,
+            likelihood: false,
+            vulnerability: false,
             risk: false,
             type: 'desc'
         };
@@ -92,6 +98,8 @@ export class AssetAtRiskWidgetComponent implements OnInit {
             description: false,
             impact: false,
             critical: false,
+            likelihood: false,
+            vulnerability: false,
             risk: false,
             type: 'desc'
         };
@@ -103,41 +111,43 @@ export class AssetAtRiskWidgetComponent implements OnInit {
                 this.myAssetsAtRisk.forEach((myAsset) => {
                     this.riskMitigationMap.set(myAsset.id, myAsset.mitigations);
                     const risk: RiskPercentageElement = {
-                      asset: myAsset,
-                      critical: myAsset.critical,
-                      percentage: myAsset.risk
-                  };
-                  if (risk.asset.asset.assetcategory.type.toString() === 'TANGIBLE') {
-                      if (this.risksTangible.length === 0) {
-                          this.risksTangible.push(_.cloneDeep(risk));
-                      } else {
-                          const index = _.findIndex(this.risksTangible, (elem) => {
-                              return elem.asset.id === myAsset.id;
-                          });
-                          if (index !== -1) {
-                              this.risksTangible.splice(index, 1, _.cloneDeep(risk));
-                          } else {
-                              this.risksTangible.push(_.cloneDeep(risk));
-                          }
-                      }
-                      this.risksTangible = _.orderBy(this.risksTangible, ['percentage'], ['desc']);
-                      this.noRiskInMap = false;
-                  } else {
-                      if (this.risksIntangible.length === 0) {
-                          this.risksIntangible.push(_.cloneDeep(risk));
-                      } else {
-                          const index = _.findIndex(this.risksIntangible, (elem) => {
-                              return elem.asset.id === myAsset.id;
-                          });
-                          if (index !== -1) {
-                              this.risksIntangible.splice(index, 1, _.cloneDeep(risk));
-                          } else {
-                              this.risksIntangible.push(_.cloneDeep(risk));
-                          }
-                      }
-                      this.risksIntangible = _.orderBy(this.risksIntangible, ['percentage'], ['desc']);
-                      this.noRiskInMap = false;
-                  }
+                        asset: myAsset,
+                        likelihood: myAsset.likelihood,
+                        vulnerability: myAsset.vulnerability,
+                        critical: myAsset.critical,
+                        percentage: myAsset.risk
+                    };
+                    if (risk.asset.asset.assetcategory.type.toString() === 'TANGIBLE') {
+                        if (this.risksTangible.length === 0) {
+                            this.risksTangible.push(_.cloneDeep(risk));
+                        } else {
+                            const index = _.findIndex(this.risksTangible, (elem) => {
+                                return elem.asset.id === myAsset.id;
+                            });
+                            if (index !== -1) {
+                                this.risksTangible.splice(index, 1, _.cloneDeep(risk));
+                            } else {
+                                this.risksTangible.push(_.cloneDeep(risk));
+                            }
+                        }
+                        this.risksTangible = _.orderBy(this.risksTangible, ['percentage'], ['desc']);
+                        this.noRiskInMap = false;
+                    } else {
+                        if (this.risksIntangible.length === 0) {
+                            this.risksIntangible.push(_.cloneDeep(risk));
+                        } else {
+                            const index = _.findIndex(this.risksIntangible, (elem) => {
+                                return elem.asset.id === myAsset.id;
+                            });
+                            if (index !== -1) {
+                                this.risksIntangible.splice(index, 1, _.cloneDeep(risk));
+                            } else {
+                                this.risksIntangible.push(_.cloneDeep(risk));
+                            }
+                        }
+                        this.risksIntangible = _.orderBy(this.risksIntangible, ['percentage'], ['desc']);
+                        this.noRiskInMap = false;
+                    }
                 });
                 this.loadingAssetsAndAttacks = false;
             } else {
@@ -156,6 +166,8 @@ export class AssetAtRiskWidgetComponent implements OnInit {
             this.orderTangibleBy.description = false;
             this.orderTangibleBy.impact = false;
             this.orderTangibleBy.risk = false;
+            this.orderTangibleBy.likelihood = false;
+            this.orderTangibleBy.vulnerability = false;
             this.orderTangibleBy.type = 'desc';
         } else {
             this.orderIntangibleBy.asset = false;
@@ -164,6 +176,8 @@ export class AssetAtRiskWidgetComponent implements OnInit {
             this.orderIntangibleBy.description = false;
             this.orderIntangibleBy.impact = false;
             this.orderIntangibleBy.risk = false;
+            this.orderIntangibleBy.likelihood = false;
+            this.orderIntangibleBy.vulnerability = false;
             this.orderIntangibleBy.type = 'desc';
         }
     }
@@ -218,6 +232,24 @@ export class AssetAtRiskWidgetComponent implements OnInit {
                         this.risksTangible = _.orderBy(this.risksTangible, ['critical'], ['desc']);
                     } else {
                         this.risksTangible = _.orderBy(this.risksTangible, ['critical'], ['asc']);
+                    }
+                    break;
+                }
+                case ('likelihood'): {
+                    this.orderTangibleBy.likelihood = true;
+                    if (desc) {
+                        this.risksTangible = _.orderBy(this.risksTangible, ['likelihood'], ['desc']);
+                    } else {
+                        this.risksTangible = _.orderBy(this.risksTangible, ['likelihood'], ['asc']);
+                    }
+                    break;
+                }
+                case ('vulnerability'): {
+                    this.orderTangibleBy.vulnerability = true;
+                    if (desc) {
+                        this.risksTangible = _.orderBy(this.risksTangible, ['vulnerability'], ['desc']);
+                    } else {
+                        this.risksTangible = _.orderBy(this.risksTangible, ['vulnerability'], ['asc']);
                     }
                     break;
                 }
@@ -281,6 +313,24 @@ export class AssetAtRiskWidgetComponent implements OnInit {
                         this.risksIntangible = _.orderBy(this.risksIntangible, ['critical'], ['desc']);
                     } else {
                         this.risksIntangible = _.orderBy(this.risksIntangible, ['critical'], ['asc']);
+                    }
+                    break;
+                }
+                case ('likelihood'): {
+                    this.orderIntangibleBy.likelihood = true;
+                    if (desc) {
+                        this.risksIntangible = _.orderBy(this.risksIntangible, ['likelihood'], ['desc']);
+                    } else {
+                        this.risksIntangible = _.orderBy(this.risksIntangible, ['likelihood'], ['asc']);
+                    }
+                    break;
+                }
+                case ('vulnerability'): {
+                    this.orderIntangibleBy.vulnerability = true;
+                    if (desc) {
+                        this.risksIntangible = _.orderBy(this.risksIntangible, ['vulnerability'], ['desc']);
+                    } else {
+                        this.risksIntangible = _.orderBy(this.risksIntangible, ['vulnerability'], ['asc']);
                     }
                     break;
                 }

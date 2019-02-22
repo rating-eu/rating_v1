@@ -9,6 +9,9 @@
             },
             "riskMitigation": {
                 "title": "Attenuazione del rischio"
+            },
+            "riskDetails": {
+                "title": "Dettagli sul rischio"
             }
         }
     }

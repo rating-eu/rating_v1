@@ -21,6 +21,15 @@
       <div class="clearfix"></div>
     </div>
     <div class="table-responsive x_content" style="padding:0px !important;" [ngbCollapse]="isCollapsed">
+        <div class="col-md-12">
+            <div style="display: block" *ngIf="data.length > 0">
+              <canvas baseChart [datasets]="data" [labels]="stackedLables" [chartType]="type" [legend]="legend" [options]="options"></canvas>
+            </div>
+            <div style="display: block" *ngIf="data.length === 0" class="text-center">
+              <p>No data available, please complete the relative questionnaire!</p>
+            </div>
+          </div>
+      <!--
       <div class="col-md-4">
         <h4 class="text-center">Initial</h4>
         <div style="display: block" *ngIf="initialData.length > 0">
@@ -49,6 +58,7 @@
           <p>No data available, please contact your external auditor!</p>
         </div>
       </div>
+      -->
     </div>
   </div>
 </div>

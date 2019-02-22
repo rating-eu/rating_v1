@@ -7,7 +7,7 @@ import java.util.List;
 
 public class AttackCostFormula {
     private AttackCost attackCost;
-    private Boolean isDirect;
+    private Boolean direct;
     private List<AttackCostParam> attackCostParams;
     private String formula;
 
@@ -19,12 +19,12 @@ public class AttackCostFormula {
         this.attackCost = attackCost;
     }
 
-    public boolean isDirect() {
-        return isDirect;
+    public boolean getDirect() {
+        return direct;
     }
 
     public void setDirect(boolean direct) {
-        isDirect = direct;
+        this.direct = direct;
     }
 
     public List<AttackCostParam> getAttackCostParams() {
