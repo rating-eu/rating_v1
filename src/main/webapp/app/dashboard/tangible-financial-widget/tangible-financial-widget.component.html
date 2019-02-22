@@ -4,15 +4,14 @@
 <div class="container" *ngIf="!loading">
     <div class="x_panel" style="padding:0px !important;">
         <div class="x_title" style="padding:0px !important;">
-            <h2 style="padding: 10px;"><a [routerLink]="['/impact-evaluation']">Economic Values for Tangible Assets</a>
+            <h2 style="padding: 10px;"><a href="javascript:void(0)" class="collapse-link" (click)="isCollapsed = !isCollapsed">Economic Values for Tangible Assets</a>
             </h2>
             <ul class="nav navbar-right panel_toolbox">
                 <li style="width: 24px; cursor: default"></li>
                 <li style="width: 24px; cursor: default"></li>
                 <li>
-                    <a href="javascript:void(0)" class="collapse-link" (click)="isCollapsed = !isCollapsed">
-                        <i *ngIf="!isCollapsed" class="fa fa-chevron-up"></i>
-                        <i *ngIf="isCollapsed" class="fa fa-chevron-down"></i>
+                    <a [routerLink]="['/impact-evaluation']">
+                        <i class="fa fa-link fa-lg" aria-hidden="true"></i>
                     </a>
                 </li>
             </ul>

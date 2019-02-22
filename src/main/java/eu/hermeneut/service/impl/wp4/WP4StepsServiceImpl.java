@@ -1,4 +1,4 @@
-package eu.hermeneut.service.impl;
+package eu.hermeneut.service.impl.wp4;
 
 import eu.hermeneut.domain.*;
 import eu.hermeneut.domain.attackmap.AugmentedAttackStrategy;
@@ -6,6 +6,7 @@ import eu.hermeneut.domain.wp4.MyAssetAttackChance;
 import eu.hermeneut.exceptions.NotFoundException;
 import eu.hermeneut.service.*;
 import eu.hermeneut.service.attackmap.AugmentedAttackStrategyService;
+import eu.hermeneut.service.wp4.WP4StepsService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -107,6 +108,9 @@ public class WP4StepsServiceImpl implements WP4StepsService {
             } else if (augmentedAttackStrategy.getContextualLikelihood() > 0F) {
                 attackChance.setLikelihood(augmentedAttackStrategy.getContextualLikelihood());
                 attackChance.setVulnerability(augmentedAttackStrategy.getContextualVulnerability());
+            } else if (augmentedAttackStrategy.getInitialLikelihood() > 0F) {
+                attackChance.setLikelihood(augmentedAttackStrategy.getInitialLikelihood());
+                attackChance.setVulnerability(augmentedAttackStrategy.getInitialLikelihood());
             }
 
             float critical = attackChance.getLikelihood() * attackChance.getVulnerability();

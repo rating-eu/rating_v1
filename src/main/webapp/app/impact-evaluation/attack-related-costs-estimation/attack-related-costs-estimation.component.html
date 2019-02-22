@@ -53,14 +53,16 @@
                     <i *ngIf="evaluatingCost.type === cost.type" class="fa fa-circle-o-notch fa-spin fa-lg fa-fw"></i>
                   </ng-container>
 
-                  {{cost.type | replace:'_':' ' | titlecase}}
+                  <ng-container *ngIf="cost.type.toString() !== 'COST_OF_IT_DOWNTIME'">{{cost.type | replace:'_':' ' | titlecase}}</ng-container>
+                  <ng-container *ngIf="cost.type.toString() === 'COST_OF_IT_DOWNTIME'">Cost of IT Downtime</ng-container>
                 </a>
               </ng-container>
             </div>
           </div>
           <div class="col-md-8" *ngIf="selectedCost">
             <div class="row">
-              <h5>{{selectedCost.type | replace:'_':' ' | titlecase}}</h5>
+              <h5 *ngIf="selectedCost.type.toString() !== 'COST_OF_IT_DOWNTIME'">{{selectedCost.type | replace:'_':' ' | titlecase}}</h5>
+              <h5 *ngIf="selectedCost.type.toString() === 'COST_OF_IT_DOWNTIME'">Cost of IT Downtime</h5>
             </div>
             <div class="row" id="evaluation">
               <ng-container [ngSwitch]="selectedCost.type">
