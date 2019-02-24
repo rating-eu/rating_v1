@@ -26,11 +26,11 @@ interface OrderBy {
 }
 
 @Component({
-  selector: 'jhi-most-dangerous-assets-widget',
-  templateUrl: './most-dangerous-assets-widget.component.html',
-  styleUrls: ['most-dangerous-assets-widget.component.css']
+  selector: 'jhi-most-vulnerable-assets-widget',
+  templateUrl: './most-vulnerable-assets-widget.component.html',
+  styleUrls: ['most-vulnerable-assets-widget.component.css']
 })
-export class MostDangerousAssetsWidgetComponent implements OnInit {
+export class MostVulnerableAssetsWidgetComponent implements OnInit {
   public isCollapsed = true;
   public loading = false;
   public loadingAttacksTable = false;

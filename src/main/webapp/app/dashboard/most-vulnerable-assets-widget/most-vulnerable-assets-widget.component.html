@@ -1,0 +1,336 @@
+<ng-container class="container" *ngIf="loading">
+    <div class="loader"></div>
+</ng-container>
+<ng-container class="container-fluid" *ngIf="!loading">
+    <div class="x_panel" style="padding:0px !important;">
+        <div class="x_title" style="padding:0px !important;">
+            <h2 style="padding: 10px;">
+                <a href="javascript:void(0)" class="collapse-link" (click)="isCollapsed = !isCollapsed"
+                   *ngIf="mdawTangibleEntities.length!==0 || mdawIntangibleEntities.length !== 0">Most Vulnerable
+                    Assets</a>
+                <small>based on 0 to 5 scale</small>
+            </h2>
+            <ul class="nav navbar-right panel_toolbox">
+                <li style="width: 24px; cursor: default"></li>
+                <li style="width: 24px; cursor: default"></li>
+                <li>
+                    <a [routerLink]="['/results']">
+                        <i class="fa fa-link fa-lg" aria-hidden="true"></i>
+                    </a>
+                </li>
+            </ul>
+            <div class="clearfix"></div>
+        </div>
+        <div class="table-responsive x_content" style="padding:0px !important;" [ngbCollapse]="isCollapsed">
+            <ngb-tabset>
+                <ngb-tab title="Tangible">
+                    <ng-template ngbTabContent>
+                        <ng-container *ngIf="mdawTangibleEntities.length > 0">
+                            <div class="table-responsive table-hover-no-pointer">
+                                <table class="table table-striped">
+                                    <thead>
+                                    <tr>
+                                        <th style="width: 20%">Category
+                                            <i *ngIf="!orderTangibleBy.category"
+                                               (click)=" tableOrderBy('category', 'TANGIBLE', true)"
+                                               class="fa fa-sort" aria-hidden="true"></i>
+                                            <i *ngIf="orderTangibleBy.category && orderTangibleBy.type === 'desc'"
+                                               (click)=" tableOrderBy('category', 'TANGIBLE', false)"
+                                               class="fa fa-chevron-down" aria-hidden="true"></i>
+                                            <i *ngIf="orderTangibleBy.category && orderTangibleBy.type === 'asc'"
+                                               (click)=" tableOrderBy('category', 'TANGIBLE', true)"
+                                               class="fa fa-chevron-up" aria-hidden="true"></i>
+                                        </th>
+                                        <th style="width: 20%">Asset
+                                            <i *ngIf="!orderTangibleBy.asset"
+                                               (click)=" tableOrderBy('asset', 'TANGIBLE', true)"
+                                               class="fa fa-sort" aria-hidden="true"></i>
+                                            <i *ngIf="orderTangibleBy.asset && orderTangibleBy.type === 'desc'"
+                                               (click)=" tableOrderBy('asset', 'TANGIBLE', false)"
+                                               class="fa fa-chevron-down" aria-hidden="true"></i>
+                                            <i *ngIf="orderTangibleBy.asset && orderTangibleBy.type === 'asc'"
+                                               (click)=" tableOrderBy('asset', 'TANGIBLE', true)"
+                                               class="fa fa-chevron-up" aria-hidden="true"></i>
+                                        </th>
+                                        <th>Attack Strategy
+                                            <i *ngIf="!orderTangibleBy.attackStrategy"
+                                               (click)=" tableOrderBy('attack_strategy', 'TANGIBLE', true)"
+                                               class="fa fa-sort" aria-hidden="true"></i>
+                                            <i *ngIf="orderTangibleBy.attackStrategy && orderTangibleBy.type === 'desc'"
+                                               (click)=" tableOrderBy('attack_strategy', 'TANGIBLE', false)"
+                                               class="fa fa-chevron-down" aria-hidden="true"></i>
+                                            <i *ngIf="orderTangibleBy.attackStrategy && orderTangibleBy.type === 'asc'"
+                                               (click)=" tableOrderBy('attack_strategy', 'TANGIBLE', true)"
+                                               class="fa fa-chevron-up" aria-hidden="true"></i>
+                                        </th>
+                                        <th>Likelihood
+                                            <i *ngIf="!orderTangibleBy.likelihood"
+                                               (click)=" tableOrderBy('likelihood', 'TANGIBLE', true)"
+                                               class="fa fa-sort" aria-hidden="true"></i>
+                                            <i *ngIf="orderTangibleBy.likelihood && orderTangibleBy.type === 'desc'"
+                                               (click)=" tableOrderBy('likelihood', 'TANGIBLE', false)"
+                                               class="fa fa-chevron-down" aria-hidden="true"></i>
+                                            <i *ngIf="orderTangibleBy.likelihood && orderTangibleBy.type === 'asc'"
+                                               (click)=" tableOrderBy('likelihood', 'TANGIBLE', true)"
+                                               class="fa fa-chevron-up" aria-hidden="true"></i>
+                                        </th>
+                                        <th>Vulnerability
+                                            <i *ngIf="!orderTangibleBy.vulnerability"
+                                               (click)=" tableOrderBy('vulnerability', 'TANGIBLE', true)"
+                                               class="fa fa-sort" aria-hidden="true"></i>
+                                            <i *ngIf="orderTangibleBy.vulnerability && orderTangibleBy.type === 'desc'"
+                                               (click)=" tableOrderBy('vulnerability', 'TANGIBLE', false)"
+                                               class="fa fa-chevron-down" aria-hidden="true"></i>
+                                            <i *ngIf="orderTangibleBy.vulnerability && orderTangibleBy.type === 'asc'"
+                                               (click)=" tableOrderBy('vulnerability', 'TANGIBLE', true)"
+                                               class="fa fa-chevron-up" aria-hidden="true"></i>
+                                        </th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <ng-container
+                                        *ngFor="let item of mdawTangibleEntities | paginate: tangibleAssetsPaginator">
+                                        <tr>
+                                            <td>{{item.asset.asset.assetcategory.name}}</td>
+                                            <th scope="row"><a href="javascript:void(0)"
+                                                               (click)="selectAsset(item.asset)">{{item.asset.asset.name}}</a>
+                                            </th>
+                                            <td placement="top" container="body"
+                                                ngbTooltip="Click on Asset name for more details">
+                                                {{item.mostDangerousAttack}}
+                                                and other {{item.howManyAttacks}} attack strategies
+                                            </td>
+                                            <td>{{item.mostDangerousAttackValue.likelihood | number : '1.1-2'}}</td>
+                                            <td *ngIf="item.mostDangerousAttackValue.vulnerability !== undefined">
+                                                {{item.mostDangerousAttackValue.vulnerability | number : '1.1-2'}}
+                                            </td>
+                                            <td *ngIf="item.mostDangerousAttackValue.vulnerability === undefined">-
+                                            </td>
+                                        </tr>
+                                        <ng-container *ngIf="selectedAsset">
+                                            <tr *ngIf="selectedAsset.asset.id === item.asset.asset.id">
+                                                <td colspan="4">
+                                                    <ng-container *ngIf="loadingAttacksTable">
+                                                        <div class="loader"></div>
+                                                    </ng-container>
+                                                    <table *ngIf="!loadingAttacksTable" class="table table-striped">
+                                                        <thead>
+                                                        <tr>
+                                                            <th>Attack Strategy</th>
+                                                            <th>Likelihood</th>
+                                                            <th>Vulnerability</th>
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                        <tr
+                                                            *ngFor="let attack of selectedAttacks | paginate: attacksPaginator">
+                                                            <td>{{attack.name}}</td>
+                                                            <td *ngIf="attack.refinedLikelihood">{{attack.refinedLikelihood |
+                                                                number : '1.1-2'}}</td>
+                                                            <td
+                                                                *ngIf="attack.refinedLikelihood===undefined && attack.contextualLikelihood!==undefined">{{attack.contextualLikelihood
+                                                                | number : '1.1-2'}}</td>
+                                                            <td
+                                                                *ngIf="attack.refinedLikelihood===undefined && attack.contextualLikelihood===undefined && attack.initialLikelihood!==undefined">{{attack.initialLikelihood
+                                                                | number : '1.1-2'}}</td>
+                                                            <td
+                                                                *ngIf="attack.refinedLikelihood===undefined && attack.contextualLikelihood===undefined && attack.initialLikelihood===undefined">
+                                                                -
+                                                            </td>
+                                                            <td *ngIf="attack.refinedVulnerability!==undefined">{{attack.refinedVulnerability
+                                                                | number : '1.1-2'}}</td>
+                                                            <td
+                                                                *ngIf="attack.refinedVulnerability===undefined && attack.contextualVulnerability!==undefined">{{attack.contextualVulnerability
+                                                                | number : '1.1-2'}}</td>
+                                                            <td
+                                                                *ngIf="attack.refinedVulnerability===undefined && attack.contextualVulnerability===undefined">
+                                                                -
+                                                            </td>
+                                                        </tr>
+                                                        </tbody>
+                                                    </table>
+                                                    <div class="text-center">
+                                                        <pagination-controls
+                                                            (pageChange)="onAttacksPageChange($event)"
+                                                            [id]="attacksPaginator.id"></pagination-controls>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </ng-container>
+                                    </ng-container>
+                                    </tbody>
+                                </table>
+                                <div class="text-center">
+                                    <pagination-controls (pageChange)="onTangibleAssetsPageChange($event)"
+                                                         [id]="tangibleAssetsPaginator.id"></pagination-controls>
+                                </div>
+                            </div>
+                        </ng-container>
+                        <div *ngIf="mdawTangibleEntities.length===0" class="text-center">
+                            No Assets counted or no questionnaire was complited
+                        </div>
+                    </ng-template>
+                </ngb-tab>
+                <ngb-tab title="Intangible">
+                    <ng-template ngbTabContent>
+                        <ng-container *ngIf="mdawIntangibleEntities.length > 0">
+                            <div class="table-responsive table-hover-no-pointer">
+                                <table class="table table-striped">
+                                    <thead>
+                                    <tr>
+                                        <th style="width: 20%">Category
+                                            <i *ngIf="!orderIntangibleBy.category"
+                                               (click)=" tableOrderBy('category', 'INTANGIBLE', true)"
+                                               class="fa fa-sort" aria-hidden="true"></i>
+                                            <i *ngIf="orderIntangibleBy.category && orderIntangibleBy.type === 'desc'"
+                                               (click)=" tableOrderBy('category', 'INTANGIBLE', false)"
+                                               class="fa fa-chevron-down" aria-hidden="true"></i>
+                                            <i *ngIf="orderIntangibleBy.category && orderIntangibleBy.type === 'asc'"
+                                               (click)=" tableOrderBy('category', 'INTANGIBLE', true)"
+                                               class="fa fa-chevron-up" aria-hidden="true"></i>
+                                        </th>
+                                        <th style="width: 20%">Asset
+                                            <i *ngIf="!orderIntangibleBy.asset"
+                                               (click)=" tableOrderBy('asset', 'INTANGIBLE', true)"
+                                               class="fa fa-sort" aria-hidden="true"></i>
+                                            <i *ngIf="orderIntangibleBy.asset && orderIntangibleBy.type === 'desc'"
+                                               (click)=" tableOrderBy('asset', 'INTANGIBLE', false)"
+                                               class="fa fa-chevron-down" aria-hidden="true"></i>
+                                            <i *ngIf="orderIntangibleBy.asset && orderIntangibleBy.type === 'asc'"
+                                               (click)=" tableOrderBy('asset', 'INTANGIBLE', true)"
+                                               class="fa fa-chevron-up" aria-hidden="true"></i>
+                                        </th>
+                                        <th>Attack Strategy
+                                            <i *ngIf="!orderIntangibleBy.attackStrategy"
+                                               (click)=" tableOrderBy('attack_strategy', 'INTANGIBLE', true)"
+                                               class="fa fa-sort" aria-hidden="true"></i>
+                                            <i *ngIf="orderIntangibleBy.attackStrategy && orderIntangibleBy.type === 'desc'"
+                                               (click)=" tableOrderBy('attack_strategy', 'INTANGIBLE', false)"
+                                               class="fa fa-chevron-down" aria-hidden="true"></i>
+                                            <i *ngIf="orderIntangibleBy.attackStrategy && orderIntangibleBy.type === 'asc'"
+                                               (click)=" tableOrderBy('attack_strategy', 'INTANGIBLE', true)"
+                                               class="fa fa-chevron-up" aria-hidden="true"></i>
+                                        </th>
+                                        <th>Likelihood
+                                            <i *ngIf="!orderIntangibleBy.likelihood"
+                                               (click)=" tableOrderBy('likelihood', 'INTANGIBLE', true)"
+                                               class="fa fa-sort" aria-hidden="true"></i>
+                                            <i *ngIf="orderIntangibleBy.likelihood && orderIntangibleBy.type === 'desc'"
+                                               (click)=" tableOrderBy('likelihood', 'INTANGIBLE', false)"
+                                               class="fa fa-chevron-down" aria-hidden="true"></i>
+                                            <i *ngIf="orderIntangibleBy.likelihood && orderIntangibleBy.type === 'asc'"
+                                               (click)=" tableOrderBy('likelihood', 'INTANGIBLE', true)"
+                                               class="fa fa-chevron-up" aria-hidden="true"></i>
+                                        </th>
+                                        <th>Vulnerability
+                                            <i *ngIf="!orderIntangibleBy.vulnerability"
+                                               (click)=" tableOrderBy('vulnerability', 'INTANGIBLE', true)"
+                                               class="fa fa-sort" aria-hidden="true"></i>
+                                            <i *ngIf="orderIntangibleBy.vulnerability && orderIntangibleBy.type === 'desc'"
+                                               (click)=" tableOrderBy('vulnerability', 'INTANGIBLE', false)"
+                                               class="fa fa-chevron-down" aria-hidden="true"></i>
+                                            <i *ngIf="orderIntangibleBy.vulnerability && orderIntangibleBy.type === 'asc'"
+                                               (click)=" tableOrderBy('vulnerability', 'INTANGIBLE', true)"
+                                               class="fa fa-chevron-up" aria-hidden="true"></i>
+                                        </th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <ng-container
+                                        *ngFor="let item of mdawIntangibleEntities | paginate: intangibleAssetsPaginator">
+                                        <tr>
+                                            <td>{{item.asset.asset.assetcategory.name}}</td>
+                                            <th scope="row"><a href="javascript:void(0)"
+                                                               (click)="selectAsset(item.asset)">{{item.asset.asset.name}}</a>
+                                            </th>
+                                            <td placement="top" container="body"
+                                                ngbTooltip="Click on Asset name for more details">
+                                                {{item.mostDangerousAttack}}
+                                                and other {{item.howManyAttacks}} attack strategies
+                                            </td>
+                                            <td>{{item.mostDangerousAttackValue.likelihood | number : '1.1-2'}}</td>
+                                            <td *ngIf="item.mostDangerousAttackValue.vulnerability !== undefined">
+                                                {{item.mostDangerousAttackValue.vulnerability | number : '1.1-2'}}
+                                            </td>
+                                            <td *ngIf="item.mostDangerousAttackValue.vulnerability === undefined">-
+                                            </td>
+                                        </tr>
+                                        <ng-container *ngIf="selectedAsset">
+                                            <tr *ngIf="selectedAsset.asset.id === item.asset.asset.id">
+                                                <td colspan="4">
+                                                    <ng-container *ngIf="loadingAttacksTable">
+                                                        <div class="loader"></div>
+                                                    </ng-container>
+                                                    <table *ngIf="!loadingAttacksTable" class="table table-striped">
+                                                        <thead>
+                                                        <tr>
+                                                            <th>Attack Strategy</th>
+                                                            <th>Likelihood</th>
+                                                            <th>Vulnerability</th>
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                        <tr
+                                                            *ngFor="let attack of selectedAttacks | paginate: attacksPaginator">
+                                                            <td>{{attack.name}}</td>
+                                                            <td *ngIf="attack.refinedLikelihood">
+                                                                {{attack.refinedLikelihood |
+                                                                number : '1.1-2'}}
+                                                            </td>
+                                                            <td
+                                                                *ngIf="!attack.refinedLikelihood && attack.contextualLikelihood">
+                                                                {{attack.contextualLikelihood
+                                                                | number : '1.1-2'}}
+                                                            </td>
+                                                            <td
+                                                                *ngIf="!attack.refinedLikelihood && !attack.contextualLikelihood && attack.initialLikelihood">
+                                                                {{attack.initialLikelihood
+                                                                | number : '1.1-2'}}
+                                                            </td>
+                                                            <td
+                                                                *ngIf="!attack.refinedLikelihood && !attack.contextualLikelihood && !attack.initialLikelihood">
+                                                                -
+                                                            </td>
+                                                            <td *ngIf="attack.refinedVulnerability">
+                                                                {{attack.refinedVulnerability
+                                                                | number : '1.1-2'}}
+                                                            </td>
+                                                            <td
+                                                                *ngIf="!attack.refinedVulnerability && attack.contextualVulnerability">
+                                                                {{attack.contextualVulnerability
+                                                                | number : '1.1-2'}}
+                                                            </td>
+                                                            <td
+                                                                *ngIf="!attack.refinedVulnerability && !attack.contextualVulnerability">
+                                                                -
+                                                            </td>
+                                                        </tr>
+                                                        </tbody>
+                                                    </table>
+                                                    <div class="text-center">
+                                                        <pagination-controls
+                                                            (pageChange)="onAttacksPageChange($event)"
+                                                            [id]="attacksPaginator.id"></pagination-controls>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </ng-container>
+                                    </ng-container>
+                                    </tbody>
+                                </table>
+                                <div class="text-center">
+                                    <pagination-controls (pageChange)="onIntangibleAssetsPageChange($event)"
+                                                         [id]="intangibleAssetsPaginator.id"></pagination-controls>
+                                </div>
+                            </div>
+                        </ng-container>
+                        <div *ngIf="mdawIntangibleEntities.length===0" class="text-center">
+                            No Assets counted or no questionnaire was complited
+                        </div>
+                    </ng-template>
+                </ngb-tab>
+            </ngb-tabset>
+
+        </div>
+    </div>
+</ng-container>

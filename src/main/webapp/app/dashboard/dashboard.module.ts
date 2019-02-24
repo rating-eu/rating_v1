@@ -6,7 +6,6 @@ import {CompanyWidgetComponent} from './company-widget/company-widget.component'
 import {AssetWidgetComponent} from './asset-widget/asset-widget.component';
 import {ThreatAgentsWidgetComponent} from './threat-agents-widget/threat-agents-widget.component';
 import {AttackStrategiesWidgetComponent} from './attack-strategies-widget/attack-strategies-widget.component';
-import {MostDangerousAssetsWidgetComponent} from './most-dangerous-assets-widget/most-dangerous-assets-widget.component';
 import {OverallLikelihoodWidgetComponent} from './overall-likelihood-widget/overall-likelihood-widget.component';
 import {MostDangerousThreatAgentsWidgetComponent} from './most-dangerous-threat-agents-widget/most-dangerous-threat-agents-widget.component';
 import {AttackMapWidgetComponent} from './attack-map-widget/attack-map-widget.component';
@@ -23,28 +22,29 @@ import {JhiEventManager, JhiLanguageService} from 'ng-jhipster';
 import {NotificationInterceptor} from '../blocks/interceptor/notification.interceptor';
 import {DashboardUtilsService} from './dashboard-utils.service';
 import {DashboardService} from './dashboard.service';
-import { IdentifyAssetUtilService } from '../identify-assets/identify-asset.util.service';
-import { RiskManagementService } from '../risk-management/risk-management.service';
-import { MaterialModule } from '../material/material.module';
-import { AttackMapService } from '../evaluate-weakness/attack-map.service';
-import { SelfAssessmentMgmService } from '../entities/self-assessment-mgm';
-import { LevelMgmService } from '../entities/level-mgm';
-import { PhaseMgmService } from '../entities/phase-mgm';
-import { NgxPaginationModule } from 'ngx-pagination';
-import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
-import { ResultsService } from '../results/results.service';
-import { ChartsModule } from 'ng2-charts';
-import { ImpactEvaluationService } from '../impact-evaluation/impact-evaluation.service';
-import { PopUpService } from '../shared/pop-up-services/pop-up.service';
-import { StepInfoWidgetComponent } from './step-info-widget/step-info-widget.component';
-import { HermeneutAttackStrategyMgmModule } from '../entities/attack-strategy-mgm/attack-strategy-mgm.module';
-import { AssetAtRiskWidgetComponent } from './asset-at-risk-widget/asset-at-risk-widget.component';
-import { EbitsWidgetComponent } from './ebits-widget/ebits-widget.component';
-import { IntangibleFinancialWidgetComponent } from './intangible-financial-widget/intangible-financial-widget.component';
-import { ImpactWidgetComponent } from './impact-widget/impact-widget.component';
-import { FinancialValueWidgetComponent } from './financial-value-widget/financial-value-widget.component';
-import { CustomersWidgetComponent } from './customers-widget/customers-widget.component';
-import { RiskSquareWidgetComponent } from './risk-square-widget/risk-square-widget.component';
+import {IdentifyAssetUtilService} from '../identify-assets/identify-asset.util.service';
+import {RiskManagementService} from '../risk-management/risk-management.service';
+import {MaterialModule} from '../material/material.module';
+import {AttackMapService} from '../evaluate-weakness/attack-map.service';
+import {SelfAssessmentMgmService} from '../entities/self-assessment-mgm';
+import {LevelMgmService} from '../entities/level-mgm';
+import {PhaseMgmService} from '../entities/phase-mgm';
+import {NgxPaginationModule} from 'ngx-pagination';
+import {NgbCollapseModule} from '@ng-bootstrap/ng-bootstrap';
+import {ResultsService} from '../results/results.service';
+import {ChartsModule} from 'ng2-charts';
+import {ImpactEvaluationService} from '../impact-evaluation/impact-evaluation.service';
+import {PopUpService} from '../shared/pop-up-services/pop-up.service';
+import {StepInfoWidgetComponent} from './step-info-widget/step-info-widget.component';
+import {HermeneutAttackStrategyMgmModule} from '../entities/attack-strategy-mgm/attack-strategy-mgm.module';
+import {AssetAtRiskWidgetComponent} from './asset-at-risk-widget/asset-at-risk-widget.component';
+import {EbitsWidgetComponent} from './ebits-widget/ebits-widget.component';
+import {IntangibleFinancialWidgetComponent} from './intangible-financial-widget/intangible-financial-widget.component';
+import {ImpactWidgetComponent} from './impact-widget/impact-widget.component';
+import {FinancialValueWidgetComponent} from './financial-value-widget/financial-value-widget.component';
+import {CustomersWidgetComponent} from './customers-widget/customers-widget.component';
+import {RiskSquareWidgetComponent} from './risk-square-widget/risk-square-widget.component';
+import {MostVulnerableAssetsWidgetComponent} from './most-vulnerable-assets-widget/most-vulnerable-assets-widget.component';
 
 @NgModule({
     imports: [
@@ -62,7 +62,7 @@ import { RiskSquareWidgetComponent } from './risk-square-widget/risk-square-widg
         AssetWidgetComponent,
         ThreatAgentsWidgetComponent,
         AttackStrategiesWidgetComponent,
-        MostDangerousAssetsWidgetComponent,
+        MostVulnerableAssetsWidgetComponent,
         OverallLikelihoodWidgetComponent,
         MostDangerousThreatAgentsWidgetComponent,
         AttackMapWidgetComponent,
