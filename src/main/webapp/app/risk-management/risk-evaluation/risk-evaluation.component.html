@@ -93,17 +93,6 @@
                                                         class="fa fa-chevron-up" aria-hidden="true"></i>
                                                 </th>
                                                 <th width="35%">Description</th>
-                                                <th width="9%">Impact
-                                                    <i *ngIf="!orderTangibleBy.impact"
-                                                        (click)=" tableOrderBy('impact', 'TANGIBLE', true)"
-                                                        class="fa fa-sort" aria-hidden="true"></i>
-                                                    <i *ngIf="orderTangibleBy.impact && orderTangibleBy.type === 'desc'"
-                                                        (click)=" tableOrderBy('impact', 'TANGIBLE', false)"
-                                                        class="fa fa-chevron-down" aria-hidden="true"></i>
-                                                    <i *ngIf="orderTangibleBy.impact && orderTangibleBy.type === 'asc'"
-                                                        (click)=" tableOrderBy('impact', 'TANGIBLE', true)"
-                                                        class="fa fa-chevron-up" aria-hidden="true"></i>
-                                                </th>
                                                 <th width="11%">Likelihood
                                                     <i *ngIf="!orderTangibleBy.likelihood"
                                                         (click)=" tableOrderBy('likelihood', 'TANGIBLE', true)"
@@ -137,6 +126,17 @@
                                                         (click)=" tableOrderBy('critical', 'TANGIBLE', true)"
                                                         class="fa fa-chevron-up" aria-hidden="true"></i>
                                                 </th>
+                                                <th width="9%">Impact
+                                                    <i *ngIf="!orderTangibleBy.impact"
+                                                       (click)=" tableOrderBy('impact', 'TANGIBLE', true)"
+                                                       class="fa fa-sort" aria-hidden="true"></i>
+                                                    <i *ngIf="orderTangibleBy.impact && orderTangibleBy.type === 'desc'"
+                                                       (click)=" tableOrderBy('impact', 'TANGIBLE', false)"
+                                                       class="fa fa-chevron-down" aria-hidden="true"></i>
+                                                    <i *ngIf="orderTangibleBy.impact && orderTangibleBy.type === 'asc'"
+                                                       (click)=" tableOrderBy('impact', 'TANGIBLE', true)"
+                                                       class="fa fa-chevron-up" aria-hidden="true"></i>
+                                                </th>
                                                 <th width="8%">Risk
                                                     <i *ngIf="!orderTangibleBy.risk"
                                                         (click)=" tableOrderBy('risk', 'TANGIBLE', true)"
@@ -169,10 +169,10 @@
                                                             [routerLink]="['/risk-management/risk-details', risk.asset?.id ]">{{risk.asset?.asset.name}}</a>
                                                     </td>
                                                     <td>{{risk.asset.asset.description}}</td>
-                                                    <td>{{risk.asset.impact}}</td>
                                                     <td>{{risk.likelihood}}</td>
                                                     <td>{{risk.vulnerability}}</td>
                                                     <td>{{risk.critical}}</td>
+                                                    <td>{{risk.asset.impact}}</td>
                                                     <td>{{risk.percentage/100 | percent}}</td>
                                                     <td>
                                                         <ng-container
@@ -226,17 +226,6 @@
                                                         class="fa fa-chevron-up" aria-hidden="true"></i>
                                                 </th>
                                                 <th width="35%">Description</th>
-                                                <th width="9%">Impact
-                                                    <i *ngIf="!orderIntangibleBy.impact"
-                                                        (click)=" tableOrderBy('impact', 'INTANGIBLE', true)"
-                                                        class="fa fa-sort" aria-hidden="true"></i>
-                                                    <i *ngIf="orderIntangibleBy.impact && orderIntangibleBy.type === 'desc'"
-                                                        (click)=" tableOrderBy('impact', 'INTANGIBLE', false)"
-                                                        class="fa fa-chevron-down" aria-hidden="true"></i>
-                                                    <i *ngIf="orderIntangibleBy.impact && orderIntangibleBy.type === 'asc'"
-                                                        (click)=" tableOrderBy('impact', 'INTANGIBLE', true)"
-                                                        class="fa fa-chevron-up" aria-hidden="true"></i>
-                                                </th>
                                                 <th width="11%">Likelihood
                                                     <i *ngIf="!orderIntangibleBy.likelihood"
                                                         (click)=" tableOrderBy('likelihood', 'INTANGIBLE', true)"
@@ -270,6 +259,17 @@
                                                         (click)=" tableOrderBy('critical', 'INTANGIBLE', true)"
                                                         class="fa fa-chevron-up" aria-hidden="true"></i>
                                                 </th>
+                                                <th width="9%">Impact
+                                                    <i *ngIf="!orderIntangibleBy.impact"
+                                                       (click)=" tableOrderBy('impact', 'INTANGIBLE', true)"
+                                                       class="fa fa-sort" aria-hidden="true"></i>
+                                                    <i *ngIf="orderIntangibleBy.impact && orderIntangibleBy.type === 'desc'"
+                                                       (click)=" tableOrderBy('impact', 'INTANGIBLE', false)"
+                                                       class="fa fa-chevron-down" aria-hidden="true"></i>
+                                                    <i *ngIf="orderIntangibleBy.impact && orderIntangibleBy.type === 'asc'"
+                                                       (click)=" tableOrderBy('impact', 'INTANGIBLE', true)"
+                                                       class="fa fa-chevron-up" aria-hidden="true"></i>
+                                                </th>
                                                 <th width="8%">Risk
                                                     <i *ngIf="!orderIntangibleBy.risk"
                                                         (click)=" tableOrderBy('risk', 'INTANGIBLE', true)"
@@ -302,10 +302,10 @@
                                                             [routerLink]="['/risk-management/risk-details', risk.asset?.id ]">{{risk.asset?.asset.name}}</a>
                                                     </td>
                                                     <td>{{risk.asset.asset.description}}</td>
-                                                    <td>{{risk.asset.impact}}</td>
                                                     <td>{{risk.likelihood}}</td>
                                                     <td>{{risk.vulnerability}}</td>
                                                     <td>{{risk.critical}}</td>
+                                                    <td>{{risk.asset.impact}}</td>
                                                     <td>{{risk.percentage/100 | percent}}</td>
                                                     <td>
                                                         <ng-container
