@@ -183,22 +183,22 @@
                                                                             *ngFor="let attack of selectedAttacks | paginate: { itemsPerPage: 7, currentPage: page }">
                                                                             <td>{{attack.name}}</td>
                                                                             <td *ngIf="attack.refinedVulnerability">{{attack.refinedVulnerability
-                                                                            | number : '1.1-1'}}</td>
+                                                                            | number : '1.1-2'}}</td>
                                                                             <td
                                                                                 *ngIf="!attack.refinedVulnerability && attack.contextualVulnerability">{{attack.contextualVulnerability
-                                                                            | number : '1.1-1'}}</td>
+                                                                            | number : '1.1-2'}}</td>
                                                                             <td
                                                                                 *ngIf="!attack.refinedVulnerability && !attack.contextualVulnerability">
                                                                                 -
                                                                             </td>
                                                                             <td *ngIf="attack.refinedLikelihood">{{attack.refinedLikelihood |
-                                                                            number : '1.1-1'}}</td>
+                                                                            number : '1.1-2'}}</td>
                                                                             <td
                                                                                 *ngIf="!attack.refinedLikelihood && attack.contextualLikelihood">{{attack.contextualLikelihood
-                                                                            | number : '1.1-1'}}</td>
+                                                                            | number : '1.1-2'}}</td>
                                                                             <td
                                                                                 *ngIf="!attack.refinedLikelihood && !attack.contextualLikelihood && attack.initialLikelihood">{{attack.initialLikelihood
-                                                                            | number : '1.1-1'}}</td>
+                                                                            | number : '1.1-2'}}</td>
                                                                             <td
                                                                                 *ngIf="!attack.refinedLikelihood && !attack.contextualLikelihood && !attack.initialLikelihood">
                                                                                 -
@@ -269,22 +269,22 @@
                                                                             *ngFor="let attack of selectedAttacks | paginate: { itemsPerPage: 7, currentPage: page }">
                                                                             <td>{{attack.name}}</td>
                                                                             <td *ngIf="attack.refinedVulnerability">{{attack.refinedVulnerability
-                                                                                    | number : '1.1-1'}}</td>
+                                                                                    | number : '1.1-2'}}</td>
                                                                             <td
                                                                                 *ngIf="!attack.refinedVulnerability && attack.contextualVulnerability">{{attack.contextualVulnerability
-                                                                                    | number : '1.1-1'}}</td>
+                                                                                    | number : '1.1-2'}}</td>
                                                                             <td
                                                                                 *ngIf="!attack.refinedVulnerability && !attack.contextualVulnerability">
                                                                                 -
                                                                             </td>
                                                                             <td *ngIf="attack.refinedLikelihood">{{attack.refinedLikelihood |
-                                                                                    number : '1.1-1'}}</td>
+                                                                                    number : '1.1-2'}}</td>
                                                                             <td
                                                                                 *ngIf="!attack.refinedLikelihood && attack.contextualLikelihood">{{attack.contextualLikelihood
-                                                                                    | number : '1.1-1'}}</td>
+                                                                                    | number : '1.1-2'}}</td>
                                                                             <td
                                                                                 *ngIf="!attack.refinedLikelihood && !attack.contextualLikelihood && attack.initialLikelihood">{{attack.initialLikelihood
-                                                                                    | number : '1.1-1'}}</td>
+                                                                                    | number : '1.1-2'}}</td>
                                                                             <td
                                                                                 *ngIf="!attack.refinedLikelihood && !attack.contextualLikelihood && !attack.initialLikelihood">
                                                                                 -

@@ -52,8 +52,8 @@ public class ImpactServiceImpl implements ImpactService {
             if (myAssets != null && !myAssets.isEmpty()) {
                 myAssets.stream().forEach((myAsset) -> {
                     try {
-                        MyAsset myAssetResult = this.calculateEconomicImpact(selfAssessmentID, myAsset.getId());
-                        impactsResult.add(myAssetResult);
+                        myAsset = this.calculateEconomicImpact(selfAssessmentID, myAsset.getId());
+                        impactsResult.add(myAsset);
                     } catch (NotFoundException e) {
                         e.printStackTrace();
                     }
@@ -84,8 +84,26 @@ public class ImpactServiceImpl implements ImpactService {
 
                 if (lossValue != null) {// Check if MyAsset has a LossValue set
                     economicImpact = economicImpact.add(lossValue);
-                    logger.debug("EconomicImpact: " + economicImpact);
+                    logger.error("EconomicImpact: " + economicImpact);
                 }
+
+                DirectAsset directAsset = this.directAssetService.findOneByMyAssetID(selfAssessment.getId(), myAsset.getId());
+
+                if (directAsset != null) {//If it is a DIRECT asset, sum also the losses of the indirects
+                    Set<IndirectAsset> indirectAssets = directAsset.getEffects();
+
+                    if (indirectAssets != null && !indirectAssets.isEmpty()) {
+                        for (IndirectAsset indirect : indirectAssets) {
+                            BigDecimal indirectLossValue = indirect.getMyAsset().getLossValue();
+
+                            if (indirectLossValue != null) {//Add the indirect loss
+                                economicImpact = economicImpact.add(indirectLossValue);
+                            }
+                        }
+                    }
+                }
+
+                logger.error("EconomicImpact after IndirecLosses: " + economicImpact);
 
                 //Map to avoid duplicated CostTypes
                 Map<CostType, AttackCost> uniqueCostTypes = toUniqueCostTypes(selfAssessment, myAsset);
@@ -126,7 +144,7 @@ public class ImpactServiceImpl implements ImpactService {
                 }
 
                 MyAsset result = this.myAssetService.save(myAsset);
-                logger.debug("MyAsset.EconomicImpact: " + myAsset.getEconomicImpact());
+                logger.error("MyAsset.EconomicImpact: " + myAsset.getEconomicImpact());
                 return result;
             } else {
                 throw new NotFoundException("MyAsset NOT FOUND!");
@@ -162,6 +180,25 @@ public class ImpactServiceImpl implements ImpactService {
         formula.append("LOSS_VALUE(");
         formula.append(lossValue);
         formula.append(this.properties.getCurrency() + ")");
+
+        DirectAsset directAsset = this.directAssetService.findOneByMyAssetID(selfAssessment.getId(), myAsset.getId());
+
+        if (directAsset != null) {//If it is a DIRECT asset, sum also the losses of the indirects
+            Set<IndirectAsset> indirectAssets = directAsset.getEffects();
+
+            if (indirectAssets != null && !indirectAssets.isEmpty()) {
+                for (IndirectAsset indirect : indirectAssets) {
+                    BigDecimal indirectLossValue = indirect.getMyAsset().getLossValue();
+
+                    if (indirectLossValue != null) {//Add the indirect loss
+                        formula.append(" + ");
+                        formula.append(indirect.getMyAsset().getAsset().getName() + "." + "LOSS_VALUE(");
+                        formula.append(indirectLossValue);
+                        formula.append(this.properties.getCurrency() + ")");
+                    }
+                }
+            }
+        }
 
         for (AttackCost attackCost : uniqueCostTypes.values()) {
             if (attackCost != null && attackCost.getCosts() != null) {

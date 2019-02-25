@@ -162,15 +162,14 @@ public class AssetRiskServiceImpl implements AssetRiskService, MaxValues {
                         currentCritical = initialLikelihood * initialLikelihood;
                     }
 
-                    if (currentLikelihood > likelihoodVulnerabilityCritical.getA()) {
+                    if (currentLikelihood > likelihoodVulnerabilityCritical.getA()
+                        &&
+                        currentVulnerability > likelihoodVulnerabilityCritical.getB()
+                        &&
+                        currentCritical > likelihoodVulnerabilityCritical.getC()) {
+
                         likelihoodVulnerabilityCritical.setA(currentLikelihood);
-                    }
-
-                    if (currentVulnerability > likelihoodVulnerabilityCritical.getB()) {
                         likelihoodVulnerabilityCritical.setB(currentVulnerability);
-                    }
-
-                    if (currentCritical > likelihoodVulnerabilityCritical.getC()) {
                         likelihoodVulnerabilityCritical.setC(currentCritical);
                     }
                 }

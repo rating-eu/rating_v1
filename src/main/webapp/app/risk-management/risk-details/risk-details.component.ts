@@ -172,8 +172,8 @@ export class RiskDetailsComponent implements OnInit, OnDestroy {
     let fullContent = '';
     let attackCounter = 0;
     for (const attack of this.attackChances) {
-      const likelihoodVulnerability = Math.round(attack.likelihood) * Math.round(attack.vulnerability);
-      if (level === likelihoodVulnerability && Math.round(attack.likelihood) === row && column === Math.round(attack.vulnerability)) {
+      const critical = Math.round(attack.likelihood) * Math.round(attack.vulnerability);
+      if (level === critical && Math.round(attack.likelihood) === row && column === Math.round(attack.vulnerability)) {
         if (content.length === 0) {
           content = attack.attackStrategy.name;
         } else {

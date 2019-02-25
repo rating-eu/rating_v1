@@ -51,7 +51,7 @@ public class AttackStrategyCalculator {
 
     public void calculateRefinedLikelihoods(List<MyAnswer> myAnswers, Map<Long/*QuestionID*/, Question> questionsMap, Map<Long/*AnswerID*/, Answer> answersMap, Map<Long/*AttackStrategy.ID*/, AugmentedAttackStrategy> augmentedAttackStrategyMap) {
         //Group the MyAnswers by AttackStrategy and find the likelihood for each of them.
-        Map<AugmentedAttackStrategy, Set<MyAnswer>> attackAnswersMap = new HashMap<>();
+        Map<Long/*AttackStrategyID*/, Set<MyAnswer>> attackAnswersMap = new HashMap<>();
 
         this.buildAttackAnswersMap(myAnswers, questionsMap, answersMap, augmentedAttackStrategyMap, attackAnswersMap);
 
@@ -59,7 +59,7 @@ public class AttackStrategyCalculator {
             AugmentedAttackStrategy augmentedAttackStrategy = entry.getValue();
             logger.debug("AugmentedAttackStrategy: " + augmentedAttackStrategy);
 
-            Set<MyAnswer> myAnswerSet = attackAnswersMap.get(augmentedAttackStrategy);
+            Set<MyAnswer> myAnswerSet = attackAnswersMap.get(augmentedAttackStrategy.getId());
             logger.debug("MyAnswerSet: " + myAnswerSet);
 
             if (myAnswerSet != null) {
@@ -77,7 +77,7 @@ public class AttackStrategyCalculator {
         }
     }
 
-    private void buildAttackAnswersMap(List<MyAnswer> myAnswers, Map<Long, Question> questionsMap, Map<Long, Answer> answersMap, Map<Long, AugmentedAttackStrategy> augmentedAttackStrategyMap, Map<AugmentedAttackStrategy, Set<MyAnswer>> attackAnswersMap) {
+    private void buildAttackAnswersMap(List<MyAnswer> myAnswers, Map<Long, Question> questionsMap, Map<Long, Answer> answersMap, Map<Long, AugmentedAttackStrategy> augmentedAttackStrategyMap, Map</*AttackStrategyID*/Long, Set<MyAnswer>> attackAnswersMap) {
         for (MyAnswer myAnswer : myAnswers) {
             Question question = myAnswer.getQuestion();
             logger.debug("Question: " + question);
@@ -98,13 +98,13 @@ public class AttackStrategyCalculator {
             for (AttackStrategy attackStrategy : attacks) {
                 AugmentedAttackStrategy augmentedAttackStrategy = augmentedAttackStrategyMap.get(attackStrategy.getId());
 
-                if (attackAnswersMap.containsKey(augmentedAttackStrategy)) {
-                    Set<MyAnswer> myAnswerSet = attackAnswersMap.get(augmentedAttackStrategy);
+                if (attackAnswersMap.containsKey(augmentedAttackStrategy.getId())) {
+                    Set<MyAnswer> myAnswerSet = attackAnswersMap.get(augmentedAttackStrategy.getId());
                     myAnswerSet.add(myAnswer);
                 } else {
                     Set<MyAnswer> myAnswerSet = new HashSet<>();
                     myAnswerSet.add(myAnswer);
-                    attackAnswersMap.put(augmentedAttackStrategy, myAnswerSet);
+                    attackAnswersMap.put(augmentedAttackStrategy.getId(), myAnswerSet);
                 }
             }
         }
@@ -112,7 +112,7 @@ public class AttackStrategyCalculator {
 
     public void calculateContextualLikelihoods(List<MyAnswer> myAnswers, Map<Long/*QuestionID*/, Question> questionsMap, Map<Long/*AnswerID*/, Answer> answersMap, Map<Long/*AttackStrategy.ID*/, AugmentedAttackStrategy> augmentedAttackStrategyMap) {
         //Group the MyAnswers by AttackStrategy and find the likelihood for each of them.
-        Map<AugmentedAttackStrategy, Set<MyAnswer>> attackAnswersMap = new HashMap<>();
+        Map</*AttackStrategyID*/Long, Set<MyAnswer>> attackAnswersMap = new HashMap<>();
 
         this.buildAttackAnswersMap(myAnswers, questionsMap, answersMap, augmentedAttackStrategyMap, attackAnswersMap);
 
@@ -120,7 +120,7 @@ public class AttackStrategyCalculator {
             AugmentedAttackStrategy augmentedAttackStrategy = entry.getValue();
             logger.debug("AugmentedAttackStrategy: " + augmentedAttackStrategy);
 
-            Set<MyAnswer> myAnswerSet = attackAnswersMap.get(augmentedAttackStrategy);
+            Set<MyAnswer> myAnswerSet = attackAnswersMap.get(augmentedAttackStrategy.getId());
             logger.debug("MyAnswerSet: " + myAnswerSet);
 
             if (myAnswerSet != null) {
