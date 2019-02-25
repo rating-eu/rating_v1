@@ -7,11 +7,8 @@ import eu.hermeneut.domain.enumeration.Role;
 import eu.hermeneut.exceptions.NotFoundException;
 import eu.hermeneut.service.*;
 import eu.hermeneut.service.attackmap.AugmentedAttackStrategyService;
-import eu.hermeneut.service.result.ResultService;
 import eu.hermeneut.utils.attackstrategy.ThreatAttackFilter;
-import eu.hermeneut.utils.likelihood.answer.AnswerCalculator;
 import eu.hermeneut.utils.likelihood.attackstrategy.AttackStrategyCalculator;
-import eu.hermeneut.utils.likelihood.overall.OverallCalculator;
 import eu.hermeneut.utils.threatagent.ThreatAgentComparator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,15 +29,6 @@ public class AugmentedAttackStrategyServiceImpl implements AugmentedAttackStrate
     private SelfAssessmentService selfAssessmentService;
 
     @Autowired
-    private LevelService levelService;
-
-    @Autowired
-    private PhaseService phaseService;
-
-    @Autowired
-    private AnswerWeightService answerWeightService;
-
-    @Autowired
     private QuestionnaireStatusService questionnaireStatusService;
 
     @Autowired
@@ -54,15 +42,6 @@ public class AugmentedAttackStrategyServiceImpl implements AugmentedAttackStrate
 
     @Autowired
     private AttackStrategyCalculator attackStrategyCalculator;
-
-    @Autowired
-    private OverallCalculator overallCalculator;
-
-    @Autowired
-    private AnswerCalculator answerCalculator;
-
-    @Autowired
-    private ResultService resultService;
 
     @Override
     public Map<Long, AugmentedAttackStrategy> getAugmentedAttackStrategyMap(Long selfAssessmentID) throws NotFoundException {
