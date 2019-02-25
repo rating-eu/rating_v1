@@ -1,7 +1,7 @@
-<div class="container" *ngIf="loading">
+<ng-container *ngIf="loading">
   <div class="loader"></div>
-</div>
-<div class="container" *ngIf="!loading">
+</ng-container>
+<ng-container *ngIf="!loading">
   <div class="tile-stats tiles-first-row">
     <div class="count" *ngIf="myAssets">{{myAssets.length}}</div>
     <ng-container *ngIf="myAssets">
@@ -17,7 +17,7 @@
         href="javascript:void(0)" (click)="open(intangibleAssetsDetails)">intangible</a></p>
       </div>
   </div>
-</div>
+</ng-container>
 
 <ng-template #tangibleAssetsDetails let-d="dismiss">
   <div class="modal-header">

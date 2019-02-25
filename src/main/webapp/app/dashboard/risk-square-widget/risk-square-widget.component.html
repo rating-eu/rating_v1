@@ -1,7 +1,7 @@
-<ng-container class="container" *ngIf="loadingRiskLevel || loadingAssetsAndAttacks">
+<ng-container *ngIf="loadingRiskLevel || loadingAssetsAndAttacks">
   <div class="loader"></div>
 </ng-container>
-<ng-container class="container-fluid" *ngIf="!loadingRiskLevel  && !loadingAssetsAndAttacks">
+<ng-container *ngIf="!loadingRiskLevel  && !loadingAssetsAndAttacks">
   <div class="x_panel" style="padding:0px !important;">
     <div class="x_title" style="padding:0px !important;">
       <h2 style="padding: 10px;">
