@@ -128,22 +128,20 @@
                                                             <td *ngIf="attack.refinedLikelihood">{{attack.refinedLikelihood |
                                                                 number : '1.1-2'}}</td>
                                                             <td
-                                                                *ngIf="attack.refinedLikelihood===undefined && attack.contextualLikelihood!==undefined">{{attack.contextualLikelihood
-                                                                | number : '1.1-2'}}</td>
+                                                                *ngIf="!attack.refinedLikelihood && attack.contextualLikelihood">
+                                                                {{attack.contextualLikelihood | number : '1.1-2'}}</td>
                                                             <td
-                                                                *ngIf="attack.refinedLikelihood===undefined && attack.contextualLikelihood===undefined && attack.initialLikelihood!==undefined">{{attack.initialLikelihood
-                                                                | number : '1.1-2'}}</td>
+                                                                *ngIf="!attack.refinedLikelihood && !attack.contextualLikelihood && attack.initialLikelihood">
+                                                                {{attack.initialLikelihood | number : '1.1-2'}}</td>
                                                             <td
-                                                                *ngIf="attack.refinedLikelihood===undefined && attack.contextualLikelihood===undefined && attack.initialLikelihood===undefined">
+                                                                *ngIf="!attack.refinedLikelihood && !attack.contextualLikelihood && !attack.initialLikelihood">
                                                                 -
                                                             </td>
-                                                            <td *ngIf="attack.refinedVulnerability!==undefined">{{attack.refinedVulnerability
-                                                                | number : '1.1-2'}}</td>
-                                                            <td
-                                                                *ngIf="attack.refinedVulnerability===undefined && attack.contextualVulnerability!==undefined">{{attack.contextualVulnerability
-                                                                | number : '1.1-2'}}</td>
-                                                            <td
-                                                                *ngIf="attack.refinedVulnerability===undefined && attack.contextualVulnerability===undefined">
+                                                            <td *ngIf="attack.refinedVulnerability">
+                                                                {{attack.refinedVulnerability | number : '1.1-2'}}</td>
+                                                            <td *ngIf="!attack.refinedVulnerability && attack.contextualVulnerability">
+                                                                {{attack.contextualVulnerability | number : '1.1-2'}}</td>
+                                                            <td *ngIf="!attack.refinedVulnerability && !attack.contextualVulnerability">
                                                                 -
                                                             </td>
                                                         </tr>
@@ -252,8 +250,7 @@
                                             <td *ngIf="item.mostDangerousAttackValue.vulnerability !== undefined">
                                                 {{item.mostDangerousAttackValue.vulnerability | number : '1.1-2'}}
                                             </td>
-                                            <td *ngIf="item.mostDangerousAttackValue.vulnerability === undefined">-
-                                            </td>
+                                            <td *ngIf="item.mostDangerousAttackValue.vulnerability === undefined">-</td>
                                         </tr>
                                         <ng-container *ngIf="selectedAsset">
                                             <tr *ngIf="selectedAsset.asset.id === item.asset.asset.id">
