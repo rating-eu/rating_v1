@@ -135,7 +135,7 @@
                   <td>
                     <span *ngFor="let mitigation of attackChance.attackStrategy.mitigations; let last = last">
                       <a class="form-control-static"
-                        [routerLink]="['../mitigation-mgm', mitigation?.id ]">{{mitigation.name}}</a>{{last
+                        [routerLink]="['/mitigation-mgm', mitigation?.id ]">{{mitigation.name}}</a>{{last
                                             ? '' : ', '}}
                     </span>
                   </td>
