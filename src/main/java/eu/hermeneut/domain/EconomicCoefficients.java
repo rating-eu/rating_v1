@@ -9,6 +9,7 @@ import javax.persistence.*;
 import javax.validation.constraints.*;
 
 import org.springframework.data.elasticsearch.annotations.Document;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Objects;
@@ -32,24 +33,30 @@ public class EconomicCoefficients implements Serializable {
 
     @DecimalMin(value = "0")
     @DecimalMax(value = "100")
-    @Column(name = "discounting_rate", precision=20, scale=2)
+    @Column(name = "discounting_rate", precision = 20, scale = 2)
     private BigDecimal discountingRate;
 
-    @Column(name = "physical_assets_return", precision=20, scale=2)
+    @Column(name = "physical_assets_return", precision = 20, scale = 2)
     private BigDecimal physicalAssetsReturn;
+
+    @Column(name = "long_term_liabilities", precision = 20, scale = 2)
+    private BigDecimal longTermLiabilities;
 
     /**
      * Fixed Assets Return
      */
     @ApiModelProperty(value = "Fixed Assets Return")
-    @Column(name = "financial_assets_return", precision=20, scale=2)
+    @Column(name = "financial_assets_return", precision = 20, scale = 2)
     private BigDecimal financialAssetsReturn;
+
+    @Column(name = "current_liabilities", precision = 20, scale = 2)
+    private BigDecimal currentLiabilities;
 
     /**
      * Current Assets Return
      */
     @ApiModelProperty(value = "Current Assets Return")
-    @Column(name = "loss_of_intangible", precision=20, scale=2)
+    @Column(name = "loss_of_intangible", precision = 20, scale = 2)
     private BigDecimal lossOfIntangible;
 
     /**
@@ -104,8 +111,24 @@ public class EconomicCoefficients implements Serializable {
         return this;
     }
 
+    public BigDecimal getLongTermLiabilities() {
+        return longTermLiabilities;
+    }
+
+    public void setLongTermLiabilities(BigDecimal longTermLiabilities) {
+        this.longTermLiabilities = longTermLiabilities;
+    }
+
     public void setFinancialAssetsReturn(BigDecimal financialAssetsReturn) {
         this.financialAssetsReturn = financialAssetsReturn;
+    }
+
+    public BigDecimal getCurrentLiabilities() {
+        return currentLiabilities;
+    }
+
+    public void setCurrentLiabilities(BigDecimal currentLiabilities) {
+        this.currentLiabilities = currentLiabilities;
     }
 
     public BigDecimal getLossOfIntangible() {

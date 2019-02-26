@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+   <changeSet author="izio (generated)" id="1551135347657-1">
+      <createTable tableName="growth_rate">
+         <column autoIncrement="true" name="id" type="BIGINT">
+            <constraints primaryKey="true" primaryKeyName="growth_ratePK"/>
+         </column>
+         <column name="rate" type="FLOAT8"/>
+         <column name="year" type="INT"/>
+         <column name="self_assessment_id" type="BIGINT"/>
+      </createTable>
+   </changeSet>
+   <changeSet author="izio (generated)" id="1551135347657-2">
+      <addForeignKeyConstraint baseColumnNames="self_assessment_id"
+                               baseTableName="growth_rate"
+                               constraintName="growth_rate_self_assessment_fk"
+                               deferrable="false"
+                               initiallyDeferred="false"
+                               referencedColumnNames="id"
+                               referencedTableName="self_assessment"/>
+   </changeSet>
+</databaseChangeLog>
