@@ -245,6 +245,9 @@ public class WP3StepsController {
             BigDecimal physicalAssetsReturn = economicCoefficients.getPhysicalAssetsReturn();
             BigDecimal financialAssetsReturn = economicCoefficients.getFinancialAssetsReturn();
 
+            BigDecimal longTermLiabilities = economicCoefficients.getLongTermLiabilities();
+            BigDecimal currentLiabilities = economicCoefficients.getCurrentLiabilities();
+
             EconomicCoefficients existingEconomicCoefficients = this.economicCoefficientsService.findOneBySelfAssessmentID(selfAssessmentID);
 
             BigDecimal discountingRate;
@@ -254,6 +257,9 @@ public class WP3StepsController {
             } else {
                 existingEconomicCoefficients.setPhysicalAssetsReturn(physicalAssetsReturn);
                 existingEconomicCoefficients.setFinancialAssetsReturn(financialAssetsReturn);
+                existingEconomicCoefficients.setLongTermLiabilities(longTermLiabilities);
+                existingEconomicCoefficients.setCurrentLiabilities(currentLiabilities);
+
                 discountingRate = existingEconomicCoefficients.getDiscountingRate();
 
                 //Update
