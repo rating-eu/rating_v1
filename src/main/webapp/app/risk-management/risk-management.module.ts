@@ -20,6 +20,7 @@ import {NgxPaginationModule} from 'ngx-pagination';
 import { HermeneutMitigationMgmModule } from '../entities/mitigation-mgm/mitigation-mgm.module';
 import { NgbAccordionModule } from '../../../../../node_modules/@ng-bootstrap/ng-bootstrap';
 import { RiskDetailsComponent } from './risk-details/risk-details.component';
+import { ImpactEvaluationService } from '../impact-evaluation/impact-evaluation.service';
 
 @NgModule({
     imports: [
@@ -71,7 +72,8 @@ import { RiskDetailsComponent } from './risk-details/risk-details.component';
             ]
         },
         RiskManagementService,
-        DashboardService
+        DashboardService,
+        ImpactEvaluationService
     ]
 })
 export class RiskManagementModule {

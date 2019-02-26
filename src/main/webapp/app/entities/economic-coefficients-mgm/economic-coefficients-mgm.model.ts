@@ -8,6 +8,8 @@ export class EconomicCoefficientsMgm implements BaseEntity {
         public financialAssetsReturn?: number,
         public lossOfIntangible?: number,
         public selfAssessment?: BaseEntity,
+        public currentLiabilities?: number,
+        public longTermLiabilities?: number
     ) {
     }
 }
