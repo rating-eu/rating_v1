@@ -104,6 +104,8 @@ export class ImpactEvaluationComponent implements OnInit {
     public physicalAssetsReturn = 7.1;
     public financialAssetsReturn = 5.0;
     public lossOfIntangiblePercentage = 18.29;
+    public longTermLiabilities: number;
+    public currentLiabilities: number;
 
     constructor(
         private mySelfAssessmentService: SelfAssessmentMgmService,
@@ -277,6 +279,8 @@ export class ImpactEvaluationComponent implements OnInit {
                         this.physicalAssetsReturn = this.wp3Status.economicCoefficients.physicalAssetsReturn;
                         this.financialAssetsReturn = this.wp3Status.economicCoefficients.financialAssetsReturn;
                         this.lossOfIntangiblePercentage = this.wp3Status.economicCoefficients.lossOfIntangible;
+                        this.longTermLiabilities = this.wp3Status.economicCoefficients.longTermLiabilities;
+                        this.currentLiabilities = this.wp3Status.economicCoefficients.currentLiabilities;
 
                         this.choosedSectorType = this.wp3Status.sectorType;
                         switch (this.choosedSectorType.toString()) {
@@ -488,11 +492,18 @@ export class ImpactEvaluationComponent implements OnInit {
         if (!dataIsOk) {
             return;
         }
-        if (this.financialAssetsAkaCurrent && this.physicalAssetsAkaFixed && this.financialAssetsReturn && this.physicalAssetsReturn) {
+        if (this.financialAssetsAkaCurrent &&
+                this.physicalAssetsAkaFixed &&
+                this.financialAssetsReturn &&
+                this.physicalAssetsReturn &&
+                this.currentLiabilities &&
+                this.longTermLiabilities) {
             const inputs: Wp3BundleInput = new Wp3BundleInput();
             inputs.economicCoefficients = new EconomicCoefficientsMgm();
             inputs.economicCoefficients.physicalAssetsReturn = this.physicalAssetsReturn;
             inputs.economicCoefficients.financialAssetsReturn = this.financialAssetsReturn;
+            inputs.economicCoefficients.longTermLiabilities = this.longTermLiabilities;
+            inputs.economicCoefficients.currentLiabilities = this.currentLiabilities;
             inputs.myAssets = [];
             inputs.myAssets = this.financialAssetsAkaCurrent.concat(this.physicalAssetsAkaFixed);
 
@@ -512,13 +523,6 @@ export class ImpactEvaluationComponent implements OnInit {
             );
 
             return result$;
-
-            /*.toPromise().then((res) => {
-                if (res) {
-                    this.intangibleDrivingEarnings = Math.round(res.economicResults.intangibleDrivingEarnings * 100) / 100;
-                    this.intangibleCapitalValuation = Math.round(res.economicResults.intangibleCapital * 100) / 100;
-                }
-            });*/
         } else {
             return of(false);
         }
@@ -611,39 +615,6 @@ export class ImpactEvaluationComponent implements OnInit {
         );
 
         return result$;
-
-        /*.toPromise().then((res) => {
-            if (res) {
-                for (const impactOn of res.splittingLosses) {
-                    switch (impactOn.categoryType.toString()) {
-                        case MyCategoryType.IP.toString(): {
-                            if (impactOn.sectorType.toString() === MySectorType.GLOBAL.toString()) {
-                                this.impactOnIP = Math.round(impactOn.loss * 100) / 100;
-                            } else {
-                                this.impactOnSectorialIP = Math.round(impactOn.loss * 100) / 100;
-                            }
-                            break;
-                        }
-                        case MyCategoryType.KEY_COMP.toString(): {
-                            if (impactOn.sectorType.toString() === MySectorType.GLOBAL.toString()) {
-                                this.impactOnKeyComp = Math.round(impactOn.loss * 100) / 100;
-                            } else {
-                                this.impactOnSectorialKeyComp = Math.round(impactOn.loss * 100) / 100;
-                            }
-                            break;
-                        }
-                        case MyCategoryType.ORG_CAPITAL.toString(): {
-                            if (impactOn.sectorType.toString() === MySectorType.GLOBAL.toString()) {
-                                this.impactOnOrgCapital = Math.round(impactOn.loss * 100) / 100;
-                            } else {
-                                this.impactOnSectorialOrgCapital = Math.round(impactOn.loss * 100) / 100;
-                            }
-                            break;
-                        }
-                    }
-                }
-            }
-        });*/
     }
 
     public evaluateStepFive(): Observable<boolean> {
@@ -707,46 +678,6 @@ export class ImpactEvaluationComponent implements OnInit {
         );
 
         return result;
-
-        /*this.impactService.evaluateStepFive(inputs, this.mySelf).toPromise().then((res) => {
-            if (res) {
-                for (const splitting of res.splittingValues) {
-                    switch (splitting.categoryType.toString()) {
-                        case MyCategoryType.IP.toString(): {
-                            if (splitting.sectorType.toString() === MySectorType.GLOBAL.toString()) {
-                                this.splittingOnIP = Math.round(splitting.value * 100) / 100;
-                            } else {
-                                this.splittingOnSectorialIP = Math.round(splitting.value * 100) / 100;
-                            }
-                            this.evaluateSplittingValue('IP');
-                            break;
-                        }
-                        case MyCategoryType.KEY_COMP.toString(): {
-                            if (splitting.sectorType.toString() === MySectorType.GLOBAL.toString()) {
-                                this.splittingOnKeyComp = Math.round(splitting.value * 100) / 100;
-                            } else {
-                                this.splittingOnSectorialKeyComp = Math.round(splitting.value * 100) / 100;
-                            }
-                            this.evaluateSplittingValue('KEY_COMP');
-                            break;
-                        }
-                        case MyCategoryType.ORG_CAPITAL.toString(): {
-                            if (splitting.sectorType.toString() === MySectorType.GLOBAL.toString()) {
-                                this.splittingOnOrgCapital = Math.round(splitting.value * 100) / 100;
-                            } else {
-                                this.splittingOnSectorialOrgCapital = Math.round(splitting.value * 100) / 100;
-                            }
-                            this.evaluateSplittingValue('ORG_CAPITAL');
-                            break;
-                        }
-                    }
-                }
-                this.selectedAssetCategoryCode = '';
-                if (!this.wp3Status) {
-                    this.ngOnInit();
-                }
-            }
-        });*/
     }
 
     private evaluateSplittingValue(category: string, evaluatedAsset?: MyAssetMgm): Observable<boolean> {

@@ -17,6 +17,7 @@ import { NotificationInterceptor } from '../blocks/interceptor/notification.inte
 import {JhiLanguageService} from 'ng-jhipster';
 import { MyCompanyMgmService } from '../entities/my-company-mgm';
 import { AttackRelatedCostsEstimationComponent } from './attack-related-costs-estimation/attack-related-costs-estimation.component';
+import { DataAssetsLossesEstimationComponent } from './data-assets-losses-estimation/data-assets-losses-estimation.component';
 
 @NgModule({
   imports: [
@@ -28,7 +29,8 @@ import { AttackRelatedCostsEstimationComponent } from './attack-related-costs-es
   ],
   declarations: [
     ImpactEvaluationComponent,
-    AttackRelatedCostsEstimationComponent
+    AttackRelatedCostsEstimationComponent,
+    DataAssetsLossesEstimationComponent
   ],
   exports: [
     ImpactEvaluationComponent
