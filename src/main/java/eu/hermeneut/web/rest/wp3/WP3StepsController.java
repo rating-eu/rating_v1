@@ -277,6 +277,7 @@ public class WP3StepsController {
 
             BigDecimal intangibleDrivingEarnings = Calculator.calculateIntangibleDrivingEarnings(economicPerformance, physicalAssetsReturn, financialAssetsReturn, myAssets);
 
+            //TODO update the calculation of the Intangoble Capital with IDEs
             BigDecimal intangibleCapital = Calculator.calculateIntangibleCapital(intangibleDrivingEarnings, discountingRate);
 
             //Update fields

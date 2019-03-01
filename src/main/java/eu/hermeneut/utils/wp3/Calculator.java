@@ -1,17 +1,18 @@
 package eu.hermeneut.utils.wp3;
 
-import eu.hermeneut.domain.Asset;
-import eu.hermeneut.domain.AssetCategory;
-import eu.hermeneut.domain.EBIT;
-import eu.hermeneut.domain.MyAsset;
+import eu.hermeneut.domain.*;
 import eu.hermeneut.domain.enumeration.CategoryType;
 import eu.hermeneut.domain.enumeration.SectorType;
+import eu.hermeneut.domain.wp3.IDE;
+import eu.hermeneut.exceptions.IllegalInputException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public class Calculator {
 
@@ -181,6 +182,57 @@ public class Calculator {
         intangibleDrivingEarnings = intangibleDrivingEarnings.subtract(financialAssetsReturn.multiply(financialAssetsValuation).divide(new BigDecimal("100"), 2, RoundingMode.HALF_UP));
 
         return intangibleDrivingEarnings;
+    }
+
+    public static List<IDE> calculateIDEsTZero() {
+
+        return null;
+    }
+
+    public static IDE calculateIDETZero() {
+
+        return null;
+    }
+
+    public static IDE calculateIDE(BigDecimal intangibleDrivingEarnings, List<GrowthRate> growthRates, Integer year) throws IllegalInputException {
+        Map<Integer, GrowthRate> growthRateMap = growthRates.stream()
+            .parallel()
+            .collect(Collectors.toMap(GrowthRate::getYear, Function.identity()));
+
+        if (growthRateMap.size() != 10) {
+            throw new IllegalInputException("There must be exactly 10 GrowthRates for 10 years.");
+        }
+
+        if (year < 1 || year > 10) {
+            throw new IllegalInputException("Year must be between 1 and 10.");
+        }
+
+        Map<Integer, IDE> idesMap = new HashMap<>();
+
+        for (int y = 1; y <= year; y++) {
+            GrowthRate growthRate = growthRateMap.get(y);
+
+            if (growthRate == null) {
+                throw new IllegalInputException("Missing GrowthRate for year: " + y);
+            }
+
+            final IDE ide = new IDE();
+            ide.setYear(y);
+
+            if (y == 1) {
+                BigDecimal value = intangibleDrivingEarnings.multiply(BigDecimal.ONE.add(new BigDecimal(growthRate.getRate()))).setScale(3, RoundingMode.HALF_UP);
+                ide.setValue(value);
+            } else {
+                IDE previousIDE = idesMap.get(y - 1);
+
+                BigDecimal value = previousIDE.getValue().multiply(BigDecimal.ONE.add(new BigDecimal(growthRate.getRate()))).setScale(3, RoundingMode.HALF_UP);
+                ide.setValue(value);
+            }
+
+            idesMap.put(y, ide);
+        }
+
+        return idesMap.get(year);
     }
 
     public static BigDecimal calculateIntangibleCapital(BigDecimal intangibleDrivingEarnings, BigDecimal discountingRate) {

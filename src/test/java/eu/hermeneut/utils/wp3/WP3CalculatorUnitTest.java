@@ -1,12 +1,11 @@
 package eu.hermeneut.utils.wp3;
 
-import eu.hermeneut.domain.Asset;
-import eu.hermeneut.domain.AssetCategory;
-import eu.hermeneut.domain.EBIT;
-import eu.hermeneut.domain.MyAsset;
+import eu.hermeneut.domain.*;
 import eu.hermeneut.domain.enumeration.AssetType;
 import eu.hermeneut.domain.enumeration.CategoryType;
 import eu.hermeneut.domain.enumeration.SectorType;
+import eu.hermeneut.domain.wp3.IDE;
+import eu.hermeneut.exceptions.IllegalInputException;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -47,6 +46,9 @@ public class WP3CalculatorUnitTest {
     private static final BigDecimal KEY_COMP_AND_HUMAN_CAPITAL_SPLITTING_LOSS = new BigDecimal("4607848.00");
     private static final BigDecimal ORG_CAPITAL_SPLITTING_LOSS = new BigDecimal("4110496.44");
 
+    // Growth Rates
+    private List<GrowthRate> growthRates;
+
     @Before
     public void setup() {
         //Data to calculate the EconomicPerformance
@@ -70,6 +72,20 @@ public class WP3CalculatorUnitTest {
         //Current MyAssets
         this.myAssets.addAll(getCurrrentAssets());
         //Data to calculate the Intangible Capital
+
+        //Growth Rates
+        this.growthRates = new ArrayList<>();
+        this.growthRates.add(new GrowthRate(1, 0.150D, null));
+        this.growthRates.add(new GrowthRate(2, 0.150D, null));
+        this.growthRates.add(new GrowthRate(3, 0.150D, null));
+        this.growthRates.add(new GrowthRate(4, 0.150D, null));
+        this.growthRates.add(new GrowthRate(5, 0.150D, null));
+
+        this.growthRates.add(new GrowthRate(6, 0.126D, null));
+        this.growthRates.add(new GrowthRate(7, 0.102D, null));
+        this.growthRates.add(new GrowthRate(8, 0.078D, null));
+        this.growthRates.add(new GrowthRate(9, 0.054D, null));
+        this.growthRates.add(new GrowthRate(10, 0.030D, null));
     }
 
     @Test
@@ -140,6 +156,44 @@ public class WP3CalculatorUnitTest {
         BigDecimal orgSplittingValue = Calculator.calculateSplittingValue(INTANGIBLE_CAPITAL, ORG_CAPITAL_CATEGORY, GLOBAL_SECTOR);
 
         Assert.assertEquals(ORG_CAPITAL_SPLITTING_VALUE, orgSplittingValue);
+    }
+
+    @Test
+    public void calculateIDEs() {
+        try {
+            IDE ide1 = Calculator.calculateIDE(new BigDecimal("121264.61"), this.growthRates, 1);
+            Assert.assertEquals(new BigDecimal("139454.301"), ide1.getValue());
+
+            IDE ide2 = Calculator.calculateIDE(new BigDecimal(121264.61D), this.growthRates, 2);
+            Assert.assertEquals(new BigDecimal("160372.446"), ide2.getValue());
+
+            IDE ide3 = Calculator.calculateIDE(new BigDecimal(121264.61D), this.growthRates, 3);
+            Assert.assertEquals(new BigDecimal("184428.313"), ide3.getValue());
+
+            IDE ide4 = Calculator.calculateIDE(new BigDecimal(121264.61D), this.growthRates, 4);
+            Assert.assertEquals(new BigDecimal("212092.560"), ide4.getValue());
+
+            IDE ide5 = Calculator.calculateIDE(new BigDecimal(121264.61D), this.growthRates, 5);
+            Assert.assertEquals(new BigDecimal("243906.444"), ide5.getValue());
+
+            IDE ide6 = Calculator.calculateIDE(new BigDecimal(121264.61D), this.growthRates, 6);
+            Assert.assertEquals(new BigDecimal("274638.656"), ide6.getValue());
+
+            IDE ide7 = Calculator.calculateIDE(new BigDecimal(121264.61D), this.growthRates, 7);
+            Assert.assertEquals(new BigDecimal("302651.799"), ide7.getValue());
+
+            IDE ide8 = Calculator.calculateIDE(new BigDecimal(121264.61D), this.growthRates, 8);
+            Assert.assertEquals(new BigDecimal("326258.639"), ide8.getValue());
+
+            IDE ide9 = Calculator.calculateIDE(new BigDecimal(121264.61D), this.growthRates, 9);
+            Assert.assertEquals(new BigDecimal("343876.606"), ide9.getValue());
+
+            IDE ide10 = Calculator.calculateIDE(new BigDecimal(121264.61D), this.growthRates, 10);
+            Assert.assertEquals(new BigDecimal("354192.904"), ide10.getValue());
+
+        } catch (IllegalInputException e) {
+            e.printStackTrace();
+        }
     }
 
     public static List<MyAsset> getFixedAssets() {

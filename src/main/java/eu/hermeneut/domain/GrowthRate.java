@@ -15,6 +15,15 @@ import java.io.Serializable;
 public class GrowthRate implements Serializable {
     private static final long serialVersionUID = 1L;
 
+    public GrowthRate(Integer year, Double rate, SelfAssessment selfAssessment) {
+        this.year = year;
+        this.rate = rate;
+        this.selfAssessment = selfAssessment;
+    }
+
+    public GrowthRate() {
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
     @SequenceGenerator(name = "sequenceGenerator")
