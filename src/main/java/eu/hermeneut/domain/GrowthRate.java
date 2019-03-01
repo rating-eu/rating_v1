@@ -21,15 +21,15 @@ public class GrowthRate implements Serializable {
     private Long id;
 
     @NotNull
-    @Column(name = "year")
+    @Column(name = "year", nullable = false)
     private Integer year;
 
     @NotNull
-    @Column(name = "rate")
+    @Column(name = "rate", nullable = false)
     private Double rate;
 
     @NotNull
-    @ManyToOne
+    @ManyToOne(optional = false)
     private SelfAssessment selfAssessment;
 
     public Long getId() {
