@@ -15,6 +15,7 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.NotNull;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -33,20 +34,20 @@ public class GrowthRateResource {
     @Autowired
     private GrowthRateService growthRateService;
 
-    private static final Map<Integer, Double> GROWTH_MAP = new HashMap<>();
+    private static final Map<Integer, BigDecimal> GROWTH_MAP = new HashMap<>();
 
     static {
-        GROWTH_MAP.put(1, 0.150D);
-        GROWTH_MAP.put(2, 0.150D);
-        GROWTH_MAP.put(3, 0.150D);
-        GROWTH_MAP.put(4, 0.150D);
-        GROWTH_MAP.put(5, 0.150D);
+        GROWTH_MAP.put(1, new BigDecimal("0.150"));
+        GROWTH_MAP.put(2, new BigDecimal("0.150"));
+        GROWTH_MAP.put(3, new BigDecimal("0.150"));
+        GROWTH_MAP.put(4, new BigDecimal("0.150"));
+        GROWTH_MAP.put(5, new BigDecimal("0.150"));
 
-        GROWTH_MAP.put(6, 0.126D);
-        GROWTH_MAP.put(7, 0.102D);
-        GROWTH_MAP.put(8, 0.078D);
-        GROWTH_MAP.put(9, 0.054D);
-        GROWTH_MAP.put(10, 0.030D);
+        GROWTH_MAP.put(6, new BigDecimal("0.126"));
+        GROWTH_MAP.put(7, new BigDecimal("0.102"));
+        GROWTH_MAP.put(8, new BigDecimal("0.078"));
+        GROWTH_MAP.put(9, new BigDecimal("0.054"));
+        GROWTH_MAP.put(10, new BigDecimal("0.030"));
     }
 
     @GetMapping("/{selfAssessmentID}/growth-rates")

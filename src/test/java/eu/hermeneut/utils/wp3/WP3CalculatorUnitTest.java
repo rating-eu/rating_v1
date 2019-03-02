@@ -75,17 +75,17 @@ public class WP3CalculatorUnitTest {
 
         //Growth Rates
         this.growthRates = new ArrayList<>();
-        this.growthRates.add(new GrowthRate(1, 0.150D, null));
-        this.growthRates.add(new GrowthRate(2, 0.150D, null));
-        this.growthRates.add(new GrowthRate(3, 0.150D, null));
-        this.growthRates.add(new GrowthRate(4, 0.150D, null));
-        this.growthRates.add(new GrowthRate(5, 0.150D, null));
+        this.growthRates.add(new GrowthRate(1, new BigDecimal("0.150"), null));
+        this.growthRates.add(new GrowthRate(2, new BigDecimal("0.150"), null));
+        this.growthRates.add(new GrowthRate(3, new BigDecimal("0.150"), null));
+        this.growthRates.add(new GrowthRate(4, new BigDecimal("0.150"), null));
+        this.growthRates.add(new GrowthRate(5, new BigDecimal("0.150"), null));
 
-        this.growthRates.add(new GrowthRate(6, 0.126D, null));
-        this.growthRates.add(new GrowthRate(7, 0.102D, null));
-        this.growthRates.add(new GrowthRate(8, 0.078D, null));
-        this.growthRates.add(new GrowthRate(9, 0.054D, null));
-        this.growthRates.add(new GrowthRate(10, 0.030D, null));
+        this.growthRates.add(new GrowthRate(6, new BigDecimal("0.126"), null));
+        this.growthRates.add(new GrowthRate(7, new BigDecimal("0.102"), null));
+        this.growthRates.add(new GrowthRate(8, new BigDecimal("0.078"), null));
+        this.growthRates.add(new GrowthRate(9, new BigDecimal("0.054"), null));
+        this.growthRates.add(new GrowthRate(10, new BigDecimal("0.030"), null));
     }
 
     @Test
@@ -162,34 +162,34 @@ public class WP3CalculatorUnitTest {
     public void calculateIDEs() {
         try {
             IDE ide1 = Calculator.calculateIDE(new BigDecimal("121264.61"), this.growthRates, 1);
-            Assert.assertEquals(new BigDecimal("139454.301"), ide1.getValue());
+            Assert.assertEquals(new BigDecimal("139454.302"), ide1.getValue());
 
-            IDE ide2 = Calculator.calculateIDE(new BigDecimal(121264.61D), this.growthRates, 2);
-            Assert.assertEquals(new BigDecimal("160372.446"), ide2.getValue());
+            IDE ide2 = Calculator.calculateIDE(new BigDecimal("121264.61"), this.growthRates, 2);
+            Assert.assertEquals(new BigDecimal("160372.447"), ide2.getValue());
 
-            IDE ide3 = Calculator.calculateIDE(new BigDecimal(121264.61D), this.growthRates, 3);
-            Assert.assertEquals(new BigDecimal("184428.313"), ide3.getValue());
+            IDE ide3 = Calculator.calculateIDE(new BigDecimal("121264.61"), this.growthRates, 3);
+            Assert.assertEquals(new BigDecimal("184428.314"), ide3.getValue());
 
-            IDE ide4 = Calculator.calculateIDE(new BigDecimal(121264.61D), this.growthRates, 4);
-            Assert.assertEquals(new BigDecimal("212092.560"), ide4.getValue());
+            IDE ide4 = Calculator.calculateIDE(new BigDecimal("121264.61"), this.growthRates, 4);
+            Assert.assertEquals(new BigDecimal("212092.561"), ide4.getValue());
 
-            IDE ide5 = Calculator.calculateIDE(new BigDecimal(121264.61D), this.growthRates, 5);
-            Assert.assertEquals(new BigDecimal("243906.444"), ide5.getValue());
+            IDE ide5 = Calculator.calculateIDE(new BigDecimal("121264.61"), this.growthRates, 5);
+            Assert.assertEquals(new BigDecimal("243906.445"), ide5.getValue());
 
-            IDE ide6 = Calculator.calculateIDE(new BigDecimal(121264.61D), this.growthRates, 6);
-            Assert.assertEquals(new BigDecimal("274638.656"), ide6.getValue());
+            IDE ide6 = Calculator.calculateIDE(new BigDecimal("121264.61"), this.growthRates, 6);
+            Assert.assertEquals(new BigDecimal("274638.657"), ide6.getValue());
 
-            IDE ide7 = Calculator.calculateIDE(new BigDecimal(121264.61D), this.growthRates, 7);
-            Assert.assertEquals(new BigDecimal("302651.799"), ide7.getValue());
+            IDE ide7 = Calculator.calculateIDE(new BigDecimal("121264.61"), this.growthRates, 7);
+            Assert.assertEquals(new BigDecimal("302651.800"), ide7.getValue());
 
-            IDE ide8 = Calculator.calculateIDE(new BigDecimal(121264.61D), this.growthRates, 8);
-            Assert.assertEquals(new BigDecimal("326258.639"), ide8.getValue());
+            IDE ide8 = Calculator.calculateIDE(new BigDecimal("121264.61"), this.growthRates, 8);
+            Assert.assertEquals(new BigDecimal("326258.640"), ide8.getValue());
 
-            IDE ide9 = Calculator.calculateIDE(new BigDecimal(121264.61D), this.growthRates, 9);
-            Assert.assertEquals(new BigDecimal("343876.606"), ide9.getValue());
+            IDE ide9 = Calculator.calculateIDE(new BigDecimal("121264.61"), this.growthRates, 9);
+            Assert.assertEquals(new BigDecimal("343876.607"), ide9.getValue());
 
-            IDE ide10 = Calculator.calculateIDE(new BigDecimal(121264.61D), this.growthRates, 10);
-            Assert.assertEquals(new BigDecimal("354192.904"), ide10.getValue());
+            IDE ide10 = Calculator.calculateIDE(new BigDecimal("121264.61"), this.growthRates, 10);
+            Assert.assertEquals(new BigDecimal("354192.905"), ide10.getValue());
 
         } catch (IllegalInputException e) {
             e.printStackTrace();

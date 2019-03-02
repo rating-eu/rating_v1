@@ -7,6 +7,7 @@ import org.springframework.data.elasticsearch.annotations.Document;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 @Entity
 @Table(name = "growth_rate")
@@ -15,7 +16,7 @@ import java.io.Serializable;
 public class GrowthRate implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    public GrowthRate(Integer year, Double rate, SelfAssessment selfAssessment) {
+    public GrowthRate(Integer year, BigDecimal rate, SelfAssessment selfAssessment) {
         this.year = year;
         this.rate = rate;
         this.selfAssessment = selfAssessment;
@@ -34,8 +35,8 @@ public class GrowthRate implements Serializable {
     private Integer year;
 
     @NotNull
-    @Column(name = "rate", nullable = false)
-    private Double rate;
+    @Column(name = "rate", nullable = false, precision = 6, scale = 3)
+    private BigDecimal rate;
 
     @NotNull
     @ManyToOne(optional = false)
@@ -57,11 +58,11 @@ public class GrowthRate implements Serializable {
         this.year = year;
     }
 
-    public Double getRate() {
+    public BigDecimal getRate() {
         return rate;
     }
 
-    public void setRate(Double rate) {
+    public void setRate(BigDecimal rate) {
         this.rate = rate;
     }
 

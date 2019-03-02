@@ -220,15 +220,16 @@ public class Calculator {
             ide.setYear(y);
 
             if (y == 1) {
-                BigDecimal value = intangibleDrivingEarnings.multiply(BigDecimal.ONE.add(new BigDecimal(growthRate.getRate()))).setScale(3, RoundingMode.HALF_UP);
+                BigDecimal value = intangibleDrivingEarnings.multiply(BigDecimal.ONE.add(growthRate.getRate())).setScale(3, RoundingMode.HALF_UP);
                 ide.setValue(value);
             } else {
                 IDE previousIDE = idesMap.get(y - 1);
 
-                BigDecimal value = previousIDE.getValue().multiply(BigDecimal.ONE.add(new BigDecimal(growthRate.getRate()))).setScale(3, RoundingMode.HALF_UP);
+                BigDecimal value = previousIDE.getValue().multiply(BigDecimal.ONE.add(growthRate.getRate())).setScale(3, RoundingMode.HALF_UP);
                 ide.setValue(value);
             }
 
+            LOGGER.warn("" + ide);
             idesMap.put(y, ide);
         }
 
