@@ -1,5 +1,6 @@
 package eu.hermeneut.domain;
 
+import eu.hermeneut.domain.interfaces.WithYear;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.springframework.data.elasticsearch.annotations.Document;
@@ -13,7 +14,7 @@ import java.math.BigDecimal;
 @Table(name = "growth_rate")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 @Document(indexName = "growth_rate")
-public class GrowthRate implements Serializable {
+public class GrowthRate implements Serializable, WithYear {
     private static final long serialVersionUID = 1L;
 
     public GrowthRate(Integer year, BigDecimal rate, SelfAssessment selfAssessment) {
@@ -50,6 +51,7 @@ public class GrowthRate implements Serializable {
         this.id = id;
     }
 
+    @Override
     public Integer getYear() {
         return year;
     }

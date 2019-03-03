@@ -1,8 +1,10 @@
 package eu.hermeneut.domain.wp3;
 
+import eu.hermeneut.domain.interfaces.WithYear;
+
 import java.math.BigDecimal;
 
-public class IDE {
+public class IDE implements WithYear {
     private Integer year;
     private BigDecimal value;
 
@@ -15,6 +17,7 @@ public class IDE {
         this.value = value;
     }
 
+    @Override
     public Integer getYear() {
         return year;
     }

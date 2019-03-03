@@ -3,6 +3,7 @@ package eu.hermeneut.utils.wp3;
 import eu.hermeneut.domain.*;
 import eu.hermeneut.domain.enumeration.CategoryType;
 import eu.hermeneut.domain.enumeration.SectorType;
+import eu.hermeneut.domain.interfaces.WithYear;
 import eu.hermeneut.domain.wp3.IDE;
 import eu.hermeneut.exceptions.IllegalInputException;
 import org.slf4j.Logger;
@@ -184,12 +185,50 @@ public class Calculator {
         return intangibleDrivingEarnings;
     }
 
-    public static List<IDE> calculateIDEsTZero() {
+    public static List<IDE> calculateIDEsTZero(BigDecimal discountingRate, List<GrowthRate> growthRates, List<IDE> ides) throws IllegalInputException {
+        Map<Integer, GrowthRate> growthRatesMap = checkTenYearsList(growthRates);
+        Map<Integer, IDE> idesMap = checkTenYearsList(ides);
+        Map<Integer, IDE> idesTZeroMap = new HashMap<>();
 
-        return null;
+        for (int year = 1; year <= 10; year++) {
+            IDE ideTZero = new IDE();
+            ideTZero.setYear(year);
+
+            if (year < 10) {
+                IDE ide = idesMap.get(year);
+
+                if (ide == null) {
+                    throw new IllegalInputException("Missing IDE for year " + year);
+                }
+
+                ideTZero.setValue(ide.getValue()
+                    .divide(BigDecimal.ONE.add(discountingRate.divide(new BigDecimal("100"), 3, RoundingMode.HALF_UP))
+                        .pow(ide.getYear()), 3, RoundingMode.HALF_UP
+                    ));
+            } else {
+                IDE ide = idesMap.get(9);
+
+                if (ide == null) {
+                    throw new IllegalInputException("Missing IDE for the 9th year!!!");
+                }
+
+                ideTZero.setValue(ide.getValue()
+                    .divide(discountingRate.divide(new BigDecimal("100"), 3, RoundingMode.HALF_UP)
+                        .subtract(growthRatesMap.get(10).getRate()), 3, RoundingMode.HALF_UP)
+                    .divide(BigDecimal.ONE.add(discountingRate.divide(new BigDecimal("100"), 3, RoundingMode.HALF_UP))
+                        .pow(ide.getYear()), 3, RoundingMode.HALF_UP
+                    )
+                );
+            }
+
+            idesTZeroMap.put(year, ideTZero);
+        }
+
+        return idesTZeroMap.values().stream().parallel().collect(Collectors.toList());
     }
 
     public static IDE calculateIDETZero(BigDecimal discountingRate, List<GrowthRate> growthRates, Integer year, IDE ide) throws IllegalInputException {
+        Map<Integer, GrowthRate> growthRatesMap = checkTenYearsList(growthRates);
         IDE ideTZero = new IDE();
         ideTZero.setYear(year);
 
@@ -207,11 +246,9 @@ public class Calculator {
                 throw new IllegalInputException("For IDEsTZero with year >= 10 you MUST provide the IDE of the 9th year!!!");
             }
 
-            Map<Integer, GrowthRate> growthRateMap = checkGrowthRates(growthRates);
-
             ideTZero.setValue(ide.getValue()
                 .divide(discountingRate.divide(new BigDecimal("100"), 3, RoundingMode.HALF_UP)
-                    .subtract(growthRateMap.get(10).getRate()), 3, RoundingMode.HALF_UP)
+                    .subtract(growthRatesMap.get(10).getRate()), 3, RoundingMode.HALF_UP)
                 .divide(BigDecimal.ONE.add(discountingRate.divide(new BigDecimal("100"), 3, RoundingMode.HALF_UP))
                     .pow(ide.getYear()), 3, RoundingMode.HALF_UP
                 )
@@ -221,10 +258,10 @@ public class Calculator {
         return ideTZero;
     }
 
-    private static Map<Integer, GrowthRate> checkGrowthRates(List<GrowthRate> growthRates) throws IllegalInputException {
-        Map<Integer, GrowthRate> growthRatesMap = growthRates.stream()
+    private static <T extends WithYear> Map<Integer, T> checkTenYearsList(List<T> items) throws IllegalInputException {
+        Map<Integer, T> growthRatesMap = items.stream()
             .parallel()
-            .collect(Collectors.toMap(GrowthRate::getYear, Function.identity()));
+            .collect(Collectors.toMap(T::getYear, Function.identity()));
 
         if (growthRatesMap.size() != 10) {
             throw new IllegalInputException("There must be exactly 10 GrowthRates for 10 years.");
@@ -240,7 +277,7 @@ public class Calculator {
     }
 
     public static IDE calculateIDE(BigDecimal intangibleDrivingEarnings, List<GrowthRate> growthRates, Integer year) throws IllegalInputException {
-        Map<Integer, GrowthRate> growthRatesMap = checkGrowthRates(growthRates);
+        Map<Integer, GrowthRate> growthRatesMap = checkTenYearsList(growthRates);
 
         if (year < 1 || year > 10) {
             throw new IllegalInputException("Year must be between 1 and 10.");
@@ -256,7 +293,7 @@ public class Calculator {
     }
 
     public static List<IDE> calculateIDEs(BigDecimal intangibleDrivingEarnings, List<GrowthRate> growthRates) throws IllegalInputException {
-        Map<Integer, GrowthRate> growthRatesMap = checkGrowthRates(growthRates);
+        Map<Integer, GrowthRate> growthRatesMap = checkTenYearsList(growthRates);
 
         Map<Integer, IDE> idesMap = new HashMap<>();
 

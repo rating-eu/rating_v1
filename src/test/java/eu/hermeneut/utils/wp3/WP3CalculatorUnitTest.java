@@ -92,7 +92,7 @@ public class WP3CalculatorUnitTest {
         this.myAssets.addAll(getFixedAssets());
 
         //Current MyAssets
-        this.myAssets.addAll(getCurrrentAssets());
+        this.myAssets.addAll(getCurrentAssets());
         //Data to calculate the Intangible Capital
 
         //Growth Rates
@@ -322,6 +322,61 @@ public class WP3CalculatorUnitTest {
         }
     }
 
+    @Test
+    public void calculateIDEsTZero() {
+        try {
+            List<IDE> ides = Calculator.calculateIDEs(IDES_INTANGIBLE_DRIVING_EARNINGS, this.growthRates);
+            List<IDE> idesTZero = Calculator.calculateIDEsTZero(IDES_DISCOUNTING_RATE_10_PERCENT, this.growthRates, ides);
+
+            for (IDE ide : idesTZero) {
+                switch (ide.getYear()) {
+                    case 1: {
+                        Assert.assertEquals(IDE1_TZERO_VALUE, ide.getValue());
+                        break;
+                    }
+                    case 2: {
+                        Assert.assertEquals(IDE2_TZERO_VALUE, ide.getValue());
+                        break;
+                    }
+                    case 3: {
+                        Assert.assertEquals(IDE3_TZERO_VALUE, ide.getValue());
+                        break;
+                    }
+                    case 4: {
+                        Assert.assertEquals(IDE4_TZERO_VALUE, ide.getValue());
+                        break;
+                    }
+                    case 5: {
+                        Assert.assertEquals(IDE5_TZERO_VALUE, ide.getValue());
+                        break;
+                    }
+                    case 6: {
+                        Assert.assertEquals(IDE6_TZERO_VALUE, ide.getValue());
+                        break;
+                    }
+                    case 7: {
+                        Assert.assertEquals(IDE7_TZERO_VALUE, ide.getValue());
+                        break;
+                    }
+                    case 8: {
+                        Assert.assertEquals(IDE8_TZERO_VALUE, ide.getValue());
+                        break;
+                    }
+                    case 9: {
+                        Assert.assertEquals(IDE9_TZERO_VALUE, ide.getValue());
+                        break;
+                    }
+                    case 10: {
+                        Assert.assertEquals(IDE10_TZERO_VALUE, ide.getValue());
+                        break;
+                    }
+                }
+            }
+        } catch (IllegalInputException e) {
+            e.printStackTrace();
+        }
+    }
+
     public static List<MyAsset> getFixedAssets() {
         List<MyAsset> fixedAssets = new ArrayList<>();
 
@@ -363,7 +418,7 @@ public class WP3CalculatorUnitTest {
 
     }
 
-    public static List<MyAsset> getCurrrentAssets() {
+    public static List<MyAsset> getCurrentAssets() {
         List<MyAsset> currentAssets = new ArrayList<>();
 
         //Current MyAssets
