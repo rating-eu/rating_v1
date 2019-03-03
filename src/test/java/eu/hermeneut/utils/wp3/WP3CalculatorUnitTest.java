@@ -24,7 +24,7 @@ public class WP3CalculatorUnitTest {
     private static final BigDecimal PHYSICAL_ASSETS_RETURN = new BigDecimal("7.1");
     private static final BigDecimal FINANCIAL_ASSETS_RETURN = new BigDecimal("5");
     private static final BigDecimal INTANGIBLE_DRIVING_EARNINGS = new BigDecimal("65452504.72");
-    private static final BigDecimal INTANGIBLE_CAPITAL = new BigDecimal("59502277.02");
+    private static final BigDecimal INTANGIBLE_CAPITAL_OLD = new BigDecimal("59502277.02");
     public static final BigDecimal IDES_INTANGIBLE_DRIVING_EARNINGS = new BigDecimal("121264.61");
     public static final BigDecimal IDE1_VALUE = new BigDecimal("139454.302");
     public static final BigDecimal IDE1_TZERO_VALUE = new BigDecimal("126776.638");
@@ -47,6 +47,7 @@ public class WP3CalculatorUnitTest {
     public static final BigDecimal IDE10_VALUE = new BigDecimal("354192.905");
     public static final BigDecimal IDE10_TZERO_VALUE = new BigDecimal("2083389.286");
     public static final BigDecimal IDES_DISCOUNTING_RATE_10_PERCENT = new BigDecimal("10");
+    public static final BigDecimal INTANGIBLE_CAPITAL = new BigDecimal("3385951.55");
 
     private List<EBIT> ebits;
     private List<MyAsset> myAssets;
@@ -125,15 +126,29 @@ public class WP3CalculatorUnitTest {
     }
 
     @Test
-    public void calculateIntangibleCapital() {
+    public void calculateIntangibleCapitalOLD() {
         BigDecimal intangibleCapital = Calculator.calculateIntangibleCapital(INTANGIBLE_DRIVING_EARNINGS, DISCOUNTING_RATE);
 
-        Assert.assertEquals(INTANGIBLE_CAPITAL, intangibleCapital);
+        Assert.assertEquals(INTANGIBLE_CAPITAL_OLD, intangibleCapital);
+    }
+
+    @Test
+    public void calculateIntangibleCapital() {
+        try {
+            List<IDE> ides = Calculator.calculateIDEs(IDES_INTANGIBLE_DRIVING_EARNINGS, this.growthRates);
+            List<IDE> idesTZero = Calculator.calculateIDEsTZero(IDES_DISCOUNTING_RATE_10_PERCENT, this.growthRates, ides);
+
+            BigDecimal intangibleCapital = Calculator.calculateIntangibleCapital(idesTZero);
+
+            Assert.assertEquals(INTANGIBLE_CAPITAL, intangibleCapital);
+        } catch (IllegalInputException e) {
+            e.printStackTrace();
+        }
     }
 
     @Test
     public void calculateIntangibleLossByAttacks() {
-        BigDecimal intangibleLossByAttacks = Calculator.calculateIntangibleLossByAttacks(INTANGIBLE_CAPITAL, LOSS_OF_INTANGIBLE_PERCENTAGE);
+        BigDecimal intangibleLossByAttacks = Calculator.calculateIntangibleLossByAttacks(INTANGIBLE_CAPITAL_OLD, LOSS_OF_INTANGIBLE_PERCENTAGE);
 
         Assert.assertEquals(INTANGIBLE_LOSS_BY_ATTACKS, intangibleLossByAttacks);
     }
@@ -161,21 +176,21 @@ public class WP3CalculatorUnitTest {
 
     @Test
     public void calculateGlobalIPSplittingValue() {
-        BigDecimal ipSplittingValue = Calculator.calculateSplittingValue(INTANGIBLE_CAPITAL, IP_CATEGORY, GLOBAL_SECTOR);
+        BigDecimal ipSplittingValue = Calculator.calculateSplittingValue(INTANGIBLE_CAPITAL_OLD, IP_CATEGORY, GLOBAL_SECTOR);
 
         Assert.assertEquals(IP_SPLITTING_VALUE, ipSplittingValue);
     }
 
     @Test
     public void calculateGlobalKeyCompSplittingValue() {
-        BigDecimal keyCompSplittingValue = Calculator.calculateSplittingValue(INTANGIBLE_CAPITAL, KEY_COMP_CATEGORY, GLOBAL_SECTOR);
+        BigDecimal keyCompSplittingValue = Calculator.calculateSplittingValue(INTANGIBLE_CAPITAL_OLD, KEY_COMP_CATEGORY, GLOBAL_SECTOR);
 
         Assert.assertEquals(KEY_COMP_SPLITTING_VALUE, keyCompSplittingValue);
     }
 
     @Test
     public void calculateGlobalOrganisationalCapitalSplittingValue() {
-        BigDecimal orgSplittingValue = Calculator.calculateSplittingValue(INTANGIBLE_CAPITAL, ORG_CAPITAL_CATEGORY, GLOBAL_SECTOR);
+        BigDecimal orgSplittingValue = Calculator.calculateSplittingValue(INTANGIBLE_CAPITAL_OLD, ORG_CAPITAL_CATEGORY, GLOBAL_SECTOR);
 
         Assert.assertEquals(ORG_CAPITAL_SPLITTING_VALUE, orgSplittingValue);
     }

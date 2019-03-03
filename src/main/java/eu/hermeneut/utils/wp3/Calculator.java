@@ -327,12 +327,21 @@ public class Calculator {
         idesMap.put(y, ide);
     }
 
+    @Deprecated
     public static BigDecimal calculateIntangibleCapital(BigDecimal intangibleDrivingEarnings, BigDecimal discountingRate) {
         BigDecimal intangibleCapital = BigDecimal.ZERO;
 
         intangibleCapital = intangibleCapital.add(intangibleDrivingEarnings.divide(BigDecimal.ONE.add(discountingRate.divide(new BigDecimal(100))), 2, RoundingMode.HALF_UP));
 
         return intangibleCapital;
+    }
+
+    public static BigDecimal calculateIntangibleCapital(List<IDE> idesTZero) throws IllegalInputException {
+        checkTenYearsList(idesTZero);
+
+        BigDecimal intangibleCapital = idesTZero.stream().map(ide -> ide.getValue()).reduce(BigDecimal.ZERO, BigDecimal::add);
+
+        return intangibleCapital.setScale(2, RoundingMode.HALF_UP);
     }
 
     public static BigDecimal calculateIntangibleLossByAttacks(BigDecimal intangibleCapital, BigDecimal lossOfIntangiblePercentage) {
