@@ -21,9 +21,9 @@ public class WP3CalculatorUnitTest {
     private static final BigDecimal DISCOUNTING_RATE = new BigDecimal("10");
 
     private static final BigDecimal TEN_PERCENT_DISCOUNTING_RATE_ECONOMIC_PERFORMANCE = new BigDecimal("65726354.72");
-    private static final BigDecimal PHYSICAL_ASSETS_RETURN = new BigDecimal("7.1");
-    private static final BigDecimal FINANCIAL_ASSETS_RETURN = new BigDecimal("5");
-    private static final BigDecimal INTANGIBLE_DRIVING_EARNINGS = new BigDecimal("65452504.72");
+    private static final BigDecimal PHYSICAL_ASSETS_RETURN = new BigDecimal("7");
+    private static final BigDecimal FINANCIAL_ASSETS_RETURN = new BigDecimal("5.5");
+    private static final BigDecimal INTANGIBLE_DRIVING_EARNINGS = new BigDecimal("121264.61");
     private static final BigDecimal INTANGIBLE_CAPITAL_OLD = new BigDecimal("59502277.02");
     public static final BigDecimal IDES_INTANGIBLE_DRIVING_EARNINGS = new BigDecimal("121264.61");
     public static final BigDecimal IDE1_VALUE = new BigDecimal("139454.302");
@@ -48,6 +48,8 @@ public class WP3CalculatorUnitTest {
     public static final BigDecimal IDE10_TZERO_VALUE = new BigDecimal("2083389.286");
     public static final BigDecimal IDES_DISCOUNTING_RATE_10_PERCENT = new BigDecimal("10");
     public static final BigDecimal INTANGIBLE_CAPITAL = new BigDecimal("3385951.55");
+    public static final BigDecimal LONG_TERM_LIABILITIES = new BigDecimal("140458.00");
+    public static final BigDecimal CURRENT_LIABILITIES = new BigDecimal("100814.00");
 
     private List<EBIT> ebits;
     private List<MyAsset> myAssets;
@@ -120,7 +122,11 @@ public class WP3CalculatorUnitTest {
 
     @Test
     public void calculateIntangibleDrivingEarnings() {
-        BigDecimal intangibleDrivingEarnings = Calculator.calculateIntangibleDrivingEarnings(TEN_PERCENT_DISCOUNTING_RATE_ECONOMIC_PERFORMANCE, PHYSICAL_ASSETS_RETURN, FINANCIAL_ASSETS_RETURN, this.myAssets);
+        BigDecimal intangibleDrivingEarnings =
+            Calculator.calculateIntangibleDrivingEarnings(new BigDecimal("36556.89"),
+                PHYSICAL_ASSETS_RETURN, LONG_TERM_LIABILITIES,
+                FINANCIAL_ASSETS_RETURN, CURRENT_LIABILITIES,
+                this.myAssets);
 
         Assert.assertEquals(INTANGIBLE_DRIVING_EARNINGS, intangibleDrivingEarnings);
     }
@@ -397,30 +403,15 @@ public class WP3CalculatorUnitTest {
         fixedAsset.setName("Fixed");
         fixedAsset.setAssetcategory(fixedAssetsCategory);
 
-        MyAsset equipment = new MyAsset();
-        equipment.setAsset(fixedAsset);
-        equipment.setEconomicValue(new BigDecimal("100000"));
-        fixedAssets.add(equipment);
+        MyAsset inventories = new MyAsset();
+        inventories.setAsset(fixedAsset);
+        inventories.setEconomicValue(new BigDecimal("4855.00"));
+        fixedAssets.add(inventories);
 
-        MyAsset land = new MyAsset();
-        land.setAsset(fixedAsset);
-        land.setEconomicValue(new BigDecimal("100000"));
-        fixedAssets.add(land);
-
-        MyAsset buildings = new MyAsset();
-        buildings.setAsset(fixedAsset);
-        buildings.setEconomicValue(new BigDecimal("1000000"));
-        fixedAssets.add(buildings);
-
-        MyAsset plantsAndMachinery = new MyAsset();
-        plantsAndMachinery.setAsset(fixedAsset);
-        plantsAndMachinery.setEconomicValue(new BigDecimal("400000"));
-        fixedAssets.add(plantsAndMachinery);
-
-        MyAsset furnitureAndOfficeSupplies = new MyAsset();
-        furnitureAndOfficeSupplies.setAsset(fixedAsset);
-        furnitureAndOfficeSupplies.setEconomicValue(new BigDecimal("250000"));
-        fixedAssets.add(furnitureAndOfficeSupplies);
+        MyAsset propertyPlanAndEquipment = new MyAsset();
+        propertyPlanAndEquipment.setAsset(fixedAsset);
+        propertyPlanAndEquipment.setEconomicValue(new BigDecimal("33783.00"));
+        fixedAssets.add(propertyPlanAndEquipment);
 
         return fixedAssets;
 
@@ -438,40 +429,10 @@ public class WP3CalculatorUnitTest {
         currentAsset.setName("Current");
         currentAsset.setAssetcategory(currentAssetsCategory);
 
-        MyAsset rawAndStockMaterial = new MyAsset();
-        rawAndStockMaterial.setAsset(currentAsset);
-        rawAndStockMaterial.setEconomicValue(new BigDecimal("100000"));
-        currentAssets.add(rawAndStockMaterial);
-
-        MyAsset insurancePremiums = new MyAsset();
-        insurancePremiums.setAsset(currentAsset);
-        insurancePremiums.setEconomicValue(new BigDecimal("1000000"));
-        currentAssets.add(insurancePremiums);
-
-        MyAsset equities = new MyAsset();
-        equities.setAsset(currentAsset);
-        equities.setEconomicValue(new BigDecimal("100000"));
-        currentAssets.add(equities);
-
-        MyAsset certificateOfDeposit = new MyAsset();
-        certificateOfDeposit.setAsset(currentAsset);
-        certificateOfDeposit.setEconomicValue(new BigDecimal("1000000"));
-        currentAssets.add(certificateOfDeposit);
-
-        MyAsset corporateBondsAndStocks = new MyAsset();
-        corporateBondsAndStocks.setAsset(currentAsset);
-        corporateBondsAndStocks.setEconomicValue(new BigDecimal("300000"));
-        currentAssets.add(corporateBondsAndStocks);
-
-        MyAsset temporaryInvestments = new MyAsset();
-        temporaryInvestments.setAsset(currentAsset);
-        temporaryInvestments.setEconomicValue(new BigDecimal("100000"));
-        currentAssets.add(temporaryInvestments);
-
-        MyAsset cash = new MyAsset();
-        cash.setAsset(currentAsset);
-        cash.setEconomicValue(new BigDecimal("250000"));
-        currentAssets.add(cash);
+        MyAsset myCurrentAsset = new MyAsset();
+        myCurrentAsset.setAsset(currentAsset);
+        myCurrentAsset.setEconomicValue(new BigDecimal("123790.00"));
+        currentAssets.add(myCurrentAsset);
 
         return currentAssets;
     }

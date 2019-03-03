@@ -279,7 +279,8 @@ public class WP3StepsController {
 
             BigDecimal economicPerformance = existingEconomicResults.getEconomicPerformance();
 
-            BigDecimal intangibleDrivingEarnings = Calculator.calculateIntangibleDrivingEarnings(economicPerformance, physicalAssetsReturn, financialAssetsReturn, myAssets);
+            BigDecimal intangibleDrivingEarnings = Calculator.calculateIntangibleDrivingEarnings(economicPerformance,
+                physicalAssetsReturn, longTermLiabilities, financialAssetsReturn, currentLiabilities, myAssets);
 
             List<GrowthRate> growthRates = this.growthRateService.findAllBySelfAssessment(selfAssessmentID);
 

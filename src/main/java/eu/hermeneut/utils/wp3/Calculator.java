@@ -138,7 +138,12 @@ public class Calculator {
         return result;
     }
 
-    public static BigDecimal calculateIntangibleDrivingEarnings(BigDecimal economicPerformance, BigDecimal physicalAssetsReturn, BigDecimal financialAssetsReturn, List<MyAsset> myAssets) {
+    public static BigDecimal calculateIntangibleDrivingEarnings(BigDecimal economicPerformance,
+                                                                BigDecimal physicalAssetsReturn,
+                                                                BigDecimal longTermLiabilities,
+                                                                BigDecimal financialAssetsReturn,
+                                                                BigDecimal currentLiabilities,
+                                                                List<MyAsset> myAssets) {
         if (myAssets == null) {
             throw new IllegalArgumentException("MyAssets can NOT be NULL!");
         }
@@ -174,15 +179,22 @@ public class Calculator {
             physicalAssetsValuation = physicalAssetsValuation.add(physicalAsset.getEconomicValue());
         }
 
+        physicalAssetsValuation = physicalAssetsValuation.subtract(longTermLiabilities);
+
         //Financial Assets
         for (MyAsset financialAsset : financialAssets) {
             financialAssetsValuation = financialAssetsValuation.add(financialAsset.getEconomicValue());
         }
 
-        intangibleDrivingEarnings = intangibleDrivingEarnings.subtract(physicalAssetsReturn.multiply(physicalAssetsValuation).divide(new BigDecimal("100"), 2, RoundingMode.HALF_UP));
-        intangibleDrivingEarnings = intangibleDrivingEarnings.subtract(financialAssetsReturn.multiply(financialAssetsValuation).divide(new BigDecimal("100"), 2, RoundingMode.HALF_UP));
+        financialAssetsValuation = financialAssetsValuation.subtract(currentLiabilities);
 
-        return intangibleDrivingEarnings;
+        BigDecimal physicalAssetsSubtrahend = (BigDecimal.ONE.add(physicalAssetsReturn.divide(new BigDecimal("100"), 3, RoundingMode.HALF_UP)).multiply(physicalAssetsValuation));
+        BigDecimal financialAssetsSubtrahend = (BigDecimal.ONE.add(financialAssetsReturn.divide(new BigDecimal("100"), 3, RoundingMode.HALF_UP)).multiply(financialAssetsValuation));
+
+        intangibleDrivingEarnings = intangibleDrivingEarnings.subtract(physicalAssetsSubtrahend);
+        intangibleDrivingEarnings = intangibleDrivingEarnings.subtract(financialAssetsSubtrahend);
+
+        return intangibleDrivingEarnings.setScale(2, RoundingMode.HALF_UP);
     }
 
     public static List<IDE> calculateIDEsTZero(BigDecimal discountingRate, List<GrowthRate> growthRates, List<IDE> ides) throws IllegalInputException {
