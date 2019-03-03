@@ -126,13 +126,6 @@ public class WP3CalculatorUnitTest {
     }
 
     @Test
-    public void calculateIntangibleCapitalOLD() {
-        BigDecimal intangibleCapital = Calculator.calculateIntangibleCapital(INTANGIBLE_DRIVING_EARNINGS, DISCOUNTING_RATE);
-
-        Assert.assertEquals(INTANGIBLE_CAPITAL_OLD, intangibleCapital);
-    }
-
-    @Test
     public void calculateIntangibleCapital() {
         try {
             List<IDE> ides = Calculator.calculateIDEs(IDES_INTANGIBLE_DRIVING_EARNINGS, this.growthRates);

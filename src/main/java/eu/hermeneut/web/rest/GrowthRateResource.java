@@ -15,11 +15,7 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.constraints.NotNull;
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
@@ -34,22 +30,6 @@ public class GrowthRateResource {
     @Autowired
     private GrowthRateService growthRateService;
 
-    private static final Map<Integer, BigDecimal> GROWTH_MAP = new HashMap<>();
-
-    static {
-        GROWTH_MAP.put(1, new BigDecimal("0.150"));
-        GROWTH_MAP.put(2, new BigDecimal("0.150"));
-        GROWTH_MAP.put(3, new BigDecimal("0.150"));
-        GROWTH_MAP.put(4, new BigDecimal("0.150"));
-        GROWTH_MAP.put(5, new BigDecimal("0.150"));
-
-        GROWTH_MAP.put(6, new BigDecimal("0.126"));
-        GROWTH_MAP.put(7, new BigDecimal("0.102"));
-        GROWTH_MAP.put(8, new BigDecimal("0.078"));
-        GROWTH_MAP.put(9, new BigDecimal("0.054"));
-        GROWTH_MAP.put(10, new BigDecimal("0.030"));
-    }
-
     @GetMapping("/{selfAssessmentID}/growth-rates")
     @Secured({AuthoritiesConstants.CISO})
     public List<GrowthRate> getGrowthRatesBySelfAssessment(@PathVariable("selfAssessmentID") Long selfAssessmentID) throws NotFoundException {
@@ -61,25 +41,7 @@ public class GrowthRateResource {
             throw new NotFoundException("SelfAssessment NOT Found!");
         }
 
-        List<GrowthRate> growthRates = this.growthRateService.findAllBySelfAssessment(selfAssessmentID);
-
-        if (growthRates == null || growthRates.isEmpty()) {
-            growthRates = new ArrayList<>();
-
-            for (int year = 1; year <= 10; year++) {
-                final GrowthRate growthRate = new GrowthRate();
-                growthRate.setYear(year);
-                growthRate.setRate(GROWTH_MAP.get(year));
-
-                growthRate.setSelfAssessment(selfAssessment);
-
-                growthRates.add(growthRate);
-            }
-
-            growthRates = this.growthRateService.saveAll(growthRates);
-        }
-
-        return growthRates;
+        return this.growthRateService.findAllBySelfAssessment(selfAssessmentID);
     }
 
     @PutMapping("/{selfAssessmentID}/growth-rates")

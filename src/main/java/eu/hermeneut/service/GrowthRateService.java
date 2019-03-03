@@ -1,6 +1,7 @@
 package eu.hermeneut.service;
 
 import eu.hermeneut.domain.GrowthRate;
+import eu.hermeneut.exceptions.NotFoundException;
 
 import java.util.List;
 
@@ -44,9 +45,11 @@ public interface GrowthRateService {
     void delete(Long id);
 
     /**
-     * Get all the GrowthRates by SelfAssessment.
+     * Returns the existing GrowthRates or creates the DEFAULT GrowthRates for the given SelfAssessment.
      *
-     * @return the list of entities of the SelfAssessment
+     * @param selfAssessmentID the SelfAssessment for which to get the GrowthRates.
+     * @return Returns the existing GrowthRates or creates the DEFAULT GrowthRates for the given SelfAssessment.
+     * @throws NotFoundException if the SelfAssessment does NOT Exist!!!
      */
-    List<GrowthRate> findAllBySelfAssessment(Long selfAssessmentID);
+    List<GrowthRate> findAllBySelfAssessment(Long selfAssessmentID) throws NotFoundException;
 }
