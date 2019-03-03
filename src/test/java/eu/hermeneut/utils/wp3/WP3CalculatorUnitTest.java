@@ -159,37 +159,87 @@ public class WP3CalculatorUnitTest {
     }
 
     @Test
-    public void calculateIDEs() {
+    public void calculateIDEsAndIDEsTZero() {
         try {
             IDE ide1 = Calculator.calculateIDE(new BigDecimal("121264.61"), this.growthRates, 1);
             Assert.assertEquals(new BigDecimal("139454.302"), ide1.getValue());
 
+            IDE ideTZero1 = Calculator.calculateIDETZero(new BigDecimal("10"), this.growthRates, 1, ide1);
+            Assert.assertEquals(new BigDecimal("126776.638"), ideTZero1.getValue());
+
+            //==============================================================================================
+
             IDE ide2 = Calculator.calculateIDE(new BigDecimal("121264.61"), this.growthRates, 2);
             Assert.assertEquals(new BigDecimal("160372.447"), ide2.getValue());
+
+            IDE ideTZero2 = Calculator.calculateIDETZero(new BigDecimal("10"), this.growthRates, 2, ide2);
+            Assert.assertEquals(new BigDecimal("132539.212"), ideTZero2.getValue());
+
+            //==============================================================================================
 
             IDE ide3 = Calculator.calculateIDE(new BigDecimal("121264.61"), this.growthRates, 3);
             Assert.assertEquals(new BigDecimal("184428.314"), ide3.getValue());
 
+            IDE ideTZero3 = Calculator.calculateIDETZero(new BigDecimal("10"), this.growthRates, 3, ide3);
+            Assert.assertEquals(new BigDecimal("138563.722"), ideTZero3.getValue());
+
+            //==============================================================================================
+
             IDE ide4 = Calculator.calculateIDE(new BigDecimal("121264.61"), this.growthRates, 4);
             Assert.assertEquals(new BigDecimal("212092.561"), ide4.getValue());
+
+            IDE ideTZero4 = Calculator.calculateIDETZero(new BigDecimal("10"), this.growthRates, 4, ide4);
+            Assert.assertEquals(new BigDecimal("144862.073"), ideTZero4.getValue());
+
+            //==============================================================================================
 
             IDE ide5 = Calculator.calculateIDE(new BigDecimal("121264.61"), this.growthRates, 5);
             Assert.assertEquals(new BigDecimal("243906.445"), ide5.getValue());
 
+            IDE ideTZero5 = Calculator.calculateIDETZero(new BigDecimal("10"), this.growthRates, 5, ide5);
+            Assert.assertEquals(new BigDecimal("151446.713"), ideTZero5.getValue());
+
+            //==============================================================================================
+
             IDE ide6 = Calculator.calculateIDE(new BigDecimal("121264.61"), this.growthRates, 6);
             Assert.assertEquals(new BigDecimal("274638.657"), ide6.getValue());
+
+            IDE ideTZero6 = Calculator.calculateIDETZero(new BigDecimal("10"), this.growthRates, 6, ide6);
+            Assert.assertEquals(new BigDecimal("155026.362"), ideTZero6.getValue());
+
+            //==============================================================================================
 
             IDE ide7 = Calculator.calculateIDE(new BigDecimal("121264.61"), this.growthRates, 7);
             Assert.assertEquals(new BigDecimal("302651.800"), ide7.getValue());
 
+            IDE ideTZero7 = Calculator.calculateIDETZero(new BigDecimal("10"), this.growthRates, 7, ide7);
+            Assert.assertEquals(new BigDecimal("155308.228"), ideTZero7.getValue());
+
+            //==============================================================================================
+
             IDE ide8 = Calculator.calculateIDE(new BigDecimal("121264.61"), this.growthRates, 8);
             Assert.assertEquals(new BigDecimal("326258.640"), ide8.getValue());
+
+            IDE ideTZero8 = Calculator.calculateIDETZero(new BigDecimal("10"), this.growthRates, 8, ide8);
+            Assert.assertEquals(new BigDecimal("152202.063"), ideTZero8.getValue());
+
+            //==============================================================================================
 
             IDE ide9 = Calculator.calculateIDE(new BigDecimal("121264.61"), this.growthRates, 9);
             Assert.assertEquals(new BigDecimal("343876.607"), ide9.getValue());
 
+            IDE ideTZero9 = Calculator.calculateIDETZero(new BigDecimal("10"), this.growthRates, 9, ide9);
+            Assert.assertEquals(new BigDecimal("145837.250"), ideTZero9.getValue());
+
+            //==============================================================================================
+
             IDE ide10 = Calculator.calculateIDE(new BigDecimal("121264.61"), this.growthRates, 10);
             Assert.assertEquals(new BigDecimal("354192.905"), ide10.getValue());
+
+            IDE ideTZero10 = Calculator.calculateIDETZero(new BigDecimal("10"), this.growthRates, 10, ide9);
+            Assert.assertEquals(new BigDecimal("2083389.286"), ideTZero10.getValue());
+
+            //==============================================================================================
 
         } catch (IllegalInputException e) {
             e.printStackTrace();

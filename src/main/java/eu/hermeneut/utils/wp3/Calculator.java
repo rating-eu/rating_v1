@@ -189,9 +189,42 @@ public class Calculator {
         return null;
     }
 
-    public static IDE calculateIDETZero() {
+    public static IDE calculateIDETZero(BigDecimal discountingRate, List<GrowthRate> growthRates, Integer year, IDE ide) throws IllegalInputException {
+        IDE ideTZero = new IDE();
+        ideTZero.setYear(year);
 
-        return null;
+        if (year < 10) {
+            if (year != ide.getYear()) {
+                throw new IllegalInputException("For IDEsTZero with year < 10 you MUST provide the IDE of the same year!!!");
+            }
+
+            ideTZero.setValue(ide.getValue()
+                .divide(BigDecimal.ONE.add(discountingRate.divide(new BigDecimal("100"), 3, RoundingMode.HALF_UP))
+                    .pow(ide.getYear()), 3, RoundingMode.HALF_UP
+                ));
+        } else {
+            if (ide.getYear() != 9) {
+                throw new IllegalInputException("For IDEsTZero with year >= 10 you MUST provide the IDE of the 9th year!!!");
+            }
+
+            Map<Integer, GrowthRate> growthRateMap = growthRates.stream()
+                .parallel()
+                .collect(Collectors.toMap(GrowthRate::getYear, Function.identity()));
+
+            if (growthRateMap.size() != 10) {
+                throw new IllegalInputException("There must be exactly 10 GrowthRates for 10 years.");
+            }
+
+            ideTZero.setValue(ide.getValue()
+                .divide(discountingRate.divide(new BigDecimal("100"), 3, RoundingMode.HALF_UP)
+                    .subtract(growthRateMap.get(10).getRate()), 3, RoundingMode.HALF_UP)
+                .divide(BigDecimal.ONE.add(discountingRate.divide(new BigDecimal("100"), 3, RoundingMode.HALF_UP))
+                    .pow(ide.getYear()), 3, RoundingMode.HALF_UP
+                )
+            );
+        }
+
+        return ideTZero;
     }
 
     public static IDE calculateIDE(BigDecimal intangibleDrivingEarnings, List<GrowthRate> growthRates, Integer year) throws IllegalInputException {
@@ -229,7 +262,6 @@ public class Calculator {
                 ide.setValue(value);
             }
 
-            LOGGER.warn("" + ide);
             idesMap.put(y, ide);
         }
 
