@@ -241,6 +241,10 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                             {
                                 label: 'Estimation of the Data Assets category Losses',
                                 routerLink: ['/impact-evaluation/data-assets-losses-estimation']
+                            },
+                            {
+                                label: 'Growth rates configurator',
+                                routerLink: ['/impact-evaluation/growth-rates-configurator']
                             }
                         ]
                     },

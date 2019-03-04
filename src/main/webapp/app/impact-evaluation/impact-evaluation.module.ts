@@ -18,6 +18,7 @@ import {JhiLanguageService} from 'ng-jhipster';
 import { MyCompanyMgmService } from '../entities/my-company-mgm';
 import { AttackRelatedCostsEstimationComponent } from './attack-related-costs-estimation/attack-related-costs-estimation.component';
 import { DataAssetsLossesEstimationComponent } from './data-assets-losses-estimation/data-assets-losses-estimation.component';
+import { GrowthRatesConfiguratorComponentComponent } from './growth-rates-configurator-component/growth-rates-configurator-component.component';
 
 @NgModule({
   imports: [
@@ -30,7 +31,8 @@ import { DataAssetsLossesEstimationComponent } from './data-assets-losses-estima
   declarations: [
     ImpactEvaluationComponent,
     AttackRelatedCostsEstimationComponent,
-    DataAssetsLossesEstimationComponent
+    DataAssetsLossesEstimationComponent,
+    GrowthRatesConfiguratorComponentComponent
   ],
   exports: [
     ImpactEvaluationComponent
