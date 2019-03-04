@@ -1,0 +1,31 @@
+<div class="container" *ngIf="loading">
+  <div class="loader"></div>
+</div>
+<ng-container class="row" *ngIf="rates.length > 0">
+  <div class="card">
+    <div class="card-body">
+      <h5 class="card-title">Growth rates</h5>
+      <div class="card-text">
+        <div class="col-md-12">
+          <ng-container *ngFor="let rate of rates; let index = index">
+            <div class="input-group" style="margin-bottom: 10px">
+              <div class="input-group-prepend">
+                <span class="input-group-text" id="rate{{index}}">Year {{rate.year}}</span>
+              </div>
+              <input type="number" min="0" step="any" class="form-control" placeholder="{{rate.year}}" aria-label="rate"
+                aria-describedby="basic-addon2" [(ngModel)]="rate.rate">
+            </div>
+          </ng-container>
+        </div>
+        <div class="col-md-12" style="margin-bottom: 20px">
+            <div class="col-md-1">
+                <button class="btn btn-primary" style="margin-left: 10px" (click)="updateRates()">Save</button>
+            </div>
+            <div class="col-md-1 offset-md-10">
+                <button class="btn btn-light" (click)="close()">Close</button>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-container>

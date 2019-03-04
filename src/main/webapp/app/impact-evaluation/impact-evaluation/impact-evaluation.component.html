@@ -255,6 +255,11 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                <tr *ngFor="let rate of rates">
+                                    <td>{{rate.year}}</td>
+                                    <td>{{rate.rate}}</td>
+                                </tr>
+                                <!--
                                 <tr>
                                     <td>1</td>
                                     <td>0,150</td>
@@ -296,6 +301,7 @@
                                     <td>10 and over...</td>
                                     <td>0,030</td>
                                 </tr>
+                                -->
                             </tbody>
                         </table>
                     </div>

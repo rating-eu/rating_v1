@@ -14,6 +14,11 @@
             "home": {
                 "title": "Valutazione delle perdite relative agli assets della categoria Data"
             }
+        },
+        "growthRatesConfigurator" : {
+            "home": {
+                "title": "Configuratore dei tassi di crescita"
+            }
         }
     }
 }
