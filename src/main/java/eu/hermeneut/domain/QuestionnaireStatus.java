@@ -56,17 +56,17 @@ public class QuestionnaireStatus implements Serializable {
 
     @NotNull
     @ManyToOne
-    @JoinColumn(name = "self_assessment_id")
+    @JoinColumn(name = "self_assessment_id", nullable = false)
     private SelfAssessment selfAssessment;
 
     @NotNull
     @ManyToOne
-    @JoinColumn(name = "questionnaire_id")
+    @JoinColumn(name = "questionnaire_id", nullable = false)
     private Questionnaire questionnaire;
 
     @NotNull
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     @OneToMany(mappedBy = "questionnaireStatus", fetch = FetchType.EAGER,

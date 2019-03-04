@@ -4,6 +4,7 @@ import com.codahale.metrics.annotation.Timed;
 import eu.hermeneut.domain.*;
 import eu.hermeneut.domain.enumeration.CategoryType;
 import eu.hermeneut.domain.enumeration.SectorType;
+import eu.hermeneut.domain.wp3.IDE;
 import eu.hermeneut.domain.wp3.WP3InputBundle;
 import eu.hermeneut.domain.wp3.WP3OutputBundle;
 import eu.hermeneut.exceptions.IllegalInputException;
@@ -52,6 +53,9 @@ public class WP3StepsController {
 
     @Autowired
     private MyAssetService myAssetService;
+
+    @Autowired
+    private GrowthRateService growthRateService;
 
     private static final Map<Long, Object> SELF_ASSESSMENT_LOCK = new HashMap<>();
 
@@ -275,9 +279,15 @@ public class WP3StepsController {
 
             BigDecimal economicPerformance = existingEconomicResults.getEconomicPerformance();
 
-            BigDecimal intangibleDrivingEarnings = Calculator.calculateIntangibleDrivingEarnings(economicPerformance, physicalAssetsReturn, financialAssetsReturn, myAssets);
+            BigDecimal intangibleDrivingEarnings = Calculator.calculateIntangibleDrivingEarnings(economicPerformance,
+                physicalAssetsReturn, longTermLiabilities, financialAssetsReturn, currentLiabilities, myAssets);
 
-            BigDecimal intangibleCapital = Calculator.calculateIntangibleCapital(intangibleDrivingEarnings, discountingRate);
+            List<GrowthRate> growthRates = this.growthRateService.findAllBySelfAssessment(selfAssessmentID);
+
+            List<IDE> ides = Calculator.calculateIDEs(intangibleDrivingEarnings, growthRates);
+            List<IDE> idesTZero = Calculator.calculateIDEsTZero(discountingRate, growthRates, ides);
+
+            BigDecimal intangibleCapital = Calculator.calculateIntangibleCapital(idesTZero);
 
             //Update fields
             existingEconomicResults.setIntangibleDrivingEarnings(intangibleDrivingEarnings);

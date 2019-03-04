@@ -1,17 +1,19 @@
 package eu.hermeneut.utils.wp3;
 
-import eu.hermeneut.domain.Asset;
-import eu.hermeneut.domain.AssetCategory;
-import eu.hermeneut.domain.EBIT;
-import eu.hermeneut.domain.MyAsset;
+import eu.hermeneut.domain.*;
 import eu.hermeneut.domain.enumeration.CategoryType;
 import eu.hermeneut.domain.enumeration.SectorType;
+import eu.hermeneut.domain.interfaces.WithYear;
+import eu.hermeneut.domain.wp3.IDE;
+import eu.hermeneut.exceptions.IllegalInputException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public class Calculator {
 
@@ -136,7 +138,12 @@ public class Calculator {
         return result;
     }
 
-    public static BigDecimal calculateIntangibleDrivingEarnings(BigDecimal economicPerformance, BigDecimal physicalAssetsReturn, BigDecimal financialAssetsReturn, List<MyAsset> myAssets) {
+    public static BigDecimal calculateIntangibleDrivingEarnings(BigDecimal economicPerformance,
+                                                                BigDecimal physicalAssetsReturn,
+                                                                BigDecimal longTermLiabilities,
+                                                                BigDecimal financialAssetsReturn,
+                                                                BigDecimal currentLiabilities,
+                                                                List<MyAsset> myAssets) {
         if (myAssets == null) {
             throw new IllegalArgumentException("MyAssets can NOT be NULL!");
         }
@@ -172,23 +179,172 @@ public class Calculator {
             physicalAssetsValuation = physicalAssetsValuation.add(physicalAsset.getEconomicValue());
         }
 
+        physicalAssetsValuation = physicalAssetsValuation.subtract(longTermLiabilities);
+
         //Financial Assets
         for (MyAsset financialAsset : financialAssets) {
             financialAssetsValuation = financialAssetsValuation.add(financialAsset.getEconomicValue());
         }
 
-        intangibleDrivingEarnings = intangibleDrivingEarnings.subtract(physicalAssetsReturn.multiply(physicalAssetsValuation).divide(new BigDecimal("100"), 2, RoundingMode.HALF_UP));
-        intangibleDrivingEarnings = intangibleDrivingEarnings.subtract(financialAssetsReturn.multiply(financialAssetsValuation).divide(new BigDecimal("100"), 2, RoundingMode.HALF_UP));
+        financialAssetsValuation = financialAssetsValuation.subtract(currentLiabilities);
 
-        return intangibleDrivingEarnings;
+        BigDecimal physicalAssetsSubtrahend = (BigDecimal.ONE.add(physicalAssetsReturn.divide(new BigDecimal("100"), 3, RoundingMode.HALF_UP)).multiply(physicalAssetsValuation));
+        BigDecimal financialAssetsSubtrahend = (BigDecimal.ONE.add(financialAssetsReturn.divide(new BigDecimal("100"), 3, RoundingMode.HALF_UP)).multiply(financialAssetsValuation));
+
+        intangibleDrivingEarnings = intangibleDrivingEarnings.subtract(physicalAssetsSubtrahend);
+        intangibleDrivingEarnings = intangibleDrivingEarnings.subtract(financialAssetsSubtrahend);
+
+        return intangibleDrivingEarnings.setScale(2, RoundingMode.HALF_UP);
     }
 
-    public static BigDecimal calculateIntangibleCapital(BigDecimal intangibleDrivingEarnings, BigDecimal discountingRate) {
-        BigDecimal intangibleCapital = BigDecimal.ZERO;
+    public static List<IDE> calculateIDEsTZero(BigDecimal discountingRate, List<GrowthRate> growthRates, List<IDE> ides) throws IllegalInputException {
+        Map<Integer, GrowthRate> growthRatesMap = checkTenYearsList(growthRates);
+        Map<Integer, IDE> idesMap = checkTenYearsList(ides);
+        Map<Integer, IDE> idesTZeroMap = new HashMap<>();
 
-        intangibleCapital = intangibleCapital.add(intangibleDrivingEarnings.divide(BigDecimal.ONE.add(discountingRate.divide(new BigDecimal(100))), 2, RoundingMode.HALF_UP));
+        for (int year = 1; year <= 10; year++) {
+            IDE ideTZero = new IDE();
+            ideTZero.setYear(year);
 
-        return intangibleCapital;
+            if (year < 10) {
+                IDE ide = idesMap.get(year);
+
+                if (ide == null) {
+                    throw new IllegalInputException("Missing IDE for year " + year);
+                }
+
+                ideTZero.setValue(ide.getValue()
+                    .divide(BigDecimal.ONE.add(discountingRate.divide(new BigDecimal("100"), 3, RoundingMode.HALF_UP))
+                        .pow(ide.getYear()), 3, RoundingMode.HALF_UP
+                    ));
+            } else {
+                IDE ide = idesMap.get(9);
+
+                if (ide == null) {
+                    throw new IllegalInputException("Missing IDE for the 9th year!!!");
+                }
+
+                ideTZero.setValue(ide.getValue()
+                    .divide(discountingRate.divide(new BigDecimal("100"), 3, RoundingMode.HALF_UP)
+                        .subtract(growthRatesMap.get(10).getRate()), 3, RoundingMode.HALF_UP)
+                    .divide(BigDecimal.ONE.add(discountingRate.divide(new BigDecimal("100"), 3, RoundingMode.HALF_UP))
+                        .pow(ide.getYear()), 3, RoundingMode.HALF_UP
+                    )
+                );
+            }
+
+            idesTZeroMap.put(year, ideTZero);
+        }
+
+        return idesTZeroMap.values().stream().parallel().collect(Collectors.toList());
+    }
+
+    public static IDE calculateIDETZero(BigDecimal discountingRate, List<GrowthRate> growthRates, Integer year, IDE ide) throws IllegalInputException {
+        Map<Integer, GrowthRate> growthRatesMap = checkTenYearsList(growthRates);
+        IDE ideTZero = new IDE();
+        ideTZero.setYear(year);
+
+        if (year < 10) {
+            if (year != ide.getYear()) {
+                throw new IllegalInputException("For IDEsTZero with year < 10 you MUST provide the IDE of the same year!!!");
+            }
+
+            ideTZero.setValue(ide.getValue()
+                .divide(BigDecimal.ONE.add(discountingRate.divide(new BigDecimal("100"), 3, RoundingMode.HALF_UP))
+                    .pow(ide.getYear()), 3, RoundingMode.HALF_UP
+                ));
+        } else {
+            if (ide.getYear() != 9) {
+                throw new IllegalInputException("For IDEsTZero with year >= 10 you MUST provide the IDE of the 9th year!!!");
+            }
+
+            ideTZero.setValue(ide.getValue()
+                .divide(discountingRate.divide(new BigDecimal("100"), 3, RoundingMode.HALF_UP)
+                    .subtract(growthRatesMap.get(10).getRate()), 3, RoundingMode.HALF_UP)
+                .divide(BigDecimal.ONE.add(discountingRate.divide(new BigDecimal("100"), 3, RoundingMode.HALF_UP))
+                    .pow(ide.getYear()), 3, RoundingMode.HALF_UP
+                )
+            );
+        }
+
+        return ideTZero;
+    }
+
+    private static <T extends WithYear> Map<Integer, T> checkTenYearsList(List<T> items) throws IllegalInputException {
+        Map<Integer, T> growthRatesMap = items.stream()
+            .parallel()
+            .collect(Collectors.toMap(T::getYear, Function.identity()));
+
+        if (growthRatesMap.size() != 10) {
+            throw new IllegalInputException("There must be exactly 10 GrowthRates for 10 years.");
+        }
+
+        for (int y = 1; y <= 10; y++) {
+            if (growthRatesMap.get(y) == null) {
+                throw new IllegalInputException("Missing GrowthRate for year " + y);
+            }
+        }
+
+        return growthRatesMap;
+    }
+
+    public static IDE calculateIDE(BigDecimal intangibleDrivingEarnings, List<GrowthRate> growthRates, Integer year) throws IllegalInputException {
+        Map<Integer, GrowthRate> growthRatesMap = checkTenYearsList(growthRates);
+
+        if (year < 1 || year > 10) {
+            throw new IllegalInputException("Year must be between 1 and 10.");
+        }
+
+        Map<Integer, IDE> idesMap = new HashMap<>();
+
+        for (int y = 1; y <= year; y++) {
+            calculateIDE(intangibleDrivingEarnings, growthRatesMap, idesMap, y);
+        }
+
+        return idesMap.get(year);
+    }
+
+    public static List<IDE> calculateIDEs(BigDecimal intangibleDrivingEarnings, List<GrowthRate> growthRates) throws IllegalInputException {
+        Map<Integer, GrowthRate> growthRatesMap = checkTenYearsList(growthRates);
+
+        Map<Integer, IDE> idesMap = new HashMap<>();
+
+        for (int y = 1; y <= 10; y++) {
+            calculateIDE(intangibleDrivingEarnings, growthRatesMap, idesMap, y);
+        }
+
+        return idesMap.values().stream().parallel().collect(Collectors.toList());
+    }
+
+    private static void calculateIDE(BigDecimal intangibleDrivingEarnings, Map<Integer, GrowthRate> growthRatesMap, Map<Integer, IDE> idesMap, int y) throws IllegalInputException {
+        GrowthRate growthRate = growthRatesMap.get(y);
+
+        if (growthRate == null) {
+            throw new IllegalInputException("Missing GrowthRate for year: " + y);
+        }
+
+        final IDE ide = new IDE();
+        ide.setYear(y);
+
+        if (y == 1) {
+            BigDecimal value = intangibleDrivingEarnings.multiply(BigDecimal.ONE.add(growthRate.getRate())).setScale(3, RoundingMode.HALF_UP);
+            ide.setValue(value);
+        } else {
+            IDE previousIDE = idesMap.get(y - 1);
+
+            BigDecimal value = previousIDE.getValue().multiply(BigDecimal.ONE.add(growthRate.getRate())).setScale(3, RoundingMode.HALF_UP);
+            ide.setValue(value);
+        }
+
+        idesMap.put(y, ide);
+    }
+
+    public static BigDecimal calculateIntangibleCapital(List<IDE> idesTZero) throws IllegalInputException {
+        checkTenYearsList(idesTZero);
+
+        BigDecimal intangibleCapital = idesTZero.stream().map(ide -> ide.getValue()).reduce(BigDecimal.ZERO, BigDecimal::add);
+
+        return intangibleCapital.setScale(2, RoundingMode.HALF_UP);
     }
 
     public static BigDecimal calculateIntangibleLossByAttacks(BigDecimal intangibleCapital, BigDecimal lossOfIntangiblePercentage) {

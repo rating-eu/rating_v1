@@ -84,7 +84,7 @@ public class ImpactServiceImpl implements ImpactService {
 
                 if (lossValue != null) {// Check if MyAsset has a LossValue set
                     economicImpact = economicImpact.add(lossValue);
-                    logger.error("EconomicImpact: " + economicImpact);
+                    logger.debug("EconomicImpact: " + economicImpact);
                 }
 
                 DirectAsset directAsset = this.directAssetService.findOneByMyAssetID(selfAssessment.getId(), myAsset.getId());
@@ -103,7 +103,7 @@ public class ImpactServiceImpl implements ImpactService {
                     }
                 }
 
-                logger.error("EconomicImpact after IndirecLosses: " + economicImpact);
+                logger.debug("EconomicImpact after IndirecLosses: " + economicImpact);
 
                 //Map to avoid duplicated CostTypes
                 Map<CostType, AttackCost> uniqueCostTypes = toUniqueCostTypes(selfAssessment, myAsset);
@@ -144,7 +144,7 @@ public class ImpactServiceImpl implements ImpactService {
                 }
 
                 MyAsset result = this.myAssetService.save(myAsset);
-                logger.error("MyAsset.EconomicImpact: " + myAsset.getEconomicImpact());
+                logger.debug("MyAsset.EconomicImpact: " + myAsset.getEconomicImpact());
                 return result;
             } else {
                 throw new NotFoundException("MyAsset NOT FOUND!");

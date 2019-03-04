@@ -124,7 +124,6 @@ public class MyAssetServiceImpl implements MyAssetService {
                 } catch (NotFoundException e) {
                     e.printStackTrace();
                 }
-
             }
         }
 

@@ -1,5 +1,6 @@
 package eu.hermeneut.domain;
 
+import eu.hermeneut.domain.interfaces.WithYear;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.springframework.data.elasticsearch.annotations.Document;
@@ -7,13 +8,23 @@ import org.springframework.data.elasticsearch.annotations.Document;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 @Entity
 @Table(name = "growth_rate")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 @Document(indexName = "growth_rate")
-public class GrowthRate implements Serializable {
+public class GrowthRate implements Serializable, WithYear {
     private static final long serialVersionUID = 1L;
+
+    public GrowthRate(Integer year, BigDecimal rate, SelfAssessment selfAssessment) {
+        this.year = year;
+        this.rate = rate;
+        this.selfAssessment = selfAssessment;
+    }
+
+    public GrowthRate() {
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "sequenceGenerator")
@@ -21,15 +32,15 @@ public class GrowthRate implements Serializable {
     private Long id;
 
     @NotNull
-    @Column(name = "year")
+    @Column(name = "year", nullable = false)
     private Integer year;
 
     @NotNull
-    @Column(name = "rate")
-    private Double rate;
+    @Column(name = "rate", nullable = false, precision = 6, scale = 3)
+    private BigDecimal rate;
 
     @NotNull
-    @ManyToOne
+    @ManyToOne(optional = false)
     private SelfAssessment selfAssessment;
 
     public Long getId() {
@@ -40,6 +51,7 @@ public class GrowthRate implements Serializable {
         this.id = id;
     }
 
+    @Override
     public Integer getYear() {
         return year;
     }
@@ -48,11 +60,11 @@ public class GrowthRate implements Serializable {
         this.year = year;
     }
 
-    public Double getRate() {
+    public BigDecimal getRate() {
         return rate;
     }
 
-    public void setRate(Double rate) {
+    public void setRate(BigDecimal rate) {
         this.rate = rate;
     }
 

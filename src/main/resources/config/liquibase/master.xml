@@ -120,5 +120,6 @@
     <include file="config/liquibase/changelog/20190128154403_added_my_asset_economic_impact_column.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20190225164735_added_economic_coefficients_liabilities.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20190225225537_added_growth_rate_entity.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190302214123_growth_rate_constraints_and_types.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
 </databaseChangeLog>
