@@ -108,7 +108,11 @@ export class ImpactWidgetComponent implements OnInit {
           }
         });
         this.loading = false;
+      } else {
+        this.loading = false;
       }
+    }).catch(() => {
+      this.loading = false;
     });
   }
 

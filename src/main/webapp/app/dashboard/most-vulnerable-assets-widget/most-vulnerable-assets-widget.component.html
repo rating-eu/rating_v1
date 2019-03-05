@@ -5,9 +5,9 @@
     <div class="x_panel" style="padding:0px !important;">
         <div class="x_title" style="padding:0px !important;">
             <h2 style="padding: 10px;">
-                <a href="javascript:void(0)" class="collapse-link" (click)="isCollapsed = !isCollapsed"
-                   *ngIf="mdawTangibleEntities.length!==0 || mdawIntangibleEntities.length !== 0">Most Vulnerable
-                    Assets</a>
+                <a href="javascript:void(0)" class="collapse-link" (click)="isCollapsed = !isCollapsed">
+                    Most Vulnerable Assets
+                </a>
                 <small>based on 0 to 5 scale</small>
             </h2>
             <ul class="nav navbar-right panel_toolbox">
@@ -22,7 +22,15 @@
             <div class="clearfix"></div>
         </div>
         <div class="table-responsive x_content" style="padding:0px !important;" [ngbCollapse]="isCollapsed">
-            <ngb-tabset>
+            <ng-container *ngIf="mdawTangibleEntities.length===0 && mdawIntangibleEntities.length === 0">
+                <div class="text-center" style="margin-top: 50px">
+                    <p style="color: orange"><i class="fa fa-exclamation-triangle fa-4x" aria-hidden="true"></i></p>
+                    <p style="color: grey">In your organization are not present tangible or intangible asset, please return in
+                        <a href="javascript:void(0)" [routerLink]="['/identify-asset/asset-clustering']">asset-clustering</a>
+                        section and add your assets!</p>
+                </div>
+            </ng-container>
+            <ngb-tabset *ngIf="mdawTangibleEntities.length!==0 || mdawIntangibleEntities.length !== 0">
                 <ngb-tab title="Tangible">
                     <ng-template ngbTabContent>
                         <ng-container *ngIf="mdawTangibleEntities.length > 0">
