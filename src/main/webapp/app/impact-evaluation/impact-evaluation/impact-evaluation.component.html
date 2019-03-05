@@ -450,11 +450,11 @@
                             <div class="input-group" style="margin-bottom: 10px">
                                 <div class="input-group-prepend">
                                     <span class="input-group-text" id="">
-                                        Valutation of {{asset.asset.name}} €
+                                        Valuation of {{asset.asset.name}} €
                                     </span>
                                 </div>
                                 <input type="number" class="form-control"
-                                    placeholder="Insert economic valutation of {{asset.asset.name}}"
+                                    placeholder="Insert economic valuation of {{asset.asset.name}}"
                                     aria-label="economicValue" aria-describedby="basic-addon2" pattern="[0-9]+"
                                     [(ngModel)]="asset.economicValue">
                             </div>
@@ -463,11 +463,11 @@
                             <div class="input-group" style="margin-bottom: 10px">
                                 <div class="input-group-prepend">
                                     <span class="input-group-text" id="">
-                                        Valutation of current Long Term Liabilities €
+                                        Valuation of Long Term Liabilities €
                                     </span>
                                 </div>
                                 <input type="number" class="form-control"
-                                    placeholder="Insert economic valutation of Current Long Term Liabilities"
+                                    placeholder="Insert economic valuation of Current Long Term Liabilities"
                                     aria-label="liabilitiesValue" aria-describedby="basic-addon2-1" pattern="[0-9]+"
                                     [(ngModel)]="longTermLiabilities">
                             </div>
@@ -479,10 +479,10 @@
                             *ngFor="let asset of financialAssetsAkaCurrent; let i = index; trackBy: trackByFn">
                             <div class="input-group" style="margin-bottom: 10px">
                                 <div class="input-group-prepend">
-                                    <span class="input-group-text">Valutation of {{asset.asset.name}} €</span>
+                                    <span class="input-group-text">Valuation of {{asset.asset.name}} €</span>
                                 </div>
                                 <input type="number" class="form-control"
-                                    placeholder="Insert economic valutation of {{asset.asset.name}}"
+                                    placeholder="Insert economic valuation of {{asset.asset.name}}"
                                     aria-label="economicValue" aria-describedby="basic-addon2" pattern="[0-9]+"
                                     [(ngModel)]="asset.economicValue">
                             </div>
@@ -491,11 +491,11 @@
                             <div class="input-group" style="margin-bottom: 10px">
                                 <div class="input-group-prepend">
                                     <span class="input-group-text" id="">
-                                        Valutation of current Liabilities €
+                                        Valuation of Current Liabilities €
                                     </span>
                                 </div>
                                 <input type="number" class="form-control"
-                                    placeholder="Insert economic valutation of Current Liabilities"
+                                    placeholder="Insert economic valuation of Current Liabilities"
                                     aria-label="liabilitiesValue" aria-describedby="basic-addon2-2" pattern="[0-9]+"
                                     [(ngModel)]="currentLiabilities">
                             </div>

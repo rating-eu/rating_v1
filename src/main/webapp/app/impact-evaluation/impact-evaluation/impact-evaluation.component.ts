@@ -190,33 +190,27 @@ export class ImpactEvaluationComponent implements OnInit {
         this.impactFormStepOne = new FormGroup({
             ebit1: new FormControl(undefined, Validators.compose([
                 Validators.required,
-                Validators.min(0),
-                Validators.pattern(RegExpUtility.from0toInfinityRegExp)
+                Validators.min(0)
             ])),
             ebit2: new FormControl(undefined, Validators.compose([
                 Validators.required,
-                Validators.min(0),
-                Validators.pattern(RegExpUtility.from0toInfinityRegExp)
+                Validators.min(0)
             ])),
             ebit3: new FormControl(undefined, Validators.compose([
                 Validators.required,
-                Validators.min(0),
-                Validators.pattern(RegExpUtility.from0toInfinityRegExp)
+                Validators.min(0)
             ])),
             ebit4: new FormControl(undefined, Validators.compose([
                 Validators.required,
-                Validators.min(0),
-                Validators.pattern(RegExpUtility.from0toInfinityRegExp)
+                Validators.min(0)
             ])),
             ebit5: new FormControl(undefined, Validators.compose([
                 Validators.required,
-                Validators.min(0),
-                Validators.pattern(RegExpUtility.from0toInfinityRegExp)
+                Validators.min(0)
             ])),
             ebit6: new FormControl(undefined, Validators.compose([
                 Validators.required,
-                Validators.min(0),
-                Validators.pattern(RegExpUtility.from0toInfinityRegExp)
+                Validators.min(0)
             ])),
             discountingRate: new FormControl(undefined, Validators.compose([
                 Validators.required,
