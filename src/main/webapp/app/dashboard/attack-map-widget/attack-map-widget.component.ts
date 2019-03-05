@@ -96,62 +96,65 @@ export class AttackMapWidgetComponent implements OnInit, OnDestroy {
             forkJoin(this.ckc7Phases$, this.attackLevels$, this.attackMatrix$);
 
         join$.subscribe((response: [HttpResponse<PhaseMgm[]>, HttpResponse<LevelMgm[]>, Map<Number, Map<Number, AugmentedAttackStrategy>>]) => {
-            this.ckc7Phases = response[0].body;
-            // Remove id 7 phase
-            const index = _.findIndex(this.ckc7Phases, (phase) => phase.id === 7);
+                this.ckc7Phases = response[0].body;
+                // Remove id 7 phase
+                const index = _.findIndex(this.ckc7Phases, (phase) => phase.id === 7);
 
-            if (index !== -1) {
-                this.ckc7Phases.splice(index, 1);
-            }
+                if (index !== -1) {
+                    this.ckc7Phases.splice(index, 1);
+                }
 
-            this.attackLevels = response[1].body;
-            this.attacksCKC7Matrix = response[2];
+                this.attackLevels = response[1].body;
+                this.attacksCKC7Matrix = response[2];
 
-            this.augmentedAttackStrategiesMap = new Map<number, AugmentedAttackStrategy>();
+                this.augmentedAttackStrategiesMap = new Map<number, AugmentedAttackStrategy>();
 
-            // Make same ID AttackStrategies point to the same AugmentedAttackStrategy object
-            for (const levelID of Object.keys(this.attacksCKC7Matrix)) {
-                for (const phaseID of Object.keys(this.attacksCKC7Matrix[levelID])) {
-                    const augmentedAttackStrategies: Array<AugmentedAttackStrategy> = this.attacksCKC7Matrix[Number(levelID)][Number(phaseID)];
-                    const augmentedAttackStrategiesByReference: Array<AugmentedAttackStrategy> = [];
+                // Make same ID AttackStrategies point to the same AugmentedAttackStrategy object
+                for (const levelID of Object.keys(this.attacksCKC7Matrix)) {
+                    for (const phaseID of Object.keys(this.attacksCKC7Matrix[levelID])) {
+                        const augmentedAttackStrategies: Array<AugmentedAttackStrategy> = this.attacksCKC7Matrix[Number(levelID)][Number(phaseID)];
+                        const augmentedAttackStrategiesByReference: Array<AugmentedAttackStrategy> = [];
 
-                    for (let augmentedAttackStrategy of augmentedAttackStrategies) {
-                        if (!this.augmentedAttackStrategiesMap.has(augmentedAttackStrategy.id)) {
-                            this.augmentedAttackStrategiesMap.set(augmentedAttackStrategy.id, augmentedAttackStrategy);
+                        for (let augmentedAttackStrategy of augmentedAttackStrategies) {
+                            if (!this.augmentedAttackStrategiesMap.has(augmentedAttackStrategy.id)) {
+                                this.augmentedAttackStrategiesMap.set(augmentedAttackStrategy.id, augmentedAttackStrategy);
 
-                            // Each time that we encounter an AttackStrategy we put it in the array by Reference
-                            augmentedAttackStrategiesByReference.push(augmentedAttackStrategy);
-                        } else {
-                            augmentedAttackStrategy = this.augmentedAttackStrategiesMap.get(augmentedAttackStrategy.id);
-                            // Each time that we encounter an AttackStrategy we put it in the array by Reference
-                            augmentedAttackStrategiesByReference.push(augmentedAttackStrategy);
+                                // Each time that we encounter an AttackStrategy we put it in the array by Reference
+                                augmentedAttackStrategiesByReference.push(augmentedAttackStrategy);
+                            } else {
+                                augmentedAttackStrategy = this.augmentedAttackStrategiesMap.get(augmentedAttackStrategy.id);
+                                // Each time that we encounter an AttackStrategy we put it in the array by Reference
+                                augmentedAttackStrategiesByReference.push(augmentedAttackStrategy);
+                            }
                         }
+                        // Finally we replace the initial AttackStrategies with those by REFERENCE
+                        // (to allow one-time update for all the occurrences of the same AttackStrategy in different Levels or Phases)
+                        this.attacksCKC7Matrix[Number(levelID)][Number(phaseID)] = augmentedAttackStrategiesByReference;
                     }
-                    // Finally we replace the initial AttackStrategies with those by REFERENCE
-                    // (to allow one-time update for all the occurrences of the same AttackStrategy in different Levels or Phases)
-                    this.attacksCKC7Matrix[Number(levelID)][Number(phaseID)] = augmentedAttackStrategiesByReference;
                 }
-            }
-            // Check which steps (INITIAL, CONTEXTUAL, REFINED) are available.
-            const allAugmentedAttackStrategies: AugmentedAttackStrategy[] = Array.from(this.augmentedAttackStrategiesMap.values());
+                // Check which steps (INITIAL, CONTEXTUAL, REFINED) are available.
+                const allAugmentedAttackStrategies: AugmentedAttackStrategy[] = Array.from(this.augmentedAttackStrategiesMap.values());
 
-            if (allAugmentedAttackStrategies && allAugmentedAttackStrategies.length > 0) {
-                const augmentedAttackStrategy: AugmentedAttackStrategy = allAugmentedAttackStrategies[0];
-                if (augmentedAttackStrategy.initialLikelihood > 0) {
-                    this.likelihoodStepEnabled.set(LikelihoodStep.INITIAL_LIKELIHOOD, true);
+                if (allAugmentedAttackStrategies && allAugmentedAttackStrategies.length > 0) {
+                    const augmentedAttackStrategy: AugmentedAttackStrategy = allAugmentedAttackStrategies[0];
+                    if (augmentedAttackStrategy.initialLikelihood > 0) {
+                        this.likelihoodStepEnabled.set(LikelihoodStep.INITIAL_LIKELIHOOD, true);
+                    }
+                    if (augmentedAttackStrategy.contextualLikelihood > 0) {
+                        this.likelihoodStepEnabled.set(LikelihoodStep.CONTEXTUAL_LIKELIHOOD, true);
+                    }
+                    if (augmentedAttackStrategy.refinedLikelihood > 0) {
+                        this.likelihoodStepEnabled.set(LikelihoodStep.REFINED_LIKELIHOOD, true);
+                    }
                 }
-                if (augmentedAttackStrategy.contextualLikelihood > 0) {
-                    this.likelihoodStepEnabled.set(LikelihoodStep.CONTEXTUAL_LIKELIHOOD, true);
-                }
-                if (augmentedAttackStrategy.refinedLikelihood > 0) {
-                    this.likelihoodStepEnabled.set(LikelihoodStep.REFINED_LIKELIHOOD, true);
-                }
-            }
 
-            // Set the SelectedThreatAgent (NULL) to make sure all the AttackStrategies are disabled at start.
-            this.threatAgentChanged(this.selectedThreatAgent);
-            this.loading = false;
-        });
+                // Set the SelectedThreatAgent (NULL) to make sure all the AttackStrategies are disabled at start.
+                this.threatAgentChanged(this.selectedThreatAgent);
+                this.loading = false;
+            },
+            (error: any) => {
+                this.loading = false;
+            });
     }
 
     ngOnDestroy(): void {

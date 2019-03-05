@@ -23,7 +23,10 @@
             <div class="clearfix"></div>
         </div>
         <div class="table-responsive x_content" style="padding:0px !important;" [ngbCollapse]="isCollapsed">
-            <div *ngIf="mdtaEntities" class="table-responsive table-hover-no-pointer">
+            <div *ngIf="mdtaEntities.length === 0" class="text-center">
+                No data available, please complete the relative questionnaire!
+            </div>
+            <div *ngIf="mdtaEntities.length > 0" class="table-responsive table-hover-no-pointer">
                 <table class="table table-striped">
                     <thead>
                         <tr>
