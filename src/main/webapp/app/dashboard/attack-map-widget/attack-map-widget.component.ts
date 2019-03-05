@@ -1,21 +1,21 @@
-import {DashboardStepEnum} from './../models/enumeration/dashboard-step.enum';
-import {DashboardService, DashboardStatus, Status} from './../dashboard.service';
+import { DashboardStepEnum } from './../models/enumeration/dashboard-step.enum';
+import { DashboardService, DashboardStatus, Status } from './../dashboard.service';
 import * as _ from 'lodash';
 
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {AugmentedAttackStrategy} from '../../evaluate-weakness/models/augmented-attack-strategy.model';
-import {Observable, Subscription} from 'rxjs';
-import {SelfAssessmentMgm, SelfAssessmentMgmService} from '../../entities/self-assessment-mgm';
-import {ThreatAgentMgm} from '../../entities/threat-agent-mgm';
-import {HttpResponse} from '@angular/common/http';
-import {PhaseMgm, PhaseMgmService} from '../../entities/phase-mgm';
-import {LevelMgm, LevelMgmService} from '../../entities/level-mgm';
-import {AttackStrategyMgm} from '../../entities/attack-strategy-mgm';
-import {LikelihoodStep} from '../../entities/enumerations/LikelihoodStep.enum';
-import {AttackMapService} from '../../evaluate-weakness/attack-map.service';
-import {forkJoin} from 'rxjs/observable/forkJoin';
-import {WeaknessUtils} from '../../evaluate-weakness/utils/weakness-utils';
-import {MatHorizontalStepper} from '@angular/material';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { AugmentedAttackStrategy } from '../../evaluate-weakness/models/augmented-attack-strategy.model';
+import { Observable, Subscription } from 'rxjs';
+import { SelfAssessmentMgm, SelfAssessmentMgmService } from '../../entities/self-assessment-mgm';
+import { ThreatAgentMgm } from '../../entities/threat-agent-mgm';
+import { HttpResponse } from '@angular/common/http';
+import { PhaseMgm, PhaseMgmService } from '../../entities/phase-mgm';
+import { LevelMgm, LevelMgmService } from '../../entities/level-mgm';
+import { AttackStrategyMgm } from '../../entities/attack-strategy-mgm';
+import { LikelihoodStep } from '../../entities/enumerations/LikelihoodStep.enum';
+import { AttackMapService } from '../../evaluate-weakness/attack-map.service';
+import { forkJoin } from 'rxjs/observable/forkJoin';
+import { WeaknessUtils } from '../../evaluate-weakness/utils/weakness-utils';
+import { MatHorizontalStepper } from '@angular/material';
 
 @Component({
     selector: 'jhi-attack-map-widget',
@@ -93,7 +93,10 @@ export class AttackMapWidgetComponent implements OnInit, OnDestroy {
         this.attackMatrix$ = this.attackMapService.getAttackCKC7Matrix(this.selfAssessment.id);
 
         const join$: Observable<[HttpResponse<PhaseMgm[]>, HttpResponse<LevelMgm[]>, Map<Number, Map<Number, AugmentedAttackStrategy>>]> =
-            forkJoin(this.ckc7Phases$, this.attackLevels$, this.attackMatrix$);
+            forkJoin(this.ckc7Phases$, this.attackLevels$, this.attackMatrix$).catch((err: any, caught: any) => {
+                    this.loading = false;
+                    return new Observable<[null, null, null]>();
+                });
 
         join$.subscribe((response: [HttpResponse<PhaseMgm[]>, HttpResponse<LevelMgm[]>, Map<Number, Map<Number, AugmentedAttackStrategy>>]) => {
             this.ckc7Phases = response[0].body;
