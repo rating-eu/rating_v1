@@ -237,12 +237,20 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                             {
                                 label: 'Estimation of the Attack Related Costs',
                                 routerLink: ['/impact-evaluation/attack-related-costs-estimation']
+                            },
+                            {
+                                label: 'Estimation of the Data Assets category Losses',
+                                routerLink: ['/impact-evaluation/data-assets-losses-estimation']
+                            },
+                            {
+                                label: 'Growth rates configurator',
+                                routerLink: ['/impact-evaluation/growth-rates-configurator']
                             }
                         ]
                     },
                     {
                         label: 'Risk Management',
-                        routerLink: ['/risk-management'],
+                        /*routerLink: ['/risk-management'],*/
                         items: [
                             {
                                 label: 'Risk Scenarios',

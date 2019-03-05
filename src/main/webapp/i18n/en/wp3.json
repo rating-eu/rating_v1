@@ -9,6 +9,16 @@
             "home": {
                 "title": "Estimation of the AttackRelatedCosts"
             }
+        },
+        "dataAssetsLossesEstimation" : {
+            "home": {
+                "title": "Estimation of the Data Assets Losses"
+            }
+        },
+        "growthRatesConfigurator" : {
+            "home": {
+                "title": "Growth rates configurator"
+            }
         }
     }
 }

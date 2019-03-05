@@ -9,6 +9,16 @@
             "home": {
                 "title": "Valutazione dei costi relativi all'attacco"
             }
+        },
+        "dataAssetsLossesEstimation" : {
+            "home": {
+                "title": "Valutazione delle perdite relative agli assets della categoria Data"
+            }
+        },
+        "growthRatesConfigurator" : {
+            "home": {
+                "title": "Configuratore dei tassi di crescita"
+            }
         }
     }
 }

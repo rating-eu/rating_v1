@@ -1,8 +1,10 @@
+import { GrowthRatesConfiguratorComponentComponent } from './growth-rates-configurator-component/growth-rates-configurator-component.component';
 import { AttackRelatedCostsEstimationComponent } from './attack-related-costs-estimation/attack-related-costs-estimation.component';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { ImpactEvaluationComponent } from './impact-evaluation/impact-evaluation.component';
 import { UserRouteAccessService } from '../shared';
+import { DataAssetsLossesEstimationComponent } from './data-assets-losses-estimation/data-assets-losses-estimation.component';
 
 const routes: Routes = [
   {
@@ -19,6 +21,24 @@ const routes: Routes = [
     component: AttackRelatedCostsEstimationComponent,
     data: {
       pageTitle: 'hermeneutApp.attackRelatedCostsEstimation.home.title',
+      authorities: ['ROLE_CISO'],
+    },
+    canActivate: [UserRouteAccessService]
+  },
+  {
+    path: 'data-assets-losses-estimation',
+    component: DataAssetsLossesEstimationComponent,
+    data: {
+      pageTitle: 'hermeneutApp.dataAssetsLossesEstimation.home.title',
+      authorities: ['ROLE_CISO'],
+    },
+    canActivate: [UserRouteAccessService]
+  },
+  {
+    path: 'growth-rates-configurator',
+    component: GrowthRatesConfiguratorComponentComponent,
+    data: {
+      pageTitle: 'hermeneutApp.growthRatesConfigurator.home.title',
       authorities: ['ROLE_CISO'],
     },
     canActivate: [UserRouteAccessService]

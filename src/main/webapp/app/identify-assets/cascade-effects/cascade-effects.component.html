@@ -4,11 +4,18 @@
             [attr.aria-expanded]="!isDescriptionCollapsed" aria-controls="descriptionCollapsible" class="float-right">
             <i class="fa fa-question-circle fa-lg" aria-hidden="true"></i>
         </a>
+        {{isDescriptionCollapsed}}
         <h5 class="card-title">Cascade Effects.</h5>
-        <i [ngbCollapse]="isDescriptionCollapsed">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at neque
-            malesuada, placerat ipsum eu, molestie urna. Integer sollicitudin sollicitudin diam, sit amet sagittis enim
-            laoreet eget. Aenean pulvinar maximus ex sit amet tempus. Suspendisse vehicula arcu ante, non facilisis
-            magna dictum ut.<br></i>
+        <div class="col-md-12" [ngbCollapse]="isDescriptionCollapsed">
+            <div class="col-md-8">
+                <img src="../../../content/images/impact_tree.jpg" alt="Impact Tree" />
+            </div>
+            <div class="col-md-4">
+                <p>The cyber-attack can lead to several consequences for the affected organisation in the form of
+                    <b>direct</b>, <b>indirect</b> consequences and <b>attack-related costs</b> and
+                    the tree-based approach helps in properly defining them.</p>
+            </div>
+        </div>
         <ng-container class="card-text" *ngIf="!myAssets">
             <div class="loader"></div>
         </ng-container>
