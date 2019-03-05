@@ -1,7 +1,7 @@
-<ng-container class="container" *ngIf="loadingRiskLevel || loadingAssetsAndAttacks">
+<ng-container *ngIf="loadingRiskLevel || loadingAssetsAndAttacks">
   <div class="loader"></div>
 </ng-container>
-<ng-container class="container-fluid" *ngIf="!loadingRiskLevel  && !loadingAssetsAndAttacks">
+<ng-container *ngIf="!loadingRiskLevel  && !loadingAssetsAndAttacks">
   <div class="x_panel" style="padding:0px !important;">
     <div class="x_title" style="padding:0px !important;">
       <h2 style="padding: 10px;">
@@ -20,13 +20,13 @@
     </div>
     <div class="table-responsive x_content" style="padding:0px !important;" [ngbCollapse]="isCollapsed">
       <div class="card card-body table-responsive">
-        <ng-container *ngIf="myAssetsAtRisk.length===0">
+        <ng-container *ngIf="!myAssetsAtRisk || myAssetsAtRisk?.length===0">
           <div class="text-center" style="margin-top: 50px">
             <p style="color: orange"><i class="fa fa-exclamation-triangle fa-4x" aria-hidden="true"></i></p>
             <p style="color: grey">No Assets counted or no questionnaire was complited!</p>
           </div>
         </ng-container>
-        <ng-container *ngIf="myAssetsAtRisk.length>0 && !attackCosts">
+        <ng-container *ngIf="myAssetsAtRisk?.length>0 && !attackCosts">
           <div class="text-center" style="margin-top: 50px">
             <p style="color: orange"><i class="fa fa-exclamation-triangle fa-4x" aria-hidden="true"></i></p>
             <p style="color: grey">No <a href="javascript:void(0)"
@@ -36,11 +36,11 @@
                 estimate</a> complited!</p>
           </div>
         </ng-container>
-        <ng-container *ngIf="myAssetsAtRisk.length>0 && attackCosts">
+        <ng-container *ngIf="myAssetsAtRisk?.length>0 && attackCosts">
           <br>
           <div class="row">
             <div class="col-md-2 text-left">
-              <b>Critically</b>
+              <b>Criticality</b>
             </div>
           </div>
           <div *ngFor="let j of squareRowElement" class="row">
@@ -77,7 +77,6 @@
             </ng-container>
           </div>
         </ng-container>
-
       </div>
     </div>
   </div>

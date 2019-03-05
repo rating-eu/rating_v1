@@ -1,3 +1,4 @@
+import { ImpactEvaluationService } from './../../impact-evaluation/impact-evaluation.service';
 import { Component, OnInit } from '@angular/core';
 import { SelfAssessmentMgm, SelfAssessmentMgmService } from '../../entities/self-assessment-mgm';
 import { RiskManagementService } from '../risk-management.service';
@@ -7,6 +8,9 @@ import { ImpactLevelDescriptionMgm, ImpactLevelDescriptionMgmService } from '../
 import { ImpactLevelMgm, ImpactLevelMgmService } from '../../entities/impact-level-mgm';
 import { forkJoin } from 'rxjs/observable/forkJoin';
 import { HttpResponse } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
+import { of } from 'rxjs/observable/of';
 
 @Component({
     // tslint:disable-next-line:component-selector
@@ -41,7 +45,8 @@ export class RiskManagementComponent implements OnInit {
         private riskService: RiskManagementService,
         private jhiAlertService: JhiAlertService,
         private impactLevelDescriptionService: ImpactLevelDescriptionMgmService,
-        private impactLevelService: ImpactLevelMgmService
+        private impactLevelService: ImpactLevelMgmService,
+        private impactEvaluationService: ImpactEvaluationService
     ) {
     }
 
@@ -190,6 +195,7 @@ export class RiskManagementComponent implements OnInit {
     }
 
     public updateImpactLevels() {
+        /*
         this.impactLevelsMap.forEach((elem) => {
             if (elem && elem.id !== undefined) {
                 this.impactLevelService.update(elem)
@@ -199,6 +205,32 @@ export class RiskManagementComponent implements OnInit {
                         window.location.reload();
                     });
             }
+        });
+        */
+        const updateImpactLevelsObs: Observable<HttpResponse<ImpactLevelMgm>>[] = [];
+        this.impactLevelsMap.forEach((elem) => {
+            if (elem && elem.id !== undefined) {
+                updateImpactLevelsObs.push(this.impactLevelService.update(elem));
+            }
+        });
+        const updateLevels: Observable<HttpResponse<ImpactLevelMgm>[]> = forkJoin(updateImpactLevelsObs);
+
+        const result: Observable<boolean> = updateLevels.pipe(
+            switchMap((updates: HttpResponse<ImpactLevelMgm>[]) => {
+                if (updates) {
+                    updates.forEach((updatedLevel: HttpResponse<ImpactLevelMgm>) => {
+                        const level = updatedLevel.body;
+                        this.impactLevelsMap.set(level.impact, level);
+                    });
+                    return of(true);
+                } else {
+                    return of(false);
+                }
+            })
+        );
+        result.subscribe((updateEndingFine: boolean) => {
+            this.impactEvaluationService.getImpacts(this.mySelf).toPromise();
+            window.location.reload();
         });
     }
 

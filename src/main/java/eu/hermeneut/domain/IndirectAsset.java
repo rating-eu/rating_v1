@@ -31,11 +31,11 @@ public class IndirectAsset implements Serializable {
     private Long id;
 
     @NotNull
-    @ManyToOne
+    @ManyToOne(optional = false)
     private DirectAsset directAsset;
 
     @NotNull
-    @OneToOne
+    @OneToOne(optional = false)
     private MyAsset myAsset;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove

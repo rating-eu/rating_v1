@@ -1,3 +1,4 @@
+import { GrowthRate } from './model/growth-rates.model';
 import { AttackCostMgm, CostType } from './../entities/attack-cost-mgm/attack-cost-mgm.model';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse, HttpParams } from '../../../../../node_modules/@angular/common/http';
@@ -28,10 +29,36 @@ export class ImpactEvaluationService {
     private operationStepFour = '/wp3/step-four/';
     private operationStepFive = '/wp3/step-five/';
     private myAssetsEconomicLossesEvaluationStep = '/wp3/economic-losses';
+    private getGrowthRatesURL = SERVER_API_URL + 'api/{selfAssessmentID}/growth-rates';
+    private updateAllGrowthRates = SERVER_API_URL + 'api/{selfAssessmentID}/growth-rates';
+    private updateSingleGrowthRate = SERVER_API_URL + 'api/growth-rates';
 
     constructor(
         private http: HttpClient
     ) {
+    }
+
+    getGrowthRates(self: SelfAssessmentMgm) {
+        const uri = this.getGrowthRatesURL.replace('{selfAssessmentID}', String(self.id));
+        return this.http.get<GrowthRate[]>(uri, { observe: 'response' })
+            .map((res: HttpResponse<GrowthRate[]>) => {
+                return res.body;
+            });
+    }
+
+    updateGrowthRates(self: SelfAssessmentMgm, rates: GrowthRate[]): Observable<GrowthRate[]> {
+        const uri = this.updateAllGrowthRates.replace('{selfAssessmentID}', String(self.id));
+        return this.http.put<GrowthRate[]>(uri, rates, { observe: 'response' })
+            .map((res: HttpResponse<GrowthRate[]>) => {
+                return res.body;
+            });
+    }
+
+    updateGrowthRate(rate: GrowthRate): Observable<GrowthRate> {
+        return this.http.put<GrowthRate>(this.updateSingleGrowthRate, rate, { observe: 'response' })
+            .map((res: HttpResponse<GrowthRate>) => {
+                return res.body;
+            });
     }
 
     getImpacts(self: SelfAssessmentMgm): Observable<MyAssetMgm[]> {

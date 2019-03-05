@@ -1,10 +1,10 @@
-<div class="container" *ngIf="loading">
+<ng-container *ngIf="loading">
     <div class="loader"></div>
-  </div>
-  <div class="container" *ngIf="!loading">
+</ng-container>
+  <ng-container *ngIf="!loading">
     <div class="tile-stats tiles-first-row">
       <div class="count" *ngIf="attacksMapCounter>0">{{attacksMapCounter}}</div>
       <h3 *ngIf="attacksMapCounter>0"><a [routerLink]="['/evaluate-weakness/questionnaires/SELFASSESSMENT/questionnaire']">Attack strategies</a></h3>
       <h3 *ngIf="attacksMapCounter===0">No Attack strategies founded</h3>
     </div>
-  </div>
+  </ng-container>

@@ -130,12 +130,12 @@
               <tbody>
                 <tr *ngFor="let attackChance of attackChances">
                   <td>{{attackChance.attackStrategy.name}}</td>
-                  <td>{{attackChance.likelihood | number : '1.1-1'}}</td>
-                    <td>{{attackChance.vulnerability | number : '1.1-1'}}</td>
+                  <td>{{attackChance.likelihood | number : '1.1-2'}}</td>
+                    <td>{{attackChance.vulnerability | number : '1.1-2'}}</td>
                   <td>
                     <span *ngFor="let mitigation of attackChance.attackStrategy.mitigations; let last = last">
                       <a class="form-control-static"
-                        [routerLink]="['../mitigation-mgm', mitigation?.id ]">{{mitigation.name}}</a>{{last
+                        [routerLink]="['/mitigation-mgm', mitigation?.id ]">{{mitigation.name}}</a>{{last
                                             ? '' : ', '}}
                     </span>
                   </td>
@@ -211,7 +211,7 @@
                                     {{param.value | currency:'EUR'}}
                                   </td>
                                   <td *ngIf="isFraction(param.type)">
-                                    {{param.value | number : '1.1-1'}}%
+                                    {{param.value | number : '1.1-2'}}%
                                   </td>
                                   <td *ngIf="!isMoney(param.type) && !isFraction(param.type)">
                                     {{param.value}}</td>
@@ -295,7 +295,7 @@
                                     {{param.value | currency:'EUR'}}
                                   </td>
                                   <td *ngIf="isFraction(param.type)">
-                                    {{param.value | number : '1.1-1'}}%
+                                    {{param.value | number : '1.1-2'}}%
                                   </td>
                                   <td *ngIf="!isMoney(param.type) && !isFraction(param.type)">
                                     {{param.value}}</td>

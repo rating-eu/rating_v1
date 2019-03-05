@@ -87,9 +87,6 @@ public class WP4StepsServiceImpl implements WP4StepsService {
                 Collectors.toMap(AugmentedAttackStrategy::getId, Function.identity())
             );
 
-        //WEIGHT the AttackStrategies by the LevelOfInterest of the Threat Agents
-        augmentedAttackStrategyMap = this.augmentedAttackStrategyService.weightAugmentedAttackStrategyMap(selfAssessmentID, augmentedAttackStrategyMap);
-
         //Building output
         List<MyAssetAttackChance> myAssetAttackChances = new ArrayList<>();
 

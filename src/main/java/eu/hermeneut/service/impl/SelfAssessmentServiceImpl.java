@@ -2,8 +2,6 @@ package eu.hermeneut.service.impl;
 
 import eu.hermeneut.domain.*;
 import eu.hermeneut.domain.attackmap.AugmentedAttackStrategy;
-import eu.hermeneut.domain.enumeration.QuestionnairePurpose;
-import eu.hermeneut.domain.enumeration.Role;
 import eu.hermeneut.domain.overview.AugmentedMyAsset;
 import eu.hermeneut.domain.overview.SelfAssessmentOverview;
 import eu.hermeneut.exceptions.NotFoundException;
@@ -13,8 +11,6 @@ import eu.hermeneut.repository.search.SelfAssessmentSearchRepository;
 import eu.hermeneut.service.attackmap.AugmentedAttackStrategyService;
 import eu.hermeneut.service.result.ResultService;
 import eu.hermeneut.thread.AugmentedMyAssetsCallable;
-import eu.hermeneut.utils.likelihood.answer.AnswerCalculator;
-import eu.hermeneut.utils.likelihood.attackstrategy.AttackStrategyCalculator;
 import eu.hermeneut.utils.wp4.ListSplitter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,7 +20,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 import java.util.concurrent.*;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -169,7 +164,7 @@ public class SelfAssessmentServiceImpl implements SelfAssessmentService {
                     LOGGER.debug("MyAssets: " + myAssets.size());
 
                     try {
-                        Map<Long, AugmentedAttackStrategy> augmentedAttackStrategyMap = this.augmentedAttackStrategyService.weightAugmentedAttackStrategyMap(selfAssessmentID, this.augmentedAttackStrategyService.getAugmentedAttackStrategyMap(selfAssessmentID));
+                        Map<Long, AugmentedAttackStrategy> augmentedAttackStrategyMap = this.augmentedAttackStrategyService.getAugmentedAttackStrategyMap(selfAssessmentID);
 
                         //===Split MyAssets and handle them in different THREADS===
                         final int MY_ASSETS_PER_SINGLE_THREAD = new Random().nextInt(myAssets.size() / 3 + 1) + 2;
@@ -183,23 +178,16 @@ public class SelfAssessmentServiceImpl implements SelfAssessmentService {
                         //create a list to hold the Future object associated with Callable
                         List<Future<List<AugmentedMyAsset>>> futureList = new ArrayList<Future<List<AugmentedMyAsset>>>();
 
+                        splittedMyAssets.entrySet().stream().forEach((entry) -> {
+                            List<MyAsset> myAssetsSubset = entry.getValue();
 
-                        Map<Long, Float> levelsOfInterestMap = this.resultService.getLevelsOfInterest(selfAssessmentID);
+                            AugmentedMyAssetsCallable augmentedMyAssetsCallable = new AugmentedMyAssetsCallable(myAssetsSubset, this.attackStrategyService, augmentedAttackStrategyMap, threatAgentSet);
 
-                        if (levelsOfInterestMap != null && !levelsOfInterestMap.isEmpty()) {
-
-                            splittedMyAssets.entrySet().stream().forEach((entry) -> {
-                                int cluster = entry.getKey();
-                                List<MyAsset> myAssetsSubset = entry.getValue();
-
-                                AugmentedMyAssetsCallable augmentedMyAssetsCallable = new AugmentedMyAssetsCallable(myAssetsSubset, this.attackStrategyService, augmentedAttackStrategyMap, threatAgentSet);
-
-                                //submit Callable tasks to be executed by thread pool
-                                Future<List<AugmentedMyAsset>> future = executor.submit(augmentedMyAssetsCallable);
-                                //add Future to the list, we can get return value using Future
-                                futureList.add(future);
-                            });
-                        }
+                            //submit Callable tasks to be executed by thread pool
+                            Future<List<AugmentedMyAsset>> future = executor.submit(augmentedMyAssetsCallable);
+                            //add Future to the list, we can get return value using Future
+                            futureList.add(future);
+                        });
 
                         for (Future<List<AugmentedMyAsset>> future : futureList) {
                             try {

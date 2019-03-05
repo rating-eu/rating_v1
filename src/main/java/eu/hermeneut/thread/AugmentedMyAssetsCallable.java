@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 public class AugmentedMyAssetsCallable implements Callable<List<AugmentedMyAsset>> {
     private List<MyAsset> myAssets;
     private AttackStrategyService attackStrategyService;
-    private Map<Long, AugmentedAttackStrategy> weightedAugmentedAttackStrategyMap;
+    private Map<Long, AugmentedAttackStrategy> augmentedAttackStrategyMap;
     private Set<ThreatAgent> threatAgentSet;
 
     public AugmentedMyAssetsCallable(
@@ -24,7 +24,7 @@ public class AugmentedMyAssetsCallable implements Callable<List<AugmentedMyAsset
 
         this.myAssets = myAssets;
         this.attackStrategyService = attackStrategyService;
-        this.weightedAugmentedAttackStrategyMap = weightedAugmentedAttackStrategyMap;
+        this.augmentedAttackStrategyMap = weightedAugmentedAttackStrategyMap;
         this.threatAgentSet = threatAgentSet;
     }
 
@@ -63,7 +63,7 @@ public class AugmentedMyAssetsCallable implements Callable<List<AugmentedMyAsset
                         //For each attack-strategy
                         while (attackStrategyIterator.hasNext()) {
                             AttackStrategy attackStrategy = attackStrategyIterator.next();
-                            AugmentedAttackStrategy weightedAugmentedAttackStrategy = (AugmentedAttackStrategy) weightedAugmentedAttackStrategyMap.get(attackStrategy.getId()).clone();
+                            AugmentedAttackStrategy augmentedAttackStrategy = (AugmentedAttackStrategy) augmentedAttackStrategyMap.get(attackStrategy.getId()).clone();
 
                             //Filter the ThreatAgents that can perform this attack
                             List<ThreatAgent> threatAgentsSubset = threatAgentSet.stream().filter(threatAgent -> ThreatAttackFilter.isAttackPossible(threatAgent, attackStrategy)).collect(Collectors.toList());
@@ -71,7 +71,7 @@ public class AugmentedMyAssetsCallable implements Callable<List<AugmentedMyAsset
                             if (threatAgentsSubset != null && !threatAgentsSubset.isEmpty()) {
                                 //Create the augmented my asset
                                 AugmentedMyAsset augmentedMyAsset = new AugmentedMyAsset(myAsset);
-                                augmentedMyAsset.setAugmentedAttackStrategy(weightedAugmentedAttackStrategy);
+                                augmentedMyAsset.setAugmentedAttackStrategy(augmentedAttackStrategy);
 
                                 augmentedMyAssets.add(augmentedMyAsset);
                             }
