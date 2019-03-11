@@ -16,6 +16,8 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -28,6 +30,7 @@ import static org.elasticsearch.index.query.QueryBuilders.*;
 @Transactional
 public class ImpactLevelServiceImpl implements ImpactLevelService {
 
+    public static final int IMPACT_LEVELS = 5;
     private final Logger log = LoggerFactory.getLogger(ImpactLevelServiceImpl.class);
 
     private final ImpactLevelRepository impactLevelRepository;
@@ -178,5 +181,59 @@ public class ImpactLevelServiceImpl implements ImpactLevelService {
         List<ImpactLevel> result = impactLevelRepository.save(impactLevels);
         impactLevelSearchRepository.save(result);
         return result;
+    }
+
+    /**
+     * Checks the validity of the input ImpactLevels.
+     * In order to be considered as valid, the impact levels must be 5,
+     * the MIN of a single Level must be < of the MAX of the same Level,
+     * the MAX of a Level x must be == to the MIN of the Level x+1.
+     *
+     * @param impactLevels
+     * @return
+     */
+    @Override
+    public boolean checkValidity(List<ImpactLevel> impactLevels) {
+        log.debug("Request to check the validity of the ImpactLevels.");
+
+        if (impactLevels == null || impactLevels.isEmpty() || impactLevels.size() != 5) {
+            return false;
+        }
+
+        Map<Integer, ImpactLevel> impactLevelMap = impactLevels.stream().parallel()
+            .collect(Collectors.toMap(ImpactLevel::getImpact, Function.identity()));
+
+        if (impactLevelMap == null || impactLevelMap.isEmpty() || impactLevelMap.size() != 5) {
+            return false;
+        }
+
+        for (int i = 1; i < IMPACT_LEVELS; i++) {
+            ImpactLevel level = impactLevelMap.get(i);
+
+            //Level must exist and have MIN and MAX defined
+            if (level == null || level.getMinLoss() == null || level.getMaxLoss() == null) {
+                return false;
+            }
+
+            //MIN must be < MAX
+            if (level.getMinLoss().compareTo(level.getMaxLoss()) >= 0) {
+                return false;
+            }
+        }
+
+        for (int i = 1; i <= IMPACT_LEVELS - 1; i++) {
+            ImpactLevel previousLevel = impactLevelMap.get(i);
+
+            for (int j = i + 1; j <= IMPACT_LEVELS; j++) {
+                ImpactLevel nextLevel = impactLevelMap.get(j);
+
+                //prev.MAX == nex.MIN
+                if (previousLevel.getMaxLoss().compareTo(nextLevel.getMinLoss()) != 0) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
     }
 }

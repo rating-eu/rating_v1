@@ -2,6 +2,7 @@ package eu.hermeneut.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import eu.hermeneut.domain.ImpactLevel;
+import eu.hermeneut.exceptions.IllegalInputException;
 import eu.hermeneut.service.ImpactLevelService;
 import eu.hermeneut.web.rest.errors.BadRequestAlertException;
 import eu.hermeneut.web.rest.util.HeaderUtil;
@@ -60,11 +61,32 @@ public class ImpactLevelResource {
 
     @PostMapping("/impact-levels/all")
     @Timed
-    public List<ImpactLevel> createImpactLevels(@Valid @RequestBody List<ImpactLevel> impactLevels){
+    public List<ImpactLevel> createImpactLevels(@Valid @RequestBody List<ImpactLevel> impactLevels) throws IllegalInputException {
         log.debug("REST request to save all ImpactLevels : {}", impactLevels);
 
         if (impactLevels.stream().filter(impactLevel -> impactLevel.getId() != null).count() > 0) {
-            throw new BadRequestAlertException("A new myAnswer cannot already have an ID", ENTITY_NAME, "idexists");
+            throw new BadRequestAlertException("A new ImpactLevel cannot already have an ID", ENTITY_NAME, "idexists");
+        }
+
+        if (!this.impactLevelService.checkValidity(impactLevels)) {
+            throw new IllegalInputException("ImpactLevels are NOT VALID!!!");
+        }
+
+        List<ImpactLevel> result = this.impactLevelService.saveAll(impactLevels);
+        return result;
+    }
+
+    @PutMapping("/impact-levels/all")
+    @Timed
+    public List<ImpactLevel> updateImpactLevels(@Valid @RequestBody List<ImpactLevel> impactLevels) throws IllegalInputException {
+        log.debug("REST request to save all ImpactLevels : {}", impactLevels);
+
+        if (impactLevels.stream().filter(impactLevel -> impactLevel.getId() == null).count() > 0) {
+            throw new IllegalInputException("An ImpactLevel to be updated must have an ID");
+        }
+
+        if (!this.impactLevelService.checkValidity(impactLevels)) {
+            throw new IllegalInputException("ImpactLevels are NOT VALID!!!");
         }
 
         List<ImpactLevel> result = this.impactLevelService.saveAll(impactLevels);
@@ -158,5 +180,4 @@ public class ImpactLevelResource {
         log.debug("REST request to search ImpactLevels for query {}", query);
         return impactLevelService.search(query);
     }
-
 }
