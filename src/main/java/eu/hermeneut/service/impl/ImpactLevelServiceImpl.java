@@ -197,6 +197,7 @@ public class ImpactLevelServiceImpl implements ImpactLevelService {
         log.debug("Request to check the validity of the ImpactLevels.");
 
         if (impactLevels == null || impactLevels.isEmpty() || impactLevels.size() != 5) {
+            log.warn("ImpactLevels Invalid Size!!!");
             return false;
         }
 
@@ -204,6 +205,7 @@ public class ImpactLevelServiceImpl implements ImpactLevelService {
             .collect(Collectors.toMap(ImpactLevel::getImpact, Function.identity()));
 
         if (impactLevelMap == null || impactLevelMap.isEmpty() || impactLevelMap.size() != 5) {
+            log.warn("ImpactLevelsMap Invalid Size!!!");
             return false;
         }
 
@@ -212,11 +214,13 @@ public class ImpactLevelServiceImpl implements ImpactLevelService {
 
             //Level must exist and have MIN and MAX defined
             if (level == null || level.getMinLoss() == null || level.getMaxLoss() == null) {
+                log.warn("ImpactLevel, MIN or MAX are NULL!!!");
                 return false;
             }
 
             //MIN must be < MAX
             if (level.getMinLoss().compareTo(level.getMaxLoss()) >= 0) {
+                log.warn("ImpactLevel MIN > MAX!!!");
                 return false;
             }
         }
@@ -227,9 +231,23 @@ public class ImpactLevelServiceImpl implements ImpactLevelService {
             for (int j = i + 1; j <= IMPACT_LEVELS; j++) {
                 ImpactLevel nextLevel = impactLevelMap.get(j);
 
-                //prev.MAX == nex.MIN
-                if (previousLevel.getMaxLoss().compareTo(nextLevel.getMinLoss()) != 0) {
-                    return false;
+                if (j == i + 1) {
+                    //prev.MAX == next.MIN
+                    if (previousLevel.getMaxLoss().compareTo(nextLevel.getMinLoss()) != 0) {
+                        log.warn("previous.IMPACT: " + previousLevel.getImpact());
+                        log.warn("previous.MAX: " + previousLevel.getMaxLoss());
+
+                        log.warn("next.IMPACT: " + nextLevel.getImpact());
+                        log.warn("next.MIN: " + nextLevel.getMinLoss());
+
+                        log.warn("ImpactLevel previous.MAX != next.MIN!!!");
+                        return false;
+                    }
+                } else {
+                    //prev.MAX < next.MIN
+                    if (previousLevel.getMaxLoss().compareTo(nextLevel.getMinLoss()) >= 0) {
+                        return false;
+                    }
                 }
             }
         }
