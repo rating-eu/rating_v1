@@ -42,7 +42,7 @@ public class AttackCost implements Serializable {
     private String description;
 
     @Column(name = "costs", precision=20, scale=2)
-    private BigDecimal costs;
+    private BigDecimal costs = BigDecimal.ZERO;
 
     @ManyToOne
     @OnDelete(action = OnDeleteAction.CASCADE)
