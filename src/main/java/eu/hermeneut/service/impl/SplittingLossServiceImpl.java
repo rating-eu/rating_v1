@@ -1,14 +1,26 @@
 package eu.hermeneut.service.impl;
 
+import eu.hermeneut.domain.MyAsset;
+import eu.hermeneut.domain.SelfAssessment;
+import eu.hermeneut.domain.enumeration.CategoryType;
+import eu.hermeneut.domain.enumeration.SectorType;
+import eu.hermeneut.exceptions.NotFoundException;
+import eu.hermeneut.exceptions.NotImplementedYetException;
+import eu.hermeneut.service.MyAssetService;
+import eu.hermeneut.service.SelfAssessmentService;
 import eu.hermeneut.service.SplittingLossService;
 import eu.hermeneut.domain.SplittingLoss;
 import eu.hermeneut.repository.SplittingLossRepository;
 import eu.hermeneut.repository.search.SplittingLossSearchRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -27,6 +39,12 @@ public class SplittingLossServiceImpl implements SplittingLossService {
     private final SplittingLossRepository splittingLossRepository;
 
     private final SplittingLossSearchRepository splittingLossSearchRepository;
+
+    @Autowired
+    private MyAssetService myAssetService;
+
+    @Autowired
+    private SelfAssessmentService selfAssessmentService;
 
     public SplittingLossServiceImpl(SplittingLossRepository splittingLossRepository, SplittingLossSearchRepository splittingLossSearchRepository) {
         this.splittingLossRepository = splittingLossRepository;
@@ -117,5 +135,40 @@ public class SplittingLossServiceImpl implements SplittingLossService {
     public List<SplittingLoss> findAllBySelfAssessmentID(Long selfAssessmentID) {
         log.debug("Request to get all SplittingLosses by SelfAssessment ID: " + selfAssessmentID);
         return splittingLossRepository.findAllBySelfAssessmentID(selfAssessmentID);
+    }
+
+    @Override
+    public SplittingLoss getDATASplittingLossBySelfAssessmentID(Long selfAssessmentID) {
+        log.debug("Request to get DATA SplittingLoss by SelfAssessment ID: " + selfAssessmentID);
+        SelfAssessment selfAssessment = this.selfAssessmentService.findOne(selfAssessmentID);
+        
+        if (selfAssessment != null) {
+            try {
+                List<MyAsset> dataAssets = this.myAssetService.findAllBySelfAssessmentAndCategoryType(selfAssessmentID, CategoryType.DATA);
+
+                if (dataAssets != null && !dataAssets.isEmpty()) {
+                    SplittingLoss dataSplittingLoss = new SplittingLoss();
+                    dataSplittingLoss.setId(null);
+                    dataSplittingLoss.setSelfAssessment(selfAssessment);
+                    dataSplittingLoss.setCategoryType(CategoryType.DATA);
+                    dataSplittingLoss.setSectorType(SectorType.GLOBAL);
+
+                    dataSplittingLoss.setLossPercentage(BigDecimal.ZERO);
+
+                    BigDecimal lossValue = dataAssets.stream().map(myAsset -> myAsset.getLossValue() != null ? myAsset.getLossValue() : BigDecimal.ZERO).reduce(BigDecimal.ZERO, BigDecimal::add);
+
+                    dataSplittingLoss.setLoss(lossValue);
+
+                    return dataSplittingLoss;
+                } else {
+                    return null;
+                }
+            } catch (NotImplementedYetException e) {
+                e.printStackTrace();
+                return null;
+            }
+        }
+
+        return null;
     }
 }

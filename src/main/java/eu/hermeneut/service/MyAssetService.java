@@ -2,6 +2,8 @@ package eu.hermeneut.service;
 
 import eu.hermeneut.domain.MyAsset;
 import eu.hermeneut.domain.enumeration.AssetType;
+import eu.hermeneut.domain.enumeration.CategoryType;
+import eu.hermeneut.exceptions.NotImplementedYetException;
 
 import java.util.List;
 
@@ -55,4 +57,6 @@ public interface MyAssetService {
     List<MyAsset> findAllBySelfAssessment(Long selfAssessmentID);
 
     List<MyAsset> findAllBySelfAssessmentAndAssetType(Long selfAssessmentID, AssetType assetType);
+
+    List<MyAsset> findAllBySelfAssessmentAndCategoryType(Long selfAssessmentID, CategoryType data) throws NotImplementedYetException;
 }
