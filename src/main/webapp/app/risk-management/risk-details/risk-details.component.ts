@@ -11,6 +11,13 @@ import { SelfAssessmentMgmService } from '../../entities/self-assessment-mgm';
 import { Subscription } from 'rxjs';
 import { MyAssetMgm } from '../../entities/my-asset-mgm';
 import { ThreatAgentInterest } from '../model/threat-agent-interest.model';
+import { ImpactEvaluationService } from '../../impact-evaluation/impact-evaluation.service';
+
+interface Formula {
+  element: string;
+  value: number;
+  warning: boolean;
+}
 
 @Component({
   selector: 'jhi-risk-details',
@@ -19,7 +26,7 @@ import { ThreatAgentInterest } from '../model/threat-agent-interest.model';
 })
 export class RiskDetailsComponent implements OnInit, OnDestroy {
   public assetError = false;
-
+  public formulaTable: Formula[] = [];
   public loading = false;
   public loadingRiskLevel = false;
   public attacksToolTipLoaded = false;
@@ -40,13 +47,15 @@ export class RiskDetailsComponent implements OnInit, OnDestroy {
   public attackChances: MyAssetAttackChance[];
 
   private criticalLevelSubscription: Subscription;
+  private impactLevelSubscription: Subscription;
   private mySelf: SelfAssessmentMgm;
 
   constructor(
     private riskService: RiskManagementService,
     private mySelfAssessmentService: SelfAssessmentMgmService,
     private route: ActivatedRoute,
-    private myAssetService: MyAssetMgmService
+    private myAssetService: MyAssetMgmService,
+    private impactEvaluationService: ImpactEvaluationService
   ) { }
 
   ngOnInit() {
@@ -77,6 +86,11 @@ export class RiskDetailsComponent implements OnInit, OnDestroy {
           this.assetError = false;
         });
       });
+    this.impactLevelSubscription = this.impactEvaluationService.subscribeForImpactLevel().subscribe((res) => {
+      if (res) {
+        this.ngOnInit();
+      }
+    });
     this.riskService.getCriticalLevel(this.mySelf).toPromise().then((res) => {
       if (res) {
         this.criticalLevel = res;
@@ -116,6 +130,7 @@ export class RiskDetailsComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.criticalLevelSubscription.unsubscribe();
+    this.impactLevelSubscription.unsubscribe();
   }
   public isMoney(type: string): boolean {
     if (type.toLowerCase().indexOf('cost') !== -1 || type.toLowerCase().indexOf('revenue') !== -1) {
@@ -137,10 +152,15 @@ export class RiskDetailsComponent implements OnInit, OnDestroy {
     this.riskService.getImpactFormulaByMyAsset(this.mySelf, myAsset).toPromise().then((res) => {
       if (res) {
         this.impactFormula = res.toString();
+        this.evaluateFormulaTable(this.impactFormula);
       } else {
         this.impactFormula = '';
       }
     });
+  }
+
+  private evaluateFormulaTable(formula: string) {
+    const elements = formula.split('+');
   }
 
   private getImpactInfo(myAsset: MyAssetMgm) {

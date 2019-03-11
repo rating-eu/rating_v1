@@ -9,6 +9,7 @@ import { CriticalLevelMgm } from '../entities/critical-level-mgm';
 import { HttpClient, HttpResponse, HttpErrorResponse } from '../../../../../node_modules/@angular/common/http';
 import { MyAssetAttackChance } from './model/my-asset-attack-chance.model';
 import { AttackCostFormula } from './model/attack-cost-formula.model';
+import { ImpactLevelMgm } from '../entities/impact-level-mgm';
 
 @Injectable()
 export class RiskManagementService {

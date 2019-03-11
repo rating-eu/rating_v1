@@ -1,3 +1,4 @@
+import { Subject } from 'rxjs/Subject';
 import { GrowthRate } from './model/growth-rates.model';
 import { AttackCostMgm, CostType } from './../entities/attack-cost-mgm/attack-cost-mgm.model';
 import { Injectable } from '@angular/core';
@@ -10,6 +11,7 @@ import { Wp3BundleInput } from './model/wp3-bundle-input.model';
 import { Wp3BundleOutput } from './model/wp3-bundle-output.model';
 import { ImpactEvaluationStatus } from './model/impact-evaluation-status.model';
 import { AttackCostParamMgm } from '../entities/attack-cost-param-mgm';
+import { ImpactLevelMgm } from '../entities/impact-level-mgm';
 
 @Injectable()
 export class ImpactEvaluationService {
@@ -32,10 +34,20 @@ export class ImpactEvaluationService {
     private getGrowthRatesURL = SERVER_API_URL + 'api/{selfAssessmentID}/growth-rates';
     private updateAllGrowthRates = SERVER_API_URL + 'api/{selfAssessmentID}/growth-rates';
     private updateSingleGrowthRate = SERVER_API_URL + 'api/growth-rates';
+    private updateAllCriticalLevel = SERVER_API_URL + 'api/impact-levels/all';
+    private subscriptorForCriticalLevel: Subject<ImpactLevelMgm[]> = new Subject<ImpactLevelMgm[]>();
 
     constructor(
         private http: HttpClient
     ) {
+    }
+
+    public subscribeForImpactLevel(): Observable<ImpactLevelMgm[]> {
+        return this.subscriptorForCriticalLevel.asObservable();
+    }
+
+    public sendUpdateForImpactLevelToSubscriptor(level: ImpactLevelMgm[]) {
+        this.subscriptorForCriticalLevel.next(level);
     }
 
     getGrowthRates(self: SelfAssessmentMgm) {
@@ -57,6 +69,13 @@ export class ImpactEvaluationService {
     updateGrowthRate(rate: GrowthRate): Observable<GrowthRate> {
         return this.http.put<GrowthRate>(this.updateSingleGrowthRate, rate, { observe: 'response' })
             .map((res: HttpResponse<GrowthRate>) => {
+                return res.body;
+            });
+    }
+
+    updateAll(impactLevels: ImpactLevelMgm[]): Observable<ImpactLevelMgm[]> {
+        return this.http.put<ImpactLevelMgm[]>(this.updateAllCriticalLevel, impactLevels, { observe: 'response' })
+            .map((res: HttpResponse<ImpactLevelMgm[]>) => {
                 return res.body;
             });
     }
