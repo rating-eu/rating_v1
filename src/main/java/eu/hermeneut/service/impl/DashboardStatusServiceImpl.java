@@ -159,11 +159,11 @@ public class DashboardStatusServiceImpl implements DashboardStatusService {
                 List<AttackCost> valuedCosts = attackCosts.stream().filter((attackCost) -> attackCost.getCosts() != null && attackCost.getCosts().compareTo(BigDecimal.ZERO) > 0).collect(Collectors.toList());
 
                 if (valuedCosts != null) {
-                    if (valuedCosts.isEmpty()) {
+                    if (valuedCosts.isEmpty()) {//No AttackCost or all with costs=ZERO
                         status = Status.EMPTY;
-                    } else if (valuedCosts.size() < attackCosts.size()) {
+                    } else if (valuedCosts.size() < attackCosts.size()) {//At least one AttackCost with costs > ZERO
                         status = Status.PENDING;
-                    } else if (valuedCosts.size() == attackCosts.size()) {
+                    } else if (valuedCosts.size() == attackCosts.size()) {//All the AttackCosts with costs > ZERO
                         status = Status.FULL;
                     }
                 }

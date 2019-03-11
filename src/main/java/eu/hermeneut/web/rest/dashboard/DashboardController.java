@@ -28,7 +28,7 @@ public class DashboardController {
     @GetMapping("{selfAssessmentID}/dashboard/impact-evaluation-status")
     @PreAuthorize("@selfAssessmentGuardian.isCISO(#selfAssessmentID) || hasRole('ROLE_ADMIN')")
     @Secured({AuthoritiesConstants.CISO, AuthoritiesConstants.ADMIN})
-    public ImpactEvaluationStatus getSelfAssessmentOverview(@PathVariable Long selfAssessmentID) throws
+    public ImpactEvaluationStatus getImpactEvaluationStatus(@PathVariable Long selfAssessmentID) throws
         NullInputException, NotFoundException {
 
         try {
