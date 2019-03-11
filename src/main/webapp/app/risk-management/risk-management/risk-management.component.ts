@@ -1,3 +1,4 @@
+import * as _ from 'lodash';
 import { ImpactEvaluationService } from './../../impact-evaluation/impact-evaluation.service';
 import { Component, OnInit } from '@angular/core';
 import { SelfAssessmentMgm, SelfAssessmentMgmService } from '../../entities/self-assessment-mgm';
@@ -8,9 +9,6 @@ import { ImpactLevelDescriptionMgm, ImpactLevelDescriptionMgmService } from '../
 import { ImpactLevelMgm, ImpactLevelMgmService } from '../../entities/impact-level-mgm';
 import { forkJoin } from 'rxjs/observable/forkJoin';
 import { HttpResponse } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
-import { of } from 'rxjs/observable/of';
 
 @Component({
     // tslint:disable-next-line:component-selector
@@ -198,9 +196,9 @@ export class RiskManagementComponent implements OnInit {
     public updateImpactLevels() {
         if (this.impactLevelsValidity()) {
             this.updateErrors = false;
-            const levelsToUpdate: ImpactLevelMgm[] = [];
             const updateElems = Array.from(this.impactLevelsMap.values());
-            this.impactEvaluationService.updateAll(levelsToUpdate).toPromise().then((res) => {
+            this.switchOnCollapsible('none');
+            this.impactEvaluationService.updateAll(updateElems).toPromise().then((res) => {
                 this.impactEvaluationService.sendUpdateForImpactLevelToSubscriptor(res);
                 this.ngOnInit();
             });
@@ -211,11 +209,14 @@ export class RiskManagementComponent implements OnInit {
 
     private impactLevelsValidity(): boolean {
         let boundaryLowElem = 0;
-        const impactsLvl = Array.from(this.impactLevelsMap.values());
+        let impactsLvl = Array.from(this.impactLevelsMap.values());
+        impactsLvl = _.orderBy(impactsLvl, ['impact'], ['asc']);
+        boundaryLowElem = impactsLvl[0].maxLoss;
+        impactsLvl.shift();
         for (const elem of impactsLvl) {
             if (elem && elem.id !== undefined) {
-                if (elem.minLoss > boundaryLowElem) {
-                    boundaryLowElem = elem.minLoss;
+                if (elem.minLoss === boundaryLowElem) {
+                    boundaryLowElem = elem.maxLoss;
                 } else {
                     return false;
                 }

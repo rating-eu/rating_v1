@@ -118,6 +118,7 @@
                             </tr>
                         </tbody>
                     </table>
+                    <small *ngIf="updateErrors" style="color: red">Please verify your scale value!</small>
                 </div>
             </div>
             <div class="collapse col-md-12" [ngbCollapse]="isLikelihoodCollapsed">
