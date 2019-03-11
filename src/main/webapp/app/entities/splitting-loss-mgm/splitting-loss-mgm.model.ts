@@ -11,7 +11,8 @@ export enum SectorType {
 export enum CategoryType {
     'IP',
     'KEY_COMP',
-    'ORG_CAPITAL'
+    'ORG_CAPITAL',
+    'DATA'
 }
 
 export class SplittingLossMgm implements BaseEntity {
