@@ -1,6 +1,7 @@
 package eu.hermeneut.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import eu.hermeneut.aop.annotation.UpdateImpactsHook;
 import eu.hermeneut.domain.ImpactLevel;
 import eu.hermeneut.exceptions.IllegalInputException;
 import eu.hermeneut.service.ImpactLevelService;
@@ -18,9 +19,6 @@ import java.net.URISyntaxException;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.StreamSupport;
-
-import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
  * REST controller for managing ImpactLevel.
@@ -61,6 +59,7 @@ public class ImpactLevelResource {
 
     @PostMapping("/impact-levels/all")
     @Timed
+    @UpdateImpactsHook
     public List<ImpactLevel> createImpactLevels(@Valid @RequestBody List<ImpactLevel> impactLevels) throws IllegalInputException {
         log.debug("REST request to save all ImpactLevels : {}", impactLevels);
 
@@ -78,6 +77,7 @@ public class ImpactLevelResource {
 
     @PutMapping("/impact-levels/all")
     @Timed
+    @UpdateImpactsHook
     public List<ImpactLevel> updateImpactLevels(@Valid @RequestBody List<ImpactLevel> impactLevels) throws IllegalInputException {
         log.debug("REST request to save all ImpactLevels : {}", impactLevels);
 
@@ -134,6 +134,7 @@ public class ImpactLevelResource {
      */
     @GetMapping("/{selfAssessmentID}/impact-levels")
     @Timed
+    @UpdateImpactsHook
     public List<ImpactLevel> getAllImpactLevelsBySelfAssessment(@PathVariable("selfAssessmentID") Long selfAssessmentID) {
         log.debug("REST request to get all ImpactLevels");
         return impactLevelService.findAllBySelfAssessment(selfAssessmentID);
