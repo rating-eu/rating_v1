@@ -3,6 +3,7 @@ package eu.hermeneut.service.impl;
 import eu.hermeneut.domain.AttackCost;
 import eu.hermeneut.domain.AttackCostParam;
 import eu.hermeneut.domain.enumeration.AssetType;
+import eu.hermeneut.domain.enumeration.CategoryType;
 import eu.hermeneut.exceptions.IllegalInputException;
 import eu.hermeneut.exceptions.NotFoundException;
 import eu.hermeneut.exceptions.NotImplementedYetException;
@@ -13,7 +14,6 @@ import eu.hermeneut.domain.MyAsset;
 import eu.hermeneut.repository.MyAssetRepository;
 import eu.hermeneut.repository.search.MyAssetSearchRepository;
 import eu.hermeneut.service.attack.cost.AttackCostSwitch;
-import org.hibernate.cfg.NotYetImplementedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -215,5 +215,23 @@ public class MyAssetServiceImpl implements MyAssetService {
     public List<MyAsset> findAllBySelfAssessmentAndAssetType(Long selfAssessmentID, AssetType assetType) {
         log.debug("Request to get all MyAssets by SelfAssessment ID and AssetType: " + assetType);
         return this.myAssetRepository.findAllBySelfAssessmentAndAssetType(selfAssessmentID, assetType);
+    }
+
+    @Override
+    public List<MyAsset> findAllBySelfAssessmentAndCategoryType(Long selfAssessmentID, CategoryType categoryType) throws NotImplementedYetException {
+        log.debug("Request to get all MyAssets by SelfAssessment ID and CategoryType: " + categoryType);
+
+        switch (categoryType) {
+            case DATA: {
+                //TODO think about a better way to search by Category instead of Strings.
+                return this.myAssetRepository.findAllBySelfAssessmentAndAssetCategory(selfAssessmentID, "Data");
+            }
+            case IP:
+            case KEY_COMP:
+            case ORG_CAPITAL:
+            default: {
+                throw new NotImplementedYetException("Method not implemented for this CategoryType");
+            }
+        }
     }
 }

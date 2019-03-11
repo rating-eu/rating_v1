@@ -52,5 +52,7 @@ public interface SplittingLossService {
 
     List<SplittingLoss> findAllBySelfAssessmentID(Long selfAssessmentID);
 
+    SplittingLoss getDATASplittingLossBySelfAssessmentID(Long selfAssessmentID);
+
     List<SplittingLoss> save(List<SplittingLoss> splittingLosses);
 }
