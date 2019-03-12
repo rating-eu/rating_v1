@@ -11,6 +11,13 @@ import { SelfAssessmentMgmService } from '../../entities/self-assessment-mgm';
 import { Subscription } from 'rxjs';
 import { MyAssetMgm } from '../../entities/my-asset-mgm';
 import { ThreatAgentInterest } from '../model/threat-agent-interest.model';
+import { ImpactEvaluationService } from '../../impact-evaluation/impact-evaluation.service';
+
+interface Formula {
+  element: string;
+  value: string;
+  warning: boolean;
+}
 
 @Component({
   selector: 'jhi-risk-details',
@@ -19,8 +26,10 @@ import { ThreatAgentInterest } from '../model/threat-agent-interest.model';
 })
 export class RiskDetailsComponent implements OnInit, OnDestroy {
   public assetError = false;
-
+  public formulaTable: Formula[] = [];
+  public formulaSum: string;
   public loading = false;
+  public loadingFormulaTable = false;
   public loadingRiskLevel = false;
   public attacksToolTipLoaded = false;
   public attacksToolTipLoadedTimer = false;
@@ -40,13 +49,15 @@ export class RiskDetailsComponent implements OnInit, OnDestroy {
   public attackChances: MyAssetAttackChance[];
 
   private criticalLevelSubscription: Subscription;
+  private impactLevelSubscription: Subscription;
   private mySelf: SelfAssessmentMgm;
 
   constructor(
     private riskService: RiskManagementService,
     private mySelfAssessmentService: SelfAssessmentMgmService,
     private route: ActivatedRoute,
-    private myAssetService: MyAssetMgmService
+    private myAssetService: MyAssetMgmService,
+    private impactEvaluationService: ImpactEvaluationService
   ) { }
 
   ngOnInit() {
@@ -77,6 +88,11 @@ export class RiskDetailsComponent implements OnInit, OnDestroy {
           this.assetError = false;
         });
       });
+    this.impactLevelSubscription = this.impactEvaluationService.subscribeForImpactLevel().subscribe((res) => {
+      if (res) {
+        this.ngOnInit();
+      }
+    });
     this.riskService.getCriticalLevel(this.mySelf).toPromise().then((res) => {
       if (res) {
         this.criticalLevel = res;
@@ -116,6 +132,7 @@ export class RiskDetailsComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.criticalLevelSubscription.unsubscribe();
+    this.impactLevelSubscription.unsubscribe();
   }
   public isMoney(type: string): boolean {
     if (type.toLowerCase().indexOf('cost') !== -1 || type.toLowerCase().indexOf('revenue') !== -1) {
@@ -134,12 +151,36 @@ export class RiskDetailsComponent implements OnInit, OnDestroy {
   }
 
   private getImpactFormula(myAsset: MyAssetMgm) {
+    this.loadingFormulaTable = true;
     this.riskService.getImpactFormulaByMyAsset(this.mySelf, myAsset).toPromise().then((res) => {
       if (res) {
         this.impactFormula = res.toString();
+        this.evaluateFormulaTable(this.impactFormula);
+        this.loadingFormulaTable = false;
       } else {
-        this.impactFormula = '';
+        this.impactFormula = undefined;
+        this.loadingFormulaTable = false;
       }
+    }).catch(() => {
+      this.impactFormula = undefined;
+      this.loadingFormulaTable = false;
+    });
+  }
+
+  private evaluateFormulaTable(formula: string) {
+    this.formulaSum = formula.substr(formula.indexOf('=') + 1);
+    formula = formula.substr(0, formula.indexOf('='));
+    const elements = formula.split('+');
+    elements.forEach((param) => {
+      param = param.trim();
+      const f: Formula = {
+        element: param.substr(0, param.indexOf('(')).replace(new RegExp('\\.', 'g'), ' ').replace(new RegExp('_', 'g'), ' ').replace(/\w\S*/g, function (txt) {
+          return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+        }),
+        value: param.substr(param.indexOf('(') + 1).replace(')', ''),
+        warning: param.substr(param.indexOf('(') + 1).replace(')', '') === '0.00€' ? true : false
+      };
+      this.formulaTable.push(f);
     });
   }
 

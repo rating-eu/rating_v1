@@ -246,6 +246,8 @@
                         </table>
                     </div>
                     <div class="col-md-12">
+                        <jhi-growth-rates-configurator-component></jhi-growth-rates-configurator-component>
+                        <!--
                         <h5>Growth rate</h5>
                         <table class="table text-center">
                             <thead>
@@ -259,51 +261,9 @@
                                     <td>{{rate.year}}</td>
                                     <td>{{rate.rate}}</td>
                                 </tr>
-                                <!--
-                                <tr>
-                                    <td>1</td>
-                                    <td>0,150</td>
-                                </tr>
-                                <tr>
-                                    <td>2</td>
-                                    <td>0,150</td>
-                                </tr>
-                                <tr>
-                                    <td>3</td>
-                                    <td>0,150</td>
-                                </tr>
-                                <tr>
-                                    <td>4</td>
-                                    <td>0,150</td>
-                                </tr>
-                                <tr>
-                                    <td>5</td>
-                                    <td>0,150</td>
-                                </tr>
-                                <tr>
-                                    <td>6</td>
-                                    <td>0,126</td>
-                                </tr>
-
-                                <tr>
-                                    <td>7</td>
-                                    <td>0,102</td>
-                                </tr>
-                                <tr>
-                                    <td>8</td>
-                                    <td>0,078</td>
-                                </tr>
-                                <tr>
-                                    <td>9</td>
-                                    <td>0,054</td>
-                                </tr>
-                                <tr>
-                                    <td>10 and over...</td>
-                                    <td>0,030</td>
-                                </tr>
-                                -->
                             </tbody>
                         </table>
+                        -->
                     </div>
                     <div class="col-md-12 text-center">
                         <img src="../../../content/images/formula.jpg" alt="Formula">
@@ -335,46 +295,52 @@
                                 <div class="input-group-prepend">
                                     <span class="input-group-text past-year" id="ebit0Prepend">{{ebitLabel[0]}} €</span>
                                 </div>
-                                <input type="number" min="0" step="any" class="form-control" placeholder="{{ebitLabel[0]}}"
-                                    aria-label="Ebit1" aria-describedby="basic-addon2" formControlName="ebit1">
+                                <input type="number" min="0" step="any" class="form-control"
+                                    placeholder="{{ebitLabel[0]}}" aria-label="Ebit1" aria-describedby="basic-addon2"
+                                    formControlName="ebit1">
                             </div>
                             <div class="input-group" style="margin-bottom: 10px">
                                 <div class="input-group-prepend">
                                     <span class="input-group-text past-year" id="ebit1Prepend">{{ebitLabel[1]}} €</span>
                                 </div>
-                                <input type="number" min="0" step="any" class="form-control" placeholder="{{ebitLabel[1]}}"
-                                    aria-label="Ebit2" aria-describedby="basic-addon2" formControlName="ebit2">
+                                <input type="number" min="0" step="any" class="form-control"
+                                    placeholder="{{ebitLabel[1]}}" aria-label="Ebit2" aria-describedby="basic-addon2"
+                                    formControlName="ebit2">
                             </div>
                             <div class="input-group" style="margin-bottom: 10px">
                                 <div class="input-group-prepend">
                                     <span class="input-group-text this-year" id="ebit2Prepend">{{ebitLabel[2]}} €</span>
                                 </div>
-                                <input type="number" min="0" step="any" class="form-control" placeholder="{{ebitLabel[2]}}"
-                                    aria-label="Ebit3" aria-describedby="basic-addon2" formControlName="ebit3">
+                                <input type="number" min="0" step="any" class="form-control"
+                                    placeholder="{{ebitLabel[2]}}" aria-label="Ebit3" aria-describedby="basic-addon2"
+                                    formControlName="ebit3">
                             </div>
                             <div class="input-group" style="margin-bottom: 10px">
                                 <div class="input-group-prepend">
                                     <span class="input-group-text future-year" id="ebit3Prepend">{{ebitLabel[3]}}
                                         €</span>
                                 </div>
-                                <input type="number" min="0" step="any" class="form-control" placeholder="{{ebitLabel[3]}}"
-                                    aria-label="Ebit4" aria-describedby="basic-addon2" formControlName="ebit4">
+                                <input type="number" min="0" step="any" class="form-control"
+                                    placeholder="{{ebitLabel[3]}}" aria-label="Ebit4" aria-describedby="basic-addon2"
+                                    formControlName="ebit4">
                             </div>
                             <div class="input-group" style="margin-bottom: 10px">
                                 <div class="input-group-prepend">
                                     <span class="input-group-text future-year" id="ebit4Prepend">{{ebitLabel[4]}}
                                         €</span>
                                 </div>
-                                <input type="number" min="0" step="any" class="form-control" placeholder="{{ebitLabel[4]}}"
-                                    aria-label="Ebit5" aria-describedby="basic-addon2" formControlName="ebit5">
+                                <input type="number" min="0" step="any" class="form-control"
+                                    placeholder="{{ebitLabel[4]}}" aria-label="Ebit5" aria-describedby="basic-addon2"
+                                    formControlName="ebit5">
                             </div>
                             <div class="input-group" style="margin-bottom: 10px">
                                 <div class="input-group-prepend">
                                     <span class="input-group-text future-year" id="ebit5Prepend">{{ebitLabel[5]}}
                                         €</span>
                                 </div>
-                                <input type="number" min="0" step="any" class="form-control" placeholder="{{ebitLabel[5]}}"
-                                    aria-label="Ebit6" aria-describedby="basic-addon2" formControlName="ebit6">
+                                <input type="number" min="0" step="any" class="form-control"
+                                    placeholder="{{ebitLabel[5]}}" aria-label="Ebit6" aria-describedby="basic-addon2"
+                                    formControlName="ebit6">
                             </div>
                         </form>
                     </div>
@@ -459,19 +425,6 @@
                                     [(ngModel)]="asset.economicValue">
                             </div>
                         </ng-container>
-                        <ng-container>
-                            <div class="input-group" style="margin-bottom: 10px">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text" id="">
-                                        Valuation of Long Term Liabilities €
-                                    </span>
-                                </div>
-                                <input type="number" class="form-control"
-                                    placeholder="Insert economic valuation of Current Long Term Liabilities"
-                                    aria-label="liabilitiesValue" aria-describedby="basic-addon2-1" pattern="[0-9]+"
-                                    [(ngModel)]="longTermLiabilities">
-                            </div>
-                        </ng-container>
                     </div>
                     <div *ngIf="financialAssetsAkaCurrent.length > 0" class="col-md-6">
                         <h6>Financial Assets</h6>
@@ -487,6 +440,28 @@
                                     [(ngModel)]="asset.economicValue">
                             </div>
                         </ng-container>
+                    </div>
+                </div>
+                <div class="row" style="margin-top: 20px">
+                    <div class="col-md-12">
+                        <h6>Liabilities</h6>
+                    </div>
+                    <div class="col-md-6">
+                        <ng-container>
+                            <div class="input-group" style="margin-bottom: 10px">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="">
+                                        Valuation of Long Term Liabilities €
+                                    </span>
+                                </div>
+                                <input type="number" class="form-control"
+                                    placeholder="Insert economic valuation of Current Long Term Liabilities"
+                                    aria-label="liabilitiesValue" aria-describedby="basic-addon2-1" pattern="[0-9]+"
+                                    [(ngModel)]="longTermLiabilities">
+                            </div>
+                        </ng-container>
+                    </div>
+                    <div class="col-md-6">
                         <ng-container>
                             <div class="input-group" style="margin-bottom: 10px">
                                 <div class="input-group-prepend">
@@ -1235,6 +1210,9 @@
                         <button class="btn btn-secondary float-right" style="margin-left: 10px" (click)="close()">
                             Close
                         </button>
+                        <button class="btn btn-light float-right"
+                            [routerLink]="['/impact-evaluation/data-assets-losses-estimation']">Estimation of the Data
+                            Assets category Losses</button>
                         <button class="btn btn-light float-right" (click)="selectStep(2)">Prev</button>
                     </div>
                 </div>

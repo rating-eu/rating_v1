@@ -1,7 +1,9 @@
 package eu.hermeneut.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import eu.hermeneut.aop.annotation.UpdateImpactsHook;
 import eu.hermeneut.domain.ImpactLevel;
+import eu.hermeneut.exceptions.IllegalInputException;
 import eu.hermeneut.service.ImpactLevelService;
 import eu.hermeneut.web.rest.errors.BadRequestAlertException;
 import eu.hermeneut.web.rest.util.HeaderUtil;
@@ -17,9 +19,6 @@ import java.net.URISyntaxException;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.StreamSupport;
-
-import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
  * REST controller for managing ImpactLevel.
@@ -60,11 +59,34 @@ public class ImpactLevelResource {
 
     @PostMapping("/impact-levels/all")
     @Timed
-    public List<ImpactLevel> createImpactLevels(@Valid @RequestBody List<ImpactLevel> impactLevels){
+    @UpdateImpactsHook
+    public List<ImpactLevel> createImpactLevels(@Valid @RequestBody List<ImpactLevel> impactLevels) throws IllegalInputException {
         log.debug("REST request to save all ImpactLevels : {}", impactLevels);
 
         if (impactLevels.stream().filter(impactLevel -> impactLevel.getId() != null).count() > 0) {
-            throw new BadRequestAlertException("A new myAnswer cannot already have an ID", ENTITY_NAME, "idexists");
+            throw new BadRequestAlertException("A new ImpactLevel cannot already have an ID", ENTITY_NAME, "idexists");
+        }
+
+        if (!this.impactLevelService.checkValidity(impactLevels)) {
+            throw new IllegalInputException("ImpactLevels are NOT VALID!!!");
+        }
+
+        List<ImpactLevel> result = this.impactLevelService.saveAll(impactLevels);
+        return result;
+    }
+
+    @PutMapping("/impact-levels/all")
+    @Timed
+    @UpdateImpactsHook
+    public List<ImpactLevel> updateImpactLevels(@Valid @RequestBody List<ImpactLevel> impactLevels) throws IllegalInputException {
+        log.debug("REST request to save all ImpactLevels : {}", impactLevels);
+
+        if (impactLevels.stream().filter(impactLevel -> impactLevel.getId() == null).count() > 0) {
+            throw new IllegalInputException("An ImpactLevel to be updated must have an ID");
+        }
+
+        if (!this.impactLevelService.checkValidity(impactLevels)) {
+            throw new IllegalInputException("ImpactLevels are NOT VALID!!!");
         }
 
         List<ImpactLevel> result = this.impactLevelService.saveAll(impactLevels);
@@ -112,6 +134,7 @@ public class ImpactLevelResource {
      */
     @GetMapping("/{selfAssessmentID}/impact-levels")
     @Timed
+    @UpdateImpactsHook
     public List<ImpactLevel> getAllImpactLevelsBySelfAssessment(@PathVariable("selfAssessmentID") Long selfAssessmentID) {
         log.debug("REST request to get all ImpactLevels");
         return impactLevelService.findAllBySelfAssessment(selfAssessmentID);
@@ -158,5 +181,4 @@ public class ImpactLevelResource {
         log.debug("REST request to search ImpactLevels for query {}", query);
         return impactLevelService.search(query);
     }
-
 }

@@ -92,7 +92,14 @@ export class LossesWidgetComponent implements OnInit {
               });
               break;
             }
-            // TODO case with Data (calculated by D4.3 methodology)
+            case MyCategoryType.DATA.toString(): {
+              this.tableInfo.push({
+                splitting: 'Data',
+                value: Math.round(impact.loss * 100) / 100,
+                type: 'DATA'
+              });
+              break;
+            }
           }
           this.tableInfo = _.orderBy(this.tableInfo, ['value'], ['desc']);
           this.loading = false;

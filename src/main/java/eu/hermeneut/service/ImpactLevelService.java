@@ -1,6 +1,7 @@
 package eu.hermeneut.service;
 
 import eu.hermeneut.domain.ImpactLevel;
+
 import java.util.List;
 
 /**
@@ -42,7 +43,6 @@ public interface ImpactLevelService {
      * Search for the impactLevel corresponding to the query.
      *
      * @param query the query of the search
-     *
      * @return the list of entities
      */
     List<ImpactLevel> search(String query);
@@ -50,4 +50,6 @@ public interface ImpactLevelService {
     List<ImpactLevel> findAllBySelfAssessment(Long selfAssessmentID);
 
     List<ImpactLevel> saveAll(List<ImpactLevel> impactLevels);
+
+    boolean checkValidity(List<ImpactLevel> impactLevels);
 }

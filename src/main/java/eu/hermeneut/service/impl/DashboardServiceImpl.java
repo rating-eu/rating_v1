@@ -90,12 +90,18 @@ public class DashboardServiceImpl implements DashboardService {
 
         List<SplittingLoss> splittingLosses = splittingLossService.findAllBySelfAssessmentID(selfAssessmentID);
 
-        if(splittingLosses != null && !splittingLosses.isEmpty()){
+        if (splittingLosses != null && !splittingLosses.isEmpty()) {
             SectorType sectorType = splittingLosses.get(0).getSectorType();
 
             if (sectorType != null) {
                 impactEvaluationStatus.setSectorType(sectorType);
             }
+        }
+
+        // Add the SplittingLoss for DATA Asssets
+        SplittingLoss dataSplittingLoss = this.splittingLossService.getDATASplittingLossBySelfAssessmentID(selfAssessmentID);
+        if (dataSplittingLoss != null) {
+            splittingLosses.add(dataSplittingLoss);
         }
 
         /*

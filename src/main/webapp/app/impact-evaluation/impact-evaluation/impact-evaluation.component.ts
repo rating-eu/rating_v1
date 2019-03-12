@@ -87,7 +87,7 @@ export class ImpactEvaluationComponent implements OnInit {
     public physicalAssetsAkaFixed: MyAssetMgm[] = [];
     public ebitLabel: string[] = [];
     public orderBy: OrderBy;
-    public rates: GrowthRate[] = [];
+    // public rates: GrowthRate[] = [];
 
     private mySelf: SelfAssessmentMgm;
     private firstYear: number;
@@ -242,9 +242,9 @@ export class ImpactEvaluationComponent implements OnInit {
             ])),
         });
         this.mySelf = this.mySelfAssessmentService.getSelfAssessment();
-        this.impactService.getGrowthRates(this.mySelf).toPromise().then((res) => {
+        /*this.impactService.getGrowthRates(this.mySelf).toPromise().then((res) => {
             this.rates = res;
-        });
+        });*/
         this.impactService.getMyAssets(this.mySelf).toPromise().then((res) => {
             if (res && res.length > 0) {
                 this.myAssets = res;
