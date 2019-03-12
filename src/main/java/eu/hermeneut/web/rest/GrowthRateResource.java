@@ -1,5 +1,6 @@
 package eu.hermeneut.web.rest;
 
+import eu.hermeneut.aop.annotation.UpdateIntangibleCapitalHook;
 import eu.hermeneut.domain.GrowthRate;
 import eu.hermeneut.domain.SelfAssessment;
 import eu.hermeneut.exceptions.IllegalInputException;
@@ -46,6 +47,7 @@ public class GrowthRateResource {
 
     @PutMapping("/{selfAssessmentID}/growth-rates")
     @Secured({AuthoritiesConstants.CISO})
+    @UpdateIntangibleCapitalHook
     public List<GrowthRate> updateGrowthRatesBySelfAssessment(@PathVariable("selfAssessmentID") Long selfAssessmentID,
                                                               @RequestBody @NotEmpty @NotNull List<GrowthRate> growthRates) throws NotFoundException, IllegalInputException {
         LOGGER.debug("REST request to update GrowthRates!");
@@ -59,7 +61,7 @@ public class GrowthRateResource {
         List<GrowthRate> deniedRates = growthRates.stream().parallel().filter(growthRate -> growthRate.getId() == null || !growthRate.getSelfAssessment().getId().equals(selfAssessmentID)).collect(Collectors.toList());
 
         if (deniedRates != null && !deniedRates.isEmpty()) {
-            throw new IllegalInputException("GrowthRates to be updated MUST have an ID!!!");
+            throw new IllegalInputException("GrowthRates to be updated MUST have an ID and belong to the given SelfAssessment!!!");
         }
 
         growthRates = this.growthRateService.saveAll(growthRates);
