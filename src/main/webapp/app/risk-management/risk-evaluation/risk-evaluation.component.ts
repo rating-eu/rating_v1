@@ -10,6 +10,7 @@ import { MyAssetMgm } from '../../entities/my-asset-mgm';
 import { Status } from '../../entities/enumerations/QuestionnaireStatus.enum';
 import { Subscription } from 'rxjs';
 import { MitigationMgm } from '../../entities/mitigation-mgm';
+import { ImpactEvaluationService } from '../../impact-evaluation/impact-evaluation.service';
 
 interface RiskPercentageElement {
     asset: MyAssetMgm;
@@ -40,12 +41,14 @@ interface OrderBy {
 export class RiskEvaluationComponent implements OnInit, OnDestroy {
     public loadingRiskLevel = false;
     public loadingAssetsAndAttacks = false;
+    public isWarningVisible = true;
     private mySelf: SelfAssessmentMgm;
     public criticalLevel: CriticalLevelMgm;
     public squareColumnElement: number[];
     public squareRowElement: number[];
     public lastSquareRowElement: number;
     private criticalLevelSubscription: Subscription;
+    private impactLevelSubscription: Subscription;
     public myAssetsAtRisk: MyAssetRisk[];
     public bostonSquareCells: string[][] = [];
     public riskMitigationMap: Map<number, MitigationMgm[]> = new Map<number, MitigationMgm[]>();
@@ -74,7 +77,8 @@ export class RiskEvaluationComponent implements OnInit, OnDestroy {
     constructor(
         private mySelfAssessmentService: SelfAssessmentMgmService,
         private riskService: RiskManagementService,
-        private dashService: DashboardService
+        private dashService: DashboardService,
+        private impactEvaluationService: ImpactEvaluationService
     ) {
     }
 
@@ -89,6 +93,11 @@ export class RiskEvaluationComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.loadingRiskLevel = true;
         this.loadingAssetsAndAttacks = true;
+        this.impactLevelSubscription = this.impactEvaluationService.subscribeForImpactLevel().subscribe((res) => {
+            if (res) {
+                this.ngOnInit();
+            }
+        });
         this.orderIntangibleBy = {
             category: false,
             asset: false,
@@ -154,14 +163,17 @@ export class RiskEvaluationComponent implements OnInit, OnDestroy {
         this.dashService.getStatusFromServer(this.mySelf, this.dashboardStatus.ATTACK_RELATED_COSTS).toPromise().then((res) => {
             if (Status[res] === Status.EMPTY || Status[res] === Status.PENDING) {
                 this.attackCosts = false;
+                this.isWarningVisible = true;
             } else {
                 this.attackCosts = true;
+                this.isWarningVisible = false;
             }
         });
     }
 
     ngOnDestroy() {
         this.criticalLevelSubscription.unsubscribe();
+        this.impactLevelSubscription.unsubscribe();
     }
 
     public whichLevel(row: number, column: number): string {

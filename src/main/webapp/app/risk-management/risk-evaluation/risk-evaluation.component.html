@@ -8,17 +8,8 @@
             <p style="color: grey">No Assets counted or no questionnaire was complited!</p>
         </div>
     </ng-container>
-    <ng-container *ngIf="myAssetsAtRisk.length>0 && !attackCosts">
-        <div class="text-center" style="margin-top: 50px">
-            <p style="color: orange"><i class="fa fa-exclamation-triangle fa-4x" aria-hidden="true"></i></p>
-            <p style="color: grey">No <a href="javascript:void(0)"
-                    [routerLink]="['/identify-asset/attack-costs']">Attack
-                    Costs</a> defined or no <a href="javascript:void(0)"
-                    [routerLink]="['/impact-evaluation/attack-related-costs-estimation']">Economic
-                    estimate</a> complited!</p>
-        </div>
-    </ng-container>
-    <ng-container *ngIf="myAssetsAtRisk.length>0 && attackCosts">
+
+    <ng-container *ngIf="myAssetsAtRisk.length>0">
         <br>
         <div class="row">
             <div class="col-md-2 text-left">
@@ -59,6 +50,26 @@
         </div>
         <div class="row">
             <span class="col-md-10 offset-md-1 border-bottom border-secondary">&nbsp;</span>
+        </div>
+        <div class="row" *ngIf="isWarningVisible">
+            <div class="col-md-10 offset-md-1 border-bottom border-secondary">
+                <div class="col-md-12" style="margin-top: 10px">
+                    <i class="fa fa-times fa-lg float-right" aria-hidden="true" (click)="isWarningVisible = false"></i>
+                </div>
+                <div class="col-md-12">
+                    <div class="text-center">
+                        <p>
+                            <i class="fa fa-exclamation-triangle" style="color: orange" aria-hidden="true"></i>
+                            <span style="color: grey">No
+                                <a href="javascript:void(0)" [routerLink]="['/identify-asset/attack-costs']">Attack Costs</a> 
+                                defined or no
+                                <a href="javascript:void(0)" [routerLink]="['/impact-evaluation/attack-related-costs-estimation']">Economic estimate</a>
+                                complited!
+                            </span>
+                        </p>
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="row">
             <div class="col-md-12">
@@ -128,14 +139,14 @@
                                                 </th>
                                                 <th width="9%">Impact
                                                     <i *ngIf="!orderTangibleBy.impact"
-                                                       (click)=" tableOrderBy('impact', 'TANGIBLE', true)"
-                                                       class="fa fa-sort" aria-hidden="true"></i>
+                                                        (click)=" tableOrderBy('impact', 'TANGIBLE', true)"
+                                                        class="fa fa-sort" aria-hidden="true"></i>
                                                     <i *ngIf="orderTangibleBy.impact && orderTangibleBy.type === 'desc'"
-                                                       (click)=" tableOrderBy('impact', 'TANGIBLE', false)"
-                                                       class="fa fa-chevron-down" aria-hidden="true"></i>
+                                                        (click)=" tableOrderBy('impact', 'TANGIBLE', false)"
+                                                        class="fa fa-chevron-down" aria-hidden="true"></i>
                                                     <i *ngIf="orderTangibleBy.impact && orderTangibleBy.type === 'asc'"
-                                                       (click)=" tableOrderBy('impact', 'TANGIBLE', true)"
-                                                       class="fa fa-chevron-up" aria-hidden="true"></i>
+                                                        (click)=" tableOrderBy('impact', 'TANGIBLE', true)"
+                                                        class="fa fa-chevron-up" aria-hidden="true"></i>
                                                 </th>
                                                 <th width="8%">Risk
                                                     <i *ngIf="!orderTangibleBy.risk"
@@ -261,14 +272,14 @@
                                                 </th>
                                                 <th width="9%">Impact
                                                     <i *ngIf="!orderIntangibleBy.impact"
-                                                       (click)=" tableOrderBy('impact', 'INTANGIBLE', true)"
-                                                       class="fa fa-sort" aria-hidden="true"></i>
+                                                        (click)=" tableOrderBy('impact', 'INTANGIBLE', true)"
+                                                        class="fa fa-sort" aria-hidden="true"></i>
                                                     <i *ngIf="orderIntangibleBy.impact && orderIntangibleBy.type === 'desc'"
-                                                       (click)=" tableOrderBy('impact', 'INTANGIBLE', false)"
-                                                       class="fa fa-chevron-down" aria-hidden="true"></i>
+                                                        (click)=" tableOrderBy('impact', 'INTANGIBLE', false)"
+                                                        class="fa fa-chevron-down" aria-hidden="true"></i>
                                                     <i *ngIf="orderIntangibleBy.impact && orderIntangibleBy.type === 'asc'"
-                                                       (click)=" tableOrderBy('impact', 'INTANGIBLE', true)"
-                                                       class="fa fa-chevron-up" aria-hidden="true"></i>
+                                                        (click)=" tableOrderBy('impact', 'INTANGIBLE', true)"
+                                                        class="fa fa-chevron-up" aria-hidden="true"></i>
                                                 </th>
                                                 <th width="8%">Risk
                                                     <i *ngIf="!orderIntangibleBy.risk"

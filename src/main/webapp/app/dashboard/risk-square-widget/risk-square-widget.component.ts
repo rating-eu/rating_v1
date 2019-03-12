@@ -74,7 +74,7 @@ export class RiskSquareWidgetComponent implements OnInit {
       this.loadingAssetsAndAttacks = false;
     });
 
-    this.dashService.getStatusFromServer(this.mySelf, this.dashboardStatus.ATTACK_RELATED_COSTS).toPromise().then((res) => {
+    this.dashService.getStatusFromServer(this.mySelf, this.dashboardStatus.RISK_EVALUATION).toPromise().then((res) => {
       if (Status[res] === Status.EMPTY || Status[res] === Status.PENDING) {
         this.attackCosts = false;
       } else {

@@ -131,7 +131,7 @@
                 <tr *ngFor="let attackChance of attackChances">
                   <td>{{attackChance.attackStrategy.name}}</td>
                   <td>{{attackChance.likelihood | number : '1.1-2'}}</td>
-                    <td>{{attackChance.vulnerability | number : '1.1-2'}}</td>
+                  <td>{{attackChance.vulnerability | number : '1.1-2'}}</td>
                   <td>
                     <span *ngFor="let mitigation of attackChance.attackStrategy.mitigations; let last = last">
                       <a class="form-control-static"
@@ -151,12 +151,40 @@
     <div class="card-body">
       <h5 class="card-title">Impact: {{selectedAsset.impact}}</h5>
       <ng-container class="card-text">
-
         <ng-container>
           <p>This impact value was evaluated by this formula:
-            <b *ngIf="impactFormula">{{impactFormula | replace:'_':' ' | titlecase}}</b>
-            <ng-container *ngIf="!impactFormula">N/A</ng-container>
+            <ng-container *ngIf="!impactFormula && !loadingFormulaTable">N/A</ng-container>
           </p>
+          <ng-container *ngIf="loadingFormulaTable">
+            <div class="loader"></div>
+          </ng-container>
+          <table class="table" *ngIf="!loadingFormulaTable">
+            <thead>
+              <tr>
+                <th scope="col" width="60%">Params</th>
+                <th scope="col">Value</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let elem of formulaTable; let isLast=last">
+                <td *ngIf="elem.warning">
+                  <i class="fa fa-exclamation-triangle" style="color: orange" aria-hidden="true"></i>
+                  <a href="javascript:void(0)"
+                    [routerLink]="['/impact-evaluation/attack-related-costs-estimation']">{{elem.element}}</a>
+                </td>
+                <td *ngIf="!elem.warning">{{elem.element}}</td>
+                <td>{{elem.value}}</td>
+                <td *ngIf="!isLast">+</td>
+                <td *ngIf="isLast">=</td>
+              </tr>
+              <tr>
+                <td></td>
+                <td><b>{{formulaSum}}</b></td>
+                <td></td>
+              </tr>
+            </tbody>
+          </table>
           <ngb-tabset>
             <ngb-tab title="Direct Cost">
               <ng-template ngbTabContent>
@@ -180,8 +208,10 @@
                             (click)="selectAttackCost(impact)">{{impact.attackCost.type | replace:'_':' ' | titlecase}}</a>
                         </th>
                         <td *ngIf="!impact.attackCostParams">
-                          <ng-container *ngIf="impact.attackCost.type.toString() !== 'COST_OF_IT_DOWNTIME'">{{impact.attackCost.type | replace:'_':' ' | titlecase}}</ng-container>
-                          <ng-container *ngIf="impact.attackCost.type.toString() === 'COST_OF_IT_DOWNTIME'">Cost of IT Downtime</ng-container>
+                          <ng-container *ngIf="impact.attackCost.type.toString() !== 'COST_OF_IT_DOWNTIME'">
+                            {{impact.attackCost.type | replace:'_':' ' | titlecase}}</ng-container>
+                          <ng-container *ngIf="impact.attackCost.type.toString() === 'COST_OF_IT_DOWNTIME'">Cost of IT
+                            Downtime</ng-container>
                         </td>
                         <td>{{impact.attackCost.costs | currency:'EUR'}}
                         </td>
@@ -264,8 +294,10 @@
                             (click)="selectAttackCost(impact)">{{impact.attackCost.type | replace:'_':' ' | titlecase}}</a>
                         </th>
                         <td *ngIf="!impact.attackCostParams">
-                          <ng-container *ngIf="impact.attackCost.type.toString() !== 'COST_OF_IT_DOWNTIME'">{{impact.attackCost.type | replace:'_':' ' | titlecase}}</ng-container>
-                          <ng-container *ngIf="impact.attackCost.type.toString() === 'COST_OF_IT_DOWNTIME'">Cost of IT Downtime</ng-container>
+                          <ng-container *ngIf="impact.attackCost.type.toString() !== 'COST_OF_IT_DOWNTIME'">
+                            {{impact.attackCost.type | replace:'_':' ' | titlecase}}</ng-container>
+                          <ng-container *ngIf="impact.attackCost.type.toString() === 'COST_OF_IT_DOWNTIME'">Cost of IT
+                            Downtime</ng-container>
                         </td>
                         <td>{{impact.attackCost.costs | currency:'EUR'}}
                         </td>
