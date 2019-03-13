@@ -1,6 +1,7 @@
 package eu.hermeneut.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import eu.hermeneut.aop.annotation.AttackCostParamsCleaningHook;
 import eu.hermeneut.aop.annotation.KafkaRiskProfileHook;
 import eu.hermeneut.domain.AttackCost;
 import eu.hermeneut.domain.MyAsset;
@@ -135,6 +136,7 @@ public class MyAssetResource {
     @PutMapping("/my-assets")
     @Timed
     @KafkaRiskProfileHook
+    @AttackCostParamsCleaningHook
     @PreAuthorize("@myAssetGuardian.isCISO(#myAsset) || hasRole('ROLE_ADMIN')")
     @Secured({AuthoritiesConstants.CISO, AuthoritiesConstants.ADMIN})
     public ResponseEntity<MyAsset> updateMyAsset(@RequestBody @NotNull MyAsset myAsset) throws URISyntaxException {
