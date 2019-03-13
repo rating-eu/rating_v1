@@ -2,6 +2,7 @@ package eu.hermeneut.web.rest;
 
 import eu.hermeneut.aop.annotation.UpdateIntangibleCapitalHook;
 import eu.hermeneut.aop.annotation.UpdateIntangibleLossByAttacksHook;
+import eu.hermeneut.aop.annotation.UpdateSplittingLossesHook;
 import eu.hermeneut.aop.annotation.UpdateSplittingValuesHook;
 import eu.hermeneut.domain.GrowthRate;
 import eu.hermeneut.domain.SelfAssessment;
@@ -52,6 +53,7 @@ public class GrowthRateResource {
     @UpdateIntangibleCapitalHook
     @UpdateIntangibleLossByAttacksHook
     @UpdateSplittingValuesHook
+    @UpdateSplittingLossesHook
     public List<GrowthRate> updateGrowthRatesBySelfAssessment(@PathVariable("selfAssessmentID") Long selfAssessmentID,
                                                               @RequestBody @NotEmpty @NotNull List<GrowthRate> growthRates) throws NotFoundException, IllegalInputException {
         LOGGER.debug("REST request to update GrowthRates!");
