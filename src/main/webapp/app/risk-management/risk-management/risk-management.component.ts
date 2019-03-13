@@ -1,14 +1,14 @@
 import * as _ from 'lodash';
-import { ImpactEvaluationService } from './../../impact-evaluation/impact-evaluation.service';
-import { Component, OnInit } from '@angular/core';
-import { SelfAssessmentMgm, SelfAssessmentMgmService } from '../../entities/self-assessment-mgm';
-import { RiskManagementService } from '../risk-management.service';
-import { CriticalLevelMgm, CriticalLevelMgmService } from '../../entities/critical-level-mgm';
-import { JhiAlertService } from '../../../../../../node_modules/ng-jhipster';
-import { ImpactLevelDescriptionMgm, ImpactLevelDescriptionMgmService } from '../../entities/impact-level-description-mgm';
-import { ImpactLevelMgm, ImpactLevelMgmService } from '../../entities/impact-level-mgm';
-import { forkJoin } from 'rxjs/observable/forkJoin';
-import { HttpResponse } from '@angular/common/http';
+import {ImpactEvaluationService} from './../../impact-evaluation/impact-evaluation.service';
+import {Component, OnInit} from '@angular/core';
+import {SelfAssessmentMgm, SelfAssessmentMgmService} from '../../entities/self-assessment-mgm';
+import {RiskManagementService} from '../risk-management.service';
+import {CriticalLevelMgm, CriticalLevelMgmService} from '../../entities/critical-level-mgm';
+import {JhiAlertService} from '../../../../../../node_modules/ng-jhipster';
+import {ImpactLevelDescriptionMgm, ImpactLevelDescriptionMgmService} from '../../entities/impact-level-description-mgm';
+import {ImpactLevelMgm, ImpactLevelMgmService} from '../../entities/impact-level-mgm';
+import {forkJoin} from 'rxjs/observable/forkJoin';
+import {HttpResponse} from '@angular/common/http';
 
 @Component({
     // tslint:disable-next-line:component-selector
@@ -333,4 +333,25 @@ export class RiskManagementComponent implements OnInit {
         this.isLevelsCollapsed = true;
     }
 
+    public updateNeighborMin(source: number) {
+        if (source >= 1 && source <= 4) {
+            const sourceImpactLevel = this.impactLevelsMap.get(source);
+            const targetImpactLevel = this.impactLevelsMap.get(source + 1);
+
+            if (sourceImpactLevel && targetImpactLevel) {
+                targetImpactLevel.minLoss = sourceImpactLevel.maxLoss;
+            }
+        }
+    }
+
+    public updateNeighborMax(source: number) {
+        if (source >= 2 && source <= 5) {
+            const sourceImpactLevel = this.impactLevelsMap.get(source);
+            const targetImpactLevel = this.impactLevelsMap.get(source - 1);
+
+            if (sourceImpactLevel && targetImpactLevel) {
+                targetImpactLevel.maxLoss = sourceImpactLevel.minLoss;
+            }
+        }
+    }
 }

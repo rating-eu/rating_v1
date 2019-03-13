@@ -62,10 +62,14 @@
                                             </div>
                                             <input type="number" class="form-control" style="min-width: 80px;"
                                                 placeholder="Min"
-                                                [(ngModel)]="impactLevelsMap.get(description.impact).minLoss" #min>
+                                                   [(ngModel)]="impactLevelsMap.get(description.impact).minLoss"
+                                                   (ngModelChange)="updateNeighborMax(description.impact)"
+                                                   #min>
                                             <input type="number" class="form-control" style="min-width: 80px;"
                                                 placeholder="Max"
-                                                [(ngModel)]="impactLevelsMap.get(description.impact).maxLoss" #max>
+                                                   [(ngModel)]="impactLevelsMap.get(description.impact).maxLoss"
+                                                   (ngModelChange)="updateNeighborMin(description.impact)"
+                                                   #max>
                                         </div>
                                     </td>
                                 </tr>
