@@ -20,7 +20,7 @@ import java.util.List;
 
 @Aspect
 @Component
-@Order(2)
+@Order(0)
 public class SplittingValuesAspect {
 
     private final Logger logger = LoggerFactory.getLogger(SplittingValuesAspect.class);

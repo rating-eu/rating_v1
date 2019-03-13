@@ -22,7 +22,7 @@ import java.util.List;
 
 @Aspect
 @Component
-@Order(2)
+@Order(1)
 public class SplittingLossesAspect {
 
     private final Logger logger = LoggerFactory.getLogger(SplittingLossesAspect.class);

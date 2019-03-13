@@ -27,7 +27,7 @@ import java.util.List;
 
 @Aspect
 @Component
-@Order(0)
+@Order(3)
 public class IntangibleCapitalAspect {
 
     private final Logger logger = LoggerFactory.getLogger(IntangibleCapitalAspect.class);

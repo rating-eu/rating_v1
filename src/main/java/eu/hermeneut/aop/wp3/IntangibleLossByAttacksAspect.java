@@ -21,7 +21,7 @@ import java.math.BigDecimal;
 
 @Aspect
 @Component
-@Order(1)
+@Order(2)
 public class IntangibleLossByAttacksAspect {
 
     private final Logger logger = LoggerFactory.getLogger(IntangibleLossByAttacksAspect.class);
