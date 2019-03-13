@@ -2,14 +2,9 @@ package eu.hermeneut.aop.wp3;
 
 import eu.hermeneut.domain.EconomicCoefficients;
 import eu.hermeneut.domain.EconomicResults;
-import eu.hermeneut.domain.GrowthRate;
 import eu.hermeneut.domain.SelfAssessment;
-import eu.hermeneut.domain.wp3.IDE;
-import eu.hermeneut.exceptions.IllegalInputException;
-import eu.hermeneut.exceptions.NotFoundException;
 import eu.hermeneut.service.EconomicCoefficientsService;
 import eu.hermeneut.service.EconomicResultsService;
-import eu.hermeneut.service.GrowthRateService;
 import eu.hermeneut.service.SelfAssessmentService;
 import eu.hermeneut.utils.wp3.Calculator;
 import org.aspectj.lang.JoinPoint;
@@ -23,7 +18,6 @@ import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
-import java.util.List;
 
 @Aspect
 @Component

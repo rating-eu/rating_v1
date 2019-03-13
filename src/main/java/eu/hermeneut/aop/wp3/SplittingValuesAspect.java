@@ -32,9 +32,6 @@ public class SplittingValuesAspect {
     private EconomicResultsService economicResultsService;
 
     @Autowired
-    private EconomicCoefficientsService economicCoefficientsService;
-
-    @Autowired
     private SplittingValueService splittingValueService;
 
     /**

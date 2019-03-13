@@ -3,7 +3,6 @@ package eu.hermeneut.aop.wp3;
 import eu.hermeneut.domain.EconomicResults;
 import eu.hermeneut.domain.SelfAssessment;
 import eu.hermeneut.domain.SplittingLoss;
-import eu.hermeneut.domain.SplittingValue;
 import eu.hermeneut.domain.enumeration.CategoryType;
 import eu.hermeneut.domain.enumeration.SectorType;
 import eu.hermeneut.service.*;
@@ -33,9 +32,6 @@ public class SplittingLossesAspect {
 
     @Autowired
     private EconomicResultsService economicResultsService;
-
-    @Autowired
-    private EconomicCoefficientsService economicCoefficientsService;
 
     @Autowired
     private SplittingLossService splittingLossService;

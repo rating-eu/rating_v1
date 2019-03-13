@@ -1,6 +1,5 @@
 package eu.hermeneut.aop.wp3;
 
-import eu.hermeneut.aop.kafka.KafkaMessagingAspect;
 import eu.hermeneut.domain.EconomicCoefficients;
 import eu.hermeneut.domain.EconomicResults;
 import eu.hermeneut.domain.GrowthRate;
