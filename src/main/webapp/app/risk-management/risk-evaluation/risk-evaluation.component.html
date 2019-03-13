@@ -53,21 +53,16 @@
         </div>
         <div class="row" *ngIf="isWarningVisible">
             <div class="col-md-10 offset-md-1 border-bottom border-secondary">
-                <div class="col-md-12" style="margin-top: 10px">
+                <div class="col-md-12 alert alert-warning" style="z-index:0; margin-top:10px">
                     <i class="fa fa-times fa-lg float-right" aria-hidden="true" (click)="isWarningVisible = false"></i>
-                </div>
-                <div class="col-md-12">
-                    <div class="text-center">
-                        <p>
-                            <i class="fa fa-exclamation-triangle" style="color: orange" aria-hidden="true"></i>
-                            <span style="color: grey">No
-                                <a href="javascript:void(0)" [routerLink]="['/identify-asset/attack-costs']">Attack Costs</a> 
-                                defined or no
-                                <a href="javascript:void(0)" [routerLink]="['/impact-evaluation/attack-related-costs-estimation']">Economic estimate</a>
-                                complited!
-                            </span>
-                        </p>
-                    </div>
+                    <p class="text-center">
+                        <span style="color: grey">No
+                            <a href="javascript:void(0)" [routerLink]="['/identify-asset/attack-costs']">Attack Costs</a> 
+                            defined or no
+                            <a href="javascript:void(0)" [routerLink]="['/impact-evaluation/attack-related-costs-estimation']">Economic estimate</a> 
+                            complited!
+                        </span>
+                    </p>
                 </div>
             </div>
         </div>

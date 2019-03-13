@@ -34,8 +34,9 @@ export class RiskManagementComponent implements OnInit {
     public impactLevelDescriptions: ImpactLevelDescriptionMgm[];
     public impactLevels: ImpactLevelMgm[];
     public impactLevelsMap: Map<number, ImpactLevelMgm>;
-    public selectedImpactLevel: ImpactLevelMgm = null;
+    public selectedImpactLevel: ImpactLevelDescriptionMgm = null;
     public updateErrors: boolean;
+    public level: string;
     private needToCreateImpactLevels: boolean;
 
     constructor(
@@ -209,15 +210,19 @@ export class RiskManagementComponent implements OnInit {
 
     private impactLevelsValidity(): boolean {
         let boundaryLowElem = 0;
+        let boundaryHighElem = 0;
         let impactsLvl = Array.from(this.impactLevelsMap.values());
         impactsLvl = _.orderBy(impactsLvl, ['impact'], ['asc']);
-        boundaryLowElem = impactsLvl[0].maxLoss;
+        boundaryHighElem = impactsLvl[0].maxLoss;
+        boundaryLowElem = impactsLvl[0].minLoss;
         impactsLvl.shift();
         for (const elem of impactsLvl) {
             if (elem && elem.id !== undefined) {
-                if (elem.maxLoss > boundaryLowElem) {
-                    boundaryLowElem = elem.maxLoss;
+                if (boundaryLowElem < boundaryHighElem && elem.maxLoss > boundaryHighElem) {
+                    boundaryHighElem = elem.maxLoss;
+                    boundaryLowElem = elem.minLoss;
                 } else {
+                    this.level = elem.impact.toString();
                     return false;
                 }
             }

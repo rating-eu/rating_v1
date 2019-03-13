@@ -43,6 +43,10 @@
         <div class="row">
             <div class="collapse col-md-12" [ngbCollapse]="isConsequenceCollapsed">
                 <div class="card card-body">
+                    <div style="z-index:0;" *ngIf="updateErrors" class="col-md-12 alert alert-danger">
+                        <i class="fa fa-times fa-lg float-right" aria-hidden="true" (click)="updateErrors = false"></i>
+                        <p class="text-center" style="color: darkred">Please verify the min and max values of level:{{level}} of scale!</p>
+                    </div>
                     <table class="table" *ngIf="impactLevelDescriptions  && impactLevelsMap">
                         <thead>
                             <tr>
@@ -62,14 +66,12 @@
                                             </div>
                                             <input type="number" class="form-control" style="min-width: 80px;"
                                                 placeholder="Min"
-                                                   [(ngModel)]="impactLevelsMap.get(description.impact).minLoss"
-                                                   (ngModelChange)="updateNeighborMax(description.impact)"
-                                                   #min>
+                                                [(ngModel)]="impactLevelsMap.get(description.impact).minLoss"
+                                                (ngModelChange)="updateNeighborMax(description.impact)" #min>
                                             <input type="number" class="form-control" style="min-width: 80px;"
                                                 placeholder="Max"
-                                                   [(ngModel)]="impactLevelsMap.get(description.impact).maxLoss"
-                                                   (ngModelChange)="updateNeighborMin(description.impact)"
-                                                   #max>
+                                                [(ngModel)]="impactLevelsMap.get(description.impact).maxLoss"
+                                                (ngModelChange)="updateNeighborMin(description.impact)" #max>
                                         </div>
                                     </td>
                                 </tr>
@@ -122,7 +124,6 @@
                             </tr>
                         </tbody>
                     </table>
-                    <small *ngIf="updateErrors" style="color: red">Please verify your scale value!</small>
                 </div>
             </div>
             <div class="collapse col-md-12" [ngbCollapse]="isLikelihoodCollapsed">

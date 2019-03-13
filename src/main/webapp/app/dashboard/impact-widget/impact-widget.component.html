@@ -63,9 +63,9 @@
                               'disabled': item.assets.length === 0
                             }" style="cursor: pointer" (click)="setImpact(item.impact)">
                                 <td>{{item.impact}}</td>
-                                <td *ngIf="item.economicValueMin">{{item.economicValueMin | currency:'EUR'}}</td>
+                                <td *ngIf="item.economicValueMin">{{item.economicValueMin | currency:'EUR':'symbol':'1.0-0'}}</td>
                                 <td *ngIf="!item.economicValueMin">-</td>
-                                <td *ngIf="item.economicValueMax">{{item.economicValueMax | currency:'EUR'}}</td>
+                                <td *ngIf="item.economicValueMax">{{item.economicValueMax | currency:'EUR':'symbol':'1.0-0'}}</td>
                                 <td *ngIf="!item.economicValueMax">-</td>
                             </tr>
                             <ng-container *ngIf="selectedImpact && item.assets.length > 0">
@@ -85,7 +85,7 @@
                                                     <td>{{asset.asset.assetcategory.name}}</td>
                                                     <td>{{asset.asset.name}}</td>
                                                     <td>{{asset.impact}}</td>
-                                                    <td>{{asset.economicImpact | currency:'EUR'}}</td>
+                                                    <td>{{asset.economicImpact | currency:'EUR':'symbol':'1.0-0'}}</td>
                                                 </tr>
                                             </tbody>
                                         </table>

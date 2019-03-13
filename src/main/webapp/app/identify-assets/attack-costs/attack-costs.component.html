@@ -41,7 +41,7 @@
                             case of attack.</h5>
                     </div>
                     <div *ngIf="warningDirect" class="row text-center">
-                        <small class="text-center"><span style="color: red">WARNING!</span> If you remove this attack
+                        <small class="text-center alert alert-warning" style="z-index:0"><span>WARNING!</span> If you remove this attack
                             cost, the connected parameter will erased too!</small>
                     </div>
                     <div class="row">
@@ -79,8 +79,8 @@
                                 generated costs.</h5>
                         </div>
                         <div *ngIf="warningIndirect" class="row text-center">
-                            <small class="text-center"><span style="color: red">WARNING!</span> If you remove this
-                                attack cost, the connected parameter will erased too!</small>
+                            <small class="text-center alert alert-warning" style="z-index:0"><span>WARNING!</span> If you remove this attack
+                                cost, the connected parameter will erased too!</small>
                         </div>
                         <div class="row" *ngIf="selectedDirectAsset.effects.length > 0">
                             <ng-container *ngFor="let indirect of selectedDirectAsset.effects">

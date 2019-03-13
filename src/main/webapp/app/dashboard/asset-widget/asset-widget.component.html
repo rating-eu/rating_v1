@@ -74,7 +74,7 @@
                       <td>{{myAsset.asset.name}}</td>
                       <td *ngIf="myAsset.ranking">{{priorities[myAsset.ranking-1]}}: {{myAsset.ranking}}</td>
                       <td *ngIf="!myAsset.ranking"> - </td>
-                      <td *ngIf="myAsset.economicValue">{{myAsset.economicValue | currency:'EUR'}}</td>
+                      <td *ngIf="myAsset.economicValue">{{myAsset.economicValue | currency:'EUR':'symbol':'1.0-0'}}</td>
                       <td *ngIf="!myAsset.economicValue"> - </td>
                     </tr>
                   </tbody>
@@ -146,7 +146,7 @@
                       <td>{{myAsset.asset.name}}</td>
                       <td *ngIf="myAsset.ranking">{{priorities[myAsset.ranking-1]}}: {{myAsset.ranking}}</td>
                       <td *ngIf="!myAsset.ranking"> - </td>
-                      <td *ngIf="myAsset.economicValue">{{myAsset.economicValue | currency:'EUR'}}</td>
+                      <td *ngIf="myAsset.economicValue">{{myAsset.economicValue | currency:'EUR':'symbol':'1.0-0'}}</td>
                       <td *ngIf="!myAsset.economicValue"> - </td>
                     </tr>
                   </tbody>

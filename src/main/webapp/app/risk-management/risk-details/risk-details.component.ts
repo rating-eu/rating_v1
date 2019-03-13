@@ -174,7 +174,7 @@ export class RiskDetailsComponent implements OnInit, OnDestroy {
     elements.forEach((param) => {
       param = param.trim();
       const f: Formula = {
-        element: param.substr(0, param.indexOf('(')).replace(new RegExp('\\.', 'g'), ' ').replace(new RegExp('_', 'g'), ' ').replace(/\w\S*/g, function (txt) {
+        element: param.substr(0, param.indexOf('(')).replace(new RegExp('\\.', 'g'), ' ').replace(new RegExp('_', 'g'), ' ').replace(/\w\S*/g, function(txt) {
           return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
         }),
         value: param.substr(param.indexOf('(') + 1).replace(')', ''),
