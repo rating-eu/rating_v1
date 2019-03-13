@@ -215,7 +215,7 @@ export class RiskManagementComponent implements OnInit {
         impactsLvl.shift();
         for (const elem of impactsLvl) {
             if (elem && elem.id !== undefined) {
-                if (elem.minLoss === boundaryLowElem) {
+                if (elem.maxLoss > boundaryLowElem) {
                     boundaryLowElem = elem.maxLoss;
                 } else {
                     return false;
