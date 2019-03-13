@@ -42,14 +42,14 @@ public class IntangibleLossByAttacksAspect {
     private EconomicCoefficientsService economicCoefficientsService;
 
     /**
-     * Pointcut for methods annotated with UpdateIntangibleCapitalHook.
+     * Pointcut for methods annotated with UpdateIntangibleLossByAttacksHook.
      */
     @Pointcut("@annotation(eu.hermeneut.aop.annotation.UpdateIntangibleLossByAttacksHook)")
     public void updateIntangibleLossByAttacksHook() {
     }
 
     /**
-     * Cross-cutting method to update the IntangibleCapital of a SelfAssessment.
+     * Cross-cutting method to update the IntangibleLossByAttacks of a SelfAssessment.
      *
      * @param joinPoint
      */
