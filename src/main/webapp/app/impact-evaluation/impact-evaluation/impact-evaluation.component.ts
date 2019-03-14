@@ -184,7 +184,7 @@ export class ImpactEvaluationComponent implements OnInit {
         this.lastYear = (new Date().getFullYear()) + 3;
         let year = this.firstYear;
         while (year <= this.lastYear) {
-            this.ebitLabel.push('Ebit for ' + year.toString());
+            this.ebitLabel.push('EBITDA for ' + year.toString());
             year++;
         }
         this.impactFormStepOne = new FormGroup({
