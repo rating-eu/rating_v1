@@ -168,13 +168,14 @@ export class RiskDetailsComponent implements OnInit, OnDestroy {
   }
 
   private evaluateFormulaTable(formula: string) {
+    this.formulaTable = [];
     this.formulaSum = formula.substr(formula.indexOf('=') + 1);
     formula = formula.substr(0, formula.indexOf('='));
     const elements = formula.split('+');
     elements.forEach((param) => {
       param = param.trim();
       const f: Formula = {
-        element: param.substr(0, param.indexOf('(')).replace(new RegExp('\\.', 'g'), ' ').replace(new RegExp('_', 'g'), ' ').replace(/\w\S*/g, function (txt) {
+        element: param.substr(0, param.indexOf('(')).replace(new RegExp('\\.', 'g'), ' ').replace(new RegExp('_', 'g'), ' ').replace(/\w\S*/g, function(txt) {
           return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
         }),
         value: param.substr(param.indexOf('(') + 1).replace(')', ''),

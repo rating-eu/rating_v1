@@ -75,8 +75,8 @@
                       in monitoring the use of stolen personal data and restore them in case they have been
                       fraudulently used.</p>
                     <p>Your possible cost, based on N. of customers x Protection cost, is=</p>
-                    <p>(MIN) {{protectionMin | currency: 'EUR'}}</p>
-                    <p>(MAX) {{protectionMax | currency: 'EUR'}}</p>
+                    <p>(MIN) {{protectionMin | currency: 'EUR':'symbol':'1.0-0'}}</p>
+                    <p>(MAX) {{protectionMax | currency: 'EUR':'symbol':'1.0-0'}}</p>
                     <P>Please, set your proper value: (Input field)</P>
                   </div>
                 </ng-container>
@@ -89,8 +89,8 @@
                       costs are varying in the interval [5 $; 50 $]
                       per customer</p>
                     <p>Your possible cost, based on N. of customers x Cost of the notification, is=</p>
-                    <p>(MIN) {{notificationMin | currency: 'EUR'}}</p>
-                    <p>(MAX) {{notificationMax | currency: 'EUR'}}</p>
+                    <p>(MIN) {{notificationMin | currency: 'EUR':'symbol':'1.0-0'}}</p>
+                    <p>(MAX) {{notificationMax | currency: 'EUR':'symbol':'1.0-0'}}</p>
                     <p>Please, set your proper value: (Input field)</p>
                   </div>
                 </ng-container>

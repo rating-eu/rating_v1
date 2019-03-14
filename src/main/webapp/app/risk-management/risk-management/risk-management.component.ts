@@ -1,14 +1,14 @@
 import * as _ from 'lodash';
-import {ImpactEvaluationService} from './../../impact-evaluation/impact-evaluation.service';
-import {Component, OnInit} from '@angular/core';
-import {SelfAssessmentMgm, SelfAssessmentMgmService} from '../../entities/self-assessment-mgm';
-import {RiskManagementService} from '../risk-management.service';
-import {CriticalLevelMgm, CriticalLevelMgmService} from '../../entities/critical-level-mgm';
-import {JhiAlertService} from '../../../../../../node_modules/ng-jhipster';
-import {ImpactLevelDescriptionMgm, ImpactLevelDescriptionMgmService} from '../../entities/impact-level-description-mgm';
-import {ImpactLevelMgm, ImpactLevelMgmService} from '../../entities/impact-level-mgm';
-import {forkJoin} from 'rxjs/observable/forkJoin';
-import {HttpResponse} from '@angular/common/http';
+import { ImpactEvaluationService } from './../../impact-evaluation/impact-evaluation.service';
+import { Component, OnInit } from '@angular/core';
+import { SelfAssessmentMgm, SelfAssessmentMgmService } from '../../entities/self-assessment-mgm';
+import { RiskManagementService } from '../risk-management.service';
+import { CriticalLevelMgm, CriticalLevelMgmService } from '../../entities/critical-level-mgm';
+import { JhiAlertService } from '../../../../../../node_modules/ng-jhipster';
+import { ImpactLevelDescriptionMgm, ImpactLevelDescriptionMgmService } from '../../entities/impact-level-description-mgm';
+import { ImpactLevelMgm, ImpactLevelMgmService } from '../../entities/impact-level-mgm';
+import { forkJoin } from 'rxjs/observable/forkJoin';
+import { HttpResponse } from '@angular/common/http';
 
 @Component({
     // tslint:disable-next-line:component-selector
@@ -34,8 +34,9 @@ export class RiskManagementComponent implements OnInit {
     public impactLevelDescriptions: ImpactLevelDescriptionMgm[];
     public impactLevels: ImpactLevelMgm[];
     public impactLevelsMap: Map<number, ImpactLevelMgm>;
-    public selectedImpactLevel: ImpactLevelMgm = null;
+    public selectedImpactLevel: ImpactLevelDescriptionMgm = null;
     public updateErrors: boolean;
+    public level: string;
     private needToCreateImpactLevels: boolean;
 
     constructor(
@@ -209,15 +210,23 @@ export class RiskManagementComponent implements OnInit {
 
     private impactLevelsValidity(): boolean {
         let boundaryLowElem = 0;
+        let boundaryHighElem = 0;
         let impactsLvl = Array.from(this.impactLevelsMap.values());
         impactsLvl = _.orderBy(impactsLvl, ['impact'], ['asc']);
-        boundaryLowElem = impactsLvl[0].maxLoss;
+        boundaryHighElem = impactsLvl[0].maxLoss;
+        boundaryLowElem = impactsLvl[0].minLoss;
         impactsLvl.shift();
         for (const elem of impactsLvl) {
             if (elem && elem.id !== undefined) {
-                if (elem.maxLoss > boundaryLowElem) {
-                    boundaryLowElem = elem.maxLoss;
+                if (boundaryLowElem > boundaryHighElem) {
+                    this.level = (elem.impact - 1).toString();
+                    return false;
+                }
+                if (elem.maxLoss > boundaryHighElem) {
+                    boundaryHighElem = elem.maxLoss;
+                    boundaryLowElem = elem.minLoss;
                 } else {
+                    this.level = elem.impact.toString();
                     return false;
                 }
             }

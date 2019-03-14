@@ -98,7 +98,7 @@ export class ImpactEvaluationComponent implements OnInit {
     public priorities = ['Low', 'Low medium', 'Medium', 'Medium high', 'High'];
     public sectorString: string;
 
-    private sectorChoosed: string;
+    public sectorChoosed: string;
     private selectedCategory: CategoryType;
     private selectedAssetCategoryCode: string;
 

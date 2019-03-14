@@ -4,7 +4,7 @@
 <ng-container *ngIf="!loading">
   <div class="col-md-3">
     <div class="tile-stats tiles-first-row">
-      <div class="count" *ngIf="ide">{{ide | currency: 'EUR'}}</div>
+      <div class="count" *ngIf="ide">{{ide | currency: 'EUR':'symbol':'1.0-0'}}</div>
       <div class="col-md-10">
           <h2>Intangible Driving Earnings</h2>
       </div>
@@ -16,7 +16,7 @@
   </div>
   <div class="col-md-3">
     <div class="tile-stats tiles-first-row">
-      <div class="count" *ngIf="intangibleCapital">{{intangibleCapital | currency: 'EUR'}}</div>
+      <div class="count" *ngIf="intangibleCapital">{{intangibleCapital | currency: 'EUR':'symbol':'1.0-0'}}</div>
       <div class="col-md-10">
           <h2>Intangible Capital</h2>
       </div>
