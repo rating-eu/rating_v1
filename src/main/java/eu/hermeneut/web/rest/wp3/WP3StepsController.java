@@ -467,9 +467,11 @@ public class WP3StepsController {
 
             for (SectorType sType : sectorTypes) {
                 for (CategoryType cType : categoryTypes) {
-                    SplittingLoss splittingLoss = createNewSplittingLoss(selfAssessment, lossValue,
-                        sType, cType);
-                    splittingLosses.add(splittingLoss);
+                    if (cType != CategoryType.DATA) {
+                        SplittingLoss splittingLoss = createNewSplittingLoss(selfAssessment, lossValue,
+                            sType, cType);
+                        splittingLosses.add(splittingLoss);
+                    }
                 }
             }
 
@@ -562,9 +564,11 @@ public class WP3StepsController {
 
             for (SectorType sType : sectorTypes) {
                 for (CategoryType cType : categoryTypes) {
-                    SplittingValue splittingValue = createNewSplittingValue(selfAssessment, intangibleCapital,
-                        sType, cType);
-                    splittingValues.add(splittingValue);
+                    if (cType != CategoryType.DATA) {
+                        SplittingValue splittingValue = createNewSplittingValue(selfAssessment, intangibleCapital,
+                            sType, cType);
+                        splittingValues.add(splittingValue);
+                    }
                 }
             }
 

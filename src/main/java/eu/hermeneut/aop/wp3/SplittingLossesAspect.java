@@ -78,11 +78,13 @@ public class SplittingLossesAspect {
                             final CategoryType categoryType = splittingLoss.getCategoryType();
                             final SectorType sectorType = splittingLoss.getSectorType();
 
-                            BigDecimal loss = Calculator.calculateSplittingLoss(intangibleLossByAttacks, categoryType, sectorType);
+                            if (categoryType != CategoryType.DATA) {
+                                BigDecimal loss = Calculator.calculateSplittingLoss(intangibleLossByAttacks, categoryType, sectorType);
 
-                            if (loss != null) {
-                                splittingLoss.setLoss(loss);
-                                splittingLoss = this.splittingLossService.save(splittingLoss);
+                                if (loss != null) {
+                                    splittingLoss.setLoss(loss);
+                                    splittingLoss = this.splittingLossService.save(splittingLoss);
+                                }
                             }
                         }
                     }

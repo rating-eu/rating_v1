@@ -76,11 +76,13 @@ public class SplittingValuesAspect {
                             final CategoryType categoryType = splittingValue.getCategoryType();
                             final SectorType sectorType = splittingValue.getSectorType();
 
-                            BigDecimal splitting = Calculator.calculateSplittingValue(intangibleCapital, categoryType, sectorType);
+                            if (categoryType != CategoryType.DATA) {
+                                BigDecimal splitting = Calculator.calculateSplittingValue(intangibleCapital, categoryType, sectorType);
 
-                            if (splitting != null) {
-                                splittingValue.setValue(splitting);
-                                splittingValue = this.splittingValueService.save(splittingValue);
+                                if (splitting != null) {
+                                    splittingValue.setValue(splitting);
+                                    splittingValue = this.splittingValueService.save(splittingValue);
+                                }
                             }
                         }
                     }
