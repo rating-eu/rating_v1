@@ -132,7 +132,8 @@ public class PostBreachCustomerProtectionImpl implements AttackCostCalculator, A
                 if (attackCostParamsMap != null && !attackCostParamsMap.isEmpty()) {
                     final AttackCostParam PROTECTION_COST_PER_CUSTOMER = attackCostParamsMap.get(AttackCostParamType.PROTECTION_COST_PER_CUSTOMER);
 
-                    if (PROTECTION_COST_PER_CUSTOMER != null) {
+                    //It may have id=null if simultaneously deleted somewhere else
+                    if (PROTECTION_COST_PER_CUSTOMER != null && PROTECTION_COST_PER_CUSTOMER.getId()!=null) {
                         this.attackCostParamService.delete(PROTECTION_COST_PER_CUSTOMER.getId());
                     }
                 }

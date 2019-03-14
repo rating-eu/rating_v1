@@ -128,7 +128,8 @@ public class CustomerBreachNotificationCostsImpl implements AttackCostCalculator
                 if (attackCostParamsMap != null && !attackCostParamsMap.isEmpty()) {
                     final AttackCostParam NOTIFICATION_COST_PER_CUSTOMER = attackCostParamsMap.get(AttackCostParamType.NOTIFICATION_COST_PER_CUSTOMER);
 
-                    if (NOTIFICATION_COST_PER_CUSTOMER != null) {
+                    //It may have id=null if simultaneously deleted somewhere else
+                    if (NOTIFICATION_COST_PER_CUSTOMER != null && NOTIFICATION_COST_PER_CUSTOMER.getId() != null) {
                         this.attackCostParamService.delete(NOTIFICATION_COST_PER_CUSTOMER.getId());
                     }
                 }

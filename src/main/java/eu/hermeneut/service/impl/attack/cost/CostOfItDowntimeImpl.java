@@ -172,31 +172,36 @@ public class CostOfItDowntimeImpl implements AttackCostCalculator, AttackCostFor
                 if (attackCostParamsMap != null && !attackCostParamsMap.isEmpty()) {
                     final AttackCostParam EMPLOYEE_COST_PER_HOUR = attackCostParamsMap.get(AttackCostParamType.EMPLOYEE_COST_PER_HOUR);
 
-                    if (EMPLOYEE_COST_PER_HOUR != null) {
+                    //It may have id=null if simultaneously deleted somewhere else
+                    if (EMPLOYEE_COST_PER_HOUR != null && EMPLOYEE_COST_PER_HOUR.getId() != null) {
                         this.attackCostParamService.delete(EMPLOYEE_COST_PER_HOUR.getId());
                     }
 
                     final AttackCostParam FRACTION_OF_EMPLOYEES_AFFECTED_BY_OUTAGE = attackCostParamsMap.get(AttackCostParamType.FRACTION_OF_EMPLOYEES_AFFECTED_BY_OUTAGE);
 
-                    if (FRACTION_OF_EMPLOYEES_AFFECTED_BY_OUTAGE != null) {
+                    //It may have id=null if simultaneously deleted somewhere else
+                    if (FRACTION_OF_EMPLOYEES_AFFECTED_BY_OUTAGE != null && FRACTION_OF_EMPLOYEES_AFFECTED_BY_OUTAGE.getId() != null) {
                         this.attackCostParamService.delete(FRACTION_OF_EMPLOYEES_AFFECTED_BY_OUTAGE.getId());
                     }
 
                     final AttackCostParam AVERAGE_REVENUE_PER_HOUR = attackCostParamsMap.get(AttackCostParamType.AVERAGE_REVENUE_PER_HOUR);
 
-                    if (AVERAGE_REVENUE_PER_HOUR != null) {
+                    //It may have id=null if simultaneously deleted somewhere else
+                    if (AVERAGE_REVENUE_PER_HOUR != null && AVERAGE_REVENUE_PER_HOUR.getId() != null) {
                         this.attackCostParamService.delete(AVERAGE_REVENUE_PER_HOUR.getId());
                     }
 
                     final AttackCostParam FRACTION_OF_REVENUE_AFFECTED_BY_OUTAGE = attackCostParamsMap.get(AttackCostParamType.FRACTION_OF_REVENUE_AFFECTED_BY_OUTAGE);
 
-                    if (FRACTION_OF_REVENUE_AFFECTED_BY_OUTAGE != null) {
+                    //It may have id=null if simultaneously deleted somewhere else
+                    if (FRACTION_OF_REVENUE_AFFECTED_BY_OUTAGE != null && FRACTION_OF_EMPLOYEES_AFFECTED_BY_OUTAGE.getId() != null) {
                         this.attackCostParamService.delete(FRACTION_OF_REVENUE_AFFECTED_BY_OUTAGE.getId());
                     }
 
                     final AttackCostParam RECOVERY_COST = attackCostParamsMap.get(AttackCostParamType.RECOVERY_COST);
 
-                    if (RECOVERY_COST != null) {
+                    //It may have id=null if simultaneously deleted somewhere else
+                    if (RECOVERY_COST != null && RECOVERY_COST.getId() != null) {
                         this.attackCostParamService.delete(RECOVERY_COST.getId());
                     }
                 }
