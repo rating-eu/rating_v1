@@ -4,12 +4,15 @@ import eu.hermeneut.aop.annotation.CostQualifier;
 import eu.hermeneut.config.ApplicationProperties;
 import eu.hermeneut.domain.AttackCost;
 import eu.hermeneut.domain.AttackCostParam;
+import eu.hermeneut.domain.SelfAssessment;
 import eu.hermeneut.domain.enumeration.AttackCostParamType;
 import eu.hermeneut.domain.enumeration.CostType;
 import eu.hermeneut.domain.formula.AttackCostFormula;
 import eu.hermeneut.exceptions.IllegalInputException;
+import eu.hermeneut.exceptions.NotFoundException;
 import eu.hermeneut.service.AttackCostParamService;
 import eu.hermeneut.service.attack.cost.AttackCostCalculator;
+import eu.hermeneut.service.attack.cost.AttackCostCleaner;
 import eu.hermeneut.service.formula.AttackCostFormulator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,7 +27,7 @@ import java.util.stream.Collectors;
 
 @Service
 @CostQualifier(type = CostType.POST_BREACH_CUSTOMER_PROTECTION_OR_CARE_COSTS)
-public class PostBreachCustomerProtectionImpl implements AttackCostCalculator, AttackCostFormulator {
+public class PostBreachCustomerProtectionImpl implements AttackCostCalculator, AttackCostFormulator, AttackCostCleaner {
 
     @Autowired
     private AttackCostParamService attackCostParamService;
@@ -112,5 +115,31 @@ public class PostBreachCustomerProtectionImpl implements AttackCostCalculator, A
         attackCostFormula.setFormula(formula.toString());
 
         return attackCostFormula;
+    }
+
+    @Override
+    public void clean(SelfAssessment selfAssessment) {
+        try {
+            List<AttackCostParam> attackCostParams = this.attackCostParamService.findAllBySelfAssessment(selfAssessment.getId());
+
+            if (attackCostParams != null && !attackCostParams.isEmpty()) {
+                Map<AttackCostParamType, AttackCostParam> attackCostParamsMap = attackCostParams.stream().parallel().collect(
+                    Collectors.toMap(
+                        attackCostParam -> attackCostParam.getType(),
+                        Function.identity())
+                );
+
+                if (attackCostParamsMap != null && !attackCostParamsMap.isEmpty()) {
+                    final AttackCostParam PROTECTION_COST_PER_CUSTOMER = attackCostParamsMap.get(AttackCostParamType.PROTECTION_COST_PER_CUSTOMER);
+
+                    //It may have id=null if simultaneously deleted somewhere else
+                    if (PROTECTION_COST_PER_CUSTOMER != null && PROTECTION_COST_PER_CUSTOMER.getId()!=null) {
+                        this.attackCostParamService.delete(PROTECTION_COST_PER_CUSTOMER.getId());
+                    }
+                }
+            }
+        } catch (NotFoundException e) {
+            e.printStackTrace();
+        }
     }
 }

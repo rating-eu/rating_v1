@@ -245,25 +245,8 @@
                             </tbody>
                         </table>
                     </div>
-                    <div class="col-md-12">
-                        <jhi-growth-rates-configurator-component></jhi-growth-rates-configurator-component>
-                        <!--
-                        <h5>Growth rate</h5>
-                        <table class="table text-center">
-                            <thead>
-                                <tr>
-                                    <th width="50%">Year</th>
-                                    <th>Value</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr *ngFor="let rate of rates">
-                                    <td>{{rate.year}}</td>
-                                    <td>{{rate.rate}}</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                        -->
+                    <div class="col-md-4">
+                        <jhi-growth-rates-configurator-component (isGrowthRateUpdated)="onGrowthRateUpdate($event)"></jhi-growth-rates-configurator-component>
                     </div>
                     <div class="col-md-12 text-center">
                         <img src="../../../content/images/formula.jpg" alt="Formula">
@@ -274,7 +257,7 @@
 
         <ng-container [ngSwitch]="witchStep">
             <div *ngSwitchCase="1" class="container-fluid">
-                <h2>EBIT And Discount Rate</h2>
+                <h2>EBITDA And Discount Rate</h2>
                 <div class="row">
                     <div class="col-md-12">
                         <form [formGroup]="impactFormStepOne">
@@ -366,14 +349,13 @@
             </div>
             <div *ngSwitchCase="2" class="container-fluid">
                 <div class="row">
-                    <p>
-                        <h2>Evaluated Economic Performance = <b class="color-b">
-                                <ng-container *ngIf="economicPerformance">{{economicPerformance | currency:'EUR'}}
-                                </ng-container>
-                                <ng-container *ngIf="!economicPerformance">-</ng-container>
-                            </b>
-                        </h2>
-                    </p>
+                    <h2>Evaluated Economic Performance = <b class="color-b">
+                            <ng-container *ngIf="economicPerformance">
+                                {{economicPerformance | currency:'EUR':'symbol':'1.0-0'}}
+                            </ng-container>
+                            <ng-container *ngIf="!economicPerformance">-</ng-container>
+                        </b>
+                    </h2>
                 </div>
                 <div class="row">
                     <div class="col-md-12">
@@ -497,13 +479,13 @@
                             <tr class="text-center align-middle">
                                 <td>
                                     <ng-container *ngIf="intangibleDrivingEarnings">{{intangibleDrivingEarnings |
-                                        currency:'EUR'}}
+                                        currency:'EUR':'symbol':'1.0-0'}}
                                     </ng-container>
                                     <ng-container *ngIf="!intangibleDrivingEarnings"> -</ng-container>
                                 </td>
                                 <td>
                                     <ng-container *ngIf="intangibleCapitalValuation">{{intangibleCapitalValuation |
-                                        currency:'EUR'}}
+                                        currency:'EUR':'symbol':'1.0-0'}}
                                     </ng-container>
                                     <ng-container *ngIf="!intangibleCapitalValuation"> -</ng-container>
                                 </td>
@@ -580,7 +562,7 @@
                                                         <!--<div class="icon"><i class="fa fa-money"></i></div>-->
                                                         <div class="count">
                                                             <ng-container *ngIf="splittingOnIP">{{splittingOnIP |
-                                                                currency:'EUR'}}
+                                                                currency:'EUR':'symbol':'1.0-0'}}
                                                             </ng-container>
                                                             <ng-container *ngIf="!splittingOnIP"> -</ng-container>
                                                         </div>
@@ -596,7 +578,7 @@
                                                         <div class="count">
                                                             <ng-container *ngIf="splittingOnKeyComp">{{splittingOnKeyComp
                                                                 |
-                                                                currency:'EUR'}}
+                                                                currency:'EUR':'symbol':'1.0-0'}}
                                                             </ng-container>
                                                             <ng-container *ngIf="!splittingOnKeyComp"> -</ng-container>
                                                         </div>
@@ -612,7 +594,7 @@
                                                         <div class="count">
                                                             <ng-container *ngIf="splittingOnOrgCapital">{{splittingOnOrgCapital
                                                                 |
-                                                                currency:'EUR'}}
+                                                                currency:'EUR':'symbol':'1.0-0'}}
                                                             </ng-container>
                                                             <ng-container *ngIf="!splittingOnOrgCapital"> -
                                                             </ng-container>
@@ -719,7 +701,7 @@
                                                                             </div>
                                                                         </div>
                                                                     </td>
-                                                                    <td><b>{{asset.economicValue | currency:'EUR'}}</b>
+                                                                    <td><b>{{asset.economicValue | currency:'EUR':'symbol':'1.0-0'}}</b>
                                                                     </td>
                                                                 </tr>
                                                             </ng-container>
@@ -738,7 +720,7 @@
                                                         <div class="count">
                                                             <ng-container *ngIf="splittingOnSectorialIP">{{splittingOnSectorialIP
                                                                 |
-                                                                currency:'EUR'}}
+                                                                currency:'EUR':'symbol':'1.0-0'}}
                                                             </ng-container>
                                                             <ng-container *ngIf="!splittingOnSectorialIP"> -
                                                             </ng-container>
@@ -755,7 +737,7 @@
                                                         <div class="count">
                                                             <ng-container *ngIf="splittingOnSectorialKeyComp">
                                                                 {{splittingOnSectorialKeyComp |
-                                                                currency:'EUR'}}
+                                                                currency:'EUR':'symbol':'1.0-0'}}
                                                             </ng-container>
                                                             <ng-container *ngIf="!splittingOnSectorialKeyComp"> -
                                                             </ng-container>
@@ -772,7 +754,7 @@
                                                         <div class="count">
                                                             <ng-container *ngIf="splittingOnSectorialOrgCapital">
                                                                 {{splittingOnSectorialOrgCapital |
-                                                                currency:'EUR'}}
+                                                                currency:'EUR':'symbol':'1.0-0'}}
                                                             </ng-container>
                                                             <ng-container *ngIf="!splittingOnSectorialOrgCapital"> -
                                                             </ng-container>
@@ -879,7 +861,7 @@
                                                                             </div>
                                                                         </div>
                                                                     </td>
-                                                                    <td><b>{{asset.economicValue | currency:'EUR'}}</b>
+                                                                    <td><b>{{asset.economicValue | currency:'EUR':'symbol':'1.0-0'}}</b>
                                                                     </td>
                                                                 </tr>
                                                             </ng-container>
@@ -933,7 +915,7 @@
                                                 <p>Loss On Intangible Assets Due To Cyberattacks<br><b class="color-b">
                                                         <ng-container *ngIf="lossOnintangibleAssetsDueToCyberattacks">
                                                             {{lossOnintangibleAssetsDueToCyberattacks
-                                                            | currency:'EUR'}}
+                                                            | currency:'EUR':'symbol':'1.0-0'}}
                                                         </ng-container>
                                                         <ng-container *ngIf="!lossOnintangibleAssetsDueToCyberattacks">
                                                             -
@@ -951,7 +933,7 @@
                                                         <!--<div class="icon"><i class="fa fa-money"></i></div>-->
                                                         <div class="count">
                                                             <ng-container *ngIf="impactOnIP">{{impactOnIP |
-                                                                currency:'EUR'}}
+                                                                currency:'EUR':'symbol':'1.0-0'}}
                                                             </ng-container>
                                                             <ng-container *ngIf="!impactOnIP"> -</ng-container>
                                                         </div>
@@ -967,7 +949,7 @@
                                                         <!--<div class="icon"><i class="fa fa-money"></i></div>-->
                                                         <div class="count">
                                                             <ng-container *ngIf="impactOnKeyComp">{{impactOnKeyComp |
-                                                                currency:'EUR'}}
+                                                                currency:'EUR':'symbol':'1.0-0'}}
                                                             </ng-container>
                                                             <ng-container *ngIf="!impactOnKeyComp"> -</ng-container>
                                                         </div>
@@ -983,7 +965,7 @@
                                                         <div class="count">
                                                             <ng-container *ngIf="impactOnOrgCapital">{{impactOnOrgCapital
                                                                 |
-                                                                currency:'EUR'}}
+                                                                currency:'EUR':'symbol':'1.0-0'}}
                                                             </ng-container>
                                                             <ng-container *ngIf="!impactOnOrgCapital"> -</ng-container>
                                                         </div>
@@ -1061,7 +1043,8 @@
                                                                     <th scope="row">{{asset.asset.name}}</th>
                                                                     <td>{{priorities[asset.ranking - 1]}}:
                                                                         {{asset.ranking}}</td>
-                                                                    <td><b>{{asset.lossValue | currency:'EUR'}}</b></td>
+                                                                    <td><b>{{asset.lossValue | currency:'EUR':'symbol':'1.0-0'}}</b>
+                                                                    </td>
                                                                 </tr>
                                                             </ng-container>
                                                         </tbody>
@@ -1079,7 +1062,7 @@
                                                         <div class="count">
                                                             <ng-container *ngIf="impactOnSectorialIP">{{impactOnSectorialIP
                                                                 |
-                                                                currency:'EUR'}}
+                                                                currency:'EUR':'symbol':'1.0-0'}}
                                                             </ng-container>
                                                             <ng-container *ngIf="!impactOnSectorialIP"> -</ng-container>
                                                         </div>
@@ -1095,7 +1078,7 @@
                                                         <!--<div class="icon"><i class="fa fa-money"></i></div>-->
                                                         <div class="count">
                                                             <ng-container *ngIf="impactOnSectorialKeyComp">
-                                                                {{impactOnSectorialKeyComp | currency:'EUR'}}
+                                                                {{impactOnSectorialKeyComp | currency:'EUR':'symbol':'1.0-0'}}
                                                             </ng-container>
                                                             <ng-container *ngIf="!impactOnSectorialKeyComp"> -
                                                             </ng-container>
@@ -1112,7 +1095,7 @@
                                                         <div class="count">
                                                             <ng-container *ngIf="impactOnSectorialOrgCapital">
                                                                 {{impactOnSectorialOrgCapital |
-                                                                currency:'EUR'}}
+                                                                currency:'EUR':'symbol':'1.0-0'}}
                                                             </ng-container>
                                                             <ng-container *ngIf="!impactOnSectorialOrgCapital"> -
                                                             </ng-container>
@@ -1191,7 +1174,8 @@
                                                                     <th scope="row">{{asset.asset.name}}</th>
                                                                     <td>{{priorities[asset.ranking - 1]}}:
                                                                         {{asset.ranking}}</td>
-                                                                    <td><b>{{asset.lossValue | currency:'EUR'}}</b></td>
+                                                                    <td><b>{{asset.lossValue | currency:'EUR':'symbol':'1.0-0'}}</b>
+                                                                    </td>
                                                                 </tr>
                                                             </ng-container>
                                                         </tbody>

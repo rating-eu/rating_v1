@@ -1,14 +1,14 @@
-import {JhiAlertService} from 'ng-jhipster';
-import {Router} from '@angular/router';
-import {IndirectAssetMgm} from './../../entities/indirect-asset-mgm/indirect-asset-mgm.model';
-import {AttackCostMgm, CostType} from './../../entities/attack-cost-mgm/attack-cost-mgm.model';
+import { JhiAlertService } from 'ng-jhipster';
+import { Router } from '@angular/router';
+import { IndirectAssetMgm } from './../../entities/indirect-asset-mgm/indirect-asset-mgm.model';
+import { AttackCostMgm, CostType } from './../../entities/attack-cost-mgm/attack-cost-mgm.model';
 import * as _ from 'lodash';
-import {DirectAssetMgm} from './../../entities/direct-asset-mgm/direct-asset-mgm.model';
-import {SelfAssessmentMgmService} from './../../entities/self-assessment-mgm/self-assessment-mgm.service';
-import {IdentifyAssetUtilService} from './../identify-asset.util.service';
-import {MyAssetMgm} from './../../entities/my-asset-mgm/my-asset-mgm.model';
-import {SelfAssessmentMgm} from './../../entities/self-assessment-mgm/self-assessment-mgm.model';
-import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
+import { DirectAssetMgm } from './../../entities/direct-asset-mgm/direct-asset-mgm.model';
+import { SelfAssessmentMgmService } from './../../entities/self-assessment-mgm/self-assessment-mgm.service';
+import { IdentifyAssetUtilService } from './../identify-asset.util.service';
+import { MyAssetMgm } from './../../entities/my-asset-mgm/my-asset-mgm.model';
+import { SelfAssessmentMgm } from './../../entities/self-assessment-mgm/self-assessment-mgm.model';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 
 @Component({
     // tslint:disable-next-line:component-selector
@@ -18,6 +18,7 @@ import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
 })
 export class AttackCostsComponent implements OnInit {
     private mySelf: SelfAssessmentMgm = {};
+    private myCosts: Map<number, AttackCostMgm[]> = new Map<number, AttackCostMgm[]>();
     public myAssets: MyAssetMgm[];
     public myAssetStatus: Map<number, string> = new Map<number, string>();
     public myDirects: DirectAssetMgm[];
@@ -28,6 +29,8 @@ export class AttackCostsComponent implements OnInit {
     public loading = false;
     public refresh = false;
     public refreshIndirect = false;
+    public warningDirect = false;
+    public warningIndirect = false;
     public costs: CostType[] = Object.keys(CostType).filter((key) => !isNaN(Number(key))).map((type) => CostType[type]);
 
     constructor(
@@ -49,6 +52,7 @@ export class AttackCostsComponent implements OnInit {
                 this.myAssets.forEach((myAsset) => {
                     if (myAsset.costs !== null && myAsset.costs.length > 0) {
                         this.myAssetStatus.set(myAsset.id, 'COMPLETED');
+                        this.myCosts.set(myAsset.id, _.cloneDeep(myAsset.costs));
                     } else {
                         this.myAssetStatus.set(myAsset.id, 'NOT COMPLETED');
                     }
@@ -67,7 +71,7 @@ export class AttackCostsComponent implements OnInit {
         if (myIndirect) {
             this.refreshIndirect = true;
             setTimeout(() => {
-                const indDirect = _.findIndex(this.myDirects, {id: this.selectedDirectAsset.id});
+                const indDirect = _.findIndex(this.myDirects, { id: this.selectedDirectAsset.id });
                 this.selectedDirectAsset = _.cloneDeep(this.myDirects[indDirect]);
                 if (this.selectedIndirectAsset) {
                     if (this.selectedIndirectAsset.id === myIndirect.id) {
@@ -110,7 +114,7 @@ export class AttackCostsComponent implements OnInit {
 
     public setCostOnDirect(costType: CostType) {
         if (costType) {
-            const myAssetIndex = _.findIndex(this.myAssets, {id: this.selectedDirectAsset.myAsset.id});
+            const myAssetIndex = _.findIndex(this.myAssets, { id: this.selectedDirectAsset.myAsset.id });
 
             if (!this.myAssets[myAssetIndex].costs) {
                 this.myAssets[myAssetIndex].costs = [];
@@ -120,8 +124,9 @@ export class AttackCostsComponent implements OnInit {
 
             this.isMyAssetUpdated = true;
 
-            const costIndex = _.findIndex(this.myAssets[myAssetIndex].costs, {type: selectedCostType});
+            const costIndex = _.findIndex(this.myAssets[myAssetIndex].costs, { type: selectedCostType });
             if (costIndex !== -1) {
+                this.verifyWarning(this.selectedDirectAsset.myAsset, true, true, this.myAssets[myAssetIndex].costs[costIndex]);
                 // Remove the existing AttackCost inplace
                 this.myAssets[myAssetIndex].costs.splice(costIndex, 1);
             } else {
@@ -129,13 +134,55 @@ export class AttackCostsComponent implements OnInit {
                 newCost.myAsset = this.myAssets[myAssetIndex];
                 newCost.type = selectedCostType;
                 this.myAssets[myAssetIndex].costs.push(_.cloneDeep(newCost));
+                this.verifyWarning(this.selectedDirectAsset.myAsset, true, false, this.myAssets[myAssetIndex].costs[costIndex]);
             }
+        }
+    }
+
+    private verifyWarning(asset: MyAssetMgm, direct: boolean, toBeRemoved: boolean, cost?: AttackCostMgm) {
+        if (!toBeRemoved) {
+            if (direct) {
+                this.warningDirect = false;
+            } else {
+                this.warningIndirect = false;
+            }
+            return;
+        }
+        const costs = this.myCosts.get(asset.id);
+        if (!costs) {
+            if (direct) {
+                this.warningDirect = false;
+            } else {
+                this.warningIndirect = false;
+            }
+            return;
+        }
+        let index: number;
+        if (cost && cost.id) {
+            index = _.findIndex(costs, { id: cost.id });
+        } else {
+            index = _.findIndex(costs, { type: cost.type });
+        }
+        if (index === -1) {
+            if (direct) {
+                this.warningDirect = false;
+            } else {
+                this.warningIndirect = false;
+            }
+            return;
+        } else {
+            if (direct) {
+                this.warningDirect = true;
+            } else {
+                this.warningIndirect = true;
+            }
+            return;
         }
     }
 
     public isDirectCostSelected(costType: CostType): boolean {
         if (costType) {
-            const myAssetIndex = _.findIndex(this.myAssets, {id: this.selectedDirectAsset.myAsset.id});
+            const myAssetIndex = _.findIndex(this.myAssets, { id: this.selectedDirectAsset.myAsset.id });
             if (this.myAssets[myAssetIndex].costs && this.myAssets[myAssetIndex].costs.length > 0) {
                 for (const iCost of this.myAssets[myAssetIndex].costs) {
                     if (iCost.type === costType) {
@@ -150,32 +197,34 @@ export class AttackCostsComponent implements OnInit {
 
     public setCostOnIndirect(costType: CostType) {
         if (costType) {
-            const myAssetIndex = _.findIndex(this.myAssets, {id: this.selectedIndirectAsset.myAsset.id});
+            const myAssetIndex = _.findIndex(this.myAssets, { id: this.selectedIndirectAsset.myAsset.id });
 
             if (!this.myAssets[myAssetIndex].costs) {
                 this.myAssets[myAssetIndex].costs = [];
             }
 
-            const selectedCost: CostType = costType;
+            const selectedCostType: CostType = costType;
 
             this.isMyAssetUpdated = true;
 
-            const costIndex = _.findIndex(this.myAssets[myAssetIndex].costs, {type: selectedCost});
+            const costIndex = _.findIndex(this.myAssets[myAssetIndex].costs, { type: selectedCostType });
             if (costIndex !== -1) {
+                this.verifyWarning(this.selectedIndirectAsset.myAsset, false, true, this.myAssets[myAssetIndex].costs[costIndex]);
                 // Remove the existing AttackCost inplace
                 this.myAssets[myAssetIndex].costs.splice(costIndex, 1);
             } else {
                 const newCost = new AttackCostMgm();
                 newCost.myAsset = this.myAssets[myAssetIndex];
-                newCost.type = selectedCost;
+                newCost.type = selectedCostType;
                 this.myAssets[myAssetIndex].costs.push(_.cloneDeep(newCost));
+                this.verifyWarning(this.selectedIndirectAsset.myAsset, false, false, this.myAssets[myAssetIndex].costs[costIndex]);
             }
         }
     }
 
     public isIndirectCostSelected(costType: CostType): boolean {
         if (costType) {
-            const myAssetIndex = _.findIndex(this.myAssets, {id: this.selectedIndirectAsset.myAsset.id});
+            const myAssetIndex = _.findIndex(this.myAssets, { id: this.selectedIndirectAsset.myAsset.id });
             if (this.myAssets[myAssetIndex].costs && this.myAssets[myAssetIndex].costs.length > 0) {
                 for (const iCost of this.myAssets[myAssetIndex].costs) {
                     if (iCost.type === costType) {
@@ -201,10 +250,10 @@ export class AttackCostsComponent implements OnInit {
         const idMyAsset = this.selectedDirectAsset.myAsset.id;
         if (this.isMyAssetUpdated) {
             this.myAssetStatus.set(idMyAsset, 'IN EVALUATION');
-            const myAssetIndex = _.findIndex(this.myAssets, {id: this.selectedDirectAsset.myAsset.id});
+            const myAssetIndex = _.findIndex(this.myAssets, { id: this.selectedDirectAsset.myAsset.id });
             this.idaUtilsService.updateAsset(this.myAssets[myAssetIndex]).toPromise().then((myAsset) => {
                 if (myAsset) {
-                    const index = _.findIndex(this.myAssets, {id: myAsset.id});
+                    const index = _.findIndex(this.myAssets, { id: myAsset.id });
                     if (index !== -1) {
                         this.myAssets.splice(index, 1, myAsset);
                     } else {
@@ -227,10 +276,10 @@ export class AttackCostsComponent implements OnInit {
                 this.router.navigate(['/dashboard']);
             });
             if (this.selectedIndirectAsset) {
-                const myAssetIndexIndirect = _.findIndex(this.myAssets, {id: this.selectedIndirectAsset.myAsset.id});
+                const myAssetIndexIndirect = _.findIndex(this.myAssets, { id: this.selectedIndirectAsset.myAsset.id });
                 this.idaUtilsService.updateAsset(this.myAssets[myAssetIndexIndirect]).toPromise().then((myAsset) => {
                     if (myAsset) {
-                        const index = _.findIndex(this.myAssets, {id: myAsset.id});
+                        const index = _.findIndex(this.myAssets, { id: myAsset.id });
                         if (index !== -1) {
                             this.myAssets.splice(index, 1, myAsset);
                         } else {

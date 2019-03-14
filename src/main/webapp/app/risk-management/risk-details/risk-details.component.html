@@ -149,9 +149,10 @@
   </div>
   <div class="card">
     <div class="card-body">
-      <h5 class="card-title">Impact: {{selectedAsset.impact}}</h5>
+      <h5 class="card-title">Impact estimation</h5>
       <ng-container class="card-text">
         <ng-container>
+          <p><b>Consequence scale:</b> {{selectedAsset.impact}}</p>
           <p>This impact value was evaluated by this formula:
             <ng-container *ngIf="!impactFormula && !loadingFormulaTable">N/A</ng-container>
           </p>
@@ -189,7 +190,9 @@
             <ngb-tab title="Direct Cost">
               <ng-template ngbTabContent>
                 <div class="col-md-12" *ngIf="directImpactTable.length === 0">
-                  <p>No attack cost was defined for this asset yet!</p>
+                  <div class="alert alert-danger text-center" role="alert">
+                    No attack cost was defined for this asset yet!
+                  </div>
                   <p>If you want, you can define them in the <a href="javascript:void(0)"
                       [routerLink]="['/identify-asset/asset-clustering']">Asset
                       Clustering</a> section!</p>
@@ -197,25 +200,40 @@
                 <table class="table" *ngIf="directImpactTable.length > 0">
                   <thead>
                     <tr>
-                      <th scope="col" width="55%">Attack Cost</th>
+                      <th scope="col" width="55%">Related Costs</th>
                       <th scope="col">Economic Impact</th>
                     </tr>
                   </thead>
                   <tbody>
                     <ng-container *ngFor="let impact of directImpactTable">
                       <tr *ngIf="impact.direct">
+                        <!--
                         <th scope="row" *ngIf="impact.attackCostParams"><a href="javascript:void(0)"
                             (click)="selectAttackCost(impact)">{{impact.attackCost.type | replace:'_':' ' | titlecase}}</a>
                         </th>
+                        -->
+                        <th scope="row" *ngIf="impact.attackCostParams">
+                          <ng-container *ngIf="impact.attackCost.type.toString() !== 'COST_OF_IT_DOWNTIME'">
+                            <a href="javascript:void(0)"
+                              [routerLink]="['/impact-evaluation/attack-related-costs-estimation']">{{impact.attackCost.type | replace:'_':' ' | titlecase}}</a>
+                          </ng-container>
+                          <ng-container *ngIf="impact.attackCost.type.toString() === 'COST_OF_IT_DOWNTIME'">
+                            <a href="javascript:void(0)"
+                              [routerLink]="['/impact-evaluation/attack-related-costs-estimation']">Cost of IT
+                              Downtime</a>
+                          </ng-container>
+                        </th>
+
                         <td *ngIf="!impact.attackCostParams">
                           <ng-container *ngIf="impact.attackCost.type.toString() !== 'COST_OF_IT_DOWNTIME'">
                             {{impact.attackCost.type | replace:'_':' ' | titlecase}}</ng-container>
                           <ng-container *ngIf="impact.attackCost.type.toString() === 'COST_OF_IT_DOWNTIME'">Cost of IT
                             Downtime</ng-container>
                         </td>
-                        <td>{{impact.attackCost.costs | currency:'EUR'}}
+                        <td>{{impact.attackCost.costs | currency:'EUR':'symbol':'1.0-0'}}
                         </td>
                       </tr>
+                      <!--
                       <ng-container *ngIf="selectedImpact && selectedImpact.direct">
                         <tr *ngIf="selectedImpact.attackCost.id === impact.attackCost.id">
                           <td colspan="3">
@@ -238,7 +256,7 @@
                                   <td>{{param.type | replace:'_':' ' | titlecase}}
                                   </td>
                                   <td *ngIf="isMoney(param.type)">
-                                    {{param.value | currency:'EUR'}}
+                                    {{param.value | currency:'EUR':'symbol':'1.0-0'}}
                                   </td>
                                   <td *ngIf="isFraction(param.type)">
                                     {{param.value | number : '1.1-2'}}%
@@ -246,7 +264,7 @@
                                   <td *ngIf="!isMoney(param.type) && !isFraction(param.type)">
                                     {{param.value}}</td>
                                   <td *ngIf="isMoney(param.type) && param.min">
-                                    {{param.min | currency:'EUR'}}
+                                    {{param.min | currency:'EUR':'symbol':'1.0-0'}}
                                   </td>
                                   <td *ngIf="isFraction(param.type) && param.min">
                                     {{param.min}}%</td>
@@ -254,7 +272,7 @@
                                     {{param.min}}</td>
                                   <td *ngIf="!param.min">-</td>
                                   <td *ngIf="isMoney(param.type) && param.max">
-                                    {{param.max | currency:'EUR'}}
+                                    {{param.max | currency:'EUR':'symbol':'1.0-0'}}
                                   </td>
                                   <td *ngIf="isFraction(param.type) && param.max">
                                     {{param.max}}%</td>
@@ -267,6 +285,7 @@
                           </td>
                         </tr>
                       </ng-container>
+                      -->
                     </ng-container>
                   </tbody>
                 </table>
@@ -275,7 +294,9 @@
             <ngb-tab title="Indirect Cost">
               <ng-template ngbTabContent>
                 <div class="col-md-12" *ngIf="indirectImpactTable.length === 0">
-                  <p>No attack cost was defined for this asset yet!</p>
+                  <div class="alert alert-danger text-center" role="alert">
+                    No attack cost was defined for this asset yet!
+                  </div>
                   <p>If you want, you can define them in the <a href="javascript:void(0)"
                       [routerLink]="['/identify-asset/asset-clustering']">Asset
                       Clustering</a> section!</p>
@@ -290,8 +311,16 @@
                   <tbody>
                     <ng-container *ngFor="let impact of indirectImpactTable">
                       <tr *ngIf="!impact.direct">
-                        <th scope="row" *ngIf="impact.attackCostParams"><a href="javascript:void(0)"
-                            (click)="selectAttackCost(impact)">{{impact.attackCost.type | replace:'_':' ' | titlecase}}</a>
+                        <th scope="row" *ngIf="impact.attackCostParams">
+                          <ng-container *ngIf="impact.attackCost.type.toString() !== 'COST_OF_IT_DOWNTIME'">
+                            <a href="javascript:void(0)"
+                              [routerLink]="['/impact-evaluation/attack-related-costs-estimation']">{{impact.attackCost.type | replace:'_':' ' | titlecase}}</a>
+                          </ng-container>
+                          <ng-container *ngIf="impact.attackCost.type.toString() === 'COST_OF_IT_DOWNTIME'">
+                            <a href="javascript:void(0)"
+                              [routerLink]="['/impact-evaluation/attack-related-costs-estimation']">Cost of IT
+                              Downtime</a>
+                          </ng-container>
                         </th>
                         <td *ngIf="!impact.attackCostParams">
                           <ng-container *ngIf="impact.attackCost.type.toString() !== 'COST_OF_IT_DOWNTIME'">
@@ -299,9 +328,10 @@
                           <ng-container *ngIf="impact.attackCost.type.toString() === 'COST_OF_IT_DOWNTIME'">Cost of IT
                             Downtime</ng-container>
                         </td>
-                        <td>{{impact.attackCost.costs | currency:'EUR'}}
+                        <td>{{impact.attackCost.costs | currency:'EUR':'symbol':'1.0-0'}}
                         </td>
                       </tr>
+                      <!--
                       <ng-container *ngIf="selectedImpact && !selectedImpact.direct">
                         <tr *ngIf="selectedImpact.attackCost.id === impact.attackCost.id">
                           <td colspan="3">
@@ -324,7 +354,7 @@
                                   <td>{{param.type | replace:'_':' ' | titlecase}}
                                   </td>
                                   <td *ngIf="isMoney(param.type)">
-                                    {{param.value | currency:'EUR'}}
+                                    {{param.value | currency:'EUR':'symbol':'1.0-0'}}
                                   </td>
                                   <td *ngIf="isFraction(param.type)">
                                     {{param.value | number : '1.1-2'}}%
@@ -332,7 +362,7 @@
                                   <td *ngIf="!isMoney(param.type) && !isFraction(param.type)">
                                     {{param.value}}</td>
                                   <td *ngIf="isMoney(param.type) && param.min">
-                                    {{param.min | currency:'EUR'}}
+                                    {{param.min | currency:'EUR':'symbol':'1.0-0'}}
                                   </td>
                                   <td *ngIf="isFraction(param.type) && param.min">
                                     {{param.min}}%</td>
@@ -340,7 +370,7 @@
                                     {{param.min}}</td>
                                   <td *ngIf="!param.min">-</td>
                                   <td *ngIf="isMoney(param.type) && param.max">
-                                    {{param.max | currency:'EUR'}}
+                                    {{param.max | currency:'EUR':'symbol':'1.0-0'}}
                                   </td>
                                   <td *ngIf="isFraction(param.type) && param.max">
                                     {{param.max}}%</td>
@@ -353,6 +383,7 @@
                           </td>
                         </tr>
                       </ng-container>
+                      -->
                     </ng-container>
                   </tbody>
                 </table>

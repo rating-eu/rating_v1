@@ -4,12 +4,15 @@ import eu.hermeneut.aop.annotation.CostQualifier;
 import eu.hermeneut.config.ApplicationProperties;
 import eu.hermeneut.domain.AttackCost;
 import eu.hermeneut.domain.AttackCostParam;
+import eu.hermeneut.domain.SelfAssessment;
 import eu.hermeneut.domain.enumeration.AttackCostParamType;
 import eu.hermeneut.domain.enumeration.CostType;
 import eu.hermeneut.domain.formula.AttackCostFormula;
 import eu.hermeneut.exceptions.IllegalInputException;
+import eu.hermeneut.exceptions.NotFoundException;
 import eu.hermeneut.service.AttackCostParamService;
 import eu.hermeneut.service.attack.cost.AttackCostCalculator;
+import eu.hermeneut.service.attack.cost.AttackCostCleaner;
 import eu.hermeneut.service.formula.AttackCostFormulator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,7 +27,7 @@ import java.util.stream.Collectors;
 
 @Service
 @CostQualifier(type = CostType.COST_OF_IT_DOWNTIME)
-public class CostOfItDowntimeImpl implements AttackCostCalculator, AttackCostFormulator {
+public class CostOfItDowntimeImpl implements AttackCostCalculator, AttackCostFormulator, AttackCostCleaner {
 
     @Autowired
     private AttackCostParamService attackCostParamService;
@@ -152,5 +155,59 @@ public class CostOfItDowntimeImpl implements AttackCostCalculator, AttackCostFor
         attackCostFormula.setFormula(formula.toString());
 
         return attackCostFormula;
+    }
+
+    @Override
+    public void clean(SelfAssessment selfAssessment) {
+        try {
+            List<AttackCostParam> attackCostParams = this.attackCostParamService.findAllBySelfAssessment(selfAssessment.getId());
+
+            if (attackCostParams != null && !attackCostParams.isEmpty()) {
+                Map<AttackCostParamType, AttackCostParam> attackCostParamsMap = attackCostParams.stream().parallel().collect(
+                    Collectors.toMap(
+                        attackCostParam -> attackCostParam.getType(),
+                        Function.identity())
+                );
+
+                if (attackCostParamsMap != null && !attackCostParamsMap.isEmpty()) {
+                    final AttackCostParam EMPLOYEE_COST_PER_HOUR = attackCostParamsMap.get(AttackCostParamType.EMPLOYEE_COST_PER_HOUR);
+
+                    //It may have id=null if simultaneously deleted somewhere else
+                    if (EMPLOYEE_COST_PER_HOUR != null && EMPLOYEE_COST_PER_HOUR.getId() != null) {
+                        this.attackCostParamService.delete(EMPLOYEE_COST_PER_HOUR.getId());
+                    }
+
+                    final AttackCostParam FRACTION_OF_EMPLOYEES_AFFECTED_BY_OUTAGE = attackCostParamsMap.get(AttackCostParamType.FRACTION_OF_EMPLOYEES_AFFECTED_BY_OUTAGE);
+
+                    //It may have id=null if simultaneously deleted somewhere else
+                    if (FRACTION_OF_EMPLOYEES_AFFECTED_BY_OUTAGE != null && FRACTION_OF_EMPLOYEES_AFFECTED_BY_OUTAGE.getId() != null) {
+                        this.attackCostParamService.delete(FRACTION_OF_EMPLOYEES_AFFECTED_BY_OUTAGE.getId());
+                    }
+
+                    final AttackCostParam AVERAGE_REVENUE_PER_HOUR = attackCostParamsMap.get(AttackCostParamType.AVERAGE_REVENUE_PER_HOUR);
+
+                    //It may have id=null if simultaneously deleted somewhere else
+                    if (AVERAGE_REVENUE_PER_HOUR != null && AVERAGE_REVENUE_PER_HOUR.getId() != null) {
+                        this.attackCostParamService.delete(AVERAGE_REVENUE_PER_HOUR.getId());
+                    }
+
+                    final AttackCostParam FRACTION_OF_REVENUE_AFFECTED_BY_OUTAGE = attackCostParamsMap.get(AttackCostParamType.FRACTION_OF_REVENUE_AFFECTED_BY_OUTAGE);
+
+                    //It may have id=null if simultaneously deleted somewhere else
+                    if (FRACTION_OF_REVENUE_AFFECTED_BY_OUTAGE != null && FRACTION_OF_EMPLOYEES_AFFECTED_BY_OUTAGE.getId() != null) {
+                        this.attackCostParamService.delete(FRACTION_OF_REVENUE_AFFECTED_BY_OUTAGE.getId());
+                    }
+
+                    final AttackCostParam RECOVERY_COST = attackCostParamsMap.get(AttackCostParamType.RECOVERY_COST);
+
+                    //It may have id=null if simultaneously deleted somewhere else
+                    if (RECOVERY_COST != null && RECOVERY_COST.getId() != null) {
+                        this.attackCostParamService.delete(RECOVERY_COST.getId());
+                    }
+                }
+            }
+        } catch (NotFoundException e) {
+            e.printStackTrace();
+        }
     }
 }
