@@ -36,6 +36,7 @@ import {ReactiveFormsModule} from '@angular/forms';
 import {DatasharingModule} from './datasharing/datasharing.module';
 import {MaterialModule} from './material/material.module';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import { MainService } from './layouts/main/main.service';
 
 @NgModule({
     imports: [
@@ -73,6 +74,7 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
         PaginationConfig,
         UserRouteAccessService,
         QuestionnairesService,
+        MainService,
         {
             provide: HTTP_INTERCEPTORS,
             useClass: AuthInterceptor,

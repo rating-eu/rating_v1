@@ -1,15 +1,16 @@
-import {Injectable} from '@angular/core';
-import {Fraction} from '../utils/fraction.class';
-import {Couple} from '../utils/couple.class';
-import {ThreatAgentMgm} from '../entities/threat-agent-mgm';
-import {AnswerMgm} from '../entities/answer-mgm';
-import {Observable} from 'rxjs/Observable';
-import {BehaviorSubject} from 'rxjs/BehaviorSubject';
-import {QuestionnaireMgm} from '../entities/questionnaire-mgm';
-import {Update} from '../layouts/model/Update';
-import {SelfAssessmentMgm} from '../entities/self-assessment-mgm';
-import {HttpClient} from '@angular/common/http';
-import {MyRole} from '../entities/enumerations/MyRole.enum';
+import { Mode } from './../entities/enumerations/Mode.enum';
+import { Injectable } from '@angular/core';
+import { Fraction } from '../utils/fraction.class';
+import { Couple } from '../utils/couple.class';
+import { ThreatAgentMgm } from '../entities/threat-agent-mgm';
+import { AnswerMgm } from '../entities/answer-mgm';
+import { Observable } from 'rxjs/Observable';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { QuestionnaireMgm } from '../entities/questionnaire-mgm';
+import { Update } from '../layouts/model/Update';
+import { SelfAssessmentMgm } from '../entities/self-assessment-mgm';
+import { HttpClient } from '@angular/common/http';
+import { MyRole } from '../entities/enumerations/MyRole.enum';
 
 @Injectable()
 export class DatasharingService {
@@ -25,7 +26,9 @@ export class DatasharingService {
     private layoutUpdateSubject: BehaviorSubject<Update> = new BehaviorSubject<Update>(null);
     private mySelfAssessmentSubject: BehaviorSubject<SelfAssessmentMgm> = new BehaviorSubject<SelfAssessmentMgm>(null);
     private roleSubject: BehaviorSubject<MyRole> = new BehaviorSubject<MyRole>(null);
+    private appMode: BehaviorSubject<Mode> = new BehaviorSubject<Mode>(null);
     private role: MyRole = null;
+    private mode: Mode = null;
 
     constructor(private http: HttpClient) {
 
@@ -86,6 +89,19 @@ export class DatasharingService {
     updateRole(role: MyRole) {
         this.role = role;
         this.roleSubject.next(this.role);
+    }
+
+    observeMode(): Observable<Mode> {
+        return this.appMode.asObservable();
+    }
+
+    updateMode(mode: Mode) {
+        this.mode = mode;
+        this.appMode.next(mode);
+    }
+
+    getMode() {
+        return this.mode;
     }
 
     getRole() {

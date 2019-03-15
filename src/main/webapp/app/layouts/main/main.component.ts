@@ -1,3 +1,4 @@
+import {MainService} from './main.service';
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRouteSnapshot, NavigationEnd, Router} from '@angular/router';
 
@@ -5,6 +6,7 @@ import {JhiLanguageHelper, LoginService, Principal} from '../../shared';
 import {DatasharingService} from '../../datasharing/datasharing.service';
 import {Update} from '../model/Update';
 import {MyRole} from '../../entities/enumerations/MyRole.enum';
+import {ModalDismissReasons, NgbModal} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
     selector: 'jhi-main',
@@ -18,13 +20,16 @@ export class JhiMainComponent implements OnInit {
     public isExternal = false;
     public isCISO = false;
     public isAdmin = false;
+    private closeResult: string;
 
     constructor(
         private principal: Principal,
         private loginService: LoginService,
         private jhiLanguageHelper: JhiLanguageHelper,
         private router: Router,
-        private dataSharingService: DatasharingService
+        private dataSharingService: DatasharingService,
+        private mainService: MainService,
+        private modalService: NgbModal
     ) {
         this.updateLayout = new Update();
     }
@@ -38,6 +43,11 @@ export class JhiMainComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.mainService.getMode().toPromise().then((res) => {
+            if (res) {
+                this.dataSharingService.updateMode(res);
+            }
+        });
         this.router.events.subscribe((event) => {
             if (event instanceof NavigationEnd) {
                 this.jhiLanguageHelper.updateTitle(this.getPageTitle(this.router.routerState.snapshot.root));
@@ -144,5 +154,23 @@ export class JhiMainComponent implements OnInit {
         this.isCISO = false;
 
         this.dataSharingService.updateRole(null);
+    }
+
+    open(content) {
+        this.modalService.open(content, { size: 'lg' }).result.then((result) => {
+            this.closeResult = `Closed with: ${result}`;
+        }, (reason) => {
+            this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+        });
+    }
+
+    private getDismissReason(reason: any): string {
+        if (reason === ModalDismissReasons.ESC) {
+            return 'by pressing ESC';
+        } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+            return 'by clicking on a backdrop';
+        } else {
+            return `with: ${reason}`;
+        }
     }
 }
