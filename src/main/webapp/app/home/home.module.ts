@@ -5,13 +5,16 @@ import {HermeneutSharedModule} from '../shared';
 
 import {HOME_ROUTES, HomeComponent} from './';
 import {MaterialModule} from '../material/material.module';
-import { AboutUsComponent } from './about.us.component';
+import {AboutUsComponent} from './about.us.component';
 
 @NgModule({
     imports: [
         HermeneutSharedModule,
         RouterModule.forChild(HOME_ROUTES),
         MaterialModule
+    ],
+    exports: [
+        AboutUsComponent
     ],
     declarations: [
         HomeComponent,

@@ -147,6 +147,14 @@ export class LossesWidgetComponent implements OnInit {
         }
         break;
       }
+      case 'DATA': {
+        for (const asset of this.myAssets) {
+          if (asset.asset.assetcategory.name === 'Data') {
+            this.assetsBySelectedCategory.push(asset);
+          }
+        }
+        break;
+      }
     }
   }
 
