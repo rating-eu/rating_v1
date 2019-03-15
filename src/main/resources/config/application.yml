@@ -130,3 +130,4 @@ jhipster:
 
 application:
     currency: ${CURRENCY:€}
+    mode: ${MODE:RATING}
