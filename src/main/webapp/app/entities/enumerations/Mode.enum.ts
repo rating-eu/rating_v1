@@ -1,4 +1,4 @@
 export enum Mode {
-    RATING,
-    COMPACT
+    'RATING' = 'RATING',
+    'COMPACT' = 'COMPACT'
 }
