@@ -1,10 +1,11 @@
-import {Component, OnInit} from '@angular/core';
-import {ActivatedRouteSnapshot, NavigationEnd, Router} from '@angular/router';
+import { MainService } from './main.service';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRouteSnapshot, NavigationEnd, Router } from '@angular/router';
 
-import {JhiLanguageHelper, LoginService, Principal} from '../../shared';
-import {DatasharingService} from '../../datasharing/datasharing.service';
-import {Update} from '../model/Update';
-import {MyRole} from '../../entities/enumerations/MyRole.enum';
+import { JhiLanguageHelper, LoginService, Principal } from '../../shared';
+import { DatasharingService } from '../../datasharing/datasharing.service';
+import { Update } from '../model/Update';
+import { MyRole } from '../../entities/enumerations/MyRole.enum';
 
 @Component({
     selector: 'jhi-main',
@@ -24,7 +25,8 @@ export class JhiMainComponent implements OnInit {
         private loginService: LoginService,
         private jhiLanguageHelper: JhiLanguageHelper,
         private router: Router,
-        private dataSharingService: DatasharingService
+        private dataSharingService: DatasharingService,
+        private mainService: MainService
     ) {
         this.updateLayout = new Update();
     }
@@ -38,6 +40,11 @@ export class JhiMainComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.mainService.getMode().toPromise().then((res) => {
+            if (res) {
+                this.dataSharingService.updateMode(res);
+            }
+        });
         this.router.events.subscribe((event) => {
             if (event instanceof NavigationEnd) {
                 this.jhiLanguageHelper.updateTitle(this.getPageTitle(this.router.routerState.snapshot.root));
