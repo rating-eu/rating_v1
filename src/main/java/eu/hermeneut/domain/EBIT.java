@@ -48,7 +48,7 @@ public class EBIT implements Serializable {
     @Column(name = "jhi_year")
     private Integer year;
 
-    @Column(name = "jhi_value", precision=20, scale=2)
+    @Column(name = "jhi_value", precision=50, scale=2)
     private BigDecimal value;
 
     @CreationTimestamp

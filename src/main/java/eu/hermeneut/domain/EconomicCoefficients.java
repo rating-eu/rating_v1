@@ -36,27 +36,27 @@ public class EconomicCoefficients implements Serializable {
     @Column(name = "discounting_rate", precision = 20, scale = 2)
     private BigDecimal discountingRate;
 
-    @Column(name = "physical_assets_return", precision = 20, scale = 2)
+    @Column(name = "physical_assets_return", precision = 50, scale = 2)
     private BigDecimal physicalAssetsReturn;
 
-    @Column(name = "long_term_liabilities", precision = 20, scale = 2)
+    @Column(name = "long_term_liabilities", precision = 50, scale = 2)
     private BigDecimal longTermLiabilities;
 
     /**
      * Fixed Assets Return
      */
     @ApiModelProperty(value = "Fixed Assets Return")
-    @Column(name = "financial_assets_return", precision = 20, scale = 2)
+    @Column(name = "financial_assets_return", precision = 50, scale = 2)
     private BigDecimal financialAssetsReturn;
 
-    @Column(name = "current_liabilities", precision = 20, scale = 2)
+    @Column(name = "current_liabilities", precision = 50, scale = 2)
     private BigDecimal currentLiabilities;
 
     /**
      * Current Assets Return
      */
     @ApiModelProperty(value = "Current Assets Return")
-    @Column(name = "loss_of_intangible", precision = 20, scale = 2)
+    @Column(name = "loss_of_intangible", precision = 50, scale = 2)
     private BigDecimal lossOfIntangible;
 
     /**

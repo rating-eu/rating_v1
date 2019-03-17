@@ -43,12 +43,12 @@ public class ImpactLevel implements Serializable {
 
     @NotNull
     @Min(value = 0L)
-    @Column(name = "min_loss", nullable = false, precision = 20, scale = 2)
+    @Column(name = "min_loss", nullable = false, precision = 50, scale = 2)
     private BigDecimal minLoss;
 
     @NotNull
     @Min(value = 0L)
-    @Column(name = "max_loss", nullable = false, precision = 20, scale = 2)
+    @Column(name = "max_loss", nullable = false, precision = 50, scale = 2)
     private BigDecimal maxLoss;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
