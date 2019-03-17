@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+    <changeSet author="developer" id="20190317213308-1">
+        <!--AttackCost-->
+        <modifyDataType catalogName="cat"
+                        schemaName="public"
+                        tableName="attack_cost"
+                        columnName="costs"
+                        newDataType="numeric(50, 2)"
+        />
+
+        <!--Attack Cost Param-->
+        <modifyDataType catalogName="cat"
+                        schemaName="public"
+                        tableName="attack_cost_param"
+                        columnName="value"
+                        newDataType="numeric(50, 2)"
+        />
+
+        <!--EBIT-->
+        <modifyDataType catalogName="cat"
+                        schemaName="public"
+                        tableName="ebit"
+                        columnName="jhi_value"
+                        newDataType="numeric(50, 2)"
+        />
+
+        <!--Economic Coefficients-->
+        <modifyDataType catalogName="cat"
+                        schemaName="public"
+                        tableName="economic_coefficients"
+                        columnName="physical_assets_return"
+                        newDataType="numeric(50, 2)"
+        />
+
+        <modifyDataType catalogName="cat"
+                        schemaName="public"
+                        tableName="economic_coefficients"
+                        columnName="long_term_liabilities"
+                        newDataType="numeric(50, 2)"
+        />
+
+        <modifyDataType catalogName="cat"
+                        schemaName="public"
+                        tableName="economic_coefficients"
+                        columnName="financial_assets_return"
+                        newDataType="numeric(50, 2)"
+        />
+
+        <modifyDataType catalogName="cat"
+                        schemaName="public"
+                        tableName="economic_coefficients"
+                        columnName="current_liabilities"
+                        newDataType="numeric(50, 2)"
+        />
+
+        <modifyDataType catalogName="cat"
+                        schemaName="public"
+                        tableName="economic_coefficients"
+                        columnName="loss_of_intangible"
+                        newDataType="numeric(50, 2)"
+        />
+
+        <!--Economic Results-->
+        <modifyDataType catalogName="cat"
+                        schemaName="public"
+                        tableName="economic_results"
+                        columnName="economic_performance"
+                        newDataType="numeric(50, 2)"
+        />
+
+        <modifyDataType catalogName="cat"
+                        schemaName="public"
+                        tableName="economic_results"
+                        columnName="intangible_driving_earnings"
+                        newDataType="numeric(50, 2)"
+        />
+
+        <modifyDataType catalogName="cat"
+                        schemaName="public"
+                        tableName="economic_results"
+                        columnName="intangible_capital"
+                        newDataType="numeric(50, 2)"
+        />
+
+        <modifyDataType catalogName="cat"
+                        schemaName="public"
+                        tableName="economic_results"
+                        columnName="intangible_loss_by_attacks"
+                        newDataType="numeric(50, 2)"
+        />
+
+        <!--Impact Level-->
+        <modifyDataType catalogName="cat"
+                        schemaName="public"
+                        tableName="impact_level"
+                        columnName="min_loss"
+                        newDataType="numeric(50, 2)"
+        />
+
+        <modifyDataType catalogName="cat"
+                        schemaName="public"
+                        tableName="impact_level"
+                        columnName="max_loss"
+                        newDataType="numeric(50, 2)"
+        />
+
+        <!--MyAsset-->
+        <modifyDataType catalogName="cat"
+                        schemaName="public"
+                        tableName="my_asset"
+                        columnName="economic_value"
+                        newDataType="numeric(50, 2)"
+        />
+
+        <modifyDataType catalogName="cat"
+                        schemaName="public"
+                        tableName="my_asset"
+                        columnName="economic_impact"
+                        newDataType="numeric(50, 2)"
+        />
+
+        <modifyDataType catalogName="cat"
+                        schemaName="public"
+                        tableName="my_asset"
+                        columnName="loss_value"
+                        newDataType="numeric(50, 2)"
+        />
+
+        <!--Splitting Loss-->
+        <modifyDataType catalogName="cat"
+                        schemaName="public"
+                        tableName="splitting_loss"
+                        columnName="loss"
+                        newDataType="numeric(50, 2)"
+        />
+
+        <!--Splitting Value-->
+        <modifyDataType catalogName="cat"
+                        schemaName="public"
+                        tableName="splitting_value"
+                        columnName="jhi_value"
+                        newDataType="numeric(50, 2)"
+        />
+    </changeSet>
+</databaseChangeLog>
