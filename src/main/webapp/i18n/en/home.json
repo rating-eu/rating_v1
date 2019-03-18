@@ -22,5 +22,8 @@
     },
     "aboutus": {
         "title": "About us"
+    },
+    "terms": {
+        "title": "Terms of Use"
     }
 }

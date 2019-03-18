@@ -114,6 +114,9 @@
                     "invalid": "Ihre Email Adresse ist ungültig.",
                     "minlength": "Ihre Email Adresse muss mindestens 5 Zeichen lang sein",
                     "maxlength": "Ihre Email Adresse darf nicht länger als 50 Zeichen sein"
+                },
+                "terms": {
+                    "required": "Sie müssen die Nutzungsbedingungen akzeptieren."
                 }
             }
         },
