@@ -130,6 +130,9 @@
                     "invalid": "Your Company website is invalid.",
                     "minlength": "Your Company website is required to be at least 5 characters.",
                     "maxlength": "Your Company website cannot be longer than 50 characters."
+                },
+                "terms": {
+                    "required": "You must accept the Terms of Use."
                 }
             }
         },

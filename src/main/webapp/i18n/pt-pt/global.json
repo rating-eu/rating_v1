@@ -114,6 +114,9 @@
                     "invalid": "Email inválido.",
                     "minlength": "O email deve ter pelo menos 5 caracteres",
                     "maxlength": "O email não pode ter mais de 50 caracteres"
+                },
+                "terms": {
+                    "required": "Você deve aceitar os termos de uso."
                 }
             }
         },

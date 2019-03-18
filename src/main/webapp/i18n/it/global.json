@@ -114,6 +114,9 @@
                     "invalid": "L'indirizzo email non è valido.",
                     "minlength": "L'indirizzo email deve essere di almeno 5 caratteri",
                     "maxlength": "L'indirizzo email non può contenere più di 50 caratteri"
+                },
+                "terms": {
+                    "required": "E' obbligatorio accettare i Termini di Utilizzo."
                 }
             }
         },

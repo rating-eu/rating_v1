@@ -233,6 +233,23 @@
                     </div>
                 </div>
 
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" name="terms" value="" id="terms" [(ngModel)]="termsAccepted"
+                           #termsAcceptedInput="ngModel" required>
+                    <label class="form-check-label" for="terms">
+                        I have read and agree to the&nbsp;
+                    </label>
+                    <a aria-hidden="true" (click)="open(terms)"
+                       ngbTooltip="Terms of Use"
+                       style="margin-right:15px;margin-top:15px;">Terms of Use</a>
+                    <div *ngIf="termsAcceptedInput.invalid">
+                        <small class="form-text text-danger" *ngIf="termsAcceptedInput.errors.required"
+                               jhiTranslate="global.messages.validate.terms.required">
+                            Your must accept the Terms of Use.
+                        </small>
+                    </div>
+                </div>
+
                 <button type="submit" [disabled]="registerForm.form.invalid" class="btn btn-primary"
                         jhiTranslate="register.form.button">Register
                 </button>
@@ -240,3 +257,15 @@
         </div>
     </div>
 </div>
+
+<ng-template #terms let-d="dismiss">
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Terms of Use</h4>
+        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <jhi-terms-of-use></jhi-terms-of-use>
+    </div>
+</ng-template>

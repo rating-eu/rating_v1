@@ -150,6 +150,9 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                 label: 'About-Us', icon: 'fa fa-info', routerLink: ['/about-us']
             },
             {
+                label: 'Terms of Use', icon: 'fas fa-file-signature', routerLink: ['/terms']
+            },
+            {
                 label: 'Company',
                 items: [
                     {
