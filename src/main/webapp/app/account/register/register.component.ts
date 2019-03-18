@@ -1,6 +1,6 @@
 import {Component, OnInit, AfterViewInit, Renderer, ElementRef} from '@angular/core';
 import {HttpErrorResponse} from '@angular/common/http';
-import {NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
+import {ModalDismissReasons, NgbModal, NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
 import {JhiLanguageService} from 'ng-jhipster';
 
 import {Register} from './register.service';
@@ -13,6 +13,7 @@ import {RegisterAccount} from './register.account.model';
 })
 export class RegisterComponent implements OnInit, AfterViewInit {
 
+    termsAccepted = false;
     confirmPassword: string;
     doNotMatch: string;
     error: string;
@@ -21,13 +22,15 @@ export class RegisterComponent implements OnInit, AfterViewInit {
     registerAccount: RegisterAccount;
     success: boolean;
     modalRef: NgbModalRef;
+    private closeResult: string;
 
     constructor(
         private languageService: JhiLanguageService,
         private loginModalService: LoginModalService,
         private registerService: Register,
         private elementRef: ElementRef,
-        private renderer: Renderer
+        private renderer: Renderer,
+        private modalService: NgbModal
     ) {
     }
 
@@ -69,6 +72,24 @@ export class RegisterComponent implements OnInit, AfterViewInit {
             this.errorEmailExists = 'ERROR';
         } else {
             this.error = 'ERROR';
+        }
+    }
+
+    open(content) {
+        this.modalService.open(content, { size: 'lg' }).result.then((result) => {
+            this.closeResult = `Closed with: ${result}`;
+        }, (reason) => {
+            this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+        });
+    }
+
+    private getDismissReason(reason: any): string {
+        if (reason === ModalDismissReasons.ESC) {
+            return 'by pressing ESC';
+        } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+            return 'by clicking on a backdrop';
+        } else {
+            return `with: ${reason}`;
         }
     }
 }

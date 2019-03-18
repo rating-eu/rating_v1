@@ -18,10 +18,12 @@ import {
     SettingsComponent,
     accountState
 } from './';
+import {HermeneutHomeModule} from '../home';
 
 @NgModule({
     imports: [
         HermeneutSharedModule,
+        HermeneutHomeModule,
         RouterModule.forChild(accountState)
     ],
     declarations: [

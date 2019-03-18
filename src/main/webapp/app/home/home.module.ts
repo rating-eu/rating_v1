@@ -6,6 +6,7 @@ import {HermeneutSharedModule} from '../shared';
 import {HOME_ROUTES, HomeComponent} from './';
 import {MaterialModule} from '../material/material.module';
 import {AboutUsComponent} from './about.us.component';
+import {TermsOfUseComponent} from './terms-of-use/terms-of-use.component';
 
 @NgModule({
     imports: [
@@ -14,11 +15,13 @@ import {AboutUsComponent} from './about.us.component';
         MaterialModule
     ],
     exports: [
-        AboutUsComponent
+        AboutUsComponent,
+        TermsOfUseComponent
     ],
     declarations: [
         HomeComponent,
-        AboutUsComponent
+        AboutUsComponent,
+        TermsOfUseComponent
     ],
     entryComponents: [],
     providers: [],
