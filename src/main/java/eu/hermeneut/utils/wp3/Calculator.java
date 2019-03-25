@@ -181,6 +181,8 @@ public class Calculator {
 
         physicalAssetsValuation = physicalAssetsValuation.subtract(longTermLiabilities);
 
+        LOGGER.debug("PhysicalAssetsValuation - LongTermLiabilities: " + physicalAssetsValuation);
+
         //Financial Assets
         for (MyAsset financialAsset : financialAssets) {
             financialAssetsValuation = financialAssetsValuation.add(financialAsset.getEconomicValue());
@@ -188,11 +190,16 @@ public class Calculator {
 
         financialAssetsValuation = financialAssetsValuation.subtract(currentLiabilities);
 
-        BigDecimal physicalAssetsSubtrahend = (BigDecimal.ONE.add(physicalAssetsReturn.divide(new BigDecimal("100"), 3, RoundingMode.HALF_UP)).multiply(physicalAssetsValuation));
-        BigDecimal financialAssetsSubtrahend = (BigDecimal.ONE.add(financialAssetsReturn.divide(new BigDecimal("100"), 3, RoundingMode.HALF_UP)).multiply(financialAssetsValuation));
+        LOGGER.debug("FinancialAssetsValuation - CurrentLiabilities: " + financialAssetsValuation);
 
-        intangibleDrivingEarnings = intangibleDrivingEarnings.subtract(physicalAssetsSubtrahend);
-        intangibleDrivingEarnings = intangibleDrivingEarnings.subtract(financialAssetsSubtrahend);
+        BigDecimal physicalAssetsAlphaProduct = (physicalAssetsReturn.divide(new BigDecimal("100"), 3, RoundingMode.HALF_UP).multiply(physicalAssetsValuation));
+        LOGGER.debug("PhysicalAssetAlphaProduct: " + physicalAssetsAlphaProduct);
+
+        BigDecimal financialAssetsBetaProduct = (financialAssetsReturn.divide(new BigDecimal("100"), 3, RoundingMode.HALF_UP).multiply(financialAssetsValuation));
+        LOGGER.debug("FinancialAssetsBetaProduct: " + financialAssetsBetaProduct);
+
+        intangibleDrivingEarnings = intangibleDrivingEarnings.subtract(physicalAssetsAlphaProduct);
+        intangibleDrivingEarnings = intangibleDrivingEarnings.subtract(financialAssetsBetaProduct);
 
         return intangibleDrivingEarnings.setScale(2, RoundingMode.HALF_UP);
     }
