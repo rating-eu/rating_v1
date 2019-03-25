@@ -23,7 +23,7 @@ public class WP3CalculatorUnitTest {
     private static final BigDecimal TEN_PERCENT_DISCOUNTING_RATE_ECONOMIC_PERFORMANCE = new BigDecimal("65726354.72");
     private static final BigDecimal PHYSICAL_ASSETS_RETURN = new BigDecimal("7");
     private static final BigDecimal FINANCIAL_ASSETS_RETURN = new BigDecimal("5.5");
-    private static final BigDecimal INTANGIBLE_DRIVING_EARNINGS = new BigDecimal("121264.61");
+    private static final BigDecimal INTANGIBLE_DRIVING_EARNINGS = new BigDecimal("42420.61");
     private static final BigDecimal INTANGIBLE_CAPITAL_OLD = new BigDecimal("59502277.02");
     public static final BigDecimal IDES_INTANGIBLE_DRIVING_EARNINGS = new BigDecimal("121264.61");
     public static final BigDecimal IDE1_VALUE = new BigDecimal("139454.302");
