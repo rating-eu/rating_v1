@@ -6,7 +6,8 @@
             "LOW_MEDIUM": "LOW_MEDIUM",
             "MEDIUM": "MEDIUM",
             "MEDIUM_HIGH": "MEDIUM_HIGH",
-            "HIGH": "HIGH"
+            "HIGH": "HIGH",
+            "NOT_APPLICABLE": "NOT_APPLICABLE"
         }
     }
 }
