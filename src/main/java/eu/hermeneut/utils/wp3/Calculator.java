@@ -81,13 +81,21 @@ public class Calculator {
 
         //First 3 years
         for (int year = -2, time = +2; year <= 0; year++) {
-            economicPerformance = economicPerformance.add(economicPerformanceHelper(ebits, discountingRate, year, time));
+            BigDecimal ebitProduct = economicPerformanceHelper(ebits, discountingRate, year, time);
+            LOGGER.debug("EBIT" + year + " product: " + ebitProduct);
+
+            economicPerformance = economicPerformance.add(ebitProduct);
         }
 
         //Last 3 years
         for (int year = +1, time = +2; year <= +3; year++) {
-            economicPerformance = economicPerformance.add(economicPerformanceHelper(ebits, discountingRate, year, time));
+            BigDecimal ebitProduct = economicPerformanceHelper(ebits, discountingRate, year, time);
+            LOGGER.debug("EBIT" + year + " product: " + ebitProduct);
+
+            economicPerformance = economicPerformance.add(ebitProduct);
         }
+
+        LOGGER.debug("EconomicPerformance before division by 6: " + economicPerformance);
 
         economicPerformance = economicPerformance.divide(new BigDecimal("6"), 2, RoundingMode.HALF_UP);
 
@@ -112,7 +120,7 @@ public class Calculator {
         if (exponent < 0) {
             exponent *= -1;//Make it positive
 
-            BigDecimal power = base.pow(exponent).setScale(2, RoundingMode.HALF_UP);
+            BigDecimal power = base.pow(exponent);
             power = BigDecimal.ONE.divide(power, 2, RoundingMode.HALF_UP);//Make the inverse
             LOGGER.debug("Power: " + power);
 
