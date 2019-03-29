@@ -1,12 +1,12 @@
 <div class="card-box">
-    <h2><span>My SelfAssessments</span></h2>
+    <h2><span>Risk Assessments</span></h2>
     <span *ngIf="isCISO">
-        <p *ngIf="!mySelfAssessments">Please create a new SelfAssessment</p>
-        <p *ngIf="!mySelfAssessment">Please select a SelfAssessment</p>
+        <p *ngIf="!mySelfAssessments">To perform a Risk Assessment, create it, then select it from the table below clicking on its name.</p>
+        <p *ngIf="mySelfAssessments && !mySelfAssessment">To perform a Risk Assessment, create it or select one from the table below clicking on its name.</p>
     </span>
     <span *ngIf="isExternal">
-        <p *ngIf="!mySelfAssessments">Currently there is no SelfAssessment to review. Please, come back later.</p>
-        <p *ngIf="!mySelfAssessment">Please select a SelfAssessment to review</p>
+        <p *ngIf="!mySelfAssessments">Currently there is no Risk Assessment to review. Please, come back later.</p>
+        <p *ngIf="mySelfAssessments && !mySelfAssessment">Please select a Risk Assessment to review</p>
     </span>
 </div>
 
