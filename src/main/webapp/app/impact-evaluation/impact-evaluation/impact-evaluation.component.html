@@ -1,11 +1,12 @@
 <ng-container *ngIf="financialAssetsAkaCurrent.length === 0 && physicalAssetsAkaFixed.length === 0">
     <div class="text-center" style="margin-top: 50px">
         <p style="color: orange"><i class="fa fa-exclamation-triangle fa-4x" aria-hidden="true"></i></p>
-        <p style="color: grey">In your organization are not present tangible asset, if this is a mistake please return
-            in
-            <a href="javascript:void(0)" [routerLink]="['/identify-asset/asset-clustering']">asset-clustering</a>
-            section and
-            modify your answers!</p>
+        <p style="text-align: center;">Unable to perform the Impact Evaluation stage.</p>
+        <p style="color: grey">
+            No tangible assets have been identified during the asset-clustering phase.
+            If you want to evaluate your Intangible Capital and simulate lossess on intangible assets,
+            please, go to the <a href="javascript:void(0)" [routerLink]="['/identify-asset/asset-clustering']">asset-clustering</a>
+            phase and select your tangible assets from the list.</p>
     </div>
 </ng-container>
 <ng-container *ngIf="financialAssetsAkaCurrent.length > 0 || physicalAssetsAkaFixed.length > 0">
