@@ -1,9 +1,8 @@
 <ng-container *ngIf="dataAssets.length === 0">
   <div class="text-center" style="margin-top: 50px">
     <p style="color: orange"><i class="fa fa-exclamation-triangle fa-4x" aria-hidden="true"></i></p>
-    <p style="color: grey">In your organization are not present data category asset, if this is a mistake please return
-      in <a href="javascript:void(0)" [routerLink]="['/identify-asset/asset-clustering']">asset-clustering</a> section
-      and modify your answers!</p>
+    <p style="color: grey">No Intangible Data assets have been selected from asset-clustering phase. If you want to estimate losses on Data, please go to the
+      <a href="javascript:void(0)" [routerLink]="['/identify-asset/asset-clustering']">asset-clustering</a> phase and select your Data assets from the list.</p>
   </div>
 </ng-container>
 <ng-container *ngIf="dataAssets.length > 0">
