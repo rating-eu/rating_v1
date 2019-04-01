@@ -61,7 +61,7 @@ public class KafkaMessagingAspect {
             } else if (args[0] instanceof QuestionnaireStatus) {
                 QuestionnaireStatus questionnaireStatus = (QuestionnaireStatus) args[0];
 
-                if (questionnaireStatus.getStatus().equals(Status.PENDING) || questionnaireStatus.getStatus().equals(Status.PENDING)) {
+                if (questionnaireStatus.getStatus().equals(Status.PENDING) || questionnaireStatus.getStatus().equals(Status.FULL)) {
                     selfAssessment = questionnaireStatus.getSelfAssessment();
                 }
             }
