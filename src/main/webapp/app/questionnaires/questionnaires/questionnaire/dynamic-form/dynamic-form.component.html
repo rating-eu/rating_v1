@@ -39,7 +39,8 @@
                             <div class="row">
                                 <div class="col-md-9 bg2">
                                     <mat-radio-group [formControlName]="question.id" class="radio-group">
-                                        <mat-radio-button *ngFor="let answer of sort(question.answers)" class="radio-button"
+                                        <mat-radio-button *ngFor="let answer of sort(question.answers)"
+                                                          class="radio-button"
                                                           [value]="answer">
                                             {{answer.name}}
                                         </mat-radio-button>
@@ -82,8 +83,11 @@
                                     </mat-form-field>
                                 </div>
                                 <div class="col-md-1 bg1 text-center">
-                                    <mat-radio-group [id] = "question.id" [formControlName]="question.id" class="radio-group">
-                                        <mat-radio-button [id] = "question.id + '' + answer.id" *ngFor="let answer of sort(question.answers)" class="radio-button"
+                                    <mat-radio-group [id]="question.id" [formControlName]="question.id"
+                                                     class="radio-group">
+                                        <mat-radio-button [id]="question.id + '' + answer.id"
+                                                          *ngFor="let answer of sort(question.answers)"
+                                                          class="radio-button"
                                                           style="display: flex;  align-items: center;"
                                                           [value]="answer" disabled="disabled">
                                             &nbsp;
@@ -91,8 +95,11 @@
                                     </mat-radio-group>
                                 </div>
                                 <div class="col-md-7 bg2">
-                                    <mat-radio-group [id] = "question.id + '.external'" [formControlName]="question.id + '.external'" class="radio-group">
-                                        <mat-radio-button [id] = "question.id + '' + answer.id + '.external'" *ngFor="let answer of sort(question.answers)" class="radio-button"
+                                    <mat-radio-group [id]="question.id + '.external'"
+                                                     [formControlName]="question.id + '.external'" class="radio-group">
+                                        <mat-radio-button [id]="question.id + '' + answer.id + '.external'"
+                                                          *ngFor="let answer of sort(question.answers)"
+                                                          class="radio-button"
                                                           [value]="answer">
                                             {{answer.name}}
                                         </mat-radio-button>
