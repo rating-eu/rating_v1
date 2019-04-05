@@ -23,6 +23,8 @@ import {Observable} from 'rxjs/Observable';
 import {HttpResponse} from '@angular/common/http';
 import {QuestionnaireStatusMgmCustomService} from '../../../../entities/questionnaire-status-mgm/questionnaire-status-mgm.custom.service';
 import {switchMap} from 'rxjs/operators';
+import {NgbModal, NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
+import {PartialSubmitDialogComponent} from '../partial-submit-dialog/partial-submit-dialog.component';
 
 @Component({
     selector: 'jhi-dynamic-form',
@@ -74,7 +76,8 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
                 private accountService: AccountService,
                 private userService: UserService,
                 private questionService: QuestionMgmService,
-                private threatAgentService: ThreatAgentMgmService) {
+                private threatAgentService: ThreatAgentMgmService,
+                private modalService: NgbModal) {
     }
 
     @Input()
@@ -245,6 +248,7 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
 
     private identifyThreatAgents() {
         this.loading = true;
+
         /**
          * Map representing the submitted form data.
          *
@@ -313,6 +317,37 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
         // Set the status of the Questionnaire
         questionnaireStatus.status = status;
 
+        switch (questionnaireStatus.status) {
+            case Status.EMPTY:
+            case Status.PENDING: {
+                console.log('Case EMPTY or PENDING...');
+
+                const modalRef: NgbModalRef = this.modalService.open(PartialSubmitDialogComponent as Component);
+
+                console.log('ModalRef opened...');
+
+                modalRef.result.then((value: boolean) => {
+                    console.log('ModalRef result: ' + value);
+
+                    if (value === true) {
+                        questionnaireStatus = this.continueIdentifyThreatAgents(questionnaireStatus, threatAgentsPercentageMap);
+                    } else {
+                        this.loading = false;
+                        return;
+                    }
+                });
+
+                break;
+            }
+            case Status.FULL: {
+                console.log('Case FULL...');
+                questionnaireStatus = this.continueIdentifyThreatAgents(questionnaireStatus, threatAgentsPercentageMap);
+                break;
+            }
+        }
+    }
+
+    private continueIdentifyThreatAgents(questionnaireStatus: QuestionnaireStatusMgm, threatAgentsPercentageMap: Map<string, Couple<ThreatAgentMgm, Fraction>>) {
         let questionnaireStatus$: Observable<HttpResponse<QuestionnaireStatusMgm>> = null;
 
         if (!this.cisoQuestionnaireStatus) {
@@ -364,6 +399,7 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
             // TODO Error management
             this.loading = false;
         });
+        return questionnaireStatus;
     }
 
     private evaluateWeakness() {
@@ -400,6 +436,36 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
         // Set the status of the Questionnaire
         questionnaireStatus.status = status;
 
+        switch (questionnaireStatus.status) {
+            case Status.EMPTY:
+            case Status.PENDING: {
+                console.log('Case EMPTY or PENDING...');
+
+                const modalRef: NgbModalRef = this.modalService.open(PartialSubmitDialogComponent as Component);
+
+                console.log('ModalRef opened...');
+
+                modalRef.result.then((value: boolean) => {
+                    console.log('ModalRef result: ' + value);
+
+                    if (value === true) {
+                        questionnaireStatus = this.continueEvaluateWeakness(questionnaireStatus);
+                    } else {
+                        this.loading = false;
+                        return;
+                    }
+                });
+                break;
+            }
+            case Status.FULL: {
+                console.log('Case FULL...');
+                questionnaireStatus = this.continueEvaluateWeakness(questionnaireStatus);
+                break;
+            }
+        }
+    }
+
+    private continueEvaluateWeakness(questionnaireStatus: any) {
         let questionnaireStatus$: Observable<HttpResponse<QuestionnaireStatusMgm>> = null;
 
         if (!this.cisoQuestionnaireStatus) {
@@ -436,6 +502,7 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
 
         // For now don't store the attackStrategies but recalculate them and their likelihood based on the stored
         // MyAnswers
+        return questionnaireStatus;
     }
 
     private externalAuditRefinement() {
