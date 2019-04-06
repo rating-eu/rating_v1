@@ -177,7 +177,7 @@ export class CascadeEffectsComponent implements OnInit {
             this.myAssetStatus.set(this.idMyAsset, 'IN EVALUATION');
             /*TODO check this*/
             // if (/*this.selectedDirectAsset.costs === undefined && */this.selectedDirectAsset.effects === undefined && this.selectedDirectAsset.myAsset === undefined) {
-            if (this.selectedDirectAsset.myAsset.costs === undefined && this.selectedDirectAsset.effects === undefined && this.selectedDirectAsset.myAsset === undefined) {
+            if (this.selectedDirectAsset.myAsset === undefined || (this.selectedDirectAsset.myAsset.costs === undefined && this.selectedDirectAsset.effects === undefined)) {
                 this.idaUtilsService.deleteDirectAsset(this.selectedDirectAsset).toPromise();
                 const index = _.findIndex(this.myDirects, {id: idDirect});
                 this.myDirects.splice(index, 1);
