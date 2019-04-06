@@ -53,7 +53,7 @@ export class IntangibleFinancialWidgetComponent implements OnInit {
       value: false,
       type: 'desc'
     };
-    this.idaUtilsService.getMySavedAssets(this.mySelf)
+    this.idaUtilsService.getMyAssets(this.mySelf)
       .toPromise()
       .then((mySavedAssets) => {
         if (mySavedAssets) {

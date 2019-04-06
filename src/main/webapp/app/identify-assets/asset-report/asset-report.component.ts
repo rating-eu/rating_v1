@@ -68,7 +68,7 @@ export class AssetReportComponent implements OnInit, OnDestroy {
             this.mySelf = this.mySelfAssessmentService.getSelfAssessment();
             this.registerChangeIdentifyAssets();
             if (this.account['authorities'].includes(MyRole.ROLE_CISO) && this.mySelf) {
-                this.idaUtilsService.getMySavedAssets(this.mySelf)
+                this.idaUtilsService.getMyAssets(this.mySelf)
                     .toPromise()
                     .then((mySavedAssets) => {
                         if (mySavedAssets) {

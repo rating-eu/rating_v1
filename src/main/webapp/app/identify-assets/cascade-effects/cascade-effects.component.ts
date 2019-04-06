@@ -20,7 +20,7 @@ import {Component, OnInit} from '@angular/core';
 export class CascadeEffectsComponent implements OnInit {
     private mySelf: SelfAssessmentMgm = {};
     public myAssets: MyAssetMgm[];
-    public selectedAsset: MyAssetMgm;
+    public selectedMyAsset: MyAssetMgm;
     public myAssetStatus: Map<number, string> = new Map<number, string>();
     public isDirect = false;
     public isMyAssetUpdated = false;
@@ -42,9 +42,9 @@ export class CascadeEffectsComponent implements OnInit {
 
     ngOnInit(): void {
         this.mySelf = this.mySelfAssessmentService.getSelfAssessment();
-        this.idaUtilsService.getMySavedAssets(this.mySelf).toPromise().then((mySavedAssets) => {
-            if (mySavedAssets) {
-                this.myAssets = mySavedAssets;
+        this.idaUtilsService.getMyAssets(this.mySelf).toPromise().then((myAssets: MyAssetMgm[]) => {
+            if (myAssets) {
+                this.myAssets = myAssets;
                 this.myAssets = _.orderBy(this.myAssets, ['asset.name'], ['asc']);
                 this.myAssets.forEach((myAsset) => {
                     this.myAssetStatus.set(myAsset.id, 'NOT COMPLETED');
@@ -64,16 +64,16 @@ export class CascadeEffectsComponent implements OnInit {
 
     public selectAsset(myAsset: MyAssetMgm) {
         if (myAsset) {
-            if (this.selectedAsset) {
-                if (this.selectedAsset.id === myAsset.id) {
-                    this.selectedAsset = null;
+            if (this.selectedMyAsset) {
+                if (this.selectedMyAsset.id === myAsset.id) {
+                    this.selectedMyAsset = null;
                 } else {
-                    this.selectedAsset = myAsset;
+                    this.selectedMyAsset = myAsset;
                 }
             } else {
-                this.selectedAsset = myAsset;
+                this.selectedMyAsset = myAsset;
             }
-            if (this.selectedAsset) {
+            if (this.selectedMyAsset) {
                 const index = _.findIndex(this.myDirects, (myDirect) => myDirect.myAsset.id === myAsset.id);
                 if (index !== -1) {
                     this.isDirect = true;

@@ -24,7 +24,7 @@
                     <ng-container *ngFor="let myAsset of myAssets">
                         <a href="javascript:void(0)" (click)="updateMyAsset(false);selectAsset(myAsset)"
                             class="list-group-item list-group-item-action"
-                            [ngClass]="{'active': selectedAsset && myAsset.id === selectedAsset.id}"
+                            [ngClass]="{'active': selectedMyAsset && myAsset.id === selectedMyAsset.id}"
                             ngbTooltip="{{myAsset.asset.description}}" placement="right">
                             <i *ngIf="myAssetStatus.get(myAsset.id) === 'COMPLETED'" class="fa fa-check fa-lg"
                                 aria-hidden="true" style="color: green"></i>
@@ -37,17 +37,17 @@
                 </div>
             </div>
             <div class="col-md-9">
-                <ng-container *ngIf="selectedAsset">
+                <ng-container *ngIf="selectedMyAsset">
                     <div class="row">
                         <div class="col-md-10">
-                            <h5>Considering your organization, the <b>{{selectedAsset.asset.name}}</b> asset can be
+                            <h5>Considering your organization, the <b>{{selectedMyAsset.asset.name}}</b> asset can be
                                 directly stolen/compromised/damaged during a cyber attack?</h5>
                         </div>
                         <div class="col-md-1">
                             <div class="chipsContainer">
                                 <div class="badge chips chips-name"
                                     [ngClass]="{'badge-light': !isDirect, 'badge-primary': isDirect}"
-                                    (click)="setDirectAsset(selectedAsset, true)">
+                                    (click)="setDirectAsset(selectedMyAsset, true)">
                                     YES
                                 </div>
                             </div>
@@ -56,7 +56,7 @@
                             <div class="chipsContainer">
                                 <div class="badge chips chips-name"
                                     [ngClass]="{'badge-light': isDirect, 'badge-primary': !isDirect}"
-                                    (click)="setDirectAsset(selectedAsset, false)">
+                                    (click)="setDirectAsset(selectedMyAsset, false)">
                                     NO
                                 </div>
                             </div>
@@ -127,7 +127,7 @@
                         </div>
                     </div>
                 </ng-container>
-                <ng-container *ngIf="!selectedAsset">
+                <ng-container *ngIf="!selectedMyAsset">
                     <div class="text-center" style="margin-top: 50px">
                         <p style="color: orange"><i class="fa fa-exclamation-triangle fa-4x" aria-hidden="true"></i></p>
                         <p style="color: grey">Please select one asset from the list at left of the screen!</p>
