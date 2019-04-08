@@ -324,15 +324,9 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
         switch (questionnaireStatus.status) {
             case Status.EMPTY:
             case Status.PENDING: {
-                console.log('Case EMPTY or PENDING...');
-
                 const modalRef: NgbModalRef = this.modalService.open(PartialSubmitDialogComponent as Component);
 
-                console.log('ModalRef opened...');
-
                 modalRef.result.then((value: boolean) => {
-                    console.log('ModalRef result: ' + value);
-
                     if (value === true) {
                         questionnaireStatus = this.continueIdentifyThreatAgents(questionnaireStatus, threatAgentsPercentageMap);
                     } else {
@@ -344,7 +338,6 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
                 break;
             }
             case Status.FULL: {
-                console.log('Case FULL...');
                 questionnaireStatus = this.continueIdentifyThreatAgents(questionnaireStatus, threatAgentsPercentageMap);
                 break;
             }
@@ -388,15 +381,9 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
         switch (questionnaireStatus.status) {
             case Status.EMPTY:
             case Status.PENDING: {
-                console.log('Case EMPTY or PENDING...');
-
                 const modalRef: NgbModalRef = this.modalService.open(PartialSubmitDialogComponent as Component);
 
-                console.log('ModalRef opened...');
-
                 modalRef.result.then((value: boolean) => {
-                    console.log('ModalRef result: ' + value);
-
                     if (value === true) {
                         questionnaireStatus = this.continueEvaluateWeakness(questionnaireStatus);
                     } else {
@@ -407,7 +394,6 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
                 break;
             }
             case Status.FULL: {
-                console.log('Case FULL...');
                 questionnaireStatus = this.continueEvaluateWeakness(questionnaireStatus);
                 break;
             }
@@ -452,15 +438,9 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
         switch (questionnaireStatus.status) {
             case Status.EMPTY:
             case Status.PENDING: {
-                console.log('Case EMPTY or PENDING...')
-
                 const modalRef: NgbModalRef = this.modalService.open(PartialSubmitDialogComponent as Component);
 
-                console.log('ModalRef opened...');
-
                 modalRef.result.then((value: boolean) => {
-                    console.log('ModalRef result: ' + value);
-
                     if (value === true) {
                         questionnaireStatus = this.continueExternalRefinement(questionnaireStatus);
                     } else {
@@ -471,7 +451,6 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
                 break;
             }
             case Status.FULL: {
-                console.log('Case FULL...');
                 questionnaireStatus = this.continueExternalRefinement(questionnaireStatus);
                 break;
             }
