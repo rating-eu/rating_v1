@@ -3,6 +3,8 @@ package eu.hermeneut.domain;
 import eu.hermeneut.domain.interfaces.WithYear;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.data.elasticsearch.annotations.Document;
 
 import javax.persistence.*;
@@ -41,6 +43,7 @@ public class GrowthRate implements Serializable, WithYear {
 
     @NotNull
     @ManyToOne(optional = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private SelfAssessment selfAssessment;
 
     public Long getId() {

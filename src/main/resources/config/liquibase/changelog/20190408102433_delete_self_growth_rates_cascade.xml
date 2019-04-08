@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <changeSet id="20190408102433-1" author="developer" runOnChange="true">
+        <preConditions onFail="MARK_RAN">
+            <foreignKeyConstraintExists
+                foreignKeyName="growth_rate_self_assessment_fk"
+            />
+        </preConditions>
+
+        <!--GrowthRates-SelfAssessment -->
+        <dropForeignKeyConstraint
+            baseTableName="growth_rate"
+            constraintName="growth_rate_self_assessment_fk"
+        />
+
+        <addForeignKeyConstraint baseColumnNames="self_assessment_id"
+                                 baseTableName="growth_rate"
+                                 constraintName="growth_rate_self_assessment_fk"
+                                 deferrable="false"
+                                 initiallyDeferred="false"
+                                 referencedColumnNames="id"
+                                 referencedTableName="self_assessment"
+                                 onDelete="CASCADE"
+        />
+    </changeSet>
+</databaseChangeLog>
