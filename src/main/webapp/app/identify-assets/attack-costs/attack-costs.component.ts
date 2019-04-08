@@ -45,7 +45,7 @@ export class AttackCostsComponent implements OnInit {
 
     ngOnInit(): void {
         this.mySelf = this.mySelfAssessmentService.getSelfAssessment();
-        this.idaUtilsService.getMySavedAssets(this.mySelf).toPromise().then((mySavedAssets) => {
+        this.idaUtilsService.getMyAssets(this.mySelf).toPromise().then((mySavedAssets) => {
             if (mySavedAssets) {
                 this.myAssets = mySavedAssets;
                 this.myAssets = _.orderBy(this.myAssets, ['asset.name'], ['asc']);

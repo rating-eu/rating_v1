@@ -97,7 +97,7 @@ export class AssetClusteringComponent implements OnInit, OnDestroy {
                     tempMap.set(category, this.categoryToAssets.get(category));
                 });
                 this.categoryToAssets = tempMap;
-                this.idaUtilsService.getMySavedAssets(this.mySelf).toPromise().then((mySavedAssets) => {
+                this.idaUtilsService.getMyAssets(this.mySelf).toPromise().then((mySavedAssets) => {
                     if (mySavedAssets) {
                         this.myAssets = mySavedAssets;
                     }

@@ -63,7 +63,7 @@ export class IdentifyAssetUtilService {
         }
     }
 
-    public getMySavedAssets(self: SelfAssessmentMgm): Observable<MyAssetMgm[]> {
+    public getMyAssets(self: SelfAssessmentMgm): Observable<MyAssetMgm[]> {
         const uri = this.assetServiceUrl + self.id.toString();
         return this.http.get<MyAssetMgm[]>(uri, { observe: 'response' })
             .map((res: HttpResponse<MyAssetMgm[]>) => {
