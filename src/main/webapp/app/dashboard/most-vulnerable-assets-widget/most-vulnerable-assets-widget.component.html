@@ -25,7 +25,8 @@
             <ng-container *ngIf="mdawTangibleEntities.length===0 && mdawIntangibleEntities.length === 0">
                 <div class="text-center" style="margin-top: 50px">
                     <p style="color: orange"><i class="fa fa-exclamation-triangle fa-4x" aria-hidden="true"></i></p>
-                    <p style="color: grey">In your organization are not present tangible or intangible asset, please return in
+                    <p style="color: grey">In your organization are not present tangible or intangible asset, please
+                        return in
                         <a href="javascript:void(0)" [routerLink]="['/identify-asset/asset-clustering']">asset-clustering</a>
                         section and add your assets!</p>
                 </div>
@@ -115,7 +116,7 @@
                                             <td *ngIf="item.mostDangerousAttackValue.vulnerability === undefined">-
                                             </td>
                                         </tr>
-                                        <ng-container *ngIf="selectedAsset">
+                                        <!--<ng-container *ngIf="selectedAsset">
                                             <tr *ngIf="selectedAsset.asset.id === item.asset.asset.id">
                                                 <td colspan="4">
                                                     <ng-container *ngIf="loadingAttacksTable">
@@ -162,7 +163,7 @@
                                                     </div>
                                                 </td>
                                             </tr>
-                                        </ng-container>
+                                        </ng-container>-->
                                     </ng-container>
                                     </tbody>
                                 </table>
@@ -260,7 +261,7 @@
                                             </td>
                                             <td *ngIf="item.mostDangerousAttackValue.vulnerability === undefined">-</td>
                                         </tr>
-                                        <ng-container *ngIf="selectedAsset">
+                                        <!--<ng-container *ngIf="selectedAsset">
                                             <tr *ngIf="selectedAsset.asset.id === item.asset.asset.id">
                                                 <td colspan="4">
                                                     <ng-container *ngIf="loadingAttacksTable">
@@ -319,7 +320,7 @@
                                                     </div>
                                                 </td>
                                             </tr>
-                                        </ng-container>
+                                        </ng-container>-->
                                     </ng-container>
                                     </tbody>
                                 </table>
