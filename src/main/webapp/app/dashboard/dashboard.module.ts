@@ -45,6 +45,7 @@ import {FinancialValueWidgetComponent} from './financial-value-widget/financial-
 import {CustomersWidgetComponent} from './customers-widget/customers-widget.component';
 import {RiskSquareWidgetComponent} from './risk-square-widget/risk-square-widget.component';
 import {MostVulnerableAssetsWidgetComponent} from './most-vulnerable-assets-widget/most-vulnerable-assets-widget.component';
+import {MostCriticalAttackStrategiesWidgetComponent} from './most-critical-attack-strategies-widget/most-critical-attack-strategies-widget.component';
 
 @NgModule({
     imports: [
@@ -76,7 +77,8 @@ import {MostVulnerableAssetsWidgetComponent} from './most-vulnerable-assets-widg
         ImpactWidgetComponent,
         FinancialValueWidgetComponent,
         CustomersWidgetComponent,
-        RiskSquareWidgetComponent
+        RiskSquareWidgetComponent,
+        MostCriticalAttackStrategiesWidgetComponent
     ],
     providers: [
         {
