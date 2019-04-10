@@ -12,5 +12,5 @@ import java.util.Set;
 public interface AssetRiskService {
     Set<AssetRisk> getAssetRisks(Long selfAssessmentID) throws NotFoundException;
 
-    Triad<Float> getLikelihoodVulnerabilityCritical(Map<Long, AugmentedAttackStrategy> augmentedAttackStrategyMap, Map<Long, Container> containers);
+    Triad<Float> getMaxLikelihoodVulnerabilityCriticality(Map<Long, AugmentedAttackStrategy> augmentedAttackStrategyMap, Map<Long, Container> containers);
 }

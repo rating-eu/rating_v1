@@ -103,7 +103,7 @@ public class AssetRiskServiceImpl implements AssetRiskService, MaxValues {
 
             if (containerMap != null && !containerMap.isEmpty()) {
                 //For each container
-                critical = getLikelihoodVulnerabilityCritical(augmentedAttackStrategyMap, containerMap).getC();
+                critical = getMaxLikelihoodVulnerabilityCriticality(augmentedAttackStrategyMap, containerMap).getC();
 
                 float risk = critical * impact;
                 risk = risk / MAX_RISK;
@@ -124,9 +124,9 @@ public class AssetRiskServiceImpl implements AssetRiskService, MaxValues {
         return assetRisks;
     }
 
-    public Triad<Float> getLikelihoodVulnerabilityCritical(Map<Long, AugmentedAttackStrategy> augmentedAttackStrategyMap, Map<Long, Container> containers) {
+    public Triad<Float> getMaxLikelihoodVulnerabilityCriticality(Map<Long, AugmentedAttackStrategy> augmentedAttackStrategyMap, Map<Long, Container> containers) {
         //(Likelihood, Vulnerability, Critical)
-        Triad<Float> likelihoodVulnerabilityCritical = new Triad<>(0F, 0F, 0F);
+        Triad<Float> likelihoodVulnerabilityCriticality = new Triad<>(0F, 0F, 0F);
 
         for (Container container : containers.values()) {
             List<AttackStrategy> attackStrategies = this.attackStrategyService.findAllByContainer(container.getId());
@@ -138,7 +138,7 @@ public class AssetRiskServiceImpl implements AssetRiskService, MaxValues {
                 if (augmentedAttackStrategy != null) {
                     float currentLikelihood = 0;
                     float currentVulnerability = 0;
-                    float currentCritical = 0;
+                    float currentCriticality = 0;
 
                     float refinedVulnerability = augmentedAttackStrategy.getRefinedVulnerability();
                     float refinedLikelihood = augmentedAttackStrategy.getRefinedLikelihood();
@@ -151,31 +151,31 @@ public class AssetRiskServiceImpl implements AssetRiskService, MaxValues {
                     if (refinedLikelihood > 0 && refinedVulnerability > 0) {
                         currentLikelihood = refinedLikelihood;
                         currentVulnerability = refinedVulnerability;
-                        currentCritical = refinedLikelihood * refinedVulnerability;
+                        currentCriticality = refinedLikelihood * refinedVulnerability;
                     } else if (contextualLikelihood > 0 && contextualVulnerability > 0) {
                         currentLikelihood = contextualLikelihood;
                         currentVulnerability = contextualVulnerability;
-                        currentCritical = contextualLikelihood * contextualVulnerability;
+                        currentCriticality = contextualLikelihood * contextualVulnerability;
                     } else if (initialLikelihood > 0) {
                         currentLikelihood = initialLikelihood;
                         currentVulnerability = initialLikelihood;
-                        currentCritical = initialLikelihood * initialLikelihood;
+                        currentCriticality = initialLikelihood * initialLikelihood;
                     }
 
-                    if (currentLikelihood > likelihoodVulnerabilityCritical.getA()
+                    if (currentLikelihood > likelihoodVulnerabilityCriticality.getA()
                         &&
-                        currentVulnerability > likelihoodVulnerabilityCritical.getB()
+                        currentVulnerability > likelihoodVulnerabilityCriticality.getB()
                         &&
-                        currentCritical > likelihoodVulnerabilityCritical.getC()) {
+                        currentCriticality > likelihoodVulnerabilityCriticality.getC()) {
 
-                        likelihoodVulnerabilityCritical.setA(currentLikelihood);
-                        likelihoodVulnerabilityCritical.setB(currentVulnerability);
-                        likelihoodVulnerabilityCritical.setC(currentCritical);
+                        likelihoodVulnerabilityCriticality.setA(currentLikelihood);
+                        likelihoodVulnerabilityCriticality.setB(currentVulnerability);
+                        likelihoodVulnerabilityCriticality.setC(currentCriticality);
                     }
                 }
             }
         }
 
-        return likelihoodVulnerabilityCritical;
+        return likelihoodVulnerabilityCriticality;
     }
 }

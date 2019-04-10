@@ -148,7 +148,7 @@ public class ResultServiceImpl implements ResultService {
 
                     List<MyAnswer> myAnswers = this.myAnswerService.findAllByQuestionnaireStatus(cisoQuestionnaireStatus.getId());
 
-                    this.attackStrategyCalculator.calculateContextualLikelihoods(myAnswers, questionsMap, answersMap, augmentedAttackStrategyMap);
+                    this.attackStrategyCalculator.calculateContextualVulnerabilityLikelihoodAndCriticalities(myAnswers, questionsMap, answersMap, augmentedAttackStrategyMap);
 
                     //#Output 2 ==> OVERALL CONTEXTUAL LIKELIHOOD
                     result.setContextualVulnerability(new HashMap<Long, Float>() {
@@ -176,7 +176,7 @@ public class ResultServiceImpl implements ResultService {
                     //Group the MyAnswers by AttackStrategy and find the likelihood for each of them.
                     Map<AugmentedAttackStrategy, Set<MyAnswer>> attackAnswersMap = new HashMap<>();
 
-                    this.attackStrategyCalculator.calculateRefinedLikelihoods(myAnswers, questionsMap, answersMap, augmentedAttackStrategyMap);
+                    this.attackStrategyCalculator.calculateRefinedVulnerabilityLikelihoodAndCriticalities(myAnswers, questionsMap, answersMap, augmentedAttackStrategyMap);
 
                     //#Output 3 ==> OVERALL REFINED LIKELIHOOD
                     result.setRefinedVulnerability(new HashMap<Long, Float>() {

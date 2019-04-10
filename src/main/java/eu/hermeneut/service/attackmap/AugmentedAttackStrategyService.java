@@ -7,7 +7,13 @@ import javax.validation.constraints.NotNull;
 import java.util.Map;
 
 public interface AugmentedAttackStrategyService {
+    /**
+     * Returns the MAP of Augmented AttackStrategies with their likelihoods and vulnerabilities.
+     * The key is the ID of the AttackStrategy, while the value is the Augmented AttackStrategy.
+     *
+     * @param selfAssessmentID The id of the SelfAssessment for which we want to calculate the Augmented AttackStrategies.
+     * @return The MAP of Augmented AttackStrategies with their likelihoods and vulnerabilities.
+     * @throws NotFoundException
+     */
     Map<Long/*AttackStrategy.ID*/, AugmentedAttackStrategy> getAugmentedAttackStrategyMap(@NotNull Long selfAssessmentID) throws NotFoundException;
-
-    //Map<Long/*AttackStrategy.ID*/, AugmentedAttackStrategy> weightAugmentedAttackStrategyMap(@NotNull Long selfAssessmentID, @NotNull Map<Long, AugmentedAttackStrategy> augmentedAttackStrategyMap) throws NotFoundException;
 }

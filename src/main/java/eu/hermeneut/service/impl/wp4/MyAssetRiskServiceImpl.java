@@ -122,7 +122,7 @@ public class MyAssetRiskServiceImpl implements MyAssetRiskService, MaxValues {
 
                 int riskInteger = Math.round(risk);
 
-                Triad<Float> likelihoodVulnerabilityCritical = this.assetRiskService.getLikelihoodVulnerabilityCritical(augmentedAttackStrategyMap, containerMap);
+                Triad<Float> likelihoodVulnerabilityCritical = this.assetRiskService.getMaxLikelihoodVulnerabilityCriticality(augmentedAttackStrategyMap, containerMap);
 
                 float likelihood = likelihoodVulnerabilityCritical.getA();
                 float vulnerability = likelihoodVulnerabilityCritical.getB();

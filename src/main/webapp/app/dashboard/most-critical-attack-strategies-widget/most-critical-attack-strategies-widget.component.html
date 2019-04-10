@@ -21,5 +21,42 @@
             </ul>
             <div class="clearfix"></div>
         </div>
+
+        <div class="table-responsive x_content" style="padding:0px !important;" [ngbCollapse]="isCollapsed">
+            <div *ngIf="!criticalAttackStrategies" class="text-center">
+                No data available, please complete the relative questionnaire!
+            </div>
+            <div *ngIf="criticalAttackStrategies" class="table-responsive table-hover-no-pointer">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th scope="col" class="text-center align-middle">Attack Strategy</th>
+                        <th scope="col" class="text-center align-middle">Target Assets</th>
+                        <th scope="col" class="text-center align-middle">Criticality</th>
+                        <th scope="col" class="text-center align-middle">Awareness Criticality</th>
+                        <th scope="col" class="text-center align-middle">SOC Criticality</th>
+                        <th scope="col" class="text-center align-middle">Alert</th>
+                    </tr>
+                    </thead>
+                    <tbody align="center">
+                    <ng-container
+                        *ngFor="let criticalAttackStrategy of criticalAttackStrategies | paginate: attackStrategiesPaginator">
+                        <tr>
+                            <td>{{criticalAttackStrategy.attackStrategy.name}}</td>
+                            <td>{{criticalAttackStrategy.targetAssets}}</td>
+                            <td>{{criticalAttackStrategy.criticality | number : '1.1-2'}}</td>
+                            <td>{{criticalAttackStrategy.awarenessCriticality | number : '1.1-2'}}</td>
+                            <td>{{criticalAttackStrategy.socCriticality | number : '1.1-2'}}</td>
+                            <td>---</td>
+                        </tr>
+                    </ng-container>
+                    </tbody>
+                </table>
+                <div class="text-center">
+                    <pagination-controls (pageChange)="onAttackStrategiesPageChange($event)"
+                                         [id]="attackStrategiesPaginator.id"></pagination-controls>
+                </div>
+            </div>
+        </div>
     </div>
 </ng-container>

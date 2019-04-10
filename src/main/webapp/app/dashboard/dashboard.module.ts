@@ -46,6 +46,7 @@ import {CustomersWidgetComponent} from './customers-widget/customers-widget.comp
 import {RiskSquareWidgetComponent} from './risk-square-widget/risk-square-widget.component';
 import {MostVulnerableAssetsWidgetComponent} from './most-vulnerable-assets-widget/most-vulnerable-assets-widget.component';
 import {MostCriticalAttackStrategiesWidgetComponent} from './most-critical-attack-strategies-widget/most-critical-attack-strategies-widget.component';
+import {CriticalAttackStrategyService} from './models/critical-attack-strategy.service';
 
 @NgModule({
     imports: [
@@ -125,7 +126,8 @@ import {MostCriticalAttackStrategiesWidgetComponent} from './most-critical-attac
         ResultsService,
         ImpactEvaluationService,
         PopUpService,
-        RiskManagementService
+        RiskManagementService,
+        CriticalAttackStrategyService
     ]
 })
 export class DashboardModule {

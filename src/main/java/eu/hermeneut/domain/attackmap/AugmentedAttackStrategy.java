@@ -7,13 +7,21 @@ public class AugmentedAttackStrategy extends AttackStrategy implements Cloneable
 
     private float initialLikelihood;
 
+    private float initialVulnerability;
+
+    private float initialCriticality;
+
     private float contextualVulnerability;
 
     private float contextualLikelihood;
 
+    private float contextualCriticality;
+
     private float refinedVulnerability;
 
     private float refinedLikelihood;
+
+    private float refinedCriticality;
 
     public AugmentedAttackStrategy() {
     }
@@ -70,6 +78,22 @@ public class AugmentedAttackStrategy extends AttackStrategy implements Cloneable
         this.initialLikelihood = initialLikelihood;
     }
 
+    public float getInitialVulnerability() {
+        return initialVulnerability;
+    }
+
+    public void setInitialVulnerability(float initialVulnerability) {
+        this.initialVulnerability = initialVulnerability;
+    }
+
+    public float getInitialCriticality() {
+        return initialCriticality;
+    }
+
+    public void setInitialCriticality(float initialCriticality) {
+        this.initialCriticality = initialCriticality;
+    }
+
     public float getContextualVulnerability() {
         if (!isEnabled()) {
             return 0;
@@ -92,6 +116,14 @@ public class AugmentedAttackStrategy extends AttackStrategy implements Cloneable
         this.contextualLikelihood = contextualLikelihood;
     }
 
+    public float getContextualCriticality() {
+        return contextualCriticality;
+    }
+
+    public void setContextualCriticality(float contextualCriticality) {
+        this.contextualCriticality = contextualCriticality;
+    }
+
     public float getRefinedVulnerability() {
         if (!isEnabled()) {
             return 0;
@@ -108,6 +140,14 @@ public class AugmentedAttackStrategy extends AttackStrategy implements Cloneable
             return 0;
         }
         return refinedLikelihood;
+    }
+
+    public float getRefinedCriticality() {
+        return refinedCriticality;
+    }
+
+    public void setRefinedCriticality(float refinedCriticality) {
+        this.refinedCriticality = refinedCriticality;
     }
 
     @Override

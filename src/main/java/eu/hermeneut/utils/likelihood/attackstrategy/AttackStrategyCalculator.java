@@ -49,7 +49,7 @@ public class AttackStrategyCalculator {
         return this.initialLikelihoodMatrix[frequency.getValue() - 1][resourceLevel.getValue() - 1];
     }
 
-    public void calculateRefinedLikelihoods(List<MyAnswer> myAnswers, Map<Long/*QuestionID*/, Question> questionsMap, Map<Long/*AnswerID*/, Answer> answersMap, Map<Long/*AttackStrategy.ID*/, AugmentedAttackStrategy> augmentedAttackStrategyMap) {
+    public void calculateRefinedVulnerabilityLikelihoodAndCriticalities(List<MyAnswer> myAnswers, Map<Long/*QuestionID*/, Question> questionsMap, Map<Long/*AnswerID*/, Answer> answersMap, Map<Long/*AttackStrategy.ID*/, AugmentedAttackStrategy> augmentedAttackStrategyMap) {
         //Group the MyAnswers by AttackStrategy and find the likelihood for each of them.
         Map<Long/*AttackStrategyID*/, Set<MyAnswer>> attackAnswersMap = new HashMap<>();
 
@@ -73,6 +73,8 @@ public class AttackStrategyCalculator {
                 }
 
                 augmentedAttackStrategy.setRefinedLikelihood(Precision.round((augmentedAttackStrategy.getInitialLikelihood() + augmentedAttackStrategy.getRefinedVulnerability()) / 2, 2));
+
+                augmentedAttackStrategy.setRefinedCriticality(augmentedAttackStrategy.getRefinedLikelihood() * augmentedAttackStrategy.getRefinedVulnerability());
             }
         }
     }
@@ -110,7 +112,7 @@ public class AttackStrategyCalculator {
         }
     }
 
-    public void calculateContextualLikelihoods(List<MyAnswer> myAnswers, Map<Long/*QuestionID*/, Question> questionsMap, Map<Long/*AnswerID*/, Answer> answersMap, Map<Long/*AttackStrategy.ID*/, AugmentedAttackStrategy> augmentedAttackStrategyMap) {
+    public void calculateContextualVulnerabilityLikelihoodAndCriticalities(List<MyAnswer> myAnswers, Map<Long/*QuestionID*/, Question> questionsMap, Map<Long/*AnswerID*/, Answer> answersMap, Map<Long/*AttackStrategy.ID*/, AugmentedAttackStrategy> augmentedAttackStrategyMap) {
         //Group the MyAnswers by AttackStrategy and find the likelihood for each of them.
         Map</*AttackStrategyID*/Long, Set<MyAnswer>> attackAnswersMap = new HashMap<>();
 
@@ -133,6 +135,8 @@ public class AttackStrategyCalculator {
                 }
 
                 augmentedAttackStrategy.setContextualLikelihood(Precision.round((augmentedAttackStrategy.getInitialLikelihood() + augmentedAttackStrategy.getContextualVulnerability()) / 2, 2));
+
+                augmentedAttackStrategy.setContextualCriticality(augmentedAttackStrategy.getContextualLikelihood() * augmentedAttackStrategy.getContextualVulnerability());
             } else {
                 //TODO Same as InitialLikelihood ???
             }
