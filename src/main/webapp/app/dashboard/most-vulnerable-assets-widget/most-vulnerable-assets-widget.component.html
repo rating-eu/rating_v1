@@ -101,9 +101,7 @@
                                         *ngFor="let item of mdawTangibleEntities | paginate: tangibleAssetsPaginator">
                                         <tr>
                                             <td>{{item.asset.asset.assetcategory.name}}</td>
-                                            <th scope="row"><a href="javascript:void(0)"
-                                                               (click)="selectAsset(item.asset)">{{item.asset.asset.name}}</a>
-                                            </th>
+                                            <td scope="row">{{item.asset.asset.name}}</td>
                                             <td placement="top" container="body"
                                                 ngbTooltip="Click on Asset name for more details">
                                                 {{item.mostDangerousAttack}}
@@ -247,9 +245,7 @@
                                         *ngFor="let item of mdawIntangibleEntities | paginate: intangibleAssetsPaginator">
                                         <tr>
                                             <td>{{item.asset.asset.assetcategory.name}}</td>
-                                            <th scope="row"><a href="javascript:void(0)"
-                                                               (click)="selectAsset(item.asset)">{{item.asset.asset.name}}</a>
-                                            </th>
+                                            <td scope="row">{{item.asset.asset.name}}</td>
                                             <td placement="top" container="body"
                                                 ngbTooltip="Click on Asset name for more details">
                                                 {{item.mostDangerousAttack}}
