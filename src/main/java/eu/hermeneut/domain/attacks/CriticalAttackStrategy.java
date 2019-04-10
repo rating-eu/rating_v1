@@ -29,14 +29,19 @@ public class CriticalAttackStrategy {
     private Float criticality;
 
     /**
+     * The criticality percentage associated with the AttackStrategy.
+     */
+    private Float criticalityPercentage;
+
+    /**
      * The awareness criticality associated with the AttackStrategy.
      */
-    private Float awarenessCriticality;
+    private Float awarenessCriticalityPercentage;
 
     /**
      * The SoC criticality associated with the AttackStrategy.
      */
-    private Float socCriticality;
+    private Float socCriticalityPercentage;
 
     public CriticalAttackStrategy(AttackStrategy attackStrategy) {
         this.attackStrategy = attackStrategy;
@@ -78,23 +83,31 @@ public class CriticalAttackStrategy {
         return criticality;
     }
 
+    public Float getCriticalityPercentage() {
+        return criticalityPercentage;
+    }
+
+    public void setCriticalityPercentage(Float criticalityPercentage) {
+        this.criticalityPercentage = criticalityPercentage;
+    }
+
     public void setCriticality(Float criticality) {
         this.criticality = criticality;
     }
 
-    public Float getAwarenessCriticality() {
-        return awarenessCriticality;
+    public Float getAwarenessCriticalityPercentage() {
+        return awarenessCriticalityPercentage;
     }
 
-    public void setAwarenessCriticality(Float awarenessCriticality) {
-        this.awarenessCriticality = awarenessCriticality;
+    public void setAwarenessCriticalityPercentage(Float awarenessCriticalityPercentage) {
+        this.awarenessCriticalityPercentage = awarenessCriticalityPercentage;
     }
 
-    public Float getSocCriticality() {
-        return socCriticality;
+    public Float getSocCriticalityPercentage() {
+        return socCriticalityPercentage;
     }
 
-    public void setSocCriticality(Float socCriticality) {
-        this.socCriticality = socCriticality;
+    public void setSocCriticalityPercentage(Float socCriticalityPercentage) {
+        this.socCriticalityPercentage = socCriticalityPercentage;
     }
 }

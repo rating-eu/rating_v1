@@ -1,5 +1,6 @@
 package eu.hermeneut.service.impl.attacks;
 
+import eu.hermeneut.constant.MaxValues;
 import eu.hermeneut.domain.*;
 import eu.hermeneut.domain.attackmap.AugmentedAttackStrategy;
 import eu.hermeneut.domain.attacks.CriticalAttackStrategy;
@@ -17,7 +18,7 @@ import java.util.stream.Collectors;
 
 @Service
 @Transactional
-public class CriticalAttackStrategyServiceImpl implements CriticalAttackStrategyService {
+public class CriticalAttackStrategyServiceImpl implements CriticalAttackStrategyService, MaxValues {
     @Autowired
     private SelfAssessmentService selfAssessmentService;
 
@@ -118,6 +119,8 @@ public class CriticalAttackStrategyServiceImpl implements CriticalAttackStrategy
             criticalAttackStrategy.setLikelihood(likelihood);
             criticalAttackStrategy.setVulnerability(vulnerability);
             criticalAttackStrategy.setCriticality(criticality);
+
+            criticalAttackStrategy.setCriticalityPercentage(criticality / MAX_CRITICALITY * 100);
         }
     }
 }

@@ -44,9 +44,12 @@
                         <tr>
                             <td>{{criticalAttackStrategy.attackStrategy.name}}</td>
                             <td>{{criticalAttackStrategy.targetAssets}}</td>
-                            <td>{{criticalAttackStrategy.criticality | number : '1.1-2'}}</td>
-                            <td>{{criticalAttackStrategy.awarenessCriticality | number : '1.1-2'}}</td>
-                            <td>{{criticalAttackStrategy.socCriticality | number : '1.1-2'}}</td>
+                            <td *ngIf="criticalAttackStrategy.criticalityPercentage">{{criticalAttackStrategy.criticalityPercentage / 100 | number : '1.0-2' | percent}}</td>
+                            <td *ngIf="!criticalAttackStrategy.criticalityPercentage">-</td>
+                            <td *ngIf="criticalAttackStrategy.awarenessCriticalityPercentage">{{criticalAttackStrategy.awarenessCriticalityPercentage / 100 | number : '1.0-2' | percent}}</td>
+                            <td *ngIf="!criticalAttackStrategy.awarenessCriticalityPercentage">-</td>
+                            <td *ngIf="criticalAttackStrategy.socCriticalityPercentage">{{criticalAttackStrategy.socCriticalityPercentage / 100 | number : '1.0-2' | percent}}</td>
+                            <td *ngIf="!criticalAttackStrategy.socCriticalityPercentage">-</td>
                             <td>---</td>
                         </tr>
                     </ng-container>
