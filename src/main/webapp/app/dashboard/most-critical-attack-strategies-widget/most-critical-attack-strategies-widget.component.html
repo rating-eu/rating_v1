@@ -10,15 +10,6 @@
                 </a>
                 <small>based on 0 to 5 scale</small>
             </h2>
-            <ul class="nav navbar-right panel_toolbox">
-                <li style="width: 24px; cursor: default"></li>
-                <li style="width: 24px; cursor: default"></li>
-                <li>
-                    <a [routerLink]="['/results']">
-                        <i class="fa fa-link fa-lg" aria-hidden="true"></i>
-                    </a>
-                </li>
-            </ul>
             <div class="clearfix"></div>
         </div>
 
@@ -27,15 +18,76 @@
                 No data available, please complete the relative questionnaire!
             </div>
             <div *ngIf="criticalAttackStrategies" class="table-responsive table-hover-no-pointer">
+                <!--TODO Sort this-->
                 <table class="table table-striped">
                     <thead>
                     <tr>
-                        <th scope="col" class="text-center align-middle">Attack Strategy</th>
-                        <th scope="col" class="text-center align-middle">Target Assets</th>
-                        <th scope="col" class="text-center align-middle">Criticality</th>
-                        <th scope="col" class="text-center align-middle">Awareness Criticality</th>
-                        <th scope="col" class="text-center align-middle">SOC Criticality</th>
-                        <th scope="col" class="text-center align-middle">Alert</th>
+                        <th scope="col" class="text-center align-middle">Attack Strategy
+                            <i *ngIf="!sortingStatusMap.has(casFieldEnum.ATTACK_STRATEGY) || sortingStatusMap.get(casFieldEnum.ATTACK_STRATEGY) === 0"
+                               (click)=" orderTableBy(casFieldEnum.ATTACK_STRATEGY, true)"
+                               class="fa fa-sort" aria-hidden="true"></i>
+                            <i *ngIf="sortingStatusMap.get(casFieldEnum.ATTACK_STRATEGY) === -1"
+                               (click)=" orderTableBy(casFieldEnum.ATTACK_STRATEGY, false)"
+                               class="fa fa-chevron-down" aria-hidden="true"></i>
+                            <i *ngIf="sortingStatusMap.get(casFieldEnum.ATTACK_STRATEGY) === 1"
+                               (click)=" orderTableBy(casFieldEnum.ATTACK_STRATEGY, true)"
+                               class="fa fa-chevron-up" aria-hidden="true"></i>
+                        </th>
+                        <th scope="col" class="text-center align-middle">Target Assets
+                            <i *ngIf="!sortingStatusMap.has(casFieldEnum.TARGET_ASSETS) || sortingStatusMap.get(casFieldEnum.TARGET_ASSETS) === 0"
+                               (click)=" orderTableBy(casFieldEnum.TARGET_ASSETS, true)"
+                               class="fa fa-sort" aria-hidden="true"></i>
+                            <i *ngIf="sortingStatusMap.get(casFieldEnum.TARGET_ASSETS) === -1"
+                               (click)=" orderTableBy(casFieldEnum.TARGET_ASSETS, false)"
+                               class="fa fa-chevron-down" aria-hidden="true"></i>
+                            <i *ngIf="sortingStatusMap.get(casFieldEnum.TARGET_ASSETS) === 1"
+                               (click)=" orderTableBy(casFieldEnum.TARGET_ASSETS, true)"
+                               class="fa fa-chevron-up" aria-hidden="true"></i>
+                        </th>
+                        <th scope="col" class="text-center align-middle">Criticality
+                            <i *ngIf="!sortingStatusMap.has(casFieldEnum.CRITICALITY) || sortingStatusMap.get(casFieldEnum.CRITICALITY) === 0"
+                               (click)=" orderTableBy(casFieldEnum.CRITICALITY, true)"
+                               class="fa fa-sort" aria-hidden="true"></i>
+                            <i *ngIf="sortingStatusMap.get(casFieldEnum.CRITICALITY) === -1"
+                               (click)=" orderTableBy(casFieldEnum.CRITICALITY, false)"
+                               class="fa fa-chevron-down" aria-hidden="true"></i>
+                            <i *ngIf="sortingStatusMap.get(casFieldEnum.CRITICALITY) === 1"
+                               (click)=" orderTableBy(casFieldEnum.CRITICALITY, true)"
+                               class="fa fa-chevron-up" aria-hidden="true"></i>
+                        </th>
+                        <th scope="col" class="text-center align-middle">Awareness Criticality
+                            <i *ngIf="!sortingStatusMap.has(casFieldEnum.AWARENESS) || sortingStatusMap.get(casFieldEnum.AWARENESS) === 0"
+                               (click)=" orderTableBy(casFieldEnum.AWARENESS, true)"
+                               class="fa fa-sort" aria-hidden="true"></i>
+                            <i *ngIf="sortingStatusMap.get(casFieldEnum.AWARENESS) === -1"
+                               (click)=" orderTableBy(casFieldEnum.AWARENESS, false)"
+                               class="fa fa-chevron-down" aria-hidden="true"></i>
+                            <i *ngIf="sortingStatusMap.get(casFieldEnum.AWARENESS) === 1"
+                               (click)=" orderTableBy(casFieldEnum.AWARENESS, true)"
+                               class="fa fa-chevron-up" aria-hidden="true"></i>
+                        </th>
+                        <th scope="col" class="text-center align-middle">SOC Criticality
+                            <i *ngIf="!sortingStatusMap.has(casFieldEnum.SOC) || sortingStatusMap.get(casFieldEnum.SOC) === 0"
+                               (click)=" orderTableBy(casFieldEnum.SOC, true)"
+                               class="fa fa-sort" aria-hidden="true"></i>
+                            <i *ngIf="sortingStatusMap.get(casFieldEnum.SOC) === -1"
+                               (click)=" orderTableBy(casFieldEnum.SOC, false)"
+                               class="fa fa-chevron-down" aria-hidden="true"></i>
+                            <i *ngIf="sortingStatusMap.get(casFieldEnum.SOC) === 1"
+                               (click)=" orderTableBy(casFieldEnum.SOC, true)"
+                               class="fa fa-chevron-up" aria-hidden="true"></i>
+                        </th>
+                        <th scope="col" class="text-center align-middle">Alert
+                            <i *ngIf="!sortingStatusMap.has(casFieldEnum.ALERT) || sortingStatusMap.get(casFieldEnum.ALERT) === 0"
+                               (click)=" orderTableBy(casFieldEnum.ALERT, true)"
+                               class="fa fa-sort" aria-hidden="true"></i>
+                            <i *ngIf="sortingStatusMap.get(casFieldEnum.ALERT) === -1"
+                               (click)=" orderTableBy(casFieldEnum.ALERT, false)"
+                               class="fa fa-chevron-down" aria-hidden="true"></i>
+                            <i *ngIf="sortingStatusMap.get(casFieldEnum.ALERT) === 1"
+                               (click)=" orderTableBy(casFieldEnum.ALERT, true)"
+                               class="fa fa-chevron-up" aria-hidden="true"></i>
+                        </th>
                     </tr>
                     </thead>
                     <tbody align="center">

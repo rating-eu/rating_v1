@@ -1,8 +1,8 @@
-import {Injectable} from "@angular/core";
-import {SERVER_API_URL} from "../../app.constants";
-import {HttpClient, HttpResponse} from "@angular/common/http";
-import {Observable} from "rxjs";
-import {CriticalAttackStrategy} from "./critical-attack-strategy.model";
+import {Injectable} from '@angular/core';
+import {SERVER_API_URL} from '../../app.constants';
+import {HttpClient, HttpResponse} from '@angular/common/http';
+import {Observable} from 'rxjs';
+import {CriticalAttackStrategy} from './critical-attack-strategy.model';
 
 @Injectable()
 export class CriticalAttackStrategyService {
@@ -18,6 +18,6 @@ export class CriticalAttackStrategyService {
         return this.http.get<CriticalAttackStrategy[]>(
             this.criticalAttackStrategiesURL
                 .replace(this.selfAssessmentIDPlaceholder, String(selfAssessmentID))
-        )
+        );
     }
 }
