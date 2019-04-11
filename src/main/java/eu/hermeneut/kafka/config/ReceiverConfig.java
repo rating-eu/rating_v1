@@ -1,6 +1,7 @@
 package eu.hermeneut.kafka.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import eu.hermeneut.constant.KafkaListenerFactories;
 import eu.hermeneut.domain.compact.input.RiskProfile;
 import eu.hermeneut.domain.compact.output.CriticalityNotification;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
@@ -24,7 +25,7 @@ import java.util.Map;
 @Profile("kafka")
 @Configuration
 @EnableKafka
-public class ReceiverConfig {
+public class ReceiverConfig implements KafkaListenerFactories {
     @Value("${spring.kafka.consumer.bootstrap-servers}")
     private String bootstrapServers;
 
@@ -63,7 +64,7 @@ public class ReceiverConfig {
         return newConsumerFactory(RiskProfile.class);
     }
 
-    @Bean(name = "RiskProfile")
+    @Bean(name = RISK_PROFILE)
     public KafkaListenerContainerFactory<ConcurrentMessageListenerContainer<String, RiskProfile>> riskProfileKafkaListenerContainerFactory() {
         ConcurrentKafkaListenerContainerFactory<String, RiskProfile> factory = new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(riskProfileConsumerFactory());
@@ -77,7 +78,7 @@ public class ReceiverConfig {
         return newConsumerFactory(CriticalityNotification.class);
     }
 
-    @Bean(name = "CriticalityNotification")
+    @Bean(name = CRITICALITY_NOTIFICATION)
     public KafkaListenerContainerFactory<ConcurrentMessageListenerContainer<String, CriticalityNotification>> criticalityNotificationKafkaListenerContainerFactory() {
         ConcurrentKafkaListenerContainerFactory<String, CriticalityNotification> factory = new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(criticalityNotificationConsumerFactory());
