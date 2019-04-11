@@ -1,6 +1,6 @@
 package eu.hermeneut.service.compact;
 
-import eu.hermeneut.domain.compact.AttackStrategyRisk;
+import eu.hermeneut.domain.compact.input.AttackStrategyRisk;
 import eu.hermeneut.exceptions.NotFoundException;
 
 import java.util.Set;

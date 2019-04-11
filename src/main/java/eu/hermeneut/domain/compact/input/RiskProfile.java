@@ -1,6 +1,5 @@
-package eu.hermeneut.domain.compact;
+package eu.hermeneut.domain.compact.input;
 
-import eu.hermeneut.domain.CompanyProfile;
 import eu.hermeneut.domain.result.Result;
 
 import javax.validation.constraints.Max;
@@ -12,6 +11,8 @@ public class RiskProfile implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private Long selfAssessmentID;
+
+    private String selfAssessmentName;
 
     private Long companyID;
 
@@ -51,6 +52,14 @@ public class RiskProfile implements Serializable {
 
     public Long getSelfAssessmentID() {
         return selfAssessmentID;
+    }
+
+    public String getSelfAssessmentName() {
+        return selfAssessmentName;
+    }
+
+    public void setSelfAssessmentName(String selfAssessmentName) {
+        this.selfAssessmentName = selfAssessmentName;
     }
 
     public static long getSerialVersionUID() {

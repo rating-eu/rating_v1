@@ -3,7 +3,7 @@ package eu.hermeneut.service.impl.wp4;
 import eu.hermeneut.constant.MaxValues;
 import eu.hermeneut.domain.*;
 import eu.hermeneut.domain.attackmap.AugmentedAttackStrategy;
-import eu.hermeneut.domain.compact.AssetRisk;
+import eu.hermeneut.domain.compact.input.AssetRisk;
 import eu.hermeneut.domain.wp4.MyAssetRisk;
 import eu.hermeneut.exceptions.NotFoundException;
 import eu.hermeneut.service.AssetService;

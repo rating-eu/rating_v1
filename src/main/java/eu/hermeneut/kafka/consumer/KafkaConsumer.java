@@ -1,6 +1,6 @@
 package eu.hermeneut.kafka.consumer;
 
-import eu.hermeneut.domain.compact.RiskProfile;
+import eu.hermeneut.domain.compact.input.RiskProfile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Profile;

@@ -2,9 +2,9 @@ package eu.hermeneut.service.impl.compact;
 
 import eu.hermeneut.domain.CompanyProfile;
 import eu.hermeneut.domain.SelfAssessment;
-import eu.hermeneut.domain.compact.AssetRisk;
-import eu.hermeneut.domain.compact.AttackStrategyRisk;
-import eu.hermeneut.domain.compact.RiskProfile;
+import eu.hermeneut.domain.compact.input.AssetRisk;
+import eu.hermeneut.domain.compact.input.AttackStrategyRisk;
+import eu.hermeneut.domain.compact.input.RiskProfile;
 import eu.hermeneut.domain.result.Result;
 import eu.hermeneut.exceptions.NotFoundException;
 import eu.hermeneut.service.SelfAssessmentService;
@@ -46,6 +46,8 @@ public class RiskProfileServiceImpl implements RiskProfileService {
         RiskProfile riskProfile = new RiskProfile();
 
         riskProfile.setSelfAssessmentID(selfAssessmentID);
+
+        riskProfile.setSelfAssessmentName(selfAssessment.getName());
 
         CompanyProfile companyProfile = selfAssessment.getCompanyProfile();
 

@@ -1,23 +1,26 @@
-package eu.hermeneut.domain.compact;
+package eu.hermeneut.domain.compact.input;
 
 import eu.hermeneut.constant.MaxValues;
-import eu.hermeneut.domain.enumeration.Frequency;
-import eu.hermeneut.domain.enumeration.ResourceLevel;
-import eu.hermeneut.domain.enumeration.SkillLevel;
+import eu.hermeneut.domain.Asset;
+import eu.hermeneut.domain.AssetCategory;
 import org.apache.commons.math3.util.Precision;
 
-public class AttackStrategyRisk implements MaxValues {
+import java.io.Serializable;
+
+public class AssetRisk implements Serializable, MaxValues {
+    private static final long serialVersionUID = 1L;
 
     private Long id;
+
     private String name;
+
     private String description;
-    private SkillLevel skill;
-    private Frequency frequency;
-    private ResourceLevel resources;
+
+    private AssetCategory assetCategory;
 
     /**
-     * Initial, Refined or Contextual likelihood associated to the AttackStrategy.
-     * The rightmost is preferred if available.
+     * The risk value that the asset could cause
+     * to the company if under attack.
      * This field represents a percentage value,
      * hence it assumes values between 0 and 1.
      */
@@ -48,28 +51,12 @@ public class AttackStrategyRisk implements MaxValues {
         this.description = description;
     }
 
-    public SkillLevel getSkill() {
-        return skill;
+    public AssetCategory getAssetCategory() {
+        return assetCategory;
     }
 
-    public void setSkill(SkillLevel skill) {
-        this.skill = skill;
-    }
-
-    public Frequency getFrequency() {
-        return frequency;
-    }
-
-    public void setFrequency(Frequency frequency) {
-        this.frequency = frequency;
-    }
-
-    public ResourceLevel getResources() {
-        return resources;
-    }
-
-    public void setResources(ResourceLevel resources) {
-        this.resources = resources;
+    public void setAssetCategory(AssetCategory assetCategory) {
+        this.assetCategory = assetCategory;
     }
 
     public Float getRisk() {

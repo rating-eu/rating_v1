@@ -2,7 +2,7 @@ package eu.hermeneut.service.compact;
 
 import eu.hermeneut.domain.Container;
 import eu.hermeneut.domain.attackmap.AugmentedAttackStrategy;
-import eu.hermeneut.domain.compact.AssetRisk;
+import eu.hermeneut.domain.compact.input.AssetRisk;
 import eu.hermeneut.exceptions.NotFoundException;
 import eu.hermeneut.utils.tuple.Triad;
 

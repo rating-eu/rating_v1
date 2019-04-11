@@ -1,7 +1,7 @@
 package eu.hermeneut.kafka.service.impl;
 
 import eu.hermeneut.domain.SelfAssessment;
-import eu.hermeneut.domain.compact.RiskProfile;
+import eu.hermeneut.domain.compact.input.RiskProfile;
 import eu.hermeneut.exceptions.NotFoundException;
 import eu.hermeneut.exceptions.NullInputException;
 import eu.hermeneut.kafka.config.KafkaTopic;

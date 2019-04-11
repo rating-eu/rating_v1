@@ -2,7 +2,7 @@ package eu.hermeneut.service.impl.compact;
 
 import eu.hermeneut.constant.MaxValues;
 import eu.hermeneut.domain.attackmap.AugmentedAttackStrategy;
-import eu.hermeneut.domain.compact.AttackStrategyRisk;
+import eu.hermeneut.domain.compact.input.AttackStrategyRisk;
 import eu.hermeneut.exceptions.NotFoundException;
 import eu.hermeneut.service.attackmap.AugmentedAttackStrategyService;
 import eu.hermeneut.service.compact.AttackStrategyRiskService;

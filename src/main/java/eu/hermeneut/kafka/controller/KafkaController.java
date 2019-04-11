@@ -1,6 +1,6 @@
 package eu.hermeneut.kafka.controller;
 
-import eu.hermeneut.domain.compact.RiskProfile;
+import eu.hermeneut.domain.compact.input.RiskProfile;
 import eu.hermeneut.exceptions.NotFoundException;
 import eu.hermeneut.kafka.producer.KafkaProducer;
 import eu.hermeneut.service.compact.RiskProfileService;

@@ -1,7 +1,7 @@
 package eu.hermeneut.kafka.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import eu.hermeneut.domain.compact.RiskProfile;
+import eu.hermeneut.domain.compact.input.RiskProfile;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.springframework.beans.factory.annotation.Autowired;
