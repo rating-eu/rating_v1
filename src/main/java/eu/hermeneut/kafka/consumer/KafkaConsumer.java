@@ -50,8 +50,10 @@ public class KafkaConsumer implements KafkaListenerFactories {
 
         float criticalityPercentage = criticalityNotification.getCriticality();
 
-        if (companyProfile != null && attackStrategy != null && type != null && criticalityPercentage >= 0) {
-            Criticality criticality = this.criticalityService.findOneByCompanyProfileAttackStrategyAndCriticalityType(companyID, attackID, type);
+        if (companyProfile != null && attackStrategy != null && type != null && criticalityPercentage >= 0
+            && criticalityPercentage <= 1) {
+            Criticality criticality = this.criticalityService
+                .findOneByCompanyProfileAttackStrategyAndCriticalityType(companyID, attackID, type);
 
             if (criticality != null) {
                 this.criticalityService.delete(criticality.getId());
