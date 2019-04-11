@@ -4,7 +4,9 @@ import eu.hermeneut.constant.MaxValues;
 import eu.hermeneut.domain.*;
 import eu.hermeneut.domain.attackmap.AugmentedAttackStrategy;
 import eu.hermeneut.domain.attacks.CriticalAttackStrategy;
+import eu.hermeneut.domain.compact.output.CriticalityType;
 import eu.hermeneut.exceptions.NotFoundException;
+import eu.hermeneut.service.CriticalityService;
 import eu.hermeneut.service.MyAssetService;
 import eu.hermeneut.service.SelfAssessmentService;
 import eu.hermeneut.service.attackmap.AugmentedAttackStrategyService;
@@ -27,6 +29,9 @@ public class CriticalAttackStrategyServiceImpl implements CriticalAttackStrategy
 
     @Autowired
     private AugmentedAttackStrategyService augmentedAttackStrategyService;
+
+    @Autowired
+    private CriticalityService criticalityService;
 
     @Override
     public List<CriticalAttackStrategy> getCriticalAttackStrategies(Long selfAssessmentID) throws NotFoundException {
@@ -107,6 +112,29 @@ public class CriticalAttackStrategyServiceImpl implements CriticalAttackStrategy
 
                 criticalAttackStrategy.setTargetAssets(targetAssetsMap.size());
 
+                // Set criticalities from Sensors
+                Criticality awarenessCriticality = this.criticalityService
+                    .findOneByCompanyProfileAttackStrategyAndCriticalityType(
+                        selfAssessment.getCompanyProfile().getId(),
+                        augmentedAttackStrategy.getId(),
+                        CriticalityType.AWARENESS
+                    );
+
+                if (awarenessCriticality != null) {
+                    criticalAttackStrategy.setAwarenessCriticalityPercentage(awarenessCriticality.getCriticality());
+                }
+
+                Criticality socCriticality = this.criticalityService
+                    .findOneByCompanyProfileAttackStrategyAndCriticalityType(
+                        selfAssessment.getCompanyProfile().getId(),
+                        augmentedAttackStrategy.getId(),
+                        CriticalityType.SOC
+                    );
+
+                if (socCriticality != null) {
+                    criticalAttackStrategy.setSocCriticalityPercentage(socCriticality.getCriticality());
+                }
+
                 criticalAttackStrategyMap.put(augmentedAttackStrategy.getId(), criticalAttackStrategy);
             });
         }
@@ -120,7 +148,7 @@ public class CriticalAttackStrategyServiceImpl implements CriticalAttackStrategy
             criticalAttackStrategy.setVulnerability(vulnerability);
             criticalAttackStrategy.setCriticality(criticality);
 
-            criticalAttackStrategy.setCriticalityPercentage(criticality / MAX_CRITICALITY * 100);
+            criticalAttackStrategy.setCriticalityPercentage(criticality / MAX_CRITICALITY);
         }
     }
 }
