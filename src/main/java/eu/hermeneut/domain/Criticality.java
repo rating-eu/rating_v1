@@ -12,11 +12,12 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.ZonedDateTime;
-import java.util.Calendar;
 import java.util.Objects;
 
 @Entity
-@Table(name = "criticality")
+@Table(name = "criticality",
+    uniqueConstraints = @UniqueConstraint(columnNames = {"company_profile_id", "attack_strategy_id", "jhi_type"})
+)
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 @Document(indexName = "criticality")
 public class Criticality implements Serializable {
