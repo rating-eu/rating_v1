@@ -1,6 +1,7 @@
 package eu.hermeneut.kafka.consumer;
 
 import eu.hermeneut.domain.compact.input.RiskProfile;
+import eu.hermeneut.domain.compact.output.CriticalityNotification;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Profile;
@@ -12,8 +13,15 @@ import org.springframework.stereotype.Component;
 public class KafkaConsumer {
     private static final Logger LOGGER = LoggerFactory.getLogger(KafkaConsumer.class);
 
-    @KafkaListener(topics = "${kafka.topic.risk-profile}")
+    @KafkaListener(topics = "${kafka.topic.risk-profile}", containerFactory = "RiskProfile")
     public void receiveRiskProfile(RiskProfile riskProfile) {
-        LOGGER.info("Message received on RiskProfile: " + riskProfile);
+        LOGGER.debug("Message received on RiskProfile: " + riskProfile);
+    }
+
+    @KafkaListener(topics = "${kafka.topic.criticality-notification}", containerFactory = "CriticalityNotification")
+    public void receiveCriticalityNotification(CriticalityNotification criticalityNotification) {
+        LOGGER.debug("Message received on CriticalityNotification: " + criticalityNotification);
+
+        //TODO persist the criticality notifications
     }
 }
