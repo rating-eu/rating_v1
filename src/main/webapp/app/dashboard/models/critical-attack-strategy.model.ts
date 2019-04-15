@@ -35,4 +35,9 @@ export class CriticalAttackStrategy {
      * The SOC criticality value expressed as a percentage.
      */
     public socCriticalityPercentage: number;
+
+    /**
+     * The alert percentage, representing a weighted average of the criticalities.
+     */
+    public alertPercentage: number;
 }

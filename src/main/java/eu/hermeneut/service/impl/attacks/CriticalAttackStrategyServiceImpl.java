@@ -135,6 +135,45 @@ public class CriticalAttackStrategyServiceImpl implements CriticalAttackStrategy
                     criticalAttackStrategy.setSocCriticalityPercentage(socCriticality.getCriticality());
                 }
 
+                // Calculate the Alert
+                Float criticalityPercentage = criticalAttackStrategy.getCriticalityPercentage();
+                int criticalityWeight = 1;
+                System.out.println("CriticalityPercentage: " + criticalityPercentage);
+                
+                Float awarenessCriticalityPercentage = criticalAttackStrategy.getAwarenessCriticalityPercentage();
+                int awarenessWeight = 1;
+                System.out.println("AwarenessCriticalityPercentage: " + awarenessCriticalityPercentage);
+                
+                Float socCriticalityPercentage = criticalAttackStrategy.getSocCriticalityPercentage();
+                int socWeight = 2;
+                System.out.println("SOCCriticalityPercentage: " + socCriticalityPercentage);
+
+                Float alertNumerator = 0F;
+                Float alertDenominator = 0F;
+
+                if (criticalityPercentage != null) {
+                    alertNumerator += criticalityPercentage * criticalityWeight;
+                    alertDenominator += criticalityWeight;
+                }
+
+                if (awarenessCriticalityPercentage != null) {
+                    alertNumerator += awarenessCriticalityPercentage * awarenessWeight;
+                    alertDenominator += awarenessWeight;
+                }
+
+                if (socCriticalityPercentage != null) {
+                    alertNumerator += socCriticalityPercentage * socWeight;
+                    alertDenominator += socWeight;
+                }
+
+                System.out.println("Alert numerator: " + alertNumerator);
+                System.out.println("Alert denominator: " + alertDenominator);
+
+                if (alertDenominator > 0) {
+                    Float alert = alertNumerator / alertDenominator;
+                    criticalAttackStrategy.setAlertPercentage(alert);
+                }
+
                 criticalAttackStrategyMap.put(augmentedAttackStrategy.getId(), criticalAttackStrategy);
             });
         }

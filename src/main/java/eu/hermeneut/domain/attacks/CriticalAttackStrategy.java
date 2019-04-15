@@ -43,6 +43,11 @@ public class CriticalAttackStrategy {
      */
     private Float socCriticalityPercentage;
 
+    /**
+     * The alert percentage, representing a weighted average of the criticalities.
+     */
+    private Float alertPercentage;
+
     public CriticalAttackStrategy(AttackStrategy attackStrategy) {
         this.attackStrategy = attackStrategy;
     }
@@ -109,5 +114,13 @@ public class CriticalAttackStrategy {
 
     public void setSocCriticalityPercentage(Float socCriticalityPercentage) {
         this.socCriticalityPercentage = socCriticalityPercentage;
+    }
+
+    public Float getAlertPercentage() {
+        return alertPercentage;
+    }
+
+    public void setAlertPercentage(Float alertPercentage) {
+        this.alertPercentage = alertPercentage;
     }
 }

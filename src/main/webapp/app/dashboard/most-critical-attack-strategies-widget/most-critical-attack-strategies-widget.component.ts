@@ -124,7 +124,15 @@ export class MostCriticalAttackStrategiesWidgetComponent implements OnInit {
                 break;
             }
             case CriticalAttackStrategyField.ALERT: {
-                // TODO
+
+                if (desc) {
+                    this.criticalAttackStrategies = _.orderBy(this.criticalAttackStrategies, (item: CriticalAttackStrategy) => item.alertPercentage, ['desc']);
+                    this.sortingStatusMap.set(CriticalAttackStrategyField.ALERT, -1);
+                } else {
+                    this.criticalAttackStrategies = _.orderBy(this.criticalAttackStrategies, (item: CriticalAttackStrategy) => item.alertPercentage, ['asc']);
+                    this.sortingStatusMap.set(CriticalAttackStrategyField.ALERT, 1);
+                }
+
                 break;
             }
         }

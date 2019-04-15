@@ -101,12 +101,26 @@
                             <td *ngIf="!criticalAttackStrategy.awarenessCriticalityPercentage">-</td>
                             <td *ngIf="criticalAttackStrategy.socCriticalityPercentage">{{criticalAttackStrategy.socCriticalityPercentage | number : '1.0-2' | percent}}</td>
                             <td *ngIf="!criticalAttackStrategy.socCriticalityPercentage">-</td>
-                            <td>---</td>
+                            <td *ngIf="criticalAttackStrategy.alertPercentage" class="text-center align-middle">
+                                <mat-progress-spinner style="margin:0 auto;" [ngClass]="{
+                              'low': criticalAttackStrategy.alertPercentage * 100 / 20 > 0 && criticalAttackStrategy.alertPercentage * 100 / 20 <= 1,
+                              'low-medium': criticalAttackStrategy.alertPercentage * 100 / 20 > 1 && criticalAttackStrategy.alertPercentage * 100 / 20 <= 2,
+                              'medium': criticalAttackStrategy.alertPercentage * 100 / 20 > 2 && criticalAttackStrategy.alertPercentage * 100 / 20 <= 3,
+                              'medium-high': criticalAttackStrategy.alertPercentage * 100 / 20 > 3 && criticalAttackStrategy.alertPercentage * 100 / 20 <= 4,
+                              'high': criticalAttackStrategy.alertPercentage * 100 / 20 > 4 && criticalAttackStrategy.alertPercentage * 100 / 20 <= 5
+                              }" [value]="criticalAttackStrategy.alertPercentage * 100">
+                                </mat-progress-spinner>
+                                <div style="top:-60px; z-index:2;position:relative;">
+                                    {{criticalAttackStrategy.alertPercentage | number : '1.0-2' | percent}}
+                                </div>
+                            </td>
+                            <td *ngIf="!criticalAttackStrategy.alertPercentage">-</td>
                         </tr>
                         <tr *ngIf="showAttackInfo.get(criticalAttackStrategy.attackStrategy.id)">
                             <td colspan="9">
                                 <div class="col-md-12 text-left">
-                                    <jhi-attack-strategy-mgm-detail [id]="criticalAttackStrategy.attackStrategy.id" [isButtonVisible]="false">
+                                    <jhi-attack-strategy-mgm-detail [id]="criticalAttackStrategy.attackStrategy.id"
+                                                                    [isButtonVisible]="false">
                                     </jhi-attack-strategy-mgm-detail>
                                 </div>
                             </td>
