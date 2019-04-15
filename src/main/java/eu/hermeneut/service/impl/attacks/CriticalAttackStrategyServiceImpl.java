@@ -155,15 +155,12 @@ public class CriticalAttackStrategyServiceImpl implements CriticalAttackStrategy
                 // Calculate the Alert
                 Float criticalityPercentage = criticalAttackStrategy.getCriticalityPercentage();
                 int criticalityWeight = 1;
-                System.out.println("CriticalityPercentage: " + criticalityPercentage);
-                
+
                 Float awarenessCriticalityPercentage = criticalAttackStrategy.getAwarenessCriticalityPercentage();
                 int awarenessWeight = 1;
-                System.out.println("AwarenessCriticalityPercentage: " + awarenessCriticalityPercentage);
-                
+
                 Float socCriticalityPercentage = criticalAttackStrategy.getSocCriticalityPercentage();
                 int socWeight = 2;
-                System.out.println("SOCCriticalityPercentage: " + socCriticalityPercentage);
 
                 Float alertNumerator = 0F;
                 Float alertDenominator = 0F;
@@ -182,9 +179,6 @@ public class CriticalAttackStrategyServiceImpl implements CriticalAttackStrategy
                     alertNumerator += socCriticalityPercentage * socWeight;
                     alertDenominator += socWeight;
                 }
-
-                System.out.println("Alert numerator: " + alertNumerator);
-                System.out.println("Alert denominator: " + alertDenominator);
 
                 if (alertDenominator > 0) {
                     Float alert = alertNumerator / alertDenominator;
