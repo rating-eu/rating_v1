@@ -10,3 +10,4 @@ spring:
 kafka:
     topic:
         risk-profile: ${KAFKA_RISK_PROFILE_TOPIC:risk-profile-topic}
+        criticality-notification: ${KAFKA_CRITICALITY_NOTIFICATION_TOPIC:criticality-notification-topic}

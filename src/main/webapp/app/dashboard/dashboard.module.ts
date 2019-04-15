@@ -1,3 +1,20 @@
+/*
+ * Copyright 2019 HERMENEUT Consortium
+ *  
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *  
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
+
 import {NgModule, Injector} from '@angular/core';
 import {CommonModule} from '@angular/common';
 
@@ -45,6 +62,8 @@ import {FinancialValueWidgetComponent} from './financial-value-widget/financial-
 import {CustomersWidgetComponent} from './customers-widget/customers-widget.component';
 import {RiskSquareWidgetComponent} from './risk-square-widget/risk-square-widget.component';
 import {MostVulnerableAssetsWidgetComponent} from './most-vulnerable-assets-widget/most-vulnerable-assets-widget.component';
+import {MostCriticalAttackStrategiesWidgetComponent} from './most-critical-attack-strategies-widget/most-critical-attack-strategies-widget.component';
+import {CriticalAttackStrategyService} from './models/critical-attack-strategy.service';
 
 @NgModule({
     imports: [
@@ -76,7 +95,8 @@ import {MostVulnerableAssetsWidgetComponent} from './most-vulnerable-assets-widg
         ImpactWidgetComponent,
         FinancialValueWidgetComponent,
         CustomersWidgetComponent,
-        RiskSquareWidgetComponent
+        RiskSquareWidgetComponent,
+        MostCriticalAttackStrategiesWidgetComponent
     ],
     providers: [
         {
@@ -123,7 +143,8 @@ import {MostVulnerableAssetsWidgetComponent} from './most-vulnerable-assets-widg
         ResultsService,
         ImpactEvaluationService,
         PopUpService,
-        RiskManagementService
+        RiskManagementService,
+        CriticalAttackStrategyService
     ]
 })
 export class DashboardModule {

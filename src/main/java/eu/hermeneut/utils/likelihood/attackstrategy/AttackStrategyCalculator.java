@@ -1,3 +1,20 @@
+/*
+ * Copyright 2019 HERMENEUT Consortium
+ *  
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *  
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
+
 package eu.hermeneut.utils.likelihood.attackstrategy;
 
 import eu.hermeneut.domain.Answer;
@@ -49,7 +66,7 @@ public class AttackStrategyCalculator {
         return this.initialLikelihoodMatrix[frequency.getValue() - 1][resourceLevel.getValue() - 1];
     }
 
-    public void calculateRefinedLikelihoods(List<MyAnswer> myAnswers, Map<Long/*QuestionID*/, Question> questionsMap, Map<Long/*AnswerID*/, Answer> answersMap, Map<Long/*AttackStrategy.ID*/, AugmentedAttackStrategy> augmentedAttackStrategyMap) {
+    public void calculateRefinedVulnerabilityLikelihoodAndCriticalities(List<MyAnswer> myAnswers, Map<Long/*QuestionID*/, Question> questionsMap, Map<Long/*AnswerID*/, Answer> answersMap, Map<Long/*AttackStrategy.ID*/, AugmentedAttackStrategy> augmentedAttackStrategyMap) {
         //Group the MyAnswers by AttackStrategy and find the likelihood for each of them.
         Map<Long/*AttackStrategyID*/, Set<MyAnswer>> attackAnswersMap = new HashMap<>();
 
@@ -73,6 +90,8 @@ public class AttackStrategyCalculator {
                 }
 
                 augmentedAttackStrategy.setRefinedLikelihood(Precision.round((augmentedAttackStrategy.getInitialLikelihood() + augmentedAttackStrategy.getRefinedVulnerability()) / 2, 2));
+
+                augmentedAttackStrategy.setRefinedCriticality(augmentedAttackStrategy.getRefinedLikelihood() * augmentedAttackStrategy.getRefinedVulnerability());
             }
         }
     }
@@ -110,7 +129,7 @@ public class AttackStrategyCalculator {
         }
     }
 
-    public void calculateContextualLikelihoods(List<MyAnswer> myAnswers, Map<Long/*QuestionID*/, Question> questionsMap, Map<Long/*AnswerID*/, Answer> answersMap, Map<Long/*AttackStrategy.ID*/, AugmentedAttackStrategy> augmentedAttackStrategyMap) {
+    public void calculateContextualVulnerabilityLikelihoodAndCriticalities(List<MyAnswer> myAnswers, Map<Long/*QuestionID*/, Question> questionsMap, Map<Long/*AnswerID*/, Answer> answersMap, Map<Long/*AttackStrategy.ID*/, AugmentedAttackStrategy> augmentedAttackStrategyMap) {
         //Group the MyAnswers by AttackStrategy and find the likelihood for each of them.
         Map</*AttackStrategyID*/Long, Set<MyAnswer>> attackAnswersMap = new HashMap<>();
 
@@ -133,6 +152,8 @@ public class AttackStrategyCalculator {
                 }
 
                 augmentedAttackStrategy.setContextualLikelihood(Precision.round((augmentedAttackStrategy.getInitialLikelihood() + augmentedAttackStrategy.getContextualVulnerability()) / 2, 2));
+
+                augmentedAttackStrategy.setContextualCriticality(augmentedAttackStrategy.getContextualLikelihood() * augmentedAttackStrategy.getContextualVulnerability());
             } else {
                 //TODO Same as InitialLikelihood ???
             }
