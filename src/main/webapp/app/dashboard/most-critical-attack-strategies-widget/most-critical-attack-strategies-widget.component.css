@@ -1,1 +1,6 @@
 @import "../dashboard.module.css";
+
+tr.attack:hover{
+    cursor: pointer !important;
+}
+

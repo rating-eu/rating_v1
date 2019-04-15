@@ -92,7 +92,7 @@
                     <tbody align="center">
                     <ng-container
                         *ngFor="let criticalAttackStrategy of criticalAttackStrategies | paginate: attackStrategiesPaginator">
-                        <tr>
+                        <tr class="attack" (click)="toggleInfo(criticalAttackStrategy.attackStrategy.id)">
                             <td>{{criticalAttackStrategy.attackStrategy.name}}</td>
                             <td>{{criticalAttackStrategy.targetAssets}}</td>
                             <td *ngIf="criticalAttackStrategy.criticalityPercentage">{{criticalAttackStrategy.criticalityPercentage | number : '1.0-2' | percent}}</td>
@@ -102,6 +102,14 @@
                             <td *ngIf="criticalAttackStrategy.socCriticalityPercentage">{{criticalAttackStrategy.socCriticalityPercentage | number : '1.0-2' | percent}}</td>
                             <td *ngIf="!criticalAttackStrategy.socCriticalityPercentage">-</td>
                             <td>---</td>
+                        </tr>
+                        <tr *ngIf="showAttackInfo.get(criticalAttackStrategy.attackStrategy.id)">
+                            <td colspan="9">
+                                <div class="col-md-12 text-left">
+                                    <jhi-attack-strategy-mgm-detail [id]="criticalAttackStrategy.attackStrategy.id" [isButtonVisible]="false">
+                                    </jhi-attack-strategy-mgm-detail>
+                                </div>
+                            </td>
                         </tr>
                     </ng-container>
                     </tbody>

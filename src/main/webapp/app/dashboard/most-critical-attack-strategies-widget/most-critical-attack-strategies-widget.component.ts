@@ -22,6 +22,7 @@ export class MostCriticalAttackStrategiesWidgetComponent implements OnInit {
     public isCollapsed = true;
     public loading = false;
     public casFieldEnum = CriticalAttackStrategyField;
+    public showAttackInfo = new Map();
 
     /**
      * Map to keep the sorting status of the fields of the CriticalAttackStrategies.
@@ -51,7 +52,7 @@ export class MostCriticalAttackStrategiesWidgetComponent implements OnInit {
             (response: CriticalAttackStrategy[]) => {
                 this.criticalAttackStrategies = response;
             }
-        )
+        );
 
         this.sortingStatusMap = new Map();
     }
@@ -62,70 +63,80 @@ export class MostCriticalAttackStrategiesWidgetComponent implements OnInit {
 
     orderTableBy(field: CriticalAttackStrategyField, desc: boolean) {
         switch (field) {
-            case CriticalAttackStrategyField.ATTACK_STRATEGY:{
+            case CriticalAttackStrategyField.ATTACK_STRATEGY: {
 
-                if(desc){
+                if (desc) {
                     this.criticalAttackStrategies = _.orderBy(this.criticalAttackStrategies, (item: CriticalAttackStrategy) => item.attackStrategy.name, ['desc']);
                     this.sortingStatusMap.set(CriticalAttackStrategyField.ATTACK_STRATEGY, -1);
-                }else {
+                } else {
                     this.criticalAttackStrategies = _.orderBy(this.criticalAttackStrategies, (item: CriticalAttackStrategy) => item.attackStrategy.name, ['asc']);
                     this.sortingStatusMap.set(CriticalAttackStrategyField.ATTACK_STRATEGY, 1);
                 }
 
                 break;
             }
-            case CriticalAttackStrategyField.TARGET_ASSETS:{
+            case CriticalAttackStrategyField.TARGET_ASSETS: {
 
-                if(desc){
+                if (desc) {
                     this.criticalAttackStrategies = _.orderBy(this.criticalAttackStrategies, (item: CriticalAttackStrategy) => item.targetAssets, ['desc']);
                     this.sortingStatusMap.set(CriticalAttackStrategyField.TARGET_ASSETS, -1);
-                }else {
+                } else {
                     this.criticalAttackStrategies = _.orderBy(this.criticalAttackStrategies, (item: CriticalAttackStrategy) => item.targetAssets, ['asc']);
                     this.sortingStatusMap.set(CriticalAttackStrategyField.TARGET_ASSETS, 1);
                 }
 
                 break;
             }
-            case CriticalAttackStrategyField.CRITICALITY:{
+            case CriticalAttackStrategyField.CRITICALITY: {
 
-                if(desc){
+                if (desc) {
                     this.criticalAttackStrategies = _.orderBy(this.criticalAttackStrategies, (item: CriticalAttackStrategy) => item.criticalityPercentage, ['desc']);
                     this.sortingStatusMap.set(CriticalAttackStrategyField.CRITICALITY, -1);
-                }else {
+                } else {
                     this.criticalAttackStrategies = _.orderBy(this.criticalAttackStrategies, (item: CriticalAttackStrategy) => item.criticalityPercentage, ['asc']);
                     this.sortingStatusMap.set(CriticalAttackStrategyField.CRITICALITY, 1);
                 }
 
                 break;
             }
-            case CriticalAttackStrategyField.AWARENESS:{
+            case CriticalAttackStrategyField.AWARENESS: {
 
-                if(desc){
+                if (desc) {
                     this.criticalAttackStrategies = _.orderBy(this.criticalAttackStrategies, (item: CriticalAttackStrategy) => item.awarenessCriticalityPercentage, ['desc']);
                     this.sortingStatusMap.set(CriticalAttackStrategyField.AWARENESS, -1);
-                }else {
+                } else {
                     this.criticalAttackStrategies = _.orderBy(this.criticalAttackStrategies, (item: CriticalAttackStrategy) => item.awarenessCriticalityPercentage, ['asc']);
                     this.sortingStatusMap.set(CriticalAttackStrategyField.AWARENESS, 1);
                 }
 
                 break;
             }
-            case CriticalAttackStrategyField.SOC:{
+            case CriticalAttackStrategyField.SOC: {
 
-                if(desc){
+                if (desc) {
                     this.criticalAttackStrategies = _.orderBy(this.criticalAttackStrategies, (item: CriticalAttackStrategy) => item.socCriticalityPercentage, ['desc']);
                     this.sortingStatusMap.set(CriticalAttackStrategyField.SOC, -1);
-                }else {
+                } else {
                     this.criticalAttackStrategies = _.orderBy(this.criticalAttackStrategies, (item: CriticalAttackStrategy) => item.socCriticalityPercentage, ['asc']);
                     this.sortingStatusMap.set(CriticalAttackStrategyField.SOC, 1);
                 }
 
                 break;
             }
-            case CriticalAttackStrategyField.ALERT:{
+            case CriticalAttackStrategyField.ALERT: {
                 // TODO
                 break;
             }
+        }
+    }
+
+    toggleInfo(attackStrategyID: number) {
+        if (this.showAttackInfo.has(attackStrategyID)) {
+            const status: boolean = this.showAttackInfo.get(attackStrategyID);
+
+            this.showAttackInfo.set(attackStrategyID, !status);
+        } else {
+            this.showAttackInfo.set(attackStrategyID, true);
         }
     }
 }
