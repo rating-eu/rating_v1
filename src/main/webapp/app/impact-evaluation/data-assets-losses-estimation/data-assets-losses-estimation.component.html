@@ -27,35 +27,47 @@
     </div>
 </ng-container>
 <ng-container *ngIf="dataAssets.length === 0">
-  <div class="text-center" style="margin-top: 50px">
-    <p style="color: orange"><i class="fa fa-exclamation-triangle fa-4x" aria-hidden="true"></i></p>
-    <p style="color: grey">No Intangible Data assets have been selected from asset-clustering phase. If you want to estimate losses on Data, please go to the
-      <a href="javascript:void(0)" [routerLink]="['/identify-asset/asset-clustering']">asset-clustering</a> phase and select your Data assets from the list.</p>
-  </div>
+    <div class="text-center" style="margin-top: 50px">
+        <p style="color: orange"><i class="fa fa-exclamation-triangle fa-4x" aria-hidden="true"></i></p>
+        <p style="color: grey">No Intangible Data assets have been selected from asset-clustering phase. If you want to
+            estimate losses on Data, please go to the
+            <a href="javascript:void(0)" [routerLink]="['/identify-asset/asset-clustering']">asset-clustering</a> phase
+            and select your Data assets from the list.</p>
+    </div>
 </ng-container>
 <ng-container *ngIf="dataAssets.length > 0">
-  <h3>Determining the Economic Value of Data</h3>
-  <div class="container-fluid">
-    <div class="row">
-      <div class="col-md-12">
-        <ng-container *ngFor="let asset of dataAssets; let i = index;">
-          <div class="input-group" style="margin-bottom: 10px">
-            <div class="input-group-prepend">
-              <span class="input-group-text">Valutation of {{asset.asset.name}} losses €</span>
+    <h3>Determining the Economic Value of Data</h3>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <ng-container *ngFor="let myAsset of dataAssets; let i = index;">
+                    <div class="row input-group" style="margin-bottom: 10px">
+                        <div class="col-md-4" style="overflow-wrap: break-word;">
+                            <span><h2><a [routerLink]="['/asset-mgm', myAsset.asset?.id]">{{myAsset.asset.name}}</a></h2></span>
+                        </div>
+                        <div class="col-md-4" style="overflow-wrap: break-word;">
+                            <span>{{myAsset.asset.description}}</span>
+                        </div>
+                        <div class="input-group col-md-4">
+                            <div class="input-group-addon">
+                                <span class="input-group-text">&euro;</span>
+                            </div>
+                            <input type="number" class="form-control input-append"
+                                   placeholder="Loss value"
+                                   aria-label="lossValue" aria-describedby="basic-addon2" pattern="[0-9]+"
+                                   [(ngModel)]="myAsset.lossValue">
+                        </div>
+                    </div>
+                </ng-container>
             </div>
-            <input type="number" class="form-control" placeholder="Insert economic losses of {{asset.asset.name}}"
-              aria-label="lossValue" aria-describedby="basic-addon2" pattern="[0-9]+" [(ngModel)]="asset.lossValue">
-          </div>
-        </ng-container>
-      </div>
+        </div>
+        <div class="row">
+            <div class="col-md-1">
+                <button class="btn btn-light" (click)="close()">Close</button>
+            </div>
+            <div class="col-md-1 offset-md-10">
+                <button class="btn btn-primary" style="margin-left: 10px" (click)="updateDataAssets()">Save</button>
+            </div>
+        </div>
     </div>
-    <div class="row">
-      <div class="col-md-1">
-        <button class="btn btn-light" (click)="close()">Close</button>
-      </div>
-      <div class="col-md-1 offset-md-10">
-        <button class="btn btn-primary" style="margin-left: 10px" (click)="updateDataAssets()">Save</button>
-      </div>
-    </div>
-  </div>
 </ng-container>
