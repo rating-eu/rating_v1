@@ -64,7 +64,7 @@ export class HomeComponent implements OnInit {
                     break;
                 }
                 case MyRole.ROLE_EXTERNAL_AUDIT: {
-                    this.router.navigate(['/my-self-assessments']);
+                    this.router.navigate(['/my-risk-assessments']);
                     break;
                 }
             }

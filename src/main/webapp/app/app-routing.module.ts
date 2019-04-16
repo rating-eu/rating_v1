@@ -89,8 +89,8 @@ const routes: Routes = [
         canActivate: [UserRouteAccessService]
     },
     {
-        path: 'my-self-assessments',
-        loadChildren: './my-self-assessments/my-self-assessments.module#MySelfAssessmentsModule',
+        path: 'my-risk-assessments',
+        loadChildren: './my-risk-assessments/my-risk-assessments.module#MyRiskAssessmentsModule',
         data: {
             authorities: ['ROLE_CISO', 'ROLE_EXTERNAL_AUDIT']
         },

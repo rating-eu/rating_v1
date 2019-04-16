@@ -179,9 +179,9 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                         visible: isCISO
                     },
                     {
-                        label: 'My SelfAssessments',
+                        label: 'My Risk Assessments',
                         icon: 'fa fa-repeat',
-                        routerLink: ['/my-self-assessments']
+                        routerLink: ['/my-risk-assessments']
                     }
                 ]
             },
