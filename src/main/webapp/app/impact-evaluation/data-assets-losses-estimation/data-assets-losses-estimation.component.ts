@@ -34,6 +34,7 @@ import {forkJoin} from 'rxjs/observable/forkJoin';
 export class DataAssetsLossesEstimationComponent implements OnInit {
     private mySelf: SelfAssessmentMgm;
     public dataAssets: MyAssetMgm[] = [];
+    public showHelp: boolean = false;
 
     constructor(
         private impactService: ImpactEvaluationService,

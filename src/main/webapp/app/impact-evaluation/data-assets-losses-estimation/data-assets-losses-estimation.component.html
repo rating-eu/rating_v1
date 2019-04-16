@@ -14,7 +14,18 @@
   ~ limitations under the License.
   ~
   -->
+<ng-container>
+    <div class="card-box">
+        <a (click)="showHelp = !showHelp" [attr.aria-expanded]="!showHelp"
+           aria-controls="descriptionCollapsible" class="float-right">
+            <i class="fa fa-question-circle fa-lg" aria-hidden="true"></i>
+        </a>
 
+        <div class="row" [ngbCollapse]="!showHelp">
+            <p>Put some help instructions here.</p>
+        </div>
+    </div>
+</ng-container>
 <ng-container *ngIf="dataAssets.length === 0">
   <div class="text-center" style="margin-top: 50px">
     <p style="color: orange"><i class="fa fa-exclamation-triangle fa-4x" aria-hidden="true"></i></p>
