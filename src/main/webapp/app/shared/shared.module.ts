@@ -38,8 +38,10 @@ import {
 
 import {Title} from '@angular/platform-browser';
 import {LoginPlainComponent} from './index';
-import { PopUpService } from './pop-up-services/pop-up.service';
-import { ReplacePipe } from './pipe/replace.pipe';
+import {PopUpService} from './pop-up-services/pop-up.service';
+import {ReplacePipe} from './pipe/replace.pipe';
+import {CompactNumberPipe} from './pipe/compact-number.pipe';
+import {CompactSuffixPipe} from './pipe/compact-suffix-pipe';
 
 @NgModule({
     imports: [
@@ -51,7 +53,9 @@ import { ReplacePipe } from './pipe/replace.pipe';
         HasAnyAuthorityDirective,
         FindLanguageFromKeyPipe,
         LoginPlainComponent,
-        ReplacePipe
+        ReplacePipe,
+        CompactNumberPipe,
+        CompactSuffixPipe
     ],
     providers: [
         LoginService,
@@ -72,7 +76,9 @@ import { ReplacePipe } from './pipe/replace.pipe';
         HasAnyAuthorityDirective,
         DatePipe,
         LoginPlainComponent,
-        ReplacePipe
+        ReplacePipe,
+        CompactNumberPipe,
+        CompactSuffixPipe
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA]
 
