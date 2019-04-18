@@ -22,8 +22,8 @@
     <div class="x_panel" style="padding:0px !important;">
         <div class="x_title" style="padding:0px !important;">
             <h2 style="padding: 10px;"><a href="javascript:void(0)" class="collapse-link"
-                    (click)="isCollapsed = !isCollapsed">Impact
-                    on Assets</a></h2>
+                                          (click)="isCollapsed = !isCollapsed">Impact
+                on Assets</a></h2>
             <ul class="nav navbar-right panel_toolbox">
                 <li style="width: 24px; cursor: default"></li>
                 <li style="width: 24px; cursor: default"></li>
@@ -39,39 +39,39 @@
             <div *ngIf="widgetElements.length > 0" class="table-responsive table-hover-no-pointer">
                 <table class="table">
                     <thead>
-                        <tr>
-                            <th width="33.33%">Impact value
-                                <i *ngIf="!orderBy.impact" (click)=" tableOrderBy('impact', true)" class="fa fa-sort"
-                                    aria-hidden="true"></i>
-                                <i *ngIf="orderBy.impact && orderBy.type === 'desc'"
-                                    (click)=" tableOrderBy('impact', false)" class="fa fa-chevron-down"
-                                    aria-hidden="true"></i>
-                                <i *ngIf="orderBy.impact && orderBy.type === 'asc'"
-                                    (click)=" tableOrderBy('impact', true)" class="fa fa-chevron-up"
-                                    aria-hidden="true"></i>
-                            </th>
-                            <th width="33.33%">from
-                                <i *ngIf="!orderBy.from" (click)=" tableOrderBy('from', true)" class="fa fa-sort"
-                                    aria-hidden="true"></i>
-                                <i *ngIf="orderBy.from && orderBy.type === 'desc'"
-                                    (click)=" tableOrderBy('from', false)" class="fa fa-chevron-down"
-                                    aria-hidden="true"></i>
-                                <i *ngIf="orderBy.from && orderBy.type === 'asc'" (click)=" tableOrderBy('from', true)"
-                                    class="fa fa-chevron-up" aria-hidden="true"></i>
-                            </th>
-                            <th width="33.33%">to
-                                <i *ngIf="!orderBy.to" (click)=" tableOrderBy('to', true)" class="fa fa-sort"
-                                    aria-hidden="true"></i>
-                                <i *ngIf="orderBy.to && orderBy.type === 'desc'" (click)=" tableOrderBy('to', false)"
-                                    class="fa fa-chevron-down" aria-hidden="true"></i>
-                                <i *ngIf="orderBy.to && orderBy.type === 'asc'" (click)=" tableOrderBy('to', true)"
-                                    class="fa fa-chevron-up" aria-hidden="true"></i>
-                            </th>
-                        </tr>
+                    <tr>
+                        <th width="33.33%">Impact value
+                            <i *ngIf="!orderBy.impact" (click)=" tableOrderBy('impact', true)" class="fa fa-sort"
+                               aria-hidden="true"></i>
+                            <i *ngIf="orderBy.impact && orderBy.type === 'desc'"
+                               (click)=" tableOrderBy('impact', false)" class="fa fa-chevron-down"
+                               aria-hidden="true"></i>
+                            <i *ngIf="orderBy.impact && orderBy.type === 'asc'"
+                               (click)=" tableOrderBy('impact', true)" class="fa fa-chevron-up"
+                               aria-hidden="true"></i>
+                        </th>
+                        <th width="33.33%">from
+                            <i *ngIf="!orderBy.from" (click)=" tableOrderBy('from', true)" class="fa fa-sort"
+                               aria-hidden="true"></i>
+                            <i *ngIf="orderBy.from && orderBy.type === 'desc'"
+                               (click)=" tableOrderBy('from', false)" class="fa fa-chevron-down"
+                               aria-hidden="true"></i>
+                            <i *ngIf="orderBy.from && orderBy.type === 'asc'" (click)=" tableOrderBy('from', true)"
+                               class="fa fa-chevron-up" aria-hidden="true"></i>
+                        </th>
+                        <th width="33.33%">to
+                            <i *ngIf="!orderBy.to" (click)=" tableOrderBy('to', true)" class="fa fa-sort"
+                               aria-hidden="true"></i>
+                            <i *ngIf="orderBy.to && orderBy.type === 'desc'" (click)=" tableOrderBy('to', false)"
+                               class="fa fa-chevron-down" aria-hidden="true"></i>
+                            <i *ngIf="orderBy.to && orderBy.type === 'asc'" (click)=" tableOrderBy('to', true)"
+                               class="fa fa-chevron-up" aria-hidden="true"></i>
+                        </th>
+                    </tr>
                     </thead>
                     <tbody>
-                        <ng-container *ngFor="let item of widgetElements">
-                            <tr [ngClass]="{
+                    <ng-container *ngFor="let item of widgetElements">
+                        <tr [ngClass]="{
                               'impact-five': item.impact === 5 && item.assets.length > 0,
                               'impact-four': item.impact === 4 && item.assets.length > 0,
                               'impact-three': item.impact === 3 && item.assets.length > 0,
@@ -79,37 +79,37 @@
                               'impact-one': item.impact === 1 && item.assets.length > 0,
                               'disabled': item.assets.length === 0
                             }" style="cursor: pointer" (click)="setImpact(item.impact)">
-                                <td>{{item.impact}}</td>
-                                <td *ngIf="item.economicValueMin">{{item.economicValueMin | currency:'EUR':'symbol':'1.0-0'}}</td>
-                                <td *ngIf="!item.economicValueMin">-</td>
-                                <td *ngIf="item.economicValueMax">{{item.economicValueMax | currency:'EUR':'symbol':'1.0-0'}}</td>
-                                <td *ngIf="!item.economicValueMax">-</td>
+                            <td>{{item.impact}}</td>
+                            <td *ngIf="item.economicValueMin">{{item.economicValueMin | compactNumber | currency:'EUR':'symbol':'1.0-2'}}{{item.economicValueMin | compactSuffix}}</td>
+                            <td *ngIf="!item.economicValueMin">-</td>
+                            <td *ngIf="item.economicValueMax">{{item.economicValueMax | compactNumber | currency:'EUR':'symbol':'1.0-2'}}{{item.economicValueMax | compactSuffix}}</td>
+                            <td *ngIf="!item.economicValueMax">-</td>
+                        </tr>
+                        <ng-container *ngIf="selectedImpact && item.assets.length > 0">
+                            <tr *ngIf="selectedImpact === item.impact" class="tr-not-bright">
+                                <td colspan="3">
+                                    <table class="table table-striped">
+                                        <thead>
+                                        <tr>
+                                            <th>Category</th>
+                                            <th width="50%">Asset</th>
+                                            <th>Impact</th>
+                                            <th>Economic impact</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr *ngFor="let asset of item.assets">
+                                            <td>{{asset.asset.assetcategory.name}}</td>
+                                            <td>{{asset.asset.name}}</td>
+                                            <td>{{asset.impact}}</td>
+                                            <td>{{asset.economicImpact | compactNumber | currency:'EUR':'symbol':'1.0-2'}}{{asset.economicImpact | compactSuffix}}</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
                             </tr>
-                            <ng-container *ngIf="selectedImpact && item.assets.length > 0">
-                                <tr *ngIf="selectedImpact === item.impact" class="tr-not-bright">
-                                    <td colspan="3">
-                                        <table class="table table-striped">
-                                            <thead>
-                                                <tr>
-                                                    <th>Category</th>
-                                                    <th width="50%">Asset</th>
-                                                    <th>Impact</th>
-                                                    <th>Economic impact</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr *ngFor="let asset of item.assets">
-                                                    <td>{{asset.asset.assetcategory.name}}</td>
-                                                    <td>{{asset.asset.name}}</td>
-                                                    <td>{{asset.impact}}</td>
-                                                    <td>{{asset.economicImpact | currency:'EUR':'symbol':'1.0-0'}}</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </td>
-                                </tr>
-                            </ng-container>
                         </ng-container>
+                    </ng-container>
                     </tbody>
                 </table>
             </div>
