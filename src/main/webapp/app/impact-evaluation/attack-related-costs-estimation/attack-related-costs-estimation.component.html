@@ -107,8 +107,10 @@
                                             have been
                                             fraudulently used.</p>
                                         <p>Your possible cost, based on N. of customers x Protection cost, is=</p>
-                                        <p>(MIN) {{protectionMin | currency: 'EUR':'symbol':'1.0-0'}}</p>
-                                        <p>(MAX) {{protectionMax | currency: 'EUR':'symbol':'1.0-0'}}</p>
+                                        <p>
+                                            (MIN) {{protectionMin | compactNumber | currency: 'EUR':'symbol':'1.0-2'}}{{protectionMin | compactSuffix}}</p>
+                                        <p>
+                                            (MAX) {{protectionMax | compactNumber | currency: 'EUR':'symbol':'1.0-2'}}{{protectionMax | compactSuffix}}</p>
                                         <P>Please, set your proper value: (Input field)</P>
                                     </div>
                                 </ng-container>
@@ -124,8 +126,10 @@
                                             per customer</p>
                                         <p>Your possible cost, based on N. of customers x Cost of the notification,
                                             is=</p>
-                                        <p>(MIN) {{notificationMin | currency: 'EUR':'symbol':'1.0-0'}}</p>
-                                        <p>(MAX) {{notificationMax | currency: 'EUR':'symbol':'1.0-0'}}</p>
+                                        <p>
+                                            (MIN) {{notificationMin | compactNumber | currency: 'EUR':'symbol':'1.0-2'}}{{notificationMin | compactSuffix}}</p>
+                                        <p>
+                                            (MAX) {{notificationMax | compactNumber | currency: 'EUR':'symbol':'1.0-2'}}{{notificationMax | compactSuffix}}</p>
                                         <p>Please, set your proper value: (Input field)</p>
                                     </div>
                                 </ng-container>

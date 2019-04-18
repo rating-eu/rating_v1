@@ -3,19 +3,19 @@
     "hermeneutApp": {
         "selfAssessment" : {
             "home": {
-                "title": "Self Assessments",
-                "createLabel": "Self Assessment erstellen",
-                "createOrEditLabel": "Self Assessment erstellen oder bearbeiten",
-                "search": "Suche nach Self Assessment"
+                "title": "Risk Assessments",
+                "createLabel": "Risk Assessment erstellen",
+                "createOrEditLabel": "Risk Assessment erstellen oder bearbeiten",
+                "search": "Suche nach Risk Assessment"
             },
-            "created": "Self Assessment erstellt mit ID {{ param }}",
-            "updated": "Self Assessment aktualisiert mit ID {{ param }}",
-            "deleted": "Self Assessment gelöscht mit ID {{ param }}",
+            "created": "Risk Assessment erstellt mit ID {{ param }}",
+            "updated": "Risk Assessment aktualisiert mit ID {{ param }}",
+            "deleted": "Risk Assessment gelöscht mit ID {{ param }}",
             "delete": {
-                "question": "Soll Self Assessment {{ id }} wirklich dauerhaft gelöscht werden?"
+                "question": "Soll Risk Assessment {{ id }} wirklich dauerhaft gelöscht werden?"
             },
             "detail": {
-                "title": "Self Assessment"
+                "title": "Risk Assessment"
             },
             "name": "Name",
             "created": "Created",
@@ -24,7 +24,7 @@
             "user": "User",
             "externalAudit": "External Audit",
             "companyGroup": "Company Group",
-            "threatagent": "Threatagent"
+            "threatagent": "Threat Agent"
         }
     }
 }

@@ -19,8 +19,8 @@ import * as _ from 'lodash';
 
 import {Component, OnInit} from '@angular/core';
 import {SelfAssessmentMgmService} from '../../entities/self-assessment-mgm';
-import {SelfAssessmentOverview} from '../../my-self-assessments/models/SelfAssessmentOverview.model';
-import {AugmentedMyAsset} from '../../my-self-assessments/models/AugmentedMyAsset.model';
+import {SelfAssessmentOverview} from '../../my-risk-assessments/models/SelfAssessmentOverview.model';
+import {AugmentedMyAsset} from '../../my-risk-assessments/models/AugmentedMyAsset.model';
 import {AugmentedAttackStrategy} from '../../evaluate-weakness/models/augmented-attack-strategy.model';
 
 interface MdawEntity {

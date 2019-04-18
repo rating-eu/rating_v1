@@ -18,8 +18,8 @@
 import { NgModule, Injector } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { MySelfAssessmentsRoutingModule } from './my-self-assessments-routing.module';
-import { MySelfAssessmentsComponent } from './my-self-assessments.component';
+import { MyRiskAssessmentsRoutingModule } from './my-risk-assessments-routing.module';
+import { MyRiskAssessmentsComponent } from './my-risk-assessments.component';
 import { FormsModule } from '../../../../../node_modules/@angular/forms';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from '../blocks/interceptor/auth.interceptor';
@@ -35,10 +35,10 @@ import { HermeneutSelfAssessmentMgmModule } from '../entities/self-assessment-mg
   imports: [
     HermeneutSharedModule,
     CommonModule,
-    MySelfAssessmentsRoutingModule,
+    MyRiskAssessmentsRoutingModule,
     FormsModule
   ],
-  declarations: [MySelfAssessmentsComponent],
+  declarations: [MyRiskAssessmentsComponent],
   providers: [
     {
         provide: HTTP_INTERCEPTORS,
@@ -75,7 +75,7 @@ import { HermeneutSelfAssessmentMgmModule } from '../entities/self-assessment-mg
     }
   ]
 })
-export class MySelfAssessmentsModule {
+export class MyRiskAssessmentsModule {
   constructor(private languageService: JhiLanguageService, private languageHelper: JhiLanguageHelper) {
     this.languageHelper.language
         .subscribe((languageKey: string) => {

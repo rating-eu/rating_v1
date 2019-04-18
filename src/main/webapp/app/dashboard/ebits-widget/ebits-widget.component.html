@@ -16,60 +16,63 @@
   -->
 
 <ng-container *ngIf="loading">
-  <div class="loader"></div>
+    <div class="loader"></div>
 </ng-container>
 <ng-container *ngIf="!loading">
-  <div class="x_panel" style="padding:0px !important;">
-    <div class="x_title" style="padding:0px !important;">
-      <h2 style="padding: 10px;"><a href="javascript:void(0)" class="collapse-link" (click)="isCollapsed = !isCollapsed">EBITDA</a></h2>
-      <ul class="nav navbar-right panel_toolbox">
-        <li style="width: 24px; cursor: default"></li>
-        <li style="width: 24px; cursor: default"></li>
-        <li>
-          <a [routerLink]="['/impact-evaluation']">
-              <i class="fa fa-link fa-lg" aria-hidden="true"></i>
-          </a>
-        </li>
-      </ul>
-      <div class="clearfix"></div>
+    <div class="x_panel" style="padding:0px !important;">
+        <div class="x_title" style="padding:0px !important;">
+            <h2 style="padding: 10px;"><a href="javascript:void(0)" class="collapse-link"
+                                          (click)="isCollapsed = !isCollapsed">EBITDA</a></h2>
+            <ul class="nav navbar-right panel_toolbox">
+                <li style="width: 24px; cursor: default"></li>
+                <li style="width: 24px; cursor: default"></li>
+                <li>
+                    <a [routerLink]="['/impact-evaluation']">
+                        <i class="fa fa-link fa-lg" aria-hidden="true"></i>
+                    </a>
+                </li>
+            </ul>
+            <div class="clearfix"></div>
+        </div>
+        <div class="table-responsive x_content" style="padding:0px !important;" [ngbCollapse]="isCollapsed">
+            <div *ngIf="ebitInfo.length > 0" class="table-responsive table-hover-no-pointer">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th width="50%">Year
+                            <i *ngIf="!ebitOrderBy.year" (click)=" tableOrderBy('year', true)"
+                               class="fa fa-sort" aria-hidden="true"></i>
+                            <i *ngIf="ebitOrderBy.year && ebitOrderBy.type === 'desc'"
+                               (click)=" tableOrderBy('year', false)" class="fa fa-chevron-down" aria-hidden="true"></i>
+                            <i *ngIf="ebitOrderBy.year && ebitOrderBy.type === 'asc'"
+                               (click)=" tableOrderBy('year', true)" class="fa fa-chevron-up" aria-hidden="true"></i>
+                        </th>
+                        <th width="50%">Value
+                            <i *ngIf="!ebitOrderBy.value" (click)=" tableOrderBy('value', true)"
+                               class="fa fa-sort" aria-hidden="true"></i>
+                            <i *ngIf="ebitOrderBy.value && ebitOrderBy.type === 'desc'"
+                               (click)=" tableOrderBy('value', false)" class="fa fa-chevron-down"
+                               aria-hidden="true"></i>
+                            <i *ngIf="ebitOrderBy.value && ebitOrderBy.type === 'asc'"
+                               (click)=" tableOrderBy('value', true)" class="fa fa-chevron-up" aria-hidden="true"></i>
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <ng-container *ngFor="let item of ebitInfo">
+                        <tr>
+                            <td [ngClass]="{'this-year':item.thisYear}">{{item.year}}</td>
+                            <td [ngClass]="{'this-year':item.thisYear}"
+                                *ngIf="item.value">{{item.value | compactNumber | currency:'EUR':'symbol':'1.0-2'}}{{item.value | compactSuffix }}</td>
+                            <td [ngClass]="{'this-year':item.thisYear}" *ngIf="!item.value">-</td>
+                        </tr>
+                    </ng-container>
+                    </tbody>
+                </table>
+            </div>
+            <div *ngIf="ebitInfo.length === 0" class="text-center">
+                No EBITDA declared!
+            </div>
+        </div>
     </div>
-    <div class="table-responsive x_content" style="padding:0px !important;" [ngbCollapse]="isCollapsed">
-      <div *ngIf="ebitInfo.length > 0" class="table-responsive table-hover-no-pointer">
-        <table class="table table-striped">
-          <thead>
-            <tr>
-              <th width="50%">Year 
-                  <i *ngIf="!ebitOrderBy.year" (click)=" tableOrderBy('year', true)"
-                  class="fa fa-sort" aria-hidden="true"></i>
-                <i *ngIf="ebitOrderBy.year && ebitOrderBy.type === 'desc'"
-                  (click)=" tableOrderBy('year', false)" class="fa fa-chevron-down" aria-hidden="true"></i>
-                <i *ngIf="ebitOrderBy.year && ebitOrderBy.type === 'asc'"
-                  (click)=" tableOrderBy('year', true)" class="fa fa-chevron-up" aria-hidden="true"></i>
-              </th>
-              <th width="50%">Value 
-                  <i *ngIf="!ebitOrderBy.value" (click)=" tableOrderBy('value', true)"
-                  class="fa fa-sort" aria-hidden="true"></i>
-                <i *ngIf="ebitOrderBy.value && ebitOrderBy.type === 'desc'"
-                  (click)=" tableOrderBy('value', false)" class="fa fa-chevron-down" aria-hidden="true"></i>
-                <i *ngIf="ebitOrderBy.value && ebitOrderBy.type === 'asc'"
-                  (click)=" tableOrderBy('value', true)" class="fa fa-chevron-up" aria-hidden="true"></i>
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            <ng-container *ngFor="let item of ebitInfo">
-              <tr>
-                <td [ngClass]="{'this-year':item.thisYear}">{{item.year}}</td>
-                <td [ngClass]="{'this-year':item.thisYear}" *ngIf="item.value">{{item.value | currency:'EUR':'symbol':'1.0-0'}}</td>
-                <td [ngClass]="{'this-year':item.thisYear}" *ngIf="!item.value">-</td>
-              </tr>
-            </ng-container>
-          </tbody>
-        </table>
-      </div>
-      <div *ngIf="ebitInfo.length === 0" class="text-center">
-        No EBITDA declared!
-      </div>
-    </div>
-  </div>
 </ng-container>

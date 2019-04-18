@@ -36,11 +36,11 @@ interface OrderBy {
 }
 
 @Component({
-    selector: 'jhi-my-self-assessments',
-    templateUrl: './my-self-assessments.component.html',
-    styleUrls: ['./my-self-assessment.component.css'],
+    selector: 'jhi-my-risk-assessments',
+    templateUrl: './my-risk-assessments.component.html',
+    styleUrls: ['./my-risk-assessment.component.css'],
 })
-export class MySelfAssessmentsComponent implements OnInit, OnDestroy {
+export class MyRiskAssessmentsComponent implements OnInit, OnDestroy {
 
     private static NOT_FOUND = 404;
     private user: User;

@@ -27,7 +27,7 @@ import {createRequestOption} from '../../shared';
 import {SessionStorageService} from '../../../../../../node_modules/ngx-webstorage';
 import {Update} from '../../layouts/model/Update';
 import {DatasharingService} from '../../datasharing/datasharing.service';
-import {SelfAssessmentOverview} from '../../my-self-assessments/models/SelfAssessmentOverview.model';
+import {SelfAssessmentOverview} from "../../my-risk-assessments/models/SelfAssessmentOverview.model";
 
 export type EntityResponseType = HttpResponse<SelfAssessmentMgm>;
 
@@ -73,7 +73,7 @@ export class SelfAssessmentMgmService implements OnInit {
     getSelfAssessment(): SelfAssessmentMgm {
         const self = this.sessionStorage.retrieve(SelfAssessmentMgmService.SELF_ASSESSMENT_KEY);
         if (!self) {
-            this.router.navigate(['/my-self-assessments']);
+            this.router.navigate(['/my-risk-assessments']);
             return null;
         } else {
             this.selfAssessmentSelected = self;

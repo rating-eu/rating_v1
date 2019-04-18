@@ -17,13 +17,13 @@
 
 import {NgModule} from '@angular/core';
 import {Routes, RouterModule} from '@angular/router';
-import {MySelfAssessmentsComponent} from './my-self-assessments.component';
+import {MyRiskAssessmentsComponent} from './my-risk-assessments.component';
 import {UserRouteAccessService} from '../shared';
 
 const routes: Routes = [
     {
         path: '',
-        component: MySelfAssessmentsComponent,
+        component: MyRiskAssessmentsComponent,
         data: {
             pageTitle: 'hermeneutApp.selfAssessment.home.title',
             authorities: ['ROLE_CISO', 'ROLE_EXTERNAL_AUDIT'],
@@ -36,5 +36,5 @@ const routes: Routes = [
     imports: [RouterModule.forChild(routes)],
     exports: [RouterModule]
 })
-export class MySelfAssessmentsRoutingModule {
+export class MyRiskAssessmentsRoutingModule {
 }
