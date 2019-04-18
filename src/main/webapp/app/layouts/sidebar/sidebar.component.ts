@@ -186,7 +186,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                 ]
             },
             {
-                label: 'Self Assessment',
+                label: 'Risk Assessment',
                 visible: visibleByMySelf,
                 items: [
                     {
