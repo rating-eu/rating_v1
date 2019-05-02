@@ -17,7 +17,6 @@
 
 package eu.hermeneut.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -154,19 +153,6 @@ public class QuestionnaireStatus implements Serializable {
 
     public void setRole(Role role) {
         this.role = role;
-    }
-
-    public SelfAssessment getSelfAssessment() {
-        return selfAssessment;
-    }
-
-    public QuestionnaireStatus selfAssessment(SelfAssessment selfAssessment) {
-        this.selfAssessment = selfAssessment;
-        return this;
-    }
-
-    public void setSelfAssessment(SelfAssessment selfAssessment) {
-        this.selfAssessment = selfAssessment;
     }
 
     public CompanyProfile getCompanyProfile() {
