@@ -76,6 +76,10 @@ public class QuestionnaireStatus implements Serializable {
     @JoinColumn(name = "self_assessment_id", nullable = false)
     private SelfAssessment selfAssessment;
 
+    @ManyToOne
+    @JoinColumn(name = "company_profile_id")
+    private CompanyProfile companyProfile;
+
     @NotNull
     @ManyToOne
     @JoinColumn(name = "questionnaire_id", nullable = false)
@@ -163,6 +167,19 @@ public class QuestionnaireStatus implements Serializable {
 
     public void setSelfAssessment(SelfAssessment selfAssessment) {
         this.selfAssessment = selfAssessment;
+    }
+
+    public CompanyProfile getCompanyProfile() {
+        return companyProfile;
+    }
+
+    public QuestionnaireStatus companyProfile(CompanyProfile companyProfile) {
+        this.companyProfile = companyProfile;
+        return this;
+    }
+
+    public void setCompanyProfile(CompanyProfile companyProfile) {
+        this.companyProfile = companyProfile;
     }
 
     public Questionnaire getQuestionnaire() {
