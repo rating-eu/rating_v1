@@ -127,5 +127,6 @@
     <include file="config/liquibase/changelog/20190411142902_added_criticality_constraints.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20190502090051_added_questionnaire_status_company_column.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20190502113243_questionnaire_status_set_company_id.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190502130859_removed_questionnaire_status_self_id.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
 </databaseChangeLog>
