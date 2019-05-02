@@ -1,12 +1,12 @@
 /*
  * Copyright 2019 HERMENEUT Consortium
- *  
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *  
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- *  
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -41,7 +41,7 @@ import eu.hermeneut.domain.enumeration.Role;
 @Entity
 @Table(
     name = "questionnaire_status",
-    uniqueConstraints = @UniqueConstraint(columnNames = {"jhi_role", "self_assessment_id", "questionnaire_id"})
+    uniqueConstraints = @UniqueConstraint(columnNames = {"jhi_role", "questionnaire_id"})
 )
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 @Document(indexName = "questionnairestatus")
@@ -69,11 +69,6 @@ public class QuestionnaireStatus implements Serializable {
     @Enumerated(EnumType.STRING)
     @Column(name = "jhi_role", nullable = false)
     private Role role;
-
-    @NotNull
-    @ManyToOne
-    @JoinColumn(name = "self_assessment_id", nullable = false)
-    private SelfAssessment selfAssessment;
 
     @ManyToOne
     @JoinColumn(name = "company_profile_id")
