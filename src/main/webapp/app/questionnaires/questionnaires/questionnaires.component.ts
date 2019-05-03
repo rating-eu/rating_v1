@@ -20,9 +20,8 @@ import {QuestionnairesService} from '../questionnaires.service';
 import {QuestionnaireMgm} from '../../entities/questionnaire-mgm';
 import {Observable} from 'rxjs/Observable';
 import {DatasharingService} from '../../datasharing/datasharing.service';
-import {QuestionnaireStatusMgm} from '../../entities/questionnaire-status-mgm';
+import {QuestionnaireStatusMgm, QuestionnaireStatusMgmService, Role} from '../../entities/questionnaire-status-mgm';
 import {Status} from '../../entities/enumerations/QuestionnaireStatus.enum';
-import {SelfAssessmentMgm, SelfAssessmentMgmService} from '../../entities/self-assessment-mgm';
 import {AccountService, User, UserService} from '../../shared';
 import {Subscription} from 'rxjs/Subscription';
 import {ActivatedRoute, Params, Router} from '@angular/router';
@@ -31,6 +30,10 @@ import {MyAnswerMgmService} from '../../entities/my-answer-mgm';
 import {IdentifyThreatAgentService} from '../../identify-threat-agent/identify-threat-agent.service';
 import {EvaluateService} from '../../evaluate-weakness/evaluate-weakness.service';
 import {LocalStorageService} from 'ngx-webstorage';
+import {CompanyProfileMgm} from "../../entities/company-profile-mgm";
+import {HttpResponse} from "@angular/common/http";
+import {MyCompanyMgm, MyCompanyMgmService} from "../../entities/my-company-mgm";
+import {switchMap} from "rxjs/operators";
 
 @Component({
     selector: 'jhi-questionnaires',
@@ -42,79 +45,183 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
     private statusEnum = Status;
     private purposeEnum = QuestionnairePurpose;
     private purpose: QuestionnairePurpose;
+
+    private static CISO_ROLE = Role[Role.ROLE_CISO];
+    private static EXTERNAL_ROLE = Role[Role.ROLE_EXTERNAL_AUDIT];
+
     questionnaires$: Observable<QuestionnaireMgm[]>;
-    private selfAssessment: SelfAssessmentMgm;
-    private account: Account;
-    private user: User;
-    private subscriptions: Subscription[] = [];
+    questionnaires: QuestionnaireMgm[];
+
+    questionnaireStatuses$: Observable<QuestionnaireStatusMgm[]>;
     private questionnaireStatuses: QuestionnaireStatusMgm[];
-    private questionnaireStatusesMap: Map<number, QuestionnaireStatusMgm>;
+    //private questionnaireStatusesMap: Map<number, QuestionnaireStatusMgm>;
+
+    private companyProfile: CompanyProfileMgm;
+
+    private myCompany$: Observable<HttpResponse<MyCompanyMgm>>;
+    private myCompany: MyCompanyMgm;
+
+    private account$: Observable<HttpResponse<Account>>;
+    private account: Account;
+    private role: Role;
+
+    private user$: Observable<HttpResponse<User>>;
+    private user: User;
+
+    private subscriptions: Subscription[] = [];
+
 
     constructor(private route: ActivatedRoute,
                 private router: Router,
+                private myCompanyService: MyCompanyMgmService,
                 private questionnairesService: QuestionnairesService,
                 private dataSharingService: DatasharingService,
-                private selfAssessmentService: SelfAssessmentMgmService,
                 private accountService: AccountService,
                 private userService: UserService,
                 private myAnswerService: MyAnswerMgmService,
                 private identifyThreatAgentsService: IdentifyThreatAgentService,
                 private evaluateWeaknessService: EvaluateService,
-                private localStorage: LocalStorageService) {
+                private localStorage: LocalStorageService,
+                private questionnaireStatusService: QuestionnaireStatusMgmService
+    ) {
     }
 
     ngOnInit() {
         console.log('Questionnaires ON INIT:');
 
-        this.subscriptions.push(
-            this.route.params.subscribe(
-                (params: Params) => {
-                    const routeQuestionnairePurpose = params['purpose'];
-                    switch (routeQuestionnairePurpose) {
-                        case QuestionnairePurpose[QuestionnairePurpose.ID_THREAT_AGENT]: {
-                            this.purpose = QuestionnairePurpose.ID_THREAT_AGENT;
-                            break;
-                        }
-                        case QuestionnairePurpose[QuestionnairePurpose.SELFASSESSMENT]: {
-                            this.purpose = QuestionnairePurpose.SELFASSESSMENT;
-                            break;
-                        }
-                    }
+        const params$ = this.route.params;
 
-                    // this.questionnaires$ = this.questionnairesService.getAllQuestionnairesByPurpose(this.purpose);
-                    this.questionnaires$ = null;
-                    // In this version of the application we do not give the possibility to choose between multiple questionnaires
-                    this.loadQuestionnaire();
+        // GET the questionnaires by purpose
+        this.questionnaires$ = params$.pipe(
+            switchMap((params: Params) => {
+                const routeQuestionnairePurpose = params['purpose'];
+                switch (routeQuestionnairePurpose) {
+                    case QuestionnairePurpose[QuestionnairePurpose.ID_THREAT_AGENT]: {
+                        this.purpose = QuestionnairePurpose.ID_THREAT_AGENT;
+                        break;
+                    }
+                    case QuestionnairePurpose[QuestionnairePurpose.SELFASSESSMENT]: {
+                        this.purpose = QuestionnairePurpose.SELFASSESSMENT;
+                        break;
+                    }
                 }
-            )
+
+                return this.questionnairesService.getAllQuestionnairesByPurpose(this.purpose);
+            })
         );
+
+        // GET the account
+        this.account$ = this.questionnaires$.pipe(
+            switchMap((response: QuestionnaireMgm[]) => {
+                this.questionnaires = response;
+
+                return this.accountService.get();
+            })
+        );
+
+        // GET the user
+        this.user$ = this.account$.pipe(switchMap(
+            (response: HttpResponse<Account>) => {
+                this.account = response.body;
+
+                if (this.account['authorities'].includes(QuestionnairesComponent.CISO_ROLE)) {
+                    this.role = Role.ROLE_CISO;
+                } else if (this.account['authorities'].includes(QuestionnairesComponent.EXTERNAL_ROLE)) {
+                    this.role = Role.ROLE_EXTERNAL_AUDIT;
+                }
+
+                return this.userService.find(this.account['login']);
+            }
+        ));
+
+        // GET the MyCompany
+        this.myCompany$ = this.user$.pipe(
+            switchMap((response: HttpResponse<User>) => {
+                this.user = response.body;
+
+                return this.myCompanyService.findByUser(this.user.id);
+            })
+        );
+
+
+        this.questionnaireStatuses$ = this.myCompany$.pipe(
+            switchMap((response: HttpResponse<MyCompanyMgm>) => {
+                this.myCompany = response.body;
+                this.companyProfile = this.myCompany.companyProfile;
+
+                return this.questionnairesService.getQuestionnaireStatusesByCompanyProfileQuestionnairePurposeAndUser(this.companyProfile, this.purpose, this.user);
+            })
+        );
+
+        this.questionnaireStatuses$.subscribe(
+            (response: QuestionnaireStatusMgm[]) => {
+                this.questionnaireStatuses = response;
+
+                console.log("Questionnaire Statuses:");
+                console.log(this.questionnaireStatuses);
+
+                // Build the Map Questionnaire ==> Status
+                /*this.questionnaireStatusesMap = new Map<number, QuestionnaireStatusMgm>();
+                this.questionnaireStatuses.forEach((questionnaireStatus: QuestionnaireStatusMgm) => {
+                    this.questionnaireStatusesMap.set(questionnaireStatus.questionnaire.id, questionnaireStatus);
+                });*/
+            }
+        );
+
+        /*.subscribe(
+        (params: Params) => {
+            const routeQuestionnairePurpose = params['purpose'];
+            switch (routeQuestionnairePurpose) {
+                case QuestionnairePurpose[QuestionnairePurpose.ID_THREAT_AGENT]: {
+                    this.purpose = QuestionnairePurpose.ID_THREAT_AGENT;
+                    break;
+                }
+                case QuestionnairePurpose[QuestionnairePurpose.SELFASSESSMENT]: {
+                    this.purpose = QuestionnairePurpose.SELFASSESSMENT;
+                    break;
+                }
+            }
+
+            // TODO Check-Me
+            this.questionnaires$ = this.questionnairesService.getAllQuestionnairesByPurpose(this.purpose);
+            // In this version of the application we do not give the possibility to choose between multiple questionnaires
+            // this.loadQuestionnaire();
+        }
+    )
+);*/
     }
 
-    private async loadQuestionnaire() {
+    /*private async loadQuestionnaire() {
         const questionnaires = await this.questionnairesService.getAllQuestionnairesByPurpose(this.purpose).toPromise();
         console.log('Questionnaires: ');
         console.log(questionnaires);
 
-        this.selfAssessment = await this.selfAssessmentService.getSelfAssessment();
         this.account = (await this.accountService.get().toPromise()).body;
         this.user = (await this.userService.find(this.account['login']).toPromise()).body;
-        await this.setCurrentQuestionnaireAsyncVersion(questionnaires[0]);
+
+        if (this.user) {
+            this.companyProfile = (await this.myCompanyService.findByUser(this.user.id).toPromise()).body.companyProfile;
+        }
+
+        await this.setCurrentQuestionnaireStatusAsyncVersion(questionnaires[0]);
 
         if (questionnaires) {
             this.dataSharingService.currentQuestionnaire = questionnaires[0];
 
             switch (this.purpose) {
                 case QuestionnairePurpose.ID_THREAT_AGENT: {
-                    this.router.navigate(['./identify-threat-agent/questionnaires/' + this.purpose + '/questionnaire']);
+                    //this.router.navigate(['./identify-threat-agent/questionnaires/' + this.purpose + '/questionnaire']);
+                    this.router.navigate(['./identify-threat-agent/questionnaires/' + this.purpose]);
                     break;
                 }
                 case QuestionnairePurpose.SELFASSESSMENT: {
-                    this.router.navigate(['./evaluate-weakness/questionnaires/' + this.purpose + '/questionnaire']);
+                    //this.router.navigate(['./evaluate-weakness/questionnaires/' + this.purpose + '/questionnaire']);
+                    this.router.navigate(['./evaluate-weakness/questionnaires/' + this.purpose]);
                     break;
                 }
             }
         }
-    }
+    }*/
 
     ngOnDestroy() {
         if (this.subscriptions) {
@@ -124,27 +231,39 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
         }
     }
 
-    async setCurrentQuestionnaireAsyncVersion(questionnaire: QuestionnaireMgm) {
-        this.dataSharingService.currentQuestionnaire = questionnaire;
+    async setCurrentQuestionnaireStatusAsyncVersion(questionnaireStatus: QuestionnaireStatusMgm) {
+        this.dataSharingService.currentQuestionnaireStatus = questionnaireStatus;
         this.localStorage.store('purpose', this.purpose);
     }
 
-    setCurrentQuestionnaire(questionnaire: QuestionnaireMgm) {
-        if (!this.questionnaireStatusesMap) {
-            this.subscriptions.push(
-                this.questionnairesService.getQuestionnaireStatusesBySelfAssessmentAndUser(this.selfAssessment, this.user)
-                    .subscribe((response: QuestionnaireStatusMgm[]) => {
-                        this.questionnaireStatuses = response;
-                        this.questionnaireStatusesMap = new Map<number, QuestionnaireStatusMgm>();
-                        this.questionnaireStatuses.forEach((questionnaireStatus: QuestionnaireStatusMgm) => {
-                            this.questionnaireStatusesMap.set(questionnaireStatus.questionnaire.id, questionnaireStatus);
-                        });
-                    })
-            );
-        } else {
+    setCurrentQuestionnaireStatus(questionnaireStatus: QuestionnaireStatusMgm) {
+        console.log("Set current QuestionnaireStatus");
+        this.dataSharingService.currentQuestionnaireStatus = questionnaireStatus;
+    }
 
+    createNewQuestionnaireStatus() {
+        console.log("Create new questionnaire status...");
+
+        let questionnaireStatus$: Observable<HttpResponse<QuestionnaireStatusMgm>> = undefined;
+
+        switch (this.purpose) {
+            case QuestionnairePurpose.ID_THREAT_AGENT: {
+                break;
+            }
+            case QuestionnairePurpose.SELFASSESSMENT: {
+                const questionnaire: QuestionnaireMgm = this.questionnaires[0];
+                const questionnaireStatus = new QuestionnaireStatusMgm(undefined, Status.EMPTY, undefined, undefined, this.companyProfile, questionnaire, this.role, this.user, []);
+
+                questionnaireStatus$ = this.questionnaireStatusService.create(questionnaireStatus);
+
+                break;
+            }
         }
 
-        this.dataSharingService.currentQuestionnaire = questionnaire;
+        if (questionnaireStatus$) {
+            questionnaireStatus$.subscribe((response: HttpResponse<QuestionnaireStatusMgm>) => {
+                this.ngOnInit();
+            });
+        }
     }
 }

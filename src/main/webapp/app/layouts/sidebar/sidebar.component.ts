@@ -15,17 +15,17 @@
  *
  */
 
-import { Component, OnInit, ViewEncapsulation, AfterViewInit, HostListener } from '@angular/core';
-import { Principal } from '../../shared';
-import { DatasharingService } from '../../datasharing/datasharing.service';
-import { Update } from '../model/Update';
+import {Component, OnInit, ViewEncapsulation, AfterViewInit, HostListener} from '@angular/core';
+import {Principal} from '../../shared';
+import {DatasharingService} from '../../datasharing/datasharing.service';
+import {Update} from '../model/Update';
 
-import { MenuItem } from 'primeng/api';
-import { MyRole } from '../../entities/enumerations/MyRole.enum';
-import { SelfAssessmentMgm, SelfAssessmentMgmService } from '../../entities/self-assessment-mgm';
-import { LogoMgm, LogoMgmService } from '../../entities/logo-mgm';
-import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
-import { Router } from '@angular/router';
+import {MenuItem} from 'primeng/api';
+import {MyRole} from '../../entities/enumerations/MyRole.enum';
+import {SelfAssessmentMgm, SelfAssessmentMgmService} from '../../entities/self-assessment-mgm';
+import {LogoMgm, LogoMgmService} from '../../entities/logo-mgm';
+import {HttpErrorResponse, HttpResponse} from '@angular/common/http';
+import {Router} from '@angular/router';
 
 @Component({
     selector: 'jhi-sidebar',
@@ -143,8 +143,8 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
     private fetchSecondaryLogo() {
         this.logoService.getSecondaryLogo().subscribe((logo: HttpResponse<LogoMgm>) => {
-            this.secondaryLogo = logo.body;
-        },
+                this.secondaryLogo = logo.body;
+            },
             (error: HttpErrorResponse) => {
                 if (error.status === 404) {
                     console.warn('Secondary logo not found!');
@@ -176,6 +176,18 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                         label: 'My Company',
                         icon: 'fa fa-home',
                         routerLink: ['/my-company'],
+                        visible: isCISO
+                    },
+                    {
+                        label: "Threat Agents",
+                        icon: "fas fa-user-secret",
+                        routerLink: ['/identify-threat-agent/questionnaires/ID_THREAT_AGENT'],
+                        visible: isCISO
+                    },
+                    {
+                        label: "Vulnerabilities",
+                        icon: "fa fa-bomb",
+                        routerLink: ['/evaluate-weakness/questionnaires/SELFASSESSMENT'],
                         visible: isCISO
                     },
                     {

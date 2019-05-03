@@ -46,6 +46,7 @@ import {QuestionnaireStatusMgmCustomService} from '../../../../entities/question
 import {switchMap} from 'rxjs/operators';
 import {NgbModal, NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
 import {PartialSubmitDialogComponent} from '../partial-submit-dialog/partial-submit-dialog.component';
+import {MyCompanyMgm, MyCompanyMgmService} from "../../../../entities/my-company-mgm";
 
 @Component({
     selector: 'jhi-dynamic-form',
@@ -82,7 +83,7 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
     private account: Account;
     private role: Role;
     private user: User;
-    private selfAssessment: SelfAssessmentMgm;
+    private myCompany: MyCompanyMgm;
     private subscriptions: Subscription[] = [];
     private _questionnaire: QuestionnaireMgm;
 
@@ -91,8 +92,8 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
                 private router: Router,
                 private myAnswerService: MyAnswerMgmService,
                 private answerService: AnswerMgmService,
-                private selfAssessmentService: SelfAssessmentMgmService,
                 private questionnaireStatusService: QuestionnaireStatusMgmService,
+                private myCompanyService: MyCompanyMgmService,
                 private questionnaireStatusCustomService: QuestionnaireStatusMgmCustomService,
                 private accountService: AccountService,
                 private userService: UserService,
@@ -127,7 +128,7 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
         // this.cisoEditMode = true;
         // this.externalAuditEditMode = true;
 
-        this.selfAssessment = this.selfAssessmentService.getSelfAssessment();
+        //this.selfAssessment = this.selfAssessmentService.getSelfAssessment();
 
         // 1) Here all the input properties are expected to be set!!!
         // 2) Get the logged user and its ROLE.
@@ -183,12 +184,20 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
             }
         );
 
-        user$.toPromise().then(
-            (response: HttpResponse<User>) => {
+        const myCompany$ = user$.pipe(
+            switchMap((response: HttpResponse<User>) => {
                 this.user = response.body;
 
+                return this.myCompanyService.findByUser(this.user.id);
+            })
+        );
+
+        myCompany$.toPromise().then(
+            (response: HttpResponse<MyCompanyMgm>) => {
+                this.myCompany = response.body;
+
                 this.questionnaireStatusCustomService
-                    .getByRoleSelfAssessmentAndQuestionnaire(DynamicFormComponent.CISO_ROLE, this.selfAssessment.id, this.questionnaire.id)
+                    .getByRoleCompanyProfileAndQuestionnaire(DynamicFormComponent.CISO_ROLE, this.myCompany.companyProfile.id, this.questionnaire.id)
                     .toPromise()
                     .then(
                         (response2: HttpResponse<QuestionnaireStatusMgm>) => {
@@ -204,7 +213,7 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
                             if (this.questionnaire.purpose === QuestionnairePurpose.SELFASSESSMENT) {
 
                                 this.questionnaireStatusCustomService
-                                    .getByRoleSelfAssessmentAndQuestionnaire(DynamicFormComponent.EXTERNAL_ROLE, this.selfAssessment.id, this.questionnaire.id).toPromise()
+                                    .getByRoleCompanyProfileAndQuestionnaire(DynamicFormComponent.EXTERNAL_ROLE, this.myCompany.companyProfile.id, this.questionnaire.id).toPromise()
                                     .then(
                                         (response3: HttpResponse<QuestionnaireStatusMgm>) => {
                                             this.externalQuestionnaireStatus = response3.body;
@@ -320,7 +329,7 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
 
         if (!this.cisoQuestionnaireStatus) {
             questionnaireStatus = new QuestionnaireStatusMgm(undefined, Status.FULL, null, null,
-                this.selfAssessment, this.questionnaire, this.role, this.user, []);
+                this.myCompany.companyProfile, this.questionnaire, this.role, this.user, []);
         } else {
             questionnaireStatus = this.cisoQuestionnaireStatus;
         }
@@ -377,7 +386,7 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
         let questionnaireStatus = null;
 
         if (!this.cisoQuestionnaireStatus) {
-            questionnaireStatus = new QuestionnaireStatusMgm(undefined, Status.FULL, null, null, this.selfAssessment, this.questionnaire, this.role, this.user, []);
+            questionnaireStatus = new QuestionnaireStatusMgm(undefined, Status.FULL, null, null, this.myCompany.companyProfile, this.questionnaire, this.role, this.user, []);
         } else {
             questionnaireStatus = this.cisoQuestionnaireStatus;
         }
@@ -403,6 +412,7 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
                 modalRef.result.then((value: boolean) => {
                     if (value === true) {
                         questionnaireStatus = this.continueEvaluateWeakness(questionnaireStatus);
+                        this.loading = false;
                     } else {
                         this.loading = false;
                         return;
@@ -412,6 +422,7 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
             }
             case Status.FULL: {
                 questionnaireStatus = this.continueEvaluateWeakness(questionnaireStatus);
+                this.loading = false;
                 break;
             }
         }
@@ -433,7 +444,7 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
         let questionnaireStatus = null;
 
         if (!this.externalQuestionnaireStatus) {
-            questionnaireStatus = new QuestionnaireStatusMgm(undefined, Status.FULL, null, null, this.selfAssessment, this.questionnaire, this.role, this.user, []);
+            questionnaireStatus = new QuestionnaireStatusMgm(undefined, Status.FULL, null, null, this.myCompany.companyProfile, this.questionnaire, this.role, this.user, []);
         } else {
             questionnaireStatus = this.externalQuestionnaireStatus;
         }
@@ -666,7 +677,17 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
             questionnaireStatus$ = this.questionnaireStatusService.update(questionnaireStatus);
         }
 
-        const selfAssessment$: Observable<HttpResponse<SelfAssessmentMgm>> = questionnaireStatus$
+        questionnaireStatus$.toPromise().then(
+            (qStatusResponse: HttpResponse<QuestionnaireStatusMgm>) => {
+                questionnaireStatus = qStatusResponse.body;
+                this.cisoQuestionnaireStatus = questionnaireStatus;
+
+                this.loading = false;
+                this.router.navigate(['/dashboard']);
+            }
+        );
+
+        /*const selfAssessment$: Observable<HttpResponse<SelfAssessmentMgm>> = questionnaireStatus$
             .pipe(
                 switchMap((qStatusResponse: HttpResponse<QuestionnaireStatusMgm>) => {
                     questionnaireStatus = qStatusResponse.body;
@@ -694,19 +715,20 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
 
                     return this.selfAssessmentService.update(this.selfAssessment);
                 })
-            );
+            );*/
 
-        selfAssessment$.toPromise().then(
+        /*selfAssessment$.toPromise().then(
             (selfAssessmentResponse: HttpResponse<SelfAssessmentMgm>) => {
-                this.selfAssessment = selfAssessmentResponse.body;
-                this.selfAssessmentService.setSelfAssessment(this.selfAssessment);
+                // this.selfAssessment = selfAssessmentResponse.body;
+                // this.selfAssessmentService.setSelfAssessment(this.selfAssessment);
                 this.loading = false;
                 this.router.navigate(['/dashboard']);
             }
         ).catch(() => {
             // TODO Error management
             this.loading = false;
-        });
+        });*/
+
         return questionnaireStatus;
     }
 
@@ -721,33 +743,18 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
             questionnaireStatus$ = this.questionnaireStatusService.update(questionnaireStatus);
         }
 
-        const selfAssessment$: Observable<HttpResponse<SelfAssessmentMgm>> = questionnaireStatus$.pipe(
-            switchMap((qStatusResponse: HttpResponse<QuestionnaireStatusMgm>) => {
+        questionnaireStatus$.toPromise().then(
+            (qStatusResponse: HttpResponse<QuestionnaireStatusMgm>) => {
                 questionnaireStatus = qStatusResponse.body;
                 this.cisoQuestionnaireStatus = questionnaireStatus;
-
-                // #4 Update the SelfAssessment
-                this.selfAssessment.user = this.user;
-
-                return this.selfAssessmentService.update(this.selfAssessment);
-            })
-        );
-
-        selfAssessment$.toPromise()
-            .then((selfAssessmentResponse: HttpResponse<SelfAssessmentMgm>) => {
-                this.selfAssessment = selfAssessmentResponse.body;
-                this.selfAssessmentService.setSelfAssessment(this.selfAssessment);
-
                 this.loading = false;
-                this.router.navigate(['/dashboard']);
-            }).catch(() => {
+                this.router.navigate(['/evaluate-weakness/questionnaires/SELFASSESSMENT']);
+                return questionnaireStatus;
+            }
+        ).catch(() => {
             // TODO Error management
             this.loading = false;
         });
-
-        // For now don't store the attackStrategies but recalculate them and their likelihood based on the stored
-        // MyAnswers
-        return questionnaireStatus;
     }
 
     private continueExternalRefinement(questionnaireStatus: any) {
@@ -767,7 +774,7 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
                 questionnaireStatus = response.body;
                 this.externalQuestionnaireStatus = questionnaireStatus;
 
-                this.selfAssessmentService.setSelfAssessment(this.selfAssessment);
+                //this.selfAssessmentService.setSelfAssessment(this.selfAssessment);
 
                 this.loading = false;
                 this.router.navigate(['/my-risk-assessments']);

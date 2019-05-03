@@ -57,32 +57,10 @@ export class MyCompanyComponent implements OnInit {
                         },
                         (error: any) => {
                             this.error = error;
-
-                            /*if (this.error.status === MyCompanyComponent.NOT_FOUND) {
-                                this.jhiAlertService.error('http.' + this.error.status, null, null);
-
-                                this.companyProfileService.query().subscribe(
-                                    (response4: HttpResponse<CompanyProfileMgm[]>) => {
-                                        this.companyProfiles = response4.body;
-                                    }
-                                );
-                            }*/
                         }
                     );
                 }
             });
         });
     }
-
-    /*saveMyCompany() {
-        this.myCompany = new MyCompanyMgm(undefined, this.user, this.companyProfile);
-        this.myCompanyService.create(this.myCompany).subscribe((response: HttpResponse<MyCompanyMgm>) => {
-            this.myCompany = response.body;
-            this.jhiAlertService.success('hermeneutApp.messages.saved', null, null);
-        });
-    }*/
-
-    /*previousState() {
-        window.history.back();
-    }*/
 }

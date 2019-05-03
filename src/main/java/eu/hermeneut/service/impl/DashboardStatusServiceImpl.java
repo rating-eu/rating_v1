@@ -1,12 +1,12 @@
 /*
  * Copyright 2019 HERMENEUT Consortium
- *  
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *  
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- *  
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -56,6 +56,9 @@ public class DashboardStatusServiceImpl implements DashboardStatusService {
     @Autowired
     private AttackCostService attackCostService;
 
+    @Autowired
+    private CompanyProfileService companyProfileService;
+
     @Override
     public Status getAssetClusteringStatus(Long selfAssessmentID) {
         Status status = Status.EMPTY;
@@ -71,12 +74,12 @@ public class DashboardStatusServiceImpl implements DashboardStatusService {
     }
 
     @Override
-    public Status getIdentifyThreatAgentsStatus(Long selfAssessmentID) {
+    public Status getIdentifyThreatAgentsStatus(Long companyProfileID) {
         Status status = Status.EMPTY;
-        SelfAssessment selfAssessment = this.selfAssessmentService.findOne(selfAssessmentID);
+        CompanyProfile companyProfile = this.companyProfileService.findOne(companyProfileID);
 
-        if (selfAssessment != null) {
-            QuestionnaireStatus questionnaireStatus = this.questionnaireStatusService.findAllBySelfAssessmentAndQuestionnairePurpose(selfAssessmentID, QuestionnairePurpose.ID_THREAT_AGENT).stream().findFirst().orElse(null);
+        if (companyProfile != null) {
+            QuestionnaireStatus questionnaireStatus = this.questionnaireStatusService.findAllByCompanyProfileAndQuestionnairePurpose(companyProfileID, QuestionnairePurpose.ID_THREAT_AGENT).stream().findFirst().orElse(null);
 
             status = questionnaireStatus != null ? questionnaireStatus.getStatus() : Status.EMPTY;
         }
@@ -85,12 +88,12 @@ public class DashboardStatusServiceImpl implements DashboardStatusService {
     }
 
     @Override
-    public Status getAssessVulnerabilitiesStatus(Long selfAssessmentID) {
+    public Status getAssessVulnerabilitiesStatus(Long companyProfileID) {
         Status status = Status.EMPTY;
-        SelfAssessment selfAssessment = this.selfAssessmentService.findOne(selfAssessmentID);
+        CompanyProfile companyProfile = this.companyProfileService.findOne(companyProfileID);
 
-        if (selfAssessment != null) {
-            QuestionnaireStatus questionnaireStatus = this.questionnaireStatusService.findBySelfAssessmentRoleAndQuestionnairePurpose(selfAssessmentID, Role.ROLE_CISO, QuestionnairePurpose.SELFASSESSMENT);
+        if (companyProfile != null) {
+            QuestionnaireStatus questionnaireStatus = this.questionnaireStatusService.findByCompanyProfileRoleAndQuestionnairePurpose(companyProfileID, Role.ROLE_CISO, QuestionnairePurpose.SELFASSESSMENT);
 
             status = questionnaireStatus != null ? questionnaireStatus.getStatus() : Status.EMPTY;
         }
@@ -99,12 +102,12 @@ public class DashboardStatusServiceImpl implements DashboardStatusService {
     }
 
     @Override
-    public Status getRefineVulnerabilitiesStatus(Long selfAssessmentID) {
+    public Status getRefineVulnerabilitiesStatus(Long companyProfileID) {
         Status status = Status.EMPTY;
-        SelfAssessment selfAssessment = this.selfAssessmentService.findOne(selfAssessmentID);
+        CompanyProfile companyProfile = this.companyProfileService.findOne(companyProfileID);
 
-        if (selfAssessment != null) {
-            QuestionnaireStatus questionnaireStatus = this.questionnaireStatusService.findBySelfAssessmentRoleAndQuestionnairePurpose(selfAssessmentID, Role.ROLE_EXTERNAL_AUDIT, QuestionnairePurpose.SELFASSESSMENT);
+        if (companyProfile != null) {
+            QuestionnaireStatus questionnaireStatus = this.questionnaireStatusService.findByCompanyProfileRoleAndQuestionnairePurpose(companyProfileID, Role.ROLE_EXTERNAL_AUDIT, QuestionnairePurpose.SELFASSESSMENT);
 
             status = questionnaireStatus != null ? questionnaireStatus.getStatus() : Status.EMPTY;
         }

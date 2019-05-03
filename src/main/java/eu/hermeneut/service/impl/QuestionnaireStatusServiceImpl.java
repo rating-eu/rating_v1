@@ -1,12 +1,12 @@
 /*
  * Copyright 2019 HERMENEUT Consortium
- *  
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *  
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- *  
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -17,19 +17,15 @@
 
 package eu.hermeneut.service.impl;
 
-import eu.hermeneut.domain.SelfAssessment;
 import eu.hermeneut.domain.enumeration.QuestionnairePurpose;
 import eu.hermeneut.domain.enumeration.Role;
-import eu.hermeneut.service.MyAnswerService;
 import eu.hermeneut.service.QuestionnaireStatusService;
 import eu.hermeneut.domain.QuestionnaireStatus;
 import eu.hermeneut.repository.QuestionnaireStatusRepository;
 import eu.hermeneut.repository.search.QuestionnaireStatusSearchRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -138,36 +134,32 @@ public class QuestionnaireStatusServiceImpl implements QuestionnaireStatusServic
     }
 
     @Override
-    @Transactional(readOnly = true)
-    public List<QuestionnaireStatus> findAllBySelfAssessmentAndUser(Long selfAssessmentID, Long userID) {
-        log.debug("Request to get all QuestionnaireStatuses by SelfAssessment");
-        return questionnaireStatusRepository.findAllBySelfAssessmentAndUser(selfAssessmentID, userID);
+    public List<QuestionnaireStatus> findAllByCompanyProfileAndUser(Long companyProfileID, Long userID) {
+        return this.questionnaireStatusRepository.findAllByCompanyProfileAndUser(companyProfileID, userID);
     }
 
     @Override
-    @Transactional(readOnly = true)
-    public QuestionnaireStatus findByRoleSelfAssessmentAndQuestionnaire(String role, Long selfAssessmentID, Long questionnaireID) {
-        log.debug("Request to get all QuestionnaireStatuses by Role, SelfAssessment, and Questionnaire");
-        Role roleEnum = Role.valueOf(role);
-        return this.questionnaireStatusRepository.findByRoleSelfAssessmentAndQuestionnaire(roleEnum, selfAssessmentID, questionnaireID);
+    public QuestionnaireStatus findByRoleCompanyProfileAndQuestionnaire(Role role, Long companyProfileID, Long questionnaireID) {
+        return this.questionnaireStatusRepository.findAllByRoleCompanyProfileAndQuestionnaire(role, companyProfileID, questionnaireID);
     }
 
     @Override
-    @Transactional(readOnly = true)
-    public List<QuestionnaireStatus> findAllBySelfAssessment(Long selfAssessmentID) {
-        log.debug("Request to get all QuestionnaireStatuses by SelfAssessment and User");
-        return questionnaireStatusRepository.findAllBySelfAssessment(selfAssessmentID);
+    public List<QuestionnaireStatus> findAllByCompanyProfile(Long companyProfileID) {
+        return this.questionnaireStatusRepository.findAllByCompanyProfile(companyProfileID);
     }
 
     @Override
-    public List<QuestionnaireStatus> findAllBySelfAssessmentAndQuestionnairePurpose(Long selfAssessmentID, QuestionnairePurpose purpose) {
-        log.debug("Request to get QuestionnaireStatus by SelfAssessment: {} and QuestionnairePurpose: {}", selfAssessmentID, purpose);
-        return questionnaireStatusRepository.findAllBySelfAssessmentAndQuestionnairePurpose(selfAssessmentID, purpose);
+    public List<QuestionnaireStatus> findAllByCompanyProfileAndQuestionnairePurpose(Long companyProfileID, QuestionnairePurpose purpose) {
+        return this.questionnaireStatusRepository.findAllByCompanyProfileAndQuestionnairePurpose(companyProfileID, purpose);
     }
 
     @Override
-    public QuestionnaireStatus findBySelfAssessmentRoleAndQuestionnairePurpose(Long selfAssessmentID, Role role, QuestionnairePurpose purpose) {
-        log.debug("Request to get QuestionnaireStatus by SelfAssessment: {} and QuestionnairePurpose: {}", selfAssessmentID, purpose);
-        return questionnaireStatusRepository.findOneBySelfAssessmentRoleAndQuestionnairePurpose(selfAssessmentID, role, purpose);
+    public QuestionnaireStatus findByCompanyProfileRoleAndQuestionnairePurpose(Long companyProfileID, Role role, QuestionnairePurpose purpose) {
+        return this.questionnaireStatusRepository.findAllByCompanyProfileRoleAndQuestionnairePurpose(companyProfileID, role, purpose);
+    }
+
+    @Override
+    public List<QuestionnaireStatus> findAllByCompanyProfileQuestionnairePurposeAndUser(Long companyProfileID, QuestionnairePurpose questionnairePurpose, Long userID) {
+        return this.questionnaireStatusRepository.findAllByCompanyProfileQuestionnairePurposeAndUser(companyProfileID, questionnairePurpose, userID);
     }
 }

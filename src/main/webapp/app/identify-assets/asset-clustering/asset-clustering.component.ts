@@ -134,7 +134,7 @@ export class AssetClusteringComponent implements OnInit, OnDestroy {
             /*if (this.account['authorities'].includes(MyRole.ROLE_CISO) && this.mySelf) {
                 for (const qs of this.questionnaries) {
                     // controllo esistenza questionnaire status
-                    this.questionnaireStatusService.getByRoleSelfAssessmentAndQuestionnaire(MyRole.ROLE_CISO.toString(), this.mySelfAssessmentService.getSelfAssessment().id, qs.id)
+                    this.questionnaireStatusService.getByRoleCompanyProfileAndQuestionnaire(MyRole.ROLE_CISO.toString(), this.mySelfAssessmentService.getSelfAssessment().id, qs.id)
                         .toPromise()
                         .then((status) => {
                             if (status.body) {

@@ -28,13 +28,16 @@ import { Update } from '../layouts/model/Update';
 import { SelfAssessmentMgm } from '../entities/self-assessment-mgm';
 import { HttpClient } from '@angular/common/http';
 import { MyRole } from '../entities/enumerations/MyRole.enum';
+import {QuestionnaireStatusMgm} from "../entities/questionnaire-status-mgm";
 
 @Injectable()
 export class DatasharingService {
 
     private _threatAgentsMap: Map<String, Couple<ThreatAgentMgm, Fraction>>;
     private _identifyThreatAgentsFormDataMap: Map<String, AnswerMgm>;
-    private _currentQuestionnaire: QuestionnaireMgm;
+    // Fix-Me
+    // private _currentQuestionnaire: QuestionnaireMgm;
+    private _currentQuestionnaireStatus: QuestionnaireStatusMgm;
 
     // ===Observables-BehaviorSubjects===
 
@@ -67,12 +70,20 @@ export class DatasharingService {
         this._identifyThreatAgentsFormDataMap = value;
     }
 
-    get currentQuestionnaire(): QuestionnaireMgm {
+    /*get currentQuestionnaire(): QuestionnaireMgm {
         return this._currentQuestionnaire;
     }
 
     set currentQuestionnaire(value: QuestionnaireMgm) {
         this._currentQuestionnaire = value;
+    }*/
+
+    get currentQuestionnaireStatus(): QuestionnaireStatusMgm {
+        return this._currentQuestionnaireStatus;
+    }
+
+    set currentQuestionnaireStatus(value: QuestionnaireStatusMgm) {
+        this._currentQuestionnaireStatus = value;
     }
 
     updateLayout(layoutUpdate: Update) {

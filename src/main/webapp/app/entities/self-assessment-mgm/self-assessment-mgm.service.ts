@@ -73,7 +73,7 @@ export class SelfAssessmentMgmService implements OnInit {
     getSelfAssessment(): SelfAssessmentMgm {
         const self = this.sessionStorage.retrieve(SelfAssessmentMgmService.SELF_ASSESSMENT_KEY);
         if (!self) {
-            this.router.navigate(['/my-risk-assessments']);
+            //this.router.navigate(['/my-risk-assessments']);
             return null;
         } else {
             this.selfAssessmentSelected = self;

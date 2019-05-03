@@ -17,9 +17,11 @@
 
 package eu.hermeneut.service.result;
 
+import eu.hermeneut.domain.ThreatAgent;
 import eu.hermeneut.domain.result.Result;
 
 import java.util.Map;
+import java.util.Set;
 
 public interface ResultService {
     Result getThreatAgentsResult(Long selfAssessmentID);
@@ -34,4 +36,7 @@ public interface ResultService {
      * @return the MAP of the levels of interest of the threat-agents
      */
     Map<Long, Float> getLevelsOfInterest(Long selfAssessmentID);
+
+
+    Set<ThreatAgent> getThreatAgents(Long companyProfileID);
 }
