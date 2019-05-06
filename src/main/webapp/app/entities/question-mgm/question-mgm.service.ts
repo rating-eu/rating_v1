@@ -26,6 +26,7 @@ import {QuestionnaireMgm} from '../questionnaire-mgm';
 import {MyAnswerMgm} from '../my-answer-mgm/my-answer-mgm.model';
 import { QuestionMgm } from './question-mgm.model';
 import { createRequestOption } from '../../shared';
+import {ContainerType} from "../enumerations/ContainerType.enum";
 
 export type EntityResponseType = HttpResponse<QuestionMgm>;
 
@@ -35,6 +36,7 @@ export class QuestionMgmService {
     private resourceUrl =  SERVER_API_URL + 'api/questions';
     private resourceSearchUrl = SERVER_API_URL + 'api/_search/questions';
     private questionsByQuestionnaireIDAPIUrl = SERVER_API_URL + 'api/questions/by/questionnaire/{questionnaireID}';
+    private questionsByQuestionnaireAndSection = SERVER_API_URL + 'api/questions/by/questionnaire/{questionnaireID}/section/{section}';
 
     constructor(private http: HttpClient, private dateUtils: JhiDateUtils) { }
 
@@ -65,6 +67,17 @@ export class QuestionMgmService {
         const options = createRequestOption();
 
         return this.http.get<QuestionnaireMgm[]>(this.questionsByQuestionnaireIDAPIUrl.replace('{questionnaireID}', String(questionnaireID)), {
+            params: options,
+            observe: 'response'
+        }).map((res: HttpResponse<MyAnswerMgm[]>) => this.convertArrayResponse(res));
+    }
+
+    getQuestionsByQuestionnaireAndSection(questionnaireID: number, section: ContainerType): Observable<HttpResponse<QuestionMgm[]>> {
+        const options = createRequestOption();
+
+        return this.http.get<QuestionnaireMgm[]>(this.questionsByQuestionnaireAndSection
+            .replace('{questionnaireID}', String(questionnaireID))
+            .replace('{section}', ContainerType[section]), {
             params: options,
             observe: 'response'
         }).map((res: HttpResponse<MyAnswerMgm[]>) => this.convertArrayResponse(res));

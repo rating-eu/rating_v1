@@ -14,17 +14,9 @@
  * limitations under the License.
  *
  */
-
-import {BaseEntity} from './../../shared';
-import {ContainerType} from "../enumerations/ContainerType.enum";
-
-export class ContainerMgm implements BaseEntity {
-    constructor(
-        public id?: number,
-        public name?: string,
-        public description?: string,
-        public containerType?: ContainerType,
-        public created?: any,
-    ) {
-    }
+export enum ContainerType {
+    'HUMAN' = <any>'HUMAN',
+    'IT' = <any>'IT',
+    'PHYSICAL' = <any>'PHYSICAL',
+    'INTANGIBLE' = <any>'INTANGIBLE'
 }

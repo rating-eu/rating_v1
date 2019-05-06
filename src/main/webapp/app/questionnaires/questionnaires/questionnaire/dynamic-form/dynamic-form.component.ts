@@ -26,16 +26,12 @@ import * as CryptoJS from 'crypto-js';
 import {Couple} from '../../../../utils/couple.class';
 import {DatasharingService} from '../../../../datasharing/datasharing.service';
 import {Router} from '@angular/router';
-import {
-    QuestionnaireStatusMgm,
-    QuestionnaireStatusMgmService
-} from '../../../../entities/questionnaire-status-mgm';
+import {QuestionnaireStatusMgm, QuestionnaireStatusMgmService} from '../../../../entities/questionnaire-status-mgm';
 import {Status} from '../../../../entities/enumerations/QuestionnaireStatus.enum';
 import {QuestionnaireMgm} from '../../../../entities/questionnaire-mgm';
 import {QuestionnairePurpose} from '../../../../entities/enumerations/QuestionnairePurpose.enum';
 import {MyAnswerMgm, MyAnswerMgmService} from '../../../../entities/my-answer-mgm';
 import {AccountService, User, UserService} from '../../../../shared';
-import {SelfAssessmentMgm, SelfAssessmentMgmService} from '../../../../entities/self-assessment-mgm';
 import {Subscription} from 'rxjs/Subscription';
 import {FormUtils} from '../../../utils/FormUtils';
 import {forkJoin} from 'rxjs/observable/forkJoin';
@@ -47,6 +43,7 @@ import {NgbModal, NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
 import {PartialSubmitDialogComponent} from '../partial-submit-dialog/partial-submit-dialog.component';
 import {MyCompanyMgm, MyCompanyMgmService} from "../../../../entities/my-company-mgm";
 import {Role} from "../../../../entities/enumerations/Role.enum";
+import {ContainerType} from "../../../../entities/enumerations/ContainerType.enum";
 
 @Component({
     selector: 'jhi-dynamic-form',
@@ -69,6 +66,10 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
     purposeEnum = QuestionnairePurpose;
 
     questionsArray: QuestionMgm[];
+    humanQuestionsArray: QuestionMgm[];
+    itQuestionsArray: QuestionMgm[];
+    physicalQuestionsArray: QuestionMgm[];
+
     /**
      * Map QuestionID ==> Question
      */
@@ -125,22 +126,16 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
      input properties. Called once, after the first ngOnChanges().
      */
     ngOnInit() {
-        // this.cisoEditMode = true;
-        // this.externalAuditEditMode = true;
-
-        //this.selfAssessment = this.selfAssessmentService.getSelfAssessment();
-
-        // 1) Here all the input properties are expected to be set!!!
-        // 2) Get the logged user and its ROLE.
-        // 3) Get the QuestionnairePurpose.
-        // 4) Create the form based on points 2 & 3.
-
         const account$ = this.accountService.get();
         const questions$ = this.questionService.getQuestionsByQuestionnaire(this.questionnaire.id);
-        const questionsAndAccount$ = forkJoin(account$, questions$);
+        const humanQuestions$ = this.questionService.getQuestionsByQuestionnaireAndSection(this.questionnaire.id, ContainerType.HUMAN);
+        const itQuestions$ = this.questionService.getQuestionsByQuestionnaireAndSection(this.questionnaire.id, ContainerType.IT);
+        const physicalQuestions$ = this.questionService.getQuestionsByQuestionnaireAndSection(this.questionnaire.id, ContainerType.PHYSICAL);
+
+        const questionsAndAccount$ = forkJoin(account$, questions$, humanQuestions$, itQuestions$, physicalQuestions$);
 
         const user$ = questionsAndAccount$.mergeMap(
-            (response: [HttpResponse<Account>, HttpResponse<QuestionMgm[]>]) => {
+            (response: [HttpResponse<Account>, HttpResponse<QuestionMgm[]>, HttpResponse<QuestionMgm[]>, HttpResponse<QuestionMgm[]>, HttpResponse<QuestionMgm[]>]) => {
                 this.account = response[0].body;
                 if (this.account['authorities'].includes(DynamicFormComponent.CISO_ROLE)) {
                     this.role = Role.ROLE_CISO;
@@ -149,6 +144,12 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
                 }
 
                 this.questionsArray = response[1].body;
+
+                // PlaceHolders for the questions of the sections
+                const _humanQuestions: QuestionMgm[] = response[2].body;
+                const _itQuestions: QuestionMgm[] = response[3].body;
+                const _physicalQuestions: QuestionMgm[] = response[4].body;
+
                 this.questionsArray.sort((a: QuestionMgm, b: QuestionMgm) => {
                     return a.order - b.order;
                 });
@@ -165,6 +166,29 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
                             }
                             case QuestionnairePurpose.SELFASSESSMENT: {
                                 this.form = this.questionControlService.toFormGroupCISOSelfAssessment(this.questionsArray);
+
+                                // Populate the array with the questions of the corresponding section
+                                // Pay attention to use the same object reference used to build the form, otherwise
+                                // the patch value will not work.
+
+                                if (_humanQuestions && _itQuestions && _physicalQuestions) {
+                                    this.humanQuestionsArray = [];
+                                    this.itQuestionsArray = [];
+                                    this.physicalQuestionsArray = [];
+
+                                    _humanQuestions.forEach(question => {
+                                        this.humanQuestionsArray.push(this.questionsArrayMap.get(question.id));
+                                    });
+
+                                    _itQuestions.forEach(question => {
+                                        this.itQuestionsArray.push(this.questionsArrayMap.get(question.id));
+                                    });
+
+                                    _physicalQuestions.forEach(question => {
+                                        this.physicalQuestionsArray.push(this.questionsArrayMap.get(question.id));
+                                    });
+                                }
+
                                 break;
                             }
                         }
@@ -221,49 +245,6 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
 
                     this.resizeAnswerHeighs();
                 }
-
-
-                /*this.questionnaireStatusCustomService
-                    .getByRoleCompanyProfileAndQuestionnaire(DynamicFormComponent.CISO_ROLE, this.myCompany.companyProfile.id, this.questionnaire.id)
-                    .toPromise()
-                    .then(
-                        (response2: HttpResponse<QuestionnaireStatusMgm[]>) => {//TODO Fix-Me
-                            this.cisoQuestionnaireStatus = response2.body[0];
-                            this.cisoQuestionnaireStatus = this.dataSharingSerivce
-
-
-                            if (this.cisoQuestionnaireStatus && this.cisoQuestionnaireStatus.answers && this.cisoQuestionnaireStatus.answers.length > 0) {
-                                this.cisoMyAnswers = this.cisoQuestionnaireStatus.answers;
-
-                                // Restore the checked status of the Form inputs
-                                this.form.patchValue(this.myAnswersToFormValue(this.cisoMyAnswers, this.questionsArrayMap));
-                            }
-
-                            if (this.questionnaire.purpose === QuestionnairePurpose.SELFASSESSMENT) {
-
-                                this.questionnaireStatusCustomService
-                                    .getByRoleCompanyProfileAndQuestionnaire(DynamicFormComponent.EXTERNAL_ROLE, this.myCompany.companyProfile.id, this.questionnaire.id).toPromise()
-                                    .then(
-                                        (response3: HttpResponse<QuestionnaireStatusMgm>) => {
-                                            this.externalQuestionnaireStatus = response3.body;
-
-                                            if (this.externalQuestionnaireStatus &&
-                                                this.externalQuestionnaireStatus.answers &&
-                                                this.externalQuestionnaireStatus.answers.length > 0) {
-                                                this.externalMyAnswers = this.externalQuestionnaireStatus.answers;
-
-                                                const formValue: {} = this.myAnswersToFormValue(this.cisoMyAnswers, this.questionsArrayMap, this.externalMyAnswers);
-
-                                                // Restore the checked status of the Form inputs
-                                                this.form.patchValue(formValue);
-                                            }
-
-                                            this.resizeAnswerHeighs();
-                                        }
-                                    );
-                            }
-                        }
-                    );*/
             }
         );
     }

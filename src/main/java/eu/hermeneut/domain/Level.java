@@ -50,7 +50,7 @@ public class Level implements Serializable {
     @Column(name = "description")
     private String description;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(unique = true)
     private Container container;
 
