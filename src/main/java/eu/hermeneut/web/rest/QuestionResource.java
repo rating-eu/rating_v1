@@ -20,6 +20,7 @@ package eu.hermeneut.web.rest;
 import com.codahale.metrics.annotation.Timed;
 import eu.hermeneut.domain.Question;
 import eu.hermeneut.domain.Questionnaire;
+import eu.hermeneut.domain.enumeration.ContainerType;
 import eu.hermeneut.service.QuestionService;
 import eu.hermeneut.service.QuestionnaireService;
 import eu.hermeneut.web.rest.errors.BadRequestAlertException;
@@ -158,7 +159,7 @@ public class QuestionResource {
     }
 
     /**
-     * GET  /questions : get all the questions.
+     * GET  /questions : get all the questions of the Questionnaire.
      *
      * @param questionnaireID the id of the questionnaire to retrieve the questions
      * @return the ResponseEntity with status 200 (OK) and the list of questions in body
@@ -171,4 +172,17 @@ public class QuestionResource {
         return this.questionService.findAllByQuestionnaire(questionnaire);
     }
 
+    /**
+     * GET  /questions : get all the questions of the Questionnaire's Section.
+     *
+     * @param questionnaireID the id of the questionnaire to retrieve the questions
+     * @return the ResponseEntity with status 200 (OK) and the list of questions in body
+     */
+    @GetMapping("/questions/by/questionnaire/{questionnaireID}/section/{section}")
+    @Timed
+    public List<Question> getAllQuestionsByQuestionnaireIDAndSection(@PathVariable Long questionnaireID, @PathVariable ContainerType section) {
+        Questionnaire questionnaire = this.questionnaireService.findOne(questionnaireID);
+
+        return this.questionService.findAllByQuestionnaireAndSection(questionnaire, section);
+    }
 }
