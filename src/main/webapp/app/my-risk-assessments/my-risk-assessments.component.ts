@@ -26,7 +26,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { MyAssetMgm, MyAssetMgmService } from '../entities/my-asset-mgm';
 import { DatasharingService } from '../datasharing/datasharing.service';
 import { PopUpService } from '../shared/pop-up-services/pop-up.service';
-import { MyRole } from '../entities/enumerations/MyRole.enum';
+import { Role } from '../entities/enumerations/Role.enum';
 
 interface OrderBy {
     name: boolean;
@@ -81,17 +81,17 @@ export class MyRiskAssessmentsComponent implements OnInit, OnDestroy {
         }
 
         // Get notified each time authentication state changes.
-        this.dataSharingService.observeRole().subscribe((role: MyRole) => {
+        this.dataSharingService.observeRole().subscribe((role: Role) => {
             switch (role) {
-                case MyRole.ROLE_ADMIN: {
+                case Role.ROLE_ADMIN: {
                     this.isAdmin = true;
                     break;
                 }
-                case MyRole.ROLE_CISO: {
+                case Role.ROLE_CISO: {
                     this.isCISO = true;
                     break;
                 }
-                case MyRole.ROLE_EXTERNAL_AUDIT: {
+                case Role.ROLE_EXTERNAL_AUDIT: {
                     this.isExternal = true;
                     break;
                 }

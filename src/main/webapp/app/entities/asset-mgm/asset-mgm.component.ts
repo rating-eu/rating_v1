@@ -24,7 +24,7 @@ import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
 import { AssetMgm } from './asset-mgm.model';
 import { AssetMgmService } from './asset-mgm.service';
 import { Principal } from '../../shared';
-import {MyRole} from '../enumerations/MyRole.enum';
+import {Role} from '../enumerations/Role.enum';
 
 @Component({
     selector: 'jhi-asset-mgm',
@@ -84,7 +84,7 @@ assets: AssetMgm[];
         this.principal.identity().then((account) => {
             this.currentAccount = account;
         });
-        this.principal.hasAnyAuthority([MyRole[MyRole.ROLE_ADMIN]]).then((response: boolean) => {
+        this.principal.hasAnyAuthority([Role[Role.ROLE_ADMIN]]).then((response: boolean) => {
             if (response) {
                 this.isADMIN = response;
             } else {

@@ -22,7 +22,7 @@ import {ActivatedRouteSnapshot, NavigationEnd, Router} from '@angular/router';
 import {JhiLanguageHelper, LoginService, Principal} from '../../shared';
 import {DatasharingService} from '../../datasharing/datasharing.service';
 import {Update} from '../model/Update';
-import {MyRole} from '../../entities/enumerations/MyRole.enum';
+import {Role} from '../../entities/enumerations/Role.enum';
 import {ModalDismissReasons, NgbModal} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
@@ -109,24 +109,24 @@ export class JhiMainComponent implements OnInit {
     }
 
     private updateRole() {
-        this.checkRole(MyRole.ROLE_EXTERNAL_AUDIT);
+        this.checkRole(Role.ROLE_EXTERNAL_AUDIT);
 
-        this.checkRole(MyRole.ROLE_CISO);
+        this.checkRole(Role.ROLE_CISO);
 
-        this.checkRole(MyRole.ROLE_ADMIN);
+        this.checkRole(Role.ROLE_ADMIN);
     }
 
-    private checkRole(role: MyRole) {
-        const ROLE_STRING: string = MyRole[role];
+    private checkRole(role: Role) {
+        const ROLE_STRING: string = Role[role];
         const updateLayout: Update = new Update();
 
         switch (role) {
-            case MyRole.ROLE_CISO: {
+            case Role.ROLE_CISO: {
                 this.principal.hasAuthority(ROLE_STRING).then((response: boolean) => {
                     this.isCISO = response;
 
                     if (this.isCISO) {
-                        this.dataSharingService.updateRole(MyRole.ROLE_CISO);
+                        this.dataSharingService.updateRole(Role.ROLE_CISO);
                         updateLayout.isSidebarCollapsed = false;
                         updateLayout.isSidebarCollapsedByMe = false;
                         this.dataSharingService.updateLayout(updateLayout);
@@ -134,12 +134,12 @@ export class JhiMainComponent implements OnInit {
                 });
                 break;
             }
-            case MyRole.ROLE_EXTERNAL_AUDIT: {
+            case Role.ROLE_EXTERNAL_AUDIT: {
                 this.principal.hasAuthority(ROLE_STRING).then((response: boolean) => {
                     this.isExternal = response;
 
                     if (this.isExternal) {
-                        this.dataSharingService.updateRole(MyRole.ROLE_EXTERNAL_AUDIT);
+                        this.dataSharingService.updateRole(Role.ROLE_EXTERNAL_AUDIT);
                         updateLayout.isSidebarCollapsed = true;
                         updateLayout.isSidebarCollapsedByMe = false;
                         this.dataSharingService.updateLayout(updateLayout);
@@ -147,7 +147,7 @@ export class JhiMainComponent implements OnInit {
                 });
                 break;
             }
-            case MyRole.ROLE_ADMIN: {
+            case Role.ROLE_ADMIN: {
                 this.principal.hasAuthority(ROLE_STRING).then((response: boolean) => {
                     this.isAdmin = response;
 
@@ -155,7 +155,7 @@ export class JhiMainComponent implements OnInit {
                         updateLayout.isSidebarCollapsed = true;
                         updateLayout.isSidebarCollapsedByMe = false;
                         this.dataSharingService.updateLayout(updateLayout);
-                        this.dataSharingService.updateRole(MyRole.ROLE_ADMIN);
+                        this.dataSharingService.updateRole(Role.ROLE_ADMIN);
                     }
                 });
                 break;

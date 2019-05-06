@@ -28,8 +28,7 @@ import {DatasharingService} from '../../../../datasharing/datasharing.service';
 import {Router} from '@angular/router';
 import {
     QuestionnaireStatusMgm,
-    QuestionnaireStatusMgmService,
-    Role
+    QuestionnaireStatusMgmService
 } from '../../../../entities/questionnaire-status-mgm';
 import {Status} from '../../../../entities/enumerations/QuestionnaireStatus.enum';
 import {QuestionnaireMgm} from '../../../../entities/questionnaire-mgm';
@@ -47,6 +46,7 @@ import {switchMap} from 'rxjs/operators';
 import {NgbModal, NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
 import {PartialSubmitDialogComponent} from '../partial-submit-dialog/partial-submit-dialog.component';
 import {MyCompanyMgm, MyCompanyMgmService} from "../../../../entities/my-company-mgm";
+import {Role} from "../../../../entities/enumerations/Role.enum";
 
 @Component({
     selector: 'jhi-dynamic-form',
@@ -59,8 +59,8 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
     private static YES = 'YES';
     private static NO = 'NO';
 
-    private static CISO_ROLE = Role[Role.ROLE_CISO];
-    private static EXTERNAL_ROLE = Role[Role.ROLE_EXTERNAL_AUDIT];
+    private static CISO_ROLE: string = Role[Role.ROLE_CISO];
+    private static EXTERNAL_ROLE: String = Role[Role.ROLE_EXTERNAL_AUDIT];
 
     public loading = false;
     public debug = false;

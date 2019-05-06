@@ -25,7 +25,7 @@ import {ThreatAgentMgm} from './threat-agent-mgm.model';
 import {ThreatAgentMgmService} from './threat-agent-mgm.service';
 import {Principal} from '../../shared';
 import {PopUpService} from '../../shared/pop-up-services/pop-up.service';
-import {MyRole} from '../enumerations/MyRole.enum';
+import {Role} from '../enumerations/Role.enum';
 
 @Component({
     selector: 'jhi-threat-agent-mgm',
@@ -88,7 +88,7 @@ export class ThreatAgentMgmComponent implements OnInit, OnDestroy {
         this.principal.identity().then((account) => {
             this.currentAccount = account;
         });
-        this.principal.hasAnyAuthority([MyRole[MyRole.ROLE_ADMIN]]).then((response: boolean) => {
+        this.principal.hasAnyAuthority([Role[Role.ROLE_ADMIN]]).then((response: boolean) => {
             if (response) {
                 this.isADMIN = response;
             } else {

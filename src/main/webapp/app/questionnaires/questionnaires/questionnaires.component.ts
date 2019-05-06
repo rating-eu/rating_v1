@@ -15,12 +15,13 @@
  *
  */
 
+import * as _ from 'lodash';
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {QuestionnairesService} from '../questionnaires.service';
 import {QuestionnaireMgm} from '../../entities/questionnaire-mgm';
 import {Observable} from 'rxjs/Observable';
 import {DatasharingService} from '../../datasharing/datasharing.service';
-import {QuestionnaireStatusMgm, QuestionnaireStatusMgmService, Role} from '../../entities/questionnaire-status-mgm';
+import {QuestionnaireStatusMgm, QuestionnaireStatusMgmService} from '../../entities/questionnaire-status-mgm';
 import {Status} from '../../entities/enumerations/QuestionnaireStatus.enum';
 import {AccountService, User, UserService} from '../../shared';
 import {Subscription} from 'rxjs/Subscription';
@@ -34,6 +35,7 @@ import {CompanyProfileMgm} from "../../entities/company-profile-mgm";
 import {HttpResponse} from "@angular/common/http";
 import {MyCompanyMgm, MyCompanyMgmService} from "../../entities/my-company-mgm";
 import {switchMap} from "rxjs/operators";
+import {Role} from "../../entities/enumerations/Role.enum";
 
 @Component({
     selector: 'jhi-questionnaires',
@@ -46,15 +48,17 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
     private purposeEnum = QuestionnairePurpose;
     private purpose: QuestionnairePurpose;
 
-    private static CISO_ROLE = Role[Role.ROLE_CISO];
-    private static EXTERNAL_ROLE = Role[Role.ROLE_EXTERNAL_AUDIT];
+    private static CISO_ROLE: string = Role[Role.ROLE_CISO];
+    private static EXTERNAL_ROLE: string = Role[Role.ROLE_EXTERNAL_AUDIT];
 
-    questionnaires$: Observable<QuestionnaireMgm[]>;
-    questionnaires: QuestionnaireMgm[];
+    private questionnaires$: Observable<QuestionnaireMgm[]>;
+    private questionnaires: QuestionnaireMgm[];
 
-    questionnaireStatuses$: Observable<QuestionnaireStatusMgm[]>;
+    private identifyThreatAgentsQuestionnaire: QuestionnaireMgm;
+    private selfAssessmentQuestionnaire: QuestionnaireMgm;
+
+    public questionnaireStatuses$: Observable<QuestionnaireStatusMgm[]>;
     private questionnaireStatuses: QuestionnaireStatusMgm[];
-    //private questionnaireStatusesMap: Map<number, QuestionnaireStatusMgm>;
 
     private companyProfile: CompanyProfileMgm;
 
@@ -115,6 +119,9 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
             switchMap((response: QuestionnaireMgm[]) => {
                 this.questionnaires = response;
 
+                this.identifyThreatAgentsQuestionnaire = _.find(this.questionnaires, {'purpose': QuestionnairePurpose.ID_THREAT_AGENT});
+                this.selfAssessmentQuestionnaire = _.find(this.questionnaires, {'purpose': QuestionnairePurpose.SELFASSESSMENT});
+
                 return this.accountService.get();
             })
         );
@@ -160,68 +167,108 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
                 console.log("Questionnaire Statuses:");
                 console.log(this.questionnaireStatuses);
 
-                // Build the Map Questionnaire ==> Status
-                /*this.questionnaireStatusesMap = new Map<number, QuestionnaireStatusMgm>();
-                this.questionnaireStatuses.forEach((questionnaireStatus: QuestionnaireStatusMgm) => {
-                    this.questionnaireStatusesMap.set(questionnaireStatus.questionnaire.id, questionnaireStatus);
-                });*/
+                if (this.questionnaireStatuses.length === 0) {
+                    console.log("This.Purpose:");
+                    console.log(this.purpose);
+
+                    console.log("ID ThreatAgent:");
+                    console.log(QuestionnairePurpose.ID_THREAT_AGENT);
+
+                    console.log("SelfAssessment:");
+                    console.log(QuestionnairePurpose.SELFASSESSMENT);
+
+                    switch (this.purpose) {
+                        case QuestionnairePurpose.ID_THREAT_AGENT: {
+                            // Create the first QuestionnaireStatus
+                            let questionnaireStatus: QuestionnaireStatusMgm = new QuestionnaireStatusMgm(undefined,
+                                Status.EMPTY, undefined, undefined, this.myCompany.companyProfile,
+                                this.identifyThreatAgentsQuestionnaire, this.role, this.user, []);
+
+                            this.questionnaireStatusService.create(questionnaireStatus).subscribe(
+                                (response: HttpResponse<QuestionnaireStatusMgm>) => {
+                                    if (response) {
+                                        questionnaireStatus = response.body;
+                                        this.questionnaires.push(response.body);
+
+                                        this.setCurrentQuestionnaireStatus(questionnaireStatus);
+                                        this.router.navigate(['/identify-threat-agent/questionnaires/ID_THREAT_AGENT/questionnaire']);
+                                    }
+                                }
+                            );
+
+                            break;
+                        }
+                        case QuestionnairePurpose.SELFASSESSMENT: {
+
+                            break;
+                        }
+                    }
+                } else {
+                    switch (this.purpose) {
+                        case QuestionnairePurpose.ID_THREAT_AGENT: {
+                            console.log("Case identify threat agents");
+
+                            switch (this.role) {
+                                case Role.ROLE_CISO: {
+                                    // TODO get the QuestionnaireStatus of the CISO
+                                    const cisoIdentifyThreatAgentsQuestionnaireStatus: QuestionnaireStatusMgm =
+                                        _.find(this.questionnaireStatuses, (value: QuestionnaireStatusMgm)=> {
+                                            console.log("Find current value: ");
+                                            console.log(value);
+
+                                            console.log("Role equality: ");
+                                            console.log(value.role as Role == Role.ROLE_CISO);
+
+                                            console.log("Value.Role:");
+                                            console.log(value.role);
+                                            console.log(value.role as Role);
+                                            console.log(Role[value.role]);
+                                            console.log(Role.ROLE_CISO);
+
+                                            console.log("Purpose equality: ");
+                                            console.log(value.questionnaire.purpose === QuestionnairePurpose.ID_THREAT_AGENT);
+
+                                            console.log("ID equality: ");
+                                            console.log(value.user.id === this.user.id);
+
+
+
+                                            if (value.role.valueOf() === Role.ROLE_CISO.valueOf() && value.user.id === this.user.id
+                                                && value.questionnaire.purpose.valueOf() === QuestionnairePurpose.ID_THREAT_AGENT.valueOf()) {
+
+                                                console.log("Returning true");
+                                                return true;
+                                            }else{
+                                                return false;
+                                            }
+                                        });
+
+                                    console.log("Identify threat agents questionnaire status:");
+                                    console.log(cisoIdentifyThreatAgentsQuestionnaireStatus);
+
+                                    if (cisoIdentifyThreatAgentsQuestionnaireStatus) {
+                                        this.setCurrentQuestionnaireStatus(cisoIdentifyThreatAgentsQuestionnaireStatus);
+                                        this.router.navigate(['/identify-threat-agent/questionnaires/ID_THREAT_AGENT/questionnaire']);
+                                    }
+
+                                    break;
+                                }
+                                case Role.ROLE_EXTERNAL_AUDIT: {
+                                    break;
+                                }
+                            }
+
+                            break;
+                        }
+                        case QuestionnairePurpose.SELFASSESSMENT: {
+
+                            break;
+                        }
+                    }
+                }
             }
         );
-
-        /*.subscribe(
-        (params: Params) => {
-            const routeQuestionnairePurpose = params['purpose'];
-            switch (routeQuestionnairePurpose) {
-                case QuestionnairePurpose[QuestionnairePurpose.ID_THREAT_AGENT]: {
-                    this.purpose = QuestionnairePurpose.ID_THREAT_AGENT;
-                    break;
-                }
-                case QuestionnairePurpose[QuestionnairePurpose.SELFASSESSMENT]: {
-                    this.purpose = QuestionnairePurpose.SELFASSESSMENT;
-                    break;
-                }
-            }
-
-            // TODO Check-Me
-            this.questionnaires$ = this.questionnairesService.getAllQuestionnairesByPurpose(this.purpose);
-            // In this version of the application we do not give the possibility to choose between multiple questionnaires
-            // this.loadQuestionnaire();
-        }
-    )
-);*/
     }
-
-    /*private async loadQuestionnaire() {
-        const questionnaires = await this.questionnairesService.getAllQuestionnairesByPurpose(this.purpose).toPromise();
-        console.log('Questionnaires: ');
-        console.log(questionnaires);
-
-        this.account = (await this.accountService.get().toPromise()).body;
-        this.user = (await this.userService.find(this.account['login']).toPromise()).body;
-
-        if (this.user) {
-            this.companyProfile = (await this.myCompanyService.findByUser(this.user.id).toPromise()).body.companyProfile;
-        }
-
-        await this.setCurrentQuestionnaireStatusAsyncVersion(questionnaires[0]);
-
-        if (questionnaires) {
-            this.dataSharingService.currentQuestionnaire = questionnaires[0];
-
-            switch (this.purpose) {
-                case QuestionnairePurpose.ID_THREAT_AGENT: {
-                    //this.router.navigate(['./identify-threat-agent/questionnaires/' + this.purpose + '/questionnaire']);
-                    this.router.navigate(['./identify-threat-agent/questionnaires/' + this.purpose]);
-                    break;
-                }
-                case QuestionnairePurpose.SELFASSESSMENT: {
-                    //this.router.navigate(['./evaluate-weakness/questionnaires/' + this.purpose + '/questionnaire']);
-                    this.router.navigate(['./evaluate-weakness/questionnaires/' + this.purpose]);
-                    break;
-                }
-            }
-        }
-    }*/
 
     ngOnDestroy() {
         if (this.subscriptions) {

@@ -26,7 +26,7 @@ import {JhiLanguageHelper, LoginModalService, LoginService, Principal} from '../
 import {VERSION} from '../../app.constants';
 import {DatasharingService} from '../../datasharing/datasharing.service';
 import {Update} from '../model/Update';
-import {MyRole} from '../../entities/enumerations/MyRole.enum';
+import {Role} from '../../entities/enumerations/Role.enum';
 
 @Component({
     selector: 'jhi-navbar',
@@ -86,22 +86,22 @@ export class NavbarComponent implements OnInit {
             }
         });
 
-        this.dataSharingService.observeRole().subscribe((role: MyRole) => {
+        this.dataSharingService.observeRole().subscribe((role: Role) => {
             if (role) {
                 switch (role) {
-                    case MyRole.ROLE_CISO: {
+                    case Role.ROLE_CISO: {
                         this.isAuthenticatedValue = true;
                         this.isAdmin = false;
                         this.isExternal = false;
                         break;
                     }
-                    case MyRole.ROLE_EXTERNAL_AUDIT: {
+                    case Role.ROLE_EXTERNAL_AUDIT: {
                         this.isAuthenticatedValue = true;
                         this.isAdmin = false;
                         this.isExternal = true;
                         break;
                     }
-                    case MyRole.ROLE_ADMIN: {
+                    case Role.ROLE_ADMIN: {
                         this.isAuthenticatedValue = true;
                         this.isAdmin = true;
                         this.isExternal = false;

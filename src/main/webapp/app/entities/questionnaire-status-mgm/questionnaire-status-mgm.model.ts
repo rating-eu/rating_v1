@@ -20,12 +20,7 @@ import {QuestionnaireMgm} from '../questionnaire-mgm';
 import {Status} from '../enumerations/QuestionnaireStatus.enum';
 import {MyAnswerMgm} from '../my-answer-mgm';
 import {CompanyProfileMgm} from "../company-profile-mgm";
-export enum Role {
-    'ROLE_ADMIN',
-    'ROLE_USER',
-    'ROLE_EXTERNAL_AUDIT',
-    'ROLE_CISO'
-}
+import {Role} from "../enumerations/Role.enum";
 
 export class QuestionnaireStatusMgm implements BaseEntity {
     constructor(

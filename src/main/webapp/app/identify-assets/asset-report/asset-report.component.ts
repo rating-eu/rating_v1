@@ -22,7 +22,7 @@ import { Principal } from '../../shared';
 import { SelfAssessmentMgm, SelfAssessmentMgmService } from '../../entities/self-assessment-mgm';
 import { Subscription } from 'rxjs';
 import { JhiEventManager } from 'ng-jhipster';
-import { MyRole } from '../../entities/enumerations/MyRole.enum';
+import { Role } from '../../entities/enumerations/Role.enum';
 import { IdentifyAssetUtilService } from '../identify-asset.util.service';
 import { MyAssetMgm } from '../../entities/my-asset-mgm';
 import { AssetType } from '../../entities/enumerations/AssetType.enum';
@@ -84,7 +84,7 @@ export class AssetReportComponent implements OnInit, OnDestroy {
             this.account = account;
             this.mySelf = this.mySelfAssessmentService.getSelfAssessment();
             this.registerChangeIdentifyAssets();
-            if (this.account['authorities'].includes(MyRole.ROLE_CISO) && this.mySelf) {
+            if (this.account['authorities'].includes(Role.ROLE_CISO) && this.mySelf) {
                 this.idaUtilsService.getMyAssets(this.mySelf)
                     .toPromise()
                     .then((mySavedAssets) => {

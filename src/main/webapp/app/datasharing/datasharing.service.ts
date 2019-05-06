@@ -27,7 +27,7 @@ import { QuestionnaireMgm } from '../entities/questionnaire-mgm';
 import { Update } from '../layouts/model/Update';
 import { SelfAssessmentMgm } from '../entities/self-assessment-mgm';
 import { HttpClient } from '@angular/common/http';
-import { MyRole } from '../entities/enumerations/MyRole.enum';
+import { Role } from '../entities/enumerations/Role.enum';
 import {QuestionnaireStatusMgm} from "../entities/questionnaire-status-mgm";
 
 @Injectable()
@@ -44,9 +44,9 @@ export class DatasharingService {
     // Single AttackStrategy update
     private layoutUpdateSubject: BehaviorSubject<Update> = new BehaviorSubject<Update>(null);
     private mySelfAssessmentSubject: BehaviorSubject<SelfAssessmentMgm> = new BehaviorSubject<SelfAssessmentMgm>(null);
-    private roleSubject: BehaviorSubject<MyRole> = new BehaviorSubject<MyRole>(null);
+    private roleSubject: BehaviorSubject<Role> = new BehaviorSubject<Role>(null);
     private appMode: BehaviorSubject<Mode> = new BehaviorSubject<Mode>(null);
-    private role: MyRole = null;
+    private role: Role = null;
     private mode: Mode = null;
 
     constructor(private http: HttpClient) {
@@ -109,11 +109,11 @@ export class DatasharingService {
         return this.mySelfAssessmentSubject.asObservable();
     }
 
-    observeRole(): Observable<MyRole> {
+    observeRole(): Observable<Role> {
         return this.roleSubject.asObservable();
     }
 
-    updateRole(role: MyRole) {
+    updateRole(role: Role) {
         this.role = role;
         this.roleSubject.next(this.role);
     }

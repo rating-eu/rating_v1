@@ -22,7 +22,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Principal } from '../../shared';
 import { SelfAssessmentMgm, SelfAssessmentMgmService } from '../../entities/self-assessment-mgm';
 import { IdentifyAssetUtilService } from '../../identify-assets/identify-asset.util.service';
-import { MyRole } from '../../entities/enumerations/MyRole.enum';
+import { Role } from '../../entities/enumerations/Role.enum';
 import { AssetType } from '../../entities/enumerations/AssetType.enum';
 import { MyAssetMgm } from '../../entities/my-asset-mgm';
 import { Subscription } from 'rxjs';
@@ -99,7 +99,7 @@ export class AssetWidgetComponent implements OnInit, OnDestroy {
             this.account = account;
             this.mySelf = this.mySelfAssessmentService.getSelfAssessment();
             this.registerChangeIdentifyAssets();
-            if (this.account['authorities'].includes(MyRole.ROLE_CISO) && this.mySelf) {
+            if (this.account['authorities'].includes(Role.ROLE_CISO) && this.mySelf) {
                 this.idaUtilsService.getMyAssets(this.mySelf)
                     .toPromise()
                     .then((mySavedAssets) => {

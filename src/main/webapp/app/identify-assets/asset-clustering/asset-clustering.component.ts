@@ -19,18 +19,17 @@ import * as _ from 'lodash';
 
 import { Component, OnInit, OnDestroy, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { Router } from '@angular/router';
-import { Principal, LoginModalService, AccountService, UserService, User } from '../../shared';
+import { Principal, AccountService, UserService, User } from '../../shared';
 import { SelfAssessmentMgm, SelfAssessmentMgmService } from '../../entities/self-assessment-mgm';
 import { Subscription } from 'rxjs/Subscription';
-import { JhiAlertService, JhiEventManager } from 'ng-jhipster';
+import { JhiEventManager } from 'ng-jhipster';
 import { QuestionnaireMgm } from '../../entities/questionnaire-mgm';
 import { QuestionnairePurpose } from '../../entities/enumerations/QuestionnairePurpose.enum';
 import { QuestionnairesService } from '../../questionnaires/questionnaires.service';
 import { IdentifyAssetUtilService } from '../identify-asset.util.service';
 import { MyAssetMgm } from '../../entities/my-asset-mgm';
 import { AssetCategoryMgm } from './../../entities/asset-category-mgm/asset-category-mgm.model';
-import { QuestionnaireStatusMgmService, QuestionnaireStatusMgm, Role, QuestionnaireStatusMgmCustomService } from '../../entities/questionnaire-status-mgm';
-import { MyRole } from '../../entities/enumerations/MyRole.enum';
+import { QuestionnaireStatusMgmService, QuestionnaireStatusMgm, QuestionnaireStatusMgmCustomService } from '../../entities/questionnaire-status-mgm';
 import { AssetMgm } from '../../entities/asset-mgm';
 
 @Component({
@@ -131,18 +130,6 @@ export class AssetClusteringComponent implements OnInit, OnDestroy {
             } else if (res && res instanceof Array) {
                 this.questionnaries = res;
             }
-            /*if (this.account['authorities'].includes(MyRole.ROLE_CISO) && this.mySelf) {
-                for (const qs of this.questionnaries) {
-                    // controllo esistenza questionnaire status
-                    this.questionnaireStatusService.getByRoleCompanyProfileAndQuestionnaire(MyRole.ROLE_CISO.toString(), this.mySelfAssessmentService.getSelfAssessment().id, qs.id)
-                        .toPromise()
-                        .then((status) => {
-                            if (status.body) {
-                                this.questionnariesStatus.push(status.body as QuestionnaireStatusMgm);
-                            }
-                        });
-                }
-            }*/
         });
     }
 

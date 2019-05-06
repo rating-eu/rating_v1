@@ -25,7 +25,7 @@ import { AttackStrategyMgm } from './attack-strategy-mgm.model';
 import { AttackStrategyMgmService } from './attack-strategy-mgm.service';
 import { Principal } from '../../shared';
 import { PopUpService } from '../../shared/pop-up-services/pop-up.service';
-import {MyRole} from '../enumerations/MyRole.enum';
+import {Role} from '../enumerations/Role.enum';
 
 @Component({
     selector: 'jhi-attack-strategy-mgm',
@@ -86,7 +86,7 @@ attackStrategies: AttackStrategyMgm[];
         this.principal.identity().then((account) => {
             this.currentAccount = account;
         });
-        this.principal.hasAnyAuthority([MyRole[MyRole.ROLE_ADMIN]]).then((response: boolean) => {
+        this.principal.hasAnyAuthority([Role[Role.ROLE_ADMIN]]).then((response: boolean) => {
             if (response) {
                 this.isADMIN = response;
             } else {

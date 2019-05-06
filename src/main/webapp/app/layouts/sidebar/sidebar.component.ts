@@ -21,7 +21,7 @@ import {DatasharingService} from '../../datasharing/datasharing.service';
 import {Update} from '../model/Update';
 
 import {MenuItem} from 'primeng/api';
-import {MyRole} from '../../entities/enumerations/MyRole.enum';
+import {Role} from '../../entities/enumerations/Role.enum';
 import {SelfAssessmentMgm, SelfAssessmentMgmService} from '../../entities/self-assessment-mgm';
 import {LogoMgm, LogoMgmService} from '../../entities/logo-mgm';
 import {HttpErrorResponse, HttpResponse} from '@angular/common/http';
@@ -90,13 +90,13 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                 this.dataSharingService.updateLayout(updateLayout);
                 this.fetchSecondaryLogo();
 
-                this.principal.hasAnyAuthority([MyRole[MyRole.ROLE_CISO]]).then((response: boolean) => {
+                this.principal.hasAnyAuthority([Role[Role.ROLE_CISO]]).then((response: boolean) => {
                     if (response) {
                         this.isCISO = response;
                         this.isExternal = !this.isCISO;
                         this.createMenuItems(this.isCISO);
                     } else {
-                        this.principal.hasAnyAuthority([MyRole[MyRole.ROLE_EXTERNAL_AUDIT]]).then((response2: boolean) => {
+                        this.principal.hasAnyAuthority([Role[Role.ROLE_EXTERNAL_AUDIT]]).then((response2: boolean) => {
                             if (response2) {
                                 this.isExternal = response2;
                                 this.isCISO = !this.isExternal;
@@ -105,7 +105,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                                 this.dataSharingService.updateLayout(updateLayout);
                                 this.createMenuItems(this.isCISO, this.isExternal);
                             } else {
-                                this.principal.hasAnyAuthority([MyRole[MyRole.ROLE_ADMIN]]).then((response3: boolean) => {
+                                this.principal.hasAnyAuthority([Role[Role.ROLE_ADMIN]]).then((response3: boolean) => {
                                     if (response3) {
                                         updateLayout.isSidebarCollapsed = true;
                                         updateLayout.isSidebarCollapsedByMe = false;

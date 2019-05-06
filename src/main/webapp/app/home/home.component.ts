@@ -23,7 +23,7 @@ import {JhiEventManager} from 'ng-jhipster';
 import {Account, LoginModalService, Principal} from '../shared';
 import {SelfAssessmentMgm, SelfAssessmentMgmService} from '../entities/self-assessment-mgm';
 import {DatasharingService} from '../datasharing/datasharing.service';
-import {MyRole} from '../entities/enumerations/MyRole.enum';
+import {Role} from '../entities/enumerations/Role.enum';
 
 @Component({
     selector: 'jhi-home',
@@ -55,15 +55,15 @@ export class HomeComponent implements OnInit {
         this.registerAuthenticationSuccess();
         this.mySelf = this.mySelfAssessmentService.getSelfAssessment();
 
-        const role: MyRole = this.dataSharingService.getRole();
+        const role: Role = this.dataSharingService.getRole();
 
         if (role) {
             switch (role) {
-                case MyRole.ROLE_CISO: {
+                case Role.ROLE_CISO: {
                     this.router.navigate(['/dashboard']);
                     break;
                 }
-                case MyRole.ROLE_EXTERNAL_AUDIT: {
+                case Role.ROLE_EXTERNAL_AUDIT: {
                     this.router.navigate(['/my-risk-assessments']);
                     break;
                 }
