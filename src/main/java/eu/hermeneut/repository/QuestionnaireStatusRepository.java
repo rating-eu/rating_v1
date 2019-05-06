@@ -41,7 +41,7 @@ public interface QuestionnaireStatusRepository extends JpaRepository<Questionnai
     List<QuestionnaireStatus> findAllByCompanyProfile(@Param("companyProfileID") Long companyProfileID);
 
     @Query("SELECT DISTINCT questionnaireStatus FROM QuestionnaireStatus questionnaireStatus LEFT JOIN FETCH questionnaireStatus.answers WHERE questionnaireStatus.role = :role AND questionnaireStatus.companyProfile.id = :companyProfileID AND questionnaireStatus.questionnaire.id = :questionnaireID")
-    QuestionnaireStatus findAllByRoleCompanyProfileAndQuestionnaire(@Param("role") Role role, @Param("companyProfileID") Long companyProfileID, @Param("questionnaireID") Long questionnaireID);
+    List<QuestionnaireStatus> findAllByRoleCompanyProfileAndQuestionnaire(@Param("role") Role role, @Param("companyProfileID") Long companyProfileID, @Param("questionnaireID") Long questionnaireID);
 
     @Query("SELECT DISTINCT questionnaireStatus FROM QuestionnaireStatus questionnaireStatus LEFT JOIN FETCH questionnaireStatus.answers WHERE questionnaireStatus.companyProfile.id = :companyProfileID AND questionnaireStatus.questionnaire.purpose = :questionnairePurpose")
     List<QuestionnaireStatus> findAllByCompanyProfileAndQuestionnairePurpose(@Param("companyProfileID") Long companyProfileID, @Param("questionnairePurpose") QuestionnairePurpose purpose);

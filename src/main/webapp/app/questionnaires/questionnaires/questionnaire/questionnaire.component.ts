@@ -49,7 +49,7 @@ export class QuestionnaireComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.questionnaireStatus = this.dataSharingService.currentQuestionnaireStatus;
+        this.questionnaireStatus = this.dataSharingService.cisoQuestionnaireStatus;
         this.purpose = this.localStorage.retrieve('purpose') as QuestionnairePurpose;
     }
 }

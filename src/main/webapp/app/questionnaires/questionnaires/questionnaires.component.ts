@@ -231,14 +231,20 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
         }
     }
 
-    async setCurrentQuestionnaireStatusAsyncVersion(questionnaireStatus: QuestionnaireStatusMgm) {
-        this.dataSharingService.currentQuestionnaireStatus = questionnaireStatus;
-        this.localStorage.store('purpose', this.purpose);
-    }
-
     setCurrentQuestionnaireStatus(questionnaireStatus: QuestionnaireStatusMgm) {
         console.log("Set current QuestionnaireStatus");
-        this.dataSharingService.currentQuestionnaireStatus = questionnaireStatus;
+
+        switch (this.role) {
+            case Role.ROLE_CISO: {
+                this.dataSharingService.cisoQuestionnaireStatus = questionnaireStatus;
+                break;
+            }
+            case Role.ROLE_EXTERNAL_AUDIT: {
+                //TODO Fix me: get also the QuestionnaireStatus of the CISO
+                this.dataSharingService.externalQuestionnaireStatus = questionnaireStatus;
+                break;
+            }
+        }
     }
 
     createNewQuestionnaireStatus() {

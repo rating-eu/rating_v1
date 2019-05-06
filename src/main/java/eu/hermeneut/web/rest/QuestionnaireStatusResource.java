@@ -155,9 +155,9 @@ public class QuestionnaireStatusResource {
     @Timed
     @PreAuthorize("@companyProfileGuardian.isCISO(#companyProfileID) || @companyProfileGuardian.isExternal(#companyProfileID) || hasRole('ROLE_ADMIN')")
     @Secured({AuthoritiesConstants.CISO, AuthoritiesConstants.EXTERNAL_AUDIT, AuthoritiesConstants.ADMIN})
-    public QuestionnaireStatus getQuestionnaireStatusByRoleCompanyProfileAndQuestionnaire(@PathVariable Long companyProfileID, @PathVariable Long questionnaireID, @PathVariable Role role) {
+    public List<QuestionnaireStatus> getAllQuestionnaireStatusesByRoleCompanyProfileAndQuestionnaire(@PathVariable Long companyProfileID, @PathVariable Long questionnaireID, @PathVariable Role role) {
         log.debug("REST request to get all QuestionnaireStatuses by Role CompanyProfile and Questionnaire");
-        return questionnaireStatusService.findByRoleCompanyProfileAndQuestionnaire(role, companyProfileID, questionnaireID);
+        return questionnaireStatusService.findAllByRoleCompanyProfileAndQuestionnaire(role, companyProfileID, questionnaireID);
     }
 
     /**

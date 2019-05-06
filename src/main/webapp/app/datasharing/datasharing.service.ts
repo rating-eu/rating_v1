@@ -35,9 +35,8 @@ export class DatasharingService {
 
     private _threatAgentsMap: Map<String, Couple<ThreatAgentMgm, Fraction>>;
     private _identifyThreatAgentsFormDataMap: Map<String, AnswerMgm>;
-    // Fix-Me
-    // private _currentQuestionnaire: QuestionnaireMgm;
-    private _currentQuestionnaireStatus: QuestionnaireStatusMgm;
+    private _cisoQuestionnaireStatus: QuestionnaireStatusMgm;
+    private _externalQuestionnaireStatus: QuestionnaireStatusMgm;
 
     // ===Observables-BehaviorSubjects===
 
@@ -70,20 +69,20 @@ export class DatasharingService {
         this._identifyThreatAgentsFormDataMap = value;
     }
 
-    /*get currentQuestionnaire(): QuestionnaireMgm {
-        return this._currentQuestionnaire;
+    get cisoQuestionnaireStatus(): QuestionnaireStatusMgm {
+        return this._cisoQuestionnaireStatus;
     }
 
-    set currentQuestionnaire(value: QuestionnaireMgm) {
-        this._currentQuestionnaire = value;
-    }*/
-
-    get currentQuestionnaireStatus(): QuestionnaireStatusMgm {
-        return this._currentQuestionnaireStatus;
+    set cisoQuestionnaireStatus(value: QuestionnaireStatusMgm) {
+        this._cisoQuestionnaireStatus = value;
     }
 
-    set currentQuestionnaireStatus(value: QuestionnaireStatusMgm) {
-        this._currentQuestionnaireStatus = value;
+    get externalQuestionnaireStatus(): QuestionnaireStatusMgm {
+        return this._externalQuestionnaireStatus;
+    }
+
+    set externalQuestionnaireStatus(value: QuestionnaireStatusMgm) {
+        this._externalQuestionnaireStatus = value;
     }
 
     updateLayout(layoutUpdate: Update) {

@@ -37,8 +37,8 @@ export class QuestionnaireStatusMgmCustomService {
     constructor(private http: HttpClient, private dateUtils: JhiDateUtils) {
     }
 
-    getByRoleCompanyProfileAndQuestionnaire(role: string, companyProfileID: number, questionaireID: number): Observable<HttpResponse<QuestionnaireStatusMgm>> {
-        return this.http.get<QuestionnaireStatusMgm>(
+    getByRoleCompanyProfileAndQuestionnaire(role: string, companyProfileID: number, questionaireID: number): Observable<HttpResponse<QuestionnaireStatusMgm[]>> {
+        return this.http.get<QuestionnaireStatusMgm[]>(
             BY_ROLE_SELF_QUESTIONNAIRE_URL
                 .replace(COMPANY_PROFILE_ID, String(companyProfileID))
                 .replace(QUESTIONNAIRE_ID, String(questionaireID))

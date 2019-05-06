@@ -196,12 +196,41 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
             (response: HttpResponse<MyCompanyMgm>) => {
                 this.myCompany = response.body;
 
-                this.questionnaireStatusCustomService
+                this.cisoQuestionnaireStatus = this.dataSharingSerivce.cisoQuestionnaireStatus;
+                this.externalQuestionnaireStatus = this.dataSharingSerivce.externalQuestionnaireStatus;
+
+                // Path Values
+                if (this.cisoQuestionnaireStatus && this.cisoQuestionnaireStatus.answers && this.cisoQuestionnaireStatus.answers.length > 0) {
+                    this.cisoMyAnswers = this.cisoQuestionnaireStatus.answers;
+
+                    // Restore the checked status of the Form inputs
+                    this.form.patchValue(this.myAnswersToFormValue(this.cisoMyAnswers, this.questionsArrayMap));
+                }
+
+                if (this.questionnaire.purpose === QuestionnairePurpose.SELFASSESSMENT) {
+                    if (this.externalQuestionnaireStatus &&
+                        this.externalQuestionnaireStatus.answers &&
+                        this.externalQuestionnaireStatus.answers.length > 0) {
+                        this.externalMyAnswers = this.externalQuestionnaireStatus.answers;
+
+                        const formValue: {} = this.myAnswersToFormValue(this.cisoMyAnswers, this.questionsArrayMap, this.externalMyAnswers);
+
+                        // Restore the checked status of the Form inputs
+                        this.form.patchValue(formValue);
+                    }
+
+                    this.resizeAnswerHeighs();
+                }
+
+
+                /*this.questionnaireStatusCustomService
                     .getByRoleCompanyProfileAndQuestionnaire(DynamicFormComponent.CISO_ROLE, this.myCompany.companyProfile.id, this.questionnaire.id)
                     .toPromise()
                     .then(
-                        (response2: HttpResponse<QuestionnaireStatusMgm>) => {
-                            this.cisoQuestionnaireStatus = response2.body;
+                        (response2: HttpResponse<QuestionnaireStatusMgm[]>) => {//TODO Fix-Me
+                            this.cisoQuestionnaireStatus = response2.body[0];
+                            this.cisoQuestionnaireStatus = this.dataSharingSerivce
+
 
                             if (this.cisoQuestionnaireStatus && this.cisoQuestionnaireStatus.answers && this.cisoQuestionnaireStatus.answers.length > 0) {
                                 this.cisoMyAnswers = this.cisoQuestionnaireStatus.answers;
@@ -234,7 +263,7 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
                                     );
                             }
                         }
-                    );
+                    );*/
             }
         );
     }

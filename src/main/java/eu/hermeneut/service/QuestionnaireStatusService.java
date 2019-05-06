@@ -80,7 +80,7 @@ public interface QuestionnaireStatusService {
 
     List<QuestionnaireStatus> findAllByCompanyProfileAndUser(Long companyProfileID, Long userID);
 
-    QuestionnaireStatus findByRoleCompanyProfileAndQuestionnaire(Role role, Long companyProfileID, Long questionnaireID);
+    List<QuestionnaireStatus> findAllByRoleCompanyProfileAndQuestionnaire(Role role, Long companyProfileID, Long questionnaireID);
 
     List<QuestionnaireStatus> findAllByCompanyProfile(Long companyProfileID);
 
