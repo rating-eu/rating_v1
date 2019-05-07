@@ -33,13 +33,13 @@ import java.util.List;
 @SuppressWarnings("unused")
 @Repository
 public interface QuestionRepository extends JpaRepository<Question, Long> {
-    @Query("SELECT DISTINCT question FROM Question question left join fetch question.attackStrategies left join fetch question.answers WHERE question.questionnaire = :questionnaire ORDER BY question.order ASC")
+    @Query("SELECT DISTINCT question FROM Question question left join fetch question.attackStrategies as attacks left join fetch attacks.levels as levels left join fetch levels.container left join fetch question.answers WHERE question.questionnaire = :questionnaire ORDER BY question.order ASC")
     List<Question> findAllByQuestionnaire(@Param("questionnaire") Questionnaire questionnaire);
 
-    @Query("select distinct question from Question question left join fetch question.attackStrategies left join fetch question.answers")
+    @Query("select distinct question from Question question left join fetch question.attackStrategies as attacks left join fetch attacks.levels as levels left join fetch levels.container left join fetch question.answers")
     List<Question> findAllWithEagerRelationships();
 
-    @Query("select question from Question question left join fetch question.attackStrategies left join fetch question.answers where question.id =:id")
+    @Query("select question from Question question left join fetch question.attackStrategies as attacks left join fetch attacks.levels as levels left join fetch levels.container left join fetch question.answers where question.id =:id")
     Question findOneWithEagerRelationships(@Param("id") Long id);
 
 }

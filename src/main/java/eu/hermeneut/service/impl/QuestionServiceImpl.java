@@ -17,12 +17,9 @@
 
 package eu.hermeneut.service.impl;
 
-import eu.hermeneut.domain.AttackStrategy;
-import eu.hermeneut.domain.Level;
-import eu.hermeneut.domain.Questionnaire;
+import eu.hermeneut.domain.*;
 import eu.hermeneut.domain.enumeration.ContainerType;
 import eu.hermeneut.service.QuestionService;
-import eu.hermeneut.domain.Question;
 import eu.hermeneut.repository.QuestionRepository;
 import eu.hermeneut.repository.search.QuestionSearchRepository;
 import org.slf4j.Logger;
@@ -33,6 +30,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 import static org.elasticsearch.index.query.QueryBuilders.*;
@@ -131,18 +129,25 @@ public class QuestionServiceImpl implements QuestionService {
 
         List<Question> questions = this.questionRepository.findAllByQuestionnaire(questionnaire);
 
-        List<Question> sectionQuestions = questions.stream().parallel().filter(question -> {
+        Stream<Question> stream = questions.stream().parallel().filter(question -> {
             Set<AttackStrategy> attackStrategies = question.getAttackStrategies();
             boolean accepted = false;
 
-            if (attackStrategies != null & !attackStrategies.isEmpty()) {
+            if (attackStrategies != null && !attackStrategies.isEmpty()) {
                 for (AttackStrategy attackStrategy : attackStrategies) {
                     Set<Level> levels = attackStrategy.getLevels();
 
                     if (levels != null && !levels.isEmpty()) {
                         for (Level level : levels) {
-                            if (level.getContainer().getContainerType().equals(section)) {
-                                accepted = true;
+                            Container container = level.getContainer();
+
+                            if (container != null) {
+                                ContainerType type = container.getContainerType();
+
+                                if (type.equals(section)) {
+                                    accepted = true;
+                                    break;
+                                }
                             }
                         }
                     }
@@ -150,8 +155,9 @@ public class QuestionServiceImpl implements QuestionService {
             }
 
             return accepted;
-        }).collect(Collectors.toList());
+        });
 
+        List<Question> sectionQuestions = stream.collect(Collectors.toList());
 
         return sectionQuestions;
     }

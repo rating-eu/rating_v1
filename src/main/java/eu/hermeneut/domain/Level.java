@@ -126,9 +126,10 @@ public class Level implements Serializable {
     @Override
     public String toString() {
         return "Level{" +
-            "id=" + getId() +
-            ", name='" + getName() + "'" +
-            ", description='" + getDescription() + "'" +
-            "}";
+            "id=" + id +
+            ", name='" + name + '\'' +
+            ", description='" + description + '\'' +
+            ", container=" + container +
+            '}';
     }
 }
