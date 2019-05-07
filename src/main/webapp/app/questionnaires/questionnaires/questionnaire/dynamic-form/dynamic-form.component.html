@@ -47,7 +47,7 @@
             <div *ngIf="questionnaire.purpose === purposeEnum.SELFASSESSMENT">
                 <mat-tab-group>
                     <mat-tab label="Human">
-                        <ol>
+                        <ol *ngIf="humanQuestionsArray">
                             <li *ngFor="let question of humanQuestionsArray; trackBy: trackByID">
                                 <div
                                     [ngClass]="{'ng-valid': isValid(question.id) === true, 'ng-invalid': isValid(question.id) === false}"
@@ -78,7 +78,7 @@
                     </mat-tab>
 
                     <mat-tab label="IT">
-                        <ol>
+                        <ol *ngIf="itQuestionsArray">
                             <li *ngFor="let question of itQuestionsArray; trackBy: trackByID">
                                 <div
                                     [ngClass]="{'ng-valid': isValid(question.id) === true, 'ng-invalid': isValid(question.id) === false}"
@@ -109,7 +109,7 @@
                     </mat-tab>
 
                     <mat-tab label="Physical">
-                        <ol>
+                        <ol *ngIf="physicalQuestionsArray">
                             <li *ngFor="let question of physicalQuestionsArray; trackBy: trackByID">
                                 <div
                                     [ngClass]="{'ng-valid': isValid(question.id) === true, 'ng-invalid': isValid(question.id) === false}"
