@@ -89,6 +89,13 @@ public class QuestionnaireStatus implements Serializable {
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<MyAnswer> answers = new HashSet<>();
 
+    /**
+     * This field references to the refinement QuestionnaireStatus of the External Audit.
+     */
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "refinement_id")
+    private QuestionnaireStatus refinement;
+
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
         return id;
@@ -213,6 +220,15 @@ public class QuestionnaireStatus implements Serializable {
     public void setAnswers(Set<MyAnswer> myAnswers) {
         this.answers = myAnswers;
     }
+
+    public QuestionnaireStatus getRefinement() {
+        return refinement;
+    }
+
+    public void setRefinement(QuestionnaireStatus refinement) {
+        this.refinement = refinement;
+    }
+
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
     @Override
