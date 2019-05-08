@@ -23,12 +23,22 @@
             </div>
         </div>
         <div *ngSwitchCase="purposeEnum.SELFASSESSMENT" class="col-md-12">
-            <div class="card-box col-md-12">
-                <h1>Questionnaires</h1>
-            </div>
 
-            <div class="col-md-2">
-                <button class="btn btn-primary btn-lg" (click)="createNewQuestionnaireStatus()">New</button>
+            <div [ngSwitch]="role">
+                <div *ngSwitchCase="roleEnum.ROLE_CISO" class="card-box col-md-12">
+                    <div class="col-md-10">
+                        <h1>Questionnaires</h1>
+                    </div>
+                    <div class="col-md-2">
+                        <h1><button class="btn btn-primary btn-lg" (click)="createNewQuestionnaireStatus()">New</button></h1>
+                    </div>
+                </div>
+
+                <div *ngSwitchCase="roleEnum.ROLE_EXTERNAL_AUDIT">
+                    <div class="card-box col-md-12">
+                        <h1>Questionnaires</h1>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

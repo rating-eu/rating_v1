@@ -44,8 +44,9 @@ import {Role} from "../../entities/enumerations/Role.enum";
 })
 export class QuestionnairesComponent implements OnInit, OnDestroy {
 
-    private statusEnum = Status;
-    private purposeEnum = QuestionnairePurpose;
+    public statusEnum = Status;
+    public roleEnum = Role;
+    public purposeEnum = QuestionnairePurpose;
     private purpose: QuestionnairePurpose;
 
     private static CISO_ROLE: string = Role[Role.ROLE_CISO];
