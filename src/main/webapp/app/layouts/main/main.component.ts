@@ -19,7 +19,7 @@ import {MainService} from './main.service';
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRouteSnapshot, NavigationEnd, Router} from '@angular/router';
 
-import {AccountService, JhiLanguageHelper, LoginService, Principal, UserService} from '../../shared';
+import {AccountService, JhiLanguageHelper, LoginService, Principal, User, UserService} from '../../shared';
 import {DatasharingService} from '../../datasharing/datasharing.service';
 import {Update} from '../model/Update';
 import {Role} from '../../entities/enumerations/Role.enum';
@@ -98,7 +98,9 @@ export class JhiMainComponent implements OnInit {
                 this.accountService.get().subscribe((accountResponse) => {
                     const loggedAccount: Account = accountResponse.body;
                     this.userService.find(loggedAccount['login']).subscribe((response2) => {
-                        const user = response2.body;
+                        const user: User = response2.body;
+
+                        this.dataSharingService.user = user;
 
                         if (user) {
                             this.myCompanyService.findByUser(user.id).subscribe(

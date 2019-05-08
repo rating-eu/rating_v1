@@ -29,6 +29,7 @@ import {HttpClient} from '@angular/common/http';
 import {Role} from '../entities/enumerations/Role.enum';
 import {QuestionnaireStatusMgm} from "../entities/questionnaire-status-mgm";
 import {MyCompanyMgm} from "../entities/my-company-mgm";
+import {User} from "../shared";
 
 @Injectable()
 export class DatasharingService {
@@ -47,6 +48,10 @@ export class DatasharingService {
     // Application Mode
     private _mode: Mode = null;
     private _modeSubject: BehaviorSubject<Mode> = new BehaviorSubject<Mode>(this._mode);
+
+    // User
+    private _user: User;
+    private _userSubject: BehaviorSubject<User> = new BehaviorSubject<User>(this._user);
 
     // MyCompany
     private _myCompany: MyCompanyMgm = null;
@@ -153,6 +158,19 @@ export class DatasharingService {
         return this._modeSubject.asObservable();
     }
 
+    // User property
+    get user(): User {
+        return this._user;
+    }
+
+    set user(user: User) {
+        this._user = user;
+        this._userSubject.next(this.user);
+    }
+
+    get userObservable(): Observable<User> {
+        return this._userSubject.asObservable();
+    }
 
     updateLayout(layoutUpdate: Update) {
         this.layoutUpdateSubject.next(layoutUpdate);
