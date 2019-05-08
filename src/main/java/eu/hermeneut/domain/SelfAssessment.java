@@ -74,13 +74,6 @@ public class SelfAssessment implements Serializable {
         inverseJoinColumns = @JoinColumn(name = "company_groups_id", referencedColumnName = "id"))
     private Set<CompanyGroup> companyGroups = new HashSet<>();
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    @JoinTable(name = "self_assessment_threatagent",
-        joinColumns = @JoinColumn(name = "self_assessments_id", referencedColumnName = "id"),
-        inverseJoinColumns = @JoinColumn(name = "threatagents_id", referencedColumnName = "id"))
-    private Set<ThreatAgent> threatagents = new HashSet<>();
-
     @ManyToOne
     private ExternalAudit externalAudit;
 
@@ -194,28 +187,6 @@ public class SelfAssessment implements Serializable {
         this.companyGroups = companyGroups;
     }
 
-    public Set<ThreatAgent> getThreatagents() {
-        return threatagents;
-    }
-
-    public SelfAssessment threatagents(Set<ThreatAgent> threatAgents) {
-        this.threatagents = threatAgents;
-        return this;
-    }
-
-    public SelfAssessment addThreatagent(ThreatAgent threatAgent) {
-        this.threatagents.add(threatAgent);
-        return this;
-    }
-
-    public SelfAssessment removeThreatagent(ThreatAgent threatAgent) {
-        this.threatagents.remove(threatAgent);
-        return this;
-    }
-
-    public void setThreatagents(Set<ThreatAgent> threatAgents) {
-        this.threatagents = threatAgents;
-    }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
     @Override
