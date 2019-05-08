@@ -15,19 +15,20 @@
  *
  */
 
-import { Mode } from './../entities/enumerations/Mode.enum';
-import { Injectable } from '@angular/core';
-import { Fraction } from '../utils/fraction.class';
-import { Couple } from '../utils/couple.class';
-import { ThreatAgentMgm } from '../entities/threat-agent-mgm';
-import { AnswerMgm } from '../entities/answer-mgm';
-import { Observable } from 'rxjs/Observable';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Update } from '../layouts/model/Update';
-import { SelfAssessmentMgm } from '../entities/self-assessment-mgm';
-import { HttpClient } from '@angular/common/http';
-import { Role } from '../entities/enumerations/Role.enum';
+import {Mode} from './../entities/enumerations/Mode.enum';
+import {Injectable} from '@angular/core';
+import {Fraction} from '../utils/fraction.class';
+import {Couple} from '../utils/couple.class';
+import {ThreatAgentMgm} from '../entities/threat-agent-mgm';
+import {AnswerMgm} from '../entities/answer-mgm';
+import {Observable} from 'rxjs/Observable';
+import {BehaviorSubject} from 'rxjs/BehaviorSubject';
+import {Update} from '../layouts/model/Update';
+import {SelfAssessmentMgm} from '../entities/self-assessment-mgm';
+import {HttpClient} from '@angular/common/http';
+import {Role} from '../entities/enumerations/Role.enum';
 import {QuestionnaireStatusMgm} from "../entities/questionnaire-status-mgm";
+import {MyCompanyMgm} from "../entities/my-company-mgm";
 
 @Injectable()
 export class DatasharingService {
@@ -47,6 +48,9 @@ export class DatasharingService {
     private appMode: BehaviorSubject<Mode> = new BehaviorSubject<Mode>(null);
     private role: Role = null;
     private mode: Mode = null;
+
+    private _myCompany: MyCompanyMgm = null;
+    private _myCompanySubject: BehaviorSubject<MyCompanyMgm> = new BehaviorSubject<MyCompanyMgm>(this._myCompany);
 
     constructor(private http: HttpClient) {
 
@@ -84,6 +88,25 @@ export class DatasharingService {
         this._externalQuestionnaireStatus = value;
     }
 
+    set myCompany(myCompany: MyCompanyMgm) {
+        console.log("Datasharing SET myCompany:");
+        console.log(myCompany);
+
+        this._myCompany = myCompany;
+        this._myCompanySubject.next(this._myCompany);
+    }
+
+    get myCompany(): MyCompanyMgm {
+        console.log("Datasharing GET myCompany:");
+        console.log(this._myCompany);
+
+        return this._myCompany;
+    }
+
+    get myCompanyObservable(): Observable<MyCompanyMgm> {
+        return this._myCompanySubject.asObservable();
+    }
+
     updateLayout(layoutUpdate: Update) {
         this.layoutUpdateSubject.next(layoutUpdate);
     }
@@ -98,10 +121,6 @@ export class DatasharingService {
 
     updateMySelfAssessment(mySelf: SelfAssessmentMgm) {
         this.mySelfAssessmentSubject.next(mySelf);
-    }
-
-    getMySelfAssessment(): SelfAssessmentMgm {
-        return this.mySelfAssessmentSubject.getValue();
     }
 
     observeMySelf(): Observable<SelfAssessmentMgm> {
