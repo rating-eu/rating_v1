@@ -19,11 +19,13 @@ import {MainService} from './main.service';
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRouteSnapshot, NavigationEnd, Router} from '@angular/router';
 
-import {JhiLanguageHelper, LoginService, Principal} from '../../shared';
+import {AccountService, JhiLanguageHelper, LoginService, Principal, UserService} from '../../shared';
 import {DatasharingService} from '../../datasharing/datasharing.service';
 import {Update} from '../model/Update';
 import {Role} from '../../entities/enumerations/Role.enum';
 import {ModalDismissReasons, NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {HttpResponse} from "@angular/common/http";
+import {MyCompanyMgm, MyCompanyMgmService} from "../../entities/my-company-mgm";
 
 @Component({
     selector: 'jhi-main',
@@ -46,7 +48,10 @@ export class JhiMainComponent implements OnInit {
         private router: Router,
         private dataSharingService: DatasharingService,
         private mainService: MainService,
-        private modalService: NgbModal
+        private modalService: NgbModal,
+        private accountService: AccountService,
+        private userService: UserService,
+        private myCompanyService: MyCompanyMgmService
     ) {
         this.updateLayout = new Update();
     }
@@ -89,6 +94,25 @@ export class JhiMainComponent implements OnInit {
         this.principal.getAuthenticationState().subscribe((authentication: any) => {
             if (authentication) {
                 this.isAuthenticated = true;
+
+                this.accountService.get().subscribe((accountResponse) => {
+                    const loggedAccount: Account = accountResponse.body;
+                    this.userService.find(loggedAccount['login']).subscribe((response2) => {
+                        const user = response2.body;
+
+                        if (user) {
+                            this.myCompanyService.findByUser(user.id).subscribe(
+                                (myCompanyResponse: HttpResponse<MyCompanyMgm>) => {
+                                    const myCompany = myCompanyResponse.body;
+                                    this.dataSharingService.myCompany = myCompany;
+                                },
+                                (error: any) => {
+                                    this.dataSharingService.myCompany = undefined;
+                                }
+                            );
+                        }
+                    });
+                });
 
                 this.updateRole();
             } else {
@@ -174,7 +198,7 @@ export class JhiMainComponent implements OnInit {
     }
 
     open(content) {
-        this.modalService.open(content, { size: 'lg' }).result.then((result) => {
+        this.modalService.open(content, {size: 'lg'}).result.then((result) => {
             this.closeResult = `Closed with: ${result}`;
         }, (reason) => {
             this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
