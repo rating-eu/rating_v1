@@ -134,7 +134,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
             }
         });
 
-        this.dataSharingService.observeMySelf().subscribe((mySelf) => {
+        this.dataSharingService.selfAssessmentObservable.subscribe((mySelf) => {
             if (mySelf) {
                 this.createMenuItems(this.isCISO, this.isExternal);
             }

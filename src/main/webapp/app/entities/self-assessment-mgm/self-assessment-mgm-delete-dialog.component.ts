@@ -58,7 +58,7 @@ export class SelfAssessmentMgmDeleteDialogComponent {
             });
 
             // TODO think of an alternative method only for update view events
-            this.dataSharingService.updateMySelfAssessment(null);
+            this.dataSharingService.selfAssessment = null;
 
             this.activeModal.dismiss(true);
         });

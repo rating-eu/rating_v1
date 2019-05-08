@@ -16,17 +16,17 @@
  */
 
 import * as _ from 'lodash';
-import { Principal } from './../shared/auth/principal.service';
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { User } from '../shared';
-import { MyCompanyMgm } from '../entities/my-company-mgm';
-import { SelfAssessmentMgm, SelfAssessmentMgmService } from '../entities/self-assessment-mgm';
-import { Router } from '@angular/router';
-import { Subscription } from 'rxjs/Subscription';
-import { MyAssetMgm, MyAssetMgmService } from '../entities/my-asset-mgm';
-import { DatasharingService } from '../datasharing/datasharing.service';
-import { PopUpService } from '../shared/pop-up-services/pop-up.service';
-import { Role } from '../entities/enumerations/Role.enum';
+import {Principal} from './../shared/auth/principal.service';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {User} from '../shared';
+import {MyCompanyMgm} from '../entities/my-company-mgm';
+import {SelfAssessmentMgm, SelfAssessmentMgmService} from '../entities/self-assessment-mgm';
+import {Router} from '@angular/router';
+import {Subscription} from 'rxjs/Subscription';
+import {MyAssetMgm, MyAssetMgmService} from '../entities/my-asset-mgm';
+import {DatasharingService} from '../datasharing/datasharing.service';
+import {PopUpService} from '../shared/pop-up-services/pop-up.service';
+import {Role} from '../entities/enumerations/Role.enum';
 
 interface OrderBy {
     name: boolean;
@@ -81,7 +81,7 @@ export class MyRiskAssessmentsComponent implements OnInit, OnDestroy {
         }
 
         // Get notified each time authentication state changes.
-        this.dataSharingService.observeRole().subscribe((role: Role) => {
+        this.dataSharingService.roleObservable.subscribe((role: Role) => {
             switch (role) {
                 case Role.ROLE_ADMIN: {
                     this.isAdmin = true;
@@ -115,7 +115,7 @@ export class MyRiskAssessmentsComponent implements OnInit, OnDestroy {
 
     selectSelfAssessment(selfAssessment: SelfAssessmentMgm) {
         this.selfAssessmentService.setSelfAssessment(selfAssessment);
-        this.dataSharingService.updateMySelfAssessment(selfAssessment);
+        this.dataSharingService.selfAssessment = selfAssessment;
 
         if (this.isCISO) {
             this.router.navigate(['/']);
@@ -131,7 +131,7 @@ export class MyRiskAssessmentsComponent implements OnInit, OnDestroy {
     }
 
     registerChangeInSelfAssessments() {
-        this.subscription = this.dataSharingService.observeMySelf().subscribe((value: SelfAssessmentMgm) => {
+        this.subscription = this.dataSharingService.selfAssessmentObservable.subscribe((value: SelfAssessmentMgm) => {
             this.loadMySelfAssessments();
         });
     }

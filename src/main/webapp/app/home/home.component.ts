@@ -55,7 +55,7 @@ export class HomeComponent implements OnInit {
         this.registerAuthenticationSuccess();
         this.mySelf = this.mySelfAssessmentService.getSelfAssessment();
 
-        const role: Role = this.dataSharingService.getRole();
+        const role: Role = this.dataSharingService.role;
 
         if (role) {
             switch (role) {

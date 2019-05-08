@@ -86,7 +86,7 @@ export class NavbarComponent implements OnInit {
             }
         });
 
-        this.dataSharingService.observeRole().subscribe((role: Role) => {
+        this.dataSharingService.roleObservable.subscribe((role: Role) => {
             if (role) {
                 switch (role) {
                     case Role.ROLE_CISO: {

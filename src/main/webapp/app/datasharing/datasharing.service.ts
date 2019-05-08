@@ -43,14 +43,23 @@ export class DatasharingService {
     // Map to keep the previous updated answers.
     // Single AttackStrategy update
     private layoutUpdateSubject: BehaviorSubject<Update> = new BehaviorSubject<Update>(null);
-    private mySelfAssessmentSubject: BehaviorSubject<SelfAssessmentMgm> = new BehaviorSubject<SelfAssessmentMgm>(null);
-    private roleSubject: BehaviorSubject<Role> = new BehaviorSubject<Role>(null);
-    private appMode: BehaviorSubject<Mode> = new BehaviorSubject<Mode>(null);
-    private role: Role = null;
-    private mode: Mode = null;
 
+    // Application Mode
+    private _mode: Mode = null;
+    private _modeSubject: BehaviorSubject<Mode> = new BehaviorSubject<Mode>(this._mode);
+
+    // MyCompany
     private _myCompany: MyCompanyMgm = null;
     private _myCompanySubject: BehaviorSubject<MyCompanyMgm> = new BehaviorSubject<MyCompanyMgm>(this._myCompany);
+
+    // Role
+    private _role: Role = null;
+    private _roleSubject: BehaviorSubject<Role> = new BehaviorSubject<Role>(this._role);
+
+    // SelfAssessment
+    private _selfAssessment: SelfAssessmentMgm = null;
+    private _selfAssessmentSubject: BehaviorSubject<SelfAssessmentMgm> = new BehaviorSubject<SelfAssessmentMgm>(this._selfAssessment);
+
 
     constructor(private http: HttpClient) {
 
@@ -88,24 +97,62 @@ export class DatasharingService {
         this._externalQuestionnaireStatus = value;
     }
 
+    // MyCompany property
     set myCompany(myCompany: MyCompanyMgm) {
-        console.log("Datasharing SET myCompany:");
-        console.log(myCompany);
-
         this._myCompany = myCompany;
         this._myCompanySubject.next(this._myCompany);
     }
 
     get myCompany(): MyCompanyMgm {
-        console.log("Datasharing GET myCompany:");
-        console.log(this._myCompany);
-
         return this._myCompany;
     }
 
     get myCompanyObservable(): Observable<MyCompanyMgm> {
         return this._myCompanySubject.asObservable();
     }
+
+    // SelfAssessment property
+    set selfAssessment(selfAssessment: SelfAssessmentMgm) {
+        this._selfAssessment = selfAssessment;
+        this._selfAssessmentSubject.next(this._selfAssessment);
+    }
+
+    get selfAssessment(): SelfAssessmentMgm {
+        return this._selfAssessment;
+    }
+
+    get selfAssessmentObservable(): Observable<SelfAssessmentMgm> {
+        return this._selfAssessmentSubject.asObservable();
+    }
+
+    // Role property
+    get role(): Role {
+        return this._role;
+    }
+
+    set role(role: Role) {
+        this._role = role;
+        this._roleSubject.next(this._role);
+    }
+
+    get roleObservable(): Observable<Role> {
+        return this._roleSubject.asObservable();
+    }
+
+    // Mode property
+    get mode(): Mode {
+        return this._mode;
+    }
+
+    set mode(mode: Mode) {
+        this._mode = mode;
+        this._modeSubject.next(this._mode);
+    }
+
+    get modeObservable(): Observable<Mode> {
+        return this._modeSubject.asObservable();
+    }
+
 
     updateLayout(layoutUpdate: Update) {
         this.layoutUpdateSubject.next(layoutUpdate);
@@ -119,43 +166,11 @@ export class DatasharingService {
         return this.layoutUpdateSubject.asObservable();
     }
 
-    updateMySelfAssessment(mySelf: SelfAssessmentMgm) {
-        this.mySelfAssessmentSubject.next(mySelf);
-    }
-
-    observeMySelf(): Observable<SelfAssessmentMgm> {
-        return this.mySelfAssessmentSubject.asObservable();
-    }
-
-    observeRole(): Observable<Role> {
-        return this.roleSubject.asObservable();
-    }
-
-    updateRole(role: Role) {
-        this.role = role;
-        this.roleSubject.next(this.role);
-    }
-
-    observeMode(): Observable<Mode> {
-        return this.appMode.asObservable();
-    }
-
-    updateMode(mode: Mode) {
-        this.mode = mode;
-        this.appMode.next(mode);
-    }
-
-    getMode() {
-        return this.mode;
-    }
-
-    getRole() {
-        return this.role;
-    }
-
     clear() {
-        this.mySelfAssessmentSubject.next(null);
+        this._roleSubject.next(null);
+        this._myCompanySubject.next(null);
+        this._selfAssessmentSubject.next(null);
+        this._modeSubject.next(null);
         this.layoutUpdateSubject.next(null);
-        this.roleSubject.next(null);
     }
 }

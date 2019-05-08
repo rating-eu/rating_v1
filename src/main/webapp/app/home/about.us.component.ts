@@ -39,7 +39,7 @@ export class AboutUsComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
-        this.modeSubs = this.dataSharing.observeMode().subscribe((mode: Mode) => {
+        this.modeSubs = this.dataSharing.modeObservable.subscribe((mode: Mode) => {
             if (mode) {
                 this.mode = mode;
             }

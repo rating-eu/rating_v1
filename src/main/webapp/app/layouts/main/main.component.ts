@@ -67,7 +67,7 @@ export class JhiMainComponent implements OnInit {
     ngOnInit() {
         this.mainService.getMode().toPromise().then((res) => {
             if (res) {
-                this.dataSharingService.updateMode(res);
+                this.dataSharingService.mode = res;
             }
         });
         this.router.events.subscribe((event) => {
@@ -150,7 +150,8 @@ export class JhiMainComponent implements OnInit {
                     this.isCISO = response;
 
                     if (this.isCISO) {
-                        this.dataSharingService.updateRole(Role.ROLE_CISO);
+                        this.dataSharingService.role = Role.ROLE_CISO;
+
                         updateLayout.isSidebarCollapsed = false;
                         updateLayout.isSidebarCollapsedByMe = false;
                         this.dataSharingService.updateLayout(updateLayout);
@@ -163,7 +164,8 @@ export class JhiMainComponent implements OnInit {
                     this.isExternal = response;
 
                     if (this.isExternal) {
-                        this.dataSharingService.updateRole(Role.ROLE_EXTERNAL_AUDIT);
+                        this.dataSharingService.role = Role.ROLE_EXTERNAL_AUDIT;
+
                         updateLayout.isSidebarCollapsed = true;
                         updateLayout.isSidebarCollapsedByMe = false;
                         this.dataSharingService.updateLayout(updateLayout);
@@ -179,7 +181,7 @@ export class JhiMainComponent implements OnInit {
                         updateLayout.isSidebarCollapsed = true;
                         updateLayout.isSidebarCollapsedByMe = false;
                         this.dataSharingService.updateLayout(updateLayout);
-                        this.dataSharingService.updateRole(Role.ROLE_ADMIN);
+                        this.dataSharingService.role = Role.ROLE_ADMIN;
                     }
                 });
                 break;
@@ -194,7 +196,7 @@ export class JhiMainComponent implements OnInit {
         this.isExternal = false;
         this.isCISO = false;
 
-        this.dataSharingService.updateRole(null);
+        this.dataSharingService.role = null;
     }
 
     open(content) {
