@@ -26,7 +26,6 @@ import eu.hermeneut.domain.attackmap.AugmentedAttackStrategy;
 import eu.hermeneut.service.*;
 import eu.hermeneut.service.result.ResultService;
 import eu.hermeneut.utils.attackstrategy.ThreatAttackFilter;
-import eu.hermeneut.utils.likelihood.answer.AnswerCalculator;
 import eu.hermeneut.utils.likelihood.attackstrategy.AttackStrategyCalculator;
 import eu.hermeneut.utils.threatagent.ThreatAgentComparator;
 import org.slf4j.Logger;
