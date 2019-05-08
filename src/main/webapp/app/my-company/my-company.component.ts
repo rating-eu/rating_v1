@@ -18,7 +18,7 @@
 import {Component, OnInit} from '@angular/core';
 import {AccountService, User, UserService} from '../shared/index';
 import {MyCompanyMgm, MyCompanyMgmService} from '../entities/my-company-mgm/index';
-import {HttpErrorResponse, HttpResponse} from '@angular/common/http';
+import {HttpErrorResponse, HttpResponse} from '@angular/common/http'
 // import {CompanyProfileMgm, CompanyProfileMgmService} from '../entities/company-profile-mgm/index';
 // import {JhiAlertService} from 'ng-jhipster';
 
@@ -34,14 +34,11 @@ export class MyCompanyComponent implements OnInit {
     public myCompany: MyCompanyMgm;
     public error: HttpErrorResponse;
     public message: string;
-    // public companyProfiles: CompanyProfileMgm[];
-    // public companyProfile: CompanyProfileMgm;
 
     constructor(private accountService: AccountService,
                 private userService: UserService,
                 private myCompanyService: MyCompanyMgmService,
-                /*private companyProfileService: CompanyProfileMgmService,
-                private jhiAlertService: JhiAlertService*/) {
+    ) {
     }
 
     ngOnInit() {

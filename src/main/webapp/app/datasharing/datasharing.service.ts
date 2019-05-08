@@ -23,7 +23,6 @@ import { ThreatAgentMgm } from '../entities/threat-agent-mgm';
 import { AnswerMgm } from '../entities/answer-mgm';
 import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { QuestionnaireMgm } from '../entities/questionnaire-mgm';
 import { Update } from '../layouts/model/Update';
 import { SelfAssessmentMgm } from '../entities/self-assessment-mgm';
 import { HttpClient } from '@angular/common/http';
