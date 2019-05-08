@@ -24,6 +24,7 @@ import eu.hermeneut.domain.enumeration.Role;
 import eu.hermeneut.domain.output.IntangibleAssetsAttacksLikelihoodTable;
 import eu.hermeneut.domain.attackmap.AugmentedAttackStrategy;
 import eu.hermeneut.service.*;
+import eu.hermeneut.service.result.ResultService;
 import eu.hermeneut.utils.attackstrategy.ThreatAttackFilter;
 import eu.hermeneut.utils.likelihood.answer.AnswerCalculator;
 import eu.hermeneut.utils.likelihood.attackstrategy.AttackStrategyCalculator;
@@ -75,7 +76,7 @@ public class WP3OutputController {
     private AnswerService answerService;
 
     @Autowired
-    private AnswerCalculator answerCalculator;
+    private ResultService resultService;
 
     @GetMapping("{selfAssessmentID}/output/intangibles/impact")
     public IntangibleAssetsAttacksLikelihoodTable intangiblesImpact(@PathVariable Long selfAssessmentID) {
@@ -90,7 +91,8 @@ public class WP3OutputController {
 
             if (companyProfile != null) {
                 //Get the StrongestThreatAgent
-                Set<ThreatAgent> threatAgentSet = selfAssessment.getThreatagents();
+                Set<ThreatAgent> threatAgentSet = this.resultService.getThreatAgents(companyProfile.getId());
+
                 List<ThreatAgent> ascendingThreatAgentSkills = new ArrayList<>(threatAgentSet);
                 ascendingThreatAgentSkills.sort(new ThreatAgentComparator().reversed());
                 ThreatAgent strongestThreatAgent = ascendingThreatAgentSkills.get(0);

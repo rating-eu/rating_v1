@@ -1,12 +1,12 @@
 /*
  * Copyright 2019 HERMENEUT Consortium
- *  
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *  
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- *  
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -56,8 +56,13 @@ public class ThreatAgentInterestServiceImpl implements ThreatAgentInterestServic
             throw new NotFoundException("SelfAssessment with ID: " + selfAssessmentID + " NOT FOUND.");
         }
 
-        //TODO update this when the threatagents identified will be saved in the DB
-        List<ThreatAgent> threatAgents = new ArrayList<>(selfAssessment.getThreatagents());
+        CompanyProfile companyProfile = selfAssessment.getCompanyProfile();
+
+        if (companyProfile == null) {
+            throw new NotFoundException("CompanyProfile of SelfAssessment NOT FOUND.");
+        }
+
+        Set<ThreatAgent> threatAgents = this.resultService.getThreatAgents(companyProfile.getId());
 
         if (threatAgents == null || threatAgents.isEmpty()) {
             throw new NotFoundException("ThreatAgent for SelfAssessment with ID: " + selfAssessmentID + " NOT FOUND.");
@@ -80,10 +85,12 @@ public class ThreatAgentInterestServiceImpl implements ThreatAgentInterestServic
         }
 
         Map<Long, Float> levelsOfInterestMap = this.resultService.getLevelsOfInterest(selfAssessmentID);
+        Iterator<ThreatAgent> threatAgentIterator = threatAgents.iterator();
 
         //Keep only the ThreatAgents that can perform at least one of the above AttackStrategies
-        for (int i = 0; i < threatAgents.size(); i++) {
-            ThreatAgent threatAgent = threatAgents.get(i);
+        while (threatAgentIterator.hasNext()) {
+            ThreatAgent threatAgent = threatAgentIterator.next();
+
             final ThreatAgentInterest threatAgentInterest = new ThreatAgentInterest(threatAgent);
             threatAgentInterest.setAttackStrategies(new HashSet<>());
 
@@ -98,8 +105,7 @@ public class ThreatAgentInterestServiceImpl implements ThreatAgentInterestServic
             }
 
             if (!canAttackThisAsset) {
-                threatAgents.remove(i);
-                i--;
+                threatAgentIterator.remove();
             } else {
                 threatAgentInterest.setLevelOfInterest(levelsOfInterestMap.getOrDefault(threatAgent.getId(), 0F));
 

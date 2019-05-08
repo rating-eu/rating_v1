@@ -1,12 +1,12 @@
 /*
  * Copyright 2019 HERMENEUT Consortium
- *  
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *  
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- *  
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -100,16 +100,6 @@ public class SelfAssessmentServiceImpl implements SelfAssessmentService {
         LOGGER.debug("Request to get all SelfAssessments");
         List<SelfAssessment> selfAssessments = selfAssessmentRepository.findAllWithEagerRelationships();
 
-        for (SelfAssessment selfAssessment : selfAssessments) {
-            Set<ThreatAgent> threatAgents = selfAssessment.getThreatagents();
-
-            if (threatAgents != null) {
-                for (ThreatAgent threatAgent : threatAgents) {
-                    threatAgent.setImage(null);
-                }
-            }
-        }
-
         return selfAssessments;
     }
 
@@ -172,53 +162,57 @@ public class SelfAssessmentServiceImpl implements SelfAssessmentService {
         overview.setAugmentedMyAssets(augmentedMyAssets);
 
         if (selfAssessment != null) {
-            Set<ThreatAgent> threatAgentSet = selfAssessment.getThreatagents();
+            CompanyProfile companyProfile = selfAssessment.getCompanyProfile();
 
-            if (threatAgentSet != null && !threatAgentSet.isEmpty()) {
-                List<MyAsset> myAssets = this.myAssetService.findAllBySelfAssessment(selfAssessmentID);
+            if (companyProfile != null) {
+                Set<ThreatAgent> threatAgentSet = this.resultService.getThreatAgents(companyProfile.getId());
 
-                if (myAssets != null && !myAssets.isEmpty()) {
-                    LOGGER.debug("MyAssets: " + myAssets.size());
+                if (threatAgentSet != null && !threatAgentSet.isEmpty()) {
+                    List<MyAsset> myAssets = this.myAssetService.findAllBySelfAssessment(selfAssessmentID);
 
-                    try {
-                        Map<Long, AugmentedAttackStrategy> augmentedAttackStrategyMap = this.augmentedAttackStrategyService.getAugmentedAttackStrategyMap(selfAssessmentID);
+                    if (myAssets != null && !myAssets.isEmpty()) {
+                        LOGGER.debug("MyAssets: " + myAssets.size());
 
-                        //===Split MyAssets and handle them in different THREADS===
-                        final int MY_ASSETS_PER_SINGLE_THREAD = new Random().nextInt(myAssets.size() / 3 + 1) + 2;
-                        final int THREADS_PROPOSAL = myAssets.size() / MY_ASSETS_PER_SINGLE_THREAD + 1;
-                        final int THREADS_AMOUNT = THREADS_PROPOSAL < myAssets.size() ? THREADS_PROPOSAL : myAssets.size();
+                        try {
+                            Map<Long, AugmentedAttackStrategy> augmentedAttackStrategyMap = this.augmentedAttackStrategyService.getAugmentedAttackStrategyMap(selfAssessmentID);
 
-                        Map<Integer, List<MyAsset>> splittedMyAssets = ListSplitter.split(myAssets, THREADS_AMOUNT);
+                            //===Split MyAssets and handle them in different THREADS===
+                            final int MY_ASSETS_PER_SINGLE_THREAD = new Random().nextInt(myAssets.size() / 3 + 1) + 2;
+                            final int THREADS_PROPOSAL = myAssets.size() / MY_ASSETS_PER_SINGLE_THREAD + 1;
+                            final int THREADS_AMOUNT = THREADS_PROPOSAL < myAssets.size() ? THREADS_PROPOSAL : myAssets.size();
 
-                        ExecutorService executor = Executors.newFixedThreadPool(THREADS_AMOUNT);
+                            Map<Integer, List<MyAsset>> splittedMyAssets = ListSplitter.split(myAssets, THREADS_AMOUNT);
 
-                        //create a list to hold the Future object associated with Callable
-                        List<Future<List<AugmentedMyAsset>>> futureList = new ArrayList<Future<List<AugmentedMyAsset>>>();
+                            ExecutorService executor = Executors.newFixedThreadPool(THREADS_AMOUNT);
 
-                        splittedMyAssets.entrySet().stream().forEach((entry) -> {
-                            List<MyAsset> myAssetsSubset = entry.getValue();
+                            //create a list to hold the Future object associated with Callable
+                            List<Future<List<AugmentedMyAsset>>> futureList = new ArrayList<Future<List<AugmentedMyAsset>>>();
 
-                            AugmentedMyAssetsCallable augmentedMyAssetsCallable = new AugmentedMyAssetsCallable(myAssetsSubset, this.attackStrategyService, augmentedAttackStrategyMap, threatAgentSet);
+                            splittedMyAssets.entrySet().stream().forEach((entry) -> {
+                                List<MyAsset> myAssetsSubset = entry.getValue();
 
-                            //submit Callable tasks to be executed by thread pool
-                            Future<List<AugmentedMyAsset>> future = executor.submit(augmentedMyAssetsCallable);
-                            //add Future to the list, we can get return value using Future
-                            futureList.add(future);
-                        });
+                                AugmentedMyAssetsCallable augmentedMyAssetsCallable = new AugmentedMyAssetsCallable(myAssetsSubset, this.attackStrategyService, augmentedAttackStrategyMap, threatAgentSet);
 
-                        for (Future<List<AugmentedMyAsset>> future : futureList) {
-                            try {
-                                //Future.get() waits for task to get completed
-                                augmentedMyAssets.addAll(future.get());
-                            } catch (InterruptedException | ExecutionException e) {
-                                e.printStackTrace();
+                                //submit Callable tasks to be executed by thread pool
+                                Future<List<AugmentedMyAsset>> future = executor.submit(augmentedMyAssetsCallable);
+                                //add Future to the list, we can get return value using Future
+                                futureList.add(future);
+                            });
+
+                            for (Future<List<AugmentedMyAsset>> future : futureList) {
+                                try {
+                                    //Future.get() waits for task to get completed
+                                    augmentedMyAssets.addAll(future.get());
+                                } catch (InterruptedException | ExecutionException e) {
+                                    e.printStackTrace();
+                                }
                             }
+                        } catch (NotFoundException e) {
+                            e.printStackTrace();
                         }
-                    } catch (NotFoundException e) {
-                        e.printStackTrace();
-                    }
-                } else {
+                    } else {
 
+                    }
                 }
             }
         } else {

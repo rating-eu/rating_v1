@@ -27,6 +27,7 @@ import eu.hermeneut.service.MyAssetService;
 import eu.hermeneut.service.SelfAssessmentService;
 import eu.hermeneut.service.attackmap.AugmentedAttackStrategyService;
 import eu.hermeneut.service.compact.AssetRiskService;
+import eu.hermeneut.service.result.ResultService;
 import eu.hermeneut.utils.attackstrategy.ThreatAttackFilter;
 import eu.hermeneut.utils.threatagent.ThreatAgentComparator;
 import eu.hermeneut.utils.tuple.Triad;
@@ -54,6 +55,9 @@ public class AssetRiskServiceImpl implements AssetRiskService, MaxValues {
     @Autowired
     private AttackStrategyService attackStrategyService;
 
+    @Autowired
+    private ResultService resultService;
+
     @Override
     public Set<AssetRisk> getAssetRisks(Long selfAssessmentID) throws NotFoundException {
         if (selfAssessmentID == null) {
@@ -66,7 +70,13 @@ public class AssetRiskServiceImpl implements AssetRiskService, MaxValues {
             throw new NotFoundException("SelfAssessment with ID = " + selfAssessmentID + " could NOT be FOUND.");
         }
 
-        Set<ThreatAgent> threatAgents = selfAssessment.getThreatagents();
+        CompanyProfile companyProfile = selfAssessment.getCompanyProfile();
+
+        if (companyProfile == null) {
+            throw new NotFoundException("CompanyProfile of SelfAssessment NOT FOUND.");
+        }
+
+        Set<ThreatAgent> threatAgents = this.resultService.getThreatAgents(companyProfile.getId());
 
         if (threatAgents == null || threatAgents.isEmpty()) {
             throw new NotFoundException("ThreatAgent for SelfAssessment with ID = " + selfAssessmentID + " could NOT be FOUND.");
