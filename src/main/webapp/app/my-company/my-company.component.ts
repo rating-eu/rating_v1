@@ -16,9 +16,9 @@
  */
 
 import {Component, OnInit} from '@angular/core';
-import {AccountService, User, UserService} from '../shared/index';
-import {MyCompanyMgm, MyCompanyMgmService} from '../entities/my-company-mgm/index';
-import {HttpErrorResponse, HttpResponse} from '@angular/common/http'
+import {MyCompanyMgm} from '../entities/my-company-mgm/index';
+import {HttpErrorResponse} from '@angular/common/http'
+import {DatasharingService} from "../datasharing/datasharing.service";
 
 @Component({
     selector: 'jhi-my-company',
@@ -27,35 +27,14 @@ import {HttpErrorResponse, HttpResponse} from '@angular/common/http'
 })
 export class MyCompanyComponent implements OnInit {
 
-    private static NOT_FOUND = 404;
-    private user: User;
     public myCompany: MyCompanyMgm;
     public error: HttpErrorResponse;
     public message: string;
 
-    constructor(private accountService: AccountService,
-                private userService: UserService,
-                private myCompanyService: MyCompanyMgmService,
-    ) {
+    constructor(private dataSharingService: DatasharingService) {
     }
 
     ngOnInit() {
-        this.accountService.get().subscribe((response1) => {
-            const loggedAccount: Account = response1.body;
-            this.userService.find(loggedAccount['login']).subscribe((response2) => {
-                this.user = response2.body;
-
-                if (this.user) {
-                    this.myCompanyService.findByUser(this.user.id).subscribe(
-                        (response3: HttpResponse<MyCompanyMgm>) => {
-                            this.myCompany = response3.body;
-                        },
-                        (error: any) => {
-                            this.error = error;
-                        }
-                    );
-                }
-            });
-        });
+        this.myCompany = this.dataSharingService.myCompany;
     }
 }
