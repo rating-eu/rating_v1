@@ -174,7 +174,7 @@ public class SelfAssessmentServiceImpl implements SelfAssessmentService {
                         LOGGER.debug("MyAssets: " + myAssets.size());
 
                         try {
-                            Map<Long, AugmentedAttackStrategy> augmentedAttackStrategyMap = this.augmentedAttackStrategyService.getAugmentedAttackStrategyMap(selfAssessmentID);
+                            Map<Long, AugmentedAttackStrategy> augmentedAttackStrategyMap = this.augmentedAttackStrategyService.getAugmentedAttackStrategyMap(selfAssessment.getCompanyProfile().getId());
 
                             //===Split MyAssets and handle them in different THREADS===
                             final int MY_ASSETS_PER_SINGLE_THREAD = new Random().nextInt(myAssets.size() / 3 + 1) + 2;

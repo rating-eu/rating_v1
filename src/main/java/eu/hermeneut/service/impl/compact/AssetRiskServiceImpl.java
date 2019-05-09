@@ -93,7 +93,7 @@ public class AssetRiskServiceImpl implements AssetRiskService, MaxValues {
             throw new NotFoundException("MyAssets for SelfAssessment with ID = " + selfAssessmentID + " could NOT be FOUND.");
         }
 
-        Map<Long, AugmentedAttackStrategy> augmentedAttackStrategyMap = this.augmentedAttackStrategyService.getAugmentedAttackStrategyMap(selfAssessmentID);
+        Map<Long, AugmentedAttackStrategy> augmentedAttackStrategyMap = this.augmentedAttackStrategyService.getAugmentedAttackStrategyMap(selfAssessment.getCompanyProfile().getId());
 
         //Keep only the attackstrategies that can be performed by the Strongest ThreatAgent
         augmentedAttackStrategyMap = augmentedAttackStrategyMap.values()

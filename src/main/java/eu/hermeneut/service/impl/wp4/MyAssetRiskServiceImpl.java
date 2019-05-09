@@ -102,7 +102,7 @@ public class MyAssetRiskServiceImpl implements MyAssetRiskService, MaxValues {
             throw new NotFoundException("AssetRisks NOT Found!!!");
         }
 
-        Map<Long, AugmentedAttackStrategy> augmentedAttackStrategyMap = this.augmentedAttackStrategyService.getAugmentedAttackStrategyMap(selfAssessmentID);
+        Map<Long, AugmentedAttackStrategy> augmentedAttackStrategyMap = this.augmentedAttackStrategyService.getAugmentedAttackStrategyMap(selfAssessment.getCompanyProfile().getId());
 
         //Keep only the attackstrategies that can be performed by the Strongest ThreatAgent
         augmentedAttackStrategyMap = augmentedAttackStrategyMap.values()
