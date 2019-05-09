@@ -1,15 +1,20 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {ChartsModule} from 'ng2-charts';
 
-import { DashboardRoutingModule } from './dashboard-routing.module';
-import { EntryPointComponent } from './entry-point/entry-point.component';
-import { VulnerabilityRadarWidgetComponent } from './vulnerability-radar-widget/vulnerability-radar-widget.component';
+import {DashboardRoutingModule} from './dashboard-routing.module';
+import {EntryPointComponent} from './entry-point/entry-point.component';
+import {VulnerabilityRadarWidgetComponent} from './vulnerability-radar-widget/vulnerability-radar-widget.component';
+import {NgbCollapseModule} from "@ng-bootstrap/ng-bootstrap";
 
 @NgModule({
-  imports: [
-    CommonModule,
-    DashboardRoutingModule
-  ],
-  declarations: [EntryPointComponent, VulnerabilityRadarWidgetComponent]
+    imports: [
+        CommonModule,
+        DashboardRoutingModule,
+        ChartsModule,
+        NgbCollapseModule.forRoot()
+    ],
+    declarations: [EntryPointComponent, VulnerabilityRadarWidgetComponent]
 })
-export class DashboardModule { }
+export class DashboardModule {
+}
