@@ -30,7 +30,6 @@ export class SelfAssessmentMgm implements BaseEntity {
         public user?: User,
         public companyProfile?: CompanyProfileMgm,
         public companyGroups?: CompanyGroupMgm[],
-        public threatagents?: ThreatAgentMgm[],
         public externalAudit?: ExternalAuditMgm,
     ) {
     }

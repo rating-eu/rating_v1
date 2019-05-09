@@ -23,7 +23,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {AugmentedAttackStrategy} from '../../evaluate-weakness/models/augmented-attack-strategy.model';
 import {Observable, Subscription} from 'rxjs';
 import {SelfAssessmentMgm, SelfAssessmentMgmService} from '../../entities/self-assessment-mgm';
-import {ThreatAgentMgm} from '../../entities/threat-agent-mgm';
+import {ThreatAgentMgm, ThreatAgentMgmService} from '../../entities/threat-agent-mgm';
 import {HttpResponse} from '@angular/common/http';
 import {PhaseMgm, PhaseMgmService} from '../../entities/phase-mgm';
 import {LevelMgm, LevelMgmService} from '../../entities/level-mgm';
@@ -34,6 +34,7 @@ import {forkJoin} from 'rxjs/observable/forkJoin';
 import {WeaknessUtils} from '../../evaluate-weakness/utils/weakness-utils';
 import {MatHorizontalStepper} from '@angular/material';
 import {DatasharingService} from "../../datasharing/datasharing.service";
+import {MyCompanyMgm} from "../../entities/my-company-mgm";
 
 @Component({
     selector: 'jhi-attack-map-widget',
@@ -54,9 +55,11 @@ export class AttackMapWidgetComponent implements OnInit, OnDestroy {
     public debug = false;
 
     public selfAssessment: SelfAssessmentMgm;
+    private myCompany: MyCompanyMgm;
 
     // ThreatAgents
     public threatAgents: ThreatAgentMgm[];
+    public threatAgents$: Observable<HttpResponse<ThreatAgentMgm[]>>;
     public selectedThreatAgent: ThreatAgentMgm;
 
     // CyberKillChain7 Phases
@@ -91,12 +94,15 @@ export class AttackMapWidgetComponent implements OnInit, OnDestroy {
         private phaseService: PhaseMgmService,
         private attackMapService: AttackMapService,
         private dashService: RiskBoardService,
-        private dataSharingService: DatasharingService
+        private dataSharingService: DatasharingService,
+        private threatAgentService: ThreatAgentMgmService
     ) {
     }
 
     ngOnInit() {
         this.selfAssessment = this.dataSharingService.selfAssessment;
+        this.myCompany = this.dataSharingService.myCompany;
+
         this.status = this.dashService.getStatus();
         this.dashService.getStatusFromServer(this.selfAssessment, this.dashboardStatus.ASSESS_VULNERABILITIES).toPromise().then((res) => {
             this.status.assessVulnerablitiesStatus = Status[res];
@@ -107,15 +113,16 @@ export class AttackMapWidgetComponent implements OnInit, OnDestroy {
         this.likelihoodStepEnabled.set(LikelihoodStep.INITIAL_LIKELIHOOD, false);
         this.likelihoodStepEnabled.set(LikelihoodStep.CONTEXTUAL_LIKELIHOOD, false);
         this.likelihoodStepEnabled.set(LikelihoodStep.REFINED_LIKELIHOOD, false);
-        this.threatAgents = this.selfAssessment.threatagents;
+
+        this.threatAgents$ = this.threatAgentService.getThreatAgentsByCompany(this.myCompany.companyProfile.id);
         this.ckc7Phases$ = this.phaseService.query();
         this.attackLevels$ = this.levelService.query();
         this.attackMatrix$ = this.attackMapService.getAttackCKC7Matrix(this.selfAssessment.id);
 
-        const join$: Observable<[HttpResponse<PhaseMgm[]>, HttpResponse<LevelMgm[]>, Map<Number, Map<Number, AugmentedAttackStrategy>>]> =
-            forkJoin(this.ckc7Phases$, this.attackLevels$, this.attackMatrix$);
+        const join$: Observable<[HttpResponse<PhaseMgm[]>, HttpResponse<LevelMgm[]>, Map<Number, Map<Number, AugmentedAttackStrategy>>, HttpResponse<ThreatAgentMgm[]>]> =
+            forkJoin(this.ckc7Phases$, this.attackLevels$, this.attackMatrix$, this.threatAgents$);
 
-        join$.subscribe((response: [HttpResponse<PhaseMgm[]>, HttpResponse<LevelMgm[]>, Map<Number, Map<Number, AugmentedAttackStrategy>>]) => {
+        join$.subscribe((response: [HttpResponse<PhaseMgm[]>, HttpResponse<LevelMgm[]>, Map<Number, Map<Number, AugmentedAttackStrategy>>, HttpResponse<ThreatAgentMgm[]>]) => {
                 this.ckc7Phases = response[0].body;
                 // Remove id 7 phase
                 const index = _.findIndex(this.ckc7Phases, (phase) => phase.id === 7);
@@ -126,6 +133,7 @@ export class AttackMapWidgetComponent implements OnInit, OnDestroy {
 
                 this.attackLevels = response[1].body;
                 this.attacksCKC7Matrix = response[2];
+                this.threatAgents = response[3].body;
 
                 this.augmentedAttackStrategiesMap = new Map<number, AugmentedAttackStrategy>();
 

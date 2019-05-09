@@ -113,7 +113,7 @@ export class MyRiskAssessmentsComponent implements OnInit, OnDestroy {
         this.dataSharingService.selfAssessment = selfAssessment;
 
         if (this.isCISO) {
-            this.router.navigate(['/']);
+            this.router.navigate(['/riskboard']);
         }
 
         if (this.isExternal) {

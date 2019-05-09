@@ -20,20 +20,20 @@
 </ng-container>
 <ng-container *ngIf="!loading">
   <div class="tile-stats tiles-first-row">
-    <div class="count" *ngIf="selfAssessment.threatagents.length>0">{{selfAssessment.threatagents.length}}</div>
-    <ng-container *ngIf="selfAssessment.threatagents.length>0">
+    <div class="count" *ngIf="threatAgents.length>0">{{threatAgents.length}}</div>
+    <ng-container *ngIf="threatAgents.length>0">
       <div class="col-md-10">
         <h3>Threat Agents</h3>
       </div>
       <div class="col-md-2"><a [routerLink]="['/identify-threat-agent/result']"><i class="fa fa-link fa-lg"
             aria-hidden="true"></i></a></div>
     </ng-container>
-    <h3 *ngIf="selfAssessment.threatagents.length===0"><a
+    <h3 *ngIf="threatAgents.length===0"><a
         [routerLink]="['/identify-threat-agent/questionnaires/ID_THREAT_AGENT/questionnaire']">No Threat Agents
         founded</a></h3>
     <div class="col-md-12">
-      <p *ngIf="selfAssessment.threatagents.length>0"><a href="javascript:void(0)"
-          (click)="open(threatAgentsDetails)">details</a></p>
+      <p *ngIf="threatAgents.length>0"><a href="javascript:void(0)"
+                                                         (click)="open(threatAgentsDetails)">details</a></p>
     </div>
   </div>
 </ng-container>

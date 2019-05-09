@@ -33,12 +33,12 @@
             <div class="clearfix"></div>
         </div>
         <div class="table-responsive x_content" style="padding:0px !important;" [ngbCollapse]="isCollapsed">
-            <ng-container *ngIf="threatAgents.length===0">
+            <ng-container *ngIf="!threatAgents || threatAgents.length===0">
                 <div>
                     <p class="text-center">No Threat Agents founded for draw an Attack Plan matrix</p>
                 </div>
             </ng-container>
-            <ng-container *ngIf="threatAgents.length>0">
+            <ng-container *ngIf="threatAgents && threatAgents.length>0">
                 <p style="padding: 10px; text-align: justify; text-justify: inter-word;">
                     An Attack-Plan is performed along “Phases” (from Reconnaissance to Command and Control)
                     and “Layers” (from Human to Physical) of the attack-vector.

@@ -57,12 +57,6 @@
                 <a [routerLink]="['/company-group-mgm', companyGroup?.id ]">{{companyGroup.name}}</a>{{last ? '' : ', '}}
             </span>
         </dd>
-        <dt><span jhiTranslate="hermeneutApp.selfAssessment.threatagent">Threatagent</span></dt>
-        <dd>
-            <span *ngFor="let threatagent of selfAssessment.threatagents; let last = last">
-                <a [routerLink]="['/threat-agent-mgm', threatagent?.id ]">{{threatagent.name}}</a>{{last ? '' : ', '}}
-            </span>
-        </dd>
     </dl>
 
     <button type="submit"

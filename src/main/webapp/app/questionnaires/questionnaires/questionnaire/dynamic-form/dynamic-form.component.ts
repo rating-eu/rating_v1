@@ -721,7 +721,7 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
                     const uniqueThreatAgentsSet: Set<ThreatAgentMgm> = new Set<ThreatAgentMgm>(
                         defaultThreatAgents.concat(identifiedThreatAgents));
                     const uniqueThreatAgentsArray: ThreatAgentMgm[] = Array.from(uniqueThreatAgentsSet);
-                    this.selfAssessment.threatagents = uniqueThreatAgentsArray;
+                    this.selfAssessment.threatAgents = uniqueThreatAgentsArray;
 
                     return this.selfAssessmentService.update(this.selfAssessment);
                 })
