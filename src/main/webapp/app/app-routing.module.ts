@@ -25,7 +25,7 @@ const routes: Routes = [
     sidebarRoute,
     ...errorRoute,
     {
-        path: 'dashboard-old',
+        path: 'dashboard',
         loadChildren: './dashboard/dashboard.module#DashboardModule',
         data: {
             authorities: ['ROLE_CISO']
@@ -33,8 +33,8 @@ const routes: Routes = [
         canActivate: [UserRouteAccessService]
     },
     {
-        path: 'dashboard',
-        loadChildren: './company-dashboard/company-dashboard.module#CompanyDashboardModule',
+        path: 'riskboard',
+        loadChildren: './risk-board/risk-board.module#RiskBoardModule',
         data: {
             authorities: ['ROLE_CISO']
         },

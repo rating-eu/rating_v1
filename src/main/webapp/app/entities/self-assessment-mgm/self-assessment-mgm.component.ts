@@ -94,7 +94,7 @@ export class SelfAssessmentMgmComponent implements OnInit, OnDestroy {
     }
 
     selectSelfAssessment(selfAssessment: SelfAssessmentMgm) {
-        this.selfAssessmentService.setSelfAssessment(selfAssessment);
+        this.dataSharingService.selfAssessment = selfAssessment;
         const link = ['/'];
         // this.mySidemenuService.roomeMenu('collapsed');
         const update: Update = new Update();

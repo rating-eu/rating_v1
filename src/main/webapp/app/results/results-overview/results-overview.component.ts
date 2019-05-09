@@ -28,6 +28,7 @@ import {AugmentedMyAsset} from "../../my-risk-assessments/models/AugmentedMyAsse
 import {AugmentedAttackStrategy} from '../../evaluate-weakness/models/augmented-attack-strategy.model';
 import {Couple} from '../../utils/couple.class';
 import * as _ from 'lodash';
+import {DatasharingService} from "../../datasharing/datasharing.service";
 
 interface OrderBy {
     asset: boolean;
@@ -79,7 +80,8 @@ export class ResultsOverviewComponent implements OnInit {
     public orderTangibleBy: OrderBy;
 
     constructor(private selfAssessmentService: SelfAssessmentMgmService,
-                private resultService: ResultsService) {
+                private resultService: ResultsService,
+                private dataSharingService: DatasharingService) {
     }
 
     ngOnInit() {
@@ -92,7 +94,7 @@ export class ResultsOverviewComponent implements OnInit {
             asset: false,
             type: 'desc'
         };
-        this.selfAssessment = this.selfAssessmentService.getSelfAssessment();
+        this.selfAssessment = this.dataSharingService.selfAssessment;
         this.threatAgents = this.selfAssessment.threatagents;
         this.threatAgentsMap = new Map<number, ThreatAgentMgm>();
         this.threatAgents.forEach((value: ThreatAgentMgm) => {

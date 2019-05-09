@@ -53,7 +53,7 @@ export class HomeComponent implements OnInit {
             this.account = account;
         });
         this.registerAuthenticationSuccess();
-        this.mySelf = this.mySelfAssessmentService.getSelfAssessment();
+        this.mySelf = this.dataSharingService.selfAssessment;
 
         const role: Role = this.dataSharingService.role;
 

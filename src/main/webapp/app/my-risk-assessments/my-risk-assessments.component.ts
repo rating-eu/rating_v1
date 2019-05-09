@@ -74,11 +74,7 @@ export class MyRiskAssessmentsComponent implements OnInit, OnDestroy {
         };
         this.loadMySelfAssessments();
         this.registerChangeInSelfAssessments();
-        if (this.selfAssessmentService.isSelfAssessmentSelected()) {
-            this.mySelfAssessment = this.selfAssessmentService.getSelfAssessment();
-        } else {
-            this.mySelfAssessment = null;
-        }
+        this.mySelfAssessment = this.dataSharingService.selfAssessment;
 
         // Get notified each time authentication state changes.
         this.dataSharingService.roleObservable.subscribe((role: Role) => {
@@ -114,7 +110,6 @@ export class MyRiskAssessmentsComponent implements OnInit, OnDestroy {
     }
 
     selectSelfAssessment(selfAssessment: SelfAssessmentMgm) {
-        this.selfAssessmentService.setSelfAssessment(selfAssessment);
         this.dataSharingService.selfAssessment = selfAssessment;
 
         if (this.isCISO) {

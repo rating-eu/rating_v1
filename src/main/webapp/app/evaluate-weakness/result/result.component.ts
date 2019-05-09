@@ -34,6 +34,7 @@ import {AttackMapService} from '../attack-map.service';
 import {MatHorizontalStepper} from '@angular/material';
 import {LikelihoodStep} from '../../entities/enumerations/LikelihoodStep.enum';
 import * as _ from 'lodash';
+import {DatasharingService} from "../../datasharing/datasharing.service";
 
 @Component({
     selector: 'jhi-result',
@@ -89,7 +90,8 @@ export class WeaknessResultComponent implements OnInit, OnDestroy {
                 private levelService: LevelMgmService,
                 private phaseService: PhaseMgmService,
                 private attackStrategyService: AttackStrategyMgmService,
-                private attackMapService: AttackMapService) {
+                private attackMapService: AttackMapService,
+                private dataSharingService: DatasharingService) {
     }
 
     ngOnInit() {
@@ -98,7 +100,7 @@ export class WeaknessResultComponent implements OnInit, OnDestroy {
         this.likelihoodStepEnabled.set(LikelihoodStep.CONTEXTUAL_LIKELIHOOD, false);
         this.likelihoodStepEnabled.set(LikelihoodStep.REFINED_LIKELIHOOD, false);
 
-        this.selfAssessment = this.selfAssessmentService.getSelfAssessment();
+        this.selfAssessment = this.dataSharingService.selfAssessment;
         this.threatAgents = this.selfAssessment.threatagents;
 
         this.ckc7Phases$ = this.phaseService.query();

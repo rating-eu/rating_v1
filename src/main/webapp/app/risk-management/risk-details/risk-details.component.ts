@@ -29,6 +29,7 @@ import { Subscription } from 'rxjs';
 import { MyAssetMgm } from '../../entities/my-asset-mgm';
 import { ThreatAgentInterest } from '../model/threat-agent-interest.model';
 import { ImpactEvaluationService } from '../../impact-evaluation/impact-evaluation.service';
+import {DatasharingService} from "../../datasharing/datasharing.service";
 
 interface Formula {
   element: string;
@@ -74,12 +75,13 @@ export class RiskDetailsComponent implements OnInit, OnDestroy {
     private mySelfAssessmentService: SelfAssessmentMgmService,
     private route: ActivatedRoute,
     private myAssetService: MyAssetMgmService,
-    private impactEvaluationService: ImpactEvaluationService
+    private impactEvaluationService: ImpactEvaluationService,
+    private dataSharingService: DatasharingService
   ) { }
 
   ngOnInit() {
     this.loading = true;
-    this.mySelf = this.mySelfAssessmentService.getSelfAssessment();
+    this.mySelf = this.dataSharingService.selfAssessment;
     this.route.params.subscribe(
       (params: Params) => {
         const assetId = params['assetId'];

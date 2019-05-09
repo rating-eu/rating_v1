@@ -25,15 +25,17 @@ import {Observable} from 'rxjs/Observable';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import {Update} from '../layouts/model/Update';
 import {SelfAssessmentMgm} from '../entities/self-assessment-mgm';
-import {HttpClient} from '@angular/common/http';
 import {Role} from '../entities/enumerations/Role.enum';
 import {QuestionnaireStatusMgm} from "../entities/questionnaire-status-mgm";
 import {MyCompanyMgm} from "../entities/my-company-mgm";
 import {User} from "../shared";
+import {Router} from "@angular/router";
+import {SessionStorageService} from "ngx-webstorage";
 
 @Injectable()
 export class DatasharingService {
 
+    private static readonly SELF_ASSESSMENT_KEY = 'selfAssessment';
     private _threatAgentsMap: Map<String, Couple<ThreatAgentMgm, Fraction>>;
     private _identifyThreatAgentsFormDataMap: Map<String, AnswerMgm>;
     private _cisoQuestionnaireStatus: QuestionnaireStatusMgm;
@@ -66,8 +68,10 @@ export class DatasharingService {
     private _selfAssessmentSubject: BehaviorSubject<SelfAssessmentMgm> = new BehaviorSubject<SelfAssessmentMgm>(this._selfAssessment);
 
 
-    constructor(private http: HttpClient) {
-
+    constructor(
+        private router: Router,
+        private sessionStorage: SessionStorageService
+    ) {
     }
 
     set threatAgentsMap(threatAgents: Map<String, Couple<ThreatAgentMgm, Fraction>>) {
@@ -119,11 +123,31 @@ export class DatasharingService {
     // SelfAssessment property
     set selfAssessment(selfAssessment: SelfAssessmentMgm) {
         this._selfAssessment = selfAssessment;
+        this.sessionStorage.store(DatasharingService.SELF_ASSESSMENT_KEY, this._selfAssessment);
         this._selfAssessmentSubject.next(this._selfAssessment);
     }
 
     get selfAssessment(): SelfAssessmentMgm {
-        return this._selfAssessment;
+        if (!this._selfAssessment) {
+            this._selfAssessment = this.sessionStorage.retrieve(DatasharingService.SELF_ASSESSMENT_KEY);
+        }
+
+        if (!this._selfAssessment) {
+            this.router.navigate(['/my-risk-assessments']);
+            return null;
+        } else {
+            let update: Update = this.getUpdate();
+
+            if (!update) {
+                update = new Update();
+            }
+
+            update.selfAssessmentId = this._selfAssessment.id.toString();
+            update.navSubTitle = self.name;
+
+            this.updateLayout(update);
+            return this._selfAssessment;
+        }
     }
 
     get selfAssessmentObservable(): Observable<SelfAssessmentMgm> {

@@ -15,10 +15,10 @@
  *
  */
 
-import { DashboardService } from './../dashboard/dashboard.service';
 import {NgModule, Injector} from '@angular/core';
 import {CommonModule} from '@angular/common';
 
+import {RiskBoardService} from '../risk-board/risk-board.service';
 import {RiskManagementRoutingModule} from './risk-management-routing.module';
 import {RiskManagementComponent} from './risk-management/risk-management.component';
 import {RiskManagementService} from './risk-management.service';
@@ -34,10 +34,10 @@ import {JhiEventManager} from '../../../../../node_modules/ng-jhipster';
 import {NotificationInterceptor} from '../blocks/interceptor/notification.interceptor';
 import {JhiLanguageService} from 'ng-jhipster';
 import {NgxPaginationModule} from 'ngx-pagination';
-import { HermeneutMitigationMgmModule } from '../entities/mitigation-mgm/mitigation-mgm.module';
-import { NgbAccordionModule } from '../../../../../node_modules/@ng-bootstrap/ng-bootstrap';
-import { RiskDetailsComponent } from './risk-details/risk-details.component';
-import { ImpactEvaluationService } from '../impact-evaluation/impact-evaluation.service';
+import {HermeneutMitigationMgmModule} from '../entities/mitigation-mgm/mitigation-mgm.module';
+import {NgbAccordionModule} from '../../../../../node_modules/@ng-bootstrap/ng-bootstrap';
+import {RiskDetailsComponent} from './risk-details/risk-details.component';
+import {ImpactEvaluationService} from '../impact-evaluation/impact-evaluation.service';
 
 @NgModule({
     imports: [
@@ -89,7 +89,7 @@ import { ImpactEvaluationService } from '../impact-evaluation/impact-evaluation.
             ]
         },
         RiskManagementService,
-        DashboardService,
+        RiskBoardService,
         ImpactEvaluationService
     ]
 })

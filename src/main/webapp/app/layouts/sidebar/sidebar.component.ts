@@ -157,7 +157,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     }
 
     private createMenuItems(isCISO = false, isExternal = false) {
-        this.mySelf = this.selfAssessmentService.getSelfAssessment();
+        this.mySelf = this.dataSharingService.selfAssessment;
         let visibleByMySelf = false;
         if (this.mySelf) {
             visibleByMySelf = true;

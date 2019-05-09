@@ -26,6 +26,7 @@ import { ImpactLevelDescriptionMgm, ImpactLevelDescriptionMgmService } from '../
 import { ImpactLevelMgm, ImpactLevelMgmService } from '../../entities/impact-level-mgm';
 import { forkJoin } from 'rxjs/observable/forkJoin';
 import { HttpResponse } from '@angular/common/http';
+import {DatasharingService} from "../../datasharing/datasharing.service";
 
 @Component({
     // tslint:disable-next-line:component-selector
@@ -63,12 +64,13 @@ export class RiskManagementComponent implements OnInit {
         private jhiAlertService: JhiAlertService,
         private impactLevelDescriptionService: ImpactLevelDescriptionMgmService,
         private impactLevelService: ImpactLevelMgmService,
-        private impactEvaluationService: ImpactEvaluationService
+        private impactEvaluationService: ImpactEvaluationService,
+        private dataSharingService: DatasharingService
     ) {
     }
 
     ngOnInit() {
-        if (this.mySelf = this.mySelfAssessmentService.getSelfAssessment()) {
+        if (this.mySelf = this.dataSharingService.selfAssessment) {
             // TODO Chiamata per il recupero degli impact level
             forkJoin(
                 this.impactLevelDescriptionService.query(null),

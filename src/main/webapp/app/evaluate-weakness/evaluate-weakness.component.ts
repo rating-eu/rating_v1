@@ -61,7 +61,8 @@ export class EvaluateWeaknessComponent implements OnInit, OnDestroy {
         this.principal.identity().then((account) => {
             this.account = account;
         });
-        this.selectedSelfAssessment = this.mySelfAssessmentService.getSelfAssessment();
+
+        this.selectedSelfAssessment = this.dataSharingService.selfAssessment;
     }
 
     previousState() {

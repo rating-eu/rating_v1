@@ -109,7 +109,7 @@ export class ThreatResultComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
-        const selfAssessment = this.selfAssessmentService.getSelfAssessment();
+        const selfAssessment = this.dataSharingService.selfAssessment;
         this.orderBy = {
             threatAgents: false,
             skills: false,

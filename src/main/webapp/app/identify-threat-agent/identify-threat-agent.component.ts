@@ -16,9 +16,8 @@
  */
 
 import {Component, OnInit} from '@angular/core';
-import {JhiEventManager, JhiLanguageService} from 'ng-jhipster';
-import {JhiLanguageHelper, LoginModalService, Principal} from '../shared';
-import {SelfAssessmentMgm, SelfAssessmentMgmService} from '../entities/self-assessment-mgm';
+import {SelfAssessmentMgm} from '../entities/self-assessment-mgm';
+import {DatasharingService} from "../datasharing/datasharing.service";
 
 @Component({
     selector: 'jhi-identify-threat-agent',
@@ -28,23 +27,15 @@ import {SelfAssessmentMgm, SelfAssessmentMgmService} from '../entities/self-asse
     ]
 })
 export class IdentifyThreatAgentComponent implements OnInit {
-    account: Account;
     mySelf: SelfAssessmentMgm = {};
 
     constructor(
-        private principal: Principal,
-        private loginModalService: LoginModalService,
-        private eventManager: JhiEventManager,
-        private mySelfAssessmentService: SelfAssessmentMgmService,
-        private languageService: JhiLanguageService, private languageHelper: JhiLanguageHelper
+        private dataSharingService: DatasharingService
     ) {
     }
 
     ngOnInit() {
-        // this.principal.identity().then((account) => {
-        //     this.account = account;
-        // });
-        this.mySelf = this.mySelfAssessmentService.getSelfAssessment();
+        this.mySelf = this.dataSharingService.selfAssessment;
 
     }
 

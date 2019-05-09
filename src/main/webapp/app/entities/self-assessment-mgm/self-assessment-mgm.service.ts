@@ -54,15 +54,18 @@ export class SelfAssessmentMgmService implements OnInit {
         this.selfAssessmentSelected = null;
     }
 
-    clearSelfAssessment() {
-        this.selfAssessmentSelected = null;
-    }
-
     getOverwiew(): Observable<SelfAssessmentOverview> {
-        const selfId = this.getSelfAssessment().id;
+        const selfAssessment: SelfAssessmentMgm = this.dataSharingService.selfAssessment;
+
+        if (!selfAssessment) {
+            return null;
+        }
+
+        const selfId = selfAssessment.id;
         if (!selfId) {
             return null;
         }
+
         const customURL = this.selfAssessmentOverviewUrl.replace('{selfID}', selfId.toString());
         return this.http.get<SelfAssessmentOverview>(`${customURL}`, {observe: 'response'})
             .map((res: HttpResponse<SelfAssessmentOverview>) => {
@@ -70,7 +73,7 @@ export class SelfAssessmentMgmService implements OnInit {
             });
     }
 
-    getSelfAssessment(): SelfAssessmentMgm {
+    private getSelfAssessment(): SelfAssessmentMgm {
         const self = this.sessionStorage.retrieve(SelfAssessmentMgmService.SELF_ASSESSMENT_KEY);
         if (!self) {
             //this.router.navigate(['/my-risk-assessments']);
@@ -91,14 +94,9 @@ export class SelfAssessmentMgmService implements OnInit {
         }
     }
 
-    setSelfAssessment(selfAssessment: SelfAssessmentMgm) {
+    private setSelfAssessment(selfAssessment: SelfAssessmentMgm) {
         this.selfAssessmentSelected = selfAssessment;
         this.sessionStorage.store(SelfAssessmentMgmService.SELF_ASSESSMENT_KEY, selfAssessment);
-    }
-
-    isSelfAssessmentSelected(): boolean {
-        const self = this.sessionStorage.retrieve(SelfAssessmentMgmService.SELF_ASSESSMENT_KEY);
-        return self !== null && self !== undefined;
     }
 
     create(selfAssessment: SelfAssessmentMgm): Observable<EntityResponseType> {

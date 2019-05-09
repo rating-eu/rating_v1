@@ -17,20 +17,25 @@
 
 import * as _ from 'lodash';
 
-import { Component, OnInit, OnDestroy, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
-import { Router } from '@angular/router';
-import { Principal, AccountService, UserService, User } from '../../shared';
-import { SelfAssessmentMgm, SelfAssessmentMgmService } from '../../entities/self-assessment-mgm';
-import { Subscription } from 'rxjs/Subscription';
-import { JhiEventManager } from 'ng-jhipster';
-import { QuestionnaireMgm } from '../../entities/questionnaire-mgm';
-import { QuestionnairePurpose } from '../../entities/enumerations/QuestionnairePurpose.enum';
-import { QuestionnairesService } from '../../questionnaires/questionnaires.service';
-import { IdentifyAssetUtilService } from '../identify-asset.util.service';
-import { MyAssetMgm } from '../../entities/my-asset-mgm';
-import { AssetCategoryMgm } from './../../entities/asset-category-mgm/asset-category-mgm.model';
-import { QuestionnaireStatusMgmService, QuestionnaireStatusMgm, QuestionnaireStatusMgmCustomService } from '../../entities/questionnaire-status-mgm';
-import { AssetMgm } from '../../entities/asset-mgm';
+import {Component, OnInit, OnDestroy, ChangeDetectionStrategy, ChangeDetectorRef} from '@angular/core';
+import {Router} from '@angular/router';
+import {Principal, AccountService, UserService, User} from '../../shared';
+import {SelfAssessmentMgm, SelfAssessmentMgmService} from '../../entities/self-assessment-mgm';
+import {Subscription} from 'rxjs/Subscription';
+import {JhiEventManager} from 'ng-jhipster';
+import {QuestionnaireMgm} from '../../entities/questionnaire-mgm';
+import {QuestionnairePurpose} from '../../entities/enumerations/QuestionnairePurpose.enum';
+import {QuestionnairesService} from '../../questionnaires/questionnaires.service';
+import {IdentifyAssetUtilService} from '../identify-asset.util.service';
+import {MyAssetMgm} from '../../entities/my-asset-mgm';
+import {AssetCategoryMgm} from './../../entities/asset-category-mgm/asset-category-mgm.model';
+import {
+    QuestionnaireStatusMgmService,
+    QuestionnaireStatusMgm,
+    QuestionnaireStatusMgmCustomService
+} from '../../entities/questionnaire-status-mgm';
+import {AssetMgm} from '../../entities/asset-mgm';
+import {DatasharingService} from "../../datasharing/datasharing.service";
 
 @Component({
     // tslint:disable-next-line:component-selector
@@ -68,8 +73,10 @@ export class AssetClusteringComponent implements OnInit, OnDestroy {
         private questionnaireStatusService: QuestionnaireStatusMgmCustomService,
         private questionnaireStatusServices: QuestionnaireStatusMgmService,
         private ref: ChangeDetectorRef,
-        private router: Router
-    ) { }
+        private router: Router,
+        private dataSharingService: DatasharingService
+    ) {
+    }
 
     ngOnDestroy() {
     }
@@ -84,7 +91,7 @@ export class AssetClusteringComponent implements OnInit, OnDestroy {
                 this.user = response2.body;
             });
         });
-        this.mySelf = this.mySelfAssessmentService.getSelfAssessment();
+        this.mySelf = this.dataSharingService.selfAssessment;
 
         this.registerChangeIdentifyAssets();
         this.questionnaries = [];
@@ -139,7 +146,7 @@ export class AssetClusteringComponent implements OnInit, OnDestroy {
 
     private findAsset(assetId?: number, categoryId?: number): AssetMgm | AssetMgm[] {
         if (assetId) {
-            return _.find(this.assets, { id: assetId }) as AssetMgm;
+            return _.find(this.assets, {id: assetId}) as AssetMgm;
         } else if (categoryId) {
             const assetsByCategory: AssetMgm[] = [];
             for (const ass of this.assets) {
@@ -226,6 +233,7 @@ export class AssetClusteringComponent implements OnInit, OnDestroy {
         }
         this.ref.detectChanges();
     }
+
     public howManyAssetInSelection(categoryId: number): number {
         if (!this.myAssets) {
             return 0;
@@ -238,7 +246,7 @@ export class AssetClusteringComponent implements OnInit, OnDestroy {
         });
         let howManyAsset = 0;
         for (const myAsset of this.myAssets) {
-            const index = _.findIndex(categoryAssets, { id: myAsset.asset.id });
+            const index = _.findIndex(categoryAssets, {id: myAsset.asset.id});
             if (index !== -1) {
                 howManyAsset++;
             }
@@ -265,7 +273,7 @@ export class AssetClusteringComponent implements OnInit, OnDestroy {
             });
             let howManyAsset = 0;
             for (const myAsset of this.myAssets) {
-                const index = _.findIndex(categoryAssets, { id: myAsset.asset.id });
+                const index = _.findIndex(categoryAssets, {id: myAsset.asset.id});
                 if (index !== -1) {
                     howManyAsset++;
                 }

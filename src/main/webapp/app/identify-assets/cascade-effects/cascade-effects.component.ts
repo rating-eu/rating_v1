@@ -26,6 +26,7 @@ import {SelfAssessmentMgm} from './../../entities/self-assessment-mgm/self-asses
 import * as _ from 'lodash';
 
 import {Component, OnInit} from '@angular/core';
+import {DatasharingService} from "../../datasharing/datasharing.service";
 
 @Component({
     // tslint:disable-next-line:component-selector
@@ -52,13 +53,13 @@ export class CascadeEffectsComponent implements OnInit {
         private idaUtilsService: IdentifyAssetUtilService,
         private mySelfAssessmentService: SelfAssessmentMgmService,
         private router: Router,
-        private jhiAlertService: JhiAlertService,
+        private dataSharingService: DatasharingService
     ) {
 
     }
 
     ngOnInit(): void {
-        this.mySelf = this.mySelfAssessmentService.getSelfAssessment();
+        this.mySelf = this.dataSharingService.selfAssessment;
         this.idaUtilsService.getMyAssets(this.mySelf).toPromise().then((myAssets: MyAssetMgm[]) => {
             if (myAssets) {
                 this.myAssets = myAssets;

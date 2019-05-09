@@ -45,6 +45,7 @@ import {Observable} from 'rxjs';
 import {switchMap} from 'rxjs/operators';
 import {of} from 'rxjs/observable/of';
 import {forkJoin} from 'rxjs/observable/forkJoin';
+import {DatasharingService} from "../../datasharing/datasharing.service";
 
 interface OrderBy {
     asset: boolean;
@@ -133,7 +134,8 @@ export class ImpactEvaluationComponent implements OnInit {
         private accountService: AccountService,
         private userService: UserService,
         private myCompanyService: MyCompanyMgmService,
-        private idaUtilService: IdentifyAssetUtilService
+        private idaUtilService: IdentifyAssetUtilService,
+        private dataSharingService: DatasharingService
     ) {
         this.router.events.subscribe((event) => {
             if (event instanceof NavigationStart) {
@@ -258,7 +260,7 @@ export class ImpactEvaluationComponent implements OnInit {
                 Validators.pattern(RegExpUtility.from0to100DecimalsRegExp)
             ])),
         });
-        this.mySelf = this.mySelfAssessmentService.getSelfAssessment();
+        this.mySelf = this.dataSharingService.selfAssessment;
         /*this.impactService.getGrowthRates(this.mySelf).toPromise().then((res) => {
             this.rates = res;
         });*/
