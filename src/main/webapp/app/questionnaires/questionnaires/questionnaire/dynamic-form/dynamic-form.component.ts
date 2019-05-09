@@ -37,7 +37,6 @@ import {FormUtils} from '../../../utils/FormUtils';
 import {forkJoin} from 'rxjs/observable/forkJoin';
 import {Observable} from 'rxjs/Observable';
 import {HttpResponse} from '@angular/common/http';
-import {QuestionnaireStatusMgmCustomService} from '../../../../entities/questionnaire-status-mgm/questionnaire-status-mgm.custom.service';
 import {switchMap} from 'rxjs/operators';
 import {NgbModal, NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
 import {PartialSubmitDialogComponent} from '../partial-submit-dialog/partial-submit-dialog.component';
@@ -95,7 +94,6 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
                 private answerService: AnswerMgmService,
                 private questionnaireStatusService: QuestionnaireStatusMgmService,
                 private myCompanyService: MyCompanyMgmService,
-                private questionnaireStatusCustomService: QuestionnaireStatusMgmCustomService,
                 private accountService: AccountService,
                 private userService: UserService,
                 private questionService: QuestionMgmService,
