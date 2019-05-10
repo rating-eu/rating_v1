@@ -39,6 +39,7 @@ import {ModalDismissReasons, NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {RiskBoardService, DashboardStatus, Status} from '../risk-board.service';
 import {DatasharingService} from "../../datasharing/datasharing.service";
 import {MyCompanyMgm} from "../../entities/my-company-mgm";
+import {QuestionnairePurpose} from "../../entities/enumerations/QuestionnairePurpose.enum";
 
 interface OrderBy {
     threatAgents: boolean;
@@ -133,7 +134,7 @@ export class ThreatAgentsWidgetComponent implements OnInit, OnDestroy {
         this.myCompany = this.dataSharingService.myCompany;
 
         this.threatAgents$ = this.threatAgentService.getThreatAgentsByCompany(this.myCompany.companyProfile.id);
-        this.questionnaireStatuses$ = this.questionnaireStatusService.getAllBySelfAssessmentAndQuestionnairePurpose(this.selfAssessment.id, 'ID_THREAT_AGENT');
+        this.questionnaireStatuses$ = this.questionnaireStatusService.getAllQuestionnaireStatusesByCompanyProfileAndQuestionnairePurpose(this.selfAssessment.companyProfile, QuestionnairePurpose.ID_THREAT_AGENT);
 
         const threatAgentsQuestionnaireStatuses$: Observable<[HttpResponse<ThreatAgentMgm[]>, HttpResponse<QuestionnaireStatusMgm[]>]> = forkJoin(this.threatAgents$, this.questionnaireStatuses$);
 
@@ -141,7 +142,7 @@ export class ThreatAgentsWidgetComponent implements OnInit, OnDestroy {
         // Then Create the Observable for the Questions and MyAnswers belonging to the fetched QuestionnaireStatus.
 
         this.questionsMyAnswers$ = threatAgentsQuestionnaireStatuses$.pipe(
-            switchMap((response: [HttpResponse<ThreatAgentMgm[]>, HttpResponse<QuestionnaireStatusMgm[]>])=>{
+            switchMap((response: [HttpResponse<ThreatAgentMgm[]>, HttpResponse<QuestionnaireStatusMgm[]>]) => {
                 this.threatAgents = response[0].body;
                 this.questionnaireStatus = response[1].body[0];
 

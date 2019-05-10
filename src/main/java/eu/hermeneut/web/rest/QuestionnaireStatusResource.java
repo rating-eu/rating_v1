@@ -137,6 +137,20 @@ public class QuestionnaireStatusResource {
      *
      * @return the ResponseEntity with status 200 (OK) and the list of questionnaireStatuses in body
      */
+    @GetMapping("/questionnaire-statuses/company-profile/{companyProfileID}")
+    @Timed
+    @PreAuthorize("@companyProfileGuardian.isCISO(#companyProfileID) || @companyProfileGuardian.isExternal(#companyProfileID) || hasRole('ROLE_ADMIN')")
+    @Secured({AuthoritiesConstants.CISO, AuthoritiesConstants.EXTERNAL_AUDIT, AuthoritiesConstants.ADMIN})
+    public List<QuestionnaireStatus> getAllQuestionnaireStatusesByCompanyProfile(@PathVariable Long companyProfileID) {
+        log.debug("REST request to get all QuestionnaireStatuses by CompanyProfile");
+        return questionnaireStatusService.findAllByCompanyProfile(companyProfileID);
+    }
+
+    /**
+     * GET  /questionnaire-statuses : get all the questionnaireStatuses.
+     *
+     * @return the ResponseEntity with status 200 (OK) and the list of questionnaireStatuses in body
+     */
     @GetMapping("/questionnaire-statuses/company-profile/{companyProfileID}/user/{userID}")
     @Timed
     @PreAuthorize("@companyProfileGuardian.isCISO(#companyProfileID) || @companyProfileGuardian.isExternal(#companyProfileID) || hasRole('ROLE_ADMIN')")
@@ -144,6 +158,22 @@ public class QuestionnaireStatusResource {
     public List<QuestionnaireStatus> getAllQuestionnaireStatusesByCompanyProfileAndUser(@PathVariable Long companyProfileID, @PathVariable Long userID) {
         log.debug("REST request to get all QuestionnaireStatuses by self assessment and user");
         return questionnaireStatusService.findAllByCompanyProfileAndUser(companyProfileID, userID);
+    }
+
+    @GetMapping("/questionnaire-statuses/company-profile/{companyProfileID}/purpose/{questionnairePurpose}")
+    @Timed
+    @PreAuthorize("@companyProfileGuardian.isCISO(#companyProfileID) || @companyProfileGuardian.isExternal(#companyProfileID) || hasRole('ROLE_ADMIN')")
+    @Secured({AuthoritiesConstants.CISO, AuthoritiesConstants.EXTERNAL_AUDIT, AuthoritiesConstants.ADMIN})
+    public List<QuestionnaireStatus> getQuestionnaireStatusByCompanyProfileAndQuestionnairePurpose(@PathVariable Long companyProfileID, @PathVariable String questionnairePurpose) {
+        log.debug("REST request to get QuestionnaireStatus by CompanyProfile and questionnairePurpose");
+        log.debug("CompanyProfile: " + companyProfileID);
+        log.debug("QuestionnairePurpose: " + questionnairePurpose);
+
+        QuestionnairePurpose purpose = QuestionnairePurpose.valueOf(questionnairePurpose);
+        log.debug("Purpose enum: " + purpose);
+
+        List<QuestionnaireStatus> questionnaireStatuses = questionnaireStatusService.findAllByCompanyProfileAndQuestionnairePurpose(companyProfileID, purpose);
+        return questionnaireStatuses;
     }
 
     /**
@@ -155,23 +185,9 @@ public class QuestionnaireStatusResource {
     @Timed
     @PreAuthorize("@companyProfileGuardian.isCISO(#companyProfileID) || @companyProfileGuardian.isExternal(#companyProfileID) || hasRole('ROLE_ADMIN')")
     @Secured({AuthoritiesConstants.CISO, AuthoritiesConstants.EXTERNAL_AUDIT, AuthoritiesConstants.ADMIN})
-    public List<QuestionnaireStatus> getAllQuestionnaireStatusesByRoleCompanyProfileAndQuestionnaire(@PathVariable Long companyProfileID, @PathVariable Long questionnaireID, @PathVariable Role role) {
+    public List<QuestionnaireStatus> getAllQuestionnaireStatusesByCompanyProfileQuestionnaireAndRole(@PathVariable Long companyProfileID, @PathVariable Long questionnaireID, @PathVariable Role role) {
         log.debug("REST request to get all QuestionnaireStatuses by Role CompanyProfile and Questionnaire");
         return questionnaireStatusService.findAllByRoleCompanyProfileAndQuestionnaire(role, companyProfileID, questionnaireID);
-    }
-
-    /**
-     * GET  /questionnaire-statuses : get all the questionnaireStatuses.
-     *
-     * @return the ResponseEntity with status 200 (OK) and the list of questionnaireStatuses in body
-     */
-    @GetMapping("/questionnaire-statuses/company-profile/{companyProfileID}")
-    @Timed
-    @PreAuthorize("@companyProfileGuardian.isCISO(#companyProfileID) || @companyProfileGuardian.isExternal(#companyProfileID) || hasRole('ROLE_ADMIN')")
-    @Secured({AuthoritiesConstants.CISO, AuthoritiesConstants.EXTERNAL_AUDIT, AuthoritiesConstants.ADMIN})
-    public List<QuestionnaireStatus> getAllQuestionnaireStatusesByCompanyProfile(@PathVariable Long companyProfileID) {
-        log.debug("REST request to get all QuestionnaireStatuses by CompanyProfile");
-        return questionnaireStatusService.findAllByCompanyProfile(companyProfileID);
     }
 
     /**
@@ -188,22 +204,6 @@ public class QuestionnaireStatusResource {
         log.debug("REST request to get QuestionnaireStatus : {}", id);
         QuestionnaireStatus questionnaireStatus = questionnaireStatusService.findOne(id);
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(questionnaireStatus));
-    }
-
-    @GetMapping("/questionnaire-statuses/{companyProfileID}/{questionnairePurpose}")
-    @Timed
-    @PreAuthorize("@companyProfileGuardian.isCISO(#companyProfileID) || @companyProfileGuardian.isExternal(#companyProfileID) || hasRole('ROLE_ADMIN')")
-    @Secured({AuthoritiesConstants.CISO, AuthoritiesConstants.EXTERNAL_AUDIT, AuthoritiesConstants.ADMIN})
-    public List<QuestionnaireStatus> getQuestionnaireStatusByCompanyProfileAndQuestionnairePurpose(@PathVariable Long companyProfileID, @PathVariable String questionnairePurpose) {
-        log.debug("REST request to get QuestionnaireStatus by CompanyProfile and questionnairePurpose");
-        log.debug("CompanyProfile: " + companyProfileID);
-        log.debug("QuestionnairePurpose: " + questionnairePurpose);
-
-        QuestionnairePurpose purpose = QuestionnairePurpose.valueOf(questionnairePurpose);
-        log.debug("Purpose enum: " + purpose);
-
-        List<QuestionnaireStatus> questionnaireStatuses = questionnaireStatusService.findAllByCompanyProfileAndQuestionnairePurpose(companyProfileID, purpose);
-        return questionnaireStatuses;
     }
 
     @GetMapping("/questionnaire-statuses/company-profile/{companyProfileID}/purpose/{questionnairePurpose}/user/{userID}")

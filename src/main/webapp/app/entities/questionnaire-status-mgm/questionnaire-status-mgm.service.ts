@@ -23,22 +23,39 @@ import {SERVER_API_URL} from '../../app.constants';
 import {JhiDateUtils} from 'ng-jhipster';
 
 import {QuestionnaireStatusMgm} from './questionnaire-status-mgm.model';
-import {createRequestOption} from '../../shared';
+import {createRequestOption, User} from '../../shared';
+import {CompanyProfileMgm} from "../company-profile-mgm";
+import {QuestionnairePurpose} from "../enumerations/QuestionnairePurpose.enum";
+import {QuestionMgm} from "../question-mgm";
+import {Role} from "../enumerations/Role.enum";
 
 export type EntityResponseType = HttpResponse<QuestionnaireStatusMgm>;
 
-const SELF_ASSESSMENT_ID_PLACEHOLDER = '{selfAssessmentID}';
-
 const QUESTIONNAIRE_PURPOSE_PLACEHOLDER = '{questionnairePurpose}';
+
+const COMPANY_ID_PLACEHOLDER = '{companyProfileID}';
+
+const QUESTIONNAIRE_ID_PLACEHOLDER = '{questionnaireID}';
+
+const ROLE_PLACEHOLDER = '{role}';
+
+const USER_ID_PLACEHOLDER = '{userID}';
 
 @Injectable()
 export class QuestionnaireStatusMgmService {
 
     private resourceUrl = SERVER_API_URL + 'api/questionnaire-statuses';
     private resourceSearchUrl = SERVER_API_URL + 'api/_search/questionnaire-statuses';
-    private resourceUrlByRoleSelfAssessmentQuestionnaire = SERVER_API_URL + '';
-    private resourceUrlBySelfAssessmentAndQuestionnairePurpose =
-        SERVER_API_URL + 'api/questionnaire-statuses/' + SELF_ASSESSMENT_ID_PLACEHOLDER + '/' + QUESTIONNAIRE_PURPOSE_PLACEHOLDER;
+
+    private questionnaireStatusesByCompanyProfile = this.resourceUrl + '/company-profile/' + COMPANY_ID_PLACEHOLDER;
+
+    private questionnaireStatusesByCompanyProfileAndUser = this.resourceUrl + '/company-profile/' + COMPANY_ID_PLACEHOLDER + '/user/' + USER_ID_PLACEHOLDER;
+
+    private questionnaireStatusesByCompanyProfileAndQuestionnairePurpose = this.resourceUrl + '/company-profile/' + COMPANY_ID_PLACEHOLDER + '/user/' + USER_ID_PLACEHOLDER;
+
+    private questionnaireStatusesByCompanyProfileQuestionnaireAndRole = this.resourceUrl + '/company-profile/' + COMPANY_ID_PLACEHOLDER + '/questionnaire/' + QUESTIONNAIRE_ID_PLACEHOLDER + '/role/' + ROLE_PLACEHOLDER;
+
+    private questionnaireStatusesByCompanyProfileQuestionnairePurposeAndUser = this.resourceUrl + '/company-profile/' + COMPANY_ID_PLACEHOLDER + '/purpose/' + QUESTIONNAIRE_PURPOSE_PLACEHOLDER + '/user/' + USER_ID_PLACEHOLDER;
 
     constructor(private http: HttpClient, private dateUtils: JhiDateUtils) {
     }
@@ -114,14 +131,50 @@ export class QuestionnaireStatusMgmService {
         return copy;
     }
 
-    getByRoleSelfAssessmentAndQuestionnaire(role: string, selfAssessmentID: number, questionnaireID: number) {
-        return this.http.get<QuestionnaireStatusMgm>(this.resourceUrlByRoleSelfAssessmentQuestionnaire);
+    public getAllQuestionnaireStatusesByCompanyProfile(companyProfile: CompanyProfileMgm): Observable<HttpResponse<QuestionnaireStatusMgm[]>> {
+        return this.http.get<QuestionnaireStatusMgm[]>(
+            this.questionnaireStatusesByCompanyProfile
+                .replace(COMPANY_ID_PLACEHOLDER, String(companyProfile.id)),
+            {observe: 'response'}
+        ).map((res: HttpResponse<QuestionnaireStatusMgm[]>) => this.convertArrayResponse(res));
     }
 
-    getAllBySelfAssessmentAndQuestionnairePurpose(selfAssessmentID: number, questionnairePurpose: string): Observable<HttpResponse<QuestionnaireStatusMgm[]>> {
+    public getAllQuestionnaireStatusesByCompanyProfileAndUser(companyProfile: CompanyProfileMgm, user: User): Observable<HttpResponse<QuestionnaireStatusMgm[]>> {
         return this.http.get<QuestionnaireStatusMgm[]>(
-            this.resourceUrlBySelfAssessmentAndQuestionnairePurpose.replace(SELF_ASSESSMENT_ID_PLACEHOLDER, selfAssessmentID + '')
-                .replace(QUESTIONNAIRE_PURPOSE_PLACEHOLDER, questionnairePurpose), {observe: 'response'})
-            .map((res: HttpResponse<QuestionnaireStatusMgm[]>) => this.convertArrayResponse(res));
+            this.questionnaireStatusesByCompanyProfileAndUser
+                .replace(COMPANY_ID_PLACEHOLDER, String(companyProfile.id))
+                .replace(USER_ID_PLACEHOLDER, String(user.id)),
+            {observe: 'response'}
+        ).map((res: HttpResponse<QuestionnaireStatusMgm[]>) => this.convertArrayResponse(res));
+    }
+
+    public getAllQuestionnaireStatusesByCompanyProfileAndQuestionnairePurpose(companyProfile: CompanyProfileMgm, purpose: QuestionnairePurpose): Observable<HttpResponse<QuestionnaireStatusMgm[]>> {
+        return this.http.get<QuestionnaireStatusMgm[]>(
+            this.questionnaireStatusesByCompanyProfileAndQuestionnairePurpose
+                .replace(COMPANY_ID_PLACEHOLDER, String(companyProfile.id))
+                .replace(QUESTIONNAIRE_PURPOSE_PLACEHOLDER, QuestionnairePurpose[purpose]),
+            {observe: 'response'}
+        ).map((res: HttpResponse<QuestionnaireStatusMgm[]>) => this.convertArrayResponse(res));
+    }
+
+    public getAllQuestionnaireStatusesByCompanyProfileQuestionnaireAndRole(companyProfile: CompanyProfileMgm, questionnaire: QuestionMgm, role: Role): Observable<HttpResponse<QuestionnaireStatusMgm[]>> {
+        return this.http.get<QuestionnaireStatusMgm[]>(
+            this.questionnaireStatusesByCompanyProfileQuestionnaireAndRole
+                .replace(COMPANY_ID_PLACEHOLDER, String(companyProfile.id))
+                .replace(QUESTIONNAIRE_ID_PLACEHOLDER, String(questionnaire.id))
+                .replace(ROLE_PLACEHOLDER, Role[role]),
+            {observe: 'response'}
+        ).map((res: HttpResponse<QuestionnaireStatusMgm[]>) => this.convertArrayResponse(res));
+    }
+
+    //questionnaireStatusesByCompanyProfileQuestionnairePurposeAndUser
+    public getAllQuestionnaireStatusesByCompanyProfileQuestionnairePurposeAndUser(companyProfile: CompanyProfileMgm, questionnairePurpose: QuestionnairePurpose, user: User): Observable<HttpResponse<QuestionnaireStatusMgm[]>> {
+        return this.http.get<QuestionnaireStatusMgm[]>(
+            this.questionnaireStatusesByCompanyProfileQuestionnairePurposeAndUser
+                .replace(COMPANY_ID_PLACEHOLDER, String(companyProfile.id))
+                .replace(QUESTIONNAIRE_PURPOSE_PLACEHOLDER, QuestionnairePurpose[questionnairePurpose])
+                .replace(USER_ID_PLACEHOLDER, String(user.id)),
+            {observe: 'response'}
+        ).map((res: HttpResponse<QuestionnaireStatusMgm[]>) => this.convertArrayResponse(res));
     }
 }
