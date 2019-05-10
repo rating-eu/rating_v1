@@ -40,7 +40,7 @@ export class DashboardStatus {
 
 @Injectable()
 export class RiskBoardService {
-    private dashboardStatusUri = SERVER_API_URL + 'api/{selfAssessmentID}/dashboard/status/{requestedStatus}';
+    private dashboardStatusUri = SERVER_API_URL + 'api/{selfAssessmentID}/riskboard/status/{requestedStatus}';
     private subscribeForStatus: BehaviorSubject<DashboardStatus> = new BehaviorSubject<DashboardStatus>({} as DashboardStatus);
     private dashboardStatus: DashboardStatus = null;
 
@@ -88,7 +88,7 @@ export class RiskBoardService {
         this.subscribeForStatus.next(this.dashboardStatus);
     }
 
-    public getStatus(): DashboardStatus {
+    public getDashboardStatus(): DashboardStatus {
         return this.subscribeForStatus.getValue();
     }
 

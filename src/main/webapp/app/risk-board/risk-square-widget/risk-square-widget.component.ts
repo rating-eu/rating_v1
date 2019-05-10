@@ -62,7 +62,7 @@ export class RiskSquareWidgetComponent implements OnInit {
     this.loadingRiskLevel = true;
     this.loadingAssetsAndAttacks = true;
     this.mySelf = this.dataSharingService.selfAssessment;
-    this.status = this.dashService.getStatus();
+    this.status = this.dashService.getDashboardStatus();
     this.riskService.getCriticalLevel(this.mySelf).toPromise().then((res) => {
       if (res) {
         this.criticalLevel = res;

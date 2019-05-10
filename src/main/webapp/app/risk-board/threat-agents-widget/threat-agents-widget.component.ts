@@ -121,7 +121,7 @@ export class ThreatAgentsWidgetComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.loading = true;
-        this.status = this.dashService.getStatus();
+        this.status = this.dashService.getDashboardStatus();
         this.orderBy = {
             threatAgents: false,
             skills: false,

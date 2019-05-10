@@ -15,17 +15,16 @@
  *
  */
 
-package eu.hermeneut.service.impl;
+package eu.hermeneut.service.impl.dashboard;
 
 import eu.hermeneut.domain.*;
 import eu.hermeneut.domain.dashboard.ImpactEvaluationStatus;
-import eu.hermeneut.domain.enumeration.QuestionnairePurpose;
-import eu.hermeneut.domain.enumeration.Role;
 import eu.hermeneut.domain.enumeration.Status;
 import eu.hermeneut.domain.wp4.MyAssetAttackChance;
 import eu.hermeneut.exceptions.NotFoundException;
 import eu.hermeneut.exceptions.NullInputException;
 import eu.hermeneut.service.*;
+import eu.hermeneut.service.dashboard.RiskBoardStatusService;
 import eu.hermeneut.service.wp4.WP4StepsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -37,7 +36,7 @@ import java.util.stream.Collectors;
 
 @Service
 @Transactional
-public class DashboardStatusServiceImpl implements DashboardStatusService {
+public class RiskBoardStatusServiceImpl implements RiskBoardStatusService {
     @Autowired
     private SelfAssessmentService selfAssessmentService;
 
@@ -68,48 +67,6 @@ public class DashboardStatusServiceImpl implements DashboardStatusService {
             List<MyAsset> myAssets = this.myAssetService.findAllBySelfAssessment(selfAssessmentID);
 
             status = !myAssets.isEmpty() ? Status.FULL : Status.EMPTY;
-        }
-
-        return status;
-    }
-
-    @Override
-    public Status getIdentifyThreatAgentsStatus(Long companyProfileID) {
-        Status status = Status.EMPTY;
-        CompanyProfile companyProfile = this.companyProfileService.findOne(companyProfileID);
-
-        if (companyProfile != null) {
-            QuestionnaireStatus questionnaireStatus = this.questionnaireStatusService.findAllByCompanyProfileAndQuestionnairePurpose(companyProfileID, QuestionnairePurpose.ID_THREAT_AGENT).stream().findFirst().orElse(null);
-
-            status = questionnaireStatus != null ? questionnaireStatus.getStatus() : Status.EMPTY;
-        }
-
-        return status;
-    }
-
-    @Override
-    public Status getAssessVulnerabilitiesStatus(Long companyProfileID) {
-        Status status = Status.EMPTY;
-        CompanyProfile companyProfile = this.companyProfileService.findOne(companyProfileID);
-
-        if (companyProfile != null) {
-            QuestionnaireStatus questionnaireStatus = this.questionnaireStatusService.findByCompanyProfileRoleAndQuestionnairePurpose(companyProfileID, Role.ROLE_CISO, QuestionnairePurpose.SELFASSESSMENT);
-
-            status = questionnaireStatus != null ? questionnaireStatus.getStatus() : Status.EMPTY;
-        }
-
-        return status;
-    }
-
-    @Override
-    public Status getRefineVulnerabilitiesStatus(Long companyProfileID) {
-        Status status = Status.EMPTY;
-        CompanyProfile companyProfile = this.companyProfileService.findOne(companyProfileID);
-
-        if (companyProfile != null) {
-            QuestionnaireStatus questionnaireStatus = this.questionnaireStatusService.findByCompanyProfileRoleAndQuestionnairePurpose(companyProfileID, Role.ROLE_EXTERNAL_AUDIT, QuestionnairePurpose.SELFASSESSMENT);
-
-            status = questionnaireStatus != null ? questionnaireStatus.getStatus() : Status.EMPTY;
         }
 
         return status;

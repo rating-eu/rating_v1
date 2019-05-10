@@ -68,7 +68,7 @@ export class TangibleFinancialWidgetComponent implements OnInit {
   ngOnInit() {
     this.loading = true;
     this.mySelf = this.dataSharingService.selfAssessment;
-    this.status = this.dashService.getStatus();
+    this.status = this.dashService.getDashboardStatus();
     this.tableInfo = [];
     this.orderBy = {
       category: false,

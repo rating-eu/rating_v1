@@ -47,7 +47,7 @@ export class StepInfoWidgetComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    const status: DashboardStatus = this.dashService.getStatus();
+    const status: DashboardStatus = this.dashService.getDashboardStatus();
     this.updateStatus(status);
     this.dashService.observeStatus().subscribe((receivedStatus: DashboardStatus) => {
       if (receivedStatus) {

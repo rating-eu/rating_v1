@@ -51,7 +51,7 @@ export class AttackStrategiesWidgetComponent implements OnInit {
 
   ngOnInit() {
     this.loading = true;
-    this.status = this.dashService.getStatus();
+    this.status = this.dashService.getDashboardStatus();
     this.mySelf = this.dataSharingService.selfAssessment;
 
     this.riskService.getMyAssets(this.mySelf).toPromise().then((res) => {
