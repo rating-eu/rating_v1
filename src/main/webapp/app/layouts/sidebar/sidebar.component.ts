@@ -164,20 +164,26 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         }
         this.items = [
             {
-                label: 'About-Us', icon: 'fa fa-info', routerLink: ['/about-us']
-            },
-            {
-                label: 'Terms of Use', icon: 'fas fa-file-signature', routerLink: ['/terms']
-            },
-            {
                 label: 'Company',
+                icon: 'fas fa-building',
                 items: [
                     {
-                        label: 'My Company',
-                        icon: 'fa fa-home',
-                        routerLink: ['/my-company'],
-                        visible: isCISO
+                        label: 'Groups',
+                        icon: 'fas fa-users',
+                        routerLink: ['/pages/coming-soon']
                     },
+                    {
+                        label: 'Reports',
+                        icon: 'fas fa-file-download',
+                        routerLink: ['/pages/coming-soon']
+                    }
+                ]
+            },
+            {
+                label: 'Cyber Posture',
+                icon: 'fas fa-shield-alt',
+                visible: isCISO,
+                items: [
                     {
                         label: "Threat Agents",
                         icon: "fas fa-user-secret",
@@ -189,104 +195,94 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                         icon: "fa fa-bomb",
                         routerLink: ['/evaluate-weakness/questionnaires/SELFASSESSMENT'],
                         visible: isCISO
-                    },
-                    {
-                        label: 'My Risk Assessments',
-                        icon: 'fa fa-repeat',
-                        routerLink: ['/my-risk-assessments']
                     }
                 ]
             },
             {
-                label: 'Risk Assessment',
-                visible: visibleByMySelf,
+                label: 'Risk Assessments',
+                icon: 'fa fa-repeat',
+                visible: isCISO,
                 items: [
                     {
-                        label: 'Assets',
-                        // routerLink: ['/identify-asset'],
+                        label: 'List',
+                        icon: 'fas fa-file-alt',
+                        routerLink: ['/my-risk-assessments']
+                    },
+                    {
+                        label: 'Asset Clustering',
                         items: [
                             {
-                                label: 'Asset Clustering',
+                                label: 'My Assets',
                                 routerLink: ['/identify-asset/asset-clustering']
                             },
                             {
-                                label: 'Cascade Effects',
+                                label: 'Indirect Effects',
                                 routerLink: ['/identify-asset/cascade-effects']
                             },
                             {
-                                label: 'Attack Costs',
+                                label: 'Related Costs',
                                 routerLink: ['/identify-asset/attack-costs']
-                            },
-                            {
-                                label: 'Asset Report',
-                                routerLink: ['/identify-asset/asset-report']
-                            },
-                        ]
-                    },
-                    {
-                        label: 'Vulnerability Assessment',
-                        items: [
-                            {
-                                label: 'Threat Agents',
-                                items: [
-                                    {
-                                        label: 'Identify',
-                                        routerLink: ['/identify-threat-agent/questionnaires/ID_THREAT_AGENT'],
-                                        visible: isCISO
-                                    },
-                                    {
-                                        label: 'Results',
-                                        routerLink: ['/identify-threat-agent/result']
-                                    }
-                                ]
-                            },
-                            {
-                                label: 'Attack Strategies',
-                                items: [
-                                    {
-                                        label: 'Assess Vulnerabilities',
-                                        routerLink: ['/evaluate-weakness/questionnaires/SELFASSESSMENT']
-                                    },
-                                    {
-                                        label: 'Likelihood Results',
-                                        routerLink: ['/evaluate-weakness/result']
-                                    }
-                                ]
-                            },
-                            {
-                                label: 'Results',
-                                routerLink: ['/results']
                             }
                         ]
                     },
                     {
-                        label: 'Consequences',
+                        label: 'Impact Analysis',
                         items: [
                             {
-                                label: 'Impact Evaluation',
-                                routerLink: ['/impact-evaluation']
+                                label: 'Quantitative',
+                                items: [
+                                    {
+                                        label: 'Impact Evaluation',
+                                        routerLink: ['/impact-evaluation']
+                                    },
+                                    {
+                                        label: 'Estimation of the Data Assets category Losses',
+                                        routerLink: ['/impact-evaluation/data-assets-losses-estimation']
+                                    },
+                                    {
+                                        label: 'Estimation of the Attack Related Costs',
+                                        routerLink: ['/impact-evaluation/attack-related-costs-estimation']
+                                    }
+                                ]
                             },
                             {
-                                label: 'Estimation of the Data Assets category Losses',
-                                routerLink: ['/impact-evaluation/data-assets-losses-estimation']
-                            },
-                            {
-                                label: 'Estimation of the Attack Related Costs',
-                                routerLink: ['/impact-evaluation/attack-related-costs-estimation']
-                            }/*,
-                            {
-                                label: 'Growth rates configurator',
-                                routerLink: ['/impact-evaluation/growth-rates-configurator']
-                            }*/
+                                label: 'Qualitative',
+                                items: [
+                                    {
+                                        label: 'Assets Magnitudo',
+                                        routerLink: ['/pages/coming-soon']
+                                    },
+                                    {
+                                        label: 'Assets Importance',
+                                        routerLink: ['/pages/coming-soon']
+                                    }
+                                ]
+                            }
                         ]
                     },
                     {
-                        label: 'Risk Management',
-                        /*routerLink: ['/risk-management'],*/
+                        label: 'Risk Analysis',
                         items: [
                             {
-                                label: 'Risk Scenarios',
+                                label: 'Risk Matrix',
                                 routerLink: ['/risk-management/risk-evaluation']
+                            },
+                            {
+                                label: 'Overall Risk',
+                                items: [
+                                    {
+                                        label: 'Assets at Risk',
+                                        routerLink: ['/pages/coming-soon']
+                                    },
+                                    {
+                                        label: 'Mitigations',
+                                        routerLink: ['/pages/coming-soon']
+                                    }
+                                ]
+                            },
+                            {
+                                label: 'Risk Analysis',
+                                routerLink: ['/pages/coming-soon']
                             }
                         ]
                     }
@@ -374,7 +370,103 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                         ]
                     }
                 ]
+            },
+            {
+                label: 'About-Us', icon: 'fa fa-info', routerLink: ['/about-us']
+            },
+            {
+                label: 'Terms of Use', icon: 'fas fa-file-signature', routerLink: ['/terms']
             }
+            /*{
+                label: 'Risk Assessment',
+                visible: visibleByMySelf,
+                items: [
+                    {
+                        label: 'Assets',
+                        // routerLink: ['/identify-asset'],
+                        items: [
+                            {
+                                label: 'Asset Clustering',
+                                routerLink: ['/identify-asset/asset-clustering']
+                            },
+                            {
+                                label: 'Cascade Effects',
+                                routerLink: ['/identify-asset/cascade-effects']
+                            },
+                            {
+                                label: 'Attack Costs',
+                                routerLink: ['/identify-asset/attack-costs']
+                            },
+                            {
+                                label: 'Asset Report',
+                                routerLink: ['/identify-asset/asset-report']
+                            },
+                        ]
+                    },
+                    {
+                        label: 'Vulnerability Assessment',
+                        items: [
+                            {
+                                label: 'Threat Agents',
+                                items: [
+                                    {
+                                        label: 'Identify',
+                                        routerLink: ['/identify-threat-agent/questionnaires/ID_THREAT_AGENT'],
+                                        visible: isCISO
+                                    },
+                                    {
+                                        label: 'Results',
+                                        routerLink: ['/identify-threat-agent/result']
+                                    }
+                                ]
+                            },
+                            {
+                                label: 'Attack Strategies',
+                                items: [
+                                    {
+                                        label: 'Assess Vulnerabilities',
+                                        routerLink: ['/evaluate-weakness/questionnaires/SELFASSESSMENT']
+                                    },
+                                    {
+                                        label: 'Likelihood Results',
+                                        routerLink: ['/evaluate-weakness/result']
+                                    }
+                                ]
+                            },
+                            {
+                                label: 'Results',
+                                routerLink: ['/results']
+                            }
+                        ]
+                    },
+                    {
+                        label: 'Consequences',
+                        items: [
+                            {
+                                label: 'Impact Evaluation',
+                                routerLink: ['/impact-evaluation']
+                            },
+                            {
+                                label: 'Estimation of the Data Assets category Losses',
+                                routerLink: ['/impact-evaluation/data-assets-losses-estimation']
+                            },
+                            {
+                                label: 'Estimation of the Attack Related Costs',
+                                routerLink: ['/impact-evaluation/attack-related-costs-estimation']
+                            }
+                        ]
+                    },
+                    {
+                        label: 'Risk Management',
+                        items: [
+                            {
+                                label: 'Risk Scenarios',
+                                routerLink: ['/risk-management/risk-evaluation']
+                            }
+                        ]
+                    }
+                ]
+            },*/
         ];
     }
 
