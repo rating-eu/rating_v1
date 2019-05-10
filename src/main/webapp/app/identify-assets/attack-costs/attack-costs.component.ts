@@ -259,7 +259,7 @@ export class AttackCostsComponent implements OnInit {
     public updateMyAsset(onNext: boolean) {
         if (!this.selectedDirectAsset) {
             if (onNext) {
-                this.router.navigate(['/dashboard']);
+                this.router.navigate(['/riskboard']);
                 return;
             } else {
                 return;
@@ -292,7 +292,7 @@ export class AttackCostsComponent implements OnInit {
                 this.ref.detectChanges();
             }).catch(() => {
                 this.loading = false;
-                this.router.navigate(['/dashboard']);
+                this.router.navigate(['/riskboard']);
             });
             if (this.selectedIndirectAsset) {
                 const myAssetIndexIndirect = _.findIndex(this.myAssets, {id: this.selectedIndirectAsset.myAsset.id});
@@ -312,7 +312,7 @@ export class AttackCostsComponent implements OnInit {
             this.loading = false;
             this.ref.detectChanges();
             if (onNext) {
-                this.router.navigate(['/dashboard']);
+                this.router.navigate(['/riskboard']);
             }
         }
     }

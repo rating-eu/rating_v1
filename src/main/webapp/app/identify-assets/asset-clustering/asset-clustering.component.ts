@@ -279,7 +279,7 @@ export class AssetClusteringComponent implements OnInit, OnDestroy {
         return false;
     }
 
-    public saveMyAsset() {
+    public saveMyAsset(redirect: boolean = true) {
         this.loading = true;
         if (this.updateMyAssets) {
             this.idaUtilsService.createUpdateMyAssets(this.mySelf, this.myAssets).toPromise().then((myAssets) => {
@@ -287,11 +287,20 @@ export class AssetClusteringComponent implements OnInit, OnDestroy {
                     this.myAssets = myAssets;
                 }
                 this.loading = false;
-                this.router.navigate(['/identify-asset/cascade-effects']);
+
+                if (redirect) {
+                    this.router.navigate(['/identify-asset/cascade-effects']);
+                }
             });
         } else {
             this.loading = false;
-            this.router.navigate(['/identify-asset/cascade-effects']);
+            if (redirect) {
+                this.router.navigate(['/identify-asset/cascade-effects']);
+            }
         }
+    }
+
+    public close() {
+        this.router.navigate(['/riskboard']);
     }
 }

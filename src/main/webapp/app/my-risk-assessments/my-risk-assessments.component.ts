@@ -43,8 +43,6 @@ interface OrderBy {
 export class MyRiskAssessmentsComponent implements OnInit, OnDestroy {
 
     private static NOT_FOUND = 404;
-    private user: User;
-    private myCompany: MyCompanyMgm;
     public mySelfAssessments: SelfAssessmentMgm[];
     eventSubscriber: Subscription;
     private subscription: Subscription;
@@ -54,6 +52,7 @@ export class MyRiskAssessmentsComponent implements OnInit, OnDestroy {
     public isExternal = false;
     public mySelfAssessment = null;
     public orderBy: OrderBy;
+    public isCollapsed: boolean = true;
 
     constructor(
         private router: Router,

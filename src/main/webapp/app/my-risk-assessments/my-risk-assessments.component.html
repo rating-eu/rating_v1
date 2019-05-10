@@ -16,8 +16,8 @@
   -->
 
 <div class="card-box">
-    <h2><span>Risk Assessments</span></h2>
-    <div>
+    <h2><span><a href="javascript:void(0)" (click)="isCollapsed=!isCollapsed">Risk Assessments</a></span></h2>
+    <div [ngbCollapse]="isCollapsed">
         <p>A <b>Risk Assessment</b> is the process of identifying, analysing and evaluating risk.
             In other words, it identifies gaps between people and processes, as well as gaps in technology itself,
             and proposes remedies to minimise the risks associated with those gaps.</p>
@@ -37,8 +37,8 @@
     </div>
 
     <span *ngIf="isCISO">
-        <p *ngIf="!mySelfAssessments">To perform a Risk Assessment, create it, then select it from the table below clicking on its name.</p>
-        <p *ngIf="mySelfAssessments && !mySelfAssessment">To perform a Risk Assessment, create it or select one from the table below clicking on its name.</p>
+        <p *ngIf="!mySelfAssessments">To perform a Risk Assessment, create it, then select it from the table below by clicking on it.</p>
+        <p *ngIf="mySelfAssessments && !mySelfAssessment">To perform a Risk Assessment, create it or select one from the table below by clicking on it.</p>
     </span>
     <span *ngIf="isExternal">
         <p *ngIf="!mySelfAssessments">Currently there is no Risk Assessment to review. Please, come back later.</p>

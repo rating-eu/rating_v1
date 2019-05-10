@@ -71,7 +71,7 @@
                         </ng-container>
                     </td>
                 </tr>
-                <tr>
+                <!--<tr>
                     <td>Identify Threat Agents</td>
                     <td>Aims at identifying who may be interested in performing the attack against the company and why,
                         using
@@ -100,8 +100,8 @@
                                 aria-hidden="true"></i></a>
                         </ng-container>
                     </td>
-                </tr>
-                <tr>
+                </tr>-->
+                <!--<tr>
                     <td>Assess Vulnerablities</td>
                     <td>Measures the weak points of company surface through self-assessment (cyber maturity
                         questionnaire). It
@@ -128,7 +128,7 @@
                                 aria-hidden="true"></i></a>
                         </ng-container>
                     </td>
-                </tr>
+                </tr>-->
                 <tr>
                     <td>Impact Evaluation</td>
                     <td>Measuring the impact; "Measuring the impact of cyberattacks on firms' intangible assets"</td>
@@ -141,10 +141,10 @@
                            [ngbTooltip]="impactEvaluationStatus[0] + impactEvaluationStatus.substr(1).toLowerCase()"></i>
                     </td>
                     <td class="text-center">
-                        <a *ngIf="impactEvaluationStatus === 'EMPTY' && assessVulnerablitiesStatus === 'FULL'"
-                           [routerLink]="['/impact-evaluation']"><i class="fa fa-plus-square fa-lg"
-                                                                    placement="top" ngbTooltip="Create"
-                                                                    aria-hidden="true"></i></a>
+                        <a *ngIf="impactEvaluationStatus === 'EMPTY'" [routerLink]="['/impact-evaluation']">
+                            <i class="fa fa-plus-square fa-lg" placement="top" ngbTooltip="Create"
+                               aria-hidden="true"></i>
+                        </a>
                         <ng-container *ngIf="impactEvaluationStatus === 'PENDING' || impactEvaluationStatus === 'FULL'">
                             <a href="javascript:void(0)" (click)="open(alert,'/impact-evaluation')"><i
                                 placement="top" ngbTooltip="Edit" class="fa fa-pencil-square-o fa-lg"
@@ -153,9 +153,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <td>
-                        <div style="margin-left: 5px">Estimation of the Attack Related Costs</div>
-                    </td>
+                    <td>Estimation of the Attack Related Costs</td>
                     <td><p>Estimate the attack related costs; "Communicate or evaluate the costs of the declared attack
                         costs"</p>
                         <p *ngIf="attackRelatedCostEstimationStatus === 'EMPTY'"><span

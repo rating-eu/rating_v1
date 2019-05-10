@@ -61,7 +61,7 @@ export class GrowthRatesConfiguratorComponentComponent implements OnInit {
     }
 
     public close() {
-        this.router.navigate(['/dashboard']);
+        this.router.navigate(['/riskboard']);
     }
 
     public updateRates() {

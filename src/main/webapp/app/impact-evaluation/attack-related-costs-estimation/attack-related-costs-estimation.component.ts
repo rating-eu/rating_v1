@@ -159,7 +159,7 @@ export class AttackRelatedCostsEstimationComponent implements OnInit {
     }
 
     public close() {
-        this.router.navigate(['/dashboard']);
+        this.router.navigate(['/riskboard']);
     }
 
     public selectCost(cost: AttackCostMgm) {

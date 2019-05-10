@@ -15,7 +15,6 @@
  *
  */
 
-import {GrowthRate} from './../model/growth-rates.model';
 import {IdentifyAssetUtilService} from './../../identify-assets/identify-asset.util.service';
 import {Priority} from './../../identify-assets/model/enumeration/priority.enum';
 import * as _ from 'lodash';
@@ -87,25 +86,16 @@ export class ImpactEvaluationComponent implements OnInit {
     public impactOnSectorialOrgCapital: number;
     public impactOnSectorialKeyComp: number;
     public impactOnSectorialIP: number;
-    public impactOnFinanceAndInsuranceSector: number[];
-    public impactOnHealthCareSector: number[];
-    public impactOnInformationSector: number[];
-    public impactOnProfessionalSector: number[];
     public splittingOnIP: number;
     public splittingOnKeyComp: number;
     public splittingOnOrgCapital: number;
     public splittingOnSectorialIP: number;
     public splittingOnSectorialKeyComp: number;
     public splittingOnSectorialOrgCapital: number;
-    public splittingOnFinanceAndInsuranceSector: number[];
-    public splittingOnHealthCareSector: number[];
-    public splittingOnInformationSector: number[];
-    public splittingOnProfessionalSector: number[];
     public financialAssetsAkaCurrent: MyAssetMgm[] = [];
     public physicalAssetsAkaFixed: MyAssetMgm[] = [];
     public ebitLabel: string[] = [];
     public orderBy: OrderBy;
-    // public rates: GrowthRate[] = [];
 
     private mySelf: SelfAssessmentMgm;
     private firstYear: number;
@@ -1162,7 +1152,7 @@ export class ImpactEvaluationComponent implements OnInit {
     }
 
     public close() {
-        this.router.navigate(['/dashboard']);
+        this.router.navigate(['/riskboard']);
     }
 
     clamp(value

@@ -90,7 +90,7 @@ export class DataAssetsLossesEstimationComponent implements OnInit {
     }
 
     public close() {
-        this.router.navigate(['/dashboard']);
+        this.router.navigate(['/riskboard']);
     }
 
 }
