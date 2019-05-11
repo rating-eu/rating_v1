@@ -21,6 +21,7 @@
             "created": "Created",
             "modified": "Modified",
             "role": "Role",
+            "companyProfile": "Company Profile",
             "selfAssessment": "Self Assessment",
             "questionnaire": "Questionnaire",
             "user": "User",
