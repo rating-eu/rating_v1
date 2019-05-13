@@ -31,6 +31,8 @@ import {MyCompanyMgm} from "../entities/my-company-mgm";
 import {User} from "../shared";
 import {Router} from "@angular/router";
 import {SessionStorageService} from "ngx-webstorage";
+import {RiskBoardStatus} from "../risk-board/risk-board.service";
+import {ReplaySubject} from "rxjs";
 
 @Injectable()
 export class DatasharingService {
@@ -67,6 +69,9 @@ export class DatasharingService {
     private _selfAssessment: SelfAssessmentMgm = null;
     private _selfAssessmentSubject: BehaviorSubject<SelfAssessmentMgm> = new BehaviorSubject<SelfAssessmentMgm>(this._selfAssessment);
 
+    // RiskBoard Status
+    private _riskBoardStatus: RiskBoardStatus = null;
+    private _riskBoardStatusSubject: ReplaySubject<RiskBoardStatus> = new ReplaySubject();
 
     constructor(
         private router: Router,
@@ -194,6 +199,20 @@ export class DatasharingService {
 
     get userObservable(): Observable<User> {
         return this._userSubject.asObservable();
+    }
+
+    // RiskBoard Status Service
+    get riskBoardStatus(): RiskBoardStatus {
+        return this._riskBoardStatus;
+    }
+
+    set riskBoardStatus(status: RiskBoardStatus) {
+        this._riskBoardStatus = status;
+        this._riskBoardStatusSubject.next(this._riskBoardStatus);
+    }
+
+    get riskBoardStatusObservable(): Observable<RiskBoardStatus> {
+        return this._riskBoardStatusSubject.asObservable();
     }
 
     updateLayout(layoutUpdate: Update) {

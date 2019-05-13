@@ -16,14 +16,14 @@
  */
 
 import { AssetMgm } from './../../entities/asset-mgm/asset-mgm.model';
-import { DashboardStepEnum } from '../models/enumeration/dashboard-step.enum';
+import { RiskBoardStepEnum } from '../../entities/enumerations/RiskBoardStep.enum';
 import * as _ from 'lodash';
 import { Component, OnInit } from '@angular/core';
 import { SelfAssessmentMgm, SelfAssessmentMgmService } from '../../entities/self-assessment-mgm';
 import { ImpactEvaluationService } from '../../impact-evaluation/impact-evaluation.service';
 import { ImpactEvaluationStatus } from '../../impact-evaluation/model/impact-evaluation-status.model';
 import { MyAssetMgm } from '../../entities/my-asset-mgm';
-import { RiskBoardService, DashboardStatus } from '../risk-board.service';
+import { RiskBoardService, RiskBoardStatus } from '../risk-board.service';
 import { AssetType } from '../../entities/enumerations/AssetType.enum';
 import { Status } from '../../entities/enumerations/QuestionnaireStatus.enum';
 import {DatasharingService} from "../../datasharing/datasharing.service";
@@ -55,8 +55,6 @@ export class TangibleFinancialWidgetComponent implements OnInit {
 
   private mySelf: SelfAssessmentMgm;
   private wp3Status: ImpactEvaluationStatus;
-  private status: DashboardStatus;
-  private dashboardStatus = DashboardStepEnum;
 
   constructor(
     private impactService: ImpactEvaluationService,
@@ -68,7 +66,6 @@ export class TangibleFinancialWidgetComponent implements OnInit {
   ngOnInit() {
     this.loading = true;
     this.mySelf = this.dataSharingService.selfAssessment;
-    this.status = this.dashService.getDashboardStatus();
     this.tableInfo = [];
     this.orderBy = {
       category: false,
@@ -110,11 +107,6 @@ export class TangibleFinancialWidgetComponent implements OnInit {
       }
     }).catch(() => {
       this.loading = false;
-    });
-
-    this.dashService.getStatusFromServer(this.mySelf, this.dashboardStatus.IMPACT_EVALUATION).toPromise().then((res) => {
-      this.status.impactEvaluationStatus = Status[res];
-      this.dashService.updateStepStatus(DashboardStepEnum.IMPACT_EVALUATION, this.status.impactEvaluationStatus);
     });
   }
 

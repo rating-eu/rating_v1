@@ -21,11 +21,8 @@ import {CommonModule} from '@angular/common';
 import {RiskBoardRoutingModule} from './risk-board-routing.module';
 import {CompanyWidgetComponent} from './company-widget/company-widget.component';
 import {AssetWidgetComponent} from './asset-widget/asset-widget.component';
-import {ThreatAgentsWidgetComponent} from './threat-agents-widget/threat-agents-widget.component';
-import {AttackStrategiesWidgetComponent} from './attack-strategies-widget/attack-strategies-widget.component';
 import {OverallLikelihoodWidgetComponent} from './overall-likelihood-widget/overall-likelihood-widget.component';
 import {MostDangerousThreatAgentsWidgetComponent} from './most-dangerous-threat-agents-widget/most-dangerous-threat-agents-widget.component';
-import {AttackMapWidgetComponent} from './attack-map-widget/attack-map-widget.component';
 import {TangibleFinancialWidgetComponent} from './tangible-financial-widget/tangible-financial-widget.component';
 import {LossesWidgetComponent} from './losses-widget/losses-widget.component';
 import {DashboardOneComponent} from './dashboard-one/dashboard-one.component';
@@ -79,12 +76,9 @@ import {CriticalAttackStrategyService} from './models/critical-attack-strategy.s
     declarations: [
         CompanyWidgetComponent,
         AssetWidgetComponent,
-        ThreatAgentsWidgetComponent,
-        AttackStrategiesWidgetComponent,
         MostVulnerableAssetsWidgetComponent,
         OverallLikelihoodWidgetComponent,
         MostDangerousThreatAgentsWidgetComponent,
-        AttackMapWidgetComponent,
         TangibleFinancialWidgetComponent,
         LossesWidgetComponent,
         DashboardOneComponent,

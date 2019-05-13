@@ -15,7 +15,7 @@
  *
  */
 
-import { DashboardStepEnum } from './../models/enumeration/dashboard-step.enum';
+import { RiskBoardStepEnum} from '../../entities/enumerations/RiskBoardStep.enum';
 import * as _ from 'lodash';
 
 import { Component, OnDestroy, OnInit } from '@angular/core';
@@ -28,7 +28,7 @@ import { MyAssetMgm } from '../../entities/my-asset-mgm';
 import { Subscription } from 'rxjs';
 import { JhiEventManager } from 'ng-jhipster';
 import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { RiskBoardService, DashboardStatus, Status } from '../risk-board.service';
+import { RiskBoardService, RiskBoardStatus} from '../risk-board.service';
 import {DatasharingService} from "../../datasharing/datasharing.service";
 
 interface OrderBy {
@@ -70,8 +70,7 @@ export class AssetWidgetComponent implements OnInit, OnDestroy {
     public tableTangibleInfo: TableElement[] = [];
     private account: Account;
     private eventSubscriber: Subscription;
-    private status: DashboardStatus;
-    private dashboardStatus = DashboardStepEnum;
+    private dashboardStatus = RiskBoardStepEnum;
 
     constructor(
         private principal: Principal,
@@ -86,7 +85,6 @@ export class AssetWidgetComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.loading = true;
-        this.status = this.dashService.getDashboardStatus();
         this.orderIntangibleBy = {
             category: false,
             assetNumber: false,
@@ -163,11 +161,6 @@ export class AssetWidgetComponent implements OnInit, OnDestroy {
                     }).catch(() => {
                         this.loading = false;
                     });
-
-                this.dashService.getStatusFromServer(this.mySelf, this.dashboardStatus.ASSET_CLUSTERING).toPromise().then((res) => {
-                    this.status.assetClusteringStatus = Status[res];
-                    this.dashService.updateStepStatus(DashboardStepEnum.ASSET_CLUSTERING, this.status.assetClusteringStatus);
-                });
             }
         }).catch(() => {
             this.loading = false;

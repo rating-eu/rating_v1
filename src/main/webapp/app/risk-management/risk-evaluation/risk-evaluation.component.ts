@@ -26,7 +26,7 @@ import {Status} from '../../entities/enumerations/QuestionnaireStatus.enum';
 import {Subscription} from 'rxjs';
 import {MitigationMgm} from '../../entities/mitigation-mgm';
 import {ImpactEvaluationService} from '../../impact-evaluation/impact-evaluation.service';
-import {DashboardStepEnum} from "../../risk-board/models/enumeration/dashboard-step.enum";
+import {RiskBoardStepEnum} from "../../entities/enumerations/RiskBoardStep.enum";
 import {RiskBoardService} from "../../risk-board/risk-board.service";
 import {DatasharingService} from "../../datasharing/datasharing.service";
 
@@ -73,7 +73,7 @@ export class RiskEvaluationComponent implements OnInit, OnDestroy {
     public attackCosts = false;
     public assetsToolTip: Map<number, string> = new Map<number, string>();
     public assetToolTipLoaded = false;
-    private dashboardStatus = DashboardStepEnum;
+    private dashboardStatus = RiskBoardStepEnum;
     public risksTangible: RiskPercentageElement[] = [];
     public risksIntangible: RiskPercentageElement[] = [];
     public noRiskInMap = false;

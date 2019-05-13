@@ -15,84 +15,117 @@
  *
  */
 
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { RiskBoardService, DashboardStatus, Status } from '../risk-board.service';
-import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
+import {Component, OnInit} from '@angular/core';
+import {Router} from '@angular/router';
+import {RiskBoardService, RiskBoardStatus} from '../risk-board.service';
+import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
+import {Observable} from "rxjs";
+import {Status} from "../../entities/enumerations/Status.enum";
+import {RiskBoardStepEnum} from "../../entities/enumerations/RiskBoardStep.enum";
+import {forkJoin} from "rxjs/observable/forkJoin";
+import {SelfAssessmentMgm} from "../../entities/self-assessment-mgm";
+import {DatasharingService} from "../../datasharing/datasharing.service";
 
 @Component({
-  selector: 'jhi-step-info-widget',
-  templateUrl: './step-info-widget.component.html',
-  styleUrls: ['step-info-widget.component.css']
+    selector: 'jhi-step-info-widget',
+    templateUrl: './step-info-widget.component.html',
+    styleUrls: ['step-info-widget.component.css']
 })
 export class StepInfoWidgetComponent implements OnInit {
-  public loading = false;
-  public isCollapsed = false;
+    public loading = false;
+    public isCollapsed = false;
 
-  public assetClusteringStatus: string;
-  public identifyThreatAgentsStatus: string;
-  public assessVulnerablitiesStatus: string;
-  public impactEvaluationStatus: string;
-  public attackRelatedCostEstimationStatus: string;
-  public riskEvaluationStatus: string;
-  public alertMessage: string;
+    public selfAssessment: SelfAssessmentMgm = null;
+    public statusEnum = Status;
 
-  private closeResult: string;
-  private linkAfterModal: string;
+    private riskBoardStatus: RiskBoardStatus = null;
 
-  constructor(
-    private dashService: RiskBoardService,
-    private modalService: NgbModal,
-    private router: Router
-  ) { }
+    private assetClusteringStatus$: Observable<Status>;
+    private assetClusteringStatus: Status;
 
-  ngOnInit() {
-    const status: DashboardStatus = this.dashService.getDashboardStatus();
-    this.updateStatus(status);
-    this.dashService.observeStatus().subscribe((receivedStatus: DashboardStatus) => {
-      if (receivedStatus) {
-        this.updateStatus(receivedStatus);
-      }
-    });
-  }
+    private impactEvaluationStatus$: Observable<Status>;
+    private impactEvaluationStatus: Status;
 
-  private updateStatus(status: DashboardStatus) {
-    if (status) {
-      this.assetClusteringStatus = status.assetClusteringStatus ? status.assetClusteringStatus.toString() : Status.EMPTY.toString();
-      this.identifyThreatAgentsStatus = status.identifyThreatAgentsStatus ? status.identifyThreatAgentsStatus.toString() : Status.EMPTY.toString();
-      this.assessVulnerablitiesStatus = status.assessVulnerablitiesStatus ? status.assessVulnerablitiesStatus.toString() : Status.EMPTY.toString();
-      this.impactEvaluationStatus = status.impactEvaluationStatus ? status.impactEvaluationStatus.toString() : Status.EMPTY.toString();
-      this.attackRelatedCostEstimationStatus = status.attackRelatedCostEstimationStatus ? status.attackRelatedCostEstimationStatus.toString() : Status.EMPTY.toString();
-      this.riskEvaluationStatus = status.riskEvaluationStatus ? status.riskEvaluationStatus.toString() : Status.EMPTY.toString();
+    private attackRelatedCostsStatus$: Observable<Status>;
+    private attackRelatedCostsStatus: Status;
+
+    private riskEvaluationStatus$: Observable<Status>;
+    private riskEvaluationStatus: Status;
+
+    public alertMessage: string;
+
+    private closeResult: string;
+    private linkAfterModal: string;
+
+    constructor(
+        private datasharingService: DatasharingService,
+        private dashService: RiskBoardService,
+        private modalService: NgbModal,
+        private router: Router,
+        private riskBoardService: RiskBoardService
+    ) {
     }
-  }
 
-  open(content, link, message?) {
-    this.linkAfterModal = link;
-    if (message) {
-      this.alertMessage = message;
-    } else {
-      this.alertMessage = null;
-    }
-    this.modalService.open(content, {}).result.then((result) => {
-      this.closeResult = `Closed with: ${result}`;
-      if (this.linkAfterModal) {
-        this.router.navigate([this.linkAfterModal]);
-      } else {
-        console.log('WORK IN PROGRESS');
-      }
-    }, (reason) => {
-      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-    });
-  }
+    ngOnInit() {
+        this.selfAssessment = this.datasharingService.selfAssessment;
 
-  private getDismissReason(reason: any): string {
-    if (reason === ModalDismissReasons.ESC) {
-      return 'by pressing ESC';
-    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
-      return 'by clicking on a backdrop';
-    } else {
-      return `with: ${reason}`;
+        if (!this.selfAssessment) {
+            this.router.navigate(['/my-risk-assessments']);
+        }
+
+        this.riskBoardStatus = new RiskBoardStatus();
+        this.datasharingService.riskBoardStatus = this.riskBoardStatus;
+
+        this.assetClusteringStatus$ = this.riskBoardService.getStatusFromServer(this.selfAssessment, RiskBoardStepEnum.ASSET_CLUSTERING);
+        this.impactEvaluationStatus$ = this.riskBoardService.getStatusFromServer(this.selfAssessment, RiskBoardStepEnum.IMPACT_EVALUATION);
+        this.attackRelatedCostsStatus$ = this.riskBoardService.getStatusFromServer(this.selfAssessment, RiskBoardStepEnum.ATTACK_RELATED_COSTS);
+        this.riskEvaluationStatus$ = this.riskBoardService.getStatusFromServer(this.selfAssessment, RiskBoardStepEnum.RISK_EVALUATION);
+
+        const join$: Observable<[Status, Status, Status, Status]> = forkJoin(this.assetClusteringStatus$,
+            this.impactEvaluationStatus$, this.attackRelatedCostsStatus$, this.riskEvaluationStatus$);
+
+        join$.subscribe((response: [Status, Status, Status, Status]) => {
+            this.assetClusteringStatus = response[0];
+            this.impactEvaluationStatus = response[1];
+            this.attackRelatedCostsStatus = response[2];
+            this.riskEvaluationStatus = response[3];
+
+            this.riskBoardStatus.assetClusteringStatus = this.assetClusteringStatus;
+            this.riskBoardStatus.impactEvaluationStatus = this.impactEvaluationStatus;
+            this.riskBoardStatus.attackRelatedCostEstimationStatus = this.attackRelatedCostsStatus;
+            this.riskBoardStatus.riskEvaluationStatus = this.riskEvaluationStatus;
+
+            this.datasharingService.riskBoardStatus = this.riskBoardStatus;
+        });
     }
-  }
+
+
+    open(content, link, message?) {
+        this.linkAfterModal = link;
+        if (message) {
+            this.alertMessage = message;
+        } else {
+            this.alertMessage = null;
+        }
+        this.modalService.open(content, {}).result.then((result) => {
+            this.closeResult = `Closed with: ${result}`;
+            if (this.linkAfterModal) {
+                this.router.navigate([this.linkAfterModal]);
+            } else {
+                console.log('WORK IN PROGRESS');
+            }
+        }, (reason) => {
+            this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+        });
+    }
+
+    private getDismissReason(reason: any): string {
+        if (reason === ModalDismissReasons.ESC) {
+            return 'by pressing ESC';
+        } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+            return 'by clicking on a backdrop';
+        } else {
+            return `with: ${reason}`;
+        }
+    }
 }

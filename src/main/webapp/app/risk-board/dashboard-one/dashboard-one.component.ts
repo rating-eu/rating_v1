@@ -16,11 +16,10 @@
  */
 
 import {Component, OnInit} from '@angular/core';
-import {Principal, LoginModalService} from '../../shared';
-import {JhiEventManager} from 'ng-jhipster';
-import {SelfAssessmentMgmService, SelfAssessmentMgm} from '../../entities/self-assessment-mgm';
-import {NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
+import {Principal} from '../../shared';
+import {SelfAssessmentMgm} from '../../entities/self-assessment-mgm';
 import {DatasharingService} from "../../datasharing/datasharing.service";
+import {Router} from "@angular/router";
 
 @Component({
     selector: 'jhi-dashboard-one',
@@ -28,28 +27,21 @@ import {DatasharingService} from "../../datasharing/datasharing.service";
     styleUrls: ['dashboard-one.component.css']
 })
 export class DashboardOneComponent implements OnInit {
-    private account: Account;
-    public mySelf: SelfAssessmentMgm = {};
+    public selfAssessment: SelfAssessmentMgm = {};
 
     constructor(
         private principal: Principal,
-        private loginModalService: LoginModalService,
-        private eventManager: JhiEventManager,
-        private mySelfAssessmentService: SelfAssessmentMgmService,
-        private datasharingService: DatasharingService
+        private datasharingService: DatasharingService,
+        private router: Router
     ) {
     }
 
     ngOnInit() {
-        this.mySelf = this.datasharingService.selfAssessment;
-    }
+        this.selfAssessment = this.datasharingService.selfAssessment;
 
-    registerAuthenticationSuccess() {
-        this.eventManager.subscribe('authenticationSuccess', (message) => {
-            this.principal.identity().then((account) => {
-                this.account = account;
-            });
-        });
+        if (!this.selfAssessment) {
+            this.router.navigate(['/my-risk-assessments']);
+        }
     }
 
     isAuthenticated() {

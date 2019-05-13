@@ -15,7 +15,7 @@
   ~
   -->
 
-<div class="container-fluid" *ngIf="mySelf">
+<div class="container-fluid" *ngIf="selfAssessment">
     <div class="row">
         <div class="col-md-12">
             <jhi-step-info-widget></jhi-step-info-widget>
@@ -64,11 +64,11 @@
             <jhi-most-vulnerable-assets-widget></jhi-most-vulnerable-assets-widget>
         </div>
     </div>
-    <div class=row>
+    <!--<div class=row>
         <div class="col-md-12">
             <jhi-attack-map-widget></jhi-attack-map-widget>
         </div>
-    </div>
+    </div>-->
     <div class="row">
         <h2>Impact Evaluation</h2>
     </div>

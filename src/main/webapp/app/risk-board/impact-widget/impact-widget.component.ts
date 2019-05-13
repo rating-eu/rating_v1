@@ -16,8 +16,8 @@
  */
 
 import * as _ from 'lodash';
-import { DashboardStepEnum } from './../models/enumeration/dashboard-step.enum';
-import { RiskBoardService, DashboardStatus } from '../risk-board.service';
+import { RiskBoardStepEnum } from '../../entities/enumerations/RiskBoardStep.enum';
+import { RiskBoardService, RiskBoardStatus } from '../risk-board.service';
 import { ImpactEvaluationService } from './../../impact-evaluation/impact-evaluation.service';
 import { Component, OnInit } from '@angular/core';
 import { SelfAssessmentMgmService, SelfAssessmentMgm } from '../../entities/self-assessment-mgm';
@@ -52,8 +52,7 @@ export class ImpactWidgetComponent implements OnInit {
   public orderBy: OrderBy;
 
   private mySelf: SelfAssessmentMgm;
-  private status: DashboardStatus;
-  private dashboardStatus = DashboardStepEnum;
+  private dashboardStatus = RiskBoardStepEnum;
   private myAssets: MyAssetMgm[] = [];
 
   constructor(
@@ -73,11 +72,6 @@ export class ImpactWidgetComponent implements OnInit {
       to: false,
       type: 'desc'
     };
-    this.status = this.dashService.getDashboardStatus();
-    this.dashService.getStatusFromServer(this.mySelf, this.dashboardStatus.ATTACK_RELATED_COSTS).toPromise().then((res) => {
-      this.status.attackRelatedCostEstimationStatus = Status[res];
-      this.dashService.updateStepStatus(DashboardStepEnum.ATTACK_RELATED_COSTS, this.status.attackRelatedCostEstimationStatus);
-    });
 
     this.impactService.getMyAssets(this.mySelf).toPromise().then((res) => {
       if (res && res.length > 0) {
