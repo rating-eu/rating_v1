@@ -27,6 +27,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Comparator;
+
 @Service
 @Transactional
 public class CompanyBoardStatusServiceImpl implements CompanyBoardStatusService {
@@ -42,7 +44,11 @@ public class CompanyBoardStatusServiceImpl implements CompanyBoardStatusService 
         CompanyProfile companyProfile = this.companyProfileService.findOne(companyProfileID);
 
         if (companyProfile != null) {
-            QuestionnaireStatus questionnaireStatus = this.questionnaireStatusService.findAllByCompanyProfileAndQuestionnairePurpose(companyProfileID, QuestionnairePurpose.ID_THREAT_AGENT).stream().findFirst().orElse(null);
+            QuestionnaireStatus questionnaireStatus = this.questionnaireStatusService
+                .findAllByCompanyProfileAndQuestionnairePurpose(companyProfileID, QuestionnairePurpose.ID_THREAT_AGENT)
+                .stream()
+                .sorted(Comparator.reverseOrder())//Consider only the latest created.
+                .findFirst().orElse(null);
 
             status = questionnaireStatus != null ? questionnaireStatus.getStatus() : Status.EMPTY;
         }
@@ -56,7 +62,14 @@ public class CompanyBoardStatusServiceImpl implements CompanyBoardStatusService 
         CompanyProfile companyProfile = this.companyProfileService.findOne(companyProfileID);
 
         if (companyProfile != null) {
-            QuestionnaireStatus questionnaireStatus = this.questionnaireStatusService.findByCompanyProfileRoleAndQuestionnairePurpose(companyProfileID, Role.ROLE_CISO, QuestionnairePurpose.SELFASSESSMENT);
+            QuestionnaireStatus questionnaireStatus = this.questionnaireStatusService
+                .findAllByCompanyProfileRoleAndQuestionnairePurpose(
+                    companyProfileID,
+                    Role.ROLE_CISO,
+                    QuestionnairePurpose.SELFASSESSMENT)
+                .stream()
+                .sorted(Comparator.reverseOrder())//Consider only the latest created.
+                .findFirst().orElse(null);
 
             status = questionnaireStatus != null ? questionnaireStatus.getStatus() : Status.EMPTY;
         }
@@ -70,7 +83,14 @@ public class CompanyBoardStatusServiceImpl implements CompanyBoardStatusService 
         CompanyProfile companyProfile = this.companyProfileService.findOne(companyProfileID);
 
         if (companyProfile != null) {
-            QuestionnaireStatus questionnaireStatus = this.questionnaireStatusService.findByCompanyProfileRoleAndQuestionnairePurpose(companyProfileID, Role.ROLE_EXTERNAL_AUDIT, QuestionnairePurpose.SELFASSESSMENT);
+            QuestionnaireStatus questionnaireStatus = this.questionnaireStatusService
+                .findAllByCompanyProfileRoleAndQuestionnairePurpose(
+                    companyProfileID,
+                    Role.ROLE_EXTERNAL_AUDIT,
+                    QuestionnairePurpose.SELFASSESSMENT)
+                .stream()
+                .sorted(Comparator.reverseOrder())//Consider only the latest created.
+                .findFirst().orElse(null);
 
             status = questionnaireStatus != null ? questionnaireStatus.getStatus() : Status.EMPTY;
         }

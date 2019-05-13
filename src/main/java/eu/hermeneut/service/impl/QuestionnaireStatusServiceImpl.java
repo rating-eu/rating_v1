@@ -154,7 +154,7 @@ public class QuestionnaireStatusServiceImpl implements QuestionnaireStatusServic
     }
 
     @Override
-    public QuestionnaireStatus findByCompanyProfileRoleAndQuestionnairePurpose(Long companyProfileID, Role role, QuestionnairePurpose purpose) {
+    public List<QuestionnaireStatus> findAllByCompanyProfileRoleAndQuestionnairePurpose(Long companyProfileID, Role role, QuestionnairePurpose purpose) {
         return this.questionnaireStatusRepository.findAllByCompanyProfileRoleAndQuestionnairePurpose(companyProfileID, role, purpose);
     }
 

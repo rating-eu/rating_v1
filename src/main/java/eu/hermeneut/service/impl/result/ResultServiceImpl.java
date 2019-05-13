@@ -239,7 +239,7 @@ public class ResultServiceImpl implements ResultService {
             CompanyProfile companyProfile = this.companyProfileService.findOne(companyProfileID);
 
             if (companyProfile != null) {
-                QuestionnaireStatus questionnaireStatus = this.questionnaireStatusService.findByCompanyProfileRoleAndQuestionnairePurpose(companyProfileID, Role.ROLE_CISO, QuestionnairePurpose.ID_THREAT_AGENT);
+                QuestionnaireStatus questionnaireStatus = this.questionnaireStatusService.findAllByCompanyProfileRoleAndQuestionnairePurpose(companyProfileID, Role.ROLE_CISO, QuestionnairePurpose.ID_THREAT_AGENT).stream().findFirst().orElse(null);;
 
                 if (questionnaireStatus != null) {
                     List<MyAnswer> myAnswers = this.myAnswerService.findAllByQuestionnaireStatus(questionnaireStatus.getId());

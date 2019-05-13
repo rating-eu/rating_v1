@@ -45,7 +45,7 @@ import eu.hermeneut.domain.enumeration.Role;
 )
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 @Document(indexName = "questionnairestatus")
-public class QuestionnaireStatus implements Serializable {
+public class QuestionnaireStatus implements Serializable, Comparable<QuestionnaireStatus> {
 
     private static final long serialVersionUID = 1L;
 
@@ -260,5 +260,10 @@ public class QuestionnaireStatus implements Serializable {
             ", modified='" + getModified() + "'" +
             ", role='" + getRole() + "'" +
             "}";
+    }
+
+    @Override
+    public int compareTo(QuestionnaireStatus questionnaireStatus) {
+        return this.getCreated().compareTo(questionnaireStatus.getCreated());
     }
 }
