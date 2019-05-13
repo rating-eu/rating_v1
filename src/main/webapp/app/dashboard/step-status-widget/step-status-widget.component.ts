@@ -17,7 +17,9 @@ import {Status} from "../../entities/enumerations/Status.enum";
 })
 export class StepStatusWidgetComponent implements OnInit {
 
+    public isCollapsed = false;
     private myCompany: MyCompanyMgm;
+    public statusEnum = Status;
 
     public identifyThreatAgentsStatus: Status = Status.EMPTY;
     public assessVulnerabilitiesStatus: Status = Status.EMPTY;

@@ -51,18 +51,20 @@
                         would attack my company?” and “Why somebody should attack my company?”
                     </td>
                     <td class="text-center">
-                        <i *ngIf="identifyThreatAgentsStatus === 'FULL'" style="color: green" class="fa fa-check"
-                           aria-hidden="true"></i>
-                        <i *ngIf="identifyThreatAgentsStatus === 'EMPTY' || identifyThreatAgentsStatus === 'PENDING'"
-                           style="color: orange" class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+                        <i *ngIf="identifyThreatAgentsStatus === statusEnum.FULL" style="color: green" class="fa fa-check"
+                           aria-hidden="true"
+                           [ngbTooltip]="statusEnum[identifyThreatAgentsStatus][0] + statusEnum[identifyThreatAgentsStatus].substr(1).toLowerCase()"></i>
+                        <i *ngIf="identifyThreatAgentsStatus === statusEnum.EMPTY || identifyThreatAgentsStatus === statusEnum.PENDING"
+                           style="color: orange" class="fa fa-exclamation-triangle" aria-hidden="true"
+                           [ngbTooltip]="statusEnum[identifyThreatAgentsStatus][0] + statusEnum[identifyThreatAgentsStatus].substr(1).toLowerCase()"></i>
                     </td>
                     <td class="text-center">
-                        <a *ngIf="identifyThreatAgentsStatus === 'EMPTY'"
+                        <a *ngIf="identifyThreatAgentsStatus === statusEnum.EMPTY"
                            [routerLink]="['/identify-threat-agent/questionnaires/ID_THREAT_AGENT']"><i class="fa fa-plus-square fa-lg"
                                                                                   placement="top"
                                                                                   aria-hidden="true"></i></a>
                         <ng-container
-                            *ngIf="identifyThreatAgentsStatus === 'PENDING' || identifyThreatAgentsStatus === 'FULL'">
+                            *ngIf="identifyThreatAgentsStatus === statusEnum.PENDING || identifyThreatAgentsStatus === statusEnum.FULL">
                             <a href="javascript:void(0)" (click)="open(alert,'/identify-threat-agent/questionnaires/ID_THREAT_AGENT')"><i
                                 placement="top" class="fa fa-pencil-square-o fa-lg"
                                 aria-hidden="true"></i></a>
@@ -76,18 +78,20 @@
                         responds to the question: “Which are the weaknesses of my company?”
                     </td>
                     <td class="text-center">
-                        <i *ngIf="assessVulnerabilitiesStatus === 'FULL'" style="color: green" class="fa fa-check"
-                           aria-hidden="true"></i>
-                        <i *ngIf="assessVulnerabilitiesStatus === 'EMPTY' || assessVulnerabilitiesStatus === 'PENDING'"
-                           style="color: orange" class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+                        <i *ngIf="assessVulnerabilitiesStatus === statusEnum.FULL" style="color: green" class="fa fa-check"
+                           aria-hidden="true"
+                           [ngbTooltip]="statusEnum[assessVulnerabilitiesStatus][0] + statusEnum[assessVulnerabilitiesStatus].substr(1).toLowerCase()"></i>
+                        <i *ngIf="assessVulnerabilitiesStatus === statusEnum.EMPTY || assessVulnerabilitiesStatus === statusEnum.PENDING"
+                           style="color: orange" class="fa fa-exclamation-triangle" aria-hidden="true"
+                           [ngbTooltip]="statusEnum[assessVulnerabilitiesStatus][0] + statusEnum[assessVulnerabilitiesStatus].substr(1).toLowerCase()"></i>
                     </td>
                     <td class="text-center">
-                        <a *ngIf="assessVulnerabilitiesStatus === 'EMPTY'"
+                        <a *ngIf="assessVulnerabilitiesStatus === statusEnum.EMPTY"
                            [routerLink]="['/evaluate-weakness/questionnaires/SELFASSESSMENT']"><i class="fa fa-plus-square fa-lg"
                                                                                   placement="top"
                                                                                   aria-hidden="true"></i></a>
                         <ng-container
-                            *ngIf="assessVulnerabilitiesStatus === 'PENDING' || assessVulnerabilitiesStatus=== 'FULL'">
+                            *ngIf="assessVulnerabilitiesStatus === statusEnum.PENDING || assessVulnerabilitiesStatus=== statusEnum.FULL">
                             <a href="javascript:void(0)" (click)="open(alert,'/evaluate-weakness/questionnaires/SELFASSESSMENT')"><i
                                 placement="top" class="fa fa-pencil-square-o fa-lg"
                                 aria-hidden="true"></i></a>
