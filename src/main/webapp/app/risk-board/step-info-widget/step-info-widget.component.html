@@ -64,7 +64,8 @@
                            [routerLink]="['/identify-asset/asset-clustering']"><i class="fa fa-plus-square fa-lg"
                                                                                   placement="top" ngbTooltip="Create"
                                                                                   aria-hidden="true"></i></a>
-                        <ng-container *ngIf="assetClusteringStatus === statusEnum.PENDING || assetClusteringStatus === statusEnum.FULL">
+                        <ng-container
+                            *ngIf="assetClusteringStatus === statusEnum.PENDING || assetClusteringStatus === statusEnum.FULL">
                             <a href="javascript:void(0)" (click)="open(alert,'/identify-asset/asset-clustering')"><i
                                 placement="top" ngbTooltip="Edit" class="fa fa-pencil-square-o fa-lg"
                                 aria-hidden="true"></i></a>
@@ -145,7 +146,8 @@
                             <i class="fa fa-plus-square fa-lg" placement="top" ngbTooltip="Create"
                                aria-hidden="true"></i>
                         </a>
-                        <ng-container *ngIf="impactEvaluationStatus === statusEnum.PENDING || impactEvaluationStatus === statusEnum.FULL">
+                        <ng-container
+                            *ngIf="impactEvaluationStatus === statusEnum.PENDING || impactEvaluationStatus === statusEnum.FULL">
                             <a href="javascript:void(0)" (click)="open(alert,'/impact-evaluation')"><i
                                 placement="top" ngbTooltip="Edit" class="fa fa-pencil-square-o fa-lg"
                                 aria-hidden="true"></i></a>
@@ -156,34 +158,34 @@
                     <td>Estimation of the Attack Related Costs</td>
                     <td><p>Estimate the attack related costs; "Communicate or evaluate the costs of the declared attack
                         costs"</p>
-                        <p *ngIf="attackRelatedCostEstimationStatus === statusEnum.EMPTY"><span
+                        <p *ngIf="attackRelatedCostsStatus === statusEnum.EMPTY"><span
                             style="color: orange">WARNING!</span> No
                             <a href="javascript:void(0)" [routerLink]="['/identify-asset/attack-costs']">Attack Cost</a>
                             identified or no one
                             <a href="javascript:void(0)"
                                [routerLink]="['/impact-evaluation/attack-related-costs-estimation']">estimated</a>!
                         </p>
-                        <p *ngIf="attackRelatedCostEstimationStatus === statusEnum.PENDING"><span
+                        <p *ngIf="attackRelatedCostsStatus === statusEnum.PENDING"><span
                             style="color: orange">WARNING!</span> Some attack related costs have not been
                             <a href="javascript:void(0)"
                                [routerLink]="['/impact-evaluation/attack-related-costs-estimation']">valorized</a>.
                         </p>
                     </td>
                     <td class="text-center">
-                        <i *ngIf="attackRelatedCostEstimationStatus === statusEnum.FULL" style="color: green" class="fa fa-check"
+                        <i *ngIf="attackRelatedCostsStatus === statusEnum.FULL" style="color: green" class="fa fa-check"
                            aria-hidden="true"
-                           [ngbTooltip]="attackRelatedCostEstimationStatus[0] + attackRelatedCostEstimationStatus.substr(1).toLowerCase()"></i>
-                        <i *ngIf="attackRelatedCostEstimationStatus === statusEnum.EMPTY || attackRelatedCostEstimationStatus === statusEnum.PENDING"
+                           [ngbTooltip]="attackRelatedCostsStatus[0] + attackRelatedCostsStatus.substr(1).toLowerCase()"></i>
+                        <i *ngIf="attackRelatedCostsStatus === statusEnum.EMPTY || attackRelatedCostsStatus === statusEnum.PENDING"
                            style="color: orange" class="fa fa-exclamation-triangle" aria-hidden="true"
-                           [ngbTooltip]="attackRelatedCostEstimationStatus[0] + attackRelatedCostEstimationStatus.substr(1).toLowerCase()"></i>
+                           [ngbTooltip]="attackRelatedCostsStatus[0] + attackRelatedCostsStatus.substr(1).toLowerCase()"></i>
                     </td>
                     <td class="text-center">
-                        <a *ngIf="attackRelatedCostEstimationStatus === statusEnum.EMPTY && impactEvaluationStatus === statusEnum.FULL"
+                        <a *ngIf="attackRelatedCostsStatus === statusEnum.EMPTY && impactEvaluationStatus === statusEnum.FULL"
                            [routerLink]="['/impact-evaluation/attack-related-costs-estimation']"><i
                             class="fa fa-plus-square fa-lg"
                             placement="top" ngbTooltip="Create" aria-hidden="true"></i></a>
                         <ng-container
-                            *ngIf="attackRelatedCostEstimationStatus === statusEnum.PENDING || attackRelatedCostEstimationStatus === statusEnum.FULL">
+                            *ngIf="attackRelatedCostsStatus === statusEnum.PENDING || attackRelatedCostsStatus === statusEnum.FULL">
                             <a href="javascript:void(0)"
                                (click)="open(alert,'/impact-evaluation/attack-related-costs-estimation')"><i
                                 placement="top" ngbTooltip="Edit" class="fa fa-pencil-square-o fa-lg"
@@ -210,7 +212,8 @@
                            [routerLink]="['/risk-management/risk-evaluation']"><i class="fa fa-plus-square fa-lg"
                                                                                   placement="top" ngbTooltip="Create"
                                                                                   aria-hidden="true"></i></a>
-                        <ng-container *ngIf="riskEvaluationStatus === statusEnum.PENDING || riskEvaluationStatus === statusEnum.FULL">
+                        <ng-container
+                            *ngIf="riskEvaluationStatus === statusEnum.PENDING || riskEvaluationStatus === statusEnum.FULL">
                             <a href="javascript:void(0)" (click)="open(alert,'/risk-management/risk-evaluation')"><i
                                 placement="top" ngbTooltip="Edit" class="fa fa-pencil-square-o fa-lg"
                                 aria-hidden="true"></i></a>
