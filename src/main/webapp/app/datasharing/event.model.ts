@@ -15,22 +15,13 @@
  *
  */
 
-import {ModuleWithProviders, NgModule} from '@angular/core';
-import {CommonModule} from '@angular/common';
-import {DatasharingService} from './datasharing.service';
-import {EventManagerService} from "./event-manager.service";
+export class Event {
 
-@NgModule({
-    imports: [
-        CommonModule
-    ],
-    declarations: []
-})
-export class DatasharingModule {
-    static forRoot(): ModuleWithProviders {
-        return {
-            ngModule: DatasharingModule,
-            providers: [DatasharingService, EventManagerService]
-        };
+    public name: string;
+    public content: string;
+
+    constructor(name: string, content: string) {
+        this.name = name;
+        this.content = content;
     }
 }

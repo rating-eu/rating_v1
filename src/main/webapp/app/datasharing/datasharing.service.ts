@@ -133,7 +133,7 @@ export class DatasharingService {
         }
 
         if (!this._selfAssessment) {
-            this.router.navigate(['/my-risk-assessments']);
+            // this.router.navigate(['/my-risk-assessments']);
             return null;
         } else {
             let update: Update = this.getUpdate();
