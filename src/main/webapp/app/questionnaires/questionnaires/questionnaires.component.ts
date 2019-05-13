@@ -36,11 +36,14 @@ import {HttpResponse} from "@angular/common/http";
 import {MyCompanyMgm, MyCompanyMgmService} from "../../entities/my-company-mgm";
 import {switchMap} from "rxjs/operators";
 import {Role} from "../../entities/enumerations/Role.enum";
+import {PopUpService} from "../../shared/pop-up-services/pop-up.service";
+import {JhiEventManager} from "ng-jhipster";
+import {EventManagerService} from "../../datasharing/event-manager.service";
 
 @Component({
     selector: 'jhi-questionnaires',
     templateUrl: './questionnaires.component.html',
-    styles: [],
+    styles: []
 })
 export class QuestionnairesComponent implements OnInit, OnDestroy {
 
@@ -75,7 +78,6 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
 
     private subscriptions: Subscription[] = [];
 
-
     constructor(private route: ActivatedRoute,
                 private router: Router,
                 private myCompanyService: MyCompanyMgmService,
@@ -87,13 +89,19 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
                 private identifyThreatAgentsService: IdentifyThreatAgentService,
                 private evaluateWeaknessService: EvaluateService,
                 private localStorage: LocalStorageService,
-                private questionnaireStatusService: QuestionnaireStatusMgmService
+                private questionnaireStatusService: QuestionnaireStatusMgmService,
+                public popUpService: PopUpService,
+                private eventManagerService: EventManagerService
     ) {
     }
 
     ngOnInit() {
         console.log('Questionnaires ON INIT:');
+        this.registerChangeInQuestionnaireStatuses();
+        this.loadQuestionnaires();
+    }
 
+    private loadQuestionnaires() {
         const params$ = this.route.params;
 
         // GET the questionnaires by purpose
@@ -207,45 +215,21 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
                 } else {
                     switch (this.purpose) {
                         case QuestionnairePurpose.ID_THREAT_AGENT: {
-                            console.log("Case identify threat agents");
 
                             switch (this.role) {
                                 case Role.ROLE_CISO: {
                                     // TODO get the QuestionnaireStatus of the CISO
                                     const cisoIdentifyThreatAgentsQuestionnaireStatus: QuestionnaireStatusMgm =
-                                        _.find(this.questionnaireStatuses, (value: QuestionnaireStatusMgm)=> {
-                                            console.log("Find current value: ");
-                                            console.log(value);
-
-                                            console.log("Role equality: ");
-                                            console.log(value.role as Role == Role.ROLE_CISO);
-
-                                            console.log("Value.Role:");
-                                            console.log(value.role);
-                                            console.log(value.role as Role);
-                                            console.log(Role[value.role]);
-                                            console.log(Role.ROLE_CISO);
-
-                                            console.log("Purpose equality: ");
-                                            console.log(value.questionnaire.purpose === QuestionnairePurpose.ID_THREAT_AGENT);
-
-                                            console.log("ID equality: ");
-                                            console.log(value.user.id === this.user.id);
-
-
+                                        _.find(this.questionnaireStatuses, (value: QuestionnaireStatusMgm) => {
 
                                             if (value.role.valueOf() === Role.ROLE_CISO.valueOf() && value.user.id === this.user.id
                                                 && value.questionnaire.purpose.valueOf() === QuestionnairePurpose.ID_THREAT_AGENT.valueOf()) {
 
-                                                console.log("Returning true");
                                                 return true;
-                                            }else{
+                                            } else {
                                                 return false;
                                             }
                                         });
-
-                                    console.log("Identify threat agents questionnaire status:");
-                                    console.log(cisoIdentifyThreatAgentsQuestionnaireStatus);
 
                                     if (cisoIdentifyThreatAgentsQuestionnaireStatus) {
                                         this.setCurrentQuestionnaireStatus(cisoIdentifyThreatAgentsQuestionnaireStatus);
@@ -280,8 +264,6 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
     }
 
     setCurrentQuestionnaireStatus(questionnaireStatus: QuestionnaireStatusMgm) {
-        console.log("Set current QuestionnaireStatus");
-
         switch (this.role) {
             case Role.ROLE_CISO: {
                 this.dataSharingService.cisoQuestionnaireStatus = questionnaireStatus;
@@ -296,8 +278,6 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
     }
 
     createNewQuestionnaireStatus() {
-        console.log("Create new questionnaire status...");
-
         let questionnaireStatus$: Observable<HttpResponse<QuestionnaireStatusMgm>> = undefined;
 
         switch (this.purpose) {
@@ -316,8 +296,18 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
 
         if (questionnaireStatus$) {
             questionnaireStatus$.subscribe((response: HttpResponse<QuestionnaireStatusMgm>) => {
-                this.ngOnInit();
+                this.loadQuestionnaires();
             });
         }
+    }
+
+    registerChangeInQuestionnaireStatuses() {
+
+        this.subscriptions.push(this.eventManagerService.observe('questionnaireStatusListModification')
+            .subscribe(
+                (response) => {
+                    this.loadQuestionnaires();
+                })
+        );
     }
 }

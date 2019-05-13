@@ -30,7 +30,9 @@
                         <h1>Questionnaires</h1>
                     </div>
                     <div class="col-md-2">
-                        <h1><button class="btn btn-primary btn-lg" (click)="createNewQuestionnaireStatus()">New</button></h1>
+                        <h1>
+                            <button class="btn btn-primary btn-lg" (click)="createNewQuestionnaireStatus()">New</button>
+                        </h1>
                     </div>
                 </div>
 
@@ -52,6 +54,7 @@
                 <th>Modified</th>
                 <th>Status</th>
                 <th></th>
+                <th></th>
             </tr>
             </thead>
             <tbody>
@@ -60,7 +63,6 @@
                 <td>{{questionnaireStatus.created}}</td>
                 <td>{{questionnaireStatus.modified}}</td>
                 <td>{{questionnaireStatus.status}}</td>
-
                 <td [ngSwitch]="statusEnum[questionnaireStatus.status]">
 
                     <button *ngSwitchCase="statusEnum.EMPTY" class="btn"
@@ -90,6 +92,17 @@
                             [routerLink]="['./questionnaire']">
                         <span class="fa fa-pencil"></span>
                         <span class="d-none d-md-inline">Answer</span>
+                    </button>
+                </td>
+                <td>
+                    <button type="submit"
+                            (click)="popUpService.setOnUserBehaviour()"
+                            [routerLink]="['/', { outlets: { popup: 'questionnaire-status-mgm/'+ questionnaireStatus.id + '/delete'} }]"
+                            replaceUrl="true"
+                            queryParamsHandling="merge"
+                            class="btn btn-danger">
+                        <span class="fa fa-remove"></span>
+                        <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
                     </button>
                 </td>
             </tr>
