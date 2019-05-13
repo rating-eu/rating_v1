@@ -36,12 +36,14 @@ import {Router} from '@angular/router';
 export class SidebarComponent implements OnInit, AfterViewInit {
 
     isCollapsed = true;
-    private isCollapsedByMe = false;
     private items: MenuItem[];
     private isCISO = false;
     private isExternal = false;
     private mySelf: SelfAssessmentMgm;
     public secondaryLogo: LogoMgm = null;
+    private selfAssessment: SelfAssessmentMgm
+    private isSelfAssessmentSelected: boolean = false;
+;
 
     windowWidth: number = window.innerWidth;
 
@@ -81,6 +83,14 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     }
 
     ngOnInit() {
+        this.selfAssessment = this.dataSharingService.selfAssessment;
+        this.checkSelfAssessment();
+
+        this.dataSharingService.selfAssessmentObservable.subscribe((response: SelfAssessmentMgm) => {
+            this.selfAssessment = response;
+            this.checkSelfAssessment();
+        });
+
         this.principal.getAuthenticationState().subscribe((identity) => {
             if (identity) {
                 this.isCollapsed = !this.isAuthenticated();
@@ -141,6 +151,14 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         });
     }
 
+    private checkSelfAssessment() {
+        if (this.selfAssessment) {
+            this.isSelfAssessmentSelected = true;
+        } else {
+            this.isSelfAssessmentSelected = false;
+        }
+    }
+
     private fetchSecondaryLogo() {
         this.logoService.getSecondaryLogo().subscribe((logo: HttpResponse<LogoMgm>) => {
                 this.secondaryLogo = logo.body;
@@ -199,20 +217,17 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                 ]
             },
             {
-                label: 'Risk Assessments',
+                label: 'Risk Management',
                 icon: 'fa fa-bolt',
+                routerLink: ['/my-risk-assessments'],
                 visible: isCISO,
                 items: [
                     {
-                        label: 'Assessments',
-                        icon: 'fas fa-file-alt',
-                        routerLink: ['/my-risk-assessments']
-                    },
-                    {
-                        label: 'Asset Clustering',
+                        label: 'Assets',
+                        visible: this.isSelfAssessmentSelected,
                         items: [
                             {
-                                label: 'My Assets',
+                                label: 'Asset Clustering',
                                 routerLink: ['/identify-asset/asset-clustering']
                             },
                             {
@@ -227,6 +242,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                     },
                     {
                         label: 'Impact Analysis',
+                        visible: this.isSelfAssessmentSelected,
                         items: [
                             {
                                 label: 'Quantitative',
@@ -249,11 +265,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                                 label: 'Qualitative',
                                 items: [
                                     {
-                                        label: 'Assets Magnitudo',
-                                        routerLink: ['/pages/coming-soon']
-                                    },
-                                    {
-                                        label: 'Assets Importance',
+                                        label: 'Impacts on Assets',
                                         routerLink: ['/pages/coming-soon']
                                     }
                                 ]
@@ -262,27 +274,25 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                     },
                     {
                         label: 'Risk Analysis',
+                        visible: this.isSelfAssessmentSelected,
+                        routerLink: ['/risk-management/risk-evaluation'],
                         items: [
                             {
                                 label: 'Risk Matrix',
                                 routerLink: ['/risk-management/risk-evaluation']
                             },
                             {
-                                label: 'Overall Risk',
+                                label: 'Assets at Risk',
+                                routerLink: ['/risk-management/risk-evaluation']
+                            },
+                            {
+                                label: 'Mitigations',
                                 items: [
                                     {
-                                        label: 'Assets at Risk',
-                                        routerLink: ['/pages/coming-soon']
-                                    },
-                                    {
-                                        label: 'Mitigations',
+                                        label: 'Cost Benefit Analysis',
                                         routerLink: ['/pages/coming-soon']
                                     }
                                 ]
-                            },
-                            {
-                                label: 'Risk Analysis',
-                                routerLink: ['/pages/coming-soon']
                             }
                         ]
                     }
@@ -377,96 +387,6 @@ export class SidebarComponent implements OnInit, AfterViewInit {
             {
                 label: 'Terms of Use', icon: 'fas fa-file-signature', routerLink: ['/terms']
             }
-            /*{
-                label: 'Risk Assessment',
-                visible: visibleByMySelf,
-                items: [
-                    {
-                        label: 'Assets',
-                        // routerLink: ['/identify-asset'],
-                        items: [
-                            {
-                                label: 'Asset Clustering',
-                                routerLink: ['/identify-asset/asset-clustering']
-                            },
-                            {
-                                label: 'Cascade Effects',
-                                routerLink: ['/identify-asset/cascade-effects']
-                            },
-                            {
-                                label: 'Attack Costs',
-                                routerLink: ['/identify-asset/attack-costs']
-                            },
-                            {
-                                label: 'Asset Report',
-                                routerLink: ['/identify-asset/asset-report']
-                            },
-                        ]
-                    },
-                    {
-                        label: 'Vulnerability Assessment',
-                        items: [
-                            {
-                                label: 'Threat Agents',
-                                items: [
-                                    {
-                                        label: 'Identify',
-                                        routerLink: ['/identify-threat-agent/questionnaires/ID_THREAT_AGENT'],
-                                        visible: isCISO
-                                    },
-                                    {
-                                        label: 'Results',
-                                        routerLink: ['/identify-threat-agent/result']
-                                    }
-                                ]
-                            },
-                            {
-                                label: 'Attack Strategies',
-                                items: [
-                                    {
-                                        label: 'Assess Vulnerabilities',
-                                        routerLink: ['/evaluate-weakness/questionnaires/SELFASSESSMENT']
-                                    },
-                                    {
-                                        label: 'Likelihood Results',
-                                        routerLink: ['/evaluate-weakness/result']
-                                    }
-                                ]
-                            },
-                            {
-                                label: 'Results',
-                                routerLink: ['/results']
-                            }
-                        ]
-                    },
-                    {
-                        label: 'Consequences',
-                        items: [
-                            {
-                                label: 'Impact Evaluation',
-                                routerLink: ['/impact-evaluation']
-                            },
-                            {
-                                label: 'Estimation of the Data Assets category Losses',
-                                routerLink: ['/impact-evaluation/data-assets-losses-estimation']
-                            },
-                            {
-                                label: 'Estimation of the Attack Related Costs',
-                                routerLink: ['/impact-evaluation/attack-related-costs-estimation']
-                            }
-                        ]
-                    },
-                    {
-                        label: 'Risk Management',
-                        items: [
-                            {
-                                label: 'Risk Scenarios',
-                                routerLink: ['/risk-management/risk-evaluation']
-                            }
-                        ]
-                    }
-                ]
-            },*/
         ];
     }
 
