@@ -200,11 +200,11 @@ export class SidebarComponent implements OnInit, AfterViewInit {
             },
             {
                 label: 'Risk Assessments',
-                icon: 'fa fa-repeat',
+                icon: 'fa fa-bolt',
                 visible: isCISO,
                 items: [
                     {
-                        label: 'List',
+                        label: 'Assessments',
                         icon: 'fas fa-file-alt',
                         routerLink: ['/my-risk-assessments']
                     },

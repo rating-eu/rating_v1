@@ -47,9 +47,9 @@
 </div>
 
 <div *ngIf="isCISO" class="row">
-    <div class="col-lg-9 col-md-12">
+    <div class="col-lg-8 col-md-12">
     </div>
-    <div class="col-lg-3 col-md-12">
+    <div class="col-lg-4 col-md-12">
         <div class="card-box">
             <button
                 class="btn btn-block btn-primary waves-effect waves-light btn-info jh-create-entity create-self-assessment-mgm"
@@ -57,7 +57,7 @@
                 [routerLink]="['/', { outlets: { popup: ['self-assessment-mgm-new'] } }]">
                 <i class="fas fa-plus"></i>
                 <span class="hidden-sm-down" jhiTranslate="hermeneutApp.selfAssessment.home.createLabel">
-                    Create new Risk Assessment
+                    Create a new Risk Assessment
                 </span>
             </button>
         </div>

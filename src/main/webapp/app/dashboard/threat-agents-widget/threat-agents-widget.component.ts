@@ -16,7 +16,7 @@
  */
 
 import * as _ from 'lodash';
-import {DashboardStepEnum} from './../models/enumeration/dashboard-step.enum';
+import {RiskBoardStepEnum} from '../../entities/enumerations/RiskBoardStep.enum';
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {SelfAssessmentMgm, SelfAssessmentMgmService} from '../../entities/self-assessment-mgm';
 import {MyAnswerMgm, MyAnswerMgmService} from '../../entities/my-answer-mgm';
@@ -36,7 +36,7 @@ import {BaseEntity} from '../../shared';
 import {AnswerMgm} from '../../entities/answer-mgm';
 import * as CryptoJS from 'crypto-js';
 import {ModalDismissReasons, NgbModal} from '@ng-bootstrap/ng-bootstrap';
-import {RiskBoardService, DashboardStatus, Status} from '../risk-board.service';
+import {RiskBoardService, RiskBoardStatus} from '../../risk-board/risk-board.service';
 import {DatasharingService} from "../../datasharing/datasharing.service";
 import {MyCompanyMgm} from "../../entities/my-company-mgm";
 import {QuestionnairePurpose} from "../../entities/enumerations/QuestionnairePurpose.enum";
@@ -103,8 +103,7 @@ export class ThreatAgentsWidgetComponent implements OnInit, OnDestroy {
     private threatAgentsPercentageMap: Map<String, Couple<ThreatAgentMgm, Fraction>>;
     public threatAgentsPercentageArray: Couple<ThreatAgentMgm, Fraction>[];
 
-    private status: DashboardStatus;
-    private dashboardStatus = DashboardStepEnum;
+    private dashboardStatus = RiskBoardStepEnum;
 
     constructor(
         private selfAssessmentService: SelfAssessmentMgmService,
@@ -121,7 +120,6 @@ export class ThreatAgentsWidgetComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.loading = true;
-        this.status = this.dashService.getDashboardStatus();
         this.orderBy = {
             threatAgents: false,
             skills: false,
@@ -204,11 +202,6 @@ export class ThreatAgentsWidgetComponent implements OnInit, OnDestroy {
                 this.loading = false;
             }
         );
-
-        this.dashService.getStatusFromServer(this.selfAssessment, this.dashboardStatus.IDENTIFY_THREAT_AGENTS).toPromise().then((res) => {
-            this.status.identifyThreatAgentsStatus = Status[res];
-            this.dashService.updateStepStatus(DashboardStepEnum.IDENTIFY_THREAT_AGENTS, this.status.identifyThreatAgentsStatus);
-        });
     }
 
     ngOnDestroy() {

@@ -14,7 +14,6 @@
   ~ limitations under the License.
   ~
   -->
-
 <ng-container *ngIf="loading">
     <div class="loader"></div>
 </ng-container>
@@ -59,12 +58,12 @@
                     </td>
                     <td class="text-center">
                         <a *ngIf="identifyThreatAgentsStatus === 'EMPTY'"
-                           [routerLink]="['/identify-asset/asset-clustering']"><i class="fa fa-plus-square fa-lg"
+                           [routerLink]="['/identify-threat-agent/questionnaires/ID_THREAT_AGENT']"><i class="fa fa-plus-square fa-lg"
                                                                                   placement="top"
                                                                                   aria-hidden="true"></i></a>
                         <ng-container
                             *ngIf="identifyThreatAgentsStatus === 'PENDING' || identifyThreatAgentsStatus === 'FULL'">
-                            <a href="javascript:void(0)" (click)="open(alert,'/identify-asset/asset-clustering')"><i
+                            <a href="javascript:void(0)" (click)="open(alert,'/identify-threat-agent/questionnaires/ID_THREAT_AGENT')"><i
                                 placement="top" class="fa fa-pencil-square-o fa-lg"
                                 aria-hidden="true"></i></a>
                         </ng-container>
@@ -77,19 +76,19 @@
                         responds to the question: “Which are the weaknesses of my company?”
                     </td>
                     <td class="text-center">
-                        <i *ngIf="identifyThreatAgentsStatus === 'FULL'" style="color: green" class="fa fa-check"
+                        <i *ngIf="assessVulnerabilitiesStatus === 'FULL'" style="color: green" class="fa fa-check"
                            aria-hidden="true"></i>
-                        <i *ngIf="identifyThreatAgentsStatus === 'EMPTY' || identifyThreatAgentsStatus === 'PENDING'"
+                        <i *ngIf="assessVulnerabilitiesStatus === 'EMPTY' || assessVulnerabilitiesStatus === 'PENDING'"
                            style="color: orange" class="fa fa-exclamation-triangle" aria-hidden="true"></i>
                     </td>
                     <td class="text-center">
-                        <a *ngIf="identifyThreatAgentsStatus === 'EMPTY'"
-                           [routerLink]="['/identify-asset/asset-clustering']"><i class="fa fa-plus-square fa-lg"
+                        <a *ngIf="assessVulnerabilitiesStatus === 'EMPTY'"
+                           [routerLink]="['/evaluate-weakness/questionnaires/SELFASSESSMENT']"><i class="fa fa-plus-square fa-lg"
                                                                                   placement="top"
                                                                                   aria-hidden="true"></i></a>
                         <ng-container
-                            *ngIf="identifyThreatAgentsStatus === 'PENDING' || identifyThreatAgentsStatus === 'FULL'">
-                            <a href="javascript:void(0)" (click)="open(alert,'/identify-asset/asset-clustering')"><i
+                            *ngIf="assessVulnerabilitiesStatus === 'PENDING' || assessVulnerabilitiesStatus=== 'FULL'">
+                            <a href="javascript:void(0)" (click)="open(alert,'/evaluate-weakness/questionnaires/SELFASSESSMENT')"><i
                                 placement="top" class="fa fa-pencil-square-o fa-lg"
                                 aria-hidden="true"></i></a>
                         </ng-container>
@@ -97,6 +96,30 @@
                 </tr>
                 </tbody>
             </table>
+
+            <ng-template #alert let-d="dismiss" let-c="close">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="modal-basic-title">Edit notification</h4>
+                    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <ng-container *ngIf="">
+                        {{alertMessage}}
+                    </ng-container>
+                    <ng-container *ngIf="!alertMessage">
+                        <p>Editing such step may influence the entire assessment.</p>
+                        <p>If you want to proceed, just click on "OK" and edit your preferences, otherwise, you can just
+                            proceed in "view" mode whitout make any changes.</p>
+                        <p>Do you want to proceed?</p>
+                    </ng-container>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-dark" (click)="c('Save click')">OK</button>
+                </div>
+            </ng-template>
         </div>
     </div>
 </ng-container>

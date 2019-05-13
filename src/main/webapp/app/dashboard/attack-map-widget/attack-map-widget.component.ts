@@ -15,8 +15,8 @@
  *
  */
 
-import {DashboardStepEnum} from './../models/enumeration/dashboard-step.enum';
-import {RiskBoardService, DashboardStatus, Status} from '../risk-board.service';
+import {RiskBoardStepEnum} from '../../entities/enumerations/RiskBoardStep.enum';
+import {RiskBoardService, RiskBoardStatus} from '../../risk-board/risk-board.service';
 import * as _ from 'lodash';
 
 import {Component, OnDestroy, OnInit} from '@angular/core';
@@ -43,8 +43,6 @@ import {MyCompanyMgm} from "../../entities/my-company-mgm";
 })
 
 export class AttackMapWidgetComponent implements OnInit, OnDestroy {
-    private status: DashboardStatus;
-    private dashboardStatus = DashboardStepEnum;
     public loading = false;
     public isCollapsed = true;
     public isViewDivDetailsVisible = false;
@@ -103,11 +101,6 @@ export class AttackMapWidgetComponent implements OnInit, OnDestroy {
         this.selfAssessment = this.dataSharingService.selfAssessment;
         this.myCompany = this.dataSharingService.myCompany;
 
-        this.status = this.dashService.getDashboardStatus();
-        this.dashService.getStatusFromServer(this.selfAssessment, this.dashboardStatus.ASSESS_VULNERABILITIES).toPromise().then((res) => {
-            this.status.assessVulnerablitiesStatus = Status[res];
-            this.dashService.updateStepStatus(DashboardStepEnum.ASSESS_VULNERABILITIES, this.status.assessVulnerablitiesStatus);
-        });
         this.loading = true;
         this.likelihoodStepEnabled = new Map();
         this.likelihoodStepEnabled.set(LikelihoodStep.INITIAL_LIKELIHOOD, false);

@@ -251,9 +251,7 @@ export class ImpactEvaluationComponent implements OnInit {
             ])),
         });
         this.mySelf = this.dataSharingService.selfAssessment;
-        /*this.impactService.getGrowthRates(this.mySelf).toPromise().then((res) => {
-            this.rates = res;
-        });*/
+
         this.impactService.getMyAssets(this.mySelf).toPromise().then((res) => {
             if (res && res.length > 0) {
                 this.myAssets = res;
