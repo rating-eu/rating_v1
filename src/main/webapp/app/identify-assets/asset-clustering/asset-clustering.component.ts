@@ -281,21 +281,24 @@ export class AssetClusteringComponent implements OnInit, OnDestroy {
 
     public saveMyAsset(redirect: boolean = true) {
         this.loading = true;
-        if (this.updateMyAssets) {
-            this.idaUtilsService.createUpdateMyAssets(this.mySelf, this.myAssets).toPromise().then((myAssets) => {
-                if (myAssets) {
-                    this.myAssets = myAssets;
-                }
-                this.loading = false;
 
+        if (this.myAssets && this.myAssets.length) {
+            if (this.updateMyAssets) {
+                this.idaUtilsService.createUpdateMyAssets(this.mySelf, this.myAssets).toPromise().then((myAssets) => {
+                    if (myAssets) {
+                        this.myAssets = myAssets;
+                    }
+                    this.loading = false;
+
+                    if (redirect) {
+                        this.router.navigate(['/identify-asset/cascade-effects']);
+                    }
+                });
+            } else {
+                this.loading = false;
                 if (redirect) {
                     this.router.navigate(['/identify-asset/cascade-effects']);
                 }
-            });
-        } else {
-            this.loading = false;
-            if (redirect) {
-                this.router.navigate(['/identify-asset/cascade-effects']);
             }
         }
     }

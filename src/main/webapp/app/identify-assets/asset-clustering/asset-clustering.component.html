@@ -193,18 +193,15 @@
                     <button *ngIf="!myAssets" class="btn btn-primary btn-lg float-left" (click)="close()">
                         Close <i *ngIf="!loading" class="fa fa-times fa-lg" aria-hidden="true"></i>
                     </button>
-                    <button *ngIf="myAssets" class="btn btn-primary btn-lg float-left" (click)="saveMyAsset(false);close()">
+                    <button *ngIf="myAssets" class="btn btn-primary btn-lg float-left"
+                            (click)="saveMyAsset(false);close()">
                         Close <i *ngIf="!loading" class="fa fa-times fa-lg" aria-hidden="true"></i>
                     </button>
                 </div>
                 <div class="col-md-3 offset-md-6">
-                    <ng-container *ngIf="!myAssets">
-                        <button class="btn btn-secondary btn-lg float-right">
-                            <i class="fa fa-arrow-right fa-lg" aria-hidden="true"></i> Cascade Effects
-                        </button>
-                    </ng-container>
                     <ng-container *ngIf="myAssets">
                         <button style="margin-bottom:25px" class="btn btn-lg float-right"
+                                [disabled]="myAssets.length===0"
                                 [ngClass]="{'btn-primary': myAssets.length>0, 'btn-secondary': myAssets.length === 0}"
                                 (click)="saveMyAsset()">
                             Cascade Effects
