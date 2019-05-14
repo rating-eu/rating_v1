@@ -1,12 +1,12 @@
 /*
  * Copyright 2019 HERMENEUT Consortium
- *  
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *  
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- *  
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -20,6 +20,7 @@ package eu.hermeneut.web.rest;
 import com.codahale.metrics.annotation.Timed;
 import eu.hermeneut.aop.annotation.AttackCostParamsCleaningHook;
 import eu.hermeneut.aop.annotation.KafkaRiskProfileHook;
+import eu.hermeneut.domain.AssetCategory;
 import eu.hermeneut.domain.AttackCost;
 import eu.hermeneut.domain.MyAsset;
 import eu.hermeneut.exceptions.IllegalInputException;
@@ -188,6 +189,15 @@ public class MyAssetResource {
     public List<MyAsset> getMyAssetsBySelfAssessment(@PathVariable Long selfAssessmentID) {
         log.debug("REST request to get all MyAssets by SelfAssessment ID");
         return myAssetService.findAllBySelfAssessment(selfAssessmentID);
+    }
+
+    @GetMapping("/my-assets/self-assessment/{selfAssessmentID}/category/{category}")
+    @Timed
+    @PreAuthorize("@selfAssessmentGuardian.isCISO(#selfAssessmentID) || hasRole('ROLE_ADMIN')")
+    @Secured({AuthoritiesConstants.CISO, AuthoritiesConstants.ADMIN})
+    public List<MyAsset> getMyAssetsBySelfAssessmentAndAssetCategory(@PathVariable Long selfAssessmentID, @PathVariable String category) {
+        log.debug("REST request to get all MyAssets by SelfAssessment ID");
+        return myAssetService.findAllBySelfAssessmentAndAssetCategory(selfAssessmentID, category);
     }
 
     /**

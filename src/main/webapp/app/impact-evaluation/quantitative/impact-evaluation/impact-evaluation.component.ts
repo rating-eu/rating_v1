@@ -15,36 +15,36 @@
  *
  */
 
-import {IdentifyAssetUtilService} from './../../identify-assets/identify-asset.util.service';
-import {Priority} from './../../identify-assets/model/enumeration/priority.enum';
+import {IdentifyAssetUtilService} from '../../../identify-assets/identify-asset.util.service';
+import {Priority} from '../../../identify-assets/model/enumeration/priority.enum';
 import * as _ from 'lodash';
 
 import {Component, OnInit} from '@angular/core';
-import {FormGroup, FormControl, Validators} from '../../../../../../node_modules/@angular/forms';
-import {SelfAssessmentMgmService, SelfAssessmentMgm} from '../../entities/self-assessment-mgm';
-import {MyAssetMgm} from '../../entities/my-asset-mgm';
-import {AssetMgm} from '../../entities/asset-mgm';
-import {AssetType} from '../../entities/enumerations/AssetType.enum';
-import {ImpactEvaluationService} from '../impact-evaluation.service';
-import {EBITMgm} from '../../entities/ebit-mgm';
+import {FormGroup, FormControl, Validators} from "@angular/forms";
+import {SelfAssessmentMgmService, SelfAssessmentMgm} from '../../../entities/self-assessment-mgm';
+import {MyAssetMgm} from '../../../entities/my-asset-mgm';
+import {AssetMgm} from '../../../entities/asset-mgm';
+import {AssetType} from '../../../entities/enumerations/AssetType.enum';
+import {ImpactEvaluationService} from '../../impact-evaluation.service';
+import {EBITMgm} from '../../../entities/ebit-mgm';
 import {Wp3BundleInput} from '../model/wp3-bundle-input.model';
-import {EconomicCoefficientsMgm} from '../../entities/economic-coefficients-mgm';
-import {SectorType, CategoryType} from '../../entities/splitting-loss-mgm';
-import {MyCategoryType} from '../../entities/enumerations/MyCategoryType.enum';
-import {Router, NavigationStart} from '../../../../../../node_modules/@angular/router';
-import {MySectorType} from '../../entities/enumerations/MySectorType.enum';
+import {EconomicCoefficientsMgm} from '../../../entities/economic-coefficients-mgm';
+import {SectorType, CategoryType} from '../../../entities/splitting-loss-mgm';
+import {MyCategoryType} from '../../../entities/enumerations/MyCategoryType.enum';
+import {Router, NavigationStart} from "@angular/router";
+import {MySectorType} from '../../../entities/enumerations/MySectorType.enum';
 import {ImpactEvaluationStatus} from '../model/impact-evaluation-status.model';
-import {AccountService, UserService, User} from '../../shared';
-import {MyCompanyMgmService, MyCompanyMgm} from '../../entities/my-company-mgm';
+import {AccountService, UserService, User} from '../../../shared';
+import {MyCompanyMgmService, MyCompanyMgm} from '../../../entities/my-company-mgm';
 import {HttpResponse} from '@angular/common/http';
-import {CompType} from '../../entities/company-profile-mgm';
-import {RegExpUtility} from '../../utils/regexp.utility.class';
+import {CompType} from '../../../entities/company-profile-mgm';
+import {RegExpUtility} from '../../../utils/regexp.utility.class';
 import {Wp3BundleOutput} from '../model/wp3-bundle-output.model';
 import {Observable} from 'rxjs';
 import {switchMap} from 'rxjs/operators';
 import {of} from 'rxjs/observable/of';
 import {forkJoin} from 'rxjs/observable/forkJoin';
-import {DatasharingService} from "../../datasharing/datasharing.service";
+import {DatasharingService} from "../../../datasharing/datasharing.service";
 
 interface OrderBy {
     asset: boolean;

@@ -17,6 +17,7 @@
 
 package eu.hermeneut.service.impl;
 
+import eu.hermeneut.domain.AssetCategory;
 import eu.hermeneut.domain.AttackCost;
 import eu.hermeneut.domain.AttackCostParam;
 import eu.hermeneut.domain.enumeration.AssetType;
@@ -250,5 +251,11 @@ public class MyAssetServiceImpl implements MyAssetService {
                 throw new NotImplementedYetException("Method not implemented for this CategoryType");
             }
         }
+    }
+
+    @Override
+    public List<MyAsset> findAllBySelfAssessmentAndAssetCategory(Long selfAssessmentID, String categoryName) {
+
+        return this.myAssetRepository.findAllBySelfAssessmentAndAssetCategory(selfAssessmentID, categoryName);
     }
 }

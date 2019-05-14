@@ -17,14 +17,14 @@
 
 import * as _ from 'lodash';
 
-import { AttackCostMgm, CostType } from './../../entities/attack-cost-mgm/attack-cost-mgm.model';
-import { ImpactEvaluationService } from './../impact-evaluation.service';
+import { AttackCostMgm, CostType } from '../../../entities/attack-cost-mgm/attack-cost-mgm.model';
+import { ImpactEvaluationService } from '../../impact-evaluation.service';
 import { Component, OnInit } from '@angular/core';
-import { SelfAssessmentMgmService, SelfAssessmentMgm } from '../../entities/self-assessment-mgm';
+import { SelfAssessmentMgmService, SelfAssessmentMgm } from '../../../entities/self-assessment-mgm';
 import { Router, NavigationStart } from '@angular/router';
-import { AttackCostParamMgm } from '../../entities/attack-cost-param-mgm';
-import { AttackCostParamType } from '../../entities/attack-cost-param-mgm';
-import {DatasharingService} from "../../datasharing/datasharing.service";
+import { AttackCostParamMgm } from '../../../entities/attack-cost-param-mgm';
+import { AttackCostParamType } from '../../../entities/attack-cost-param-mgm';
+import {DatasharingService} from "../../../datasharing/datasharing.service";
 
 @Component({
     selector: 'jhi-attack-related-costs-estimation',

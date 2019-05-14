@@ -16,10 +16,9 @@
  */
 
 import { SelfAssessmentMgm } from './../../entities/self-assessment-mgm/self-assessment-mgm.model';
-import { ImpactEvaluationStatus } from './../../impact-evaluation/model/impact-evaluation-status.model';
+import { ImpactEvaluationStatus} from "../../impact-evaluation/quantitative/model/impact-evaluation-status.model";
 import { Component, OnInit } from '@angular/core';
 import { ImpactEvaluationService } from '../../impact-evaluation/impact-evaluation.service';
-import { SelfAssessmentMgmService } from '../../entities/self-assessment-mgm';
 import {DatasharingService} from "../../datasharing/datasharing.service";
 
 @Component({

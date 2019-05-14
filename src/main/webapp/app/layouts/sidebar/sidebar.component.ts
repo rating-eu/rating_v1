@@ -41,9 +41,8 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     private isExternal = false;
     private mySelf: SelfAssessmentMgm;
     public secondaryLogo: LogoMgm = null;
-    private selfAssessment: SelfAssessmentMgm
+    private selfAssessment: SelfAssessmentMgm;
     private isSelfAssessmentSelected: boolean = false;
-;
 
     windowWidth: number = window.innerWidth;
 
@@ -243,21 +242,22 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                     {
                         label: 'Impact Analysis',
                         visible: this.isSelfAssessmentSelected,
+                        routerLink: ['/impact-evaluation'],
                         items: [
                             {
                                 label: 'Quantitative',
                                 items: [
                                     {
                                         label: 'Impact Evaluation',
-                                        routerLink: ['/impact-evaluation']
+                                        routerLink: ['/impact-evaluation/quantitative']
                                     },
                                     {
                                         label: 'Estimation of the Data Assets category Losses',
-                                        routerLink: ['/impact-evaluation/data-assets-losses-estimation']
+                                        routerLink: ['/impact-evaluation/quantitative/data-assets-losses-estimation']
                                     },
                                     {
                                         label: 'Estimation of the Attack Related Costs',
-                                        routerLink: ['/impact-evaluation/attack-related-costs-estimation']
+                                        routerLink: ['/impact-evaluation/quantitative/attack-related-costs-estimation']
                                     }
                                 ]
                             },

@@ -76,4 +76,6 @@ public interface MyAssetService {
     List<MyAsset> findAllBySelfAssessmentAndAssetType(Long selfAssessmentID, AssetType assetType);
 
     List<MyAsset> findAllBySelfAssessmentAndCategoryType(Long selfAssessmentID, CategoryType data) throws NotImplementedYetException;
+
+    List<MyAsset> findAllBySelfAssessmentAndAssetCategory(Long selfAssessmentID, String categoryName);
 }

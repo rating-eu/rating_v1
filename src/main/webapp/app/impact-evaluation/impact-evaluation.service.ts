@@ -16,7 +16,7 @@
  */
 
 import { Subject } from 'rxjs/Subject';
-import { GrowthRate } from './model/growth-rates.model';
+import { GrowthRate} from "./quantitative/model/growth-rates.model";
 import { AttackCostMgm, CostType } from './../entities/attack-cost-mgm/attack-cost-mgm.model';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse, HttpParams } from '../../../../../node_modules/@angular/common/http';
@@ -24,9 +24,9 @@ import { SelfAssessmentMgm } from '../entities/self-assessment-mgm';
 import { SERVER_API_URL } from '../app.constants';
 import { Observable } from '../../../../../node_modules/rxjs';
 import { MyAssetMgm } from '../entities/my-asset-mgm';
-import { Wp3BundleInput } from './model/wp3-bundle-input.model';
-import { Wp3BundleOutput } from './model/wp3-bundle-output.model';
-import { ImpactEvaluationStatus } from './model/impact-evaluation-status.model';
+import { Wp3BundleInput} from "./quantitative/model/wp3-bundle-input.model";
+import { Wp3BundleOutput} from "./quantitative/model/wp3-bundle-output.model";
+import { ImpactEvaluationStatus} from "./quantitative/model/impact-evaluation-status.model";
 import { AttackCostParamMgm } from '../entities/attack-cost-param-mgm';
 import { ImpactLevelMgm } from '../entities/impact-level-mgm';
 

@@ -18,7 +18,7 @@
 import { SelfAssessmentMgmService } from './../../entities/self-assessment-mgm/self-assessment-mgm.service';
 import * as _ from 'lodash';
 import { SelfAssessmentMgm } from './../../entities/self-assessment-mgm/self-assessment-mgm.model';
-import { ImpactEvaluationStatus } from './../../impact-evaluation/model/impact-evaluation-status.model';
+import { ImpactEvaluationStatus} from "../../impact-evaluation/quantitative/model/impact-evaluation-status.model";
 import { ImpactEvaluationService } from './../../impact-evaluation/impact-evaluation.service';
 import { Component, OnInit } from '@angular/core';
 import {DatasharingService} from "../../datasharing/datasharing.service";

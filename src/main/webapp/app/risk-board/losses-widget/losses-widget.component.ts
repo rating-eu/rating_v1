@@ -24,7 +24,7 @@ import { ImpactEvaluationService } from '../../impact-evaluation/impact-evaluati
 import { MyCategoryType } from '../../entities/enumerations/MyCategoryType.enum';
 import { MySectorType } from '../../entities/enumerations/MySectorType.enum';
 import { SelfAssessmentMgmService, SelfAssessmentMgm } from '../../entities/self-assessment-mgm';
-import { ImpactEvaluationStatus } from '../../impact-evaluation/model/impact-evaluation-status.model';
+import { ImpactEvaluationStatus} from "../../impact-evaluation/quantitative/model/impact-evaluation-status.model";
 import {DatasharingService} from "../../datasharing/datasharing.service";
 
 interface OrderBy {

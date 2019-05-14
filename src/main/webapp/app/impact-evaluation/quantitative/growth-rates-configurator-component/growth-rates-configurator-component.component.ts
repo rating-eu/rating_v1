@@ -16,12 +16,12 @@
  */
 
 import * as _ from 'lodash';
-import {ImpactEvaluationService} from './../impact-evaluation.service';
+import {ImpactEvaluationService} from '../../impact-evaluation.service';
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
-import {SelfAssessmentMgmService, SelfAssessmentMgm} from '../../entities/self-assessment-mgm';
+import {SelfAssessmentMgmService, SelfAssessmentMgm} from '../../../entities/self-assessment-mgm';
 import {GrowthRate} from '../model/growth-rates.model';
 import {Router} from '@angular/router';
-import {DatasharingService} from "../../datasharing/datasharing.service";
+import {DatasharingService} from "../../../datasharing/datasharing.service";
 
 @Component({
     selector: 'jhi-growth-rates-configurator-component',

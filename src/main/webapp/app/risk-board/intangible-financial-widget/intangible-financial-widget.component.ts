@@ -15,7 +15,7 @@
  *
  */
 
-import { ImpactEvaluationStatus } from './../../impact-evaluation/model/impact-evaluation-status.model';
+import { ImpactEvaluationStatus} from "../../impact-evaluation/quantitative/model/impact-evaluation-status.model";
 import { ImpactEvaluationService } from './../../impact-evaluation/impact-evaluation.service';
 import * as _ from 'lodash';
 import { MyAssetMgm } from './../../entities/my-asset-mgm/my-asset-mgm.model';

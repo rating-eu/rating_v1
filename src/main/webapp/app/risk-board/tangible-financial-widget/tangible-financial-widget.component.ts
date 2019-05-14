@@ -16,16 +16,14 @@
  */
 
 import { AssetMgm } from './../../entities/asset-mgm/asset-mgm.model';
-import { RiskBoardStepEnum } from '../../entities/enumerations/RiskBoardStep.enum';
 import * as _ from 'lodash';
 import { Component, OnInit } from '@angular/core';
 import { SelfAssessmentMgm, SelfAssessmentMgmService } from '../../entities/self-assessment-mgm';
 import { ImpactEvaluationService } from '../../impact-evaluation/impact-evaluation.service';
-import { ImpactEvaluationStatus } from '../../impact-evaluation/model/impact-evaluation-status.model';
+import { ImpactEvaluationStatus} from "../../impact-evaluation/quantitative/model/impact-evaluation-status.model";
 import { MyAssetMgm } from '../../entities/my-asset-mgm';
-import { RiskBoardService, RiskBoardStatus } from '../risk-board.service';
+import { RiskBoardService} from '../risk-board.service';
 import { AssetType } from '../../entities/enumerations/AssetType.enum';
-import { Status } from '../../entities/enumerations/QuestionnaireStatus.enum';
 import {DatasharingService} from "../../datasharing/datasharing.service";
 
 interface OrderBy {

@@ -16,16 +16,16 @@
  */
 
 import * as _ from 'lodash';
-import {MyAssetMgm} from './../../entities/my-asset-mgm/my-asset-mgm.model';
+import {MyAssetMgm} from '../../../entities/my-asset-mgm/my-asset-mgm.model';
 import {Router, NavigationStart} from '@angular/router';
-import {ImpactEvaluationService} from './../impact-evaluation.service';
+import {ImpactEvaluationService} from '../../impact-evaluation.service';
 import {Component, OnInit} from '@angular/core';
-import {SelfAssessmentMgm, SelfAssessmentMgmService} from '../../entities/self-assessment-mgm';
-import {MyAssetMgmService} from '../../entities/my-asset-mgm';
+import {SelfAssessmentMgm, SelfAssessmentMgmService} from '../../../entities/self-assessment-mgm';
+import {MyAssetMgmService} from '../../../entities/my-asset-mgm';
 import {Observable} from 'rxjs';
 import {HttpResponse} from '@angular/common/http';
 import {forkJoin} from 'rxjs/observable/forkJoin';
-import {DatasharingService} from "../../datasharing/datasharing.service";
+import {DatasharingService} from "../../../datasharing/datasharing.service";
 
 @Component({
     selector: 'jhi-data-assets-losses-estimation',
