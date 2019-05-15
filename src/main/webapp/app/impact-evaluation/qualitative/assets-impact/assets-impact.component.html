@@ -1,42 +1,46 @@
-<p>
-    Choose the impact of your assets in case of attack.
-</p>
-
-<mat-tab-group>
-    <mat-tab *ngFor="let category of assetCategories" label="{{category.name}}">
-        <table class="table" *ngIf="myAssetsByCategoriesMap.get(category.id)?.length > 0">
-            <thead>
-            <tr>
-                <th scope="col">Asset</th>
-                <th scope="col">#Indirect Assets</th>
-                <th scope="col">#Related Costs</th>
-                <th scope="col">Criticality</th>
-                <th scope="col">Priority</th>
-            </tr>
-            </thead>
-            <tbody>
-            <ng-container
-                *ngFor="let myAsset of myAssetsByCategoriesMap.get(category.id)">
-                <tr>
-                    <th scope="row">{{myAsset.asset.name}}</th>
-                    <td>{{myAssetsDTOsByIDMap.get(myAsset.id)?.indirectAssets.length}}</td>
-                    <td>{{myAssetsDTOsByIDMap.get(myAsset.id)?.attackCosts.length}}</td>
-                    <td>{{myAssetsDTOsByIDMap.get(myAsset.id)?.criticality}}</td>
-                    <td>
-                        <select [(ngModel)]="myAsset.ranking">
-                            <option *ngFor="let level of priorities; let i = index"
-                                    [ngValue]="i">{{level}}</option>
-                        </select>
-                    </td>
-                </tr>
-            </ng-container>
-            </tbody>
-        </table>
-
-        <div class="row">
-            <div class="col-md-12" style="margin-top: 7%">
-                <button class="btn btn-light btn-success float-right" (click)="saveMyAssets()">Save</button>
+<div class="row">
+    <div class="col-md-12">
+        <p>
+            Choose the impact of your assets in case of attack.
+        </p>
+        <mat-tab-group>
+            <div *ngFor="let category of assetCategories">
+                <mat-tab *ngIf="myAssetsByCategoriesMap.get(category.id)?.length > 0" label="{{category.name}}">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th scope="col">Asset</th>
+                            <th scope="col">#Indirect Assets</th>
+                            <th scope="col">#Related Costs</th>
+                            <th scope="col">Criticality</th>
+                            <th scope="col">Priority</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <ng-container
+                            *ngFor="let myAsset of myAssetsByCategoriesMap.get(category.id)">
+                            <tr>
+                                <th scope="row">{{myAsset.asset.name}}</th>
+                                <td>{{myAssetsDTOsByIDMap.get(myAsset.id)?.indirectAssets.length}}</td>
+                                <td>{{myAssetsDTOsByIDMap.get(myAsset.id)?.attackCosts.length}}</td>
+                                <td>{{myAssetsDTOsByIDMap.get(myAsset.id)?.criticality}}</td>
+                                <td>
+                                    <select [(ngModel)]="myAsset.ranking">
+                                        <option *ngFor="let level of priorities; let i = index"
+                                                [ngValue]="i">{{level}}</option>
+                                    </select>
+                                </td>
+                            </tr>
+                        </ng-container>
+                        </tbody>
+                    </table>
+                </mat-tab>
             </div>
-        </div>
-    </mat-tab>
-</mat-tab-group>
+        </mat-tab-group>
+    </div>
+    <div class="col-md-12">
+        <button class="btn btn-light btn-success float-right" (click)="saveMyAssets()">Save</button>
+    </div>
+</div>
+
+
