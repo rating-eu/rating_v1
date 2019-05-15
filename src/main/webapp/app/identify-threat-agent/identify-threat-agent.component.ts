@@ -27,7 +27,7 @@ import {DatasharingService} from "../datasharing/datasharing.service";
     ]
 })
 export class IdentifyThreatAgentComponent implements OnInit {
-    mySelf: SelfAssessmentMgm = {};
+    mySelf: SelfAssessmentMgm = null;
 
     constructor(
         private dataSharingService: DatasharingService

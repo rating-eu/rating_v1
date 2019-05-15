@@ -31,12 +31,11 @@ import {Role} from '../entities/enumerations/Role.enum';
     styleUrls: [
         'home.css'
     ]
-
 })
 export class HomeComponent implements OnInit {
     account: Account;
     modalRef: NgbModalRef;
-    mySelf: SelfAssessmentMgm = {};
+    mySelf: SelfAssessmentMgm = null;
 
     constructor(
         private principal: Principal,

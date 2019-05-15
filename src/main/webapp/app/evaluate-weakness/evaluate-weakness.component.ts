@@ -40,7 +40,7 @@ export class EvaluateWeaknessComponent implements OnInit, OnDestroy {
     currentAccount: any;
     eventSubscriber: Subscription;
     currentSearch: string;
-    selectedSelfAssessment: SelfAssessmentMgm = {};
+    selectedSelfAssessment: SelfAssessmentMgm = null;
 
     constructor(private attackStrategyService: AttackStrategyMgmService,
                 private jhiAlertService: JhiAlertService,

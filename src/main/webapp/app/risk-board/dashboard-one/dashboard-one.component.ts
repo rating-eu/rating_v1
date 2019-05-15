@@ -27,7 +27,7 @@ import {Router} from "@angular/router";
     styleUrls: ['dashboard-one.component.css']
 })
 export class DashboardOneComponent implements OnInit {
-    public selfAssessment: SelfAssessmentMgm = {};
+    public selfAssessment: SelfAssessmentMgm = null;
 
     constructor(
         private principal: Principal,

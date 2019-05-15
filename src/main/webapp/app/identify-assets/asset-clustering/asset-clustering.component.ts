@@ -46,7 +46,7 @@ export class AssetClusteringComponent implements OnInit, OnDestroy {
     private eventSubscriber: Subscription;
     private questionnaries: QuestionnaireMgm[];
 
-    public mySelf: SelfAssessmentMgm = {};
+    public mySelf: SelfAssessmentMgm = null;
     public assets: AssetMgm[];
     public myAssets: MyAssetMgm[];
     public categoryToAssets: Map<AssetCategoryMgm, AssetMgm[]> = new Map<AssetCategoryMgm, AssetMgm[]>();

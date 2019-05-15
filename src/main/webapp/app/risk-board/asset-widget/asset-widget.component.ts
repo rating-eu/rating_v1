@@ -48,7 +48,7 @@ interface TableElement {
     styleUrls: ['asset-widget.component.css']
 })
 export class AssetWidgetComponent implements OnInit, OnDestroy {
-    private mySelf: SelfAssessmentMgm = {};
+    private mySelf: SelfAssessmentMgm = null;
     private closeResult: string;
 
     public orderIntangibleBy: OrderBy;

@@ -40,7 +40,7 @@ interface OrderBy {
   styleUrls: ['intangible-financial-widget.component.css']
 })
 export class IntangibleFinancialWidgetComponent implements OnInit {
-  private mySelf: SelfAssessmentMgm = {};
+  private mySelf: SelfAssessmentMgm = null;
   private wp3Status: ImpactEvaluationStatus;
 
   public intangible: MyAssetMgm[];

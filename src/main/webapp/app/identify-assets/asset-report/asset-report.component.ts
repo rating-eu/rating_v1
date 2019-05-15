@@ -41,7 +41,7 @@ interface OrderBy {
 })
 
 export class AssetReportComponent implements OnInit, OnDestroy {
-    public mySelf: SelfAssessmentMgm = {};
+    public mySelf: SelfAssessmentMgm = null;
     private myAssets: MyAssetMgm[];
 
     public selectedCategory: string;

@@ -36,7 +36,7 @@ import {DatasharingService} from "../../datasharing/datasharing.service";
 })
 
 export class CascadeEffectsComponent implements OnInit {
-    private mySelf: SelfAssessmentMgm = {};
+    private mySelf: SelfAssessmentMgm = null;
     public myAssets: MyAssetMgm[];
     public selectedMyAsset: MyAssetMgm;
     public myAssetStatus: Map<number, string> = new Map<number, string>();
