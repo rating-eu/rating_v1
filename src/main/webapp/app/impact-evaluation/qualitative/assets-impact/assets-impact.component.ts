@@ -9,6 +9,7 @@ import {DatasharingService} from "../../../datasharing/datasharing.service";
 import {forkJoin} from "rxjs/observable/forkJoin";
 import {MyAssetDtoService} from "../../../dto/my-asset/my-asset-dto.service";
 import {MyAssetDto} from "../../../dto/my-asset/my-asset-dto";
+import {Router} from "@angular/router";
 
 @Component({
     selector: 'jhi-assets-impact',
@@ -30,10 +31,12 @@ export class AssetsImpactComponent implements OnInit {
 
     public priorities = ['Low', 'Low medium', 'Medium', 'Medium high', 'High'];
 
-    constructor(private assetCategoryService: AssetCategoryMgmService,
-                private myAssetService: MyAssetMgmService,
-                private myAssetDTOServie: MyAssetDtoService,
-                private dataSharing: DatasharingService) {
+    constructor(
+        private router: Router,
+        private assetCategoryService: AssetCategoryMgmService,
+        private myAssetService: MyAssetMgmService,
+        private myAssetDTOServie: MyAssetDtoService,
+        private dataSharing: DatasharingService) {
     }
 
     ngOnInit() {
@@ -102,6 +105,12 @@ export class AssetsImpactComponent implements OnInit {
 
         saveMyAssets$.subscribe((response: HttpResponse<MyAssetMgm[]>) => {
             this.myAssets = response.body;
+
+            this.router.navigate(['/riskboard']);
         });
+    }
+
+    previousState() {
+        window.history.back();
     }
 }
