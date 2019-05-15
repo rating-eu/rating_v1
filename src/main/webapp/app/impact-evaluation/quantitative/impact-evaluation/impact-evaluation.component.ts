@@ -1229,4 +1229,8 @@ export class ImpactEvaluationComponent implements OnInit {
             }
         }
     }
+
+    back() {
+        history.back();
+    }
 }
