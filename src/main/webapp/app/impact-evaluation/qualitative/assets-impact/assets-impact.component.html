@@ -39,17 +39,14 @@
         </mat-tab-group>
     </div>
     <div class="col-md-12">
-        <div class="col-md-6">
-            <button type="submit"
-                    (click)="previousState()"
-                    class="btn btn-secondary float-left">
-                <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
-            </button>
-        </div>
 
-        <div class="col-md-6">
-            <button class="btn btn-light float-right" (click)="saveMyAssets()">Save</button>
-        </div>
+        <button class="btn btn-primary float-right" (click)="saveMyAssets()">Save</button>
+
+        <button style="margin-left: 10px"
+                (click)="previousState()"
+                class="btn btn-light float-right">
+            <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+        </button>
     </div>
 </div>
 
