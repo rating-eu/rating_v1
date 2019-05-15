@@ -31,7 +31,7 @@ export class ChoiceComponent implements OnInit {
         this.impactMode = ImpactMode.QUANTITATIVE;
 
         if (this.selfAssessment) {
-            switch (this.selfAssessment.impactmode) {
+            switch (this.selfAssessment.impactMode) {
                 case ImpactMode.QUANTITATIVE: {
                     // Just redirect
                     this.router.navigate(['/impact-evaluation/quantitative']);
@@ -39,7 +39,7 @@ export class ChoiceComponent implements OnInit {
                 }
                 default: {
                     // Update the ImpactMode
-                    this.selfAssessment.impactmode = ImpactMode.QUANTITATIVE;
+                    this.selfAssessment.impactMode = ImpactMode.QUANTITATIVE;
 
                     this.selfAssessmentService.update(this.selfAssessment).subscribe((response) => {
                         this.selfAssessment = response.body;
@@ -56,7 +56,7 @@ export class ChoiceComponent implements OnInit {
         this.impactMode = ImpactMode.QUALITATIVE;
 
         if (this.selfAssessment) {
-            switch (this.selfAssessment.impactmode) {
+            switch (this.selfAssessment.impactMode) {
                 case ImpactMode.QUALITATIVE: {
                     // Just redirect
                     this.router.navigate(['/impact-evaluation/qualitative']);
@@ -64,7 +64,7 @@ export class ChoiceComponent implements OnInit {
                 }
                 default: {
                     // Update the ImpactMode
-                    this.selfAssessment.impactmode = ImpactMode.QUALITATIVE;
+                    this.selfAssessment.impactMode = ImpactMode.QUALITATIVE;
 
                     this.selfAssessmentService.update(this.selfAssessment).subscribe((response) => {
                         this.selfAssessment = response.body;
