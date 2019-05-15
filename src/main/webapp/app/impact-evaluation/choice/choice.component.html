@@ -20,7 +20,7 @@
                     <td>Quantitative</td>
                     <td>The Impact Evaluation using the Quantitative approach</td>
                     <td>
-                        <button type="submit" [routerLink]="['/impact-evaluation/quantitative']"
+                        <button type="submit" (click)="quantitativeMode()"
                                 class="btn btn-success btn-sm">
                             <span class="d-none d-md-inline">Evaluate</span>
                         </button>
@@ -30,7 +30,7 @@
                     <td>Qualitative</td>
                     <td>The Impact Evaluation using the Qualitative approach</td>
                     <td>
-                        <button type="submit" [routerLink]="['/impact-evaluation/qualitative']"
+                        <button type="submit" (click)="qualitativeMode()"
                                 class="btn btn-success btn-sm">
                             <span class="d-none d-md-inline">Evaluate</span>
                         </button>

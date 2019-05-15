@@ -35,7 +35,7 @@ import {DatasharingService} from "../../datasharing/datasharing.service";
     styleUrls: ['./attack-costs.component.css'],
 })
 export class AttackCostsComponent implements OnInit {
-    private mySelf: SelfAssessmentMgm = {};
+    private mySelf: SelfAssessmentMgm = null;
     private myCosts: Map<number, AttackCostMgm[]> = new Map<number, AttackCostMgm[]>();
     public myAssets: MyAssetMgm[];
     public myAssetStatus: Map<number, string> = new Map<number, string>();
