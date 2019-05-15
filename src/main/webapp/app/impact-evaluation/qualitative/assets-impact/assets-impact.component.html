@@ -16,14 +16,14 @@
             </thead>
             <tbody>
             <ng-container
-                *ngFor="let asset of myAssetsByCategoriesMap.get(category.id)">
+                *ngFor="let myAsset of myAssetsByCategoriesMap.get(category.id)">
                 <tr>
-                    <th scope="row">{{asset.asset.name}}</th>
-                    <td></td>
-                    <td></td>
-                    <td></td>
+                    <th scope="row">{{myAsset.asset.name}}</th>
+                    <td>{{myAssetsDTOsByIDMap.get(myAsset.id)?.indirectAssets.length}}</td>
+                    <td>{{myAssetsDTOsByIDMap.get(myAsset.id)?.attackCosts.length}}</td>
+                    <td>{{myAssetsDTOsByIDMap.get(myAsset.id)?.criticality}}</td>
                     <td>
-                        <select [(ngModel)]="asset.ranking">
+                        <select [(ngModel)]="myAsset.ranking">
                             <option *ngFor="let level of priorities; let i = index"
                                     [ngValue]="i">{{level}}</option>
                         </select>
@@ -35,7 +35,7 @@
 
         <div class="row">
             <div class="col-md-12" style="margin-top: 7%">
-                <button class="btn btn-light float-right" (click)="saveMyAssets()">Save</button>
+                <button class="btn btn-light btn-success float-right" (click)="saveMyAssets()">Save</button>
             </div>
         </div>
     </mat-tab>

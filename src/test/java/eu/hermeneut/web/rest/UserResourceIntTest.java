@@ -18,7 +18,6 @@
 package eu.hermeneut.web.rest;
 
 import eu.hermeneut.HermeneutApp;
-import eu.hermeneut.config.CacheConfiguration;
 import eu.hermeneut.domain.Authority;
 import eu.hermeneut.domain.User;
 import eu.hermeneut.repository.UserRepository;
@@ -26,7 +25,7 @@ import eu.hermeneut.repository.search.UserSearchRepository;
 import eu.hermeneut.security.AuthoritiesConstants;
 import eu.hermeneut.service.MailService;
 import eu.hermeneut.service.UserService;
-import eu.hermeneut.service.dto.UserDTO;
+import eu.hermeneut.domain.dto.UserDTO;
 import eu.hermeneut.service.mapper.UserMapper;
 import eu.hermeneut.web.rest.errors.ExceptionTranslator;
 import eu.hermeneut.web.rest.vm.ManagedUserVM;

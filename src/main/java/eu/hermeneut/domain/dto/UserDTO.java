@@ -15,7 +15,7 @@
  *
  */
 
-package eu.hermeneut.service.dto;
+package eu.hermeneut.domain.dto;
 
 import eu.hermeneut.config.Constants;
 

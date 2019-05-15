@@ -26,7 +26,7 @@ import eu.hermeneut.repository.search.UserSearchRepository;
 import eu.hermeneut.security.AuthoritiesConstants;
 import eu.hermeneut.security.SecurityUtils;
 import eu.hermeneut.service.util.RandomUtil;
-import eu.hermeneut.service.dto.UserDTO;
+import eu.hermeneut.domain.dto.UserDTO;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

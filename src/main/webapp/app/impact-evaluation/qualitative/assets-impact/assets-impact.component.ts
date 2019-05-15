@@ -7,7 +7,8 @@ import {MyAssetMgm, MyAssetMgmService} from "../../../entities/my-asset-mgm";
 import {SelfAssessmentMgm} from "../../../entities/self-assessment-mgm";
 import {DatasharingService} from "../../../datasharing/datasharing.service";
 import {forkJoin} from "rxjs/observable/forkJoin";
-import {IdentifyAssetUtilService} from "../../../identify-assets/identify-asset.util.service";
+import {MyAssetDtoService} from "../../../dto/my-asset/my-asset-dto.service";
+import {MyAssetDto} from "../../../dto/my-asset/my-asset-dto";
 
 @Component({
     selector: 'jhi-assets-impact',
@@ -20,25 +21,46 @@ export class AssetsImpactComponent implements OnInit {
     private assetCategories$: Observable<HttpResponse<AssetCategoryMgm[]>>;
     public assetCategories: AssetCategoryMgm[];
     public myAssetsByCategoriesMap: Map<number/*AssetCategoryID*/, MyAssetMgm[]>;
+
     private myAssets: MyAssetMgm[] = [];
+    public myAssetsByIDMap: Map<number/*MyAssetID*/, MyAssetMgm>;
+
+    private myAssetsDTOs: MyAssetDto[] = [];
+    public myAssetsDTOsByIDMap: Map<number, MyAssetDto>;
+
     public priorities = ['Low', 'Low medium', 'Medium', 'Medium high', 'High'];
 
     constructor(private assetCategoryService: AssetCategoryMgmService,
                 private myAssetService: MyAssetMgmService,
+                private myAssetDTOServie: MyAssetDtoService,
                 private dataSharing: DatasharingService) {
     }
 
     ngOnInit() {
         this.selfAssessment = this.dataSharing.selfAssessment;
         this.myAssets = [];
+        this.myAssetsByIDMap = new Map();
 
         this.myAssetsByCategoriesMap = new Map();
         this.assetCategories$ = this.assetCategoryService.findAll();
 
-        const assetsByCategories$: Observable<HttpResponse<MyAssetMgm[]>[]> = this.assetCategories$.pipe(
-            switchMap((categoriesResponse: HttpResponse<AssetCategoryMgm[]>) => {
+        //this.directAssetByMyAssetMap = new Map();
+        this.myAssetsDTOsByIDMap = new Map();
+        const myAssetDTOs$: Observable<HttpResponse<MyAssetDto[]>> = this.myAssetDTOServie.getAllBySelfAssessment(this.selfAssessment.id);
 
-                this.assetCategories = categoriesResponse.body;
+        const categoriesAndMyAssetsDTOs$: Observable<[HttpResponse<AssetCategoryMgm[]>, HttpResponse<MyAssetDto[]>]> = forkJoin(this.assetCategories$, myAssetDTOs$);
+
+        const assetsByCategories$: Observable<HttpResponse<MyAssetMgm[]>[]> = categoriesAndMyAssetsDTOs$.pipe(
+            switchMap((categoriesAndDirectsResponse: [HttpResponse<AssetCategoryMgm[]>, HttpResponse<MyAssetDto[]>]) => {
+
+                this.assetCategories = categoriesAndDirectsResponse[0].body;
+                this.myAssetsDTOs = categoriesAndDirectsResponse[1].body;
+
+                if (this.myAssetsDTOs && this.myAssetsDTOs.length) {
+                    this.myAssetsDTOs.forEach((myAssetDTO) => {
+                        this.myAssetsDTOsByIDMap.set(myAssetDTO.myAssetID, myAssetDTO);
+                    });
+                }
 
                 const assetsByCategoriesArray: Observable<HttpResponse<MyAssetMgm[]>>[] = [];
 
@@ -66,6 +88,10 @@ export class AssetsImpactComponent implements OnInit {
 
                         this.myAssetsByCategoriesMap.set(cat.id, myAssets);
                     }
+                });
+
+                this.myAssets.forEach((myAsset: MyAssetMgm) => {
+                    this.myAssetsByIDMap.set(myAsset.id, myAsset);
                 });
             }
         });

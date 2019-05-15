@@ -19,7 +19,7 @@ package eu.hermeneut.service.mapper;
 
 import eu.hermeneut.domain.Authority;
 import eu.hermeneut.domain.User;
-import eu.hermeneut.service.dto.UserDTO;
+import eu.hermeneut.domain.dto.UserDTO;
 
 import org.springframework.stereotype.Service;
 

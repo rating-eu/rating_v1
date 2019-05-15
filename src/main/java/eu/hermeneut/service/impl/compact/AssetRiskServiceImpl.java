@@ -1,12 +1,12 @@
 /*
  * Copyright 2019 HERMENEUT Consortium
- *  
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *  
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- *  
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -95,7 +95,7 @@ public class AssetRiskServiceImpl implements AssetRiskService, MaxValues {
 
         Map<Long, AugmentedAttackStrategy> augmentedAttackStrategyMap = this.augmentedAttackStrategyService.getAugmentedAttackStrategyMap(selfAssessment.getCompanyProfile().getId());
 
-        //Keep only the attackstrategies that can be performed by the Strongest ThreatAgent
+        //Keep only the attackStrategies that can be performed by the Strongest ThreatAgent
         augmentedAttackStrategyMap = augmentedAttackStrategyMap.values()
             .stream()
             .filter(attackStrategy -> ThreatAttackFilter.isAttackPossible(strongestThreatAgent, attackStrategy))
@@ -111,44 +111,49 @@ public class AssetRiskServiceImpl implements AssetRiskService, MaxValues {
             int impact = myAsset.getImpact() != null ? myAsset.getImpact() : 0;
             float critical = 0;
 
-            final Set<Container> containers = myAsset.getAsset().getContainers() != null ? myAsset.getAsset().getContainers() : new HashSet<>();
-            final Set<DomainOfInfluence> domainsOfInfluence = myAsset.getAsset().getDomainsOfInfluences() != null ? myAsset.getAsset().getDomainsOfInfluences() : new HashSet<>();
+            Map<Long, Container> containerMap = this.getContainerMap(myAsset);
 
-            Map<Long, Container> containerMap = new HashMap<>();
+            //For each container
+            Triad<Float> likelihoodVulnerabilityCriticality = this.getMaxLikelihoodVulnerabilityCriticality(augmentedAttackStrategyMap, containerMap);
 
-            containers.stream().parallel().forEach(container -> {
-                containerMap.put(container.getId(), container);
-            });
+            critical = likelihoodVulnerabilityCriticality.getC();
 
-            domainsOfInfluence.stream().parallel().forEach(domainOfInfluence -> {
-                containerMap.put(domainOfInfluence.getContainer().getId(), domainOfInfluence.getContainer());
-            });
+            float risk = critical * impact;
+            risk = risk / MAX_RISK;
 
-            if (containerMap.isEmpty()) {
-                throw new NotFoundException("Containers NOT Found!!!");
-            }
+            AssetRisk assetRisk = new AssetRisk();
 
-            if (containerMap != null && !containerMap.isEmpty()) {
-                //For each container
-                critical = getMaxLikelihoodVulnerabilityCriticality(augmentedAttackStrategyMap, containerMap).getC();
+            assetRisk.setId(myAsset.getAsset().getId());
+            assetRisk.setName(myAsset.getAsset().getName());
+            assetRisk.setDescription(myAsset.getAsset().getDescription());
+            assetRisk.setAssetCategory(myAsset.getAsset().getAssetcategory());
 
-                float risk = critical * impact;
-                risk = risk / MAX_RISK;
+            assetRisk.setRisk(risk);
 
-                AssetRisk assetRisk = new AssetRisk();
-
-                assetRisk.setId(myAsset.getAsset().getId());
-                assetRisk.setName(myAsset.getAsset().getName());
-                assetRisk.setDescription(myAsset.getAsset().getDescription());
-                assetRisk.setAssetCategory(myAsset.getAsset().getAssetcategory());
-
-                assetRisk.setRisk(risk);
-
-                assetRisks.add(assetRisk);
-            }
+            assetRisks.add(assetRisk);
         }
 
         return assetRisks;
+    }
+
+    public Map<Long, Container> getContainerMap(MyAsset myAsset) throws NotFoundException {
+        final Set<Container> containers = myAsset.getAsset().getContainers() != null ? myAsset.getAsset().getContainers() : new HashSet<>();
+        final Set<DomainOfInfluence> domainsOfInfluence = myAsset.getAsset().getDomainsOfInfluences() != null ? myAsset.getAsset().getDomainsOfInfluences() : new HashSet<>();
+
+        Map<Long, Container> containerMap = new HashMap<>();
+
+        containers.stream().parallel().forEach(container -> {
+            containerMap.put(container.getId(), container);
+        });
+
+        domainsOfInfluence.stream().parallel().forEach(domainOfInfluence -> {
+            containerMap.put(domainOfInfluence.getContainer().getId(), domainOfInfluence.getContainer());
+        });
+
+        if (containerMap.isEmpty()) {
+            throw new NotFoundException("Containers NOT Found!!!");
+        }
+        return containerMap;
     }
 
     public Triad<Float> getMaxLikelihoodVulnerabilityCriticality(Map<Long, AugmentedAttackStrategy> augmentedAttackStrategyMap, Map<Long, Container> containers) {

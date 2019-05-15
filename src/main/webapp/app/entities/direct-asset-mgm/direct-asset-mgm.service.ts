@@ -22,13 +22,17 @@ import { SERVER_API_URL } from '../../app.constants';
 
 import { DirectAssetMgm } from './direct-asset-mgm.model';
 import { createRequestOption } from '../../shared';
+import {SelfAssessmentMgm} from "../self-assessment-mgm";
 
 export type EntityResponseType = HttpResponse<DirectAssetMgm>;
+
+const SELF_ASSESSMENT_ID_PLACEHOLDER = '{selfAssessmentID}';
 
 @Injectable()
 export class DirectAssetMgmService {
 
     private resourceUrl =  SERVER_API_URL + 'api/direct-assets';
+    private directAssetsBySelfAssessment = SERVER_API_URL + 'api/' + SELF_ASSESSMENT_ID_PLACEHOLDER + '/direct-assets';
     private resourceSearchUrl = SERVER_API_URL + 'api/_search/direct-assets';
 
     constructor(private http: HttpClient) { }
@@ -64,6 +68,11 @@ export class DirectAssetMgmService {
         const options = createRequestOption(req);
         return this.http.get<DirectAssetMgm[]>(this.resourceSearchUrl, { params: options, observe: 'response' })
             .map((res: HttpResponse<DirectAssetMgm[]>) => this.convertArrayResponse(res));
+    }
+
+    public getMyDirectAssets(self: SelfAssessmentMgm): Observable<HttpResponse<DirectAssetMgm[]>> {
+        const uri = this.directAssetsBySelfAssessment.replace(SELF_ASSESSMENT_ID_PLACEHOLDER, String(self.id));
+        return this.http.get<DirectAssetMgm[]>(uri, { observe: 'response' });
     }
 
     private convertResponse(res: EntityResponseType): EntityResponseType {

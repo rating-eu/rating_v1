@@ -25,7 +25,7 @@ import eu.hermeneut.repository.search.UserSearchRepository;
 import eu.hermeneut.security.AuthoritiesConstants;
 import eu.hermeneut.service.MailService;
 import eu.hermeneut.service.UserService;
-import eu.hermeneut.service.dto.UserDTO;
+import eu.hermeneut.domain.dto.UserDTO;
 import eu.hermeneut.web.rest.errors.BadRequestAlertException;
 import eu.hermeneut.web.rest.errors.EmailAlreadyUsedException;
 import eu.hermeneut.web.rest.errors.LoginAlreadyUsedException;

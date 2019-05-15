@@ -21,7 +21,7 @@ import eu.hermeneut.HermeneutApp;
 import eu.hermeneut.config.Constants;
 import eu.hermeneut.domain.User;
 import eu.hermeneut.repository.UserRepository;
-import eu.hermeneut.service.dto.UserDTO;
+import eu.hermeneut.domain.dto.UserDTO;
 import eu.hermeneut.service.util.RandomUtil;
 
 import org.apache.commons.lang3.RandomStringUtils;
