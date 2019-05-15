@@ -18,8 +18,8 @@
 import {BaseEntity, User} from './../../shared';
 import {CompanyProfileMgm} from '../company-profile-mgm';
 import {CompanyGroupMgm} from '../company-group-mgm';
-import {ThreatAgentMgm} from '../threat-agent-mgm';
 import {ExternalAuditMgm} from '../external-audit-mgm';
+import {ImpactMode} from "../enumerations/ImpactMode.enum";
 
 export class SelfAssessmentMgm implements BaseEntity {
     constructor(
@@ -31,6 +31,7 @@ export class SelfAssessmentMgm implements BaseEntity {
         public companyProfile?: CompanyProfileMgm,
         public companyGroups?: CompanyGroupMgm[],
         public externalAudit?: ExternalAuditMgm,
+        public impactmode: ImpactMode = ImpactMode.QUANTITATIVE
     ) {
     }
 }
