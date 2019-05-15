@@ -15,7 +15,7 @@
  *
  */
 
-export class Update {
+export class LayoutConfiguration {
     isSidebarCollapsed = false;
     isSidebarCollapsedByMe = false;
     navSubTitle: string = null;

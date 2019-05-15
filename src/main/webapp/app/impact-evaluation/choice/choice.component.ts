@@ -20,6 +20,7 @@ export class ChoiceComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.dataSharing.checkSelfAssessment();
         this.selfAssessment = this.dataSharing.selfAssessment;
 
         this.dataSharing.selfAssessmentObservable.subscribe((value: SelfAssessmentMgm) => {

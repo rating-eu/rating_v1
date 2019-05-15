@@ -21,7 +21,7 @@ import {ActivatedRouteSnapshot, NavigationEnd, Router} from '@angular/router';
 
 import {AccountService, JhiLanguageHelper, LoginService, Principal, User, UserService} from '../../shared';
 import {DatasharingService} from '../../datasharing/datasharing.service';
-import {Update} from '../model/Update';
+import {LayoutConfiguration} from '../model/LayoutConfiguration';
 import {Role} from '../../entities/enumerations/Role.enum';
 import {ModalDismissReasons, NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {HttpResponse} from "@angular/common/http";
@@ -33,7 +33,7 @@ import {MyCompanyMgm, MyCompanyMgmService} from "../../entities/my-company-mgm";
 })
 export class JhiMainComponent implements OnInit {
 
-    public updateLayout: Update;
+    public updateLayout: LayoutConfiguration;
     public isAuthenticated = false;
     public isResetUrl = false;
     public isExternal = false;
@@ -53,7 +53,7 @@ export class JhiMainComponent implements OnInit {
         private userService: UserService,
         private myCompanyService: MyCompanyMgmService
     ) {
-        this.updateLayout = new Update();
+        this.updateLayout = new LayoutConfiguration();
     }
 
     private getPageTitle(routeSnapshot: ActivatedRouteSnapshot) {
@@ -82,7 +82,7 @@ export class JhiMainComponent implements OnInit {
             }
         });
 
-        this.dataSharingService.observeUpdate().subscribe((update: Update) => {
+        this.dataSharingService.layoutConfigurationObservable.subscribe((update: LayoutConfiguration) => {
             if (update) {
                 setTimeout(() => {
                     this.updateLayout = update;
@@ -119,10 +119,10 @@ export class JhiMainComponent implements OnInit {
                 this.updateRole();
             } else {
                 this.isAuthenticated = false;
-                const updateLayout: Update = new Update();
-                updateLayout.isSidebarCollapsed = true;
-                updateLayout.isSidebarCollapsedByMe = false;
-                this.dataSharingService.updateLayout(updateLayout);
+                const layoutConfiguration: LayoutConfiguration = new LayoutConfiguration();
+                layoutConfiguration.isSidebarCollapsed = true;
+                layoutConfiguration.isSidebarCollapsedByMe = false;
+                this.dataSharingService.layoutConfiguration = layoutConfiguration;
 
                 this.resetRole();
             }
@@ -144,7 +144,7 @@ export class JhiMainComponent implements OnInit {
 
     private checkRole(role: Role) {
         const ROLE_STRING: string = Role[role];
-        const updateLayout: Update = new Update();
+        const layoutConfiguration: LayoutConfiguration = new LayoutConfiguration();
 
         switch (role) {
             case Role.ROLE_CISO: {
@@ -154,9 +154,9 @@ export class JhiMainComponent implements OnInit {
                     if (this.isCISO) {
                         this.dataSharingService.role = Role.ROLE_CISO;
 
-                        updateLayout.isSidebarCollapsed = false;
-                        updateLayout.isSidebarCollapsedByMe = false;
-                        this.dataSharingService.updateLayout(updateLayout);
+                        layoutConfiguration.isSidebarCollapsed = false;
+                        layoutConfiguration.isSidebarCollapsedByMe = false;
+                        this.dataSharingService.layoutConfiguration = layoutConfiguration;
                     }
                 });
                 break;
@@ -168,9 +168,9 @@ export class JhiMainComponent implements OnInit {
                     if (this.isExternal) {
                         this.dataSharingService.role = Role.ROLE_EXTERNAL_AUDIT;
 
-                        updateLayout.isSidebarCollapsed = true;
-                        updateLayout.isSidebarCollapsedByMe = false;
-                        this.dataSharingService.updateLayout(updateLayout);
+                        layoutConfiguration.isSidebarCollapsed = true;
+                        layoutConfiguration.isSidebarCollapsedByMe = false;
+                        this.dataSharingService.layoutConfiguration = layoutConfiguration;
                     }
                 });
                 break;
@@ -180,9 +180,9 @@ export class JhiMainComponent implements OnInit {
                     this.isAdmin = response;
 
                     if (this.isAdmin) {
-                        updateLayout.isSidebarCollapsed = true;
-                        updateLayout.isSidebarCollapsedByMe = false;
-                        this.dataSharingService.updateLayout(updateLayout);
+                        layoutConfiguration.isSidebarCollapsed = true;
+                        layoutConfiguration.isSidebarCollapsedByMe = false;
+                        this.dataSharingService.layoutConfiguration = layoutConfiguration;
                         this.dataSharingService.role = Role.ROLE_ADMIN;
                     }
                 });

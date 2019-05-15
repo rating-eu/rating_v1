@@ -22,8 +22,7 @@ import {Couple} from '../utils/couple.class';
 import {ThreatAgentMgm} from '../entities/threat-agent-mgm';
 import {AnswerMgm} from '../entities/answer-mgm';
 import {Observable} from 'rxjs/Observable';
-import {BehaviorSubject} from 'rxjs/BehaviorSubject';
-import {Update} from '../layouts/model/Update';
+import {LayoutConfiguration} from '../layouts/model/LayoutConfiguration';
 import {SelfAssessmentMgm} from '../entities/self-assessment-mgm';
 import {Role} from '../entities/enumerations/Role.enum';
 import {QuestionnaireStatusMgm} from "../entities/questionnaire-status-mgm";
@@ -45,33 +44,33 @@ export class DatasharingService {
 
     // ===Observables-BehaviorSubjects===
 
-    // Map to keep the previous updated answers.
-    // Single AttackStrategy update
-    private layoutUpdateSubject: BehaviorSubject<Update> = new BehaviorSubject<Update>(null);
-
     // Application Mode
     private _mode: Mode = null;
-    private _modeSubject: BehaviorSubject<Mode> = new BehaviorSubject<Mode>(this._mode);
+    private _modeSubject: ReplaySubject<Mode> = new ReplaySubject<Mode>();
 
     // User
     private _user: User;
-    private _userSubject: BehaviorSubject<User> = new BehaviorSubject<User>(this._user);
+    private _userSubject: ReplaySubject<User> = new ReplaySubject<User>();
 
     // MyCompany
     private _myCompany: MyCompanyMgm = null;
-    private _myCompanySubject: BehaviorSubject<MyCompanyMgm> = new BehaviorSubject<MyCompanyMgm>(this._myCompany);
+    private _myCompanySubject: ReplaySubject<MyCompanyMgm> = new ReplaySubject<MyCompanyMgm>();
 
     // Role
     private _role: Role = null;
-    private _roleSubject: BehaviorSubject<Role> = new BehaviorSubject<Role>(this._role);
+    private _roleSubject: ReplaySubject<Role> = new ReplaySubject<Role>();
 
     // SelfAssessment
     private _selfAssessment: SelfAssessmentMgm = null;
-    private _selfAssessmentSubject: BehaviorSubject<SelfAssessmentMgm> = new BehaviorSubject<SelfAssessmentMgm>(this._selfAssessment);
+    private _selfAssessmentSubject: ReplaySubject<SelfAssessmentMgm> = new ReplaySubject<SelfAssessmentMgm>();
 
     // RiskBoard Status
     private _riskBoardStatus: RiskBoardStatus = null;
-    private _riskBoardStatusSubject: ReplaySubject<RiskBoardStatus> = new ReplaySubject();
+    private _riskBoardStatusSubject: ReplaySubject<RiskBoardStatus> = new ReplaySubject<RiskBoardStatus>();
+
+    // Layout Configuration
+    private _layoutConfiguration: LayoutConfiguration = null;
+    private _layoutConfigurationSubject: ReplaySubject<LayoutConfiguration> = new ReplaySubject<LayoutConfiguration>();
 
     constructor(
         private router: Router,
@@ -138,20 +137,25 @@ export class DatasharingService {
         }
 
         if (!this._selfAssessment) {
-            // this.router.navigate(['/my-risk-assessments']);
             return null;
         } else {
-            let update: Update = this.getUpdate();
+            let configuration: LayoutConfiguration = this.layoutConfiguration;
 
-            if (!update) {
-                update = new Update();
+            if (!configuration) {
+                configuration = new LayoutConfiguration();
             }
 
-            update.selfAssessmentId = this._selfAssessment.id.toString();
-            update.navSubTitle = self.name;
+            configuration.selfAssessmentId = this._selfAssessment.id.toString();
+            configuration.navSubTitle = self.name;
 
-            this.updateLayout(update);
+            this.layoutConfiguration = configuration;
             return this._selfAssessment;
+        }
+    }
+
+    checkSelfAssessment() {
+        if (!this.selfAssessment) {
+            this.router.navigate(['/my-risk-assessments']);
         }
     }
 
@@ -201,7 +205,7 @@ export class DatasharingService {
         return this._userSubject.asObservable();
     }
 
-    // RiskBoard Status Service
+    // RiskBoard Status property
     get riskBoardStatus(): RiskBoardStatus {
         return this._riskBoardStatus;
     }
@@ -215,23 +219,25 @@ export class DatasharingService {
         return this._riskBoardStatusSubject.asObservable();
     }
 
-    updateLayout(layoutUpdate: Update) {
-        this.layoutUpdateSubject.next(layoutUpdate);
+    // Layout Configuration property
+    get layoutConfiguration(): LayoutConfiguration {
+        return this._layoutConfiguration;
     }
 
-    getUpdate(): Update {
-        return this.layoutUpdateSubject.getValue();
+    set layoutConfiguration(configuration: LayoutConfiguration) {
+        this._layoutConfiguration = configuration;
+        this._layoutConfigurationSubject.next(this._layoutConfiguration);
     }
 
-    observeUpdate(): Observable<Update> {
-        return this.layoutUpdateSubject.asObservable();
+    get layoutConfigurationObservable(): Observable<LayoutConfiguration> {
+        return this._layoutConfigurationSubject.asObservable();
     }
 
     clear() {
-        this._roleSubject.next(null);
-        this._myCompanySubject.next(null);
-        this._selfAssessmentSubject.next(null);
-        this._modeSubject.next(null);
-        this.layoutUpdateSubject.next(null);
+        this.role = null;
+        this.myCompany = null;
+        this.selfAssessment = null;
+        this.mode = null;
+        this.layoutConfiguration = null;
     }
 }

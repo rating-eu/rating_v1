@@ -18,7 +18,7 @@
 import {Component, OnInit, ViewEncapsulation, AfterViewInit, HostListener} from '@angular/core';
 import {Principal} from '../../shared';
 import {DatasharingService} from '../../datasharing/datasharing.service';
-import {Update} from '../model/Update';
+import {LayoutConfiguration} from '../model/LayoutConfiguration';
 
 import {MenuItem} from 'primeng/api';
 import {Role} from '../../entities/enumerations/Role.enum';
@@ -64,7 +64,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     }
 
     private isSidebarCollapseByTheScreen() {
-        let updateLayout: Update = this.dataSharingService.getUpdate();
+        let updateLayout: LayoutConfiguration = this.dataSharingService.layoutConfiguration;
         if (updateLayout && updateLayout.isSidebarCollapsedByMe) {
             return;
         }
@@ -76,7 +76,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         if (updateLayout) {
             updateLayout.isSidebarCollapsed = this.isCollapsed;
         } else {
-            updateLayout = new Update();
+            updateLayout = new LayoutConfiguration();
             updateLayout.isSidebarCollapsed = this.isCollapsed;
         }
     }
@@ -93,10 +93,10 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         this.principal.getAuthenticationState().subscribe((identity) => {
             if (identity) {
                 this.isCollapsed = !this.isAuthenticated();
-                updateLayout = new Update();
-                updateLayout.isSidebarCollapsed = this.isCollapsed;
+                layoutConfiguration = new LayoutConfiguration();
+                layoutConfiguration.isSidebarCollapsed = this.isCollapsed;
 
-                this.dataSharingService.updateLayout(updateLayout);
+                this.dataSharingService.layoutConfiguration = layoutConfiguration;
                 this.fetchSecondaryLogo();
 
                 this.principal.hasAnyAuthority([Role[Role.ROLE_CISO]]).then((response: boolean) => {
@@ -109,16 +109,16 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                             if (response2) {
                                 this.isExternal = response2;
                                 this.isCISO = !this.isExternal;
-                                updateLayout.isSidebarCollapsed = true;
-                                updateLayout.isSidebarCollapsedByMe = false;
-                                this.dataSharingService.updateLayout(updateLayout);
+                                layoutConfiguration.isSidebarCollapsed = true;
+                                layoutConfiguration.isSidebarCollapsedByMe = false;
+                                this.dataSharingService.layoutConfiguration = layoutConfiguration;
                                 this.createMenuItems(this.isCISO, this.isExternal);
                             } else {
                                 this.principal.hasAnyAuthority([Role[Role.ROLE_ADMIN]]).then((response3: boolean) => {
                                     if (response3) {
-                                        updateLayout.isSidebarCollapsed = true;
-                                        updateLayout.isSidebarCollapsedByMe = false;
-                                        this.dataSharingService.updateLayout(updateLayout);
+                                        layoutConfiguration.isSidebarCollapsed = true;
+                                        layoutConfiguration.isSidebarCollapsedByMe = false;
+                                        this.dataSharingService.layoutConfiguration = layoutConfiguration;
                                         this.router.navigate(['/jhi-metrics']);
                                     }
                                 });
@@ -130,14 +130,14 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
             }
         });
-        this.isCollapsed = this.dataSharingService.getUpdate() != null ? this.dataSharingService.getUpdate().isSidebarCollapsed : true;
+        this.isCollapsed = this.dataSharingService.layoutConfiguration != null ? this.dataSharingService.layoutConfiguration.isSidebarCollapsed : true;
 
-        let updateLayout: Update = this.dataSharingService.getUpdate();
-        if (updateLayout) {
-            this.isCollapsed = updateLayout.isSidebarCollapsed;
+        let layoutConfiguration: LayoutConfiguration = this.dataSharingService.layoutConfiguration;
+        if (layoutConfiguration) {
+            this.isCollapsed = layoutConfiguration.isSidebarCollapsed;
         }
 
-        this.dataSharingService.observeUpdate().subscribe((update: Update) => {
+        this.dataSharingService.layoutConfigurationObservable.subscribe((update: LayoutConfiguration) => {
             if (update) {
                 this.isCollapsed = update.isSidebarCollapsed;
             }
@@ -395,15 +395,15 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     }
 
     toggleSideBar() {
-        let update: Update = this.dataSharingService.getUpdate();
+        let layoutConfiguration: LayoutConfiguration = this.dataSharingService.layoutConfiguration;
 
-        if (update) {
-            update.isSidebarCollapsed = !update.isSidebarCollapsed;
+        if (layoutConfiguration) {
+            layoutConfiguration.isSidebarCollapsed = !layoutConfiguration.isSidebarCollapsed;
         } else {
-            update = new Update();
-            update.isSidebarCollapsed = !this.principal.isAuthenticated();
+            layoutConfiguration = new LayoutConfiguration();
+            layoutConfiguration.isSidebarCollapsed = !this.principal.isAuthenticated();
         }
 
-        this.dataSharingService.updateLayout(update);
+        this.dataSharingService.layoutConfiguration = layoutConfiguration;
     }
 }

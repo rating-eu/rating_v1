@@ -25,7 +25,7 @@ import {JhiDateUtils} from 'ng-jhipster';
 import {SelfAssessmentMgm} from './self-assessment-mgm.model';
 import {createRequestOption} from '../../shared';
 import {SessionStorageService} from '../../../../../../node_modules/ngx-webstorage';
-import {Update} from '../../layouts/model/Update';
+import {LayoutConfiguration} from '../../layouts/model/LayoutConfiguration';
 import {DatasharingService} from '../../datasharing/datasharing.service';
 import {SelfAssessmentOverview} from "../../my-risk-assessments/models/SelfAssessmentOverview.model";
 
@@ -80,16 +80,16 @@ export class SelfAssessmentMgmService implements OnInit {
             return null;
         } else {
             this.selfAssessmentSelected = self;
-            let update: Update = this.dataSharingService.getUpdate();
+            let configuration: LayoutConfiguration = this.dataSharingService.layoutConfiguration;
 
-            if (!update) {
-                update = new Update();
+            if (!configuration) {
+                configuration = new LayoutConfiguration();
             }
 
-            update.selfAssessmentId = this.selfAssessmentSelected.id.toString();
-            update.navSubTitle = self.name;
+            configuration.selfAssessmentId = this.selfAssessmentSelected.id.toString();
+            configuration.navSubTitle = self.name;
 
-            this.dataSharingService.updateLayout(update);
+            this.dataSharingService.layoutConfiguration = configuration;
             return this.selfAssessmentSelected;
         }
     }

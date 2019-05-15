@@ -26,7 +26,7 @@ import {SelfAssessmentMgmService} from './self-assessment-mgm.service';
 import {Principal} from '../../shared';
 
 import {DatasharingService} from '../../datasharing/datasharing.service';
-import {Update} from '../../layouts/model/Update';
+import {LayoutConfiguration} from '../../layouts/model/LayoutConfiguration';
 import {PopUpService} from '../../shared/pop-up-services/pop-up.service';
 
 @Component({
@@ -97,9 +97,9 @@ export class SelfAssessmentMgmComponent implements OnInit, OnDestroy {
         this.dataSharingService.selfAssessment = selfAssessment;
         const link = ['/'];
         // this.mySidemenuService.roomeMenu('collapsed');
-        const update: Update = new Update();
-        update.navSubTitle = selfAssessment.name;
-        this.dataSharingService.updateLayout(update);
+        const layoutConfiguration: LayoutConfiguration = new LayoutConfiguration();
+        layoutConfiguration.navSubTitle = selfAssessment.name;
+        this.dataSharingService.layoutConfiguration = layoutConfiguration;
         this.router.navigate(link);
     }
 

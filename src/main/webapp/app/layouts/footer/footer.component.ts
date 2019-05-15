@@ -17,30 +17,30 @@
 
 import { Component, OnInit } from '@angular/core';
 import { DatasharingService } from '../../datasharing/datasharing.service';
-import { Update } from '../model/Update';
+import { LayoutConfiguration } from '../model/LayoutConfiguration';
 
 @Component({
     selector: 'jhi-footer',
     templateUrl: './footer.component.html'
 })
 export class FooterComponent implements OnInit {
-    updateLayout: Update;
+    layoutConfiguration: LayoutConfiguration;
 
     constructor(
         private dataSharingService: DatasharingService
     ) { }
 
     ngOnInit() {
-        this.updateLayout = this.dataSharingService.getUpdate();
-        if (!this.updateLayout) {
-            this.updateLayout = new Update();
-            this.updateLayout.isSidebarCollapsed = false;
-            this.updateLayout.isSidebarCollapsedByMe = false;
+        this.layoutConfiguration = this.dataSharingService.layoutConfiguration;
+        if (!this.layoutConfiguration) {
+            this.layoutConfiguration = new LayoutConfiguration();
+            this.layoutConfiguration.isSidebarCollapsed = false;
+            this.layoutConfiguration.isSidebarCollapsedByMe = false;
         }
-        this.dataSharingService.observeUpdate().subscribe((update: Update) => {
+        this.dataSharingService.layoutConfigurationObservable.subscribe((update: LayoutConfiguration) => {
             if (update) {
                 setTimeout(() => {
-                    this.updateLayout = update;
+                    this.layoutConfiguration = update;
                 }, 0);
             }
         });

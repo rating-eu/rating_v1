@@ -25,7 +25,7 @@ import {JhiLanguageHelper, LoginModalService, LoginService, Principal} from '../
 
 import {VERSION} from '../../app.constants';
 import {DatasharingService} from '../../datasharing/datasharing.service';
-import {Update} from '../model/Update';
+import {LayoutConfiguration} from '../model/LayoutConfiguration';
 import {Role} from '../../entities/enumerations/Role.enum';
 
 @Component({
@@ -76,8 +76,8 @@ export class NavbarComponent implements OnInit {
             this.swaggerEnabled = profileInfo.swaggerEnabled;
         });
 
-        this.navSubTitle = this.dataSharingService.getUpdate() != null ? 'Selected self assessment: ' + this.dataSharingService.getUpdate().navSubTitle : null;
-        this.dataSharingService.observeUpdate().subscribe((update: Update) => {
+        this.navSubTitle = this.dataSharingService.layoutConfiguration != null ? 'Selected self assessment: ' + this.dataSharingService.layoutConfiguration.navSubTitle : null;
+        this.dataSharingService.layoutConfigurationObservable.subscribe((update: LayoutConfiguration) => {
             if (update && update.navSubTitle) {
                 this.navSubTitle = 'Selected self assessment: ';
                 this.selfAssessmentName = update.navSubTitle;
@@ -126,11 +126,13 @@ export class NavbarComponent implements OnInit {
     }
 
     hideShowSideNav() {
-        const updateLayout: Update = this.dataSharingService.getUpdate();
-        updateLayout.isSidebarCollapsed = !this.dataSharingService.getUpdate().isSidebarCollapsed;
-        this.sidebarCollapsed = updateLayout.isSidebarCollapsed;
-        updateLayout.isSidebarCollapsedByMe = !this.dataSharingService.getUpdate().isSidebarCollapsedByMe;
-        this.dataSharingService.updateLayout(updateLayout);
+        const layoutConfiguration: LayoutConfiguration = this.dataSharingService.layoutConfiguration;
+
+        layoutConfiguration.isSidebarCollapsed = !layoutConfiguration.isSidebarCollapsed;
+        this.sidebarCollapsed = layoutConfiguration.isSidebarCollapsed;
+
+        layoutConfiguration.isSidebarCollapsedByMe = !layoutConfiguration.isSidebarCollapsedByMe;
+        this.dataSharingService.layoutConfiguration = layoutConfiguration;
     }
 
     isAuthenticated() {
@@ -144,12 +146,12 @@ export class NavbarComponent implements OnInit {
     logout() {
         this.collapseNavbar();
         this.loginService.logout();
-        const update: Update = this.dataSharingService.getUpdate();
+        const layoutConfiguration: LayoutConfiguration = this.dataSharingService.layoutConfiguration;
         this.dataSharingService.clear();
-        update.isSidebarCollapsed = true;
-        update.isSidebarCollapsedByMe = false;
+        layoutConfiguration.isSidebarCollapsed = true;
+        layoutConfiguration.isSidebarCollapsedByMe = false;
 
-        this.dataSharingService.updateLayout(update);
+        this.dataSharingService.layoutConfiguration = layoutConfiguration;
 
         this.router.navigate(['']);
     }
