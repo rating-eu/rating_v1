@@ -69,33 +69,35 @@
             <jhi-attack-map-widget></jhi-attack-map-widget>
         </div>
     </div>-->
-    <div class="row">
-        <h2>Impact Evaluation</h2>
-    </div>
-    <div class="row">
-        <div class="col-md-12">
-            <jhi-financial-value-widget></jhi-financial-value-widget>
+    <div *ngIf="selfAssessment.impactMode === impactModeEnum.QUANTITATIVE" class="row">
+        <div class="row">
+            <h2>Impact Evaluation</h2>
         </div>
-    </div>
-    <div class="row">
-        <div class="col-md-2">
-            <jhi-ebits-widget></jhi-ebits-widget>
+        <div class="row">
+            <div class="col-md-12">
+                <jhi-financial-value-widget></jhi-financial-value-widget>
+            </div>
         </div>
-        <div class="col-md-5">
-            <jhi-tangible-financial-widget></jhi-tangible-financial-widget>
+        <div class="row">
+            <div class="col-md-2">
+                <jhi-ebits-widget></jhi-ebits-widget>
+            </div>
+            <div class="col-md-5">
+                <jhi-tangible-financial-widget></jhi-tangible-financial-widget>
+            </div>
+            <div class="col-md-5">
+                <jhi-intangible-financial-widget></jhi-intangible-financial-widget>
+            </div>
         </div>
-        <div class="col-md-5">
-            <jhi-intangible-financial-widget></jhi-intangible-financial-widget>
+        <div class="row">
+            <div class="col-md-12">
+                <jhi-losses-widget></jhi-losses-widget>
+            </div>
         </div>
-    </div>
-    <div class="row">
-        <div class="col-md-12">
-            <jhi-losses-widget></jhi-losses-widget>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-12">
-            <jhi-impact-widget></jhi-impact-widget>
+        <div class="row">
+            <div class="col-md-12">
+                <jhi-impact-widget></jhi-impact-widget>
+            </div>
         </div>
     </div>
     <div class="row">

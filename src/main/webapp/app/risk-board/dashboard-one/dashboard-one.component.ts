@@ -20,6 +20,7 @@ import {Principal} from '../../shared';
 import {SelfAssessmentMgm} from '../../entities/self-assessment-mgm';
 import {DatasharingService} from "../../datasharing/datasharing.service";
 import {Router} from "@angular/router";
+import {ImpactMode} from "../../entities/enumerations/ImpactMode.enum";
 
 @Component({
     selector: 'jhi-dashboard-one',
@@ -28,6 +29,7 @@ import {Router} from "@angular/router";
 })
 export class DashboardOneComponent implements OnInit {
     public selfAssessment: SelfAssessmentMgm = null;
+    public impactModeEnum = ImpactMode;
 
     constructor(
         private principal: Principal,
