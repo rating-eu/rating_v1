@@ -164,12 +164,12 @@
                             <a href="javascript:void(0)" [routerLink]="['/identify-asset/attack-costs']">Attack Cost</a>
                             identified or no one
                             <a href="javascript:void(0)"
-                               [routerLink]="['/impact-evaluation/attack-related-costs-estimation']">estimated</a>!
+                               [routerLink]="['/impact-evaluation/quantitative/attack-related-costs-estimation']">estimated</a>!
                         </p>
                         <p *ngIf="attackRelatedCostsStatus === statusEnum.PENDING"><span
                             style="color: orange">WARNING!</span> Some attack related costs have not been
                             <a href="javascript:void(0)"
-                               [routerLink]="['/impact-evaluation/attack-related-costs-estimation']">valorized</a>.
+                               [routerLink]="['/impact-evaluation/quantitative/attack-related-costs-estimation']">valorized</a>.
                         </p>
                     </td>
                     <td class="text-center">
@@ -182,13 +182,13 @@
                     </td>
                     <td class="text-center">
                         <a *ngIf="attackRelatedCostsStatus === statusEnum.EMPTY && impactEvaluationStatus === statusEnum.FULL"
-                           [routerLink]="['/impact-evaluation/attack-related-costs-estimation']"><i
+                           [routerLink]="['/impact-evaluation/quantitative/attack-related-costs-estimation']"><i
                             class="fa fa-plus-square fa-lg"
                             placement="top" ngbTooltip="Create" aria-hidden="true"></i></a>
                         <ng-container
                             *ngIf="attackRelatedCostsStatus === statusEnum.PENDING || attackRelatedCostsStatus === statusEnum.FULL">
                             <a href="javascript:void(0)"
-                               (click)="open(alert,'/impact-evaluation/attack-related-costs-estimation')"><i
+                               (click)="open(alert,'/impact-evaluation/quantitative/attack-related-costs-estimation')"><i
                                 placement="top" ngbTooltip="Edit" class="fa fa-pencil-square-o fa-lg"
                                 aria-hidden="true"></i></a>
                         </ng-container>
