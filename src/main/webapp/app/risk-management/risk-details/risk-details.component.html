@@ -164,8 +164,8 @@
             </ngb-accordion>
         </div>
     </div>
-    <div class="card">
-        <div class="card-body">
+    <div class="card" [ngSwitch]="selfAssessment.impactMode">
+        <div class="card-body" *ngSwitchCase="impactModeEnum.QUANTITATIVE">
             <h5 class="card-title">Impact estimation</h5>
             <ng-container class="card-text">
                 <ng-container>
@@ -423,6 +423,9 @@
                     </ngb-tabset>
                 </ng-container>
             </ng-container>
+        </div>
+        <div class="card-body" *ngSwitchCase="impactModeEnum.QUALITATIVE">
+            <h5 class="card-title"><b>Impact</b>: {{selectedAsset.impact}}</h5>
         </div>
     </div>
     <div class="row">

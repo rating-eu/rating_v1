@@ -30,6 +30,7 @@ import { MyAssetMgm } from '../../entities/my-asset-mgm';
 import { ThreatAgentInterest } from '../model/threat-agent-interest.model';
 import { ImpactEvaluationService } from '../../impact-evaluation/impact-evaluation.service';
 import {DatasharingService} from "../../datasharing/datasharing.service";
+import {ImpactMode} from "../../entities/enumerations/ImpactMode.enum";
 
 interface Formula {
   element: string;
@@ -68,7 +69,8 @@ export class RiskDetailsComponent implements OnInit, OnDestroy {
 
   private criticalLevelSubscription: Subscription;
   private impactLevelSubscription: Subscription;
-  private mySelf: SelfAssessmentMgm;
+  private selfAssessment: SelfAssessmentMgm;
+  private impactModeEnum = ImpactMode;
 
   constructor(
     private riskService: RiskManagementService,
@@ -81,7 +83,7 @@ export class RiskDetailsComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.loading = true;
-    this.mySelf = this.dataSharingService.selfAssessment;
+    this.selfAssessment = this.dataSharingService.selfAssessment;
     this.route.params.subscribe(
       (params: Params) => {
         const assetId = params['assetId'];
@@ -90,12 +92,12 @@ export class RiskDetailsComponent implements OnInit, OnDestroy {
             this.selectedAsset = asset.body;
             this.getImpactFormula(this.selectedAsset);
             this.getImpactInfo(this.selectedAsset);
-            this.riskService.getAttackChance(this.selectedAsset, this.mySelf).toPromise().then((res) => {
+            this.riskService.getAttackChance(this.selectedAsset, this.selfAssessment).toPromise().then((res) => {
               if (res) {
                 this.attackChances = res;
               }
             });
-            this.riskService.getThreatAgentsInterests(this.selectedAsset, this.mySelf).toPromise().then((res) => {
+            this.riskService.getThreatAgentsInterests(this.selectedAsset, this.selfAssessment).toPromise().then((res) => {
               if (res) {
                 this.threatAgentInterest = res;
               }
@@ -112,7 +114,7 @@ export class RiskDetailsComponent implements OnInit, OnDestroy {
         this.ngOnInit();
       }
     });
-    this.riskService.getCriticalLevel(this.mySelf).toPromise().then((res) => {
+    this.riskService.getCriticalLevel(this.selfAssessment).toPromise().then((res) => {
       if (res) {
         this.criticalLevel = res;
         this.squareColumnElement = [];
@@ -171,7 +173,7 @@ export class RiskDetailsComponent implements OnInit, OnDestroy {
 
   private getImpactFormula(myAsset: MyAssetMgm) {
     this.loadingFormulaTable = true;
-    this.riskService.getImpactFormulaByMyAsset(this.mySelf, myAsset).toPromise().then((res) => {
+    this.riskService.getImpactFormulaByMyAsset(this.selfAssessment, myAsset).toPromise().then((res) => {
       if (res) {
         this.impactFormula = res.toString();
         this.evaluateFormulaTable(this.impactFormula);
@@ -205,7 +207,7 @@ export class RiskDetailsComponent implements OnInit, OnDestroy {
   }
 
   private getImpactInfo(myAsset: MyAssetMgm) {
-    this.riskService.getAttackCostsFormulaByMyAsset(this.mySelf, myAsset).toPromise().then((res) => {
+    this.riskService.getAttackCostsFormulaByMyAsset(this.selfAssessment, myAsset).toPromise().then((res) => {
       if (res) {
         this.impactTable = res;
         this.impactTable.forEach((item) => {

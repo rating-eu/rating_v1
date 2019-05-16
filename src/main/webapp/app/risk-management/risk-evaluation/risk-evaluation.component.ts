@@ -29,6 +29,7 @@ import {ImpactEvaluationService} from '../../impact-evaluation/impact-evaluation
 import {RiskBoardStepEnum} from "../../entities/enumerations/RiskBoardStep.enum";
 import {RiskBoardService} from "../../risk-board/risk-board.service";
 import {DatasharingService} from "../../datasharing/datasharing.service";
+import {ImpactMode} from "../../entities/enumerations/ImpactMode.enum";
 
 interface RiskPercentageElement {
     asset: MyAssetMgm;
@@ -60,7 +61,8 @@ export class RiskEvaluationComponent implements OnInit, OnDestroy {
     public loadingRiskLevel = false;
     public loadingAssetsAndAttacks = false;
     public isWarningVisible = true;
-    private mySelf: SelfAssessmentMgm;
+    public selfAssessment: SelfAssessmentMgm;
+    public impactModeEnum = ImpactMode;
     public criticalLevel: CriticalLevelMgm;
     public squareColumnElement: number[];
     public squareRowElement: number[];
@@ -139,8 +141,8 @@ export class RiskEvaluationComponent implements OnInit, OnDestroy {
             risk: false,
             type: 'desc'
         };
-        this.mySelf = this.dataSharingService.selfAssessment;
-        this.riskService.getCriticalLevel(this.mySelf).toPromise().then((res) => {
+        this.selfAssessment = this.dataSharingService.selfAssessment;
+        this.riskService.getCriticalLevel(this.selfAssessment).toPromise().then((res) => {
             if (res) {
                 this.criticalLevel = res;
                 this.squareColumnElement = [];
@@ -165,7 +167,7 @@ export class RiskEvaluationComponent implements OnInit, OnDestroy {
             }
         });
 
-        this.riskService.getMyAssetsAtRisk(this.mySelf).toPromise().then((res: MyAssetRisk[]) => {
+        this.riskService.getMyAssetsAtRisk(this.selfAssessment).toPromise().then((res: MyAssetRisk[]) => {
             if (res) {
                 this.myAssetsAtRisk = res;
                 this.myAssetsAtRisk.forEach((myAsset) => {
@@ -179,7 +181,7 @@ export class RiskEvaluationComponent implements OnInit, OnDestroy {
             this.loadingAssetsAndAttacks = false;
         });
 
-        this.riskBoardService.getStatusFromServer(this.mySelf, this.dashboardStatus.ATTACK_RELATED_COSTS).toPromise().then((res) => {
+        this.riskBoardService.getStatusFromServer(this.selfAssessment, this.dashboardStatus.ATTACK_RELATED_COSTS).toPromise().then((res) => {
             if (Status[res] === Status.EMPTY || Status[res] === Status.PENDING) {
                 this.attackCosts = false;
                 this.isWarningVisible = true;

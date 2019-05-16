@@ -27,6 +27,7 @@ import { ImpactLevelMgm, ImpactLevelMgmService } from '../../entities/impact-lev
 import { forkJoin } from 'rxjs/observable/forkJoin';
 import { HttpResponse } from '@angular/common/http';
 import {DatasharingService} from "../../datasharing/datasharing.service";
+import {ImpactMode} from "../../entities/enumerations/ImpactMode.enum";
 
 @Component({
     // tslint:disable-next-line:component-selector
@@ -35,6 +36,8 @@ import {DatasharingService} from "../../datasharing/datasharing.service";
     styleUrls: ['./risk-management.component.css'],
 })
 export class RiskManagementComponent implements OnInit {
+    public impactModeEnum = ImpactMode;
+
     public isLikelihoodCollapsed = true;
     public isVulnerabilityCollapsed = true;
     public isCriticalCollapsed = true;
@@ -45,11 +48,12 @@ export class RiskManagementComponent implements OnInit {
     public squareColumnElement: number[];
     public squareRowElement: number[];
     public lastSquareRowElement: number;
-    private mySelf: SelfAssessmentMgm;
+    private selfAssessment: SelfAssessmentMgm;
     public criticalLevel: CriticalLevelMgm;
     public impactMinLevelValues: number[] = [];
     public impactMaxLevelValues: number[] = [];
     public impactLevelDescriptions: ImpactLevelDescriptionMgm[];
+    public impactLevelDescriptionsByImpactMap: Map<number, ImpactLevelDescriptionMgm>;
     public impactLevels: ImpactLevelMgm[];
     public impactLevelsMap: Map<number, ImpactLevelMgm>;
     public selectedImpactLevel: ImpactLevelDescriptionMgm = null;
@@ -70,14 +74,23 @@ export class RiskManagementComponent implements OnInit {
     }
 
     ngOnInit() {
-        if (this.mySelf = this.dataSharingService.selfAssessment) {
+        this.impactLevelDescriptionsByImpactMap = new Map();
+
+        if (this.selfAssessment = this.dataSharingService.selfAssessment) {
             // TODO Chiamata per il recupero degli impact level
             forkJoin(
                 this.impactLevelDescriptionService.query(null),
-                this.impactLevelService.findAllBySelfAssessment(this.mySelf.id)
+                this.impactLevelService.findAllBySelfAssessment(this.selfAssessment.id)
             ).toPromise()
                 .then((response: [HttpResponse<ImpactLevelDescriptionMgm[]>, HttpResponse<ImpactLevelMgm[]>]) => {
                     this.impactLevelDescriptions = response[0].body;
+
+                    if(this.impactLevelDescriptions){
+                        this.impactLevelDescriptions.forEach((description: ImpactLevelDescriptionMgm) => {
+                            this.impactLevelDescriptionsByImpactMap.set(description.impact, description);
+                        });
+                    }
+
                     this.impactLevels = response[1].body;
 
                     // ImpactLevels already exist
@@ -91,7 +104,7 @@ export class RiskManagementComponent implements OnInit {
                         this.impactLevels = [];
 
                         this.impactLevelDescriptions.forEach((description: ImpactLevelDescriptionMgm) => {
-                            this.impactLevels.push(new ImpactLevelMgm(undefined, this.mySelf.id, description.impact, 0, 0));
+                            this.impactLevels.push(new ImpactLevelMgm(undefined, this.selfAssessment.id, description.impact, 0, 0));
                         });
                     }
 
@@ -118,7 +131,7 @@ export class RiskManagementComponent implements OnInit {
                 });
         }
 
-        this.riskService.getCriticalLevel(this.mySelf).toPromise().then((res) => {
+        this.riskService.getCriticalLevel(this.selfAssessment).toPromise().then((res) => {
             if (res) {
                 this.criticalLevel = res;
             } else {
@@ -127,7 +140,7 @@ export class RiskManagementComponent implements OnInit {
                 this.criticalLevel.lowLimit = 4;
                 this.criticalLevel.mediumLimit = 14;
                 this.criticalLevel.highLimit = 25;
-                this.criticalLevel.selfAssessment = this.mySelf;
+                this.criticalLevel.selfAssessment = this.selfAssessment;
                 this.criticalLevelService.create(this.criticalLevel).toPromise().then((res2) => {
                     if (res2) {
                         this.criticalLevel = res2.body;
