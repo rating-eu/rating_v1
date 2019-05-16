@@ -155,7 +155,7 @@
                         </ng-container>
                     </td>
                 </tr>
-                <tr>
+                <tr *ngIf="selfAssessment.impactMode===impactModeEnum.QUANTITATIVE">
                     <td>Estimation of the Attack Related Costs</td>
                     <td><p>Estimate the attack related costs; "Communicate or evaluate the costs of the declared attack
                         costs"</p>

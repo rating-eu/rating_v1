@@ -25,6 +25,7 @@ import {RiskBoardStepEnum} from "../../entities/enumerations/RiskBoardStep.enum"
 import {forkJoin} from "rxjs/observable/forkJoin";
 import {SelfAssessmentMgm} from "../../entities/self-assessment-mgm";
 import {DatasharingService} from "../../datasharing/datasharing.service";
+import {ImpactMode} from "../../entities/enumerations/ImpactMode.enum";
 
 @Component({
     selector: 'jhi-step-info-widget',
@@ -37,6 +38,7 @@ export class StepInfoWidgetComponent implements OnInit {
 
     public selfAssessment: SelfAssessmentMgm = null;
     public statusEnum = Status;
+    public impactModeEnum = ImpactMode;
 
     private riskBoardStatus: RiskBoardStatus = null;
 
