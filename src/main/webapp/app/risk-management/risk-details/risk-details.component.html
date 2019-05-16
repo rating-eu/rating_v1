@@ -189,7 +189,7 @@
                             <td *ngIf="elem.warning">
                                 <i class="fa fa-exclamation-triangle" style="color: orange" aria-hidden="true"></i>
                                 <a href="javascript:void(0)"
-                                   [routerLink]="['/impact-evaluation/attack-related-costs-estimation']">{{elem.element}}</a>
+                                   [routerLink]="['/impact-evaluation/quantitative/attack-related-costs-estimation']">{{elem.element}}</a>
                             </td>
                             <td *ngIf="!elem.warning">{{elem.element}}</td>
                             <td>{{elem.value}}</td>
@@ -233,12 +233,12 @@
                                                 <ng-container
                                                     *ngIf="impact.attackCost.type.toString() !== 'COST_OF_IT_DOWNTIME'">
                                                     <a href="javascript:void(0)"
-                                                       [routerLink]="['/impact-evaluation/attack-related-costs-estimation']">{{impact.attackCost.type | replace:'_':' ' | titlecase}}</a>
+                                                       [routerLink]="['/impact-evaluation/quantitative/attack-related-costs-estimation']">{{impact.attackCost.type | replace:'_':' ' | titlecase}}</a>
                                                 </ng-container>
                                                 <ng-container
                                                     *ngIf="impact.attackCost.type.toString() === 'COST_OF_IT_DOWNTIME'">
                                                     <a href="javascript:void(0)"
-                                                       [routerLink]="['/impact-evaluation/attack-related-costs-estimation']">Cost
+                                                       [routerLink]="['/impact-evaluation/quantitative/attack-related-costs-estimation']">Cost
                                                         of IT
                                                         Downtime</a>
                                                 </ng-container>
@@ -339,12 +339,12 @@
                                                 <ng-container
                                                     *ngIf="impact.attackCost.type.toString() !== 'COST_OF_IT_DOWNTIME'">
                                                     <a href="javascript:void(0)"
-                                                       [routerLink]="['/impact-evaluation/attack-related-costs-estimation']">{{impact.attackCost.type | replace:'_':' ' | titlecase}}</a>
+                                                       [routerLink]="['/impact-evaluation/quantitative/attack-related-costs-estimation']">{{impact.attackCost.type | replace:'_':' ' | titlecase}}</a>
                                                 </ng-container>
                                                 <ng-container
                                                     *ngIf="impact.attackCost.type.toString() === 'COST_OF_IT_DOWNTIME'">
                                                     <a href="javascript:void(0)"
-                                                       [routerLink]="['/impact-evaluation/attack-related-costs-estimation']">Cost
+                                                       [routerLink]="['/impact-evaluation/quantitative/attack-related-costs-estimation']">Cost
                                                         of IT
                                                         Downtime</a>
                                                 </ng-container>
