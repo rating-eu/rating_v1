@@ -27,7 +27,7 @@
                                 <td>
                                     <select [(ngModel)]="myAsset.ranking">
                                         <option *ngFor="let level of priorities; let i = index"
-                                                [ngValue]="i">{{level}}</option>
+                                                [ngValue]="i+1">{{level}}</option>
                                     </select>
                                 </td>
                             </tr>

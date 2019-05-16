@@ -23,16 +23,20 @@ import eu.hermeneut.aop.annotation.KafkaRiskProfileHook;
 import eu.hermeneut.domain.AssetCategory;
 import eu.hermeneut.domain.AttackCost;
 import eu.hermeneut.domain.MyAsset;
+import eu.hermeneut.domain.SelfAssessment;
 import eu.hermeneut.exceptions.IllegalInputException;
+import eu.hermeneut.exceptions.NotFoundException;
 import eu.hermeneut.exceptions.NullInputException;
 import eu.hermeneut.security.AuthoritiesConstants;
 import eu.hermeneut.service.MyAssetService;
+import eu.hermeneut.service.SelfAssessmentService;
 import eu.hermeneut.web.rest.errors.BadRequestAlertException;
 import eu.hermeneut.web.rest.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -60,7 +64,11 @@ public class MyAssetResource {
 
     private static final String ENTITY_NAME = "myAsset";
 
-    private final MyAssetService myAssetService;
+    @Autowired
+    private MyAssetService myAssetService;
+
+    @Autowired
+    private SelfAssessmentService selfAssessmentService;
 
     public MyAssetResource(MyAssetService myAssetService) {
         this.myAssetService = myAssetService;
@@ -92,11 +100,17 @@ public class MyAssetResource {
     @Timed
     @PreAuthorize("@selfAssessmentGuardian.isCISO(#selfAssessmentID) || hasRole('ROLE_ADMIN')")
     @Secured({AuthoritiesConstants.CISO, AuthoritiesConstants.ADMIN})
-    public List<MyAsset> createMyAssets(@PathVariable("selfAssessmentID") Long selfAssessmentID, @RequestBody @NotEmpty List<MyAsset> myAssets) throws IllegalInputException, NullInputException {
+    public List<MyAsset> createMyAssets(@PathVariable("selfAssessmentID") Long selfAssessmentID, @RequestBody @NotEmpty List<MyAsset> myAssets) throws NotFoundException, IllegalInputException, NullInputException {
         log.debug("REST request to save MyAssets : {}", myAssets);
 
         if (selfAssessmentID == null) {
             throw new NullInputException("SelfAssessmentID CANNOT be NULL!");
+        }
+
+        SelfAssessment selfAssessment = this.selfAssessmentService.findOne(selfAssessmentID);
+
+        if (selfAssessment == null) {
+            throw new NotFoundException("SelfAssessment NOT Found!!!");
         }
 
         if (myAssets == null || myAssets.isEmpty()) {
@@ -136,6 +150,20 @@ public class MyAssetResource {
 
         for (MyAsset myAsset : myAssetsDiff) {
             this.myAssetService.delete(myAsset.getId());
+        }
+
+        switch (selfAssessment.getImpactMode()) {
+            case QUANTITATIVE: {
+                //Do Nothing
+                break;
+            }
+            case QUALITATIVE: {
+                // Set the impact as the ranking value
+                for (MyAsset myAsset : myAssets) {
+                    myAsset.setImpact(myAsset.getRanking());
+                }
+                break;
+            }
         }
 
         //Save the new ones

@@ -101,6 +101,10 @@ export class AssetsImpactComponent implements OnInit {
     }
 
     saveMyAssets() {
+        this.myAssets.forEach(myAsset => {
+            myAsset.impact = myAsset.ranking;
+        });
+
         const saveMyAssets$: Observable<HttpResponse<MyAssetMgm[]>> = this.myAssetService.saveMyAssets(this.selfAssessment, this.myAssets);
 
         saveMyAssets$.subscribe((response: HttpResponse<MyAssetMgm[]>) => {
