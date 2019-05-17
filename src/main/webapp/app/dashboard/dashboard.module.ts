@@ -23,20 +23,26 @@ import {OverallLikelihoodWidgetComponent} from './overall-likelihood-widget/over
 import {CompanyWidgetComponent} from './company-widget/company-widget.component';
 import {ThreatAgentsWidgetComponent} from './threat-agents-widget/threat-agents-widget.component';
 import {CustomersWidgetComponent} from './customers-widget/customers-widget.component';
-import {AttackStrategiesWidgetComponent} from "./attack-strategies-widget/attack-strategies-widget.component";
-import {ImpactEvaluationModule} from "../impact-evaluation/impact-evaluation.module";
-import {RiskManagementModule} from "../risk-management/risk-management.module";
+import {AttackStrategiesWidgetComponent} from './attack-strategies-widget/attack-strategies-widget.component';
+import {ImpactEvaluationModule} from '../impact-evaluation/impact-evaluation.module';
+import {RiskManagementModule} from '../risk-management/risk-management.module';
+import {MostCriticalAttackStrategiesWidgetComponent} from './most-critical-attack-strategies-widget/most-critical-attack-strategies-widget.component';
+import {CriticalAttackStrategyService} from './models/critical-attack-strategy.service';
+import {MaterialModule} from "../material/material.module";
+import {HermeneutAttackStrategyMgmModule} from "../entities/attack-strategy-mgm/attack-strategy-mgm.module";
 
 @NgModule({
     imports: [
         CommonModule,
         HermeneutSharedModule,
         DashboardRoutingModule,
+        MaterialModule,
         ChartsModule,
         NgxPaginationModule,
         ResultsModule,
         ImpactEvaluationModule,
         RiskManagementModule,
+        HermeneutAttackStrategyMgmModule,
         NgbCollapseModule.forRoot()
     ],
     declarations: [
@@ -48,6 +54,7 @@ import {RiskManagementModule} from "../risk-management/risk-management.module";
         AttackStrategiesWidgetComponent,
         CustomersWidgetComponent,
         MostDangerousThreatAgentsWidgetComponent,
+        MostCriticalAttackStrategiesWidgetComponent,
         OverallLikelihoodWidgetComponent
     ],
     providers: [
@@ -84,7 +91,8 @@ import {RiskManagementModule} from "../risk-management/risk-management.module";
                 Injector
             ]
         },
-        DashboardService
+        DashboardService,
+        CriticalAttackStrategyService
     ]
 })
 export class DashboardModule {

@@ -55,8 +55,6 @@ import {ImpactWidgetComponent} from './impact-widget/impact-widget.component';
 import {FinancialValueWidgetComponent} from './financial-value-widget/financial-value-widget.component';
 import {RiskSquareWidgetComponent} from './risk-square-widget/risk-square-widget.component';
 import {MostVulnerableAssetsWidgetComponent} from './most-vulnerable-assets-widget/most-vulnerable-assets-widget.component';
-import {MostCriticalAttackStrategiesWidgetComponent} from './most-critical-attack-strategies-widget/most-critical-attack-strategies-widget.component';
-import {CriticalAttackStrategyService} from './models/critical-attack-strategy.service';
 
 @NgModule({
     imports: [
@@ -81,8 +79,7 @@ import {CriticalAttackStrategyService} from './models/critical-attack-strategy.s
         IntangibleFinancialWidgetComponent,
         ImpactWidgetComponent,
         FinancialValueWidgetComponent,
-        RiskSquareWidgetComponent,
-        MostCriticalAttackStrategiesWidgetComponent
+        RiskSquareWidgetComponent
     ],
     providers: [
         {
@@ -129,8 +126,7 @@ import {CriticalAttackStrategyService} from './models/critical-attack-strategy.s
         ResultsService,
         ImpactEvaluationService,
         PopUpService,
-        RiskManagementService,
-        CriticalAttackStrategyService
+        RiskManagementService
     ]
 })
 export class RiskBoardModule {

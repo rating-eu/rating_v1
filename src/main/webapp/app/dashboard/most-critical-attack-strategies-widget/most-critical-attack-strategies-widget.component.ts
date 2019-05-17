@@ -16,11 +16,11 @@
  */
 
 import {Component, OnInit} from '@angular/core';
-import {CriticalAttackStrategyService} from "../models/critical-attack-strategy.service";
-import {SelfAssessmentMgm, SelfAssessmentMgmService} from "../../entities/self-assessment-mgm";
-import {CriticalAttackStrategy} from "../models/critical-attack-strategy.model";
+import {CriticalAttackStrategyService} from '../models/critical-attack-strategy.service';
+import {SelfAssessmentMgm, SelfAssessmentMgmService} from '../../entities/self-assessment-mgm';
+import {CriticalAttackStrategy} from '../models/critical-attack-strategy.model';
 import * as _ from 'lodash';
-import {DatasharingService} from "../../datasharing/datasharing.service";
+import {DatasharingService} from '../../datasharing/datasharing.service';
 
 export enum CriticalAttackStrategyField {
     'ATTACK_STRATEGY' = <any>'ATTACK_STRATEGY',
