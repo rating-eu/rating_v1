@@ -30,6 +30,8 @@ import {MostCriticalAttackStrategiesWidgetComponent} from './most-critical-attac
 import {CriticalAttackStrategyService} from './models/critical-attack-strategy.service';
 import {MaterialModule} from "../material/material.module";
 import {HermeneutAttackStrategyMgmModule} from "../entities/attack-strategy-mgm/attack-strategy-mgm.module";
+import {AttackMapWidgetComponent} from "./attack-map-widget/attack-map-widget.component";
+import {EvaluateWeaknessModule} from "../evaluate-weakness/evaluate-weakness.module";
 
 @NgModule({
     imports: [
@@ -40,6 +42,7 @@ import {HermeneutAttackStrategyMgmModule} from "../entities/attack-strategy-mgm/
         ChartsModule,
         NgxPaginationModule,
         ResultsModule,
+        EvaluateWeaknessModule,
         ImpactEvaluationModule,
         RiskManagementModule,
         HermeneutAttackStrategyMgmModule,
@@ -52,6 +55,7 @@ import {HermeneutAttackStrategyMgmModule} from "../entities/attack-strategy-mgm/
         VulnerabilityRadarWidgetComponent,
         ThreatAgentsWidgetComponent,
         AttackStrategiesWidgetComponent,
+        AttackMapWidgetComponent,
         CustomersWidgetComponent,
         MostDangerousThreatAgentsWidgetComponent,
         MostCriticalAttackStrategiesWidgetComponent,
