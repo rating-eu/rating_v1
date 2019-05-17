@@ -26,6 +26,7 @@ import {DatasharingService} from "../../datasharing/datasharing.service";
 import {MyCompanyMgm} from "../../entities/my-company-mgm";
 import {Observable} from "rxjs";
 import {ThreatAgentMgm, ThreatAgentMgmService} from "../../entities/threat-agent-mgm";
+import {switchMap} from "rxjs/operators";
 
 @Component({
     selector: 'jhi-overall-likelihood-widget',
@@ -78,11 +79,13 @@ export class OverallLikelihoodWidgetComponent implements OnInit {
 
         this.threatAgents$ = this.threatAgentService.getThreatAgentsByCompany(this.myCompany.companyProfile.id);
 
-        this.result$ = this.threatAgents$.pipe().switchMap((response: HttpResponse<ThreatAgentMgm[]>) => {
-            this.threatAgents = response.body;
+        this.result$ = this.threatAgents$.pipe(
+            switchMap((response: HttpResponse<ThreatAgentMgm[]>) => {
+                this.threatAgents = response.body;
 
-            return this.resultService.getResult(this.mySelf.id);
-        });
+                return this.resultService.getResult(this.myCompany.companyProfile.id);
+            })
+        );
 
         this.result$.toPromise().then((res: HttpResponse<Result>) => {
             if (res.body) {

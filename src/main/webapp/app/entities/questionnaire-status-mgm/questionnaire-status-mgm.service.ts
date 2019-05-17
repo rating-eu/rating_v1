@@ -51,7 +51,7 @@ export class QuestionnaireStatusMgmService {
 
     private questionnaireStatusesByCompanyProfileAndUser = this.resourceUrl + '/company-profile/' + COMPANY_ID_PLACEHOLDER + '/user/' + USER_ID_PLACEHOLDER;
 
-    private questionnaireStatusesByCompanyProfileAndQuestionnairePurpose = this.resourceUrl + '/company-profile/' + COMPANY_ID_PLACEHOLDER + '/user/' + USER_ID_PLACEHOLDER;
+    private questionnaireStatusesByCompanyProfileAndQuestionnairePurpose = this.resourceUrl + '/company-profile/' + COMPANY_ID_PLACEHOLDER + '/purpose/' + QUESTIONNAIRE_PURPOSE_PLACEHOLDER;
 
     private questionnaireStatusesByCompanyProfileQuestionnaireAndRole = this.resourceUrl + '/company-profile/' + COMPANY_ID_PLACEHOLDER + '/questionnaire/' + QUESTIONNAIRE_ID_PLACEHOLDER + '/role/' + ROLE_PLACEHOLDER;
 

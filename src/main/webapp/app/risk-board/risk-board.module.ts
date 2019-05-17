@@ -19,10 +19,7 @@ import {NgModule, Injector} from '@angular/core';
 import {CommonModule} from '@angular/common';
 
 import {RiskBoardRoutingModule} from './risk-board-routing.module';
-import {CompanyWidgetComponent} from './company-widget/company-widget.component';
 import {AssetWidgetComponent} from './asset-widget/asset-widget.component';
-import {OverallLikelihoodWidgetComponent} from './overall-likelihood-widget/overall-likelihood-widget.component';
-import {MostDangerousThreatAgentsWidgetComponent} from './most-dangerous-threat-agents-widget/most-dangerous-threat-agents-widget.component';
 import {TangibleFinancialWidgetComponent} from './tangible-financial-widget/tangible-financial-widget.component';
 import {LossesWidgetComponent} from './losses-widget/losses-widget.component';
 import {DashboardOneComponent} from './dashboard-one/dashboard-one.component';
@@ -56,7 +53,6 @@ import {EbitsWidgetComponent} from './ebits-widget/ebits-widget.component';
 import {IntangibleFinancialWidgetComponent} from './intangible-financial-widget/intangible-financial-widget.component';
 import {ImpactWidgetComponent} from './impact-widget/impact-widget.component';
 import {FinancialValueWidgetComponent} from './financial-value-widget/financial-value-widget.component';
-import {CustomersWidgetComponent} from './customers-widget/customers-widget.component';
 import {RiskSquareWidgetComponent} from './risk-square-widget/risk-square-widget.component';
 import {MostVulnerableAssetsWidgetComponent} from './most-vulnerable-assets-widget/most-vulnerable-assets-widget.component';
 import {MostCriticalAttackStrategiesWidgetComponent} from './most-critical-attack-strategies-widget/most-critical-attack-strategies-widget.component';
@@ -74,11 +70,8 @@ import {CriticalAttackStrategyService} from './models/critical-attack-strategy.s
         HermeneutAttackStrategyMgmModule
     ],
     declarations: [
-        CompanyWidgetComponent,
         AssetWidgetComponent,
         MostVulnerableAssetsWidgetComponent,
-        OverallLikelihoodWidgetComponent,
-        MostDangerousThreatAgentsWidgetComponent,
         TangibleFinancialWidgetComponent,
         LossesWidgetComponent,
         DashboardOneComponent,
@@ -88,7 +81,6 @@ import {CriticalAttackStrategyService} from './models/critical-attack-strategy.s
         IntangibleFinancialWidgetComponent,
         ImpactWidgetComponent,
         FinancialValueWidgetComponent,
-        CustomersWidgetComponent,
         RiskSquareWidgetComponent,
         MostCriticalAttackStrategiesWidgetComponent
     ],

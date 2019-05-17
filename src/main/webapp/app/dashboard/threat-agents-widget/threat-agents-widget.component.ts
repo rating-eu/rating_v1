@@ -103,8 +103,6 @@ export class ThreatAgentsWidgetComponent implements OnInit, OnDestroy {
     private threatAgentsPercentageMap: Map<String, Couple<ThreatAgentMgm, Fraction>>;
     public threatAgentsPercentageArray: Couple<ThreatAgentMgm, Fraction>[];
 
-    private dashboardStatus = RiskBoardStepEnum;
-
     constructor(
         private selfAssessmentService: SelfAssessmentMgmService,
         private myAnswerService: MyAnswerMgmService,
@@ -113,7 +111,6 @@ export class ThreatAgentsWidgetComponent implements OnInit, OnDestroy {
         private motivationsService: MotivationMgmService,
         private threatAgentService: ThreatAgentMgmService,
         private modalService: NgbModal,
-        private dashService: RiskBoardService,
         private dataSharingService: DatasharingService
     ) {
     }
@@ -132,7 +129,7 @@ export class ThreatAgentsWidgetComponent implements OnInit, OnDestroy {
         this.myCompany = this.dataSharingService.myCompany;
 
         this.threatAgents$ = this.threatAgentService.getThreatAgentsByCompany(this.myCompany.companyProfile.id);
-        this.questionnaireStatuses$ = this.questionnaireStatusService.getAllQuestionnaireStatusesByCompanyProfileAndQuestionnairePurpose(this.selfAssessment.companyProfile, QuestionnairePurpose.ID_THREAT_AGENT);
+        this.questionnaireStatuses$ = this.questionnaireStatusService.getAllQuestionnaireStatusesByCompanyProfileAndQuestionnairePurpose(this.myCompany.companyProfile, QuestionnairePurpose.ID_THREAT_AGENT);
 
         const threatAgentsQuestionnaireStatuses$: Observable<[HttpResponse<ThreatAgentMgm[]>, HttpResponse<QuestionnaireStatusMgm[]>]> = forkJoin(this.threatAgents$, this.questionnaireStatuses$);
 
@@ -199,6 +196,7 @@ export class ThreatAgentsWidgetComponent implements OnInit, OnDestroy {
                         return result;
                     }
                 );
+
                 this.loading = false;
             }
         );

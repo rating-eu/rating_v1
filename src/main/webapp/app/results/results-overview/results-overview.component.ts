@@ -126,7 +126,7 @@ export class ResultsOverviewComponent implements OnInit {
                     });
                 }
 
-                return this.resultService.getResult(this.selfAssessment.id);
+                return this.resultService.getResult(this.myCompany.companyProfile.id);
             }
         );
 

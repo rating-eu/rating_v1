@@ -26,6 +26,7 @@ import {DatasharingService} from "../../datasharing/datasharing.service";
 import {Observable} from "rxjs";
 import {ThreatAgentMgm, ThreatAgentMgmService} from "../../entities/threat-agent-mgm";
 import {MyCompanyMgm} from "../../entities/my-company-mgm";
+import {switchMap} from "rxjs/operators";
 
 interface OrderBy {
     threatAgent: boolean;
@@ -97,38 +98,44 @@ export class MostDangerousThreatAgentsWidgetComponent implements OnInit {
 
         this.threatAgents$ = this.threatAgentService.getThreatAgentsByCompany(this.myCompany.companyProfile.id);
 
-        this.result$ = this.threatAgents$.pipe().switchMap((response: HttpResponse<ThreatAgentMgm[]>) => {
-            this.threatAgents = response.body;
+        this.result$ = this.threatAgents$.pipe(
+            switchMap((response: HttpResponse<ThreatAgentMgm[]>) => {
+                this.threatAgents = response.body;
 
-            return this.resultService.getResult(this.mySelf.id);
-        });
+                return this.resultService.getResult(this.myCompany.companyProfile.id);
+            })
+        );
 
+        this.result$.subscribe((res: HttpResponse<Result>) => {
+                console.log("Most Dangerouse Threat Agents Result response:");
+                console.log(res.body);
 
-        this.result$.toPromise().then((res: HttpResponse<Result>) => {
-            if (res.body) {
-                this.mdtaEntities = [];
-                this.result = res.body;
-                this.result.initialVulnerability.forEach((item, key) => {
-                    const tIndex = _.findIndex(this.threatAgents, {id: key});
-                    this.addInfo(this.threatAgents[tIndex].id, item, ValueType.INITIAL);
-                });
-                this.result.contextualVulnerability.forEach((item, key) => {
-                    const tIndex = _.findIndex(this.threatAgents, {id: key});
-                    this.addInfo(this.threatAgents[tIndex].id, item, ValueType.CONTEXTUAL);
-                });
-                this.result.refinedVulnerability.forEach((item, key) => {
-                    const tIndex = _.findIndex(this.threatAgents, {id: key});
-                    this.addInfo(this.threatAgents[tIndex].id, item, ValueType.REFINED);
-                });
-                this.mdtaEntities = _.orderBy(this.mdtaEntities, ['initial', 'contextual', 'refined'], ['desc', 'desc', 'desc']);
-                this.percentageTransformation();
-                this.loading = false;
-            } else {
+                if (res.body) {
+                    this.mdtaEntities = [];
+                    this.result = res.body;
+                    this.result.initialVulnerability.forEach((item, key) => {
+                        const tIndex = _.findIndex(this.threatAgents, {id: key});
+                        this.addInfo(this.threatAgents[tIndex].id, item, ValueType.INITIAL);
+                    });
+                    this.result.contextualVulnerability.forEach((item, key) => {
+                        const tIndex = _.findIndex(this.threatAgents, {id: key});
+                        this.addInfo(this.threatAgents[tIndex].id, item, ValueType.CONTEXTUAL);
+                    });
+                    this.result.refinedVulnerability.forEach((item, key) => {
+                        const tIndex = _.findIndex(this.threatAgents, {id: key});
+                        this.addInfo(this.threatAgents[tIndex].id, item, ValueType.REFINED);
+                    });
+                    this.mdtaEntities = _.orderBy(this.mdtaEntities, ['initial', 'contextual', 'refined'], ['desc', 'desc', 'desc']);
+                    this.percentageTransformation();
+                    this.loading = false;
+                } else {
+                    this.loading = false;
+                }
+            },
+            () => {
                 this.loading = false;
             }
-        }).catch(() => {
-            this.loading = false;
-        });
+        );
     }
 
     private addInfo(tID: number, value: number, typeOfInfo: ValueType) {

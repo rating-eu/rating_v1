@@ -39,13 +39,10 @@ export class AttackStrategiesWidgetComponent implements OnInit {
 
     private attacksMap: Map<number /*AttackStrategyID*/, AttackStrategyMgm> = new Map<number, AttackStrategyMgm>();
     private mySelf: SelfAssessmentMgm;
-    private status: RiskBoardStatus;
-    private dashboardStatus = RiskBoardStepEnum;
 
     constructor(
         private riskService: RiskManagementService,
         private mySelfAssessmentService: SelfAssessmentMgmService,
-        private dashService: RiskBoardService,
         private dataSharingService: DatasharingService
     ) {
     }
