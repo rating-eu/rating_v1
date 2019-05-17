@@ -137,12 +137,6 @@ export class SelfAssessmentMgmService implements OnInit {
         return this.http.delete<any>(`${this.resourceUrl}/${id}`, {observe: 'response'});
     }
 
-    search(req?: any): Observable<HttpResponse<SelfAssessmentMgm[]>> {
-        const options = createRequestOption(req);
-        return this.http.get<SelfAssessmentMgm[]>(this.resourceSearchUrl, {params: options, observe: 'response'})
-            .map((res: HttpResponse<SelfAssessmentMgm[]>) => this.convertArrayResponse(res));
-    }
-
     private convertResponse(res: EntityResponseType): EntityResponseType {
         const body: SelfAssessmentMgm = this.convertItemFromServer(res.body);
         return res.clone({body});

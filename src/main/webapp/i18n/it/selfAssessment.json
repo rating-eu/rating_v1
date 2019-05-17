@@ -5,8 +5,7 @@
             "home": {
                 "title": "RiskAssessments",
                 "createLabel": "Genera un nuovo Risk Assessment",
-                "createOrEditLabel": "Genera o modifica un Risk Assessment",
-                "search": "Cerca Risk Assessment"
+                "createOrEditLabel": "Genera o modifica un Risk Assessment"
             },
             "created": "&Egrave; stato generato un nuovo Risk Assessment con identificatore {{ param }}",
             "updated": "&Egrave; stato aggiornato Risk Assessment identificato da {{ param }}",

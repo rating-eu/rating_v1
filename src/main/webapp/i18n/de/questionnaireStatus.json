@@ -5,8 +5,7 @@
             "home": {
                 "title": "Questionnaire Statuses",
                 "createLabel": "Questionnaire Status erstellen",
-                "createOrEditLabel": "Questionnaire Status erstellen oder bearbeiten",
-                "search": "Suche nach Questionnaire Status"
+                "createOrEditLabel": "Questionnaire Status erstellen oder bearbeiten"
             },
             "created": "Questionnaire Status erstellt mit ID {{ param }}",
             "updated": "Questionnaire Status aktualisiert mit ID {{ param }}",

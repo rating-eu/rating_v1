@@ -60,12 +60,6 @@ export class ImpactLevelDescriptionMgmService {
         return this.http.delete<any>(`${this.resourceUrl}/${id}`, { observe: 'response'});
     }
 
-    search(req?: any): Observable<HttpResponse<ImpactLevelDescriptionMgm[]>> {
-        const options = createRequestOption(req);
-        return this.http.get<ImpactLevelDescriptionMgm[]>(this.resourceSearchUrl, { params: options, observe: 'response' })
-            .map((res: HttpResponse<ImpactLevelDescriptionMgm[]>) => this.convertArrayResponse(res));
-    }
-
     private convertResponse(res: EntityResponseType): EntityResponseType {
         const body: ImpactLevelDescriptionMgm = this.convertItemFromServer(res.body);
         return res.clone({body});

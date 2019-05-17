@@ -60,12 +60,6 @@ export class DomainOfInfluenceMgmService {
         return this.http.delete<any>(`${this.resourceUrl}/${id}`, { observe: 'response'});
     }
 
-    search(req?: any): Observable<HttpResponse<DomainOfInfluenceMgm[]>> {
-        const options = createRequestOption(req);
-        return this.http.get<DomainOfInfluenceMgm[]>(this.resourceSearchUrl, { params: options, observe: 'response' })
-            .map((res: HttpResponse<DomainOfInfluenceMgm[]>) => this.convertArrayResponse(res));
-    }
-
     private convertResponse(res: EntityResponseType): EntityResponseType {
         const body: DomainOfInfluenceMgm = this.convertItemFromServer(res.body);
         return res.clone({body});

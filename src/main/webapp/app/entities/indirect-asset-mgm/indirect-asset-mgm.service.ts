@@ -60,12 +60,6 @@ export class IndirectAssetMgmService {
         return this.http.delete<any>(`${this.resourceUrl}/${id}`, { observe: 'response'});
     }
 
-    search(req?: any): Observable<HttpResponse<IndirectAssetMgm[]>> {
-        const options = createRequestOption(req);
-        return this.http.get<IndirectAssetMgm[]>(this.resourceSearchUrl, { params: options, observe: 'response' })
-            .map((res: HttpResponse<IndirectAssetMgm[]>) => this.convertArrayResponse(res));
-    }
-
     private convertResponse(res: EntityResponseType): EntityResponseType {
         const body: IndirectAssetMgm = this.convertItemFromServer(res.body);
         return res.clone({body});

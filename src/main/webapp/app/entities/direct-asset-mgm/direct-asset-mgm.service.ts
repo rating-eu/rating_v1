@@ -33,7 +33,6 @@ export class DirectAssetMgmService {
 
     private resourceUrl =  SERVER_API_URL + 'api/direct-assets';
     private directAssetsBySelfAssessment = SERVER_API_URL + 'api/' + SELF_ASSESSMENT_ID_PLACEHOLDER + '/direct-assets';
-    private resourceSearchUrl = SERVER_API_URL + 'api/_search/direct-assets';
 
     constructor(private http: HttpClient) { }
 
@@ -62,12 +61,6 @@ export class DirectAssetMgmService {
 
     delete(id: number): Observable<HttpResponse<any>> {
         return this.http.delete<any>(`${this.resourceUrl}/${id}`, { observe: 'response'});
-    }
-
-    search(req?: any): Observable<HttpResponse<DirectAssetMgm[]>> {
-        const options = createRequestOption(req);
-        return this.http.get<DirectAssetMgm[]>(this.resourceSearchUrl, { params: options, observe: 'response' })
-            .map((res: HttpResponse<DirectAssetMgm[]>) => this.convertArrayResponse(res));
     }
 
     public getMyDirectAssets(self: SelfAssessmentMgm): Observable<HttpResponse<DirectAssetMgm[]>> {

@@ -5,8 +5,7 @@
             "home": {
                 "title": "Assets",
                 "createLabel": "Crear nuevo Asset",
-                "createOrEditLabel": "Crear o editar Asset",
-                "search": "Search for Asset"
+                "createOrEditLabel": "Crear o editar Asset"
             },
             "created": "Un nuevo Asset ha sido creado con el identificador {{ param }}",
             "updated": "Un Asset ha sido actualizado con el identificador {{ param }}",

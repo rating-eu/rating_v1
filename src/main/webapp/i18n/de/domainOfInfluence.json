@@ -5,8 +5,7 @@
             "home": {
                 "title": "Domain Of Influences",
                 "createLabel": "Domain Of Influence erstellen",
-                "createOrEditLabel": "Domain Of Influence erstellen oder bearbeiten",
-                "search": "Suche nach Domain Of Influence"
+                "createOrEditLabel": "Domain Of Influence erstellen oder bearbeiten"
             },
             "created": "Domain Of Influence erstellt mit ID {{ param }}",
             "updated": "Domain Of Influence aktualisiert mit ID {{ param }}",

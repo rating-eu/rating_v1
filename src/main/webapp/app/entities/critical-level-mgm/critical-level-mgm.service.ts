@@ -60,12 +60,6 @@ export class CriticalLevelMgmService {
         return this.http.delete<any>(`${this.resourceUrl}/${id}`, { observe: 'response'});
     }
 
-    search(req?: any): Observable<HttpResponse<CriticalLevelMgm[]>> {
-        const options = createRequestOption(req);
-        return this.http.get<CriticalLevelMgm[]>(this.resourceSearchUrl, { params: options, observe: 'response' })
-            .map((res: HttpResponse<CriticalLevelMgm[]>) => this.convertArrayResponse(res));
-    }
-
     private convertResponse(res: EntityResponseType): EntityResponseType {
         const body: CriticalLevelMgm = this.convertItemFromServer(res.body);
         return res.clone({body});

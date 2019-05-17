@@ -5,8 +5,7 @@
             "home": {
                 "title": "Impact Level Descriptions",
                 "createLabel": "Impact Level Description erstellen",
-                "createOrEditLabel": "Impact Level Description erstellen oder bearbeiten",
-                "search": "Suche nach Impact Level Description"
+                "createOrEditLabel": "Impact Level Description erstellen oder bearbeiten"
             },
             "created": "Impact Level Description erstellt mit ID {{ param }}",
             "updated": "Impact Level Description aktualisiert mit ID {{ param }}",

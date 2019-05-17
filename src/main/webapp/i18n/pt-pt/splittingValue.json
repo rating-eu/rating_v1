@@ -5,8 +5,7 @@
             "home": {
                 "title": "Splitting Values",
                 "createLabel": "Criar um(a) novo(a) Splitting Value",
-                "createOrEditLabel": "Criar ou editar um(a) Splitting Value",
-                "search": "Search for Splitting Value"
+                "createOrEditLabel": "Criar ou editar um(a) Splitting Value"
             },
             "created": "A new Splitting Value is created with identifier {{ param }}",
             "updated": "A Splitting Value is updated with identifier {{ param }}",

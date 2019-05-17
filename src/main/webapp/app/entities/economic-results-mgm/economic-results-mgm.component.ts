@@ -34,7 +34,6 @@ export class EconomicResultsMgmComponent implements OnInit, OnDestroy {
 economicResults: EconomicResultsMgm[];
     currentAccount: any;
     eventSubscriber: Subscription;
-    currentSearch: string;
 
     constructor(
         private economicResultsService: EconomicResultsMgmService,
@@ -44,39 +43,18 @@ economicResults: EconomicResultsMgm[];
         private principal: Principal,
         public popUpService: PopUpService
     ) {
-        this.currentSearch = this.activatedRoute.snapshot && this.activatedRoute.snapshot.params['search'] ?
-            this.activatedRoute.snapshot.params['search'] : '';
     }
 
     loadAll() {
-        if (this.currentSearch) {
-            this.economicResultsService.search({
-                query: this.currentSearch,
-                }).subscribe(
-                    (res: HttpResponse<EconomicResultsMgm[]>) => this.economicResults = res.body,
-                    (res: HttpErrorResponse) => this.onError(res.message)
-                );
-            return;
-       }
         this.economicResultsService.query().subscribe(
             (res: HttpResponse<EconomicResultsMgm[]>) => {
                 this.economicResults = res.body;
-                this.currentSearch = '';
             },
             (res: HttpErrorResponse) => this.onError(res.message)
         );
     }
 
-    search(query) {
-        if (!query) {
-            return this.clear();
-        }
-        this.currentSearch = query;
-        this.loadAll();
-    }
-
     clear() {
-        this.currentSearch = '';
         this.loadAll();
     }
     ngOnInit() {

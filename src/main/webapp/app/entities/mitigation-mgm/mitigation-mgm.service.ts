@@ -62,12 +62,6 @@ export class MitigationMgmService {
         return this.http.delete<any>(`${this.resourceUrl}/${id}`, { observe: 'response'});
     }
 
-    search(req?: any): Observable<HttpResponse<MitigationMgm[]>> {
-        const options = createRequestOption(req);
-        return this.http.get<MitigationMgm[]>(this.resourceSearchUrl, { params: options, observe: 'response' })
-            .map((res: HttpResponse<MitigationMgm[]>) => this.convertArrayResponse(res));
-    }
-
     private convertResponse(res: EntityResponseType): EntityResponseType {
         const body: MitigationMgm = this.convertItemFromServer(res.body);
         return res.clone({body});

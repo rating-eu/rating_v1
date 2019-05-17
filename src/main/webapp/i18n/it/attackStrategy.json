@@ -5,8 +5,7 @@
             "home": {
                 "title": "AttackStrategies",
                 "createLabel": "Genera un nuovo Attack Strategy",
-                "createOrEditLabel": "Genera o modifica un Attack Strategy",
-                "search": "Cerca Attack Strategy"
+                "createOrEditLabel": "Genera o modifica un Attack Strategy"
             },
             "created": "&Egrave; stato generato un nuovo Attack Strategy con identificatore {{ param }}",
             "updated": "&Egrave; stato aggiornato Attack Strategy identificato da {{ param }}",

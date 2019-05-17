@@ -34,7 +34,6 @@ export class AssetCategoryMgmComponent implements OnInit, OnDestroy {
 assetCategories: AssetCategoryMgm[];
     currentAccount: any;
     eventSubscriber: Subscription;
-    currentSearch: string;
 
     constructor(
         private assetCategoryService: AssetCategoryMgmService,
@@ -44,39 +43,18 @@ assetCategories: AssetCategoryMgm[];
         private principal: Principal,
         public popUpService: PopUpService
     ) {
-        this.currentSearch = this.activatedRoute.snapshot && this.activatedRoute.snapshot.params['search'] ?
-            this.activatedRoute.snapshot.params['search'] : '';
     }
 
     loadAll() {
-        if (this.currentSearch) {
-            this.assetCategoryService.search({
-                query: this.currentSearch,
-                }).subscribe(
-                    (res: HttpResponse<AssetCategoryMgm[]>) => this.assetCategories = res.body,
-                    (res: HttpErrorResponse) => this.onError(res.message)
-                );
-            return;
-       }
         this.assetCategoryService.query().subscribe(
             (res: HttpResponse<AssetCategoryMgm[]>) => {
                 this.assetCategories = res.body;
-                this.currentSearch = '';
             },
             (res: HttpErrorResponse) => this.onError(res.message)
         );
     }
 
-    search(query) {
-        if (!query) {
-            return this.clear();
-        }
-        this.currentSearch = query;
-        this.loadAll();
-    }
-
     clear() {
-        this.currentSearch = '';
         this.loadAll();
     }
     ngOnInit() {

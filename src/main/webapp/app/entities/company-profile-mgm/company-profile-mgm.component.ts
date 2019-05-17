@@ -34,7 +34,6 @@ export class CompanyProfileMgmComponent implements OnInit, OnDestroy {
 companyProfiles: CompanyProfileMgm[];
     currentAccount: any;
     eventSubscriber: Subscription;
-    currentSearch: string;
 
     constructor(
         private companyProfileService: CompanyProfileMgmService,
@@ -44,39 +43,18 @@ companyProfiles: CompanyProfileMgm[];
         private principal: Principal,
         public popUpService: PopUpService
     ) {
-        this.currentSearch = this.activatedRoute.snapshot && this.activatedRoute.snapshot.params['search'] ?
-            this.activatedRoute.snapshot.params['search'] : '';
     }
 
     loadAll() {
-        if (this.currentSearch) {
-            this.companyProfileService.search({
-                query: this.currentSearch,
-                }).subscribe(
-                    (res: HttpResponse<CompanyProfileMgm[]>) => this.companyProfiles = res.body,
-                    (res: HttpErrorResponse) => this.onError(res.message)
-                );
-            return;
-       }
         this.companyProfileService.query().subscribe(
             (res: HttpResponse<CompanyProfileMgm[]>) => {
                 this.companyProfiles = res.body;
-                this.currentSearch = '';
             },
             (res: HttpErrorResponse) => this.onError(res.message)
         );
     }
 
-    search(query) {
-        if (!query) {
-            return this.clear();
-        }
-        this.currentSearch = query;
-        this.loadAll();
-    }
-
     clear() {
-        this.currentSearch = '';
         this.loadAll();
     }
     ngOnInit() {

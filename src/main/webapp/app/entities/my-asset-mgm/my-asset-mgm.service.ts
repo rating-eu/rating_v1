@@ -78,12 +78,6 @@ export class MyAssetMgmService {
         return this.http.delete<any>(`${this.resourceUrl}/${id}`, {observe: 'response'});
     }
 
-    search(req?: any): Observable<HttpResponse<MyAssetMgm[]>> {
-        const options = createRequestOption(req);
-        return this.http.get<MyAssetMgm[]>(this.resourceSearchUrl, {params: options, observe: 'response'})
-            .map((res: HttpResponse<MyAssetMgm[]>) => this.convertArrayResponse(res));
-    }
-
     private convertResponse(res: EntityResponseType): EntityResponseType {
         const body: MyAssetMgm = this.convertItemFromServer(res.body);
         return res.clone({body});

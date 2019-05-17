@@ -5,8 +5,7 @@
             "home": {
                 "title": "Answers",
                 "createLabel": "Genera un nuovo Answer",
-                "createOrEditLabel": "Genera o modifica un Answer",
-                "search": "Cerca Answer"
+                "createOrEditLabel": "Genera o modifica un Answer"
             },
             "created": "&Egrave; stato generato un nuovo Answer con identificatore {{ param }}",
             "updated": "&Egrave; stato aggiornato Answer identificato da {{ param }}",

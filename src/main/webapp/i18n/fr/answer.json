@@ -5,8 +5,7 @@
             "home": {
                 "title": "Answers",
                 "createLabel": "Créer un nouveau Answer",
-                "createOrEditLabel": "Créer ou éditer un Answer",
-                "search": "Recherche pour Answer"
+                "createOrEditLabel": "Créer ou éditer un Answer"
             },
             "created": "Un nouveau Answer a été créé avec l'identifiant {{ param }}",
             "updated": "Le Answer avec l'identifiant {{ param }} a été mis à jour",

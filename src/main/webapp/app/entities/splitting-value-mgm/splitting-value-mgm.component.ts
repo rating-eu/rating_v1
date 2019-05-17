@@ -33,7 +33,6 @@ export class SplittingValueMgmComponent implements OnInit, OnDestroy {
 splittingValues: SplittingValueMgm[];
     currentAccount: any;
     eventSubscriber: Subscription;
-    currentSearch: string;
 
     constructor(
         private splittingValueService: SplittingValueMgmService,
@@ -42,39 +41,18 @@ splittingValues: SplittingValueMgm[];
         private activatedRoute: ActivatedRoute,
         private principal: Principal
     ) {
-        this.currentSearch = this.activatedRoute.snapshot && this.activatedRoute.snapshot.params['search'] ?
-            this.activatedRoute.snapshot.params['search'] : '';
     }
 
     loadAll() {
-        if (this.currentSearch) {
-            this.splittingValueService.search({
-                query: this.currentSearch,
-                }).subscribe(
-                    (res: HttpResponse<SplittingValueMgm[]>) => this.splittingValues = res.body,
-                    (res: HttpErrorResponse) => this.onError(res.message)
-                );
-            return;
-       }
         this.splittingValueService.query().subscribe(
             (res: HttpResponse<SplittingValueMgm[]>) => {
                 this.splittingValues = res.body;
-                this.currentSearch = '';
             },
             (res: HttpErrorResponse) => this.onError(res.message)
         );
     }
 
-    search(query) {
-        if (!query) {
-            return this.clear();
-        }
-        this.currentSearch = query;
-        this.loadAll();
-    }
-
     clear() {
-        this.currentSearch = '';
         this.loadAll();
     }
     ngOnInit() {

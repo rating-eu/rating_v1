@@ -5,8 +5,7 @@
             "home": {
                 "title": "Splitting Values",
                 "createLabel": "Crear nuevo Splitting Value",
-                "createOrEditLabel": "Crear o editar Splitting Value",
-                "search": "Search for Splitting Value"
+                "createOrEditLabel": "Crear o editar Splitting Value"
             },
             "created": "Un nuevo Splitting Value ha sido creado con el identificador {{ param }}",
             "updated": "Un Splitting Value ha sido actualizado con el identificador {{ param }}",

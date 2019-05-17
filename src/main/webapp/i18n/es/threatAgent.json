@@ -5,8 +5,7 @@
             "home": {
                 "title": "Threat Agents",
                 "createLabel": "Crear nuevo Threat Agent",
-                "createOrEditLabel": "Crear o editar Threat Agent",
-                "search": "Search for Threat Agent"
+                "createOrEditLabel": "Crear o editar Threat Agent"
             },
             "created": "Un nuevo Threat Agent ha sido creado con el identificador {{ param }}",
             "updated": "Un Threat Agent ha sido actualizado con el identificador {{ param }}",

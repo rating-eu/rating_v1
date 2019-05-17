@@ -5,8 +5,7 @@
             "home": {
                 "title": "Logos",
                 "createLabel": "Crear nuevo Logo",
-                "createOrEditLabel": "Crear o editar Logo",
-                "search": "Search for Logo"
+                "createOrEditLabel": "Crear o editar Logo"
             },
             "created": "Un nuevo Logo ha sido creado con el identificador {{ param }}",
             "updated": "Un Logo ha sido actualizado con el identificador {{ param }}",

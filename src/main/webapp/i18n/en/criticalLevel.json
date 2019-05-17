@@ -5,8 +5,7 @@
             "home": {
                 "title": "Critical Levels",
                 "createLabel": "Create a new Critical Level",
-                "createOrEditLabel": "Create or edit a Critical Level",
-                "search": "Search for Critical Level"
+                "createOrEditLabel": "Create or edit a Critical Level"
             },
             "created": "A new Critical Level is created with identifier {{ param }}",
             "updated": "A Critical Level is updated with identifier {{ param }}",

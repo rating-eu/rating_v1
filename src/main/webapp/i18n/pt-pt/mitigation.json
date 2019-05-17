@@ -5,8 +5,7 @@
             "home": {
                 "title": "Mitigations",
                 "createLabel": "Criar um(a) novo(a) Mitigation",
-                "createOrEditLabel": "Criar ou editar um(a) Mitigation",
-                "search": "Search for Mitigation"
+                "createOrEditLabel": "Criar ou editar um(a) Mitigation"
             },
             "created": "A new Mitigation is created with identifier {{ param }}",
             "updated": "A Mitigation is updated with identifier {{ param }}",

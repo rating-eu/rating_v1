@@ -60,12 +60,6 @@ export class AttackCostParamMgmService {
         return this.http.delete<any>(`${this.resourceUrl}/${id}`, { observe: 'response'});
     }
 
-    search(req?: any): Observable<HttpResponse<AttackCostParamMgm[]>> {
-        const options = createRequestOption(req);
-        return this.http.get<AttackCostParamMgm[]>(this.resourceSearchUrl, { params: options, observe: 'response' })
-            .map((res: HttpResponse<AttackCostParamMgm[]>) => this.convertArrayResponse(res));
-    }
-
     private convertResponse(res: EntityResponseType): EntityResponseType {
         const body: AttackCostParamMgm = this.convertItemFromServer(res.body);
         return res.clone({body});

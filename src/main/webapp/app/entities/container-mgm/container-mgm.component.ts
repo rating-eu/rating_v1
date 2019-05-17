@@ -34,7 +34,6 @@ export class ContainerMgmComponent implements OnInit, OnDestroy {
 containers: ContainerMgm[];
     currentAccount: any;
     eventSubscriber: Subscription;
-    currentSearch: string;
 
     constructor(
         private containerService: ContainerMgmService,
@@ -44,39 +43,18 @@ containers: ContainerMgm[];
         private principal: Principal,
         public popUpService: PopUpService
     ) {
-        this.currentSearch = this.activatedRoute.snapshot && this.activatedRoute.snapshot.params['search'] ?
-            this.activatedRoute.snapshot.params['search'] : '';
     }
 
     loadAll() {
-        if (this.currentSearch) {
-            this.containerService.search({
-                query: this.currentSearch,
-                }).subscribe(
-                    (res: HttpResponse<ContainerMgm[]>) => this.containers = res.body,
-                    (res: HttpErrorResponse) => this.onError(res.message)
-                );
-            return;
-       }
         this.containerService.query().subscribe(
             (res: HttpResponse<ContainerMgm[]>) => {
                 this.containers = res.body;
-                this.currentSearch = '';
             },
             (res: HttpErrorResponse) => this.onError(res.message)
         );
     }
 
-    search(query) {
-        if (!query) {
-            return this.clear();
-        }
-        this.currentSearch = query;
-        this.loadAll();
-    }
-
     clear() {
-        this.currentSearch = '';
         this.loadAll();
     }
     ngOnInit() {

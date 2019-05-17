@@ -33,7 +33,6 @@ export class LogoMgmComponent implements OnInit, OnDestroy {
 logos: LogoMgm[];
     currentAccount: any;
     eventSubscriber: Subscription;
-    currentSearch: string;
 
     constructor(
         private logoService: LogoMgmService,
@@ -43,39 +42,18 @@ logos: LogoMgm[];
         private activatedRoute: ActivatedRoute,
         private principal: Principal
     ) {
-        this.currentSearch = this.activatedRoute.snapshot && this.activatedRoute.snapshot.params['search'] ?
-            this.activatedRoute.snapshot.params['search'] : '';
     }
 
     loadAll() {
-        if (this.currentSearch) {
-            this.logoService.search({
-                query: this.currentSearch,
-                }).subscribe(
-                    (res: HttpResponse<LogoMgm[]>) => this.logos = res.body,
-                    (res: HttpErrorResponse) => this.onError(res.message)
-                );
-            return;
-       }
         this.logoService.query().subscribe(
             (res: HttpResponse<LogoMgm[]>) => {
                 this.logos = res.body;
-                this.currentSearch = '';
             },
             (res: HttpErrorResponse) => this.onError(res.message)
         );
     }
 
-    search(query) {
-        if (!query) {
-            return this.clear();
-        }
-        this.currentSearch = query;
-        this.loadAll();
-    }
-
     clear() {
-        this.currentSearch = '';
         this.loadAll();
     }
     ngOnInit() {

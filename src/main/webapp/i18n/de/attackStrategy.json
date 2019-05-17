@@ -5,8 +5,7 @@
             "home": {
                 "title": "Attack Strategies",
                 "createLabel": "Attack Strategy erstellen",
-                "createOrEditLabel": "Attack Strategy erstellen oder bearbeiten",
-                "search": "Suche nach Attack Strategy"
+                "createOrEditLabel": "Attack Strategy erstellen oder bearbeiten"
             },
             "created": "Attack Strategy erstellt mit ID {{ param }}",
             "updated": "Attack Strategy aktualisiert mit ID {{ param }}",

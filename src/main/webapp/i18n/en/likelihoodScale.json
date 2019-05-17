@@ -5,8 +5,7 @@
             "home": {
                 "title": "Likelihood Scales",
                 "createLabel": "Create a new Likelihood Scale",
-                "createOrEditLabel": "Create or edit a Likelihood Scale",
-                "search": "Search for Likelihood Scale"
+                "createOrEditLabel": "Create or edit a Likelihood Scale"
             },
             "created": "A new Likelihood Scale is created with identifier {{ param }}",
             "updated": "A Likelihood Scale is updated with identifier {{ param }}",

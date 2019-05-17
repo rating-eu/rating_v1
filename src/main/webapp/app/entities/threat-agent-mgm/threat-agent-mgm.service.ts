@@ -67,12 +67,6 @@ export class ThreatAgentMgmService {
         return this.http.delete<any>(`${this.resourceUrl}/${id}`, {observe: 'response'});
     }
 
-    search(req?: any): Observable<HttpResponse<ThreatAgentMgm[]>> {
-        const options = createRequestOption(req);
-        return this.http.get<ThreatAgentMgm[]>(this.resourceSearchUrl, {params: options, observe: 'response'})
-            .map((res: HttpResponse<ThreatAgentMgm[]>) => this.convertArrayResponse(res));
-    }
-
     private convertResponse(res: EntityResponseType): EntityResponseType {
         const body: ThreatAgentMgm = this.convertItemFromServer(res.body);
         return res.clone({body});

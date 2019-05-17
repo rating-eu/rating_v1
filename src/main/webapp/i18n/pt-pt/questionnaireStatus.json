@@ -5,8 +5,7 @@
             "home": {
                 "title": "Questionnaire Statuses",
                 "createLabel": "Criar um(a) novo(a) Questionnaire Status",
-                "createOrEditLabel": "Criar ou editar um(a) Questionnaire Status",
-                "search": "Search for Questionnaire Status"
+                "createOrEditLabel": "Criar ou editar um(a) Questionnaire Status"
             },
             "created": "A new Questionnaire Status is created with identifier {{ param }}",
             "updated": "A Questionnaire Status is updated with identifier {{ param }}",

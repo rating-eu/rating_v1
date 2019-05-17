@@ -62,12 +62,6 @@ export class CompanyGroupMgmService {
         return this.http.delete<any>(`${this.resourceUrl}/${id}`, { observe: 'response'});
     }
 
-    search(req?: any): Observable<HttpResponse<CompanyGroupMgm[]>> {
-        const options = createRequestOption(req);
-        return this.http.get<CompanyGroupMgm[]>(this.resourceSearchUrl, { params: options, observe: 'response' })
-            .map((res: HttpResponse<CompanyGroupMgm[]>) => this.convertArrayResponse(res));
-    }
-
     private convertResponse(res: EntityResponseType): EntityResponseType {
         const body: CompanyGroupMgm = this.convertItemFromServer(res.body);
         return res.clone({body});

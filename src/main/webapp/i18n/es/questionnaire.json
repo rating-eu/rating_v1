@@ -5,8 +5,7 @@
             "home": {
                 "title": "Questionnaires",
                 "createLabel": "Crear nuevo Questionnaire",
-                "createOrEditLabel": "Crear o editar Questionnaire",
-                "search": "Search for Questionnaire"
+                "createOrEditLabel": "Crear o editar Questionnaire"
             },
             "created": "Un nuevo Questionnaire ha sido creado con el identificador {{ param }}",
             "updated": "Un Questionnaire ha sido actualizado con el identificador {{ param }}",

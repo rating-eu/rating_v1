@@ -5,8 +5,7 @@
             "home": {
                 "title": "Answer Weights",
                 "createLabel": "Criar um(a) novo(a) Answer Weight",
-                "createOrEditLabel": "Criar ou editar um(a) Answer Weight",
-                "search": "Search for Answer Weight"
+                "createOrEditLabel": "Criar ou editar um(a) Answer Weight"
             },
             "created": "A new Answer Weight is created with identifier {{ param }}",
             "updated": "A Answer Weight is updated with identifier {{ param }}",

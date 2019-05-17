@@ -5,8 +5,7 @@
             "home": {
                 "title": "My Assets",
                 "createLabel": "My Asset erstellen",
-                "createOrEditLabel": "My Asset erstellen oder bearbeiten",
-                "search": "Suche nach My Asset"
+                "createOrEditLabel": "My Asset erstellen oder bearbeiten"
             },
             "created": "My Asset erstellt mit ID {{ param }}",
             "updated": "My Asset aktualisiert mit ID {{ param }}",

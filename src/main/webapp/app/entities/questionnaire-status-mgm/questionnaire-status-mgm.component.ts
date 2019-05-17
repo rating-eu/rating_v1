@@ -34,7 +34,6 @@ export class QuestionnaireStatusMgmComponent implements OnInit, OnDestroy {
 questionnaireStatuses: QuestionnaireStatusMgm[];
     currentAccount: any;
     eventSubscriber: Subscription;
-    currentSearch: string;
 
     constructor(
         private questionnaireStatusService: QuestionnaireStatusMgmService,
@@ -44,39 +43,18 @@ questionnaireStatuses: QuestionnaireStatusMgm[];
         private principal: Principal,
         public popUpService: PopUpService
     ) {
-        this.currentSearch = this.activatedRoute.snapshot && this.activatedRoute.snapshot.params['search'] ?
-            this.activatedRoute.snapshot.params['search'] : '';
     }
 
     loadAll() {
-        if (this.currentSearch) {
-            this.questionnaireStatusService.search({
-                query: this.currentSearch,
-                }).subscribe(
-                    (res: HttpResponse<QuestionnaireStatusMgm[]>) => this.questionnaireStatuses = res.body,
-                    (res: HttpErrorResponse) => this.onError(res.message)
-                );
-            return;
-       }
         this.questionnaireStatusService.query().subscribe(
             (res: HttpResponse<QuestionnaireStatusMgm[]>) => {
                 this.questionnaireStatuses = res.body;
-                this.currentSearch = '';
             },
             (res: HttpErrorResponse) => this.onError(res.message)
         );
     }
 
-    search(query) {
-        if (!query) {
-            return this.clear();
-        }
-        this.currentSearch = query;
-        this.loadAll();
-    }
-
     clear() {
-        this.currentSearch = '';
         this.loadAll();
     }
     ngOnInit() {

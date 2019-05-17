@@ -60,12 +60,6 @@ export class SplittingValueMgmService {
         return this.http.delete<any>(`${this.resourceUrl}/${id}`, { observe: 'response'});
     }
 
-    search(req?: any): Observable<HttpResponse<SplittingValueMgm[]>> {
-        const options = createRequestOption(req);
-        return this.http.get<SplittingValueMgm[]>(this.resourceSearchUrl, { params: options, observe: 'response' })
-            .map((res: HttpResponse<SplittingValueMgm[]>) => this.convertArrayResponse(res));
-    }
-
     private convertResponse(res: EntityResponseType): EntityResponseType {
         const body: SplittingValueMgm = this.convertItemFromServer(res.body);
         return res.clone({body});

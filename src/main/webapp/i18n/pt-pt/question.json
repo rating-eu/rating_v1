@@ -5,8 +5,7 @@
             "home": {
                 "title": "Questions",
                 "createLabel": "Criar um(a) novo(a) Question",
-                "createOrEditLabel": "Criar ou editar um(a) Question",
-                "search": "Search for Question"
+                "createOrEditLabel": "Criar ou editar um(a) Question"
             },
             "created": "A new Question is created with identifier {{ param }}",
             "updated": "A Question is updated with identifier {{ param }}",

@@ -5,8 +5,7 @@
             "home": {
                 "title": "Phases",
                 "createLabel": "Crear nuevo Phase",
-                "createOrEditLabel": "Crear o editar Phase",
-                "search": "Search for Phase"
+                "createOrEditLabel": "Crear o editar Phase"
             },
             "created": "Un nuevo Phase ha sido creado con el identificador {{ param }}",
             "updated": "Un Phase ha sido actualizado con el identificador {{ param }}",

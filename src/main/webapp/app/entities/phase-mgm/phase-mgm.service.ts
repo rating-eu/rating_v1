@@ -29,7 +29,6 @@ export type EntityResponseType = HttpResponse<PhaseMgm>;
 export class PhaseMgmService {
 
     private resourceUrl =  SERVER_API_URL + 'api/phases';
-    private resourceSearchUrl = SERVER_API_URL + 'api/_search/phases';
 
     constructor(private http: HttpClient) { }
 
@@ -58,12 +57,6 @@ export class PhaseMgmService {
 
     delete(id: number): Observable<HttpResponse<any>> {
         return this.http.delete<any>(`${this.resourceUrl}/${id}`, { observe: 'response'});
-    }
-
-    search(req?: any): Observable<HttpResponse<PhaseMgm[]>> {
-        const options = createRequestOption(req);
-        return this.http.get<PhaseMgm[]>(this.resourceSearchUrl, { params: options, observe: 'response' })
-            .map((res: HttpResponse<PhaseMgm[]>) => this.convertArrayResponse(res));
     }
 
     private convertResponse(res: EntityResponseType): EntityResponseType {

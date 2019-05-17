@@ -60,12 +60,6 @@ export class AnswerWeightMgmService {
         return this.http.delete<any>(`${this.resourceUrl}/${id}`, { observe: 'response'});
     }
 
-    search(req?: any): Observable<HttpResponse<AnswerWeightMgm[]>> {
-        const options = createRequestOption(req);
-        return this.http.get<AnswerWeightMgm[]>(this.resourceSearchUrl, { params: options, observe: 'response' })
-            .map((res: HttpResponse<AnswerWeightMgm[]>) => this.convertArrayResponse(res));
-    }
-
     private convertResponse(res: EntityResponseType): EntityResponseType {
         const body: AnswerWeightMgm = this.convertItemFromServer(res.body);
         return res.clone({body});

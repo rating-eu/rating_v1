@@ -5,8 +5,7 @@
             "home": {
                 "title": "Risk Assessments",
                 "createLabel": "Risk Assessment erstellen",
-                "createOrEditLabel": "Risk Assessment erstellen oder bearbeiten",
-                "search": "Suche nach Risk Assessment"
+                "createOrEditLabel": "Risk Assessment erstellen oder bearbeiten"
             },
             "created": "Risk Assessment erstellt mit ID {{ param }}",
             "updated": "Risk Assessment aktualisiert mit ID {{ param }}",

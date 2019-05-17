@@ -39,7 +39,6 @@ export class EvaluateWeaknessComponent implements OnInit, OnDestroy {
     account: Account;
     currentAccount: any;
     eventSubscriber: Subscription;
-    currentSearch: string;
     selectedSelfAssessment: SelfAssessmentMgm = null;
 
     constructor(private attackStrategyService: AttackStrategyMgmService,

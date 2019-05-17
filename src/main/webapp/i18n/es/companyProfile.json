@@ -5,8 +5,7 @@
             "home": {
                 "title": "Company Profiles",
                 "createLabel": "Crear nuevo Company Profile",
-                "createOrEditLabel": "Crear o editar Company Profile",
-                "search": "Search for Company Profile"
+                "createOrEditLabel": "Crear o editar Company Profile"
             },
             "created": "Un nuevo Company Profile ha sido creado con el identificador {{ param }}",
             "updated": "Un Company Profile ha sido actualizado con el identificador {{ param }}",

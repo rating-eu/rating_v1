@@ -5,8 +5,7 @@
             "home": {
                 "title": "Levels",
                 "createLabel": "Create a new Level",
-                "createOrEditLabel": "Create or edit a Level",
-                "search": "Search for Level"
+                "createOrEditLabel": "Create or edit a Level"
             },
             "created": "A new Level is created with identifier {{ param }}",
             "updated": "A Level is updated with identifier {{ param }}",

@@ -5,8 +5,7 @@
             "home": {
                 "title": "Answers",
                 "createLabel": "Criar um(a) novo(a) Answer",
-                "createOrEditLabel": "Criar ou editar um(a) Answer",
-                "search": "Search for Answer"
+                "createOrEditLabel": "Criar ou editar um(a) Answer"
             },
             "created": "A new Answer is created with identifier {{ param }}",
             "updated": "A Answer is updated with identifier {{ param }}",

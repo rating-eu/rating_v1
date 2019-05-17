@@ -31,7 +31,6 @@ export type EntityResponseType = HttpResponse<AssetMgm>;
 export class AssetMgmService {
 
     private resourceUrl =  SERVER_API_URL + 'api/assets';
-    private resourceSearchUrl = SERVER_API_URL + 'api/_search/assets';
 
     constructor(private http: HttpClient, private dateUtils: JhiDateUtils) { }
 
@@ -64,12 +63,6 @@ export class AssetMgmService {
 
     delete(id: number): Observable<HttpResponse<any>> {
         return this.http.delete<any>(`${this.resourceUrl}/${id}`, { observe: 'response'});
-    }
-
-    search(req?: any): Observable<HttpResponse<AssetMgm[]>> {
-        const options = createRequestOption(req);
-        return this.http.get<AssetMgm[]>(this.resourceSearchUrl, { params: options, observe: 'response' })
-            .map((res: HttpResponse<AssetMgm[]>) => this.convertArrayResponse(res));
     }
 
     private convertResponse(res: EntityResponseType): EntityResponseType {

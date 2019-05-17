@@ -35,7 +35,6 @@ export class AttackStrategyMgmComponent implements OnInit, OnDestroy {
 attackStrategies: AttackStrategyMgm[];
     currentAccount: any;
     eventSubscriber: Subscription;
-    currentSearch: string;
     public isADMIN: boolean;
 
     constructor(
@@ -46,39 +45,18 @@ attackStrategies: AttackStrategyMgm[];
         private principal: Principal,
         public popUpService: PopUpService
     ) {
-        this.currentSearch = this.activatedRoute.snapshot && this.activatedRoute.snapshot.params['search'] ?
-            this.activatedRoute.snapshot.params['search'] : '';
     }
 
     loadAll() {
-        if (this.currentSearch) {
-            this.attackStrategyService.search({
-                query: this.currentSearch,
-                }).subscribe(
-                    (res: HttpResponse<AttackStrategyMgm[]>) => this.attackStrategies = res.body,
-                    (res: HttpErrorResponse) => this.onError(res.message)
-                );
-            return;
-       }
         this.attackStrategyService.query().subscribe(
             (res: HttpResponse<AttackStrategyMgm[]>) => {
                 this.attackStrategies = res.body;
-                this.currentSearch = '';
             },
             (res: HttpErrorResponse) => this.onError(res.message)
         );
     }
 
-    search(query) {
-        if (!query) {
-            return this.clear();
-        }
-        this.currentSearch = query;
-        this.loadAll();
-    }
-
     clear() {
-        this.currentSearch = '';
         this.loadAll();
     }
     ngOnInit() {

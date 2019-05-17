@@ -60,12 +60,6 @@ export class LikelihoodScaleMgmService {
         return this.http.delete<any>(`${this.resourceUrl}/${id}`, { observe: 'response'});
     }
 
-    search(req?: any): Observable<HttpResponse<LikelihoodScaleMgm[]>> {
-        const options = createRequestOption(req);
-        return this.http.get<LikelihoodScaleMgm[]>(this.resourceSearchUrl, { params: options, observe: 'response' })
-            .map((res: HttpResponse<LikelihoodScaleMgm[]>) => this.convertArrayResponse(res));
-    }
-
     private convertResponse(res: EntityResponseType): EntityResponseType {
         const body: LikelihoodScaleMgm = this.convertItemFromServer(res.body);
         return res.clone({body});

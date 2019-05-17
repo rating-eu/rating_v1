@@ -5,8 +5,7 @@
             "home": {
                 "title": "Mitigations",
                 "createLabel": "Mitigation erstellen",
-                "createOrEditLabel": "Mitigation erstellen oder bearbeiten",
-                "search": "Suche nach Mitigation"
+                "createOrEditLabel": "Mitigation erstellen oder bearbeiten"
             },
             "created": "Mitigation erstellt mit ID {{ param }}",
             "updated": "Mitigation aktualisiert mit ID {{ param }}",

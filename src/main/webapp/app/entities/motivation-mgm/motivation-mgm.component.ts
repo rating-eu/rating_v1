@@ -34,7 +34,6 @@ export class MotivationMgmComponent implements OnInit, OnDestroy {
 motivations: MotivationMgm[];
     currentAccount: any;
     eventSubscriber: Subscription;
-    currentSearch: string;
 
     constructor(
         private motivationService: MotivationMgmService,
@@ -44,39 +43,18 @@ motivations: MotivationMgm[];
         private principal: Principal,
         public popUpService: PopUpService
     ) {
-        this.currentSearch = this.activatedRoute.snapshot && this.activatedRoute.snapshot.params['search'] ?
-            this.activatedRoute.snapshot.params['search'] : '';
     }
 
     loadAll() {
-        if (this.currentSearch) {
-            this.motivationService.search({
-                query: this.currentSearch,
-                }).subscribe(
-                    (res: HttpResponse<MotivationMgm[]>) => this.motivations = res.body,
-                    (res: HttpErrorResponse) => this.onError(res.message)
-                );
-            return;
-       }
         this.motivationService.query().subscribe(
             (res: HttpResponse<MotivationMgm[]>) => {
                 this.motivations = res.body;
-                this.currentSearch = '';
             },
             (res: HttpErrorResponse) => this.onError(res.message)
         );
     }
 
-    search(query) {
-        if (!query) {
-            return this.clear();
-        }
-        this.currentSearch = query;
-        this.loadAll();
-    }
-
     clear() {
-        this.currentSearch = '';
         this.loadAll();
     }
     ngOnInit() {
