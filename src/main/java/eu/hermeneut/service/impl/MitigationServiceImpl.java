@@ -20,17 +20,12 @@ package eu.hermeneut.service.impl;
 import eu.hermeneut.service.MitigationService;
 import eu.hermeneut.domain.Mitigation;
 import eu.hermeneut.repository.MitigationRepository;
-import eu.hermeneut.repository.search.MitigationSearchRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
-
-import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
  * Service Implementation for managing Mitigation.
@@ -43,11 +38,8 @@ public class MitigationServiceImpl implements MitigationService {
 
     private final MitigationRepository mitigationRepository;
 
-    private final MitigationSearchRepository mitigationSearchRepository;
-
-    public MitigationServiceImpl(MitigationRepository mitigationRepository, MitigationSearchRepository mitigationSearchRepository) {
+    public MitigationServiceImpl(MitigationRepository mitigationRepository) {
         this.mitigationRepository = mitigationRepository;
-        this.mitigationSearchRepository = mitigationSearchRepository;
     }
 
     /**
@@ -60,7 +52,6 @@ public class MitigationServiceImpl implements MitigationService {
     public Mitigation save(Mitigation mitigation) {
         log.debug("Request to save Mitigation : {}", mitigation);
         Mitigation result = mitigationRepository.save(mitigation);
-        mitigationSearchRepository.save(result);
         return result;
     }
 
@@ -98,21 +89,5 @@ public class MitigationServiceImpl implements MitigationService {
     public void delete(Long id) {
         log.debug("Request to delete Mitigation : {}", id);
         mitigationRepository.delete(id);
-        mitigationSearchRepository.delete(id);
-    }
-
-    /**
-     * Search for the mitigation corresponding to the query.
-     *
-     * @param query the query of the search
-     * @return the list of entities
-     */
-    @Override
-    @Transactional(readOnly = true)
-    public List<Mitigation> search(String query) {
-        log.debug("Request to search Mitigations for query {}", query);
-        return StreamSupport
-            .stream(mitigationSearchRepository.search(queryStringQuery(query)).spliterator(), false)
-            .collect(Collectors.toList());
     }
 }

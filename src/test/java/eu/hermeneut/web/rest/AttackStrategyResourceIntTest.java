@@ -23,7 +23,6 @@ import eu.hermeneut.domain.AttackStrategy;
 import eu.hermeneut.domain.enumeration.AttackStrategyLikelihood;
 import eu.hermeneut.repository.AttackStrategyRepository;
 import eu.hermeneut.service.AttackStrategyService;
-import eu.hermeneut.repository.search.AttackStrategySearchRepository;
 import eu.hermeneut.service.LevelService;
 import eu.hermeneut.service.PhaseService;
 import eu.hermeneut.web.rest.errors.ExceptionTranslator;
@@ -106,9 +105,6 @@ public class AttackStrategyResourceIntTest {
     private PhaseService phaseService;
 
     @Autowired
-    private AttackStrategySearchRepository attackStrategySearchRepository;
-
-    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -156,7 +152,6 @@ public class AttackStrategyResourceIntTest {
 
     @Before
     public void initTest() {
-        attackStrategySearchRepository.deleteAll();
         attackStrategy = createEntity(em);
     }
 
@@ -183,12 +178,6 @@ public class AttackStrategyResourceIntTest {
         assertThat(testAttackStrategy.getLikelihood()).isEqualTo(DEFAULT_ATTACK_STRATEGY_LIKELIHOOD);
         assertThat(testAttackStrategy.getCreated()).isEqualTo(DEFAULT_CREATED);
         assertThat(testAttackStrategy.getModified()).isEqualTo(DEFAULT_MODIFIED);
-
-        // Validate the AttackStrategy in Elasticsearch
-        AttackStrategy attackStrategyEs = attackStrategySearchRepository.findOne(testAttackStrategy.getId());
-        assertThat(testAttackStrategy.getCreated()).isEqualTo(testAttackStrategy.getCreated());
-        assertThat(testAttackStrategy.getModified()).isEqualTo(testAttackStrategy.getModified());
-        assertThat(attackStrategyEs).isEqualToIgnoringGivenFields(testAttackStrategy, "created", "modified");
     }
 
     @Test
@@ -371,12 +360,6 @@ public class AttackStrategyResourceIntTest {
         assertThat(testAttackStrategy.getLikelihood()).isEqualTo(UPDATED_ATTACK_STRATEGY_LIKELIHOOD);
         assertThat(testAttackStrategy.getCreated()).isEqualTo(UPDATED_CREATED);
         assertThat(testAttackStrategy.getModified()).isEqualTo(UPDATED_MODIFIED);
-
-        // Validate the AttackStrategy in Elasticsearch
-        AttackStrategy attackStrategyEs = attackStrategySearchRepository.findOne(testAttackStrategy.getId());
-        assertThat(testAttackStrategy.getCreated()).isEqualTo(testAttackStrategy.getCreated());
-        assertThat(testAttackStrategy.getModified()).isEqualTo(testAttackStrategy.getModified());
-        assertThat(attackStrategyEs).isEqualToIgnoringGivenFields(testAttackStrategy, "created", "modified");
     }
 
     @Test
@@ -410,34 +393,9 @@ public class AttackStrategyResourceIntTest {
             .accept(TestUtil.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk());
 
-        // Validate Elasticsearch is empty
-        boolean attackStrategyExistsInEs = attackStrategySearchRepository.exists(attackStrategy.getId());
-        assertThat(attackStrategyExistsInEs).isFalse();
-
         // Validate the database is empty
         List<AttackStrategy> attackStrategyList = attackStrategyRepository.findAll();
         assertThat(attackStrategyList).hasSize(databaseSizeBeforeDelete - 1);
-    }
-
-    @Test
-    @Transactional
-    public void searchAttackStrategy() throws Exception {
-        // Initialize the database
-        attackStrategyService.save(attackStrategy);
-
-        // Search the attackStrategy
-        restAttackStrategyMockMvc.perform(get("/api/_search/attack-strategies?query=id:" + attackStrategy.getId()))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(attackStrategy.getId().intValue())))
-            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
-            .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION.toString())))
-            .andExpect(jsonPath("$.[*].frequency").value(hasItem(DEFAULT_FREQUENCY.toString())))
-            .andExpect(jsonPath("$.[*].skill").value(hasItem(DEFAULT_SKILL.toString())))
-            .andExpect(jsonPath("$.[*].resources").value(hasItem(DEFAULT_RESOURCES.toString())))
-            .andExpect(jsonPath("$.[*].likelihood").value(hasItem(DEFAULT_ATTACK_STRATEGY_LIKELIHOOD.toString())))
-            .andExpect(jsonPath("$.[*].created").value(hasItem(sameInstant(DEFAULT_CREATED))))
-            .andExpect(jsonPath("$.[*].modified").value(hasItem(sameInstant(DEFAULT_MODIFIED))));
     }
 
     @Test

@@ -22,7 +22,6 @@ import eu.hermeneut.HermeneutApp;
 import eu.hermeneut.domain.ImpactLevel;
 import eu.hermeneut.repository.ImpactLevelRepository;
 import eu.hermeneut.service.ImpactLevelService;
-import eu.hermeneut.repository.search.ImpactLevelSearchRepository;
 import eu.hermeneut.web.rest.errors.ExceptionTranslator;
 
 import org.junit.Before;
@@ -77,9 +76,6 @@ public class ImpactLevelResourceIntTest {
     private ImpactLevelService impactLevelService;
 
     @Autowired
-    private ImpactLevelSearchRepository impactLevelSearchRepository;
-
-    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -123,7 +119,6 @@ public class ImpactLevelResourceIntTest {
 
     @Before
     public void initTest() {
-        impactLevelSearchRepository.deleteAll();
         impactLevel = createEntity(em);
     }
 
@@ -146,10 +141,6 @@ public class ImpactLevelResourceIntTest {
         assertThat(testImpactLevel.getImpact()).isEqualTo(DEFAULT_IMPACT);
         assertThat(testImpactLevel.getMinLoss()).isEqualTo(DEFAULT_MIN_LOSS);
         assertThat(testImpactLevel.getMaxLoss()).isEqualTo(DEFAULT_MAX_LOSS);
-
-        // Validate the ImpactLevel in Elasticsearch
-        ImpactLevel impactLevelEs = impactLevelSearchRepository.findOne(testImpactLevel.getId());
-        assertThat(impactLevelEs).isEqualToIgnoringGivenFields(testImpactLevel);
     }
 
     @Test
@@ -316,10 +307,6 @@ public class ImpactLevelResourceIntTest {
         assertThat(testImpactLevel.getImpact()).isEqualTo(UPDATED_IMPACT);
         assertThat(testImpactLevel.getMinLoss()).isEqualTo(UPDATED_MIN_LOSS);
         assertThat(testImpactLevel.getMaxLoss()).isEqualTo(UPDATED_MAX_LOSS);
-
-        // Validate the ImpactLevel in Elasticsearch
-        ImpactLevel impactLevelEs = impactLevelSearchRepository.findOne(testImpactLevel.getId());
-        assertThat(impactLevelEs).isEqualToIgnoringGivenFields(testImpactLevel);
     }
 
     @Test
@@ -353,30 +340,9 @@ public class ImpactLevelResourceIntTest {
             .accept(TestUtil.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk());
 
-        // Validate Elasticsearch is empty
-        boolean impactLevelExistsInEs = impactLevelSearchRepository.exists(impactLevel.getId());
-        assertThat(impactLevelExistsInEs).isFalse();
-
         // Validate the database is empty
         List<ImpactLevel> impactLevelList = impactLevelRepository.findAll();
         assertThat(impactLevelList).hasSize(databaseSizeBeforeDelete - 1);
-    }
-
-    @Test
-    @Transactional
-    public void searchImpactLevel() throws Exception {
-        // Initialize the database
-        impactLevelService.save(impactLevel);
-
-        // Search the impactLevel
-        restImpactLevelMockMvc.perform(get("/api/_search/impact-levels?query=id:" + impactLevel.getId()))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(impactLevel.getId().intValue())))
-            .andExpect(jsonPath("$.[*].selfAssessmentID").value(hasItem(DEFAULT_SELF_ASSESSMENT_ID.intValue())))
-            .andExpect(jsonPath("$.[*].impact").value(hasItem(DEFAULT_IMPACT)))
-            .andExpect(jsonPath("$.[*].minLoss").value(hasItem(DEFAULT_MIN_LOSS.intValue())))
-            .andExpect(jsonPath("$.[*].maxLoss").value(hasItem(DEFAULT_MAX_LOSS.intValue())));
     }
 
     @Test

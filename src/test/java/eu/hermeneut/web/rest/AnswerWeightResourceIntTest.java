@@ -23,7 +23,6 @@ import eu.hermeneut.domain.AnswerWeight;
 import eu.hermeneut.domain.enumeration.AnswerLikelihood;
 import eu.hermeneut.repository.AnswerWeightRepository;
 import eu.hermeneut.service.AnswerWeightService;
-import eu.hermeneut.repository.search.AnswerWeightSearchRepository;
 import eu.hermeneut.web.rest.errors.ExceptionTranslator;
 
 import org.junit.Before;
@@ -75,9 +74,6 @@ public class AnswerWeightResourceIntTest {
     private AnswerWeightService answerWeightService;
 
     @Autowired
-    private AnswerWeightSearchRepository answerWeightSearchRepository;
-
-    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -118,12 +114,6 @@ public class AnswerWeightResourceIntTest {
         return answerWeight;
     }
 
-    @Before
-    public void initTest() {
-        answerWeightSearchRepository.deleteAll();
-        answerWeight = createEntity(em);
-    }
-
     @Test
     @Transactional
     public void createAnswerWeight() throws Exception {
@@ -142,10 +132,6 @@ public class AnswerWeightResourceIntTest {
         assertThat(testAnswerWeight.getLikelihood()).isEqualTo(DEFAULT_ATTACK_STRATEGY_LIKELIHOOD);
         assertThat(testAnswerWeight.getQuestionType()).isEqualTo(DEFAULT_QUESTION_TYPE);
         assertThat(testAnswerWeight.getWeight()).isEqualTo(DEFAULT_WEIGHT);
-
-        // Validate the AnswerWeight in Elasticsearch
-        AnswerWeight answerWeightEs = answerWeightSearchRepository.findOne(testAnswerWeight.getId());
-        assertThat(answerWeightEs).isEqualToIgnoringGivenFields(testAnswerWeight);
     }
 
     @Test
@@ -236,10 +222,6 @@ public class AnswerWeightResourceIntTest {
         assertThat(testAnswerWeight.getLikelihood()).isEqualTo(UPDATED_ATTACK_STRATEGY_LIKELIHOOD);
         assertThat(testAnswerWeight.getQuestionType()).isEqualTo(UPDATED_QUESTION_TYPE);
         assertThat(testAnswerWeight.getWeight()).isEqualTo(UPDATED_WEIGHT);
-
-        // Validate the AnswerWeight in Elasticsearch
-        AnswerWeight answerWeightEs = answerWeightSearchRepository.findOne(testAnswerWeight.getId());
-        assertThat(answerWeightEs).isEqualToIgnoringGivenFields(testAnswerWeight);
     }
 
     @Test
@@ -273,29 +255,9 @@ public class AnswerWeightResourceIntTest {
             .accept(TestUtil.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk());
 
-        // Validate Elasticsearch is empty
-        boolean answerWeightExistsInEs = answerWeightSearchRepository.exists(answerWeight.getId());
-        assertThat(answerWeightExistsInEs).isFalse();
-
         // Validate the database is empty
         List<AnswerWeight> answerWeightList = answerWeightRepository.findAll();
         assertThat(answerWeightList).hasSize(databaseSizeBeforeDelete - 1);
-    }
-
-    @Test
-    @Transactional
-    public void searchAnswerWeight() throws Exception {
-        // Initialize the database
-        answerWeightService.save(answerWeight);
-
-        // Search the answerWeight
-        restAnswerWeightMockMvc.perform(get("/api/_search/answer-weights?query=id:" + answerWeight.getId()))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(answerWeight.getId().intValue())))
-            .andExpect(jsonPath("$.[*].likelihood").value(hasItem(DEFAULT_ATTACK_STRATEGY_LIKELIHOOD.toString())))
-            .andExpect(jsonPath("$.[*].questionType").value(hasItem(DEFAULT_QUESTION_TYPE.toString())))
-            .andExpect(jsonPath("$.[*].weight").value(hasItem(DEFAULT_WEIGHT.doubleValue())));
     }
 
     @Test

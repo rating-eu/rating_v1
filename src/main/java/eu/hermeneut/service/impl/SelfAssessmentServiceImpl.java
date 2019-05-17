@@ -24,7 +24,6 @@ import eu.hermeneut.domain.overview.SelfAssessmentOverview;
 import eu.hermeneut.exceptions.NotFoundException;
 import eu.hermeneut.service.*;
 import eu.hermeneut.repository.SelfAssessmentRepository;
-import eu.hermeneut.repository.search.SelfAssessmentSearchRepository;
 import eu.hermeneut.service.attackmap.AugmentedAttackStrategyService;
 import eu.hermeneut.service.result.ResultService;
 import eu.hermeneut.thread.AugmentedMyAssetsCallable;
@@ -37,10 +36,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 import java.util.concurrent.*;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
-
-import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
  * Service Implementation for managing SelfAssessment.
@@ -52,8 +47,6 @@ public class SelfAssessmentServiceImpl implements SelfAssessmentService {
     private final Logger LOGGER = LoggerFactory.getLogger(SelfAssessmentServiceImpl.class);
 
     private final SelfAssessmentRepository selfAssessmentRepository;
-
-    private final SelfAssessmentSearchRepository selfAssessmentSearchRepository;
 
     @Autowired
     private SelfAssessmentService selfAssessmentService;
@@ -70,9 +63,8 @@ public class SelfAssessmentServiceImpl implements SelfAssessmentService {
     @Autowired
     private ResultService resultService;
 
-    public SelfAssessmentServiceImpl(SelfAssessmentRepository selfAssessmentRepository, SelfAssessmentSearchRepository selfAssessmentSearchRepository) {
+    public SelfAssessmentServiceImpl(SelfAssessmentRepository selfAssessmentRepository) {
         this.selfAssessmentRepository = selfAssessmentRepository;
-        this.selfAssessmentSearchRepository = selfAssessmentSearchRepository;
     }
 
     /**
@@ -85,7 +77,6 @@ public class SelfAssessmentServiceImpl implements SelfAssessmentService {
     public SelfAssessment save(SelfAssessment selfAssessment) {
         LOGGER.debug("Request to save SelfAssessment : {}", selfAssessment);
         SelfAssessment result = selfAssessmentRepository.save(selfAssessment);
-        selfAssessmentSearchRepository.save(result);
         return result;
     }
 
@@ -125,22 +116,6 @@ public class SelfAssessmentServiceImpl implements SelfAssessmentService {
     public void delete(Long id) {
         LOGGER.debug("Request to delete SelfAssessment : {}", id);
         selfAssessmentRepository.delete(id);
-        selfAssessmentSearchRepository.delete(id);
-    }
-
-    /**
-     * Search for the selfAssessment corresponding to the query.
-     *
-     * @param query the query of the search
-     * @return the list of entities
-     */
-    @Override
-    @Transactional(readOnly = true)
-    public List<SelfAssessment> search(String query) {
-        LOGGER.debug("Request to search SelfAssessments for query {}", query);
-        return StreamSupport
-            .stream(selfAssessmentSearchRepository.search(queryStringQuery(query)).spliterator(), false)
-            .collect(Collectors.toList());
     }
 
     @Override

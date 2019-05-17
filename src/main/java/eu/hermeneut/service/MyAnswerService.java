@@ -68,13 +68,5 @@ public interface MyAnswerService {
      */
     void delete(Long id);
 
-    /**
-     * Search for the myAnswer corresponding to the query.
-     *
-     * @param query the query of the search
-     * @return the list of entities
-     */
-    List<MyAnswer> search(String query);
-
     List<MyAnswer> findAllByQuestionnaireStatus(Long questionnaireStatusID);
 }

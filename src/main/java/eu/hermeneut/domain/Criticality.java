@@ -21,7 +21,7 @@ import eu.hermeneut.domain.compact.output.CriticalityType;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.CreationTimestamp;
-import org.springframework.data.elasticsearch.annotations.Document;
+
 
 import javax.persistence.*;
 import javax.validation.constraints.Max;
@@ -36,7 +36,7 @@ import java.util.Objects;
     uniqueConstraints = @UniqueConstraint(columnNames = {"company_profile_id", "attack_strategy_id", "jhi_type"})
 )
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-@Document(indexName = "criticality")
+
 public class Criticality implements Serializable {
     private static final long serialVersionUID = 1L;
 

@@ -33,9 +33,6 @@ import java.net.URISyntaxException;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.StreamSupport;
-
-import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
  * REST controller for managing EBIT.
@@ -135,19 +132,4 @@ public class EBITResource {
         eBITService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
-
-    /**
-     * SEARCH  /_search/ebits?query=:query : search for the eBIT corresponding
-     * to the query.
-     *
-     * @param query the query of the eBIT search
-     * @return the result of the search
-     */
-    @GetMapping("/_search/ebits")
-    @Timed
-    public List<EBIT> searchEBITS(@RequestParam String query) {
-        log.debug("REST request to search EBITS for query {}", query);
-        return eBITService.search(query);
-    }
-
 }

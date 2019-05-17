@@ -34,9 +34,6 @@ import java.net.URISyntaxException;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.StreamSupport;
-
-import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
  * REST controller for managing Container.
@@ -136,19 +133,4 @@ public class ContainerResource {
         containerService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
-
-    /**
-     * SEARCH  /_search/containers?query=:query : search for the container corresponding
-     * to the query.
-     *
-     * @param query the query of the container search
-     * @return the result of the search
-     */
-    @GetMapping("/_search/containers")
-    @Timed
-    public List<Container> searchContainers(@RequestParam String query) {
-        log.debug("REST request to search Containers for query {}", query);
-        return containerService.search(query);
-    }
-
 }

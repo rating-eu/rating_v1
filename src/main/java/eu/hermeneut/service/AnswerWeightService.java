@@ -54,13 +54,4 @@ public interface AnswerWeightService {
      * @param id the id of the entity
      */
     void delete(Long id);
-
-    /**
-     * Search for the answerWeight corresponding to the query.
-     *
-     * @param query the query of the search
-     * 
-     * @return the list of entities
-     */
-    List<AnswerWeight> search(String query);
 }

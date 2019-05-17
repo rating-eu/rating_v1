@@ -1,12 +1,12 @@
 /*
  * Copyright 2019 HERMENEUT Consortium
- *  
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *  
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- *  
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -32,12 +32,8 @@ import org.springframework.web.bind.annotation.*;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.StreamSupport;
-
-import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
  * REST controller for managing MyAnswer.
@@ -176,19 +172,4 @@ public class MyAnswerResource {
         myAnswerService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
-
-    /**
-     * SEARCH  /_search/my-answers?query=:query : search for the myAnswer corresponding
-     * to the query.
-     *
-     * @param query the query of the myAnswer search
-     * @return the result of the search
-     */
-    @GetMapping("/_search/my-answers")
-    @Timed
-    public List<MyAnswer> searchMyAnswers(@RequestParam String query) {
-        log.debug("REST request to search MyAnswers for query {}", query);
-        return myAnswerService.search(query);
-    }
-
 }

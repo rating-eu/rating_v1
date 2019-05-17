@@ -34,9 +34,6 @@ import java.net.URISyntaxException;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.StreamSupport;
-
-import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
  * REST controller for managing LikelihoodScale.
@@ -148,19 +145,4 @@ public class LikelihoodScaleResource {
         likelihoodScaleService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
-
-    /**
-     * SEARCH  /_search/likelihood-scales?query=:query : search for the likelihoodScale corresponding
-     * to the query.
-     *
-     * @param query the query of the likelihoodScale search
-     * @return the result of the search
-     */
-    @GetMapping("/_search/likelihood-scales")
-    @Timed
-    public List<LikelihoodScale> searchLikelihoodScales(@RequestParam String query) {
-        log.debug("REST request to search LikelihoodScales for query {}", query);
-        return likelihoodScaleService.search(query);
-    }
-
 }

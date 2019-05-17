@@ -223,19 +223,4 @@ public class AttackStrategyResource {
 
         return toReturn;
     }
-
-    /**
-     * SEARCH  /_search/attack-strategies?query=:query : search for the attackStrategy corresponding
-     * to the query.
-     *
-     * @param query the query of the attackStrategy search
-     * @return the result of the search
-     */
-    @GetMapping("/_search/attack-strategies")
-    @Timed
-    public List<AttackStrategy> searchAttackStrategies(@RequestParam String query) {
-        log.debug("REST request to search AttackStrategies for query {}", query);
-        return attackStrategyService.search(query);
-    }
-
 }

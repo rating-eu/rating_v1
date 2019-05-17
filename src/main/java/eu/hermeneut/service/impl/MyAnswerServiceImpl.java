@@ -20,7 +20,6 @@ package eu.hermeneut.service.impl;
 import eu.hermeneut.service.MyAnswerService;
 import eu.hermeneut.domain.MyAnswer;
 import eu.hermeneut.repository.MyAnswerRepository;
-import eu.hermeneut.repository.search.MyAnswerSearchRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -28,10 +27,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
-
-import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
  * Service Implementation for managing MyAnswer.
@@ -44,11 +39,8 @@ public class MyAnswerServiceImpl implements MyAnswerService {
 
     private final MyAnswerRepository myAnswerRepository;
 
-    private final MyAnswerSearchRepository myAnswerSearchRepository;
-
-    public MyAnswerServiceImpl(MyAnswerRepository myAnswerRepository, MyAnswerSearchRepository myAnswerSearchRepository) {
+    public MyAnswerServiceImpl(MyAnswerRepository myAnswerRepository) {
         this.myAnswerRepository = myAnswerRepository;
-        this.myAnswerSearchRepository = myAnswerSearchRepository;
     }
 
     /**
@@ -61,7 +53,6 @@ public class MyAnswerServiceImpl implements MyAnswerService {
     public MyAnswer save(MyAnswer myAnswer) {
         log.debug("Request to save MyAnswer : {}", myAnswer);
         MyAnswer result = myAnswerRepository.save(myAnswer);
-        myAnswerSearchRepository.save(result);
         return result;
     }
 
@@ -69,7 +60,6 @@ public class MyAnswerServiceImpl implements MyAnswerService {
     public List<MyAnswer> saveAll(List<MyAnswer> myAnswers) {
         log.debug("Request to save MyAnswer : {}", Arrays.toString(myAnswers.toArray()));
         List<MyAnswer> result = myAnswerRepository.save(myAnswers);
-        myAnswerSearchRepository.save(result);
         return result;
     }
 
@@ -122,22 +112,6 @@ public class MyAnswerServiceImpl implements MyAnswerService {
     public void delete(Long id) {
         log.debug("Request to delete MyAnswer : {}", id);
         myAnswerRepository.delete(id);
-        myAnswerSearchRepository.delete(id);
-    }
-
-    /**
-     * Search for the myAnswer corresponding to the query.
-     *
-     * @param query the query of the search
-     * @return the list of entities
-     */
-    @Override
-    @Transactional(readOnly = true)
-    public List<MyAnswer> search(String query) {
-        log.debug("Request to search MyAnswers for query {}", query);
-        return StreamSupport
-            .stream(myAnswerSearchRepository.search(queryStringQuery(query)).spliterator(), false)
-            .collect(Collectors.toList());
     }
 
     /**

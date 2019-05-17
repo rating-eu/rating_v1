@@ -23,7 +23,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 
-import org.springframework.data.elasticsearch.annotations.Document;
+
 
 import java.io.Serializable;
 import java.time.ZonedDateTime;
@@ -44,7 +44,7 @@ import eu.hermeneut.domain.enumeration.Role;
     uniqueConstraints = @UniqueConstraint(columnNames = {"jhi_role", "questionnaire_id"})
 )
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-@Document(indexName = "questionnairestatus")
+
 public class QuestionnaireStatus implements Serializable, Comparable<QuestionnaireStatus> {
 
     private static final long serialVersionUID = 1L;

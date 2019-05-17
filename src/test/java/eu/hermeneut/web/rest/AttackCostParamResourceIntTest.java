@@ -22,7 +22,6 @@ import eu.hermeneut.HermeneutApp;
 import eu.hermeneut.domain.AttackCostParam;
 import eu.hermeneut.repository.AttackCostParamRepository;
 import eu.hermeneut.service.AttackCostParamService;
-import eu.hermeneut.repository.search.AttackCostParamSearchRepository;
 import eu.hermeneut.web.rest.errors.ExceptionTranslator;
 
 import org.junit.Before;
@@ -72,9 +71,6 @@ public class AttackCostParamResourceIntTest {
     private AttackCostParamService attackCostParamService;
 
     @Autowired
-    private AttackCostParamSearchRepository attackCostParamSearchRepository;
-
-    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -116,7 +112,6 @@ public class AttackCostParamResourceIntTest {
 
     @Before
     public void initTest() {
-        attackCostParamSearchRepository.deleteAll();
         attackCostParam = createEntity(em);
     }
 
@@ -137,10 +132,6 @@ public class AttackCostParamResourceIntTest {
         AttackCostParam testAttackCostParam = attackCostParamList.get(attackCostParamList.size() - 1);
         assertThat(testAttackCostParam.getType()).isEqualTo(DEFAULT_TYPE);
         assertThat(testAttackCostParam.getValue()).isEqualTo(DEFAULT_VALUE);
-
-        // Validate the AttackCostParam in Elasticsearch
-        AttackCostParam attackCostParamEs = attackCostParamSearchRepository.findOne(testAttackCostParam.getId());
-        assertThat(attackCostParamEs).isEqualToIgnoringGivenFields(testAttackCostParam);
     }
 
     @Test
@@ -245,10 +236,6 @@ public class AttackCostParamResourceIntTest {
         AttackCostParam testAttackCostParam = attackCostParamList.get(attackCostParamList.size() - 1);
         assertThat(testAttackCostParam.getType()).isEqualTo(UPDATED_TYPE);
         assertThat(testAttackCostParam.getValue()).isEqualTo(UPDATED_VALUE);
-
-        // Validate the AttackCostParam in Elasticsearch
-        AttackCostParam attackCostParamEs = attackCostParamSearchRepository.findOne(testAttackCostParam.getId());
-        assertThat(attackCostParamEs).isEqualToIgnoringGivenFields(testAttackCostParam);
     }
 
     @Test
@@ -282,28 +269,9 @@ public class AttackCostParamResourceIntTest {
             .accept(TestUtil.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk());
 
-        // Validate Elasticsearch is empty
-        boolean attackCostParamExistsInEs = attackCostParamSearchRepository.exists(attackCostParam.getId());
-        assertThat(attackCostParamExistsInEs).isFalse();
-
         // Validate the database is empty
         List<AttackCostParam> attackCostParamList = attackCostParamRepository.findAll();
         assertThat(attackCostParamList).hasSize(databaseSizeBeforeDelete - 1);
-    }
-
-    @Test
-    @Transactional
-    public void searchAttackCostParam() throws Exception {
-        // Initialize the database
-        attackCostParamService.save(attackCostParam);
-
-        // Search the attackCostParam
-        restAttackCostParamMockMvc.perform(get("/api/_search/attack-cost-params?query=id:" + attackCostParam.getId()))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(attackCostParam.getId().intValue())))
-            .andExpect(jsonPath("$.[*].type").value(hasItem(DEFAULT_TYPE.toString())))
-            .andExpect(jsonPath("$.[*].value").value(hasItem(DEFAULT_VALUE.intValue())));
     }
 
     @Test

@@ -56,14 +56,6 @@ public interface ImpactLevelService {
      */
     void delete(Long id);
 
-    /**
-     * Search for the impactLevel corresponding to the query.
-     *
-     * @param query the query of the search
-     * @return the list of entities
-     */
-    List<ImpactLevel> search(String query);
-
     List<ImpactLevel> findAllBySelfAssessment(Long selfAssessmentID);
 
     List<ImpactLevel> saveAll(List<ImpactLevel> impactLevels);

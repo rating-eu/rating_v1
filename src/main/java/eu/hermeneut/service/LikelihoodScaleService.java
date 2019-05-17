@@ -56,15 +56,6 @@ public interface LikelihoodScaleService {
     void delete(Long id);
 
     /**
-     * Search for the likelihoodScale corresponding to the query.
-     *
-     * @param query the query of the search
-     *
-     * @return the list of entities
-     */
-    List<LikelihoodScale> search(String query);
-
-    /**
      * Get all the likelihoodScales by SelfAssessment
      *
      * @Param selfAssessmentID the SelfAssessment ID

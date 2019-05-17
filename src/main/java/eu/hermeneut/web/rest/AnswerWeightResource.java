@@ -33,9 +33,6 @@ import java.net.URISyntaxException;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.StreamSupport;
-
-import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
  * REST controller for managing AnswerWeight.
@@ -135,19 +132,4 @@ public class AnswerWeightResource {
         answerWeightService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
-
-    /**
-     * SEARCH  /_search/answer-weights?query=:query : search for the answerWeight corresponding
-     * to the query.
-     *
-     * @param query the query of the answerWeight search
-     * @return the result of the search
-     */
-    @GetMapping("/_search/answer-weights")
-    @Timed
-    public List<AnswerWeight> searchAnswerWeights(@RequestParam String query) {
-        log.debug("REST request to search AnswerWeights for query {}", query);
-        return answerWeightService.search(query);
-    }
-
 }

@@ -33,9 +33,6 @@ import java.net.URISyntaxException;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.StreamSupport;
-
-import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
  * REST controller for managing Answer.
@@ -135,19 +132,4 @@ public class AnswerResource {
         answerService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
-
-    /**
-     * SEARCH  /_search/answers?query=:query : search for the answer corresponding
-     * to the query.
-     *
-     * @param query the query of the answer search
-     * @return the result of the search
-     */
-    @GetMapping("/_search/answers")
-    @Timed
-    public List<Answer> searchAnswers(@RequestParam String query) {
-        log.debug("REST request to search Answers for query {}", query);
-        return answerService.search(query);
-    }
-
 }

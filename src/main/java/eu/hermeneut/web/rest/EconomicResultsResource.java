@@ -33,9 +33,6 @@ import java.net.URISyntaxException;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.StreamSupport;
-
-import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
  * REST controller for managing EconomicResults.
@@ -149,19 +146,4 @@ public class EconomicResultsResource {
         economicResultsService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
-
-    /**
-     * SEARCH  /_search/economic-results?query=:query : search for the economicResults corresponding
-     * to the query.
-     *
-     * @param query the query of the economicResults search
-     * @return the result of the search
-     */
-    @GetMapping("/_search/economic-results")
-    @Timed
-    public List<EconomicResults> searchEconomicResults(@RequestParam String query) {
-        log.debug("REST request to search EconomicResults for query {}", query);
-        return economicResultsService.search(query);
-    }
-
 }

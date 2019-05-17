@@ -21,17 +21,12 @@ import eu.hermeneut.domain.enumeration.AssetType;
 import eu.hermeneut.service.AssetCategoryService;
 import eu.hermeneut.domain.AssetCategory;
 import eu.hermeneut.repository.AssetCategoryRepository;
-import eu.hermeneut.repository.search.AssetCategorySearchRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
-
-import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
  * Service Implementation for managing AssetCategory.
@@ -44,11 +39,8 @@ public class AssetCategoryServiceImpl implements AssetCategoryService {
 
     private final AssetCategoryRepository assetCategoryRepository;
 
-    private final AssetCategorySearchRepository assetCategorySearchRepository;
-
-    public AssetCategoryServiceImpl(AssetCategoryRepository assetCategoryRepository, AssetCategorySearchRepository assetCategorySearchRepository) {
+    public AssetCategoryServiceImpl(AssetCategoryRepository assetCategoryRepository) {
         this.assetCategoryRepository = assetCategoryRepository;
-        this.assetCategorySearchRepository = assetCategorySearchRepository;
     }
 
     /**
@@ -61,7 +53,6 @@ public class AssetCategoryServiceImpl implements AssetCategoryService {
     public AssetCategory save(AssetCategory assetCategory) {
         log.debug("Request to save AssetCategory : {}", assetCategory);
         AssetCategory result = assetCategoryRepository.save(assetCategory);
-        assetCategorySearchRepository.save(result);
         return result;
     }
 
@@ -99,22 +90,6 @@ public class AssetCategoryServiceImpl implements AssetCategoryService {
     public void delete(Long id) {
         log.debug("Request to delete AssetCategory : {}", id);
         assetCategoryRepository.delete(id);
-        assetCategorySearchRepository.delete(id);
-    }
-
-    /**
-     * Search for the assetCategory corresponding to the query.
-     *
-     * @param query the query of the search
-     * @return the list of entities
-     */
-    @Override
-    @Transactional(readOnly = true)
-    public List<AssetCategory> search(String query) {
-        log.debug("Request to search AssetCategories for query {}", query);
-        return StreamSupport
-            .stream(assetCategorySearchRepository.search(queryStringQuery(query)).spliterator(), false)
-            .collect(Collectors.toList());
     }
 
     /**

@@ -56,15 +56,6 @@ public interface CriticalLevelService {
     void delete(Long id);
 
     /**
-     * Search for the criticalLevel corresponding to the query.
-     *
-     * @param query the query of the search
-     *
-     * @return the list of entities
-     */
-    List<CriticalLevel> search(String query);
-
-    /**
      * Get the "selfAssessmentID" criticalLevel.
      *
      * @param selfAssessmentID the id of the linked SelfAssessment

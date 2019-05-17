@@ -34,9 +34,6 @@ import java.net.URISyntaxException;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.StreamSupport;
-
-import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
  * REST controller for managing EconomicCoefficients.
@@ -136,19 +133,4 @@ public class EconomicCoefficientsResource {
         economicCoefficientsService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
-
-    /**
-     * SEARCH  /_search/economic-coefficients?query=:query : search for the economicCoefficients corresponding
-     * to the query.
-     *
-     * @param query the query of the economicCoefficients search
-     * @return the result of the search
-     */
-    @GetMapping("/_search/economic-coefficients")
-    @Timed
-    public List<EconomicCoefficients> searchEconomicCoefficients(@RequestParam String query) {
-        log.debug("REST request to search EconomicCoefficients for query {}", query);
-        return economicCoefficientsService.search(query);
-    }
-
 }

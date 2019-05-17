@@ -21,17 +21,12 @@ import eu.hermeneut.domain.User;
 import eu.hermeneut.service.ExternalAuditService;
 import eu.hermeneut.domain.ExternalAudit;
 import eu.hermeneut.repository.ExternalAuditRepository;
-import eu.hermeneut.repository.search.ExternalAuditSearchRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
-
-import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
  * Service Implementation for managing ExternalAudit.
@@ -44,11 +39,8 @@ public class ExternalAuditServiceImpl implements ExternalAuditService {
 
     private final ExternalAuditRepository externalAuditRepository;
 
-    private final ExternalAuditSearchRepository externalAuditSearchRepository;
-
-    public ExternalAuditServiceImpl(ExternalAuditRepository externalAuditRepository, ExternalAuditSearchRepository externalAuditSearchRepository) {
+    public ExternalAuditServiceImpl(ExternalAuditRepository externalAuditRepository) {
         this.externalAuditRepository = externalAuditRepository;
-        this.externalAuditSearchRepository = externalAuditSearchRepository;
     }
 
     /**
@@ -61,7 +53,6 @@ public class ExternalAuditServiceImpl implements ExternalAuditService {
     public ExternalAudit save(ExternalAudit externalAudit) {
         log.debug("Request to save ExternalAudit : {}", externalAudit);
         ExternalAudit result = externalAuditRepository.save(externalAudit);
-        externalAuditSearchRepository.save(result);
         return result;
     }
 
@@ -99,22 +90,6 @@ public class ExternalAuditServiceImpl implements ExternalAuditService {
     public void delete(Long id) {
         log.debug("Request to delete ExternalAudit : {}", id);
         externalAuditRepository.delete(id);
-        externalAuditSearchRepository.delete(id);
-    }
-
-    /**
-     * Search for the externalAudit corresponding to the query.
-     *
-     * @param query the query of the search
-     * @return the list of entities
-     */
-    @Override
-    @Transactional(readOnly = true)
-    public List<ExternalAudit> search(String query) {
-        log.debug("Request to search ExternalAudits for query {}", query);
-        return StreamSupport
-            .stream(externalAuditSearchRepository.search(queryStringQuery(query)).spliterator(), false)
-            .collect(Collectors.toList());
     }
 
     @Override

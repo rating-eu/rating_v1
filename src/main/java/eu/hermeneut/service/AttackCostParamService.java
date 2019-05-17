@@ -57,14 +57,5 @@ public interface AttackCostParamService {
      */
     void delete(Long id);
 
-    /**
-     * Search for the attackCostParam corresponding to the query.
-     *
-     * @param query the query of the search
-     * 
-     * @return the list of entities
-     */
-    List<AttackCostParam> search(String query);
-
     List<AttackCostParam> findAllBySelfAssessment(Long selfAssessmentID) throws NotFoundException;
 }

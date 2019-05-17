@@ -22,7 +22,6 @@ import eu.hermeneut.HermeneutApp;
 import eu.hermeneut.domain.Level;
 import eu.hermeneut.repository.LevelRepository;
 import eu.hermeneut.service.LevelService;
-import eu.hermeneut.repository.search.LevelSearchRepository;
 import eu.hermeneut.web.rest.errors.ExceptionTranslator;
 
 import org.junit.Before;
@@ -70,9 +69,6 @@ public class LevelResourceIntTest {
     private LevelService levelService;
 
     @Autowired
-    private LevelSearchRepository levelSearchRepository;
-
-    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -114,7 +110,6 @@ public class LevelResourceIntTest {
 
     @Before
     public void initTest() {
-        levelSearchRepository.deleteAll();
         level = createEntity(em);
     }
 
@@ -135,10 +130,6 @@ public class LevelResourceIntTest {
         Level testLevel = levelList.get(levelList.size() - 1);
         assertThat(testLevel.getName()).isEqualTo(DEFAULT_NAME);
         assertThat(testLevel.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
-
-        // Validate the Level in Elasticsearch
-        Level levelEs = levelSearchRepository.findOne(testLevel.getId());
-        assertThat(levelEs).isEqualToIgnoringGivenFields(testLevel);
     }
 
     @Test
@@ -243,10 +234,6 @@ public class LevelResourceIntTest {
         Level testLevel = levelList.get(levelList.size() - 1);
         assertThat(testLevel.getName()).isEqualTo(UPDATED_NAME);
         assertThat(testLevel.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
-
-        // Validate the Level in Elasticsearch
-        Level levelEs = levelSearchRepository.findOne(testLevel.getId());
-        assertThat(levelEs).isEqualToIgnoringGivenFields(testLevel);
     }
 
     @Test
@@ -280,28 +267,9 @@ public class LevelResourceIntTest {
             .accept(TestUtil.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk());
 
-        // Validate Elasticsearch is empty
-        boolean levelExistsInEs = levelSearchRepository.exists(level.getId());
-        assertThat(levelExistsInEs).isFalse();
-
         // Validate the database is empty
         List<Level> levelList = levelRepository.findAll();
         assertThat(levelList).hasSize(databaseSizeBeforeDelete - 1);
-    }
-
-    @Test
-    @Transactional
-    public void searchLevel() throws Exception {
-        // Initialize the database
-        levelService.save(level);
-
-        // Search the level
-        restLevelMockMvc.perform(get("/api/_search/levels?query=id:" + level.getId()))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(level.getId().intValue())))
-            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
-            .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION.toString())));
     }
 
     @Test

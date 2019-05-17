@@ -34,9 +34,6 @@ import java.net.URISyntaxException;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.StreamSupport;
-
-import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
  * REST controller for managing Motivation.
@@ -136,19 +133,4 @@ public class MotivationResource {
         motivationService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
-
-    /**
-     * SEARCH  /_search/motivations?query=:query : search for the motivation corresponding
-     * to the query.
-     *
-     * @param query the query of the motivation search
-     * @return the result of the search
-     */
-    @GetMapping("/_search/motivations")
-    @Timed
-    public List<Motivation> searchMotivations(@RequestParam String query) {
-        log.debug("REST request to search Motivations for query {}", query);
-        return motivationService.search(query);
-    }
-
 }

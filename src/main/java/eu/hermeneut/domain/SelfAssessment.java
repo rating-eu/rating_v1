@@ -26,7 +26,7 @@ import javax.validation.constraints.*;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-import org.springframework.data.elasticsearch.annotations.Document;
+
 
 import java.io.Serializable;
 import java.time.ZonedDateTime;
@@ -40,7 +40,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "self_assessment")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-@Document(indexName = "selfassessment")
+
 public class SelfAssessment implements Serializable {
 
     private static final long serialVersionUID = 1L;

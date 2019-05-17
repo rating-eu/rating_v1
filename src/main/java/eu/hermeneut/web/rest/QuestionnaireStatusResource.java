@@ -234,19 +234,4 @@ public class QuestionnaireStatusResource {
         questionnaireStatusService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
-
-    /**
-     * SEARCH  /_search/questionnaire-statuses?query=:query : search for the questionnaireStatus corresponding
-     * to the query.
-     *
-     * @param query the query of the questionnaireStatus search
-     * @return the result of the search
-     */
-    @GetMapping("/_search/questionnaire-statuses")
-    @Timed
-    @Secured(AuthoritiesConstants.ADMIN)
-    public List<QuestionnaireStatus> searchQuestionnaireStatuses(@RequestParam String query) {
-        log.debug("REST request to search QuestionnaireStatuses for query {}", query);
-        return questionnaireStatusService.search(query);
-    }
 }

@@ -59,14 +59,6 @@ public interface AttackCostService {
      */
     void delete(Long id);
 
-    /**
-     * Search for the attackCost corresponding to the query.
-     *
-     * @param query the query of the search
-     * @return the list of entities
-     */
-    List<AttackCost> search(String query);
-
     List<AttackCost> findAllUniqueTypesBySelfAssessmentWithNulledID(Long selfAssessmentID);
 
     List<AttackCost> findAllBySelfAssessmentAndCostTypeWithDuplicateTypes(Long selfAssessmentID, CostType costType);

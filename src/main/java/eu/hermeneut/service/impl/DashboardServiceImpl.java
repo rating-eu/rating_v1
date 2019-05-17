@@ -20,7 +20,6 @@ package eu.hermeneut.service.impl;
 import eu.hermeneut.domain.*;
 import eu.hermeneut.domain.dashboard.ImpactEvaluationStatus;
 import eu.hermeneut.domain.enumeration.AssetType;
-import eu.hermeneut.domain.enumeration.CompType;
 import eu.hermeneut.domain.enumeration.SectorType;
 import eu.hermeneut.exceptions.NotFoundException;
 import eu.hermeneut.exceptions.NullInputException;

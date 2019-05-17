@@ -58,14 +58,6 @@ public interface SelfAssessmentService {
      */
     void delete(Long id);
 
-    /**
-     * Search for the selfAssessment corresponding to the query.
-     *
-     * @param query the query of the search
-     * @return the list of entities
-     */
-    List<SelfAssessment> search(String query);
-
     List<SelfAssessment> findAllByCompanyProfile(Long companyProfileID);
 
     SelfAssessmentOverview getSelfAssessmentOverview(Long selfAssessmentID);

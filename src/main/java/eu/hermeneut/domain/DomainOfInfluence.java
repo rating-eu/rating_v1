@@ -23,7 +23,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 
-import org.springframework.data.elasticsearch.annotations.Document;
+
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -33,7 +33,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "domain_of_influence")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-@Document(indexName = "domainofinfluence")
+
 public class DomainOfInfluence implements Serializable {
 
     private static final long serialVersionUID = 1L;

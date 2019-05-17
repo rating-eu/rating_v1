@@ -63,14 +63,6 @@ public interface MyAssetService {
      */
     void delete(Long id);
 
-    /**
-     * Search for the myAsset corresponding to the query.
-     *
-     * @param query the query of the search
-     * @return the list of entities
-     */
-    List<MyAsset> search(String query);
-
     List<MyAsset> findAllBySelfAssessment(Long selfAssessmentID);
 
     List<MyAsset> findAllBySelfAssessmentAndAssetType(Long selfAssessmentID, AssetType assetType);

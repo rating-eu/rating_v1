@@ -59,14 +59,6 @@ public interface QuestionService {
     void delete(Long id);
 
     /**
-     * Search for the question corresponding to the query.
-     *
-     * @param query the query of the search
-     * @return the list of entities
-     */
-    List<Question> search(String query);
-
-    /**
      * Get all the questions by questionnaire.
      *
      * @return the list of entities

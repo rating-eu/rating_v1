@@ -55,14 +55,5 @@ public interface EconomicCoefficientsService {
      */
     void delete(Long id);
 
-    /**
-     * Search for the economicCoefficients corresponding to the query.
-     *
-     * @param query the query of the search
-     *
-     * @return the list of entities
-     */
-    List<EconomicCoefficients> search(String query);
-
     EconomicCoefficients findOneBySelfAssessmentID(Long selfAssessmentID);
 }

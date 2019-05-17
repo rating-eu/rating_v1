@@ -22,7 +22,6 @@ import eu.hermeneut.HermeneutApp;
 import eu.hermeneut.domain.EconomicResults;
 import eu.hermeneut.repository.EconomicResultsRepository;
 import eu.hermeneut.service.EconomicResultsService;
-import eu.hermeneut.repository.search.EconomicResultsSearchRepository;
 import eu.hermeneut.web.rest.errors.ExceptionTranslator;
 
 import org.junit.Before;
@@ -77,9 +76,6 @@ public class EconomicResultsResourceIntTest {
     private EconomicResultsService economicResultsService;
 
     @Autowired
-    private EconomicResultsSearchRepository economicResultsSearchRepository;
-
-    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -123,7 +119,6 @@ public class EconomicResultsResourceIntTest {
 
     @Before
     public void initTest() {
-        economicResultsSearchRepository.deleteAll();
         economicResults = createEntity(em);
     }
 
@@ -146,10 +141,6 @@ public class EconomicResultsResourceIntTest {
         assertThat(testEconomicResults.getIntangibleDrivingEarnings()).isEqualTo(DEFAULT_INTANGIBLE_DRIVING_EARNINGS);
         assertThat(testEconomicResults.getIntangibleCapital()).isEqualTo(DEFAULT_INTANGIBLE_CAPITAL);
         assertThat(testEconomicResults.getIntangibleLossByAttacks()).isEqualTo(DEFAULT_INTANGIBLE_LOSS_BY_ATTACKS);
-
-        // Validate the EconomicResults in Elasticsearch
-        EconomicResults economicResultsEs = economicResultsSearchRepository.findOne(testEconomicResults.getId());
-        assertThat(economicResultsEs).isEqualToIgnoringGivenFields(testEconomicResults);
     }
 
     @Test
@@ -244,10 +235,6 @@ public class EconomicResultsResourceIntTest {
         assertThat(testEconomicResults.getIntangibleDrivingEarnings()).isEqualTo(UPDATED_INTANGIBLE_DRIVING_EARNINGS);
         assertThat(testEconomicResults.getIntangibleCapital()).isEqualTo(UPDATED_INTANGIBLE_CAPITAL);
         assertThat(testEconomicResults.getIntangibleLossByAttacks()).isEqualTo(UPDATED_INTANGIBLE_LOSS_BY_ATTACKS);
-
-        // Validate the EconomicResults in Elasticsearch
-        EconomicResults economicResultsEs = economicResultsSearchRepository.findOne(testEconomicResults.getId());
-        assertThat(economicResultsEs).isEqualToIgnoringGivenFields(testEconomicResults);
     }
 
     @Test
@@ -281,30 +268,9 @@ public class EconomicResultsResourceIntTest {
             .accept(TestUtil.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk());
 
-        // Validate Elasticsearch is empty
-        boolean economicResultsExistsInEs = economicResultsSearchRepository.exists(economicResults.getId());
-        assertThat(economicResultsExistsInEs).isFalse();
-
         // Validate the database is empty
         List<EconomicResults> economicResultsList = economicResultsRepository.findAll();
         assertThat(economicResultsList).hasSize(databaseSizeBeforeDelete - 1);
-    }
-
-    @Test
-    @Transactional
-    public void searchEconomicResults() throws Exception {
-        // Initialize the database
-        economicResultsService.save(economicResults);
-
-        // Search the economicResults
-        restEconomicResultsMockMvc.perform(get("/api/_search/economic-results?query=id:" + economicResults.getId()))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(economicResults.getId().intValue())))
-            .andExpect(jsonPath("$.[*].economicPerformance").value(hasItem(DEFAULT_ECONOMIC_PERFORMANCE.intValue())))
-            .andExpect(jsonPath("$.[*].intangibleDrivingEarnings").value(hasItem(DEFAULT_INTANGIBLE_DRIVING_EARNINGS.intValue())))
-            .andExpect(jsonPath("$.[*].intangibleCapital").value(hasItem(DEFAULT_INTANGIBLE_CAPITAL.intValue())))
-            .andExpect(jsonPath("$.[*].intangibleLossByAttacks").value(hasItem(DEFAULT_INTANGIBLE_LOSS_BY_ATTACKS.intValue())));
     }
 
     @Test

@@ -37,9 +37,6 @@ import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import java.util.stream.StreamSupport;
-
-import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
  * REST controller for managing ThreatAgent.
@@ -166,19 +163,4 @@ public class ThreatAgentResource {
         threatAgentService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
-
-    /**
-     * SEARCH  /_search/threat-agents?query=:query : search for the threatAgent corresponding
-     * to the query.
-     *
-     * @param query the query of the threatAgent search
-     * @return the result of the search
-     */
-    @GetMapping("/_search/threat-agents")
-    @Timed
-    public List<ThreatAgent> searchThreatAgents(@RequestParam String query) {
-        log.debug("REST request to search ThreatAgents for query {}", query);
-        return threatAgentService.search(query);
-    }
-
 }

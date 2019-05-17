@@ -22,7 +22,6 @@ import eu.hermeneut.service.EconomicResultsService;
 import eu.hermeneut.service.ImpactLevelService;
 import eu.hermeneut.domain.ImpactLevel;
 import eu.hermeneut.repository.ImpactLevelRepository;
-import eu.hermeneut.repository.search.ImpactLevelSearchRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,9 +35,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
-
-import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
  * Service Implementation for managing ImpactLevel.
@@ -52,14 +48,11 @@ public class ImpactLevelServiceImpl implements ImpactLevelService {
 
     private final ImpactLevelRepository impactLevelRepository;
 
-    private final ImpactLevelSearchRepository impactLevelSearchRepository;
-
     @Autowired
     private EconomicResultsService economicResultsService;
 
-    public ImpactLevelServiceImpl(ImpactLevelRepository impactLevelRepository, ImpactLevelSearchRepository impactLevelSearchRepository) {
+    public ImpactLevelServiceImpl(ImpactLevelRepository impactLevelRepository) {
         this.impactLevelRepository = impactLevelRepository;
-        this.impactLevelSearchRepository = impactLevelSearchRepository;
     }
 
     /**
@@ -72,7 +65,6 @@ public class ImpactLevelServiceImpl implements ImpactLevelService {
     public ImpactLevel save(ImpactLevel impactLevel) {
         log.debug("Request to save ImpactLevel : {}", impactLevel);
         ImpactLevel result = impactLevelRepository.save(impactLevel);
-        impactLevelSearchRepository.save(result);
         return result;
     }
 
@@ -110,22 +102,6 @@ public class ImpactLevelServiceImpl implements ImpactLevelService {
     public void delete(Long id) {
         log.debug("Request to delete ImpactLevel : {}", id);
         impactLevelRepository.delete(id);
-        impactLevelSearchRepository.delete(id);
-    }
-
-    /**
-     * Search for the impactLevel corresponding to the query.
-     *
-     * @param query the query of the search
-     * @return the list of entities
-     */
-    @Override
-    @Transactional(readOnly = true)
-    public List<ImpactLevel> search(String query) {
-        log.debug("Request to search ImpactLevels for query {}", query);
-        return StreamSupport
-            .stream(impactLevelSearchRepository.search(queryStringQuery(query)).spliterator(), false)
-            .collect(Collectors.toList());
     }
 
     @Override
@@ -206,7 +182,6 @@ public class ImpactLevelServiceImpl implements ImpactLevelService {
     public List<ImpactLevel> saveAll(List<ImpactLevel> impactLevels) {
         log.debug("Request to save ImpactLevel : {}", impactLevels);
         List<ImpactLevel> result = impactLevelRepository.save(impactLevels);
-        impactLevelSearchRepository.save(result);
         return result;
     }
 

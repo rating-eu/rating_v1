@@ -21,7 +21,6 @@ import eu.hermeneut.domain.*;
 import eu.hermeneut.domain.enumeration.ContainerType;
 import eu.hermeneut.service.QuestionService;
 import eu.hermeneut.repository.QuestionRepository;
-import eu.hermeneut.repository.search.QuestionSearchRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -31,9 +30,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
-
-import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
  * Service Implementation for managing Question.
@@ -46,11 +42,8 @@ public class QuestionServiceImpl implements QuestionService {
 
     private final QuestionRepository questionRepository;
 
-    private final QuestionSearchRepository questionSearchRepository;
-
-    public QuestionServiceImpl(QuestionRepository questionRepository, QuestionSearchRepository questionSearchRepository) {
+    public QuestionServiceImpl(QuestionRepository questionRepository) {
         this.questionRepository = questionRepository;
-        this.questionSearchRepository = questionSearchRepository;
     }
 
     /**
@@ -63,7 +56,6 @@ public class QuestionServiceImpl implements QuestionService {
     public Question save(Question question) {
         log.debug("Request to save Question : {}", question);
         Question result = questionRepository.save(question);
-        questionSearchRepository.save(result);
         return result;
     }
 
@@ -101,22 +93,6 @@ public class QuestionServiceImpl implements QuestionService {
     public void delete(Long id) {
         log.debug("Request to delete Question : {}", id);
         questionRepository.delete(id);
-        questionSearchRepository.delete(id);
-    }
-
-    /**
-     * Search for the question corresponding to the query.
-     *
-     * @param query the query of the search
-     * @return the list of entities
-     */
-    @Override
-    @Transactional(readOnly = true)
-    public List<Question> search(String query) {
-        log.debug("Request to search Questions for query {}", query);
-        return StreamSupport
-            .stream(questionSearchRepository.search(queryStringQuery(query)).spliterator(), false)
-            .collect(Collectors.toList());
     }
 
     @Override

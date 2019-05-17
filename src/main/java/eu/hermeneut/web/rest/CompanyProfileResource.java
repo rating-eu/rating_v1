@@ -27,16 +27,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
-
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.StreamSupport;
-
-import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
  * REST controller for managing CompanyProfile.
@@ -136,19 +131,4 @@ public class CompanyProfileResource {
         companyProfileService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
-
-    /**
-     * SEARCH  /_search/company-profiles?query=:query : search for the companyProfile corresponding
-     * to the query.
-     *
-     * @param query the query of the companyProfile search
-     * @return the result of the search
-     */
-    @GetMapping("/_search/company-profiles")
-    @Timed
-    public List<CompanyProfile> searchCompanyProfiles(@RequestParam String query) {
-        log.debug("REST request to search CompanyProfiles for query {}", query);
-        return companyProfileService.search(query);
-    }
-
 }

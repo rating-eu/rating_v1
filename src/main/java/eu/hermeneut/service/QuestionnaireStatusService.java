@@ -60,24 +60,6 @@ public interface QuestionnaireStatusService {
      */
     void delete(Long id);
 
-    /**
-     * Search for the questionnaireStatus corresponding to the query.
-     *
-     * @param query the query of the search
-     * @return the list of entities
-     */
-    List<QuestionnaireStatus> search(String query);
-
-    /*List<QuestionnaireStatus> findAllBySelfAssessmentAndUser(Long selfAssessmentID, Long userID);
-
-    QuestionnaireStatus findByRoleSelfAssessmentAndQuestionnaire(String role, Long selfAssessmentID, Long questionnaireID);
-
-    List<QuestionnaireStatus> findAllBySelfAssessment(Long selfAssessmentID);
-
-    List<QuestionnaireStatus> findAllBySelfAssessmentAndQuestionnairePurpose(Long selfAssessmentID, QuestionnairePurpose purpose);
-
-    QuestionnaireStatus findBySelfAssessmentRoleAndQuestionnairePurpose(Long selfAssessmentID, Role role, QuestionnairePurpose purpose);*/
-
     List<QuestionnaireStatus> findAllByCompanyProfileAndUser(Long companyProfileID, Long userID);
 
     List<QuestionnaireStatus> findAllByRoleCompanyProfileAndQuestionnaire(Role role, Long companyProfileID, Long questionnaireID);

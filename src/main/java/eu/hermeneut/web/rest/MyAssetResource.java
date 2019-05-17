@@ -20,8 +20,6 @@ package eu.hermeneut.web.rest;
 import com.codahale.metrics.annotation.Timed;
 import eu.hermeneut.aop.annotation.AttackCostParamsCleaningHook;
 import eu.hermeneut.aop.annotation.KafkaRiskProfileHook;
-import eu.hermeneut.domain.AssetCategory;
-import eu.hermeneut.domain.AttackCost;
 import eu.hermeneut.domain.MyAsset;
 import eu.hermeneut.domain.SelfAssessment;
 import eu.hermeneut.exceptions.IllegalInputException;
@@ -49,9 +47,6 @@ import java.net.URISyntaxException;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
-
-import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
  * REST controller for managing MyAsset.
@@ -259,20 +254,4 @@ public class MyAssetResource {
         myAssetService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
-
-    /**
-     * SEARCH  /_search/my-assets?query=:query : search for the myAsset corresponding
-     * to the query.
-     *
-     * @param query the query of the myAsset search
-     * @return the result of the search
-     */
-    @GetMapping("/_search/my-assets")
-    @Timed
-    @Secured(AuthoritiesConstants.ADMIN)
-    public List<MyAsset> searchMyAssets(@RequestParam String query) {
-        log.debug("REST request to search MyAssets for query {}", query);
-        return myAssetService.search(query);
-    }
-
 }

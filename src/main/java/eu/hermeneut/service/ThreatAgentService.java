@@ -61,13 +61,4 @@ public interface ThreatAgentService {
      * @param id the id of the entity
      */
     void delete(Long id);
-
-    /**
-     * Search for the threatAgent corresponding to the query.
-     *
-     * @param query the query of the search
-     *
-     * @return the list of entities
-     */
-    List<ThreatAgent> search(String query);
 }
