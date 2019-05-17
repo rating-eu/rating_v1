@@ -61,14 +61,6 @@ spring:
             auth: ${EMAIL_AUTH:true}
             starttls.enable: ${EMAIL_TLS:true}
             ssl.trust: ${EMAIL_HOST:localhost}
-    data:
-        elasticsearch:
-            cluster-name:
-            cluster-nodes:
-            properties:
-                path:
-                    logs: target/elasticsearch/log
-                    data: target/elasticsearch/data
     messages:
         cache-seconds: 1
     thymeleaf:

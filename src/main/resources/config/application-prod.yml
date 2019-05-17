@@ -55,10 +55,6 @@ spring:
             auth: ${EMAIL_AUTH}
             starttls.enable: ${EMAIL_TLS}
             ssl.trust: ${EMAIL_HOST}
-    data:
-        elasticsearch:
-            cluster-name:
-            cluster-nodes: localhost:9300
     thymeleaf:
         cache: true
     zipkin: # Use the "zipkin" Maven profile to have the Spring Cloud Zipkin dependencies
