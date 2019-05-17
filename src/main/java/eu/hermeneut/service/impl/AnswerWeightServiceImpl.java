@@ -17,6 +17,7 @@
 
 package eu.hermeneut.service.impl;
 
+import eu.hermeneut.domain.enumeration.QuestionType;
 import eu.hermeneut.service.AnswerWeightService;
 import eu.hermeneut.domain.AnswerWeight;
 import eu.hermeneut.repository.AnswerWeightRepository;
@@ -57,7 +58,7 @@ public class AnswerWeightServiceImpl implements AnswerWeightService {
     }
 
     /**
-     * Get all the answerWeights.
+     * Get all the allAnswerWeights.
      *
      * @return the list of entities
      */
@@ -90,5 +91,10 @@ public class AnswerWeightServiceImpl implements AnswerWeightService {
     public void delete(Long id) {
         log.debug("Request to delete AnswerWeight : {}", id);
         answerWeightRepository.delete(id);
+    }
+
+    @Override
+    public List<AnswerWeight> findAllByQuestionType(QuestionType questionType) {
+        return answerWeightRepository.findAllByQuestionType(questionType);
     }
 }

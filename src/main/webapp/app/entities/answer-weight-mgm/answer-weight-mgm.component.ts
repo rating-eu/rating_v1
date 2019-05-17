@@ -15,24 +15,27 @@
  *
  */
 
-import {Component, OnInit, OnDestroy} from '@angular/core';
-import {HttpResponse, HttpErrorResponse} from '@angular/common/http';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {HttpErrorResponse, HttpResponse} from '@angular/common/http';
 import {ActivatedRoute} from '@angular/router';
 import {Subscription} from 'rxjs/Subscription';
-import {JhiEventManager, JhiAlertService} from 'ng-jhipster';
+import {JhiAlertService, JhiEventManager} from 'ng-jhipster';
 
 import {AnswerWeightMgm} from './answer-weight-mgm.model';
 import {AnswerWeightMgmService} from './answer-weight-mgm.service';
 import {Principal} from '../../shared';
 import {MatTabChangeEvent} from '@angular/material';
 import {PopUpService} from '../../shared/pop-up-services/pop-up.service';
+import {QuestionType} from "../enumerations/QuestionType.enum";
 
 @Component({
     selector: 'jhi-answer-weight-mgm',
     templateUrl: './answer-weight-mgm.component.html'
 })
 export class AnswerWeightMgmComponent implements OnInit, OnDestroy {
-    answerWeights: AnswerWeightMgm[];
+    allAnswerWeights: AnswerWeightMgm[];
+    regularAnswerWeights: AnswerWeightMgm[];
+    relevantAnswerWeights: AnswerWeightMgm[];
     currentAccount: any;
     eventSubscriber: Subscription;
 
@@ -47,7 +50,7 @@ export class AnswerWeightMgmComponent implements OnInit, OnDestroy {
     loadAll() {
         this.answerWeightService.query().subscribe(
             (res: HttpResponse<AnswerWeightMgm[]>) => {
-                this.answerWeights = res.body;
+                this.allAnswerWeights = res.body;
             },
             (res: HttpErrorResponse) => this.onError(res.message)
         );
@@ -79,5 +82,43 @@ export class AnswerWeightMgmComponent implements OnInit, OnDestroy {
 
     private onError(error) {
         this.jhiAlertService.error(error.message, null, null);
+    }
+
+    tabClick(event: MatTabChangeEvent) {
+        switch (event.tab.textLabel) {
+            case '': {
+                if (!this.allAnswerWeights || !this.allAnswerWeights.length) {
+                    this.answerWeightService.query().subscribe(
+                        (response: HttpResponse<AnswerWeightMgm[]>) => {
+                            this.allAnswerWeights = response.body;
+                        }
+                    );
+                }
+
+                break;
+            }
+            case 'Regular': {
+                if (!this.regularAnswerWeights || !this.regularAnswerWeights.length) {
+                    this.answerWeightService.findAllByQuestionType(QuestionType.REGULAR).subscribe(
+                        (response: HttpResponse<AnswerWeightMgm[]>) => {
+                            this.regularAnswerWeights = response.body;
+                        }
+                    );
+                }
+
+                break;
+            }
+            case 'Relevant': {
+                if (!this.relevantAnswerWeights || !this.relevantAnswerWeights.length) {
+                    this.answerWeightService.findAllByQuestionType(QuestionType.RELEVANT).subscribe(
+                        (response: HttpResponse<AnswerWeightMgm[]>) => {
+                            this.relevantAnswerWeights = response.body;
+                        }
+                    );
+                }
+                
+                break;
+            }
+        }
     }
 }
