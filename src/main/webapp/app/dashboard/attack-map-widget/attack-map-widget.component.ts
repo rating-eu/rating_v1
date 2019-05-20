@@ -52,7 +52,6 @@ export class AttackMapWidgetComponent implements OnInit, OnDestroy {
     private _subscriptions: Subscription[] = [];
     public debug = false;
 
-    public selfAssessment: SelfAssessmentMgm;
     private myCompany: MyCompanyMgm;
 
     // ThreatAgents
@@ -87,7 +86,6 @@ export class AttackMapWidgetComponent implements OnInit, OnDestroy {
     public likelihoodStepEnabled: Map<number/*Step-Number*/, boolean>;
 
     constructor(
-        private selfAssessmentService: SelfAssessmentMgmService,
         private levelService: LevelMgmService,
         private phaseService: PhaseMgmService,
         private attackMapService: AttackMapService,
@@ -98,84 +96,93 @@ export class AttackMapWidgetComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
-        this.selfAssessment = this.dataSharingService.selfAssessment;
-        this.myCompany = this.dataSharingService.myCompany;
-
         this.loading = true;
         this.likelihoodStepEnabled = new Map();
         this.likelihoodStepEnabled.set(LikelihoodStep.INITIAL_LIKELIHOOD, false);
         this.likelihoodStepEnabled.set(LikelihoodStep.CONTEXTUAL_LIKELIHOOD, false);
         this.likelihoodStepEnabled.set(LikelihoodStep.REFINED_LIKELIHOOD, false);
 
-        this.threatAgents$ = this.threatAgentService.getThreatAgentsByCompany(this.myCompany.companyProfile.id);
-        this.ckc7Phases$ = this.phaseService.query();
-        this.attackLevels$ = this.levelService.query();
-        this.attackMatrix$ = this.attackMapService.getAttackCKC7Matrix(this.myCompany.companyProfile);
+        this.myCompany = this.dataSharingService.myCompany;
+        this.callAPI();
 
-        const join$: Observable<[HttpResponse<PhaseMgm[]>, HttpResponse<LevelMgm[]>, Map<Number, Map<Number, AugmentedAttackStrategy>>, HttpResponse<ThreatAgentMgm[]>]> =
-            forkJoin(this.ckc7Phases$, this.attackLevels$, this.attackMatrix$, this.threatAgents$);
+        this.dataSharingService.myCompanyObservable.subscribe((response: MyCompanyMgm) => {
+            this.myCompany = response;
+            this.callAPI();
+        });
+    }
 
-        join$.subscribe((response: [HttpResponse<PhaseMgm[]>, HttpResponse<LevelMgm[]>, Map<Number, Map<Number, AugmentedAttackStrategy>>, HttpResponse<ThreatAgentMgm[]>]) => {
-                this.ckc7Phases = response[0].body;
-                // Remove id 7 phase
-                const index = _.findIndex(this.ckc7Phases, (phase) => phase.id === 7);
+    private callAPI() {
+        if (this.myCompany && this.myCompany.companyProfile) {
+            this.threatAgents$ = this.threatAgentService.getThreatAgentsByCompany(this.myCompany.companyProfile.id);
+            this.ckc7Phases$ = this.phaseService.query();
+            this.attackLevels$ = this.levelService.query();
+            this.attackMatrix$ = this.attackMapService.getAttackCKC7Matrix(this.myCompany.companyProfile);
 
-                if (index !== -1) {
-                    this.ckc7Phases.splice(index, 1);
-                }
+            const join$: Observable<[HttpResponse<PhaseMgm[]>, HttpResponse<LevelMgm[]>, Map<Number, Map<Number, AugmentedAttackStrategy>>, HttpResponse<ThreatAgentMgm[]>]> =
+                forkJoin(this.ckc7Phases$, this.attackLevels$, this.attackMatrix$, this.threatAgents$);
 
-                this.attackLevels = response[1].body;
-                this.attacksCKC7Matrix = response[2];
-                this.threatAgents = response[3].body;
+            join$.subscribe((response: [HttpResponse<PhaseMgm[]>, HttpResponse<LevelMgm[]>, Map<Number, Map<Number, AugmentedAttackStrategy>>, HttpResponse<ThreatAgentMgm[]>]) => {
+                    this.ckc7Phases = response[0].body;
+                    // Remove id 7 phase
+                    const index = _.findIndex(this.ckc7Phases, (phase) => phase.id === 7);
 
-                this.augmentedAttackStrategiesMap = new Map<number, AugmentedAttackStrategy>();
+                    if (index !== -1) {
+                        this.ckc7Phases.splice(index, 1);
+                    }
 
-                // Make same ID AttackStrategies point to the same AugmentedAttackStrategy object
-                for (const levelID of Object.keys(this.attacksCKC7Matrix)) {
-                    for (const phaseID of Object.keys(this.attacksCKC7Matrix[levelID])) {
-                        const augmentedAttackStrategies: Array<AugmentedAttackStrategy> = this.attacksCKC7Matrix[Number(levelID)][Number(phaseID)];
-                        const augmentedAttackStrategiesByReference: Array<AugmentedAttackStrategy> = [];
+                    this.attackLevels = response[1].body;
+                    this.attacksCKC7Matrix = response[2];
+                    this.threatAgents = response[3].body;
 
-                        for (let augmentedAttackStrategy of augmentedAttackStrategies) {
-                            if (!this.augmentedAttackStrategiesMap.has(augmentedAttackStrategy.id)) {
-                                this.augmentedAttackStrategiesMap.set(augmentedAttackStrategy.id, augmentedAttackStrategy);
+                    this.augmentedAttackStrategiesMap = new Map<number, AugmentedAttackStrategy>();
 
-                                // Each time that we encounter an AttackStrategy we put it in the array by Reference
-                                augmentedAttackStrategiesByReference.push(augmentedAttackStrategy);
-                            } else {
-                                augmentedAttackStrategy = this.augmentedAttackStrategiesMap.get(augmentedAttackStrategy.id);
-                                // Each time that we encounter an AttackStrategy we put it in the array by Reference
-                                augmentedAttackStrategiesByReference.push(augmentedAttackStrategy);
+                    // Make same ID AttackStrategies point to the same AugmentedAttackStrategy object
+                    for (const levelID of Object.keys(this.attacksCKC7Matrix)) {
+                        for (const phaseID of Object.keys(this.attacksCKC7Matrix[levelID])) {
+                            const augmentedAttackStrategies: Array<AugmentedAttackStrategy> = this.attacksCKC7Matrix[Number(levelID)][Number(phaseID)];
+                            const augmentedAttackStrategiesByReference: Array<AugmentedAttackStrategy> = [];
+
+                            for (let augmentedAttackStrategy of augmentedAttackStrategies) {
+                                if (!this.augmentedAttackStrategiesMap.has(augmentedAttackStrategy.id)) {
+                                    this.augmentedAttackStrategiesMap.set(augmentedAttackStrategy.id, augmentedAttackStrategy);
+
+                                    // Each time that we encounter an AttackStrategy we put it in the array by Reference
+                                    augmentedAttackStrategiesByReference.push(augmentedAttackStrategy);
+                                } else {
+                                    augmentedAttackStrategy = this.augmentedAttackStrategiesMap.get(augmentedAttackStrategy.id);
+                                    // Each time that we encounter an AttackStrategy we put it in the array by Reference
+                                    augmentedAttackStrategiesByReference.push(augmentedAttackStrategy);
+                                }
                             }
+                            // Finally we replace the initial AttackStrategies with those by REFERENCE
+                            // (to allow one-time update for all the occurrences of the same AttackStrategy in different Levels or Phases)
+                            this.attacksCKC7Matrix[Number(levelID)][Number(phaseID)] = augmentedAttackStrategiesByReference;
                         }
-                        // Finally we replace the initial AttackStrategies with those by REFERENCE
-                        // (to allow one-time update for all the occurrences of the same AttackStrategy in different Levels or Phases)
-                        this.attacksCKC7Matrix[Number(levelID)][Number(phaseID)] = augmentedAttackStrategiesByReference;
                     }
-                }
-                // Check which steps (INITIAL, CONTEXTUAL, REFINED) are available.
-                const allAugmentedAttackStrategies: AugmentedAttackStrategy[] = Array.from(this.augmentedAttackStrategiesMap.values());
+                    // Check which steps (INITIAL, CONTEXTUAL, REFINED) are available.
+                    const allAugmentedAttackStrategies: AugmentedAttackStrategy[] = Array.from(this.augmentedAttackStrategiesMap.values());
 
-                if (allAugmentedAttackStrategies && allAugmentedAttackStrategies.length > 0) {
-                    const augmentedAttackStrategy: AugmentedAttackStrategy = allAugmentedAttackStrategies[0];
-                    if (augmentedAttackStrategy.initialLikelihood > 0) {
-                        this.likelihoodStepEnabled.set(LikelihoodStep.INITIAL_LIKELIHOOD, true);
+                    if (allAugmentedAttackStrategies && allAugmentedAttackStrategies.length > 0) {
+                        const augmentedAttackStrategy: AugmentedAttackStrategy = allAugmentedAttackStrategies[0];
+                        if (augmentedAttackStrategy.initialLikelihood > 0) {
+                            this.likelihoodStepEnabled.set(LikelihoodStep.INITIAL_LIKELIHOOD, true);
+                        }
+                        if (augmentedAttackStrategy.contextualLikelihood > 0) {
+                            this.likelihoodStepEnabled.set(LikelihoodStep.CONTEXTUAL_LIKELIHOOD, true);
+                        }
+                        if (augmentedAttackStrategy.refinedLikelihood > 0) {
+                            this.likelihoodStepEnabled.set(LikelihoodStep.REFINED_LIKELIHOOD, true);
+                        }
                     }
-                    if (augmentedAttackStrategy.contextualLikelihood > 0) {
-                        this.likelihoodStepEnabled.set(LikelihoodStep.CONTEXTUAL_LIKELIHOOD, true);
-                    }
-                    if (augmentedAttackStrategy.refinedLikelihood > 0) {
-                        this.likelihoodStepEnabled.set(LikelihoodStep.REFINED_LIKELIHOOD, true);
-                    }
-                }
 
-                // Set the SelectedThreatAgent (NULL) to make sure all the AttackStrategies are disabled at start.
-                this.threatAgentChanged(this.selectedThreatAgent);
-                this.loading = false;
-            },
-            (error: any) => {
-                this.loading = false;
-            });
+                    // Set the SelectedThreatAgent (NULL) to make sure all the AttackStrategies are disabled at start.
+                    this.threatAgentChanged(this.selectedThreatAgent);
+                    this.loading = false;
+                },
+                (error: any) => {
+                    this.loading = false;
+                });
+        }
     }
 
     ngOnDestroy(): void {

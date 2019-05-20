@@ -20,8 +20,8 @@
 </ng-container>
 <ng-container *ngIf="!loading">
     <div class="tile-stats tiles-first-row">
-        <div class="count" *ngIf="threatAgentInterests.length>0">{{threatAgentInterests.length}}</div>
-        <ng-container *ngIf="threatAgentInterests.length>0">
+        <div class="count" *ngIf="threatAgentInterests?.length>0">{{threatAgentInterests.length}}</div>
+        <ng-container *ngIf="threatAgentInterests?.length>0">
             <div class="col-md-10">
                 <h3>Threat Agents</h3>
             </div>
@@ -29,12 +29,12 @@
                                                                                          aria-hidden="true"></i></a>
             </div>
         </ng-container>
-        <h3 *ngIf="threatAgentInterests.length===0"><a
+        <h3 *ngIf="threatAgentInterests?.length===0"><a
             [routerLink]="['/identify-threat-agent/questionnaires/ID_THREAT_AGENT/questionnaire']">No Threat Agents
             founded</a></h3>
         <div class="col-md-12">
-            <p *ngIf="threatAgentInterests.length>0"><a href="javascript:void(0)"
-                                                        (click)="open(threatAgentsDetails)">details</a></p>
+            <p *ngIf="threatAgentInterests?.length>0"><a href="javascript:void(0)"
+                                                         (click)="open(threatAgentsDetails)">details</a></p>
         </div>
     </div>
 </ng-container>
@@ -84,20 +84,20 @@
 
                 <tbody>
                 <!--For rows-->
-                <ng-container *ngFor="let couple of threatAgentInterests">
-                    <tr (click)="selectThreatAgent(couple)" style="cursor: pointer">
+                <ng-container *ngFor="let threatAgentInterest of threatAgentInterests">
+                    <tr (click)="selectThreatAgent(threatAgentInterest)" style="cursor: pointer">
                         <!--For cols-->
                         <th scope="row" class="text-center align-middle">
-                            {{couple.name}}
+                            {{threatAgentInterest.name}}
                         </th>
                         <td class="text-center align-middle">
-                            {{couple.skillLevel | titlecase}}
+                            {{threatAgentInterest.skillLevel | titlecase}}
                         </td>
                         <td class="text-center align-middle">
-                            {{couple.levelOfInterest | percent:'1.0-2'}}
+                            {{threatAgentInterest.levelOfInterest | percent:'1.0-2'}}
                         </td>
                     </tr>
-                    <tr *ngIf="selectedThreatAgent?.id === couple.id">
+                    <tr *ngIf="selectedThreatAgent?.id === threatAgentInterest?.id">
                         <td colspan="3">
                             <table>
                                 <thead>
@@ -127,7 +127,7 @@
                                     <td>Motivations</td>
                                     <td>
                                         <ng-container
-                                            *ngFor="let motivation of selectedThreatAgent.motivations, let last=last">
+                                            *ngFor="let motivation of selectedThreatAgent?.motivations, let last=last">
                                             <a [routerLink]="['/motivation-mgm', motivation.id]">{{motivation
                                                 .name}}</a>
                                             <ng-container *ngIf="!last">,&nbsp;

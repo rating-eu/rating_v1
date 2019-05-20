@@ -55,7 +55,6 @@ export class OverallLikelihoodWidgetComponent implements OnInit {
     public stackedLables: string[] = [];
     public data: any[] = [];
 
-    private mySelf: SelfAssessmentMgm;
     private myCompany: MyCompanyMgm;
 
     private threatAgents$: Observable<HttpResponse<ThreatAgentMgm[]>>;
@@ -74,94 +73,105 @@ export class OverallLikelihoodWidgetComponent implements OnInit {
 
     ngOnInit() {
         this.loading = true;
-        this.mySelf = this.dataSharingService.selfAssessment;
         this.myCompany = this.dataSharingService.myCompany;
+        this.callAPI();
 
-        this.threatAgents$ = this.threatAgentService.getThreatAgentsByCompany(this.myCompany.companyProfile.id);
-
-        this.result$ = this.threatAgents$.pipe(
-            switchMap((response: HttpResponse<ThreatAgentMgm[]>) => {
-                this.threatAgents = response.body;
-
-                return this.resultService.getResult(this.myCompany.companyProfile.id);
-            })
-        );
-
-        this.result$.toPromise().then((res: HttpResponse<Result>) => {
-            if (res.body) {
-                this.initDataForGraph();
-                this.result = res.body;
-                if (this.result.initialVulnerability.size > 0) {
-                    let iIndex = 0;
-                    const iLabels: string[] = [];
-                    const iLocalData: number[] = [];
-                    this.result.initialVulnerability.forEach((item, key, map) => {
-                        const tIndex = _.findIndex(this.threatAgents, {id: key});
-                        iLabels.push(this.threatAgents[tIndex].name);
-                        iLocalData.push(item);
-                        if (iIndex === map.size - 1) {
-                            this.stackedLables = iLabels;
-                            const iElem = {
-                                label: 'Initial',
-                                backgroundColor: '#ac6e6e',
-                                data: iLocalData
-                            };
-                            this.data.push(iElem);
-                        }
-                        iIndex++;
-                    });
-                }
-                if (this.result.contextualVulnerability.size > 0) {
-                    let cIndex = 0;
-                    const cLabels: string[] = [];
-                    const cLocalData: number[] = [];
-                    this.result.contextualVulnerability.forEach((item, key, map) => {
-                        const tIndex = _.findIndex(this.threatAgents, {id: key});
-                        cLabels.push(this.threatAgents[tIndex].name);
-                        cLocalData.push(item);
-                        if (cIndex === map.size - 1) {
-                            if (this.stackedLables.length === 0) {
-                                this.stackedLables = cLabels;
-                            }
-                            const cElem = {
-                                label: 'Contextual',
-                                backgroundColor: '#7aaa8b',
-                                data: cLocalData
-                            };
-                            this.data.push(cElem);
-                        }
-                        cIndex++;
-                    });
-                }
-                if (this.result.refinedVulnerability.size > 0) {
-                    let rIndex = 0;
-                    const rLabels: string[] = [];
-                    const rLocalData: number[] = [];
-                    this.result.refinedVulnerability.forEach((item, key, map) => {
-                        const tIndex = _.findIndex(this.threatAgents, {id: key});
-                        rLabels.push(this.threatAgents[tIndex].name);
-                        rLocalData.push(item);
-                        if (rIndex === map.size - 1) {
-                            if (this.stackedLables.length === 0) {
-                                this.stackedLables = rLabels;
-                            }
-                            const rElem = {
-                                label: 'Refined',
-                                backgroundColor: '#779bc0',
-                                data: rLocalData
-                            };
-                            this.data.push(rElem);
-                        }
-                        rIndex++;
-                    });
-                }
-                this.loading = false;
-            } else {
-                this.loading = false;
+        this.dataSharingService.myCompanyObservable.subscribe(
+            (response: MyCompanyMgm) => {
+                this.myCompany = response;
+                this.callAPI();
             }
-        }).catch(() => {
-            this.loading = false;
-        });
+        );
+    }
+
+    private callAPI() {
+        if (this.myCompany && this.myCompany.companyProfile) {
+            this.threatAgents$ = this.threatAgentService.getThreatAgentsByCompany(this.myCompany.companyProfile.id);
+
+            this.result$ = this.threatAgents$.pipe(
+                switchMap((response: HttpResponse<ThreatAgentMgm[]>) => {
+                    this.threatAgents = response.body;
+
+                    return this.resultService.getResult(this.myCompany.companyProfile.id);
+                })
+            );
+
+            this.result$.toPromise().then((res: HttpResponse<Result>) => {
+                if (res.body) {
+                    this.initDataForGraph();
+                    this.result = res.body;
+                    if (this.result.initialVulnerability.size > 0) {
+                        let iIndex = 0;
+                        const iLabels: string[] = [];
+                        const iLocalData: number[] = [];
+                        this.result.initialVulnerability.forEach((item, key, map) => {
+                            const tIndex = _.findIndex(this.threatAgents, {id: key});
+                            iLabels.push(this.threatAgents[tIndex].name);
+                            iLocalData.push(item);
+                            if (iIndex === map.size - 1) {
+                                this.stackedLables = iLabels;
+                                const iElem = {
+                                    label: 'Initial',
+                                    backgroundColor: '#ac6e6e',
+                                    data: iLocalData
+                                };
+                                this.data.push(iElem);
+                            }
+                            iIndex++;
+                        });
+                    }
+                    if (this.result.contextualVulnerability.size > 0) {
+                        let cIndex = 0;
+                        const cLabels: string[] = [];
+                        const cLocalData: number[] = [];
+                        this.result.contextualVulnerability.forEach((item, key, map) => {
+                            const tIndex = _.findIndex(this.threatAgents, {id: key});
+                            cLabels.push(this.threatAgents[tIndex].name);
+                            cLocalData.push(item);
+                            if (cIndex === map.size - 1) {
+                                if (this.stackedLables.length === 0) {
+                                    this.stackedLables = cLabels;
+                                }
+                                const cElem = {
+                                    label: 'Contextual',
+                                    backgroundColor: '#7aaa8b',
+                                    data: cLocalData
+                                };
+                                this.data.push(cElem);
+                            }
+                            cIndex++;
+                        });
+                    }
+                    if (this.result.refinedVulnerability.size > 0) {
+                        let rIndex = 0;
+                        const rLabels: string[] = [];
+                        const rLocalData: number[] = [];
+                        this.result.refinedVulnerability.forEach((item, key, map) => {
+                            const tIndex = _.findIndex(this.threatAgents, {id: key});
+                            rLabels.push(this.threatAgents[tIndex].name);
+                            rLocalData.push(item);
+                            if (rIndex === map.size - 1) {
+                                if (this.stackedLables.length === 0) {
+                                    this.stackedLables = rLabels;
+                                }
+                                const rElem = {
+                                    label: 'Refined',
+                                    backgroundColor: '#779bc0',
+                                    data: rLocalData
+                                };
+                                this.data.push(rElem);
+                            }
+                            rIndex++;
+                        });
+                    }
+                    this.loading = false;
+                } else {
+                    this.loading = false;
+                }
+            }).catch(() => {
+                this.loading = false;
+            });
+        }
     }
 
     private initDataForGraph() {
