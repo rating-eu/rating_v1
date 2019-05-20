@@ -39,18 +39,28 @@ export class StepStatusWidgetComponent implements OnInit {
 
     ngOnInit() {
         this.myCompany = this.dataSharingService.myCompany;
+        this.fetchStatus();
 
-        const identifyThreatAgentStatus$ = this.dashboardService.getStatusFromServer(this.myCompany.companyProfile, CompanyBoardStep.IDENTIFY_THREAT_AGENTS);
-        const assessVulnerabilitiesStatus$ = this.dashboardService.getStatusFromServer(this.myCompany.companyProfile, CompanyBoardStep.ASSESS_VULNERABILITIES);
-        const refineVulnerabilitiesStatus$ = this.dashboardService.getStatusFromServer(this.myCompany.companyProfile, CompanyBoardStep.REFINE_VULNERABILITIES);
-
-        const statusJoin$: Observable<[HttpResponse<Status>, HttpResponse<Status>, HttpResponse<Status>]> = forkJoin(identifyThreatAgentStatus$, assessVulnerabilitiesStatus$, refineVulnerabilitiesStatus$);
-
-        statusJoin$.subscribe((response: [HttpResponse<Status>, HttpResponse<Status>, HttpResponse<Status>]) => {
-            this.identifyThreatAgentsStatus = response[0].body;
-            this.assessVulnerabilitiesStatus = response[1].body;
-            this.refineVulnerabilitiesStatus = response[2].body;
+        this.dataSharingService.myCompanyObservable.subscribe((response: MyCompanyMgm) => {
+            this.myCompany = response;
+            this.fetchStatus();
         });
+    }
+
+    private fetchStatus() {
+        if (this.myCompany && this.myCompany.companyProfile) {
+            const identifyThreatAgentStatus$ = this.dashboardService.getStatusFromServer(this.myCompany.companyProfile, CompanyBoardStep.IDENTIFY_THREAT_AGENTS);
+            const assessVulnerabilitiesStatus$ = this.dashboardService.getStatusFromServer(this.myCompany.companyProfile, CompanyBoardStep.ASSESS_VULNERABILITIES);
+            const refineVulnerabilitiesStatus$ = this.dashboardService.getStatusFromServer(this.myCompany.companyProfile, CompanyBoardStep.REFINE_VULNERABILITIES);
+
+            const statusJoin$: Observable<[HttpResponse<Status>, HttpResponse<Status>, HttpResponse<Status>]> = forkJoin(identifyThreatAgentStatus$, assessVulnerabilitiesStatus$, refineVulnerabilitiesStatus$);
+
+            statusJoin$.subscribe((response: [HttpResponse<Status>, HttpResponse<Status>, HttpResponse<Status>]) => {
+                this.identifyThreatAgentsStatus = response[0].body;
+                this.assessVulnerabilitiesStatus = response[1].body;
+                this.refineVulnerabilitiesStatus = response[2].body;
+            });
+        }
     }
 
     open(content, link, message?) {

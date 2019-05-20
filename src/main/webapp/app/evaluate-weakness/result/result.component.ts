@@ -110,7 +110,7 @@ export class WeaknessResultComponent implements OnInit, OnDestroy {
         this.threatAgents$ = this.threatAgentService.getThreatAgentsByCompany(this.myCompany.companyProfile.id);
         this.ckc7Phases$ = this.phaseService.query();
         this.attackLevels$ = this.levelService.query();
-        this.attackMatrix$ = this.attackMapService.getAttackCKC7Matrix(this.selfAssessment.id);
+        this.attackMatrix$ = this.attackMapService.getAttackCKC7Matrix(this.myCompany.companyProfile);
 
         const join$: Observable<[HttpResponse<ThreatAgentMgm[]>, HttpResponse<PhaseMgm[]>, HttpResponse<LevelMgm[]>, Map<Number, Map<Number, AugmentedAttackStrategy>>]> =
             forkJoin(this.threatAgents$, this.ckc7Phases$, this.attackLevels$, this.attackMatrix$);

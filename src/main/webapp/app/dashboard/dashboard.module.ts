@@ -22,7 +22,6 @@ import {ResultsModule} from '../results/results.module';
 import {OverallLikelihoodWidgetComponent} from './overall-likelihood-widget/overall-likelihood-widget.component';
 import {CompanyWidgetComponent} from './company-widget/company-widget.component';
 import {ThreatAgentsWidgetComponent} from './threat-agents-widget/threat-agents-widget.component';
-import {CustomersWidgetComponent} from './customers-widget/customers-widget.component';
 import {AttackStrategiesWidgetComponent} from './attack-strategies-widget/attack-strategies-widget.component';
 import {ImpactEvaluationModule} from '../impact-evaluation/impact-evaluation.module';
 import {RiskManagementModule} from '../risk-management/risk-management.module';
@@ -54,7 +53,6 @@ import {EvaluateWeaknessModule} from "../evaluate-weakness/evaluate-weakness.mod
         ThreatAgentsWidgetComponent,
         AttackStrategiesWidgetComponent,
         AttackMapWidgetComponent,
-        CustomersWidgetComponent,
         MostDangerousThreatAgentsWidgetComponent,
         OverallLikelihoodWidgetComponent
     ],
