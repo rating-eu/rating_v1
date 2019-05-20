@@ -89,6 +89,11 @@ public class QuestionnaireStatus implements Serializable, Comparable<Questionnai
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<MyAnswer> answers = new HashSet<>();
 
+    @NotNull
+    @ManyToOne
+    @JoinColumn(name = "external_id", nullable = true)
+    private User external;
+
     /**
      * This field references to the refinement QuestionnaireStatus of the External Audit.
      */
@@ -219,6 +224,14 @@ public class QuestionnaireStatus implements Serializable, Comparable<Questionnai
 
     public void setAnswers(Set<MyAnswer> myAnswers) {
         this.answers = myAnswers;
+    }
+
+    public User getExternal() {
+        return external;
+    }
+
+    public void setExternal(User external) {
+        this.external = external;
     }
 
     public QuestionnaireStatus getRefinement() {
