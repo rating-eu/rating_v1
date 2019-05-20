@@ -131,5 +131,6 @@
     <include file="config/liquibase/changelog/20190507084152_added_questionnaire_status_refinement_fk.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20190508080355_remove_self_assessment_threat_agents.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20190515130554_added_self_assessment_impact_mode_column.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190520153849_added_qstatus_external_fk.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
 </databaseChangeLog>
