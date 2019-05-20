@@ -15,7 +15,7 @@
  *
  */
 
-@import "../../risk-board/risk-board.css";
+@import "../risk-board.css";
 
 tr.attack:hover{
     cursor: pointer !important;

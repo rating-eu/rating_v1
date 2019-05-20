@@ -16,9 +16,9 @@
  */
 
 import {Component, OnInit} from '@angular/core';
-import {CriticalAttackStrategyService} from '../models/critical-attack-strategy.service';
+import {CriticalAttackStrategyService} from "../models/critical-attack-strategy.service";
 import {SelfAssessmentMgm, SelfAssessmentMgmService} from '../../entities/self-assessment-mgm';
-import {CriticalAttackStrategy} from '../models/critical-attack-strategy.model';
+import {CriticalAttackStrategy} from "../models/critical-attack-strategy.model";
 import * as _ from 'lodash';
 import {DatasharingService} from '../../datasharing/datasharing.service';
 

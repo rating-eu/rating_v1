@@ -26,8 +26,6 @@ import {CustomersWidgetComponent} from './customers-widget/customers-widget.comp
 import {AttackStrategiesWidgetComponent} from './attack-strategies-widget/attack-strategies-widget.component';
 import {ImpactEvaluationModule} from '../impact-evaluation/impact-evaluation.module';
 import {RiskManagementModule} from '../risk-management/risk-management.module';
-import {MostCriticalAttackStrategiesWidgetComponent} from './most-critical-attack-strategies-widget/most-critical-attack-strategies-widget.component';
-import {CriticalAttackStrategyService} from './models/critical-attack-strategy.service';
 import {MaterialModule} from "../material/material.module";
 import {HermeneutAttackStrategyMgmModule} from "../entities/attack-strategy-mgm/attack-strategy-mgm.module";
 import {AttackMapWidgetComponent} from "./attack-map-widget/attack-map-widget.component";
@@ -58,7 +56,6 @@ import {EvaluateWeaknessModule} from "../evaluate-weakness/evaluate-weakness.mod
         AttackMapWidgetComponent,
         CustomersWidgetComponent,
         MostDangerousThreatAgentsWidgetComponent,
-        MostCriticalAttackStrategiesWidgetComponent,
         OverallLikelihoodWidgetComponent
     ],
     providers: [
@@ -95,8 +92,7 @@ import {EvaluateWeaknessModule} from "../evaluate-weakness/evaluate-weakness.mod
                 Injector
             ]
         },
-        DashboardService,
-        CriticalAttackStrategyService
+        DashboardService
     ]
 })
 export class DashboardModule {
