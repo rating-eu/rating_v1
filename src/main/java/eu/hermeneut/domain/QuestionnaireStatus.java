@@ -89,7 +89,6 @@ public class QuestionnaireStatus implements Serializable, Comparable<Questionnai
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<MyAnswer> answers = new HashSet<>();
 
-    @NotNull
     @ManyToOne
     @JoinColumn(name = "external_id", nullable = true)
     private User external;

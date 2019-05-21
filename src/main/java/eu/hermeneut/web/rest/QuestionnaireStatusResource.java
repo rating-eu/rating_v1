@@ -132,6 +132,12 @@ public class QuestionnaireStatusResource {
         return questionnaireStatusService.findAll();
     }
 
+    @GetMapping("/questionnaire-statuses/me/purpose/{questionnairePurpose}")
+    @Timed
+    public List<QuestionnaireStatus> getMyQuestionnaireStatusesByPurpose(@PathVariable QuestionnairePurpose questionnairePurpose) {
+        return this.questionnaireStatusService.findAllByCurrentUserAndQuestionnairePurpose(questionnairePurpose);
+    }
+
     /**
      * GET  /questionnaire-statuses : get all the questionnaireStatuses.
      *

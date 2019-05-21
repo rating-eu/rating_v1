@@ -17,13 +17,20 @@
 
 package eu.hermeneut.service.impl;
 
+import eu.hermeneut.domain.MyCompany;
+import eu.hermeneut.domain.User;
 import eu.hermeneut.domain.enumeration.QuestionnairePurpose;
 import eu.hermeneut.domain.enumeration.Role;
+import eu.hermeneut.security.AuthoritiesConstants;
+import eu.hermeneut.security.SecurityUtils;
+import eu.hermeneut.service.MyCompanyService;
 import eu.hermeneut.service.QuestionnaireStatusService;
 import eu.hermeneut.domain.QuestionnaireStatus;
 import eu.hermeneut.repository.QuestionnaireStatusRepository;
+import eu.hermeneut.service.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -40,6 +47,12 @@ public class QuestionnaireStatusServiceImpl implements QuestionnaireStatusServic
     private final Logger log = LoggerFactory.getLogger(QuestionnaireStatusServiceImpl.class);
 
     private final QuestionnaireStatusRepository questionnaireStatusRepository;
+
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private MyCompanyService myCompanyService;
 
     public QuestionnaireStatusServiceImpl(QuestionnaireStatusRepository questionnaireStatusRepository) {
         this.questionnaireStatusRepository = questionnaireStatusRepository;
@@ -138,5 +151,25 @@ public class QuestionnaireStatusServiceImpl implements QuestionnaireStatusServic
     @Override
     public List<QuestionnaireStatus> findAllByCompanyProfileQuestionnairePurposeAndUser(Long companyProfileID, QuestionnairePurpose questionnairePurpose, Long userID) {
         return this.questionnaireStatusRepository.findAllByCompanyProfileQuestionnairePurposeAndUser(companyProfileID, questionnairePurpose, userID);
+    }
+
+    @Override
+    public List<QuestionnaireStatus> findAllByCurrentUserAndQuestionnairePurpose(QuestionnairePurpose questionnairePurpose) {
+        User currentUser = this.userService.getUserWithAuthorities().orElse(null);
+
+        if (currentUser != null) {
+            if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.CISO)) {
+                MyCompany myCompany = this.myCompanyService.findOneByUser(currentUser.getId());
+
+                if (myCompany != null && myCompany.getCompanyProfile() != null) {
+                    return this.findAllByCompanyProfileQuestionnairePurposeAndUser(myCompany.getCompanyProfile().getId(), questionnairePurpose, currentUser.getId());
+                }
+            } else if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.EXTERNAL_AUDIT)) {
+                return this.questionnaireStatusRepository.findAllByExternalAudit(currentUser.getId());
+            }
+        }
+
+
+        return null;
     }
 }
