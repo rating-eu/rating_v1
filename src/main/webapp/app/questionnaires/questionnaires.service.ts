@@ -35,10 +35,6 @@ import {CompanyProfileMgm} from "../entities/company-profile-mgm";
 export class QuestionnairesService {
 
     private questionnairesByPurposeAPIUrl = SERVER_API_URL + 'api/questionnaires/by/purpose/{purpose}';
-    private questionsByQuestionnaireIDAPIUrl = SERVER_API_URL + 'api/questions/by/questionnaire/{questionnaireID}';
-    private answersByQuestionIDAPIUrl = SERVER_API_URL + 'api/answers/by/question/{questionID}';
-    private myAnswersByQuestionnaireAndUser = SERVER_API_URL + 'api/my-answers/questionnaire/{questionnaireID}/user/{userID}';
-    private questionnaireStatusesByCompanyProfileAndUser = SERVER_API_URL + 'api/questionnaire-statuses/company-profile/{companyProfileID}/user/{userID}';
     private questionnaireStatusesByCompanyProfileQuestionnairePurposeAndUser = SERVER_API_URL + 'api/questionnaire-statuses/company-profile/{companyProfileID}/purpose/{questionnairePurpose}/user/{userID}';
 
     constructor(private http: HttpClient, private dateUtils: JhiDateUtils) {
@@ -46,24 +42,6 @@ export class QuestionnairesService {
 
     getAllQuestionnairesByPurpose(purpose: QuestionnairePurpose): Observable<QuestionnaireMgm[]> {
         return this.http.get<QuestionnaireMgm[]>(this.questionnairesByPurposeAPIUrl.replace('{purpose}', String(purpose)));
-    }
-
-    getAllQuestionsByQuestionnaire(questionnaire: QuestionnaireMgm): Observable<QuestionMgm[]> {
-        return this.http.get<QuestionMgm[]>(this.questionsByQuestionnaireIDAPIUrl.replace('{questionnaireID}', String(questionnaire.id)));
-    }
-
-    getMyAnswersByQuestionnaireAndUser(questionnaire: QuestionnaireMgm, user: User): Observable<MyAnswerMgm[]> {
-        return this.http.get<MyAnswerMgm[]>(this.myAnswersByQuestionnaireAndUser.replace('{questionnaireID}', String(questionnaire.id)).replace('{userID}', user.id));
-    }
-
-    getQuestionnaireStatusesBySelfAssessmentAndUser(selfAssessment: SelfAssessmentMgm, user: User): Observable<QuestionnaireStatusMgm[]> {
-        return this.http.get<QuestionnaireStatusMgm[]>(
-            this.questionnaireStatusesByCompanyProfileAndUser.replace('{companyProfileID}', String(selfAssessment.id)).replace('{userID}', user.id));
-    }
-
-    getQuestionnaireStatusesByCompanyProfileAndUser(companyProfile: CompanyProfileMgm, user: User): Observable<QuestionnaireStatusMgm[]> {
-        return this.http.get<QuestionnaireStatusMgm[]>(
-            this.questionnaireStatusesByCompanyProfileAndUser.replace('{companyProfileID}', String(companyProfile.id)).replace('{userID}', user.id));
     }
 
     getQuestionnaireStatusesByCompanyProfileQuestionnairePurposeAndUser(companyProfile: CompanyProfileMgm, questionnairePurpose: QuestionnairePurpose, user: User): Observable<QuestionnaireStatusMgm[]> {

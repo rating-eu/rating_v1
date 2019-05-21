@@ -165,7 +165,7 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
                 this.myCompany = response.body;
                 this.companyProfile = this.myCompany.companyProfile;
 
-                return this.questionnairesService.getQuestionnaireStatusesByCompanyProfileQuestionnairePurposeAndUser(this.companyProfile, this.purpose, this.user);
+                return this.questionnaireStatusService.getAllQuestionnaireStatusesByCurrentUserAndQuestionnairePurpose(this.purpose);
             })
         );
 
@@ -191,7 +191,7 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
                             // Create the first QuestionnaireStatus
                             let questionnaireStatus: QuestionnaireStatusMgm = new QuestionnaireStatusMgm(undefined,
                                 Status.EMPTY, undefined, undefined, this.myCompany.companyProfile,
-                                this.identifyThreatAgentsQuestionnaire, this.role, this.user, []);
+                                this.identifyThreatAgentsQuestionnaire, this.role, this.user, [], undefined, undefined);
 
                             this.questionnaireStatusService.create(questionnaireStatus).subscribe(
                                 (response: HttpResponse<QuestionnaireStatusMgm>) => {
@@ -286,7 +286,8 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
             }
             case QuestionnairePurpose.SELFASSESSMENT: {
                 const questionnaire: QuestionnaireMgm = this.questionnaires[0];
-                const questionnaireStatus = new QuestionnaireStatusMgm(undefined, Status.EMPTY, undefined, undefined, this.companyProfile, questionnaire, this.role, this.user, []);
+                const questionnaireStatus = new QuestionnaireStatusMgm(undefined, Status.EMPTY, undefined,
+                    undefined, this.companyProfile, questionnaire, this.role, this.user, [], undefined, undefined);
 
                 questionnaireStatus$ = this.questionnaireStatusService.create(questionnaireStatus);
 

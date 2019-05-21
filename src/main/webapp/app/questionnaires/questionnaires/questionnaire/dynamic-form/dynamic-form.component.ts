@@ -337,7 +337,7 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
 
         if (!this.cisoQuestionnaireStatus) {
             questionnaireStatus = new QuestionnaireStatusMgm(undefined, Status.FULL, null, null,
-                this.myCompany.companyProfile, this.questionnaire, this.role, this.user, []);
+                this.myCompany.companyProfile, this.questionnaire, this.role, this.user, [], undefined, undefined);
         } else {
             questionnaireStatus = this.cisoQuestionnaireStatus;
         }
@@ -394,7 +394,8 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
         let questionnaireStatus = null;
 
         if (!this.cisoQuestionnaireStatus) {
-            questionnaireStatus = new QuestionnaireStatusMgm(undefined, Status.FULL, null, null, this.myCompany.companyProfile, this.questionnaire, this.role, this.user, []);
+            questionnaireStatus = new QuestionnaireStatusMgm(undefined, Status.FULL, null, null,
+                this.myCompany.companyProfile, this.questionnaire, this.role, this.user, [], undefined, undefined);
         } else {
             questionnaireStatus = this.cisoQuestionnaireStatus;
         }
@@ -452,7 +453,8 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
         let questionnaireStatus = null;
 
         if (!this.externalQuestionnaireStatus) {
-            questionnaireStatus = new QuestionnaireStatusMgm(undefined, Status.FULL, null, null, this.myCompany.companyProfile, this.questionnaire, this.role, this.user, []);
+            questionnaireStatus = new QuestionnaireStatusMgm(undefined, Status.FULL, null, null,
+                this.myCompany.companyProfile, this.questionnaire, this.role, this.user, [], undefined, undefined);
         } else {
             questionnaireStatus = this.externalQuestionnaireStatus;
         }

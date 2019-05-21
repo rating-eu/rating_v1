@@ -56,6 +56,7 @@ export class QuestionnaireStatusMgmService {
     private questionnaireStatusesByCompanyProfileQuestionnaireAndRole = this.resourceUrl + '/company-profile/' + COMPANY_ID_PLACEHOLDER + '/questionnaire/' + QUESTIONNAIRE_ID_PLACEHOLDER + '/role/' + ROLE_PLACEHOLDER;
 
     private questionnaireStatusesByCompanyProfileQuestionnairePurposeAndUser = this.resourceUrl + '/company-profile/' + COMPANY_ID_PLACEHOLDER + '/purpose/' + QUESTIONNAIRE_PURPOSE_PLACEHOLDER + '/user/' + USER_ID_PLACEHOLDER;
+    private questionnaireStatusesByCurrentUserAndQuestionnairePurpose = this.resourceUrl + '/me/purpose/' + QUESTIONNAIRE_PURPOSE_PLACEHOLDER;
 
     constructor(private http: HttpClient, private dateUtils: JhiDateUtils) {
     }
@@ -119,9 +120,14 @@ export class QuestionnaireStatusMgmService {
     private convert(questionnaireStatus: QuestionnaireStatusMgm): QuestionnaireStatusMgm {
         const copy: QuestionnaireStatusMgm = Object.assign({}, questionnaireStatus);
 
-        copy.created = this.dateUtils.toDate(questionnaireStatus.created);
+        if (questionnaireStatus.created) {
+            copy.created = this.dateUtils.toDate(questionnaireStatus.created);
+        }
 
-        copy.modified = this.dateUtils.toDate(questionnaireStatus.modified);
+        if (questionnaireStatus.modified) {
+            copy.modified = this.dateUtils.toDate(questionnaireStatus.modified);
+        }
+
         return copy;
     }
 
@@ -170,5 +176,12 @@ export class QuestionnaireStatusMgmService {
                 .replace(USER_ID_PLACEHOLDER, String(user.id)),
             {observe: 'response'}
         ).map((res: HttpResponse<QuestionnaireStatusMgm[]>) => this.convertArrayResponse(res));
+    }
+
+    public getAllQuestionnaireStatusesByCurrentUserAndQuestionnairePurpose(questionnairePurpose: QuestionnairePurpose): Observable<QuestionnaireStatusMgm[]> {
+        return this.http.get<QuestionnaireStatusMgm[]>(
+            this.questionnaireStatusesByCurrentUserAndQuestionnairePurpose
+                .replace(QUESTIONNAIRE_PURPOSE_PLACEHOLDER, QuestionnairePurpose[questionnairePurpose])
+        );
     }
 }

@@ -33,6 +33,7 @@ export class QuestionnaireStatusMgm implements BaseEntity {
         public role?: Role,
         public user?: User,
         public answers?: MyAnswerMgm[],
+        public external?: User,
         public refinement?: QuestionnaireStatusMgm
     ) {
     }
