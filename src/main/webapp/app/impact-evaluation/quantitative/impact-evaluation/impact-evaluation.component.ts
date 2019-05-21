@@ -45,6 +45,7 @@ import {switchMap} from 'rxjs/operators';
 import {of} from 'rxjs/observable/of';
 import {forkJoin} from 'rxjs/observable/forkJoin';
 import {DatasharingService} from "../../../datasharing/datasharing.service";
+import {Account} from "../../../shared";
 
 interface OrderBy {
     asset: boolean;

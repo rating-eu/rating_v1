@@ -31,15 +31,14 @@ import {MyAnswerMgmService} from '../../entities/my-answer-mgm';
 import {IdentifyThreatAgentService} from '../../identify-threat-agent/identify-threat-agent.service';
 import {EvaluateService} from '../../evaluate-weakness/evaluate-weakness.service';
 import {LocalStorageService} from 'ngx-webstorage';
-import {CompanyProfileMgm} from "../../entities/company-profile-mgm";
 import {HttpResponse} from "@angular/common/http";
-import {MyCompanyMgm, MyCompanyMgmService} from "../../entities/my-company-mgm";
+import {MyCompanyMgm} from "../../entities/my-company-mgm";
 import {switchMap} from "rxjs/operators";
 import {Role} from "../../entities/enumerations/Role.enum";
 import {PopUpService} from "../../shared/pop-up-services/pop-up.service";
-import {JhiEventManager} from "ng-jhipster";
 import {EventManagerService} from "../../datasharing/event-manager.service";
 import {forkJoin} from "rxjs/observable/forkJoin";
+import {Account} from '../../shared';
 
 @Component({
     selector: 'jhi-questionnaires',
@@ -68,8 +67,6 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
     public questionnaireStatuses$: Observable<QuestionnaireStatusMgm[]>;
     private questionnaireStatuses: QuestionnaireStatusMgm[];
 
-    private companyProfile: CompanyProfileMgm;
-
     private myCompany$: Observable<HttpResponse<MyCompanyMgm>>;
     private myCompany: MyCompanyMgm;
 
@@ -86,7 +83,6 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
 
     constructor(private route: ActivatedRoute,
                 private router: Router,
-                private myCompanyService: MyCompanyMgmService,
                 private questionnairesService: QuestionnairesService,
                 private dataSharingService: DatasharingService,
                 private accountService: AccountService,
@@ -105,6 +101,12 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
         console.log('Questionnaires ON INIT:');
         this.registerChangeInQuestionnaireStatuses();
         this.loadQuestionnaires();
+
+        this.myCompany = this.dataSharingService.myCompany;
+        this.dataSharingService.myCompanyObservable.subscribe((response: MyCompanyMgm) => {
+            this.myCompany = response;
+        });
+
         this.externalChangedMap = new Map();
     }
 
@@ -161,20 +163,9 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
             }
         ));
 
-        // GET the MyCompany
-        this.myCompany$ = this.user$.pipe(
+        this.questionnaireStatuses$ = this.user$.pipe(
             switchMap((response: HttpResponse<User>) => {
                 this.user = response.body;
-
-                return this.myCompanyService.findByUser(this.user.id);
-            })
-        );
-
-
-        this.questionnaireStatuses$ = this.myCompany$.pipe(
-            switchMap((response: HttpResponse<MyCompanyMgm>) => {
-                this.myCompany = response.body;
-                this.companyProfile = this.myCompany.companyProfile;
 
                 return this.questionnaireStatusService.getAllQuestionnaireStatusesByCurrentUserAndQuestionnairePurpose(this.purpose);
             })
@@ -282,7 +273,8 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
             }
             case Role.ROLE_EXTERNAL_AUDIT: {
                 //TODO Fix me: get also the QuestionnaireStatus of the CISO
-                this.dataSharingService.externalQuestionnaireStatus = questionnaireStatus;
+                this.dataSharingService.cisoQuestionnaireStatus = questionnaireStatus;
+                this.dataSharingService.externalQuestionnaireStatus = questionnaireStatus.refinement;
                 break;
             }
         }
@@ -298,7 +290,7 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
             case QuestionnairePurpose.SELFASSESSMENT: {
                 const questionnaire: QuestionnaireMgm = this.questionnaires[0];
                 const questionnaireStatus = new QuestionnaireStatusMgm(undefined, Status.EMPTY, undefined,
-                    undefined, this.companyProfile, questionnaire, this.role, this.user, [], undefined, undefined);
+                    undefined, this.myCompany.companyProfile, questionnaire, this.role, this.user, [], undefined, undefined);
 
                 questionnaireStatus$ = this.questionnaireStatusService.create(questionnaireStatus);
 

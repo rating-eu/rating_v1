@@ -34,8 +34,9 @@ import {Role} from '../entities/enumerations/Role.enum';
 })
 export class HomeComponent implements OnInit {
     account: Account;
+    role: Role;
+
     modalRef: NgbModalRef;
-    mySelf: SelfAssessmentMgm = null;
 
     constructor(
         private principal: Principal,
@@ -50,14 +51,22 @@ export class HomeComponent implements OnInit {
     ngOnInit() {
         this.principal.identity().then((account) => {
             this.account = account;
+            this.dataSharingService.account = this.account;
         });
         this.registerAuthenticationSuccess();
-        this.mySelf = this.dataSharingService.selfAssessment;
 
-        const role: Role = this.dataSharingService.role;
+        this.role = this.dataSharingService.role;
+        this.checkRole();
 
-        if (role) {
-            switch (role) {
+        this.dataSharingService.roleObservable.subscribe((response: Role) => {
+            this.role = response;
+            this.checkRole();
+        });
+    }
+
+    private checkRole() {
+        if (this.role) {
+            switch (this.role) {
                 case Role.ROLE_CISO: {
                     this.router.navigate(['/dashboard']);
                     break;

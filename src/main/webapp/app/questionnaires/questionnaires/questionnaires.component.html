@@ -74,7 +74,9 @@
                             [ngValue]="userOption.id === questionnaireStatus.external?.id ? questionnaireStatus.external : userOption"
                             *ngFor="let userOption of externalAudits; trackBy: trackUserById">{{userOption.login}}</option>
                     </select>
-                    <button *ngIf="externalChangedMap.get(questionnaireStatus.id)" class="btn btn-success" (click)="updateQuestionnaireStatus(questionnaireStatus)">Save</button>
+                    <button *ngIf="externalChangedMap.get(questionnaireStatus.id)" class="btn btn-success"
+                            (click)="updateQuestionnaireStatus(questionnaireStatus)">Save
+                    </button>
                 </td>
                 <td>{{questionnaireStatus.refinement}}</td>
                 <td [ngSwitch]="statusEnum[questionnaireStatus.status]">
@@ -129,11 +131,52 @@
                 <th>Created</th>
                 <th>Modified</th>
                 <th>Status</th>
-                <th>Status</th>
-                <th></th>
+                <th>Refined</th>
+                <th>Refinement Status</th>
                 <th></th>
             </tr>
             </thead>
+            <tbody>
+            <tr *ngFor="let questionnaireStatus of questionnaireStatuses$ | async">
+                <td>{{questionnaireStatus.questionnaire.name}}</td>
+                <td>{{questionnaireStatus.created}}</td>
+                <td>{{questionnaireStatus.modified}}</td>
+                <td>{{questionnaireStatus.status}}</td>
+                <td>{{questionnaireStatus?.refinement?.modified}}</td>
+                <td>{{questionnaireStatus?.refinement?.status}}</td>
+                <td [ngSwitch]="statusEnum[questionnaireStatus?.refinement?.status]">
+
+                    <button *ngSwitchCase="statusEnum.EMPTY" class="btn"
+                            (click)="setCurrentQuestionnaireStatus(questionnaireStatus)"
+                            [routerLink]="['./questionnaire']">
+                        <span class="fa fa-pencil"></span>
+                        <span class="d-none d-md-inline">Answer</span>
+                    </button>
+
+                    <button *ngSwitchCase="statusEnum.PENDING" class="btn"
+                            (click)="setCurrentQuestionnaireStatus(questionnaireStatus)"
+                            [routerLink]="['./questionnaire']">
+                        <span class="fa fa-clock-o"></span>
+                        <span class="d-none d-md-inline">Resume</span>
+                    </button>
+
+                    <button *ngSwitchCase="statusEnum.FULL" class="btn"
+                            (click)="setCurrentQuestionnaireStatus(questionnaireStatus)"
+                            [routerLink]="['./questionnaire']">
+                        <span class="fa fa-eraser"></span>
+                        <span class="d-none d-md-inline">Edit</span>
+                    </button>
+
+                    <!--When the status is null-->
+                    <button *ngSwitchDefault class="btn"
+                            (click)="setCurrentQuestionnaireStatus(questionnaireStatus)"
+                            [routerLink]="['./questionnaire']">
+                        <span class="fa fa-pencil"></span>
+                        <span class="d-none d-md-inline">Answer</span>
+                    </button>
+                </td>
+            </tr>
+            </tbody>
         </table>
     </div>
 </ng-container>

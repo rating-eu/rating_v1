@@ -39,6 +39,7 @@ import {SessionStorageService} from 'ngx-webstorage';
 import {PopupService} from '@ng-bootstrap/ng-bootstrap/util/popup';
 import {PopUpService} from '../../shared/pop-up-services/pop-up.service';
 import {DatasharingService} from '../../datasharing/datasharing.service';
+import {Account} from "../../shared";
 
 @Component({
     selector: 'jhi-self-assessment-mgm-dialog',

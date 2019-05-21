@@ -22,6 +22,7 @@ import { HttpResponse } from '@angular/common/http';
 import { PopUpService } from '../../shared/pop-up-services/pop-up.service';
 import { SelfAssessmentMgmService, SelfAssessmentMgm } from '../../entities/self-assessment-mgm';
 import {DatasharingService} from "../../datasharing/datasharing.service";
+import {Account} from "../../shared";
 
 @Component({
   selector: 'jhi-company-widget',

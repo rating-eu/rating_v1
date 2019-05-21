@@ -26,6 +26,7 @@ import {Role} from '../../entities/enumerations/Role.enum';
 import {ModalDismissReasons, NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {HttpResponse} from "@angular/common/http";
 import {MyCompanyMgm, MyCompanyMgmService} from "../../entities/my-company-mgm";
+import {Account} from "../../shared";
 
 @Component({
     selector: 'jhi-main',

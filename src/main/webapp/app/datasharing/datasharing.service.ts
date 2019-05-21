@@ -27,11 +27,13 @@ import {SelfAssessmentMgm} from '../entities/self-assessment-mgm';
 import {Role} from '../entities/enumerations/Role.enum';
 import {QuestionnaireStatusMgm} from "../entities/questionnaire-status-mgm";
 import {MyCompanyMgm} from "../entities/my-company-mgm";
-import {User} from "../shared";
+import {AccountService, User} from "../shared";
 import {Router} from "@angular/router";
 import {SessionStorageService} from "ngx-webstorage";
 import {RiskBoardStatus} from "../risk-board/risk-board.service";
 import {ReplaySubject} from "rxjs";
+import {HttpResponse} from "@angular/common/http";
+import {Account} from '../shared';
 
 @Injectable()
 export class DatasharingService {
@@ -51,6 +53,10 @@ export class DatasharingService {
     // User
     private _user: User;
     private _userSubject: ReplaySubject<User> = new ReplaySubject<User>();
+
+    // Account
+    private _account: Account;
+    private _accountSubject: ReplaySubject<Account> = new ReplaySubject<Account>();
 
     // MyCompany
     private _myCompany: MyCompanyMgm = null;
@@ -74,7 +80,8 @@ export class DatasharingService {
 
     constructor(
         private router: Router,
-        private sessionStorage: SessionStorageService
+        private sessionStorage: SessionStorageService,
+        private accountService: AccountService
     ) {
     }
 
@@ -199,10 +206,46 @@ export class DatasharingService {
     set user(user: User) {
         this._user = user;
         this._userSubject.next(this.user);
+
+        if (this._user) {
+            this.accountService.get().subscribe((response: HttpResponse<Account>) => {
+                if (response) {
+                    this.account = response.body;
+                } else {
+                    this.account = null;
+                }
+            });
+        } else {
+            this.account = null;
+        }
     }
 
     get userObservable(): Observable<User> {
         return this._userSubject.asObservable();
+    }
+
+    // Account property
+    get account(): Account {
+        return this._account;
+    }
+
+    set account(account: Account) {
+        this._account = account;
+        this._accountSubject.next(this._account);
+
+        if (this._account['authorities'].includes(Role[Role.ROLE_CISO])) {
+            this.role = Role.ROLE_CISO;
+        } else if (this._account['authorities'].includes(Role[Role.ROLE_EXTERNAL_AUDIT])) {
+            this.role = Role.ROLE_EXTERNAL_AUDIT;
+        } else if (this._account['authorities'].includes(Role[Role.ROLE_ADMIN])) {
+            this.role = Role.ROLE_ADMIN;
+        } else {
+            this.role = null;
+        }
+    }
+
+    get accountObservable(): Observable<Account> {
+        return this._accountSubject.asObservable();
     }
 
     // RiskBoard Status property

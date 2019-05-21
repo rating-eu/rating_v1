@@ -43,6 +43,7 @@ import {PartialSubmitDialogComponent} from '../partial-submit-dialog/partial-sub
 import {MyCompanyMgm, MyCompanyMgmService} from "../../../../entities/my-company-mgm";
 import {Role} from "../../../../entities/enumerations/Role.enum";
 import {ContainerType} from "../../../../entities/enumerations/ContainerType.enum";
+import {Account} from "../../../../shared";
 
 @Component({
     selector: 'jhi-dynamic-form',
@@ -56,7 +57,7 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
     private static NO = 'NO';
 
     private static CISO_ROLE: string = Role[Role.ROLE_CISO];
-    private static EXTERNAL_ROLE: String = Role[Role.ROLE_EXTERNAL_AUDIT];
+    private static EXTERNAL_ROLE: string = Role[Role.ROLE_EXTERNAL_AUDIT];
 
     public loading = false;
     public debug = false;
