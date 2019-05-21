@@ -48,6 +48,7 @@ import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * REST controller for managing users.
@@ -169,12 +170,14 @@ public class UserResource {
     }
 
     @GetMapping("/users/external")
-    public List<User> getAllExternalAudits() {
+    public List<UserDTO> getAllExternalAudits() {
         // To be valid the Authority entity just needs to have the correct role's name.
         Authority authority = new Authority();
         authority.setName(AuthoritiesConstants.EXTERNAL_AUDIT);
 
-        return this.userRepository.findAllByRole(authority);
+        return this.userRepository.findAllByRole(authority).stream().parallel()
+            .map(UserDTO::new)
+            .collect(Collectors.toList());
     }
 
     /**
