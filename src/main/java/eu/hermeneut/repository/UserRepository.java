@@ -67,6 +67,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     Page<User> findAllByLoginNot(Pageable pageable, String login);
 
-    @Query("SELECT user FROM User user LEFT JOIN FETCH user.authorities WHERE :role MEMBER OF user.authorities")
+    @Query("SELECT DISTINCT user FROM User user LEFT JOIN FETCH user.authorities WHERE :role MEMBER OF user.authorities")
     List<User> findAllByRole(@Param("role") Authority role);
 }
