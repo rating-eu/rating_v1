@@ -17,12 +17,14 @@
 
 package eu.hermeneut.service.impl;
 
+import eu.hermeneut.domain.MyAnswer;
 import eu.hermeneut.domain.MyCompany;
 import eu.hermeneut.domain.User;
 import eu.hermeneut.domain.enumeration.QuestionnairePurpose;
 import eu.hermeneut.domain.enumeration.Role;
 import eu.hermeneut.security.AuthoritiesConstants;
 import eu.hermeneut.security.SecurityUtils;
+import eu.hermeneut.service.MyAnswerService;
 import eu.hermeneut.service.MyCompanyService;
 import eu.hermeneut.service.QuestionnaireStatusService;
 import eu.hermeneut.domain.QuestionnaireStatus;
@@ -35,6 +37,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -53,6 +56,9 @@ public class QuestionnaireStatusServiceImpl implements QuestionnaireStatusServic
 
     @Autowired
     private MyCompanyService myCompanyService;
+
+    @Autowired
+    private MyAnswerService myAnswerService;
 
     public QuestionnaireStatusServiceImpl(QuestionnaireStatusRepository questionnaireStatusRepository) {
         this.questionnaireStatusRepository = questionnaireStatusRepository;
@@ -73,7 +79,12 @@ public class QuestionnaireStatusServiceImpl implements QuestionnaireStatusServic
                 .findOne(questionnaireStatus.getId());
 
             if (existingQStatus != null) {
-                this.delete(existingQStatus.getId());
+                // Delete the Old MyAnswers
+                Set<MyAnswer> myAnswers = existingQStatus.getAnswers();
+
+                if (myAnswers != null && !myAnswers.isEmpty()) {
+                    this.myAnswerService.deleteAll(myAnswers);
+                }
             }
         }
 

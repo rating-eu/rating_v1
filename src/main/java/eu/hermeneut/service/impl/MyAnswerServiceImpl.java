@@ -27,6 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Service Implementation for managing MyAnswer.
@@ -125,5 +126,10 @@ public class MyAnswerServiceImpl implements MyAnswerService {
     public List<MyAnswer> findAllByQuestionnaireStatus(Long questionnaireStatusID) {
         log.debug("Request to get all MyAnswers by questionnaire and user");
         return myAnswerRepository.findAllByQuestionnaireStatus(questionnaireStatusID);
+    }
+
+    @Override
+    public void deleteAll(Set<MyAnswer> myAnswers) {
+        this.myAnswerRepository.delete(myAnswers);
     }
 }

@@ -20,6 +20,7 @@ package eu.hermeneut.service;
 import eu.hermeneut.domain.MyAnswer;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * Service Interface for managing MyAnswer.
@@ -69,4 +70,6 @@ public interface MyAnswerService {
     void delete(Long id);
 
     List<MyAnswer> findAllByQuestionnaireStatus(Long questionnaireStatusID);
+
+    void deleteAll(Set<MyAnswer> myAnswers);
 }

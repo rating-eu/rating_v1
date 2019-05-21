@@ -39,6 +39,7 @@ import {Role} from "../../entities/enumerations/Role.enum";
 import {PopUpService} from "../../shared/pop-up-services/pop-up.service";
 import {JhiEventManager} from "ng-jhipster";
 import {EventManagerService} from "../../datasharing/event-manager.service";
+import {forkJoin} from "rxjs/observable/forkJoin";
 
 @Component({
     selector: 'jhi-questionnaires',
@@ -57,6 +58,9 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
 
     private questionnaires$: Observable<QuestionnaireMgm[]>;
     private questionnaires: QuestionnaireMgm[];
+
+    private externalAudits$: Observable<User[]>;
+    private externalAudits: User[];
 
     private identifyThreatAgentsQuestionnaire: QuestionnaireMgm;
     private selfAssessmentQuestionnaire: QuestionnaireMgm;
@@ -77,6 +81,8 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
     private user: User;
 
     private subscriptions: Subscription[] = [];
+
+    public externalChangedMap: Map<number/*QStatus.ID*/, boolean>;
 
     constructor(private route: ActivatedRoute,
                 private router: Router,
@@ -99,13 +105,14 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
         console.log('Questionnaires ON INIT:');
         this.registerChangeInQuestionnaireStatuses();
         this.loadQuestionnaires();
+        this.externalChangedMap = new Map();
     }
 
     private loadQuestionnaires() {
         const params$ = this.route.params;
 
         // GET the questionnaires by purpose
-        this.questionnaires$ = params$.pipe(
+        const join$ = params$.pipe(
             switchMap((params: Params) => {
                 const routeQuestionnairePurpose = params['purpose'];
                 switch (routeQuestionnairePurpose) {
@@ -119,14 +126,18 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
                     }
                 }
 
-                return this.questionnairesService.getAllQuestionnairesByPurpose(this.purpose);
+                this.questionnaires$ = this.questionnairesService.getAllQuestionnairesByPurpose(this.purpose);
+                this.externalAudits$ = this.userService.getExternalAudits();
+
+                return forkJoin(this.questionnaires$, this.externalAudits$);
             })
         );
 
         // GET the account
-        this.account$ = this.questionnaires$.pipe(
-            switchMap((response: QuestionnaireMgm[]) => {
-                this.questionnaires = response;
+        this.account$ = join$.pipe(
+            switchMap((response: [QuestionnaireMgm[], User[]]) => {
+                this.questionnaires = response[0];
+                this.externalAudits = response[1];
 
                 this.identifyThreatAgentsQuestionnaire = _.find(this.questionnaires, {'purpose': QuestionnairePurpose.ID_THREAT_AGENT});
                 this.selfAssessmentQuestionnaire = _.find(this.questionnaires, {'purpose': QuestionnairePurpose.SELFASSESSMENT});
@@ -310,5 +321,21 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
                     this.loadQuestionnaires();
                 })
         );
+    }
+
+    trackUserById(index: number, item: User) {
+        return item.id;
+    }
+
+    onExternalChange(id: number, old: User, current: User) {
+        this.externalChangedMap.set(id, true);
+    }
+
+    updateQuestionnaireStatus(questionnaireStatus: QuestionnaireStatusMgm) {
+        this.questionnaireStatusService.update(questionnaireStatus).subscribe((response: HttpResponse<QuestionnaireStatusMgm>) => {
+            if (response) {
+                this.externalChangedMap.set(questionnaireStatus.id, false);
+            }
+        });
     }
 }
