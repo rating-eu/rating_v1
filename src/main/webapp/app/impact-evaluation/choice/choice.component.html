@@ -1,0 +1,43 @@
+<ng-container>
+    <div class="x_panel">
+        <div class="x_title">
+            <h2>Choose your Impact Evaluation approach</h2>
+        </div>
+        <div class="x_content">
+            <p>Description, links. We suggest to use the Quantitative approach.</p>
+        </div>
+        <div class="table-responsive x_content">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Approach</th>
+                    <th>Description</th>
+                    <th>Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>Quantitative</td>
+                    <td>The Impact Evaluation using the Quantitative approach</td>
+                    <td>
+                        <button type="submit" (click)="quantitativeMode()"
+                                class="btn btn-success btn-sm">
+                            <span class="d-none d-md-inline">Evaluate</span>
+                        </button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Qualitative</td>
+                    <td>The Impact Evaluation using the Qualitative approach</td>
+                    <td>
+                        <button type="submit" (click)="qualitativeMode()"
+                                class="btn btn-success btn-sm">
+                            <span class="d-none d-md-inline">Evaluate</span>
+                        </button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</ng-container>

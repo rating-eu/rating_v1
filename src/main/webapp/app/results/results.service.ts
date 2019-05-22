@@ -33,8 +33,8 @@ export class ResultsService {
     ) {
     }
 
-    getResult(selfAssessmentID: number): Observable<EntityResponseType> {
-        return this.http.get<Result>(this.resourceUrl + '/' + selfAssessmentID, {observe: 'response'})
+    getResult(companyProfileID: number): Observable<EntityResponseType> {
+        return this.http.get<Result>(this.resourceUrl + '/' + companyProfileID, {observe: 'response'})
             .map((res: EntityResponseType) => this.convertResponse(res));
     }
 

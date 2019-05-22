@@ -67,12 +67,6 @@ export class AttackStrategyMgmService {
         return this.http.delete<any>(`${this.resourceUrl}/${id}`, { observe: 'response'});
     }
 
-    search(req?: any): Observable<HttpResponse<AttackStrategyMgm[]>> {
-        const options = createRequestOption(req);
-        return this.http.get<AttackStrategyMgm[]>(this.resourceSearchUrl, { params: options, observe: 'response' })
-            .map((res: HttpResponse<AttackStrategyMgm[]>) => this.convertArrayResponse(res));
-    }
-
     private convertResponse(res: EntityResponseType): EntityResponseType {
         const body: AttackStrategyMgm = this.convertItemFromServer(res.body);
         return res.clone({body});

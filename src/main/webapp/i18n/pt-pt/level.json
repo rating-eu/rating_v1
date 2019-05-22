@@ -5,8 +5,7 @@
             "home": {
                 "title": "Levels",
                 "createLabel": "Criar um(a) novo(a) Level",
-                "createOrEditLabel": "Criar ou editar um(a) Level",
-                "search": "Search for Level"
+                "createOrEditLabel": "Criar ou editar um(a) Level"
             },
             "created": "A new Level is created with identifier {{ param }}",
             "updated": "A Level is updated with identifier {{ param }}",

@@ -86,7 +86,7 @@ public class CriticalAttackStrategyServiceImpl implements CriticalAttackStrategy
             }
         }
 
-        Map<Long, AugmentedAttackStrategy> augmentedAttackStrategyMap = this.augmentedAttackStrategyService.getAugmentedAttackStrategyMap(selfAssessmentID);
+        Map<Long, AugmentedAttackStrategy> augmentedAttackStrategyMap = this.augmentedAttackStrategyService.getAugmentedAttackStrategyMap(selfAssessment.getCompanyProfile().getId());
 
         if (augmentedAttackStrategyMap != null) {
             augmentedAttackStrategyMap.values().forEach(augmentedAttackStrategy -> {

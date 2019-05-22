@@ -64,7 +64,7 @@ describe('Component Tests', () => {
 
                 // THEN
                 expect(service.query).toHaveBeenCalled();
-                expect(comp.answerWeights[0]).toEqual(jasmine.objectContaining({id: 123}));
+                expect(comp.allAnswerWeights[0]).toEqual(jasmine.objectContaining({id: 123}));
             });
         });
     });

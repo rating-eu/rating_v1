@@ -31,7 +31,6 @@ export type EntityResponseType = HttpResponse<EBITMgm>;
 export class EBITMgmService {
 
     private resourceUrl =  SERVER_API_URL + 'api/ebits';
-    private resourceSearchUrl = SERVER_API_URL + 'api/_search/ebits';
 
     constructor(private http: HttpClient, private dateUtils: JhiDateUtils) { }
 
@@ -60,12 +59,6 @@ export class EBITMgmService {
 
     delete(id: number): Observable<HttpResponse<any>> {
         return this.http.delete<any>(`${this.resourceUrl}/${id}`, { observe: 'response'});
-    }
-
-    search(req?: any): Observable<HttpResponse<EBITMgm[]>> {
-        const options = createRequestOption(req);
-        return this.http.get<EBITMgm[]>(this.resourceSearchUrl, { params: options, observe: 'response' })
-            .map((res: HttpResponse<EBITMgm[]>) => this.convertArrayResponse(res));
     }
 
     private convertResponse(res: EntityResponseType): EntityResponseType {

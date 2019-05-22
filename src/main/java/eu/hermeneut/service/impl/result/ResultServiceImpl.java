@@ -1,12 +1,12 @@
 /*
  * Copyright 2019 HERMENEUT Consortium
- *  
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *  
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- *  
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -25,7 +25,6 @@ import eu.hermeneut.domain.enumeration.Role;
 import eu.hermeneut.domain.result.Result;
 import eu.hermeneut.service.*;
 import eu.hermeneut.service.result.ResultService;
-import eu.hermeneut.utils.likelihood.answer.AnswerCalculator;
 import eu.hermeneut.utils.likelihood.attackstrategy.AttackStrategyCalculator;
 import eu.hermeneut.utils.likelihood.overall.OverallCalculator;
 import eu.hermeneut.utils.threatagent.ThreatAgentComparator;
@@ -47,22 +46,13 @@ public class ResultServiceImpl implements ResultService {
     private final Logger log = LoggerFactory.getLogger(AssetResource.class);
 
     @Autowired
-    private SelfAssessmentService selfAssessmentService;
+    private CompanyProfileService companyProfileService;
 
     @Autowired
     private ThreatAgentService threatAgentService;
 
     @Autowired
     private AttackStrategyService attackStrategyService;
-
-    @Autowired
-    private LevelService levelService;
-
-    @Autowired
-    private PhaseService phaseService;
-
-    @Autowired
-    private AnswerWeightService answerWeightService;
 
     @Autowired
     private QuestionnaireStatusService questionnaireStatusService;
@@ -82,23 +72,21 @@ public class ResultServiceImpl implements ResultService {
     @Autowired
     private OverallCalculator overallCalculator;
 
-    @Autowired
-    private AnswerCalculator answerCalculator;
-
     @Override
-    public Result getThreatAgentsResult(Long selfAssessmentID) {
+    public Result getThreatAgentsResult(Long companyProfileID) {
         log.debug("REST request to get the RESULT");
-        log.debug("SelfAssessmentID: " + selfAssessmentID);
+        log.debug("CompanyProfileID: " + companyProfileID);
 
         Result result = new Result();
 
-        //#1 fetch the SelfAssessment
-        SelfAssessment selfAssessment = this.selfAssessmentService.findOne(selfAssessmentID);
-        log.debug("SelfAssessment: " + selfAssessment);
+        //#1 fetch the CompanyProfile
+        CompanyProfile companyProfile = this.companyProfileService.findOne(companyProfileID);
 
-        if (selfAssessment != null) {
+        if (companyProfile != null) {
+            //Get
+
             //#2 Calculate the identified threat agents from the MyAnswers
-            Set<ThreatAgent> threatAgentSet = this.getThreatAgents(selfAssessmentID);
+            Set<ThreatAgent> threatAgentSet = this.getThreatAgents(companyProfileID);
             log.debug("ThreatAgents: " + Arrays.toString(threatAgentSet.toArray()));
 
             if (threatAgentSet != null && !threatAgentSet.isEmpty()) {
@@ -109,7 +97,7 @@ public class ResultServiceImpl implements ResultService {
                     log.debug("Skills: " + threatAgent.getSkillLevel().getValue());
                 }
 
-                Map<Long, Float> levelsOfInterest = this.getLevelsOfInterest(selfAssessmentID);
+                Map<Long, Float> levelsOfInterest = this.getLevelsOfInterest(companyProfileID);
 
                 ThreatAgent strongestThreatAgent = ascendingThreatAgentSkills.get(0);
                 log.debug("Strongest ThreatAgent: " + strongestThreatAgent);
@@ -145,7 +133,7 @@ public class ResultServiceImpl implements ResultService {
                 });
 
                 //#4 get the questionnaireStatuses by CISO and EXTERNAL_AUDIT
-                List<QuestionnaireStatus> questionnaireStatuses = this.questionnaireStatusService.findAllBySelfAssessment(selfAssessment.getId());
+                List<QuestionnaireStatus> questionnaireStatuses = this.questionnaireStatusService.findAllByCompanyProfile(companyProfile.getId());
 
                 QuestionnaireStatus cisoQuestionnaireStatus = questionnaireStatuses.stream().filter(questionnaireStatus -> {
                     return questionnaireStatus.getQuestionnaire().getPurpose().equals(QuestionnairePurpose.SELFASSESSMENT) && questionnaireStatus.getRole() == Role.ROLE_CISO;
@@ -216,11 +204,11 @@ public class ResultServiceImpl implements ResultService {
     }
 
     @Override
-    public Float getOverallLikelihood(Long selfAssessmentID) {
+    public Float getOverallLikelihood(Long companyProfileID) {
         Float overallLikelihood = -1F;
 
-        if (selfAssessmentID != null) {
-            Result result = this.getThreatAgentsResult(selfAssessmentID);
+        if (companyProfileID != null) {
+            Result result = this.getThreatAgentsResult(companyProfileID);
 
             if (result != null) {
                 Map<Long, Float> initialVulnerability = result.getInitialVulnerability();
@@ -241,17 +229,17 @@ public class ResultServiceImpl implements ResultService {
     }
 
     @Override
-    public Map<Long/*ThreatAgentID*/, Float/*LevelOfInterest*/> getLevelsOfInterest(Long selfAssessmentID) {
+    public Map<Long/*ThreatAgentID*/, Float/*LevelOfInterest*/> getLevelsOfInterest(Long companyProfileID) {
         //ThreatAgent-ID --> x-Value
         Map<Long, Integer> threatAgentQuestionsCount = new HashMap<>();
         Map<Long, Integer> threatAgentYesCount = new HashMap<>();
         Map<Long, Float> threatAgentLevelsOfInterest = new HashMap<>();
 
-        if (selfAssessmentID != null) {
-            SelfAssessment selfAssessment = this.selfAssessmentService.findOne(selfAssessmentID);
+        if (companyProfileID != null) {
+            CompanyProfile companyProfile = this.companyProfileService.findOne(companyProfileID);
 
-            if (selfAssessment != null) {
-                QuestionnaireStatus questionnaireStatus = this.questionnaireStatusService.findBySelfAssessmentRoleAndQuestionnairePurpose(selfAssessmentID, Role.ROLE_CISO, QuestionnairePurpose.ID_THREAT_AGENT);
+            if (companyProfile != null) {
+                QuestionnaireStatus questionnaireStatus = this.questionnaireStatusService.findAllByCompanyProfileRoleAndQuestionnairePurpose(companyProfileID, Role.ROLE_CISO, QuestionnairePurpose.ID_THREAT_AGENT).stream().findFirst().orElse(null);;
 
                 if (questionnaireStatus != null) {
                     List<MyAnswer> myAnswers = this.myAnswerService.findAllByQuestionnaireStatus(questionnaireStatus.getId());
@@ -298,9 +286,10 @@ public class ResultServiceImpl implements ResultService {
         return threatAgentLevelsOfInterest;
     }
 
-    public Set<ThreatAgent> getThreatAgents(Long selfAssessmentID) {
+    @Override
+    public Set<ThreatAgent> getThreatAgents(Long companyProfileID) {
         //Get the levels of interest
-        Map<Long/*ThreatAgentID*/, Float/*LevelOfInterest*/> levelOfInterests = this.getLevelsOfInterest(selfAssessmentID);
+        Map<Long/*ThreatAgentID*/, Float/*LevelOfInterest*/> levelOfInterests = this.getLevelsOfInterest(companyProfileID);
 
         //Fetch all threat-agents
         List<ThreatAgent> threatAgents = this.threatAgentService.findAll();

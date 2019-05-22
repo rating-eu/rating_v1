@@ -15,6 +15,6 @@
   ~
   -->
 
-<h2 *ngIf="questionnaire" class="text-center">{{questionnaire.name}}</h2>
+<h2 *ngIf="questionnaireStatus" class="text-center">{{questionnaireStatus.questionnaire.name}}</h2>
 
-<jhi-dynamic-form *ngIf="questionnaire" [questionnaire]="questionnaire"></jhi-dynamic-form>
+<jhi-dynamic-form *ngIf="questionnaireStatus" [questionnaire]="questionnaireStatus.questionnaire"></jhi-dynamic-form>

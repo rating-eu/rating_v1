@@ -184,18 +184,4 @@ public class ImpactLevelResource {
         impactLevelService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
-
-    /**
-     * SEARCH  /_search/impact-levels?query=:query : search for the impactLevel corresponding
-     * to the query.
-     *
-     * @param query the query of the impactLevel search
-     * @return the result of the search
-     */
-    @GetMapping("/_search/impact-levels")
-    @Timed
-    public List<ImpactLevel> searchImpactLevels(@RequestParam String query) {
-        log.debug("REST request to search ImpactLevels for query {}", query);
-        return impactLevelService.search(query);
-    }
 }

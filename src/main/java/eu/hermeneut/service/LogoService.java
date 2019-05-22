@@ -56,15 +56,6 @@ public interface LogoService {
     void delete(Long id);
 
     /**
-     * Search for the logo corresponding to the query.
-     *
-     * @param query the query of the search
-     * 
-     * @return the list of entities
-     */
-    List<Logo> search(String query);
-
-    /**
      * Get the "Secondary" logo of the system.
      *
      * @return the entity

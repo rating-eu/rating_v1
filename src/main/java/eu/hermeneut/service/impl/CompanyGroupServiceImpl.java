@@ -20,17 +20,12 @@ package eu.hermeneut.service.impl;
 import eu.hermeneut.service.CompanyGroupService;
 import eu.hermeneut.domain.CompanyGroup;
 import eu.hermeneut.repository.CompanyGroupRepository;
-import eu.hermeneut.repository.search.CompanyGroupSearchRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
-
-import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
  * Service Implementation for managing CompanyGroup.
@@ -43,11 +38,8 @@ public class CompanyGroupServiceImpl implements CompanyGroupService {
 
     private final CompanyGroupRepository companyGroupRepository;
 
-    private final CompanyGroupSearchRepository companyGroupSearchRepository;
-
-    public CompanyGroupServiceImpl(CompanyGroupRepository companyGroupRepository, CompanyGroupSearchRepository companyGroupSearchRepository) {
+    public CompanyGroupServiceImpl(CompanyGroupRepository companyGroupRepository) {
         this.companyGroupRepository = companyGroupRepository;
-        this.companyGroupSearchRepository = companyGroupSearchRepository;
     }
 
     /**
@@ -60,7 +52,6 @@ public class CompanyGroupServiceImpl implements CompanyGroupService {
     public CompanyGroup save(CompanyGroup companyGroup) {
         log.debug("Request to save CompanyGroup : {}", companyGroup);
         CompanyGroup result = companyGroupRepository.save(companyGroup);
-        companyGroupSearchRepository.save(result);
         return result;
     }
 
@@ -98,21 +89,5 @@ public class CompanyGroupServiceImpl implements CompanyGroupService {
     public void delete(Long id) {
         log.debug("Request to delete CompanyGroup : {}", id);
         companyGroupRepository.delete(id);
-        companyGroupSearchRepository.delete(id);
-    }
-
-    /**
-     * Search for the companyGroup corresponding to the query.
-     *
-     * @param query the query of the search
-     * @return the list of entities
-     */
-    @Override
-    @Transactional(readOnly = true)
-    public List<CompanyGroup> search(String query) {
-        log.debug("Request to search CompanyGroups for query {}", query);
-        return StreamSupport
-            .stream(companyGroupSearchRepository.search(queryStringQuery(query)).spliterator(), false)
-            .collect(Collectors.toList());
     }
 }

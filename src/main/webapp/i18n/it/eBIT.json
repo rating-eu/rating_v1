@@ -5,8 +5,7 @@
             "home": {
                 "title": "EBITS",
                 "createLabel": "Genera un nuovo EBIT",
-                "createOrEditLabel": "Genera o modifica un EBIT",
-                "search": "Cerca EBIT"
+                "createOrEditLabel": "Genera o modifica un EBIT"
             },
             "created": "&Egrave; stato generato un nuovo EBIT con identificatore {{ param }}",
             "updated": "&Egrave; stato aggiornato EBIT identificato da {{ param }}",

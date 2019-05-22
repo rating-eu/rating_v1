@@ -20,17 +20,12 @@ package eu.hermeneut.service.impl;
 import eu.hermeneut.service.LogoService;
 import eu.hermeneut.domain.Logo;
 import eu.hermeneut.repository.LogoRepository;
-import eu.hermeneut.repository.search.LogoSearchRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
-
-import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
  * Service Implementation for managing Logo.
@@ -43,11 +38,8 @@ public class LogoServiceImpl implements LogoService {
 
     private final LogoRepository logoRepository;
 
-    private final LogoSearchRepository logoSearchRepository;
-
-    public LogoServiceImpl(LogoRepository logoRepository, LogoSearchRepository logoSearchRepository) {
+    public LogoServiceImpl(LogoRepository logoRepository) {
         this.logoRepository = logoRepository;
-        this.logoSearchRepository = logoSearchRepository;
     }
 
     /**
@@ -60,7 +52,6 @@ public class LogoServiceImpl implements LogoService {
     public Logo save(Logo logo) {
         log.debug("Request to save Logo : {}", logo);
         Logo result = logoRepository.save(logo);
-        logoSearchRepository.save(result);
         return result;
     }
 
@@ -98,22 +89,6 @@ public class LogoServiceImpl implements LogoService {
     public void delete(Long id) {
         log.debug("Request to delete Logo : {}", id);
         logoRepository.delete(id);
-        logoSearchRepository.delete(id);
-    }
-
-    /**
-     * Search for the logo corresponding to the query.
-     *
-     * @param query the query of the search
-     * @return the list of entities
-     */
-    @Override
-    @Transactional(readOnly = true)
-    public List<Logo> search(String query) {
-        log.debug("Request to search Logos for query {}", query);
-        return StreamSupport
-            .stream(logoSearchRepository.search(queryStringQuery(query)).spliterator(), false)
-            .collect(Collectors.toList());
     }
 
     @Override

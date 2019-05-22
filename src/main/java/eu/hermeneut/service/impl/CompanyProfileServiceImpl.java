@@ -20,7 +20,6 @@ package eu.hermeneut.service.impl;
 import eu.hermeneut.service.CompanyProfileService;
 import eu.hermeneut.domain.CompanyProfile;
 import eu.hermeneut.repository.CompanyProfileRepository;
-import eu.hermeneut.repository.search.CompanyProfileSearchRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -29,8 +28,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
-
-import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
  * Service Implementation for managing CompanyProfile.
@@ -43,11 +40,8 @@ public class CompanyProfileServiceImpl implements CompanyProfileService {
 
     private final CompanyProfileRepository companyProfileRepository;
 
-    private final CompanyProfileSearchRepository companyProfileSearchRepository;
-
-    public CompanyProfileServiceImpl(CompanyProfileRepository companyProfileRepository, CompanyProfileSearchRepository companyProfileSearchRepository) {
+    public CompanyProfileServiceImpl(CompanyProfileRepository companyProfileRepository) {
         this.companyProfileRepository = companyProfileRepository;
-        this.companyProfileSearchRepository = companyProfileSearchRepository;
     }
 
     /**
@@ -60,7 +54,6 @@ public class CompanyProfileServiceImpl implements CompanyProfileService {
     public CompanyProfile save(CompanyProfile companyProfile) {
         log.debug("Request to save CompanyProfile : {}", companyProfile);
         CompanyProfile result = companyProfileRepository.save(companyProfile);
-        companyProfileSearchRepository.save(result);
         return result;
     }
 
@@ -98,21 +91,5 @@ public class CompanyProfileServiceImpl implements CompanyProfileService {
     public void delete(Long id) {
         log.debug("Request to delete CompanyProfile : {}", id);
         companyProfileRepository.delete(id);
-        companyProfileSearchRepository.delete(id);
-    }
-
-    /**
-     * Search for the companyProfile corresponding to the query.
-     *
-     * @param query the query of the search
-     * @return the list of entities
-     */
-    @Override
-    @Transactional(readOnly = true)
-    public List<CompanyProfile> search(String query) {
-        log.debug("Request to search CompanyProfiles for query {}", query);
-        return StreamSupport
-            .stream(companyProfileSearchRepository.search(queryStringQuery(query)).spliterator(), false)
-            .collect(Collectors.toList());
     }
 }

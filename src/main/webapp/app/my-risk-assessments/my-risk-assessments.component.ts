@@ -16,17 +16,17 @@
  */
 
 import * as _ from 'lodash';
-import { Principal } from './../shared/auth/principal.service';
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { User } from '../shared';
-import { MyCompanyMgm } from '../entities/my-company-mgm';
-import { SelfAssessmentMgm, SelfAssessmentMgmService } from '../entities/self-assessment-mgm';
-import { Router } from '@angular/router';
-import { Subscription } from 'rxjs/Subscription';
-import { MyAssetMgm, MyAssetMgmService } from '../entities/my-asset-mgm';
-import { DatasharingService } from '../datasharing/datasharing.service';
-import { PopUpService } from '../shared/pop-up-services/pop-up.service';
-import { MyRole } from '../entities/enumerations/MyRole.enum';
+import {Principal} from './../shared/auth/principal.service';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {User} from '../shared';
+import {MyCompanyMgm} from '../entities/my-company-mgm';
+import {SelfAssessmentMgm, SelfAssessmentMgmService} from '../entities/self-assessment-mgm';
+import {Router} from '@angular/router';
+import {Subscription} from 'rxjs/Subscription';
+import {MyAssetMgm, MyAssetMgmService} from '../entities/my-asset-mgm';
+import {DatasharingService} from '../datasharing/datasharing.service';
+import {PopUpService} from '../shared/pop-up-services/pop-up.service';
+import {Role} from '../entities/enumerations/Role.enum';
 
 interface OrderBy {
     name: boolean;
@@ -43,8 +43,6 @@ interface OrderBy {
 export class MyRiskAssessmentsComponent implements OnInit, OnDestroy {
 
     private static NOT_FOUND = 404;
-    private user: User;
-    private myCompany: MyCompanyMgm;
     public mySelfAssessments: SelfAssessmentMgm[];
     eventSubscriber: Subscription;
     private subscription: Subscription;
@@ -54,6 +52,7 @@ export class MyRiskAssessmentsComponent implements OnInit, OnDestroy {
     public isExternal = false;
     public mySelfAssessment = null;
     public orderBy: OrderBy;
+    public isCollapsed: boolean = true;
 
     constructor(
         private router: Router,
@@ -74,24 +73,20 @@ export class MyRiskAssessmentsComponent implements OnInit, OnDestroy {
         };
         this.loadMySelfAssessments();
         this.registerChangeInSelfAssessments();
-        if (this.selfAssessmentService.isSelfAssessmentSelected()) {
-            this.mySelfAssessment = this.selfAssessmentService.getSelfAssessment();
-        } else {
-            this.mySelfAssessment = null;
-        }
+        this.mySelfAssessment = this.dataSharingService.selfAssessment;
 
         // Get notified each time authentication state changes.
-        this.dataSharingService.observeRole().subscribe((role: MyRole) => {
+        this.dataSharingService.roleObservable.subscribe((role: Role) => {
             switch (role) {
-                case MyRole.ROLE_ADMIN: {
+                case Role.ROLE_ADMIN: {
                     this.isAdmin = true;
                     break;
                 }
-                case MyRole.ROLE_CISO: {
+                case Role.ROLE_CISO: {
                     this.isCISO = true;
                     break;
                 }
-                case MyRole.ROLE_EXTERNAL_AUDIT: {
+                case Role.ROLE_EXTERNAL_AUDIT: {
                     this.isExternal = true;
                     break;
                 }
@@ -114,11 +109,10 @@ export class MyRiskAssessmentsComponent implements OnInit, OnDestroy {
     }
 
     selectSelfAssessment(selfAssessment: SelfAssessmentMgm) {
-        this.selfAssessmentService.setSelfAssessment(selfAssessment);
-        this.dataSharingService.updateMySelfAssessment(selfAssessment);
+        this.dataSharingService.selfAssessment = selfAssessment;
 
         if (this.isCISO) {
-            this.router.navigate(['/']);
+            this.router.navigate(['/riskboard']);
         }
 
         if (this.isExternal) {
@@ -131,7 +125,7 @@ export class MyRiskAssessmentsComponent implements OnInit, OnDestroy {
     }
 
     registerChangeInSelfAssessments() {
-        this.subscription = this.dataSharingService.observeMySelf().subscribe((value: SelfAssessmentMgm) => {
+        this.subscription = this.dataSharingService.selfAssessmentObservable.subscribe((value: SelfAssessmentMgm) => {
             this.loadMySelfAssessments();
         });
     }

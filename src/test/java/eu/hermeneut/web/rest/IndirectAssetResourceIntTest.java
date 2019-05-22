@@ -22,7 +22,6 @@ import eu.hermeneut.HermeneutApp;
 import eu.hermeneut.domain.IndirectAsset;
 import eu.hermeneut.repository.IndirectAssetRepository;
 import eu.hermeneut.service.IndirectAssetService;
-import eu.hermeneut.repository.search.IndirectAssetSearchRepository;
 import eu.hermeneut.web.rest.errors.ExceptionTranslator;
 
 import org.junit.Before;
@@ -64,9 +63,6 @@ public class IndirectAssetResourceIntTest {
     private IndirectAssetService indirectAssetService;
 
     @Autowired
-    private IndirectAssetSearchRepository indirectAssetSearchRepository;
-
-    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -106,7 +102,6 @@ public class IndirectAssetResourceIntTest {
 
     @Before
     public void initTest() {
-        indirectAssetSearchRepository.deleteAll();
         indirectAsset = createEntity(em);
     }
 
@@ -125,10 +120,6 @@ public class IndirectAssetResourceIntTest {
         List<IndirectAsset> indirectAssetList = indirectAssetRepository.findAll();
         assertThat(indirectAssetList).hasSize(databaseSizeBeforeCreate + 1);
         IndirectAsset testIndirectAsset = indirectAssetList.get(indirectAssetList.size() - 1);
-
-        // Validate the IndirectAsset in Elasticsearch
-        IndirectAsset indirectAssetEs = indirectAssetSearchRepository.findOne(testIndirectAsset.getId());
-        assertThat(indirectAssetEs).isEqualToIgnoringGivenFields(testIndirectAsset);
     }
 
     @Test
@@ -206,10 +197,6 @@ public class IndirectAssetResourceIntTest {
         List<IndirectAsset> indirectAssetList = indirectAssetRepository.findAll();
         assertThat(indirectAssetList).hasSize(databaseSizeBeforeUpdate);
         IndirectAsset testIndirectAsset = indirectAssetList.get(indirectAssetList.size() - 1);
-
-        // Validate the IndirectAsset in Elasticsearch
-        IndirectAsset indirectAssetEs = indirectAssetSearchRepository.findOne(testIndirectAsset.getId());
-        assertThat(indirectAssetEs).isEqualToIgnoringGivenFields(testIndirectAsset);
     }
 
     @Test
@@ -243,26 +230,9 @@ public class IndirectAssetResourceIntTest {
             .accept(TestUtil.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk());
 
-        // Validate Elasticsearch is empty
-        boolean indirectAssetExistsInEs = indirectAssetSearchRepository.exists(indirectAsset.getId());
-        assertThat(indirectAssetExistsInEs).isFalse();
-
         // Validate the database is empty
         List<IndirectAsset> indirectAssetList = indirectAssetRepository.findAll();
         assertThat(indirectAssetList).hasSize(databaseSizeBeforeDelete - 1);
-    }
-
-    @Test
-    @Transactional
-    public void searchIndirectAsset() throws Exception {
-        // Initialize the database
-        indirectAssetService.save(indirectAsset);
-
-        // Search the indirectAsset
-        restIndirectAssetMockMvc.perform(get("/api/_search/indirect-assets?query=id:" + indirectAsset.getId()))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(indirectAsset.getId().intValue())));
     }
 
     @Test

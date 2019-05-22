@@ -5,8 +5,7 @@
             "home": {
                 "title": "Phases",
                 "createLabel": "Phase erstellen",
-                "createOrEditLabel": "Phase erstellen oder bearbeiten",
-                "search": "Suche nach Phase"
+                "createOrEditLabel": "Phase erstellen oder bearbeiten"
             },
             "created": "Phase erstellt mit ID {{ param }}",
             "updated": "Phase aktualisiert mit ID {{ param }}",

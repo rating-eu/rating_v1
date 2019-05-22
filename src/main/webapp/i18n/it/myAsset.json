@@ -5,8 +5,7 @@
             "home": {
                 "title": "MyAssets",
                 "createLabel": "Genera un nuovo My Asset",
-                "createOrEditLabel": "Genera o modifica un My Asset",
-                "search": "Cerca My Asset"
+                "createOrEditLabel": "Genera o modifica un My Asset"
             },
             "created": "&Egrave; stato generato un nuovo My Asset con identificatore {{ param }}",
             "updated": "&Egrave; stato aggiornato My Asset identificato da {{ param }}",

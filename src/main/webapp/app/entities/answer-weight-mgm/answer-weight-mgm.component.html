@@ -18,22 +18,6 @@
 <div class="row">
 
     <div class="col-lg-9 col-md-12">
-        <div class="card-box">
-            <div class="form-search-table">
-
-                <form name="searchForm"role="search" class="">
-                    <div class="input-group w-100">
-                        <input type="text" class="form-control" [(ngModel)]="currentSearch" id="currentSearch" name="currentSearch" placeholder="{{ 'hermeneutApp.answerWeight.home.search' | translate }}">
-                        <button class="input-group-append btn btn-info" (click)="search(currentSearch)">
-                            <span class="fa fa-search"></span>
-                        </button>
-                        <button class="input-group-append btn btn-danger" (click)="clear()" *ngIf="currentSearch">
-                            <span class="fa fa-trash-o"></span>
-                        </button>
-                    </div>
-                </form>
-            </div>
-        </div>
     </div>
     <div class="col-lg-3 col-md-12">
         <div class="card-box">
@@ -61,32 +45,14 @@
         </button> -->
     </h2>
     <jhi-alert></jhi-alert>
-    <!-- <div class="row">
-        <div class="col-sm-12">
-            <form name="searchForm" class="form-inline">
-                <div class="input-group w-100 mt-3">
-                    <input type="text" class="form-control" [(ngModel)]="currentSearch" id="currentSearch"
-                           name="currentSearch" placeholder="{{ 'hermeneutApp.answerWeight.home.search' | translate }}">
-                    <button class="input-group-append btn btn-info" (click)="search(currentSearch)">
-                        <span class="fa fa-search"></span>
-                    </button>
-                    <button class="input-group-append btn btn-danger" (click)="clear()" *ngIf="currentSearch">
-                        <span class="fa fa-trash-o"></span>
-                    </button>
-                </div>
-            </form>
-        </div>
-    </div>
-    <br/> -->
     <mat-tab-group (selectedTabChange)="tabClick($event)">
         <mat-tab label="">
             <mat-icon></mat-icon>
 
-            <div class="table-responsive" *ngIf="answerWeights">
+            <div class="table-responsive" *ngIf="allAnswerWeights">
                 <table class="table table-striped">
                     <thead>
                     <tr>
-                        <!--<th><span jhiTranslate="global.field.id">ID</span></th>-->
                         <th><span jhiTranslate="hermeneutApp.answerWeight.likelihood">Likelihood</span></th>
                         <th><span jhiTranslate="hermeneutApp.answerWeight.questionType">Question Type</span></th>
                         <th><span jhiTranslate="hermeneutApp.answerWeight.weight">Weight</span></th>
@@ -94,7 +60,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr *ngFor="let answerWeight of answerWeights ;trackBy: trackId">
+                    <tr *ngFor="let answerWeight of allAnswerWeights ;trackBy: trackId">
                         <!--<td><a [routerLink]="['../answer-weight-mgm', answerWeight.id ]">{{answerWeight.id}}</a></td>-->
                         <td jhiTranslate="{{'hermeneutApp.Likelihood.' + answerWeight.likelihood}}">
                             {{answerWeight.likelihood}}
@@ -137,7 +103,7 @@
         <mat-tab label="Regular">
             <h1>Some more tab content</h1>
 
-            <div class="table-responsive" *ngIf="answerWeights">
+            <div class="table-responsive" *ngIf="regularAnswerWeights">
                 <table class="table table-striped">
                     <thead>
                     <tr>
@@ -149,8 +115,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr *ngFor="let answerWeight of answerWeights ;trackBy: trackId">
-                        <!--<td><a [routerLink]="['../answer-weight-mgm', answerWeight.id ]">{{answerWeight.id}}</a></td>-->
+                    <tr *ngFor="let answerWeight of regularAnswerWeights ;trackBy: trackId">
                         <td jhiTranslate="{{'hermeneutApp.Likelihood.' + answerWeight.likelihood}}">
                             {{answerWeight.likelihood}}
                         </td>
@@ -192,7 +157,7 @@
         <mat-tab label="Relevant">
             <h1>Some more tab content</h1>
 
-            <div class="table-responsive" *ngIf="answerWeights">
+            <div class="table-responsive" *ngIf="relevantAnswerWeights">
                 <table class="table table-striped">
                     <thead>
                     <tr>
@@ -204,8 +169,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <tr *ngFor="let answerWeight of answerWeights ;trackBy: trackId">
-                        <!--<td><a [routerLink]="['../answer-weight-mgm', answerWeight.id ]">{{answerWeight.id}}</a></td>-->
+                    <tr *ngFor="let answerWeight of relevantAnswerWeights ;trackBy: trackId">
                         <td jhiTranslate="{{'hermeneutApp.Likelihood.' + answerWeight.likelihood}}">
                             {{answerWeight.likelihood}}
                         </td>

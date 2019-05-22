@@ -1,12 +1,12 @@
 /*
  * Copyright 2019 HERMENEUT Consortium
- *  
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *  
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- *  
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -44,23 +44,23 @@ public class AttackMapController {
     private final Logger log = LoggerFactory.getLogger(AssetResource.class);
 
     @Autowired
-    private SelfAssessmentService selfAssessmentService;
+    private CompanyProfileService companyProfileService;
 
     @Autowired
     private AugmentedAttackStrategyService augmentedAttackStrategyService;
 
-    @GetMapping("/{selfAssessmentID}/attack-matrix")
-    public AttackCKC7Matrix getAttackMatrix(@PathVariable Long selfAssessmentID) throws NotFoundException {
-        //#1 fetch the SelfAssessment
-        SelfAssessment selfAssessment = this.selfAssessmentService.findOne(selfAssessmentID);
+    @GetMapping("/{companyProfileID}/attack-matrix")
+    public AttackCKC7Matrix getAttackMatrix(@PathVariable Long companyProfileID) throws NotFoundException {
+        //#1 fetch the CompanyProfile
+        CompanyProfile companyProfile = this.companyProfileService.findOne(companyProfileID);
 
-        if (selfAssessment == null) {
-            throw new NotFoundException("SelfAssessment with ID: " + selfAssessmentID + "NOT FOUND!");
+        if (companyProfile == null) {
+            throw new NotFoundException("CompanyProfile NOT FOUND!");
         }
 
         //Map used to update the likelihood of an AttackStrategy in time O(1).
         Map<Long/*AttackStrategy.ID*/, AugmentedAttackStrategy> augmentedAttackStrategyMap =
-            this.augmentedAttackStrategyService.getAugmentedAttackStrategyMap(selfAssessmentID);
+            this.augmentedAttackStrategyService.getAugmentedAttackStrategyMap(companyProfile.getId());
 
         AttackCKC7Matrix attackMatrix = new AttackCKC7Matrix(augmentedAttackStrategyMap);
 

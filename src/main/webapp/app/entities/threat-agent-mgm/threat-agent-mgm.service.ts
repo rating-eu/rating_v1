@@ -27,12 +27,15 @@ import {createRequestOption} from '../../shared';
 
 export type EntityResponseType = HttpResponse<ThreatAgentMgm>;
 
+const COMPANY_ID = '{companyID}';
+
 @Injectable()
 export class ThreatAgentMgmService {
 
     private resourceUrl = SERVER_API_URL + 'api/threat-agents';
     private resourceSearchUrl = SERVER_API_URL + 'api/_search/threat-agents';
     private defaultThreatAgentsUrl = this.resourceUrl + '/default';
+    private threatAgentsByCompanyUrl = this.resourceUrl + '/company-profile/' + COMPANY_ID;
 
     constructor(private http: HttpClient, private dateUtils: JhiDateUtils) {
     }
@@ -62,12 +65,6 @@ export class ThreatAgentMgmService {
 
     delete(id: number): Observable<HttpResponse<any>> {
         return this.http.delete<any>(`${this.resourceUrl}/${id}`, {observe: 'response'});
-    }
-
-    search(req?: any): Observable<HttpResponse<ThreatAgentMgm[]>> {
-        const options = createRequestOption(req);
-        return this.http.get<ThreatAgentMgm[]>(this.resourceSearchUrl, {params: options, observe: 'response'})
-            .map((res: HttpResponse<ThreatAgentMgm[]>) => this.convertArrayResponse(res));
     }
 
     private convertResponse(res: EntityResponseType): EntityResponseType {
@@ -112,5 +109,15 @@ export class ThreatAgentMgmService {
         const options = createRequestOption();
         return this.http.get<ThreatAgentMgm[]>(this.defaultThreatAgentsUrl, {params: options, observe: 'response'})
             .map((res: HttpResponse<ThreatAgentMgm[]>) => this.convertArrayResponse(res));
+    }
+
+    getThreatAgentsByCompany(companyID: number): Observable<HttpResponse<ThreatAgentMgm[]>> {
+        const options = createRequestOption();
+        return this.http.get<ThreatAgentMgm[]>(this.threatAgentsByCompanyUrl.replace(COMPANY_ID, String(companyID)),
+            {
+                params: options,
+                observe: 'response'
+            }
+        ).map((res: HttpResponse<ThreatAgentMgm[]>) => this.convertArrayResponse(res));
     }
 }

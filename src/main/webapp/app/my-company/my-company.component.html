@@ -31,10 +31,6 @@
     <hr>
     <jhi-alert-error></jhi-alert-error>
     <dl class="row-md jh-entity-details">
-        <!--<dt><span jhiTranslate="hermeneutApp.myCompany.user">User</span></dt>
-        <dd>
-            {{myCompany.user?.login}}
-        </dd>-->
         <dt><span jhiTranslate="hermeneutApp.myCompany.companyProfile">Company Profile</span></dt>
         <dd>
             <div *ngIf="myCompany.companyProfile">
@@ -43,20 +39,6 @@
             </div>
         </dd>
     </dl>
-
-    <!--<button type="submit"
-            (click)="previousState()"
-            class="btn btn-info">
-        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
-    </button>
-
-    <button type="button"
-            [routerLink]="['/', { outlets: { popup: 'my-company-mgm/'+ myCompany.id + '/edit'} }]"
-            replaceUrl="true"
-            queryParamsHandling="merge"
-            class="btn btn-primary">
-        <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
-    </button>-->
 </div>
 
 <div *ngIf="!myCompany">
@@ -64,27 +46,4 @@
     <p>
         Your Company has not been set yet by the Administrator.
     </p>
-    <!--<div *ngIf="companyProfiles?.length > 0">
-        <p>No Company found. Select one or create a new one.</p>
-        <select [(ngModel)]="companyProfile">
-            <option [ngValue]="null"></option>
-            <option *ngFor="let companyProfile of companyProfiles" [ngValue]="companyProfile">{{companyProfile.name}}
-            </option>
-        </select>
-
-        <button *ngIf="companyProfile" (click)="saveMyCompany()">Save</button>
-
-        <button *ngIf="!companyProfile" routerLink="/company-profile-mgm">
-            Create Company
-        </button>
-    </div>
-
-    <div *ngIf="companyProfiles?.length === 0">
-        <p>
-            No Company found, create a new one first!
-        </p>
-        <button routerLink="/company-profile-mgm">
-            Create Company
-        </button>
-    </div>-->
 </div>

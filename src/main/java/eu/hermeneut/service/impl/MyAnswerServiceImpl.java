@@ -1,12 +1,12 @@
 /*
  * Copyright 2019 HERMENEUT Consortium
- *  
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *  
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- *  
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -17,10 +17,11 @@
 
 package eu.hermeneut.service.impl;
 
+import eu.hermeneut.domain.*;
+import eu.hermeneut.domain.enumeration.ContainerType;
 import eu.hermeneut.service.MyAnswerService;
-import eu.hermeneut.domain.MyAnswer;
 import eu.hermeneut.repository.MyAnswerRepository;
-import eu.hermeneut.repository.search.MyAnswerSearchRepository;
+import eu.hermeneut.utils.filter.MyAnswerByContainerFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -28,10 +29,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
-
-import static org.elasticsearch.index.query.QueryBuilders.*;
+import java.util.stream.Stream;
 
 /**
  * Service Implementation for managing MyAnswer.
@@ -44,11 +45,8 @@ public class MyAnswerServiceImpl implements MyAnswerService {
 
     private final MyAnswerRepository myAnswerRepository;
 
-    private final MyAnswerSearchRepository myAnswerSearchRepository;
-
-    public MyAnswerServiceImpl(MyAnswerRepository myAnswerRepository, MyAnswerSearchRepository myAnswerSearchRepository) {
+    public MyAnswerServiceImpl(MyAnswerRepository myAnswerRepository) {
         this.myAnswerRepository = myAnswerRepository;
-        this.myAnswerSearchRepository = myAnswerSearchRepository;
     }
 
     /**
@@ -61,7 +59,6 @@ public class MyAnswerServiceImpl implements MyAnswerService {
     public MyAnswer save(MyAnswer myAnswer) {
         log.debug("Request to save MyAnswer : {}", myAnswer);
         MyAnswer result = myAnswerRepository.save(myAnswer);
-        myAnswerSearchRepository.save(result);
         return result;
     }
 
@@ -69,7 +66,6 @@ public class MyAnswerServiceImpl implements MyAnswerService {
     public List<MyAnswer> saveAll(List<MyAnswer> myAnswers) {
         log.debug("Request to save MyAnswer : {}", Arrays.toString(myAnswers.toArray()));
         List<MyAnswer> result = myAnswerRepository.save(myAnswers);
-        myAnswerSearchRepository.save(result);
         return result;
     }
 
@@ -122,22 +118,6 @@ public class MyAnswerServiceImpl implements MyAnswerService {
     public void delete(Long id) {
         log.debug("Request to delete MyAnswer : {}", id);
         myAnswerRepository.delete(id);
-        myAnswerSearchRepository.delete(id);
-    }
-
-    /**
-     * Search for the myAnswer corresponding to the query.
-     *
-     * @param query the query of the search
-     * @return the list of entities
-     */
-    @Override
-    @Transactional(readOnly = true)
-    public List<MyAnswer> search(String query) {
-        log.debug("Request to search MyAnswers for query {}", query);
-        return StreamSupport
-            .stream(myAnswerSearchRepository.search(queryStringQuery(query)).spliterator(), false)
-            .collect(Collectors.toList());
     }
 
     /**
@@ -151,5 +131,21 @@ public class MyAnswerServiceImpl implements MyAnswerService {
     public List<MyAnswer> findAllByQuestionnaireStatus(Long questionnaireStatusID) {
         log.debug("Request to get all MyAnswers by questionnaire and user");
         return myAnswerRepository.findAllByQuestionnaireStatus(questionnaireStatusID);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<MyAnswer> findAllByQuestionnaireStatusAndSection(QuestionnaireStatus questionnaireStatus, ContainerType section) {
+        List<MyAnswer> allMyAnswers = myAnswerRepository.findAllByQuestionnaireStatus(questionnaireStatus.getId());
+
+        Predicate<MyAnswer> myAnswerPredicate = new MyAnswerByContainerFilter(section);
+
+        Stream<MyAnswer> stream = allMyAnswers.stream().parallel().filter(
+            myAnswerPredicate
+        );
+
+        List<MyAnswer> myAnswersBySection = stream.collect(Collectors.toList());
+
+        return myAnswersBySection;
     }
 }

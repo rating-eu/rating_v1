@@ -17,6 +17,7 @@
 
 package eu.hermeneut.service.impl;
 
+import eu.hermeneut.domain.AssetCategory;
 import eu.hermeneut.domain.AttackCost;
 import eu.hermeneut.domain.AttackCostParam;
 import eu.hermeneut.domain.enumeration.AssetType;
@@ -29,7 +30,6 @@ import eu.hermeneut.service.AttackCostService;
 import eu.hermeneut.service.MyAssetService;
 import eu.hermeneut.domain.MyAsset;
 import eu.hermeneut.repository.MyAssetRepository;
-import eu.hermeneut.repository.search.MyAssetSearchRepository;
 import eu.hermeneut.service.attack.cost.AttackCostSwitch;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,9 +43,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
-
-import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
  * Service Implementation for managing MyAsset.
@@ -58,7 +55,6 @@ public class MyAssetServiceImpl implements MyAssetService {
 
     private final MyAssetRepository myAssetRepository;
 
-    private final MyAssetSearchRepository myAssetSearchRepository;
 
     @Autowired
     private AttackCostService attackCostService;
@@ -69,9 +65,8 @@ public class MyAssetServiceImpl implements MyAssetService {
     @Autowired
     private AttackCostSwitch attackCostSwitch;
 
-    public MyAssetServiceImpl(MyAssetRepository myAssetRepository, MyAssetSearchRepository myAssetSearchRepository) {
+    public MyAssetServiceImpl(MyAssetRepository myAssetRepository) {
         this.myAssetRepository = myAssetRepository;
-        this.myAssetSearchRepository = myAssetSearchRepository;
     }
 
 
@@ -116,7 +111,6 @@ public class MyAssetServiceImpl implements MyAssetService {
         }
 
         MyAsset result = myAssetRepository.save(myAsset);
-        myAssetSearchRepository.save(result);
 
         if (result != null) {
             Set<AttackCost> costs = result.getCosts();
@@ -160,7 +154,6 @@ public class MyAssetServiceImpl implements MyAssetService {
         );
 
         List<MyAsset> result = myAssetRepository.save(myAssets);
-        myAssetSearchRepository.save(result);
         return result;
     }
 
@@ -204,22 +197,6 @@ public class MyAssetServiceImpl implements MyAssetService {
     public void delete(Long id) {
         log.debug("Request to delete MyAsset : {}", id);
         myAssetRepository.delete(id);
-        myAssetSearchRepository.delete(id);
-    }
-
-    /**
-     * Search for the myAsset corresponding to the query.
-     *
-     * @param query the query of the search
-     * @return the list of entities
-     */
-    @Override
-    @Transactional(readOnly = true)
-    public List<MyAsset> search(String query) {
-        log.debug("Request to search MyAssets for query {}", query);
-        return StreamSupport
-            .stream(myAssetSearchRepository.search(queryStringQuery(query)).spliterator(), false)
-            .collect(Collectors.toList());
     }
 
     @Override
@@ -250,5 +227,11 @@ public class MyAssetServiceImpl implements MyAssetService {
                 throw new NotImplementedYetException("Method not implemented for this CategoryType");
             }
         }
+    }
+
+    @Override
+    public List<MyAsset> findAllBySelfAssessmentAndAssetCategory(Long selfAssessmentID, String categoryName) {
+
+        return this.myAssetRepository.findAllBySelfAssessmentAndAssetCategory(selfAssessmentID, categoryName);
     }
 }

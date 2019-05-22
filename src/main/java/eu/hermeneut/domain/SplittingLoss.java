@@ -23,8 +23,6 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
-import org.springframework.data.elasticsearch.annotations.Document;
-
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Objects;
@@ -39,7 +37,7 @@ import eu.hermeneut.domain.enumeration.CategoryType;
 @Entity
 @Table(name = "splitting_loss")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-@Document(indexName = "splittingloss")
+
 public class SplittingLoss implements Serializable {
 
     private static final long serialVersionUID = 1L;

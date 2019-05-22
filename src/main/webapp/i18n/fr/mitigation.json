@@ -5,8 +5,7 @@
             "home": {
                 "title": "Mitigations",
                 "createLabel": "Créer un nouveau Mitigation",
-                "createOrEditLabel": "Créer ou éditer un Mitigation",
-                "search": "Recherche pour Mitigation"
+                "createOrEditLabel": "Créer ou éditer un Mitigation"
             },
             "created": "Un nouveau Mitigation a été créé avec l'identifiant {{ param }}",
             "updated": "Le Mitigation avec l'identifiant {{ param }} a été mis à jour",

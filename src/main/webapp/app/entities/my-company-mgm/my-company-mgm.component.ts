@@ -34,7 +34,6 @@ export class MyCompanyMgmComponent implements OnInit, OnDestroy {
 myCompanies: MyCompanyMgm[];
     currentAccount: any;
     eventSubscriber: Subscription;
-    currentSearch: string;
 
     constructor(
         private myCompanyService: MyCompanyMgmService,
@@ -44,39 +43,18 @@ myCompanies: MyCompanyMgm[];
         private principal: Principal,
         public popUpService: PopUpService
     ) {
-        this.currentSearch = this.activatedRoute.snapshot && this.activatedRoute.snapshot.params['search'] ?
-            this.activatedRoute.snapshot.params['search'] : '';
     }
 
     loadAll() {
-        if (this.currentSearch) {
-            this.myCompanyService.search({
-                query: this.currentSearch,
-                }).subscribe(
-                    (res: HttpResponse<MyCompanyMgm[]>) => this.myCompanies = res.body,
-                    (res: HttpErrorResponse) => this.onError(res.message)
-                );
-            return;
-       }
         this.myCompanyService.query().subscribe(
             (res: HttpResponse<MyCompanyMgm[]>) => {
                 this.myCompanies = res.body;
-                this.currentSearch = '';
             },
             (res: HttpErrorResponse) => this.onError(res.message)
         );
     }
 
-    search(query) {
-        if (!query) {
-            return this.clear();
-        }
-        this.currentSearch = query;
-        this.loadAll();
-    }
-
     clear() {
-        this.currentSearch = '';
         this.loadAll();
     }
     ngOnInit() {

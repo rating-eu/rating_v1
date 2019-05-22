@@ -5,8 +5,7 @@
             "home": {
                 "title": "Motivations",
                 "createLabel": "Motivation erstellen",
-                "createOrEditLabel": "Motivation erstellen oder bearbeiten",
-                "search": "Suche nach Motivation"
+                "createOrEditLabel": "Motivation erstellen oder bearbeiten"
             },
             "created": "Motivation erstellt mit ID {{ param }}",
             "updated": "Motivation aktualisiert mit ID {{ param }}",

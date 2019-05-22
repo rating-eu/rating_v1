@@ -22,7 +22,6 @@ import eu.hermeneut.HermeneutApp;
 import eu.hermeneut.domain.Question;
 import eu.hermeneut.repository.QuestionRepository;
 import eu.hermeneut.service.QuestionService;
-import eu.hermeneut.repository.search.QuestionSearchRepository;
 import eu.hermeneut.web.rest.errors.ExceptionTranslator;
 
 import org.junit.Before;
@@ -89,9 +88,6 @@ public class QuestionResourceIntTest {
     private QuestionService questionService;
 
     @Autowired
-    private QuestionSearchRepository questionSearchRepository;
-
-    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -137,7 +133,6 @@ public class QuestionResourceIntTest {
 
     @Before
     public void initTest() {
-        questionSearchRepository.deleteAll();
         question = createEntity(em);
     }
 
@@ -162,12 +157,6 @@ public class QuestionResourceIntTest {
         assertThat(testQuestion.getOrder()).isEqualTo(DEFAULT_ORDER);
         assertThat(testQuestion.getQuestionType()).isEqualTo(DEFAULT_QUESTION_TYPE);
         assertThat(testQuestion.getAnswerType()).isEqualTo(DEFAULT_ANSWER_TYPE);
-
-        // Validate the Question in Elasticsearch
-        Question questionEs = questionSearchRepository.findOne(testQuestion.getId());
-        assertThat(testQuestion.getCreated()).isEqualTo(testQuestion.getCreated());
-        assertThat(testQuestion.getModified()).isEqualTo(testQuestion.getModified());
-        assertThat(questionEs).isEqualToIgnoringGivenFields(testQuestion, "created", "modified");
     }
 
     @Test
@@ -324,12 +313,6 @@ public class QuestionResourceIntTest {
         assertThat(testQuestion.getOrder()).isEqualTo(UPDATED_ORDER);
         assertThat(testQuestion.getQuestionType()).isEqualTo(UPDATED_QUESTION_TYPE);
         assertThat(testQuestion.getAnswerType()).isEqualTo(UPDATED_ANSWER_TYPE);
-
-        // Validate the Question in Elasticsearch
-        Question questionEs = questionSearchRepository.findOne(testQuestion.getId());
-        assertThat(testQuestion.getCreated()).isEqualTo(testQuestion.getCreated());
-        assertThat(testQuestion.getModified()).isEqualTo(testQuestion.getModified());
-        assertThat(questionEs).isEqualToIgnoringGivenFields(testQuestion, "created", "modified");
     }
 
     @Test
@@ -363,32 +346,9 @@ public class QuestionResourceIntTest {
             .accept(TestUtil.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk());
 
-        // Validate Elasticsearch is empty
-        boolean questionExistsInEs = questionSearchRepository.exists(question.getId());
-        assertThat(questionExistsInEs).isFalse();
-
         // Validate the database is empty
         List<Question> questionList = questionRepository.findAll();
         assertThat(questionList).hasSize(databaseSizeBeforeDelete - 1);
-    }
-
-    @Test
-    @Transactional
-    public void searchQuestion() throws Exception {
-        // Initialize the database
-        questionService.save(question);
-
-        // Search the question
-        restQuestionMockMvc.perform(get("/api/_search/questions?query=id:" + question.getId()))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(question.getId().intValue())))
-            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
-            .andExpect(jsonPath("$.[*].created").value(hasItem(sameInstant(DEFAULT_CREATED))))
-            .andExpect(jsonPath("$.[*].modified").value(hasItem(sameInstant(DEFAULT_MODIFIED))))
-            .andExpect(jsonPath("$.[*].order").value(hasItem(DEFAULT_ORDER)))
-            .andExpect(jsonPath("$.[*].questionType").value(hasItem(DEFAULT_QUESTION_TYPE.toString())))
-            .andExpect(jsonPath("$.[*].answerType").value(hasItem(DEFAULT_ANSWER_TYPE.toString())));
     }
 
     @Test

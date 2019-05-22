@@ -19,11 +19,14 @@ import {MainService} from './main.service';
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRouteSnapshot, NavigationEnd, Router} from '@angular/router';
 
-import {JhiLanguageHelper, LoginService, Principal} from '../../shared';
+import {AccountService, JhiLanguageHelper, LoginService, Principal, User, UserService} from '../../shared';
 import {DatasharingService} from '../../datasharing/datasharing.service';
-import {Update} from '../model/Update';
-import {MyRole} from '../../entities/enumerations/MyRole.enum';
+import {LayoutConfiguration} from '../model/LayoutConfiguration';
+import {Role} from '../../entities/enumerations/Role.enum';
 import {ModalDismissReasons, NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {HttpResponse} from "@angular/common/http";
+import {MyCompanyMgm, MyCompanyMgmService} from "../../entities/my-company-mgm";
+import {Account} from "../../shared";
 
 @Component({
     selector: 'jhi-main',
@@ -31,13 +34,14 @@ import {ModalDismissReasons, NgbModal} from '@ng-bootstrap/ng-bootstrap';
 })
 export class JhiMainComponent implements OnInit {
 
-    public updateLayout: Update;
+    public updateLayout: LayoutConfiguration;
     public isAuthenticated = false;
     public isResetUrl = false;
     public isExternal = false;
     public isCISO = false;
     public isAdmin = false;
     private closeResult: string;
+    private role: Role;
 
     constructor(
         private principal: Principal,
@@ -46,9 +50,12 @@ export class JhiMainComponent implements OnInit {
         private router: Router,
         private dataSharingService: DatasharingService,
         private mainService: MainService,
-        private modalService: NgbModal
+        private modalService: NgbModal,
+        private accountService: AccountService,
+        private userService: UserService,
+        private myCompanyService: MyCompanyMgmService
     ) {
-        this.updateLayout = new Update();
+        this.updateLayout = new LayoutConfiguration();
     }
 
     private getPageTitle(routeSnapshot: ActivatedRouteSnapshot) {
@@ -62,7 +69,7 @@ export class JhiMainComponent implements OnInit {
     ngOnInit() {
         this.mainService.getMode().toPromise().then((res) => {
             if (res) {
-                this.dataSharingService.updateMode(res);
+                this.dataSharingService.mode = res;
             }
         });
         this.router.events.subscribe((event) => {
@@ -77,7 +84,7 @@ export class JhiMainComponent implements OnInit {
             }
         });
 
-        this.dataSharingService.observeUpdate().subscribe((update: Update) => {
+        this.dataSharingService.layoutConfigurationObservable.subscribe((update: LayoutConfiguration) => {
             if (update) {
                 setTimeout(() => {
                     this.updateLayout = update;
@@ -90,13 +97,46 @@ export class JhiMainComponent implements OnInit {
             if (authentication) {
                 this.isAuthenticated = true;
 
-                this.updateRole();
+                this.accountService.get().subscribe((accountResponse) => {
+                    const loggedAccount: Account = accountResponse.body;
+                    this.userService.find(loggedAccount['login']).subscribe((response2) => {
+                        const user: User = response2.body;
+
+                        this.dataSharingService.user = user;
+                        this.updateRole();
+
+                        if (user) {
+                            switch (this.role) {
+                                case Role.ROLE_ADMIN: {
+
+                                    break;
+                                }
+                                case Role.ROLE_CISO: {
+                                    this.myCompanyService.findByUser(user.id).subscribe(
+                                        (myCompanyResponse: HttpResponse<MyCompanyMgm>) => {
+                                            const myCompany = myCompanyResponse.body;
+                                            this.dataSharingService.myCompany = myCompany;
+                                        },
+                                        (error: any) => {
+                                            this.dataSharingService.myCompany = undefined;
+                                        }
+                                    );
+                                    break;
+                                }
+                                case Role.ROLE_EXTERNAL_AUDIT: {
+
+                                    break;
+                                }
+                            }
+                        }
+                    });
+                });
             } else {
                 this.isAuthenticated = false;
-                const updateLayout: Update = new Update();
-                updateLayout.isSidebarCollapsed = true;
-                updateLayout.isSidebarCollapsedByMe = false;
-                this.dataSharingService.updateLayout(updateLayout);
+                const layoutConfiguration: LayoutConfiguration = new LayoutConfiguration();
+                layoutConfiguration.isSidebarCollapsed = true;
+                layoutConfiguration.isSidebarCollapsedByMe = false;
+                this.dataSharingService.layoutConfiguration = layoutConfiguration;
 
                 this.resetRole();
             }
@@ -109,53 +149,58 @@ export class JhiMainComponent implements OnInit {
     }
 
     private updateRole() {
-        this.checkRole(MyRole.ROLE_EXTERNAL_AUDIT);
+        this.checkRole(Role.ROLE_EXTERNAL_AUDIT);
 
-        this.checkRole(MyRole.ROLE_CISO);
+        this.checkRole(Role.ROLE_CISO);
 
-        this.checkRole(MyRole.ROLE_ADMIN);
+        this.checkRole(Role.ROLE_ADMIN);
     }
 
-    private checkRole(role: MyRole) {
-        const ROLE_STRING: string = MyRole[role];
-        const updateLayout: Update = new Update();
+    private checkRole(role: Role) {
+        const ROLE_STRING: string = Role[role];
+        const layoutConfiguration: LayoutConfiguration = new LayoutConfiguration();
 
         switch (role) {
-            case MyRole.ROLE_CISO: {
+            case Role.ROLE_CISO: {
                 this.principal.hasAuthority(ROLE_STRING).then((response: boolean) => {
                     this.isCISO = response;
 
                     if (this.isCISO) {
-                        this.dataSharingService.updateRole(MyRole.ROLE_CISO);
-                        updateLayout.isSidebarCollapsed = false;
-                        updateLayout.isSidebarCollapsedByMe = false;
-                        this.dataSharingService.updateLayout(updateLayout);
+                        this.role = Role.ROLE_CISO;
+                        this.dataSharingService.role = Role.ROLE_CISO;
+
+                        layoutConfiguration.isSidebarCollapsed = false;
+                        layoutConfiguration.isSidebarCollapsedByMe = false;
+                        this.dataSharingService.layoutConfiguration = layoutConfiguration;
                     }
                 });
                 break;
             }
-            case MyRole.ROLE_EXTERNAL_AUDIT: {
+            case Role.ROLE_EXTERNAL_AUDIT: {
                 this.principal.hasAuthority(ROLE_STRING).then((response: boolean) => {
                     this.isExternal = response;
 
                     if (this.isExternal) {
-                        this.dataSharingService.updateRole(MyRole.ROLE_EXTERNAL_AUDIT);
-                        updateLayout.isSidebarCollapsed = true;
-                        updateLayout.isSidebarCollapsedByMe = false;
-                        this.dataSharingService.updateLayout(updateLayout);
+                        this.role = Role.ROLE_EXTERNAL_AUDIT;
+                        this.dataSharingService.role = Role.ROLE_EXTERNAL_AUDIT;
+
+                        layoutConfiguration.isSidebarCollapsed = true;
+                        layoutConfiguration.isSidebarCollapsedByMe = false;
+                        this.dataSharingService.layoutConfiguration = layoutConfiguration;
                     }
                 });
                 break;
             }
-            case MyRole.ROLE_ADMIN: {
+            case Role.ROLE_ADMIN: {
                 this.principal.hasAuthority(ROLE_STRING).then((response: boolean) => {
                     this.isAdmin = response;
 
                     if (this.isAdmin) {
-                        updateLayout.isSidebarCollapsed = true;
-                        updateLayout.isSidebarCollapsedByMe = false;
-                        this.dataSharingService.updateLayout(updateLayout);
-                        this.dataSharingService.updateRole(MyRole.ROLE_ADMIN);
+                        this.role = Role.ROLE_ADMIN;
+                        layoutConfiguration.isSidebarCollapsed = true;
+                        layoutConfiguration.isSidebarCollapsedByMe = false;
+                        this.dataSharingService.layoutConfiguration = layoutConfiguration;
+                        this.dataSharingService.role = Role.ROLE_ADMIN;
                     }
                 });
                 break;
@@ -170,11 +215,11 @@ export class JhiMainComponent implements OnInit {
         this.isExternal = false;
         this.isCISO = false;
 
-        this.dataSharingService.updateRole(null);
+        this.dataSharingService.role = null;
     }
 
     open(content) {
-        this.modalService.open(content, { size: 'lg' }).result.then((result) => {
+        this.modalService.open(content, {size: 'lg'}).result.then((result) => {
             this.closeResult = `Closed with: ${result}`;
         }, (reason) => {
             this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;

@@ -29,7 +29,6 @@ export type EntityResponseType = HttpResponse<LevelMgm>;
 export class LevelMgmService {
 
     private resourceUrl =  SERVER_API_URL + 'api/levels';
-    private resourceSearchUrl = SERVER_API_URL + 'api/_search/levels';
 
     constructor(private http: HttpClient) { }
 
@@ -58,12 +57,6 @@ export class LevelMgmService {
 
     delete(id: number): Observable<HttpResponse<any>> {
         return this.http.delete<any>(`${this.resourceUrl}/${id}`, { observe: 'response'});
-    }
-
-    search(req?: any): Observable<HttpResponse<LevelMgm[]>> {
-        const options = createRequestOption(req);
-        return this.http.get<LevelMgm[]>(this.resourceSearchUrl, { params: options, observe: 'response' })
-            .map((res: HttpResponse<LevelMgm[]>) => this.convertArrayResponse(res));
     }
 
     private convertResponse(res: EntityResponseType): EntityResponseType {

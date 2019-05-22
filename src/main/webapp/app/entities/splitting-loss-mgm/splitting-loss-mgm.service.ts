@@ -60,12 +60,6 @@ export class SplittingLossMgmService {
         return this.http.delete<any>(`${this.resourceUrl}/${id}`, { observe: 'response'});
     }
 
-    search(req?: any): Observable<HttpResponse<SplittingLossMgm[]>> {
-        const options = createRequestOption(req);
-        return this.http.get<SplittingLossMgm[]>(this.resourceSearchUrl, { params: options, observe: 'response' })
-            .map((res: HttpResponse<SplittingLossMgm[]>) => this.convertArrayResponse(res));
-    }
-
     private convertResponse(res: EntityResponseType): EntityResponseType {
         const body: SplittingLossMgm = this.convertItemFromServer(res.body);
         return res.clone({body});

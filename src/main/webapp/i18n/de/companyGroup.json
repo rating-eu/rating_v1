@@ -5,8 +5,7 @@
             "home": {
                 "title": "Groups",
                 "createLabel": "Group erstellen",
-                "createOrEditLabel": "Group erstellen oder bearbeiten",
-                "search": "Suche nach Group"
+                "createOrEditLabel": "Group erstellen oder bearbeiten"
             },
             "created": "Group erstellt mit ID {{ param }}",
             "updated": "Group aktualisiert mit ID {{ param }}",

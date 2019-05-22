@@ -20,17 +20,12 @@ package eu.hermeneut.service.impl;
 import eu.hermeneut.service.ThreatAgentService;
 import eu.hermeneut.domain.ThreatAgent;
 import eu.hermeneut.repository.ThreatAgentRepository;
-import eu.hermeneut.repository.search.ThreatAgentSearchRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
-
-import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
  * Service Implementation for managing ThreatAgent.
@@ -43,11 +38,8 @@ public class ThreatAgentServiceImpl implements ThreatAgentService {
 
     private final ThreatAgentRepository threatAgentRepository;
 
-    private final ThreatAgentSearchRepository threatAgentSearchRepository;
-
-    public ThreatAgentServiceImpl(ThreatAgentRepository threatAgentRepository, ThreatAgentSearchRepository threatAgentSearchRepository) {
+    public ThreatAgentServiceImpl(ThreatAgentRepository threatAgentRepository) {
         this.threatAgentRepository = threatAgentRepository;
-        this.threatAgentSearchRepository = threatAgentSearchRepository;
     }
 
     /**
@@ -60,7 +52,6 @@ public class ThreatAgentServiceImpl implements ThreatAgentService {
     public ThreatAgent save(ThreatAgent threatAgent) {
         log.debug("Request to save ThreatAgent : {}", threatAgent);
         ThreatAgent result = threatAgentRepository.save(threatAgent);
-        threatAgentSearchRepository.save(result);
         return result;
     }
 
@@ -109,21 +100,5 @@ public class ThreatAgentServiceImpl implements ThreatAgentService {
     public void delete(Long id) {
         log.debug("Request to delete ThreatAgent : {}", id);
         threatAgentRepository.delete(id);
-        threatAgentSearchRepository.delete(id);
-    }
-
-    /**
-     * Search for the threatAgent corresponding to the query.
-     *
-     * @param query the query of the search
-     * @return the list of entities
-     */
-    @Override
-    @Transactional(readOnly = true)
-    public List<ThreatAgent> search(String query) {
-        log.debug("Request to search ThreatAgents for query {}", query);
-        return StreamSupport
-            .stream(threatAgentSearchRepository.search(queryStringQuery(query)).spliterator(), false)
-            .collect(Collectors.toList());
     }
 }

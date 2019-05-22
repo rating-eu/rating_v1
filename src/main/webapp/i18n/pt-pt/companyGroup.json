@@ -5,8 +5,7 @@
             "home": {
                 "title": "Groups",
                 "createLabel": "Criar um(a) novo(a) Group",
-                "createOrEditLabel": "Criar ou editar um(a) Group",
-                "search": "Search for Group"
+                "createOrEditLabel": "Criar ou editar um(a) Group"
             },
             "created": "A new Group is created with identifier {{ param }}",
             "updated": "A Group is updated with identifier {{ param }}",

@@ -17,7 +17,7 @@
 
 package eu.hermeneut.web.rest.vm;
 
-import eu.hermeneut.service.dto.UserDTO;
+import eu.hermeneut.domain.dto.UserDTO;
 import javax.validation.constraints.Size;
 
 /**

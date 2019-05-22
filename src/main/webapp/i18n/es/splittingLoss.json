@@ -5,8 +5,7 @@
             "home": {
                 "title": "Splitting Losses",
                 "createLabel": "Crear nuevo Splitting Loss",
-                "createOrEditLabel": "Crear o editar Splitting Loss",
-                "search": "Search for Splitting Loss"
+                "createOrEditLabel": "Crear o editar Splitting Loss"
             },
             "created": "Un nuevo Splitting Loss ha sido creado con el identificador {{ param }}",
             "updated": "Un Splitting Loss ha sido actualizado con el identificador {{ param }}",

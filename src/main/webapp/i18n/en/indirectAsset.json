@@ -5,8 +5,7 @@
             "home": {
                 "title": "Indirect Assets",
                 "createLabel": "Create a new Indirect Asset",
-                "createOrEditLabel": "Create or edit a Indirect Asset",
-                "search": "Search for Indirect Asset"
+                "createOrEditLabel": "Create or edit a Indirect Asset"
             },
             "created": "A new Indirect Asset is created with identifier {{ param }}",
             "updated": "A Indirect Asset is updated with identifier {{ param }}",

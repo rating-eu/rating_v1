@@ -40,19 +40,21 @@ import {HermeneutMyAssetMgmModule} from './my-asset-mgm/my-asset-mgm.module';
 import {HermeneutDirectAssetMgmModule} from './direct-asset-mgm/direct-asset-mgm.module';
 import {HermeneutIndirectAssetMgmModule} from './indirect-asset-mgm/indirect-asset-mgm.module';
 import {HermeneutAttackCostMgmModule} from './attack-cost-mgm/attack-cost-mgm.module';
-import { HermeneutEconomicCoefficientsMgmModule } from './economic-coefficients-mgm/economic-coefficients-mgm.module';
-import { HermeneutEBITMgmModule } from './ebit-mgm/ebit-mgm.module';
-import { HermeneutEconomicResultsMgmModule } from './economic-results-mgm/economic-results-mgm.module';
-import { HermeneutSplittingLossMgmModule } from './splitting-loss-mgm/splitting-loss-mgm.module';
-import { HermeneutCriticalLevelMgmModule } from './critical-level-mgm/critical-level-mgm.module';
-import { HermeneutLikelihoodScaleMgmModule } from './likelihood-scale-mgm/likelihood-scale-mgm.module';
-import { HermeneutVulnerabilityScaleMgmModule } from './vulnerability-scale-mgm/vulnerability-scale-mgm.module';
-import { HermeneutMyCompanyMgmModule } from './my-company-mgm/my-company-mgm.module';
-import { HermeneutImpactLevelMgmModule } from './impact-level-mgm/impact-level-mgm.module';
-import { HermeneutImpactLevelDescriptionMgmModule } from './impact-level-description-mgm/impact-level-description-mgm.module';
-import { HermeneutSplittingValueMgmModule } from './splitting-value-mgm/splitting-value-mgm.module';
-import { HermeneutLogoMgmModule } from './logo-mgm/logo-mgm.module';
-import { HermeneutAttackCostParamMgmModule } from './attack-cost-param-mgm/attack-cost-param-mgm.module';
+import {HermeneutEconomicCoefficientsMgmModule} from './economic-coefficients-mgm/economic-coefficients-mgm.module';
+import {HermeneutEBITMgmModule} from './ebit-mgm/ebit-mgm.module';
+import {HermeneutEconomicResultsMgmModule} from './economic-results-mgm/economic-results-mgm.module';
+import {HermeneutSplittingLossMgmModule} from './splitting-loss-mgm/splitting-loss-mgm.module';
+import {HermeneutCriticalLevelMgmModule} from './critical-level-mgm/critical-level-mgm.module';
+import {HermeneutLikelihoodScaleMgmModule} from './likelihood-scale-mgm/likelihood-scale-mgm.module';
+import {HermeneutVulnerabilityScaleMgmModule} from './vulnerability-scale-mgm/vulnerability-scale-mgm.module';
+import {HermeneutMyCompanyMgmModule} from './my-company-mgm/my-company-mgm.module';
+import {HermeneutImpactLevelMgmModule} from './impact-level-mgm/impact-level-mgm.module';
+import {HermeneutImpactLevelDescriptionMgmModule} from './impact-level-description-mgm/impact-level-description-mgm.module';
+import {HermeneutSplittingValueMgmModule} from './splitting-value-mgm/splitting-value-mgm.module';
+import {HermeneutLogoMgmModule} from './logo-mgm/logo-mgm.module';
+import {HermeneutAttackCostParamMgmModule} from './attack-cost-param-mgm/attack-cost-param-mgm.module';
+import {ThreatAgentInterestModule} from "./threat-agent-interest/threat-agent-interest.module";
+
 /* jhipster-needle-add-entity-module-import - JHipster will add entity modules imports here */
 
 @NgModule({
@@ -94,6 +96,7 @@ import { HermeneutAttackCostParamMgmModule } from './attack-cost-param-mgm/attac
         HermeneutSplittingValueMgmModule,
         HermeneutLogoMgmModule,
         HermeneutAttackCostParamMgmModule,
+        ThreatAgentInterestModule
         /* jhipster-needle-add-entity-module - JHipster will add entity modules here */
     ],
     declarations: [],

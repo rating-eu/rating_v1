@@ -22,7 +22,6 @@ import eu.hermeneut.HermeneutApp;
 import eu.hermeneut.domain.ExternalAudit;
 import eu.hermeneut.repository.ExternalAuditRepository;
 import eu.hermeneut.service.ExternalAuditService;
-import eu.hermeneut.repository.search.ExternalAuditSearchRepository;
 import eu.hermeneut.web.rest.errors.ExceptionTranslator;
 
 import org.junit.Before;
@@ -67,9 +66,6 @@ public class ExternalAuditResourceIntTest {
     private ExternalAuditService externalAuditService;
 
     @Autowired
-    private ExternalAuditSearchRepository externalAuditSearchRepository;
-
-    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -110,7 +106,6 @@ public class ExternalAuditResourceIntTest {
 
     @Before
     public void initTest() {
-        externalAuditSearchRepository.deleteAll();
         externalAudit = createEntity(em);
     }
 
@@ -130,10 +125,6 @@ public class ExternalAuditResourceIntTest {
         assertThat(externalAuditList).hasSize(databaseSizeBeforeCreate + 1);
         ExternalAudit testExternalAudit = externalAuditList.get(externalAuditList.size() - 1);
         assertThat(testExternalAudit.getName()).isEqualTo(DEFAULT_NAME);
-
-        // Validate the ExternalAudit in Elasticsearch
-        ExternalAudit externalAuditEs = externalAuditSearchRepository.findOne(testExternalAudit.getId());
-        assertThat(externalAuditEs).isEqualToIgnoringGivenFields(testExternalAudit);
     }
 
     @Test
@@ -234,10 +225,6 @@ public class ExternalAuditResourceIntTest {
         assertThat(externalAuditList).hasSize(databaseSizeBeforeUpdate);
         ExternalAudit testExternalAudit = externalAuditList.get(externalAuditList.size() - 1);
         assertThat(testExternalAudit.getName()).isEqualTo(UPDATED_NAME);
-
-        // Validate the ExternalAudit in Elasticsearch
-        ExternalAudit externalAuditEs = externalAuditSearchRepository.findOne(testExternalAudit.getId());
-        assertThat(externalAuditEs).isEqualToIgnoringGivenFields(testExternalAudit);
     }
 
     @Test
@@ -271,27 +258,9 @@ public class ExternalAuditResourceIntTest {
             .accept(TestUtil.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk());
 
-        // Validate Elasticsearch is empty
-        boolean externalAuditExistsInEs = externalAuditSearchRepository.exists(externalAudit.getId());
-        assertThat(externalAuditExistsInEs).isFalse();
-
         // Validate the database is empty
         List<ExternalAudit> externalAuditList = externalAuditRepository.findAll();
         assertThat(externalAuditList).hasSize(databaseSizeBeforeDelete - 1);
-    }
-
-    @Test
-    @Transactional
-    public void searchExternalAudit() throws Exception {
-        // Initialize the database
-        externalAuditService.save(externalAudit);
-
-        // Search the externalAudit
-        restExternalAuditMockMvc.perform(get("/api/_search/external-audits?query=id:" + externalAudit.getId()))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(externalAudit.getId().intValue())))
-            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())));
     }
 
     @Test

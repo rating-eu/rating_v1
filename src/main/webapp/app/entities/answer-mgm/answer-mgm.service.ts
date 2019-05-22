@@ -31,7 +31,6 @@ export type EntityResponseType = HttpResponse<AnswerMgm>;
 export class AnswerMgmService {
 
     private resourceUrl =  SERVER_API_URL + 'api/answers';
-    private resourceSearchUrl = SERVER_API_URL + 'api/_search/answers';
 
     constructor(private http: HttpClient, private dateUtils: JhiDateUtils) { }
 
@@ -60,12 +59,6 @@ export class AnswerMgmService {
 
     delete(id: number): Observable<HttpResponse<any>> {
         return this.http.delete<any>(`${this.resourceUrl}/${id}`, { observe: 'response'});
-    }
-
-    search(req?: any): Observable<HttpResponse<AnswerMgm[]>> {
-        const options = createRequestOption(req);
-        return this.http.get<AnswerMgm[]>(this.resourceSearchUrl, { params: options, observe: 'response' })
-            .map((res: HttpResponse<AnswerMgm[]>) => this.convertArrayResponse(res));
     }
 
     private convertResponse(res: EntityResponseType): EntityResponseType {

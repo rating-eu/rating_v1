@@ -15,59 +15,55 @@
  *
  */
 
-import { Injectable } from '@angular/core';
-import { HttpClient, HttpResponse } from '@angular/common/http';
-import { Observable } from 'rxjs/Observable';
-import { SERVER_API_URL } from '../../app.constants';
+import {Injectable} from '@angular/core';
+import {HttpClient, HttpResponse} from '@angular/common/http';
+import {Observable} from 'rxjs/Observable';
+import {SERVER_API_URL} from '../../app.constants';
 
-import { AssetCategoryMgm } from './asset-category-mgm.model';
-import { createRequestOption } from '../../shared';
+import {AssetCategoryMgm} from './asset-category-mgm.model';
+import {createRequestOption} from '../../shared';
 
 export type EntityResponseType = HttpResponse<AssetCategoryMgm>;
 
 @Injectable()
 export class AssetCategoryMgmService {
 
-    private resourceUrl =  SERVER_API_URL + 'api/asset-categories';
+    private resourceUrl = SERVER_API_URL + 'api/asset-categories';
     private resourceSearchUrl = SERVER_API_URL + 'api/_search/asset-categories';
 
-    constructor(private http: HttpClient) { }
+    constructor(private http: HttpClient) {
+    }
 
     create(assetCategory: AssetCategoryMgm): Observable<EntityResponseType> {
         const copy = this.convert(assetCategory);
-        return this.http.post<AssetCategoryMgm>(this.resourceUrl, copy, { observe: 'response' })
+        return this.http.post<AssetCategoryMgm>(this.resourceUrl, copy, {observe: 'response'})
             .map((res: EntityResponseType) => this.convertResponse(res));
     }
 
     update(assetCategory: AssetCategoryMgm): Observable<EntityResponseType> {
         const copy = this.convert(assetCategory);
-        return this.http.put<AssetCategoryMgm>(this.resourceUrl, copy, { observe: 'response' })
+        return this.http.put<AssetCategoryMgm>(this.resourceUrl, copy, {observe: 'response'})
             .map((res: EntityResponseType) => this.convertResponse(res));
     }
 
     find(id: number): Observable<EntityResponseType> {
-        return this.http.get<AssetCategoryMgm>(`${this.resourceUrl}/${id}`, { observe: 'response'})
+        return this.http.get<AssetCategoryMgm>(`${this.resourceUrl}/${id}`, {observe: 'response'})
             .map((res: EntityResponseType) => this.convertResponse(res));
     }
 
-    findAll(): Observable<AssetCategoryMgm[]> {
-        return this.http.get<AssetCategoryMgm[]>(this.resourceUrl);
+    findAll(): Observable<HttpResponse<AssetCategoryMgm[]>> {
+        return this.http.get<AssetCategoryMgm[]>(this.resourceUrl, {observe: 'response'})
+            .map((res: HttpResponse<AssetCategoryMgm[]>) => this.convertArrayResponse(res));
     }
 
     query(req?: any): Observable<HttpResponse<AssetCategoryMgm[]>> {
         const options = createRequestOption(req);
-        return this.http.get<AssetCategoryMgm[]>(this.resourceUrl, { params: options, observe: 'response' })
+        return this.http.get<AssetCategoryMgm[]>(this.resourceUrl, {params: options, observe: 'response'})
             .map((res: HttpResponse<AssetCategoryMgm[]>) => this.convertArrayResponse(res));
     }
 
     delete(id: number): Observable<HttpResponse<any>> {
-        return this.http.delete<any>(`${this.resourceUrl}/${id}`, { observe: 'response'});
-    }
-
-    search(req?: any): Observable<HttpResponse<AssetCategoryMgm[]>> {
-        const options = createRequestOption(req);
-        return this.http.get<AssetCategoryMgm[]>(this.resourceSearchUrl, { params: options, observe: 'response' })
-            .map((res: HttpResponse<AssetCategoryMgm[]>) => this.convertArrayResponse(res));
+        return this.http.delete<any>(`${this.resourceUrl}/${id}`, {observe: 'response'});
     }
 
     private convertResponse(res: EntityResponseType): EntityResponseType {

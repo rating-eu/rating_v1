@@ -1,12 +1,12 @@
 /*
  * Copyright 2019 HERMENEUT Consortium
- *  
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *  
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- *  
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -17,14 +17,13 @@
 
 package eu.hermeneut.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
 
-import org.springframework.data.elasticsearch.annotations.Document;
+
 
 import java.io.Serializable;
 import java.time.ZonedDateTime;
@@ -42,11 +41,11 @@ import eu.hermeneut.domain.enumeration.Role;
 @Entity
 @Table(
     name = "questionnaire_status",
-    uniqueConstraints = @UniqueConstraint(columnNames = {"jhi_role", "self_assessment_id", "questionnaire_id"})
+    uniqueConstraints = @UniqueConstraint(columnNames = {"jhi_role", "questionnaire_id"})
 )
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-@Document(indexName = "questionnairestatus")
-public class QuestionnaireStatus implements Serializable {
+
+public class QuestionnaireStatus implements Serializable, Comparable<QuestionnaireStatus> {
 
     private static final long serialVersionUID = 1L;
 
@@ -71,10 +70,9 @@ public class QuestionnaireStatus implements Serializable {
     @Column(name = "jhi_role", nullable = false)
     private Role role;
 
-    @NotNull
     @ManyToOne
-    @JoinColumn(name = "self_assessment_id", nullable = false)
-    private SelfAssessment selfAssessment;
+    @JoinColumn(name = "company_profile_id")
+    private CompanyProfile companyProfile;
 
     @NotNull
     @ManyToOne
@@ -90,6 +88,17 @@ public class QuestionnaireStatus implements Serializable {
         cascade = {CascadeType.ALL, CascadeType.PERSIST, CascadeType.MERGE}, orphanRemoval = true)
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<MyAnswer> answers = new HashSet<>();
+
+    @ManyToOne
+    @JoinColumn(name = "external_id", nullable = true)
+    private User external;
+
+    /**
+     * This field references to the refinement QuestionnaireStatus of the External Audit.
+     */
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "refinement_id")
+    private QuestionnaireStatus refinement;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -152,17 +161,17 @@ public class QuestionnaireStatus implements Serializable {
         this.role = role;
     }
 
-    public SelfAssessment getSelfAssessment() {
-        return selfAssessment;
+    public CompanyProfile getCompanyProfile() {
+        return companyProfile;
     }
 
-    public QuestionnaireStatus selfAssessment(SelfAssessment selfAssessment) {
-        this.selfAssessment = selfAssessment;
+    public QuestionnaireStatus companyProfile(CompanyProfile companyProfile) {
+        this.companyProfile = companyProfile;
         return this;
     }
 
-    public void setSelfAssessment(SelfAssessment selfAssessment) {
-        this.selfAssessment = selfAssessment;
+    public void setCompanyProfile(CompanyProfile companyProfile) {
+        this.companyProfile = companyProfile;
     }
 
     public Questionnaire getQuestionnaire() {
@@ -215,6 +224,23 @@ public class QuestionnaireStatus implements Serializable {
     public void setAnswers(Set<MyAnswer> myAnswers) {
         this.answers = myAnswers;
     }
+
+    public User getExternal() {
+        return external;
+    }
+
+    public void setExternal(User external) {
+        this.external = external;
+    }
+
+    public QuestionnaireStatus getRefinement() {
+        return refinement;
+    }
+
+    public void setRefinement(QuestionnaireStatus refinement) {
+        this.refinement = refinement;
+    }
+
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
     @Override
@@ -246,5 +272,10 @@ public class QuestionnaireStatus implements Serializable {
             ", modified='" + getModified() + "'" +
             ", role='" + getRole() + "'" +
             "}";
+    }
+
+    @Override
+    public int compareTo(QuestionnaireStatus questionnaireStatus) {
+        return this.getCreated().compareTo(questionnaireStatus.getCreated());
     }
 }

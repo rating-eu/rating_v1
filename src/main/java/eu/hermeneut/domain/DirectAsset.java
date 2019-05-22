@@ -22,7 +22,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
 
-import org.springframework.data.elasticsearch.annotations.Document;
+
 
 import java.io.Serializable;
 import java.util.HashSet;
@@ -35,7 +35,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "direct_asset")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-@Document(indexName = "directasset")
+
 public class DirectAsset implements Serializable {
 
     private static final long serialVersionUID = 1L;

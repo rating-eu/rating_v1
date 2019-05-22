@@ -5,8 +5,7 @@
             "home": {
                 "title": "Questions",
                 "createLabel": "Question erstellen",
-                "createOrEditLabel": "Question erstellen oder bearbeiten",
-                "search": "Suche nach Question"
+                "createOrEditLabel": "Question erstellen oder bearbeiten"
             },
             "created": "Question erstellt mit ID {{ param }}",
             "updated": "Question aktualisiert mit ID {{ param }}",

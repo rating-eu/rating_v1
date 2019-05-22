@@ -20,17 +20,12 @@ package eu.hermeneut.service.impl;
 import eu.hermeneut.service.MotivationService;
 import eu.hermeneut.domain.Motivation;
 import eu.hermeneut.repository.MotivationRepository;
-import eu.hermeneut.repository.search.MotivationSearchRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
-
-import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
  * Service Implementation for managing Motivation.
@@ -43,11 +38,9 @@ public class MotivationServiceImpl implements MotivationService {
 
     private final MotivationRepository motivationRepository;
 
-    private final MotivationSearchRepository motivationSearchRepository;
 
-    public MotivationServiceImpl(MotivationRepository motivationRepository, MotivationSearchRepository motivationSearchRepository) {
+    public MotivationServiceImpl(MotivationRepository motivationRepository) {
         this.motivationRepository = motivationRepository;
-        this.motivationSearchRepository = motivationSearchRepository;
     }
 
     /**
@@ -60,7 +53,6 @@ public class MotivationServiceImpl implements MotivationService {
     public Motivation save(Motivation motivation) {
         log.debug("Request to save Motivation : {}", motivation);
         Motivation result = motivationRepository.save(motivation);
-        motivationSearchRepository.save(result);
         return result;
     }
 
@@ -98,21 +90,5 @@ public class MotivationServiceImpl implements MotivationService {
     public void delete(Long id) {
         log.debug("Request to delete Motivation : {}", id);
         motivationRepository.delete(id);
-        motivationSearchRepository.delete(id);
-    }
-
-    /**
-     * Search for the motivation corresponding to the query.
-     *
-     * @param query the query of the search
-     * @return the list of entities
-     */
-    @Override
-    @Transactional(readOnly = true)
-    public List<Motivation> search(String query) {
-        log.debug("Request to search Motivations for query {}", query);
-        return StreamSupport
-            .stream(motivationSearchRepository.search(queryStringQuery(query)).spliterator(), false)
-            .collect(Collectors.toList());
     }
 }

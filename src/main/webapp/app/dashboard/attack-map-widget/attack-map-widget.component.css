@@ -15,7 +15,7 @@
  *
  */
 
-@import "../dashboard.module.css";
+@import "../../risk-board/risk-board.css";
 
 .btn{
     font-size: 14px !important;

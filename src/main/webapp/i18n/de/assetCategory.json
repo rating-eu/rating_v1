@@ -5,8 +5,7 @@
             "home": {
                 "title": "Asset Categories",
                 "createLabel": "Asset Category erstellen",
-                "createOrEditLabel": "Asset Category erstellen oder bearbeiten",
-                "search": "Suche nach Asset Category"
+                "createOrEditLabel": "Asset Category erstellen oder bearbeiten"
             },
             "created": "Asset Category erstellt mit ID {{ param }}",
             "updated": "Asset Category aktualisiert mit ID {{ param }}",

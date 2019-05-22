@@ -55,15 +55,6 @@ public interface SplittingValueService {
      */
     void delete(Long id);
 
-    /**
-     * Search for the splittingValue corresponding to the query.
-     *
-     * @param query the query of the search
-     * 
-     * @return the list of entities
-     */
-    List<SplittingValue> search(String query);
-
     List<SplittingValue> findAllBySelfAssessmentID(Long selfAssessmentID);
 
     void delete(List<SplittingValue> splittingValues);

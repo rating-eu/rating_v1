@@ -25,7 +25,7 @@ import {ThreatAgentMgm} from './threat-agent-mgm.model';
 import {ThreatAgentMgmService} from './threat-agent-mgm.service';
 import {Principal} from '../../shared';
 import {PopUpService} from '../../shared/pop-up-services/pop-up.service';
-import {MyRole} from '../enumerations/MyRole.enum';
+import {Role} from '../enumerations/Role.enum';
 
 @Component({
     selector: 'jhi-threat-agent-mgm',
@@ -35,7 +35,6 @@ export class ThreatAgentMgmComponent implements OnInit, OnDestroy {
     threatAgents: ThreatAgentMgm[];
     currentAccount: any;
     eventSubscriber: Subscription;
-    currentSearch: string;
     public isADMIN: boolean;
 
     constructor(
@@ -47,39 +46,18 @@ export class ThreatAgentMgmComponent implements OnInit, OnDestroy {
         private principal: Principal,
         public popUpService: PopUpService
     ) {
-        this.currentSearch = this.activatedRoute.snapshot && this.activatedRoute.snapshot.params['search'] ?
-            this.activatedRoute.snapshot.params['search'] : '';
     }
 
     loadAll() {
-        if (this.currentSearch) {
-            this.threatAgentService.search({
-                query: this.currentSearch,
-            }).subscribe(
-                (res: HttpResponse<ThreatAgentMgm[]>) => this.threatAgents = res.body,
-                (res: HttpErrorResponse) => this.onError(res.message)
-            );
-            return;
-        }
         this.threatAgentService.query().subscribe(
             (res: HttpResponse<ThreatAgentMgm[]>) => {
                 this.threatAgents = res.body;
-                this.currentSearch = '';
             },
             (res: HttpErrorResponse) => this.onError(res.message)
         );
     }
 
-    search(query) {
-        if (!query) {
-            return this.clear();
-        }
-        this.currentSearch = query;
-        this.loadAll();
-    }
-
     clear() {
-        this.currentSearch = '';
         this.loadAll();
     }
 
@@ -88,7 +66,7 @@ export class ThreatAgentMgmComponent implements OnInit, OnDestroy {
         this.principal.identity().then((account) => {
             this.currentAccount = account;
         });
-        this.principal.hasAnyAuthority([MyRole[MyRole.ROLE_ADMIN]]).then((response: boolean) => {
+        this.principal.hasAnyAuthority([Role[Role.ROLE_ADMIN]]).then((response: boolean) => {
             if (response) {
                 this.isADMIN = response;
             } else {

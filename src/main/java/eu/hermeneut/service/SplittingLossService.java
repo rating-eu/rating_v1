@@ -59,14 +59,6 @@ public interface SplittingLossService {
 
     void delete(List<SplittingLoss> splittingLosses);
 
-    /**
-     * Search for the splittingLoss corresponding to the query.
-     *
-     * @param query the query of the search
-     * @return the list of entities
-     */
-    List<SplittingLoss> search(String query);
-
     List<SplittingLoss> findAllBySelfAssessmentID(Long selfAssessmentID);
 
     SplittingLoss getDATASplittingLossBySelfAssessmentID(Long selfAssessmentID);

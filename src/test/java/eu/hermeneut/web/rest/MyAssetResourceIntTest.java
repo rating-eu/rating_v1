@@ -22,7 +22,6 @@ import eu.hermeneut.HermeneutApp;
 import eu.hermeneut.domain.MyAsset;
 import eu.hermeneut.repository.MyAssetRepository;
 import eu.hermeneut.service.MyAssetService;
-import eu.hermeneut.repository.search.MyAssetSearchRepository;
 import eu.hermeneut.web.rest.errors.ExceptionTranslator;
 
 import org.junit.Before;
@@ -80,9 +79,6 @@ public class MyAssetResourceIntTest {
     private MyAssetService myAssetService;
 
     @Autowired
-    private MyAssetSearchRepository myAssetSearchRepository;
-
-    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -127,7 +123,6 @@ public class MyAssetResourceIntTest {
 
     @Before
     public void initTest() {
-        myAssetSearchRepository.deleteAll();
         myAsset = createEntity(em);
     }
 
@@ -151,10 +146,6 @@ public class MyAssetResourceIntTest {
         assertThat(testMyAsset.getEconomicValue()).isEqualTo(DEFAULT_ECONOMIC_VALUE);
         assertThat(testMyAsset.getImpact()).isEqualTo(DEFAULT_IMPACT);
         assertThat(testMyAsset.getLossValue()).isEqualTo(DEFAULT_LOSS_VALUE);
-
-        // Validate the MyAsset in Elasticsearch
-        MyAsset myAssetEs = myAssetSearchRepository.findOne(testMyAsset.getId());
-        assertThat(myAssetEs).isEqualToIgnoringGivenFields(testMyAsset);
     }
 
     @Test
@@ -253,10 +244,6 @@ public class MyAssetResourceIntTest {
         assertThat(testMyAsset.getEconomicValue()).isEqualTo(UPDATED_ECONOMIC_VALUE);
         assertThat(testMyAsset.getImpact()).isEqualTo(UPDATED_IMPACT);
         assertThat(testMyAsset.getLossValue()).isEqualTo(UPDATED_LOSS_VALUE);
-
-        // Validate the MyAsset in Elasticsearch
-        MyAsset myAssetEs = myAssetSearchRepository.findOne(testMyAsset.getId());
-        assertThat(myAssetEs).isEqualToIgnoringGivenFields(testMyAsset);
     }
 
     @Test
@@ -290,31 +277,9 @@ public class MyAssetResourceIntTest {
             .accept(TestUtil.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk());
 
-        // Validate Elasticsearch is empty
-        boolean myAssetExistsInEs = myAssetSearchRepository.exists(myAsset.getId());
-        assertThat(myAssetExistsInEs).isFalse();
-
         // Validate the database is empty
         List<MyAsset> myAssetList = myAssetRepository.findAll();
         assertThat(myAssetList).hasSize(databaseSizeBeforeDelete - 1);
-    }
-
-    @Test
-    @Transactional
-    public void searchMyAsset() throws Exception {
-        // Initialize the database
-        myAssetService.save(myAsset);
-
-        // Search the myAsset
-        restMyAssetMockMvc.perform(get("/api/_search/my-assets?query=id:" + myAsset.getId()))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(myAsset.getId().intValue())))
-            .andExpect(jsonPath("$.[*].ranking").value(hasItem(DEFAULT_RANKING)))
-            .andExpect(jsonPath("$.[*].estimated").value(hasItem(DEFAULT_ESTIMATED.booleanValue())))
-            .andExpect(jsonPath("$.[*].economicValue").value(hasItem(DEFAULT_ECONOMIC_VALUE.intValue())))
-            .andExpect(jsonPath("$.[*].impact").value(hasItem(DEFAULT_IMPACT)))
-            .andExpect(jsonPath("$.[*].lossValue").value(hasItem(DEFAULT_LOSS_VALUE.intValue())));
     }
 
     @Test

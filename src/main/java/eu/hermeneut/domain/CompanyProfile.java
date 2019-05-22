@@ -24,7 +24,6 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 
-import org.springframework.data.elasticsearch.annotations.Document;
 import java.io.Serializable;
 import java.time.ZonedDateTime;
 import java.util.HashSet;
@@ -39,7 +38,7 @@ import eu.hermeneut.domain.enumeration.CompType;
 @Entity
 @Table(name = "company_profile")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-@Document(indexName = "companyprofile")
+
 public class CompanyProfile implements Serializable {
 
     private static final long serialVersionUID = 1L;

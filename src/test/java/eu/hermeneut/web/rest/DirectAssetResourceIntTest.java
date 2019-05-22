@@ -22,7 +22,6 @@ import eu.hermeneut.HermeneutApp;
 import eu.hermeneut.domain.DirectAsset;
 import eu.hermeneut.repository.DirectAssetRepository;
 import eu.hermeneut.service.DirectAssetService;
-import eu.hermeneut.repository.search.DirectAssetSearchRepository;
 import eu.hermeneut.web.rest.errors.ExceptionTranslator;
 
 import org.junit.Before;
@@ -64,9 +63,6 @@ public class DirectAssetResourceIntTest {
     private DirectAssetService directAssetService;
 
     @Autowired
-    private DirectAssetSearchRepository directAssetSearchRepository;
-
-    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -106,7 +102,6 @@ public class DirectAssetResourceIntTest {
 
     @Before
     public void initTest() {
-        directAssetSearchRepository.deleteAll();
         directAsset = createEntity(em);
     }
 
@@ -125,10 +120,6 @@ public class DirectAssetResourceIntTest {
         List<DirectAsset> directAssetList = directAssetRepository.findAll();
         assertThat(directAssetList).hasSize(databaseSizeBeforeCreate + 1);
         DirectAsset testDirectAsset = directAssetList.get(directAssetList.size() - 1);
-
-        // Validate the DirectAsset in Elasticsearch
-        DirectAsset directAssetEs = directAssetSearchRepository.findOne(testDirectAsset.getId());
-        assertThat(directAssetEs).isEqualToIgnoringGivenFields(testDirectAsset);
     }
 
     @Test
@@ -206,10 +197,6 @@ public class DirectAssetResourceIntTest {
         List<DirectAsset> directAssetList = directAssetRepository.findAll();
         assertThat(directAssetList).hasSize(databaseSizeBeforeUpdate);
         DirectAsset testDirectAsset = directAssetList.get(directAssetList.size() - 1);
-
-        // Validate the DirectAsset in Elasticsearch
-        DirectAsset directAssetEs = directAssetSearchRepository.findOne(testDirectAsset.getId());
-        assertThat(directAssetEs).isEqualToIgnoringGivenFields(testDirectAsset);
     }
 
     @Test
@@ -243,26 +230,9 @@ public class DirectAssetResourceIntTest {
             .accept(TestUtil.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk());
 
-        // Validate Elasticsearch is empty
-        boolean directAssetExistsInEs = directAssetSearchRepository.exists(directAsset.getId());
-        assertThat(directAssetExistsInEs).isFalse();
-
         // Validate the database is empty
         List<DirectAsset> directAssetList = directAssetRepository.findAll();
         assertThat(directAssetList).hasSize(databaseSizeBeforeDelete - 1);
-    }
-
-    @Test
-    @Transactional
-    public void searchDirectAsset() throws Exception {
-        // Initialize the database
-        directAssetService.save(directAsset);
-
-        // Search the directAsset
-        restDirectAssetMockMvc.perform(get("/api/_search/direct-assets?query=id:" + directAsset.getId()))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(directAsset.getId().intValue())));
     }
 
     @Test

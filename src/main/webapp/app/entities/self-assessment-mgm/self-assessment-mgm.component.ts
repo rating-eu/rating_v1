@@ -26,7 +26,7 @@ import {SelfAssessmentMgmService} from './self-assessment-mgm.service';
 import {Principal} from '../../shared';
 
 import {DatasharingService} from '../../datasharing/datasharing.service';
-import {Update} from '../../layouts/model/Update';
+import {LayoutConfiguration} from '../../layouts/model/LayoutConfiguration';
 import {PopUpService} from '../../shared/pop-up-services/pop-up.service';
 
 @Component({
@@ -37,7 +37,6 @@ export class SelfAssessmentMgmComponent implements OnInit, OnDestroy {
     selfAssessments: SelfAssessmentMgm[];
     currentAccount: any;
     eventSubscriber: Subscription;
-    currentSearch: string;
 
     constructor(
         private router: Router,
@@ -49,39 +48,18 @@ export class SelfAssessmentMgmComponent implements OnInit, OnDestroy {
         public popUpService: PopUpService,
         private dataSharingService: DatasharingService
     ) {
-        this.currentSearch = this.activatedRoute.snapshot && this.activatedRoute.snapshot.params['search'] ?
-            this.activatedRoute.snapshot.params['search'] : '';
     }
 
     loadAll() {
-        if (this.currentSearch) {
-            this.selfAssessmentService.search({
-                query: this.currentSearch,
-            }).subscribe(
-                (res: HttpResponse<SelfAssessmentMgm[]>) => this.selfAssessments = res.body,
-                (res: HttpErrorResponse) => this.onError(res.message)
-            );
-            return;
-        }
         this.selfAssessmentService.query().subscribe(
             (res: HttpResponse<SelfAssessmentMgm[]>) => {
                 this.selfAssessments = res.body;
-                this.currentSearch = '';
             },
             (res: HttpErrorResponse) => this.onError(res.message)
         );
     }
 
-    search(query) {
-        if (!query) {
-            return this.clear();
-        }
-        this.currentSearch = query;
-        this.loadAll();
-    }
-
     clear() {
-        this.currentSearch = '';
         this.loadAll();
     }
 
@@ -94,12 +72,12 @@ export class SelfAssessmentMgmComponent implements OnInit, OnDestroy {
     }
 
     selectSelfAssessment(selfAssessment: SelfAssessmentMgm) {
-        this.selfAssessmentService.setSelfAssessment(selfAssessment);
+        this.dataSharingService.selfAssessment = selfAssessment;
         const link = ['/'];
         // this.mySidemenuService.roomeMenu('collapsed');
-        const update: Update = new Update();
-        update.navSubTitle = selfAssessment.name;
-        this.dataSharingService.updateLayout(update);
+        const layoutConfiguration: LayoutConfiguration = new LayoutConfiguration();
+        layoutConfiguration.navSubTitle = selfAssessment.name;
+        this.dataSharingService.layoutConfiguration = layoutConfiguration;
         this.router.navigate(link);
     }
 

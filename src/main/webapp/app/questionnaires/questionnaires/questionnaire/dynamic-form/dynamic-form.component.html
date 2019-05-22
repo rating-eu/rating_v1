@@ -45,34 +45,100 @@
                 </ol>
             </div>
             <div *ngIf="questionnaire.purpose === purposeEnum.SELFASSESSMENT">
-                <ol>
-                    <li *ngFor="let question of questionsArray; trackBy: trackByID">
-                        <div
-                            [ngClass]="{'ng-valid': isValid(question.id) === true, 'ng-invalid': isValid(question.id) === false}"
-                            class="card-box">
-                            <label class="form-control-label" [attr.for]="question?.id">
-                                <h3 class="h3-dynamic-form"> {{question?.name}}</h3>
-                            </label>
-                            <div class="row">
-                                <div class="col-md-9 bg2">
-                                    <mat-radio-group [formControlName]="question.id" class="radio-group">
-                                        <mat-radio-button *ngFor="let answer of sort(question.answers)"
-                                                          class="radio-button"
-                                                          [value]="answer">
-                                            {{answer.name}}
-                                        </mat-radio-button>
-                                    </mat-radio-group>
-                                </div>
-                                <div class="col-md-3 bg3 text-center">
-                                    <mat-form-field>
+                <mat-tab-group>
+                    <mat-tab label="Human">
+                        <ol *ngIf="humanQuestionsArray">
+                            <li *ngFor="let question of humanQuestionsArray; trackBy: trackByID">
+                                <div
+                                    [ngClass]="{'ng-valid': isValid(question.id) === true, 'ng-invalid': isValid(question.id) === false}"
+                                    class="card-box">
+                                    <label class="form-control-label" [attr.for]="question?.id">
+                                        <h3 class="h3-dynamic-form"> {{question?.name}}</h3>
+                                    </label>
+                                    <div class="row">
+                                        <div class="col-md-9 bg2">
+                                            <mat-radio-group [formControlName]="question.id" class="radio-group">
+                                                <mat-radio-button *ngFor="let answer of sort(question.answers)"
+                                                                  class="radio-button"
+                                                                  [value]="answer">
+                                                    {{answer.name}}
+                                                </mat-radio-button>
+                                            </mat-radio-group>
+                                        </div>
+                                        <div class="col-md-3 bg3 text-center">
+                                            <mat-form-field>
                                     <textarea matInput [formControlName]="question.id + '.ciso.note'" [rows]="7"
                                               placeholder="Notes"></textarea>
-                                    </mat-form-field>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
-                    </li>
-                </ol>
+                            </li>
+                        </ol>
+                    </mat-tab>
+
+                    <mat-tab label="IT">
+                        <ol *ngIf="itQuestionsArray">
+                            <li *ngFor="let question of itQuestionsArray; trackBy: trackByID">
+                                <div
+                                    [ngClass]="{'ng-valid': isValid(question.id) === true, 'ng-invalid': isValid(question.id) === false}"
+                                    class="card-box">
+                                    <label class="form-control-label" [attr.for]="question?.id">
+                                        <h3 class="h3-dynamic-form"> {{question?.name}}</h3>
+                                    </label>
+                                    <div class="row">
+                                        <div class="col-md-9 bg2">
+                                            <mat-radio-group [formControlName]="question.id" class="radio-group">
+                                                <mat-radio-button *ngFor="let answer of sort(question.answers)"
+                                                                  class="radio-button"
+                                                                  [value]="answer">
+                                                    {{answer.name}}
+                                                </mat-radio-button>
+                                            </mat-radio-group>
+                                        </div>
+                                        <div class="col-md-3 bg3 text-center">
+                                            <mat-form-field>
+                                    <textarea matInput [formControlName]="question.id + '.ciso.note'" [rows]="7"
+                                              placeholder="Notes"></textarea>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                        </ol>
+                    </mat-tab>
+
+                    <mat-tab label="Physical">
+                        <ol *ngIf="physicalQuestionsArray">
+                            <li *ngFor="let question of physicalQuestionsArray; trackBy: trackByID">
+                                <div
+                                    [ngClass]="{'ng-valid': isValid(question.id) === true, 'ng-invalid': isValid(question.id) === false}"
+                                    class="card-box">
+                                    <label class="form-control-label" [attr.for]="question?.id">
+                                        <h3 class="h3-dynamic-form"> {{question?.name}}</h3>
+                                    </label>
+                                    <div class="row">
+                                        <div class="col-md-9 bg2">
+                                            <mat-radio-group [formControlName]="question.id" class="radio-group">
+                                                <mat-radio-button *ngFor="let answer of sort(question.answers)"
+                                                                  class="radio-button"
+                                                                  [value]="answer">
+                                                    {{answer.name}}
+                                                </mat-radio-button>
+                                            </mat-radio-group>
+                                        </div>
+                                        <div class="col-md-3 bg3 text-center">
+                                            <mat-form-field>
+                                    <textarea matInput [formControlName]="question.id + '.ciso.note'" [rows]="7"
+                                              placeholder="Notes"></textarea>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                        </ol>
+                    </mat-tab>
+                </mat-tab-group>
             </div>
             <div class="form-row text-right d-block" style="margin-bottom: 40px">
                 <button class="btn btn-success waves-light waves-effect w-md" type="submit"

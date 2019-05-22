@@ -5,8 +5,7 @@
             "home": {
                 "title": "Economic Results",
                 "createLabel": "Create a new Economic Results",
-                "createOrEditLabel": "Create or edit a Economic Results",
-                "search": "Search for Economic Results"
+                "createOrEditLabel": "Create or edit a Economic Results"
             },
             "created": "A new Economic Results is created with identifier {{ param }}",
             "updated": "A Economic Results is updated with identifier {{ param }}",

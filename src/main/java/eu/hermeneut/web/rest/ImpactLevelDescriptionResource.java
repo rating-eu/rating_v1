@@ -34,9 +34,6 @@ import java.net.URISyntaxException;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.StreamSupport;
-
-import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
  * REST controller for managing ImpactLevelDescription.
@@ -136,19 +133,4 @@ public class ImpactLevelDescriptionResource {
         impactLevelDescriptionService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
-
-    /**
-     * SEARCH  /_search/impact-level-descriptions?query=:query : search for the impactLevelDescription corresponding
-     * to the query.
-     *
-     * @param query the query of the impactLevelDescription search
-     * @return the result of the search
-     */
-    @GetMapping("/_search/impact-level-descriptions")
-    @Timed
-    public List<ImpactLevelDescription> searchImpactLevelDescriptions(@RequestParam String query) {
-        log.debug("REST request to search ImpactLevelDescriptions for query {}", query);
-        return impactLevelDescriptionService.search(query);
-    }
-
 }

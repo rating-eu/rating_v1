@@ -25,7 +25,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.CreationTimestamp;
-import org.springframework.data.elasticsearch.annotations.Document;
+
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -38,7 +38,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "ebit")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-@Document(indexName = "ebit")
+
 public class EBIT implements Serializable {
 
     private static final long serialVersionUID = 1L;

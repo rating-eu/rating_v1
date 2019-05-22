@@ -5,8 +5,7 @@
             "home": {
                 "title": "Answers",
                 "createLabel": "Create a new Answer",
-                "createOrEditLabel": "Create or edit a Answer",
-                "search": "Search for Answer"
+                "createOrEditLabel": "Create or edit a Answer"
             },
             "created": "A new Answer is created with identifier {{ param }}",
             "updated": "A Answer is updated with identifier {{ param }}",

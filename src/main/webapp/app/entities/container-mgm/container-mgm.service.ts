@@ -62,12 +62,6 @@ export class ContainerMgmService {
         return this.http.delete<any>(`${this.resourceUrl}/${id}`, { observe: 'response'});
     }
 
-    search(req?: any): Observable<HttpResponse<ContainerMgm[]>> {
-        const options = createRequestOption(req);
-        return this.http.get<ContainerMgm[]>(this.resourceSearchUrl, { params: options, observe: 'response' })
-            .map((res: HttpResponse<ContainerMgm[]>) => this.convertArrayResponse(res));
-    }
-
     private convertResponse(res: EntityResponseType): EntityResponseType {
         const body: ContainerMgm = this.convertItemFromServer(res.body);
         return res.clone({body});

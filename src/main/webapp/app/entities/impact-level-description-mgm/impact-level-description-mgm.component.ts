@@ -34,7 +34,6 @@ export class ImpactLevelDescriptionMgmComponent implements OnInit, OnDestroy {
 impactLevelDescriptions: ImpactLevelDescriptionMgm[];
     currentAccount: any;
     eventSubscriber: Subscription;
-    currentSearch: string;
 
     constructor(
         private impactLevelDescriptionService: ImpactLevelDescriptionMgmService,
@@ -44,39 +43,18 @@ impactLevelDescriptions: ImpactLevelDescriptionMgm[];
         private principal: Principal,
         public popUpService: PopUpService
     ) {
-        this.currentSearch = this.activatedRoute.snapshot && this.activatedRoute.snapshot.params['search'] ?
-            this.activatedRoute.snapshot.params['search'] : '';
     }
 
     loadAll() {
-        if (this.currentSearch) {
-            this.impactLevelDescriptionService.search({
-                query: this.currentSearch,
-                }).subscribe(
-                    (res: HttpResponse<ImpactLevelDescriptionMgm[]>) => this.impactLevelDescriptions = res.body,
-                    (res: HttpErrorResponse) => this.onError(res.message)
-                );
-            return;
-       }
         this.impactLevelDescriptionService.query().subscribe(
             (res: HttpResponse<ImpactLevelDescriptionMgm[]>) => {
                 this.impactLevelDescriptions = res.body;
-                this.currentSearch = '';
             },
             (res: HttpErrorResponse) => this.onError(res.message)
         );
     }
 
-    search(query) {
-        if (!query) {
-            return this.clear();
-        }
-        this.currentSearch = query;
-        this.loadAll();
-    }
-
     clear() {
-        this.currentSearch = '';
         this.loadAll();
     }
     ngOnInit() {

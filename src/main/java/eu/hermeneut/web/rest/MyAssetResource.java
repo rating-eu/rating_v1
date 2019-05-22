@@ -1,12 +1,12 @@
 /*
  * Copyright 2019 HERMENEUT Consortium
- *  
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *  
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- *  
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -20,18 +20,21 @@ package eu.hermeneut.web.rest;
 import com.codahale.metrics.annotation.Timed;
 import eu.hermeneut.aop.annotation.AttackCostParamsCleaningHook;
 import eu.hermeneut.aop.annotation.KafkaRiskProfileHook;
-import eu.hermeneut.domain.AttackCost;
 import eu.hermeneut.domain.MyAsset;
+import eu.hermeneut.domain.SelfAssessment;
 import eu.hermeneut.exceptions.IllegalInputException;
+import eu.hermeneut.exceptions.NotFoundException;
 import eu.hermeneut.exceptions.NullInputException;
 import eu.hermeneut.security.AuthoritiesConstants;
 import eu.hermeneut.service.MyAssetService;
+import eu.hermeneut.service.SelfAssessmentService;
 import eu.hermeneut.web.rest.errors.BadRequestAlertException;
 import eu.hermeneut.web.rest.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -44,9 +47,6 @@ import java.net.URISyntaxException;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
-
-import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
  * REST controller for managing MyAsset.
@@ -59,7 +59,11 @@ public class MyAssetResource {
 
     private static final String ENTITY_NAME = "myAsset";
 
-    private final MyAssetService myAssetService;
+    @Autowired
+    private MyAssetService myAssetService;
+
+    @Autowired
+    private SelfAssessmentService selfAssessmentService;
 
     public MyAssetResource(MyAssetService myAssetService) {
         this.myAssetService = myAssetService;
@@ -91,11 +95,17 @@ public class MyAssetResource {
     @Timed
     @PreAuthorize("@selfAssessmentGuardian.isCISO(#selfAssessmentID) || hasRole('ROLE_ADMIN')")
     @Secured({AuthoritiesConstants.CISO, AuthoritiesConstants.ADMIN})
-    public List<MyAsset> createMyAssets(@PathVariable("selfAssessmentID") Long selfAssessmentID, @RequestBody @NotEmpty List<MyAsset> myAssets) throws IllegalInputException, NullInputException {
+    public List<MyAsset> createMyAssets(@PathVariable("selfAssessmentID") Long selfAssessmentID, @RequestBody @NotEmpty List<MyAsset> myAssets) throws NotFoundException, IllegalInputException, NullInputException {
         log.debug("REST request to save MyAssets : {}", myAssets);
 
         if (selfAssessmentID == null) {
             throw new NullInputException("SelfAssessmentID CANNOT be NULL!");
+        }
+
+        SelfAssessment selfAssessment = this.selfAssessmentService.findOne(selfAssessmentID);
+
+        if (selfAssessment == null) {
+            throw new NotFoundException("SelfAssessment NOT Found!!!");
         }
 
         if (myAssets == null || myAssets.isEmpty()) {
@@ -135,6 +145,20 @@ public class MyAssetResource {
 
         for (MyAsset myAsset : myAssetsDiff) {
             this.myAssetService.delete(myAsset.getId());
+        }
+
+        switch (selfAssessment.getImpactMode()) {
+            case QUANTITATIVE: {
+                //Do Nothing
+                break;
+            }
+            case QUALITATIVE: {
+                // Set the impact as the ranking value
+                for (MyAsset myAsset : myAssets) {
+                    myAsset.setImpact(myAsset.getRanking());
+                }
+                break;
+            }
         }
 
         //Save the new ones
@@ -190,6 +214,15 @@ public class MyAssetResource {
         return myAssetService.findAllBySelfAssessment(selfAssessmentID);
     }
 
+    @GetMapping("/my-assets/self-assessment/{selfAssessmentID}/category/{category}")
+    @Timed
+    @PreAuthorize("@selfAssessmentGuardian.isCISO(#selfAssessmentID) || hasRole('ROLE_ADMIN')")
+    @Secured({AuthoritiesConstants.CISO, AuthoritiesConstants.ADMIN})
+    public List<MyAsset> getMyAssetsBySelfAssessmentAndAssetCategory(@PathVariable Long selfAssessmentID, @PathVariable String category) {
+        log.debug("REST request to get all MyAssets by SelfAssessment ID");
+        return myAssetService.findAllBySelfAssessmentAndAssetCategory(selfAssessmentID, category);
+    }
+
     /**
      * GET  /my-assets/:id : get the "id" myAsset.
      *
@@ -221,20 +254,4 @@ public class MyAssetResource {
         myAssetService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
-
-    /**
-     * SEARCH  /_search/my-assets?query=:query : search for the myAsset corresponding
-     * to the query.
-     *
-     * @param query the query of the myAsset search
-     * @return the result of the search
-     */
-    @GetMapping("/_search/my-assets")
-    @Timed
-    @Secured(AuthoritiesConstants.ADMIN)
-    public List<MyAsset> searchMyAssets(@RequestParam String query) {
-        log.debug("REST request to search MyAssets for query {}", query);
-        return myAssetService.search(query);
-    }
-
 }

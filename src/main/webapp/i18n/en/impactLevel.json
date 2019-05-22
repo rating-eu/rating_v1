@@ -5,8 +5,7 @@
             "home": {
                 "title": "Impact Levels",
                 "createLabel": "Create a new Impact Level",
-                "createOrEditLabel": "Create or edit a Impact Level",
-                "search": "Search for Impact Level"
+                "createOrEditLabel": "Create or edit a Impact Level"
             },
             "created": "A new Impact Level is created with identifier {{ param }}",
             "updated": "A Impact Level is updated with identifier {{ param }}",

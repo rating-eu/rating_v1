@@ -5,8 +5,7 @@
             "home": {
                 "title": "Containers",
                 "createLabel": "Create a new Container",
-                "createOrEditLabel": "Create or edit a Container",
-                "search": "Search for Container"
+                "createOrEditLabel": "Create or edit a Container"
             },
             "created": "A new Container is created with identifier {{ param }}",
             "updated": "A Container is updated with identifier {{ param }}",

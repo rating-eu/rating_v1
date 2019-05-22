@@ -33,9 +33,6 @@ import java.net.URISyntaxException;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.StreamSupport;
-
-import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
  * REST controller for managing IndirectAsset.
@@ -154,19 +151,4 @@ public class IndirectAssetResource {
         indirectAssetService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
-
-    /**
-     * SEARCH  /_search/indirect-assets?query=:query : search for the indirectAsset corresponding
-     * to the query.
-     *
-     * @param query the query of the indirectAsset search
-     * @return the result of the search
-     */
-    @GetMapping("/_search/indirect-assets")
-    @Timed
-    public List<IndirectAsset> searchIndirectAssets(@RequestParam String query) {
-        log.debug("REST request to search IndirectAssets for query {}", query);
-        return indirectAssetService.search(query);
-    }
-
 }

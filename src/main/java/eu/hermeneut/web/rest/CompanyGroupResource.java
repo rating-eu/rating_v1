@@ -34,9 +34,6 @@ import java.net.URISyntaxException;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.StreamSupport;
-
-import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
  * REST controller for managing CompanyGroup.
@@ -136,19 +133,4 @@ public class CompanyGroupResource {
         companyGroupService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
-
-    /**
-     * SEARCH  /_search/company-groups?query=:query : search for the companyGroup corresponding
-     * to the query.
-     *
-     * @param query the query of the companyGroup search
-     * @return the result of the search
-     */
-    @GetMapping("/_search/company-groups")
-    @Timed
-    public List<CompanyGroup> searchCompanyGroups(@RequestParam String query) {
-        log.debug("REST request to search CompanyGroups for query {}", query);
-        return companyGroupService.search(query);
-    }
-
 }

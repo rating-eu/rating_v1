@@ -22,13 +22,18 @@ import {Result} from '../../results/models/result.model';
 import {ResultsService} from '../../results/results.service';
 import {HttpResponse} from '@angular/common/http';
 import {Couple} from '../../utils/couple.class';
+import {DatasharingService} from "../../datasharing/datasharing.service";
+import {Observable} from "rxjs";
+import {ThreatAgentMgm, ThreatAgentMgmService} from "../../entities/threat-agent-mgm";
+import {MyCompanyMgm} from "../../entities/my-company-mgm";
+import {switchMap} from "rxjs/operators";
 
 interface OrderBy {
-  threatAgent: boolean;
-  initial: boolean;
-  contextual: boolean;
-  refined: boolean;
-  type: string;
+    threatAgent: boolean;
+    initial: boolean;
+    contextual: boolean;
+    refined: boolean;
+    type: string;
 }
 
 interface MdtaEntity {
@@ -68,53 +73,86 @@ export class MostDangerousThreatAgentsWidgetComponent implements OnInit {
         currentPage: 1
     };
 
-    private mySelf: SelfAssessmentMgm;
-    private results: Result;
+    private myCompany: MyCompanyMgm;
+
+    private threatAgents$: Observable<HttpResponse<ThreatAgentMgm[]>>;
+    public threatAgents: ThreatAgentMgm[];
+
+    private result$: Observable<HttpResponse<Result>>;
+    private result: Result;
 
     constructor(
         private resultService: ResultsService,
-        private selfAssessmentService: SelfAssessmentMgmService
+        private selfAssessmentService: SelfAssessmentMgmService,
+        private dataSharingService: DatasharingService,
+        private threatAgentService: ThreatAgentMgmService
     ) {
     }
 
     ngOnInit() {
         this.sortedBy = new Map();
         this.loading = true;
-        this.mySelf = this.selfAssessmentService.getSelfAssessment();
-        this.resultService.getResult(this.mySelf.id).toPromise().then((res: HttpResponse<Result>) => {
-            if (res.body) {
-                this.mdtaEntities = [];
-                this.results = res.body;
-                this.results.initialVulnerability.forEach((item, key) => {
-                    const tIndex = _.findIndex(this.mySelf.threatagents, {id: key});
-                    this.addInfo(this.mySelf.threatagents[tIndex].id, item, ValueType.INITIAL);
-                });
-                this.results.contextualVulnerability.forEach((item, key) => {
-                    const tIndex = _.findIndex(this.mySelf.threatagents, {id: key});
-                    this.addInfo(this.mySelf.threatagents[tIndex].id, item, ValueType.CONTEXTUAL);
-                });
-                this.results.refinedVulnerability.forEach((item, key) => {
-                    const tIndex = _.findIndex(this.mySelf.threatagents, {id: key});
-                    this.addInfo(this.mySelf.threatagents[tIndex].id, item, ValueType.REFINED);
-                });
-                this.mdtaEntities = _.orderBy(this.mdtaEntities, ['initial', 'contextual', 'refined'], ['desc', 'desc', 'desc']);
-                this.percentageTransformation();
-                this.loading = false;
-            } else {
-                this.loading = false;
-            }
-        }).catch(() => {
-            this.loading = false;
+        this.myCompany = this.dataSharingService.myCompany;
+        this.callAPI();
+
+        this.dataSharingService.myCompanyObservable.subscribe((response: MyCompanyMgm) => {
+            this.myCompany = response;
+            this.callAPI();
         });
+    }
+
+    private callAPI() {
+        if (this.myCompany && this.myCompany.companyProfile) {
+            this.threatAgents$ = this.threatAgentService.getThreatAgentsByCompany(this.myCompany.companyProfile.id);
+
+            this.result$ = this.threatAgents$.pipe(
+                switchMap((response: HttpResponse<ThreatAgentMgm[]>) => {
+                    this.threatAgents = response.body;
+
+                    return this.resultService.getResult(this.myCompany.companyProfile.id);
+                })
+            );
+
+            this.result$.subscribe((res: HttpResponse<Result>) => {
+                    console.log("Most Dangerouse Threat Agents Result response:");
+                    console.log(res.body);
+
+                    if (res.body) {
+                        this.mdtaEntities = [];
+                        this.result = res.body;
+                        this.result.initialVulnerability.forEach((item, key) => {
+                            const tIndex = _.findIndex(this.threatAgents, {id: key});
+                            this.addInfo(this.threatAgents[tIndex].id, item, ValueType.INITIAL);
+                        });
+                        this.result.contextualVulnerability.forEach((item, key) => {
+                            const tIndex = _.findIndex(this.threatAgents, {id: key});
+                            this.addInfo(this.threatAgents[tIndex].id, item, ValueType.CONTEXTUAL);
+                        });
+                        this.result.refinedVulnerability.forEach((item, key) => {
+                            const tIndex = _.findIndex(this.threatAgents, {id: key});
+                            this.addInfo(this.threatAgents[tIndex].id, item, ValueType.REFINED);
+                        });
+                        this.mdtaEntities = _.orderBy(this.mdtaEntities, ['initial', 'contextual', 'refined'], ['desc', 'desc', 'desc']);
+                        this.percentageTransformation();
+                        this.loading = false;
+                    } else {
+                        this.loading = false;
+                    }
+                },
+                () => {
+                    this.loading = false;
+                }
+            );
+        }
     }
 
     private addInfo(tID: number, value: number, typeOfInfo: ValueType) {
         const elemIndex = _.findIndex(this.mdtaEntities, {threatAgentID: tID});
         if (elemIndex === -1) {
             const elem: MdtaEntity = {} as MdtaEntity;
-            const tIndex = _.findIndex(this.mySelf.threatagents, {id: tID});
-            elem.threatAgentID = this.mySelf.threatagents[tIndex].id;
-            elem.threatAgent = this.mySelf.threatagents[tIndex].name;
+            const tIndex = _.findIndex(this.threatAgents, {id: tID});
+            elem.threatAgentID = this.threatAgents[tIndex].id;
+            elem.threatAgent = this.threatAgents[tIndex].name;
             switch (typeOfInfo) {
                 case ValueType.INITIAL: {
                     elem.initial = value;

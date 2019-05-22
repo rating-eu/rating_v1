@@ -60,12 +60,6 @@ export class EconomicResultsMgmService {
         return this.http.delete<any>(`${this.resourceUrl}/${id}`, { observe: 'response'});
     }
 
-    search(req?: any): Observable<HttpResponse<EconomicResultsMgm[]>> {
-        const options = createRequestOption(req);
-        return this.http.get<EconomicResultsMgm[]>(this.resourceSearchUrl, { params: options, observe: 'response' })
-            .map((res: HttpResponse<EconomicResultsMgm[]>) => this.convertArrayResponse(res));
-    }
-
     private convertResponse(res: EntityResponseType): EntityResponseType {
         const body: EconomicResultsMgm = this.convertItemFromServer(res.body);
         return res.clone({body});

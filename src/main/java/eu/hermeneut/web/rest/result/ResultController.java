@@ -47,8 +47,8 @@ public class ResultController {
         return numerator / OverallCalculator.DENOMINATOR;
     }
 
-    @GetMapping("/result/{selfAssessmentID}")
-    public Result getResult(@PathVariable Long selfAssessmentID) {
-        return this.resultService.getThreatAgentsResult(selfAssessmentID);
+    @GetMapping("/result/{companyProfileID}")
+    public Result getResult(@PathVariable Long companyProfileID) {
+        return this.resultService.getThreatAgentsResult(companyProfileID);
     }
 }

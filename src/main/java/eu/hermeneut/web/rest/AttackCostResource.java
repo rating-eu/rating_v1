@@ -176,19 +176,4 @@ public class AttackCostResource {
         attackCostService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
-
-    /**
-     * SEARCH  /_search/attack-costs?query=:query : search for the attackCost corresponding
-     * to the query.
-     *
-     * @param query the query of the attackCost search
-     * @return the result of the search
-     */
-    @GetMapping("/_search/attack-costs")
-    @Timed
-    public List<AttackCost> searchAttackCosts(@RequestParam String query) {
-        log.debug("REST request to search AttackCosts for query {}", query);
-        return attackCostService.search(query);
-    }
-
 }

@@ -23,7 +23,7 @@
 
 <div *ngIf="isAuthenticated"
      [ngClass]="{'content-page-sidenav': !updateLayout.isSidebarCollapsed && !isExternal && !isAdmin, 'content-page-no-sidenav': updateLayout.isSidebarCollapsed || isExternal || isAdmin}">
-    <!-- [ngClass]="{'content-page-sidenav': !updateLayout.isSidebarCollapsed, 'content-page-no-sidenav': updateLayout.isSidebarCollapsed}" -->
+    <!-- [ngClass]="{'content-page-sidenav': !layoutConfiguration.isSidebarCollapsed, 'content-page-no-sidenav': layoutConfiguration.isSidebarCollapsed}" -->
     <!-- Start content -->
     <div class="content">
         <div class="container-fluid content-with-margin">

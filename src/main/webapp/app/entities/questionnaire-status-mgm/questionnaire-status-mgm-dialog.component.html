@@ -43,7 +43,7 @@
                 </small>
             </div>
         </div>
-        <div class="form-group">
+        <!--<div class="form-group">
             <label class="form-control-label" jhiTranslate="hermeneutApp.questionnaireStatus.created" for="field_created">Created</label>
             <div class="d-flex">
                 <input id="field_created" type="datetime-local" class="form-control" name="created" [(ngModel)]="questionnaireStatus.created"
@@ -56,7 +56,7 @@
                 <input id="field_modified" type="datetime-local" class="form-control" name="modified" [(ngModel)]="questionnaireStatus.modified"
                 />
             </div>
-        </div>
+        </div>-->
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="hermeneutApp.questionnaireStatus.role" for="field_role">Role</label>
             <select class="form-control" name="role" [(ngModel)]="questionnaireStatus.role" id="field_role"  required>
@@ -74,10 +74,10 @@
         </div>
 
         <div class="form-group">
-            <label class="form-control-label" jhiTranslate="hermeneutApp.questionnaireStatus.selfAssessment" for="field_selfAssessment">Self Assessment</label>
-            <select class="form-control" id="field_selfAssessment" name="selfAssessment" [(ngModel)]="questionnaireStatus.selfAssessment">
+            <label class="form-control-label" jhiTranslate="hermeneutApp.questionnaireStatus.companyProfile" for="field_company_profile">Company Profile</label>
+            <select class="form-control" id="field_company_profile" name="selfAssessment" [(ngModel)]="questionnaireStatus.companyProfile">
                 <option [ngValue]="null"></option>
-                <option [ngValue]="selfAssessmentOption.id === questionnaireStatus.selfAssessment?.id ? questionnaireStatus.selfAssessment : selfAssessmentOption" *ngFor="let selfAssessmentOption of selfassessments; trackBy: trackSelfAssessmentById">{{selfAssessmentOption.name}}</option>
+                <option [ngValue]="companyProfileOption.id === questionnaireStatus.companyProfile?.id ? questionnaireStatus.companyProfile : companyProfileOption" *ngFor="let companyProfileOption of companyProfiles; trackBy: trackCompanyProfileById">{{companyProfileOption.name}}</option>
             </select>
         </div>
         <div class="form-group">

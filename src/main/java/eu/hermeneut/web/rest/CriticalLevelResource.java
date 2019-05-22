@@ -34,9 +34,6 @@ import java.net.URISyntaxException;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.StreamSupport;
-
-import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
  * REST controller for managing CriticalLevel.
@@ -144,19 +141,4 @@ public class CriticalLevelResource {
         criticalLevelService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
-
-    /**
-     * SEARCH  /_search/critical-levels?query=:query : search for the criticalLevel corresponding
-     * to the query.
-     *
-     * @param query the query of the criticalLevel search
-     * @return the result of the search
-     */
-    @GetMapping("/_search/critical-levels")
-    @Timed
-    public List<CriticalLevel> searchCriticalLevels(@RequestParam String query) {
-        log.debug("REST request to search CriticalLevels for query {}", query);
-        return criticalLevelService.search(query);
-    }
-
 }

@@ -5,8 +5,7 @@
             "home": {
                 "title": "External Audits",
                 "createLabel": "Create a new External Audit",
-                "createOrEditLabel": "Create or edit a External Audit",
-                "search": "Search for External Audit"
+                "createOrEditLabel": "Create or edit a External Audit"
             },
             "created": "A new External Audit is created with identifier {{ param }}",
             "updated": "A External Audit is updated with identifier {{ param }}",

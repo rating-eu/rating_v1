@@ -21,6 +21,8 @@ import { MyCompanyMgmService, MyCompanyMgm } from '../../entities/my-company-mgm
 import { HttpResponse } from '@angular/common/http';
 import { PopUpService } from '../../shared/pop-up-services/pop-up.service';
 import { SelfAssessmentMgmService, SelfAssessmentMgm } from '../../entities/self-assessment-mgm';
+import {DatasharingService} from "../../datasharing/datasharing.service";
+import {Account} from "../../shared";
 
 @Component({
   selector: 'jhi-company-widget',
@@ -40,7 +42,8 @@ export class CompanyWidgetComponent implements OnInit {
     private userService: UserService,
     private myCompanyService: MyCompanyMgmService,
     private selfAssessmentService: SelfAssessmentMgmService,
-    public popUpService: PopUpService
+    public popUpService: PopUpService,
+    private dataSharingService: DatasharingService
   ) { }
 
   ngOnInit() {
@@ -53,6 +56,7 @@ export class CompanyWidgetComponent implements OnInit {
           this.myCompanyService.findByUser(this.user.id).subscribe(
             (response3: HttpResponse<MyCompanyMgm>) => {
               this.myCompany = response3.body;
+              this.dataSharingService.myCompany = this.myCompany;
               this.companyName = this.myCompany.companyProfile.name;
               this.companySector = this.myCompany.companyProfile.type.toString();
             }
@@ -60,7 +64,7 @@ export class CompanyWidgetComponent implements OnInit {
         }
       });
     });
-    this.mySelf = this.selfAssessmentService.getSelfAssessment();
+    this.mySelf = this.dataSharingService.selfAssessment;
     if (this.mySelf) {
       this.selfAssessmentName = this.mySelf.name;
     }

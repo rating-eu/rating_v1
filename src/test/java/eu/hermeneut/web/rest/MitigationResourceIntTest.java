@@ -22,7 +22,6 @@ import eu.hermeneut.HermeneutApp;
 import eu.hermeneut.domain.Mitigation;
 import eu.hermeneut.repository.MitigationRepository;
 import eu.hermeneut.service.MitigationService;
-import eu.hermeneut.repository.search.MitigationSearchRepository;
 import eu.hermeneut.web.rest.errors.ExceptionTranslator;
 
 import org.junit.Before;
@@ -81,9 +80,6 @@ public class MitigationResourceIntTest {
     private MitigationService mitigationService;
 
     @Autowired
-    private MitigationSearchRepository mitigationSearchRepository;
-
-    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -127,7 +123,6 @@ public class MitigationResourceIntTest {
 
     @Before
     public void initTest() {
-        mitigationSearchRepository.deleteAll();
         mitigation = createEntity(em);
     }
 
@@ -150,12 +145,6 @@ public class MitigationResourceIntTest {
         assertThat(testMitigation.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
         assertThat(testMitigation.getCreated()).isEqualTo(DEFAULT_CREATED);
         assertThat(testMitigation.getModified()).isEqualTo(DEFAULT_MODIFIED);
-
-        // Validate the Mitigation in Elasticsearch
-        Mitigation mitigationEs = mitigationSearchRepository.findOne(testMitigation.getId());
-        assertThat(testMitigation.getCreated()).isEqualTo(testMitigation.getCreated());
-        assertThat(testMitigation.getModified()).isEqualTo(testMitigation.getModified());
-        assertThat(mitigationEs).isEqualToIgnoringGivenFields(testMitigation, "created", "modified");
     }
 
     @Test
@@ -250,12 +239,6 @@ public class MitigationResourceIntTest {
         assertThat(testMitigation.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
         assertThat(testMitigation.getCreated()).isEqualTo(UPDATED_CREATED);
         assertThat(testMitigation.getModified()).isEqualTo(UPDATED_MODIFIED);
-
-        // Validate the Mitigation in Elasticsearch
-        Mitigation mitigationEs = mitigationSearchRepository.findOne(testMitigation.getId());
-        assertThat(testMitigation.getCreated()).isEqualTo(testMitigation.getCreated());
-        assertThat(testMitigation.getModified()).isEqualTo(testMitigation.getModified());
-        assertThat(mitigationEs).isEqualToIgnoringGivenFields(testMitigation, "created", "modified");
     }
 
     @Test
@@ -289,30 +272,9 @@ public class MitigationResourceIntTest {
             .accept(TestUtil.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk());
 
-        // Validate Elasticsearch is empty
-        boolean mitigationExistsInEs = mitigationSearchRepository.exists(mitigation.getId());
-        assertThat(mitigationExistsInEs).isFalse();
-
         // Validate the database is empty
         List<Mitigation> mitigationList = mitigationRepository.findAll();
         assertThat(mitigationList).hasSize(databaseSizeBeforeDelete - 1);
-    }
-
-    @Test
-    @Transactional
-    public void searchMitigation() throws Exception {
-        // Initialize the database
-        mitigationService.save(mitigation);
-
-        // Search the mitigation
-        restMitigationMockMvc.perform(get("/api/_search/mitigations?query=id:" + mitigation.getId()))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(mitigation.getId().intValue())))
-            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
-            .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION.toString())))
-            .andExpect(jsonPath("$.[*].created").value(hasItem(sameInstant(DEFAULT_CREATED))))
-            .andExpect(jsonPath("$.[*].modified").value(hasItem(sameInstant(DEFAULT_MODIFIED))));
     }
 
     @Test

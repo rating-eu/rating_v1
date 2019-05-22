@@ -40,23 +40,12 @@ export class IdentifyAssetUtilService {
     private myIndirectAssets: IndirectAssetMgm[];
     private myAnswerLinkedMap: any[];
 
-    private myAssetIndex = 1;
-    private myDirectAssetIndex = 1;
-    private myIndirectAssetIndex = 1;
-
-    private subscriptorForMyAsset: Subject<MyAssetMgm[]> = new Subject<MyAssetMgm[]>();
-    private subscriptorForDirectAssets: Subject<DirectAssetMgm[]> = new Subject<DirectAssetMgm[]>();
-    private subscriptorForIndirectAssets: Subject<IndirectAssetMgm[]> = new Subject<IndirectAssetMgm[]>();
-    private subscriptorForAnswersComplited: Subject<MyAnswerMgm[]> = new Subject<MyAnswerMgm[]>();
-    private subscriptorForIndirectMap: Subject<any> = new Subject<any>();
-
     private assetServiceUrl = SERVER_API_URL + 'api/my-assets/self-assessment/';
     private directUrl = SERVER_API_URL + 'api/{selfAssessmentID}/direct-assets';
     private indirectUrl = SERVER_API_URL + 'api/{selfAssessmentID}/indirect-assets';
     private allAsset = SERVER_API_URL + 'api/assets';
     private updateAssetUri = SERVER_API_URL + 'api/my-assets';
     private updateDirectAssetUri = SERVER_API_URL + '/api/direct-assets';
-    private updateIndirectAssetUri = SERVER_API_URL + 'api/indirect-assets';
     private createMyAssets = SERVER_API_URL + 'api/{selfAssessmentID}/my-assets/all';
     private allAttackCost = SERVER_API_URL + 'api/attack-costs';
 

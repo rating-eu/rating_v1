@@ -18,6 +18,8 @@
 package eu.hermeneut.service;
 
 import eu.hermeneut.domain.AnswerWeight;
+import eu.hermeneut.domain.enumeration.QuestionType;
+
 import java.util.List;
 
 /**
@@ -34,7 +36,7 @@ public interface AnswerWeightService {
     AnswerWeight save(AnswerWeight answerWeight);
 
     /**
-     * Get all the answerWeights.
+     * Get all the allAnswerWeights.
      *
      * @return the list of entities
      */
@@ -55,12 +57,5 @@ public interface AnswerWeightService {
      */
     void delete(Long id);
 
-    /**
-     * Search for the answerWeight corresponding to the query.
-     *
-     * @param query the query of the search
-     * 
-     * @return the list of entities
-     */
-    List<AnswerWeight> search(String query);
+    List<AnswerWeight> findAllByQuestionType(QuestionType questionType);
 }

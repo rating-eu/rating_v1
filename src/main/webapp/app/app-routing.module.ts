@@ -15,10 +15,10 @@
  *
  */
 
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
-import { errorRoute, navbarRoute, sidebarRoute } from './layouts';
-import { UserRouteAccessService } from './shared';
+import {NgModule} from '@angular/core';
+import {RouterModule, Routes} from '@angular/router';
+import {errorRoute, navbarRoute, sidebarRoute} from './layouts';
+import {UserRouteAccessService} from './shared';
 
 const routes: Routes = [
     navbarRoute,
@@ -27,6 +27,14 @@ const routes: Routes = [
     {
         path: 'dashboard',
         loadChildren: './dashboard/dashboard.module#DashboardModule',
+        data: {
+            authorities: ['ROLE_CISO']
+        },
+        canActivate: [UserRouteAccessService]
+    },
+    {
+        path: 'riskboard',
+        loadChildren: './risk-board/risk-board.module#RiskBoardModule',
         data: {
             authorities: ['ROLE_CISO']
         },
@@ -108,7 +116,7 @@ const routes: Routes = [
 
 @NgModule({
     imports: [
-        RouterModule.forRoot(routes, { useHash: true })
+        RouterModule.forRoot(routes, {useHash: true})
     ],
     exports: [
         RouterModule

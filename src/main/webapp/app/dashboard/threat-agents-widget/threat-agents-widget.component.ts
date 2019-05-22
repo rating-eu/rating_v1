@@ -16,7 +16,7 @@
  */
 
 import * as _ from 'lodash';
-import {DashboardStepEnum} from './../models/enumeration/dashboard-step.enum';
+import {RiskBoardStepEnum} from '../../entities/enumerations/RiskBoardStep.enum';
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {SelfAssessmentMgm, SelfAssessmentMgmService} from '../../entities/self-assessment-mgm';
 import {MyAnswerMgm, MyAnswerMgmService} from '../../entities/my-answer-mgm';
@@ -25,7 +25,7 @@ import {QuestionnaireStatusMgm, QuestionnaireStatusMgmService} from '../../entit
 import {HttpResponse} from '@angular/common/http';
 import {MotivationMgm, MotivationMgmService} from '../../entities/motivation-mgm';
 import {ThreatAgentMgm, ThreatAgentMgmService} from '../../entities/threat-agent-mgm';
-import {mergeMap} from 'rxjs/operators';
+import {mergeMap, switchMap} from 'rxjs/operators';
 import {forkJoin} from 'rxjs/observable/forkJoin';
 import {Couple} from '../../utils/couple.class';
 import {Fraction} from '../../utils/fraction.class';
@@ -36,305 +36,171 @@ import {BaseEntity} from '../../shared';
 import {AnswerMgm} from '../../entities/answer-mgm';
 import * as CryptoJS from 'crypto-js';
 import {ModalDismissReasons, NgbModal} from '@ng-bootstrap/ng-bootstrap';
-import {DashboardService, DashboardStatus, Status} from '../dashboard.service';
+import {RiskBoardService, RiskBoardStatus} from '../../risk-board/risk-board.service';
+import {DatasharingService} from "../../datasharing/datasharing.service";
+import {MyCompanyMgm} from "../../entities/my-company-mgm";
+import {QuestionnairePurpose} from "../../entities/enumerations/QuestionnairePurpose.enum";
+import {ThreatAgentInterestService} from "../../entities/threat-agent-interest/threat-agent-interest.service";
+import {ThreatAgentInterest} from "../../entities/threat-agent-interest/threat-agent-interest.model";
 
 interface OrderBy {
-  threatAgents: boolean;
-  skills: boolean;
-  interest: boolean;
-  type: string;
+    threatAgents: boolean;
+    skills: boolean;
+    interest: boolean;
+    type: string;
 }
 
 @Component({
-  selector: 'jhi-threat-agents-widget',
-  templateUrl: './threat-agents-widget.component.html',
-  styleUrls: ['threat-agents-widget.component.css']
+    selector: 'jhi-threat-agents-widget',
+    templateUrl: './threat-agents-widget.component.html',
+    styleUrls: ['threat-agents-widget.component.css']
 })
 export class ThreatAgentsWidgetComponent implements OnInit, OnDestroy {
-  private static YES = 'YES';
-  private static NO = 'NO';
+    private closeResult: string;
 
-  private closeResult: string;
+    private subscriptions: Subscription[] = [];
 
-  private subscriptions: Subscription[] = [];
-  private questionnaire: QuestionnaireMgm;
+    public selectedThreatAgent: ThreatAgentMgm = null;
+    private myCompany: MyCompanyMgm;
 
-  public selectedThreatAgent: ThreatAgentMgm = null;
-  public selfAssessment: SelfAssessmentMgm;
-  public loading = false;
-  public orderBy: OrderBy;
+    public loading = false;
+    public orderBy: OrderBy;
 
-  // ThreatAgents
-  private defaultThreatAgents$: Observable<HttpResponse<ThreatAgentMgm[]>>;
-  private defaultThreatAgents: ThreatAgentMgm[];
+    // Company ThreatAgents
+    private threatAgentInterests$: Observable<ThreatAgentInterest[]>;
+    private threatAgentInterests: ThreatAgentInterest[];
 
-  // Motivations
-  private motivations$: Observable<HttpResponse<MotivationMgm[]>>;
-  public motivations: MotivationMgm[];
+    constructor(
+        private selfAssessmentService: SelfAssessmentMgmService,
+        private myAnswerService: MyAnswerMgmService,
+        private questionService: QuestionMgmService,
+        private questionnaireStatusService: QuestionnaireStatusMgmService,
+        private motivationsService: MotivationMgmService,
+        private threatAgentService: ThreatAgentMgmService,
+        private threatAgentInterestService: ThreatAgentInterestService,
+        private modalService: NgbModal,
+        private dataSharingService: DatasharingService
+    ) {
+    }
 
-  private defaultThreatAgentsMotivations$: Observable<[HttpResponse<ThreatAgentMgm[]>, HttpResponse<MotivationMgm[]>]>;
+    ngOnInit() {
+        this.loading = true;
+        this.orderBy = {
+            threatAgents: false,
+            skills: false,
+            interest: false,
+            type: 'desc'
+        };
 
-  // QuestionnaireStatus
-  private questionnaireStatuses$: Observable<HttpResponse<QuestionnaireStatusMgm[]>>;
-  private questionnaireStatus: QuestionnaireStatusMgm;
+        // The below code is been copy and customized from the resul.component of the identify-threat-agents module
+        this.myCompany = this.dataSharingService.myCompany;
+        this.callAPI();
 
-  // MyAnswers
-  private myAnswers$: Observable<HttpResponse<MyAnswerMgm[]>>;
-  private myAnswers: MyAnswerMgm[];
-
-  // Questions
-  private questions$: Observable<HttpResponse<QuestionMgm[]>>;
-  private questions: QuestionMgm[];
-  private questionsMap: Map<number, QuestionMgm>;
-
-  // Questions & MyAnswers Join
-  private questionsMyAnswers$: Observable<[HttpResponse<QuestionMgm[]>, HttpResponse<MyAnswerMgm[]>]>;
-
-  // ThreatAgents Percentage Map
-  private threatAgentsPercentageMap: Map<String, Couple<ThreatAgentMgm, Fraction>>;
-  public threatAgentsPercentageArray: Couple<ThreatAgentMgm, Fraction>[];
-
-  private status: DashboardStatus;
-  private dashboardStatus = DashboardStepEnum;
-
-  constructor(
-    private selfAssessmentService: SelfAssessmentMgmService,
-    private myAnswerService: MyAnswerMgmService,
-    private questionService: QuestionMgmService,
-    private questionnaireStatusService: QuestionnaireStatusMgmService,
-    private motivationsService: MotivationMgmService,
-    private threatAgentService: ThreatAgentMgmService,
-    private modalService: NgbModal,
-    private dashService: DashboardService
-  ) { }
-
-  ngOnInit() {
-    this.loading = true;
-    this.status = this.dashService.getStatus();
-    this.orderBy = {
-      threatAgents: false,
-      skills: false,
-      interest: false,
-      type: 'desc'
-    };
-    // The below code is been copy and customized from the resul.component of the identify-threat-agents module
-    this.selfAssessment = this.selfAssessmentService.getSelfAssessment();
-    this.questionnaireStatuses$ = this.questionnaireStatusService.getAllBySelfAssessmentAndQuestionnairePurpose(this.selfAssessment.id, 'ID_THREAT_AGENT');
-
-    // First Fetch the QuestionnaireStatus with the above observable.
-    // Then Create the Observable for the Questions and MyAnswers belonging to the fetched QuestionnaireStatus.
-    this.questionsMyAnswers$ = this.questionnaireStatuses$.pipe(
-      mergeMap((questionnaireStatusResponse: HttpResponse<QuestionnaireStatusMgm[]>) => {
-        this.questionnaireStatus = questionnaireStatusResponse.body[0];
-        if (!this.questionnaireStatus) {
-          return forkJoin(Observable.of(null), Observable.of(null));
-        }
-        this.questionnaire = this.questionnaireStatus.questionnaire;
-        this.questions$ = this.questionService.getQuestionsByQuestionnaire(this.questionnaire.id);
-        this.myAnswers$ = this.myAnswerService.getAllByQuestionnaireStatusID(this.questionnaireStatus.id);
-        return forkJoin(this.questions$, this.myAnswers$);
-      })
-    );
-    // Create the Observable to fetch the Motivations of the ThreatAgents
-    this.motivations$ = this.motivationsService.query();
-    // Create the Observable to fetch the default ThreatAgents
-    this.defaultThreatAgents$ = this.threatAgentService.getDefaultThreatAgents();
-    // Chain observables
-    this.defaultThreatAgentsMotivations$ =
-      this.questionsMyAnswers$.mergeMap(
-        (response: [HttpResponse<QuestionMgm[]>, HttpResponse<MyAnswerMgm[]>]) => {
-          if (!response[0] || !response[1]) {
-            return forkJoin(Observable.of(null), Observable.of(null));
-          }
-          this.questions = response[0].body;
-          this.myAnswers = response[1].body;
-          return forkJoin(this.defaultThreatAgents$, this.motivations$);
-        }
-      );
-    this.defaultThreatAgentsMotivations$.subscribe(
-      (response: [HttpResponse<ThreatAgentMgm[]>, HttpResponse<MotivationMgm[]>]) => {
-        if (!response[0] || !response[1]) {
-          this.loading = false;
-          return;
-        }
-        this.defaultThreatAgents = response[0].body;
-        this.motivations = response[1].body;
-        this.questionsMap = this.arrayToMap<QuestionMgm>(this.questions);
-        this.threatAgentsPercentageMap = this.questionsMyAnswersToThreatAgentsPercentageMap(this.questionsMap, this.myAnswers, this.defaultThreatAgents);
-        this.threatAgentsPercentageArray = Array.from(this.threatAgentsPercentageMap.values());
-
-        // Sort ThreatAgents by Skills * Accuracy
-        this.threatAgentsPercentageArray = this.threatAgentsPercentageArray.sort(
-          (a: Couple<ThreatAgentMgm, Fraction>, b: Couple<ThreatAgentMgm, Fraction>) => {
-            const aSkill: number = Number(SkillLevel[a.key.skillLevel]);
-            const bSkill: number = Number(SkillLevel[b.key.skillLevel]);
-
-            const aAccuracy: number = Number(a.value.toPercentage().toFixed(2));
-            const bAccuracy: number = Number(b.value.toPercentage().toFixed(2));
-
-            const aStrength: number = aSkill * aAccuracy;
-            const bStrength: number = bSkill * bAccuracy;
-
-            const result = (aStrength - bStrength) * -1;
-
-            return result;
-          }
+        this.subscriptions.push(
+            this.dataSharingService.myCompanyObservable.subscribe(
+                (response: MyCompanyMgm) => {
+                    this.myCompany = response;
+                    this.callAPI();
+                }
+            )
         );
-        this.loading = false;
-      }
-    );
+    }
 
-    this.dashService.getStatusFromServer(this.selfAssessment, this.dashboardStatus.IDENTIFY_THREAT_AGENTS).toPromise().then((res) => {
-      this.status.identifyThreatAgentsStatus = Status[res];
-      this.dashService.updateStepStatus(DashboardStepEnum.IDENTIFY_THREAT_AGENTS, this.status.identifyThreatAgentsStatus);
-    });
-  }
+    private callAPI() {
+        if (this.myCompany && this.myCompany.companyProfile) {
+            this.threatAgentInterests$ = this.threatAgentInterestService.getThreatAgentsInterestsByCompanyProfile(this.myCompany.companyProfile);
 
-  ngOnDestroy() {
-    if (this.subscriptions) {
-      this.subscriptions.forEach((subscription: Subscription) => {
-        if (subscription) {
-          subscription.unsubscribe();
+            this.threatAgentInterests$.subscribe((response: ThreatAgentInterest[]) => {
+                this.threatAgentInterests = response;
+                this.loading = false;
+            });
+        }else {
+            this.loading = false;
         }
-      });
     }
-  }
 
-  private getDismissReason(reason: any): string {
-    if (reason === ModalDismissReasons.ESC) {
-      return 'by pressing ESC';
-    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
-      return 'by clicking on a backdrop';
-    } else {
-      return `with: ${reason}`;
-    }
-  }
-
-  open(content) {
-    this.modalService.open(content, { size: 'lg' }).result.then((result) => {
-      this.closeResult = `Closed with: ${result}`;
-    }, (reason) => {
-      this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-    });
-  }
-
-  /**
-     * Converts the input array to a Map having the item's ID as the KEY and the item itself as the VALUE.
-     * Attention: If the array contains more items with the same ID, only the last of them will be present.
-     * The id of the item must be a number.
-     * @param {T[]} array The input array.
-     * @returns {Map<number, T extends BaseEntity>} The output map.
-     */
-  private arrayToMap<T extends BaseEntity>(array: T[]): Map<number, T> {
-
-    const map: Map<number, T> = new Map<number, T>();
-
-    array.forEach((item: T) => {
-      map.set(Number(item.id), item);
-    });
-
-    return map;
-  }
-
-  private questionsMyAnswersToThreatAgentsPercentageMap(questionsMap: Map<number, QuestionMgm>,
-    myAnswers: MyAnswerMgm[],
-    defaultThreatAgents: ThreatAgentMgm[]): Map<String, Couple<ThreatAgentMgm, Fraction>> {
-
-    const map: Map<string, Couple<ThreatAgentMgm, Fraction>> = new Map<string, Couple<ThreatAgentMgm, Fraction>>();
-
-    myAnswers.forEach((myAnswer: MyAnswerMgm) => {
-      const question: QuestionMgm = this.questionsMap.get(myAnswer.question.id);
-      const answer: AnswerMgm = myAnswer.answer;
-      const threatAgent: ThreatAgentMgm = question.threatAgent;
-
-      // The hash of the ThreatAgent JSON is used as the Key of the Map.
-      const threatAgentHash: string = CryptoJS.SHA256(JSON.stringify(threatAgent)).toString();
-
-      if (map.has(threatAgentHash)) {// a question identifying this threat agent has already been encountered.
-        // fraction = #YES/#Questions
-        const fraction: Fraction = map.get(threatAgentHash).value;
-        // increment the number of questions identifying this threat-agent
-        fraction.whole++;
-        if (answer.name.toUpperCase() === ThreatAgentsWidgetComponent.YES) {
-          fraction.part++;
-        } else if (answer.name.toUpperCase() === ThreatAgentsWidgetComponent.NO) {
+    ngOnDestroy() {
+        if (this.subscriptions) {
+            this.subscriptions.forEach((subscription: Subscription) => {
+                if (subscription) {
+                    subscription.unsubscribe();
+                }
+            });
         }
-      } else {// first time
-        const fraction = new Fraction(0, 1);
-        map.set(threatAgentHash, new Couple<ThreatAgentMgm, Fraction>(threatAgent, fraction));
-        if (answer.name.toUpperCase() === ThreatAgentsWidgetComponent.YES) {
-          fraction.part++;
-        } else if (answer.name.toUpperCase() === ThreatAgentsWidgetComponent.NO) {
-        }
-      }
-    });
-
-    defaultThreatAgents.forEach((threatAgent: ThreatAgentMgm) => {
-      // The hash of the ThreatAgent JSON is used as the Key of the Map.
-      const threatAgentHash: string = CryptoJS.SHA256(JSON.stringify(threatAgent)).toString();
-      const fraction: Fraction = new Fraction(1, 1); // 100%
-      const couple: Couple<ThreatAgentMgm, Fraction> = new Couple<ThreatAgentMgm, Fraction>(threatAgent, fraction);
-
-      map.set(threatAgentHash, couple);
-    });
-
-    return map;
-  }
-
-  public selectThreatAgent(threatAgent: ThreatAgentMgm) {
-    if (this.selectedThreatAgent) {
-      if (this.selectedThreatAgent.id === threatAgent.id) {
-        this.selectedThreatAgent = null;
-      } else {
-        this.selectedThreatAgent = threatAgent;
-      }
-    } else {
-      this.selectedThreatAgent = threatAgent;
     }
-  }
 
-  private resetOrder() {
-    this.orderBy.threatAgents = false;
-    this.orderBy.skills = false;
-    this.orderBy.interest = false;
-    this.orderBy.type = 'desc';
-  }
-
-  public tableOrderBy(orderColumn: string, desc: boolean) {
-    this.resetOrder();
-    if (desc) {
-      this.orderBy.type = 'desc';
-    } else {
-      this.orderBy.type = 'asc';
-    }
-    switch (orderColumn.toLowerCase()) {
-      case ('threat_agents'): {
-        this.orderBy.threatAgents = true;
-        if (desc) {
-          this.threatAgentsPercentageArray = _.orderBy(this.threatAgentsPercentageArray, (elem: Couple<ThreatAgentMgm, Fraction>) => elem.key.name, ['desc']);
+    private getDismissReason(reason: any): string {
+        if (reason === ModalDismissReasons.ESC) {
+            return 'by pressing ESC';
+        } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+            return 'by clicking on a backdrop';
         } else {
-          this.threatAgentsPercentageArray = _.orderBy(this.threatAgentsPercentageArray, (elem: Couple<ThreatAgentMgm, Fraction>) => elem.key.name, ['asc']);
+            return `with: ${reason}`;
         }
-        break;
-      }
-      case ('skills'): {
-        this.orderBy.skills = true;
-        if (desc) {
-          this.threatAgentsPercentageArray = _.orderBy(this.threatAgentsPercentageArray, (elem: Couple<ThreatAgentMgm, Fraction>) => elem.key.skillLevel, ['desc']);
-        } else {
-          this.threatAgentsPercentageArray = _.orderBy(this.threatAgentsPercentageArray, (elem: Couple<ThreatAgentMgm, Fraction>) => elem.key.skillLevel, ['asc']);
-        }
-        break;
-      }
-      case ('interest'): {
-        this.orderBy.interest = true;
-        if (desc) {
-          this.threatAgentsPercentageArray = _.orderBy(this.threatAgentsPercentageArray, (elem: Couple<ThreatAgentMgm, Fraction>) => elem.value.toPercentage(), ['desc']);
-        } else {
-          this.threatAgentsPercentageArray = _.orderBy(this.threatAgentsPercentageArray, (elem: Couple<ThreatAgentMgm, Fraction>) => elem.value.toPercentage(), ['asc']);
-        }
-        break;
-      }
     }
-  }
+
+    open(content) {
+        this.modalService.open(content, {size: 'lg'}).result.then((result) => {
+            this.closeResult = `Closed with: ${result}`;
+        }, (reason) => {
+            this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+        });
+    }
+
+    public selectThreatAgent(threatAgent: ThreatAgentMgm) {
+        if (this.selectedThreatAgent) {
+            if (this.selectedThreatAgent.id === threatAgent.id) {
+                this.selectedThreatAgent = null;
+            } else {
+                this.selectedThreatAgent = threatAgent;
+            }
+        } else {
+            this.selectedThreatAgent = threatAgent;
+        }
+    }
+
+    private resetOrder() {
+        this.orderBy.threatAgents = false;
+        this.orderBy.skills = false;
+        this.orderBy.interest = false;
+        this.orderBy.type = 'desc';
+    }
+
+    public tableOrderBy(orderColumn: string, desc: boolean) {
+        this.resetOrder();
+        if (desc) {
+            this.orderBy.type = 'desc';
+        } else {
+            this.orderBy.type = 'asc';
+        }
+        switch (orderColumn.toLowerCase()) {
+            case ('threat_agents'): {
+                this.orderBy.threatAgents = true;
+                if (desc) {
+                    this.threatAgentInterests = _.orderBy(this.threatAgentInterests, (elem: ThreatAgentInterest) => elem.name, ['desc']);
+                } else {
+                    this.threatAgentInterests = _.orderBy(this.threatAgentInterests, (elem: ThreatAgentInterest) => elem.name, ['asc']);
+                }
+                break;
+            }
+            case ('skills'): {
+                this.orderBy.skills = true;
+                if (desc) {
+                    this.threatAgentInterests = _.orderBy(this.threatAgentInterests, (elem: ThreatAgentInterest) => elem.skillLevel, ['desc']);
+                } else {
+                    this.threatAgentInterests = _.orderBy(this.threatAgentInterests, (elem: ThreatAgentInterest) => elem.skillLevel, ['asc']);
+                }
+                break;
+            }
+            case ('interest'): {
+                this.orderBy.interest = true;
+                if (desc) {
+                    this.threatAgentInterests = _.orderBy(this.threatAgentInterests, (elem: ThreatAgentInterest) => elem.levelOfInterest, ['desc']);
+                } else {
+                    this.threatAgentInterests = _.orderBy(this.threatAgentInterests, (elem: ThreatAgentInterest) => elem.levelOfInterest, ['asc']);
+                }
+                break;
+            }
+        }
+    }
 }

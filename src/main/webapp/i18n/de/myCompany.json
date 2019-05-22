@@ -5,8 +5,7 @@
             "home": {
                 "title": "My Companies",
                 "createLabel": "My Company erstellen",
-                "createOrEditLabel": "My Company erstellen oder bearbeiten",
-                "search": "Suche nach My Company"
+                "createOrEditLabel": "My Company erstellen oder bearbeiten"
             },
             "created": "My Company erstellt mit ID {{ param }}",
             "updated": "My Company aktualisiert mit ID {{ param }}",

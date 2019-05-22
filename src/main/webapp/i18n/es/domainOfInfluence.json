@@ -5,8 +5,7 @@
             "home": {
                 "title": "Domain Of Influences",
                 "createLabel": "Crear nuevo Domain Of Influence",
-                "createOrEditLabel": "Crear o editar Domain Of Influence",
-                "search": "Search for Domain Of Influence"
+                "createOrEditLabel": "Crear o editar Domain Of Influence"
             },
             "created": "Un nuevo Domain Of Influence ha sido creado con el identificador {{ param }}",
             "updated": "Un Domain Of Influence ha sido actualizado con el identificador {{ param }}",

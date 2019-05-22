@@ -35,9 +35,6 @@ import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.StreamSupport;
-
-import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
  * REST controller for managing Questionnaire.
@@ -157,19 +154,4 @@ public class QuestionnaireResource {
         questionnaireService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
-
-    /**
-     * SEARCH  /_search/questionnaires?query=:query : search for the questionnaire corresponding
-     * to the query.
-     *
-     * @param query the query of the questionnaire search
-     * @return the result of the search
-     */
-    @GetMapping("/_search/questionnaires")
-    @Timed
-    public List<Questionnaire> searchQuestionnaires(@RequestParam String query) {
-        log.debug("REST request to search Questionnaires for query {}", query);
-        return questionnaireService.search(query);
-    }
-
 }

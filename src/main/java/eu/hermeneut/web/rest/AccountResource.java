@@ -24,7 +24,7 @@ import eu.hermeneut.repository.UserRepository;
 import eu.hermeneut.security.SecurityUtils;
 import eu.hermeneut.service.MailService;
 import eu.hermeneut.service.UserService;
-import eu.hermeneut.service.dto.UserDTO;
+import eu.hermeneut.domain.dto.UserDTO;
 import eu.hermeneut.web.rest.errors.*;
 import eu.hermeneut.web.rest.vm.KeyAndPasswordVM;
 import eu.hermeneut.web.rest.vm.ManagedUserVM;

@@ -42,6 +42,7 @@ import {PopUpService} from './pop-up-services/pop-up.service';
 import {ReplacePipe} from './pipe/replace.pipe';
 import {CompactNumberPipe} from './pipe/compact-number.pipe';
 import {CompactSuffixPipe} from './pipe/compact-suffix-pipe';
+import {JhiEventManager} from "ng-jhipster";
 
 @NgModule({
     imports: [
@@ -57,24 +58,12 @@ import {CompactSuffixPipe} from './pipe/compact-suffix-pipe';
         CompactNumberPipe,
         CompactSuffixPipe
     ],
-    providers: [
-        LoginService,
-        LoginModalService,
-        AccountService,
-        StateStorageService,
-        Principal,
-        CSRFService,
-        AuthServerProvider,
-        UserService,
-        DatePipe
-    ],
     entryComponents: [JhiLoginModalComponent, LoginPlainComponent],
     exports: [
         HermeneutSharedCommonModule,
         JhiLoginModalComponent,
         FindLanguageFromKeyPipe,
         HasAnyAuthorityDirective,
-        DatePipe,
         LoginPlainComponent,
         ReplacePipe,
         CompactNumberPipe,
@@ -98,7 +87,17 @@ export class HermeneutSharedModule {
                 StateStorageService,
                 PopUpService,
                 LoginModalService,
+                LoginService,
+                LoginModalService,
+                AccountService,
+                StateStorageService,
+                Principal,
+                CSRFService,
+                AuthServerProvider,
+                UserService,
+                DatePipe,
                 Title,
+                JhiEventManager,
                 {
                     provide: LOCALE_ID,
                     useValue: 'en'

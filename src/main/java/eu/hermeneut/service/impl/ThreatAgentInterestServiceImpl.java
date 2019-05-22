@@ -1,12 +1,12 @@
 /*
  * Copyright 2019 HERMENEUT Consortium
- *  
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *  
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- *  
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -34,13 +34,10 @@ import java.util.*;
 @Transactional
 public class ThreatAgentInterestServiceImpl implements ThreatAgentInterestService {
     @Autowired
-    private SelfAssessmentService selfAssessmentService;
+    private CompanyProfileService companyProfileService;
 
     @Autowired
     private MyAssetService myAssetService;
-
-    @Autowired
-    private ThreatAgentService threatAgentService;
 
     @Autowired
     private ResultService resultService;
@@ -49,18 +46,17 @@ public class ThreatAgentInterestServiceImpl implements ThreatAgentInterestServic
     private AttackStrategyService attackStrategyService;
 
     @Override
-    public List<ThreatAgentInterest> getThreatAgentInterestsByMyAsset(@NotNull Long selfAssessmentID, @NotNull Long myAssetID) throws NotFoundException {
-        SelfAssessment selfAssessment = this.selfAssessmentService.findOne(selfAssessmentID);
+    public List<ThreatAgentInterest> getThreatAgentInterestsByCompanyProfileAndMyAsset(@NotNull Long companyProfileID, @NotNull Long myAssetID) throws NotFoundException {
+        CompanyProfile companyProfile = this.companyProfileService.findOne(companyProfileID);
 
-        if (selfAssessment == null) {
-            throw new NotFoundException("SelfAssessment with ID: " + selfAssessmentID + " NOT FOUND.");
+        if (companyProfile == null) {
+            throw new NotFoundException("CompanyProfile NOT FOUND.");
         }
 
-        //TODO update this when the threatagents identified will be saved in the DB
-        List<ThreatAgent> threatAgents = new ArrayList<>(selfAssessment.getThreatagents());
+        Set<ThreatAgent> threatAgents = this.resultService.getThreatAgents(companyProfile.getId());
 
         if (threatAgents == null || threatAgents.isEmpty()) {
-            throw new NotFoundException("ThreatAgent for SelfAssessment with ID: " + selfAssessmentID + " NOT FOUND.");
+            throw new NotFoundException("ThreatAgents for CompanyProfile: " + companyProfileID + " NOT FOUND.");
         }
 
         MyAsset myAsset = this.myAssetService.findOne(myAssetID);
@@ -79,11 +75,13 @@ public class ThreatAgentInterestServiceImpl implements ThreatAgentInterestServic
             attackStrategies.addAll(this.attackStrategyService.findAllByContainer(container.getId()));
         }
 
-        Map<Long, Float> levelsOfInterestMap = this.resultService.getLevelsOfInterest(selfAssessmentID);
+        Map<Long, Float> levelsOfInterestMap = this.resultService.getLevelsOfInterest(companyProfileID);
+        Iterator<ThreatAgent> threatAgentIterator = threatAgents.iterator();
 
         //Keep only the ThreatAgents that can perform at least one of the above AttackStrategies
-        for (int i = 0; i < threatAgents.size(); i++) {
-            ThreatAgent threatAgent = threatAgents.get(i);
+        while (threatAgentIterator.hasNext()) {
+            ThreatAgent threatAgent = threatAgentIterator.next();
+
             final ThreatAgentInterest threatAgentInterest = new ThreatAgentInterest(threatAgent);
             threatAgentInterest.setAttackStrategies(new HashSet<>());
 
@@ -98,8 +96,55 @@ public class ThreatAgentInterestServiceImpl implements ThreatAgentInterestServic
             }
 
             if (!canAttackThisAsset) {
-                threatAgents.remove(i);
-                i--;
+                threatAgentIterator.remove();
+            } else {
+                threatAgentInterest.setLevelOfInterest(levelsOfInterestMap.getOrDefault(threatAgent.getId(), 0F));
+
+                threatAgentInterests.add(threatAgentInterest);
+            }
+        }
+
+        return threatAgentInterests;
+    }
+
+    @Override
+    public List<ThreatAgentInterest> getThreatAgentInterestsByCompanyProfile(@NotNull Long companyProfileID) throws NotFoundException {
+        CompanyProfile companyProfile = this.companyProfileService.findOne(companyProfileID);
+
+        if (companyProfile == null) {
+            throw new NotFoundException("CompanyProfile NOT FOUND.");
+        }
+
+        Set<ThreatAgent> threatAgents = this.resultService.getThreatAgents(companyProfile.getId());
+
+        if (threatAgents == null || threatAgents.isEmpty()) {
+            throw new NotFoundException("ThreatAgents for CompanyProfile: " + companyProfileID + " NOT FOUND.");
+        }
+
+        List<AttackStrategy> attackStrategies = this.attackStrategyService.findAll();
+        List<ThreatAgentInterest> threatAgentInterests = new ArrayList<>();
+        Map<Long, Float> levelsOfInterestMap = this.resultService.getLevelsOfInterest(companyProfileID);
+        Iterator<ThreatAgent> threatAgentIterator = threatAgents.iterator();
+
+        //Keep only the ThreatAgents that can perform at least one of the above AttackStrategies
+        while (threatAgentIterator.hasNext()) {
+            ThreatAgent threatAgent = threatAgentIterator.next();
+
+            final ThreatAgentInterest threatAgentInterest = new ThreatAgentInterest(threatAgent);
+            threatAgentInterest.setAttackStrategies(new HashSet<>());
+
+            boolean canAttack = false;
+
+            for (AttackStrategy attackStrategy : attackStrategies) {
+                if (ThreatAttackFilter.isAttackPossible(threatAgent, attackStrategy)) {
+                    canAttack = true;
+
+                    threatAgentInterest.getAttackStrategies().add(attackStrategy);
+                }
+            }
+
+            if (!canAttack) {
+                threatAgentIterator.remove();
             } else {
                 threatAgentInterest.setLevelOfInterest(levelsOfInterestMap.getOrDefault(threatAgent.getId(), 0F));
 

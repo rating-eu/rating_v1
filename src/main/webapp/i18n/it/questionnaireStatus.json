@@ -5,8 +5,7 @@
             "home": {
                 "title": "QuestionnaireStatuses",
                 "createLabel": "Genera un nuovo Questionnaire Status",
-                "createOrEditLabel": "Genera o modifica un Questionnaire Status",
-                "search": "Cerca Questionnaire Status"
+                "createOrEditLabel": "Genera o modifica un Questionnaire Status"
             },
             "created": "&Egrave; stato generato un nuovo Questionnaire Status con identificatore {{ param }}",
             "updated": "&Egrave; stato aggiornato Questionnaire Status identificato da {{ param }}",
@@ -21,6 +20,7 @@
             "created": "Created",
             "modified": "Modified",
             "role": "Role",
+            "companyProfile": "Company Profile",
             "selfAssessment": "Self Assessment",
             "questionnaire": "Questionnaire",
             "user": "User",

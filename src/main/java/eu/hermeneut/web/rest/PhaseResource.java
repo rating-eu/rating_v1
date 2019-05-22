@@ -34,9 +34,6 @@ import java.net.URISyntaxException;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.StreamSupport;
-
-import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
  * REST controller for managing Phase.
@@ -136,19 +133,4 @@ public class PhaseResource {
         phaseService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
-
-    /**
-     * SEARCH  /_search/phases?query=:query : search for the phase corresponding
-     * to the query.
-     *
-     * @param query the query of the phase search
-     * @return the result of the search
-     */
-    @GetMapping("/_search/phases")
-    @Timed
-    public List<Phase> searchPhases(@RequestParam String query) {
-        log.debug("REST request to search Phases for query {}", query);
-        return phaseService.search(query);
-    }
-
 }

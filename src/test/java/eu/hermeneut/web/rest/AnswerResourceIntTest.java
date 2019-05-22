@@ -23,7 +23,7 @@ import eu.hermeneut.domain.Answer;
 import eu.hermeneut.domain.enumeration.AnswerLikelihood;
 import eu.hermeneut.repository.AnswerRepository;
 import eu.hermeneut.service.AnswerService;
-import eu.hermeneut.repository.search.AnswerSearchRepository;
+
 import eu.hermeneut.web.rest.errors.ExceptionTranslator;
 
 import org.junit.Before;
@@ -85,9 +85,6 @@ public class AnswerResourceIntTest {
     private AnswerService answerService;
 
     @Autowired
-    private AnswerSearchRepository answerSearchRepository;
-
-    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -132,7 +129,6 @@ public class AnswerResourceIntTest {
 
     @Before
     public void initTest() {
-        answerSearchRepository.deleteAll();
         answer = createEntity(em);
     }
 
@@ -156,12 +152,6 @@ public class AnswerResourceIntTest {
         assertThat(testAnswer.getModified()).isEqualTo(DEFAULT_MODIFIED);
         assertThat(testAnswer.getOrder()).isEqualTo(DEFAULT_ORDER);
         assertThat(testAnswer.getLikelihood()).isEqualTo(DEFAULT_ATTACK_STRATEGY_LIKELIHOOD);
-
-        // Validate the Answer in Elasticsearch
-        Answer answerEs = answerSearchRepository.findOne(testAnswer.getId());
-        assertThat(testAnswer.getCreated()).isEqualTo(testAnswer.getCreated());
-        assertThat(testAnswer.getModified()).isEqualTo(testAnswer.getModified());
-        assertThat(answerEs).isEqualToIgnoringGivenFields(testAnswer, "created", "modified");
     }
 
     @Test
@@ -260,12 +250,6 @@ public class AnswerResourceIntTest {
         assertThat(testAnswer.getModified()).isEqualTo(UPDATED_MODIFIED);
         assertThat(testAnswer.getOrder()).isEqualTo(UPDATED_ORDER);
         assertThat(testAnswer.getLikelihood()).isEqualTo(UPDATED_ATTACK_STRATEGY_LIKELIHOOD);
-
-        // Validate the Answer in Elasticsearch
-        Answer answerEs = answerSearchRepository.findOne(testAnswer.getId());
-        assertThat(testAnswer.getCreated()).isEqualTo(testAnswer.getCreated());
-        assertThat(testAnswer.getModified()).isEqualTo(testAnswer.getModified());
-        assertThat(answerEs).isEqualToIgnoringGivenFields(testAnswer, "created", "modified");
     }
 
     @Test
@@ -299,31 +283,9 @@ public class AnswerResourceIntTest {
             .accept(TestUtil.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk());
 
-        // Validate Elasticsearch is empty
-        boolean answerExistsInEs = answerSearchRepository.exists(answer.getId());
-        assertThat(answerExistsInEs).isFalse();
-
         // Validate the database is empty
         List<Answer> answerList = answerRepository.findAll();
         assertThat(answerList).hasSize(databaseSizeBeforeDelete - 1);
-    }
-
-    @Test
-    @Transactional
-    public void searchAnswer() throws Exception {
-        // Initialize the database
-        answerService.save(answer);
-
-        // Search the answer
-        restAnswerMockMvc.perform(get("/api/_search/answers?query=id:" + answer.getId()))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(answer.getId().intValue())))
-            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
-            .andExpect(jsonPath("$.[*].created").value(hasItem(sameInstant(DEFAULT_CREATED))))
-            .andExpect(jsonPath("$.[*].modified").value(hasItem(sameInstant(DEFAULT_MODIFIED))))
-            .andExpect(jsonPath("$.[*].order").value(hasItem(DEFAULT_ORDER)))
-            .andExpect(jsonPath("$.[*].likelihood").value(hasItem(DEFAULT_ATTACK_STRATEGY_LIKELIHOOD.toString())));
     }
 
     @Test

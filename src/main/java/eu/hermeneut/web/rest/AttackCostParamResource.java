@@ -35,9 +35,6 @@ import java.net.URISyntaxException;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.StreamSupport;
-
-import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
  * REST controller for managing AttackCostParam.
@@ -149,19 +146,4 @@ public class AttackCostParamResource {
         attackCostParamService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
-
-    /**
-     * SEARCH  /_search/attack-cost-params?query=:query : search for the attackCostParam corresponding
-     * to the query.
-     *
-     * @param query the query of the attackCostParam search
-     * @return the result of the search
-     */
-    @GetMapping("/_search/attack-cost-params")
-    @Timed
-    public List<AttackCostParam> searchAttackCostParams(@RequestParam String query) {
-        log.debug("REST request to search AttackCostParams for query {}", query);
-        return attackCostParamService.search(query);
-    }
-
 }

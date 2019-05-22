@@ -5,8 +5,7 @@
             "home": {
                 "title": "Logos",
                 "createLabel": "Criar um(a) novo(a) Logo",
-                "createOrEditLabel": "Criar ou editar um(a) Logo",
-                "search": "Search for Logo"
+                "createOrEditLabel": "Criar ou editar um(a) Logo"
             },
             "created": "A new Logo is created with identifier {{ param }}",
             "updated": "A Logo is updated with identifier {{ param }}",

@@ -15,17 +15,17 @@
  *
  */
 
-import { Component, OnInit, ViewEncapsulation, AfterViewInit, HostListener } from '@angular/core';
-import { Principal } from '../../shared';
-import { DatasharingService } from '../../datasharing/datasharing.service';
-import { Update } from '../model/Update';
+import {Component, OnInit, ViewEncapsulation, AfterViewInit, HostListener} from '@angular/core';
+import {Principal} from '../../shared';
+import {DatasharingService} from '../../datasharing/datasharing.service';
+import {LayoutConfiguration} from '../model/LayoutConfiguration';
 
-import { MenuItem } from 'primeng/api';
-import { MyRole } from '../../entities/enumerations/MyRole.enum';
-import { SelfAssessmentMgm, SelfAssessmentMgmService } from '../../entities/self-assessment-mgm';
-import { LogoMgm, LogoMgmService } from '../../entities/logo-mgm';
-import { HttpErrorResponse, HttpResponse } from '@angular/common/http';
-import { Router } from '@angular/router';
+import {MenuItem} from 'primeng/api';
+import {Role} from '../../entities/enumerations/Role.enum';
+import {SelfAssessmentMgm, SelfAssessmentMgmService} from '../../entities/self-assessment-mgm';
+import {LogoMgm, LogoMgmService} from '../../entities/logo-mgm';
+import {HttpErrorResponse, HttpResponse} from '@angular/common/http';
+import {Router} from '@angular/router';
 
 @Component({
     selector: 'jhi-sidebar',
@@ -36,12 +36,13 @@ import { Router } from '@angular/router';
 export class SidebarComponent implements OnInit, AfterViewInit {
 
     isCollapsed = true;
-    private isCollapsedByMe = false;
     private items: MenuItem[];
     private isCISO = false;
     private isExternal = false;
     private mySelf: SelfAssessmentMgm;
     public secondaryLogo: LogoMgm = null;
+    private selfAssessment: SelfAssessmentMgm;
+    private isSelfAssessmentSelected: boolean = false;
 
     windowWidth: number = window.innerWidth;
 
@@ -63,7 +64,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     }
 
     private isSidebarCollapseByTheScreen() {
-        let updateLayout: Update = this.dataSharingService.getUpdate();
+        let updateLayout: LayoutConfiguration = this.dataSharingService.layoutConfiguration;
         if (updateLayout && updateLayout.isSidebarCollapsedByMe) {
             return;
         }
@@ -75,41 +76,49 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         if (updateLayout) {
             updateLayout.isSidebarCollapsed = this.isCollapsed;
         } else {
-            updateLayout = new Update();
+            updateLayout = new LayoutConfiguration();
             updateLayout.isSidebarCollapsed = this.isCollapsed;
         }
     }
 
     ngOnInit() {
+        this.selfAssessment = this.dataSharingService.selfAssessment;
+        this.checkSelfAssessment();
+
+        this.dataSharingService.selfAssessmentObservable.subscribe((response: SelfAssessmentMgm) => {
+            this.selfAssessment = response;
+            this.checkSelfAssessment();
+        });
+
         this.principal.getAuthenticationState().subscribe((identity) => {
             if (identity) {
                 this.isCollapsed = !this.isAuthenticated();
-                updateLayout = new Update();
-                updateLayout.isSidebarCollapsed = this.isCollapsed;
+                layoutConfiguration = new LayoutConfiguration();
+                layoutConfiguration.isSidebarCollapsed = this.isCollapsed;
 
-                this.dataSharingService.updateLayout(updateLayout);
+                this.dataSharingService.layoutConfiguration = layoutConfiguration;
                 this.fetchSecondaryLogo();
 
-                this.principal.hasAnyAuthority([MyRole[MyRole.ROLE_CISO]]).then((response: boolean) => {
+                this.principal.hasAnyAuthority([Role[Role.ROLE_CISO]]).then((response: boolean) => {
                     if (response) {
                         this.isCISO = response;
                         this.isExternal = !this.isCISO;
                         this.createMenuItems(this.isCISO);
                     } else {
-                        this.principal.hasAnyAuthority([MyRole[MyRole.ROLE_EXTERNAL_AUDIT]]).then((response2: boolean) => {
+                        this.principal.hasAnyAuthority([Role[Role.ROLE_EXTERNAL_AUDIT]]).then((response2: boolean) => {
                             if (response2) {
                                 this.isExternal = response2;
                                 this.isCISO = !this.isExternal;
-                                updateLayout.isSidebarCollapsed = true;
-                                updateLayout.isSidebarCollapsedByMe = false;
-                                this.dataSharingService.updateLayout(updateLayout);
+                                layoutConfiguration.isSidebarCollapsed = true;
+                                layoutConfiguration.isSidebarCollapsedByMe = false;
+                                this.dataSharingService.layoutConfiguration = layoutConfiguration;
                                 this.createMenuItems(this.isCISO, this.isExternal);
                             } else {
-                                this.principal.hasAnyAuthority([MyRole[MyRole.ROLE_ADMIN]]).then((response3: boolean) => {
+                                this.principal.hasAnyAuthority([Role[Role.ROLE_ADMIN]]).then((response3: boolean) => {
                                     if (response3) {
-                                        updateLayout.isSidebarCollapsed = true;
-                                        updateLayout.isSidebarCollapsedByMe = false;
-                                        this.dataSharingService.updateLayout(updateLayout);
+                                        layoutConfiguration.isSidebarCollapsed = true;
+                                        layoutConfiguration.isSidebarCollapsedByMe = false;
+                                        this.dataSharingService.layoutConfiguration = layoutConfiguration;
                                         this.router.navigate(['/jhi-metrics']);
                                     }
                                 });
@@ -121,30 +130,38 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
             }
         });
-        this.isCollapsed = this.dataSharingService.getUpdate() != null ? this.dataSharingService.getUpdate().isSidebarCollapsed : true;
+        this.isCollapsed = this.dataSharingService.layoutConfiguration != null ? this.dataSharingService.layoutConfiguration.isSidebarCollapsed : true;
 
-        let updateLayout: Update = this.dataSharingService.getUpdate();
-        if (updateLayout) {
-            this.isCollapsed = updateLayout.isSidebarCollapsed;
+        let layoutConfiguration: LayoutConfiguration = this.dataSharingService.layoutConfiguration;
+        if (layoutConfiguration) {
+            this.isCollapsed = layoutConfiguration.isSidebarCollapsed;
         }
 
-        this.dataSharingService.observeUpdate().subscribe((update: Update) => {
+        this.dataSharingService.layoutConfigurationObservable.subscribe((update: LayoutConfiguration) => {
             if (update) {
                 this.isCollapsed = update.isSidebarCollapsed;
             }
         });
 
-        this.dataSharingService.observeMySelf().subscribe((mySelf) => {
+        this.dataSharingService.selfAssessmentObservable.subscribe((mySelf) => {
             if (mySelf) {
                 this.createMenuItems(this.isCISO, this.isExternal);
             }
         });
     }
 
+    private checkSelfAssessment() {
+        if (this.selfAssessment) {
+            this.isSelfAssessmentSelected = true;
+        } else {
+            this.isSelfAssessmentSelected = false;
+        }
+    }
+
     private fetchSecondaryLogo() {
         this.logoService.getSecondaryLogo().subscribe((logo: HttpResponse<LogoMgm>) => {
-            this.secondaryLogo = logo.body;
-        },
+                this.secondaryLogo = logo.body;
+            },
             (error: HttpErrorResponse) => {
                 if (error.status === 404) {
                     console.warn('Secondary logo not found!');
@@ -157,41 +174,56 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     }
 
     private createMenuItems(isCISO = false, isExternal = false) {
-        this.mySelf = this.selfAssessmentService.getSelfAssessment();
+        this.mySelf = this.dataSharingService.selfAssessment;
         let visibleByMySelf = false;
         if (this.mySelf) {
             visibleByMySelf = true;
         }
         this.items = [
             {
-                label: 'About-Us', icon: 'fa fa-info', routerLink: ['/about-us']
-            },
-            {
-                label: 'Terms of Use', icon: 'fas fa-file-signature', routerLink: ['/terms']
-            },
-            {
                 label: 'Company',
+                icon: 'fas fa-building',
                 items: [
                     {
-                        label: 'My Company',
-                        icon: 'fa fa-home',
-                        routerLink: ['/my-company'],
-                        visible: isCISO
+                        label: 'Groups',
+                        icon: 'fas fa-users',
+                        routerLink: ['/pages/coming-soon']
                     },
                     {
-                        label: 'My Risk Assessments',
-                        icon: 'fa fa-repeat',
-                        routerLink: ['/my-risk-assessments']
+                        label: 'Reports',
+                        icon: 'fas fa-file-download',
+                        routerLink: ['/pages/coming-soon']
                     }
                 ]
             },
             {
-                label: 'Risk Assessment',
-                visible: visibleByMySelf,
+                label: 'Cyber Posture',
+                icon: 'fas fa-shield-alt',
+                visible: isCISO,
+                items: [
+                    {
+                        label: "Threat Agents",
+                        icon: "fas fa-user-secret",
+                        routerLink: ['/identify-threat-agent/questionnaires/ID_THREAT_AGENT'],
+                        visible: isCISO
+                    },
+                    {
+                        label: "Vulnerabilities",
+                        icon: "fa fa-bomb",
+                        routerLink: ['/evaluate-weakness/questionnaires/SELFASSESSMENT'],
+                        visible: isCISO
+                    }
+                ]
+            },
+            {
+                label: 'Risk Management',
+                icon: 'fa fa-bolt',
+                routerLink: ['/my-risk-assessments'],
+                visible: isCISO,
                 items: [
                     {
                         label: 'Assets',
-                        // routerLink: ['/identify-asset'],
+                        visible: this.isSelfAssessmentSelected,
                         items: [
                             {
                                 label: 'Asset Clustering',
@@ -202,79 +234,65 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                                 routerLink: ['/identify-asset/cascade-effects']
                             },
                             {
-                                label: 'Attack Costs',
+                                label: 'Related Costs',
                                 routerLink: ['/identify-asset/attack-costs']
-                            },
-                            {
-                                label: 'Asset Report',
-                                routerLink: ['/identify-asset/asset-report']
-                            },
-                        ]
-                    },
-                    {
-                        label: 'Vulnerability Assessment',
-                        items: [
-                            {
-                                label: 'Threat Agents',
-                                items: [
-                                    {
-                                        label: 'Identify',
-                                        routerLink: ['/identify-threat-agent/questionnaires/ID_THREAT_AGENT'],
-                                        visible: isCISO
-                                    },
-                                    {
-                                        label: 'Results',
-                                        routerLink: ['/identify-threat-agent/result']
-                                    }
-                                ]
-                            },
-                            {
-                                label: 'Attack Strategies',
-                                items: [
-                                    {
-                                        label: 'Assess Vulnerabilities',
-                                        routerLink: ['/evaluate-weakness/questionnaires/SELFASSESSMENT']
-                                    },
-                                    {
-                                        label: 'Likelihood Results',
-                                        routerLink: ['/evaluate-weakness/result']
-                                    }
-                                ]
-                            },
-                            {
-                                label: 'Results',
-                                routerLink: ['/results']
                             }
                         ]
                     },
                     {
-                        label: 'Consequences',
+                        label: 'Impact Analysis',
+                        visible: this.isSelfAssessmentSelected,
+                        routerLink: ['/impact-evaluation'],
                         items: [
                             {
-                                label: 'Impact Evaluation',
-                                routerLink: ['/impact-evaluation']
+                                label: 'Quantitative',
+                                items: [
+                                    {
+                                        label: 'Impact Evaluation',
+                                        routerLink: ['/impact-evaluation/quantitative']
+                                    },
+                                    {
+                                        label: 'Estimation of the Data Assets category Losses',
+                                        routerLink: ['/impact-evaluation/quantitative/data-assets-losses-estimation']
+                                    },
+                                    {
+                                        label: 'Estimation of the Attack Related Costs',
+                                        routerLink: ['/impact-evaluation/quantitative/attack-related-costs-estimation']
+                                    }
+                                ]
                             },
                             {
-                                label: 'Estimation of the Data Assets category Losses',
-                                routerLink: ['/impact-evaluation/data-assets-losses-estimation']
-                            },
-                            {
-                                label: 'Estimation of the Attack Related Costs',
-                                routerLink: ['/impact-evaluation/attack-related-costs-estimation']
-                            }/*,
-                            {
-                                label: 'Growth rates configurator',
-                                routerLink: ['/impact-evaluation/growth-rates-configurator']
-                            }*/
+                                label: 'Qualitative',
+                                items: [
+                                    {
+                                        label: 'Impacts on Assets',
+                                        routerLink: ['/pages/coming-soon']
+                                    }
+                                ]
+                            }
                         ]
                     },
                     {
-                        label: 'Risk Management',
-                        /*routerLink: ['/risk-management'],*/
+                        label: 'Risk Analysis',
+                        visible: this.isSelfAssessmentSelected,
+                        routerLink: ['/risk-management/risk-evaluation'],
                         items: [
                             {
-                                label: 'Risk Scenarios',
+                                label: 'Risk Matrix',
                                 routerLink: ['/risk-management/risk-evaluation']
+                            },
+                            {
+                                label: 'Assets at Risk',
+                                routerLink: ['/risk-management/risk-evaluation']
+                            },
+                            {
+                                label: 'Mitigations',
+                                items: [
+                                    {
+                                        label: 'Cost Benefit Analysis',
+                                        routerLink: ['/pages/coming-soon']
+                                    }
+                                ]
                             }
                         ]
                     }
@@ -362,6 +380,12 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                         ]
                     }
                 ]
+            },
+            {
+                label: 'About-Us', icon: 'fa fa-info', routerLink: ['/about-us']
+            },
+            {
+                label: 'Terms of Use', icon: 'fas fa-file-signature', routerLink: ['/terms']
             }
         ];
     }
@@ -371,15 +395,15 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     }
 
     toggleSideBar() {
-        let update: Update = this.dataSharingService.getUpdate();
+        let layoutConfiguration: LayoutConfiguration = this.dataSharingService.layoutConfiguration;
 
-        if (update) {
-            update.isSidebarCollapsed = !update.isSidebarCollapsed;
+        if (layoutConfiguration) {
+            layoutConfiguration.isSidebarCollapsed = !layoutConfiguration.isSidebarCollapsed;
         } else {
-            update = new Update();
-            update.isSidebarCollapsed = !this.principal.isAuthenticated();
+            layoutConfiguration = new LayoutConfiguration();
+            layoutConfiguration.isSidebarCollapsed = !this.principal.isAuthenticated();
         }
 
-        this.dataSharingService.updateLayout(update);
+        this.dataSharingService.layoutConfiguration = layoutConfiguration;
     }
 }

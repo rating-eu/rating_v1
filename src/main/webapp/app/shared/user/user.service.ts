@@ -26,6 +26,7 @@ import { createRequestOption } from '../model/request-util';
 @Injectable()
 export class UserService {
     private resourceUrl = SERVER_API_URL + 'api/users';
+    private externalAuditsUrl = SERVER_API_URL + 'api/users/external';
 
     constructor(private http: HttpClient) { }
 
@@ -54,4 +55,7 @@ export class UserService {
         return this.http.get<string[]>(SERVER_API_URL + 'api/users/authorities');
     }
 
+    getExternalAudits(): Observable<User[]> {
+        return this.http.get<User[]>(this.externalAuditsUrl);
+    }
 }

@@ -35,9 +35,6 @@ import java.net.URISyntaxException;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.StreamSupport;
-
-import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
  * REST controller for managing AssetCategory.
@@ -152,19 +149,4 @@ public class AssetCategoryResource {
         assetCategoryService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
-
-    /**
-     * SEARCH  /_search/asset-categories?query=:query : search for the assetCategory corresponding
-     * to the query.
-     *
-     * @param query the query of the assetCategory search
-     * @return the result of the search
-     */
-    @GetMapping("/_search/asset-categories")
-    @Timed
-    public List<AssetCategory> searchAssetCategories(@RequestParam String query) {
-        log.debug("REST request to search AssetCategories for query {}", query);
-        return assetCategoryService.search(query);
-    }
-
 }

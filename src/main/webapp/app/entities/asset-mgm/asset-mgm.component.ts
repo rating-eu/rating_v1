@@ -24,7 +24,7 @@ import { JhiEventManager, JhiAlertService } from 'ng-jhipster';
 import { AssetMgm } from './asset-mgm.model';
 import { AssetMgmService } from './asset-mgm.service';
 import { Principal } from '../../shared';
-import {MyRole} from '../enumerations/MyRole.enum';
+import {Role} from '../enumerations/Role.enum';
 
 @Component({
     selector: 'jhi-asset-mgm',
@@ -34,7 +34,6 @@ export class AssetMgmComponent implements OnInit, OnDestroy {
 assets: AssetMgm[];
     currentAccount: any;
     eventSubscriber: Subscription;
-    currentSearch: string;
     public isADMIN: boolean;
 
     constructor(
@@ -44,39 +43,18 @@ assets: AssetMgm[];
         private activatedRoute: ActivatedRoute,
         private principal: Principal
     ) {
-        this.currentSearch = this.activatedRoute.snapshot && this.activatedRoute.snapshot.params['search'] ?
-            this.activatedRoute.snapshot.params['search'] : '';
     }
 
     loadAll() {
-        if (this.currentSearch) {
-            this.assetService.search({
-                query: this.currentSearch,
-                }).subscribe(
-                    (res: HttpResponse<AssetMgm[]>) => this.assets = res.body,
-                    (res: HttpErrorResponse) => this.onError(res.message)
-                );
-            return;
-       }
         this.assetService.query().subscribe(
             (res: HttpResponse<AssetMgm[]>) => {
                 this.assets = res.body;
-                this.currentSearch = '';
             },
             (res: HttpErrorResponse) => this.onError(res.message)
         );
     }
 
-    search(query) {
-        if (!query) {
-            return this.clear();
-        }
-        this.currentSearch = query;
-        this.loadAll();
-    }
-
     clear() {
-        this.currentSearch = '';
         this.loadAll();
     }
     ngOnInit() {
@@ -84,7 +62,7 @@ assets: AssetMgm[];
         this.principal.identity().then((account) => {
             this.currentAccount = account;
         });
-        this.principal.hasAnyAuthority([MyRole[MyRole.ROLE_ADMIN]]).then((response: boolean) => {
+        this.principal.hasAnyAuthority([Role[Role.ROLE_ADMIN]]).then((response: boolean) => {
             if (response) {
                 this.isADMIN = response;
             } else {

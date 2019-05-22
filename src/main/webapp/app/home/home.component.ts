@@ -23,7 +23,7 @@ import {JhiEventManager} from 'ng-jhipster';
 import {Account, LoginModalService, Principal} from '../shared';
 import {SelfAssessmentMgm, SelfAssessmentMgmService} from '../entities/self-assessment-mgm';
 import {DatasharingService} from '../datasharing/datasharing.service';
-import {MyRole} from '../entities/enumerations/MyRole.enum';
+import {Role} from '../entities/enumerations/Role.enum';
 
 @Component({
     selector: 'jhi-home',
@@ -31,12 +31,12 @@ import {MyRole} from '../entities/enumerations/MyRole.enum';
     styleUrls: [
         'home.css'
     ]
-
 })
 export class HomeComponent implements OnInit {
     account: Account;
+    role: Role;
+
     modalRef: NgbModalRef;
-    mySelf: SelfAssessmentMgm = {};
 
     constructor(
         private principal: Principal,
@@ -51,20 +51,28 @@ export class HomeComponent implements OnInit {
     ngOnInit() {
         this.principal.identity().then((account) => {
             this.account = account;
+            this.dataSharingService.account = this.account;
         });
         this.registerAuthenticationSuccess();
-        this.mySelf = this.mySelfAssessmentService.getSelfAssessment();
 
-        const role: MyRole = this.dataSharingService.getRole();
+        this.role = this.dataSharingService.role;
+        this.checkRole();
 
-        if (role) {
-            switch (role) {
-                case MyRole.ROLE_CISO: {
+        this.dataSharingService.roleObservable.subscribe((response: Role) => {
+            this.role = response;
+            this.checkRole();
+        });
+    }
+
+    private checkRole() {
+        if (this.role) {
+            switch (this.role) {
+                case Role.ROLE_CISO: {
                     this.router.navigate(['/dashboard']);
                     break;
                 }
-                case MyRole.ROLE_EXTERNAL_AUDIT: {
-                    this.router.navigate(['/my-risk-assessments']);
+                case Role.ROLE_EXTERNAL_AUDIT: {
+                    this.router.navigate(['/evaluate-weakness/questionnaires/SELFASSESSMENT']);
                     break;
                 }
             }

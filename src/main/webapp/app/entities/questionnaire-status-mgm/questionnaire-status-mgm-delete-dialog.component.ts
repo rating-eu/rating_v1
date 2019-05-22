@@ -24,8 +24,10 @@ import {JhiEventManager} from 'ng-jhipster';
 import {QuestionnaireStatusMgm} from './questionnaire-status-mgm.model';
 import {QuestionnaireStatusMgmPopupService} from './questionnaire-status-mgm-popup.service';
 import {QuestionnaireStatusMgmService} from './questionnaire-status-mgm.service';
-import {SessionStorageService} from 'ngx-webstorage';
 import {PopUpService} from '../../shared/pop-up-services/pop-up.service';
+import {EventManagerService} from "../../datasharing/event-manager.service";
+
+import {Event} from "../../datasharing/event.model";
 
 @Component({
     selector: 'jhi-questionnaire-status-mgm-delete-dialog',
@@ -38,7 +40,8 @@ export class QuestionnaireStatusMgmDeleteDialogComponent {
     constructor(
         private questionnaireStatusService: QuestionnaireStatusMgmService,
         public activeModal: NgbActiveModal,
-        private eventManager: JhiEventManager
+        private eventManager: JhiEventManager,
+        private eventManagerService: EventManagerService
     ) {
     }
 
@@ -50,8 +53,12 @@ export class QuestionnaireStatusMgmDeleteDialogComponent {
         this.questionnaireStatusService.delete(id).subscribe((response) => {
             this.eventManager.broadcast({
                 name: 'questionnaireStatusListModification',
-                content: 'Deleted an questionnaireStatus'
+                content: 'Deleted a questionnaireStatus'
             });
+
+            console.error("Broadcasting QSTatus delete event...");
+
+            this.eventManagerService.broadcast(new Event('questionnaireStatusListModification', 'Deleted a questionnaireStatus'));
             this.activeModal.dismiss(true);
         });
     }

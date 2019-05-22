@@ -17,21 +17,15 @@
 
 package eu.hermeneut.service.impl;
 
-import eu.hermeneut.domain.EconomicResults;
 import eu.hermeneut.service.EconomicCoefficientsService;
 import eu.hermeneut.domain.EconomicCoefficients;
 import eu.hermeneut.repository.EconomicCoefficientsRepository;
-import eu.hermeneut.repository.search.EconomicCoefficientsSearchRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
-
-import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
  * Service Implementation for managing EconomicCoefficients.
@@ -44,11 +38,8 @@ public class EconomicCoefficientsServiceImpl implements EconomicCoefficientsServ
 
     private final EconomicCoefficientsRepository economicCoefficientsRepository;
 
-    private final EconomicCoefficientsSearchRepository economicCoefficientsSearchRepository;
-
-    public EconomicCoefficientsServiceImpl(EconomicCoefficientsRepository economicCoefficientsRepository, EconomicCoefficientsSearchRepository economicCoefficientsSearchRepository) {
+    public EconomicCoefficientsServiceImpl(EconomicCoefficientsRepository economicCoefficientsRepository) {
         this.economicCoefficientsRepository = economicCoefficientsRepository;
-        this.economicCoefficientsSearchRepository = economicCoefficientsSearchRepository;
     }
 
     /**
@@ -61,7 +52,6 @@ public class EconomicCoefficientsServiceImpl implements EconomicCoefficientsServ
     public EconomicCoefficients save(EconomicCoefficients economicCoefficients) {
         log.debug("Request to save EconomicCoefficients : {}", economicCoefficients);
         EconomicCoefficients result = economicCoefficientsRepository.save(economicCoefficients);
-        economicCoefficientsSearchRepository.save(result);
         return result;
     }
 
@@ -99,22 +89,6 @@ public class EconomicCoefficientsServiceImpl implements EconomicCoefficientsServ
     public void delete(Long id) {
         log.debug("Request to delete EconomicCoefficients : {}", id);
         economicCoefficientsRepository.delete(id);
-        economicCoefficientsSearchRepository.delete(id);
-    }
-
-    /**
-     * Search for the economicCoefficients corresponding to the query.
-     *
-     * @param query the query of the search
-     * @return the list of entities
-     */
-    @Override
-    @Transactional(readOnly = true)
-    public List<EconomicCoefficients> search(String query) {
-        log.debug("Request to search EconomicCoefficients for query {}", query);
-        return StreamSupport
-            .stream(economicCoefficientsSearchRepository.search(queryStringQuery(query)).spliterator(), false)
-            .collect(Collectors.toList());
     }
 
     @Override

@@ -54,6 +54,7 @@ import {DatasharingModule} from './datasharing/datasharing.module';
 import {MaterialModule} from './material/material.module';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { MainService } from './layouts/main/main.service';
+import {DtoModule} from "./dto/dto.module";
 
 @NgModule({
     imports: [
@@ -66,6 +67,7 @@ import { MainService } from './layouts/main/main.service';
         HermeneutAdminModule,
         HermeneutAccountModule,
         HermeneutEntityModule,
+        DtoModule,
         HermeneutAppRoutingModule,
         DatasharingModule.forRoot(),
         BrowserAnimationsModule,

@@ -15,14 +15,8 @@
  *
  */
 
-import { BaseEntity } from './../../shared';
-
-export const enum ContainerType {
-    'HUMAN',
-    'IT',
-    'PHYSICAL',
-    'INTANGIBLE'
-}
+import {BaseEntity} from './../../shared';
+import {ContainerType} from "../enumerations/ContainerType.enum";
 
 export class ContainerMgm implements BaseEntity {
     constructor(

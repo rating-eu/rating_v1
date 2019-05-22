@@ -39,8 +39,7 @@ export class EvaluateWeaknessComponent implements OnInit, OnDestroy {
     account: Account;
     currentAccount: any;
     eventSubscriber: Subscription;
-    currentSearch: string;
-    selectedSelfAssessment: SelfAssessmentMgm = {};
+    selectedSelfAssessment: SelfAssessmentMgm = null;
 
     constructor(private attackStrategyService: AttackStrategyMgmService,
                 private jhiAlertService: JhiAlertService,
@@ -61,7 +60,8 @@ export class EvaluateWeaknessComponent implements OnInit, OnDestroy {
         this.principal.identity().then((account) => {
             this.account = account;
         });
-        this.selectedSelfAssessment = this.mySelfAssessmentService.getSelfAssessment();
+
+        this.selectedSelfAssessment = this.dataSharingService.selfAssessment;
     }
 
     previousState() {

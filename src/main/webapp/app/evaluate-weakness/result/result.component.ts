@@ -27,13 +27,15 @@ import {LevelMgm, LevelMgmService} from '../../entities/level-mgm';
 import {AttackStrategyMgm} from '../../entities/attack-strategy-mgm/attack-strategy-mgm.model';
 import {AttackStrategyMgmService} from '../../entities/attack-strategy-mgm/attack-strategy-mgm.service';
 import {SelfAssessmentMgm, SelfAssessmentMgmService} from '../../entities/self-assessment-mgm';
-import {ThreatAgentMgm} from '../../entities/threat-agent-mgm';
+import {ThreatAgentMgm, ThreatAgentMgmService} from '../../entities/threat-agent-mgm';
 import {AugmentedAttackStrategy} from '../models/augmented-attack-strategy.model';
 import {WeaknessUtils} from '../utils/weakness-utils';
 import {AttackMapService} from '../attack-map.service';
 import {MatHorizontalStepper} from '@angular/material';
 import {LikelihoodStep} from '../../entities/enumerations/LikelihoodStep.enum';
 import * as _ from 'lodash';
+import {DatasharingService} from "../../datasharing/datasharing.service";
+import {MyCompanyMgm} from "../../entities/my-company-mgm";
 
 @Component({
     selector: 'jhi-result',
@@ -50,10 +52,12 @@ export class WeaknessResultComponent implements OnInit, OnDestroy {
     private _subscriptions: Subscription[] = [];
     debug = false;
 
-    selfAssessment: SelfAssessmentMgm;
+    selfAssessment: SelfAssessmentMgm = null;
+    myCompany: MyCompanyMgm = null;
 
     // ThreatAgents
     threatAgents: ThreatAgentMgm[];
+    threatAgents$: Observable<HttpResponse<ThreatAgentMgm[]>>;
     selectedThreatAgent: ThreatAgentMgm;
 
     // CyberKillChain7 Phases
@@ -89,7 +93,9 @@ export class WeaknessResultComponent implements OnInit, OnDestroy {
                 private levelService: LevelMgmService,
                 private phaseService: PhaseMgmService,
                 private attackStrategyService: AttackStrategyMgmService,
-                private attackMapService: AttackMapService) {
+                private attackMapService: AttackMapService,
+                private dataSharingService: DatasharingService,
+                private threatAgentService: ThreatAgentMgmService) {
     }
 
     ngOnInit() {
@@ -98,18 +104,21 @@ export class WeaknessResultComponent implements OnInit, OnDestroy {
         this.likelihoodStepEnabled.set(LikelihoodStep.CONTEXTUAL_LIKELIHOOD, false);
         this.likelihoodStepEnabled.set(LikelihoodStep.REFINED_LIKELIHOOD, false);
 
-        this.selfAssessment = this.selfAssessmentService.getSelfAssessment();
-        this.threatAgents = this.selfAssessment.threatagents;
+        this.selfAssessment = this.dataSharingService.selfAssessment;
+        this.myCompany = this.dataSharingService.myCompany;
 
+        this.threatAgents$ = this.threatAgentService.getThreatAgentsByCompany(this.myCompany.companyProfile.id);
         this.ckc7Phases$ = this.phaseService.query();
         this.attackLevels$ = this.levelService.query();
-        this.attackMatrix$ = this.attackMapService.getAttackCKC7Matrix(this.selfAssessment.id);
+        this.attackMatrix$ = this.attackMapService.getAttackCKC7Matrix(this.myCompany.companyProfile);
 
-        const join$: Observable<[HttpResponse<PhaseMgm[]>, HttpResponse<LevelMgm[]>, Map<Number, Map<Number, AugmentedAttackStrategy>>]> =
-            forkJoin(this.ckc7Phases$, this.attackLevels$, this.attackMatrix$);
+        const join$: Observable<[HttpResponse<ThreatAgentMgm[]>, HttpResponse<PhaseMgm[]>, HttpResponse<LevelMgm[]>, Map<Number, Map<Number, AugmentedAttackStrategy>>]> =
+            forkJoin(this.threatAgents$, this.ckc7Phases$, this.attackLevels$, this.attackMatrix$);
 
-        join$.subscribe((response: [HttpResponse<PhaseMgm[]>, HttpResponse<LevelMgm[]>, Map<Number, Map<Number, AugmentedAttackStrategy>>]) => {
-            this.ckc7Phases = response[0].body;
+        join$.subscribe((response: [HttpResponse<ThreatAgentMgm[]>, HttpResponse<PhaseMgm[]>, HttpResponse<LevelMgm[]>, Map<Number, Map<Number, AugmentedAttackStrategy>>]) => {
+            this.threatAgents = response[0].body;
+
+            this.ckc7Phases = response[1].body;
             // Remove id 7 phase
             const index = _.findIndex(this.ckc7Phases, (phase) => phase.id === 7);
 
@@ -117,8 +126,8 @@ export class WeaknessResultComponent implements OnInit, OnDestroy {
                 this.ckc7Phases.splice(index, 1);
             }
 
-            this.attackLevels = response[1].body;
-            this.attacksCKC7Matrix = response[2];
+            this.attackLevels = response[2].body;
+            this.attacksCKC7Matrix = response[3];
 
             this.augmentedAttackStrategiesMap = new Map<number, AugmentedAttackStrategy>();
 

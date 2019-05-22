@@ -25,7 +25,7 @@ import eu.hermeneut.repository.AuthorityRepository;
 import eu.hermeneut.repository.UserRepository;
 import eu.hermeneut.security.AuthoritiesConstants;
 import eu.hermeneut.service.MailService;
-import eu.hermeneut.service.dto.UserDTO;
+import eu.hermeneut.domain.dto.UserDTO;
 import eu.hermeneut.web.rest.errors.ExceptionTranslator;
 import eu.hermeneut.web.rest.vm.KeyAndPasswordVM;
 import eu.hermeneut.web.rest.vm.ManagedUserVM;
@@ -48,7 +48,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 import java.time.Instant;
-import java.time.LocalDate;
 
 import java.util.*;
 

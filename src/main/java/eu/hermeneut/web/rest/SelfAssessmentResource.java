@@ -194,19 +194,4 @@ public class SelfAssessmentResource {
         selfAssessmentService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
-
-    /**
-     * SEARCH  /_search/self-assessments?query=:query : search for the selfAssessment corresponding
-     * to the query.
-     *
-     * @param query the query of the selfAssessment search
-     * @return the result of the search
-     */
-    @GetMapping("/_search/self-assessments")
-    @Timed
-    @Secured(AuthoritiesConstants.ADMIN)
-    public List<SelfAssessment> searchSelfAssessments(@RequestParam String query) {
-        log.debug("REST request to search SelfAssessments for query {}", query);
-        return selfAssessmentService.search(query);
-    }
 }

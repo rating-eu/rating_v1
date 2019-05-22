@@ -15,17 +15,19 @@
  *
  */
 
-import { Injectable } from '@angular/core';
-import { HttpClient, HttpResponse } from '@angular/common/http';
-import { Observable } from 'rxjs/Observable';
-import { SERVER_API_URL } from '../../app.constants';
+import {Injectable} from '@angular/core';
+import {HttpClient, HttpResponse} from '@angular/common/http';
+import {Observable} from 'rxjs/Observable';
+import {SERVER_API_URL} from '../../app.constants';
+import {Account} from "..";
 
 @Injectable()
-export class AccountService  {
-    constructor(private http: HttpClient) { }
+export class AccountService {
+    constructor(private http: HttpClient) {
+    }
 
     get(): Observable<HttpResponse<Account>> {
-        return this.http.get<Account>(SERVER_API_URL + 'api/account', {observe : 'response'});
+        return this.http.get<Account>(SERVER_API_URL + 'api/account', {observe: 'response'});
     }
 
     save(account: any): Observable<HttpResponse<any>> {

@@ -5,8 +5,7 @@
             "home": {
                 "title": "Economic Results",
                 "createLabel": "Criar um(a) novo(a) Economic Results",
-                "createOrEditLabel": "Criar ou editar um(a) Economic Results",
-                "search": "Search for Economic Results"
+                "createOrEditLabel": "Criar ou editar um(a) Economic Results"
             },
             "created": "A new Economic Results is created with identifier {{ param }}",
             "updated": "A Economic Results is updated with identifier {{ param }}",

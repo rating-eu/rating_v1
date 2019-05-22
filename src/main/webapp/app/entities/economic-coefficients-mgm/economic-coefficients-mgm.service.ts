@@ -60,12 +60,6 @@ export class EconomicCoefficientsMgmService {
         return this.http.delete<any>(`${this.resourceUrl}/${id}`, { observe: 'response'});
     }
 
-    search(req?: any): Observable<HttpResponse<EconomicCoefficientsMgm[]>> {
-        const options = createRequestOption(req);
-        return this.http.get<EconomicCoefficientsMgm[]>(this.resourceSearchUrl, { params: options, observe: 'response' })
-            .map((res: HttpResponse<EconomicCoefficientsMgm[]>) => this.convertArrayResponse(res));
-    }
-
     private convertResponse(res: EntityResponseType): EntityResponseType {
         const body: EconomicCoefficientsMgm = this.convertItemFromServer(res.body);
         return res.clone({body});

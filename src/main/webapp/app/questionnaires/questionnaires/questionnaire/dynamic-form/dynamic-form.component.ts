@@ -26,26 +26,24 @@ import * as CryptoJS from 'crypto-js';
 import {Couple} from '../../../../utils/couple.class';
 import {DatasharingService} from '../../../../datasharing/datasharing.service';
 import {Router} from '@angular/router';
-import {
-    QuestionnaireStatusMgm,
-    QuestionnaireStatusMgmService,
-    Role
-} from '../../../../entities/questionnaire-status-mgm';
+import {QuestionnaireStatusMgm, QuestionnaireStatusMgmService} from '../../../../entities/questionnaire-status-mgm';
 import {Status} from '../../../../entities/enumerations/QuestionnaireStatus.enum';
 import {QuestionnaireMgm} from '../../../../entities/questionnaire-mgm';
 import {QuestionnairePurpose} from '../../../../entities/enumerations/QuestionnairePurpose.enum';
 import {MyAnswerMgm, MyAnswerMgmService} from '../../../../entities/my-answer-mgm';
 import {AccountService, User, UserService} from '../../../../shared';
-import {SelfAssessmentMgm, SelfAssessmentMgmService} from '../../../../entities/self-assessment-mgm';
 import {Subscription} from 'rxjs/Subscription';
 import {FormUtils} from '../../../utils/FormUtils';
 import {forkJoin} from 'rxjs/observable/forkJoin';
 import {Observable} from 'rxjs/Observable';
 import {HttpResponse} from '@angular/common/http';
-import {QuestionnaireStatusMgmCustomService} from '../../../../entities/questionnaire-status-mgm/questionnaire-status-mgm.custom.service';
 import {switchMap} from 'rxjs/operators';
 import {NgbModal, NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
 import {PartialSubmitDialogComponent} from '../partial-submit-dialog/partial-submit-dialog.component';
+import {MyCompanyMgm, MyCompanyMgmService} from "../../../../entities/my-company-mgm";
+import {Role} from "../../../../entities/enumerations/Role.enum";
+import {ContainerType} from "../../../../entities/enumerations/ContainerType.enum";
+import {Account} from "../../../../shared";
 
 @Component({
     selector: 'jhi-dynamic-form',
@@ -58,8 +56,8 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
     private static YES = 'YES';
     private static NO = 'NO';
 
-    private static CISO_ROLE = Role[Role.ROLE_CISO];
-    private static EXTERNAL_ROLE = Role[Role.ROLE_EXTERNAL_AUDIT];
+    private static CISO_ROLE: string = Role[Role.ROLE_CISO];
+    private static EXTERNAL_ROLE: string = Role[Role.ROLE_EXTERNAL_AUDIT];
 
     public loading = false;
     public debug = false;
@@ -68,6 +66,10 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
     purposeEnum = QuestionnairePurpose;
 
     questionsArray: QuestionMgm[];
+    humanQuestionsArray: QuestionMgm[];
+    itQuestionsArray: QuestionMgm[];
+    physicalQuestionsArray: QuestionMgm[];
+
     /**
      * Map QuestionID ==> Question
      */
@@ -82,7 +84,7 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
     private account: Account;
     private role: Role;
     private user: User;
-    private selfAssessment: SelfAssessmentMgm;
+    private myCompany: MyCompanyMgm;
     private subscriptions: Subscription[] = [];
     private _questionnaire: QuestionnaireMgm;
 
@@ -91,9 +93,8 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
                 private router: Router,
                 private myAnswerService: MyAnswerMgmService,
                 private answerService: AnswerMgmService,
-                private selfAssessmentService: SelfAssessmentMgmService,
                 private questionnaireStatusService: QuestionnaireStatusMgmService,
-                private questionnaireStatusCustomService: QuestionnaireStatusMgmCustomService,
+                private myCompanyService: MyCompanyMgmService,
                 private accountService: AccountService,
                 private userService: UserService,
                 private questionService: QuestionMgmService,
@@ -124,22 +125,16 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
      input properties. Called once, after the first ngOnChanges().
      */
     ngOnInit() {
-        // this.cisoEditMode = true;
-        // this.externalAuditEditMode = true;
-
-        this.selfAssessment = this.selfAssessmentService.getSelfAssessment();
-
-        // 1) Here all the input properties are expected to be set!!!
-        // 2) Get the logged user and its ROLE.
-        // 3) Get the QuestionnairePurpose.
-        // 4) Create the form based on points 2 & 3.
-
         const account$ = this.accountService.get();
         const questions$ = this.questionService.getQuestionsByQuestionnaire(this.questionnaire.id);
-        const questionsAndAccount$ = forkJoin(account$, questions$);
+        const humanQuestions$ = this.questionService.getQuestionsByQuestionnaireAndSection(this.questionnaire.id, ContainerType.HUMAN);
+        const itQuestions$ = this.questionService.getQuestionsByQuestionnaireAndSection(this.questionnaire.id, ContainerType.IT);
+        const physicalQuestions$ = this.questionService.getQuestionsByQuestionnaireAndSection(this.questionnaire.id, ContainerType.PHYSICAL);
+
+        const questionsAndAccount$ = forkJoin(account$, questions$, humanQuestions$, itQuestions$, physicalQuestions$);
 
         const user$ = questionsAndAccount$.mergeMap(
-            (response: [HttpResponse<Account>, HttpResponse<QuestionMgm[]>]) => {
+            (response: [HttpResponse<Account>, HttpResponse<QuestionMgm[]>, HttpResponse<QuestionMgm[]>, HttpResponse<QuestionMgm[]>, HttpResponse<QuestionMgm[]>]) => {
                 this.account = response[0].body;
                 if (this.account['authorities'].includes(DynamicFormComponent.CISO_ROLE)) {
                     this.role = Role.ROLE_CISO;
@@ -148,6 +143,12 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
                 }
 
                 this.questionsArray = response[1].body;
+
+                // PlaceHolders for the questions of the sections
+                const _humanQuestions: QuestionMgm[] = response[2].body;
+                const _itQuestions: QuestionMgm[] = response[3].body;
+                const _physicalQuestions: QuestionMgm[] = response[4].body;
+
                 this.questionsArray.sort((a: QuestionMgm, b: QuestionMgm) => {
                     return a.order - b.order;
                 });
@@ -164,6 +165,29 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
                             }
                             case QuestionnairePurpose.SELFASSESSMENT: {
                                 this.form = this.questionControlService.toFormGroupCISOSelfAssessment(this.questionsArray);
+
+                                // Populate the array with the questions of the corresponding section
+                                // Pay attention to use the same object reference used to build the form, otherwise
+                                // the patch value will not work.
+
+                                if (_humanQuestions && _itQuestions && _physicalQuestions) {
+                                    this.humanQuestionsArray = [];
+                                    this.itQuestionsArray = [];
+                                    this.physicalQuestionsArray = [];
+
+                                    _humanQuestions.forEach(question => {
+                                        this.humanQuestionsArray.push(this.questionsArrayMap.get(question.id));
+                                    });
+
+                                    _itQuestions.forEach(question => {
+                                        this.itQuestionsArray.push(this.questionsArrayMap.get(question.id));
+                                    });
+
+                                    _physicalQuestions.forEach(question => {
+                                        this.physicalQuestionsArray.push(this.questionsArrayMap.get(question.id));
+                                    });
+                                }
+
                                 break;
                             }
                         }
@@ -183,49 +207,43 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
             }
         );
 
-        user$.toPromise().then(
-            (response: HttpResponse<User>) => {
+        const myCompany$ = user$.pipe(
+            switchMap((response: HttpResponse<User>) => {
                 this.user = response.body;
 
-                this.questionnaireStatusCustomService
-                    .getByRoleSelfAssessmentAndQuestionnaire(DynamicFormComponent.CISO_ROLE, this.selfAssessment.id, this.questionnaire.id)
-                    .toPromise()
-                    .then(
-                        (response2: HttpResponse<QuestionnaireStatusMgm>) => {
-                            this.cisoQuestionnaireStatus = response2.body;
+                return this.myCompanyService.findByUser(this.user.id);
+            })
+        );
 
-                            if (this.cisoQuestionnaireStatus && this.cisoQuestionnaireStatus.answers && this.cisoQuestionnaireStatus.answers.length > 0) {
-                                this.cisoMyAnswers = this.cisoQuestionnaireStatus.answers;
+        myCompany$.toPromise().then(
+            (response: HttpResponse<MyCompanyMgm>) => {
+                this.myCompany = response.body;
 
-                                // Restore the checked status of the Form inputs
-                                this.form.patchValue(this.myAnswersToFormValue(this.cisoMyAnswers, this.questionsArrayMap));
-                            }
+                this.cisoQuestionnaireStatus = this.dataSharingSerivce.cisoQuestionnaireStatus;
+                this.externalQuestionnaireStatus = this.dataSharingSerivce.externalQuestionnaireStatus;
 
-                            if (this.questionnaire.purpose === QuestionnairePurpose.SELFASSESSMENT) {
+                // Path Values
+                if (this.cisoQuestionnaireStatus && this.cisoQuestionnaireStatus.answers && this.cisoQuestionnaireStatus.answers.length > 0) {
+                    this.cisoMyAnswers = this.cisoQuestionnaireStatus.answers;
 
-                                this.questionnaireStatusCustomService
-                                    .getByRoleSelfAssessmentAndQuestionnaire(DynamicFormComponent.EXTERNAL_ROLE, this.selfAssessment.id, this.questionnaire.id).toPromise()
-                                    .then(
-                                        (response3: HttpResponse<QuestionnaireStatusMgm>) => {
-                                            this.externalQuestionnaireStatus = response3.body;
+                    // Restore the checked status of the Form inputs
+                    this.form.patchValue(this.myAnswersToFormValue(this.cisoMyAnswers, this.questionsArrayMap));
+                }
 
-                                            if (this.externalQuestionnaireStatus &&
-                                                this.externalQuestionnaireStatus.answers &&
-                                                this.externalQuestionnaireStatus.answers.length > 0) {
-                                                this.externalMyAnswers = this.externalQuestionnaireStatus.answers;
+                if (this.questionnaire.purpose === QuestionnairePurpose.SELFASSESSMENT) {
+                    if (this.externalQuestionnaireStatus &&
+                        this.externalQuestionnaireStatus.answers &&
+                        this.externalQuestionnaireStatus.answers.length > 0) {
+                        this.externalMyAnswers = this.externalQuestionnaireStatus.answers;
 
-                                                const formValue: {} = this.myAnswersToFormValue(this.cisoMyAnswers, this.questionsArrayMap, this.externalMyAnswers);
+                        const formValue: {} = this.myAnswersToFormValue(this.cisoMyAnswers, this.questionsArrayMap, this.externalMyAnswers);
 
-                                                // Restore the checked status of the Form inputs
-                                                this.form.patchValue(formValue);
-                                            }
+                        // Restore the checked status of the Form inputs
+                        this.form.patchValue(formValue);
+                    }
 
-                                            this.resizeAnswerHeighs();
-                                        }
-                                    );
-                            }
-                        }
-                    );
+                    this.resizeAnswerHeighs();
+                }
             }
         );
     }
@@ -320,7 +338,7 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
 
         if (!this.cisoQuestionnaireStatus) {
             questionnaireStatus = new QuestionnaireStatusMgm(undefined, Status.FULL, null, null,
-                this.selfAssessment, this.questionnaire, this.role, this.user, []);
+                this.myCompany.companyProfile, this.questionnaire, this.role, this.user, [], undefined, undefined);
         } else {
             questionnaireStatus = this.cisoQuestionnaireStatus;
         }
@@ -377,7 +395,8 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
         let questionnaireStatus = null;
 
         if (!this.cisoQuestionnaireStatus) {
-            questionnaireStatus = new QuestionnaireStatusMgm(undefined, Status.FULL, null, null, this.selfAssessment, this.questionnaire, this.role, this.user, []);
+            questionnaireStatus = new QuestionnaireStatusMgm(undefined, Status.FULL, null, null,
+                this.myCompany.companyProfile, this.questionnaire, this.role, this.user, [], undefined, undefined);
         } else {
             questionnaireStatus = this.cisoQuestionnaireStatus;
         }
@@ -403,6 +422,7 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
                 modalRef.result.then((value: boolean) => {
                     if (value === true) {
                         questionnaireStatus = this.continueEvaluateWeakness(questionnaireStatus);
+                        this.loading = false;
                     } else {
                         this.loading = false;
                         return;
@@ -412,6 +432,7 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
             }
             case Status.FULL: {
                 questionnaireStatus = this.continueEvaluateWeakness(questionnaireStatus);
+                this.loading = false;
                 break;
             }
         }
@@ -433,7 +454,8 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
         let questionnaireStatus = null;
 
         if (!this.externalQuestionnaireStatus) {
-            questionnaireStatus = new QuestionnaireStatusMgm(undefined, Status.FULL, null, null, this.selfAssessment, this.questionnaire, this.role, this.user, []);
+            questionnaireStatus = new QuestionnaireStatusMgm(undefined, Status.FULL, null, null,
+                this.myCompany.companyProfile, this.questionnaire, this.role, this.user, [], undefined, undefined);
         } else {
             questionnaireStatus = this.externalQuestionnaireStatus;
         }
@@ -666,7 +688,17 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
             questionnaireStatus$ = this.questionnaireStatusService.update(questionnaireStatus);
         }
 
-        const selfAssessment$: Observable<HttpResponse<SelfAssessmentMgm>> = questionnaireStatus$
+        questionnaireStatus$.toPromise().then(
+            (qStatusResponse: HttpResponse<QuestionnaireStatusMgm>) => {
+                questionnaireStatus = qStatusResponse.body;
+                this.cisoQuestionnaireStatus = questionnaireStatus;
+
+                this.loading = false;
+                this.router.navigate(['/dashboard']);
+            }
+        );
+
+        /*const selfAssessment$: Observable<HttpResponse<SelfAssessmentMgm>> = questionnaireStatus$
             .pipe(
                 switchMap((qStatusResponse: HttpResponse<QuestionnaireStatusMgm>) => {
                     questionnaireStatus = qStatusResponse.body;
@@ -690,23 +722,24 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
                     const uniqueThreatAgentsSet: Set<ThreatAgentMgm> = new Set<ThreatAgentMgm>(
                         defaultThreatAgents.concat(identifiedThreatAgents));
                     const uniqueThreatAgentsArray: ThreatAgentMgm[] = Array.from(uniqueThreatAgentsSet);
-                    this.selfAssessment.threatagents = uniqueThreatAgentsArray;
+                    this.selfAssessment.threatAgents = uniqueThreatAgentsArray;
 
                     return this.selfAssessmentService.update(this.selfAssessment);
                 })
-            );
+            );*/
 
-        selfAssessment$.toPromise().then(
+        /*selfAssessment$.toPromise().then(
             (selfAssessmentResponse: HttpResponse<SelfAssessmentMgm>) => {
-                this.selfAssessment = selfAssessmentResponse.body;
-                this.selfAssessmentService.setSelfAssessment(this.selfAssessment);
+                // this.selfAssessment = selfAssessmentResponse.body;
+                // this.selfAssessmentService.setSelfAssessment(this.selfAssessment);
                 this.loading = false;
                 this.router.navigate(['/dashboard']);
             }
         ).catch(() => {
             // TODO Error management
             this.loading = false;
-        });
+        });*/
+
         return questionnaireStatus;
     }
 
@@ -721,33 +754,18 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
             questionnaireStatus$ = this.questionnaireStatusService.update(questionnaireStatus);
         }
 
-        const selfAssessment$: Observable<HttpResponse<SelfAssessmentMgm>> = questionnaireStatus$.pipe(
-            switchMap((qStatusResponse: HttpResponse<QuestionnaireStatusMgm>) => {
+        questionnaireStatus$.toPromise().then(
+            (qStatusResponse: HttpResponse<QuestionnaireStatusMgm>) => {
                 questionnaireStatus = qStatusResponse.body;
                 this.cisoQuestionnaireStatus = questionnaireStatus;
-
-                // #4 Update the SelfAssessment
-                this.selfAssessment.user = this.user;
-
-                return this.selfAssessmentService.update(this.selfAssessment);
-            })
-        );
-
-        selfAssessment$.toPromise()
-            .then((selfAssessmentResponse: HttpResponse<SelfAssessmentMgm>) => {
-                this.selfAssessment = selfAssessmentResponse.body;
-                this.selfAssessmentService.setSelfAssessment(this.selfAssessment);
-
                 this.loading = false;
-                this.router.navigate(['/dashboard']);
-            }).catch(() => {
+                this.router.navigate(['/evaluate-weakness/questionnaires/SELFASSESSMENT']);
+                return questionnaireStatus;
+            }
+        ).catch(() => {
             // TODO Error management
             this.loading = false;
         });
-
-        // For now don't store the attackStrategies but recalculate them and their likelihood based on the stored
-        // MyAnswers
-        return questionnaireStatus;
     }
 
     private continueExternalRefinement(questionnaireStatus: any) {
@@ -767,7 +785,7 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
                 questionnaireStatus = response.body;
                 this.externalQuestionnaireStatus = questionnaireStatus;
 
-                this.selfAssessmentService.setSelfAssessment(this.selfAssessment);
+                //this.selfAssessmentService.setSelfAssessment(this.selfAssessment);
 
                 this.loading = false;
                 this.router.navigate(['/my-risk-assessments']);

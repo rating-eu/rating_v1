@@ -39,6 +39,7 @@ import {SessionStorageService} from 'ngx-webstorage';
 import {PopupService} from '@ng-bootstrap/ng-bootstrap/util/popup';
 import {PopUpService} from '../../shared/pop-up-services/pop-up.service';
 import {DatasharingService} from '../../datasharing/datasharing.service';
+import {Account} from "../../shared";
 
 @Component({
     selector: 'jhi-self-assessment-mgm-dialog',
@@ -173,7 +174,7 @@ export class SelfAssessmentMgmDialogComponent implements OnInit {
     private subscribeToSaveResponse(result: Observable<HttpResponse<SelfAssessmentMgm>>) {
         result.subscribe((res: HttpResponse<SelfAssessmentMgm>) => {
                 this.onSaveSuccess(res.body);
-                this.dataSharingService.updateMySelfAssessment(res.body);
+                this.dataSharingService.selfAssessment = res.body;
             }, (res: HttpErrorResponse) => {
                 this.onSaveError();
             }

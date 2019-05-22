@@ -5,8 +5,7 @@
             "home": {
                 "title": "Domain Of Influences",
                 "createLabel": "Criar um(a) novo(a) Domain Of Influence",
-                "createOrEditLabel": "Criar ou editar um(a) Domain Of Influence",
-                "search": "Search for Domain Of Influence"
+                "createOrEditLabel": "Criar ou editar um(a) Domain Of Influence"
             },
             "created": "A new Domain Of Influence is created with identifier {{ param }}",
             "updated": "A Domain Of Influence is updated with identifier {{ param }}",

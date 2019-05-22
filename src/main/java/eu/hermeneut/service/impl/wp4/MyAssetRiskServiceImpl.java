@@ -29,6 +29,7 @@ import eu.hermeneut.service.MyAssetService;
 import eu.hermeneut.service.SelfAssessmentService;
 import eu.hermeneut.service.attackmap.AugmentedAttackStrategyService;
 import eu.hermeneut.service.compact.AssetRiskService;
+import eu.hermeneut.service.result.ResultService;
 import eu.hermeneut.service.wp4.MyAssetRiskService;
 import eu.hermeneut.utils.attackstrategy.ThreatAttackFilter;
 import eu.hermeneut.utils.threatagent.ThreatAgentComparator;
@@ -52,7 +53,7 @@ public class MyAssetRiskServiceImpl implements MyAssetRiskService, MaxValues {
     private MyAssetService myAssetService;
 
     @Autowired
-    private AssetService assetService;
+    private ResultService resultService;
 
     @Autowired
     private AssetRiskService assetRiskService;
@@ -71,10 +72,16 @@ public class MyAssetRiskServiceImpl implements MyAssetRiskService, MaxValues {
             throw new NotFoundException("SelfAssessment NOT FOUND.");
         }
 
-        Set<ThreatAgent> threatAgents = selfAssessment.getThreatagents();
+        CompanyProfile companyProfile = selfAssessment.getCompanyProfile();
+
+        if (companyProfile == null) {
+            throw new NotFoundException("CompanyProfile of SelfAssessment NOT FOUND.");
+        }
+
+        Set<ThreatAgent> threatAgents = this.resultService.getThreatAgents(companyProfile.getId());
 
         if (threatAgents == null || threatAgents.isEmpty()) {
-            throw new NotFoundException("ThreatAgent for SelfAssessment were NOT be FOUND.");
+            throw new NotFoundException("ThreatAgent for SelfAssessment with ID = " + selfAssessmentID + " could NOT be FOUND.");
         }
 
         List<ThreatAgent> ascendingThreatAgentSkills = new ArrayList<>(threatAgents);
@@ -95,7 +102,7 @@ public class MyAssetRiskServiceImpl implements MyAssetRiskService, MaxValues {
             throw new NotFoundException("AssetRisks NOT Found!!!");
         }
 
-        Map<Long, AugmentedAttackStrategy> augmentedAttackStrategyMap = this.augmentedAttackStrategyService.getAugmentedAttackStrategyMap(selfAssessmentID);
+        Map<Long, AugmentedAttackStrategy> augmentedAttackStrategyMap = this.augmentedAttackStrategyService.getAugmentedAttackStrategyMap(selfAssessment.getCompanyProfile().getId());
 
         //Keep only the attackstrategies that can be performed by the Strongest ThreatAgent
         augmentedAttackStrategyMap = augmentedAttackStrategyMap.values()
@@ -173,10 +180,16 @@ public class MyAssetRiskServiceImpl implements MyAssetRiskService, MaxValues {
             throw new NotFoundException("SelfAssessment NOT FOUND.");
         }
 
-        Set<ThreatAgent> threatAgents = selfAssessment.getThreatagents();
+        CompanyProfile companyProfile = selfAssessment.getCompanyProfile();
+
+        if (companyProfile == null) {
+            throw new NotFoundException("CompanyProfile of SelfAssessment NOT FOUND.");
+        }
+
+        Set<ThreatAgent> threatAgents = this.resultService.getThreatAgents(companyProfile.getId());
 
         if (threatAgents == null || threatAgents.isEmpty()) {
-            throw new NotFoundException("ThreatAgent for SelfAssessment were NOT be FOUND.");
+            throw new NotFoundException("ThreatAgent for SelfAssessment with ID = " + selfAssessmentID + " could NOT be FOUND.");
         }
 
         List<ThreatAgent> ascendingThreatAgentSkills = new ArrayList<>(threatAgents);

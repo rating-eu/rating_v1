@@ -22,7 +22,6 @@ import eu.hermeneut.HermeneutApp;
 import eu.hermeneut.domain.MyAnswer;
 import eu.hermeneut.repository.MyAnswerRepository;
 import eu.hermeneut.service.MyAnswerService;
-import eu.hermeneut.repository.search.MyAnswerSearchRepository;
 import eu.hermeneut.web.rest.errors.ExceptionTranslator;
 
 import org.junit.Before;
@@ -70,9 +69,6 @@ public class MyAnswerResourceIntTest {
     private MyAnswerService myAnswerService;
 
     @Autowired
-    private MyAnswerSearchRepository myAnswerSearchRepository;
-
-    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -114,7 +110,6 @@ public class MyAnswerResourceIntTest {
 
     @Before
     public void initTest() {
-        myAnswerSearchRepository.deleteAll();
         myAnswer = createEntity(em);
     }
 
@@ -135,10 +130,6 @@ public class MyAnswerResourceIntTest {
         MyAnswer testMyAnswer = myAnswerList.get(myAnswerList.size() - 1);
         assertThat(testMyAnswer.getNote()).isEqualTo(DEFAULT_NOTE);
         assertThat(testMyAnswer.getAnswerOffset()).isEqualTo(DEFAULT_ANSWER_OFFSET);
-
-        // Validate the MyAnswer in Elasticsearch
-        MyAnswer myAnswerEs = myAnswerSearchRepository.findOne(testMyAnswer.getId());
-        assertThat(myAnswerEs).isEqualToIgnoringGivenFields(testMyAnswer);
     }
 
     @Test
@@ -243,10 +234,6 @@ public class MyAnswerResourceIntTest {
         MyAnswer testMyAnswer = myAnswerList.get(myAnswerList.size() - 1);
         assertThat(testMyAnswer.getNote()).isEqualTo(UPDATED_NOTE);
         assertThat(testMyAnswer.getAnswerOffset()).isEqualTo(UPDATED_ANSWER_OFFSET);
-
-        // Validate the MyAnswer in Elasticsearch
-        MyAnswer myAnswerEs = myAnswerSearchRepository.findOne(testMyAnswer.getId());
-        assertThat(myAnswerEs).isEqualToIgnoringGivenFields(testMyAnswer);
     }
 
     @Test
@@ -280,28 +267,9 @@ public class MyAnswerResourceIntTest {
             .accept(TestUtil.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk());
 
-        // Validate Elasticsearch is empty
-        boolean myAnswerExistsInEs = myAnswerSearchRepository.exists(myAnswer.getId());
-        assertThat(myAnswerExistsInEs).isFalse();
-
         // Validate the database is empty
         List<MyAnswer> myAnswerList = myAnswerRepository.findAll();
         assertThat(myAnswerList).hasSize(databaseSizeBeforeDelete - 1);
-    }
-
-    @Test
-    @Transactional
-    public void searchMyAnswer() throws Exception {
-        // Initialize the database
-        myAnswerService.save(myAnswer);
-
-        // Search the myAnswer
-        restMyAnswerMockMvc.perform(get("/api/_search/my-answers?query=id:" + myAnswer.getId()))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(myAnswer.getId().intValue())))
-            .andExpect(jsonPath("$.[*].note").value(hasItem(DEFAULT_NOTE.toString())))
-            .andExpect(jsonPath("$.[*].answerOffset").value(hasItem(DEFAULT_ANSWER_OFFSET)));
     }
 
     @Test

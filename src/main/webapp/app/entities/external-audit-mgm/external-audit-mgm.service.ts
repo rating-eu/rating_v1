@@ -60,12 +60,6 @@ export class ExternalAuditMgmService {
         return this.http.delete<any>(`${this.resourceUrl}/${id}`, { observe: 'response'});
     }
 
-    search(req?: any): Observable<HttpResponse<ExternalAuditMgm[]>> {
-        const options = createRequestOption(req);
-        return this.http.get<ExternalAuditMgm[]>(this.resourceSearchUrl, { params: options, observe: 'response' })
-            .map((res: HttpResponse<ExternalAuditMgm[]>) => this.convertArrayResponse(res));
-    }
-
     private convertResponse(res: EntityResponseType): EntityResponseType {
         const body: ExternalAuditMgm = this.convertItemFromServer(res.body);
         return res.clone({body});

@@ -20,17 +20,12 @@ package eu.hermeneut.service.impl;
 import eu.hermeneut.service.EconomicResultsService;
 import eu.hermeneut.domain.EconomicResults;
 import eu.hermeneut.repository.EconomicResultsRepository;
-import eu.hermeneut.repository.search.EconomicResultsSearchRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
-
-import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
  * Service Implementation for managing EconomicResults.
@@ -43,11 +38,8 @@ public class EconomicResultsServiceImpl implements EconomicResultsService {
 
     private final EconomicResultsRepository economicResultsRepository;
 
-    private final EconomicResultsSearchRepository economicResultsSearchRepository;
-
-    public EconomicResultsServiceImpl(EconomicResultsRepository economicResultsRepository, EconomicResultsSearchRepository economicResultsSearchRepository) {
+    public EconomicResultsServiceImpl(EconomicResultsRepository economicResultsRepository) {
         this.economicResultsRepository = economicResultsRepository;
-        this.economicResultsSearchRepository = economicResultsSearchRepository;
     }
 
     /**
@@ -60,7 +52,6 @@ public class EconomicResultsServiceImpl implements EconomicResultsService {
     public EconomicResults save(EconomicResults economicResults) {
         log.debug("Request to save EconomicResults : {}", economicResults);
         EconomicResults result = economicResultsRepository.save(economicResults);
-        economicResultsSearchRepository.save(result);
         return result;
     }
 
@@ -98,22 +89,6 @@ public class EconomicResultsServiceImpl implements EconomicResultsService {
     public void delete(Long id) {
         log.debug("Request to delete EconomicResults : {}", id);
         economicResultsRepository.delete(id);
-        economicResultsSearchRepository.delete(id);
-    }
-
-    /**
-     * Search for the economicResults corresponding to the query.
-     *
-     * @param query the query of the search
-     * @return the list of entities
-     */
-    @Override
-    @Transactional(readOnly = true)
-    public List<EconomicResults> search(String query) {
-        log.debug("Request to search EconomicResults for query {}", query);
-        return StreamSupport
-            .stream(economicResultsSearchRepository.search(queryStringQuery(query)).spliterator(), false)
-            .collect(Collectors.toList());
     }
 
     @Override

@@ -1,12 +1,12 @@
 /*
  * Copyright 2019 HERMENEUT Consortium
- *  
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *  
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- *  
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -20,11 +20,13 @@ package eu.hermeneut.web.rest;
 import com.codahale.metrics.annotation.Timed;
 import eu.hermeneut.domain.ThreatAgent;
 import eu.hermeneut.service.ThreatAgentService;
+import eu.hermeneut.service.result.ResultService;
 import eu.hermeneut.web.rest.errors.BadRequestAlertException;
 import eu.hermeneut.web.rest.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,9 +36,7 @@ import java.net.URISyntaxException;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.StreamSupport;
-
-import static org.elasticsearch.index.query.QueryBuilders.*;
+import java.util.Set;
 
 /**
  * REST controller for managing ThreatAgent.
@@ -50,6 +50,9 @@ public class ThreatAgentResource {
     private static final String ENTITY_NAME = "threatAgent";
 
     private final ThreatAgentService threatAgentService;
+
+    @Autowired
+    private ResultService resultService;
 
     public ThreatAgentResource(ThreatAgentService threatAgentService) {
         this.threatAgentService = threatAgentService;
@@ -110,6 +113,18 @@ public class ThreatAgentResource {
     }
 
     /**
+     * GET  /threat-agents : get all the threatAgents of a Company.
+     *
+     * @return the ResponseEntity with status 200 (OK) and the list of threatAgents in body
+     */
+    @GetMapping("/threat-agents/company-profile/{companyID}")
+    @Timed
+    public Set<ThreatAgent> getAllThreatAgentsByCompanyProfile(@PathVariable Long companyID) {
+        log.debug("REST request to get all ThreatAgents");
+        return this.resultService.getThreatAgents(companyID);
+    }
+
+    /**
      * GET  /threat-agents : get all the threatAgents.
      *
      * @return the ResponseEntity with status 200 (OK) and the list of threatAgents in body
@@ -148,19 +163,4 @@ public class ThreatAgentResource {
         threatAgentService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
-
-    /**
-     * SEARCH  /_search/threat-agents?query=:query : search for the threatAgent corresponding
-     * to the query.
-     *
-     * @param query the query of the threatAgent search
-     * @return the result of the search
-     */
-    @GetMapping("/_search/threat-agents")
-    @Timed
-    public List<ThreatAgent> searchThreatAgents(@RequestParam String query) {
-        log.debug("REST request to search ThreatAgents for query {}", query);
-        return threatAgentService.search(query);
-    }
-
 }

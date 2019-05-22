@@ -5,8 +5,7 @@
             "home": {
                 "title": "Risk Assessments",
                 "createLabel": "Criar um(a) novo(a) Risk Assessment",
-                "createOrEditLabel": "Criar ou editar um(a) Risk Assessment",
-                "search": "Search for Risk Assessment"
+                "createOrEditLabel": "Criar ou editar um(a) Risk Assessment"
             },
             "created": "A new Risk Assessment is created with identifier {{ param }}",
             "updated": "A Risk Assessment is updated with identifier {{ param }}",

@@ -5,8 +5,7 @@
             "home": {
                 "title": "AttackCosts",
                 "createLabel": "Créer un nouveau Attack Cost",
-                "createOrEditLabel": "Créer ou éditer un Attack Cost",
-                "search": "Recherche pour Attack Cost"
+                "createOrEditLabel": "Créer ou éditer un Attack Cost"
             },
             "created": "Un nouveau Attack Cost a été créé avec l'identifiant {{ param }}",
             "updated": "Le Attack Cost avec l'identifiant {{ param }} a été mis à jour",

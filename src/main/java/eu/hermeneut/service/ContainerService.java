@@ -54,13 +54,4 @@ public interface ContainerService {
      * @param id the id of the entity
      */
     void delete(Long id);
-
-    /**
-     * Search for the container corresponding to the query.
-     *
-     * @param query the query of the search
-     * 
-     * @return the list of entities
-     */
-    List<Container> search(String query);
 }

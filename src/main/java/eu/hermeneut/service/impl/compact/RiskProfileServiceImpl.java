@@ -93,6 +93,7 @@ public class RiskProfileServiceImpl implements RiskProfileService {
             e.printStackTrace();
         }
 
+        //TODO Fix-Me
         Result result = this.resultService.getThreatAgentsResult(selfAssessmentID);
         riskProfile.setVulnerabilities(result);
 

@@ -29,7 +29,6 @@ export type EntityResponseType = HttpResponse<LogoMgm>;
 export class LogoMgmService {
 
     private resourceUrl = SERVER_API_URL + 'api/logos';
-    private resourceSearchUrl = SERVER_API_URL + 'api/_search/logos';
 
     constructor(private http: HttpClient) {
     }
@@ -65,12 +64,6 @@ export class LogoMgmService {
 
     delete(id: number): Observable<HttpResponse<any>> {
         return this.http.delete<any>(`${this.resourceUrl}/${id}`, {observe: 'response'});
-    }
-
-    search(req?: any): Observable<HttpResponse<LogoMgm[]>> {
-        const options = createRequestOption(req);
-        return this.http.get<LogoMgm[]>(this.resourceSearchUrl, {params: options, observe: 'response'})
-            .map((res: HttpResponse<LogoMgm[]>) => this.convertArrayResponse(res));
     }
 
     private convertResponse(res: EntityResponseType): EntityResponseType {

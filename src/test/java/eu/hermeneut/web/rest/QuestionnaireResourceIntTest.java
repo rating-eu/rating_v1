@@ -22,7 +22,6 @@ import eu.hermeneut.HermeneutApp;
 import eu.hermeneut.domain.Questionnaire;
 import eu.hermeneut.repository.QuestionnaireRepository;
 import eu.hermeneut.service.QuestionnaireService;
-import eu.hermeneut.repository.search.QuestionnaireSearchRepository;
 import eu.hermeneut.web.rest.errors.ExceptionTranslator;
 
 import org.junit.Before;
@@ -82,9 +81,6 @@ public class QuestionnaireResourceIntTest {
     private QuestionnaireService questionnaireService;
 
     @Autowired
-    private QuestionnaireSearchRepository questionnaireSearchRepository;
-
-    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -128,7 +124,6 @@ public class QuestionnaireResourceIntTest {
 
     @Before
     public void initTest() {
-        questionnaireSearchRepository.deleteAll();
         questionnaire = createEntity(em);
     }
 
@@ -151,12 +146,6 @@ public class QuestionnaireResourceIntTest {
         assertThat(testQuestionnaire.getPurpose()).isEqualTo(DEFAULT_PURPOSE);
         assertThat(testQuestionnaire.getCreated()).isEqualTo(DEFAULT_CREATED);
         assertThat(testQuestionnaire.getModified()).isEqualTo(DEFAULT_MODIFIED);
-
-        // Validate the Questionnaire in Elasticsearch
-        Questionnaire questionnaireEs = questionnaireSearchRepository.findOne(testQuestionnaire.getId());
-        assertThat(testQuestionnaire.getCreated()).isEqualTo(testQuestionnaire.getCreated());
-        assertThat(testQuestionnaire.getModified()).isEqualTo(testQuestionnaire.getModified());
-        assertThat(questionnaireEs).isEqualToIgnoringGivenFields(testQuestionnaire, "created", "modified");
     }
 
     @Test
@@ -287,12 +276,6 @@ public class QuestionnaireResourceIntTest {
         assertThat(testQuestionnaire.getPurpose()).isEqualTo(UPDATED_PURPOSE);
         assertThat(testQuestionnaire.getCreated()).isEqualTo(UPDATED_CREATED);
         assertThat(testQuestionnaire.getModified()).isEqualTo(UPDATED_MODIFIED);
-
-        // Validate the Questionnaire in Elasticsearch
-        Questionnaire questionnaireEs = questionnaireSearchRepository.findOne(testQuestionnaire.getId());
-        assertThat(testQuestionnaire.getCreated()).isEqualTo(testQuestionnaire.getCreated());
-        assertThat(testQuestionnaire.getModified()).isEqualTo(testQuestionnaire.getModified());
-        assertThat(questionnaireEs).isEqualToIgnoringGivenFields(testQuestionnaire, "created", "modified");
     }
 
     @Test
@@ -326,30 +309,9 @@ public class QuestionnaireResourceIntTest {
             .accept(TestUtil.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk());
 
-        // Validate Elasticsearch is empty
-        boolean questionnaireExistsInEs = questionnaireSearchRepository.exists(questionnaire.getId());
-        assertThat(questionnaireExistsInEs).isFalse();
-
         // Validate the database is empty
         List<Questionnaire> questionnaireList = questionnaireRepository.findAll();
         assertThat(questionnaireList).hasSize(databaseSizeBeforeDelete - 1);
-    }
-
-    @Test
-    @Transactional
-    public void searchQuestionnaire() throws Exception {
-        // Initialize the database
-        questionnaireService.save(questionnaire);
-
-        // Search the questionnaire
-        restQuestionnaireMockMvc.perform(get("/api/_search/questionnaires?query=id:" + questionnaire.getId()))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(questionnaire.getId().intValue())))
-            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
-            .andExpect(jsonPath("$.[*].purpose").value(hasItem(DEFAULT_PURPOSE.toString())))
-            .andExpect(jsonPath("$.[*].created").value(hasItem(sameInstant(DEFAULT_CREATED))))
-            .andExpect(jsonPath("$.[*].modified").value(hasItem(sameInstant(DEFAULT_MODIFIED))));
     }
 
     @Test

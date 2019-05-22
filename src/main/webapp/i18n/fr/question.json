@@ -5,8 +5,7 @@
             "home": {
                 "title": "Questions",
                 "createLabel": "Créer un nouveau Question",
-                "createOrEditLabel": "Créer ou éditer un Question",
-                "search": "Recherche pour Question"
+                "createOrEditLabel": "Créer ou éditer un Question"
             },
             "created": "Un nouveau Question a été créé avec l'identifiant {{ param }}",
             "updated": "Le Question avec l'identifiant {{ param }} a été mis à jour",

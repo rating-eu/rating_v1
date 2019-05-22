@@ -23,7 +23,6 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 
-import org.springframework.data.elasticsearch.annotations.Document;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -33,7 +32,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "level")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-@Document(indexName = "level")
+
 public class Level implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -50,7 +49,7 @@ public class Level implements Serializable {
     @Column(name = "description")
     private String description;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(unique = true)
     private Container container;
 
@@ -126,9 +125,10 @@ public class Level implements Serializable {
     @Override
     public String toString() {
         return "Level{" +
-            "id=" + getId() +
-            ", name='" + getName() + "'" +
-            ", description='" + getDescription() + "'" +
-            "}";
+            "id=" + id +
+            ", name='" + name + '\'' +
+            ", description='" + description + '\'' +
+            ", container=" + container +
+            '}';
     }
 }

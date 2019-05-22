@@ -17,13 +17,13 @@
 
 import {Component, OnInit} from '@angular/core';
 import {QuestionnairesService} from '../../questionnaires.service';
-import {QuestionnaireMgm} from '../../../entities/questionnaire-mgm';
 import {DatasharingService} from '../../../datasharing/datasharing.service';
 import {Router} from '@angular/router';
 import {LocalStorageService} from 'ngx-webstorage';
 import {QuestionnairePurpose} from '../../../entities/enumerations/QuestionnairePurpose.enum';
 import {SelfAssessmentMgm, SelfAssessmentMgmService} from '../../../entities/self-assessment-mgm';
 import {AccountService, User, UserService} from '../../../shared';
+import {QuestionnaireStatusMgm} from "../../../entities/questionnaire-status-mgm";
 
 @Component({
     selector: 'jhi-questionnaire',
@@ -32,7 +32,7 @@ import {AccountService, User, UserService} from '../../../shared';
 })
 export class QuestionnaireComponent implements OnInit {
 
-    questionnaire: QuestionnaireMgm;
+    questionnaireStatus: QuestionnaireStatusMgm;
     purpose: QuestionnairePurpose;
     selfAssessment: SelfAssessmentMgm;
     account: Account;
@@ -49,7 +49,7 @@ export class QuestionnaireComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.questionnaire = this.dataSharingService.currentQuestionnaire;
+        this.questionnaireStatus = this.dataSharingService.cisoQuestionnaireStatus;
         this.purpose = this.localStorage.retrieve('purpose') as QuestionnairePurpose;
     }
 }

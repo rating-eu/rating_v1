@@ -58,14 +58,6 @@ public interface ExternalAuditService {
     void delete(Long id);
 
     /**
-     * Search for the externalAudit corresponding to the query.
-     *
-     * @param query the query of the search
-     * @return the list of entities
-     */
-    List<ExternalAudit> search(String query);
-
-    /**
      * GET the ExternalAudit for the input user, if present, else null.
      *
      * @param user the user for which to look for an ExternalAudit.

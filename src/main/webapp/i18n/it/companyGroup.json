@@ -5,8 +5,7 @@
             "home": {
                 "title": "CompanyGroups",
                 "createLabel": "Genera un nuovo Group",
-                "createOrEditLabel": "Genera o modifica un Group",
-                "search": "Cerca Group"
+                "createOrEditLabel": "Genera o modifica un Group"
             },
             "created": "&Egrave; stato generato un nuovo Group con identificatore {{ param }}",
             "updated": "&Egrave; stato aggiornato Group identificato da {{ param }}",

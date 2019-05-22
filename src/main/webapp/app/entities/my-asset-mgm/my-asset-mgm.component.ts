@@ -34,7 +34,6 @@ export class MyAssetMgmComponent implements OnInit, OnDestroy {
 myAssets: MyAssetMgm[];
     currentAccount: any;
     eventSubscriber: Subscription;
-    currentSearch: string;
 
     constructor(
         private myAssetService: MyAssetMgmService,
@@ -44,39 +43,18 @@ myAssets: MyAssetMgm[];
         private principal: Principal,
         public popUpService: PopUpService
     ) {
-        this.currentSearch = this.activatedRoute.snapshot && this.activatedRoute.snapshot.params['search'] ?
-            this.activatedRoute.snapshot.params['search'] : '';
     }
 
     loadAll() {
-        if (this.currentSearch) {
-            this.myAssetService.search({
-                query: this.currentSearch,
-                }).subscribe(
-                    (res: HttpResponse<MyAssetMgm[]>) => this.myAssets = res.body,
-                    (res: HttpErrorResponse) => this.onError(res.message)
-                );
-            return;
-       }
         this.myAssetService.query().subscribe(
             (res: HttpResponse<MyAssetMgm[]>) => {
                 this.myAssets = res.body;
-                this.currentSearch = '';
             },
             (res: HttpErrorResponse) => this.onError(res.message)
         );
     }
 
-    search(query) {
-        if (!query) {
-            return this.clear();
-        }
-        this.currentSearch = query;
-        this.loadAll();
-    }
-
     clear() {
-        this.currentSearch = '';
         this.loadAll();
     }
     ngOnInit() {

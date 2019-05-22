@@ -22,7 +22,6 @@ import eu.hermeneut.HermeneutApp;
 import eu.hermeneut.domain.QuestionnaireStatus;
 import eu.hermeneut.repository.QuestionnaireStatusRepository;
 import eu.hermeneut.service.QuestionnaireStatusService;
-import eu.hermeneut.repository.search.QuestionnaireStatusSearchRepository;
 import eu.hermeneut.web.rest.errors.ExceptionTranslator;
 
 import org.junit.Before;
@@ -83,9 +82,6 @@ public class QuestionnaireStatusResourceIntTest {
     private QuestionnaireStatusService questionnaireStatusService;
 
     @Autowired
-    private QuestionnaireStatusSearchRepository questionnaireStatusSearchRepository;
-
-    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -129,7 +125,6 @@ public class QuestionnaireStatusResourceIntTest {
 
     @Before
     public void initTest() {
-        questionnaireStatusSearchRepository.deleteAll();
         questionnaireStatus = createEntity(em);
     }
 
@@ -152,12 +147,6 @@ public class QuestionnaireStatusResourceIntTest {
         assertThat(testQuestionnaireStatus.getCreated()).isEqualTo(DEFAULT_CREATED);
         assertThat(testQuestionnaireStatus.getModified()).isEqualTo(DEFAULT_MODIFIED);
         assertThat(testQuestionnaireStatus.getRole()).isEqualTo(DEFAULT_ROLE);
-
-        // Validate the QuestionnaireStatus in Elasticsearch
-        QuestionnaireStatus questionnaireStatusEs = questionnaireStatusSearchRepository.findOne(testQuestionnaireStatus.getId());
-        assertThat(testQuestionnaireStatus.getCreated()).isEqualTo(testQuestionnaireStatus.getCreated());
-        assertThat(testQuestionnaireStatus.getModified()).isEqualTo(testQuestionnaireStatus.getModified());
-        assertThat(questionnaireStatusEs).isEqualToIgnoringGivenFields(testQuestionnaireStatus, "created", "modified");
     }
 
     @Test
@@ -288,12 +277,6 @@ public class QuestionnaireStatusResourceIntTest {
         assertThat(testQuestionnaireStatus.getCreated()).isEqualTo(UPDATED_CREATED);
         assertThat(testQuestionnaireStatus.getModified()).isEqualTo(UPDATED_MODIFIED);
         assertThat(testQuestionnaireStatus.getRole()).isEqualTo(UPDATED_ROLE);
-
-        // Validate the QuestionnaireStatus in Elasticsearch
-        QuestionnaireStatus questionnaireStatusEs = questionnaireStatusSearchRepository.findOne(testQuestionnaireStatus.getId());
-        assertThat(testQuestionnaireStatus.getCreated()).isEqualTo(testQuestionnaireStatus.getCreated());
-        assertThat(testQuestionnaireStatus.getModified()).isEqualTo(testQuestionnaireStatus.getModified());
-        assertThat(questionnaireStatusEs).isEqualToIgnoringGivenFields(testQuestionnaireStatus, "created", "modified");
     }
 
     @Test
@@ -327,30 +310,9 @@ public class QuestionnaireStatusResourceIntTest {
             .accept(TestUtil.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk());
 
-        // Validate Elasticsearch is empty
-        boolean questionnaireStatusExistsInEs = questionnaireStatusSearchRepository.exists(questionnaireStatus.getId());
-        assertThat(questionnaireStatusExistsInEs).isFalse();
-
         // Validate the database is empty
         List<QuestionnaireStatus> questionnaireStatusList = questionnaireStatusRepository.findAll();
         assertThat(questionnaireStatusList).hasSize(databaseSizeBeforeDelete - 1);
-    }
-
-    @Test
-    @Transactional
-    public void searchQuestionnaireStatus() throws Exception {
-        // Initialize the database
-        questionnaireStatusService.save(questionnaireStatus);
-
-        // Search the questionnaireStatus
-        restQuestionnaireStatusMockMvc.perform(get("/api/_search/questionnaire-statuses?query=id:" + questionnaireStatus.getId()))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(questionnaireStatus.getId().intValue())))
-            .andExpect(jsonPath("$.[*].status").value(hasItem(DEFAULT_STATUS.toString())))
-            .andExpect(jsonPath("$.[*].created").value(hasItem(sameInstant(DEFAULT_CREATED))))
-            .andExpect(jsonPath("$.[*].modified").value(hasItem(sameInstant(DEFAULT_MODIFIED))))
-            .andExpect(jsonPath("$.[*].role").value(hasItem(DEFAULT_ROLE.toString())));
     }
 
     @Test

@@ -33,7 +33,6 @@ export class AttackCostParamMgmComponent implements OnInit, OnDestroy {
 attackCostParams: AttackCostParamMgm[];
     currentAccount: any;
     eventSubscriber: Subscription;
-    currentSearch: string;
 
     constructor(
         private attackCostParamService: AttackCostParamMgmService,
@@ -42,39 +41,18 @@ attackCostParams: AttackCostParamMgm[];
         private activatedRoute: ActivatedRoute,
         private principal: Principal
     ) {
-        this.currentSearch = this.activatedRoute.snapshot && this.activatedRoute.snapshot.params['search'] ?
-            this.activatedRoute.snapshot.params['search'] : '';
     }
 
     loadAll() {
-        if (this.currentSearch) {
-            this.attackCostParamService.search({
-                query: this.currentSearch,
-                }).subscribe(
-                    (res: HttpResponse<AttackCostParamMgm[]>) => this.attackCostParams = res.body,
-                    (res: HttpErrorResponse) => this.onError(res.message)
-                );
-            return;
-       }
         this.attackCostParamService.query().subscribe(
             (res: HttpResponse<AttackCostParamMgm[]>) => {
                 this.attackCostParams = res.body;
-                this.currentSearch = '';
             },
             (res: HttpErrorResponse) => this.onError(res.message)
         );
     }
 
-    search(query) {
-        if (!query) {
-            return this.clear();
-        }
-        this.currentSearch = query;
-        this.loadAll();
-    }
-
     clear() {
-        this.currentSearch = '';
         this.loadAll();
     }
     ngOnInit() {

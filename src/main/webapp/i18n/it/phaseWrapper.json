@@ -5,8 +5,7 @@
             "home": {
                 "title": "PhaseWrappers",
                 "createLabel": "Genera un nuovo Phase Wrapper",
-                "createOrEditLabel": "Genera o modifica un Phase Wrapper",
-                "search": "Cerca Phase Wrapper"
+                "createOrEditLabel": "Genera o modifica un Phase Wrapper"
             },
             "created": "&Egrave; stato generato un nuovo Phase Wrapper con identificatore {{ param }}",
             "updated": "&Egrave; stato aggiornato Phase Wrapper identificato da {{ param }}",

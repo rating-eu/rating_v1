@@ -5,8 +5,7 @@
             "home": {
                 "title": "ImpactLevelDescriptions",
                 "createLabel": "Genera un nuovo Impact Level Description",
-                "createOrEditLabel": "Genera o modifica un Impact Level Description",
-                "search": "Cerca Impact Level Description"
+                "createOrEditLabel": "Genera o modifica un Impact Level Description"
             },
             "created": "&Egrave; stato generato un nuovo Impact Level Description con identificatore {{ param }}",
             "updated": "&Egrave; stato aggiornato Impact Level Description identificato da {{ param }}",

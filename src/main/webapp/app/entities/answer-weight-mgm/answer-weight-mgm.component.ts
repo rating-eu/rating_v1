@@ -15,27 +15,29 @@
  *
  */
 
-import {Component, OnInit, OnDestroy} from '@angular/core';
-import {HttpResponse, HttpErrorResponse} from '@angular/common/http';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {HttpErrorResponse, HttpResponse} from '@angular/common/http';
 import {ActivatedRoute} from '@angular/router';
 import {Subscription} from 'rxjs/Subscription';
-import {JhiEventManager, JhiAlertService} from 'ng-jhipster';
+import {JhiAlertService, JhiEventManager} from 'ng-jhipster';
 
 import {AnswerWeightMgm} from './answer-weight-mgm.model';
 import {AnswerWeightMgmService} from './answer-weight-mgm.service';
 import {Principal} from '../../shared';
 import {MatTabChangeEvent} from '@angular/material';
-import { PopUpService } from '../../shared/pop-up-services/pop-up.service';
+import {PopUpService} from '../../shared/pop-up-services/pop-up.service';
+import {QuestionType} from "../enumerations/QuestionType.enum";
 
 @Component({
     selector: 'jhi-answer-weight-mgm',
     templateUrl: './answer-weight-mgm.component.html'
 })
 export class AnswerWeightMgmComponent implements OnInit, OnDestroy {
-    answerWeights: AnswerWeightMgm[];
+    allAnswerWeights: AnswerWeightMgm[];
+    regularAnswerWeights: AnswerWeightMgm[];
+    relevantAnswerWeights: AnswerWeightMgm[];
     currentAccount: any;
     eventSubscriber: Subscription;
-    currentSearch: string;
 
     constructor(private answerWeightService: AnswerWeightMgmService,
                 private jhiAlertService: JhiAlertService,
@@ -43,39 +45,18 @@ export class AnswerWeightMgmComponent implements OnInit, OnDestroy {
                 private activatedRoute: ActivatedRoute,
                 private principal: Principal,
                 public popUpService: PopUpService) {
-        this.currentSearch = this.activatedRoute.snapshot && this.activatedRoute.snapshot.params['search'] ?
-            this.activatedRoute.snapshot.params['search'] : '';
     }
 
     loadAll() {
-        if (this.currentSearch) {
-            this.answerWeightService.search({
-                query: this.currentSearch,
-            }).subscribe(
-                (res: HttpResponse<AnswerWeightMgm[]>) => this.answerWeights = res.body,
-                (res: HttpErrorResponse) => this.onError(res.message)
-            );
-            return;
-        }
         this.answerWeightService.query().subscribe(
             (res: HttpResponse<AnswerWeightMgm[]>) => {
-                this.answerWeights = res.body;
-                this.currentSearch = '';
+                this.allAnswerWeights = res.body;
             },
             (res: HttpErrorResponse) => this.onError(res.message)
         );
     }
 
-    search(query) {
-        if (!query) {
-            return this.clear();
-        }
-        this.currentSearch = query;
-        this.loadAll();
-    }
-
     clear() {
-        this.currentSearch = '';
         this.loadAll();
     }
 
@@ -104,7 +85,40 @@ export class AnswerWeightMgmComponent implements OnInit, OnDestroy {
     }
 
     tabClick(event: MatTabChangeEvent) {
-        this.currentSearch = event.tab.textLabel;
-        this.search(this.currentSearch);
+        switch (event.tab.textLabel) {
+            case '': {
+                if (!this.allAnswerWeights || !this.allAnswerWeights.length) {
+                    this.answerWeightService.query().subscribe(
+                        (response: HttpResponse<AnswerWeightMgm[]>) => {
+                            this.allAnswerWeights = response.body;
+                        }
+                    );
+                }
+
+                break;
+            }
+            case 'Regular': {
+                if (!this.regularAnswerWeights || !this.regularAnswerWeights.length) {
+                    this.answerWeightService.findAllByQuestionType(QuestionType.REGULAR).subscribe(
+                        (response: HttpResponse<AnswerWeightMgm[]>) => {
+                            this.regularAnswerWeights = response.body;
+                        }
+                    );
+                }
+
+                break;
+            }
+            case 'Relevant': {
+                if (!this.relevantAnswerWeights || !this.relevantAnswerWeights.length) {
+                    this.answerWeightService.findAllByQuestionType(QuestionType.RELEVANT).subscribe(
+                        (response: HttpResponse<AnswerWeightMgm[]>) => {
+                            this.relevantAnswerWeights = response.body;
+                        }
+                    );
+                }
+                
+                break;
+            }
+        }
     }
 }

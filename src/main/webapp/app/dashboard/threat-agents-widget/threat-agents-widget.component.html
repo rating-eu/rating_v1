@@ -16,127 +16,133 @@
   -->
 
 <ng-container *ngIf="loading">
-  <div class="loader"></div>
+    <div class="loader"></div>
 </ng-container>
 <ng-container *ngIf="!loading">
-  <div class="tile-stats tiles-first-row">
-    <div class="count" *ngIf="selfAssessment.threatagents.length>0">{{selfAssessment.threatagents.length}}</div>
-    <ng-container *ngIf="selfAssessment.threatagents.length>0">
-      <div class="col-md-10">
-        <h3>Threat Agents</h3>
-      </div>
-      <div class="col-md-2"><a [routerLink]="['/identify-threat-agent/result']"><i class="fa fa-link fa-lg"
-            aria-hidden="true"></i></a></div>
-    </ng-container>
-    <h3 *ngIf="selfAssessment.threatagents.length===0"><a
-        [routerLink]="['/identify-threat-agent/questionnaires/ID_THREAT_AGENT/questionnaire']">No Threat Agents
-        founded</a></h3>
-    <div class="col-md-12">
-      <p *ngIf="selfAssessment.threatagents.length>0"><a href="javascript:void(0)"
-          (click)="open(threatAgentsDetails)">details</a></p>
+    <div class="tile-stats tiles-first-row">
+        <div class="count" *ngIf="threatAgentInterests?.length>0">{{threatAgentInterests.length}}</div>
+        <ng-container *ngIf="threatAgentInterests?.length>0">
+            <div class="col-md-10">
+                <h3>Threat Agents</h3>
+            </div>
+            <div class="col-md-2"><a [routerLink]="['/identify-threat-agent/result']"><i class="fa fa-link fa-lg"
+                                                                                         aria-hidden="true"></i></a>
+            </div>
+        </ng-container>
+        <h3 *ngIf="threatAgentInterests?.length===0"><a
+            [routerLink]="['/identify-threat-agent/questionnaires/ID_THREAT_AGENT/questionnaire']">No Threat Agents
+            founded</a></h3>
+        <div class="col-md-12">
+            <p *ngIf="threatAgentInterests?.length>0"><a href="javascript:void(0)"
+                                                         (click)="open(threatAgentsDetails)">details</a></p>
+        </div>
     </div>
-  </div>
 </ng-container>
 
 <ng-template #threatAgentsDetails let-d="dismiss">
-  <div class="modal-header">
-    <h4 class="modal-title" id="modal-basic-title">Threat Agents</h4>
-    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
-      <span aria-hidden="true">&times;</span>
-    </button>
-  </div>
-  <div class="modal-body">
-    <div class="table-responsive table-hover">
-      <table class="table" *ngIf="motivations, threatAgentsPercentageArray">
-        <thead>
-          <tr>
-            <th scope="col" class="text-center align-middle">Threat Agent
-              <i *ngIf="!orderBy.threatAgents" (click)=" tableOrderBy('threat_agents', true)" class="fa fa-sort"
-                aria-hidden="true"></i>
-              <i *ngIf="orderBy.threatAgents && orderBy.type === 'desc'" (click)=" tableOrderBy('threat_agents', false)"
-                class="fa fa-chevron-down" aria-hidden="true"></i>
-              <i *ngIf="orderBy.threatAgents && orderBy.type === 'asc'" (click)=" tableOrderBy('threat_agents', true)"
-                class="fa fa-chevron-up" aria-hidden="true"></i>
-            </th>
-            <th scope="col" class="text-center align-middle">Skills
-              <i *ngIf="!orderBy.skills" (click)=" tableOrderBy('skills', true)" class="fa fa-sort"
-                aria-hidden="true"></i>
-              <i *ngIf="orderBy.skills && orderBy.type === 'desc'" (click)=" tableOrderBy('skills', false)"
-                class="fa fa-chevron-down" aria-hidden="true"></i>
-              <i *ngIf="orderBy.skills && orderBy.type === 'asc'" (click)=" tableOrderBy('skills', true)"
-                class="fa fa-chevron-up" aria-hidden="true"></i>
-            </th>
-            <th scope="col" class="text-center align-middle">Level of Interest
-              <i *ngIf="!orderBy.interest" (click)=" tableOrderBy('interest', true)" class="fa fa-sort"
-                aria-hidden="true"></i>
-              <i *ngIf="orderBy.interest && orderBy.type === 'desc'" (click)=" tableOrderBy('interest', false)"
-                class="fa fa-chevron-down" aria-hidden="true"></i>
-              <i *ngIf="orderBy.interest && orderBy.type === 'asc'" (click)=" tableOrderBy('interest', true)"
-                class="fa fa-chevron-up" aria-hidden="true"></i>
-            </th>
-          </tr>
-        </thead>
-
-        <tbody>
-          <!--For rows-->
-          <ng-container *ngFor="let couple of threatAgentsPercentageArray">
-            <tr (click)="selectThreatAgent(couple.key)" style="cursor: pointer">
-              <!--For cols-->
-              <th scope="row" class="text-center align-middle">
-                {{couple.key.name}}
-              </th>
-              <td class="text-center align-middle">
-                {{couple.key.skillLevel | titlecase}}
-              </td>
-              <td class="text-center align-middle">
-                {{couple.value.toPercentage()/100 | percent:'1.0-2'}}
-              </td>
-            </tr>
-            <tr *ngIf="selectedThreatAgent?.id === couple.key.id">
-              <td colspan="3">
-                <table>
-                  <thead>
-              <th scope="col" class="text-center align-middle">Property</th>
-              <th scope="col" class="text-center align-middle">Value</th>
-              </thead>
-        <tbody>
-          <tr>
-            <td>Description</td>
-            <td>
-              <p>{{selectedThreatAgent.description}}</p>
-            </td>
-          </tr>
-          <tr>
-            <td>Access</td>
-            <td>
-              <p>{{selectedThreatAgent.access}}</p>
-            </td>
-          </tr>
-          <tr>
-            <td>Intent</td>
-            <td>
-              <p>{{selectedThreatAgent.intent}}</p>
-            </td>
-          </tr>
-          <tr *ngIf="selectedThreatAgent.motivations">
-            <td>Motivations</td>
-            <td>
-              <ng-container *ngFor="let motivation of selectedThreatAgent.motivations, let last=last">
-                <a [routerLink]="['/motivation-mgm', motivation.id]">{{motivation
-                  .name}}</a>
-                <ng-container *ngIf="!last">,&nbsp;
-                </ng-container>
-              </ng-container>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-      </td>
-      </tr>
-      </ng-container>
-
-      </tbody>
-      </table>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Threat Agents</h4>
+        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+            <span aria-hidden="true">&times;</span>
+        </button>
     </div>
-  </div>
+    <div class="modal-body">
+        <div class="table-responsive table-hover">
+            <table class="table" *ngIf="threatAgentInterests">
+                <thead>
+                <tr>
+                    <th scope="col" class="text-center align-middle">Threat Agent
+                        <i *ngIf="!orderBy.threatAgents" (click)=" tableOrderBy('threat_agents', true)"
+                           class="fa fa-sort"
+                           aria-hidden="true"></i>
+                        <i *ngIf="orderBy.threatAgents && orderBy.type === 'desc'"
+                           (click)=" tableOrderBy('threat_agents', false)"
+                           class="fa fa-chevron-down" aria-hidden="true"></i>
+                        <i *ngIf="orderBy.threatAgents && orderBy.type === 'asc'"
+                           (click)=" tableOrderBy('threat_agents', true)"
+                           class="fa fa-chevron-up" aria-hidden="true"></i>
+                    </th>
+                    <th scope="col" class="text-center align-middle">Skills
+                        <i *ngIf="!orderBy.skills" (click)=" tableOrderBy('skills', true)" class="fa fa-sort"
+                           aria-hidden="true"></i>
+                        <i *ngIf="orderBy.skills && orderBy.type === 'desc'" (click)=" tableOrderBy('skills', false)"
+                           class="fa fa-chevron-down" aria-hidden="true"></i>
+                        <i *ngIf="orderBy.skills && orderBy.type === 'asc'" (click)=" tableOrderBy('skills', true)"
+                           class="fa fa-chevron-up" aria-hidden="true"></i>
+                    </th>
+                    <th scope="col" class="text-center align-middle">Level of Interest
+                        <i *ngIf="!orderBy.interest" (click)=" tableOrderBy('interest', true)" class="fa fa-sort"
+                           aria-hidden="true"></i>
+                        <i *ngIf="orderBy.interest && orderBy.type === 'desc'"
+                           (click)=" tableOrderBy('interest', false)"
+                           class="fa fa-chevron-down" aria-hidden="true"></i>
+                        <i *ngIf="orderBy.interest && orderBy.type === 'asc'" (click)=" tableOrderBy('interest', true)"
+                           class="fa fa-chevron-up" aria-hidden="true"></i>
+                    </th>
+                </tr>
+                </thead>
+
+                <tbody>
+                <!--For rows-->
+                <ng-container *ngFor="let threatAgentInterest of threatAgentInterests">
+                    <tr (click)="selectThreatAgent(threatAgentInterest)" style="cursor: pointer">
+                        <!--For cols-->
+                        <th scope="row" class="text-center align-middle">
+                            {{threatAgentInterest.name}}
+                        </th>
+                        <td class="text-center align-middle">
+                            {{threatAgentInterest.skillLevel | titlecase}}
+                        </td>
+                        <td class="text-center align-middle">
+                            {{threatAgentInterest.levelOfInterest | percent:'1.0-2'}}
+                        </td>
+                    </tr>
+                    <tr *ngIf="selectedThreatAgent?.id === threatAgentInterest?.id">
+                        <td colspan="3">
+                            <table>
+                                <thead>
+                                <th scope="col" class="text-center align-middle">Property</th>
+                                <th scope="col" class="text-center align-middle">Value</th>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td>Description</td>
+                                    <td>
+                                        <p>{{selectedThreatAgent.description}}</p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Access</td>
+                                    <td>
+                                        <p>{{selectedThreatAgent.access}}</p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Intent</td>
+                                    <td>
+                                        <p>{{selectedThreatAgent.intent}}</p>
+                                    </td>
+                                </tr>
+                                <tr *ngIf="selectedThreatAgent.motivations">
+                                    <td>Motivations</td>
+                                    <td>
+                                        <ng-container
+                                            *ngFor="let motivation of selectedThreatAgent?.motivations, let last=last">
+                                            <a [routerLink]="['/motivation-mgm', motivation.id]">{{motivation
+                                                .name}}</a>
+                                            <ng-container *ngIf="!last">,&nbsp;
+                                            </ng-container>
+                                        </ng-container>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                </ng-container>
+
+                </tbody>
+            </table>
+        </div>
+    </div>
 </ng-template>

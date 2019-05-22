@@ -20,17 +20,12 @@ package eu.hermeneut.service.impl;
 import eu.hermeneut.service.AssetService;
 import eu.hermeneut.domain.Asset;
 import eu.hermeneut.repository.AssetRepository;
-import eu.hermeneut.repository.search.AssetSearchRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
-
-import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
  * Service Implementation for managing Asset.
@@ -43,11 +38,8 @@ public class AssetServiceImpl implements AssetService {
 
     private final AssetRepository assetRepository;
 
-    private final AssetSearchRepository assetSearchRepository;
-
-    public AssetServiceImpl(AssetRepository assetRepository, AssetSearchRepository assetSearchRepository) {
+    public AssetServiceImpl(AssetRepository assetRepository) {
         this.assetRepository = assetRepository;
-        this.assetSearchRepository = assetSearchRepository;
     }
 
     /**
@@ -60,7 +52,6 @@ public class AssetServiceImpl implements AssetService {
     public Asset save(Asset asset) {
         log.debug("Request to save Asset : {}", asset);
         Asset result = assetRepository.save(asset);
-        assetSearchRepository.save(result);
         return result;
     }
 
@@ -98,21 +89,5 @@ public class AssetServiceImpl implements AssetService {
     public void delete(Long id) {
         log.debug("Request to delete Asset : {}", id);
         assetRepository.delete(id);
-        assetSearchRepository.delete(id);
-    }
-
-    /**
-     * Search for the asset corresponding to the query.
-     *
-     * @param query the query of the search
-     * @return the list of entities
-     */
-    @Override
-    @Transactional(readOnly = true)
-    public List<Asset> search(String query) {
-        log.debug("Request to search Assets for query {}", query);
-        return StreamSupport
-            .stream(assetSearchRepository.search(queryStringQuery(query)).spliterator(), false)
-            .collect(Collectors.toList());
     }
 }

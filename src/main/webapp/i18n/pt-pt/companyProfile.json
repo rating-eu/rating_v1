@@ -5,8 +5,7 @@
             "home": {
                 "title": "Company Profiles",
                 "createLabel": "Criar um(a) novo(a) Company Profile",
-                "createOrEditLabel": "Criar ou editar um(a) Company Profile",
-                "search": "Search for Company Profile"
+                "createOrEditLabel": "Criar ou editar um(a) Company Profile"
             },
             "created": "A new Company Profile is created with identifier {{ param }}",
             "updated": "A Company Profile is updated with identifier {{ param }}",

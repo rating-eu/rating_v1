@@ -22,7 +22,6 @@ import eu.hermeneut.HermeneutApp;
 import eu.hermeneut.domain.Phase;
 import eu.hermeneut.repository.PhaseRepository;
 import eu.hermeneut.service.PhaseService;
-import eu.hermeneut.repository.search.PhaseSearchRepository;
 import eu.hermeneut.web.rest.errors.ExceptionTranslator;
 
 import org.junit.Before;
@@ -73,9 +72,6 @@ public class PhaseResourceIntTest {
     private PhaseService phaseService;
 
     @Autowired
-    private PhaseSearchRepository phaseSearchRepository;
-
-    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -118,7 +114,6 @@ public class PhaseResourceIntTest {
 
     @Before
     public void initTest() {
-        phaseSearchRepository.deleteAll();
         phase = createEntity(em);
     }
 
@@ -140,10 +135,6 @@ public class PhaseResourceIntTest {
         assertThat(testPhase.getName()).isEqualTo(DEFAULT_NAME);
         assertThat(testPhase.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
         assertThat(testPhase.getWeight()).isEqualTo(DEFAULT_WEIGHT);
-
-        // Validate the Phase in Elasticsearch
-        Phase phaseEs = phaseSearchRepository.findOne(testPhase.getId());
-        assertThat(phaseEs).isEqualToIgnoringGivenFields(testPhase);
     }
 
     @Test
@@ -270,10 +261,6 @@ public class PhaseResourceIntTest {
         assertThat(testPhase.getName()).isEqualTo(UPDATED_NAME);
         assertThat(testPhase.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
         assertThat(testPhase.getWeight()).isEqualTo(UPDATED_WEIGHT);
-
-        // Validate the Phase in Elasticsearch
-        Phase phaseEs = phaseSearchRepository.findOne(testPhase.getId());
-        assertThat(phaseEs).isEqualToIgnoringGivenFields(testPhase);
     }
 
     @Test
@@ -307,29 +294,9 @@ public class PhaseResourceIntTest {
             .accept(TestUtil.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk());
 
-        // Validate Elasticsearch is empty
-        boolean phaseExistsInEs = phaseSearchRepository.exists(phase.getId());
-        assertThat(phaseExistsInEs).isFalse();
-
         // Validate the database is empty
         List<Phase> phaseList = phaseRepository.findAll();
         assertThat(phaseList).hasSize(databaseSizeBeforeDelete - 1);
-    }
-
-    @Test
-    @Transactional
-    public void searchPhase() throws Exception {
-        // Initialize the database
-        phaseService.save(phase);
-
-        // Search the phase
-        restPhaseMockMvc.perform(get("/api/_search/phases?query=id:" + phase.getId()))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(phase.getId().intValue())))
-            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
-            .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION.toString())))
-            .andExpect(jsonPath("$.[*].weight").value(hasItem(DEFAULT_WEIGHT.doubleValue())));
     }
 
     @Test

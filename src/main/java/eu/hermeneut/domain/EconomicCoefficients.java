@@ -25,7 +25,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 
-import org.springframework.data.elasticsearch.annotations.Document;
+
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -38,7 +38,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "economic_coefficients")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-@Document(indexName = "economiccoefficients")
+
 public class EconomicCoefficients implements Serializable {
 
     private static final long serialVersionUID = 1L;

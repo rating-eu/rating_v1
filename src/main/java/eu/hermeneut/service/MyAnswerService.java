@@ -18,8 +18,13 @@
 package eu.hermeneut.service;
 
 import eu.hermeneut.domain.MyAnswer;
+import eu.hermeneut.domain.Question;
+import eu.hermeneut.domain.Questionnaire;
+import eu.hermeneut.domain.QuestionnaireStatus;
+import eu.hermeneut.domain.enumeration.ContainerType;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * Service Interface for managing MyAnswer.
@@ -68,13 +73,7 @@ public interface MyAnswerService {
      */
     void delete(Long id);
 
-    /**
-     * Search for the myAnswer corresponding to the query.
-     *
-     * @param query the query of the search
-     * @return the list of entities
-     */
-    List<MyAnswer> search(String query);
-
     List<MyAnswer> findAllByQuestionnaireStatus(Long questionnaireStatusID);
+
+    List<MyAnswer> findAllByQuestionnaireStatusAndSection(QuestionnaireStatus questionnaireStatus, ContainerType section);
 }

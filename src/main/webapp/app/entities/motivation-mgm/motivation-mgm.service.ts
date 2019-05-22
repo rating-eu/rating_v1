@@ -62,12 +62,6 @@ export class MotivationMgmService {
         return this.http.delete<any>(`${this.resourceUrl}/${id}`, { observe: 'response'});
     }
 
-    search(req?: any): Observable<HttpResponse<MotivationMgm[]>> {
-        const options = createRequestOption(req);
-        return this.http.get<MotivationMgm[]>(this.resourceSearchUrl, { params: options, observe: 'response' })
-            .map((res: HttpResponse<MotivationMgm[]>) => this.convertArrayResponse(res));
-    }
-
     private convertResponse(res: EntityResponseType): EntityResponseType {
         const body: MotivationMgm = this.convertItemFromServer(res.body);
         return res.clone({body});

@@ -24,7 +24,6 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import javax.persistence.*;
 import javax.validation.constraints.*;
 
-import org.springframework.data.elasticsearch.annotations.Document;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
@@ -38,7 +37,7 @@ import eu.hermeneut.domain.enumeration.AssetType;
 @Entity
 @Table(name = "asset_category")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-@Document(indexName = "assetcategory")
+
 public class AssetCategory implements Serializable {
 
     private static final long serialVersionUID = 1L;

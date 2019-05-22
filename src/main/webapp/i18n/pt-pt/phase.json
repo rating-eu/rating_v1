@@ -5,8 +5,7 @@
             "home": {
                 "title": "Phases",
                 "createLabel": "Criar um(a) novo(a) Phase",
-                "createOrEditLabel": "Criar ou editar um(a) Phase",
-                "search": "Search for Phase"
+                "createOrEditLabel": "Criar ou editar um(a) Phase"
             },
             "created": "A new Phase is created with identifier {{ param }}",
             "updated": "A Phase is updated with identifier {{ param }}",

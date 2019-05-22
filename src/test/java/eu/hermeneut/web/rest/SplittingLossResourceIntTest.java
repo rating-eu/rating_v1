@@ -22,7 +22,6 @@ import eu.hermeneut.HermeneutApp;
 import eu.hermeneut.domain.SplittingLoss;
 import eu.hermeneut.repository.SplittingLossRepository;
 import eu.hermeneut.service.SplittingLossService;
-import eu.hermeneut.repository.search.SplittingLossSearchRepository;
 import eu.hermeneut.web.rest.errors.ExceptionTranslator;
 
 import org.junit.Before;
@@ -79,9 +78,6 @@ public class SplittingLossResourceIntTest {
     private SplittingLossService splittingLossService;
 
     @Autowired
-    private SplittingLossSearchRepository splittingLossSearchRepository;
-
-    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -125,7 +121,6 @@ public class SplittingLossResourceIntTest {
 
     @Before
     public void initTest() {
-        splittingLossSearchRepository.deleteAll();
         splittingLoss = createEntity(em);
     }
 
@@ -148,10 +143,6 @@ public class SplittingLossResourceIntTest {
         assertThat(testSplittingLoss.getCategoryType()).isEqualTo(DEFAULT_CATEGORY_TYPE);
         assertThat(testSplittingLoss.getLossPercentage()).isEqualTo(DEFAULT_LOSS_PERCENTAGE);
         assertThat(testSplittingLoss.getLoss()).isEqualTo(DEFAULT_LOSS);
-
-        // Validate the SplittingLoss in Elasticsearch
-        SplittingLoss splittingLossEs = splittingLossSearchRepository.findOne(testSplittingLoss.getId());
-        assertThat(splittingLossEs).isEqualToIgnoringGivenFields(testSplittingLoss);
     }
 
     @Test
@@ -246,10 +237,6 @@ public class SplittingLossResourceIntTest {
         assertThat(testSplittingLoss.getCategoryType()).isEqualTo(UPDATED_CATEGORY_TYPE);
         assertThat(testSplittingLoss.getLossPercentage()).isEqualTo(UPDATED_LOSS_PERCENTAGE);
         assertThat(testSplittingLoss.getLoss()).isEqualTo(UPDATED_LOSS);
-
-        // Validate the SplittingLoss in Elasticsearch
-        SplittingLoss splittingLossEs = splittingLossSearchRepository.findOne(testSplittingLoss.getId());
-        assertThat(splittingLossEs).isEqualToIgnoringGivenFields(testSplittingLoss);
     }
 
     @Test
@@ -283,30 +270,9 @@ public class SplittingLossResourceIntTest {
             .accept(TestUtil.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk());
 
-        // Validate Elasticsearch is empty
-        boolean splittingLossExistsInEs = splittingLossSearchRepository.exists(splittingLoss.getId());
-        assertThat(splittingLossExistsInEs).isFalse();
-
         // Validate the database is empty
         List<SplittingLoss> splittingLossList = splittingLossRepository.findAll();
         assertThat(splittingLossList).hasSize(databaseSizeBeforeDelete - 1);
-    }
-
-    @Test
-    @Transactional
-    public void searchSplittingLoss() throws Exception {
-        // Initialize the database
-        splittingLossService.save(splittingLoss);
-
-        // Search the splittingLoss
-        restSplittingLossMockMvc.perform(get("/api/_search/splitting-losses?query=id:" + splittingLoss.getId()))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(splittingLoss.getId().intValue())))
-            .andExpect(jsonPath("$.[*].sectorType").value(hasItem(DEFAULT_SECTOR_TYPE.toString())))
-            .andExpect(jsonPath("$.[*].categoryType").value(hasItem(DEFAULT_CATEGORY_TYPE.toString())))
-            .andExpect(jsonPath("$.[*].lossPercentage").value(hasItem(DEFAULT_LOSS_PERCENTAGE.intValue())))
-            .andExpect(jsonPath("$.[*].loss").value(hasItem(DEFAULT_LOSS.intValue())));
     }
 
     @Test

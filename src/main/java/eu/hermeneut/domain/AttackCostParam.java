@@ -24,7 +24,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
-import org.springframework.data.elasticsearch.annotations.Document;
+
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -37,7 +37,7 @@ import java.util.Objects;
     uniqueConstraints = @UniqueConstraint(columnNames = {"self_assessment_id", "param_type"})
 )
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-@Document(indexName = "attack_cost_param")
+
 public class AttackCostParam implements Serializable {
 
     private static final long serialVersionUID = 1L;

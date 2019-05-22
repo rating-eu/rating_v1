@@ -34,7 +34,6 @@ export class SplittingLossMgmComponent implements OnInit, OnDestroy {
 splittingLosses: SplittingLossMgm[];
     currentAccount: any;
     eventSubscriber: Subscription;
-    currentSearch: string;
 
     constructor(
         private splittingLossService: SplittingLossMgmService,
@@ -44,39 +43,18 @@ splittingLosses: SplittingLossMgm[];
         private principal: Principal,
         public popUpService: PopUpService
     ) {
-        this.currentSearch = this.activatedRoute.snapshot && this.activatedRoute.snapshot.params['search'] ?
-            this.activatedRoute.snapshot.params['search'] : '';
     }
 
     loadAll() {
-        if (this.currentSearch) {
-            this.splittingLossService.search({
-                query: this.currentSearch,
-                }).subscribe(
-                    (res: HttpResponse<SplittingLossMgm[]>) => this.splittingLosses = res.body,
-                    (res: HttpErrorResponse) => this.onError(res.message)
-                );
-            return;
-       }
         this.splittingLossService.query().subscribe(
             (res: HttpResponse<SplittingLossMgm[]>) => {
                 this.splittingLosses = res.body;
-                this.currentSearch = '';
             },
             (res: HttpErrorResponse) => this.onError(res.message)
         );
     }
 
-    search(query) {
-        if (!query) {
-            return this.clear();
-        }
-        this.currentSearch = query;
-        this.loadAll();
-    }
-
     clear() {
-        this.currentSearch = '';
         this.loadAll();
     }
     ngOnInit() {

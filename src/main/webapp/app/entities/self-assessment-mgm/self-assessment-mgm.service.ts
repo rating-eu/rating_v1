@@ -25,7 +25,7 @@ import {JhiDateUtils} from 'ng-jhipster';
 import {SelfAssessmentMgm} from './self-assessment-mgm.model';
 import {createRequestOption} from '../../shared';
 import {SessionStorageService} from '../../../../../../node_modules/ngx-webstorage';
-import {Update} from '../../layouts/model/Update';
+import {LayoutConfiguration} from '../../layouts/model/LayoutConfiguration';
 import {DatasharingService} from '../../datasharing/datasharing.service';
 import {SelfAssessmentOverview} from "../../my-risk-assessments/models/SelfAssessmentOverview.model";
 
@@ -54,15 +54,18 @@ export class SelfAssessmentMgmService implements OnInit {
         this.selfAssessmentSelected = null;
     }
 
-    clearSelfAssessment() {
-        this.selfAssessmentSelected = null;
-    }
-
     getOverwiew(): Observable<SelfAssessmentOverview> {
-        const selfId = this.getSelfAssessment().id;
+        const selfAssessment: SelfAssessmentMgm = this.dataSharingService.selfAssessment;
+
+        if (!selfAssessment) {
+            return null;
+        }
+
+        const selfId = selfAssessment.id;
         if (!selfId) {
             return null;
         }
+
         const customURL = this.selfAssessmentOverviewUrl.replace('{selfID}', selfId.toString());
         return this.http.get<SelfAssessmentOverview>(`${customURL}`, {observe: 'response'})
             .map((res: HttpResponse<SelfAssessmentOverview>) => {
@@ -70,35 +73,30 @@ export class SelfAssessmentMgmService implements OnInit {
             });
     }
 
-    getSelfAssessment(): SelfAssessmentMgm {
+    private getSelfAssessment(): SelfAssessmentMgm {
         const self = this.sessionStorage.retrieve(SelfAssessmentMgmService.SELF_ASSESSMENT_KEY);
         if (!self) {
-            this.router.navigate(['/my-risk-assessments']);
+            //this.router.navigate(['/my-risk-assessments']);
             return null;
         } else {
             this.selfAssessmentSelected = self;
-            let update: Update = this.dataSharingService.getUpdate();
+            let configuration: LayoutConfiguration = this.dataSharingService.layoutConfiguration;
 
-            if (!update) {
-                update = new Update();
+            if (!configuration) {
+                configuration = new LayoutConfiguration();
             }
 
-            update.selfAssessmentId = this.selfAssessmentSelected.id.toString();
-            update.navSubTitle = self.name;
+            configuration.selfAssessmentId = this.selfAssessmentSelected.id.toString();
+            configuration.navSubTitle = self.name;
 
-            this.dataSharingService.updateLayout(update);
+            this.dataSharingService.layoutConfiguration = configuration;
             return this.selfAssessmentSelected;
         }
     }
 
-    setSelfAssessment(selfAssessment: SelfAssessmentMgm) {
+    private setSelfAssessment(selfAssessment: SelfAssessmentMgm) {
         this.selfAssessmentSelected = selfAssessment;
         this.sessionStorage.store(SelfAssessmentMgmService.SELF_ASSESSMENT_KEY, selfAssessment);
-    }
-
-    isSelfAssessmentSelected(): boolean {
-        const self = this.sessionStorage.retrieve(SelfAssessmentMgmService.SELF_ASSESSMENT_KEY);
-        return self !== null && self !== undefined;
     }
 
     create(selfAssessment: SelfAssessmentMgm): Observable<EntityResponseType> {
@@ -137,12 +135,6 @@ export class SelfAssessmentMgmService implements OnInit {
         }
 
         return this.http.delete<any>(`${this.resourceUrl}/${id}`, {observe: 'response'});
-    }
-
-    search(req?: any): Observable<HttpResponse<SelfAssessmentMgm[]>> {
-        const options = createRequestOption(req);
-        return this.http.get<SelfAssessmentMgm[]>(this.resourceSearchUrl, {params: options, observe: 'response'})
-            .map((res: HttpResponse<SelfAssessmentMgm[]>) => this.convertArrayResponse(res));
     }
 
     private convertResponse(res: EntityResponseType): EntityResponseType {

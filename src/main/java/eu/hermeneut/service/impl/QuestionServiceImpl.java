@@ -1,12 +1,12 @@
 /*
  * Copyright 2019 HERMENEUT Consortium
- *  
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *  
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- *  
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -17,21 +17,21 @@
 
 package eu.hermeneut.service.impl;
 
-import eu.hermeneut.domain.Questionnaire;
+import eu.hermeneut.domain.*;
+import eu.hermeneut.domain.enumeration.ContainerType;
 import eu.hermeneut.service.QuestionService;
-import eu.hermeneut.domain.Question;
 import eu.hermeneut.repository.QuestionRepository;
-import eu.hermeneut.repository.search.QuestionSearchRepository;
+import eu.hermeneut.utils.filter.QuestionByContainerFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Set;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
-
-import static org.elasticsearch.index.query.QueryBuilders.*;
+import java.util.stream.Stream;
 
 /**
  * Service Implementation for managing Question.
@@ -44,11 +44,8 @@ public class QuestionServiceImpl implements QuestionService {
 
     private final QuestionRepository questionRepository;
 
-    private final QuestionSearchRepository questionSearchRepository;
-
-    public QuestionServiceImpl(QuestionRepository questionRepository, QuestionSearchRepository questionSearchRepository) {
+    public QuestionServiceImpl(QuestionRepository questionRepository) {
         this.questionRepository = questionRepository;
-        this.questionSearchRepository = questionSearchRepository;
     }
 
     /**
@@ -61,7 +58,6 @@ public class QuestionServiceImpl implements QuestionService {
     public Question save(Question question) {
         log.debug("Request to save Question : {}", question);
         Question result = questionRepository.save(question);
-        questionSearchRepository.save(result);
         return result;
     }
 
@@ -99,26 +95,28 @@ public class QuestionServiceImpl implements QuestionService {
     public void delete(Long id) {
         log.debug("Request to delete Question : {}", id);
         questionRepository.delete(id);
-        questionSearchRepository.delete(id);
     }
 
-    /**
-     * Search for the question corresponding to the query.
-     *
-     * @param query the query of the search
-     * @return the list of entities
-     */
     @Override
     @Transactional(readOnly = true)
-    public List<Question> search(String query) {
-        log.debug("Request to search Questions for query {}", query);
-        return StreamSupport
-            .stream(questionSearchRepository.search(queryStringQuery(query)).spliterator(), false)
-            .collect(Collectors.toList());
+    public List<Question> findAllByQuestionnaire(Questionnaire questionnaire) {
+        return this.questionRepository.findAllByQuestionnaire(questionnaire);
     }
 
     @Override
-    public List<Question> findAllByQuestionnaire(Questionnaire questionnaire) {
-        return this.questionRepository.findAllByQuestionnaire(questionnaire);
+    @Transactional(readOnly = true)
+    public List<Question> findAllByQuestionnaireAndSection(Questionnaire questionnaire, ContainerType section) {
+
+        List<Question> questions = this.questionRepository.findAllByQuestionnaire(questionnaire);
+
+        Predicate<Question> questionPredicate = new QuestionByContainerFilter(section);
+
+        Stream<Question> stream = questions.stream().parallel().filter(
+            questionPredicate
+        );
+
+        List<Question> sectionQuestions = stream.collect(Collectors.toList());
+
+        return sectionQuestions;
     }
 }

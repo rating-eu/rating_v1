@@ -22,7 +22,6 @@ import eu.hermeneut.HermeneutApp;
 import eu.hermeneut.domain.ImpactLevelDescription;
 import eu.hermeneut.repository.ImpactLevelDescriptionRepository;
 import eu.hermeneut.service.ImpactLevelDescriptionService;
-import eu.hermeneut.repository.search.ImpactLevelDescriptionSearchRepository;
 import eu.hermeneut.web.rest.errors.ExceptionTranslator;
 
 import org.junit.Before;
@@ -82,9 +81,6 @@ public class ImpactLevelDescriptionResourceIntTest {
     private ImpactLevelDescriptionService impactLevelDescriptionService;
 
     @Autowired
-    private ImpactLevelDescriptionSearchRepository impactLevelDescriptionSearchRepository;
-
-    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -130,7 +126,6 @@ public class ImpactLevelDescriptionResourceIntTest {
 
     @Before
     public void initTest() {
-        impactLevelDescriptionSearchRepository.deleteAll();
         impactLevelDescription = createEntity(em);
     }
 
@@ -155,10 +150,6 @@ public class ImpactLevelDescriptionResourceIntTest {
         assertThat(testImpactLevelDescription.getServiceOutputs()).isEqualTo(DEFAULT_SERVICE_OUTPUTS);
         assertThat(testImpactLevelDescription.getLegalAndCompliance()).isEqualTo(DEFAULT_LEGAL_AND_COMPLIANCE);
         assertThat(testImpactLevelDescription.getManagementImpact()).isEqualTo(DEFAULT_MANAGEMENT_IMPACT);
-
-        // Validate the ImpactLevelDescription in Elasticsearch
-        ImpactLevelDescription impactLevelDescriptionEs = impactLevelDescriptionSearchRepository.findOne(testImpactLevelDescription.getId());
-        assertThat(impactLevelDescriptionEs).isEqualToIgnoringGivenFields(testImpactLevelDescription);
     }
 
     @Test
@@ -369,10 +360,6 @@ public class ImpactLevelDescriptionResourceIntTest {
         assertThat(testImpactLevelDescription.getServiceOutputs()).isEqualTo(UPDATED_SERVICE_OUTPUTS);
         assertThat(testImpactLevelDescription.getLegalAndCompliance()).isEqualTo(UPDATED_LEGAL_AND_COMPLIANCE);
         assertThat(testImpactLevelDescription.getManagementImpact()).isEqualTo(UPDATED_MANAGEMENT_IMPACT);
-
-        // Validate the ImpactLevelDescription in Elasticsearch
-        ImpactLevelDescription impactLevelDescriptionEs = impactLevelDescriptionSearchRepository.findOne(testImpactLevelDescription.getId());
-        assertThat(impactLevelDescriptionEs).isEqualToIgnoringGivenFields(testImpactLevelDescription);
     }
 
     @Test
@@ -406,32 +393,9 @@ public class ImpactLevelDescriptionResourceIntTest {
             .accept(TestUtil.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk());
 
-        // Validate Elasticsearch is empty
-        boolean impactLevelDescriptionExistsInEs = impactLevelDescriptionSearchRepository.exists(impactLevelDescription.getId());
-        assertThat(impactLevelDescriptionExistsInEs).isFalse();
-
         // Validate the database is empty
         List<ImpactLevelDescription> impactLevelDescriptionList = impactLevelDescriptionRepository.findAll();
         assertThat(impactLevelDescriptionList).hasSize(databaseSizeBeforeDelete - 1);
-    }
-
-    @Test
-    @Transactional
-    public void searchImpactLevelDescription() throws Exception {
-        // Initialize the database
-        impactLevelDescriptionService.save(impactLevelDescription);
-
-        // Search the impactLevelDescription
-        restImpactLevelDescriptionMockMvc.perform(get("/api/_search/impact-level-descriptions?query=id:" + impactLevelDescription.getId()))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(impactLevelDescription.getId().intValue())))
-            .andExpect(jsonPath("$.[*].impact").value(hasItem(DEFAULT_IMPACT)))
-            .andExpect(jsonPath("$.[*].peopleEffects").value(hasItem(DEFAULT_PEOPLE_EFFECTS.toString())))
-            .andExpect(jsonPath("$.[*].reputation").value(hasItem(DEFAULT_REPUTATION.toString())))
-            .andExpect(jsonPath("$.[*].serviceOutputs").value(hasItem(DEFAULT_SERVICE_OUTPUTS.toString())))
-            .andExpect(jsonPath("$.[*].legalAndCompliance").value(hasItem(DEFAULT_LEGAL_AND_COMPLIANCE.toString())))
-            .andExpect(jsonPath("$.[*].managementImpact").value(hasItem(DEFAULT_MANAGEMENT_IMPACT.toString())));
     }
 
     @Test
