@@ -48,10 +48,8 @@ export class RiskManagementComponent implements OnInit {
     public squareColumnElement: number[];
     public squareRowElement: number[];
     public lastSquareRowElement: number;
-    private selfAssessment: SelfAssessmentMgm;
+    public selfAssessment: SelfAssessmentMgm;
     public criticalLevel: CriticalLevelMgm;
-    public impactMinLevelValues: number[] = [];
-    public impactMaxLevelValues: number[] = [];
     public impactLevelDescriptions: ImpactLevelDescriptionMgm[];
     public impactLevelDescriptionsByImpactMap: Map<number, ImpactLevelDescriptionMgm>;
     public impactLevels: ImpactLevelMgm[];
