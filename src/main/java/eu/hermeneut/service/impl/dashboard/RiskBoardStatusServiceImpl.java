@@ -79,15 +79,49 @@ public class RiskBoardStatusServiceImpl implements RiskBoardStatusService {
         SelfAssessment selfAssessment = this.selfAssessmentService.findOne(selfAssessmentID);
 
         if (selfAssessment != null) {
-            try {
-                ImpactEvaluationStatus impactEvaluationStatus = this.dashboardService.getImpactEvaluationStatus(selfAssessmentID);
+            switch (selfAssessment.getImpactMode()) {
+                case QUALITATIVE: {
+                    List<MyAsset> myAssets = this.myAssetService.findAllBySelfAssessment(selfAssessmentID);
 
-                status = impactEvaluationStatus != null ? Status.FULL : Status.EMPTY;
-            } catch (NullInputException e) {
-                e.printStackTrace();
-            } catch (NotFoundException e) {
-                e.printStackTrace();
+                    if (myAssets != null && !myAssets.isEmpty()) {
+                        int all = myAssets.size();
+                        int withImpact = 0;
+
+                        for (MyAsset myAsset : myAssets) {
+                            if (myAsset.getImpact() != null) {
+                                withImpact++;
+                            }
+                        }
+
+                        if (withImpact == 0) {
+                            status = Status.EMPTY;
+                        } else if (withImpact < all) {
+                            status = Status.PENDING;
+                        } else if (all == withImpact) {
+                            status = Status.FULL;
+                        }
+                    }
+
+                    break;
+                }
+                case QUANTITATIVE: {
+                    try {
+                        ImpactEvaluationStatus impactEvaluationStatus = this.dashboardService.getImpactEvaluationStatus(selfAssessmentID);
+
+                        status = impactEvaluationStatus != null ? Status.FULL : Status.EMPTY;
+                    } catch (NullInputException e) {
+                        e.printStackTrace();
+                    } catch (NotFoundException e) {
+                        e.printStackTrace();
+                    }
+                    break;
+                }
+                default: {
+                    break;
+                }
             }
+
+
         }
 
         return status;
