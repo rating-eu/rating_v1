@@ -52,7 +52,7 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
     public statusEnum = Status;
     public roleEnum = Role;
     public purposeEnum = QuestionnairePurpose;
-    private purpose: QuestionnairePurpose;
+    public purpose: QuestionnairePurpose;
 
     private static CISO_ROLE: string = Role[Role.ROLE_CISO];
     private static EXTERNAL_ROLE: string = Role[Role.ROLE_EXTERNAL_AUDIT];

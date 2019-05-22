@@ -9,7 +9,7 @@ import {HttpResponse} from "@angular/common/http";
 import {ModalDismissReasons, NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {Router} from "@angular/router";
 import {Status} from "../../entities/enumerations/Status.enum";
-import {switchMap} from "rxjs/operators";
+import {catchError, switchMap} from "rxjs/operators";
 import {CompletionDtoService} from "../../dto/completion/completion-dto.service";
 import {AssessVulnerabilitiesCompletionDTO} from "../../dto/completion/assess-vulnerabilities-completion";
 import {of} from "rxjs/observable/of";
@@ -34,7 +34,7 @@ export class StepStatusWidgetComponent implements OnInit {
     private closeResult: string;
     private linkAfterModal: string;
     public alertMessage: string;
-
+    public loading: boolean = false;
 
     constructor(
         private dataSharingService: DatasharingService,
@@ -56,6 +56,8 @@ export class StepStatusWidgetComponent implements OnInit {
 
     private fetchStatus() {
         if (this.myCompany && this.myCompany.companyProfile) {
+            this.loading = true;
+
             const identifyThreatAgentStatus$ = this.dashboardService.getStatusFromServer(this.myCompany.companyProfile, CompanyBoardStep.IDENTIFY_THREAT_AGENTS);
             const assessVulnerabilitiesStatus$ = this.dashboardService.getStatusFromServer(this.myCompany.companyProfile, CompanyBoardStep.ASSESS_VULNERABILITIES);
             const refineVulnerabilitiesStatus$ = this.dashboardService.getStatusFromServer(this.myCompany.companyProfile, CompanyBoardStep.REFINE_VULNERABILITIES);
@@ -68,24 +70,27 @@ export class StepStatusWidgetComponent implements OnInit {
                     this.assessVulnerabilitiesStatus = response[1].body;
                     this.refineVulnerabilitiesStatus = response[2].body;
 
+                    this.loading = false;
+
                     switch (this.assessVulnerabilitiesStatus) {
                         case Status.PENDING:
-                        case Status.FULL: {
+                        case Status.FULL:
+                        case Status.EMPTY: {
                             return this.completionDTOService.getAssessVulnerabilitiesCompletionByCompanyProfile(this.myCompany.companyProfile.id);
                         }
-                        default: {
-                            return null;
-                        }
                     }
+                }),
+                catchError((err) => {
+                    this.loading = false;
+                    return of(null);
                 })
             );
 
             if (assessVulnerabilitiesCompletion$) {
                 assessVulnerabilitiesCompletion$.subscribe((response: HttpResponse<AssessVulnerabilitiesCompletionDTO>) => {
-                        this.assessVulnerabilitiesCompletion = response.body;
-                    },
-                    error => {
-                        
+                        if (response) {
+                            this.assessVulnerabilitiesCompletion = response.body;
+                        }
                     }
                 );
             }
