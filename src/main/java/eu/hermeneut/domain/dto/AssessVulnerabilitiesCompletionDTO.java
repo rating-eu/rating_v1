@@ -19,7 +19,7 @@ package eu.hermeneut.domain.dto;
 
 import java.io.Serializable;
 
-public class AssessVulnerabilitiesCompletion implements Serializable {
+public class AssessVulnerabilitiesCompletionDTO implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private float human;

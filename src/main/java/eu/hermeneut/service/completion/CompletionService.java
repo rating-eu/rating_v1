@@ -17,10 +17,10 @@
 
 package eu.hermeneut.service.completion;
 
-import eu.hermeneut.domain.dto.AssessVulnerabilitiesCompletion;
+import eu.hermeneut.domain.dto.AssessVulnerabilitiesCompletionDTO;
 import eu.hermeneut.exceptions.NotFoundException;
 
 public interface CompletionService {
-    AssessVulnerabilitiesCompletion getAssessVulnerabilitiesCompletion(Long companyProfileID) throws NotFoundException;
-    AssessVulnerabilitiesCompletion getAssessVulnerabilitiesCompletion(Long companyProfileID, Long questionnaireStatusID) throws NotFoundException;
+    AssessVulnerabilitiesCompletionDTO getAssessVulnerabilitiesCompletion(Long companyProfileID) throws NotFoundException;
+    AssessVulnerabilitiesCompletionDTO getAssessVulnerabilitiesCompletion(Long companyProfileID, Long questionnaireStatusID) throws NotFoundException;
 }

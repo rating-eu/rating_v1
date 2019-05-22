@@ -51,7 +51,8 @@
                         would attack my company?” and “Why somebody should attack my company?”
                     </td>
                     <td class="text-center">
-                        <i *ngIf="identifyThreatAgentsStatus === statusEnum.FULL" style="color: green" class="fa fa-check"
+                        <i *ngIf="identifyThreatAgentsStatus === statusEnum.FULL" style="color: green"
+                           class="fa fa-check"
                            aria-hidden="true"
                            [ngbTooltip]="statusEnum[identifyThreatAgentsStatus][0] + statusEnum[identifyThreatAgentsStatus].substr(1).toLowerCase()"></i>
                         <i *ngIf="identifyThreatAgentsStatus === statusEnum.EMPTY || identifyThreatAgentsStatus === statusEnum.PENDING"
@@ -60,12 +61,14 @@
                     </td>
                     <td class="text-center">
                         <a *ngIf="identifyThreatAgentsStatus === statusEnum.EMPTY"
-                           [routerLink]="['/identify-threat-agent/questionnaires/ID_THREAT_AGENT']"><i class="fa fa-plus-square fa-lg"
-                                                                                  placement="top"
-                                                                                  aria-hidden="true"></i></a>
+                           [routerLink]="['/identify-threat-agent/questionnaires/ID_THREAT_AGENT']"><i
+                            class="fa fa-plus-square fa-lg"
+                            placement="top"
+                            aria-hidden="true"></i></a>
                         <ng-container
                             *ngIf="identifyThreatAgentsStatus === statusEnum.PENDING || identifyThreatAgentsStatus === statusEnum.FULL">
-                            <a href="javascript:void(0)" (click)="open(alert,'/identify-threat-agent/questionnaires/ID_THREAT_AGENT')"><i
+                            <a href="javascript:void(0)"
+                               (click)="open(alert,'/identify-threat-agent/questionnaires/ID_THREAT_AGENT')"><i
                                 placement="top" class="fa fa-pencil-square-o fa-lg"
                                 aria-hidden="true"></i></a>
                         </ng-container>
@@ -78,21 +81,38 @@
                         responds to the question: “Which are the weaknesses of my company?”
                     </td>
                     <td class="text-center">
-                        <i *ngIf="assessVulnerabilitiesStatus === statusEnum.FULL" style="color: green" class="fa fa-check"
+                        <i *ngIf="assessVulnerabilitiesStatus === statusEnum.FULL" style="color: green"
+                           class="fa fa-check"
                            aria-hidden="true"
                            [ngbTooltip]="statusEnum[assessVulnerabilitiesStatus][0] + statusEnum[assessVulnerabilitiesStatus].substr(1).toLowerCase()"></i>
                         <i *ngIf="assessVulnerabilitiesStatus === statusEnum.EMPTY || assessVulnerabilitiesStatus === statusEnum.PENDING"
                            style="color: orange" class="fa fa-exclamation-triangle" aria-hidden="true"
                            [ngbTooltip]="statusEnum[assessVulnerabilitiesStatus][0] + statusEnum[assessVulnerabilitiesStatus].substr(1).toLowerCase()"></i>
+                        <div *ngIf="assessVulnerabilitiesCompletion">
+                            <table>
+                                <thead>
+                                <th class="small text-muted pr-2" scope="row">Human</th>
+                                <th class="small text-muted pr-2" scope="row">IT</th>
+                                <th class="small text-muted pr-2" scope="row">Physical</th>
+                                </thead>
+                                <tbody>
+                                <td>{{assessVulnerabilitiesCompletion.human | percent}}</td>
+                                <td>{{assessVulnerabilitiesCompletion.it | percent}}</td>
+                                <td>{{assessVulnerabilitiesCompletion.physical | percent}}</td>
+                                </tbody>
+                            </table>
+                        </div>
                     </td>
                     <td class="text-center">
                         <a *ngIf="assessVulnerabilitiesStatus === statusEnum.EMPTY"
-                           [routerLink]="['/evaluate-weakness/questionnaires/SELFASSESSMENT']"><i class="fa fa-plus-square fa-lg"
-                                                                                  placement="top"
-                                                                                  aria-hidden="true"></i></a>
+                           [routerLink]="['/evaluate-weakness/questionnaires/SELFASSESSMENT']"><i
+                            class="fa fa-plus-square fa-lg"
+                            placement="top"
+                            aria-hidden="true"></i></a>
                         <ng-container
                             *ngIf="assessVulnerabilitiesStatus === statusEnum.PENDING || assessVulnerabilitiesStatus=== statusEnum.FULL">
-                            <a href="javascript:void(0)" (click)="open(alert,'/evaluate-weakness/questionnaires/SELFASSESSMENT')"><i
+                            <a href="javascript:void(0)"
+                               (click)="open(alert,'/evaluate-weakness/questionnaires/SELFASSESSMENT')"><i
                                 placement="top" class="fa fa-pencil-square-o fa-lg"
                                 aria-hidden="true"></i></a>
                         </ng-container>

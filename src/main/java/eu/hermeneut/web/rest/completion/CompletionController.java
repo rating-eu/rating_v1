@@ -17,7 +17,7 @@
 
 package eu.hermeneut.web.rest.completion;
 
-import eu.hermeneut.domain.dto.AssessVulnerabilitiesCompletion;
+import eu.hermeneut.domain.dto.AssessVulnerabilitiesCompletionDTO;
 import eu.hermeneut.exceptions.NotFoundException;
 import eu.hermeneut.service.completion.CompletionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,8 +33,13 @@ public class CompletionController {
     @Autowired
     private CompletionService completionService;
 
-    @GetMapping("{companyProfileID}/completion/vulnerabilities")
-    public AssessVulnerabilitiesCompletion getCompanyBoardSTepStatus(@PathVariable Long companyProfileID) throws NotFoundException {
+    @GetMapping("/{companyProfileID}/completion/vulnerabilities")
+    public AssessVulnerabilitiesCompletionDTO getAssessVulnerabilitiesCompletionByCompanyProfile(@PathVariable Long companyProfileID) throws NotFoundException {
         return this.completionService.getAssessVulnerabilitiesCompletion(companyProfileID);
+    }
+
+    @GetMapping("/{companyProfileID}/completion/vulnerabilities/questionnaire-status/{questionnaireStatusID}")
+    public AssessVulnerabilitiesCompletionDTO getAssessVulnerabilitiesCompletionByCompanyProfileAndQuestionnaireStatus(@PathVariable Long companyProfileID, @PathVariable Long questionnaireStatusID) throws NotFoundException {
+        return this.completionService.getAssessVulnerabilitiesCompletion(companyProfileID, questionnaireStatusID);
     }
 }

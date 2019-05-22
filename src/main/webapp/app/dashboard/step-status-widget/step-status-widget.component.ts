@@ -9,6 +9,10 @@ import {HttpResponse} from "@angular/common/http";
 import {ModalDismissReasons, NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {Router} from "@angular/router";
 import {Status} from "../../entities/enumerations/Status.enum";
+import {switchMap} from "rxjs/operators";
+import {CompletionDtoService} from "../../dto/completion/completion-dto.service";
+import {AssessVulnerabilitiesCompletionDTO} from "../../dto/completion/assess-vulnerabilities-completion";
+import {of} from "rxjs/observable/of";
 
 @Component({
     selector: 'jhi-step-status-widget',
@@ -25,6 +29,8 @@ export class StepStatusWidgetComponent implements OnInit {
     public assessVulnerabilitiesStatus: Status = Status.EMPTY;
     public refineVulnerabilitiesStatus: Status = Status.EMPTY;
 
+    public assessVulnerabilitiesCompletion: AssessVulnerabilitiesCompletionDTO = null;
+
     private closeResult: string;
     private linkAfterModal: string;
     public alertMessage: string;
@@ -32,6 +38,7 @@ export class StepStatusWidgetComponent implements OnInit {
 
     constructor(
         private dataSharingService: DatasharingService,
+        private completionDTOService: CompletionDtoService,
         private dashboardService: DashboardService,
         private modalService: NgbModal,
         private router: Router) {
@@ -55,11 +62,33 @@ export class StepStatusWidgetComponent implements OnInit {
 
             const statusJoin$: Observable<[HttpResponse<Status>, HttpResponse<Status>, HttpResponse<Status>]> = forkJoin(identifyThreatAgentStatus$, assessVulnerabilitiesStatus$, refineVulnerabilitiesStatus$);
 
-            statusJoin$.subscribe((response: [HttpResponse<Status>, HttpResponse<Status>, HttpResponse<Status>]) => {
-                this.identifyThreatAgentsStatus = response[0].body;
-                this.assessVulnerabilitiesStatus = response[1].body;
-                this.refineVulnerabilitiesStatus = response[2].body;
-            });
+            const assessVulnerabilitiesCompletion$: Observable<HttpResponse<AssessVulnerabilitiesCompletionDTO>> = statusJoin$.pipe(
+                switchMap((response: [HttpResponse<Status>, HttpResponse<Status>, HttpResponse<Status>]) => {
+                    this.identifyThreatAgentsStatus = response[0].body;
+                    this.assessVulnerabilitiesStatus = response[1].body;
+                    this.refineVulnerabilitiesStatus = response[2].body;
+
+                    switch (this.assessVulnerabilitiesStatus) {
+                        case Status.PENDING:
+                        case Status.FULL: {
+                            return this.completionDTOService.getAssessVulnerabilitiesCompletionByCompanyProfile(this.myCompany.companyProfile.id);
+                        }
+                        default: {
+                            return null;
+                        }
+                    }
+                })
+            );
+
+            if (assessVulnerabilitiesCompletion$) {
+                assessVulnerabilitiesCompletion$.subscribe((response: HttpResponse<AssessVulnerabilitiesCompletionDTO>) => {
+                        this.assessVulnerabilitiesCompletion = response.body;
+                    },
+                    error => {
+                        
+                    }
+                );
+            }
         }
     }
 

@@ -18,11 +18,10 @@
 package eu.hermeneut.service.impl.completion;
 
 import eu.hermeneut.domain.*;
-import eu.hermeneut.domain.dto.AssessVulnerabilitiesCompletion;
+import eu.hermeneut.domain.dto.AssessVulnerabilitiesCompletionDTO;
 import eu.hermeneut.domain.enumeration.ContainerType;
 import eu.hermeneut.domain.enumeration.QuestionnairePurpose;
 import eu.hermeneut.domain.enumeration.Role;
-import eu.hermeneut.domain.enumeration.Status;
 import eu.hermeneut.exceptions.NotFoundException;
 import eu.hermeneut.service.CompanyProfileService;
 import eu.hermeneut.service.MyAnswerService;
@@ -54,7 +53,7 @@ public class CompletionServiceImpl implements CompletionService {
 
 
     @Override
-    public AssessVulnerabilitiesCompletion getAssessVulnerabilitiesCompletion(Long companyProfileID) throws NotFoundException {
+    public AssessVulnerabilitiesCompletionDTO getAssessVulnerabilitiesCompletion(Long companyProfileID) throws NotFoundException {
         CompanyProfile companyProfile = this.companyProfileService.findOne(companyProfileID);
 
         if (companyProfile == null) {
@@ -78,14 +77,14 @@ public class CompletionServiceImpl implements CompletionService {
     }
 
     @Override
-    public AssessVulnerabilitiesCompletion getAssessVulnerabilitiesCompletion(Long companyProfileID, Long questionnaireStatusID) throws NotFoundException {
+    public AssessVulnerabilitiesCompletionDTO getAssessVulnerabilitiesCompletion(Long companyProfileID, Long questionnaireStatusID) throws NotFoundException {
         QuestionnaireStatus questionnaireStatus = this.questionnaireStatusService.findOne(questionnaireStatusID);
 
         if (questionnaireStatus == null) {
             throw new NotFoundException("QuestionnaireStatus not found!");
         }
 
-        AssessVulnerabilitiesCompletion completion = new AssessVulnerabilitiesCompletion();
+        AssessVulnerabilitiesCompletionDTO completion = new AssessVulnerabilitiesCompletionDTO();
 
         Questionnaire questionnaire = questionnaireStatus.getQuestionnaire();
 

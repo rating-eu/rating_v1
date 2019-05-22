@@ -29,6 +29,7 @@ import {MaterialModule} from "../material/material.module";
 import {HermeneutAttackStrategyMgmModule} from "../entities/attack-strategy-mgm/attack-strategy-mgm.module";
 import {AttackMapWidgetComponent} from "./attack-map-widget/attack-map-widget.component";
 import {EvaluateWeaknessModule} from "../evaluate-weakness/evaluate-weakness.module";
+import {DtoModule} from "../dto/dto.module";
 
 @NgModule({
     imports: [
@@ -43,6 +44,7 @@ import {EvaluateWeaknessModule} from "../evaluate-weakness/evaluate-weakness.mod
         ImpactEvaluationModule,
         RiskManagementModule,
         HermeneutAttackStrategyMgmModule,
+        DtoModule,
         NgbCollapseModule.forRoot()
     ],
     declarations: [
