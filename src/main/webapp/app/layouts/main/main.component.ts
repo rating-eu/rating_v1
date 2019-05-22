@@ -41,6 +41,7 @@ export class JhiMainComponent implements OnInit {
     public isCISO = false;
     public isAdmin = false;
     private closeResult: string;
+    private role: Role;
 
     constructor(
         private principal: Principal,
@@ -102,22 +103,34 @@ export class JhiMainComponent implements OnInit {
                         const user: User = response2.body;
 
                         this.dataSharingService.user = user;
+                        this.updateRole();
 
                         if (user) {
-                            this.myCompanyService.findByUser(user.id).subscribe(
-                                (myCompanyResponse: HttpResponse<MyCompanyMgm>) => {
-                                    const myCompany = myCompanyResponse.body;
-                                    this.dataSharingService.myCompany = myCompany;
-                                },
-                                (error: any) => {
-                                    this.dataSharingService.myCompany = undefined;
+                            switch (this.role) {
+                                case Role.ROLE_ADMIN: {
+
+                                    break;
                                 }
-                            );
+                                case Role.ROLE_CISO: {
+                                    this.myCompanyService.findByUser(user.id).subscribe(
+                                        (myCompanyResponse: HttpResponse<MyCompanyMgm>) => {
+                                            const myCompany = myCompanyResponse.body;
+                                            this.dataSharingService.myCompany = myCompany;
+                                        },
+                                        (error: any) => {
+                                            this.dataSharingService.myCompany = undefined;
+                                        }
+                                    );
+                                    break;
+                                }
+                                case Role.ROLE_EXTERNAL_AUDIT: {
+
+                                    break;
+                                }
+                            }
                         }
                     });
                 });
-
-                this.updateRole();
             } else {
                 this.isAuthenticated = false;
                 const layoutConfiguration: LayoutConfiguration = new LayoutConfiguration();
@@ -153,6 +166,7 @@ export class JhiMainComponent implements OnInit {
                     this.isCISO = response;
 
                     if (this.isCISO) {
+                        this.role = Role.ROLE_CISO;
                         this.dataSharingService.role = Role.ROLE_CISO;
 
                         layoutConfiguration.isSidebarCollapsed = false;
@@ -167,6 +181,7 @@ export class JhiMainComponent implements OnInit {
                     this.isExternal = response;
 
                     if (this.isExternal) {
+                        this.role = Role.ROLE_EXTERNAL_AUDIT;
                         this.dataSharingService.role = Role.ROLE_EXTERNAL_AUDIT;
 
                         layoutConfiguration.isSidebarCollapsed = true;
@@ -181,6 +196,7 @@ export class JhiMainComponent implements OnInit {
                     this.isAdmin = response;
 
                     if (this.isAdmin) {
+                        this.role = Role.ROLE_ADMIN;
                         layoutConfiguration.isSidebarCollapsed = true;
                         layoutConfiguration.isSidebarCollapsedByMe = false;
                         this.dataSharingService.layoutConfiguration = layoutConfiguration;

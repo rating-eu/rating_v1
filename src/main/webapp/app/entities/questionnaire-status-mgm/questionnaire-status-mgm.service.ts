@@ -121,11 +121,11 @@ export class QuestionnaireStatusMgmService {
         const copy: QuestionnaireStatusMgm = Object.assign({}, questionnaireStatus);
 
         if (questionnaireStatus.created) {
-            copy.created = this.dateUtils.toDate(questionnaireStatus.created);
+            copy.created = this.dateUtils.toDate(String(questionnaireStatus.created));
         }
 
         if (questionnaireStatus.modified) {
-            copy.modified = this.dateUtils.toDate(questionnaireStatus.modified);
+            copy.modified = this.dateUtils.toDate(String(questionnaireStatus.modified));
         }
 
         return copy;
