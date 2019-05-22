@@ -21,6 +21,7 @@ import eu.hermeneut.domain.*;
 import eu.hermeneut.domain.enumeration.ContainerType;
 import eu.hermeneut.service.QuestionService;
 import eu.hermeneut.repository.QuestionRepository;
+import eu.hermeneut.utils.filter.QuestionByContainerFilter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -28,6 +29,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Set;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -96,42 +98,22 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Question> findAllByQuestionnaire(Questionnaire questionnaire) {
         return this.questionRepository.findAllByQuestionnaire(questionnaire);
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<Question> findAllByQuestionnaireAndSection(Questionnaire questionnaire, ContainerType section) {
 
         List<Question> questions = this.questionRepository.findAllByQuestionnaire(questionnaire);
 
-        Stream<Question> stream = questions.stream().parallel().filter(question -> {
-            Set<AttackStrategy> attackStrategies = question.getAttackStrategies();
-            boolean accepted = false;
+        Predicate<Question> questionPredicate = new QuestionByContainerFilter(section);
 
-            if (attackStrategies != null && !attackStrategies.isEmpty()) {
-                for (AttackStrategy attackStrategy : attackStrategies) {
-                    Set<Level> levels = attackStrategy.getLevels();
-
-                    if (levels != null && !levels.isEmpty()) {
-                        for (Level level : levels) {
-                            Container container = level.getContainer();
-
-                            if (container != null) {
-                                ContainerType type = container.getContainerType();
-
-                                if (type.equals(section)) {
-                                    accepted = true;
-                                    break;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-
-            return accepted;
-        });
+        Stream<Question> stream = questions.stream().parallel().filter(
+            questionPredicate
+        );
 
         List<Question> sectionQuestions = stream.collect(Collectors.toList());
 

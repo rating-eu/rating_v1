@@ -18,6 +18,10 @@
 package eu.hermeneut.service;
 
 import eu.hermeneut.domain.MyAnswer;
+import eu.hermeneut.domain.Question;
+import eu.hermeneut.domain.Questionnaire;
+import eu.hermeneut.domain.QuestionnaireStatus;
+import eu.hermeneut.domain.enumeration.ContainerType;
 
 import java.util.List;
 import java.util.Set;
@@ -71,5 +75,5 @@ public interface MyAnswerService {
 
     List<MyAnswer> findAllByQuestionnaireStatus(Long questionnaireStatusID);
 
-    void deleteAll(Set<MyAnswer> myAnswers);
+    List<MyAnswer> findAllByQuestionnaireStatusAndSection(QuestionnaireStatus questionnaireStatus, ContainerType section);
 }
