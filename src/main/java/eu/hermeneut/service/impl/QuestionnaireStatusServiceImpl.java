@@ -17,7 +17,6 @@
 
 package eu.hermeneut.service.impl;
 
-import eu.hermeneut.domain.MyAnswer;
 import eu.hermeneut.domain.MyCompany;
 import eu.hermeneut.domain.User;
 import eu.hermeneut.domain.enumeration.QuestionnairePurpose;
@@ -34,17 +33,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 /**
  * Service Implementation for managing QuestionnaireStatus.
  */
 @Service
+//@Transactional
 public class QuestionnaireStatusServiceImpl implements QuestionnaireStatusService {
 
     private final Logger log = LoggerFactory.getLogger(QuestionnaireStatusServiceImpl.class);
@@ -71,6 +67,7 @@ public class QuestionnaireStatusServiceImpl implements QuestionnaireStatusServic
      * @return the persisted entity
      */
     @Override
+    //@Transactional(propagation = Propagation.REQUIRES_NEW)
     public QuestionnaireStatus save(QuestionnaireStatus questionnaireStatus) {
         log.debug("Request to save QuestionnaireStatus : {}", questionnaireStatus);
 
@@ -80,11 +77,8 @@ public class QuestionnaireStatusServiceImpl implements QuestionnaireStatusServic
 
             if (existingQStatus != null) {
                 // Delete the Old MyAnswers
-                Set<MyAnswer> myAnswers = existingQStatus.getAnswers();
-
-                if (myAnswers != null && !myAnswers.isEmpty()) {
-                    this.myAnswerService.deleteAll(myAnswers);
-                }
+                existingQStatus.getAnswers().clear();
+                this.questionnaireStatusRepository.save(existingQStatus);
             }
         }
 
@@ -104,7 +98,6 @@ public class QuestionnaireStatusServiceImpl implements QuestionnaireStatusServic
      * @return the list of entities
      */
     @Override
-    @Transactional(readOnly = true)
     public List<QuestionnaireStatus> findAll() {
         log.debug("Request to get all QuestionnaireStatuses");
         return questionnaireStatusRepository.findAll();
@@ -117,7 +110,6 @@ public class QuestionnaireStatusServiceImpl implements QuestionnaireStatusServic
      * @return the entity
      */
     @Override
-    @Transactional(readOnly = true)
     public QuestionnaireStatus findOne(Long id) {
         log.debug("Request to get QuestionnaireStatus : {}", id);
         return questionnaireStatusRepository.findOne(id);
