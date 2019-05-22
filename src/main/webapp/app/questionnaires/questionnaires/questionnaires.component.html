@@ -19,7 +19,7 @@
     <div class="row" [ngSwitch]="purposeEnum[purpose]">
         <div *ngSwitchCase="purposeEnum.ID_THREAT_AGENT" class="col-md-12">
             <div class="card-box col-md-12">
-                <h1>Questionnaires</h1>
+                <h1>Identify Threat Agents</h1>
             </div>
         </div>
         <div *ngSwitchCase="purposeEnum.SELFASSESSMENT" class="col-md-12">
@@ -27,7 +27,7 @@
             <div [ngSwitch]="role">
                 <div *ngSwitchCase="roleEnum.ROLE_CISO" class="card-box col-md-12">
                     <div class="col-md-10">
-                        <h1>Questionnaires</h1>
+                        <h1>Vulnerability Assessment</h1>
                     </div>
                     <div class="col-md-2">
                         <h1>
@@ -38,7 +38,7 @@
 
                 <div *ngSwitchCase="roleEnum.ROLE_EXTERNAL_AUDIT">
                     <div class="card-box col-md-12">
-                        <h1>Questionnaires</h1>
+                        <h1>Vulnerability Assessment</h1>
                     </div>
                 </div>
             </div>
