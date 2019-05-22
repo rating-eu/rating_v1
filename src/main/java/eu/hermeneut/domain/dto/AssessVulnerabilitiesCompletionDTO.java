@@ -21,10 +21,19 @@ import java.io.Serializable;
 
 public class AssessVulnerabilitiesCompletionDTO implements Serializable {
     private static final long serialVersionUID = 1L;
+    private Long questionnaireStatusID;
 
     private float human;
     private float it;
     private float physical;
+
+    public Long getQuestionnaireStatusID() {
+        return questionnaireStatusID;
+    }
+
+    public void setQuestionnaireStatusID(Long questionnaireStatusID) {
+        this.questionnaireStatusID = questionnaireStatusID;
+    }
 
     public float getHuman() {
         return human;

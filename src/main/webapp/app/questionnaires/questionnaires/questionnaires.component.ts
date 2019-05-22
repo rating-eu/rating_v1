@@ -39,6 +39,8 @@ import {PopUpService} from "../../shared/pop-up-services/pop-up.service";
 import {EventManagerService} from "../../datasharing/event-manager.service";
 import {forkJoin} from "rxjs/observable/forkJoin";
 import {Account} from '../../shared';
+import {AssessVulnerabilitiesCompletionDTO} from "../../dto/completion/assess-vulnerabilities-completion";
+import {CompletionDtoService} from "../../dto/completion/completion-dto.service";
 
 @Component({
     selector: 'jhi-questionnaires',
@@ -81,6 +83,8 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
 
     public externalChangedMap: Map<number/*QStatus.ID*/, boolean>;
 
+    public assessVulnerabilitiesCompletionMap: Map<number/*QStatus.ID*/, AssessVulnerabilitiesCompletionDTO>;
+
     constructor(private route: ActivatedRoute,
                 private router: Router,
                 private questionnairesService: QuestionnairesService,
@@ -93,7 +97,8 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
                 private localStorage: LocalStorageService,
                 private questionnaireStatusService: QuestionnaireStatusMgmService,
                 public popUpService: PopUpService,
-                private eventManagerService: EventManagerService
+                private eventManagerService: EventManagerService,
+                private completionService: CompletionDtoService
     ) {
     }
 
@@ -108,6 +113,7 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
         });
 
         this.externalChangedMap = new Map();
+        this.assessVulnerabilitiesCompletionMap = new Map();
     }
 
     private loadQuestionnaires() {
@@ -248,7 +254,31 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
                             break;
                         }
                         case QuestionnairePurpose.SELFASSESSMENT: {
+                            switch (this.role) {
+                                case Role.ROLE_CISO: {
+                                    const completions$ = [];
 
+                                    this.questionnaireStatuses.forEach((questionnaireStatus) => {
+                                            completions$.push(
+                                                this.completionService
+                                                    .getAssessVulnerabilitiesCompletionByCompanyProfileAndQuestionnaireStatus(this.myCompany.companyProfile.id, questionnaireStatus.id)
+                                            );
+                                        }
+                                    );
+
+                                    const join$: Observable<HttpResponse<AssessVulnerabilitiesCompletionDTO>[]> = forkJoin(completions$);
+
+                                    join$.subscribe((response: HttpResponse<AssessVulnerabilitiesCompletionDTO>[]) => {
+                                        if(response && response.length){
+                                            response.forEach((value: HttpResponse<AssessVulnerabilitiesCompletionDTO>) => {
+                                                const completion = value.body;
+
+                                                this.assessVulnerabilitiesCompletionMap.set(completion.questionnaireStatusID, completion);
+                                            });
+                                        }
+                                    });
+                                }
+                            }
                             break;
                         }
                     }

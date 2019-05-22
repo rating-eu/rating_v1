@@ -45,13 +45,13 @@
         </div>
     </div>
 
-    <div class="table-responsive" [ngSwitch]="role">
+    <div *ngIf="purpose === purposeEnum.SELFASSESSMENT" class="table-responsive" [ngSwitch]="role">
         <table class="table" *ngSwitchCase="roleEnum.ROLE_CISO">
             <thead>
             <tr>
-                <th>Questionnaire</th>
                 <th>Created</th>
                 <th>Modified</th>
+                <th>Completion</th>
                 <th>Status</th>
                 <th>External Audit</th>
                 <th>Refinement Status</th>
@@ -61,9 +61,22 @@
             </thead>
             <tbody>
             <tr *ngFor="let questionnaireStatus of questionnaireStatuses$ | async">
-                <td>{{questionnaireStatus.questionnaire.name}}</td>
                 <td>{{questionnaireStatus.created}}</td>
                 <td>{{questionnaireStatus.modified}}</td>
+                <td>
+                    <table>
+                        <thead>
+                        <th class="small text-muted pr-2" scope="row">Human</th>
+                        <th class="small text-muted pr-2" scope="row">IT</th>
+                        <th class="small text-muted pr-2" scope="row">Physical</th>
+                        </thead>
+                        <tbody>
+                        <td>{{assessVulnerabilitiesCompletionMap.get(questionnaireStatus.id)?.human | percent}}</td>
+                        <td>{{assessVulnerabilitiesCompletionMap.get(questionnaireStatus.id)?.it | percent}}</td>
+                        <td>{{assessVulnerabilitiesCompletionMap.get(questionnaireStatus.id)?.physical | percent}}</td>
+                        </tbody>
+                    </table>
+                </td>
                 <td>{{questionnaireStatus.status}}</td>
                 <td>
                     <select class="form-control"

@@ -85,6 +85,7 @@ public class CompletionServiceImpl implements CompletionService {
         }
 
         AssessVulnerabilitiesCompletionDTO completion = new AssessVulnerabilitiesCompletionDTO();
+        completion.setQuestionnaireStatusID(questionnaireStatus.getId());
 
         Questionnaire questionnaire = questionnaireStatus.getQuestionnaire();
 
