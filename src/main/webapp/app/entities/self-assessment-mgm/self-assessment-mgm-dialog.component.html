@@ -80,12 +80,12 @@
                 <option [ngValue]="getSelected(selfAssessment.attackstrategies, attackStrategyOption)" *ngFor="let attackStrategyOption of attackstrategies; trackBy: trackAttackStrategyById">{{attackStrategyOption.name}}</option>
             </select>
         </div>-->
-        <div class="form-group">
+        <!--<div class="form-group">
             <label jhiTranslate="hermeneutApp.selfAssessment.externalAudit" for="field_external_audit">External Audit</label>
             <select class="form-control" id="field_external_audit" name="externalaudit" [(ngModel)]="selfAssessment.externalAudit">
                 <option [ngValue]="getSelected(selfAssessment.externalAudit, externalAuditOption)" *ngFor="let externalAuditOption of externalaudits; trackBy: trackExternalAuditById">{{externalAuditOption.name}}</option>
             </select>
-        </div>
+        </div>-->
         <!--<div class="form-group">
             <label jhiTranslate="hermeneutApp.selfAssessment.questionnaire" for="field_questionnaire">Questionnaire</label>
             <select class="form-control" id="field_questionnaire" multiple name="questionnaire" [(ngModel)]="selfAssessment.questionnaires">

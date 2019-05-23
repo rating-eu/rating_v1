@@ -44,7 +44,4 @@ public interface SelfAssessmentRepository extends JpaRepository<SelfAssessment, 
 
     @Query("SELECT DISTINCT self_assessment FROM SelfAssessment self_assessment left join fetch self_assessment.companyGroups WHERE self_assessment.companyProfile.id =:companyProfileID")
     List<SelfAssessment> findAllByCompanyProfile(@Param("companyProfileID") Long companyProfileID);
-
-    @Query("SELECT DISTINCT self_assessment FROM SelfAssessment self_assessment left join fetch self_assessment.companyGroups WHERE self_assessment.externalAudit =:externalAudit")
-    List<SelfAssessment> findAllByExternalAudit(@Param("externalAudit") ExternalAudit externalAudit);
 }

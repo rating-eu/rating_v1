@@ -99,7 +99,7 @@
             <!--<th><span jhiTranslate="hermeneutApp.selfAssessment.asset">Asset</span></th>-->
             <!--<th><span jhiTranslate="hermeneutApp.selfAssessment.threatagent">Threatagent</span></th>-->
             <!--<th><span jhiTranslate="hermeneutApp.selfAssessment.attackstrategy">Attackstrategy</span></th>-->
-            <th><span jhiTranslate="hermeneutApp.selfAssessment.externalAudit">External Audit</span></th>
+            <!--<th><span jhiTranslate="hermeneutApp.selfAssessment.externalAudit">External Audit</span></th>-->
             <!--<th><span jhiTranslate="hermeneutApp.selfAssessment.questionnaire">Questionnaire</span></th>-->
             <th *ngIf="isCISO"></th>
         </tr>
@@ -143,12 +143,12 @@
                        [routerLink]="['../attack-strategy-mgm', attackstrategy?.id ]">{{attackstrategy.name}}</a>{{last ? '' : ', '}}
                 </span>
     </td>-->
-            <td (click)="selectSelfAssessment(selfAssessment)">
+            <!--<td (click)="selectSelfAssessment(selfAssessment)">
                 <div *ngIf="selfAssessment.externalAudit">
                     <a
                         [routerLink]="['../external-audit-mgm', selfAssessment.externalAudit?.id ]">{{selfAssessment.externalAudit?.name}}</a>
                 </div>
-            </td>
+            </td>-->
             <!--<td (click)="selectSelfAssessment(selfAssessment)">
                 <span *ngFor="let questionnaire of selfAssessment.questionnaires; let last = last">
                     <a class="form-control-static" [routerLink]="['../questionnaire-mgm', questionnaire?.id ]">{{questionnaire.name}}</a>{{last

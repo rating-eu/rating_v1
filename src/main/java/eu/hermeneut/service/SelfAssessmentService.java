@@ -61,6 +61,4 @@ public interface SelfAssessmentService {
     List<SelfAssessment> findAllByCompanyProfile(Long companyProfileID);
 
     SelfAssessmentOverview getSelfAssessmentOverview(Long selfAssessmentID);
-
-    List<SelfAssessment> findAllByExternalAudit(ExternalAudit externalAudit);
 }

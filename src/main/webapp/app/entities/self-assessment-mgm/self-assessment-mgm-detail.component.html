@@ -45,12 +45,6 @@
         <dd>
             {{selfAssessment.user?.login}}
         </dd>
-        <dt><span jhiTranslate="hermeneutApp.selfAssessment.externalAudit">External Audit</span></dt>
-        <dd>
-            <div *ngIf="selfAssessment.externalAudit">
-                <a [routerLink]="['/external-audit-mgm', selfAssessment.externalAudit?.id]">{{selfAssessment.externalAudit?.name}}</a>
-            </div>
-        </dd>
         <dt><span jhiTranslate="hermeneutApp.selfAssessment.companyGroup">Company Group</span></dt>
         <dd>
             <span *ngFor="let companyGroup of selfAssessment.companyGroups; let last = last">
