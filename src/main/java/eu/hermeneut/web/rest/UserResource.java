@@ -185,7 +185,7 @@ public class UserResource {
      */
     @GetMapping("/users/authorities")
     @Timed
-    @Secured(AuthoritiesConstants.ADMIN)
+    @Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.CISO})
     public List<String> getAuthorities() {
         return userService.getAuthorities();
     }
