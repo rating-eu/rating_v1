@@ -32,7 +32,7 @@
                             class="card-box">
 
                             <label class="form-control-label" [attr.for]="question?.id">
-                                <h3 class="h3-dynamic-form"> {{question?.name}}</h3>
+                                <h5 class="h3-dynamic-form"> {{question?.name}}</h5>
                             </label>
                             <mat-radio-group [formControlName]="question.id" class="radio-group">
                                 <mat-radio-button *ngFor="let answer of sort(question.answers)" class="radio-button"
@@ -53,7 +53,7 @@
                                     [ngClass]="{'ng-valid': isValid(question.id) === true, 'ng-invalid': isValid(question.id) === false}"
                                     class="card-box">
                                     <label class="form-control-label" [attr.for]="question?.id">
-                                        <h3 class="h3-dynamic-form"> {{question?.name}}</h3>
+                                        <h5 class="h3-dynamic-form"> {{question?.name}}</h5>
                                     </label>
                                     <div class="row">
                                         <div class="col-md-9 bg2">
@@ -84,7 +84,7 @@
                                     [ngClass]="{'ng-valid': isValid(question.id) === true, 'ng-invalid': isValid(question.id) === false}"
                                     class="card-box">
                                     <label class="form-control-label" [attr.for]="question?.id">
-                                        <h3 class="h3-dynamic-form"> {{question?.name}}</h3>
+                                        <h5 class="h3-dynamic-form"> {{question?.name}}</h5>
                                     </label>
                                     <div class="row">
                                         <div class="col-md-9 bg2">
@@ -115,7 +115,7 @@
                                     [ngClass]="{'ng-valid': isValid(question.id) === true, 'ng-invalid': isValid(question.id) === false}"
                                     class="card-box">
                                     <label class="form-control-label" [attr.for]="question?.id">
-                                        <h3 class="h3-dynamic-form"> {{question?.name}}</h3>
+                                        <h5 class="h3-dynamic-form"> {{question?.name}}</h5>
                                     </label>
                                     <div class="row">
                                         <div class="col-md-9 bg2">
@@ -156,7 +156,7 @@
                             [ngClass]="{'ng-valid': isValid(question.id) === true, 'ng-invalid': isValid(question.id) === false}"
                             class="card-box">
                             <label class="form-control-label" [attr.for]="question?.id">
-                                <h3 class="h3-dynamic-form"> {{question?.name}}</h3>
+                                <h5 class="h3-dynamic-form"> {{question?.name}}</h5>
                             </label>
                             <div class="row">
                                 <div class="col-md-2 bg3 text-center">

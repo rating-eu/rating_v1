@@ -33,23 +33,17 @@ import {QuestionnaireStatusMgm} from "../../../entities/questionnaire-status-mgm
 export class QuestionnaireComponent implements OnInit {
 
     questionnaireStatus: QuestionnaireStatusMgm;
-    purpose: QuestionnairePurpose;
+    purposeEnum = QuestionnairePurpose;
     selfAssessment: SelfAssessmentMgm;
     account: Account;
     user: User;
 
     constructor(
         private questionnairesService: QuestionnairesService,
-        private dataSharingService: DatasharingService,
-        private selfAssessmentService: SelfAssessmentMgmService,
-        private accountService: AccountService,
-        private userService: UserService,
-        private router: Router,
-        private localStorage: LocalStorageService) {
+        private dataSharingService: DatasharingService) {
     }
 
     ngOnInit() {
         this.questionnaireStatus = this.dataSharingService.cisoQuestionnaireStatus;
-        this.purpose = this.localStorage.retrieve('purpose') as QuestionnairePurpose;
     }
 }
