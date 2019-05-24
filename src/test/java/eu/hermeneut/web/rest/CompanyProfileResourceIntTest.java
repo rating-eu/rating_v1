@@ -52,7 +52,7 @@ import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-import eu.hermeneut.domain.enumeration.CompType;
+import eu.hermeneut.domain.enumeration.CompanyType;
 /**
  * Test class for the CompanyProfileResource REST controller.
  *
@@ -74,8 +74,8 @@ public class CompanyProfileResourceIntTest {
     private static final ZonedDateTime DEFAULT_MODIFIED = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
     private static final ZonedDateTime UPDATED_MODIFIED = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
 
-    private static final CompType DEFAULT_TYPE = CompType.OTHER;
-    private static final CompType UPDATED_TYPE = CompType.FINANCE_AND_INSURANCE;
+    private static final CompanyType DEFAULT_TYPE = CompanyType.OTHER;
+    private static final CompanyType UPDATED_TYPE = CompanyType.FINANCE_AND_INSURANCE;
 
     @Autowired
     private CompanyProfileRepository companyProfileRepository;
