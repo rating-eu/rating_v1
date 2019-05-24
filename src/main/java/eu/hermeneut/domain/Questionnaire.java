@@ -18,6 +18,7 @@
 package eu.hermeneut.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import eu.hermeneut.domain.enumeration.CompanyType;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -63,6 +64,10 @@ public class Questionnaire implements Serializable {
 
     @Column(name = "modified")
     private ZonedDateTime modified;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "company_type")
+    private CompanyType companyType;
 
     @OneToMany(mappedBy = "questionnaire")
     @JsonIgnore
@@ -128,6 +133,14 @@ public class Questionnaire implements Serializable {
 
     public void setModified(ZonedDateTime modified) {
         this.modified = modified;
+    }
+
+    public CompanyType getCompanyType() {
+        return companyType;
+    }
+
+    public void setCompanyType(CompanyType companyType) {
+        this.companyType = companyType;
     }
 
     public Set<Question> getQuestions() {
