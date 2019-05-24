@@ -20,7 +20,9 @@ import { EconomicResultsMgm } from '../../../entities/economic-results-mgm';
 import { MyAssetMgm } from '../../../entities/my-asset-mgm';
 import { EconomicCoefficientsMgm } from '../../../entities/economic-coefficients-mgm';
 import { EBITMgm } from '../../../entities/ebit-mgm';
-import { SectorType, CategoryType, SplittingLossMgm } from '../../../entities/splitting-loss-mgm';
+import {SplittingLossMgm } from '../../../entities/splitting-loss-mgm';
+import {SectorType} from '../../../entities/enumerations/SectorTyep.enum';
+import {CategoryType} from '../../../entities/enumerations/CategoryType.enum';
 
 export class ImpactEvaluationStatus {
     ebits: EBITMgm[];

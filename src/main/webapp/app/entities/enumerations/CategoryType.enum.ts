@@ -15,10 +15,9 @@
  *
  */
 
-export enum MySectorType {
-    'GLOBAL' = <any>'GLOBAL',
-    'FINANCE_AND_INSURANCE' = <any>'FINANCE_AND_INSURANCE',
-    'HEALTH_CARE_AND_SOCIAL_ASSISTANCE' = <any>'HEALTH_CARE_AND_SOCIAL_ASSISTANCE',
-    'INFORMATION' = <any>'INFORMATION',
-    'PROFESSIONAL_SCIENTIFIC_AND_TECHNICAL_SERVICE' = <any>'PROFESSIONAL_SCIENTIFIC_AND_TECHNICAL_SERVICE'
+export enum CategoryType {
+    'IP' = <any> 'IP',
+    'KEY_COMP' = <any> 'KEY_COMP',
+    'ORG_CAPITAL' = <any> 'ORG_CAPITAL',
+    'DATA' = <any> 'DATA'
 }

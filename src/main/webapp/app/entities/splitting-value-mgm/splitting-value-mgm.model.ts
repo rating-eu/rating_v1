@@ -16,20 +16,8 @@
  */
 
 import { BaseEntity } from './../../shared';
-
-export const enum SectorType {
-    'GLOBAL',
-    'FINANCE_AND_INSURANCE',
-    'HEALTH_CARE_AND_SOCIAL_ASSISTANCE',
-    'INFORMATION',
-    'PROFESSIONAL_SCIENTIFIC_AND_TECHNICAL_SERVICE'
-}
-
-export const enum CategoryType {
-    'IP',
-    'KEY_COMP',
-    'ORG_CAPITAL'
-}
+import {SectorType} from '../enumerations/SectorTyep.enum';
+import {CategoryType} from '../enumerations/CategoryType.enum';
 
 export class SplittingValueMgm implements BaseEntity {
     constructor(

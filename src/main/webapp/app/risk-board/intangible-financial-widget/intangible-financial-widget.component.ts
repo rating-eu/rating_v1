@@ -24,9 +24,9 @@ import { SelfAssessmentMgmService } from './../../entities/self-assessment-mgm/s
 import { IdentifyAssetUtilService } from './../../identify-assets/identify-asset.util.service';
 import { Component, OnInit } from '@angular/core';
 import { AssetType } from '../../entities/enumerations/AssetType.enum';
-import { MyCategoryType } from '../../entities/enumerations/MyCategoryType.enum';
-import { MySectorType } from '../../entities/enumerations/MySectorType.enum';
+import { CategoryType } from '../../entities/enumerations/CategoryType.enum';
 import {DatasharingService} from "../../datasharing/datasharing.service";
+import {SectorType} from "../../entities/enumerations/SectorTyep.enum";
 
 interface OrderBy {
   category: boolean;
@@ -82,7 +82,7 @@ export class IntangibleFinancialWidgetComponent implements OnInit {
           }
           this.intangible = [];
           for (const myAsset of mySavedAssets) {
-            if (myAsset.asset.assetcategory.type.toString() === AssetType.INTANGIBLE.toString()) {
+            if (myAsset.asset.assetcategory.type === AssetType.INTANGIBLE) {
               this.intangible.push(myAsset);
             }
           }
@@ -92,13 +92,13 @@ export class IntangibleFinancialWidgetComponent implements OnInit {
               this.wp3Status = status;
               this.tableInfo = [];
               for (const impact of this.wp3Status.splittingValues) {
-                if (!this.companySector && impact.sectorType.toString() !== MySectorType.GLOBAL.toString()) {
-                  this.companySector = impact.sectorType.toString().charAt(0).toUpperCase() + impact.sectorType.toString().slice(1).toLowerCase();
+                if (!this.companySector && impact.sectorType !== SectorType.GLOBAL) {
+                  this.companySector = SectorType[impact.sectorType].charAt(0).toUpperCase() + SectorType[impact.sectorType].slice(1).toLowerCase();
                 } else {
                   this.companySector = 'Global';
                 }
-                switch (impact.categoryType.toString()) {
-                  case MyCategoryType.IP.toString(): {
+                switch (impact.categoryType) {
+                  case CategoryType.IP: {
                     this.tableInfo.push({
                       splitting: 'Intellectual Properties',
                       value: Math.round(impact.value * 100) / 100,
@@ -106,7 +106,7 @@ export class IntangibleFinancialWidgetComponent implements OnInit {
                     });
                     break;
                   }
-                  case MyCategoryType.KEY_COMP.toString(): {
+                  case CategoryType.KEY_COMP: {
                     this.tableInfo.push({
                       splitting: 'Key Competences',
                       value: Math.round(impact.value * 100) / 100,
@@ -114,7 +114,7 @@ export class IntangibleFinancialWidgetComponent implements OnInit {
                     });
                     break;
                   }
-                  case MyCategoryType.ORG_CAPITAL.toString(): {
+                  case CategoryType.ORG_CAPITAL: {
                     this.tableInfo.push({
                       splitting: 'Organizational Capital (Reputation & Brand included )',
                       value: Math.round(impact.value * 100) / 100,

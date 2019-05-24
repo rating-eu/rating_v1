@@ -29,23 +29,22 @@ import {ImpactEvaluationService} from '../../impact-evaluation.service';
 import {EBITMgm} from '../../../entities/ebit-mgm';
 import {Wp3BundleInput} from '../model/wp3-bundle-input.model';
 import {EconomicCoefficientsMgm} from '../../../entities/economic-coefficients-mgm';
-import {SectorType, CategoryType} from '../../../entities/splitting-loss-mgm';
-import {MyCategoryType} from '../../../entities/enumerations/MyCategoryType.enum';
-import {Router, NavigationStart} from "@angular/router";
-import {MySectorType} from '../../../entities/enumerations/MySectorType.enum';
+import {Router, NavigationStart} from '@angular/router';
 import {ImpactEvaluationStatus} from '../model/impact-evaluation-status.model';
 import {AccountService, UserService, User} from '../../../shared';
 import {MyCompanyMgmService, MyCompanyMgm} from '../../../entities/my-company-mgm';
 import {HttpResponse} from '@angular/common/http';
-import {CompType} from '../../../entities/company-profile-mgm';
 import {RegExpUtility} from '../../../utils/regexp.utility.class';
 import {Wp3BundleOutput} from '../model/wp3-bundle-output.model';
 import {Observable} from 'rxjs';
 import {switchMap} from 'rxjs/operators';
 import {of} from 'rxjs/observable/of';
 import {forkJoin} from 'rxjs/observable/forkJoin';
-import {DatasharingService} from "../../../datasharing/datasharing.service";
-import {Account} from "../../../shared";
+import {DatasharingService} from '../../../datasharing/datasharing.service';
+import {Account} from '../../../shared';
+import {CompanyType} from '../../../entities/enumerations/CompanyType.enum';
+import {SectorType} from '../../../entities/enumerations/SectorTyep.enum';
+import {CategoryType} from '../../../entities/enumerations/CategoryType.enum';
 
 interface OrderBy {
     asset: boolean;
@@ -154,32 +153,32 @@ export class ImpactEvaluationComponent implements OnInit {
                     this.myCompanyService.findByUser(this.user.id).subscribe(
                         (response3: HttpResponse<MyCompanyMgm>) => {
                             this.myCompany = response3.body;
-                            switch (this.myCompany.companyProfile.type.toString()) {
-                                case CompType[CompType.FINANCE_AND_INSURANCE]: {
+                            switch (this.myCompany.companyProfile.type) {
+                                case CompanyType.FINANCE_AND_INSURANCE: {
                                     this.choosedSectorType = SectorType.FINANCE_AND_INSURANCE;
                                     this.sectorChoosed = 'finance_and_insurance';
                                     this.sectorString = 'Finance and Insurance';
                                     break;
                                 }
-                                case CompType[CompType.HEALTH_CARE_AND_SOCIAL_ASSISTANCE]: {
+                                case CompanyType.HEALTH_CARE_AND_SOCIAL_ASSISTANCE: {
                                     this.choosedSectorType = SectorType.HEALTH_CARE_AND_SOCIAL_ASSISTANCE;
                                     this.sectorChoosed = 'health_care_and_social_assistance';
                                     this.sectorString = 'Health care and social assistance';
                                     break;
                                 }
-                                case CompType[CompType.INFORMATION]: {
+                                case CompanyType.INFORMATION: {
                                     this.choosedSectorType = SectorType.INFORMATION;
                                     this.sectorChoosed = 'information';
                                     this.sectorString = 'Information';
                                     break;
                                 }
-                                case CompType[CompType.PROFESSIONAL_SCIENTIFIC_AND_TECHNICAL_SERVICE]: {
+                                case CompanyType.PROFESSIONAL_SCIENTIFIC_AND_TECHNICAL_SERVICE: {
                                     this.choosedSectorType = SectorType.PROFESSIONAL_SCIENTIFIC_AND_TECHNICAL_SERVICE;
                                     this.sectorChoosed = 'professional_scientific_and_technical_service';
                                     this.sectorString = 'Professional Scientific and Technical Service';
                                     break;
                                 }
-                                case CompType[CompType.OTHER]: {
+                                case CompanyType.OTHER: {
                                     this.choosedSectorType = SectorType.GLOBAL;
                                     this.sectorChoosed = '';
                                     this.sectorString = '';
@@ -334,24 +333,24 @@ export class ImpactEvaluationComponent implements OnInit {
                         this.lossOnintangibleAssetsDueToCyberattacks = this.wp3Status.economicResults.intangibleLossByAttacks;
                         for (const impact of this.wp3Status.splittingLosses) {
                             switch (impact.categoryType.toString()) {
-                                case MyCategoryType.IP.toString(): {
-                                    if (impact.sectorType.toString() === MySectorType.GLOBAL.toString()) {
+                                case CategoryType.IP.toString(): {
+                                    if (impact.sectorType === SectorType.GLOBAL) {
                                         this.impactOnIP = Math.round(impact.loss * 100) / 100;
                                     } else {
                                         this.impactOnSectorialIP = Math.round(impact.loss * 100) / 100;
                                     }
                                     break;
                                 }
-                                case MyCategoryType.KEY_COMP.toString(): {
-                                    if (impact.sectorType.toString() === MySectorType.GLOBAL.toString()) {
+                                case CategoryType.KEY_COMP.toString(): {
+                                    if (impact.sectorType === SectorType.GLOBAL) {
                                         this.impactOnKeyComp = Math.round(impact.loss * 100) / 100;
                                     } else {
                                         this.impactOnSectorialKeyComp = Math.round(impact.loss * 100) / 100;
                                     }
                                     break;
                                 }
-                                case MyCategoryType.ORG_CAPITAL.toString(): {
-                                    if (impact.sectorType.toString() === MySectorType.GLOBAL.toString()) {
+                                case CategoryType.ORG_CAPITAL.toString(): {
+                                    if (impact.sectorType === SectorType.GLOBAL) {
                                         this.impactOnOrgCapital = Math.round(impact.loss * 100) / 100;
                                     } else {
                                         this.impactOnSectorialOrgCapital = Math.round(impact.loss * 100) / 100;
@@ -363,8 +362,8 @@ export class ImpactEvaluationComponent implements OnInit {
                         // TODO mod in splittingValues and value da decommentare
                         for (const splitting of this.wp3Status.splittingValues) {
                             switch (splitting.categoryType.toString()) {
-                                case MyCategoryType.IP.toString(): {
-                                    if (splitting.sectorType.toString() === MySectorType.GLOBAL.toString()) {
+                                case CategoryType.IP.toString(): {
+                                    if (splitting.sectorType === SectorType.GLOBAL) {
                                         this.splittingOnIP = Math.round(splitting.value * 100) / 100;
                                     } else {
                                         this.splittingOnSectorialIP = Math.round(splitting.value * 100) / 100;
@@ -374,8 +373,8 @@ export class ImpactEvaluationComponent implements OnInit {
                                     });
                                     break;
                                 }
-                                case MyCategoryType.KEY_COMP.toString(): {
-                                    if (splitting.sectorType.toString() === MySectorType.GLOBAL.toString()) {
+                                case CategoryType.KEY_COMP.toString(): {
+                                    if (splitting.sectorType === SectorType.GLOBAL) {
                                         this.splittingOnKeyComp = Math.round(splitting.value * 100) / 100;
                                     } else {
                                         this.splittingOnSectorialKeyComp = Math.round(splitting.value * 100) / 100;
@@ -385,8 +384,8 @@ export class ImpactEvaluationComponent implements OnInit {
                                     });
                                     break;
                                 }
-                                case MyCategoryType.ORG_CAPITAL.toString(): {
-                                    if (splitting.sectorType.toString() === MySectorType.GLOBAL.toString()) {
+                                case CategoryType.ORG_CAPITAL.toString(): {
+                                    if (splitting.sectorType === SectorType.GLOBAL) {
                                         this.splittingOnOrgCapital = Math.round(splitting.value * 100) / 100;
                                     } else {
                                         this.splittingOnSectorialOrgCapital = Math.round(splitting.value * 100) / 100;
@@ -592,25 +591,25 @@ export class ImpactEvaluationComponent implements OnInit {
             switchMap((res: Wp3BundleOutput) => {
                 if (res) {
                     for (const impactOn of res.splittingLosses) {
-                        switch (impactOn.categoryType.toString()) {
-                            case MyCategoryType.IP.toString(): {
-                                if (impactOn.sectorType.toString() === MySectorType.GLOBAL.toString()) {
+                        switch (impactOn.categoryType) {
+                            case CategoryType.IP: {
+                                if (impactOn.sectorType === SectorType.GLOBAL) {
                                     this.impactOnIP = Math.round(impactOn.loss * 100) / 100;
                                 } else {
                                     this.impactOnSectorialIP = Math.round(impactOn.loss * 100) / 100;
                                 }
                                 break;
                             }
-                            case MyCategoryType.KEY_COMP.toString(): {
-                                if (impactOn.sectorType.toString() === MySectorType.GLOBAL.toString()) {
+                            case CategoryType.KEY_COMP: {
+                                if (impactOn.sectorType === SectorType.GLOBAL) {
                                     this.impactOnKeyComp = Math.round(impactOn.loss * 100) / 100;
                                 } else {
                                     this.impactOnSectorialKeyComp = Math.round(impactOn.loss * 100) / 100;
                                 }
                                 break;
                             }
-                            case MyCategoryType.ORG_CAPITAL.toString(): {
-                                if (impactOn.sectorType.toString() === MySectorType.GLOBAL.toString()) {
+                            case CategoryType.ORG_CAPITAL: {
+                                if (impactOn.sectorType === SectorType.GLOBAL) {
                                     this.impactOnOrgCapital = Math.round(impactOn.loss * 100) / 100;
                                 } else {
                                     this.impactOnSectorialOrgCapital = Math.round(impactOn.loss * 100) / 100;
@@ -644,9 +643,9 @@ export class ImpactEvaluationComponent implements OnInit {
             switchMap((res: Wp3BundleOutput) => {
                 if (res) {
                     for (const splitting of res.splittingValues) {
-                        switch (splitting.categoryType.toString()) {
-                            case MyCategoryType.IP.toString(): {
-                                if (splitting.sectorType.toString() === MySectorType.GLOBAL.toString()) {
+                        switch (splitting.categoryType) {
+                            case CategoryType.IP: {
+                                if (splitting.sectorType === SectorType.GLOBAL) {
                                     this.splittingOnIP = Math.round(splitting.value * 100) / 100;
                                 } else {
                                     this.splittingOnSectorialIP = Math.round(splitting.value * 100) / 100;
@@ -656,8 +655,8 @@ export class ImpactEvaluationComponent implements OnInit {
                                 });
                                 break;
                             }
-                            case MyCategoryType.KEY_COMP.toString(): {
-                                if (splitting.sectorType.toString() === MySectorType.GLOBAL.toString()) {
+                            case CategoryType.KEY_COMP: {
+                                if (splitting.sectorType === SectorType.GLOBAL) {
                                     this.splittingOnKeyComp = Math.round(splitting.value * 100) / 100;
                                 } else {
                                     this.splittingOnSectorialKeyComp = Math.round(splitting.value * 100) / 100;
@@ -667,8 +666,8 @@ export class ImpactEvaluationComponent implements OnInit {
                                 });
                                 break;
                             }
-                            case MyCategoryType.ORG_CAPITAL.toString(): {
-                                if (splitting.sectorType.toString() === MySectorType.GLOBAL.toString()) {
+                            case CategoryType.ORG_CAPITAL: {
+                                if (splitting.sectorType === SectorType.GLOBAL) {
                                     this.splittingOnOrgCapital = Math.round(splitting.value * 100) / 100;
                                 } else {
                                     this.splittingOnSectorialOrgCapital = Math.round(splitting.value * 100) / 100;
