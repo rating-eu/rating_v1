@@ -1,0 +1,19 @@
+id;name;created;modified;jhi_order;question_type;answer_type;questionnaire_id;threat_agent_id
+10001;Does your LPA manage relevant/important data?;now();now();1;OTHER;YESNO;10000;1
+10002;Does your LPA have a national or international visibility?;now();now();2;OTHER;YESNO;10000;1
+10003;Does your LPA manage critical infrastructure/SCADA?;now();now();3;OTHER;YESNO;10000;1
+10004;Does your LPA have offices in countries with political tensions?;now();now();4;OTHER;YESNO;10000;1
+10005;Is your LPA a potential target for political, ethnical, religious or environmental reasons?;now();now();5;OTHER;YESNO;10000;2
+10006;Does your LPA have government contracts?;now();now();6;OTHER;YESNO;10000;2
+10007;Does your LPA have a negative media impact?;now();now();7;OTHER;YESNO;10000;2
+10008;Does your LPA operate in a war zone?;now();now();8;OTHER;YESNO;10000;3
+10009;Does your LPA work closely with high-profile people?;now();now();9;OTHER;YESNO;10000;3
+10010;Does your LPA manage critical infrastructure/SCADA?;now();now();10;OTHER;YESNO;10000;3
+10011;Does your LPA manage relevant data that could be easily resold to competitors or in black markets?;now();now();11;OTHER;YESNO;10000;4
+10012;Does your LPA have a well-known brand?;now();now();12;OTHER;YESNO;10000;4
+10013;Does your LPA has industrial secrets or intellectual properties?;now();now();13;OTHER;YESNO;10000;5
+10014;Is your LPA a market leader?;now();now();14;OTHER;YESNO;10000;5
+10015;Does your employee manage assets that could be easily resold to competitors or on black markets?;now();now();15;OTHER;YESNO;10000;6
+10016;Have there ever been discontent among employees? (Caused by layoffs, fusion, relocation etc.);now();now();16;OTHER;YESNO;10000;6
+10017;Does your LPA ever suffer for data leaks in the past?;now();now();17;OTHER;YESNO;10000;6
+10018;In your LPA can every employee have easily access to relevant assets?;now();now();18;OTHER;YESNO;10000;6

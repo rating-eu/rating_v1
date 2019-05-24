@@ -1,0 +1,4 @@
+id;name;purpose;created;modified
+10000;Identify Threat Agents;ID_THREAT_AGENT;now();now()
+20000;Vulnerability Assessment;SELFASSESSMENT;now();now()
+30000;Asset Management;ID_ASSETS;now();now()
