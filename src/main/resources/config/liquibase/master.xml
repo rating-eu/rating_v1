@@ -140,5 +140,6 @@
     <include file="config/liquibase/changelog/20190524160537_added_LPA_threat_agents_questions_data.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20190524162042_added_LPA_threat_agents_questions_answers_join_data.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20190524163955_added_LPA_attack_strategies_questions_data.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190524165134_added_LPA_attack_strategies_questions_attacks_join_data.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
 </databaseChangeLog>
