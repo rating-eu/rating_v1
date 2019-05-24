@@ -133,5 +133,6 @@
     <include file="config/liquibase/changelog/20190515130554_added_self_assessment_impact_mode_column.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20190520153849_added_qstatus_external_fk.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20190523130056_drop_self_external_column.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190524130329_added_questionnaire_company_type_column.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
 </databaseChangeLog>
