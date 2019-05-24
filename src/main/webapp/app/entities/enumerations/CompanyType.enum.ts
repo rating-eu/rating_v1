@@ -15,17 +15,11 @@
  *
  */
 
-
-import {CompanyType} from '../../entities/enumerations/CompanyType.enum';
-
-export class RegisterAccount {
-    login: string;
-    firstName: string;
-    lastName: string;
-    companyName: string;
-    companySector: CompanyType;
-    companyWebsite: string;
-    email: string;
-    password: string;
-    langKey: string;
+export enum CompanyType {
+    'OTHER' = <any>'OTHER',
+    'FINANCE_AND_INSURANCE' = <any>'FINANCE_AND_INSURANCE',
+    'HEALTH_CARE_AND_SOCIAL_ASSISTANCE' = <any>'HEALTH_CARE_AND_SOCIAL_ASSISTANCE',
+    'INFORMATION' = <any>'INFORMATION',
+    'PROFESSIONAL_SCIENTIFIC_AND_TECHNICAL_SERVICE' = <any>'PROFESSIONAL_SCIENTIFIC_AND_TECHNICAL_SERVICE',
+    'LOCAL_PUBLIC_ADMINISTRATION' = <any>'LOCAL_PUBLIC_ADMINISTRATION'
 }

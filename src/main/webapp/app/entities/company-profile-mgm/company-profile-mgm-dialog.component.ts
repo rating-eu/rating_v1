@@ -28,8 +28,8 @@ import {CompanyProfileMgmPopupService} from './company-profile-mgm-popup.service
 import {CompanyProfileMgmService} from './company-profile-mgm.service';
 import {User, UserService} from '../../shared';
 import {ContainerMgm, ContainerMgmService} from '../container-mgm';
-import {SessionStorageService} from 'ngx-webstorage';
 import { PopUpService } from '../../shared/pop-up-services/pop-up.service';
+import {CompanyType} from '../enumerations/CompanyType.enum';
 
 @Component({
     selector: 'jhi-company-profile-mgm-dialog',
@@ -39,6 +39,7 @@ export class CompanyProfileMgmDialogComponent implements OnInit {
 
     companyProfile: CompanyProfileMgm;
     isSaving: boolean;
+    companyTypeEnum = CompanyType;
 
     users: User[];
 
