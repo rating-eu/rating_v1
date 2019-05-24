@@ -1,4 +1,4 @@
-id;name;purpose;created;modified
-10000;Identify Threat Agents;ID_THREAT_AGENT;now();now()
-20000;Vulnerability Assessment;SELFASSESSMENT;now();now()
-30000;Asset Management;ID_ASSETS;now();now()
+id;name;purpose;created;modified;company_type
+10001;Identify Threat Agents;ID_THREAT_AGENT;now();now();LOCAL_PUBLIC_ADMINISTRATION
+10002;Vulnerability Assessment;SELFASSESSMENT;now();now();LOCAL_PUBLIC_ADMINISTRATION
+10003;Asset Management;ID_ASSETS;now();now();LOCAL_PUBLIC_ADMINISTRATION
