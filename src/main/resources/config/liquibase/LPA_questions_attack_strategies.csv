@@ -1,58 +1,58 @@
 id;name;created;modified;jhi_order;question_type;answer_type;questionnaire_id
-10019;How many employees are aware of the risks of sharing “personal” or ”work related” information on social networks?;now();now();1;REGULAR;PERC5;20000
-10020;Is the LPA able to monitor its reputation level on the Internet?;now();now();2;REGULAR;RANGE5;20000
-10021;How many employees can recognise Social Engineering tricks and react to this threat? e.g. phishing attempt, spam, fake telephone calls (vishing), fake websites or malicious USBs dropped on the walkway;now();now();3;RELEVANT;PERC5;20000
-10022;How many employees are trained with simulated phishing campaigns and regular awareness program?;now();now();4;REGULAR;PERC5;20000
-10023;How many employees are trained to identify and correctly protect LPA''s sensitive and non-sensitive data?;now();now();5;REGULAR;PERC5;20000
-10024;How many employees are trained to distinguish a legitimate warning message (requesting permission for an update or from fake antivirus) from a fake one, and properly notify the security team, if something terrible or questionable happens?;now();now();6;REGULAR;PERC5;20000
-10025;Are the physical security measures, not only well defined, but also in line with the best practices and standards? E.g. registry of guests, guest escorting procedure, segregate internal areas, etc.;now();now();8;REGULAR;RANGE5;20000
-10026;In the case of existing branch offices, are they also compliant with the same policies, standards and best practices of the headquarter? E.g. when to use the VPN or proxy connections, policies of the antiviruses, documents classification and disposal.;now();now();9;REGULAR;RANGE5;20000
-10027;Is the concept of “Data Classification” applied within the LPA?;now();now();10;REGULAR;RANGE5;20000
-10028;Are sensitive documents and devices correctly disposed at the end of their life-cycle? E.g. dismissed laptops, servers, mobile terminals;now();now();12;REGULAR;RANGE5;20000
-10029;Can you assure that all passwords in your LPA are not stored into easily accessible media? e.g. easily accessible files, via FTP or mobile terminals?;now();now();14;REGULAR;RANGE3;20000
-10030;Is Strong Authentication used in your LPA? E.g. tokens, two-factor authentication.;now();now();15;REGULAR;RANGE5;20000
-10031;Are all the information related to user accounts (e.g. last n sessions, IP used addresses, ...) correctly stored and analysed in log files?;now();now();16;RELEVANT;RANGE5;20000
-10032;Is the vulnerability scanning a regularly scheduled maintenance task in the LPA?;now();now();17;RELEVANT;RANGE5;20000
-10033;Are there unnecessary services on systems exposed in Internet? E.g., misconfigured FTP servers, abandoned web-exposed servers, unnecessary shares or server ports, zombie servers, etc.;now();now();18;RELEVANT;RANGE5;20000
-10034;Is there a strict firewall rules management?;now();now();19;REGULAR;RANGE5;20000
-10036;What percentage of software and applications are updated within a well-defined process? E.g. internally developed coding best practices to improve security of the applications.;now();now();22;RELEVANT;PERC5;20000
-10037;Are custom (e.g. internally developed) applications used? Are there custom applications accessible via Internet?;now();now();20;REGULAR;RANGE3;20000
-10038;What percentage of custom applications has been carried out according to the “Secure Coding” practices? E.g. recognised best practices such as Common Criteria or Secure software development lifecycle (OWASP).;now();now();23;REGULAR;PERC5;20000
-10039;Accoriding to GDPR law, in case of custom application development, are you using security-by-design and privacy-by-design best practices?;now();now();24;REGULAR;RANGE5;20000
-10040;Does your LPA develop software for third parties? E.g. mobile apps for your suppliers, web-sites for your stakeholder or suppliers.;now();now();21;REGULAR;RANGE3;20000
-10041;What percentage of the IT developers are aware of the set of general software security coding practices during the development lifecycle (e.g. training on OWASP Secure Coding)?;now();now();25;REGULAR;PERC5;20000
-10042;How many legacy network protocols/services are used in the LPA that not guarantee strong-enough security features (e.g. telnet, FTP, or other channels not using strong authentication, authorization and encryption)?;now();now();27;RELEVANT;PERC5;20000
-10043;In case some legacy network protocols/services are still used in the LPA, are they also exposed over the Internet or just on internal networks?;now();now();28;RELEVANT;RANGE3;20000
-10044;How many network devices are correctly managed according to the best security practices? E.g. continuous or automatic patch management solutions.;now();now();29;RELEVANT;PERC5;20000
-10045;Are Wi-Fi access-points available in your LPA? If yes, are they protected with robust Wi-Fi encryption schemas (e.g. WPA2, WPA3, Enterprise-WPA)? What type of authentication do you use (e.g. “Pre-Shared Key” or “Certificate”)?;now();now();30;REGULAR;RANGE5;20000
-10046;What percentage of software does your LPA regularly ensure suppliers with security patches?;now();now();26;REGULAR;PERC5;20000
-10047;Are DDoS mitigation solutions used in the LPA (e.g. CloudFlare)?;now();now();31;REGULAR;RANGE5;20000
-10049;What percentage of users are able to install custom software on their LPA’s workstations?;now();now();32;RELEVANT;PERC5;20000
-10050;Are there some policies regarding the installation of new software on LPA’s devices?;now();now();33;RELEVANT;RANGE5;20000
-10051;Is “BYOD” (Bring Your Own Device) allowed?;now();now();34;REGULAR;YESNO;20000
-10052;Are tools for perimeter security with anomaly behavior and sandboxing used in your LPA?;now();now();35;REGULAR;RANGE5;20000
-10053;Which percentage of software applications is regulated by an internal policy?;now();now();36;REGULAR;PERC5;20000
-10054;What percentage of passwords used internally are under policies that require a minimum length, a combination of numbers and special characters and an expiration date?;now();now();37;REGULAR;PERC5;20000
-10055;What percentage of web-applications are protected with a WAF (Web Application Firewall) deployed to detect and block unauthorized connections or scanning attempts? Either on internet or intranet.;now();now();38;REGULAR;PERC5;20000
-10056;What percentage of web-applications are following a continuous patching during their life-cycle?;now();now();39;RELEVANT;PERC5;20000
-10057;What percentage of web-applications follows regularly penetration testing?;now();now();40;RELEVANT;PERC5;20000
-10058;Are antivirus solutions configured following known best practices or standards, and used LPA-wide?;now();now();41;RELEVANT;RANGE5;20000
-10059;What are the percentages of systems on LPA that are receiving constantly security updates?;now();now();43;REGULAR;PERC5;20000
-10060;How often the configurations of business critical systems are checked?;now();now();44;RELEVANT;RANGE5;20000
-10061;How often the administrative users are regularly checked? E.g. check that the admins present in a system are still meaningful.;now();now();45;REGULAR;RANGE5;20000
-10062;Is the LPA prepared for a ransomware event with an incident response plan? E.g. mitigation measures specific to contrast the ransomware threat.;now();now();46;REGULAR;RANGE5;20000
-10063;What is the coverage of systems regularly backed-up?;now();now();47;REGULAR;RANGE5;20000
-10064;Is the principle of “network segmentation” applied? E.g. DMZ, zero trust networks, ...;now();now();48;RELEVANT;RANGE5;20000
-10065;Is the principle of “minimum privilege” applied? E.g. Remove all the unused user or services on a server, run applications without administration rights (where possible), users are not the admin of their machines.;now();now();49;RELEVANT;RANGE5;20000
-10066;What is the percentage of systems with antivirus and anti-spam solutions installed and managed?;now();now();42;REGULAR;RANGE5;20000
-10067;Are firewalls and Intrusion Detection System (IDS) deployed following best practices? E.g., Common Criteria or other best practices used to block the unauthorised connection or scanning attempts.;now();now();50;REGULAR;RANGE5;20000
-10068;Are the logs files of firewalls and IDS periodically checked against security threats?;now();now();51;REGULAR;RANGE5;20000
-10069;Is there a security information and event management (SIEM)?;now();now();52;REGULAR;RANGE5;20000
-10070;Is there a Service Operation Centre (SOC)?;now();now();53;REGULAR;RANGE5;20000
-10071;Is there a continuous monitoring of security events at network’s level? E.g., Intrusion Prevention System.;now();now();54;REGULAR;RANGE5;20000
-10072;Are the policies and procedures to regulate the physical access to sensible areas (such as door lock to data server rooms or video monitoring of sensible spaces) well defined?;now();now();7;REGULAR;RANGE5;20000
-10074;Are sensitive documents and digital supports properly disposed of? E.g. documents of terminated or archived projects, draft documents and intermediary results.;now();now();13;REGULAR;RANGE5;20000
-10075;Which percentage of employees regularly receives scrutiny on security (all the employees, considering also for example cleaners staff)?;now();now();55;REGULAR;PERC5;20000
-10076;What percentage of workstations and mobile devices use “full data encryption”?;now();now();56;REGULAR;PERC5;20000
-10078;What percentage of employees are aware of the risks derived from the insertion of an unauthorised device (e.g. USB drive found near the LPA building) into a system of the LPA (e.g., personal workstation or dedicated laptops)?;now();now();57;REGULAR;PERC5;20000
-10080;Is the concept of “Data Classification” applied within the LPA’s supply-chain?;now();now();11;REGULAR;RANGE5;20000
+10019;How many employees are aware of the risks of sharing “personal” or ”work related” information on social networks?;now();now();1;REGULAR;PERC5;10002
+10020;Is the LPA able to monitor its reputation level on the Internet?;now();now();2;REGULAR;RANGE5;10002
+10021;How many employees can recognise Social Engineering tricks and react to this threat? e.g. phishing attempt, spam, fake telephone calls (vishing), fake websites or malicious USBs dropped on the walkway;now();now();3;RELEVANT;PERC5;10002
+10022;How many employees are trained with simulated phishing campaigns and regular awareness program?;now();now();4;REGULAR;PERC5;10002
+10023;How many employees are trained to identify and correctly protect LPA''s sensitive and non-sensitive data?;now();now();5;REGULAR;PERC5;10002
+10024;How many employees are trained to distinguish a legitimate warning message (requesting permission for an update or from fake antivirus) from a fake one, and properly notify the security team, if something terrible or questionable happens?;now();now();6;REGULAR;PERC5;10002
+10025;Are the physical security measures, not only well defined, but also in line with the best practices and standards? E.g. registry of guests, guest escorting procedure, segregate internal areas, etc.;now();now();7;REGULAR;RANGE5;10002
+10026;In the case of existing branch offices, are they also compliant with the same policies, standards and best practices of the headquarter? E.g. when to use the VPN or proxy connections, policies of the antiviruses, documents classification and disposal.;now();now();8;REGULAR;RANGE5;10002
+10027;Is the concept of “Data Classification” applied within the LPA?;now();now();9;REGULAR;RANGE5;10002
+10028;Are sensitive documents and devices correctly disposed at the end of their life-cycle? E.g. dismissed laptops, servers, mobile terminals;now();now();10;REGULAR;RANGE5;10002
+10029;Can you assure that all passwords in your LPA are not stored into easily accessible media? e.g. easily accessible files, via FTP or mobile terminals?;now();now();11;REGULAR;RANGE3;10002
+10030;Is Strong Authentication used in your LPA? E.g. tokens, two-factor authentication.;now();now();12;REGULAR;RANGE5;10002
+10031;Are all the information related to user accounts (e.g. last n sessions, IP used addresses, ...) correctly stored and analysed in log files?;now();now();13;RELEVANT;RANGE5;10002
+10032;Is the vulnerability scanning a regularly scheduled maintenance task in the LPA?;now();now();14;RELEVANT;RANGE5;10002
+10033;Are there unnecessary services on systems exposed in Internet? E.g., misconfigured FTP servers, abandoned web-exposed servers, unnecessary shares or server ports, zombie servers, etc.;now();now();15;RELEVANT;RANGE5;10002
+10034;Is there a strict firewall rules management?;now();now();16;REGULAR;RANGE5;10002
+10036;What percentage of software and applications are updated within a well-defined process? E.g. internally developed coding best practices to improve security of the applications.;now();now();17;RELEVANT;PERC5;10002
+10037;Are custom (e.g. internally developed) applications used? Are there custom applications accessible via Internet?;now();now();18;REGULAR;RANGE3;10002
+10038;What percentage of custom applications has been carried out according to the “Secure Coding” practices? E.g. recognised best practices such as Common Criteria or Secure software development lifecycle (OWASP).;now();now();19;REGULAR;PERC5;10002
+10039;Accoriding to GDPR law, in case of custom application development, are you using security-by-design and privacy-by-design best practices?;now();now();20;REGULAR;RANGE5;10002
+10040;Does your LPA develop software for third parties? E.g. mobile apps for your suppliers, web-sites for your stakeholder or suppliers.;now();now();21;REGULAR;RANGE3;10002
+10041;What percentage of the IT developers are aware of the set of general software security coding practices during the development lifecycle (e.g. training on OWASP Secure Coding)?;now();now();22;REGULAR;PERC5;10002
+10042;How many legacy network protocols/services are used in the LPA that not guarantee strong-enough security features (e.g. telnet, FTP, or other channels not using strong authentication, authorization and encryption)?;now();now();23;RELEVANT;PERC5;10002
+10043;In case some legacy network protocols/services are still used in the LPA, are they also exposed over the Internet or just on internal networks?;now();now();24;RELEVANT;RANGE3;10002
+10044;How many network devices are correctly managed according to the best security practices? E.g. continuous or automatic patch management solutions.;now();now();25;RELEVANT;PERC5;10002
+10045;Are Wi-Fi access-points available in your LPA? If yes, are they protected with robust Wi-Fi encryption schemas (e.g. WPA2, WPA3, Enterprise-WPA)? What type of authentication do you use (e.g. “Pre-Shared Key” or “Certificate”)?;now();now();26;REGULAR;RANGE5;10002
+10046;What percentage of software does your LPA regularly ensure suppliers with security patches?;now();now();27;REGULAR;PERC5;10002
+10047;Are DDoS mitigation solutions used in the LPA (e.g. CloudFlare)?;now();now();28;REGULAR;RANGE5;10002
+10049;What percentage of users are able to install custom software on their LPA’s workstations?;now();now();29;RELEVANT;PERC5;10002
+10050;Are there some policies regarding the installation of new software on LPA’s devices?;now();now();30;RELEVANT;RANGE5;10002
+10051;Is “BYOD” (Bring Your Own Device) allowed?;now();now();31;REGULAR;YESNO;10002
+10052;Are tools for perimeter security with anomaly behavior and sandboxing used in your LPA?;now();now();32;REGULAR;RANGE5;10002
+10053;Which percentage of software applications is regulated by an internal policy?;now();now();33;REGULAR;PERC5;10002
+10054;What percentage of passwords used internally are under policies that require a minimum length, a combination of numbers and special characters and an expiration date?;now();now();34;REGULAR;PERC5;10002
+10055;What percentage of web-applications are protected with a WAF (Web Application Firewall) deployed to detect and block unauthorized connections or scanning attempts? Either on internet or intranet.;now();now();35;REGULAR;PERC5;10002
+10056;What percentage of web-applications are following a continuous patching during their life-cycle?;now();now();36;RELEVANT;PERC5;10002
+10057;What percentage of web-applications follows regularly penetration testing?;now();now();37;RELEVANT;PERC5;10002
+10058;Are antivirus solutions configured following known best practices or standards, and used LPA-wide?;now();now();38;RELEVANT;RANGE5;10002
+10059;What are the percentages of systems on LPA that are receiving constantly security updates?;now();now();39;REGULAR;PERC5;10002
+10060;How often the configurations of business critical systems are checked?;now();now();40;RELEVANT;RANGE5;10002
+10061;How often the administrative users are regularly checked? E.g. check that the admins present in a system are still meaningful.;now();now();41;REGULAR;RANGE5;10002
+10062;Is the LPA prepared for a ransomware event with an incident response plan? E.g. mitigation measures specific to contrast the ransomware threat.;now();now();42;REGULAR;RANGE5;10002
+10063;What is the coverage of systems regularly backed-up?;now();now();43;REGULAR;RANGE5;10002
+10064;Is the principle of “network segmentation” applied? E.g. DMZ, zero trust networks, ...;now();now();44;RELEVANT;RANGE5;10002
+10065;Is the principle of “minimum privilege” applied? E.g. Remove all the unused user or services on a server, run applications without administration rights (where possible), users are not the admin of their machines.;now();now();45;RELEVANT;RANGE5;10002
+10066;What is the percentage of systems with antivirus and anti-spam solutions installed and managed?;now();now();46;REGULAR;RANGE5;10002
+10067;Are firewalls and Intrusion Detection System (IDS) deployed following best practices? E.g., Common Criteria or other best practices used to block the unauthorised connection or scanning attempts.;now();now();47;REGULAR;RANGE5;10002
+10068;Are the logs files of firewalls and IDS periodically checked against security threats?;now();now();48;REGULAR;RANGE5;10002
+10069;Is there a security information and event management (SIEM)?;now();now();49;REGULAR;RANGE5;10002
+10070;Is there a Service Operation Centre (SOC)?;now();now();50;REGULAR;RANGE5;10002
+10071;Is there a continuous monitoring of security events at network’s level? E.g., Intrusion Prevention System.;now();now();51;REGULAR;RANGE5;10002
+10072;Are the policies and procedures to regulate the physical access to sensible areas (such as door lock to data server rooms or video monitoring of sensible spaces) well defined?;now();now();52;REGULAR;RANGE5;10002
+10074;Are sensitive documents and digital supports properly disposed of? E.g. documents of terminated or archived projects, draft documents and intermediary results.;now();now();53;REGULAR;RANGE5;10002
+10075;Which percentage of employees regularly receives scrutiny on security (all the employees, considering also for example cleaners staff)?;now();now();54;REGULAR;PERC5;10002
+10076;What percentage of workstations and mobile devices use “full data encryption”?;now();now();55;REGULAR;PERC5;10002
+10078;What percentage of employees are aware of the risks derived from the insertion of an unauthorised device (e.g. USB drive found near the LPA building) into a system of the LPA (e.g., personal workstation or dedicated laptops)?;now();now();56;REGULAR;PERC5;10002
+10080;Is the concept of “Data Classification” applied within the LPA’s supply-chain?;now();now();57;REGULAR;RANGE5;10002
