@@ -69,7 +69,7 @@ public class Questionnaire implements Serializable {
 
     @NotNull
     @Enumerated(EnumType.STRING)
-    @Column(name = "company_type")
+    @Column(name = "company_type", nullable = false)
     private CompanyType companyType;
 
     @OneToMany(mappedBy = "questionnaire")
