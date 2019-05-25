@@ -67,6 +67,7 @@ public class Questionnaire implements Serializable {
     @Column(name = "modified")
     private ZonedDateTime modified;
 
+    @NotNull
     @Enumerated(EnumType.STRING)
     @Column(name = "company_type")
     private CompanyType companyType;
