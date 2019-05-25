@@ -29,7 +29,6 @@ public class AugmentedMyAsset extends MyAsset {
         this.setEconomicValue(myAsset.getEconomicValue());
         this.setEstimated(myAsset.isEstimated());
         this.setSelfAssessment(myAsset.getSelfAssessment());
-        this.setQuestionnaire(myAsset.getQuestionnaire());
     }
 
     private AugmentedAttackStrategy augmentedAttackStrategy;

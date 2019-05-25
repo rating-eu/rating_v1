@@ -45,7 +45,6 @@ public class MyAssetRisk extends MyAsset {
         this.setCosts(myAsset.getCosts());
         this.setAsset(myAsset.getAsset());
         this.setSelfAssessment(myAsset.getSelfAssessment());
-        this.setQuestionnaire(myAsset.getQuestionnaire());
     }
 
     public float getLikelihood() {
