@@ -44,7 +44,6 @@ export class AssetClusteringComponent implements OnInit, OnDestroy {
     private account: Account;
     private user: User;
     private eventSubscriber: Subscription;
-    //private questionnaries: QuestionnaireMgm[];
 
     public mySelf: SelfAssessmentMgm = null;
     public assets: AssetMgm[];
@@ -86,7 +85,6 @@ export class AssetClusteringComponent implements OnInit, OnDestroy {
         this.mySelf = this.dataSharingService.selfAssessment;
 
         this.registerChangeIdentifyAssets();
-        //this.questionnaries = [];
         this.idaUtilsService.getAllAssets().toPromise().then((systemAssets) => {
             if (systemAssets) {
                 this.assets = systemAssets;
@@ -122,14 +120,6 @@ export class AssetClusteringComponent implements OnInit, OnDestroy {
                 });
             }
         });
-
-        /*this.questionnairesService.getAllQuestionnairesByPurpose(QuestionnairePurpose.ID_ASSETS).toPromise().then((res) => {
-            if (res && res instanceof QuestionnaireMgm) {
-                this.questionnaries.push(res);
-            } else if (res && res instanceof Array) {
-                this.questionnaries = res;
-            }
-        });*/
     }
 
     registerChangeIdentifyAssets() {
@@ -191,7 +181,6 @@ export class AssetClusteringComponent implements OnInit, OnDestroy {
                     if (i === -1) {
                         const newAsset: MyAssetMgm = {};
                         newAsset.asset = asset;
-                        //newAsset.questionnaire = this.questionnaries[0];
                         newAsset.selfAssessment = this.mySelf;
                         newAsset.economicValue = undefined;
                         newAsset.estimated = undefined;
@@ -212,8 +201,6 @@ export class AssetClusteringComponent implements OnInit, OnDestroy {
             } else {
                 const newAsset: MyAssetMgm = {};
                 newAsset.asset = selectedAsset;
-                // TODO pensare ad una politica futura di selezione del questionario
-                //newAsset.questionnaire = this.questionnaries[0];
                 newAsset.selfAssessment = this.mySelf;
                 newAsset.economicValue = undefined;
                 newAsset.estimated = undefined;

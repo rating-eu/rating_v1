@@ -78,13 +78,6 @@
                 <option [ngValue]="selfAssessmentOption.id === myAsset.selfAssessment?.id ? myAsset.selfAssessment : selfAssessmentOption" *ngFor="let selfAssessmentOption of selfassessments; trackBy: trackSelfAssessmentById">{{selfAssessmentOption.name}}</option>
             </select>
         </div>
-        <div class="form-group">
-            <label class="form-control-label" jhiTranslate="hermeneutApp.myAsset.questionnaire" for="field_questionnaire">Questionnaire</label>
-            <select class="form-control" id="field_questionnaire" name="questionnaire" [(ngModel)]="myAsset.questionnaire" >
-                <option [ngValue]="null"></option>
-                <option [ngValue]="questionnaireOption.id === myAsset.questionnaire?.id ? myAsset.questionnaire : questionnaireOption" *ngFor="let questionnaireOption of questionnaires; trackBy: trackQuestionnaireById">{{questionnaireOption.name}}</option>
-            </select>
-        </div>
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">

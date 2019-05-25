@@ -54,11 +54,6 @@
             </div>
         </dd>
         <dt><span jhiTranslate="hermeneutApp.myAsset.questionnaire">Questionnaire</span></dt>
-        <dd>
-            <div *ngIf="myAsset.questionnaire">
-                <a [routerLink]="['/questionnaire-mgm', myAsset.questionnaire?.id]">{{myAsset.questionnaire?.name}}</a>
-            </div>
-        </dd>
     </dl>
 
     <button type="submit"
