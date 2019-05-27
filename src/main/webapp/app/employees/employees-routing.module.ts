@@ -1,15 +1,15 @@
 import {NgModule} from '@angular/core';
 import {Routes, RouterModule} from '@angular/router';
 import {UserRouteAccessService} from "../shared";
-import {PeopleComponent} from "./people/people.component";
 import {ExternalAuditorComponent} from "./external-auditor/external-auditor.component";
 import {FinancialDeputyComponent} from "./financial-deputy/financial-deputy.component";
 import {CisoComponent} from "./ciso/ciso.component";
+import {EmployeesComponent} from "./employees/employees.component";
 
 const routes: Routes = [
     {
         path: '',
-        component: PeopleComponent,
+        component: EmployeesComponent,
         data: {
             authorities: ['ROLE_CISO', 'ROLE_EXTERNAL_AUDIT'],
         },
@@ -35,5 +35,5 @@ const routes: Routes = [
     imports: [RouterModule.forChild(routes)],
     exports: [RouterModule]
 })
-export class PeopleRoutingModule {
+export class EmployeesRoutingModule {
 }

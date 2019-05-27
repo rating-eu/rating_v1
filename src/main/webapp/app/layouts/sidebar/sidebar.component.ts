@@ -216,24 +216,23 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                 ]
             },
             {
-                label: 'People',
+                label: 'Employees',
                 icon: 'fas fa-address-book',
-                routerLink: ['/people'],
                 items: [
                     {
                         label: 'CISO Deputy',
                         icon: 'fas fa-user-tie',
-                        routerLink: ['/people/ciso']
+                        routerLink: ['/employees/ciso']
                     },
                     {
                         label: 'External Auditor',
                         icon: 'fas fa-address-card',
-                        routerLink: ['/people/external']
+                        routerLink: ['/employees/external']
                     },
                     {
                         label: 'Financial Deputy',
                         icon: 'fas fa-glasses',
-                        routerLink: ['/people/financial']
+                        routerLink: ['/employees/financial']
                     }
                 ]
             },
