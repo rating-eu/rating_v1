@@ -97,7 +97,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         this.role = this.dataSharingService.role;
         this.createMenuItems();
 
-        this.dataSharingService.roleObservable.subscribe((roleResponse: Role)=>{
+        this.dataSharingService.roleObservable.subscribe((roleResponse: Role) => {
             this.role = roleResponse;
             this.createMenuItems();
         });
@@ -198,239 +198,253 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     private createMenuItems() {
         this.mySelf = this.dataSharingService.selfAssessment;
 
+        const companyMenuItem: MenuItem = {
+            label: 'Company',
+            icon: 'fas fa-building',
+            items: [
+                {
+                    label: 'Groups',
+                    icon: 'fas fa-users',
+                    routerLink: ['/pages/coming-soon']
+                },
+                {
+                    label: 'Reports',
+                    icon: 'fas fa-file-download',
+                    routerLink: ['/pages/coming-soon']
+                }
+            ]
+        };
+
+        const employeesMenuItem: MenuItem = {
+            label: 'Employees',
+            icon: 'fas fa-address-book',
+            items: [
+                {
+                    label: 'CISO Deputy',
+                    icon: 'fas fa-user-tie',
+                    routerLink: ['/employees/ciso']
+                },
+                {
+                    label: 'External Auditor',
+                    icon: 'fas fa-address-card',
+                    routerLink: ['/employees/external']
+                },
+                {
+                    label: 'Financial Deputy',
+                    icon: 'fas fa-glasses',
+                    routerLink: ['/employees/financial']
+                }
+            ]
+        };
+
+        const cyberPostureMenuItem: MenuItem = {
+            label: 'Cyber Posture',
+            icon: 'fas fa-shield-alt',
+            visible: this.role === Role.ROLE_CISO,
+            items: [
+                {
+                    label: "Threat Agents",
+                    icon: "fas fa-user-secret",
+                    routerLink: ['/identify-threat-agent/questionnaires/ID_THREAT_AGENT'],
+                    visible: this.role === Role.ROLE_CISO
+                },
+                {
+                    label: "Vulnerabilities",
+                    icon: "fa fa-bomb",
+                    routerLink: ['/evaluate-weakness/questionnaires/SELFASSESSMENT'],
+                    visible: this.role === Role.ROLE_CISO
+                }
+            ]
+        };
+
+        const riskManagementMenuItem: MenuItem = {
+            label: 'Risk Management',
+            icon: 'fa fa-bolt',
+            routerLink: ['/my-risk-assessments'],
+            visible: this.role === Role.ROLE_CISO
+                && this.companyBoardStatus
+                && this.companyBoardStatus.identifyThreatAgentsStatus === Status.FULL
+                && this.companyBoardStatus.assessVulnerablitiesStatus === Status.FULL,
+            items: [
+                {
+                    label: 'Assets',
+                    visible: this.isSelfAssessmentSelected,
+                    items: [
+                        {
+                            label: 'Asset Clustering',
+                            routerLink: ['/identify-asset/asset-clustering']
+                        },
+                        {
+                            label: 'Cascade Effects',
+                            routerLink: ['/identify-asset/cascade-effects']
+                        },
+                        {
+                            label: 'Related Costs',
+                            routerLink: ['/identify-asset/attack-costs']
+                        }
+                    ]
+                },
+                {
+                    label: 'Impact Analysis',
+                    visible: this.isSelfAssessmentSelected,
+                    routerLink: ['/impact-evaluation'],
+                    items: [
+                        {
+                            label: 'Quantitative',
+                            items: [
+                                {
+                                    label: 'Impact Evaluation',
+                                    routerLink: ['/impact-evaluation/quantitative']
+                                },
+                                {
+                                    label: 'Estimation of the Data Assets category Losses',
+                                    routerLink: ['/impact-evaluation/quantitative/data-assets-losses-estimation']
+                                },
+                                {
+                                    label: 'Estimation of the Attack Related Costs',
+                                    routerLink: ['/impact-evaluation/quantitative/attack-related-costs-estimation']
+                                }
+                            ]
+                        },
+                        {
+                            label: 'Qualitative',
+                            items: [
+                                {
+                                    label: 'Impacts on Assets',
+                                    routerLink: ['/impact-evaluation/qualitative/']
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    label: 'Risk Analysis',
+                    visible: this.isSelfAssessmentSelected,
+                    routerLink: ['/risk-management/risk-evaluation'],
+                    items: [
+                        {
+                            label: 'Risk Matrix',
+                            routerLink: ['/risk-management/risk-evaluation']
+                        },
+                        {
+                            label: 'Assets at Risk',
+                            routerLink: ['/risk-management/risk-evaluation']
+                        },
+                        {
+                            label: 'Mitigations',
+                            items: [
+                                {
+                                    label: 'Cost Benefit Analysis',
+                                    routerLink: ['/pages/coming-soon']
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        };
+
+        const taxonomiesMenuItem: MenuItem = {
+            label: 'Taxonomies',
+            icon: 'fas fa-atom',
+            items: [
+                {
+                    label: 'Assets',
+                    items: [
+                        {
+                            label: 'Add',
+                            icon: 'fa fa-plus',
+                            routerLink: ['/pages/coming-soon']
+                        },
+                        {
+                            label: 'Tangible',
+                            routerLink: ['/asset-mgm']
+                        },
+                        {
+                            label: 'Intangible',
+                            routerLink: ['/asset-mgm']
+                        }
+                    ]
+                },
+                {
+                    label: 'Threat Agents',
+                    items: [
+                        {
+                            label: 'Add',
+                            icon: 'fa fa-plus',
+                            routerLink: ['/pages/coming-soon']
+                        },
+                        {
+                            label: 'View',
+                            icon: 'far fa-eye',
+                            routerLink: ['/threat-agent-mgm']
+                        },
+                        {
+                            label: 'Update',
+                            icon: 'fas fa-pen-fancy',
+                            routerLink: ['/pages/coming-soon']
+                        },
+                    ]
+                },
+                {
+                    label: 'Attack Strategies',
+                    items: [
+                        {
+                            label: 'Add',
+                            icon: 'fa fa-plus',
+                            routerLink: ['/pages/coming-soon']
+                        },
+                        {
+                            label: 'View',
+                            icon: 'far fa-eye',
+                            routerLink: ['/attack-strategy-mgm']
+                        },
+                        {
+                            label: 'Update',
+                            icon: 'fas fa-pen-fancy',
+                            routerLink: ['/pages/coming-soon']
+                        }
+                    ]
+                },
+                {
+                    label: 'Mitigations',
+                    items: [
+                        {
+                            label: 'Add',
+                            icon: 'fa fa-plus',
+                            routerLink: ['/pages/coming-soon']
+                        },
+                        {
+                            label: 'View',
+                            icon: 'far fa-eye',
+                            routerLink: ['/mitigation-mgm']
+                        },
+                        {
+                            label: 'Update',
+                            icon: 'fas fa-pen-fancy',
+                            routerLink: ['/mitigation-mgm']
+                        }
+                    ]
+                }
+            ]
+        };
+
+        const aboutUsMenuItem: MenuItem = {
+            label: 'About-Us', icon: 'fa fa-info', routerLink: ['/about-us']
+        };
+
+        const termsOfUseMenuItem: MenuItem = {
+            label: 'Terms of Use', icon: 'fas fa-file-signature', routerLink: ['/terms']
+        };
+
         this.items = [
-            {
-                label: 'Company',
-                icon: 'fas fa-building',
-                items: [
-                    {
-                        label: 'Groups',
-                        icon: 'fas fa-users',
-                        routerLink: ['/pages/coming-soon']
-                    },
-                    {
-                        label: 'Reports',
-                        icon: 'fas fa-file-download',
-                        routerLink: ['/pages/coming-soon']
-                    }
-                ]
-            },
-            {
-                label: 'Employees',
-                icon: 'fas fa-address-book',
-                items: [
-                    {
-                        label: 'CISO Deputy',
-                        icon: 'fas fa-user-tie',
-                        routerLink: ['/employees/ciso']
-                    },
-                    {
-                        label: 'External Auditor',
-                        icon: 'fas fa-address-card',
-                        routerLink: ['/employees/external']
-                    },
-                    {
-                        label: 'Financial Deputy',
-                        icon: 'fas fa-glasses',
-                        routerLink: ['/employees/financial']
-                    }
-                ]
-            },
-            {
-                label: 'Cyber Posture',
-                icon: 'fas fa-shield-alt',
-                visible: this.role === Role.ROLE_CISO,
-                items: [
-                    {
-                        label: "Threat Agents",
-                        icon: "fas fa-user-secret",
-                        routerLink: ['/identify-threat-agent/questionnaires/ID_THREAT_AGENT'],
-                        visible: this.role === Role.ROLE_CISO
-                    },
-                    {
-                        label: "Vulnerabilities",
-                        icon: "fa fa-bomb",
-                        routerLink: ['/evaluate-weakness/questionnaires/SELFASSESSMENT'],
-                        visible: this.role === Role.ROLE_CISO
-                    }
-                ]
-            },
-            {
-                label: 'Risk Management',
-                icon: 'fa fa-bolt',
-                routerLink: ['/my-risk-assessments'],
-                visible: this.role === Role.ROLE_CISO
-                    && this.companyBoardStatus
-                    && this.companyBoardStatus.identifyThreatAgentsStatus === Status.FULL
-                    && this.companyBoardStatus.assessVulnerablitiesStatus === Status.FULL,
-                items: [
-                    {
-                        label: 'Assets',
-                        visible: this.isSelfAssessmentSelected,
-                        items: [
-                            {
-                                label: 'Asset Clustering',
-                                routerLink: ['/identify-asset/asset-clustering']
-                            },
-                            {
-                                label: 'Cascade Effects',
-                                routerLink: ['/identify-asset/cascade-effects']
-                            },
-                            {
-                                label: 'Related Costs',
-                                routerLink: ['/identify-asset/attack-costs']
-                            }
-                        ]
-                    },
-                    {
-                        label: 'Impact Analysis',
-                        visible: this.isSelfAssessmentSelected,
-                        routerLink: ['/impact-evaluation'],
-                        items: [
-                            {
-                                label: 'Quantitative',
-                                items: [
-                                    {
-                                        label: 'Impact Evaluation',
-                                        routerLink: ['/impact-evaluation/quantitative']
-                                    },
-                                    {
-                                        label: 'Estimation of the Data Assets category Losses',
-                                        routerLink: ['/impact-evaluation/quantitative/data-assets-losses-estimation']
-                                    },
-                                    {
-                                        label: 'Estimation of the Attack Related Costs',
-                                        routerLink: ['/impact-evaluation/quantitative/attack-related-costs-estimation']
-                                    }
-                                ]
-                            },
-                            {
-                                label: 'Qualitative',
-                                items: [
-                                    {
-                                        label: 'Impacts on Assets',
-                                        routerLink: ['/impact-evaluation/qualitative/']
-                                    }
-                                ]
-                            }
-                        ]
-                    },
-                    {
-                        label: 'Risk Analysis',
-                        visible: this.isSelfAssessmentSelected,
-                        routerLink: ['/risk-management/risk-evaluation'],
-                        items: [
-                            {
-                                label: 'Risk Matrix',
-                                routerLink: ['/risk-management/risk-evaluation']
-                            },
-                            {
-                                label: 'Assets at Risk',
-                                routerLink: ['/risk-management/risk-evaluation']
-                            },
-                            {
-                                label: 'Mitigations',
-                                items: [
-                                    {
-                                        label: 'Cost Benefit Analysis',
-                                        routerLink: ['/pages/coming-soon']
-                                    }
-                                ]
-                            }
-                        ]
-                    }
-                ]
-            },
-            {
-                label: 'Taxonomies',
-                icon: 'fas fa-atom',
-                items: [
-                    {
-                        label: 'Assets',
-                        items: [
-                            {
-                                label: 'Add',
-                                icon: 'fa fa-plus',
-                                routerLink: ['/pages/coming-soon']
-                            },
-                            {
-                                label: 'Tangible',
-                                routerLink: ['/asset-mgm']
-                            },
-                            {
-                                label: 'Intangible',
-                                routerLink: ['/asset-mgm']
-                            }
-                        ]
-                    },
-                    {
-                        label: 'Threat Agents',
-                        items: [
-                            {
-                                label: 'Add',
-                                icon: 'fa fa-plus',
-                                routerLink: ['/pages/coming-soon']
-                            },
-                            {
-                                label: 'View',
-                                icon: 'far fa-eye',
-                                routerLink: ['/threat-agent-mgm']
-                            },
-                            {
-                                label: 'Update',
-                                icon: 'fas fa-pen-fancy',
-                                routerLink: ['/pages/coming-soon']
-                            },
-                        ]
-                    },
-                    {
-                        label: 'Attack Strategies',
-                        items: [
-                            {
-                                label: 'Add',
-                                icon: 'fa fa-plus',
-                                routerLink: ['/pages/coming-soon']
-                            },
-                            {
-                                label: 'View',
-                                icon: 'far fa-eye',
-                                routerLink: ['/attack-strategy-mgm']
-                            },
-                            {
-                                label: 'Update',
-                                icon: 'fas fa-pen-fancy',
-                                routerLink: ['/pages/coming-soon']
-                            }
-                        ]
-                    },
-                    {
-                        label: 'Mitigations',
-                        items: [
-                            {
-                                label: 'Add',
-                                icon: 'fa fa-plus',
-                                routerLink: ['/pages/coming-soon']
-                            },
-                            {
-                                label: 'View',
-                                icon: 'far fa-eye',
-                                routerLink: ['/mitigation-mgm']
-                            },
-                            {
-                                label: 'Update',
-                                icon: 'fas fa-pen-fancy',
-                                routerLink: ['/mitigation-mgm']
-                            }
-                        ]
-                    }
-                ]
-            },
-            {
-                label: 'About-Us', icon: 'fa fa-info', routerLink: ['/about-us']
-            },
-            {
-                label: 'Terms of Use', icon: 'fas fa-file-signature', routerLink: ['/terms']
-            }
+            companyMenuItem,
+            employeesMenuItem,
+            cyberPostureMenuItem,
+            riskManagementMenuItem,
+            taxonomiesMenuItem,
+            aboutUsMenuItem,
+            termsOfUseMenuItem
         ];
     }
 
