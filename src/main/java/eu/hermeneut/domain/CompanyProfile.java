@@ -18,6 +18,7 @@
 package eu.hermeneut.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import eu.hermeneut.domain.enumeration.CompanyType;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -29,8 +30,6 @@ import java.time.ZonedDateTime;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.Objects;
-
-import eu.hermeneut.domain.enumeration.CompType;
 
 /**
  * A CompanyProfile.
@@ -64,7 +63,7 @@ public class CompanyProfile implements Serializable {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "jhi_type")
-    private CompType type;
+    private CompanyType type;
 
     @OneToMany(mappedBy = "companyprofile")
     @JsonIgnore
@@ -142,16 +141,16 @@ public class CompanyProfile implements Serializable {
         this.modified = modified;
     }
 
-    public CompType getType() {
+    public CompanyType getType() {
         return type;
     }
 
-    public CompanyProfile type(CompType type) {
+    public CompanyProfile type(CompanyType type) {
         this.type = type;
         return this;
     }
 
-    public void setType(CompType type) {
+    public void setType(CompanyType type) {
         this.type = type;
     }
 

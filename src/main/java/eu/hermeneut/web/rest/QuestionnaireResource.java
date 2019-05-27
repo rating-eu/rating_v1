@@ -1,12 +1,12 @@
 /*
  * Copyright 2019 HERMENEUT Consortium
- *  
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *  
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- *  
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -19,6 +19,7 @@ package eu.hermeneut.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import eu.hermeneut.domain.Questionnaire;
+import eu.hermeneut.domain.enumeration.CompanyType;
 import eu.hermeneut.domain.enumeration.QuestionnairePurpose;
 import eu.hermeneut.service.QuestionnaireService;
 import eu.hermeneut.web.rest.errors.BadRequestAlertException;
@@ -32,7 +33,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -94,6 +94,7 @@ public class QuestionnaireResource {
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, questionnaire.getId().toString()))
             .body(result);
     }
+
     /**
      * GET  /questionnaires/{scope} : get all the questionnaires.
      *
@@ -101,18 +102,29 @@ public class QuestionnaireResource {
      */
     @GetMapping("/questionnaires/by/purpose/{purpose}")
     @Timed
-    public List<Questionnaire> getAllQuestionnairesByPurpose(@PathVariable String purpose) {
-        log.debug("REST request to get all Questionnaires by scope");
+    public Questionnaire getQuestionnaireByPurpose(@PathVariable QuestionnairePurpose purpose) {
+        log.debug("REST request to get Questionnaire by scope");
 
-        List<Questionnaire> questionnaires = new ArrayList<>();
-        try {
-            QuestionnairePurpose questionnairePurpose = QuestionnairePurpose.valueOf(purpose);
-            questionnaires = this.questionnaireService.findAllByPurpose(questionnairePurpose);
-        } catch (IllegalArgumentException e) {
-            e.printStackTrace();
+        return this.questionnaireService.findOneByPurpose(purpose);
+    }
+
+    /**
+     * GET  /questionnaires/{scope} : get all the questionnaires.
+     *
+     * @return the ResponseEntity with status 200 (OK) and the list of questionnaires in body
+     */
+    @GetMapping("/questionnaires/by/purpose/{purpose}/company-type/{companyType}")
+    @Timed
+    public Questionnaire getQuestionnaireByPurposeAndCompanyType(@PathVariable QuestionnairePurpose purpose, @PathVariable CompanyType companyType) {
+        log.debug("REST request to get Questionnaire by purpose and company type.");
+
+        Questionnaire questionnaire = this.questionnaireService.findOneByPurposeAndCompanyType(purpose, companyType);
+
+        if (questionnaire == null) {
+            questionnaire = this.questionnaireService.findOneByPurpose(purpose);
         }
 
-        return questionnaires;
+        return questionnaire;
     }
 
     /**
@@ -125,7 +137,7 @@ public class QuestionnaireResource {
     public List<Questionnaire> getAllQuestionnaires() {
         log.debug("REST request to get all Questionnaires");
         return questionnaireService.findAll();
-        }
+    }
 
     /**
      * GET  /questionnaires/:id : get the "id" questionnaire.

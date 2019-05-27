@@ -15,14 +15,15 @@
  *
  */
 
-import {CompType} from '../../entities/company-profile-mgm';
+
+import {CompanyType} from '../../entities/enumerations/CompanyType.enum';
 
 export class RegisterAccount {
     login: string;
     firstName: string;
     lastName: string;
     companyName: string;
-    companySector: CompType;
+    companySector: CompanyType;
     companyWebsite: string;
     email: string;
     password: string;

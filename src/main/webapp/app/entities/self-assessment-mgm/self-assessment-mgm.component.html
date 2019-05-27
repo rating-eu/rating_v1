@@ -98,11 +98,11 @@
                             <a class="form-control-static" [routerLink]="['../attack-strategy-mgm', attackstrategy?.id ]">{{attackstrategy.name}}</a>{{last ? '' : ', '}}
                         </span>
                 </td>-->
-                <td (click)="selectSelfAssessment(selfAssessment)">
+                <!--<td (click)="selectSelfAssessment(selfAssessment)">
                     <div *ngIf="selfAssessment.externalAudit">
                         <a [routerLink]="['../external-audit-mgm', selfAssessment.externalAudit?.id ]">{{selfAssessment.externalAudit?.name}}</a>
                     </div>
-                </td>
+                </td>-->
                 <!--<td (click)="selectSelfAssessment(selfAssessment)">
                     <span *ngFor="let questionnaire of selfAssessment.questionnaires; let last = last">
                             <a class="form-control-static" [routerLink]="['../questionnaire-mgm', questionnaire?.id ]">{{questionnaire.name}}</a>{{last ? '' : ', '}}

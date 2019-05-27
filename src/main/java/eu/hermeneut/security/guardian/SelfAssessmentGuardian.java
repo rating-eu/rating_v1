@@ -100,21 +100,7 @@ public class SelfAssessmentGuardian implements Guardian<SelfAssessment> {
             return false;
         }
 
-        SelfAssessment selfAssessment = this.selfAssessmentService.findOne(id);
-
-        if (selfAssessment == null) {
-            return false;
-        }
-
-        ExternalAudit externalAudit = selfAssessment.getExternalAudit();
-
-        if (externalAudit == null) {
-            return false;
-        }
-
-        if (externalAudit.getUser().getId().equals(user.getId())) {
-            return true;
-        }
+        //TODO check if external or not!
 
         return false;
     }

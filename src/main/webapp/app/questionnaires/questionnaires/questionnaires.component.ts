@@ -23,7 +23,7 @@ import {Observable} from 'rxjs/Observable';
 import {DatasharingService} from '../../datasharing/datasharing.service';
 import {QuestionnaireStatusMgm, QuestionnaireStatusMgmService} from '../../entities/questionnaire-status-mgm';
 import {Status} from '../../entities/enumerations/QuestionnaireStatus.enum';
-import {AccountService, User, UserService} from '../../shared';
+import {Account, AccountService, User, UserService} from '../../shared';
 import {Subscription} from 'rxjs/Subscription';
 import {ActivatedRoute, Params, Router} from '@angular/router';
 import {QuestionnairePurpose} from '../../entities/enumerations/QuestionnairePurpose.enum';
@@ -38,7 +38,6 @@ import {Role} from "../../entities/enumerations/Role.enum";
 import {PopUpService} from "../../shared/pop-up-services/pop-up.service";
 import {EventManagerService} from "../../datasharing/event-manager.service";
 import {forkJoin} from "rxjs/observable/forkJoin";
-import {Account} from '../../shared';
 import {AssessVulnerabilitiesCompletionDTO} from "../../dto/completion/assess-vulnerabilities-completion";
 import {CompletionDtoService} from "../../dto/completion/completion-dto.service";
 
@@ -57,8 +56,8 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
     private static CISO_ROLE: string = Role[Role.ROLE_CISO];
     private static EXTERNAL_ROLE: string = Role[Role.ROLE_EXTERNAL_AUDIT];
 
-    private questionnaires$: Observable<QuestionnaireMgm[]>;
-    private questionnaires: QuestionnaireMgm[];
+    private questionnaire$: Observable<QuestionnaireMgm>;
+    private questionnaire: QuestionnaireMgm;
 
     private externalAudits$: Observable<User[]>;
     private externalAudits: User[];
@@ -104,19 +103,28 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         console.log('Questionnaires ON INIT:');
-        this.registerChangeInQuestionnaireStatuses();
-        this.loadQuestionnaires();
 
         this.myCompany = this.dataSharingService.myCompany;
-        this.dataSharingService.myCompanyObservable.subscribe((response: MyCompanyMgm) => {
+
+        if(this.myCompany && this.myCompany.companyProfile){
+            this.registerChangeInQuestionnaireStatuses();
+            this.loadQuestionnaire();
+        }
+
+        this.subscriptions.push(this.dataSharingService.myCompanyObservable.subscribe((response: MyCompanyMgm) => {
             this.myCompany = response;
-        });
+
+            if(this.myCompany && this.myCompany.companyProfile){
+                this.registerChangeInQuestionnaireStatuses();
+                this.loadQuestionnaire();
+            }
+        }));
 
         this.externalChangedMap = new Map();
         this.assessVulnerabilitiesCompletionMap = new Map();
     }
 
-    private loadQuestionnaires() {
+    private loadQuestionnaire() {
         const params$ = this.route.params;
 
         // GET the questionnaires by purpose
@@ -134,21 +142,27 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
                     }
                 }
 
-                this.questionnaires$ = this.questionnairesService.getAllQuestionnairesByPurpose(this.purpose);
+                this.questionnaire$ = this.questionnairesService.getQuestionnaireByPurposeAndCompanyType(this.purpose, this.myCompany.companyProfile.type);
                 this.externalAudits$ = this.userService.getExternalAudits();
 
-                return forkJoin(this.questionnaires$, this.externalAudits$);
+                return forkJoin(this.questionnaire$, this.externalAudits$);
             })
         );
 
         // GET the account
         this.account$ = join$.pipe(
-            switchMap((response: [QuestionnaireMgm[], User[]]) => {
-                this.questionnaires = response[0];
+            switchMap((response: [QuestionnaireMgm, User[]]) => {
+                this.questionnaire = response[0];
                 this.externalAudits = response[1];
 
-                this.identifyThreatAgentsQuestionnaire = _.find(this.questionnaires, {'purpose': QuestionnairePurpose.ID_THREAT_AGENT});
-                this.selfAssessmentQuestionnaire = _.find(this.questionnaires, {'purpose': QuestionnairePurpose.SELFASSESSMENT});
+                switch (this.purpose) {
+                    case QuestionnairePurpose.SELFASSESSMENT:{
+                        this.selfAssessmentQuestionnaire = this.questionnaire;
+                    }
+                    case QuestionnairePurpose.ID_THREAT_AGENT:{
+                        this.identifyThreatAgentsQuestionnaire = this.questionnaire;
+                    }
+                }
 
                 return this.accountService.get();
             })
@@ -173,6 +187,7 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
             switchMap((response: HttpResponse<User>) => {
                 this.user = response.body;
 
+                // TODO switch user's role, if external get by external field.
                 return this.questionnaireStatusService.getAllQuestionnaireStatusesByCurrentUserAndQuestionnairePurpose(this.purpose);
             })
         );
@@ -205,7 +220,7 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
                                 (response: HttpResponse<QuestionnaireStatusMgm>) => {
                                     if (response) {
                                         questionnaireStatus = response.body;
-                                        this.questionnaires.push(response.body);
+                                        this.questionnaireStatuses.push(response.body);
 
                                         this.setCurrentQuestionnaireStatus(questionnaireStatus);
                                         this.router.navigate(['/identify-threat-agent/questionnaires/ID_THREAT_AGENT/questionnaire']);
@@ -318,7 +333,7 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
                 break;
             }
             case QuestionnairePurpose.SELFASSESSMENT: {
-                const questionnaire: QuestionnaireMgm = this.questionnaires[0];
+                const questionnaire: QuestionnaireMgm = this.questionnaire;
                 const questionnaireStatus = new QuestionnaireStatusMgm(undefined, Status.EMPTY, undefined,
                     undefined, this.myCompany.companyProfile, questionnaire, this.role, this.user, [], undefined, undefined);
 
@@ -330,7 +345,7 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
 
         if (questionnaireStatus$) {
             questionnaireStatus$.subscribe((response: HttpResponse<QuestionnaireStatusMgm>) => {
-                this.loadQuestionnaires();
+                this.loadQuestionnaire();
             });
         }
     }
@@ -340,7 +355,7 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
         this.subscriptions.push(this.eventManagerService.observe('questionnaireStatusListModification')
             .subscribe(
                 (response) => {
-                    this.loadQuestionnaires();
+                    this.loadQuestionnaire();
                 })
         );
     }

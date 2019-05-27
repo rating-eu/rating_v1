@@ -21,11 +21,11 @@ import * as _ from 'lodash';
 
 import { Component, OnInit } from '@angular/core';
 import { ImpactEvaluationService } from '../../impact-evaluation/impact-evaluation.service';
-import { MyCategoryType } from '../../entities/enumerations/MyCategoryType.enum';
-import { MySectorType } from '../../entities/enumerations/MySectorType.enum';
+import { CategoryType } from '../../entities/enumerations/CategoryType.enum';
 import { SelfAssessmentMgmService, SelfAssessmentMgm } from '../../entities/self-assessment-mgm';
 import { ImpactEvaluationStatus} from "../../impact-evaluation/quantitative/model/impact-evaluation-status.model";
 import {DatasharingService} from "../../datasharing/datasharing.service";
+import {SectorType} from "../../entities/enumerations/SectorTyep.enum";
 
 interface OrderBy {
   category: boolean;
@@ -81,13 +81,13 @@ export class LossesWidgetComponent implements OnInit {
         this.tableInfo = [];
         this.lossesPercentage = this.wp3Status.economicCoefficients.lossOfIntangible ? this.wp3Status.economicCoefficients.lossOfIntangible / 100 : undefined;
         for (const impact of this.wp3Status.splittingLosses) {
-          if (!this.companySector && impact.sectorType.toString() !== MySectorType.GLOBAL.toString()) {
-            this.companySector = impact.sectorType.toString().charAt(0).toUpperCase() + impact.sectorType.toString().slice(1).toLowerCase();
+          if (!this.companySector && impact.sectorType !== SectorType.GLOBAL) {
+            this.companySector = SectorType[impact.sectorType].charAt(0).toUpperCase() + SectorType[impact.sectorType].slice(1).toLowerCase();
           } else {
             this.companySector = 'Global';
           }
-          switch (impact.categoryType.toString()) {
-            case MyCategoryType.IP.toString(): {
+          switch (impact.categoryType) {
+            case CategoryType.IP: {
               this.tableInfo.push({
                 splitting: 'Intellectual Properties',
                 value: Math.round(impact.loss * 100) / 100,
@@ -95,7 +95,7 @@ export class LossesWidgetComponent implements OnInit {
               });
               break;
             }
-            case MyCategoryType.KEY_COMP.toString(): {
+            case CategoryType.KEY_COMP: {
               this.tableInfo.push({
                 splitting: 'Key Competences',
                 value: Math.round(impact.loss * 100) / 100,
@@ -103,7 +103,7 @@ export class LossesWidgetComponent implements OnInit {
               });
               break;
             }
-            case MyCategoryType.ORG_CAPITAL.toString(): {
+            case CategoryType.ORG_CAPITAL: {
               this.tableInfo.push({
                 splitting: 'Organizational Capital (Reputation & Brand included )',
                 value: Math.round(impact.loss * 100) / 100,
@@ -111,7 +111,7 @@ export class LossesWidgetComponent implements OnInit {
               });
               break;
             }
-            case MyCategoryType.DATA.toString(): {
+            case CategoryType.DATA: {
               this.tableInfo.push({
                 splitting: 'Data',
                 value: Math.round(impact.loss * 100) / 100,

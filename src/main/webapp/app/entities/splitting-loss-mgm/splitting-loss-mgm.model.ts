@@ -15,22 +15,9 @@
  *
  */
 
-import { BaseEntity } from './../../shared';
-
-export enum SectorType {
-    'GLOBAL',
-    'FINANCE_AND_INSURANCE',
-    'HEALTH_CARE_AND_SOCIAL_ASSISTANCE',
-    'INFORMATION',
-    'PROFESSIONAL_SCIENTIFIC_AND_TECHNICAL_SERVICE'
-}
-
-export enum CategoryType {
-    'IP',
-    'KEY_COMP',
-    'ORG_CAPITAL',
-    'DATA'
-}
+import {BaseEntity} from './../../shared';
+import {SectorType} from '../enumerations/SectorTyep.enum';
+import {CategoryType} from '../enumerations/CategoryType.enum';
 
 export class SplittingLossMgm implements BaseEntity {
     constructor(

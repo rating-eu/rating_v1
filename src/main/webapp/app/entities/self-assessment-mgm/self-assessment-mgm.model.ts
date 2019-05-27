@@ -30,7 +30,6 @@ export class SelfAssessmentMgm implements BaseEntity {
         public user?: User,
         public companyProfile?: CompanyProfileMgm,
         public companyGroups?: CompanyGroupMgm[],
-        public externalAudit?: ExternalAuditMgm,
         public impactMode: ImpactMode = ImpactMode.QUANTITATIVE
     ) {
     }

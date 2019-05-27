@@ -18,6 +18,7 @@
 import { BaseEntity } from './../../shared';
 import {QuestionMgm} from '../question-mgm';
 import {QuestionnairePurpose} from '../enumerations/QuestionnairePurpose.enum';
+import {CompanyType} from "../enumerations/CompanyType.enum";
 
 export class QuestionnaireMgm implements BaseEntity {
     constructor(
@@ -27,6 +28,7 @@ export class QuestionnaireMgm implements BaseEntity {
         public created?: any,
         public modified?: any,
         public questions?: QuestionMgm[],
+        public companyType?: CompanyType
     ) {
     }
 }

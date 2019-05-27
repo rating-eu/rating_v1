@@ -17,7 +17,6 @@
 
 package eu.hermeneut.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModelProperty;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -81,9 +80,6 @@ public class MyAsset implements Serializable {
 
     @ManyToOne
     private SelfAssessment selfAssessment;
-
-    @ManyToOne
-    private Questionnaire questionnaire;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -223,18 +219,6 @@ public class MyAsset implements Serializable {
         this.selfAssessment = selfAssessment;
     }
 
-    public Questionnaire getQuestionnaire() {
-        return questionnaire;
-    }
-
-    public MyAsset questionnaire(Questionnaire questionnaire) {
-        this.questionnaire = questionnaire;
-        return this;
-    }
-
-    public void setQuestionnaire(Questionnaire questionnaire) {
-        this.questionnaire = questionnaire;
-    }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
     @Override

@@ -15,7 +15,7 @@
  *
  */
 
-export enum MyCategoryType {
+export enum CategoryType {
     'IP' = <any> 'IP',
     'KEY_COMP' = <any> 'KEY_COMP',
     'ORG_CAPITAL' = <any> 'ORG_CAPITAL',

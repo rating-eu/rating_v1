@@ -111,6 +111,14 @@ const routes: Routes = [
             authorities: ['ROLE_USER']
         },
         canActivate: [UserRouteAccessService]
+    },
+    {
+        path: 'people',
+        loadChildren: './people/people.module#PeopleModule',
+        data: {
+            authorities: ['ROLE_CISO']
+        },
+        canActivate: [UserRouteAccessService]
     }
 ];
 

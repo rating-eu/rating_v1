@@ -23,6 +23,7 @@ import {JhiLanguageService} from 'ng-jhipster';
 import {Register} from './register.service';
 import {LoginModalService, EMAIL_ALREADY_USED_TYPE, LOGIN_ALREADY_USED_TYPE} from '../../shared';
 import {RegisterAccount} from './register.account.model';
+import {CompanyType} from "../../entities/enumerations/CompanyType.enum";
 
 @Component({
     selector: 'jhi-register',
@@ -40,6 +41,8 @@ export class RegisterComponent implements OnInit, AfterViewInit {
     success: boolean;
     modalRef: NgbModalRef;
     private closeResult: string;
+
+    companyTypeEnum = CompanyType;
 
     constructor(
         private languageService: JhiLanguageService,

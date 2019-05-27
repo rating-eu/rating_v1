@@ -75,9 +75,6 @@ public class SelfAssessment implements Serializable {
         inverseJoinColumns = @JoinColumn(name = "company_groups_id", referencedColumnName = "id"))
     private Set<CompanyGroup> companyGroups = new HashSet<>();
 
-    @ManyToOne
-    private ExternalAudit externalAudit;
-
     @NotNull
     @Enumerated(EnumType.STRING)
     @Column(name = "impact_mode", nullable = false)
@@ -155,19 +152,6 @@ public class SelfAssessment implements Serializable {
 
     public void setUser(User user) {
         this.user = user;
-    }
-
-    public ExternalAudit getExternalAudit() {
-        return externalAudit;
-    }
-
-    public SelfAssessment externalAudit(ExternalAudit externalAudit) {
-        this.externalAudit = externalAudit;
-        return this;
-    }
-
-    public void setExternalAudit(ExternalAudit externalAudit) {
-        this.externalAudit = externalAudit;
     }
 
     public Set<CompanyGroup> getCompanyGroups() {

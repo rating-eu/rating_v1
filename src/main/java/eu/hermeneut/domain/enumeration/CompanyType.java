@@ -18,18 +18,19 @@
 package eu.hermeneut.domain.enumeration;
 
 /**
- * The CompType enumeration.
+ * The CompanyType enumeration.
  */
-public enum CompType {
+public enum CompanyType {
     OTHER(0),
     FINANCE_AND_INSURANCE(1),
     HEALTH_CARE_AND_SOCIAL_ASSISTANCE(2),
     INFORMATION(3),
-    PROFESSIONAL_SCIENTIFIC_AND_TECHNICAL_SERVICE(4);
+    PROFESSIONAL_SCIENTIFIC_AND_TECHNICAL_SERVICE(4),
+    LOCAL_PUBLIC_ADMINISTRATION(5);
 
     private final int value;
 
-    CompType(int value) {
+    CompanyType(int value) {
         this.value = value;
     }
 

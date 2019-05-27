@@ -175,10 +175,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
     private createMenuItems(isCISO = false, isExternal = false) {
         this.mySelf = this.dataSharingService.selfAssessment;
-        let visibleByMySelf = false;
-        if (this.mySelf) {
-            visibleByMySelf = true;
-        }
+
         this.items = [
             {
                 label: 'Company',
@@ -193,6 +190,28 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                         label: 'Reports',
                         icon: 'fas fa-file-download',
                         routerLink: ['/pages/coming-soon']
+                    }
+                ]
+            },
+            {
+                label: 'People',
+                icon: 'fas fa-address-book',
+                routerLink: ['/people'],
+                items: [
+                    {
+                        label: 'CISO Deputy',
+                        icon: 'fas fa-user-tie',
+                        routerLink: ['/people/ciso']
+                    },
+                    {
+                        label: 'External Auditor',
+                        icon: 'fas fa-address-card',
+                        routerLink: ['/people/external']
+                    },
+                    {
+                        label: 'Financial Deputy',
+                        icon: 'fas fa-glasses',
+                        routerLink: ['/people/financial']
                     }
                 ]
             },

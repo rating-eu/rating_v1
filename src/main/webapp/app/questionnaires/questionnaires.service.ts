@@ -30,18 +30,25 @@ import {MyAnswerMgm} from '../entities/my-answer-mgm';
 import {SelfAssessmentMgm} from '../entities/self-assessment-mgm';
 import {QuestionnaireStatusMgm} from '../entities/questionnaire-status-mgm';
 import {CompanyProfileMgm} from "../entities/company-profile-mgm";
+import {CompanyType} from "../entities/enumerations/CompanyType.enum";
+
+const PURPOSE_PLACEHOLDER = '{purpose}';
+const COMPANY_TYPE_PLACEHOLDER = '{company-type}';
 
 @Injectable()
 export class QuestionnairesService {
 
-    private questionnairesByPurposeAPIUrl = SERVER_API_URL + 'api/questionnaires/by/purpose/{purpose}';
+    private questionnaireByPurposeAndCompanyTypeAPIUrl = SERVER_API_URL + 'api/questionnaires/by/purpose/' + PURPOSE_PLACEHOLDER + '/company-type/' + COMPANY_TYPE_PLACEHOLDER;
     private questionnaireStatusesByCompanyProfileQuestionnairePurposeAndUser = SERVER_API_URL + 'api/questionnaire-statuses/company-profile/{companyProfileID}/purpose/{questionnairePurpose}/user/{userID}';
 
     constructor(private http: HttpClient, private dateUtils: JhiDateUtils) {
     }
 
-    getAllQuestionnairesByPurpose(purpose: QuestionnairePurpose): Observable<QuestionnaireMgm[]> {
-        return this.http.get<QuestionnaireMgm[]>(this.questionnairesByPurposeAPIUrl.replace('{purpose}', String(purpose)));
+    getQuestionnaireByPurposeAndCompanyType(purpose: QuestionnairePurpose, companyType: CompanyType): Observable<QuestionnaireMgm> {
+        return this.http.get<QuestionnaireMgm>(this.questionnaireByPurposeAndCompanyTypeAPIUrl
+            .replace(PURPOSE_PLACEHOLDER, QuestionnairePurpose[purpose])
+            .replace(COMPANY_TYPE_PLACEHOLDER, CompanyType[companyType])
+        );
     }
 
     getQuestionnaireStatusesByCompanyProfileQuestionnairePurposeAndUser(companyProfile: CompanyProfileMgm, questionnairePurpose: QuestionnairePurpose, user: User): Observable<QuestionnaireStatusMgm[]> {

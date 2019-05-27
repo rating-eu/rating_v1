@@ -14,5 +14,10 @@
  * limitations under the License.
  *
  */
-
-@import "../risk-board.css";
+export enum SectorType {
+    'GLOBAL' = <any>'GLOBAL',
+    'FINANCE_AND_INSURANCE' = <any>'FINANCE_AND_INSURANCE',
+    'HEALTH_CARE_AND_SOCIAL_ASSISTANCE' = <any>'HEALTH_CARE_AND_SOCIAL_ASSISTANCE',
+    'INFORMATION' = <any>'INFORMATION',
+    'PROFESSIONAL_SCIENTIFIC_AND_TECHNICAL_SERVICE' = <any>'PROFESSIONAL_SCIENTIFIC_AND_TECHNICAL_SERVICE'
+}

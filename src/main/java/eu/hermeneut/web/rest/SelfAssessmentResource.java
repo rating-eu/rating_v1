@@ -147,7 +147,7 @@ public class SelfAssessmentResource {
      */
     @GetMapping("/my-self-assessments")
     @Timed
-    @Secured({AuthoritiesConstants.CISO, AuthoritiesConstants.EXTERNAL_AUDIT})
+    @Secured({AuthoritiesConstants.CISO})
     public List<SelfAssessment> getMySelfAssessments() {
         log.debug("REST request to get MySelfAssessments fro logged user.");
         List<SelfAssessment> selfAssessments = new ArrayList<>();
@@ -165,13 +165,6 @@ public class SelfAssessmentResource {
                     if (companyProfile != null) {
                         selfAssessments = this.selfAssessmentService.findAllByCompanyProfile(companyProfile.getId());
                     }
-                }
-            } else if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.EXTERNAL_AUDIT)) {
-                //GET the SelfAssessments by SelfAssessment.externalAudit
-                ExternalAudit externalAudit = this.externalAuditService.getByUser(currentUser);
-
-                if (externalAudit != null) {
-                    selfAssessments = this.selfAssessmentService.findAllByExternalAudit(externalAudit);
                 }
             }
         }
