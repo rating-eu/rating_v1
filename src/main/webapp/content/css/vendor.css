@@ -1,6 +1,6 @@
 /* after changing this file run 'yarn run webpack:build' */
 @import '~bootstrap/dist/css/bootstrap.min.css';
-@import '~font-awesome/css/font-awesome.css';
+@import "~@fortawesome/fontawesome-free/css/all.css";
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
 @import '../plugins/responsive-table/css/rwd-table.min.css';
 @import '../plugins/sweet-alert/sweetalert2.min.css';
