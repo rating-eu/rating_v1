@@ -108,7 +108,7 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
 
         if(this.myCompany && this.myCompany.companyProfile){
             this.registerChangeInQuestionnaireStatuses();
-            this.loadQuestionnaires();
+            this.loadQuestionnaire();
         }
 
         this.subscriptions.push(this.dataSharingService.myCompanyObservable.subscribe((response: MyCompanyMgm) => {
@@ -116,7 +116,7 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
 
             if(this.myCompany && this.myCompany.companyProfile){
                 this.registerChangeInQuestionnaireStatuses();
-                this.loadQuestionnaires();
+                this.loadQuestionnaire();
             }
         }));
 
@@ -124,7 +124,7 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
         this.assessVulnerabilitiesCompletionMap = new Map();
     }
 
-    private loadQuestionnaires() {
+    private loadQuestionnaire() {
         const params$ = this.route.params;
 
         // GET the questionnaires by purpose
@@ -187,6 +187,7 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
             switchMap((response: HttpResponse<User>) => {
                 this.user = response.body;
 
+                // TODO switch user's role, if external get by external field.
                 return this.questionnaireStatusService.getAllQuestionnaireStatusesByCurrentUserAndQuestionnairePurpose(this.purpose);
             })
         );
@@ -344,7 +345,7 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
 
         if (questionnaireStatus$) {
             questionnaireStatus$.subscribe((response: HttpResponse<QuestionnaireStatusMgm>) => {
-                this.loadQuestionnaires();
+                this.loadQuestionnaire();
             });
         }
     }
@@ -354,7 +355,7 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
         this.subscriptions.push(this.eventManagerService.observe('questionnaireStatusListModification')
             .subscribe(
                 (response) => {
-                    this.loadQuestionnaires();
+                    this.loadQuestionnaire();
                 })
         );
     }
