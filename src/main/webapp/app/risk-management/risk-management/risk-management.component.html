@@ -1,3 +1,20 @@
+<!--
+  ~ Copyright 2019 HERMENEUT Consortium
+  ~  
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~  
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~  
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  ~
+  -->
+
 <div class="card-box">
     <div class="container-fluid">
         <jhi-alert></jhi-alert>
@@ -15,29 +32,30 @@
             <div class="col-md-7 offset-md-4">
                 <div class="btn-group" role="group" aria-label="riskHomeBtnGroup">
                     <button type="button" class="btn btn-primary" (click)="switchOnCollapsible('likelihood')"
-                        [attr.aria-expanded]="!isLikelihoodCollapsed" aria-controls="likelihoodScale">
+                            [attr.aria-expanded]="!isLikelihoodCollapsed" aria-controls="likelihoodScale">
                         Likelihood Scale
                     </button>
                     <button type="button" class="btn btn-primary" (click)="switchOnCollapsible('vulnerability')"
-                        [attr.aria-expanded]="!isVulnerabilityCollapsed" aria-controls="vulnerabilityScale">
+                            [attr.aria-expanded]="!isVulnerabilityCollapsed" aria-controls="vulnerabilityScale">
                         Vulnerability Scale
                     </button>
                     <button type="button" class="btn btn-primary" (click)="switchOnCollapsible('consequence')"
-                        [attr.aria-expanded]="!isConsequenceCollapsed" aria-controls="consequenceScale">
+                            [attr.aria-expanded]="!isConsequenceCollapsed" aria-controls="consequenceScale">
                         Consequence Scale
                     </button>
                 </div>
                 <div class="btn-group" role="group" aria-label="riskHomeBtnGroup">
                     <button type="button" class="btn btn-primary" (click)="switchOnCollapsible('critical-level')"
-                        [attr.aria-expanded]="!isCriticalCollapsed" aria-controls="criticalLevel">
+                            [attr.aria-expanded]="!isCriticalCollapsed" aria-controls="criticalLevel">
                         Risk Level
                     </button>
                 </div>
             </div>
-            <div *ngIf="!isConsequenceCollapsed || !isCriticalCollapsed || !isVulnerabilityCollapsed || !isLikelihoodCollapsed"
+            <div
+                *ngIf="!isConsequenceCollapsed || !isCriticalCollapsed || !isVulnerabilityCollapsed || !isLikelihoodCollapsed"
                 class="col-md-1 text-right align-middle">
                 <i class="fa fa-times fa-lg text-secondary" aria-hidden="true"
-                    (click)="switchOnCollapsible('none')"></i>
+                   (click)="switchOnCollapsible('none')"></i>
             </div>
         </div>
         <div class="row">
@@ -45,41 +63,45 @@
                 <div class="card card-body">
                     <div style="z-index:0;" *ngIf="updateErrors" class="col-md-12 alert alert-danger">
                         <i class="fa fa-times fa-lg float-right" aria-hidden="true" (click)="updateErrors = false"></i>
-                        <p class="text-center" style="color: darkred">Please verify the min and max values of level:{{level}} of scale!</p>
+                        <p class="text-center" style="color: darkred">Please verify the min and max values of
+                            level:{{level}} of scale!</p>
                     </div>
-                    <table class="table" *ngIf="impactLevelDescriptions  && impactLevelsMap">
-                        <thead>
-                            <tr>
-                                <th scope="col">Consequence Rating</th>
-                                <th scope="col">Financial Impact</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <ng-container *ngFor="let description of impactLevelDescriptions">
+                    <div [ngSwitch]="selfAssessment.impactMode">
+                        <div *ngSwitchCase="impactModeEnum.QUANTITATIVE">
+                            <table class="table" *ngIf="impactLevelDescriptions  && impactLevelsMap">
+                                <thead>
                                 <tr>
-                                    <th scope="row"><a href="javascript:void(0)"
-                                            (click)="selectImpactLevel(description)">{{description.impact}}</a></th>
-                                    <td>
-                                        <div class="col-md-12 input-group">
-                                            <div class="input-group-prepend">
-                                                <span class="input-group-text" id="">Min and Max value(€)</span>
-                                            </div>
-                                            <input type="number" class="form-control" style="min-width: 80px;"
-                                                placeholder="Min"
-                                                [(ngModel)]="impactLevelsMap.get(description.impact).minLoss"
-                                                (ngModelChange)="updateNeighborMax(description.impact)" #min>
-                                            <input type="number" class="form-control" style="min-width: 80px;"
-                                                placeholder="Max"
-                                                [(ngModel)]="impactLevelsMap.get(description.impact).maxLoss"
-                                                (ngModelChange)="updateNeighborMin(description.impact)" #max>
-                                        </div>
-                                    </td>
+                                    <th scope="col">Consequence Rating</th>
+                                    <th scope="col">Financial Impact</th>
                                 </tr>
-                                <ng-container *ngIf="selectedImpactLevel">
-                                    <tr *ngIf="selectedImpactLevel.id === description.id">
-                                        <td colspan="2">
-                                            <table class="col-md-12">
-                                                <tbody>
+                                </thead>
+                                <tbody>
+                                <ng-container *ngFor="let description of impactLevelDescriptions">
+                                    <tr>
+                                        <th scope="row"><a href="javascript:void(0)"
+                                                           (click)="selectImpactLevel(description)">{{description.impact}}</a>
+                                        </th>
+                                        <td>
+                                            <div class="col-md-12 input-group">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text" id="">Min and Max value(€)</span>
+                                                </div>
+                                                <input type="number" class="form-control" style="min-width: 80px;"
+                                                       placeholder="Min"
+                                                       [(ngModel)]="impactLevelsMap.get(description.impact).minLoss"
+                                                       (ngModelChange)="updateNeighborMax(description.impact)" #min>
+                                                <input type="number" class="form-control" style="min-width: 80px;"
+                                                       placeholder="Max"
+                                                       [(ngModel)]="impactLevelsMap.get(description.impact).maxLoss"
+                                                       (ngModelChange)="updateNeighborMin(description.impact)" #max>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <ng-container *ngIf="selectedImpactLevel">
+                                        <tr *ngIf="selectedImpactLevel.id === description.id">
+                                            <td colspan="2">
+                                                <table class="col-md-12">
+                                                    <tbody>
                                                     <tr>
                                                         <td><b>People Effects</b></td>
                                                         <td>
@@ -110,65 +132,99 @@
                                                             <p>{{selectedImpactLevel.managementImpact}}</p>
                                                         </td>
                                                     </tr>
-                                                </tbody>
-                                            </table>
-                                        </td>
-                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    </ng-container>
                                 </ng-container>
-                            </ng-container>
-                            <tr>
-                                <td colspan="2">
-                                    <div class="col-md-2 offset-md-10 btn btn-primary" (click)="updateImpactLevels()">OK
-                                    </div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                                <tr>
+                                    <td colspan="2">
+                                        <div class="col-md-2 offset-md-10 btn btn-primary"
+                                             (click)="updateImpactLevels()">OK
+                                        </div>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div *ngSwitchCase="impactModeEnum.QUALITATIVE">
+                            <table class="table">
+                                <thead>
+                                <th scope="col">Consequence Rating</th>
+                                <th scope="col">Effects</th>
+                                </thead>
+                                <tbody>
+                                <tr *ngFor="let description of impactLevelDescriptions">
+                                    <td>{{description.impact}}</td>
+                                    <td>
+                                        <table class="table">
+                                            <thead>
+                                            <th>People</th>
+                                            <th>Reputation</th>
+                                            <th>Services</th>
+                                            <th>Legal & Compliance</th>
+                                            <th>Management</th>
+                                            </thead>
+                                            <tbody>
+                                            <th>{{description.peopleEffects}}</th>
+                                            <th>{{description.reputation}}</th>
+                                            <th>{{description.serviceOutputs}}</th>
+                                            <th>{{description.legalAndCompliance}}</th>
+                                            <th>{{description.managementImpact}}</th>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="collapse col-md-12" [ngbCollapse]="isLikelihoodCollapsed">
                 <div class="card card-body">
                     <table class="table">
                         <thead>
-                            <tr>
-                                <th scope="col">Likelihood Rating</th>
-                                <th scope="col">Descriptor</th>
-                                <th scope="col">Definition</th>
-                                <th scope="col">Indicative Frequency</th>
-                            </tr>
+                        <tr>
+                            <th scope="col">Likelihood Rating</th>
+                            <th scope="col">Descriptor</th>
+                            <th scope="col">Definition</th>
+                            <th scope="col">Indicative Frequency</th>
+                        </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <th scope="row">5</th>
-                                <td>Almost certain</td>
-                                <td>The consequence is expected to occur on an annual basis</td>
-                                <td>Every year or more frequently</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">4</th>
-                                <td>Likely</td>
-                                <td>The event has occurred several times or more throughout history of the organization
-                                </td>
-                                <td>Every three years</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">3</th>
-                                <td>Possible</td>
-                                <td>The event might occur once in the organization</td>
-                                <td>Every ten years</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">2</th>
-                                <td>Unlikely</td>
-                                <td>The event does occur from time to time</td>
-                                <td>Every thirty years</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">1</th>
-                                <td>Very Unlikely</td>
-                                <td>Heard of something like that occurring elsewhere</td>
-                                <td>Every 100 years</td>
-                            </tr>
+                        <tr>
+                            <th scope="row">5</th>
+                            <td>Almost certain</td>
+                            <td>The consequence is expected to occur on an annual basis</td>
+                            <td>Every year or more frequently</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">4</th>
+                            <td>Likely</td>
+                            <td>The event has occurred several times or more throughout history of the organization
+                            </td>
+                            <td>Every three years</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">3</th>
+                            <td>Possible</td>
+                            <td>The event might occur once in the organization</td>
+                            <td>Every ten years</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">2</th>
+                            <td>Unlikely</td>
+                            <td>The event does occur from time to time</td>
+                            <td>Every thirty years</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">1</th>
+                            <td>Very Unlikely</td>
+                            <td>Heard of something like that occurring elsewhere</td>
+                            <td>Every 100 years</td>
+                        </tr>
                         </tbody>
                     </table>
                 </div>
@@ -177,44 +233,44 @@
                 <div class="card card-body">
                     <table class="table">
                         <thead>
-                            <tr>
-                                <th scope="col">Vulnerability</th>
-                                <th scope="col">Rating</th>
-                                <th scope="col">Descriptor</th>
-                                <th scope="col">Definition</th>
-                            </tr>
+                        <tr>
+                            <th scope="col">Vulnerability</th>
+                            <th scope="col">Rating</th>
+                            <th scope="col">Descriptor</th>
+                            <th scope="col">Definition</th>
+                        </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <th scope="row">5</th>
-                                <td>Extreme</td>
-                                <td></td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <th scope="row">4</th>
-                                <td>High</td>
-                                <td></td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <th scope="row">3</th>
-                                <td>Elevated</td>
-                                <td></td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <th scope="row">2</th>
-                                <td>Moderated</td>
-                                <td></td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <th scope="row">1</th>
-                                <td>Low</td>
-                                <td></td>
-                                <td></td>
-                            </tr>
+                        <tr>
+                            <th scope="row">5</th>
+                            <td>Extreme</td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <th scope="row">4</th>
+                            <td>High</td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <th scope="row">3</th>
+                            <td>Elevated</td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <th scope="row">2</th>
+                            <td>Moderated</td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <th scope="row">1</th>
+                            <td>Low</td>
+                            <td></td>
+                            <td></td>
+                        </tr>
                         </tbody>
                     </table>
                 </div>
@@ -223,7 +279,7 @@
                 <div class="card card-body">
                     <div *ngFor="let j of squareRowElement" class="row">
                         <div class="col text-right">
-                            <ng-container *ngIf="j!==lastSquareRowElement">{{lastSquareRowElement-j}}</ng-container>
+                            <ng-container *ngIf="j!==lastSquareRowElement">{{lastSquareRowElement - j}}</ng-container>
                         </div>
                         <ng-container *ngIf="j===lastSquareRowElement">
                             <div *ngFor="let i of squareColumnElement" class="col text-center">
@@ -232,7 +288,8 @@
                         </ng-container>
                         <ng-container *ngIf="j!==lastSquareRowElement">
                             <div *ngFor="let i of squareColumnElement" class="col">
-                                <div [ngClass]="{'low-level': whichLevel(lastSquareRowElement-j, i) === 'low', 'medium-level': whichLevel(lastSquareRowElement-j, i) === 'medium', 'high-level': whichLevel(lastSquareRowElement-j, i) === 'high'}"
+                                <div
+                                    [ngClass]="{'low-level': whichLevel(lastSquareRowElement-j, i) === 'low', 'medium-level': whichLevel(lastSquareRowElement-j, i) === 'medium', 'high-level': whichLevel(lastSquareRowElement-j, i) === 'high'}"
                                     (click)="selectedMatrixCell(lastSquareRowElement-j, i)">&nbsp;
                                 </div>
                             </div>
@@ -252,7 +309,7 @@
                                         </div>
                                         <div class="col-md-1 offset-md-5 text-right">
                                             <i class="fa fa-times fa-lg text-secondary" aria-hidden="true"
-                                                (click)="closeLevelSelection()"></i>
+                                               (click)="closeLevelSelection()"></i>
                                         </div>
                                     </div>
                                     <div class="row">

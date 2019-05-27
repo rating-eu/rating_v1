@@ -1,4 +1,22 @@
-<nav *ngIf="isAuthenticated()" class="navbar navbar-custom navbar-expand-md topbar" [ngClass]="{'navbar-custom-no-sidenav': sidebarCollapsed || isExternal || isAdmin}">
+<!--
+  ~ Copyright 2019 HERMENEUT Consortium
+  ~  
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~  
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~  
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  ~
+  -->
+
+<nav *ngIf="isAuthenticated()" class="navbar navbar-custom navbar-expand-md topbar"
+     [ngClass]="{'navbar-custom-no-sidenav': sidebarCollapsed || isExternal || isAdmin}">
     <!-- [ngClass]="{'sidebar-collapsed': isCollapsed}"-->
     <div class="topbar-left logo">
         <i class="fa fa-bars fa-2x col-md-2" (click)="hideShowSideNav()" *jhiHasAnyAuthority="'ROLE_CISO'"></i>
@@ -19,7 +37,8 @@
         {{navSubTitle}}<a [routerLink]="['../self-assessment-mgm', selfAssessmentId ]" style="color: #4fbde9">{{selfAssessmentName}}</a>
     </div>
     -->
-    <div class="navbar-collapse collapse" id="navbarResponsive" [ngbCollapse]="isNavbarCollapsed" [ngSwitch]="isAuthenticated()">
+    <div class="navbar-collapse collapse" id="navbarResponsive" [ngbCollapse]="isNavbarCollapsed"
+         [ngSwitch]="isAuthenticated()">
         <ul class="navbar-nav ml-auto">
             <!--
             <li class="waves-light waves-effect nav-item" routerLinkActive="active"
@@ -32,15 +51,26 @@
                 </a>
             </li>
             -->
-            <li *jhiHasAnyAuthority="'ROLE_CISO'" class="waves-light waves-effect nav-item" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+            <li *jhiHasAnyAuthority="'ROLE_CISO'" class="waves-light waves-effect nav-item" routerLinkActive="active"
+                [routerLinkActiveOptions]="{exact: true}">
                 <a class="nav-link" routerLink="/dashboard" (click)="collapseNavbar()">
                     <span>
                         <i class="fa fa-dashboard" aria-hidden="true"></i>
-                        <span>Dashboard</span>
+                        <span>Vulnerabilities</span>
                     </span>
                 </a>
             </li>
-            <li *jhiHasAnyAuthority="'ROLE_ADMIN'" ngbDropdown class="waves-light waves-effect nav-item dropdown pointer entities-nav "
+            <li *jhiHasAnyAuthority="'ROLE_CISO'" class="waves-light waves-effect nav-item" routerLinkActive="active"
+                [routerLinkActiveOptions]="{exact: true}">
+                <a class="nav-link" routerLink="/riskboard" (click)="collapseNavbar()">
+                    <span>
+                        <i class="fab fa-servicestack" aria-hidden="true"></i>
+                        <span>Risk Board</span>
+                    </span>
+                </a>
+            </li>
+            <li *jhiHasAnyAuthority="'ROLE_ADMIN'" ngbDropdown
+                class="waves-light waves-effect nav-item dropdown pointer entities-nav "
                 routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
                 <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="entity-menu">
                     <span>
@@ -53,257 +83,264 @@
                 <ul class="dropdown-menu" ngbDropdownMenu>
                     <li>
                         <a class="dropdown-item" routerLink="company-profile-mgm" routerLinkActive="active"
-                            [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                           [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
                             <i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
                             <span jhiTranslate="global.menu.entities.companyProfileMgm">Company Profile Mgm</span>
                         </a>
                     </li>
                     <li>
                         <a class="dropdown-item" routerLink="domain-of-influence-mgm" routerLinkActive="active"
-                            [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                           [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
                             <i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
-                            <span jhiTranslate="global.menu.entities.domainOfInfluenceMgm">Domain Of Influence Mgm</span>
+                            <span
+                                jhiTranslate="global.menu.entities.domainOfInfluenceMgm">Domain Of Influence Mgm</span>
                         </a>
                     </li>
                     <li>
                         <a class="dropdown-item" routerLink="self-assessment-mgm" routerLinkActive="active"
-                            [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                           [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
                             <i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
                             <span jhiTranslate="global.menu.entities.selfAssessmentMgm">Self Assessment Mgm</span>
                         </a>
                     </li>
                     <li>
                         <a class="dropdown-item" routerLink="container-mgm" routerLinkActive="active"
-                            [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                           [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
                             <i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
                             <span jhiTranslate="global.menu.entities.containerMgm">Container Mgm</span>
                         </a>
                     </li>
                     <li>
                         <a class="dropdown-item" routerLink="asset-category-mgm" routerLinkActive="active"
-                            [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                           [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
                             <i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
                             <span jhiTranslate="global.menu.entities.assetCategoryMgm">Asset Category Mgm</span>
                         </a>
                     </li>
                     <li>
                         <a class="dropdown-item" routerLink="asset-mgm" routerLinkActive="active"
-                            [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                           [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
                             <i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
                             <span jhiTranslate="global.menu.entities.assetMgm">Asset Mgm</span>
                         </a>
                     </li>
                     <li>
                         <a class="dropdown-item" routerLink="threat-agent-mgm" routerLinkActive="active"
-                            [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                           [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
                             <i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
                             <span jhiTranslate="global.menu.entities.threatAgentMgm">Threat Agent Mgm</span>
                         </a>
                     </li>
                     <li>
                         <a class="dropdown-item" routerLink="motivation-mgm" routerLinkActive="active"
-                            [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                           [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
                             <i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
                             <span jhiTranslate="global.menu.entities.motivationMgm">Motivation Mgm</span>
                         </a>
                     </li>
                     <li>
                         <a class="dropdown-item" routerLink="attack-strategy-mgm" routerLinkActive="active"
-                            [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                           [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
                             <i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
                             <span jhiTranslate="global.menu.entities.attackStrategyMgm">Attack Strategy Mgm</span>
                         </a>
                     </li>
                     <li>
                         <a class="dropdown-item" routerLink="mitigation-mgm" routerLinkActive="active"
-                            [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                           [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
                             <i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
                             <span jhiTranslate="global.menu.entities.mitigationMgm">Mitigation Mgm</span>
                         </a>
                     </li>
                     <li>
                         <a class="dropdown-item" routerLink="questionnaire-mgm" routerLinkActive="active"
-                            [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                           [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
                             <i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
                             <span jhiTranslate="global.menu.entities.questionnaireMgm">Questionnaire Mgm</span>
                         </a>
                     </li>
                     <li>
                         <a class="dropdown-item" routerLink="question-mgm" routerLinkActive="active"
-                            [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                           [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
                             <i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
                             <span jhiTranslate="global.menu.entities.questionMgm">Question Mgm</span>
                         </a>
                     </li>
                     <li>
                         <a class="dropdown-item" routerLink="answer-mgm" routerLinkActive="active"
-                            [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                           [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
                             <i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
                             <span jhiTranslate="global.menu.entities.answerMgm">Answer Mgm</span>
                         </a>
                     </li>
                     <li>
                         <a class="dropdown-item" routerLink="external-audit-mgm" routerLinkActive="active"
-                            [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                           [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
                             <i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
                             <span jhiTranslate="global.menu.entities.externalAuditMgm">External Audit Mgm</span>
                         </a>
                     </li>
                     <li>
                         <a class="dropdown-item" routerLink="my-answer-mgm" routerLinkActive="active"
-                            [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                           [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
                             <i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
                             <span jhiTranslate="global.menu.entities.myAnswerMgm">My Answer Mgm</span>
                         </a>
                     </li>
                     <li>
                         <a class="dropdown-item" routerLink="answer-weight-mgm" routerLinkActive="active"
-                            [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                           [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
                             <i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
                             <span jhiTranslate="global.menu.entities.answerWeightMgm">Answer Weight Mgm</span>
                         </a>
                     </li>
                     <li>
                         <a class="dropdown-item" routerLink="questionnaire-status-mgm" routerLinkActive="active"
-                            [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                           [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
                             <i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
-                            <span jhiTranslate="global.menu.entities.questionnaireStatusMgm">Questionnaire Status Mgm</span>
+                            <span
+                                jhiTranslate="global.menu.entities.questionnaireStatusMgm">Questionnaire Status Mgm</span>
                         </a>
                     </li>
                     <li>
                         <a class="dropdown-item" routerLink="level-mgm" routerLinkActive="active"
-                            [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                           [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
                             <i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
                             <span jhiTranslate="global.menu.entities.levelMgm">Level Mgm</span>
                         </a>
                     </li>
                     <li>
                         <a class="dropdown-item" routerLink="phase-mgm" routerLinkActive="active"
-                            [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                           [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
                             <i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
                             <span jhiTranslate="global.menu.entities.phaseMgm">Phase Mgm</span>
                         </a>
                     </li>
                     <li>
                         <a class="dropdown-item" routerLink="company-group-mgm" routerLinkActive="active"
-                            [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                           [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
                             <i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
                             <span jhiTranslate="global.menu.entities.companyGroupMgm">Group Mgm</span>
                         </a>
                     </li>
                     <li>
                         <a class="dropdown-item" routerLink="my-asset-mgm" routerLinkActive="active"
-                            [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                           [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
                             <i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
                             <span jhiTranslate="global.menu.entities.myAssetMgm">My Asset Mgm</span>
                         </a>
                     </li>
                     <li>
                         <a class="dropdown-item" routerLink="direct-asset-mgm" routerLinkActive="active"
-                            [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                           [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
                             <i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
                             <span jhiTranslate="global.menu.entities.directAssetMgm">Direct Asset Mgm</span>
                         </a>
                     </li>
                     <li>
                         <a class="dropdown-item" routerLink="indirect-asset-mgm" routerLinkActive="active"
-                            [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                           [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
                             <i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
                             <span jhiTranslate="global.menu.entities.indirectAssetMgm">Indirect Asset Mgm</span>
                         </a>
                     </li>
                     <li>
                         <a class="dropdown-item" routerLink="attack-cost-mgm" routerLinkActive="active"
-                            [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                           [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
                             <i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
                             <span jhiTranslate="global.menu.entities.attackCostMgm">Attack Cost Mgm</span>
                         </a>
                     </li>
                     <li>
                         <a class="dropdown-item" routerLink="economic-coefficients-mgm" routerLinkActive="active"
-                            [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                           [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
                             <i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
-                            <span jhiTranslate="global.menu.entities.economicCoefficientsMgm">Economic Coefficients Mgm</span>
+                            <span
+                                jhiTranslate="global.menu.entities.economicCoefficientsMgm">Economic Coefficients Mgm</span>
                         </a>
                     </li>
                     <li>
                         <a class="dropdown-item" routerLink="ebit-mgm" routerLinkActive="active"
-                            [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                           [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
                             <i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
                             <span jhiTranslate="global.menu.entities.ebitMgm">Ebit Mgm</span>
                         </a>
                     </li>
                     <li>
                         <a class="dropdown-item" routerLink="economic-results-mgm" routerLinkActive="active"
-                            [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                           [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
                             <i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
                             <span jhiTranslate="global.menu.entities.economicResultsMgm">Economic Results Mgm</span>
                         </a>
                     </li>
                     <li>
                         <a class="dropdown-item" routerLink="splitting-loss-mgm" routerLinkActive="active"
-                            [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                           [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
                             <i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
                             <span jhiTranslate="global.menu.entities.splittingLossMgm">Splitting Loss Mgm</span>
                         </a>
                     </li>
                     <li>
                         <a class="dropdown-item" routerLink="critical-level-mgm" routerLinkActive="active"
-                            [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                           [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
                             <i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
                             <span jhiTranslate="global.menu.entities.criticalLevelMgm">Critical Level Mgm</span>
                         </a>
                     </li>
                     <li>
                         <a class="dropdown-item" routerLink="likelihood-scale-mgm" routerLinkActive="active"
-                            [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                           [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
                             <i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
                             <span jhiTranslate="global.menu.entities.likelihoodScaleMgm">Likelihood Scale Mgm</span>
                         </a>
                     </li>
                     <li>
                         <a class="dropdown-item" routerLink="vulnerability-scale-mgm" routerLinkActive="active"
-                            [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                           [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
                             <i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
-                            <span jhiTranslate="global.menu.entities.vulnerabilityScaleMgm">Vulnerability Scale Mgm</span>
+                            <span
+                                jhiTranslate="global.menu.entities.vulnerabilityScaleMgm">Vulnerability Scale Mgm</span>
                         </a>
                     </li>
                     <li>
                         <a class="dropdown-item" routerLink="my-company-mgm" routerLinkActive="active"
-                            [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                           [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
                             <i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
                             <span jhiTranslate="global.menu.entities.myCompanyMgm">My Company Mgm</span>
                         </a>
                     </li>
                     <li>
                         <a class="dropdown-item" routerLink="impact-level-mgm" routerLinkActive="active"
-                            [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                           [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
                             <i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
                             <span jhiTranslate="global.menu.entities.impactLevelMgm">Impact Level Mgm</span>
                         </a>
                     </li>
                     <li>
                         <a class="dropdown-item" routerLink="impact-level-description-mgm" routerLinkActive="active"
-                            [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                           [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
                             <i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
                             <span jhiTranslate="global.menu.entities.impactLevelDescriptionMgm">Impact Level
                                 Description Mgm</span>
                         </a>
                     </li>
                     <li>
-                        <a class="dropdown-item" routerLink="splitting-value-mgm" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                        <a class="dropdown-item" routerLink="splitting-value-mgm" routerLinkActive="active"
+                           [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
                             <i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
                             <span jhiTranslate="global.menu.entities.splittingValueMgm">Splitting Value Mgm</span>
                         </a>
                     </li>
                     <li>
-                        <a class="dropdown-item" routerLink="logo-mgm" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                        <a class="dropdown-item" routerLink="logo-mgm" routerLinkActive="active"
+                           [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
                             <i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
                             <span jhiTranslate="global.menu.entities.logoMgm">Logo Mgm</span>
                         </a>
                     </li>
                     <li>
-                        <a class="dropdown-item" routerLink="attack-cost-param-mgm" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                        <a class="dropdown-item" routerLink="attack-cost-param-mgm" routerLinkActive="active"
+                           [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
                             <i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
                             <span jhiTranslate="global.menu.entities.attackCostParamMgm">Attack Cost Param Mgm</span>
                         </a>
@@ -311,7 +348,8 @@
                     <!-- jhipster-needle-add-entity-to-menu - JHipster will add entities to the menu here -->
                 </ul>
             </li>
-            <li *jhiHasAnyAuthority="'ROLE_ADMIN'" ngbDropdown class="waves-light waves-effect nav-item dropdown pointer"
+            <li *jhiHasAnyAuthority="'ROLE_ADMIN'" ngbDropdown
+                class="waves-light waves-effect nav-item dropdown pointer"
                 routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
                 <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);" id="admin-menu">
                     <span>
@@ -321,31 +359,36 @@
                 </a>
                 <ul class="dropdown-menu" ngbDropdownMenu>
                     <li>
-                        <a class="dropdown-item" routerLink="user-management" routerLinkActive="active" (click)="collapseNavbar()">
+                        <a class="dropdown-item" routerLink="user-management" routerLinkActive="active"
+                           (click)="collapseNavbar()">
                             <i class="fa fa-fw fa-user" aria-hidden="true"></i>
                             <span jhiTranslate="global.menu.admin.userManagement">User management</span>
                         </a>
                     </li>
                     <li>
-                        <a class="dropdown-item" routerLink="jhi-metrics" routerLinkActive="active" (click)="collapseNavbar()">
+                        <a class="dropdown-item" routerLink="jhi-metrics" routerLinkActive="active"
+                           (click)="collapseNavbar()">
                             <i class="fa fa-fw fa-tachometer" aria-hidden="true"></i>
                             <span jhiTranslate="global.menu.admin.metrics">Metrics</span>
                         </a>
                     </li>
                     <li>
-                        <a class="dropdown-item" routerLink="jhi-health" routerLinkActive="active" (click)="collapseNavbar()">
+                        <a class="dropdown-item" routerLink="jhi-health" routerLinkActive="active"
+                           (click)="collapseNavbar()">
                             <i class="fa fa-fw fa-heart" aria-hidden="true"></i>
                             <span jhiTranslate="global.menu.admin.health">Health</span>
                         </a>
                     </li>
                     <li>
-                        <a class="dropdown-item" routerLink="jhi-configuration" routerLinkActive="active" (click)="collapseNavbar()">
+                        <a class="dropdown-item" routerLink="jhi-configuration" routerLinkActive="active"
+                           (click)="collapseNavbar()">
                             <i class="fa fa-fw fa-list" aria-hidden="true"></i>
                             <span jhiTranslate="global.menu.admin.configuration">Configuration</span>
                         </a>
                     </li>
                     <li>
-                        <a class="dropdown-item" routerLink="audits" routerLinkActive="active" (click)="collapseNavbar()">
+                        <a class="dropdown-item" routerLink="audits" routerLinkActive="active"
+                           (click)="collapseNavbar()">
                             <i class="fa fa-fw fa-bell" aria-hidden="true"></i>
                             <span jhiTranslate="global.menu.admin.audits">Audits</span>
                         </a>
@@ -360,12 +403,6 @@
                         <a class="dropdown-item" routerLink="docs" routerLinkActive="active" (click)="collapseNavbar()">
                             <i class="fa fa-fw fa-book" aria-hidden="true"></i>
                             <span jhiTranslate="global.menu.admin.apidocs">API</span>
-                        </a>
-                    </li>
-                    <li>
-                        <a class="dropdown-item" routerLink="elasticsearch-reindex" routerLinkActive="active" (click)="collapseNavbar()">
-                            <i class="fa fa-fw fa-search" aria-hidden="true"></i>&nbsp;
-                            <span jhiTranslate="global.menu.admin.elasticsearch-reindex">Elasticsearch Reindex</span>
                         </a>
                     </li>
                 </ul>
@@ -391,7 +428,7 @@
             </li>
             -->
             <li *jhiHasAnyAuthority="['ROLE_EXTERNAL_AUDIT']">
-                <a class="nav-link" routerLink="/my-self-assessments" (click)="collapseNavbar()">
+                <a class="nav-link" routerLink="/my-risk-assessments" (click)="collapseNavbar()">
                     <span>
                         <i class="fa fa-dashboard" aria-hidden="true"></i>
                         <span>Self-Assessments</span>
@@ -413,13 +450,15 @@
                 </a>
                 <ul class="dropdown-menu" ngbDropdownMenu>
                     <li *ngSwitchCase="true">
-                        <a class="dropdown-item" routerLink="settings" routerLinkActive="active" (click)="collapseNavbar()">
+                        <a class="dropdown-item" routerLink="settings" routerLinkActive="active"
+                           (click)="collapseNavbar()">
                             <i class="fa fa-fw fa-wrench" aria-hidden="true"></i>
                             <span jhiTranslate="global.menu.account.settings">Settings</span>
                         </a>
                     </li>
                     <li *ngSwitchCase="true">
-                        <a class="dropdown-item" routerLink="password" routerLinkActive="active" (click)="collapseNavbar()">
+                        <a class="dropdown-item" routerLink="password" routerLinkActive="active"
+                           (click)="collapseNavbar()">
                             <i class="fa fa-fw fa-clock-o" aria-hidden="true"></i>
                             <span jhiTranslate="global.menu.account.password">Password</span>
                         </a>

@@ -1,3 +1,20 @@
+/*
+ * Copyright 2019 HERMENEUT Consortium
+ *  
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *  
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
+
 package eu.hermeneut.web.rest;
 
 import eu.hermeneut.HermeneutApp;
@@ -5,7 +22,6 @@ import eu.hermeneut.HermeneutApp;
 import eu.hermeneut.domain.DomainOfInfluence;
 import eu.hermeneut.repository.DomainOfInfluenceRepository;
 import eu.hermeneut.service.DomainOfInfluenceService;
-import eu.hermeneut.repository.search.DomainOfInfluenceSearchRepository;
 import eu.hermeneut.web.rest.errors.ExceptionTranslator;
 
 import org.junit.Before;
@@ -53,9 +69,6 @@ public class DomainOfInfluenceResourceIntTest {
     private DomainOfInfluenceService domainOfInfluenceService;
 
     @Autowired
-    private DomainOfInfluenceSearchRepository domainOfInfluenceSearchRepository;
-
-    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -97,7 +110,6 @@ public class DomainOfInfluenceResourceIntTest {
 
     @Before
     public void initTest() {
-        domainOfInfluenceSearchRepository.deleteAll();
         domainOfInfluence = createEntity(em);
     }
 
@@ -118,10 +130,6 @@ public class DomainOfInfluenceResourceIntTest {
         DomainOfInfluence testDomainOfInfluence = domainOfInfluenceList.get(domainOfInfluenceList.size() - 1);
         assertThat(testDomainOfInfluence.getName()).isEqualTo(DEFAULT_NAME);
         assertThat(testDomainOfInfluence.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
-
-        // Validate the DomainOfInfluence in Elasticsearch
-        DomainOfInfluence domainOfInfluenceEs = domainOfInfluenceSearchRepository.findOne(testDomainOfInfluence.getId());
-        assertThat(domainOfInfluenceEs).isEqualToIgnoringGivenFields(testDomainOfInfluence);
     }
 
     @Test
@@ -226,10 +234,6 @@ public class DomainOfInfluenceResourceIntTest {
         DomainOfInfluence testDomainOfInfluence = domainOfInfluenceList.get(domainOfInfluenceList.size() - 1);
         assertThat(testDomainOfInfluence.getName()).isEqualTo(UPDATED_NAME);
         assertThat(testDomainOfInfluence.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
-
-        // Validate the DomainOfInfluence in Elasticsearch
-        DomainOfInfluence domainOfInfluenceEs = domainOfInfluenceSearchRepository.findOne(testDomainOfInfluence.getId());
-        assertThat(domainOfInfluenceEs).isEqualToIgnoringGivenFields(testDomainOfInfluence);
     }
 
     @Test
@@ -263,28 +267,9 @@ public class DomainOfInfluenceResourceIntTest {
             .accept(TestUtil.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk());
 
-        // Validate Elasticsearch is empty
-        boolean domainOfInfluenceExistsInEs = domainOfInfluenceSearchRepository.exists(domainOfInfluence.getId());
-        assertThat(domainOfInfluenceExistsInEs).isFalse();
-
         // Validate the database is empty
         List<DomainOfInfluence> domainOfInfluenceList = domainOfInfluenceRepository.findAll();
         assertThat(domainOfInfluenceList).hasSize(databaseSizeBeforeDelete - 1);
-    }
-
-    @Test
-    @Transactional
-    public void searchDomainOfInfluence() throws Exception {
-        // Initialize the database
-        domainOfInfluenceService.save(domainOfInfluence);
-
-        // Search the domainOfInfluence
-        restDomainOfInfluenceMockMvc.perform(get("/api/_search/domain-of-influences?query=id:" + domainOfInfluence.getId()))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(domainOfInfluence.getId().intValue())))
-            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
-            .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION.toString())));
     }
 
     @Test

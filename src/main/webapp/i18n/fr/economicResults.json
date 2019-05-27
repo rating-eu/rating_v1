@@ -5,8 +5,7 @@
             "home": {
                 "title": "EconomicResults",
                 "createLabel": "Créer un nouveau Economic Results",
-                "createOrEditLabel": "Créer ou éditer un Economic Results",
-                "search": "Recherche pour Economic Results"
+                "createOrEditLabel": "Créer ou éditer un Economic Results"
             },
             "created": "Un nouveau Economic Results a été créé avec l'identifiant {{ param }}",
             "updated": "Le Economic Results avec l'identifiant {{ param }} a été mis à jour",

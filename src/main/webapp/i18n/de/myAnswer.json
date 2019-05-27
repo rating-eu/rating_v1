@@ -5,8 +5,7 @@
             "home": {
                 "title": "My Answers",
                 "createLabel": "My Answer erstellen",
-                "createOrEditLabel": "My Answer erstellen oder bearbeiten",
-                "search": "Suche nach My Answer"
+                "createOrEditLabel": "My Answer erstellen oder bearbeiten"
             },
             "created": "My Answer erstellt mit ID {{ param }}",
             "updated": "My Answer aktualisiert mit ID {{ param }}",

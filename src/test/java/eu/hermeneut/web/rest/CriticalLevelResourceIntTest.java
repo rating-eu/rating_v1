@@ -1,3 +1,20 @@
+/*
+ * Copyright 2019 HERMENEUT Consortium
+ *  
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *  
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
+
 package eu.hermeneut.web.rest;
 
 import eu.hermeneut.HermeneutApp;
@@ -5,7 +22,6 @@ import eu.hermeneut.HermeneutApp;
 import eu.hermeneut.domain.CriticalLevel;
 import eu.hermeneut.repository.CriticalLevelRepository;
 import eu.hermeneut.service.CriticalLevelService;
-import eu.hermeneut.repository.search.CriticalLevelSearchRepository;
 import eu.hermeneut.web.rest.errors.ExceptionTranslator;
 
 import org.junit.Before;
@@ -59,9 +75,6 @@ public class CriticalLevelResourceIntTest {
     private CriticalLevelService criticalLevelService;
 
     @Autowired
-    private CriticalLevelSearchRepository criticalLevelSearchRepository;
-
-    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -105,7 +118,6 @@ public class CriticalLevelResourceIntTest {
 
     @Before
     public void initTest() {
-        criticalLevelSearchRepository.deleteAll();
         criticalLevel = createEntity(em);
     }
 
@@ -128,10 +140,6 @@ public class CriticalLevelResourceIntTest {
         assertThat(testCriticalLevel.getLowLimit()).isEqualTo(DEFAULT_LOW_LIMIT);
         assertThat(testCriticalLevel.getMediumLimit()).isEqualTo(DEFAULT_MEDIUM_LIMIT);
         assertThat(testCriticalLevel.getHighLimit()).isEqualTo(DEFAULT_HIGH_LIMIT);
-
-        // Validate the CriticalLevel in Elasticsearch
-        CriticalLevel criticalLevelEs = criticalLevelSearchRepository.findOne(testCriticalLevel.getId());
-        assertThat(criticalLevelEs).isEqualToIgnoringGivenFields(testCriticalLevel);
     }
 
     @Test
@@ -226,10 +234,6 @@ public class CriticalLevelResourceIntTest {
         assertThat(testCriticalLevel.getLowLimit()).isEqualTo(UPDATED_LOW_LIMIT);
         assertThat(testCriticalLevel.getMediumLimit()).isEqualTo(UPDATED_MEDIUM_LIMIT);
         assertThat(testCriticalLevel.getHighLimit()).isEqualTo(UPDATED_HIGH_LIMIT);
-
-        // Validate the CriticalLevel in Elasticsearch
-        CriticalLevel criticalLevelEs = criticalLevelSearchRepository.findOne(testCriticalLevel.getId());
-        assertThat(criticalLevelEs).isEqualToIgnoringGivenFields(testCriticalLevel);
     }
 
     @Test
@@ -263,30 +267,9 @@ public class CriticalLevelResourceIntTest {
             .accept(TestUtil.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk());
 
-        // Validate Elasticsearch is empty
-        boolean criticalLevelExistsInEs = criticalLevelSearchRepository.exists(criticalLevel.getId());
-        assertThat(criticalLevelExistsInEs).isFalse();
-
         // Validate the database is empty
         List<CriticalLevel> criticalLevelList = criticalLevelRepository.findAll();
         assertThat(criticalLevelList).hasSize(databaseSizeBeforeDelete - 1);
-    }
-
-    @Test
-    @Transactional
-    public void searchCriticalLevel() throws Exception {
-        // Initialize the database
-        criticalLevelService.save(criticalLevel);
-
-        // Search the criticalLevel
-        restCriticalLevelMockMvc.perform(get("/api/_search/critical-levels?query=id:" + criticalLevel.getId()))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(criticalLevel.getId().intValue())))
-            .andExpect(jsonPath("$.[*].side").value(hasItem(DEFAULT_SIDE)))
-            .andExpect(jsonPath("$.[*].lowLimit").value(hasItem(DEFAULT_LOW_LIMIT)))
-            .andExpect(jsonPath("$.[*].mediumLimit").value(hasItem(DEFAULT_MEDIUM_LIMIT)))
-            .andExpect(jsonPath("$.[*].highLimit").value(hasItem(DEFAULT_HIGH_LIMIT)));
     }
 
     @Test

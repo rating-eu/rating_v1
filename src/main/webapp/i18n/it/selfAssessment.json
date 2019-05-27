@@ -3,19 +3,18 @@
     "hermeneutApp": {
         "selfAssessment" : {
             "home": {
-                "title": "SelfAssessments",
-                "createLabel": "Genera un nuovo Self Assessment",
-                "createOrEditLabel": "Genera o modifica un Self Assessment",
-                "search": "Cerca Self Assessment"
+                "title": "RiskAssessments",
+                "createLabel": "Genera un nuovo Risk Assessment",
+                "createOrEditLabel": "Genera o modifica un Risk Assessment"
             },
-            "created": "&Egrave; stato generato un nuovo Self Assessment con identificatore {{ param }}",
-            "updated": "&Egrave; stato aggiornato Self Assessment identificato da {{ param }}",
-            "deleted": "&Egrave; stato eliminato Self Assessment con identificatore {{ param }}",
+            "created": "&Egrave; stato generato un nuovo Risk Assessment con identificatore {{ param }}",
+            "updated": "&Egrave; stato aggiornato Risk Assessment identificato da {{ param }}",
+            "deleted": "&Egrave; stato eliminato Risk Assessment con identificatore {{ param }}",
             "delete": {
-                "question": "Sei sicuro di volere eliminare Self Assessment {{ id }}?"
+                "question": "Sei sicuro di volere eliminare Risk Assessment {{ id }}?"
             },
             "detail": {
-                "title": "Self Assessment"
+                "title": "Risk Assessment"
             },
             "name": "Name",
             "created": "Created",

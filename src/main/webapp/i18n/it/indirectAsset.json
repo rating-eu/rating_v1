@@ -5,8 +5,7 @@
             "home": {
                 "title": "IndirectAssets",
                 "createLabel": "Genera un nuovo Indirect Asset",
-                "createOrEditLabel": "Genera o modifica un Indirect Asset",
-                "search": "Cerca Indirect Asset"
+                "createOrEditLabel": "Genera o modifica un Indirect Asset"
             },
             "created": "&Egrave; stato generato un nuovo Indirect Asset con identificatore {{ param }}",
             "updated": "&Egrave; stato aggiornato Indirect Asset identificato da {{ param }}",

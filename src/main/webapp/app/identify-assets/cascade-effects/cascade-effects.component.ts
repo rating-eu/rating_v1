@@ -1,3 +1,20 @@
+/*
+ * Copyright 2019 HERMENEUT Consortium
+ *  
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *  
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
+
 import {JhiAlertService} from 'ng-jhipster';
 import {Router} from '@angular/router';
 import {IndirectAssetMgm} from './../../entities/indirect-asset-mgm/indirect-asset-mgm.model';
@@ -9,6 +26,7 @@ import {SelfAssessmentMgm} from './../../entities/self-assessment-mgm/self-asses
 import * as _ from 'lodash';
 
 import {Component, OnInit} from '@angular/core';
+import {DatasharingService} from "../../datasharing/datasharing.service";
 
 @Component({
     // tslint:disable-next-line:component-selector
@@ -18,7 +36,7 @@ import {Component, OnInit} from '@angular/core';
 })
 
 export class CascadeEffectsComponent implements OnInit {
-    private mySelf: SelfAssessmentMgm = {};
+    private mySelf: SelfAssessmentMgm = null;
     public myAssets: MyAssetMgm[];
     public selectedMyAsset: MyAssetMgm;
     public myAssetStatus: Map<number, string> = new Map<number, string>();
@@ -35,13 +53,13 @@ export class CascadeEffectsComponent implements OnInit {
         private idaUtilsService: IdentifyAssetUtilService,
         private mySelfAssessmentService: SelfAssessmentMgmService,
         private router: Router,
-        private jhiAlertService: JhiAlertService,
+        private dataSharingService: DatasharingService
     ) {
 
     }
 
     ngOnInit(): void {
-        this.mySelf = this.mySelfAssessmentService.getSelfAssessment();
+        this.mySelf = this.dataSharingService.selfAssessment;
         this.idaUtilsService.getMyAssets(this.mySelf).toPromise().then((myAssets: MyAssetMgm[]) => {
             if (myAssets) {
                 this.myAssets = myAssets;

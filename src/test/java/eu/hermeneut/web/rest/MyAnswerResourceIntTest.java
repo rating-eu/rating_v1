@@ -1,3 +1,20 @@
+/*
+ * Copyright 2019 HERMENEUT Consortium
+ *  
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *  
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
+
 package eu.hermeneut.web.rest;
 
 import eu.hermeneut.HermeneutApp;
@@ -5,7 +22,6 @@ import eu.hermeneut.HermeneutApp;
 import eu.hermeneut.domain.MyAnswer;
 import eu.hermeneut.repository.MyAnswerRepository;
 import eu.hermeneut.service.MyAnswerService;
-import eu.hermeneut.repository.search.MyAnswerSearchRepository;
 import eu.hermeneut.web.rest.errors.ExceptionTranslator;
 
 import org.junit.Before;
@@ -53,9 +69,6 @@ public class MyAnswerResourceIntTest {
     private MyAnswerService myAnswerService;
 
     @Autowired
-    private MyAnswerSearchRepository myAnswerSearchRepository;
-
-    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -97,7 +110,6 @@ public class MyAnswerResourceIntTest {
 
     @Before
     public void initTest() {
-        myAnswerSearchRepository.deleteAll();
         myAnswer = createEntity(em);
     }
 
@@ -118,10 +130,6 @@ public class MyAnswerResourceIntTest {
         MyAnswer testMyAnswer = myAnswerList.get(myAnswerList.size() - 1);
         assertThat(testMyAnswer.getNote()).isEqualTo(DEFAULT_NOTE);
         assertThat(testMyAnswer.getAnswerOffset()).isEqualTo(DEFAULT_ANSWER_OFFSET);
-
-        // Validate the MyAnswer in Elasticsearch
-        MyAnswer myAnswerEs = myAnswerSearchRepository.findOne(testMyAnswer.getId());
-        assertThat(myAnswerEs).isEqualToIgnoringGivenFields(testMyAnswer);
     }
 
     @Test
@@ -226,10 +234,6 @@ public class MyAnswerResourceIntTest {
         MyAnswer testMyAnswer = myAnswerList.get(myAnswerList.size() - 1);
         assertThat(testMyAnswer.getNote()).isEqualTo(UPDATED_NOTE);
         assertThat(testMyAnswer.getAnswerOffset()).isEqualTo(UPDATED_ANSWER_OFFSET);
-
-        // Validate the MyAnswer in Elasticsearch
-        MyAnswer myAnswerEs = myAnswerSearchRepository.findOne(testMyAnswer.getId());
-        assertThat(myAnswerEs).isEqualToIgnoringGivenFields(testMyAnswer);
     }
 
     @Test
@@ -263,28 +267,9 @@ public class MyAnswerResourceIntTest {
             .accept(TestUtil.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk());
 
-        // Validate Elasticsearch is empty
-        boolean myAnswerExistsInEs = myAnswerSearchRepository.exists(myAnswer.getId());
-        assertThat(myAnswerExistsInEs).isFalse();
-
         // Validate the database is empty
         List<MyAnswer> myAnswerList = myAnswerRepository.findAll();
         assertThat(myAnswerList).hasSize(databaseSizeBeforeDelete - 1);
-    }
-
-    @Test
-    @Transactional
-    public void searchMyAnswer() throws Exception {
-        // Initialize the database
-        myAnswerService.save(myAnswer);
-
-        // Search the myAnswer
-        restMyAnswerMockMvc.perform(get("/api/_search/my-answers?query=id:" + myAnswer.getId()))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(myAnswer.getId().intValue())))
-            .andExpect(jsonPath("$.[*].note").value(hasItem(DEFAULT_NOTE.toString())))
-            .andExpect(jsonPath("$.[*].answerOffset").value(hasItem(DEFAULT_ANSWER_OFFSET)));
     }
 
     @Test

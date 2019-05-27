@@ -1,3 +1,20 @@
+/*
+ * Copyright 2019 HERMENEUT Consortium
+ *  
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *  
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
+
 package eu.hermeneut.domain.attackmap;
 
 import eu.hermeneut.domain.AttackStrategy;
@@ -7,13 +24,21 @@ public class AugmentedAttackStrategy extends AttackStrategy implements Cloneable
 
     private float initialLikelihood;
 
+    private float initialVulnerability;
+
+    private float initialCriticality;
+
     private float contextualVulnerability;
 
     private float contextualLikelihood;
 
+    private float contextualCriticality;
+
     private float refinedVulnerability;
 
     private float refinedLikelihood;
+
+    private float refinedCriticality;
 
     public AugmentedAttackStrategy() {
     }
@@ -70,6 +95,22 @@ public class AugmentedAttackStrategy extends AttackStrategy implements Cloneable
         this.initialLikelihood = initialLikelihood;
     }
 
+    public float getInitialVulnerability() {
+        return initialVulnerability;
+    }
+
+    public void setInitialVulnerability(float initialVulnerability) {
+        this.initialVulnerability = initialVulnerability;
+    }
+
+    public float getInitialCriticality() {
+        return initialCriticality;
+    }
+
+    public void setInitialCriticality(float initialCriticality) {
+        this.initialCriticality = initialCriticality;
+    }
+
     public float getContextualVulnerability() {
         if (!isEnabled()) {
             return 0;
@@ -92,6 +133,14 @@ public class AugmentedAttackStrategy extends AttackStrategy implements Cloneable
         this.contextualLikelihood = contextualLikelihood;
     }
 
+    public float getContextualCriticality() {
+        return contextualCriticality;
+    }
+
+    public void setContextualCriticality(float contextualCriticality) {
+        this.contextualCriticality = contextualCriticality;
+    }
+
     public float getRefinedVulnerability() {
         if (!isEnabled()) {
             return 0;
@@ -108,6 +157,14 @@ public class AugmentedAttackStrategy extends AttackStrategy implements Cloneable
             return 0;
         }
         return refinedLikelihood;
+    }
+
+    public float getRefinedCriticality() {
+        return refinedCriticality;
+    }
+
+    public void setRefinedCriticality(float refinedCriticality) {
+        this.refinedCriticality = refinedCriticality;
     }
 
     @Override

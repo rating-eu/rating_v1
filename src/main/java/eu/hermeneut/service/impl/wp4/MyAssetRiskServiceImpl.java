@@ -1,9 +1,26 @@
+/*
+ * Copyright 2019 HERMENEUT Consortium
+ *  
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *  
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
+
 package eu.hermeneut.service.impl.wp4;
 
 import eu.hermeneut.constant.MaxValues;
 import eu.hermeneut.domain.*;
 import eu.hermeneut.domain.attackmap.AugmentedAttackStrategy;
-import eu.hermeneut.domain.compact.AssetRisk;
+import eu.hermeneut.domain.compact.input.AssetRisk;
 import eu.hermeneut.domain.wp4.MyAssetRisk;
 import eu.hermeneut.exceptions.NotFoundException;
 import eu.hermeneut.service.AssetService;
@@ -12,6 +29,7 @@ import eu.hermeneut.service.MyAssetService;
 import eu.hermeneut.service.SelfAssessmentService;
 import eu.hermeneut.service.attackmap.AugmentedAttackStrategyService;
 import eu.hermeneut.service.compact.AssetRiskService;
+import eu.hermeneut.service.result.ResultService;
 import eu.hermeneut.service.wp4.MyAssetRiskService;
 import eu.hermeneut.utils.attackstrategy.ThreatAttackFilter;
 import eu.hermeneut.utils.threatagent.ThreatAgentComparator;
@@ -35,7 +53,7 @@ public class MyAssetRiskServiceImpl implements MyAssetRiskService, MaxValues {
     private MyAssetService myAssetService;
 
     @Autowired
-    private AssetService assetService;
+    private ResultService resultService;
 
     @Autowired
     private AssetRiskService assetRiskService;
@@ -54,10 +72,16 @@ public class MyAssetRiskServiceImpl implements MyAssetRiskService, MaxValues {
             throw new NotFoundException("SelfAssessment NOT FOUND.");
         }
 
-        Set<ThreatAgent> threatAgents = selfAssessment.getThreatagents();
+        CompanyProfile companyProfile = selfAssessment.getCompanyProfile();
+
+        if (companyProfile == null) {
+            throw new NotFoundException("CompanyProfile of SelfAssessment NOT FOUND.");
+        }
+
+        Set<ThreatAgent> threatAgents = this.resultService.getThreatAgents(companyProfile.getId());
 
         if (threatAgents == null || threatAgents.isEmpty()) {
-            throw new NotFoundException("ThreatAgent for SelfAssessment were NOT be FOUND.");
+            throw new NotFoundException("ThreatAgent for SelfAssessment with ID = " + selfAssessmentID + " could NOT be FOUND.");
         }
 
         List<ThreatAgent> ascendingThreatAgentSkills = new ArrayList<>(threatAgents);
@@ -78,7 +102,7 @@ public class MyAssetRiskServiceImpl implements MyAssetRiskService, MaxValues {
             throw new NotFoundException("AssetRisks NOT Found!!!");
         }
 
-        Map<Long, AugmentedAttackStrategy> augmentedAttackStrategyMap = this.augmentedAttackStrategyService.getAugmentedAttackStrategyMap(selfAssessmentID);
+        Map<Long, AugmentedAttackStrategy> augmentedAttackStrategyMap = this.augmentedAttackStrategyService.getAugmentedAttackStrategyMap(selfAssessment.getCompanyProfile().getId());
 
         //Keep only the attackstrategies that can be performed by the Strongest ThreatAgent
         augmentedAttackStrategyMap = augmentedAttackStrategyMap.values()
@@ -122,7 +146,7 @@ public class MyAssetRiskServiceImpl implements MyAssetRiskService, MaxValues {
 
                 int riskInteger = Math.round(risk);
 
-                Triad<Float> likelihoodVulnerabilityCritical = this.assetRiskService.getLikelihoodVulnerabilityCritical(augmentedAttackStrategyMap, containerMap);
+                Triad<Float> likelihoodVulnerabilityCritical = this.assetRiskService.getMaxLikelihoodVulnerabilityCriticality(augmentedAttackStrategyMap, containerMap);
 
                 float likelihood = likelihoodVulnerabilityCritical.getA();
                 float vulnerability = likelihoodVulnerabilityCritical.getB();
@@ -156,10 +180,16 @@ public class MyAssetRiskServiceImpl implements MyAssetRiskService, MaxValues {
             throw new NotFoundException("SelfAssessment NOT FOUND.");
         }
 
-        Set<ThreatAgent> threatAgents = selfAssessment.getThreatagents();
+        CompanyProfile companyProfile = selfAssessment.getCompanyProfile();
+
+        if (companyProfile == null) {
+            throw new NotFoundException("CompanyProfile of SelfAssessment NOT FOUND.");
+        }
+
+        Set<ThreatAgent> threatAgents = this.resultService.getThreatAgents(companyProfile.getId());
 
         if (threatAgents == null || threatAgents.isEmpty()) {
-            throw new NotFoundException("ThreatAgent for SelfAssessment were NOT be FOUND.");
+            throw new NotFoundException("ThreatAgent for SelfAssessment with ID = " + selfAssessmentID + " could NOT be FOUND.");
         }
 
         List<ThreatAgent> ascendingThreatAgentSkills = new ArrayList<>(threatAgents);

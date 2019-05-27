@@ -1,5 +1,23 @@
+/*
+ * Copyright 2019 HERMENEUT Consortium
+ *  
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *  
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
+
 package eu.hermeneut.service.impl;
 
+import eu.hermeneut.domain.AssetCategory;
 import eu.hermeneut.domain.AttackCost;
 import eu.hermeneut.domain.AttackCostParam;
 import eu.hermeneut.domain.enumeration.AssetType;
@@ -12,7 +30,6 @@ import eu.hermeneut.service.AttackCostService;
 import eu.hermeneut.service.MyAssetService;
 import eu.hermeneut.domain.MyAsset;
 import eu.hermeneut.repository.MyAssetRepository;
-import eu.hermeneut.repository.search.MyAssetSearchRepository;
 import eu.hermeneut.service.attack.cost.AttackCostSwitch;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,9 +43,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
-
-import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
  * Service Implementation for managing MyAsset.
@@ -41,7 +55,6 @@ public class MyAssetServiceImpl implements MyAssetService {
 
     private final MyAssetRepository myAssetRepository;
 
-    private final MyAssetSearchRepository myAssetSearchRepository;
 
     @Autowired
     private AttackCostService attackCostService;
@@ -52,9 +65,8 @@ public class MyAssetServiceImpl implements MyAssetService {
     @Autowired
     private AttackCostSwitch attackCostSwitch;
 
-    public MyAssetServiceImpl(MyAssetRepository myAssetRepository, MyAssetSearchRepository myAssetSearchRepository) {
+    public MyAssetServiceImpl(MyAssetRepository myAssetRepository) {
         this.myAssetRepository = myAssetRepository;
-        this.myAssetSearchRepository = myAssetSearchRepository;
     }
 
 
@@ -99,7 +111,6 @@ public class MyAssetServiceImpl implements MyAssetService {
         }
 
         MyAsset result = myAssetRepository.save(myAsset);
-        myAssetSearchRepository.save(result);
 
         if (result != null) {
             Set<AttackCost> costs = result.getCosts();
@@ -143,7 +154,6 @@ public class MyAssetServiceImpl implements MyAssetService {
         );
 
         List<MyAsset> result = myAssetRepository.save(myAssets);
-        myAssetSearchRepository.save(result);
         return result;
     }
 
@@ -187,22 +197,6 @@ public class MyAssetServiceImpl implements MyAssetService {
     public void delete(Long id) {
         log.debug("Request to delete MyAsset : {}", id);
         myAssetRepository.delete(id);
-        myAssetSearchRepository.delete(id);
-    }
-
-    /**
-     * Search for the myAsset corresponding to the query.
-     *
-     * @param query the query of the search
-     * @return the list of entities
-     */
-    @Override
-    @Transactional(readOnly = true)
-    public List<MyAsset> search(String query) {
-        log.debug("Request to search MyAssets for query {}", query);
-        return StreamSupport
-            .stream(myAssetSearchRepository.search(queryStringQuery(query)).spliterator(), false)
-            .collect(Collectors.toList());
     }
 
     @Override
@@ -233,5 +227,11 @@ public class MyAssetServiceImpl implements MyAssetService {
                 throw new NotImplementedYetException("Method not implemented for this CategoryType");
             }
         }
+    }
+
+    @Override
+    public List<MyAsset> findAllBySelfAssessmentAndAssetCategory(Long selfAssessmentID, String categoryName) {
+
+        return this.myAssetRepository.findAllBySelfAssessmentAndAssetCategory(selfAssessmentID, categoryName);
     }
 }

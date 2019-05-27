@@ -5,8 +5,7 @@
             "home": {
                 "title": "MyAnswers",
                 "createLabel": "Genera un nuovo My Answer",
-                "createOrEditLabel": "Genera o modifica un My Answer",
-                "search": "Cerca My Answer"
+                "createOrEditLabel": "Genera o modifica un My Answer"
             },
             "created": "&Egrave; stato generato un nuovo My Answer con identificatore {{ param }}",
             "updated": "&Egrave; stato aggiornato My Answer identificato da {{ param }}",

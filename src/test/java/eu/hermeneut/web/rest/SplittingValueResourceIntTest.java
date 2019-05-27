@@ -1,3 +1,20 @@
+/*
+ * Copyright 2019 HERMENEUT Consortium
+ *  
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *  
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
+
 package eu.hermeneut.web.rest;
 
 import eu.hermeneut.HermeneutApp;
@@ -5,7 +22,6 @@ import eu.hermeneut.HermeneutApp;
 import eu.hermeneut.domain.SplittingValue;
 import eu.hermeneut.repository.SplittingValueRepository;
 import eu.hermeneut.service.SplittingValueService;
-import eu.hermeneut.repository.search.SplittingValueSearchRepository;
 import eu.hermeneut.web.rest.errors.ExceptionTranslator;
 
 import org.junit.Before;
@@ -59,9 +75,6 @@ public class SplittingValueResourceIntTest {
     private SplittingValueService splittingValueService;
 
     @Autowired
-    private SplittingValueSearchRepository splittingValueSearchRepository;
-
-    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -104,7 +117,6 @@ public class SplittingValueResourceIntTest {
 
     @Before
     public void initTest() {
-        splittingValueSearchRepository.deleteAll();
         splittingValue = createEntity(em);
     }
 
@@ -126,10 +138,6 @@ public class SplittingValueResourceIntTest {
         assertThat(testSplittingValue.getSectorType()).isEqualTo(DEFAULT_SECTOR_TYPE);
         assertThat(testSplittingValue.getCategoryType()).isEqualTo(DEFAULT_CATEGORY_TYPE);
         assertThat(testSplittingValue.getValue()).isEqualTo(DEFAULT_VALUE);
-
-        // Validate the SplittingValue in Elasticsearch
-        SplittingValue splittingValueEs = splittingValueSearchRepository.findOne(testSplittingValue.getId());
-        assertThat(splittingValueEs).isEqualToIgnoringGivenFields(testSplittingValue);
     }
 
     @Test
@@ -220,10 +228,6 @@ public class SplittingValueResourceIntTest {
         assertThat(testSplittingValue.getSectorType()).isEqualTo(UPDATED_SECTOR_TYPE);
         assertThat(testSplittingValue.getCategoryType()).isEqualTo(UPDATED_CATEGORY_TYPE);
         assertThat(testSplittingValue.getValue()).isEqualTo(UPDATED_VALUE);
-
-        // Validate the SplittingValue in Elasticsearch
-        SplittingValue splittingValueEs = splittingValueSearchRepository.findOne(testSplittingValue.getId());
-        assertThat(splittingValueEs).isEqualToIgnoringGivenFields(testSplittingValue);
     }
 
     @Test
@@ -257,29 +261,9 @@ public class SplittingValueResourceIntTest {
             .accept(TestUtil.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk());
 
-        // Validate Elasticsearch is empty
-        boolean splittingValueExistsInEs = splittingValueSearchRepository.exists(splittingValue.getId());
-        assertThat(splittingValueExistsInEs).isFalse();
-
         // Validate the database is empty
         List<SplittingValue> splittingValueList = splittingValueRepository.findAll();
         assertThat(splittingValueList).hasSize(databaseSizeBeforeDelete - 1);
-    }
-
-    @Test
-    @Transactional
-    public void searchSplittingValue() throws Exception {
-        // Initialize the database
-        splittingValueService.save(splittingValue);
-
-        // Search the splittingValue
-        restSplittingValueMockMvc.perform(get("/api/_search/splitting-values?query=id:" + splittingValue.getId()))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(splittingValue.getId().intValue())))
-            .andExpect(jsonPath("$.[*].sectorType").value(hasItem(DEFAULT_SECTOR_TYPE.toString())))
-            .andExpect(jsonPath("$.[*].categoryType").value(hasItem(DEFAULT_CATEGORY_TYPE.toString())))
-            .andExpect(jsonPath("$.[*].value").value(hasItem(DEFAULT_VALUE.intValue())));
     }
 
     @Test

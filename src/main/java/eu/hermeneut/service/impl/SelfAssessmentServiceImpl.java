@@ -1,3 +1,20 @@
+/*
+ * Copyright 2019 HERMENEUT Consortium
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
+
 package eu.hermeneut.service.impl;
 
 import eu.hermeneut.domain.*;
@@ -7,7 +24,6 @@ import eu.hermeneut.domain.overview.SelfAssessmentOverview;
 import eu.hermeneut.exceptions.NotFoundException;
 import eu.hermeneut.service.*;
 import eu.hermeneut.repository.SelfAssessmentRepository;
-import eu.hermeneut.repository.search.SelfAssessmentSearchRepository;
 import eu.hermeneut.service.attackmap.AugmentedAttackStrategyService;
 import eu.hermeneut.service.result.ResultService;
 import eu.hermeneut.thread.AugmentedMyAssetsCallable;
@@ -20,10 +36,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 import java.util.concurrent.*;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
-
-import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
  * Service Implementation for managing SelfAssessment.
@@ -35,8 +47,6 @@ public class SelfAssessmentServiceImpl implements SelfAssessmentService {
     private final Logger LOGGER = LoggerFactory.getLogger(SelfAssessmentServiceImpl.class);
 
     private final SelfAssessmentRepository selfAssessmentRepository;
-
-    private final SelfAssessmentSearchRepository selfAssessmentSearchRepository;
 
     @Autowired
     private SelfAssessmentService selfAssessmentService;
@@ -53,9 +63,8 @@ public class SelfAssessmentServiceImpl implements SelfAssessmentService {
     @Autowired
     private ResultService resultService;
 
-    public SelfAssessmentServiceImpl(SelfAssessmentRepository selfAssessmentRepository, SelfAssessmentSearchRepository selfAssessmentSearchRepository) {
+    public SelfAssessmentServiceImpl(SelfAssessmentRepository selfAssessmentRepository) {
         this.selfAssessmentRepository = selfAssessmentRepository;
-        this.selfAssessmentSearchRepository = selfAssessmentSearchRepository;
     }
 
     /**
@@ -68,7 +77,6 @@ public class SelfAssessmentServiceImpl implements SelfAssessmentService {
     public SelfAssessment save(SelfAssessment selfAssessment) {
         LOGGER.debug("Request to save SelfAssessment : {}", selfAssessment);
         SelfAssessment result = selfAssessmentRepository.save(selfAssessment);
-        selfAssessmentSearchRepository.save(result);
         return result;
     }
 
@@ -82,16 +90,6 @@ public class SelfAssessmentServiceImpl implements SelfAssessmentService {
     public List<SelfAssessment> findAll() {
         LOGGER.debug("Request to get all SelfAssessments");
         List<SelfAssessment> selfAssessments = selfAssessmentRepository.findAllWithEagerRelationships();
-
-        for (SelfAssessment selfAssessment : selfAssessments) {
-            Set<ThreatAgent> threatAgents = selfAssessment.getThreatagents();
-
-            if (threatAgents != null) {
-                for (ThreatAgent threatAgent : threatAgents) {
-                    threatAgent.setImage(null);
-                }
-            }
-        }
 
         return selfAssessments;
     }
@@ -118,22 +116,6 @@ public class SelfAssessmentServiceImpl implements SelfAssessmentService {
     public void delete(Long id) {
         LOGGER.debug("Request to delete SelfAssessment : {}", id);
         selfAssessmentRepository.delete(id);
-        selfAssessmentSearchRepository.delete(id);
-    }
-
-    /**
-     * Search for the selfAssessment corresponding to the query.
-     *
-     * @param query the query of the search
-     * @return the list of entities
-     */
-    @Override
-    @Transactional(readOnly = true)
-    public List<SelfAssessment> search(String query) {
-        LOGGER.debug("Request to search SelfAssessments for query {}", query);
-        return StreamSupport
-            .stream(selfAssessmentSearchRepository.search(queryStringQuery(query)).spliterator(), false)
-            .collect(Collectors.toList());
     }
 
     @Override
@@ -155,53 +137,57 @@ public class SelfAssessmentServiceImpl implements SelfAssessmentService {
         overview.setAugmentedMyAssets(augmentedMyAssets);
 
         if (selfAssessment != null) {
-            Set<ThreatAgent> threatAgentSet = selfAssessment.getThreatagents();
+            CompanyProfile companyProfile = selfAssessment.getCompanyProfile();
 
-            if (threatAgentSet != null && !threatAgentSet.isEmpty()) {
-                List<MyAsset> myAssets = this.myAssetService.findAllBySelfAssessment(selfAssessmentID);
+            if (companyProfile != null) {
+                Set<ThreatAgent> threatAgentSet = this.resultService.getThreatAgents(companyProfile.getId());
 
-                if (myAssets != null && !myAssets.isEmpty()) {
-                    LOGGER.debug("MyAssets: " + myAssets.size());
+                if (threatAgentSet != null && !threatAgentSet.isEmpty()) {
+                    List<MyAsset> myAssets = this.myAssetService.findAllBySelfAssessment(selfAssessmentID);
 
-                    try {
-                        Map<Long, AugmentedAttackStrategy> augmentedAttackStrategyMap = this.augmentedAttackStrategyService.getAugmentedAttackStrategyMap(selfAssessmentID);
+                    if (myAssets != null && !myAssets.isEmpty()) {
+                        LOGGER.debug("MyAssets: " + myAssets.size());
 
-                        //===Split MyAssets and handle them in different THREADS===
-                        final int MY_ASSETS_PER_SINGLE_THREAD = new Random().nextInt(myAssets.size() / 3 + 1) + 2;
-                        final int THREADS_PROPOSAL = myAssets.size() / MY_ASSETS_PER_SINGLE_THREAD + 1;
-                        final int THREADS_AMOUNT = THREADS_PROPOSAL < myAssets.size() ? THREADS_PROPOSAL : myAssets.size();
+                        try {
+                            Map<Long, AugmentedAttackStrategy> augmentedAttackStrategyMap = this.augmentedAttackStrategyService.getAugmentedAttackStrategyMap(selfAssessment.getCompanyProfile().getId());
 
-                        Map<Integer, List<MyAsset>> splittedMyAssets = ListSplitter.split(myAssets, THREADS_AMOUNT);
+                            //===Split MyAssets and handle them in different THREADS===
+                            final int MY_ASSETS_PER_SINGLE_THREAD = new Random().nextInt(myAssets.size() / 3 + 1) + 2;
+                            final int THREADS_PROPOSAL = myAssets.size() / MY_ASSETS_PER_SINGLE_THREAD + 1;
+                            final int THREADS_AMOUNT = THREADS_PROPOSAL < myAssets.size() ? THREADS_PROPOSAL : myAssets.size();
 
-                        ExecutorService executor = Executors.newFixedThreadPool(THREADS_AMOUNT);
+                            Map<Integer, List<MyAsset>> splittedMyAssets = ListSplitter.split(myAssets, THREADS_AMOUNT);
 
-                        //create a list to hold the Future object associated with Callable
-                        List<Future<List<AugmentedMyAsset>>> futureList = new ArrayList<Future<List<AugmentedMyAsset>>>();
+                            ExecutorService executor = Executors.newFixedThreadPool(THREADS_AMOUNT);
 
-                        splittedMyAssets.entrySet().stream().forEach((entry) -> {
-                            List<MyAsset> myAssetsSubset = entry.getValue();
+                            //create a list to hold the Future object associated with Callable
+                            List<Future<List<AugmentedMyAsset>>> futureList = new ArrayList<Future<List<AugmentedMyAsset>>>();
 
-                            AugmentedMyAssetsCallable augmentedMyAssetsCallable = new AugmentedMyAssetsCallable(myAssetsSubset, this.attackStrategyService, augmentedAttackStrategyMap, threatAgentSet);
+                            splittedMyAssets.entrySet().stream().forEach((entry) -> {
+                                List<MyAsset> myAssetsSubset = entry.getValue();
 
-                            //submit Callable tasks to be executed by thread pool
-                            Future<List<AugmentedMyAsset>> future = executor.submit(augmentedMyAssetsCallable);
-                            //add Future to the list, we can get return value using Future
-                            futureList.add(future);
-                        });
+                                AugmentedMyAssetsCallable augmentedMyAssetsCallable = new AugmentedMyAssetsCallable(myAssetsSubset, this.attackStrategyService, augmentedAttackStrategyMap, threatAgentSet);
 
-                        for (Future<List<AugmentedMyAsset>> future : futureList) {
-                            try {
-                                //Future.get() waits for task to get completed
-                                augmentedMyAssets.addAll(future.get());
-                            } catch (InterruptedException | ExecutionException e) {
-                                e.printStackTrace();
+                                //submit Callable tasks to be executed by thread pool
+                                Future<List<AugmentedMyAsset>> future = executor.submit(augmentedMyAssetsCallable);
+                                //add Future to the list, we can get return value using Future
+                                futureList.add(future);
+                            });
+
+                            for (Future<List<AugmentedMyAsset>> future : futureList) {
+                                try {
+                                    //Future.get() waits for task to get completed
+                                    augmentedMyAssets.addAll(future.get());
+                                } catch (InterruptedException | ExecutionException e) {
+                                    e.printStackTrace();
+                                }
                             }
+                        } catch (NotFoundException e) {
+                            e.printStackTrace();
                         }
-                    } catch (NotFoundException e) {
-                        e.printStackTrace();
-                    }
-                } else {
+                    } else {
 
+                    }
                 }
             }
         } else {
@@ -211,11 +197,5 @@ public class SelfAssessmentServiceImpl implements SelfAssessmentService {
         LOGGER.debug("AugmentedMyAssets: " + augmentedMyAssets.size());
 
         return overview;
-    }
-
-    @Override
-    public List<SelfAssessment> findAllByExternalAudit(ExternalAudit externalAudit) {
-        LOGGER.debug("Request to get SelfAssessment by ExternalAudit: {}", externalAudit.getName());
-        return selfAssessmentRepository.findAllByExternalAudit(externalAudit);
     }
 }

@@ -1,3 +1,20 @@
+/*
+ * Copyright 2019 HERMENEUT Consortium
+ *  
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *  
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
+
 package eu.hermeneut.web.rest;
 
 import eu.hermeneut.HermeneutApp;
@@ -5,7 +22,6 @@ import eu.hermeneut.HermeneutApp;
 import eu.hermeneut.domain.EconomicCoefficients;
 import eu.hermeneut.repository.EconomicCoefficientsRepository;
 import eu.hermeneut.service.EconomicCoefficientsService;
-import eu.hermeneut.repository.search.EconomicCoefficientsSearchRepository;
 import eu.hermeneut.web.rest.errors.ExceptionTranslator;
 
 import org.junit.Before;
@@ -60,9 +76,6 @@ public class EconomicCoefficientsResourceIntTest {
     private EconomicCoefficientsService economicCoefficientsService;
 
     @Autowired
-    private EconomicCoefficientsSearchRepository economicCoefficientsSearchRepository;
-
-    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -106,7 +119,6 @@ public class EconomicCoefficientsResourceIntTest {
 
     @Before
     public void initTest() {
-        economicCoefficientsSearchRepository.deleteAll();
         economicCoefficients = createEntity(em);
     }
 
@@ -129,10 +141,6 @@ public class EconomicCoefficientsResourceIntTest {
         assertThat(testEconomicCoefficients.getPhysicalAssetsReturn()).isEqualTo(DEFAULT_PHYSICAL_ASSETS_RETURN);
         assertThat(testEconomicCoefficients.getFinancialAssetsReturn()).isEqualTo(DEFAULT_FINANCIAL_ASSETS_RETURN);
         assertThat(testEconomicCoefficients.getLossOfIntangible()).isEqualTo(DEFAULT_LOSS_OF_INTANGIBLE);
-
-        // Validate the EconomicCoefficients in Elasticsearch
-        EconomicCoefficients economicCoefficientsEs = economicCoefficientsSearchRepository.findOne(testEconomicCoefficients.getId());
-        assertThat(economicCoefficientsEs).isEqualToIgnoringGivenFields(testEconomicCoefficients);
     }
 
     @Test
@@ -227,10 +235,6 @@ public class EconomicCoefficientsResourceIntTest {
         assertThat(testEconomicCoefficients.getPhysicalAssetsReturn()).isEqualTo(UPDATED_PHYSICAL_ASSETS_RETURN);
         assertThat(testEconomicCoefficients.getFinancialAssetsReturn()).isEqualTo(UPDATED_FINANCIAL_ASSETS_RETURN);
         assertThat(testEconomicCoefficients.getLossOfIntangible()).isEqualTo(UPDATED_LOSS_OF_INTANGIBLE);
-
-        // Validate the EconomicCoefficients in Elasticsearch
-        EconomicCoefficients economicCoefficientsEs = economicCoefficientsSearchRepository.findOne(testEconomicCoefficients.getId());
-        assertThat(economicCoefficientsEs).isEqualToIgnoringGivenFields(testEconomicCoefficients);
     }
 
     @Test
@@ -264,30 +268,9 @@ public class EconomicCoefficientsResourceIntTest {
             .accept(TestUtil.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk());
 
-        // Validate Elasticsearch is empty
-        boolean economicCoefficientsExistsInEs = economicCoefficientsSearchRepository.exists(economicCoefficients.getId());
-        assertThat(economicCoefficientsExistsInEs).isFalse();
-
         // Validate the database is empty
         List<EconomicCoefficients> economicCoefficientsList = economicCoefficientsRepository.findAll();
         assertThat(economicCoefficientsList).hasSize(databaseSizeBeforeDelete - 1);
-    }
-
-    @Test
-    @Transactional
-    public void searchEconomicCoefficients() throws Exception {
-        // Initialize the database
-        economicCoefficientsService.save(economicCoefficients);
-
-        // Search the economicCoefficients
-        restEconomicCoefficientsMockMvc.perform(get("/api/_search/economic-coefficients?query=id:" + economicCoefficients.getId()))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(economicCoefficients.getId().intValue())))
-            .andExpect(jsonPath("$.[*].discountingRate").value(hasItem(DEFAULT_DISCOUNTING_RATE.intValue())))
-            .andExpect(jsonPath("$.[*].physicalAssetsReturn").value(hasItem(DEFAULT_PHYSICAL_ASSETS_RETURN.intValue())))
-            .andExpect(jsonPath("$.[*].financialAssetsReturn").value(hasItem(DEFAULT_FINANCIAL_ASSETS_RETURN.intValue())))
-            .andExpect(jsonPath("$.[*].lossOfIntangible").value(hasItem(DEFAULT_LOSS_OF_INTANGIBLE.intValue())));
     }
 
     @Test

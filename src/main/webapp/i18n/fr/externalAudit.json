@@ -5,8 +5,7 @@
             "home": {
                 "title": "ExternalAudits",
                 "createLabel": "Créer un nouveau External Audit",
-                "createOrEditLabel": "Créer ou éditer un External Audit",
-                "search": "Recherche pour External Audit"
+                "createOrEditLabel": "Créer ou éditer un External Audit"
             },
             "created": "Un nouveau External Audit a été créé avec l'identifiant {{ param }}",
             "updated": "Le External Audit avec l'identifiant {{ param }} a été mis à jour",

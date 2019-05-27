@@ -1,3 +1,20 @@
+/*
+ * Copyright 2019 HERMENEUT Consortium
+ *  
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *  
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
+
 package eu.hermeneut.web.rest;
 
 import eu.hermeneut.HermeneutApp;
@@ -5,7 +22,6 @@ import eu.hermeneut.HermeneutApp;
 import eu.hermeneut.domain.EBIT;
 import eu.hermeneut.repository.EBITRepository;
 import eu.hermeneut.service.EBITService;
-import eu.hermeneut.repository.search.EBITSearchRepository;
 import eu.hermeneut.web.rest.errors.ExceptionTranslator;
 
 import org.junit.Before;
@@ -62,9 +78,6 @@ public class EBITResourceIntTest {
     private EBITService eBITService;
 
     @Autowired
-    private EBITSearchRepository eBITSearchRepository;
-
-    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -107,7 +120,6 @@ public class EBITResourceIntTest {
 
     @Before
     public void initTest() {
-        eBITSearchRepository.deleteAll();
         eBIT = createEntity(em);
     }
 
@@ -129,11 +141,6 @@ public class EBITResourceIntTest {
         assertThat(testEBIT.getYear()).isEqualTo(DEFAULT_YEAR);
         assertThat(testEBIT.getValue()).isEqualTo(DEFAULT_VALUE);
         assertThat(testEBIT.getCreated()).isEqualTo(DEFAULT_CREATED);
-
-        // Validate the EBIT in Elasticsearch
-        EBIT eBITEs = eBITSearchRepository.findOne(testEBIT.getId());
-        assertThat(testEBIT.getCreated()).isEqualTo(testEBIT.getCreated());
-        assertThat(eBITEs).isEqualToIgnoringGivenFields(testEBIT, "created");
     }
 
     @Test
@@ -224,11 +231,6 @@ public class EBITResourceIntTest {
         assertThat(testEBIT.getYear()).isEqualTo(UPDATED_YEAR);
         assertThat(testEBIT.getValue()).isEqualTo(UPDATED_VALUE);
         assertThat(testEBIT.getCreated()).isEqualTo(UPDATED_CREATED);
-
-        // Validate the EBIT in Elasticsearch
-        EBIT eBITEs = eBITSearchRepository.findOne(testEBIT.getId());
-        assertThat(testEBIT.getCreated()).isEqualTo(testEBIT.getCreated());
-        assertThat(eBITEs).isEqualToIgnoringGivenFields(testEBIT, "created");
     }
 
     @Test
@@ -262,29 +264,9 @@ public class EBITResourceIntTest {
             .accept(TestUtil.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk());
 
-        // Validate Elasticsearch is empty
-        boolean eBITExistsInEs = eBITSearchRepository.exists(eBIT.getId());
-        assertThat(eBITExistsInEs).isFalse();
-
         // Validate the database is empty
         List<EBIT> eBITList = eBITRepository.findAll();
         assertThat(eBITList).hasSize(databaseSizeBeforeDelete - 1);
-    }
-
-    @Test
-    @Transactional
-    public void searchEBIT() throws Exception {
-        // Initialize the database
-        eBITService.save(eBIT);
-
-        // Search the eBIT
-        restEBITMockMvc.perform(get("/api/_search/ebits?query=id:" + eBIT.getId()))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(eBIT.getId().intValue())))
-            .andExpect(jsonPath("$.[*].year").value(hasItem(DEFAULT_YEAR)))
-            .andExpect(jsonPath("$.[*].value").value(hasItem(DEFAULT_VALUE.intValue())))
-            .andExpect(jsonPath("$.[*].created").value(hasItem(sameInstant(DEFAULT_CREATED))));
     }
 
     @Test

@@ -1,16 +1,35 @@
-import { MyAssetRisk } from './../model/my-asset-risk.model';
+/*
+ * Copyright 2019 HERMENEUT Consortium
+ *  
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *  
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
+
+import {MyAssetRisk} from './../model/my-asset-risk.model';
 import * as _ from 'lodash';
-import { DashboardStepEnum } from './../../dashboard/models/enumeration/dashboard-step.enum';
-import { DashboardService } from './../../dashboard/dashboard.service';
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { RiskManagementService } from '../risk-management.service';
-import { SelfAssessmentMgmService, SelfAssessmentMgm } from '../../entities/self-assessment-mgm';
-import { CriticalLevelMgm } from '../../entities/critical-level-mgm';
-import { MyAssetMgm } from '../../entities/my-asset-mgm';
-import { Status } from '../../entities/enumerations/QuestionnaireStatus.enum';
-import { Subscription } from 'rxjs';
-import { MitigationMgm } from '../../entities/mitigation-mgm';
-import { ImpactEvaluationService } from '../../impact-evaluation/impact-evaluation.service';
+import {Component, OnInit, OnDestroy} from '@angular/core';
+import {RiskManagementService} from '../risk-management.service';
+import {SelfAssessmentMgmService, SelfAssessmentMgm} from '../../entities/self-assessment-mgm';
+import {CriticalLevelMgm} from '../../entities/critical-level-mgm';
+import {MyAssetMgm} from '../../entities/my-asset-mgm';
+import {Status} from '../../entities/enumerations/QuestionnaireStatus.enum';
+import {Subscription} from 'rxjs';
+import {MitigationMgm} from '../../entities/mitigation-mgm';
+import {ImpactEvaluationService} from '../../impact-evaluation/impact-evaluation.service';
+import {RiskBoardStepEnum} from "../../entities/enumerations/RiskBoardStep.enum";
+import {RiskBoardService} from "../../risk-board/risk-board.service";
+import {DatasharingService} from "../../datasharing/datasharing.service";
+import {ImpactMode} from "../../entities/enumerations/ImpactMode.enum";
 
 interface RiskPercentageElement {
     asset: MyAssetMgm;
@@ -42,7 +61,8 @@ export class RiskEvaluationComponent implements OnInit, OnDestroy {
     public loadingRiskLevel = false;
     public loadingAssetsAndAttacks = false;
     public isWarningVisible = true;
-    private mySelf: SelfAssessmentMgm;
+    public selfAssessment: SelfAssessmentMgm;
+    public impactModeEnum = ImpactMode;
     public criticalLevel: CriticalLevelMgm;
     public squareColumnElement: number[];
     public squareRowElement: number[];
@@ -55,7 +75,7 @@ export class RiskEvaluationComponent implements OnInit, OnDestroy {
     public attackCosts = false;
     public assetsToolTip: Map<number, string> = new Map<number, string>();
     public assetToolTipLoaded = false;
-    private dashboardStatus = DashboardStepEnum;
+    private dashboardStatus = RiskBoardStepEnum;
     public risksTangible: RiskPercentageElement[] = [];
     public risksIntangible: RiskPercentageElement[] = [];
     public noRiskInMap = false;
@@ -77,8 +97,9 @@ export class RiskEvaluationComponent implements OnInit, OnDestroy {
     constructor(
         private mySelfAssessmentService: SelfAssessmentMgmService,
         private riskService: RiskManagementService,
-        private dashService: DashboardService,
-        private impactEvaluationService: ImpactEvaluationService
+        private riskBoardService: RiskBoardService,
+        private impactEvaluationService: ImpactEvaluationService,
+        private dataSharingService: DatasharingService
     ) {
     }
 
@@ -120,8 +141,8 @@ export class RiskEvaluationComponent implements OnInit, OnDestroy {
             risk: false,
             type: 'desc'
         };
-        this.mySelf = this.mySelfAssessmentService.getSelfAssessment();
-        this.riskService.getCriticalLevel(this.mySelf).toPromise().then((res) => {
+        this.selfAssessment = this.dataSharingService.selfAssessment;
+        this.riskService.getCriticalLevel(this.selfAssessment).toPromise().then((res) => {
             if (res) {
                 this.criticalLevel = res;
                 this.squareColumnElement = [];
@@ -146,7 +167,7 @@ export class RiskEvaluationComponent implements OnInit, OnDestroy {
             }
         });
 
-        this.riskService.getMyAssetsAtRisk(this.mySelf).toPromise().then((res: MyAssetRisk[]) => {
+        this.riskService.getMyAssetsAtRisk(this.selfAssessment).toPromise().then((res: MyAssetRisk[]) => {
             if (res) {
                 this.myAssetsAtRisk = res;
                 this.myAssetsAtRisk.forEach((myAsset) => {
@@ -160,7 +181,7 @@ export class RiskEvaluationComponent implements OnInit, OnDestroy {
             this.loadingAssetsAndAttacks = false;
         });
 
-        this.dashService.getStatusFromServer(this.mySelf, this.dashboardStatus.ATTACK_RELATED_COSTS).toPromise().then((res) => {
+        this.riskBoardService.getStatusFromServer(this.selfAssessment, this.dashboardStatus.ATTACK_RELATED_COSTS).toPromise().then((res) => {
             if (Status[res] === Status.EMPTY || Status[res] === Status.PENDING) {
                 this.attackCosts = false;
                 this.isWarningVisible = true;
@@ -299,6 +320,7 @@ export class RiskEvaluationComponent implements OnInit, OnDestroy {
             this.orderIntangibleBy.type = 'desc';
         }
     }
+
     public tableOrderBy(orderColumn: string, category: string, desc: boolean) {
         if (category === 'TANGIBLE') {
             this.resetOrder('TANGIBLE');

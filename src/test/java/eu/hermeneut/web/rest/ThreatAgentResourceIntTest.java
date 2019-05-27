@@ -1,3 +1,20 @@
+/*
+ * Copyright 2019 HERMENEUT Consortium
+ *  
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *  
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
+
 package eu.hermeneut.web.rest;
 
 import eu.hermeneut.HermeneutApp;
@@ -5,7 +22,6 @@ import eu.hermeneut.HermeneutApp;
 import eu.hermeneut.domain.ThreatAgent;
 import eu.hermeneut.repository.ThreatAgentRepository;
 import eu.hermeneut.service.ThreatAgentService;
-import eu.hermeneut.repository.search.ThreatAgentSearchRepository;
 import eu.hermeneut.web.rest.errors.ExceptionTranslator;
 
 import org.junit.Before;
@@ -85,9 +101,6 @@ public class ThreatAgentResourceIntTest {
     private ThreatAgentService threatAgentService;
 
     @Autowired
-    private ThreatAgentSearchRepository threatAgentSearchRepository;
-
-    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -137,7 +150,6 @@ public class ThreatAgentResourceIntTest {
 
     @Before
     public void initTest() {
-        threatAgentSearchRepository.deleteAll();
         threatAgent = createEntity(em);
     }
 
@@ -166,12 +178,6 @@ public class ThreatAgentResourceIntTest {
         assertThat(testThreatAgent.getCreated()).isEqualTo(DEFAULT_CREATED);
         assertThat(testThreatAgent.getModified()).isEqualTo(DEFAULT_MODIFIED);
         assertThat(testThreatAgent.isIdentifiedByDefault()).isEqualTo(DEFAULT_IDENTIFIED_BY_DEFAULT);
-
-        // Validate the ThreatAgent in Elasticsearch
-        ThreatAgent threatAgentEs = threatAgentSearchRepository.findOne(testThreatAgent.getId());
-        assertThat(testThreatAgent.getCreated()).isEqualTo(testThreatAgent.getCreated());
-        assertThat(testThreatAgent.getModified()).isEqualTo(testThreatAgent.getModified());
-        assertThat(threatAgentEs).isEqualToIgnoringGivenFields(testThreatAgent, "created", "modified");
     }
 
     @Test
@@ -398,12 +404,6 @@ public class ThreatAgentResourceIntTest {
         assertThat(testThreatAgent.getCreated()).isEqualTo(UPDATED_CREATED);
         assertThat(testThreatAgent.getModified()).isEqualTo(UPDATED_MODIFIED);
         assertThat(testThreatAgent.isIdentifiedByDefault()).isEqualTo(UPDATED_IDENTIFIED_BY_DEFAULT);
-
-        // Validate the ThreatAgent in Elasticsearch
-        ThreatAgent threatAgentEs = threatAgentSearchRepository.findOne(testThreatAgent.getId());
-        assertThat(testThreatAgent.getCreated()).isEqualTo(testThreatAgent.getCreated());
-        assertThat(testThreatAgent.getModified()).isEqualTo(testThreatAgent.getModified());
-        assertThat(threatAgentEs).isEqualToIgnoringGivenFields(testThreatAgent, "created", "modified");
     }
 
     @Test
@@ -437,36 +437,9 @@ public class ThreatAgentResourceIntTest {
             .accept(TestUtil.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk());
 
-        // Validate Elasticsearch is empty
-        boolean threatAgentExistsInEs = threatAgentSearchRepository.exists(threatAgent.getId());
-        assertThat(threatAgentExistsInEs).isFalse();
-
         // Validate the database is empty
         List<ThreatAgent> threatAgentList = threatAgentRepository.findAll();
         assertThat(threatAgentList).hasSize(databaseSizeBeforeDelete - 1);
-    }
-
-    @Test
-    @Transactional
-    public void searchThreatAgent() throws Exception {
-        // Initialize the database
-        threatAgentService.save(threatAgent);
-
-        // Search the threatAgent
-        restThreatAgentMockMvc.perform(get("/api/_search/threat-agents?query=id:" + threatAgent.getId()))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(threatAgent.getId().intValue())))
-            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
-            .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION.toString())))
-            .andExpect(jsonPath("$.[*].imageContentType").value(hasItem(DEFAULT_IMAGE_CONTENT_TYPE)))
-            .andExpect(jsonPath("$.[*].image").value(hasItem(Base64Utils.encodeToString(DEFAULT_IMAGE))))
-            .andExpect(jsonPath("$.[*].skillLevel").value(hasItem(DEFAULT_SKILL_LEVEL.toString())))
-            .andExpect(jsonPath("$.[*].intent").value(hasItem(DEFAULT_INTENT.toString())))
-            .andExpect(jsonPath("$.[*].access").value(hasItem(DEFAULT_ACCESS.toString())))
-            .andExpect(jsonPath("$.[*].created").value(hasItem(sameInstant(DEFAULT_CREATED))))
-            .andExpect(jsonPath("$.[*].modified").value(hasItem(sameInstant(DEFAULT_MODIFIED))))
-            .andExpect(jsonPath("$.[*].identifiedByDefault").value(hasItem(DEFAULT_IDENTIFIED_BY_DEFAULT.booleanValue())));
     }
 
     @Test

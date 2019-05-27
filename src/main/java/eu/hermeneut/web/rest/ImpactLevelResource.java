@@ -1,3 +1,20 @@
+/*
+ * Copyright 2019 HERMENEUT Consortium
+ *  
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *  
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
+
 package eu.hermeneut.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
@@ -166,19 +183,5 @@ public class ImpactLevelResource {
         log.debug("REST request to delete ImpactLevel : {}", id);
         impactLevelService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
-    }
-
-    /**
-     * SEARCH  /_search/impact-levels?query=:query : search for the impactLevel corresponding
-     * to the query.
-     *
-     * @param query the query of the impactLevel search
-     * @return the result of the search
-     */
-    @GetMapping("/_search/impact-levels")
-    @Timed
-    public List<ImpactLevel> searchImpactLevels(@RequestParam String query) {
-        log.debug("REST request to search ImpactLevels for query {}", query);
-        return impactLevelService.search(query);
     }
 }

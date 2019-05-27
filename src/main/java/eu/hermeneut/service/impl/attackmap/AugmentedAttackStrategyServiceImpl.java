@@ -1,3 +1,20 @@
+/*
+ * Copyright 2019 HERMENEUT Consortium
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
+
 package eu.hermeneut.service.impl.attackmap;
 
 import eu.hermeneut.domain.*;
@@ -7,6 +24,7 @@ import eu.hermeneut.domain.enumeration.Role;
 import eu.hermeneut.exceptions.NotFoundException;
 import eu.hermeneut.service.*;
 import eu.hermeneut.service.attackmap.AugmentedAttackStrategyService;
+import eu.hermeneut.service.result.ResultService;
 import eu.hermeneut.utils.attackstrategy.ThreatAttackFilter;
 import eu.hermeneut.utils.likelihood.attackstrategy.AttackStrategyCalculator;
 import eu.hermeneut.utils.threatagent.ThreatAgentComparator;
@@ -26,7 +44,7 @@ public class AugmentedAttackStrategyServiceImpl implements AugmentedAttackStrate
     private AttackStrategyService attackStrategyService;
 
     @Autowired
-    private SelfAssessmentService selfAssessmentService;
+    private CompanyProfileService companyProfileService;
 
     @Autowired
     private QuestionnaireStatusService questionnaireStatusService;
@@ -43,16 +61,20 @@ public class AugmentedAttackStrategyServiceImpl implements AugmentedAttackStrate
     @Autowired
     private AttackStrategyCalculator attackStrategyCalculator;
 
-    @Override
-    public Map<Long, AugmentedAttackStrategy> getAugmentedAttackStrategyMap(Long selfAssessmentID) throws NotFoundException {
-        SelfAssessment selfAssessment = this.selfAssessmentService.findOne(selfAssessmentID);
+    @Autowired
+    private ResultService resultService;
 
-        if (selfAssessment == null) {
-            throw new NotFoundException("The selfAssessment Not Found!!!");
+    @Override
+    public Map<Long, AugmentedAttackStrategy> getAugmentedAttackStrategyMap(Long companyProfileID) throws NotFoundException {
+        //SelfAssessment selfAssessment = this.selfAssessmentService.findOne(companyProfileID);
+        CompanyProfile companyProfile = this.companyProfileService.findOne(companyProfileID);
+
+        if (companyProfile == null) {
+            throw new NotFoundException("CompanyProfile Not Found!!!");
         }
 
         // Get the identified ThreatAgents
-        Set<ThreatAgent> threatAgentSet = selfAssessment.getThreatagents();
+        Set<ThreatAgent> threatAgentSet = this.resultService.getThreatAgents(companyProfile.getId());
 
         if (threatAgentSet == null || threatAgentSet.isEmpty()) {
             throw new NotFoundException("No Threat Agent found for this SelfAssessment!!!");
@@ -77,69 +99,70 @@ public class AugmentedAttackStrategyServiceImpl implements AugmentedAttackStrate
             .filter(attackStrategy -> ThreatAttackFilter.isAttackPossible(strongestThreatAgent, attackStrategy))
             .collect(Collectors.toMap(AttackStrategy::getId, attackStrategy -> new AugmentedAttackStrategy(attackStrategy, true)));
 
-        //===INITIAL LIKELIHOOD===
         augmentedAttackStrategyMap.values().forEach(augmentedAttackStrategy -> {
+            //===INITIAL LIKELIHOOD===
             augmentedAttackStrategy.setInitialLikelihood(this.attackStrategyCalculator.initialLikelihood(augmentedAttackStrategy).getValue());
+            //===INITIAL VULNERABILITY===
+            augmentedAttackStrategy.setInitialVulnerability(this.attackStrategyCalculator.initialLikelihood(augmentedAttackStrategy).getValue());
+            //===INITIAL CRITICALITY===
+            augmentedAttackStrategy.setInitialCriticality(augmentedAttackStrategy.getInitialLikelihood() * augmentedAttackStrategy.getInitialVulnerability());
         });
 
+
         //Get QuestionnaireStatuses by SelfAssessment
-        List<QuestionnaireStatus> questionnaireStatuses = this.questionnaireStatusService.findAllBySelfAssessment(selfAssessmentID);
+        List<QuestionnaireStatus> questionnaireStatuses = this.questionnaireStatusService.findAllByCompanyProfile(companyProfileID);
 
-        if (questionnaireStatuses == null || questionnaireStatuses.size() == 0) {
-            throw new NotFoundException("NO QuestionaireStatus was found for the SelfAssessment: " + selfAssessmentID);
-        }
+        if (questionnaireStatuses != null && questionnaireStatuses.size() > 0) {
+            QuestionnaireStatus cisoQStatus = questionnaireStatuses.stream().filter(questionnaireStatus ->
+                questionnaireStatus.getRole().equals(Role.ROLE_CISO) && questionnaireStatus.getQuestionnaire().getPurpose
+                    ().equals(QuestionnairePurpose.SELFASSESSMENT))
+                .findFirst().orElse(null);
 
-        QuestionnaireStatus cisoQStatus = questionnaireStatuses.stream().filter(questionnaireStatus ->
-            questionnaireStatus.getRole().equals(Role.ROLE_CISO) && questionnaireStatus.getQuestionnaire().getPurpose
-                ().equals(QuestionnairePurpose.SELFASSESSMENT))
-            .findFirst().orElse(null);
+            QuestionnaireStatus externalQStatus = questionnaireStatuses.stream().filter(questionnaireStatus ->
+                questionnaireStatus.getRole().equals(Role.ROLE_EXTERNAL_AUDIT) && questionnaireStatus.getQuestionnaire().getPurpose
+                    ().equals(QuestionnairePurpose.SELFASSESSMENT)).findFirst().orElse(null);
 
-        QuestionnaireStatus externalQStatus = questionnaireStatuses.stream().filter(questionnaireStatus ->
-            questionnaireStatus.getRole().equals(Role.ROLE_EXTERNAL_AUDIT) && questionnaireStatus.getQuestionnaire().getPurpose
-                ().equals(QuestionnairePurpose.SELFASSESSMENT)).findFirst().orElse(null);
+            Questionnaire questionnaire;// = externalQStatus.getQuestionnaire();
+            List<Question> questions;// = this.questionService.findAllByQuestionnaire(questionnaire);
+            List<Answer> answers;// = this.answerService.findAll();
+            Map<Long/*AnswerID*/, Answer> answersMap;// = answers.stream().collect(Collectors.toMap(Answer::getId, Function.identity()));
+            Map<Long/*QuestionID*/, Question> questionsMap;// = questions.stream().collect(Collectors.toMap(Question::getId, Function.identity()));
+            List<MyAnswer> myAnswers;// = this.myAnswerService.findAllByQuestionnaireStatus(externalQStatus.getId());
 
-        Questionnaire questionnaire;// = externalQStatus.getQuestionnaire();
-        List<Question> questions;// = this.questionService.findAllByQuestionnaire(questionnaire);
-        List<Answer> answers;// = this.answerService.findAll();
-        Map<Long/*AnswerID*/, Answer> answersMap;// = answers.stream().collect(Collectors.toMap(Answer::getId, Function.identity()));
-        Map<Long/*QuestionID*/, Question> questionsMap;// = questions.stream().collect(Collectors.toMap(Question::getId, Function.identity()));
-        List<MyAnswer> myAnswers;// = this.myAnswerService.findAllByQuestionnaireStatus(externalQStatus.getId());
+            if (cisoQStatus != null) {
+                //Use cisoQStatus
+                questionnaire = cisoQStatus.getQuestionnaire();
+                myAnswers = this.myAnswerService.findAllByQuestionnaireStatus(cisoQStatus.getId());
 
-        if (cisoQStatus == null && externalQStatus == null) {
-            throw new NotFoundException("QuestionnaireStatuses for Role ExternalAudit and CISO NOT FOUND!");
-        }
+                if (myAnswers == null || myAnswers.size() == 0) {
+                    throw new NotFoundException("MyAnswers not found for QuestionnaireStatus with id: " + cisoQStatus.getId());
+                }
 
-        if (cisoQStatus != null) {
-            //Use cisoQStatus
-            questionnaire = cisoQStatus.getQuestionnaire();
-            myAnswers = this.myAnswerService.findAllByQuestionnaireStatus(cisoQStatus.getId());
+                questions = this.questionService.findAllByQuestionnaire(questionnaire);
+                answers = this.answerService.findAll();
+                answersMap = answers.stream().collect(Collectors.toMap(Answer::getId, Function.identity()));
+                questionsMap = questions.stream().collect(Collectors.toMap(Question::getId, Function.identity()));
 
-            if (myAnswers == null || myAnswers.size() == 0) {
-                throw new NotFoundException("MyAnswers not found for QuestionnaireStatus with id: " + cisoQStatus.getId());
+                //===CONTEXTUAL VULNERABILITY, LIKELIHOOD, CRITICALITY
+                this.attackStrategyCalculator.calculateContextualVulnerabilityLikelihoodAndCriticalities(myAnswers, questionsMap, answersMap, augmentedAttackStrategyMap);
             }
 
-            questions = this.questionService.findAllByQuestionnaire(questionnaire);
-            answers = this.answerService.findAll();
-            answersMap = answers.stream().collect(Collectors.toMap(Answer::getId, Function.identity()));
-            questionsMap = questions.stream().collect(Collectors.toMap(Question::getId, Function.identity()));
+            if (cisoQStatus != null && externalQStatus != null) {
+                questionnaire = externalQStatus.getQuestionnaire();
+                myAnswers = this.myAnswerService.findAllByQuestionnaireStatus(externalQStatus.getId());
 
-            this.attackStrategyCalculator.calculateContextualLikelihoods(myAnswers, questionsMap, answersMap, augmentedAttackStrategyMap);
-        }
+                if (myAnswers == null || myAnswers.size() == 0) {
+                    throw new NotFoundException("MyAnswers not found for QuestionnaireStatus with id: " + externalQStatus.getId());
+                }
 
-        if (externalQStatus != null) {
-            questionnaire = externalQStatus.getQuestionnaire();
-            myAnswers = this.myAnswerService.findAllByQuestionnaireStatus(externalQStatus.getId());
+                questions = this.questionService.findAllByQuestionnaire(questionnaire);
+                answers = this.answerService.findAll();
+                answersMap = answers.stream().collect(Collectors.toMap(Answer::getId, Function.identity()));
+                questionsMap = questions.stream().collect(Collectors.toMap(Question::getId, Function.identity()));
 
-            if (myAnswers == null || myAnswers.size() == 0) {
-                throw new NotFoundException("MyAnswers not found for QuestionnaireStatus with id: " + externalQStatus.getId());
+                //===REFINED VULNERABILITY, LIKELIHOOD, CRITICALITY
+                this.attackStrategyCalculator.calculateRefinedVulnerabilityLikelihoodAndCriticalities(myAnswers, questionsMap, answersMap, augmentedAttackStrategyMap);
             }
-
-            questions = this.questionService.findAllByQuestionnaire(questionnaire);
-            answers = this.answerService.findAll();
-            answersMap = answers.stream().collect(Collectors.toMap(Answer::getId, Function.identity()));
-            questionsMap = questions.stream().collect(Collectors.toMap(Question::getId, Function.identity()));
-
-            this.attackStrategyCalculator.calculateRefinedLikelihoods(myAnswers, questionsMap, answersMap, augmentedAttackStrategyMap);
         }
 
         return augmentedAttackStrategyMap;

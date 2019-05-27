@@ -1,0 +1,76 @@
+<!--
+  ~ Copyright 2019 HERMENEUT Consortium
+  ~  
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~  
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~  
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  ~
+  -->
+
+<ng-container *ngIf="loading">
+    <div class="loader"></div>
+</ng-container>
+<ng-container *ngIf="!loading">
+    <div class="col-md-3">
+        <div class="tile-stats tiles-first-row">
+            <div class="count"
+                 *ngIf="ide">{{ide | compactNumber | currency: 'EUR':'symbol':'1.0-0'}}{{ide | compactSuffix}}</div>
+            <div class="col-md-10">
+                <h2>Intangible Driving Earnings</h2>
+            </div>
+            <div class="col-md-2">
+                <a [routerLink]="['/impact-evaluation']"><i class="fa fa-link fa-lg" style="margin-top: 25px"
+                                                            aria-hidden="true"></i></a>
+            </div>
+            <small *ngIf="!ide">The Impact evaluation step was not completed</small>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="tile-stats tiles-first-row">
+            <div class="count"
+                 *ngIf="intangibleCapital">{{intangibleCapital | compactNumber | currency: 'EUR':'symbol':'1.0-2'}}{{intangibleCapital | compactSuffix}}</div>
+            <div class="col-md-10">
+                <h2>Intangible Capital</h2>
+            </div>
+            <div class="col-md-2">
+                <a [routerLink]="['/impact-evaluation']"><i class="fa fa-link fa-lg" style="margin-top: 25px"
+                                                            aria-hidden="true"></i></a>
+            </div>
+            <small *ngIf="!intangibleCapital">The Impact evaluation step was not completed</small>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="tile-stats tiles-first-row">
+            <div class="count" *ngIf="physicalReturn">{{physicalReturn / 100 | percent:'1.0-2'}}</div>
+            <div class="col-md-10">
+                <h2>Physical Asset Return</h2>
+            </div>
+            <div class="col-md-2">
+                <a [routerLink]="['/impact-evaluation']"><i class="fa fa-link fa-lg" style="margin-top: 25px"
+                                                            aria-hidden="true"></i></a>
+            </div>
+            <small *ngIf="!physicalReturn">The Impact evaluation step was not completed</small>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="tile-stats tiles-first-row">
+            <div class="count" *ngIf="financialReturn">{{financialReturn / 100 | percent:'1.0-2'}}</div>
+            <div class="col-md-10">
+                <h2>Financial Asset Return</h2>
+            </div>
+            <div class="col-md-2">
+                <a [routerLink]="['/impact-evaluation']"><i class="fa fa-link fa-lg" style="margin-top: 25px"
+                                                            aria-hidden="true"></i></a>
+            </div>
+            <small *ngIf="!financialReturn">The Impact evaluation step was not completed</small>
+        </div>
+    </div>
+</ng-container>

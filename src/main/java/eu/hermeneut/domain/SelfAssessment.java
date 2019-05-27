@@ -1,5 +1,23 @@
+/*
+ * Copyright 2019 HERMENEUT Consortium
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
+
 package eu.hermeneut.domain;
 
+import eu.hermeneut.domain.enumeration.ImpactMode;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -8,7 +26,7 @@ import javax.validation.constraints.*;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-import org.springframework.data.elasticsearch.annotations.Document;
+
 
 import java.io.Serializable;
 import java.time.ZonedDateTime;
@@ -22,7 +40,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "self_assessment")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-@Document(indexName = "selfassessment")
+
 public class SelfAssessment implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -57,15 +75,10 @@ public class SelfAssessment implements Serializable {
         inverseJoinColumns = @JoinColumn(name = "company_groups_id", referencedColumnName = "id"))
     private Set<CompanyGroup> companyGroups = new HashSet<>();
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    @JoinTable(name = "self_assessment_threatagent",
-        joinColumns = @JoinColumn(name = "self_assessments_id", referencedColumnName = "id"),
-        inverseJoinColumns = @JoinColumn(name = "threatagents_id", referencedColumnName = "id"))
-    private Set<ThreatAgent> threatagents = new HashSet<>();
-
-    @ManyToOne
-    private ExternalAudit externalAudit;
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    @Column(name = "impact_mode", nullable = false)
+    private ImpactMode impactMode = ImpactMode.QUANTITATIVE;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -141,19 +154,6 @@ public class SelfAssessment implements Serializable {
         this.user = user;
     }
 
-    public ExternalAudit getExternalAudit() {
-        return externalAudit;
-    }
-
-    public SelfAssessment externalAudit(ExternalAudit externalAudit) {
-        this.externalAudit = externalAudit;
-        return this;
-    }
-
-    public void setExternalAudit(ExternalAudit externalAudit) {
-        this.externalAudit = externalAudit;
-    }
-
     public Set<CompanyGroup> getCompanyGroups() {
         return companyGroups;
     }
@@ -177,28 +177,14 @@ public class SelfAssessment implements Serializable {
         this.companyGroups = companyGroups;
     }
 
-    public Set<ThreatAgent> getThreatagents() {
-        return threatagents;
+    public ImpactMode getImpactMode() {
+        return impactMode;
     }
 
-    public SelfAssessment threatagents(Set<ThreatAgent> threatAgents) {
-        this.threatagents = threatAgents;
-        return this;
+    public void setImpactMode(ImpactMode impactMode) {
+        this.impactMode = impactMode;
     }
 
-    public SelfAssessment addThreatagent(ThreatAgent threatAgent) {
-        this.threatagents.add(threatAgent);
-        return this;
-    }
-
-    public SelfAssessment removeThreatagent(ThreatAgent threatAgent) {
-        this.threatagents.remove(threatAgent);
-        return this;
-    }
-
-    public void setThreatagents(Set<ThreatAgent> threatAgents) {
-        this.threatagents = threatAgents;
-    }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
     @Override

@@ -1,3 +1,20 @@
+/*
+ * Copyright 2019 HERMENEUT Consortium
+ *  
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *  
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
+
 package eu.hermeneut.web.rest;
 
 import eu.hermeneut.HermeneutApp;
@@ -5,7 +22,6 @@ import eu.hermeneut.HermeneutApp;
 import eu.hermeneut.domain.CompanyProfile;
 import eu.hermeneut.repository.CompanyProfileRepository;
 import eu.hermeneut.service.CompanyProfileService;
-import eu.hermeneut.repository.search.CompanyProfileSearchRepository;
 import eu.hermeneut.web.rest.errors.ExceptionTranslator;
 
 import org.junit.Before;
@@ -36,7 +52,7 @@ import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-import eu.hermeneut.domain.enumeration.CompType;
+import eu.hermeneut.domain.enumeration.CompanyType;
 /**
  * Test class for the CompanyProfileResource REST controller.
  *
@@ -58,17 +74,14 @@ public class CompanyProfileResourceIntTest {
     private static final ZonedDateTime DEFAULT_MODIFIED = ZonedDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneOffset.UTC);
     private static final ZonedDateTime UPDATED_MODIFIED = ZonedDateTime.now(ZoneId.systemDefault()).withNano(0);
 
-    private static final CompType DEFAULT_TYPE = CompType.OTHER;
-    private static final CompType UPDATED_TYPE = CompType.FINANCE_AND_INSURANCE;
+    private static final CompanyType DEFAULT_TYPE = CompanyType.OTHER;
+    private static final CompanyType UPDATED_TYPE = CompanyType.FINANCE_AND_INSURANCE;
 
     @Autowired
     private CompanyProfileRepository companyProfileRepository;
 
     @Autowired
     private CompanyProfileService companyProfileService;
-
-    @Autowired
-    private CompanyProfileSearchRepository companyProfileSearchRepository;
 
     @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
@@ -115,7 +128,6 @@ public class CompanyProfileResourceIntTest {
 
     @Before
     public void initTest() {
-        companyProfileSearchRepository.deleteAll();
         companyProfile = createEntity(em);
     }
 
@@ -139,12 +151,6 @@ public class CompanyProfileResourceIntTest {
         assertThat(testCompanyProfile.getCreated()).isEqualTo(DEFAULT_CREATED);
         assertThat(testCompanyProfile.getModified()).isEqualTo(DEFAULT_MODIFIED);
         assertThat(testCompanyProfile.getType()).isEqualTo(DEFAULT_TYPE);
-
-        // Validate the CompanyProfile in Elasticsearch
-        CompanyProfile companyProfileEs = companyProfileSearchRepository.findOne(testCompanyProfile.getId());
-        assertThat(testCompanyProfile.getCreated()).isEqualTo(testCompanyProfile.getCreated());
-        assertThat(testCompanyProfile.getModified()).isEqualTo(testCompanyProfile.getModified());
-        assertThat(companyProfileEs).isEqualToIgnoringGivenFields(testCompanyProfile, "created", "modified");
     }
 
     @Test
@@ -261,12 +267,6 @@ public class CompanyProfileResourceIntTest {
         assertThat(testCompanyProfile.getCreated()).isEqualTo(UPDATED_CREATED);
         assertThat(testCompanyProfile.getModified()).isEqualTo(UPDATED_MODIFIED);
         assertThat(testCompanyProfile.getType()).isEqualTo(UPDATED_TYPE);
-
-        // Validate the CompanyProfile in Elasticsearch
-        CompanyProfile companyProfileEs = companyProfileSearchRepository.findOne(testCompanyProfile.getId());
-        assertThat(testCompanyProfile.getCreated()).isEqualTo(testCompanyProfile.getCreated());
-        assertThat(testCompanyProfile.getModified()).isEqualTo(testCompanyProfile.getModified());
-        assertThat(companyProfileEs).isEqualToIgnoringGivenFields(testCompanyProfile, "created", "modified");
     }
 
     @Test
@@ -300,31 +300,9 @@ public class CompanyProfileResourceIntTest {
             .accept(TestUtil.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk());
 
-        // Validate Elasticsearch is empty
-        boolean companyProfileExistsInEs = companyProfileSearchRepository.exists(companyProfile.getId());
-        assertThat(companyProfileExistsInEs).isFalse();
-
         // Validate the database is empty
         List<CompanyProfile> companyProfileList = companyProfileRepository.findAll();
         assertThat(companyProfileList).hasSize(databaseSizeBeforeDelete - 1);
-    }
-
-    @Test
-    @Transactional
-    public void searchCompanyProfile() throws Exception {
-        // Initialize the database
-        companyProfileService.save(companyProfile);
-
-        // Search the companyProfile
-        restCompanyProfileMockMvc.perform(get("/api/_search/company-profiles?query=id:" + companyProfile.getId()))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(companyProfile.getId().intValue())))
-            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
-            .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION.toString())))
-            .andExpect(jsonPath("$.[*].created").value(hasItem(sameInstant(DEFAULT_CREATED))))
-            .andExpect(jsonPath("$.[*].modified").value(hasItem(sameInstant(DEFAULT_MODIFIED))))
-            .andExpect(jsonPath("$.[*].type").value(hasItem(DEFAULT_TYPE.toString())));
     }
 
     @Test

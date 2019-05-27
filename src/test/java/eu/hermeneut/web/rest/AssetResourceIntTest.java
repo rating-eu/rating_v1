@@ -1,3 +1,20 @@
+/*
+ * Copyright 2019 HERMENEUT Consortium
+ *  
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *  
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
+
 package eu.hermeneut.web.rest;
 
 import eu.hermeneut.HermeneutApp;
@@ -5,7 +22,6 @@ import eu.hermeneut.HermeneutApp;
 import eu.hermeneut.domain.Asset;
 import eu.hermeneut.repository.AssetRepository;
 import eu.hermeneut.service.AssetService;
-import eu.hermeneut.repository.search.AssetSearchRepository;
 import eu.hermeneut.web.rest.errors.ExceptionTranslator;
 
 import org.junit.Before;
@@ -64,9 +80,6 @@ public class AssetResourceIntTest {
     private AssetService assetService;
 
     @Autowired
-    private AssetSearchRepository assetSearchRepository;
-
-    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -110,7 +123,6 @@ public class AssetResourceIntTest {
 
     @Before
     public void initTest() {
-        assetSearchRepository.deleteAll();
         asset = createEntity(em);
     }
 
@@ -133,12 +145,6 @@ public class AssetResourceIntTest {
         assertThat(testAsset.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
         assertThat(testAsset.getCreated()).isEqualTo(DEFAULT_CREATED);
         assertThat(testAsset.getModified()).isEqualTo(DEFAULT_MODIFIED);
-
-        // Validate the Asset in Elasticsearch
-        Asset assetEs = assetSearchRepository.findOne(testAsset.getId());
-        assertThat(testAsset.getCreated()).isEqualTo(testAsset.getCreated());
-        assertThat(testAsset.getModified()).isEqualTo(testAsset.getModified());
-        assertThat(assetEs).isEqualToIgnoringGivenFields(testAsset, "created", "modified");
     }
 
     @Test
@@ -251,12 +257,6 @@ public class AssetResourceIntTest {
         assertThat(testAsset.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
         assertThat(testAsset.getCreated()).isEqualTo(UPDATED_CREATED);
         assertThat(testAsset.getModified()).isEqualTo(UPDATED_MODIFIED);
-
-        // Validate the Asset in Elasticsearch
-        Asset assetEs = assetSearchRepository.findOne(testAsset.getId());
-        assertThat(testAsset.getCreated()).isEqualTo(testAsset.getCreated());
-        assertThat(testAsset.getModified()).isEqualTo(testAsset.getModified());
-        assertThat(assetEs).isEqualToIgnoringGivenFields(testAsset, "created", "modified");
     }
 
     @Test
@@ -290,30 +290,9 @@ public class AssetResourceIntTest {
             .accept(TestUtil.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk());
 
-        // Validate Elasticsearch is empty
-        boolean assetExistsInEs = assetSearchRepository.exists(asset.getId());
-        assertThat(assetExistsInEs).isFalse();
-
         // Validate the database is empty
         List<Asset> assetList = assetRepository.findAll();
         assertThat(assetList).hasSize(databaseSizeBeforeDelete - 1);
-    }
-
-    @Test
-    @Transactional
-    public void searchAsset() throws Exception {
-        // Initialize the database
-        assetService.save(asset);
-
-        // Search the asset
-        restAssetMockMvc.perform(get("/api/_search/assets?query=id:" + asset.getId()))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(asset.getId().intValue())))
-            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
-            .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION.toString())))
-            .andExpect(jsonPath("$.[*].created").value(hasItem(sameInstant(DEFAULT_CREATED))))
-            .andExpect(jsonPath("$.[*].modified").value(hasItem(sameInstant(DEFAULT_MODIFIED))));
     }
 
     @Test

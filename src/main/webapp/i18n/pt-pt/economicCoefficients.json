@@ -5,8 +5,7 @@
             "home": {
                 "title": "Economic Coefficients",
                 "createLabel": "Criar um(a) novo(a) Economic Coefficients",
-                "createOrEditLabel": "Criar ou editar um(a) Economic Coefficients",
-                "search": "Search for Economic Coefficients"
+                "createOrEditLabel": "Criar ou editar um(a) Economic Coefficients"
             },
             "created": "A new Economic Coefficients is created with identifier {{ param }}",
             "updated": "A Economic Coefficients is updated with identifier {{ param }}",

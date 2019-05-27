@@ -1,3 +1,20 @@
+/*
+ * Copyright 2019 HERMENEUT Consortium
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
+
 package eu.hermeneut.service;
 
 import eu.hermeneut.domain.QuestionnaireStatus;
@@ -43,34 +60,18 @@ public interface QuestionnaireStatusService {
      */
     void delete(Long id);
 
-    /**
-     * Search for the questionnaireStatus corresponding to the query.
-     *
-     * @param query the query of the search
-     * @return the list of entities
-     */
-    List<QuestionnaireStatus> search(String query);
+    List<QuestionnaireStatus> findAllByCompanyProfileAndUser(Long companyProfileID, Long userID);
 
-    /**
-     * Get all the questionnaireStatuses by selfAssessment and user
-     *
-     * @param selfAssessmentID
-     * @param userID
-     * @return the list of entities
-     */
-    List<QuestionnaireStatus> findAllBySelfAssessmentAndUser(Long selfAssessmentID, Long userID);
+    List<QuestionnaireStatus> findAllByRoleCompanyProfileAndQuestionnaire(Role role, Long companyProfileID, Long questionnaireID);
 
-    QuestionnaireStatus findByRoleSelfAssessmentAndQuestionnaire(String role, Long selfAssessmentID, Long questionnaireID);
+    List<QuestionnaireStatus> findAllByCompanyProfile(Long companyProfileID);
 
-    /**
-     * Get all the questionnaireStatuses by selfAssessment.
-     *
-     * @param selfAssessmentID
-     * @return the list of entities
-     */
-    List<QuestionnaireStatus> findAllBySelfAssessment(Long selfAssessmentID);
+    List<QuestionnaireStatus> findAllByCompanyProfileAndQuestionnairePurpose(Long companyProfileID, QuestionnairePurpose purpose);
 
-    List<QuestionnaireStatus> findAllBySelfAssessmentAndQuestionnairePurpose(Long selfAssessmentID, QuestionnairePurpose purpose);
+    List<QuestionnaireStatus> findAllByCompanyProfileRoleAndQuestionnairePurpose(Long companyProfileID, Role role, QuestionnairePurpose purpose);
 
-    QuestionnaireStatus findBySelfAssessmentRoleAndQuestionnairePurpose(Long selfAssessmentID, Role role, QuestionnairePurpose purpose);
+    List<QuestionnaireStatus> findAllByCompanyProfileQuestionnairePurposeAndUser(Long companyProfileID, QuestionnairePurpose questionnairePurpose, Long userID);
+
+    List<QuestionnaireStatus> findAllByCurrentUserAndQuestionnairePurpose(QuestionnairePurpose questionnairePurpose);
+
 }

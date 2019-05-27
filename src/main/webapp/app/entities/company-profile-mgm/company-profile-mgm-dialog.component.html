@@ -1,9 +1,28 @@
+<!--
+  ~ Copyright 2019 HERMENEUT Consortium
+  ~  
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~  
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~  
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  ~
+  -->
+
 <form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
 
     <div class="modal-header">
-        <h4 class="modal-title" id="myCompanyProfileLabel" jhiTranslate="hermeneutApp.companyProfile.home.createOrEditLabel">Create or edit a Company Profile</h4>
+        <h4 class="modal-title" id="myCompanyProfileLabel"
+            jhiTranslate="hermeneutApp.companyProfile.home.createOrEditLabel">Create or edit a Company Profile</h4>
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
-                (click)="clear()">&times;</button>
+                (click)="clear()">&times;
+        </button>
     </div>
     <div class="modal-body">
         <jhi-alert-error></jhi-alert-error>
@@ -13,63 +32,78 @@
                    [(ngModel)]="companyProfile.id" readonly />
         </div>-->
         <div class="form-group">
-            <label class="form-control-label" jhiTranslate="hermeneutApp.companyProfile.name" for="field_name">Name</label>
+            <label class="form-control-label" jhiTranslate="hermeneutApp.companyProfile.name"
+                   for="field_name">Name</label>
             <input type="text" class="form-control" name="name" id="field_name"
-                [(ngModel)]="companyProfile.name" required/>
+                   [(ngModel)]="companyProfile.name" required/>
             <div [hidden]="!(editForm.controls.name?.dirty && editForm.controls.name?.invalid)">
                 <small class="form-text text-danger"
-                   [hidden]="!editForm.controls.name?.errors?.required" jhiTranslate="entity.validation.required">
-                   This field is required.
+                       [hidden]="!editForm.controls.name?.errors?.required" jhiTranslate="entity.validation.required">
+                    This field is required.
                 </small>
             </div>
         </div>
         <div class="form-group">
-            <label class="form-control-label" jhiTranslate="hermeneutApp.companyProfile.description" for="field_description">Description</label>
+            <label class="form-control-label" jhiTranslate="hermeneutApp.companyProfile.description"
+                   for="field_description">Description</label>
             <input type="text" class="form-control" name="description" id="field_description"
-                [(ngModel)]="companyProfile.description" maxlength="2000"/>
+                   [(ngModel)]="companyProfile.description" maxlength="2000"/>
             <div [hidden]="!(editForm.controls.description?.dirty && editForm.controls.description?.invalid)">
                 <small class="form-text text-danger"
-                   [hidden]="!editForm.controls.description?.errors?.maxlength" jhiTranslate="entity.validation.maxlength" translateValues="{ max: 2000 }">
-                   This field cannot be longer than 2000 characters.
+                       [hidden]="!editForm.controls.description?.errors?.maxlength"
+                       jhiTranslate="entity.validation.maxlength" translateValues="{ max: 2000 }">
+                    This field cannot be longer than 2000 characters.
                 </small>
             </div>
         </div>
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="hermeneutApp.companyProfile.created" for="field_created">Created</label>
             <div class="d-flex">
-                <input id="field_created" type="datetime-local" class="form-control" name="created" [(ngModel)]="companyProfile.created"
+                <input id="field_created" type="datetime-local" class="form-control" name="created"
+                       [(ngModel)]="companyProfile.created"
                 />
             </div>
         </div>
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="hermeneutApp.companyProfile.modified" for="field_modified">Modified</label>
             <div class="d-flex">
-                <input id="field_modified" type="datetime-local" class="form-control" name="modified" [(ngModel)]="companyProfile.modified"
+                <input id="field_modified" type="datetime-local" class="form-control" name="modified"
+                       [(ngModel)]="companyProfile.modified"
                 />
             </div>
         </div>
         <div class="form-group">
-            <label class="form-control-label" jhiTranslate="hermeneutApp.companyProfile.type" for="field_type">Type</label>
-            <select class="form-control" name="type" [(ngModel)]="companyProfile.type" id="field_type" >
-                <option value="OTHER">{{'hermeneutApp.CompType.OTHER' | translate}}</option>
-                <option value="FINANCE_AND_INSURANCE">{{'hermeneutApp.CompType.FINANCE_AND_INSURANCE' | translate}}</option>
-                <option value="HEALTH_CARE_AND_SOCIAL_ASSISTANCE">{{'hermeneutApp.CompType.HEALTH_CARE_AND_SOCIAL_ASSISTANCE' | translate}}</option>
-                <option value="INFORMATION">{{'hermeneutApp.CompType.INFORMATION' | translate}}</option>
-                <option value="PROFESSIONAL_SCIENTIFIC_AND_TECHNICAL_SERVICE">{{'hermeneutApp.CompType.PROFESSIONAL_SCIENTIFIC_AND_TECHNICAL_SERVICE' | translate}}</option>
+            <label class="form-control-label" jhiTranslate="hermeneutApp.companyProfile.type"
+                   for="field_type">Type</label>
+            <select class="form-control" name="type" [(ngModel)]="companyProfile.type" id="field_type">
+                <option [value]="companyTypeEnum.OTHER">{{companyTypeEnum.OTHER}}</option>
+                <option
+                    [value]="companyTypeEnum.FINANCE_AND_INSURANCE">{{companyTypeEnum.FINANCE_AND_INSURANCE}}</option>
+                <option
+                    [value]="companyTypeEnum.PROFESSIONAL_SCIENTIFIC_AND_TECHNICAL_SERVICE">{{companyTypeEnum.PROFESSIONAL_SCIENTIFIC_AND_TECHNICAL_SERVICE}}</option>
+                <option [value]="companyTypeEnum.INFORMATION">{{companyTypeEnum.INFORMATION}}</option>
+                <option
+                    [value]="companyTypeEnum.HEALTH_CARE_AND_SOCIAL_ASSISTANCE">{{companyTypeEnum.HEALTH_CARE_AND_SOCIAL_ASSISTANCE}}</option>
+                <option
+                    [value]="companyTypeEnum.LOCAL_PUBLIC_ADMINISTRATION">{{companyTypeEnum.LOCAL_PUBLIC_ADMINISTRATION}}</option>
             </select>
         </div>
 
         <div class="form-group">
-            <label class="form-control-label" jhiTranslate="hermeneutApp.companyProfile.user" for="field_user">User</label>
-            <select class="form-control" id="field_user" name="user" [(ngModel)]="companyProfile.user" >
+            <label class="form-control-label" jhiTranslate="hermeneutApp.companyProfile.user"
+                   for="field_user">User</label>
+            <select class="form-control" id="field_user" name="user" [(ngModel)]="companyProfile.user">
                 <option [ngValue]="null"></option>
-                <option [ngValue]="userOption.id === companyProfile.user?.id ? companyProfile.user : userOption" *ngFor="let userOption of users; trackBy: trackUserById">{{userOption.login}}</option>
+                <option [ngValue]="userOption.id === companyProfile.user?.id ? companyProfile.user : userOption"
+                        *ngFor="let userOption of users; trackBy: trackUserById">{{userOption.login}}</option>
             </select>
         </div>
         <div class="form-group">
             <label jhiTranslate="hermeneutApp.companyProfile.containers" for="field_containers">Containers</label>
-            <select class="form-control" id="field_containers" multiple name="containers" [(ngModel)]="companyProfile.containers">
-                <option [ngValue]="getSelected(companyProfile.containers, containerOption)" *ngFor="let containerOption of containers; trackBy: trackContainerById">{{containerOption.name}}</option>
+            <select class="form-control" id="field_containers" multiple name="containers"
+                    [(ngModel)]="companyProfile.containers">
+                <option [ngValue]="getSelected(companyProfile.containers, containerOption)"
+                        *ngFor="let containerOption of containers; trackBy: trackContainerById">{{containerOption.name}}</option>
             </select>
         </div>
     </div>

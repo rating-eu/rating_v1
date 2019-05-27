@@ -1,15 +1,33 @@
+/*
+ * Copyright 2019 HERMENEUT Consortium
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
+
 package eu.hermeneut.service.impl.compact;
 
 import eu.hermeneut.constant.MaxValues;
 import eu.hermeneut.domain.*;
 import eu.hermeneut.domain.attackmap.AugmentedAttackStrategy;
-import eu.hermeneut.domain.compact.AssetRisk;
+import eu.hermeneut.domain.compact.input.AssetRisk;
 import eu.hermeneut.exceptions.NotFoundException;
 import eu.hermeneut.service.AttackStrategyService;
 import eu.hermeneut.service.MyAssetService;
 import eu.hermeneut.service.SelfAssessmentService;
 import eu.hermeneut.service.attackmap.AugmentedAttackStrategyService;
 import eu.hermeneut.service.compact.AssetRiskService;
+import eu.hermeneut.service.result.ResultService;
 import eu.hermeneut.utils.attackstrategy.ThreatAttackFilter;
 import eu.hermeneut.utils.threatagent.ThreatAgentComparator;
 import eu.hermeneut.utils.tuple.Triad;
@@ -37,6 +55,9 @@ public class AssetRiskServiceImpl implements AssetRiskService, MaxValues {
     @Autowired
     private AttackStrategyService attackStrategyService;
 
+    @Autowired
+    private ResultService resultService;
+
     @Override
     public Set<AssetRisk> getAssetRisks(Long selfAssessmentID) throws NotFoundException {
         if (selfAssessmentID == null) {
@@ -49,7 +70,13 @@ public class AssetRiskServiceImpl implements AssetRiskService, MaxValues {
             throw new NotFoundException("SelfAssessment with ID = " + selfAssessmentID + " could NOT be FOUND.");
         }
 
-        Set<ThreatAgent> threatAgents = selfAssessment.getThreatagents();
+        CompanyProfile companyProfile = selfAssessment.getCompanyProfile();
+
+        if (companyProfile == null) {
+            throw new NotFoundException("CompanyProfile of SelfAssessment NOT FOUND.");
+        }
+
+        Set<ThreatAgent> threatAgents = this.resultService.getThreatAgents(companyProfile.getId());
 
         if (threatAgents == null || threatAgents.isEmpty()) {
             throw new NotFoundException("ThreatAgent for SelfAssessment with ID = " + selfAssessmentID + " could NOT be FOUND.");
@@ -66,9 +93,9 @@ public class AssetRiskServiceImpl implements AssetRiskService, MaxValues {
             throw new NotFoundException("MyAssets for SelfAssessment with ID = " + selfAssessmentID + " could NOT be FOUND.");
         }
 
-        Map<Long, AugmentedAttackStrategy> augmentedAttackStrategyMap = this.augmentedAttackStrategyService.getAugmentedAttackStrategyMap(selfAssessmentID);
+        Map<Long, AugmentedAttackStrategy> augmentedAttackStrategyMap = this.augmentedAttackStrategyService.getAugmentedAttackStrategyMap(selfAssessment.getCompanyProfile().getId());
 
-        //Keep only the attackstrategies that can be performed by the Strongest ThreatAgent
+        //Keep only the attackStrategies that can be performed by the Strongest ThreatAgent
         augmentedAttackStrategyMap = augmentedAttackStrategyMap.values()
             .stream()
             .filter(attackStrategy -> ThreatAttackFilter.isAttackPossible(strongestThreatAgent, attackStrategy))
@@ -84,49 +111,54 @@ public class AssetRiskServiceImpl implements AssetRiskService, MaxValues {
             int impact = myAsset.getImpact() != null ? myAsset.getImpact() : 0;
             float critical = 0;
 
-            final Set<Container> containers = myAsset.getAsset().getContainers() != null ? myAsset.getAsset().getContainers() : new HashSet<>();
-            final Set<DomainOfInfluence> domainsOfInfluence = myAsset.getAsset().getDomainsOfInfluences() != null ? myAsset.getAsset().getDomainsOfInfluences() : new HashSet<>();
+            Map<Long, Container> containerMap = this.getContainerMap(myAsset);
 
-            Map<Long, Container> containerMap = new HashMap<>();
+            //For each container
+            Triad<Float> likelihoodVulnerabilityCriticality = this.getMaxLikelihoodVulnerabilityCriticality(augmentedAttackStrategyMap, containerMap);
 
-            containers.stream().parallel().forEach(container -> {
-                containerMap.put(container.getId(), container);
-            });
+            critical = likelihoodVulnerabilityCriticality.getC();
 
-            domainsOfInfluence.stream().parallel().forEach(domainOfInfluence -> {
-                containerMap.put(domainOfInfluence.getContainer().getId(), domainOfInfluence.getContainer());
-            });
+            float risk = critical * impact;
+            risk = risk / MAX_RISK;
 
-            if (containerMap.isEmpty()) {
-                throw new NotFoundException("Containers NOT Found!!!");
-            }
+            AssetRisk assetRisk = new AssetRisk();
 
-            if (containerMap != null && !containerMap.isEmpty()) {
-                //For each container
-                critical = getLikelihoodVulnerabilityCritical(augmentedAttackStrategyMap, containerMap).getC();
+            assetRisk.setId(myAsset.getAsset().getId());
+            assetRisk.setName(myAsset.getAsset().getName());
+            assetRisk.setDescription(myAsset.getAsset().getDescription());
+            assetRisk.setAssetCategory(myAsset.getAsset().getAssetcategory());
 
-                float risk = critical * impact;
-                risk = risk / MAX_RISK;
+            assetRisk.setRisk(risk);
 
-                AssetRisk assetRisk = new AssetRisk();
-
-                assetRisk.setId(myAsset.getAsset().getId());
-                assetRisk.setName(myAsset.getAsset().getName());
-                assetRisk.setDescription(myAsset.getAsset().getDescription());
-                assetRisk.setAssetCategory(myAsset.getAsset().getAssetcategory());
-
-                assetRisk.setRisk(risk);
-
-                assetRisks.add(assetRisk);
-            }
+            assetRisks.add(assetRisk);
         }
 
         return assetRisks;
     }
 
-    public Triad<Float> getLikelihoodVulnerabilityCritical(Map<Long, AugmentedAttackStrategy> augmentedAttackStrategyMap, Map<Long, Container> containers) {
+    public Map<Long, Container> getContainerMap(MyAsset myAsset) throws NotFoundException {
+        final Set<Container> containers = myAsset.getAsset().getContainers() != null ? myAsset.getAsset().getContainers() : new HashSet<>();
+        final Set<DomainOfInfluence> domainsOfInfluence = myAsset.getAsset().getDomainsOfInfluences() != null ? myAsset.getAsset().getDomainsOfInfluences() : new HashSet<>();
+
+        Map<Long, Container> containerMap = new HashMap<>();
+
+        containers.stream().parallel().forEach(container -> {
+            containerMap.put(container.getId(), container);
+        });
+
+        domainsOfInfluence.stream().parallel().forEach(domainOfInfluence -> {
+            containerMap.put(domainOfInfluence.getContainer().getId(), domainOfInfluence.getContainer());
+        });
+
+        if (containerMap.isEmpty()) {
+            throw new NotFoundException("Containers NOT Found!!!");
+        }
+        return containerMap;
+    }
+
+    public Triad<Float> getMaxLikelihoodVulnerabilityCriticality(Map<Long, AugmentedAttackStrategy> augmentedAttackStrategyMap, Map<Long, Container> containers) {
         //(Likelihood, Vulnerability, Critical)
-        Triad<Float> likelihoodVulnerabilityCritical = new Triad<>(0F, 0F, 0F);
+        Triad<Float> likelihoodVulnerabilityCriticality = new Triad<>(0F, 0F, 0F);
 
         for (Container container : containers.values()) {
             List<AttackStrategy> attackStrategies = this.attackStrategyService.findAllByContainer(container.getId());
@@ -138,7 +170,7 @@ public class AssetRiskServiceImpl implements AssetRiskService, MaxValues {
                 if (augmentedAttackStrategy != null) {
                     float currentLikelihood = 0;
                     float currentVulnerability = 0;
-                    float currentCritical = 0;
+                    float currentCriticality = 0;
 
                     float refinedVulnerability = augmentedAttackStrategy.getRefinedVulnerability();
                     float refinedLikelihood = augmentedAttackStrategy.getRefinedLikelihood();
@@ -151,31 +183,31 @@ public class AssetRiskServiceImpl implements AssetRiskService, MaxValues {
                     if (refinedLikelihood > 0 && refinedVulnerability > 0) {
                         currentLikelihood = refinedLikelihood;
                         currentVulnerability = refinedVulnerability;
-                        currentCritical = refinedLikelihood * refinedVulnerability;
+                        currentCriticality = refinedLikelihood * refinedVulnerability;
                     } else if (contextualLikelihood > 0 && contextualVulnerability > 0) {
                         currentLikelihood = contextualLikelihood;
                         currentVulnerability = contextualVulnerability;
-                        currentCritical = contextualLikelihood * contextualVulnerability;
+                        currentCriticality = contextualLikelihood * contextualVulnerability;
                     } else if (initialLikelihood > 0) {
                         currentLikelihood = initialLikelihood;
                         currentVulnerability = initialLikelihood;
-                        currentCritical = initialLikelihood * initialLikelihood;
+                        currentCriticality = initialLikelihood * initialLikelihood;
                     }
 
-                    if (currentLikelihood > likelihoodVulnerabilityCritical.getA()
+                    if (currentLikelihood > likelihoodVulnerabilityCriticality.getA()
                         &&
-                        currentVulnerability > likelihoodVulnerabilityCritical.getB()
+                        currentVulnerability > likelihoodVulnerabilityCriticality.getB()
                         &&
-                        currentCritical > likelihoodVulnerabilityCritical.getC()) {
+                        currentCriticality > likelihoodVulnerabilityCriticality.getC()) {
 
-                        likelihoodVulnerabilityCritical.setA(currentLikelihood);
-                        likelihoodVulnerabilityCritical.setB(currentVulnerability);
-                        likelihoodVulnerabilityCritical.setC(currentCritical);
+                        likelihoodVulnerabilityCriticality.setA(currentLikelihood);
+                        likelihoodVulnerabilityCriticality.setB(currentVulnerability);
+                        likelihoodVulnerabilityCriticality.setC(currentCriticality);
                     }
                 }
             }
         }
 
-        return likelihoodVulnerabilityCritical;
+        return likelihoodVulnerabilityCriticality;
     }
 }

@@ -1,3 +1,20 @@
+/*
+ * Copyright 2019 HERMENEUT Consortium
+ *  
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *  
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
+
 package eu.hermeneut.service.impl;
 
 import eu.hermeneut.domain.SelfAssessment;
@@ -6,7 +23,6 @@ import eu.hermeneut.exceptions.NotFoundException;
 import eu.hermeneut.service.AttackCostParamService;
 import eu.hermeneut.domain.AttackCostParam;
 import eu.hermeneut.repository.AttackCostParamRepository;
-import eu.hermeneut.repository.search.AttackCostParamSearchRepository;
 import eu.hermeneut.service.SelfAssessmentService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,9 +35,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
-
-import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
  * Service Implementation for managing AttackCostParam.
@@ -38,14 +51,11 @@ public class AttackCostParamServiceImpl implements AttackCostParamService {
 
     private final AttackCostParamRepository attackCostParamRepository;
 
-    private final AttackCostParamSearchRepository attackCostParamSearchRepository;
-
     @Autowired
     private SelfAssessmentService selfAssessmentService;
 
-    public AttackCostParamServiceImpl(AttackCostParamRepository attackCostParamRepository, AttackCostParamSearchRepository attackCostParamSearchRepository) {
+    public AttackCostParamServiceImpl(AttackCostParamRepository attackCostParamRepository) {
         this.attackCostParamRepository = attackCostParamRepository;
-        this.attackCostParamSearchRepository = attackCostParamSearchRepository;
     }
 
     /**
@@ -58,7 +68,6 @@ public class AttackCostParamServiceImpl implements AttackCostParamService {
     public AttackCostParam save(AttackCostParam attackCostParam) {
         log.debug("Request to save AttackCostParam : {}", attackCostParam);
         AttackCostParam result = attackCostParamRepository.save(attackCostParam);
-        attackCostParamSearchRepository.save(result);
         return result;
     }
 
@@ -139,21 +148,5 @@ public class AttackCostParamServiceImpl implements AttackCostParamService {
     public void delete(Long id) {
         log.debug("Request to delete AttackCostParam : {}", id);
         attackCostParamRepository.delete(id);
-        attackCostParamSearchRepository.delete(id);
-    }
-
-    /**
-     * Search for the attackCostParam corresponding to the query.
-     *
-     * @param query the query of the search
-     * @return the list of entities
-     */
-    @Override
-    @Transactional(readOnly = true)
-    public List<AttackCostParam> search(String query) {
-        log.debug("Request to search AttackCostParams for query {}", query);
-        return StreamSupport
-            .stream(attackCostParamSearchRepository.search(queryStringQuery(query)).spliterator(), false)
-            .collect(Collectors.toList());
     }
 }

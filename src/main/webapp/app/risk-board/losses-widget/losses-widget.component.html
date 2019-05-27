@@ -1,0 +1,103 @@
+<!--
+  ~ Copyright 2019 HERMENEUT Consortium
+  ~  
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~  
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~  
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  ~
+  -->
+
+<ng-container *ngIf="loading">
+    <div class="loader"></div>
+</ng-container>
+<ng-container *ngIf="!loading">
+    <div class="x_panel" style="padding:0px !important;">
+        <div class="x_title" style="padding:0px !important;">
+            <h2 style="padding: 10px;"><a href="javascript:void(0)" class="collapse-link"
+                                          (click)="isCollapsed = !isCollapsed">Simulation Losses</a> (
+                <ng-container *ngIf="lossesPercentage">{{lossesPercentage | percent:'1.0-2'}}</ng-container>
+                <ng-container *ngIf="!lossesPercentage">-</ng-container>
+                )
+            </h2>
+            <ul class="nav navbar-right panel_toolbox">
+                <li style="width: 24px; cursor: default"></li>
+                <li style="width: 24px; cursor: default"></li>
+                <li>
+                    <a [routerLink]="['/impact-evaluation']">
+                        <i class="fa fa-link fa-lg" aria-hidden="true"></i>
+                    </a>
+                </li>
+            </ul>
+            <div class="clearfix"></div>
+        </div>
+        <div class="table-responsive x_content" style="padding:0px !important;" [ngbCollapse]="isCollapsed">
+            <div *ngIf="tableInfo" class="table-responsive table-hover-no-pointer">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th width="50%">Category
+                            <i *ngIf="!orderBy.category" (click)=" tableOrderBy('category', true)" class="fa fa-sort"
+                               aria-hidden="true"></i>
+                            <i *ngIf="orderBy.category && orderBy.type === 'desc'"
+                               (click)=" tableOrderBy('category', false)"
+                               class="fa fa-chevron-down" aria-hidden="true"></i>
+                            <i *ngIf="orderBy.category && orderBy.type === 'asc'"
+                               (click)=" tableOrderBy('category', true)"
+                               class="fa fa-chevron-up" aria-hidden="true"></i>
+                        </th>
+                        <th>Value
+                            <i *ngIf="!orderBy.value" (click)=" tableOrderBy('value', true)" class="fa fa-sort"
+                               aria-hidden="true"></i>
+                            <i *ngIf="orderBy.value && orderBy.type === 'desc'" (click)=" tableOrderBy('value', false)"
+                               class="fa fa-chevron-down" aria-hidden="true"></i>
+                            <i *ngIf="orderBy.value && orderBy.type === 'asc'" (click)=" tableOrderBy('value', true)"
+                               class="fa fa-chevron-up" aria-hidden="true"></i>
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <ng-container *ngFor="let item of tableInfo">
+                        <tr>
+                            <td><a href="javascript:void(0)"
+                                   (click)="setAssetCategory(item.type)">{{item.splitting}}</a></td>
+                            <td *ngIf="item.value">{{item.value | compactNumber | currency:'EUR':'symbol':'1.0-2'}}{{item.value | compactSuffix}}</td>
+                            <td *ngIf="!item.value">-</td>
+                        </tr>
+                        <ng-container *ngIf="selectedCategory">
+                            <tr *ngIf="selectedCategory === item.type">
+                                <td colspan="2">
+                                    <table class="table table-striped">
+                                        <thead>
+                                        <tr>
+                                            <th width="50%">Asset</th>
+                                            <th>Value</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr *ngFor="let asset of assetsBySelectedCategory">
+                                            <td>{{asset.asset.name}}</td>
+                                            <td>{{asset.lossValue | compactNumber | currency:'EUR':'symbol':'1.0-2'}}{{asset.lossValue | compactSuffix}}</td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </td>
+                            </tr>
+                        </ng-container>
+                    </ng-container>
+                    </tbody>
+                </table>
+            </div>
+            <div *ngIf="!tableInfo" class="text-center">
+                No Assets counted or impact evaluation step is not completed
+            </div>
+        </div>
+    </div>
+</ng-container>

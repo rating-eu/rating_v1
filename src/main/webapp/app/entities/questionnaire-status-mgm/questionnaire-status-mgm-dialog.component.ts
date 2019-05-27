@@ -1,3 +1,20 @@
+/*
+ * Copyright 2019 HERMENEUT Consortium
+ *  
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *  
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
+
 import {Component, OnInit, OnDestroy} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {HttpResponse, HttpErrorResponse} from '@angular/common/http';
@@ -9,10 +26,10 @@ import {JhiEventManager, JhiAlertService} from 'ng-jhipster';
 import {QuestionnaireStatusMgm} from './questionnaire-status-mgm.model';
 import {QuestionnaireStatusMgmPopupService} from './questionnaire-status-mgm-popup.service';
 import {QuestionnaireStatusMgmService} from './questionnaire-status-mgm.service';
-import {SelfAssessmentMgm, SelfAssessmentMgmService} from '../self-assessment-mgm';
 import {QuestionnaireMgm, QuestionnaireMgmService} from '../questionnaire-mgm';
 import {User, UserService} from '../../shared';
 import {PopUpService} from '../../shared/pop-up-services/pop-up.service';
+import {CompanyProfileMgm, CompanyProfileMgmService} from "../company-profile-mgm";
 
 @Component({
     selector: 'jhi-questionnaire-status-mgm-dialog',
@@ -23,7 +40,7 @@ export class QuestionnaireStatusMgmDialogComponent implements OnInit {
     questionnaireStatus: QuestionnaireStatusMgm;
     isSaving: boolean;
 
-    selfassessments: SelfAssessmentMgm[];
+    companyProfiles: CompanyProfileMgm[];
 
     questionnaires: QuestionnaireMgm[];
 
@@ -33,7 +50,7 @@ export class QuestionnaireStatusMgmDialogComponent implements OnInit {
         public activeModal: NgbActiveModal,
         private jhiAlertService: JhiAlertService,
         private questionnaireStatusService: QuestionnaireStatusMgmService,
-        private selfAssessmentService: SelfAssessmentMgmService,
+        private companyProfileService: CompanyProfileMgmService,
         private questionnaireService: QuestionnaireMgmService,
         private userService: UserService,
         private eventManager: JhiEventManager
@@ -42,16 +59,16 @@ export class QuestionnaireStatusMgmDialogComponent implements OnInit {
 
     ngOnInit() {
         this.isSaving = false;
-        this.selfAssessmentService
+        this.companyProfileService
             .query({filter: 'questionnairestatus-is-null'})
-            .subscribe((res: HttpResponse<SelfAssessmentMgm[]>) => {
-                if (!this.questionnaireStatus.selfAssessment || !this.questionnaireStatus.selfAssessment.id) {
-                    this.selfassessments = res.body;
+            .subscribe((res: HttpResponse<CompanyProfileMgm[]>) => {
+                if (!this.questionnaireStatus.companyProfile || !this.questionnaireStatus.companyProfile.id) {
+                    this.companyProfiles = res.body;
                 } else {
-                    this.selfAssessmentService
-                        .find(this.questionnaireStatus.selfAssessment.id)
-                        .subscribe((subRes: HttpResponse<SelfAssessmentMgm>) => {
-                            this.selfassessments = [subRes.body].concat(res.body);
+                    this.companyProfileService
+                        .find(this.questionnaireStatus.companyProfile.id)
+                        .subscribe((subRes: HttpResponse<CompanyProfileMgm>) => {
+                            this.companyProfiles = [subRes.body].concat(res.body);
                         }, (subRes: HttpErrorResponse) => this.onError(subRes.message));
                 }
             }, (res: HttpErrorResponse) => this.onError(res.message));
@@ -108,7 +125,7 @@ export class QuestionnaireStatusMgmDialogComponent implements OnInit {
         this.jhiAlertService.error(error.message, null, null);
     }
 
-    trackSelfAssessmentById(index: number, item: SelfAssessmentMgm) {
+    trackCompanyProfileById(index: number, item: CompanyProfileMgm) {
         return item.id;
     }
 

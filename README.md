@@ -1,17 +1,3 @@
-0. check DB connections
-1.jdl import
-2. create ROLE_AUDIT from DB control panel
-3. set auth permission in serviceImpl classes: CompanyProfile - CompanySector - External audit - Self Assessment
-
-
-https://stackoverflow.com/questions/46587247/adding-new-route-to-jhipster-using-angular-4
-
-
-to add service:
-Resource -> service .> repository -> service impl
-https://github.com/izio7/wp2-hermeneut/commit/c7ea2f9efd73786a9ca2edde6b9c3a59654452aa
-
-
 # hermeneut
 This application was generated using JHipster 4.14.5, you can find documentation and help at [http://www.jhipster.tech/documentation-archive/v4.14.5](http://www.jhipster.tech/documentation-archive/v4.14.5).
 

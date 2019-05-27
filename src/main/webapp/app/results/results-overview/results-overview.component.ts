@@ -1,16 +1,36 @@
-import { Component, OnInit } from '@angular/core';
-import { SelfAssessmentMgm, SelfAssessmentMgmService } from '../../entities/self-assessment-mgm';
-import { ResultsService } from '../results.service';
-import { Result } from '../models/result.model';
-import { HttpResponse } from '@angular/common/http';
-import { ThreatAgentLikelihoods } from '../../utils/threatagent.likelihoods.class';
-import { ThreatAgentMgm } from '../../entities/threat-agent-mgm';
-import { Observable } from 'rxjs/Observable';
-import { SelfAssessmentOverview } from '../../my-self-assessments/models/SelfAssessmentOverview.model';
-import { AugmentedMyAsset } from '../../my-self-assessments/models/AugmentedMyAsset.model';
-import { AugmentedAttackStrategy } from '../../evaluate-weakness/models/augmented-attack-strategy.model';
-import { Couple } from '../../utils/couple.class';
+/*
+ * Copyright 2019 HERMENEUT Consortium
+ *  
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *  
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
+
+import {Component, OnInit} from '@angular/core';
+import {SelfAssessmentMgm, SelfAssessmentMgmService} from '../../entities/self-assessment-mgm';
+import {ResultsService} from '../results.service';
+import {Result} from '../models/result.model';
+import {HttpResponse} from '@angular/common/http';
+import {ThreatAgentLikelihoods} from '../../utils/threatagent.likelihoods.class';
+import {ThreatAgentMgm, ThreatAgentMgmService} from '../../entities/threat-agent-mgm';
+import {Observable} from 'rxjs/Observable';
+import {SelfAssessmentOverview} from "../../my-risk-assessments/models/SelfAssessmentOverview.model";
+import {AugmentedMyAsset} from "../../my-risk-assessments/models/AugmentedMyAsset.model";
+import {AugmentedAttackStrategy} from '../../evaluate-weakness/models/augmented-attack-strategy.model';
+import {Couple} from '../../utils/couple.class';
 import * as _ from 'lodash';
+import {DatasharingService} from "../../datasharing/datasharing.service";
+import {MyCompanyMgm} from "../../entities/my-company-mgm";
+import {forkJoin} from "rxjs/observable/forkJoin";
 
 interface OrderBy {
     asset: boolean;
@@ -37,8 +57,13 @@ export class ResultsOverviewComponent implements OnInit {
     public selectedAttacks: AugmentedAttackStrategy[];
     public loading = false;
     public loadingAttacksTable = false;
+
     selfAssessment: SelfAssessmentMgm;
+    myCompany: MyCompanyMgm;
+
     threatAgents: ThreatAgentMgm[];
+    threatAgents$: Observable<HttpResponse<ThreatAgentMgm[]>>;
+
     threatAgentsMap: Map<number, ThreatAgentMgm>;
 
     result: Result;
@@ -62,7 +87,9 @@ export class ResultsOverviewComponent implements OnInit {
     public orderTangibleBy: OrderBy;
 
     constructor(private selfAssessmentService: SelfAssessmentMgmService,
-        private resultService: ResultsService) {
+                private resultService: ResultsService,
+                private dataSharingService: DatasharingService,
+                private threatAgentService: ThreatAgentMgmService) {
     }
 
     ngOnInit() {
@@ -75,22 +102,31 @@ export class ResultsOverviewComponent implements OnInit {
             asset: false,
             type: 'desc'
         };
-        this.selfAssessment = this.selfAssessmentService.getSelfAssessment();
-        this.threatAgents = this.selfAssessment.threatagents;
-        this.threatAgentsMap = new Map<number, ThreatAgentMgm>();
-        this.threatAgents.forEach((value: ThreatAgentMgm) => {
-            this.threatAgentsMap.set(value.id, value);
-        });
+
+        this.selfAssessment = this.dataSharingService.selfAssessment;
+        this.myCompany = this.dataSharingService.myCompany;
 
         this.threatAgentLikelihoodsMap = new Map<number/*ThreatAgentID*/, ThreatAgentLikelihoods>();
 
         this.maxLikelihood$ = this.resultService.getMax();
+        this.threatAgents$ = this.threatAgentService.getThreatAgentsByCompany(this.myCompany.id);
 
-        this.result$ = this.maxLikelihood$.mergeMap(
-            (value: number) => {
-                this.maxLikelihood = value;
+        const join$: Observable<[number, HttpResponse<ThreatAgentMgm[]>]> = forkJoin(this.maxLikelihood$, this.threatAgents$);
 
-                return this.resultService.getResult(this.selfAssessment.id);
+        this.result$ = join$.mergeMap(
+            (value: [number, HttpResponse<ThreatAgentMgm[]>]) => {
+                this.maxLikelihood = value[0];
+                this.threatAgents = value[1].body;
+
+                this.threatAgentsMap = new Map<number, ThreatAgentMgm>();
+
+                if (this.threatAgents) {
+                    this.threatAgents.forEach((value: ThreatAgentMgm) => {
+                        this.threatAgentsMap.set(value.id, value);
+                    });
+                }
+
+                return this.resultService.getResult(this.myCompany.companyProfile.id);
             }
         );
 
@@ -273,6 +309,7 @@ export class ResultsOverviewComponent implements OnInit {
             this.orderIntangibleBy.type = 'desc';
         }
     }
+
     public tableOrderBy(orderColumn: string, category: string, desc: boolean) {
         if (category === 'TANGIBLE') {
             this.resetOrder('TANGIBLE');

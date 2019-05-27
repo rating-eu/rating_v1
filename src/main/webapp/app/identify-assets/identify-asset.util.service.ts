@@ -1,3 +1,20 @@
+/*
+ * Copyright 2019 HERMENEUT Consortium
+ *  
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *  
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
+
 import { MyAssetMgm } from './../entities/my-asset-mgm/my-asset-mgm.model';
 import * as _ from 'lodash';
 
@@ -23,23 +40,12 @@ export class IdentifyAssetUtilService {
     private myIndirectAssets: IndirectAssetMgm[];
     private myAnswerLinkedMap: any[];
 
-    private myAssetIndex = 1;
-    private myDirectAssetIndex = 1;
-    private myIndirectAssetIndex = 1;
-
-    private subscriptorForMyAsset: Subject<MyAssetMgm[]> = new Subject<MyAssetMgm[]>();
-    private subscriptorForDirectAssets: Subject<DirectAssetMgm[]> = new Subject<DirectAssetMgm[]>();
-    private subscriptorForIndirectAssets: Subject<IndirectAssetMgm[]> = new Subject<IndirectAssetMgm[]>();
-    private subscriptorForAnswersComplited: Subject<MyAnswerMgm[]> = new Subject<MyAnswerMgm[]>();
-    private subscriptorForIndirectMap: Subject<any> = new Subject<any>();
-
     private assetServiceUrl = SERVER_API_URL + 'api/my-assets/self-assessment/';
     private directUrl = SERVER_API_URL + 'api/{selfAssessmentID}/direct-assets';
     private indirectUrl = SERVER_API_URL + 'api/{selfAssessmentID}/indirect-assets';
     private allAsset = SERVER_API_URL + 'api/assets';
     private updateAssetUri = SERVER_API_URL + 'api/my-assets';
     private updateDirectAssetUri = SERVER_API_URL + '/api/direct-assets';
-    private updateIndirectAssetUri = SERVER_API_URL + 'api/indirect-assets';
     private createMyAssets = SERVER_API_URL + 'api/{selfAssessmentID}/my-assets/all';
     private allAttackCost = SERVER_API_URL + 'api/attack-costs';
 

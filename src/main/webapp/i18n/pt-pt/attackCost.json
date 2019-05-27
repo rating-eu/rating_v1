@@ -5,8 +5,7 @@
             "home": {
                 "title": "Attack Costs",
                 "createLabel": "Criar um(a) novo(a) Attack Cost",
-                "createOrEditLabel": "Criar ou editar um(a) Attack Cost",
-                "search": "Search for Attack Cost"
+                "createOrEditLabel": "Criar ou editar um(a) Attack Cost"
             },
             "created": "A new Attack Cost is created with identifier {{ param }}",
             "updated": "A Attack Cost is updated with identifier {{ param }}",

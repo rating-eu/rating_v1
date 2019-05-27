@@ -1,20 +1,36 @@
+/*
+ * Copyright 2019 HERMENEUT Consortium
+ *  
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *  
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
+
 import * as _ from 'lodash';
 
-import { Component, OnInit, OnDestroy, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
-import { Router } from '@angular/router';
-import { Principal, LoginModalService, AccountService, UserService, User } from '../../shared';
-import { SelfAssessmentMgm, SelfAssessmentMgmService } from '../../entities/self-assessment-mgm';
-import { Subscription } from 'rxjs/Subscription';
-import { JhiAlertService, JhiEventManager } from 'ng-jhipster';
-import { QuestionnaireMgm } from '../../entities/questionnaire-mgm';
-import { QuestionnairePurpose } from '../../entities/enumerations/QuestionnairePurpose.enum';
-import { QuestionnairesService } from '../../questionnaires/questionnaires.service';
-import { IdentifyAssetUtilService } from '../identify-asset.util.service';
-import { MyAssetMgm } from '../../entities/my-asset-mgm';
-import { AssetCategoryMgm } from './../../entities/asset-category-mgm/asset-category-mgm.model';
-import { QuestionnaireStatusMgmService, QuestionnaireStatusMgm, Role, QuestionnaireStatusMgmCustomService } from '../../entities/questionnaire-status-mgm';
-import { MyRole } from '../../entities/enumerations/MyRole.enum';
-import { AssetMgm } from '../../entities/asset-mgm';
+import {Component, OnInit, OnDestroy, ChangeDetectionStrategy, ChangeDetectorRef} from '@angular/core';
+import {Router} from '@angular/router';
+import {Principal, AccountService, UserService, User} from '../../shared';
+import {SelfAssessmentMgm, SelfAssessmentMgmService} from '../../entities/self-assessment-mgm';
+import {Subscription} from 'rxjs/Subscription';
+import {JhiEventManager} from 'ng-jhipster';
+import {QuestionnaireMgm} from '../../entities/questionnaire-mgm';
+import {QuestionnairePurpose} from '../../entities/enumerations/QuestionnairePurpose.enum';
+import {QuestionnairesService} from '../../questionnaires/questionnaires.service';
+import {IdentifyAssetUtilService} from '../identify-asset.util.service';
+import {MyAssetMgm} from '../../entities/my-asset-mgm';
+import {AssetCategoryMgm} from './../../entities/asset-category-mgm/asset-category-mgm.model';
+import {AssetMgm} from '../../entities/asset-mgm';
+import {DatasharingService} from "../../datasharing/datasharing.service";
 
 @Component({
     // tslint:disable-next-line:component-selector
@@ -28,10 +44,8 @@ export class AssetClusteringComponent implements OnInit, OnDestroy {
     private account: Account;
     private user: User;
     private eventSubscriber: Subscription;
-    private questionnaries: QuestionnaireMgm[];
-    private questionnariesStatus: QuestionnaireStatusMgm[] = [];
 
-    public mySelf: SelfAssessmentMgm = {};
+    public mySelf: SelfAssessmentMgm = null;
     public assets: AssetMgm[];
     public myAssets: MyAssetMgm[];
     public categoryToAssets: Map<AssetCategoryMgm, AssetMgm[]> = new Map<AssetCategoryMgm, AssetMgm[]>();
@@ -49,11 +63,11 @@ export class AssetClusteringComponent implements OnInit, OnDestroy {
         private eventManager: JhiEventManager,
         private idaUtilsService: IdentifyAssetUtilService,
         private questionnairesService: QuestionnairesService,
-        private questionnaireStatusService: QuestionnaireStatusMgmCustomService,
-        private questionnaireStatusServices: QuestionnaireStatusMgmService,
         private ref: ChangeDetectorRef,
-        private router: Router
-    ) { }
+        private router: Router,
+        private dataSharingService: DatasharingService
+    ) {
+    }
 
     ngOnDestroy() {
     }
@@ -68,10 +82,9 @@ export class AssetClusteringComponent implements OnInit, OnDestroy {
                 this.user = response2.body;
             });
         });
-        this.mySelf = this.mySelfAssessmentService.getSelfAssessment();
+        this.mySelf = this.dataSharingService.selfAssessment;
 
         this.registerChangeIdentifyAssets();
-        this.questionnaries = [];
         this.idaUtilsService.getAllAssets().toPromise().then((systemAssets) => {
             if (systemAssets) {
                 this.assets = systemAssets;
@@ -107,26 +120,6 @@ export class AssetClusteringComponent implements OnInit, OnDestroy {
                 });
             }
         });
-
-        this.questionnairesService.getAllQuestionnairesByPurpose(QuestionnairePurpose.ID_ASSETS).toPromise().then((res) => {
-            if (res && res instanceof QuestionnaireMgm) {
-                this.questionnaries.push(res);
-            } else if (res && res instanceof Array) {
-                this.questionnaries = res;
-            }
-            /*if (this.account['authorities'].includes(MyRole.ROLE_CISO) && this.mySelf) {
-                for (const qs of this.questionnaries) {
-                    // controllo esistenza questionnaire status
-                    this.questionnaireStatusService.getByRoleSelfAssessmentAndQuestionnaire(MyRole.ROLE_CISO.toString(), this.mySelfAssessmentService.getSelfAssessment().id, qs.id)
-                        .toPromise()
-                        .then((status) => {
-                            if (status.body) {
-                                this.questionnariesStatus.push(status.body as QuestionnaireStatusMgm);
-                            }
-                        });
-                }
-            }*/
-        });
     }
 
     registerChangeIdentifyAssets() {
@@ -135,7 +128,7 @@ export class AssetClusteringComponent implements OnInit, OnDestroy {
 
     private findAsset(assetId?: number, categoryId?: number): AssetMgm | AssetMgm[] {
         if (assetId) {
-            return _.find(this.assets, { id: assetId }) as AssetMgm;
+            return _.find(this.assets, {id: assetId}) as AssetMgm;
         } else if (categoryId) {
             const assetsByCategory: AssetMgm[] = [];
             for (const ass of this.assets) {
@@ -188,7 +181,6 @@ export class AssetClusteringComponent implements OnInit, OnDestroy {
                     if (i === -1) {
                         const newAsset: MyAssetMgm = {};
                         newAsset.asset = asset;
-                        newAsset.questionnaire = this.questionnaries[0];
                         newAsset.selfAssessment = this.mySelf;
                         newAsset.economicValue = undefined;
                         newAsset.estimated = undefined;
@@ -209,8 +201,6 @@ export class AssetClusteringComponent implements OnInit, OnDestroy {
             } else {
                 const newAsset: MyAssetMgm = {};
                 newAsset.asset = selectedAsset;
-                // TODO pensare ad una politica futura di selezione del questionario
-                newAsset.questionnaire = this.questionnaries[0];
                 newAsset.selfAssessment = this.mySelf;
                 newAsset.economicValue = undefined;
                 newAsset.estimated = undefined;
@@ -222,6 +212,7 @@ export class AssetClusteringComponent implements OnInit, OnDestroy {
         }
         this.ref.detectChanges();
     }
+
     public howManyAssetInSelection(categoryId: number): number {
         if (!this.myAssets) {
             return 0;
@@ -234,7 +225,7 @@ export class AssetClusteringComponent implements OnInit, OnDestroy {
         });
         let howManyAsset = 0;
         for (const myAsset of this.myAssets) {
-            const index = _.findIndex(categoryAssets, { id: myAsset.asset.id });
+            const index = _.findIndex(categoryAssets, {id: myAsset.asset.id});
             if (index !== -1) {
                 howManyAsset++;
             }
@@ -261,7 +252,7 @@ export class AssetClusteringComponent implements OnInit, OnDestroy {
             });
             let howManyAsset = 0;
             for (const myAsset of this.myAssets) {
-                const index = _.findIndex(categoryAssets, { id: myAsset.asset.id });
+                const index = _.findIndex(categoryAssets, {id: myAsset.asset.id});
                 if (index !== -1) {
                     howManyAsset++;
                 }
@@ -275,19 +266,31 @@ export class AssetClusteringComponent implements OnInit, OnDestroy {
         return false;
     }
 
-    public saveMyAsset() {
+    public saveMyAsset(redirect: boolean = true) {
         this.loading = true;
-        if (this.updateMyAssets) {
-            this.idaUtilsService.createUpdateMyAssets(this.mySelf, this.myAssets).toPromise().then((myAssets) => {
-                if (myAssets) {
-                    this.myAssets = myAssets;
-                }
+
+        if (this.myAssets && this.myAssets.length) {
+            if (this.updateMyAssets) {
+                this.idaUtilsService.createUpdateMyAssets(this.mySelf, this.myAssets).toPromise().then((myAssets) => {
+                    if (myAssets) {
+                        this.myAssets = myAssets;
+                    }
+                    this.loading = false;
+
+                    if (redirect) {
+                        this.router.navigate(['/identify-asset/cascade-effects']);
+                    }
+                });
+            } else {
                 this.loading = false;
-                this.router.navigate(['/identify-asset/cascade-effects']);
-            });
-        } else {
-            this.loading = false;
-            this.router.navigate(['/identify-asset/cascade-effects']);
+                if (redirect) {
+                    this.router.navigate(['/identify-asset/cascade-effects']);
+                }
+            }
         }
+    }
+
+    public close() {
+        this.router.navigate(['/riskboard']);
     }
 }

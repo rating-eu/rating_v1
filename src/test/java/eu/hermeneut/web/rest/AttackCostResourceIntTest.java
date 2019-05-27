@@ -1,3 +1,20 @@
+/*
+ * Copyright 2019 HERMENEUT Consortium
+ *  
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *  
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
+
 package eu.hermeneut.web.rest;
 
 import eu.hermeneut.HermeneutApp;
@@ -5,7 +22,6 @@ import eu.hermeneut.HermeneutApp;
 import eu.hermeneut.domain.AttackCost;
 import eu.hermeneut.repository.AttackCostRepository;
 import eu.hermeneut.service.AttackCostService;
-import eu.hermeneut.repository.search.AttackCostSearchRepository;
 import eu.hermeneut.service.SelfAssessmentService;
 import eu.hermeneut.web.rest.errors.ExceptionTranslator;
 
@@ -62,9 +78,6 @@ public class AttackCostResourceIntTest {
     private SelfAssessmentService selfAssessmentService;
 
     @Autowired
-    private AttackCostSearchRepository attackCostSearchRepository;
-
-    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -107,7 +120,6 @@ public class AttackCostResourceIntTest {
 
     @Before
     public void initTest() {
-        attackCostSearchRepository.deleteAll();
         attackCost = createEntity(em);
     }
 
@@ -129,10 +141,6 @@ public class AttackCostResourceIntTest {
         assertThat(testAttackCost.getType()).isEqualTo(DEFAULT_TYPE);
         assertThat(testAttackCost.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
         assertThat(testAttackCost.getCosts()).isEqualTo(DEFAULT_COSTS);
-
-        // Validate the AttackCost in Elasticsearch
-        AttackCost attackCostEs = attackCostSearchRepository.findOne(testAttackCost.getId());
-        assertThat(attackCostEs).isEqualToIgnoringGivenFields(testAttackCost);
     }
 
     @Test
@@ -241,10 +249,6 @@ public class AttackCostResourceIntTest {
         assertThat(testAttackCost.getType()).isEqualTo(UPDATED_TYPE);
         assertThat(testAttackCost.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
         assertThat(testAttackCost.getCosts()).isEqualTo(UPDATED_COSTS);
-
-        // Validate the AttackCost in Elasticsearch
-        AttackCost attackCostEs = attackCostSearchRepository.findOne(testAttackCost.getId());
-        assertThat(attackCostEs).isEqualToIgnoringGivenFields(testAttackCost);
     }
 
     @Test
@@ -278,29 +282,9 @@ public class AttackCostResourceIntTest {
             .accept(TestUtil.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk());
 
-        // Validate Elasticsearch is empty
-        boolean attackCostExistsInEs = attackCostSearchRepository.exists(attackCost.getId());
-        assertThat(attackCostExistsInEs).isFalse();
-
         // Validate the database is empty
         List<AttackCost> attackCostList = attackCostRepository.findAll();
         assertThat(attackCostList).hasSize(databaseSizeBeforeDelete - 1);
-    }
-
-    @Test
-    @Transactional
-    public void searchAttackCost() throws Exception {
-        // Initialize the database
-        attackCostService.save(attackCost);
-
-        // Search the attackCost
-        restAttackCostMockMvc.perform(get("/api/_search/attack-costs?query=id:" + attackCost.getId()))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(attackCost.getId().intValue())))
-            .andExpect(jsonPath("$.[*].type").value(hasItem(DEFAULT_TYPE.toString())))
-            .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION.toString())))
-            .andExpect(jsonPath("$.[*].costs").value(hasItem(DEFAULT_COSTS.intValue())));
     }
 
     @Test

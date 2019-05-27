@@ -1,12 +1,12 @@
 import {NgModule} from '@angular/core';
 import {Routes, RouterModule} from '@angular/router';
-import {DashboardOneComponent} from './dashboard-one/dashboard-one.component';
-import { UserRouteAccessService } from '../shared';
+import {UserRouteAccessService} from "../shared";
+import {EntryPointComponent} from "./entry-point/entry-point.component";
 
 const routes: Routes = [
     {
         path: '',
-        component: DashboardOneComponent,
+        component: EntryPointComponent,
         data: {
             pageTitle: 'hermeneutApp.dashboardSection.page.dashboard.title',
             authorities: ['ROLE_CISO'],
@@ -16,12 +16,8 @@ const routes: Routes = [
 ];
 
 @NgModule({
-    imports: [
-        RouterModule.forChild(routes)
-    ],
-    exports: [
-        RouterModule
-    ]
+    imports: [RouterModule.forChild(routes)],
+    exports: [RouterModule]
 })
 export class DashboardRoutingModule {
 }

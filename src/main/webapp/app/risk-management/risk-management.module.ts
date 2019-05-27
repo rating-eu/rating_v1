@@ -1,7 +1,24 @@
-import { DashboardService } from './../dashboard/dashboard.service';
+/*
+ * Copyright 2019 HERMENEUT Consortium
+ *  
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *  
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
+
 import {NgModule, Injector} from '@angular/core';
 import {CommonModule} from '@angular/common';
 
+import {RiskBoardService} from '../risk-board/risk-board.service';
 import {RiskManagementRoutingModule} from './risk-management-routing.module';
 import {RiskManagementComponent} from './risk-management/risk-management.component';
 import {RiskManagementService} from './risk-management.service';
@@ -17,10 +34,10 @@ import {JhiEventManager} from '../../../../../node_modules/ng-jhipster';
 import {NotificationInterceptor} from '../blocks/interceptor/notification.interceptor';
 import {JhiLanguageService} from 'ng-jhipster';
 import {NgxPaginationModule} from 'ngx-pagination';
-import { HermeneutMitigationMgmModule } from '../entities/mitigation-mgm/mitigation-mgm.module';
-import { NgbAccordionModule } from '../../../../../node_modules/@ng-bootstrap/ng-bootstrap';
-import { RiskDetailsComponent } from './risk-details/risk-details.component';
-import { ImpactEvaluationService } from '../impact-evaluation/impact-evaluation.service';
+import {HermeneutMitigationMgmModule} from '../entities/mitigation-mgm/mitigation-mgm.module';
+import {NgbAccordionModule} from '../../../../../node_modules/@ng-bootstrap/ng-bootstrap';
+import {RiskDetailsComponent} from './risk-details/risk-details.component';
+import {ImpactEvaluationService} from '../impact-evaluation/impact-evaluation.service';
 
 @NgModule({
     imports: [
@@ -72,7 +89,7 @@ import { ImpactEvaluationService } from '../impact-evaluation/impact-evaluation.
             ]
         },
         RiskManagementService,
-        DashboardService,
+        RiskBoardService,
         ImpactEvaluationService
     ]
 })

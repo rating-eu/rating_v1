@@ -1,3 +1,20 @@
+/*
+ * Copyright 2019 HERMENEUT Consortium
+ *  
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *  
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
+
 import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
@@ -8,8 +25,8 @@ import {JhiLanguageHelper, LoginModalService, LoginService, Principal} from '../
 
 import {VERSION} from '../../app.constants';
 import {DatasharingService} from '../../datasharing/datasharing.service';
-import {Update} from '../model/Update';
-import {MyRole} from '../../entities/enumerations/MyRole.enum';
+import {LayoutConfiguration} from '../model/LayoutConfiguration';
+import {Role} from '../../entities/enumerations/Role.enum';
 
 @Component({
     selector: 'jhi-navbar',
@@ -59,8 +76,8 @@ export class NavbarComponent implements OnInit {
             this.swaggerEnabled = profileInfo.swaggerEnabled;
         });
 
-        this.navSubTitle = this.dataSharingService.getUpdate() != null ? 'Selected self assessment: ' + this.dataSharingService.getUpdate().navSubTitle : null;
-        this.dataSharingService.observeUpdate().subscribe((update: Update) => {
+        this.navSubTitle = this.dataSharingService.layoutConfiguration != null ? 'Selected self assessment: ' + this.dataSharingService.layoutConfiguration.navSubTitle : null;
+        this.dataSharingService.layoutConfigurationObservable.subscribe((update: LayoutConfiguration) => {
             if (update && update.navSubTitle) {
                 this.navSubTitle = 'Selected self assessment: ';
                 this.selfAssessmentName = update.navSubTitle;
@@ -69,22 +86,22 @@ export class NavbarComponent implements OnInit {
             }
         });
 
-        this.dataSharingService.observeRole().subscribe((role: MyRole) => {
+        this.dataSharingService.roleObservable.subscribe((role: Role) => {
             if (role) {
                 switch (role) {
-                    case MyRole.ROLE_CISO: {
+                    case Role.ROLE_CISO: {
                         this.isAuthenticatedValue = true;
                         this.isAdmin = false;
                         this.isExternal = false;
                         break;
                     }
-                    case MyRole.ROLE_EXTERNAL_AUDIT: {
+                    case Role.ROLE_EXTERNAL_AUDIT: {
                         this.isAuthenticatedValue = true;
                         this.isAdmin = false;
                         this.isExternal = true;
                         break;
                     }
-                    case MyRole.ROLE_ADMIN: {
+                    case Role.ROLE_ADMIN: {
                         this.isAuthenticatedValue = true;
                         this.isAdmin = true;
                         this.isExternal = false;
@@ -109,11 +126,13 @@ export class NavbarComponent implements OnInit {
     }
 
     hideShowSideNav() {
-        const updateLayout: Update = this.dataSharingService.getUpdate();
-        updateLayout.isSidebarCollapsed = !this.dataSharingService.getUpdate().isSidebarCollapsed;
-        this.sidebarCollapsed = updateLayout.isSidebarCollapsed;
-        updateLayout.isSidebarCollapsedByMe = !this.dataSharingService.getUpdate().isSidebarCollapsedByMe;
-        this.dataSharingService.updateLayout(updateLayout);
+        const layoutConfiguration: LayoutConfiguration = this.dataSharingService.layoutConfiguration;
+
+        layoutConfiguration.isSidebarCollapsed = !layoutConfiguration.isSidebarCollapsed;
+        this.sidebarCollapsed = layoutConfiguration.isSidebarCollapsed;
+
+        layoutConfiguration.isSidebarCollapsedByMe = !layoutConfiguration.isSidebarCollapsedByMe;
+        this.dataSharingService.layoutConfiguration = layoutConfiguration;
     }
 
     isAuthenticated() {
@@ -127,12 +146,12 @@ export class NavbarComponent implements OnInit {
     logout() {
         this.collapseNavbar();
         this.loginService.logout();
-        const update: Update = this.dataSharingService.getUpdate();
+        const layoutConfiguration: LayoutConfiguration = this.dataSharingService.layoutConfiguration;
         this.dataSharingService.clear();
-        update.isSidebarCollapsed = true;
-        update.isSidebarCollapsedByMe = false;
+        layoutConfiguration.isSidebarCollapsed = true;
+        layoutConfiguration.isSidebarCollapsedByMe = false;
 
-        this.dataSharingService.updateLayout(update);
+        this.dataSharingService.layoutConfiguration = layoutConfiguration;
 
         this.router.navigate(['']);
     }

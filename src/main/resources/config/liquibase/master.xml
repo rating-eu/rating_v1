@@ -123,5 +123,27 @@
     <include file="config/liquibase/changelog/20190302214123_growth_rate_constraints_and_types.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20190317213308_updated_decimal_precision_scale_50.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20190408102433_delete_self_growth_rates_cascade.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190411135122_added_criticality_entity.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190411142902_added_criticality_constraints.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190502090051_added_questionnaire_status_company_column.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190502113243_questionnaire_status_set_company_id.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190502130859_removed_questionnaire_status_self_id.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190507084152_added_questionnaire_status_refinement_fk.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190508080355_remove_self_assessment_threat_agents.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190515130554_added_self_assessment_impact_mode_column.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190520153849_added_qstatus_external_fk.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190523130056_drop_self_external_column.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190524130329_added_questionnaire_company_type_column.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190524131207_added_questionnaire_unique_constraint_purpose_and_company_type.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190524153558_added_LPA_questionnaires_data.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190524154958_added_LPA_answers_data.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190524160537_added_LPA_threat_agents_questions_data.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190524162042_added_LPA_threat_agents_questions_answers_join_data.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190524163955_added_LPA_attack_strategies_questions_data.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190524165134_added_LPA_attack_strategies_questions_attacks_join_data.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190524171453_added_LPA_attack_strategies_questions_answers_join_data.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190524174569_update_default_questionnaires_company_type_to_OTHER.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190525162720_update_questionnaire_company_type_not_null.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190525174921_drop_my_asset_questionnaire_id_column.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
 </databaseChangeLog>

@@ -5,8 +5,7 @@
             "home": {
                 "title": "My Companies",
                 "createLabel": "Criar um(a) novo(a) My Company",
-                "createOrEditLabel": "Criar ou editar um(a) My Company",
-                "search": "Search for My Company"
+                "createOrEditLabel": "Criar ou editar um(a) My Company"
             },
             "created": "A new My Company is created with identifier {{ param }}",
             "updated": "A My Company is updated with identifier {{ param }}",

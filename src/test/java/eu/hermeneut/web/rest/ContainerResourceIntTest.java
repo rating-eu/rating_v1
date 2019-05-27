@@ -1,3 +1,20 @@
+/*
+ * Copyright 2019 HERMENEUT Consortium
+ *  
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *  
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
+
 package eu.hermeneut.web.rest;
 
 import eu.hermeneut.HermeneutApp;
@@ -5,7 +22,6 @@ import eu.hermeneut.HermeneutApp;
 import eu.hermeneut.domain.Container;
 import eu.hermeneut.repository.ContainerRepository;
 import eu.hermeneut.service.ContainerService;
-import eu.hermeneut.repository.search.ContainerSearchRepository;
 import eu.hermeneut.web.rest.errors.ExceptionTranslator;
 
 import org.junit.Before;
@@ -65,9 +81,6 @@ public class ContainerResourceIntTest {
     private ContainerService containerService;
 
     @Autowired
-    private ContainerSearchRepository containerSearchRepository;
-
-    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -111,7 +124,6 @@ public class ContainerResourceIntTest {
 
     @Before
     public void initTest() {
-        containerSearchRepository.deleteAll();
         container = createEntity(em);
     }
 
@@ -134,11 +146,6 @@ public class ContainerResourceIntTest {
         assertThat(testContainer.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
         assertThat(testContainer.getContainerType()).isEqualTo(DEFAULT_CONTAINER_TYPE);
         assertThat(testContainer.getCreated()).isEqualTo(DEFAULT_CREATED);
-
-        // Validate the Container in Elasticsearch
-        Container containerEs = containerSearchRepository.findOne(testContainer.getId());
-        assertThat(testContainer.getCreated()).isEqualTo(testContainer.getCreated());
-        assertThat(containerEs).isEqualToIgnoringGivenFields(testContainer, "created");
     }
 
     @Test
@@ -251,11 +258,6 @@ public class ContainerResourceIntTest {
         assertThat(testContainer.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
         assertThat(testContainer.getContainerType()).isEqualTo(UPDATED_CONTAINER_TYPE);
         assertThat(testContainer.getCreated()).isEqualTo(UPDATED_CREATED);
-
-        // Validate the Container in Elasticsearch
-        Container containerEs = containerSearchRepository.findOne(testContainer.getId());
-        assertThat(testContainer.getCreated()).isEqualTo(testContainer.getCreated());
-        assertThat(containerEs).isEqualToIgnoringGivenFields(testContainer, "created");
     }
 
     @Test
@@ -289,30 +291,9 @@ public class ContainerResourceIntTest {
             .accept(TestUtil.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk());
 
-        // Validate Elasticsearch is empty
-        boolean containerExistsInEs = containerSearchRepository.exists(container.getId());
-        assertThat(containerExistsInEs).isFalse();
-
         // Validate the database is empty
         List<Container> containerList = containerRepository.findAll();
         assertThat(containerList).hasSize(databaseSizeBeforeDelete - 1);
-    }
-
-    @Test
-    @Transactional
-    public void searchContainer() throws Exception {
-        // Initialize the database
-        containerService.save(container);
-
-        // Search the container
-        restContainerMockMvc.perform(get("/api/_search/containers?query=id:" + container.getId()))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(container.getId().intValue())))
-            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
-            .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION.toString())))
-            .andExpect(jsonPath("$.[*].containerType").value(hasItem(DEFAULT_CONTAINER_TYPE.toString())))
-            .andExpect(jsonPath("$.[*].created").value(hasItem(sameInstant(DEFAULT_CREATED))));
     }
 
     @Test

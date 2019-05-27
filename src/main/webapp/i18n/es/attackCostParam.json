@@ -5,8 +5,7 @@
             "home": {
                 "title": "Attack Cost Params",
                 "createLabel": "Crear nuevo Attack Cost Param",
-                "createOrEditLabel": "Crear o editar Attack Cost Param",
-                "search": "Search for Attack Cost Param"
+                "createOrEditLabel": "Crear o editar Attack Cost Param"
             },
             "created": "Un nuevo Attack Cost Param ha sido creado con el identificador {{ param }}",
             "updated": "Un Attack Cost Param ha sido actualizado con el identificador {{ param }}",

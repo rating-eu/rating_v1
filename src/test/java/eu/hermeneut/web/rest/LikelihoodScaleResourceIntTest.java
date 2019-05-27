@@ -1,3 +1,20 @@
+/*
+ * Copyright 2019 HERMENEUT Consortium
+ *  
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *  
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
+
 package eu.hermeneut.web.rest;
 
 import eu.hermeneut.HermeneutApp;
@@ -5,7 +22,6 @@ import eu.hermeneut.HermeneutApp;
 import eu.hermeneut.domain.LikelihoodScale;
 import eu.hermeneut.repository.LikelihoodScaleRepository;
 import eu.hermeneut.service.LikelihoodScaleService;
-import eu.hermeneut.repository.search.LikelihoodScaleSearchRepository;
 import eu.hermeneut.web.rest.errors.ExceptionTranslator;
 
 import org.junit.Before;
@@ -59,9 +75,6 @@ public class LikelihoodScaleResourceIntTest {
     private LikelihoodScaleService likelihoodScaleService;
 
     @Autowired
-    private LikelihoodScaleSearchRepository likelihoodScaleSearchRepository;
-
-    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -105,7 +118,6 @@ public class LikelihoodScaleResourceIntTest {
 
     @Before
     public void initTest() {
-        likelihoodScaleSearchRepository.deleteAll();
         likelihoodScale = createEntity(em);
     }
 
@@ -128,10 +140,6 @@ public class LikelihoodScaleResourceIntTest {
         assertThat(testLikelihoodScale.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
         assertThat(testLikelihoodScale.getLikelihood()).isEqualTo(DEFAULT_LIKELIHOOD);
         assertThat(testLikelihoodScale.getFrequency()).isEqualTo(DEFAULT_FREQUENCY);
-
-        // Validate the LikelihoodScale in Elasticsearch
-        LikelihoodScale likelihoodScaleEs = likelihoodScaleSearchRepository.findOne(testLikelihoodScale.getId());
-        assertThat(likelihoodScaleEs).isEqualToIgnoringGivenFields(testLikelihoodScale);
     }
 
     @Test
@@ -298,10 +306,6 @@ public class LikelihoodScaleResourceIntTest {
         assertThat(testLikelihoodScale.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
         assertThat(testLikelihoodScale.getLikelihood()).isEqualTo(UPDATED_LIKELIHOOD);
         assertThat(testLikelihoodScale.getFrequency()).isEqualTo(UPDATED_FREQUENCY);
-
-        // Validate the LikelihoodScale in Elasticsearch
-        LikelihoodScale likelihoodScaleEs = likelihoodScaleSearchRepository.findOne(testLikelihoodScale.getId());
-        assertThat(likelihoodScaleEs).isEqualToIgnoringGivenFields(testLikelihoodScale);
     }
 
     @Test
@@ -335,30 +339,9 @@ public class LikelihoodScaleResourceIntTest {
             .accept(TestUtil.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk());
 
-        // Validate Elasticsearch is empty
-        boolean likelihoodScaleExistsInEs = likelihoodScaleSearchRepository.exists(likelihoodScale.getId());
-        assertThat(likelihoodScaleExistsInEs).isFalse();
-
         // Validate the database is empty
         List<LikelihoodScale> likelihoodScaleList = likelihoodScaleRepository.findAll();
         assertThat(likelihoodScaleList).hasSize(databaseSizeBeforeDelete - 1);
-    }
-
-    @Test
-    @Transactional
-    public void searchLikelihoodScale() throws Exception {
-        // Initialize the database
-        likelihoodScaleService.save(likelihoodScale);
-
-        // Search the likelihoodScale
-        restLikelihoodScaleMockMvc.perform(get("/api/_search/likelihood-scales?query=id:" + likelihoodScale.getId()))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(likelihoodScale.getId().intValue())))
-            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
-            .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION.toString())))
-            .andExpect(jsonPath("$.[*].likelihood").value(hasItem(DEFAULT_LIKELIHOOD)))
-            .andExpect(jsonPath("$.[*].frequency").value(hasItem(DEFAULT_FREQUENCY)));
     }
 
     @Test

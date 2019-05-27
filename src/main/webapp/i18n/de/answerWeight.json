@@ -5,8 +5,7 @@
             "home": {
                 "title": "Answer Weights",
                 "createLabel": "Answer Weight erstellen",
-                "createOrEditLabel": "Answer Weight erstellen oder bearbeiten",
-                "search": "Suche nach Answer Weight"
+                "createOrEditLabel": "Answer Weight erstellen oder bearbeiten"
             },
             "created": "Answer Weight erstellt mit ID {{ param }}",
             "updated": "Answer Weight aktualisiert mit ID {{ param }}",

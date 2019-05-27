@@ -1,9 +1,25 @@
+/*
+ * Copyright 2019 HERMENEUT Consortium
+ *  
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *  
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
+
 package eu.hermeneut.service.impl;
 
 import eu.hermeneut.service.PhaseService;
 import eu.hermeneut.domain.Phase;
 import eu.hermeneut.repository.PhaseRepository;
-import eu.hermeneut.repository.search.PhaseSearchRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -12,8 +28,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
-
-import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
  * Service Implementation for managing Phase.
@@ -26,11 +40,8 @@ public class PhaseServiceImpl implements PhaseService {
 
     private final PhaseRepository phaseRepository;
 
-    private final PhaseSearchRepository phaseSearchRepository;
-
-    public PhaseServiceImpl(PhaseRepository phaseRepository, PhaseSearchRepository phaseSearchRepository) {
+    public PhaseServiceImpl(PhaseRepository phaseRepository) {
         this.phaseRepository = phaseRepository;
-        this.phaseSearchRepository = phaseSearchRepository;
     }
 
     /**
@@ -43,7 +54,6 @@ public class PhaseServiceImpl implements PhaseService {
     public Phase save(Phase phase) {
         log.debug("Request to save Phase : {}", phase);
         Phase result = phaseRepository.save(phase);
-        phaseSearchRepository.save(result);
         return result;
     }
 
@@ -81,21 +91,5 @@ public class PhaseServiceImpl implements PhaseService {
     public void delete(Long id) {
         log.debug("Request to delete Phase : {}", id);
         phaseRepository.delete(id);
-        phaseSearchRepository.delete(id);
-    }
-
-    /**
-     * Search for the phase corresponding to the query.
-     *
-     * @param query the query of the search
-     * @return the list of entities
-     */
-    @Override
-    @Transactional(readOnly = true)
-    public List<Phase> search(String query) {
-        log.debug("Request to search Phases for query {}", query);
-        return StreamSupport
-            .stream(phaseSearchRepository.search(queryStringQuery(query)).spliterator(), false)
-            .collect(Collectors.toList());
     }
 }

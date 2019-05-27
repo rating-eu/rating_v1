@@ -5,8 +5,7 @@
             "home": {
                 "title": "Questionnaire Statuses",
                 "createLabel": "Create a new Questionnaire Status",
-                "createOrEditLabel": "Create or edit a Questionnaire Status",
-                "search": "Search for Questionnaire Status"
+                "createOrEditLabel": "Create or edit a Questionnaire Status"
             },
             "created": "A new Questionnaire Status is created with identifier {{ param }}",
             "updated": "A Questionnaire Status is updated with identifier {{ param }}",
@@ -21,6 +20,7 @@
             "created": "Created",
             "modified": "Modified",
             "role": "Role",
+            "companyProfile": "Company Profile",
             "selfAssessment": "Self Assessment",
             "questionnaire": "Questionnaire",
             "user": "User",

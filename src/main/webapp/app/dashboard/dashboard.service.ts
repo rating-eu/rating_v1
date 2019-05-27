@@ -1,91 +1,30 @@
-import {SERVER_API_URL} from './../app.constants';
-import {HttpClient, HttpResponse} from '@angular/common/http';
-import {DashboardStepEnum} from './models/enumeration/dashboard-step.enum';
-import {SelfAssessmentMgm} from './../entities/self-assessment-mgm/self-assessment-mgm.model';
 import {Injectable} from '@angular/core';
-import {BehaviorSubject, Observable} from 'rxjs';
+import {SERVER_API_URL} from "../app.constants";
+import {HttpClient, HttpResponse} from "@angular/common/http";
+import {Observable} from "rxjs";
+import {CompanyProfileMgm} from "../entities/company-profile-mgm";
+import {CompanyBoardStep} from "../entities/enumerations/CompanyBoardStep.enum";
+import {Status} from "../entities/enumerations/Status.enum";
 
-export enum Status {
-    'EMPTY' = 'EMPTY',
-    'PENDING' = 'PENDING',
-    'FULL' = 'FULL'
-}
+const COMPANY_PROFILE_ID_PLACEHOLDER = '{companyProfileID}';
 
-export class DashboardStatus {
-    assetClusteringStatus: Status = Status.EMPTY;
-    identifyThreatAgentsStatus: Status = Status.EMPTY;
-    assessVulnerablitiesStatus: Status = Status.EMPTY;
-    refineVulnerablitiesStatus: Status = Status.EMPTY;
-    impactEvaluationStatus: Status = Status.EMPTY;
-    attackRelatedCostEstimationStatus: Status = Status.EMPTY;
-    riskEvaluationStatus: Status = Status.EMPTY;
-}
+const STEP_PLACEHOLDER = '{step}';
 
 @Injectable()
 export class DashboardService {
-    private dashboardStatusUri = SERVER_API_URL + 'api/{selfAssessmentID}/dashboard/status/{requestedStatus}';
-    private subscribeForStatus: BehaviorSubject<DashboardStatus> = new BehaviorSubject<DashboardStatus>({} as DashboardStatus);
-    private dashboardStatus: DashboardStatus = null;
+
+    private dashboardStatusUrl = SERVER_API_URL + 'api/' + COMPANY_PROFILE_ID_PLACEHOLDER + '/companyboard/status/' + STEP_PLACEHOLDER;
 
     constructor(
         private http: HttpClient
     ) {
     }
 
-    public updateStepStatus(step: DashboardStepEnum, status: Status) {
-        if (!this.dashboardStatus) {
-            this.dashboardStatus = new DashboardStatus();
-        }
+    public getStatusFromServer(companyProfile: CompanyProfileMgm, step: CompanyBoardStep): Observable<HttpResponse<Status>> {
+        const url = this.dashboardStatusUrl
+            .replace(COMPANY_PROFILE_ID_PLACEHOLDER, String(companyProfile.id))
+            .replace(STEP_PLACEHOLDER, CompanyBoardStep[step]);
 
-        switch (step) {
-            case DashboardStepEnum.ASSET_CLUSTERING: {
-                this.dashboardStatus.assetClusteringStatus = status;
-                break;
-            }
-            case DashboardStepEnum.IDENTIFY_THREAT_AGENTS: {
-                this.dashboardStatus.identifyThreatAgentsStatus = status;
-                break;
-            }
-            case DashboardStepEnum.ASSESS_VULNERABILITIES: {
-                this.dashboardStatus.assessVulnerablitiesStatus = status;
-                break;
-            }
-            case DashboardStepEnum.REFINE_VULNERABILITIES: {
-                this.dashboardStatus.refineVulnerablitiesStatus = status;
-                break;
-            }
-            case DashboardStepEnum.IMPACT_EVALUATION: {
-                this.dashboardStatus.impactEvaluationStatus = status;
-                break;
-            }
-            case DashboardStepEnum.ATTACK_RELATED_COSTS: {
-                this.dashboardStatus.attackRelatedCostEstimationStatus = status;
-                break;
-            }
-            case DashboardStepEnum.RISK_EVALUATION: {
-                this.dashboardStatus.riskEvaluationStatus = status;
-                break;
-            }
-        }
-
-        this.subscribeForStatus.next(this.dashboardStatus);
+        return this.http.get<Status>(url, {observe: 'response'});
     }
-
-    public getStatus(): DashboardStatus {
-        return this.subscribeForStatus.getValue();
-    }
-
-    public observeStatus(): Observable<DashboardStatus> {
-        return this.subscribeForStatus.asObservable();
-    }
-
-    public getStatusFromServer(self: SelfAssessmentMgm, requestedStatus: DashboardStepEnum): Observable<string> {
-        let uri = this.dashboardStatusUri.replace('{selfAssessmentID}', String(self.id));
-        uri = uri.replace('{requestedStatus}', requestedStatus.toString());
-        return this.http.get<string>(uri, {observe: 'response'})
-            .map((res: HttpResponse<string>) => {
-                return res.body;
-            });
-    }
-
 }

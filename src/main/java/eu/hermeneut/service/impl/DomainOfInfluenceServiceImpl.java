@@ -1,19 +1,31 @@
+/*
+ * Copyright 2019 HERMENEUT Consortium
+ *  
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *  
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
+
 package eu.hermeneut.service.impl;
 
 import eu.hermeneut.service.DomainOfInfluenceService;
 import eu.hermeneut.domain.DomainOfInfluence;
 import eu.hermeneut.repository.DomainOfInfluenceRepository;
-import eu.hermeneut.repository.search.DomainOfInfluenceSearchRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
-
-import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
  * Service Implementation for managing DomainOfInfluence.
@@ -26,11 +38,8 @@ public class DomainOfInfluenceServiceImpl implements DomainOfInfluenceService {
 
     private final DomainOfInfluenceRepository domainOfInfluenceRepository;
 
-    private final DomainOfInfluenceSearchRepository domainOfInfluenceSearchRepository;
-
-    public DomainOfInfluenceServiceImpl(DomainOfInfluenceRepository domainOfInfluenceRepository, DomainOfInfluenceSearchRepository domainOfInfluenceSearchRepository) {
+    public DomainOfInfluenceServiceImpl(DomainOfInfluenceRepository domainOfInfluenceRepository) {
         this.domainOfInfluenceRepository = domainOfInfluenceRepository;
-        this.domainOfInfluenceSearchRepository = domainOfInfluenceSearchRepository;
     }
 
     /**
@@ -43,7 +52,6 @@ public class DomainOfInfluenceServiceImpl implements DomainOfInfluenceService {
     public DomainOfInfluence save(DomainOfInfluence domainOfInfluence) {
         log.debug("Request to save DomainOfInfluence : {}", domainOfInfluence);
         DomainOfInfluence result = domainOfInfluenceRepository.save(domainOfInfluence);
-        domainOfInfluenceSearchRepository.save(result);
         return result;
     }
 
@@ -81,21 +89,5 @@ public class DomainOfInfluenceServiceImpl implements DomainOfInfluenceService {
     public void delete(Long id) {
         log.debug("Request to delete DomainOfInfluence : {}", id);
         domainOfInfluenceRepository.delete(id);
-        domainOfInfluenceSearchRepository.delete(id);
-    }
-
-    /**
-     * Search for the domainOfInfluence corresponding to the query.
-     *
-     * @param query the query of the search
-     * @return the list of entities
-     */
-    @Override
-    @Transactional(readOnly = true)
-    public List<DomainOfInfluence> search(String query) {
-        log.debug("Request to search DomainOfInfluences for query {}", query);
-        return StreamSupport
-            .stream(domainOfInfluenceSearchRepository.search(queryStringQuery(query)).spliterator(), false)
-            .collect(Collectors.toList());
     }
 }

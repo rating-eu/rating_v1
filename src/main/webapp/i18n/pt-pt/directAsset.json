@@ -5,8 +5,7 @@
             "home": {
                 "title": "Direct Assets",
                 "createLabel": "Criar um(a) novo(a) Direct Asset",
-                "createOrEditLabel": "Criar ou editar um(a) Direct Asset",
-                "search": "Search for Direct Asset"
+                "createOrEditLabel": "Criar ou editar um(a) Direct Asset"
             },
             "created": "A new Direct Asset is created with identifier {{ param }}",
             "updated": "A Direct Asset is updated with identifier {{ param }}",

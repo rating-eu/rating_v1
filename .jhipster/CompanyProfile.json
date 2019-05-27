@@ -48,8 +48,8 @@
         },
         {
             "fieldName": "type",
-            "fieldType": "CompType",
-            "fieldValues": "OTHER,FINANCE_AND_INSURANCE,HEALTH_CARE_AND_SOCIAL_ASSISTANCE,INFORMATION,PROFESSIONAL_SCIENTIFIC_AND_TECHNICAL_SERVICE"
+            "fieldType": "CompanyType",
+            "fieldValues": "OTHER,FINANCE_AND_INSURANCE,HEALTH_CARE_AND_SOCIAL_ASSISTANCE,INFORMATION,PROFESSIONAL_SCIENTIFIC_AND_TECHNICAL_SERVICE,LOCAL_PUBLIC_ADMINISTRATION"
         }
     ],
     "changelogDate": "20180410085152",

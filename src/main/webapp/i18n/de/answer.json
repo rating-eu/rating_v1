@@ -5,8 +5,7 @@
             "home": {
                 "title": "Answers",
                 "createLabel": "Answer erstellen",
-                "createOrEditLabel": "Answer erstellen oder bearbeiten",
-                "search": "Suche nach Answer"
+                "createOrEditLabel": "Answer erstellen oder bearbeiten"
             },
             "created": "Answer erstellt mit ID {{ param }}",
             "updated": "Answer aktualisiert mit ID {{ param }}",

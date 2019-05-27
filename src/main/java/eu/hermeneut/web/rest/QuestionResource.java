@@ -1,8 +1,26 @@
+/*
+ * Copyright 2019 HERMENEUT Consortium
+ *  
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *  
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
+
 package eu.hermeneut.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import eu.hermeneut.domain.Question;
 import eu.hermeneut.domain.Questionnaire;
+import eu.hermeneut.domain.enumeration.ContainerType;
 import eu.hermeneut.service.QuestionService;
 import eu.hermeneut.service.QuestionnaireService;
 import eu.hermeneut.web.rest.errors.BadRequestAlertException;
@@ -20,9 +38,6 @@ import java.net.URISyntaxException;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.StreamSupport;
-
-import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
  * REST controller for managing Question.
@@ -127,21 +142,7 @@ public class QuestionResource {
     }
 
     /**
-     * SEARCH  /_search/questions?query=:query : search for the question corresponding
-     * to the query.
-     *
-     * @param query the query of the question search
-     * @return the result of the search
-     */
-    @GetMapping("/_search/questions")
-    @Timed
-    public List<Question> searchQuestions(@RequestParam String query) {
-        log.debug("REST request to search Questions for query {}", query);
-        return questionService.search(query);
-    }
-
-    /**
-     * GET  /questions : get all the questions.
+     * GET  /questions : get all the questions of the Questionnaire.
      *
      * @param questionnaireID the id of the questionnaire to retrieve the questions
      * @return the ResponseEntity with status 200 (OK) and the list of questions in body
@@ -154,4 +155,17 @@ public class QuestionResource {
         return this.questionService.findAllByQuestionnaire(questionnaire);
     }
 
+    /**
+     * GET  /questions : get all the questions of the Questionnaire's Section.
+     *
+     * @param questionnaireID the id of the questionnaire to retrieve the questions
+     * @return the ResponseEntity with status 200 (OK) and the list of questions in body
+     */
+    @GetMapping("/questions/by/questionnaire/{questionnaireID}/section/{section}")
+    @Timed
+    public List<Question> getAllQuestionsByQuestionnaireIDAndSection(@PathVariable Long questionnaireID, @PathVariable ContainerType section) {
+        Questionnaire questionnaire = this.questionnaireService.findOne(questionnaireID);
+
+        return this.questionService.findAllByQuestionnaireAndSection(questionnaire, section);
+    }
 }

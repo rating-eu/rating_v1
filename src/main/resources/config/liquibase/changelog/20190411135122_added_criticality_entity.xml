@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <changeSet author="developer (generated)" id="1554990689104-1">
+        <createTable tableName="criticality">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints primaryKey="true" primaryKeyName="criticalityPK"/>
+            </column>
+            <column name="created" type="timestamp"/>
+            <column name="criticality" type="FLOAT4">
+                <constraints nullable="false"/>
+            </column>
+            <column name="jhi_type" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="attack_strategy_id" type="BIGINT"/>
+            <column name="company_profile_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="izio (generated)" id="1554990689104-2">
+        <addForeignKeyConstraint baseColumnNames="company_profile_id"
+                                 baseTableName="criticality"
+                                 constraintName="criticality_company_profile_fk"
+                                 deferrable="false"
+                                 initiallyDeferred="false"
+                                 referencedColumnNames="id"
+                                 referencedTableName="company_profile"/>
+    </changeSet>
+    <changeSet author="izio (generated)" id="1554990689104-3">
+        <addForeignKeyConstraint baseColumnNames="attack_strategy_id"
+                                 baseTableName="criticality"
+                                 constraintName="criticality_attack_strategy_fk"
+                                 deferrable="false"
+                                 initiallyDeferred="false"
+                                 referencedColumnNames="id"
+                                 referencedTableName="attack_strategy"/>
+    </changeSet>
+</databaseChangeLog>

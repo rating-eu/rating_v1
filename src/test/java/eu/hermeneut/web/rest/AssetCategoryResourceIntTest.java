@@ -1,3 +1,20 @@
+/*
+ * Copyright 2019 HERMENEUT Consortium
+ *  
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *  
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
+
 package eu.hermeneut.web.rest;
 
 import eu.hermeneut.HermeneutApp;
@@ -5,7 +22,6 @@ import eu.hermeneut.HermeneutApp;
 import eu.hermeneut.domain.AssetCategory;
 import eu.hermeneut.repository.AssetCategoryRepository;
 import eu.hermeneut.service.AssetCategoryService;
-import eu.hermeneut.repository.search.AssetCategorySearchRepository;
 import eu.hermeneut.web.rest.errors.ExceptionTranslator;
 
 import org.junit.Before;
@@ -57,9 +73,6 @@ public class AssetCategoryResourceIntTest {
     private AssetCategoryService assetCategoryService;
 
     @Autowired
-    private AssetCategorySearchRepository assetCategorySearchRepository;
-
-    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -102,7 +115,6 @@ public class AssetCategoryResourceIntTest {
 
     @Before
     public void initTest() {
-        assetCategorySearchRepository.deleteAll();
         assetCategory = createEntity(em);
     }
 
@@ -124,10 +136,6 @@ public class AssetCategoryResourceIntTest {
         assertThat(testAssetCategory.getName()).isEqualTo(DEFAULT_NAME);
         assertThat(testAssetCategory.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
         assertThat(testAssetCategory.getType()).isEqualTo(DEFAULT_TYPE);
-
-        // Validate the AssetCategory in Elasticsearch
-        AssetCategory assetCategoryEs = assetCategorySearchRepository.findOne(testAssetCategory.getId());
-        assertThat(assetCategoryEs).isEqualToIgnoringGivenFields(testAssetCategory);
     }
 
     @Test
@@ -254,10 +262,6 @@ public class AssetCategoryResourceIntTest {
         assertThat(testAssetCategory.getName()).isEqualTo(UPDATED_NAME);
         assertThat(testAssetCategory.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
         assertThat(testAssetCategory.getType()).isEqualTo(UPDATED_TYPE);
-
-        // Validate the AssetCategory in Elasticsearch
-        AssetCategory assetCategoryEs = assetCategorySearchRepository.findOne(testAssetCategory.getId());
-        assertThat(assetCategoryEs).isEqualToIgnoringGivenFields(testAssetCategory);
     }
 
     @Test
@@ -291,29 +295,9 @@ public class AssetCategoryResourceIntTest {
             .accept(TestUtil.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk());
 
-        // Validate Elasticsearch is empty
-        boolean assetCategoryExistsInEs = assetCategorySearchRepository.exists(assetCategory.getId());
-        assertThat(assetCategoryExistsInEs).isFalse();
-
         // Validate the database is empty
         List<AssetCategory> assetCategoryList = assetCategoryRepository.findAll();
         assertThat(assetCategoryList).hasSize(databaseSizeBeforeDelete - 1);
-    }
-
-    @Test
-    @Transactional
-    public void searchAssetCategory() throws Exception {
-        // Initialize the database
-        assetCategoryService.save(assetCategory);
-
-        // Search the assetCategory
-        restAssetCategoryMockMvc.perform(get("/api/_search/asset-categories?query=id:" + assetCategory.getId()))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(assetCategory.getId().intValue())))
-            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
-            .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION.toString())))
-            .andExpect(jsonPath("$.[*].type").value(hasItem(DEFAULT_TYPE.toString())));
     }
 
     @Test

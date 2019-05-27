@@ -5,8 +5,7 @@
             "home": {
                 "title": "EBITS",
                 "createLabel": "Crear nuevo EBIT",
-                "createOrEditLabel": "Crear o editar EBIT",
-                "search": "Search for EBIT"
+                "createOrEditLabel": "Crear o editar EBIT"
             },
             "created": "Un nuevo EBIT ha sido creado con el identificador {{ param }}",
             "updated": "Un EBIT ha sido actualizado con el identificador {{ param }}",

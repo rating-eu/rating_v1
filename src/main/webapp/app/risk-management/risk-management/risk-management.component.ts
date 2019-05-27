@@ -1,3 +1,20 @@
+/*
+ * Copyright 2019 HERMENEUT Consortium
+ *  
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *  
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
+
 import * as _ from 'lodash';
 import { ImpactEvaluationService } from './../../impact-evaluation/impact-evaluation.service';
 import { Component, OnInit } from '@angular/core';
@@ -9,6 +26,8 @@ import { ImpactLevelDescriptionMgm, ImpactLevelDescriptionMgmService } from '../
 import { ImpactLevelMgm, ImpactLevelMgmService } from '../../entities/impact-level-mgm';
 import { forkJoin } from 'rxjs/observable/forkJoin';
 import { HttpResponse } from '@angular/common/http';
+import {DatasharingService} from "../../datasharing/datasharing.service";
+import {ImpactMode} from "../../entities/enumerations/ImpactMode.enum";
 
 @Component({
     // tslint:disable-next-line:component-selector
@@ -17,6 +36,8 @@ import { HttpResponse } from '@angular/common/http';
     styleUrls: ['./risk-management.component.css'],
 })
 export class RiskManagementComponent implements OnInit {
+    public impactModeEnum = ImpactMode;
+
     public isLikelihoodCollapsed = true;
     public isVulnerabilityCollapsed = true;
     public isCriticalCollapsed = true;
@@ -27,11 +48,10 @@ export class RiskManagementComponent implements OnInit {
     public squareColumnElement: number[];
     public squareRowElement: number[];
     public lastSquareRowElement: number;
-    private mySelf: SelfAssessmentMgm;
+    public selfAssessment: SelfAssessmentMgm;
     public criticalLevel: CriticalLevelMgm;
-    public impactMinLevelValues: number[] = [];
-    public impactMaxLevelValues: number[] = [];
     public impactLevelDescriptions: ImpactLevelDescriptionMgm[];
+    public impactLevelDescriptionsByImpactMap: Map<number, ImpactLevelDescriptionMgm>;
     public impactLevels: ImpactLevelMgm[];
     public impactLevelsMap: Map<number, ImpactLevelMgm>;
     public selectedImpactLevel: ImpactLevelDescriptionMgm = null;
@@ -46,19 +66,29 @@ export class RiskManagementComponent implements OnInit {
         private jhiAlertService: JhiAlertService,
         private impactLevelDescriptionService: ImpactLevelDescriptionMgmService,
         private impactLevelService: ImpactLevelMgmService,
-        private impactEvaluationService: ImpactEvaluationService
+        private impactEvaluationService: ImpactEvaluationService,
+        private dataSharingService: DatasharingService
     ) {
     }
 
     ngOnInit() {
-        if (this.mySelf = this.mySelfAssessmentService.getSelfAssessment()) {
+        this.impactLevelDescriptionsByImpactMap = new Map();
+
+        if (this.selfAssessment = this.dataSharingService.selfAssessment) {
             // TODO Chiamata per il recupero degli impact level
             forkJoin(
                 this.impactLevelDescriptionService.query(null),
-                this.impactLevelService.findAllBySelfAssessment(this.mySelf.id)
+                this.impactLevelService.findAllBySelfAssessment(this.selfAssessment.id)
             ).toPromise()
                 .then((response: [HttpResponse<ImpactLevelDescriptionMgm[]>, HttpResponse<ImpactLevelMgm[]>]) => {
                     this.impactLevelDescriptions = response[0].body;
+
+                    if(this.impactLevelDescriptions){
+                        this.impactLevelDescriptions.forEach((description: ImpactLevelDescriptionMgm) => {
+                            this.impactLevelDescriptionsByImpactMap.set(description.impact, description);
+                        });
+                    }
+
                     this.impactLevels = response[1].body;
 
                     // ImpactLevels already exist
@@ -72,7 +102,7 @@ export class RiskManagementComponent implements OnInit {
                         this.impactLevels = [];
 
                         this.impactLevelDescriptions.forEach((description: ImpactLevelDescriptionMgm) => {
-                            this.impactLevels.push(new ImpactLevelMgm(undefined, this.mySelf.id, description.impact, 0, 0));
+                            this.impactLevels.push(new ImpactLevelMgm(undefined, this.selfAssessment.id, description.impact, 0, 0));
                         });
                     }
 
@@ -99,7 +129,7 @@ export class RiskManagementComponent implements OnInit {
                 });
         }
 
-        this.riskService.getCriticalLevel(this.mySelf).toPromise().then((res) => {
+        this.riskService.getCriticalLevel(this.selfAssessment).toPromise().then((res) => {
             if (res) {
                 this.criticalLevel = res;
             } else {
@@ -108,7 +138,7 @@ export class RiskManagementComponent implements OnInit {
                 this.criticalLevel.lowLimit = 4;
                 this.criticalLevel.mediumLimit = 14;
                 this.criticalLevel.highLimit = 25;
-                this.criticalLevel.selfAssessment = this.mySelf;
+                this.criticalLevel.selfAssessment = this.selfAssessment;
                 this.criticalLevelService.create(this.criticalLevel).toPromise().then((res2) => {
                     if (res2) {
                         this.criticalLevel = res2.body;

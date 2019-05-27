@@ -5,8 +5,7 @@
             "home": {
                 "title": "EBITS",
                 "createLabel": "Criar um(a) novo(a) EBIT",
-                "createOrEditLabel": "Criar ou editar um(a) EBIT",
-                "search": "Search for EBIT"
+                "createOrEditLabel": "Criar ou editar um(a) EBIT"
             },
             "created": "A new EBIT is created with identifier {{ param }}",
             "updated": "A EBIT is updated with identifier {{ param }}",

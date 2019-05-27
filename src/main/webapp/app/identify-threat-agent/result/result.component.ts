@@ -1,28 +1,45 @@
+/*
+ * Copyright 2019 HERMENEUT Consortium
+ *  
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *  
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
+
 import * as _ from 'lodash';
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { DatasharingService } from '../../datasharing/datasharing.service';
-import { ThreatAgentMgm, ThreatAgentMgmService } from '../../entities/threat-agent-mgm';
-import { Couple } from '../../utils/couple.class';
-import { Fraction } from '../../utils/fraction.class';
-import { IdentifyThreatAgentService } from '../identify-threat-agent.service';
-import { MotivationMgm, MotivationMgmService } from '../../entities/motivation-mgm';
-import { AnswerMgm } from '../../entities/answer-mgm';
-import { AccountService, BaseEntity, UserService } from '../../shared';
-import { QuestionMgm, QuestionMgmService } from '../../entities/question-mgm';
-import { QuestionnaireMgm } from '../../entities/questionnaire-mgm';
-import { MyAnswerMgm, MyAnswerMgmService } from '../../entities/my-answer-mgm';
-import { ActivatedRoute, Params, Router } from '@angular/router';
-import { Subscription } from 'rxjs/Subscription';
-import { QuestionnairesService } from '../../questionnaires/questionnaires.service';
-import { QuestionnaireStatusMgm, QuestionnaireStatusMgmService } from '../../entities/questionnaire-status-mgm';
-import { HttpResponse } from '@angular/common/http';
-import { Observable } from 'rxjs/Observable';
-import { concatMap, mergeMap } from 'rxjs/operators';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {DatasharingService} from '../../datasharing/datasharing.service';
+import {ThreatAgentMgm, ThreatAgentMgmService} from '../../entities/threat-agent-mgm';
+import {Couple} from '../../utils/couple.class';
+import {Fraction} from '../../utils/fraction.class';
+import {IdentifyThreatAgentService} from '../identify-threat-agent.service';
+import {MotivationMgm, MotivationMgmService} from '../../entities/motivation-mgm';
+import {AnswerMgm} from '../../entities/answer-mgm';
+import {AccountService, BaseEntity, UserService} from '../../shared';
+import {QuestionMgm, QuestionMgmService} from '../../entities/question-mgm';
+import {QuestionnaireMgm} from '../../entities/questionnaire-mgm';
+import {MyAnswerMgm, MyAnswerMgmService} from '../../entities/my-answer-mgm';
+import {Router} from '@angular/router';
+import {Subscription} from 'rxjs/Subscription';
+import {QuestionnairesService} from '../../questionnaires/questionnaires.service';
+import {QuestionnaireStatusMgm, QuestionnaireStatusMgmService} from '../../entities/questionnaire-status-mgm';
+import {HttpResponse} from '@angular/common/http';
+import {Observable} from 'rxjs/Observable';
+import {mergeMap} from 'rxjs/operators';
 import * as CryptoJS from 'crypto-js';
-import { forkJoin } from 'rxjs/observable/forkJoin';
-import { SelfAssessmentMgmService } from '../../entities/self-assessment-mgm';
-import { SkillLevel } from '../../entities/enumerations/SkillLevel.enum';
-import { AnswerLikelihood } from '../../entities/enumerations/AnswerLikelihood.enum';
+import {forkJoin} from 'rxjs/observable/forkJoin';
+import {SelfAssessmentMgmService} from '../../entities/self-assessment-mgm';
+import {SkillLevel} from '../../entities/enumerations/SkillLevel.enum';
+import {QuestionnairePurpose} from "../../entities/enumerations/QuestionnairePurpose.enum";
 
 interface OrderBy {
     threatAgents: boolean;
@@ -78,28 +95,28 @@ export class ThreatResultComponent implements OnInit, OnDestroy {
     public page = 1;
 
     constructor(private selfAssessmentService: SelfAssessmentMgmService,
-        private dataSharingService: DatasharingService,
-        private identifyThreatAgentService: IdentifyThreatAgentService,
-        private myAnswerService: MyAnswerMgmService,
-        private accountService: AccountService,
-        private userService: UserService,
-        private router: Router,
-        private questionService: QuestionMgmService,
-        private questionnairesService: QuestionnairesService,
-        private questionnaireStatusService: QuestionnaireStatusMgmService,
-        private motivationsService: MotivationMgmService,
-        private threatAgentService: ThreatAgentMgmService) {
+                private dataSharingService: DatasharingService,
+                private identifyThreatAgentService: IdentifyThreatAgentService,
+                private myAnswerService: MyAnswerMgmService,
+                private accountService: AccountService,
+                private userService: UserService,
+                private router: Router,
+                private questionService: QuestionMgmService,
+                private questionnairesService: QuestionnairesService,
+                private questionnaireStatusService: QuestionnaireStatusMgmService,
+                private motivationsService: MotivationMgmService,
+                private threatAgentService: ThreatAgentMgmService) {
     }
 
     ngOnInit() {
-        const selfAssessment = this.selfAssessmentService.getSelfAssessment();
+        const selfAssessment = this.dataSharingService.selfAssessment;
         this.orderBy = {
             threatAgents: false,
             skills: false,
             interest: false,
             type: 'desc'
         };
-        this.questionnaireStatuses$ = this.questionnaireStatusService.getAllBySelfAssessmentAndQuestionnairePurpose(selfAssessment.id, 'ID_THREAT_AGENT');
+        this.questionnaireStatuses$ = this.questionnaireStatusService.getAllQuestionnaireStatusesByCompanyProfileAndQuestionnairePurpose(selfAssessment.companyProfile, QuestionnairePurpose.ID_THREAT_AGENT);
 
         // First Fetch the QuestionnaireStatus with the above observable.
         // Then Create the Observable for the Questions and MyAnswers belonging to the fetched QuestionnaireStatus.
@@ -194,8 +211,8 @@ export class ThreatResultComponent implements OnInit, OnDestroy {
     }
 
     questionsMyAnswersToThreatAgentsPercentageMap(questionsMap: Map<number, QuestionMgm>,
-        myAnswers: MyAnswerMgm[],
-        defaultThreatAgents: ThreatAgentMgm[]): Map<String, Couple<ThreatAgentMgm, Fraction>> {
+                                                  myAnswers: MyAnswerMgm[],
+                                                  defaultThreatAgents: ThreatAgentMgm[]): Map<String, Couple<ThreatAgentMgm, Fraction>> {
 
         const map: Map<string, Couple<ThreatAgentMgm, Fraction>> = new Map<string, Couple<ThreatAgentMgm, Fraction>>();
 

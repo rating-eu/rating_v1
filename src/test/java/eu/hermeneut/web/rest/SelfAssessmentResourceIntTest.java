@@ -1,3 +1,20 @@
+/*
+ * Copyright 2019 HERMENEUT Consortium
+ *  
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *  
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
+
 package eu.hermeneut.web.rest;
 
 import eu.hermeneut.HermeneutApp;
@@ -7,7 +24,6 @@ import eu.hermeneut.repository.SelfAssessmentRepository;
 import eu.hermeneut.service.ExternalAuditService;
 import eu.hermeneut.service.MyCompanyService;
 import eu.hermeneut.service.SelfAssessmentService;
-import eu.hermeneut.repository.search.SelfAssessmentSearchRepository;
 import eu.hermeneut.service.UserService;
 import eu.hermeneut.web.rest.errors.ExceptionTranslator;
 
@@ -73,9 +89,6 @@ public class SelfAssessmentResourceIntTest {
     private MyCompanyService myCompanyService;
 
     @Autowired
-    private SelfAssessmentSearchRepository selfAssessmentSearchRepository;
-
-    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -118,7 +131,6 @@ public class SelfAssessmentResourceIntTest {
 
     @Before
     public void initTest() {
-        selfAssessmentSearchRepository.deleteAll();
         selfAssessment = createEntity(em);
     }
 
@@ -140,12 +152,6 @@ public class SelfAssessmentResourceIntTest {
         assertThat(testSelfAssessment.getName()).isEqualTo(DEFAULT_NAME);
         assertThat(testSelfAssessment.getCreated()).isEqualTo(DEFAULT_CREATED);
         assertThat(testSelfAssessment.getModified()).isEqualTo(DEFAULT_MODIFIED);
-
-        // Validate the SelfAssessment in Elasticsearch
-        SelfAssessment selfAssessmentEs = selfAssessmentSearchRepository.findOne(testSelfAssessment.getId());
-        assertThat(testSelfAssessment.getCreated()).isEqualTo(testSelfAssessment.getCreated());
-        assertThat(testSelfAssessment.getModified()).isEqualTo(testSelfAssessment.getModified());
-        assertThat(selfAssessmentEs).isEqualToIgnoringGivenFields(testSelfAssessment, "created", "modified");
     }
 
     @Test
@@ -254,12 +260,6 @@ public class SelfAssessmentResourceIntTest {
         assertThat(testSelfAssessment.getName()).isEqualTo(UPDATED_NAME);
         assertThat(testSelfAssessment.getCreated()).isEqualTo(UPDATED_CREATED);
         assertThat(testSelfAssessment.getModified()).isEqualTo(UPDATED_MODIFIED);
-
-        // Validate the SelfAssessment in Elasticsearch
-        SelfAssessment selfAssessmentEs = selfAssessmentSearchRepository.findOne(testSelfAssessment.getId());
-        assertThat(testSelfAssessment.getCreated()).isEqualTo(testSelfAssessment.getCreated());
-        assertThat(testSelfAssessment.getModified()).isEqualTo(testSelfAssessment.getModified());
-        assertThat(selfAssessmentEs).isEqualToIgnoringGivenFields(testSelfAssessment, "created", "modified");
     }
 
     @Test
@@ -293,29 +293,9 @@ public class SelfAssessmentResourceIntTest {
             .accept(TestUtil.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk());
 
-        // Validate Elasticsearch is empty
-        boolean selfAssessmentExistsInEs = selfAssessmentSearchRepository.exists(selfAssessment.getId());
-        assertThat(selfAssessmentExistsInEs).isFalse();
-
         // Validate the database is empty
         List<SelfAssessment> selfAssessmentList = selfAssessmentRepository.findAll();
         assertThat(selfAssessmentList).hasSize(databaseSizeBeforeDelete - 1);
-    }
-
-    @Test
-    @Transactional
-    public void searchSelfAssessment() throws Exception {
-        // Initialize the database
-        selfAssessmentService.save(selfAssessment);
-
-        // Search the selfAssessment
-        restSelfAssessmentMockMvc.perform(get("/api/_search/self-assessments?query=id:" + selfAssessment.getId()))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(selfAssessment.getId().intValue())))
-            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
-            .andExpect(jsonPath("$.[*].created").value(hasItem(sameInstant(DEFAULT_CREATED))))
-            .andExpect(jsonPath("$.[*].modified").value(hasItem(sameInstant(DEFAULT_MODIFIED))));
     }
 
     @Test

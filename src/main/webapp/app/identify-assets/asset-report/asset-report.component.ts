@@ -1,3 +1,20 @@
+/*
+ * Copyright 2019 HERMENEUT Consortium
+ *  
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *  
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
+
 import * as _ from 'lodash';
 
 import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
@@ -5,10 +22,11 @@ import { Principal } from '../../shared';
 import { SelfAssessmentMgm, SelfAssessmentMgmService } from '../../entities/self-assessment-mgm';
 import { Subscription } from 'rxjs';
 import { JhiEventManager } from 'ng-jhipster';
-import { MyRole } from '../../entities/enumerations/MyRole.enum';
+import { Role } from '../../entities/enumerations/Role.enum';
 import { IdentifyAssetUtilService } from '../identify-asset.util.service';
 import { MyAssetMgm } from '../../entities/my-asset-mgm';
 import { AssetType } from '../../entities/enumerations/AssetType.enum';
+import {DatasharingService} from "../../datasharing/datasharing.service";
 
 interface OrderBy {
     category: boolean;
@@ -23,7 +41,7 @@ interface OrderBy {
 })
 
 export class AssetReportComponent implements OnInit, OnDestroy {
-    public mySelf: SelfAssessmentMgm = {};
+    public mySelf: SelfAssessmentMgm = null;
     private myAssets: MyAssetMgm[];
 
     public selectedCategory: string;
@@ -48,6 +66,7 @@ export class AssetReportComponent implements OnInit, OnDestroy {
         private eventManager: JhiEventManager,
         private ref: ChangeDetectorRef,
         private idaUtilsService: IdentifyAssetUtilService,
+        private dataSharingService: DatasharingService
     ) {
 
     }
@@ -65,9 +84,9 @@ export class AssetReportComponent implements OnInit, OnDestroy {
         };
         this.principal.identity().then((account) => {
             this.account = account;
-            this.mySelf = this.mySelfAssessmentService.getSelfAssessment();
+            this.mySelf = this.dataSharingService.selfAssessment;
             this.registerChangeIdentifyAssets();
-            if (this.account['authorities'].includes(MyRole.ROLE_CISO) && this.mySelf) {
+            if (this.account['authorities'].includes(Role.ROLE_CISO) && this.mySelf) {
                 this.idaUtilsService.getMyAssets(this.mySelf)
                     .toPromise()
                     .then((mySavedAssets) => {

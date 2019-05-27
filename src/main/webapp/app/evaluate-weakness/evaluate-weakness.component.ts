@@ -1,3 +1,20 @@
+/*
+ * Copyright 2019 HERMENEUT Consortium
+ *  
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *  
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
+
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute, NavigationStart, Router} from '@angular/router';
 import {Subscription} from 'rxjs/Subscription';
@@ -22,8 +39,7 @@ export class EvaluateWeaknessComponent implements OnInit, OnDestroy {
     account: Account;
     currentAccount: any;
     eventSubscriber: Subscription;
-    currentSearch: string;
-    selectedSelfAssessment: SelfAssessmentMgm = {};
+    selectedSelfAssessment: SelfAssessmentMgm = null;
 
     constructor(private attackStrategyService: AttackStrategyMgmService,
                 private jhiAlertService: JhiAlertService,
@@ -44,7 +60,8 @@ export class EvaluateWeaknessComponent implements OnInit, OnDestroy {
         this.principal.identity().then((account) => {
             this.account = account;
         });
-        this.selectedSelfAssessment = this.mySelfAssessmentService.getSelfAssessment();
+
+        this.selectedSelfAssessment = this.dataSharingService.selfAssessment;
     }
 
     previousState() {

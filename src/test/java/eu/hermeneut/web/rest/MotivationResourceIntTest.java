@@ -1,3 +1,20 @@
+/*
+ * Copyright 2019 HERMENEUT Consortium
+ *  
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *  
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
+
 package eu.hermeneut.web.rest;
 
 import eu.hermeneut.HermeneutApp;
@@ -5,7 +22,6 @@ import eu.hermeneut.HermeneutApp;
 import eu.hermeneut.domain.Motivation;
 import eu.hermeneut.repository.MotivationRepository;
 import eu.hermeneut.service.MotivationService;
-import eu.hermeneut.repository.search.MotivationSearchRepository;
 import eu.hermeneut.web.rest.errors.ExceptionTranslator;
 
 import org.junit.Before;
@@ -64,9 +80,6 @@ public class MotivationResourceIntTest {
     private MotivationService motivationService;
 
     @Autowired
-    private MotivationSearchRepository motivationSearchRepository;
-
-    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -110,7 +123,6 @@ public class MotivationResourceIntTest {
 
     @Before
     public void initTest() {
-        motivationSearchRepository.deleteAll();
         motivation = createEntity(em);
     }
 
@@ -133,12 +145,6 @@ public class MotivationResourceIntTest {
         assertThat(testMotivation.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
         assertThat(testMotivation.getCreated()).isEqualTo(DEFAULT_CREATED);
         assertThat(testMotivation.getModified()).isEqualTo(DEFAULT_MODIFIED);
-
-        // Validate the Motivation in Elasticsearch
-        Motivation motivationEs = motivationSearchRepository.findOne(testMotivation.getId());
-        assertThat(testMotivation.getCreated()).isEqualTo(testMotivation.getCreated());
-        assertThat(testMotivation.getModified()).isEqualTo(testMotivation.getModified());
-        assertThat(motivationEs).isEqualToIgnoringGivenFields(testMotivation, "created", "modified");
     }
 
     @Test
@@ -251,12 +257,6 @@ public class MotivationResourceIntTest {
         assertThat(testMotivation.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
         assertThat(testMotivation.getCreated()).isEqualTo(UPDATED_CREATED);
         assertThat(testMotivation.getModified()).isEqualTo(UPDATED_MODIFIED);
-
-        // Validate the Motivation in Elasticsearch
-        Motivation motivationEs = motivationSearchRepository.findOne(testMotivation.getId());
-        assertThat(testMotivation.getCreated()).isEqualTo(testMotivation.getCreated());
-        assertThat(testMotivation.getModified()).isEqualTo(testMotivation.getModified());
-        assertThat(motivationEs).isEqualToIgnoringGivenFields(testMotivation, "created", "modified");
     }
 
     @Test
@@ -290,30 +290,9 @@ public class MotivationResourceIntTest {
             .accept(TestUtil.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk());
 
-        // Validate Elasticsearch is empty
-        boolean motivationExistsInEs = motivationSearchRepository.exists(motivation.getId());
-        assertThat(motivationExistsInEs).isFalse();
-
         // Validate the database is empty
         List<Motivation> motivationList = motivationRepository.findAll();
         assertThat(motivationList).hasSize(databaseSizeBeforeDelete - 1);
-    }
-
-    @Test
-    @Transactional
-    public void searchMotivation() throws Exception {
-        // Initialize the database
-        motivationService.save(motivation);
-
-        // Search the motivation
-        restMotivationMockMvc.perform(get("/api/_search/motivations?query=id:" + motivation.getId()))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(motivation.getId().intValue())))
-            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
-            .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION.toString())))
-            .andExpect(jsonPath("$.[*].created").value(hasItem(sameInstant(DEFAULT_CREATED))))
-            .andExpect(jsonPath("$.[*].modified").value(hasItem(sameInstant(DEFAULT_MODIFIED))));
     }
 
     @Test

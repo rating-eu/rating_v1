@@ -1,3 +1,20 @@
+/*
+ * Copyright 2019 HERMENEUT Consortium
+ *  
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *  
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
+
 package eu.hermeneut.web.rest;
 
 import eu.hermeneut.HermeneutApp;
@@ -5,7 +22,6 @@ import eu.hermeneut.HermeneutApp;
 import eu.hermeneut.domain.CompanyGroup;
 import eu.hermeneut.repository.CompanyGroupRepository;
 import eu.hermeneut.service.CompanyGroupService;
-import eu.hermeneut.repository.search.CompanyGroupSearchRepository;
 import eu.hermeneut.web.rest.errors.ExceptionTranslator;
 
 import org.junit.Before;
@@ -64,9 +80,6 @@ public class CompanyGroupResourceIntTest {
     private CompanyGroupService companyGroupService;
 
     @Autowired
-    private CompanyGroupSearchRepository companyGroupSearchRepository;
-
-    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -110,7 +123,6 @@ public class CompanyGroupResourceIntTest {
 
     @Before
     public void initTest() {
-        companyGroupSearchRepository.deleteAll();
         companyGroup = createEntity(em);
     }
 
@@ -133,12 +145,6 @@ public class CompanyGroupResourceIntTest {
         assertThat(testCompanyGroup.getDescription()).isEqualTo(DEFAULT_DESCRIPTION);
         assertThat(testCompanyGroup.getCreated()).isEqualTo(DEFAULT_CREATED);
         assertThat(testCompanyGroup.getModified()).isEqualTo(DEFAULT_MODIFIED);
-
-        // Validate the CompanyGroup in Elasticsearch
-        CompanyGroup companyGroupEs = companyGroupSearchRepository.findOne(testCompanyGroup.getId());
-        assertThat(testCompanyGroup.getCreated()).isEqualTo(testCompanyGroup.getCreated());
-        assertThat(testCompanyGroup.getModified()).isEqualTo(testCompanyGroup.getModified());
-        assertThat(companyGroupEs).isEqualToIgnoringGivenFields(testCompanyGroup, "created", "modified");
     }
 
     @Test
@@ -251,12 +257,6 @@ public class CompanyGroupResourceIntTest {
         assertThat(testCompanyGroup.getDescription()).isEqualTo(UPDATED_DESCRIPTION);
         assertThat(testCompanyGroup.getCreated()).isEqualTo(UPDATED_CREATED);
         assertThat(testCompanyGroup.getModified()).isEqualTo(UPDATED_MODIFIED);
-
-        // Validate the CompanyGroup in Elasticsearch
-        CompanyGroup companyGroupEs = companyGroupSearchRepository.findOne(testCompanyGroup.getId());
-        assertThat(testCompanyGroup.getCreated()).isEqualTo(testCompanyGroup.getCreated());
-        assertThat(testCompanyGroup.getModified()).isEqualTo(testCompanyGroup.getModified());
-        assertThat(companyGroupEs).isEqualToIgnoringGivenFields(testCompanyGroup, "created", "modified");
     }
 
     @Test
@@ -290,30 +290,9 @@ public class CompanyGroupResourceIntTest {
             .accept(TestUtil.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk());
 
-        // Validate Elasticsearch is empty
-        boolean companyGroupExistsInEs = companyGroupSearchRepository.exists(companyGroup.getId());
-        assertThat(companyGroupExistsInEs).isFalse();
-
         // Validate the database is empty
         List<CompanyGroup> companyGroupList = companyGroupRepository.findAll();
         assertThat(companyGroupList).hasSize(databaseSizeBeforeDelete - 1);
-    }
-
-    @Test
-    @Transactional
-    public void searchCompanyGroup() throws Exception {
-        // Initialize the database
-        companyGroupService.save(companyGroup);
-
-        // Search the companyGroup
-        restCompanyGroupMockMvc.perform(get("/api/_search/company-groups?query=id:" + companyGroup.getId()))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(companyGroup.getId().intValue())))
-            .andExpect(jsonPath("$.[*].name").value(hasItem(DEFAULT_NAME.toString())))
-            .andExpect(jsonPath("$.[*].description").value(hasItem(DEFAULT_DESCRIPTION.toString())))
-            .andExpect(jsonPath("$.[*].created").value(hasItem(sameInstant(DEFAULT_CREATED))))
-            .andExpect(jsonPath("$.[*].modified").value(hasItem(sameInstant(DEFAULT_MODIFIED))));
     }
 
     @Test

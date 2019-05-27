@@ -1,3 +1,20 @@
+<!--
+  ~ Copyright 2019 HERMENEUT Consortium
+  ~  
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~  
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~  
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  ~
+  -->
+
 <div>
     <div class="row justify-content-center">
         <div class="col-md-10">
@@ -123,17 +140,16 @@
                         Sector</label>
                     <select class="form-control" name="company.sector" id="company.sector"
                             [(ngModel)]="registerAccount.companySector">
-                        <option value="OTHER">{{'hermeneutApp.CompType.OTHER' | translate}}</option>
-                        <option value="FINANCE_AND_INSURANCE">{{'hermeneutApp.CompType.FINANCE_AND_INSURANCE' |
-                            translate}}
-                        </option>
-                        <option value="HEALTH_CARE_AND_SOCIAL_ASSISTANCE">
-                            {{'hermeneutApp.CompType.HEALTH_CARE_AND_SOCIAL_ASSISTANCE' | translate}}
-                        </option>
-                        <option value="INFORMATION">{{'hermeneutApp.CompType.INFORMATION' | translate}}</option>
-                        <option value="PROFESSIONAL_SCIENTIFIC_AND_TECHNICAL_SERVICE">
-                            {{'hermeneutApp.CompType.PROFESSIONAL_SCIENTIFIC_AND_TECHNICAL_SERVICE' | translate}}
-                        </option>
+                        <option
+                            [value]="companyTypeEnum.FINANCE_AND_INSURANCE">{{companyTypeEnum.FINANCE_AND_INSURANCE}}</option>
+                        <option
+                            [value]="companyTypeEnum.HEALTH_CARE_AND_SOCIAL_ASSISTANCE">{{companyTypeEnum.HEALTH_CARE_AND_SOCIAL_ASSISTANCE}}</option>
+                        <option [value]="companyTypeEnum.INFORMATION">{{companyTypeEnum.INFORMATION}}</option>
+                        <option
+                            [value]="companyTypeEnum.PROFESSIONAL_SCIENTIFIC_AND_TECHNICAL_SERVICE">{{companyTypeEnum.PROFESSIONAL_SCIENTIFIC_AND_TECHNICAL_SERVICE}}</option>
+                        <option
+                            [value]="companyTypeEnum.LOCAL_PUBLIC_ADMINISTRATION">{{companyTypeEnum.LOCAL_PUBLIC_ADMINISTRATION}}</option>
+                        <option [value]="companyTypeEnum.OTHER">{{companyTypeEnum.OTHER}}</option>
                     </select>
                 </div>
 
@@ -234,7 +250,8 @@
                 </div>
 
                 <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="terms" value="" id="terms" [(ngModel)]="termsAccepted"
+                    <input class="form-check-input" type="checkbox" name="terms" value="" id="terms"
+                           [(ngModel)]="termsAccepted"
                            #termsAcceptedInput="ngModel" required>
                     <label class="form-check-label" for="terms">
                         I have read and agree to the&nbsp;

@@ -1,3 +1,20 @@
+/*
+ * Copyright 2019 HERMENEUT Consortium
+ *  
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *  
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
+
 package eu.hermeneut.web.rest;
 
 import eu.hermeneut.HermeneutApp;
@@ -5,7 +22,6 @@ import eu.hermeneut.HermeneutApp;
 import eu.hermeneut.domain.MyCompany;
 import eu.hermeneut.repository.MyCompanyRepository;
 import eu.hermeneut.service.MyCompanyService;
-import eu.hermeneut.repository.search.MyCompanySearchRepository;
 import eu.hermeneut.web.rest.errors.ExceptionTranslator;
 
 import org.junit.Before;
@@ -47,9 +63,6 @@ public class MyCompanyResourceIntTest {
     private MyCompanyService myCompanyService;
 
     @Autowired
-    private MyCompanySearchRepository myCompanySearchRepository;
-
-    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -89,7 +102,6 @@ public class MyCompanyResourceIntTest {
 
     @Before
     public void initTest() {
-        myCompanySearchRepository.deleteAll();
         myCompany = createEntity(em);
     }
 
@@ -108,10 +120,6 @@ public class MyCompanyResourceIntTest {
         List<MyCompany> myCompanyList = myCompanyRepository.findAll();
         assertThat(myCompanyList).hasSize(databaseSizeBeforeCreate + 1);
         MyCompany testMyCompany = myCompanyList.get(myCompanyList.size() - 1);
-
-        // Validate the MyCompany in Elasticsearch
-        MyCompany myCompanyEs = myCompanySearchRepository.findOne(testMyCompany.getId());
-        assertThat(myCompanyEs).isEqualToIgnoringGivenFields(testMyCompany);
     }
 
     @Test
@@ -189,10 +197,6 @@ public class MyCompanyResourceIntTest {
         List<MyCompany> myCompanyList = myCompanyRepository.findAll();
         assertThat(myCompanyList).hasSize(databaseSizeBeforeUpdate);
         MyCompany testMyCompany = myCompanyList.get(myCompanyList.size() - 1);
-
-        // Validate the MyCompany in Elasticsearch
-        MyCompany myCompanyEs = myCompanySearchRepository.findOne(testMyCompany.getId());
-        assertThat(myCompanyEs).isEqualToIgnoringGivenFields(testMyCompany);
     }
 
     @Test
@@ -226,26 +230,9 @@ public class MyCompanyResourceIntTest {
             .accept(TestUtil.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk());
 
-        // Validate Elasticsearch is empty
-        boolean myCompanyExistsInEs = myCompanySearchRepository.exists(myCompany.getId());
-        assertThat(myCompanyExistsInEs).isFalse();
-
         // Validate the database is empty
         List<MyCompany> myCompanyList = myCompanyRepository.findAll();
         assertThat(myCompanyList).hasSize(databaseSizeBeforeDelete - 1);
-    }
-
-    @Test
-    @Transactional
-    public void searchMyCompany() throws Exception {
-        // Initialize the database
-        myCompanyService.save(myCompany);
-
-        // Search the myCompany
-        restMyCompanyMockMvc.perform(get("/api/_search/my-companies?query=id:" + myCompany.getId()))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(myCompany.getId().intValue())));
     }
 
     @Test

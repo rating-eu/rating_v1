@@ -1,3 +1,20 @@
+/*
+ * Copyright 2019 HERMENEUT Consortium
+ *  
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *  
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
+
 package eu.hermeneut.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
@@ -16,9 +33,6 @@ import java.net.URISyntaxException;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.StreamSupport;
-
-import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
  * REST controller for managing IndirectAsset.
@@ -137,19 +151,4 @@ public class IndirectAssetResource {
         indirectAssetService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
-
-    /**
-     * SEARCH  /_search/indirect-assets?query=:query : search for the indirectAsset corresponding
-     * to the query.
-     *
-     * @param query the query of the indirectAsset search
-     * @return the result of the search
-     */
-    @GetMapping("/_search/indirect-assets")
-    @Timed
-    public List<IndirectAsset> searchIndirectAssets(@RequestParam String query) {
-        log.debug("REST request to search IndirectAssets for query {}", query);
-        return indirectAssetService.search(query);
-    }
-
 }

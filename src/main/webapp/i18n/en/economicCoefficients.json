@@ -5,8 +5,7 @@
             "home": {
                 "title": "Economic Coefficients",
                 "createLabel": "Create a new Economic Coefficients",
-                "createOrEditLabel": "Create or edit a Economic Coefficients",
-                "search": "Search for Economic Coefficients"
+                "createOrEditLabel": "Create or edit a Economic Coefficients"
             },
             "created": "A new Economic Coefficients is created with identifier {{ param }}",
             "updated": "A Economic Coefficients is updated with identifier {{ param }}",

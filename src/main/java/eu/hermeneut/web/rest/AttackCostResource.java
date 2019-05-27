@@ -1,3 +1,20 @@
+/*
+ * Copyright 2019 HERMENEUT Consortium
+ *  
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *  
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
+
 package eu.hermeneut.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
@@ -159,19 +176,4 @@ public class AttackCostResource {
         attackCostService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
-
-    /**
-     * SEARCH  /_search/attack-costs?query=:query : search for the attackCost corresponding
-     * to the query.
-     *
-     * @param query the query of the attackCost search
-     * @return the result of the search
-     */
-    @GetMapping("/_search/attack-costs")
-    @Timed
-    public List<AttackCost> searchAttackCosts(@RequestParam String query) {
-        log.debug("REST request to search AttackCosts for query {}", query);
-        return attackCostService.search(query);
-    }
-
 }

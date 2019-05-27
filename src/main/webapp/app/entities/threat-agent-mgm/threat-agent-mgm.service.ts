@@ -1,3 +1,20 @@
+/*
+ * Copyright 2019 HERMENEUT Consortium
+ *  
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *  
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
+
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpResponse} from '@angular/common/http';
 import {Observable} from 'rxjs/Observable';
@@ -10,12 +27,15 @@ import {createRequestOption} from '../../shared';
 
 export type EntityResponseType = HttpResponse<ThreatAgentMgm>;
 
+const COMPANY_ID = '{companyID}';
+
 @Injectable()
 export class ThreatAgentMgmService {
 
     private resourceUrl = SERVER_API_URL + 'api/threat-agents';
     private resourceSearchUrl = SERVER_API_URL + 'api/_search/threat-agents';
     private defaultThreatAgentsUrl = this.resourceUrl + '/default';
+    private threatAgentsByCompanyUrl = this.resourceUrl + '/company-profile/' + COMPANY_ID;
 
     constructor(private http: HttpClient, private dateUtils: JhiDateUtils) {
     }
@@ -45,12 +65,6 @@ export class ThreatAgentMgmService {
 
     delete(id: number): Observable<HttpResponse<any>> {
         return this.http.delete<any>(`${this.resourceUrl}/${id}`, {observe: 'response'});
-    }
-
-    search(req?: any): Observable<HttpResponse<ThreatAgentMgm[]>> {
-        const options = createRequestOption(req);
-        return this.http.get<ThreatAgentMgm[]>(this.resourceSearchUrl, {params: options, observe: 'response'})
-            .map((res: HttpResponse<ThreatAgentMgm[]>) => this.convertArrayResponse(res));
     }
 
     private convertResponse(res: EntityResponseType): EntityResponseType {
@@ -95,5 +109,15 @@ export class ThreatAgentMgmService {
         const options = createRequestOption();
         return this.http.get<ThreatAgentMgm[]>(this.defaultThreatAgentsUrl, {params: options, observe: 'response'})
             .map((res: HttpResponse<ThreatAgentMgm[]>) => this.convertArrayResponse(res));
+    }
+
+    getThreatAgentsByCompany(companyID: number): Observable<HttpResponse<ThreatAgentMgm[]>> {
+        const options = createRequestOption();
+        return this.http.get<ThreatAgentMgm[]>(this.threatAgentsByCompanyUrl.replace(COMPANY_ID, String(companyID)),
+            {
+                params: options,
+                observe: 'response'
+            }
+        ).map((res: HttpResponse<ThreatAgentMgm[]>) => this.convertArrayResponse(res));
     }
 }

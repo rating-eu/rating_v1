@@ -1,3 +1,20 @@
+/*
+ * Copyright 2019 HERMENEUT Consortium
+ *  
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *  
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
+
 import {Component, OnInit, OnDestroy} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 
@@ -7,8 +24,10 @@ import {JhiEventManager} from 'ng-jhipster';
 import {QuestionnaireStatusMgm} from './questionnaire-status-mgm.model';
 import {QuestionnaireStatusMgmPopupService} from './questionnaire-status-mgm-popup.service';
 import {QuestionnaireStatusMgmService} from './questionnaire-status-mgm.service';
-import {SessionStorageService} from 'ngx-webstorage';
 import {PopUpService} from '../../shared/pop-up-services/pop-up.service';
+import {EventManagerService} from "../../datasharing/event-manager.service";
+
+import {Event} from "../../datasharing/event.model";
 
 @Component({
     selector: 'jhi-questionnaire-status-mgm-delete-dialog',
@@ -21,7 +40,8 @@ export class QuestionnaireStatusMgmDeleteDialogComponent {
     constructor(
         private questionnaireStatusService: QuestionnaireStatusMgmService,
         public activeModal: NgbActiveModal,
-        private eventManager: JhiEventManager
+        private eventManager: JhiEventManager,
+        private eventManagerService: EventManagerService
     ) {
     }
 
@@ -33,8 +53,12 @@ export class QuestionnaireStatusMgmDeleteDialogComponent {
         this.questionnaireStatusService.delete(id).subscribe((response) => {
             this.eventManager.broadcast({
                 name: 'questionnaireStatusListModification',
-                content: 'Deleted an questionnaireStatus'
+                content: 'Deleted a questionnaireStatus'
             });
+
+            console.error("Broadcasting QSTatus delete event...");
+
+            this.eventManagerService.broadcast(new Event('questionnaireStatusListModification', 'Deleted a questionnaireStatus'));
             this.activeModal.dismiss(true);
         });
     }

@@ -5,8 +5,7 @@
             "home": {
                 "title": "Motivations",
                 "createLabel": "Genera un nuovo Motivation",
-                "createOrEditLabel": "Genera o modifica un Motivation",
-                "search": "Cerca Motivation"
+                "createOrEditLabel": "Genera o modifica un Motivation"
             },
             "created": "&Egrave; stato generato un nuovo Motivation con identificatore {{ param }}",
             "updated": "&Egrave; stato aggiornato Motivation identificato da {{ param }}",

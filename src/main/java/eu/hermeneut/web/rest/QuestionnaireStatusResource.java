@@ -1,9 +1,27 @@
+/*
+ * Copyright 2019 HERMENEUT Consortium
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
+
 package eu.hermeneut.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import eu.hermeneut.aop.annotation.KafkaRiskProfileHook;
 import eu.hermeneut.domain.QuestionnaireStatus;
 import eu.hermeneut.domain.enumeration.QuestionnairePurpose;
+import eu.hermeneut.domain.enumeration.Role;
 import eu.hermeneut.security.AuthoritiesConstants;
 import eu.hermeneut.service.QuestionnaireStatusService;
 import eu.hermeneut.web.rest.errors.BadRequestAlertException;
@@ -50,7 +68,7 @@ public class QuestionnaireStatusResource {
      */
     @PostMapping("/questionnaire-statuses")
     @Timed
-    @PreAuthorize("@questionnaireStatusGuardian.isCISO(#questionnaireStatus) || @questionnaireStatusGuardian.isExternal(#questionnaireStatus) || hasRole('ROLE_ADMIN')")
+    //@PreAuthorize("@questionnaireStatusGuardian.isCISO(#questionnaireStatus) || @questionnaireStatusGuardian.isExternal(#questionnaireStatus) || hasRole('ROLE_ADMIN')")
     @Secured({AuthoritiesConstants.CISO, AuthoritiesConstants.EXTERNAL_AUDIT, AuthoritiesConstants.ADMIN})
     @KafkaRiskProfileHook
     public ResponseEntity<QuestionnaireStatus> createQuestionnaireStatus(@Valid @RequestBody QuestionnaireStatus questionnaireStatus) throws URISyntaxException {
@@ -82,7 +100,7 @@ public class QuestionnaireStatusResource {
      */
     @PutMapping("/questionnaire-statuses")
     @Timed
-    @PreAuthorize("@questionnaireStatusGuardian.isCISO(#questionnaireStatus) || @questionnaireStatusGuardian.isExternal(#questionnaireStatus) || hasRole('ROLE_ADMIN')")
+    //@PreAuthorize("@questionnaireStatusGuardian.isCISO(#questionnaireStatus) || @questionnaireStatusGuardian.isExternal(#questionnaireStatus) || hasRole('ROLE_ADMIN')")
     @Secured({AuthoritiesConstants.CISO, AuthoritiesConstants.EXTERNAL_AUDIT, AuthoritiesConstants.ADMIN})
     @KafkaRiskProfileHook
     public ResponseEntity<QuestionnaireStatus> updateQuestionnaireStatus(@Valid @RequestBody QuestionnaireStatus questionnaireStatus) throws URISyntaxException {
@@ -114,46 +132,68 @@ public class QuestionnaireStatusResource {
         return questionnaireStatusService.findAll();
     }
 
+    @GetMapping("/questionnaire-statuses/me/purpose/{questionnairePurpose}")
+    @Timed
+    public List<QuestionnaireStatus> getMyQuestionnaireStatusesByPurpose(@PathVariable QuestionnairePurpose questionnairePurpose) {
+        return this.questionnaireStatusService.findAllByCurrentUserAndQuestionnairePurpose(questionnairePurpose);
+    }
+
     /**
      * GET  /questionnaire-statuses : get all the questionnaireStatuses.
      *
      * @return the ResponseEntity with status 200 (OK) and the list of questionnaireStatuses in body
      */
-    @GetMapping("/questionnaire-statuses/self-assessment/{selfAssessmentID}/user/{userID}")
+    @GetMapping("/questionnaire-statuses/company-profile/{companyProfileID}")
     @Timed
-    @PreAuthorize("@selfAssessmentGuardian.isCISO(#selfAssessmentID) || @selfAssessmentGuardian.isExternal(#selfAssessmentID) || hasRole('ROLE_ADMIN')")
+    @PreAuthorize("@companyProfileGuardian.isCISO(#companyProfileID) || @companyProfileGuardian.isExternal(#companyProfileID) || hasRole('ROLE_ADMIN')")
     @Secured({AuthoritiesConstants.CISO, AuthoritiesConstants.EXTERNAL_AUDIT, AuthoritiesConstants.ADMIN})
-    public List<QuestionnaireStatus> getAllQuestionnaireStatusesBySelfAssessmentAndUser(@PathVariable Long selfAssessmentID, @PathVariable Long userID) {
+    public List<QuestionnaireStatus> getAllQuestionnaireStatusesByCompanyProfile(@PathVariable Long companyProfileID) {
+        log.debug("REST request to get all QuestionnaireStatuses by CompanyProfile");
+        return questionnaireStatusService.findAllByCompanyProfile(companyProfileID);
+    }
+
+    /**
+     * GET  /questionnaire-statuses : get all the questionnaireStatuses.
+     *
+     * @return the ResponseEntity with status 200 (OK) and the list of questionnaireStatuses in body
+     */
+    @GetMapping("/questionnaire-statuses/company-profile/{companyProfileID}/user/{userID}")
+    @Timed
+    @PreAuthorize("@companyProfileGuardian.isCISO(#companyProfileID) || @companyProfileGuardian.isExternal(#companyProfileID) || hasRole('ROLE_ADMIN')")
+    @Secured({AuthoritiesConstants.CISO, AuthoritiesConstants.EXTERNAL_AUDIT, AuthoritiesConstants.ADMIN})
+    public List<QuestionnaireStatus> getAllQuestionnaireStatusesByCompanyProfileAndUser(@PathVariable Long companyProfileID, @PathVariable Long userID) {
         log.debug("REST request to get all QuestionnaireStatuses by self assessment and user");
-        return questionnaireStatusService.findAllBySelfAssessmentAndUser(selfAssessmentID, userID);
+        return questionnaireStatusService.findAllByCompanyProfileAndUser(companyProfileID, userID);
+    }
+
+    @GetMapping("/questionnaire-statuses/company-profile/{companyProfileID}/purpose/{questionnairePurpose}")
+    @Timed
+    @PreAuthorize("@companyProfileGuardian.isCISO(#companyProfileID) || @companyProfileGuardian.isExternal(#companyProfileID) || hasRole('ROLE_ADMIN')")
+    @Secured({AuthoritiesConstants.CISO, AuthoritiesConstants.EXTERNAL_AUDIT, AuthoritiesConstants.ADMIN})
+    public List<QuestionnaireStatus> getQuestionnaireStatusByCompanyProfileAndQuestionnairePurpose(@PathVariable Long companyProfileID, @PathVariable String questionnairePurpose) {
+        log.debug("REST request to get QuestionnaireStatus by CompanyProfile and questionnairePurpose");
+        log.debug("CompanyProfile: " + companyProfileID);
+        log.debug("QuestionnairePurpose: " + questionnairePurpose);
+
+        QuestionnairePurpose purpose = QuestionnairePurpose.valueOf(questionnairePurpose);
+        log.debug("Purpose enum: " + purpose);
+
+        List<QuestionnaireStatus> questionnaireStatuses = questionnaireStatusService.findAllByCompanyProfileAndQuestionnairePurpose(companyProfileID, purpose);
+        return questionnaireStatuses;
     }
 
     /**
-     * GET  /questionnaire-statuses : get all the questionnaireStatuses by Role SelfAssessment and Questionnaire.
+     * GET  /questionnaire-statuses : get all the questionnaireStatuses by Role CompanyProfile and Questionnaire.
      *
      * @return the ResponseEntity with status 200 (OK) and the list of questionnaireStatuses in body
      */
-    @GetMapping("/questionnaire-statuses/self-assessment/{selfAssessmentID}/questionnaire/{questionnaireID}/role/{role}")
+    @GetMapping("/questionnaire-statuses/company-profile/{companyProfileID}/questionnaire/{questionnaireID}/role/{role}")
     @Timed
-    @PreAuthorize("@selfAssessmentGuardian.isCISO(#selfAssessmentID) || @selfAssessmentGuardian.isExternal(#selfAssessmentID) || hasRole('ROLE_ADMIN')")
+    @PreAuthorize("@companyProfileGuardian.isCISO(#companyProfileID) || @companyProfileGuardian.isExternal(#companyProfileID) || hasRole('ROLE_ADMIN')")
     @Secured({AuthoritiesConstants.CISO, AuthoritiesConstants.EXTERNAL_AUDIT, AuthoritiesConstants.ADMIN})
-    public QuestionnaireStatus getQuestionnaireStatusByRoleSelfAssessmentAndQuestionnaire(@PathVariable Long selfAssessmentID, @PathVariable Long questionnaireID, @PathVariable String role) {
-        log.debug("REST request to get all QuestionnaireStatuses by Role SelfAssessment and Questionnaire");
-        return questionnaireStatusService.findByRoleSelfAssessmentAndQuestionnaire(role, selfAssessmentID, questionnaireID);
-    }
-
-    /**
-     * GET  /questionnaire-statuses : get all the questionnaireStatuses.
-     *
-     * @return the ResponseEntity with status 200 (OK) and the list of questionnaireStatuses in body
-     */
-    @GetMapping("/questionnaire-statuses/self-assessment/{selfAssessmentID}")
-    @Timed
-    @PreAuthorize("@selfAssessmentGuardian.isCISO(#selfAssessmentID) || @selfAssessmentGuardian.isExternal(#selfAssessmentID) || hasRole('ROLE_ADMIN')")
-    @Secured({AuthoritiesConstants.CISO, AuthoritiesConstants.EXTERNAL_AUDIT, AuthoritiesConstants.ADMIN})
-    public List<QuestionnaireStatus> getAllQuestionnaireStatusesBySelfAssessment(@PathVariable Long selfAssessmentID) {
-        log.debug("REST request to get all QuestionnaireStatuses by SelfAssessment");
-        return questionnaireStatusService.findAllBySelfAssessment(selfAssessmentID);
+    public List<QuestionnaireStatus> getAllQuestionnaireStatusesByCompanyProfileQuestionnaireAndRole(@PathVariable Long companyProfileID, @PathVariable Long questionnaireID, @PathVariable Role role) {
+        log.debug("REST request to get all QuestionnaireStatuses by Role CompanyProfile and Questionnaire");
+        return questionnaireStatusService.findAllByRoleCompanyProfileAndQuestionnaire(role, companyProfileID, questionnaireID);
     }
 
     /**
@@ -172,19 +212,16 @@ public class QuestionnaireStatusResource {
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(questionnaireStatus));
     }
 
-    @GetMapping("/questionnaire-statuses/{selfAssessmentID}/{questionnairePurpose}")
+    @GetMapping("/questionnaire-statuses/company-profile/{companyProfileID}/purpose/{questionnairePurpose}/user/{userID}")
     @Timed
-    @PreAuthorize("@selfAssessmentGuardian.isCISO(#selfAssessmentID) || @selfAssessmentGuardian.isExternal(#selfAssessmentID) || hasRole('ROLE_ADMIN')")
+    @PreAuthorize("@companyProfileGuardian.isCISO(#companyProfileID) || @companyProfileGuardian.isExternal(#companyProfileID) || hasRole('ROLE_ADMIN')")
     @Secured({AuthoritiesConstants.CISO, AuthoritiesConstants.EXTERNAL_AUDIT, AuthoritiesConstants.ADMIN})
-    public List<QuestionnaireStatus> getQuestionnaireStatusBySelfAssessmentAndQuestionnairePurpose(@PathVariable Long selfAssessmentID, @PathVariable String questionnairePurpose) {
-        log.debug("REST request to get QuestionnaireStatus by selfAssessment and questionnairePurpose");
-        log.debug("SelfAssessment: " + selfAssessmentID);
+    public List<QuestionnaireStatus> getQuestionnaireStatusByCompanyProfileQuestionnairePurposeAndUser(@PathVariable Long companyProfileID, @PathVariable QuestionnairePurpose questionnairePurpose, @PathVariable Long userID) {
+        log.debug("REST request to get QuestionnaireStatus by CompanyProfile and questionnairePurpose");
+        log.debug("CompanyProfile: " + companyProfileID);
         log.debug("QuestionnairePurpose: " + questionnairePurpose);
 
-        QuestionnairePurpose purpose = QuestionnairePurpose.valueOf(questionnairePurpose);
-        log.debug("Purpose enum: " + purpose);
-
-        List<QuestionnaireStatus> questionnaireStatuses = questionnaireStatusService.findAllBySelfAssessmentAndQuestionnairePurpose(selfAssessmentID, purpose);
+        List<QuestionnaireStatus> questionnaireStatuses = questionnaireStatusService.findAllByCompanyProfileQuestionnairePurposeAndUser(companyProfileID, questionnairePurpose, userID);
         return questionnaireStatuses;
     }
 
@@ -202,20 +239,5 @@ public class QuestionnaireStatusResource {
         log.debug("REST request to delete QuestionnaireStatus : {}", id);
         questionnaireStatusService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
-    }
-
-    /**
-     * SEARCH  /_search/questionnaire-statuses?query=:query : search for the questionnaireStatus corresponding
-     * to the query.
-     *
-     * @param query the query of the questionnaireStatus search
-     * @return the result of the search
-     */
-    @GetMapping("/_search/questionnaire-statuses")
-    @Timed
-    @Secured(AuthoritiesConstants.ADMIN)
-    public List<QuestionnaireStatus> searchQuestionnaireStatuses(@RequestParam String query) {
-        log.debug("REST request to search QuestionnaireStatuses for query {}", query);
-        return questionnaireStatusService.search(query);
     }
 }

@@ -5,8 +5,7 @@
             "home": {
                 "title": "Assets",
                 "createLabel": "Criar um(a) novo(a) Asset",
-                "createOrEditLabel": "Criar ou editar um(a) Asset",
-                "search": "Search for Asset"
+                "createOrEditLabel": "Criar ou editar um(a) Asset"
             },
             "created": "A new Asset is created with identifier {{ param }}",
             "updated": "A Asset is updated with identifier {{ param }}",

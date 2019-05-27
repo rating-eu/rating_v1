@@ -1,3 +1,20 @@
+/*
+ * Copyright 2019 HERMENEUT Consortium
+ *  
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *  
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
+
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
@@ -9,6 +26,7 @@ import {QuestionnaireMgm} from '../questionnaire-mgm';
 import {MyAnswerMgm} from '../my-answer-mgm/my-answer-mgm.model';
 import { QuestionMgm } from './question-mgm.model';
 import { createRequestOption } from '../../shared';
+import {ContainerType} from "../enumerations/ContainerType.enum";
 
 export type EntityResponseType = HttpResponse<QuestionMgm>;
 
@@ -18,6 +36,7 @@ export class QuestionMgmService {
     private resourceUrl =  SERVER_API_URL + 'api/questions';
     private resourceSearchUrl = SERVER_API_URL + 'api/_search/questions';
     private questionsByQuestionnaireIDAPIUrl = SERVER_API_URL + 'api/questions/by/questionnaire/{questionnaireID}';
+    private questionsByQuestionnaireAndSection = SERVER_API_URL + 'api/questions/by/questionnaire/{questionnaireID}/section/{section}';
 
     constructor(private http: HttpClient, private dateUtils: JhiDateUtils) { }
 
@@ -53,14 +72,19 @@ export class QuestionMgmService {
         }).map((res: HttpResponse<MyAnswerMgm[]>) => this.convertArrayResponse(res));
     }
 
-    delete(id: number): Observable<HttpResponse<any>> {
-        return this.http.delete<any>(`${this.resourceUrl}/${id}`, { observe: 'response'});
+    getQuestionsByQuestionnaireAndSection(questionnaireID: number, section: ContainerType): Observable<HttpResponse<QuestionMgm[]>> {
+        const options = createRequestOption();
+
+        return this.http.get<QuestionnaireMgm[]>(this.questionsByQuestionnaireAndSection
+            .replace('{questionnaireID}', String(questionnaireID))
+            .replace('{section}', ContainerType[section]), {
+            params: options,
+            observe: 'response'
+        }).map((res: HttpResponse<MyAnswerMgm[]>) => this.convertArrayResponse(res));
     }
 
-    search(req?: any): Observable<HttpResponse<QuestionMgm[]>> {
-        const options = createRequestOption(req);
-        return this.http.get<QuestionMgm[]>(this.resourceSearchUrl, { params: options, observe: 'response' })
-            .map((res: HttpResponse<QuestionMgm[]>) => this.convertArrayResponse(res));
+    delete(id: number): Observable<HttpResponse<any>> {
+        return this.http.delete<any>(`${this.resourceUrl}/${id}`, { observe: 'response'});
     }
 
     private convertResponse(res: EntityResponseType): EntityResponseType {

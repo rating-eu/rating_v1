@@ -1,14 +1,32 @@
+/*
+ * Copyright 2019 HERMENEUT Consortium
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
+
 package eu.hermeneut.web.rest;
 
 import eu.hermeneut.config.Constants;
 import com.codahale.metrics.annotation.Timed;
+import eu.hermeneut.domain.Authority;
 import eu.hermeneut.domain.User;
+import eu.hermeneut.domain.enumeration.Role;
 import eu.hermeneut.repository.UserRepository;
-import eu.hermeneut.repository.search.UserSearchRepository;
 import eu.hermeneut.security.AuthoritiesConstants;
 import eu.hermeneut.service.MailService;
 import eu.hermeneut.service.UserService;
-import eu.hermeneut.service.dto.UserDTO;
+import eu.hermeneut.domain.dto.UserDTO;
 import eu.hermeneut.web.rest.errors.BadRequestAlertException;
 import eu.hermeneut.web.rest.errors.EmailAlreadyUsedException;
 import eu.hermeneut.web.rest.errors.LoginAlreadyUsedException;
@@ -31,9 +49,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
-
-import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
  * REST controller for managing users.
@@ -71,14 +86,11 @@ public class UserResource {
 
     private final MailService mailService;
 
-    private final UserSearchRepository userSearchRepository;
-
-    public UserResource(UserRepository userRepository, UserService userService, MailService mailService, UserSearchRepository userSearchRepository) {
+    public UserResource(UserRepository userRepository, UserService userService, MailService mailService) {
 
         this.userRepository = userRepository;
         this.userService = userService;
         this.mailService = mailService;
-        this.userSearchRepository = userSearchRepository;
     }
 
     /**
@@ -90,7 +102,7 @@ public class UserResource {
      *
      * @param userDTO the user to create
      * @return the ResponseEntity with status 201 (Created) and with body the new user, or with status 400 (Bad Request) if the login or email is already in use
-     * @throws URISyntaxException if the Location URI syntax is incorrect
+     * @throws URISyntaxException       if the Location URI syntax is incorrect
      * @throws BadRequestAlertException 400 (Bad Request) if the login or email is already in use
      */
     @PostMapping("/users")
@@ -110,7 +122,7 @@ public class UserResource {
             User newUser = userService.createUser(userDTO);
             mailService.sendCreationEmail(newUser);
             return ResponseEntity.created(new URI("/api/users/" + newUser.getLogin()))
-                .headers(HeaderUtil.createAlert( "userManagement.created", newUser.getLogin()))
+                .headers(HeaderUtil.createAlert("userManagement.created", newUser.getLogin()))
                 .body(newUser);
         }
     }
@@ -150,10 +162,22 @@ public class UserResource {
      */
     @GetMapping("/users")
     @Timed
+    @Secured(AuthoritiesConstants.ADMIN)
     public ResponseEntity<List<UserDTO>> getAllUsers(Pageable pageable) {
         final Page<UserDTO> page = userService.getAllManagedUsers(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/users");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+
+    @GetMapping("/users/external")
+    public List<UserDTO> getAllExternalAudits() {
+        // To be valid the Authority entity just needs to have the correct role's name.
+        Authority authority = new Authority();
+        authority.setName(AuthoritiesConstants.EXTERNAL_AUDIT);
+
+        return this.userRepository.findAllByRole(authority).stream().parallel()
+            .map(UserDTO::new)
+            .collect(Collectors.toList());
     }
 
     /**
@@ -161,7 +185,7 @@ public class UserResource {
      */
     @GetMapping("/users/authorities")
     @Timed
-    @Secured(AuthoritiesConstants.ADMIN)
+    @Secured({AuthoritiesConstants.ADMIN, AuthoritiesConstants.CISO})
     public List<String> getAuthorities() {
         return userService.getAuthorities();
     }
@@ -193,21 +217,6 @@ public class UserResource {
     public ResponseEntity<Void> deleteUser(@PathVariable String login) {
         log.debug("REST request to delete User: {}", login);
         userService.deleteUser(login);
-        return ResponseEntity.ok().headers(HeaderUtil.createAlert( "userManagement.deleted", login)).build();
-    }
-
-    /**
-     * SEARCH /_search/users/:query : search for the User corresponding
-     * to the query.
-     *
-     * @param query the query to search
-     * @return the result of the search
-     */
-    @GetMapping("/_search/users/{query}")
-    @Timed
-    public List<User> search(@PathVariable String query) {
-        return StreamSupport
-            .stream(userSearchRepository.search(queryStringQuery(query)).spliterator(), false)
-            .collect(Collectors.toList());
+        return ResponseEntity.ok().headers(HeaderUtil.createAlert("userManagement.deleted", login)).build();
     }
 }

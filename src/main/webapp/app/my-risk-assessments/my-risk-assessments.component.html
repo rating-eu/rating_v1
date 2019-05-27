@@ -1,0 +1,193 @@
+<!--
+  ~ Copyright 2019 HERMENEUT Consortium
+  ~  
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~  
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~  
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  ~
+  -->
+
+<div class="card-box">
+    <h2><span><a href="javascript:void(0)" (click)="isCollapsed=!isCollapsed">Risk Assessments</a></span></h2>
+    <div [ngbCollapse]="isCollapsed">
+        <p>A <b>Risk Assessment</b> is the process of identifying, analysing and evaluating risk.
+            In other words, it identifies gaps between people and processes, as well as gaps in technology itself,
+            and proposes remedies to minimise the risks associated with those gaps.</p>
+        <p>It is the only way to ensure that the cyber security controls you choose are appropriate to the risks your
+            organization faces.
+            To evaluate your risks, you can create a new Risk Assessment and perform all the stages provided by the
+            tool.
+            Ideally, we suggest you to be careful about what you want to evaluate; just consider your organization's
+            domain and the services that you want to evaluate.</p>
+        <p>For instance, if you are a Public Local Administration, you may perform several Risk Assessments as much
+            as the services that you have (eg. Local Police service, Data Management service, etc..). Otherwise, if you
+            are a
+            Company, you may evaluate your risks all over the organization.</p>
+        <p>Just create a new Risk Assessment naming it as the service/process/sector/department or entire company but,
+            be careful that information that you will provide must concerns only the domain's space that you
+            want to evaluate.</p>
+    </div>
+
+    <span *ngIf="isCISO">
+        <p *ngIf="!mySelfAssessments">To perform a Risk Assessment, create it, then select it from the table below by clicking on it.</p>
+        <p *ngIf="mySelfAssessments && !mySelfAssessment">To perform a Risk Assessment, create it or select one from the table below by clicking on it.</p>
+    </span>
+    <span *ngIf="isExternal">
+        <p *ngIf="!mySelfAssessments">Currently there is no Risk Assessment to review. Please, come back later.</p>
+        <p *ngIf="mySelfAssessments && !mySelfAssessment">Please select a Risk Assessment to review</p>
+    </span>
+</div>
+
+<div *ngIf="isCISO" class="row">
+    <div class="col-lg-8 col-md-12">
+    </div>
+    <div class="col-lg-4 col-md-12">
+        <div class="card-box">
+            <button
+                class="btn btn-block btn-primary waves-effect waves-light btn-info jh-create-entity create-self-assessment-mgm"
+                (click)="popUpService.setOnUserBehaviour()"
+                [routerLink]="['/', { outlets: { popup: ['self-assessment-mgm-new'] } }]">
+                <i class="fas fa-plus"></i>
+                <span class="hidden-sm-down" jhiTranslate="hermeneutApp.selfAssessment.home.createLabel">
+                    Create a new Risk Assessment
+                </span>
+            </button>
+        </div>
+    </div>
+</div>
+
+<div class="table-responsive table-hover" *ngIf="mySelfAssessments" style="margin-bottom:50px">
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <!--<th><span jhiTranslate="global.field.id">ID</span></th>-->
+            <th><span jhiTranslate="hermeneutApp.selfAssessment.name">Name</span>
+                <i *ngIf="!orderBy.name" (click)=" tableOrderBy('name', true)" class="fa fa-sort"
+                   aria-hidden="true"></i>
+                <i *ngIf="orderBy.name && orderBy.type === 'desc'" (click)=" tableOrderBy('name', false)"
+                   class="fa fa-chevron-down" aria-hidden="true"></i>
+                <i *ngIf="orderBy.name && orderBy.type === 'asc'" (click)=" tableOrderBy('name', true)"
+                   class="fa fa-chevron-up" aria-hidden="true"></i>
+            </th>
+            <th><span jhiTranslate="hermeneutApp.selfAssessment.created">Created</span>
+                <i *ngIf="!orderBy.created" (click)=" tableOrderBy('created', true)" class="fa fa-sort"
+                   aria-hidden="true"></i>
+                <i *ngIf="orderBy.created && orderBy.type === 'desc'" (click)=" tableOrderBy('created', false)"
+                   class="fa fa-chevron-down" aria-hidden="true"></i>
+                <i *ngIf="orderBy.created && orderBy.type === 'asc'" (click)=" tableOrderBy('created', true)"
+                   class="fa fa-chevron-up" aria-hidden="true"></i>
+            </th>
+            <th><span jhiTranslate="hermeneutApp.selfAssessment.modified">Modified</span>
+                <i *ngIf="!orderBy.modified" (click)=" tableOrderBy('modified', true)" class="fa fa-sort"
+                   aria-hidden="true"></i>
+                <i *ngIf="orderBy.modified && orderBy.type === 'desc'" (click)=" tableOrderBy('modified', false)"
+                   class="fa fa-chevron-down" aria-hidden="true"></i>
+                <i *ngIf="orderBy.modified && orderBy.type === 'asc'" (click)=" tableOrderBy('modified', true)"
+                   class="fa fa-chevron-up" aria-hidden="true"></i>
+            </th>
+            <th><span jhiTranslate="hermeneutApp.selfAssessment.companyProfile">Company Profile</span></th>
+            <!--<th><span jhiTranslate="hermeneutApp.selfAssessment.user">User</span></th>-->
+            <th><span jhiTranslate="hermeneutApp.selfAssessment.companyGroup">Company Group</span></th>
+            <!--<th><span jhiTranslate="hermeneutApp.selfAssessment.asset">Asset</span></th>-->
+            <!--<th><span jhiTranslate="hermeneutApp.selfAssessment.threatagent">Threatagent</span></th>-->
+            <!--<th><span jhiTranslate="hermeneutApp.selfAssessment.attackstrategy">Attackstrategy</span></th>-->
+            <!--<th><span jhiTranslate="hermeneutApp.selfAssessment.externalAudit">External Audit</span></th>-->
+            <!--<th><span jhiTranslate="hermeneutApp.selfAssessment.questionnaire">Questionnaire</span></th>-->
+            <th *ngIf="isCISO"></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let selfAssessment of mySelfAssessments ;trackBy: trackId">
+            <!--<td><a [routerLink]="['../self-assessment-mgm', selfAssessment.id ]">{{selfAssessment.id}}</a></td>-->
+            <td (click)="selectSelfAssessment(selfAssessment)">{{selfAssessment.name}}</td>
+            <td (click)="selectSelfAssessment(selfAssessment)">{{selfAssessment.created | date:'medium'}}</td>
+            <td (click)="selectSelfAssessment(selfAssessment)">{{selfAssessment.modified | date:'medium'}}</td>
+            <td (click)="selectSelfAssessment(selfAssessment)">
+                <div *ngIf="selfAssessment.companyProfile">
+                    <a
+                        [routerLink]="['../company-profile-mgm', selfAssessment.companyProfile?.id ]">{{selfAssessment.companyProfile?.name}}</a>
+                </div>
+            </td>
+            <!--<td (click)="selectSelfAssessment(selfAssessment)">
+        {{selfAssessment.user?.login}}
+    </td>-->
+            <td (click)="selectSelfAssessment(selfAssessment)">
+                    <span *ngFor="let companyGroup of selfAssessment.companyGroups; let last = last">
+                        <a class="form-control-static"
+                           [routerLink]="['../company-group-mgm', companyGroup?.id ]">{{companyGroup.name}}</a>{{last
+                        ? '' : ', '}}
+                    </span>
+            </td>
+            <!--<td (click)="selectSelfAssessment(selfAssessment)">
+            <span *ngFor="let asset of selfAssessment.assets; let last = last">
+                    <a class="form-control-static"
+                       [routerLink]="['../asset-mgm', asset?.id ]">{{asset.name}}</a>{{last ? '' : ', '}}
+                </span>
+    </td>-->
+            <!--<td (click)="selectSelfAssessment(selfAssessment)">
+            <span *ngFor="let threatagent of selfAssessment.threatAgents; let last = last">
+                    <a class="form-control-static" [routerLink]="['../threat-agent-mgm', threatagent?.id ]">{{threatagent.name}}</a>{{last ? '' : ', '}}
+                </span>
+    </td>-->
+            <!--<td (click)="selectSelfAssessment(selfAssessment)">
+            <span *ngFor="let attackstrategy of selfAssessment.attackstrategies; let last = last">
+                    <a class="form-control-static"
+                       [routerLink]="['../attack-strategy-mgm', attackstrategy?.id ]">{{attackstrategy.name}}</a>{{last ? '' : ', '}}
+                </span>
+    </td>-->
+            <!--<td (click)="selectSelfAssessment(selfAssessment)">
+                <div *ngIf="selfAssessment.externalAudit">
+                    <a
+                        [routerLink]="['../external-audit-mgm', selfAssessment.externalAudit?.id ]">{{selfAssessment.externalAudit?.name}}</a>
+                </div>
+            </td>-->
+            <!--<td (click)="selectSelfAssessment(selfAssessment)">
+                <span *ngFor="let questionnaire of selfAssessment.questionnaires; let last = last">
+                    <a class="form-control-static" [routerLink]="['../questionnaire-mgm', questionnaire?.id ]">{{questionnaire.name}}</a>{{last
+                    ? '' : ', '}}
+                </span>
+        </td>-->
+            <td *ngIf="isCISO" class="text-right">
+                <div class="btn-group flex-btn-group-container btn-table">
+                    <ng-template #tipButtonView><span jhiTranslate="entity.action.view">View Test</span>
+                    </ng-template>
+                    <!--<button type="submit"
+                    [routerLink]="['../self-assessment-mgm', selfAssessment.id ]"
+                    class="btn btn-info btn-sm"
+                    ngbTooltip="tipButtonView"
+                    container="body">
+                <i class="fas fa-eye"></i>-->
+                    <!-- <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>-->
+                    <!--</button>-->
+                    <ng-template #tipButtonEdit><span jhiTranslate="entity.action.edit">Edit Test</span>
+                    </ng-template>
+                    <button type="submit" (click)="popUpService.setOnUserBehaviour()"
+                            [routerLink]="['/', { outlets: { popup: 'self-assessment-mgm/'+ selfAssessment.id + '/edit'} }]"
+                            replaceUrl="true" queryParamsHandling="merge" class="btn btn-warning btn-sm"
+                            ngbTooltip="tipButtonEdit" container="body">
+                        <i class="fas fa-edit"></i>
+                        <!-- <span class="d-none d-md-inline" jhiTranslate="entity.action.edit" >Edit</span>-->
+                    </button>
+                    <ng-template #tipButtonDelete><span jhiTranslate="entity.action.delete">Edit Test</span>
+                    </ng-template>
+                    <button type="submit" (click)="popUpService.setOnUserBehaviour()"
+                            [routerLink]="['/', { outlets: { popup: 'self-assessment-mgm/'+ selfAssessment.id + '/delete'} }]"
+                            replaceUrl="true" queryParamsHandling="merge" class="btn btn-danger btn-sm"
+                            ngbTooltip="tipButtonDelete" container="body">
+                        <i class="fas fa-trash"></i>
+                        <!-- <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>-->
+                    </button>
+                </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>

@@ -5,8 +5,7 @@
             "home": {
                 "title": "Direct Assets",
                 "createLabel": "Crear nuevo Direct Asset",
-                "createOrEditLabel": "Crear o editar Direct Asset",
-                "search": "Search for Direct Asset"
+                "createOrEditLabel": "Crear o editar Direct Asset"
             },
             "created": "Un nuevo Direct Asset ha sido creado con el identificador {{ param }}",
             "updated": "Un Direct Asset ha sido actualizado con el identificador {{ param }}",

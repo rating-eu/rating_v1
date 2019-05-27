@@ -1,3 +1,20 @@
+/*
+ * Copyright 2019 HERMENEUT Consortium
+ *  
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *  
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
+
 package eu.hermeneut.web.rest;
 
 import eu.hermeneut.HermeneutApp;
@@ -5,7 +22,6 @@ import eu.hermeneut.HermeneutApp;
 import eu.hermeneut.domain.Logo;
 import eu.hermeneut.repository.LogoRepository;
 import eu.hermeneut.service.LogoService;
-import eu.hermeneut.repository.search.LogoSearchRepository;
 import eu.hermeneut.web.rest.errors.ExceptionTranslator;
 
 import org.junit.Before;
@@ -56,9 +72,6 @@ public class LogoResourceIntTest {
     private LogoService logoService;
 
     @Autowired
-    private LogoSearchRepository logoSearchRepository;
-
-    @Autowired
     private MappingJackson2HttpMessageConverter jacksonMessageConverter;
 
     @Autowired
@@ -101,7 +114,6 @@ public class LogoResourceIntTest {
 
     @Before
     public void initTest() {
-        logoSearchRepository.deleteAll();
         logo = createEntity(em);
     }
 
@@ -123,10 +135,6 @@ public class LogoResourceIntTest {
         assertThat(testLogo.isPrimary()).isEqualTo(DEFAULT_PRIMARY);
         assertThat(testLogo.getImage()).isEqualTo(DEFAULT_IMAGE);
         assertThat(testLogo.getImageContentType()).isEqualTo(DEFAULT_IMAGE_CONTENT_TYPE);
-
-        // Validate the Logo in Elasticsearch
-        Logo logoEs = logoSearchRepository.findOne(testLogo.getId());
-        assertThat(logoEs).isEqualToIgnoringGivenFields(testLogo);
     }
 
     @Test
@@ -235,10 +243,6 @@ public class LogoResourceIntTest {
         assertThat(testLogo.isPrimary()).isEqualTo(UPDATED_PRIMARY);
         assertThat(testLogo.getImage()).isEqualTo(UPDATED_IMAGE);
         assertThat(testLogo.getImageContentType()).isEqualTo(UPDATED_IMAGE_CONTENT_TYPE);
-
-        // Validate the Logo in Elasticsearch
-        Logo logoEs = logoSearchRepository.findOne(testLogo.getId());
-        assertThat(logoEs).isEqualToIgnoringGivenFields(testLogo);
     }
 
     @Test
@@ -272,29 +276,9 @@ public class LogoResourceIntTest {
             .accept(TestUtil.APPLICATION_JSON_UTF8))
             .andExpect(status().isOk());
 
-        // Validate Elasticsearch is empty
-        boolean logoExistsInEs = logoSearchRepository.exists(logo.getId());
-        assertThat(logoExistsInEs).isFalse();
-
         // Validate the database is empty
         List<Logo> logoList = logoRepository.findAll();
         assertThat(logoList).hasSize(databaseSizeBeforeDelete - 1);
-    }
-
-    @Test
-    @Transactional
-    public void searchLogo() throws Exception {
-        // Initialize the database
-        logoService.save(logo);
-
-        // Search the logo
-        restLogoMockMvc.perform(get("/api/_search/logos?query=id:" + logo.getId()))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
-            .andExpect(jsonPath("$.[*].id").value(hasItem(logo.getId().intValue())))
-            .andExpect(jsonPath("$.[*].primary").value(hasItem(DEFAULT_PRIMARY.booleanValue())))
-            .andExpect(jsonPath("$.[*].imageContentType").value(hasItem(DEFAULT_IMAGE_CONTENT_TYPE)))
-            .andExpect(jsonPath("$.[*].image").value(hasItem(Base64Utils.encodeToString(DEFAULT_IMAGE))));
     }
 
     @Test

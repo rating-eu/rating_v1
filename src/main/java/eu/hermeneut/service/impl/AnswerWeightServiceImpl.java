@@ -1,19 +1,32 @@
+/*
+ * Copyright 2019 HERMENEUT Consortium
+ *  
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *  
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
+
 package eu.hermeneut.service.impl;
 
+import eu.hermeneut.domain.enumeration.QuestionType;
 import eu.hermeneut.service.AnswerWeightService;
 import eu.hermeneut.domain.AnswerWeight;
 import eu.hermeneut.repository.AnswerWeightRepository;
-import eu.hermeneut.repository.search.AnswerWeightSearchRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
-
-import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
  * Service Implementation for managing AnswerWeight.
@@ -26,11 +39,9 @@ public class AnswerWeightServiceImpl implements AnswerWeightService {
 
     private final AnswerWeightRepository answerWeightRepository;
 
-    private final AnswerWeightSearchRepository answerWeightSearchRepository;
 
-    public AnswerWeightServiceImpl(AnswerWeightRepository answerWeightRepository, AnswerWeightSearchRepository answerWeightSearchRepository) {
+    public AnswerWeightServiceImpl(AnswerWeightRepository answerWeightRepository) {
         this.answerWeightRepository = answerWeightRepository;
-        this.answerWeightSearchRepository = answerWeightSearchRepository;
     }
 
     /**
@@ -43,12 +54,11 @@ public class AnswerWeightServiceImpl implements AnswerWeightService {
     public AnswerWeight save(AnswerWeight answerWeight) {
         log.debug("Request to save AnswerWeight : {}", answerWeight);
         AnswerWeight result = answerWeightRepository.save(answerWeight);
-        answerWeightSearchRepository.save(result);
         return result;
     }
 
     /**
-     * Get all the answerWeights.
+     * Get all the allAnswerWeights.
      *
      * @return the list of entities
      */
@@ -81,21 +91,10 @@ public class AnswerWeightServiceImpl implements AnswerWeightService {
     public void delete(Long id) {
         log.debug("Request to delete AnswerWeight : {}", id);
         answerWeightRepository.delete(id);
-        answerWeightSearchRepository.delete(id);
     }
 
-    /**
-     * Search for the answerWeight corresponding to the query.
-     *
-     * @param query the query of the search
-     * @return the list of entities
-     */
     @Override
-    @Transactional(readOnly = true)
-    public List<AnswerWeight> search(String query) {
-        log.debug("Request to search AnswerWeights for query {}", query);
-        return StreamSupport
-            .stream(answerWeightSearchRepository.search(queryStringQuery(query)).spliterator(), false)
-            .collect(Collectors.toList());
+    public List<AnswerWeight> findAllByQuestionType(QuestionType questionType) {
+        return answerWeightRepository.findAllByQuestionType(questionType);
     }
 }

@@ -1,3 +1,20 @@
+/*
+ * Copyright 2019 HERMENEUT Consortium
+ *  
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *  
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
+
 package eu.hermeneut.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
@@ -130,7 +147,7 @@ public class SelfAssessmentResource {
      */
     @GetMapping("/my-self-assessments")
     @Timed
-    @Secured({AuthoritiesConstants.CISO, AuthoritiesConstants.EXTERNAL_AUDIT})
+    @Secured({AuthoritiesConstants.CISO})
     public List<SelfAssessment> getMySelfAssessments() {
         log.debug("REST request to get MySelfAssessments fro logged user.");
         List<SelfAssessment> selfAssessments = new ArrayList<>();
@@ -148,13 +165,6 @@ public class SelfAssessmentResource {
                     if (companyProfile != null) {
                         selfAssessments = this.selfAssessmentService.findAllByCompanyProfile(companyProfile.getId());
                     }
-                }
-            } else if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.EXTERNAL_AUDIT)) {
-                //GET the SelfAssessments by SelfAssessment.externalAudit
-                ExternalAudit externalAudit = this.externalAuditService.getByUser(currentUser);
-
-                if (externalAudit != null) {
-                    selfAssessments = this.selfAssessmentService.findAllByExternalAudit(externalAudit);
                 }
             }
         }
@@ -176,20 +186,5 @@ public class SelfAssessmentResource {
         log.debug("REST request to delete SelfAssessment : {}", id);
         selfAssessmentService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
-    }
-
-    /**
-     * SEARCH  /_search/self-assessments?query=:query : search for the selfAssessment corresponding
-     * to the query.
-     *
-     * @param query the query of the selfAssessment search
-     * @return the result of the search
-     */
-    @GetMapping("/_search/self-assessments")
-    @Timed
-    @Secured(AuthoritiesConstants.ADMIN)
-    public List<SelfAssessment> searchSelfAssessments(@RequestParam String query) {
-        log.debug("REST request to search SelfAssessments for query {}", query);
-        return selfAssessmentService.search(query);
     }
 }

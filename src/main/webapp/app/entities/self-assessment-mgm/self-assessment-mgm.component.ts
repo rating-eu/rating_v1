@@ -1,3 +1,20 @@
+/*
+ * Copyright 2019 HERMENEUT Consortium
+ *  
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *  
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
+
 import {Component, OnInit, OnDestroy} from '@angular/core';
 import {HttpResponse, HttpErrorResponse} from '@angular/common/http';
 import {ActivatedRoute, Router} from '@angular/router';
@@ -9,7 +26,7 @@ import {SelfAssessmentMgmService} from './self-assessment-mgm.service';
 import {Principal} from '../../shared';
 
 import {DatasharingService} from '../../datasharing/datasharing.service';
-import {Update} from '../../layouts/model/Update';
+import {LayoutConfiguration} from '../../layouts/model/LayoutConfiguration';
 import {PopUpService} from '../../shared/pop-up-services/pop-up.service';
 
 @Component({
@@ -20,7 +37,6 @@ export class SelfAssessmentMgmComponent implements OnInit, OnDestroy {
     selfAssessments: SelfAssessmentMgm[];
     currentAccount: any;
     eventSubscriber: Subscription;
-    currentSearch: string;
 
     constructor(
         private router: Router,
@@ -32,39 +48,18 @@ export class SelfAssessmentMgmComponent implements OnInit, OnDestroy {
         public popUpService: PopUpService,
         private dataSharingService: DatasharingService
     ) {
-        this.currentSearch = this.activatedRoute.snapshot && this.activatedRoute.snapshot.params['search'] ?
-            this.activatedRoute.snapshot.params['search'] : '';
     }
 
     loadAll() {
-        if (this.currentSearch) {
-            this.selfAssessmentService.search({
-                query: this.currentSearch,
-            }).subscribe(
-                (res: HttpResponse<SelfAssessmentMgm[]>) => this.selfAssessments = res.body,
-                (res: HttpErrorResponse) => this.onError(res.message)
-            );
-            return;
-        }
         this.selfAssessmentService.query().subscribe(
             (res: HttpResponse<SelfAssessmentMgm[]>) => {
                 this.selfAssessments = res.body;
-                this.currentSearch = '';
             },
             (res: HttpErrorResponse) => this.onError(res.message)
         );
     }
 
-    search(query) {
-        if (!query) {
-            return this.clear();
-        }
-        this.currentSearch = query;
-        this.loadAll();
-    }
-
     clear() {
-        this.currentSearch = '';
         this.loadAll();
     }
 
@@ -77,12 +72,12 @@ export class SelfAssessmentMgmComponent implements OnInit, OnDestroy {
     }
 
     selectSelfAssessment(selfAssessment: SelfAssessmentMgm) {
-        this.selfAssessmentService.setSelfAssessment(selfAssessment);
+        this.dataSharingService.selfAssessment = selfAssessment;
         const link = ['/'];
         // this.mySidemenuService.roomeMenu('collapsed');
-        const update: Update = new Update();
-        update.navSubTitle = selfAssessment.name;
-        this.dataSharingService.updateLayout(update);
+        const layoutConfiguration: LayoutConfiguration = new LayoutConfiguration();
+        layoutConfiguration.navSubTitle = selfAssessment.name;
+        this.dataSharingService.layoutConfiguration = layoutConfiguration;
         this.router.navigate(link);
     }
 

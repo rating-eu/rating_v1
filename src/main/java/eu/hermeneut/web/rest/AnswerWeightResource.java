@@ -1,7 +1,25 @@
+/*
+ * Copyright 2019 HERMENEUT Consortium
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
+
 package eu.hermeneut.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import eu.hermeneut.domain.AnswerWeight;
+import eu.hermeneut.domain.enumeration.QuestionType;
 import eu.hermeneut.service.AnswerWeightService;
 import eu.hermeneut.web.rest.errors.BadRequestAlertException;
 import eu.hermeneut.web.rest.util.HeaderUtil;
@@ -16,9 +34,6 @@ import java.net.URISyntaxException;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.StreamSupport;
-
-import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
  * REST controller for managing AnswerWeight.
@@ -80,16 +95,23 @@ public class AnswerWeightResource {
     }
 
     /**
-     * GET  /answer-weights : get all the answerWeights.
+     * GET  /answer-weights : get all the allAnswerWeights.
      *
-     * @return the ResponseEntity with status 200 (OK) and the list of answerWeights in body
+     * @return the ResponseEntity with status 200 (OK) and the list of allAnswerWeights in body
      */
     @GetMapping("/answer-weights")
     @Timed
     public List<AnswerWeight> getAllAnswerWeights() {
         log.debug("REST request to get all AnswerWeights");
         return answerWeightService.findAll();
-        }
+    }
+
+    @GetMapping("/answer-weights/type/{questionType}")
+    @Timed
+    public List<AnswerWeight> getAllAnswerWeightsByQuestionType(@PathVariable QuestionType questionType) {
+        log.debug("REST request to get all AnswerWeights by QuestionType");
+        return answerWeightService.findAllByQuestionType(questionType);
+    }
 
     /**
      * GET  /answer-weights/:id : get the "id" answerWeight.
@@ -118,19 +140,4 @@ public class AnswerWeightResource {
         answerWeightService.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert(ENTITY_NAME, id.toString())).build();
     }
-
-    /**
-     * SEARCH  /_search/answer-weights?query=:query : search for the answerWeight corresponding
-     * to the query.
-     *
-     * @param query the query of the answerWeight search
-     * @return the result of the search
-     */
-    @GetMapping("/_search/answer-weights")
-    @Timed
-    public List<AnswerWeight> searchAnswerWeights(@RequestParam String query) {
-        log.debug("REST request to search AnswerWeights for query {}", query);
-        return answerWeightService.search(query);
-    }
-
 }

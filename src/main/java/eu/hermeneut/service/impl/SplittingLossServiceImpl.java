@@ -1,17 +1,32 @@
+/*
+ * Copyright 2019 HERMENEUT Consortium
+ *  
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *  
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
+
 package eu.hermeneut.service.impl;
 
 import eu.hermeneut.domain.MyAsset;
 import eu.hermeneut.domain.SelfAssessment;
 import eu.hermeneut.domain.enumeration.CategoryType;
 import eu.hermeneut.domain.enumeration.SectorType;
-import eu.hermeneut.exceptions.NotFoundException;
 import eu.hermeneut.exceptions.NotImplementedYetException;
 import eu.hermeneut.service.MyAssetService;
 import eu.hermeneut.service.SelfAssessmentService;
 import eu.hermeneut.service.SplittingLossService;
 import eu.hermeneut.domain.SplittingLoss;
 import eu.hermeneut.repository.SplittingLossRepository;
-import eu.hermeneut.repository.search.SplittingLossSearchRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,13 +34,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
-import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
  * Service Implementation for managing SplittingLoss.
@@ -38,17 +48,14 @@ public class SplittingLossServiceImpl implements SplittingLossService {
 
     private final SplittingLossRepository splittingLossRepository;
 
-    private final SplittingLossSearchRepository splittingLossSearchRepository;
-
     @Autowired
     private MyAssetService myAssetService;
 
     @Autowired
     private SelfAssessmentService selfAssessmentService;
 
-    public SplittingLossServiceImpl(SplittingLossRepository splittingLossRepository, SplittingLossSearchRepository splittingLossSearchRepository) {
+    public SplittingLossServiceImpl(SplittingLossRepository splittingLossRepository) {
         this.splittingLossRepository = splittingLossRepository;
-        this.splittingLossSearchRepository = splittingLossSearchRepository;
     }
 
     /**
@@ -61,7 +68,6 @@ public class SplittingLossServiceImpl implements SplittingLossService {
     public SplittingLoss save(SplittingLoss splittingLoss) {
         log.debug("Request to save SplittingLoss : {}", splittingLoss);
         SplittingLoss result = splittingLossRepository.save(splittingLoss);
-        splittingLossSearchRepository.save(result);
         return result;
     }
 
@@ -69,7 +75,6 @@ public class SplittingLossServiceImpl implements SplittingLossService {
     public List<SplittingLoss> save(List<SplittingLoss> splittingLosses) {
         log.debug("Request to save SplittingLosses : {}", splittingLosses.size());
         List<SplittingLoss> result = splittingLossRepository.save(splittingLosses);
-        splittingLossSearchRepository.save(result);
         return result;
     }
 
@@ -107,28 +112,11 @@ public class SplittingLossServiceImpl implements SplittingLossService {
     public void delete(Long id) {
         log.debug("Request to delete SplittingLoss : {}", id);
         splittingLossRepository.delete(id);
-        splittingLossSearchRepository.delete(id);
     }
 
     public void delete(List<SplittingLoss> splittingLosses) {
         log.debug("Request to delete SplittingLosses : {}", splittingLosses);
         splittingLossRepository.delete(splittingLosses);
-        splittingLossSearchRepository.delete(splittingLosses);
-    }
-
-    /**
-     * Search for the splittingLoss corresponding to the query.
-     *
-     * @param query the query of the search
-     * @return the list of entities
-     */
-    @Override
-    @Transactional(readOnly = true)
-    public List<SplittingLoss> search(String query) {
-        log.debug("Request to search SplittingLosses for query {}", query);
-        return StreamSupport
-            .stream(splittingLossSearchRepository.search(queryStringQuery(query)).spliterator(), false)
-            .collect(Collectors.toList());
     }
 
     @Override

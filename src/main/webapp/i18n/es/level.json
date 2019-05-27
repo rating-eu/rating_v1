@@ -5,8 +5,7 @@
             "home": {
                 "title": "Levels",
                 "createLabel": "Crear nuevo Level",
-                "createOrEditLabel": "Crear o editar Level",
-                "search": "Search for Level"
+                "createOrEditLabel": "Crear o editar Level"
             },
             "created": "Un nuevo Level ha sido creado con el identificador {{ param }}",
             "updated": "Un Level ha sido actualizado con el identificador {{ param }}",

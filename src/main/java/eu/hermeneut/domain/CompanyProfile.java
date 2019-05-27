@@ -1,20 +1,35 @@
+/*
+ * Copyright 2019 HERMENEUT Consortium
+ *  
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *  
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *  
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
+
 package eu.hermeneut.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import eu.hermeneut.domain.enumeration.CompanyType;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
 
-import org.springframework.data.elasticsearch.annotations.Document;
 import java.io.Serializable;
 import java.time.ZonedDateTime;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.Objects;
-
-import eu.hermeneut.domain.enumeration.CompType;
 
 /**
  * A CompanyProfile.
@@ -22,7 +37,7 @@ import eu.hermeneut.domain.enumeration.CompType;
 @Entity
 @Table(name = "company_profile")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-@Document(indexName = "companyprofile")
+
 public class CompanyProfile implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -48,7 +63,7 @@ public class CompanyProfile implements Serializable {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "jhi_type")
-    private CompType type;
+    private CompanyType type;
 
     @OneToMany(mappedBy = "companyprofile")
     @JsonIgnore
@@ -126,16 +141,16 @@ public class CompanyProfile implements Serializable {
         this.modified = modified;
     }
 
-    public CompType getType() {
+    public CompanyType getType() {
         return type;
     }
 
-    public CompanyProfile type(CompType type) {
+    public CompanyProfile type(CompanyType type) {
         this.type = type;
         return this;
     }
 
-    public void setType(CompType type) {
+    public void setType(CompanyType type) {
         this.type = type;
     }
 
