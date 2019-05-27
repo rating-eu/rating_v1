@@ -285,7 +285,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                                 items: [
                                     {
                                         label: 'Impacts on Assets',
-                                        routerLink: ['/pages/coming-soon']
+                                        routerLink: ['/impact-evaluation/qualitative/']
                                     }
                                 ]
                             }
