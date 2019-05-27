@@ -15,7 +15,7 @@
  *
  */
 
-import {Component, OnInit, ViewEncapsulation, AfterViewInit, HostListener} from '@angular/core';
+import {AfterViewInit, Component, HostListener, OnInit, ViewEncapsulation} from '@angular/core';
 import {Principal} from '../../shared';
 import {DatasharingService} from '../../datasharing/datasharing.service';
 import {LayoutConfiguration} from '../model/LayoutConfiguration';
@@ -26,6 +26,8 @@ import {SelfAssessmentMgm, SelfAssessmentMgmService} from '../../entities/self-a
 import {LogoMgm, LogoMgmService} from '../../entities/logo-mgm';
 import {HttpErrorResponse, HttpResponse} from '@angular/common/http';
 import {Router} from '@angular/router';
+import {CompanyBoardStatus} from "../../dashboard/models/CompanyBoardStatus";
+import {Status} from "../../entities/enumerations/Status.enum";
 
 @Component({
     selector: 'jhi-sidebar',
@@ -43,6 +45,8 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     public secondaryLogo: LogoMgm = null;
     private selfAssessment: SelfAssessmentMgm;
     private isSelfAssessmentSelected: boolean = false;
+    public companyBoardStatus: CompanyBoardStatus = null;
+    public role: Role = null;
 
     windowWidth: number = window.innerWidth;
 
@@ -82,12 +86,30 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     }
 
     ngOnInit() {
+        this.companyBoardStatus = this.dataSharingService.companyBoardStatus;
+        this.createMenuItems();
+
+        this.dataSharingService.companyBoardStatusSubject.subscribe((status: CompanyBoardStatus) => {
+            this.companyBoardStatus = status;
+            this.createMenuItems();
+        });
+
+        this.role = this.dataSharingService.role;
+        this.createMenuItems();
+
+        this.dataSharingService.roleObservable.subscribe((roleResponse: Role)=>{
+            this.role = roleResponse;
+            this.createMenuItems();
+        });
+
         this.selfAssessment = this.dataSharingService.selfAssessment;
         this.checkSelfAssessment();
+        this.createMenuItems();
 
         this.dataSharingService.selfAssessmentObservable.subscribe((response: SelfAssessmentMgm) => {
             this.selfAssessment = response;
             this.checkSelfAssessment();
+            this.createMenuItems();
         });
 
         this.principal.getAuthenticationState().subscribe((identity) => {
@@ -103,7 +125,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                     if (response) {
                         this.isCISO = response;
                         this.isExternal = !this.isCISO;
-                        this.createMenuItems(this.isCISO);
+                        this.createMenuItems();
                     } else {
                         this.principal.hasAnyAuthority([Role[Role.ROLE_EXTERNAL_AUDIT]]).then((response2: boolean) => {
                             if (response2) {
@@ -112,7 +134,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                                 layoutConfiguration.isSidebarCollapsed = true;
                                 layoutConfiguration.isSidebarCollapsedByMe = false;
                                 this.dataSharingService.layoutConfiguration = layoutConfiguration;
-                                this.createMenuItems(this.isCISO, this.isExternal);
+                                this.createMenuItems();
                             } else {
                                 this.principal.hasAnyAuthority([Role[Role.ROLE_ADMIN]]).then((response3: boolean) => {
                                     if (response3) {
@@ -145,7 +167,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
         this.dataSharingService.selfAssessmentObservable.subscribe((mySelf) => {
             if (mySelf) {
-                this.createMenuItems(this.isCISO, this.isExternal);
+                this.createMenuItems();
             }
         });
     }
@@ -173,7 +195,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         this.windowWidth = window.innerWidth;
     }
 
-    private createMenuItems(isCISO = false, isExternal = false) {
+    private createMenuItems() {
         this.mySelf = this.dataSharingService.selfAssessment;
 
         this.items = [
@@ -218,19 +240,19 @@ export class SidebarComponent implements OnInit, AfterViewInit {
             {
                 label: 'Cyber Posture',
                 icon: 'fas fa-shield-alt',
-                visible: isCISO,
+                visible: this.role === Role.ROLE_CISO,
                 items: [
                     {
                         label: "Threat Agents",
                         icon: "fas fa-user-secret",
                         routerLink: ['/identify-threat-agent/questionnaires/ID_THREAT_AGENT'],
-                        visible: isCISO
+                        visible: this.role === Role.ROLE_CISO
                     },
                     {
                         label: "Vulnerabilities",
                         icon: "fa fa-bomb",
                         routerLink: ['/evaluate-weakness/questionnaires/SELFASSESSMENT'],
-                        visible: isCISO
+                        visible: this.role === Role.ROLE_CISO
                     }
                 ]
             },
@@ -238,7 +260,10 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                 label: 'Risk Management',
                 icon: 'fa fa-bolt',
                 routerLink: ['/my-risk-assessments'],
-                visible: isCISO,
+                visible: this.role === Role.ROLE_CISO
+                    && this.companyBoardStatus
+                    && this.companyBoardStatus.identifyThreatAgentsStatus === Status.FULL
+                    && this.companyBoardStatus.assessVulnerablitiesStatus === Status.FULL,
                 items: [
                     {
                         label: 'Assets',

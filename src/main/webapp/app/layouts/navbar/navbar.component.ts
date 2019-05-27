@@ -27,6 +27,8 @@ import {VERSION} from '../../app.constants';
 import {DatasharingService} from '../../datasharing/datasharing.service';
 import {LayoutConfiguration} from '../model/LayoutConfiguration';
 import {Role} from '../../entities/enumerations/Role.enum';
+import {CompanyBoardStatus} from "../../dashboard/models/CompanyBoardStatus";
+import {Status} from "../../entities/enumerations/Status.enum";
 
 @Component({
     selector: 'jhi-navbar',
@@ -51,6 +53,8 @@ export class NavbarComponent implements OnInit {
     public isAuthenticatedValue = false;
     public isExternal = false;
     public isAdmin = false;
+    public companyBoardStatus: CompanyBoardStatus;
+    public statusEnum = Status;
 
     constructor(
         private loginService: LoginService,
@@ -67,6 +71,9 @@ export class NavbarComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.companyBoardStatus = new CompanyBoardStatus();
+        this.companyBoardStatus = this.dataSharingService.companyBoardStatus;
+
         this.languageHelper.getAll().then((languages) => {
             this.languages = languages;
         });
@@ -114,6 +121,10 @@ export class NavbarComponent implements OnInit {
                     }
                 }
             }
+        });
+
+        this.dataSharingService.companyBoardStatusSubject.subscribe((status: CompanyBoardStatus) => {
+            this.companyBoardStatus = status;
         });
     }
 

@@ -60,15 +60,20 @@
                     </span>
                 </a>
             </li>
-            <li *jhiHasAnyAuthority="'ROLE_CISO'" class="waves-light waves-effect nav-item" routerLinkActive="active"
-                [routerLinkActiveOptions]="{exact: true}">
-                <a class="nav-link" routerLink="/riskboard" (click)="collapseNavbar()">
+            <ng-container
+                *ngIf="companyBoardStatus && companyBoardStatus.identifyThreatAgentsStatus === statusEnum.FULL && companyBoardStatus.assessVulnerablitiesStatus === statusEnum.FULL">
+                <li *jhiHasAnyAuthority="'ROLE_CISO'" class="waves-light waves-effect nav-item"
+                    routerLinkActive="active"
+                    [routerLinkActiveOptions]="{exact: true}">
+                    <a class="nav-link" routerLink="/riskboard" (click)="collapseNavbar()">
                     <span>
                         <i class="fab fa-servicestack" aria-hidden="true"></i>
                         <span>Risk Board</span>
                     </span>
-                </a>
-            </li>
+                    </a>
+                </li>
+            </ng-container>
+
             <li *jhiHasAnyAuthority="'ROLE_ADMIN'" ngbDropdown
                 class="waves-light waves-effect nav-item dropdown pointer entities-nav "
                 routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">

@@ -34,6 +34,7 @@ import {RiskBoardStatus} from "../risk-board/risk-board.service";
 import {ReplaySubject} from "rxjs";
 import {HttpResponse} from "@angular/common/http";
 import {Account} from '../shared';
+import {CompanyBoardStatus} from "../dashboard/models/CompanyBoardStatus";
 
 @Injectable()
 export class DatasharingService {
@@ -77,6 +78,10 @@ export class DatasharingService {
     // Layout Configuration
     private _layoutConfiguration: LayoutConfiguration = null;
     private _layoutConfigurationSubject: ReplaySubject<LayoutConfiguration> = new ReplaySubject<LayoutConfiguration>();
+
+    // CompanyBoardStatus
+    private _companyBoardStatus: CompanyBoardStatus = null;
+    private _companyBoardStatusSubject: ReplaySubject<CompanyBoardStatus> = new ReplaySubject<CompanyBoardStatus>();
 
     constructor(
         private router: Router,
@@ -274,6 +279,20 @@ export class DatasharingService {
 
     get layoutConfigurationObservable(): Observable<LayoutConfiguration> {
         return this._layoutConfigurationSubject.asObservable();
+    }
+
+    // CompanyBoardStatus property
+    get companyBoardStatus(): CompanyBoardStatus {
+        return this._companyBoardStatus;
+    }
+
+    set companyBoardStatus(status: CompanyBoardStatus) {
+        this._companyBoardStatus = status;
+        this._companyBoardStatusSubject.next(this._companyBoardStatus);
+    }
+
+    get companyBoardStatusSubject(): Observable<CompanyBoardStatus> {
+        return this._companyBoardStatusSubject.asObservable();
     }
 
     clear() {

@@ -13,6 +13,7 @@ import {catchError, switchMap} from "rxjs/operators";
 import {CompletionDtoService} from "../../dto/completion/completion-dto.service";
 import {AssessVulnerabilitiesCompletionDTO} from "../../dto/completion/assess-vulnerabilities-completion";
 import {of} from "rxjs/observable/of";
+import {CompanyBoardStatus} from "../models/CompanyBoardStatus";
 
 @Component({
     selector: 'jhi-step-status-widget',
@@ -24,6 +25,7 @@ export class StepStatusWidgetComponent implements OnInit {
     public isCollapsed = false;
     private myCompany: MyCompanyMgm;
     public statusEnum = Status;
+    public companyBoardStatus: CompanyBoardStatus;
 
     public identifyThreatAgentsStatus: Status = Status.EMPTY;
     public assessVulnerabilitiesStatus: Status = Status.EMPTY;
@@ -46,6 +48,9 @@ export class StepStatusWidgetComponent implements OnInit {
 
     ngOnInit() {
         this.myCompany = this.dataSharingService.myCompany;
+        this.companyBoardStatus = new CompanyBoardStatus();
+        this.dataSharingService.companyBoardStatus = this.companyBoardStatus;
+
         this.fetchStatus();
 
         this.dataSharingService.myCompanyObservable.subscribe((response: MyCompanyMgm) => {
@@ -69,6 +74,12 @@ export class StepStatusWidgetComponent implements OnInit {
                     this.identifyThreatAgentsStatus = response[0].body;
                     this.assessVulnerabilitiesStatus = response[1].body;
                     this.refineVulnerabilitiesStatus = response[2].body;
+
+                    this.companyBoardStatus.identifyThreatAgentsStatus = this.identifyThreatAgentsStatus;
+                    this.companyBoardStatus.assessVulnerablitiesStatus = this.assessVulnerabilitiesStatus;
+                    this.companyBoardStatus.refineVulnerablitiesStatus = this.refineVulnerabilitiesStatus;
+
+                    this.dataSharingService.companyBoardStatus = this.companyBoardStatus;
 
                     this.loading = false;
 

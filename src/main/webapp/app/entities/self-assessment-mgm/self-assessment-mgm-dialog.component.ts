@@ -120,10 +120,10 @@ export class SelfAssessmentMgmDialogComponent implements OnInit {
                 // Keep only the CompanyProfile for which there is a MyCompany in DB associated with the logged user.
             }, (res: HttpErrorResponse) => this.onError(res.message));*/
 
-        this.userService.query()
+        /*this.userService.query()
             .subscribe((res: HttpResponse<User[]>) => {
                 this.users = res.body;
-            }, (res: HttpErrorResponse) => this.onError(res.message));
+            }, (res: HttpErrorResponse) => this.onError(res.message));*/
         this.companyGroupService.query()
             .subscribe((res: HttpResponse<CompanyGroupMgm[]>) => {
                 this.companygroups = res.body;
