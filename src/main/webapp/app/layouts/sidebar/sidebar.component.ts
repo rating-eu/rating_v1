@@ -99,7 +99,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
             this.filterByCompanyBoardStatus();
         });
 
-        this.selfAssessmentService.getMySelfAssessments().toPromise().then(
+        this.selfAssessmentService.getMySelfAssessments().subscribe(
             (response: SelfAssessmentMgm[]) => {
                 this.selfAssessments = response;
                 this.showSelfAssessments();
