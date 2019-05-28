@@ -79,7 +79,7 @@ export class StepInfoWidgetComponent implements OnInit {
         }
 
         this.datasharingService.selfAssessmentObservable.subscribe(assessment => {
-            if (!assessment || this.selfAssessment.id !== assessment.id) {
+            if (!this.selfAssessment || this.selfAssessment.id !== assessment.id) {
                 this.selfAssessment = assessment;
 
                 if (!this.selfAssessment) {

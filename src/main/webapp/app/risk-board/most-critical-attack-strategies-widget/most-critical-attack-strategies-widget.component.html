@@ -19,137 +19,138 @@
     <div class="loader"></div>
 </ng-container>
 <ng-container *ngIf="!loading">
-    <div class="x_panel" style="padding:0px !important;">
-        <div class="x_title" style="padding:0px !important;">
-            <h2 style="padding: 10px;">
-                <a href="javascript:void(0)" class="collapse-link" (click)="isCollapsed = !isCollapsed">
-                    Most Critical Attack Strategies
-                </a>
-            </h2>
-            <div class="clearfix"></div>
-        </div>
+    <mat-accordion>
+        <mat-expansion-panel>
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    <h2>
+                        <a href="javascript:void(0);" class="collapse-link">Most Critical Attack Strategies</a>
+                    </h2>
+                </mat-panel-title>
+            </mat-expansion-panel-header>
 
-        <div class="table-responsive x_content" style="padding:0px !important;" [ngbCollapse]="isCollapsed">
-            <div *ngIf="!criticalAttackStrategies" class="text-center">
-                No data available, please complete the relative questionnaire!
-            </div>
-            <div *ngIf="criticalAttackStrategies" class="table-responsive table-hover-no-pointer">
-                <!--TODO Sort this-->
-                <table class="table table-striped">
-                    <thead>
-                    <tr>
-                        <th scope="col" class="text-center align-middle">Attack Strategy
-                            <i *ngIf="!sortingStatusMap.has(casFieldEnum.ATTACK_STRATEGY) || sortingStatusMap.get(casFieldEnum.ATTACK_STRATEGY) === 0"
-                               (click)=" orderTableBy(casFieldEnum.ATTACK_STRATEGY, true)"
-                               class="fa fa-sort" aria-hidden="true"></i>
-                            <i *ngIf="sortingStatusMap.get(casFieldEnum.ATTACK_STRATEGY) === -1"
-                               (click)=" orderTableBy(casFieldEnum.ATTACK_STRATEGY, false)"
-                               class="fa fa-chevron-down" aria-hidden="true"></i>
-                            <i *ngIf="sortingStatusMap.get(casFieldEnum.ATTACK_STRATEGY) === 1"
-                               (click)=" orderTableBy(casFieldEnum.ATTACK_STRATEGY, true)"
-                               class="fa fa-chevron-up" aria-hidden="true"></i>
-                        </th>
-                        <th scope="col" class="text-center align-middle">Target Assets
-                            <i *ngIf="!sortingStatusMap.has(casFieldEnum.TARGET_ASSETS) || sortingStatusMap.get(casFieldEnum.TARGET_ASSETS) === 0"
-                               (click)=" orderTableBy(casFieldEnum.TARGET_ASSETS, true)"
-                               class="fa fa-sort" aria-hidden="true"></i>
-                            <i *ngIf="sortingStatusMap.get(casFieldEnum.TARGET_ASSETS) === -1"
-                               (click)=" orderTableBy(casFieldEnum.TARGET_ASSETS, false)"
-                               class="fa fa-chevron-down" aria-hidden="true"></i>
-                            <i *ngIf="sortingStatusMap.get(casFieldEnum.TARGET_ASSETS) === 1"
-                               (click)=" orderTableBy(casFieldEnum.TARGET_ASSETS, true)"
-                               class="fa fa-chevron-up" aria-hidden="true"></i>
-                        </th>
-                        <th scope="col" class="text-center align-middle">Criticality
-                            <i *ngIf="!sortingStatusMap.has(casFieldEnum.CRITICALITY) || sortingStatusMap.get(casFieldEnum.CRITICALITY) === 0"
-                               (click)=" orderTableBy(casFieldEnum.CRITICALITY, true)"
-                               class="fa fa-sort" aria-hidden="true"></i>
-                            <i *ngIf="sortingStatusMap.get(casFieldEnum.CRITICALITY) === -1"
-                               (click)=" orderTableBy(casFieldEnum.CRITICALITY, false)"
-                               class="fa fa-chevron-down" aria-hidden="true"></i>
-                            <i *ngIf="sortingStatusMap.get(casFieldEnum.CRITICALITY) === 1"
-                               (click)=" orderTableBy(casFieldEnum.CRITICALITY, true)"
-                               class="fa fa-chevron-up" aria-hidden="true"></i>
-                        </th>
-                        <th scope="col" class="text-center align-middle">Awareness Criticality
-                            <i *ngIf="!sortingStatusMap.has(casFieldEnum.AWARENESS) || sortingStatusMap.get(casFieldEnum.AWARENESS) === 0"
-                               (click)=" orderTableBy(casFieldEnum.AWARENESS, true)"
-                               class="fa fa-sort" aria-hidden="true"></i>
-                            <i *ngIf="sortingStatusMap.get(casFieldEnum.AWARENESS) === -1"
-                               (click)=" orderTableBy(casFieldEnum.AWARENESS, false)"
-                               class="fa fa-chevron-down" aria-hidden="true"></i>
-                            <i *ngIf="sortingStatusMap.get(casFieldEnum.AWARENESS) === 1"
-                               (click)=" orderTableBy(casFieldEnum.AWARENESS, true)"
-                               class="fa fa-chevron-up" aria-hidden="true"></i>
-                        </th>
-                        <th scope="col" class="text-center align-middle">SOC Criticality
-                            <i *ngIf="!sortingStatusMap.has(casFieldEnum.SOC) || sortingStatusMap.get(casFieldEnum.SOC) === 0"
-                               (click)=" orderTableBy(casFieldEnum.SOC, true)"
-                               class="fa fa-sort" aria-hidden="true"></i>
-                            <i *ngIf="sortingStatusMap.get(casFieldEnum.SOC) === -1"
-                               (click)=" orderTableBy(casFieldEnum.SOC, false)"
-                               class="fa fa-chevron-down" aria-hidden="true"></i>
-                            <i *ngIf="sortingStatusMap.get(casFieldEnum.SOC) === 1"
-                               (click)=" orderTableBy(casFieldEnum.SOC, true)"
-                               class="fa fa-chevron-up" aria-hidden="true"></i>
-                        </th>
-                        <th scope="col" class="text-center align-middle">Alert
-                            <i *ngIf="!sortingStatusMap.has(casFieldEnum.ALERT) || sortingStatusMap.get(casFieldEnum.ALERT) === 0"
-                               (click)=" orderTableBy(casFieldEnum.ALERT, true)"
-                               class="fa fa-sort" aria-hidden="true"></i>
-                            <i *ngIf="sortingStatusMap.get(casFieldEnum.ALERT) === -1"
-                               (click)=" orderTableBy(casFieldEnum.ALERT, false)"
-                               class="fa fa-chevron-down" aria-hidden="true"></i>
-                            <i *ngIf="sortingStatusMap.get(casFieldEnum.ALERT) === 1"
-                               (click)=" orderTableBy(casFieldEnum.ALERT, true)"
-                               class="fa fa-chevron-up" aria-hidden="true"></i>
-                        </th>
-                    </tr>
-                    </thead>
-                    <tbody align="center">
-                    <ng-container
-                        *ngFor="let criticalAttackStrategy of criticalAttackStrategies | paginate: attackStrategiesPaginator">
-                        <tr class="attack" (click)="toggleInfo(criticalAttackStrategy.attackStrategy.id)">
-                            <td>{{criticalAttackStrategy.attackStrategy.name}}</td>
-                            <td>{{criticalAttackStrategy.targetAssets}}</td>
-                            <td *ngIf="criticalAttackStrategy.criticalityPercentage">{{criticalAttackStrategy.criticalityPercentage | number : '1.0-2' | percent}}</td>
-                            <td *ngIf="!criticalAttackStrategy.criticalityPercentage">-</td>
-                            <td *ngIf="criticalAttackStrategy.awarenessCriticalityPercentage">{{criticalAttackStrategy.awarenessCriticalityPercentage | number : '1.0-2' | percent}}</td>
-                            <td *ngIf="!criticalAttackStrategy.awarenessCriticalityPercentage">-</td>
-                            <td *ngIf="criticalAttackStrategy.socCriticalityPercentage">{{criticalAttackStrategy.socCriticalityPercentage | number : '1.0-2' | percent}}</td>
-                            <td *ngIf="!criticalAttackStrategy.socCriticalityPercentage">-</td>
-                            <td *ngIf="criticalAttackStrategy.alertPercentage" class="text-center align-middle">
-                                <mat-progress-spinner style="margin:0 auto;" [ngClass]="{
+            <div class="table-responsive" style="padding:0px !important;">
+                <div *ngIf="!criticalAttackStrategies" class="text-center">
+                    No data available, please complete the relative questionnaire!
+                </div>
+                <div *ngIf="criticalAttackStrategies" class="table-responsive table-hover-no-pointer">
+                    <!--TODO Sort this-->
+                    <table class="table table-striped">
+                        <thead>
+                        <tr>
+                            <th scope="col" class="text-center align-middle">Attack Strategy
+                                <i *ngIf="!sortingStatusMap.has(casFieldEnum.ATTACK_STRATEGY) || sortingStatusMap.get(casFieldEnum.ATTACK_STRATEGY) === 0"
+                                   (click)=" orderTableBy(casFieldEnum.ATTACK_STRATEGY, true)"
+                                   class="fa fa-sort" aria-hidden="true"></i>
+                                <i *ngIf="sortingStatusMap.get(casFieldEnum.ATTACK_STRATEGY) === -1"
+                                   (click)=" orderTableBy(casFieldEnum.ATTACK_STRATEGY, false)"
+                                   class="fa fa-chevron-down" aria-hidden="true"></i>
+                                <i *ngIf="sortingStatusMap.get(casFieldEnum.ATTACK_STRATEGY) === 1"
+                                   (click)=" orderTableBy(casFieldEnum.ATTACK_STRATEGY, true)"
+                                   class="fa fa-chevron-up" aria-hidden="true"></i>
+                            </th>
+                            <th scope="col" class="text-center align-middle">Target Assets
+                                <i *ngIf="!sortingStatusMap.has(casFieldEnum.TARGET_ASSETS) || sortingStatusMap.get(casFieldEnum.TARGET_ASSETS) === 0"
+                                   (click)=" orderTableBy(casFieldEnum.TARGET_ASSETS, true)"
+                                   class="fa fa-sort" aria-hidden="true"></i>
+                                <i *ngIf="sortingStatusMap.get(casFieldEnum.TARGET_ASSETS) === -1"
+                                   (click)=" orderTableBy(casFieldEnum.TARGET_ASSETS, false)"
+                                   class="fa fa-chevron-down" aria-hidden="true"></i>
+                                <i *ngIf="sortingStatusMap.get(casFieldEnum.TARGET_ASSETS) === 1"
+                                   (click)=" orderTableBy(casFieldEnum.TARGET_ASSETS, true)"
+                                   class="fa fa-chevron-up" aria-hidden="true"></i>
+                            </th>
+                            <th scope="col" class="text-center align-middle">Criticality
+                                <i *ngIf="!sortingStatusMap.has(casFieldEnum.CRITICALITY) || sortingStatusMap.get(casFieldEnum.CRITICALITY) === 0"
+                                   (click)=" orderTableBy(casFieldEnum.CRITICALITY, true)"
+                                   class="fa fa-sort" aria-hidden="true"></i>
+                                <i *ngIf="sortingStatusMap.get(casFieldEnum.CRITICALITY) === -1"
+                                   (click)=" orderTableBy(casFieldEnum.CRITICALITY, false)"
+                                   class="fa fa-chevron-down" aria-hidden="true"></i>
+                                <i *ngIf="sortingStatusMap.get(casFieldEnum.CRITICALITY) === 1"
+                                   (click)=" orderTableBy(casFieldEnum.CRITICALITY, true)"
+                                   class="fa fa-chevron-up" aria-hidden="true"></i>
+                            </th>
+                            <th scope="col" class="text-center align-middle">Awareness Criticality
+                                <i *ngIf="!sortingStatusMap.has(casFieldEnum.AWARENESS) || sortingStatusMap.get(casFieldEnum.AWARENESS) === 0"
+                                   (click)=" orderTableBy(casFieldEnum.AWARENESS, true)"
+                                   class="fa fa-sort" aria-hidden="true"></i>
+                                <i *ngIf="sortingStatusMap.get(casFieldEnum.AWARENESS) === -1"
+                                   (click)=" orderTableBy(casFieldEnum.AWARENESS, false)"
+                                   class="fa fa-chevron-down" aria-hidden="true"></i>
+                                <i *ngIf="sortingStatusMap.get(casFieldEnum.AWARENESS) === 1"
+                                   (click)=" orderTableBy(casFieldEnum.AWARENESS, true)"
+                                   class="fa fa-chevron-up" aria-hidden="true"></i>
+                            </th>
+                            <th scope="col" class="text-center align-middle">SOC Criticality
+                                <i *ngIf="!sortingStatusMap.has(casFieldEnum.SOC) || sortingStatusMap.get(casFieldEnum.SOC) === 0"
+                                   (click)=" orderTableBy(casFieldEnum.SOC, true)"
+                                   class="fa fa-sort" aria-hidden="true"></i>
+                                <i *ngIf="sortingStatusMap.get(casFieldEnum.SOC) === -1"
+                                   (click)=" orderTableBy(casFieldEnum.SOC, false)"
+                                   class="fa fa-chevron-down" aria-hidden="true"></i>
+                                <i *ngIf="sortingStatusMap.get(casFieldEnum.SOC) === 1"
+                                   (click)=" orderTableBy(casFieldEnum.SOC, true)"
+                                   class="fa fa-chevron-up" aria-hidden="true"></i>
+                            </th>
+                            <th scope="col" class="text-center align-middle">Alert
+                                <i *ngIf="!sortingStatusMap.has(casFieldEnum.ALERT) || sortingStatusMap.get(casFieldEnum.ALERT) === 0"
+                                   (click)=" orderTableBy(casFieldEnum.ALERT, true)"
+                                   class="fa fa-sort" aria-hidden="true"></i>
+                                <i *ngIf="sortingStatusMap.get(casFieldEnum.ALERT) === -1"
+                                   (click)=" orderTableBy(casFieldEnum.ALERT, false)"
+                                   class="fa fa-chevron-down" aria-hidden="true"></i>
+                                <i *ngIf="sortingStatusMap.get(casFieldEnum.ALERT) === 1"
+                                   (click)=" orderTableBy(casFieldEnum.ALERT, true)"
+                                   class="fa fa-chevron-up" aria-hidden="true"></i>
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody align="center">
+                        <ng-container
+                            *ngFor="let criticalAttackStrategy of criticalAttackStrategies | paginate: attackStrategiesPaginator">
+                            <tr class="attack" (click)="toggleInfo(criticalAttackStrategy.attackStrategy.id)">
+                                <td>{{criticalAttackStrategy.attackStrategy.name}}</td>
+                                <td>{{criticalAttackStrategy.targetAssets}}</td>
+                                <td *ngIf="criticalAttackStrategy.criticalityPercentage">{{criticalAttackStrategy.criticalityPercentage | number : '1.0-2' | percent}}</td>
+                                <td *ngIf="!criticalAttackStrategy.criticalityPercentage">-</td>
+                                <td *ngIf="criticalAttackStrategy.awarenessCriticalityPercentage">{{criticalAttackStrategy.awarenessCriticalityPercentage | number : '1.0-2' | percent}}</td>
+                                <td *ngIf="!criticalAttackStrategy.awarenessCriticalityPercentage">-</td>
+                                <td *ngIf="criticalAttackStrategy.socCriticalityPercentage">{{criticalAttackStrategy.socCriticalityPercentage | number : '1.0-2' | percent}}</td>
+                                <td *ngIf="!criticalAttackStrategy.socCriticalityPercentage">-</td>
+                                <td *ngIf="criticalAttackStrategy.alertPercentage" class="text-center align-middle">
+                                    <mat-progress-spinner style="margin:0 auto;" [ngClass]="{
                               'low': criticalAttackStrategy.alertPercentage * 100 / 20 > 0 && criticalAttackStrategy.alertPercentage * 100 / 20 <= 1,
                               'low-medium': criticalAttackStrategy.alertPercentage * 100 / 20 > 1 && criticalAttackStrategy.alertPercentage * 100 / 20 <= 2,
                               'medium': criticalAttackStrategy.alertPercentage * 100 / 20 > 2 && criticalAttackStrategy.alertPercentage * 100 / 20 <= 3,
                               'medium-high': criticalAttackStrategy.alertPercentage * 100 / 20 > 3 && criticalAttackStrategy.alertPercentage * 100 / 20 <= 4,
                               'high': criticalAttackStrategy.alertPercentage * 100 / 20 > 4 && criticalAttackStrategy.alertPercentage * 100 / 20 <= 5
                               }" [value]="criticalAttackStrategy.alertPercentage * 100">
-                                </mat-progress-spinner>
-                                <div style="top:-60px; z-index:2;position:relative;">
-                                    {{criticalAttackStrategy.alertPercentage | number : '1.0-2' | percent}}
-                                </div>
-                            </td>
-                            <td *ngIf="!criticalAttackStrategy.alertPercentage">-</td>
-                        </tr>
-                        <tr *ngIf="showAttackInfo.get(criticalAttackStrategy.attackStrategy.id)">
-                            <td colspan="9">
-                                <div class="col-md-12 text-left">
-                                    <jhi-attack-strategy-mgm-detail [id]="criticalAttackStrategy.attackStrategy.id"
-                                                                    [isButtonVisible]="false">
-                                    </jhi-attack-strategy-mgm-detail>
-                                </div>
-                            </td>
-                        </tr>
-                    </ng-container>
-                    </tbody>
-                </table>
-                <div class="text-center">
-                    <pagination-controls (pageChange)="onAttackStrategiesPageChange($event)"
-                                         [id]="attackStrategiesPaginator.id"></pagination-controls>
+                                    </mat-progress-spinner>
+                                    <div style="top:-60px; z-index:2;position:relative;">
+                                        {{criticalAttackStrategy.alertPercentage | number : '1.0-2' | percent}}
+                                    </div>
+                                </td>
+                                <td *ngIf="!criticalAttackStrategy.alertPercentage">-</td>
+                            </tr>
+                            <tr *ngIf="showAttackInfo.get(criticalAttackStrategy.attackStrategy.id)">
+                                <td colspan="9">
+                                    <div class="col-md-12 text-left">
+                                        <jhi-attack-strategy-mgm-detail [id]="criticalAttackStrategy.attackStrategy.id"
+                                                                        [isButtonVisible]="false">
+                                        </jhi-attack-strategy-mgm-detail>
+                                    </div>
+                                </td>
+                            </tr>
+                        </ng-container>
+                        </tbody>
+                    </table>
+                    <div class="text-center">
+                        <pagination-controls (pageChange)="onAttackStrategiesPageChange($event)"
+                                             [id]="attackStrategiesPaginator.id"></pagination-controls>
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
+        </mat-expansion-panel>
+    </mat-accordion>
 </ng-container>
