@@ -29,6 +29,11 @@
                 </mat-panel-title>
             </mat-expansion-panel-header>
 
+            <div class="float-right mb-1"><a
+                [routerLink]="['/evaluate-weakness/result']">
+                <i class="fas fa-link fa-lg" aria-hidden="true"></i></a>
+            </div>
+
             <div class="table-responsive" style="padding:0px !important;">
                 <ng-container *ngIf="!threatAgents || threatAgents.length===0">
                     <div>
