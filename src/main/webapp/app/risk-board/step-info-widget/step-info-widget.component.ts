@@ -73,8 +73,25 @@ export class StepInfoWidgetComponent implements OnInit {
 
         if (!this.selfAssessment) {
             this.router.navigate(['/my-risk-assessments']);
+        }else{
+            this.fetchStatus();
         }
 
+        this.datasharingService.selfAssessmentObservable.subscribe(assessment => {
+            if (!assessment || this.selfAssessment.id !== assessment.id) {
+                this.selfAssessment = assessment;
+
+                if (!this.selfAssessment) {
+                    this.router.navigate(['/my-risk-assessments']);
+                }else{
+                    this.fetchStatus();
+                }
+            }
+        });
+    }
+
+
+    private fetchStatus() {
         this.riskBoardStatus = new RiskBoardStatus();
         this.datasharingService.riskBoardStatus = this.riskBoardStatus;
 
@@ -100,7 +117,6 @@ export class StepInfoWidgetComponent implements OnInit {
             this.datasharingService.riskBoardStatus = this.riskBoardStatus;
         });
     }
-
 
     open(content, link, message?) {
         this.linkAfterModal = link;

@@ -41,6 +41,10 @@ export class DashboardOneComponent implements OnInit {
     ngOnInit() {
         this.selfAssessment = this.datasharingService.selfAssessment;
 
+        this.datasharingService.selfAssessmentObservable.subscribe(assessment => {
+            this.selfAssessment = assessment;
+        });
+
         if (!this.selfAssessment) {
             this.router.navigate(['/my-risk-assessments']);
         }

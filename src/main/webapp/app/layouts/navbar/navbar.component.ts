@@ -15,7 +15,7 @@
  *
  */
 
-import {Component, OnInit} from '@angular/core';
+import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
 import {JhiLanguageService} from 'ng-jhipster';
@@ -64,15 +64,16 @@ export class NavbarComponent implements OnInit {
         private loginModalService: LoginModalService,
         private profileService: ProfileService,
         private router: Router,
-        private dataSharingService: DatasharingService
+        private dataSharingService: DatasharingService,
+        private changeDetector: ChangeDetectorRef
     ) {
         this.version = VERSION ? 'v' + VERSION : '';
         this.isNavbarCollapsed = true;
     }
 
     ngOnInit() {
-        this.companyBoardStatus = new CompanyBoardStatus();
         this.companyBoardStatus = this.dataSharingService.companyBoardStatus;
+        this.changeDetector.detectChanges();
 
         this.languageHelper.getAll().then((languages) => {
             this.languages = languages;
@@ -90,6 +91,8 @@ export class NavbarComponent implements OnInit {
                 this.selfAssessmentName = update.navSubTitle;
                 this.selfAssessmentId = update.selfAssessmentId;
                 this.sidebarCollapsed = update.isSidebarCollapsed;
+
+                this.changeDetector.detectChanges();
             }
         });
 
@@ -125,6 +128,7 @@ export class NavbarComponent implements OnInit {
 
         this.dataSharingService.companyBoardStatusSubject.subscribe((status: CompanyBoardStatus) => {
             this.companyBoardStatus = status;
+            this.changeDetector.detectChanges();
         });
     }
 
