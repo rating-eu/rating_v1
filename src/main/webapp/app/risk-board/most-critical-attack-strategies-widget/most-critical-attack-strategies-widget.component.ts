@@ -15,7 +15,7 @@
  *
  */
 
-import {Component, OnInit} from '@angular/core';
+import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import {CriticalAttackStrategyService} from "../models/critical-attack-strategy.service";
 import {SelfAssessmentMgm, SelfAssessmentMgmService} from '../../entities/self-assessment-mgm';
 import {CriticalAttackStrategy} from "../models/critical-attack-strategy.model";
@@ -62,18 +62,32 @@ export class MostCriticalAttackStrategiesWidgetComponent implements OnInit {
     constructor(
         private selfAssessmentService: SelfAssessmentMgmService,
         private criticalAttackStrategyService: CriticalAttackStrategyService,
-        private dataSharingService: DatasharingService) {
+        private dataSharingService: DatasharingService,
+        private changeDetector: ChangeDetectorRef) {
     }
 
     ngOnInit() {
-        this.selfAssessment = this.dataSharingService.selfAssessment;
-        this.criticalAttackStrategyService.getCriticalAttackStrategies(this.selfAssessment.id).subscribe(
-            (response: CriticalAttackStrategy[]) => {
-                this.criticalAttackStrategies = response;
-            }
-        );
-
         this.sortingStatusMap = new Map();
+        this.selfAssessment = this.dataSharingService.selfAssessment;
+        this.fetchCriticalAttackStrategies();
+
+        this.dataSharingService.selfAssessmentObservable.subscribe((assessment: SelfAssessmentMgm) => {
+            this.selfAssessment = assessment;
+
+            this.fetchCriticalAttackStrategies();
+        });
+    }
+
+    private fetchCriticalAttackStrategies() {
+        if (this.selfAssessment) {
+            this.criticalAttackStrategyService.getCriticalAttackStrategies(this.selfAssessment.id).subscribe(
+                (response: CriticalAttackStrategy[]) => {
+                    this.criticalAttackStrategies = response;
+                    
+                    this.changeDetector.detectChanges();
+                }
+            );
+        }
     }
 
     onAttackStrategiesPageChange(number: number) {
