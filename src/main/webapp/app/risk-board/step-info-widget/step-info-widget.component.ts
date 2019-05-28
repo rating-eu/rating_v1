@@ -15,7 +15,7 @@
  *
  */
 
-import {Component, OnInit} from '@angular/core';
+import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {RiskBoardService, RiskBoardStatus} from '../risk-board.service';
 import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
@@ -64,7 +64,8 @@ export class StepInfoWidgetComponent implements OnInit {
         private dashService: RiskBoardService,
         private modalService: NgbModal,
         private router: Router,
-        private riskBoardService: RiskBoardService
+        private riskBoardService: RiskBoardService,
+        private changeDetector: ChangeDetectorRef
     ) {
     }
 
@@ -95,6 +96,10 @@ export class StepInfoWidgetComponent implements OnInit {
         this.riskBoardStatus = new RiskBoardStatus();
         this.datasharingService.riskBoardStatus = this.riskBoardStatus;
 
+        if(this.changeDetector){
+            this.changeDetector.detectChanges();
+        }
+
         this.assetClusteringStatus$ = this.riskBoardService.getStatusFromServer(this.selfAssessment, RiskBoardStepEnum.ASSET_CLUSTERING);
         this.impactEvaluationStatus$ = this.riskBoardService.getStatusFromServer(this.selfAssessment, RiskBoardStepEnum.IMPACT_EVALUATION);
         this.attackRelatedCostsStatus$ = this.riskBoardService.getStatusFromServer(this.selfAssessment, RiskBoardStepEnum.ATTACK_RELATED_COSTS);
@@ -115,6 +120,10 @@ export class StepInfoWidgetComponent implements OnInit {
             this.riskBoardStatus.riskEvaluationStatus = this.riskEvaluationStatus;
 
             this.datasharingService.riskBoardStatus = this.riskBoardStatus;
+
+            if(this.changeDetector){
+                this.changeDetector.detectChanges();
+            }
         });
     }
 
