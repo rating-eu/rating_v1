@@ -83,8 +83,10 @@ export class MostCriticalAttackStrategiesWidgetComponent implements OnInit {
             this.criticalAttackStrategyService.getCriticalAttackStrategies(this.selfAssessment.id).subscribe(
                 (response: CriticalAttackStrategy[]) => {
                     this.criticalAttackStrategies = response;
-                    
-                    this.changeDetector.detectChanges();
+
+                    if(this.changeDetector){
+                        this.changeDetector.detectChanges();
+                    }
                 }
             );
         }
