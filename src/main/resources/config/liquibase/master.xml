@@ -146,5 +146,6 @@
     <include file="config/liquibase/changelog/20190525162720_update_questionnaire_company_type_not_null.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20190525174921_drop_my_asset_questionnaire_id_column.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20190529111302_added_employee_table.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190529193151_added_employee_activated_column.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
 </databaseChangeLog>
