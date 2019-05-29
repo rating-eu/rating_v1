@@ -62,8 +62,9 @@ public class Employee implements Serializable {
     @Column(name = "employee_role", nullable = false)
     private Role role;
 
+    @NotNull
     @ManyToOne
-    @JoinColumn(name = "company_profile_id")
+    @JoinColumn(name = "company_profile_id", nullable = false)
     private CompanyProfile companyProfile;
 
     public Long getId() {
