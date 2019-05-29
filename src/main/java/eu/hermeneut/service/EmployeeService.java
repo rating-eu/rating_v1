@@ -18,17 +18,19 @@
 package eu.hermeneut.service;
 
 import eu.hermeneut.domain.Employee;
+import eu.hermeneut.domain.enumeration.Role;
 
 import java.util.List;
+import java.util.Set;
 
 public interface EmployeeService {
     /**
      * Save a Employee.
      *
-     * @param Employee the entity to save
+     * @param employee the entity to save
      * @return the persisted entity
      */
-    Employee save(Employee Employee);
+    Employee save(Employee employee);
 
     /**
      * Get all the Employees.
@@ -51,4 +53,12 @@ public interface EmployeeService {
      * @param id the id of the entity
      */
     void delete(Long id);
+
+    /**
+     * Get all the Employees by company and role.
+     * @param companyID
+     * @param role
+     * @return
+     */
+    Set<Employee> getEmployeesByCompanyAndRole(Long companyID, Role role);
 }

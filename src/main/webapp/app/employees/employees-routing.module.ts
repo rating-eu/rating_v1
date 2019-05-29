@@ -4,24 +4,31 @@ import {UserRouteAccessService} from "../shared";
 import {ExternalAuditorComponent} from "./external-auditor/external-auditor.component";
 import {FinancialDeputyComponent} from "./financial-deputy/financial-deputy.component";
 import {CisoComponent} from "./ciso/ciso.component";
-import {EmployeesComponent} from "./employees/employees.component";
+import {EmployeeComponent} from "./employee/employee.component";
 
 const routes: Routes = [
     {
         path: '',
-        component: EmployeesComponent,
         data: {
-            authorities: ['ROLE_CISO', 'ROLE_EXTERNAL_AUDIT'],
+            authorities: ['ROLE_CISO'],
         },
         canActivate: [UserRouteAccessService],
         children: [
+            {
+                path: 'employee/:role',
+                component: EmployeeComponent
+            },
+            {
+                path: 'employee/:role/:id',
+                component: EmployeeComponent
+            },
             {
                 path: 'ciso',
                 component: CisoComponent
             },
             {
                 path: 'external',
-                component: ExternalAuditorComponent
+                component: ExternalAuditorComponent,
             },
             {
                 path: 'financial',

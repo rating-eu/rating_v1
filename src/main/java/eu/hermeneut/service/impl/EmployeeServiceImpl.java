@@ -18,12 +18,14 @@
 package eu.hermeneut.service.impl;
 
 import eu.hermeneut.domain.Employee;
+import eu.hermeneut.domain.enumeration.Role;
 import eu.hermeneut.repository.EmployeeRepository;
 import eu.hermeneut.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
@@ -49,5 +51,10 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public void delete(Long id) {
         this.employeeRepository.delete(id);
+    }
+
+    @Override
+    public Set<Employee> getEmployeesByCompanyAndRole(Long companyID, Role role) {
+        return this.employeeRepository.findAllByCompanyIDAndRole(companyID, role);
     }
 }

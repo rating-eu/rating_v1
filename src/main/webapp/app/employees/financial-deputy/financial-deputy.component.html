@@ -1,3 +1,14 @@
-<p>
-  financial-deputy works!
-</p>
+<div class="row">
+    <div class="col-md-10">
+        <div class="card-box">
+            <h2><span>Financial Deputies</span></h2>
+        </div>
+    </div>
+    <div class="col-md-2">
+        <div class="card-box">
+            <button class="btn btn-block btn-primary waves-effect waves-light btn-info"
+                    [routerLink]="['/employees/employee/' + roleEnum.ROLE_FINANCIAL_DEPUTY]">
+                <i class="fas fa-plus"></i>New
+            </button>
+        </div>
+    </div>

@@ -1,15 +1,19 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {Role} from "../../entities/enumerations/Role.enum";
 
 @Component({
-  selector: 'jhi-ciso',
-  templateUrl: './ciso.component.html',
-  styles: []
+    selector: 'jhi-ciso',
+    templateUrl: './ciso.component.html',
+    styles: []
 })
 export class CisoComponent implements OnInit {
 
-  constructor() { }
+    public roleEnum = Role;
 
-  ngOnInit() {
-  }
+    constructor() {
+    }
+
+    ngOnInit() {
+    }
 
 }
