@@ -51,9 +51,10 @@ public class Employee implements Serializable {
     @Column(name = "last_name", length = 50)
     private String lastName;
 
+    @NotNull
     @Email
     @Size(min = 5, max = 100)
-    @Column(name="email", length = 100, unique = true)
+    @Column(name="email", length = 100, unique = true, nullable = false)
     private String email;
 
     @NotNull
