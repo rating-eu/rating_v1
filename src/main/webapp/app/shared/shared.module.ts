@@ -86,7 +86,6 @@ export class HermeneutSharedModule {
                 AccountService,
                 StateStorageService,
                 PopUpService,
-                LoginModalService,
                 LoginService,
                 LoginModalService,
                 AccountService,
