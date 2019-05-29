@@ -5,7 +5,6 @@ import {MyCompanyMgm} from '../../entities/my-company-mgm';
 import {ActivatedRoute, Router} from '@angular/router';
 import {EmployeeService} from '../employee.service';
 import {Role} from "../../entities/enumerations/Role.enum";
-import {QuestionnairePurpose} from "../../entities/enumerations/QuestionnairePurpose.enum";
 
 @Component({
     selector: 'jhi-employee',
@@ -73,6 +72,8 @@ export class EmployeeComponent implements OnInit {
                             break;
                         }
                     }
+
+                    this.employee.role = this.role;
                 }
             })
         );
