@@ -25,4 +25,5 @@ export class Employee {
     email: string;
     role: Role;
     companyProfile: CompanyProfileMgm;
+    activated: boolean = false;
 }

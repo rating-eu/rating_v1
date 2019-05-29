@@ -67,6 +67,10 @@ public class Employee implements Serializable {
     @JoinColumn(name = "company_profile_id", nullable = false)
     private CompanyProfile companyProfile;
 
+    @NotNull
+    @Column(nullable = false)
+    private boolean activated = false;
+
     public Long getId() {
         return id;
     }
@@ -121,5 +125,13 @@ public class Employee implements Serializable {
 
     public void setCompanyProfile(CompanyProfile companyProfile) {
         this.companyProfile = companyProfile;
+    }
+
+    public boolean isActivated() {
+        return activated;
+    }
+
+    public void setActivated(boolean activated) {
+        this.activated = activated;
     }
 }
