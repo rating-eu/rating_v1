@@ -15,7 +15,7 @@
 </div>
 
 <div class="card-box">
-    <div class="table-responsive" *ngIf="employees">
+    <div class="table-responsive" *ngIf="employees && employees.length > 0">
         <table class="table table-striped">
             <thead>
             <tr>
@@ -39,7 +39,7 @@
             </tbody>
         </table>
     </div>
-    <div *ngIf="!employees">
+    <div *ngIf="!employees || employees.length === 0">
         <span>Add the first External Auditor!</span>
     </div>
 </div>

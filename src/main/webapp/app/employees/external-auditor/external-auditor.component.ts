@@ -4,8 +4,10 @@ import {EmployeeService} from "../employee.service";
 import {DatasharingService} from "../../datasharing/datasharing.service";
 import {MyCompanyMgm} from "../../entities/my-company-mgm";
 import {Employee} from "../models/Employee";
-import {Subscription} from "rxjs";
+import {Observable, Subscription} from "rxjs";
 import {switchMap} from "rxjs/operators";
+import {of} from "rxjs/observable/of";
+import {HttpResponse} from "@angular/common/http";
 
 @Component({
     selector: 'jhi-external-auditor',
@@ -29,26 +31,28 @@ export class ExternalAuditorComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.subscriptions = [];
+        this.employees = [];
+
         this.myCompany = this.dataSharingService.myCompany;
         this.fetchEmployees();
 
-        const employees$ = this.dataSharingService.myCompanyObservable.pipe(
+        const employees$: Observable<HttpResponse<Employee[]> | null> = this.dataSharingService.myCompanyObservable.pipe(
             switchMap((response: MyCompanyMgm) => {
                 this.myCompany = response;
 
                 if (this.myCompany && this.myCompany.companyProfile) {
                     return this.employeeService.findAllByCompanyAndRole(this.myCompany.companyProfile, Role.ROLE_EXTERNAL_AUDIT);
                 } else {
-                    return null;
+                    return of(null);
                 }
             })
         );
 
-        if (employees$) {
-            this.subscriptions.push(employees$.subscribe((response) => {
+        this.subscriptions.push(employees$.subscribe((response: HttpResponse<Employee[]> | null) => {
+            if (response) {
                 this.employees = response.body;
-            }));
-        }
+            }
+        }));
     }
 
     private fetchEmployees() {

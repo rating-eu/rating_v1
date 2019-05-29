@@ -32,6 +32,12 @@ public final class AuthoritiesConstants {
 
     public static final String CISO = "ROLE_CISO";
 
+    public static final String CISO_DEPUTY = "ROLE_CISO_DEPUTY";
+
+    public static final String FINANCIAL_DEPUTY = "ROLE_FINANCIAL_DEPUTY";
+
+
+
     private AuthoritiesConstants() {
     }
 }
