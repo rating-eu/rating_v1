@@ -22,7 +22,7 @@ import java.util.Random;
 
 public class PasswordGenerator {
     private static final Random RANDOM = new SecureRandom();
-    private static final String ALPHABET = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz@#_-.,;?!$&()[]{}";
+    private static final String ALPHABET = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz#_-.,;?!$&()[]{}";
 
     public static String generatePassword(int length) {
         StringBuilder returnValue = new StringBuilder(length);

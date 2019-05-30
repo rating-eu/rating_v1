@@ -155,7 +155,7 @@ public class UserService {
         newUser.setEmail(employee.getEmail());
 
         Couple<User, byte[]> userCouple = new Couple<>();
-        userCouple.setB(PasswordGenerator.generatePassword(100).getBytes());
+        userCouple.setB(PasswordGenerator.generatePassword(8).getBytes());
 
         String encryptedPassword = passwordEncoder.encode(new String(userCouple.getB()));
         // new user gets initially a generated password

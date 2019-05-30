@@ -19,11 +19,14 @@ package eu.hermeneut.web.rest.employee;
 
 import com.codahale.metrics.annotation.Timed;
 import eu.hermeneut.domain.Employee;
+import eu.hermeneut.domain.MyCompany;
 import eu.hermeneut.domain.User;
 import eu.hermeneut.domain.enumeration.Role;
+import eu.hermeneut.repository.MyCompanyRepository;
 import eu.hermeneut.repository.UserRepository;
 import eu.hermeneut.service.EmployeeService;
 import eu.hermeneut.service.MailService;
+import eu.hermeneut.service.MyCompanyService;
 import eu.hermeneut.service.UserService;
 import eu.hermeneut.utils.tuple.Couple;
 import eu.hermeneut.web.rest.errors.EmailAlreadyUsedException;
@@ -49,6 +52,9 @@ public class EmployeeResource {
 
     @Autowired
     private MailService mailService;
+
+    @Autowired
+    private MyCompanyRepository myCompanyRepository;
 
     @PostMapping("/employees")
     @Timed
@@ -78,6 +84,12 @@ public class EmployeeResource {
             // TODO create user
             Couple<User, byte[]> userCouple = userService.registerEmployee(employee);
             mailService.sendEmployeeActivationEmail(employee, userCouple.getA(), userCouple.getB());
+
+            MyCompany myCompany = new MyCompany();
+            myCompany.setUser(userCouple.getA());
+            myCompany.setCompanyProfile(employee.getCompanyProfile());
+
+            this.myCompanyRepository.save(myCompany);
         }
 
         return savedEmployee;
