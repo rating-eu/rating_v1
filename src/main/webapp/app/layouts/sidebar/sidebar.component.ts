@@ -49,8 +49,11 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
     public secondaryLogo: LogoMgm = null;
     private selfAssessments: SelfAssessmentMgm[];
+    private selfAssessment: SelfAssessmentMgm;
     public companyBoardStatus: CompanyBoardStatus = null;
     public role: Role = null;
+
+    private riskAssessmentsMap: Map<number, MenuItem>;
 
     windowWidth: number = window.innerWidth;
 
@@ -93,6 +96,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     ngOnInit() {
         this.companyBoardStatus = this.dataSharingService.companyBoardStatus;
         this.createMenuItems();
+        this.riskAssessmentsMap = new Map();
 
         this.dataSharingService.companyBoardStatusSubject.subscribe((status: CompanyBoardStatus) => {
             this.companyBoardStatus = status;
@@ -105,6 +109,14 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                 this.showSelfAssessments();
             }
         );
+
+        this.selfAssessment = this.dataSharingService.selfAssessment;
+        this.expandSelectedSelfAssessment();
+
+        this.dataSharingService.selfAssessmentObservable.subscribe((assessment) => {
+            this.selfAssessment = assessment;
+            this.expandSelectedSelfAssessment();
+        });
 
         this.role = this.dataSharingService.role;
         this.filterByRole();
@@ -162,6 +174,18 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                 this.isCollapsed = update.isSidebarCollapsed;
             }
         });
+    }
+
+    private expandSelectedSelfAssessment() {
+        if (this.selfAssessment) {
+            this.riskAssessmentsMap.forEach((item: MenuItem, key: number) => {
+                if (key !== this.selfAssessment.id) {
+                    item.expanded = false;
+                } else {
+                    item.expanded = true;
+                }
+            });
+        }
     }
 
     private fetchSecondaryLogo() {
@@ -394,8 +418,15 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                     const assessmentItem: MenuItem = {
                         label: assessment.name,
                         command: event => {
-                            this.dataSharingService.selfAssessment = assessment;
-                            this.router.navigate(['/riskboard']);
+                            if (this.selfAssessment) {
+                                if (this.selfAssessment.id !== assessment.id) {
+                                    this.dataSharingService.selfAssessment = assessment;
+                                }
+                                this.router.navigate(['/riskboard']);
+                            } else {
+                                this.dataSharingService.selfAssessment = assessment;
+                                this.router.navigate(['/riskboard']);
+                            }
                         },
                         items: [
                             {
@@ -472,6 +503,8 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                             }
                         ]
                     };
+
+                    this.riskAssessmentsMap.set(assessment.id, assessmentItem);
 
                     // @ts-ignore
                     this.riskManagementMenuItem.items.push(assessmentItem);
