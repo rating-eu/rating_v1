@@ -16,7 +16,7 @@
  */
 
 import {MainService} from './main.service';
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRouteSnapshot, NavigationEnd, Router} from '@angular/router';
 
 import {AccountService, JhiLanguageHelper, LoginService, Principal, User, UserService} from '../../shared';
@@ -27,12 +27,18 @@ import {ModalDismissReasons, NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {HttpResponse} from "@angular/common/http";
 import {MyCompanyMgm, MyCompanyMgmService} from "../../entities/my-company-mgm";
 import {Account} from "../../shared";
+import {Observable, Subscription} from "rxjs";
+import {switchMap} from "rxjs/operators";
+import {of} from "rxjs/observable/of";
 
 @Component({
     selector: 'jhi-main',
     templateUrl: './main.component.html'
 })
-export class JhiMainComponent implements OnInit {
+export class JhiMainComponent implements OnInit, OnDestroy {
+    myCompany: MyCompanyMgm;
+    user: User;
+    account: Account;
 
     public updateLayout: LayoutConfiguration;
     public isAuthenticated = false;
@@ -43,6 +49,7 @@ export class JhiMainComponent implements OnInit {
     public isAdmin = false;
     private closeResult: string;
     private role: Role;
+    private subscriptions: Subscription[];
 
     constructor(
         private principal: Principal,
@@ -68,12 +75,15 @@ export class JhiMainComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.subscriptions = [];
+
         this.mainService.getMode().toPromise().then((res) => {
             if (res) {
                 this.dataSharingService.mode = res;
             }
         });
-        this.router.events.subscribe((event) => {
+
+        this.subscriptions.push(this.router.events.subscribe((event) => {
             if (event instanceof NavigationEnd) {
                 this.jhiLanguageHelper.updateTitle(this.getPageTitle(this.router.routerState.snapshot.root));
 
@@ -89,18 +99,115 @@ export class JhiMainComponent implements OnInit {
                     this.isActivateUrl = false;
                 }
             }
-        });
+        }));
 
-        this.dataSharingService.layoutConfigurationObservable.subscribe((update: LayoutConfiguration) => {
+        this.subscriptions.push(this.dataSharingService.layoutConfigurationObservable.subscribe((update: LayoutConfiguration) => {
             if (update) {
                 setTimeout(() => {
                     this.updateLayout = update;
                 }, 0);
             }
-        });
+        }));
 
         // Get notified each time authentication state changes.
-        this.principal.getAuthenticationState().subscribe((authentication: any) => {
+        const account$: Observable<HttpResponse<Account> | null> = this.principal.getAuthenticationState().pipe(
+            switchMap((authentication: any) => {
+                if (authentication) {
+                    this.isAuthenticated = true;
+                    return this.accountService.get();
+                } else {
+                    this.isAuthenticated = false;
+                    const layoutConfiguration: LayoutConfiguration = new LayoutConfiguration();
+                    layoutConfiguration.isSidebarCollapsed = true;
+                    layoutConfiguration.isSidebarCollapsedByMe = false;
+                    this.dataSharingService.layoutConfiguration = layoutConfiguration;
+
+                    this.resetRole();
+
+                    return of(null);
+                }
+            })
+        );
+
+        const user$: Observable<HttpResponse<User> | null> = account$.pipe(
+            switchMap((accountResponse: HttpResponse<Account>) => {
+                if (accountResponse) {
+                    this.account = accountResponse.body;
+                    this.dataSharingService.account = this.account;
+
+                    return this.userService.find(this.account.login);
+                } else {
+                    this.account = null;
+                    this.dataSharingService.account = this.account;
+                    return of(null);
+                }
+            })
+        );
+
+        const role$: Observable<Role | null> = user$.pipe(
+            switchMap((userResponse: HttpResponse<User>) => {
+                    if (userResponse) {
+                        this.user = userResponse.body;
+                        this.dataSharingService.user = this.user;
+
+                        console.log("Main user:");
+                        console.log(this.user);
+
+                        if (this.user.authorities && this.user.authorities.length) {
+                            if (this.user.authorities.includes(Role[Role.ROLE_ADMIN])) {
+                                return of(Role.ROLE_ADMIN);
+                            } else if (this.user.authorities.includes(Role[Role.ROLE_CISO])) {
+                                return of(Role.ROLE_CISO);
+                            } else if (this.user.authorities.includes(Role[Role.ROLE_CISO_DEPUTY])) {
+                                return of(Role.ROLE_CISO_DEPUTY);
+                            } else if (this.user.authorities.includes(Role[Role.ROLE_EXTERNAL_AUDIT])) {
+                                return of(Role.ROLE_EXTERNAL_AUDIT);
+                            } else if (this.user.authorities.includes(Role[Role.ROLE_FINANCIAL_DEPUTY])) {
+                                return of(Role.ROLE_FINANCIAL_DEPUTY);
+                            }
+                        } else {
+                            return of(null);
+                        }
+                    } else {
+                        this.user = null;
+                        this.dataSharingService.user = this.user;
+                        return of(null);
+                    }
+                }
+            )
+        );
+
+        const myCompany$: Observable<HttpResponse<MyCompanyMgm> | null> = role$.pipe(
+            switchMap((roleResponse: Role) => {
+                if (roleResponse) {
+                    this.role = roleResponse;
+                    this.dataSharingService.role = this.role;
+
+                    return this.myCompanyService.findByUser(this.user.id);
+                } else {
+                    this.role = null;
+                    this.dataSharingService.role = this.role;
+
+                    return of(null);
+                }
+            })
+        );
+
+        this.subscriptions.push(myCompany$.subscribe((myCompanyResponse: HttpResponse<MyCompanyMgm>) => {
+            if (myCompanyResponse) {
+                this.myCompany = myCompanyResponse.body;
+            } else {
+                this.myCompany = null;
+            }
+
+            console.log("Main MyCompany");
+            console.log(this.myCompany);
+
+            this.dataSharingService.myCompany = this.myCompany;
+        }));
+
+
+        /*this.subscriptions.push(this.principal.getAuthenticationState().subscribe((authentication: any) => {
             if (authentication) {
                 this.isAuthenticated = true;
 
@@ -155,7 +262,7 @@ export class JhiMainComponent implements OnInit {
 
                 this.resetRole();
             }
-        });
+        }));*/
 
         if (this.principal.isAuthenticated()) {
             this.isAuthenticated = this.principal.isAuthenticated();
@@ -248,6 +355,14 @@ export class JhiMainComponent implements OnInit {
             return 'by clicking on a backdrop';
         } else {
             return `with: ${reason}`;
+        }
+    }
+
+    ngOnDestroy(): void {
+        if (this.subscriptions && this.subscriptions.length) {
+            this.subscriptions.forEach((subscription) => {
+                subscription.unsubscribe();
+            });
         }
     }
 }
