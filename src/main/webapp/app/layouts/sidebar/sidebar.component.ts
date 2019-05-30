@@ -345,9 +345,11 @@ export class SidebarComponent implements OnInit, AfterViewInit {
             routerLink: ['/terms']
         };
 
+        // @ts-ignore
+        this.companyMenuItem.items.push(this.employeesMenuItem);
+
         this.menuItems = [
             this.companyMenuItem,
-            this.employeesMenuItem,
             this.cyberPostureMenuItem,
             this.riskManagementMenuItem,
             this.taxonomiesMenuItem,
@@ -393,6 +395,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                         label: assessment.name,
                         command: event => {
                             this.dataSharingService.selfAssessment = assessment;
+                            this.router.navigate(['/riskboard']);
                         },
                         items: [
                             {

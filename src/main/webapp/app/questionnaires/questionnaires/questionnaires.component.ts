@@ -84,6 +84,8 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
 
     public assessVulnerabilitiesCompletionMap: Map<number/*QStatus.ID*/, AssessVulnerabilitiesCompletionDTO>;
 
+    public isTherAnyEMPTYQuestionnaire = false;
+
     constructor(private route: ActivatedRoute,
                 private router: Router,
                 private questionnairesService: QuestionnairesService,
@@ -297,6 +299,12 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
                             break;
                         }
                     }
+
+                    this.questionnaireStatuses.forEach((questionnaireStatus) => {
+                       if(questionnaireStatus.status === Status.EMPTY || questionnaireStatus.status === Status.PENDING){
+                           this.isTherAnyEMPTYQuestionnaire = true;
+                       }
+                    });
                 }
             }
         );

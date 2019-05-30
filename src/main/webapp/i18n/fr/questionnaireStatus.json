@@ -11,7 +11,7 @@
             "updated": "Le Questionnaire Status avec l'identifiant {{ param }} a été mis à jour",
             "deleted": "Le Questionnaire Status avec l'identifiant {{ param }} a été supprimé",
             "delete": {
-                "question": "Etes-vous certain de vouloir supprimer le Questionnaire Status {{ id }} ?"
+                "question": "Etes-vous certain de vouloir supprimer le Vulnerability Assessment?"
             },
             "detail": {
                 "title": "Questionnaire Status"

@@ -84,7 +84,7 @@ public class Employee implements Serializable {
     }
 
     public void setLogin(String login) {
-        this.login = login;
+        this.login = login.toLowerCase();
     }
 
     public String getFirstName() {
@@ -108,7 +108,7 @@ public class Employee implements Serializable {
     }
 
     public void setEmail(String email) {
-        this.email = email;
+        this.email = email.toLowerCase();
     }
 
     public Role getRole() {

@@ -19,8 +19,15 @@ package eu.hermeneut.web.rest.employee;
 
 import com.codahale.metrics.annotation.Timed;
 import eu.hermeneut.domain.Employee;
+import eu.hermeneut.domain.User;
 import eu.hermeneut.domain.enumeration.Role;
+import eu.hermeneut.repository.UserRepository;
 import eu.hermeneut.service.EmployeeService;
+import eu.hermeneut.service.MailService;
+import eu.hermeneut.service.UserService;
+import eu.hermeneut.utils.tuple.Couple;
+import eu.hermeneut.web.rest.errors.EmailAlreadyUsedException;
+import eu.hermeneut.web.rest.errors.LoginAlreadyUsedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,14 +41,43 @@ public class EmployeeResource {
     @Autowired
     private EmployeeService employeeService;
 
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private MailService mailService;
+
     @PostMapping("/employees")
     @Timed
     public Employee createEmployee(@RequestBody @Valid Employee employee) {
+
+        //Check for duplicate login
+        employeeService.findOneByLogin(employee.getLogin().toLowerCase()).ifPresent(e -> {
+            throw new LoginAlreadyUsedException();
+        });
+
+        userRepository.findOneByLogin(employee.getLogin().toLowerCase()).ifPresent(u -> {
+            throw new LoginAlreadyUsedException();
+        });
+
+        //Check for duplicate email
+        employeeService.findOneByEmail(employee.getEmail().toLowerCase()).ifPresent(e -> {
+            throw new LoginAlreadyUsedException();
+        });
+
+        userRepository.findOneByEmailIgnoreCase(employee.getEmail()).ifPresent(u -> {
+            throw new EmailAlreadyUsedException();
+        });
 
         Employee savedEmployee = this.employeeService.save(employee);
 
         if (savedEmployee != null) {
             // TODO create user
+            Couple<User, byte[]> userCouple = userService.registerEmployee(employee);
+            mailService.sendEmployeeActivationEmail(employee, userCouple.getA(), userCouple.getB());
         }
 
         return savedEmployee;

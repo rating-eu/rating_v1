@@ -29,7 +29,7 @@
                     <div class="col-md-10">
                         <h1>Vulnerability Assessment</h1>
                     </div>
-                    <div class="col-md-2">
+                    <div class="col-md-2" *ngIf="!isTherAnyEMPTYQuestionnaire">
                         <h1>
                             <button class="btn btn-primary btn-lg" (click)="createNewQuestionnaireStatus()">New</button>
                         </h1>

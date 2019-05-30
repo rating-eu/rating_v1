@@ -93,6 +93,13 @@
         </div>
     </div>
 
+    <div *ngIf="isActivateUrl" class="row">
+        <div class="col-md-12">
+            <router-outlet></router-outlet>
+            <router-outlet name="popup"></router-outlet>
+        </div>
+    </div>
+
     <div *ngIf="isResetUrl"
          [ngClass]="{'content-page-sidenav': !updateLayout.isSidebarCollapsed, 'content-page-no-sidenav': updateLayout.isSidebarCollapsed}">
         <div class="content">

@@ -74,11 +74,11 @@ export class MostCriticalAttackStrategiesWidgetComponent implements OnInit, OnDe
         this.selfAssessment = this.dataSharingService.selfAssessment;
         this.fetchCriticalAttackStrategies();
 
-        this.dataSharingService.selfAssessmentObservable.subscribe((assessment: SelfAssessmentMgm) => {
+        this.subscriptions.push(this.dataSharingService.selfAssessmentObservable.subscribe((assessment: SelfAssessmentMgm) => {
             this.selfAssessment = assessment;
 
             this.fetchCriticalAttackStrategies();
-        });
+        }));
     }
 
     private fetchCriticalAttackStrategies() {

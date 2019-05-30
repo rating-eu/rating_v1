@@ -11,7 +11,7 @@
             "updated": "Questionnaire Status aktualisiert mit ID {{ param }}",
             "deleted": "Questionnaire Status gelöscht mit ID {{ param }}",
             "delete": {
-                "question": "Soll Questionnaire Status {{ id }} wirklich dauerhaft gelöscht werden?"
+                "question": "Soll Vulnerability Assessment wirklich dauerhaft gelöscht werden?"
             },
             "detail": {
                 "title": "Questionnaire Status"

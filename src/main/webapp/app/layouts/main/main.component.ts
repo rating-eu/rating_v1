@@ -37,6 +37,7 @@ export class JhiMainComponent implements OnInit {
     public updateLayout: LayoutConfiguration;
     public isAuthenticated = false;
     public isResetUrl = false;
+    public isActivateUrl = false;
     public isExternal = false;
     public isCISO = false;
     public isAdmin = false;
@@ -80,6 +81,12 @@ export class JhiMainComponent implements OnInit {
                     this.isResetUrl = true;
                 } else {
                     this.isResetUrl = false;
+                }
+
+                if (this.router.url.indexOf('/activate') !== -1) {
+                    this.isActivateUrl = true;
+                } else {
+                    this.isActivateUrl = false;
                 }
             }
         });

@@ -21,6 +21,7 @@ import eu.hermeneut.domain.Employee;
 import eu.hermeneut.domain.enumeration.Role;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 public interface EmployeeService {
@@ -46,6 +47,20 @@ public interface EmployeeService {
      * @return the entity
      */
     Employee findOne(Long id);
+
+    /**
+     * Get the Employ by login, if it exists.
+     * @param login
+     * @return
+     */
+    Optional<Employee> findOneByLogin(String login);
+
+    /**
+     * Get the Employ by email, if it exists.
+     * @param email
+     * @return
+     */
+    Optional<Employee> findOneByEmail(String email);
 
     /**
      * Delete the "id" Employee.

@@ -15,11 +15,11 @@
  *
  */
 
-import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
+import {ChangeDetectorRef, Component, OnDestroy, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {RiskBoardService, RiskBoardStatus} from '../risk-board.service';
 import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
-import {Observable} from "rxjs";
+import {Observable, Subscription} from "rxjs";
 import {Status} from "../../entities/enumerations/Status.enum";
 import {RiskBoardStepEnum} from "../../entities/enumerations/RiskBoardStep.enum";
 import {forkJoin} from "rxjs/observable/forkJoin";
@@ -32,7 +32,7 @@ import {ImpactMode} from "../../entities/enumerations/ImpactMode.enum";
     templateUrl: './step-info-widget.component.html',
     styleUrls: ['step-info-widget.component.css']
 })
-export class StepInfoWidgetComponent implements OnInit {
+export class StepInfoWidgetComponent implements OnInit, OnDestroy {
     public loading = false;
     public isCollapsed = false;
 
@@ -59,36 +59,40 @@ export class StepInfoWidgetComponent implements OnInit {
     private closeResult: string;
     private linkAfterModal: string;
 
+    private subscriptions: Subscription[];
+
     constructor(
         private datasharingService: DatasharingService,
         private dashService: RiskBoardService,
         private modalService: NgbModal,
         private router: Router,
-        private riskBoardService: RiskBoardService,
-        private changeDetector: ChangeDetectorRef
+        private riskBoardService: RiskBoardService
     ) {
     }
 
     ngOnInit() {
+        this.subscriptions = [];
         this.selfAssessment = this.datasharingService.selfAssessment;
 
         if (!this.selfAssessment) {
             this.router.navigate(['/my-risk-assessments']);
-        }else{
+        } else {
             this.fetchStatus();
         }
 
-        this.datasharingService.selfAssessmentObservable.subscribe(assessment => {
-            if (!this.selfAssessment || this.selfAssessment.id !== assessment.id) {
-                this.selfAssessment = assessment;
+        this.subscriptions.push(
+            this.datasharingService.selfAssessmentObservable.subscribe((assessment) => {
+                if (assessment) {
+                    if (!this.selfAssessment || this.selfAssessment.id !== assessment.id) {
+                        this.selfAssessment = assessment;
 
-                if (!this.selfAssessment) {
+                        this.fetchStatus();
+                    }
+                } else {
                     this.router.navigate(['/my-risk-assessments']);
-                }else{
-                    this.fetchStatus();
                 }
-            }
-        });
+            })
+        );
     }
 
 
@@ -96,9 +100,9 @@ export class StepInfoWidgetComponent implements OnInit {
         this.riskBoardStatus = new RiskBoardStatus();
         this.datasharingService.riskBoardStatus = this.riskBoardStatus;
 
-        if(this.changeDetector){
+        /*if (this.changeDetector) {
             this.changeDetector.detectChanges();
-        }
+        }*/
 
         this.assetClusteringStatus$ = this.riskBoardService.getStatusFromServer(this.selfAssessment, RiskBoardStepEnum.ASSET_CLUSTERING);
         this.impactEvaluationStatus$ = this.riskBoardService.getStatusFromServer(this.selfAssessment, RiskBoardStepEnum.IMPACT_EVALUATION);
@@ -108,23 +112,25 @@ export class StepInfoWidgetComponent implements OnInit {
         const join$: Observable<[Status, Status, Status, Status]> = forkJoin(this.assetClusteringStatus$,
             this.impactEvaluationStatus$, this.attackRelatedCostsStatus$, this.riskEvaluationStatus$);
 
-        join$.subscribe((response: [Status, Status, Status, Status]) => {
-            this.assetClusteringStatus = response[0];
-            this.impactEvaluationStatus = response[1];
-            this.attackRelatedCostsStatus = response[2];
-            this.riskEvaluationStatus = response[3];
+        this.subscriptions.push(
+            join$.subscribe((response: [Status, Status, Status, Status]) => {
+                this.assetClusteringStatus = response[0];
+                this.impactEvaluationStatus = response[1];
+                this.attackRelatedCostsStatus = response[2];
+                this.riskEvaluationStatus = response[3];
 
-            this.riskBoardStatus.assetClusteringStatus = this.assetClusteringStatus;
-            this.riskBoardStatus.impactEvaluationStatus = this.impactEvaluationStatus;
-            this.riskBoardStatus.attackRelatedCostEstimationStatus = this.attackRelatedCostsStatus;
-            this.riskBoardStatus.riskEvaluationStatus = this.riskEvaluationStatus;
+                this.riskBoardStatus.assetClusteringStatus = this.assetClusteringStatus;
+                this.riskBoardStatus.impactEvaluationStatus = this.impactEvaluationStatus;
+                this.riskBoardStatus.attackRelatedCostEstimationStatus = this.attackRelatedCostsStatus;
+                this.riskBoardStatus.riskEvaluationStatus = this.riskEvaluationStatus;
 
-            this.datasharingService.riskBoardStatus = this.riskBoardStatus;
+                this.datasharingService.riskBoardStatus = this.riskBoardStatus;
 
-            if(this.changeDetector){
-                this.changeDetector.detectChanges();
-            }
-        });
+                /*if (this.changeDetector) {
+                    this.changeDetector.detectChanges();
+                }*/
+            })
+        );
     }
 
     open(content, link, message?) {
@@ -153,6 +159,14 @@ export class StepInfoWidgetComponent implements OnInit {
             return 'by clicking on a backdrop';
         } else {
             return `with: ${reason}`;
+        }
+    }
+
+    ngOnDestroy(): void {
+        if (this.subscriptions && this.subscriptions.length) {
+            this.subscriptions.forEach((subscription) => {
+                subscription.unsubscribe();
+            });
         }
     }
 }

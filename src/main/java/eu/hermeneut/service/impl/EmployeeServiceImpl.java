@@ -25,6 +25,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -46,6 +47,16 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public Employee findOne(Long id) {
         return this.employeeRepository.findOne(id);
+    }
+
+    @Override
+    public Optional<Employee> findOneByLogin(String login) {
+        return this.employeeRepository.findOneByLogin(login.toLowerCase());
+    }
+
+    @Override
+    public Optional<Employee> findOneByEmail(String email) {
+        return this.employeeRepository.findOneByEmail(email.toLowerCase());
     }
 
     @Override

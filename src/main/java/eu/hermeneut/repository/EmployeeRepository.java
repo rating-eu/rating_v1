@@ -24,6 +24,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
 import java.util.Set;
 
 @Repository
@@ -32,4 +33,12 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
     @Query("SELECT DISTINCT employee FROM Employee employee LEFT JOIN FETCH employee.companyProfile " +
         "WHERE employee.companyProfile.id = :companyID AND employee.role = :role")
     Set<Employee> findAllByCompanyIDAndRole(@Param("companyID") Long companyID, @Param("role") Role role);
+
+    @Query("SELECT DISTINCT employee FROM Employee employee LEFT JOIN FETCH employee.companyProfile " +
+        "WHERE employee.email = :email")
+    Optional<Employee> findOneByEmail(@Param("email") String email);
+
+    @Query("SELECT DISTINCT employee FROM Employee employee LEFT JOIN FETCH employee.companyProfile " +
+        "WHERE employee.login = :login")
+    Optional<Employee> findOneByLogin(@Param("login") String login);
 }
