@@ -305,54 +305,6 @@
                         </ol>
                     </mat-tab>
                 </mat-tab-group>
-                <!--<ol>
-                    <li *ngFor="let question of questionsArray; trackBy: trackByID">
-                        <div
-                            [ngClass]="{'ng-valid': isValid(question.id) === true, 'ng-invalid': isValid(question.id) === false}"
-                            class="card-box">
-                            <label class="form-control-label" [attr.for]="question?.id">
-                                <h5 class="h3-dynamic-form"> {{question?.name}}</h5>
-                            </label>
-                            <div class="row">
-                                <div class="col-md-2 bg3 text-center">
-                                    <mat-form-field>
-                                    <textarea matInput [formControlName]="question.id + '.ciso.note'" [rows]="7"
-                                              placeholder="CISO Notes" readonly></textarea>
-                                    </mat-form-field>
-                                </div>
-                                <div class="col-md-1 bg1 text-center">
-                                    <mat-radio-group [id]="question.id" [formControlName]="question.id"
-                                                     class="radio-group">
-                                        <mat-radio-button [id]="question.id + '' + answer.id"
-                                                          *ngFor="let answer of sort(question.answers)"
-                                                          class="radio-button"
-                                                          style="display: flex;  align-items: center;"
-                                                          [value]="answer" disabled="disabled">
-                                            &nbsp;
-                                        </mat-radio-button>
-                                    </mat-radio-group>
-                                </div>
-                                <div class="col-md-7 bg2">
-                                    <mat-radio-group [id]="question.id + '.external'"
-                                                     [formControlName]="question.id + '.external'" class="radio-group">
-                                        <mat-radio-button [id]="question.id + '' + answer.id + '.external'"
-                                                          *ngFor="let answer of sort(question.answers)"
-                                                          class="radio-button"
-                                                          [value]="answer">
-                                            {{answer.name}}
-                                        </mat-radio-button>
-                                    </mat-radio-group>
-                                </div>
-                                <div class="col-md-2 bg3 text-center">
-                                    <mat-form-field>
-                                    <textarea matInput [formControlName]="question.id + '.external.note'" [rows]="7"
-                                              placeholder="External Notes"></textarea>
-                                    </mat-form-field>
-                                </div>
-                            </div>
-                        </div>
-                    </li>
-                </ol>-->
                 <div class="form-row text-right d-block" style="margin-bottom: 40px">
                     <button class="btn btn-success waves-light waves-effect w-md" type="submit"
                             [disabled]="!form.valid">
