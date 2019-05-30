@@ -31,12 +31,7 @@
 </p>
 
 <ul>
-    <li th:text="#{email.employee.activation.company.name(${employee.companyProfile.name})}">Company: {0}</li>
-    <li th:text="#{email.employee.activation.company.sector(${employee.companyProfile.type})}">Company Sector: {0}</li>
-</ul>
-
-<ul>
-    <li th:text="#{email.employee.activation.user.login(${user.firstName})}">Login: {0}</li>
+    <li th:text="#{email.employee.activation.user.login(${user.login})}">Login: {0}</li>
     <li th:text="#{email.employee.activation.user.password(${password})}">Password: {0}</li>
     <li th:text="#{email.employee.activation.user.name(${user.firstName})}">Name: {0}</li>
     <li th:text="#{email.employee.activation.user.surname(${user.lastName})}">Surname: {0}</li>
