@@ -204,65 +204,7 @@ export class JhiMainComponent implements OnInit, OnDestroy {
             console.log(this.myCompany);
 
             this.dataSharingService.myCompany = this.myCompany;
-        }));
-
-
-        /*this.subscriptions.push(this.principal.getAuthenticationState().subscribe((authentication: any) => {
-            if (authentication) {
-                this.isAuthenticated = true;
-
-                this.accountService.get().subscribe((accountResponse) => {
-                    const loggedAccount: Account = accountResponse.body;
-                    this.userService.find(loggedAccount['login']).subscribe((response2) => {
-                        const user: User = response2.body;
-
-                        this.dataSharingService.user = user;
-                        this.updateRole();
-
-                        if (user) {
-                            switch (this.role) {
-                                case Role.ROLE_ADMIN: {
-
-                                    break;
-                                }
-                                case Role.ROLE_CISO: {
-                                    this.myCompanyService.findByUser(user.id).subscribe(
-                                        (myCompanyResponse: HttpResponse<MyCompanyMgm>) => {
-                                            const myCompany = myCompanyResponse.body;
-                                            this.dataSharingService.myCompany = myCompany;
-                                        },
-                                        (error: any) => {
-                                            this.dataSharingService.myCompany = null;
-                                        }
-                                    );
-                                    break;
-                                }
-                                case Role.ROLE_EXTERNAL_AUDIT: {
-                                    this.myCompanyService.findByUser(user.id).subscribe(
-                                        (myCompanyResponse: HttpResponse<MyCompanyMgm>) => {
-                                            const myCompany = myCompanyResponse.body;
-                                            this.dataSharingService.myCompany = myCompany;
-                                        },
-                                        (error: any) => {
-                                            this.dataSharingService.myCompany = null;
-                                        }
-                                    );
-                                    break;
-                                }
-                            }
-                        }
-                    });
-                });
-            } else {
-                this.isAuthenticated = false;
-                const layoutConfiguration: LayoutConfiguration = new LayoutConfiguration();
-                layoutConfiguration.isSidebarCollapsed = true;
-                layoutConfiguration.isSidebarCollapsedByMe = false;
-                this.dataSharingService.layoutConfiguration = layoutConfiguration;
-
-                this.resetRole();
-            }
-        }));*/
+        });
 
         if (this.principal.isAuthenticated()) {
             this.isAuthenticated = this.principal.isAuthenticated();
