@@ -103,13 +103,6 @@ export class SidebarComponent implements OnInit, AfterViewInit {
             this.filterByCompanyBoardStatus();
         });
 
-        this.selfAssessmentService.getMySelfAssessments().subscribe(
-            (response: SelfAssessmentMgm[]) => {
-                this.selfAssessments = response;
-                this.showSelfAssessments();
-            }
-        );
-
         this.selfAssessment = this.dataSharingService.selfAssessment;
         this.expandSelectedSelfAssessment();
 
@@ -121,9 +114,15 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         this.role = this.dataSharingService.role;
         this.filterByRole();
 
+        //Check if CISO inside
+        this.fetchSelfAssessments();
+
         this.dataSharingService.roleObservable.subscribe((roleResponse: Role) => {
             this.role = roleResponse;
             this.filterByRole();
+
+            //Check if CISO inside
+            this.fetchSelfAssessments();
         });
 
         this.principal.getAuthenticationState().subscribe((identity) => {
@@ -532,6 +531,24 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                 this.cyberPostureMenuItem.visible = this.role === Role.ROLE_CISO;
 
                 this.changeDetector.detectChanges();
+            }
+        }
+    }
+
+    private fetchSelfAssessments() {
+        switch (this.role) {
+            case Role.ROLE_CISO: {
+                this.selfAssessmentService.getMySelfAssessments().subscribe(
+                    (response: SelfAssessmentMgm[]) => {
+                        this.selfAssessments = response;
+                        this.showSelfAssessments();
+                    }
+                );
+
+                break;
+            }
+            default: {
+                break;
             }
         }
     }
