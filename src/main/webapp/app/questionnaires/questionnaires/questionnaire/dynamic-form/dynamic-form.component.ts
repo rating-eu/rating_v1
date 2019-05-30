@@ -480,7 +480,7 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
         const formDataMap: Map<string, AnswerMgm | string> = FormUtils.formToMap<AnswerMgm | string>(this.form);
 
         // #1 Create the QuestionnaireStatus or update the existing one
-        let questionnaireStatus = null;
+        let questionnaireStatus: QuestionnaireStatusMgm = null;
 
         if (!this.externalQuestionnaireStatus) {
             questionnaireStatus = new QuestionnaireStatusMgm(undefined, Status.FULL, null, null,
@@ -797,28 +797,30 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
         });
     }
 
-    private continueExternalRefinement(questionnaireStatus: any) {
+    private continueExternalRefinement(questionnaireStatus: QuestionnaireStatusMgm) {
         let questionnaireStatus$: Observable<HttpResponse<QuestionnaireStatusMgm>> = null;
 
-        if (!this.externalQuestionnaireStatus) {
-            // Create a new QStatus
-            questionnaireStatus$ = this.questionnaireStatusService.create(questionnaireStatus);
+        if (this.cisoQuestionnaireStatus) {
+            // Set the Refinement QuestionnaireStatus
+            this.cisoQuestionnaireStatus.refinement = questionnaireStatus;
+
+            // Update the QStatus
+            questionnaireStatus$ = this.questionnaireStatusService.update(this.cisoQuestionnaireStatus);
+
+            // #4 Persist the QuestionnaireStatus
+            questionnaireStatus$.toPromise()
+                .then((response: HttpResponse<QuestionnaireStatusMgm>) => {
+                    questionnaireStatus = response.body;
+                    this.externalQuestionnaireStatus = questionnaireStatus;
+
+                    //this.selfAssessmentService.setSelfAssessment(this.selfAssessment);
+
+                    this.loading = false;
+                    this.router.navigate(['/evaluate-weakness/questionnaires/SELFASSESSMENT']);
+                });
+            return questionnaireStatus;
         } else {
-            // Update the existing QStatus
-            questionnaireStatus$ = this.questionnaireStatusService.update(questionnaireStatus);
+
         }
-
-        // #4 Persist the QuestionnaireStatus
-        questionnaireStatus$.toPromise()
-            .then((response: HttpResponse<QuestionnaireStatusMgm>) => {
-                questionnaireStatus = response.body;
-                this.externalQuestionnaireStatus = questionnaireStatus;
-
-                //this.selfAssessmentService.setSelfAssessment(this.selfAssessment);
-
-                this.loading = false;
-                this.router.navigate(['/my-risk-assessments']);
-            });
-        return questionnaireStatus;
     }
 }
