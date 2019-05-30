@@ -238,12 +238,16 @@ export class DatasharingService {
         this._account = account;
         this._accountSubject.next(this._account);
 
-        if (this._account['authorities'].includes(Role[Role.ROLE_CISO])) {
-            this.role = Role.ROLE_CISO;
-        } else if (this._account['authorities'].includes(Role[Role.ROLE_EXTERNAL_AUDIT])) {
-            this.role = Role.ROLE_EXTERNAL_AUDIT;
-        } else if (this._account['authorities'].includes(Role[Role.ROLE_ADMIN])) {
-            this.role = Role.ROLE_ADMIN;
+        if (this._account) {
+            if (this._account['authorities'].includes(Role[Role.ROLE_CISO])) {
+                this.role = Role.ROLE_CISO;
+            } else if (this._account['authorities'].includes(Role[Role.ROLE_EXTERNAL_AUDIT])) {
+                this.role = Role.ROLE_EXTERNAL_AUDIT;
+            } else if (this._account['authorities'].includes(Role[Role.ROLE_ADMIN])) {
+                this.role = Role.ROLE_ADMIN;
+            } else {
+                this.role = null;
+            }
         } else {
             this.role = null;
         }

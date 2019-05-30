@@ -204,7 +204,7 @@ export class JhiMainComponent implements OnInit, OnDestroy {
             console.log(this.myCompany);
 
             this.dataSharingService.myCompany = this.myCompany;
-        });
+        }));
 
         if (this.principal.isAuthenticated()) {
             this.isAuthenticated = this.principal.isAuthenticated();
