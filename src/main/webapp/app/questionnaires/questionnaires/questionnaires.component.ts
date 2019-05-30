@@ -108,7 +108,7 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
 
         this.myCompany = this.dataSharingService.myCompany;
 
-        if(this.myCompany && this.myCompany.companyProfile){
+        if (this.myCompany && this.myCompany.companyProfile) {
             this.registerChangeInQuestionnaireStatuses();
             this.loadQuestionnaire();
         }
@@ -116,7 +116,7 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
         this.subscriptions.push(this.dataSharingService.myCompanyObservable.subscribe((response: MyCompanyMgm) => {
             this.myCompany = response;
 
-            if(this.myCompany && this.myCompany.companyProfile){
+            if (this.myCompany && this.myCompany.companyProfile) {
                 this.registerChangeInQuestionnaireStatuses();
                 this.loadQuestionnaire();
             }
@@ -145,7 +145,7 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
                 }
 
                 this.questionnaire$ = this.questionnairesService.getQuestionnaireByPurposeAndCompanyType(this.purpose, this.myCompany.companyProfile.type);
-                this.externalAudits$ = this.userService.getExternalAudits();
+                this.externalAudits$ = this.userService.getExternalAuditsByCompanyProfile(this.myCompany.companyProfile.id);
 
                 return forkJoin(this.questionnaire$, this.externalAudits$);
             })
@@ -158,10 +158,10 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
                 this.externalAudits = response[1];
 
                 switch (this.purpose) {
-                    case QuestionnairePurpose.SELFASSESSMENT:{
+                    case QuestionnairePurpose.SELFASSESSMENT: {
                         this.selfAssessmentQuestionnaire = this.questionnaire;
                     }
-                    case QuestionnairePurpose.ID_THREAT_AGENT:{
+                    case QuestionnairePurpose.ID_THREAT_AGENT: {
                         this.identifyThreatAgentsQuestionnaire = this.questionnaire;
                     }
                 }
@@ -286,7 +286,7 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
                                     const join$: Observable<HttpResponse<AssessVulnerabilitiesCompletionDTO>[]> = forkJoin(completions$);
 
                                     join$.subscribe((response: HttpResponse<AssessVulnerabilitiesCompletionDTO>[]) => {
-                                        if(response && response.length){
+                                        if (response && response.length) {
                                             response.forEach((value: HttpResponse<AssessVulnerabilitiesCompletionDTO>) => {
                                                 const completion = value.body;
 
@@ -301,9 +301,9 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
                     }
 
                     this.questionnaireStatuses.forEach((questionnaireStatus) => {
-                       if(questionnaireStatus.status === Status.EMPTY || questionnaireStatus.status === Status.PENDING){
-                           this.isTherAnyEMPTYQuestionnaire = true;
-                       }
+                        if (questionnaireStatus.status === Status.EMPTY || questionnaireStatus.status === Status.PENDING) {
+                            this.isTherAnyEMPTYQuestionnaire = true;
+                        }
                     });
                 }
             }

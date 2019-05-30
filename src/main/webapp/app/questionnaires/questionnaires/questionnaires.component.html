@@ -85,7 +85,7 @@
                         <option [ngValue]="null"></option>
                         <option
                             [ngValue]="userOption.id === questionnaireStatus.external?.id ? questionnaireStatus.external : userOption"
-                            *ngFor="let userOption of externalAudits; trackBy: trackUserById">{{userOption.login}}</option>
+                            *ngFor="let userOption of externalAudits; trackBy: trackUserById">{{userOption.firstName}}&nbsp;{{userOption.lastName}}</option>
                     </select>
                     <button *ngIf="externalChangedMap.get(questionnaireStatus.id)" class="btn btn-success"
                             (click)="updateQuestionnaireStatus(questionnaireStatus)">Save
