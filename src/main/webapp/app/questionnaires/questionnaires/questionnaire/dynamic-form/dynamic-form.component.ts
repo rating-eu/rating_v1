@@ -31,7 +31,7 @@ import {Status} from '../../../../entities/enumerations/QuestionnaireStatus.enum
 import {QuestionnaireMgm} from '../../../../entities/questionnaire-mgm';
 import {QuestionnairePurpose} from '../../../../entities/enumerations/QuestionnairePurpose.enum';
 import {MyAnswerMgm, MyAnswerMgmService} from '../../../../entities/my-answer-mgm';
-import {AccountService, User, UserService} from '../../../../shared';
+import {Account, AccountService, User, UserService} from '../../../../shared';
 import {Subscription} from 'rxjs/Subscription';
 import {FormUtils} from '../../../utils/FormUtils';
 import {forkJoin} from 'rxjs/observable/forkJoin';
@@ -43,7 +43,6 @@ import {PartialSubmitDialogComponent} from '../partial-submit-dialog/partial-sub
 import {MyCompanyMgm, MyCompanyMgmService} from "../../../../entities/my-company-mgm";
 import {Role} from "../../../../entities/enumerations/Role.enum";
 import {ContainerType} from "../../../../entities/enumerations/ContainerType.enum";
-import {Account} from "../../../../shared";
 
 @Component({
     selector: 'jhi-dynamic-form',
@@ -195,7 +194,37 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
                         break;
                     }
                     case Role.ROLE_EXTERNAL_AUDIT: {
-                        this.form = this.questionControlService.toFormGroupExternalAuditor(this.questionsArray);
+                        switch (this.questionnaire.purpose) {
+                            case QuestionnairePurpose.SELFASSESSMENT: {
+                                this.form = this.questionControlService.toFormGroupExternalAuditor(this.questionsArray);
+
+                                // Populate the array with the questions of the corresponding section
+                                // Pay attention to use the same object reference used to build the form, otherwise
+                                // the patch value will not work.
+
+                                if (_humanQuestions && _itQuestions && _physicalQuestions) {
+                                    this.humanQuestionsArray = [];
+                                    this.itQuestionsArray = [];
+                                    this.physicalQuestionsArray = [];
+
+                                    _humanQuestions.forEach(question => {
+                                        this.humanQuestionsArray.push(this.questionsArrayMap.get(question.id));
+                                    });
+
+                                    _itQuestions.forEach(question => {
+                                        this.itQuestionsArray.push(this.questionsArrayMap.get(question.id));
+                                    });
+
+                                    _physicalQuestions.forEach(question => {
+                                        this.physicalQuestionsArray.push(this.questionsArrayMap.get(question.id));
+                                    });
+                                }
+
+                                break;
+                            }
+                        }
+
+
                         break;
                     }
                     default: {
