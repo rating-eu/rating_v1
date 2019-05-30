@@ -125,13 +125,21 @@ export class JhiMainComponent implements OnInit {
                                             this.dataSharingService.myCompany = myCompany;
                                         },
                                         (error: any) => {
-                                            this.dataSharingService.myCompany = undefined;
+                                            this.dataSharingService.myCompany = null;
                                         }
                                     );
                                     break;
                                 }
                                 case Role.ROLE_EXTERNAL_AUDIT: {
-
+                                    this.myCompanyService.findByUser(user.id).subscribe(
+                                        (myCompanyResponse: HttpResponse<MyCompanyMgm>) => {
+                                            const myCompany = myCompanyResponse.body;
+                                            this.dataSharingService.myCompany = myCompany;
+                                        },
+                                        (error: any) => {
+                                            this.dataSharingService.myCompany = null;
+                                        }
+                                    );
                                     break;
                                 }
                             }

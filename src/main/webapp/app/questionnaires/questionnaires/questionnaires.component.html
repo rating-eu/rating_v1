@@ -59,7 +59,7 @@
                 <th></th>
             </tr>
             </thead>
-            <tbody>
+            <tbody *ngIf="questionnaireStatuses$">
             <tr *ngFor="let questionnaireStatus of questionnaireStatuses$ | async">
                 <td>{{questionnaireStatus.created}}</td>
                 <td>{{questionnaireStatus.modified}}</td>
@@ -149,7 +149,7 @@
                 <th></th>
             </tr>
             </thead>
-            <tbody>
+            <tbody *ngIf="questionnaireStatuses$">
             <tr *ngFor="let questionnaireStatus of questionnaireStatuses$ | async">
                 <td>{{questionnaireStatus.questionnaire.name}}</td>
                 <td>{{questionnaireStatus.created}}</td>

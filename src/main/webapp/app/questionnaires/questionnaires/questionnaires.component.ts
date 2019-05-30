@@ -40,6 +40,7 @@ import {EventManagerService} from "../../datasharing/event-manager.service";
 import {forkJoin} from "rxjs/observable/forkJoin";
 import {AssessVulnerabilitiesCompletionDTO} from "../../dto/completion/assess-vulnerabilities-completion";
 import {CompletionDtoService} from "../../dto/completion/completion-dto.service";
+import {of} from "rxjs/observable/of";
 
 @Component({
     selector: 'jhi-questionnaires',
@@ -108,6 +109,9 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
 
         this.myCompany = this.dataSharingService.myCompany;
 
+        console.log("MyCompany:");
+        console.log(this.myCompany);
+
         if (this.myCompany && this.myCompany.companyProfile) {
             this.registerChangeInQuestionnaireStatuses();
             this.loadQuestionnaire();
@@ -115,6 +119,9 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
 
         this.subscriptions.push(this.dataSharingService.myCompanyObservable.subscribe((response: MyCompanyMgm) => {
             this.myCompany = response;
+
+            console.log("MyCompany update:");
+            console.log(this.myCompany);
 
             if (this.myCompany && this.myCompany.companyProfile) {
                 this.registerChangeInQuestionnaireStatuses();
@@ -127,10 +134,11 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
     }
 
     private loadQuestionnaire() {
+        console.log("Loading questionnaire");
         const params$ = this.route.params;
 
         // GET the questionnaires by purpose
-        const join$ = params$.pipe(
+        this.questionnaire$ = params$.pipe(
             switchMap((params: Params) => {
                 const routeQuestionnairePurpose = params['purpose'];
                 switch (routeQuestionnairePurpose) {
@@ -144,18 +152,14 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
                     }
                 }
 
-                this.questionnaire$ = this.questionnairesService.getQuestionnaireByPurposeAndCompanyType(this.purpose, this.myCompany.companyProfile.type);
-                this.externalAudits$ = this.userService.getExternalAuditsByCompanyProfile(this.myCompany.companyProfile.id);
-
-                return forkJoin(this.questionnaire$, this.externalAudits$);
+                return this.questionnairesService.getQuestionnaireByPurposeAndCompanyType(this.purpose, this.myCompany.companyProfile.type);
             })
         );
 
         // GET the account
-        this.account$ = join$.pipe(
-            switchMap((response: [QuestionnaireMgm, User[]]) => {
-                this.questionnaire = response[0];
-                this.externalAudits = response[1];
+        this.account$ = this.questionnaire$.pipe(
+            switchMap((response: QuestionnaireMgm) => {
+                this.questionnaire = response;
 
                 switch (this.purpose) {
                     case QuestionnairePurpose.SELFASSESSMENT: {
@@ -177,11 +181,22 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
 
                 if (this.account['authorities'].includes(QuestionnairesComponent.CISO_ROLE)) {
                     this.role = Role.ROLE_CISO;
+
+                    //this.questionnaire$ = this.questionnairesService.getQuestionnaireByPurposeAndCompanyType(this.purpose, this.myCompany.companyProfile.type);
+                    this.externalAudits$ = this.userService.getExternalAuditsByCompanyProfile(this.myCompany.companyProfile.id);
+
+                    this.externalAudits$.subscribe((response: User[]) => {
+                        this.externalAudits = response;
+                    });
                 } else if (this.account['authorities'].includes(QuestionnairesComponent.EXTERNAL_ROLE)) {
                     this.role = Role.ROLE_EXTERNAL_AUDIT;
+
+                    this.externalAudits$ = of(null);
+                    this.user$ = this.userService.find(this.account['login']);
                 }
 
-                return this.userService.find(this.account['login']);
+
+                return this.user$;
             }
         ));
 
@@ -189,7 +204,7 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
             switchMap((response: HttpResponse<User>) => {
                 this.user = response.body;
 
-                // TODO switch user's role, if external get by external field.
+                // API handles if External or CISO
                 return this.questionnaireStatusService.getAllQuestionnaireStatusesByCurrentUserAndQuestionnairePurpose(this.purpose);
             })
         );

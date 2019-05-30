@@ -221,7 +221,7 @@ public class QuestionnaireStatusResource {
         log.debug("CompanyProfile: " + companyProfileID);
         log.debug("QuestionnairePurpose: " + questionnairePurpose);
 
-        List<QuestionnaireStatus> questionnaireStatuses = questionnaireStatusService.findAllByCompanyProfileQuestionnairePurposeAndUser(companyProfileID, questionnairePurpose, userID);
+        List<QuestionnaireStatus> questionnaireStatuses = questionnaireStatusService.findAllByCompanyProfileQuestionnairePurposeAndCISOUser(companyProfileID, questionnairePurpose, userID);
         return questionnaireStatuses;
     }
 

@@ -152,8 +152,13 @@ public class QuestionnaireStatusServiceImpl implements QuestionnaireStatusServic
     }
 
     @Override
-    public List<QuestionnaireStatus> findAllByCompanyProfileQuestionnairePurposeAndUser(Long companyProfileID, QuestionnairePurpose questionnairePurpose, Long userID) {
-        return this.questionnaireStatusRepository.findAllByCompanyProfileQuestionnairePurposeAndUser(companyProfileID, questionnairePurpose, userID);
+    public List<QuestionnaireStatus> findAllByCompanyProfileQuestionnairePurposeAndCISOUser(Long companyProfileID, QuestionnairePurpose questionnairePurpose, Long userID) {
+        return this.questionnaireStatusRepository.findAllByCompanyProfileQuestionnairePurposeAndCISOUser(companyProfileID, questionnairePurpose, userID);
+    }
+
+    @Override
+    public List<QuestionnaireStatus> findAllByCompanyProfileQuestionnairePurposeAndExternalUser(Long companyProfileID, QuestionnairePurpose questionnairePurpose, Long externalID) {
+        return this.questionnaireStatusRepository.findAllByCompanyProfileQuestionnairePurposeAndExternalUser(companyProfileID, questionnairePurpose, externalID);
     }
 
     @Override
@@ -161,18 +166,19 @@ public class QuestionnaireStatusServiceImpl implements QuestionnaireStatusServic
         User currentUser = this.userService.getUserWithAuthorities().orElse(null);
 
         if (currentUser != null) {
-            if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.CISO)) {
-                MyCompany myCompany = this.myCompanyService.findOneByUser(currentUser.getId());
+            MyCompany myCompany = this.myCompanyService.findOneByUser(currentUser.getId());
 
-                if (myCompany != null && myCompany.getCompanyProfile() != null) {
-                    return this.findAllByCompanyProfileQuestionnairePurposeAndUser(myCompany.getCompanyProfile().getId(), questionnairePurpose, currentUser.getId());
+            if (myCompany != null && myCompany.getCompanyProfile() != null) {
+                if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.CISO)) {
+                    return this.findAllByCompanyProfileQuestionnairePurposeAndCISOUser(myCompany.getCompanyProfile().getId(), questionnairePurpose, currentUser.getId());
+                } else if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.EXTERNAL_AUDIT)) {
+                    return this.findAllByCompanyProfileQuestionnairePurposeAndExternalUser(myCompany.getCompanyProfile().getId(), questionnairePurpose, currentUser.getId());
                 }
-            } else if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.EXTERNAL_AUDIT)) {
-                return this.questionnaireStatusRepository.findAllByExternalAudit(currentUser.getId());
             }
         }
 
-
         return null;
     }
+
+
 }
