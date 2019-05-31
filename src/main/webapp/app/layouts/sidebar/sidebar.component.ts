@@ -209,11 +209,6 @@ export class SidebarComponent implements OnInit, AfterViewInit {
             icon: 'fas fa-building',
             items: [
                 {
-                    label: 'Groups',
-                    icon: 'fas fa-users',
-                    routerLink: ['/pages/coming-soon']
-                },
-                {
                     label: 'Reports',
                     icon: 'fas fa-file-download',
                     routerLink: ['/pages/coming-soon']
