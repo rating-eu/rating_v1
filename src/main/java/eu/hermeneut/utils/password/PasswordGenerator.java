@@ -31,8 +31,4 @@ public class PasswordGenerator {
         }
         return new String(returnValue);
     }
-
-    public static void main(String[] args) {
-        System.out.println(generatePassword(100));
-    }
 }
