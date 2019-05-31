@@ -1,12 +1,12 @@
 /*
  * Copyright 2019 HERMENEUT Consortium
- *  
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *  
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- *  
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -20,6 +20,7 @@ package eu.hermeneut.service.impl.impact;
 import eu.hermeneut.config.ApplicationProperties;
 import eu.hermeneut.domain.*;
 import eu.hermeneut.domain.enumeration.CostType;
+import eu.hermeneut.domain.enumeration.ImpactMode;
 import eu.hermeneut.exceptions.NotFoundException;
 import eu.hermeneut.service.*;
 import eu.hermeneut.service.impact.ImpactService;
@@ -29,6 +30,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.transaction.NotSupportedException;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.util.*;
@@ -57,31 +59,35 @@ public class ImpactServiceImpl implements ImpactService {
     private ApplicationProperties properties;
 
     @Override
-    public List<MyAsset> calculateEconomicImpacts(@NotNull Long selfAssessmentID) throws NotFoundException {
+    public List<MyAsset> calculateEconomicImpacts(@NotNull Long selfAssessmentID) throws NotFoundException, NotSupportedException {
         SelfAssessment selfAssessment = this.selfAssessmentService.findOne(selfAssessmentID);
 
         //Check if the SelfAssessment exists
-        if (selfAssessment != null) {
-            List<MyAsset> myAssets = this.myAssetService.findAllBySelfAssessment(selfAssessmentID);
-            List<MyAsset> impactsResult = new ArrayList<>();
-
-            //Check if MyAssets have been identified
-            if (myAssets != null && !myAssets.isEmpty()) {
-                myAssets.stream().forEach((myAsset) -> {
-                    try {
-                        myAsset = this.calculateEconomicImpact(selfAssessmentID, myAsset.getId());
-                        impactsResult.add(myAsset);
-                    } catch (NotFoundException e) {
-                        e.printStackTrace();
-                    }
-                });
-
-                return impactsResult;
-            } else {
-                throw new NotFoundException("MyAssets NOT FOUND!");
-            }
-        } else {
+        if (selfAssessment == null) {
             throw new NotFoundException("SelfAssessment NOT FOUND!");
+        }
+
+        if (!selfAssessment.getImpactMode().equals(ImpactMode.QUANTITATIVE)) {
+            throw new NotSupportedException("SelfAssessment mode must be equal to QUANTITATIVE");
+        }
+
+        List<MyAsset> myAssets = this.myAssetService.findAllBySelfAssessment(selfAssessmentID);
+        List<MyAsset> impactsResult = new ArrayList<>();
+
+        //Check if MyAssets have been identified
+        if (myAssets != null && !myAssets.isEmpty()) {
+            myAssets.stream().forEach((myAsset) -> {
+                try {
+                    myAsset = this.calculateEconomicImpact(selfAssessmentID, myAsset.getId());
+                    impactsResult.add(myAsset);
+                } catch (NotFoundException e) {
+                    e.printStackTrace();
+                }
+            });
+
+            return impactsResult;
+        } else {
+            throw new NotFoundException("MyAssets NOT FOUND!");
         }
     }
 
