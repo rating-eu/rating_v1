@@ -15,12 +15,13 @@
  *
  */
 
-import {Component, OnInit} from '@angular/core';
+import {ChangeDetectorRef, Component, OnDestroy, OnInit} from '@angular/core';
 import {CriticalAttackStrategyService} from "../models/critical-attack-strategy.service";
 import {SelfAssessmentMgm, SelfAssessmentMgmService} from '../../entities/self-assessment-mgm';
 import {CriticalAttackStrategy} from "../models/critical-attack-strategy.model";
 import * as _ from 'lodash';
 import {DatasharingService} from '../../datasharing/datasharing.service';
+import {Subscription} from "rxjs";
 
 export enum CriticalAttackStrategyField {
     'ATTACK_STRATEGY' = <any>'ATTACK_STRATEGY',
@@ -36,11 +37,12 @@ export enum CriticalAttackStrategyField {
     templateUrl: './most-critical-attack-strategies-widget.component.html',
     styleUrls: ['most-critical-attack-strategies-widget.component.css']
 })
-export class MostCriticalAttackStrategiesWidgetComponent implements OnInit {
+export class MostCriticalAttackStrategiesWidgetComponent implements OnInit, OnDestroy {
     public isCollapsed = true;
     public loading = false;
     public casFieldEnum = CriticalAttackStrategyField;
     public showAttackInfo = new Map();
+    private subscriptions: Subscription[];
 
     /**
      * Map to keep the sorting status of the fields of the CriticalAttackStrategies.
@@ -62,18 +64,35 @@ export class MostCriticalAttackStrategiesWidgetComponent implements OnInit {
     constructor(
         private selfAssessmentService: SelfAssessmentMgmService,
         private criticalAttackStrategyService: CriticalAttackStrategyService,
-        private dataSharingService: DatasharingService) {
+        private dataSharingService: DatasharingService,
+        private changeDetector: ChangeDetectorRef) {
     }
 
     ngOnInit() {
-        this.selfAssessment = this.dataSharingService.selfAssessment;
-        this.criticalAttackStrategyService.getCriticalAttackStrategies(this.selfAssessment.id).subscribe(
-            (response: CriticalAttackStrategy[]) => {
-                this.criticalAttackStrategies = response;
-            }
-        );
-
+        this.subscriptions = [];
         this.sortingStatusMap = new Map();
+        this.selfAssessment = this.dataSharingService.selfAssessment;
+        this.fetchCriticalAttackStrategies();
+
+        this.subscriptions.push(this.dataSharingService.selfAssessmentObservable.subscribe((assessment: SelfAssessmentMgm) => {
+            this.selfAssessment = assessment;
+
+            this.fetchCriticalAttackStrategies();
+        }));
+    }
+
+    private fetchCriticalAttackStrategies() {
+        if (this.selfAssessment) {
+            this.subscriptions.push(
+                this.criticalAttackStrategyService.getCriticalAttackStrategies(this.selfAssessment.id).subscribe(
+                    (response: CriticalAttackStrategy[]) => {
+                        this.criticalAttackStrategies = response;
+
+                        this.changeDetector.detectChanges();
+                    }
+                )
+            );
+        }
     }
 
     onAttackStrategiesPageChange(number: number) {
@@ -164,6 +183,14 @@ export class MostCriticalAttackStrategiesWidgetComponent implements OnInit {
             this.showAttackInfo.set(attackStrategyID, !status);
         } else {
             this.showAttackInfo.set(attackStrategyID, true);
+        }
+    }
+
+    ngOnDestroy(): void {
+        if (this.subscriptions && this.subscriptions.length) {
+            this.subscriptions.forEach(subscription => {
+                subscription.unsubscribe();
+            });
         }
     }
 }

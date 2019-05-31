@@ -28,6 +28,7 @@ import { forkJoin } from 'rxjs/observable/forkJoin';
 import { HttpResponse } from '@angular/common/http';
 import {DatasharingService} from "../../datasharing/datasharing.service";
 import {ImpactMode} from "../../entities/enumerations/ImpactMode.enum";
+import {MyCompanyMgm} from "../../entities/my-company-mgm";
 
 @Component({
     // tslint:disable-next-line:component-selector
@@ -58,6 +59,7 @@ export class RiskManagementComponent implements OnInit {
     public updateErrors: boolean;
     public level: string;
     private needToCreateImpactLevels: boolean;
+    public myCompany: MyCompanyMgm;
 
     constructor(
         private mySelfAssessmentService: SelfAssessmentMgmService,
@@ -73,6 +75,11 @@ export class RiskManagementComponent implements OnInit {
 
     ngOnInit() {
         this.impactLevelDescriptionsByImpactMap = new Map();
+        this.myCompany = this.dataSharingService.myCompany;
+
+        this.dataSharingService.myCompanyObservable.subscribe((company )=> {
+            this.myCompany = company;
+        });
 
         if (this.selfAssessment = this.dataSharingService.selfAssessment) {
             // TODO Chiamata per il recupero degli impact level

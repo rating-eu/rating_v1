@@ -15,40 +15,44 @@
  *
  */
 
-import { Injectable } from '@angular/core';
-import { HttpClient, HttpResponse } from '@angular/common/http';
-import { Observable } from 'rxjs/Observable';
+import {Injectable} from '@angular/core';
+import {HttpClient, HttpResponse} from '@angular/common/http';
+import {Observable} from 'rxjs/Observable';
 
-import { SERVER_API_URL } from '../../app.constants';
-import { User } from './user.model';
-import { createRequestOption } from '../model/request-util';
+import {SERVER_API_URL} from '../../app.constants';
+import {User} from './user.model';
+import {createRequestOption} from '../model/request-util';
+
+const COMPANY_ID_PLACEHOLDER = '{companyID}';
 
 @Injectable()
 export class UserService {
     private resourceUrl = SERVER_API_URL + 'api/users';
     private externalAuditsUrl = SERVER_API_URL + 'api/users/external';
+    private externalAuditsByCompanyUrl = SERVER_API_URL + 'api/users/external/company/' + COMPANY_ID_PLACEHOLDER;
 
-    constructor(private http: HttpClient) { }
+    constructor(private http: HttpClient) {
+    }
 
     create(user: User): Observable<HttpResponse<User>> {
-        return this.http.post<User>(this.resourceUrl, user, { observe: 'response' });
+        return this.http.post<User>(this.resourceUrl, user, {observe: 'response'});
     }
 
     update(user: User): Observable<HttpResponse<User>> {
-        return this.http.put<User>(this.resourceUrl, user, { observe: 'response' });
+        return this.http.put<User>(this.resourceUrl, user, {observe: 'response'});
     }
 
     find(login: string): Observable<HttpResponse<User>> {
-        return this.http.get<User>(`${this.resourceUrl}/${login}`, { observe: 'response' });
+        return this.http.get<User>(`${this.resourceUrl}/${login}`, {observe: 'response'});
     }
 
     query(req?: any): Observable<HttpResponse<User[]>> {
         const options = createRequestOption(req);
-        return this.http.get<User[]>(this.resourceUrl, { params: options, observe: 'response' });
+        return this.http.get<User[]>(this.resourceUrl, {params: options, observe: 'response'});
     }
 
     delete(login: string): Observable<HttpResponse<any>> {
-        return this.http.delete(`${this.resourceUrl}/${login}`, { observe: 'response' });
+        return this.http.delete(`${this.resourceUrl}/${login}`, {observe: 'response'});
     }
 
     authorities(): Observable<string[]> {
@@ -57,5 +61,10 @@ export class UserService {
 
     getExternalAudits(): Observable<User[]> {
         return this.http.get<User[]>(this.externalAuditsUrl);
+    }
+
+    getExternalAuditsByCompanyProfile(companyProfileID: number): Observable<User[]> {
+        return this.http.get<User[]>(
+            this.externalAuditsByCompanyUrl.replace(COMPANY_ID_PLACEHOLDER, String(companyProfileID)));
     }
 }

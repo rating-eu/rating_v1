@@ -26,6 +26,5 @@ export const activateRoute: Route = {
     data: {
         authorities: [],
         pageTitle: 'activate.title'
-    },
-    canActivate: [UserRouteAccessService]
+    }
 };

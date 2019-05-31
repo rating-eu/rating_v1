@@ -1,0 +1,97 @@
+<form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+
+    <div class="modal-header">
+        <h4 class="modal-title" id="myUserLabel">
+            Create or edit an Employee</h4>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+
+        <div class="form-group">
+            <label class="form-control-label">Login</label>
+            <input type="text" class="form-control" name="login" #loginInput="ngModel"
+                   [(ngModel)]="employee.login" required minlength="1" maxlength="50" pattern="^[_'.@A-Za-z0-9-]*$">
+
+            <div *ngIf="loginInput.dirty && loginInput.invalid">
+                <small class="form-text text-danger"
+                       *ngIf="loginInput.errors.required">
+                    This field is required.
+                </small>
+
+                <small class="form-text text-danger"
+                       *ngIf="loginInput.errors.maxlength"
+                       translateValues="{max: 50}">
+                    This field cannot be longer than 50 characters.
+                </small>
+
+                <small class="form-text text-danger"
+                       *ngIf="loginInput.errors.pattern">
+                    This field can only contain letters, digits and e-mail addresses.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label">First Name</label>
+            <input type="text" class="form-control" name="firstName" #firstNameInput="ngModel"
+                   [(ngModel)]="employee.firstName" maxlength="50">
+
+            <div *ngIf="firstNameInput.dirty && firstNameInput.invalid">
+                <small class="form-text text-danger"
+                       *ngIf="firstNameInput.errors.maxlength"
+                       translateValues="{max: 50}">
+                    This field cannot be longer than 50 characters.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label>Last Name</label>
+            <input type="text" class="form-control" name="lastName" #lastNameInput="ngModel"
+                   [(ngModel)]="employee.lastName" maxlength="50">
+
+            <div *ngIf="lastNameInput.dirty && lastNameInput.invalid">
+                <small class="form-text text-danger"
+                       *ngIf="lastNameInput.errors.maxlength"
+                       translateValues="{max: 50}">
+                    This field cannot be longer than 50 characters.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label">Email</label>
+            <input type="email" class="form-control" name="email" #emailInput="ngModel"
+                   [(ngModel)]="employee.email" minlength="5" required maxlength="100" email>
+
+            <div *ngIf="emailInput.dirty && emailInput.invalid">
+                <small class="form-text text-danger"
+                       *ngIf="emailInput.errors.required">
+                    This field is required.
+                </small>
+
+                <small class="form-text text-danger"
+                       *ngIf="emailInput.errors.maxlength"
+                       translateValues="{max: 100}">
+                    This field cannot be longer than 100 characters.
+                </small>
+
+                <small class="form-text text-danger"
+                       *ngIf="emailInput.errors.minlength"
+                       translateValues="{min: 5}">
+                    This field is required to be at least 5 characters.
+                </small>
+
+                <small class="form-text text-danger"
+                       *ngIf="emailInput.errors.email">
+                    Your email is invalid.
+                </small>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="cancel()">
+            <span class="fa fa-ban"></span>&nbsp;<span>Cancel</span>
+        </button>
+        <button type="submit" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+            <span class="fa fa-floppy-o"></span>&nbsp;<span>Save</span>
+        </button>
+    </div>
+</form>

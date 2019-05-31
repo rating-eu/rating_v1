@@ -68,7 +68,7 @@ export class ThreatAgentsWidgetComponent implements OnInit, OnDestroy {
 
     // Company ThreatAgents
     private threatAgentInterests$: Observable<ThreatAgentInterest[]>;
-    private threatAgentInterests: ThreatAgentInterest[];
+    public threatAgentInterests: ThreatAgentInterest[];
 
     constructor(
         private selfAssessmentService: SelfAssessmentMgmService,

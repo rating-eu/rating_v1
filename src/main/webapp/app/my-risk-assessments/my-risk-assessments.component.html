@@ -93,9 +93,9 @@
                 <i *ngIf="orderBy.modified && orderBy.type === 'asc'" (click)=" tableOrderBy('modified', true)"
                    class="fa fa-chevron-up" aria-hidden="true"></i>
             </th>
-            <th><span jhiTranslate="hermeneutApp.selfAssessment.companyProfile">Company Profile</span></th>
+            <!--<th><span jhiTranslate="hermeneutApp.selfAssessment.companyProfile">Company Profile</span></th>-->
             <!--<th><span jhiTranslate="hermeneutApp.selfAssessment.user">User</span></th>-->
-            <th><span jhiTranslate="hermeneutApp.selfAssessment.companyGroup">Company Group</span></th>
+            <!--<th><span jhiTranslate="hermeneutApp.selfAssessment.companyGroup">Company Group</span></th>-->
             <!--<th><span jhiTranslate="hermeneutApp.selfAssessment.asset">Asset</span></th>-->
             <!--<th><span jhiTranslate="hermeneutApp.selfAssessment.threatagent">Threatagent</span></th>-->
             <!--<th><span jhiTranslate="hermeneutApp.selfAssessment.attackstrategy">Attackstrategy</span></th>-->
@@ -110,22 +110,22 @@
             <td (click)="selectSelfAssessment(selfAssessment)">{{selfAssessment.name}}</td>
             <td (click)="selectSelfAssessment(selfAssessment)">{{selfAssessment.created | date:'medium'}}</td>
             <td (click)="selectSelfAssessment(selfAssessment)">{{selfAssessment.modified | date:'medium'}}</td>
-            <td (click)="selectSelfAssessment(selfAssessment)">
+            <!--<td (click)="selectSelfAssessment(selfAssessment)">
                 <div *ngIf="selfAssessment.companyProfile">
                     <a
                         [routerLink]="['../company-profile-mgm', selfAssessment.companyProfile?.id ]">{{selfAssessment.companyProfile?.name}}</a>
                 </div>
-            </td>
+            </td>-->
             <!--<td (click)="selectSelfAssessment(selfAssessment)">
         {{selfAssessment.user?.login}}
     </td>-->
-            <td (click)="selectSelfAssessment(selfAssessment)">
+            <!--<td (click)="selectSelfAssessment(selfAssessment)">
                     <span *ngFor="let companyGroup of selfAssessment.companyGroups; let last = last">
                         <a class="form-control-static"
                            [routerLink]="['../company-group-mgm', companyGroup?.id ]">{{companyGroup.name}}</a>{{last
                         ? '' : ', '}}
                     </span>
-            </td>
+            </td>-->
             <!--<td (click)="selectSelfAssessment(selfAssessment)">
             <span *ngFor="let asset of selfAssessment.assets; let last = last">
                     <a class="form-control-static"

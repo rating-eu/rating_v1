@@ -40,6 +40,7 @@ import {EventManagerService} from "../../datasharing/event-manager.service";
 import {forkJoin} from "rxjs/observable/forkJoin";
 import {AssessVulnerabilitiesCompletionDTO} from "../../dto/completion/assess-vulnerabilities-completion";
 import {CompletionDtoService} from "../../dto/completion/completion-dto.service";
+import {of} from "rxjs/observable/of";
 
 @Component({
     selector: 'jhi-questionnaires',
@@ -47,6 +48,9 @@ import {CompletionDtoService} from "../../dto/completion/completion-dto.service"
     styles: []
 })
 export class QuestionnairesComponent implements OnInit, OnDestroy {
+    private showCompletionPercentages: boolean;
+    private useExistingThreatAgentQuestionnaireStatus: boolean;
+    private createNewThreatAgentsQuestionnaireStatus: boolean;
 
     public statusEnum = Status;
     public roleEnum = Role;
@@ -68,6 +72,8 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
     public questionnaireStatuses$: Observable<QuestionnaireStatusMgm[]>;
     private questionnaireStatuses: QuestionnaireStatusMgm[];
 
+    private questionnaireStatusesChangeEventSubscription: Subscription;
+
     private myCompany$: Observable<HttpResponse<MyCompanyMgm>>;
     private myCompany: MyCompanyMgm;
 
@@ -83,6 +89,8 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
     public externalChangedMap: Map<number/*QStatus.ID*/, boolean>;
 
     public assessVulnerabilitiesCompletionMap: Map<number/*QStatus.ID*/, AssessVulnerabilitiesCompletionDTO>;
+
+    public isThereAnyEMPTYQuestionnaire = false;
 
     constructor(private route: ActivatedRoute,
                 private router: Router,
@@ -103,32 +111,35 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         console.log('Questionnaires ON INIT:');
+        this.showCompletionPercentages = false;
+        this.useExistingThreatAgentQuestionnaireStatus = false;
+        this.createNewThreatAgentsQuestionnaireStatus = false;
 
+        this.account = this.dataSharingService.account;
+        this.user = this.dataSharingService.user;
+        this.role = this.dataSharingService.role;
         this.myCompany = this.dataSharingService.myCompany;
 
-        if(this.myCompany && this.myCompany.companyProfile){
-            this.registerChangeInQuestionnaireStatuses();
+        console.log("MyCompany:");
+        console.log(this.myCompany);
+
+        // Listen for when a new QuestionnaireStatus is created
+        this.registerChangeInQuestionnaireStatuses();
+
+        if (this.account && this.user && this.myCompany && this.myCompany.companyProfile) {
             this.loadQuestionnaire();
         }
-
-        this.subscriptions.push(this.dataSharingService.myCompanyObservable.subscribe((response: MyCompanyMgm) => {
-            this.myCompany = response;
-
-            if(this.myCompany && this.myCompany.companyProfile){
-                this.registerChangeInQuestionnaireStatuses();
-                this.loadQuestionnaire();
-            }
-        }));
 
         this.externalChangedMap = new Map();
         this.assessVulnerabilitiesCompletionMap = new Map();
     }
 
     private loadQuestionnaire() {
+        console.log("Loading questionnaire");
         const params$ = this.route.params;
 
         // GET the questionnaires by purpose
-        const join$ = params$.pipe(
+        const questionnaireAndStatusesJoin$: Observable<[QuestionnaireMgm, QuestionnaireStatusMgm[]]> = params$.pipe(
             switchMap((params: Params) => {
                 const routeQuestionnairePurpose = params['purpose'];
                 switch (routeQuestionnairePurpose) {
@@ -143,56 +154,258 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
                 }
 
                 this.questionnaire$ = this.questionnairesService.getQuestionnaireByPurposeAndCompanyType(this.purpose, this.myCompany.companyProfile.type);
-                this.externalAudits$ = this.userService.getExternalAudits();
+                this.questionnaireStatuses$ = this.questionnaireStatusService.getAllQuestionnaireStatusesByCurrentUserAndQuestionnairePurpose(this.purpose);
 
-                return forkJoin(this.questionnaire$, this.externalAudits$);
+                return forkJoin(this.questionnaire$, this.questionnaireStatuses$);
             })
         );
 
-        // GET the account
-        this.account$ = join$.pipe(
-            switchMap((response: [QuestionnaireMgm, User[]]) => {
+        const externalAudits$: Observable<User[] | null> = questionnaireAndStatusesJoin$.pipe(
+            switchMap((response: [QuestionnaireMgm, QuestionnaireStatusMgm[]]) => {
                 this.questionnaire = response[0];
-                this.externalAudits = response[1];
+                this.questionnaireStatuses = response[1];
+
+                if (this.purpose === QuestionnairePurpose.SELFASSESSMENT && this.role === Role.ROLE_CISO) {
+                    return this.userService.getExternalAuditsByCompanyProfile(this.myCompany.companyProfile.id);
+                } else {
+                    return of(null);
+                }
+            })
+        );
+
+        const howToProceed$: Observable<HttpResponse<QuestionnaireStatusMgm> | null | QuestionnaireStatusMgm | HttpResponse<AssessVulnerabilitiesCompletionDTO>[]> = externalAudits$.pipe(
+            switchMap((response: User[] | null) => {
+                    if (response) {
+                        this.externalAudits = response;
+                    } else {
+                        this.externalAudits = [];
+                    }
+
+                    if (this.questionnaireStatuses.length === 0) {
+                        switch (this.purpose) {
+                            case QuestionnairePurpose.ID_THREAT_AGENT: {
+                                // Create the first QuestionnaireStatus
+                                const questionnaireStatus: QuestionnaireStatusMgm = new QuestionnaireStatusMgm(undefined,
+                                    Status.EMPTY, undefined, undefined, this.myCompany.companyProfile,
+                                    this.identifyThreatAgentsQuestionnaire, this.role, this.user, [], undefined, undefined);
+
+                                this.createNewThreatAgentsQuestionnaireStatus = true;
+                                return this.questionnaireStatusService.create(questionnaireStatus);
+
+                                /*this.subscriptions.push(this.questionnaireStatusService.create(questionnaireStatus).subscribe(
+                                    (response: HttpResponse<QuestionnaireStatusMgm>) => {
+                                        if (response) {
+                                            questionnaireStatus = response.body;
+                                            this.questionnaireStatuses.push(response.body);
+
+                                            this.setCurrentQuestionnaireStatus(questionnaireStatus);
+                                            this.router.navigate(['/identify-threat-agent/questionnaires/ID_THREAT_AGENT/questionnaire']);
+                                        }
+                                    }
+                                ));
+
+                                break*/
+                            }
+                            case QuestionnairePurpose.SELFASSESSMENT: {
+                                return of(null);
+                            }
+                        }
+                    } else {
+                        switch (this.purpose) {
+                            case QuestionnairePurpose.ID_THREAT_AGENT: {
+                                switch (this.role) {
+                                    case Role.ROLE_CISO: {
+
+                                        const cisoIdentifyThreatAgentsQuestionnaireStatus: QuestionnaireStatusMgm =
+                                            _.find(this.questionnaireStatuses, (value: QuestionnaireStatusMgm) => {
+
+                                                if (value.role.valueOf() === Role.ROLE_CISO.valueOf() && value.user.id === this.user.id
+                                                    && value.questionnaire.purpose.valueOf() === QuestionnairePurpose.ID_THREAT_AGENT.valueOf()) {
+
+                                                    return true;
+                                                } else {
+                                                    return false;
+                                                }
+                                            });
+
+                                        if (cisoIdentifyThreatAgentsQuestionnaireStatus) {
+                                            this.useExistingThreatAgentQuestionnaireStatus = true;
+                                            return of(cisoIdentifyThreatAgentsQuestionnaireStatus);
+
+                                            //this.setCurrentQuestionnaireStatus(cisoIdentifyThreatAgentsQuestionnaireStatus);
+                                            //this.router.navigate(['/identify-threat-agent/questionnaires/ID_THREAT_AGENT/questionnaire']);
+                                        } else {
+                                            // Create the first QuestionnaireStatus
+                                            const questionnaireStatus: QuestionnaireStatusMgm = new QuestionnaireStatusMgm(undefined,
+                                                Status.EMPTY, undefined, undefined, this.myCompany.companyProfile,
+                                                this.identifyThreatAgentsQuestionnaire, this.role, this.user, [], undefined, undefined);
+
+                                            this.createNewThreatAgentsQuestionnaireStatus = true;
+                                            return this.questionnaireStatusService.create(questionnaireStatus);
+                                        }
+                                    }
+                                }
+                            }
+                            case QuestionnairePurpose.SELFASSESSMENT: {
+                                switch (this.role) {
+                                    case Role.ROLE_CISO: {
+                                        const completions$ = [];
+
+                                        this.questionnaireStatuses.forEach((questionnaireStatus) => {
+                                                completions$.push(
+                                                    this.completionService
+                                                        .getAssessVulnerabilitiesCompletionByCompanyProfileAndQuestionnaireStatus(this.myCompany.companyProfile.id, questionnaireStatus.id)
+                                                );
+
+                                                if (questionnaireStatus.status === Status.EMPTY || questionnaireStatus.status === Status.PENDING) {
+                                                    this.isThereAnyEMPTYQuestionnaire = true;
+                                                }
+                                            }
+                                        );
+
+                                        this.showCompletionPercentages = true;
+                                        const join$: Observable<HttpResponse<AssessVulnerabilitiesCompletionDTO>[]> = forkJoin(completions$);
+
+                                        return join$;
+
+                                        /*this.subscriptions.push(join$.subscribe((response: HttpResponse<AssessVulnerabilitiesCompletionDTO>[]) => {
+                                            if (response && response.length) {
+                                                response.forEach((value: HttpResponse<AssessVulnerabilitiesCompletionDTO>) => {
+                                                    const completion = value.body;
+
+                                                    this.assessVulnerabilitiesCompletionMap.set(completion.questionnaireStatusID, completion);
+                                                });
+                                            }
+                                        }));*/
+                                    }
+                                }
+                                break;
+                            }
+                        }
+                    }
+
+                    return null;
+                }
+            )
+            )
+        ;
+
+        this.subscriptions.push(howToProceed$.subscribe(
+            (response: HttpResponse<QuestionnaireStatusMgm> | null | QuestionnaireStatusMgm | HttpResponse<AssessVulnerabilitiesCompletionDTO>[]) => {
+
+                console.log("Inside HOW TO PROCEED...");
 
                 switch (this.purpose) {
-                    case QuestionnairePurpose.SELFASSESSMENT:{
+                    case QuestionnairePurpose.ID_THREAT_AGENT: {
+                        console.log("CASE THREAT AGENTS");
+
+                        if (this.createNewThreatAgentsQuestionnaireStatus) {
+                            this.createNewThreatAgentsQuestionnaireStatus = false;
+
+                            const questionnaireStatus: QuestionnaireStatusMgm = (<HttpResponse<QuestionnaireStatusMgm>>response).body;
+                            this.questionnaireStatuses.push(questionnaireStatus);
+
+                            this.setCurrentQuestionnaireStatus(questionnaireStatus);
+                            this.router.navigate(['/identify-threat-agent/questionnaires/ID_THREAT_AGENT/questionnaire']);
+                        } else if (this.useExistingThreatAgentQuestionnaireStatus) {
+                            this.useExistingThreatAgentQuestionnaireStatus = false;
+
+                            const questionnaireStatus: QuestionnaireStatusMgm = <QuestionnaireStatusMgm>response;
+
+                            this.setCurrentQuestionnaireStatus(questionnaireStatus);
+                            this.router.navigate(['/identify-threat-agent/questionnaires/ID_THREAT_AGENT/questionnaire']);
+                        }
+
+                        break;
+                    }
+                    case QuestionnairePurpose.SELFASSESSMENT: {
+                        if (this.showCompletionPercentages) {
+                            this.showCompletionPercentages = false;
+
+                            response = <HttpResponse<AssessVulnerabilitiesCompletionDTO>[]>response;
+
+                            if (response && response.length) {
+                                response.forEach((value: HttpResponse<AssessVulnerabilitiesCompletionDTO>) => {
+                                    const completion = value.body;
+
+                                    this.assessVulnerabilitiesCompletionMap.set(completion.questionnaireStatusID, completion);
+                                });
+                            }
+                        }
+
+                        break;
+                    }
+                }
+            }
+        ));
+
+        // GET The Questionnaire Statuses
+        /*this.questionnaireStatuses$ = this.questionnaire$.pipe(
+            switchMap((questionnaireResponse: QuestionnaireMgm) => {
+                this.questionnaire = questionnaireResponse;
+
+                // API handles if External or CISO
+                return this.questionnaireStatusService.getAllQuestionnaireStatusesByCurrentUserAndQuestionnairePurpose(this.purpose);
+            })
+        );*/
+
+        // GET the ExternalAudits if CISO or else []
+
+
+        // GET the account
+        /*this.account$ = this.questionnaire$.pipe(
+            switchMap((response: QuestionnaireMgm) => {
+                this.questionnaire = response;
+
+                switch (this.purpose) {
+                    case QuestionnairePurpose.SELFASSESSMENT: {
                         this.selfAssessmentQuestionnaire = this.questionnaire;
                     }
-                    case QuestionnairePurpose.ID_THREAT_AGENT:{
+                    case QuestionnairePurpose.ID_THREAT_AGENT: {
                         this.identifyThreatAgentsQuestionnaire = this.questionnaire;
                     }
                 }
 
                 return this.accountService.get();
             })
-        );
+        );*/
 
         // GET the user
-        this.user$ = this.account$.pipe(switchMap(
+        /*this.user$ = this.account$.pipe(switchMap(
             (response: HttpResponse<Account>) => {
                 this.account = response.body;
 
                 if (this.account['authorities'].includes(QuestionnairesComponent.CISO_ROLE)) {
                     this.role = Role.ROLE_CISO;
+
+                    //this.questionnaire$ = this.questionnairesService.getQuestionnaireByPurposeAndCompanyType(this.purpose, this.myCompany.companyProfile.type);
+                    this.externalAudits$ = this.userService.getExternalAuditsByCompanyProfile(this.myCompany.companyProfile.id);
+
+                    this.subscriptions.push(this.externalAudits$.subscribe((response: User[]) => {
+                        this.externalAudits = response;
+                    }));
                 } else if (this.account['authorities'].includes(QuestionnairesComponent.EXTERNAL_ROLE)) {
                     this.role = Role.ROLE_EXTERNAL_AUDIT;
+
+                    this.externalAudits$ = of(null);
+                    this.user$ = this.userService.find(this.account['login']);
                 }
 
-                return this.userService.find(this.account['login']);
-            }
-        ));
 
-        this.questionnaireStatuses$ = this.user$.pipe(
+                return this.user$;
+            }
+        ));*/
+
+        /*this.questionnaireStatuses$ = this.user$.pipe(
             switchMap((response: HttpResponse<User>) => {
                 this.user = response.body;
 
-                // TODO switch user's role, if external get by external field.
+                // API handles if External or CISO
                 return this.questionnaireStatusService.getAllQuestionnaireStatusesByCurrentUserAndQuestionnairePurpose(this.purpose);
             })
-        );
+        );*/
 
-        this.questionnaireStatuses$.subscribe(
+        /*this.subscriptions.push(this.questionnaireStatuses$.subscribe(
             (response: QuestionnaireStatusMgm[]) => {
                 this.questionnaireStatuses = response;
 
@@ -200,15 +413,6 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
                 console.log(this.questionnaireStatuses);
 
                 if (this.questionnaireStatuses.length === 0) {
-                    console.log("This.Purpose:");
-                    console.log(this.purpose);
-
-                    console.log("ID ThreatAgent:");
-                    console.log(QuestionnairePurpose.ID_THREAT_AGENT);
-
-                    console.log("SelfAssessment:");
-                    console.log(QuestionnairePurpose.SELFASSESSMENT);
-
                     switch (this.purpose) {
                         case QuestionnairePurpose.ID_THREAT_AGENT: {
                             // Create the first QuestionnaireStatus
@@ -216,7 +420,7 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
                                 Status.EMPTY, undefined, undefined, this.myCompany.companyProfile,
                                 this.identifyThreatAgentsQuestionnaire, this.role, this.user, [], undefined, undefined);
 
-                            this.questionnaireStatusService.create(questionnaireStatus).subscribe(
+                            this.subscriptions.push(this.questionnaireStatusService.create(questionnaireStatus).subscribe(
                                 (response: HttpResponse<QuestionnaireStatusMgm>) => {
                                     if (response) {
                                         questionnaireStatus = response.body;
@@ -226,7 +430,7 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
                                         this.router.navigate(['/identify-threat-agent/questionnaires/ID_THREAT_AGENT/questionnaire']);
                                     }
                                 }
-                            );
+                            ));
 
                             break;
                         }
@@ -283,23 +487,25 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
 
                                     const join$: Observable<HttpResponse<AssessVulnerabilitiesCompletionDTO>[]> = forkJoin(completions$);
 
-                                    join$.subscribe((response: HttpResponse<AssessVulnerabilitiesCompletionDTO>[]) => {
-                                        if(response && response.length){
+                                    this.subscriptions.push(join$.subscribe((response: HttpResponse<AssessVulnerabilitiesCompletionDTO>[]) => {
+                                        if (response && response.length) {
                                             response.forEach((value: HttpResponse<AssessVulnerabilitiesCompletionDTO>) => {
                                                 const completion = value.body;
 
                                                 this.assessVulnerabilitiesCompletionMap.set(completion.questionnaireStatusID, completion);
                                             });
                                         }
-                                    });
+                                    }));
                                 }
                             }
                             break;
                         }
                     }
+
+
                 }
             }
-        );
+        ));*/
     }
 
     ngOnDestroy() {
@@ -344,20 +550,22 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
         }
 
         if (questionnaireStatus$) {
-            questionnaireStatus$.subscribe((response: HttpResponse<QuestionnaireStatusMgm>) => {
+            this.subscriptions.push(questionnaireStatus$.subscribe((response: HttpResponse<QuestionnaireStatusMgm>) => {
                 this.loadQuestionnaire();
-            });
+            }));
         }
     }
 
     registerChangeInQuestionnaireStatuses() {
+        if (!this.questionnaireStatusesChangeEventSubscription) {
+            this.questionnaireStatusesChangeEventSubscription = this.eventManagerService.observe('questionnaireStatusListModification')
+                .subscribe(
+                    (response) => {
+                        this.loadQuestionnaire();
+                    });
 
-        this.subscriptions.push(this.eventManagerService.observe('questionnaireStatusListModification')
-            .subscribe(
-                (response) => {
-                    this.loadQuestionnaire();
-                })
-        );
+            this.subscriptions.push(this.questionnaireStatusesChangeEventSubscription);
+        }
     }
 
     trackUserById(index: number, item: User) {
@@ -369,7 +577,7 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
     }
 
     updateQuestionnaireStatus(questionnaireStatus: QuestionnaireStatusMgm) {
-        this.questionnaireStatusService.update(questionnaireStatus).subscribe((response: HttpResponse<QuestionnaireStatusMgm>) => {
+        this.questionnaireStatusService.update(questionnaireStatus).toPromise().then((response: HttpResponse<QuestionnaireStatusMgm>) => {
             if (response) {
                 this.externalChangedMap.set(questionnaireStatus.id, false);
             }

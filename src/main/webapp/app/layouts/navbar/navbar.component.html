@@ -17,40 +17,12 @@
 
 <nav *ngIf="isAuthenticated()" class="navbar navbar-custom navbar-expand-md topbar"
      [ngClass]="{'navbar-custom-no-sidenav': sidebarCollapsed || isExternal || isAdmin}">
-    <!-- [ngClass]="{'sidebar-collapsed': isCollapsed}"-->
     <div class="topbar-left logo">
         <i class="fa fa-bars fa-2x col-md-2" (click)="hideShowSideNav()" *jhiHasAnyAuthority="'ROLE_CISO'"></i>
-        <!--routerLink="/"-->
-        <!--
-        <a href="javascript:void(0)" class="logo" (click)="hideShowSideNav()"> 
-            <span>
-                <img src="../../../content/assets/images/logo-horizontal-white.png" alt="" class="img-fluid">
-            </span>
-            <i>
-                <img src="../../../content/assets/images/logo-horizontal-white-small.png" alt="" class="img-fluid">
-            </i>
-        </a>
-        -->
     </div>
-    <!--
-    <div *ngIf="navSubTitle" class="nav-self-assessment">
-        {{navSubTitle}}<a [routerLink]="['../self-assessment-mgm', selfAssessmentId ]" style="color: #4fbde9">{{selfAssessmentName}}</a>
-    </div>
-    -->
     <div class="navbar-collapse collapse" id="navbarResponsive" [ngbCollapse]="isNavbarCollapsed"
          [ngSwitch]="isAuthenticated()">
         <ul class="navbar-nav ml-auto">
-            <!--
-            <li class="waves-light waves-effect nav-item" routerLinkActive="active"
-                [routerLinkActiveOptions]="{exact: true}">
-                <a class="nav-link" routerLink="/" (click)="collapseNavbar()">
-                    <span>
-                        <i class="fa fa-home" aria-hidden="true"></i>
-                        <span jhiTranslate="global.menu.home">Home</span>
-                    </span>
-                </a>
-            </li>
-            -->
             <li *jhiHasAnyAuthority="'ROLE_CISO'" class="waves-light waves-effect nav-item" routerLinkActive="active"
                 [routerLinkActiveOptions]="{exact: true}">
                 <a class="nav-link" routerLink="/dashboard" (click)="collapseNavbar()">
@@ -60,15 +32,20 @@
                     </span>
                 </a>
             </li>
-            <li *jhiHasAnyAuthority="'ROLE_CISO'" class="waves-light waves-effect nav-item" routerLinkActive="active"
-                [routerLinkActiveOptions]="{exact: true}">
-                <a class="nav-link" routerLink="/riskboard" (click)="collapseNavbar()">
+            <ng-container
+                *ngIf="companyBoardStatus && companyBoardStatus.identifyThreatAgentsStatus === statusEnum.FULL && companyBoardStatus.assessVulnerablitiesStatus === statusEnum.FULL">
+                <li *jhiHasAnyAuthority="'ROLE_CISO'" class="waves-light waves-effect nav-item"
+                    routerLinkActive="active"
+                    [routerLinkActiveOptions]="{exact: true}">
+                    <a class="nav-link" routerLink="/riskboard" (click)="collapseNavbar()">
                     <span>
                         <i class="fab fa-servicestack" aria-hidden="true"></i>
                         <span>Risk Board</span>
                     </span>
-                </a>
-            </li>
+                    </a>
+                </li>
+            </ng-container>
+
             <li *jhiHasAnyAuthority="'ROLE_ADMIN'" ngbDropdown
                 class="waves-light waves-effect nav-item dropdown pointer entities-nav "
                 routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
@@ -407,31 +384,11 @@
                     </li>
                 </ul>
             </li>
-            <!--
-            <li ngbDropdown class="waves-light waves-effect nav-item dropdown pointer" *ngIf="languages">
-                <a class="nav-link dropdown-toggle" ngbDropdownToggle href="javascript:void(0);"
-                   id="languagesnavBarDropdown" *ngIf="languages.length > 1">
-                        <span>
-                            <i class="fa fa-flag" aria-hidden="true"></i>
-                            <span jhiTranslate="global.menu.language">Language</span>
-                        </span>
-                </a>
-                <ul class="dropdown-menu" ngbDropdownMenu *ngIf="languages.length > 1">
-                    <li *ngFor="let language of languages">
-                        <a class="dropdown-item" [jhiActiveMenu]="language" href="javascript:void(0);"
-                           (click)="changeLanguage(language);collapseNavbar();">
-                            <span ngClass="flag-icon flag-icon-{{language}}"></span>
-                            {{language | findLanguageFromKey}}
-                        </a>
-                    </li>
-                </ul>
-            </li>
-            -->
             <li *jhiHasAnyAuthority="['ROLE_EXTERNAL_AUDIT']">
-                <a class="nav-link" routerLink="/my-risk-assessments" (click)="collapseNavbar()">
+                <a class="nav-link" routerLink="/evaluate-weakness/questionnaires/SELFASSESSMENT" (click)="collapseNavbar()">
                     <span>
                         <i class="fa fa-dashboard" aria-hidden="true"></i>
-                        <span>Self-Assessments</span>
+                        <span>Vulnerabilities Refinement</span>
                     </span>
                 </a>
             </li>
@@ -469,20 +426,6 @@
                             <span jhiTranslate="global.menu.account.logout">Sign out</span>
                         </a>
                     </li>
-                    <!--<li *ngSwitchCase="false">
-                        <a class="dropdown-item" (click)="login()" id="login">
-                            <i class="fa fa-fw fa-sign-in" aria-hidden="true"></i>
-                            <span jhiTranslate="global.menu.account.login">Sign in</span>
-                        </a>
-                    </li>
-                    <li *ngSwitchCase="false">
-                        <a class="dropdown-item" routerLink="register" routerLinkActive="active"
-                           (click)="collapseNavbar()">
-                            <i class="fa fa-fw fa-user-plus" aria-hidden="true"></i>
-                            <span jhiTranslate="global.menu.account.register">Register</span>
-                        </a>
-                    </li>
-                    -->
                 </ul>
             </li>
         </ul>

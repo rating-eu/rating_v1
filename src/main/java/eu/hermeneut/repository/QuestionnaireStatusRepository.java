@@ -50,8 +50,11 @@ public interface QuestionnaireStatusRepository extends JpaRepository<Questionnai
     List<QuestionnaireStatus> findAllByCompanyProfileRoleAndQuestionnairePurpose(@Param("companyProfileID") Long companyProfileID, @Param("role") Role role, @Param("questionnairePurpose") QuestionnairePurpose purpose);
 
     @Query("SELECT DISTINCT questionnaireStatus FROM QuestionnaireStatus questionnaireStatus LEFT JOIN FETCH questionnaireStatus.answers LEFT JOIN FETCH questionnaireStatus.refinement WHERE questionnaireStatus.companyProfile.id = :companyProfileID AND questionnaireStatus.questionnaire.purpose = :questionnairePurpose AND questionnaireStatus.user.id=:userID")
-    List<QuestionnaireStatus> findAllByCompanyProfileQuestionnairePurposeAndUser(@Param("companyProfileID") Long companyProfileID, @Param("questionnairePurpose") QuestionnairePurpose questionnairePurpose, @Param("userID") Long userID);
+    List<QuestionnaireStatus> findAllByCompanyProfileQuestionnairePurposeAndCISOUser(@Param("companyProfileID") Long companyProfileID, @Param("questionnairePurpose") QuestionnairePurpose questionnairePurpose, @Param("userID") Long userID);
 
     @Query("SELECT DISTINCT questionnaireStatus FROM QuestionnaireStatus questionnaireStatus LEFT JOIN FETCH questionnaireStatus.answers LEFT JOIN FETCH questionnaireStatus.refinement WHERE questionnaireStatus.external.id = :externalID")
     List<QuestionnaireStatus> findAllByExternalAudit(@Param("externalID") Long externalID);
+
+    @Query("SELECT DISTINCT questionnaireStatus FROM QuestionnaireStatus questionnaireStatus LEFT JOIN FETCH questionnaireStatus.answers LEFT JOIN FETCH questionnaireStatus.refinement WHERE questionnaireStatus.companyProfile.id = :companyProfileID AND questionnaireStatus.questionnaire.purpose = :questionnairePurpose AND questionnaireStatus.external.id = :externalID")
+    List<QuestionnaireStatus> findAllByCompanyProfileQuestionnairePurposeAndExternalUser(@Param("companyProfileID") Long companyProfileID, @Param("questionnairePurpose") QuestionnairePurpose questionnairePurpose, @Param("externalID") Long externalID);
 }

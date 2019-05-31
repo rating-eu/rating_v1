@@ -19,81 +19,71 @@
     <div class="loader"></div>
 </ng-container>
 <ng-container *ngIf="!loading">
-    <div class="x_panel" style="padding:0px !important;">
-        <div class="x_title" style="padding:0px !important;">
-            <h2 style="padding: 10px;">
-                <a href="javascript:void(0)" class="collapse-link" (click)="isCollapsed = !isCollapsed">Most Dangerous
-                    Threat Agents</a></h2>
-            <ul class="nav navbar-right panel_toolbox">
-                <li style="width: 24px; cursor: default"></li>
-                <li style="width: 24px; cursor: default"></li>
-                <li>
-                    <a [routerLink]="['/identify-threat-agent/questionnaires/ID_THREAT_AGENT/questionnaire']"
-                        *ngIf="mdtaEntities">
-                        <i class="fa fa-link fa-lg" aria-hidden="true"></i>
-                    </a>
-                    <a [routerLink]="['/identify-threat-agent/result']" *ngIf="!mdtaEntities">
-                        <i class="fa fa-link fa-lg" aria-hidden="true"></i>
-                    </a>
-                </li>
-            </ul>
-            <div class="clearfix"></div>
-        </div>
-        <div class="table-responsive x_content" style="padding:0px !important;" [ngbCollapse]="isCollapsed">
-            <div *ngIf="mdtaEntities.length === 0" class="text-center">
-                No data available, please complete the relative questionnaire!
-            </div>
-            <div *ngIf="mdtaEntities.length > 0" class="table-responsive table-hover-no-pointer">
-                <table class="table table-striped">
-                    <thead>
+    <mat-accordion>
+        <mat-expansion-panel>
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    <h2>
+                        <a href="javascript:void(0);" class="collapse-link">Most Dangerous Threat Agents</a>
+                    </h2>
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+
+            <div class="table-responsive" style="padding:0px !important;">
+                <div *ngIf="mdtaEntities.length === 0" class="text-center">
+                    No data available, please complete the relative questionnaire!
+                </div>
+                <div *ngIf="mdtaEntities.length > 0" class="table-responsive table-hover-no-pointer">
+                    <table class="table table-striped">
+                        <thead>
                         <tr>
                             <th scope="col" class="text-center align-middle">Threat Agent
                                 <i *ngIf="!sortedBy.get(THREAT_AGENT_NAME)?.key"
-                                    (click)="sortTableBy(THREAT_AGENT_NAME, true)" class="fa fa-sort"
-                                    aria-hidden="true"></i>
+                                   (click)="sortTableBy(THREAT_AGENT_NAME, true)" class="fa fa-sort"
+                                   aria-hidden="true"></i>
                                 <i *ngIf="sortedBy.get(THREAT_AGENT_NAME)?.key && !sortedBy.get(THREAT_AGENT_NAME)?.value"
-                                    (click)="sortTableBy(THREAT_AGENT_NAME, true)" class="fa fa-chevron-down"
-                                    aria-hidden="true"></i>
+                                   (click)="sortTableBy(THREAT_AGENT_NAME, true)" class="fa fa-chevron-down"
+                                   aria-hidden="true"></i>
                                 <i *ngIf="sortedBy.get(THREAT_AGENT_NAME)?.key && sortedBy.get(THREAT_AGENT_NAME)?.value"
-                                    (click)="sortTableBy(THREAT_AGENT_NAME, false)" class="fa fa-chevron-up"
-                                    aria-hidden="true"></i>
+                                   (click)="sortTableBy(THREAT_AGENT_NAME, false)" class="fa fa-chevron-up"
+                                   aria-hidden="true"></i>
                             </th>
                             <th scope="col" class="text-center align-middle">Initial Likelihood
                                 <i *ngIf="!sortedBy.get(INITIAL_LIKELIHOOD)?.key"
-                                    (click)="sortTableBy(INITIAL_LIKELIHOOD, true)" class="fa fa-sort"
-                                    aria-hidden="true"></i>
+                                   (click)="sortTableBy(INITIAL_LIKELIHOOD, true)" class="fa fa-sort"
+                                   aria-hidden="true"></i>
                                 <i *ngIf="sortedBy.get(INITIAL_LIKELIHOOD)?.key && !sortedBy.get(INITIAL_LIKELIHOOD)?.value"
-                                    (click)="sortTableBy(INITIAL_LIKELIHOOD, true)" class="fa fa-chevron-down"
-                                    aria-hidden="true"></i>
+                                   (click)="sortTableBy(INITIAL_LIKELIHOOD, true)" class="fa fa-chevron-down"
+                                   aria-hidden="true"></i>
                                 <i *ngIf="sortedBy.get(INITIAL_LIKELIHOOD)?.key && sortedBy.get(INITIAL_LIKELIHOOD)?.value"
-                                    (click)="sortTableBy(INITIAL_LIKELIHOOD, false)" class="fa fa-chevron-up"
-                                    aria-hidden="true"></i>
+                                   (click)="sortTableBy(INITIAL_LIKELIHOOD, false)" class="fa fa-chevron-up"
+                                   aria-hidden="true"></i>
                             </th>
                             <th scope="col" class="text-center align-middle">Contextual Likelihood
                                 <i *ngIf="!sortedBy.get(CONTEXTUAL_LIKELIHOOD)?.key"
-                                    (click)="sortTableBy(CONTEXTUAL_LIKELIHOOD, true)" class="fa fa-sort"
-                                    aria-hidden="true"></i>
+                                   (click)="sortTableBy(CONTEXTUAL_LIKELIHOOD, true)" class="fa fa-sort"
+                                   aria-hidden="true"></i>
                                 <i *ngIf="sortedBy.get(CONTEXTUAL_LIKELIHOOD)?.key && !sortedBy.get(CONTEXTUAL_LIKELIHOOD)?.value"
-                                    (click)="sortTableBy(CONTEXTUAL_LIKELIHOOD, true)" class="fa fa-chevron-down"
-                                    aria-hidden="true"></i>
+                                   (click)="sortTableBy(CONTEXTUAL_LIKELIHOOD, true)" class="fa fa-chevron-down"
+                                   aria-hidden="true"></i>
                                 <i *ngIf="sortedBy.get(CONTEXTUAL_LIKELIHOOD)?.key && sortedBy.get(CONTEXTUAL_LIKELIHOOD)?.value"
-                                    (click)="sortTableBy(CONTEXTUAL_LIKELIHOOD, false)" class="fa fa-chevron-up"
-                                    aria-hidden="true"></i>
+                                   (click)="sortTableBy(CONTEXTUAL_LIKELIHOOD, false)" class="fa fa-chevron-up"
+                                   aria-hidden="true"></i>
                             </th>
                             <th scope="col" class="text-center align-middle">Refined Likelihood
                                 <i *ngIf="!sortedBy.get(REFINED_LIKELIHOOD)?.key"
-                                    (click)="sortTableBy(REFINED_LIKELIHOOD, true)" class="fa fa-sort"
-                                    aria-hidden="true"></i>
+                                   (click)="sortTableBy(REFINED_LIKELIHOOD, true)" class="fa fa-sort"
+                                   aria-hidden="true"></i>
                                 <i *ngIf="sortedBy.get(REFINED_LIKELIHOOD)?.key && !sortedBy.get(REFINED_LIKELIHOOD)?.value"
-                                    (click)="sortTableBy(REFINED_LIKELIHOOD, true)" class="fa fa-chevron-down"
-                                    aria-hidden="true"></i>
+                                   (click)="sortTableBy(REFINED_LIKELIHOOD, true)" class="fa fa-chevron-down"
+                                   aria-hidden="true"></i>
                                 <i *ngIf="sortedBy.get(REFINED_LIKELIHOOD)?.key && sortedBy.get(REFINED_LIKELIHOOD)?.value"
-                                    (click)="sortTableBy(REFINED_LIKELIHOOD, false)" class="fa fa-chevron-up"
-                                    aria-hidden="true"></i>
+                                   (click)="sortTableBy(REFINED_LIKELIHOOD, false)" class="fa fa-chevron-up"
+                                   aria-hidden="true"></i>
                             </th>
                         </tr>
-                    </thead>
-                    <tbody align="center">
+                        </thead>
+                        <tbody align="center">
                         <ng-container *ngFor="let item of mdtaEntities | paginate: threatAgentsPaginator">
                             <tr>
                                 <td>{{item.threatAgent}}</td>
@@ -105,16 +95,17 @@
                                 <td *ngIf="!item.refined">-</td>
                             </tr>
                         </ng-container>
-                    </tbody>
-                </table>
-                <div class="text-center">
-                    <pagination-controls (pageChange)="onThreatAgentsPageChange($event)"
-                        [id]="threatAgentsPaginator.id"></pagination-controls>
+                        </tbody>
+                    </table>
+                    <div class="text-center">
+                        <pagination-controls (pageChange)="onThreatAgentsPageChange($event)"
+                                             [id]="threatAgentsPaginator.id"></pagination-controls>
+                    </div>
+                </div>
+                <div *ngIf="!mdtaEntities" class="text-center">
+                    No Threat Agents founded
                 </div>
             </div>
-            <div *ngIf="!mdtaEntities" class="text-center">
-                No Threat Agents founded
-            </div>
-        </div>
-    </div>
+        </mat-expansion-panel>
+    </mat-accordion>
 </ng-container>

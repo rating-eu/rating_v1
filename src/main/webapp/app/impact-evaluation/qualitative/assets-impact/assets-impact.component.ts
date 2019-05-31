@@ -10,6 +10,8 @@ import {forkJoin} from "rxjs/observable/forkJoin";
 import {MyAssetDtoService} from "../../../dto/my-asset/my-asset-dto.service";
 import {MyAssetDto} from "../../../dto/my-asset/my-asset-dto";
 import {Router} from "@angular/router";
+import * as _ from 'lodash';
+import {AssetType} from "../../../entities/enumerations/AssetType.enum";
 
 @Component({
     selector: 'jhi-assets-impact',
@@ -21,6 +23,8 @@ export class AssetsImpactComponent implements OnInit {
     private selfAssessment: SelfAssessmentMgm;
     private assetCategories$: Observable<HttpResponse<AssetCategoryMgm[]>>;
     public assetCategories: AssetCategoryMgm[];
+    public tangibleCategories: AssetCategoryMgm[];
+    public intangibleCategories: AssetCategoryMgm[];
     public myAssetsByCategoriesMap: Map<number/*AssetCategoryID*/, MyAssetMgm[]>;
 
     private myAssets: MyAssetMgm[] = [];
@@ -58,6 +62,14 @@ export class AssetsImpactComponent implements OnInit {
 
                 this.assetCategories = categoriesAndDirectsResponse[0].body;
                 this.myAssetsDTOs = categoriesAndDirectsResponse[1].body;
+
+                this.tangibleCategories = [];
+                this.intangibleCategories = [];
+
+                if (this.assetCategories && this.assetCategories.length) {
+                    this.tangibleCategories = _.filter(this.assetCategories, (assetCategory) => assetCategory.type === AssetType.TANGIBLE);
+                    this.intangibleCategories = _.filter(this.assetCategories, (assetCategory) => assetCategory.type === AssetType.INTANGIBLE);
+                }
 
                 if (this.myAssetsDTOs && this.myAssetsDTOs.length) {
                     this.myAssetsDTOs.forEach((myAssetDTO) => {

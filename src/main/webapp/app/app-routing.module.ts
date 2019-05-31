@@ -113,8 +113,8 @@ const routes: Routes = [
         canActivate: [UserRouteAccessService]
     },
     {
-        path: 'people',
-        loadChildren: './people/people.module#PeopleModule',
+        path: 'employees',
+        loadChildren: './employees/employees.module#EmployeesModule',
         data: {
             authorities: ['ROLE_CISO']
         },

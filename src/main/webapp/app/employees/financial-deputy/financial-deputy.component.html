@@ -1,0 +1,45 @@
+<div class="row">
+    <div class="col-md-10">
+        <div class="card-box">
+            <h2><span>Financial Deputies</span></h2>
+        </div>
+    </div>
+    <div class="col-md-2">
+        <div class="card-box">
+            <button class="btn btn-block btn-primary waves-effect waves-light btn-info"
+                    [routerLink]="['/employees/employee/' + roleEnum.ROLE_FINANCIAL_DEPUTY]">
+                <i class="fas fa-plus"></i>New
+            </button>
+        </div>
+    </div>
+</div>
+
+<div class="card-box">
+    <div class="table-responsive" *ngIf="employees && employees.length > 0">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th><span>Login</span></th>
+                <th><span>Email</span></th>
+                <th><span>First Name</span></th>
+                <th><span>Last Name</span></th>
+                <th><span>Activated</span></th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody *ngIf="employees">
+            <tr *ngFor="let employee of employees">
+                <td>{{employee.login}}</td>
+                <td>{{employee.email}}</td>
+                <td>{{employee.firstName}}</td>
+                <td>{{employee.lastName}}</td>
+                <td>{{employee.activated}}</td>
+                <td></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div *ngIf="!employees || employees.length === 0">
+        <span>Add the first Financial Deputy!</span>
+    </div>
+</div>

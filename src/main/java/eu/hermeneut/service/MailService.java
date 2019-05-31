@@ -1,12 +1,12 @@
 /*
  * Copyright 2019 HERMENEUT Consortium
- *  
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *  
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- *  
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -17,6 +17,7 @@
 
 package eu.hermeneut.service;
 
+import eu.hermeneut.domain.Employee;
 import eu.hermeneut.domain.User;
 
 import io.github.jhipster.config.JHipsterProperties;
@@ -48,6 +49,10 @@ public class MailService {
     public static final String ADMIN = "admin";
 
     public static final String USER = "user";
+
+    public static final String EMPLOYEE = "employee";
+
+    public static final String PASSWORD = "password";
 
     private static final String BASE_URL = "baseUrl";
 
@@ -119,6 +124,27 @@ public class MailService {
     public void sendActivationEmail(User user) {
         log.debug("Sending activation email to '{}'", user.getEmail());
         sendEmailFromTemplate(user, "activationEmail", "email.activation.title");
+    }
+
+    @Async
+    public void sendEmployeeActivationEmail(Employee employee, User user, byte[] password) {
+        log.debug("Sending employee activation email to '{}'", employee.getEmail());
+        sendEmailFromTemplateToEmployee(employee, user, password, "employeeActivationEmail", "email.employee.activation.title");
+    }
+
+    private void sendEmailFromTemplateToEmployee(Employee employee, User user, byte[] password, String templateName, String titleKey) {
+        Locale locale = Locale.forLanguageTag(user.getLangKey());
+        Context context = new Context(locale);
+
+        context.setVariable(EMPLOYEE, employee);
+        context.setVariable(PASSWORD, new String(password));
+        context.setVariable(USER, user);
+
+        context.setVariable(BASE_URL, jHipsterProperties.getMail().getBaseUrl());
+        String content = templateEngine.process(templateName, context);
+        String subject = messageSource.getMessage(titleKey, null, locale);
+
+        sendEmail(employee.getEmail(), subject, content, false, true);
     }
 
     @Async
