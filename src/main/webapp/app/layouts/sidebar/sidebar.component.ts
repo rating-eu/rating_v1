@@ -28,6 +28,8 @@ import {HttpErrorResponse, HttpResponse} from '@angular/common/http';
 import {Router} from '@angular/router';
 import {CompanyBoardStatus} from "../../dashboard/models/CompanyBoardStatus";
 import {Status} from "../../entities/enumerations/Status.enum";
+import {JhiDateUtils} from 'ng-jhipster';
+import * as _ from 'lodash';
 
 @Component({
     selector: 'jhi-sidebar',
@@ -64,6 +66,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         private logoService: LogoMgmService,
         private router: Router,
         private changeDetector: ChangeDetectorRef,
+        private dateUtils: JhiDateUtils
     ) {
         this.isCollapsed = true;
         this.isSidebarCollapseByTheScreen();
@@ -407,6 +410,13 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
                 // @ts-ignore
                 this.riskManagementMenuItem.items.push(servicesMenuItem);
+
+                // Sort SelfAssessments by creation date
+                const self = this;
+
+                this.selfAssessments = _.sortBy(this.selfAssessments, function (assessment: SelfAssessmentMgm) {
+                    return self.dateUtils.convertDateTimeFromServer(assessment.created);
+                });
 
                 this.selfAssessments.forEach((assessment) => {
                     const assessmentItem: MenuItem = {
