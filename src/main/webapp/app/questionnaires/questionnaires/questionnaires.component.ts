@@ -63,11 +63,7 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
     private questionnaire$: Observable<QuestionnaireMgm>;
     private questionnaire: QuestionnaireMgm;
 
-    private externalAudits$: Observable<User[]>;
-    private externalAudits: User[];
-
-    private identifyThreatAgentsQuestionnaire: QuestionnaireMgm;
-    private selfAssessmentQuestionnaire: QuestionnaireMgm;
+    public externalAudits: User[];
 
     public questionnaireStatuses$: Observable<QuestionnaireStatusMgm[]>;
     private questionnaireStatuses: QuestionnaireStatusMgm[];
@@ -187,7 +183,7 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
                                 // Create the first QuestionnaireStatus
                                 const questionnaireStatus: QuestionnaireStatusMgm = new QuestionnaireStatusMgm(undefined,
                                     Status.EMPTY, undefined, undefined, this.myCompany.companyProfile,
-                                    this.identifyThreatAgentsQuestionnaire, this.role, this.user, [], undefined, undefined);
+                                    this.questionnaire, this.role, this.user, [], undefined, undefined);
 
                                 this.createNewThreatAgentsQuestionnaireStatus = true;
                                 return this.questionnaireStatusService.create(questionnaireStatus);
@@ -231,14 +227,11 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
                                         if (cisoIdentifyThreatAgentsQuestionnaireStatus) {
                                             this.useExistingThreatAgentQuestionnaireStatus = true;
                                             return of(cisoIdentifyThreatAgentsQuestionnaireStatus);
-
-                                            //this.setCurrentQuestionnaireStatus(cisoIdentifyThreatAgentsQuestionnaireStatus);
-                                            //this.router.navigate(['/identify-threat-agent/questionnaires/ID_THREAT_AGENT/questionnaire']);
                                         } else {
                                             // Create the first QuestionnaireStatus
                                             const questionnaireStatus: QuestionnaireStatusMgm = new QuestionnaireStatusMgm(undefined,
                                                 Status.EMPTY, undefined, undefined, this.myCompany.companyProfile,
-                                                this.identifyThreatAgentsQuestionnaire, this.role, this.user, [], undefined, undefined);
+                                                this.questionnaire, this.role, this.user, [], undefined, undefined);
 
                                             this.createNewThreatAgentsQuestionnaireStatus = true;
                                             return this.questionnaireStatusService.create(questionnaireStatus);
@@ -267,16 +260,6 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
                                         const join$: Observable<HttpResponse<AssessVulnerabilitiesCompletionDTO>[]> = forkJoin(completions$);
 
                                         return join$;
-
-                                        /*this.subscriptions.push(join$.subscribe((response: HttpResponse<AssessVulnerabilitiesCompletionDTO>[]) => {
-                                            if (response && response.length) {
-                                                response.forEach((value: HttpResponse<AssessVulnerabilitiesCompletionDTO>) => {
-                                                    const completion = value.body;
-
-                                                    this.assessVulnerabilitiesCompletionMap.set(completion.questionnaireStatusID, completion);
-                                                });
-                                            }
-                                        }));*/
                                     }
                                 }
                                 break;

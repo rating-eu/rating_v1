@@ -726,49 +726,7 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
                 this.router.navigate(['/dashboard']);
             }
         );
-
-        /*const selfAssessment$: Observable<HttpResponse<SelfAssessmentMgm>> = questionnaireStatus$
-            .pipe(
-                switchMap((qStatusResponse: HttpResponse<QuestionnaireStatusMgm>) => {
-                    questionnaireStatus = qStatusResponse.body;
-                    return this.threatAgentService.getDefaultThreatAgents();
-                })
-            ).pipe(
-                switchMap((defaultsResponse: HttpResponse<ThreatAgentMgm[]>) => {
-                    const defaultThreatAgents: ThreatAgentMgm[] = defaultsResponse.body;
-
-                    const identifiedThreatAgents: ThreatAgentMgm[] = [];
-                    const threatAgentsPercentageArray: Couple<ThreatAgentMgm, Fraction>[] = Array.from(threatAgentsPercentageMap.values());
-
-                    threatAgentsPercentageArray.forEach((couple: Couple<ThreatAgentMgm, Fraction>) => {
-                        const threatAgent: ThreatAgentMgm = couple.key;
-                        const likelihood: Fraction = couple.value;
-                        if (likelihood.toPercentage() > 0) {
-                            identifiedThreatAgents.push(threatAgent);
-                        }
-                    });
-
-                    const uniqueThreatAgentsSet: Set<ThreatAgentMgm> = new Set<ThreatAgentMgm>(
-                        defaultThreatAgents.concat(identifiedThreatAgents));
-                    const uniqueThreatAgentsArray: ThreatAgentMgm[] = Array.from(uniqueThreatAgentsSet);
-                    this.selfAssessment.threatAgents = uniqueThreatAgentsArray;
-
-                    return this.selfAssessmentService.update(this.selfAssessment);
-                })
-            );*/
-
-        /*selfAssessment$.toPromise().then(
-            (selfAssessmentResponse: HttpResponse<SelfAssessmentMgm>) => {
-                // this.selfAssessment = selfAssessmentResponse.body;
-                // this.selfAssessmentService.setSelfAssessment(this.selfAssessment);
-                this.loading = false;
-                this.router.navigate(['/dashboard']);
-            }
-        ).catch(() => {
-            // TODO Error management
-            this.loading = false;
-        });*/
-
+        
         return questionnaireStatus;
     }
 
@@ -798,27 +756,41 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
     }
 
     private continueExternalRefinement(questionnaireStatus: QuestionnaireStatusMgm) {
-        let questionnaireStatus$: Observable<HttpResponse<QuestionnaireStatusMgm>> = null;
+        let cisoQuestionnaireStatus$: Observable<HttpResponse<QuestionnaireStatusMgm>> = null;
+        let externalQuestionnaireStatus$: Observable<HttpResponse<QuestionnaireStatusMgm>> = null;
 
         if (this.cisoQuestionnaireStatus) {
             // Set the Refinement QuestionnaireStatus
             this.cisoQuestionnaireStatus.refinement = questionnaireStatus;
 
-            // Update the QStatus
-            questionnaireStatus$ = this.questionnaireStatusService.update(this.cisoQuestionnaireStatus);
+            // Update the CISO QStatus
+            cisoQuestionnaireStatus$ = this.questionnaireStatusService.update(this.cisoQuestionnaireStatus);
 
-            // #4 Persist the QuestionnaireStatus
-            questionnaireStatus$.toPromise()
-                .then((response: HttpResponse<QuestionnaireStatusMgm>) => {
-                    questionnaireStatus = response.body;
+            // #4 Persist the CISO QuestionnaireStatus
+            externalQuestionnaireStatus$ = cisoQuestionnaireStatus$.pipe(
+                switchMap((response: HttpResponse<QuestionnaireStatusMgm>) => {
+                    this.cisoQuestionnaireStatus = response.body;
+
+                    // Update the ID of the external QStatus
+                    questionnaireStatus.id = this.cisoQuestionnaireStatus.refinement.id;
+
+                    // Persist the External Questionnaire Status
                     this.externalQuestionnaireStatus = questionnaireStatus;
 
-                    //this.selfAssessmentService.setSelfAssessment(this.selfAssessment);
+                    return this.questionnaireStatusService.update(this.externalQuestionnaireStatus);
+                })
+            );
+
+            this.subscriptions.push(externalQuestionnaireStatus$.subscribe(
+                (response: HttpResponse<QuestionnaireStatusMgm>) => {
+                    this.externalQuestionnaireStatus = response.body;
 
                     this.loading = false;
                     this.router.navigate(['/evaluate-weakness/questionnaires/SELFASSESSMENT']);
-                });
-            return questionnaireStatus;
+                }
+            ));
+
+            return this.externalQuestionnaireStatus;
         } else {
 
         }
