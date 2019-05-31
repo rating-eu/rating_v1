@@ -18,9 +18,11 @@
 import {Component, OnInit} from '@angular/core';
 import {Principal} from '../../shared';
 import {SelfAssessmentMgm} from '../../entities/self-assessment-mgm';
-import {DatasharingService} from "../../datasharing/datasharing.service";
-import {Router} from "@angular/router";
-import {ImpactMode} from "../../entities/enumerations/ImpactMode.enum";
+import {DatasharingService} from '../../datasharing/datasharing.service';
+import {Router} from '@angular/router';
+import {ImpactMode} from '../../entities/enumerations/ImpactMode.enum';
+import {RiskBoardStatus} from '../risk-board.service';
+import {Status} from '../../entities/enumerations/Status.enum';
 
 @Component({
     selector: 'jhi-dashboard-one',
@@ -30,6 +32,9 @@ import {ImpactMode} from "../../entities/enumerations/ImpactMode.enum";
 export class DashboardOneComponent implements OnInit {
     public selfAssessment: SelfAssessmentMgm = null;
     public impactModeEnum = ImpactMode;
+    public statusEnum = Status;
+    public riskBoardStatus: RiskBoardStatus = null;
+
 
     constructor(
         private principal: Principal,
@@ -41,9 +46,19 @@ export class DashboardOneComponent implements OnInit {
     ngOnInit() {
         this.selfAssessment = this.datasharingService.selfAssessment;
 
+        this.datasharingService.selfAssessmentObservable.subscribe(assessment => {
+            this.selfAssessment = assessment;
+        });
+
         if (!this.selfAssessment) {
             this.router.navigate(['/my-risk-assessments']);
         }
+
+        this.datasharingService.riskBoardStatusObservable.subscribe(
+            (status: RiskBoardStatus) => {
+                this.riskBoardStatus = status;
+            }
+        );
     }
 
     isAuthenticated() {

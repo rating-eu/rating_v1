@@ -1,27 +1,34 @@
 import {NgModule} from '@angular/core';
 import {Routes, RouterModule} from '@angular/router';
 import {UserRouteAccessService} from "../shared";
-import {PeopleComponent} from "./people/people.component";
 import {ExternalAuditorComponent} from "./external-auditor/external-auditor.component";
 import {FinancialDeputyComponent} from "./financial-deputy/financial-deputy.component";
 import {CisoComponent} from "./ciso/ciso.component";
+import {EmployeeComponent} from "./employee/employee.component";
 
 const routes: Routes = [
     {
         path: '',
-        component: PeopleComponent,
         data: {
-            authorities: ['ROLE_CISO', 'ROLE_EXTERNAL_AUDIT'],
+            authorities: ['ROLE_CISO'],
         },
         canActivate: [UserRouteAccessService],
         children: [
+            {
+                path: 'employee/:role',
+                component: EmployeeComponent
+            },
+            {
+                path: 'employee/:role/:id',
+                component: EmployeeComponent
+            },
             {
                 path: 'ciso',
                 component: CisoComponent
             },
             {
                 path: 'external',
-                component: ExternalAuditorComponent
+                component: ExternalAuditorComponent,
             },
             {
                 path: 'financial',
@@ -35,5 +42,5 @@ const routes: Routes = [
     imports: [RouterModule.forChild(routes)],
     exports: [RouterModule]
 })
-export class PeopleRoutingModule {
+export class EmployeesRoutingModule {
 }

@@ -18,133 +18,132 @@
     <div class="loader"></div>
 </ng-container>
 <ng-container *ngIf="!loading">
-    <div class="x_panel">
-        <div class="x_title">
-            <h2 style="padding: 10px;">Vulnerability Assessment</h2>
-            <ul class="nav navbar-right panel_toolbox">
-                <li style="width: 24px; cursor: default"></li>
-                <li style="width: 24px; cursor: default"></li>
-                <li>
-                    <a href="javascript:void(0)" class="collapse-link" (click)="isCollapsed = !isCollapsed">
-                        <i *ngIf="!isCollapsed" class="fa fa-chevron-up"></i>
-                        <i *ngIf="isCollapsed" class="fa fa-chevron-down"></i>
-                    </a>
-                </li>
-            </ul>
-            <div class="clearfix"></div>
-        </div>
-        <div class="table-responsive x_content" [ngbCollapse]="isCollapsed">
-            <table class="table">
-                <thead>
-                <tr>
-                    <th style="width: 15%">Steps</th>
-                    <th>Description</th>
-                    <th>Status</th>
-                    <th style="width: 7%" class="text-center">Action</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td>Identify Threat Agents</td>
-                    <td>Aims at identifying who may be interested in performing the attack against the company and why,
-                        using as a base what emerged from asset clustering. This phase responds to the questions: “Who
-                        would attack my company?” and “Why somebody should attack my company?”
-                    </td>
-                    <td class="text-center">
-                        <i *ngIf="identifyThreatAgentsStatus === statusEnum.FULL" style="color: green"
-                           class="fa fa-check"
-                           aria-hidden="true"
-                           [ngbTooltip]="statusEnum[identifyThreatAgentsStatus][0] + statusEnum[identifyThreatAgentsStatus].substr(1).toLowerCase()"></i>
-                        <i *ngIf="identifyThreatAgentsStatus === statusEnum.EMPTY || identifyThreatAgentsStatus === statusEnum.PENDING"
-                           style="color: orange" class="fa fa-exclamation-triangle" aria-hidden="true"
-                           [ngbTooltip]="statusEnum[identifyThreatAgentsStatus][0] + statusEnum[identifyThreatAgentsStatus].substr(1).toLowerCase()"></i>
-                    </td>
-                    <td class="text-center">
-                        <a *ngIf="identifyThreatAgentsStatus === statusEnum.EMPTY"
-                           [routerLink]="['/identify-threat-agent/questionnaires/ID_THREAT_AGENT']"><i
-                            class="fa fa-plus-square fa-lg"
-                            placement="top"
-                            aria-hidden="true"></i></a>
-                        <ng-container
-                            *ngIf="identifyThreatAgentsStatus === statusEnum.PENDING || identifyThreatAgentsStatus === statusEnum.FULL">
-                            <a href="javascript:void(0)"
-                               (click)="open(alert,'/identify-threat-agent/questionnaires/ID_THREAT_AGENT')"><i
-                                placement="top" class="fa fa-pencil-square-o fa-lg"
-                                aria-hidden="true"></i></a>
-                        </ng-container>
-                    </td>
-                </tr>
-                <tr>
-                    <td>Assess Vulnerablities</td>
-                    <td>Measures the weak points of company surface through self-assessment (cyber maturity
-                        questionnaire). It
-                        responds to the question: “Which are the weaknesses of my company?”
-                    </td>
-                    <td class="text-center">
-                        <i *ngIf="assessVulnerabilitiesStatus === statusEnum.FULL" style="color: green"
-                           class="fa fa-check"
-                           aria-hidden="true"
-                           [ngbTooltip]="statusEnum[assessVulnerabilitiesStatus][0] + statusEnum[assessVulnerabilitiesStatus].substr(1).toLowerCase()"></i>
-                        <i *ngIf="assessVulnerabilitiesStatus === statusEnum.EMPTY || assessVulnerabilitiesStatus === statusEnum.PENDING"
-                           style="color: orange" class="fa fa-exclamation-triangle" aria-hidden="true"
-                           [ngbTooltip]="statusEnum[assessVulnerabilitiesStatus][0] + statusEnum[assessVulnerabilitiesStatus].substr(1).toLowerCase()"></i>
-                        <div *ngIf="assessVulnerabilitiesCompletion">
-                            <p>Completion</p>
-                            <table>
-                                <thead>
-                                <th class="small text-muted pr-2" scope="row">Human</th>
-                                <th class="small text-muted pr-2" scope="row">IT</th>
-                                <th class="small text-muted pr-2" scope="row">Physical</th>
-                                </thead>
-                                <tbody>
-                                <td>{{assessVulnerabilitiesCompletion.human | percent}}</td>
-                                <td>{{assessVulnerabilitiesCompletion.it | percent}}</td>
-                                <td>{{assessVulnerabilitiesCompletion.physical | percent}}</td>
-                                </tbody>
-                            </table>
-                        </div>
-                    </td>
-                    <td class="text-center">
-                        <a *ngIf="assessVulnerabilitiesStatus === statusEnum.EMPTY"
-                           [routerLink]="['/evaluate-weakness/questionnaires/SELFASSESSMENT']"><i
-                            class="fa fa-plus-square fa-lg"
-                            placement="top"
-                            aria-hidden="true"></i></a>
-                        <ng-container
-                            *ngIf="assessVulnerabilitiesStatus === statusEnum.PENDING || assessVulnerabilitiesStatus=== statusEnum.FULL">
-                            <a href="javascript:void(0)"
-                               (click)="open(alert,'/evaluate-weakness/questionnaires/SELFASSESSMENT')"><i
-                                placement="top" class="fa fa-pencil-square-o fa-lg"
-                                aria-hidden="true"></i></a>
-                        </ng-container>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
+    <mat-accordion>
+        <mat-expansion-panel [expanded]="true">
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    <h2>
+                        <a href="javascript:void(0);" class="collapse-link">Vulnerability Assessment</a>
+                    </h2>
+                </mat-panel-title>
+            </mat-expansion-panel-header>
 
-            <ng-template #alert let-d="dismiss" let-c="close">
-                <div class="modal-header">
-                    <h4 class="modal-title" id="modal-basic-title">Edit notification</h4>
-                    <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <ng-container *ngIf="">
-                        {{alertMessage}}
-                    </ng-container>
-                    <ng-container *ngIf="!alertMessage">
-                        <p>Editing such step may influence the entire assessment.</p>
-                        <p>If you want to proceed, just click on "OK" and edit your preferences, otherwise, you can just
-                            proceed in "view" mode whitout make any changes.</p>
-                        <p>Do you want to proceed?</p>
-                    </ng-container>
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th style="width: 15%">Steps</th>
+                        <th>Description</th>
+                        <th>Status</th>
+                        <th style="width: 7%" class="text-center">Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>Identify Threat Agents</td>
+                        <td>Aims at identifying who may be interested in performing the attack against the company and
+                            why,
+                            using as a base what emerged from asset clustering. This phase responds to the questions:
+                            “Who
+                            would attack my company?” and “Why somebody should attack my company?”
+                        </td>
+                        <td class="text-center">
+                            <i *ngIf="identifyThreatAgentsStatus === statusEnum.FULL" style="color: green"
+                               class="fa fa-check"
+                               aria-hidden="true"
+                               [ngbTooltip]="statusEnum[identifyThreatAgentsStatus][0] + statusEnum[identifyThreatAgentsStatus].substr(1).toLowerCase()"></i>
+                            <i *ngIf="identifyThreatAgentsStatus === statusEnum.EMPTY || identifyThreatAgentsStatus === statusEnum.PENDING"
+                               style="color: orange" class="fa fa-exclamation-triangle" aria-hidden="true"
+                               [ngbTooltip]="statusEnum[identifyThreatAgentsStatus][0] + statusEnum[identifyThreatAgentsStatus].substr(1).toLowerCase()"></i>
+                        </td>
+                        <td class="text-center">
+                            <a *ngIf="identifyThreatAgentsStatus === statusEnum.EMPTY"
+                               [routerLink]="['/identify-threat-agent/questionnaires/ID_THREAT_AGENT']"><i
+                                class="fa fa-plus-square fa-lg"
+                                placement="top"
+                                aria-hidden="true"></i></a>
+                            <ng-container
+                                *ngIf="identifyThreatAgentsStatus === statusEnum.PENDING || identifyThreatAgentsStatus === statusEnum.FULL">
+                                <a href="javascript:void(0)"
+                                   (click)="open(alert,'/identify-threat-agent/questionnaires/ID_THREAT_AGENT')"><i
+                                    placement="top" class="fa fa-pencil-square-o fa-lg"
+                                    aria-hidden="true"></i></a>
+                            </ng-container>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Assess Vulnerablities</td>
+                        <td>Measures the weak points of company surface through self-assessment (cyber maturity
+                            questionnaire). It
+                            responds to the question: “Which are the weaknesses of my company?”
+                        </td>
+                        <td class="text-center">
+                            <i *ngIf="assessVulnerabilitiesStatus === statusEnum.FULL" style="color: green"
+                               class="fa fa-check"
+                               aria-hidden="true"
+                               [ngbTooltip]="statusEnum[assessVulnerabilitiesStatus][0] + statusEnum[assessVulnerabilitiesStatus].substr(1).toLowerCase()"></i>
+                            <i *ngIf="assessVulnerabilitiesStatus === statusEnum.EMPTY || assessVulnerabilitiesStatus === statusEnum.PENDING"
+                               style="color: orange" class="fa fa-exclamation-triangle" aria-hidden="true"
+                               [ngbTooltip]="statusEnum[assessVulnerabilitiesStatus][0] + statusEnum[assessVulnerabilitiesStatus].substr(1).toLowerCase()"></i>
+                            <div *ngIf="assessVulnerabilitiesCompletion">
+                                <p>Completion</p>
+                                <table>
+                                    <thead>
+                                    <th class="small text-muted pr-2" scope="row">Human</th>
+                                    <th class="small text-muted pr-2" scope="row">IT</th>
+                                    <th class="small text-muted pr-2" scope="row">Physical</th>
+                                    </thead>
+                                    <tbody>
+                                    <td>{{assessVulnerabilitiesCompletion.human | percent}}</td>
+                                    <td>{{assessVulnerabilitiesCompletion.it | percent}}</td>
+                                    <td>{{assessVulnerabilitiesCompletion.physical | percent}}</td>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </td>
+                        <td class="text-center">
+                            <a *ngIf="assessVulnerabilitiesStatus === statusEnum.EMPTY"
+                               [routerLink]="['/evaluate-weakness/questionnaires/SELFASSESSMENT']"><i
+                                class="fa fa-plus-square fa-lg"
+                                placement="top"
+                                aria-hidden="true"></i></a>
+                            <ng-container
+                                *ngIf="assessVulnerabilitiesStatus === statusEnum.PENDING || assessVulnerabilitiesStatus=== statusEnum.FULL">
+                                <a href="javascript:void(0)"
+                                   (click)="open(alert,'/evaluate-weakness/questionnaires/SELFASSESSMENT')"><i
+                                    placement="top" class="fa fa-pencil-square-o fa-lg"
+                                    aria-hidden="true"></i></a>
+                            </ng-container>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
 
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-dark" (click)="c('Save click')">OK</button>
-                </div>
-            </ng-template>
-        </div>
-    </div>
+                <ng-template #alert let-d="dismiss" let-c="close">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="modal-basic-title">Edit notification</h4>
+                        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <ng-container *ngIf="">
+                            {{alertMessage}}
+                        </ng-container>
+                        <ng-container *ngIf="!alertMessage">
+                            <p>Editing such step may influence the entire assessment.</p>
+                            <p>If you want to proceed, just click on "OK" and edit your preferences, otherwise, you can
+                                just
+                                proceed in "view" mode whitout make any changes.</p>
+                            <p>Do you want to proceed?</p>
+                        </ng-container>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-dark" (click)="c('Save click')">OK</button>
+                    </div>
+                </ng-template>
+            </div>
+        </mat-expansion-panel>
+    </mat-accordion>
 </ng-container>

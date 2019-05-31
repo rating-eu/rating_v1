@@ -22,6 +22,7 @@ import com.codahale.metrics.annotation.Timed;
 import eu.hermeneut.domain.Authority;
 import eu.hermeneut.domain.User;
 import eu.hermeneut.domain.enumeration.Role;
+import eu.hermeneut.repository.EmployeeRepository;
 import eu.hermeneut.repository.UserRepository;
 import eu.hermeneut.security.AuthoritiesConstants;
 import eu.hermeneut.service.MailService;
@@ -36,6 +37,7 @@ import io.github.jhipster.web.util.ResponseUtil;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
@@ -85,6 +87,9 @@ public class UserResource {
     private final UserService userService;
 
     private final MailService mailService;
+
+    @Autowired
+    private EmployeeRepository employeeRepository;
 
     public UserResource(UserRepository userRepository, UserService userService, MailService mailService) {
 
@@ -176,6 +181,16 @@ public class UserResource {
         authority.setName(AuthoritiesConstants.EXTERNAL_AUDIT);
 
         return this.userRepository.findAllByRole(authority).stream().parallel()
+            .map(UserDTO::new)
+            .collect(Collectors.toList());
+    }
+
+    @GetMapping("/users/external/company/{companyID}")
+    @Secured(AuthoritiesConstants.CISO)
+    public List<UserDTO> getAllExternalAuditsByCompanyProfile(@PathVariable Long companyID) {
+        return this.userRepository.findAllUsersByCompanyIDAndRole(companyID, Role.ROLE_EXTERNAL_AUDIT)
+            .stream()
+            .parallel()
             .map(UserDTO::new)
             .collect(Collectors.toList());
     }

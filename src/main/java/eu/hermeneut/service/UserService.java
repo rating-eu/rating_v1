@@ -1,12 +1,12 @@
 /*
  * Copyright 2019 HERMENEUT Consortium
- *  
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *  
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- *  
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -18,6 +18,7 @@
 package eu.hermeneut.service;
 
 import eu.hermeneut.domain.Authority;
+import eu.hermeneut.domain.Employee;
 import eu.hermeneut.domain.User;
 import eu.hermeneut.repository.AuthorityRepository;
 import eu.hermeneut.config.Constants;
@@ -27,6 +28,8 @@ import eu.hermeneut.security.SecurityUtils;
 import eu.hermeneut.service.util.RandomUtil;
 import eu.hermeneut.domain.dto.UserDTO;
 
+import eu.hermeneut.utils.password.PasswordGenerator;
+import eu.hermeneut.utils.tuple.Couple;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cache.CacheManager;
@@ -81,18 +84,18 @@ public class UserService {
     }
 
     public Optional<User> completePasswordReset(String newPassword, String key) {
-       log.debug("Reset user password for reset key {}", key);
+        log.debug("Reset user password for reset key {}", key);
 
-       return userRepository.findOneByResetKey(key)
-           .filter(user -> user.getResetDate().isAfter(Instant.now().minusSeconds(86400)))
-           .map(user -> {
+        return userRepository.findOneByResetKey(key)
+            .filter(user -> user.getResetDate().isAfter(Instant.now().minusSeconds(86400)))
+            .map(user -> {
                 user.setPassword(passwordEncoder.encode(newPassword));
                 user.setResetKey(null);
                 user.setResetDate(null);
                 cacheManager.getCache(UserRepository.USERS_BY_LOGIN_CACHE).evict(user.getLogin());
                 cacheManager.getCache(UserRepository.USERS_BY_EMAIL_CACHE).evict(user.getEmail());
                 return user;
-           });
+            });
     }
 
     public Optional<User> requestPasswordReset(String mail) {
@@ -137,6 +140,54 @@ public class UserService {
         return newUser;
     }
 
+    public Couple<User, byte[]> registerEmployee(Employee employee) {
+        User newUser = new User();
+
+        Authority authority1 = authorityRepository.findOne(AuthoritiesConstants.USER);
+        Authority authority2 = authorityRepository.findOne(employee.getRole().name());
+
+        Set<Authority> authorities = new HashSet<>();
+        authorities.add(authority1);
+        authorities.add(authority2);
+        newUser.setAuthorities(authorities);
+
+        newUser.setLogin(employee.getLogin());
+        newUser.setEmail(employee.getEmail());
+
+        Couple<User, byte[]> userCouple = new Couple<>();
+        userCouple.setB(PasswordGenerator.generatePassword(8).getBytes());
+
+        String encryptedPassword = passwordEncoder.encode(new String(userCouple.getB()));
+        // new user gets initially a generated password
+        newUser.setPassword(encryptedPassword);
+
+
+        newUser.setFirstName(employee.getFirstName());
+        newUser.setLastName(employee.getLastName());
+
+
+        newUser.setCompanyName(employee.getCompanyProfile().getName());
+        newUser.setCompanySector(employee.getCompanyProfile().getType().name());
+
+        //TODO add website to company profile
+        //newUser.setCompanyWebsite(employee.getCompanyProfile());
+
+        newUser.setLangKey(Constants.DEFAULT_LANGUAGE);
+        // new user is not active
+        newUser.setActivated(false);
+        // new user gets registration key
+        newUser.setActivationKey(RandomUtil.generateActivationKey());
+
+        userRepository.save(newUser);
+        cacheManager.getCache(UserRepository.USERS_BY_LOGIN_CACHE).evict(newUser.getLogin());
+        cacheManager.getCache(UserRepository.USERS_BY_EMAIL_CACHE).evict(newUser.getEmail());
+        log.debug("Created Information for User: {}", newUser);
+
+        userCouple.setA(newUser);
+
+        return userCouple;
+    }
+
     public User createUser(UserDTO userDTO) {
         User user = new User();
         user.setLogin(userDTO.getLogin());
@@ -171,10 +222,10 @@ public class UserService {
      * Update basic information (first name, last name, email, language) for the current user.
      *
      * @param firstName first name of user
-     * @param lastName last name of user
-     * @param email email id of user
-     * @param langKey language key
-     * @param imageUrl image URL of user
+     * @param lastName  last name of user
+     * @param email     email id of user
+     * @param langKey   language key
+     * @param imageUrl  image URL of user
      */
     public void updateUser(String firstName, String lastName, String email, String langKey, String imageUrl) {
         SecurityUtils.getCurrentUserLogin()

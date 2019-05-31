@@ -16,8 +16,10 @@
  */
 
 export enum Role {
-    'ROLE_ADMIN' = <any>'ROLE_ADMIN',
-    'ROLE_USER' = <any>'ROLE_USER',
-    'ROLE_EXTERNAL_AUDIT' = <any>'ROLE_EXTERNAL_AUDIT',
-    'ROLE_CISO' = <any>'ROLE_CISO'
+    ROLE_ADMIN = <any>'ROLE_ADMIN',
+    ROLE_USER = <any>'ROLE_USER',
+    ROLE_EXTERNAL_AUDIT = <any>'ROLE_EXTERNAL_AUDIT',
+    ROLE_CISO = <any>'ROLE_CISO',
+    ROLE_CISO_DEPUTY = <any> 'ROLE_CISO_DEPUTY',
+    ROLE_FINANCIAL_DEPUTY = <any> 'ROLE_FINANCIAL_DEPUTY'
 }

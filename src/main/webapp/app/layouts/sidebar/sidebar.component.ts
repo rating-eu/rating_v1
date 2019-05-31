@@ -15,7 +15,7 @@
  *
  */
 
-import {Component, OnInit, ViewEncapsulation, AfterViewInit, HostListener} from '@angular/core';
+import {AfterViewInit, ChangeDetectorRef, Component, HostListener, OnInit, ViewEncapsulation} from '@angular/core';
 import {Principal} from '../../shared';
 import {DatasharingService} from '../../datasharing/datasharing.service';
 import {LayoutConfiguration} from '../model/LayoutConfiguration';
@@ -26,6 +26,8 @@ import {SelfAssessmentMgm, SelfAssessmentMgmService} from '../../entities/self-a
 import {LogoMgm, LogoMgmService} from '../../entities/logo-mgm';
 import {HttpErrorResponse, HttpResponse} from '@angular/common/http';
 import {Router} from '@angular/router';
+import {CompanyBoardStatus} from "../../dashboard/models/CompanyBoardStatus";
+import {Status} from "../../entities/enumerations/Status.enum";
 
 @Component({
     selector: 'jhi-sidebar',
@@ -35,14 +37,23 @@ import {Router} from '@angular/router';
 })
 export class SidebarComponent implements OnInit, AfterViewInit {
 
-    isCollapsed = true;
-    private items: MenuItem[];
-    private isCISO = false;
-    private isExternal = false;
-    private mySelf: SelfAssessmentMgm;
+    public isCollapsed = true;
+    public menuItems: MenuItem[];
+    private companyMenuItem: MenuItem;
+    private employeesMenuItem: MenuItem;
+    private cyberPostureMenuItem: MenuItem;
+    private riskManagementMenuItem: MenuItem;
+    private taxonomiesMenuItem: MenuItem;
+    private aboutUsMenuItem: MenuItem;
+    private termsOfUseMenuItem: MenuItem;
+
     public secondaryLogo: LogoMgm = null;
+    private selfAssessments: SelfAssessmentMgm[];
     private selfAssessment: SelfAssessmentMgm;
-    private isSelfAssessmentSelected: boolean = false;
+    public companyBoardStatus: CompanyBoardStatus = null;
+    public role: Role = null;
+
+    private riskAssessmentsMap: Map<number, MenuItem>;
 
     windowWidth: number = window.innerWidth;
 
@@ -51,7 +62,8 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         private dataSharingService: DatasharingService,
         private selfAssessmentService: SelfAssessmentMgmService,
         private logoService: LogoMgmService,
-        private router: Router
+        private router: Router,
+        private changeDetector: ChangeDetectorRef,
     ) {
         this.isCollapsed = true;
         this.isSidebarCollapseByTheScreen();
@@ -82,12 +94,35 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     }
 
     ngOnInit() {
-        this.selfAssessment = this.dataSharingService.selfAssessment;
-        this.checkSelfAssessment();
+        this.companyBoardStatus = this.dataSharingService.companyBoardStatus;
+        this.createMenuItems();
+        this.riskAssessmentsMap = new Map();
 
-        this.dataSharingService.selfAssessmentObservable.subscribe((response: SelfAssessmentMgm) => {
-            this.selfAssessment = response;
-            this.checkSelfAssessment();
+        this.dataSharingService.companyBoardStatusSubject.subscribe((status: CompanyBoardStatus) => {
+            this.companyBoardStatus = status;
+            this.filterByCompanyBoardStatus();
+        });
+
+        this.selfAssessment = this.dataSharingService.selfAssessment;
+        this.expandSelectedSelfAssessment();
+
+        this.dataSharingService.selfAssessmentObservable.subscribe((assessment) => {
+            this.selfAssessment = assessment;
+            this.expandSelectedSelfAssessment();
+        });
+
+        this.role = this.dataSharingService.role;
+        this.filterByRole();
+
+        //Check if CISO inside
+        this.fetchSelfAssessments();
+
+        this.dataSharingService.roleObservable.subscribe((roleResponse: Role) => {
+            this.role = roleResponse;
+            this.filterByRole();
+
+            //Check if CISO inside
+            this.fetchSelfAssessments();
         });
 
         this.principal.getAuthenticationState().subscribe((identity) => {
@@ -101,18 +136,14 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
                 this.principal.hasAnyAuthority([Role[Role.ROLE_CISO]]).then((response: boolean) => {
                     if (response) {
-                        this.isCISO = response;
-                        this.isExternal = !this.isCISO;
-                        this.createMenuItems(this.isCISO);
+                        this.createMenuItems();
                     } else {
                         this.principal.hasAnyAuthority([Role[Role.ROLE_EXTERNAL_AUDIT]]).then((response2: boolean) => {
                             if (response2) {
-                                this.isExternal = response2;
-                                this.isCISO = !this.isExternal;
                                 layoutConfiguration.isSidebarCollapsed = true;
                                 layoutConfiguration.isSidebarCollapsedByMe = false;
                                 this.dataSharingService.layoutConfiguration = layoutConfiguration;
-                                this.createMenuItems(this.isCISO, this.isExternal);
+                                this.createMenuItems();
                             } else {
                                 this.principal.hasAnyAuthority([Role[Role.ROLE_ADMIN]]).then((response3: boolean) => {
                                     if (response3) {
@@ -142,25 +173,24 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                 this.isCollapsed = update.isSidebarCollapsed;
             }
         });
-
-        this.dataSharingService.selfAssessmentObservable.subscribe((mySelf) => {
-            if (mySelf) {
-                this.createMenuItems(this.isCISO, this.isExternal);
-            }
-        });
     }
 
-    private checkSelfAssessment() {
+    private expandSelectedSelfAssessment() {
         if (this.selfAssessment) {
-            this.isSelfAssessmentSelected = true;
-        } else {
-            this.isSelfAssessmentSelected = false;
+            this.riskAssessmentsMap.forEach((item: MenuItem, key: number) => {
+                if (key !== this.selfAssessment.id) {
+                    item.expanded = false;
+                } else {
+                    item.expanded = true;
+                }
+            });
         }
     }
 
     private fetchSecondaryLogo() {
         this.logoService.getSecondaryLogo().subscribe((logo: HttpResponse<LogoMgm>) => {
                 this.secondaryLogo = logo.body;
+                this.changeDetector.detectChanges();
             },
             (error: HttpErrorResponse) => {
                 if (error.status === 404) {
@@ -173,240 +203,184 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         this.windowWidth = window.innerWidth;
     }
 
-    private createMenuItems(isCISO = false, isExternal = false) {
-        this.mySelf = this.dataSharingService.selfAssessment;
+    private createMenuItems() {
+        this.companyMenuItem = {
+            label: 'Company',
+            icon: 'fas fa-building',
+            items: [
+                {
+                    label: 'Groups',
+                    icon: 'fas fa-users',
+                    routerLink: ['/pages/coming-soon']
+                },
+                {
+                    label: 'Reports',
+                    icon: 'fas fa-file-download',
+                    routerLink: ['/pages/coming-soon']
+                }
+            ]
+        };
 
-        this.items = [
-            {
-                label: 'Company',
-                icon: 'fas fa-building',
-                items: [
-                    {
-                        label: 'Groups',
-                        icon: 'fas fa-users',
-                        routerLink: ['/pages/coming-soon']
-                    },
-                    {
-                        label: 'Reports',
-                        icon: 'fas fa-file-download',
-                        routerLink: ['/pages/coming-soon']
-                    }
-                ]
-            },
-            {
-                label: 'People',
-                icon: 'fas fa-address-book',
-                routerLink: ['/people'],
-                items: [
-                    {
-                        label: 'CISO Deputy',
-                        icon: 'fas fa-user-tie',
-                        routerLink: ['/people/ciso']
-                    },
-                    {
-                        label: 'External Auditor',
-                        icon: 'fas fa-address-card',
-                        routerLink: ['/people/external']
-                    },
-                    {
-                        label: 'Financial Deputy',
-                        icon: 'fas fa-glasses',
-                        routerLink: ['/people/financial']
-                    }
-                ]
-            },
-            {
-                label: 'Cyber Posture',
-                icon: 'fas fa-shield-alt',
-                visible: isCISO,
-                items: [
-                    {
-                        label: "Threat Agents",
-                        icon: "fas fa-user-secret",
-                        routerLink: ['/identify-threat-agent/questionnaires/ID_THREAT_AGENT'],
-                        visible: isCISO
-                    },
-                    {
-                        label: "Vulnerabilities",
-                        icon: "fa fa-bomb",
-                        routerLink: ['/evaluate-weakness/questionnaires/SELFASSESSMENT'],
-                        visible: isCISO
-                    }
-                ]
-            },
-            {
-                label: 'Risk Management',
-                icon: 'fa fa-bolt',
-                routerLink: ['/my-risk-assessments'],
-                visible: isCISO,
-                items: [
-                    {
-                        label: 'Assets',
-                        visible: this.isSelfAssessmentSelected,
-                        items: [
-                            {
-                                label: 'Asset Clustering',
-                                routerLink: ['/identify-asset/asset-clustering']
-                            },
-                            {
-                                label: 'Cascade Effects',
-                                routerLink: ['/identify-asset/cascade-effects']
-                            },
-                            {
-                                label: 'Related Costs',
-                                routerLink: ['/identify-asset/attack-costs']
-                            }
-                        ]
-                    },
-                    {
-                        label: 'Impact Analysis',
-                        visible: this.isSelfAssessmentSelected,
-                        routerLink: ['/impact-evaluation'],
-                        items: [
-                            {
-                                label: 'Quantitative',
-                                items: [
-                                    {
-                                        label: 'Impact Evaluation',
-                                        routerLink: ['/impact-evaluation/quantitative']
-                                    },
-                                    {
-                                        label: 'Estimation of the Data Assets category Losses',
-                                        routerLink: ['/impact-evaluation/quantitative/data-assets-losses-estimation']
-                                    },
-                                    {
-                                        label: 'Estimation of the Attack Related Costs',
-                                        routerLink: ['/impact-evaluation/quantitative/attack-related-costs-estimation']
-                                    }
-                                ]
-                            },
-                            {
-                                label: 'Qualitative',
-                                items: [
-                                    {
-                                        label: 'Impacts on Assets',
-                                        routerLink: ['/pages/coming-soon']
-                                    }
-                                ]
-                            }
-                        ]
-                    },
-                    {
-                        label: 'Risk Analysis',
-                        visible: this.isSelfAssessmentSelected,
-                        routerLink: ['/risk-management/risk-evaluation'],
-                        items: [
-                            {
-                                label: 'Risk Matrix',
-                                routerLink: ['/risk-management/risk-evaluation']
-                            },
-                            {
-                                label: 'Assets at Risk',
-                                routerLink: ['/risk-management/risk-evaluation']
-                            },
-                            {
-                                label: 'Mitigations',
-                                items: [
-                                    {
-                                        label: 'Cost Benefit Analysis',
-                                        routerLink: ['/pages/coming-soon']
-                                    }
-                                ]
-                            }
-                        ]
-                    }
-                ]
-            },
-            {
-                label: 'Taxonomies',
-                items: [
-                    {
-                        label: 'Assets',
-                        items: [
-                            {
-                                label: 'Add',
-                                icon: 'fa fa-plus',
-                                routerLink: ['/pages/coming-soon']
-                            },
-                            {
-                                label: 'Tangible',
-                                routerLink: ['/asset-mgm']
-                            },
-                            {
-                                label: 'Intangible',
-                                routerLink: ['/asset-mgm']
-                            }
-                        ]
-                    },
-                    {
-                        label: 'Threat Agents',
-                        items: [
-                            {
-                                label: 'Add',
-                                icon: 'fa fa-plus',
-                                routerLink: ['/pages/coming-soon']
-                            },
-                            {
-                                label: 'View',
-                                icon: 'far fa-eye',
-                                routerLink: ['/threat-agent-mgm']
-                            },
-                            {
-                                label: 'Update',
-                                icon: 'fas fa-pen-fancy',
-                                routerLink: ['/pages/coming-soon']
-                            },
-                        ]
-                    },
-                    {
-                        label: 'Attack Strategies',
-                        items: [
-                            {
-                                label: 'Add',
-                                icon: 'fa fa-plus',
-                                routerLink: ['/pages/coming-soon']
-                            },
-                            {
-                                label: 'View',
-                                icon: 'far fa-eye',
-                                routerLink: ['/attack-strategy-mgm']
-                            },
-                            {
-                                label: 'Update',
-                                icon: 'fas fa-pen-fancy',
-                                routerLink: ['/pages/coming-soon']
-                            }
-                        ]
-                    },
-                    {
-                        label: 'Mitigations',
-                        items: [
-                            {
-                                label: 'Add',
-                                icon: 'fa fa-plus',
-                                routerLink: ['/pages/coming-soon']
-                            },
-                            {
-                                label: 'View',
-                                icon: 'far fa-eye',
-                                routerLink: ['/mitigation-mgm']
-                            },
-                            {
-                                label: 'Update',
-                                icon: 'fas fa-pen-fancy',
-                                routerLink: ['/mitigation-mgm']
-                            }
-                        ]
-                    }
-                ]
-            },
-            {
-                label: 'About-Us', icon: 'fa fa-info', routerLink: ['/about-us']
-            },
-            {
-                label: 'Terms of Use', icon: 'fas fa-file-signature', routerLink: ['/terms']
-            }
+        this.employeesMenuItem = {
+            label: 'Employees',
+            icon: 'fas fa-address-book',
+            items: [
+                {
+                    label: 'CISO Deputy',
+                    icon: 'fas fa-user-tie',
+                    routerLink: ['/employees/ciso']
+                },
+                {
+                    label: 'External Auditor',
+                    icon: 'fas fa-address-card',
+                    routerLink: ['/employees/external']
+                },
+                {
+                    label: 'Financial Deputy',
+                    icon: 'fas fa-glasses',
+                    routerLink: ['/employees/financial']
+                }
+            ]
+        };
+
+        this.cyberPostureMenuItem = {
+            label: 'Cyber Posture',
+            icon: 'fas fa-shield-alt',
+            visible: this.role === Role.ROLE_CISO,
+            items: [
+                {
+                    label: "Threat Agents",
+                    icon: "fas fa-user-secret",
+                    routerLink: ['/identify-threat-agent/questionnaires/ID_THREAT_AGENT']
+                },
+                {
+                    label: "Vulnerabilities",
+                    icon: "fa fa-bomb",
+                    routerLink: ['/evaluate-weakness/questionnaires/SELFASSESSMENT']
+                }
+            ]
+        };
+
+        this.riskManagementMenuItem = {
+            label: 'Risk Management',
+            icon: 'fa fa-bolt',
+            visible: this.role === Role.ROLE_CISO
+                && this.companyBoardStatus
+                && this.companyBoardStatus.identifyThreatAgentsStatus === Status.FULL
+                && this.companyBoardStatus.assessVulnerablitiesStatus === Status.FULL,
+            items: []
+        };
+
+        this.taxonomiesMenuItem = {
+            label: 'Taxonomies',
+            icon: 'fas fa-atom',
+            items: [
+                {
+                    label: 'Assets',
+                    items: [
+                        {
+                            label: 'Add',
+                            icon: 'fa fa-plus',
+                            routerLink: ['/pages/coming-soon']
+                        },
+                        {
+                            label: 'Tangible',
+                            routerLink: ['/asset-mgm']
+                        },
+                        {
+                            label: 'Intangible',
+                            routerLink: ['/asset-mgm']
+                        }
+                    ]
+                },
+                {
+                    label: 'Threat Agents',
+                    items: [
+                        {
+                            label: 'Add',
+                            icon: 'fa fa-plus',
+                            routerLink: ['/pages/coming-soon']
+                        },
+                        {
+                            label: 'View',
+                            icon: 'far fa-eye',
+                            routerLink: ['/threat-agent-mgm']
+                        },
+                        {
+                            label: 'Update',
+                            icon: 'fas fa-pen-fancy',
+                            routerLink: ['/pages/coming-soon']
+                        },
+                    ]
+                },
+                {
+                    label: 'Attack Strategies',
+                    items: [
+                        {
+                            label: 'Add',
+                            icon: 'fa fa-plus',
+                            routerLink: ['/pages/coming-soon']
+                        },
+                        {
+                            label: 'View',
+                            icon: 'far fa-eye',
+                            routerLink: ['/attack-strategy-mgm']
+                        },
+                        {
+                            label: 'Update',
+                            icon: 'fas fa-pen-fancy',
+                            routerLink: ['/pages/coming-soon']
+                        }
+                    ]
+                },
+                {
+                    label: 'Mitigations',
+                    items: [
+                        {
+                            label: 'Add',
+                            icon: 'fa fa-plus',
+                            routerLink: ['/pages/coming-soon']
+                        },
+                        {
+                            label: 'View',
+                            icon: 'far fa-eye',
+                            routerLink: ['/mitigation-mgm']
+                        },
+                        {
+                            label: 'Update',
+                            icon: 'fas fa-pen-fancy',
+                            routerLink: ['/mitigation-mgm']
+                        }
+                    ]
+                }
+            ]
+        };
+
+        this.aboutUsMenuItem = {
+            label: 'About-Us',
+            icon: 'fa fa-info',
+            routerLink: ['/about-us']
+        };
+
+        this.termsOfUseMenuItem = {
+            label: 'Terms of Use',
+            icon: 'fas fa-file-signature',
+            routerLink: ['/terms']
+        };
+
+        // @ts-ignore
+        this.companyMenuItem.items.push(this.employeesMenuItem);
+
+        this.menuItems = [
+            this.companyMenuItem,
+            this.cyberPostureMenuItem,
+            this.riskManagementMenuItem,
+            this.taxonomiesMenuItem,
+            this.aboutUsMenuItem,
+            this.termsOfUseMenuItem
         ];
+
+        this.changeDetector.detectChanges();
     }
 
     isAuthenticated() {
@@ -424,5 +398,158 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         }
 
         this.dataSharingService.layoutConfiguration = layoutConfiguration;
+    }
+
+    private showSelfAssessments() {
+        if (this.selfAssessments && this.selfAssessments.length) {
+            if (this.riskManagementMenuItem) {
+                this.riskManagementMenuItem.items = [];
+
+                const servicesMenuItem: MenuItem = {
+                    label: 'Services',
+                    routerLink: ['/my-risk-assessments']
+                };
+
+                // @ts-ignore
+                this.riskManagementMenuItem.items.push(servicesMenuItem);
+
+                this.selfAssessments.forEach((assessment) => {
+                    const assessmentItem: MenuItem = {
+                        label: assessment.name,
+                        command: event => {
+                            if (this.selfAssessment) {
+                                if (this.selfAssessment.id !== assessment.id) {
+                                    this.dataSharingService.selfAssessment = assessment;
+                                }
+                                this.router.navigate(['/riskboard']);
+                            } else {
+                                this.dataSharingService.selfAssessment = assessment;
+                                this.router.navigate(['/riskboard']);
+                            }
+                        },
+                        items: [
+                            {
+                                label: 'Assets',
+                                items: [
+                                    {
+                                        label: 'Asset Clustering',
+                                        routerLink: ['/identify-asset/asset-clustering']
+                                    },
+                                    {
+                                        label: 'Cascade Effects',
+                                        routerLink: ['/identify-asset/cascade-effects']
+                                    },
+                                    {
+                                        label: 'Related Costs',
+                                        routerLink: ['/identify-asset/attack-costs']
+                                    }
+                                ]
+                            },
+                            {
+                                label: 'Impact Analysis',
+                                routerLink: ['/impact-evaluation'],
+                                items: [
+                                    {
+                                        label: 'Quantitative',
+                                        items: [
+                                            {
+                                                label: 'Impact Evaluation',
+                                                routerLink: ['/impact-evaluation/quantitative']
+                                            },
+                                            {
+                                                label: 'Estimation of the Data Assets category Losses',
+                                                routerLink: ['/impact-evaluation/quantitative/data-assets-losses-estimation']
+                                            },
+                                            {
+                                                label: 'Estimation of the Attack Related Costs',
+                                                routerLink: ['/impact-evaluation/quantitative/attack-related-costs-estimation']
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        label: 'Qualitative',
+                                        items: [
+                                            {
+                                                label: 'Impacts on Assets',
+                                                routerLink: ['/impact-evaluation/qualitative/']
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                label: 'Risk Analysis',
+                                routerLink: ['/risk-management/risk-evaluation'],
+                                items: [
+                                    {
+                                        label: 'Risk Matrix',
+                                        routerLink: ['/risk-management/risk-evaluation']
+                                    },
+                                    {
+                                        label: 'Assets at Risk',
+                                        routerLink: ['/risk-management/risk-evaluation']
+                                    },
+                                    {
+                                        label: 'Mitigations',
+                                        items: [
+                                            {
+                                                label: 'Cost Benefit Analysis',
+                                                routerLink: ['/pages/coming-soon']
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    };
+
+                    this.riskAssessmentsMap.set(assessment.id, assessmentItem);
+
+                    // @ts-ignore
+                    this.riskManagementMenuItem.items.push(assessmentItem);
+                });
+
+                this.changeDetector.detectChanges();
+            }
+        }
+    }
+
+    private filterByCompanyBoardStatus() {
+        if (this.riskManagementMenuItem) {
+            this.riskManagementMenuItem.visible = this.role === Role.ROLE_CISO
+                && this.companyBoardStatus
+                && this.companyBoardStatus.identifyThreatAgentsStatus === Status.FULL
+                && this.companyBoardStatus.assessVulnerablitiesStatus === Status.FULL;
+
+            this.changeDetector.detectChanges();
+        }
+    }
+
+    private filterByRole() {
+        if (this.role) {
+            if (this.cyberPostureMenuItem) {
+                this.cyberPostureMenuItem.visible = this.role === Role.ROLE_CISO;
+
+                this.changeDetector.detectChanges();
+            }
+        }
+    }
+
+    private fetchSelfAssessments() {
+        switch (this.role) {
+            case Role.ROLE_CISO: {
+                this.selfAssessmentService.getMySelfAssessments().subscribe(
+                    (response: SelfAssessmentMgm[]) => {
+                        this.selfAssessments = response;
+                        this.showSelfAssessments();
+                    }
+                );
+
+                break;
+            }
+            default: {
+                break;
+            }
+        }
     }
 }

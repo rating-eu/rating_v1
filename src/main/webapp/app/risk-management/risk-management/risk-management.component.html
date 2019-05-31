@@ -29,28 +29,52 @@
                 </button>
             </div>
             -->
-            <div class="col-md-7 offset-md-4">
+            <div class="col-md-2 offset-md-8">
                 <div class="btn-group" role="group" aria-label="riskHomeBtnGroup">
-                    <button type="button" class="btn btn-primary" (click)="switchOnCollapsible('likelihood')"
+                    <!--<button type="button" class="btn btn-primary" (click)="switchOnCollapsible('likelihood')"
                             [attr.aria-expanded]="!isLikelihoodCollapsed" aria-controls="likelihoodScale">
                         Likelihood Scale
                     </button>
                     <button type="button" class="btn btn-primary" (click)="switchOnCollapsible('vulnerability')"
                             [attr.aria-expanded]="!isVulnerabilityCollapsed" aria-controls="vulnerabilityScale">
                         Vulnerability Scale
-                    </button>
-                    <button type="button" class="btn btn-primary" (click)="switchOnCollapsible('consequence')"
+                    </button>-->
+                    <button *ngIf="selfAssessment.impactMode === impactModeEnum.QUANTITATIVE" type="button"
+                            style="margin-right: 4%;"
+                            class="btn btn-primary" (click)="switchOnCollapsible('consequence')"
                             [attr.aria-expanded]="!isConsequenceCollapsed" aria-controls="consequenceScale">
                         Consequence Scale
                     </button>
-                </div>
-                <div class="btn-group" role="group" aria-label="riskHomeBtnGroup">
-                    <button type="button" class="btn btn-primary" (click)="switchOnCollapsible('critical-level')"
-                            [attr.aria-expanded]="!isCriticalCollapsed" aria-controls="criticalLevel">
-                        Risk Level
-                    </button>
+                    <div class="btn-group" role="group" aria-label="riskHomeBtnGroup">
+                        <button type="button" class="btn btn-primary" (click)="switchOnCollapsible('critical-level')"
+                                [attr.aria-expanded]="!isCriticalCollapsed" aria-controls="criticalLevel">
+                            Risk Level
+                        </button>
+                    </div>
                 </div>
             </div>
+            <!--<div class="col-md-2 offset-md-10">
+                <div *ngIf="selfAssessment.impactMode === impactModeEnum.QUANTITATIVE" class="btn-group" role="group" aria-label="riskHomeBtnGroup">-->
+            <!--<button type="button" class="btn btn-primary" (click)="switchOnCollapsible('likelihood')"
+                    [attr.aria-expanded]="!isLikelihoodCollapsed" aria-controls="likelihoodScale">
+                Likelihood Scale
+            </button>
+            <button type="button" class="btn btn-primary" (click)="switchOnCollapsible('vulnerability')"
+                    [attr.aria-expanded]="!isVulnerabilityCollapsed" aria-controls="vulnerabilityScale">
+                Vulnerability Scale
+            </button>-->
+            <!-- <button type="button" class="btn btn-primary" (click)="switchOnCollapsible('consequence')"
+                     [attr.aria-expanded]="!isConsequenceCollapsed" aria-controls="consequenceScale">
+                 Consequence Scale
+             </button>
+         </div>
+         <div class="btn-group" role="group" aria-label="riskHomeBtnGroup">
+             <button type="button" class="btn btn-primary" (click)="switchOnCollapsible('critical-level')"
+                     [attr.aria-expanded]="!isCriticalCollapsed" aria-controls="criticalLevel">
+                 Risk Level
+             </button>
+         </div>
+     </div>-->
             <div
                 *ngIf="!isConsequenceCollapsed || !isCriticalCollapsed || !isVulnerabilityCollapsed || !isLikelihoodCollapsed"
                 class="col-md-1 text-right align-middle">

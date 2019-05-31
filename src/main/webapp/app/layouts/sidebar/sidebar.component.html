@@ -26,7 +26,7 @@
                 </span>
             </div>
         </div>
-        <p-panelMenu [model]="items" [multiple]="false" [style]="{'width':'240px','height':'360px','border':'1px solid #ffffff'}"></p-panelMenu>
+        <p-panelMenu [model]="menuItems" [multiple]="false" [style]="{'width':'240px','height':'360px','border':'1px solid #ffffff'}"></p-panelMenu>
         <img *ngIf="secondaryLogo" [src]="'data:' + secondaryLogo.imageContentType + ';base64,' + secondaryLogo.image"
             style="max-height: 40px; bottom: 0px; padding: 10px 30px 5px; position: fixed; z-index: -1;" alt="logo image" />
     </nav>

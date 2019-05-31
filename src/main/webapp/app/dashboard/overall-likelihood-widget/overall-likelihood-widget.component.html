@@ -16,31 +16,31 @@
   -->
 
 <ng-container *ngIf="loading">
-  <div class="loader"></div>
+    <div class="loader"></div>
 </ng-container>
 <ng-container *ngIf="!loading">
-  <div class="x_panel" style="padding:0px !important;">
-    <div class="x_title" style="padding:0px !important;">
-      <h2 style="padding: 10px;">
-        <a href="javascript:void(0)" class="collapse-link" (click)="isCollapsed = !isCollapsed">Overall Likelihood</a>
-        <small>based on 0 to 5 scale</small>
-      </h2>
-      <ul class="nav navbar-right panel_toolbox">
-        <li style="width: 24px; cursor: default"></li>
-        <li style="width: 24px; cursor: default"></li>
-        <li></li>
-      </ul>
-      <div class="clearfix"></div>
-    </div>
-    <div class="table-responsive x_content" style="padding:0px !important;" [ngbCollapse]="isCollapsed">
-        <div class="col-md-12">
-            <div style="display: block" *ngIf="data.length > 0">
-              <canvas baseChart [datasets]="data" [labels]="stackedLables" [chartType]="type" [legend]="legend"></canvas>
+    <mat-accordion>
+        <mat-expansion-panel>
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    <h2>
+                        <a href="javascript:void(0);" class="collapse-link">Overall Likelihood</a>
+                        <span class="badge badge-pill badge-secondary">Based on a 0 to 5 scale</span>
+                    </h2>
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+
+            <div class="table-responsive" style="padding:0px !important;">
+                <div class="col-md-12">
+                    <div style="display: block" *ngIf="data.length > 0">
+                        <canvas baseChart [datasets]="data" [labels]="stackedLables" [chartType]="type"
+                                [legend]="legend"></canvas>
+                    </div>
+                    <div style="display: block" *ngIf="data.length === 0" class="text-center">
+                        <p>No data available, please complete the relative questionnaire!</p>
+                    </div>
+                </div>
             </div>
-            <div style="display: block" *ngIf="data.length === 0" class="text-center">
-              <p>No data available, please complete the relative questionnaire!</p>
-            </div>
-          </div>
-    </div>
-  </div>
+        </mat-expansion-panel>
+    </mat-accordion>
 </ng-container>

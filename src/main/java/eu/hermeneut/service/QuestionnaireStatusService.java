@@ -70,8 +70,9 @@ public interface QuestionnaireStatusService {
 
     List<QuestionnaireStatus> findAllByCompanyProfileRoleAndQuestionnairePurpose(Long companyProfileID, Role role, QuestionnairePurpose purpose);
 
-    List<QuestionnaireStatus> findAllByCompanyProfileQuestionnairePurposeAndUser(Long companyProfileID, QuestionnairePurpose questionnairePurpose, Long userID);
+    List<QuestionnaireStatus> findAllByCompanyProfileQuestionnairePurposeAndCISOUser(Long companyProfileID, QuestionnairePurpose questionnairePurpose, Long userID);
 
     List<QuestionnaireStatus> findAllByCurrentUserAndQuestionnairePurpose(QuestionnairePurpose questionnairePurpose);
 
+    List<QuestionnaireStatus> findAllByCompanyProfileQuestionnairePurposeAndExternalUser(Long companyProfileID, QuestionnairePurpose questionnairePurpose, Long externalID);
 }

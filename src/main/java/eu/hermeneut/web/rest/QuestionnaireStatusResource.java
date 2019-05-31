@@ -113,6 +113,15 @@ public class QuestionnaireStatusResource {
         ZonedDateTime now = ZonedDateTime.now();
         questionnaireStatus.setModified(now);
 
+        if (questionnaireStatus.getRefinement() != null) {
+            if (questionnaireStatus.getRefinement().getCreated() == null) {
+                questionnaireStatus.getRefinement().setCreated(now);
+            }
+
+            //Always update the modified date
+            questionnaireStatus.getRefinement().setModified(now);
+        }
+
         QuestionnaireStatus result = questionnaireStatusService.save(questionnaireStatus);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, questionnaireStatus.getId().toString()))
@@ -221,7 +230,7 @@ public class QuestionnaireStatusResource {
         log.debug("CompanyProfile: " + companyProfileID);
         log.debug("QuestionnairePurpose: " + questionnairePurpose);
 
-        List<QuestionnaireStatus> questionnaireStatuses = questionnaireStatusService.findAllByCompanyProfileQuestionnairePurposeAndUser(companyProfileID, questionnairePurpose, userID);
+        List<QuestionnaireStatus> questionnaireStatuses = questionnaireStatusService.findAllByCompanyProfileQuestionnairePurposeAndCISOUser(companyProfileID, questionnairePurpose, userID);
         return questionnaireStatuses;
     }
 

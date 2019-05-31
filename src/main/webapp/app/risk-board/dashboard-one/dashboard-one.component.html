@@ -16,8 +16,9 @@
   -->
 
 <div class="container-fluid" *ngIf="selfAssessment">
+    <h1>{{selfAssessment.name}}</h1>
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-12 mb-2">
             <jhi-step-info-widget></jhi-step-info-widget>
         </div>
     </div>
@@ -54,65 +55,65 @@
             <jhi-most-dangerous-threat-agents-widget></jhi-most-dangerous-threat-agents-widget>
         </div>
     </div>-->
-    <div class="row">
+    <div class="row mb-2" *ngIf="riskBoardStatus?.assetClusteringStatus === statusEnum.FULL">
         <div class="col-md-12">
             <jhi-most-critical-attack-strategies-widget></jhi-most-critical-attack-strategies-widget>
         </div>
     </div>
-    <div class="row">
+    <div class="row mb-2" *ngIf="riskBoardStatus?.assetClusteringStatus === statusEnum.FULL">
         <div class="col-md-12">
             <jhi-most-vulnerable-assets-widget></jhi-most-vulnerable-assets-widget>
         </div>
     </div>
-    <!--<div class=row>
-        <div class="col-md-12">
-            <jhi-attack-map-widget></jhi-attack-map-widget>
+    <ng-container *ngIf="riskBoardStatus?.impactEvaluationStatus === statusEnum.FULL">
+        <div *ngIf="selfAssessment.impactMode === impactModeEnum.QUANTITATIVE">
+            <div class="row">
+                <h2>Impact Evaluation</h2>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <jhi-financial-value-widget></jhi-financial-value-widget>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-2">
+                    <jhi-ebits-widget></jhi-ebits-widget>
+                </div>
+                <div class="col-md-5">
+                    <jhi-tangible-financial-widget></jhi-tangible-financial-widget>
+                </div>
+                <div class="col-md-5">
+                    <jhi-intangible-financial-widget></jhi-intangible-financial-widget>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <jhi-losses-widget></jhi-losses-widget>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <jhi-impact-widget></jhi-impact-widget>
+                </div>
+            </div>
         </div>
-    </div>-->
-    <div *ngIf="selfAssessment.impactMode === impactModeEnum.QUANTITATIVE">
+    </ng-container>
+
+    <ng-container *ngIf="riskBoardStatus?.riskEvaluationStatus === statusEnum.FULL">
         <div class="row">
-            <h2>Impact Evaluation</h2>
+            <h2>Risk Evaluation</h2>
         </div>
-        <div class="row">
-            <div class="col-md-12">
-                <jhi-financial-value-widget></jhi-financial-value-widget>
+        <div class="row card mb-2">
+            <div class="col-md-12 mb-2" style="margin-top:20px">
+                <jhi-risk-square-widget></jhi-risk-square-widget>
+            </div>
+            <div class="col-md-12 mb-2" style="margin-bottom:20px">
+                <jhi-asset-at-risk-widget></jhi-asset-at-risk-widget>
             </div>
         </div>
-        <div class="row">
-            <div class="col-md-2">
-                <jhi-ebits-widget></jhi-ebits-widget>
-            </div>
-            <div class="col-md-5">
-                <jhi-tangible-financial-widget></jhi-tangible-financial-widget>
-            </div>
-            <div class="col-md-5">
-                <jhi-intangible-financial-widget></jhi-intangible-financial-widget>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-12">
-                <jhi-losses-widget></jhi-losses-widget>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-12">
-                <jhi-impact-widget></jhi-impact-widget>
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <h2>Risk Evaluation</h2>
-    </div>
-    <div class="row card">
-        <div class="col-md-12" style="margin-top:20px">
-            <jhi-risk-square-widget></jhi-risk-square-widget>
-        </div>
-        <div class="col-md-12" style="margin-bottom:20px">
-            <jhi-asset-at-risk-widget></jhi-asset-at-risk-widget>
-        </div>
-    </div>
+    </ng-container>
     <!--Remove last row when the Asset Risk html is done-->
-    <div class="row">
+    <div class="row mb-2">
         <p>&nbsp;</p>
     </div>
 </div>
