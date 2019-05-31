@@ -77,11 +77,6 @@ public class QuestionnaireStatusResource {
             throw new BadRequestAlertException("A new questionnaireStatus cannot already have an ID", ENTITY_NAME, "idexists");
         }
 
-        //Set the current date for the questionnaire status (created and modified)
-        ZonedDateTime now = ZonedDateTime.now();
-        questionnaireStatus.setCreated(now);
-        questionnaireStatus.setModified(now);
-
         QuestionnaireStatus result = questionnaireStatusService.save(questionnaireStatus);
 
         return ResponseEntity.created(new URI("/api/questionnaire-statuses/" + result.getId()))
@@ -107,19 +102,6 @@ public class QuestionnaireStatusResource {
         log.debug("REST request to update QuestionnaireStatus : {}", questionnaireStatus);
         if (questionnaireStatus.getId() == null) {
             return createQuestionnaireStatus(questionnaireStatus);
-        }
-
-        //Set the current date for the questionnaire status (modified)
-        ZonedDateTime now = ZonedDateTime.now();
-        questionnaireStatus.setModified(now);
-
-        if (questionnaireStatus.getRefinement() != null) {
-            if (questionnaireStatus.getRefinement().getCreated() == null) {
-                questionnaireStatus.getRefinement().setCreated(now);
-            }
-
-            //Always update the modified date
-            questionnaireStatus.getRefinement().setModified(now);
         }
 
         QuestionnaireStatus result = questionnaireStatusService.save(questionnaireStatus);

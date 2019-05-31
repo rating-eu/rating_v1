@@ -16,7 +16,7 @@
  */
 
 import * as _ from 'lodash';
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {ChangeDetectorRef, Component, OnDestroy, OnInit} from '@angular/core';
 import {QuestionnairesService} from '../questionnaires.service';
 import {QuestionnaireMgm} from '../../entities/questionnaire-mgm';
 import {Observable} from 'rxjs/Observable';
@@ -86,7 +86,7 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
 
     public assessVulnerabilitiesCompletionMap: Map<number/*QStatus.ID*/, AssessVulnerabilitiesCompletionDTO>;
 
-    public isThereAnyEMPTYQuestionnaire = false;
+    public canCreateNewQuestionnaireStatus;
 
     constructor(private route: ActivatedRoute,
                 private router: Router,
@@ -101,12 +101,14 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
                 private questionnaireStatusService: QuestionnaireStatusMgmService,
                 public popUpService: PopUpService,
                 private eventManagerService: EventManagerService,
-                private completionService: CompletionDtoService
+                private completionService: CompletionDtoService,
+                private changeDetector: ChangeDetectorRef
     ) {
     }
 
     ngOnInit() {
         console.log('Questionnaires ON INIT:');
+        this.canCreateNewQuestionnaireStatus = true;
         this.showCompletionPercentages = false;
         this.useExistingThreatAgentQuestionnaireStatus = false;
         this.createNewThreatAgentsQuestionnaireStatus = false;
@@ -123,14 +125,14 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
         this.registerChangeInQuestionnaireStatuses();
 
         if (this.account && this.user && this.myCompany && this.myCompany.companyProfile) {
-            this.loadQuestionnaire();
+            this.loadQuestionnaireStatuses();
         }
 
         this.externalChangedMap = new Map();
         this.assessVulnerabilitiesCompletionMap = new Map();
     }
 
-    private loadQuestionnaire() {
+    private loadQuestionnaireStatuses() {
         console.log("Loading questionnaire");
         const params$ = this.route.params;
 
@@ -251,7 +253,8 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
                                                 );
 
                                                 if (questionnaireStatus.status === Status.EMPTY || questionnaireStatus.status === Status.PENDING) {
-                                                    this.isThereAnyEMPTYQuestionnaire = true;
+                                                    this.canCreateNewQuestionnaireStatus = false;
+                                                    this.changeDetector.detectChanges();
                                                 }
                                             }
                                         );
@@ -534,7 +537,7 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
 
         if (questionnaireStatus$) {
             this.subscriptions.push(questionnaireStatus$.subscribe((response: HttpResponse<QuestionnaireStatusMgm>) => {
-                this.loadQuestionnaire();
+                this.loadQuestionnaireStatuses();
             }));
         }
     }
@@ -544,7 +547,7 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
             this.questionnaireStatusesChangeEventSubscription = this.eventManagerService.observe('questionnaireStatusListModification')
                 .subscribe(
                     (response) => {
-                        this.loadQuestionnaire();
+                        this.loadQuestionnaireStatuses();
                     });
 
             this.subscriptions.push(this.questionnaireStatusesChangeEventSubscription);
