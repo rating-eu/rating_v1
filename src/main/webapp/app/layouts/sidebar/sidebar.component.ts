@@ -428,10 +428,13 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                                 if (this.selfAssessment.id !== assessment.id) {
                                     this.dataSharingService.selfAssessment = assessment;
                                 }
-                                //this.router.navigate(['/riskboard']);
                             } else {
                                 this.dataSharingService.selfAssessment = assessment;
-                                //this.router.navigate(['/riskboard']);
+                            }
+
+                            if (this.router.url !== '/riskboard') {
+                                console.log("Redirecting to riskboard");
+                                this.router.navigate(['/riskboard']);
                             }
                         },
                         items: [
