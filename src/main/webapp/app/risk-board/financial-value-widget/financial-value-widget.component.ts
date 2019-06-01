@@ -15,48 +15,99 @@
  *
  */
 
-import { SelfAssessmentMgm } from './../../entities/self-assessment-mgm/self-assessment-mgm.model';
-import { ImpactEvaluationStatus} from "../../impact-evaluation/quantitative/model/impact-evaluation-status.model";
-import { Component, OnInit } from '@angular/core';
-import { ImpactEvaluationService } from '../../impact-evaluation/impact-evaluation.service';
+import {SelfAssessmentMgm} from './../../entities/self-assessment-mgm/self-assessment-mgm.model';
+import {ImpactEvaluationStatus} from "../../impact-evaluation/quantitative/model/impact-evaluation-status.model";
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {ImpactEvaluationService} from '../../impact-evaluation/impact-evaluation.service';
 import {DatasharingService} from "../../datasharing/datasharing.service";
+import {Subscription} from "rxjs";
+import {switchMap} from "rxjs/operators";
+import {EmptyObservable} from "rxjs/observable/EmptyObservable";
 
 @Component({
-  selector: 'jhi-financial-value-widget',
-  templateUrl: './financial-value-widget.component.html',
-  styleUrls: ['financial-value-widget.component.css']
+    selector: 'jhi-financial-value-widget',
+    templateUrl: './financial-value-widget.component.html',
+    styleUrls: ['financial-value-widget.component.css']
 })
-export class FinancialValueWidgetComponent implements OnInit {
-  public loading = false;
-  public ide: number;
-  public intangibleCapital: number;
-  public physicalReturn: number;
-  public financialReturn: number;
+export class FinancialValueWidgetComponent implements OnInit, OnDestroy {
+    public loading = false;
+    public ide: number;
+    public intangibleCapital: number;
+    public physicalReturn: number;
+    public financialReturn: number;
 
-  private wp3Status: ImpactEvaluationStatus;
-  private mySelf: SelfAssessmentMgm;
+    private wp3Status: ImpactEvaluationStatus;
+    private selfAssessment: SelfAssessmentMgm;
 
-  constructor(
-    private impactService: ImpactEvaluationService,
-    private dataSharingService: DatasharingService
-  ) { }
+    private subscriptions: Subscription[];
 
-  ngOnInit() {
-    this.loading = true;
-    this.mySelf = this.dataSharingService.selfAssessment;
+    constructor(
+        private impactService: ImpactEvaluationService,
+        private dataSharingService: DatasharingService
+    ) {
+    }
 
-    this.impactService.getStatus(this.mySelf).toPromise().then((status) => {
-      if (status) {
-        this.wp3Status = status;
-        this.ide = this.wp3Status.economicResults.intangibleDrivingEarnings;
-        this.intangibleCapital = this.wp3Status.economicResults.intangibleCapital;
-        this.physicalReturn = this.wp3Status.economicCoefficients.physicalAssetsReturn;
-        this.financialReturn = this.wp3Status.economicCoefficients.financialAssetsReturn;
-        this.loading = false;
-      }
-    }).catch(() => {
-      this.loading = false;
-    });
-  }
+    ngOnInit() {
+        this.subscriptions = [];
+        this.loading = true;
+        this.selfAssessment = this.dataSharingService.selfAssessment;
 
+        if (this.selfAssessment) {
+            this.impactService.getStatus(this.selfAssessment).toPromise().then((status) => {
+                this.handleStatus(status);
+            }).catch(() => {
+                this.loading = false;
+            });
+        }
+
+        this.subscriptions.push(
+            this.dataSharingService.selfAssessmentObservable.pipe(
+                switchMap((newAssessment: SelfAssessmentMgm) => {
+                    console.log("Financial Value widget: ASSESSMENT CHANGED");
+                    console.log(newAssessment);
+
+                    if (newAssessment) {
+                        // Check if there is no self assessment or if it has changed
+                        if (!this.selfAssessment || this.selfAssessment.id !== newAssessment.id) {
+                            this.selfAssessment = newAssessment;
+
+                            return this.impactService.getStatus(this.selfAssessment);
+                        } else {
+                            return new EmptyObservable();
+                        }
+                    } else {
+                        return new EmptyObservable();
+                    }
+                })
+            ).subscribe(
+                (status: ImpactEvaluationStatus) => {
+                    this.handleStatus(status);
+                },
+                (error) => {
+                    this.loading = false;
+                }
+            )
+        );
+    }
+
+    private handleStatus(status) {
+        if (status) {
+            this.wp3Status = status;
+            this.ide = this.wp3Status.economicResults.intangibleDrivingEarnings;
+            this.intangibleCapital = this.wp3Status.economicResults.intangibleCapital;
+            this.physicalReturn = this.wp3Status.economicCoefficients.physicalAssetsReturn;
+            this.financialReturn = this.wp3Status.economicCoefficients.financialAssetsReturn;
+            this.loading = false;
+        } else {
+            this.loading = false;
+        }
+    }
+
+    ngOnDestroy(): void {
+        if (this.subscriptions && this.subscriptions.length) {
+            this.subscriptions.forEach((subscription: Subscription) => {
+                subscription.unsubscribe();
+            })
+        }
+    }
 }

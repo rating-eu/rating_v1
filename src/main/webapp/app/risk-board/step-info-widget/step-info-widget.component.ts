@@ -15,7 +15,7 @@
  *
  */
 
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {ChangeDetectorRef, Component, OnDestroy, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {RiskBoardService, RiskBoardStatus} from '../risk-board.service';
 import {ModalDismissReasons, NgbModal} from '@ng-bootstrap/ng-bootstrap';
@@ -27,7 +27,7 @@ import {SelfAssessmentMgm} from "../../entities/self-assessment-mgm";
 import {DatasharingService} from "../../datasharing/datasharing.service";
 import {ImpactMode} from "../../entities/enumerations/ImpactMode.enum";
 import {switchMap} from "rxjs/operators";
-import {of} from "rxjs/observable/of";
+import {EmptyObservable} from "rxjs/observable/EmptyObservable";
 
 @Component({
     selector: 'jhi-step-info-widget',
@@ -67,37 +67,48 @@ export class StepInfoWidgetComponent implements OnInit, OnDestroy {
         private dashService: RiskBoardService,
         private modalService: NgbModal,
         private router: Router,
-        private riskBoardService: RiskBoardService
+        private riskBoardService: RiskBoardService,
+        private changeDetector: ChangeDetectorRef
     ) {
     }
 
     ngOnInit() {
+        console.error("Step info widget on Init")
+
         this.subscriptions = [];
         this.selfAssessment = this.datasharingService.selfAssessment;
 
         if (!this.selfAssessment) {
             this.router.navigate(['/my-risk-assessments']);
         } else {
-            this.fetchStatus$().subscribe((response: [Status, Status, Status, Status] | null) => {
-                this.handleStatusUpdate(response);
-            });
+            this.fetchStatus$()
+                .toPromise()
+                .then((response: [Status, Status, Status, Status] | null) => {
+                    this.handleStatusUpdate(response);
+                });
         }
 
-        this.datasharingService.selfAssessmentObservable.pipe(
-            switchMap((assessment: SelfAssessmentMgm) => {
-                if (assessment) {
-                    if (!this.selfAssessment || this.selfAssessment.id !== assessment.id) {
-                        this.selfAssessment = assessment;
+        this.subscriptions.push(
+            this.datasharingService.selfAssessmentObservable.pipe(
+                switchMap((newAssessment: SelfAssessmentMgm) => {
+                    console.log("Step info: ASSESSMENT CHANGED");
+                    console.log(newAssessment);
 
-                        return this.fetchStatus$();
+                    if (newAssessment) {
+                        // Check if there is no self assessment or if it has changed
+                        if (!this.selfAssessment || this.selfAssessment.id !== newAssessment.id) {
+                            this.selfAssessment = newAssessment;
+
+                            return this.fetchStatus$();
+                        }
+                    } else {
+                        return new EmptyObservable();
                     }
-                } else {
-                    return of(null);
-                }
+                })
+            ).subscribe((response: [Status, Status, Status, Status]) => {
+                this.handleStatusUpdate(response);
             })
-        ).subscribe((response: [Status, Status, Status, Status] | null) => {
-            this.handleStatusUpdate(response);
-        });
+        );
     }
 
 
@@ -120,6 +131,10 @@ export class StepInfoWidgetComponent implements OnInit, OnDestroy {
         this.riskBoardStatus.riskEvaluationStatus = this.riskEvaluationStatus;
 
         this.datasharingService.riskBoardStatus = this.riskBoardStatus;
+
+        if (this.changeDetector) {
+            this.changeDetector.detectChanges();
+        }
     }
 
     private fetchStatus$(): Observable<[Status, Status, Status, Status]> {
@@ -139,22 +154,6 @@ export class StepInfoWidgetComponent implements OnInit, OnDestroy {
             this.impactEvaluationStatus$, this.attackRelatedCostsStatus$, this.riskEvaluationStatus$);
 
         return join$;
-
-        /*this.subscriptions.push(
-            join$.subscribe((response: [Status, Status, Status, Status]) => {
-                this.assetClusteringStatus = response[0];
-                this.impactEvaluationStatus = response[1];
-                this.attackRelatedCostsStatus = response[2];
-                this.riskEvaluationStatus = response[3];
-
-                this.riskBoardStatus.assetClusteringStatus = this.assetClusteringStatus;
-                this.riskBoardStatus.impactEvaluationStatus = this.impactEvaluationStatus;
-                this.riskBoardStatus.attackRelatedCostEstimationStatus = this.attackRelatedCostsStatus;
-                this.riskBoardStatus.riskEvaluationStatus = this.riskEvaluationStatus;
-
-                this.datasharingService.riskBoardStatus = this.riskBoardStatus;
-            })
-        );*/
     }
 
     open(content, link, message?) {
@@ -187,6 +186,8 @@ export class StepInfoWidgetComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy(): void {
+        console.error("Step info widget on destroy");
+
         if (this.subscriptions && this.subscriptions.length) {
             this.subscriptions.forEach((subscription) => {
                 subscription.unsubscribe();

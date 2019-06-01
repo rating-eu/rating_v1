@@ -15,15 +15,18 @@
  *
  */
 
-import { MyAssetRisk } from './../../risk-management/model/my-asset-risk.model';
-import { MitigationMgm } from './../../entities/mitigation-mgm/mitigation-mgm.model';
+import {MyAssetRisk} from './../../risk-management/model/my-asset-risk.model';
+import {MitigationMgm} from './../../entities/mitigation-mgm/mitigation-mgm.model';
 import * as _ from 'lodash';
-import { RiskManagementService } from './../../risk-management/risk-management.service';
-import { SelfAssessmentMgm } from './../../entities/self-assessment-mgm/self-assessment-mgm.model';
-import { MyAssetMgm } from './../../entities/my-asset-mgm/my-asset-mgm.model';
-import { SelfAssessmentMgmService } from './../../entities/self-assessment-mgm/self-assessment-mgm.service';
-import { Component, OnInit } from '@angular/core';
+import {RiskManagementService} from './../../risk-management/risk-management.service';
+import {SelfAssessmentMgm} from './../../entities/self-assessment-mgm/self-assessment-mgm.model';
+import {MyAssetMgm} from './../../entities/my-asset-mgm/my-asset-mgm.model';
+import {SelfAssessmentMgmService} from './../../entities/self-assessment-mgm/self-assessment-mgm.service';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {DatasharingService} from "../../datasharing/datasharing.service";
+import {switchMap} from "rxjs/operators";
+import {EmptyObservable} from "rxjs/observable/EmptyObservable";
+import {Subscription} from "rxjs";
 
 interface RiskPercentageElement {
     asset: MyAssetMgm;
@@ -50,11 +53,11 @@ interface OrderBy {
     templateUrl: './asset-at-risk-widget.component.html',
     styleUrls: ['asset-at-risk-widget.component.css']
 })
-export class AssetAtRiskWidgetComponent implements OnInit {
+export class AssetAtRiskWidgetComponent implements OnInit, OnDestroy {
     public loadingRiskLevel = false;
     public loadingAssetsAndAttacks = false;
     public isCollapsed = true;
-    private mySelf: SelfAssessmentMgm;
+    private selfAssessment: SelfAssessmentMgm;
     public squareColumnElement: number[];
     public squareRowElement: number[];
     public lastSquareRowElement: number;
@@ -70,6 +73,7 @@ export class AssetAtRiskWidgetComponent implements OnInit {
     public assetToolTipLoadedTimer = false;
     public orderIntangibleBy: OrderBy;
     public orderTangibleBy: OrderBy;
+    private subscriptions: Subscription[];
 
     public tangibleAssetAtRiskPaginator = {
         id: 'tangible_asset_at_risk_paginator',
@@ -98,6 +102,7 @@ export class AssetAtRiskWidgetComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.subscriptions = [];
         this.loadingRiskLevel = true;
         this.loadingAssetsAndAttacks = true;
         this.orderIntangibleBy = {
@@ -122,59 +127,47 @@ export class AssetAtRiskWidgetComponent implements OnInit {
             risk: false,
             type: 'desc'
         };
-        this.mySelf = this.dataSharingService.selfAssessment;
+        this.selfAssessment = this.dataSharingService.selfAssessment;
 
-        this.riskService.getMyAssetsAtRisk(this.mySelf).toPromise().then((res: MyAssetRisk[]) => {
-            if (res) {
-                this.myAssetsAtRisk = res;
-                this.myAssetsAtRisk.forEach((myAsset) => {
-                    this.riskMitigationMap.set(myAsset.id, myAsset.mitigations);
-                    const risk: RiskPercentageElement = {
-                        asset: myAsset,
-                        likelihood: myAsset.likelihood,
-                        vulnerability: myAsset.vulnerability,
-                        critical: myAsset.critical,
-                        percentage: myAsset.risk
-                    };
-                    if (risk.asset.asset.assetcategory.type.toString() === 'TANGIBLE') {
-                        if (this.risksTangible.length === 0) {
-                            this.risksTangible.push(_.cloneDeep(risk));
-                        } else {
-                            const index = _.findIndex(this.risksTangible, (elem) => {
-                                return elem.asset.id === myAsset.id;
-                            });
-                            if (index !== -1) {
-                                this.risksTangible.splice(index, 1, _.cloneDeep(risk));
+        if (this.selfAssessment) {
+            this.riskService.getMyAssetsAtRisk(this.selfAssessment)
+                .toPromise()
+                .then((response: MyAssetRisk[]) => {
+                    this.handleMyAssetsAtRisk(response);
+                })
+                .catch(reason => {
+                    this.loadingAssetsAndAttacks = false;
+                })
+        }
+
+        this.subscriptions.push(
+            this.dataSharingService.selfAssessmentObservable
+                .pipe(
+                    switchMap((newAssessment: SelfAssessmentMgm) => {
+                        console.log("Assets at risk widget: ASSESSMENT CHANGED");
+                        console.log(newAssessment);
+
+                        if (newAssessment) {
+                            // Check if there is no self assessment or if it has changed
+                            if (!this.selfAssessment || this.selfAssessment.id !== newAssessment.id) {
+                                this.selfAssessment = newAssessment;
+
+                                return this.riskService.getMyAssetsAtRisk(this.selfAssessment);
                             } else {
-                                this.risksTangible.push(_.cloneDeep(risk));
+                                return new EmptyObservable();
                             }
-                        }
-                        this.risksTangible = _.orderBy(this.risksTangible, ['percentage'], ['desc']);
-                        this.noRiskInMap = false;
-                    } else {
-                        if (this.risksIntangible.length === 0) {
-                            this.risksIntangible.push(_.cloneDeep(risk));
                         } else {
-                            const index = _.findIndex(this.risksIntangible, (elem) => {
-                                return elem.asset.id === myAsset.id;
-                            });
-                            if (index !== -1) {
-                                this.risksIntangible.splice(index, 1, _.cloneDeep(risk));
-                            } else {
-                                this.risksIntangible.push(_.cloneDeep(risk));
-                            }
+                            return new EmptyObservable();
                         }
-                        this.risksIntangible = _.orderBy(this.risksIntangible, ['percentage'], ['desc']);
-                        this.noRiskInMap = false;
-                    }
-                });
-                this.loadingAssetsAndAttacks = false;
-            } else {
-                this.loadingAssetsAndAttacks = false;
-            }
-        }).catch(() => {
-            this.loadingAssetsAndAttacks = false;
-        });
+                    })
+                ).subscribe(
+                (response: MyAssetRisk[]) => {
+                    this.handleMyAssetsAtRisk(response);
+                },
+                (error) => {
+                    this.loadingAssetsAndAttacks = false;
+                })
+        );
     }
 
     private resetOrder(witchCategory: string) {
@@ -200,6 +193,7 @@ export class AssetAtRiskWidgetComponent implements OnInit {
             this.orderIntangibleBy.type = 'desc';
         }
     }
+
     public tableOrderBy(orderColumn: string, category: string, desc: boolean) {
         if (category === 'TANGIBLE') {
             this.resetOrder('TANGIBLE');
@@ -363,6 +357,64 @@ export class AssetAtRiskWidgetComponent implements OnInit {
                     break;
                 }
             }
+        }
+    }
+
+    private handleMyAssetsAtRisk(response: MyAssetRisk[]) {
+        if (response) {
+            this.myAssetsAtRisk = response;
+            this.myAssetsAtRisk.forEach((myAsset) => {
+                this.riskMitigationMap.set(myAsset.id, myAsset.mitigations);
+                const risk: RiskPercentageElement = {
+                    asset: myAsset,
+                    likelihood: myAsset.likelihood,
+                    vulnerability: myAsset.vulnerability,
+                    critical: myAsset.critical,
+                    percentage: myAsset.risk
+                };
+                if (risk.asset.asset.assetcategory.type.toString() === 'TANGIBLE') {
+                    if (this.risksTangible.length === 0) {
+                        this.risksTangible.push(_.cloneDeep(risk));
+                    } else {
+                        const index = _.findIndex(this.risksTangible, (elem) => {
+                            return elem.asset.id === myAsset.id;
+                        });
+                        if (index !== -1) {
+                            this.risksTangible.splice(index, 1, _.cloneDeep(risk));
+                        } else {
+                            this.risksTangible.push(_.cloneDeep(risk));
+                        }
+                    }
+                    this.risksTangible = _.orderBy(this.risksTangible, ['percentage'], ['desc']);
+                    this.noRiskInMap = false;
+                } else {
+                    if (this.risksIntangible.length === 0) {
+                        this.risksIntangible.push(_.cloneDeep(risk));
+                    } else {
+                        const index = _.findIndex(this.risksIntangible, (elem) => {
+                            return elem.asset.id === myAsset.id;
+                        });
+                        if (index !== -1) {
+                            this.risksIntangible.splice(index, 1, _.cloneDeep(risk));
+                        } else {
+                            this.risksIntangible.push(_.cloneDeep(risk));
+                        }
+                    }
+                    this.risksIntangible = _.orderBy(this.risksIntangible, ['percentage'], ['desc']);
+                    this.noRiskInMap = false;
+                }
+            });
+            this.loadingAssetsAndAttacks = false;
+        } else {
+            this.loadingAssetsAndAttacks = false;
+        }
+    }
+
+    ngOnDestroy(): void {
+        if (this.subscriptions && this.subscriptions.length) {
+            this.subscriptions.forEach((subscription: Subscription) => {
+                subscription.unsubscribe();
+            })
         }
     }
 }

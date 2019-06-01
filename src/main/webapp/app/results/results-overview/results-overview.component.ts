@@ -202,7 +202,7 @@ export class ResultsOverviewComponent implements OnInit {
                 });
             }
         );
-        this.selfAssessmentService.getOverwiew().toPromise().then((res: SelfAssessmentOverview) => {
+        this.selfAssessmentService.getOverwiew(this.selfAssessment.id).toPromise().then((res: SelfAssessmentOverview) => {
             if (res) {
                 this.loading = true;
                 this.overview = res;

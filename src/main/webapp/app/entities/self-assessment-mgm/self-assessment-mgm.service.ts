@@ -54,19 +54,8 @@ export class SelfAssessmentMgmService implements OnInit {
         this.selfAssessmentSelected = null;
     }
 
-    getOverwiew(): Observable<SelfAssessmentOverview> {
-        const selfAssessment: SelfAssessmentMgm = this.dataSharingService.selfAssessment;
-
-        if (!selfAssessment) {
-            return null;
-        }
-
-        const selfId = selfAssessment.id;
-        if (!selfId) {
-            return null;
-        }
-
-        const customURL = this.selfAssessmentOverviewUrl.replace('{selfID}', selfId.toString());
+    getOverwiew(id: number): Observable<SelfAssessmentOverview> {
+        const customURL = this.selfAssessmentOverviewUrl.replace('{selfID}', id.toString());
         return this.http.get<SelfAssessmentOverview>(`${customURL}`, {observe: 'response'})
             .map((res: HttpResponse<SelfAssessmentOverview>) => {
                 return res.body;

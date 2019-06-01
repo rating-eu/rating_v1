@@ -21,7 +21,10 @@ import {SelfAssessmentMgm, SelfAssessmentMgmService} from '../../entities/self-a
 import {CriticalAttackStrategy} from "../models/critical-attack-strategy.model";
 import * as _ from 'lodash';
 import {DatasharingService} from '../../datasharing/datasharing.service';
-import {Subscription} from "rxjs";
+import {Observable, Subscription} from "rxjs";
+import {isEmpty, switchMap} from "rxjs/operators";
+import {EmptyObservable} from "rxjs/observable/EmptyObservable";
+import {Router} from "@angular/router";
 
 export enum CriticalAttackStrategyField {
     'ATTACK_STRATEGY' = <any>'ATTACK_STRATEGY',
@@ -65,34 +68,60 @@ export class MostCriticalAttackStrategiesWidgetComponent implements OnInit, OnDe
         private selfAssessmentService: SelfAssessmentMgmService,
         private criticalAttackStrategyService: CriticalAttackStrategyService,
         private dataSharingService: DatasharingService,
-        private changeDetector: ChangeDetectorRef) {
+        private changeDetector: ChangeDetectorRef,
+        private router: Router) {
     }
 
     ngOnInit() {
         this.subscriptions = [];
         this.sortingStatusMap = new Map();
         this.selfAssessment = this.dataSharingService.selfAssessment;
-        this.fetchCriticalAttackStrategies();
 
-        this.subscriptions.push(this.dataSharingService.selfAssessmentObservable.subscribe((assessment: SelfAssessmentMgm) => {
-            this.selfAssessment = assessment;
+        if (!this.selfAssessment) {
+            this.router.navigate(['/my-risk-assessments']);
+        } else {
+            this.fetchCriticalAttackStrategies()
+                .toPromise()
+                .then((response: CriticalAttackStrategy[]) => {
+                    this.handleAttackStrategiesUpdate(response);
+                });
+        }
 
-            this.fetchCriticalAttackStrategies();
-        }));
+        this.subscriptions.push(
+            this.dataSharingService.selfAssessmentObservable.pipe(
+                switchMap((newAssessment: SelfAssessmentMgm) => {
+                    console.log("Most critical attack-strategies: ASSESSMENT CHANGED");
+                    console.log(newAssessment);
+
+                    if (newAssessment) {
+                        // Check if there is no self assessment or if it has changed
+                        if (!this.selfAssessment || this.selfAssessment.id !== newAssessment.id) {
+                            this.selfAssessment = newAssessment;
+
+                            return this.fetchCriticalAttackStrategies();
+                        }
+                    } else {
+                        return new EmptyObservable();
+                    }
+                })
+            ).subscribe(
+                (response: CriticalAttackStrategy[]) => {
+                    if (response && response.length) {
+                        this.handleAttackStrategiesUpdate(response);
+                    }
+                }
+            )
+        );
     }
 
-    private fetchCriticalAttackStrategies() {
-        if (this.selfAssessment) {
-            this.subscriptions.push(
-                this.criticalAttackStrategyService.getCriticalAttackStrategies(this.selfAssessment.id).subscribe(
-                    (response: CriticalAttackStrategy[]) => {
-                        this.criticalAttackStrategies = response;
+    private fetchCriticalAttackStrategies(): Observable<CriticalAttackStrategy[]> {
+        return this.criticalAttackStrategyService.getCriticalAttackStrategies(this.selfAssessment.id);
+    }
 
-                        this.changeDetector.detectChanges();
-                    }
-                )
-            );
-        }
+    private handleAttackStrategiesUpdate(response: CriticalAttackStrategy[]) {
+        this.criticalAttackStrategies = response;
+
+        this.changeDetector.detectChanges();
     }
 
     onAttackStrategiesPageChange(number: number) {

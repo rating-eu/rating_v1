@@ -193,7 +193,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     }
 
     private fetchSecondaryLogo() {
-        this.logoService.getSecondaryLogo().subscribe((logo: HttpResponse<LogoMgm>) => {
+        this.logoService.getSecondaryLogo().toPromise().then((logo: HttpResponse<LogoMgm>) => {
                 this.secondaryLogo = logo.body;
                 this.changeDetector.detectChanges();
             },
@@ -428,10 +428,10 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                                 if (this.selfAssessment.id !== assessment.id) {
                                     this.dataSharingService.selfAssessment = assessment;
                                 }
-                                this.router.navigate(['/riskboard']);
+                                //this.router.navigate(['/riskboard']);
                             } else {
                                 this.dataSharingService.selfAssessment = assessment;
-                                this.router.navigate(['/riskboard']);
+                                //this.router.navigate(['/riskboard']);
                             }
                         },
                         items: [

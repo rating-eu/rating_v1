@@ -17,11 +17,15 @@
 
 import * as _ from 'lodash';
 
-import {Component, OnInit} from '@angular/core';
-import {SelfAssessmentMgmService} from '../../entities/self-assessment-mgm';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {SelfAssessmentMgm, SelfAssessmentMgmService} from '../../entities/self-assessment-mgm';
 import {SelfAssessmentOverview} from '../../my-risk-assessments/models/SelfAssessmentOverview.model';
 import {AugmentedMyAsset} from '../../my-risk-assessments/models/AugmentedMyAsset.model';
 import {AugmentedAttackStrategy} from '../../evaluate-weakness/models/augmented-attack-strategy.model';
+import {DatasharingService} from "../../datasharing/datasharing.service";
+import {switchMap} from "rxjs/operators";
+import {EmptyObservable} from "rxjs/observable/EmptyObservable";
+import {Subscription} from "rxjs";
 
 interface MdawEntity {
     asset: AugmentedMyAsset;
@@ -47,7 +51,7 @@ interface OrderBy {
     templateUrl: './most-vulnerable-assets-widget.component.html',
     styleUrls: ['most-vulnerable-assets-widget.component.css']
 })
-export class MostVulnerableAssetsWidgetComponent implements OnInit {
+export class MostVulnerableAssetsWidgetComponent implements OnInit, OnDestroy {
     public isCollapsed = true;
     public loading = false;
     public loadingAttacksTable = false;
@@ -73,16 +77,21 @@ export class MostVulnerableAssetsWidgetComponent implements OnInit {
     public orderIntangibleBy: OrderBy;
     public orderTangibleBy: OrderBy;
 
+    private selfAssessment: SelfAssessmentMgm;
+    private subscriptions: Subscription[];
+
     private overview: SelfAssessmentOverview;
     // high; medium-high ; medium; medium low; low
     // Likelihood: 5, 4, 3 , 2, 1
     // Vulnerability: 5, 4, 3, 2, 1
     constructor(
         private selfAssessmentService: SelfAssessmentMgmService,
+        private dataSharingService: DatasharingService
     ) {
     }
 
     ngOnInit() {
+        this.subscriptions = [];
         this.loading = true;
         this.orderTangibleBy = {
             category: false,
@@ -100,39 +109,40 @@ export class MostVulnerableAssetsWidgetComponent implements OnInit {
             attackStrategy: false,
             type: 'desc'
         };
-        this.selfAssessmentService.getOverwiew().toPromise().then((res: SelfAssessmentOverview) => {
-            if (res) {
-                this.overview = res;
-                this.mdawTangibleEntities = [];
-                this.mdawIntangibleEntities = [];
-                for (const item of this.overview.augmentedMyAssets) {
-                    if (item.asset.assetcategory.type.toString() === 'TANGIBLE') {
-                        const index = _.findIndex(this.mdawTangibleEntities, (elem) => {
-                            return elem.asset.asset.id === item.asset.id;
-                        });
-                        if (index === -1) {
-                            this.mdawTangibleEntities.push(
-                                _.clone(this.getMostDangerousAttack(item))
-                            );
-                        } else {
-                            continue;
+
+        this.selfAssessment = this.dataSharingService.selfAssessment;
+
+        if (this.selfAssessment && this.selfAssessment.id) {
+            this.selfAssessmentService.getOverwiew(this.selfAssessment.id)
+                .toPromise()
+                .then(
+                    (response: SelfAssessmentOverview) => {
+                        this.handleOverviewUpdate(response);
+                    }
+                );
+        }
+
+        this.subscriptions.push(
+            this.dataSharingService.selfAssessmentObservable.pipe(
+                switchMap((newAssessment: SelfAssessmentMgm) => {
+                    console.log("Most vulnerable assets widget: ASSESSMENT CHANGED");
+                    console.log(newAssessment);
+
+                    if (newAssessment) {
+                        // Check if there is no self assessment or if it has changed
+                        if (!this.selfAssessment || this.selfAssessment.id !== newAssessment.id) {
+                            this.selfAssessment = newAssessment;
+
+                            return this.selfAssessmentService.getOverwiew(this.selfAssessment.id);
                         }
                     } else {
-                        const index = _.findIndex(this.mdawIntangibleEntities, (elem) => {
-                            return elem.asset.asset.id === item.asset.id;
-                        });
-                        if (index === -1) {
-                            this.mdawIntangibleEntities.push(
-                                _.clone(this.getMostDangerousAttack(item))
-                            );
-                        } else {
-                            continue;
-                        }
+                        return new EmptyObservable();
                     }
-                }
-                this.loading = false;
-            }
-        });
+                })
+            ).subscribe((response: SelfAssessmentOverview) => {
+                this.handleOverviewUpdate(response);
+            })
+        );
     }
 
     private getMostDangerousAttack(augAsset: AugmentedMyAsset): MdawEntity {
@@ -181,6 +191,40 @@ export class MostVulnerableAssetsWidgetComponent implements OnInit {
 
     onTangibleAssetsPageChange(number: number) {
         this.tangibleAssetsPaginator.currentPage = number;
+    }
+
+    private handleOverviewUpdate(overview: SelfAssessmentOverview): void {
+        if (overview) {
+            this.overview = overview;
+            this.mdawTangibleEntities = [];
+            this.mdawIntangibleEntities = [];
+            for (const item of this.overview.augmentedMyAssets) {
+                if (item.asset.assetcategory.type.toString() === 'TANGIBLE') {
+                    const index = _.findIndex(this.mdawTangibleEntities, (elem) => {
+                        return elem.asset.asset.id === item.asset.id;
+                    });
+                    if (index === -1) {
+                        this.mdawTangibleEntities.push(
+                            _.clone(this.getMostDangerousAttack(item))
+                        );
+                    } else {
+                        continue;
+                    }
+                } else {
+                    const index = _.findIndex(this.mdawIntangibleEntities, (elem) => {
+                        return elem.asset.asset.id === item.asset.id;
+                    });
+                    if (index === -1) {
+                        this.mdawIntangibleEntities.push(
+                            _.clone(this.getMostDangerousAttack(item))
+                        );
+                    } else {
+                        continue;
+                    }
+                }
+            }
+            this.loading = false;
+        }
     }
 
     public selectAsset(asset: AugmentedMyAsset) {
@@ -338,4 +382,11 @@ export class MostVulnerableAssetsWidgetComponent implements OnInit {
         }
     }
 
+    ngOnDestroy(): void {
+        if (this.subscriptions && this.subscriptions.length) {
+            this.subscriptions.forEach((subscription) => {
+                subscription.unsubscribe();
+            });
+        }
+    }
 }
