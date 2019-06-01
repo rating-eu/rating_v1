@@ -36,7 +36,6 @@ import {of} from "rxjs/observable/of";
 })
 export class StepInfoWidgetComponent implements OnInit, OnDestroy {
     public loading = false;
-    public isCollapsed = false;
 
     public selfAssessment: SelfAssessmentMgm = null;
     public statusEnum = Status;
