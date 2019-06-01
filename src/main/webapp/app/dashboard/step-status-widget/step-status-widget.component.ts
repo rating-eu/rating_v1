@@ -14,6 +14,7 @@ import {CompletionDtoService} from "../../dto/completion/completion-dto.service"
 import {AssessVulnerabilitiesCompletionDTO} from "../../dto/completion/assess-vulnerabilities-completion";
 import {of} from "rxjs/observable/of";
 import {CompanyBoardStatus} from "../models/CompanyBoardStatus";
+import {EmptyObservable} from "rxjs/observable/EmptyObservable";
 
 @Component({
     selector: 'jhi-step-status-widget',
@@ -69,7 +70,7 @@ export class StepStatusWidgetComponent implements OnInit {
 
             const statusJoin$: Observable<[HttpResponse<Status>, HttpResponse<Status>, HttpResponse<Status>]> = forkJoin(identifyThreatAgentStatus$, assessVulnerabilitiesStatus$, refineVulnerabilitiesStatus$);
 
-            const assessVulnerabilitiesCompletion$: Observable<HttpResponse<AssessVulnerabilitiesCompletionDTO>> = statusJoin$.pipe(
+            const assessVulnerabilitiesCompletion$: Observable<HttpResponse<AssessVulnerabilitiesCompletionDTO> | any> = statusJoin$.pipe(
                 switchMap((response: [HttpResponse<Status>, HttpResponse<Status>, HttpResponse<Status>]) => {
                     this.identifyThreatAgentsStatus = response[0].body;
                     this.assessVulnerabilitiesStatus = response[1].body;
@@ -93,7 +94,7 @@ export class StepStatusWidgetComponent implements OnInit {
                 }),
                 catchError((err) => {
                     this.loading = false;
-                    return of(null);
+                    return new EmptyObservable();
                 })
             );
 

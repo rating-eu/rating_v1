@@ -18,13 +18,17 @@
 import {RiskBoardStepEnum} from '../../entities/enumerations/RiskBoardStep.enum';
 import {RiskBoardService, RiskBoardStatus} from '../risk-board.service';
 import {MyAssetRisk} from './../../risk-management/model/my-asset-risk.model';
-import * as _ from 'lodash';
 import {CriticalLevelMgm} from './../../entities/critical-level-mgm/critical-level-mgm.model';
-import {Component, OnInit} from '@angular/core';
-import {SelfAssessmentMgmService, SelfAssessmentMgm} from '../../entities/self-assessment-mgm';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {SelfAssessmentMgm, SelfAssessmentMgmService} from '../../entities/self-assessment-mgm';
 import {RiskManagementService} from '../../risk-management/risk-management.service';
 import {Status} from "../../entities/enumerations/Status.enum";
 import {DatasharingService} from "../../datasharing/datasharing.service";
+import {switchMap} from "rxjs/operators";
+import {EmptyObservable} from "rxjs/observable/EmptyObservable";
+import {ImpactMode} from "../../entities/enumerations/ImpactMode.enum";
+import {forkJoin} from "rxjs/observable/forkJoin";
+import {Observable, Subscription} from "rxjs";
 
 @Component({
     selector: 'jhi-risk-square-widget',
@@ -32,12 +36,12 @@ import {DatasharingService} from "../../datasharing/datasharing.service";
     styleUrls: ['risk-square-widget.component.css']
 })
 
-export class RiskSquareWidgetComponent implements OnInit {
+export class RiskSquareWidgetComponent implements OnInit, OnDestroy {
     public loadingRiskLevel = false;
     public loadingAssetsAndAttacks = false;
     public attackCosts = false;
     public isCollapsed = true;
-    private mySelf: SelfAssessmentMgm;
+    private selfAssessment: SelfAssessmentMgm;
     private riskBoardStatus: RiskBoardStatus;
     public criticalLevel: CriticalLevelMgm;
     public myAssetsAtRisk: MyAssetRisk[];
@@ -49,6 +53,7 @@ export class RiskSquareWidgetComponent implements OnInit {
     public assetToolTipLoaded = false;
     public assetToolTipLoadedTimer = false;
     private dashboardStatus = RiskBoardStepEnum;
+    private subscriptions: Subscription[];
 
     constructor(
         private mySelfAssessmentService: SelfAssessmentMgmService,
@@ -59,49 +64,70 @@ export class RiskSquareWidgetComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.subscriptions = [];
         this.loadingRiskLevel = true;
         this.loadingAssetsAndAttacks = true;
-        this.mySelf = this.dataSharingService.selfAssessment;
+        this.selfAssessment = this.dataSharingService.selfAssessment;
         this.riskBoardStatus = this.dataSharingService.riskBoardStatus;
+
+        if (this.selfAssessment) {
+            this.fetchCriticalLevelAndAssetsAtRisk().toPromise().then(
+                (response: [CriticalLevelMgm, MyAssetRisk[]]) => {
+                    if (response && response.length && response.length === 2) {
+                        this.handleCriticalLevelAndAssetsAtRisk(response[0], response[1]);
+                    }
+                }
+            );
+        }
 
         if (this.riskBoardStatus) {
             this.extractAttackStatus();
         }
 
-        this.dataSharingService.riskBoardStatusObservable.subscribe((response: RiskBoardStatus) => {
-            this.riskBoardStatus = response;
-            this.extractAttackStatus();
-        });
+        this.subscriptions.push(
+            this.dataSharingService.riskBoardStatusObservable.subscribe((response: RiskBoardStatus) => {
+                this.riskBoardStatus = response;
+                this.extractAttackStatus();
+            })
+        );
 
-        this.riskService.getCriticalLevel(this.mySelf).toPromise().then((res) => {
-            if (res) {
-                this.criticalLevel = res;
-                this.squareColumnElement = [];
-                this.squareRowElement = [];
-                this.lastSquareRowElement = this.criticalLevel.side + 1;
-                for (let i = 1; i <= this.criticalLevel.side; i++) {
-                    this.squareColumnElement.push(i);
-                    this.squareRowElement.push(i);
+        this.dataSharingService.selfAssessmentObservable.pipe(
+            switchMap((newAssessment: SelfAssessmentMgm) => {
+                console.log("Risk Square widget: ASSESSMENT CHANGED");
+                console.log(newAssessment);
+
+                if (newAssessment) {
+                    // Check if there is no self assessment or if it has changed
+                    if (!this.selfAssessment || this.selfAssessment.id !== newAssessment.id) {
+                        this.selfAssessment = newAssessment;
+
+                        switch (this.selfAssessment.impactMode) {
+                            case ImpactMode.QUANTITATIVE: {
+                                return this.fetchCriticalLevelAndAssetsAtRisk();
+                            }
+                            case ImpactMode.QUALITATIVE: {
+                                return new EmptyObservable();
+                            }
+                            default: {
+                                return new EmptyObservable();
+                            }
+                        }
+                    }
+                } else {
+                    return new EmptyObservable();
                 }
-                this.squareRowElement.push(this.criticalLevel.side + 1);
+            })
+        ).subscribe(
+            (response: [CriticalLevelMgm, MyAssetRisk[]]) => {
+                if (response && response.length && response.length === 2) {
+                    this.handleCriticalLevelAndAssetsAtRisk(response[0], response[1]);
+                }
+            },
+            (error) => {
                 this.loadingRiskLevel = false;
-            } else {
-                this.loadingRiskLevel = false;
-            }
-        }).catch(() => {
-            this.loadingRiskLevel = false;
-        });
-
-        this.riskService.getMyAssetsAtRisk(this.mySelf).toPromise().then((res: MyAssetRisk[]) => {
-            if (res) {
-                this.myAssetsAtRisk = res;
-                this.loadingAssetsAndAttacks = false;
-            } else {
                 this.loadingAssetsAndAttacks = false;
             }
-        }).catch(() => {
-            this.loadingAssetsAndAttacks = false;
-        });
+        );
     }
 
     private extractAttackStatus() {
@@ -169,5 +195,44 @@ export class RiskSquareWidgetComponent implements OnInit {
             mapIndex = mapIndex.concat(elem.toString());
         }
         return Number(mapIndex);
+    }
+
+    private fetchCriticalLevelAndAssetsAtRisk(): Observable<[CriticalLevelMgm, MyAssetRisk[]]> {
+        return forkJoin(
+            this.riskService.getCriticalLevel(this.selfAssessment),
+            this.riskService.getMyAssetsAtRisk(this.selfAssessment)
+        );
+    }
+
+    private handleCriticalLevelAndAssetsAtRisk(criticalLevel: CriticalLevelMgm, myAssetRisks: MyAssetRisk[]): void {
+        if (criticalLevel) {
+            this.criticalLevel = criticalLevel;
+            this.squareColumnElement = [];
+            this.squareRowElement = [];
+            this.lastSquareRowElement = this.criticalLevel.side + 1;
+            for (let i = 1; i <= this.criticalLevel.side; i++) {
+                this.squareColumnElement.push(i);
+                this.squareRowElement.push(i);
+            }
+            this.squareRowElement.push(this.criticalLevel.side + 1);
+            this.loadingRiskLevel = false;
+        } else {
+            this.loadingRiskLevel = false;
+        }
+
+        if (myAssetRisks) {
+            this.myAssetsAtRisk = myAssetRisks;
+            this.loadingAssetsAndAttacks = false;
+        } else {
+            this.loadingAssetsAndAttacks = false;
+        }
+    }
+
+    ngOnDestroy(): void {
+        if (this.subscriptions && this.subscriptions.length) {
+            this.subscriptions.forEach((subscription) => {
+                subscription.unsubscribe();
+            })
+        }
     }
 }

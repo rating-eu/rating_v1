@@ -16,7 +16,7 @@ import {AssetType} from "../../../entities/enumerations/AssetType.enum";
 @Component({
     selector: 'jhi-assets-impact',
     templateUrl: './assets-impact.component.html',
-    styles: []
+    styleUrls: ['./assets-impact.css']
 })
 export class AssetsImpactComponent implements OnInit {
 

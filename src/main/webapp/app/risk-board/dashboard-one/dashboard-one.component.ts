@@ -15,7 +15,7 @@
  *
  */
 
-import {Component, OnInit} from '@angular/core';
+import {ChangeDetectorRef, Component, OnDestroy, OnInit} from '@angular/core';
 import {Principal} from '../../shared';
 import {SelfAssessmentMgm} from '../../entities/self-assessment-mgm';
 import {DatasharingService} from '../../datasharing/datasharing.service';
@@ -23,45 +23,66 @@ import {Router} from '@angular/router';
 import {ImpactMode} from '../../entities/enumerations/ImpactMode.enum';
 import {RiskBoardStatus} from '../risk-board.service';
 import {Status} from '../../entities/enumerations/Status.enum';
+import {Subscription} from "rxjs";
 
 @Component({
     selector: 'jhi-dashboard-one',
     templateUrl: './dashboard-one.component.html',
     styleUrls: ['dashboard-one.component.css']
 })
-export class DashboardOneComponent implements OnInit {
+export class DashboardOneComponent implements OnInit, OnDestroy {
     public selfAssessment: SelfAssessmentMgm = null;
     public impactModeEnum = ImpactMode;
     public statusEnum = Status;
     public riskBoardStatus: RiskBoardStatus = null;
+    private subscriptions: Subscription[];
 
 
     constructor(
         private principal: Principal,
         private datasharingService: DatasharingService,
-        private router: Router
+        private router: Router,
+        private changDetector: ChangeDetectorRef
     ) {
     }
 
     ngOnInit() {
+        this.subscriptions = [];
         this.selfAssessment = this.datasharingService.selfAssessment;
+        this.riskBoardStatus = this.datasharingService.riskBoardStatus;
 
-        this.datasharingService.selfAssessmentObservable.subscribe(assessment => {
-            this.selfAssessment = assessment;
-        });
+        this.subscriptions.push(
+            this.datasharingService.selfAssessmentObservable.subscribe(assessment => {
+                this.selfAssessment = assessment;
+            })
+        );
 
         if (!this.selfAssessment) {
             this.router.navigate(['/my-risk-assessments']);
         }
 
-        this.datasharingService.riskBoardStatusObservable.subscribe(
-            (status: RiskBoardStatus) => {
-                this.riskBoardStatus = status;
-            }
+        this.subscriptions.push(
+            this.datasharingService.riskBoardStatusObservable.subscribe(
+                (status: RiskBoardStatus) => {
+                    console.log("RiskBoardStatus CHANGED");
+                    console.log(status);
+
+                    this.riskBoardStatus = status;
+                    this.changDetector.detectChanges();
+                }
+            )
         );
     }
 
     isAuthenticated() {
         return this.principal.isAuthenticated();
+    }
+
+    ngOnDestroy(): void {
+        if (this.subscriptions && this.subscriptions.length) {
+            this.subscriptions.forEach((subscription: Subscription) => {
+                subscription.unsubscribe();
+            });
+        }
     }
 }

@@ -15,17 +15,20 @@
  *
  */
 
-package eu.hermeneut.service.impact;
+export const atLeastOneRefinementValidator = () => {
+    return (formGroup) => {
+        const controls = formGroup.controls;
 
-import eu.hermeneut.domain.MyAsset;
-import eu.hermeneut.exceptions.NotFoundException;
-import eu.hermeneut.service.formula.ImpactFormulator;
+        if (controls) {
+            // Check if there is at least one answer
+            const theOne = Object.keys(controls).find((key) => key.endsWith('.external') && controls[key].value !== '' && controls[key].value !== undefined && controls[key].value !== null);
 
-import javax.transaction.NotSupportedException;
-import java.util.List;
-
-public interface ImpactService extends ImpactFormulator {
-    List<MyAsset> calculateEconomicImpacts(Long selfAssessmentID) throws NotFoundException, NotSupportedException;
-
-    MyAsset calculateEconomicImpact(Long selfAssessmentID, Long MyAssetID) throws NotFoundException;
-}
+            if (!theOne) {
+                return {
+                    message: 'At least one answer is needed!'
+                };
+            }
+        }
+        return null;
+    };
+};

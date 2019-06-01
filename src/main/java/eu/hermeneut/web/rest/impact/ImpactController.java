@@ -1,12 +1,12 @@
 /*
  * Copyright 2019 HERMENEUT Consortium
- *  
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *  
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- *  
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -31,6 +31,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.transaction.NotSupportedException;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
@@ -60,7 +61,7 @@ public class ImpactController {
      */
     @GetMapping("/{selfAssessmentID}/economic-impact")
     @Timed
-    public List<MyAsset> getImpactsBySelfAssessment(@PathVariable Long selfAssessmentID) throws NotFoundException {
+    public List<MyAsset> getEconomicImpactsBySelfAssessment(@PathVariable Long selfAssessmentID) throws NotFoundException, NotSupportedException {
         log.debug("REST request to get the impact by selfAssessmentID: {}", selfAssessmentID);
 
         return this.impactService.calculateEconomicImpacts(selfAssessmentID);

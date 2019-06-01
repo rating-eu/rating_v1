@@ -30,6 +30,7 @@ import {Account} from "../../shared";
 import {Observable, Subscription} from "rxjs";
 import {switchMap} from "rxjs/operators";
 import {of} from "rxjs/observable/of";
+import {EmptyObservable} from "rxjs/observable/EmptyObservable";
 
 @Component({
     selector: 'jhi-main',
@@ -110,7 +111,7 @@ export class JhiMainComponent implements OnInit, OnDestroy {
         }));
 
         // Get notified each time authentication state changes.
-        const account$: Observable<HttpResponse<Account> | null> = this.principal.getAuthenticationState().pipe(
+        const account$: Observable<HttpResponse<Account>> = this.principal.getAuthenticationState().pipe(
             switchMap((authentication: any) => {
                 if (authentication) {
                     this.isAuthenticated = true;
@@ -124,7 +125,7 @@ export class JhiMainComponent implements OnInit, OnDestroy {
 
                     this.resetRole();
 
-                    return of(null);
+                    return new EmptyObservable();
                 }
             })
         );
@@ -139,7 +140,8 @@ export class JhiMainComponent implements OnInit, OnDestroy {
                 } else {
                     this.account = null;
                     this.dataSharingService.account = this.account;
-                    return of(null);
+
+                    return new EmptyObservable();
                 }
             })
         );
@@ -166,12 +168,12 @@ export class JhiMainComponent implements OnInit, OnDestroy {
                                 return of(Role.ROLE_FINANCIAL_DEPUTY);
                             }
                         } else {
-                            return of(null);
+                            return new EmptyObservable();
                         }
                     } else {
                         this.user = null;
                         this.dataSharingService.user = this.user;
-                        return of(null);
+                        return new EmptyObservable();
                     }
                 }
             )
@@ -188,7 +190,7 @@ export class JhiMainComponent implements OnInit, OnDestroy {
                     this.role = null;
                     this.dataSharingService.role = this.role;
 
-                    return of(null);
+                    return new EmptyObservable();
                 }
             })
         );

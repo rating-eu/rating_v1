@@ -19,6 +19,7 @@ import {Injectable} from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {QuestionMgm} from '../../../../../entities/question-mgm';
 import {atLeastOneValidator} from '../validator/at-least-one-validator';
+import {atLeastOneRefinementValidator} from "../validator/at-least-one-refinement-validator";
 
 @Injectable()
 export class QuestionControlService {
@@ -68,7 +69,7 @@ export class QuestionControlService {
         }, 6000);
 
         const formGroup: FormGroup = new FormGroup(group);
-        formGroup.validator = atLeastOneValidator();
+        formGroup.validator = atLeastOneRefinementValidator();
 
         return formGroup;
     }

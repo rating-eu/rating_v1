@@ -696,9 +696,11 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
                     const cisoRadioButton: HTMLElement = document.getElementById(question.id + '' + answer.id + '');
                     const externalRadioButton: HTMLElement = document.getElementById(question.id + '' + answer.id + '.external');
 
-                    const externalHeight = externalRadioButton.clientHeight;
+                    if(cisoRadioButton && externalRadioButton){
+                        const externalHeight = externalRadioButton.clientHeight;
 
-                    cisoRadioButton.style.height = externalHeight + 'px';
+                        cisoRadioButton.style.height = externalHeight + 'px';
+                    }
                 });
             });
         }
@@ -773,6 +775,9 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
 
                     // Update the ID of the external QStatus
                     questionnaireStatus.id = this.cisoQuestionnaireStatus.refinement.id;
+
+                    // Update the created date of the external QStatus
+                    questionnaireStatus.created = this.cisoQuestionnaireStatus.refinement.created;
 
                     // Persist the External Questionnaire Status
                     this.externalQuestionnaireStatus = questionnaireStatus;

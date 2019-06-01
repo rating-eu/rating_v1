@@ -8,6 +8,7 @@ import {Observable, Subscription} from "rxjs";
 import {switchMap} from "rxjs/operators";
 import {of} from "rxjs/observable/of";
 import {HttpResponse} from "@angular/common/http";
+import {EmptyObservable} from "rxjs/observable/EmptyObservable";
 
 @Component({
     selector: 'jhi-external-auditor',
@@ -43,7 +44,7 @@ export class ExternalAuditorComponent implements OnInit, OnDestroy {
                 if (this.myCompany && this.myCompany.companyProfile) {
                     return this.employeeService.findAllByCompanyAndRole(this.myCompany.companyProfile, Role.ROLE_EXTERNAL_AUDIT);
                 } else {
-                    return of(null);
+                    return new EmptyObservable();
                 }
             })
         );

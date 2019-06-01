@@ -28,6 +28,9 @@ import {HttpErrorResponse, HttpResponse} from '@angular/common/http';
 import {Router} from '@angular/router';
 import {CompanyBoardStatus} from "../../dashboard/models/CompanyBoardStatus";
 import {Status} from "../../entities/enumerations/Status.enum";
+import {JhiDateUtils} from 'ng-jhipster';
+import * as _ from 'lodash';
+import {ImpactMode} from "../../entities/enumerations/ImpactMode.enum";
 
 @Component({
     selector: 'jhi-sidebar',
@@ -64,6 +67,8 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         private logoService: LogoMgmService,
         private router: Router,
         private changeDetector: ChangeDetectorRef,
+        private dateUtils: JhiDateUtils,
+        private dataSharing: DatasharingService
     ) {
         this.isCollapsed = true;
         this.isSidebarCollapseByTheScreen();
@@ -188,7 +193,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
     }
 
     private fetchSecondaryLogo() {
-        this.logoService.getSecondaryLogo().subscribe((logo: HttpResponse<LogoMgm>) => {
+        this.logoService.getSecondaryLogo().toPromise().then((logo: HttpResponse<LogoMgm>) => {
                 this.secondaryLogo = logo.body;
                 this.changeDetector.detectChanges();
             },
@@ -208,11 +213,6 @@ export class SidebarComponent implements OnInit, AfterViewInit {
             label: 'Company',
             icon: 'fas fa-building',
             items: [
-                {
-                    label: 'Groups',
-                    icon: 'fas fa-users',
-                    routerLink: ['/pages/coming-soon']
-                },
                 {
                     label: 'Reports',
                     icon: 'fas fa-file-download',
@@ -413,6 +413,13 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                 // @ts-ignore
                 this.riskManagementMenuItem.items.push(servicesMenuItem);
 
+                // Sort SelfAssessments by creation date
+                const self = this;
+
+                this.selfAssessments = _.sortBy(this.selfAssessments, function (assessment: SelfAssessmentMgm) {
+                    return self.dateUtils.convertDateTimeFromServer(assessment.created);
+                });
+
                 this.selfAssessments.forEach((assessment) => {
                     const assessmentItem: MenuItem = {
                         label: assessment.name,
@@ -421,9 +428,12 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                                 if (this.selfAssessment.id !== assessment.id) {
                                     this.dataSharingService.selfAssessment = assessment;
                                 }
-                                this.router.navigate(['/riskboard']);
                             } else {
                                 this.dataSharingService.selfAssessment = assessment;
+                            }
+
+                            if (this.router.url !== '/riskboard') {
+                                console.log("Redirecting to riskboard");
                                 this.router.navigate(['/riskboard']);
                             }
                         },
@@ -454,14 +464,26 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                                         items: [
                                             {
                                                 label: 'Impact Evaluation',
+                                                command: event => {
+                                                    // Update the Impact Mode of the Assessment
+                                                    this.updateAssessmentImpactMode(assessment, ImpactMode.QUANTITATIVE);
+                                                },
                                                 routerLink: ['/impact-evaluation/quantitative']
                                             },
                                             {
                                                 label: 'Estimation of the Data Assets category Losses',
+                                                command: event => {
+                                                    // Update the Impact Mode of the Assessment
+                                                    this.updateAssessmentImpactMode(assessment, ImpactMode.QUANTITATIVE);
+                                                },
                                                 routerLink: ['/impact-evaluation/quantitative/data-assets-losses-estimation']
                                             },
                                             {
                                                 label: 'Estimation of the Attack Related Costs',
+                                                command: event => {
+                                                    // Update the Impact Mode of the Assessment
+                                                    this.updateAssessmentImpactMode(assessment, ImpactMode.QUANTITATIVE);
+                                                },
                                                 routerLink: ['/impact-evaluation/quantitative/attack-related-costs-estimation']
                                             }
                                         ]
@@ -471,6 +493,10 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                                         items: [
                                             {
                                                 label: 'Impacts on Assets',
+                                                command: event => {
+                                                    // Update the Impact Mode of the Assessment
+                                                    this.updateAssessmentImpactMode(assessment, ImpactMode.QUALITATIVE);
+                                                },
                                                 routerLink: ['/impact-evaluation/qualitative/']
                                             }
                                         ]
@@ -511,6 +537,17 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
                 this.changeDetector.detectChanges();
             }
+        }
+    }
+
+    private updateAssessmentImpactMode(assessment: SelfAssessmentMgm, impactMode: ImpactMode) {
+        if (assessment.impactMode !== impactMode) {
+            assessment.impactMode = impactMode;
+
+            this.selfAssessmentService.update(assessment).toPromise().then((response: HttpResponse<SelfAssessmentMgm>) => {
+                this.selfAssessment = response.body;
+                this.dataSharing.selfAssessment = this.selfAssessment;
+            });
         }
     }
 

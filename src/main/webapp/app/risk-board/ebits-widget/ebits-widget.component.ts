@@ -15,109 +15,158 @@
  *
  */
 
-import { SelfAssessmentMgmService } from './../../entities/self-assessment-mgm/self-assessment-mgm.service';
+import {SelfAssessmentMgmService} from './../../entities/self-assessment-mgm/self-assessment-mgm.service';
 import * as _ from 'lodash';
-import { SelfAssessmentMgm } from './../../entities/self-assessment-mgm/self-assessment-mgm.model';
-import { ImpactEvaluationStatus} from "../../impact-evaluation/quantitative/model/impact-evaluation-status.model";
-import { ImpactEvaluationService } from './../../impact-evaluation/impact-evaluation.service';
-import { Component, OnInit } from '@angular/core';
+import {SelfAssessmentMgm} from './../../entities/self-assessment-mgm/self-assessment-mgm.model';
+import {ImpactEvaluationStatus} from "../../impact-evaluation/quantitative/model/impact-evaluation-status.model";
+import {ImpactEvaluationService} from './../../impact-evaluation/impact-evaluation.service';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {DatasharingService} from "../../datasharing/datasharing.service";
+import {Subscription} from "rxjs";
+import {switchMap} from "rxjs/operators";
+import {EmptyObservable} from "rxjs/observable/EmptyObservable";
 
 interface OrderBy {
-  year: boolean;
-  value: boolean;
-  type: string;
+    year: boolean;
+    value: boolean;
+    type: string;
 }
 
 @Component({
-  selector: 'jhi-ebits-widget',
-  templateUrl: './ebits-widget.component.html',
-  styleUrls: ['ebits-widget.component.css']
+    selector: 'jhi-ebits-widget',
+    templateUrl: './ebits-widget.component.html',
+    styleUrls: ['ebits-widget.component.css']
 })
-export class EbitsWidgetComponent implements OnInit {
-  public loading = false;
-  public isCollapsed = true;
-  private wp3Status: ImpactEvaluationStatus;
-  private mySelf: SelfAssessmentMgm;
-  public ebitOrderBy: OrderBy;
-  public ebitInfo: {
-    year: string,
-    thisYear: boolean,
-    value: number
-  }[];
+export class EbitsWidgetComponent implements OnInit, OnDestroy {
+    public loading = false;
+    public isCollapsed = true;
+    private wp3Status: ImpactEvaluationStatus;
+    private selfAssessment: SelfAssessmentMgm;
+    public ebitOrderBy: OrderBy;
+    public ebitInfo: {
+        year: string,
+        thisYear: boolean,
+        value: number
+    }[];
 
-  constructor(
-    private impactService: ImpactEvaluationService,
-    private mySelfAssessmentService: SelfAssessmentMgmService,
-    private dataSharingService: DatasharingService
-  ) { }
+    private subscriptions: Subscription[];
 
-  ngOnInit() {
-    this.loading = true;
-    this.mySelf = this.dataSharingService.selfAssessment;
-    this.ebitOrderBy = {
-      year: false,
-      value: false,
-      type: 'desc'
-    };
-    this.impactService.getStatus(this.mySelf).toPromise().then((status) => {
-      if (status) {
-        this.wp3Status = status;
-        this.ebitInfo = [];
-        this.wp3Status.ebits = _.orderBy(this.wp3Status.ebits, ['year'], ['asc']);
-        let index = 1;
-        const year = (new Date()).getFullYear();
-        for (const ebit of this.wp3Status.ebits) {
-          this.ebitInfo.push(
-            {
-              year: ebit.year.toString(),
-              thisYear: ebit.year === year,
-              value: ebit.value
+    constructor(
+        private impactService: ImpactEvaluationService,
+        private mySelfAssessmentService: SelfAssessmentMgmService,
+        private dataSharingService: DatasharingService
+    ) {
+    }
+
+    ngOnInit() {
+        this.subscriptions = [];
+        this.loading = true;
+        this.selfAssessment = this.dataSharingService.selfAssessment;
+        this.ebitOrderBy = {
+            year: false,
+            value: false,
+            type: 'desc'
+        };
+
+        if (this.selfAssessment) {
+            this.impactService.getStatus(this.selfAssessment).toPromise().then((status: ImpactEvaluationStatus) => {
+                this.handleStatus(status);
+            }).catch(() => {
+                this.wp3Status = null;
+                this.loading = false;
+                this.ebitInfo = [];
             });
-          index++;
         }
-        this.loading = false;
-      }
-    }).catch(() => {
-      this.wp3Status = null;
-      this.loading = false;
-      this.ebitInfo = [];
-    });
-  }
 
-  private resetOrder() {
-    this.ebitOrderBy.year = false;
-    this.ebitOrderBy.value = false;
-    this.ebitOrderBy.type = 'desc';
-  }
+        this.subscriptions.push(
+            this.dataSharingService.selfAssessmentObservable.pipe(
+                switchMap((newAssessment: SelfAssessmentMgm) => {
+                    console.log("Ebits widget: ASSESSMENT CHANGED");
+                    console.log(newAssessment);
 
-  public tableOrderBy(orderColumn: string, desc: boolean) {
-    this.resetOrder();
-    if (desc) {
-      this.ebitOrderBy.type = 'desc';
-    } else {
-      this.ebitOrderBy.type = 'asc';
+                    if (newAssessment) {
+                        // Check if there is no self assessment or if it has changed
+                        if (!this.selfAssessment || this.selfAssessment.id !== newAssessment.id) {
+                            this.selfAssessment = newAssessment;
+
+                            return this.impactService.getStatus(this.selfAssessment);
+                        } else {
+                            return new EmptyObservable();
+                        }
+                    } else {
+                        return new EmptyObservable();
+                    }
+                })
+            ).subscribe((status: ImpactEvaluationStatus) => {
+                this.handleStatus(status);
+            }, (error) => {
+                this.loading = false;
+            })
+        );
     }
-    switch (orderColumn.toLowerCase()) {
-      case ('year'): {
-        this.ebitOrderBy.year = true;
-        if (desc) {
-          this.ebitInfo = _.orderBy(this.ebitInfo, ['year'], ['desc']);
-        } else {
-          this.ebitInfo = _.orderBy(this.ebitInfo, ['year'], ['asc']);
-        }
-        break;
-      }
-      case ('value'): {
-        this.ebitOrderBy.value = true;
-        if (desc) {
-          this.ebitInfo = _.orderBy(this.ebitInfo, ['value'], ['desc']);
-        } else {
-          this.ebitInfo = _.orderBy(this.ebitInfo, ['value'], ['asc']);
-        }
-        break;
-      }
-    }
-  }
 
+    private handleStatus(status: ImpactEvaluationStatus) {
+        if (status) {
+            this.wp3Status = status;
+            this.ebitInfo = [];
+            this.wp3Status.ebits = _.orderBy(this.wp3Status.ebits, ['year'], ['asc']);
+            let index = 1;
+            const year = (new Date()).getFullYear();
+            for (const ebit of this.wp3Status.ebits) {
+                this.ebitInfo.push(
+                    {
+                        year: ebit.year.toString(),
+                        thisYear: ebit.year === year,
+                        value: ebit.value
+                    });
+                index++;
+            }
+            this.loading = false;
+        } else {
+            this.loading = false;
+        }
+    }
+
+    private resetOrder() {
+        this.ebitOrderBy.year = false;
+        this.ebitOrderBy.value = false;
+        this.ebitOrderBy.type = 'desc';
+    }
+
+    public tableOrderBy(orderColumn: string, desc: boolean) {
+        this.resetOrder();
+        if (desc) {
+            this.ebitOrderBy.type = 'desc';
+        } else {
+            this.ebitOrderBy.type = 'asc';
+        }
+        switch (orderColumn.toLowerCase()) {
+            case ('year'): {
+                this.ebitOrderBy.year = true;
+                if (desc) {
+                    this.ebitInfo = _.orderBy(this.ebitInfo, ['year'], ['desc']);
+                } else {
+                    this.ebitInfo = _.orderBy(this.ebitInfo, ['year'], ['asc']);
+                }
+                break;
+            }
+            case ('value'): {
+                this.ebitOrderBy.value = true;
+                if (desc) {
+                    this.ebitInfo = _.orderBy(this.ebitInfo, ['value'], ['desc']);
+                } else {
+                    this.ebitInfo = _.orderBy(this.ebitInfo, ['value'], ['asc']);
+                }
+                break;
+            }
+        }
+    }
+
+    ngOnDestroy(): void {
+        if (this.subscriptions && this.subscriptions.length) {
+            this.subscriptions.forEach((subscription: Subscription) => {
+                subscription.unsubscribe();
+            })
+        }
+    }
 }

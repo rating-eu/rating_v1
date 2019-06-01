@@ -34,6 +34,8 @@ import java.util.Objects;
 import eu.hermeneut.domain.enumeration.Status;
 
 import eu.hermeneut.domain.enumeration.Role;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 /**
  * A QuestionnaireStatus.
@@ -59,9 +61,11 @@ public class QuestionnaireStatus implements Serializable, Comparable<Questionnai
     @Column(name = "status", nullable = false)
     private Status status;
 
+    @CreationTimestamp
     @Column(name = "created")
     private ZonedDateTime created;
 
+    @UpdateTimestamp
     @Column(name = "modified")
     private ZonedDateTime modified;
 

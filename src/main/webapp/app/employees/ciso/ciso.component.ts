@@ -8,6 +8,7 @@ import {switchMap} from "rxjs/operators";
 import {Observable, Subscription} from "rxjs";
 import {HttpResponse} from "@angular/common/http";
 import {of} from "rxjs/observable/of";
+import {EmptyObservable} from "rxjs/observable/EmptyObservable";
 
 @Component({
     selector: 'jhi-ciso',
@@ -41,7 +42,7 @@ export class CisoComponent implements OnInit, OnDestroy {
                 if (this.myCompany && this.myCompany.companyProfile) {
                     return this.employeeService.findAllByCompanyAndRole(this.myCompany.companyProfile, Role.ROLE_CISO_DEPUTY);
                 } else {
-                    return of(null);
+                    return new EmptyObservable();
                 }
             })
         );

@@ -20,8 +20,8 @@ import {Priority} from '../../../identify-assets/model/enumeration/priority.enum
 import * as _ from 'lodash';
 
 import {Component, OnInit} from '@angular/core';
-import {FormGroup, FormControl, Validators} from "@angular/forms";
-import {SelfAssessmentMgmService, SelfAssessmentMgm} from '../../../entities/self-assessment-mgm';
+import {FormControl, FormGroup, Validators} from "@angular/forms";
+import {SelfAssessmentMgm, SelfAssessmentMgmService} from '../../../entities/self-assessment-mgm';
 import {MyAssetMgm} from '../../../entities/my-asset-mgm';
 import {AssetMgm} from '../../../entities/asset-mgm';
 import {AssetType} from '../../../entities/enumerations/AssetType.enum';
@@ -29,10 +29,10 @@ import {ImpactEvaluationService} from '../../impact-evaluation.service';
 import {EBITMgm} from '../../../entities/ebit-mgm';
 import {Wp3BundleInput} from '../model/wp3-bundle-input.model';
 import {EconomicCoefficientsMgm} from '../../../entities/economic-coefficients-mgm';
-import {Router, NavigationStart} from '@angular/router';
+import {NavigationStart, Router} from '@angular/router';
 import {ImpactEvaluationStatus} from '../model/impact-evaluation-status.model';
-import {AccountService, UserService, User} from '../../../shared';
-import {MyCompanyMgmService, MyCompanyMgm} from '../../../entities/my-company-mgm';
+import {Account, AccountService, User, UserService} from '../../../shared';
+import {MyCompanyMgm, MyCompanyMgmService} from '../../../entities/my-company-mgm';
 import {HttpResponse} from '@angular/common/http';
 import {RegExpUtility} from '../../../utils/regexp.utility.class';
 import {Wp3BundleOutput} from '../model/wp3-bundle-output.model';
@@ -41,10 +41,10 @@ import {switchMap} from 'rxjs/operators';
 import {of} from 'rxjs/observable/of';
 import {forkJoin} from 'rxjs/observable/forkJoin';
 import {DatasharingService} from '../../../datasharing/datasharing.service';
-import {Account} from '../../../shared';
 import {CompanyType} from '../../../entities/enumerations/CompanyType.enum';
 import {SectorType} from '../../../entities/enumerations/SectorTyep.enum';
 import {CategoryType} from '../../../entities/enumerations/CategoryType.enum';
+import {ImpactMode} from "../../../entities/enumerations/ImpactMode.enum";
 
 interface OrderBy {
     asset: boolean;
@@ -129,7 +129,7 @@ export class ImpactEvaluationComponent implements OnInit {
     ) {
         this.router.events.subscribe((event) => {
             if (event instanceof NavigationStart) {
-                if (this.mySelf) {
+                if (this.mySelf && this.mySelf.impactMode === ImpactMode.QUANTITATIVE) {
                     console.log('Send start impacts Evaluation request!');
                     this.impactService.getImpacts(this.mySelf).toPromise();
                 }
