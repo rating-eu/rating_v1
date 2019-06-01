@@ -30,6 +30,7 @@ import {CompanyBoardStatus} from "../../dashboard/models/CompanyBoardStatus";
 import {Status} from "../../entities/enumerations/Status.enum";
 import {JhiDateUtils} from 'ng-jhipster';
 import * as _ from 'lodash';
+import {ImpactMode} from "../../entities/enumerations/ImpactMode.enum";
 
 @Component({
     selector: 'jhi-sidebar',
@@ -66,7 +67,8 @@ export class SidebarComponent implements OnInit, AfterViewInit {
         private logoService: LogoMgmService,
         private router: Router,
         private changeDetector: ChangeDetectorRef,
-        private dateUtils: JhiDateUtils
+        private dateUtils: JhiDateUtils,
+        private dataSharing: DatasharingService
     ) {
         this.isCollapsed = true;
         this.isSidebarCollapseByTheScreen();
@@ -459,14 +461,26 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                                         items: [
                                             {
                                                 label: 'Impact Evaluation',
+                                                command: event => {
+                                                    // Update the Impact Mode of the Assessment
+                                                    this.updateAssessmentImpactMode(assessment, ImpactMode.QUANTITATIVE);
+                                                },
                                                 routerLink: ['/impact-evaluation/quantitative']
                                             },
                                             {
                                                 label: 'Estimation of the Data Assets category Losses',
+                                                command: event => {
+                                                    // Update the Impact Mode of the Assessment
+                                                    this.updateAssessmentImpactMode(assessment, ImpactMode.QUANTITATIVE);
+                                                },
                                                 routerLink: ['/impact-evaluation/quantitative/data-assets-losses-estimation']
                                             },
                                             {
                                                 label: 'Estimation of the Attack Related Costs',
+                                                command: event => {
+                                                    // Update the Impact Mode of the Assessment
+                                                    this.updateAssessmentImpactMode(assessment, ImpactMode.QUANTITATIVE);
+                                                },
                                                 routerLink: ['/impact-evaluation/quantitative/attack-related-costs-estimation']
                                             }
                                         ]
@@ -476,6 +490,10 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                                         items: [
                                             {
                                                 label: 'Impacts on Assets',
+                                                command: event => {
+                                                    // Update the Impact Mode of the Assessment
+                                                    this.updateAssessmentImpactMode(assessment, ImpactMode.QUALITATIVE);
+                                                },
                                                 routerLink: ['/impact-evaluation/qualitative/']
                                             }
                                         ]
@@ -516,6 +534,17 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
                 this.changeDetector.detectChanges();
             }
+        }
+    }
+
+    private updateAssessmentImpactMode(assessment: SelfAssessmentMgm, impactMode: ImpactMode) {
+        if (assessment.impactMode !== impactMode) {
+            assessment.impactMode = impactMode;
+
+            this.selfAssessmentService.update(assessment).toPromise().then((response: HttpResponse<SelfAssessmentMgm>) => {
+                this.selfAssessment = response.body;
+                this.dataSharing.selfAssessment = this.selfAssessment;
+            });
         }
     }
 
