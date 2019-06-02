@@ -72,7 +72,7 @@ export class Principal {
 
     identity(force?: boolean): Promise<any> {
         if (force === true) {
-            this.userIdentity = undefined;
+            this.userIdentity = null;
         }
 
         // check and see if we have retrieved the userIdentity data from the server.
@@ -112,7 +112,7 @@ export class Principal {
     }
 
     isIdentityResolved(): boolean {
-        return this.userIdentity !== undefined;
+        return this.userIdentity !== null && this.userIdentity !== undefined;
     }
 
     getAuthenticationState(): Observable<any> {

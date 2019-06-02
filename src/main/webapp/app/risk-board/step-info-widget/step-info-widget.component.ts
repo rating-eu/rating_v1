@@ -139,12 +139,9 @@ export class StepInfoWidgetComponent implements OnInit, OnDestroy {
     }
 
     private fetchStatus$(): Observable<[Status, Status, Status, Status]> {
+        // Reset the Statuses
         this.riskBoardStatus = new RiskBoardStatus();
         this.datasharingService.riskBoardStatus = this.riskBoardStatus;
-
-        /*if (this.changeDetector) {
-            this.changeDetector.detectChanges();
-        }*/
 
         this.assetClusteringStatus$ = this.riskBoardService.getStatusFromServer(this.selfAssessment, RiskBoardStepEnum.ASSET_CLUSTERING)
             .catch((err) => {
@@ -164,7 +161,10 @@ export class StepInfoWidgetComponent implements OnInit, OnDestroy {
             });
 
         const join$: Observable<[Status, Status, Status, Status]> = forkJoin(this.assetClusteringStatus$,
-            this.impactEvaluationStatus$, this.attackRelatedCostsStatus$, this.riskEvaluationStatus$);
+            this.impactEvaluationStatus$, this.attackRelatedCostsStatus$, this.riskEvaluationStatus$)
+            .catch(err => {
+                return forkJoin(of(Status.EMPTY), of(Status.EMPTY), of(Status.EMPTY), of(Status.EMPTY));
+            });
 
         return join$;
     }
@@ -198,6 +198,8 @@ export class StepInfoWidgetComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy(): void {
+        this.changeDetector.detach();
+
         if (this.subscriptions && this.subscriptions.length) {
             this.subscriptions.forEach((subscription) => {
                 subscription.unsubscribe();

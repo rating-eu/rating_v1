@@ -218,6 +218,8 @@ export class MostCriticalAttackStrategiesWidgetComponent implements OnInit, OnDe
     }
 
     ngOnDestroy(): void {
+        this.changeDetector.detach();
+
         if (this.subscriptions && this.subscriptions.length) {
             this.subscriptions.forEach(subscription => {
                 subscription.unsubscribe();

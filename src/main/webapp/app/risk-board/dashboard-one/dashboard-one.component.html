@@ -55,17 +55,17 @@
             <jhi-most-dangerous-threat-agents-widget></jhi-most-dangerous-threat-agents-widget>
         </div>
     </div>-->
-    <div class="row mb-2" *ngIf="riskBoardStatus?.assetClusteringStatus === statusEnum.FULL">
+    <div class="row mb-2" *ngIf="riskBoardStatus && riskBoardStatus.assetClusteringStatus === statusEnum.FULL">
         <div class="col-md-12">
             <jhi-most-critical-attack-strategies-widget></jhi-most-critical-attack-strategies-widget>
         </div>
     </div>
-    <div class="row mb-2" *ngIf="riskBoardStatus?.assetClusteringStatus === statusEnum.FULL">
+    <div class="row mb-2" *ngIf="riskBoardStatus && riskBoardStatus.assetClusteringStatus === statusEnum.FULL">
         <div class="col-md-12">
             <jhi-most-vulnerable-assets-widget></jhi-most-vulnerable-assets-widget>
         </div>
     </div>
-    <ng-container *ngIf="riskBoardStatus?.impactEvaluationStatus === statusEnum.FULL">
+    <ng-container *ngIf="riskBoardStatus && riskBoardStatus.impactEvaluationStatus === statusEnum.FULL">
         <div *ngIf="selfAssessment.impactMode === impactModeEnum.QUANTITATIVE">
             <div class="row">
                 <h2>Impact Evaluation</h2>
@@ -99,7 +99,7 @@
         </div>
     </ng-container>
 
-    <ng-container *ngIf="riskBoardStatus?.riskEvaluationStatus === statusEnum.FULL">
+    <ng-container *ngIf="riskBoardStatus && riskBoardStatus.riskEvaluationStatus === statusEnum.FULL">
         <div class="row">
             <h2>Risk Evaluation</h2>
         </div>

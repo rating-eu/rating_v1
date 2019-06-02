@@ -307,14 +307,6 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
         ));
     }
 
-    ngOnDestroy() {
-        if (this.subscriptions) {
-            this.subscriptions.forEach((subscription: Subscription) => {
-                subscription.unsubscribe();
-            });
-        }
-    }
-
     setCurrentQuestionnaireStatus(questionnaireStatus: QuestionnaireStatusMgm) {
         switch (this.role) {
             case Role.ROLE_CISO: {
@@ -330,7 +322,7 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
     }
 
     createNewQuestionnaireStatus() {
-        let questionnaireStatus$: Observable<HttpResponse<QuestionnaireStatusMgm>> = undefined;
+        let questionnaireStatus$: Observable<HttpResponse<QuestionnaireStatusMgm>> = null;
 
         switch (this.purpose) {
             case QuestionnairePurpose.ID_THREAT_AGENT: {
@@ -380,5 +372,15 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
                 this.externalChangedMap.set(questionnaireStatus.id, false);
             }
         });
+    }
+
+    ngOnDestroy() {
+        this.changeDetector.detach();
+
+        if (this.subscriptions) {
+            this.subscriptions.forEach((subscription: Subscription) => {
+                subscription.unsubscribe();
+            });
+        }
     }
 }

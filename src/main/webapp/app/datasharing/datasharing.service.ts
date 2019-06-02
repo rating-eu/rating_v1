@@ -259,11 +259,19 @@ export class DatasharingService {
 
     // RiskBoard Status property
     get riskBoardStatus(): RiskBoardStatus {
+        if (!this._riskBoardStatus) {
+            this.riskBoardStatus = new RiskBoardStatus();
+        }
         return this._riskBoardStatus;
     }
 
     set riskBoardStatus(status: RiskBoardStatus) {
         this._riskBoardStatus = status;
+
+        if (!this._riskBoardStatus) {
+            this.riskBoardStatus = new RiskBoardStatus();
+        }
+
         this._riskBoardStatusSubject.next(this._riskBoardStatus);
     }
 

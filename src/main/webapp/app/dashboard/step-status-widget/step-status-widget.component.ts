@@ -91,12 +91,11 @@ export class StepStatusWidgetComponent implements OnInit {
                             return this.completionDTOService.getAssessVulnerabilitiesCompletionByCompanyProfile(this.myCompany.companyProfile.id);
                         }
                     }
-                }),
-                catchError((err) => {
-                    this.loading = false;
-                    return Observable.empty<HttpResponse<AssessVulnerabilitiesCompletionDTO>>();
                 })
-            );
+            ).catch((err) => {
+                this.loading = false;
+                return Observable.empty<HttpResponse<AssessVulnerabilitiesCompletionDTO>>();
+            });
 
             if (assessVulnerabilitiesCompletion$) {
                 assessVulnerabilitiesCompletion$.subscribe((response: HttpResponse<AssessVulnerabilitiesCompletionDTO>) => {

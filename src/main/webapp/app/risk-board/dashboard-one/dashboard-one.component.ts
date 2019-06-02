@@ -53,7 +53,11 @@ export class DashboardOneComponent implements OnInit, OnDestroy {
 
         this.subscriptions.push(
             this.datasharingService.selfAssessmentObservable.subscribe(assessment => {
-                this.selfAssessment = assessment;
+                if (assessment) {
+                    this.selfAssessment = assessment;
+                } else {
+                    this.selfAssessment = null;
+                }
             })
         );
 
@@ -76,6 +80,8 @@ export class DashboardOneComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy(): void {
+        this.changDetector.detach();
+
         if (this.subscriptions && this.subscriptions.length) {
             this.subscriptions.forEach((subscription: Subscription) => {
                 subscription.unsubscribe();
