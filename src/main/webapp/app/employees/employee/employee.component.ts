@@ -94,15 +94,15 @@ export class EmployeeComponent implements OnInit {
 
                     switch (this.role) {
                         case Role.ROLE_EXTERNAL_AUDIT: {
-                            this.router.navigate(['/employees/external']);
+                            this.router.navigate(['/people/external']);
                             break;
                         }
                         case Role.ROLE_CISO_DEPUTY: {
-                            this.router.navigate(['/employees/ciso']);
+                            this.router.navigate(['/people/ciso']);
                             break;
                         }
                         case Role.ROLE_FINANCIAL_DEPUTY: {
-                            this.router.navigate(['/employees/financial']);
+                            this.router.navigate(['/people/financial']);
                             break;
                         }
                         default: {
@@ -117,15 +117,15 @@ export class EmployeeComponent implements OnInit {
     public cancel() {
         switch (this.role) {
             case Role.ROLE_EXTERNAL_AUDIT: {
-                this.router.navigate(['/employees/external']);
+                this.router.navigate(['/people/external']);
                 break;
             }
             case Role.ROLE_CISO_DEPUTY: {
-                this.router.navigate(['/employees/ciso']);
+                this.router.navigate(['/people/ciso']);
                 break;
             }
             case Role.ROLE_FINANCIAL_DEPUTY: {
-                this.router.navigate(['/employees/financial']);
+                this.router.navigate(['/people/financial']);
                 break;
             }
             default: {
