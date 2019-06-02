@@ -183,7 +183,7 @@ export class JhiMainComponent implements OnInit, OnDestroy {
             )
         );
 
-        const myCompany$: Observable<HttpResponse<MyCompanyMgm> | null> = role$.pipe(
+        const myCompany$: Observable<HttpResponse<MyCompanyMgm>> = role$.pipe(
             switchMap((roleResponse: Role) => {
                 if (roleResponse) {
                     this.role = roleResponse;
@@ -203,7 +203,7 @@ export class JhiMainComponent implements OnInit, OnDestroy {
         );
 
         this.subscriptions.push(myCompany$.subscribe((myCompanyResponse: HttpResponse<MyCompanyMgm>) => {
-            if (myCompanyResponse) {
+            if (myCompanyResponse && myCompanyResponse.body) {
                 this.myCompany = myCompanyResponse.body;
             } else {
                 this.myCompany = null;
@@ -255,7 +255,7 @@ export class JhiMainComponent implements OnInit, OnDestroy {
                         this.dataSharingService.role = Role.ROLE_EXTERNAL_AUDIT;
 
                         layoutConfiguration.isSidebarCollapsed = true;
-                        layoutConfiguration.isSidebarCollapsedByMe = false;
+                        layoutConfiguration.isSidebarCollapsedByMe = true;
                         this.dataSharingService.layoutConfiguration = layoutConfiguration;
                     }
                 });

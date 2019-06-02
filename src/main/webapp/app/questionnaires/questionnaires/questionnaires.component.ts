@@ -125,6 +125,18 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
             this.loadQuestionnaireStatuses();
         }
 
+        this.subscriptions.push(
+            this.dataSharingService.myCompanyObservable.subscribe(
+                (updatedMyCompany: MyCompanyMgm) => {
+                    this.myCompany = updatedMyCompany;
+
+                    if (this.account && this.user && this.myCompany && this.myCompany.companyProfile) {
+                        this.loadQuestionnaireStatuses();
+                    }
+                }
+            )
+        );
+
         this.externalChangedMap = new Map();
         this.assessVulnerabilitiesCompletionMap = new Map();
     }
@@ -162,10 +174,10 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
                 if (this.purpose === QuestionnairePurpose.SELFASSESSMENT && this.role === Role.ROLE_CISO) {
                     return this.userService.getExternalAuditsByCompanyProfile(this.myCompany.companyProfile.id)
                         .catch((err) => {
-                            return Observable.empty<User[]>();
+                            return new EmptyObservable<User[]>();
                         });
                 } else {
-                    return Observable.empty<User[]>();
+                    return new EmptyObservable<User[]>();
                 }
             })
         );
@@ -341,7 +353,9 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
 
         if (questionnaireStatus$) {
             this.subscriptions.push(questionnaireStatus$.subscribe((response: HttpResponse<QuestionnaireStatusMgm>) => {
-                this.loadQuestionnaireStatuses();
+                if (this.account && this.user && this.myCompany && this.myCompany.companyProfile) {
+                    this.loadQuestionnaireStatuses();
+                }
             }));
         }
     }
@@ -351,7 +365,9 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
             this.questionnaireStatusesChangeEventSubscription = this.eventManagerService.observe('questionnaireStatusListModification')
                 .subscribe(
                     (response) => {
-                        this.loadQuestionnaireStatuses();
+                        if (this.account && this.user && this.myCompany && this.myCompany.companyProfile) {
+                            this.loadQuestionnaireStatuses();
+                        }
                     });
 
             this.subscriptions.push(this.questionnaireStatusesChangeEventSubscription);
