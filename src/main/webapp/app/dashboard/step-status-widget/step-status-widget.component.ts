@@ -70,7 +70,7 @@ export class StepStatusWidgetComponent implements OnInit {
 
             const statusJoin$: Observable<[HttpResponse<Status>, HttpResponse<Status>, HttpResponse<Status>]> = forkJoin(identifyThreatAgentStatus$, assessVulnerabilitiesStatus$, refineVulnerabilitiesStatus$);
 
-            const assessVulnerabilitiesCompletion$: Observable<HttpResponse<AssessVulnerabilitiesCompletionDTO> | any> = statusJoin$.pipe(
+            const assessVulnerabilitiesCompletion$: Observable<HttpResponse<AssessVulnerabilitiesCompletionDTO>> = statusJoin$.pipe(
                 switchMap((response: [HttpResponse<Status>, HttpResponse<Status>, HttpResponse<Status>]) => {
                     this.identifyThreatAgentsStatus = response[0].body;
                     this.assessVulnerabilitiesStatus = response[1].body;
@@ -94,7 +94,7 @@ export class StepStatusWidgetComponent implements OnInit {
                 }),
                 catchError((err) => {
                     this.loading = false;
-                    return new EmptyObservable();
+                    return Observable.empty<HttpResponse<AssessVulnerabilitiesCompletionDTO>>();
                 })
             );
 

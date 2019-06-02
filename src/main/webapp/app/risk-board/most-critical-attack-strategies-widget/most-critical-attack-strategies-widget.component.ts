@@ -25,6 +25,7 @@ import {Observable, Subscription} from "rxjs";
 import {isEmpty, switchMap} from "rxjs/operators";
 import {EmptyObservable} from "rxjs/observable/EmptyObservable";
 import {Router} from "@angular/router";
+import {MyAssetMgm} from "../../entities/my-asset-mgm";
 
 export enum CriticalAttackStrategyField {
     'ATTACK_STRATEGY' = <any>'ATTACK_STRATEGY',
@@ -101,7 +102,7 @@ export class MostCriticalAttackStrategiesWidgetComponent implements OnInit, OnDe
                             return this.fetchCriticalAttackStrategies();
                         }
                     } else {
-                        return new EmptyObservable();
+                        return Observable.empty<CriticalAttackStrategy[]>();
                     }
                 })
             ).subscribe(

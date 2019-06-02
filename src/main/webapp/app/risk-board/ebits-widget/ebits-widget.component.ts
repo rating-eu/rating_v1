@@ -22,9 +22,10 @@ import {ImpactEvaluationStatus} from "../../impact-evaluation/quantitative/model
 import {ImpactEvaluationService} from './../../impact-evaluation/impact-evaluation.service';
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {DatasharingService} from "../../datasharing/datasharing.service";
-import {Subscription} from "rxjs";
+import {Observable, Subscription} from "rxjs";
 import {switchMap} from "rxjs/operators";
 import {EmptyObservable} from "rxjs/observable/EmptyObservable";
+import {MyAssetRisk} from "../../risk-management/model/my-asset-risk.model";
 
 interface OrderBy {
     year: boolean;
@@ -91,13 +92,13 @@ export class EbitsWidgetComponent implements OnInit, OnDestroy {
 
                             return this.impactService.getStatus(this.selfAssessment)
                                 .catch((err) => {
-                                    return new EmptyObservable();
+                                    return Observable.empty<ImpactEvaluationStatus>();
                                 });
                         } else {
-                            return new EmptyObservable();
+                            return Observable.empty<ImpactEvaluationStatus>();
                         }
                     } else {
-                        return new EmptyObservable();
+                        return Observable.empty<ImpactEvaluationStatus>();
                     }
                 })
             ).subscribe((status: ImpactEvaluationStatus) => {

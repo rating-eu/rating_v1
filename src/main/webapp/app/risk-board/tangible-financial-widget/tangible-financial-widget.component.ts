@@ -25,7 +25,7 @@ import {MyAssetMgm} from '../../entities/my-asset-mgm';
 import {RiskBoardService} from '../risk-board.service';
 import {AssetType} from '../../entities/enumerations/AssetType.enum';
 import {DatasharingService} from "../../datasharing/datasharing.service";
-import {Subscription} from "rxjs";
+import {Observable, Subscription} from "rxjs";
 import {switchMap} from "rxjs/operators";
 import {EmptyObservable} from "rxjs/observable/EmptyObservable";
 
@@ -100,13 +100,13 @@ export class TangibleFinancialWidgetComponent implements OnInit, OnDestroy {
                             this.selfAssessment = newAssessment;
                             return this.impactService.getStatus(this.selfAssessment)
                                 .catch((err) => {
-                                    return new EmptyObservable();
+                                    return Observable.empty<ImpactEvaluationStatus>();
                                 });
                         } else {
-                            return new EmptyObservable();
+                            return Observable.empty<ImpactEvaluationStatus>();
                         }
                     } else {
-                        return new EmptyObservable();
+                        return Observable.empty<ImpactEvaluationStatus>();
                     }
                 })
             ).subscribe((status: ImpactEvaluationStatus) => {

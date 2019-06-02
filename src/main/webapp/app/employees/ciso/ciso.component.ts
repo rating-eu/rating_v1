@@ -9,6 +9,7 @@ import {Observable, Subscription} from "rxjs";
 import {HttpResponse} from "@angular/common/http";
 import {of} from "rxjs/observable/of";
 import {EmptyObservable} from "rxjs/observable/EmptyObservable";
+import {MyAssetMgm} from "../../entities/my-asset-mgm";
 
 @Component({
     selector: 'jhi-ciso',
@@ -35,14 +36,14 @@ export class CisoComponent implements OnInit, OnDestroy {
         this.myCompany = this.dataSharingService.myCompany;
         this.fetchEmployees();
 
-        const employees$: Observable<HttpResponse<Employee[]> | null> = this.dataSharingService.myCompanyObservable.pipe(
+        const employees$: Observable<HttpResponse<Employee[]>> = this.dataSharingService.myCompanyObservable.pipe(
             switchMap((response: MyCompanyMgm) => {
                 this.myCompany = response;
 
                 if (this.myCompany && this.myCompany.companyProfile) {
                     return this.employeeService.findAllByCompanyAndRole(this.myCompany.companyProfile, Role.ROLE_CISO_DEPUTY);
                 } else {
-                    return new EmptyObservable();
+                    return Observable.empty<HttpResponse<Employee[]>>();
                 }
             })
         );

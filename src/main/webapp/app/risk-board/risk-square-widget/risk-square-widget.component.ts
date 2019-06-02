@@ -106,15 +106,15 @@ export class RiskSquareWidgetComponent implements OnInit, OnDestroy {
                                 return this.fetchCriticalLevelAndAssetsAtRisk();
                             }
                             case ImpactMode.QUALITATIVE: {
-                                return new EmptyObservable();
+                                return Observable.empty<[CriticalLevelMgm, MyAssetRisk[]]>();
                             }
                             default: {
-                                return new EmptyObservable();
+                                return Observable.empty<[CriticalLevelMgm, MyAssetRisk[]]>();
                             }
                         }
                     }
                 } else {
-                    return new EmptyObservable();
+                    return Observable.empty<[CriticalLevelMgm, MyAssetRisk[]]>();
                 }
             })
         ).subscribe(
@@ -197,16 +197,16 @@ export class RiskSquareWidgetComponent implements OnInit, OnDestroy {
         return Number(mapIndex);
     }
 
-    private fetchCriticalLevelAndAssetsAtRisk(): Observable<[CriticalLevelMgm | {}, MyAssetRisk[] | {}]> {
+    private fetchCriticalLevelAndAssetsAtRisk(): Observable<[CriticalLevelMgm, MyAssetRisk[]]> {
         return forkJoin(
             this.riskService.getCriticalLevel(this.selfAssessment)
                 .catch((error) => {
-                    return new EmptyObservable()
+                    return Observable.empty<CriticalLevelMgm>();
                 }),
             this.riskService.getMyAssetsAtRisk(this.selfAssessment)
                 .catch(
                     (error) => {
-                        return new EmptyObservable()
+                        return Observable.empty<MyAssetRisk[]>();
                     }
                 )
         );

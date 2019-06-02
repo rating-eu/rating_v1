@@ -26,7 +26,8 @@ import {MyAssetMgm} from '../../entities/my-asset-mgm';
 import {DatasharingService} from "../../datasharing/datasharing.service";
 import {switchMap} from "rxjs/operators";
 import {EmptyObservable} from "rxjs/observable/EmptyObservable";
-import {Subscription} from "rxjs";
+import {Observable, Subscription} from "rxjs";
+import {ImpactEvaluationStatus} from "../../impact-evaluation/quantitative/model/impact-evaluation-status.model";
 
 interface OrderBy {
     impact: boolean;
@@ -104,11 +105,11 @@ export class ImpactWidgetComponent implements OnInit, OnDestroy {
 
                             return this.impactService.getMyAssets(this.selfAssessment)
                                 .catch((err) => {
-                                    return new EmptyObservable();
+                                    return Observable.empty<MyAssetMgm>();
                                 });
                         }
                     } else {
-                        return new EmptyObservable();
+                        return Observable.empty<MyAssetMgm>();
                     }
                 })
             ).subscribe((myAssets: MyAssetMgm[]) => {

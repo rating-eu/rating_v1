@@ -26,7 +26,8 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {DatasharingService} from "../../datasharing/datasharing.service";
 import {switchMap} from "rxjs/operators";
 import {EmptyObservable} from "rxjs/observable/EmptyObservable";
-import {Subscription} from "rxjs";
+import {Observable, Subscription} from "rxjs";
+import {ImpactEvaluationStatus} from "../../impact-evaluation/quantitative/model/impact-evaluation-status.model";
 
 interface RiskPercentageElement {
     asset: MyAssetMgm;
@@ -154,13 +155,13 @@ export class AssetAtRiskWidgetComponent implements OnInit, OnDestroy {
 
                                 return this.riskService.getMyAssetsAtRisk(this.selfAssessment)
                                     .catch((err) => {
-                                        return new EmptyObservable()
+                                        return Observable.empty<MyAssetRisk>();
                                     });
                             } else {
-                                return new EmptyObservable();
+                                return Observable.empty<MyAssetRisk>();
                             }
                         } else {
-                            return new EmptyObservable();
+                            return Observable.empty<MyAssetRisk>();
                         }
                     })
                 ).subscribe(
