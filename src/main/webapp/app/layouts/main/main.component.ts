@@ -19,19 +19,16 @@ import {MainService} from './main.service';
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRouteSnapshot, NavigationEnd, Router} from '@angular/router';
 
-import {AccountService, JhiLanguageHelper, LoginService, Principal, User, UserService} from '../../shared';
+import {Account, AccountService, JhiLanguageHelper, LoginService, Principal, User, UserService} from '../../shared';
 import {DatasharingService} from '../../datasharing/datasharing.service';
 import {LayoutConfiguration} from '../model/LayoutConfiguration';
 import {Role} from '../../entities/enumerations/Role.enum';
 import {ModalDismissReasons, NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {HttpResponse} from "@angular/common/http";
 import {MyCompanyMgm, MyCompanyMgmService} from "../../entities/my-company-mgm";
-import {Account} from "../../shared";
 import {Observable, Subscription} from "rxjs";
 import {switchMap} from "rxjs/operators";
 import {of} from "rxjs/observable/of";
-import {EmptyObservable} from "rxjs/observable/EmptyObservable";
-import {Status} from "../../entities/enumerations/Status.enum";
 
 @Component({
     selector: 'jhi-main',
@@ -183,11 +180,41 @@ export class JhiMainComponent implements OnInit, OnDestroy {
             )
         );
 
-        const myCompany$: Observable<HttpResponse<MyCompanyMgm> | null> = role$.pipe(
+        const myCompany$: Observable<HttpResponse<MyCompanyMgm>> = role$.pipe(
             switchMap((roleResponse: Role) => {
                 if (roleResponse) {
                     this.role = roleResponse;
                     this.dataSharingService.role = this.role;
+
+                    switch (this.role) {
+                        case Role.ROLE_CISO_DEPUTY:
+                        case Role.ROLE_CISO: {
+                            this.isCISO = true;
+                            this.isExternal = false;
+                            this.isAdmin = false;
+
+                            break;
+                        }
+                        case Role.ROLE_EXTERNAL_AUDIT: {
+                            this.isCISO = false;
+                            this.isExternal = true;
+                            this.isAdmin = false;
+
+                            break;
+                        }
+                        case Role.ROLE_ADMIN: {
+                            this.isCISO = false;
+                            this.isExternal = false;
+                            this.isAdmin = true;
+
+                            break;
+                        }
+                        default: {
+                            this.isCISO = false;
+                            this.isExternal = false;
+                            this.isAdmin = false;
+                        }
+                    }
 
                     return this.myCompanyService.findByUser(this.user.id)
                         .catch((err) => {
@@ -203,7 +230,7 @@ export class JhiMainComponent implements OnInit, OnDestroy {
         );
 
         this.subscriptions.push(myCompany$.subscribe((myCompanyResponse: HttpResponse<MyCompanyMgm>) => {
-            if (myCompanyResponse) {
+            if (myCompanyResponse && myCompanyResponse.body) {
                 this.myCompany = myCompanyResponse.body;
             } else {
                 this.myCompany = null;
@@ -255,7 +282,7 @@ export class JhiMainComponent implements OnInit, OnDestroy {
                         this.dataSharingService.role = Role.ROLE_EXTERNAL_AUDIT;
 
                         layoutConfiguration.isSidebarCollapsed = true;
-                        layoutConfiguration.isSidebarCollapsedByMe = false;
+                        layoutConfiguration.isSidebarCollapsedByMe = true;
                         this.dataSharingService.layoutConfiguration = layoutConfiguration;
                     }
                 });
