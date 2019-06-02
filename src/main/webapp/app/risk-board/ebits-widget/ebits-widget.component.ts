@@ -89,7 +89,10 @@ export class EbitsWidgetComponent implements OnInit, OnDestroy {
                         if (!this.selfAssessment || this.selfAssessment.id !== newAssessment.id) {
                             this.selfAssessment = newAssessment;
 
-                            return this.impactService.getStatus(this.selfAssessment);
+                            return this.impactService.getStatus(this.selfAssessment)
+                                .catch((err) => {
+                                    return new EmptyObservable();
+                                });
                         } else {
                             return new EmptyObservable();
                         }

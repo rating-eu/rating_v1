@@ -152,7 +152,10 @@ export class AssetAtRiskWidgetComponent implements OnInit, OnDestroy {
                             if (!this.selfAssessment || this.selfAssessment.id !== newAssessment.id) {
                                 this.selfAssessment = newAssessment;
 
-                                return this.riskService.getMyAssetsAtRisk(this.selfAssessment);
+                                return this.riskService.getMyAssetsAtRisk(this.selfAssessment)
+                                    .catch((err) => {
+                                        return new EmptyObservable()
+                                    });
                             } else {
                                 return new EmptyObservable();
                             }

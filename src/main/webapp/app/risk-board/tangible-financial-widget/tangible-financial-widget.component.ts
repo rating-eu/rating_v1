@@ -98,7 +98,10 @@ export class TangibleFinancialWidgetComponent implements OnInit, OnDestroy {
                         // Check if there is no self assessment or if it has changed
                         if (!this.selfAssessment || this.selfAssessment.id !== newAssessment.id) {
                             this.selfAssessment = newAssessment;
-                            return this.impactService.getStatus(this.selfAssessment);
+                            return this.impactService.getStatus(this.selfAssessment)
+                                .catch((err) => {
+                                    return new EmptyObservable();
+                                });
                         } else {
                             return new EmptyObservable();
                         }

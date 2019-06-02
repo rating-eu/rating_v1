@@ -102,7 +102,10 @@ export class ImpactWidgetComponent implements OnInit, OnDestroy {
                         if (!this.selfAssessment || this.selfAssessment.id !== newAssessment.id) {
                             this.selfAssessment = newAssessment;
 
-                            return this.impactService.getMyAssets(this.selfAssessment);
+                            return this.impactService.getMyAssets(this.selfAssessment)
+                                .catch((err) => {
+                                    return new EmptyObservable();
+                                });
                         }
                     } else {
                         return new EmptyObservable();

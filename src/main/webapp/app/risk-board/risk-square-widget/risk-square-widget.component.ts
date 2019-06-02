@@ -197,10 +197,18 @@ export class RiskSquareWidgetComponent implements OnInit, OnDestroy {
         return Number(mapIndex);
     }
 
-    private fetchCriticalLevelAndAssetsAtRisk(): Observable<[CriticalLevelMgm, MyAssetRisk[]]> {
+    private fetchCriticalLevelAndAssetsAtRisk(): Observable<[CriticalLevelMgm | {}, MyAssetRisk[] | {}]> {
         return forkJoin(
-            this.riskService.getCriticalLevel(this.selfAssessment),
+            this.riskService.getCriticalLevel(this.selfAssessment)
+                .catch((error) => {
+                    return new EmptyObservable()
+                }),
             this.riskService.getMyAssetsAtRisk(this.selfAssessment)
+                .catch(
+                    (error) => {
+                        return new EmptyObservable()
+                    }
+                )
         );
     }
 

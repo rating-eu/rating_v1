@@ -159,15 +159,18 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
             })
         );
 
-        const externalAudits$: Observable<User[] | null> = questionnaireAndStatusesJoin$.pipe(
+        const externalAudits$: Observable<User[]> = questionnaireAndStatusesJoin$.pipe(
             switchMap((response: [QuestionnaireMgm, QuestionnaireStatusMgm[]]) => {
                 this.questionnaire = response[0];
                 this.questionnaireStatuses = response[1];
 
                 if (this.purpose === QuestionnairePurpose.SELFASSESSMENT && this.role === Role.ROLE_CISO) {
-                    return this.userService.getExternalAuditsByCompanyProfile(this.myCompany.companyProfile.id);
+                    return this.userService.getExternalAuditsByCompanyProfile(this.myCompany.companyProfile.id)
+                        .catch((err) => {
+                            return Observable.empty<User[]>();
+                        });
                 } else {
-                    return new EmptyObservable();
+                    return Observable.empty<User[]>();
                 }
             })
         );

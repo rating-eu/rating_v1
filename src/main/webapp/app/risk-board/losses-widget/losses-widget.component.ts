@@ -121,10 +121,16 @@ export class LossesWidgetComponent implements OnInit, OnDestroy {
         );
     }
 
-    private fetchMyAssetsAndImpactStatus(): Observable<[MyAssetMgm[], ImpactEvaluationStatus]> {
+    private fetchMyAssetsAndImpactStatus(): Observable<[MyAssetMgm[] | {}, ImpactEvaluationStatus | {}]> {
         return forkJoin(
-            this.impactService.getMyAssets(this.selfAssessment),
+            this.impactService.getMyAssets(this.selfAssessment)
+                .catch((err) => {
+                    return new EmptyObservable();
+                }),
             this.impactService.getStatus(this.selfAssessment)
+                .catch((err) => {
+                    return new EmptyObservable();
+                })
         );
     }
 

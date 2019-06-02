@@ -28,6 +28,8 @@ import {DatasharingService} from "../../datasharing/datasharing.service";
 import {ImpactMode} from "../../entities/enumerations/ImpactMode.enum";
 import {switchMap} from "rxjs/operators";
 import {EmptyObservable} from "rxjs/observable/EmptyObservable";
+import {ImpactEvaluationStatus} from "../../impact-evaluation/quantitative/model/impact-evaluation-status.model";
+import {of} from "rxjs/observable/of";
 
 @Component({
     selector: 'jhi-step-info-widget',
@@ -73,7 +75,7 @@ export class StepInfoWidgetComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
-        console.error("Step info widget on Init")
+        console.log("Step info widget on Init");
 
         this.subscriptions = [];
         this.selfAssessment = this.datasharingService.selfAssessment;
@@ -99,10 +101,13 @@ export class StepInfoWidgetComponent implements OnInit, OnDestroy {
                         if (!this.selfAssessment || this.selfAssessment.id !== newAssessment.id) {
                             this.selfAssessment = newAssessment;
 
-                            return this.fetchStatus$();
+                            return this.fetchStatus$()
+                                .catch((err) => {
+                                    return Observable.empty<[Status, Status, Status, Status]>();
+                                });
                         }
                     } else {
-                        return new EmptyObservable();
+                        return Observable.empty<[Status, Status, Status, Status]>();
                     }
                 })
             ).subscribe((response: [Status, Status, Status, Status]) => {
@@ -145,10 +150,22 @@ export class StepInfoWidgetComponent implements OnInit, OnDestroy {
             this.changeDetector.detectChanges();
         }*/
 
-        this.assetClusteringStatus$ = this.riskBoardService.getStatusFromServer(this.selfAssessment, RiskBoardStepEnum.ASSET_CLUSTERING);
-        this.impactEvaluationStatus$ = this.riskBoardService.getStatusFromServer(this.selfAssessment, RiskBoardStepEnum.IMPACT_EVALUATION);
-        this.attackRelatedCostsStatus$ = this.riskBoardService.getStatusFromServer(this.selfAssessment, RiskBoardStepEnum.ATTACK_RELATED_COSTS);
-        this.riskEvaluationStatus$ = this.riskBoardService.getStatusFromServer(this.selfAssessment, RiskBoardStepEnum.RISK_EVALUATION);
+        this.assetClusteringStatus$ = this.riskBoardService.getStatusFromServer(this.selfAssessment, RiskBoardStepEnum.ASSET_CLUSTERING)
+            .catch((err) => {
+                return of(Status.EMPTY);
+            });
+        this.impactEvaluationStatus$ = this.riskBoardService.getStatusFromServer(this.selfAssessment, RiskBoardStepEnum.IMPACT_EVALUATION)
+            .catch((err) => {
+                return of(Status.EMPTY);
+            });
+        this.attackRelatedCostsStatus$ = this.riskBoardService.getStatusFromServer(this.selfAssessment, RiskBoardStepEnum.ATTACK_RELATED_COSTS)
+            .catch((err) => {
+                return of(Status.EMPTY);
+            });
+        this.riskEvaluationStatus$ = this.riskBoardService.getStatusFromServer(this.selfAssessment, RiskBoardStepEnum.RISK_EVALUATION)
+            .catch((err) => {
+                return of(Status.EMPTY);
+            });
 
         const join$: Observable<[Status, Status, Status, Status]> = forkJoin(this.assetClusteringStatus$,
             this.impactEvaluationStatus$, this.attackRelatedCostsStatus$, this.riskEvaluationStatus$);
@@ -186,7 +203,7 @@ export class StepInfoWidgetComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy(): void {
-        console.error("Step info widget on destroy");
+        console.log("Step info widget on destroy");
 
         if (this.subscriptions && this.subscriptions.length) {
             this.subscriptions.forEach((subscription) => {

@@ -115,7 +115,11 @@ export class MostCriticalAttackStrategiesWidgetComponent implements OnInit, OnDe
     }
 
     private fetchCriticalAttackStrategies(): Observable<CriticalAttackStrategy[]> {
-        return this.criticalAttackStrategyService.getCriticalAttackStrategies(this.selfAssessment.id);
+        return this.criticalAttackStrategyService
+            .getCriticalAttackStrategies(this.selfAssessment.id)
+            .catch(err => {
+                return Observable.empty<CriticalAttackStrategy[]>()
+            });
     }
 
     private handleAttackStrategiesUpdate(response: CriticalAttackStrategy[]) {
