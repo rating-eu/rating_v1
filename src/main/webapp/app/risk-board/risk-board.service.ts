@@ -25,13 +25,23 @@ import {Observable} from "rxjs";
 
 
 export class RiskBoardStatus {
-    assetClusteringStatus: Status = Status.EMPTY;
-    identifyThreatAgentsStatus: Status = Status.EMPTY;
-    assessVulnerablitiesStatus: Status = Status.EMPTY;
-    refineVulnerablitiesStatus: Status = Status.EMPTY;
-    impactEvaluationStatus: Status = Status.EMPTY;
-    attackRelatedCostEstimationStatus: Status = Status.EMPTY;
-    riskEvaluationStatus: Status = Status.EMPTY;
+    assetClusteringStatus: Status;
+    identifyThreatAgentsStatus: Status;
+    assessVulnerablitiesStatus: Status;
+    refineVulnerablitiesStatus: Status;
+    impactEvaluationStatus: Status;
+    attackRelatedCostEstimationStatus: Status;
+    riskEvaluationStatus: Status;
+
+    constructor() {
+        this.assetClusteringStatus = Status.EMPTY;
+        this.identifyThreatAgentsStatus = Status.EMPTY;
+        this.assessVulnerablitiesStatus = Status.EMPTY;
+        this.refineVulnerablitiesStatus = Status.EMPTY;
+        this.impactEvaluationStatus = Status.EMPTY;
+        this.attackRelatedCostEstimationStatus = Status.EMPTY;
+        this.riskEvaluationStatus = Status.EMPTY;
+    }
 }
 
 @Injectable()
