@@ -25,10 +25,10 @@ import {RiskManagementService} from '../../risk-management/risk-management.servi
 import {Status} from "../../entities/enumerations/Status.enum";
 import {DatasharingService} from "../../datasharing/datasharing.service";
 import {switchMap} from "rxjs/operators";
-import {EmptyObservable} from "rxjs/observable/EmptyObservable";
 import {ImpactMode} from "../../entities/enumerations/ImpactMode.enum";
 import {forkJoin} from "rxjs/observable/forkJoin";
 import {Observable, Subscription} from "rxjs";
+import {of} from "rxjs/observable/of";
 
 @Component({
     selector: 'jhi-risk-square-widget',
@@ -103,15 +103,15 @@ export class RiskSquareWidgetComponent implements OnInit, OnDestroy {
                                 return this.fetchCriticalLevelAndAssetsAtRisk();
                             }
                             case ImpactMode.QUALITATIVE: {
-                                return Observable.empty<[CriticalLevelMgm, MyAssetRisk[]]>();
+                                return forkJoin(of(null), of([]));
                             }
                             default: {
-                                return Observable.empty<[CriticalLevelMgm, MyAssetRisk[]]>();
+                                return forkJoin(of(null), of([]));
                             }
                         }
                     }
                 } else {
-                    return Observable.empty<[CriticalLevelMgm, MyAssetRisk[]]>();
+                    return forkJoin(of(null), of([]));
                 }
             })
         ).subscribe(
@@ -198,12 +198,12 @@ export class RiskSquareWidgetComponent implements OnInit, OnDestroy {
         return forkJoin(
             this.riskService.getCriticalLevel(this.selfAssessment)
                 .catch((error) => {
-                    return Observable.empty<CriticalLevelMgm>();
+                    return of(null);
                 }),
             this.riskService.getMyAssetsAtRisk(this.selfAssessment)
                 .catch(
                     (error) => {
-                        return Observable.empty<MyAssetRisk[]>();
+                        return of([]);
                     }
                 )
         );

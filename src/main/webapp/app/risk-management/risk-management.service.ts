@@ -25,6 +25,7 @@ import {CriticalLevelMgm} from '../entities/critical-level-mgm';
 import {HttpClient, HttpResponse, HttpErrorResponse} from '../../../../../node_modules/@angular/common/http';
 import {MyAssetAttackChance} from './model/my-asset-attack-chance.model';
 import {AttackCostFormula} from './model/attack-cost-formula.model';
+import {of} from "rxjs/observable/of";
 
 @Injectable()
 export class RiskManagementService {
@@ -55,7 +56,7 @@ export class RiskManagementService {
             .map((res: HttpResponse<MyAssetRisk[]>) => {
                 return res.body;
             }).catch((err: HttpErrorResponse) => {
-                return Observable.empty<MyAssetRisk[]>();
+                return of(null);
             });
     }
 
@@ -65,7 +66,7 @@ export class RiskManagementService {
             .map((res) => {
                 return res;
             }).catch((err) => {
-                return Observable.empty<string>();
+                return of(null);
             });
     }
 
@@ -75,7 +76,7 @@ export class RiskManagementService {
             .map((res: HttpResponse<AttackCostFormula[]>) => {
                 return res.body;
             }).catch((err: HttpErrorResponse) => {
-                return Observable.empty<AttackCostFormula[]>();
+                return of(null);
             });
     }
 
@@ -85,7 +86,7 @@ export class RiskManagementService {
             .map((res: HttpResponse<CriticalLevelMgm>) => {
                 return res.body;
             }).catch((err: HttpErrorResponse) => {
-                return Observable.empty<CriticalLevelMgm>();
+                return of(null);
             });
     }
 

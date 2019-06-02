@@ -29,7 +29,7 @@ import {SectorType} from "../../entities/enumerations/SectorTyep.enum";
 import {Observable, Subscription} from "rxjs";
 import {forkJoin} from "rxjs/observable/forkJoin";
 import {switchMap} from "rxjs/operators";
-import {EmptyObservable} from "rxjs/observable/EmptyObservable";
+import {of} from "rxjs/observable/of";
 
 interface OrderBy {
     category: boolean;
@@ -101,10 +101,10 @@ export class LossesWidgetComponent implements OnInit, OnDestroy {
 
                             return this.fetchMyAssetsAndImpactStatus();
                         } else {
-                            return Observable.empty<[MyAssetMgm[], ImpactEvaluationStatus]>();
+                            return forkJoin(of([]), of(null));
                         }
                     } else {
-                        return Observable.empty<[MyAssetMgm[], ImpactEvaluationStatus]>();
+                        return forkJoin(of([]), of(null));
                     }
                 })
             ).subscribe((response: [MyAssetMgm[], ImpactEvaluationStatus]) => {
@@ -122,11 +122,11 @@ export class LossesWidgetComponent implements OnInit, OnDestroy {
         return forkJoin(
             this.impactService.getMyAssets(this.selfAssessment)
                 .catch((err) => {
-                    return Observable.empty<MyAssetMgm[]>();
+                    return of([]);
                 }),
             this.impactService.getStatus(this.selfAssessment)
                 .catch((err) => {
-                    return Observable.empty<ImpactEvaluationStatus>();
+                    return of(null);
                 })
         );
     }

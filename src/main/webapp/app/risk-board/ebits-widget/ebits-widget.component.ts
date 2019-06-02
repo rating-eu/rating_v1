@@ -24,8 +24,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {DatasharingService} from "../../datasharing/datasharing.service";
 import {Observable, Subscription} from "rxjs";
 import {switchMap} from "rxjs/operators";
-import {EmptyObservable} from "rxjs/observable/EmptyObservable";
-import {MyAssetRisk} from "../../risk-management/model/my-asset-risk.model";
+import {of} from "rxjs/observable/of";
 
 interface OrderBy {
     year: boolean;
@@ -89,13 +88,13 @@ export class EbitsWidgetComponent implements OnInit, OnDestroy {
 
                             return this.impactService.getStatus(this.selfAssessment)
                                 .catch((err) => {
-                                    return Observable.empty<ImpactEvaluationStatus>();
+                                    return of(null);
                                 });
                         } else {
-                            return Observable.empty<ImpactEvaluationStatus>();
+                            return of(null);
                         }
                     } else {
-                        return Observable.empty<ImpactEvaluationStatus>();
+                        return of(null);
                     }
                 })
             ).subscribe((status: ImpactEvaluationStatus) => {

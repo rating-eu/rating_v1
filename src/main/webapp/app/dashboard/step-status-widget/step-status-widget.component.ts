@@ -9,12 +9,11 @@ import {HttpResponse} from "@angular/common/http";
 import {ModalDismissReasons, NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {Router} from "@angular/router";
 import {Status} from "../../entities/enumerations/Status.enum";
-import {catchError, switchMap} from "rxjs/operators";
+import {switchMap} from "rxjs/operators";
 import {CompletionDtoService} from "../../dto/completion/completion-dto.service";
 import {AssessVulnerabilitiesCompletionDTO} from "../../dto/completion/assess-vulnerabilities-completion";
-import {of} from "rxjs/observable/of";
 import {CompanyBoardStatus} from "../models/CompanyBoardStatus";
-import {EmptyObservable} from "rxjs/observable/EmptyObservable";
+import {of} from "rxjs/observable/of";
 
 @Component({
     selector: 'jhi-step-status-widget',
@@ -90,11 +89,14 @@ export class StepStatusWidgetComponent implements OnInit {
                         case Status.EMPTY: {
                             return this.completionDTOService.getAssessVulnerabilitiesCompletionByCompanyProfile(this.myCompany.companyProfile.id);
                         }
+                        default:{
+                            return of(new HttpResponse<AssessVulnerabilitiesCompletionDTO>({body: new AssessVulnerabilitiesCompletionDTO()}));
+                        }
                     }
                 })
             ).catch((err) => {
                 this.loading = false;
-                return Observable.empty<HttpResponse<AssessVulnerabilitiesCompletionDTO>>();
+                return of(new HttpResponse<AssessVulnerabilitiesCompletionDTO>({body: new AssessVulnerabilitiesCompletionDTO()}));
             });
 
             if (assessVulnerabilitiesCompletion$) {

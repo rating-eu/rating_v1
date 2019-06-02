@@ -21,6 +21,7 @@ import { HttpClient, HttpResponse, HttpErrorResponse } from '@angular/common/htt
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { SERVER_API_URL } from '../../app.constants';
+import {of} from "rxjs/observable/of";
 
 @Injectable()
 export class MainService {
@@ -37,7 +38,7 @@ export class MainService {
                 return res.body;
             }).catch((err: HttpErrorResponse) => {
                 console.error('An error occurred:', err.status);
-                return Observable.empty<Mode>();
+                return of(Mode.RATING);
             });
     }
 }

@@ -22,7 +22,7 @@ import {ImpactEvaluationService} from '../../impact-evaluation/impact-evaluation
 import {DatasharingService} from "../../datasharing/datasharing.service";
 import {Observable, Subscription} from "rxjs";
 import {switchMap} from "rxjs/operators";
-import {EmptyObservable} from "rxjs/observable/EmptyObservable";
+import {of} from "rxjs/observable/of";
 
 @Component({
     selector: 'jhi-financial-value-widget',
@@ -70,13 +70,13 @@ export class FinancialValueWidgetComponent implements OnInit, OnDestroy {
 
                             return this.impactService.getStatus(this.selfAssessment)
                                 .catch((err) => {
-                                    return Observable.empty<ImpactEvaluationStatus>();
+                                    return of(null);
                                 });
                         } else {
-                            return Observable.empty<ImpactEvaluationStatus>();
+                            return of(null);
                         }
                     } else {
-                        return Observable.empty<ImpactEvaluationStatus>();
+                        return of(null);
                     }
                 })
             ).subscribe(

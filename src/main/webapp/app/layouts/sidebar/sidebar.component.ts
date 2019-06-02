@@ -51,7 +51,7 @@ export class SidebarComponent implements OnInit, OnDestroy, AfterViewInit {
     public isCollapsed = true;
     public menuItems: MenuItem[];
     private companyMenuItem: MenuItem;
-    private employeesMenuItem: MenuItem;
+    private peopleMenuItem: MenuItem;
     private cyberPostureMenuItem: MenuItem;
     private riskManagementMenuItem: MenuItem;
     private taxonomiesMenuItem: MenuItem;
@@ -226,24 +226,24 @@ export class SidebarComponent implements OnInit, OnDestroy, AfterViewInit {
             ]
         };
 
-        this.employeesMenuItem = {
-            label: 'Employees',
+        this.peopleMenuItem = {
+            label: 'People',
             icon: 'fas fa-address-book',
             items: [
                 {
                     label: 'CISO Deputy',
                     icon: 'fas fa-user-tie',
-                    routerLink: ['/employees/ciso']
+                    routerLink: ['/people/ciso']
                 },
                 {
                     label: 'External Auditor',
                     icon: 'fas fa-address-card',
-                    routerLink: ['/employees/external']
+                    routerLink: ['/people/external']
                 },
                 {
                     label: 'Financial Deputy',
                     icon: 'fas fa-glasses',
-                    routerLink: ['/employees/financial']
+                    routerLink: ['/people/financial']
                 }
             ]
         };
@@ -374,7 +374,7 @@ export class SidebarComponent implements OnInit, OnDestroy, AfterViewInit {
         };
 
         // @ts-ignore
-        this.companyMenuItem.items.push(this.employeesMenuItem);
+        this.companyMenuItem.items.push(this.peopleMenuItem);
 
         this.menuItems = [
             this.companyMenuItem,

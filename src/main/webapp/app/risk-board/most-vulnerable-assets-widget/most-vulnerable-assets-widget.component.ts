@@ -24,8 +24,8 @@ import {AugmentedMyAsset} from '../../my-risk-assessments/models/AugmentedMyAsse
 import {AugmentedAttackStrategy} from '../../evaluate-weakness/models/augmented-attack-strategy.model';
 import {DatasharingService} from "../../datasharing/datasharing.service";
 import {switchMap} from "rxjs/operators";
-import {EmptyObservable} from "rxjs/observable/EmptyObservable";
 import {Observable, Subscription} from "rxjs";
+import {of} from "rxjs/observable/of";
 
 interface MdawEntity {
     asset: AugmentedMyAsset;
@@ -133,7 +133,7 @@ export class MostVulnerableAssetsWidgetComponent implements OnInit, OnDestroy {
                             return this.selfAssessmentService.getOverwiew(this.selfAssessment.id);
                         }
                     } else {
-                        return Observable.empty<SelfAssessmentOverview>();
+                        return of(null);
                     }
                 })
             ).subscribe((response: SelfAssessmentOverview) => {

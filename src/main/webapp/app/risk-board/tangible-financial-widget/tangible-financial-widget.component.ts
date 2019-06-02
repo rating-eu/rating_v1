@@ -27,7 +27,7 @@ import {AssetType} from '../../entities/enumerations/AssetType.enum';
 import {DatasharingService} from "../../datasharing/datasharing.service";
 import {Observable, Subscription} from "rxjs";
 import {switchMap} from "rxjs/operators";
-import {EmptyObservable} from "rxjs/observable/EmptyObservable";
+import {of} from "rxjs/observable/of";
 
 interface OrderBy {
     category: boolean;
@@ -97,13 +97,13 @@ export class TangibleFinancialWidgetComponent implements OnInit, OnDestroy {
                             this.selfAssessment = newAssessment;
                             return this.impactService.getStatus(this.selfAssessment)
                                 .catch((err) => {
-                                    return Observable.empty<ImpactEvaluationStatus>();
+                                    return of(null);
                                 });
                         } else {
-                            return Observable.empty<ImpactEvaluationStatus>();
+                            return of(null);
                         }
                     } else {
-                        return Observable.empty<ImpactEvaluationStatus>();
+                        return of(null);
                     }
                 })
             ).subscribe((status: ImpactEvaluationStatus) => {

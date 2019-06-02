@@ -1,12 +1,12 @@
 /*
  * Copyright 2019 HERMENEUT Consortium
- *  
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *  
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- *  
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -19,12 +19,16 @@ package eu.hermeneut.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import eu.hermeneut.domain.CriticalLevel;
+import eu.hermeneut.domain.SelfAssessment;
+import eu.hermeneut.exceptions.NotFoundException;
 import eu.hermeneut.service.CriticalLevelService;
+import eu.hermeneut.service.SelfAssessmentService;
 import eu.hermeneut.web.rest.errors.BadRequestAlertException;
 import eu.hermeneut.web.rest.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -47,6 +51,9 @@ public class CriticalLevelResource {
     private static final String ENTITY_NAME = "criticalLevel";
 
     private final CriticalLevelService criticalLevelService;
+
+    @Autowired
+    private SelfAssessmentService selfAssessmentService;
 
     public CriticalLevelResource(CriticalLevelService criticalLevelService) {
         this.criticalLevelService = criticalLevelService;
@@ -104,7 +111,7 @@ public class CriticalLevelResource {
     public List<CriticalLevel> getAllCriticalLevels() {
         log.debug("REST request to get all CriticalLevels");
         return criticalLevelService.findAll();
-        }
+    }
 
     /**
      * GET  /critical-levels/:id : get the "id" criticalLevel.
@@ -122,9 +129,29 @@ public class CriticalLevelResource {
 
     @GetMapping("/critical-levels/self-assessment/{selfAssessmentID}")
     @Timed
-    public ResponseEntity<CriticalLevel> getCriticalLevelBySelfAssessment(@PathVariable Long selfAssessmentID){
+    public ResponseEntity<CriticalLevel> getCriticalLevelBySelfAssessment(@PathVariable Long selfAssessmentID) throws NotFoundException {
         log.debug("REST request to get CriticalLevel by SelfAssessment ID: {}", selfAssessmentID);
+
+        SelfAssessment selfAssessment = this.selfAssessmentService.findOne(selfAssessmentID);
+
+        if (selfAssessment == null) {
+            throw new NotFoundException("SelfAssessment not found");
+        }
+
         CriticalLevel criticalLevel = criticalLevelService.findOneBySelfAssessment(selfAssessmentID);
+
+        if (criticalLevel == null) {
+            criticalLevel = new CriticalLevel();
+
+            criticalLevel.setSelfAssessment(selfAssessment);
+            criticalLevel.setSide(5);
+            criticalLevel.setLowLimit(4);
+            criticalLevel.setMediumLimit(14);
+            criticalLevel.setHighLimit(25);
+
+            criticalLevel = this.criticalLevelService.save(criticalLevel);
+        }
+
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(criticalLevel));
     }
 
