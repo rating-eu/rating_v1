@@ -41,7 +41,6 @@ import {forkJoin} from "rxjs/observable/forkJoin";
 import {AssessVulnerabilitiesCompletionDTO} from "../../dto/completion/assess-vulnerabilities-completion";
 import {CompletionDtoService} from "../../dto/completion/completion-dto.service";
 import {of} from "rxjs/observable/of";
-import {EmptyObservable} from "rxjs/observable/EmptyObservable";
 
 @Component({
     selector: 'jhi-questionnaires',
@@ -159,8 +158,14 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
                     }
                 }
 
-                this.questionnaire$ = this.questionnairesService.getQuestionnaireByPurposeAndCompanyType(this.purpose, this.myCompany.companyProfile.type);
-                this.questionnaireStatuses$ = this.questionnaireStatusService.getAllQuestionnaireStatusesByCurrentUserAndQuestionnairePurpose(this.purpose);
+                this.questionnaire$ = this.questionnairesService.getQuestionnaireByPurposeAndCompanyType(this.purpose, this.myCompany.companyProfile.type)
+                    .catch((err) => {
+                        return of({});
+                    });
+                this.questionnaireStatuses$ = this.questionnaireStatusService.getAllQuestionnaireStatusesByCurrentUserAndQuestionnairePurpose(this.purpose)
+                    .catch((err) => {
+                        return of([])
+                    });
 
                 return forkJoin(this.questionnaire$, this.questionnaireStatuses$);
             })
@@ -174,16 +179,16 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
                 if (this.purpose === QuestionnairePurpose.SELFASSESSMENT && this.role === Role.ROLE_CISO) {
                     return this.userService.getExternalAuditsByCompanyProfile(this.myCompany.companyProfile.id)
                         .catch((err) => {
-                            return new EmptyObservable<User[]>();
+                            return of([]);
                         });
                 } else {
-                    return new EmptyObservable<User[]>();
+                    return of([]);
                 }
             })
         );
 
-        const howToProceed$: Observable<HttpResponse<QuestionnaireStatusMgm> | null | QuestionnaireStatusMgm | HttpResponse<AssessVulnerabilitiesCompletionDTO>[]> = externalAudits$.pipe(
-            switchMap((response: User[] | null) => {
+        const howToProceed$ = externalAudits$.pipe(
+            switchMap((response) => {
                     if (response) {
                         this.externalAudits = response;
                     } else {
@@ -202,7 +207,7 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
                                 return this.questionnaireStatusService.create(questionnaireStatus);
                             }
                             case QuestionnairePurpose.SELFASSESSMENT: {
-                                return new EmptyObservable();
+                                return of({});
                             }
                         }
                     } else {
