@@ -108,7 +108,6 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
-        console.log('Questionnaires ON INIT:');
         this.canCreateNewQuestionnaireStatus = true;
         this.showCompletionPercentages = false;
         this.useExistingThreatAgentQuestionnaireStatus = false;
@@ -118,9 +117,6 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
         this.user = this.dataSharingService.user;
         this.role = this.dataSharingService.role;
         this.myCompany = this.dataSharingService.myCompany;
-
-        console.log("MyCompany:");
-        console.log(this.myCompany);
 
         // Listen for when a new QuestionnaireStatus is created
         this.registerChangeInQuestionnaireStatuses();
@@ -134,7 +130,6 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
     }
 
     private loadQuestionnaireStatuses() {
-        console.log("Loading questionnaire");
         const params$ = this.route.params;
 
         // GET the questionnaires by purpose
@@ -159,15 +154,18 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
             })
         );
 
-        const externalAudits$: Observable<User[] | null> = questionnaireAndStatusesJoin$.pipe(
+        const externalAudits$: Observable<User[]> = questionnaireAndStatusesJoin$.pipe(
             switchMap((response: [QuestionnaireMgm, QuestionnaireStatusMgm[]]) => {
                 this.questionnaire = response[0];
                 this.questionnaireStatuses = response[1];
 
                 if (this.purpose === QuestionnairePurpose.SELFASSESSMENT && this.role === Role.ROLE_CISO) {
-                    return this.userService.getExternalAuditsByCompanyProfile(this.myCompany.companyProfile.id);
+                    return this.userService.getExternalAuditsByCompanyProfile(this.myCompany.companyProfile.id)
+                        .catch((err) => {
+                            return Observable.empty<User[]>();
+                        });
                 } else {
-                    return new EmptyObservable();
+                    return Observable.empty<User[]>();
                 }
             })
         );
@@ -190,20 +188,6 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
 
                                 this.createNewThreatAgentsQuestionnaireStatus = true;
                                 return this.questionnaireStatusService.create(questionnaireStatus);
-
-                                /*this.subscriptions.push(this.questionnaireStatusService.create(questionnaireStatus).subscribe(
-                                    (response: HttpResponse<QuestionnaireStatusMgm>) => {
-                                        if (response) {
-                                            questionnaireStatus = response.body;
-                                            this.questionnaireStatuses.push(response.body);
-
-                                            this.setCurrentQuestionnaireStatus(questionnaireStatus);
-                                            this.router.navigate(['/identify-threat-agent/questionnaires/ID_THREAT_AGENT/questionnaire']);
-                                        }
-                                    }
-                                ));
-
-                                break*/
                             }
                             case QuestionnairePurpose.SELFASSESSMENT: {
                                 return new EmptyObservable();
@@ -280,12 +264,8 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
         this.subscriptions.push(howToProceed$.subscribe(
             (response: HttpResponse<QuestionnaireStatusMgm> | null | QuestionnaireStatusMgm | HttpResponse<AssessVulnerabilitiesCompletionDTO>[]) => {
 
-                console.log("Inside HOW TO PROCEED...");
-
                 switch (this.purpose) {
                     case QuestionnairePurpose.ID_THREAT_AGENT: {
-                        console.log("CASE THREAT AGENTS");
-
                         if (this.createNewThreatAgentsQuestionnaireStatus) {
                             this.createNewThreatAgentsQuestionnaireStatus = false;
 
@@ -327,14 +307,6 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
         ));
     }
 
-    ngOnDestroy() {
-        if (this.subscriptions) {
-            this.subscriptions.forEach((subscription: Subscription) => {
-                subscription.unsubscribe();
-            });
-        }
-    }
-
     setCurrentQuestionnaireStatus(questionnaireStatus: QuestionnaireStatusMgm) {
         switch (this.role) {
             case Role.ROLE_CISO: {
@@ -350,7 +322,7 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
     }
 
     createNewQuestionnaireStatus() {
-        let questionnaireStatus$: Observable<HttpResponse<QuestionnaireStatusMgm>> = undefined;
+        let questionnaireStatus$: Observable<HttpResponse<QuestionnaireStatusMgm>> = null;
 
         switch (this.purpose) {
             case QuestionnairePurpose.ID_THREAT_AGENT: {
@@ -400,5 +372,15 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
                 this.externalChangedMap.set(questionnaireStatus.id, false);
             }
         });
+    }
+
+    ngOnDestroy() {
+        this.changeDetector.detach();
+
+        if (this.subscriptions) {
+            this.subscriptions.forEach((subscription: Subscription) => {
+                subscription.unsubscribe();
+            });
+        }
     }
 }

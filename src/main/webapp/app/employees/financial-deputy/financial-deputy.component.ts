@@ -41,7 +41,7 @@ export class FinancialDeputyComponent implements OnInit, OnDestroy {
                 if (this.myCompany && this.myCompany.companyProfile) {
                     return this.employeeService.findAllByCompanyAndRole(this.myCompany.companyProfile, Role.ROLE_FINANCIAL_DEPUTY);
                 } else {
-                    return new EmptyObservable();
+                    return Observable.empty<HttpResponse<Employee[]>>();
                 }
             })
         );

@@ -94,9 +94,6 @@ export class LossesWidgetComponent implements OnInit, OnDestroy {
         this.subscriptions.push(
             this.dataSharingService.selfAssessmentObservable.pipe(
                 switchMap((newAssessment: SelfAssessmentMgm) => {
-                    console.log("Losses widget: ASSESSMENT CHANGED");
-                    console.log(newAssessment);
-
                     if (newAssessment) {
                         // Check if there is no self assessment or if it has changed
                         if (!this.selfAssessment || this.selfAssessment.id !== newAssessment.id) {
@@ -104,10 +101,10 @@ export class LossesWidgetComponent implements OnInit, OnDestroy {
 
                             return this.fetchMyAssetsAndImpactStatus();
                         } else {
-                            return new EmptyObservable();
+                            return Observable.empty<[MyAssetMgm[], ImpactEvaluationStatus]>();
                         }
                     } else {
-                        return new EmptyObservable();
+                        return Observable.empty<[MyAssetMgm[], ImpactEvaluationStatus]>();
                     }
                 })
             ).subscribe((response: [MyAssetMgm[], ImpactEvaluationStatus]) => {
@@ -123,8 +120,14 @@ export class LossesWidgetComponent implements OnInit, OnDestroy {
 
     private fetchMyAssetsAndImpactStatus(): Observable<[MyAssetMgm[], ImpactEvaluationStatus]> {
         return forkJoin(
-            this.impactService.getMyAssets(this.selfAssessment),
+            this.impactService.getMyAssets(this.selfAssessment)
+                .catch((err) => {
+                    return Observable.empty<MyAssetMgm[]>();
+                }),
             this.impactService.getStatus(this.selfAssessment)
+                .catch((err) => {
+                    return Observable.empty<ImpactEvaluationStatus>();
+                })
         );
     }
 

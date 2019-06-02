@@ -25,6 +25,7 @@ import {Observable, Subscription} from "rxjs";
 import {isEmpty, switchMap} from "rxjs/operators";
 import {EmptyObservable} from "rxjs/observable/EmptyObservable";
 import {Router} from "@angular/router";
+import {MyAssetMgm} from "../../entities/my-asset-mgm";
 
 export enum CriticalAttackStrategyField {
     'ATTACK_STRATEGY' = <any>'ATTACK_STRATEGY',
@@ -90,9 +91,6 @@ export class MostCriticalAttackStrategiesWidgetComponent implements OnInit, OnDe
         this.subscriptions.push(
             this.dataSharingService.selfAssessmentObservable.pipe(
                 switchMap((newAssessment: SelfAssessmentMgm) => {
-                    console.log("Most critical attack-strategies: ASSESSMENT CHANGED");
-                    console.log(newAssessment);
-
                     if (newAssessment) {
                         // Check if there is no self assessment or if it has changed
                         if (!this.selfAssessment || this.selfAssessment.id !== newAssessment.id) {
@@ -101,7 +99,7 @@ export class MostCriticalAttackStrategiesWidgetComponent implements OnInit, OnDe
                             return this.fetchCriticalAttackStrategies();
                         }
                     } else {
-                        return new EmptyObservable();
+                        return Observable.empty<CriticalAttackStrategy[]>();
                     }
                 })
             ).subscribe(
@@ -115,7 +113,11 @@ export class MostCriticalAttackStrategiesWidgetComponent implements OnInit, OnDe
     }
 
     private fetchCriticalAttackStrategies(): Observable<CriticalAttackStrategy[]> {
-        return this.criticalAttackStrategyService.getCriticalAttackStrategies(this.selfAssessment.id);
+        return this.criticalAttackStrategyService
+            .getCriticalAttackStrategies(this.selfAssessment.id)
+            .catch(err => {
+                return Observable.empty<CriticalAttackStrategy[]>()
+            });
     }
 
     private handleAttackStrategiesUpdate(response: CriticalAttackStrategy[]) {
@@ -216,6 +218,8 @@ export class MostCriticalAttackStrategiesWidgetComponent implements OnInit, OnDe
     }
 
     ngOnDestroy(): void {
+        this.changeDetector.detach();
+
         if (this.subscriptions && this.subscriptions.length) {
             this.subscriptions.forEach(subscription => {
                 subscription.unsubscribe();

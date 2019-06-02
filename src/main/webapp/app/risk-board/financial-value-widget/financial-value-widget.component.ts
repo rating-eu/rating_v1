@@ -20,7 +20,7 @@ import {ImpactEvaluationStatus} from "../../impact-evaluation/quantitative/model
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ImpactEvaluationService} from '../../impact-evaluation/impact-evaluation.service';
 import {DatasharingService} from "../../datasharing/datasharing.service";
-import {Subscription} from "rxjs";
+import {Observable, Subscription} from "rxjs";
 import {switchMap} from "rxjs/operators";
 import {EmptyObservable} from "rxjs/observable/EmptyObservable";
 
@@ -63,20 +63,20 @@ export class FinancialValueWidgetComponent implements OnInit, OnDestroy {
         this.subscriptions.push(
             this.dataSharingService.selfAssessmentObservable.pipe(
                 switchMap((newAssessment: SelfAssessmentMgm) => {
-                    console.log("Financial Value widget: ASSESSMENT CHANGED");
-                    console.log(newAssessment);
-
                     if (newAssessment) {
                         // Check if there is no self assessment or if it has changed
                         if (!this.selfAssessment || this.selfAssessment.id !== newAssessment.id) {
                             this.selfAssessment = newAssessment;
 
-                            return this.impactService.getStatus(this.selfAssessment);
+                            return this.impactService.getStatus(this.selfAssessment)
+                                .catch((err) => {
+                                    return Observable.empty<ImpactEvaluationStatus>();
+                                });
                         } else {
-                            return new EmptyObservable();
+                            return Observable.empty<ImpactEvaluationStatus>();
                         }
                     } else {
-                        return new EmptyObservable();
+                        return Observable.empty<ImpactEvaluationStatus>();
                     }
                 })
             ).subscribe(

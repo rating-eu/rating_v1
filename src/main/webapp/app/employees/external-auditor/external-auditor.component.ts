@@ -9,6 +9,8 @@ import {switchMap} from "rxjs/operators";
 import {of} from "rxjs/observable/of";
 import {HttpResponse} from "@angular/common/http";
 import {EmptyObservable} from "rxjs/observable/EmptyObservable";
+import {CriticalLevelMgm} from "../../entities/critical-level-mgm";
+import {MyAssetRisk} from "../../risk-management/model/my-asset-risk.model";
 
 @Component({
     selector: 'jhi-external-auditor',
@@ -37,14 +39,14 @@ export class ExternalAuditorComponent implements OnInit, OnDestroy {
         this.myCompany = this.dataSharingService.myCompany;
         this.fetchEmployees();
 
-        const employees$: Observable<HttpResponse<Employee[]> | null> = this.dataSharingService.myCompanyObservable.pipe(
+        const employees$: Observable<HttpResponse<Employee[]>> = this.dataSharingService.myCompanyObservable.pipe(
             switchMap((response: MyCompanyMgm) => {
                 this.myCompany = response;
 
                 if (this.myCompany && this.myCompany.companyProfile) {
                     return this.employeeService.findAllByCompanyAndRole(this.myCompany.companyProfile, Role.ROLE_EXTERNAL_AUDIT);
                 } else {
-                    return new EmptyObservable();
+                    return Observable.empty<HttpResponse<Employee[]>>();
                 }
             })
         );

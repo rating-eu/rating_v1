@@ -15,7 +15,7 @@
  *
  */
 
-import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
+import {ChangeDetectorRef, Component, OnDestroy, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
 import {JhiLanguageService} from 'ng-jhipster';
@@ -29,6 +29,7 @@ import {LayoutConfiguration} from '../model/LayoutConfiguration';
 import {Role} from '../../entities/enumerations/Role.enum';
 import {CompanyBoardStatus} from "../../dashboard/models/CompanyBoardStatus";
 import {Status} from "../../entities/enumerations/Status.enum";
+import {Subscription} from "rxjs";
 
 @Component({
     selector: 'jhi-navbar',
@@ -37,7 +38,7 @@ import {Status} from "../../entities/enumerations/Status.enum";
         'navbar.css'
     ]
 })
-export class NavbarComponent implements OnInit {
+export class NavbarComponent implements OnInit, OnDestroy {
 
     inProduction: boolean;
     isNavbarCollapsed: boolean;
@@ -55,6 +56,7 @@ export class NavbarComponent implements OnInit {
     public isAdmin = false;
     public companyBoardStatus: CompanyBoardStatus;
     public statusEnum = Status;
+    private subscriptions: Subscription[];
 
     constructor(
         private loginService: LoginService,
@@ -72,6 +74,7 @@ export class NavbarComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.subscriptions = [];
         this.companyBoardStatus = this.dataSharingService.companyBoardStatus;
         this.changeDetector.detectChanges();
 
@@ -85,51 +88,58 @@ export class NavbarComponent implements OnInit {
         });
 
         this.navSubTitle = this.dataSharingService.layoutConfiguration != null ? 'Selected self assessment: ' + this.dataSharingService.layoutConfiguration.navSubTitle : null;
-        this.dataSharingService.layoutConfigurationObservable.subscribe((update: LayoutConfiguration) => {
-            if (update && update.navSubTitle) {
-                this.navSubTitle = 'Selected self assessment: ';
-                this.selfAssessmentName = update.navSubTitle;
-                this.selfAssessmentId = update.selfAssessmentId;
-                this.sidebarCollapsed = update.isSidebarCollapsed;
 
-                this.changeDetector.detectChanges();
-            }
-        });
+        this.subscriptions.push(
+            this.dataSharingService.layoutConfigurationObservable.subscribe((update: LayoutConfiguration) => {
+                if (update && update.navSubTitle) {
+                    this.navSubTitle = 'Selected self assessment: ';
+                    this.selfAssessmentName = update.navSubTitle;
+                    this.selfAssessmentId = update.selfAssessmentId;
+                    this.sidebarCollapsed = update.isSidebarCollapsed;
 
-        this.dataSharingService.roleObservable.subscribe((role: Role) => {
-            if (role) {
-                switch (role) {
-                    case Role.ROLE_CISO: {
-                        this.isAuthenticatedValue = true;
-                        this.isAdmin = false;
-                        this.isExternal = false;
-                        break;
-                    }
-                    case Role.ROLE_EXTERNAL_AUDIT: {
-                        this.isAuthenticatedValue = true;
-                        this.isAdmin = false;
-                        this.isExternal = true;
-                        break;
-                    }
-                    case Role.ROLE_ADMIN: {
-                        this.isAuthenticatedValue = true;
-                        this.isAdmin = true;
-                        this.isExternal = false;
-                        break;
-                    }
-                    default: {
-                        this.isAuthenticatedValue = false;
-                        this.isAdmin = false;
-                        this.isExternal = false;
+                    this.changeDetector.detectChanges();
+                }
+            })
+        );
+
+        this.subscriptions.push(
+            this.dataSharingService.roleObservable.subscribe((role: Role) => {
+                if (role) {
+                    switch (role) {
+                        case Role.ROLE_CISO: {
+                            this.isAuthenticatedValue = true;
+                            this.isAdmin = false;
+                            this.isExternal = false;
+                            break;
+                        }
+                        case Role.ROLE_EXTERNAL_AUDIT: {
+                            this.isAuthenticatedValue = true;
+                            this.isAdmin = false;
+                            this.isExternal = true;
+                            break;
+                        }
+                        case Role.ROLE_ADMIN: {
+                            this.isAuthenticatedValue = true;
+                            this.isAdmin = true;
+                            this.isExternal = false;
+                            break;
+                        }
+                        default: {
+                            this.isAuthenticatedValue = false;
+                            this.isAdmin = false;
+                            this.isExternal = false;
+                        }
                     }
                 }
-            }
-        });
+            })
+        );
 
-        this.dataSharingService.companyBoardStatusSubject.subscribe((status: CompanyBoardStatus) => {
-            this.companyBoardStatus = status;
-            this.changeDetector.detectChanges();
-        });
+        this.subscriptions.push(
+            this.dataSharingService.companyBoardStatusSubject.subscribe((status: CompanyBoardStatus) => {
+                this.companyBoardStatus = status;
+                this.changeDetector.detectChanges();
+            })
+        );
     }
 
     changeLanguage(languageKey: string) {
@@ -177,5 +187,15 @@ export class NavbarComponent implements OnInit {
 
     getImageUrl() {
         return this.isAuthenticated() ? this.principal.getImageUrl() : null;
+    }
+
+    ngOnDestroy(): void {
+        this.changeDetector.detach();
+
+        if (this.subscriptions && this.subscriptions.length) {
+            this.subscriptions.forEach((subscription) => {
+                subscription.unsubscribe();
+            });
+        }
     }
 }

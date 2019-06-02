@@ -93,9 +93,6 @@ export class RiskSquareWidgetComponent implements OnInit, OnDestroy {
 
         this.dataSharingService.selfAssessmentObservable.pipe(
             switchMap((newAssessment: SelfAssessmentMgm) => {
-                console.log("Risk Square widget: ASSESSMENT CHANGED");
-                console.log(newAssessment);
-
                 if (newAssessment) {
                     // Check if there is no self assessment or if it has changed
                     if (!this.selfAssessment || this.selfAssessment.id !== newAssessment.id) {
@@ -106,15 +103,15 @@ export class RiskSquareWidgetComponent implements OnInit, OnDestroy {
                                 return this.fetchCriticalLevelAndAssetsAtRisk();
                             }
                             case ImpactMode.QUALITATIVE: {
-                                return new EmptyObservable();
+                                return Observable.empty<[CriticalLevelMgm, MyAssetRisk[]]>();
                             }
                             default: {
-                                return new EmptyObservable();
+                                return Observable.empty<[CriticalLevelMgm, MyAssetRisk[]]>();
                             }
                         }
                     }
                 } else {
-                    return new EmptyObservable();
+                    return Observable.empty<[CriticalLevelMgm, MyAssetRisk[]]>();
                 }
             })
         ).subscribe(
@@ -199,8 +196,16 @@ export class RiskSquareWidgetComponent implements OnInit, OnDestroy {
 
     private fetchCriticalLevelAndAssetsAtRisk(): Observable<[CriticalLevelMgm, MyAssetRisk[]]> {
         return forkJoin(
-            this.riskService.getCriticalLevel(this.selfAssessment),
+            this.riskService.getCriticalLevel(this.selfAssessment)
+                .catch((error) => {
+                    return Observable.empty<CriticalLevelMgm>();
+                }),
             this.riskService.getMyAssetsAtRisk(this.selfAssessment)
+                .catch(
+                    (error) => {
+                        return Observable.empty<MyAssetRisk[]>();
+                    }
+                )
         );
     }
 

@@ -46,7 +46,6 @@ export class DataAssetsLossesEstimationComponent implements OnInit {
         this.router.events.subscribe((event) => {
             if (event instanceof NavigationStart) {
                 if (this.mySelf) {
-                    console.log('Send start impacts Evaluation request!');
                     this.impactService.getImpacts(this.mySelf).toPromise();
                 }
             }

@@ -26,7 +26,8 @@ import {MyAssetMgm} from '../../entities/my-asset-mgm';
 import {DatasharingService} from "../../datasharing/datasharing.service";
 import {switchMap} from "rxjs/operators";
 import {EmptyObservable} from "rxjs/observable/EmptyObservable";
-import {Subscription} from "rxjs";
+import {Observable, Subscription} from "rxjs";
+import {ImpactEvaluationStatus} from "../../impact-evaluation/quantitative/model/impact-evaluation-status.model";
 
 interface OrderBy {
     impact: boolean;
@@ -94,18 +95,18 @@ export class ImpactWidgetComponent implements OnInit, OnDestroy {
         this.subscriptions.push(
             this.dataSharingService.selfAssessmentObservable.pipe(
                 switchMap((newAssessment: SelfAssessmentMgm) => {
-                    console.log("Impact Widget: ASSESSMENT CHANGED");
-                    console.log(newAssessment);
-
                     if (newAssessment) {
                         // Check if there is no self assessment or if it has changed
                         if (!this.selfAssessment || this.selfAssessment.id !== newAssessment.id) {
                             this.selfAssessment = newAssessment;
 
-                            return this.impactService.getMyAssets(this.selfAssessment);
+                            return this.impactService.getMyAssets(this.selfAssessment)
+                                .catch((err) => {
+                                    return Observable.empty<MyAssetMgm>();
+                                });
                         }
                     } else {
-                        return new EmptyObservable();
+                        return Observable.empty<MyAssetMgm>();
                     }
                 })
             ).subscribe((myAssets: MyAssetMgm[]) => {

@@ -25,7 +25,7 @@ import {MyAssetMgm} from '../../entities/my-asset-mgm';
 import {RiskBoardService} from '../risk-board.service';
 import {AssetType} from '../../entities/enumerations/AssetType.enum';
 import {DatasharingService} from "../../datasharing/datasharing.service";
-import {Subscription} from "rxjs";
+import {Observable, Subscription} from "rxjs";
 import {switchMap} from "rxjs/operators";
 import {EmptyObservable} from "rxjs/observable/EmptyObservable";
 
@@ -91,19 +91,19 @@ export class TangibleFinancialWidgetComponent implements OnInit, OnDestroy {
         this.subscriptions.push(
             this.dataSharingService.selfAssessmentObservable.pipe(
                 switchMap((newAssessment: SelfAssessmentMgm) => {
-                    console.log("Financial widget: ASSESSMENT CHANGED");
-                    console.log(newAssessment);
-
                     if (newAssessment) {
                         // Check if there is no self assessment or if it has changed
                         if (!this.selfAssessment || this.selfAssessment.id !== newAssessment.id) {
                             this.selfAssessment = newAssessment;
-                            return this.impactService.getStatus(this.selfAssessment);
+                            return this.impactService.getStatus(this.selfAssessment)
+                                .catch((err) => {
+                                    return Observable.empty<ImpactEvaluationStatus>();
+                                });
                         } else {
-                            return new EmptyObservable();
+                            return Observable.empty<ImpactEvaluationStatus>();
                         }
                     } else {
-                        return new EmptyObservable();
+                        return Observable.empty<ImpactEvaluationStatus>();
                     }
                 })
             ).subscribe((status: ImpactEvaluationStatus) => {

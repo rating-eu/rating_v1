@@ -25,7 +25,7 @@ import {AugmentedAttackStrategy} from '../../evaluate-weakness/models/augmented-
 import {DatasharingService} from "../../datasharing/datasharing.service";
 import {switchMap} from "rxjs/operators";
 import {EmptyObservable} from "rxjs/observable/EmptyObservable";
-import {Subscription} from "rxjs";
+import {Observable, Subscription} from "rxjs";
 
 interface MdawEntity {
     asset: AugmentedMyAsset;
@@ -125,9 +125,6 @@ export class MostVulnerableAssetsWidgetComponent implements OnInit, OnDestroy {
         this.subscriptions.push(
             this.dataSharingService.selfAssessmentObservable.pipe(
                 switchMap((newAssessment: SelfAssessmentMgm) => {
-                    console.log("Most vulnerable assets widget: ASSESSMENT CHANGED");
-                    console.log(newAssessment);
-
                     if (newAssessment) {
                         // Check if there is no self assessment or if it has changed
                         if (!this.selfAssessment || this.selfAssessment.id !== newAssessment.id) {
@@ -136,7 +133,7 @@ export class MostVulnerableAssetsWidgetComponent implements OnInit, OnDestroy {
                             return this.selfAssessmentService.getOverwiew(this.selfAssessment.id);
                         }
                     } else {
-                        return new EmptyObservable();
+                        return Observable.empty<SelfAssessmentOverview>();
                     }
                 })
             ).subscribe((response: SelfAssessmentOverview) => {

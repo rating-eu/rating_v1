@@ -114,9 +114,6 @@ export class MostDangerousThreatAgentsWidgetComponent implements OnInit {
             );
 
             this.result$.subscribe((res: HttpResponse<Result>) => {
-                    console.log("Most Dangerouse Threat Agents Result response:");
-                    console.log(res.body);
-
                     if (res.body) {
                         this.mdtaEntities = [];
                         this.result = res.body;

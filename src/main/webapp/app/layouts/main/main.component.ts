@@ -31,6 +31,7 @@ import {Observable, Subscription} from "rxjs";
 import {switchMap} from "rxjs/operators";
 import {of} from "rxjs/observable/of";
 import {EmptyObservable} from "rxjs/observable/EmptyObservable";
+import {Status} from "../../entities/enumerations/Status.enum";
 
 @Component({
     selector: 'jhi-main',
@@ -115,7 +116,10 @@ export class JhiMainComponent implements OnInit, OnDestroy {
             switchMap((authentication: any) => {
                 if (authentication) {
                     this.isAuthenticated = true;
-                    return this.accountService.get();
+                    return this.accountService.get()
+                        .catch((err) => {
+                            return Observable.empty<HttpResponse<Account>>();
+                        });
                 } else {
                     this.isAuthenticated = false;
                     const layoutConfiguration: LayoutConfiguration = new LayoutConfiguration();
@@ -125,35 +129,35 @@ export class JhiMainComponent implements OnInit, OnDestroy {
 
                     this.resetRole();
 
-                    return new EmptyObservable();
+                    return Observable.empty<HttpResponse<Account>>();
                 }
             })
         );
 
-        const user$: Observable<HttpResponse<User> | null> = account$.pipe(
+        const user$: Observable<HttpResponse<User>> = account$.pipe(
             switchMap((accountResponse: HttpResponse<Account>) => {
                 if (accountResponse) {
                     this.account = accountResponse.body;
                     this.dataSharingService.account = this.account;
 
-                    return this.userService.find(this.account.login);
+                    return this.userService.find(this.account.login)
+                        .catch((err) => {
+                            return Observable.empty<HttpResponse<User>>();
+                        });
                 } else {
                     this.account = null;
                     this.dataSharingService.account = this.account;
 
-                    return new EmptyObservable();
+                    return Observable.empty<HttpResponse<User>>();
                 }
             })
         );
 
-        const role$: Observable<Role | null> = user$.pipe(
+        const role$: Observable<Role> = user$.pipe(
             switchMap((userResponse: HttpResponse<User>) => {
                     if (userResponse) {
                         this.user = userResponse.body;
                         this.dataSharingService.user = this.user;
-
-                        console.log("Main user:");
-                        console.log(this.user);
 
                         if (this.user.authorities && this.user.authorities.length) {
                             if (this.user.authorities.includes(Role[Role.ROLE_ADMIN])) {
@@ -168,12 +172,12 @@ export class JhiMainComponent implements OnInit, OnDestroy {
                                 return of(Role.ROLE_FINANCIAL_DEPUTY);
                             }
                         } else {
-                            return new EmptyObservable();
+                            return Observable.empty<Role>();
                         }
                     } else {
                         this.user = null;
                         this.dataSharingService.user = this.user;
-                        return new EmptyObservable();
+                        return Observable.empty<Role>();
                     }
                 }
             )
@@ -185,12 +189,15 @@ export class JhiMainComponent implements OnInit, OnDestroy {
                     this.role = roleResponse;
                     this.dataSharingService.role = this.role;
 
-                    return this.myCompanyService.findByUser(this.user.id);
+                    return this.myCompanyService.findByUser(this.user.id)
+                        .catch((err) => {
+                            return Observable.empty<HttpResponse<MyCompanyMgm>>();
+                        });
                 } else {
                     this.role = null;
                     this.dataSharingService.role = this.role;
 
-                    return new EmptyObservable();
+                    return Observable.empty<HttpResponse<MyCompanyMgm>>();
                 }
             })
         );
@@ -201,9 +208,6 @@ export class JhiMainComponent implements OnInit, OnDestroy {
             } else {
                 this.myCompany = null;
             }
-
-            console.log("Main MyCompany");
-            console.log(this.myCompany);
 
             this.dataSharingService.myCompany = this.myCompany;
         }));

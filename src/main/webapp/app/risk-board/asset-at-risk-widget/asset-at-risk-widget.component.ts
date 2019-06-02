@@ -26,7 +26,8 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {DatasharingService} from "../../datasharing/datasharing.service";
 import {switchMap} from "rxjs/operators";
 import {EmptyObservable} from "rxjs/observable/EmptyObservable";
-import {Subscription} from "rxjs";
+import {Observable, Subscription} from "rxjs";
+import {ImpactEvaluationStatus} from "../../impact-evaluation/quantitative/model/impact-evaluation-status.model";
 
 interface RiskPercentageElement {
     asset: MyAssetMgm;
@@ -144,20 +145,20 @@ export class AssetAtRiskWidgetComponent implements OnInit, OnDestroy {
             this.dataSharingService.selfAssessmentObservable
                 .pipe(
                     switchMap((newAssessment: SelfAssessmentMgm) => {
-                        console.log("Assets at risk widget: ASSESSMENT CHANGED");
-                        console.log(newAssessment);
-
                         if (newAssessment) {
                             // Check if there is no self assessment or if it has changed
                             if (!this.selfAssessment || this.selfAssessment.id !== newAssessment.id) {
                                 this.selfAssessment = newAssessment;
 
-                                return this.riskService.getMyAssetsAtRisk(this.selfAssessment);
+                                return this.riskService.getMyAssetsAtRisk(this.selfAssessment)
+                                    .catch((err) => {
+                                        return Observable.empty<MyAssetRisk>();
+                                    });
                             } else {
-                                return new EmptyObservable();
+                                return Observable.empty<MyAssetRisk>();
                             }
                         } else {
-                            return new EmptyObservable();
+                            return Observable.empty<MyAssetRisk>();
                         }
                     })
                 ).subscribe(

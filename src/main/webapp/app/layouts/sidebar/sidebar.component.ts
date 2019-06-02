@@ -15,7 +15,15 @@
  *
  */
 
-import {AfterViewInit, ChangeDetectorRef, Component, HostListener, OnInit, ViewEncapsulation} from '@angular/core';
+import {
+    AfterViewInit,
+    ChangeDetectorRef,
+    Component,
+    HostListener,
+    OnDestroy,
+    OnInit,
+    ViewEncapsulation
+} from '@angular/core';
 import {Principal} from '../../shared';
 import {DatasharingService} from '../../datasharing/datasharing.service';
 import {LayoutConfiguration} from '../model/LayoutConfiguration';
@@ -38,7 +46,7 @@ import {ImpactMode} from "../../entities/enumerations/ImpactMode.enum";
     styleUrls: ['sidebar.css'],
     encapsulation: ViewEncapsulation.None
 })
-export class SidebarComponent implements OnInit, AfterViewInit {
+export class SidebarComponent implements OnInit, OnDestroy, AfterViewInit {
 
     public isCollapsed = true;
     public menuItems: MenuItem[];
@@ -194,14 +202,11 @@ export class SidebarComponent implements OnInit, AfterViewInit {
 
     private fetchSecondaryLogo() {
         this.logoService.getSecondaryLogo().toPromise().then((logo: HttpResponse<LogoMgm>) => {
-                this.secondaryLogo = logo.body;
-                this.changeDetector.detectChanges();
-            },
-            (error: HttpErrorResponse) => {
-                if (error.status === 404) {
-                    console.warn('Secondary logo not found!');
-                }
-            });
+            this.secondaryLogo = logo.body;
+            this.changeDetector.detectChanges();
+        }).catch((reason) => {
+            //Do Nothing
+        });
     }
 
     ngAfterViewInit() {
@@ -433,7 +438,6 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                             }
 
                             if (this.router.url !== '/riskboard') {
-                                console.log("Redirecting to riskboard");
                                 this.router.navigate(['/riskboard']);
                             }
                         },
@@ -588,5 +592,9 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                 break;
             }
         }
+    }
+
+    ngOnDestroy(): void {
+        this.changeDetector.detach();
     }
 }

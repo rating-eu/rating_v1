@@ -55,7 +55,6 @@ export class RiskManagementService {
             .map((res: HttpResponse<MyAssetRisk[]>) => {
                 return res.body;
             }).catch((err: HttpErrorResponse) => {
-                console.error('An error occurred:', err.status);
                 return Observable.empty<MyAssetRisk[]>();
             });
     }
@@ -66,7 +65,6 @@ export class RiskManagementService {
             .map((res) => {
                 return res;
             }).catch((err) => {
-                console.error('An error occurred:', err);
                 return Observable.empty<string>();
             });
     }
@@ -77,7 +75,6 @@ export class RiskManagementService {
             .map((res: HttpResponse<AttackCostFormula[]>) => {
                 return res.body;
             }).catch((err: HttpErrorResponse) => {
-                console.error('An error occurred:', err.status);
                 return Observable.empty<AttackCostFormula[]>();
             });
     }
@@ -88,7 +85,6 @@ export class RiskManagementService {
             .map((res: HttpResponse<CriticalLevelMgm>) => {
                 return res.body;
             }).catch((err: HttpErrorResponse) => {
-                console.error('An error occurred:', err.status);
                 return Observable.empty<CriticalLevelMgm>();
             });
     }

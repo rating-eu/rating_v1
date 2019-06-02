@@ -226,7 +226,6 @@ export class RiskManagementComponent implements OnInit {
             this.impactLevelService.update(impactLevel)
                 .toPromise()
                 .then((response: HttpResponse<ImpactLevelMgm>) => {
-                    console.log('ImpactLevel updated: ' + JSON.stringify(impactLevel));
                 });
         }
     }

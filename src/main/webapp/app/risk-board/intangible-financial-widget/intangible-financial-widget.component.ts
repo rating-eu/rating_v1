@@ -29,7 +29,7 @@ import {DatasharingService} from "../../datasharing/datasharing.service";
 import {SectorType} from "../../entities/enumerations/SectorTyep.enum";
 import {switchMap} from "rxjs/operators";
 import {EmptyObservable} from "rxjs/observable/EmptyObservable";
-import {Subscription} from "rxjs";
+import {Observable, Subscription} from "rxjs";
 
 interface OrderBy {
     category: boolean;
@@ -92,9 +92,6 @@ export class IntangibleFinancialWidgetComponent implements OnInit, OnDestroy {
         this.subscriptions.push(
             this.dataSharingService.selfAssessmentObservable.pipe(
                 switchMap((newAssessment: SelfAssessmentMgm) => {
-                        console.log("Financial assets widget: ASSESSMENT CHANGED");
-                        console.log(newAssessment);
-
                         if (newAssessment) {
                             // Check if there is no self assessment or if it has changed
                             if (!this.selfAssessment || this.selfAssessment.id !== newAssessment.id) {
@@ -102,10 +99,10 @@ export class IntangibleFinancialWidgetComponent implements OnInit, OnDestroy {
 
                                 return this.idaUtilsService.getMyAssets(this.selfAssessment);
                             } else {
-                                return new EmptyObservable();
+                                return Observable.empty<MyAssetMgm[]>();
                             }
                         } else {
-                            return new EmptyObservable();
+                            return Observable.empty<MyAssetMgm[]>();
                         }
                     }
                 )).subscribe((response: MyAssetMgm[]) => {
