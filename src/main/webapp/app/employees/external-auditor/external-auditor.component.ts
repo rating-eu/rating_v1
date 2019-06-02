@@ -6,11 +6,8 @@ import {MyCompanyMgm} from "../../entities/my-company-mgm";
 import {Employee} from "../models/Employee";
 import {Observable, Subscription} from "rxjs";
 import {switchMap} from "rxjs/operators";
-import {of} from "rxjs/observable/of";
 import {HttpResponse} from "@angular/common/http";
-import {EmptyObservable} from "rxjs/observable/EmptyObservable";
-import {CriticalLevelMgm} from "../../entities/critical-level-mgm";
-import {MyAssetRisk} from "../../risk-management/model/my-asset-risk.model";
+import {of} from "rxjs/observable/of";
 
 @Component({
     selector: 'jhi-external-auditor',
@@ -46,7 +43,7 @@ export class ExternalAuditorComponent implements OnInit, OnDestroy {
                 if (this.myCompany && this.myCompany.companyProfile) {
                     return this.employeeService.findAllByCompanyAndRole(this.myCompany.companyProfile, Role.ROLE_EXTERNAL_AUDIT);
                 } else {
-                    return Observable.empty<HttpResponse<Employee[]>>();
+                    return of(new HttpResponse({body: []}));
                 }
             })
         );

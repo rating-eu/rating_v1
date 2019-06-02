@@ -28,8 +28,8 @@ import {CategoryType} from '../../entities/enumerations/CategoryType.enum';
 import {DatasharingService} from "../../datasharing/datasharing.service";
 import {SectorType} from "../../entities/enumerations/SectorTyep.enum";
 import {switchMap} from "rxjs/operators";
-import {EmptyObservable} from "rxjs/observable/EmptyObservable";
 import {Observable, Subscription} from "rxjs";
+import {of} from "rxjs/observable/of";
 
 interface OrderBy {
     category: boolean;
@@ -99,10 +99,10 @@ export class IntangibleFinancialWidgetComponent implements OnInit, OnDestroy {
 
                                 return this.idaUtilsService.getMyAssets(this.selfAssessment);
                             } else {
-                                return Observable.empty<MyAssetMgm[]>();
+                                return of([]);
                             }
                         } else {
-                            return Observable.empty<MyAssetMgm[]>();
+                            return of([]);
                         }
                     }
                 )).subscribe((response: MyAssetMgm[]) => {

@@ -25,9 +25,8 @@ import {SelfAssessmentMgmService} from './../../entities/self-assessment-mgm/sel
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {DatasharingService} from "../../datasharing/datasharing.service";
 import {switchMap} from "rxjs/operators";
-import {EmptyObservable} from "rxjs/observable/EmptyObservable";
 import {Observable, Subscription} from "rxjs";
-import {ImpactEvaluationStatus} from "../../impact-evaluation/quantitative/model/impact-evaluation-status.model";
+import {of} from "rxjs/observable/of";
 
 interface RiskPercentageElement {
     asset: MyAssetMgm;
@@ -152,13 +151,13 @@ export class AssetAtRiskWidgetComponent implements OnInit, OnDestroy {
 
                                 return this.riskService.getMyAssetsAtRisk(this.selfAssessment)
                                     .catch((err) => {
-                                        return Observable.empty<MyAssetRisk>();
+                                        return of([]);
                                     });
                             } else {
-                                return Observable.empty<MyAssetRisk>();
+                                return of([]);
                             }
                         } else {
-                            return Observable.empty<MyAssetRisk>();
+                            return of([]);
                         }
                     })
                 ).subscribe(

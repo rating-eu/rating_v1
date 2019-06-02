@@ -22,10 +22,9 @@ import {CriticalAttackStrategy} from "../models/critical-attack-strategy.model";
 import * as _ from 'lodash';
 import {DatasharingService} from '../../datasharing/datasharing.service';
 import {Observable, Subscription} from "rxjs";
-import {isEmpty, switchMap} from "rxjs/operators";
-import {EmptyObservable} from "rxjs/observable/EmptyObservable";
+import {switchMap} from "rxjs/operators";
 import {Router} from "@angular/router";
-import {MyAssetMgm} from "../../entities/my-asset-mgm";
+import {of} from "rxjs/observable/of";
 
 export enum CriticalAttackStrategyField {
     'ATTACK_STRATEGY' = <any>'ATTACK_STRATEGY',
@@ -99,7 +98,7 @@ export class MostCriticalAttackStrategiesWidgetComponent implements OnInit, OnDe
                             return this.fetchCriticalAttackStrategies();
                         }
                     } else {
-                        return Observable.empty<CriticalAttackStrategy[]>();
+                        return of([]);
                     }
                 })
             ).subscribe(
@@ -116,7 +115,7 @@ export class MostCriticalAttackStrategiesWidgetComponent implements OnInit, OnDe
         return this.criticalAttackStrategyService
             .getCriticalAttackStrategies(this.selfAssessment.id)
             .catch(err => {
-                return Observable.empty<CriticalAttackStrategy[]>()
+                return of([]);
             });
     }
 

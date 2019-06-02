@@ -27,8 +27,6 @@ import {SelfAssessmentMgm} from "../../entities/self-assessment-mgm";
 import {DatasharingService} from "../../datasharing/datasharing.service";
 import {ImpactMode} from "../../entities/enumerations/ImpactMode.enum";
 import {switchMap} from "rxjs/operators";
-import {EmptyObservable} from "rxjs/observable/EmptyObservable";
-import {ImpactEvaluationStatus} from "../../impact-evaluation/quantitative/model/impact-evaluation-status.model";
 import {of} from "rxjs/observable/of";
 
 @Component({
@@ -99,11 +97,11 @@ export class StepInfoWidgetComponent implements OnInit, OnDestroy {
 
                             return this.fetchStatus$()
                                 .catch((err) => {
-                                    return Observable.empty<[Status, Status, Status, Status]>();
+                                    return forkJoin(of(Status.EMPTY), of(Status.EMPTY), of(Status.EMPTY), of(Status.EMPTY));
                                 });
                         }
                     } else {
-                        return Observable.empty<[Status, Status, Status, Status]>();
+                        return forkJoin(of(Status.EMPTY), of(Status.EMPTY), of(Status.EMPTY), of(Status.EMPTY));
                     }
                 })
             ).subscribe((response: [Status, Status, Status, Status]) => {

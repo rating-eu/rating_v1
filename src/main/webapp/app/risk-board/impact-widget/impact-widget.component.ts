@@ -21,13 +21,11 @@ import {RiskBoardService, RiskBoardStatus} from '../risk-board.service';
 import {ImpactEvaluationService} from './../../impact-evaluation/impact-evaluation.service';
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {SelfAssessmentMgmService, SelfAssessmentMgm} from '../../entities/self-assessment-mgm';
-import {Status} from '../../entities/enumerations/QuestionnaireStatus.enum';
 import {MyAssetMgm} from '../../entities/my-asset-mgm';
 import {DatasharingService} from "../../datasharing/datasharing.service";
 import {switchMap} from "rxjs/operators";
-import {EmptyObservable} from "rxjs/observable/EmptyObservable";
 import {Observable, Subscription} from "rxjs";
-import {ImpactEvaluationStatus} from "../../impact-evaluation/quantitative/model/impact-evaluation-status.model";
+import {of} from "rxjs/observable/of";
 
 interface OrderBy {
     impact: boolean;
@@ -102,11 +100,11 @@ export class ImpactWidgetComponent implements OnInit, OnDestroy {
 
                             return this.impactService.getMyAssets(this.selfAssessment)
                                 .catch((err) => {
-                                    return Observable.empty<MyAssetMgm>();
+                                    return of(null);
                                 });
                         }
                     } else {
-                        return Observable.empty<MyAssetMgm>();
+                        return of(null);
                     }
                 })
             ).subscribe((myAssets: MyAssetMgm[]) => {

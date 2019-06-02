@@ -115,7 +115,7 @@ export class JhiMainComponent implements OnInit, OnDestroy {
                     this.isAuthenticated = true;
                     return this.accountService.get()
                         .catch((err) => {
-                            return Observable.empty<HttpResponse<Account>>();
+                            return of(null)
                         });
                 } else {
                     this.isAuthenticated = false;
@@ -126,7 +126,7 @@ export class JhiMainComponent implements OnInit, OnDestroy {
 
                     this.resetRole();
 
-                    return Observable.empty<HttpResponse<Account>>();
+                    return of(null);
                 }
             })
         );
@@ -139,13 +139,13 @@ export class JhiMainComponent implements OnInit, OnDestroy {
 
                     return this.userService.find(this.account.login)
                         .catch((err) => {
-                            return Observable.empty<HttpResponse<User>>();
+                            return of(null);
                         });
                 } else {
                     this.account = null;
                     this.dataSharingService.account = this.account;
 
-                    return Observable.empty<HttpResponse<User>>();
+                    return of(null)
                 }
             })
         );
@@ -169,12 +169,12 @@ export class JhiMainComponent implements OnInit, OnDestroy {
                                 return of(Role.ROLE_FINANCIAL_DEPUTY);
                             }
                         } else {
-                            return Observable.empty<Role>();
+                            return of(null);
                         }
                     } else {
                         this.user = null;
                         this.dataSharingService.user = this.user;
-                        return Observable.empty<Role>();
+                        return of(null);
                     }
                 }
             )
@@ -218,13 +218,13 @@ export class JhiMainComponent implements OnInit, OnDestroy {
 
                     return this.myCompanyService.findByUser(this.user.id)
                         .catch((err) => {
-                            return Observable.empty<HttpResponse<MyCompanyMgm>>();
+                            return of(null);
                         });
                 } else {
                     this.role = null;
                     this.dataSharingService.role = this.role;
 
-                    return Observable.empty<HttpResponse<MyCompanyMgm>>();
+                    return of(null);
                 }
             })
         );
