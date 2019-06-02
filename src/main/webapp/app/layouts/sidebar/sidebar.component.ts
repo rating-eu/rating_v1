@@ -433,7 +433,6 @@ export class SidebarComponent implements OnInit, AfterViewInit {
                             }
 
                             if (this.router.url !== '/riskboard') {
-                                console.log("Redirecting to riskboard");
                                 this.router.navigate(['/riskboard']);
                             }
                         },

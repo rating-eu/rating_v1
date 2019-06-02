@@ -121,7 +121,6 @@ export class StepStatusWidgetComponent implements OnInit {
             if (this.linkAfterModal) {
                 this.router.navigate([this.linkAfterModal]);
             } else {
-                console.log('WORK IN PROGRESS');
             }
         }, (reason) => {
             this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;

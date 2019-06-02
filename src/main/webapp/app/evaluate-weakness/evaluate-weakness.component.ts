@@ -51,7 +51,6 @@ export class EvaluateWeaknessComponent implements OnInit, OnDestroy {
                 private router: Router) {
         this.router.events.subscribe((event) => {
             if (event instanceof NavigationStart) {
-                console.log('ENTER EvaluateWeakness');
             }
         });
     }

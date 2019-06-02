@@ -145,9 +145,6 @@ export class AssetAtRiskWidgetComponent implements OnInit, OnDestroy {
             this.dataSharingService.selfAssessmentObservable
                 .pipe(
                     switchMap((newAssessment: SelfAssessmentMgm) => {
-                        console.log("Assets at risk widget: ASSESSMENT CHANGED");
-                        console.log(newAssessment);
-
                         if (newAssessment) {
                             // Check if there is no self assessment or if it has changed
                             if (!this.selfAssessment || this.selfAssessment.id !== newAssessment.id) {

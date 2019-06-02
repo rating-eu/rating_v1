@@ -64,9 +64,6 @@ export class DashboardOneComponent implements OnInit, OnDestroy {
         this.subscriptions.push(
             this.datasharingService.riskBoardStatusObservable.subscribe(
                 (status: RiskBoardStatus) => {
-                    console.log("RiskBoardStatus CHANGED");
-                    console.log(status);
-
                     this.riskBoardStatus = status;
                     this.changDetector.detectChanges();
                 }

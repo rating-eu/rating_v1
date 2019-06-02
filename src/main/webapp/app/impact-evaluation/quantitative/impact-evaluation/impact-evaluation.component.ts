@@ -130,7 +130,6 @@ export class ImpactEvaluationComponent implements OnInit {
         this.router.events.subscribe((event) => {
             if (event instanceof NavigationStart) {
                 if (this.mySelf && this.mySelf.impactMode === ImpactMode.QUANTITATIVE) {
-                    console.log('Send start impacts Evaluation request!');
                     this.impactService.getImpacts(this.mySelf).toPromise();
                 }
             }
@@ -369,7 +368,6 @@ export class ImpactEvaluationComponent implements OnInit {
                                         this.splittingOnSectorialIP = Math.round(splitting.value * 100) / 100;
                                     }
                                     this.evaluateSplittingValue('IP').subscribe((splittingResult: boolean) => {
-                                        console.log('SplittingResult: ' + splittingResult);
                                     });
                                     break;
                                 }
@@ -380,7 +378,6 @@ export class ImpactEvaluationComponent implements OnInit {
                                         this.splittingOnSectorialKeyComp = Math.round(splitting.value * 100) / 100;
                                     }
                                     this.evaluateSplittingValue('KEY_COMP').subscribe((splittingResult: boolean) => {
-                                        console.log('SplittingResult: ' + splittingResult);
                                     });
                                     break;
                                 }
@@ -391,7 +388,6 @@ export class ImpactEvaluationComponent implements OnInit {
                                         this.splittingOnSectorialOrgCapital = Math.round(splitting.value * 100) / 100;
                                     }
                                     this.evaluateSplittingValue('ORG_CAPITAL').subscribe((splittingResult: boolean) => {
-                                        console.log('SplittingResult: ' + splittingResult);
                                     });
                                     break;
                                 }
@@ -651,7 +647,6 @@ export class ImpactEvaluationComponent implements OnInit {
                                     this.splittingOnSectorialIP = Math.round(splitting.value * 100) / 100;
                                 }
                                 this.evaluateSplittingValue('IP').subscribe((splittingResult: boolean) => {
-                                    console.log('SplittingResult: ' + splittingResult);
                                 });
                                 break;
                             }
@@ -662,7 +657,6 @@ export class ImpactEvaluationComponent implements OnInit {
                                     this.splittingOnSectorialKeyComp = Math.round(splitting.value * 100) / 100;
                                 }
                                 this.evaluateSplittingValue('KEY_COMP').subscribe((splittingResult: boolean) => {
-                                    console.log('SplittingResult: ' + splittingResult);
                                 });
                                 break;
                             }
@@ -673,7 +667,6 @@ export class ImpactEvaluationComponent implements OnInit {
                                     this.splittingOnSectorialOrgCapital = Math.round(splitting.value * 100) / 100;
                                 }
                                 this.evaluateSplittingValue('ORG_CAPITAL').subscribe((splittingResult: boolean) => {
-                                    console.log('SplittingResult: ' + splittingResult);
                                 });
                                 break;
                             }
@@ -940,7 +933,6 @@ export class ImpactEvaluationComponent implements OnInit {
                 }
             }
             this.evaluateSplittingValue(this.selectedAssetCategoryCode, asset).subscribe((splittingResult: boolean) => {
-                console.log('SplittingResult: ' + splittingResult);
             });
             // TODO calcolare con la formula di maurizio
             /*
@@ -1035,7 +1027,6 @@ export class ImpactEvaluationComponent implements OnInit {
             );
 
         evaluateStepTwoFourThreeFive$.subscribe((twoFourThreeFiveResult: boolean) => {
-            console.log('2-4-3-5 result: ' + twoFourThreeFiveResult);
         });
     }
 
@@ -1095,7 +1086,6 @@ export class ImpactEvaluationComponent implements OnInit {
         }
 
         stepFour$.subscribe((result: boolean) => {
-            console.log('Step 5 -4 result: ' + result);
         });
     }
 
@@ -1145,7 +1135,6 @@ export class ImpactEvaluationComponent implements OnInit {
         );
 
         stepFour$.subscribe((result: boolean) => {
-            console.log('Step 5 -4 result: ' + result);
         });
     }
 

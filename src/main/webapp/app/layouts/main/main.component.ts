@@ -159,9 +159,6 @@ export class JhiMainComponent implements OnInit, OnDestroy {
                         this.user = userResponse.body;
                         this.dataSharingService.user = this.user;
 
-                        console.log("Main user:");
-                        console.log(this.user);
-
                         if (this.user.authorities && this.user.authorities.length) {
                             if (this.user.authorities.includes(Role[Role.ROLE_ADMIN])) {
                                 return of(Role.ROLE_ADMIN);
@@ -211,9 +208,6 @@ export class JhiMainComponent implements OnInit, OnDestroy {
             } else {
                 this.myCompany = null;
             }
-
-            console.log("Main MyCompany");
-            console.log(this.myCompany);
 
             this.dataSharingService.myCompany = this.myCompany;
         }));

@@ -75,8 +75,6 @@ export class StepInfoWidgetComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
-        console.log("Step info widget on Init");
-
         this.subscriptions = [];
         this.selfAssessment = this.datasharingService.selfAssessment;
 
@@ -93,8 +91,6 @@ export class StepInfoWidgetComponent implements OnInit, OnDestroy {
         this.subscriptions.push(
             this.datasharingService.selfAssessmentObservable.pipe(
                 switchMap((newAssessment: SelfAssessmentMgm) => {
-                    console.log("Step info: ASSESSMENT CHANGED");
-                    console.log(newAssessment);
 
                     if (newAssessment) {
                         // Check if there is no self assessment or if it has changed
@@ -185,7 +181,6 @@ export class StepInfoWidgetComponent implements OnInit, OnDestroy {
             if (this.linkAfterModal) {
                 this.router.navigate([this.linkAfterModal]);
             } else {
-                console.log('WORK IN PROGRESS');
             }
         }, (reason) => {
             this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
@@ -203,8 +198,6 @@ export class StepInfoWidgetComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy(): void {
-        console.log("Step info widget on destroy");
-
         if (this.subscriptions && this.subscriptions.length) {
             this.subscriptions.forEach((subscription) => {
                 subscription.unsubscribe();

@@ -108,7 +108,6 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
-        console.log('Questionnaires ON INIT:');
         this.canCreateNewQuestionnaireStatus = true;
         this.showCompletionPercentages = false;
         this.useExistingThreatAgentQuestionnaireStatus = false;
@@ -118,9 +117,6 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
         this.user = this.dataSharingService.user;
         this.role = this.dataSharingService.role;
         this.myCompany = this.dataSharingService.myCompany;
-
-        console.log("MyCompany:");
-        console.log(this.myCompany);
 
         // Listen for when a new QuestionnaireStatus is created
         this.registerChangeInQuestionnaireStatuses();
@@ -134,7 +130,6 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
     }
 
     private loadQuestionnaireStatuses() {
-        console.log("Loading questionnaire");
         const params$ = this.route.params;
 
         // GET the questionnaires by purpose
@@ -269,12 +264,8 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
         this.subscriptions.push(howToProceed$.subscribe(
             (response: HttpResponse<QuestionnaireStatusMgm> | null | QuestionnaireStatusMgm | HttpResponse<AssessVulnerabilitiesCompletionDTO>[]) => {
 
-                console.log("Inside HOW TO PROCEED...");
-
                 switch (this.purpose) {
                     case QuestionnairePurpose.ID_THREAT_AGENT: {
-                        console.log("CASE THREAT AGENTS");
-
                         if (this.createNewThreatAgentsQuestionnaireStatus) {
                             this.createNewThreatAgentsQuestionnaireStatus = false;
 
