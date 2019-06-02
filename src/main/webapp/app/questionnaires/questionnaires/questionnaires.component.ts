@@ -193,20 +193,6 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
 
                                 this.createNewThreatAgentsQuestionnaireStatus = true;
                                 return this.questionnaireStatusService.create(questionnaireStatus);
-
-                                /*this.subscriptions.push(this.questionnaireStatusService.create(questionnaireStatus).subscribe(
-                                    (response: HttpResponse<QuestionnaireStatusMgm>) => {
-                                        if (response) {
-                                            questionnaireStatus = response.body;
-                                            this.questionnaireStatuses.push(response.body);
-
-                                            this.setCurrentQuestionnaireStatus(questionnaireStatus);
-                                            this.router.navigate(['/identify-threat-agent/questionnaires/ID_THREAT_AGENT/questionnaire']);
-                                        }
-                                    }
-                                ));
-
-                                break*/
                             }
                             case QuestionnairePurpose.SELFASSESSMENT: {
                                 return new EmptyObservable();
