@@ -406,7 +406,7 @@ export class SidebarComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     private showSelfAssessments() {
-        if (this.selfAssessments && this.selfAssessments.length) {
+        if (this.selfAssessments) {
             if (this.riskManagementMenuItem) {
                 this.riskManagementMenuItem.items = [];
 
