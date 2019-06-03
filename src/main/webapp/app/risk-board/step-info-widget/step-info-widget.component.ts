@@ -81,7 +81,7 @@ export class StepInfoWidgetComponent implements OnInit, OnDestroy {
         } else {
             this.fetchStatus$()
                 .toPromise()
-                .then((response: [Status, Status, Status, Status] | null) => {
+                .then((response: [Status, Status, Status, Status]) => {
                     this.handleStatusUpdate(response);
                 });
         }
@@ -90,21 +90,23 @@ export class StepInfoWidgetComponent implements OnInit, OnDestroy {
             this.datasharingService.selfAssessmentObservable.pipe(
                 switchMap((newAssessment: SelfAssessmentMgm) => {
 
+                    console.log("Step info: New assessment:");
+                    console.log(newAssessment);
+
                     if (newAssessment) {
                         // Check if there is no self assessment or if it has changed
                         if (!this.selfAssessment || this.selfAssessment.id !== newAssessment.id) {
                             this.selfAssessment = newAssessment;
 
-                            return this.fetchStatus$()
-                                .catch((err) => {
-                                    return forkJoin(of(Status.EMPTY), of(Status.EMPTY), of(Status.EMPTY), of(Status.EMPTY));
-                                });
+                            return this.fetchStatus$();
                         }
                     } else {
                         return forkJoin(of(Status.EMPTY), of(Status.EMPTY), of(Status.EMPTY), of(Status.EMPTY));
                     }
                 })
-            ).subscribe((response: [Status, Status, Status, Status]) => {
+            ).catch((err) => {
+                return forkJoin(of(Status.EMPTY), of(Status.EMPTY), of(Status.EMPTY), of(Status.EMPTY));
+            }).subscribe((response: [Status, Status, Status, Status]) => {
                 this.handleStatusUpdate(response);
             })
         );
@@ -112,7 +114,7 @@ export class StepInfoWidgetComponent implements OnInit, OnDestroy {
 
 
     private handleStatusUpdate(response: [Status, Status, Status, Status] | null) {
-        if (response) {
+        if (response && response.length && response.length === 4) {
             this.assetClusteringStatus = response[0];
             this.impactEvaluationStatus = response[1];
             this.attackRelatedCostsStatus = response[2];
@@ -159,10 +161,7 @@ export class StepInfoWidgetComponent implements OnInit, OnDestroy {
             });
 
         const join$: Observable<[Status, Status, Status, Status]> = forkJoin(this.assetClusteringStatus$,
-            this.impactEvaluationStatus$, this.attackRelatedCostsStatus$, this.riskEvaluationStatus$)
-            .catch(err => {
-                return forkJoin(of(Status.EMPTY), of(Status.EMPTY), of(Status.EMPTY), of(Status.EMPTY));
-            });
+            this.impactEvaluationStatus$, this.attackRelatedCostsStatus$, this.riskEvaluationStatus$);
 
         return join$;
     }
