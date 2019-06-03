@@ -21,7 +21,9 @@
                                     <th scope="col">Asset</th>
                                     <th scope="col">#Indirect Assets</th>
                                     <th scope="col">#Related Costs</th>
-                                    <th scope="col">Criticality</th>
+                                    <th scope="col" matTooltip="Criticality = Likelihood X Vulnerability"
+                                        [matTooltipPosition]="'above'">Criticality
+                                    </th>
                                     <th scope="col">Priority</th>
                                 </tr>
                                 </thead>
@@ -39,7 +41,12 @@
                                               'medium': myAssetsDTOsByIDMap.get(myAsset.id)?.criticality > 0.4 && myAssetsDTOsByIDMap.get(myAsset.id)?.criticality <= 0.6,
                                               'medium-high': myAssetsDTOsByIDMap.get(myAsset.id)?.criticality > 0.6 && myAssetsDTOsByIDMap.get(myAsset.id)?.criticality <= 0.8,
                                               'high': myAssetsDTOsByIDMap.get(myAsset.id)?.criticality > 0.8 && myAssetsDTOsByIDMap.get(myAsset.id)?.criticality <= 1
-                                              }" [value]="myAssetsDTOsByIDMap.get(myAsset.id)?.criticality * 100">
+                                              }"
+                                                                  [value]="myAssetsDTOsByIDMap.get(myAsset.id)?.criticality * 100"
+                                                                  matTooltip="Likelihood: {{myAssetsDTOsByIDMap.get(myAsset.id)?.likelihood}}&#13;
+                                                                        Vulnerability: {{myAssetsDTOsByIDMap.get(myAsset.id)?.vulnerability}}"
+                                                                  [matTooltipPosition]="'above'"
+                                            >
                                             </mat-progress-spinner>
                                             <div style="top:-35px; z-index:2;position:relative;">
                                                 {{myAssetsDTOsByIDMap.get(myAsset.id)?.criticality | percent}}

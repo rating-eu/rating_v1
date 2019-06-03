@@ -15,7 +15,7 @@
  *
  */
 
-thead{
+thead {
     background-color: #f0f8ff;
 }
 
@@ -39,10 +39,14 @@ thead{
     stroke: #FF0000;
 }
 
-table tbody tr th{
+table tbody tr th {
     vertical-align: middle;
 }
 
-table tbody tr td{
+table tbody tr td {
     vertical-align: middle;
+}
+
+::ng-deep .mat-tooltip {
+    white-space: pre-line !important;
 }
