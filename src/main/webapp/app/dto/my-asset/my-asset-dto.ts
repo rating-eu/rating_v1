@@ -7,6 +7,8 @@ export class MyAssetDto {
         public myAssetName: String,
         public indirectAssets: IndirectAssetMgm[],
         public attackCosts: AttackCostMgm[],
+        public likelihood: number,
+        public vulnerability: number,
         public criticality: number,
         public priority: number
     ) {
