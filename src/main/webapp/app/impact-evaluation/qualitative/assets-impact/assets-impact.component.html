@@ -15,13 +15,15 @@
                 <mat-tab-group>
                     <div *ngFor="let category of tangibleCategories">
                         <mat-tab *ngIf="myAssetsByCategoriesMap.get(category.id)?.length > 0" label="{{category.name}}">
-                            <table class="table">
+                            <table class="table text-center">
                                 <thead>
                                 <tr>
                                     <th scope="col">Asset</th>
                                     <th scope="col">#Indirect Assets</th>
                                     <th scope="col">#Related Costs</th>
-                                    <th scope="col">Criticality</th>
+                                    <th scope="col" matTooltip="Criticality = Likelihood X Vulnerability"
+                                        [matTooltipPosition]="'above'">Criticality
+                                    </th>
                                     <th scope="col">Priority</th>
                                 </tr>
                                 </thead>
@@ -32,8 +34,25 @@
                                         <th scope="row">{{myAsset.asset.name}}</th>
                                         <td>{{myAssetsDTOsByIDMap.get(myAsset.id)?.indirectAssets.length}}</td>
                                         <td>{{myAssetsDTOsByIDMap.get(myAsset.id)?.attackCosts.length}}</td>
-                                        <td>{{myAssetsDTOsByIDMap.get(myAsset.id)?.criticality}}</td>
-                                        <td>
+                                        <td class="align-middle">
+                                            <mat-progress-spinner [diameter]="50" style="margin: 0 auto;" [ngClass]="{
+                                              'low': myAssetsDTOsByIDMap.get(myAsset.id)?.criticality > 0 && myAssetsDTOsByIDMap.get(myAsset.id)?.criticality <= 0.2,
+                                              'low-medium': myAssetsDTOsByIDMap.get(myAsset.id)?.criticality > 0.2 && myAssetsDTOsByIDMap.get(myAsset.id)?.criticality <= 0.4,
+                                              'medium': myAssetsDTOsByIDMap.get(myAsset.id)?.criticality > 0.4 && myAssetsDTOsByIDMap.get(myAsset.id)?.criticality <= 0.6,
+                                              'medium-high': myAssetsDTOsByIDMap.get(myAsset.id)?.criticality > 0.6 && myAssetsDTOsByIDMap.get(myAsset.id)?.criticality <= 0.8,
+                                              'high': myAssetsDTOsByIDMap.get(myAsset.id)?.criticality > 0.8 && myAssetsDTOsByIDMap.get(myAsset.id)?.criticality <= 1
+                                              }"
+                                                                  [value]="myAssetsDTOsByIDMap.get(myAsset.id)?.criticality * 100"
+                                                                  matTooltip="Likelihood: {{myAssetsDTOsByIDMap.get(myAsset.id)?.likelihood}}&#13;
+                                                                        Vulnerability: {{myAssetsDTOsByIDMap.get(myAsset.id)?.vulnerability}}"
+                                                                  [matTooltipPosition]="'above'"
+                                            >
+                                            </mat-progress-spinner>
+                                            <div style="top:-35px; z-index:2;position:relative;">
+                                                {{myAssetsDTOsByIDMap.get(myAsset.id)?.criticality | percent}}
+                                            </div>
+                                        </td>
+                                        <td class="align-middle">
                                             <select [(ngModel)]="myAsset.ranking">
                                                 <option *ngFor="let level of priorities; let i = index"
                                                         [ngValue]="i+1">{{level}}</option>

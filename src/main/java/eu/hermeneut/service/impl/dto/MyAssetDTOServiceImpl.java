@@ -115,18 +115,25 @@ public class MyAssetDTOServiceImpl implements MyAssetDTOService, MaxValues {
         //For each MyAsset
         for (MyAsset myAsset : myAssets) {
             int impact = myAsset.getImpact() != null ? myAsset.getImpact() : 0;
+
+            float likelihood = 0;
+            float vulnerability = 0;
             float criticality = 0;
 
             Map<Long, Container> containerMap = this.assetRiskService.getContainerMap(myAsset);
 
             // For each container
             Triad<Float> maxLikelihoodVulnerabilityCriticality = this.assetRiskService.getMaxLikelihoodVulnerabilityCriticality(augmentedAttackStrategyMap, containerMap);
+            likelihood= maxLikelihoodVulnerabilityCriticality.getA();
+            vulnerability = maxLikelihoodVulnerabilityCriticality.getB();
             criticality = maxLikelihoodVulnerabilityCriticality.getC();
 
             MyAssetDTO myAssetDTO = new MyAssetDTO();
             myAssetDTO.setMyAssetID(myAsset.getId());
             myAssetDTO.setMyAssetName(myAsset.getAsset().getName());
-            myAssetDTO.setCriticality(criticality);
+            myAssetDTO.setLikelihood(likelihood);
+            myAssetDTO.setVulnerability(vulnerability);
+            myAssetDTO.setCriticality(criticality / MAX_CRITICALITY);
             myAssetDTO.setPriority(myAsset.getRanking());
 
             // AttackCosts PlaceHolder

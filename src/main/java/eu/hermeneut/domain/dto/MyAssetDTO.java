@@ -41,6 +41,16 @@ public class MyAssetDTO implements Serializable {
     private Set<AttackCost> attackCosts;
 
     /**
+     * The likelihood
+     */
+    private float likelihood;
+
+    /**
+     * The vulnerability
+     */
+    private float vulnerability;
+
+    /**
      * The criticality percentage.
      */
     @Min(0)
@@ -86,6 +96,22 @@ public class MyAssetDTO implements Serializable {
 
     public void setAttackCosts(Set<AttackCost> attackCosts) {
         this.attackCosts = attackCosts;
+    }
+
+    public float getLikelihood() {
+        return likelihood;
+    }
+
+    public void setLikelihood(float likelihood) {
+        this.likelihood = likelihood;
+    }
+
+    public float getVulnerability() {
+        return vulnerability;
+    }
+
+    public void setVulnerability(float vulnerability) {
+        this.vulnerability = vulnerability;
     }
 
     public float getCriticality() {

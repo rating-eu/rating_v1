@@ -15,6 +15,38 @@
  *
  */
 
-thead{
+thead {
     background-color: #f0f8ff;
+}
+
+.low.mat-progress-spinner::ng-deep circle {
+    stroke: #00FF00;
+}
+
+.low-medium.mat-progress-spinner::ng-deep circle {
+    stroke: #FFFF00;
+}
+
+.medium.mat-progress-spinner::ng-deep circle {
+    stroke: #FFBB00;
+}
+
+.medium-high.mat-progress-spinner::ng-deep circle {
+    stroke: #FF7700;
+}
+
+.high.mat-progress-spinner::ng-deep circle {
+    stroke: #FF0000;
+}
+
+table tbody tr th {
+    vertical-align: middle;
+}
+
+table tbody tr td {
+    vertical-align: middle;
+}
+
+::ng-deep .mat-tooltip {
+    white-space: pre-line !important;
 }
