@@ -15,7 +15,7 @@
  *
  */
 
-import {ChangeDetectorRef, Component, OnDestroy, OnInit} from '@angular/core';
+import {ChangeDetectorRef, Component, OnDestroy, OnInit, ViewRef} from '@angular/core';
 import {CriticalAttackStrategyService} from "../models/critical-attack-strategy.service";
 import {SelfAssessmentMgm, SelfAssessmentMgmService} from '../../entities/self-assessment-mgm';
 import {CriticalAttackStrategy} from "../models/critical-attack-strategy.model";
@@ -127,7 +127,9 @@ export class MostCriticalAttackStrategiesWidgetComponent implements OnInit, OnDe
     private handleAttackStrategiesUpdate(response: CriticalAttackStrategy[]) {
         this.criticalAttackStrategies = response;
 
-        this.changeDetector.detectChanges();
+        if(this.changeDetector && !(this.changeDetector as ViewRef).destroyed){
+            this.changeDetector.detectChanges();
+        }
     }
 
     onAttackStrategiesPageChange(number: number) {

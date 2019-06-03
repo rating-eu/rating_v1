@@ -15,7 +15,7 @@
  *
  */
 
-import {ChangeDetectorRef, Component, OnDestroy, OnInit} from '@angular/core';
+import {ChangeDetectorRef, Component, OnDestroy, OnInit, ViewRef} from '@angular/core';
 import {Router} from '@angular/router';
 import {NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
 import {JhiLanguageService} from 'ng-jhipster';
@@ -76,7 +76,10 @@ export class NavbarComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.subscriptions = [];
         this.companyBoardStatus = this.dataSharingService.companyBoardStatus;
-        this.changeDetector.detectChanges();
+
+        if(this.changeDetector && !(this.changeDetector as ViewRef).destroyed){
+            this.changeDetector.detectChanges();
+        }
 
         this.languageHelper.getAll().then((languages) => {
             this.languages = languages;
@@ -97,7 +100,9 @@ export class NavbarComponent implements OnInit, OnDestroy {
                     this.selfAssessmentId = update.selfAssessmentId;
                     this.sidebarCollapsed = update.isSidebarCollapsed;
 
-                    this.changeDetector.detectChanges();
+                    if(this.changeDetector && !(this.changeDetector as ViewRef).destroyed){
+                        this.changeDetector.detectChanges();
+                    }
                 }
             })
         );
@@ -137,7 +142,9 @@ export class NavbarComponent implements OnInit, OnDestroy {
         this.subscriptions.push(
             this.dataSharingService.companyBoardStatusSubject.subscribe((status: CompanyBoardStatus) => {
                 this.companyBoardStatus = status;
-                this.changeDetector.detectChanges();
+                if(this.changeDetector && !(this.changeDetector as ViewRef).destroyed){
+                    this.changeDetector.detectChanges();
+                }
             })
         );
     }

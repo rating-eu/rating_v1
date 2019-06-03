@@ -22,7 +22,7 @@ import {
     HostListener,
     OnDestroy,
     OnInit,
-    ViewEncapsulation
+    ViewEncapsulation, ViewRef
 } from '@angular/core';
 import {Principal} from '../../shared';
 import {DatasharingService} from '../../datasharing/datasharing.service';
@@ -203,7 +203,9 @@ export class SidebarComponent implements OnInit, OnDestroy, AfterViewInit {
     private fetchSecondaryLogo() {
         this.logoService.getSecondaryLogo().toPromise().then((logo: HttpResponse<LogoMgm>) => {
             this.secondaryLogo = logo.body;
-            this.changeDetector.detectChanges();
+            if(this.changeDetector && !(this.changeDetector as ViewRef).destroyed){
+                this.changeDetector.detectChanges();
+            }
         }).catch((reason) => {
             //Do Nothing
         });
@@ -385,7 +387,9 @@ export class SidebarComponent implements OnInit, OnDestroy, AfterViewInit {
             this.termsOfUseMenuItem
         ];
 
-        this.changeDetector.detectChanges();
+        if(this.changeDetector && !(this.changeDetector as ViewRef).destroyed){
+            this.changeDetector.detectChanges();
+        }
     }
 
     isAuthenticated() {
@@ -539,7 +543,9 @@ export class SidebarComponent implements OnInit, OnDestroy, AfterViewInit {
                     this.riskManagementMenuItem.items.push(assessmentItem);
                 });
 
-                this.changeDetector.detectChanges();
+                if(this.changeDetector && !(this.changeDetector as ViewRef).destroyed){
+                    this.changeDetector.detectChanges();
+                }
             }
         }
     }
@@ -562,7 +568,9 @@ export class SidebarComponent implements OnInit, OnDestroy, AfterViewInit {
                 && this.companyBoardStatus.identifyThreatAgentsStatus === Status.FULL
                 && this.companyBoardStatus.assessVulnerablitiesStatus === Status.FULL;
 
-            this.changeDetector.detectChanges();
+            if(this.changeDetector && !(this.changeDetector as ViewRef).destroyed){
+                this.changeDetector.detectChanges();
+            }
         }
     }
 
@@ -571,7 +579,9 @@ export class SidebarComponent implements OnInit, OnDestroy, AfterViewInit {
             if (this.cyberPostureMenuItem) {
                 this.cyberPostureMenuItem.visible = this.role === Role.ROLE_CISO;
 
-                this.changeDetector.detectChanges();
+                if(this.changeDetector && !(this.changeDetector as ViewRef).destroyed){
+                    this.changeDetector.detectChanges();
+                }
             }
         }
     }

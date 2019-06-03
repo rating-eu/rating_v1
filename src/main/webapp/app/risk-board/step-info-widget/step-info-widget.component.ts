@@ -15,7 +15,7 @@
  *
  */
 
-import {ChangeDetectorRef, Component, OnDestroy, OnInit} from '@angular/core';
+import {ChangeDetectorRef, Component, OnDestroy, OnInit, ViewRef} from '@angular/core';
 import {Router} from '@angular/router';
 import {RiskBoardService, RiskBoardStatus} from '../risk-board.service';
 import {ModalDismissReasons, NgbModal} from '@ng-bootstrap/ng-bootstrap';
@@ -133,7 +133,7 @@ export class StepInfoWidgetComponent implements OnInit, OnDestroy {
 
         this.datasharingService.riskBoardStatus = this.riskBoardStatus;
 
-        if (this.changeDetector) {
+        if(this.changeDetector && !(this.changeDetector as ViewRef).destroyed){
             this.changeDetector.detectChanges();
         }
     }

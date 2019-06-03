@@ -59,7 +59,7 @@ export class DashboardOneComponent implements OnInit, OnDestroy {
         this.subscriptions.push(
             this.datasharingService.selfAssessmentObservable
                 .catch((err) => {
-                    this.selfAssessment = assessment;
+                    this.selfAssessment = null;
                     return of(null);
                 })
                 .subscribe(assessment => {
