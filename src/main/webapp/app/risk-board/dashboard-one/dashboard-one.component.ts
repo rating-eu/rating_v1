@@ -24,6 +24,7 @@ import {ImpactMode} from '../../entities/enumerations/ImpactMode.enum';
 import {RiskBoardStatus} from '../risk-board.service';
 import {Status} from '../../entities/enumerations/Status.enum';
 import {Subscription} from "rxjs";
+import {of} from "rxjs/observable/of";
 
 @Component({
     selector: 'jhi-dashboard-one',
@@ -51,32 +52,44 @@ export class DashboardOneComponent implements OnInit, OnDestroy {
         this.selfAssessment = this.datasharingService.selfAssessment;
         this.riskBoardStatus = this.datasharingService.riskBoardStatus;
 
-        this.subscriptions.push(
-            this.datasharingService.selfAssessmentObservable.subscribe(assessment => {
-                if (assessment) {
-                    this.selfAssessment = assessment;
-                } else {
-                    this.selfAssessment = null;
-                }
-            })
-        );
-
         if (!this.selfAssessment) {
             this.router.navigate(['/my-risk-assessments']);
         }
 
         this.subscriptions.push(
-            this.datasharingService.riskBoardStatusObservable.subscribe(
+            this.datasharingService.selfAssessmentObservable
+                .catch((err) => {
+                    this.selfAssessment = assessment;
+                    return of(null);
+                })
+                .subscribe(assessment => {
+
+                    if (assessment) {
+                        this.selfAssessment = assessment;
+                    } else {
+                        this.selfAssessment = null;
+                    }
+
+                    if (!this.selfAssessment) {
+                        this.router.navigate(['/my-risk-assessments']);
+                    }
+                })
+        );
+
+
+        this.subscriptions.push(
+            this.datasharingService.riskBoardStatusObservable
+                .catch((err) => {
+
+                    const status: RiskBoardStatus = new RiskBoardStatus();
+                    return of(status);
+                }).subscribe(
                 (status: RiskBoardStatus) => {
                     this.riskBoardStatus = status;
                     this.changDetector.detectChanges();
                 }
             )
         );
-    }
-
-    isAuthenticated() {
-        return this.principal.isAuthenticated();
     }
 
     ngOnDestroy(): void {

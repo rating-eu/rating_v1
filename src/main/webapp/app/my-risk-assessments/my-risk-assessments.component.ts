@@ -45,7 +45,7 @@ export class MyRiskAssessmentsComponent implements OnInit, OnDestroy {
     private static NOT_FOUND = 404;
     public mySelfAssessments: SelfAssessmentMgm[];
     eventSubscriber: Subscription;
-    private subscription: Subscription;
+    private subscriptions: Subscription[];
     public isAuthenticated = false;
     public isAdmin = false;
     public isCISO = false;
@@ -65,6 +65,8 @@ export class MyRiskAssessmentsComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
+        this.subscriptions = [];
+
         this.orderBy = {
             name: false,
             created: false,
@@ -76,28 +78,30 @@ export class MyRiskAssessmentsComponent implements OnInit, OnDestroy {
         this.mySelfAssessment = this.dataSharingService.selfAssessment;
 
         // Get notified each time authentication state changes.
-        this.dataSharingService.roleObservable.subscribe((role: Role) => {
-            switch (role) {
-                case Role.ROLE_ADMIN: {
-                    this.isAdmin = true;
-                    break;
+        this.subscriptions.push(
+            this.dataSharingService.roleObservable.subscribe((role: Role) => {
+                switch (role) {
+                    case Role.ROLE_ADMIN: {
+                        this.isAdmin = true;
+                        break;
+                    }
+                    case Role.ROLE_CISO: {
+                        this.isCISO = true;
+                        break;
+                    }
+                    case Role.ROLE_EXTERNAL_AUDIT: {
+                        this.isExternal = true;
+                        break;
+                    }
+                    default: {
+                        this.isAuthenticated = false;
+                        this.isCISO = false;
+                        this.isExternal = false;
+                        this.isAdmin = false;
+                    }
                 }
-                case Role.ROLE_CISO: {
-                    this.isCISO = true;
-                    break;
-                }
-                case Role.ROLE_EXTERNAL_AUDIT: {
-                    this.isExternal = true;
-                    break;
-                }
-                case null: {
-                    this.isAuthenticated = false;
-                    this.isCISO = false;
-                    this.isExternal = false;
-                    this.isAdmin = false;
-                }
-            }
-        });
+            })
+        );
     }
 
     private loadMySelfAssessments() {
@@ -125,18 +129,18 @@ export class MyRiskAssessmentsComponent implements OnInit, OnDestroy {
     }
 
     registerChangeInSelfAssessments() {
-        this.subscription = this.dataSharingService.selfAssessmentObservable.subscribe((value: SelfAssessmentMgm) => {
-            this.loadMySelfAssessments();
-        });
-    }
-
-    updateMyAsset(asset: MyAssetMgm) {
-        this.myAssetService.update(asset).toPromise();
+        this.subscriptions.push(
+            this.dataSharingService.selfAssessmentObservable.subscribe((value: SelfAssessmentMgm) => {
+                this.loadMySelfAssessments();
+            })
+        );
     }
 
     ngOnDestroy(): void {
-        if (this.subscription) {
-            this.subscription.unsubscribe();
+        if (this.subscriptions && this.subscriptions.length) {
+            this.subscriptions.forEach((subscription: Subscription) => {
+                subscription.unsubscribe();
+            });
         }
     }
 
