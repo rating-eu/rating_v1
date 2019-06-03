@@ -22,39 +22,7 @@
             <jhi-step-info-widget></jhi-step-info-widget>
         </div>
     </div>
-    <!--<div class="row">
-        <h2>Cyber Posture</h2>
-    </div>
-    <div class="row">
-        <div class="col-md-3">
-            <jhi-company-widget></jhi-company-widget>
-        </div>
-        <div class="col-md-3">
-            <jhi-asset-widget></jhi-asset-widget>
-        </div>
-        <div class="col-md-3">
-            <jhi-threat-agents-widget></jhi-threat-agents-widget>
-        </div>
-        <div class="col-md-3">
-            <jhi-customers-widget></jhi-customers-widget>
-        </div>
-        <div class="col-md-3">
-          <jhi-attack-strategies-widget></jhi-attack-strategies-widget>
-        </div>
-    </div>-->
-    <!--<div class="row">
-        <h2>Vulnerabilities</h2>
-    </div>
-    <div class="row">
-        <div class="col-md-12">
-            <jhi-overall-likelihood-widget></jhi-overall-likelihood-widget>
-        </div>
-    </div>-->
-    <!--<div class="row">
-        <div class="col-md-12">
-            <jhi-most-dangerous-threat-agents-widget></jhi-most-dangerous-threat-agents-widget>
-        </div>
-    </div>-->
+
     <div class="row mb-2" *ngIf="riskBoardStatus && riskBoardStatus.assetClusteringStatus === statusEnum.FULL">
         <div class="col-md-12">
             <jhi-most-critical-attack-strategies-widget></jhi-most-critical-attack-strategies-widget>
