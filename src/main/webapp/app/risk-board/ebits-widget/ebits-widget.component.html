@@ -70,7 +70,7 @@
                     </tbody>
                 </table>
             </div>
-            <div *ngIf="ebitInfo.length === 0" class="text-center">
+            <div *ngIf="!ebitInfo || (ebitInfo && ebitInfo.length === 0)" class="text-center">
                 No EBITDA declared!
             </div>
         </div>
