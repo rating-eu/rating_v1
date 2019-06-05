@@ -1,0 +1,45 @@
+id;name;modified;directly_vulnerable;indirectly_vulnerable
+1;Cash;now();FALSE;TRUE
+2;Certificate of Deposit (CD);now();FALSE;FALSE
+3;Equities;now();FALSE;FALSE
+4;Corporate bonds and stock;now();FALSE;FALSE
+5;Temporary investments;now();FALSE;FALSE
+6;Insurance premiums;now();FALSE;FALSE
+7;Raw and Stock Material;now();FALSE;FALSE
+8;Land;now();FALSE;FALSE
+9;Buildings;now();FALSE;FALSE
+10;Plants and Machinery;now();TRUE;FALSE
+11;Equipment;now();TRUE;FALSE
+12;Furniture and Office Supplies;now();FALSE;FALSE
+13;Copyright;now();TRUE;FALSE
+14;Patent;now();TRUE;FALSE
+15;Blueprint;now();TRUE;FALSE
+16;Intellectual Property (IP) in progress;now();TRUE;FALSE
+17;Trade or business secrets;now();TRUE;FALSE
+18;Industrial process;now();TRUE;FALSE
+19;On-going R&D innovation projects;now();TRUE;FALSE
+20;On-going new product and new services;now();TRUE;FALSE
+21;Business models;now();TRUE;FALSE
+22;Data on clients and partners;now();TRUE;FALSE
+23;Data on personnel;now();TRUE;FALSE
+24;Data on suppliers and ecosystems;now();TRUE;FALSE
+25;Data on functions (HR, commercial, finance, fiscal, etc.);now();TRUE;FALSE
+26;Organisation Reputation with clients, stakeholders and firm''s ecosystems;now();FALSE;TRUE
+27;Reputation of managers and employees;now();FALSE;FALSE
+28;Cyber-trustworthy;now();FALSE;TRUE
+29;Brand value with customers, stakeholders and firm or organisation''s ecosystem;now();FALSE;TRUE
+30;Brand Reputation;now();FALSE;TRUE
+31;Firm''s personnel technical and business key competences;now();FALSE;TRUE
+32;Firm''s personnel soft-skills;now();FALSE;TRUE
+33;Organisational knowledge;now();FALSE;TRUE
+34;Personnel motivation and satisfaction;now();FALSE;TRUE
+35;Personnel trust in the organisation;now();FALSE;TRUE
+36;Personnel learning capabilities;now();FALSE;TRUE
+37;Digital supported process;now();FALSE;TRUE
+38;Non-digitised functional and interfunctional processes;now();FALSE;TRUE
+39;Continuous Learning and Training Opportunities;now();FALSE;TRUE
+40;Firm or organisation''s strategic capabilities;now();FALSE;TRUE
+41;Eco-system''s processes;now();FALSE;TRUE
+42;Commercial and Stakeholders'' Network;now();FALSE;TRUE
+43;Royalty;now();FALSE;TRUE
+44;Cooperation and Commercial Agreements;now();FALSE;TRUE
