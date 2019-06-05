@@ -149,5 +149,6 @@
     <include file="config/liquibase/changelog/20190529193151_added_employee_activated_column.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20190529232047_load_new_authorities.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20190605091540_added_asset_in-directly_vulnerable_columns.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190605115047_added_asset_in-directly_vulnerable_data.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
 </databaseChangeLog>
