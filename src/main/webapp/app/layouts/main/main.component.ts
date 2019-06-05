@@ -186,6 +186,8 @@ export class JhiMainComponent implements OnInit, OnDestroy {
                     this.role = roleResponse;
                     this.dataSharingService.role = this.role;
 
+                    let myCompanyObservable: Observable<HttpResponse<MyCompanyMgm>> = of(null);
+
                     switch (this.role) {
                         case Role.ROLE_CISO_DEPUTY:
                         case Role.ROLE_CISO: {
@@ -193,12 +195,21 @@ export class JhiMainComponent implements OnInit, OnDestroy {
                             this.isExternal = false;
                             this.isAdmin = false;
 
+                            myCompanyObservable = this.myCompanyService.findByUser(this.user.id)
+                                .catch((err) => {
+                                    return of(null);
+                                });
                             break;
                         }
                         case Role.ROLE_EXTERNAL_AUDIT: {
                             this.isCISO = false;
                             this.isExternal = true;
                             this.isAdmin = false;
+
+                            myCompanyObservable = this.myCompanyService.findByUser(this.user.id)
+                                .catch((err) => {
+                                    return of(null);
+                                });
 
                             break;
                         }
@@ -216,10 +227,7 @@ export class JhiMainComponent implements OnInit, OnDestroy {
                         }
                     }
 
-                    return this.myCompanyService.findByUser(this.user.id)
-                        .catch((err) => {
-                            return of(null);
-                        });
+                    return myCompanyObservable;
                 } else {
                     this.role = null;
                     this.dataSharingService.role = this.role;

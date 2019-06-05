@@ -45,7 +45,7 @@
                 </ol>
             </div>
             <div *ngIf="questionnaire.purpose === purposeEnum.SELFASSESSMENT">
-                <mat-tab-group>
+                <mat-tab-group [(selectedIndex)]="currentTabIndex">
                     <mat-tab label="Human">
                         <ol *ngIf="humanQuestionsArray">
                             <li *ngFor="let question of humanQuestionsArray; trackBy: trackByID">
@@ -139,6 +139,14 @@
                         </ol>
                     </mat-tab>
                 </mat-tab-group>
+                <mat-tab-group [(selectedIndex)]="currentTabIndex">
+                    <mat-tab label="Human">
+                    </mat-tab>
+                    <mat-tab label="IT">
+                    </mat-tab>
+                    <mat-tab label="Physical">
+                    </mat-tab>
+                </mat-tab-group>
             </div>
             <div class="form-row text-right d-block" style="margin-bottom: 40px">
                 <button class="btn btn-success waves-light waves-effect w-md" type="submit"
@@ -150,7 +158,7 @@
 
         <div *ngSwitchCase="roleEnum.ROLE_EXTERNAL_AUDIT">
             <div *ngIf="questionnaire.purpose === purposeEnum.SELFASSESSMENT">
-                <mat-tab-group>
+                <mat-tab-group [(selectedIndex)]="currentTabIndex">
                     <mat-tab label="Human">
                         <ol *ngIf="humanQuestionsArray">
                             <li *ngFor="let question of humanQuestionsArray; trackBy: trackByID">
@@ -303,6 +311,14 @@
                                 </div>
                             </li>
                         </ol>
+                    </mat-tab>
+                </mat-tab-group>
+                <mat-tab-group [(selectedIndex)]="currentTabIndex">
+                    <mat-tab label="Human">
+                    </mat-tab>
+                    <mat-tab label="IT">
+                    </mat-tab>
+                    <mat-tab label="Physical">
                     </mat-tab>
                 </mat-tab-group>
                 <div class="form-row text-right d-block" style="margin-bottom: 40px">
