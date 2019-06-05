@@ -85,6 +85,14 @@
                 <option [ngValue]="assetCategoryOption.id === asset.assetcategory?.id ? asset.assetcategory : assetCategoryOption" *ngFor="let assetCategoryOption of assetcategories; trackBy: trackAssetCategoryById">{{assetCategoryOption.name}}</option>
             </select>
         </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="hermeneutApp.asset.directlyVulnerable" for="field_directly_vulnerable">Directly Vulnerable</label>
+            <input type="checkbox" class="form-control" id="field_directly_vulnerable" name="directlyVulnerable" [(ngModel)]="asset.directlyVulnerable" />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="hermeneutApp.asset.indirectlyVulnerable" for="field_indirectly_vulnerable">Indirectly Vulnerable</label>
+            <input type="checkbox" class="form-control" id="field_indirectly_vulnerable" name="indirectlyVulnerable" [(ngModel)]="asset.indirectlyVulnerable" />
+        </div>
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">
