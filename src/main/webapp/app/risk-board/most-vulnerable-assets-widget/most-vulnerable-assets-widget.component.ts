@@ -114,6 +114,13 @@ export class MostVulnerableAssetsWidgetComponent implements OnInit, OnDestroy {
 
         if (this.selfAssessment && this.selfAssessment.id) {
             this.selfAssessmentService.getOverwiew(this.selfAssessment.id)
+                .catch((err) => {
+                    const overview: SelfAssessmentOverview = new SelfAssessmentOverview();
+                    overview.selfAssessmentID = this.selfAssessment.id;
+                    overview.augmentedMyAssets = [];
+
+                    return of(overview);
+                })
                 .toPromise()
                 .then(
                     (response: SelfAssessmentOverview) => {
@@ -130,7 +137,16 @@ export class MostVulnerableAssetsWidgetComponent implements OnInit, OnDestroy {
                         if (!this.selfAssessment || this.selfAssessment.id !== newAssessment.id) {
                             this.selfAssessment = newAssessment;
 
-                            return this.selfAssessmentService.getOverwiew(this.selfAssessment.id);
+                            return this.selfAssessmentService.getOverwiew(this.selfAssessment.id)
+                                .catch((err) => {
+                                    const overview: SelfAssessmentOverview = new SelfAssessmentOverview();
+                                    overview.selfAssessmentID = this.selfAssessment.id;
+                                    overview.augmentedMyAssets = [];
+
+                                    return of(overview);
+                                });
+                        }else{
+                            return of(null);
                         }
                     } else {
                         return of(null);

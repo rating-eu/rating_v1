@@ -55,6 +55,8 @@
             <th><span jhiTranslate="hermeneutApp.asset.container">Container</span></th>
             <th><span jhiTranslate="hermeneutApp.asset.domainsOfInfluence">Domains Of Influence</span></th>
             <th><span jhiTranslate="hermeneutApp.asset.assetcategory">Assetcategory</span></th>
+            <th><span jhiTranslate="hermeneutApp.asset.directlyVulnerable">Directly Vulnerable</span></th>
+            <th><span jhiTranslate="hermeneutApp.asset.indirectlyVulnerable">Indirectly Vulnerable</span></th>
             <th></th>
             </tr>
             </thead>
@@ -79,6 +81,12 @@
                     <div *ngIf="asset.assetcategory">
                         <a [routerLink]="['../asset-category-mgm', asset.assetcategory?.id ]" >{{asset.assetcategory?.name}}</a>
                     </div>
+                </td>
+                <td>
+                    {{asset.directlyVulnerable}}
+                </td>
+                <td>
+                    {{asset.indirectlyVulnerable}}
                 </td>
                 <td class="text-right">
                     <div class="btn-group flex-btn-group-container">

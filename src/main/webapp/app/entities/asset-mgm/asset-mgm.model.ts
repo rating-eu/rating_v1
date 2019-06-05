@@ -30,6 +30,8 @@ export class AssetMgm implements BaseEntity {
         public containers?: ContainerMgm[],
         public domainsOfInfluences?: DomainOfInfluenceMgm[],
         public assetcategory?: AssetCategoryMgm,
+        public directlyVulnerable: boolean = false,
+        public indirectlyVulnerable: boolean = false
     ) {
     }
 }

@@ -42,12 +42,14 @@
                     <tbody>
                     <tr>
                         <td>Asset Clustering</td>
-                        <td>First step of the process that aims at describing the company domain in terms of owned assets.
+                        <td>First step of the process that aims at describing the company domain in terms of owned
+                            assets.
                             In other
                             terms this phase responds to the question "What do I own?”
                         </td>
                         <td class="text-center">
-                            <i *ngIf="assetClusteringStatus === statusEnum.FULL" style="color: green" class="fa fa-check"
+                            <i *ngIf="assetClusteringStatus === statusEnum.FULL" style="color: green"
+                               class="fa fa-check"
                                aria-hidden="true"
                                [ngbTooltip]="statusEnum[assetClusteringStatus][0] + statusEnum[assetClusteringStatus].substr(1).toLowerCase()"></i>
                             <i *ngIf="assetClusteringStatus === statusEnum.EMPTY || assetClusteringStatus === statusEnum.PENDING"
@@ -57,7 +59,8 @@
                         <td class="text-center">
                             <a *ngIf="assetClusteringStatus === statusEnum.EMPTY"
                                [routerLink]="['/identify-asset/asset-clustering']"><i class="fa fa-plus-square fa-lg"
-                                                                                      placement="top" ngbTooltip="Create"
+                                                                                      placement="top"
+                                                                                      ngbTooltip="Create"
                                                                                       aria-hidden="true"></i></a>
                             <ng-container
                                 *ngIf="assetClusteringStatus === statusEnum.PENDING || assetClusteringStatus === statusEnum.FULL">
@@ -71,7 +74,8 @@
                         <td>Impact Evaluation</td>
                         <td>Measuring the impact on assets</td>
                         <td class="text-center">
-                            <i *ngIf="impactEvaluationStatus === statusEnum.FULL" style="color: green" class="fa fa-check"
+                            <i *ngIf="impactEvaluationStatus === statusEnum.FULL" style="color: green"
+                               class="fa fa-check"
                                aria-hidden="true"
                                [ngbTooltip]="statusEnum[impactEvaluationStatus][0] + statusEnum[impactEvaluationStatus].substr(1).toLowerCase()"></i>
                             <i *ngIf="impactEvaluationStatus === statusEnum.EMPTY || impactEvaluationStatus === statusEnum.PENDING"
@@ -92,13 +96,15 @@
                             </ng-container>
                         </td>
                     </tr>
-                    <tr *ngIf="selfAssessment.impactMode===impactModeEnum.QUANTITATIVE">
+                    <tr *ngIf="selfAssessment.impactMode===impactModeEnum.QUANTITATIVE && impactEvaluationStatus === statusEnum.FULL">
                         <td>Estimation of the Attack Related Costs</td>
-                        <td><p>Estimate the attack related costs; "Communicate or evaluate the costs of the declared attack
+                        <td><p>Estimate the attack related costs; "Communicate or evaluate the costs of the declared
+                            attack
                             costs"</p>
                             <p *ngIf="attackRelatedCostsStatus === statusEnum.EMPTY"><span
                                 style="color: orange">WARNING!</span> No
-                                <a href="javascript:void(0)" [routerLink]="['/identify-asset/attack-costs']">Attack Cost</a>
+                                <a href="javascript:void(0)" [routerLink]="['/identify-asset/attack-costs']">Attack
+                                    Cost</a>
                                 identified or no one
                                 <a href="javascript:void(0)"
                                    [routerLink]="['/impact-evaluation/quantitative/attack-related-costs-estimation']">estimated</a>!
@@ -110,7 +116,8 @@
                             </p>
                         </td>
                         <td class="text-center">
-                            <i *ngIf="attackRelatedCostsStatus === statusEnum.FULL" style="color: green" class="fa fa-check"
+                            <i *ngIf="attackRelatedCostsStatus === statusEnum.FULL" style="color: green"
+                               class="fa fa-check"
                                aria-hidden="true"
                                [ngbTooltip]="attackRelatedCostsStatus[0] + attackRelatedCostsStatus.substr(1).toLowerCase()"></i>
                             <i *ngIf="attackRelatedCostsStatus === statusEnum.EMPTY || attackRelatedCostsStatus === statusEnum.PENDING"
@@ -133,9 +140,11 @@
                     </tr>
                     <tr>
                         <td>Risk Evaluation</td>
-                        <td>Manage your risk based on cost benefit analisys. The general approach includes both qualitative
+                        <td>Manage your risk based on cost benefit analisys. The general approach includes both
+                            qualitative
                             and
-                            quantitative metodologies based on risk definition (ISO31000) and risk management (ISO31010).
+                            quantitative metodologies based on risk definition (ISO31000) and risk management
+                            (ISO31010).
                         </td>
                         <td class="text-center">
                             <i *ngIf="riskEvaluationStatus === statusEnum.FULL" style="color: green" class="fa fa-check"
@@ -148,7 +157,8 @@
                         <td class="text-center">
                             <a *ngIf="riskEvaluationStatus === statusEnum.EMPTY && impactEvaluationStatus === statusEnum.FULL"
                                [routerLink]="['/risk-management/risk-evaluation']"><i class="fa fa-plus-square fa-lg"
-                                                                                      placement="top" ngbTooltip="Create"
+                                                                                      placement="top"
+                                                                                      ngbTooltip="Create"
                                                                                       aria-hidden="true"></i></a>
                             <ng-container
                                 *ngIf="riskEvaluationStatus === statusEnum.PENDING || riskEvaluationStatus === statusEnum.FULL">
@@ -173,7 +183,8 @@
                         </ng-container>
                         <ng-container *ngIf="!alertMessage">
                             <p>Editing such step may influence the entire assessment.</p>
-                            <p>If you want to proceed, just click on "OK" and edit your preferences, otherwise, you can just
+                            <p>If you want to proceed, just click on "OK" and edit your preferences, otherwise, you can
+                                just
                                 proceed in "view" mode whitout make any changes.</p>
                             <p>Do you want to proceed?</p>
                         </ng-container>

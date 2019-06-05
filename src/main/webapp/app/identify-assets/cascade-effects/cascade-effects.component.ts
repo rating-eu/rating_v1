@@ -38,6 +38,9 @@ import {DatasharingService} from "../../datasharing/datasharing.service";
 export class CascadeEffectsComponent implements OnInit {
     private mySelf: SelfAssessmentMgm = null;
     public myAssets: MyAssetMgm[];
+    public myDirectlyVulnerableAssets: MyAssetMgm[];
+    public myIndirectlyVulnerableAssets: MyAssetMgm[];
+
     public selectedMyAsset: MyAssetMgm;
     public myAssetStatus: Map<number, string> = new Map<number, string>();
     public isDirect = false;
@@ -64,9 +67,15 @@ export class CascadeEffectsComponent implements OnInit {
             if (myAssets) {
                 this.myAssets = myAssets;
                 this.myAssets = _.orderBy(this.myAssets, ['asset.name'], ['asc']);
+
+                this.myDirectlyVulnerableAssets = _.filter(this.myAssets, (myAsset: MyAssetMgm)=>myAsset.asset.directlyVulnerable);
+                this.myIndirectlyVulnerableAssets = _.filter(this.myAssets, (myAsset: MyAssetMgm)=>myAsset.asset.indirectlyVulnerable);
+
                 this.myAssets.forEach((myAsset) => {
                     this.myAssetStatus.set(myAsset.id, 'NOT COMPLETED');
                 });
+
+
                 this.idaUtilsService.getMySavedDirectAssets(this.mySelf).toPromise().then((mySavedDirect) => {
                     if (mySavedDirect) {
                         this.myDirects = mySavedDirect;

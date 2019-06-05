@@ -15,7 +15,7 @@
  *
  */
 
-import {ChangeDetectorRef, Component, OnDestroy, OnInit} from '@angular/core';
+import {ChangeDetectorRef, Component, OnDestroy, OnInit, ViewRef} from '@angular/core';
 import {CriticalAttackStrategyService} from "../models/critical-attack-strategy.service";
 import {SelfAssessmentMgm, SelfAssessmentMgmService} from '../../entities/self-assessment-mgm';
 import {CriticalAttackStrategy} from "../models/critical-attack-strategy.model";
@@ -81,6 +81,9 @@ export class MostCriticalAttackStrategiesWidgetComponent implements OnInit, OnDe
             this.router.navigate(['/my-risk-assessments']);
         } else {
             this.fetchCriticalAttackStrategies()
+                .catch(err => {
+                    return of([]);
+                })
                 .toPromise()
                 .then((response: CriticalAttackStrategy[]) => {
                     this.handleAttackStrategiesUpdate(response);
@@ -95,7 +98,12 @@ export class MostCriticalAttackStrategiesWidgetComponent implements OnInit, OnDe
                         if (!this.selfAssessment || this.selfAssessment.id !== newAssessment.id) {
                             this.selfAssessment = newAssessment;
 
-                            return this.fetchCriticalAttackStrategies();
+                            return this.fetchCriticalAttackStrategies()
+                                .catch(err => {
+                                    return of([]);
+                                });
+                        } else {
+                            return of([]);
                         }
                     } else {
                         return of([]);
@@ -113,16 +121,15 @@ export class MostCriticalAttackStrategiesWidgetComponent implements OnInit, OnDe
 
     private fetchCriticalAttackStrategies(): Observable<CriticalAttackStrategy[]> {
         return this.criticalAttackStrategyService
-            .getCriticalAttackStrategies(this.selfAssessment.id)
-            .catch(err => {
-                return of([]);
-            });
+            .getCriticalAttackStrategies(this.selfAssessment.id);
     }
 
     private handleAttackStrategiesUpdate(response: CriticalAttackStrategy[]) {
         this.criticalAttackStrategies = response;
 
-        this.changeDetector.detectChanges();
+        if(this.changeDetector && !(this.changeDetector as ViewRef).destroyed){
+            this.changeDetector.detectChanges();
+        }
     }
 
     onAttackStrategiesPageChange(number: number) {
