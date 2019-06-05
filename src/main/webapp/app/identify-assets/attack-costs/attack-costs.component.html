@@ -118,20 +118,20 @@
                         <div class="row" *ngIf="selectedIndirectAsset && !refreshIndirect">
                             <div class="col-md-12">
                                 <div class="col-md-6">
-                                    <ng-container *ngFor="let cost of costs; let isOdd=odd">
-                                        <ng-container *ngIf="isOdd">
+                                    <ng-container *ngFor="let cost of costs; let isEven=even">
+                                        <ng-container *ngIf="isEven">
                                             <div class="row">
                                                 <label><input type="checkbox" [checked]="isIndirectCostSelected(cost)"
-                                                        (change)="setCostOnIndirect(cost)"
-                                                        id="{{cost.toString()}}-{{selectedIndirectAsset.myAsset.asset.name}}">
+                                                              (change)="setCostOnIndirect(cost)"
+                                                              id="{{cost.toString()}}-{{selectedIndirectAsset.myAsset.asset.name}}">
                                                     {{cost.toString() | replace:'_':' '}}</label>
                                             </div>
                                         </ng-container>
                                     </ng-container>
                                 </div>
                                 <div class="col-md-6">
-                                    <ng-container *ngFor="let cost of costs; let isEven=even">
-                                        <ng-container *ngIf="isEven">
+                                    <ng-container *ngFor="let cost of costs; let isOdd=odd">
+                                        <ng-container *ngIf="isOdd">
                                             <div class="row">
                                                 <label><input type="checkbox" [checked]="isIndirectCostSelected(cost)"
                                                         (change)="setCostOnIndirect(cost)"

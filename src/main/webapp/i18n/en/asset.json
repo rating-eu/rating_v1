@@ -22,7 +22,9 @@
             "modified": "Modified",
             "container": "Container",
             "domainsOfInfluence": "Domains Of Influence",
-            "assetcategory": "Assetcategory"
+            "assetcategory": "Assetcategory",
+            "directlyVulnerable": "Directly Vulnerable",
+            "indirectlyVulnerable": "Indirectly Vulnerable"
         }
     }
 }

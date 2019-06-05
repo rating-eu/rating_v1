@@ -55,6 +55,14 @@
                 <a [routerLink]="['/asset-category-mgm', asset.assetcategory?.id]">{{asset.assetcategory?.name}}</a>
             </div>
         </dd>
+        <dt><span jhiTranslate="hermeneutApp.asset.directlyVulnerable">Directly Vulnerable</span></dt>
+        <dd>
+            <span>{{asset.directlyVulnerable}}</span>
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.asset.indirectlyVulnerable">Indirectly Vulnerable</span></dt>
+        <dd>
+            <span>{{asset.indirectlyVulnerable}}</span>
+        </dd>
     </dl>
 
     <button type="submit"

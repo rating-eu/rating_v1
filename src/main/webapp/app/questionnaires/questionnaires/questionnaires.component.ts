@@ -16,7 +16,7 @@
  */
 
 import * as _ from 'lodash';
-import {ChangeDetectorRef, Component, OnDestroy, OnInit} from '@angular/core';
+import {ChangeDetectorRef, Component, OnDestroy, OnInit, ViewRef} from '@angular/core';
 import {QuestionnairesService} from '../questionnaires.service';
 import {QuestionnaireMgm} from '../../entities/questionnaire-mgm';
 import {Observable} from 'rxjs/Observable';
@@ -278,7 +278,9 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
 
                                                     if (questionnaireStatus.status === Status.EMPTY || questionnaireStatus.status === Status.PENDING) {
                                                         this.canCreateNewQuestionnaireStatus = false;
-                                                        this.changeDetector.detectChanges();
+                                                        if(this.changeDetector && !(this.changeDetector as ViewRef).destroyed){
+                                                            this.changeDetector.detectChanges();
+                                                        }
                                                     }
                                                 }
                                             );

@@ -27,7 +27,7 @@
                 <li style="width: 24px; cursor: default"></li>
                 <li style="width: 24px; cursor: default"></li>
                 <li>
-                    <a [routerLink]="['/impact-evaluation']">
+                    <a [routerLink]="['/impact-evaluation/quantitative']">
                         <i class="fa fa-link fa-lg" aria-hidden="true"></i>
                     </a>
                 </li>
@@ -35,7 +35,7 @@
             <div class="clearfix"></div>
         </div>
         <div class="table-responsive x_content" style="padding:0px !important;" [ngbCollapse]="isCollapsed">
-            <div *ngIf="ebitInfo.length > 0" class="table-responsive table-hover-no-pointer">
+            <div *ngIf="ebitInfo && ebitInfo.length > 0" class="table-responsive table-hover-no-pointer">
                 <table class="table table-striped">
                     <thead>
                     <tr>
@@ -70,7 +70,7 @@
                     </tbody>
                 </table>
             </div>
-            <div *ngIf="ebitInfo.length === 0" class="text-center">
+            <div *ngIf="!ebitInfo || (ebitInfo && ebitInfo.length === 0)" class="text-center">
                 No EBITDA declared!
             </div>
         </div>

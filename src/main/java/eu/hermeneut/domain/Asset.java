@@ -1,12 +1,12 @@
 /*
  * Copyright 2019 HERMENEUT Consortium
- *  
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *  
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- *  
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -74,6 +74,12 @@ public class Asset implements Serializable {
 
     @ManyToOne
     private AssetCategory assetcategory;
+
+    @NotNull
+    private Boolean directlyVulnerable = false;
+
+    @NotNull
+    private Boolean indirectlyVulnerable = false;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -196,6 +202,23 @@ public class Asset implements Serializable {
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
+
+    public Boolean getDirectlyVulnerable() {
+        return directlyVulnerable;
+    }
+
+    public void setDirectlyVulnerable(Boolean directlyVulnerable) {
+        this.directlyVulnerable = directlyVulnerable;
+    }
+
+    public Boolean getIndirectlyVulnerable() {
+        return indirectlyVulnerable;
+    }
+
+    public void setIndirectlyVulnerable(Boolean indirectlyVulnerable) {
+        this.indirectlyVulnerable = indirectlyVulnerable;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -219,11 +242,13 @@ public class Asset implements Serializable {
     @Override
     public String toString() {
         return "Asset{" +
-            "id=" + getId() +
-            ", name='" + getName() + "'" +
-            ", description='" + getDescription() + "'" +
-            ", created='" + getCreated() + "'" +
-            ", modified='" + getModified() + "'" +
-            "}";
+            "id=" + id +
+            ", name='" + name + '\'' +
+            ", description='" + description + '\'' +
+            ", created=" + created +
+            ", modified=" + modified +
+            ", directlyVulnerable=" + directlyVulnerable +
+            ", indirectlyVulnerable=" + indirectlyVulnerable +
+            '}';
     }
 }
