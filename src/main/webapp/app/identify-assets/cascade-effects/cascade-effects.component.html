@@ -35,10 +35,10 @@
         <ng-container class="card-text" *ngIf="!myAssets">
             <div class="loader"></div>
         </ng-container>
-        <ng-container class="card-text" *ngIf="myAssets">
+        <ng-container class="card-text" *ngIf="myAssets && myDirectlyVulnerableAssets && myIndirectlyVulnerableAssets">
             <div class="col-md-3">
                 <div class="list-group">
-                    <ng-container *ngFor="let myAsset of myAssets">
+                    <ng-container *ngFor="let myAsset of myDirectlyVulnerableAssets">
                         <a href="javascript:void(0)" (click)="updateMyAsset(false);selectAsset(myAsset)"
                             class="list-group-item list-group-item-action"
                             [ngClass]="{'active': selectedMyAsset && myAsset.id === selectedMyAsset.id}"
@@ -89,21 +89,21 @@
                                 <h5>Tangible</h5>
                             </div>
                             <div class="col-md-6">
-                                <ng-container *ngFor="let myAsset of myAssets; let isOdd=odd">
+                                <ng-container *ngFor="let myAsset of myIndirectlyVulnerableAssets; let isEven=even">
                                     <ng-container
-                                        *ngIf="isOdd && myAsset.asset.assetcategory.type.toString() === 'TANGIBLE' && myAsset.asset.id !== selectedDirectAsset.myAsset.asset.id">
+                                        *ngIf="isEven && myAsset.asset.assetcategory.type.toString() === 'TANGIBLE' && myAsset.asset.id !== selectedDirectAsset.myAsset.asset.id">
                                         <div class="row">
                                             <label><input type="checkbox" [checked]="isIndirect(myAsset)"
-                                                    (change)="setIndirectAsset(myAsset)" id="{{myAsset.asset.name}}">
+                                                          (change)="setIndirectAsset(myAsset)" id="{{myAsset.asset.name}}">
                                                 {{myAsset.asset.name}}</label>
                                         </div>
                                     </ng-container>
                                 </ng-container>
                             </div>
                             <div class="col-md-6">
-                                <ng-container *ngFor="let myAsset of myAssets; let isEven=even">
+                                <ng-container *ngFor="let myAsset of myIndirectlyVulnerableAssets; let isOdd=odd">
                                     <ng-container
-                                        *ngIf="isEven && myAsset.asset.assetcategory.type.toString() === 'TANGIBLE' && myAsset.asset.id !== selectedDirectAsset.myAsset.asset.id">
+                                        *ngIf="isOdd && myAsset.asset.assetcategory.type.toString() === 'TANGIBLE' && myAsset.asset.id !== selectedDirectAsset.myAsset.asset.id">
                                         <div class="row">
                                             <label><input type="checkbox" [checked]="isIndirect(myAsset)"
                                                     (change)="setIndirectAsset(myAsset)" id="{{myAsset.asset.name}}">
@@ -118,21 +118,21 @@
                                 <h5>Intangible</h5>
                             </div>
                             <div class="col-md-6">
-                                <ng-container *ngFor="let myAsset of myAssets; let isOdd=odd">
+                                <ng-container *ngFor="let myAsset of myIndirectlyVulnerableAssets; let isEven=even">
                                     <ng-container
-                                        *ngIf="isOdd && myAsset.asset.assetcategory.type.toString() === 'INTANGIBLE' && myAsset.asset.id !== selectedDirectAsset.myAsset.asset.id">
+                                        *ngIf="isEven && myAsset.asset.assetcategory.type.toString() === 'INTANGIBLE' && myAsset.asset.id !== selectedDirectAsset.myAsset.asset.id">
                                         <div class="row">
                                             <label><input type="checkbox" [checked]="isIndirect(myAsset)"
-                                                    (change)="setIndirectAsset(myAsset)" id="{{myAsset.asset.name}}">
+                                                          (change)="setIndirectAsset(myAsset)" id="{{myAsset.asset.name}}">
                                                 {{myAsset.asset.name}}</label>
                                         </div>
                                     </ng-container>
                                 </ng-container>
                             </div>
                             <div class="col-md-6">
-                                <ng-container *ngFor="let myAsset of myAssets; let isEven=even">
+                                <ng-container *ngFor="let myAsset of myIndirectlyVulnerableAssets; let isOdd=odd">
                                     <ng-container
-                                        *ngIf="isEven && myAsset.asset.assetcategory.type.toString() === 'INTANGIBLE' && myAsset.asset.id !== selectedDirectAsset.myAsset.asset.id">
+                                        *ngIf="isOdd && myAsset.asset.assetcategory.type.toString() === 'INTANGIBLE' && myAsset.asset.id !== selectedDirectAsset.myAsset.asset.id">
                                         <div class="row">
                                             <label><input type="checkbox" [checked]="isIndirect(myAsset)"
                                                     (change)="setIndirectAsset(myAsset)" id="{{myAsset.asset.name}}">
