@@ -73,11 +73,9 @@
                 <div class="col-md-12 alert alert-warning" style="z-index:0; margin-top:10px">
                     <i class="fa fa-times fa-lg float-right" aria-hidden="true" (click)="isWarningVisible = false"></i>
                     <p class="text-center">
-                        <span style="color: grey">No
-                            <a href="javascript:void(0)" [routerLink]="['/identify-asset/attack-costs']">Attack Costs</a> 
-                            defined or no
-                            <a href="javascript:void(0)" [routerLink]="['/impact-evaluation/attack-related-costs-estimation']">Economic estimate</a> 
-                            completed!
+                        <span style="color: grey">No related cost has been
+                            <a href="javascript:void(0)"
+                               [routerLink]="['/impact-evaluation/quantitative/attack-related-costs-estimation']">evaluated</a>!
                         </span>
                     </p>
                 </div>
@@ -216,7 +214,15 @@
                                     </div>
                                 </ng-container>
                                 <ng-container *ngIf="risksTangible.length === 0">
-                                    You don't have any tangible assets!
+                                    <div class="col-md-10 offset-md-1 border-secondary">
+                                        <div class="col-md-12 alert alert-warning" style="z-index:0; margin-top:10px">
+                                            <p class="text-center">
+                                            <span style="color: grey">
+                                                No asset has been evaluated!
+                                            </span>
+                                            </p>
+                                        </div>
+                                    </div>
                                 </ng-container>
                             </ng-template>
                         </ngb-tab>
@@ -349,7 +355,15 @@
                                     </div>
                                 </ng-container>
                                 <ng-container *ngIf="risksIntangible.length === 0">
-                                    You don't have any intangible assets!
+                                    <div class="col-md-10 offset-md-1 border-secondary">
+                                        <div class="col-md-12 alert alert-warning" style="z-index:0; margin-top:10px">
+                                            <p class="text-center">
+                                            <span style="color: grey">
+                                                No asset has been evaluated!
+                                            </span>
+                                            </p>
+                                        </div>
+                                    </div>
                                 </ng-container>
                             </ng-template>
                         </ngb-tab>
