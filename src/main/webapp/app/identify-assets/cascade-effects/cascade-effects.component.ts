@@ -76,12 +76,12 @@ export class CascadeEffectsComponent implements OnInit {
                 this.myAssets = _.orderBy(this.myAssets, ['asset.name'], ['asc']);
 
                 this.myDirectlyVulnerableAssets = _.filter(this.myAssets, (myAsset: MyAssetMgm) => myAsset.asset.directlyVulnerable);
-                this.myTangibleDirectlyVulnerableAssets = _.filter(this.myDirectlyVulnerableAssets, (myAsset: MyAssetMgm) => myAsset.asset.assetcategory === AssetType.TANGIBLE);
+                this.myTangibleDirectlyVulnerableAssets = _.filter(this.myDirectlyVulnerableAssets, (myAsset: MyAssetMgm) => myAsset.asset.assetcategory.type === AssetType.TANGIBLE);
                 this.myIntangibleDirectlyVulnerableAssets = _.filter(this.myDirectlyVulnerableAssets, (myAsset: MyAssetMgm) => myAsset.asset.assetcategory === AssetType.INTANGIBLE);
 
                 this.myIndirectlyVulnerableAssets = _.filter(this.myAssets, (myAsset: MyAssetMgm) => myAsset.asset.indirectlyVulnerable);
-                this.myTangibleIndirectlyVulnerableAssets = _.filter(this.myIndirectlyVulnerableAssets, (myAsset: MyAssetMgm) => myAsset.asset.assetcategory === AssetType.TANGIBLE);
-                this.myIntangibleIndirectlyVulnerableAssets = _.filter(this.myIndirectlyVulnerableAssets, (myAsset: MyAssetMgm) => myAsset.asset.assetcategory === AssetType.INTANGIBLE);
+                this.myTangibleIndirectlyVulnerableAssets = _.filter(this.myIndirectlyVulnerableAssets, (myAsset: MyAssetMgm) => myAsset.asset.assetcategory.type === AssetType.TANGIBLE);
+                this.myIntangibleIndirectlyVulnerableAssets = _.filter(this.myIndirectlyVulnerableAssets, (myAsset: MyAssetMgm) => myAsset.asset.assetcategory.type === AssetType.INTANGIBLE);
 
                 this.myAssets.forEach((myAsset) => {
                     this.myAssetStatus.set(myAsset.id, 'NOT COMPLETED');
