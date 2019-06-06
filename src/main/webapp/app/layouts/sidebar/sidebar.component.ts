@@ -282,6 +282,7 @@ export class SidebarComponent implements OnInit, AfterViewInit {
             },
             {
                 label: 'Taxonomies',
+                icon: 'fas fa-atom',
                 items: [
                     {
                         label: 'Assets',
