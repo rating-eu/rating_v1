@@ -37,7 +37,7 @@ export class FooterComponent implements OnInit {
             this.layoutConfiguration.isSidebarCollapsed = false;
             this.layoutConfiguration.isSidebarCollapsedByMe = false;
         }
-        this.dataSharingService.layoutConfigurationObservable.subscribe((update: LayoutConfiguration) => {
+        this.dataSharingService.layoutConfiguration$.subscribe((update: LayoutConfiguration) => {
             if (update) {
                 setTimeout(() => {
                     this.layoutConfiguration = update;

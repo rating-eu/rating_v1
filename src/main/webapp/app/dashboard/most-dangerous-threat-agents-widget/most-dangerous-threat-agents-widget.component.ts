@@ -95,7 +95,7 @@ export class MostDangerousThreatAgentsWidgetComponent implements OnInit {
         this.myCompany = this.dataSharingService.myCompany;
         this.callAPI();
 
-        this.dataSharingService.myCompanyObservable.subscribe((response: MyCompanyMgm) => {
+        this.dataSharingService.myCompany$.subscribe((response: MyCompanyMgm) => {
             this.myCompany = response;
             this.callAPI();
         });

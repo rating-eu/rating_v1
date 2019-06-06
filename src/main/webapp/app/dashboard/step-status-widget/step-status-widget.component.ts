@@ -53,7 +53,7 @@ export class StepStatusWidgetComponent implements OnInit {
 
         this.fetchStatus();
 
-        this.dataSharingService.myCompanyObservable.subscribe((response: MyCompanyMgm) => {
+        this.dataSharingService.myCompany$.subscribe((response: MyCompanyMgm) => {
             this.myCompany = response;
             this.fetchStatus();
         });

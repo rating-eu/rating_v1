@@ -81,7 +81,7 @@ export class DatasharingService {
 
     // CompanyBoardStatus
     private _companyBoardStatus: CompanyBoardStatus = null;
-    private _companyBoardStatusSubject: ReplaySubject<CompanyBoardStatus> = new ReplaySubject<CompanyBoardStatus>();
+    private _companyBoardStatus$: ReplaySubject<CompanyBoardStatus> = new ReplaySubject<CompanyBoardStatus>();
 
     constructor(
         private router: Router,
@@ -132,7 +132,7 @@ export class DatasharingService {
         return this._myCompany;
     }
 
-    get myCompanyObservable(): Observable<MyCompanyMgm> {
+    get myCompany$(): Observable<MyCompanyMgm> {
         return this._myCompanySubject.asObservable();
     }
 
@@ -171,7 +171,7 @@ export class DatasharingService {
         }
     }
 
-    get selfAssessmentObservable(): Observable<SelfAssessmentMgm> {
+    get selfAssessment$(): Observable<SelfAssessmentMgm> {
         return this._selfAssessmentSubject.asObservable();
     }
 
@@ -185,7 +185,7 @@ export class DatasharingService {
         this._roleSubject.next(this._role);
     }
 
-    get roleObservable(): Observable<Role> {
+    get role$(): Observable<Role> {
         return this._roleSubject.asObservable();
     }
 
@@ -199,7 +199,7 @@ export class DatasharingService {
         this._modeSubject.next(this._mode);
     }
 
-    get modeObservable(): Observable<Mode> {
+    get mode$(): Observable<Mode> {
         return this._modeSubject.asObservable();
     }
 
@@ -225,7 +225,7 @@ export class DatasharingService {
         }
     }
 
-    get userObservable(): Observable<User> {
+    get user$(): Observable<User> {
         return this._userSubject.asObservable();
     }
 
@@ -253,7 +253,7 @@ export class DatasharingService {
         }
     }
 
-    get accountObservable(): Observable<Account> {
+    get account$(): Observable<Account> {
         return this._accountSubject.asObservable();
     }
 
@@ -275,7 +275,7 @@ export class DatasharingService {
         this._riskBoardStatusSubject.next(this._riskBoardStatus);
     }
 
-    get riskBoardStatusObservable(): Observable<RiskBoardStatus> {
+    get riskBoardStatus$(): Observable<RiskBoardStatus> {
         return this._riskBoardStatusSubject.asObservable();
     }
 
@@ -289,7 +289,7 @@ export class DatasharingService {
         this._layoutConfigurationSubject.next(this._layoutConfiguration);
     }
 
-    get layoutConfigurationObservable(): Observable<LayoutConfiguration> {
+    get layoutConfiguration$(): Observable<LayoutConfiguration> {
         return this._layoutConfigurationSubject.asObservable();
     }
 
@@ -300,11 +300,11 @@ export class DatasharingService {
 
     set companyBoardStatus(status: CompanyBoardStatus) {
         this._companyBoardStatus = status;
-        this._companyBoardStatusSubject.next(this._companyBoardStatus);
+        this._companyBoardStatus$.next(this._companyBoardStatus);
     }
 
-    get companyBoardStatusSubject(): Observable<CompanyBoardStatus> {
-        return this._companyBoardStatusSubject.asObservable();
+    get companyBoardStatus$(): Observable<CompanyBoardStatus> {
+        return this._companyBoardStatus$.asObservable();
     }
 
     clear() {

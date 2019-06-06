@@ -27,6 +27,7 @@ import * as _ from 'lodash';
 
 import {Component, OnInit} from '@angular/core';
 import {DatasharingService} from "../../datasharing/datasharing.service";
+import {AssetType} from "../../entities/enumerations/AssetType.enum";
 
 @Component({
     // tslint:disable-next-line:component-selector
@@ -38,8 +39,14 @@ import {DatasharingService} from "../../datasharing/datasharing.service";
 export class CascadeEffectsComponent implements OnInit {
     private mySelf: SelfAssessmentMgm = null;
     public myAssets: MyAssetMgm[];
+
     public myDirectlyVulnerableAssets: MyAssetMgm[];
+    public myTangibleDirectlyVulnerableAssets: MyAssetMgm[];
+    public myIntangibleDirectlyVulnerableAssets: MyAssetMgm[];
+
     public myIndirectlyVulnerableAssets: MyAssetMgm[];
+    public myTangibleIndirectlyVulnerableAssets: MyAssetMgm[];
+    public myIntangibleIndirectlyVulnerableAssets: MyAssetMgm[];
 
     public selectedMyAsset: MyAssetMgm;
     public myAssetStatus: Map<number, string> = new Map<number, string>();
@@ -68,8 +75,13 @@ export class CascadeEffectsComponent implements OnInit {
                 this.myAssets = myAssets;
                 this.myAssets = _.orderBy(this.myAssets, ['asset.name'], ['asc']);
 
-                this.myDirectlyVulnerableAssets = _.filter(this.myAssets, (myAsset: MyAssetMgm)=>myAsset.asset.directlyVulnerable);
-                this.myIndirectlyVulnerableAssets = _.filter(this.myAssets, (myAsset: MyAssetMgm)=>myAsset.asset.indirectlyVulnerable);
+                this.myDirectlyVulnerableAssets = _.filter(this.myAssets, (myAsset: MyAssetMgm) => myAsset.asset.directlyVulnerable);
+                this.myTangibleDirectlyVulnerableAssets = _.filter(this.myDirectlyVulnerableAssets, (myAsset: MyAssetMgm) => myAsset.asset.assetcategory === AssetType.TANGIBLE);
+                this.myIntangibleDirectlyVulnerableAssets = _.filter(this.myDirectlyVulnerableAssets, (myAsset: MyAssetMgm) => myAsset.asset.assetcategory === AssetType.INTANGIBLE);
+
+                this.myIndirectlyVulnerableAssets = _.filter(this.myAssets, (myAsset: MyAssetMgm) => myAsset.asset.indirectlyVulnerable);
+                this.myTangibleIndirectlyVulnerableAssets = _.filter(this.myIndirectlyVulnerableAssets, (myAsset: MyAssetMgm) => myAsset.asset.assetcategory === AssetType.TANGIBLE);
+                this.myIntangibleIndirectlyVulnerableAssets = _.filter(this.myIndirectlyVulnerableAssets, (myAsset: MyAssetMgm) => myAsset.asset.assetcategory === AssetType.INTANGIBLE);
 
                 this.myAssets.forEach((myAsset) => {
                     this.myAssetStatus.set(myAsset.id, 'NOT COMPLETED');

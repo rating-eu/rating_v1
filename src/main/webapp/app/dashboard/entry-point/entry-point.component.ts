@@ -19,7 +19,7 @@ export class EntryPointComponent implements OnInit {
         this.myCompany = this.dataSharingService.myCompany;
 
         // Listen for updates of MyCompany
-        this.dataSharingService.myCompanyObservable.subscribe((myCompany: MyCompanyMgm) => {
+        this.dataSharingService.myCompany$.subscribe((myCompany: MyCompanyMgm) => {
             this.myCompany = myCompany;
         });
     }

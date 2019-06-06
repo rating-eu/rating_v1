@@ -79,7 +79,7 @@ export class MyRiskAssessmentsComponent implements OnInit, OnDestroy {
 
         // Get notified each time authentication state changes.
         this.subscriptions.push(
-            this.dataSharingService.roleObservable.subscribe((role: Role) => {
+            this.dataSharingService.role$.subscribe((role: Role) => {
                 switch (role) {
                     case Role.ROLE_ADMIN: {
                         this.isAdmin = true;
@@ -130,7 +130,7 @@ export class MyRiskAssessmentsComponent implements OnInit, OnDestroy {
 
     registerChangeInSelfAssessments() {
         this.subscriptions.push(
-            this.dataSharingService.selfAssessmentObservable.subscribe((value: SelfAssessmentMgm) => {
+            this.dataSharingService.selfAssessment$.subscribe((value: SelfAssessmentMgm) => {
                 this.loadMySelfAssessments();
             })
         );

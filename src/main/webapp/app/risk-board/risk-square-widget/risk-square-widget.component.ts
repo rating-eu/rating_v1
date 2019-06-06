@@ -85,13 +85,13 @@ export class RiskSquareWidgetComponent implements OnInit, OnDestroy {
         }
 
         this.subscriptions.push(
-            this.dataSharingService.riskBoardStatusObservable.subscribe((response: RiskBoardStatus) => {
+            this.dataSharingService.riskBoardStatus$.subscribe((response: RiskBoardStatus) => {
                 this.riskBoardStatus = response;
                 this.extractAttackStatus();
             })
         );
 
-        this.dataSharingService.selfAssessmentObservable.pipe(
+        this.dataSharingService.selfAssessment$.pipe(
             switchMap((newAssessment: SelfAssessmentMgm) => {
                 if (newAssessment) {
                     // Check if there is no self assessment or if it has changed

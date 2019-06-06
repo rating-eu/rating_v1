@@ -77,7 +77,7 @@ export class RiskManagementComponent implements OnInit {
         this.impactLevelDescriptionsByImpactMap = new Map();
         this.myCompany = this.dataSharingService.myCompany;
 
-        this.dataSharingService.myCompanyObservable.subscribe((company )=> {
+        this.dataSharingService.myCompany$.subscribe((company )=> {
             this.myCompany = company;
         });
 

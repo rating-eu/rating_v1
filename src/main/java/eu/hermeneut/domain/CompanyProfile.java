@@ -73,13 +73,6 @@ public class CompanyProfile implements Serializable {
     @ManyToOne
     private User user;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    @JoinTable(name = "company_profile_containers",
-               joinColumns = @JoinColumn(name="company_profiles_id", referencedColumnName="id"),
-               inverseJoinColumns = @JoinColumn(name="containers_id", referencedColumnName="id"))
-    private Set<Container> containers = new HashSet<>();
-
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
         return id;
@@ -192,28 +185,6 @@ public class CompanyProfile implements Serializable {
         this.user = user;
     }
 
-    public Set<Container> getContainers() {
-        return containers;
-    }
-
-    public CompanyProfile containers(Set<Container> containers) {
-        this.containers = containers;
-        return this;
-    }
-
-    public CompanyProfile addContainers(Container container) {
-        this.containers.add(container);
-        return this;
-    }
-
-    public CompanyProfile removeContainers(Container container) {
-        this.containers.remove(container);
-        return this;
-    }
-
-    public void setContainers(Set<Container> containers) {
-        this.containers = containers;
-    }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 
     @Override

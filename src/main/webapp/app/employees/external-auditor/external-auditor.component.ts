@@ -36,7 +36,7 @@ export class ExternalAuditorComponent implements OnInit, OnDestroy {
         this.myCompany = this.dataSharingService.myCompany;
         this.fetchEmployees();
 
-        const employees$: Observable<HttpResponse<Employee[]>> = this.dataSharingService.myCompanyObservable.pipe(
+        const employees$: Observable<HttpResponse<Employee[]>> = this.dataSharingService.myCompany$.pipe(
             switchMap((response: MyCompanyMgm) => {
                 this.myCompany = response;
 
