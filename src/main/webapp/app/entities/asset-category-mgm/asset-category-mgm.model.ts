@@ -16,11 +16,7 @@
  */
 
 import { BaseEntity } from './../../shared';
-
-export const enum AssetType {
-    'TANGIBLE',
-    'INTANGIBLE'
-}
+import {AssetType} from '../enumerations/AssetType.enum';
 
 export class AssetCategoryMgm implements BaseEntity {
     constructor(
