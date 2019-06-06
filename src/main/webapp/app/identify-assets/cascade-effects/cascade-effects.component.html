@@ -88,10 +88,21 @@
                             <div class="row">
                                 <h5>Tangible</h5>
                             </div>
+                            <div class="row" *ngIf="(!myTangibleIndirectlyVulnerableAssets || !myTangibleIndirectlyVulnerableAssets.length)">
+                                <div class="col-md-10 offset-md-1 border-bottom border-secondary">
+                                    <div class="col-md-12 alert alert-warning" style="z-index:0; margin-top:10px">
+                                        <p class="text-center">
+                                            <span style="color: grey">
+                                                No asset available.
+                                            </span>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
                             <div class="col-md-6">
-                                <ng-container *ngFor="let myAsset of myIndirectlyVulnerableAssets; let isEven=even">
+                                <ng-container *ngFor="let myAsset of myTangibleIndirectlyVulnerableAssets; let isEven=even">
                                     <ng-container
-                                        *ngIf="isEven && myAsset.asset.assetcategory.type.toString() === 'TANGIBLE' && myAsset.asset.id !== selectedDirectAsset.myAsset.asset.id">
+                                        *ngIf="isEven && myAsset.asset.id !== selectedDirectAsset.myAsset.asset.id">
                                         <div class="row">
                                             <label><input type="checkbox" [checked]="isIndirect(myAsset)"
                                                           (change)="setIndirectAsset(myAsset)" id="{{myAsset.asset.name}}">
@@ -101,9 +112,9 @@
                                 </ng-container>
                             </div>
                             <div class="col-md-6">
-                                <ng-container *ngFor="let myAsset of myIndirectlyVulnerableAssets; let isOdd=odd">
+                                <ng-container *ngFor="let myAsset of myTangibleIndirectlyVulnerableAssets; let isOdd=odd">
                                     <ng-container
-                                        *ngIf="isOdd && myAsset.asset.assetcategory.type.toString() === 'TANGIBLE' && myAsset.asset.id !== selectedDirectAsset.myAsset.asset.id">
+                                        *ngIf="isOdd && myAsset.asset.id !== selectedDirectAsset.myAsset.asset.id">
                                         <div class="row">
                                             <label><input type="checkbox" [checked]="isIndirect(myAsset)"
                                                     (change)="setIndirectAsset(myAsset)" id="{{myAsset.asset.name}}">
@@ -117,10 +128,21 @@
                             <div class="row">
                                 <h5>Intangible</h5>
                             </div>
+                            <div class="row" *ngIf="(!myIntangibleIndirectlyVulnerableAssets || !myIntangibleIndirectlyVulnerableAssets.length)">
+                                <div class="col-md-10 offset-md-1 border-bottom border-secondary">
+                                    <div class="col-md-12 alert alert-warning" style="z-index:0; margin-top:10px">
+                                        <p class="text-center">
+                                            <span style="color: grey">
+                                                No asset available.
+                                            </span>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
                             <div class="col-md-6">
-                                <ng-container *ngFor="let myAsset of myIndirectlyVulnerableAssets; let isEven=even">
+                                <ng-container *ngFor="let myAsset of myIntangibleIndirectlyVulnerableAssets; let isEven=even">
                                     <ng-container
-                                        *ngIf="isEven && myAsset.asset.assetcategory.type.toString() === 'INTANGIBLE' && myAsset.asset.id !== selectedDirectAsset.myAsset.asset.id">
+                                        *ngIf="isEven && myAsset.asset.id !== selectedDirectAsset.myAsset.asset.id">
                                         <div class="row">
                                             <label><input type="checkbox" [checked]="isIndirect(myAsset)"
                                                           (change)="setIndirectAsset(myAsset)" id="{{myAsset.asset.name}}">
@@ -130,9 +152,9 @@
                                 </ng-container>
                             </div>
                             <div class="col-md-6">
-                                <ng-container *ngFor="let myAsset of myIndirectlyVulnerableAssets; let isOdd=odd">
+                                <ng-container *ngFor="let myAsset of myIntangibleIndirectlyVulnerableAssets; let isOdd=odd">
                                     <ng-container
-                                        *ngIf="isOdd && myAsset.asset.assetcategory.type.toString() === 'INTANGIBLE' && myAsset.asset.id !== selectedDirectAsset.myAsset.asset.id">
+                                        *ngIf="isOdd && myAsset.asset.id !== selectedDirectAsset.myAsset.asset.id">
                                         <div class="row">
                                             <label><input type="checkbox" [checked]="isIndirect(myAsset)"
                                                     (change)="setIndirectAsset(myAsset)" id="{{myAsset.asset.name}}">
@@ -144,10 +166,16 @@
                         </div>
                     </div>
                 </ng-container>
-                <ng-container *ngIf="!selectedMyAsset">
+                <ng-container *ngIf="myDirectlyVulnerableAssets && myDirectlyVulnerableAssets.length && !selectedMyAsset">
                     <div class="text-center" style="margin-top: 50px">
                         <p style="color: orange"><i class="fa fa-exclamation-triangle fa-4x" aria-hidden="true"></i></p>
                         <p style="color: grey">Please select one asset from the list at left of the screen!</p>
+                    </div>
+                </ng-container>
+                <ng-container *ngIf="!myDirectlyVulnerableAssets || !myDirectlyVulnerableAssets.length">
+                    <div class="text-center" style="margin-top: 50px">
+                        <p style="color: orange"><i class="fa fa-exclamation-triangle fa-4x" aria-hidden="true"></i></p>
+                        <p style="color: grey">No directly vulnerable asset identified in the previous step.</p>
                     </div>
                 </ng-container>
             </div>
