@@ -57,7 +57,7 @@ export class DashboardOneComponent implements OnInit, OnDestroy {
         }
 
         this.subscriptions.push(
-            this.datasharingService.selfAssessmentObservable
+            this.datasharingService.selfAssessment$
                 .catch((err) => {
                     this.selfAssessment = null;
                     return of(null);
@@ -78,7 +78,7 @@ export class DashboardOneComponent implements OnInit, OnDestroy {
 
 
         this.subscriptions.push(
-            this.datasharingService.riskBoardStatusObservable
+            this.datasharingService.riskBoardStatus$
                 .catch((err) => {
 
                     const status: RiskBoardStatus = new RiskBoardStatus();

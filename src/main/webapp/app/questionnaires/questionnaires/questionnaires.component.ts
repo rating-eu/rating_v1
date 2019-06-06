@@ -110,6 +110,8 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
+        console.log("Questionnaires ON INIT");
+
         this.loadingQuestionnairesSemaphore = false;
 
         this.canCreateNewQuestionnaireStatus = true;
@@ -117,30 +119,48 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
         this.useExistingThreatAgentQuestionnaireStatus = false;
         this.createNewThreatAgentsQuestionnaireStatus = false;
 
-        this.account = this.dataSharingService.account;
-        this.user = this.dataSharingService.user;
-        this.role = this.dataSharingService.role;
-        this.myCompany = this.dataSharingService.myCompany;
-
-        // Listen for when a new QuestionnaireStatus is created
-        this.registerChangeInQuestionnaireStatuses();
-
-        if (this.account && this.user && this.myCompany && this.myCompany.companyProfile) {
-            console.log("Calling loadQuestionnaires direct");
-            this.loadQuestionnaireStatuses();
-        }
+        const join$: Observable<[Account, User, Role, MyCompanyMgm]> = forkJoin(
+            this.dataSharingService.account$
+                .timeout(500)
+                .catch((err) => {
+                    console.warn("Account timeout...");
+                    return of(this.dataSharingService.account);
+                }),
+            this.dataSharingService.user$
+                .timeout(500)
+                .catch((err) => {
+                    console.warn("User timeout...");
+                    return of(this.dataSharingService.user);
+                }),
+            this.dataSharingService.role$
+                .timeout(500)
+                .catch((err) => {
+                    console.warn("Role timeout...");
+                    return of(this.dataSharingService.role);
+                }),
+            this.dataSharingService.myCompany$
+                .timeout(500)
+                .catch((err, caught) => {
+                    console.warn("MyCompany timeout...");
+                    return of(this.dataSharingService.myCompany);
+                })
+        );
 
         this.subscriptions.push(
-            this.dataSharingService.myCompanyObservable.subscribe(
-                (updatedMyCompany: MyCompanyMgm) => {
-                    this.myCompany = updatedMyCompany;
+            join$.subscribe((response: [Account, User, Role, MyCompanyMgm]) => {
+                this.account = response[0];
+                this.user = response[1];
+                this.role = response[2];
+                this.myCompany = response[3];
 
-                    if (this.account && this.user && this.myCompany && this.myCompany.companyProfile) {
-                        console.log("Calling loadQuestionnaires subscription");
-                        this.loadQuestionnaireStatuses();
-                    }
+                // Listen for when a new QuestionnaireStatus is created
+                this.registerChangeInQuestionnaireStatuses();
+
+                if (this.account && this.user && this.role && this.myCompany && this.myCompany.companyProfile) {
+                    console.log("Calling loadQuestionnaires subscription");
+                    this.loadQuestionnaireStatuses();
                 }
-            )
+            })
         );
 
         this.externalChangedMap = new Map();
@@ -150,7 +170,7 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
     private loadQuestionnaireStatuses() {
         console.log("Loading questionnaires");
 
-        if(!this.loadingQuestionnairesSemaphore){
+        if (!this.loadingQuestionnairesSemaphore) {
             this.loadingQuestionnairesSemaphore = true;
 
             const params$ = this.route.params;
@@ -192,6 +212,8 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
                     this.questionnaire = response[0];
                     this.questionnaireStatuses = response[1];
 
+                    console.log("Inside Questionnaires and Statuses...");
+
                     if (this.purpose === QuestionnairePurpose.SELFASSESSMENT && this.role === Role.ROLE_CISO) {
                         return this.userService.getExternalAuditsByCompanyProfile(this.myCompany.companyProfile.id)
                             .catch((err) => {
@@ -225,7 +247,7 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
                                     return this.questionnaireStatusService.create(questionnaireStatus);
                                 }
                                 default: {
-                                    return of({});
+                                    return of(null);
                                 }
                             }
                         } else {
@@ -278,7 +300,7 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
 
                                                     if (questionnaireStatus.status === Status.EMPTY || questionnaireStatus.status === Status.PENDING) {
                                                         this.canCreateNewQuestionnaireStatus = false;
-                                                        if(this.changeDetector && !(this.changeDetector as ViewRef).destroyed){
+                                                        if (this.changeDetector && !(this.changeDetector as ViewRef).destroyed) {
                                                             this.changeDetector.detectChanges();
                                                         }
                                                     }
@@ -290,8 +312,10 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
 
                                             return join$;
                                         }
+                                        default: {
+                                            return of(null);
+                                        }
                                     }
-                                    break;
                                 }
                             }
                         }

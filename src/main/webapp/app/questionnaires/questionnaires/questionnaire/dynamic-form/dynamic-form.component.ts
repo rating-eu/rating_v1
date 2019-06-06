@@ -68,6 +68,7 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
     humanQuestionsArray: QuestionMgm[];
     itQuestionsArray: QuestionMgm[];
     physicalQuestionsArray: QuestionMgm[];
+    currentTabIndex: number;
 
     /**
      * Map QuestionID ==> Question

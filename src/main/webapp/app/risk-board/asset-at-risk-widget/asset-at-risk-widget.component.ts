@@ -141,7 +141,7 @@ export class AssetAtRiskWidgetComponent implements OnInit, OnDestroy {
         }
 
         this.subscriptions.push(
-            this.dataSharingService.selfAssessmentObservable
+            this.dataSharingService.selfAssessment$
                 .pipe(
                     switchMap((newAssessment: SelfAssessmentMgm) => {
                         if (newAssessment) {
