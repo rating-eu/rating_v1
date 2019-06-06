@@ -42,7 +42,7 @@ export class EmployeeComponent implements OnInit {
         this.myCompany = this.dataSHaringService.myCompany;
         this.assignCompany();
 
-        this.dataSHaringService.myCompanyObservable.subscribe((company) => {
+        this.dataSHaringService.myCompany$.subscribe((company) => {
             this.myCompany = company;
             this.assignCompany();
         });

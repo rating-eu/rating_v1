@@ -76,7 +76,7 @@ export class OverallLikelihoodWidgetComponent implements OnInit {
         this.myCompany = this.dataSharingService.myCompany;
         this.callAPI();
 
-        this.dataSharingService.myCompanyObservable.subscribe(
+        this.dataSharingService.myCompany$.subscribe(
             (response: MyCompanyMgm) => {
                 this.myCompany = response;
                 this.callAPI();

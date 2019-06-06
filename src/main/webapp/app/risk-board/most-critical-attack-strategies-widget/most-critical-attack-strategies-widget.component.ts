@@ -91,7 +91,7 @@ export class MostCriticalAttackStrategiesWidgetComponent implements OnInit, OnDe
         }
 
         this.subscriptions.push(
-            this.dataSharingService.selfAssessmentObservable.pipe(
+            this.dataSharingService.selfAssessment$.pipe(
                 switchMap((newAssessment: SelfAssessmentMgm) => {
                     if (newAssessment) {
                         // Check if there is no self assessment or if it has changed

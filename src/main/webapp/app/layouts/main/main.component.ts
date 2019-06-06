@@ -100,7 +100,7 @@ export class JhiMainComponent implements OnInit, OnDestroy {
             }
         }));
 
-        this.subscriptions.push(this.dataSharingService.layoutConfigurationObservable.subscribe((update: LayoutConfiguration) => {
+        this.subscriptions.push(this.dataSharingService.layoutConfiguration$.subscribe((update: LayoutConfiguration) => {
             if (update) {
                 setTimeout(() => {
                     this.updateLayout = update;

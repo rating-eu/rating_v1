@@ -93,7 +93,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
         this.navSubTitle = this.dataSharingService.layoutConfiguration != null ? 'Selected self assessment: ' + this.dataSharingService.layoutConfiguration.navSubTitle : null;
 
         this.subscriptions.push(
-            this.dataSharingService.layoutConfigurationObservable.subscribe((update: LayoutConfiguration) => {
+            this.dataSharingService.layoutConfiguration$.subscribe((update: LayoutConfiguration) => {
                 if (update && update.navSubTitle) {
                     this.navSubTitle = 'Selected self assessment: ';
                     this.selfAssessmentName = update.navSubTitle;
@@ -108,7 +108,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
         );
 
         this.subscriptions.push(
-            this.dataSharingService.roleObservable.subscribe((role: Role) => {
+            this.dataSharingService.role$.subscribe((role: Role) => {
                 if (role) {
                     switch (role) {
                         case Role.ROLE_CISO: {
@@ -140,7 +140,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
         );
 
         this.subscriptions.push(
-            this.dataSharingService.companyBoardStatusSubject.subscribe((status: CompanyBoardStatus) => {
+            this.dataSharingService.companyBoardStatus$.subscribe((status: CompanyBoardStatus) => {
                 this.companyBoardStatus = status;
                 if(this.changeDetector && !(this.changeDetector as ViewRef).destroyed){
                     this.changeDetector.detectChanges();

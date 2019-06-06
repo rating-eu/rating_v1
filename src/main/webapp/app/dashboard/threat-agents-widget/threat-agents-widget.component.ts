@@ -97,7 +97,7 @@ export class ThreatAgentsWidgetComponent implements OnInit, OnDestroy {
         this.callAPI();
 
         this.subscriptions.push(
-            this.dataSharingService.myCompanyObservable.subscribe(
+            this.dataSharingService.myCompany$.subscribe(
                 (response: MyCompanyMgm) => {
                     this.myCompany = response;
                     this.callAPI();

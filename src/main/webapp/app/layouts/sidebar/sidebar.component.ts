@@ -111,7 +111,7 @@ export class SidebarComponent implements OnInit, OnDestroy, AfterViewInit {
         this.createMenuItems();
         this.riskAssessmentsMap = new Map();
 
-        this.dataSharingService.companyBoardStatusSubject.subscribe((status: CompanyBoardStatus) => {
+        this.dataSharingService.companyBoardStatus$.subscribe((status: CompanyBoardStatus) => {
             this.companyBoardStatus = status;
             this.filterByCompanyBoardStatus();
         });
@@ -119,7 +119,7 @@ export class SidebarComponent implements OnInit, OnDestroy, AfterViewInit {
         this.selfAssessment = this.dataSharingService.selfAssessment;
         this.expandSelectedSelfAssessment();
 
-        this.dataSharingService.selfAssessmentObservable.subscribe((assessment) => {
+        this.dataSharingService.selfAssessment$.subscribe((assessment) => {
             this.selfAssessment = assessment;
             this.expandSelectedSelfAssessment();
         });
@@ -130,7 +130,7 @@ export class SidebarComponent implements OnInit, OnDestroy, AfterViewInit {
         //Check if CISO inside
         this.fetchSelfAssessments();
 
-        this.dataSharingService.roleObservable.subscribe((roleResponse: Role) => {
+        this.dataSharingService.role$.subscribe((roleResponse: Role) => {
             this.role = roleResponse;
             this.filterByRole();
 
@@ -181,7 +181,7 @@ export class SidebarComponent implements OnInit, OnDestroy, AfterViewInit {
             this.isCollapsed = layoutConfiguration.isSidebarCollapsed;
         }
 
-        this.dataSharingService.layoutConfigurationObservable.subscribe((update: LayoutConfiguration) => {
+        this.dataSharingService.layoutConfiguration$.subscribe((update: LayoutConfiguration) => {
             if (update) {
                 this.isCollapsed = update.isSidebarCollapsed;
             }
@@ -203,7 +203,7 @@ export class SidebarComponent implements OnInit, OnDestroy, AfterViewInit {
     private fetchSecondaryLogo() {
         this.logoService.getSecondaryLogo().toPromise().then((logo: HttpResponse<LogoMgm>) => {
             this.secondaryLogo = logo.body;
-            if(this.changeDetector && !(this.changeDetector as ViewRef).destroyed){
+            if (this.changeDetector && !(this.changeDetector as ViewRef).destroyed) {
                 this.changeDetector.detectChanges();
             }
         }).catch((reason) => {
@@ -387,7 +387,7 @@ export class SidebarComponent implements OnInit, OnDestroy, AfterViewInit {
             this.termsOfUseMenuItem
         ];
 
-        if(this.changeDetector && !(this.changeDetector as ViewRef).destroyed){
+        if (this.changeDetector && !(this.changeDetector as ViewRef).destroyed) {
             this.changeDetector.detectChanges();
         }
     }
@@ -430,120 +430,122 @@ export class SidebarComponent implements OnInit, OnDestroy, AfterViewInit {
                 });
 
                 this.selfAssessments.forEach((assessment) => {
-                    const assessmentItem: MenuItem = {
-                        label: assessment.name,
-                        command: event => {
-                            if (this.selfAssessment) {
-                                if (this.selfAssessment.id !== assessment.id) {
+                    if (assessment) {
+                        const assessmentItem: MenuItem = {
+                            label: assessment.name,
+                            command: event => {
+                                if (this.selfAssessment) {
+                                    if (this.selfAssessment.id !== assessment.id) {
+                                        this.dataSharingService.selfAssessment = assessment;
+                                    }
+                                } else {
                                     this.dataSharingService.selfAssessment = assessment;
                                 }
-                            } else {
-                                this.dataSharingService.selfAssessment = assessment;
-                            }
 
-                            if (this.router.url !== '/riskboard') {
-                                this.router.navigate(['/riskboard']);
-                            }
-                        },
-                        items: [
-                            {
-                                label: 'Assets',
-                                items: [
-                                    {
-                                        label: 'Asset Clustering',
-                                        routerLink: ['/identify-asset/asset-clustering']
-                                    },
-                                    {
-                                        label: 'Cascade Effects',
-                                        routerLink: ['/identify-asset/cascade-effects']
-                                    },
-                                    {
-                                        label: 'Related Costs',
-                                        routerLink: ['/identify-asset/attack-costs']
-                                    }
-                                ]
+                                if (this.router.url !== '/riskboard') {
+                                    this.router.navigate(['/riskboard']);
+                                }
                             },
-                            {
-                                label: 'Impact Analysis',
-                                routerLink: ['/impact-evaluation'],
-                                items: [
-                                    {
-                                        label: 'Quantitative',
-                                        items: [
-                                            {
-                                                label: 'Impact Evaluation',
-                                                command: event => {
-                                                    // Update the Impact Mode of the Assessment
-                                                    this.updateAssessmentImpactMode(assessment, ImpactMode.QUANTITATIVE);
+                            items: [
+                                {
+                                    label: 'Assets',
+                                    items: [
+                                        {
+                                            label: 'Asset Clustering',
+                                            routerLink: ['/identify-asset/asset-clustering']
+                                        },
+                                        {
+                                            label: 'Cascade Effects',
+                                            routerLink: ['/identify-asset/cascade-effects']
+                                        },
+                                        {
+                                            label: 'Related Costs',
+                                            routerLink: ['/identify-asset/attack-costs']
+                                        }
+                                    ]
+                                },
+                                {
+                                    label: 'Impact Analysis',
+                                    routerLink: ['/impact-evaluation'],
+                                    items: [
+                                        {
+                                            label: 'Quantitative',
+                                            items: [
+                                                {
+                                                    label: 'Impact Evaluation',
+                                                    command: event => {
+                                                        // Update the Impact Mode of the Assessment
+                                                        this.updateAssessmentImpactMode(assessment, ImpactMode.QUANTITATIVE);
+                                                    },
+                                                    routerLink: ['/impact-evaluation/quantitative']
                                                 },
-                                                routerLink: ['/impact-evaluation/quantitative']
-                                            },
-                                            {
-                                                label: 'Estimation of the Data Assets category Losses',
-                                                command: event => {
-                                                    // Update the Impact Mode of the Assessment
-                                                    this.updateAssessmentImpactMode(assessment, ImpactMode.QUANTITATIVE);
+                                                {
+                                                    label: 'Estimation of the Data Assets category Losses',
+                                                    command: event => {
+                                                        // Update the Impact Mode of the Assessment
+                                                        this.updateAssessmentImpactMode(assessment, ImpactMode.QUANTITATIVE);
+                                                    },
+                                                    routerLink: ['/impact-evaluation/quantitative/data-assets-losses-estimation']
                                                 },
-                                                routerLink: ['/impact-evaluation/quantitative/data-assets-losses-estimation']
-                                            },
-                                            {
-                                                label: 'Estimation of the Attack Related Costs',
-                                                command: event => {
-                                                    // Update the Impact Mode of the Assessment
-                                                    this.updateAssessmentImpactMode(assessment, ImpactMode.QUANTITATIVE);
-                                                },
-                                                routerLink: ['/impact-evaluation/quantitative/attack-related-costs-estimation']
-                                            }
-                                        ]
-                                    },
-                                    {
-                                        label: 'Qualitative',
-                                        items: [
-                                            {
-                                                label: 'Impacts on Assets',
-                                                command: event => {
-                                                    // Update the Impact Mode of the Assessment
-                                                    this.updateAssessmentImpactMode(assessment, ImpactMode.QUALITATIVE);
-                                                },
-                                                routerLink: ['/impact-evaluation/qualitative/']
-                                            }
-                                        ]
-                                    }
-                                ]
-                            },
-                            {
-                                label: 'Risk Analysis',
-                                routerLink: ['/risk-management/risk-evaluation'],
-                                items: [
-                                    {
-                                        label: 'Risk Matrix',
-                                        routerLink: ['/risk-management/risk-evaluation']
-                                    },
-                                    {
-                                        label: 'Assets at Risk',
-                                        routerLink: ['/risk-management/risk-evaluation']
-                                    },
-                                    {
-                                        label: 'Mitigations',
-                                        items: [
-                                            {
-                                                label: 'Cost Benefit Analysis',
-                                                routerLink: ['/pages/coming-soon']
-                                            }
-                                        ]
-                                    }
-                                ]
-                            }
-                        ]
-                    };
+                                                {
+                                                    label: 'Estimation of the Attack Related Costs',
+                                                    command: event => {
+                                                        // Update the Impact Mode of the Assessment
+                                                        this.updateAssessmentImpactMode(assessment, ImpactMode.QUANTITATIVE);
+                                                    },
+                                                    routerLink: ['/impact-evaluation/quantitative/attack-related-costs-estimation']
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            label: 'Qualitative',
+                                            items: [
+                                                {
+                                                    label: 'Impacts on Assets',
+                                                    command: event => {
+                                                        // Update the Impact Mode of the Assessment
+                                                        this.updateAssessmentImpactMode(assessment, ImpactMode.QUALITATIVE);
+                                                    },
+                                                    routerLink: ['/impact-evaluation/qualitative/']
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                {
+                                    label: 'Risk Analysis',
+                                    routerLink: ['/risk-management/risk-evaluation'],
+                                    items: [
+                                        {
+                                            label: 'Risk Matrix',
+                                            routerLink: ['/risk-management/risk-evaluation']
+                                        },
+                                        {
+                                            label: 'Assets at Risk',
+                                            routerLink: ['/risk-management/risk-evaluation']
+                                        },
+                                        {
+                                            label: 'Mitigations',
+                                            items: [
+                                                {
+                                                    label: 'Cost Benefit Analysis',
+                                                    routerLink: ['/pages/coming-soon']
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ]
+                        };
 
-                    this.riskAssessmentsMap.set(assessment.id, assessmentItem);
+                        this.riskAssessmentsMap.set(assessment.id, assessmentItem);
 
-                    // @ts-ignore
-                    this.riskManagementMenuItem.items.push(assessmentItem);
+                        // @ts-ignore
+                        this.riskManagementMenuItem.items.push(assessmentItem);
+                    }
                 });
 
-                if(this.changeDetector && !(this.changeDetector as ViewRef).destroyed){
+                if (this.changeDetector && !(this.changeDetector as ViewRef).destroyed) {
                     this.changeDetector.detectChanges();
                 }
             }
@@ -568,7 +570,7 @@ export class SidebarComponent implements OnInit, OnDestroy, AfterViewInit {
                 && this.companyBoardStatus.identifyThreatAgentsStatus === Status.FULL
                 && this.companyBoardStatus.assessVulnerablitiesStatus === Status.FULL;
 
-            if(this.changeDetector && !(this.changeDetector as ViewRef).destroyed){
+            if (this.changeDetector && !(this.changeDetector as ViewRef).destroyed) {
                 this.changeDetector.detectChanges();
             }
         }
@@ -579,7 +581,7 @@ export class SidebarComponent implements OnInit, OnDestroy, AfterViewInit {
             if (this.cyberPostureMenuItem) {
                 this.cyberPostureMenuItem.visible = this.role === Role.ROLE_CISO;
 
-                if(this.changeDetector && !(this.changeDetector as ViewRef).destroyed){
+                if (this.changeDetector && !(this.changeDetector as ViewRef).destroyed) {
                     this.changeDetector.detectChanges();
                 }
             }
