@@ -98,14 +98,6 @@
                         *ngFor="let userOption of users; trackBy: trackUserById">{{userOption.login}}</option>
             </select>
         </div>
-        <div class="form-group">
-            <label jhiTranslate="hermeneutApp.companyProfile.containers" for="field_containers">Containers</label>
-            <select class="form-control" id="field_containers" multiple name="containers"
-                    [(ngModel)]="companyProfile.containers">
-                <option [ngValue]="getSelected(companyProfile.containers, containerOption)"
-                        *ngFor="let containerOption of containers; trackBy: trackContainerById">{{containerOption.name}}</option>
-            </select>
-        </div>
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">

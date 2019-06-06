@@ -56,7 +56,6 @@
                     <th><span jhiTranslate="hermeneutApp.companyProfile.modified">Modified</span></th>
                     <th><span jhiTranslate="hermeneutApp.companyProfile.type">Type</span></th>
                     <th><span jhiTranslate="hermeneutApp.companyProfile.user">User</span></th>
-                    <th><span jhiTranslate="hermeneutApp.companyProfile.containers">Containers</span></th>
                     <th></th>
                 </tr>
             </thead>
@@ -70,12 +69,6 @@
                     <td jhiTranslate="{{'hermeneutApp.CompanyType.' + companyProfile.type}}">{{companyProfile.type}}</td>
                     <td>
                         {{companyProfile.user?.login}}
-                    </td>
-                    <td>
-                        <span *ngFor="let containers of companyProfile.containers; let last = last">
-                            <a class="form-control-static" [routerLink]="['../container-mgm', containers?.id ]">{{containers.name}}</a>{{last
-                            ? '' : ', '}}
-                        </span>
                     </td>
                     <td class="text-right">
                         <div class="btn-group flex-btn-group-container">

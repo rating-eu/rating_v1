@@ -66,7 +66,7 @@ public class CompanyProfileServiceImpl implements CompanyProfileService {
     @Transactional(readOnly = true)
     public List<CompanyProfile> findAll() {
         log.debug("Request to get all CompanyProfiles");
-        return companyProfileRepository.findAllWithEagerRelationships();
+        return companyProfileRepository.findAll();
     }
 
     /**
@@ -79,7 +79,7 @@ public class CompanyProfileServiceImpl implements CompanyProfileService {
     @Transactional(readOnly = true)
     public CompanyProfile findOne(Long id) {
         log.debug("Request to get CompanyProfile : {}", id);
-        return companyProfileRepository.findOneWithEagerRelationships(id);
+        return companyProfileRepository.findOne(id);
     }
 
     /**
