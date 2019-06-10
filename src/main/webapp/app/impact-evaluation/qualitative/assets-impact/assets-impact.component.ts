@@ -24,7 +24,9 @@ export class AssetsImpactComponent implements OnInit {
     private assetCategories$: Observable<HttpResponse<AssetCategoryMgm[]>>;
     public assetCategories: AssetCategoryMgm[];
     public tangibleCategories: AssetCategoryMgm[];
+    public myTangibleAssets: MyAssetMgm[];
     public intangibleCategories: AssetCategoryMgm[];
+    public myIntangibleAssets: MyAssetMgm[];
     public myAssetsByCategoriesMap: Map<number/*AssetCategoryID*/, MyAssetMgm[]>;
 
     private myAssets: MyAssetMgm[] = [];
@@ -46,6 +48,8 @@ export class AssetsImpactComponent implements OnInit {
     ngOnInit() {
         this.selfAssessment = this.dataSharing.selfAssessment;
         this.myAssets = [];
+        this.myTangibleAssets = [];
+        this.myIntangibleAssets = [];
         this.myAssetsByIDMap = new Map();
 
         this.myAssetsByCategoriesMap = new Map();
@@ -108,6 +112,9 @@ export class AssetsImpactComponent implements OnInit {
                 this.myAssets.forEach((myAsset: MyAssetMgm) => {
                     this.myAssetsByIDMap.set(myAsset.id, myAsset);
                 });
+
+                this.myTangibleAssets = _.filter(this.myAssets, (myAsset: MyAssetMgm) => myAsset.asset.assetcategory.type === AssetType.TANGIBLE);
+                this.myIntangibleAssets = _.filter(this.myAssets, (myAsset: MyAssetMgm) => myAsset.asset.assetcategory.type === AssetType.INTANGIBLE);
             }
         });
     }
