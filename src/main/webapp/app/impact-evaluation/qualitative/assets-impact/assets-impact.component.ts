@@ -126,7 +126,7 @@ export class AssetsImpactComponent implements OnInit {
         });
     }
 
-    previousState() {
+    back() {
         window.history.back();
     }
 }
