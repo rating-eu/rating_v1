@@ -174,7 +174,6 @@ export class SelfAssessmentMgmDialogComponent implements OnInit {
     private subscribeToSaveResponse(result: Observable<HttpResponse<SelfAssessmentMgm>>) {
         result.subscribe((res: HttpResponse<SelfAssessmentMgm>) => {
                 this.onSaveSuccess(res.body);
-                this.dataSharingService.selfAssessment = res.body;
             }, (res: HttpErrorResponse) => {
                 this.onSaveError();
             }
@@ -182,6 +181,7 @@ export class SelfAssessmentMgmDialogComponent implements OnInit {
     }
 
     private onSaveSuccess(result: SelfAssessmentMgm) {
+        //TODO use custom event manager
         this.eventManager.broadcast({name: 'selfAssessmentListModification', content: 'OK'});
         this.isSaving = false;
         this.activeModal.dismiss(result);

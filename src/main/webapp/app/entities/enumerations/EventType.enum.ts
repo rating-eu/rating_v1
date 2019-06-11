@@ -15,16 +15,7 @@
  *
  */
 
-import {EventType} from '../entities/enumerations/EventType.enum';
-import {ActionType} from '../entities/enumerations/ActionType.enum';
-
-export class Event {
-
-    public type: EventType;
-    public action: ActionType;
-
-    constructor(type: EventType, action: ActionType) {
-        this.type = type;
-        this.action = action;
-    }
+export enum EventType {
+    'RISK_ASSESSMENT_LIST_UPDATE' = <any>'RISK_ASSESSMENT_LIST_UPDATE',
+    'QUESTIONNAIRE_STATUS_LIST_UPDATE' = <any>'QUESTIONNAIRE_STATUS_LIST_UPDATE'
 }

@@ -31,16 +31,18 @@ import {MyAnswerMgmService} from '../../entities/my-answer-mgm';
 import {IdentifyThreatAgentService} from '../../identify-threat-agent/identify-threat-agent.service';
 import {EvaluateService} from '../../evaluate-weakness/evaluate-weakness.service';
 import {LocalStorageService} from 'ngx-webstorage';
-import {HttpResponse} from "@angular/common/http";
-import {MyCompanyMgm} from "../../entities/my-company-mgm";
-import {switchMap} from "rxjs/operators";
-import {Role} from "../../entities/enumerations/Role.enum";
-import {PopUpService} from "../../shared/pop-up-services/pop-up.service";
-import {EventManagerService} from "../../datasharing/event-manager.service";
-import {forkJoin} from "rxjs/observable/forkJoin";
-import {AssessVulnerabilitiesCompletionDTO} from "../../dto/completion/assess-vulnerabilities-completion";
-import {CompletionDtoService} from "../../dto/completion/completion-dto.service";
-import {of} from "rxjs/observable/of";
+import {HttpResponse} from '@angular/common/http';
+import {MyCompanyMgm} from '../../entities/my-company-mgm';
+import {switchMap} from 'rxjs/operators';
+import {Role} from '../../entities/enumerations/Role.enum';
+import {PopUpService} from '../../shared/pop-up-services/pop-up.service';
+import {EventManagerService} from '../../datasharing/event-manager.service';
+import {forkJoin} from 'rxjs/observable/forkJoin';
+import {AssessVulnerabilitiesCompletionDTO} from '../../dto/completion/assess-vulnerabilities-completion';
+import {CompletionDtoService} from '../../dto/completion/completion-dto.service';
+import {of} from 'rxjs/observable/of';
+import {EventType} from '../../entities/enumerations/EventType.enum';
+import {Event} from '../../datasharing/event.model';
 
 @Component({
     selector: 'jhi-questionnaires',
@@ -110,7 +112,7 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
-        console.log("Questionnaires ON INIT");
+        console.log('Questionnaires ON INIT');
 
         this.loadingQuestionnairesSemaphore = false;
 
@@ -123,25 +125,25 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
             this.dataSharingService.account$
                 .timeout(500)
                 .catch((err) => {
-                    console.warn("Account timeout...");
+                    console.warn('Account timeout...');
                     return of(this.dataSharingService.account);
                 }),
             this.dataSharingService.user$
                 .timeout(500)
                 .catch((err) => {
-                    console.warn("User timeout...");
+                    console.warn('User timeout...');
                     return of(this.dataSharingService.user);
                 }),
             this.dataSharingService.role$
                 .timeout(500)
                 .catch((err) => {
-                    console.warn("Role timeout...");
+                    console.warn('Role timeout...');
                     return of(this.dataSharingService.role);
                 }),
             this.dataSharingService.myCompany$
                 .timeout(500)
                 .catch((err, caught) => {
-                    console.warn("MyCompany timeout...");
+                    console.warn('MyCompany timeout...');
                     return of(this.dataSharingService.myCompany);
                 })
         );
@@ -157,7 +159,7 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
                 this.registerChangeInQuestionnaireStatuses();
 
                 if (this.account && this.user && this.role && this.myCompany && this.myCompany.companyProfile) {
-                    console.log("Calling loadQuestionnaires subscription");
+                    console.log('Calling loadQuestionnaires subscription');
                     this.loadQuestionnaireStatuses();
                 }
             })
@@ -168,9 +170,11 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
     }
 
     private loadQuestionnaireStatuses() {
-        console.log("Loading questionnaires");
+        console.log('Loading questionnaires');
 
         if (!this.loadingQuestionnairesSemaphore) {
+            console.log('Inside if ! loading questionnaires semaphore');
+
             this.loadingQuestionnairesSemaphore = true;
 
             const params$ = this.route.params;
@@ -180,7 +184,7 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
                 switchMap((params: Params) => {
                     const routeQuestionnairePurpose = params['purpose'];
 
-                    console.log("Inside Params:");
+                    console.log('Inside Params:');
                     console.log(routeQuestionnairePurpose);
 
                     switch (routeQuestionnairePurpose) {
@@ -212,7 +216,7 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
                     this.questionnaire = response[0];
                     this.questionnaireStatuses = response[1];
 
-                    console.log("Inside Questionnaires and Statuses...");
+                    console.log('Inside Questionnaires and Statuses...');
 
                     if (this.purpose === QuestionnairePurpose.SELFASSESSMENT && this.role === Role.ROLE_CISO) {
                         return this.userService.getExternalAuditsByCompanyProfile(this.myCompany.companyProfile.id)
@@ -233,7 +237,7 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
                             this.externalAudits = [];
                         }
 
-                        console.log("Inside How to proceed...");
+                        console.log('Inside How to proceed...');
 
                         if (this.questionnaireStatuses.length === 0) {
                             switch (this.purpose) {
@@ -292,6 +296,9 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
                                         case Role.ROLE_CISO: {
                                             const completions$ = [];
 
+                                            // To reset it to TRUE at each update
+                                            let guardian: boolean = true;
+
                                             this.questionnaireStatuses.forEach((questionnaireStatus) => {
                                                     completions$.push(
                                                         this.completionService
@@ -299,13 +306,15 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
                                                     );
 
                                                     if (questionnaireStatus.status === Status.EMPTY || questionnaireStatus.status === Status.PENDING) {
-                                                        this.canCreateNewQuestionnaireStatus = false;
+                                                        guardian = false;
                                                         if (this.changeDetector && !(this.changeDetector as ViewRef).destroyed) {
                                                             this.changeDetector.detectChanges();
                                                         }
                                                     }
                                                 }
                                             );
+
+                                            this.canCreateNewQuestionnaireStatus = guardian;
 
                                             this.showCompletionPercentages = true;
                                             const join$: Observable<HttpResponse<AssessVulnerabilitiesCompletionDTO>[]> = forkJoin(completions$);
@@ -421,9 +430,12 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
 
     registerChangeInQuestionnaireStatuses() {
         if (!this.questionnaireStatusesChangeEventSubscription) {
-            this.questionnaireStatusesChangeEventSubscription = this.eventManagerService.observe('questionnaireStatusListModification')
+            this.questionnaireStatusesChangeEventSubscription = this.eventManagerService.observe(EventType.QUESTIONNAIRE_STATUS_LIST_UPDATE)
                 .subscribe(
-                    (response) => {
+                    (event: Event) => {
+                        console.log('Event: ');
+                        console.log(event);
+
                         if (this.account && this.user && this.myCompany && this.myCompany.companyProfile) {
                             this.loadQuestionnaireStatuses();
                         }

@@ -18,14 +18,15 @@
 import {Injectable} from "@angular/core";
 import {Observable, ReplaySubject} from "rxjs";
 import {Event} from "./event.model";
+import {EventType} from "../entities/enumerations/EventType.enum";
 
 @Injectable()
 export class EventManagerService {
 
-    private eventsSubjectMap: Map<string, ReplaySubject<Event>>;
+    private eventsSubjectMap: Map<EventType, ReplaySubject<Event>>;
 
     constructor() {
-        this.eventsSubjectMap = new Map<string, ReplaySubject<Event>>();
+        this.eventsSubjectMap = new Map<EventType, ReplaySubject<Event>>();
     }
 
     broadcast(event: Event) {
@@ -33,25 +34,25 @@ export class EventManagerService {
 
             let subject: ReplaySubject<Event> = null;
 
-            if (this.eventsSubjectMap.has(event.name)) {
-                subject = this.eventsSubjectMap.get(event.name);
+            if (this.eventsSubjectMap.has(event.type)) {
+                subject = this.eventsSubjectMap.get(event.type);
             } else {
                 subject = new ReplaySubject();
-                this.eventsSubjectMap.set(event.name, subject);
+                this.eventsSubjectMap.set(event.type, subject);
             }
 
             subject.next(event);
         }
     }
 
-    observe(eventName: string): Observable<Event> {
+    observe(eventType: EventType): Observable<Event> {
         let subject: ReplaySubject<Event> = null;
 
-        if (this.eventsSubjectMap.has(eventName)) {
-            subject = this.eventsSubjectMap.get(eventName);
+        if (this.eventsSubjectMap.has(eventType)) {
+            subject = this.eventsSubjectMap.get(eventType);
         } else {
             subject = new ReplaySubject();
-            this.eventsSubjectMap.set(eventName, subject);
+            this.eventsSubjectMap.set(eventType, subject);
         }
 
         return subject.asObservable();
