@@ -74,10 +74,6 @@ public class RiskProfileServiceImpl implements RiskProfileService {
         }
 
         //OK
-        Float overallLikelihood = this.resultService.getOverallLikelihood(selfAssessmentID);
-        riskProfile.setOverallLikelihood(overallLikelihood);
-
-        //OK
         try {
             Set<AssetRisk> assetRisks = this.assetRiskService.getAssetRisks(selfAssessmentID);
             riskProfile.setAssetRisks(assetRisks);
@@ -92,10 +88,6 @@ public class RiskProfileServiceImpl implements RiskProfileService {
         } catch (NotFoundException e) {
             e.printStackTrace();
         }
-
-        //TODO Fix-Me
-        Result result = this.resultService.getThreatAgentsResult(selfAssessmentID);
-        riskProfile.setVulnerabilities(result);
 
         return riskProfile;
     }

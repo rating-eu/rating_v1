@@ -18,13 +18,17 @@
 package eu.hermeneut.service.result;
 
 import eu.hermeneut.domain.ThreatAgent;
+import eu.hermeneut.domain.compact.input.VulnerabilityResult;
 import eu.hermeneut.domain.result.Result;
+import eu.hermeneut.exceptions.NotFoundException;
 
 import java.util.Map;
 import java.util.Set;
 
 public interface ResultService {
     Result getThreatAgentsResult(Long companyProfileID);
+
+    VulnerabilityResult getVulnerabilityResult(Long companyProfileID) throws NotFoundException;
 
     Float getOverallLikelihood(Long companyProfileID);
 
