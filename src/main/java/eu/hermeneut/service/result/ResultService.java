@@ -38,4 +38,6 @@ public interface ResultService {
     Map<Long, Float> getLevelsOfInterest(Long companyProfileID);
 
     Set<ThreatAgent> getThreatAgents(Long companyProfileID);
+
+    ThreatAgent getTheStrongestThreatAgent(Long companyProfileID);
 }

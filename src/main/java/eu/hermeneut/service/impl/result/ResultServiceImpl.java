@@ -311,6 +311,26 @@ public class ResultServiceImpl implements ResultService {
         return allThreatAgentsMap.values().stream().collect(Collectors.toSet());
     }
 
+    @Override
+    public ThreatAgent getTheStrongestThreatAgent(Long companyProfileID) {
+        Set<ThreatAgent> threatAgents = this.getThreatAgents(companyProfileID);
+
+        return this.getTheStrongestThreatAgent(threatAgents);
+    }
+
+    private ThreatAgent getTheStrongestThreatAgent(Set<ThreatAgent> threatAgents) {
+        ThreatAgent theStrongest = null;
+
+        if (threatAgents != null && !threatAgents.isEmpty()) {
+            List<ThreatAgent> ascendingThreatAgentSkills = new ArrayList<>(threatAgents);
+            ascendingThreatAgentSkills.sort(new ThreatAgentComparator().reversed());
+
+            theStrongest = ascendingThreatAgentSkills.get(0);
+        }
+
+        return theStrongest;
+    }
+
     private void initOrIncrement(Map<Long, Integer> threatAgentPropertyCount, ThreatAgent threatAgent) {
         if (threatAgentPropertyCount.containsKey(threatAgent.getId())) {
             Integer currentCount = threatAgentPropertyCount.get(threatAgent.getId());
