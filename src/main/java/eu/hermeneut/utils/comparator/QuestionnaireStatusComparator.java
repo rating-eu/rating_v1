@@ -1,12 +1,12 @@
 /*
  * Copyright 2019 HERMENEUT Consortium
- *  
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *  
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- *  
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -15,15 +15,15 @@
  *
  */
 
-package eu.hermeneut.kafka.service;
+package eu.hermeneut.utils.comparator;
 
-import eu.hermeneut.exceptions.NotFoundException;
-import eu.hermeneut.exceptions.NullInputException;
-import org.springframework.context.annotation.Profile;
+import eu.hermeneut.domain.QuestionnaireStatus;
 
-@Profile("kafka")
-public interface MessageSenderService {
-    void sendRiskProfile(Long selfAssessmentID) throws NullInputException, NotFoundException;
+import java.util.Comparator;
 
-    void sendVulnerabilityProfile(Long companyProfileID) throws NullInputException, NotFoundException;
+public class QuestionnaireStatusComparator implements Comparator<QuestionnaireStatus> {
+    @Override
+    public int compare(QuestionnaireStatus q1, QuestionnaireStatus q2) {
+        return q1.getCreated().compareTo(q2.getCreated());
+    }
 }

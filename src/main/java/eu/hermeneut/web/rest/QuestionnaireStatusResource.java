@@ -19,6 +19,7 @@ package eu.hermeneut.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import eu.hermeneut.aop.annotation.KafkaRiskProfileHook;
+import eu.hermeneut.aop.annotation.KafkaVulnerabilityProfileHook;
 import eu.hermeneut.domain.QuestionnaireStatus;
 import eu.hermeneut.domain.enumeration.QuestionnairePurpose;
 import eu.hermeneut.domain.enumeration.Role;
@@ -70,7 +71,7 @@ public class QuestionnaireStatusResource {
     @Timed
     //@PreAuthorize("@questionnaireStatusGuardian.isCISO(#questionnaireStatus) || @questionnaireStatusGuardian.isExternal(#questionnaireStatus) || hasRole('ROLE_ADMIN')")
     @Secured({AuthoritiesConstants.CISO, AuthoritiesConstants.EXTERNAL_AUDIT, AuthoritiesConstants.ADMIN})
-    @KafkaRiskProfileHook
+    @KafkaVulnerabilityProfileHook
     public ResponseEntity<QuestionnaireStatus> createQuestionnaireStatus(@Valid @RequestBody QuestionnaireStatus questionnaireStatus) throws URISyntaxException {
         log.debug("REST request to save QuestionnaireStatus : {}", questionnaireStatus);
         if (questionnaireStatus.getId() != null) {
@@ -97,7 +98,7 @@ public class QuestionnaireStatusResource {
     @Timed
     //@PreAuthorize("@questionnaireStatusGuardian.isCISO(#questionnaireStatus) || @questionnaireStatusGuardian.isExternal(#questionnaireStatus) || hasRole('ROLE_ADMIN')")
     @Secured({AuthoritiesConstants.CISO, AuthoritiesConstants.EXTERNAL_AUDIT, AuthoritiesConstants.ADMIN})
-    @KafkaRiskProfileHook
+    @KafkaVulnerabilityProfileHook
     public ResponseEntity<QuestionnaireStatus> updateQuestionnaireStatus(@Valid @RequestBody QuestionnaireStatus questionnaireStatus) throws URISyntaxException {
         log.debug("REST request to update QuestionnaireStatus : {}", questionnaireStatus);
         if (questionnaireStatus.getId() == null) {

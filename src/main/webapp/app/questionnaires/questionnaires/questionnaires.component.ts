@@ -391,6 +391,7 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
         switch (this.role) {
             case Role.ROLE_CISO: {
                 this.dataSharingService.cisoQuestionnaireStatus = questionnaireStatus;
+                this.dataSharingService.externalQuestionnaireStatus = questionnaireStatus.refinement;
                 break;
             }
             case Role.ROLE_EXTERNAL_AUDIT: {

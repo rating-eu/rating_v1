@@ -64,7 +64,7 @@ export class Principal {
         }
 
         return this.identity().then((id) => {
-            return Promise.resolve(id.authorities && id.authorities.includes(authority));
+            return Promise.resolve(id && id.authorities && id.authorities.includes(authority));
         }, () => {
             return Promise.resolve(false);
         });

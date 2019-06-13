@@ -19,5 +19,6 @@ package eu.hermeneut.constant;
 
 public interface KafkaListenerFactories {
     String RISK_PROFILE = "RiskProfile";
+    String VULNERABILITY_PROFILE = "VulnerabilityProfile";
     String CRITICALITY_NOTIFICATION = "CriticalityNotification";
 }

@@ -26,6 +26,9 @@ import eu.hermeneut.exceptions.NullInputException;
 import eu.hermeneut.service.*;
 import eu.hermeneut.service.dashboard.RiskBoardStatusService;
 import eu.hermeneut.service.wp4.WP4StepsService;
+import eu.hermeneut.utils.filter.HasImpactFilter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,6 +40,9 @@ import java.util.stream.Collectors;
 @Service
 @Transactional
 public class RiskBoardStatusServiceImpl implements RiskBoardStatusService {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(RiskBoardStatusService.class);
+
     @Autowired
     private SelfAssessmentService selfAssessmentService;
 
@@ -84,20 +90,16 @@ public class RiskBoardStatusServiceImpl implements RiskBoardStatusService {
                     List<MyAsset> myAssets = this.myAssetService.findAllBySelfAssessment(selfAssessmentID);
 
                     if (myAssets != null && !myAssets.isEmpty()) {
-                        int all = myAssets.size();
-                        int withImpact = 0;
+                        boolean allWithImpact = myAssets.stream().parallel().allMatch(new HasImpactFilter());
+                        boolean someWithImpact = myAssets.stream().parallel().anyMatch(new HasImpactFilter());
 
-                        for (MyAsset myAsset : myAssets) {
-                            if (myAsset.getImpact() != null) {
-                                withImpact++;
-                            }
+                        if (!someWithImpact) {
+                            status = Status.EMPTY;
+                        } else if (someWithImpact) {
+                            status = Status.PENDING;
                         }
 
-                        if (withImpact == 0) {
-                            status = Status.EMPTY;
-                        } else if (withImpact < all) {
-                            status = Status.PENDING;
-                        } else if (all == withImpact) {
+                        if (allWithImpact) {
                             status = Status.FULL;
                         }
                     }
@@ -110,9 +112,9 @@ public class RiskBoardStatusServiceImpl implements RiskBoardStatusService {
 
                         status = impactEvaluationStatus != null ? Status.FULL : Status.EMPTY;
                     } catch (NullInputException e) {
-                        e.printStackTrace();
+                        LOGGER.warn("Get ImpactEvaluationStatus Null Input Exception.");
                     } catch (NotFoundException e) {
-                        e.printStackTrace();
+                        LOGGER.warn("Get ImpactEvaluationStatus Not Found Exception.");
                     }
                     break;
                 }
@@ -120,8 +122,6 @@ public class RiskBoardStatusServiceImpl implements RiskBoardStatusService {
                     break;
                 }
             }
-
-
         }
 
         return status;

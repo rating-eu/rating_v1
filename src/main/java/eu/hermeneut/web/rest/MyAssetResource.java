@@ -93,9 +93,10 @@ public class MyAssetResource {
 
     @PostMapping("/{selfAssessmentID}/my-assets/all")
     @Timed
+    @KafkaRiskProfileHook
     @PreAuthorize("@selfAssessmentGuardian.isCISO(#selfAssessmentID) || hasRole('ROLE_ADMIN')")
     @Secured({AuthoritiesConstants.CISO, AuthoritiesConstants.ADMIN})
-    public List<MyAsset> createMyAssets(@PathVariable("selfAssessmentID") Long selfAssessmentID, @RequestBody @NotEmpty List<MyAsset> myAssets) throws NotFoundException, IllegalInputException, NullInputException {
+    public List<MyAsset> createMyAssets(@RequestBody @NotEmpty List<MyAsset> myAssets, @PathVariable("selfAssessmentID") Long selfAssessmentID) throws NotFoundException, IllegalInputException, NullInputException {
         log.debug("REST request to save MyAssets : {}", myAssets);
 
         if (selfAssessmentID == null) {

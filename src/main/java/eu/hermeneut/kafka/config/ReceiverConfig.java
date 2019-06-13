@@ -1,12 +1,12 @@
 /*
  * Copyright 2019 HERMENEUT Consortium
- *  
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *  
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- *  
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -20,6 +20,7 @@ package eu.hermeneut.kafka.config;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import eu.hermeneut.constant.KafkaListenerFactories;
 import eu.hermeneut.domain.compact.input.RiskProfile;
+import eu.hermeneut.domain.compact.input.VulnerabilityProfile;
 import eu.hermeneut.domain.compact.output.CriticalityNotification;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
@@ -85,6 +86,20 @@ public class ReceiverConfig implements KafkaListenerFactories {
     public KafkaListenerContainerFactory<ConcurrentMessageListenerContainer<String, RiskProfile>> riskProfileKafkaListenerContainerFactory() {
         ConcurrentKafkaListenerContainerFactory<String, RiskProfile> factory = new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(riskProfileConsumerFactory());
+        factory.setBatchListener(true);
+        return factory;
+    }
+
+    //================================================Vulnerability Profile======================================================
+    @Bean
+    public ConsumerFactory<String, VulnerabilityProfile> vulnerabilityProfileConsumerFactory() {
+        return newConsumerFactory(VulnerabilityProfile.class);
+    }
+
+    @Bean(name = VULNERABILITY_PROFILE)
+    public KafkaListenerContainerFactory<ConcurrentMessageListenerContainer<String, VulnerabilityProfile>> vulnerabilityProfileKafkaListenerContainerFactory() {
+        ConcurrentKafkaListenerContainerFactory<String, VulnerabilityProfile> factory = new ConcurrentKafkaListenerContainerFactory<>();
+        factory.setConsumerFactory(vulnerabilityProfileConsumerFactory());
         factory.setBatchListener(true);
         return factory;
     }

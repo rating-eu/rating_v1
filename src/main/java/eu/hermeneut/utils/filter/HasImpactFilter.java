@@ -1,12 +1,12 @@
 /*
  * Copyright 2019 HERMENEUT Consortium
- *  
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *  
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- *  
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -15,15 +15,25 @@
  *
  */
 
-package eu.hermeneut.kafka.service;
+package eu.hermeneut.utils.filter;
 
-import eu.hermeneut.exceptions.NotFoundException;
-import eu.hermeneut.exceptions.NullInputException;
-import org.springframework.context.annotation.Profile;
+import eu.hermeneut.domain.MyAsset;
+import org.checkerframework.checker.units.qual.m;
 
-@Profile("kafka")
-public interface MessageSenderService {
-    void sendRiskProfile(Long selfAssessmentID) throws NullInputException, NotFoundException;
+import java.util.function.Predicate;
 
-    void sendVulnerabilityProfile(Long companyProfileID) throws NullInputException, NotFoundException;
+public class HasImpactFilter implements Predicate<MyAsset> {
+
+    @Override
+    public boolean test(MyAsset myAsset) {
+        boolean accepted = false;
+
+        if (myAsset != null) {
+            if (myAsset.getImpact() != null && myAsset.getImpact() > 0) {
+                accepted = true;
+            }
+        }
+
+        return accepted;
+    }
 }
