@@ -1,0 +1,39 @@
+/*
+ * Copyright 2019 HERMENEUT Consortium
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
+
+package eu.hermeneut.utils.filter;
+
+import eu.hermeneut.domain.MyAsset;
+import org.checkerframework.checker.units.qual.m;
+
+import java.util.function.Predicate;
+
+public class HasImpactFilter implements Predicate<MyAsset> {
+
+    @Override
+    public boolean test(MyAsset myAsset) {
+        boolean accepted = false;
+
+        if (myAsset != null) {
+            if (myAsset.getImpact() != null && myAsset.getImpact() > 0) {
+                accepted = true;
+            }
+        }
+
+        return accepted;
+    }
+}

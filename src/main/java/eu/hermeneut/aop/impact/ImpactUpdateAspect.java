@@ -17,6 +17,7 @@
 
 package eu.hermeneut.aop.impact;
 
+import eu.hermeneut.aop.annotation.KafkaRiskProfileHook;
 import eu.hermeneut.domain.ImpactLevel;
 import eu.hermeneut.domain.SelfAssessment;
 import eu.hermeneut.domain.enumeration.ImpactMode;
@@ -56,6 +57,7 @@ public class ImpactUpdateAspect {
      *
      * @param joinPoint
      */
+    @KafkaRiskProfileHook
     @AfterReturning("updateImpactsHook()")
     public void updateMyAssetsImpact(JoinPoint joinPoint) {
         logger.debug("Updating MyAssets Impact AOP...");

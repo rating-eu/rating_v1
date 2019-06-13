@@ -17,13 +17,12 @@
 
 package eu.hermeneut.aop.kafka;
 
-import eu.hermeneut.domain.CompanyProfile;
-import eu.hermeneut.domain.MyAsset;
-import eu.hermeneut.domain.QuestionnaireStatus;
-import eu.hermeneut.domain.SelfAssessment;
+import eu.hermeneut.domain.*;
+import eu.hermeneut.domain.enumeration.ImpactMode;
 import eu.hermeneut.domain.enumeration.Status;
 import eu.hermeneut.kafka.service.MessageSenderService;
 import eu.hermeneut.service.SelfAssessmentService;
+import eu.hermeneut.utils.filter.HasImpactFilter;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
@@ -75,14 +74,42 @@ public class KafkaMessagingAspect {
                 if (myAsset.getImpact() != null && myAsset.getImpact() > 0) {
                     selfAssessment = myAsset.getSelfAssessment();
                 }
+            } else if (args[0] instanceof JoinPoint) {
+                JoinPoint updateImpactaJoinPoint = (JoinPoint) args[0];
+                Object[] args2 = updateImpactaJoinPoint.getArgs();
+
+                if (args2 != null && args2.length > 0) {
+                    //The first parameter must be the ID of the SelfAssessment
+                    if (args2[0] instanceof Long) {
+                        selfAssessment = this.selfAssessmentService.findOne((Long) args2[0]);
+                    }//or the list of the ImpactLevels
+                    else if (args2[0] instanceof List) {
+                        List<?> list = (List) args[0];
+
+                        if (!list.isEmpty()) {
+                            if (list.get(0) instanceof ImpactLevel) {
+                                ImpactLevel level = (ImpactLevel) list.get(0);
+
+                                selfAssessment = this.selfAssessmentService.findOne(level.getSelfAssessmentID());
+                            }
+                        }
+                    }
+                }
             } else if (args[0] instanceof List) {
-                List<?> myAssets = (List) args[0];
+                List<?> list = (List) args[0];
 
-                if (myAssets != null && !myAssets.isEmpty()) {
-                    MyAsset myAsset = (MyAsset) myAssets.get(0);
+                if (list != null && !list.isEmpty()) {
+                    if (list.get(0) instanceof MyAsset) {
 
-                    if (myAsset.getImpact() != null && myAsset.getImpact() > 0) {
-                        selfAssessment = myAsset.getSelfAssessment();
+                        try {
+                            List<MyAsset> myAssets = (List<MyAsset>) list;
+
+                            if (myAssets.stream().parallel().allMatch(new HasImpactFilter())) {
+                                selfAssessment = myAssets.get(0).getSelfAssessment();
+                            }
+                        } catch (ClassCastException e) {
+
+                        }
                     }
                 }
             }
