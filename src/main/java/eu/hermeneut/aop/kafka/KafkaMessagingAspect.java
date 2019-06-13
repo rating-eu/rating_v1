@@ -34,6 +34,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Aspect
 @Component
 @Profile("kafka")
@@ -72,6 +74,16 @@ public class KafkaMessagingAspect {
 
                 if (myAsset.getImpact() != null && myAsset.getImpact() > 0) {
                     selfAssessment = myAsset.getSelfAssessment();
+                }
+            } else if (args[0] instanceof List) {
+                List<?> myAssets = (List) args[0];
+
+                if (myAssets != null && !myAssets.isEmpty()) {
+                    MyAsset myAsset = (MyAsset) myAssets.get(0);
+
+                    if (myAsset.getImpact() != null && myAsset.getImpact() > 0) {
+                        selfAssessment = myAsset.getSelfAssessment();
+                    }
                 }
             }
         }
