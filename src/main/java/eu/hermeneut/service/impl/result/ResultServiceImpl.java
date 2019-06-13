@@ -17,6 +17,7 @@
 
 package eu.hermeneut.service.impl.result;
 
+import eu.hermeneut.constant.MaxValues;
 import eu.hermeneut.domain.*;
 import eu.hermeneut.domain.attackmap.AttackMap;
 import eu.hermeneut.domain.attackmap.AugmentedAttackStrategy;
@@ -47,7 +48,7 @@ import java.util.stream.Collectors;
 
 @Service
 @Transactional
-public class ResultServiceImpl implements ResultService {
+public class ResultServiceImpl implements ResultService, MaxValues {
     private final Logger log = LoggerFactory.getLogger(AssetResource.class);
 
     @Autowired
@@ -250,7 +251,7 @@ public class ResultServiceImpl implements ResultService {
                     ThreatAgentVulnerability threatAgentVulnerability = new ThreatAgentVulnerability();
                     threatAgentVulnerability.setThreatAgentID(threatAgent.getId());
                     threatAgentVulnerability.setThreatAgentName(threatAgent.getName());
-                    threatAgentVulnerability.setVulnerability(Precision.round(levelOfInterest * ResultServiceImpl.this.overallCalculator.overallInitialLikelihoodByThreatAgent(threatAgent, attackMap), 2));
+                    threatAgentVulnerability.setVulnerability(Precision.round(levelOfInterest * ResultServiceImpl.this.overallCalculator.overallInitialLikelihoodByThreatAgent(threatAgent, attackMap) / MAX_LIKELIHOOD, 2));
 
                     put(threatAgent.getId(), threatAgentVulnerability);
                 }
@@ -291,7 +292,7 @@ public class ResultServiceImpl implements ResultService {
                         ThreatAgentVulnerability threatAgentVulnerability = new ThreatAgentVulnerability();
                         threatAgentVulnerability.setThreatAgentID(threatAgent.getId());
                         threatAgentVulnerability.setThreatAgentName(threatAgent.getName());
-                        threatAgentVulnerability.setVulnerability(Precision.round(levelOfInterest * ResultServiceImpl.this.overallCalculator.overallContextualLikelihoodByThreatAgent(threatAgent, attackMap), 2));
+                        threatAgentVulnerability.setVulnerability(Precision.round(levelOfInterest * ResultServiceImpl.this.overallCalculator.overallContextualLikelihoodByThreatAgent(threatAgent, attackMap) / MAX_LIKELIHOOD, 2));
 
                         put(threatAgent.getId(), threatAgentVulnerability);
                     }
@@ -325,7 +326,7 @@ public class ResultServiceImpl implements ResultService {
                         ThreatAgentVulnerability threatAgentVulnerability = new ThreatAgentVulnerability();
                         threatAgentVulnerability.setThreatAgentID(threatAgent.getId());
                         threatAgentVulnerability.setThreatAgentName(threatAgent.getName());
-                        threatAgentVulnerability.setVulnerability(Precision.round(levelOfInterest * ResultServiceImpl.this.overallCalculator.overallRefinedLikelihoodByThreatAgent(threatAgent, attackMap), 2));
+                        threatAgentVulnerability.setVulnerability(Precision.round(levelOfInterest * ResultServiceImpl.this.overallCalculator.overallRefinedLikelihoodByThreatAgent(threatAgent, attackMap) / MAX_LIKELIHOOD, 2));
 
                         put(threatAgent.getId(), threatAgentVulnerability);
                     }
