@@ -770,26 +770,9 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
             cisoQuestionnaireStatus$ = this.questionnaireStatusService.update(this.cisoQuestionnaireStatus);
 
             // #4 Persist the CISO QuestionnaireStatus
-            externalQuestionnaireStatus$ = cisoQuestionnaireStatus$.pipe(
-                switchMap((response: HttpResponse<QuestionnaireStatusMgm>) => {
-                    this.cisoQuestionnaireStatus = response.body;
-
-                    // Update the ID of the external QStatus
-                    questionnaireStatus.id = this.cisoQuestionnaireStatus.refinement.id;
-
-                    // Update the created date of the external QStatus
-                    questionnaireStatus.created = this.cisoQuestionnaireStatus.refinement.created;
-
-                    // Persist the External Questionnaire Status
-                    this.externalQuestionnaireStatus = questionnaireStatus;
-
-                    return this.questionnaireStatusService.update(this.externalQuestionnaireStatus);
-                })
-            );
-
-            this.subscriptions.push(externalQuestionnaireStatus$.subscribe(
+            this.subscriptions.push(cisoQuestionnaireStatus$.subscribe(
                 (response: HttpResponse<QuestionnaireStatusMgm>) => {
-                    this.externalQuestionnaireStatus = response.body;
+                    this.cisoQuestionnaireStatus = response.body;
 
                     this.loading = false;
                     this.router.navigate(['/evaluate-weakness/questionnaires/SELFASSESSMENT']);
