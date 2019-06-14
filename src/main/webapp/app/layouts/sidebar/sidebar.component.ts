@@ -22,7 +22,8 @@ import {
     HostListener,
     OnDestroy,
     OnInit,
-    ViewEncapsulation, ViewRef
+    ViewEncapsulation,
+    ViewRef
 } from '@angular/core';
 import {Principal} from '../../shared';
 import {DatasharingService} from '../../datasharing/datasharing.service';
@@ -32,13 +33,17 @@ import {MenuItem} from 'primeng/api';
 import {Role} from '../../entities/enumerations/Role.enum';
 import {SelfAssessmentMgm, SelfAssessmentMgmService} from '../../entities/self-assessment-mgm';
 import {LogoMgm, LogoMgmService} from '../../entities/logo-mgm';
-import {HttpErrorResponse, HttpResponse} from '@angular/common/http';
+import {HttpResponse} from '@angular/common/http';
 import {Router} from '@angular/router';
 import {CompanyBoardStatus} from "../../dashboard/models/CompanyBoardStatus";
 import {Status} from "../../entities/enumerations/Status.enum";
 import {JhiDateUtils} from 'ng-jhipster';
 import * as _ from 'lodash';
 import {ImpactMode} from "../../entities/enumerations/ImpactMode.enum";
+import {Subscription} from 'rxjs';
+import {EventManagerService} from '../../datasharing/event-manager.service';
+import {EventType} from '../../entities/enumerations/EventType.enum';
+import {Event} from '../../datasharing/event.model';
 
 @Component({
     selector: 'jhi-sidebar',
@@ -64,6 +69,8 @@ export class SidebarComponent implements OnInit, OnDestroy, AfterViewInit {
     public companyBoardStatus: CompanyBoardStatus = null;
     public role: Role = null;
 
+    private subscriptions: Subscription[];
+
     private riskAssessmentsMap: Map<number, MenuItem>;
 
     windowWidth: number = window.innerWidth;
@@ -76,7 +83,8 @@ export class SidebarComponent implements OnInit, OnDestroy, AfterViewInit {
         private router: Router,
         private changeDetector: ChangeDetectorRef,
         private dateUtils: JhiDateUtils,
-        private dataSharing: DatasharingService
+        private dataSharing: DatasharingService,
+        private eventManagerService: EventManagerService,
     ) {
         this.isCollapsed = true;
         this.isSidebarCollapseByTheScreen();
@@ -107,6 +115,7 @@ export class SidebarComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     ngOnInit() {
+        this.subscriptions = [];
         this.companyBoardStatus = this.dataSharingService.companyBoardStatus;
         this.createMenuItems();
         this.riskAssessmentsMap = new Map();
@@ -186,6 +195,12 @@ export class SidebarComponent implements OnInit, OnDestroy, AfterViewInit {
                 this.isCollapsed = update.isSidebarCollapsed;
             }
         });
+
+        this.subscriptions.push(
+            this.eventManagerService.observe(EventType.RISK_ASSESSMENT_LIST_UPDATE).subscribe((event: Event) => {
+                this.fetchSelfAssessments();
+            })
+        )
     }
 
     private expandSelectedSelfAssessment() {
@@ -608,5 +623,11 @@ export class SidebarComponent implements OnInit, OnDestroy, AfterViewInit {
 
     ngOnDestroy(): void {
         this.changeDetector.detach();
+
+        if(this.subscriptions && this.subscriptions.length){
+            this.subscriptions.forEach((subscription: Subscription) => {
+               subscription.unsubscribe();
+            });
+        }
     }
 }
