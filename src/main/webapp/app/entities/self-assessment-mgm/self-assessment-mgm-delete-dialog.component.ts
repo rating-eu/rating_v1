@@ -15,8 +15,8 @@
  *
  */
 
-import {Component, OnInit, OnDestroy} from '@angular/core';
-import {ActivatedRoute, Route, Router} from '@angular/router';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
 
 import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 import {JhiEventManager} from 'ng-jhipster';
@@ -27,6 +27,10 @@ import {SelfAssessmentMgmService} from './self-assessment-mgm.service';
 import {SessionStorageService} from 'ngx-webstorage';
 import {PopUpService} from '../../shared/pop-up-services/pop-up.service';
 import {DatasharingService} from '../../datasharing/datasharing.service';
+import {EventManagerService} from '../../datasharing/event-manager.service';
+import {Event} from '../../datasharing/event.model';
+import {EventType} from '../enumerations/EventType.enum';
+import {ActionType} from '../enumerations/ActionType.enum';
 
 @Component({
     selector: 'jhi-self-assessment-mgm-delete-dialog',
@@ -41,7 +45,8 @@ export class SelfAssessmentMgmDeleteDialogComponent {
         public activeModal: NgbActiveModal,
         private eventManager: JhiEventManager,
         private router: Router,
-        private dataSharingService: DatasharingService
+        private dataSharingService: DatasharingService,
+        private eventManagerService: EventManagerService
     ) {
     }
 
@@ -57,8 +62,7 @@ export class SelfAssessmentMgmDeleteDialogComponent {
                 content: 'Deleted an selfAssessment'
             });
 
-            // TODO think of an alternative method only for update view events
-            this.dataSharingService.selfAssessment = null;
+            this.eventManagerService.broadcast(new Event(EventType.RISK_ASSESSMENT_LIST_UPDATE, ActionType.DELETE));
 
             this.activeModal.dismiss(true);
         });
