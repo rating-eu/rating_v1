@@ -23,8 +23,8 @@
                 <th><span>Email</span></th>
                 <th><span>First Name</span></th>
                 <th><span>Last Name</span></th>
-                <th><span>Activated</span></th>
-                <th></th>
+                <th>Waiting</th>
+                <th>Completed</th>
             </tr>
             </thead>
             <tbody *ngIf="employees">
@@ -33,7 +33,7 @@
                 <td>{{employee.email}}</td>
                 <td>{{employee.firstName}}</td>
                 <td>{{employee.lastName}}</td>
-                <td>{{employee.activated}}</td>
+                <td></td>
                 <td></td>
             </tr>
             </tbody>

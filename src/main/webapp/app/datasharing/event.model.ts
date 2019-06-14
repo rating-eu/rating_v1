@@ -15,13 +15,16 @@
  *
  */
 
+import {EventType} from '../entities/enumerations/EventType.enum';
+import {ActionType} from '../entities/enumerations/ActionType.enum';
+
 export class Event {
 
-    public name: string;
-    public content: string;
+    public type: EventType;
+    public action: ActionType;
 
-    constructor(name: string, content: string) {
-        this.name = name;
-        this.content = content;
+    constructor(type: EventType, action: ActionType) {
+        this.type = type;
+        this.action = action;
     }
 }

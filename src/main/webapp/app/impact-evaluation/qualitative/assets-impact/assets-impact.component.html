@@ -3,7 +3,6 @@
         <p>
             Choose the impact of your assets in case of attack.
         </p>
-
         <mat-accordion>
             <mat-expansion-panel [expanded]="true">
                 <mat-expansion-panel-header>
@@ -12,59 +11,74 @@
                     </mat-panel-title>
                 </mat-expansion-panel-header>
 
-                <mat-tab-group>
-                    <div *ngFor="let category of tangibleCategories">
-                        <mat-tab *ngIf="myAssetsByCategoriesMap.get(category.id)?.length > 0" label="{{category.name}}">
-                            <table class="table text-center">
-                                <thead>
-                                <tr>
-                                    <th scope="col">Asset</th>
-                                    <th scope="col">#Indirect Assets</th>
-                                    <th scope="col">#Related Costs</th>
-                                    <th scope="col" matTooltip="Criticality = Likelihood X Vulnerability"
-                                        [matTooltipPosition]="'above'">Criticality
-                                    </th>
-                                    <th scope="col">Priority</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <ng-container
-                                    *ngFor="let myAsset of myAssetsByCategoriesMap.get(category.id)">
+                <mat-tab-group *ngIf="myTangibleAssets && myTangibleAssets.length">
+                    <ng-container *ngIf="myTangibleAssets && myTangibleAssets.length > 0">
+                        <div *ngFor="let category of tangibleCategories">
+                            <mat-tab *ngIf="myAssetsByCategoriesMap.get(category.id)?.length > 0"
+                                     label="{{category.name}}">
+                                <table class="table text-center">
+                                    <thead>
                                     <tr>
-                                        <th scope="row">{{myAsset.asset.name}}</th>
-                                        <td>{{myAssetsDTOsByIDMap.get(myAsset.id)?.indirectAssets.length}}</td>
-                                        <td>{{myAssetsDTOsByIDMap.get(myAsset.id)?.attackCosts.length}}</td>
-                                        <td class="align-middle">
-                                            <mat-progress-spinner [diameter]="50" style="margin: 0 auto;" [ngClass]="{
+                                        <th scope="col">Asset</th>
+                                        <th scope="col">#Indirect Assets</th>
+                                        <th scope="col">#Related Costs</th>
+                                        <th scope="col" matTooltip="Criticality = Likelihood X Vulnerability"
+                                            [matTooltipPosition]="'above'">Criticality
+                                        </th>
+                                        <th scope="col">Priority</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <ng-container
+                                        *ngFor="let myAsset of myAssetsByCategoriesMap.get(category.id)">
+                                        <tr>
+                                            <th scope="row">{{myAsset.asset.name}}</th>
+                                            <td>{{myAssetsDTOsByIDMap.get(myAsset.id)?.indirectAssets.length}}</td>
+                                            <td>{{myAssetsDTOsByIDMap.get(myAsset.id)?.attackCosts.length}}</td>
+                                            <td class="align-middle">
+                                                <mat-progress-spinner [diameter]="50" style="margin: 0 auto;"
+                                                                      [ngClass]="{
                                               'low': myAssetsDTOsByIDMap.get(myAsset.id)?.criticality > 0 && myAssetsDTOsByIDMap.get(myAsset.id)?.criticality <= 0.2,
                                               'low-medium': myAssetsDTOsByIDMap.get(myAsset.id)?.criticality > 0.2 && myAssetsDTOsByIDMap.get(myAsset.id)?.criticality <= 0.4,
                                               'medium': myAssetsDTOsByIDMap.get(myAsset.id)?.criticality > 0.4 && myAssetsDTOsByIDMap.get(myAsset.id)?.criticality <= 0.6,
                                               'medium-high': myAssetsDTOsByIDMap.get(myAsset.id)?.criticality > 0.6 && myAssetsDTOsByIDMap.get(myAsset.id)?.criticality <= 0.8,
                                               'high': myAssetsDTOsByIDMap.get(myAsset.id)?.criticality > 0.8 && myAssetsDTOsByIDMap.get(myAsset.id)?.criticality <= 1
                                               }"
-                                                                  [value]="myAssetsDTOsByIDMap.get(myAsset.id)?.criticality * 100"
-                                                                  matTooltip="Likelihood: {{myAssetsDTOsByIDMap.get(myAsset.id)?.likelihood}}&#13;
+                                                                      [value]="myAssetsDTOsByIDMap.get(myAsset.id)?.criticality * 100"
+                                                                      matTooltip="Likelihood: {{myAssetsDTOsByIDMap.get(myAsset.id)?.likelihood}}&#13;
                                                                         Vulnerability: {{myAssetsDTOsByIDMap.get(myAsset.id)?.vulnerability}}"
-                                                                  [matTooltipPosition]="'above'"
-                                            >
-                                            </mat-progress-spinner>
-                                            <div style="top:-35px; z-index:2;position:relative;">
-                                                {{myAssetsDTOsByIDMap.get(myAsset.id)?.criticality | percent}}
-                                            </div>
-                                        </td>
-                                        <td class="align-middle">
-                                            <select [(ngModel)]="myAsset.ranking">
-                                                <option *ngFor="let level of priorities; let i = index"
-                                                        [ngValue]="i+1">{{level}}</option>
-                                            </select>
-                                        </td>
-                                    </tr>
-                                </ng-container>
-                                </tbody>
-                            </table>
-                        </mat-tab>
-                    </div>
+                                                                      [matTooltipPosition]="'above'"
+                                                >
+                                                </mat-progress-spinner>
+                                                <div style="top:-35px; z-index:2;position:relative;">
+                                                    {{myAssetsDTOsByIDMap.get(myAsset.id)?.criticality | percent}}
+                                                </div>
+                                            </td>
+                                            <td class="align-middle">
+                                                <select [(ngModel)]="myAsset.ranking">
+                                                    <option *ngFor="let level of priorities; let i = index"
+                                                            [ngValue]="i+1">{{level}}</option>
+                                                </select>
+                                            </td>
+                                        </tr>
+                                    </ng-container>
+                                    </tbody>
+                                </table>
+                            </mat-tab>
+                        </div>
+                    </ng-container>
                 </mat-tab-group>
+
+                <div *ngIf="!myTangibleAssets || !myTangibleAssets.length"
+                     class="border-secondary">
+                    <div class="alert alert-warning" style="margin-top:10px">
+                        <p class="text-center">
+                            <span style="color: grey">
+                                No tangible asset has been identified!
+                            </span>
+                        </p>
+                    </div>
+                </div>
             </mat-expansion-panel>
             <mat-expansion-panel>
                 <mat-expansion-panel-header>
@@ -72,40 +86,74 @@
                         Intangible Assets
                     </mat-panel-title>
                 </mat-expansion-panel-header>
-                <mat-tab-group>
-                    <div *ngFor="let category of intangibleCategories">
-                        <mat-tab *ngIf="myAssetsByCategoriesMap.get(category.id)?.length > 0" label="{{category.name}}">
-                            <table class="table">
-                                <thead>
-                                <tr>
-                                    <th scope="col">Asset</th>
-                                    <th scope="col">#Indirect Assets</th>
-                                    <th scope="col">#Related Costs</th>
-                                    <th scope="col">Criticality</th>
-                                    <th scope="col">Priority</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <ng-container
-                                    *ngFor="let myAsset of myAssetsByCategoriesMap.get(category.id)">
+
+                <mat-tab-group *ngIf="myIntangibleAssets && myIntangibleAssets.length">
+                    <ng-container *ngIf="myIntangibleAssets && myIntangibleAssets.length > 0">
+                        <div *ngFor="let category of intangibleCategories">
+                            <mat-tab *ngIf="myAssetsByCategoriesMap.get(category.id)?.length > 0"
+                                     label="{{category.name}}">
+                                <table class="table text-center">
+                                    <thead>
                                     <tr>
-                                        <th scope="row">{{myAsset.asset.name}}</th>
-                                        <td>{{myAssetsDTOsByIDMap.get(myAsset.id)?.indirectAssets.length}}</td>
-                                        <td>{{myAssetsDTOsByIDMap.get(myAsset.id)?.attackCosts.length}}</td>
-                                        <td>{{myAssetsDTOsByIDMap.get(myAsset.id)?.criticality}}</td>
-                                        <td>
-                                            <select [(ngModel)]="myAsset.ranking">
-                                                <option *ngFor="let level of priorities; let i = index"
-                                                        [ngValue]="i+1">{{level}}</option>
-                                            </select>
-                                        </td>
+                                        <th scope="col">Asset</th>
+                                        <th scope="col">#Indirect Assets</th>
+                                        <th scope="col">#Related Costs</th>
+                                        <th scope="col" matTooltip="Criticality = Likelihood X Vulnerability"
+                                            [matTooltipPosition]="'above'">Criticality
+                                        </th>
+                                        <th scope="col">Priority</th>
                                     </tr>
-                                </ng-container>
-                                </tbody>
-                            </table>
-                        </mat-tab>
-                    </div>
+                                    </thead>
+                                    <tbody>
+                                    <ng-container
+                                        *ngFor="let myAsset of myAssetsByCategoriesMap.get(category.id)">
+                                        <tr>
+                                            <th scope="row">{{myAsset.asset.name}}</th>
+                                            <td>{{myAssetsDTOsByIDMap.get(myAsset.id)?.indirectAssets.length}}</td>
+                                            <td>{{myAssetsDTOsByIDMap.get(myAsset.id)?.attackCosts.length}}</td>
+                                            <td class="align-middle">
+                                                <mat-progress-spinner [diameter]="50" style="margin: 0 auto;"
+                                                                      [ngClass]="{
+                                              'low': myAssetsDTOsByIDMap.get(myAsset.id)?.criticality > 0 && myAssetsDTOsByIDMap.get(myAsset.id)?.criticality <= 0.2,
+                                              'low-medium': myAssetsDTOsByIDMap.get(myAsset.id)?.criticality > 0.2 && myAssetsDTOsByIDMap.get(myAsset.id)?.criticality <= 0.4,
+                                              'medium': myAssetsDTOsByIDMap.get(myAsset.id)?.criticality > 0.4 && myAssetsDTOsByIDMap.get(myAsset.id)?.criticality <= 0.6,
+                                              'medium-high': myAssetsDTOsByIDMap.get(myAsset.id)?.criticality > 0.6 && myAssetsDTOsByIDMap.get(myAsset.id)?.criticality <= 0.8,
+                                              'high': myAssetsDTOsByIDMap.get(myAsset.id)?.criticality > 0.8 && myAssetsDTOsByIDMap.get(myAsset.id)?.criticality <= 1
+                                              }" [value]="myAssetsDTOsByIDMap.get(myAsset.id)?.criticality * 100"
+                                                                      matTooltip="Likelihood: {{myAssetsDTOsByIDMap.get(myAsset.id)?.likelihood}}&#13;
+                                                 Vulnerability: {{myAssetsDTOsByIDMap.get(myAsset.id)?.vulnerability}}"
+                                                                      [matTooltipPosition]="'above'"
+                                                >
+                                                </mat-progress-spinner>
+                                                <div style="top:-35px; z-index:2;position:relative;">
+                                                    {{myAssetsDTOsByIDMap.get(myAsset.id)?.criticality | percent}}
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <select [(ngModel)]="myAsset.ranking">
+                                                    <option *ngFor="let level of priorities; let i = index"
+                                                            [ngValue]="i+1">{{level}}</option>
+                                                </select>
+                                            </td>
+                                        </tr>
+                                    </ng-container>
+                                    </tbody>
+                                </table>
+                            </mat-tab>
+                        </div>
+                    </ng-container>
                 </mat-tab-group>
+
+                <div *ngIf="!myIntangibleAssets || !myIntangibleAssets.length"
+                     class="border-secondary">
+                    <div class="alert alert-warning" style="margin-top:10px">
+                        <p class="text-center">
+                            <span style="color: grey">
+                                No intangible asset has been identified!
+                            </span>
+                        </p>
+                    </div>
+                </div>
             </mat-expansion-panel>
         </mat-accordion>
     </div>
@@ -114,7 +162,7 @@
         <button class="btn btn-primary float-right" (click)="saveMyAssets()">Save</button>
 
         <button style="margin-left: 10px"
-                (click)="previousState()"
+                (click)="back()"
                 class="btn btn-light float-right">
             <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
         </button>

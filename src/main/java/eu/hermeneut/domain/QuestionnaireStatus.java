@@ -17,12 +17,13 @@
 
 package eu.hermeneut.domain;
 
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.*;
 
 import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import javax.validation.constraints.*;
-
 
 
 import java.io.Serializable;
@@ -34,8 +35,7 @@ import java.util.Objects;
 import eu.hermeneut.domain.enumeration.Status;
 
 import eu.hermeneut.domain.enumeration.Role;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.annotations.Cache;
 
 /**
  * A QuestionnaireStatus.
@@ -89,7 +89,7 @@ public class QuestionnaireStatus implements Serializable, Comparable<Questionnai
     private User user;
 
     @OneToMany(mappedBy = "questionnaireStatus", fetch = FetchType.EAGER,
-        cascade = {CascadeType.ALL, CascadeType.PERSIST, CascadeType.MERGE}, orphanRemoval = true)
+        cascade = CascadeType.ALL, orphanRemoval = true)
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<MyAnswer> answers = new HashSet<>();
 
@@ -101,7 +101,7 @@ public class QuestionnaireStatus implements Serializable, Comparable<Questionnai
      * This field references to the refinement QuestionnaireStatus of the External Audit.
      */
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "refinement_id")
+    @JoinColumn(name = "refinement_id", nullable = true)
     private QuestionnaireStatus refinement;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove

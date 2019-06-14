@@ -11,8 +11,8 @@ import {ImpactMode} from "../../entities/enumerations/ImpactMode.enum";
 })
 export class ChoiceComponent implements OnInit {
 
-    private selfAssessment: SelfAssessmentMgm;
-    private impactMode: ImpactMode;
+    public selfAssessment: SelfAssessmentMgm;
+    public impactModeEnum = ImpactMode;
 
     constructor(private router: Router,
                 private dataSharing: DatasharingService,
@@ -29,8 +29,6 @@ export class ChoiceComponent implements OnInit {
     }
 
     quantitativeMode() {
-        this.impactMode = ImpactMode.QUANTITATIVE;
-
         if (this.selfAssessment) {
             switch (this.selfAssessment.impactMode) {
                 case ImpactMode.QUANTITATIVE: {
@@ -54,8 +52,6 @@ export class ChoiceComponent implements OnInit {
     }
 
     qualitativeMode() {
-        this.impactMode = ImpactMode.QUALITATIVE;
-
         if (this.selfAssessment) {
             switch (this.selfAssessment.impactMode) {
                 case ImpactMode.QUALITATIVE: {

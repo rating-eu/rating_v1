@@ -72,20 +72,6 @@ public class MyAnswerResource {
             .body(result);
     }
 
-    @PostMapping("/{selfAssessmentID}/my-answers/all")
-    @Timed
-    @KafkaRiskProfileHook
-    public List<MyAnswer> createMyAnswers(@PathVariable Long selfAssessmentID, @RequestBody List<MyAnswer> myAnswers) {
-        log.debug("REST request to save MyAnswers : {}", myAnswers);
-
-        if (myAnswers.stream().filter(myAnswer -> myAnswer.getId() != null).count() > 0) {
-            throw new BadRequestAlertException("A new myAnswer cannot already have an ID", ENTITY_NAME, "idexists");
-        }
-
-        List<MyAnswer> result = this.myAnswerService.saveAll(myAnswers);
-        return result;
-    }
-
     /**
      * PUT  /my-answers : Updates an existing myAnswer.
      *

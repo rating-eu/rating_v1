@@ -15,19 +15,19 @@
  *
  */
 
-import {Component, OnInit, OnDestroy} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
-import {HttpResponse, HttpErrorResponse} from '@angular/common/http';
+import {HttpErrorResponse, HttpResponse} from '@angular/common/http';
 
 import {Observable} from 'rxjs/Observable';
 import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
-import {JhiEventManager, JhiAlertService} from 'ng-jhipster';
+import {JhiAlertService, JhiEventManager} from 'ng-jhipster';
 
 import {SelfAssessmentMgm} from './self-assessment-mgm.model';
 import {SelfAssessmentMgmPopupService} from './self-assessment-mgm-popup.service';
 import {SelfAssessmentMgmService} from './self-assessment-mgm.service';
 import {CompanyProfileMgm, CompanyProfileMgmService} from '../company-profile-mgm';
-import {AccountService, User, UserService} from '../../shared';
+import {Account, AccountService, User, UserService} from '../../shared';
 import {CompanyGroupMgm, CompanyGroupMgmService} from '../company-group-mgm';
 import {AssetMgm, AssetMgmService} from '../asset-mgm';
 import {ThreatAgentMgm, ThreatAgentMgmService} from '../threat-agent-mgm';
@@ -36,10 +36,12 @@ import {ExternalAuditMgm, ExternalAuditMgmService} from '../external-audit-mgm';
 import {QuestionnaireMgm, QuestionnaireMgmService} from '../questionnaire-mgm';
 import {MyCompanyMgm, MyCompanyMgmService} from '../my-company-mgm';
 import {SessionStorageService} from 'ngx-webstorage';
-import {PopupService} from '@ng-bootstrap/ng-bootstrap/util/popup';
 import {PopUpService} from '../../shared/pop-up-services/pop-up.service';
 import {DatasharingService} from '../../datasharing/datasharing.service';
-import {Account} from "../../shared";
+import {EventManagerService} from '../../datasharing/event-manager.service';
+import {Event} from '../../datasharing/event.model';
+import {EventType} from "../enumerations/EventType.enum";
+import {ActionType} from "../enumerations/ActionType.enum";
 
 @Component({
     selector: 'jhi-self-assessment-mgm-dialog',
@@ -81,9 +83,10 @@ export class SelfAssessmentMgmDialogComponent implements OnInit {
         private attackStrategyService: AttackStrategyMgmService,
         private externalAuditService: ExternalAuditMgmService,
         private questionnaireService: QuestionnaireMgmService,
-        private eventManager: JhiEventManager,
+        private jhiEventManager: JhiEventManager,
         private myCompanyService: MyCompanyMgmService,
-        private dataSharingService: DatasharingService
+        private dataSharingService: DatasharingService,
+        private eventManagerService: EventManagerService
     ) {
     }
 
@@ -174,7 +177,6 @@ export class SelfAssessmentMgmDialogComponent implements OnInit {
     private subscribeToSaveResponse(result: Observable<HttpResponse<SelfAssessmentMgm>>) {
         result.subscribe((res: HttpResponse<SelfAssessmentMgm>) => {
                 this.onSaveSuccess(res.body);
-                this.dataSharingService.selfAssessment = res.body;
             }, (res: HttpErrorResponse) => {
                 this.onSaveError();
             }
@@ -182,7 +184,10 @@ export class SelfAssessmentMgmDialogComponent implements OnInit {
     }
 
     private onSaveSuccess(result: SelfAssessmentMgm) {
-        this.eventManager.broadcast({name: 'selfAssessmentListModification', content: 'OK'});
+        //TODO use custom event manager
+        this.jhiEventManager.broadcast({name: 'selfAssessmentListModification', content: 'OK'});
+        this.eventManagerService.broadcast(new Event(EventType.RISK_ASSESSMENT_LIST_UPDATE, ActionType.CREATE));
+
         this.isSaving = false;
         this.activeModal.dismiss(result);
     }

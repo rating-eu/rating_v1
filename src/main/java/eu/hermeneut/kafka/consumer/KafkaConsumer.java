@@ -1,12 +1,12 @@
 /*
  * Copyright 2019 HERMENEUT Consortium
- *  
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *  
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- *  
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -22,6 +22,7 @@ import eu.hermeneut.domain.AttackStrategy;
 import eu.hermeneut.domain.CompanyProfile;
 import eu.hermeneut.domain.Criticality;
 import eu.hermeneut.domain.compact.input.RiskProfile;
+import eu.hermeneut.domain.compact.input.VulnerabilityProfile;
 import eu.hermeneut.domain.compact.output.CriticalityNotification;
 import eu.hermeneut.domain.compact.output.CriticalityType;
 import eu.hermeneut.service.AttackStrategyService;
@@ -48,10 +49,15 @@ public class KafkaConsumer implements KafkaListenerFactories {
     @Autowired
     private AttackStrategyService attackStrategyService;
 
-    @KafkaListener(topics = "${kafka.topic.risk-profile}", containerFactory = RISK_PROFILE)
+    /*@KafkaListener(topics = "${kafka.topic.risk-profile}", containerFactory = RISK_PROFILE)
     public void receiveRiskProfile(RiskProfile riskProfile) {
         LOGGER.debug("Message received on RiskProfile: " + riskProfile);
-    }
+    }*/
+
+    /*@KafkaListener(topics = "${kafka.topic.vulnerability-profile}", containerFactory = VULNERABILITY_PROFILE)
+    public void receiveVulnerabilityProfile(VulnerabilityProfile vulnerabilityProfile) {
+        LOGGER.debug("Message received on VulnerabilityProfile: " + vulnerabilityProfile);
+    }*/
 
     @KafkaListener(topics = "${kafka.topic.criticality-notification}", containerFactory = CRITICALITY_NOTIFICATION)
     public void receiveCriticalityNotification(CriticalityNotification criticalityNotification) {

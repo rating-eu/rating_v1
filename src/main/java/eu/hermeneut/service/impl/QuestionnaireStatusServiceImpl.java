@@ -88,7 +88,28 @@ public class QuestionnaireStatusServiceImpl implements QuestionnaireStatusServic
             });
         }
 
+        if (questionnaireStatus.getRefinement() != null && !questionnaireStatus.getRefinement().getAnswers().isEmpty()) {
+
+            QuestionnaireStatus refinement = questionnaireStatus.getRefinement();
+
+            if (refinement.getId() != null) {
+                QuestionnaireStatus existingRefinement = this.questionnaireStatusRepository.findOne(refinement.getId());
+
+                if (existingRefinement != null) {
+                    // Delete the Old MyAnswers
+                    existingRefinement.getAnswers().clear();
+                    this.questionnaireStatusRepository.save(existingRefinement);
+                }
+            }
+
+            refinement.getAnswers().stream().forEach((myAnswer) -> {
+                myAnswer.setQuestionnaireStatus(refinement);
+            });
+        }
+
         QuestionnaireStatus result = questionnaireStatusRepository.save(questionnaireStatus);
+        log.debug("Saved QuestionnaireStatus", result);
+
         return result;
     }
 

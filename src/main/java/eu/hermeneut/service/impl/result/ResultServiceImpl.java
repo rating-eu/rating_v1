@@ -17,14 +17,20 @@
 
 package eu.hermeneut.service.impl.result;
 
+import eu.hermeneut.constant.MaxValues;
 import eu.hermeneut.domain.*;
 import eu.hermeneut.domain.attackmap.AttackMap;
 import eu.hermeneut.domain.attackmap.AugmentedAttackStrategy;
+import eu.hermeneut.domain.compact.input.ThreatAgentVulnerability;
+import eu.hermeneut.domain.compact.input.VulnerabilityResult;
 import eu.hermeneut.domain.enumeration.QuestionnairePurpose;
 import eu.hermeneut.domain.enumeration.Role;
 import eu.hermeneut.domain.result.Result;
+import eu.hermeneut.exceptions.NotFoundException;
 import eu.hermeneut.service.*;
 import eu.hermeneut.service.result.ResultService;
+import eu.hermeneut.utils.comparator.QuestionnaireStatusComparator;
+import eu.hermeneut.utils.filter.QuestionnaireStatusByRoleFilter;
 import eu.hermeneut.utils.likelihood.attackstrategy.AttackStrategyCalculator;
 import eu.hermeneut.utils.likelihood.overall.OverallCalculator;
 import eu.hermeneut.utils.threatagent.ThreatAgentComparator;
@@ -42,7 +48,7 @@ import java.util.stream.Collectors;
 
 @Service
 @Transactional
-public class ResultServiceImpl implements ResultService {
+public class ResultServiceImpl implements ResultService, MaxValues {
     private final Logger log = LoggerFactory.getLogger(AssetResource.class);
 
     @Autowired
@@ -204,6 +210,137 @@ public class ResultServiceImpl implements ResultService {
     }
 
     @Override
+    public VulnerabilityResult getVulnerabilityResult(Long companyProfileID) throws NotFoundException {
+        VulnerabilityResult vulnerabilityResult = new VulnerabilityResult();
+
+        CompanyProfile companyProfile = this.companyProfileService.findOne(companyProfileID);
+
+        if (companyProfile == null) {
+            throw new NotFoundException("Company Profile not found!");
+        }
+
+        Set<ThreatAgent> threatAgents = this.getThreatAgents(companyProfileID);
+
+        if (threatAgents == null || threatAgents.isEmpty()) {
+            throw new NotFoundException("Threat Agents not found!");
+        }
+
+        Map<Long, Float> levelsOfInterest = this.getLevelsOfInterest(companyProfileID);
+
+        ThreatAgent theStrongest = this.getTheStrongestThreatAgent(threatAgents);
+
+        List<AttackStrategy> attackStrategies = this.attackStrategyService.findAll();
+
+        //Map used to update the likelihood of an AttackStrategy in time O(1).
+        Map<Long/*AttackStrategy.ID*/, AugmentedAttackStrategy> augmentedAttackStrategyMap = attackStrategies.stream().collect(Collectors.toMap(AttackStrategy::getId, attackStrategy -> new AugmentedAttackStrategy(attackStrategy)));
+
+        // AttackStrategies.INITIAL_LIKELIHOOD
+        for (Map.Entry<Long, AugmentedAttackStrategy> entry : augmentedAttackStrategyMap.entrySet()) {
+            AugmentedAttackStrategy attackStrategy = entry.getValue();
+            attackStrategy.setInitialLikelihood(this.attackStrategyCalculator.initialLikelihood(attackStrategy).getValue());
+        }
+
+        AttackMap attackMap = new AttackMap(augmentedAttackStrategyMap);
+
+        //#Output 1 ==> OVERALL INITIAL LIKELIHOOD
+        vulnerabilityResult.setInitialVulnerability(new HashMap<Long, ThreatAgentVulnerability>() {
+            {
+                for (ThreatAgent threatAgent : threatAgents) {
+                    float levelOfInterest = levelsOfInterest.getOrDefault(threatAgent.getId(), 0F);
+
+                    ThreatAgentVulnerability threatAgentVulnerability = new ThreatAgentVulnerability();
+                    threatAgentVulnerability.setThreatAgentID(threatAgent.getId());
+                    threatAgentVulnerability.setThreatAgentName(threatAgent.getName());
+                    threatAgentVulnerability.setVulnerability(Precision.round(levelOfInterest * ResultServiceImpl.this.overallCalculator.overallInitialLikelihoodByThreatAgent(threatAgent, attackMap) / MAX_LIKELIHOOD, 2));
+
+                    put(threatAgent.getId(), threatAgentVulnerability);
+                }
+            }
+        });
+
+        // Get the latest created Questionnaire of type SELF_ASSESSMENT
+        List<QuestionnaireStatus> questionnaireStatuses = this.questionnaireStatusService.findAllByCompanyProfileAndQuestionnairePurpose(companyProfile.getId(), QuestionnairePurpose.SELFASSESSMENT);
+
+        QuestionnaireStatus cisoQuestionnaireStatus = questionnaireStatuses.stream().filter(
+            new QuestionnaireStatusByRoleFilter(Role.ROLE_CISO)
+        ).sorted(
+            new QuestionnaireStatusComparator().reversed()
+        ).findFirst().orElse(null);
+
+        QuestionnaireStatus externalQuestionnaireStatus = null;
+
+        //#5 Turn CISO myAnswers to ContextualLikelihoods
+        if (cisoQuestionnaireStatus != null) {
+            externalQuestionnaireStatus = cisoQuestionnaireStatus.getRefinement();
+
+            Questionnaire questionnaire = cisoQuestionnaireStatus.getQuestionnaire();
+            List<Question> questions = this.questionService.findAllByQuestionnaire(questionnaire);
+            List<Answer> answers = this.answerService.findAll();
+            Map<Long/*AnswerID*/, Answer> answersMap = answers.stream().collect(Collectors.toMap(Answer::getId, Function.identity()));
+            Map<Long/*QuestionID*/, Question> questionsMap = questions.stream().collect(Collectors.toMap(Question::getId, Function.identity()));
+
+            List<MyAnswer> myAnswers = this.myAnswerService.findAllByQuestionnaireStatus(cisoQuestionnaireStatus.getId());
+
+            this.attackStrategyCalculator.calculateContextualVulnerabilityLikelihoodAndCriticalities(myAnswers, questionsMap, answersMap, augmentedAttackStrategyMap);
+
+            //#Output 2 ==> OVERALL CONTEXTUAL LIKELIHOOD
+            vulnerabilityResult.setContextualVulnerability(new HashMap<Long, ThreatAgentVulnerability>() {
+                {
+                    for (ThreatAgent threatAgent : threatAgents) {
+                        float levelOfInterest = levelsOfInterest.getOrDefault(threatAgent.getId(), 0F);
+
+                        ThreatAgentVulnerability threatAgentVulnerability = new ThreatAgentVulnerability();
+                        threatAgentVulnerability.setThreatAgentID(threatAgent.getId());
+                        threatAgentVulnerability.setThreatAgentName(threatAgent.getName());
+                        threatAgentVulnerability.setVulnerability(Precision.round(levelOfInterest * ResultServiceImpl.this.overallCalculator.overallContextualLikelihoodByThreatAgent(threatAgent, attackMap) / MAX_LIKELIHOOD, 2));
+
+                        put(threatAgent.getId(), threatAgentVulnerability);
+                    }
+                }
+            });
+        } else {
+            vulnerabilityResult.setContextualVulnerability(new HashMap<>());
+        }
+
+        //#6 Turn ExternalAudit MyAnswers to RefinedLikelihoods
+        if (externalQuestionnaireStatus != null) {
+            Questionnaire questionnaire = externalQuestionnaireStatus.getQuestionnaire();
+            List<Question> questions = this.questionService.findAllByQuestionnaire(questionnaire);
+            List<Answer> answers = this.answerService.findAll();
+            Map<Long/*AnswerID*/, Answer> answersMap = answers.stream().collect(Collectors.toMap(Answer::getId, Function.identity()));
+            Map<Long/*QuestionID*/, Question> questionsMap = questions.stream().collect(Collectors.toMap(Question::getId, Function.identity()));
+
+            List<MyAnswer> myAnswers = this.myAnswerService.findAllByQuestionnaireStatus(externalQuestionnaireStatus.getId());
+
+            //Group the MyAnswers by AttackStrategy and find the likelihood for each of them.
+            Map<AugmentedAttackStrategy, Set<MyAnswer>> attackAnswersMap = new HashMap<>();
+
+            this.attackStrategyCalculator.calculateRefinedVulnerabilityLikelihoodAndCriticalities(myAnswers, questionsMap, answersMap, augmentedAttackStrategyMap);
+
+            //#Output 3 ==> OVERALL REFINED LIKELIHOOD
+            vulnerabilityResult.setRefinedVulnerability(new HashMap<Long, ThreatAgentVulnerability>() {
+                {
+                    for (ThreatAgent threatAgent : threatAgents) {
+                        float levelOfInterest = levelsOfInterest.getOrDefault(threatAgent.getId(), 0F);
+
+                        ThreatAgentVulnerability threatAgentVulnerability = new ThreatAgentVulnerability();
+                        threatAgentVulnerability.setThreatAgentID(threatAgent.getId());
+                        threatAgentVulnerability.setThreatAgentName(threatAgent.getName());
+                        threatAgentVulnerability.setVulnerability(Precision.round(levelOfInterest * ResultServiceImpl.this.overallCalculator.overallRefinedLikelihoodByThreatAgent(threatAgent, attackMap) / MAX_LIKELIHOOD, 2));
+
+                        put(threatAgent.getId(), threatAgentVulnerability);
+                    }
+                }
+            });
+        } else {
+            vulnerabilityResult.setRefinedVulnerability(new HashMap<>());
+        }
+
+
+        return vulnerabilityResult;
+    }
+
+    @Override
     public Float getOverallLikelihood(Long companyProfileID) {
         Float overallLikelihood = -1F;
 
@@ -239,7 +376,7 @@ public class ResultServiceImpl implements ResultService {
             CompanyProfile companyProfile = this.companyProfileService.findOne(companyProfileID);
 
             if (companyProfile != null) {
-                QuestionnaireStatus questionnaireStatus = this.questionnaireStatusService.findAllByCompanyProfileRoleAndQuestionnairePurpose(companyProfileID, Role.ROLE_CISO, QuestionnairePurpose.ID_THREAT_AGENT).stream().findFirst().orElse(null);;
+                QuestionnaireStatus questionnaireStatus = this.questionnaireStatusService.findAllByCompanyProfileRoleAndQuestionnairePurpose(companyProfileID, Role.ROLE_CISO, QuestionnairePurpose.ID_THREAT_AGENT).stream().findFirst().orElse(null);
 
                 if (questionnaireStatus != null) {
                     List<MyAnswer> myAnswers = this.myAnswerService.findAllByQuestionnaireStatus(questionnaireStatus.getId());
@@ -309,6 +446,26 @@ public class ResultServiceImpl implements ResultService {
             });
 
         return allThreatAgentsMap.values().stream().collect(Collectors.toSet());
+    }
+
+    @Override
+    public ThreatAgent getTheStrongestThreatAgent(Long companyProfileID) {
+        Set<ThreatAgent> threatAgents = this.getThreatAgents(companyProfileID);
+
+        return this.getTheStrongestThreatAgent(threatAgents);
+    }
+
+    private ThreatAgent getTheStrongestThreatAgent(Set<ThreatAgent> threatAgents) {
+        ThreatAgent theStrongest = null;
+
+        if (threatAgents != null && !threatAgents.isEmpty()) {
+            List<ThreatAgent> ascendingThreatAgentSkills = new ArrayList<>(threatAgents);
+            ascendingThreatAgentSkills.sort(new ThreatAgentComparator().reversed());
+
+            theStrongest = ascendingThreatAgentSkills.get(0);
+        }
+
+        return theStrongest;
     }
 
     private void initOrIncrement(Map<Long, Integer> threatAgentPropertyCount, ThreatAgent threatAgent) {

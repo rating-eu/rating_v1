@@ -15,7 +15,7 @@
  *
  */
 
-import {Component, OnInit, OnDestroy} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 
 import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
@@ -25,9 +25,11 @@ import {QuestionnaireStatusMgm} from './questionnaire-status-mgm.model';
 import {QuestionnaireStatusMgmPopupService} from './questionnaire-status-mgm-popup.service';
 import {QuestionnaireStatusMgmService} from './questionnaire-status-mgm.service';
 import {PopUpService} from '../../shared/pop-up-services/pop-up.service';
-import {EventManagerService} from "../../datasharing/event-manager.service";
+import {EventManagerService} from '../../datasharing/event-manager.service';
 
-import {Event} from "../../datasharing/event.model";
+import {Event} from '../../datasharing/event.model';
+import {EventType} from '../enumerations/EventType.enum';
+import {ActionType} from '../enumerations/ActionType.enum';
 
 @Component({
     selector: 'jhi-questionnaire-status-mgm-delete-dialog',
@@ -56,9 +58,9 @@ export class QuestionnaireStatusMgmDeleteDialogComponent {
                 content: 'Deleted a questionnaireStatus'
             });
 
-            console.error("Broadcasting QSTatus delete event...");
+            console.error('Broadcasting QSTatus delete event...');
 
-            this.eventManagerService.broadcast(new Event('questionnaireStatusListModification', 'Deleted a questionnaireStatus'));
+            this.eventManagerService.broadcast(new Event(EventType.QUESTIONNAIRE_STATUS_LIST_UPDATE, ActionType.DELETE));
             this.activeModal.dismiss(true);
         });
     }

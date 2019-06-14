@@ -1,12 +1,12 @@
 /*
  * Copyright 2019 HERMENEUT Consortium
- *  
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *  
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- *  
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -17,10 +17,6 @@
 
 package eu.hermeneut.domain.compact.input;
 
-import eu.hermeneut.domain.result.Result;
-
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
 import java.io.Serializable;
 import java.util.Set;
 
@@ -36,16 +32,6 @@ public class RiskProfile implements Serializable {
     private String companyName;
 
     /**
-     * The Overall Likelihood value that
-     * the most dangerous ThreatAgent identified could
-     * attack your company. This field represents a percentage
-     * value, hence it assumes values between 0 and 1.
-     */
-    @Min(0)
-    @Max(1)
-    private Float overallLikelihood;
-
-    /**
      * The set of the assets owned by the company, with their risk
      * associated.
      */
@@ -56,12 +42,6 @@ public class RiskProfile implements Serializable {
      * associated.
      */
     private Set<AttackStrategyRisk> attackStrategyRisks;
-
-    /**
-     * The vulnerabilities (initial, contextual, refined)
-     * associated with each of the identified ThreatAgents.
-     */
-    private Result vulnerabilities;
 
     public void setSelfAssessmentID(Long selfAssessmentID) {
         this.selfAssessmentID = selfAssessmentID;
@@ -99,14 +79,6 @@ public class RiskProfile implements Serializable {
         this.companyName = companyName;
     }
 
-    public Float getOverallLikelihood() {
-        return overallLikelihood;
-    }
-
-    public void setOverallLikelihood(Float overallLikelihood) {
-        this.overallLikelihood = overallLikelihood;
-    }
-
     public Set<AssetRisk> getAssetRisks() {
         return assetRisks;
     }
@@ -121,13 +93,5 @@ public class RiskProfile implements Serializable {
 
     public void setAttackStrategyRisks(Set<AttackStrategyRisk> attackStrategyRisks) {
         this.attackStrategyRisks = attackStrategyRisks;
-    }
-
-    public Result getVulnerabilities() {
-        return vulnerabilities;
-    }
-
-    public void setVulnerabilities(Result vulnerabilities) {
-        this.vulnerabilities = vulnerabilities;
     }
 }

@@ -34,27 +34,27 @@ import java.util.List;
 @SuppressWarnings("unused")
 @Repository
 public interface QuestionnaireStatusRepository extends JpaRepository<QuestionnaireStatus, Long> {
-    @Query("SELECT DISTINCT questionnaireStatus FROM QuestionnaireStatus questionnaireStatus LEFT JOIN FETCH questionnaireStatus.answers LEFT JOIN FETCH questionnaireStatus.refinement WHERE questionnaireStatus.companyProfile.id = :companyProfileID AND questionnaireStatus.user.id = :userID")
+    @Query("SELECT DISTINCT questionnaireStatus FROM QuestionnaireStatus questionnaireStatus LEFT JOIN FETCH questionnaireStatus.answers LEFT JOIN FETCH questionnaireStatus.refinement refinement LEFT JOIN FETCH refinement.answers WHERE questionnaireStatus.companyProfile.id = :companyProfileID AND questionnaireStatus.user.id = :userID")
     List<QuestionnaireStatus> findAllByCompanyProfileAndUser(@Param("companyProfileID") Long companyProfileID, @Param("userID") Long userID);
 
-    @Query("SELECT DISTINCT questionnaireStatus FROM QuestionnaireStatus questionnaireStatus LEFT JOIN FETCH questionnaireStatus.answers LEFT JOIN FETCH questionnaireStatus.refinement WHERE questionnaireStatus.companyProfile.id = :companyProfileID")
+    @Query("SELECT DISTINCT questionnaireStatus FROM QuestionnaireStatus questionnaireStatus LEFT JOIN FETCH questionnaireStatus.answers LEFT JOIN FETCH questionnaireStatus.refinement refinement LEFT JOIN FETCH refinement.answers WHERE questionnaireStatus.companyProfile.id = :companyProfileID")
     List<QuestionnaireStatus> findAllByCompanyProfile(@Param("companyProfileID") Long companyProfileID);
 
-    @Query("SELECT DISTINCT questionnaireStatus FROM QuestionnaireStatus questionnaireStatus LEFT JOIN FETCH questionnaireStatus.answers LEFT JOIN FETCH questionnaireStatus.refinement WHERE questionnaireStatus.role = :role AND questionnaireStatus.companyProfile.id = :companyProfileID AND questionnaireStatus.questionnaire.id = :questionnaireID")
+    @Query("SELECT DISTINCT questionnaireStatus FROM QuestionnaireStatus questionnaireStatus LEFT JOIN FETCH questionnaireStatus.answers LEFT JOIN FETCH questionnaireStatus.refinement refinement LEFT JOIN FETCH refinement.answers WHERE questionnaireStatus.role = :role AND questionnaireStatus.companyProfile.id = :companyProfileID AND questionnaireStatus.questionnaire.id = :questionnaireID")
     List<QuestionnaireStatus> findAllByRoleCompanyProfileAndQuestionnaire(@Param("role") Role role, @Param("companyProfileID") Long companyProfileID, @Param("questionnaireID") Long questionnaireID);
 
-    @Query("SELECT DISTINCT questionnaireStatus FROM QuestionnaireStatus questionnaireStatus LEFT JOIN FETCH questionnaireStatus.answers LEFT JOIN FETCH questionnaireStatus.refinement WHERE questionnaireStatus.companyProfile.id = :companyProfileID AND questionnaireStatus.questionnaire.purpose = :questionnairePurpose")
+    @Query("SELECT DISTINCT questionnaireStatus FROM QuestionnaireStatus questionnaireStatus LEFT JOIN FETCH questionnaireStatus.answers LEFT JOIN FETCH questionnaireStatus.refinement refinement LEFT JOIN FETCH refinement.answers WHERE questionnaireStatus.companyProfile.id = :companyProfileID AND questionnaireStatus.questionnaire.purpose = :questionnairePurpose")
     List<QuestionnaireStatus> findAllByCompanyProfileAndQuestionnairePurpose(@Param("companyProfileID") Long companyProfileID, @Param("questionnairePurpose") QuestionnairePurpose purpose);
 
-    @Query("SELECT DISTINCT questionnaireStatus FROM QuestionnaireStatus questionnaireStatus LEFT JOIN FETCH questionnaireStatus.answers LEFT JOIN FETCH questionnaireStatus.refinement WHERE questionnaireStatus.companyProfile.id = :companyProfileID AND questionnaireStatus.role = :role AND questionnaireStatus.questionnaire.purpose = :questionnairePurpose")
+    @Query("SELECT DISTINCT questionnaireStatus FROM QuestionnaireStatus questionnaireStatus LEFT JOIN FETCH questionnaireStatus.answers LEFT JOIN FETCH questionnaireStatus.refinement refinement LEFT JOIN FETCH refinement.answers WHERE questionnaireStatus.companyProfile.id = :companyProfileID AND questionnaireStatus.role = :role AND questionnaireStatus.questionnaire.purpose = :questionnairePurpose")
     List<QuestionnaireStatus> findAllByCompanyProfileRoleAndQuestionnairePurpose(@Param("companyProfileID") Long companyProfileID, @Param("role") Role role, @Param("questionnairePurpose") QuestionnairePurpose purpose);
 
-    @Query("SELECT DISTINCT questionnaireStatus FROM QuestionnaireStatus questionnaireStatus LEFT JOIN FETCH questionnaireStatus.answers LEFT JOIN FETCH questionnaireStatus.refinement WHERE questionnaireStatus.companyProfile.id = :companyProfileID AND questionnaireStatus.questionnaire.purpose = :questionnairePurpose AND questionnaireStatus.user.id=:userID")
+    @Query("SELECT DISTINCT questionnaireStatus FROM QuestionnaireStatus questionnaireStatus LEFT JOIN FETCH questionnaireStatus.answers LEFT JOIN FETCH questionnaireStatus.refinement refinement LEFT JOIN FETCH refinement.answers WHERE questionnaireStatus.companyProfile.id = :companyProfileID AND questionnaireStatus.questionnaire.purpose = :questionnairePurpose AND questionnaireStatus.user.id=:userID")
     List<QuestionnaireStatus> findAllByCompanyProfileQuestionnairePurposeAndCISOUser(@Param("companyProfileID") Long companyProfileID, @Param("questionnairePurpose") QuestionnairePurpose questionnairePurpose, @Param("userID") Long userID);
 
-    @Query("SELECT DISTINCT questionnaireStatus FROM QuestionnaireStatus questionnaireStatus LEFT JOIN FETCH questionnaireStatus.answers LEFT JOIN FETCH questionnaireStatus.refinement WHERE questionnaireStatus.external.id = :externalID")
+    @Query("SELECT DISTINCT questionnaireStatus FROM QuestionnaireStatus questionnaireStatus LEFT JOIN FETCH questionnaireStatus.answers LEFT JOIN FETCH questionnaireStatus.refinement refinement LEFT JOIN FETCH refinement.answers WHERE questionnaireStatus.external.id = :externalID")
     List<QuestionnaireStatus> findAllByExternalAudit(@Param("externalID") Long externalID);
 
-    @Query("SELECT DISTINCT questionnaireStatus FROM QuestionnaireStatus questionnaireStatus LEFT JOIN FETCH questionnaireStatus.answers LEFT JOIN FETCH questionnaireStatus.refinement WHERE questionnaireStatus.companyProfile.id = :companyProfileID AND questionnaireStatus.questionnaire.purpose = :questionnairePurpose AND questionnaireStatus.external.id = :externalID")
+    @Query("SELECT DISTINCT questionnaireStatus FROM QuestionnaireStatus questionnaireStatus LEFT JOIN FETCH questionnaireStatus.answers LEFT JOIN FETCH questionnaireStatus.refinement refinement LEFT JOIN FETCH refinement.answers WHERE questionnaireStatus.companyProfile.id = :companyProfileID AND questionnaireStatus.questionnaire.purpose = :questionnairePurpose AND questionnaireStatus.external.id = :externalID")
     List<QuestionnaireStatus> findAllByCompanyProfileQuestionnairePurposeAndExternalUser(@Param("companyProfileID") Long companyProfileID, @Param("questionnairePurpose") QuestionnairePurpose questionnairePurpose, @Param("externalID") Long externalID);
 }
