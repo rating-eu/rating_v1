@@ -49,15 +49,15 @@ public class KafkaConsumer implements KafkaListenerFactories {
     @Autowired
     private AttackStrategyService attackStrategyService;
 
-    @KafkaListener(topics = "${kafka.topic.risk-profile}", containerFactory = RISK_PROFILE)
+    /*@KafkaListener(topics = "${kafka.topic.risk-profile}", containerFactory = RISK_PROFILE)
     public void receiveRiskProfile(RiskProfile riskProfile) {
         LOGGER.debug("Message received on RiskProfile: " + riskProfile);
-    }
+    }*/
 
-    @KafkaListener(topics = "${kafka.topic.vulnerability-profile}", containerFactory = VULNERABILITY_PROFILE)
+    /*@KafkaListener(topics = "${kafka.topic.vulnerability-profile}", containerFactory = VULNERABILITY_PROFILE)
     public void receiveVulnerabilityProfile(VulnerabilityProfile vulnerabilityProfile) {
         LOGGER.debug("Message received on VulnerabilityProfile: " + vulnerabilityProfile);
-    }
+    }*/
 
     @KafkaListener(topics = "${kafka.topic.criticality-notification}", containerFactory = CRITICALITY_NOTIFICATION)
     public void receiveCriticalityNotification(CriticalityNotification criticalityNotification) {
