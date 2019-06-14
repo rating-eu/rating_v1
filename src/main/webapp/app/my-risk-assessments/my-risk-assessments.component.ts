@@ -18,15 +18,16 @@
 import * as _ from 'lodash';
 import {Principal} from './../shared/auth/principal.service';
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {User} from '../shared';
-import {MyCompanyMgm} from '../entities/my-company-mgm';
 import {SelfAssessmentMgm, SelfAssessmentMgmService} from '../entities/self-assessment-mgm';
 import {Router} from '@angular/router';
 import {Subscription} from 'rxjs/Subscription';
-import {MyAssetMgm, MyAssetMgmService} from '../entities/my-asset-mgm';
+import {MyAssetMgmService} from '../entities/my-asset-mgm';
 import {DatasharingService} from '../datasharing/datasharing.service';
 import {PopUpService} from '../shared/pop-up-services/pop-up.service';
 import {Role} from '../entities/enumerations/Role.enum';
+import {EventManagerService} from '../datasharing/event-manager.service';
+import {EventType} from '../entities/enumerations/EventType.enum';
+import {Event} from '../datasharing/event.model';
 
 interface OrderBy {
     name: boolean;
@@ -59,6 +60,7 @@ export class MyRiskAssessmentsComponent implements OnInit, OnDestroy {
         private selfAssessmentService: SelfAssessmentMgmService,
         private myAssetService: MyAssetMgmService,
         private dataSharingService: DatasharingService,
+        private eventManagerService: EventManagerService,
         public popUpService: PopUpService,
         private principal: Principal
     ) {
@@ -134,6 +136,14 @@ export class MyRiskAssessmentsComponent implements OnInit, OnDestroy {
                 this.loadMySelfAssessments();
             })
         );
+
+        this.subscriptions.push(
+            this.eventManagerService.observe(EventType.RISK_ASSESSMENT_LIST_UPDATE).subscribe(
+                (event: Event) => {
+                    this.loadMySelfAssessments();
+                }
+            )
+        )
     }
 
     ngOnDestroy(): void {
