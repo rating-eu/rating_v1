@@ -17,7 +17,7 @@
 
 import {BaseEntity, User} from './../../shared';
 import {QuestionnaireMgm} from '../questionnaire-mgm';
-import {Status} from '../enumerations/QuestionnaireStatus.enum';
+import {Status} from '../enumerations/Status.enum';
 import {MyAnswerMgm} from '../my-answer-mgm';
 import {CompanyProfileMgm} from "../company-profile-mgm";
 import {Role} from "../enumerations/Role.enum";

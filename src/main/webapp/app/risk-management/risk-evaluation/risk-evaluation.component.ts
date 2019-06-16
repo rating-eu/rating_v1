@@ -22,7 +22,7 @@ import {RiskManagementService} from '../risk-management.service';
 import {SelfAssessmentMgmService, SelfAssessmentMgm} from '../../entities/self-assessment-mgm';
 import {CriticalLevelMgm} from '../../entities/critical-level-mgm';
 import {MyAssetMgm} from '../../entities/my-asset-mgm';
-import {Status} from '../../entities/enumerations/QuestionnaireStatus.enum';
+import {Status} from '../../entities/enumerations/Status.enum';
 import {Subscription} from 'rxjs';
 import {MitigationMgm} from '../../entities/mitigation-mgm';
 import {ImpactEvaluationService} from '../../impact-evaluation/impact-evaluation.service';
@@ -181,8 +181,8 @@ export class RiskEvaluationComponent implements OnInit, OnDestroy {
             this.loadingAssetsAndAttacks = false;
         });
 
-        this.riskBoardService.getStatusFromServer(this.selfAssessment, this.dashboardStatus.ATTACK_RELATED_COSTS).toPromise().then((res) => {
-            if (Status[res] === Status.EMPTY || Status[res] === Status.PENDING) {
+        this.riskBoardService.getStatusFromServer(this.selfAssessment, this.dashboardStatus.ATTACK_RELATED_COSTS).toPromise().then((status: Status) => {
+            if (status === Status.EMPTY || status === Status.PENDING) {
                 this.attackCosts = false;
                 this.isWarningVisible = true;
             } else {

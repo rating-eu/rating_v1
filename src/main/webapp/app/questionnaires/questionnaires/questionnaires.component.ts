@@ -22,7 +22,7 @@ import {QuestionnaireMgm} from '../../entities/questionnaire-mgm';
 import {Observable} from 'rxjs/Observable';
 import {DatasharingService} from '../../datasharing/datasharing.service';
 import {QuestionnaireStatusMgm, QuestionnaireStatusMgmService} from '../../entities/questionnaire-status-mgm';
-import {Status} from '../../entities/enumerations/QuestionnaireStatus.enum';
+import {Status} from '../../entities/enumerations/Status.enum';
 import {Account, AccountService, User, UserService} from '../../shared';
 import {Subscription} from 'rxjs/Subscription';
 import {ActivatedRoute, Params, Router} from '@angular/router';
