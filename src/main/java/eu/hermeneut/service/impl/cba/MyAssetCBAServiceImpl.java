@@ -23,12 +23,15 @@ import eu.hermeneut.domain.MyAsset;
 import eu.hermeneut.domain.SelfAssessment;
 import eu.hermeneut.domain.attackmap.AugmentedAttackStrategy;
 import eu.hermeneut.domain.cba.MyAssetCBA;
+import eu.hermeneut.domain.dto.AssetDTO;
+import eu.hermeneut.domain.dto.UserDTO;
 import eu.hermeneut.exceptions.NotFoundException;
 import eu.hermeneut.service.AttackStrategyService;
 import eu.hermeneut.service.MyAssetService;
 import eu.hermeneut.service.SelfAssessmentService;
 import eu.hermeneut.service.attackmap.AugmentedAttackStrategyService;
 import eu.hermeneut.service.cba.MyAssetCBAService;
+import eu.hermeneut.utils.filter.VulnerableAssetFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -67,13 +70,16 @@ public class MyAssetCBAServiceImpl implements MyAssetCBAService {
             throw new NotFoundException("MyAssets not found!");
         }
 
+        // Keep only the assets that are directly or indirectly vulnerable
+        myAssets = myAssets.stream().parallel().filter(new VulnerableAssetFilter()).collect(Collectors.toList());
+
         Map<Long/*AttackStrategy.ID*/, AugmentedAttackStrategy> augmentedAttackStrategyMap = this.augmentedAttackStrategyService.getAugmentedAttackStrategyMap(selfAssessment.getCompanyProfile().getId());
 
         Set<MyAssetCBA> myAssetCBAs = new HashSet<>();
 
         for (MyAsset myAsset : myAssets) {
             final MyAssetCBA myAssetCBA = new MyAssetCBA();
-            myAssetCBA.setAsset(myAsset.getAsset());
+            myAssetCBA.setAsset(Optional.of(myAsset.getAsset()).map(AssetDTO::new).orElse(null));
             myAssetCBA.setImpact(myAsset.getImpact());
 
             // Get All the Containers
