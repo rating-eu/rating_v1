@@ -83,6 +83,10 @@ export class DatasharingService {
     private _companyBoardStatus: CompanyBoardStatus = null;
     private _companyBoardStatus$: ReplaySubject<CompanyBoardStatus> = new ReplaySubject<CompanyBoardStatus>();
 
+    // Vulnerability Assessment
+    private _vulnerabilityAssessment: QuestionnaireStatusMgm = null;
+    private _vulnerabilityAssessmentSubject: ReplaySubject<QuestionnaireStatusMgm> = new ReplaySubject<QuestionnaireStatusMgm>();
+
     constructor(
         private router: Router,
         private sessionStorage: SessionStorageService,
@@ -305,6 +309,20 @@ export class DatasharingService {
 
     get companyBoardStatus$(): Observable<CompanyBoardStatus> {
         return this._companyBoardStatus$.asObservable();
+    }
+
+    // Vulnerability Assessment Questionnaire Status
+    get vulnerabilityAssessment(): QuestionnaireStatusMgm {
+        return this._vulnerabilityAssessment;
+    }
+
+    set vulnerabilityAssessment(status: QuestionnaireStatusMgm) {
+        this._vulnerabilityAssessment = status;
+        this._vulnerabilityAssessmentSubject.next(this._vulnerabilityAssessment);
+    }
+
+    get vulnerabilityAssessment$(): Observable<QuestionnaireStatusMgm> {
+        return this._vulnerabilityAssessmentSubject.asObservable();
     }
 
     clear() {

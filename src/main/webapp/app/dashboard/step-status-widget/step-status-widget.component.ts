@@ -1,10 +1,10 @@
-import {Component, OnInit} from '@angular/core';
+import {AfterViewChecked, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewRef} from '@angular/core';
 import {DashboardService} from "../dashboard.service";
 import {MyCompanyMgm} from "../../entities/my-company-mgm";
 import {DatasharingService} from "../../datasharing/datasharing.service";
 import {CompanyBoardStep} from "../../entities/enumerations/CompanyBoardStep.enum";
 import {forkJoin} from "rxjs/observable/forkJoin";
-import {Observable} from "rxjs";
+import {Observable, Subscription} from "rxjs";
 import {HttpResponse} from "@angular/common/http";
 import {ModalDismissReasons, NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {Router} from "@angular/router";
@@ -14,13 +14,15 @@ import {CompletionDtoService} from "../../dto/completion/completion-dto.service"
 import {AssessVulnerabilitiesCompletionDTO} from "../../dto/completion/assess-vulnerabilities-completion";
 import {CompanyBoardStatus} from "../models/CompanyBoardStatus";
 import {of} from "rxjs/observable/of";
+import {QuestionnaireStatusMgm, QuestionnaireStatusMgmService} from "../../entities/questionnaire-status-mgm";
+import {QuestionnairePurpose} from "../../entities/enumerations/QuestionnairePurpose.enum";
 
 @Component({
     selector: 'jhi-step-status-widget',
     templateUrl: './step-status-widget.component.html',
     styles: []
 })
-export class StepStatusWidgetComponent implements OnInit {
+export class StepStatusWidgetComponent implements OnInit, AfterViewChecked, OnDestroy {
 
     public isCollapsed = false;
     private myCompany: MyCompanyMgm;
@@ -36,27 +38,75 @@ export class StepStatusWidgetComponent implements OnInit {
     private closeResult: string;
     private linkAfterModal: string;
     public alertMessage: string;
-    public loading: boolean = false;
+    private loading: boolean = false;
+    public isLoading: boolean = false;
+
+    private subscriptions: Subscription[];
+    public questionnaireStatuses: QuestionnaireStatusMgm[];
+
+    public vulnerabilityAssessment: QuestionnaireStatusMgm;
 
     constructor(
         private dataSharingService: DatasharingService,
         private completionDTOService: CompletionDtoService,
+        private questionnaireStatusService: QuestionnaireStatusMgmService,
         private dashboardService: DashboardService,
         private modalService: NgbModal,
-        private router: Router) {
+        private router: Router,
+        private changeDetector: ChangeDetectorRef) {
     }
 
     ngOnInit() {
+        this.subscriptions = [];
+        this.questionnaireStatuses = [];
+
         this.myCompany = this.dataSharingService.myCompany;
         this.companyBoardStatus = new CompanyBoardStatus();
         this.dataSharingService.companyBoardStatus = this.companyBoardStatus;
 
         this.fetchStatus();
+        this.fetchQuestionnaireStatuses();
 
-        this.dataSharingService.myCompany$.subscribe((response: MyCompanyMgm) => {
-            this.myCompany = response;
-            this.fetchStatus();
-        });
+        this.subscriptions.push(
+            this.dataSharingService.myCompany$.subscribe((response: MyCompanyMgm) => {
+                this.myCompany = response;
+                this.fetchStatus();
+                this.fetchQuestionnaireStatuses();
+            })
+        );
+
+        this.subscriptions.push(
+            this.dataSharingService.vulnerabilityAssessment$.pipe(
+                switchMap(
+                    (vulnerabilityAssessment: QuestionnaireStatusMgm) => {
+                        this.vulnerabilityAssessment = vulnerabilityAssessment;
+
+                        if (this.vulnerabilityAssessment) {
+                            this.assessVulnerabilitiesStatus = this.vulnerabilityAssessment.status;
+                            this.companyBoardStatus.assessVulnerablitiesStatus = this.assessVulnerabilitiesStatus;
+                            this.dataSharingService.companyBoardStatus = this.companyBoardStatus;
+                        }
+
+                        return this.completionDTOService.getAssessVulnerabilitiesCompletionByCompanyProfileAndQuestionnaireStatus(this.myCompany.companyProfile.id, this.vulnerabilityAssessment.id);
+                    }
+                )
+            ).subscribe(
+                (response: HttpResponse<AssessVulnerabilitiesCompletionDTO>) => {
+                    this.assessVulnerabilitiesCompletion = response.body;
+
+                    if (this.changeDetector && !(this.changeDetector as ViewRef).destroyed) {
+                        this.changeDetector.detectChanges();
+                    }
+                }
+            )
+        );
+    }
+
+    ngAfterViewChecked(): void {
+        this.isLoading = this.loading;
+        if (this.changeDetector && !(this.changeDetector as ViewRef).destroyed) {
+            this.changeDetector.detectChanges();
+        }
     }
 
     private fetchStatus() {
@@ -89,7 +139,7 @@ export class StepStatusWidgetComponent implements OnInit {
                         case Status.EMPTY: {
                             return this.completionDTOService.getAssessVulnerabilitiesCompletionByCompanyProfile(this.myCompany.companyProfile.id);
                         }
-                        default:{
+                        default: {
                             return of(new HttpResponse<AssessVulnerabilitiesCompletionDTO>({body: new AssessVulnerabilitiesCompletionDTO()}));
                         }
                     }
@@ -100,13 +150,35 @@ export class StepStatusWidgetComponent implements OnInit {
             });
 
             if (assessVulnerabilitiesCompletion$) {
-                assessVulnerabilitiesCompletion$.subscribe((response: HttpResponse<AssessVulnerabilitiesCompletionDTO>) => {
-                        if (response) {
-                            this.assessVulnerabilitiesCompletion = response.body;
+                this.subscriptions.push(
+                    assessVulnerabilitiesCompletion$.subscribe((response: HttpResponse<AssessVulnerabilitiesCompletionDTO>) => {
+                            if (response) {
+                                this.assessVulnerabilitiesCompletion = response.body;
+                            }
                         }
-                    }
+                    )
                 );
             }
+        }
+    }
+
+    private fetchQuestionnaireStatuses() {
+        if (this.myCompany && this.myCompany.companyProfile) {
+            this.subscriptions.push(
+                this.questionnaireStatusService.getAllQuestionnaireStatusesByCurrentUserAndQuestionnairePurpose(QuestionnairePurpose.SELFASSESSMENT)
+                    .catch((err) => {
+                        return of([]);
+                    })
+                    .subscribe((response: QuestionnaireStatusMgm[]) => {
+                        this.questionnaireStatuses = response;
+
+                        if (this.questionnaireStatuses && this.questionnaireStatuses.length) {
+
+                        } else {
+
+                        }
+                    })
+            );
         }
     }
 
@@ -135,6 +207,18 @@ export class StepStatusWidgetComponent implements OnInit {
             return 'by clicking on a backdrop';
         } else {
             return `with: ${reason}`;
+        }
+    }
+
+    ngOnDestroy(): void {
+        if (this.changeDetector) {
+            this.changeDetector.detach();
+        }
+
+        if (this.subscriptions && this.subscriptions.length) {
+            this.subscriptions.forEach((subscription: Subscription) => {
+                subscription.unsubscribe();
+            });
         }
     }
 }
