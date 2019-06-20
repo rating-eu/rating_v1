@@ -22,7 +22,6 @@ import eu.hermeneut.domain.MyAsset;
 import java.util.function.Predicate;
 
 public class VulnerableAssetFilter implements Predicate<MyAsset> {
-
     @Override
     public boolean test(MyAsset myAsset) {
         return myAsset != null &&

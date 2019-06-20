@@ -17,24 +17,24 @@
 
 package eu.hermeneut.domain.cba;
 
-import eu.hermeneut.domain.Asset;
 import eu.hermeneut.domain.attackmap.AugmentedAttackStrategy;
+import eu.hermeneut.domain.dto.AssetDTO;
 
 import java.util.List;
 
 public class MyAssetCBA {
 
-    private Asset asset;
+    private AssetDTO asset;
 
     private Integer impact;
 
     private List<AugmentedAttackStrategy> attackStrategies;
 
-    public Asset getAsset() {
+    public AssetDTO getAsset() {
         return asset;
     }
 
-    public void setAsset(Asset asset) {
+    public void setAsset(AssetDTO asset) {
         this.asset = asset;
     }
 
