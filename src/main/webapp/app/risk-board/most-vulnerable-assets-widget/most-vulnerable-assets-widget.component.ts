@@ -145,7 +145,7 @@ export class MostVulnerableAssetsWidgetComponent implements OnInit, OnDestroy {
 
                                     return of(overview);
                                 });
-                        }else{
+                        } else {
                             return of(null);
                         }
                     } else {
@@ -158,16 +158,17 @@ export class MostVulnerableAssetsWidgetComponent implements OnInit, OnDestroy {
         );
     }
 
-    private getMostDangerousAttack(augAsset: AugmentedMyAsset): MdawEntity {
+    private getMostDangerousAttack(augmentedAsset: AugmentedMyAsset): MdawEntity {
         const mdaw = {} as MdawEntity;
         mdaw.mostDangerousAttackValue = {} as {
             likelihood: number,
             vulnerability: number
         };
         let attacks: AugmentedAttackStrategy[] = [];
-        for (const item of this.overview.augmentedMyAssets) {
-            if (item.asset.id === augAsset.asset.id) {
-                attacks.push(item.augmentedAttackStrategy);
+
+        for (const currentAsset of this.overview.augmentedMyAssets) {
+            if (currentAsset.asset.id === augmentedAsset.asset.id) {
+                attacks.push(...currentAsset.attackStrategies);
             }
         }
         if (attacks[0].refinedLikelihood) {
@@ -178,7 +179,7 @@ export class MostVulnerableAssetsWidgetComponent implements OnInit, OnDestroy {
             attacks = _.orderBy(attacks, ['likelihood'], ['desc']);
         }
         const mostDangerousAttack = attacks[0];
-        mdaw.asset = augAsset;
+        mdaw.asset = augmentedAsset;
         mdaw.howManyAttacks = attacks.length;
         mdaw.mostDangerousAttack = mostDangerousAttack.name;
         if (mostDangerousAttack.refinedLikelihood) {
@@ -252,7 +253,7 @@ export class MostVulnerableAssetsWidgetComponent implements OnInit, OnDestroy {
         this.loadingAttacksTable = true;
         for (const item of this.overview.augmentedMyAssets) {
             if (item.asset.id === this.selectedAsset.asset.id) {
-                this.selectedAttacks.push(item.augmentedAttackStrategy);
+                this.selectedAttacks.push(...item.attackStrategies);
             }
         }
         if (this.selectedAttacks[0].refinedLikelihood) {
