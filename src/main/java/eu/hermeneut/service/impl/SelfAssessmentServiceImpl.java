@@ -27,6 +27,7 @@ import eu.hermeneut.repository.SelfAssessmentRepository;
 import eu.hermeneut.service.attackmap.AugmentedAttackStrategyService;
 import eu.hermeneut.service.result.ResultService;
 import eu.hermeneut.thread.AugmentedMyAssetsCallable;
+import eu.hermeneut.utils.filter.VulnerableAssetFilter;
 import eu.hermeneut.utils.wp4.ListSplitter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,6 +37,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 import java.util.concurrent.*;
+import java.util.stream.Collectors;
 
 /**
  * Service Implementation for managing SelfAssessment.
@@ -147,6 +149,9 @@ public class SelfAssessmentServiceImpl implements SelfAssessmentService {
 
                     if (myAssets != null && !myAssets.isEmpty()) {
                         LOGGER.debug("MyAssets: " + myAssets.size());
+
+                        // Keep only the Directly or Indirectly vulnerable assets
+                        myAssets = myAssets.stream().parallel().filter(new VulnerableAssetFilter()).collect(Collectors.toList());
 
                         try {
                             Map<Long, AugmentedAttackStrategy> augmentedAttackStrategyMap = this.augmentedAttackStrategyService.getAugmentedAttackStrategyMap(selfAssessment.getCompanyProfile().getId());
