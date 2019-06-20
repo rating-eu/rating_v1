@@ -31,6 +31,7 @@ import eu.hermeneut.service.attackmap.AugmentedAttackStrategyService;
 import eu.hermeneut.service.compact.AssetRiskService;
 import eu.hermeneut.service.wp4.MyAssetRiskService;
 import eu.hermeneut.utils.attackstrategy.ThreatAttackFilter;
+import eu.hermeneut.utils.filter.VulnerableAssetFilter;
 import eu.hermeneut.utils.threatagent.ThreatAgentComparator;
 import eu.hermeneut.utils.tuple.Triad;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -91,7 +92,7 @@ public class MyAssetRiskServiceImpl implements MyAssetRiskService, MaxValues {
 
         // Keep only the assets that are directly or indirectly vulnerable
         myAssets = myAssets.stream().parallel()
-            .filter(myAsset -> myAsset.getAsset().getDirectlyVulnerable() || myAsset.getAsset().getIndirectlyVulnerable())
+            .filter(new VulnerableAssetFilter())
             .collect(Collectors.toList());
 
         Set<AssetRisk> assetRisks = this.assetRiskService.getAssetRisks(selfAssessmentID);

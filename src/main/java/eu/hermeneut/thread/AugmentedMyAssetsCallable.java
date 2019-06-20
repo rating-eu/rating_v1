@@ -1,12 +1,12 @@
 /*
  * Copyright 2019 HERMENEUT Consortium
- *  
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *  
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- *  
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -77,6 +77,9 @@ public class AugmentedMyAssetsCallable implements Callable<List<AugmentedMyAsset
                     if (attackStrategiesByContainer != null && !attackStrategiesByContainer.isEmpty()) {
                         Iterator<AttackStrategy> attackStrategyIterator = attackStrategiesByContainer.iterator();
 
+                        //Create the augmented my asset
+                        AugmentedMyAsset augmentedMyAsset = new AugmentedMyAsset(myAsset);
+
                         //For each attack-strategy
                         while (attackStrategyIterator.hasNext()) {
                             AttackStrategy attackStrategy = attackStrategyIterator.next();
@@ -86,13 +89,14 @@ public class AugmentedMyAssetsCallable implements Callable<List<AugmentedMyAsset
                             List<ThreatAgent> threatAgentsSubset = threatAgentSet.stream().filter(threatAgent -> ThreatAttackFilter.isAttackPossible(threatAgent, attackStrategy)).collect(Collectors.toList());
                             //For each ThreatAgent build an AugmentedMyAsset
                             if (threatAgentsSubset != null && !threatAgentsSubset.isEmpty()) {
-                                //Create the augmented my asset
-                                AugmentedMyAsset augmentedMyAsset = new AugmentedMyAsset(myAsset);
-                                augmentedMyAsset.setAugmentedAttackStrategy(augmentedAttackStrategy);
+
+                                augmentedMyAsset.getAttackStrategies().add(augmentedAttackStrategy);
 
                                 augmentedMyAssets.add(augmentedMyAsset);
                             }
                         }
+
+                        augmentedMyAssets.add(augmentedMyAsset);
                     }
                 }
             }

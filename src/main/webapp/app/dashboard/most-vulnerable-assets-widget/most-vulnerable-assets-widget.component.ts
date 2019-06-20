@@ -144,7 +144,7 @@ export class MostVulnerableAssetsWidgetComponent implements OnInit {
         let attacks: AugmentedAttackStrategy[] = [];
         for (const item of this.overview.augmentedMyAssets) {
             if (item.asset.id === augAsset.asset.id) {
-                attacks.push(item.augmentedAttackStrategy);
+                attacks.push(...item.attackStrategies);
             }
         }
         if (attacks[0].refinedLikelihood) {
@@ -195,7 +195,7 @@ export class MostVulnerableAssetsWidgetComponent implements OnInit {
         this.loadingAttacksTable = true;
         for (const item of this.overview.augmentedMyAssets) {
             if (item.asset.id === this.selectedAsset.asset.id) {
-                this.selectedAttacks.push(item.augmentedAttackStrategy);
+                this.selectedAttacks.push(...item.attackStrategies);
             }
         }
         if (this.selectedAttacks[0].refinedLikelihood) {
