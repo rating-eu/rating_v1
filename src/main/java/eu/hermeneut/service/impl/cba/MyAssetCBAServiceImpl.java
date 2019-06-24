@@ -72,7 +72,7 @@ public class MyAssetCBAServiceImpl implements MyAssetCBAService {
         // Keep only the assets that are directly or indirectly vulnerable
         myAssets = myAssets.stream().parallel().filter(new VulnerableAssetFilter()).collect(Collectors.toList());
 
-        Map<Long/*AttackStrategy.ID*/, AugmentedAttackStrategy> augmentedAttackStrategyMap = this.augmentedAttackStrategyService.getAugmentedAttackStrategyMap(selfAssessment.getCompanyProfile().getId());
+        Map<Long/*AttackStrategy.ID*/, AugmentedAttackStrategy> augmentedAttackStrategyMap = this.augmentedAttackStrategyService.getAugmentedAttackStrategyMap(selfAssessment.getId());
 
         Set<MyAssetCBA> myAssetCBAs = new HashSet<>();
 

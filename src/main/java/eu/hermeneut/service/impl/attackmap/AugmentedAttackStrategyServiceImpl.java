@@ -65,7 +65,7 @@ public class AugmentedAttackStrategyServiceImpl implements AugmentedAttackStrate
         SelfAssessment selfAssessment = this.selfAssessmentService.findOne(selfAssessmentID);
 
         if (selfAssessment == null) {
-            throw new NotFoundException("The selfAssessment Not Found!!!");
+            throw new NotFoundException("The selfAssessment wit ID: " + selfAssessmentID +" was Not Found!!!");
         }
 
         // Get the identified ThreatAgents
