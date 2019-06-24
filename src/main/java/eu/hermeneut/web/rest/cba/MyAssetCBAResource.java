@@ -41,8 +41,8 @@ public class MyAssetCBAResource {
 
     @GetMapping("/{selfAssessmentID}/cba/my-assets")
     @Timed
-    @PreAuthorize("@selfAssessmentGuardian.isCISO(#selfAssessmentID) || hasRole('ROLE_ADMIN')")
-    @Secured({AuthoritiesConstants.CISO, AuthoritiesConstants.ADMIN})
+    @PreAuthorize("@selfAssessmentGuardian.isCISO(#selfAssessmentID) || hasRole('ROLE_CBA') || hasRole('ROLE_ADMIN')")
+    @Secured({AuthoritiesConstants.CISO, AuthoritiesConstants.CBA, AuthoritiesConstants.ADMIN})
     public Set<MyAssetCBA> getMyAssetsCBABySelfAssessment(@PathVariable Long selfAssessmentID) throws NotFoundException {
         return this.myAssetCBAService.getMyAssetsCBA(selfAssessmentID);
     }
