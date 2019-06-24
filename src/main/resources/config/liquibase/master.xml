@@ -127,5 +127,6 @@
     <include file="config/liquibase/changelog/20190411142902_added_criticality_constraints.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20190605091540_added_asset_in-directly_vulnerable_columns.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20190605115047_added_asset_in-directly_vulnerable_data.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190624111235_added_CBA_role_to_authorities.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
 </databaseChangeLog>

@@ -32,6 +32,8 @@ public final class AuthoritiesConstants {
 
     public static final String CISO = "ROLE_CISO";
 
+    public static final String CBA = "ROLE_CBA";
+
     private AuthoritiesConstants() {
     }
 }
