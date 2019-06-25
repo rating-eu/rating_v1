@@ -20,7 +20,7 @@
                    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
-    <changeSet author="izio (generated)" id="20190529232047-1">
+    <changeSet author="izio (generated)" id="20190529232047-1" runOnChange="true">
         <loadUpdateData file="config/liquibase/authorities_2.csv"
                         separator=";"
                         primaryKey="name"
