@@ -242,7 +242,7 @@ export class ResultsOverviewComponent implements OnInit {
         this.loadingAttacksTable = true;
         for (const item of this.overview.augmentedMyAssets) {
             if (item.asset.id === this.selectedAsset.asset.id) {
-                this.selectedAttacks.push(item.augmentedAttackStrategy);
+                this.selectedAttacks.push(...item.attackStrategies);
             }
         }
         this.loadingAttacksTable = false;
