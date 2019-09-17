@@ -59,6 +59,7 @@ export class SidebarComponent implements OnInit, OnDestroy, AfterViewInit {
     private peopleMenuItem: MenuItem;
     private cyberPostureMenuItem: MenuItem;
     private riskManagementMenuItem: MenuItem;
+    private privacyRiskAssessmentMenuItem: MenuItem;
     private taxonomiesMenuItem: MenuItem;
     private aboutUsMenuItem: MenuItem;
     private termsOfUseMenuItem: MenuItem;
@@ -293,6 +294,18 @@ export class SidebarComponent implements OnInit, OnDestroy, AfterViewInit {
             items: []
         };
 
+        this.privacyRiskAssessmentMenuItem = {
+            label: 'Privacy Risk Assessment',
+            icon: 'far fa-id-card',
+            items: [
+                {
+                    label: 'Personal Data Processes',
+                    icon: 'fas fa-spinner',
+                    routerLink: ['/privacy-risk-assessment/processes']
+                }
+            ]
+        };
+
         this.taxonomiesMenuItem = {
             label: 'Taxonomies',
             icon: 'fas fa-atom',
@@ -397,6 +410,7 @@ export class SidebarComponent implements OnInit, OnDestroy, AfterViewInit {
             this.companyMenuItem,
             this.cyberPostureMenuItem,
             this.riskManagementMenuItem,
+            this.privacyRiskAssessmentMenuItem,
             this.taxonomiesMenuItem,
             this.aboutUsMenuItem,
             this.termsOfUseMenuItem
@@ -624,9 +638,9 @@ export class SidebarComponent implements OnInit, OnDestroy, AfterViewInit {
     ngOnDestroy(): void {
         this.changeDetector.detach();
 
-        if(this.subscriptions && this.subscriptions.length){
+        if (this.subscriptions && this.subscriptions.length) {
             this.subscriptions.forEach((subscription: Subscription) => {
-               subscription.unsubscribe();
+                subscription.unsubscribe();
             });
         }
     }

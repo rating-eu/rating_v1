@@ -105,6 +105,10 @@ const routes: Routes = [
         canActivate: [UserRouteAccessService]
     },
     {
+        path: 'privacy-risk-assessment',
+        loadChildren: './privacy-risk-assessment/privacy-risk-assessment.module#PrivacyRiskAssessmentModule'
+    },
+    {
         path: 'pages',
         loadChildren: './service-pages/service-pages.module#ServicePagesModule',
         data: {
