@@ -16,15 +16,16 @@
     <!--
         Added AttackStrategies Questions' Answers.
     -->
-    <changeSet id="20180723141516-1" author="developer">
-        <loadData catalogName="mitigation"
-                  encoding="UTF-8"
-                  file="config/liquibase/mitigations.csv"
-                  schemaName="public"
-                  separator=";"
-                  quotchar="'"
-                  tableName="mitigation">
-        </loadData>
+    <changeSet id="20180723141516-1" author="developer" runOnChange="true">
+        <loadUpdateData catalogName="mitigation"
+                        encoding="UTF-8"
+                        file="config/liquibase/mitigations.csv"
+                        schemaName="public"
+                        separator=";"
+                        quotchar="'"
+                        tableName="mitigation"
+                        primaryKey="id">
+        </loadUpdateData>
     </changeSet>
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here, do not remove-->
 </databaseChangeLog>

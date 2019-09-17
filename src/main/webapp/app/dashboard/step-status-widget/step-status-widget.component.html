@@ -14,10 +14,10 @@
   ~ limitations under the License.
   ~
   -->
-<ng-container *ngIf="loading">
+<ng-container *ngIf="isLoading">
     <div class="loader"></div>
 </ng-container>
-<ng-container *ngIf="!loading">
+<ng-container *ngIf="!isLoading">
     <mat-accordion>
         <mat-expansion-panel [expanded]="true">
             <mat-expansion-panel-header>
@@ -73,9 +73,14 @@
                     </tr>
                     <tr>
                         <td>Assess Vulnerablities</td>
-                        <td>Measures the weak points of company surface through self-assessment (cyber maturity
-                            questionnaire). It
-                            responds to the question: “Which are the weaknesses of my company?”
+                        <td>
+                            <p>
+                                Measures the weak points of company surface through self-assessment (cyber maturity
+                                questionnaire). It
+                                responds to the question: “Which are the weaknesses of my company?”
+                            </p>
+                            <jhi-vulnerability-assessment-selector *ngIf="questionnaireStatuses"
+                                                                   [questionnaireStatuses]="questionnaireStatuses"></jhi-vulnerability-assessment-selector>
                         </td>
                         <td class="text-center">
                             <i *ngIf="assessVulnerabilitiesStatus === statusEnum.FULL" style="color: green"
