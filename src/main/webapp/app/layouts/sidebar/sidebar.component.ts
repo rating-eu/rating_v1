@@ -249,7 +249,7 @@ export class SidebarComponent implements OnInit, OnDestroy, AfterViewInit {
             icon: 'fas fa-address-book',
             items: [
                 {
-                    label: 'CISO Deputy',
+                    label: 'CISO',
                     icon: 'fas fa-user-tie',
                     routerLink: ['/people/ciso']
                 },
