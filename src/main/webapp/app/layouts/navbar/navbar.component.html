@@ -45,6 +45,16 @@
                     </a>
                 </li>
             </ng-container>
+            <li *jhiHasAnyAuthority="'ROLE_CISO'" class="waves-light waves-effect nav-item"
+                routerLinkActive="active"
+                [routerLinkActiveOptions]="{exact: true}">
+                <a class="nav-link" routerLink="/privacy-board" (click)="collapseNavbar()">
+                    <span>
+                        <i class="fas fa-fingerprint" aria-hidden="true"></i>
+                        <span>Privacy Board</span>
+                    </span>
+                </a>
+            </li>
 
             <li *jhiHasAnyAuthority="'ROLE_ADMIN'" ngbDropdown
                 class="waves-light waves-effect nav-item dropdown pointer entities-nav "

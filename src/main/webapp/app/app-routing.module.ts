@@ -109,6 +109,10 @@ const routes: Routes = [
         loadChildren: './privacy-risk-assessment/privacy-risk-assessment.module#PrivacyRiskAssessmentModule'
     },
     {
+        path: 'privacy-board',
+        loadChildren: './privacy-board/privacy-board.module#PrivacyBoardModule'
+    },
+    {
         path: 'pages',
         loadChildren: './service-pages/service-pages.module#ServicePagesModule',
         data: {
