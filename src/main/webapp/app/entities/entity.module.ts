@@ -55,6 +55,7 @@ import {HermeneutLogoMgmModule} from './logo-mgm/logo-mgm.module';
 import {HermeneutAttackCostParamMgmModule} from './attack-cost-param-mgm/attack-cost-param-mgm.module';
 import {ThreatAgentInterestModule} from "./threat-agent-interest/threat-agent-interest.module";
 
+import { HermeneutDataImpactDescriptionMgmModule } from './data-impact-description-mgm/data-impact-description-mgm.module';
 /* jhipster-needle-add-entity-module-import - JHipster will add entity modules imports here */
 
 @NgModule({
@@ -96,7 +97,8 @@ import {ThreatAgentInterestModule} from "./threat-agent-interest/threat-agent-in
         HermeneutSplittingValueMgmModule,
         HermeneutLogoMgmModule,
         HermeneutAttackCostParamMgmModule,
-        ThreatAgentInterestModule
+        ThreatAgentInterestModule,
+        HermeneutDataImpactDescriptionMgmModule,
         /* jhipster-needle-add-entity-module - JHipster will add entity modules here */
     ],
     declarations: [],

@@ -1,0 +1,27 @@
+{
+    "fluentMethods": true,
+    "relationships": [],
+    "fields": [
+        {
+            "fieldName": "impact",
+            "fieldType": "DataImpact",
+            "fieldValues": "LOW,MEDIUM,HIGH,VERY_HIGH"
+        },
+        {
+            "fieldName": "description",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "language",
+            "fieldType": "Language",
+            "fieldValues": "IT,EN,DE,ES,FR,PT_PT"
+        }
+    ],
+    "changelogDate": "20190923130933",
+    "entityTableName": "data_impact_description",
+    "dto": "no",
+    "pagination": "no",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "angularJSSuffix": "mgm"
+}
