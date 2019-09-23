@@ -3,7 +3,7 @@ entity CompanyProfile{
     Description String maxlength(2000),
     Created ZonedDateTime,
     Modified ZonedDateTime,
-    Type CompType
+    Type CompanyType
 }
 
 entity CompanyGroup{
@@ -13,7 +13,7 @@ entity CompanyGroup{
     Modified ZonedDateTime
 }
 
-enum CompType {
+enum CompanyType {
     OTHER,
     FINANCE_AND_INSURANCE,
     HEALTH_CARE_AND_SOCIAL_ASSISTANCE,
