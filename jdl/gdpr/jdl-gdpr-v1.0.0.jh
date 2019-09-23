@@ -425,3 +425,77 @@ entity Logo{
 	Primary Boolean,
 	Image ImageBlob required
 }
+
+/*=======GDPR=======*/
+enum DataRecipientType{
+    INTERNAL,
+    EXTERNAL
+}
+
+enum SecurityPillar{
+    CONFIDENTIALITY,
+    INTEGRITY,
+    AVAILABILITY
+}
+
+enum DataImpact{
+    LOW,
+    MEDIUM,
+    HIGH,
+    VERY_HIGH
+}
+
+enum ThreatArea{
+    NETWORK_AND_TECHNICAL_RESOURCES,
+    PROCEDURES_RELATED_TO_THE_PROCESSING_OF_PERSONAL_DATA,
+    PEOPLE_INVOLVED_IN_THE_PROCESSING_OF_PERFONAL_DATA,
+    BUSINESS_SECTOR_AND_SCALE_OF_PROCESSING
+}
+
+enum DataThreatLikelihood{
+    LOW,
+    MEDIUM,
+    HIGH
+}
+
+enum DataOperationField{
+    NAME,
+    PROCESSED_DATA,
+    PROCESSING_PURPOSE,
+    DATA_SUBJECT,
+    PROCESSING_MEANS,
+    DATA_RECIPIENTS,
+    DATA_PROCESSOR
+}
+
+enum Language{
+    IT,
+    EN,
+    DE,
+    ES,
+    FR,
+    PT_PT
+}
+
+enum AnswerValue{
+    YES,
+    NO
+}
+
+enum GDPRAnswerType{
+    OPEN,
+    MULTIPLE_CHOICE,
+    OBJECT
+}
+
+enum GDPRQuestionnairePurpose{
+    OPERATION_CONTEXT,
+    IMPACT_EVALUATION,
+    THREAT_LIKELIHOOD
+}
+
+entity DataImpactDescription{
+    Impact DataImpact,
+    Description String,
+    Language Language
+}
