@@ -15,7 +15,7 @@
  *
  */
 
-package eu.hermeneut.domain.dashboard;
+package eu.hermeneut.domain.enumeration.dashboard;
 
 public enum RiskBoardStep {
     ASSET_CLUSTERING,
