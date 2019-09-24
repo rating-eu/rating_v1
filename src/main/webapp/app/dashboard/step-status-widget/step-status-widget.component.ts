@@ -66,39 +66,15 @@ export class StepStatusWidgetComponent implements OnInit, AfterViewChecked, OnDe
 
         this.fetchStatus();
         this.fetchQuestionnaireStatuses();
+        this.fetchVulnerabilitiesCompletions();
 
         this.subscriptions.push(
             this.dataSharingService.myCompany$.subscribe((response: MyCompanyMgm) => {
                 this.myCompany = response;
                 this.fetchStatus();
                 this.fetchQuestionnaireStatuses();
+                this.fetchVulnerabilitiesCompletions();
             })
-        );
-
-        this.subscriptions.push(
-            this.dataSharingService.vulnerabilityAssessment$.pipe(
-                switchMap(
-                    (vulnerabilityAssessment: QuestionnaireStatusMgm) => {
-                        this.vulnerabilityAssessment = vulnerabilityAssessment;
-
-                        if (this.vulnerabilityAssessment) {
-                            this.assessVulnerabilitiesStatus = this.vulnerabilityAssessment.status;
-                            this.companyBoardStatus.assessVulnerablitiesStatus = this.assessVulnerabilitiesStatus;
-                            this.dataSharingService.companyBoardStatus = this.companyBoardStatus;
-                        }
-
-                        return this.completionDTOService.getAssessVulnerabilitiesCompletionByCompanyProfileAndQuestionnaireStatus(this.myCompany.companyProfile.id, this.vulnerabilityAssessment.id);
-                    }
-                )
-            ).subscribe(
-                (response: HttpResponse<AssessVulnerabilitiesCompletionDTO>) => {
-                    this.assessVulnerabilitiesCompletion = response.body;
-
-                    if (this.changeDetector && !(this.changeDetector as ViewRef).destroyed) {
-                        this.changeDetector.detectChanges();
-                    }
-                }
-            )
         );
     }
 
@@ -178,6 +154,36 @@ export class StepStatusWidgetComponent implements OnInit, AfterViewChecked, OnDe
 
                         }
                     })
+            );
+        }
+    }
+
+    private fetchVulnerabilitiesCompletions() {
+        if (this.myCompany && this.myCompany.companyProfile) {
+            this.subscriptions.push(
+                this.dataSharingService.vulnerabilityAssessment$.pipe(
+                    switchMap(
+                        (vulnerabilityAssessment: QuestionnaireStatusMgm) => {
+                            this.vulnerabilityAssessment = vulnerabilityAssessment;
+
+                            if (this.vulnerabilityAssessment) {
+                                this.assessVulnerabilitiesStatus = this.vulnerabilityAssessment.status;
+                                this.companyBoardStatus.assessVulnerablitiesStatus = this.assessVulnerabilitiesStatus;
+                                this.dataSharingService.companyBoardStatus = this.companyBoardStatus;
+                            }
+
+                            return this.completionDTOService.getAssessVulnerabilitiesCompletionByCompanyProfileAndQuestionnaireStatus(this.myCompany.companyProfile.id, this.vulnerabilityAssessment.id);
+                        }
+                    )
+                ).subscribe(
+                    (response: HttpResponse<AssessVulnerabilitiesCompletionDTO>) => {
+                        this.assessVulnerabilitiesCompletion = response.body;
+
+                        if (this.changeDetector && !(this.changeDetector as ViewRef).destroyed) {
+                            this.changeDetector.detectChanges();
+                        }
+                    }
+                )
             );
         }
     }
