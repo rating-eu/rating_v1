@@ -568,27 +568,31 @@ entity Translation{
 
 /*=======GDPR Relationships=======*/
 relationship OneToOne{
-    OverallSecurityImpact to DataOperation,
-    OverallDataThreat to DataOperation
+    OverallSecurityImpact{operation(name)} to DataOperation,
+    OverallDataThreat{operation(name)} to DataOperation
 }
 
 relationship OneToMany{
-    DataOperation to DataRecipient,
-    DataOperation to SecurityImpact,
-    OverallSecurityImpact to SecurityImpact,
-    DataOperation to DataThreat,
-    OverallDataThreat to DataThreat,
-    GDPRQuestion to Translation,
-    DataImpactDescription to Translation
+    DataOperation{recipients(name)} to DataRecipient{operation(name)},
+    DataOperation{impacts(securityPillar)} to SecurityImpact{operation(name)},
+    OverallSecurityImpact{impact(securityPillar)} to SecurityImpact,
+    DataOperation{threats(threatArea)} to DataThreat{operation(name)},
+    OverallDataThreat{threats(threatArea)} to DataThreat,
+    GDPRQuestion{translations(language)} to Translation,
+    DataImpactDescription{translations(language)} to Translation
 }
 
 relationship ManyToOne{
-    DataOperation to CompanyProfile,
-    GDPRQuestionnaireStatus to DataOperation,
-    GDPRQuestionnaireStatus to GDPRQuestionnaire,
-    GDPRQuestion to GDPRQuestionnaire,
-    GDPRAnswer to GDPRQuestion,
-    GDPRMyAnswer to GDPRQuestionnaireStatus,
-    GDPRMyAnswer to GDPRQuestion,
+    DataOperation{companyProfile(name)} to CompanyProfile,
+    GDPRQuestionnaireStatus{operation(name)} to DataOperation,
+    GDPRQuestionnaireStatus{questionnaire(name)} to GDPRQuestionnaire,
+    GDPRQuestionnaireStatus{user(login)} to User,
+    GDPRQuestion{questionnaire(name)} to GDPRQuestionnaire,
+    GDPRMyAnswer{questionnaireStatus(status)} to GDPRQuestionnaireStatus,
+    GDPRMyAnswer{question(text)} to GDPRQuestion,
     GDPRMyAnswer to GDPRAnswer
+}
+
+relationship ManyToMany{
+    GDPRQuestion{answers(text)} to GDPRAnswer{question(text)}
 }
