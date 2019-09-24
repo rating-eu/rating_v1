@@ -557,6 +557,7 @@ entity GDPRQuestion{
 
 entity GDPRAnswer{
     Text String,
+    Language Language required,
     AnswerValue AnswerValue,
     Order Integer
 }
@@ -583,6 +584,7 @@ relationship OneToMany{
     DataOperation{threats(threatArea)} to DataThreat{operation(name)},
     OverallDataThreat{threats(threatArea)} to DataThreat,
     GDPRQuestion{translations(language)} to Translation,
+    GDPRAnswer{translations(language)} to Translation,
     DataImpactDescription{translations(language)} to Translation
 }
 
