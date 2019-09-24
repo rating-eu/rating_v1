@@ -594,7 +594,7 @@ relationship ManyToOne{
     GDPRQuestion{questionnaire(name)} to GDPRQuestionnaire,
     GDPRMyAnswer{questionnaireStatus(status)} to GDPRQuestionnaireStatus,
     GDPRMyAnswer{question(text)} to GDPRQuestion,
-    GDPRMyAnswer to GDPRAnswer
+    GDPRMyAnswer{answer} to GDPRAnswer
 }
 
 relationship ManyToMany{
