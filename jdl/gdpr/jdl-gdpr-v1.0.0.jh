@@ -427,7 +427,7 @@ entity Logo{
 	Image ImageBlob required
 }
 
-/*=======GDPR=======*/
+/*=======GDPR Enums=======*/
 enum DataRecipientType{
     INTERNAL,
     EXTERNAL
@@ -495,8 +495,100 @@ enum GDPRQuestionnairePurpose{
     THREAT_LIKELIHOOD
 }
 
+/*=======GDPR Entities=======*/
 entity DataImpactDescription{
     Impact DataImpact,
     Description String,
     Language Language
+}
+
+entity DataRecipient{
+    Name String,
+    Type DataRecipientType
+}
+
+entity SecurityImpact{
+    SecurityPillar SecurityPillar,
+    Impact DataImpact
+}
+
+entity OverallSecurityImpact{
+    Impact DataImpact
+}
+
+entity DataOperation{
+    Name String,
+    ProcessedData String,
+    ProcessingPurpose String,
+    DataSubject String,
+    ProcessingMeans String,
+    DataProcessor String
+}
+
+entity DataThreat{
+    ThreatArea ThreatArea,
+    Likelihood DataThreatLikelihood
+}
+
+entity OverallDataThreat{
+    Likelihood DataThreatLikelihood
+}
+
+/*=======GDPR Questions=======*/
+entity GDPRQuestionnaire{
+    Name String,
+    Purpose GDPRQuestionnairePurpose
+}
+
+entity GDPRQuestionnaireStatus{
+    Status Status
+}
+
+entity GDPRQuestion{
+    Text String,
+    Description String,
+    Language Language,
+    AnswerType GDPRAnswerType,
+    Order Integer,
+    DataOperationField DataOperationField,
+    SecurityPillar SecurityPillar,
+    ThreatArea ThreatArea
+}
+
+entity GDPRAnswer{
+    Text String,
+    AnswerValue AnswerValue,
+    Order Integer
+}
+
+entity Translation{
+    Text String,
+    Language Language
+}
+
+/*=======GDPR Relationships=======*/
+relationship OneToOne{
+    OverallSecurityImpact to DataOperation,
+    OverallDataThreat to DataOperation
+}
+
+relationship OneToMany{
+    DataOperation to DataRecipient,
+    DataOperation to SecurityImpact,
+    OverallSecurityImpact to SecurityImpact,
+    DataOperation to DataThreat,
+    OverallDataThreat to DataThreat,
+    GDPRQuestion to Translation,
+    DataImpactDescription to Translation
+}
+
+relationship ManyToOne{
+    DataOperation to CompanyProfile,
+    GDPRQuestionnaireStatus to DataOperation,
+    GDPRQuestionnaireStatus to GDPRQuestionnaire,
+    GDPRQuestion to GDPRQuestionnaire,
+    GDPRAnswer to GDPRQuestion,
+    GDPRMyAnswer to GDPRQuestionnaireStatus,
+    GDPRMyAnswer to GDPRQuestion,
+    GDPRMyAnswer to GDPRAnswer
 }
