@@ -11,6 +11,7 @@ import { TranslationMgmPopupService } from './translation-mgm-popup.service';
 import { TranslationMgmService } from './translation-mgm.service';
 import { DataImpactDescriptionMgm, DataImpactDescriptionMgmService } from '../data-impact-description-mgm';
 import { GDPRQuestionMgm, GDPRQuestionMgmService } from '../gdpr-question-mgm';
+import { GDPRAnswerMgm, GDPRAnswerMgmService } from '../gdpr-answer-mgm';
 
 @Component({
     selector: 'jhi-translation-mgm-dialog',
@@ -25,12 +26,15 @@ export class TranslationMgmDialogComponent implements OnInit {
 
     gdprquestions: GDPRQuestionMgm[];
 
+    gdpranswers: GDPRAnswerMgm[];
+
     constructor(
         public activeModal: NgbActiveModal,
         private jhiAlertService: JhiAlertService,
         private translationService: TranslationMgmService,
         private dataImpactDescriptionService: DataImpactDescriptionMgmService,
         private gDPRQuestionService: GDPRQuestionMgmService,
+        private gDPRAnswerService: GDPRAnswerMgmService,
         private eventManager: JhiEventManager
     ) {
     }
@@ -41,6 +45,8 @@ export class TranslationMgmDialogComponent implements OnInit {
             .subscribe((res: HttpResponse<DataImpactDescriptionMgm[]>) => { this.dataimpactdescriptions = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
         this.gDPRQuestionService.query()
             .subscribe((res: HttpResponse<GDPRQuestionMgm[]>) => { this.gdprquestions = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
+        this.gDPRAnswerService.query()
+            .subscribe((res: HttpResponse<GDPRAnswerMgm[]>) => { this.gdpranswers = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
     }
 
     clear() {
@@ -82,6 +88,10 @@ export class TranslationMgmDialogComponent implements OnInit {
     }
 
     trackGDPRQuestionById(index: number, item: GDPRQuestionMgm) {
+        return item.id;
+    }
+
+    trackGDPRAnswerById(index: number, item: GDPRAnswerMgm) {
         return item.id;
     }
 }

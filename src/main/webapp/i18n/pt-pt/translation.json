@@ -19,7 +19,8 @@
             "text": "Text",
             "language": "Language",
             "dataImpactDescription": "Data Impact Description",
-            "gDPRQuestion": "G DPR Question"
+            "gDPRQuestion": "G DPR Question",
+            "gDPRAnswer": "G DPR Answer"
         }
     }
 }

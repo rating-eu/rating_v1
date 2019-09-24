@@ -12,6 +12,12 @@
             "otherEntityName": "gDPRQuestion",
             "relationshipType": "many-to-one",
             "otherEntityField": "id"
+        },
+        {
+            "relationshipName": "gDPRAnswer",
+            "otherEntityName": "gDPRAnswer",
+            "relationshipType": "many-to-one",
+            "otherEntityField": "id"
         }
     ],
     "fields": [

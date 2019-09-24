@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -43,7 +44,7 @@ public class GDPRAnswerResource {
      */
     @PostMapping("/gdpr-answers")
     @Timed
-    public ResponseEntity<GDPRAnswer> createGDPRAnswer(@RequestBody GDPRAnswer gDPRAnswer) throws URISyntaxException {
+    public ResponseEntity<GDPRAnswer> createGDPRAnswer(@Valid @RequestBody GDPRAnswer gDPRAnswer) throws URISyntaxException {
         log.debug("REST request to save GDPRAnswer : {}", gDPRAnswer);
         if (gDPRAnswer.getId() != null) {
             throw new BadRequestAlertException("A new gDPRAnswer cannot already have an ID", ENTITY_NAME, "idexists");
@@ -65,7 +66,7 @@ public class GDPRAnswerResource {
      */
     @PutMapping("/gdpr-answers")
     @Timed
-    public ResponseEntity<GDPRAnswer> updateGDPRAnswer(@RequestBody GDPRAnswer gDPRAnswer) throws URISyntaxException {
+    public ResponseEntity<GDPRAnswer> updateGDPRAnswer(@Valid @RequestBody GDPRAnswer gDPRAnswer) throws URISyntaxException {
         log.debug("REST request to update GDPRAnswer : {}", gDPRAnswer);
         if (gDPRAnswer.getId() == null) {
             return createGDPRAnswer(gDPRAnswer);

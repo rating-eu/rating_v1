@@ -24,6 +24,12 @@
                 <a [routerLink]="['/gdpr-question-mgm', translation.gDPRQuestion?.id]">{{translation.gDPRQuestion?.id}}</a>
             </div>
         </dd>
+        <dt><span jhiTranslate="hermeneutApp.translation.gDPRAnswer">G DPR Answer</span></dt>
+        <dd>
+            <div *ngIf="translation.gDPRAnswer">
+                <a [routerLink]="['/gdpr-answer-mgm', translation.gDPRAnswer?.id]">{{translation.gDPRAnswer?.id}}</a>
+            </div>
+        </dd>
     </dl>
 
     <button type="submit"

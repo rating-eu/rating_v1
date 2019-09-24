@@ -41,6 +41,9 @@ public class Translation implements Serializable {
     @ManyToOne
     private GDPRQuestion gDPRQuestion;
 
+    @ManyToOne
+    private GDPRAnswer gDPRAnswer;
+
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
         return id;
@@ -100,6 +103,19 @@ public class Translation implements Serializable {
 
     public void setGDPRQuestion(GDPRQuestion gDPRQuestion) {
         this.gDPRQuestion = gDPRQuestion;
+    }
+
+    public GDPRAnswer getGDPRAnswer() {
+        return gDPRAnswer;
+    }
+
+    public Translation gDPRAnswer(GDPRAnswer gDPRAnswer) {
+        this.gDPRAnswer = gDPRAnswer;
+        return this;
+    }
+
+    public void setGDPRAnswer(GDPRAnswer gDPRAnswer) {
+        this.gDPRAnswer = gDPRAnswer;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 

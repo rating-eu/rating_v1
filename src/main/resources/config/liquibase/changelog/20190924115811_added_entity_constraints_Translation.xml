@@ -20,5 +20,11 @@
                                  referencedColumnNames="id"
                                  referencedTableName="gdpr_question"/>
 
+        <addForeignKeyConstraint baseColumnNames="gdpranswer_id"
+                                 baseTableName="translation"
+                                 constraintName="fk_translation_gdpranswer_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="gdpr_answer"/>
+
     </changeSet>
 </databaseChangeLog>

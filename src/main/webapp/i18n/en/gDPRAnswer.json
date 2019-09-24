@@ -17,8 +17,10 @@
                 "title": "GDPR Answer"
             },
             "text": "Text",
+            "language": "Language",
             "answerValue": "Answer Value",
             "order": "Order",
+            "translations": "Translations",
             "question": "Question"
         }
     }

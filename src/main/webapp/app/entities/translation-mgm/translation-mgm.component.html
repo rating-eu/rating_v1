@@ -21,6 +21,7 @@
             <th><span jhiTranslate="hermeneutApp.translation.language">Language</span></th>
             <th><span jhiTranslate="hermeneutApp.translation.dataImpactDescription">Data Impact Description</span></th>
             <th><span jhiTranslate="hermeneutApp.translation.gDPRQuestion">G DPR Question</span></th>
+            <th><span jhiTranslate="hermeneutApp.translation.gDPRAnswer">G DPR Answer</span></th>
             <th></th>
             </tr>
             </thead>
@@ -37,6 +38,11 @@
                 <td>
                     <div *ngIf="translation.gDPRQuestion">
                         <a [routerLink]="['../gdpr-question-mgm', translation.gDPRQuestion?.id ]" >{{translation.gDPRQuestion?.id}}</a>
+                    </div>
+                </td>
+                <td>
+                    <div *ngIf="translation.gDPRAnswer">
+                        <a [routerLink]="['../gdpr-answer-mgm', translation.gDPRAnswer?.id ]" >{{translation.gDPRAnswer?.id}}</a>
                     </div>
                 </td>
                 <td class="text-right">

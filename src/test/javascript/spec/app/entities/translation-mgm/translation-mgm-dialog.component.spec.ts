@@ -11,6 +11,7 @@ import { TranslationMgmService } from '../../../../../../main/webapp/app/entitie
 import { TranslationMgm } from '../../../../../../main/webapp/app/entities/translation-mgm/translation-mgm.model';
 import { DataImpactDescriptionMgmService } from '../../../../../../main/webapp/app/entities/data-impact-description-mgm';
 import { GDPRQuestionMgmService } from '../../../../../../main/webapp/app/entities/gdpr-question-mgm';
+import { GDPRAnswerMgmService } from '../../../../../../main/webapp/app/entities/gdpr-answer-mgm';
 
 describe('Component Tests', () => {
 
@@ -28,6 +29,7 @@ describe('Component Tests', () => {
                 providers: [
                     DataImpactDescriptionMgmService,
                     GDPRQuestionMgmService,
+                    GDPRAnswerMgmService,
                     TranslationMgmService
                 ]
             })

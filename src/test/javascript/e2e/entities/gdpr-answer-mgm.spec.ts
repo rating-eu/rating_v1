@@ -35,6 +35,7 @@ describe('GDPRAnswer e2e test', () => {
         gDPRAnswerComponentsPage.clickOnCreateButton();
         gDPRAnswerDialogPage.setTextInput('text');
         expect(gDPRAnswerDialogPage.getTextInput()).toMatch('text');
+        gDPRAnswerDialogPage.languageSelectLastOption();
         gDPRAnswerDialogPage.answerValueSelectLastOption();
         gDPRAnswerDialogPage.setOrderInput('5');
         expect(gDPRAnswerDialogPage.getOrderInput()).toMatch('5');
@@ -65,6 +66,7 @@ export class GDPRAnswerDialogPage {
     saveButton = element(by.css('.modal-footer .btn.btn-primary'));
     closeButton = element(by.css('button.close'));
     textInput = element(by.css('input#field_text'));
+    languageSelect = element(by.css('select#field_language'));
     answerValueSelect = element(by.css('select#field_answerValue'));
     orderInput = element(by.css('input#field_order'));
 
@@ -80,6 +82,17 @@ export class GDPRAnswerDialogPage {
         return this.textInput.getAttribute('value');
     };
 
+    setLanguageSelect = function(language) {
+        this.languageSelect.sendKeys(language);
+    };
+
+    getLanguageSelect = function() {
+        return this.languageSelect.element(by.css('option:checked')).getText();
+    };
+
+    languageSelectLastOption = function() {
+        this.languageSelect.all(by.tagName('option')).last().click();
+    };
     setAnswerValueSelect = function(answerValue) {
         this.answerValueSelect.sendKeys(answerValue);
     };

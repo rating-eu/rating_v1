@@ -16,6 +16,7 @@ export class TranslationMgm implements BaseEntity {
         public language?: Language,
         public dataImpactDescription?: BaseEntity,
         public gDPRQuestion?: BaseEntity,
+        public gDPRAnswer?: BaseEntity,
     ) {
     }
 }

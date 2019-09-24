@@ -38,6 +38,7 @@ describe('Translation e2e test', () => {
         translationDialogPage.languageSelectLastOption();
         translationDialogPage.dataImpactDescriptionSelectLastOption();
         translationDialogPage.gDPRQuestionSelectLastOption();
+        translationDialogPage.gDPRAnswerSelectLastOption();
         translationDialogPage.save();
         expect(translationDialogPage.getSaveButton().isPresent()).toBeFalsy();
     });
@@ -68,6 +69,7 @@ export class TranslationDialogPage {
     languageSelect = element(by.css('select#field_language'));
     dataImpactDescriptionSelect = element(by.css('select#field_dataImpactDescription'));
     gDPRQuestionSelect = element(by.css('select#field_gDPRQuestion'));
+    gDPRAnswerSelect = element(by.css('select#field_gDPRAnswer'));
 
     getModalTitle() {
         return this.modalTitle.getAttribute('jhiTranslate');
@@ -122,6 +124,22 @@ export class TranslationDialogPage {
 
     getGDPRQuestionSelectedOption = function() {
         return this.gDPRQuestionSelect.element(by.css('option:checked')).getText();
+    };
+
+    gDPRAnswerSelectLastOption = function() {
+        this.gDPRAnswerSelect.all(by.tagName('option')).last().click();
+    };
+
+    gDPRAnswerSelectOption = function(option) {
+        this.gDPRAnswerSelect.sendKeys(option);
+    };
+
+    getGDPRAnswerSelect = function() {
+        return this.gDPRAnswerSelect;
+    };
+
+    getGDPRAnswerSelectedOption = function() {
+        return this.gDPRAnswerSelect.element(by.css('option:checked')).getText();
     };
 
     save() {

@@ -55,6 +55,13 @@
                 <option [ngValue]="gDPRQuestionOption.id === translation.gDPRQuestion?.id ? translation.gDPRQuestion : gDPRQuestionOption" *ngFor="let gDPRQuestionOption of gdprquestions; trackBy: trackGDPRQuestionById">{{gDPRQuestionOption.id}}</option>
             </select>
         </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="hermeneutApp.translation.gDPRAnswer" for="field_gDPRAnswer">G DPR Answer</label>
+            <select class="form-control" id="field_gDPRAnswer" name="gDPRAnswer" [(ngModel)]="translation.gDPRAnswer" >
+                <option [ngValue]="null"></option>
+                <option [ngValue]="gDPRAnswerOption.id === translation.gDPRAnswer?.id ? translation.gDPRAnswer : gDPRAnswerOption" *ngFor="let gDPRAnswerOption of gdpranswers; trackBy: trackGDPRAnswerById">{{gDPRAnswerOption.id}}</option>
+            </select>
+        </div>
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">

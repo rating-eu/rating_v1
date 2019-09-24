@@ -2,6 +2,12 @@
     "fluentMethods": true,
     "relationships": [
         {
+            "relationshipType": "one-to-many",
+            "relationshipName": "translations",
+            "otherEntityName": "translation",
+            "otherEntityRelationshipName": "gDPRAnswer"
+        },
+        {
             "relationshipType": "many-to-many",
             "relationshipName": "question",
             "otherEntityName": "gDPRQuestion",
@@ -13,6 +19,14 @@
         {
             "fieldName": "text",
             "fieldType": "String"
+        },
+        {
+            "fieldName": "language",
+            "fieldType": "Language",
+            "fieldValues": "IT,EN,DE,ES,FR,PT_PT",
+            "fieldValidateRules": [
+                "required"
+            ]
         },
         {
             "fieldName": "answerValue",

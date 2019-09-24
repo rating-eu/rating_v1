@@ -18,6 +18,23 @@
                 [(ngModel)]="gDPRAnswer.text" />
         </div>
         <div class="form-group">
+            <label class="form-control-label" jhiTranslate="hermeneutApp.gDPRAnswer.language" for="field_language">Language</label>
+            <select class="form-control" name="language" [(ngModel)]="gDPRAnswer.language" id="field_language"  required>
+                <option value="IT">{{'hermeneutApp.Language.IT' | translate}}</option>
+                <option value="EN">{{'hermeneutApp.Language.EN' | translate}}</option>
+                <option value="DE">{{'hermeneutApp.Language.DE' | translate}}</option>
+                <option value="ES">{{'hermeneutApp.Language.ES' | translate}}</option>
+                <option value="FR">{{'hermeneutApp.Language.FR' | translate}}</option>
+                <option value="PT_PT">{{'hermeneutApp.Language.PT_PT' | translate}}</option>
+            </select>
+            <div [hidden]="!(editForm.controls.language?.dirty && editForm.controls.language?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.language?.errors?.required" jhiTranslate="entity.validation.required">
+                   This field is required.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
             <label class="form-control-label" jhiTranslate="hermeneutApp.gDPRAnswer.answerValue" for="field_answerValue">Answer Value</label>
             <select class="form-control" name="answerValue" [(ngModel)]="gDPRAnswer.answerValue" id="field_answerValue" >
                 <option value="YES">{{'hermeneutApp.AnswerValue.YES' | translate}}</option>

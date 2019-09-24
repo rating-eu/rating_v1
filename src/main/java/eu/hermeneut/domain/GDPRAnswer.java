@@ -5,11 +5,14 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
+import javax.validation.constraints.*;
 
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.Objects;
+
+import eu.hermeneut.domain.enumeration.Language;
 
 import eu.hermeneut.domain.enumeration.AnswerValue;
 
@@ -31,12 +34,22 @@ public class GDPRAnswer implements Serializable {
     @Column(name = "text")
     private String text;
 
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    @Column(name = "language", nullable = false)
+    private Language language;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "answer_value")
     private AnswerValue answerValue;
 
     @Column(name = "jhi_order")
     private Integer order;
+
+    @OneToMany(mappedBy = "gDPRAnswer")
+    @JsonIgnore
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    private Set<Translation> translations = new HashSet<>();
 
     @ManyToMany(mappedBy = "answers")
     @JsonIgnore
@@ -65,6 +78,19 @@ public class GDPRAnswer implements Serializable {
         this.text = text;
     }
 
+    public Language getLanguage() {
+        return language;
+    }
+
+    public GDPRAnswer language(Language language) {
+        this.language = language;
+        return this;
+    }
+
+    public void setLanguage(Language language) {
+        this.language = language;
+    }
+
     public AnswerValue getAnswerValue() {
         return answerValue;
     }
@@ -89,6 +115,31 @@ public class GDPRAnswer implements Serializable {
 
     public void setOrder(Integer order) {
         this.order = order;
+    }
+
+    public Set<Translation> getTranslations() {
+        return translations;
+    }
+
+    public GDPRAnswer translations(Set<Translation> translations) {
+        this.translations = translations;
+        return this;
+    }
+
+    public GDPRAnswer addTranslations(Translation translation) {
+        this.translations.add(translation);
+        translation.setGDPRAnswer(this);
+        return this;
+    }
+
+    public GDPRAnswer removeTranslations(Translation translation) {
+        this.translations.remove(translation);
+        translation.setGDPRAnswer(null);
+        return this;
+    }
+
+    public void setTranslations(Set<Translation> translations) {
+        this.translations = translations;
     }
 
     public Set<GDPRQuestion> getQuestions() {
@@ -142,6 +193,7 @@ public class GDPRAnswer implements Serializable {
         return "GDPRAnswer{" +
             "id=" + getId() +
             ", text='" + getText() + "'" +
+            ", language='" + getLanguage() + "'" +
             ", answerValue='" + getAnswerValue() + "'" +
             ", order=" + getOrder() +
             "}";
