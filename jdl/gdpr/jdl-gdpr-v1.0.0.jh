@@ -497,59 +497,59 @@ enum GDPRQuestionnairePurpose{
 
 /*=======GDPR Entities=======*/
 entity DataImpactDescription{
-    Impact DataImpact,
-    Description String,
-    Language Language
+    Impact DataImpact required,
+    Description String maxlength(2000) required,
+    Language Language required
 }
 
 entity DataRecipient{
-    Name String,
-    Type DataRecipientType
+    Name String required,
+    Type DataRecipientType required
 }
 
 entity SecurityImpact{
-    SecurityPillar SecurityPillar,
-    Impact DataImpact
+    SecurityPillar SecurityPillar required,
+    Impact DataImpact required
 }
 
 entity OverallSecurityImpact{
-    Impact DataImpact
+    Impact DataImpact required
 }
 
 entity DataOperation{
-    Name String,
-    ProcessedData String,
-    ProcessingPurpose String,
-    DataSubject String,
-    ProcessingMeans String,
-    DataProcessor String
+    Name String required,
+    ProcessedData String required,
+    ProcessingPurpose String required,
+    DataSubject String required,
+    ProcessingMeans String required,
+    DataProcessor String required
 }
 
 entity DataThreat{
-    ThreatArea ThreatArea,
-    Likelihood DataThreatLikelihood
+    ThreatArea ThreatArea required,
+    Likelihood DataThreatLikelihood required
 }
 
 entity OverallDataThreat{
-    Likelihood DataThreatLikelihood
+    Likelihood DataThreatLikelihood required
 }
 
 /*=======GDPR Questions=======*/
 entity GDPRQuestionnaire{
-    Name String,
-    Purpose GDPRQuestionnairePurpose
+    Name String required,
+    Purpose GDPRQuestionnairePurpose required
 }
 
 entity GDPRQuestionnaireStatus{
-    Status Status
+    Status Status required
 }
 
 entity GDPRQuestion{
-    Text String,
-    Description String,
-    Language Language,
-    AnswerType GDPRAnswerType,
-    Order Integer,
+    Text String required,
+    Description String required,
+    Language Language required,
+    AnswerType GDPRAnswerType required,
+    Order Integer required,
     DataOperationField DataOperationField,
     SecurityPillar SecurityPillar,
     ThreatArea ThreatArea
@@ -566,8 +566,8 @@ entity GDPRMyAnswer{
 }
 
 entity Translation{
-    Text String,
-    Language Language
+    Text String required,
+    Language Language required
 }
 
 /*=======GDPR Relationships=======*/
