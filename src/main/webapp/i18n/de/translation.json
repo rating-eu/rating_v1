@@ -1,0 +1,25 @@
+
+{
+    "hermeneutApp": {
+        "translation" : {
+            "home": {
+                "title": "Translations",
+                "createLabel": "Translation erstellen",
+                "createOrEditLabel": "Translation erstellen oder bearbeiten"
+            },
+            "created": "Translation erstellt mit ID {{ param }}",
+            "updated": "Translation aktualisiert mit ID {{ param }}",
+            "deleted": "Translation gelöscht mit ID {{ param }}",
+            "delete": {
+                "question": "Soll Translation {{ id }} wirklich dauerhaft gelöscht werden?"
+            },
+            "detail": {
+                "title": "Translation"
+            },
+            "text": "Text",
+            "language": "Language",
+            "dataImpactDescription": "Data Impact Description",
+            "gDPRQuestion": "G DPR Question"
+        }
+    }
+}

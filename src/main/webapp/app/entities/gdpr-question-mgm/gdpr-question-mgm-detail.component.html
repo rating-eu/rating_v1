@@ -1,0 +1,66 @@
+
+<div *ngIf="gDPRQuestion">
+    <h2><span jhiTranslate="hermeneutApp.gDPRQuestion.detail.title">GDPR Question</span> {{gDPRQuestion.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="hermeneutApp.gDPRQuestion.text">Text</span></dt>
+        <dd>
+            <span>{{gDPRQuestion.text}}</span>
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.gDPRQuestion.description">Description</span></dt>
+        <dd>
+            <span>{{gDPRQuestion.description}}</span>
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.gDPRQuestion.language">Language</span></dt>
+        <dd>
+            <span jhiTranslate="{{'hermeneutApp.Language.' + gDPRQuestion.language}}">{{gDPRQuestion.language}}</span>
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.gDPRQuestion.answerType">Answer Type</span></dt>
+        <dd>
+            <span jhiTranslate="{{'hermeneutApp.GDPRAnswerType.' + gDPRQuestion.answerType}}">{{gDPRQuestion.answerType}}</span>
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.gDPRQuestion.order">Order</span></dt>
+        <dd>
+            <span>{{gDPRQuestion.order}}</span>
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.gDPRQuestion.dataOperationField">Data Operation Field</span></dt>
+        <dd>
+            <span jhiTranslate="{{'hermeneutApp.DataOperationField.' + gDPRQuestion.dataOperationField}}">{{gDPRQuestion.dataOperationField}}</span>
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.gDPRQuestion.securityPillar">Security Pillar</span></dt>
+        <dd>
+            <span jhiTranslate="{{'hermeneutApp.SecurityPillar.' + gDPRQuestion.securityPillar}}">{{gDPRQuestion.securityPillar}}</span>
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.gDPRQuestion.threatArea">Threat Area</span></dt>
+        <dd>
+            <span jhiTranslate="{{'hermeneutApp.ThreatArea.' + gDPRQuestion.threatArea}}">{{gDPRQuestion.threatArea}}</span>
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.gDPRQuestion.questionnaire">Questionnaire</span></dt>
+        <dd>
+            <div *ngIf="gDPRQuestion.questionnaire">
+                <a [routerLink]="['/gdpr-questionnaire-mgm', gDPRQuestion.questionnaire?.id]">{{gDPRQuestion.questionnaire?.name}}</a>
+            </div>
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.gDPRQuestion.answers">Answers</span></dt>
+        <dd>
+            <span *ngFor="let answers of gDPRQuestion.answers; let last = last">
+                <a [routerLink]="['/gdpr-answer-mgm', answers?.id ]">{{answers.text}}</a>{{last ? '' : ', '}}
+            </span>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'gdpr-question-mgm/'+ gDPRQuestion.id + '/edit'} }]"
+            replaceUrl="true"
+            queryParamsHandling="merge"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+    </button>
+</div>

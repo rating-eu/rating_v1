@@ -1,0 +1,68 @@
+<form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+
+    <div class="modal-header">
+        <h4 class="modal-title" id="myDataThreatLabel" jhiTranslate="hermeneutApp.dataThreat.home.createOrEditLabel">Create or edit a Data Threat</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                (click)="clear()">&times;</button>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group" [hidden]="!dataThreat.id">
+            <label for="id" jhiTranslate="global.field.id">ID</label>
+            <input type="text" class="form-control" id="id" name="id"
+                   [(ngModel)]="dataThreat.id" readonly />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="hermeneutApp.dataThreat.threatArea" for="field_threatArea">Threat Area</label>
+            <select class="form-control" name="threatArea" [(ngModel)]="dataThreat.threatArea" id="field_threatArea"  required>
+                <option value="NETWORK_AND_TECHNICAL_RESOURCES">{{'hermeneutApp.ThreatArea.NETWORK_AND_TECHNICAL_RESOURCES' | translate}}</option>
+                <option value="PROCEDURES_RELATED_TO_THE_PROCESSING_OF_PERSONAL_DATA">{{'hermeneutApp.ThreatArea.PROCEDURES_RELATED_TO_THE_PROCESSING_OF_PERSONAL_DATA' | translate}}</option>
+                <option value="PEOPLE_INVOLVED_IN_THE_PROCESSING_OF_PERFONAL_DATA">{{'hermeneutApp.ThreatArea.PEOPLE_INVOLVED_IN_THE_PROCESSING_OF_PERFONAL_DATA' | translate}}</option>
+                <option value="BUSINESS_SECTOR_AND_SCALE_OF_PROCESSING">{{'hermeneutApp.ThreatArea.BUSINESS_SECTOR_AND_SCALE_OF_PROCESSING' | translate}}</option>
+            </select>
+            <div [hidden]="!(editForm.controls.threatArea?.dirty && editForm.controls.threatArea?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.threatArea?.errors?.required" jhiTranslate="entity.validation.required">
+                   This field is required.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="hermeneutApp.dataThreat.likelihood" for="field_likelihood">Likelihood</label>
+            <select class="form-control" name="likelihood" [(ngModel)]="dataThreat.likelihood" id="field_likelihood"  required>
+                <option value="LOW">{{'hermeneutApp.DataThreatLikelihood.LOW' | translate}}</option>
+                <option value="MEDIUM">{{'hermeneutApp.DataThreatLikelihood.MEDIUM' | translate}}</option>
+                <option value="HIGH">{{'hermeneutApp.DataThreatLikelihood.HIGH' | translate}}</option>
+            </select>
+            <div [hidden]="!(editForm.controls.likelihood?.dirty && editForm.controls.likelihood?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.likelihood?.errors?.required" jhiTranslate="entity.validation.required">
+                   This field is required.
+                </small>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="hermeneutApp.dataThreat.operation" for="field_operation">Operation</label>
+            <select class="form-control" id="field_operation" name="operation" [(ngModel)]="dataThreat.operation" >
+                <option [ngValue]="null"></option>
+                <option [ngValue]="dataOperationOption.id === dataThreat.operation?.id ? dataThreat.operation : dataOperationOption" *ngFor="let dataOperationOption of dataoperations; trackBy: trackDataOperationById">{{dataOperationOption.name}}</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="hermeneutApp.dataThreat.overallDataThreat" for="field_overallDataThreat">Overall Data Threat</label>
+            <select class="form-control" id="field_overallDataThreat" name="overallDataThreat" [(ngModel)]="dataThreat.overallDataThreat" >
+                <option [ngValue]="null"></option>
+                <option [ngValue]="overallDataThreatOption.id === dataThreat.overallDataThreat?.id ? dataThreat.overallDataThreat : overallDataThreatOption" *ngFor="let overallDataThreatOption of overalldatathreats; trackBy: trackOverallDataThreatById">{{overallDataThreatOption.id}}</option>
+            </select>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">
+            <span class="fa fa-ban"></span>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+        <button type="submit" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+            <span class="fa fa-save"></span>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+    </div>
+</form>

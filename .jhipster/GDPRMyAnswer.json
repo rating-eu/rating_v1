@@ -1,0 +1,31 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "questionnaireStatus",
+            "otherEntityName": "gDPRQuestionnaireStatus",
+            "otherEntityField": "status"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "question",
+            "otherEntityName": "gDPRQuestion",
+            "otherEntityField": "text"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "answer",
+            "otherEntityName": "gDPRAnswer",
+            "otherEntityField": "id"
+        }
+    ],
+    "fields": [],
+    "changelogDate": "20190924115810",
+    "entityTableName": "gdpr_my_answer",
+    "dto": "no",
+    "pagination": "no",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "angularJSSuffix": "mgm"
+}

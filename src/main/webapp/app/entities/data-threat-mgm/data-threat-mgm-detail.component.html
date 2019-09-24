@@ -1,0 +1,42 @@
+
+<div *ngIf="dataThreat">
+    <h2><span jhiTranslate="hermeneutApp.dataThreat.detail.title">Data Threat</span> {{dataThreat.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="hermeneutApp.dataThreat.threatArea">Threat Area</span></dt>
+        <dd>
+            <span jhiTranslate="{{'hermeneutApp.ThreatArea.' + dataThreat.threatArea}}">{{dataThreat.threatArea}}</span>
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.dataThreat.likelihood">Likelihood</span></dt>
+        <dd>
+            <span jhiTranslate="{{'hermeneutApp.DataThreatLikelihood.' + dataThreat.likelihood}}">{{dataThreat.likelihood}}</span>
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.dataThreat.operation">Operation</span></dt>
+        <dd>
+            <div *ngIf="dataThreat.operation">
+                <a [routerLink]="['/data-operation-mgm', dataThreat.operation?.id]">{{dataThreat.operation?.name}}</a>
+            </div>
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.dataThreat.overallDataThreat">Overall Data Threat</span></dt>
+        <dd>
+            <div *ngIf="dataThreat.overallDataThreat">
+                <a [routerLink]="['/overall-data-threat-mgm', dataThreat.overallDataThreat?.id]">{{dataThreat.overallDataThreat?.id}}</a>
+            </div>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'data-threat-mgm/'+ dataThreat.id + '/edit'} }]"
+            replaceUrl="true"
+            queryParamsHandling="merge"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+    </button>
+</div>

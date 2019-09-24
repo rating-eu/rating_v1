@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <!--
+        Added the constraints for entity SecurityImpact.
+    -->
+    <changeSet id="20190924115801-2" author="jhipster">
+        
+        <addForeignKeyConstraint baseColumnNames="operation_id"
+                                 baseTableName="security_impact"
+                                 constraintName="fk_security_impact_operation_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="data_operation"/>
+
+        <addForeignKeyConstraint baseColumnNames="overall_security_impact_id"
+                                 baseTableName="security_impact"
+                                 constraintName="fk_security_impact_overall_security_impact_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="overall_security_impact"/>
+
+    </changeSet>
+</databaseChangeLog>

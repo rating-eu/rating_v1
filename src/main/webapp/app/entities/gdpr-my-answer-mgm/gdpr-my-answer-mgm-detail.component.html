@@ -1,0 +1,40 @@
+
+<div *ngIf="gDPRMyAnswer">
+    <h2><span jhiTranslate="hermeneutApp.gDPRMyAnswer.detail.title">GDPR My Answer</span> {{gDPRMyAnswer.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="hermeneutApp.gDPRMyAnswer.questionnaireStatus">Questionnaire Status</span></dt>
+        <dd>
+            <div *ngIf="gDPRMyAnswer.questionnaireStatus">
+                <a [routerLink]="['/gdpr-questionnaire-status-mgm', gDPRMyAnswer.questionnaireStatus?.id]">{{gDPRMyAnswer.questionnaireStatus?.status}}</a>
+            </div>
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.gDPRMyAnswer.question">Question</span></dt>
+        <dd>
+            <div *ngIf="gDPRMyAnswer.question">
+                <a [routerLink]="['/gdpr-question-mgm', gDPRMyAnswer.question?.id]">{{gDPRMyAnswer.question?.text}}</a>
+            </div>
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.gDPRMyAnswer.answer">Answer</span></dt>
+        <dd>
+            <div *ngIf="gDPRMyAnswer.answer">
+                <a [routerLink]="['/gdpr-answer-mgm', gDPRMyAnswer.answer?.id]">{{gDPRMyAnswer.answer?.id}}</a>
+            </div>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'gdpr-my-answer-mgm/'+ gDPRMyAnswer.id + '/edit'} }]"
+            replaceUrl="true"
+            queryParamsHandling="merge"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+    </button>
+</div>

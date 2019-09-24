@@ -1,0 +1,68 @@
+<form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+
+    <div class="modal-header">
+        <h4 class="modal-title" id="mySecurityImpactLabel" jhiTranslate="hermeneutApp.securityImpact.home.createOrEditLabel">Create or edit a Security Impact</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                (click)="clear()">&times;</button>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group" [hidden]="!securityImpact.id">
+            <label for="id" jhiTranslate="global.field.id">ID</label>
+            <input type="text" class="form-control" id="id" name="id"
+                   [(ngModel)]="securityImpact.id" readonly />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="hermeneutApp.securityImpact.securityPillar" for="field_securityPillar">Security Pillar</label>
+            <select class="form-control" name="securityPillar" [(ngModel)]="securityImpact.securityPillar" id="field_securityPillar"  required>
+                <option value="CONFIDENTIALITY">{{'hermeneutApp.SecurityPillar.CONFIDENTIALITY' | translate}}</option>
+                <option value="INTEGRITY">{{'hermeneutApp.SecurityPillar.INTEGRITY' | translate}}</option>
+                <option value="AVAILABILITY">{{'hermeneutApp.SecurityPillar.AVAILABILITY' | translate}}</option>
+            </select>
+            <div [hidden]="!(editForm.controls.securityPillar?.dirty && editForm.controls.securityPillar?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.securityPillar?.errors?.required" jhiTranslate="entity.validation.required">
+                   This field is required.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="hermeneutApp.securityImpact.impact" for="field_impact">Impact</label>
+            <select class="form-control" name="impact" [(ngModel)]="securityImpact.impact" id="field_impact"  required>
+                <option value="LOW">{{'hermeneutApp.DataImpact.LOW' | translate}}</option>
+                <option value="MEDIUM">{{'hermeneutApp.DataImpact.MEDIUM' | translate}}</option>
+                <option value="HIGH">{{'hermeneutApp.DataImpact.HIGH' | translate}}</option>
+                <option value="VERY_HIGH">{{'hermeneutApp.DataImpact.VERY_HIGH' | translate}}</option>
+            </select>
+            <div [hidden]="!(editForm.controls.impact?.dirty && editForm.controls.impact?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.impact?.errors?.required" jhiTranslate="entity.validation.required">
+                   This field is required.
+                </small>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="hermeneutApp.securityImpact.operation" for="field_operation">Operation</label>
+            <select class="form-control" id="field_operation" name="operation" [(ngModel)]="securityImpact.operation" >
+                <option [ngValue]="null"></option>
+                <option [ngValue]="dataOperationOption.id === securityImpact.operation?.id ? securityImpact.operation : dataOperationOption" *ngFor="let dataOperationOption of dataoperations; trackBy: trackDataOperationById">{{dataOperationOption.name}}</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="hermeneutApp.securityImpact.overallSecurityImpact" for="field_overallSecurityImpact">Overall Security Impact</label>
+            <select class="form-control" id="field_overallSecurityImpact" name="overallSecurityImpact" [(ngModel)]="securityImpact.overallSecurityImpact" >
+                <option [ngValue]="null"></option>
+                <option [ngValue]="overallSecurityImpactOption.id === securityImpact.overallSecurityImpact?.id ? securityImpact.overallSecurityImpact : overallSecurityImpactOption" *ngFor="let overallSecurityImpactOption of overallsecurityimpacts; trackBy: trackOverallSecurityImpactById">{{overallSecurityImpactOption.id}}</option>
+            </select>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">
+            <span class="fa fa-ban"></span>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+        <button type="submit" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+            <span class="fa fa-save"></span>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+    </div>
+</form>

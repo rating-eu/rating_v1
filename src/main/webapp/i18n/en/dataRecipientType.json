@@ -1,0 +1,9 @@
+{
+    "hermeneutApp": {
+        "DataRecipientType" : {
+            "null": "",
+            "INTERNAL": "INTERNAL",
+            "EXTERNAL": "EXTERNAL"
+        }
+    }
+}

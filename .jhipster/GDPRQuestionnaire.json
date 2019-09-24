@@ -1,0 +1,29 @@
+{
+    "fluentMethods": true,
+    "relationships": [],
+    "fields": [
+        {
+            "fieldName": "name",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "purpose",
+            "fieldType": "GDPRQuestionnairePurpose",
+            "fieldValues": "OPERATION_CONTEXT,IMPACT_EVALUATION,THREAT_LIKELIHOOD",
+            "fieldValidateRules": [
+                "required"
+            ]
+        }
+    ],
+    "changelogDate": "20190924115806",
+    "javadoc": "=======GDPR Questions=======",
+    "entityTableName": "gdpr_questionnaire",
+    "dto": "no",
+    "pagination": "no",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "angularJSSuffix": "mgm"
+}

@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -43,7 +44,7 @@ public class DataImpactDescriptionResource {
      */
     @PostMapping("/data-impact-descriptions")
     @Timed
-    public ResponseEntity<DataImpactDescription> createDataImpactDescription(@RequestBody DataImpactDescription dataImpactDescription) throws URISyntaxException {
+    public ResponseEntity<DataImpactDescription> createDataImpactDescription(@Valid @RequestBody DataImpactDescription dataImpactDescription) throws URISyntaxException {
         log.debug("REST request to save DataImpactDescription : {}", dataImpactDescription);
         if (dataImpactDescription.getId() != null) {
             throw new BadRequestAlertException("A new dataImpactDescription cannot already have an ID", ENTITY_NAME, "idexists");
@@ -65,7 +66,7 @@ public class DataImpactDescriptionResource {
      */
     @PutMapping("/data-impact-descriptions")
     @Timed
-    public ResponseEntity<DataImpactDescription> updateDataImpactDescription(@RequestBody DataImpactDescription dataImpactDescription) throws URISyntaxException {
+    public ResponseEntity<DataImpactDescription> updateDataImpactDescription(@Valid @RequestBody DataImpactDescription dataImpactDescription) throws URISyntaxException {
         log.debug("REST request to update DataImpactDescription : {}", dataImpactDescription);
         if (dataImpactDescription.getId() == null) {
             return createDataImpactDescription(dataImpactDescription);

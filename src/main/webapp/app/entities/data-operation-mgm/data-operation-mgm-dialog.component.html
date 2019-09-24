@@ -1,0 +1,98 @@
+<form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+
+    <div class="modal-header">
+        <h4 class="modal-title" id="myDataOperationLabel" jhiTranslate="hermeneutApp.dataOperation.home.createOrEditLabel">Create or edit a Data Operation</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                (click)="clear()">&times;</button>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group" [hidden]="!dataOperation.id">
+            <label for="id" jhiTranslate="global.field.id">ID</label>
+            <input type="text" class="form-control" id="id" name="id"
+                   [(ngModel)]="dataOperation.id" readonly />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="hermeneutApp.dataOperation.name" for="field_name">Name</label>
+            <input type="text" class="form-control" name="name" id="field_name"
+                [(ngModel)]="dataOperation.name" required/>
+            <div [hidden]="!(editForm.controls.name?.dirty && editForm.controls.name?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.name?.errors?.required" jhiTranslate="entity.validation.required">
+                   This field is required.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="hermeneutApp.dataOperation.processedData" for="field_processedData">Processed Data</label>
+            <input type="text" class="form-control" name="processedData" id="field_processedData"
+                [(ngModel)]="dataOperation.processedData" required/>
+            <div [hidden]="!(editForm.controls.processedData?.dirty && editForm.controls.processedData?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.processedData?.errors?.required" jhiTranslate="entity.validation.required">
+                   This field is required.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="hermeneutApp.dataOperation.processingPurpose" for="field_processingPurpose">Processing Purpose</label>
+            <input type="text" class="form-control" name="processingPurpose" id="field_processingPurpose"
+                [(ngModel)]="dataOperation.processingPurpose" required/>
+            <div [hidden]="!(editForm.controls.processingPurpose?.dirty && editForm.controls.processingPurpose?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.processingPurpose?.errors?.required" jhiTranslate="entity.validation.required">
+                   This field is required.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="hermeneutApp.dataOperation.dataSubject" for="field_dataSubject">Data Subject</label>
+            <input type="text" class="form-control" name="dataSubject" id="field_dataSubject"
+                [(ngModel)]="dataOperation.dataSubject" required/>
+            <div [hidden]="!(editForm.controls.dataSubject?.dirty && editForm.controls.dataSubject?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.dataSubject?.errors?.required" jhiTranslate="entity.validation.required">
+                   This field is required.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="hermeneutApp.dataOperation.processingMeans" for="field_processingMeans">Processing Means</label>
+            <input type="text" class="form-control" name="processingMeans" id="field_processingMeans"
+                [(ngModel)]="dataOperation.processingMeans" required/>
+            <div [hidden]="!(editForm.controls.processingMeans?.dirty && editForm.controls.processingMeans?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.processingMeans?.errors?.required" jhiTranslate="entity.validation.required">
+                   This field is required.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="hermeneutApp.dataOperation.dataProcessor" for="field_dataProcessor">Data Processor</label>
+            <input type="text" class="form-control" name="dataProcessor" id="field_dataProcessor"
+                [(ngModel)]="dataOperation.dataProcessor" required/>
+            <div [hidden]="!(editForm.controls.dataProcessor?.dirty && editForm.controls.dataProcessor?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.dataProcessor?.errors?.required" jhiTranslate="entity.validation.required">
+                   This field is required.
+                </small>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="hermeneutApp.dataOperation.companyProfile" for="field_companyProfile">Company Profile</label>
+            <select class="form-control" id="field_companyProfile" name="companyProfile" [(ngModel)]="dataOperation.companyProfile" >
+                <option [ngValue]="null"></option>
+                <option [ngValue]="companyProfileOption.id === dataOperation.companyProfile?.id ? dataOperation.companyProfile : companyProfileOption" *ngFor="let companyProfileOption of companyprofiles; trackBy: trackCompanyProfileById">{{companyProfileOption.name}}</option>
+            </select>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">
+            <span class="fa fa-ban"></span>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+        <button type="submit" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+            <span class="fa fa-save"></span>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+    </div>
+</form>

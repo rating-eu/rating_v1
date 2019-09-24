@@ -1,0 +1,25 @@
+
+{
+    "hermeneutApp": {
+        "gDPRAnswer" : {
+            "home": {
+                "title": "GDPR Answers",
+                "createLabel": "Criar um(a) novo(a) GDPR Answer",
+                "createOrEditLabel": "Criar ou editar um(a) GDPR Answer"
+            },
+            "created": "A new GDPR Answer is created with identifier {{ param }}",
+            "updated": "A GDPR Answer is updated with identifier {{ param }}",
+            "deleted": "A GDPR Answer is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Tem a certeza que pretende eliminar o(a) GDPR Answer {{ id }}?"
+            },
+            "detail": {
+                "title": "GDPR Answer"
+            },
+            "text": "Text",
+            "answerValue": "Answer Value",
+            "order": "Order",
+            "question": "Question"
+        }
+    }
+}

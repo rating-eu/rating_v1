@@ -1,0 +1,24 @@
+
+{
+    "hermeneutApp": {
+        "overallDataThreat" : {
+            "home": {
+                "title": "OverallDataThreats",
+                "createLabel": "Créer un nouveau Overall Data Threat",
+                "createOrEditLabel": "Créer ou éditer un Overall Data Threat"
+            },
+            "created": "Un nouveau Overall Data Threat a été créé avec l'identifiant {{ param }}",
+            "updated": "Le Overall Data Threat avec l'identifiant {{ param }} a été mis à jour",
+            "deleted": "Le Overall Data Threat avec l'identifiant {{ param }} a été supprimé",
+            "delete": {
+                "question": "Etes-vous certain de vouloir supprimer le Overall Data Threat {{ id }} ?"
+            },
+            "detail": {
+                "title": "Overall Data Threat"
+            },
+            "likelihood": "Likelihood",
+            "operation": "Operation",
+            "threats": "Threats"
+        }
+    }
+}

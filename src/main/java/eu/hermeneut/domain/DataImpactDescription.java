@@ -1,11 +1,16 @@
 package eu.hermeneut.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.swagger.annotations.ApiModel;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
+import javax.validation.constraints.*;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.Objects;
 
 import eu.hermeneut.domain.enumeration.DataImpact;
@@ -13,8 +18,9 @@ import eu.hermeneut.domain.enumeration.DataImpact;
 import eu.hermeneut.domain.enumeration.Language;
 
 /**
- * A DataImpactDescription.
+ * =======GDPR Entities=======
  */
+@ApiModel(description = "=======GDPR Entities=======")
 @Entity
 @Table(name = "data_impact_description")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
@@ -27,16 +33,25 @@ public class DataImpactDescription implements Serializable {
     @SequenceGenerator(name = "sequenceGenerator")
     private Long id;
 
+    @NotNull
     @Enumerated(EnumType.STRING)
-    @Column(name = "impact")
+    @Column(name = "impact", nullable = false)
     private DataImpact impact;
 
-    @Column(name = "description")
+    @NotNull
+    @Size(max = 2000)
+    @Column(name = "description", length = 2000, nullable = false)
     private String description;
 
+    @NotNull
     @Enumerated(EnumType.STRING)
-    @Column(name = "language")
+    @Column(name = "language", nullable = false)
     private Language language;
+
+    @OneToMany(mappedBy = "dataImpactDescription")
+    @JsonIgnore
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    private Set<Translation> translations = new HashSet<>();
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -84,6 +99,31 @@ public class DataImpactDescription implements Serializable {
 
     public void setLanguage(Language language) {
         this.language = language;
+    }
+
+    public Set<Translation> getTranslations() {
+        return translations;
+    }
+
+    public DataImpactDescription translations(Set<Translation> translations) {
+        this.translations = translations;
+        return this;
+    }
+
+    public DataImpactDescription addTranslations(Translation translation) {
+        this.translations.add(translation);
+        translation.setDataImpactDescription(this);
+        return this;
+    }
+
+    public DataImpactDescription removeTranslations(Translation translation) {
+        this.translations.remove(translation);
+        translation.setDataImpactDescription(null);
+        return this;
+    }
+
+    public void setTranslations(Set<Translation> translations) {
+        this.translations = translations;
     }
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove
 

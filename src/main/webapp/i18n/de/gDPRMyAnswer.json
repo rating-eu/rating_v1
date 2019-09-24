@@ -1,0 +1,24 @@
+
+{
+    "hermeneutApp": {
+        "gDPRMyAnswer" : {
+            "home": {
+                "title": "GDPR My Answers",
+                "createLabel": "GDPR My Answer erstellen",
+                "createOrEditLabel": "GDPR My Answer erstellen oder bearbeiten"
+            },
+            "created": "GDPR My Answer erstellt mit ID {{ param }}",
+            "updated": "GDPR My Answer aktualisiert mit ID {{ param }}",
+            "deleted": "GDPR My Answer gelöscht mit ID {{ param }}",
+            "delete": {
+                "question": "Soll GDPR My Answer {{ id }} wirklich dauerhaft gelöscht werden?"
+            },
+            "detail": {
+                "title": "GDPR My Answer"
+            },
+            "questionnaireStatus": "Questionnaire Status",
+            "question": "Question",
+            "answer": "Answer"
+        }
+    }
+}

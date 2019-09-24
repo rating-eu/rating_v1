@@ -1,0 +1,42 @@
+
+<div *ngIf="translation">
+    <h2><span jhiTranslate="hermeneutApp.translation.detail.title">Translation</span> {{translation.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="hermeneutApp.translation.text">Text</span></dt>
+        <dd>
+            <span>{{translation.text}}</span>
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.translation.language">Language</span></dt>
+        <dd>
+            <span jhiTranslate="{{'hermeneutApp.Language.' + translation.language}}">{{translation.language}}</span>
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.translation.dataImpactDescription">Data Impact Description</span></dt>
+        <dd>
+            <div *ngIf="translation.dataImpactDescription">
+                <a [routerLink]="['/data-impact-description-mgm', translation.dataImpactDescription?.id]">{{translation.dataImpactDescription?.id}}</a>
+            </div>
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.translation.gDPRQuestion">G DPR Question</span></dt>
+        <dd>
+            <div *ngIf="translation.gDPRQuestion">
+                <a [routerLink]="['/gdpr-question-mgm', translation.gDPRQuestion?.id]">{{translation.gDPRQuestion?.id}}</a>
+            </div>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'translation-mgm/'+ translation.id + '/edit'} }]"
+            replaceUrl="true"
+            queryParamsHandling="merge"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+    </button>
+</div>

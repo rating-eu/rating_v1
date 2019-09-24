@@ -1,0 +1,84 @@
+<div>
+    <h2>
+        <span jhiTranslate="hermeneutApp.gDPRQuestion.home.title">GDPR Questions</span>
+        <button class="btn btn-primary float-right jh-create-entity create-gdpr-question-mgm" [routerLink]="['/', { outlets: { popup: ['gdpr-question-mgm-new'] } }]">
+            <span class="fa fa-plus"></span>
+            <span  jhiTranslate="hermeneutApp.gDPRQuestion.home.createLabel">
+            Create new GDPR Question
+            </span>
+        </button>
+    </h2>
+    <jhi-alert></jhi-alert>
+    <div class="row">
+    </div>
+    <br/>
+    <div class="table-responsive" *ngIf="gDPRQuestions">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+            <th><span jhiTranslate="global.field.id">ID</span></th>
+            <th><span jhiTranslate="hermeneutApp.gDPRQuestion.text">Text</span></th>
+            <th><span jhiTranslate="hermeneutApp.gDPRQuestion.description">Description</span></th>
+            <th><span jhiTranslate="hermeneutApp.gDPRQuestion.language">Language</span></th>
+            <th><span jhiTranslate="hermeneutApp.gDPRQuestion.answerType">Answer Type</span></th>
+            <th><span jhiTranslate="hermeneutApp.gDPRQuestion.order">Order</span></th>
+            <th><span jhiTranslate="hermeneutApp.gDPRQuestion.dataOperationField">Data Operation Field</span></th>
+            <th><span jhiTranslate="hermeneutApp.gDPRQuestion.securityPillar">Security Pillar</span></th>
+            <th><span jhiTranslate="hermeneutApp.gDPRQuestion.threatArea">Threat Area</span></th>
+            <th><span jhiTranslate="hermeneutApp.gDPRQuestion.questionnaire">Questionnaire</span></th>
+            <th><span jhiTranslate="hermeneutApp.gDPRQuestion.answers">Answers</span></th>
+            <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let gDPRQuestion of gDPRQuestions ;trackBy: trackId">
+                <td><a [routerLink]="['../gdpr-question-mgm', gDPRQuestion.id ]">{{gDPRQuestion.id}}</a></td>
+                <td>{{gDPRQuestion.text}}</td>
+                <td>{{gDPRQuestion.description}}</td>
+                <td jhiTranslate="{{'hermeneutApp.Language.' + gDPRQuestion.language}}">{{gDPRQuestion.language}}</td>
+                <td jhiTranslate="{{'hermeneutApp.GDPRAnswerType.' + gDPRQuestion.answerType}}">{{gDPRQuestion.answerType}}</td>
+                <td>{{gDPRQuestion.order}}</td>
+                <td jhiTranslate="{{'hermeneutApp.DataOperationField.' + gDPRQuestion.dataOperationField}}">{{gDPRQuestion.dataOperationField}}</td>
+                <td jhiTranslate="{{'hermeneutApp.SecurityPillar.' + gDPRQuestion.securityPillar}}">{{gDPRQuestion.securityPillar}}</td>
+                <td jhiTranslate="{{'hermeneutApp.ThreatArea.' + gDPRQuestion.threatArea}}">{{gDPRQuestion.threatArea}}</td>
+                <td>
+                    <div *ngIf="gDPRQuestion.questionnaire">
+                        <a [routerLink]="['../gdpr-questionnaire-mgm', gDPRQuestion.questionnaire?.id ]" >{{gDPRQuestion.questionnaire?.name}}</a>
+                    </div>
+                </td>
+                <td>
+                    <span *ngFor="let answers of gDPRQuestion.answers; let last = last">
+                            <a class="form-control-static" [routerLink]="['../gdpr-answer-mgm', answers?.id ]">{{answers.text}}</a>{{last ? '' : ', '}}
+                        </span>
+                </td>
+                <td class="text-right">
+                    <div class="btn-group flex-btn-group-container">
+                        <button type="submit"
+                                [routerLink]="['../gdpr-question-mgm', gDPRQuestion.id ]"
+                                class="btn btn-info btn-sm">
+                            <span class="fa fa-eye"></span>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'gdpr-question-mgm/'+ gDPRQuestion.id + '/edit'} }]"
+                                replaceUrl="true"
+                                queryParamsHandling="merge"
+                                class="btn btn-primary btn-sm">
+                            <span class="fa fa-pencil"></span>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'gdpr-question-mgm/'+ gDPRQuestion.id + '/delete'} }]"
+                                replaceUrl="true"
+                                queryParamsHandling="merge"
+                                class="btn btn-danger btn-sm">
+                            <span class="fa fa-remove"></span>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -14,21 +14,37 @@
         </div>
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="hermeneutApp.dataImpactDescription.impact" for="field_impact">Impact</label>
-            <select class="form-control" name="impact" [(ngModel)]="dataImpactDescription.impact" id="field_impact" >
+            <select class="form-control" name="impact" [(ngModel)]="dataImpactDescription.impact" id="field_impact"  required>
                 <option value="LOW">{{'hermeneutApp.DataImpact.LOW' | translate}}</option>
                 <option value="MEDIUM">{{'hermeneutApp.DataImpact.MEDIUM' | translate}}</option>
                 <option value="HIGH">{{'hermeneutApp.DataImpact.HIGH' | translate}}</option>
                 <option value="VERY_HIGH">{{'hermeneutApp.DataImpact.VERY_HIGH' | translate}}</option>
             </select>
+            <div [hidden]="!(editForm.controls.impact?.dirty && editForm.controls.impact?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.impact?.errors?.required" jhiTranslate="entity.validation.required">
+                   This field is required.
+                </small>
+            </div>
         </div>
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="hermeneutApp.dataImpactDescription.description" for="field_description">Description</label>
             <input type="text" class="form-control" name="description" id="field_description"
-                [(ngModel)]="dataImpactDescription.description" />
+                [(ngModel)]="dataImpactDescription.description" required maxlength="2000"/>
+            <div [hidden]="!(editForm.controls.description?.dirty && editForm.controls.description?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.description?.errors?.required" jhiTranslate="entity.validation.required">
+                   This field is required.
+                </small>
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.description?.errors?.maxlength" jhiTranslate="entity.validation.maxlength" translateValues="{ max: 2000 }">
+                   This field cannot be longer than 2000 characters.
+                </small>
+            </div>
         </div>
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="hermeneutApp.dataImpactDescription.language" for="field_language">Language</label>
-            <select class="form-control" name="language" [(ngModel)]="dataImpactDescription.language" id="field_language" >
+            <select class="form-control" name="language" [(ngModel)]="dataImpactDescription.language" id="field_language"  required>
                 <option value="IT">{{'hermeneutApp.Language.IT' | translate}}</option>
                 <option value="EN">{{'hermeneutApp.Language.EN' | translate}}</option>
                 <option value="DE">{{'hermeneutApp.Language.DE' | translate}}</option>
@@ -36,6 +52,12 @@
                 <option value="FR">{{'hermeneutApp.Language.FR' | translate}}</option>
                 <option value="PT_PT">{{'hermeneutApp.Language.PT_PT' | translate}}</option>
             </select>
+            <div [hidden]="!(editForm.controls.language?.dirty && editForm.controls.language?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.language?.errors?.required" jhiTranslate="entity.validation.required">
+                   This field is required.
+                </small>
+            </div>
         </div>
 
     </div>

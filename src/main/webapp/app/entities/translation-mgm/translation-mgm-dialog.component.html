@@ -1,0 +1,67 @@
+<form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+
+    <div class="modal-header">
+        <h4 class="modal-title" id="myTranslationLabel" jhiTranslate="hermeneutApp.translation.home.createOrEditLabel">Create or edit a Translation</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                (click)="clear()">&times;</button>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group" [hidden]="!translation.id">
+            <label for="id" jhiTranslate="global.field.id">ID</label>
+            <input type="text" class="form-control" id="id" name="id"
+                   [(ngModel)]="translation.id" readonly />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="hermeneutApp.translation.text" for="field_text">Text</label>
+            <input type="text" class="form-control" name="text" id="field_text"
+                [(ngModel)]="translation.text" required/>
+            <div [hidden]="!(editForm.controls.text?.dirty && editForm.controls.text?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.text?.errors?.required" jhiTranslate="entity.validation.required">
+                   This field is required.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="hermeneutApp.translation.language" for="field_language">Language</label>
+            <select class="form-control" name="language" [(ngModel)]="translation.language" id="field_language"  required>
+                <option value="IT">{{'hermeneutApp.Language.IT' | translate}}</option>
+                <option value="EN">{{'hermeneutApp.Language.EN' | translate}}</option>
+                <option value="DE">{{'hermeneutApp.Language.DE' | translate}}</option>
+                <option value="ES">{{'hermeneutApp.Language.ES' | translate}}</option>
+                <option value="FR">{{'hermeneutApp.Language.FR' | translate}}</option>
+                <option value="PT_PT">{{'hermeneutApp.Language.PT_PT' | translate}}</option>
+            </select>
+            <div [hidden]="!(editForm.controls.language?.dirty && editForm.controls.language?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.language?.errors?.required" jhiTranslate="entity.validation.required">
+                   This field is required.
+                </small>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="hermeneutApp.translation.dataImpactDescription" for="field_dataImpactDescription">Data Impact Description</label>
+            <select class="form-control" id="field_dataImpactDescription" name="dataImpactDescription" [(ngModel)]="translation.dataImpactDescription" >
+                <option [ngValue]="null"></option>
+                <option [ngValue]="dataImpactDescriptionOption.id === translation.dataImpactDescription?.id ? translation.dataImpactDescription : dataImpactDescriptionOption" *ngFor="let dataImpactDescriptionOption of dataimpactdescriptions; trackBy: trackDataImpactDescriptionById">{{dataImpactDescriptionOption.id}}</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="hermeneutApp.translation.gDPRQuestion" for="field_gDPRQuestion">G DPR Question</label>
+            <select class="form-control" id="field_gDPRQuestion" name="gDPRQuestion" [(ngModel)]="translation.gDPRQuestion" >
+                <option [ngValue]="null"></option>
+                <option [ngValue]="gDPRQuestionOption.id === translation.gDPRQuestion?.id ? translation.gDPRQuestion : gDPRQuestionOption" *ngFor="let gDPRQuestionOption of gdprquestions; trackBy: trackGDPRQuestionById">{{gDPRQuestionOption.id}}</option>
+            </select>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">
+            <span class="fa fa-ban"></span>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+        <button type="submit" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+            <span class="fa fa-save"></span>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+    </div>
+</form>

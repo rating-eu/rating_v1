@@ -143,6 +143,60 @@ public class DataImpactDescriptionResourceIntTest {
 
     @Test
     @Transactional
+    public void checkImpactIsRequired() throws Exception {
+        int databaseSizeBeforeTest = dataImpactDescriptionRepository.findAll().size();
+        // set the field null
+        dataImpactDescription.setImpact(null);
+
+        // Create the DataImpactDescription, which fails.
+
+        restDataImpactDescriptionMockMvc.perform(post("/api/data-impact-descriptions")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(dataImpactDescription)))
+            .andExpect(status().isBadRequest());
+
+        List<DataImpactDescription> dataImpactDescriptionList = dataImpactDescriptionRepository.findAll();
+        assertThat(dataImpactDescriptionList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
+    public void checkDescriptionIsRequired() throws Exception {
+        int databaseSizeBeforeTest = dataImpactDescriptionRepository.findAll().size();
+        // set the field null
+        dataImpactDescription.setDescription(null);
+
+        // Create the DataImpactDescription, which fails.
+
+        restDataImpactDescriptionMockMvc.perform(post("/api/data-impact-descriptions")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(dataImpactDescription)))
+            .andExpect(status().isBadRequest());
+
+        List<DataImpactDescription> dataImpactDescriptionList = dataImpactDescriptionRepository.findAll();
+        assertThat(dataImpactDescriptionList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
+    public void checkLanguageIsRequired() throws Exception {
+        int databaseSizeBeforeTest = dataImpactDescriptionRepository.findAll().size();
+        // set the field null
+        dataImpactDescription.setLanguage(null);
+
+        // Create the DataImpactDescription, which fails.
+
+        restDataImpactDescriptionMockMvc.perform(post("/api/data-impact-descriptions")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(dataImpactDescription)))
+            .andExpect(status().isBadRequest());
+
+        List<DataImpactDescription> dataImpactDescriptionList = dataImpactDescriptionRepository.findAll();
+        assertThat(dataImpactDescriptionList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
     public void getAllDataImpactDescriptions() throws Exception {
         // Initialize the database
         dataImpactDescriptionRepository.saveAndFlush(dataImpactDescription);

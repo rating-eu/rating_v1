@@ -1,0 +1,25 @@
+
+{
+    "hermeneutApp": {
+        "gDPRAnswer" : {
+            "home": {
+                "title": "GDPR Answers",
+                "createLabel": "GDPR Answer erstellen",
+                "createOrEditLabel": "GDPR Answer erstellen oder bearbeiten"
+            },
+            "created": "GDPR Answer erstellt mit ID {{ param }}",
+            "updated": "GDPR Answer aktualisiert mit ID {{ param }}",
+            "deleted": "GDPR Answer gelöscht mit ID {{ param }}",
+            "delete": {
+                "question": "Soll GDPR Answer {{ id }} wirklich dauerhaft gelöscht werden?"
+            },
+            "detail": {
+                "title": "GDPR Answer"
+            },
+            "text": "Text",
+            "answerValue": "Answer Value",
+            "order": "Order",
+            "question": "Question"
+        }
+    }
+}

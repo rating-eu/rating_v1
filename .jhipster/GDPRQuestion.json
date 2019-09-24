@@ -1,0 +1,86 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "translations",
+            "otherEntityName": "translation",
+            "otherEntityRelationshipName": "gDPRQuestion"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "questionnaire",
+            "otherEntityName": "gDPRQuestionnaire",
+            "otherEntityField": "name"
+        },
+        {
+            "relationshipType": "many-to-many",
+            "otherEntityRelationshipName": "question",
+            "relationshipName": "answers",
+            "otherEntityName": "gDPRAnswer",
+            "otherEntityField": "text",
+            "ownerSide": true
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "text",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "description",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "language",
+            "fieldType": "Language",
+            "fieldValues": "IT,EN,DE,ES,FR,PT_PT",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "answerType",
+            "fieldType": "GDPRAnswerType",
+            "fieldValues": "OPEN,MULTIPLE_CHOICE,OBJECT",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "order",
+            "fieldType": "Integer",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "dataOperationField",
+            "fieldType": "DataOperationField",
+            "fieldValues": "NAME,PROCESSED_DATA,PROCESSING_PURPOSE,DATA_SUBJECT,PROCESSING_MEANS,DATA_RECIPIENTS,DATA_PROCESSOR"
+        },
+        {
+            "fieldName": "securityPillar",
+            "fieldType": "SecurityPillar",
+            "fieldValues": "CONFIDENTIALITY,INTEGRITY,AVAILABILITY"
+        },
+        {
+            "fieldName": "threatArea",
+            "fieldType": "ThreatArea",
+            "fieldValues": "NETWORK_AND_TECHNICAL_RESOURCES,PROCEDURES_RELATED_TO_THE_PROCESSING_OF_PERSONAL_DATA,PEOPLE_INVOLVED_IN_THE_PROCESSING_OF_PERFONAL_DATA,BUSINESS_SECTOR_AND_SCALE_OF_PROCESSING"
+        }
+    ],
+    "changelogDate": "20190924115808",
+    "entityTableName": "gdpr_question",
+    "dto": "no",
+    "pagination": "no",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "angularJSSuffix": "mgm"
+}

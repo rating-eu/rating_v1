@@ -22,6 +22,7 @@ export class DataImpactDescriptionMgm implements BaseEntity {
         public impact?: DataImpact,
         public description?: string,
         public language?: Language,
+        public translations?: BaseEntity[],
     ) {
     }
 }

@@ -1,0 +1,25 @@
+
+{
+    "hermeneutApp": {
+        "gDPRQuestionnaireStatus" : {
+            "home": {
+                "title": "GDPR Questionnaire Statuses",
+                "createLabel": "Criar um(a) novo(a) GDPR Questionnaire Status",
+                "createOrEditLabel": "Criar ou editar um(a) GDPR Questionnaire Status"
+            },
+            "created": "A new GDPR Questionnaire Status is created with identifier {{ param }}",
+            "updated": "A GDPR Questionnaire Status is updated with identifier {{ param }}",
+            "deleted": "A GDPR Questionnaire Status is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Tem a certeza que pretende eliminar o(a) GDPR Questionnaire Status {{ id }}?"
+            },
+            "detail": {
+                "title": "GDPR Questionnaire Status"
+            },
+            "status": "Status",
+            "operation": "Operation",
+            "questionnaire": "Questionnaire",
+            "user": "User"
+        }
+    }
+}

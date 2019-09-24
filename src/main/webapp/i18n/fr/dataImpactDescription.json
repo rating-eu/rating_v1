@@ -18,7 +18,8 @@
             },
             "impact": "Impact",
             "description": "Description",
-            "language": "Language"
+            "language": "Language",
+            "translations": "Translations"
         }
     }
 }

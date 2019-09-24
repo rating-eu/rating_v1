@@ -1,0 +1,60 @@
+<form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+
+    <div class="modal-header">
+        <h4 class="modal-title" id="myGDPRQuestionnaireStatusLabel" jhiTranslate="hermeneutApp.gDPRQuestionnaireStatus.home.createOrEditLabel">Create or edit a GDPR Questionnaire Status</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                (click)="clear()">&times;</button>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group" [hidden]="!gDPRQuestionnaireStatus.id">
+            <label for="id" jhiTranslate="global.field.id">ID</label>
+            <input type="text" class="form-control" id="id" name="id"
+                   [(ngModel)]="gDPRQuestionnaireStatus.id" readonly />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="hermeneutApp.gDPRQuestionnaireStatus.status" for="field_status">Status</label>
+            <select class="form-control" name="status" [(ngModel)]="gDPRQuestionnaireStatus.status" id="field_status"  required>
+                <option value="EMPTY">{{'hermeneutApp.Status.EMPTY' | translate}}</option>
+                <option value="PENDING">{{'hermeneutApp.Status.PENDING' | translate}}</option>
+                <option value="FULL">{{'hermeneutApp.Status.FULL' | translate}}</option>
+            </select>
+            <div [hidden]="!(editForm.controls.status?.dirty && editForm.controls.status?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.status?.errors?.required" jhiTranslate="entity.validation.required">
+                   This field is required.
+                </small>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="hermeneutApp.gDPRQuestionnaireStatus.operation" for="field_operation">Operation</label>
+            <select class="form-control" id="field_operation" name="operation" [(ngModel)]="gDPRQuestionnaireStatus.operation" >
+                <option [ngValue]="null"></option>
+                <option [ngValue]="dataOperationOption.id === gDPRQuestionnaireStatus.operation?.id ? gDPRQuestionnaireStatus.operation : dataOperationOption" *ngFor="let dataOperationOption of dataoperations; trackBy: trackDataOperationById">{{dataOperationOption.name}}</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="hermeneutApp.gDPRQuestionnaireStatus.questionnaire" for="field_questionnaire">Questionnaire</label>
+            <select class="form-control" id="field_questionnaire" name="questionnaire" [(ngModel)]="gDPRQuestionnaireStatus.questionnaire" >
+                <option [ngValue]="null"></option>
+                <option [ngValue]="gDPRQuestionnaireOption.id === gDPRQuestionnaireStatus.questionnaire?.id ? gDPRQuestionnaireStatus.questionnaire : gDPRQuestionnaireOption" *ngFor="let gDPRQuestionnaireOption of gdprquestionnaires; trackBy: trackGDPRQuestionnaireById">{{gDPRQuestionnaireOption.name}}</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="hermeneutApp.gDPRQuestionnaireStatus.user" for="field_user">User</label>
+            <select class="form-control" id="field_user" name="user" [(ngModel)]="gDPRQuestionnaireStatus.user" >
+                <option [ngValue]="null"></option>
+                <option [ngValue]="userOption.id === gDPRQuestionnaireStatus.user?.id ? gDPRQuestionnaireStatus.user : userOption" *ngFor="let userOption of users; trackBy: trackUserById">{{userOption.login}}</option>
+            </select>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">
+            <span class="fa fa-ban"></span>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+        <button type="submit" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+            <span class="fa fa-save"></span>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+    </div>
+</form>

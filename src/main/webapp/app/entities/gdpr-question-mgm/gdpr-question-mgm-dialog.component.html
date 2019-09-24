@@ -1,0 +1,135 @@
+<form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+
+    <div class="modal-header">
+        <h4 class="modal-title" id="myGDPRQuestionLabel" jhiTranslate="hermeneutApp.gDPRQuestion.home.createOrEditLabel">Create or edit a GDPR Question</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                (click)="clear()">&times;</button>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group" [hidden]="!gDPRQuestion.id">
+            <label for="id" jhiTranslate="global.field.id">ID</label>
+            <input type="text" class="form-control" id="id" name="id"
+                   [(ngModel)]="gDPRQuestion.id" readonly />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="hermeneutApp.gDPRQuestion.text" for="field_text">Text</label>
+            <input type="text" class="form-control" name="text" id="field_text"
+                [(ngModel)]="gDPRQuestion.text" required/>
+            <div [hidden]="!(editForm.controls.text?.dirty && editForm.controls.text?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.text?.errors?.required" jhiTranslate="entity.validation.required">
+                   This field is required.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="hermeneutApp.gDPRQuestion.description" for="field_description">Description</label>
+            <input type="text" class="form-control" name="description" id="field_description"
+                [(ngModel)]="gDPRQuestion.description" required/>
+            <div [hidden]="!(editForm.controls.description?.dirty && editForm.controls.description?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.description?.errors?.required" jhiTranslate="entity.validation.required">
+                   This field is required.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="hermeneutApp.gDPRQuestion.language" for="field_language">Language</label>
+            <select class="form-control" name="language" [(ngModel)]="gDPRQuestion.language" id="field_language"  required>
+                <option value="IT">{{'hermeneutApp.Language.IT' | translate}}</option>
+                <option value="EN">{{'hermeneutApp.Language.EN' | translate}}</option>
+                <option value="DE">{{'hermeneutApp.Language.DE' | translate}}</option>
+                <option value="ES">{{'hermeneutApp.Language.ES' | translate}}</option>
+                <option value="FR">{{'hermeneutApp.Language.FR' | translate}}</option>
+                <option value="PT_PT">{{'hermeneutApp.Language.PT_PT' | translate}}</option>
+            </select>
+            <div [hidden]="!(editForm.controls.language?.dirty && editForm.controls.language?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.language?.errors?.required" jhiTranslate="entity.validation.required">
+                   This field is required.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="hermeneutApp.gDPRQuestion.answerType" for="field_answerType">Answer Type</label>
+            <select class="form-control" name="answerType" [(ngModel)]="gDPRQuestion.answerType" id="field_answerType"  required>
+                <option value="OPEN">{{'hermeneutApp.GDPRAnswerType.OPEN' | translate}}</option>
+                <option value="MULTIPLE_CHOICE">{{'hermeneutApp.GDPRAnswerType.MULTIPLE_CHOICE' | translate}}</option>
+                <option value="OBJECT">{{'hermeneutApp.GDPRAnswerType.OBJECT' | translate}}</option>
+            </select>
+            <div [hidden]="!(editForm.controls.answerType?.dirty && editForm.controls.answerType?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.answerType?.errors?.required" jhiTranslate="entity.validation.required">
+                   This field is required.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="hermeneutApp.gDPRQuestion.order" for="field_order">Order</label>
+            <input type="number" class="form-control" name="order" id="field_order"
+                [(ngModel)]="gDPRQuestion.order" required/>
+            <div [hidden]="!(editForm.controls.order?.dirty && editForm.controls.order?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.order?.errors?.required" jhiTranslate="entity.validation.required">
+                   This field is required.
+                </small>
+                <small class="form-text text-danger"
+                    [hidden]="!editForm.controls.order?.errors?.number" jhiTranslate="entity.validation.number">
+                    This field should be a number.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="hermeneutApp.gDPRQuestion.dataOperationField" for="field_dataOperationField">Data Operation Field</label>
+            <select class="form-control" name="dataOperationField" [(ngModel)]="gDPRQuestion.dataOperationField" id="field_dataOperationField" >
+                <option value="NAME">{{'hermeneutApp.DataOperationField.NAME' | translate}}</option>
+                <option value="PROCESSED_DATA">{{'hermeneutApp.DataOperationField.PROCESSED_DATA' | translate}}</option>
+                <option value="PROCESSING_PURPOSE">{{'hermeneutApp.DataOperationField.PROCESSING_PURPOSE' | translate}}</option>
+                <option value="DATA_SUBJECT">{{'hermeneutApp.DataOperationField.DATA_SUBJECT' | translate}}</option>
+                <option value="PROCESSING_MEANS">{{'hermeneutApp.DataOperationField.PROCESSING_MEANS' | translate}}</option>
+                <option value="DATA_RECIPIENTS">{{'hermeneutApp.DataOperationField.DATA_RECIPIENTS' | translate}}</option>
+                <option value="DATA_PROCESSOR">{{'hermeneutApp.DataOperationField.DATA_PROCESSOR' | translate}}</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="hermeneutApp.gDPRQuestion.securityPillar" for="field_securityPillar">Security Pillar</label>
+            <select class="form-control" name="securityPillar" [(ngModel)]="gDPRQuestion.securityPillar" id="field_securityPillar" >
+                <option value="CONFIDENTIALITY">{{'hermeneutApp.SecurityPillar.CONFIDENTIALITY' | translate}}</option>
+                <option value="INTEGRITY">{{'hermeneutApp.SecurityPillar.INTEGRITY' | translate}}</option>
+                <option value="AVAILABILITY">{{'hermeneutApp.SecurityPillar.AVAILABILITY' | translate}}</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="hermeneutApp.gDPRQuestion.threatArea" for="field_threatArea">Threat Area</label>
+            <select class="form-control" name="threatArea" [(ngModel)]="gDPRQuestion.threatArea" id="field_threatArea" >
+                <option value="NETWORK_AND_TECHNICAL_RESOURCES">{{'hermeneutApp.ThreatArea.NETWORK_AND_TECHNICAL_RESOURCES' | translate}}</option>
+                <option value="PROCEDURES_RELATED_TO_THE_PROCESSING_OF_PERSONAL_DATA">{{'hermeneutApp.ThreatArea.PROCEDURES_RELATED_TO_THE_PROCESSING_OF_PERSONAL_DATA' | translate}}</option>
+                <option value="PEOPLE_INVOLVED_IN_THE_PROCESSING_OF_PERFONAL_DATA">{{'hermeneutApp.ThreatArea.PEOPLE_INVOLVED_IN_THE_PROCESSING_OF_PERFONAL_DATA' | translate}}</option>
+                <option value="BUSINESS_SECTOR_AND_SCALE_OF_PROCESSING">{{'hermeneutApp.ThreatArea.BUSINESS_SECTOR_AND_SCALE_OF_PROCESSING' | translate}}</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="hermeneutApp.gDPRQuestion.questionnaire" for="field_questionnaire">Questionnaire</label>
+            <select class="form-control" id="field_questionnaire" name="questionnaire" [(ngModel)]="gDPRQuestion.questionnaire" >
+                <option [ngValue]="null"></option>
+                <option [ngValue]="gDPRQuestionnaireOption.id === gDPRQuestion.questionnaire?.id ? gDPRQuestion.questionnaire : gDPRQuestionnaireOption" *ngFor="let gDPRQuestionnaireOption of gdprquestionnaires; trackBy: trackGDPRQuestionnaireById">{{gDPRQuestionnaireOption.name}}</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label jhiTranslate="hermeneutApp.gDPRQuestion.answers" for="field_answers">Answers</label>
+            <select class="form-control" id="field_answers" multiple name="answers" [(ngModel)]="gDPRQuestion.answers">
+                <option [ngValue]="getSelected(gDPRQuestion.answers, gDPRAnswerOption)" *ngFor="let gDPRAnswerOption of gdpranswers; trackBy: trackGDPRAnswerById">{{gDPRAnswerOption.text}}</option>
+            </select>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">
+            <span class="fa fa-ban"></span>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+        <button type="submit" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+            <span class="fa fa-save"></span>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+    </div>
+</form>

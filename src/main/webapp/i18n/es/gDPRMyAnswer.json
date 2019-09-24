@@ -1,0 +1,24 @@
+
+{
+    "hermeneutApp": {
+        "gDPRMyAnswer" : {
+            "home": {
+                "title": "GDPR My Answers",
+                "createLabel": "Crear nuevo GDPR My Answer",
+                "createOrEditLabel": "Crear o editar GDPR My Answer"
+            },
+            "created": "Un nuevo GDPR My Answer ha sido creado con el identificador {{ param }}",
+            "updated": "Un GDPR My Answer ha sido actualizado con el identificador {{ param }}",
+            "deleted": "Un GDPR My Answer ha sido eliminado con el identificador {{ param }}",
+            "delete": {
+                "question": "¿Seguro que quiere eliminar GDPR My Answer {{ id }}?"
+            },
+            "detail": {
+                "title": "GDPR My Answer"
+            },
+            "questionnaireStatus": "Questionnaire Status",
+            "question": "Question",
+            "answer": "Answer"
+        }
+    }
+}

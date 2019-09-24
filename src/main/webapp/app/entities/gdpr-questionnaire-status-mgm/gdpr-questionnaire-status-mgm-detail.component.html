@@ -1,0 +1,42 @@
+
+<div *ngIf="gDPRQuestionnaireStatus">
+    <h2><span jhiTranslate="hermeneutApp.gDPRQuestionnaireStatus.detail.title">GDPR Questionnaire Status</span> {{gDPRQuestionnaireStatus.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="hermeneutApp.gDPRQuestionnaireStatus.status">Status</span></dt>
+        <dd>
+            <span jhiTranslate="{{'hermeneutApp.Status.' + gDPRQuestionnaireStatus.status}}">{{gDPRQuestionnaireStatus.status}}</span>
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.gDPRQuestionnaireStatus.operation">Operation</span></dt>
+        <dd>
+            <div *ngIf="gDPRQuestionnaireStatus.operation">
+                <a [routerLink]="['/data-operation-mgm', gDPRQuestionnaireStatus.operation?.id]">{{gDPRQuestionnaireStatus.operation?.name}}</a>
+            </div>
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.gDPRQuestionnaireStatus.questionnaire">Questionnaire</span></dt>
+        <dd>
+            <div *ngIf="gDPRQuestionnaireStatus.questionnaire">
+                <a [routerLink]="['/gdpr-questionnaire-mgm', gDPRQuestionnaireStatus.questionnaire?.id]">{{gDPRQuestionnaireStatus.questionnaire?.name}}</a>
+            </div>
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.gDPRQuestionnaireStatus.user">User</span></dt>
+        <dd>
+            {{gDPRQuestionnaireStatus.user?.login}}
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'gdpr-questionnaire-status-mgm/'+ gDPRQuestionnaireStatus.id + '/edit'} }]"
+            replaceUrl="true"
+            queryParamsHandling="merge"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+    </button>
+</div>
