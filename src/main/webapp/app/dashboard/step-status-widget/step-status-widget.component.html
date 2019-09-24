@@ -79,7 +79,7 @@
                                 questionnaire). It
                                 responds to the question: “Which are the weaknesses of my company?”
                             </p>
-                            <jhi-vulnerability-assessment-selector *ngIf="questionnaireStatuses"
+                            <jhi-vulnerability-assessment-selector *ngIf="questionnaireStatuses && questionnaireStatuses.length"
                                                                    [questionnaireStatuses]="questionnaireStatuses"></jhi-vulnerability-assessment-selector>
                         </td>
                         <td class="text-center">
@@ -90,7 +90,7 @@
                             <i *ngIf="assessVulnerabilitiesStatus === statusEnum.EMPTY || assessVulnerabilitiesStatus === statusEnum.PENDING"
                                style="color: orange" class="fa fa-exclamation-triangle" aria-hidden="true"
                                [ngbTooltip]="statusEnum[assessVulnerabilitiesStatus][0] + statusEnum[assessVulnerabilitiesStatus].substr(1).toLowerCase()"></i>
-                            <div *ngIf="assessVulnerabilitiesCompletion">
+                            <div *ngIf="assessVulnerabilitiesCompletion && questionnaireStatuses && questionnaireStatuses.length">
                                 <p>Completion</p>
                                 <table>
                                     <thead>
