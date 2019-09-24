@@ -561,6 +561,10 @@ entity GDPRAnswer{
     Order Integer
 }
 
+entity GDPRMyAnswer{
+    
+}
+
 entity Translation{
     Text String,
     Language Language
