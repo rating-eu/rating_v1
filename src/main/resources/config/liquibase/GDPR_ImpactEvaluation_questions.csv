@@ -1,4 +1,4 @@
-id;text;description;language;answer_type;jhi_order;security_pillar;questionnaire_id
-1001;Please reflect on the impact that an unauthorized disclosure (loss of confidentiality) of personal data - in the context where your business activity takes place - could have on the individual and express a rating accordingly.;;EN;MULTIPLE_CHOICE;1;CONFIDENTIALITY;2
-1002;Please reflect on the impact that an unauthorized alteration (loss of integrity) of personal data - in the context where your business activity takes place - could have on the individual and express a rating accordingly.;;EN;MULTIPLE_CHOICE;2;INTEGRITY;2
-1003;Please reflect on the impact that an unauthorized destruction or loss (loss of availability) of personal data - in the context where your business activity takes place - could have on the individual and express a rating accordingly.;;EN;MULTIPLE_CHOICE;3;AVAILABILITY;2
+id;text;language;answer_type;jhi_order;security_pillar;questionnaire_id
+1001;Please reflect on the impact that an unauthorized disclosure (loss of confidentiality) of personal data - in the context where your business activity takes place - could have on the individual and express a rating accordingly.;EN;MULTIPLE_CHOICE;1;CONFIDENTIALITY;2
+1002;Please reflect on the impact that an unauthorized alteration (loss of integrity) of personal data - in the context where your business activity takes place - could have on the individual and express a rating accordingly.;EN;MULTIPLE_CHOICE;2;INTEGRITY;2
+1003;Please reflect on the impact that an unauthorized destruction or loss (loss of availability) of personal data - in the context where your business activity takes place - could have on the individual and express a rating accordingly.;EN;MULTIPLE_CHOICE;3;AVAILABILITY;2
