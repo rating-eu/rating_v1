@@ -18,7 +18,10 @@
     "fields": [
         {
             "fieldName": "text",
-            "fieldType": "String"
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
         },
         {
             "fieldName": "language",
@@ -32,6 +35,11 @@
             "fieldName": "answerValue",
             "fieldType": "AnswerValue",
             "fieldValues": "YES,NO"
+        },
+        {
+            "fieldName": "dataImpact",
+            "fieldType": "DataImpact",
+            "fieldValues": "LOW,MEDIUM,HIGH,VERY_HIGH"
         },
         {
             "fieldName": "order",

@@ -19,6 +19,7 @@
             "text": "Text",
             "language": "Language",
             "answerValue": "Answer Value",
+            "dataImpact": "Data Impact",
             "order": "Order",
             "translations": "Translations",
             "question": "Question"
