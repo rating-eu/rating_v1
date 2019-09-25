@@ -556,9 +556,10 @@ entity GDPRQuestion{
 }
 
 entity GDPRAnswer{
-    Text String,
+    Text String required,
     Language Language required,
     AnswerValue AnswerValue,
+    DataImpact DataImpact,
     Order Integer
 }
 
