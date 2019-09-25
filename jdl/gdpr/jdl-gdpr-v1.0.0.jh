@@ -546,7 +546,7 @@ entity GDPRQuestionnaireStatus{
 
 entity GDPRQuestion{
     Text String required,
-    Description String,
+    Description String maxlength(2000),
     Language Language required,
     AnswerType GDPRAnswerType required,
     Order Integer required,
