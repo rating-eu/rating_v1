@@ -189,24 +189,6 @@ public class GDPRQuestionResourceIntTest {
 
     @Test
     @Transactional
-    public void checkDescriptionIsRequired() throws Exception {
-        int databaseSizeBeforeTest = gDPRQuestionRepository.findAll().size();
-        // set the field null
-        gDPRQuestion.setDescription(null);
-
-        // Create the GDPRQuestion, which fails.
-
-        restGDPRQuestionMockMvc.perform(post("/api/gdpr-questions")
-            .contentType(TestUtil.APPLICATION_JSON_UTF8)
-            .content(TestUtil.convertObjectToJsonBytes(gDPRQuestion)))
-            .andExpect(status().isBadRequest());
-
-        List<GDPRQuestion> gDPRQuestionList = gDPRQuestionRepository.findAll();
-        assertThat(gDPRQuestionList).hasSize(databaseSizeBeforeTest);
-    }
-
-    @Test
-    @Transactional
     public void checkLanguageIsRequired() throws Exception {
         int databaseSizeBeforeTest = gDPRQuestionRepository.findAll().size();
         // set the field null

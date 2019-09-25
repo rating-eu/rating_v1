@@ -26,13 +26,7 @@
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="hermeneutApp.gDPRQuestion.description" for="field_description">Description</label>
             <input type="text" class="form-control" name="description" id="field_description"
-                [(ngModel)]="gDPRQuestion.description" required/>
-            <div [hidden]="!(editForm.controls.description?.dirty && editForm.controls.description?.invalid)">
-                <small class="form-text text-danger"
-                   [hidden]="!editForm.controls.description?.errors?.required" jhiTranslate="entity.validation.required">
-                   This field is required.
-                </small>
-            </div>
+                [(ngModel)]="gDPRQuestion.description" />
         </div>
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="hermeneutApp.gDPRQuestion.language" for="field_language">Language</label>
