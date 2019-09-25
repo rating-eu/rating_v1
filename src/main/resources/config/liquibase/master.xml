@@ -176,5 +176,6 @@
     <include file="config/liquibase/changelog/20190924115811_added_entity_constraints_Translation.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20190925141946_load_GDPR_questionnaires.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20190925143132_load_GDPR_OPERATION_CONTEXT_questions.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190925145320_load_GDPR_IMPACT_EVALUATION_questions.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
 </databaseChangeLog>
