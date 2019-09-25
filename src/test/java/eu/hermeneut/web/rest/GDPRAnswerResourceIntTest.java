@@ -32,6 +32,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import eu.hermeneut.domain.enumeration.Language;
 import eu.hermeneut.domain.enumeration.AnswerValue;
+import eu.hermeneut.domain.enumeration.DataImpact;
 /**
  * Test class for the GDPRAnswerResource REST controller.
  *
@@ -49,6 +50,9 @@ public class GDPRAnswerResourceIntTest {
 
     private static final AnswerValue DEFAULT_ANSWER_VALUE = AnswerValue.YES;
     private static final AnswerValue UPDATED_ANSWER_VALUE = AnswerValue.NO;
+
+    private static final DataImpact DEFAULT_DATA_IMPACT = DataImpact.LOW;
+    private static final DataImpact UPDATED_DATA_IMPACT = DataImpact.MEDIUM;
 
     private static final Integer DEFAULT_ORDER = 1;
     private static final Integer UPDATED_ORDER = 2;
@@ -97,6 +101,7 @@ public class GDPRAnswerResourceIntTest {
             .text(DEFAULT_TEXT)
             .language(DEFAULT_LANGUAGE)
             .answerValue(DEFAULT_ANSWER_VALUE)
+            .dataImpact(DEFAULT_DATA_IMPACT)
             .order(DEFAULT_ORDER);
         return gDPRAnswer;
     }
@@ -124,6 +129,7 @@ public class GDPRAnswerResourceIntTest {
         assertThat(testGDPRAnswer.getText()).isEqualTo(DEFAULT_TEXT);
         assertThat(testGDPRAnswer.getLanguage()).isEqualTo(DEFAULT_LANGUAGE);
         assertThat(testGDPRAnswer.getAnswerValue()).isEqualTo(DEFAULT_ANSWER_VALUE);
+        assertThat(testGDPRAnswer.getDataImpact()).isEqualTo(DEFAULT_DATA_IMPACT);
         assertThat(testGDPRAnswer.getOrder()).isEqualTo(DEFAULT_ORDER);
     }
 
@@ -144,6 +150,24 @@ public class GDPRAnswerResourceIntTest {
         // Validate the GDPRAnswer in the database
         List<GDPRAnswer> gDPRAnswerList = gDPRAnswerRepository.findAll();
         assertThat(gDPRAnswerList).hasSize(databaseSizeBeforeCreate);
+    }
+
+    @Test
+    @Transactional
+    public void checkTextIsRequired() throws Exception {
+        int databaseSizeBeforeTest = gDPRAnswerRepository.findAll().size();
+        // set the field null
+        gDPRAnswer.setText(null);
+
+        // Create the GDPRAnswer, which fails.
+
+        restGDPRAnswerMockMvc.perform(post("/api/gdpr-answers")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(gDPRAnswer)))
+            .andExpect(status().isBadRequest());
+
+        List<GDPRAnswer> gDPRAnswerList = gDPRAnswerRepository.findAll();
+        assertThat(gDPRAnswerList).hasSize(databaseSizeBeforeTest);
     }
 
     @Test
@@ -178,6 +202,7 @@ public class GDPRAnswerResourceIntTest {
             .andExpect(jsonPath("$.[*].text").value(hasItem(DEFAULT_TEXT.toString())))
             .andExpect(jsonPath("$.[*].language").value(hasItem(DEFAULT_LANGUAGE.toString())))
             .andExpect(jsonPath("$.[*].answerValue").value(hasItem(DEFAULT_ANSWER_VALUE.toString())))
+            .andExpect(jsonPath("$.[*].dataImpact").value(hasItem(DEFAULT_DATA_IMPACT.toString())))
             .andExpect(jsonPath("$.[*].order").value(hasItem(DEFAULT_ORDER)));
     }
 
@@ -195,6 +220,7 @@ public class GDPRAnswerResourceIntTest {
             .andExpect(jsonPath("$.text").value(DEFAULT_TEXT.toString()))
             .andExpect(jsonPath("$.language").value(DEFAULT_LANGUAGE.toString()))
             .andExpect(jsonPath("$.answerValue").value(DEFAULT_ANSWER_VALUE.toString()))
+            .andExpect(jsonPath("$.dataImpact").value(DEFAULT_DATA_IMPACT.toString()))
             .andExpect(jsonPath("$.order").value(DEFAULT_ORDER));
     }
 
@@ -222,6 +248,7 @@ public class GDPRAnswerResourceIntTest {
             .text(UPDATED_TEXT)
             .language(UPDATED_LANGUAGE)
             .answerValue(UPDATED_ANSWER_VALUE)
+            .dataImpact(UPDATED_DATA_IMPACT)
             .order(UPDATED_ORDER);
 
         restGDPRAnswerMockMvc.perform(put("/api/gdpr-answers")
@@ -236,6 +263,7 @@ public class GDPRAnswerResourceIntTest {
         assertThat(testGDPRAnswer.getText()).isEqualTo(UPDATED_TEXT);
         assertThat(testGDPRAnswer.getLanguage()).isEqualTo(UPDATED_LANGUAGE);
         assertThat(testGDPRAnswer.getAnswerValue()).isEqualTo(UPDATED_ANSWER_VALUE);
+        assertThat(testGDPRAnswer.getDataImpact()).isEqualTo(UPDATED_DATA_IMPACT);
         assertThat(testGDPRAnswer.getOrder()).isEqualTo(UPDATED_ORDER);
     }
 

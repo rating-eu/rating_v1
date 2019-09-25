@@ -22,7 +22,7 @@
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="text" type="varchar(255)">
-                <constraints nullable="true" />
+                <constraints nullable="false" />
             </column>
 
             <column name="language" type="varchar(255)">
@@ -30,6 +30,10 @@
             </column>
 
             <column name="answer_value" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="data_impact" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
 

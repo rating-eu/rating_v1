@@ -68,7 +68,7 @@ class GDPRAnswerGatlingTest extends Simulation {
             .exec(http("Create new gDPRAnswer")
             .post("/api/gdpr-answers")
             .headers(headers_http_authenticated)
-            .body(StringBody("""{"id":null, "text":"SAMPLE_TEXT", "language":null, "answerValue":null, "order":"0"}""")).asJSON
+            .body(StringBody("""{"id":null, "text":"SAMPLE_TEXT", "language":null, "answerValue":null, "dataImpact":null, "order":"0"}""")).asJSON
             .check(status.is(201))
             .check(headerRegex("Location", "(.*)").saveAs("new_gDPRAnswer_url"))).exitHereIfFailed
             .pause(10)

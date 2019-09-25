@@ -15,7 +15,13 @@
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="hermeneutApp.gDPRAnswer.text" for="field_text">Text</label>
             <input type="text" class="form-control" name="text" id="field_text"
-                [(ngModel)]="gDPRAnswer.text" />
+                [(ngModel)]="gDPRAnswer.text" required/>
+            <div [hidden]="!(editForm.controls.text?.dirty && editForm.controls.text?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.text?.errors?.required" jhiTranslate="entity.validation.required">
+                   This field is required.
+                </small>
+            </div>
         </div>
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="hermeneutApp.gDPRAnswer.language" for="field_language">Language</label>
@@ -39,6 +45,15 @@
             <select class="form-control" name="answerValue" [(ngModel)]="gDPRAnswer.answerValue" id="field_answerValue" >
                 <option value="YES">{{'hermeneutApp.AnswerValue.YES' | translate}}</option>
                 <option value="NO">{{'hermeneutApp.AnswerValue.NO' | translate}}</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="hermeneutApp.gDPRAnswer.dataImpact" for="field_dataImpact">Data Impact</label>
+            <select class="form-control" name="dataImpact" [(ngModel)]="gDPRAnswer.dataImpact" id="field_dataImpact" >
+                <option value="LOW">{{'hermeneutApp.DataImpact.LOW' | translate}}</option>
+                <option value="MEDIUM">{{'hermeneutApp.DataImpact.MEDIUM' | translate}}</option>
+                <option value="HIGH">{{'hermeneutApp.DataImpact.HIGH' | translate}}</option>
+                <option value="VERY_HIGH">{{'hermeneutApp.DataImpact.VERY_HIGH' | translate}}</option>
             </select>
         </div>
         <div class="form-group">

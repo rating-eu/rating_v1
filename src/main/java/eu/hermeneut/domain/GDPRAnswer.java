@@ -16,6 +16,8 @@ import eu.hermeneut.domain.enumeration.Language;
 
 import eu.hermeneut.domain.enumeration.AnswerValue;
 
+import eu.hermeneut.domain.enumeration.DataImpact;
+
 /**
  * A GDPRAnswer.
  */
@@ -31,7 +33,8 @@ public class GDPRAnswer implements Serializable {
     @SequenceGenerator(name = "sequenceGenerator")
     private Long id;
 
-    @Column(name = "text")
+    @NotNull
+    @Column(name = "text", nullable = false)
     private String text;
 
     @NotNull
@@ -42,6 +45,10 @@ public class GDPRAnswer implements Serializable {
     @Enumerated(EnumType.STRING)
     @Column(name = "answer_value")
     private AnswerValue answerValue;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "data_impact")
+    private DataImpact dataImpact;
 
     @Column(name = "jhi_order")
     private Integer order;
@@ -102,6 +109,19 @@ public class GDPRAnswer implements Serializable {
 
     public void setAnswerValue(AnswerValue answerValue) {
         this.answerValue = answerValue;
+    }
+
+    public DataImpact getDataImpact() {
+        return dataImpact;
+    }
+
+    public GDPRAnswer dataImpact(DataImpact dataImpact) {
+        this.dataImpact = dataImpact;
+        return this;
+    }
+
+    public void setDataImpact(DataImpact dataImpact) {
+        this.dataImpact = dataImpact;
     }
 
     public Integer getOrder() {
@@ -195,6 +215,7 @@ public class GDPRAnswer implements Serializable {
             ", text='" + getText() + "'" +
             ", language='" + getLanguage() + "'" +
             ", answerValue='" + getAnswerValue() + "'" +
+            ", dataImpact='" + getDataImpact() + "'" +
             ", order=" + getOrder() +
             "}";
     }

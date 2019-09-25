@@ -37,6 +37,7 @@ describe('GDPRAnswer e2e test', () => {
         expect(gDPRAnswerDialogPage.getTextInput()).toMatch('text');
         gDPRAnswerDialogPage.languageSelectLastOption();
         gDPRAnswerDialogPage.answerValueSelectLastOption();
+        gDPRAnswerDialogPage.dataImpactSelectLastOption();
         gDPRAnswerDialogPage.setOrderInput('5');
         expect(gDPRAnswerDialogPage.getOrderInput()).toMatch('5');
         gDPRAnswerDialogPage.save();
@@ -68,6 +69,7 @@ export class GDPRAnswerDialogPage {
     textInput = element(by.css('input#field_text'));
     languageSelect = element(by.css('select#field_language'));
     answerValueSelect = element(by.css('select#field_answerValue'));
+    dataImpactSelect = element(by.css('select#field_dataImpact'));
     orderInput = element(by.css('input#field_order'));
 
     getModalTitle() {
@@ -103,6 +105,17 @@ export class GDPRAnswerDialogPage {
 
     answerValueSelectLastOption = function() {
         this.answerValueSelect.all(by.tagName('option')).last().click();
+    };
+    setDataImpactSelect = function(dataImpact) {
+        this.dataImpactSelect.sendKeys(dataImpact);
+    };
+
+    getDataImpactSelect = function() {
+        return this.dataImpactSelect.element(by.css('option:checked')).getText();
+    };
+
+    dataImpactSelectLastOption = function() {
+        this.dataImpactSelect.all(by.tagName('option')).last().click();
     };
     setOrderInput = function(order) {
         this.orderInput.sendKeys(order);
