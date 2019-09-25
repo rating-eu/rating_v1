@@ -1,0 +1,5 @@
+id;text;language;jhi_order;data_impact
+1001;Low;EN;1;LOW
+1002;Medium;EN;2;MEDIUM
+1003;High;EN;3;HIGH
+1004;Very high;EN;4;VERY_HIGH
