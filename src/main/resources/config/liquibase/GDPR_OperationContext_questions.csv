@@ -1,4 +1,4 @@
-id;text;description;language;answer_type;jhi_order;data_operation_field;questionnaire_id
+id;text;language;answer_type;jhi_order;data_operation_field;questionnaire_id
 1;What is the personal data processing operation?;EN;OPEN;1;NAME;1
 2;What are the types of personal data processed?;EN;OPEN;2;PROCESSED_DATA;1
 3;What is the purpose of the processing?;EN;OPEN;3;PROCESSING_PURPOSE;1
