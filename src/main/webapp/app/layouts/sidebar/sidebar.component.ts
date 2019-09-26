@@ -301,7 +301,7 @@ export class SidebarComponent implements OnInit, OnDestroy, AfterViewInit {
                 {
                     label: 'Personal Data Processes',
                     icon: 'fas fa-spinner',
-                    routerLink: ['/privacy-risk-assessment/processes']
+                    routerLink: ['/privacy-risk-assessment/operations']
                 }
             ]
         };

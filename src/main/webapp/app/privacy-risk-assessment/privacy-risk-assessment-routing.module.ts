@@ -1,11 +1,11 @@
 import {NgModule} from '@angular/core';
 import {Routes, RouterModule} from '@angular/router';
-import {ProcessesComponent} from "./processes/processes.component";
+import {DataOperationsComponent} from './data-operations/data-operations.component';
 
 const routes: Routes = [
     {
-        path: 'processes',
-        component: ProcessesComponent
+        path: 'operations',
+        component: DataOperationsComponent
     }
 ];
 
