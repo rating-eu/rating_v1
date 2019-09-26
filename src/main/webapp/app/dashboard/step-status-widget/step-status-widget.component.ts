@@ -1,7 +1,7 @@
 import {AfterViewChecked, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewRef} from '@angular/core';
 import {DashboardService} from "../dashboard.service";
 import {MyCompanyMgm} from "../../entities/my-company-mgm";
-import {DatasharingService} from "../../datasharing/datasharing.service";
+import {DataSharingService} from "../../data-sharing/data-sharing.service";
 import {CompanyBoardStep} from "../../entities/enumerations/CompanyBoardStep.enum";
 import {forkJoin} from "rxjs/observable/forkJoin";
 import {Observable, Subscription} from "rxjs";
@@ -47,7 +47,7 @@ export class StepStatusWidgetComponent implements OnInit, AfterViewChecked, OnDe
     public vulnerabilityAssessment: QuestionnaireStatusMgm;
 
     constructor(
-        private dataSharingService: DatasharingService,
+        private dataSharingService: DataSharingService,
         private completionDTOService: CompletionDtoService,
         private questionnaireStatusService: QuestionnaireStatusMgmService,
         private dashboardService: DashboardService,

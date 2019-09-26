@@ -34,7 +34,7 @@ import {AttackMapService} from '../attack-map.service';
 import {MatHorizontalStepper} from '@angular/material';
 import {LikelihoodStep} from '../../entities/enumerations/LikelihoodStep.enum';
 import * as _ from 'lodash';
-import {DatasharingService} from "../../datasharing/datasharing.service";
+import {DataSharingService} from "../../data-sharing/data-sharing.service";
 import {MyCompanyMgm} from "../../entities/my-company-mgm";
 
 @Component({
@@ -94,7 +94,7 @@ export class WeaknessResultComponent implements OnInit, OnDestroy {
                 private phaseService: PhaseMgmService,
                 private attackStrategyService: AttackStrategyMgmService,
                 private attackMapService: AttackMapService,
-                private dataSharingService: DatasharingService,
+                private dataSharingService: DataSharingService,
                 private threatAgentService: ThreatAgentMgmService) {
     }
 

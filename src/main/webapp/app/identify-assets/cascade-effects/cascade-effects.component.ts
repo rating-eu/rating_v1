@@ -26,7 +26,7 @@ import {SelfAssessmentMgm} from './../../entities/self-assessment-mgm/self-asses
 import * as _ from 'lodash';
 
 import {Component, OnInit} from '@angular/core';
-import {DatasharingService} from "../../datasharing/datasharing.service";
+import {DataSharingService} from "../../data-sharing/data-sharing.service";
 import {AssetType} from "../../entities/enumerations/AssetType.enum";
 
 @Component({
@@ -63,7 +63,7 @@ export class CascadeEffectsComponent implements OnInit {
         private idaUtilsService: IdentifyAssetUtilService,
         private mySelfAssessmentService: SelfAssessmentMgmService,
         private router: Router,
-        private dataSharingService: DatasharingService
+        private dataSharingService: DataSharingService
     ) {
 
     }

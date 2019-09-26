@@ -17,7 +17,7 @@
 
 import {Subscription} from 'rxjs/Subscription';
 import {Mode} from './../entities/enumerations/Mode.enum';
-import {DatasharingService} from './../datasharing/datasharing.service';
+import {DataSharingService} from '../data-sharing/data-sharing.service';
 import {Component, OnInit, OnDestroy} from '@angular/core';
 
 @Component({
@@ -33,7 +33,7 @@ export class AboutUsComponent implements OnInit, OnDestroy {
     public mode: Mode;
 
     constructor(
-        private dataSharing: DatasharingService
+        private dataSharing: DataSharingService
     ) {
 
     }

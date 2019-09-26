@@ -12,7 +12,7 @@ import { Principal } from '../../shared';
     templateUrl: './data-operation-mgm.component.html'
 })
 export class DataOperationMgmComponent implements OnInit, OnDestroy {
-dataOperations: DataOperationMgm[];
+    dataOperations: DataOperationMgm[];
     currentAccount: any;
     eventSubscriber: Subscription;
 

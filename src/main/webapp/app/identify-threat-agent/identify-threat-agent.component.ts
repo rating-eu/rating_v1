@@ -17,7 +17,7 @@
 
 import {Component, OnInit} from '@angular/core';
 import {SelfAssessmentMgm} from '../entities/self-assessment-mgm';
-import {DatasharingService} from "../datasharing/datasharing.service";
+import {DataSharingService} from "../data-sharing/data-sharing.service";
 
 @Component({
     selector: 'jhi-identify-threat-agent',
@@ -30,7 +30,7 @@ export class IdentifyThreatAgentComponent implements OnInit {
     mySelf: SelfAssessmentMgm = null;
 
     constructor(
-        private dataSharingService: DatasharingService
+        private dataSharingService: DataSharingService
     ) {
     }
 

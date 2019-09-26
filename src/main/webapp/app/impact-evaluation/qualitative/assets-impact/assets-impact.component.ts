@@ -5,7 +5,7 @@ import {HttpResponse} from "@angular/common/http";
 import {switchMap} from "rxjs/operators";
 import {MyAssetMgm, MyAssetMgmService} from "../../../entities/my-asset-mgm";
 import {SelfAssessmentMgm} from "../../../entities/self-assessment-mgm";
-import {DatasharingService} from "../../../datasharing/datasharing.service";
+import {DataSharingService} from "../../../data-sharing/data-sharing.service";
 import {forkJoin} from "rxjs/observable/forkJoin";
 import {MyAssetDtoService} from "../../../dto/my-asset/my-asset-dto.service";
 import {MyAssetDto} from "../../../dto/my-asset/my-asset-dto";
@@ -42,7 +42,7 @@ export class AssetsImpactComponent implements OnInit {
         private assetCategoryService: AssetCategoryMgmService,
         private myAssetService: MyAssetMgmService,
         private myAssetDTOServie: MyAssetDtoService,
-        private dataSharing: DatasharingService) {
+        private dataSharing: DataSharingService) {
     }
 
     ngOnInit() {

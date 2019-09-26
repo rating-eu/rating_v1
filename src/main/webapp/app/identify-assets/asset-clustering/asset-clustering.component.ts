@@ -30,7 +30,7 @@ import {IdentifyAssetUtilService} from '../identify-asset.util.service';
 import {MyAssetMgm} from '../../entities/my-asset-mgm';
 import {AssetCategoryMgm} from './../../entities/asset-category-mgm/asset-category-mgm.model';
 import {AssetMgm} from '../../entities/asset-mgm';
-import {DatasharingService} from "../../datasharing/datasharing.service";
+import {DataSharingService} from "../../data-sharing/data-sharing.service";
 
 @Component({
     // tslint:disable-next-line:component-selector
@@ -65,7 +65,7 @@ export class AssetClusteringComponent implements OnInit, OnDestroy {
         private questionnairesService: QuestionnairesService,
         private ref: ChangeDetectorRef,
         private router: Router,
-        private dataSharingService: DatasharingService
+        private dataSharingService: DataSharingService
     ) {
     }
 

@@ -50,7 +50,7 @@ import {
 } from './layouts';
 import {QuestionnairesService} from './questionnaires/questionnaires.service';
 import {ReactiveFormsModule} from '@angular/forms';
-import {DatasharingModule} from './datasharing/datasharing.module';
+import {DataSharingModule} from './data-sharing/data-sharing.module';
 import {MaterialModule} from './material/material.module';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { MainService } from './layouts/main/main.service';
@@ -69,7 +69,7 @@ import {DtoModule} from "./dto/dto.module";
         HermeneutEntityModule,
         DtoModule,
         HermeneutAppRoutingModule,
-        DatasharingModule.forRoot(),
+        DataSharingModule.forRoot(),
         BrowserAnimationsModule,
         MaterialModule,
         PanelMenuModule

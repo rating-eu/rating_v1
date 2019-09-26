@@ -37,7 +37,7 @@ import {Account} from '../shared';
 import {CompanyBoardStatus} from "../dashboard/models/CompanyBoardStatus";
 
 @Injectable()
-export class DatasharingService {
+export class DataSharingService {
 
     private static readonly SELF_ASSESSMENT_KEY = 'selfAssessment';
     private _threatAgentsMap: Map<String, Couple<ThreatAgentMgm, Fraction>>;
@@ -143,13 +143,13 @@ export class DatasharingService {
     // SelfAssessment property
     set selfAssessment(selfAssessment: SelfAssessmentMgm) {
         this._selfAssessment = selfAssessment;
-        this.sessionStorage.store(DatasharingService.SELF_ASSESSMENT_KEY, this._selfAssessment);
+        this.sessionStorage.store(DataSharingService.SELF_ASSESSMENT_KEY, this._selfAssessment);
         this._selfAssessmentSubject.next(this._selfAssessment);
     }
 
     get selfAssessment(): SelfAssessmentMgm {
         if (!this._selfAssessment) {
-            this._selfAssessment = this.sessionStorage.retrieve(DatasharingService.SELF_ASSESSMENT_KEY);
+            this._selfAssessment = this.sessionStorage.retrieve(DataSharingService.SELF_ASSESSMENT_KEY);
         }
 
         if (!this._selfAssessment) {

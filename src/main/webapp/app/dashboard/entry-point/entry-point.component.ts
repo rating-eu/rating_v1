@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {DatasharingService} from "../../datasharing/datasharing.service";
+import {DataSharingService} from "../../data-sharing/data-sharing.service";
 import {MyCompanyMgm} from "../../entities/my-company-mgm";
 
 @Component({
@@ -11,7 +11,7 @@ export class EntryPointComponent implements OnInit {
 
     public myCompany: MyCompanyMgm = undefined;
 
-    constructor(private dataSharingService: DatasharingService) {
+    constructor(private dataSharingService: DataSharingService) {
     }
 
     ngOnInit() {

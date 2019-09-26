@@ -20,7 +20,7 @@ import {CriticalAttackStrategyService} from "../models/critical-attack-strategy.
 import {SelfAssessmentMgm, SelfAssessmentMgmService} from '../../entities/self-assessment-mgm';
 import {CriticalAttackStrategy} from "../models/critical-attack-strategy.model";
 import * as _ from 'lodash';
-import {DatasharingService} from '../../datasharing/datasharing.service';
+import {DataSharingService} from '../../data-sharing/data-sharing.service';
 import {Observable, Subscription} from "rxjs";
 import {switchMap} from "rxjs/operators";
 import {Router} from "@angular/router";
@@ -67,7 +67,7 @@ export class MostCriticalAttackStrategiesWidgetComponent implements OnInit, OnDe
     constructor(
         private selfAssessmentService: SelfAssessmentMgmService,
         private criticalAttackStrategyService: CriticalAttackStrategyService,
-        private dataSharingService: DatasharingService,
+        private dataSharingService: DataSharingService,
         private changeDetector: ChangeDetectorRef,
         private router: Router) {
     }

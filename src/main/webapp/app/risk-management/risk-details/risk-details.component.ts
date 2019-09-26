@@ -20,19 +20,18 @@ import {MyAssetMgmService} from './../../entities/my-asset-mgm/my-asset-mgm.serv
 import {ActivatedRoute, Params} from '@angular/router';
 import {AttackCostFormula} from './../model/attack-cost-formula.model';
 import {CriticalLevelMgm} from './../../entities/critical-level-mgm/critical-level-mgm.model';
-import * as _ from 'lodash';
 import {Component, OnInit, OnDestroy} from '@angular/core';
 import {RiskManagementService} from '../risk-management.service';
 import {SelfAssessmentMgm} from './../../entities/self-assessment-mgm/self-assessment-mgm.model';
 import {SelfAssessmentMgmService} from '../../entities/self-assessment-mgm';
 import {Subscription} from 'rxjs';
 import {MyAssetMgm} from '../../entities/my-asset-mgm';
-import {ThreatAgentInterest} from "../../entities/threat-agent-interest/threat-agent-interest.model";
+import {ThreatAgentInterest} from '../../entities/threat-agent-interest/threat-agent-interest.model';
 import {ImpactEvaluationService} from '../../impact-evaluation/impact-evaluation.service';
-import {DatasharingService} from "../../datasharing/datasharing.service";
-import {ImpactMode} from "../../entities/enumerations/ImpactMode.enum";
-import {ThreatAgentInterestService} from "../../entities/threat-agent-interest/threat-agent-interest.service";
-import {MyCompanyMgm} from "../../entities/my-company-mgm";
+import {DataSharingService} from '../../data-sharing/data-sharing.service';
+import {ImpactMode} from '../../entities/enumerations/ImpactMode.enum';
+import {ThreatAgentInterestService} from '../../entities/threat-agent-interest/threat-agent-interest.service';
+import {MyCompanyMgm} from '../../entities/my-company-mgm';
 
 interface Formula {
     element: string;
@@ -82,7 +81,7 @@ export class RiskDetailsComponent implements OnInit, OnDestroy {
         private route: ActivatedRoute,
         private myAssetService: MyAssetMgmService,
         private impactEvaluationService: ImpactEvaluationService,
-        private dataSharingService: DatasharingService
+        private dataSharingService: DataSharingService
     ) {
     }
 

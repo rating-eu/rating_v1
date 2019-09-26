@@ -21,7 +21,7 @@ import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {SelfAssessmentMgmService, SelfAssessmentMgm} from '../../../entities/self-assessment-mgm';
 import {GrowthRate} from '../model/growth-rates.model';
 import {Router} from '@angular/router';
-import {DatasharingService} from "../../../datasharing/datasharing.service";
+import {DataSharingService} from "../../../data-sharing/data-sharing.service";
 
 @Component({
     selector: 'jhi-growth-rates-configurator-component',
@@ -40,7 +40,7 @@ export class GrowthRatesConfiguratorComponentComponent implements OnInit {
         private impactService: ImpactEvaluationService,
         private mySelfAssessmentService: SelfAssessmentMgmService,
         private router: Router,
-        private dataSharingService: DatasharingService
+        private dataSharingService: DataSharingService
     ) {
     }
 

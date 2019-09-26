@@ -16,7 +16,7 @@
  */
 
 import { Mode } from './../../entities/enumerations/Mode.enum';
-import { DatasharingService } from './../../datasharing/datasharing.service';
+import { DataSharingService } from '../../data-sharing/data-sharing.service';
 import { HttpClient, HttpResponse, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
@@ -29,7 +29,7 @@ export class MainService {
 
     constructor(
         private http: HttpClient,
-        private dataSharing: DatasharingService,
+        private dataSharing: DataSharingService,
     ) { }
 
     public getMode(): Observable<Mode> {

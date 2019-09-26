@@ -24,7 +24,7 @@ import {ThreatAgentMgm, ThreatAgentMgmService} from '../../../../entities/threat
 import {Fraction} from '../../../../utils/fraction.class';
 import * as CryptoJS from 'crypto-js';
 import {Couple} from '../../../../utils/couple.class';
-import {DatasharingService} from '../../../../datasharing/datasharing.service';
+import {DataSharingService} from '../../../../data-sharing/data-sharing.service';
 import {Router} from '@angular/router';
 import {QuestionnaireStatusMgm, QuestionnaireStatusMgmService} from '../../../../entities/questionnaire-status-mgm';
 import {Status} from '../../../../entities/enumerations/Status.enum';
@@ -89,7 +89,7 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
     private _questionnaire: QuestionnaireMgm;
 
     constructor(private questionControlService: QuestionControlService,
-                private dataSharingSerivce: DatasharingService,
+                private dataSharingSerivce: DataSharingService,
                 private router: Router,
                 private myAnswerService: MyAnswerMgmService,
                 private answerService: AnswerMgmService,

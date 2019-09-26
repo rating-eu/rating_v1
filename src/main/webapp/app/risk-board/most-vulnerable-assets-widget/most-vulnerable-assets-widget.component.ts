@@ -22,7 +22,7 @@ import {SelfAssessmentMgm, SelfAssessmentMgmService} from '../../entities/self-a
 import {SelfAssessmentOverview} from '../../my-risk-assessments/models/SelfAssessmentOverview.model';
 import {AugmentedMyAsset} from '../../my-risk-assessments/models/AugmentedMyAsset.model';
 import {AugmentedAttackStrategy} from '../../evaluate-weakness/models/augmented-attack-strategy.model';
-import {DatasharingService} from "../../datasharing/datasharing.service";
+import {DataSharingService} from "../../data-sharing/data-sharing.service";
 import {switchMap} from "rxjs/operators";
 import {Observable, Subscription} from "rxjs";
 import {of} from "rxjs/observable/of";
@@ -86,7 +86,7 @@ export class MostVulnerableAssetsWidgetComponent implements OnInit, OnDestroy {
     // Vulnerability: 5, 4, 3, 2, 1
     constructor(
         private selfAssessmentService: SelfAssessmentMgmService,
-        private dataSharingService: DatasharingService
+        private dataSharingService: DataSharingService
     ) {
     }
 

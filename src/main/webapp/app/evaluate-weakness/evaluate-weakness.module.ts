@@ -28,7 +28,7 @@ import {ErrorHandlerInterceptor} from '../blocks/interceptor/errorhandler.interc
 import {IdentifyThreatAgentService} from '../identify-threat-agent/identify-threat-agent.service';
 import {NotificationInterceptor} from '../blocks/interceptor/notification.interceptor';
 import {JhiEventManager, JhiLanguageService} from 'ng-jhipster';
-import {DatasharingModule} from '../datasharing/datasharing.module';
+import {DataSharingModule} from '../data-sharing/data-sharing.module';
 import {WeaknessResultComponent} from './result/result.component';
 import {EvaluateService} from './evaluate-weakness.service';
 import {AttackMapService} from './attack-map.service';
@@ -40,7 +40,7 @@ import { HermeneutAttackStrategyMgmModule } from '../entities/attack-strategy-mg
         CommonModule,
         HermeneutSharedModule,
         EvaluateWeaknessRoutingModule,
-        DatasharingModule,
+        DataSharingModule,
         MaterialModule,
         HermeneutAttackStrategyMgmModule
     ],

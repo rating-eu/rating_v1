@@ -7,7 +7,7 @@ import {FinancialDeputyComponent} from './financial-deputy/financial-deputy.comp
 import {CisoComponent} from './ciso/ciso.component';
 import {MaterialModule} from '../material/material.module';
 import {FormsModule} from '@angular/forms';
-import {DatasharingModule} from '../datasharing/datasharing.module';
+import {DataSharingModule} from '../data-sharing/data-sharing.module';
 import {EmployeeComponent} from './employee/employee.component';
 import {HermeneutSharedModule} from '../shared';
 import {EmployeeService} from './employee.service';
@@ -25,7 +25,7 @@ import {RouterModule} from "@angular/router";
         CommonModule,
         HermeneutSharedModule,
         EmployeesRoutingModule,
-        DatasharingModule,
+        DataSharingModule,
         MaterialModule,
         FormsModule,
         RouterModule

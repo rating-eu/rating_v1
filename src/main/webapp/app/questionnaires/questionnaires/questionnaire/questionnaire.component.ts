@@ -17,7 +17,7 @@
 
 import {Component, OnInit} from '@angular/core';
 import {QuestionnairesService} from '../../questionnaires.service';
-import {DatasharingService} from '../../../datasharing/datasharing.service';
+import {DataSharingService} from '../../../data-sharing/data-sharing.service';
 import {Router} from '@angular/router';
 import {LocalStorageService} from 'ngx-webstorage';
 import {QuestionnairePurpose} from '../../../entities/enumerations/QuestionnairePurpose.enum';
@@ -40,7 +40,7 @@ export class QuestionnaireComponent implements OnInit {
 
     constructor(
         private questionnairesService: QuestionnairesService,
-        private dataSharingService: DatasharingService) {
+        private dataSharingService: DataSharingService) {
     }
 
     ngOnInit() {

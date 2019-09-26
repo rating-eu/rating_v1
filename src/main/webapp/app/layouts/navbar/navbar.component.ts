@@ -24,7 +24,7 @@ import {ProfileService} from '../profiles/profile.service';
 import {JhiLanguageHelper, LoginModalService, LoginService, Principal} from '../../shared';
 
 import {VERSION} from '../../app.constants';
-import {DatasharingService} from '../../datasharing/datasharing.service';
+import {DataSharingService} from '../../data-sharing/data-sharing.service';
 import {LayoutConfiguration} from '../model/LayoutConfiguration';
 import {Role} from '../../entities/enumerations/Role.enum';
 import {CompanyBoardStatus} from "../../dashboard/models/CompanyBoardStatus";
@@ -66,7 +66,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
         private loginModalService: LoginModalService,
         private profileService: ProfileService,
         private router: Router,
-        private dataSharingService: DatasharingService,
+        private dataSharingService: DataSharingService,
         private changeDetector: ChangeDetectorRef
     ) {
         this.version = VERSION ? 'v' + VERSION : '';

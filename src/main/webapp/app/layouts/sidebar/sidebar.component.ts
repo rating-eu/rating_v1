@@ -26,7 +26,7 @@ import {
     ViewRef
 } from '@angular/core';
 import {Principal} from '../../shared';
-import {DatasharingService} from '../../datasharing/datasharing.service';
+import {DataSharingService} from '../../data-sharing/data-sharing.service';
 import {LayoutConfiguration} from '../model/LayoutConfiguration';
 
 import {MenuItem} from 'primeng/api';
@@ -41,9 +41,9 @@ import {JhiDateUtils} from 'ng-jhipster';
 import * as _ from 'lodash';
 import {ImpactMode} from "../../entities/enumerations/ImpactMode.enum";
 import {Subscription} from 'rxjs';
-import {EventManagerService} from '../../datasharing/event-manager.service';
+import {EventManagerService} from '../../data-sharing/event-manager.service';
 import {EventType} from '../../entities/enumerations/EventType.enum';
-import {Event} from '../../datasharing/event.model';
+import {Event} from '../../data-sharing/event.model';
 
 @Component({
     selector: 'jhi-sidebar',
@@ -78,13 +78,13 @@ export class SidebarComponent implements OnInit, OnDestroy, AfterViewInit {
 
     constructor(
         private principal: Principal,
-        private dataSharingService: DatasharingService,
+        private dataSharingService: DataSharingService,
         private selfAssessmentService: SelfAssessmentMgmService,
         private logoService: LogoMgmService,
         private router: Router,
         private changeDetector: ChangeDetectorRef,
         private dateUtils: JhiDateUtils,
-        private dataSharing: DatasharingService,
+        private dataSharing: DataSharingService,
         private eventManagerService: EventManagerService,
     ) {
         this.isCollapsed = true;
