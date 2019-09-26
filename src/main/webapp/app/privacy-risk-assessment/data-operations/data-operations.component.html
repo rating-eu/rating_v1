@@ -13,7 +13,7 @@
     <div class="row">
     </div>
     <br/>
-    <div class="table-responsive" *ngIf="dataOperations">
+    <div class="table-responsive table-hover" *ngIf="dataOperations">
         <table class="table table-striped">
             <thead>
             <tr>
@@ -28,7 +28,10 @@
             </tr>
             </thead>
             <tbody>
-            <tr *ngFor="let dataOperation of dataOperations; trackBy: trackId">
+            <tr *ngFor="let dataOperation of dataOperations; trackBy: trackId"
+                (click)="selectDataOperation(dataOperation)"
+                [routerLink]="['/privacy-board']"
+            >
                 <td>{{dataOperation.name}}</td>
                 <td>{{dataOperation.processedData}}</td>
                 <td>{{dataOperation.processingPurpose}}</td>
@@ -37,10 +40,10 @@
                 <td>{{dataOperation.dataProcessor}}</td>
                 <td>
                     <div *ngIf="dataOperation.companyProfile">
-                        <a [routerLink]="['../company-profile-mgm', dataOperation.companyProfile?.id ]">{{dataOperation.companyProfile?.name}}</a>
+                        <a [routerLink]="['/company-profile-mgm', dataOperation.companyProfile?.id ]">{{dataOperation.companyProfile?.name}}</a>
                     </div>
                 </td>
-                <td class="text-right">
+                <td class="text-right" (click)="$event.stopPropagation()">
                     <div class="btn-group flex-btn-group-container">
                         <button type="submit"
                                 [routerLink]="['/data-operation-mgm', dataOperation.id ]"

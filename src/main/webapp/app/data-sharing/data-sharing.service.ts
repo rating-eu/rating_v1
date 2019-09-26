@@ -35,6 +35,7 @@ import {ReplaySubject} from "rxjs";
 import {HttpResponse} from "@angular/common/http";
 import {Account} from '../shared';
 import {CompanyBoardStatus} from "../dashboard/models/CompanyBoardStatus";
+import {DataOperationMgm} from "../entities/data-operation-mgm";
 
 @Injectable()
 export class DataSharingService {
@@ -86,6 +87,10 @@ export class DataSharingService {
     // Vulnerability Assessment
     private _vulnerabilityAssessment: QuestionnaireStatusMgm = null;
     private _vulnerabilityAssessmentSubject: ReplaySubject<QuestionnaireStatusMgm> = new ReplaySubject<QuestionnaireStatusMgm>();
+
+    // DataOperation
+    private _dataOperation: DataOperationMgm = null;
+    private _dataOperationSubject: ReplaySubject<DataOperationMgm> = new ReplaySubject<DataOperationMgm>();
 
     constructor(
         private router: Router,
@@ -323,6 +328,20 @@ export class DataSharingService {
 
     get vulnerabilityAssessment$(): Observable<QuestionnaireStatusMgm> {
         return this._vulnerabilityAssessmentSubject.asObservable();
+    }
+
+    // DataOperation property
+    get dataOperation(): DataOperationMgm {
+        return this._dataOperation;
+    }
+
+    set dataOperation(dataOperationMgm: DataOperationMgm) {
+        this._dataOperation = dataOperationMgm;
+        this._dataOperationSubject.next(this._dataOperation);
+    }
+
+    get dataOperation$(): Observable<DataOperationMgm> {
+        return this._dataOperationSubject.asObservable();
     }
 
     clear() {
