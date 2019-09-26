@@ -1,6 +1,7 @@
 package eu.hermeneut.service;
 
 import eu.hermeneut.domain.DataOperation;
+
 import java.util.List;
 
 /**
@@ -37,4 +38,12 @@ public interface DataOperationService {
      * @param id the id of the entity
      */
     void delete(Long id);
+
+    /**
+     * Get all the dataOperations by CompanyProfileID.
+     *
+     * @param companyProfileID The ID of the CompanyProfile.
+     * @return The list of DataOperations of the given CompanyProfile.
+     */
+    List<DataOperation> findAllByCompanyProfile(Long companyProfileID);
 }

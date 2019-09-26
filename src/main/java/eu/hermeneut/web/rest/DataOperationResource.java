@@ -87,7 +87,7 @@ public class DataOperationResource {
     public List<DataOperation> getAllDataOperations() {
         log.debug("REST request to get all DataOperations");
         return dataOperationService.findAll();
-        }
+    }
 
     /**
      * GET  /data-operations/:id : get the "id" dataOperation.
@@ -101,6 +101,15 @@ public class DataOperationResource {
         log.debug("REST request to get DataOperation : {}", id);
         DataOperation dataOperation = dataOperationService.findOne(id);
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(dataOperation));
+    }
+
+    @GetMapping("/data-operations/company-profile/{companyProfileID}")
+    public List<DataOperation> getAllDataOperationsByCompanyProfile(@PathVariable Long companyProfileID) {
+        log.debug("REST request to get DataOperations by CompanyProfile : {}", companyProfileID);
+
+        List<DataOperation> dataOperations = this.dataOperationService.findAllByCompanyProfile(companyProfileID);
+
+        return dataOperations;
     }
 
     /**

@@ -72,4 +72,11 @@ public class DataOperationServiceImpl implements DataOperationService {
         log.debug("Request to delete DataOperation : {}", id);
         dataOperationRepository.delete(id);
     }
+
+    @Override
+    public List<DataOperation> findAllByCompanyProfile(Long companyProfileID) {
+        log.debug("Request to get all the DataOperations by COmpanyProfile {}", companyProfileID);
+
+        return this.dataOperationRepository.findAllByCompanyProfile(companyProfileID);
+    }
 }
