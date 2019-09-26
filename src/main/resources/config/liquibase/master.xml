@@ -180,5 +180,6 @@
     <include file="config/liquibase/changelog/20190925184511_load_GDPR_IMPACT_EVALUATION_answers.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20190925185522_load_GDPR_IMPACT_EVALUATION_questions_answers.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20190925191423_load_GDPR_THREAT_LIKELIHOOD_questions.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190926113813_load_GDPR_THREAT_LIKELIHOOD_answers.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
 </databaseChangeLog>
