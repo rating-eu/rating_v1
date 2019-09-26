@@ -34,8 +34,9 @@
             "fieldName": "description",
             "fieldType": "String",
             "fieldValidateRules": [
-                "required"
-            ]
+                "maxlength"
+            ],
+            "fieldValidateRulesMaxlength": 2000
         },
         {
             "fieldName": "language",

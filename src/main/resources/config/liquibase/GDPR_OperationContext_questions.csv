@@ -1,0 +1,8 @@
+id;text;language;answer_type;jhi_order;data_operation_field;questionnaire_id
+1;What is the personal data processing operation?;EN;OPEN;1;NAME;1
+2;What are the types of personal data processed?;EN;OPEN;2;PROCESSED_DATA;1
+3;What is the purpose of the processing?;EN;OPEN;3;PROCESSING_PURPOSE;1
+4;What are the means used for the processing of personal data?;EN;OPEN;4;PROCESSING_MEANS;1
+5;Where does the processing of personal data take place?;EN;OPEN;5;DATA_PROCESSOR;1
+6;Which are the categories of data subjects?;EN;OPEN;6;DATA_SUBJECT;1
+7;Which are the recipients of the data?;EN;OBJECT;7;DATA_RECIPIENTS;1

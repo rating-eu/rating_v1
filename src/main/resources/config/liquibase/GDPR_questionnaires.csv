@@ -1,0 +1,4 @@
+id;name;purpose
+1;Operation Context;OPERATION_CONTEXT
+2;Impact Evaluation;IMPACT_EVALUATION
+3;Threat Likelihood;THREAT_LIKELIHOOD

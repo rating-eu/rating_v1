@@ -25,8 +25,8 @@
                 <constraints nullable="false" />
             </column>
 
-            <column name="description" type="varchar(255)">
-                <constraints nullable="false" />
+            <column name="description" type="varchar(2000)">
+                <constraints nullable="true" />
             </column>
 
             <column name="language" type="varchar(255)">

@@ -41,8 +41,8 @@ public class GDPRQuestion implements Serializable {
     @Column(name = "text", nullable = false)
     private String text;
 
-    @NotNull
-    @Column(name = "description", nullable = false)
+    @Size(max = 2000)
+    @Column(name = "description", length = 2000)
     private String description;
 
     @NotNull
