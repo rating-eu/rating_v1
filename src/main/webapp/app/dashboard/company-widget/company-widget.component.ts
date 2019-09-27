@@ -56,6 +56,10 @@ export class CompanyWidgetComponent implements OnInit {
           this.myCompanyService.findByUser(this.user.id).subscribe(
             (response3: HttpResponse<MyCompanyMgm>) => {
               this.myCompany = response3.body;
+
+              console.log('CompanyWidget DS.MyCompany: ');
+              console.log(this.myCompany);
+
               this.dataSharingService.myCompany = this.myCompany;
               this.companyName = this.myCompany.companyProfile.name;
               this.companySector = this.myCompany.companyProfile.type.toString();
