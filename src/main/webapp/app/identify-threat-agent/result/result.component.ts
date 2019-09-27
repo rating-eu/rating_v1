@@ -71,7 +71,7 @@ export class ThreatResultComponent implements OnInit, OnDestroy {
     private defaultThreatAgentsMotivations$: Observable<[HttpResponse<ThreatAgentMgm[]>, HttpResponse<MotivationMgm[]>]>;
 
     // QuestionnaireStatus
-    private questionnaireStatuses$: Observable<HttpResponse<QuestionnaireStatusMgm[]>>;
+    private questionnaireStatuses$: Observable<QuestionnaireStatusMgm[]>;
     private questionnaireStatus: QuestionnaireStatusMgm;
 
     // MyAnswers
@@ -121,8 +121,8 @@ export class ThreatResultComponent implements OnInit, OnDestroy {
         // First Fetch the QuestionnaireStatus with the above observable.
         // Then Create the Observable for the Questions and MyAnswers belonging to the fetched QuestionnaireStatus.
         this.questionsMyAnswers$ = this.questionnaireStatuses$.pipe(
-            mergeMap((questionnaireStatusResponse: HttpResponse<QuestionnaireStatusMgm[]>) => {
-                this.questionnaireStatus = questionnaireStatusResponse.body[0];
+            mergeMap((questionnaireStatusResponse: QuestionnaireStatusMgm[]) => {
+                this.questionnaireStatus = questionnaireStatusResponse[0];
                 this.questionnaire = this.questionnaireStatus.questionnaire;
                 this.questions$ = this.questionService.getQuestionsByQuestionnaire(this.questionnaire.id);
                 this.myAnswers$ = this.myAnswerService.getAllByQuestionnaireStatusID(this.questionnaireStatus.id);

@@ -56,6 +56,7 @@ export class QuestionnaireStatusMgmService {
     private questionnaireStatusesByCompanyProfileQuestionnaireAndRole = this.resourceUrl + '/company-profile/' + COMPANY_ID_PLACEHOLDER + '/questionnaire/' + QUESTIONNAIRE_ID_PLACEHOLDER + '/role/' + ROLE_PLACEHOLDER;
 
     private questionnaireStatusesByCompanyProfileQuestionnairePurposeAndUser = this.resourceUrl + '/company-profile/' + COMPANY_ID_PLACEHOLDER + '/purpose/' + QUESTIONNAIRE_PURPOSE_PLACEHOLDER + '/user/' + USER_ID_PLACEHOLDER;
+    private questionnaireStatusesByCompanyProfileQuestionnairePurposeAndRole = this.resourceUrl + '/company-profile/' + COMPANY_ID_PLACEHOLDER + '/purpose/' + QUESTIONNAIRE_PURPOSE_PLACEHOLDER + '/role/' + ROLE_PLACEHOLDER;
     private questionnaireStatusesByCurrentUserAndQuestionnairePurpose = this.resourceUrl + '/me/purpose/' + QUESTIONNAIRE_PURPOSE_PLACEHOLDER;
 
     constructor(private http: HttpClient, private dateUtils: JhiDateUtils) {
@@ -148,13 +149,12 @@ export class QuestionnaireStatusMgmService {
         ).map((res: HttpResponse<QuestionnaireStatusMgm[]>) => this.convertArrayResponse(res));
     }
 
-    public getAllQuestionnaireStatusesByCompanyProfileAndQuestionnairePurpose(companyProfile: CompanyProfileMgm, purpose: QuestionnairePurpose): Observable<HttpResponse<QuestionnaireStatusMgm[]>> {
+    public getAllQuestionnaireStatusesByCompanyProfileAndQuestionnairePurpose(companyProfile: CompanyProfileMgm, purpose: QuestionnairePurpose): Observable<QuestionnaireStatusMgm[]> {
         return this.http.get<QuestionnaireStatusMgm[]>(
             this.questionnaireStatusesByCompanyProfileAndQuestionnairePurpose
                 .replace(COMPANY_ID_PLACEHOLDER, String(companyProfile.id))
-                .replace(QUESTIONNAIRE_PURPOSE_PLACEHOLDER, QuestionnairePurpose[purpose]),
-            {observe: 'response'}
-        ).map((res: HttpResponse<QuestionnaireStatusMgm[]>) => this.convertArrayResponse(res));
+                .replace(QUESTIONNAIRE_PURPOSE_PLACEHOLDER, QuestionnairePurpose[purpose])
+        );
     }
 
     public getAllQuestionnaireStatusesByCompanyProfileQuestionnaireAndRole(companyProfile: CompanyProfileMgm, questionnaire: QuestionMgm, role: Role): Observable<HttpResponse<QuestionnaireStatusMgm[]>> {
@@ -182,6 +182,15 @@ export class QuestionnaireStatusMgmService {
         return this.http.get<QuestionnaireStatusMgm[]>(
             this.questionnaireStatusesByCurrentUserAndQuestionnairePurpose
                 .replace(QUESTIONNAIRE_PURPOSE_PLACEHOLDER, QuestionnairePurpose[questionnairePurpose])
+        );
+    }
+
+    public getAllQuestionnaireStatusesByCompanyProfileQuestionnairePurposeAndRole(companyProfile: CompanyProfileMgm, purpose: QuestionnairePurpose, role: Role): Observable<QuestionnaireStatusMgm[]> {
+        return this.http.get<QuestionnaireStatusMgm[]>(
+            this.questionnaireStatusesByCompanyProfileQuestionnairePurposeAndRole
+                .replace(COMPANY_ID_PLACEHOLDER, String(companyProfile.id))
+                .replace(QUESTIONNAIRE_PURPOSE_PLACEHOLDER, QuestionnairePurpose[purpose])
+                .replace(ROLE_PLACEHOLDER, Role[role])
         );
     }
 }
