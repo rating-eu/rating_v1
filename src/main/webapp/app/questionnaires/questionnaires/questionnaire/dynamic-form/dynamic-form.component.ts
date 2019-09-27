@@ -133,6 +133,8 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
 
         const questionsAndAccount$ = forkJoin(account$, questions$, humanQuestions$, itQuestions$, physicalQuestions$);
 
+        // TODO Fix me beacuse user appears to be undefined
+        // TODO Maybe we can simply use the user reference available in the datasharing serivce
         const user$ = questionsAndAccount$.mergeMap(
             (response: [HttpResponse<Account>, HttpResponse<QuestionMgm[]>, HttpResponse<QuestionMgm[]>, HttpResponse<QuestionMgm[]>, HttpResponse<QuestionMgm[]>]) => {
                 this.account = response[0].body;
