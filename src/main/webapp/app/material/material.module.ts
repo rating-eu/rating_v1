@@ -23,8 +23,10 @@ import {
     MatFormFieldModule,
     MatIconModule,
     MatInputModule,
+    MatPaginatorModule,
     MatProgressSpinnerModule,
     MatRadioModule,
+    MatSelectModule,
     MatStepperModule,
     MatTabsModule,
     MatTooltipModule
@@ -42,7 +44,9 @@ import {
         MatInputModule,
         MatStepperModule,
         MatExpansionModule,
-        MatTooltipModule
+        MatTooltipModule,
+        MatPaginatorModule,
+        MatSelectModule
     ],
     exports: [
         MatTabsModule,
@@ -54,7 +58,9 @@ import {
         MatInputModule,
         MatStepperModule,
         MatExpansionModule,
-        MatTooltipModule
+        MatTooltipModule,
+        MatPaginatorModule,
+        MatSelectModule
     ]
 })
 export class MaterialModule {

@@ -63,10 +63,11 @@ public class CompanyBoardStatusServiceImpl implements CompanyBoardStatusService 
 
         if (companyProfile != null) {
             QuestionnaireStatus questionnaireStatus = this.questionnaireStatusService
-                .findAllByCompanyProfileRoleAndQuestionnairePurpose(
+                .findAllByCompanyProfileQuestionnairePurposeAndRole(
                     companyProfileID,
-                    Role.ROLE_CISO,
-                    QuestionnairePurpose.SELFASSESSMENT)
+                    QuestionnairePurpose.SELFASSESSMENT,
+                    Role.ROLE_CISO
+                )
                 .stream()
                 .sorted(Comparator.reverseOrder())//Consider only the latest created.
                 .findFirst().orElse(null);
@@ -84,10 +85,11 @@ public class CompanyBoardStatusServiceImpl implements CompanyBoardStatusService 
 
         if (companyProfile != null) {
             QuestionnaireStatus questionnaireStatus = this.questionnaireStatusService
-                .findAllByCompanyProfileRoleAndQuestionnairePurpose(
+                .findAllByCompanyProfileQuestionnairePurposeAndRole(
                     companyProfileID,
-                    Role.ROLE_EXTERNAL_AUDIT,
-                    QuestionnairePurpose.SELFASSESSMENT)
+                    QuestionnairePurpose.SELFASSESSMENT,
+                    Role.ROLE_EXTERNAL_AUDIT
+                )
                 .stream()
                 .sorted(Comparator.reverseOrder())//Consider only the latest created.
                 .findFirst().orElse(null);

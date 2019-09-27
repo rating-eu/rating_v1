@@ -30,6 +30,7 @@ import {HermeneutAttackStrategyMgmModule} from "../entities/attack-strategy-mgm/
 import {AttackMapWidgetComponent} from "./attack-map-widget/attack-map-widget.component";
 import {EvaluateWeaknessModule} from "../evaluate-weakness/evaluate-weakness.module";
 import {DtoModule} from "../dto/dto.module";
+import { VulnerabilityAssessmentSelectorComponent } from './vulnerability-assessment-selector/vulnerability-assessment-selector.component';
 
 @NgModule({
     imports: [
@@ -56,7 +57,8 @@ import {DtoModule} from "../dto/dto.module";
         AttackStrategiesWidgetComponent,
         AttackMapWidgetComponent,
         MostDangerousThreatAgentsWidgetComponent,
-        OverallLikelihoodWidgetComponent
+        OverallLikelihoodWidgetComponent,
+        VulnerabilityAssessmentSelectorComponent
     ],
     providers: [
         {

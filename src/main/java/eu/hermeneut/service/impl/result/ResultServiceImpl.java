@@ -376,7 +376,8 @@ public class ResultServiceImpl implements ResultService, MaxValues {
             CompanyProfile companyProfile = this.companyProfileService.findOne(companyProfileID);
 
             if (companyProfile != null) {
-                QuestionnaireStatus questionnaireStatus = this.questionnaireStatusService.findAllByCompanyProfileRoleAndQuestionnairePurpose(companyProfileID, Role.ROLE_CISO, QuestionnairePurpose.ID_THREAT_AGENT).stream().findFirst().orElse(null);
+                QuestionnaireStatus questionnaireStatus = this.questionnaireStatusService
+                    .findAllByCompanyProfileQuestionnairePurposeAndRole(companyProfileID, QuestionnairePurpose.ID_THREAT_AGENT, Role.ROLE_CISO).stream().findFirst().orElse(null);
 
                 if (questionnaireStatus != null) {
                     List<MyAnswer> myAnswers = this.myAnswerService.findAllByQuestionnaireStatus(questionnaireStatus.getId());
