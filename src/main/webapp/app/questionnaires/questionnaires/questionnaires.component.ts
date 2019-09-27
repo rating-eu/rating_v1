@@ -217,7 +217,8 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
                         }
                         case QuestionnairePurpose.SELFASSESSMENT: {
 
-                            this.questionnaireStatuses$ = this.questionnaireStatusService.getAllQuestionnaireStatusesByCurrentUserAndQuestionnairePurpose(this.purpose)
+                            this.questionnaireStatuses$ = this.questionnaireStatusService
+                                .getAllQuestionnaireStatusesByCompanyProfileQuestionnairePurposeAndRole(this.myCompany.companyProfile, this.purpose, this.role)
                                 .catch((err) => {
                                     return of([])
                                 });
