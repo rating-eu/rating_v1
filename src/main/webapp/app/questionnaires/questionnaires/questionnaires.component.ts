@@ -202,10 +202,29 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
                         .catch((err) => {
                             return of({});
                         });
-                    this.questionnaireStatuses$ = this.questionnaireStatusService.getAllQuestionnaireStatusesByCurrentUserAndQuestionnairePurpose(this.purpose)
-                        .catch((err) => {
-                            return of([])
-                        });
+
+                    switch (this.purpose) {
+                        case QuestionnairePurpose.ID_THREAT_AGENT: {
+
+                            // Get all the QuestionnaireStatuses for Identifying the ThreatAgents of the CompanyProfile
+                            this.questionnaireStatuses$ = this.questionnaireStatusService
+                                .getAllQuestionnaireStatusesByCompanyProfileQuestionnairePurposeAndRole(this.myCompany.companyProfile, this.purpose, this.role)
+                                .catch((err) => {
+                                    return of([])
+                                });
+
+                            break;
+                        }
+                        case QuestionnairePurpose.SELFASSESSMENT: {
+
+                            this.questionnaireStatuses$ = this.questionnaireStatusService.getAllQuestionnaireStatusesByCurrentUserAndQuestionnairePurpose(this.purpose)
+                                .catch((err) => {
+                                    return of([])
+                                });
+
+                            break;
+                        }
+                    }
 
                     return forkJoin(this.questionnaire$, this.questionnaireStatuses$);
                 })
@@ -260,11 +279,11 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
                                     switch (this.role) {
                                         case Role.ROLE_CISO: {
 
-                                            const cisoIdentifyThreatAgentsQuestionnaireStatus: QuestionnaireStatusMgm =
-                                                _.find(this.questionnaireStatuses, (value: QuestionnaireStatusMgm) => {
+                                            const cisoIdentifyThreatAgentsQuestionnaireStatusExists: QuestionnaireStatusMgm =
+                                                _.find(this.questionnaireStatuses, (questionnaireStatus: QuestionnaireStatusMgm) => {
 
-                                                    if (value.role.valueOf() === Role.ROLE_CISO.valueOf() && value.user.id === this.user.id
-                                                        && value.questionnaire.purpose.valueOf() === QuestionnairePurpose.ID_THREAT_AGENT.valueOf()) {
+                                                    if (questionnaireStatus.role.valueOf() === Role.ROLE_CISO.valueOf()
+                                                        && questionnaireStatus.questionnaire.purpose.valueOf() === QuestionnairePurpose.ID_THREAT_AGENT.valueOf()) {
 
                                                         return true;
                                                     } else {
@@ -272,10 +291,10 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
                                                     }
                                                 });
 
-                                            if (cisoIdentifyThreatAgentsQuestionnaireStatus) {
+                                            if (cisoIdentifyThreatAgentsQuestionnaireStatusExists) {
                                                 this.useExistingThreatAgentQuestionnaireStatus = true;
                                                 this.createNewThreatAgentsQuestionnaireStatus = false;
-                                                return of(cisoIdentifyThreatAgentsQuestionnaireStatus);
+                                                return of(cisoIdentifyThreatAgentsQuestionnaireStatusExists);
                                             } else {
                                                 // Create the first QuestionnaireStatus
                                                 const questionnaireStatus: QuestionnaireStatusMgm = new QuestionnaireStatusMgm(undefined,
