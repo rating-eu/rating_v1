@@ -34,7 +34,7 @@ public class GDPRQuestionnaire implements Serializable {
 
     @NotNull
     @Enumerated(EnumType.STRING)
-    @Column(name = "purpose", nullable = false)
+    @Column(name = "purpose", nullable = false, unique = true)
     private GDPRQuestionnairePurpose purpose;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
