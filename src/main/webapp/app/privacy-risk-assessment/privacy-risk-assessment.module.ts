@@ -13,6 +13,7 @@ import {LocalStorageService, SessionStorageService} from 'ngx-webstorage';
 import {AuthExpiredInterceptor} from '../blocks/interceptor/auth-expired.interceptor';
 import {ErrorHandlerInterceptor} from '../blocks/interceptor/errorhandler.interceptor';
 import {NotificationInterceptor} from '../blocks/interceptor/notification.interceptor';
+import {DataOperationContextComponent} from "./data-operation-context/data-operation-context.component";
 
 @NgModule({
     imports: [
@@ -57,7 +58,7 @@ import {NotificationInterceptor} from '../blocks/interceptor/notification.interc
             ]
         }
     ],
-    declarations: [DataOperationsComponent]
+    declarations: [DataOperationsComponent, DataOperationContextComponent]
 })
 export class PrivacyRiskAssessmentModule {
     // Fixes Translation Not Found in Lazy Loading modules

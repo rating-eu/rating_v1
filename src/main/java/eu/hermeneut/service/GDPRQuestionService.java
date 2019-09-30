@@ -1,6 +1,7 @@
 package eu.hermeneut.service;
 
 import eu.hermeneut.domain.GDPRQuestion;
+
 import java.util.List;
 
 /**
@@ -37,4 +38,12 @@ public interface GDPRQuestionService {
      * @param id the id of the entity
      */
     void delete(Long id);
+
+    /**
+     * Get all the gDPRQuestions belonging to the given questionnaire.
+     *
+     * @param questionnaireID The ID of the Questionnaire.
+     * @return the list of entities
+     */
+    List<GDPRQuestion> findAllByQuestionnaire(Long questionnaireID);
 }

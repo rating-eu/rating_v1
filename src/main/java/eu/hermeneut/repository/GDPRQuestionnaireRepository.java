@@ -1,6 +1,8 @@
 package eu.hermeneut.repository;
 
 import eu.hermeneut.domain.GDPRQuestionnaire;
+import eu.hermeneut.domain.enumeration.GDPRQuestionnairePurpose;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import org.springframework.data.jpa.repository.*;
@@ -13,4 +15,6 @@ import org.springframework.data.jpa.repository.*;
 @Repository
 public interface GDPRQuestionnaireRepository extends JpaRepository<GDPRQuestionnaire, Long> {
 
+    @Query("SELECT questionnaire from GDPRQuestionnaire questionnaire WHERE questionnaire.purpose = :purpose")
+    GDPRQuestionnaire findOneByPurpose(@Param("purpose") GDPRQuestionnairePurpose purpose);
 }

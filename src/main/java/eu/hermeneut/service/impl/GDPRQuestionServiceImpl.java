@@ -72,4 +72,15 @@ public class GDPRQuestionServiceImpl implements GDPRQuestionService {
         log.debug("Request to delete GDPRQuestion : {}", id);
         gDPRQuestionRepository.delete(id);
     }
+
+    /**
+     * Get all the Questions belonging to the given questionnaire.
+     * @param questionnaireID The ID of the Questionnaire.
+     * @return The list of questions of the questionnaire.
+     */
+    @Override
+    public List<GDPRQuestion> findAllByQuestionnaire(Long questionnaireID) {
+        log.debug("Request to get all GDPRQuestions belonging to the questionnaire: " + questionnaireID);
+        return gDPRQuestionRepository.findAllByQuestionnaire(questionnaireID);
+    }
 }

@@ -87,7 +87,20 @@ public class GDPRQuestionResource {
     public List<GDPRQuestion> getAllGDPRQuestions() {
         log.debug("REST request to get all GDPRQuestions");
         return gDPRQuestionService.findAll();
-        }
+    }
+
+    /**
+     * GET  /gdpr-questions : get all the gDPRQuestions.
+     *
+     * @return the ResponseEntity with status 200 (OK) and the list of gDPRQuestions in body
+     */
+    @GetMapping("/gdpr-questions/questionnaire/{questionnaireID}")
+    @Timed
+    public List<GDPRQuestion> getAllGDPRQuestionsByQuestionnaire(@PathVariable Long questionnaireID) {
+        log.debug("REST request to get all GDPRQuestions");
+        return gDPRQuestionService.findAllByQuestionnaire(questionnaireID);
+    }
+
 
     /**
      * GET  /gdpr-questions/:id : get the "id" gDPRQuestion.

@@ -1,10 +1,5 @@
-import { BaseEntity } from './../../shared';
-
-export const enum GDPRQuestionnairePurpose {
-    'OPERATION_CONTEXT',
-    'IMPACT_EVALUATION',
-    'THREAT_LIKELIHOOD'
-}
+import {BaseEntity} from './../../shared';
+import {GDPRQuestionnairePurpose} from '../enumerations/GDPRQuestionnairePurpose.enum';
 
 export class GDPRQuestionnaireMgm implements BaseEntity {
     constructor(

@@ -1,5 +1,6 @@
 package eu.hermeneut.service.impl;
 
+import eu.hermeneut.domain.enumeration.GDPRQuestionnairePurpose;
 import eu.hermeneut.service.GDPRQuestionnaireService;
 import eu.hermeneut.domain.GDPRQuestionnaire;
 import eu.hermeneut.repository.GDPRQuestionnaireRepository;
@@ -71,5 +72,12 @@ public class GDPRQuestionnaireServiceImpl implements GDPRQuestionnaireService {
     public void delete(Long id) {
         log.debug("Request to delete GDPRQuestionnaire : {}", id);
         gDPRQuestionnaireRepository.delete(id);
+    }
+
+    @Override
+    public GDPRQuestionnaire findOneByPurpose(GDPRQuestionnairePurpose purpose) {
+        log.debug("Request to get GDPRQuestionnaire by purpose: {}", purpose);
+
+        return this.gDPRQuestionnaireRepository.findOneByPurpose(purpose);
     }
 }

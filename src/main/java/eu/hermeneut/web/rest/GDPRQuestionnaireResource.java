@@ -2,6 +2,7 @@ package eu.hermeneut.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import eu.hermeneut.domain.GDPRQuestionnaire;
+import eu.hermeneut.domain.enumeration.GDPRQuestionnairePurpose;
 import eu.hermeneut.service.GDPRQuestionnaireService;
 import eu.hermeneut.web.rest.errors.BadRequestAlertException;
 import eu.hermeneut.web.rest.util.HeaderUtil;
@@ -87,7 +88,7 @@ public class GDPRQuestionnaireResource {
     public List<GDPRQuestionnaire> getAllGDPRQuestionnaires() {
         log.debug("REST request to get all GDPRQuestionnaires");
         return gDPRQuestionnaireService.findAll();
-        }
+    }
 
     /**
      * GET  /gdpr-questionnaires/:id : get the "id" gDPRQuestionnaire.
@@ -101,6 +102,20 @@ public class GDPRQuestionnaireResource {
         log.debug("REST request to get GDPRQuestionnaire : {}", id);
         GDPRQuestionnaire gDPRQuestionnaire = gDPRQuestionnaireService.findOne(id);
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(gDPRQuestionnaire));
+    }
+
+    /**
+     * GET  /gdpr-questionnaires/purpose/:purpose : get the "id" gDPRQuestionnaire.
+     *
+     * @param purpose the purpose of the Questionnaire
+     * @return the ResponseEntity with status 200 (OK) and with body the gDPRQuestionnaire, or with status 404 (Not Found)
+     */
+    @GetMapping("/gdpr-questionnaires/purpose/{purpose}")
+    @Timed
+    public ResponseEntity<GDPRQuestionnaire> getGDPRQuestionnaireByPurpose(@PathVariable GDPRQuestionnairePurpose purpose) {
+        log.debug("REST request to get GDPRQuestionnaire by purpose: {}", purpose);
+        GDPRQuestionnaire questionnaire = this.gDPRQuestionnaireService.findOneByPurpose(purpose);
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(questionnaire));
     }
 
     /**
