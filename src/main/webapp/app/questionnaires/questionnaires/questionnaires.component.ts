@@ -112,8 +112,6 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
-        console.log('Questionnaires ON INIT');
-
         this.loadingQuestionnairesSemaphore = false;
 
         this.canCreateNewQuestionnaireStatus = true;

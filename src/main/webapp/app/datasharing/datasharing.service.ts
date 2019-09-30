@@ -248,9 +248,6 @@ export class DatasharingService {
     }
 
     set account(account: Account) {
-        console.log('DS.Account: ');
-        console.log(account);
-
         this._account = account;
         this._accountSubject.next(this._account);
 

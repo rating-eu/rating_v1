@@ -49,8 +49,6 @@ export class HomeComponent implements OnInit {
     }
 
     ngOnInit() {
-        console.log("Home on init...");
-
         this.registerAuthenticationSuccess();
 
         this.role = this.dataSharingService.role;
