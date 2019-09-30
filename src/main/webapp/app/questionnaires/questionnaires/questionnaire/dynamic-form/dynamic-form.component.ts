@@ -133,11 +133,10 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
 
         const questionsAndAccount$ = forkJoin(account$, questions$, humanQuestions$, itQuestions$, physicalQuestions$);
 
-        // TODO Fix me beacuse user appears to be undefined
-        // TODO Maybe we can simply use the user reference available in the datasharing serivce
         const user$ = questionsAndAccount$.mergeMap(
             (response: [HttpResponse<Account>, HttpResponse<QuestionMgm[]>, HttpResponse<QuestionMgm[]>, HttpResponse<QuestionMgm[]>, HttpResponse<QuestionMgm[]>]) => {
                 this.account = response[0].body;
+
                 if (this.account['authorities'].includes(DynamicFormComponent.CISO_ROLE)) {
                     this.role = Role.ROLE_CISO;
                 } else if (this.account['authorities'].includes(DynamicFormComponent.EXTERNAL_ROLE)) {
@@ -227,7 +226,6 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
                             }
                         }
 
-
                         break;
                     }
                     default: {
@@ -235,13 +233,17 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
                     }
                 }
 
-                return this.userService.find(this.account['login']);
+                return this.userService.find(this.account.login);
             }
         );
 
         const myCompany$ = user$.pipe(
             switchMap((response: HttpResponse<User>) => {
-                this.user = response.body;
+                if(Array.isArray(response.body)){
+                    this.user = response.body[0];
+                }else{
+                    this.user = response.body;
+                }
 
                 return this.myCompanyService.findByUser(this.user.id);
             })
@@ -699,7 +701,7 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
                     const cisoRadioButton: HTMLElement = document.getElementById(question.id + '' + answer.id + '');
                     const externalRadioButton: HTMLElement = document.getElementById(question.id + '' + answer.id + '.external');
 
-                    if(cisoRadioButton && externalRadioButton){
+                    if (cisoRadioButton && externalRadioButton) {
                         const externalHeight = externalRadioButton.clientHeight;
 
                         cisoRadioButton.style.height = externalHeight + 'px';
@@ -731,7 +733,7 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
                 this.router.navigate(['/dashboard']);
             }
         );
-        
+
         return questionnaireStatus;
     }
 
