@@ -36,6 +36,7 @@ import {HttpResponse} from "@angular/common/http";
 import {Account} from '../shared';
 import {CompanyBoardStatus} from "../dashboard/models/CompanyBoardStatus";
 import {DataOperationMgm} from "../entities/data-operation-mgm";
+import {PrivacyBoardStatus} from "../privacy-board/model/privacy-board-status";
 
 @Injectable()
 export class DataSharingService {
@@ -91,6 +92,10 @@ export class DataSharingService {
     // DataOperation
     private _dataOperation: DataOperationMgm = null;
     private _dataOperationSubject: ReplaySubject<DataOperationMgm> = new ReplaySubject<DataOperationMgm>();
+
+    // PrivacyBoardStatus
+    private _privacyBoardStatus: PrivacyBoardStatus = null;
+    private _privacyBoardStatusSubject: ReplaySubject<PrivacyBoardStatus> = new ReplaySubject<PrivacyBoardStatus>();
 
     constructor(
         private router: Router,
@@ -351,6 +356,25 @@ export class DataSharingService {
 
     get dataOperation$(): Observable<DataOperationMgm> {
         return this._dataOperationSubject.asObservable();
+    }
+
+    // PrivacyBoard Status property
+    get privacyBoardStatus(): PrivacyBoardStatus {
+        if (!this._privacyBoardStatus) {
+            this._privacyBoardStatus = new PrivacyBoardStatus();
+        }
+
+        return this._privacyBoardStatus;
+    }
+
+    set privacyBoardStatus(status: PrivacyBoardStatus) {
+        this._privacyBoardStatus = status;
+
+        if (!this._privacyBoardStatus) {
+            this._privacyBoardStatus = new PrivacyBoardStatus();
+        }
+
+        this._privacyBoardStatusSubject.next(this._privacyBoardStatus);
     }
 
     clear() {

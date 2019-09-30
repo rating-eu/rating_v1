@@ -51,17 +51,17 @@ public class DataOperation implements Serializable {
     @Column(name = "data_processor", nullable = false)
     private String dataProcessor;
 
-    @OneToMany(mappedBy = "operation")
+    @OneToMany(mappedBy = "operation", fetch = FetchType.EAGER)
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<DataRecipient> recipients = new HashSet<>();
 
-    @OneToMany(mappedBy = "operation")
+    @OneToMany(mappedBy = "operation", fetch = FetchType.EAGER)
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<SecurityImpact> impacts = new HashSet<>();
 
-    @OneToMany(mappedBy = "operation")
+    @OneToMany(mappedBy = "operation", fetch = FetchType.EAGER)
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<DataThreat> threats = new HashSet<>();

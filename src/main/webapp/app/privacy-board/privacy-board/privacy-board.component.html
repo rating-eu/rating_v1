@@ -1,6 +1,7 @@
-<p>
-    privacy-board works!
-</p>
-<pre *ngIf="dataOperation">
-    {{dataOperation | json}}
-</pre>
+<div class="container-fluid">
+    <div class="row mb-2">
+        <div class="col-md-12">
+            <jhi-privacy-steps-status-widget [dataOperation]="dataOperation"></jhi-privacy-steps-status-widget>
+        </div>
+    </div>
+</div>

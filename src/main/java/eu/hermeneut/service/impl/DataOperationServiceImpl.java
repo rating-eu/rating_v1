@@ -79,4 +79,11 @@ public class DataOperationServiceImpl implements DataOperationService {
 
         return this.dataOperationRepository.findAllByCompanyProfile(companyProfileID);
     }
+
+    @Override
+    public DataOperation findOneByCompanyProfileAndOperationID(Long companyProfileID, Long operationID) {
+        log.debug("Request to get the DataOperation by COmpanyProfile {} and OperationID", companyProfileID, operationID);
+
+        return this.dataOperationRepository.findOneByCompanyProfileAndOperationID(companyProfileID, operationID);
+    }
 }

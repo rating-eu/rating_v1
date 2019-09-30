@@ -46,4 +46,13 @@ public interface DataOperationService {
      * @return The list of DataOperations of the given CompanyProfile.
      */
     List<DataOperation> findAllByCompanyProfile(Long companyProfileID);
+
+    /**
+     * Get the dataOperation by CompanyProfileID and operationID.
+     *
+     * @param companyProfileID The ID of the CompanyProfile.
+     * @param operationID      The ID of the DataOperation.
+     * @return The DataOperation of the given CompanyProfile with the matching ID.
+     */
+    DataOperation findOneByCompanyProfileAndOperationID(Long companyProfileID, Long operationID);
 }

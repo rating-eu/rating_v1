@@ -18,4 +18,7 @@ public interface DataOperationRepository extends JpaRepository<DataOperation, Lo
 
     @Query("SELECT dataOperation FROM DataOperation dataOperation WHERE dataOperation.companyProfile.id = :companyProfileID")
     List<DataOperation> findAllByCompanyProfile(@Param("companyProfileID") Long companyProfileID);
+
+    @Query("SELECT dataOperation FROM DataOperation dataOperation WHERE dataOperation.companyProfile.id = :companyProfileID AND dataOperation.id = :operationID")
+    DataOperation findOneByCompanyProfileAndOperationID(@Param("companyProfileID") Long companyProfileID, @Param("operationID") Long operationID);
 }
