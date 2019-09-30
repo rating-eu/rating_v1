@@ -61,10 +61,10 @@ public class CompletionServiceImpl implements CompletionService {
         }
 
         QuestionnaireStatus questionnaireStatus = this.questionnaireStatusService
-            .findAllByCompanyProfileRoleAndQuestionnairePurpose(
+            .findAllByCompanyProfileQuestionnairePurposeAndRole(
                 companyProfileID,
-                Role.ROLE_CISO,
-                QuestionnairePurpose.SELFASSESSMENT)
+                QuestionnairePurpose.SELFASSESSMENT,
+                Role.ROLE_CISO)
             .stream()
             .sorted(Comparator.reverseOrder())//Consider only the latest created.
             .findFirst().orElse(null);

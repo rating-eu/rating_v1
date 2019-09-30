@@ -49,10 +49,6 @@ export class HomeComponent implements OnInit {
     }
 
     ngOnInit() {
-        /*this.principal.identity().then((account) => {
-            this.account = account;
-            this.dataSharingService.account = this.account;
-        });*/
         this.registerAuthenticationSuccess();
 
         this.role = this.dataSharingService.role;

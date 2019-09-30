@@ -68,7 +68,7 @@ public interface QuestionnaireStatusService {
 
     List<QuestionnaireStatus> findAllByCompanyProfileAndQuestionnairePurpose(Long companyProfileID, QuestionnairePurpose purpose);
 
-    List<QuestionnaireStatus> findAllByCompanyProfileRoleAndQuestionnairePurpose(Long companyProfileID, Role role, QuestionnairePurpose purpose);
+    List<QuestionnaireStatus> findAllByCompanyProfileQuestionnairePurposeAndRole(Long companyProfileID, QuestionnairePurpose purpose, Role role);
 
     List<QuestionnaireStatus> findAllByCompanyProfileQuestionnairePurposeAndCISOUser(Long companyProfileID, QuestionnairePurpose questionnairePurpose, Long userID);
 

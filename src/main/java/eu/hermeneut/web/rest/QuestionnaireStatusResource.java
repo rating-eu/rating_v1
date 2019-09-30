@@ -18,7 +18,6 @@
 package eu.hermeneut.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
-import eu.hermeneut.aop.annotation.KafkaRiskProfileHook;
 import eu.hermeneut.aop.annotation.KafkaVulnerabilityProfileHook;
 import eu.hermeneut.domain.QuestionnaireStatus;
 import eu.hermeneut.domain.enumeration.QuestionnairePurpose;
@@ -39,7 +38,6 @@ import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -214,6 +212,21 @@ public class QuestionnaireStatusResource {
         log.debug("QuestionnairePurpose: " + questionnairePurpose);
 
         List<QuestionnaireStatus> questionnaireStatuses = questionnaireStatusService.findAllByCompanyProfileQuestionnairePurposeAndCISOUser(companyProfileID, questionnairePurpose, userID);
+        return questionnaireStatuses;
+    }
+
+    @GetMapping("/questionnaire-statuses/company-profile/{companyProfileID}/purpose/{questionnairePurpose}/role/{role}")
+    @Timed
+    @PreAuthorize("@companyProfileGuardian.isCISO(#companyProfileID) || @companyProfileGuardian.isExternal(#companyProfileID) || hasRole('ROLE_ADMIN')")
+    @Secured({AuthoritiesConstants.CISO, AuthoritiesConstants.EXTERNAL_AUDIT, AuthoritiesConstants.ADMIN})
+    public List<QuestionnaireStatus> getAllQuestionnaireStatusesByCompanyProfileQuestionnairePurposeAndRole(@PathVariable Long companyProfileID, @PathVariable QuestionnairePurpose questionnairePurpose, @PathVariable Role role) {
+        log.debug("REST request to get QuestionnaireStatus by");
+        log.debug("CompanyProfile: " + companyProfileID);
+        log.debug("QuestionnairePurpose: " + questionnairePurpose);
+
+        List<QuestionnaireStatus> questionnaireStatuses = this.questionnaireStatusService
+            .findAllByCompanyProfileQuestionnairePurposeAndRole(companyProfileID, questionnairePurpose, role);
+
         return questionnaireStatuses;
     }
 

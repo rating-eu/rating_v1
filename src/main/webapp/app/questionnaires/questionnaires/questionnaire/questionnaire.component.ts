@@ -39,11 +39,16 @@ export class QuestionnaireComponent implements OnInit {
     user: User;
 
     constructor(
+        private router: Router,
         private questionnairesService: QuestionnairesService,
         private dataSharingService: DataSharingService) {
     }
 
     ngOnInit() {
         this.questionnaireStatus = this.dataSharingService.cisoQuestionnaireStatus;
+
+        if (!this.questionnaireStatus || !this.questionnaireStatus.questionnaire) {
+            this.router.navigate(['/']);
+        }
     }
 }
