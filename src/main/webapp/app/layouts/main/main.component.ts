@@ -145,7 +145,7 @@ export class JhiMainComponent implements OnInit, OnDestroy {
                     this.account = null;
                     this.dataSharingService.account = this.account;
 
-                    return of(null)
+                    return of(null);
                 }
             })
         );
@@ -154,6 +154,12 @@ export class JhiMainComponent implements OnInit, OnDestroy {
             switchMap((userResponse: HttpResponse<User>) => {
                     if (userResponse) {
                         this.user = userResponse.body;
+
+                        // TODO Investigate why it's an array
+                        if(Array.isArray(this.user)){
+                            this.user = this.user[0];
+                        }
+
                         this.dataSharingService.user = this.user;
 
                         if (this.user.authorities && this.user.authorities.length) {
@@ -182,6 +188,7 @@ export class JhiMainComponent implements OnInit, OnDestroy {
 
         const myCompany$: Observable<HttpResponse<MyCompanyMgm>> = role$.pipe(
             switchMap((roleResponse: Role) => {
+
                 if (roleResponse) {
                     this.role = roleResponse;
                     this.dataSharingService.role = this.role;

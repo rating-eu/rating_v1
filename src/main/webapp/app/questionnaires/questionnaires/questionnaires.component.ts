@@ -112,8 +112,6 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
-        console.log('Questionnaires ON INIT');
-
         this.loadingQuestionnairesSemaphore = false;
 
         this.canCreateNewQuestionnaireStatus = true;
@@ -217,11 +215,19 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
                         }
                         case QuestionnairePurpose.SELFASSESSMENT: {
 
-                            this.questionnaireStatuses$ = this.questionnaireStatusService
-                                .getAllQuestionnaireStatusesByCompanyProfileQuestionnairePurposeAndRole(this.myCompany.companyProfile, this.purpose, this.role)
-                                .catch((err) => {
-                                    return of([])
-                                });
+                            switch (this.role) {
+                                case Role.ROLE_EXTERNAL_AUDIT:
+                                case Role.ROLE_CISO_DEPUTY:
+                                case Role.ROLE_CISO: {
+                                    this.questionnaireStatuses$ = this.questionnaireStatusService
+                                        .getAllQuestionnaireStatusesByCompanyProfileQuestionnairePurposeAndRole(this.myCompany.companyProfile, this.purpose, Role.ROLE_CISO)
+                                        .catch((err) => {
+                                            return of([])
+                                        });
+
+                                    break;
+                                }
+                            }
 
                             break;
                         }
