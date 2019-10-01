@@ -1,8 +1,15 @@
 <div>
     <h2>
         <span jhiTranslate="hermeneutApp.dataOperation.home.title">Data Operations</span>
-        <button class="btn btn-primary float-right jh-create-entity create-data-operation-mgm"
+        <!--<button class="btn btn-primary float-right jh-create-entity create-data-operation-mgm"
                 [routerLink]="['/', { outlets: { popup: ['data-operation-mgm-new'] } }]">
+            <span class="fa fa-plus"></span>
+            <span jhiTranslate="hermeneutApp.dataOperation.home.createLabel">
+            Create new Data Operation
+            </span>
+        </button>-->
+        <button class="btn btn-primary float-right jh-create-entity create-data-operation-mgm"
+        (click)="createNewDataOperation()">
             <span class="fa fa-plus"></span>
             <span jhiTranslate="hermeneutApp.dataOperation.home.createLabel">
             Create new Data Operation

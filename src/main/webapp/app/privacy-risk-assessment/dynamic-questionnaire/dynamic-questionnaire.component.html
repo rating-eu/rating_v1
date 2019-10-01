@@ -1,0 +1,108 @@
+<div *ngIf="questionnaire && dataOperation" [ngSwitch]="questionnaire.purpose" style="margin-bottom: 10%">
+    <div *ngSwitchCase="purposeEnum.OPERATION_CONTEXT">
+        <form *ngIf="form" [formGroup]="form" (ngSubmit)="submitOperationContext()">
+            <div *ngFor="let question of questions; trackBy: trackByID" class="card-box">
+                <label class="form-control-label" [attr.for]="question?.id">
+                    <h5 class="h3-dynamic-form"> {{question?.text}}</h5>
+                </label>
+
+                <mat-form-field [ngSwitch]="question.dataOperationField" [floatLabel]="'auto'"
+                                [hideRequiredMarker]="false">
+                    <input matInput
+                           *ngSwitchCase="dataOperationFieldEnum.NAME"
+                           [formControlName]="question.id"
+                           [(ngModel)]="dataOperation.name"
+                           [placeholder]="question.description"
+                           type="text"
+                           required>
+                    <input matInput
+                           *ngSwitchCase="dataOperationFieldEnum.PROCESSED_DATA"
+                           [formControlName]="question.id"
+                           [(ngModel)]="dataOperation.processedData"
+                           [placeholder]="question.description" type="text"
+                           required>
+                    <input matInput
+                           *ngSwitchCase="dataOperationFieldEnum.PROCESSING_PURPOSE"
+                           [formControlName]="question.id"
+                           [(ngModel)]="dataOperation.processingPurpose"
+                           [placeholder]="question.description" type="text"
+                           required>
+                    <input matInput
+                           *ngSwitchCase="dataOperationFieldEnum.PROCESSING_MEANS"
+                           [formControlName]="question.id"
+                           [(ngModel)]="dataOperation.processingMeans"
+                           [placeholder]="question.description" type="text"
+                           required>
+                    <input matInput
+                           *ngSwitchCase="dataOperationFieldEnum.DATA_PROCESSOR"
+                           [formControlName]="question.id"
+                           [(ngModel)]="dataOperation.dataProcessor"
+                           [placeholder]="question.description" type="text"
+                           required>
+                    <input matInput
+                           *ngSwitchCase="dataOperationFieldEnum.DATA_SUBJECT"
+                           [formControlName]="question.id"
+                           [(ngModel)]="dataOperation.dataSubject"
+                           [placeholder]="question.description" type="text"
+                           required>
+                    <div *ngSwitchCase="dataOperationFieldEnum.DATA_RECIPIENTS" class="form-group">
+                        <button type="button"><i class="fa fa-plus" aria-hidden="true" (click)="addRecipient()"></i>
+                        </button>
+                        <div *ngFor="let recipient of dataOperation.recipients; let i=index; let last=last;">
+                            <!--Recipient-->
+                            <div class="row">
+                                <div class="col">
+                                    <label class="form-control-label" jhiTranslate="hermeneutApp.dataRecipient.name">
+                                        Name
+                                    </label>
+                                    <mat-form-field [floatLabel]="'auto'"
+                                                    [hideRequiredMarker]="false">
+                                        <input matInput
+
+                                               [(ngModel)]="recipient.name"
+                                               [placeholder]="question.description" type="text"
+                                               required>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col">
+                                    <label class="form-control-label" jhiTranslate="hermeneutApp.dataRecipient.type">
+                                        Type
+                                    </label>
+                                    <mat-form-field [floatLabel]="'auto'"
+                                                    [hideRequiredMarker]="false">
+                                        <mat-select
+
+                                            [(ngModel)]="recipient.type"
+                                            required>
+                                            <mat-option
+                                                value="INTERNAL">{{'hermeneutApp.DataRecipientType.INTERNAL' | translate}}</mat-option>
+                                            <mat-option
+                                                value="EXTERNAL">{{'hermeneutApp.DataRecipientType.EXTERNAL' | translate}}</mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <input matInput
+                           *ngSwitchCase="dataOperationFieldEnum.DATA_RECIPIENTS"
+                           [formControlName]="question.id"
+                           [placeholder]="question.description" type="text"
+                           required>
+                </mat-form-field>
+            </div>
+            <div class="form-row text-right d-block" style="margin-bottom: 40px">
+                <button class="btn btn-success waves-light waves-effect w-md" type="submit"
+                        [disabled]="!form.valid">
+                    <i class="far fa-save"></i>&nbsp;<span>Submit</span>
+                </button>
+            </div>
+        </form>
+    </div>
+    <div *ngSwitchCase="purposeEnum.IMPACT_EVALUATION">
+        Case Impact Evaluation
+    </div>
+    <div *ngSwitchCase="purposeEnum.THREAT_LIKELIHOOD">
+        Case Threat Likelihood
+    </div>
+</div>

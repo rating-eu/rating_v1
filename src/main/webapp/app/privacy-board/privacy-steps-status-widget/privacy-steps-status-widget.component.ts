@@ -56,7 +56,7 @@ export class PrivacyStepsStatusWidgetComponent implements OnInit, OnDestroy {
     }
 
     private fetchStatus() {
-        if (this._dataOperation && this.myCompany && this.myCompany.companyProfile) {
+        if (this._dataOperation && this.dataOperation.id && this.myCompany && this.myCompany.companyProfile) {
             this.loading = true;
 
             this.subscriptions.push(
@@ -67,6 +67,10 @@ export class PrivacyStepsStatusWidgetComponent implements OnInit, OnDestroy {
                     }
                 )
             );
+        }else if(this.dataOperation && this.myCompany && this.myCompany.companyProfile){
+            this.loading = true;
+            this.privacyBoardStatus = new PrivacyBoardStatus();
+            this.loading = false;
         }
     }
 

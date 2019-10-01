@@ -13,17 +13,24 @@ import {LocalStorageService, SessionStorageService} from 'ngx-webstorage';
 import {AuthExpiredInterceptor} from '../blocks/interceptor/auth-expired.interceptor';
 import {ErrorHandlerInterceptor} from '../blocks/interceptor/errorhandler.interceptor';
 import {NotificationInterceptor} from '../blocks/interceptor/notification.interceptor';
-import {DataOperationContextComponent} from "./data-operation-context/data-operation-context.component";
+import {DataOperationContextComponent} from './data-operation-context/data-operation-context.component';
+import { DynamicQuestionnaireComponent } from './dynamic-questionnaire/dynamic-questionnaire.component';
+import {DynamicQuestionnaireService} from './dynamic-questionnaire/dynamic-questionnaire.service';
+import {ReactiveFormsModule} from '@angular/forms';
+import {MaterialModule} from '../material/material.module';
 
 @NgModule({
     imports: [
         HermeneutSharedModule,
         CommonModule,
+        ReactiveFormsModule,
+        MaterialModule,
         DataSharingModule,
         PrivacyRiskAssessmentRoutingModule
     ],
     providers: [
         DataOperationsService,
+        DynamicQuestionnaireService,
         {
             provide: HTTP_INTERCEPTORS,
             useClass: AuthInterceptor,
@@ -58,7 +65,7 @@ import {DataOperationContextComponent} from "./data-operation-context/data-opera
             ]
         }
     ],
-    declarations: [DataOperationsComponent, DataOperationContextComponent]
+    declarations: [DataOperationsComponent, DataOperationContextComponent, DynamicQuestionnaireComponent]
 })
 export class PrivacyRiskAssessmentModule {
     // Fixes Translation Not Found in Lazy Loading modules

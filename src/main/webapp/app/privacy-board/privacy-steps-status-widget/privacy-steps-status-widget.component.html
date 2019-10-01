@@ -10,7 +10,7 @@
                         <a href="javascript:void(0);" class="collapse-link">Privacy Board</a>
                     </h2>
                 </mat-panel-title>
-                <mat-panel-description>
+                <mat-panel-description *ngIf="dataOperation.name">
                     <h3>
                         <a href="javascript:void(0);" class="collapse-link">{{dataOperation.name}}</a>
                     </h3>
@@ -46,14 +46,8 @@
                                [ngbTooltip]="statusEnum[privacyBoardStatus.operationDefinition][0] + statusEnum[privacyBoardStatus.operationDefinition].substr(1).toLowerCase()"></i>
                         </td>
                         <td class="text-center">
-                            <a *ngIf="privacyBoardStatus.operationDefinition === statusEnum.EMPTY"
-                               [routerLink]="['/']"><i
-                                class="fa fa-plus-square fa-lg"
-                                placement="top"
-                                aria-hidden="true"></i></a>
-                            <ng-container
-                                *ngIf="privacyBoardStatus.operationDefinition === statusEnum.PENDING || privacyBoardStatus.operationDefinition === statusEnum.FULL">
-                                <a [routerLink]="['/privacy-board/data-operation-context']">
+                            <ng-container>
+                                <a [routerLink]="['/privacy-risk-assessment/context']">
                                     <i placement="top" class="fa fa-pencil-square-o fa-lg"
                                        aria-hidden="true"></i>
                                 </a>

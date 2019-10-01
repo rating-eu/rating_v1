@@ -18,7 +18,7 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {
-    MatButtonModule,
+    MatButtonModule, MatDividerModule,
     MatExpansionModule,
     MatFormFieldModule,
     MatIconModule,
@@ -46,7 +46,8 @@ import {
         MatExpansionModule,
         MatTooltipModule,
         MatPaginatorModule,
-        MatSelectModule
+        MatSelectModule,
+        MatDividerModule
     ],
     exports: [
         MatTabsModule,
@@ -60,7 +61,8 @@ import {
         MatExpansionModule,
         MatTooltipModule,
         MatPaginatorModule,
-        MatSelectModule
+        MatSelectModule,
+        MatDividerModule
     ]
 })
 export class MaterialModule {

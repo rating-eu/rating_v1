@@ -7,10 +7,6 @@ const routes: Routes = [
     {
         path: '',
         component: PrivacyBoardComponent
-    },
-    {
-        path: 'data-operation-context',
-        component: DataOperationContextComponent
     }
 ];
 
