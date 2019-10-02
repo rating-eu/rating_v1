@@ -59,4 +59,12 @@ export class DynamicQuestionnaireService {
             );
         }
     }
+
+    removeRecipient(form: FormGroup, index: number) {
+        const recipients: FormArray = form.controls[DataOperationField[DataOperationField.DATA_RECIPIENTS]] as FormArray;
+
+        if(recipients){
+            recipients.removeAt(index);
+        }
+    }
 }

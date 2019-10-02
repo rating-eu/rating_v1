@@ -12,6 +12,7 @@ import {Router} from "@angular/router";
 import {DataRecipientMgm} from "../../entities/data-recipient-mgm";
 import {DataOperationField} from "../../entities/enumerations/gdpr/DataOperationField.enum";
 import {DataRecipientType} from "../../entities/enumerations/gdpr/DataRecipientType.enum";
+import * as _ from 'lodash';
 
 @Component({
     selector: 'jhi-dynamic-questionnaire',
@@ -145,6 +146,17 @@ export class DynamicQuestionnaireComponent implements OnInit, OnChanges, OnDestr
             this.dynamicQuestionnaireService.addDataRecipient(this.form);
 
             this.detectChanges();
+        }
+    }
+
+    removeRecipient(index: number) {
+        if (this.dataOperation && this.form) {
+            if (this.dataOperation.recipients) {
+                const removed: DataRecipientMgm[] = this.dataOperation.recipients.splice(index, 1);
+                this.dynamicQuestionnaireService.removeRecipient(this.form, index);
+
+                this.detectChanges();
+            }
         }
     }
 }

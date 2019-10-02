@@ -82,7 +82,8 @@
                     <mat-divider></mat-divider>
 
                     <!--Loop throught recipients-->
-                    <div *ngFor="let recipient of dataOperation.recipients; let i = index; let first = first; let last = last">
+                    <div
+                        *ngFor="let recipient of dataOperation.recipients; let i = index; let first = first; let last = last">
                         <!--Each recipient has its own FormGroup, with the name corresponding to the index.-->
                         <div [formGroupName]="i">
                             <div class="row">
@@ -98,7 +99,7 @@
                                         />
                                     </mat-form-field>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-3">
                                     <!--Type-->
                                     <label class="form-control-label">
                                         <h6 class="h3-dynamic-form">Type</h6>
@@ -109,6 +110,11 @@
                                             </mat-option>
                                         </mat-select>
                                     </mat-form-field>
+                                </div>
+                                <div class="col-md-1 middle">
+                                    <button type="button" class="btn btn-danger" (click)="removeRecipient(i)">
+                                        <i class="fa fa-trash" aria-hidden="true"></i>
+                                    </button>
                                 </div>
                             </div>
                         </div>
