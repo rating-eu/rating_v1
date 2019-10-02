@@ -71,17 +71,11 @@
                                [ngbTooltip]="statusEnum[privacyBoardStatus.impactEvaluation][0] + statusEnum[privacyBoardStatus.impactEvaluation].substr(1).toLowerCase()"></i>
                         </td>
                         <td class="text-center">
-                            <a *ngIf="privacyBoardStatus.impactEvaluation === statusEnum.EMPTY"
-                               [routerLink]="['/']"><i
-                                class="fa fa-plus-square fa-lg"
-                                placement="top"
-                                aria-hidden="true"></i></a>
-                            <ng-container
-                                *ngIf="privacyBoardStatus.impactEvaluation === statusEnum.PENDING || privacyBoardStatus.impactEvaluation === statusEnum.FULL">
-                                <a href="javascript:void(0)"
-                                   (click)="open(alert,'/')"><i
-                                    placement="top" class="fa fa-pencil-square-o fa-lg"
-                                    aria-hidden="true"></i></a>
+                            <ng-container>
+                                <a [routerLink]="['/privacy-risk-assessment/impact']">
+                                    <i placement="top" class="fa fa-pencil-square-o fa-lg"
+                                       aria-hidden="true"></i>
+                                </a>
                             </ng-container>
                         </td>
                     </tr>

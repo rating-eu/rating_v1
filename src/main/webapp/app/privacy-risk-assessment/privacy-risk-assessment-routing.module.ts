@@ -1,8 +1,8 @@
-import {Input, NgModule} from '@angular/core';
+import {NgModule} from '@angular/core';
 import {Routes, RouterModule} from '@angular/router';
 import {DataOperationsComponent} from './data-operations/data-operations.component';
-import {GDPRQuestionnaireMgm} from "../entities/gdpr-questionnaire-mgm";
 import {DataOperationContextComponent} from "./data-operation-context/data-operation-context.component";
+import {SecurityImpactComponent} from "./security-impact/security-impact.component";
 
 const routes: Routes = [
     {
@@ -12,6 +12,10 @@ const routes: Routes = [
     {
         path: 'context',
         component: DataOperationContextComponent
+    },
+    {
+        path: 'impact',
+        component: SecurityImpactComponent
     }
 ];
 
