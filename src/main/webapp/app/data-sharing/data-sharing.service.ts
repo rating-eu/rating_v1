@@ -138,9 +138,6 @@ export class DataSharingService {
 
     // MyCompany property
     set myCompany(myCompany: MyCompanyMgm) {
-        console.log('DS.MyCompany: ');
-        console.log(myCompany);
-
         this._myCompany = myCompany;
         this._myCompanySubject.next(this._myCompany);
     }
@@ -198,9 +195,6 @@ export class DataSharingService {
     }
 
     set role(role: Role) {
-        console.log('DS.role: ');
-        console.log(role);
-
         this._role = role;
         this._roleSubject.next(this._role);
     }
@@ -229,9 +223,6 @@ export class DataSharingService {
     }
 
     set user(user: User) {
-        console.log('DS.User: ');
-        console.log(user);
-
         this._user = user;
         this._userSubject.next(this.user);
 
