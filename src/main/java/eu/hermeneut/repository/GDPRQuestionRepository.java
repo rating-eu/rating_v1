@@ -14,12 +14,12 @@ import java.util.List;
 @SuppressWarnings("unused")
 @Repository
 public interface GDPRQuestionRepository extends JpaRepository<GDPRQuestion, Long> {
-    @Query("select distinct gdpr_question from GDPRQuestion gdpr_question left join fetch gdpr_question.answers")
+    @Query("SELECT DISTINCT gdpr_question FROM GDPRQuestion gdpr_question LEFT JOIN FETCH gdpr_question.answers")
     List<GDPRQuestion> findAllWithEagerRelationships();
 
-    @Query("select gdpr_question from GDPRQuestion gdpr_question left join fetch gdpr_question.answers where gdpr_question.id =:id")
+    @Query("SELECT DISTINCT gdpr_question FROM GDPRQuestion gdpr_question LEFT JOIN FETCH gdpr_question.answers WHERE gdpr_question.id =:id")
     GDPRQuestion findOneWithEagerRelationships(@Param("id") Long id);
 
-    @Query("SELECT question FROM GDPRQuestion question LEFT JOIN FETCH question.answers WHERE question.questionnaire.id = :questionnaireID")
+    @Query("SELECT DISTINCT question FROM GDPRQuestion question LEFT JOIN FETCH question.answers WHERE question.questionnaire.id = :questionnaireID")
     List<GDPRQuestion> findAllByQuestionnaire(@Param("questionnaireID") Long questionnaireID);
 }

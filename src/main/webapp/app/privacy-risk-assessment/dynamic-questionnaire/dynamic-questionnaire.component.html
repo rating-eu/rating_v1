@@ -149,7 +149,26 @@
         </form>
     </div>
     <div *ngSwitchCase="purposeEnum.IMPACT_EVALUATION">
-        Case Impact Evaluation
+        <form *ngIf="form" [formGroup]="form">
+            <div *ngFor="let question of questions; trackBy: trackByID"
+                 [ngSwitch]="question.dataOperationField" class="card-box row">
+
+                <div class="col-md-8">
+                    <label class="form-control-label">
+                        <h5 class="h3-dynamic-form">{{question?.text}}</h5>
+                    </label>
+                </div>
+                <div class="col-md-4">
+                    <mat-radio-group [formControlName]="question.securityPillar" class="radio-group">
+                        <mat-radio-button *ngFor="let answer of question.answers"
+                                          class="radio-button"
+                                          [value]="answer.dataImpact">
+                            {{answer.text}}
+                        </mat-radio-button>
+                    </mat-radio-group>
+                </div>
+            </div>
+        </form>
     </div>
     <div *ngSwitchCase="purposeEnum.THREAT_LIKELIHOOD">
         Case Threat Likelihood

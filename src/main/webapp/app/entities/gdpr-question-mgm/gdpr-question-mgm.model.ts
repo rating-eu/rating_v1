@@ -4,6 +4,9 @@ import {SecurityPillar} from '../enumerations/gdpr/SecurityPillar.enum';
 import {ThreatArea} from '../enumerations/gdpr/ThreatArea.enum';
 import {DataOperationField} from '../enumerations/gdpr/DataOperationField.enum';
 import {GDPRAnswerType} from '../enumerations/gdpr/GDPRAnswerType.enum';
+import {TranslationMgm} from '../translation-mgm';
+import {GDPRQuestionnaireMgm} from '../gdpr-questionnaire-mgm';
+import {GDPRAnswerMgm} from '../gdpr-answer-mgm';
 
 
 export class GDPRQuestionMgm implements BaseEntity {
@@ -17,9 +20,9 @@ export class GDPRQuestionMgm implements BaseEntity {
         public dataOperationField?: DataOperationField,
         public securityPillar?: SecurityPillar,
         public threatArea?: ThreatArea,
-        public translations?: BaseEntity[],
-        public questionnaire?: BaseEntity,
-        public answers?: BaseEntity[],
+        public translations?: TranslationMgm[],
+        public questionnaire?: GDPRQuestionnaireMgm,
+        public answers?: GDPRAnswerMgm[],
     ) {
     }
 }

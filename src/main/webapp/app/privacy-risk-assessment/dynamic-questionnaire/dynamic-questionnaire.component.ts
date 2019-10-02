@@ -87,7 +87,23 @@ export class DynamicQuestionnaireComponent implements OnInit, OnChanges, OnDestr
                         return a.order - b.order;
                     });
 
-                    this.form = this.dynamicQuestionnaireService.buildOperationContextForm(this.dataOperation, this.questions);
+                    switch (this._questionnaire.purpose) {
+                        case GDPRQuestionnairePurpose.OPERATION_CONTEXT: {
+                            this.form = this.dynamicQuestionnaireService.buildOperationContextForm(this.dataOperation, this.questions);
+
+                            break;
+                        }
+                        case GDPRQuestionnairePurpose.IMPACT_EVALUATION: {
+                            this.form = this.dynamicQuestionnaireService.buildImpactEvaluationForm(this.dataOperation, this.questions);
+
+                            break;
+                        }
+                        case GDPRQuestionnairePurpose.THREAT_LIKELIHOOD: {
+                            this.form = this.dynamicQuestionnaireService.buildThreatLikelihoodForm(this.dataOperation, this.questions);
+
+                            break;
+                        }
+                    }
                 }
             );
 
@@ -134,7 +150,7 @@ export class DynamicQuestionnaireComponent implements OnInit, OnChanges, OnDestr
     ngOnChanges(changes: SimpleChanges): void {
     }
 
-    back(){
+    back() {
         this.router.navigate(['/privacy-board']);
     }
 
