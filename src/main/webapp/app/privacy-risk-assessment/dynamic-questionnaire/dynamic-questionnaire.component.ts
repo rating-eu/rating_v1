@@ -88,7 +88,7 @@ export class DynamicQuestionnaireComponent implements OnInit, OnChanges, OnDestr
                         return a.order - b.order;
                     });
 
-                    this.form = this.dynamicQuestionnaireService.buildOperationContextForm(this.questions);
+                    this.form = this.dynamicQuestionnaireService.buildOperationContextForm(this.dataOperation, this.questions);
                 }
             );
 

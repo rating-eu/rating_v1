@@ -16,9 +16,9 @@ import java.util.List;
 @Repository
 public interface DataOperationRepository extends JpaRepository<DataOperation, Long> {
 
-    @Query("SELECT dataOperation FROM DataOperation dataOperation WHERE dataOperation.companyProfile.id = :companyProfileID")
+    @Query("SELECT dataOperation FROM DataOperation dataOperation LEFT JOIN FETCH dataOperation.recipients LEFT JOIN FETCH dataOperation.impacts LEFT JOIN FETCH dataOperation.threats WHERE dataOperation.companyProfile.id = :companyProfileID")
     List<DataOperation> findAllByCompanyProfile(@Param("companyProfileID") Long companyProfileID);
 
-    @Query("SELECT dataOperation FROM DataOperation dataOperation WHERE dataOperation.companyProfile.id = :companyProfileID AND dataOperation.id = :operationID")
+    @Query("SELECT dataOperation FROM DataOperation dataOperation LEFT JOIN FETCH dataOperation.recipients LEFT JOIN FETCH dataOperation.impacts LEFT JOIN FETCH dataOperation.threats WHERE dataOperation.companyProfile.id = :companyProfileID AND dataOperation.id = :operationID")
     DataOperation findOneByCompanyProfileAndOperationID(@Param("companyProfileID") Long companyProfileID, @Param("operationID") Long operationID);
 }

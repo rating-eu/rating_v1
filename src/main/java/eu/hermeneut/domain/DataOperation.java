@@ -51,18 +51,15 @@ public class DataOperation implements Serializable {
     @Column(name = "data_processor", nullable = false)
     private String dataProcessor;
 
-    @OneToMany(mappedBy = "operation", fetch = FetchType.EAGER)
-    @JsonIgnore
+    @OneToMany(mappedBy = "operation", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<DataRecipient> recipients = new HashSet<>();
 
-    @OneToMany(mappedBy = "operation", fetch = FetchType.EAGER)
-    @JsonIgnore
+    @OneToMany(mappedBy = "operation", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<SecurityImpact> impacts = new HashSet<>();
 
-    @OneToMany(mappedBy = "operation", fetch = FetchType.EAGER)
-    @JsonIgnore
+    @OneToMany(mappedBy = "operation", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<DataThreat> threats = new HashSet<>();
 

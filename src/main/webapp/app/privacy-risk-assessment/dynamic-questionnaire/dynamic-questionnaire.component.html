@@ -82,30 +82,35 @@
                     <mat-divider></mat-divider>
 
                     <!--Loop throught recipients-->
-                    <div
-                        *ngFor="let recipient of dataOperation.recipients; let i = index; let first = first; let last = last">
+                    <div *ngFor="let recipient of dataOperation.recipients; let i = index; let first = first; let last = last">
                         <!--Each recipient has its own FormGroup, with the name corresponding to the index.-->
                         <div [formGroupName]="i">
-                            <!--Name-->
-                            <label class="form-control-label">
-                                <h7 class="h3-dynamic-form">Name</h7>
-                            </label>
-                            <mat-form-field>
-                                <input matInput
-                                       [formControlName]="'name'" [(ngModel)]="recipient.name"
-                                       type="text" required
-                                />
-                            </mat-form-field>
-                            <!--Type-->
-                            <label class="form-control-label">
-                                <h7 class="h3-dynamic-form">Type</h7>
-                            </label>
-                            <mat-form-field>
-                                <mat-select [formControlName]="'type'" [(ngModel)]="recipient.type">
-                                    <mat-option *ngFor="let type of dataRecipientTypes" [value]="type">{{type}}
-                                    </mat-option>
-                                </mat-select>
-                            </mat-form-field>
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <!--Name-->
+                                    <label class="form-control-label">
+                                        <h6 class="h3-dynamic-form">Name</h6>
+                                    </label>
+                                    <mat-form-field>
+                                        <input matInput
+                                               [formControlName]="'name'" [(ngModel)]="recipient.name"
+                                               type="text" required
+                                        />
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-md-4">
+                                    <!--Type-->
+                                    <label class="form-control-label">
+                                        <h6 class="h3-dynamic-form">Type</h6>
+                                    </label>
+                                    <mat-form-field>
+                                        <mat-select [formControlName]="'type'" [(ngModel)]="recipient.type">
+                                            <mat-option *ngFor="let type of dataRecipientTypes" [value]="type">{{type}}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+                            </div>
                         </div>
 
                         <mat-divider *ngIf="!last"></mat-divider>

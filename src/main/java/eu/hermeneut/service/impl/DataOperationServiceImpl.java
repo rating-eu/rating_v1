@@ -1,5 +1,8 @@
 package eu.hermeneut.service.impl;
 
+import eu.hermeneut.domain.DataRecipient;
+import eu.hermeneut.domain.DataThreat;
+import eu.hermeneut.domain.SecurityImpact;
 import eu.hermeneut.service.DataOperationService;
 import eu.hermeneut.domain.DataOperation;
 import eu.hermeneut.repository.DataOperationRepository;
@@ -9,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * Service Implementation for managing DataOperation.
@@ -34,6 +38,31 @@ public class DataOperationServiceImpl implements DataOperationService {
     @Override
     public DataOperation save(DataOperation dataOperation) {
         log.debug("Request to save DataOperation : {}", dataOperation);
+
+        if (dataOperation != null) {
+            Set<DataRecipient> recipients = dataOperation.getRecipients();
+            Set<SecurityImpact> impacts = dataOperation.getImpacts();
+            Set<DataThreat> threats = dataOperation.getThreats();
+
+            if (recipients != null && !recipients.isEmpty()) {
+                recipients.stream().parallel().forEach((dataRecipient) -> {
+                    dataRecipient.setOperation(dataOperation);
+                });
+            }
+
+            if (impacts != null && !impacts.isEmpty()) {
+                impacts.stream().parallel().forEach((securityImpact) -> {
+                    securityImpact.setOperation(dataOperation);
+                });
+            }
+
+            if (threats != null && !threats.isEmpty()) {
+                threats.stream().parallel().forEach((dataThreat) -> {
+                    dataThreat.setOperation(dataOperation);
+                });
+            }
+        }
+
         return dataOperationRepository.save(dataOperation);
     }
 

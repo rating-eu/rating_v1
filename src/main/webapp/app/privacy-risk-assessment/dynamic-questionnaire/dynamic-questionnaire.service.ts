@@ -3,6 +3,7 @@ import {GDPRQuestionMgm} from '../../entities/gdpr-question-mgm';
 import {FormArray, FormBuilder, FormControl, FormGroup} from '@angular/forms';
 import {DataRecipientMgm} from "../../entities/data-recipient-mgm";
 import {DataOperationField} from "../../entities/enumerations/gdpr/DataOperationField.enum";
+import {DataOperationMgm} from "../../entities/data-operation-mgm";
 
 @Injectable()
 export class DynamicQuestionnaireService {
@@ -10,7 +11,7 @@ export class DynamicQuestionnaireService {
     constructor(private formBuilder: FormBuilder) {
     }
 
-    public buildOperationContextForm(questions: GDPRQuestionMgm[]): FormGroup {
+    public buildOperationContextForm(dataOperation: DataOperationMgm, questions: GDPRQuestionMgm[]): FormGroup {
         const formGroup: FormGroup = this.formBuilder.group(
             {}
         );
@@ -30,6 +31,14 @@ export class DynamicQuestionnaireService {
                 }
                 case DataOperationField.DATA_RECIPIENTS: {
                     formGroup.addControl(DataOperationField[field], this.formBuilder.array(new Array<DataRecipientMgm>()));
+
+                    if (dataOperation && dataOperation.recipients) {
+                        dataOperation.recipients.forEach((recipient: DataRecipientMgm) => {
+                                this.addDataRecipient(formGroup);
+                            }
+                        );
+                    }
+
                     break;
                 }
             }
