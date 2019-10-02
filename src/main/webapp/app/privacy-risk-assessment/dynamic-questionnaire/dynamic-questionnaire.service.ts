@@ -1,21 +1,53 @@
-import { Injectable } from '@angular/core';
-import {GDPRQuestionMgm} from "../../entities/gdpr-question-mgm";
-import {FormControl, FormGroup} from "@angular/forms";
+import {Injectable} from '@angular/core';
+import {GDPRQuestionMgm} from '../../entities/gdpr-question-mgm';
+import {FormArray, FormBuilder, FormControl, FormGroup} from '@angular/forms';
+import {DataRecipientMgm} from "../../entities/data-recipient-mgm";
+import {DataOperationField} from "../../entities/enumerations/gdpr/DataOperationField.enum";
 
 @Injectable()
 export class DynamicQuestionnaireService {
 
-  constructor() { }
+    constructor(private formBuilder: FormBuilder) {
+    }
 
-  toOperationContextForm(questions: GDPRQuestionMgm[]): FormGroup{
-      const group: any = {};
+    public buildOperationContextForm(questions: GDPRQuestionMgm[]): FormGroup {
+        const formGroup: FormGroup = this.formBuilder.group(
+            {}
+        );
 
-      questions.forEach((question) => {
-          group[question.id] = new FormControl('');
-      });
+        questions.forEach((question: GDPRQuestionMgm) => {
+            const field: DataOperationField = question.dataOperationField;
 
-      const formGroup: FormGroup = new FormGroup(group);
+            switch (field) {
+                case DataOperationField.NAME:
+                case DataOperationField.PROCESSED_DATA:
+                case DataOperationField.PROCESSING_PURPOSE:
+                case DataOperationField.PROCESSING_MEANS:
+                case DataOperationField.DATA_PROCESSOR:
+                case DataOperationField.DATA_SUBJECT: {
+                    formGroup.addControl(DataOperationField[field], this.formBuilder.control(''));
+                    break;
+                }
+                case DataOperationField.DATA_RECIPIENTS: {
+                    formGroup.addControl(DataOperationField[field], this.formBuilder.array(new Array<DataRecipientMgm>()));
+                    break;
+                }
+            }
+        });
 
-      return formGroup;
-  }
+        return formGroup;
+    }
+
+    public addDataRecipient(form: FormGroup) {
+        const recipients: FormArray = form.controls[DataOperationField[DataOperationField.DATA_RECIPIENTS]] as FormArray;
+
+        if (recipients) {
+            recipients.push(
+                this.formBuilder.group({
+                    'name': '',
+                    'type': null
+                })
+            );
+        }
+    }
 }

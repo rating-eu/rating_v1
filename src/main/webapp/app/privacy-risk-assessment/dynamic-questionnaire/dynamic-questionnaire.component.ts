@@ -7,10 +7,11 @@ import {Observable, Subscription} from 'rxjs';
 import {HttpResponse} from '@angular/common/http';
 import {FormGroup} from '@angular/forms';
 import {DynamicQuestionnaireService} from './dynamic-questionnaire.service';
-import {DataOperationField} from '../../entities/enumerations/gdpr/DataOperationField';
 import {DataSharingService} from "../../data-sharing/data-sharing.service";
 import {Router} from "@angular/router";
 import {DataRecipientMgm} from "../../entities/data-recipient-mgm";
+import {DataOperationField} from "../../entities/enumerations/gdpr/DataOperationField.enum";
+import {DataRecipientType} from "../../entities/enumerations/gdpr/DataRecipientType.enum";
 
 @Component({
     selector: 'jhi-dynamic-questionnaire',
@@ -28,6 +29,8 @@ export class DynamicQuestionnaireComponent implements OnInit, OnChanges, OnDestr
 
     public purposeEnum = GDPRQuestionnairePurpose;
     public dataOperationFieldEnum = DataOperationField;
+    public dataRecipientTypeEnum = DataRecipientType;
+    public dataRecipientTypes: DataRecipientType[];
     public form: FormGroup;
 
     constructor(private router: Router,
@@ -40,6 +43,7 @@ export class DynamicQuestionnaireComponent implements OnInit, OnChanges, OnDestr
 
     ngOnInit() {
         this.subscriptions = [];
+        this.dataRecipientTypes = Object.keys(DataRecipientType).map((key) => DataRecipientType[key]);
     }
 
     public submitOperationContext() {
@@ -84,7 +88,7 @@ export class DynamicQuestionnaireComponent implements OnInit, OnChanges, OnDestr
                         return a.order - b.order;
                     });
 
-                    this.form = this.dynamicQuestionnaireService.toOperationContextForm(this.questions);
+                    this.form = this.dynamicQuestionnaireService.buildOperationContextForm(this.questions);
                 }
             );
 
@@ -132,8 +136,14 @@ export class DynamicQuestionnaireComponent implements OnInit, OnChanges, OnDestr
     }
 
     addRecipient() {
-        if (this.dataOperation) {
+        if (this.dataOperation && this.form) {
+            if (!this.dataOperation.recipients) {
+                this.dataOperation.recipients = [];
+            }
+
             this.dataOperation.recipients.push(new DataRecipientMgm());
+            this.dynamicQuestionnaireService.addDataRecipient(this.form);
+
             this.detectChanges();
         }
     }

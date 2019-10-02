@@ -2,7 +2,7 @@ import {BaseEntity} from './../../shared';
 import {Language} from '../enumerations/gdpr/Language.enum';
 import {SecurityPillar} from '../enumerations/gdpr/SecurityPillar.enum';
 import {ThreatArea} from '../enumerations/gdpr/ThreatArea.enum';
-import {DataOperationField} from '../enumerations/gdpr/DataOperationField';
+import {DataOperationField} from '../enumerations/gdpr/DataOperationField.enum';
 import {GDPRAnswerType} from '../enumerations/gdpr/GDPRAnswerType.enum';
 
 

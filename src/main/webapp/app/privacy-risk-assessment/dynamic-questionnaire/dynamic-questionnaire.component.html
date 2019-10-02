@@ -1,95 +1,116 @@
 <div *ngIf="questionnaire && dataOperation" [ngSwitch]="questionnaire.purpose" style="margin-bottom: 10%">
     <div *ngSwitchCase="purposeEnum.OPERATION_CONTEXT">
         <form *ngIf="form" [formGroup]="form" (ngSubmit)="submitOperationContext()">
-            <div *ngFor="let question of questions; trackBy: trackByID" class="card-box">
+            <div *ngFor="let question of questions; trackBy: trackByID"
+                 [ngSwitch]="question.dataOperationField" class="card-box">
                 <label class="form-control-label" [attr.for]="question?.id">
                     <h5 class="h3-dynamic-form"> {{question?.text}}</h5>
                 </label>
 
-                <mat-form-field [ngSwitch]="question.dataOperationField" [floatLabel]="'auto'"
-                                [hideRequiredMarker]="false">
+                <!--Name-->
+                <mat-form-field *ngSwitchCase="dataOperationFieldEnum.NAME">
                     <input matInput
                            *ngSwitchCase="dataOperationFieldEnum.NAME"
-                           [formControlName]="question.id"
+                           [formControlName]="dataOperationFieldEnum.NAME"
                            [(ngModel)]="dataOperation.name"
                            [placeholder]="question.description"
                            type="text"
-                           required>
+                           required
+                    />
+                </mat-form-field>
+
+                <!--Processed Data-->
+                <mat-form-field *ngSwitchCase="dataOperationFieldEnum.PROCESSED_DATA">
                     <input matInput
                            *ngSwitchCase="dataOperationFieldEnum.PROCESSED_DATA"
-                           [formControlName]="question.id"
+                           [formControlName]="dataOperationFieldEnum.PROCESSED_DATA"
                            [(ngModel)]="dataOperation.processedData"
                            [placeholder]="question.description" type="text"
-                           required>
+                           required
+                    />
+                </mat-form-field>
+
+                <!--Processing Purpose-->
+                <mat-form-field *ngSwitchCase="dataOperationFieldEnum.PROCESSING_PURPOSE">
                     <input matInput
                            *ngSwitchCase="dataOperationFieldEnum.PROCESSING_PURPOSE"
-                           [formControlName]="question.id"
+                           [formControlName]="dataOperationFieldEnum.PROCESSING_PURPOSE"
                            [(ngModel)]="dataOperation.processingPurpose"
                            [placeholder]="question.description" type="text"
-                           required>
+                           required
+                    />
+                </mat-form-field>
+
+                <!--Processing Means-->
+                <mat-form-field *ngSwitchCase="dataOperationFieldEnum.PROCESSING_MEANS">
                     <input matInput
                            *ngSwitchCase="dataOperationFieldEnum.PROCESSING_MEANS"
-                           [formControlName]="question.id"
+                           [formControlName]="dataOperationFieldEnum.PROCESSING_MEANS"
                            [(ngModel)]="dataOperation.processingMeans"
                            [placeholder]="question.description" type="text"
-                           required>
+                           required
+                    />
+                </mat-form-field>
+
+                <!--Data Processor-->
+                <mat-form-field *ngSwitchCase="dataOperationFieldEnum.DATA_PROCESSOR">
                     <input matInput
                            *ngSwitchCase="dataOperationFieldEnum.DATA_PROCESSOR"
-                           [formControlName]="question.id"
+                           [formControlName]="dataOperationFieldEnum.DATA_PROCESSOR"
                            [(ngModel)]="dataOperation.dataProcessor"
                            [placeholder]="question.description" type="text"
-                           required>
+                           required
+                    />
+                </mat-form-field>
+
+                <!--Data Subject-->
+                <mat-form-field *ngSwitchCase="dataOperationFieldEnum.DATA_SUBJECT">
                     <input matInput
                            *ngSwitchCase="dataOperationFieldEnum.DATA_SUBJECT"
-                           [formControlName]="question.id"
+                           [formControlName]="dataOperationFieldEnum.DATA_SUBJECT"
                            [(ngModel)]="dataOperation.dataSubject"
                            [placeholder]="question.description" type="text"
-                           required>
-                    <div *ngSwitchCase="dataOperationFieldEnum.DATA_RECIPIENTS" class="form-group">
-                        <button type="button"><i class="fa fa-plus" aria-hidden="true" (click)="addRecipient()"></i>
-                        </button>
-                        <div *ngFor="let recipient of dataOperation.recipients; let i=index; let last=last;">
-                            <!--Recipient-->
-                            <div class="row">
-                                <div class="col">
-                                    <label class="form-control-label" jhiTranslate="hermeneutApp.dataRecipient.name">
-                                        Name
-                                    </label>
-                                    <mat-form-field [floatLabel]="'auto'"
-                                                    [hideRequiredMarker]="false">
-                                        <input matInput
-
-                                               [(ngModel)]="recipient.name"
-                                               [placeholder]="question.description" type="text"
-                                               required>
-                                    </mat-form-field>
-                                </div>
-                                <div class="col">
-                                    <label class="form-control-label" jhiTranslate="hermeneutApp.dataRecipient.type">
-                                        Type
-                                    </label>
-                                    <mat-form-field [floatLabel]="'auto'"
-                                                    [hideRequiredMarker]="false">
-                                        <mat-select
-
-                                            [(ngModel)]="recipient.type"
-                                            required>
-                                            <mat-option
-                                                value="INTERNAL">{{'hermeneutApp.DataRecipientType.INTERNAL' | translate}}</mat-option>
-                                            <mat-option
-                                                value="EXTERNAL">{{'hermeneutApp.DataRecipientType.EXTERNAL' | translate}}</mat-option>
-                                        </mat-select>
-                                    </mat-form-field>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <input matInput
-                           *ngSwitchCase="dataOperationFieldEnum.DATA_RECIPIENTS"
-                           [formControlName]="question.id"
-                           [placeholder]="question.description" type="text"
-                           required>
+                           required
+                    />
                 </mat-form-field>
+
+                <!--Data Recipients-->
+                <mat-card *ngSwitchCase="dataOperationFieldEnum.DATA_RECIPIENTS"
+                          [formArrayName]="dataOperationFieldEnum.DATA_RECIPIENTS">
+                    <mat-card-title>Recipients</mat-card-title>
+                    <button type="button" (click)="addRecipient()" class="fa fa-plus"></button>
+                    <mat-divider></mat-divider>
+
+                    <!--Loop throught recipients-->
+                    <div
+                        *ngFor="let recipient of dataOperation.recipients; let i = index; let first = first; let last = last">
+                        <!--Each recipient has its own FormGroup, with the name corresponding to the index.-->
+                        <div [formGroupName]="i">
+                            <!--Name-->
+                            <label class="form-control-label">
+                                <h7 class="h3-dynamic-form">Name</h7>
+                            </label>
+                            <mat-form-field>
+                                <input matInput
+                                       [formControlName]="'name'" [(ngModel)]="recipient.name"
+                                       type="text" required
+                                />
+                            </mat-form-field>
+                            <!--Type-->
+                            <label class="form-control-label">
+                                <h7 class="h3-dynamic-form">Type</h7>
+                            </label>
+                            <mat-form-field>
+                                <mat-select [formControlName]="'type'" [(ngModel)]="recipient.type">
+                                    <mat-option *ngFor="let type of dataRecipientTypes" [value]="type">{{type}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+
+                        <mat-divider *ngIf="!last"></mat-divider>
+                    </div>
+                </mat-card>
             </div>
             <div class="form-row text-right d-block" style="margin-bottom: 40px">
                 <button class="btn btn-success waves-light waves-effect w-md" type="submit"
