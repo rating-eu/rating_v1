@@ -136,6 +136,10 @@ export class DynamicQuestionnaireComponent implements OnInit, OnChanges, OnDestr
     ngOnChanges(changes: SimpleChanges): void {
     }
 
+    back(){
+        this.router.navigate(['/privacy-board']);
+    }
+
     addRecipient() {
         if (this.dataOperation && this.form) {
             if (!this.dataOperation.recipients) {

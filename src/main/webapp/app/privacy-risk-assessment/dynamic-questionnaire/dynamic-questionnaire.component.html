@@ -99,7 +99,7 @@
                                 <div class="col-md-9">
                                     <!--Name-->
                                     <label class="form-control-label">
-                                        <h6 class="h3-dynamic-form">Name</h6>
+                                        <h6 class="h3-dynamic-form">Title</h6>
                                     </label>
                                     <mat-form-field>
                                         <input matInput
@@ -132,11 +132,19 @@
                     </div>
                 </mat-card>
             </div>
-            <div class="form-row text-right d-block" style="margin-bottom: 40px">
-                <button class="btn btn-success waves-light waves-effect w-md" type="submit"
-                        [disabled]="!form.valid">
-                    <i class="far fa-save"></i>&nbsp;<span>Submit</span>
-                </button>
+            <div class="row">
+                <div class="col-md-6 text-left">
+                    <button class="btn btn-info waves-light waves-effect w-md" type="button"
+                            (click)="back()">
+                        <i class="fa fa-remove"></i>&nbsp;<span>Cancel</span>
+                    </button>
+                </div>
+                <div class="col-md-6 text-right">
+                    <button class="btn btn-success waves-light waves-effect w-md" type="submit"
+                            [disabled]="!form.valid">
+                        <i class="far fa-save"></i>&nbsp;<span>Save</span>
+                    </button>
+                </div>
             </div>
         </form>
     </div>
