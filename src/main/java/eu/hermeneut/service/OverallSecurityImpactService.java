@@ -32,6 +32,14 @@ public interface OverallSecurityImpactService {
     OverallSecurityImpact findOne(Long id);
 
     /**
+     * Get the overallSecurityImpact by DataOperation.
+     *
+     * @param dataOperationID the id of the DataOperation
+     * @return the entity
+     */
+    OverallSecurityImpact findOneByDataOperation(Long dataOperationID);
+
+    /**
      * Delete the "id" overallSecurityImpact.
      *
      * @param id the id of the entity

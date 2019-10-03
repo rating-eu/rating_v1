@@ -62,6 +62,13 @@ public class OverallSecurityImpactServiceImpl implements OverallSecurityImpactSe
         return overallSecurityImpactRepository.findOne(id);
     }
 
+    @Override
+    @Transactional(readOnly = true)
+    public OverallSecurityImpact findOneByDataOperation(Long dataOperationID) {
+        log.debug("Request to get OverallSecurityImpact by DataOperation : {}", dataOperationID);
+        return this.overallSecurityImpactRepository.findOneByDataOperation(dataOperationID);
+    }
+
     /**
      * Delete the overallSecurityImpact by id.
      *
