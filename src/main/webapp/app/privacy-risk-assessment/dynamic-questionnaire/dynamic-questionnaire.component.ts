@@ -30,6 +30,8 @@ export class DynamicQuestionnaireComponent implements OnInit, OnChanges, OnDestr
     private _questionnaire: GDPRQuestionnaireMgm;
     private _questions: GDPRQuestionMgm[];
 
+    public questionsByThreatAreaMap: Map<ThreatArea, GDPRQuestionMgm[]>;
+
     public purposeEnum = GDPRQuestionnairePurpose;
     public dataOperationFieldEnum = DataOperationField;
     public dataRecipientTypes: DataRecipientType[];
@@ -159,6 +161,10 @@ export class DynamicQuestionnaireComponent implements OnInit, OnChanges, OnDestr
         }
     }
 
+    public submitThreatLikelihood() {
+
+    }
+
     @Input()
     set dataOperation(dataOperation: DataOperationMgm) {
         this._dataOperation = dataOperation;
@@ -195,6 +201,26 @@ export class DynamicQuestionnaireComponent implements OnInit, OnChanges, OnDestr
                         }
                         case GDPRQuestionnairePurpose.THREAT_LIKELIHOOD: {
                             this.form = this.dynamicQuestionnaireService.buildThreatLikelihoodForm(this.dataOperation, this.questions);
+
+                            this.questionsByThreatAreaMap = new Map();
+
+                            this.threatAreas.forEach((area: ThreatArea) => {
+                                this.questionsByThreatAreaMap.set(area, []);
+                            });
+
+                            this._questions.forEach((question: GDPRQuestionMgm) => {
+                                const area: ThreatArea = question.threatArea;
+
+                                switch (area) {
+                                    case ThreatArea.NETWORK_AND_TECHNICAL_RESOURCES:
+                                    case ThreatArea.PROCEDURES_RELATED_TO_THE_PROCESSING_OF_PERSONAL_DATA:
+                                    case ThreatArea.PEOPLE_INVOLVED_IN_THE_PROCESSING_OF_PERSONAL_DATA:
+                                    case ThreatArea.BUSINESS_SECTOR_AND_SCALE_OF_PROCESSING: {
+                                        this.questionsByThreatAreaMap.get(area).push(question);
+                                        break;
+                                    }
+                                }
+                            });
 
                             break;
                         }

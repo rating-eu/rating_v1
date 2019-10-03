@@ -187,11 +187,98 @@
         </form>
     </div>
     <div *ngSwitchCase="purposeEnum.THREAT_LIKELIHOOD">
-        Case Threat Likelihood
-        <form>
+        <form *ngIf="form" [formGroup]="form" (ngSubmit)="submitThreatLikelihood()">
             <mat-tab-group>
-                <mat-tab *ngFor="let area of threatAreas" label="{{area | replace:'_':' ' | titlecase}}">
-                    Ciao
+                <mat-tab *ngFor="let area of threatAreas" [ngSwitch]="area"
+                         label="{{area | replace:'_':' ' | titlecase}}">
+                    <div *ngSwitchCase="threatAreaEnum.NETWORK_AND_TECHNICAL_RESOURCES">
+                        <div *ngFor="let question of questionsByThreatAreaMap.get(area); trackBy: trackByID"
+                             [ngSwitch]="question.dataOperationField" class="card-box row">
+
+                            <div class="col-md-11">
+                                <label class="form-control-label">
+                                    <h5 class="h3-dynamic-form">{{question?.text}}</h5>
+                                </label>
+                            </div>
+                            <div class="col-md-1">
+                                <mat-radio-group class="radio-group"
+                                                 [formControlName]="question.id"
+                                >
+                                    <mat-radio-button *ngFor="let answer of question.answers"
+                                                      class="radio-button"
+                                                      [value]="answer.answerValue">
+                                        {{answer.text}}
+                                    </mat-radio-button>
+                                </mat-radio-group>
+                            </div>
+                        </div>
+                    </div>
+                    <div *ngSwitchCase="threatAreaEnum.PROCEDURES_RELATED_TO_THE_PROCESSING_OF_PERSONAL_DATA">
+                        <div *ngFor="let question of questionsByThreatAreaMap.get(area); trackBy: trackByID"
+                             [ngSwitch]="question.dataOperationField" class="card-box row">
+
+                            <div class="col-md-11">
+                                <label class="form-control-label">
+                                    <h5 class="h3-dynamic-form">{{question?.text}}</h5>
+                                </label>
+                            </div>
+                            <div class="col-md-1">
+                                <mat-radio-group class="radio-group"
+                                                 [formControlName]="question.id"
+                                >
+                                    <mat-radio-button *ngFor="let answer of question.answers"
+                                                      class="radio-button"
+                                                      [value]="answer.answerValue">
+                                        {{answer.text}}
+                                    </mat-radio-button>
+                                </mat-radio-group>
+                            </div>
+                        </div>
+                    </div>
+                    <div *ngSwitchCase="threatAreaEnum.PEOPLE_INVOLVED_IN_THE_PROCESSING_OF_PERSONAL_DATA">
+                        <div *ngFor="let question of questionsByThreatAreaMap.get(area); trackBy: trackByID"
+                             [ngSwitch]="question.dataOperationField" class="card-box row">
+
+                            <div class="col-md-11">
+                                <label class="form-control-label">
+                                    <h5 class="h3-dynamic-form">{{question?.text}}</h5>
+                                </label>
+                            </div>
+                            <div class="col-md-1">
+                                <mat-radio-group class="radio-group"
+                                                 [formControlName]="question.id"
+                                >
+                                    <mat-radio-button *ngFor="let answer of question.answers"
+                                                      class="radio-button"
+                                                      [value]="answer.answerValue">
+                                        {{answer.text}}
+                                    </mat-radio-button>
+                                </mat-radio-group>
+                            </div>
+                        </div>
+                    </div>
+                    <div *ngSwitchCase="threatAreaEnum.BUSINESS_SECTOR_AND_SCALE_OF_PROCESSING">
+                        <div *ngFor="let question of questionsByThreatAreaMap.get(area); trackBy: trackByID"
+                             [ngSwitch]="question.dataOperationField" class="card-box row">
+
+                            <div class="col-md-11">
+                                <label class="form-control-label">
+                                    <h5 class="h3-dynamic-form">{{question?.text}}</h5>
+                                </label>
+                            </div>
+                            <div class="col-md-1">
+                                <mat-radio-group class="radio-group"
+                                                 [formControlName]="question.id"
+                                >
+                                    <mat-radio-button *ngFor="let answer of question.answers"
+                                                      class="radio-button"
+                                                      [value]="answer.answerValue">
+                                        {{answer.text}}
+                                    </mat-radio-button>
+                                </mat-radio-group>
+                            </div>
+                        </div>
+                    </div>
                 </mat-tab>
             </mat-tab-group>
         </form>

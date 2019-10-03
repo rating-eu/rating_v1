@@ -98,6 +98,9 @@ export class DynamicQuestionnaireService {
             {}
         );
 
+        questions.forEach((question: GDPRQuestionMgm) => {
+            formGroup.addControl(String(question.id), this.formBuilder.control(''));
+        });
 
         return formGroup;
     }
