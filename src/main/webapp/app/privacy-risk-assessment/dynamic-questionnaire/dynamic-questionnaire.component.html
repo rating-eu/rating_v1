@@ -149,10 +149,6 @@
         </form>
     </div>
     <div *ngSwitchCase="purposeEnum.IMPACT_EVALUATION">
-        <pre *ngIf="securityImpactsMap">
-            <div *ngFor="let key of securityImpactsMap.keys()">{{key}} = {{securityImpactsMap.get(key) | json}}</div>
-        </pre>
-
         <form *ngIf="form" [formGroup]="form" (ngSubmit)="submitSecurityImpacts()">
             <div *ngFor="let question of questions; trackBy: trackByID"
                  [ngSwitch]="question.dataOperationField" class="card-box row">

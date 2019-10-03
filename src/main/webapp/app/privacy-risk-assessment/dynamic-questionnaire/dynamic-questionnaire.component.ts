@@ -131,6 +131,26 @@ export class DynamicQuestionnaireComponent implements OnInit, OnChanges, OnDestr
 
     public submitSecurityImpacts() {
         console.log('Submit SecurityImpacts...');
+
+        if (this._dataOperation.impacts && this.dataOperation.impacts.length) {
+            console.log('Impacts are set on the DataOperation...');
+        }
+
+        if (this._dataOperation.impacts && this.dataOperation.impacts.length) {
+            if (this.dataOperation.id) {
+                this.dataOperationMgmService.update(this._dataOperation).toPromise()
+                    .then(
+                        (operationResponse: HttpResponse<DataOperationMgm>) => {
+                            this._dataOperation = operationResponse.body;
+                            this.dataSharingService.dataOperation = this._dataOperation;
+
+                            this.router.navigate(['/privacy-board']);
+                        }
+                    );
+            } else {
+                // To perform this step a DataOperation must already exist.
+            }
+        }
     }
 
     @Input()
