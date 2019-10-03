@@ -149,7 +149,11 @@
         </form>
     </div>
     <div *ngSwitchCase="purposeEnum.IMPACT_EVALUATION">
-        <form *ngIf="form" [formGroup]="form">
+        <pre *ngIf="securityImpactsMap">
+            <div *ngFor="let key of securityImpactsMap.keys()">{{key}} = {{securityImpactsMap.get(key) | json}}</div>
+        </pre>
+
+        <form *ngIf="form" [formGroup]="form" (ngSubmit)="submitSecurityImpacts()">
             <div *ngFor="let question of questions; trackBy: trackByID"
                  [ngSwitch]="question.dataOperationField" class="card-box row">
 
@@ -159,13 +163,29 @@
                     </label>
                 </div>
                 <div class="col-md-4">
-                    <mat-radio-group [formControlName]="question.securityPillar" class="radio-group">
+                    <mat-radio-group class="radio-group"
+                                     [formControlName]="question.securityPillar"
+                                     [(ngModel)]="securityImpactsMap.get(question.securityPillar).impact">
                         <mat-radio-button *ngFor="let answer of question.answers"
                                           class="radio-button"
                                           [value]="answer.dataImpact">
                             {{answer.text}}
                         </mat-radio-button>
                     </mat-radio-group>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 text-left">
+                    <button class="btn btn-info waves-light waves-effect w-md" type="button"
+                            (click)="back()">
+                        <i class="fa fa-remove"></i>&nbsp;<span>Cancel</span>
+                    </button>
+                </div>
+                <div class="col-md-6 text-right">
+                    <button class="btn btn-success waves-light waves-effect w-md" type="submit"
+                            [disabled]="!form.valid">
+                        <i class="far fa-save"></i>&nbsp;<span>Save</span>
+                    </button>
                 </div>
             </div>
         </form>

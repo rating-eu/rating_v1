@@ -7,11 +7,13 @@ import {Observable, Subscription} from 'rxjs';
 import {HttpResponse} from '@angular/common/http';
 import {FormGroup} from '@angular/forms';
 import {DynamicQuestionnaireService} from './dynamic-questionnaire.service';
-import {DataSharingService} from "../../data-sharing/data-sharing.service";
-import {Router} from "@angular/router";
-import {DataRecipientMgm} from "../../entities/data-recipient-mgm";
-import {DataOperationField} from "../../entities/enumerations/gdpr/DataOperationField.enum";
-import {DataRecipientType} from "../../entities/enumerations/gdpr/DataRecipientType.enum";
+import {DataSharingService} from '../../data-sharing/data-sharing.service';
+import {Router} from '@angular/router';
+import {DataRecipientMgm} from '../../entities/data-recipient-mgm';
+import {DataOperationField} from '../../entities/enumerations/gdpr/DataOperationField.enum';
+import {DataRecipientType} from '../../entities/enumerations/gdpr/DataRecipientType.enum';
+import {SecurityImpactMgm} from '../../entities/security-impact-mgm';
+import {SecurityPillar} from '../../entities/enumerations/gdpr/SecurityPillar.enum';
 
 @Component({
     selector: 'jhi-dynamic-questionnaire',
@@ -32,6 +34,10 @@ export class DynamicQuestionnaireComponent implements OnInit, OnChanges, OnDestr
     public dataRecipientTypes: DataRecipientType[];
     public form: FormGroup;
 
+    public securityPillarEnum = SecurityPillar;
+    public securityPillars: SecurityPillar[];
+    public securityImpactsMap: Map<SecurityPillar, SecurityImpactMgm>;
+
     constructor(private router: Router,
                 private questionsService: GDPRQuestionMgmService,
                 private dataOperationMgmService: DataOperationMgmService,
@@ -43,6 +49,65 @@ export class DynamicQuestionnaireComponent implements OnInit, OnChanges, OnDestr
     ngOnInit() {
         this.subscriptions = [];
         this.dataRecipientTypes = Object.keys(DataRecipientType).map((key) => DataRecipientType[key]);
+
+        this.securityPillars = Object.keys(SecurityPillar).map((key) => SecurityPillar[key]);
+        this.securityImpactsMap = new Map();
+    }
+
+    ngOnChanges(changes: SimpleChanges): void {
+        console.log('Dynamic Questionnaire OnChanges...');
+
+        if (this._dataOperation && this._questionnaire) {
+            const purpose: GDPRQuestionnairePurpose = this._questionnaire.purpose;
+
+            switch (purpose) {
+                case GDPRQuestionnairePurpose.OPERATION_CONTEXT: {
+
+                    break;
+                }
+                case GDPRQuestionnairePurpose.IMPACT_EVALUATION: {
+                    console.log('Case ImpactEvaluation...');
+
+                    if (this.dataOperation.impacts && this.dataOperation.impacts.length) {
+                        this.dataOperation.impacts.forEach((impact: SecurityImpactMgm) => {
+                            this.securityImpactsMap.set(impact.securityPillar, impact);
+                        });
+
+                        this.securityPillars.forEach((securityPillar: SecurityPillar) => {
+                            if (this.securityImpactsMap.has(securityPillar)) {
+                                // Ok, do nothing!
+                            } else {
+                                // Create the missing SecurityImpact
+                                const securityImpact: SecurityImpactMgm = new SecurityImpactMgm(undefined, securityPillar);
+
+                                this.dataOperation.impacts.push(securityImpact);
+                                this.securityImpactsMap.set(securityPillar, securityImpact);
+                            }
+                        });
+                    } else {
+                        // Initialize the SecurityImpacts
+                        this.dataOperation.impacts = [];
+
+                        this.securityPillars.forEach((securityPillar: SecurityPillar) => {
+                            // Create the missing SecurityImpact
+                            const securityImpact: SecurityImpactMgm = new SecurityImpactMgm(undefined, securityPillar);
+
+                            this.dataOperation.impacts.push(securityImpact);
+                            this.securityImpactsMap.set(securityPillar, securityImpact);
+                        });
+                    }
+
+                    console.log('SecurityImpactsMap:');
+                    console.log('Keys.length: ' + this.securityImpactsMap.size);
+
+                    break;
+                }
+                case GDPRQuestionnairePurpose.THREAT_LIKELIHOOD: {
+
+                    break;
+                }
+            }
+        }
     }
 
     public submitOperationContext() {
@@ -62,6 +127,10 @@ export class DynamicQuestionnaireComponent implements OnInit, OnChanges, OnDestr
                 this.router.navigate(['/privacy-board']);
             })
         );
+    }
+
+    public submitSecurityImpacts() {
+        console.log('Submit SecurityImpacts...');
     }
 
     @Input()
@@ -145,9 +214,6 @@ export class DynamicQuestionnaireComponent implements OnInit, OnChanges, OnDestr
                 subscription.unsubscribe();
             });
         }
-    }
-
-    ngOnChanges(changes: SimpleChanges): void {
     }
 
     back() {
