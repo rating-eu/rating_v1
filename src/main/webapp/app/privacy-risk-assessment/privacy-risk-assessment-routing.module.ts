@@ -1,8 +1,9 @@
 import {NgModule} from '@angular/core';
 import {Routes, RouterModule} from '@angular/router';
 import {DataOperationsComponent} from './data-operations/data-operations.component';
-import {DataOperationContextComponent} from "./data-operation-context/data-operation-context.component";
-import {SecurityImpactComponent} from "./security-impact/security-impact.component";
+import {DataOperationContextComponent} from './data-operation-context/data-operation-context.component';
+import {SecurityImpactComponent} from './security-impact/security-impact.component';
+import {DataThreatComponent} from './data-threat/data-threat.component';
 
 const routes: Routes = [
     {
@@ -16,6 +17,10 @@ const routes: Routes = [
     {
         path: 'impact',
         component: SecurityImpactComponent
+    },
+    {
+        path: 'threat',
+        component: DataThreatComponent
     }
 ];
 

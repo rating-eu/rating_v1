@@ -14,6 +14,7 @@ import {DataOperationField} from '../../entities/enumerations/gdpr/DataOperation
 import {DataRecipientType} from '../../entities/enumerations/gdpr/DataRecipientType.enum';
 import {SecurityImpactMgm} from '../../entities/security-impact-mgm';
 import {SecurityPillar} from '../../entities/enumerations/gdpr/SecurityPillar.enum';
+import {ThreatArea} from "../../entities/enumerations/gdpr/ThreatArea.enum";
 
 @Component({
     selector: 'jhi-dynamic-questionnaire',
@@ -38,6 +39,9 @@ export class DynamicQuestionnaireComponent implements OnInit, OnChanges, OnDestr
     public securityPillars: SecurityPillar[];
     public securityImpactsMap: Map<SecurityPillar, SecurityImpactMgm>;
 
+    public threatAreaEnum = ThreatArea;
+    public threatAreas: ThreatArea[];
+
     constructor(private router: Router,
                 private questionsService: GDPRQuestionMgmService,
                 private dataOperationMgmService: DataOperationMgmService,
@@ -52,6 +56,8 @@ export class DynamicQuestionnaireComponent implements OnInit, OnChanges, OnDestr
 
         this.securityPillars = Object.keys(SecurityPillar).map((key) => SecurityPillar[key]);
         this.securityImpactsMap = new Map();
+
+        this.threatAreas = Object.keys(ThreatArea).map((key) => ThreatArea[key]);
     }
 
     ngOnChanges(changes: SimpleChanges): void {

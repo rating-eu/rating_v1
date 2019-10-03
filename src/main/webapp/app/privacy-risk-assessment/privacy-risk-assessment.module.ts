@@ -19,6 +19,7 @@ import {DynamicQuestionnaireService} from './dynamic-questionnaire/dynamic-quest
 import {ReactiveFormsModule} from '@angular/forms';
 import {MaterialModule} from '../material/material.module';
 import { SecurityImpactComponent } from './security-impact/security-impact.component';
+import { DataThreatComponent } from './data-threat/data-threat.component';
 
 @NgModule({
     imports: [
@@ -66,7 +67,7 @@ import { SecurityImpactComponent } from './security-impact/security-impact.compo
             ]
         }
     ],
-    declarations: [DataOperationsComponent, DataOperationContextComponent, DynamicQuestionnaireComponent, SecurityImpactComponent]
+    declarations: [DataOperationsComponent, DataOperationContextComponent, DynamicQuestionnaireComponent, SecurityImpactComponent, DataThreatComponent]
 })
 export class PrivacyRiskAssessmentModule {
     // Fixes Translation Not Found in Lazy Loading modules

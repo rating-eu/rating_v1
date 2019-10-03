@@ -188,5 +188,12 @@
     </div>
     <div *ngSwitchCase="purposeEnum.THREAT_LIKELIHOOD">
         Case Threat Likelihood
+        <form>
+            <mat-tab-group>
+                <mat-tab *ngFor="let area of threatAreas" label="{{area | replace:'_':' ' | titlecase}}">
+                    Ciao
+                </mat-tab>
+            </mat-tab-group>
+        </form>
     </div>
 </div>
