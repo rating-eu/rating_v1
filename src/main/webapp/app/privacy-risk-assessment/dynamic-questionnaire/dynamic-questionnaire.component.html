@@ -153,12 +153,12 @@
             <div *ngFor="let question of questions; trackBy: trackByID"
                  [ngSwitch]="question.dataOperationField" class="card-box row">
 
-                <div class="col-md-8">
+                <div class="col-md-10">
                     <label class="form-control-label">
                         <h5 class="h3-dynamic-form">{{question?.text}}</h5>
                     </label>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-2">
                     <mat-radio-group class="radio-group"
                                      [formControlName]="question.securityPillar"
                                      [(ngModel)]="securityImpactsMap.get(question.securityPillar).impact">
