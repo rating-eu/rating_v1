@@ -1,20 +1,7 @@
-import { BaseEntity } from './../../shared';
-
-export const enum DataImpact {
-    'LOW',
-    'MEDIUM',
-    'HIGH',
-    'VERY_HIGH'
-}
-
-export const enum Language {
-    'IT',
-    'EN',
-    'DE',
-    'ES',
-    'FR',
-    'PT_PT'
-}
+import {BaseEntity} from './../../shared';
+import {DataImpact} from '../enumerations/gdpr/DataImpact.enum';
+import {Language} from '../enumerations/gdpr/Language.enum';
+import {TranslationMgm} from '../translation-mgm';
 
 export class DataImpactDescriptionMgm implements BaseEntity {
     constructor(
@@ -22,7 +9,7 @@ export class DataImpactDescriptionMgm implements BaseEntity {
         public impact?: DataImpact,
         public description?: string,
         public language?: Language,
-        public translations?: BaseEntity[],
+        public translations?: TranslationMgm[],
     ) {
     }
 }
