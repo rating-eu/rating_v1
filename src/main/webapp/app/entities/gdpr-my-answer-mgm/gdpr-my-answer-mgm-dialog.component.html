@@ -14,10 +14,10 @@
         </div>
 
         <div class="form-group">
-            <label class="form-control-label" jhiTranslate="hermeneutApp.gDPRMyAnswer.questionnaireStatus" for="field_questionnaireStatus">Questionnaire Status</label>
-            <select class="form-control" id="field_questionnaireStatus" name="questionnaireStatus" [(ngModel)]="gDPRMyAnswer.questionnaireStatus" >
+            <label class="form-control-label" jhiTranslate="hermeneutApp.gDPRMyAnswer.gDPRQuestionnaireStatus" for="field_gDPRQuestionnaireStatus">G DPR Questionnaire Status</label>
+            <select class="form-control" id="field_gDPRQuestionnaireStatus" name="gDPRQuestionnaireStatus" [(ngModel)]="gDPRMyAnswer.gDPRQuestionnaireStatus" >
                 <option [ngValue]="null"></option>
-                <option [ngValue]="gDPRQuestionnaireStatusOption.id === gDPRMyAnswer.questionnaireStatus?.id ? gDPRMyAnswer.questionnaireStatus : gDPRQuestionnaireStatusOption" *ngFor="let gDPRQuestionnaireStatusOption of gdprquestionnairestatuses; trackBy: trackGDPRQuestionnaireStatusById">{{gDPRQuestionnaireStatusOption.status}}</option>
+                <option [ngValue]="gDPRQuestionnaireStatusOption.id === gDPRMyAnswer.gDPRQuestionnaireStatus?.id ? gDPRMyAnswer.gDPRQuestionnaireStatus : gDPRQuestionnaireStatusOption" *ngFor="let gDPRQuestionnaireStatusOption of gdprquestionnairestatuses; trackBy: trackGDPRQuestionnaireStatusById">{{gDPRQuestionnaireStatusOption.id}}</option>
             </select>
         </div>
         <div class="form-group">

@@ -24,7 +24,7 @@ public class GDPRMyAnswer implements Serializable {
     private Long id;
 
     @ManyToOne
-    private GDPRQuestionnaireStatus questionnaireStatus;
+    private GDPRQuestionnaireStatus gDPRQuestionnaireStatus;
 
     @ManyToOne
     private GDPRQuestion question;
@@ -41,17 +41,17 @@ public class GDPRMyAnswer implements Serializable {
         this.id = id;
     }
 
-    public GDPRQuestionnaireStatus getQuestionnaireStatus() {
-        return questionnaireStatus;
+    public GDPRQuestionnaireStatus getGDPRQuestionnaireStatus() {
+        return gDPRQuestionnaireStatus;
     }
 
-    public GDPRMyAnswer questionnaireStatus(GDPRQuestionnaireStatus gDPRQuestionnaireStatus) {
-        this.questionnaireStatus = gDPRQuestionnaireStatus;
+    public GDPRMyAnswer gDPRQuestionnaireStatus(GDPRQuestionnaireStatus gDPRQuestionnaireStatus) {
+        this.gDPRQuestionnaireStatus = gDPRQuestionnaireStatus;
         return this;
     }
 
-    public void setQuestionnaireStatus(GDPRQuestionnaireStatus gDPRQuestionnaireStatus) {
-        this.questionnaireStatus = gDPRQuestionnaireStatus;
+    public void setGDPRQuestionnaireStatus(GDPRQuestionnaireStatus gDPRQuestionnaireStatus) {
+        this.gDPRQuestionnaireStatus = gDPRQuestionnaireStatus;
     }
 
     public GDPRQuestion getQuestion() {

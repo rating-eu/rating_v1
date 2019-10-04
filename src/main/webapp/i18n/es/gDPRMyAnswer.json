@@ -16,7 +16,7 @@
             "detail": {
                 "title": "GDPR My Answer"
             },
-            "questionnaireStatus": "Questionnaire Status",
+            "gDPRQuestionnaireStatus": "GDPR Questionnaire Status",
             "question": "Question",
             "answer": "Answer"
         }

@@ -4,10 +4,10 @@
     <hr>
     <jhi-alert-error></jhi-alert-error>
     <dl class="row-md jh-entity-details">
-        <dt><span jhiTranslate="hermeneutApp.gDPRMyAnswer.questionnaireStatus">Questionnaire Status</span></dt>
+        <dt><span jhiTranslate="hermeneutApp.gDPRMyAnswer.gDPRQuestionnaireStatus">G DPR Questionnaire Status</span></dt>
         <dd>
-            <div *ngIf="gDPRMyAnswer.questionnaireStatus">
-                <a [routerLink]="['/gdpr-questionnaire-status-mgm', gDPRMyAnswer.questionnaireStatus?.id]">{{gDPRMyAnswer.questionnaireStatus?.status}}</a>
+            <div *ngIf="gDPRMyAnswer.gDPRQuestionnaireStatus">
+                <a [routerLink]="['/gdpr-questionnaire-status-mgm', gDPRMyAnswer.gDPRQuestionnaireStatus?.id]">{{gDPRMyAnswer.gDPRQuestionnaireStatus?.id}}</a>
             </div>
         </dd>
         <dt><span jhiTranslate="hermeneutApp.gDPRMyAnswer.question">Question</span></dt>

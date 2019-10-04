@@ -2,6 +2,12 @@
     "fluentMethods": true,
     "relationships": [
         {
+            "relationshipType": "one-to-many",
+            "relationshipName": "answers",
+            "otherEntityName": "gDPRMyAnswer",
+            "otherEntityRelationshipName": "gDPRQuestionnaireStatus"
+        },
+        {
             "relationshipType": "many-to-one",
             "relationshipName": "operation",
             "otherEntityName": "dataOperation",

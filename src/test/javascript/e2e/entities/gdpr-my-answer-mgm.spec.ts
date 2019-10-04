@@ -33,7 +33,7 @@ describe('GDPRMyAnswer e2e test', () => {
 
     it('should create and save GDPRMyAnswers', () => {
         gDPRMyAnswerComponentsPage.clickOnCreateButton();
-        gDPRMyAnswerDialogPage.questionnaireStatusSelectLastOption();
+        gDPRMyAnswerDialogPage.gDPRQuestionnaireStatusSelectLastOption();
         gDPRMyAnswerDialogPage.questionSelectLastOption();
         gDPRMyAnswerDialogPage.answerSelectLastOption();
         gDPRMyAnswerDialogPage.save();
@@ -62,7 +62,7 @@ export class GDPRMyAnswerDialogPage {
     modalTitle = element(by.css('h4#myGDPRMyAnswerLabel'));
     saveButton = element(by.css('.modal-footer .btn.btn-primary'));
     closeButton = element(by.css('button.close'));
-    questionnaireStatusSelect = element(by.css('select#field_questionnaireStatus'));
+    gDPRQuestionnaireStatusSelect = element(by.css('select#field_gDPRQuestionnaireStatus'));
     questionSelect = element(by.css('select#field_question'));
     answerSelect = element(by.css('select#field_answer'));
 
@@ -70,20 +70,20 @@ export class GDPRMyAnswerDialogPage {
         return this.modalTitle.getAttribute('jhiTranslate');
     }
 
-    questionnaireStatusSelectLastOption = function() {
-        this.questionnaireStatusSelect.all(by.tagName('option')).last().click();
+    gDPRQuestionnaireStatusSelectLastOption = function() {
+        this.gDPRQuestionnaireStatusSelect.all(by.tagName('option')).last().click();
     };
 
-    questionnaireStatusSelectOption = function(option) {
-        this.questionnaireStatusSelect.sendKeys(option);
+    gDPRQuestionnaireStatusSelectOption = function(option) {
+        this.gDPRQuestionnaireStatusSelect.sendKeys(option);
     };
 
-    getQuestionnaireStatusSelect = function() {
-        return this.questionnaireStatusSelect;
+    getGDPRQuestionnaireStatusSelect = function() {
+        return this.gDPRQuestionnaireStatusSelect;
     };
 
-    getQuestionnaireStatusSelectedOption = function() {
-        return this.questionnaireStatusSelect.element(by.css('option:checked')).getText();
+    getGDPRQuestionnaireStatusSelectedOption = function() {
+        return this.gDPRQuestionnaireStatusSelect.element(by.css('option:checked')).getText();
     };
 
     questionSelectLastOption = function() {

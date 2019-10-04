@@ -17,7 +17,7 @@
             <thead>
             <tr>
             <th><span jhiTranslate="global.field.id">ID</span></th>
-            <th><span jhiTranslate="hermeneutApp.gDPRMyAnswer.questionnaireStatus">Questionnaire Status</span></th>
+            <th><span jhiTranslate="hermeneutApp.gDPRMyAnswer.gDPRQuestionnaireStatus">G DPR Questionnaire Status</span></th>
             <th><span jhiTranslate="hermeneutApp.gDPRMyAnswer.question">Question</span></th>
             <th><span jhiTranslate="hermeneutApp.gDPRMyAnswer.answer">Answer</span></th>
             <th></th>
@@ -27,8 +27,8 @@
             <tr *ngFor="let gDPRMyAnswer of gDPRMyAnswers ;trackBy: trackId">
                 <td><a [routerLink]="['../gdpr-my-answer-mgm', gDPRMyAnswer.id ]">{{gDPRMyAnswer.id}}</a></td>
                 <td>
-                    <div *ngIf="gDPRMyAnswer.questionnaireStatus">
-                        <a [routerLink]="['../gdpr-questionnaire-status-mgm', gDPRMyAnswer.questionnaireStatus?.id ]" >{{gDPRMyAnswer.questionnaireStatus?.status}}</a>
+                    <div *ngIf="gDPRMyAnswer.gDPRQuestionnaireStatus">
+                        <a [routerLink]="['../gdpr-questionnaire-status-mgm', gDPRMyAnswer.gDPRQuestionnaireStatus?.id ]" >{{gDPRMyAnswer.gDPRQuestionnaireStatus?.id}}</a>
                     </div>
                 </td>
                 <td>

@@ -8,9 +8,9 @@
     -->
     <changeSet id="20190924115810-2" author="jhipster">
         
-        <addForeignKeyConstraint baseColumnNames="questionnaire_status_id"
+        <addForeignKeyConstraint baseColumnNames="gdprquestionnaire_status_id"
                                  baseTableName="gdpr_my_answer"
-                                 constraintName="fk_gdprmy_answer_questionnaire_status_id"
+                                 constraintName="fk_gdprmy_answer_gdprquestionnaire_status_id"
                                  referencedColumnNames="id"
                                  referencedTableName="gdpr_questionnaire_status"/>
 

@@ -2,10 +2,10 @@
     "fluentMethods": true,
     "relationships": [
         {
-            "relationshipType": "many-to-one",
-            "relationshipName": "questionnaireStatus",
+            "relationshipName": "gDPRQuestionnaireStatus",
             "otherEntityName": "gDPRQuestionnaireStatus",
-            "otherEntityField": "status"
+            "relationshipType": "many-to-one",
+            "otherEntityField": "id"
         },
         {
             "relationshipType": "many-to-one",

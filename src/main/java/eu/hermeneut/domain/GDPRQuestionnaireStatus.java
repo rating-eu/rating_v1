@@ -1,5 +1,6 @@
 package eu.hermeneut.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -7,6 +8,8 @@ import javax.persistence.*;
 import javax.validation.constraints.*;
 
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.Objects;
 
 import eu.hermeneut.domain.enumeration.Status;
@@ -30,6 +33,11 @@ public class GDPRQuestionnaireStatus implements Serializable {
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
     private Status status;
+
+    @OneToMany(mappedBy = "gDPRQuestionnaireStatus")
+    @JsonIgnore
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    private Set<GDPRMyAnswer> answers = new HashSet<>();
 
     @ManyToOne
     private DataOperation operation;
@@ -60,6 +68,31 @@ public class GDPRQuestionnaireStatus implements Serializable {
 
     public void setStatus(Status status) {
         this.status = status;
+    }
+
+    public Set<GDPRMyAnswer> getAnswers() {
+        return answers;
+    }
+
+    public GDPRQuestionnaireStatus answers(Set<GDPRMyAnswer> gDPRMyAnswers) {
+        this.answers = gDPRMyAnswers;
+        return this;
+    }
+
+    public GDPRQuestionnaireStatus addAnswers(GDPRMyAnswer gDPRMyAnswer) {
+        this.answers.add(gDPRMyAnswer);
+        gDPRMyAnswer.setGDPRQuestionnaireStatus(this);
+        return this;
+    }
+
+    public GDPRQuestionnaireStatus removeAnswers(GDPRMyAnswer gDPRMyAnswer) {
+        this.answers.remove(gDPRMyAnswer);
+        gDPRMyAnswer.setGDPRQuestionnaireStatus(null);
+        return this;
+    }
+
+    public void setAnswers(Set<GDPRMyAnswer> gDPRMyAnswers) {
+        this.answers = gDPRMyAnswers;
     }
 
     public DataOperation getOperation() {
