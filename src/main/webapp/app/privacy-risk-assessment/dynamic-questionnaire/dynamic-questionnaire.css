@@ -48,6 +48,11 @@ h1, h2, h3, h4, h5, h6 {
     margin: auto 0 !important;
 }
 
-mat-panel-title label{
+mat-panel-title label {
     margin: auto 0 !important;
+}
+
+mat-expansion-panel mat-expansion-panel-header {
+    height: auto !important;
+    padding: 1rem;
 }

@@ -170,9 +170,25 @@
                  [ngSwitch]="question.dataOperationField" class="card-box row">
 
                 <div class="col-md-10">
-                    <label class="form-control-label">
-                        <h5 class="h3-dynamic-form">{{question?.text}}</h5>
-                    </label>
+                    <mat-expansion-panel [hideToggle]="true">
+                        <mat-expansion-panel-header>
+                            <mat-panel-title>
+                                <label class="form-control-label">
+                                    <h5 class="h3-dynamic-form"> {{question?.text}}</h5>
+                                </label>
+                            </mat-panel-title>
+                            <mat-panel-description>
+                                <mat-icon>info</mat-icon>
+                            </mat-panel-description>
+                        </mat-expansion-panel-header>
+
+                        <p *ngIf="question.description">
+                            {{question.description}}
+                        </p>
+                        <p *ngIf="!question.description">
+                            Waiting for description...
+                        </p>
+                    </mat-expansion-panel>
                 </div>
                 <div class="col-md-2">
                     <mat-radio-group class="radio-group"
