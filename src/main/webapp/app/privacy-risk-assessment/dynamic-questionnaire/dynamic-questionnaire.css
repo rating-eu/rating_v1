@@ -37,3 +37,8 @@ mat-form-field {
     display: block;
     margin: 5px;
 }
+
+.mat-expansion-panel-header-description {
+    display: flex;
+    justify-content: flex-end;
+}
