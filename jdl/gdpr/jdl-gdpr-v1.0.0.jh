@@ -586,7 +586,8 @@ relationship OneToMany{
     OverallDataThreat{threats(threatArea)} to DataThreat,
     GDPRQuestion{translations(language)} to Translation,
     GDPRAnswer{translations(language)} to Translation,
-    DataImpactDescription{translations(language)} to Translation
+    DataImpactDescription{translations(language)} to Translation,
+    GDPRQuestionnaireStatus{answers} to GDPRMyAnswer
 }
 
 relationship ManyToOne{
@@ -595,7 +596,6 @@ relationship ManyToOne{
     GDPRQuestionnaireStatus{questionnaire(name)} to GDPRQuestionnaire,
     GDPRQuestionnaireStatus{user(login)} to User,
     GDPRQuestion{questionnaire(name)} to GDPRQuestionnaire,
-    GDPRMyAnswer{questionnaireStatus(status)} to GDPRQuestionnaireStatus,
     GDPRMyAnswer{question(text)} to GDPRQuestion,
     GDPRMyAnswer{answer} to GDPRAnswer
 }
