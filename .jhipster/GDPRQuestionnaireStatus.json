@@ -34,6 +34,14 @@
             "fieldValidateRules": [
                 "required"
             ]
+        },
+        {
+            "fieldName": "role",
+            "fieldType": "Role",
+            "fieldValues": "ROLE_ADMIN,ROLE_USER,ROLE_EXTERNAL_AUDIT,ROLE_CISO",
+            "fieldValidateRules": [
+                "required"
+            ]
         }
     ],
     "changelogDate": "20190924115807",

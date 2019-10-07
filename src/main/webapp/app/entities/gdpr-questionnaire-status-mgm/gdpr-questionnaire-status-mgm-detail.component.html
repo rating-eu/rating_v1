@@ -8,6 +8,10 @@
         <dd>
             <span jhiTranslate="{{'hermeneutApp.Status.' + gDPRQuestionnaireStatus.status}}">{{gDPRQuestionnaireStatus.status}}</span>
         </dd>
+        <dt><span jhiTranslate="hermeneutApp.gDPRQuestionnaireStatus.role">Role</span></dt>
+        <dd>
+            <span jhiTranslate="{{'hermeneutApp.Role.' + gDPRQuestionnaireStatus.role}}">{{gDPRQuestionnaireStatus.role}}</span>
+        </dd>
         <dt><span jhiTranslate="hermeneutApp.gDPRQuestionnaireStatus.operation">Operation</span></dt>
         <dd>
             <div *ngIf="gDPRQuestionnaireStatus.operation">

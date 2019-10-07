@@ -18,6 +18,7 @@
             <tr>
             <th><span jhiTranslate="global.field.id">ID</span></th>
             <th><span jhiTranslate="hermeneutApp.gDPRQuestionnaireStatus.status">Status</span></th>
+            <th><span jhiTranslate="hermeneutApp.gDPRQuestionnaireStatus.role">Role</span></th>
             <th><span jhiTranslate="hermeneutApp.gDPRQuestionnaireStatus.operation">Operation</span></th>
             <th><span jhiTranslate="hermeneutApp.gDPRQuestionnaireStatus.questionnaire">Questionnaire</span></th>
             <th><span jhiTranslate="hermeneutApp.gDPRQuestionnaireStatus.user">User</span></th>
@@ -28,6 +29,7 @@
             <tr *ngFor="let gDPRQuestionnaireStatus of gDPRQuestionnaireStatuses ;trackBy: trackId">
                 <td><a [routerLink]="['../gdpr-questionnaire-status-mgm', gDPRQuestionnaireStatus.id ]">{{gDPRQuestionnaireStatus.id}}</a></td>
                 <td jhiTranslate="{{'hermeneutApp.Status.' + gDPRQuestionnaireStatus.status}}">{{gDPRQuestionnaireStatus.status}}</td>
+                <td jhiTranslate="{{'hermeneutApp.Role.' + gDPRQuestionnaireStatus.role}}">{{gDPRQuestionnaireStatus.role}}</td>
                 <td>
                     <div *ngIf="gDPRQuestionnaireStatus.operation">
                         <a [routerLink]="['../data-operation-mgm', gDPRQuestionnaireStatus.operation?.id ]" >{{gDPRQuestionnaireStatus.operation?.name}}</a>

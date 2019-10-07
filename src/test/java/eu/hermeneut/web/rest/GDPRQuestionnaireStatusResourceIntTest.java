@@ -31,6 +31,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 import eu.hermeneut.domain.enumeration.Status;
+import eu.hermeneut.domain.enumeration.Role;
 /**
  * Test class for the GDPRQuestionnaireStatusResource REST controller.
  *
@@ -42,6 +43,9 @@ public class GDPRQuestionnaireStatusResourceIntTest {
 
     private static final Status DEFAULT_STATUS = Status.EMPTY;
     private static final Status UPDATED_STATUS = Status.PENDING;
+
+    private static final Role DEFAULT_ROLE = Role.ROLE_ADMIN;
+    private static final Role UPDATED_ROLE = Role.ROLE_USER;
 
     @Autowired
     private GDPRQuestionnaireStatusRepository gDPRQuestionnaireStatusRepository;
@@ -84,7 +88,8 @@ public class GDPRQuestionnaireStatusResourceIntTest {
      */
     public static GDPRQuestionnaireStatus createEntity(EntityManager em) {
         GDPRQuestionnaireStatus gDPRQuestionnaireStatus = new GDPRQuestionnaireStatus()
-            .status(DEFAULT_STATUS);
+            .status(DEFAULT_STATUS)
+            .role(DEFAULT_ROLE);
         return gDPRQuestionnaireStatus;
     }
 
@@ -109,6 +114,7 @@ public class GDPRQuestionnaireStatusResourceIntTest {
         assertThat(gDPRQuestionnaireStatusList).hasSize(databaseSizeBeforeCreate + 1);
         GDPRQuestionnaireStatus testGDPRQuestionnaireStatus = gDPRQuestionnaireStatusList.get(gDPRQuestionnaireStatusList.size() - 1);
         assertThat(testGDPRQuestionnaireStatus.getStatus()).isEqualTo(DEFAULT_STATUS);
+        assertThat(testGDPRQuestionnaireStatus.getRole()).isEqualTo(DEFAULT_ROLE);
     }
 
     @Test
@@ -150,6 +156,24 @@ public class GDPRQuestionnaireStatusResourceIntTest {
 
     @Test
     @Transactional
+    public void checkRoleIsRequired() throws Exception {
+        int databaseSizeBeforeTest = gDPRQuestionnaireStatusRepository.findAll().size();
+        // set the field null
+        gDPRQuestionnaireStatus.setRole(null);
+
+        // Create the GDPRQuestionnaireStatus, which fails.
+
+        restGDPRQuestionnaireStatusMockMvc.perform(post("/api/gdpr-questionnaire-statuses")
+            .contentType(TestUtil.APPLICATION_JSON_UTF8)
+            .content(TestUtil.convertObjectToJsonBytes(gDPRQuestionnaireStatus)))
+            .andExpect(status().isBadRequest());
+
+        List<GDPRQuestionnaireStatus> gDPRQuestionnaireStatusList = gDPRQuestionnaireStatusRepository.findAll();
+        assertThat(gDPRQuestionnaireStatusList).hasSize(databaseSizeBeforeTest);
+    }
+
+    @Test
+    @Transactional
     public void getAllGDPRQuestionnaireStatuses() throws Exception {
         // Initialize the database
         gDPRQuestionnaireStatusRepository.saveAndFlush(gDPRQuestionnaireStatus);
@@ -159,7 +183,8 @@ public class GDPRQuestionnaireStatusResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.[*].id").value(hasItem(gDPRQuestionnaireStatus.getId().intValue())))
-            .andExpect(jsonPath("$.[*].status").value(hasItem(DEFAULT_STATUS.toString())));
+            .andExpect(jsonPath("$.[*].status").value(hasItem(DEFAULT_STATUS.toString())))
+            .andExpect(jsonPath("$.[*].role").value(hasItem(DEFAULT_ROLE.toString())));
     }
 
     @Test
@@ -173,7 +198,8 @@ public class GDPRQuestionnaireStatusResourceIntTest {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8_VALUE))
             .andExpect(jsonPath("$.id").value(gDPRQuestionnaireStatus.getId().intValue()))
-            .andExpect(jsonPath("$.status").value(DEFAULT_STATUS.toString()));
+            .andExpect(jsonPath("$.status").value(DEFAULT_STATUS.toString()))
+            .andExpect(jsonPath("$.role").value(DEFAULT_ROLE.toString()));
     }
 
     @Test
@@ -197,7 +223,8 @@ public class GDPRQuestionnaireStatusResourceIntTest {
         // Disconnect from session so that the updates on updatedGDPRQuestionnaireStatus are not directly saved in db
         em.detach(updatedGDPRQuestionnaireStatus);
         updatedGDPRQuestionnaireStatus
-            .status(UPDATED_STATUS);
+            .status(UPDATED_STATUS)
+            .role(UPDATED_ROLE);
 
         restGDPRQuestionnaireStatusMockMvc.perform(put("/api/gdpr-questionnaire-statuses")
             .contentType(TestUtil.APPLICATION_JSON_UTF8)
@@ -209,6 +236,7 @@ public class GDPRQuestionnaireStatusResourceIntTest {
         assertThat(gDPRQuestionnaireStatusList).hasSize(databaseSizeBeforeUpdate);
         GDPRQuestionnaireStatus testGDPRQuestionnaireStatus = gDPRQuestionnaireStatusList.get(gDPRQuestionnaireStatusList.size() - 1);
         assertThat(testGDPRQuestionnaireStatus.getStatus()).isEqualTo(UPDATED_STATUS);
+        assertThat(testGDPRQuestionnaireStatus.getRole()).isEqualTo(UPDATED_ROLE);
     }
 
     @Test

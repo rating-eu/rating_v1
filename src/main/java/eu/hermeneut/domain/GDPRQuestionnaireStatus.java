@@ -14,6 +14,8 @@ import java.util.Objects;
 
 import eu.hermeneut.domain.enumeration.Status;
 
+import eu.hermeneut.domain.enumeration.Role;
+
 /**
  * A GDPRQuestionnaireStatus.
  */
@@ -33,6 +35,11 @@ public class GDPRQuestionnaireStatus implements Serializable {
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
     private Status status;
+
+    @NotNull
+    @Enumerated(EnumType.STRING)
+    @Column(name = "jhi_role", nullable = false)
+    private Role role;
 
     @OneToMany(mappedBy = "gDPRQuestionnaireStatus")
     @JsonIgnore
@@ -68,6 +75,19 @@ public class GDPRQuestionnaireStatus implements Serializable {
 
     public void setStatus(Status status) {
         this.status = status;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public GDPRQuestionnaireStatus role(Role role) {
+        this.role = role;
+        return this;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
     }
 
     public Set<GDPRMyAnswer> getAnswers() {
@@ -160,6 +180,7 @@ public class GDPRQuestionnaireStatus implements Serializable {
         return "GDPRQuestionnaireStatus{" +
             "id=" + getId() +
             ", status='" + getStatus() + "'" +
+            ", role='" + getRole() + "'" +
             "}";
     }
 }

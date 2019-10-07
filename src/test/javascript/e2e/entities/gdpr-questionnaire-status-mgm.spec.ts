@@ -34,6 +34,7 @@ describe('GDPRQuestionnaireStatus e2e test', () => {
     it('should create and save GDPRQuestionnaireStatuses', () => {
         gDPRQuestionnaireStatusComponentsPage.clickOnCreateButton();
         gDPRQuestionnaireStatusDialogPage.statusSelectLastOption();
+        gDPRQuestionnaireStatusDialogPage.roleSelectLastOption();
         gDPRQuestionnaireStatusDialogPage.operationSelectLastOption();
         gDPRQuestionnaireStatusDialogPage.questionnaireSelectLastOption();
         gDPRQuestionnaireStatusDialogPage.userSelectLastOption();
@@ -64,6 +65,7 @@ export class GDPRQuestionnaireStatusDialogPage {
     saveButton = element(by.css('.modal-footer .btn.btn-primary'));
     closeButton = element(by.css('button.close'));
     statusSelect = element(by.css('select#field_status'));
+    roleSelect = element(by.css('select#field_role'));
     operationSelect = element(by.css('select#field_operation'));
     questionnaireSelect = element(by.css('select#field_questionnaire'));
     userSelect = element(by.css('select#field_user'));
@@ -82,6 +84,17 @@ export class GDPRQuestionnaireStatusDialogPage {
 
     statusSelectLastOption = function() {
         this.statusSelect.all(by.tagName('option')).last().click();
+    };
+    setRoleSelect = function(role) {
+        this.roleSelect.sendKeys(role);
+    };
+
+    getRoleSelect = function() {
+        return this.roleSelect.element(by.css('option:checked')).getText();
+    };
+
+    roleSelectLastOption = function() {
+        this.roleSelect.all(by.tagName('option')).last().click();
     };
     operationSelectLastOption = function() {
         this.operationSelect.all(by.tagName('option')).last().click();

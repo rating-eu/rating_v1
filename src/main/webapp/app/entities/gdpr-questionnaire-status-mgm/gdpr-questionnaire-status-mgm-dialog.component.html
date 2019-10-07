@@ -26,6 +26,21 @@
                 </small>
             </div>
         </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="hermeneutApp.gDPRQuestionnaireStatus.role" for="field_role">Role</label>
+            <select class="form-control" name="role" [(ngModel)]="gDPRQuestionnaireStatus.role" id="field_role"  required>
+                <option value="ROLE_ADMIN">{{'hermeneutApp.Role.ROLE_ADMIN' | translate}}</option>
+                <option value="ROLE_USER">{{'hermeneutApp.Role.ROLE_USER' | translate}}</option>
+                <option value="ROLE_EXTERNAL_AUDIT">{{'hermeneutApp.Role.ROLE_EXTERNAL_AUDIT' | translate}}</option>
+                <option value="ROLE_CISO">{{'hermeneutApp.Role.ROLE_CISO' | translate}}</option>
+            </select>
+            <div [hidden]="!(editForm.controls.role?.dirty && editForm.controls.role?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.role?.errors?.required" jhiTranslate="entity.validation.required">
+                   This field is required.
+                </small>
+            </div>
+        </div>
 
         <div class="form-group">
             <label class="form-control-label" jhiTranslate="hermeneutApp.gDPRQuestionnaireStatus.operation" for="field_operation">Operation</label>

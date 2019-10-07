@@ -25,6 +25,10 @@
                 <constraints nullable="false" />
             </column>
 
+            <column name="jhi_role" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+
             <column name="operation_id" type="bigint">
                 <constraints nullable="true" />
             </column>

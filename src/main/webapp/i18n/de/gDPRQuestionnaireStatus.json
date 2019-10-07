@@ -17,6 +17,7 @@
                 "title": "GDPR Questionnaire Status"
             },
             "status": "Status",
+            "role": "Role",
             "answers": "Answers",
             "operation": "Operation",
             "questionnaire": "Questionnaire",

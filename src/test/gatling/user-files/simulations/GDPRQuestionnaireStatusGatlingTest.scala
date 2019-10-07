@@ -68,7 +68,7 @@ class GDPRQuestionnaireStatusGatlingTest extends Simulation {
             .exec(http("Create new gDPRQuestionnaireStatus")
             .post("/api/gdpr-questionnaire-statuses")
             .headers(headers_http_authenticated)
-            .body(StringBody("""{"id":null, "status":null}""")).asJSON
+            .body(StringBody("""{"id":null, "status":null, "role":null}""")).asJSON
             .check(status.is(201))
             .check(headerRegex("Location", "(.*)").saveAs("new_gDPRQuestionnaireStatus_url"))).exitHereIfFailed
             .pause(10)
