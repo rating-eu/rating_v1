@@ -1,8 +1,8 @@
-id;text;language;answer_type;jhi_order;data_operation_field;questionnaire_id
-1;What is the personal data processing operation?;EN;OPEN;1;NAME;1
-2;What are the types of personal data processed?;EN;OPEN;2;PROCESSED_DATA;1
-3;What is the purpose of the processing?;EN;OPEN;3;PROCESSING_PURPOSE;1
-4;What are the means used for the processing of personal data?;EN;OPEN;4;PROCESSING_MEANS;1
-5;Where does the processing of personal data take place?;EN;OPEN;5;DATA_PROCESSOR;1
-6;Which are the categories of data subjects?;EN;OPEN;6;DATA_SUBJECT;1
-7;Which are the recipients of the data?;EN;OBJECT;7;DATA_RECIPIENTS;1
+id;text;description;language;answer_type;jhi_order;data_operation_field;questionnaire_id
+1;What is the operation that requires processing personal data?;Personal data, as stated in General Data Protection Regulation, is any information relating to an identified or identifiable natural person (data subject). An identifiable natural person is one who can be identified, directly or indirectly, in particular by reference to an identifier such as a name, an identification number, location data, an online identifier or to one or more factors specific to the physical, physiological, genetic, mental, economic, cultural or social identity of that natural person.;EN;OPEN;1;NAME;1
+2;What kind of personal data will be used? Will special categories of personal data be processed?;GDPR considers, as stated at Article 9, special categories of personal data those data revealing racial or ethnic origin, politcal opinions, religious or philosophical beliefs, or trade union membership, genetic data, biometric data, data concerning health or data concerning a natural person’s sex life or sexual orientation.;EN;OPEN;2;PROCESSED_DATA;1
+3;What are the purposes for which personal data will be processed?;Personal data can be useful and processed in order to carry out operations of payment management, managing candidate selection for recruitment, order and delivery of goods, etc.;EN;OPEN;3;PROCESSING_PURPOSE;1
+4;What are the means used for the processing of personal data?;Personal data can be processed i.e. through IT systems from the single office assigned to the operation or through web services or CCTV IT systems, etc.;EN;OPEN;4;PROCESSING_MEANS;1
+5;Where does the processing of personal data take place?;Personal data processing can take place in-house or at an external processor i.e. third party marketing campaign web service provider. At the same time it is important that the data processing takes place within a Member State’s territory, where General Data Protection Regulation is applied.;EN;OPEN;5;DATA_PROCESSOR;1
+6;Which are the categories of data subjects?;Data subjects categories change depending on the operations carried out: in the case of payroll management data subjects will be employees but if data will be processed for marketing operations data subjects will be customers.;EN;OPEN;6;DATA_SUBJECT;1
+7;Which are the recipients to whom the processed personal data will be communicated?;According to GDPR, Article 4, (9), recipient is a natural or legal person, public authority, agency or another body, to which the personal data are disclosed, whether a third party or not. Recipient can be internal, i.e. administration or external, i.e. Payment Services Provider.;EN;OBJECT;7;DATA_RECIPIENTS;1
