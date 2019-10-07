@@ -14,7 +14,7 @@
             </thead>
             <tbody>
             <tr *ngFor="let description of descriptions">
-                <th scope="row">{{description.impact}}</th>
+                <th scope="row">{{description.impact | replace:'_':' ' | titlecase}}</th>
                 <td>
                     <p>{{description.description}}</p>
                 </td>
