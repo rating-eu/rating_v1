@@ -14,9 +14,12 @@ import {DataOperationField} from '../../entities/enumerations/gdpr/DataOperation
 import {DataRecipientType} from '../../entities/enumerations/gdpr/DataRecipientType.enum';
 import {SecurityImpactMgm} from '../../entities/security-impact-mgm';
 import {SecurityPillar} from '../../entities/enumerations/gdpr/SecurityPillar.enum';
-import {ThreatArea} from "../../entities/enumerations/gdpr/ThreatArea.enum";
-import {GDPRQuestionnaireStatusMgm} from "../../entities/gdpr-questionnaire-status-mgm";
-import {GDPRMyAnswerMgm} from "../../entities/gdpr-my-answer-mgm";
+import {ThreatArea} from '../../entities/enumerations/gdpr/ThreatArea.enum';
+import {
+    GDPRQuestionnaireStatusMgm,
+    GDPRQuestionnaireStatusMgmService
+} from '../../entities/gdpr-questionnaire-status-mgm';
+import {GDPRMyAnswerMgm} from '../../entities/gdpr-my-answer-mgm';
 
 @Component({
     selector: 'jhi-dynamic-questionnaire',
@@ -50,7 +53,7 @@ export class DynamicQuestionnaireComponent implements OnInit, OnChanges, OnDestr
 
     constructor(private router: Router,
                 private questionService: GDPRQuestionMgmService,
-                private questionnaireStatusService: GDPRQuestionnaireStatusMgm,
+                private questionnaireStatusService: GDPRQuestionnaireStatusMgmService,
                 private dataOperationMgmService: DataOperationMgmService,
                 private dynamicQuestionnaireService: DynamicQuestionnaireService,
                 private dataSharingService: DataSharingService,
