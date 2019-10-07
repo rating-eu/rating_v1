@@ -20,7 +20,10 @@ import eu.hermeneut.domain.enumeration.Role;
  * A GDPRQuestionnaireStatus.
  */
 @Entity
-@Table(name = "gdpr_questionnaire_status")
+@Table(
+    name = "gdpr_questionnaire_status",
+    uniqueConstraints = @UniqueConstraint(columnNames = {"jhi_role", "operation_id", "questionnaire_id"})
+)
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class GDPRQuestionnaireStatus implements Serializable {
 
@@ -47,9 +50,11 @@ public class GDPRQuestionnaireStatus implements Serializable {
     private Set<GDPRMyAnswer> answers = new HashSet<>();
 
     @ManyToOne
+    @JoinColumn(name = "operation_id")
     private DataOperation operation;
 
     @ManyToOne
+    @JoinColumn(name = "questionnaire_id")
     private GDPRQuestionnaire questionnaire;
 
     @ManyToOne
