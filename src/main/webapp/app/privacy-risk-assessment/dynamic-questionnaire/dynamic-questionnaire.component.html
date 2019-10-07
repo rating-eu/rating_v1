@@ -29,7 +29,6 @@
                            *ngSwitchCase="dataOperationFieldEnum.NAME"
                            [formControlName]="dataOperationFieldEnum.NAME"
                            [(ngModel)]="dataOperation.name"
-                           [placeholder]="question.description"
                            type="text"
                            required
                     />
@@ -41,7 +40,7 @@
                            *ngSwitchCase="dataOperationFieldEnum.PROCESSED_DATA"
                            [formControlName]="dataOperationFieldEnum.PROCESSED_DATA"
                            [(ngModel)]="dataOperation.processedData"
-                           [placeholder]="question.description" type="text"
+                           type="text"
                            required
                     />
                 </mat-form-field>
@@ -52,7 +51,7 @@
                            *ngSwitchCase="dataOperationFieldEnum.PROCESSING_PURPOSE"
                            [formControlName]="dataOperationFieldEnum.PROCESSING_PURPOSE"
                            [(ngModel)]="dataOperation.processingPurpose"
-                           [placeholder]="question.description" type="text"
+                           type="text"
                            required
                     />
                 </mat-form-field>
@@ -63,7 +62,7 @@
                            *ngSwitchCase="dataOperationFieldEnum.PROCESSING_MEANS"
                            [formControlName]="dataOperationFieldEnum.PROCESSING_MEANS"
                            [(ngModel)]="dataOperation.processingMeans"
-                           [placeholder]="question.description" type="text"
+                           type="text"
                            required
                     />
                 </mat-form-field>
@@ -74,7 +73,7 @@
                            *ngSwitchCase="dataOperationFieldEnum.DATA_PROCESSOR"
                            [formControlName]="dataOperationFieldEnum.DATA_PROCESSOR"
                            [(ngModel)]="dataOperation.dataProcessor"
-                           [placeholder]="question.description" type="text"
+                           type="text"
                            required
                     />
                 </mat-form-field>
@@ -85,7 +84,7 @@
                            *ngSwitchCase="dataOperationFieldEnum.DATA_SUBJECT"
                            [formControlName]="dataOperationFieldEnum.DATA_SUBJECT"
                            [(ngModel)]="dataOperation.dataSubject"
-                           [placeholder]="question.description" type="text"
+                           type="text"
                            required
                     />
                 </mat-form-field>
