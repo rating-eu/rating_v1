@@ -15,6 +15,8 @@ import {DataRecipientType} from '../../entities/enumerations/gdpr/DataRecipientT
 import {SecurityImpactMgm} from '../../entities/security-impact-mgm';
 import {SecurityPillar} from '../../entities/enumerations/gdpr/SecurityPillar.enum';
 import {ThreatArea} from "../../entities/enumerations/gdpr/ThreatArea.enum";
+import {GDPRQuestionnaireStatusMgm} from "../../entities/gdpr-questionnaire-status-mgm";
+import {GDPRMyAnswerMgm} from "../../entities/gdpr-my-answer-mgm";
 
 @Component({
     selector: 'jhi-dynamic-questionnaire',
@@ -43,9 +45,12 @@ export class DynamicQuestionnaireComponent implements OnInit, OnChanges, OnDestr
 
     public threatAreaEnum = ThreatArea;
     public threatAreas: ThreatArea[];
+    private threatAreasQuestionnaireStatus: GDPRQuestionnaireStatusMgm;
+    public threatAreasMyAnswersMap: Map<number/*QuestionID*/, GDPRMyAnswerMgm>;
 
     constructor(private router: Router,
-                private questionsService: GDPRQuestionMgmService,
+                private questionService: GDPRQuestionMgmService,
+                private questionnaireStatusService: GDPRQuestionnaireStatusMgm,
                 private dataOperationMgmService: DataOperationMgmService,
                 private dynamicQuestionnaireService: DynamicQuestionnaireService,
                 private dataSharingService: DataSharingService,
@@ -60,6 +65,7 @@ export class DynamicQuestionnaireComponent implements OnInit, OnChanges, OnDestr
         this.securityImpactsMap = new Map();
 
         this.threatAreas = Object.keys(ThreatArea).map((key) => ThreatArea[key]);
+        this.threatAreasMyAnswersMap = new Map();
     }
 
     ngOnChanges(changes: SimpleChanges): void {
@@ -111,6 +117,16 @@ export class DynamicQuestionnaireComponent implements OnInit, OnChanges, OnDestr
                     break;
                 }
                 case GDPRQuestionnairePurpose.THREAT_LIKELIHOOD: {
+                    console.log('Case Threat Likelihood...');
+
+                    if(this._dataOperation && !this.threatAreasQuestionnaireStatus){
+                        // TODO 0: Create the API Get the QuestionnaireStatus by DataOperation
+                        // TODO 1: Get the QuestionnaireStatus by DataOperation
+                        // TODO 2: Build the MapOfMyAnswers referencing the Answers of the QuestionnaireStatus
+                        // TODO 3: Do the binding with the form radio buttons
+
+
+                    }
 
                     break;
                 }
@@ -180,7 +196,7 @@ export class DynamicQuestionnaireComponent implements OnInit, OnChanges, OnDestr
         this._questionnaire = questionnaire;
 
         if (this._questionnaire) {
-            this.questionsService.getAllByQuestionnaire(this._questionnaire.id).toPromise().then(
+            this.questionService.getAllByQuestionnaire(this._questionnaire.id).toPromise().then(
                 (response: HttpResponse<GDPRQuestionMgm[]>) => {
                     const questionsArray = response.body;
 
