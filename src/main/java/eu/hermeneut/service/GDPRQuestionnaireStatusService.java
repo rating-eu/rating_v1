@@ -1,6 +1,8 @@
 package eu.hermeneut.service;
 
 import eu.hermeneut.domain.GDPRQuestionnaireStatus;
+import eu.hermeneut.domain.enumeration.Role;
+
 import java.util.List;
 
 /**
@@ -37,4 +39,14 @@ public interface GDPRQuestionnaireStatusService {
      * @param id the id of the entity
      */
     void delete(Long id);
+
+    /**
+     * Get the GDPRQuestionnaireStatus by DataOperationID, QUestionnaireID and Role.
+     *
+     * @param operationID     The ID of the DataOperation
+     * @param questionnaireID The ID of the Questionnaire
+     * @param role            The Role of the user.
+     * @return The GDPRQuestionnaireStatus.
+     */
+    GDPRQuestionnaireStatus findOneByDataOperationQuestionnaireAndRole(Long operationID, Long questionnaireID, Role role);
 }

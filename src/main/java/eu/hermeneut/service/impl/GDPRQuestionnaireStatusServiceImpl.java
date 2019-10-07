@@ -1,5 +1,6 @@
 package eu.hermeneut.service.impl;
 
+import eu.hermeneut.domain.enumeration.Role;
 import eu.hermeneut.service.GDPRQuestionnaireStatusService;
 import eu.hermeneut.domain.GDPRQuestionnaireStatus;
 import eu.hermeneut.repository.GDPRQuestionnaireStatusRepository;
@@ -71,5 +72,12 @@ public class GDPRQuestionnaireStatusServiceImpl implements GDPRQuestionnaireStat
     public void delete(Long id) {
         log.debug("Request to delete GDPRQuestionnaireStatus : {}", id);
         gDPRQuestionnaireStatusRepository.delete(id);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public GDPRQuestionnaireStatus findOneByDataOperationQuestionnaireAndRole(Long operationID, Long questionnaireID, Role role) {
+        log.debug("Request to get GDPRQuestionnaireStatus By DataOperation: {}, Questionnaire: {}, Role: {}", operationID, questionnaireID, role);
+        return gDPRQuestionnaireStatusRepository.findOneByDataOperationQuestionnaireAndRole(operationID, questionnaireID, role);
     }
 }

@@ -2,6 +2,7 @@ package eu.hermeneut.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import eu.hermeneut.domain.GDPRQuestionnaireStatus;
+import eu.hermeneut.domain.enumeration.Role;
 import eu.hermeneut.service.GDPRQuestionnaireStatusService;
 import eu.hermeneut.web.rest.errors.BadRequestAlertException;
 import eu.hermeneut.web.rest.util.HeaderUtil;
@@ -100,6 +101,14 @@ public class GDPRQuestionnaireStatusResource {
     public ResponseEntity<GDPRQuestionnaireStatus> getGDPRQuestionnaireStatus(@PathVariable Long id) {
         log.debug("REST request to get GDPRQuestionnaireStatus : {}", id);
         GDPRQuestionnaireStatus gDPRQuestionnaireStatus = gDPRQuestionnaireStatusService.findOne(id);
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(gDPRQuestionnaireStatus));
+    }
+
+    @GetMapping("/gdpr-questionnaire-statuses/operation/{operationID}/questionnaire/{questionnaireID}/role/{role}")
+    @Timed
+    public ResponseEntity<GDPRQuestionnaireStatus> getGDPRQuestionnaireStatusByDataOperationQuestionnaireAndROle(@PathVariable Long operationID, @PathVariable Long questionnaireID, @PathVariable Role role) {
+        log.debug("REST request to get GDPRQuestionnaireStatus by DataOperation: {}, Questionnaire: {}, Role: {}", operationID, questionnaireID, role);
+        GDPRQuestionnaireStatus gDPRQuestionnaireStatus = gDPRQuestionnaireStatusService.findOneByDataOperationQuestionnaireAndRole(operationID, questionnaireID, role);
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(gDPRQuestionnaireStatus));
     }
 
