@@ -1,0 +1,25 @@
+<div class="row card-box">
+    <mat-expansion-panel [expanded]="true">
+        <mat-expansion-panel-header>
+            <mat-panel-title>
+                <h4>Impact Levels Description</h4>
+            </mat-panel-title>
+        </mat-expansion-panel-header>
+        <table class="table" *ngIf="descriptions">
+            <thead>
+            <tr>
+                <th scope="col">Level of Impact</th>
+                <th scope="col">Description</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let description of descriptions">
+                <th scope="row">{{description.impact}}</th>
+                <td>
+                    <p>{{description.description}}</p>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </mat-expansion-panel>
+</div>

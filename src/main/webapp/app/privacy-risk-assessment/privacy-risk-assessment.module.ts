@@ -14,12 +14,13 @@ import {AuthExpiredInterceptor} from '../blocks/interceptor/auth-expired.interce
 import {ErrorHandlerInterceptor} from '../blocks/interceptor/errorhandler.interceptor';
 import {NotificationInterceptor} from '../blocks/interceptor/notification.interceptor';
 import {DataOperationContextComponent} from './data-operation-context/data-operation-context.component';
-import { DynamicQuestionnaireComponent } from './dynamic-questionnaire/dynamic-questionnaire.component';
+import {DynamicQuestionnaireComponent} from './dynamic-questionnaire/dynamic-questionnaire.component';
 import {DynamicQuestionnaireService} from './dynamic-questionnaire/dynamic-questionnaire.service';
 import {ReactiveFormsModule} from '@angular/forms';
 import {MaterialModule} from '../material/material.module';
-import { SecurityImpactComponent } from './security-impact/security-impact.component';
-import { DataThreatComponent } from './data-threat/data-threat.component';
+import {SecurityImpactComponent} from './security-impact/security-impact.component';
+import {DataThreatComponent} from './data-threat/data-threat.component';
+import {DataImpactsDescriptionComponent} from './data-impacts-description/data-impacts-description.component';
 
 @NgModule({
     imports: [
@@ -67,7 +68,7 @@ import { DataThreatComponent } from './data-threat/data-threat.component';
             ]
         }
     ],
-    declarations: [DataOperationsComponent, DataOperationContextComponent, DynamicQuestionnaireComponent, SecurityImpactComponent, DataThreatComponent]
+    declarations: [DataOperationsComponent, DataOperationContextComponent, DynamicQuestionnaireComponent, SecurityImpactComponent, DataThreatComponent, DataImpactsDescriptionComponent]
 })
 export class PrivacyRiskAssessmentModule {
     // Fixes Translation Not Found in Lazy Loading modules
