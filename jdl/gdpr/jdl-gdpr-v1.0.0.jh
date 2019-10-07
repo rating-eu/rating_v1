@@ -541,7 +541,8 @@ entity GDPRQuestionnaire{
 }
 
 entity GDPRQuestionnaireStatus{
-    Status Status required
+    Status Status required,
+    Role Role required
 }
 
 entity GDPRQuestion{
