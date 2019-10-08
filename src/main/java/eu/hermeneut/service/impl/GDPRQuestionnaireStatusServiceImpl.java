@@ -1,5 +1,6 @@
 package eu.hermeneut.service.impl;
 
+import eu.hermeneut.aop.annotation.gdpr.QuestionnaireStatusCompletionHook;
 import eu.hermeneut.domain.GDPRMyAnswer;
 import eu.hermeneut.domain.enumeration.Role;
 import eu.hermeneut.service.GDPRQuestionnaireStatusService;
@@ -35,6 +36,7 @@ public class GDPRQuestionnaireStatusServiceImpl implements GDPRQuestionnaireStat
      * @return the persisted entity
      */
     @Override
+    @QuestionnaireStatusCompletionHook
     public GDPRQuestionnaireStatus save(GDPRQuestionnaireStatus gDPRQuestionnaireStatus) {
         log.debug("Request to save GDPRQuestionnaireStatus : {}", gDPRQuestionnaireStatus);
 
