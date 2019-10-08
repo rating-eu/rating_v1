@@ -225,10 +225,6 @@
                     <div *ngSwitchCase="threatAreaEnum.NETWORK_AND_TECHNICAL_RESOURCES">
                         <div *ngFor="let question of questionsByThreatAreaMap.get(area); trackBy: trackByID"
                              [ngSwitch]="question.dataOperationField" class="card-box row">
-                            <pre *ngIf="threatAreasMyAnswersMap.get(question.id)">
-                                {{threatAreasMyAnswersMap.get(question.id)?.answer | json}}
-                            </pre>
-
                             <div class="col-md-11">
                                 <mat-expansion-panel [hideToggle]="true">
                                     <mat-expansion-panel-header>
@@ -268,11 +264,6 @@
                     <div *ngSwitchCase="threatAreaEnum.PROCEDURES_RELATED_TO_THE_PROCESSING_OF_PERSONAL_DATA">
                         <div *ngFor="let question of questionsByThreatAreaMap.get(area); trackBy: trackByID"
                              [ngSwitch]="question.dataOperationField" class="card-box row">
-
-                            <pre *ngIf="threatAreasMyAnswersMap.get(question.id)">
-                                {{threatAreasMyAnswersMap.get(question.id).answer | json}}
-                            </pre>
-
                             <div class="col-md-11">
                                 <mat-expansion-panel [hideToggle]="true">
                                     <mat-expansion-panel-header>
@@ -312,11 +303,6 @@
                     <div *ngSwitchCase="threatAreaEnum.PEOPLE_INVOLVED_IN_THE_PROCESSING_OF_PERSONAL_DATA">
                         <div *ngFor="let question of questionsByThreatAreaMap.get(area); trackBy: trackByID"
                              [ngSwitch]="question.dataOperationField" class="card-box row">
-
-                            <pre *ngIf="threatAreasMyAnswersMap.get(question.id)">
-                                {{threatAreasMyAnswersMap.get(question.id).answer | json}}
-                            </pre>
-
                             <div class="col-md-11">
                                 <mat-expansion-panel [hideToggle]="true">
                                     <mat-expansion-panel-header>
@@ -356,11 +342,6 @@
                     <div *ngSwitchCase="threatAreaEnum.BUSINESS_SECTOR_AND_SCALE_OF_PROCESSING">
                         <div *ngFor="let question of questionsByThreatAreaMap.get(area); trackBy: trackByID"
                              [ngSwitch]="question.dataOperationField" class="card-box row">
-
-                            <pre *ngIf="threatAreasMyAnswersMap.get(question.id)">
-                                {{threatAreasMyAnswersMap.get(question.id).answer | json}}
-                            </pre>
-
                             <div class="col-md-11">
                                 <mat-expansion-panel [hideToggle]="true">
                                     <mat-expansion-panel-header>
