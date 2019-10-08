@@ -87,7 +87,15 @@ public class DataThreatResource {
     public List<DataThreat> getAllDataThreats() {
         log.debug("REST request to get all DataThreats");
         return dataThreatService.findAll();
-        }
+    }
+
+    @GetMapping("/data-threats/operation/{operationID}")
+    @Timed
+    public List<DataThreat> getAllByDataOperation(@PathVariable Long operationID) {
+        log.debug("REST request to get all DataThreats by DataOperation: {}", operationID);
+
+        return this.dataThreatService.findAllByDataOperation(operationID);
+    }
 
     /**
      * GET  /data-threats/:id : get the "id" dataThreat.

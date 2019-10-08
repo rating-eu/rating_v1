@@ -72,4 +72,11 @@ public class DataThreatServiceImpl implements DataThreatService {
         log.debug("Request to delete DataThreat : {}", id);
         dataThreatRepository.delete(id);
     }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<DataThreat> findAllByDataOperation(Long operationID) {
+        log.debug("Request to get all DataThreats by DataOperation: {}", operationID);
+        return this.dataThreatRepository.findAllByDataOperation(operationID);
+    }
 }

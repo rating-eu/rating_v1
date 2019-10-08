@@ -1,6 +1,7 @@
 package eu.hermeneut.service;
 
 import eu.hermeneut.domain.DataThreat;
+
 import java.util.List;
 
 /**
@@ -37,4 +38,12 @@ public interface DataThreatService {
      * @param id the id of the entity
      */
     void delete(Long id);
+
+    /**
+     * Get all the dataThreats of the given DataOperation.
+     *
+     * @param operationID The ID of the DataOperation.
+     * @return the list of entities
+     */
+    List<DataThreat> findAllByDataOperation(Long operationID);
 }
