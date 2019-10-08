@@ -52,6 +52,7 @@ export class DynamicQuestionnaireComponent implements OnInit, OnChanges, OnDestr
     private _dataOperation: DataOperationMgm;
     private _questionnaire: GDPRQuestionnaireMgm;
     private _questions: GDPRQuestionMgm[];
+    private _questionsMap: Map<number/*ID*/, GDPRQuestionMgm>;
 
     public questionsByThreatAreaMap: Map<ThreatArea, GDPRQuestionMgm[]>;
 
@@ -179,6 +180,7 @@ export class DynamicQuestionnaireComponent implements OnInit, OnChanges, OnDestr
                                     (response: HttpResponse<GDPRQuestionnaireStatusMgm>) => {
                                         this.threatAreasQuestionnaireStatus = response.body;
                                         this.handleThreatAreasQuestionnaireStatus();
+                                        this.setOriginalAnswers();
 
                                         console.log('Got ThreatAreas QuestionnaireStatus...');
                                     }
@@ -199,6 +201,7 @@ export class DynamicQuestionnaireComponent implements OnInit, OnChanges, OnDestr
                                             this.threatAreasQuestionnaireStatus.role = this.role;
 
                                             this.handleThreatAreasQuestionnaireStatus();
+                                            this.setOriginalAnswers();
                                         }
                                     }
                                 );
@@ -307,6 +310,11 @@ export class DynamicQuestionnaireComponent implements OnInit, OnChanges, OnDestr
 
                     this.questions = questionsArray.sort((a, b) => {
                         return a.order - b.order;
+                    });
+
+                    this._questionsMap = new Map();
+                    this._questions.forEach((question: GDPRQuestionMgm) => {
+                        this._questionsMap.set(question.id, question);
                     });
 
                     // === Begin ChangeDetection Trigger ===
@@ -459,6 +467,28 @@ export class DynamicQuestionnaireComponent implements OnInit, OnChanges, OnDestr
             }
 
             this.detectChanges();
+        }
+    }
+
+    /**
+     * This method is needed to replace the MyAnswer.answer with the exact same reference to the corresponding answer used
+     * while building the radio buttons, otherwise the checked state will not work.
+     */
+    private setOriginalAnswers() {
+        if (this.threatAreasMyAnswersMap && this._questionsMap) {
+            this._questionsMap.forEach((question) => {
+                const myAnswer: GDPRMyAnswerMgm = this.threatAreasMyAnswersMap.get(question.id);
+
+                if (myAnswer && myAnswer.answer) {
+                    if (question.answers) {
+                        question.answers.forEach((answer) => {
+                            if (myAnswer.answer.id === answer.id) {
+                                myAnswer.answer = answer;
+                            }
+                        });
+                    }
+                }
+            });
         }
     }
 }
