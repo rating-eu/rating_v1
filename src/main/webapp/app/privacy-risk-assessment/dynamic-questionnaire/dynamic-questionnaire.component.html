@@ -219,12 +219,15 @@
     </div>
     <div *ngSwitchCase="purposeEnum.THREAT_LIKELIHOOD">
         <form *ngIf="form" [formGroup]="form" (ngSubmit)="submitThreatLikelihood()">
-            <mat-tab-group>
+            <mat-tab-group *ngIf="threatAreasMyAnswersMap">
                 <mat-tab *ngFor="let area of threatAreas" [ngSwitch]="area"
                          label="{{area | replace:'_':' ' | titlecase}}">
                     <div *ngSwitchCase="threatAreaEnum.NETWORK_AND_TECHNICAL_RESOURCES">
                         <div *ngFor="let question of questionsByThreatAreaMap.get(area); trackBy: trackByID"
                              [ngSwitch]="question.dataOperationField" class="card-box row">
+                            <pre *ngIf="threatAreasMyAnswersMap.get(question.id)">
+                                {{threatAreasMyAnswersMap.get(question.id)?.answer | json}}
+                            </pre>
 
                             <div class="col-md-11">
                                 <mat-expansion-panel [hideToggle]="true">
@@ -248,8 +251,10 @@
                                 </mat-expansion-panel>
                             </div>
                             <div class="col-md-1 middle">
-                                <mat-radio-group class="radio-group"
+                                <mat-radio-group *ngIf="threatAreasMyAnswersMap.get(question.id)"
+                                                 class="radio-group"
                                                  [formControlName]="question.id"
+                                                 [(ngModel)]="threatAreasMyAnswersMap.get(question.id).answer"
                                 >
                                     <mat-radio-button *ngFor="let answer of question.answers"
                                                       class="radio-button"
@@ -264,6 +269,10 @@
                         <div *ngFor="let question of questionsByThreatAreaMap.get(area); trackBy: trackByID"
                              [ngSwitch]="question.dataOperationField" class="card-box row">
 
+                            <pre *ngIf="threatAreasMyAnswersMap.get(question.id)">
+                                {{threatAreasMyAnswersMap.get(question.id).answer | json}}
+                            </pre>
+
                             <div class="col-md-11">
                                 <mat-expansion-panel [hideToggle]="true">
                                     <mat-expansion-panel-header>
@@ -286,8 +295,10 @@
                                 </mat-expansion-panel>
                             </div>
                             <div class="col-md-1 middle">
-                                <mat-radio-group class="radio-group"
+                                <mat-radio-group *ngIf="threatAreasMyAnswersMap.get(question.id)"
+                                                 class="radio-group"
                                                  [formControlName]="question.id"
+                                                 [(ngModel)]="threatAreasMyAnswersMap.get(question.id).answer"
                                 >
                                     <mat-radio-button *ngFor="let answer of question.answers"
                                                       class="radio-button"
@@ -302,6 +313,10 @@
                         <div *ngFor="let question of questionsByThreatAreaMap.get(area); trackBy: trackByID"
                              [ngSwitch]="question.dataOperationField" class="card-box row">
 
+                            <pre *ngIf="threatAreasMyAnswersMap.get(question.id)">
+                                {{threatAreasMyAnswersMap.get(question.id).answer | json}}
+                            </pre>
+
                             <div class="col-md-11">
                                 <mat-expansion-panel [hideToggle]="true">
                                     <mat-expansion-panel-header>
@@ -324,8 +339,10 @@
                                 </mat-expansion-panel>
                             </div>
                             <div class="col-md-1 middle">
-                                <mat-radio-group class="radio-group"
+                                <mat-radio-group *ngIf="threatAreasMyAnswersMap.get(question.id)"
+                                                 class="radio-group"
                                                  [formControlName]="question.id"
+                                                 [(ngModel)]="threatAreasMyAnswersMap.get(question.id).answer"
                                 >
                                     <mat-radio-button *ngFor="let answer of question.answers"
                                                       class="radio-button"
@@ -340,6 +357,10 @@
                         <div *ngFor="let question of questionsByThreatAreaMap.get(area); trackBy: trackByID"
                              [ngSwitch]="question.dataOperationField" class="card-box row">
 
+                            <pre *ngIf="threatAreasMyAnswersMap.get(question.id)">
+                                {{threatAreasMyAnswersMap.get(question.id).answer | json}}
+                            </pre>
+
                             <div class="col-md-11">
                                 <mat-expansion-panel [hideToggle]="true">
                                     <mat-expansion-panel-header>
@@ -362,8 +383,10 @@
                                 </mat-expansion-panel>
                             </div>
                             <div class="col-md-1 middle">
-                                <mat-radio-group class="radio-group"
+                                <mat-radio-group *ngIf="threatAreasMyAnswersMap.get(question.id)"
+                                                 class="radio-group"
                                                  [formControlName]="question.id"
+                                                 [(ngModel)]="threatAreasMyAnswersMap.get(question.id).answer"
                                 >
                                     <mat-radio-button *ngFor="let answer of question.answers"
                                                       class="radio-button"
@@ -376,6 +399,20 @@
                     </div>
                 </mat-tab>
             </mat-tab-group>
+            <div class="row">
+                <div class="col-md-6 text-left">
+                    <button class="btn btn-info waves-light waves-effect w-md" type="button"
+                            (click)="back()">
+                        <i class="fa fa-remove"></i>&nbsp;<span>Cancel</span>
+                    </button>
+                </div>
+                <div class="col-md-6 text-right">
+                    <button class="btn btn-success waves-light waves-effect w-md" type="submit"
+                            [disabled]="!form.valid">
+                        <i class="far fa-save"></i>&nbsp;<span>Save</span>
+                    </button>
+                </div>
+            </div>
         </form>
     </div>
 </div>

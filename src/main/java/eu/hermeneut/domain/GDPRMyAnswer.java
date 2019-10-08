@@ -1,5 +1,6 @@
 package eu.hermeneut.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -41,6 +42,7 @@ public class GDPRMyAnswer implements Serializable {
         this.id = id;
     }
 
+    @JsonIgnore
     public GDPRQuestionnaireStatus getGDPRQuestionnaireStatus() {
         return gDPRQuestionnaireStatus;
     }

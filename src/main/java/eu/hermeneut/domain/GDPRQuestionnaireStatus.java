@@ -44,8 +44,7 @@ public class GDPRQuestionnaireStatus implements Serializable {
     @Column(name = "jhi_role", nullable = false)
     private Role role;
 
-    @OneToMany(mappedBy = "gDPRQuestionnaireStatus")
-    @JsonIgnore
+    @OneToMany(mappedBy = "gDPRQuestionnaireStatus", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<GDPRMyAnswer> answers = new HashSet<>();
 

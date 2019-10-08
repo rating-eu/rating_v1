@@ -1,10 +1,20 @@
-import {ChangeDetectorRef, Component, Input, OnChanges, OnDestroy, OnInit, SimpleChanges, ViewRef} from '@angular/core';
+import {
+    ChangeDetectorRef,
+    Component,
+    Input,
+    OnChanges,
+    OnDestroy,
+    OnInit,
+    SimpleChange,
+    SimpleChanges,
+    ViewRef
+} from '@angular/core';
 import {GDPRQuestionnaireMgm} from '../../entities/gdpr-questionnaire-mgm';
 import {DataOperationMgm, DataOperationMgmService} from '../../entities/data-operation-mgm';
 import {GDPRQuestionnairePurpose} from '../../entities/enumerations/GDPRQuestionnairePurpose.enum';
 import {GDPRQuestionMgm, GDPRQuestionMgmService} from '../../entities/gdpr-question-mgm';
 import {Observable, Subscription} from 'rxjs';
-import {HttpResponse} from '@angular/common/http';
+import {HttpErrorResponse, HttpResponse} from '@angular/common/http';
 import {FormGroup} from '@angular/forms';
 import {DynamicQuestionnaireService} from './dynamic-questionnaire.service';
 import {DataSharingService} from '../../data-sharing/data-sharing.service';
@@ -20,6 +30,11 @@ import {
     GDPRQuestionnaireStatusMgmService
 } from '../../entities/gdpr-questionnaire-status-mgm';
 import {GDPRMyAnswerMgm} from '../../entities/gdpr-my-answer-mgm';
+import {User} from "../../shared";
+import {Role} from "../../entities/enumerations/Role.enum";
+import {forkJoin} from "rxjs/observable/forkJoin";
+import {of} from "rxjs/observable/of";
+import {Status} from "../../entities/enumerations/Status.enum";
 
 @Component({
     selector: 'jhi-dynamic-questionnaire',
@@ -29,6 +44,9 @@ import {GDPRMyAnswerMgm} from '../../entities/gdpr-my-answer-mgm';
 export class DynamicQuestionnaireComponent implements OnInit, OnChanges, OnDestroy {
 
     private subscriptions: Subscription[];
+
+    private user: User;
+    private role: Role;
 
     // Properties
     private _dataOperation: DataOperationMgm;
@@ -69,12 +87,41 @@ export class DynamicQuestionnaireComponent implements OnInit, OnChanges, OnDestr
 
         this.threatAreas = Object.keys(ThreatArea).map((key) => ThreatArea[key]);
         this.threatAreasMyAnswersMap = new Map();
+
+        this.user = this.dataSharingService.user;
+        this.role = this.dataSharingService.role;
+
+        const join$: Observable<[User, Role]> = forkJoin(
+            this.dataSharingService.user$
+                .timeout(500)
+                .catch((err) => {
+                    console.warn('User timeout...');
+                    return of(this.dataSharingService.user);
+                }),
+            this.dataSharingService.role$
+                .timeout(500)
+                .catch((err) => {
+                    console.warn('Role timeout...');
+                    return of(this.dataSharingService.role);
+                })
+        );
+
+        this.subscriptions.push(
+            join$.subscribe(
+                (response: [User, Role]) => {
+                    if (!this.user || !this.role) {
+                        this.user = response[0];
+                        this.role = response[1];
+                    }
+                }
+            )
+        );
     }
 
     ngOnChanges(changes: SimpleChanges): void {
         console.log('Dynamic Questionnaire OnChanges...');
 
-        if (this._dataOperation && this._questionnaire) {
+        if (this._dataOperation && this._questionnaire && this._questions) {
             const purpose: GDPRQuestionnairePurpose = this._questionnaire.purpose;
 
             switch (purpose) {
@@ -122,13 +169,50 @@ export class DynamicQuestionnaireComponent implements OnInit, OnChanges, OnDestr
                 case GDPRQuestionnairePurpose.THREAT_LIKELIHOOD: {
                     console.log('Case Threat Likelihood...');
 
-                    if(this._dataOperation && !this.threatAreasQuestionnaireStatus){
+                    if (this._dataOperation && this._questionnaire && !this.threatAreasQuestionnaireStatus) {
+
+                        if (this.user && this.role) {
+                            this.questionnaireStatusService.findOneByDataOperationQuestionnaireAndRole(
+                                this._dataOperation.id, this._questionnaire.id, this.role)
+                                .toPromise()
+                                .then(
+                                    (response: HttpResponse<GDPRQuestionnaireStatusMgm>) => {
+                                        this.threatAreasQuestionnaireStatus = response.body;
+                                        this.handleThreatAreasQuestionnaireStatus();
+
+                                        console.log('Got ThreatAreas QuestionnaireStatus...');
+                                    }
+                                )
+                                .catch((reason: HttpErrorResponse) => {
+                                        console.log('GDPR QuestionnaireStatus rejected...');
+                                        console.log(reason);
+
+                                        if (reason.status === 404) {
+                                            // Create the QuestionnaireStatus
+                                            this.threatAreasQuestionnaireStatus = new GDPRQuestionnaireStatusMgm();
+                                            this.threatAreasQuestionnaireStatus.id = undefined;
+                                            this.threatAreasQuestionnaireStatus.operation = this._dataOperation;
+                                            this.threatAreasQuestionnaireStatus.questionnaire = this._questionnaire;
+                                            this.threatAreasQuestionnaireStatus.answers = [];
+                                            this.threatAreasQuestionnaireStatus.status = Status.EMPTY;
+                                            this.threatAreasQuestionnaireStatus.user = this.user;
+                                            this.threatAreasQuestionnaireStatus.role = this.role;
+
+                                            this.handleThreatAreasQuestionnaireStatus();
+                                        }
+                                    }
+                                );
+                        }
                         // TODO 0: Create the API Get the QuestionnaireStatus by DataOperation
                         // TODO 1: Get the QuestionnaireStatus by DataOperation
                         // TODO 2: Build the MapOfMyAnswers referencing the Answers of the QuestionnaireStatus
                         // TODO 3: Do the binding with the form radio buttons
 
+                        console.log('User:');
+                        console.log(this.user);
 
+                        console.log('Role:');
+                        console.log(this.role);
                     }
 
                     break;
@@ -181,7 +265,25 @@ export class DynamicQuestionnaireComponent implements OnInit, OnChanges, OnDestr
     }
 
     public submitThreatLikelihood() {
+        console.log('Submit ThreatLikelihood...');
 
+        if (this.threatAreasQuestionnaireStatus && this.threatAreasQuestionnaireStatus.answers) {
+            let questionnaireStatus$: Observable<HttpResponse<GDPRQuestionnaireStatusMgm>>;
+
+            // Update the QuestionnaireStatus
+            if (this.threatAreasQuestionnaireStatus.id) {
+                questionnaireStatus$ = this.questionnaireStatusService.update(this.threatAreasQuestionnaireStatus);
+            } else { // Create the QuestionnaireStatus
+                questionnaireStatus$ = this.questionnaireStatusService.create(this.threatAreasQuestionnaireStatus);
+            }
+
+            questionnaireStatus$.toPromise()
+                .then((response: HttpResponse<GDPRQuestionnaireStatusMgm>) => {
+                    this.threatAreasQuestionnaireStatus = response.body;
+
+                    this.router.navigate(['/privacy-board']);
+                });
+        }
     }
 
     @Input()
@@ -206,6 +308,17 @@ export class DynamicQuestionnaireComponent implements OnInit, OnChanges, OnDestr
                     this.questions = questionsArray.sort((a, b) => {
                         return a.order - b.order;
                     });
+
+                    // === Begin ChangeDetection Trigger ===
+                    let changes: SimpleChanges = new class implements SimpleChanges {
+                        [value: string]: SimpleChange;
+                    };
+
+                    changes['questions'] = new SimpleChange([], this._questions, true);
+
+                    // Force the ChangeDetection handler
+                    this.ngOnChanges(changes);
+                    // === End ChangeDetection Trigger ===
 
                     switch (this._questionnaire.purpose) {
                         case GDPRQuestionnairePurpose.OPERATION_CONTEXT: {
@@ -255,6 +368,7 @@ export class DynamicQuestionnaireComponent implements OnInit, OnChanges, OnDestr
         return this._questionnaire;
     }
 
+    @Input()
     set questions(questions: GDPRQuestionMgm[]) {
         this._questions = questions;
     }
@@ -312,6 +426,39 @@ export class DynamicQuestionnaireComponent implements OnInit, OnChanges, OnDestr
 
                 this.detectChanges();
             }
+        }
+    }
+
+    handleThreatAreasQuestionnaireStatus() {
+        // TODO 0: Create the API Get the QuestionnaireStatus by DataOperation
+        // TODO 1: Get the QuestionnaireStatus by DataOperation
+        // TODO 2: Build the MapOfMyAnswers referencing the Answers of the QuestionnaireStatus
+        // TODO 3: Do the binding with the form radio buttons
+
+        if (this.threatAreasQuestionnaireStatus && this._questions) {
+            this.threatAreasMyAnswersMap = new Map();
+
+            if (this.threatAreasQuestionnaireStatus.id) { // Existing QuestionnaireStatus
+                if (this.threatAreasQuestionnaireStatus.answers && this.threatAreasQuestionnaireStatus.answers.length === this._questions.length) {
+                    this.threatAreasQuestionnaireStatus.answers.forEach((myAnswer: GDPRMyAnswerMgm) => {
+                        this.threatAreasMyAnswersMap.set(myAnswer.question.id, myAnswer);
+                    });
+                }
+            } else { // New QuestionnaireStatus
+                this.threatAreasQuestionnaireStatus.answers = [];
+
+                this._questions.forEach((question: GDPRQuestionMgm) => {
+                    const myAnswer: GDPRMyAnswerMgm = new GDPRMyAnswerMgm();
+                    myAnswer.id = undefined;
+                    myAnswer.question = question;
+                    myAnswer.answer = null;
+
+                    this.threatAreasMyAnswersMap.set(question.id, myAnswer);
+                    this.threatAreasQuestionnaireStatus.answers.push(myAnswer);
+                });
+            }
+
+            this.detectChanges();
         }
     }
 }

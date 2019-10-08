@@ -1,5 +1,6 @@
 package eu.hermeneut.service.impl;
 
+import eu.hermeneut.domain.GDPRMyAnswer;
 import eu.hermeneut.domain.enumeration.Role;
 import eu.hermeneut.service.GDPRQuestionnaireStatusService;
 import eu.hermeneut.domain.GDPRQuestionnaireStatus;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * Service Implementation for managing GDPRQuestionnaireStatus.
@@ -35,6 +37,17 @@ public class GDPRQuestionnaireStatusServiceImpl implements GDPRQuestionnaireStat
     @Override
     public GDPRQuestionnaireStatus save(GDPRQuestionnaireStatus gDPRQuestionnaireStatus) {
         log.debug("Request to save GDPRQuestionnaireStatus : {}", gDPRQuestionnaireStatus);
+
+        if (gDPRQuestionnaireStatus != null) {
+            Set<GDPRMyAnswer> myAnswers = gDPRQuestionnaireStatus.getAnswers();
+
+            if (myAnswers != null && !myAnswers.isEmpty()) {
+                myAnswers.stream().parallel().forEach((myAnswer) -> {
+                    myAnswer.setGDPRQuestionnaireStatus(gDPRQuestionnaireStatus);
+                });
+            }
+        }
+
         return gDPRQuestionnaireStatusRepository.save(gDPRQuestionnaireStatus);
     }
 
