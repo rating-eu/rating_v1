@@ -18,7 +18,10 @@ import eu.hermeneut.domain.enumeration.DataThreatLikelihood;
  * A DataThreat.
  */
 @Entity
-@Table(name = "data_threat")
+@Table(
+    name = "data_threat",
+    uniqueConstraints = @UniqueConstraint(columnNames = {"operation_id", "threat_area"})
+)
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class DataThreat implements Serializable {
 
