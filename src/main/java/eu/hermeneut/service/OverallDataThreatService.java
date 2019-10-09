@@ -1,6 +1,7 @@
 package eu.hermeneut.service;
 
 import eu.hermeneut.domain.OverallDataThreat;
+
 import java.util.List;
 
 /**
@@ -37,4 +38,12 @@ public interface OverallDataThreatService {
      * @param id the id of the entity
      */
     void delete(Long id);
+
+    /**
+     * Get the OverallDataThreat by the ID of the DataOperation.
+     *
+     * @param operationID The ID of the DataOperation.
+     * @return the entity
+     */
+    OverallDataThreat findOneByDataOperation(Long operationID);
 }

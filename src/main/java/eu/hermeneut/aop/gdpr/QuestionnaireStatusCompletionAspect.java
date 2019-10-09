@@ -25,12 +25,14 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Set;
 
 @Aspect
+@Order(2)
 @Component
 public class QuestionnaireStatusCompletionAspect {
 
@@ -38,7 +40,7 @@ public class QuestionnaireStatusCompletionAspect {
     private GDPRQuestionService questionService;
 
     /**
-     * Pointcut for methods annotated with UpdateImpactsHook.
+     * Pointcut for methods annotated with QuestionnaireStatusCompletionHook.
      */
     @Pointcut("@annotation(eu.hermeneut.aop.annotation.gdpr.QuestionnaireStatusCompletionHook)")
     public void questionnaireStatusCompletionHook() {

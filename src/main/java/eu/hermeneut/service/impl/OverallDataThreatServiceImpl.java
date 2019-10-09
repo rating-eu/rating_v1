@@ -72,4 +72,11 @@ public class OverallDataThreatServiceImpl implements OverallDataThreatService {
         log.debug("Request to delete OverallDataThreat : {}", id);
         overallDataThreatRepository.delete(id);
     }
+
+    @Override
+    public OverallDataThreat findOneByDataOperation(Long operationID) {
+        log.debug("Request to get OverallDataThreat by DataOperation: {}", operationID);
+
+        return this.overallDataThreatRepository.findOneByDataOperation(operationID);
+    }
 }

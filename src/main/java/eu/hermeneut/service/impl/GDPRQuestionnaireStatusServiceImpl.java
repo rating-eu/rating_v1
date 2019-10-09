@@ -1,5 +1,7 @@
 package eu.hermeneut.service.impl;
 
+import eu.hermeneut.aop.annotation.gdpr.DataThreatHook;
+import eu.hermeneut.aop.annotation.gdpr.OverallDataThreatHook;
 import eu.hermeneut.aop.annotation.gdpr.QuestionnaireStatusCompletionHook;
 import eu.hermeneut.domain.GDPRMyAnswer;
 import eu.hermeneut.domain.enumeration.Role;
@@ -37,6 +39,8 @@ public class GDPRQuestionnaireStatusServiceImpl implements GDPRQuestionnaireStat
      */
     @Override
     @QuestionnaireStatusCompletionHook
+    @DataThreatHook
+    @OverallDataThreatHook
     public GDPRQuestionnaireStatus save(GDPRQuestionnaireStatus gDPRQuestionnaireStatus) {
         log.debug("Request to save GDPRQuestionnaireStatus : {}", gDPRQuestionnaireStatus);
 

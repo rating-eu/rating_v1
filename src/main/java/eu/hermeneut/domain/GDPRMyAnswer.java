@@ -27,10 +27,10 @@ public class GDPRMyAnswer implements Serializable {
     @ManyToOne
     private GDPRQuestionnaireStatus gDPRQuestionnaireStatus;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     private GDPRQuestion question;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     private GDPRAnswer answer;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove

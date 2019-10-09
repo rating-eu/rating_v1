@@ -6,6 +6,7 @@ import eu.hermeneut.repository.DataThreatRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -32,6 +33,7 @@ public class DataThreatServiceImpl implements DataThreatService {
      * @return the persisted entity
      */
     @Override
+    @Transactional(propagation = Propagation.NESTED)
     public DataThreat save(DataThreat dataThreat) {
         log.debug("Request to save DataThreat : {}", dataThreat);
         return dataThreatRepository.save(dataThreat);
