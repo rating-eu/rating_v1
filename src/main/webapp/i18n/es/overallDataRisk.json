@@ -1,0 +1,23 @@
+
+{
+    "hermeneutApp": {
+        "overallDataRisk" : {
+            "home": {
+                "title": "Overall Data Risks",
+                "createLabel": "Crear nuevo Overall Data Risk",
+                "createOrEditLabel": "Crear o editar Overall Data Risk"
+            },
+            "created": "Un nuevo Overall Data Risk ha sido creado con el identificador {{ param }}",
+            "updated": "Un Overall Data Risk ha sido actualizado con el identificador {{ param }}",
+            "deleted": "Un Overall Data Risk ha sido eliminado con el identificador {{ param }}",
+            "delete": {
+                "question": "¿Seguro que quiere eliminar Overall Data Risk {{ id }}?"
+            },
+            "detail": {
+                "title": "Overall Data Risk"
+            },
+            "riskLevel": "Risk Level",
+            "operation": "Operation"
+        }
+    }
+}

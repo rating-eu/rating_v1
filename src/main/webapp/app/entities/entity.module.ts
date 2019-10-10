@@ -68,6 +68,7 @@ import { HermeneutGDPRQuestionMgmModule } from './gdpr-question-mgm/gdpr-questio
 import { HermeneutGDPRAnswerMgmModule } from './gdpr-answer-mgm/gdpr-answer-mgm.module';
 import { HermeneutGDPRMyAnswerMgmModule } from './gdpr-my-answer-mgm/gdpr-my-answer-mgm.module';
 import { HermeneutTranslationMgmModule } from './translation-mgm/translation-mgm.module';
+import { HermeneutOverallDataRiskMgmModule } from './overall-data-risk-mgm/overall-data-risk-mgm.module';
 /* jhipster-needle-add-entity-module-import - JHipster will add entity modules imports here */
 
 @NgModule({
@@ -123,6 +124,7 @@ import { HermeneutTranslationMgmModule } from './translation-mgm/translation-mgm
         HermeneutGDPRAnswerMgmModule,
         HermeneutGDPRMyAnswerMgmModule,
         HermeneutTranslationMgmModule,
+        HermeneutOverallDataRiskMgmModule,
         /* jhipster-needle-add-entity-module - JHipster will add entity modules here */
     ],
     declarations: [],

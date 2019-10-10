@@ -54,6 +54,7 @@
     <include file="config/liquibase/changelog/20190924115809_added_entity_GDPRAnswer.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20190924115810_added_entity_GDPRMyAnswer.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20190924115811_added_entity_Translation.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20191010142907_added_entity_OverallDataRisk.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
     <include file="config/liquibase/changelog/20180410085152_added_entity_constraints_CompanyProfile.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180410085155_added_entity_constraints_SelfAssessment.xml" relativeToChangelogFile="false"/>
@@ -186,5 +187,6 @@
     <include file="config/liquibase/changelog/20191007153349_load_DATA_IMPACT_DESCRIPTIONs.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20191007162752_add_GDPRQuestionnaireStatus_UC_operation_role_questionnaire.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20191008150410_added_UC_DataThreat_operation_threat_area.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20191010142907_added_entity_constraints_OverallDataRisk.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
 </databaseChangeLog>
