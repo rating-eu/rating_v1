@@ -7,6 +7,7 @@ import {
     OnInit,
     SimpleChange,
     SimpleChanges,
+    ViewEncapsulation,
     ViewRef
 } from '@angular/core';
 import {GDPRQuestionnaireMgm} from '../../entities/gdpr-questionnaire-mgm';
@@ -39,7 +40,8 @@ import {Status} from "../../entities/enumerations/Status.enum";
 @Component({
     selector: 'jhi-dynamic-questionnaire',
     templateUrl: './dynamic-questionnaire.component.html',
-    styleUrls: ['dynamic-questionnaire.css']
+    styleUrls: ['dynamic-questionnaire.css'],
+    encapsulation: ViewEncapsulation.None
 })
 export class DynamicQuestionnaireComponent implements OnInit, OnChanges, OnDestroy {
 
