@@ -3,7 +3,7 @@
         <form *ngIf="form" [formGroup]="form" (ngSubmit)="submitOperationContext()">
             <div *ngFor="let question of questions; trackBy: trackByID"
                  [ngSwitch]="question.dataOperationField" class="card-box">
-                <mat-expansion-panel [hideToggle]="true">
+                <mat-expansion-panel [expanded]="true" [disabled]="true" [hideToggle]="true">
                     <mat-expansion-panel-header>
                         <mat-panel-title>
                             <label class="form-control-label">
@@ -11,7 +11,7 @@
                             </label>
                         </mat-panel-title>
                         <mat-panel-description>
-                            <mat-icon>info</mat-icon>
+                            <!--<mat-icon>info</mat-icon>-->
                         </mat-panel-description>
                     </mat-expansion-panel-header>
 
@@ -169,7 +169,7 @@
                  [ngSwitch]="question.dataOperationField" class="card-box row">
 
                 <div class="col-md-10">
-                    <mat-expansion-panel [hideToggle]="true">
+                    <mat-expansion-panel [expanded]="true" [disabled]="true" [hideToggle]="true">
                         <mat-expansion-panel-header>
                             <mat-panel-title>
                                 <label class="form-control-label">
@@ -177,7 +177,7 @@
                                 </label>
                             </mat-panel-title>
                             <mat-panel-description>
-                                <mat-icon>info</mat-icon>
+                                <!--<mat-icon>info</mat-icon>-->
                             </mat-panel-description>
                         </mat-expansion-panel-header>
 
@@ -226,7 +226,7 @@
                         <div *ngFor="let question of questionsByThreatAreaMap.get(area); trackBy: trackByID"
                              [ngSwitch]="question.dataOperationField" class="card-box row">
                             <div class="col-md-11">
-                                <mat-expansion-panel [hideToggle]="true">
+                                <mat-expansion-panel [expanded]="true" [disabled]="true" [hideToggle]="true">
                                     <mat-expansion-panel-header>
                                         <mat-panel-title>
                                             <label class="form-control-label">
@@ -234,7 +234,7 @@
                                             </label>
                                         </mat-panel-title>
                                         <mat-panel-description>
-                                            <mat-icon>info</mat-icon>
+                                            <!--<mat-icon>info</mat-icon>-->
                                         </mat-panel-description>
                                     </mat-expansion-panel-header>
 
@@ -265,7 +265,7 @@
                         <div *ngFor="let question of questionsByThreatAreaMap.get(area); trackBy: trackByID"
                              [ngSwitch]="question.dataOperationField" class="card-box row">
                             <div class="col-md-11">
-                                <mat-expansion-panel [hideToggle]="true">
+                                <mat-expansion-panel [expanded]="true" [disabled]="true" [hideToggle]="true">
                                     <mat-expansion-panel-header>
                                         <mat-panel-title>
                                             <label class="form-control-label">
@@ -273,7 +273,7 @@
                                             </label>
                                         </mat-panel-title>
                                         <mat-panel-description>
-                                            <mat-icon>info</mat-icon>
+                                            <!--<mat-icon>info</mat-icon>-->
                                         </mat-panel-description>
                                     </mat-expansion-panel-header>
 
@@ -304,7 +304,7 @@
                         <div *ngFor="let question of questionsByThreatAreaMap.get(area); trackBy: trackByID"
                              [ngSwitch]="question.dataOperationField" class="card-box row">
                             <div class="col-md-11">
-                                <mat-expansion-panel [hideToggle]="true">
+                                <mat-expansion-panel [expanded]="true" [disabled]="true" [hideToggle]="true">
                                     <mat-expansion-panel-header>
                                         <mat-panel-title>
                                             <label class="form-control-label">
@@ -312,7 +312,7 @@
                                             </label>
                                         </mat-panel-title>
                                         <mat-panel-description>
-                                            <mat-icon>info</mat-icon>
+                                            <!--<mat-icon>info</mat-icon>-->
                                         </mat-panel-description>
                                     </mat-expansion-panel-header>
 
@@ -343,7 +343,7 @@
                         <div *ngFor="let question of questionsByThreatAreaMap.get(area); trackBy: trackByID"
                              [ngSwitch]="question.dataOperationField" class="card-box row">
                             <div class="col-md-11">
-                                <mat-expansion-panel [hideToggle]="true">
+                                <mat-expansion-panel [expanded]="true" [disabled]="true" [hideToggle]="true">
                                     <mat-expansion-panel-header>
                                         <mat-panel-title>
                                             <label class="form-control-label">
@@ -351,7 +351,7 @@
                                             </label>
                                         </mat-panel-title>
                                         <mat-panel-description>
-                                            <mat-icon>info</mat-icon>
+                                            <!--<mat-icon>info</mat-icon>-->
                                         </mat-panel-description>
                                     </mat-expansion-panel-header>
 
