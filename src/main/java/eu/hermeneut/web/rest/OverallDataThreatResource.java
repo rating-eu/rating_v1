@@ -87,7 +87,7 @@ public class OverallDataThreatResource {
     public List<OverallDataThreat> getAllOverallDataThreats() {
         log.debug("REST request to get all OverallDataThreats");
         return overallDataThreatService.findAll();
-        }
+    }
 
     /**
      * GET  /overall-data-threats/:id : get the "id" overallDataThreat.
@@ -101,6 +101,19 @@ public class OverallDataThreatResource {
         log.debug("REST request to get OverallDataThreat : {}", id);
         OverallDataThreat overallDataThreat = overallDataThreatService.findOne(id);
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(overallDataThreat));
+    }
+
+    /**
+     * GET  /overall-data-threats/operation/:operationID : get the OverallDataThreat for the given DataOperation.
+     * @param operationID the id of the DataOperation
+     * @return the ResponseEntity with status 200 (OK) and with body the overallDataThreat, or with status 404 (Not Found)
+     */
+    @GetMapping("/overall-data-threats/operation/{operationID}")
+    @Timed
+    public ResponseEntity<OverallDataThreat> getOverallDataThreatByDataOperation(@PathVariable Long operationID) {
+        log.debug("REST request to get OverallSecurityImpact by DataOperation: {}", operationID);
+        OverallDataThreat overallSecurityImpact = overallDataThreatService.findOneByDataOperation(operationID);
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(overallSecurityImpact));
     }
 
     /**

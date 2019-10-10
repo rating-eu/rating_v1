@@ -1,17 +1,7 @@
-import { BaseEntity } from './../../shared';
-
-export const enum ThreatArea {
-    'NETWORK_AND_TECHNICAL_RESOURCES',
-    'PROCEDURES_RELATED_TO_THE_PROCESSING_OF_PERSONAL_DATA',
-    'PEOPLE_INVOLVED_IN_THE_PROCESSING_OF_PERSONAL_DATA',
-    'BUSINESS_SECTOR_AND_SCALE_OF_PROCESSING'
-}
-
-export const enum DataThreatLikelihood {
-    'LOW',
-    'MEDIUM',
-    'HIGH'
-}
+import {BaseEntity} from './../../shared';
+import {ThreatArea} from '../enumerations/gdpr/ThreatArea.enum';
+import {DataThreatLikelihood} from '../enumerations/gdpr/DataThreatLikelihood.enum';
+import {OverallDataThreatMgm} from '../overall-data-threat-mgm';
 
 export class DataThreatMgm implements BaseEntity {
     constructor(
@@ -19,7 +9,7 @@ export class DataThreatMgm implements BaseEntity {
         public threatArea?: ThreatArea,
         public likelihood?: DataThreatLikelihood,
         public operation?: BaseEntity,
-        public overallDataThreat?: BaseEntity,
+        public overallDataThreat?: OverallDataThreatMgm,
     ) {
     }
 }

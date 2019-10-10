@@ -18,6 +18,7 @@ import {NotificationInterceptor} from '../blocks/interceptor/notification.interc
 import {PrivacyRiskAssessmentModule} from '../privacy-risk-assessment/privacy-risk-assessment.module';
 import { SecurityImpactsWidgetComponent } from './security-impacts-widget/security-impacts-widget.component';
 import {ChartsModule} from "ng2-charts";
+import { DataThreatsWidgetComponent } from './data-threats-widget/data-threats-widget.component';
 
 @NgModule({
     imports: [
@@ -65,7 +66,7 @@ import {ChartsModule} from "ng2-charts";
         },
         PrivacyBoardService
     ],
-    declarations: [PrivacyBoardComponent, PrivacyStepsStatusWidgetComponent, SecurityImpactsWidgetComponent]
+    declarations: [PrivacyBoardComponent, PrivacyStepsStatusWidgetComponent, SecurityImpactsWidgetComponent, DataThreatsWidgetComponent]
 })
 export class PrivacyBoardModule {
 }
