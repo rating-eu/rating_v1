@@ -62,6 +62,12 @@ public class OverallDataRiskServiceImpl implements OverallDataRiskService {
         return overallDataRiskRepository.findOne(id);
     }
 
+    @Override
+    public OverallDataRisk findOneByDataOperation(Long operationID) {
+        log.debug("Request to get OverallDataRisk by DataOperation: {}", operationID);
+        return overallDataRiskRepository.findOneByDataOperation(operationID);
+    }
+
     /**
      * Delete the overallDataRisk by id.
      *

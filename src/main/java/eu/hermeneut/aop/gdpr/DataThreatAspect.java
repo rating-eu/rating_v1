@@ -42,7 +42,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Aspect
-@Order(1)
+@Order(2)
 @Component
 public class DataThreatAspect {
 

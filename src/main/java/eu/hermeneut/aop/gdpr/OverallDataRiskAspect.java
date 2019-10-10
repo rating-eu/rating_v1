@@ -19,15 +19,14 @@ package eu.hermeneut.aop.gdpr;
 
 import eu.hermeneut.domain.*;
 import eu.hermeneut.domain.enumeration.GDPRQuestionnairePurpose;
-import eu.hermeneut.service.DataThreatService;
+import eu.hermeneut.service.OverallDataRiskService;
 import eu.hermeneut.service.OverallDataThreatService;
-import eu.hermeneut.service.gdpr.DataThreatCalculator;
+import eu.hermeneut.service.OverallSecurityImpactService;
+import eu.hermeneut.service.gdpr.DataRiskCalculator;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
@@ -37,30 +36,31 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Aspect
-@Order(1)
+@Order(0)
 @Component
-public class OverallDataThreatAspect {
+public class OverallDataRiskAspect {
 
     @Autowired
-    private DataThreatService dataThreatService;
+    private OverallSecurityImpactService overallSecurityImpactService;
 
     @Autowired
     private OverallDataThreatService overallDataThreatService;
 
     @Autowired
-    private DataThreatCalculator dataThreatCalculator;
+    private OverallDataRiskService overallDataRiskService;
 
-    private Logger logger = LoggerFactory.getLogger(OverallDataThreatAspect.class);
+    @Autowired
+    private DataRiskCalculator dataRiskCalculator;
 
     /**
      * Pointcut for methods annotated with OverallDataThreatHook.
      */
-    @Pointcut("@annotation(eu.hermeneut.aop.annotation.gdpr.OverallDataThreatHook)")
-    public void overallDataThreatHook() {
+    @Pointcut("@annotation(eu.hermeneut.aop.annotation.gdpr.OverallDataRiskHook)")
+    public void overallDataRiskHook() {
     }
 
     @Transactional
-    @AfterReturning(pointcut = "overallDataThreatHook()", returning = "result")
+    @AfterReturning(pointcut = "overallDataRiskHook()", returning = "result")
     public void updateOverallDataThreat(JoinPoint joinPoint, Object result) {
         if (result != null && result instanceof GDPRQuestionnaireStatus) {
             GDPRQuestionnaireStatus questionnaireStatus = (GDPRQuestionnaireStatus) result;
@@ -71,36 +71,20 @@ public class OverallDataThreatAspect {
                 DataOperation operation = questionnaireStatus.getOperation();
 
                 if (operation != null) {
-                    List<DataThreat> threats = this.dataThreatService.findAllByDataOperation(operation.getId());
-                    OverallDataThreat existingOverall = this.overallDataThreatService.findOneByDataOperation(operation.getId());
+                    OverallSecurityImpact overallSecurityImpact = this.overallSecurityImpactService.findOneByDataOperation(operation.getId());
+                    OverallDataThreat overallDataThreat = this.overallDataThreatService.findOneByDataOperation(operation.getId());
 
-                    if (threats != null && !threats.isEmpty()) {
-                        OverallDataThreat latestOverall = this.dataThreatCalculator.calculateOverallDataThreat(threats.stream().parallel().collect(Collectors.toSet()));
+                    if (overallSecurityImpact != null && overallDataThreat != null) {
+                        OverallDataRisk existingOverallDataRisk = this.overallDataRiskService.findOneByDataOperation(operation.getId());
 
-                        if (existingOverall != null) {
-                            existingOverall.setLikelihood(latestOverall.getLikelihood());
+                        OverallDataRisk actualOverallDataRisk = this.dataRiskCalculator.calculateOverallDataRisk(overallSecurityImpact, overallDataThreat);
 
-                            existingOverall = this.overallDataThreatService.save(existingOverall);
-
-                            for (DataThreat dataThreat : threats) {
-                                dataThreat.setOverallDataThreat(existingOverall);
-                            }
-
-                            this.dataThreatService.save(threats);
+                        if (existingOverallDataRisk != null) {
+                            existingOverallDataRisk.setRiskLevel(actualOverallDataRisk.getRiskLevel());
+                            this.overallDataRiskService.save(existingOverallDataRisk);
                         } else {
-                            latestOverall = this.overallDataThreatService.save(latestOverall);
-
-                            for (DataThreat dataThreat : threats) {
-                                dataThreat.setOverallDataThreat(latestOverall);
-
-                                this.dataThreatService.save(dataThreat);
-                            }
-
-                            this.dataThreatService.save(threats);
+                            this.overallDataRiskService.save(actualOverallDataRisk);
                         }
-                    } else {
-                        // TODO Should we try to create the DataThreats here?
-                        this.logger.warn("DataThreats NOT FOUND...");
                     }
                 }
             }

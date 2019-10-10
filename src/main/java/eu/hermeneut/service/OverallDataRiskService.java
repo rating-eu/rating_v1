@@ -32,6 +32,14 @@ public interface OverallDataRiskService {
     OverallDataRisk findOne(Long id);
 
     /**
+     * Get the overallDataRisk of the given DataOperation.
+     *
+     * @param operationID the id of the DataOperation
+     * @return the entity
+     */
+    OverallDataRisk findOneByDataOperation(Long operationID);
+
+    /**
      * Delete the "id" overallDataRisk.
      *
      * @param id the id of the entity

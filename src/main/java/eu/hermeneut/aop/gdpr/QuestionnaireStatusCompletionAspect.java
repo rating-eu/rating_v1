@@ -32,7 +32,7 @@ import java.util.List;
 import java.util.Set;
 
 @Aspect
-@Order(2)
+@Order(3)
 @Component
 public class QuestionnaireStatusCompletionAspect {
 
