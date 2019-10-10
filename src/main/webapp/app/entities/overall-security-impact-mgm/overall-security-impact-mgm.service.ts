@@ -8,10 +8,13 @@ import { createRequestOption } from '../../shared';
 
 export type EntityResponseType = HttpResponse<OverallSecurityImpactMgm>;
 
+const OPERATION_ID_PLACEHOLDER = '{operationID}';
+
 @Injectable()
 export class OverallSecurityImpactMgmService {
 
     private resourceUrl =  SERVER_API_URL + 'api/overall-security-impacts';
+    private resourceUrlByDataOperation =  SERVER_API_URL + 'api/overall-security-impacts/operation/' + OPERATION_ID_PLACEHOLDER;
 
     constructor(private http: HttpClient) { }
 
@@ -29,6 +32,12 @@ export class OverallSecurityImpactMgmService {
 
     find(id: number): Observable<EntityResponseType> {
         return this.http.get<OverallSecurityImpactMgm>(`${this.resourceUrl}/${id}`, { observe: 'response'})
+            .map((res: EntityResponseType) => this.convertResponse(res));
+    }
+
+    getByDataOperation(operationID: number){
+        return this.http.get<OverallSecurityImpactMgm>(this.resourceUrlByDataOperation
+            .replace(OPERATION_ID_PLACEHOLDER, String(operationID)), { observe: 'response'})
             .map((res: EntityResponseType) => this.convertResponse(res));
     }
 

@@ -7,6 +7,7 @@ import {PrivacyBoardStatus} from "../model/privacy-board-status";
 import {PrivacyBoardService} from "../privacy-board.service";
 import {DataOperationMgm} from "../../entities/data-operation-mgm";
 import {HttpResponse} from "@angular/common/http";
+import {SecurityImpactMgm} from "../../entities/security-impact-mgm";
 
 @Component({
     selector: 'jhi-privacy-steps-status-widget',
@@ -63,6 +64,7 @@ export class PrivacyStepsStatusWidgetComponent implements OnInit, OnDestroy {
                 this.privacyBoardService.getPrivacyBoardStatus(this.myCompany.companyProfile.id, this._dataOperation.id).subscribe(
                     (statusResponse: HttpResponse<PrivacyBoardStatus>) => {
                         this.privacyBoardStatus = statusResponse.body;
+                        this.dataSharingService.privacyBoardStatus = this.privacyBoardStatus;
                         this.loading = false;
                     }
                 )
@@ -70,6 +72,7 @@ export class PrivacyStepsStatusWidgetComponent implements OnInit, OnDestroy {
         }else if(this.dataOperation && this.myCompany && this.myCompany.companyProfile){
             this.loading = true;
             this.privacyBoardStatus = new PrivacyBoardStatus();
+            this.dataSharingService.privacyBoardStatus = this.privacyBoardStatus;
             this.loading = false;
         }
     }

@@ -368,6 +368,10 @@ export class DataSharingService {
         this._privacyBoardStatusSubject.next(this._privacyBoardStatus);
     }
 
+    get privacyBoardStatus$(): Observable<PrivacyBoardStatus>{
+        return this._privacyBoardStatusSubject.asObservable();
+    }
+
     clear() {
         this.role = null;
         this.myCompany = null;

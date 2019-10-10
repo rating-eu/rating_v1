@@ -3,6 +3,8 @@ import {DataSharingService} from '../../data-sharing/data-sharing.service';
 import {DataOperationMgm} from '../../entities/data-operation-mgm';
 import {Subscription} from 'rxjs';
 import {Router} from '@angular/router';
+import {PrivacyBoardStatus} from "../model/privacy-board-status";
+import {Status} from "../../entities/enumerations/Status.enum";
 
 @Component({
     selector: 'jhi-privacy-board',
@@ -13,6 +15,8 @@ export class PrivacyBoardComponent implements OnInit, OnDestroy {
 
     public dataOperation: DataOperationMgm;
     private subscriptions: Subscription[];
+    public privacyBoardStatus: PrivacyBoardStatus;
+    public statusEnum = Status;
 
     constructor(private router: Router,
                 private dataSharingService: DataSharingService) {
@@ -33,7 +37,15 @@ export class PrivacyBoardComponent implements OnInit, OnDestroy {
                     this.dataOperation = operation;
                 }
             )
-        )
+        );
+
+        this.privacyBoardStatus = this.dataSharingService.privacyBoardStatus;
+
+        this.subscriptions.push(
+            this.dataSharingService.privacyBoardStatus$.subscribe((status: PrivacyBoardStatus) => {
+                this.privacyBoardStatus = status;
+            })
+        );
     }
 
     ngOnDestroy(): void {

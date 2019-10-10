@@ -87,7 +87,7 @@ public class OverallSecurityImpactResource {
     public List<OverallSecurityImpact> getAllOverallSecurityImpacts() {
         log.debug("REST request to get all OverallSecurityImpacts");
         return overallSecurityImpactService.findAll();
-        }
+    }
 
     /**
      * GET  /overall-security-impacts/:id : get the "id" overallSecurityImpact.
@@ -100,6 +100,20 @@ public class OverallSecurityImpactResource {
     public ResponseEntity<OverallSecurityImpact> getOverallSecurityImpact(@PathVariable Long id) {
         log.debug("REST request to get OverallSecurityImpact : {}", id);
         OverallSecurityImpact overallSecurityImpact = overallSecurityImpactService.findOne(id);
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(overallSecurityImpact));
+    }
+
+    /**
+     * GET  /overall-security-impacts/operation/:operationID : get the overallSecurityImpact.
+     *
+     * @param operationID the id of the DataOperation
+     * @return the ResponseEntity with status 200 (OK) and with body the overallSecurityImpact, or with status 404 (Not Found)
+     */
+    @GetMapping("/overall-security-impacts/operation/{operationID}")
+    @Timed
+    public ResponseEntity<OverallSecurityImpact> getOverallSecurityImpactByDataOperation(@PathVariable Long operationID) {
+        log.debug("REST request to get OverallSecurityImpact by DataOperation: {}", operationID);
+        OverallSecurityImpact overallSecurityImpact = overallSecurityImpactService.findOneByDataOperation(operationID);
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(overallSecurityImpact));
     }
 

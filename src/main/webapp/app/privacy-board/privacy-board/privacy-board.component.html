@@ -4,4 +4,12 @@
             <jhi-privacy-steps-status-widget [dataOperation]="dataOperation"></jhi-privacy-steps-status-widget>
         </div>
     </div>
+    <div class="row well">
+        <h2>Privacy Posture</h2>
+    </div>
+    <div class="row mb-2">
+        <div *ngIf="privacyBoardStatus && privacyBoardStatus.impactEvaluation===statusEnum.FULL" class="col-md-12">
+            <jhi-security-impacts-widget [dataOperation]="dataOperation"></jhi-security-impacts-widget>
+        </div>
+    </div>
 </div>

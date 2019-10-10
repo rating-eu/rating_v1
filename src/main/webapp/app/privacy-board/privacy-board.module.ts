@@ -16,6 +16,8 @@ import {ErrorHandlerInterceptor} from '../blocks/interceptor/errorhandler.interc
 import {JhiEventManager} from 'ng-jhipster';
 import {NotificationInterceptor} from '../blocks/interceptor/notification.interceptor';
 import {PrivacyRiskAssessmentModule} from '../privacy-risk-assessment/privacy-risk-assessment.module';
+import { SecurityImpactsWidgetComponent } from './security-impacts-widget/security-impacts-widget.component';
+import {ChartsModule} from "ng2-charts";
 
 @NgModule({
     imports: [
@@ -23,6 +25,7 @@ import {PrivacyRiskAssessmentModule} from '../privacy-risk-assessment/privacy-ri
         HermeneutSharedModule,
         DataSharingModule,
         MaterialModule,
+        ChartsModule,
         PrivacyBoardRoutingModule,
         PrivacyRiskAssessmentModule
     ],
@@ -62,7 +65,7 @@ import {PrivacyRiskAssessmentModule} from '../privacy-risk-assessment/privacy-ri
         },
         PrivacyBoardService
     ],
-    declarations: [PrivacyBoardComponent, PrivacyStepsStatusWidgetComponent]
+    declarations: [PrivacyBoardComponent, PrivacyStepsStatusWidgetComponent, SecurityImpactsWidgetComponent]
 })
 export class PrivacyBoardModule {
 }
