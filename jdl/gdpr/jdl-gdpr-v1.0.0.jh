@@ -459,6 +459,12 @@ enum DataThreatLikelihood{
     HIGH
 }
 
+enum DataRiskLevel{
+    LOW,
+    MEDIUM,
+    HIGH
+}
+
 enum DataOperationField{
     NAME,
     PROCESSED_DATA,
@@ -534,6 +540,10 @@ entity OverallDataThreat{
     Likelihood DataThreatLikelihood required
 }
 
+entity OverallDataRisk{
+    RiskLevel DataRiskLevel required
+}
+
 /*=======GDPR Questions=======*/
 entity GDPRQuestionnaire{
     Name String required,
@@ -576,7 +586,8 @@ entity Translation{
 /*=======GDPR Relationships=======*/
 relationship OneToOne{
     OverallSecurityImpact{operation(name)} to DataOperation,
-    OverallDataThreat{operation(name)} to DataOperation
+    OverallDataThreat{operation(name)} to DataOperation,
+    OverallDataRisk{operation(name)} to DataOperation
 }
 
 relationship OneToMany{
