@@ -39,6 +39,13 @@ public class DataThreatServiceImpl implements DataThreatService {
         return dataThreatRepository.save(dataThreat);
     }
 
+    @Override
+    @Transactional(propagation = Propagation.NESTED)
+    public List<DataThreat> save(List<DataThreat> dataThreats) {
+        log.debug("Request to save DataThreats : {}");
+        return dataThreatRepository.save(dataThreats);
+    }
+
     /**
      * Get all the dataThreats.
      *

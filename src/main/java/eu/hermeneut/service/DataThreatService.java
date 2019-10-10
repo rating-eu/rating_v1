@@ -18,6 +18,14 @@ public interface DataThreatService {
     DataThreat save(DataThreat dataThreat);
 
     /**
+     * Save the list of dataThreats.
+     *
+     * @param dataThreats the list of entities to save
+     * @return the persisted entities
+     */
+    List<DataThreat> save(List<DataThreat> dataThreats);
+
+    /**
      * Get all the dataThreats.
      *
      * @return the list of entities

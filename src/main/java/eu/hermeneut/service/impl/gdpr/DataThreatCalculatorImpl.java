@@ -62,13 +62,17 @@ public class DataThreatCalculatorImpl implements DataThreatCalculator {
 
         // Check that all the MyAnswers are linked to one of the given Questions.
         myAnswers.stream().parallel().forEach((myAnswer) -> {
-            if (!questionsMap.containsKey(myAnswer.getQuestion().getId())) {
-                throw new IllegalArgumentException("All the myAnswers must be LINKED to one of the GIVEN Questions!");
-            } else {
-                if (myAnswersMap.containsKey(myAnswer.getQuestion().getId())) {
-                    throw new IllegalArgumentException("Multiple myAnswers for the same Quesion are not allowed!");
+            if (myAnswer != null && myAnswer.getQuestion() != null) {
+                GDPRQuestion question = myAnswer.getQuestion();
+
+                if (!questionsMap.containsKey(question.getId())) {
+                    throw new IllegalArgumentException("All the myAnswers must be LINKED to one of the GIVEN Questions!");
                 } else {
-                    myAnswersMap.put(myAnswer.getQuestion().getId(), myAnswer);
+                    if (myAnswersMap.containsKey(question.getId())) {
+                        throw new IllegalArgumentException("Multiple myAnswers for the same Quesion are not allowed!");
+                    } else {
+                        myAnswersMap.put(question.getId(), myAnswer);
+                    }
                 }
             }
         });

@@ -38,7 +38,10 @@ public class OverallDataThreat implements Serializable {
     @JoinColumn(unique = true)
     private DataOperation operation;
 
-    @OneToMany(mappedBy = "overallDataThreat")
+    @OneToMany(mappedBy = "overallDataThreat",
+        cascade = {CascadeType.ALL},
+        orphanRemoval = true
+    )
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<DataThreat> threats = new HashSet<>();

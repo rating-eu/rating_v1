@@ -46,6 +46,7 @@ public class DataThreat implements Serializable {
     private DataOperation operation;
 
     @ManyToOne
+    @JsonIgnore
     private OverallDataThreat overallDataThreat;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove

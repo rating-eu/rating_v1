@@ -85,9 +85,23 @@ public class OverallDataThreatAspect {
                         if (existingOverall != null) {
                             existingOverall.setLikelihood(latestOverall.getLikelihood());
 
-                            this.overallDataThreatService.save(existingOverall);
+                            existingOverall = this.overallDataThreatService.save(existingOverall);
+
+                            for (DataThreat dataThreat : threats) {
+                                dataThreat.setOverallDataThreat(existingOverall);
+                            }
+
+                            this.dataThreatService.save(threats);
                         } else {
-                            this.overallDataThreatService.save(latestOverall);
+                            latestOverall = this.overallDataThreatService.save(latestOverall);
+
+                            for (DataThreat dataThreat : threats) {
+                                dataThreat.setOverallDataThreat(latestOverall);
+
+                                this.dataThreatService.save(dataThreat);
+                            }
+
+                            this.dataThreatService.save(threats);
                         }
                     } else {
                         // TODO Should we try to create the DataThreats here?
