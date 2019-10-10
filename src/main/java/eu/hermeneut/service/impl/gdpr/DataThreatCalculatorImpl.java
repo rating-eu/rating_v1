@@ -84,7 +84,7 @@ public class DataThreatCalculatorImpl implements DataThreatCalculator {
         dataThreat.setOperation(operation);
         dataThreat.setThreatArea(area);
 
-        long yesCount = myAnswers.stream().parallel().filter(myAnswer -> myAnswer.getAnswer().getAnswerValue().equals(AnswerValue.YES)).count();
+        long yesCount = myAnswers.stream().parallel().filter(myAnswer -> AnswerValue.YES.equals(myAnswer.getAnswer().getAnswerValue())).count();
         int likelihoodValue = yesCountRange.convert((int) yesCount, likelihoodRange);
 
         DataThreatLikelihood likelihood = DataThreatLikelihood.getByValue(likelihoodValue);

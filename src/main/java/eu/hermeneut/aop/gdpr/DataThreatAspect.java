@@ -63,8 +63,6 @@ public class DataThreatAspect {
 
     @AfterReturning(pointcut = "dataThreatHook()", returning = "result")
     public void updateDataThreats(JoinPoint joinPoint, Object result) {
-        this.logger.error("Update DataThreats...");
-
         if (result != null && result instanceof GDPRQuestionnaireStatus) {
             GDPRQuestionnaireStatus questionnaireStatus = (GDPRQuestionnaireStatus) result;
 

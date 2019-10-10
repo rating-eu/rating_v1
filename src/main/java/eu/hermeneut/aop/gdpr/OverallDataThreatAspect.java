@@ -31,7 +31,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -63,8 +62,6 @@ public class OverallDataThreatAspect {
     @Transactional
     @AfterReturning(pointcut = "overallDataThreatHook()", returning = "result")
     public void updateOverallDataThreat(JoinPoint joinPoint, Object result) {
-        this.logger.error("Update OverallDataThreats...");
-
         if (result != null && result instanceof GDPRQuestionnaireStatus) {
             GDPRQuestionnaireStatus questionnaireStatus = (GDPRQuestionnaireStatus) result;
 
@@ -79,8 +76,6 @@ public class OverallDataThreatAspect {
 
                     if (threats != null && !threats.isEmpty()) {
                         OverallDataThreat latestOverall = this.dataThreatCalculator.calculateOverallDataThreat(threats.stream().parallel().collect(Collectors.toSet()));
-
-                        this.logger.error("DataThreats are here and now...");
 
                         if (existingOverall != null) {
                             existingOverall.setLikelihood(latestOverall.getLikelihood());
@@ -105,7 +100,7 @@ public class OverallDataThreatAspect {
                         }
                     } else {
                         // TODO Should we try to create the DataThreats here?
-                        this.logger.error("DataThreats NOT FOUND...");
+                        this.logger.warn("DataThreats NOT FOUND...");
                     }
                 }
             }
