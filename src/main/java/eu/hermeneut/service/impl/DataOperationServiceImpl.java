@@ -1,5 +1,6 @@
 package eu.hermeneut.service.impl;
 
+import eu.hermeneut.aop.annotation.gdpr.OverallDataRiskHook;
 import eu.hermeneut.aop.annotation.gdpr.OverallSecurityImpactHook;
 import eu.hermeneut.domain.DataRecipient;
 import eu.hermeneut.domain.DataThreat;
@@ -38,6 +39,7 @@ public class DataOperationServiceImpl implements DataOperationService {
      */
     @Override
     @OverallSecurityImpactHook
+    @OverallDataRiskHook
     public DataOperation save(DataOperation dataOperation) {
         log.debug("Request to save DataOperation : {}", dataOperation);
 

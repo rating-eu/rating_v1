@@ -84,7 +84,15 @@ public class DataThreatCalculatorImpl implements DataThreatCalculator {
         dataThreat.setOperation(operation);
         dataThreat.setThreatArea(area);
 
-        long yesCount = myAnswers.stream().parallel().filter(myAnswer -> AnswerValue.YES.equals(myAnswer.getAnswer().getAnswerValue())).count();
+        long yesCount = myAnswers.stream().parallel()
+            .filter((myAnswer) -> {
+                if (myAnswer != null && myAnswer.getAnswer() != null) {
+                    return AnswerValue.YES.equals(myAnswer.getAnswer().getAnswerValue());
+                } else {
+                    return false;
+                }
+            }).count();
+
         int likelihoodValue = yesCountRange.convert((int) yesCount, likelihoodRange);
 
         DataThreatLikelihood likelihood = DataThreatLikelihood.getByValue(likelihoodValue);
@@ -130,22 +138,34 @@ public class DataThreatCalculatorImpl implements DataThreatCalculator {
                         Function.identity())
                     );
 
-                questionsByThreatArea.entrySet().stream().parallel()
-                    .forEach(threatAreaQuestionsEntry -> {
-                        ThreatArea area = threatAreaQuestionsEntry.getKey();
-                        List<GDPRQuestion> areaQuestions = threatAreaQuestionsEntry.getValue();
-                        List<GDPRMyAnswer> gdprMyAnswers = new ArrayList<>();
+                if (questionsByThreatArea != null && !questionsByThreatArea.isEmpty()) {
+                    Set<Map.Entry<ThreatArea, List<GDPRQuestion>>> entrySet = questionsByThreatArea.entrySet();
 
-                        areaQuestions.stream().parallel()
-                            .forEach((question) -> {
-                                if (myAnswerByQuestionIDMap.containsKey(question.getId())) {
-                                    gdprMyAnswers.add(myAnswerByQuestionIDMap.get(question.getId()));
+                    if (entrySet != null && !entrySet.isEmpty()) {
+                        entrySet.stream()
+                            .parallel()
+                            .forEach(
+                                threatAreaQuestionsEntry -> {
+                                    ThreatArea area = threatAreaQuestionsEntry.getKey();
+                                    List<GDPRQuestion> areaQuestions = threatAreaQuestionsEntry.getValue();
+
+                                    if (area != null && areaQuestions != null) {
+                                        List<GDPRMyAnswer> gdprMyAnswers = new ArrayList<>();
+
+                                        areaQuestions.stream().parallel()
+                                            .forEach((question) -> {
+                                                if (myAnswerByQuestionIDMap.containsKey(question.getId())) {
+                                                    gdprMyAnswers.add(myAnswerByQuestionIDMap.get(question.getId()));
+                                                }
+                                            });
+
+                                        final DataThreat dataThreat = this.calculateDataThreat(operation, area, areaQuestions, gdprMyAnswers);
+                                        dataThreats.add(dataThreat);
+                                    }
                                 }
-                            });
-
-                        final DataThreat dataThreat = this.calculateDataThreat(operation, area, areaQuestions, gdprMyAnswers);
-                        dataThreats.add(dataThreat);
-                    });
+                            );
+                    }
+                }
 
                 break;
             }

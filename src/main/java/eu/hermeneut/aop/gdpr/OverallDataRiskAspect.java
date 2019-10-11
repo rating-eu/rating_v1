@@ -32,9 +32,6 @@ import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 @Aspect
 @Order(0)
 @Component
@@ -62,30 +59,39 @@ public class OverallDataRiskAspect {
     @Transactional
     @AfterReturning(pointcut = "overallDataRiskHook()", returning = "result")
     public void updateOverallDataThreat(JoinPoint joinPoint, Object result) {
-        if (result != null && result instanceof GDPRQuestionnaireStatus) {
-            GDPRQuestionnaireStatus questionnaireStatus = (GDPRQuestionnaireStatus) result;
+        if (result != null) {
+            if (result instanceof GDPRQuestionnaireStatus) {
+                GDPRQuestionnaireStatus questionnaireStatus = (GDPRQuestionnaireStatus) result;
 
-            GDPRQuestionnaire questionnaire = questionnaireStatus.getQuestionnaire();
+                GDPRQuestionnaire questionnaire = questionnaireStatus.getQuestionnaire();
 
-            if (questionnaire != null && questionnaire.getPurpose().equals(GDPRQuestionnairePurpose.THREAT_LIKELIHOOD)) {
-                DataOperation operation = questionnaireStatus.getOperation();
+                if (questionnaire != null && questionnaire.getPurpose().equals(GDPRQuestionnairePurpose.THREAT_LIKELIHOOD)) {
+                    DataOperation operation = questionnaireStatus.getOperation();
 
-                if (operation != null) {
-                    OverallSecurityImpact overallSecurityImpact = this.overallSecurityImpactService.findOneByDataOperation(operation.getId());
-                    OverallDataThreat overallDataThreat = this.overallDataThreatService.findOneByDataOperation(operation.getId());
+                    this.update(operation);
+                }
+            } else if (result instanceof DataOperation) {
+                DataOperation operation = (DataOperation) result;
+                this.update(operation);
+            }
+        }
+    }
 
-                    if (overallSecurityImpact != null && overallDataThreat != null) {
-                        OverallDataRisk existingOverallDataRisk = this.overallDataRiskService.findOneByDataOperation(operation.getId());
+    private void update(DataOperation operation) {
+        if (operation != null) {
+            OverallSecurityImpact overallSecurityImpact = this.overallSecurityImpactService.findOneByDataOperation(operation.getId());
+            OverallDataThreat overallDataThreat = this.overallDataThreatService.findOneByDataOperation(operation.getId());
 
-                        OverallDataRisk actualOverallDataRisk = this.dataRiskCalculator.calculateOverallDataRisk(overallSecurityImpact, overallDataThreat);
+            if (overallSecurityImpact != null && overallDataThreat != null) {
+                OverallDataRisk existingOverallDataRisk = this.overallDataRiskService.findOneByDataOperation(operation.getId());
 
-                        if (existingOverallDataRisk != null) {
-                            existingOverallDataRisk.setRiskLevel(actualOverallDataRisk.getRiskLevel());
-                            this.overallDataRiskService.save(existingOverallDataRisk);
-                        } else {
-                            this.overallDataRiskService.save(actualOverallDataRisk);
-                        }
-                    }
+                OverallDataRisk actualOverallDataRisk = this.dataRiskCalculator.calculateOverallDataRisk(overallSecurityImpact, overallDataThreat);
+
+                if (existingOverallDataRisk != null) {
+                    existingOverallDataRisk.setRiskLevel(actualOverallDataRisk.getRiskLevel());
+                    this.overallDataRiskService.save(existingOverallDataRisk);
+                } else {
+                    this.overallDataRiskService.save(actualOverallDataRisk);
                 }
             }
         }

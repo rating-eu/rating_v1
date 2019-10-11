@@ -28,6 +28,7 @@ import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -35,6 +36,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Aspect
+@Order(1)
 @Component
 public class OverallSecurityImpactAspect {
 
