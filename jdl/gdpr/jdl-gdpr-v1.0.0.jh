@@ -544,6 +544,13 @@ entity OverallDataRisk{
     RiskLevel DataRiskLevel required
 }
 
+entity DataRiskLevelConfig{
+    Rationale String required maxlength(2000),
+    Likelihood DataThreatLikelihood required,
+    Impact DataImpact required,
+    Risk DataRiskLevel required
+}
+
 /*=======GDPR Questions=======*/
 entity GDPRQuestionnaire{
     Name String required,
@@ -609,7 +616,8 @@ relationship ManyToOne{
     GDPRQuestionnaireStatus{user(login)} to User,
     GDPRQuestion{questionnaire(name)} to GDPRQuestionnaire,
     GDPRMyAnswer{question(text)} to GDPRQuestion,
-    GDPRMyAnswer{answer} to GDPRAnswer
+    GDPRMyAnswer{answer} to GDPRAnswer,
+    DataRiskLevelConfig{operation(name)} to DataOperation
 }
 
 relationship ManyToMany{
