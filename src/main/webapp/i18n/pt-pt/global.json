@@ -59,6 +59,7 @@
                 "gdprMyAnswerMgm": "GDPR My Answer",
                 "translationMgm": "Translation",
                 "overallDataRiskMgm": "Overall Data Risk",
+                "dataRiskLevelConfigMgm": "Data Risk Level Config",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {

@@ -416,6 +416,12 @@
                             <span jhiTranslate="global.menu.entities.overallDataRiskMgm">Overall Data Risk Mgm</span>
                         </a>
                     </li>
+                    <li>
+                        <a class="dropdown-item" routerLink="data-risk-level-config-mgm" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                            <i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
+                            <span jhiTranslate="global.menu.entities.dataRiskLevelConfigMgm">Data Risk Level Config Mgm</span>
+                        </a>
+                    </li>
                     <!-- jhipster-needle-add-entity-to-menu - JHipster will add entities to the menu here -->
                 </ul>
             </li>

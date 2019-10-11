@@ -1,0 +1,26 @@
+
+{
+    "hermeneutApp": {
+        "dataRiskLevelConfig" : {
+            "home": {
+                "title": "Data Risk Level Configs",
+                "createLabel": "Create a new Data Risk Level Config",
+                "createOrEditLabel": "Create or edit a Data Risk Level Config"
+            },
+            "created": "A new Data Risk Level Config is created with identifier {{ param }}",
+            "updated": "A Data Risk Level Config is updated with identifier {{ param }}",
+            "deleted": "A Data Risk Level Config is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Data Risk Level Config {{ id }}?"
+            },
+            "detail": {
+                "title": "Data Risk Level Config"
+            },
+            "rationale": "Rationale",
+            "likelihood": "Likelihood",
+            "impact": "Impact",
+            "risk": "Risk",
+            "operation": "Operation"
+        }
+    }
+}
