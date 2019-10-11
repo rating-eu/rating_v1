@@ -19,7 +19,13 @@ import eu.hermeneut.domain.enumeration.DataRiskLevel;
  * A DataRiskLevelConfig.
  */
 @Entity
-@Table(name = "data_risk_level_config")
+@Table(
+    name = "data_risk_level_config",
+    uniqueConstraints = @UniqueConstraint(
+        name = "UK_DataRiskLevelConfig_DataOperation_Likelihood_Impact",
+        columnNames = {"operation_id", "likelihood", "impact"}
+    )
+)
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class DataRiskLevelConfig implements Serializable {
 
@@ -51,6 +57,7 @@ public class DataRiskLevelConfig implements Serializable {
     private DataRiskLevel risk;
 
     @ManyToOne
+    @JoinColumn(name = "operation_id")
     private DataOperation operation;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
