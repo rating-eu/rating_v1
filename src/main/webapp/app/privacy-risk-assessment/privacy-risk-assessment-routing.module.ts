@@ -4,6 +4,7 @@ import {DataOperationsComponent} from './data-operations/data-operations.compone
 import {DataOperationContextComponent} from './data-operation-context/data-operation-context.component';
 import {SecurityImpactComponent} from './security-impact/security-impact.component';
 import {DataThreatComponent} from './data-threat/data-threat.component';
+import {DataRiskComponent} from "./data-risk/data-risk.component";
 
 const routes: Routes = [
     {
@@ -21,6 +22,10 @@ const routes: Routes = [
     {
         path: 'threat',
         component: DataThreatComponent
+    },
+    {
+        path: 'risk',
+        component: DataRiskComponent
     }
 ];
 

@@ -21,6 +21,7 @@ import {MaterialModule} from '../material/material.module';
 import {SecurityImpactComponent} from './security-impact/security-impact.component';
 import {DataThreatComponent} from './data-threat/data-threat.component';
 import {DataImpactsDescriptionComponent} from './data-impacts-description/data-impacts-description.component';
+import { DataRiskComponent } from './data-risk/data-risk.component';
 
 @NgModule({
     imports: [
@@ -68,7 +69,7 @@ import {DataImpactsDescriptionComponent} from './data-impacts-description/data-i
             ]
         }
     ],
-    declarations: [DataOperationsComponent, DataOperationContextComponent, DynamicQuestionnaireComponent, SecurityImpactComponent, DataThreatComponent, DataImpactsDescriptionComponent]
+    declarations: [DataOperationsComponent, DataOperationContextComponent, DynamicQuestionnaireComponent, SecurityImpactComponent, DataThreatComponent, DataImpactsDescriptionComponent, DataRiskComponent]
 })
 export class PrivacyRiskAssessmentModule {
     // Fixes Translation Not Found in Lazy Loading modules
