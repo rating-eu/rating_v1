@@ -17,17 +17,13 @@
 
 package eu.hermeneut.service.impl.dashboard;
 
-import eu.hermeneut.domain.DataOperation;
-import eu.hermeneut.domain.DataThreat;
-import eu.hermeneut.domain.SecurityImpact;
+import eu.hermeneut.domain.*;
 import eu.hermeneut.domain.dashboard.PrivacyBoardStatus;
 import eu.hermeneut.domain.enumeration.SecurityPillar;
 import eu.hermeneut.domain.enumeration.Status;
 import eu.hermeneut.domain.enumeration.ThreatArea;
 import eu.hermeneut.exceptions.NotFoundException;
-import eu.hermeneut.service.DataOperationService;
-import eu.hermeneut.service.DataThreatService;
-import eu.hermeneut.service.SecurityImpactService;
+import eu.hermeneut.service.*;
 import eu.hermeneut.service.dashboard.PrivacyBoardStatusService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -43,10 +39,13 @@ public class PrivacyBoardStatusServiceImpl implements PrivacyBoardStatusService 
     private DataOperationService dataOperationService;
 
     @Autowired
-    private SecurityImpactService securityImpactService;
+    private OverallSecurityImpactService overallSecurityImpactService;
 
     @Autowired
-    private DataThreatService dataThreatService;
+    private OverallDataThreatService overallDataThreatService;
+
+    @Autowired
+    private OverallDataRiskService overallDataRiskService;
 
     @Override
     public Status getOperationDefinitionStatus(Long companyProfileID, Long operationID) throws NotFoundException {
@@ -65,13 +64,20 @@ public class PrivacyBoardStatusServiceImpl implements PrivacyBoardStatusService 
         DataOperation operation = checkOperationExistence(companyProfileID, operationID);
 
         Set<SecurityImpact> impacts = operation.getImpacts();
+        OverallSecurityImpact overallSecurityImpact = this.overallSecurityImpactService.findOneByDataOperation(operationID);
 
-        if (impacts == null || impacts.isEmpty()) {
-            return Status.EMPTY;
-        } else if (impacts.size() == SecurityPillar.values().length) {
-            return Status.FULL;
+        if (overallSecurityImpact == null) {
+            // Status may be EMPTY or PENDING
+            if (impacts == null || impacts.isEmpty()) {
+                return Status.EMPTY;
+            } else if (impacts.size() != SecurityPillar.values().length) {
+                return Status.PENDING;
+            } else {
+                return Status.FULL;
+            }
         } else {
-            return Status.EMPTY;
+            // TODO Status is FULL but the Overall is missing
+            return Status.FULL;
         }
     }
 
@@ -80,13 +86,20 @@ public class PrivacyBoardStatusServiceImpl implements PrivacyBoardStatusService 
         DataOperation operation = checkOperationExistence(companyProfileID, operationID);
 
         Set<DataThreat> threats = operation.getThreats();
+        OverallDataThreat overallDataThreat = this.overallDataThreatService.findOneByDataOperation(operationID);
 
-        if (threats == null || threats.isEmpty()) {
-            return Status.EMPTY;
-        } else if (threats.size() == ThreatArea.values().length) {
-            return Status.FULL;
+        if (overallDataThreat == null) {
+            // Status may be EMPTY or PENDING
+            if (threats == null || threats.isEmpty()) {
+                return Status.EMPTY;
+            } else if (threats.size() != ThreatArea.values().length) {
+                return Status.PENDING;
+            } else {
+                return Status.FULL;
+            }
         } else {
-            return Status.EMPTY;
+            // Status is FULL
+            return Status.FULL;
         }
     }
 
@@ -94,8 +107,13 @@ public class PrivacyBoardStatusServiceImpl implements PrivacyBoardStatusService 
     public Status getRiskEvaluationStatus(Long companyProfileID, Long operationID) throws NotFoundException {
         DataOperation operation = checkOperationExistence(companyProfileID, operationID);
 
-        // TODO Think on how to check this status.
-        return Status.PENDING;
+        OverallDataRisk overallDataRisk = this.overallDataRiskService.findOneByDataOperation(operationID);
+
+        if (overallDataRisk != null) {
+            return Status.FULL;
+        } else {
+            return Status.EMPTY;
+        }
     }
 
     @Override
