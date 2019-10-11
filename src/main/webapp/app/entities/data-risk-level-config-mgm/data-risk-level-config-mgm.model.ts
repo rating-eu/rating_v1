@@ -1,23 +1,7 @@
 import { BaseEntity } from './../../shared';
-
-export const enum DataThreatLikelihood {
-    'LOW',
-    'MEDIUM',
-    'HIGH'
-}
-
-export const enum DataImpact {
-    'LOW',
-    'MEDIUM',
-    'HIGH',
-    'VERY_HIGH'
-}
-
-export const enum DataRiskLevel {
-    'LOW',
-    'MEDIUM',
-    'HIGH'
-}
+import {DataThreatLikelihood} from '../enumerations/gdpr/DataThreatLikelihood.enum';
+import {DataImpact} from '../enumerations/gdpr/DataImpact.enum';
+import {DataRiskLevel} from '../overall-data-risk-mgm';
 
 export class DataRiskLevelConfigMgm implements BaseEntity {
     constructor(
