@@ -87,7 +87,7 @@ public class OverallDataRiskResource {
     public List<OverallDataRisk> getAllOverallDataRisks() {
         log.debug("REST request to get all OverallDataRisks");
         return overallDataRiskService.findAll();
-        }
+    }
 
     /**
      * GET  /overall-data-risks/:id : get the "id" overallDataRisk.
@@ -100,6 +100,20 @@ public class OverallDataRiskResource {
     public ResponseEntity<OverallDataRisk> getOverallDataRisk(@PathVariable Long id) {
         log.debug("REST request to get OverallDataRisk : {}", id);
         OverallDataRisk overallDataRisk = overallDataRiskService.findOne(id);
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(overallDataRisk));
+    }
+
+    /**
+     * GET  /overall-data-risks/operation/{operationID} : get the OverallDataRisk of te given DataOperation.
+     *
+     * @param operationID the id of the DataOperation
+     * @return the ResponseEntity with status 200 (OK) and with body the overallDataRisk, or with status 404 (Not Found)
+     */
+    @GetMapping("/overall-data-risks/operation/{operationID}")
+    @Timed
+    public ResponseEntity<OverallDataRisk> getOverallDataRiskByDataOperation(@PathVariable Long operationID) {
+        log.debug("REST request to get OverallDataRisk by DataOperation : {}", operationID);
+        OverallDataRisk overallDataRisk = overallDataRiskService.findOneByDataOperation(operationID);
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(overallDataRisk));
     }
 
