@@ -168,7 +168,7 @@
             <div *ngFor="let question of questions; trackBy: trackByID"
                  [ngSwitch]="question.dataOperationField" class="card-box row">
 
-                <div class="col-md-10">
+                <div class="col-md-11">
                     <mat-expansion-panel [expanded]="true" [disabled]="true" [hideToggle]="true">
                         <mat-expansion-panel-header>
                             <mat-panel-title>
@@ -189,7 +189,7 @@
                         </p>
                     </mat-expansion-panel>
                 </div>
-                <div class="col-md-2">
+                <div class="col-md-1">
                     <mat-radio-group class="radio-group"
                                      [formControlName]="question.securityPillar"
                                      [(ngModel)]="securityImpactsMap.get(question.securityPillar).impact">

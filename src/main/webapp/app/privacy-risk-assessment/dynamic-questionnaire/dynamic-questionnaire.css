@@ -38,6 +38,10 @@ mat-form-field {
     margin: 5px;
 }
 
+.mat-radio-button {
+    display: block !important;
+}
+
 mat-panel-description {
     display: flex;
     justify-content: flex-end;
