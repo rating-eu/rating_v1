@@ -44,7 +44,7 @@ export class OverallSecurityImpactMgmPopupService {
 
     overallSecurityImpactModalRef(component: Component, overallSecurityImpact: OverallSecurityImpactMgm): NgbModalRef {
         const modalRef = this.modalService.open(component, { size: 'lg', backdrop: 'static'});
-        modalRef.componentInstance.overallSecurityImpact = overallSecurityImpact;
+        modalRef.componentInstance.overallDataRisk = overallSecurityImpact;
         modalRef.result.then((result) => {
             this.router.navigate([{ outlets: { popup: null }}], { replaceUrl: true, queryParamsHandling: 'merge' });
             this.ngbModalRef = null;
