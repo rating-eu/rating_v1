@@ -8,17 +8,13 @@
         <h2>Privacy Posture</h2>
     </div>
     <div class="row mb-2">
-        <div class="col-md-12" *ngIf="privacyBoardStatus && privacyBoardStatus.impactEvaluation===statusEnum.FULL">
+        <div class="col-md-4" *ngIf="privacyBoardStatus && privacyBoardStatus.impactEvaluation===statusEnum.FULL">
             <jhi-security-impacts-widget [dataOperation]="dataOperation"></jhi-security-impacts-widget>
         </div>
-    </div>
-    <div class="row mb-2">
-        <div class="col-md-12" *ngIf="privacyBoardStatus && privacyBoardStatus.threatIdentification===statusEnum.FULL">
+        <div class="col-md-4" *ngIf="privacyBoardStatus && privacyBoardStatus.threatIdentification===statusEnum.FULL">
             <jhi-data-threats-widget [dataOperation]="dataOperation"></jhi-data-threats-widget>
         </div>
-    </div>
-    <div class="row mb-2">
-        <div class="col-md-12" *ngIf="privacyBoardStatus && privacyBoardStatus.riskEvaluation===statusEnum.FULL">
+        <div class="col-md-4" *ngIf="privacyBoardStatus && privacyBoardStatus.riskEvaluation===statusEnum.FULL">
             <jhi-data-risks-widget [dataOperation]="dataOperation"></jhi-data-risks-widget>
         </div>
     </div>

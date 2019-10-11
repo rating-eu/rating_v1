@@ -1,22 +1,17 @@
-import { BaseEntity } from './../../shared';
-
-export const enum Language {
-    'IT',
-    'EN',
-    'DE',
-    'ES',
-    'FR',
-    'PT_PT'
-}
+import {BaseEntity} from './../../shared';
+import {Language} from '../enumerations/gdpr/Language.enum';
+import {DataImpactDescriptionMgm} from '../data-impact-description-mgm';
+import {GDPRQuestionMgm} from '../gdpr-question-mgm';
+import {GDPRAnswerMgm} from '../gdpr-answer-mgm';
 
 export class TranslationMgm implements BaseEntity {
     constructor(
         public id?: number,
         public text?: string,
         public language?: Language,
-        public dataImpactDescription?: BaseEntity,
-        public gDPRQuestion?: BaseEntity,
-        public gDPRAnswer?: BaseEntity,
+        public dataImpactDescription?: DataImpactDescriptionMgm,
+        public gDPRQuestion?: GDPRQuestionMgm,
+        public gDPRAnswer?: GDPRAnswerMgm,
     ) {
     }
 }

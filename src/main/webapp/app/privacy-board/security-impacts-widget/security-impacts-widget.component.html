@@ -14,12 +14,14 @@
             </mat-expansion-panel-header>
             <div *ngIf="overallSecurityImpact">
                 <p>
-                    The Overall Security Impact is
+                    The Overall Security Impact is <span style="font-size: large" [ngClass]="{
+                        'low': overallSecurityImpact.impact === dataImpactEnum.LOW,
+                        'medium': overallSecurityImpact.impact === dataImpactEnum.MEDIUM,
+                        'high': overallSecurityImpact.impact === dataImpactEnum.HIGH,
+                        'very-high': overallSecurityImpact.impact === dataImpactEnum.VERY_HIGH
+                        }"
+                                                         class="badge badge-pill badge-secondary">{{overallSecurityImpact.impact | replace:'_':' ' | titlecase}}</span>
                 </p>
-                <h2>
-                    <span
-                        class="badge badge-pill badge-secondary"> {{overallSecurityImpact.impact | replace:'_':' ' | titlecase}}</span>
-                </h2>
             </div>
         </mat-expansion-panel>
     </mat-accordion>

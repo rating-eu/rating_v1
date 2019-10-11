@@ -1,8 +1,9 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
-import {Subscription} from "rxjs";
-import {DataOperationMgm} from "../../entities/data-operation-mgm";
-import {OverallDataThreatMgm, OverallDataThreatMgmService} from "../../entities/overall-data-threat-mgm";
-import {HttpErrorResponse, HttpResponse} from "@angular/common/http";
+import {Subscription} from 'rxjs';
+import {DataOperationMgm} from '../../entities/data-operation-mgm';
+import {OverallDataThreatMgm, OverallDataThreatMgmService} from '../../entities/overall-data-threat-mgm';
+import {HttpErrorResponse, HttpResponse} from '@angular/common/http';
+import {DataThreatLikelihood} from '../../entities/enumerations/gdpr/DataThreatLikelihood.enum';
 
 @Component({
     selector: 'jhi-data-threats-widget',
@@ -14,6 +15,7 @@ export class DataThreatsWidgetComponent implements OnInit, OnDestroy {
     private subscriptions: Subscription[];
 
     public loading = false;
+    public dataThreatLikelihoodEnum = DataThreatLikelihood;
 
     // Properties
     private _dataOperation: DataOperationMgm;

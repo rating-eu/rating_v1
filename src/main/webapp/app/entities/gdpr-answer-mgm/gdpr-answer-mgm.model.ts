@@ -1,25 +1,10 @@
-import { BaseEntity } from './../../shared';
+import {BaseEntity} from './../../shared';
+import {DataImpact} from '../enumerations/gdpr/DataImpact.enum';
+import {AnswerValue} from '../enumerations/gdpr/AnswerValue.enum';
+import {Language} from '../enumerations/gdpr/Language.enum';
+import {TranslationMgm} from '../translation-mgm';
+import {GDPRQuestionMgm} from '../gdpr-question-mgm';
 
-export const enum Language {
-    'IT',
-    'EN',
-    'DE',
-    'ES',
-    'FR',
-    'PT_PT'
-}
-
-export const enum AnswerValue {
-    'YES',
-    'NO'
-}
-
-export const enum DataImpact {
-    'LOW',
-    'MEDIUM',
-    'HIGH',
-    'VERY_HIGH'
-}
 
 export class GDPRAnswerMgm implements BaseEntity {
     constructor(
@@ -29,8 +14,8 @@ export class GDPRAnswerMgm implements BaseEntity {
         public answerValue?: AnswerValue,
         public dataImpact?: DataImpact,
         public order?: number,
-        public translations?: BaseEntity[],
-        public questions?: BaseEntity[],
+        public translations?: TranslationMgm[],
+        public questions?: GDPRQuestionMgm[],
     ) {
     }
 }

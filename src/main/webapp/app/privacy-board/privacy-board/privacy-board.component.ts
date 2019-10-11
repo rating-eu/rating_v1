@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewEncapsulation} from '@angular/core';
 import {DataSharingService} from '../../data-sharing/data-sharing.service';
 import {DataOperationMgm} from '../../entities/data-operation-mgm';
 import {Subscription} from 'rxjs';
@@ -9,7 +9,8 @@ import {Status} from "../../entities/enumerations/Status.enum";
 @Component({
     selector: 'jhi-privacy-board',
     templateUrl: './privacy-board.component.html',
-    styles: []
+    styleUrls: ['./privacy-board.component.css'],
+    encapsulation: ViewEncapsulation.None
 })
 export class PrivacyBoardComponent implements OnInit, OnDestroy {
 
