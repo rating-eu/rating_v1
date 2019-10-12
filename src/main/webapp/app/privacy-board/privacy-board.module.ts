@@ -20,6 +20,9 @@ import { SecurityImpactsWidgetComponent } from './security-impacts-widget/securi
 import {ChartsModule} from "ng2-charts";
 import { DataThreatsWidgetComponent } from './data-threats-widget/data-threats-widget.component';
 import { DataRisksWidgetComponent } from './data-risks-widget/data-risks-widget.component';
+import { OverallSecurityImpactWidgetComponent } from './overall-security-impact-widget/overall-security-impact-widget.component';
+import { OverallDataThreatWidgetComponent } from './overall-data-threat-widget/overall-data-threat-widget.component';
+import { OverallDataRiskWidgetComponent } from './overall-data-risk-widget/overall-data-risk-widget.component';
 
 @NgModule({
     imports: [
@@ -67,7 +70,7 @@ import { DataRisksWidgetComponent } from './data-risks-widget/data-risks-widget.
         },
         PrivacyBoardService
     ],
-    declarations: [PrivacyBoardComponent, PrivacyStepsStatusWidgetComponent, SecurityImpactsWidgetComponent, DataThreatsWidgetComponent, DataRisksWidgetComponent]
+    declarations: [PrivacyBoardComponent, PrivacyStepsStatusWidgetComponent, SecurityImpactsWidgetComponent, DataThreatsWidgetComponent, DataRisksWidgetComponent, OverallSecurityImpactWidgetComponent, OverallDataThreatWidgetComponent, OverallDataRiskWidgetComponent]
 })
 export class PrivacyBoardModule {
 }
