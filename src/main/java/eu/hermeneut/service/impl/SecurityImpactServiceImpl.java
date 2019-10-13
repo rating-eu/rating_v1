@@ -72,4 +72,11 @@ public class SecurityImpactServiceImpl implements SecurityImpactService {
         log.debug("Request to delete SecurityImpact : {}", id);
         securityImpactRepository.delete(id);
     }
+
+    @Override
+    public List<SecurityImpact> findAllByDataOperation(Long operationID) {
+        log.debug("Request to get all SecurityImpacts by DataOperation: {}", operationID);
+
+        return this.securityImpactRepository.findAllByDataOperation(operationID);
+    }
 }

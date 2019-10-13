@@ -37,4 +37,11 @@ public interface SecurityImpactService {
      * @param id the id of the entity
      */
     void delete(Long id);
+
+    /**
+     * Get all the securityImpacts of the given DataOperation.
+     * @param operationID The ID of the DataOperation.
+     * @return the list of entities
+     */
+    List<SecurityImpact> findAllByDataOperation(Long operationID);
 }

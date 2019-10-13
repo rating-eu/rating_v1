@@ -87,7 +87,20 @@ public class SecurityImpactResource {
     public List<SecurityImpact> getAllSecurityImpacts() {
         log.debug("REST request to get all SecurityImpacts");
         return securityImpactService.findAll();
-        }
+    }
+
+    /**
+     * GET  /security-impacts/operation/:operationID : get all the securityImpacts of the given DataOperation.
+     *
+     * @param operationID The iD of the DataOperation
+     * @return the ResponseEntity with status 200 (OK) and the list of securityImpacts in body
+     */
+    @GetMapping("/security-impacts/operation/{operationID}")
+    @Timed
+    public List<SecurityImpact> getAllSecurityImpactsByDataOperation(@PathVariable Long operationID) {
+        log.debug("REST request to get all SecurityImpacts");
+        return securityImpactService.findAllByDataOperation(operationID);
+    }
 
     /**
      * GET  /security-impacts/:id : get the "id" securityImpact.
