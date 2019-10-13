@@ -286,8 +286,20 @@ export class DynamicQuestionnaireComponent implements OnInit, OnChanges, OnDestr
                 .then((response: HttpResponse<GDPRQuestionnaireStatusMgm>) => {
                     this.threatAreasQuestionnaireStatus = response.body;
 
-                    this.router.navigate(['/privacy-board']);
-                });
+                    return this.threatAreasQuestionnaireStatus;
+                }).then((value: GDPRQuestionnaireStatusMgm) => {
+                    if (value) {
+                        this.dataOperationMgmService.find(this._dataOperation.id)
+                            .toPromise()
+                            .then((operationResponse: HttpResponse<DataOperationMgm>) => {
+                                this._dataOperation = operationResponse.body;
+                                this.dataSharingService.dataOperation = this._dataOperation;
+
+                                this.router.navigate(['/privacy-board']);
+                            });
+                    }
+                }
+            );
         }
     }
 
