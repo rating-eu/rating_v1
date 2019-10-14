@@ -72,7 +72,8 @@
                         </td>
                         <td class="text-center">
                             <ng-container>
-                                <a [routerLink]="['/privacy-risk-assessment/impact']">
+                                <a *ngIf="privacyBoardStatus && privacyBoardStatus.operationDefinition === statusEnum.FULL"
+                                    [routerLink]="['/privacy-risk-assessment/impact']">
                                     <i placement="top" class="fa fa-pencil-square-o fa-lg"
                                        aria-hidden="true"></i>
                                 </a>
@@ -98,7 +99,8 @@
                         </td>
                         <td class="text-center">
                             <ng-container>
-                                <a [routerLink]="['/privacy-risk-assessment/threat']">
+                                <a *ngIf="privacyBoardStatus && privacyBoardStatus.operationDefinition === statusEnum.FULL && privacyBoardStatus.impactEvaluation === statusEnum.FULL"
+                                    [routerLink]="['/privacy-risk-assessment/threat']">
                                     <i placement="top" class="fa fa-pencil-square-o fa-lg"
                                        aria-hidden="true"></i>
                                 </a>
