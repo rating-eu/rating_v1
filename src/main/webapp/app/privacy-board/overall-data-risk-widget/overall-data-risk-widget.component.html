@@ -14,7 +14,7 @@
 
             <div class="table-responsive">
                 <table *ngIf="threatLikelihoods && dataImpacts" class="table table-striped">
-                    <thead>
+                    <thead class="thead-light">
                     <tr>
                         <th></th>
                         <th></th>
@@ -29,7 +29,7 @@
                     </thead>
                     <tbody *ngIf="riskLevelConfigsMap">
                     <!--Just the First Likelihood-->
-                    <tr *ngFor="let likelihood of threatLikelihoods | slice:0:1">
+                    <tr *ngFor="let likelihood of threatLikelihoods | slice:0:1" class="thead-light">
                         <th class="text-center" [rowSpan]="threatLikelihoods.length">
                             <p style="writing-mode: vertical-rl; text-orientation: upright; margin: 0 auto;">
                                 Likelihood
@@ -55,7 +55,7 @@
                         </td>
                     </tr>
                     <!--The remaining Likelihoods-->
-                    <tr *ngFor="let likelihood of threatLikelihoods | slice:1">
+                    <tr *ngFor="let likelihood of threatLikelihoods | slice:1" class="thead-light">
                         <th class="text-center align-middle">{{likelihood | replace:'_':' ' | titlecase}}</th>
                         <td *ngFor="let impact of dataImpacts" class="text-center align-middle">
                             <i *ngIf="selectedDataRiskLevelConfig && riskLevelConfigsMap.has(likelihood)
