@@ -20,7 +20,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRouteSnapshot, NavigationEnd, Router} from '@angular/router';
 
 import {Account, AccountService, JhiLanguageHelper, LoginService, Principal, User, UserService} from '../../shared';
-import {DatasharingService} from '../../datasharing/datasharing.service';
+import {DataSharingService} from '../../data-sharing/data-sharing.service';
 import {LayoutConfiguration} from '../model/LayoutConfiguration';
 import {Role} from '../../entities/enumerations/Role.enum';
 import {ModalDismissReasons, NgbModal} from '@ng-bootstrap/ng-bootstrap';
@@ -55,7 +55,7 @@ export class JhiMainComponent implements OnInit, OnDestroy {
         private loginService: LoginService,
         private jhiLanguageHelper: JhiLanguageHelper,
         private router: Router,
-        private dataSharingService: DatasharingService,
+        private dataSharingService: DataSharingService,
         private mainService: MainService,
         private modalService: NgbModal,
         private accountService: AccountService,

@@ -1,0 +1,64 @@
+<div>
+    <h2>
+        <span jhiTranslate="hermeneutApp.overallSecurityImpact.home.title">Overall Security Impacts</span>
+        <button class="btn btn-primary float-right jh-create-entity create-overall-security-impact-mgm" [routerLink]="['/', { outlets: { popup: ['overall-security-impact-mgm-new'] } }]">
+            <span class="fa fa-plus"></span>
+            <span  jhiTranslate="hermeneutApp.overallSecurityImpact.home.createLabel">
+            Create new Overall Security Impact
+            </span>
+        </button>
+    </h2>
+    <jhi-alert></jhi-alert>
+    <div class="row">
+    </div>
+    <br/>
+    <div class="table-responsive" *ngIf="overallSecurityImpacts">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+            <th><span jhiTranslate="global.field.id">ID</span></th>
+            <th><span jhiTranslate="hermeneutApp.overallSecurityImpact.impact">Impact</span></th>
+            <th><span jhiTranslate="hermeneutApp.overallSecurityImpact.operation">Operation</span></th>
+            <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let overallSecurityImpact of overallSecurityImpacts ;trackBy: trackId">
+                <td><a [routerLink]="['../overall-security-impact-mgm', overallSecurityImpact.id ]">{{overallSecurityImpact.id}}</a></td>
+                <td jhiTranslate="{{'hermeneutApp.DataImpact.' + overallSecurityImpact.impact}}">{{overallSecurityImpact.impact}}</td>
+                <td>
+                    <div *ngIf="overallSecurityImpact.operation">
+                        <a [routerLink]="['../data-operation-mgm', overallSecurityImpact.operation?.id ]" >{{overallSecurityImpact.operation?.name}}</a>
+                    </div>
+                </td>
+                <td class="text-right">
+                    <div class="btn-group flex-btn-group-container">
+                        <button type="submit"
+                                [routerLink]="['../overall-security-impact-mgm', overallSecurityImpact.id ]"
+                                class="btn btn-info btn-sm">
+                            <span class="fa fa-eye"></span>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'overall-security-impact-mgm/'+ overallSecurityImpact.id + '/edit'} }]"
+                                replaceUrl="true"
+                                queryParamsHandling="merge"
+                                class="btn btn-primary btn-sm">
+                            <span class="fa fa-pencil"></span>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'overall-security-impact-mgm/'+ overallSecurityImpact.id + '/delete'} }]"
+                                replaceUrl="true"
+                                queryParamsHandling="merge"
+                                class="btn btn-danger btn-sm">
+                            <span class="fa fa-remove"></span>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

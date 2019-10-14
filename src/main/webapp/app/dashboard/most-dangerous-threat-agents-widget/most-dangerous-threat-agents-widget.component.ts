@@ -22,7 +22,7 @@ import {Result} from '../../results/models/result.model';
 import {ResultsService} from '../../results/results.service';
 import {HttpResponse} from '@angular/common/http';
 import {Couple} from '../../utils/couple.class';
-import {DatasharingService} from "../../datasharing/datasharing.service";
+import {DataSharingService} from "../../data-sharing/data-sharing.service";
 import {Observable} from "rxjs";
 import {ThreatAgentMgm, ThreatAgentMgmService} from "../../entities/threat-agent-mgm";
 import {MyCompanyMgm} from "../../entities/my-company-mgm";
@@ -84,7 +84,7 @@ export class MostDangerousThreatAgentsWidgetComponent implements OnInit {
     constructor(
         private resultService: ResultsService,
         private selfAssessmentService: SelfAssessmentMgmService,
-        private dataSharingService: DatasharingService,
+        private dataSharingService: DataSharingService,
         private threatAgentService: ThreatAgentMgmService
     ) {
     }

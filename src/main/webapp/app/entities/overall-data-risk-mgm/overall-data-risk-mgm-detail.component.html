@@ -1,0 +1,32 @@
+
+<div *ngIf="overallDataRisk">
+    <h2><span jhiTranslate="hermeneutApp.overallDataRisk.detail.title">Overall Data Risk</span> {{overallDataRisk.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="hermeneutApp.overallDataRisk.riskLevel">Risk Level</span></dt>
+        <dd>
+            <span jhiTranslate="{{'hermeneutApp.DataRiskLevel.' + overallDataRisk.riskLevel}}">{{overallDataRisk.riskLevel}}</span>
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.overallDataRisk.operation">Operation</span></dt>
+        <dd>
+            <div *ngIf="overallDataRisk.operation">
+                <a [routerLink]="['/data-operation-mgm', overallDataRisk.operation?.id]">{{overallDataRisk.operation?.name}}</a>
+            </div>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'overall-data-risk-mgm/'+ overallDataRisk.id + '/edit'} }]"
+            replaceUrl="true"
+            queryParamsHandling="merge"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+    </button>
+</div>

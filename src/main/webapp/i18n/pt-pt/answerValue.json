@@ -1,0 +1,9 @@
+{
+    "hermeneutApp": {
+        "AnswerValue" : {
+            "null": "",
+            "YES": "YES",
+            "NO": "NO"
+        }
+    }
+}

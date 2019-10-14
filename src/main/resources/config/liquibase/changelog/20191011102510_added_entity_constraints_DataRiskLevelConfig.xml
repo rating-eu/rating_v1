@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <!--
+        Added the constraints for entity DataRiskLevelConfig.
+    -->
+    <changeSet id="20191011102510-2" author="jhipster">
+        
+        <addForeignKeyConstraint baseColumnNames="operation_id"
+                                 baseTableName="data_risk_level_config"
+                                 constraintName="fk_data_risk_level_config_operation_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="data_operation"/>
+
+    </changeSet>
+</databaseChangeLog>

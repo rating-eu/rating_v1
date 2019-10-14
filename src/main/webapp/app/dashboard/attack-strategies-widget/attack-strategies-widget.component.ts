@@ -24,7 +24,7 @@ import {MyAssetMgm} from '../../entities/my-asset-mgm';
 import {MyAssetAttackChance} from '../../risk-management/model/my-asset-attack-chance.model';
 import {AttackStrategyMgm} from '../../entities/attack-strategy-mgm';
 import {RiskBoardService, RiskBoardStatus} from '../../risk-board/risk-board.service';
-import {DatasharingService} from "../../datasharing/datasharing.service";
+import {DataSharingService} from "../../data-sharing/data-sharing.service";
 
 @Component({
     selector: 'jhi-attack-strategies-widget',
@@ -43,7 +43,7 @@ export class AttackStrategiesWidgetComponent implements OnInit {
     constructor(
         private riskService: RiskManagementService,
         private mySelfAssessmentService: SelfAssessmentMgmService,
-        private dataSharingService: DatasharingService
+        private dataSharingService: DataSharingService
     ) {
     }
 

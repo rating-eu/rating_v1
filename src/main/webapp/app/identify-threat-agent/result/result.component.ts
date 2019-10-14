@@ -17,7 +17,7 @@
 
 import * as _ from 'lodash';
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {DatasharingService} from '../../datasharing/datasharing.service';
+import {DataSharingService} from '../../data-sharing/data-sharing.service';
 import {ThreatAgentMgm, ThreatAgentMgmService} from '../../entities/threat-agent-mgm';
 import {Couple} from '../../utils/couple.class';
 import {Fraction} from '../../utils/fraction.class';
@@ -95,7 +95,7 @@ export class ThreatResultComponent implements OnInit, OnDestroy {
     public page = 1;
 
     constructor(private selfAssessmentService: SelfAssessmentMgmService,
-                private dataSharingService: DatasharingService,
+                private dataSharingService: DataSharingService,
                 private identifyThreatAgentService: IdentifyThreatAgentService,
                 private myAnswerService: MyAnswerMgmService,
                 private accountService: AccountService,

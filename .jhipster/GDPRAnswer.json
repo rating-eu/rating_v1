@@ -1,0 +1,56 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "translations",
+            "otherEntityName": "translation",
+            "otherEntityRelationshipName": "gDPRAnswer"
+        },
+        {
+            "relationshipType": "many-to-many",
+            "relationshipName": "question",
+            "otherEntityName": "gDPRQuestion",
+            "ownerSide": false,
+            "otherEntityRelationshipName": "answers"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "text",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "language",
+            "fieldType": "Language",
+            "fieldValues": "IT,EN,DE,ES,FR,PT_PT",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "answerValue",
+            "fieldType": "AnswerValue",
+            "fieldValues": "YES,NO"
+        },
+        {
+            "fieldName": "dataImpact",
+            "fieldType": "DataImpact",
+            "fieldValues": "LOW,MEDIUM,HIGH,VERY_HIGH"
+        },
+        {
+            "fieldName": "order",
+            "fieldType": "Integer"
+        }
+    ],
+    "changelogDate": "20190924115809",
+    "entityTableName": "gdpr_answer",
+    "dto": "no",
+    "pagination": "no",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "angularJSSuffix": "mgm"
+}

@@ -1,0 +1,42 @@
+
+<div *ngIf="securityImpact">
+    <h2><span jhiTranslate="hermeneutApp.securityImpact.detail.title">Security Impact</span> {{securityImpact.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="hermeneutApp.securityImpact.securityPillar">Security Pillar</span></dt>
+        <dd>
+            <span jhiTranslate="{{'hermeneutApp.SecurityPillar.' + securityImpact.securityPillar}}">{{securityImpact.securityPillar}}</span>
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.securityImpact.impact">Impact</span></dt>
+        <dd>
+            <span jhiTranslate="{{'hermeneutApp.DataImpact.' + securityImpact.impact}}">{{securityImpact.impact}}</span>
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.securityImpact.operation">Operation</span></dt>
+        <dd>
+            <div *ngIf="securityImpact.operation">
+                <a [routerLink]="['/data-operation-mgm', securityImpact.operation?.id]">{{securityImpact.operation?.name}}</a>
+            </div>
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.securityImpact.overallSecurityImpact">Overall Security Impact</span></dt>
+        <dd>
+            <div *ngIf="securityImpact.overallSecurityImpact">
+                <a [routerLink]="['/overall-security-impact-mgm', securityImpact.overallSecurityImpact?.id]">{{securityImpact.overallSecurityImpact?.id}}</a>
+            </div>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'security-impact-mgm/'+ securityImpact.id + '/edit'} }]"
+            replaceUrl="true"
+            queryParamsHandling="merge"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+    </button>
+</div>

@@ -25,7 +25,7 @@ import {IdentifyAssetUtilService} from './../../identify-assets/identify-asset.u
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {AssetType} from '../../entities/enumerations/AssetType.enum';
 import {CategoryType} from '../../entities/enumerations/CategoryType.enum';
-import {DatasharingService} from "../../datasharing/datasharing.service";
+import {DataSharingService} from "../../data-sharing/data-sharing.service";
 import {SectorType} from "../../entities/enumerations/SectorTyep.enum";
 import {switchMap} from "rxjs/operators";
 import {Observable, Subscription} from "rxjs";
@@ -65,7 +65,7 @@ export class IntangibleFinancialWidgetComponent implements OnInit, OnDestroy {
         private selfAssessmentService: SelfAssessmentMgmService,
         private idaUtilsService: IdentifyAssetUtilService,
         private impactService: ImpactEvaluationService,
-        private dataSharingService: DatasharingService
+        private dataSharingService: DataSharingService
     ) {
     }
 

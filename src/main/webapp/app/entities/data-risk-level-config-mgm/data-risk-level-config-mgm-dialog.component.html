@@ -1,0 +1,90 @@
+<form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+
+    <div class="modal-header">
+        <h4 class="modal-title" id="myDataRiskLevelConfigLabel" jhiTranslate="hermeneutApp.dataRiskLevelConfig.home.createOrEditLabel">Create or edit a Data Risk Level Config</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                (click)="clear()">&times;</button>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group" [hidden]="!dataRiskLevelConfig.id">
+            <label for="id" jhiTranslate="global.field.id">ID</label>
+            <input type="text" class="form-control" id="id" name="id"
+                   [(ngModel)]="dataRiskLevelConfig.id" readonly />
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="hermeneutApp.dataRiskLevelConfig.rationale" for="field_rationale">Rationale</label>
+            <input type="text" class="form-control" name="rationale" id="field_rationale"
+                [(ngModel)]="dataRiskLevelConfig.rationale" required maxlength="2000"/>
+            <div [hidden]="!(editForm.controls.rationale?.dirty && editForm.controls.rationale?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.rationale?.errors?.required" jhiTranslate="entity.validation.required">
+                   This field is required.
+                </small>
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.rationale?.errors?.maxlength" jhiTranslate="entity.validation.maxlength" translateValues="{ max: 2000 }">
+                   This field cannot be longer than 2000 characters.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="hermeneutApp.dataRiskLevelConfig.likelihood" for="field_likelihood">Likelihood</label>
+            <select class="form-control" name="likelihood" [(ngModel)]="dataRiskLevelConfig.likelihood" id="field_likelihood"  required>
+                <option value="LOW">{{'hermeneutApp.DataThreatLikelihood.LOW' | translate}}</option>
+                <option value="MEDIUM">{{'hermeneutApp.DataThreatLikelihood.MEDIUM' | translate}}</option>
+                <option value="HIGH">{{'hermeneutApp.DataThreatLikelihood.HIGH' | translate}}</option>
+            </select>
+            <div [hidden]="!(editForm.controls.likelihood?.dirty && editForm.controls.likelihood?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.likelihood?.errors?.required" jhiTranslate="entity.validation.required">
+                   This field is required.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="hermeneutApp.dataRiskLevelConfig.impact" for="field_impact">Impact</label>
+            <select class="form-control" name="impact" [(ngModel)]="dataRiskLevelConfig.impact" id="field_impact"  required>
+                <option value="LOW">{{'hermeneutApp.DataImpact.LOW' | translate}}</option>
+                <option value="MEDIUM">{{'hermeneutApp.DataImpact.MEDIUM' | translate}}</option>
+                <option value="HIGH">{{'hermeneutApp.DataImpact.HIGH' | translate}}</option>
+                <option value="VERY_HIGH">{{'hermeneutApp.DataImpact.VERY_HIGH' | translate}}</option>
+            </select>
+            <div [hidden]="!(editForm.controls.impact?.dirty && editForm.controls.impact?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.impact?.errors?.required" jhiTranslate="entity.validation.required">
+                   This field is required.
+                </small>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="hermeneutApp.dataRiskLevelConfig.risk" for="field_risk">Risk</label>
+            <select class="form-control" name="risk" [(ngModel)]="dataRiskLevelConfig.risk" id="field_risk"  required>
+                <option value="LOW">{{'hermeneutApp.DataRiskLevel.LOW' | translate}}</option>
+                <option value="MEDIUM">{{'hermeneutApp.DataRiskLevel.MEDIUM' | translate}}</option>
+                <option value="HIGH">{{'hermeneutApp.DataRiskLevel.HIGH' | translate}}</option>
+            </select>
+            <div [hidden]="!(editForm.controls.risk?.dirty && editForm.controls.risk?.invalid)">
+                <small class="form-text text-danger"
+                   [hidden]="!editForm.controls.risk?.errors?.required" jhiTranslate="entity.validation.required">
+                   This field is required.
+                </small>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="hermeneutApp.dataRiskLevelConfig.operation" for="field_operation">Operation</label>
+            <select class="form-control" id="field_operation" name="operation" [(ngModel)]="dataRiskLevelConfig.operation" >
+                <option [ngValue]="null"></option>
+                <option [ngValue]="dataOperationOption.id === dataRiskLevelConfig.operation?.id ? dataRiskLevelConfig.operation : dataOperationOption" *ngFor="let dataOperationOption of dataoperations; trackBy: trackDataOperationById">{{dataOperationOption.name}}</option>
+            </select>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">
+            <span class="fa fa-ban"></span>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+        <button type="submit" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+            <span class="fa fa-save"></span>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+    </div>
+</form>

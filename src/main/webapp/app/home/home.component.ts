@@ -22,7 +22,7 @@ import {JhiEventManager} from 'ng-jhipster';
 
 import {Account, LoginModalService, Principal} from '../shared';
 import {SelfAssessmentMgm, SelfAssessmentMgmService} from '../entities/self-assessment-mgm';
-import {DatasharingService} from '../datasharing/datasharing.service';
+import {DataSharingService} from '../data-sharing/data-sharing.service';
 import {Role} from '../entities/enumerations/Role.enum';
 
 @Component({
@@ -44,7 +44,7 @@ export class HomeComponent implements OnInit {
         private eventManager: JhiEventManager,
         private mySelfAssessmentService: SelfAssessmentMgmService,
         private router: Router,
-        private dataSharingService: DatasharingService
+        private dataSharingService: DataSharingService
     ) {
     }
 

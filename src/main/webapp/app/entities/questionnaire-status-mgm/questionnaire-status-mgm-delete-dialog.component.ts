@@ -25,9 +25,9 @@ import {QuestionnaireStatusMgm} from './questionnaire-status-mgm.model';
 import {QuestionnaireStatusMgmPopupService} from './questionnaire-status-mgm-popup.service';
 import {QuestionnaireStatusMgmService} from './questionnaire-status-mgm.service';
 import {PopUpService} from '../../shared/pop-up-services/pop-up.service';
-import {EventManagerService} from '../../datasharing/event-manager.service';
+import {EventManagerService} from '../../data-sharing/event-manager.service';
 
-import {Event} from '../../datasharing/event.model';
+import {Event} from '../../data-sharing/event.model';
 import {EventType} from '../enumerations/EventType.enum';
 import {ActionType} from '../enumerations/ActionType.enum';
 

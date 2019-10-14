@@ -26,7 +26,7 @@ import {IdentifyAssetUtilService} from './../identify-asset.util.service';
 import {MyAssetMgm} from './../../entities/my-asset-mgm/my-asset-mgm.model';
 import {SelfAssessmentMgm} from './../../entities/self-assessment-mgm/self-assessment-mgm.model';
 import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
-import {DatasharingService} from "../../datasharing/datasharing.service";
+import {DataSharingService} from "../../data-sharing/data-sharing.service";
 
 @Component({
     // tslint:disable-next-line:component-selector
@@ -57,7 +57,7 @@ export class AttackCostsComponent implements OnInit {
         private router: Router,
         private jhiAlertService: JhiAlertService,
         private ref: ChangeDetectorRef,
-        private dataSharingService: DatasharingService
+        private dataSharingService: DataSharingService
     ) {
 
     }

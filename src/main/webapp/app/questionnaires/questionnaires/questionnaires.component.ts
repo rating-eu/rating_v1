@@ -20,7 +20,7 @@ import {ChangeDetectorRef, Component, OnDestroy, OnInit, ViewRef} from '@angular
 import {QuestionnairesService} from '../questionnaires.service';
 import {QuestionnaireMgm} from '../../entities/questionnaire-mgm';
 import {Observable} from 'rxjs/Observable';
-import {DatasharingService} from '../../datasharing/datasharing.service';
+import {DataSharingService} from '../../data-sharing/data-sharing.service';
 import {QuestionnaireStatusMgm, QuestionnaireStatusMgmService} from '../../entities/questionnaire-status-mgm';
 import {Status} from '../../entities/enumerations/Status.enum';
 import {Account, AccountService, User, UserService} from '../../shared';
@@ -36,13 +36,13 @@ import {MyCompanyMgm} from '../../entities/my-company-mgm';
 import {switchMap} from 'rxjs/operators';
 import {Role} from '../../entities/enumerations/Role.enum';
 import {PopUpService} from '../../shared/pop-up-services/pop-up.service';
-import {EventManagerService} from '../../datasharing/event-manager.service';
+import {EventManagerService} from '../../data-sharing/event-manager.service';
 import {forkJoin} from 'rxjs/observable/forkJoin';
 import {AssessVulnerabilitiesCompletionDTO} from '../../dto/completion/assess-vulnerabilities-completion';
 import {CompletionDtoService} from '../../dto/completion/completion-dto.service';
 import {of} from 'rxjs/observable/of';
 import {EventType} from '../../entities/enumerations/EventType.enum';
-import {Event} from '../../datasharing/event.model';
+import {Event} from '../../data-sharing/event.model';
 
 @Component({
     selector: 'jhi-questionnaires',
@@ -96,7 +96,7 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
     constructor(private route: ActivatedRoute,
                 private router: Router,
                 private questionnairesService: QuestionnairesService,
-                private dataSharingService: DatasharingService,
+                private dataSharingService: DataSharingService,
                 private accountService: AccountService,
                 private userService: UserService,
                 private myAnswerService: MyAnswerMgmService,

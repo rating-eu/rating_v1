@@ -1,0 +1,25 @@
+
+{
+    "hermeneutApp": {
+        "dataImpactDescription" : {
+            "home": {
+                "title": "Data Impact Descriptions",
+                "createLabel": "Crear nuevo Data Impact Description",
+                "createOrEditLabel": "Crear o editar Data Impact Description"
+            },
+            "created": "Un nuevo Data Impact Description ha sido creado con el identificador {{ param }}",
+            "updated": "Un Data Impact Description ha sido actualizado con el identificador {{ param }}",
+            "deleted": "Un Data Impact Description ha sido eliminado con el identificador {{ param }}",
+            "delete": {
+                "question": "¿Seguro que quiere eliminar Data Impact Description {{ id }}?"
+            },
+            "detail": {
+                "title": "Data Impact Description"
+            },
+            "impact": "Impact",
+            "description": "Description",
+            "language": "Language",
+            "translations": "Translations"
+        }
+    }
+}

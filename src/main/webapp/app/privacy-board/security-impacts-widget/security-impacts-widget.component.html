@@ -1,0 +1,29 @@
+<ng-container *ngIf="loading">
+    <div class="loader"></div>
+</ng-container>
+<ng-container *ngIf="!loading">
+    <mat-accordion>
+        <mat-expansion-panel>
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    <h2>
+                        <a href="javascript:void(0);" class="collapse-link">Overall Security Impact</a>
+                        <!--<span class="badge badge-pill badge-secondary">Based on a 0 to 5 scale</span>-->
+                    </h2>
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+            <div *ngIf="overallSecurityImpact">
+                <p>The Overall Security Impact is</p>
+                <p class="text-center">
+                    <span style="font-size: large" [ngClass]="{
+                        'low': overallSecurityImpact.impact === dataImpactEnum.LOW,
+                        'medium': overallSecurityImpact.impact === dataImpactEnum.MEDIUM,
+                        'high': overallSecurityImpact.impact === dataImpactEnum.HIGH,
+                        'very-high': overallSecurityImpact.impact === dataImpactEnum.VERY_HIGH
+                        }"
+                                                         class="badge badge-pill badge-secondary">{{overallSecurityImpact.impact | replace:'_':' ' | titlecase}}</span>
+                </p>
+            </div>
+        </mat-expansion-panel>
+    </mat-accordion>
+</ng-container>

@@ -1,0 +1,152 @@
+import {ChangeDetectorRef, Component, Input, OnDestroy, OnInit, ViewRef} from '@angular/core';
+import {DataImpact} from "../../entities/enumerations/gdpr/DataImpact.enum";
+import {DataThreatLikelihood} from "../../entities/enumerations/gdpr/DataThreatLikelihood.enum";
+import {DataOperationMgm} from "../../entities/data-operation-mgm";
+import {DataRiskLevelConfigMgm, DataRiskLevelConfigMgmService} from "../../entities/data-risk-level-config-mgm";
+import {HttpResponse} from "@angular/common/http";
+import {DataRiskLevel} from "../../entities/enumerations/gdpr/DataRiskLevel.enum";
+import {OverallDataRiskMgm, OverallDataRiskMgmService} from "../../entities/overall-data-risk-mgm";
+import {OverallSecurityImpactMgm, OverallSecurityImpactMgmService} from "../../entities/overall-security-impact-mgm";
+import {OverallDataThreatMgm, OverallDataThreatMgmService} from "../../entities/overall-data-threat-mgm";
+import {Observable} from "rxjs";
+import {Http} from "@angular/http";
+import {forkJoin} from "rxjs/observable/forkJoin";
+
+@Component({
+    selector: 'jhi-overall-data-risk-widget',
+    templateUrl: './overall-data-risk-widget.component.html',
+    styleUrls: ['./overall-data-risk-widget.component.css']
+})
+export class OverallDataRiskWidgetComponent implements OnInit, OnDestroy {
+
+    public loading = false;
+
+    public dataImpactEnum = DataImpact;
+    public dataImpacts: DataImpact[];
+
+    public dataThreatLikelihoodEnum = DataThreatLikelihood;
+    public threatLikelihoods: DataThreatLikelihood[];
+
+    public dataRiskLevelEnum = DataRiskLevel;
+    public dataRiskLevels: DataRiskLevel[];
+
+    public overallSecurityImpact: OverallSecurityImpactMgm;
+    public overallDataThreat: OverallDataThreatMgm;
+    public overallDataRisk: OverallDataRiskMgm;
+
+    // Properties
+    private _dataOperation: DataOperationMgm;
+
+    private riskLevelConfigs: DataRiskLevelConfigMgm[];
+    private riskLevelConfigsMap: Map<DataThreatLikelihood, Map<DataImpact, DataRiskLevelConfigMgm>>;
+    public selectedDataRiskLevelConfig: DataRiskLevelConfigMgm;
+
+    constructor(private dataRiskLevelConfigService: DataRiskLevelConfigMgmService,
+                private overallSecurityImpactService: OverallSecurityImpactMgmService,
+                private overallDataThreatService: OverallDataThreatMgmService,
+                private overallDataRiskService: OverallDataRiskMgmService,
+                private changeDetector: ChangeDetectorRef) {
+    }
+
+    ngOnInit() {
+        this.dataImpacts = Object.keys(DataImpact).map((key) => DataImpact[key]);
+        this.threatLikelihoods = Object.keys(DataThreatLikelihood).map((key) => DataThreatLikelihood[key]);
+        this.dataRiskLevels = Object.keys(DataRiskLevel).map((key) => DataRiskLevel[key]);
+    }
+
+    @Input()
+    set dataOperation(dataOperation: DataOperationMgm) {
+        this._dataOperation = dataOperation;
+
+        if (this._dataOperation && this._dataOperation.id) {
+            this.dataRiskLevelConfigService.getAllByDataOperation(this._dataOperation.id).toPromise()
+                .then((response: HttpResponse<DataRiskLevelConfigMgm[]>) => {
+                    this.riskLevelConfigs = response.body;
+
+                    this.riskLevelConfigsMap = new Map();
+
+                    this.riskLevelConfigs.forEach((config: DataRiskLevelConfigMgm) => {
+                        const likelihood: DataThreatLikelihood = config.likelihood;
+                        const impact: DataImpact = config.impact;
+                        const riskConfig: DataRiskLevelConfigMgm = config;
+
+                        let impactsMap: Map<DataImpact, DataRiskLevelConfigMgm> = new Map();
+
+                        if (this.riskLevelConfigsMap.has(likelihood)) {
+                            impactsMap = this.riskLevelConfigsMap.get(likelihood);
+                        } else {
+                            this.riskLevelConfigsMap.set(likelihood, impactsMap);
+                        }
+
+                        impactsMap.set(impact, riskConfig)
+                    });
+                });
+
+            const join$: Observable<[HttpResponse<OverallSecurityImpactMgm>, HttpResponse<OverallDataThreatMgm>, HttpResponse<OverallDataThreatMgm>]>
+                = forkJoin(
+                    this.overallSecurityImpactService.getByDataOperation(this._dataOperation.id),
+                    this.overallDataThreatService.getByDataOperation(this._dataOperation.id),
+                    this.overallDataRiskService.getByDataOperation(this._dataOperation.id),
+                );
+
+            join$.toPromise().then((response: [HttpResponse<OverallSecurityImpactMgm>, HttpResponse<OverallDataThreatMgm>, HttpResponse<OverallDataThreatMgm>]) => {
+                if(response){
+                    this.overallSecurityImpact = response[0].body;
+                    this.overallDataThreat = response[1].body;
+                    this.overallDataRisk = response[2].body;
+                }
+            });
+        }
+
+        if (this.changeDetector && !(this.changeDetector as ViewRef).destroyed) {
+            this.changeDetector.detectChanges();
+        }
+    }
+
+    get dataOperation(): DataOperationMgm {
+        return this._dataOperation;
+    }
+
+    public selectDataRiskLevelConfig(config: DataRiskLevelConfigMgm) {
+        if (!this.selectedDataRiskLevelConfig) {
+            this.selectedDataRiskLevelConfig = config;
+        } else {
+            if (config != null && config.id === this.selectedDataRiskLevelConfig.id) {
+                this.selectedDataRiskLevelConfig = null;
+            } else {
+                this.selectedDataRiskLevelConfig = config;
+            }
+        }
+    }
+
+    ngOnDestroy(): void {
+        if (this.changeDetector) {
+            this.changeDetector.detach();
+        }
+    }
+
+    updateRiskLevel(riskLevel: DataRiskLevel) {
+        if (this.selectedDataRiskLevelConfig) {
+            const oldRiskLevel: DataRiskLevel = this.selectedDataRiskLevelConfig.risk;
+
+            this.selectedDataRiskLevelConfig.risk = riskLevel;
+
+            if (this.changeDetector && !(this.changeDetector as ViewRef).destroyed) {
+                this.changeDetector.detectChanges();
+            }
+        }
+    }
+
+    submitRiskLevelConfigs() {
+        if(this.selectedDataRiskLevelConfig && this.selectedDataRiskLevelConfig.id){
+            this.dataRiskLevelConfigService.update(this.selectedDataRiskLevelConfig)
+                .toPromise()
+                .then((response: HttpResponse<DataRiskLevelConfigMgm>) => {
+                   if(response && response.body){
+                       // To hide the edit form
+                       this.selectedDataRiskLevelConfig = null;
+                   }
+                });
+        }
+    }
+}

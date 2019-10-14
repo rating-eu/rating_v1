@@ -1,0 +1,32 @@
+
+{
+    "hermeneutApp": {
+        "gDPRQuestion" : {
+            "home": {
+                "title": "GDPR Questions",
+                "createLabel": "GDPR Question erstellen",
+                "createOrEditLabel": "GDPR Question erstellen oder bearbeiten"
+            },
+            "created": "GDPR Question erstellt mit ID {{ param }}",
+            "updated": "GDPR Question aktualisiert mit ID {{ param }}",
+            "deleted": "GDPR Question gelöscht mit ID {{ param }}",
+            "delete": {
+                "question": "Soll GDPR Question {{ id }} wirklich dauerhaft gelöscht werden?"
+            },
+            "detail": {
+                "title": "GDPR Question"
+            },
+            "text": "Text",
+            "description": "Description",
+            "language": "Language",
+            "answerType": "Answer Type",
+            "order": "Order",
+            "dataOperationField": "Data Operation Field",
+            "securityPillar": "Security Pillar",
+            "threatArea": "Threat Area",
+            "translations": "Translations",
+            "questionnaire": "Questionnaire",
+            "answers": "Answers"
+        }
+    }
+}

@@ -1,0 +1,52 @@
+<ng-container *ngIf="loading">
+    <div class="loader"></div>
+</ng-container>
+<ng-container *ngIf="!loading">
+    <mat-accordion>
+        <mat-expansion-panel>
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    <h2>
+                        <a href="javascript:void(0);" class="collapse-link">Threats</a>
+                    </h2>
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+
+            <div *ngIf="threatAreas && dataThreats && dataThreatsMap" class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th class="text-center">Threat Area</th>
+                        <th class="text-center">Likelihood</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr *ngFor="let threatArea of threatAreas">
+                        <th class="text-left">{{threatArea | replace:'_':' ' | titlecase}}</th>
+                        <td class="text-center">
+                            <span style="font-size: medium" [ngClass]="{
+                            'low': dataThreatsMap.get(threatArea).likelihood === threatLikelihoodEnum.LOW,
+                            'medium': dataThreatsMap.get(threatArea).likelihood === threatLikelihoodEnum.MEDIUM,
+                            'high': dataThreatsMap.get(threatArea).likelihood === threatLikelihoodEnum.HIGH
+                            }"
+                                  class="badge badge-pill badge-secondary">{{dataThreatsMap.get(threatArea).likelihood | replace:'_':' ' | titlecase}}
+                            </span>
+                        </td>
+                    </tr>
+                    <tr *ngIf="overallDataThreat">
+                        <th class="text-center">Overall Threat Occurrence Likelihood</th>
+                        <td class="text-center">
+                            <span style="font-size: large" [ngClass]="{
+                            'low': overallDataThreat.likelihood === threatLikelihoodEnum.LOW,
+                            'medium': overallDataThreat.likelihood === threatLikelihoodEnum.MEDIUM,
+                            'high': overallDataThreat.likelihood === threatLikelihoodEnum.HIGH
+                            }"
+                                  class="badge badge-pill badge-secondary">{{overallDataThreat.likelihood | replace:'_':' ' | titlecase}}</span>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </mat-expansion-panel>
+    </mat-accordion>
+</ng-container>

@@ -1,0 +1,31 @@
+
+{
+    "hermeneutApp": {
+        "dataOperation" : {
+            "home": {
+                "title": "DataOperations",
+                "createLabel": "Genera un nuovo Data Operation",
+                "createOrEditLabel": "Genera o modifica un Data Operation"
+            },
+            "created": "&Egrave; stato generato un nuovo Data Operation con identificatore {{ param }}",
+            "updated": "&Egrave; stato aggiornato Data Operation identificato da {{ param }}",
+            "deleted": "&Egrave; stato eliminato Data Operation con identificatore {{ param }}",
+            "delete": {
+                "question": "Sei sicuro di volere eliminare Data Operation {{ id }}?"
+            },
+            "detail": {
+                "title": "Data Operation"
+            },
+            "name": "Name",
+            "processedData": "Processed Data",
+            "processingPurpose": "Processing Purpose",
+            "dataSubject": "Data Subject",
+            "processingMeans": "Processing Means",
+            "dataProcessor": "Data Processor",
+            "recipients": "Recipients",
+            "impacts": "Impacts",
+            "threats": "Threats",
+            "companyProfile": "Company Profile"
+        }
+    }
+}

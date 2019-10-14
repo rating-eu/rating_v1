@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <!--
+        Added the constraints for entity Translation.
+    -->
+    <changeSet id="20190924115811-2" author="jhipster">
+        
+        <addForeignKeyConstraint baseColumnNames="data_impact_description_id"
+                                 baseTableName="translation"
+                                 constraintName="fk_translation_data_impact_description_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="data_impact_description"/>
+
+        <addForeignKeyConstraint baseColumnNames="gdprquestion_id"
+                                 baseTableName="translation"
+                                 constraintName="fk_translation_gdprquestion_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="gdpr_question"/>
+
+        <addForeignKeyConstraint baseColumnNames="gdpranswer_id"
+                                 baseTableName="translation"
+                                 constraintName="fk_translation_gdpranswer_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="gdpr_answer"/>
+
+    </changeSet>
+</databaseChangeLog>

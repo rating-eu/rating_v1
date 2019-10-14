@@ -26,9 +26,9 @@ import { ImpactLevelDescriptionMgm, ImpactLevelDescriptionMgmService } from '../
 import { ImpactLevelMgm, ImpactLevelMgmService } from '../../entities/impact-level-mgm';
 import { forkJoin } from 'rxjs/observable/forkJoin';
 import { HttpResponse } from '@angular/common/http';
-import {DatasharingService} from "../../datasharing/datasharing.service";
-import {ImpactMode} from "../../entities/enumerations/ImpactMode.enum";
-import {MyCompanyMgm} from "../../entities/my-company-mgm";
+import {DataSharingService} from '../../data-sharing/data-sharing.service';
+import {ImpactMode} from '../../entities/enumerations/ImpactMode.enum';
+import {MyCompanyMgm} from '../../entities/my-company-mgm';
 
 @Component({
     // tslint:disable-next-line:component-selector
@@ -69,7 +69,7 @@ export class RiskManagementComponent implements OnInit {
         private impactLevelDescriptionService: ImpactLevelDescriptionMgmService,
         private impactLevelService: ImpactLevelMgmService,
         private impactEvaluationService: ImpactEvaluationService,
-        private dataSharingService: DatasharingService
+        private dataSharingService: DataSharingService
     ) {
     }
 

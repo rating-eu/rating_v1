@@ -1,0 +1,42 @@
+
+<div *ngIf="gDPRAnswer">
+    <h2><span jhiTranslate="hermeneutApp.gDPRAnswer.detail.title">GDPR Answer</span> {{gDPRAnswer.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="hermeneutApp.gDPRAnswer.text">Text</span></dt>
+        <dd>
+            <span>{{gDPRAnswer.text}}</span>
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.gDPRAnswer.language">Language</span></dt>
+        <dd>
+            <span jhiTranslate="{{'hermeneutApp.Language.' + gDPRAnswer.language}}">{{gDPRAnswer.language}}</span>
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.gDPRAnswer.answerValue">Answer Value</span></dt>
+        <dd>
+            <span jhiTranslate="{{'hermeneutApp.AnswerValue.' + gDPRAnswer.answerValue}}">{{gDPRAnswer.answerValue}}</span>
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.gDPRAnswer.dataImpact">Data Impact</span></dt>
+        <dd>
+            <span jhiTranslate="{{'hermeneutApp.DataImpact.' + gDPRAnswer.dataImpact}}">{{gDPRAnswer.dataImpact}}</span>
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.gDPRAnswer.order">Order</span></dt>
+        <dd>
+            <span>{{gDPRAnswer.order}}</span>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'gdpr-answer-mgm/'+ gDPRAnswer.id + '/edit'} }]"
+            replaceUrl="true"
+            queryParamsHandling="merge"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+    </button>
+</div>

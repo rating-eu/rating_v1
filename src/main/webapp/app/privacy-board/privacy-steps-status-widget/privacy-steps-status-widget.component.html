@@ -1,0 +1,161 @@
+<ng-container *ngIf="loading">
+    <div class="loader"></div>
+</ng-container>
+<ng-container *ngIf="!loading">
+    <mat-accordion *ngIf="dataOperation">
+        <mat-expansion-panel [expanded]="true">
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    <h2>
+                        <a href="javascript:void(0);" class="collapse-link">Privacy Board</a>
+                    </h2>
+                </mat-panel-title>
+                <mat-panel-description *ngIf="dataOperation.name">
+                    <h3>
+                        <a href="javascript:void(0);" class="collapse-link">{{dataOperation.name}}</a>
+                    </h3>
+                </mat-panel-description>
+            </mat-expansion-panel-header>
+
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th style="width: 15%">Steps</th>
+                        <th>Description</th>
+                        <th>Status</th>
+                        <th style="width: 7%" class="text-center">Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>Definition of the processing operation and its context</td>
+                        <td>This step is the starting point of the risk assessment and is fundamental for the data
+                            controller in order to
+                            define the boundaries of the data processing system (under assessment) and its relevant
+                            context. To
+                            support LPAs in defining the processing operation a set of questions is provided.
+                        </td>
+                        <td class="text-center">
+                            <i *ngIf="privacyBoardStatus.operationDefinition === statusEnum.FULL" style="color: green"
+                               class="fa fa-check"
+                               aria-hidden="true"
+                               [ngbTooltip]="statusEnum[privacyBoardStatus.operationDefinition][0] + statusEnum[privacyBoardStatus.operationDefinition].substr(1).toLowerCase()"></i>
+                            <i *ngIf="privacyBoardStatus.operationDefinition === statusEnum.EMPTY || privacyBoardStatus.operationDefinition === statusEnum.PENDING"
+                               style="color: orange" class="fa fa-exclamation-triangle" aria-hidden="true"
+                               [ngbTooltip]="statusEnum[privacyBoardStatus.operationDefinition][0] + statusEnum[privacyBoardStatus.operationDefinition].substr(1).toLowerCase()"></i>
+                        </td>
+                        <td class="text-center">
+                            <ng-container>
+                                <a [routerLink]="['/privacy-risk-assessment/context']">
+                                    <i placement="top" class="fa fa-pencil-square-o fa-lg"
+                                       aria-hidden="true"></i>
+                                </a>
+                            </ng-container>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Impact Evaluation</td>
+                        <td>Based on the analysis of Step 1, the data controller at this stage must assess the impact on
+                            the
+                            fundamental rights and freedoms of the individuals, resulting from the possible loss of
+                            security of the personal data.
+                        </td>
+                        <td class="text-center">
+                            <i *ngIf="privacyBoardStatus.impactEvaluation === statusEnum.FULL" style="color: green"
+                               class="fa fa-check"
+                               aria-hidden="true"
+                               [ngbTooltip]="statusEnum[privacyBoardStatus.impactEvaluation][0] + statusEnum[privacyBoardStatus.impactEvaluation].substr(1).toLowerCase()"></i>
+                            <i *ngIf="privacyBoardStatus.impactEvaluation === statusEnum.EMPTY || privacyBoardStatus.impactEvaluation === statusEnum.PENDING"
+                               style="color: orange" class="fa fa-exclamation-triangle" aria-hidden="true"
+                               [ngbTooltip]="statusEnum[privacyBoardStatus.impactEvaluation][0] + statusEnum[privacyBoardStatus.impactEvaluation].substr(1).toLowerCase()"></i>
+                        </td>
+                        <td class="text-center">
+                            <ng-container>
+                                <a [routerLink]="['/privacy-risk-assessment/impact']">
+                                    <i placement="top" class="fa fa-pencil-square-o fa-lg"
+                                       aria-hidden="true"></i>
+                                </a>
+                            </ng-container>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Definition of possible threats and evaluation of their likelihood</td>
+                        <td>At this step, the scope for the data controller is to understand the threats related to the
+                            overall environment
+                            of the personal data processing (external or internal) and assess their likelihood (threat
+                            occurrence
+                            probability).
+                        </td>
+                        <td class="text-center">
+                            <i *ngIf="privacyBoardStatus.threatIdentification === statusEnum.FULL" style="color: green"
+                               class="fa fa-check"
+                               aria-hidden="true"
+                               [ngbTooltip]="statusEnum[privacyBoardStatus.threatIdentification][0] + statusEnum[privacyBoardStatus.threatIdentification].substr(1).toLowerCase()"></i>
+                            <i *ngIf="privacyBoardStatus.threatIdentification === statusEnum.EMPTY || privacyBoardStatus.threatIdentification === statusEnum.PENDING"
+                               style="color: orange" class="fa fa-exclamation-triangle" aria-hidden="true"
+                               [ngbTooltip]="statusEnum[privacyBoardStatus.threatIdentification][0] + statusEnum[privacyBoardStatus.threatIdentification].substr(1).toLowerCase()"></i>
+                        </td>
+                        <td class="text-center">
+                            <ng-container>
+                                <a [routerLink]="['/privacy-risk-assessment/threat']">
+                                    <i placement="top" class="fa fa-pencil-square-o fa-lg"
+                                       aria-hidden="true"></i>
+                                </a>
+                            </ng-container>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Evaluation of risk</td>
+                        <td>After evaluating the impact of the personal data processing operation and the relevant
+                            threat occurrence
+                            probability, the final evaluation of risk is possible.
+                        </td>
+                        <td class="text-center">
+                            <i *ngIf="privacyBoardStatus.riskEvaluation === statusEnum.FULL" style="color: green"
+                               class="fa fa-check"
+                               aria-hidden="true"
+                               [ngbTooltip]="statusEnum[privacyBoardStatus.riskEvaluation][0] + statusEnum[privacyBoardStatus.riskEvaluation].substr(1).toLowerCase()"></i>
+                            <i *ngIf="privacyBoardStatus.riskEvaluation === statusEnum.EMPTY || privacyBoardStatus.riskEvaluation === statusEnum.PENDING"
+                               style="color: orange" class="fa fa-exclamation-triangle" aria-hidden="true"
+                               [ngbTooltip]="statusEnum[privacyBoardStatus.riskEvaluation][0] + statusEnum[privacyBoardStatus.riskEvaluation].substr(1).toLowerCase()"></i>
+                        </td>
+                        <td class="text-center">
+                            <ng-container *ngIf="false">
+                                <a [routerLink]="['/privacy-risk-assessment/risk']">
+                                    <i placement="top" class="fa fa-pencil-square-o fa-lg"
+                                       aria-hidden="true"></i>
+                                </a>
+                            </ng-container>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <ng-template #alert let-d="dismiss" let-c="close">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="modal-basic-title">Edit notification</h4>
+                        <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <ng-container *ngIf="alertMessage">
+                            {{alertMessage}}
+                        </ng-container>
+                        <ng-container *ngIf="!alertMessage">
+                            <p>Editing such step may influence the entire assessment.</p>
+                            <p>If you want to proceed, just click on "OK" and edit your preferences, otherwise, you can
+                                just
+                                proceed in "view" mode whitout make any changes.</p>
+                            <p>Do you want to proceed?</p>
+                        </ng-container>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-dark" (click)="c('Save click')">OK</button>
+                    </div>
+                </ng-template>
+            </div>
+        </mat-expansion-panel>
+    </mat-accordion>
+</ng-container>

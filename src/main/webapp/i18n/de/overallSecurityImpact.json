@@ -1,0 +1,24 @@
+
+{
+    "hermeneutApp": {
+        "overallSecurityImpact" : {
+            "home": {
+                "title": "Overall Security Impacts",
+                "createLabel": "Overall Security Impact erstellen",
+                "createOrEditLabel": "Overall Security Impact erstellen oder bearbeiten"
+            },
+            "created": "Overall Security Impact erstellt mit ID {{ param }}",
+            "updated": "Overall Security Impact aktualisiert mit ID {{ param }}",
+            "deleted": "Overall Security Impact gelöscht mit ID {{ param }}",
+            "delete": {
+                "question": "Soll Overall Security Impact {{ id }} wirklich dauerhaft gelöscht werden?"
+            },
+            "detail": {
+                "title": "Overall Security Impact"
+            },
+            "impact": "Impact",
+            "operation": "Operation",
+            "impact": "Impact"
+        }
+    }
+}

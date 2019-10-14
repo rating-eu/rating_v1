@@ -22,7 +22,7 @@ import {ImpactEvaluationService} from './../../impact-evaluation/impact-evaluati
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {SelfAssessmentMgmService, SelfAssessmentMgm} from '../../entities/self-assessment-mgm';
 import {MyAssetMgm} from '../../entities/my-asset-mgm';
-import {DatasharingService} from "../../datasharing/datasharing.service";
+import {DataSharingService} from "../../data-sharing/data-sharing.service";
 import {switchMap} from "rxjs/operators";
 import {Observable, Subscription} from "rxjs";
 import {of} from "rxjs/observable/of";
@@ -62,7 +62,7 @@ export class ImpactWidgetComponent implements OnInit, OnDestroy {
         private impactService: ImpactEvaluationService,
         private mySelfAssessmentService: SelfAssessmentMgmService,
         private dashService: RiskBoardService,
-        private dataSharingService: DatasharingService
+        private dataSharingService: DataSharingService
     ) {
     }
 

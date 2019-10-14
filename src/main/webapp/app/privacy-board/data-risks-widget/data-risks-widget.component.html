@@ -1,0 +1,28 @@
+<ng-container *ngIf="loading">
+    <div class="loader"></div>
+</ng-container>
+<ng-container *ngIf="!loading">
+    <mat-accordion>
+        <mat-expansion-panel>
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    <h2>
+                        <a href="javascript:void(0);" class="collapse-link">Overall Data Risk</a>
+                    </h2>
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+            <div *ngIf="overallDataRisk">
+                <p>
+                    The Overall Data Risk is</p>
+                <p class="text-center">
+                <span style="font-size: large" [ngClass]="{
+                        'low': overallDataRisk.riskLevel === dataRiskLevelEnum.LOW,
+                        'medium': overallDataRisk.riskLevel === dataRiskLevelEnum.MEDIUM,
+                        'high': overallDataRisk.riskLevel === dataRiskLevelEnum.HIGH
+                        }"
+                                                   class="badge badge-pill badge-secondary">{{overallDataRisk.riskLevel | replace:'_':' ' | titlecase}}</span>
+                </p>
+            </div>
+        </mat-expansion-panel>
+    </mat-accordion>
+</ng-container>

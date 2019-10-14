@@ -19,7 +19,7 @@ import {Injector, NgModule} from '@angular/core';
 import {IdentifyThreatAgentRoutingModule} from './identify-threat-agent-routing.module';
 import {IdentifyThreatAgentComponent} from './identify-threat-agent.component';
 import {ThreatResultComponent} from './result/result.component';
-import {DatasharingModule} from '../datasharing/datasharing.module';
+import {DataSharingModule} from '../data-sharing/data-sharing.module';
 import {IdentifyThreatAgentService} from './identify-threat-agent.service';
 import {NotificationInterceptor} from '../blocks/interceptor/notification.interceptor';
 import {AuthInterceptor} from '../blocks/interceptor/auth.interceptor';
@@ -37,7 +37,7 @@ import {NgxPaginationModule} from 'ngx-pagination';
         CommonModule,
         HermeneutSharedModule,
         IdentifyThreatAgentRoutingModule,
-        DatasharingModule,
+        DataSharingModule,
         NgxPaginationModule
     ],
     declarations: [

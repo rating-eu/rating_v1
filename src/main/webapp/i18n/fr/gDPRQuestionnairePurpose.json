@@ -1,0 +1,10 @@
+{
+    "hermeneutApp": {
+        "GDPRQuestionnairePurpose" : {
+            "null": "",
+            "OPERATION_CONTEXT": "OPERATION_CONTEXT",
+            "IMPACT_EVALUATION": "IMPACT_EVALUATION",
+            "THREAT_LIKELIHOOD": "THREAT_LIKELIHOOD"
+        }
+    }
+}

@@ -1,0 +1,52 @@
+<ng-container *ngIf="loading">
+    <div class="loader"></div>
+</ng-container>
+<ng-container *ngIf="!loading">
+    <mat-accordion>
+        <mat-expansion-panel>
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    <h2>
+                        <a href="javascript:void(0);" class="collapse-link">Impacts</a>
+                    </h2>
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                    <tr *ngIf="securityPillars">
+                        <th *ngFor="let securityPillar of securityPillars"
+                            class="text-center">{{securityPillar | replace:'_':' ' | titlecase}}</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr *ngIf="securityImpactsMap">
+                        <td *ngFor="let securityPillar of securityPillars"
+                            class="text-center">
+                            <span style="font-size: medium" [ngClass]="{
+                            'low': securityImpactsMap.get(securityPillar).impact === dataImpactEnum.LOW,
+                            'medium': securityImpactsMap.get(securityPillar).impact === dataImpactEnum.MEDIUM,
+                            'high': securityImpactsMap.get(securityPillar).impact === dataImpactEnum.HIGH,
+                            'very-high': securityImpactsMap.get(securityPillar).impact === dataImpactEnum.VERY_HIGH
+                            }" class="badge badge-pill badge-secondary">{{securityImpactsMap.get(securityPillar).impact | replace:'_':' ' | titlecase}}</span>
+
+                        </td>
+                    </tr>
+                    <tr *ngIf="overallSecurityImpact">
+                        <th [colSpan]="securityPillars.length - 1" class="text-center">Overall Impact Evaluation</th>
+                        <td class="text-center">
+                            <span style="font-size: large" [ngClass]="{
+                            'low': overallSecurityImpact.impact === dataImpactEnum.LOW,
+                            'medium': overallSecurityImpact.impact === dataImpactEnum.MEDIUM,
+                            'high': overallSecurityImpact.impact === dataImpactEnum.HIGH,
+                            'very-high': overallSecurityImpact.impact === dataImpactEnum.VERY_HIGH
+                            }" class="badge badge-pill badge-secondary">{{overallSecurityImpact.impact | replace:'_':' ' | titlecase}}</span>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </mat-expansion-panel>
+    </mat-accordion>
+</ng-container>

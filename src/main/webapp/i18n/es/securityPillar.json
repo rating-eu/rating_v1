@@ -1,0 +1,10 @@
+{
+    "hermeneutApp": {
+        "SecurityPillar" : {
+            "null": "",
+            "CONFIDENTIALITY": "CONFIDENTIALITY",
+            "INTEGRITY": "INTEGRITY",
+            "AVAILABILITY": "AVAILABILITY"
+        }
+    }
+}

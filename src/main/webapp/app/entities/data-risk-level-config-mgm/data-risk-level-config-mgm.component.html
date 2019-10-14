@@ -1,0 +1,70 @@
+<div>
+    <h2>
+        <span jhiTranslate="hermeneutApp.dataRiskLevelConfig.home.title">Data Risk Level Configs</span>
+        <button class="btn btn-primary float-right jh-create-entity create-data-risk-level-config-mgm" [routerLink]="['/', { outlets: { popup: ['data-risk-level-config-mgm-new'] } }]">
+            <span class="fa fa-plus"></span>
+            <span  jhiTranslate="hermeneutApp.dataRiskLevelConfig.home.createLabel">
+            Create new Data Risk Level Config
+            </span>
+        </button>
+    </h2>
+    <jhi-alert></jhi-alert>
+    <div class="row">
+    </div>
+    <br/>
+    <div class="table-responsive" *ngIf="dataRiskLevelConfigs">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+            <th><span jhiTranslate="global.field.id">ID</span></th>
+            <th><span jhiTranslate="hermeneutApp.dataRiskLevelConfig.rationale">Rationale</span></th>
+            <th><span jhiTranslate="hermeneutApp.dataRiskLevelConfig.likelihood">Likelihood</span></th>
+            <th><span jhiTranslate="hermeneutApp.dataRiskLevelConfig.impact">Impact</span></th>
+            <th><span jhiTranslate="hermeneutApp.dataRiskLevelConfig.risk">Risk</span></th>
+            <th><span jhiTranslate="hermeneutApp.dataRiskLevelConfig.operation">Operation</span></th>
+            <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let dataRiskLevelConfig of dataRiskLevelConfigs ;trackBy: trackId">
+                <td><a [routerLink]="['../data-risk-level-config-mgm', dataRiskLevelConfig.id ]">{{dataRiskLevelConfig.id}}</a></td>
+                <td>{{dataRiskLevelConfig.rationale}}</td>
+                <td jhiTranslate="{{'hermeneutApp.DataThreatLikelihood.' + dataRiskLevelConfig.likelihood}}">{{dataRiskLevelConfig.likelihood}}</td>
+                <td jhiTranslate="{{'hermeneutApp.DataImpact.' + dataRiskLevelConfig.impact}}">{{dataRiskLevelConfig.impact}}</td>
+                <td jhiTranslate="{{'hermeneutApp.DataRiskLevel.' + dataRiskLevelConfig.risk}}">{{dataRiskLevelConfig.risk}}</td>
+                <td>
+                    <div *ngIf="dataRiskLevelConfig.operation">
+                        <a [routerLink]="['../data-operation-mgm', dataRiskLevelConfig.operation?.id ]" >{{dataRiskLevelConfig.operation?.name}}</a>
+                    </div>
+                </td>
+                <td class="text-right">
+                    <div class="btn-group flex-btn-group-container">
+                        <button type="submit"
+                                [routerLink]="['../data-risk-level-config-mgm', dataRiskLevelConfig.id ]"
+                                class="btn btn-info btn-sm">
+                            <span class="fa fa-eye"></span>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'data-risk-level-config-mgm/'+ dataRiskLevelConfig.id + '/edit'} }]"
+                                replaceUrl="true"
+                                queryParamsHandling="merge"
+                                class="btn btn-primary btn-sm">
+                            <span class="fa fa-pencil"></span>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'data-risk-level-config-mgm/'+ dataRiskLevelConfig.id + '/delete'} }]"
+                                replaceUrl="true"
+                                queryParamsHandling="merge"
+                                class="btn btn-danger btn-sm">
+                            <span class="fa fa-remove"></span>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

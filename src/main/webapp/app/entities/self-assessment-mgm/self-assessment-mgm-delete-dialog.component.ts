@@ -26,9 +26,9 @@ import {SelfAssessmentMgmPopupService} from './self-assessment-mgm-popup.service
 import {SelfAssessmentMgmService} from './self-assessment-mgm.service';
 import {SessionStorageService} from 'ngx-webstorage';
 import {PopUpService} from '../../shared/pop-up-services/pop-up.service';
-import {DatasharingService} from '../../datasharing/datasharing.service';
-import {EventManagerService} from '../../datasharing/event-manager.service';
-import {Event} from '../../datasharing/event.model';
+import {DataSharingService} from '../../data-sharing/data-sharing.service';
+import {EventManagerService} from '../../data-sharing/event-manager.service';
+import {Event} from '../../data-sharing/event.model';
 import {EventType} from '../enumerations/EventType.enum';
 import {ActionType} from '../enumerations/ActionType.enum';
 
@@ -45,7 +45,7 @@ export class SelfAssessmentMgmDeleteDialogComponent {
         public activeModal: NgbActiveModal,
         private eventManager: JhiEventManager,
         private router: Router,
-        private dataSharingService: DatasharingService,
+        private dataSharingService: DataSharingService,
         private eventManagerService: EventManagerService
     ) {
     }

@@ -23,7 +23,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {SelfAssessmentMgm, SelfAssessmentMgmService} from '../../entities/self-assessment-mgm';
 import {RiskManagementService} from '../../risk-management/risk-management.service';
 import {Status} from "../../entities/enumerations/Status.enum";
-import {DatasharingService} from "../../datasharing/datasharing.service";
+import {DataSharingService} from "../../data-sharing/data-sharing.service";
 import {switchMap} from "rxjs/operators";
 import {ImpactMode} from "../../entities/enumerations/ImpactMode.enum";
 import {forkJoin} from "rxjs/observable/forkJoin";
@@ -59,7 +59,7 @@ export class RiskSquareWidgetComponent implements OnInit, OnDestroy {
         private mySelfAssessmentService: SelfAssessmentMgmService,
         private riskService: RiskManagementService,
         private dashService: RiskBoardService,
-        private dataSharingService: DatasharingService
+        private dataSharingService: DataSharingService
     ) {
     }
 

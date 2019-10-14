@@ -1,0 +1,25 @@
+
+{
+    "hermeneutApp": {
+        "securityImpact" : {
+            "home": {
+                "title": "SecurityImpacts",
+                "createLabel": "Genera un nuovo Security Impact",
+                "createOrEditLabel": "Genera o modifica un Security Impact"
+            },
+            "created": "&Egrave; stato generato un nuovo Security Impact con identificatore {{ param }}",
+            "updated": "&Egrave; stato aggiornato Security Impact identificato da {{ param }}",
+            "deleted": "&Egrave; stato eliminato Security Impact con identificatore {{ param }}",
+            "delete": {
+                "question": "Sei sicuro di volere eliminare Security Impact {{ id }}?"
+            },
+            "detail": {
+                "title": "Security Impact"
+            },
+            "securityPillar": "Security Pillar",
+            "impact": "Impact",
+            "operation": "Operation",
+            "overallSecurityImpact": "Overall Security Impact"
+        }
+    }
+}

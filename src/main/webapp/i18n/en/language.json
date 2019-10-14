@@ -1,0 +1,13 @@
+{
+    "hermeneutApp": {
+        "Language" : {
+            "null": "",
+            "IT": "IT",
+            "EN": "EN",
+            "DE": "DE",
+            "ES": "ES",
+            "FR": "FR",
+            "PT_PT": "PT_PT"
+        }
+    }
+}

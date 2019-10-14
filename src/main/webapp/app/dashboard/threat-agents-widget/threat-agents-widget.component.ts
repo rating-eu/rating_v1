@@ -37,7 +37,7 @@ import {AnswerMgm} from '../../entities/answer-mgm';
 import * as CryptoJS from 'crypto-js';
 import {ModalDismissReasons, NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {RiskBoardService, RiskBoardStatus} from '../../risk-board/risk-board.service';
-import {DatasharingService} from "../../datasharing/datasharing.service";
+import {DataSharingService} from "../../data-sharing/data-sharing.service";
 import {MyCompanyMgm} from "../../entities/my-company-mgm";
 import {QuestionnairePurpose} from "../../entities/enumerations/QuestionnairePurpose.enum";
 import {ThreatAgentInterestService} from "../../entities/threat-agent-interest/threat-agent-interest.service";
@@ -79,7 +79,7 @@ export class ThreatAgentsWidgetComponent implements OnInit, OnDestroy {
         private threatAgentService: ThreatAgentMgmService,
         private threatAgentInterestService: ThreatAgentInterestService,
         private modalService: NgbModal,
-        private dataSharingService: DatasharingService
+        private dataSharingService: DataSharingService
     ) {
     }
 

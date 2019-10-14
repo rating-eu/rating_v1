@@ -1,0 +1,80 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "recipients",
+            "otherEntityName": "dataRecipient",
+            "otherEntityRelationshipName": "operation"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "impacts",
+            "otherEntityName": "securityImpact",
+            "otherEntityRelationshipName": "operation"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "threats",
+            "otherEntityName": "dataThreat",
+            "otherEntityRelationshipName": "operation"
+        },
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "companyProfile",
+            "otherEntityName": "companyProfile",
+            "otherEntityField": "name"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "name",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "processedData",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "processingPurpose",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "dataSubject",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "processingMeans",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "dataProcessor",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        }
+    ],
+    "changelogDate": "20190924115803",
+    "entityTableName": "data_operation",
+    "dto": "no",
+    "pagination": "no",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "angularJSSuffix": "mgm"
+}

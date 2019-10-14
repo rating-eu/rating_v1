@@ -1,0 +1,25 @@
+
+{
+    "hermeneutApp": {
+        "dataThreat" : {
+            "home": {
+                "title": "Data Threats",
+                "createLabel": "Data Threat erstellen",
+                "createOrEditLabel": "Data Threat erstellen oder bearbeiten"
+            },
+            "created": "Data Threat erstellt mit ID {{ param }}",
+            "updated": "Data Threat aktualisiert mit ID {{ param }}",
+            "deleted": "Data Threat gelöscht mit ID {{ param }}",
+            "delete": {
+                "question": "Soll Data Threat {{ id }} wirklich dauerhaft gelöscht werden?"
+            },
+            "detail": {
+                "title": "Data Threat"
+            },
+            "threatArea": "Threat Area",
+            "likelihood": "Likelihood",
+            "operation": "Operation",
+            "overallDataThreat": "Overall Data Threat"
+        }
+    }
+}

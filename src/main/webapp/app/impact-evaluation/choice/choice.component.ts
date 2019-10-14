@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {DatasharingService} from "../../datasharing/datasharing.service";
+import {DataSharingService} from "../../data-sharing/data-sharing.service";
 import {SelfAssessmentMgm, SelfAssessmentMgmService} from "../../entities/self-assessment-mgm";
 import {Router} from "@angular/router";
 import {ImpactMode} from "../../entities/enumerations/ImpactMode.enum";
@@ -15,7 +15,7 @@ export class ChoiceComponent implements OnInit {
     public impactModeEnum = ImpactMode;
 
     constructor(private router: Router,
-                private dataSharing: DatasharingService,
+                private dataSharing: DataSharingService,
                 private selfAssessmentService: SelfAssessmentMgmService) {
     }
 

@@ -26,7 +26,7 @@ import {SelfAssessmentMgm} from './self-assessment-mgm.model';
 import {createRequestOption} from '../../shared';
 import {SessionStorageService} from '../../../../../../node_modules/ngx-webstorage';
 import {LayoutConfiguration} from '../../layouts/model/LayoutConfiguration';
-import {DatasharingService} from '../../datasharing/datasharing.service';
+import {DataSharingService} from '../../data-sharing/data-sharing.service';
 import {SelfAssessmentOverview} from "../../my-risk-assessments/models/SelfAssessmentOverview.model";
 
 export type EntityResponseType = HttpResponse<SelfAssessmentMgm>;
@@ -46,7 +46,7 @@ export class SelfAssessmentMgmService implements OnInit {
         private dateUtils: JhiDateUtils,
         private router: Router,
         private sessionStorage: SessionStorageService,
-        private dataSharingService: DatasharingService
+        private dataSharingService: DataSharingService
     ) {
     }
 

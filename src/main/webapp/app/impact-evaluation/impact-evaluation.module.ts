@@ -40,7 +40,7 @@ import {ChoiceComponent} from './choice/choice.component';
 import {MaterialModule} from '../material/material.module';
 import {QualitativeComponent} from './qualitative/qualitative.component';
 import {AssetsImpactComponent} from './qualitative/assets-impact/assets-impact.component';
-import {DatasharingModule} from "../datasharing/datasharing.module";
+import {DataSharingModule} from "../data-sharing/data-sharing.module";
 
 @NgModule({
     imports: [
@@ -50,7 +50,7 @@ import {DatasharingModule} from "../datasharing/datasharing.module";
         ReactiveFormsModule,
         FormsModule,
         MaterialModule,
-        DatasharingModule
+        DataSharingModule
     ],
     declarations: [
         ImpactEvaluationComponent,

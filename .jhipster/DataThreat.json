@@ -1,0 +1,42 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "operation",
+            "otherEntityName": "dataOperation",
+            "otherEntityField": "name"
+        },
+        {
+            "relationshipName": "overallDataThreat",
+            "otherEntityName": "overallDataThreat",
+            "relationshipType": "many-to-one",
+            "otherEntityField": "id"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "threatArea",
+            "fieldType": "ThreatArea",
+            "fieldValues": "NETWORK_AND_TECHNICAL_RESOURCES,PROCEDURES_RELATED_TO_THE_PROCESSING_OF_PERSONAL_DATA,PEOPLE_INVOLVED_IN_THE_PROCESSING_OF_PERSONAL_DATA,BUSINESS_SECTOR_AND_SCALE_OF_PROCESSING",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "likelihood",
+            "fieldType": "DataThreatLikelihood",
+            "fieldValues": "LOW,MEDIUM,HIGH",
+            "fieldValidateRules": [
+                "required"
+            ]
+        }
+    ],
+    "changelogDate": "20190924115804",
+    "entityTableName": "data_threat",
+    "dto": "no",
+    "pagination": "no",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "angularJSSuffix": "mgm"
+}
