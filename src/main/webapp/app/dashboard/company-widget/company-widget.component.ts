@@ -21,7 +21,7 @@ import { MyCompanyMgmService, MyCompanyMgm } from '../../entities/my-company-mgm
 import { HttpResponse } from '@angular/common/http';
 import { PopUpService } from '../../shared/pop-up-services/pop-up.service';
 import { SelfAssessmentMgmService, SelfAssessmentMgm } from '../../entities/self-assessment-mgm';
-import {DatasharingService} from "../../datasharing/datasharing.service";
+import {DataSharingService} from "../../data-sharing/data-sharing.service";
 import {Account} from "../../shared";
 
 @Component({
@@ -43,7 +43,7 @@ export class CompanyWidgetComponent implements OnInit {
     private myCompanyService: MyCompanyMgmService,
     private selfAssessmentService: SelfAssessmentMgmService,
     public popUpService: PopUpService,
-    private dataSharingService: DatasharingService
+    private dataSharingService: DataSharingService
   ) { }
 
   ngOnInit() {

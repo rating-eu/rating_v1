@@ -40,7 +40,7 @@ import {Observable} from 'rxjs';
 import {switchMap} from 'rxjs/operators';
 import {of} from 'rxjs/observable/of';
 import {forkJoin} from 'rxjs/observable/forkJoin';
-import {DatasharingService} from '../../../datasharing/datasharing.service';
+import {DataSharingService} from '../../../data-sharing/data-sharing.service';
 import {CompanyType} from '../../../entities/enumerations/CompanyType.enum';
 import {SectorType} from '../../../entities/enumerations/SectorTyep.enum';
 import {CategoryType} from '../../../entities/enumerations/CategoryType.enum';
@@ -125,7 +125,7 @@ export class ImpactEvaluationComponent implements OnInit {
         private userService: UserService,
         private myCompanyService: MyCompanyMgmService,
         private idaUtilService: IdentifyAssetUtilService,
-        private dataSharingService: DatasharingService
+        private dataSharingService: DataSharingService
     ) {
         this.router.events.subscribe((event) => {
             if (event instanceof NavigationStart) {

@@ -28,7 +28,7 @@ import {MitigationMgm} from '../../entities/mitigation-mgm';
 import {ImpactEvaluationService} from '../../impact-evaluation/impact-evaluation.service';
 import {RiskBoardStepEnum} from "../../entities/enumerations/RiskBoardStep.enum";
 import {RiskBoardService} from "../../risk-board/risk-board.service";
-import {DatasharingService} from "../../datasharing/datasharing.service";
+import {DataSharingService} from "../../data-sharing/data-sharing.service";
 import {ImpactMode} from "../../entities/enumerations/ImpactMode.enum";
 
 interface RiskPercentageElement {
@@ -99,7 +99,7 @@ export class RiskEvaluationComponent implements OnInit, OnDestroy {
         private riskService: RiskManagementService,
         private riskBoardService: RiskBoardService,
         private impactEvaluationService: ImpactEvaluationService,
-        private dataSharingService: DatasharingService
+        private dataSharingService: DataSharingService
     ) {
     }
 

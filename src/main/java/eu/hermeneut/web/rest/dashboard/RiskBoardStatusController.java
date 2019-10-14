@@ -17,7 +17,7 @@
 
 package eu.hermeneut.web.rest.dashboard;
 
-import eu.hermeneut.domain.dashboard.RiskBoardStep;
+import eu.hermeneut.domain.enumeration.dashboard.RiskBoardStep;
 import eu.hermeneut.domain.enumeration.Status;
 import eu.hermeneut.security.AuthoritiesConstants;
 import eu.hermeneut.service.dashboard.RiskBoardStatusService;

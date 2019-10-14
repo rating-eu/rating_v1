@@ -1,0 +1,42 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "many-to-one",
+            "relationshipName": "operation",
+            "otherEntityName": "dataOperation",
+            "otherEntityField": "name"
+        },
+        {
+            "relationshipName": "overallSecurityImpact",
+            "otherEntityName": "overallSecurityImpact",
+            "relationshipType": "many-to-one",
+            "otherEntityField": "id"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "securityPillar",
+            "fieldType": "SecurityPillar",
+            "fieldValues": "CONFIDENTIALITY,INTEGRITY,AVAILABILITY",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "impact",
+            "fieldType": "DataImpact",
+            "fieldValues": "LOW,MEDIUM,HIGH,VERY_HIGH",
+            "fieldValidateRules": [
+                "required"
+            ]
+        }
+    ],
+    "changelogDate": "20190924115801",
+    "entityTableName": "security_impact",
+    "dto": "no",
+    "pagination": "no",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "angularJSSuffix": "mgm"
+}

@@ -55,6 +55,21 @@ import {HermeneutLogoMgmModule} from './logo-mgm/logo-mgm.module';
 import {HermeneutAttackCostParamMgmModule} from './attack-cost-param-mgm/attack-cost-param-mgm.module';
 import {ThreatAgentInterestModule} from "./threat-agent-interest/threat-agent-interest.module";
 
+import { HermeneutDataImpactDescriptionMgmModule } from './data-impact-description-mgm/data-impact-description-mgm.module';
+import { HermeneutDataRecipientMgmModule } from './data-recipient-mgm/data-recipient-mgm.module';
+import { HermeneutSecurityImpactMgmModule } from './security-impact-mgm/security-impact-mgm.module';
+import { HermeneutOverallSecurityImpactMgmModule } from './overall-security-impact-mgm/overall-security-impact-mgm.module';
+import { HermeneutDataOperationMgmModule } from './data-operation-mgm/data-operation-mgm.module';
+import { HermeneutDataThreatMgmModule } from './data-threat-mgm/data-threat-mgm.module';
+import { HermeneutOverallDataThreatMgmModule } from './overall-data-threat-mgm/overall-data-threat-mgm.module';
+import { HermeneutGDPRQuestionnaireMgmModule } from './gdpr-questionnaire-mgm/gdpr-questionnaire-mgm.module';
+import { HermeneutGDPRQuestionnaireStatusMgmModule } from './gdpr-questionnaire-status-mgm/gdpr-questionnaire-status-mgm.module';
+import { HermeneutGDPRQuestionMgmModule } from './gdpr-question-mgm/gdpr-question-mgm.module';
+import { HermeneutGDPRAnswerMgmModule } from './gdpr-answer-mgm/gdpr-answer-mgm.module';
+import { HermeneutGDPRMyAnswerMgmModule } from './gdpr-my-answer-mgm/gdpr-my-answer-mgm.module';
+import { HermeneutTranslationMgmModule } from './translation-mgm/translation-mgm.module';
+import { HermeneutOverallDataRiskMgmModule } from './overall-data-risk-mgm/overall-data-risk-mgm.module';
+import { HermeneutDataRiskLevelConfigMgmModule } from './data-risk-level-config-mgm/data-risk-level-config-mgm.module';
 /* jhipster-needle-add-entity-module-import - JHipster will add entity modules imports here */
 
 @NgModule({
@@ -96,7 +111,22 @@ import {ThreatAgentInterestModule} from "./threat-agent-interest/threat-agent-in
         HermeneutSplittingValueMgmModule,
         HermeneutLogoMgmModule,
         HermeneutAttackCostParamMgmModule,
-        ThreatAgentInterestModule
+        ThreatAgentInterestModule,
+        HermeneutDataImpactDescriptionMgmModule,
+        HermeneutDataRecipientMgmModule,
+        HermeneutSecurityImpactMgmModule,
+        HermeneutOverallSecurityImpactMgmModule,
+        HermeneutDataOperationMgmModule,
+        HermeneutDataThreatMgmModule,
+        HermeneutOverallDataThreatMgmModule,
+        HermeneutGDPRQuestionnaireMgmModule,
+        HermeneutGDPRQuestionnaireStatusMgmModule,
+        HermeneutGDPRQuestionMgmModule,
+        HermeneutGDPRAnswerMgmModule,
+        HermeneutGDPRMyAnswerMgmModule,
+        HermeneutTranslationMgmModule,
+        HermeneutOverallDataRiskMgmModule,
+        HermeneutDataRiskLevelConfigMgmModule,
         /* jhipster-needle-add-entity-module - JHipster will add entity modules here */
     ],
     declarations: [],

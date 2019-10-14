@@ -19,15 +19,15 @@ import {ChangeDetectorRef, Component, OnDestroy, OnInit, ViewRef} from '@angular
 import {Router} from '@angular/router';
 import {RiskBoardService, RiskBoardStatus} from '../risk-board.service';
 import {ModalDismissReasons, NgbModal} from '@ng-bootstrap/ng-bootstrap';
-import {Observable, Subscription} from "rxjs";
-import {Status} from "../../entities/enumerations/Status.enum";
-import {RiskBoardStepEnum} from "../../entities/enumerations/RiskBoardStep.enum";
-import {forkJoin} from "rxjs/observable/forkJoin";
-import {SelfAssessmentMgm} from "../../entities/self-assessment-mgm";
-import {DatasharingService} from "../../datasharing/datasharing.service";
-import {ImpactMode} from "../../entities/enumerations/ImpactMode.enum";
-import {switchMap} from "rxjs/operators";
-import {of} from "rxjs/observable/of";
+import {Observable, Subscription} from 'rxjs';
+import {Status} from '../../entities/enumerations/Status.enum';
+import {RiskBoardStepEnum} from '../../entities/enumerations/RiskBoardStep.enum';
+import {forkJoin} from 'rxjs/observable/forkJoin';
+import {SelfAssessmentMgm} from '../../entities/self-assessment-mgm';
+import {DataSharingService} from '../../data-sharing/data-sharing.service';
+import {ImpactMode} from '../../entities/enumerations/ImpactMode.enum';
+import {switchMap} from 'rxjs/operators';
+import {of} from 'rxjs/observable/of';
 
 @Component({
     selector: 'jhi-step-info-widget',
@@ -63,7 +63,7 @@ export class StepInfoWidgetComponent implements OnInit, OnDestroy {
     private subscriptions: Subscription[];
 
     constructor(
-        private datasharingService: DatasharingService,
+        private datasharingService: DataSharingService,
         private dashService: RiskBoardService,
         private modalService: NgbModal,
         private router: Router,
@@ -90,7 +90,7 @@ export class StepInfoWidgetComponent implements OnInit, OnDestroy {
             this.datasharingService.selfAssessment$.pipe(
                 switchMap((newAssessment: SelfAssessmentMgm) => {
 
-                    console.log("Step info: New assessment:");
+                    console.log('Step info: New assessment:');
                     console.log(newAssessment);
 
                     if (newAssessment) {

@@ -25,7 +25,7 @@ import {MyAssetMgmService} from '../../../entities/my-asset-mgm';
 import {Observable} from 'rxjs';
 import {HttpResponse} from '@angular/common/http';
 import {forkJoin} from 'rxjs/observable/forkJoin';
-import {DatasharingService} from "../../../datasharing/datasharing.service";
+import {DataSharingService} from "../../../data-sharing/data-sharing.service";
 
 @Component({
     selector: 'jhi-data-assets-losses-estimation',
@@ -41,7 +41,7 @@ export class DataAssetsLossesEstimationComponent implements OnInit {
         private impactService: ImpactEvaluationService,
         private router: Router,
         private myAssetService: MyAssetMgmService,
-        private dataSharingService: DatasharingService
+        private dataSharingService: DataSharingService
     ) {
         this.router.events.subscribe((event) => {
             if (event instanceof NavigationStart) {

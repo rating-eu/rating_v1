@@ -1,0 +1,66 @@
+<div>
+    <h2>
+        <span jhiTranslate="hermeneutApp.dataRecipient.home.title">Data Recipients</span>
+        <button class="btn btn-primary float-right jh-create-entity create-data-recipient-mgm" [routerLink]="['/', { outlets: { popup: ['data-recipient-mgm-new'] } }]">
+            <span class="fa fa-plus"></span>
+            <span  jhiTranslate="hermeneutApp.dataRecipient.home.createLabel">
+            Create new Data Recipient
+            </span>
+        </button>
+    </h2>
+    <jhi-alert></jhi-alert>
+    <div class="row">
+    </div>
+    <br/>
+    <div class="table-responsive" *ngIf="dataRecipients">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+            <th><span jhiTranslate="global.field.id">ID</span></th>
+            <th><span jhiTranslate="hermeneutApp.dataRecipient.name">Name</span></th>
+            <th><span jhiTranslate="hermeneutApp.dataRecipient.type">Type</span></th>
+            <th><span jhiTranslate="hermeneutApp.dataRecipient.operation">Operation</span></th>
+            <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let dataRecipient of dataRecipients ;trackBy: trackId">
+                <td><a [routerLink]="['../data-recipient-mgm', dataRecipient.id ]">{{dataRecipient.id}}</a></td>
+                <td>{{dataRecipient.name}}</td>
+                <td jhiTranslate="{{'hermeneutApp.DataRecipientType.' + dataRecipient.type}}">{{dataRecipient.type}}</td>
+                <td>
+                    <div *ngIf="dataRecipient.operation">
+                        <a [routerLink]="['../data-operation-mgm', dataRecipient.operation?.id ]" >{{dataRecipient.operation?.name}}</a>
+                    </div>
+                </td>
+                <td class="text-right">
+                    <div class="btn-group flex-btn-group-container">
+                        <button type="submit"
+                                [routerLink]="['../data-recipient-mgm', dataRecipient.id ]"
+                                class="btn btn-info btn-sm">
+                            <span class="fa fa-eye"></span>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'data-recipient-mgm/'+ dataRecipient.id + '/edit'} }]"
+                                replaceUrl="true"
+                                queryParamsHandling="merge"
+                                class="btn btn-primary btn-sm">
+                            <span class="fa fa-pencil"></span>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'data-recipient-mgm/'+ dataRecipient.id + '/delete'} }]"
+                                replaceUrl="true"
+                                queryParamsHandling="merge"
+                                class="btn btn-danger btn-sm">
+                            <span class="fa fa-remove"></span>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

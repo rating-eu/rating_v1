@@ -23,7 +23,7 @@ import {SelfAssessmentMgm, SelfAssessmentMgmService} from '../entities/self-asse
 import {AttackStrategyMgm} from '../entities/attack-strategy-mgm/attack-strategy-mgm.model';
 import {AttackStrategyMgmService} from '../entities/attack-strategy-mgm/attack-strategy-mgm.service';
 import {Principal} from '../shared';
-import {DatasharingService} from '../datasharing/datasharing.service';
+import {DataSharingService} from '../data-sharing/data-sharing.service';
 
 @Component({
     selector: 'jhi-evaluate-weakness',
@@ -47,7 +47,7 @@ export class EvaluateWeaknessComponent implements OnInit, OnDestroy {
                 private activatedRoute: ActivatedRoute,
                 private principal: Principal,
                 private mySelfAssessmentService: SelfAssessmentMgmService,
-                private dataSharingService: DatasharingService,
+                private dataSharingService: DataSharingService,
                 private router: Router) {
         this.router.events.subscribe((event) => {
             if (event instanceof NavigationStart) {

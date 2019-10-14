@@ -1,0 +1,23 @@
+
+{
+    "hermeneutApp": {
+        "gDPRQuestionnaire" : {
+            "home": {
+                "title": "GDPR Questionnaires",
+                "createLabel": "Crear nuevo GDPR Questionnaire",
+                "createOrEditLabel": "Crear o editar GDPR Questionnaire"
+            },
+            "created": "Un nuevo GDPR Questionnaire ha sido creado con el identificador {{ param }}",
+            "updated": "Un GDPR Questionnaire ha sido actualizado con el identificador {{ param }}",
+            "deleted": "Un GDPR Questionnaire ha sido eliminado con el identificador {{ param }}",
+            "delete": {
+                "question": "¿Seguro que quiere eliminar GDPR Questionnaire {{ id }}?"
+            },
+            "detail": {
+                "title": "GDPR Questionnaire"
+            },
+            "name": "Name",
+            "purpose": "Purpose"
+        }
+    }
+}

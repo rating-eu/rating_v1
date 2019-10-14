@@ -1,0 +1,14 @@
+{
+    "hermeneutApp": {
+        "DataOperationField" : {
+            "null": "",
+            "NAME": "NAME",
+            "PROCESSED_DATA": "PROCESSED_DATA",
+            "PROCESSING_PURPOSE": "PROCESSING_PURPOSE",
+            "DATA_SUBJECT": "DATA_SUBJECT",
+            "PROCESSING_MEANS": "PROCESSING_MEANS",
+            "DATA_RECIPIENTS": "DATA_RECIPIENTS",
+            "DATA_PROCESSOR": "DATA_PROCESSOR"
+        }
+    }
+}

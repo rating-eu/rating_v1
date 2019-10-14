@@ -1,0 +1,24 @@
+
+{
+    "hermeneutApp": {
+        "overallSecurityImpact" : {
+            "home": {
+                "title": "OverallSecurityImpacts",
+                "createLabel": "Créer un nouveau Overall Security Impact",
+                "createOrEditLabel": "Créer ou éditer un Overall Security Impact"
+            },
+            "created": "Un nouveau Overall Security Impact a été créé avec l'identifiant {{ param }}",
+            "updated": "Le Overall Security Impact avec l'identifiant {{ param }} a été mis à jour",
+            "deleted": "Le Overall Security Impact avec l'identifiant {{ param }} a été supprimé",
+            "delete": {
+                "question": "Etes-vous certain de vouloir supprimer le Overall Security Impact {{ id }} ?"
+            },
+            "detail": {
+                "title": "Overall Security Impact"
+            },
+            "impact": "Impact",
+            "operation": "Operation",
+            "impact": "Impact"
+        }
+    }
+}

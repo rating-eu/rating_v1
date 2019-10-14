@@ -41,6 +41,21 @@
     <include file="config/liquibase/changelog/20181003143530_added_entity_ImpactLevelDescription.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20181207142117_added_entity_SplittingValue.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20181214110408_added_entity_Logo.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190923130933_added_entity_DataImpactDescription.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190924115800_added_entity_DataRecipient.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190924115801_added_entity_SecurityImpact.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190924115802_added_entity_OverallSecurityImpact.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190924115803_added_entity_DataOperation.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190924115804_added_entity_DataThreat.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190924115805_added_entity_OverallDataThreat.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190924115806_added_entity_GDPRQuestionnaire.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190924115807_added_entity_GDPRQuestionnaireStatus.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190924115808_added_entity_GDPRQuestion.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190924115809_added_entity_GDPRAnswer.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190924115810_added_entity_GDPRMyAnswer.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190924115811_added_entity_Translation.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20191010142907_added_entity_OverallDataRisk.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20191011102510_added_entity_DataRiskLevelConfig.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
     <include file="config/liquibase/changelog/20180410085152_added_entity_constraints_CompanyProfile.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180410085155_added_entity_constraints_SelfAssessment.xml" relativeToChangelogFile="false"/>
@@ -151,5 +166,30 @@
     <include file="config/liquibase/changelog/20190605091540_added_asset_in-directly_vulnerable_columns.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20190605115047_added_asset_in-directly_vulnerable_data.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20190606102041_removed_company_profile_containers.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190924115800_added_entity_constraints_DataRecipient.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190924115801_added_entity_constraints_SecurityImpact.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190924115802_added_entity_constraints_OverallSecurityImpact.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190924115803_added_entity_constraints_DataOperation.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190924115804_added_entity_constraints_DataThreat.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190924115805_added_entity_constraints_OverallDataThreat.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190924115807_added_entity_constraints_GDPRQuestionnaireStatus.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190924115808_added_entity_constraints_GDPRQuestion.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190924115810_added_entity_constraints_GDPRMyAnswer.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190924115811_added_entity_constraints_Translation.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190925141946_load_GDPR_questionnaires.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190925143132_load_GDPR_OPERATION_CONTEXT_questions.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190925145320_load_GDPR_IMPACT_EVALUATION_questions.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190925184511_load_GDPR_IMPACT_EVALUATION_answers.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190925185522_load_GDPR_IMPACT_EVALUATION_questions_answers.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190925191423_load_GDPR_THREAT_LIKELIHOOD_questions.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190926113813_load_GDPR_THREAT_LIKELIHOOD_answers.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190926115251_load_GDPR_THREAT_LIKELIHOOD_questions_answers.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20190930133104_add_GDPRQuestionnaire_purpose_unique_constraint.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20191007153349_load_DATA_IMPACT_DESCRIPTIONs.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20191007162752_add_GDPRQuestionnaireStatus_UC_operation_role_questionnaire.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20191008150410_added_UC_DataThreat_operation_threat_area.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20191010142907_added_entity_constraints_OverallDataRisk.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20191011102510_added_entity_constraints_DataRiskLevelConfig.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20191011121559_added_UK_data_risk_level_config_DataOperation_Likelihood_Impact.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
 </databaseChangeLog>

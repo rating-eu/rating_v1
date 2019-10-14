@@ -26,7 +26,7 @@ import { Role } from '../../entities/enumerations/Role.enum';
 import { IdentifyAssetUtilService } from '../identify-asset.util.service';
 import { MyAssetMgm } from '../../entities/my-asset-mgm';
 import { AssetType } from '../../entities/enumerations/AssetType.enum';
-import {DatasharingService} from "../../datasharing/datasharing.service";
+import {DataSharingService} from "../../data-sharing/data-sharing.service";
 
 interface OrderBy {
     category: boolean;
@@ -66,7 +66,7 @@ export class AssetReportComponent implements OnInit, OnDestroy {
         private eventManager: JhiEventManager,
         private ref: ChangeDetectorRef,
         private idaUtilsService: IdentifyAssetUtilService,
-        private dataSharingService: DatasharingService
+        private dataSharingService: DataSharingService
     ) {
 
     }

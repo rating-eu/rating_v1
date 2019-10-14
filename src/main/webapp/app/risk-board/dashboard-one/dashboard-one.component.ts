@@ -18,7 +18,7 @@
 import {ChangeDetectorRef, Component, OnDestroy, OnInit} from '@angular/core';
 import {Principal} from '../../shared';
 import {SelfAssessmentMgm} from '../../entities/self-assessment-mgm';
-import {DatasharingService} from '../../datasharing/datasharing.service';
+import {DataSharingService} from '../../data-sharing/data-sharing.service';
 import {Router} from '@angular/router';
 import {ImpactMode} from '../../entities/enumerations/ImpactMode.enum';
 import {RiskBoardStatus} from '../risk-board.service';
@@ -41,7 +41,7 @@ export class DashboardOneComponent implements OnInit, OnDestroy {
 
     constructor(
         private principal: Principal,
-        private datasharingService: DatasharingService,
+        private datasharingService: DataSharingService,
         private router: Router,
         private changDetector: ChangeDetectorRef
     ) {

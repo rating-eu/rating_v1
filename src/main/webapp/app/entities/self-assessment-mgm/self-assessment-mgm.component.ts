@@ -25,7 +25,7 @@ import {SelfAssessmentMgm} from './self-assessment-mgm.model';
 import {SelfAssessmentMgmService} from './self-assessment-mgm.service';
 import {Principal} from '../../shared';
 
-import {DatasharingService} from '../../datasharing/datasharing.service';
+import {DataSharingService} from '../../data-sharing/data-sharing.service';
 import {LayoutConfiguration} from '../../layouts/model/LayoutConfiguration';
 import {PopUpService} from '../../shared/pop-up-services/pop-up.service';
 
@@ -46,7 +46,7 @@ export class SelfAssessmentMgmComponent implements OnInit, OnDestroy {
         private activatedRoute: ActivatedRoute,
         private principal: Principal,
         public popUpService: PopUpService,
-        private dataSharingService: DatasharingService
+        private dataSharingService: DataSharingService
     ) {
     }
 

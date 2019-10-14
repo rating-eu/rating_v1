@@ -1,0 +1,10 @@
+{
+    "hermeneutApp": {
+        "GDPRAnswerType" : {
+            "null": "",
+            "OPEN": "OPEN",
+            "MULTIPLE_CHOICE": "MULTIPLE_CHOICE",
+            "OBJECT": "OBJECT"
+        }
+    }
+}

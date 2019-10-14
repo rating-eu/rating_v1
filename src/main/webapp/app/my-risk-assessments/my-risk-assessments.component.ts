@@ -22,12 +22,12 @@ import {SelfAssessmentMgm, SelfAssessmentMgmService} from '../entities/self-asse
 import {Router} from '@angular/router';
 import {Subscription} from 'rxjs/Subscription';
 import {MyAssetMgmService} from '../entities/my-asset-mgm';
-import {DatasharingService} from '../datasharing/datasharing.service';
+import {DataSharingService} from '../data-sharing/data-sharing.service';
 import {PopUpService} from '../shared/pop-up-services/pop-up.service';
 import {Role} from '../entities/enumerations/Role.enum';
-import {EventManagerService} from '../datasharing/event-manager.service';
+import {EventManagerService} from '../data-sharing/event-manager.service';
 import {EventType} from '../entities/enumerations/EventType.enum';
-import {Event} from '../datasharing/event.model';
+import {Event} from '../data-sharing/event.model';
 
 interface OrderBy {
     name: boolean;
@@ -59,7 +59,7 @@ export class MyRiskAssessmentsComponent implements OnInit, OnDestroy {
         private router: Router,
         private selfAssessmentService: SelfAssessmentMgmService,
         private myAssetService: MyAssetMgmService,
-        private dataSharingService: DatasharingService,
+        private dataSharingService: DataSharingService,
         private eventManagerService: EventManagerService,
         public popUpService: PopUpService,
         private principal: Principal

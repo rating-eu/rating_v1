@@ -21,7 +21,7 @@ import {SelfAssessmentMgm} from './../../entities/self-assessment-mgm/self-asses
 import {ImpactEvaluationStatus} from "../../impact-evaluation/quantitative/model/impact-evaluation-status.model";
 import {ImpactEvaluationService} from './../../impact-evaluation/impact-evaluation.service';
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {DatasharingService} from "../../datasharing/datasharing.service";
+import {DataSharingService} from "../../data-sharing/data-sharing.service";
 import {Observable, Subscription} from "rxjs";
 import {switchMap} from "rxjs/operators";
 import {of} from "rxjs/observable/of";
@@ -54,7 +54,7 @@ export class EbitsWidgetComponent implements OnInit, OnDestroy {
     constructor(
         private impactService: ImpactEvaluationService,
         private mySelfAssessmentService: SelfAssessmentMgmService,
-        private dataSharingService: DatasharingService
+        private dataSharingService: DataSharingService
     ) {
     }
 

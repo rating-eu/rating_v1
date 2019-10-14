@@ -20,7 +20,7 @@ import {HttpInterceptor, HttpRequest, HttpHandler, HttpEvent, HttpErrorResponse}
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/operator/do';
 import {LoginService} from '../../shared/login/login.service';
-import {DatasharingService} from '../../datasharing/datasharing.service';
+import {DataSharingService} from '../../data-sharing/data-sharing.service';
 
 export class AuthExpiredInterceptor implements HttpInterceptor {
 
@@ -36,7 +36,7 @@ export class AuthExpiredInterceptor implements HttpInterceptor {
                 if (err.status === 401) {
                     const loginService: LoginService = this.injector.get(LoginService);
                     loginService.logout();
-                    const dataSharingService: DatasharingService = this.injector.get(DatasharingService);
+                    const dataSharingService: DataSharingService = this.injector.get(DataSharingService);
                     dataSharingService.clear();
                 }
             }

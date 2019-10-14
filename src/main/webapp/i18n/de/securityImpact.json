@@ -1,0 +1,25 @@
+
+{
+    "hermeneutApp": {
+        "securityImpact" : {
+            "home": {
+                "title": "Security Impacts",
+                "createLabel": "Security Impact erstellen",
+                "createOrEditLabel": "Security Impact erstellen oder bearbeiten"
+            },
+            "created": "Security Impact erstellt mit ID {{ param }}",
+            "updated": "Security Impact aktualisiert mit ID {{ param }}",
+            "deleted": "Security Impact gelöscht mit ID {{ param }}",
+            "delete": {
+                "question": "Soll Security Impact {{ id }} wirklich dauerhaft gelöscht werden?"
+            },
+            "detail": {
+                "title": "Security Impact"
+            },
+            "securityPillar": "Security Pillar",
+            "impact": "Impact",
+            "operation": "Operation",
+            "overallSecurityImpact": "Overall Security Impact"
+        }
+    }
+}

@@ -24,7 +24,7 @@ import {ImpactEvaluationService} from '../../impact-evaluation/impact-evaluation
 import {CategoryType} from '../../entities/enumerations/CategoryType.enum';
 import {SelfAssessmentMgmService, SelfAssessmentMgm} from '../../entities/self-assessment-mgm';
 import {ImpactEvaluationStatus} from "../../impact-evaluation/quantitative/model/impact-evaluation-status.model";
-import {DatasharingService} from "../../datasharing/datasharing.service";
+import {DataSharingService} from "../../data-sharing/data-sharing.service";
 import {SectorType} from "../../entities/enumerations/SectorTyep.enum";
 import {Observable, Subscription} from "rxjs";
 import {forkJoin} from "rxjs/observable/forkJoin";
@@ -65,7 +65,7 @@ export class LossesWidgetComponent implements OnInit, OnDestroy {
     constructor(
         private impactService: ImpactEvaluationService,
         private mySelfAssessmentService: SelfAssessmentMgmService,
-        private dataSharingService: DatasharingService
+        private dataSharingService: DataSharingService
     ) {
     }
 

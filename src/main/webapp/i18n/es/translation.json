@@ -1,0 +1,26 @@
+
+{
+    "hermeneutApp": {
+        "translation" : {
+            "home": {
+                "title": "Translations",
+                "createLabel": "Crear nuevo Translation",
+                "createOrEditLabel": "Crear o editar Translation"
+            },
+            "created": "Un nuevo Translation ha sido creado con el identificador {{ param }}",
+            "updated": "Un Translation ha sido actualizado con el identificador {{ param }}",
+            "deleted": "Un Translation ha sido eliminado con el identificador {{ param }}",
+            "delete": {
+                "question": "¿Seguro que quiere eliminar Translation {{ id }}?"
+            },
+            "detail": {
+                "title": "Translation"
+            },
+            "text": "Text",
+            "language": "Language",
+            "dataImpactDescription": "Data Impact Description",
+            "gDPRQuestion": "G DPR Question",
+            "gDPRAnswer": "G DPR Answer"
+        }
+    }
+}

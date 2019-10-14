@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+    <!--
+        Added the constraints for entity GDPRQuestion.
+    -->
+    <changeSet id="20190924115808-2" author="jhipster">
+        
+        <addForeignKeyConstraint baseColumnNames="questionnaire_id"
+                                 baseTableName="gdpr_question"
+                                 constraintName="fk_gdprquestion_questionnaire_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="gdpr_questionnaire"/>
+
+        <addForeignKeyConstraint baseColumnNames="gdprquestions_id"
+                                 baseTableName="gdprquestion_answers"
+                                 constraintName="fk_gdprquestion_answers_gdprquestions_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="gdpr_question"/>
+        <addForeignKeyConstraint baseColumnNames="answers_id"
+                                 baseTableName="gdprquestion_answers"
+                                 constraintName="fk_gdprquestion_answers_answers_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="gdpr_answer"/>
+        
+    </changeSet>
+</databaseChangeLog>

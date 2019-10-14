@@ -24,7 +24,7 @@ import {QuestionnairesComponent} from './questionnaires/questionnaires.component
 import {DynamicFormComponent} from './questionnaires/questionnaire/dynamic-form/dynamic-form.component';
 import {ReactiveFormsModule} from '@angular/forms';
 import {IdentifyThreatAgentModule} from '../identify-threat-agent/identify-threat-agent.module';
-import {DatasharingModule} from '../datasharing/datasharing.module';
+import {DataSharingModule} from '../data-sharing/data-sharing.module';
 import {EvaluateWeaknessModule} from '../evaluate-weakness/evaluate-weakness.module';
 import {MaterialModule} from '../material/material.module';
 import {PartialSubmitPopupService} from './questionnaires/questionnaire/partial-submit-dialog/partial-submit-popup.service';
@@ -41,7 +41,7 @@ import {DtoModule} from "../dto/dto.module";
         ReactiveFormsModule,
         IdentifyThreatAgentModule,
         EvaluateWeaknessModule,
-        DatasharingModule,
+        DataSharingModule,
         MaterialModule,
         DtoModule
     ],

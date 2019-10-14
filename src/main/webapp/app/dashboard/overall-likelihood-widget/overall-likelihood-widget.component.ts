@@ -22,7 +22,7 @@ import {ResultsService} from '../../results/results.service';
 import {Result} from '../../results/models/result.model';
 import {SelfAssessmentMgm, SelfAssessmentMgmService} from '../../entities/self-assessment-mgm';
 import {HttpResponse} from '@angular/common/http';
-import {DatasharingService} from "../../datasharing/datasharing.service";
+import {DataSharingService} from "../../data-sharing/data-sharing.service";
 import {MyCompanyMgm} from "../../entities/my-company-mgm";
 import {Observable} from "rxjs";
 import {ThreatAgentMgm, ThreatAgentMgmService} from "../../entities/threat-agent-mgm";
@@ -66,7 +66,7 @@ export class OverallLikelihoodWidgetComponent implements OnInit {
     constructor(
         private resultService: ResultsService,
         private selfAssessmentService: SelfAssessmentMgmService,
-        private dataSharingService: DatasharingService,
+        private dataSharingService: DataSharingService,
         private threatAgentService: ThreatAgentMgmService
     ) {
     }

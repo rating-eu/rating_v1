@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {Employee} from '../models/Employee';
-import {DatasharingService} from '../../datasharing/datasharing.service';
+import {DataSharingService} from '../../data-sharing/data-sharing.service';
 import {MyCompanyMgm} from '../../entities/my-company-mgm';
 import {ActivatedRoute, Router} from '@angular/router';
 import {EmployeeService} from '../employee.service';
@@ -26,7 +26,7 @@ export class EmployeeComponent implements OnInit {
     constructor(
         private route: ActivatedRoute,
         private router: Router,
-        private dataSHaringService: DatasharingService,
+        private dataSHaringService: DataSharingService,
         private employeeService: EmployeeService
     ) {
 

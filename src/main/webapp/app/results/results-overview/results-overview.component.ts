@@ -28,7 +28,7 @@ import {AugmentedMyAsset} from "../../my-risk-assessments/models/AugmentedMyAsse
 import {AugmentedAttackStrategy} from '../../evaluate-weakness/models/augmented-attack-strategy.model';
 import {Couple} from '../../utils/couple.class';
 import * as _ from 'lodash';
-import {DatasharingService} from "../../datasharing/datasharing.service";
+import {DataSharingService} from "../../data-sharing/data-sharing.service";
 import {MyCompanyMgm} from "../../entities/my-company-mgm";
 import {forkJoin} from "rxjs/observable/forkJoin";
 
@@ -88,7 +88,7 @@ export class ResultsOverviewComponent implements OnInit {
 
     constructor(private selfAssessmentService: SelfAssessmentMgmService,
                 private resultService: ResultsService,
-                private dataSharingService: DatasharingService,
+                private dataSharingService: DataSharingService,
                 private threatAgentService: ThreatAgentMgmService) {
     }
 

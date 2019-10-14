@@ -1,7 +1,7 @@
 import {AfterViewChecked, ChangeDetectorRef, Component, OnDestroy, OnInit, ViewRef} from '@angular/core';
 import {DashboardService} from "../dashboard.service";
 import {MyCompanyMgm} from "../../entities/my-company-mgm";
-import {DatasharingService} from "../../datasharing/datasharing.service";
+import {DataSharingService} from "../../data-sharing/data-sharing.service";
 import {CompanyBoardStep} from "../../entities/enumerations/CompanyBoardStep.enum";
 import {forkJoin} from "rxjs/observable/forkJoin";
 import {Observable, Subscription} from "rxjs";
@@ -47,7 +47,7 @@ export class StepStatusWidgetComponent implements OnInit, AfterViewChecked, OnDe
     public vulnerabilityAssessment: QuestionnaireStatusMgm;
 
     constructor(
-        private dataSharingService: DatasharingService,
+        private dataSharingService: DataSharingService,
         private completionDTOService: CompletionDtoService,
         private questionnaireStatusService: QuestionnaireStatusMgmService,
         private dashboardService: DashboardService,
@@ -66,39 +66,15 @@ export class StepStatusWidgetComponent implements OnInit, AfterViewChecked, OnDe
 
         this.fetchStatus();
         this.fetchQuestionnaireStatuses();
+        this.fetchVulnerabilitiesCompletions();
 
         this.subscriptions.push(
             this.dataSharingService.myCompany$.subscribe((response: MyCompanyMgm) => {
                 this.myCompany = response;
                 this.fetchStatus();
                 this.fetchQuestionnaireStatuses();
+                this.fetchVulnerabilitiesCompletions();
             })
-        );
-
-        this.subscriptions.push(
-            this.dataSharingService.vulnerabilityAssessment$.pipe(
-                switchMap(
-                    (vulnerabilityAssessment: QuestionnaireStatusMgm) => {
-                        this.vulnerabilityAssessment = vulnerabilityAssessment;
-
-                        if (this.vulnerabilityAssessment) {
-                            this.assessVulnerabilitiesStatus = this.vulnerabilityAssessment.status;
-                            this.companyBoardStatus.assessVulnerablitiesStatus = this.assessVulnerabilitiesStatus;
-                            this.dataSharingService.companyBoardStatus = this.companyBoardStatus;
-                        }
-
-                        return this.completionDTOService.getAssessVulnerabilitiesCompletionByCompanyProfileAndQuestionnaireStatus(this.myCompany.companyProfile.id, this.vulnerabilityAssessment.id);
-                    }
-                )
-            ).subscribe(
-                (response: HttpResponse<AssessVulnerabilitiesCompletionDTO>) => {
-                    this.assessVulnerabilitiesCompletion = response.body;
-
-                    if (this.changeDetector && !(this.changeDetector as ViewRef).destroyed) {
-                        this.changeDetector.detectChanges();
-                    }
-                }
-            )
         );
     }
 
@@ -178,6 +154,36 @@ export class StepStatusWidgetComponent implements OnInit, AfterViewChecked, OnDe
 
                         }
                     })
+            );
+        }
+    }
+
+    private fetchVulnerabilitiesCompletions() {
+        if (this.myCompany && this.myCompany.companyProfile) {
+            this.subscriptions.push(
+                this.dataSharingService.vulnerabilityAssessment$.pipe(
+                    switchMap(
+                        (vulnerabilityAssessment: QuestionnaireStatusMgm) => {
+                            this.vulnerabilityAssessment = vulnerabilityAssessment;
+
+                            if (this.vulnerabilityAssessment) {
+                                this.assessVulnerabilitiesStatus = this.vulnerabilityAssessment.status;
+                                this.companyBoardStatus.assessVulnerablitiesStatus = this.assessVulnerabilitiesStatus;
+                                this.dataSharingService.companyBoardStatus = this.companyBoardStatus;
+                            }
+
+                            return this.completionDTOService.getAssessVulnerabilitiesCompletionByCompanyProfileAndQuestionnaireStatus(this.myCompany.companyProfile.id, this.vulnerabilityAssessment.id);
+                        }
+                    )
+                ).subscribe(
+                    (response: HttpResponse<AssessVulnerabilitiesCompletionDTO>) => {
+                        this.assessVulnerabilitiesCompletion = response.body;
+
+                        if (this.changeDetector && !(this.changeDetector as ViewRef).destroyed) {
+                            this.changeDetector.detectChanges();
+                        }
+                    }
+                )
             );
         }
     }

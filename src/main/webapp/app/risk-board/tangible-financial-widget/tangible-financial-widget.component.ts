@@ -24,7 +24,7 @@ import {ImpactEvaluationStatus} from "../../impact-evaluation/quantitative/model
 import {MyAssetMgm} from '../../entities/my-asset-mgm';
 import {RiskBoardService} from '../risk-board.service';
 import {AssetType} from '../../entities/enumerations/AssetType.enum';
-import {DatasharingService} from "../../datasharing/datasharing.service";
+import {DataSharingService} from '../../data-sharing/data-sharing.service';
 import {Observable, Subscription} from "rxjs";
 import {switchMap} from "rxjs/operators";
 import {of} from "rxjs/observable/of";
@@ -63,7 +63,7 @@ export class TangibleFinancialWidgetComponent implements OnInit, OnDestroy {
         private impactService: ImpactEvaluationService,
         private mySelfAssessmentService: SelfAssessmentMgmService,
         private dashService: RiskBoardService,
-        private dataSharingService: DatasharingService
+        private dataSharingService: DataSharingService
     ) {
     }
 

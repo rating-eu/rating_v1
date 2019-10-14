@@ -2,7 +2,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Role} from "../../entities/enumerations/Role.enum";
 import {MyCompanyMgm} from "../../entities/my-company-mgm";
 import {Employee} from "../models/Employee";
-import {DatasharingService} from "../../datasharing/datasharing.service";
+import {DataSharingService} from "../../data-sharing/data-sharing.service";
 import {EmployeeService} from "../employee.service";
 import {switchMap} from "rxjs/operators";
 import {Observable, Subscription} from "rxjs";
@@ -24,7 +24,7 @@ export class CisoComponent implements OnInit, OnDestroy {
     private subscriptions: Subscription[] = [];
 
     constructor(
-        private dataSharingService: DatasharingService,
+        private dataSharingService: DataSharingService,
         private employeeService: EmployeeService
     ) {
     }

@@ -1,0 +1,24 @@
+
+{
+    "hermeneutApp": {
+        "dataRecipient" : {
+            "home": {
+                "title": "DataRecipients",
+                "createLabel": "Créer un nouveau Data Recipient",
+                "createOrEditLabel": "Créer ou éditer un Data Recipient"
+            },
+            "created": "Un nouveau Data Recipient a été créé avec l'identifiant {{ param }}",
+            "updated": "Le Data Recipient avec l'identifiant {{ param }} a été mis à jour",
+            "deleted": "Le Data Recipient avec l'identifiant {{ param }} a été supprimé",
+            "delete": {
+                "question": "Etes-vous certain de vouloir supprimer le Data Recipient {{ id }} ?"
+            },
+            "detail": {
+                "title": "Data Recipient"
+            },
+            "name": "Name",
+            "type": "Type",
+            "operation": "Operation"
+        }
+    }
+}

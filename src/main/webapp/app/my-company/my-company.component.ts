@@ -18,7 +18,7 @@
 import {Component, OnInit} from '@angular/core';
 import {MyCompanyMgm} from '../entities/my-company-mgm/index';
 import {HttpErrorResponse} from '@angular/common/http'
-import {DatasharingService} from "../datasharing/datasharing.service";
+import {DataSharingService} from "../data-sharing/data-sharing.service";
 
 @Component({
     selector: 'jhi-my-company',
@@ -31,7 +31,7 @@ export class MyCompanyComponent implements OnInit {
     public error: HttpErrorResponse;
     public message: string;
 
-    constructor(private dataSharingService: DatasharingService) {
+    constructor(private dataSharingService: DataSharingService) {
     }
 
     ngOnInit() {

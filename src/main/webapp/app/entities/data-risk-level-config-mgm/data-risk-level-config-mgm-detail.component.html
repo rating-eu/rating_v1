@@ -1,0 +1,44 @@
+
+<div *ngIf="dataRiskLevelConfig">
+    <h2><span jhiTranslate="hermeneutApp.dataRiskLevelConfig.detail.title">Data Risk Level Config</span> {{dataRiskLevelConfig.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="hermeneutApp.dataRiskLevelConfig.rationale">Rationale</span></dt>
+        <dd>
+            <span>{{dataRiskLevelConfig.rationale}}</span>
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.dataRiskLevelConfig.likelihood">Likelihood</span></dt>
+        <dd>
+            <span jhiTranslate="{{'hermeneutApp.DataThreatLikelihood.' + dataRiskLevelConfig.likelihood}}">{{dataRiskLevelConfig.likelihood}}</span>
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.dataRiskLevelConfig.impact">Impact</span></dt>
+        <dd>
+            <span jhiTranslate="{{'hermeneutApp.DataImpact.' + dataRiskLevelConfig.impact}}">{{dataRiskLevelConfig.impact}}</span>
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.dataRiskLevelConfig.risk">Risk</span></dt>
+        <dd>
+            <span jhiTranslate="{{'hermeneutApp.DataRiskLevel.' + dataRiskLevelConfig.risk}}">{{dataRiskLevelConfig.risk}}</span>
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.dataRiskLevelConfig.operation">Operation</span></dt>
+        <dd>
+            <div *ngIf="dataRiskLevelConfig.operation">
+                <a [routerLink]="['/data-operation-mgm', dataRiskLevelConfig.operation?.id]">{{dataRiskLevelConfig.operation?.name}}</a>
+            </div>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'data-risk-level-config-mgm/'+ dataRiskLevelConfig.id + '/edit'} }]"
+            replaceUrl="true"
+            queryParamsHandling="merge"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+    </button>
+</div>

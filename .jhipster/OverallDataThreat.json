@@ -1,0 +1,36 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "one-to-one",
+            "relationshipName": "operation",
+            "otherEntityName": "dataOperation",
+            "otherEntityField": "name",
+            "ownerSide": true,
+            "otherEntityRelationshipName": "overallDataThreat"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "threats",
+            "otherEntityName": "dataThreat",
+            "otherEntityRelationshipName": "overallDataThreat"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "likelihood",
+            "fieldType": "DataThreatLikelihood",
+            "fieldValues": "LOW,MEDIUM,HIGH",
+            "fieldValidateRules": [
+                "required"
+            ]
+        }
+    ],
+    "changelogDate": "20190924115805",
+    "entityTableName": "overall_data_threat",
+    "dto": "no",
+    "pagination": "no",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "angularJSSuffix": "mgm"
+}

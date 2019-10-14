@@ -26,7 +26,7 @@ import {
     ViewRef
 } from '@angular/core';
 import {Principal} from '../../shared';
-import {DatasharingService} from '../../datasharing/datasharing.service';
+import {DataSharingService} from '../../data-sharing/data-sharing.service';
 import {LayoutConfiguration} from '../model/LayoutConfiguration';
 
 import {MenuItem} from 'primeng/api';
@@ -41,9 +41,9 @@ import {JhiDateUtils} from 'ng-jhipster';
 import * as _ from 'lodash';
 import {ImpactMode} from "../../entities/enumerations/ImpactMode.enum";
 import {Subscription} from 'rxjs';
-import {EventManagerService} from '../../datasharing/event-manager.service';
+import {EventManagerService} from '../../data-sharing/event-manager.service';
 import {EventType} from '../../entities/enumerations/EventType.enum';
-import {Event} from '../../datasharing/event.model';
+import {Event} from '../../data-sharing/event.model';
 
 @Component({
     selector: 'jhi-sidebar',
@@ -59,6 +59,7 @@ export class SidebarComponent implements OnInit, OnDestroy, AfterViewInit {
     private peopleMenuItem: MenuItem;
     private cyberPostureMenuItem: MenuItem;
     private riskManagementMenuItem: MenuItem;
+    private privacyRiskAssessmentMenuItem: MenuItem;
     private taxonomiesMenuItem: MenuItem;
     private aboutUsMenuItem: MenuItem;
     private termsOfUseMenuItem: MenuItem;
@@ -77,13 +78,13 @@ export class SidebarComponent implements OnInit, OnDestroy, AfterViewInit {
 
     constructor(
         private principal: Principal,
-        private dataSharingService: DatasharingService,
+        private dataSharingService: DataSharingService,
         private selfAssessmentService: SelfAssessmentMgmService,
         private logoService: LogoMgmService,
         private router: Router,
         private changeDetector: ChangeDetectorRef,
         private dateUtils: JhiDateUtils,
-        private dataSharing: DatasharingService,
+        private dataSharing: DataSharingService,
         private eventManagerService: EventManagerService,
     ) {
         this.isCollapsed = true;
@@ -248,7 +249,7 @@ export class SidebarComponent implements OnInit, OnDestroy, AfterViewInit {
             icon: 'fas fa-address-book',
             items: [
                 {
-                    label: 'CISO Deputy',
+                    label: 'CISO',
                     icon: 'fas fa-user-tie',
                     routerLink: ['/people/ciso']
                 },
@@ -291,6 +292,18 @@ export class SidebarComponent implements OnInit, OnDestroy, AfterViewInit {
                 && this.companyBoardStatus.identifyThreatAgentsStatus === Status.FULL
                 && this.companyBoardStatus.assessVulnerablitiesStatus === Status.FULL,
             items: []
+        };
+
+        this.privacyRiskAssessmentMenuItem = {
+            label: 'Privacy Risk Assessment',
+            icon: 'far fa-id-card',
+            items: [
+                {
+                    label: 'Personal Data Processes',
+                    icon: 'fas fa-spinner',
+                    routerLink: ['/privacy-risk-assessment/operations']
+                }
+            ]
         };
 
         this.taxonomiesMenuItem = {
@@ -397,6 +410,7 @@ export class SidebarComponent implements OnInit, OnDestroy, AfterViewInit {
             this.companyMenuItem,
             this.cyberPostureMenuItem,
             this.riskManagementMenuItem,
+            this.privacyRiskAssessmentMenuItem,
             this.taxonomiesMenuItem,
             this.aboutUsMenuItem,
             this.termsOfUseMenuItem
@@ -624,9 +638,9 @@ export class SidebarComponent implements OnInit, OnDestroy, AfterViewInit {
     ngOnDestroy(): void {
         this.changeDetector.detach();
 
-        if(this.subscriptions && this.subscriptions.length){
+        if (this.subscriptions && this.subscriptions.length) {
             this.subscriptions.forEach((subscription: Subscription) => {
-               subscription.unsubscribe();
+                subscription.unsubscribe();
             });
         }
     }

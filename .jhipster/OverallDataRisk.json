@@ -1,0 +1,30 @@
+{
+    "fluentMethods": true,
+    "relationships": [
+        {
+            "relationshipType": "one-to-one",
+            "relationshipName": "operation",
+            "otherEntityName": "dataOperation",
+            "otherEntityField": "name",
+            "ownerSide": true,
+            "otherEntityRelationshipName": "overallDataRisk"
+        }
+    ],
+    "fields": [
+        {
+            "fieldName": "riskLevel",
+            "fieldType": "DataRiskLevel",
+            "fieldValues": "LOW,MEDIUM,HIGH",
+            "fieldValidateRules": [
+                "required"
+            ]
+        }
+    ],
+    "changelogDate": "20191010142907",
+    "entityTableName": "overall_data_risk",
+    "dto": "no",
+    "pagination": "no",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "angularJSSuffix": "mgm"
+}

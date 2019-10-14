@@ -1,0 +1,10 @@
+{
+    "hermeneutApp": {
+        "DataRiskLevel" : {
+            "null": "",
+            "LOW": "LOW",
+            "MEDIUM": "MEDIUM",
+            "HIGH": "HIGH"
+        }
+    }
+}

@@ -1,0 +1,46 @@
+<form name="editForm" role="form" novalidate (ngSubmit)="save()" #editForm="ngForm">
+
+    <div class="modal-header">
+        <h4 class="modal-title" id="myGDPRMyAnswerLabel" jhiTranslate="hermeneutApp.gDPRMyAnswer.home.createOrEditLabel">Create or edit a GDPR My Answer</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                (click)="clear()">&times;</button>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group" [hidden]="!gDPRMyAnswer.id">
+            <label for="id" jhiTranslate="global.field.id">ID</label>
+            <input type="text" class="form-control" id="id" name="id"
+                   [(ngModel)]="gDPRMyAnswer.id" readonly />
+        </div>
+
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="hermeneutApp.gDPRMyAnswer.gDPRQuestionnaireStatus" for="field_gDPRQuestionnaireStatus">G DPR Questionnaire Status</label>
+            <select class="form-control" id="field_gDPRQuestionnaireStatus" name="gDPRQuestionnaireStatus" [(ngModel)]="gDPRMyAnswer.gDPRQuestionnaireStatus" >
+                <option [ngValue]="null"></option>
+                <option [ngValue]="gDPRQuestionnaireStatusOption.id === gDPRMyAnswer.gDPRQuestionnaireStatus?.id ? gDPRMyAnswer.gDPRQuestionnaireStatus : gDPRQuestionnaireStatusOption" *ngFor="let gDPRQuestionnaireStatusOption of gdprquestionnairestatuses; trackBy: trackGDPRQuestionnaireStatusById">{{gDPRQuestionnaireStatusOption.id}}</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="hermeneutApp.gDPRMyAnswer.question" for="field_question">Question</label>
+            <select class="form-control" id="field_question" name="question" [(ngModel)]="gDPRMyAnswer.question" >
+                <option [ngValue]="null"></option>
+                <option [ngValue]="gDPRQuestionOption.id === gDPRMyAnswer.question?.id ? gDPRMyAnswer.question : gDPRQuestionOption" *ngFor="let gDPRQuestionOption of gdprquestions; trackBy: trackGDPRQuestionById">{{gDPRQuestionOption.text}}</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label class="form-control-label" jhiTranslate="hermeneutApp.gDPRMyAnswer.answer" for="field_answer">Answer</label>
+            <select class="form-control" id="field_answer" name="answer" [(ngModel)]="gDPRMyAnswer.answer" >
+                <option [ngValue]="null"></option>
+                <option [ngValue]="gDPRAnswerOption.id === gDPRMyAnswer.answer?.id ? gDPRMyAnswer.answer : gDPRAnswerOption" *ngFor="let gDPRAnswerOption of gdpranswers; trackBy: trackGDPRAnswerById">{{gDPRAnswerOption.id}}</option>
+            </select>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="clear()">
+            <span class="fa fa-ban"></span>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+        <button type="submit" [disabled]="editForm.form.invalid || isSaving" class="btn btn-primary">
+            <span class="fa fa-save"></span>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+    </div>
+</form>

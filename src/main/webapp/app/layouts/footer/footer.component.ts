@@ -16,7 +16,7 @@
  */
 
 import { Component, OnInit } from '@angular/core';
-import { DatasharingService } from '../../datasharing/datasharing.service';
+import { DataSharingService } from '../../data-sharing/data-sharing.service';
 import { LayoutConfiguration } from '../model/LayoutConfiguration';
 
 @Component({
@@ -27,7 +27,7 @@ export class FooterComponent implements OnInit {
     layoutConfiguration: LayoutConfiguration;
 
     constructor(
-        private dataSharingService: DatasharingService
+        private dataSharingService: DataSharingService
     ) { }
 
     ngOnInit() {

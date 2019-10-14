@@ -1,0 +1,52 @@
+
+<div *ngIf="dataOperation">
+    <h2><span jhiTranslate="hermeneutApp.dataOperation.detail.title">Data Operation</span> {{dataOperation.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="row-md jh-entity-details">
+        <dt><span jhiTranslate="hermeneutApp.dataOperation.name">Name</span></dt>
+        <dd>
+            <span>{{dataOperation.name}}</span>
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.dataOperation.processedData">Processed Data</span></dt>
+        <dd>
+            <span>{{dataOperation.processedData}}</span>
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.dataOperation.processingPurpose">Processing Purpose</span></dt>
+        <dd>
+            <span>{{dataOperation.processingPurpose}}</span>
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.dataOperation.dataSubject">Data Subject</span></dt>
+        <dd>
+            <span>{{dataOperation.dataSubject}}</span>
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.dataOperation.processingMeans">Processing Means</span></dt>
+        <dd>
+            <span>{{dataOperation.processingMeans}}</span>
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.dataOperation.dataProcessor">Data Processor</span></dt>
+        <dd>
+            <span>{{dataOperation.dataProcessor}}</span>
+        </dd>
+        <dt><span jhiTranslate="hermeneutApp.dataOperation.companyProfile">Company Profile</span></dt>
+        <dd>
+            <div *ngIf="dataOperation.companyProfile">
+                <a [routerLink]="['/company-profile-mgm', dataOperation.companyProfile?.id]">{{dataOperation.companyProfile?.name}}</a>
+            </div>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            (click)="previousState()"
+            class="btn btn-info">
+        <span class="fa fa-arrow-left"></span>&nbsp;<span jhiTranslate="entity.action.back"> Back</span>
+    </button>
+
+    <button type="button"
+            [routerLink]="['/', { outlets: { popup: 'data-operation-mgm/'+ dataOperation.id + '/edit'} }]"
+            replaceUrl="true"
+            queryParamsHandling="merge"
+            class="btn btn-primary">
+        <span class="fa fa-pencil"></span>&nbsp;<span jhiTranslate="entity.action.edit"> Edit</span>
+    </button>
+</div>

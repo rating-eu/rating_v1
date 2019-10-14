@@ -1,0 +1,78 @@
+<div>
+    <h2>
+        <span jhiTranslate="hermeneutApp.translation.home.title">Translations</span>
+        <button class="btn btn-primary float-right jh-create-entity create-translation-mgm" [routerLink]="['/', { outlets: { popup: ['translation-mgm-new'] } }]">
+            <span class="fa fa-plus"></span>
+            <span  jhiTranslate="hermeneutApp.translation.home.createLabel">
+            Create new Translation
+            </span>
+        </button>
+    </h2>
+    <jhi-alert></jhi-alert>
+    <div class="row">
+    </div>
+    <br/>
+    <div class="table-responsive" *ngIf="translations">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+            <th><span jhiTranslate="global.field.id">ID</span></th>
+            <th><span jhiTranslate="hermeneutApp.translation.text">Text</span></th>
+            <th><span jhiTranslate="hermeneutApp.translation.language">Language</span></th>
+            <th><span jhiTranslate="hermeneutApp.translation.dataImpactDescription">Data Impact Description</span></th>
+            <th><span jhiTranslate="hermeneutApp.translation.gDPRQuestion">G DPR Question</span></th>
+            <th><span jhiTranslate="hermeneutApp.translation.gDPRAnswer">G DPR Answer</span></th>
+            <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let translation of translations ;trackBy: trackId">
+                <td><a [routerLink]="['../translation-mgm', translation.id ]">{{translation.id}}</a></td>
+                <td>{{translation.text}}</td>
+                <td jhiTranslate="{{'hermeneutApp.Language.' + translation.language}}">{{translation.language}}</td>
+                <td>
+                    <div *ngIf="translation.dataImpactDescription">
+                        <a [routerLink]="['../data-impact-description-mgm', translation.dataImpactDescription?.id ]" >{{translation.dataImpactDescription?.id}}</a>
+                    </div>
+                </td>
+                <td>
+                    <div *ngIf="translation.gDPRQuestion">
+                        <a [routerLink]="['../gdpr-question-mgm', translation.gDPRQuestion?.id ]" >{{translation.gDPRQuestion?.id}}</a>
+                    </div>
+                </td>
+                <td>
+                    <div *ngIf="translation.gDPRAnswer">
+                        <a [routerLink]="['../gdpr-answer-mgm', translation.gDPRAnswer?.id ]" >{{translation.gDPRAnswer?.id}}</a>
+                    </div>
+                </td>
+                <td class="text-right">
+                    <div class="btn-group flex-btn-group-container">
+                        <button type="submit"
+                                [routerLink]="['../translation-mgm', translation.id ]"
+                                class="btn btn-info btn-sm">
+                            <span class="fa fa-eye"></span>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'translation-mgm/'+ translation.id + '/edit'} }]"
+                                replaceUrl="true"
+                                queryParamsHandling="merge"
+                                class="btn btn-primary btn-sm">
+                            <span class="fa fa-pencil"></span>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                        </button>
+                        <button type="submit"
+                                [routerLink]="['/', { outlets: { popup: 'translation-mgm/'+ translation.id + '/delete'} }]"
+                                replaceUrl="true"
+                                queryParamsHandling="merge"
+                                class="btn btn-danger btn-sm">
+                            <span class="fa fa-remove"></span>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

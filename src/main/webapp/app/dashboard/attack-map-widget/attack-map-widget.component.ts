@@ -33,7 +33,7 @@ import {AttackMapService} from '../../evaluate-weakness/attack-map.service';
 import {forkJoin} from 'rxjs/observable/forkJoin';
 import {WeaknessUtils} from '../../evaluate-weakness/utils/weakness-utils';
 import {MatHorizontalStepper} from '@angular/material';
-import {DatasharingService} from "../../datasharing/datasharing.service";
+import {DataSharingService} from "../../data-sharing/data-sharing.service";
 import {MyCompanyMgm} from "../../entities/my-company-mgm";
 
 @Component({
@@ -90,7 +90,7 @@ export class AttackMapWidgetComponent implements OnInit, OnDestroy {
         private phaseService: PhaseMgmService,
         private attackMapService: AttackMapService,
         private dashService: RiskBoardService,
-        private dataSharingService: DatasharingService,
+        private dataSharingService: DataSharingService,
         private threatAgentService: ThreatAgentMgmService
     ) {
     }

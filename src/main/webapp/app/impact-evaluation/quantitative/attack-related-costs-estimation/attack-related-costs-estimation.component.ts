@@ -24,7 +24,7 @@ import { SelfAssessmentMgmService, SelfAssessmentMgm } from '../../../entities/s
 import { Router, NavigationStart } from '@angular/router';
 import { AttackCostParamMgm } from '../../../entities/attack-cost-param-mgm';
 import { AttackCostParamType } from '../../../entities/attack-cost-param-mgm';
-import {DatasharingService} from "../../../datasharing/datasharing.service";
+import {DataSharingService} from "../../../data-sharing/data-sharing.service";
 
 @Component({
     selector: 'jhi-attack-related-costs-estimation',
@@ -62,7 +62,7 @@ export class AttackRelatedCostsEstimationComponent implements OnInit {
         private mySelfAssessmentService: SelfAssessmentMgmService,
         private impactService: ImpactEvaluationService,
         private router: Router,
-        private dataSharingService: DatasharingService
+        private dataSharingService: DataSharingService
     ) {
         this.router.events.subscribe((event) => {
             if (event instanceof NavigationStart) {
