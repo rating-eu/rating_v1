@@ -121,7 +121,7 @@
                                [ngbTooltip]="statusEnum[privacyBoardStatus.riskEvaluation][0] + statusEnum[privacyBoardStatus.riskEvaluation].substr(1).toLowerCase()"></i>
                         </td>
                         <td class="text-center">
-                            <ng-container>
+                            <ng-container *ngIf="false">
                                 <a [routerLink]="['/privacy-risk-assessment/risk']">
                                     <i placement="top" class="fa fa-pencil-square-o fa-lg"
                                        aria-hidden="true"></i>
