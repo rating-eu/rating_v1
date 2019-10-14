@@ -7,7 +7,7 @@
                     <mat-expansion-panel-header>
                         <mat-panel-title>
                             <label class="form-control-label">
-                                <h5 class="h3-dynamic-form"> {{question?.text}}</h5>
+                                <h5 class="h3-dynamic-form py-2"> {{question?.text}}</h5>
                             </label>
                         </mat-panel-title>
                         <mat-panel-description>
@@ -15,10 +15,10 @@
                         </mat-panel-description>
                     </mat-expansion-panel-header>
 
-                    <p *ngIf="question.description">
+                    <p *ngIf="question.description" class="text-justify" class="text-justify">
                         {{question.description}}
                     </p>
-                    <p *ngIf="!question.description">
+                    <p *ngIf="!question.description" class="text-justify" class="text-justify">
                         Waiting for description...
                     </p>
                 </mat-expansion-panel>
@@ -173,7 +173,7 @@
                         <mat-expansion-panel-header>
                             <mat-panel-title>
                                 <label class="form-control-label">
-                                    <h5 class="h3-dynamic-form"> {{question?.text}}</h5>
+                                    <h5 class="h3-dynamic-form py-2"> {{question?.text}}</h5>
                                 </label>
                             </mat-panel-title>
                             <mat-panel-description>
@@ -181,15 +181,15 @@
                             </mat-panel-description>
                         </mat-expansion-panel-header>
 
-                        <p *ngIf="question.description">
+                        <p *ngIf="question.description" class="text-justify">
                             {{question.description}}
                         </p>
-                        <p *ngIf="!question.description">
+                        <p *ngIf="!question.description" class="text-justify">
                             Waiting for description...
                         </p>
                     </mat-expansion-panel>
                 </div>
-                <div class="col-md-1">
+                <div class="col-md-1 middle">
                     <mat-radio-group class="radio-group"
                                      [formControlName]="question.securityPillar"
                                      [(ngModel)]="securityImpactsMap.get(question.securityPillar).impact">
@@ -230,7 +230,7 @@
                                     <mat-expansion-panel-header>
                                         <mat-panel-title>
                                             <label class="form-control-label">
-                                                <h5 class="h3-dynamic-form"> {{question?.text}}</h5>
+                                                <h5 class="h3-dynamic-form py-2"> {{question?.text}}</h5>
                                             </label>
                                         </mat-panel-title>
                                         <mat-panel-description>
@@ -238,10 +238,10 @@
                                         </mat-panel-description>
                                     </mat-expansion-panel-header>
 
-                                    <p *ngIf="question.description">
+                                    <p *ngIf="question.description" class="text-justify">
                                         {{question.description}}
                                     </p>
-                                    <p *ngIf="!question.description">
+                                    <p *ngIf="!question.description" class="text-justify">
                                         Waiting for description...
                                     </p>
                                 </mat-expansion-panel>
@@ -269,7 +269,7 @@
                                     <mat-expansion-panel-header>
                                         <mat-panel-title>
                                             <label class="form-control-label">
-                                                <h5 class="h3-dynamic-form"> {{question?.text}}</h5>
+                                                <h5 class="h3-dynamic-form py-2"> {{question?.text}}</h5>
                                             </label>
                                         </mat-panel-title>
                                         <mat-panel-description>
@@ -277,10 +277,10 @@
                                         </mat-panel-description>
                                     </mat-expansion-panel-header>
 
-                                    <p *ngIf="question.description">
+                                    <p *ngIf="question.description" class="text-justify">
                                         {{question.description}}
                                     </p>
-                                    <p *ngIf="!question.description">
+                                    <p *ngIf="!question.description" class="text-justify">
                                         Waiting for description...
                                     </p>
                                 </mat-expansion-panel>
@@ -308,7 +308,7 @@
                                     <mat-expansion-panel-header>
                                         <mat-panel-title>
                                             <label class="form-control-label">
-                                                <h5 class="h3-dynamic-form"> {{question?.text}}</h5>
+                                                <h5 class="h3-dynamic-form py-2"> {{question?.text}}</h5>
                                             </label>
                                         </mat-panel-title>
                                         <mat-panel-description>
@@ -316,10 +316,10 @@
                                         </mat-panel-description>
                                     </mat-expansion-panel-header>
 
-                                    <p *ngIf="question.description">
+                                    <p *ngIf="question.description" class="text-justify">
                                         {{question.description}}
                                     </p>
-                                    <p *ngIf="!question.description">
+                                    <p *ngIf="!question.description" class="text-justify">
                                         Waiting for description...
                                     </p>
                                 </mat-expansion-panel>
@@ -347,7 +347,7 @@
                                     <mat-expansion-panel-header>
                                         <mat-panel-title>
                                             <label class="form-control-label">
-                                                <h5 class="h3-dynamic-form"> {{question?.text}}</h5>
+                                                <h5 class="h3-dynamic-form py-2"> {{question?.text}}</h5>
                                             </label>
                                         </mat-panel-title>
                                         <mat-panel-description>
@@ -355,10 +355,10 @@
                                         </mat-panel-description>
                                     </mat-expansion-panel-header>
 
-                                    <p *ngIf="question.description">
+                                    <p *ngIf="question.description" class="text-justify">
                                         {{question.description}}
                                     </p>
-                                    <p *ngIf="!question.description">
+                                    <p *ngIf="!question.description" class="text-justify">
                                         Waiting for description...
                                     </p>
                                 </mat-expansion-panel>
