@@ -87,7 +87,19 @@ public class DataRiskLevelConfigResource {
     public List<DataRiskLevelConfig> getAllDataRiskLevelConfigs() {
         log.debug("REST request to get all DataRiskLevelConfigs");
         return dataRiskLevelConfigService.findAll();
-        }
+    }
+
+    /**
+     * GET  /data-risk-level-configs/operation/:operationID : get all the dataRiskLevelConfigs of the DataOperation.
+     *
+     * @return the ResponseEntity with status 200 (OK) and the list of dataRiskLevelConfigs in body
+     */
+    @GetMapping("/data-risk-level-configs/operation/{operationID}")
+    @Timed
+    public List<DataRiskLevelConfig> getAllDataRiskLevelConfigsByDataOperation(@PathVariable Long operationID) {
+        log.debug("REST request to get all DataRiskLevelConfigs");
+        return dataRiskLevelConfigService.findAllByDataOperation(operationID);
+    }
 
     /**
      * GET  /data-risk-level-configs/:id : get the "id" dataRiskLevelConfig.

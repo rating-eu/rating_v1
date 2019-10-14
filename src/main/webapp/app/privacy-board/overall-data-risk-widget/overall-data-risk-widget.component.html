@@ -11,13 +11,88 @@
                     </h2>
                 </mat-panel-title>
             </mat-expansion-panel-header>
-            <p>
-                BlaBlaBlaBlaBlaBlaBlaBlaBlaBlaBlaBlaBlaBlaBlaBlaBlaBlaBlaBlaBlaBlaBlaBlaBlaBlaBlaBlaBlaBlaBlaBlaBlaBlaBlaBla
-                BlaBlaBlaBlaBlaBlaBlaBlaBlaBlaBlaBlaBlaBlaBlaBlaBlaBlaBlaBlaBlaBlaBlaBlaBlaBlaBlaBlaBlaBlaBlaBlaBlaBlaBlaBla
-                BlaBlaBlaBlaBlaBlaBlaBlaBlaBlaBlaBlaBlaBlaBlaBlaBlaBlaBlaBlaBlaBlaBlaBlaBlaBlaBlaBlaBlaBlaBlaBlaBlaBlaBlaBla
-                BlaBlaBlaBlaBlaBlaBlaBlaBlaBlaBlaBlaBlaBlaBlaBlaBlaBlaBlaBlaBlaBlaBlaBlaBlaBlaBlaBlaBlaBlaBlaBlaBlaBlaBlaBla
-                BlaBlaBlaBlaBlaBlaBlaBlaBlaBlaBlaBlaBlaBlaBlaBlaBlaBlaBlaBlaBlaBlaBlaBlaBlaBlaBlaBlaBlaBlaBlaBlaBlaBlaBlaBla
-            </p>
+
+            <div class="table-responsive">
+                <table *ngIf="threatLikelihoods && dataImpacts" class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th></th>
+                        <th></th>
+                        <th class="text-center" [colSpan]="dataImpacts.length">Impact Level</th>
+                    </tr>
+                    <tr>
+                        <th></th>
+                        <th></th>
+                        <th class="text-center"
+                            *ngFor="let impactLevel of dataImpacts">{{impactLevel | replace:'_':' ' | titlecase}}</th>
+                    </tr>
+                    </thead>
+                    <tbody *ngIf="riskLevelConfigsMap">
+                    <!--Just the First Likelihood-->
+                    <tr *ngFor="let likelihood of threatLikelihoods | slice:0:1">
+                        <th class="text-center" [rowSpan]="threatLikelihoods.length">
+                            <p style="writing-mode: vertical-rl; text-orientation: upright; margin: 0 auto;">
+                                Likelihood
+                            </p>
+                        </th>
+                        <th class="text-center">{{likelihood | replace:'_':' ' | titlecase}}</th>
+                        <td *ngFor="let impact of dataImpacts" class="text-center">
+                                <i *ngIf="selectedDataRiskLevelConfig && riskLevelConfigsMap.has(likelihood)
+                                && riskLevelConfigsMap.get(likelihood).has(impact)
+                                && riskLevelConfigsMap.get(likelihood).get(impact)===selectedDataRiskLevelConfig" class="fas fa-check"></i>
+                                <span
+                                    *ngIf="riskLevelConfigsMap.has(likelihood) && riskLevelConfigsMap.get(likelihood).has(impact)"
+                                    (click)="selectDataRiskLevelConfig(riskLevelConfigsMap.get(likelihood).get(impact))"
+                                    style="font-size: medium" [ngClass]="{
+                                'low': riskLevelConfigsMap.get(likelihood).get(impact).risk === dataRiskLevelEnum.LOW,
+                                'medium': riskLevelConfigsMap.get(likelihood).get(impact).risk === dataRiskLevelEnum.MEDIUM,
+                                'high': riskLevelConfigsMap.get(likelihood).get(impact).risk === dataRiskLevelEnum.HIGH
+                            }"
+                                    class="badge badge-pill badge-secondary pointer">{{riskLevelConfigsMap.get(likelihood).get(impact).risk | replace:'_':' ' | titlecase}}</span>
+                        </td>
+                    </tr>
+                    <!--The remaining Likelihoods-->
+                    <tr *ngFor="let likelihood of threatLikelihoods | slice:1">
+                        <th class="text-center">{{likelihood | replace:'_':' ' | titlecase}}</th>
+                        <td *ngFor="let impact of dataImpacts" class="text-center">
+                            <i *ngIf="selectedDataRiskLevelConfig && riskLevelConfigsMap.has(likelihood)
+                            && riskLevelConfigsMap.get(likelihood).has(impact)
+                            && riskLevelConfigsMap.get(likelihood).get(impact)===selectedDataRiskLevelConfig" class="fas fa-check"></i>
+                            <span
+                                *ngIf="riskLevelConfigsMap.has(likelihood) && riskLevelConfigsMap.get(likelihood).has(impact)"
+                                (click)="selectDataRiskLevelConfig(riskLevelConfigsMap.get(likelihood).get(impact))"
+                                style="font-size: medium" [ngClass]="{
+                                'low': riskLevelConfigsMap.get(likelihood).get(impact).risk === dataRiskLevelEnum.LOW,
+                                'medium': riskLevelConfigsMap.get(likelihood).get(impact).risk === dataRiskLevelEnum.MEDIUM,
+                                'high': riskLevelConfigsMap.get(likelihood).get(impact).risk === dataRiskLevelEnum.HIGH
+                            }"
+                                class="badge badge-pill badge-secondary pointer">{{riskLevelConfigsMap.get(likelihood).get(impact).risk | replace:'_':' ' | titlecase}}</span>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <br/>
+            <div *ngIf="selectedDataRiskLevelConfig">
+                <ng-container *ngFor="let riskLevel of dataRiskLevels">
+                              <span
+                                  (click)="updateRiskLevel(riskLevel)"
+                                  style="font-size: medium" [ngClass]="{
+                                'low': riskLevel === dataRiskLevelEnum.LOW,
+                                'medium': riskLevel=== dataRiskLevelEnum.MEDIUM,
+                                'high': riskLevel=== dataRiskLevelEnum.HIGH
+                            }"
+                                  class="badge badge-pill badge-secondary pointer">{{riskLevel | replace:'_':' ' | titlecase}}</span>
+                </ng-container>
+                <form>
+                    <div class="form-group">
+                        <label>Rationale</label>
+                        <input type="text" class="form-control"
+                               name="rationale"
+                               [(ngModel)]="selectedDataRiskLevelConfig.rationale">
+                    </div>
+                </form>
+            </div>
         </mat-expansion-panel>
     </mat-accordion>
 </ng-container>

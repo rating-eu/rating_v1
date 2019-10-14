@@ -1,6 +1,8 @@
 package eu.hermeneut.service;
 
 import eu.hermeneut.domain.DataRiskLevelConfig;
+
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -15,6 +17,8 @@ public interface DataRiskLevelConfigService {
      * @return the persisted entity
      */
     DataRiskLevelConfig save(DataRiskLevelConfig dataRiskLevelConfig);
+
+    List<DataRiskLevelConfig> save(Collection<DataRiskLevelConfig> dataRiskLevelConfigs);
 
     /**
      * Get all the dataRiskLevelConfigs.
@@ -37,4 +41,14 @@ public interface DataRiskLevelConfigService {
      * @param id the id of the entity
      */
     void delete(Long id);
+
+    /**
+     * Get all the dataRiskLevelConfigs.
+     * @param operationID The ID of the DataOperation
+     *
+     * @return the list of entities
+     */
+    List<DataRiskLevelConfig> findAllByDataOperation(Long operationID);
+
+    List<DataRiskLevelConfig> createDefaultDataRiskLevelConfigs(Long operationID);
 }
