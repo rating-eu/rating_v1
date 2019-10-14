@@ -13,7 +13,9 @@
             </mat-expansion-panel-header>
             <div *ngIf="overallDataRisk">
                 <p>
-                    The Overall Data Risk is <span style="font-size: large" [ngClass]="{
+                    The Overall Data Risk is</p>
+                <p class="text-center">
+                <span style="font-size: large" [ngClass]="{
                         'low': overallDataRisk.riskLevel === dataRiskLevelEnum.LOW,
                         'medium': overallDataRisk.riskLevel === dataRiskLevelEnum.MEDIUM,
                         'high': overallDataRisk.riskLevel === dataRiskLevelEnum.HIGH

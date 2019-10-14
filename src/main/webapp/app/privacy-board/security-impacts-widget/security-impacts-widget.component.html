@@ -13,8 +13,9 @@
                 </mat-panel-title>
             </mat-expansion-panel-header>
             <div *ngIf="overallSecurityImpact">
-                <p>
-                    The Overall Security Impact is <span style="font-size: large" [ngClass]="{
+                <p>The Overall Security Impact is</p>
+                <p class="text-center">
+                    <span style="font-size: large" [ngClass]="{
                         'low': overallSecurityImpact.impact === dataImpactEnum.LOW,
                         'medium': overallSecurityImpact.impact === dataImpactEnum.MEDIUM,
                         'high': overallSecurityImpact.impact === dataImpactEnum.HIGH,

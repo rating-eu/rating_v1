@@ -14,12 +14,15 @@
             </mat-expansion-panel-header>
             <div *ngIf="overallDataThreat">
                 <p>
-                    The Overall Data Threat Likelihood is <span style="font-size: large" [ngClass]="{
+                    The Overall Data Threat Likelihood is
+                </p>
+                <p class="text-center">
+                <span style="font-size: large" [ngClass]="{
                         'low': overallDataThreat.likelihood === dataThreatLikelihoodEnum.LOW,
                         'medium': overallDataThreat.likelihood === dataThreatLikelihoodEnum.MEDIUM,
                         'high': overallDataThreat.likelihood === dataThreatLikelihoodEnum.HIGH
                         }"
-                                                                class="badge badge-pill badge-secondary">{{overallDataThreat.likelihood | replace:'_':' ' | titlecase}}</span>
+                      class="badge badge-pill badge-secondary">{{overallDataThreat.likelihood | replace:'_':' ' | titlecase}}</span>
                 </p>
             </div>
         </mat-expansion-panel>
