@@ -63,6 +63,7 @@ export class DynamicQuestionnaireComponent implements OnInit, OnChanges, OnDestr
     public dataOperationFieldEnum = DataOperationField;
     public dataRecipientTypes: DataRecipientType[];
     public form: FormGroup;
+    public submitDisabled: boolean = false;
 
     public securityPillarEnum = SecurityPillar;
     public securityPillars: SecurityPillar[];
