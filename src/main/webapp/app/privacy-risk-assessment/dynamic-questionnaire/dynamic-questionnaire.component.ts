@@ -10,6 +10,7 @@ import {
     ViewEncapsulation,
     ViewRef
 } from '@angular/core';
+import * as _ from 'lodash';
 import {GDPRQuestionnaireMgm} from '../../entities/gdpr-questionnaire-mgm';
 import {DataOperationMgm, DataOperationMgmService} from '../../entities/data-operation-mgm';
 import {GDPRQuestionnairePurpose} from '../../entities/enumerations/GDPRQuestionnairePurpose.enum';
@@ -250,6 +251,11 @@ export class DynamicQuestionnaireComponent implements OnInit, OnChanges, OnDestr
 
         if (this._dataOperation.impacts && this.dataOperation.impacts.length) {
             console.log('Impacts are set on the DataOperation...');
+
+            // Filter only the SecurityImpacts with a not null Impact value.
+            this._dataOperation.impacts = _.filter(this.dataOperation.impacts, function (securityImpact: SecurityImpactMgm) {
+                return securityImpact.impact != null;
+            })
         }
 
         if (this._dataOperation.impacts && this.dataOperation.impacts.length) {
