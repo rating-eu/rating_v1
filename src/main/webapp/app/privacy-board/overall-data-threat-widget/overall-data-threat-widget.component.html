@@ -14,7 +14,7 @@
 
             <div *ngIf="threatAreas && dataThreats && dataThreatsMap" class="table-responsive">
                 <table class="table table-striped">
-                    <thead>
+                    <thead class="thead-light">
                     <tr>
                         <th class="text-center">Threat Area</th>
                         <th class="text-center">Likelihood</th>
@@ -33,7 +33,7 @@
                             </span>
                         </td>
                     </tr>
-                    <tr *ngIf="overallDataThreat">
+                    <tr *ngIf="overallDataThreat" class="thead-light">
                         <th class="text-center">Overall Threat Occurrence Likelihood</th>
                         <td class="text-center">
                             <span style="font-size: large" [ngClass]="{

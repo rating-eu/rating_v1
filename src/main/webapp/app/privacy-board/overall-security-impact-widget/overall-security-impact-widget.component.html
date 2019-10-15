@@ -14,7 +14,7 @@
 
             <div class="table-responsive">
                 <table class="table table-striped">
-                    <thead>
+                    <thead class="thead-light">
                     <tr *ngIf="securityPillars">
                         <th *ngFor="let securityPillar of securityPillars"
                             class="text-center">{{securityPillar | replace:'_':' ' | titlecase}}</th>
@@ -33,7 +33,7 @@
 
                         </td>
                     </tr>
-                    <tr *ngIf="overallSecurityImpact">
+                    <tr *ngIf="overallSecurityImpact" class="thead-light">
                         <th [colSpan]="securityPillars.length - 1" class="text-center">Overall Impact Evaluation</th>
                         <td class="text-center">
                             <span style="font-size: large" [ngClass]="{
