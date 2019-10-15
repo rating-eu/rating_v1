@@ -18,7 +18,10 @@ import eu.hermeneut.domain.enumeration.DataImpact;
  * A SecurityImpact.
  */
 @Entity
-@Table(name = "security_impact")
+@Table(
+    name = "security_impact",
+    uniqueConstraints = @UniqueConstraint(columnNames = {"operation_id", "security_pillar"})
+)
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class SecurityImpact implements Serializable {
 
@@ -40,6 +43,7 @@ public class SecurityImpact implements Serializable {
     private DataImpact impact;
 
     @ManyToOne
+    @JoinColumn(name = "operation_id")
     private DataOperation operation;
 
     @ManyToOne
