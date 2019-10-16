@@ -43,6 +43,13 @@ public interface DataRiskLevelConfigService {
     void delete(Long id);
 
     /**
+     * Delete the list of the dataRiskLevelConfigs.
+     *
+     * @param riskLevelConfigs the list of the dataRiskLevelConfigs.
+     */
+    void delete(List<DataRiskLevelConfig> riskLevelConfigs);
+
+    /**
      * Get all the dataRiskLevelConfigs.
      * @param operationID The ID of the DataOperation
      *

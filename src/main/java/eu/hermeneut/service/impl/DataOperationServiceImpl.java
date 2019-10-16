@@ -5,6 +5,7 @@ import eu.hermeneut.aop.annotation.gdpr.OverallSecurityImpactHook;
 import eu.hermeneut.domain.*;
 import eu.hermeneut.service.DataOperationService;
 import eu.hermeneut.repository.DataOperationRepository;
+import eu.hermeneut.service.DataRiskLevelConfigService;
 import eu.hermeneut.service.GDPRQuestionnaireStatusService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,6 +29,9 @@ public class DataOperationServiceImpl implements DataOperationService {
 
     @Autowired
     private GDPRQuestionnaireStatusService questionnaireStatusService;
+
+    @Autowired
+    private DataRiskLevelConfigService dataRiskLevelConfigService;
 
     public DataOperationServiceImpl(DataOperationRepository dataOperationRepository) {
         this.dataOperationRepository = dataOperationRepository;
@@ -108,6 +112,12 @@ public class DataOperationServiceImpl implements DataOperationService {
 
         if (questionnaireStatuses != null && !questionnaireStatuses.isEmpty()) {
             this.questionnaireStatusService.delete(questionnaireStatuses);
+        }
+
+        List<DataRiskLevelConfig> riskLevelConfigs = this.dataRiskLevelConfigService.findAllByDataOperation(id);
+
+        if(riskLevelConfigs != null && !riskLevelConfigs.isEmpty()){
+            this.dataRiskLevelConfigService.delete(riskLevelConfigs);
         }
 
         log.debug("Request to delete DataOperation : {}", id);

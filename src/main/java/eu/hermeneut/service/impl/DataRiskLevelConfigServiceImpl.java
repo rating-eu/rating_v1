@@ -125,6 +125,12 @@ public class DataRiskLevelConfigServiceImpl implements DataRiskLevelConfigServic
         dataRiskLevelConfigRepository.delete(id);
     }
 
+    @Override
+    public void delete(List<DataRiskLevelConfig> riskLevelConfigs) {
+        log.debug("Request to delete the list of DataRiskLevelConfigs");
+        dataRiskLevelConfigRepository.delete(riskLevelConfigs);
+    }
+
     /**
      * Get all the dataRiskLevelConfigs of the given DataOperation.
      *
