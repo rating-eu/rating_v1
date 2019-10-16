@@ -21,4 +21,7 @@ public interface GDPRQuestionnaireStatusRepository extends JpaRepository<GDPRQue
 
     @Query("SELECT DISTINCT questionnaire_status FROM GDPRQuestionnaireStatus questionnaire_status LEFT JOIN FETCH questionnaire_status.answers WHERE questionnaire_status.operation.id = :operationID AND questionnaire_status.questionnaire.id = :questionnaireID AND questionnaire_status.role = :role")
     GDPRQuestionnaireStatus findOneByDataOperationQuestionnaireAndRole(@Param("operationID") Long operationID, @Param("questionnaireID") Long questionnaireID, @Param("role") Role role);
+
+    @Query("SELECT DISTINCT questionnaire_status FROM GDPRQuestionnaireStatus questionnaire_status LEFT JOIN FETCH questionnaire_status.answers WHERE questionnaire_status.operation.id = :operationID")
+    List<GDPRQuestionnaireStatus> findAllByDataOperation(@Param("operationID") Long operationID);
 }

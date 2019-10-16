@@ -2,14 +2,13 @@ package eu.hermeneut.service.impl;
 
 import eu.hermeneut.aop.annotation.gdpr.OverallDataRiskHook;
 import eu.hermeneut.aop.annotation.gdpr.OverallSecurityImpactHook;
-import eu.hermeneut.domain.DataRecipient;
-import eu.hermeneut.domain.DataThreat;
-import eu.hermeneut.domain.SecurityImpact;
+import eu.hermeneut.domain.*;
 import eu.hermeneut.service.DataOperationService;
-import eu.hermeneut.domain.DataOperation;
 import eu.hermeneut.repository.DataOperationRepository;
+import eu.hermeneut.service.GDPRQuestionnaireStatusService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,6 +25,9 @@ public class DataOperationServiceImpl implements DataOperationService {
     private final Logger log = LoggerFactory.getLogger(DataOperationServiceImpl.class);
 
     private final DataOperationRepository dataOperationRepository;
+
+    @Autowired
+    private GDPRQuestionnaireStatusService questionnaireStatusService;
 
     public DataOperationServiceImpl(DataOperationRepository dataOperationRepository) {
         this.dataOperationRepository = dataOperationRepository;
@@ -102,6 +104,12 @@ public class DataOperationServiceImpl implements DataOperationService {
      */
     @Override
     public void delete(Long id) {
+        List<GDPRQuestionnaireStatus> questionnaireStatuses = this.questionnaireStatusService.findAllByDataOperation(id);
+
+        if (questionnaireStatuses != null && !questionnaireStatuses.isEmpty()) {
+            this.questionnaireStatusService.delete(questionnaireStatuses);
+        }
+
         log.debug("Request to delete DataOperation : {}", id);
         dataOperationRepository.delete(id);
     }
