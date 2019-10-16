@@ -42,15 +42,15 @@ public class DataThreatCalculatorImpl implements DataThreatCalculator {
             throw new IllegalArgumentException("ThreatArea must be NOT NULL!");
         } else if (questions == null || questions.isEmpty()) {
             throw new IllegalArgumentException("Questions must be NOT NULL and NOT EMPTY!");
-        } else if (myAnswers.size() > questions.size()) {
-            throw new IllegalArgumentException("MyAnswers must be at most equal to the questions' size!");
+        } else if (myAnswers.size() != questions.size()) {
+            throw new IllegalArgumentException("MyAnswers must be EQUAL to the questions' SIZE!");
         }
 
         Map<Long/*Question.ID*/, GDPRQuestion> questionsMap = new HashMap<>();
 
         // Check that all the Questions belong to the specified ThreatArea
         questions.stream().parallel().forEach((question) -> {
-            if (!question.getThreatArea().equals(area)) {
+            if (!area.equals(question.getThreatArea())) {
                 throw new IllegalArgumentException("All the questions must BELONG to the GIVEN ThreatArea!");
             } else {
                 // Populate the Map
@@ -150,17 +150,21 @@ public class DataThreatCalculatorImpl implements DataThreatCalculator {
                                     List<GDPRQuestion> areaQuestions = threatAreaQuestionsEntry.getValue();
 
                                     if (area != null && areaQuestions != null) {
+                                        List<GDPRQuestion> gdprQuestions = new ArrayList<>();
                                         List<GDPRMyAnswer> gdprMyAnswers = new ArrayList<>();
 
                                         areaQuestions.stream().parallel()
                                             .forEach((question) -> {
                                                 if (myAnswerByQuestionIDMap.containsKey(question.getId())) {
+                                                    gdprQuestions.add(question);
                                                     gdprMyAnswers.add(myAnswerByQuestionIDMap.get(question.getId()));
                                                 }
                                             });
 
-                                        final DataThreat dataThreat = this.calculateDataThreat(operation, area, areaQuestions, gdprMyAnswers);
-                                        dataThreats.add(dataThreat);
+                                        if (!(gdprQuestions.isEmpty() || gdprMyAnswers.isEmpty()) && gdprQuestions.size() == gdprMyAnswers.size()) {
+                                            final DataThreat dataThreat = this.calculateDataThreat(operation, area, gdprQuestions, gdprMyAnswers);
+                                            dataThreats.add(dataThreat);
+                                        }
                                     }
                                 }
                             );

@@ -210,16 +210,6 @@ export class DynamicQuestionnaireComponent implements OnInit, OnChanges, OnDestr
                                     }
                                 );
                         }
-                        // TODO 0: Create the API Get the QuestionnaireStatus by DataOperation
-                        // TODO 1: Get the QuestionnaireStatus by DataOperation
-                        // TODO 2: Build the MapOfMyAnswers referencing the Answers of the QuestionnaireStatus
-                        // TODO 3: Do the binding with the form radio buttons
-
-                        console.log('User:');
-                        console.log(this.user);
-
-                        console.log('Role:');
-                        console.log(this.role);
                     }
 
                     break;
@@ -280,6 +270,10 @@ export class DynamicQuestionnaireComponent implements OnInit, OnChanges, OnDestr
         console.log('Submit ThreatLikelihood...');
 
         if (this.threatAreasQuestionnaireStatus && this.threatAreasQuestionnaireStatus.answers) {
+            // Keep only the MyAnswers where the answer is NOT NULL!
+            this.threatAreasQuestionnaireStatus.answers = _.filter(this.threatAreasQuestionnaireStatus.answers,
+                (myAnswer: GDPRMyAnswerMgm) => myAnswer.answer != null);
+
             let questionnaireStatus$: Observable<HttpResponse<GDPRQuestionnaireStatusMgm>>;
 
             // Update the QuestionnaireStatus
@@ -459,18 +453,51 @@ export class DynamicQuestionnaireComponent implements OnInit, OnChanges, OnDestr
     }
 
     handleThreatAreasQuestionnaireStatus() {
-        // TODO 0: Create the API Get the QuestionnaireStatus by DataOperation
-        // TODO 1: Get the QuestionnaireStatus by DataOperation
-        // TODO 2: Build the MapOfMyAnswers referencing the Answers of the QuestionnaireStatus
-        // TODO 3: Do the binding with the form radio buttons
-
         if (this.threatAreasQuestionnaireStatus && this._questions) {
             this.threatAreasMyAnswersMap = new Map();
 
             if (this.threatAreasQuestionnaireStatus.id) { // Existing QuestionnaireStatus
-                if (this.threatAreasQuestionnaireStatus.answers && this.threatAreasQuestionnaireStatus.answers.length === this._questions.length) {
-                    this.threatAreasQuestionnaireStatus.answers.forEach((myAnswer: GDPRMyAnswerMgm) => {
-                        this.threatAreasMyAnswersMap.set(myAnswer.question.id, myAnswer);
+                if (this.threatAreasQuestionnaireStatus.answers && this.threatAreasQuestionnaireStatus.answers.length) {//Some answers
+                    if (this.threatAreasQuestionnaireStatus.answers.length === this._questions.length) {//Full
+
+                        // Restore the existing MyAnswers
+                        this.threatAreasQuestionnaireStatus.answers.forEach((myAnswer: GDPRMyAnswerMgm) => {
+                            this.threatAreasMyAnswersMap.set(myAnswer.question.id, myAnswer);
+                        });
+                    } else {
+                        // Restore the existing MyAnswers
+                        this.threatAreasQuestionnaireStatus.answers.forEach((myAnswer: GDPRMyAnswerMgm) => {
+                            this.threatAreasMyAnswersMap.set(myAnswer.question.id, myAnswer);
+                        });
+
+                        // Add the missing MyAnswers (as empty)
+                        this._questions.forEach((question: GDPRQuestionMgm) => {
+                            if (!this.threatAreasMyAnswersMap.has(question.id)) {
+                                const myAnswer: GDPRMyAnswerMgm = new GDPRMyAnswerMgm();
+                                myAnswer.id = undefined;
+                                myAnswer.question = question;
+                                myAnswer.answer = null;
+
+                                this.threatAreasMyAnswersMap.set(question.id, myAnswer);
+
+                                // Important: Put the MyAnswer also in the QuestionnaireStatus
+                                this.threatAreasQuestionnaireStatus.answers.push(myAnswer);
+                            }
+                        });
+                    }
+                } else { // Empty
+                    this.threatAreasQuestionnaireStatus.answers = [];
+
+                    this._questions.forEach((question: GDPRQuestionMgm) => {
+                        const myAnswer: GDPRMyAnswerMgm = new GDPRMyAnswerMgm();
+                        myAnswer.id = undefined;
+                        myAnswer.question = question;
+                        myAnswer.answer = null;
+
+                        this.threatAreasMyAnswersMap.set(question.id, myAnswer);
+
+                        // Important: Put the MyAnswer also in the QuestionnaireStatus
+                        this.threatAreasQuestionnaireStatus.answers.push(myAnswer);
                     });
                 }
             } else { // New QuestionnaireStatus
@@ -483,6 +510,8 @@ export class DynamicQuestionnaireComponent implements OnInit, OnChanges, OnDestr
                     myAnswer.answer = null;
 
                     this.threatAreasMyAnswersMap.set(question.id, myAnswer);
+
+                    // Important: Put the MyAnswer also in the QuestionnaireStatus
                     this.threatAreasQuestionnaireStatus.answers.push(myAnswer);
                 });
             }

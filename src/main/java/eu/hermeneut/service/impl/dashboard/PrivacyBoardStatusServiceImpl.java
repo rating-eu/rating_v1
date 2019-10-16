@@ -17,12 +17,13 @@
 
 package eu.hermeneut.service.impl.dashboard;
 
+import com.netflix.discovery.converters.Auto;
 import eu.hermeneut.domain.*;
 import eu.hermeneut.domain.dashboard.PrivacyBoardStatus;
-import eu.hermeneut.domain.enumeration.SecurityPillar;
-import eu.hermeneut.domain.enumeration.Status;
-import eu.hermeneut.domain.enumeration.ThreatArea;
+import eu.hermeneut.domain.enumeration.*;
 import eu.hermeneut.exceptions.NotFoundException;
+import eu.hermeneut.security.AuthoritiesConstants;
+import eu.hermeneut.security.SecurityUtils;
 import eu.hermeneut.service.*;
 import eu.hermeneut.service.dashboard.PrivacyBoardStatusService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,6 +47,12 @@ public class PrivacyBoardStatusServiceImpl implements PrivacyBoardStatusService 
 
     @Autowired
     private OverallDataRiskService overallDataRiskService;
+
+    @Autowired
+    private GDPRQuestionnaireStatusService questionnaireStatusService;
+
+    @Autowired
+    private GDPRQuestionnaireService questionnaireService;
 
     @Override
     public Status getOperationDefinitionStatus(Long companyProfileID, Long operationID) throws NotFoundException {
@@ -73,7 +80,9 @@ public class PrivacyBoardStatusServiceImpl implements PrivacyBoardStatusService 
             } else if (impacts.size() != SecurityPillar.values().length) {
                 return Status.PENDING;
             } else {
-                return Status.FULL;
+                /* TODO This is an exceptional case
+                TODO The OverallSecurityImpact can not be NULL while all the SecurityImpacts are present.*/
+                return Status.PENDING;
             }
         } else {
             // TODO Status is FULL but the Overall is missing
@@ -88,14 +97,38 @@ public class PrivacyBoardStatusServiceImpl implements PrivacyBoardStatusService 
         Set<DataThreat> threats = operation.getThreats();
         OverallDataThreat overallDataThreat = this.overallDataThreatService.findOneByDataOperation(operationID);
 
+        GDPRQuestionnaire questionnaire = this.questionnaireService.findOneByPurpose(GDPRQuestionnairePurpose.THREAT_LIKELIHOOD);
+
+        GDPRQuestionnaireStatus questionnaireStatus = null;
+
+        if (questionnaire != null) {
+            if (SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.CISO)) {
+                questionnaireStatus = this.questionnaireStatusService
+                    .findOneByDataOperationQuestionnaireAndRole(operationID, questionnaire.getId(), Role.ROLE_CISO);
+            }
+        }
+
         if (overallDataThreat == null) {
             // Status may be EMPTY or PENDING
             if (threats == null || threats.isEmpty()) {
-                return Status.EMPTY;
+                // Check if some answers have been persisted
+                if (questionnaireStatus != null) {
+                    Set<GDPRMyAnswer> myAnswers = questionnaireStatus.getAnswers();
+
+                    if (myAnswers != null && myAnswers.size() > 0) {
+                        return Status.PENDING;
+                    } else {
+                        return Status.EMPTY;
+                    }
+                } else {
+                    return Status.EMPTY;
+                }
             } else if (threats.size() != ThreatArea.values().length) {
                 return Status.PENDING;
             } else {
-                return Status.FULL;
+                /* TODO This is an exceptional case
+                TODO The OverallDataThreat can not be NULL while all the DataThreats are present.*/
+                return Status.PENDING;
             }
         } else {
             // Status is FULL
