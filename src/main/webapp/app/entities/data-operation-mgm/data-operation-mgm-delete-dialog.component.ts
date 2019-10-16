@@ -7,6 +7,10 @@ import { JhiEventManager } from 'ng-jhipster';
 import { DataOperationMgm } from './data-operation-mgm.model';
 import { DataOperationMgmPopupService } from './data-operation-mgm-popup.service';
 import { DataOperationMgmService } from './data-operation-mgm.service';
+import {EventManagerService} from "../../data-sharing/event-manager.service";
+import {Event} from "../../data-sharing/event.model";
+import {EventType} from "../enumerations/EventType.enum";
+import {ActionType} from "../enumerations/ActionType.enum";
 
 @Component({
     selector: 'jhi-data-operation-mgm-delete-dialog',
@@ -19,7 +23,8 @@ export class DataOperationMgmDeleteDialogComponent {
     constructor(
         private dataOperationService: DataOperationMgmService,
         public activeModal: NgbActiveModal,
-        private eventManager: JhiEventManager
+        private eventManager: JhiEventManager,
+        private eventManagerService: EventManagerService
     ) {
     }
 
@@ -33,6 +38,8 @@ export class DataOperationMgmDeleteDialogComponent {
                 name: 'dataOperationListModification',
                 content: 'Deleted an dataOperation'
             });
+
+            this.eventManagerService.broadcast(new Event(EventType.DATA_OPERATION_LIST_UPDATE, ActionType.DELETE));
             this.activeModal.dismiss(true);
         });
     }
