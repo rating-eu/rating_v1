@@ -6,7 +6,7 @@
         <mat-expansion-panel>
             <mat-expansion-panel-header>
                 <mat-panel-title>
-                    <h2>
+                    <h2 style="font-size: large;">
                         <a href="javascript:void(0);" class="collapse-link">Impacts</a>
                     </h2>
                 </mat-panel-title>
@@ -17,7 +17,7 @@
                     <thead class="thead-light">
                     <tr *ngIf="securityPillars">
                         <th *ngFor="let securityPillar of securityPillars"
-                            class="text-center">{{securityPillar | replace:'_':' ' | titlecase}}</th>
+                            class="text-center" style="font-size: large;">{{securityPillar | replace:'_':' ' | titlecase}}</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -34,7 +34,7 @@
                         </td>
                     </tr>
                     <tr *ngIf="overallSecurityImpact" class="thead-light">
-                        <th [colSpan]="securityPillars.length - 1" class="text-center">Overall Impact Evaluation</th>
+                        <th [colSpan]="securityPillars.length - 1" class="text-center" style="font-size: large;">Overall Impact Evaluation</th>
                         <td class="text-center">
                             <span style="font-size: large" [ngClass]="{
                             'low': overallSecurityImpact.impact === dataImpactEnum.LOW,
