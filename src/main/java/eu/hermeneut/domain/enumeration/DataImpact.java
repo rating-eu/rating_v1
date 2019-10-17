@@ -6,17 +6,17 @@ package eu.hermeneut.domain.enumeration;
 public enum DataImpact {
     LOW(1), MEDIUM(2), HIGH(3), VERY_HIGH(4);
 
-    private int impact;
+    private int value;
 
     DataImpact(int impact) {
-        this.impact = impact;
+        this.value = impact;
     }
 
-    public int getImpact() {
-        return impact;
+    public int getValue() {
+        return value;
     }
 
     public void setImpact(int impact) {
-        this.impact = impact;
+        this.value = impact;
     }
 }

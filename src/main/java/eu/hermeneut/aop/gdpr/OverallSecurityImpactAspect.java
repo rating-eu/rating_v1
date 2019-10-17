@@ -23,7 +23,6 @@ import eu.hermeneut.domain.SecurityImpact;
 import eu.hermeneut.domain.enumeration.DataImpact;
 import eu.hermeneut.domain.enumeration.SecurityPillar;
 import eu.hermeneut.service.OverallSecurityImpactService;
-import eu.hermeneut.service.SecurityImpactService;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
@@ -32,7 +31,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -66,7 +64,7 @@ public class OverallSecurityImpactAspect {
                 DataImpact overallImpact = DataImpact.LOW;
 
                 for (SecurityImpact impact : impacts) {
-                    if (impact.getImpact().getImpact() > overallImpact.getImpact()) {
+                    if (impact.getImpact().getValue() > overallImpact.getValue()) {
                         overallImpact = impact.getImpact();
                     }
                 }

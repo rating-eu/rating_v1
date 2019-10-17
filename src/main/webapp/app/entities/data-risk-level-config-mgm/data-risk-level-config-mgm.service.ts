@@ -5,6 +5,8 @@ import {SERVER_API_URL} from '../../app.constants';
 
 import {DataRiskLevelConfigMgm} from './data-risk-level-config-mgm.model';
 import {createRequestOption} from '../../shared';
+import {DataOperationMgm} from "../data-operation-mgm";
+import {MyAssetMgm} from "../my-asset-mgm";
 
 export type EntityResponseType = HttpResponse<DataRiskLevelConfigMgm>;
 
@@ -30,6 +32,14 @@ export class DataRiskLevelConfigMgmService {
         return this.http.put<DataRiskLevelConfigMgm>(this.resourceUrl, copy, {observe: 'response'})
             .map((res: EntityResponseType) => this.convertResponse(res));
     }
+
+    updateAllConfigsByDataOperation(dataOperation: DataOperationMgm, configs: DataRiskLevelConfigMgm[]): Observable<HttpResponse<DataRiskLevelConfigMgm[]>> {
+        const url = this.resourceByDataOperationUrl.replace(OPERATION_ID, String(dataOperation.id));
+
+        return this.http.put<DataRiskLevelConfigMgm[]>(url, configs, {observe: 'response'})
+            .map((res: HttpResponse<DataRiskLevelConfigMgm[]>) => this.convertArrayResponse(res));
+    }
+
 
     find(id: number): Observable<EntityResponseType> {
         return this.http.get<DataRiskLevelConfigMgm>(`${this.resourceUrl}/${id}`, {observe: 'response'})

@@ -83,7 +83,7 @@
                 <div class="col-md-3 text-center">
                     <ng-container *ngFor="let riskLevel of dataRiskLevels">
                               <span
-                                  (click)="updateRiskLevel(riskLevel)"
+                                  (click)="updateRiskLevelConfigs(riskLevel)"
                                   style="font-size: medium" [ngClass]="{
                                 'low': riskLevel === dataRiskLevelEnum.LOW,
                                 'medium': riskLevel=== dataRiskLevelEnum.MEDIUM,

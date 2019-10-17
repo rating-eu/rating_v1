@@ -16,13 +16,14 @@ import {ErrorHandlerInterceptor} from '../blocks/interceptor/errorhandler.interc
 import {JhiEventManager} from 'ng-jhipster';
 import {NotificationInterceptor} from '../blocks/interceptor/notification.interceptor';
 import {PrivacyRiskAssessmentModule} from '../privacy-risk-assessment/privacy-risk-assessment.module';
-import { SecurityImpactsWidgetComponent } from './security-impacts-widget/security-impacts-widget.component';
+import {SecurityImpactsWidgetComponent} from './security-impacts-widget/security-impacts-widget.component';
 import {ChartsModule} from "ng2-charts";
-import { DataThreatsWidgetComponent } from './data-threats-widget/data-threats-widget.component';
-import { DataRisksWidgetComponent } from './data-risks-widget/data-risks-widget.component';
-import { OverallSecurityImpactWidgetComponent } from './overall-security-impact-widget/overall-security-impact-widget.component';
-import { OverallDataThreatWidgetComponent } from './overall-data-threat-widget/overall-data-threat-widget.component';
-import { OverallDataRiskWidgetComponent } from './overall-data-risk-widget/overall-data-risk-widget.component';
+import {DataThreatsWidgetComponent} from './data-threats-widget/data-threats-widget.component';
+import {DataRisksWidgetComponent} from './data-risks-widget/data-risks-widget.component';
+import {OverallSecurityImpactWidgetComponent} from './overall-security-impact-widget/overall-security-impact-widget.component';
+import {OverallDataThreatWidgetComponent} from './overall-data-threat-widget/overall-data-threat-widget.component';
+import {OverallDataRiskWidgetComponent} from './overall-data-risk-widget/overall-data-risk-widget.component';
+import {OverallDataRiskWidgetService} from "./overall-data-risk-widget/overall-data-risk-widget.service";
 
 @NgModule({
     imports: [
@@ -68,7 +69,8 @@ import { OverallDataRiskWidgetComponent } from './overall-data-risk-widget/overa
                 Injector
             ]
         },
-        PrivacyBoardService
+        PrivacyBoardService,
+        OverallDataRiskWidgetService
     ],
     declarations: [PrivacyBoardComponent, PrivacyStepsStatusWidgetComponent, SecurityImpactsWidgetComponent, DataThreatsWidgetComponent, DataRisksWidgetComponent, OverallSecurityImpactWidgetComponent, OverallDataThreatWidgetComponent, OverallDataRiskWidgetComponent]
 })
