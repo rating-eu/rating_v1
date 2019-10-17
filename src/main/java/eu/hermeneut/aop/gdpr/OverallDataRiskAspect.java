@@ -18,6 +18,7 @@
 package eu.hermeneut.aop.gdpr;
 
 import eu.hermeneut.domain.*;
+import eu.hermeneut.domain.enumeration.DataRiskLevel;
 import eu.hermeneut.domain.enumeration.GDPRQuestionnairePurpose;
 import eu.hermeneut.service.OverallDataRiskService;
 import eu.hermeneut.service.OverallDataThreatService;
@@ -31,6 +32,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Aspect
 @Order(0)
@@ -58,7 +61,7 @@ public class OverallDataRiskAspect {
 
     @Transactional
     @AfterReturning(pointcut = "overallDataRiskHook()", returning = "result")
-    public void updateOverallDataThreat(JoinPoint joinPoint, Object result) {
+    public void updateOverallDataRisk(JoinPoint joinPoint, Object result) {
         if (result != null) {
             if (result instanceof GDPRQuestionnaireStatus) {
                 GDPRQuestionnaireStatus questionnaireStatus = (GDPRQuestionnaireStatus) result;
@@ -73,6 +76,18 @@ public class OverallDataRiskAspect {
             } else if (result instanceof DataOperation) {
                 DataOperation operation = (DataOperation) result;
                 this.update(operation);
+            } else if (result instanceof List) {
+                List<Object> objects = (List<Object>) result;
+
+                if (!objects.isEmpty()) {
+                    if (objects.get(0) instanceof DataRiskLevelConfig) {
+                        List<DataRiskLevelConfig> configs = (List<DataRiskLevelConfig>) result;
+
+                        DataOperation operation = configs.get(0).getOperation();
+
+                        this.update(operation);
+                    }
+                }
             }
         }
     }

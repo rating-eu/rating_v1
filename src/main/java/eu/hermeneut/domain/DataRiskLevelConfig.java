@@ -27,7 +27,7 @@ import eu.hermeneut.domain.enumeration.DataRiskLevel;
     )
 )
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class DataRiskLevelConfig implements Serializable {
+public class DataRiskLevelConfig implements Comparable<DataRiskLevelConfig>, Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -164,5 +164,26 @@ public class DataRiskLevelConfig implements Serializable {
             ", impact='" + getImpact() + "'" +
             ", risk='" + getRisk() + "'" +
             "}";
+    }
+
+    @Override
+    public int compareTo(DataRiskLevelConfig config) {
+        // The sorting of the RiskLevel configs is based on their
+        // risk = Likelihood x Impact.
+        int likelihood = this.getLikelihood().getValue();
+        int impact = this.getImpact().getValue();
+        int risk = likelihood * impact;
+
+        int otherLikelihood = config.getLikelihood().getValue();
+        int otherImpact = config.getImpact().getValue();
+        int otherRisk = otherLikelihood * otherImpact;
+
+        if (risk < otherRisk) {
+            return -1;
+        } else if (risk == otherRisk) {
+            return 0;
+        } else {
+            return 1;
+        }
     }
 }

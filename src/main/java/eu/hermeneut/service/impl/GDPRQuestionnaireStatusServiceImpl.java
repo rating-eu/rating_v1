@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -95,10 +96,27 @@ public class GDPRQuestionnaireStatusServiceImpl implements GDPRQuestionnaireStat
         gDPRQuestionnaireStatusRepository.delete(id);
     }
 
+    /**
+     * Delete the GDPRQuestionnaireStatus in the list.
+     *
+     * @param questionnaireStatuses the list of QuestionnaireStatuses.
+     */
+    @Override
+    public void delete(Collection<GDPRQuestionnaireStatus> questionnaireStatuses) {
+        log.debug("Request to delete a list GDPRQuestionnaireStatuses.");
+        gDPRQuestionnaireStatusRepository.delete(questionnaireStatuses);
+    }
+
     @Override
     @Transactional(readOnly = true)
     public GDPRQuestionnaireStatus findOneByDataOperationQuestionnaireAndRole(Long operationID, Long questionnaireID, Role role) {
         log.debug("Request to get GDPRQuestionnaireStatus By DataOperation: {}, Questionnaire: {}, Role: {}", operationID, questionnaireID, role);
         return gDPRQuestionnaireStatusRepository.findOneByDataOperationQuestionnaireAndRole(operationID, questionnaireID, role);
+    }
+
+    @Override
+    public List<GDPRQuestionnaireStatus> findAllByDataOperation(Long operationID) {
+        log.debug("Request to get the GDPRQuestionnaireStatuses By DataOperation: {}", operationID);
+        return gDPRQuestionnaireStatusRepository.findAllByDataOperation(operationID);
     }
 }

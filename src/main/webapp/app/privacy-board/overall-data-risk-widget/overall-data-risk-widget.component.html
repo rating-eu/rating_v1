@@ -6,36 +6,36 @@
         <mat-expansion-panel>
             <mat-expansion-panel-header>
                 <mat-panel-title>
-                    <h2>
+                    <h2 style="font-size: large;">
                         <a href="javascript:void(0);" class="collapse-link">Risks</a>
                     </h2>
                 </mat-panel-title>
             </mat-expansion-panel-header>
 
-            <div class="table-responsive">
+            <div class="table-responsive" style="border-top: none; border-left: none;">
                 <table *ngIf="threatLikelihoods && dataImpacts" class="table table-striped">
                     <thead class="thead-light">
                     <tr>
-                        <th></th>
-                        <th></th>
-                        <th class="text-center align-middle" [colSpan]="dataImpacts.length">Impact Level</th>
+                        <th style="visibility: hidden;"></th>
+                        <th style="visibility: hidden;"></th>
+                        <th class="text-center align-middle" style="font-size: large;" [colSpan]="dataImpacts.length">Impact Level</th>
                     </tr>
                     <tr>
-                        <th></th>
-                        <th></th>
-                        <th class="text-center align-middle"
+                        <th style="visibility: hidden;"></th>
+                        <th style="visibility: hidden;"></th>
+                        <th class="text-center align-middle" style="font-size: large;"
                             *ngFor="let impactLevel of dataImpacts">{{impactLevel | replace:'_':' ' | titlecase}}</th>
                     </tr>
                     </thead>
                     <tbody *ngIf="riskLevelConfigsMap">
                     <!--Just the First Likelihood-->
                     <tr *ngFor="let likelihood of threatLikelihoods | slice:0:1" class="thead-light">
-                        <th class="text-center" [rowSpan]="threatLikelihoods.length">
+                        <th class="text-center" style="font-size: large;" [rowSpan]="threatLikelihoods.length">
                             <p style="writing-mode: vertical-rl; text-orientation: upright; margin: 0 auto;">
                                 Likelihood
                             </p>
                         </th>
-                        <th class="text-center align-middle">{{likelihood | replace:'_':' ' | titlecase}}</th>
+                        <th class="text-center align-middle" style="font-size: large;">{{likelihood | replace:'_':' ' | titlecase}}</th>
                         <td *ngFor="let impact of dataImpacts" class="text-center align-middle">
                             <i *ngIf="selectedDataRiskLevelConfig && riskLevelConfigsMap.has(likelihood)
                                 && riskLevelConfigsMap.get(likelihood).has(impact)
@@ -56,7 +56,7 @@
                     </tr>
                     <!--The remaining Likelihoods-->
                     <tr *ngFor="let likelihood of threatLikelihoods | slice:1" class="thead-light">
-                        <th class="text-center align-middle">{{likelihood | replace:'_':' ' | titlecase}}</th>
+                        <th class="text-center align-middle" style="font-size: large;">{{likelihood | replace:'_':' ' | titlecase}}</th>
                         <td *ngFor="let impact of dataImpacts" class="text-center align-middle">
                             <i *ngIf="selectedDataRiskLevelConfig && riskLevelConfigsMap.has(likelihood)
                             && riskLevelConfigsMap.get(likelihood).has(impact)
@@ -83,7 +83,7 @@
                 <div class="col-md-3 text-center">
                     <ng-container *ngFor="let riskLevel of dataRiskLevels">
                               <span
-                                  (click)="updateRiskLevel(riskLevel)"
+                                  (click)="updateRiskLevelConfigs(riskLevel)"
                                   style="font-size: medium" [ngClass]="{
                                 'low': riskLevel === dataRiskLevelEnum.LOW,
                                 'medium': riskLevel=== dataRiskLevelEnum.MEDIUM,

@@ -3,6 +3,7 @@ package eu.hermeneut.service;
 import eu.hermeneut.domain.GDPRQuestionnaireStatus;
 import eu.hermeneut.domain.enumeration.Role;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -41,6 +42,13 @@ public interface GDPRQuestionnaireStatusService {
     void delete(Long id);
 
     /**
+     * Delete all the GDPRQuestionnaireStatus in the list.
+     *
+     * @param questionnaireStatuses the list of questionnaireStatuses.
+     */
+    void delete(Collection<GDPRQuestionnaireStatus> questionnaireStatuses);
+
+    /**
      * Get the GDPRQuestionnaireStatus by DataOperationID, QUestionnaireID and Role.
      *
      * @param operationID     The ID of the DataOperation
@@ -49,4 +57,11 @@ public interface GDPRQuestionnaireStatusService {
      * @return The GDPRQuestionnaireStatus.
      */
     GDPRQuestionnaireStatus findOneByDataOperationQuestionnaireAndRole(Long operationID, Long questionnaireID, Role role);
+
+    /**
+     * Get all the GDPRQuestionnaireStatuses by DataOperationID.
+     * @param operationID The ID of the DataOperation.
+     * @return The list of entities.
+     */
+    List<GDPRQuestionnaireStatus> findAllByDataOperation(Long operationID);
 }

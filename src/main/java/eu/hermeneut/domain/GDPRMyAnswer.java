@@ -5,6 +5,7 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -27,10 +28,12 @@ public class GDPRMyAnswer implements Serializable {
     @ManyToOne
     private GDPRQuestionnaireStatus gDPRQuestionnaireStatus;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @NotNull
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     private GDPRQuestion question;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @NotNull
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     private GDPRAnswer answer;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove

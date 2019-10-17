@@ -1,6 +1,6 @@
 <div *ngIf="questionnaire && dataOperation" [ngSwitch]="questionnaire.purpose" style="margin-bottom: 10%">
     <div *ngSwitchCase="purposeEnum.OPERATION_CONTEXT">
-        <form *ngIf="form" [formGroup]="form" (ngSubmit)="submitOperationContext()">
+        <form *ngIf="form" [formGroup]="form">
             <div *ngFor="let question of questions; trackBy: trackByID"
                  [ngSwitch]="question.dataOperationField" class="card-box">
                 <mat-expansion-panel [expanded]="true" [disabled]="true" [hideToggle]="true">
@@ -15,10 +15,10 @@
                         </mat-panel-description>
                     </mat-expansion-panel-header>
 
-                    <p *ngIf="question.description" class="text-justify" class="text-justify">
+                    <p *ngIf="question.description" class="text-justify">
                         {{question.description}}
                     </p>
-                    <p *ngIf="!question.description" class="text-justify" class="text-justify">
+                    <p *ngIf="!question.description" class="text-justify">
                         Waiting for description...
                     </p>
                 </mat-expansion-panel>
@@ -155,8 +155,9 @@
                     </button>
                 </div>
                 <div class="col-md-6 text-right">
-                    <button class="btn btn-success waves-light waves-effect w-md" type="submit"
-                            [disabled]="!form.valid">
+                    <button class="btn btn-success waves-light waves-effect w-md" type="button"
+                            (click)="submitDisabled=true; submitOperationContext();"
+                            [disabled]="!form.valid || submitDisabled">
                         <i class="far fa-save"></i>&nbsp;<span>Save</span>
                     </button>
                 </div>
@@ -164,7 +165,7 @@
         </form>
     </div>
     <div *ngSwitchCase="purposeEnum.IMPACT_EVALUATION">
-        <form *ngIf="form" [formGroup]="form" (ngSubmit)="submitSecurityImpacts()">
+        <form *ngIf="form" [formGroup]="form">
             <div *ngFor="let question of questions; trackBy: trackByID"
                  [ngSwitch]="question.dataOperationField" class="card-box row">
 
@@ -209,8 +210,9 @@
                     </button>
                 </div>
                 <div class="col-md-6 text-right">
-                    <button class="btn btn-success waves-light waves-effect w-md" type="submit"
-                            [disabled]="!form.valid">
+                    <button class="btn btn-success waves-light waves-effect w-md" type="button"
+                            (click)="submitDisabled=true; submitSecurityImpacts();"
+                            [disabled]="!form.valid || submitDisabled">
                         <i class="far fa-save"></i>&nbsp;<span>Save</span>
                     </button>
                 </div>
@@ -218,7 +220,7 @@
         </form>
     </div>
     <div *ngSwitchCase="purposeEnum.THREAT_LIKELIHOOD">
-        <form *ngIf="form" [formGroup]="form" (ngSubmit)="submitThreatLikelihood()">
+        <form *ngIf="form" [formGroup]="form">
             <mat-tab-group *ngIf="threatAreasMyAnswersMap">
                 <mat-tab *ngFor="let area of threatAreas" [ngSwitch]="area"
                          label="{{area | replace:'_':' ' | titlecase}}">
@@ -388,8 +390,9 @@
                     </button>
                 </div>
                 <div class="col-md-6 text-right">
-                    <button class="btn btn-success waves-light waves-effect w-md" type="submit"
-                            [disabled]="!form.valid">
+                    <button class="btn btn-success waves-light waves-effect w-md" type="button"
+                            (click)="submitDisabled=true; submitThreatLikelihood();"
+                            [disabled]="!form.valid || submitDisabled">
                         <i class="far fa-save"></i>&nbsp;<span>Save</span>
                     </button>
                 </div>

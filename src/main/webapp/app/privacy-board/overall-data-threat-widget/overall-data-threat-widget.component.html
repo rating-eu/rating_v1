@@ -6,7 +6,7 @@
         <mat-expansion-panel>
             <mat-expansion-panel-header>
                 <mat-panel-title>
-                    <h2>
+                    <h2 style="font-size: large;">
                         <a href="javascript:void(0);" class="collapse-link">Threats</a>
                     </h2>
                 </mat-panel-title>
@@ -16,8 +16,8 @@
                 <table class="table table-striped">
                     <thead class="thead-light">
                     <tr>
-                        <th class="text-center">Threat Area</th>
-                        <th class="text-center">Likelihood</th>
+                        <th class="text-center" style="font-size: large;">Threat Area</th>
+                        <th class="text-center" style="font-size: large;">Likelihood</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -34,7 +34,7 @@
                         </td>
                     </tr>
                     <tr *ngIf="overallDataThreat" class="thead-light">
-                        <th class="text-center">Overall Threat Occurrence Likelihood</th>
+                        <th class="text-center" style="font-size: large;">Overall Threat Occurrence Likelihood</th>
                         <td class="text-center">
                             <span style="font-size: large" [ngClass]="{
                             'low': overallDataThreat.likelihood === threatLikelihoodEnum.LOW,

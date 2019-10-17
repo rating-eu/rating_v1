@@ -1,13 +1,16 @@
 package eu.hermeneut.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import eu.hermeneut.domain.DataOperation;
 import eu.hermeneut.domain.DataRiskLevelConfig;
+import eu.hermeneut.service.DataOperationService;
 import eu.hermeneut.service.DataRiskLevelConfigService;
 import eu.hermeneut.web.rest.errors.BadRequestAlertException;
 import eu.hermeneut.web.rest.util.HeaderUtil;
 import io.github.jhipster.web.util.ResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,6 +33,9 @@ public class DataRiskLevelConfigResource {
     private static final String ENTITY_NAME = "dataRiskLevelConfig";
 
     private final DataRiskLevelConfigService dataRiskLevelConfigService;
+
+    @Autowired
+    private DataOperationService dataOperationService;
 
     public DataRiskLevelConfigResource(DataRiskLevelConfigService dataRiskLevelConfigService) {
         this.dataRiskLevelConfigService = dataRiskLevelConfigService;
@@ -75,6 +81,47 @@ public class DataRiskLevelConfigResource {
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert(ENTITY_NAME, dataRiskLevelConfig.getId().toString()))
             .body(result);
+    }
+
+    /**
+     * PUT  /data-risk-level-configs/operation/{operationID}/all : Updates a list existing dataRiskLevelConfig belonging to a given DataOperation.
+     *
+     * @param dataRiskLevelConfigs the list of dataRiskLevelConfigs to update.
+     * @return the ResponseEntity with status 200 (OK) and with body the updated dataRiskLevelConfig,
+     * or with status 400 (Bad Request) if the dataRiskLevelConfig is not valid,
+     * or with status 500 (Internal Server Error) if the dataRiskLevelConfig couldn't be updated
+     * @throws URISyntaxException if the Location URI syntax is incorrect
+     */
+    @PutMapping("/data-risk-level-configs/operation/{operationID}")
+    @Timed
+    public List<DataRiskLevelConfig> updateAllDataRiskLevelConfigsByDataOperation(@PathVariable Long operationID, @Valid @RequestBody List<DataRiskLevelConfig> dataRiskLevelConfigs) throws URISyntaxException {
+        log.debug("REST request to update a list of DataRiskLevelConfigs for DataOperation : {}", operationID);
+
+
+        if (dataRiskLevelConfigs == null || dataRiskLevelConfigs.isEmpty()) {
+            throw new BadRequestAlertException("The list of DataRiskLevelConfigs can NOT be NULL or EMPTY!", ENTITY_NAME, "emptylist");
+        }
+
+        DataOperation dataOperation = this.dataOperationService.findOne(operationID);
+
+        if (dataOperation == null) {
+            throw new BadRequestAlertException("The DataOperation does not exist.", ENTITY_NAME, "operation_not_found");
+        }
+
+        dataRiskLevelConfigs.stream().parallel().forEach((config) -> {
+            if (config.getOperation() == null || !config.getOperation().getId().equals(operationID)) {
+                throw new BadRequestAlertException("All the DataRiskLevelConfigs must belong to the given DataOperation!", ENTITY_NAME, "extraneous_configurations");
+            }
+        });
+
+        boolean isValid = this.dataRiskLevelConfigService.validate(dataRiskLevelConfigs);
+
+        if (isValid) {
+            // Update the configs
+            return this.dataRiskLevelConfigService.save(dataRiskLevelConfigs);
+        } else {
+            throw new BadRequestAlertException("Configs are NOT VALID!", ENTITY_NAME, "invalid_configs");
+        }
     }
 
     /**
