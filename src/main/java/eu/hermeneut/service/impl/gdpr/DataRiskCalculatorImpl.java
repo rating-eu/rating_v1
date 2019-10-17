@@ -17,24 +17,27 @@
 
 package eu.hermeneut.service.impl.gdpr;
 
-import eu.hermeneut.domain.DataOperation;
-import eu.hermeneut.domain.OverallDataRisk;
-import eu.hermeneut.domain.OverallDataThreat;
-import eu.hermeneut.domain.OverallSecurityImpact;
+import eu.hermeneut.domain.*;
 import eu.hermeneut.domain.enumeration.DataImpact;
 import eu.hermeneut.domain.enumeration.DataRiskLevel;
 import eu.hermeneut.domain.enumeration.DataThreatLikelihood;
+import eu.hermeneut.service.DataRiskLevelConfigService;
 import eu.hermeneut.service.gdpr.DataRiskCalculator;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service
 @Transactional
 public class DataRiskCalculatorImpl implements DataRiskCalculator {
     private static Map<DataThreatLikelihood, Map<DataImpact, DataRiskLevel>> dataRisksMap;
+
+    @Autowired
+    private DataRiskLevelConfigService dataRiskLevelConfigService;
 
     static {
         dataRisksMap = new HashMap<DataThreatLikelihood, Map<DataImpact, DataRiskLevel>>() {
@@ -101,7 +104,20 @@ public class DataRiskCalculatorImpl implements DataRiskCalculator {
 
         OverallDataRisk overallDataRisk = new OverallDataRisk();
         overallDataRisk.setOperation(operationA);
-        overallDataRisk.setRiskLevel(dataRisksMap.get(threatLikelihood).get(dataImpact));
+
+        List<DataRiskLevelConfig> configs = this.dataRiskLevelConfigService.findAllByDataOperation(operationA.getId());
+
+        if (configs != null && !configs.isEmpty()) { // Use the customized configs
+            // TODO loop through the configs
+            for (DataRiskLevelConfig config : configs) {
+                if (threatLikelihood.equals(config.getLikelihood()) && dataImpact.equals(config.getImpact())) {
+                    overallDataRisk.setRiskLevel(config.getRisk());
+                    break;
+                }
+            }
+        } else { // Use the default configs
+            overallDataRisk.setRiskLevel(dataRisksMap.get(threatLikelihood).get(dataImpact));
+        }
 
         return overallDataRisk;
     }

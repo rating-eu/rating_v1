@@ -1,5 +1,6 @@
 package eu.hermeneut.service.impl;
 
+import eu.hermeneut.aop.annotation.gdpr.OverallDataRiskHook;
 import eu.hermeneut.domain.DataOperation;
 import eu.hermeneut.domain.enumeration.DataImpact;
 import eu.hermeneut.domain.enumeration.DataRiskLevel;
@@ -111,6 +112,7 @@ public class DataRiskLevelConfigServiceImpl implements DataRiskLevelConfigServic
     }
 
     @Override
+    @OverallDataRiskHook
     public List<DataRiskLevelConfig> save(Collection<DataRiskLevelConfig> dataRiskLevelConfigs) {
         return this.dataRiskLevelConfigRepository.save(dataRiskLevelConfigs);
     }

@@ -11,6 +11,10 @@ import {OverallDataThreatMgm, OverallDataThreatMgmService} from "../../entities/
 import {Observable} from "rxjs";
 import {forkJoin} from "rxjs/observable/forkJoin";
 import {OverallDataRiskWidgetService} from "./overall-data-risk-widget.service";
+import {EventManagerService} from "../../data-sharing/event-manager.service";
+import {Event} from "../../data-sharing/event.model";
+import {EventType} from "../../entities/enumerations/EventType.enum";
+import {ActionType} from "../../entities/enumerations/ActionType.enum";
 
 @Component({
     selector: 'jhi-overall-data-risk-widget',
@@ -46,6 +50,7 @@ export class OverallDataRiskWidgetComponent implements OnInit, OnDestroy {
                 private overallDataThreatService: OverallDataThreatMgmService,
                 private overallDataRiskService: OverallDataRiskMgmService,
                 private riskWidgetService: OverallDataRiskWidgetService,
+                private eventManagerService: EventManagerService,
                 private changeDetector: ChangeDetectorRef) {
     }
 
@@ -178,6 +183,9 @@ export class OverallDataRiskWidgetComponent implements OnInit, OnDestroy {
                         this.riskLevelConfigs = response.body;
                         // To hide the edit form
                         this.selectedDataRiskLevelConfig = null;
+
+                        // Notify the DataRisks widget to update its value.
+                        this.eventManagerService.broadcast(new Event(EventType.DATA_RISK_LEVEL_CONFIG_LIST_UPDATE, ActionType.UPDATE));
 
                         if (this.changeDetector && !(this.changeDetector as ViewRef).destroyed) {
                             this.changeDetector.detectChanges();
