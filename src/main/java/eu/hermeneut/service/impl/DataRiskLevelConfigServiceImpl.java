@@ -1,5 +1,6 @@
 package eu.hermeneut.service.impl;
 
+import eu.hermeneut.aop.annotation.gdpr.OverallDataRiskHook;
 import eu.hermeneut.domain.DataOperation;
 import eu.hermeneut.domain.enumeration.DataImpact;
 import eu.hermeneut.domain.enumeration.DataRiskLevel;
@@ -8,16 +9,14 @@ import eu.hermeneut.service.DataOperationService;
 import eu.hermeneut.service.DataRiskLevelConfigService;
 import eu.hermeneut.domain.DataRiskLevelConfig;
 import eu.hermeneut.repository.DataRiskLevelConfigRepository;
+import eu.hermeneut.utils.validator.SortingValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Service Implementation for managing DataRiskLevelConfig.
@@ -72,6 +71,34 @@ public class DataRiskLevelConfigServiceImpl implements DataRiskLevelConfigServic
         this.dataRiskLevelConfigRepository = dataRiskLevelConfigRepository;
     }
 
+    @Override
+    public DataRiskLevelConfig[][] toMatrix(List<DataRiskLevelConfig> configs) {
+        if (configs == null) {
+            throw new IllegalArgumentException("Configs must be NOT NULL!");
+        } else if (configs.isEmpty()) {
+            throw new IllegalArgumentException("Configs must be NOT EMPTY!");
+        }
+
+        int likelihoods = DataThreatLikelihood.values().length;
+        int impacts = DataImpact.values().length;
+        int product = likelihoods * impacts;
+
+        if (configs.size() != product) {
+            throw new IllegalArgumentException("There MUST BE exactly " + product + " configs!!!");
+        }
+
+        DataRiskLevelConfig[][] matrix = new DataRiskLevelConfig[likelihoods][impacts];
+
+        configs.stream().parallel().forEach((config) -> {
+            int likelihood = config.getLikelihood().getValue();
+            int impact = config.getImpact().getValue();
+
+            matrix[likelihood - 1][impact - 1] = config;
+        });
+
+        return matrix;
+    }
+
     /**
      * Save a dataRiskLevelConfig.
      *
@@ -85,6 +112,7 @@ public class DataRiskLevelConfigServiceImpl implements DataRiskLevelConfigServic
     }
 
     @Override
+    @OverallDataRiskHook
     public List<DataRiskLevelConfig> save(Collection<DataRiskLevelConfig> dataRiskLevelConfigs) {
         return this.dataRiskLevelConfigRepository.save(dataRiskLevelConfigs);
     }
@@ -123,6 +151,12 @@ public class DataRiskLevelConfigServiceImpl implements DataRiskLevelConfigServic
     public void delete(Long id) {
         log.debug("Request to delete DataRiskLevelConfig : {}", id);
         dataRiskLevelConfigRepository.delete(id);
+    }
+
+    @Override
+    public void delete(List<DataRiskLevelConfig> riskLevelConfigs) {
+        log.debug("Request to delete the list of DataRiskLevelConfigs");
+        dataRiskLevelConfigRepository.delete(riskLevelConfigs);
     }
 
     /**
@@ -176,5 +210,18 @@ public class DataRiskLevelConfigServiceImpl implements DataRiskLevelConfigServic
         }
 
         return this.save(configs);
+    }
+
+    @Override
+    public boolean validate(List<DataRiskLevelConfig> configs) {
+        try {
+            DataRiskLevelConfig[][] matrix = this.toMatrix(configs);
+            SortingValidator<DataRiskLevelConfig> validator = new SortingValidator<>(DataRiskLevelConfig.class);
+
+            return validator.validate(matrix);
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 }

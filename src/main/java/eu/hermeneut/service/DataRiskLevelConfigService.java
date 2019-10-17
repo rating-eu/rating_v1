@@ -10,6 +10,8 @@ import java.util.List;
  */
 public interface DataRiskLevelConfigService {
 
+    DataRiskLevelConfig[][] toMatrix(List<DataRiskLevelConfig> configs);
+
     /**
      * Save a dataRiskLevelConfig.
      *
@@ -43,12 +45,27 @@ public interface DataRiskLevelConfigService {
     void delete(Long id);
 
     /**
-     * Get all the dataRiskLevelConfigs.
-     * @param operationID The ID of the DataOperation
+     * Delete the list of the dataRiskLevelConfigs.
      *
+     * @param riskLevelConfigs the list of the dataRiskLevelConfigs.
+     */
+    void delete(List<DataRiskLevelConfig> riskLevelConfigs);
+
+    /**
+     * Get all the dataRiskLevelConfigs.
+     *
+     * @param operationID The ID of the DataOperation
      * @return the list of entities
      */
     List<DataRiskLevelConfig> findAllByDataOperation(Long operationID);
 
     List<DataRiskLevelConfig> createDefaultDataRiskLevelConfigs(Long operationID);
+
+    /**
+     * Validate the given RiskLevel configs.
+     *
+     * @param configs The list of RiskLevel configs.
+     * @return <code>true</code> if they are valid, <code>false</code> otherwise.
+     */
+    boolean validate(List<DataRiskLevelConfig> configs);
 }

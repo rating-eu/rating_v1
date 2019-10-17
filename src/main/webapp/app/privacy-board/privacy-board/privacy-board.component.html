@@ -4,36 +4,45 @@
             <jhi-privacy-steps-status-widget [dataOperation]="dataOperation"></jhi-privacy-steps-status-widget>
         </div>
     </div>
-    <div class="row well">
-        <h2>Privacy Posture</h2>
-    </div>
-    <div class="row mb-2">
-        <div class="col-md-4" *ngIf="privacyBoardStatus && privacyBoardStatus.impactEvaluation===statusEnum.FULL">
-            <jhi-security-impacts-widget [dataOperation]="dataOperation"></jhi-security-impacts-widget>
+    <ng-container *ngIf="privacyBoardStatus && (privacyBoardStatus.impactEvaluation===statusEnum.FULL
+    || privacyBoardStatus.threatIdentification===statusEnum.FULL
+    || privacyBoardStatus.riskEvaluation===statusEnum.FULL)">
+        <div class="row well">
+            <h2>Privacy Posture</h2>
         </div>
-        <div class="col-md-4" *ngIf="privacyBoardStatus && privacyBoardStatus.threatIdentification===statusEnum.FULL">
-            <jhi-data-threats-widget [dataOperation]="dataOperation"></jhi-data-threats-widget>
+        <div class="row mb-2">
+            <div class="col-md-4" *ngIf="privacyBoardStatus && privacyBoardStatus.impactEvaluation===statusEnum.FULL">
+                <jhi-security-impacts-widget [dataOperation]="dataOperation"></jhi-security-impacts-widget>
+            </div>
+            <div class="col-md-4" *ngIf="privacyBoardStatus && privacyBoardStatus.threatIdentification===statusEnum.FULL">
+                <jhi-data-threats-widget [dataOperation]="dataOperation"></jhi-data-threats-widget>
+            </div>
+            <div class="col-md-4" *ngIf="privacyBoardStatus && privacyBoardStatus.riskEvaluation===statusEnum.FULL">
+                <jhi-data-risks-widget [dataOperation]="dataOperation"></jhi-data-risks-widget>
+            </div>
         </div>
-        <div class="col-md-4" *ngIf="privacyBoardStatus && privacyBoardStatus.riskEvaluation===statusEnum.FULL">
-            <jhi-data-risks-widget [dataOperation]="dataOperation"></jhi-data-risks-widget>
+    </ng-container>
+
+    <ng-container *ngIf="privacyBoardStatus && (privacyBoardStatus.impactEvaluation===statusEnum.FULL
+    || privacyBoardStatus.threatIdentification===statusEnum.FULL
+    || privacyBoardStatus.riskEvaluation===statusEnum.FULL)">
+        <div class="row well">
+            <h2>Details</h2>
         </div>
-    </div>
-    <div class="row well">
-        <h2>Details</h2>
-    </div>
-    <div class="row mb-2">
-        <div class="col-md-12">
-            <jhi-overall-security-impact-widget [dataOperation]="dataOperation"></jhi-overall-security-impact-widget>
+        <div class="row mb-2" *ngIf="privacyBoardStatus.impactEvaluation===statusEnum.FULL">
+            <div class="col-md-12">
+                <jhi-overall-security-impact-widget [dataOperation]="dataOperation"></jhi-overall-security-impact-widget>
+            </div>
         </div>
-    </div>
-    <div class="row mb-2">
-        <div class="col-md-12">
-            <jhi-overall-data-threat-widget [dataOperation]="dataOperation"></jhi-overall-data-threat-widget>
+        <div class="row mb-2" *ngIf="privacyBoardStatus.threatIdentification===statusEnum.FULL">
+            <div class="col-md-12">
+                <jhi-overall-data-threat-widget [dataOperation]="dataOperation"></jhi-overall-data-threat-widget>
+            </div>
         </div>
-    </div>
-    <div class="row mb-2">
-        <div class="col-md-12">
-            <jhi-overall-data-risk-widget [dataOperation]="dataOperation"></jhi-overall-data-risk-widget>
+        <div class="row mb-2" *ngIf="privacyBoardStatus.riskEvaluation===statusEnum.FULL">
+            <div class="col-md-12">
+                <jhi-overall-data-risk-widget [dataOperation]="dataOperation"></jhi-overall-data-risk-widget>
+            </div>
         </div>
-    </div>
+    </ng-container>
 </div>

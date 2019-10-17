@@ -39,7 +39,7 @@ public class OverallDataThreat implements Serializable {
     private DataOperation operation;
 
     @OneToMany(mappedBy = "overallDataThreat",
-        cascade = {CascadeType.ALL},
+        cascade = {CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH, CascadeType.REMOVE},
         orphanRemoval = true
     )
     @JsonIgnore

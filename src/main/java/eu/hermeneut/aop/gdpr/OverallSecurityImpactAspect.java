@@ -21,8 +21,8 @@ import eu.hermeneut.domain.DataOperation;
 import eu.hermeneut.domain.OverallSecurityImpact;
 import eu.hermeneut.domain.SecurityImpact;
 import eu.hermeneut.domain.enumeration.DataImpact;
+import eu.hermeneut.domain.enumeration.SecurityPillar;
 import eu.hermeneut.service.OverallSecurityImpactService;
-import eu.hermeneut.service.SecurityImpactService;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
@@ -31,7 +31,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -57,7 +56,7 @@ public class OverallSecurityImpactAspect {
 
             Set<SecurityImpact> impacts = new HashSet<>(dataOperation.getImpacts());
 
-            if (impacts != null && !impacts.isEmpty()) {
+            if (impacts != null && !impacts.isEmpty() && impacts.size() == SecurityPillar.values().length) {
                 // Create or Update the OverallSecurityImpact
                 OverallSecurityImpact overallSecurityImpact = this.overallSecurityImpactService
                     .findOneByDataOperation(dataOperation.getId());
@@ -65,7 +64,7 @@ public class OverallSecurityImpactAspect {
                 DataImpact overallImpact = DataImpact.LOW;
 
                 for (SecurityImpact impact : impacts) {
-                    if (impact.getImpact().getImpact() > overallImpact.getImpact()) {
+                    if (impact.getImpact().getValue() > overallImpact.getValue()) {
                         overallImpact = impact.getImpact();
                     }
                 }
@@ -84,7 +83,13 @@ public class OverallSecurityImpactAspect {
 
                 this.overallSecurityImpactService.save(overallSecurityImpact);
             } else {
+                OverallSecurityImpact overallSecurityImpact = this.overallSecurityImpactService
+                    .findOneByDataOperation(dataOperation.getId());
+
                 // Delete the existing OverallSecurityImpact if present.
+                if(overallSecurityImpact != null){
+                    this.overallSecurityImpactService.delete(overallSecurityImpact.getId());
+                }
             }
         }
     }

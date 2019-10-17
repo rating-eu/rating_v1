@@ -19,6 +19,7 @@ package eu.hermeneut.aop.gdpr;
 
 import eu.hermeneut.domain.*;
 import eu.hermeneut.domain.enumeration.GDPRQuestionnairePurpose;
+import eu.hermeneut.domain.enumeration.Status;
 import eu.hermeneut.service.DataThreatService;
 import eu.hermeneut.service.OverallDataThreatService;
 import eu.hermeneut.service.gdpr.DataThreatCalculator;
@@ -71,36 +72,45 @@ public class OverallDataThreatAspect {
                 DataOperation operation = questionnaireStatus.getOperation();
 
                 if (operation != null) {
-                    List<DataThreat> threats = this.dataThreatService.findAllByDataOperation(operation.getId());
-                    OverallDataThreat existingOverall = this.overallDataThreatService.findOneByDataOperation(operation.getId());
+                    if(questionnaireStatus.getStatus().equals(Status.FULL)){
+                        List<DataThreat> threats = this.dataThreatService.findAllByDataOperation(operation.getId());
+                        OverallDataThreat existingOverall = this.overallDataThreatService.findOneByDataOperation(operation.getId());
 
-                    if (threats != null && !threats.isEmpty()) {
-                        OverallDataThreat latestOverall = this.dataThreatCalculator.calculateOverallDataThreat(threats.stream().parallel().collect(Collectors.toSet()));
+                        if (threats != null && !threats.isEmpty()) {
+                            OverallDataThreat latestOverall = this.dataThreatCalculator.calculateOverallDataThreat(threats.stream().parallel().collect(Collectors.toSet()));
 
-                        if (existingOverall != null) {
-                            existingOverall.setLikelihood(latestOverall.getLikelihood());
+                            if (existingOverall != null) {
+                                existingOverall.setLikelihood(latestOverall.getLikelihood());
 
-                            existingOverall = this.overallDataThreatService.save(existingOverall);
+                                existingOverall = this.overallDataThreatService.save(existingOverall);
 
-                            for (DataThreat dataThreat : threats) {
-                                dataThreat.setOverallDataThreat(existingOverall);
+                                for (DataThreat dataThreat : threats) {
+                                    dataThreat.setOverallDataThreat(existingOverall);
+                                }
+
+                                this.dataThreatService.save(threats);
+                            } else {
+                                latestOverall = this.overallDataThreatService.save(latestOverall);
+
+                                for (DataThreat dataThreat : threats) {
+                                    dataThreat.setOverallDataThreat(latestOverall);
+
+                                    this.dataThreatService.save(dataThreat);
+                                }
+
+                                this.dataThreatService.save(threats);
                             }
-
-                            this.dataThreatService.save(threats);
                         } else {
-                            latestOverall = this.overallDataThreatService.save(latestOverall);
-
-                            for (DataThreat dataThreat : threats) {
-                                dataThreat.setOverallDataThreat(latestOverall);
-
-                                this.dataThreatService.save(dataThreat);
-                            }
-
-                            this.dataThreatService.save(threats);
+                            // TODO Should we try to create the DataThreats from the QuestionnaireStatus here?
+                            this.logger.warn("DataThreats NOT FOUND...");
                         }
-                    } else {
-                        // TODO Should we try to create the DataThreats here?
-                        this.logger.warn("DataThreats NOT FOUND...");
+                    }else{
+                        OverallDataThreat overallDataThreat = this.overallDataThreatService.findOneByDataOperation(operation.getId());
+
+                        // Delete the existing OverallDataThreat if present.
+                        if(overallDataThreat != null){
+                            this.overallDataThreatService.delete(overallDataThreat.getId());
+                        }
                     }
                 }
             }

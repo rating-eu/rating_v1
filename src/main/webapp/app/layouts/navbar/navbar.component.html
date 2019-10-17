@@ -45,16 +45,18 @@
                     </a>
                 </li>
             </ng-container>
-            <li *jhiHasAnyAuthority="'ROLE_CISO'" class="waves-light waves-effect nav-item"
-                routerLinkActive="active"
-                [routerLinkActiveOptions]="{exact: true}">
-                <a class="nav-link" routerLink="/privacy-board" (click)="collapseNavbar()">
+            <ng-container *ngIf="dataOperation">
+                <li *jhiHasAnyAuthority="'ROLE_CISO'" class="waves-light waves-effect nav-item"
+                    routerLinkActive="active"
+                    [routerLinkActiveOptions]="{exact: true}">
+                    <a class="nav-link" routerLink="/privacy-board" (click)="collapseNavbar()">
                     <span>
                         <i class="fas fa-fingerprint" aria-hidden="true"></i>
                         <span>Privacy Board</span>
                     </span>
-                </a>
-            </li>
+                    </a>
+                </li>
+            </ng-container>
 
             <li *jhiHasAnyAuthority="'ROLE_ADMIN'" ngbDropdown
                 class="waves-light waves-effect nav-item dropdown pointer entities-nav "
@@ -333,93 +335,110 @@
                         </a>
                     </li>
                     <li>
-                        <a class="dropdown-item" routerLink="data-impact-description-mgm" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                        <a class="dropdown-item" routerLink="data-impact-description-mgm" routerLinkActive="active"
+                           [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
                             <i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
                             <span jhiTranslate="global.menu.entities.dataImpactDescriptionMgm">Data Impact Description Mgm</span>
                         </a>
                     </li>
                     <li>
-                        <a class="dropdown-item" routerLink="data-recipient-mgm" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                        <a class="dropdown-item" routerLink="data-recipient-mgm" routerLinkActive="active"
+                           [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
                             <i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
                             <span jhiTranslate="global.menu.entities.dataRecipientMgm">Data Recipient Mgm</span>
                         </a>
                     </li>
                     <li>
-                        <a class="dropdown-item" routerLink="security-impact-mgm" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                        <a class="dropdown-item" routerLink="security-impact-mgm" routerLinkActive="active"
+                           [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
                             <i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
                             <span jhiTranslate="global.menu.entities.securityImpactMgm">Security Impact Mgm</span>
                         </a>
                     </li>
                     <li>
-                        <a class="dropdown-item" routerLink="overall-security-impact-mgm" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                        <a class="dropdown-item" routerLink="overall-security-impact-mgm" routerLinkActive="active"
+                           [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
                             <i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
                             <span jhiTranslate="global.menu.entities.overallSecurityImpactMgm">Overall Security Impact Mgm</span>
                         </a>
                     </li>
                     <li>
-                        <a class="dropdown-item" routerLink="data-operation-mgm" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                        <a class="dropdown-item" routerLink="data-operation-mgm" routerLinkActive="active"
+                           [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
                             <i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
                             <span jhiTranslate="global.menu.entities.dataOperationMgm">Data Operation Mgm</span>
                         </a>
                     </li>
                     <li>
-                        <a class="dropdown-item" routerLink="data-threat-mgm" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                        <a class="dropdown-item" routerLink="data-threat-mgm" routerLinkActive="active"
+                           [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
                             <i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
                             <span jhiTranslate="global.menu.entities.dataThreatMgm">Data Threat Mgm</span>
                         </a>
                     </li>
                     <li>
-                        <a class="dropdown-item" routerLink="overall-data-threat-mgm" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                        <a class="dropdown-item" routerLink="overall-data-threat-mgm" routerLinkActive="active"
+                           [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
                             <i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
-                            <span jhiTranslate="global.menu.entities.overallDataThreatMgm">Overall Data Threat Mgm</span>
+                            <span
+                                jhiTranslate="global.menu.entities.overallDataThreatMgm">Overall Data Threat Mgm</span>
                         </a>
                     </li>
                     <li>
-                        <a class="dropdown-item" routerLink="gdpr-questionnaire-mgm" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                        <a class="dropdown-item" routerLink="gdpr-questionnaire-mgm" routerLinkActive="active"
+                           [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
                             <i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
                             <span jhiTranslate="global.menu.entities.gdprQuestionnaireMgm">Gdpr Questionnaire Mgm</span>
                         </a>
                     </li>
                     <li>
-                        <a class="dropdown-item" routerLink="gdpr-questionnaire-status-mgm" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                        <a class="dropdown-item" routerLink="gdpr-questionnaire-status-mgm" routerLinkActive="active"
+                           [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
                             <i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
                             <span jhiTranslate="global.menu.entities.gdprQuestionnaireStatusMgm">Gdpr Questionnaire Status Mgm</span>
                         </a>
                     </li>
                     <li>
-                        <a class="dropdown-item" routerLink="gdpr-question-mgm" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                        <a class="dropdown-item" routerLink="gdpr-question-mgm" routerLinkActive="active"
+                           [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
                             <i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
                             <span jhiTranslate="global.menu.entities.gdprQuestionMgm">Gdpr Question Mgm</span>
                         </a>
                     </li>
                     <li>
-                        <a class="dropdown-item" routerLink="gdpr-answer-mgm" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                        <a class="dropdown-item" routerLink="gdpr-answer-mgm" routerLinkActive="active"
+                           [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
                             <i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
                             <span jhiTranslate="global.menu.entities.gdprAnswerMgm">Gdpr Answer Mgm</span>
                         </a>
                     </li>
                     <li>
-                        <a class="dropdown-item" routerLink="gdpr-my-answer-mgm" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                        <a class="dropdown-item" routerLink="gdpr-my-answer-mgm" routerLinkActive="active"
+                           [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
                             <i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
                             <span jhiTranslate="global.menu.entities.gdprMyAnswerMgm">Gdpr My Answer Mgm</span>
                         </a>
                     </li>
                     <li>
-                        <a class="dropdown-item" routerLink="translation-mgm" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                        <a class="dropdown-item" routerLink="translation-mgm" routerLinkActive="active"
+                           [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
                             <i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
                             <span jhiTranslate="global.menu.entities.translationMgm">Translation Mgm</span>
                         </a>
                     </li>
                     <li>
-                        <a class="dropdown-item" routerLink="overall-data-risk-mgm" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                        <a class="dropdown-item" routerLink="overall-data-risk-mgm" routerLinkActive="active"
+                           [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
                             <i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
                             <span jhiTranslate="global.menu.entities.overallDataRiskMgm">Overall Data Risk Mgm</span>
                         </a>
                     </li>
                     <li>
-                        <a class="dropdown-item" routerLink="data-risk-level-config-mgm" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
+                        <a class="dropdown-item" routerLink="data-risk-level-config-mgm" routerLinkActive="active"
+                           [routerLinkActiveOptions]="{ exact: true }" (click)="collapseNavbar()">
                             <i class="fa fa-fw fa-asterisk" aria-hidden="true"></i>
-                            <span jhiTranslate="global.menu.entities.dataRiskLevelConfigMgm">Data Risk Level Config Mgm</span>
+                            <span
+                                jhiTranslate="global.menu.entities.dataRiskLevelConfigMgm">Data Risk Level Config Mgm</span>
                         </a>
                     </li>
                     <!-- jhipster-needle-add-entity-to-menu - JHipster will add entities to the menu here -->
@@ -485,7 +504,8 @@
                 </ul>
             </li>
             <li *jhiHasAnyAuthority="['ROLE_EXTERNAL_AUDIT']">
-                <a class="nav-link" routerLink="/evaluate-weakness/questionnaires/SELFASSESSMENT" (click)="collapseNavbar()">
+                <a class="nav-link" routerLink="/evaluate-weakness/questionnaires/SELFASSESSMENT"
+                   (click)="collapseNavbar()">
                     <span>
                         <i class="fa fa-dashboard" aria-hidden="true"></i>
                         <span>Vulnerabilities Refinement</span>

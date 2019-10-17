@@ -30,6 +30,7 @@ import {Role} from '../../entities/enumerations/Role.enum';
 import {CompanyBoardStatus} from "../../dashboard/models/CompanyBoardStatus";
 import {Status} from "../../entities/enumerations/Status.enum";
 import {Subscription} from "rxjs";
+import {DataOperationMgm} from "../../entities/data-operation-mgm";
 
 @Component({
     selector: 'jhi-navbar',
@@ -56,6 +57,9 @@ export class NavbarComponent implements OnInit, OnDestroy {
     public isAdmin = false;
     public companyBoardStatus: CompanyBoardStatus;
     public statusEnum = Status;
+
+    public dataOperation: DataOperationMgm;
+
     private subscriptions: Subscription[];
 
     constructor(
@@ -146,6 +150,16 @@ export class NavbarComponent implements OnInit, OnDestroy {
                     this.changeDetector.detectChanges();
                 }
             })
+        );
+
+        this.subscriptions.push(
+          this.dataSharingService.dataOperation$.subscribe((dataOperation: DataOperationMgm) => {
+              this.dataOperation = dataOperation;
+
+              if(this.changeDetector && !(this.changeDetector as ViewRef).destroyed){
+                  this.changeDetector.detectChanges();
+              }
+          })
         );
     }
 
