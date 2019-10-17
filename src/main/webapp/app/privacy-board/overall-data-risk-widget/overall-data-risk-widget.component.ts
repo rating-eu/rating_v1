@@ -69,23 +69,7 @@ export class OverallDataRiskWidgetComponent implements OnInit, OnDestroy {
                 .then((response: HttpResponse<DataRiskLevelConfigMgm[]>) => {
                     this.riskLevelConfigs = response.body;
 
-                    this.riskLevelConfigsMap = new Map();
-
-                    this.riskLevelConfigs.forEach((config: DataRiskLevelConfigMgm) => {
-                        const likelihood: DataThreatLikelihood = config.likelihood;
-                        const impact: DataImpact = config.impact;
-                        const riskConfig: DataRiskLevelConfigMgm = config;
-
-                        let impactsMap: Map<DataImpact, DataRiskLevelConfigMgm> = new Map();
-
-                        if (this.riskLevelConfigsMap.has(likelihood)) {
-                            impactsMap = this.riskLevelConfigsMap.get(likelihood);
-                        } else {
-                            this.riskLevelConfigsMap.set(likelihood, impactsMap);
-                        }
-
-                        impactsMap.set(impact, riskConfig)
-                    });
+                    this.riskLevelConfigsMap = this.mapRiskLevelConfigs(this.riskLevelConfigs);
                 });
 
             const join$: Observable<[HttpResponse<OverallSecurityImpactMgm>, HttpResponse<OverallDataThreatMgm>, HttpResponse<OverallDataThreatMgm>]>
@@ -181,6 +165,8 @@ export class OverallDataRiskWidgetComponent implements OnInit, OnDestroy {
                 .then((response: HttpResponse<DataRiskLevelConfigMgm[]>) => {
                     if (response && response.body) {
                         this.riskLevelConfigs = response.body;
+                        this.riskLevelConfigsMap = this.mapRiskLevelConfigs(this.riskLevelConfigs);
+
                         // To hide the edit form
                         this.selectedDataRiskLevelConfig = null;
 
@@ -193,5 +179,29 @@ export class OverallDataRiskWidgetComponent implements OnInit, OnDestroy {
                     }
                 });
         }
+    }
+
+    private mapRiskLevelConfigs(riskLevelConfigs: DataRiskLevelConfigMgm[]) {
+        const configsMap: Map<DataThreatLikelihood, Map<DataImpact, DataRiskLevelConfigMgm>> = new Map();
+
+        if(riskLevelConfigs && riskLevelConfigs.length){
+            this.riskLevelConfigs.forEach((config: DataRiskLevelConfigMgm) => {
+                const likelihood: DataThreatLikelihood = config.likelihood;
+                const impact: DataImpact = config.impact;
+                const riskConfig: DataRiskLevelConfigMgm = config;
+
+                let impactsMap: Map<DataImpact, DataRiskLevelConfigMgm> = new Map();
+
+                if (configsMap.has(likelihood)) {
+                    impactsMap = configsMap.get(likelihood);
+                } else {
+                    configsMap.set(likelihood, impactsMap);
+                }
+
+                impactsMap.set(impact, riskConfig)
+            });
+        }
+
+        return configsMap;
     }
 }
