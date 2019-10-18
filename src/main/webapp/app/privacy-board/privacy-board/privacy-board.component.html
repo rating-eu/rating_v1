@@ -4,7 +4,8 @@
             <jhi-privacy-steps-status-widget [dataOperation]="dataOperation"></jhi-privacy-steps-status-widget>
         </div>
     </div>
-    <ng-container *ngIf="privacyBoardStatus && (privacyBoardStatus.impactEvaluation===statusEnum.FULL
+    <!--Privacy Posture Section hidden-->
+    <!--<ng-container *ngIf="privacyBoardStatus && (privacyBoardStatus.impactEvaluation===statusEnum.FULL
     || privacyBoardStatus.threatIdentification===statusEnum.FULL
     || privacyBoardStatus.riskEvaluation===statusEnum.FULL)">
         <div class="row well">
@@ -21,14 +22,14 @@
                 <jhi-data-risks-widget [dataOperation]="dataOperation"></jhi-data-risks-widget>
             </div>
         </div>
-    </ng-container>
+    </ng-container>-->
 
     <ng-container *ngIf="privacyBoardStatus && (privacyBoardStatus.impactEvaluation===statusEnum.FULL
     || privacyBoardStatus.threatIdentification===statusEnum.FULL
     || privacyBoardStatus.riskEvaluation===statusEnum.FULL)">
-        <div class="row well">
+        <!--<div class="row well">
             <h2>Details</h2>
-        </div>
+        </div>-->
         <div class="row mb-2" *ngIf="privacyBoardStatus.impactEvaluation===statusEnum.FULL">
             <div class="col-md-12">
                 <jhi-overall-security-impact-widget [dataOperation]="dataOperation"></jhi-overall-security-impact-widget>
