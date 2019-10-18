@@ -39,7 +39,8 @@
                         </th>
                         <th class="text-center align-middle"
                             style="font-size: large;">{{likelihood | replace:'_':' ' | titlecase}}</th>
-                        <td *ngFor="let impact of dataImpacts" class="text-center align-middle"
+                        <td *ngFor="let impact of dataImpacts" class="text-center align-middle pointer"
+                            (click)="selectDataRiskLevelConfig(riskLevelConfigsMap.get(likelihood).get(impact))"
                             [ngClass]="{
                                 'low-background': riskLevelConfigsMap.get(likelihood).get(impact).risk === dataRiskLevelEnum.LOW,
                                 'medium-background': riskLevelConfigsMap.get(likelihood).get(impact).risk === dataRiskLevelEnum.MEDIUM,
@@ -50,9 +51,12 @@
                                 && riskLevelConfigsMap.has(likelihood)
                                 && riskLevelConfigsMap.get(likelihood).has(impact)
                                 && riskLevelConfigsMap.get(likelihood).get(impact)===selectedDataRiskLevelConfig"
-                               class="fas fa-check"></i>
+                               class="fas fa-edit"></i>
                             <span
-                                *ngIf="riskLevelConfigsMap.has(likelihood) && riskLevelConfigsMap.get(likelihood).has(impact)"
+                                *ngIf="riskLevelConfigsMap.has(likelihood)
+                                        && riskLevelConfigsMap.get(likelihood).has(impact)
+                                        && overallDataThreat && overallDataThreat.likelihood === likelihood
+                                        && overallSecurityImpact && overallSecurityImpact.impact === impact"
                                 (click)="selectDataRiskLevelConfig(riskLevelConfigsMap.get(likelihood).get(impact))"
                                 [style.border]="overallDataThreat && overallDataThreat.likelihood === likelihood
                                                 && overallSecurityImpact && overallSecurityImpact.impact === impact ? '1px dashed' : 'none'"
@@ -61,7 +65,7 @@
                                 'medium': riskLevelConfigsMap.get(likelihood).get(impact).risk === dataRiskLevelEnum.MEDIUM,
                                 'high': riskLevelConfigsMap.get(likelihood).get(impact).risk === dataRiskLevelEnum.HIGH
                             }"
-                                class="badge badge-pill badge-secondary pointer">
+                                class="badge badge-pill badge-secondary">
                                 <ng-container
                                     *ngIf="overallDataThreat && overallDataThreat.likelihood === likelihood && overallSecurityImpact && overallSecurityImpact.impact === impact">
                                 {{riskLevelConfigsMap.get(likelihood).get(impact).risk | replace:'_':' ' | titlecase}}
@@ -73,7 +77,8 @@
                     <tr *ngFor="let likelihood of threatLikelihoods | slice:1" class="thead-light">
                         <th class="text-center align-middle"
                             style="font-size: large;">{{likelihood | replace:'_':' ' | titlecase}}</th>
-                        <td *ngFor="let impact of dataImpacts" class="text-center align-middle"
+                        <td *ngFor="let impact of dataImpacts" class="text-center align-middle pointer"
+                            (click)="selectDataRiskLevelConfig(riskLevelConfigsMap.get(likelihood).get(impact))"
                             [ngClass]="{
                                 'low-background': riskLevelConfigsMap.get(likelihood).get(impact).risk === dataRiskLevelEnum.LOW,
                                 'medium-background': riskLevelConfigsMap.get(likelihood).get(impact).risk === dataRiskLevelEnum.MEDIUM,
@@ -84,10 +89,12 @@
                             && riskLevelConfigsMap.has(likelihood)
                             && riskLevelConfigsMap.get(likelihood).has(impact)
                             && riskLevelConfigsMap.get(likelihood).get(impact)===selectedDataRiskLevelConfig"
-                               class="fas fa-check"></i>
+                               class="fas fa-edit"></i>
                             <span
-                                *ngIf="riskLevelConfigsMap.has(likelihood) && riskLevelConfigsMap.get(likelihood).has(impact)"
-                                (click)="selectDataRiskLevelConfig(riskLevelConfigsMap.get(likelihood).get(impact))"
+                                *ngIf="riskLevelConfigsMap.has(likelihood)
+                                        && riskLevelConfigsMap.get(likelihood).has(impact)
+                                        && overallDataThreat && overallDataThreat.likelihood === likelihood
+                                        && overallSecurityImpact && overallSecurityImpact.impact === impact"
                                 [style.border]="overallDataThreat && overallDataThreat.likelihood === likelihood
                                                 && overallSecurityImpact && overallSecurityImpact.impact === impact ? '1px dashed' : 'none'"
                                 style="font-size: medium" [ngClass]="{
@@ -95,7 +102,7 @@
                                 'medium': riskLevelConfigsMap.get(likelihood).get(impact).risk === dataRiskLevelEnum.MEDIUM,
                                 'high': riskLevelConfigsMap.get(likelihood).get(impact).risk === dataRiskLevelEnum.HIGH
                             }"
-                                class="badge badge-pill badge-secondary pointer">
+                                class="badge badge-pill badge-secondary">
                                 <ng-container
                                     *ngIf="overallDataThreat && overallDataThreat.likelihood === likelihood && overallSecurityImpact && overallSecurityImpact.impact === impact">
                                 {{riskLevelConfigsMap.get(likelihood).get(impact).risk | replace:'_':' ' | titlecase}}
