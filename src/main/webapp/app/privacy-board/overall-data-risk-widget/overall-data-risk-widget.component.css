@@ -18,3 +18,12 @@
 .pointer:hover {
     cursor: pointer;
 }
+
+td span {
+    min-width: 2.5em;
+    min-height: 1.5em;
+}
+
+.table > tbody > tr > td {
+    border-top: none;
+}

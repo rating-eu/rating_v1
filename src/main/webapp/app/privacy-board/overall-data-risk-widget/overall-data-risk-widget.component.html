@@ -13,12 +13,14 @@
             </mat-expansion-panel-header>
 
             <div class="table-responsive" style="border-top: none; border-left: none;">
-                <table *ngIf="threatLikelihoods && dataImpacts" class="table table-striped">
+                <table *ngIf="threatLikelihoods && dataImpacts" class="table">
                     <thead class="thead-light">
                     <tr>
                         <th style="visibility: hidden;"></th>
                         <th style="visibility: hidden;"></th>
-                        <th class="text-center align-middle" style="font-size: large;" [colSpan]="dataImpacts.length">Impact Level</th>
+                        <th class="text-center align-middle" style="font-size: large;" [colSpan]="dataImpacts.length">
+                            Impact Level
+                        </th>
                     </tr>
                     <tr>
                         <th style="visibility: hidden;"></th>
@@ -35,44 +37,70 @@
                                 Likelihood
                             </p>
                         </th>
-                        <th class="text-center align-middle" style="font-size: large;">{{likelihood | replace:'_':' ' | titlecase}}</th>
-                        <td *ngFor="let impact of dataImpacts" class="text-center align-middle">
-                            <i *ngIf="selectedDataRiskLevelConfig && riskLevelConfigsMap.has(likelihood)
+                        <th class="text-center align-middle"
+                            style="font-size: large;">{{likelihood | replace:'_':' ' | titlecase}}</th>
+                        <td *ngFor="let impact of dataImpacts" class="text-center align-middle"
+                            [ngClass]="{
+                                'low-background': riskLevelConfigsMap.get(likelihood).get(impact).risk === dataRiskLevelEnum.LOW,
+                                'medium-background': riskLevelConfigsMap.get(likelihood).get(impact).risk === dataRiskLevelEnum.MEDIUM,
+                                'high-background': riskLevelConfigsMap.get(likelihood).get(impact).risk === dataRiskLevelEnum.HIGH
+                                }"
+                        >
+                            <i *ngIf="selectedDataRiskLevelConfig
+                                && riskLevelConfigsMap.has(likelihood)
                                 && riskLevelConfigsMap.get(likelihood).has(impact)
                                 && riskLevelConfigsMap.get(likelihood).get(impact)===selectedDataRiskLevelConfig"
                                class="fas fa-check"></i>
                             <span
                                 *ngIf="riskLevelConfigsMap.has(likelihood) && riskLevelConfigsMap.get(likelihood).has(impact)"
                                 (click)="selectDataRiskLevelConfig(riskLevelConfigsMap.get(likelihood).get(impact))"
+                                [style.border]="overallDataThreat && overallDataThreat.likelihood === likelihood
+                                                && overallSecurityImpact && overallSecurityImpact.impact === impact ? '1px dashed' : 'none'"
                                 style="font-size: medium" [ngClass]="{
                                 'low': riskLevelConfigsMap.get(likelihood).get(impact).risk === dataRiskLevelEnum.LOW,
                                 'medium': riskLevelConfigsMap.get(likelihood).get(impact).risk === dataRiskLevelEnum.MEDIUM,
                                 'high': riskLevelConfigsMap.get(likelihood).get(impact).risk === dataRiskLevelEnum.HIGH
                             }"
-                                class="badge badge-pill badge-secondary pointer">{{riskLevelConfigsMap.get(likelihood).get(impact).risk | replace:'_':' ' | titlecase}}</span>
-                            <i *ngIf="overallDataThreat && overallDataThreat.likelihood === likelihood && overallSecurityImpact && overallSecurityImpact.impact === impact"
-                               class="fas fa-flag"></i>
+                                class="badge badge-pill badge-secondary pointer">
+                                <ng-container
+                                    *ngIf="overallDataThreat && overallDataThreat.likelihood === likelihood && overallSecurityImpact && overallSecurityImpact.impact === impact">
+                                {{riskLevelConfigsMap.get(likelihood).get(impact).risk | replace:'_':' ' | titlecase}}
+                                </ng-container>
+                            </span>
                         </td>
                     </tr>
                     <!--The remaining Likelihoods-->
                     <tr *ngFor="let likelihood of threatLikelihoods | slice:1" class="thead-light">
-                        <th class="text-center align-middle" style="font-size: large;">{{likelihood | replace:'_':' ' | titlecase}}</th>
-                        <td *ngFor="let impact of dataImpacts" class="text-center align-middle">
-                            <i *ngIf="selectedDataRiskLevelConfig && riskLevelConfigsMap.has(likelihood)
+                        <th class="text-center align-middle"
+                            style="font-size: large;">{{likelihood | replace:'_':' ' | titlecase}}</th>
+                        <td *ngFor="let impact of dataImpacts" class="text-center align-middle"
+                            [ngClass]="{
+                                'low-background': riskLevelConfigsMap.get(likelihood).get(impact).risk === dataRiskLevelEnum.LOW,
+                                'medium-background': riskLevelConfigsMap.get(likelihood).get(impact).risk === dataRiskLevelEnum.MEDIUM,
+                                'high-background': riskLevelConfigsMap.get(likelihood).get(impact).risk === dataRiskLevelEnum.HIGH
+                                }"
+                        >
+                            <i *ngIf="selectedDataRiskLevelConfig
+                            && riskLevelConfigsMap.has(likelihood)
                             && riskLevelConfigsMap.get(likelihood).has(impact)
                             && riskLevelConfigsMap.get(likelihood).get(impact)===selectedDataRiskLevelConfig"
                                class="fas fa-check"></i>
                             <span
                                 *ngIf="riskLevelConfigsMap.has(likelihood) && riskLevelConfigsMap.get(likelihood).has(impact)"
                                 (click)="selectDataRiskLevelConfig(riskLevelConfigsMap.get(likelihood).get(impact))"
+                                [style.border]="overallDataThreat && overallDataThreat.likelihood === likelihood
+                                                && overallSecurityImpact && overallSecurityImpact.impact === impact ? '1px dashed' : 'none'"
                                 style="font-size: medium" [ngClass]="{
                                 'low': riskLevelConfigsMap.get(likelihood).get(impact).risk === dataRiskLevelEnum.LOW,
                                 'medium': riskLevelConfigsMap.get(likelihood).get(impact).risk === dataRiskLevelEnum.MEDIUM,
                                 'high': riskLevelConfigsMap.get(likelihood).get(impact).risk === dataRiskLevelEnum.HIGH
                             }"
-                                class="badge badge-pill badge-secondary pointer">{{riskLevelConfigsMap.get(likelihood).get(impact).risk | replace:'_':' ' | titlecase}}</span>
-                            <i *ngIf="overallDataThreat && overallDataThreat.likelihood === likelihood && overallSecurityImpact && overallSecurityImpact.impact === impact"
-                               class="fas fa-flag"></i>
+                                class="badge badge-pill badge-secondary pointer">
+                                <ng-container
+                                    *ngIf="overallDataThreat && overallDataThreat.likelihood === likelihood && overallSecurityImpact && overallSecurityImpact.impact === impact">
+                                {{riskLevelConfigsMap.get(likelihood).get(impact).risk | replace:'_':' ' | titlecase}}
+                                </ng-container>
+                            </span>
                         </td>
                     </tr>
                     </tbody>
