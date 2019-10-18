@@ -36,7 +36,7 @@
                     <tr *ngIf="overallSecurityImpact" class="thead-light">
                         <th [colSpan]="securityPillars.length - 1" class="text-center" style="font-size: large;">Overall Impact Evaluation</th>
                         <td class="text-center">
-                            <span style="font-size: large" [ngClass]="{
+                            <span style="font-size: large; border: 1px dashed;" [ngClass]="{
                             'low': overallSecurityImpact.impact === dataImpactEnum.LOW,
                             'medium': overallSecurityImpact.impact === dataImpactEnum.MEDIUM,
                             'high': overallSecurityImpact.impact === dataImpactEnum.HIGH,

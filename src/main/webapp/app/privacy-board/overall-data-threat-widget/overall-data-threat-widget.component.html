@@ -36,7 +36,7 @@
                     <tr *ngIf="overallDataThreat" class="thead-light">
                         <th class="text-center" style="font-size: large;">Overall Threat Occurrence Probability</th>
                         <td class="text-center">
-                            <span style="font-size: large" [ngClass]="{
+                            <span style="font-size: large; border: 1px dashed;" [ngClass]="{
                             'low': overallDataThreat.likelihood === threatLikelihoodEnum.LOW,
                             'medium': overallDataThreat.likelihood === threatLikelihoodEnum.MEDIUM,
                             'high': overallDataThreat.likelihood === threatLikelihoodEnum.HIGH
