@@ -16,8 +16,8 @@
                 <table class="table table-striped">
                     <thead class="thead-light">
                     <tr>
-                        <th class="text-center" style="font-size: large;">Threat Area</th>
-                        <th class="text-center" style="font-size: large;">Likelihood</th>
+                        <th class="text-center" style="font-size: large;">Assessment Area</th>
+                        <th class="text-center" style="font-size: large;">Probability</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -34,7 +34,7 @@
                         </td>
                     </tr>
                     <tr *ngIf="overallDataThreat" class="thead-light">
-                        <th class="text-center" style="font-size: large;">Overall Threat Occurrence Likelihood</th>
+                        <th class="text-center" style="font-size: large;">Overall Threat Occurrence Probability</th>
                         <td class="text-center">
                             <span style="font-size: large" [ngClass]="{
                             'low': overallDataThreat.likelihood === threatLikelihoodEnum.LOW,
