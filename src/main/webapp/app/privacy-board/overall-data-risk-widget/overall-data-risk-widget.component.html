@@ -4,12 +4,19 @@
 <ng-container *ngIf="!loading">
     <mat-accordion>
         <mat-expansion-panel [expanded]="true">
-            <mat-expansion-panel-header>
+            <mat-expansion-panel-header [collapsedHeight]="'auto'" [expandedHeight]="'auto'">
                 <mat-panel-title>
-                    <h2 style="font-size: large;">
+                    <h2 class="my-2" style="font-size: large;">
                         <a href="javascript:void(0);" class="collapse-link">Evaluation of Risk</a>
                     </h2>
                 </mat-panel-title>
+                <mat-panel-description>
+                    <p class="my-2 text-justify">
+                        Irrespective of the final result of this exercise, feel free to adjust the obtained risk level,
+                        taking into account specific characteristics of the data processing operation (that have been missed during
+                        the assessment process) and provide adequate justification for this adjustment.
+                    </p>
+                </mat-panel-description>
             </mat-expansion-panel-header>
 
             <div class="table-responsive" style="border-top: none; border-left: none;">
@@ -114,6 +121,17 @@
                 </table>
             </div>
             <br/>
+            <div *ngIf="selectedDataRiskLevelConfig" class="row">
+                <div class="col-md-3 text-center">
+                </div>
+                <div class="col-md-8">
+                    <p class="text-justify">
+                        Please report here any notes about the risk criteria that has been used to evaluate the data processing operation.
+                    </p>
+                </div>
+                <div class="col-md-1 text-center">
+                </div>
+            </div>
             <div *ngIf="selectedDataRiskLevelConfig" class="row">
                 <div class="col-md-3 text-center">
                     <ng-container *ngFor="let riskLevel of dataRiskLevels">
