@@ -2,6 +2,7 @@ import { BaseEntity } from './../../shared';
 import {DataRecipientMgm} from '../data-recipient-mgm';
 import {SecurityImpactMgm} from '../security-impact-mgm';
 import {DataThreatMgm} from '../data-threat-mgm';
+import {CompanyProfileMgm} from "../company-profile-mgm";
 
 export class DataOperationMgm implements BaseEntity {
     constructor(
@@ -12,10 +13,10 @@ export class DataOperationMgm implements BaseEntity {
         public dataSubject?: string,
         public processingMeans?: string,
         public dataProcessor?: string,
-        public companyProfile?: BaseEntity,
-        public recipients: DataRecipientMgm[] = [],
-        public impacts: SecurityImpactMgm[] = [],
-        public threats: DataThreatMgm[] = []
+        public companyProfile?: CompanyProfileMgm,
+        public recipients?: DataRecipientMgm[],
+        public impacts?: SecurityImpactMgm[],
+        public threats?: DataThreatMgm[]
     ) {
     }
 }

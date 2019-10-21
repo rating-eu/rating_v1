@@ -37,6 +37,7 @@ import {Role} from "../../entities/enumerations/Role.enum";
 import {forkJoin} from "rxjs/observable/forkJoin";
 import {of} from "rxjs/observable/of";
 import {Status} from "../../entities/enumerations/Status.enum";
+import {JhiAlertService} from "ng-jhipster";
 
 @Component({
     selector: 'jhi-dynamic-questionnaire',
@@ -80,6 +81,7 @@ export class DynamicQuestionnaireComponent implements OnInit, OnChanges, OnDestr
                 private dataOperationMgmService: DataOperationMgmService,
                 private dynamicQuestionnaireService: DynamicQuestionnaireService,
                 private dataSharingService: DataSharingService,
+                private alertService: JhiAlertService,
                 private changeDetector: ChangeDetectorRef) {
     }
 
@@ -227,14 +229,23 @@ export class DynamicQuestionnaireComponent implements OnInit, OnChanges, OnDestr
             dataOperation$ = this.dataOperationMgmService.create(this.dataOperation);
         }
 
-        this.subscriptions.push(
-            dataOperation$.subscribe((operationResponse: HttpResponse<DataOperationMgm>) => {
-                this.dataOperation = operationResponse.body;
-                this.dataSharingService.dataOperation = this.dataOperation;
+        dataOperation$.toPromise().then((operationResponse: HttpResponse<DataOperationMgm>) => {
+            this.dataOperation = operationResponse.body;
+            this.dataSharingService.dataOperation = this.dataOperation;
 
+            // await can be used only inside async function
+            (async () => {
+                // Do something before delay
+                this.alertService.success('hermeneutApp.messages.saved', null, 'top');
+
+                await this.delay(1000);
+
+                // Do something after
                 this.router.navigate(['/privacy-board']);
-            })
-        );
+            })();
+        }).catch((reason) => {
+            this.alertService.error('hermeneutApp.messages.error', null, 'top');
+        });
     }
 
     public submitSecurityImpacts() {
@@ -257,9 +268,21 @@ export class DynamicQuestionnaireComponent implements OnInit, OnChanges, OnDestr
                             this._dataOperation = operationResponse.body;
                             this.dataSharingService.dataOperation = this._dataOperation;
 
-                            this.router.navigate(['/privacy-board']);
+                            // await can be used only inside async function
+                            (async () => {
+                                // Do something before delay
+                                this.alertService.success('hermeneutApp.messages.saved', null, 'top');
+
+                                await this.delay(1000);
+
+                                // Do something after
+                                this.router.navigate(['/privacy-board']);
+                            })();
                         }
-                    );
+                    ).catch((reason) => {
+                        this.alertService.error('hermeneutApp.messages.error', null, 'top');
+                    }
+                );
             } else {
                 // To perform this step a DataOperation must already exist.
             }
@@ -296,11 +319,22 @@ export class DynamicQuestionnaireComponent implements OnInit, OnChanges, OnDestr
                                 this._dataOperation = operationResponse.body;
                                 this.dataSharingService.dataOperation = this._dataOperation;
 
-                                this.router.navigate(['/privacy-board']);
+                                // await can be used only inside async function
+                                (async () => {
+                                    // Do something before delay
+                                    this.alertService.success('hermeneutApp.messages.saved', null, 'top');
+
+                                    await this.delay(1000);
+
+                                    // Do something after
+                                    this.router.navigate(['/privacy-board']);
+                                })();
                             });
                     }
                 }
-            );
+            ).catch((reason) => {
+                this.alertService.error('hermeneutApp.messages.error', null, 'top');
+            });
         }
     }
 
@@ -540,5 +574,10 @@ export class DynamicQuestionnaireComponent implements OnInit, OnChanges, OnDestr
                 }
             });
         }
+    }
+
+    // Delay functions
+    private delay(ms: number) {
+        return new Promise(resolve => setTimeout(resolve, ms));
     }
 }

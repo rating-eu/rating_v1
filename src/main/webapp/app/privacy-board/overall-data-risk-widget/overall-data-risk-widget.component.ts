@@ -15,6 +15,7 @@ import {EventManagerService} from "../../data-sharing/event-manager.service";
 import {Event} from "../../data-sharing/event.model";
 import {EventType} from "../../entities/enumerations/EventType.enum";
 import {ActionType} from "../../entities/enumerations/ActionType.enum";
+import {JhiAlertService} from "ng-jhipster";
 
 @Component({
     selector: 'jhi-overall-data-risk-widget',
@@ -51,6 +52,7 @@ export class OverallDataRiskWidgetComponent implements OnInit, OnDestroy {
                 private overallDataRiskService: OverallDataRiskMgmService,
                 private riskWidgetService: OverallDataRiskWidgetService,
                 private eventManagerService: EventManagerService,
+                private alertService: JhiAlertService,
                 private changeDetector: ChangeDetectorRef) {
     }
 
@@ -176,7 +178,12 @@ export class OverallDataRiskWidgetComponent implements OnInit, OnDestroy {
                         if (this.changeDetector && !(this.changeDetector as ViewRef).destroyed) {
                             this.changeDetector.detectChanges();
                         }
+
+                        this.alertService.success('hermeneutApp.messages.saved', null, 'top');
                     }
+                })
+                .catch((reason) => {
+                    this.alertService.error('hermeneutApp.messages.error', null, 'top');
                 });
         }
     }
@@ -184,7 +191,7 @@ export class OverallDataRiskWidgetComponent implements OnInit, OnDestroy {
     private mapRiskLevelConfigs(riskLevelConfigs: DataRiskLevelConfigMgm[]) {
         const configsMap: Map<DataThreatLikelihood, Map<DataImpact, DataRiskLevelConfigMgm>> = new Map();
 
-        if(riskLevelConfigs && riskLevelConfigs.length){
+        if (riskLevelConfigs && riskLevelConfigs.length) {
             this.riskLevelConfigs.forEach((config: DataRiskLevelConfigMgm) => {
                 const likelihood: DataThreatLikelihood = config.likelihood;
                 const impact: DataImpact = config.impact;
@@ -203,5 +210,10 @@ export class OverallDataRiskWidgetComponent implements OnInit, OnDestroy {
         }
 
         return configsMap;
+    }
+
+    // Delay functions
+    private delay(ms: number) {
+        return new Promise(resolve => setTimeout(resolve, ms));
     }
 }
