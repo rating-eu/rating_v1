@@ -179,12 +179,11 @@ export class OverallDataRiskWidgetComponent implements OnInit, OnDestroy {
                             this.changeDetector.detectChanges();
                         }
 
-                        // await can be used only inside async function
-                        (async () => {
-                            // Do something before delay
-                            this.alertService.success('hermeneutApp.messages.saved', null, 'top');
-                        })();
+                        this.alertService.success('hermeneutApp.messages.saved', null, 'top');
                     }
+                })
+                .catch((reason) => {
+                    this.alertService.error('hermeneutApp.messages.error', null, 'top');
                 });
         }
     }
@@ -192,7 +191,7 @@ export class OverallDataRiskWidgetComponent implements OnInit, OnDestroy {
     private mapRiskLevelConfigs(riskLevelConfigs: DataRiskLevelConfigMgm[]) {
         const configsMap: Map<DataThreatLikelihood, Map<DataImpact, DataRiskLevelConfigMgm>> = new Map();
 
-        if(riskLevelConfigs && riskLevelConfigs.length){
+        if (riskLevelConfigs && riskLevelConfigs.length) {
             this.riskLevelConfigs.forEach((config: DataRiskLevelConfigMgm) => {
                 const likelihood: DataThreatLikelihood = config.likelihood;
                 const impact: DataImpact = config.impact;

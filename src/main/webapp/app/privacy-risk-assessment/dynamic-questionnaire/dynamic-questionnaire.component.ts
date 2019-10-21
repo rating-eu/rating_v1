@@ -229,23 +229,23 @@ export class DynamicQuestionnaireComponent implements OnInit, OnChanges, OnDestr
             dataOperation$ = this.dataOperationMgmService.create(this.dataOperation);
         }
 
-        this.subscriptions.push(
-            dataOperation$.subscribe((operationResponse: HttpResponse<DataOperationMgm>) => {
-                this.dataOperation = operationResponse.body;
-                this.dataSharingService.dataOperation = this.dataOperation;
+        dataOperation$.toPromise().then((operationResponse: HttpResponse<DataOperationMgm>) => {
+            this.dataOperation = operationResponse.body;
+            this.dataSharingService.dataOperation = this.dataOperation;
 
-                // await can be used only inside async function
-                (async () => {
-                    // Do something before delay
-                    this.alertService.success('hermeneutApp.messages.saved', null, 'top');
+            // await can be used only inside async function
+            (async () => {
+                // Do something before delay
+                this.alertService.success('hermeneutApp.messages.saved', null, 'top');
 
-                    await this.delay(1000);
+                await this.delay(1000);
 
-                    // Do something after
-                    this.router.navigate(['/privacy-board']);
-                })();
-            })
-        );
+                // Do something after
+                this.router.navigate(['/privacy-board']);
+            })();
+        }).catch((reason) => {
+            this.alertService.error('hermeneutApp.messages.error', null, 'top');
+        });
     }
 
     public submitSecurityImpacts() {
@@ -279,7 +279,10 @@ export class DynamicQuestionnaireComponent implements OnInit, OnChanges, OnDestr
                                 this.router.navigate(['/privacy-board']);
                             })();
                         }
-                    );
+                    ).catch((reason) => {
+                        this.alertService.error('hermeneutApp.messages.error', null, 'top');
+                    }
+                );
             } else {
                 // To perform this step a DataOperation must already exist.
             }
@@ -329,7 +332,9 @@ export class DynamicQuestionnaireComponent implements OnInit, OnChanges, OnDestr
                             });
                     }
                 }
-            );
+            ).catch((reason) => {
+                this.alertService.error('hermeneutApp.messages.error', null, 'top');
+            });
         }
     }
 
