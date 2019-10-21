@@ -24,7 +24,7 @@
                     <tr *ngFor="let threatArea of threatAreas">
                         <th class="text-left">{{threatArea | replace:'_':' ' | titlecase}}</th>
                         <td class="text-center">
-                            <span style="font-size: medium" [ngClass]="{
+                            <span *ngIf="dataThreatsMap.has(threatArea)" style="font-size: medium" [ngClass]="{
                             'low': dataThreatsMap.get(threatArea).likelihood === threatLikelihoodEnum.LOW,
                             'medium': dataThreatsMap.get(threatArea).likelihood === threatLikelihoodEnum.MEDIUM,
                             'high': dataThreatsMap.get(threatArea).likelihood === threatLikelihoodEnum.HIGH
