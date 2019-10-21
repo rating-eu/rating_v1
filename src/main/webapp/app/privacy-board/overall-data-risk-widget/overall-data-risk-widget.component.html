@@ -10,15 +10,14 @@
                         <a href="javascript:void(0);" class="collapse-link">Risk Evaluation</a>
                     </h2>
                 </mat-panel-title>
-                <mat-panel-description>
-                    <p class="my-2 text-justify">
-                        Irrespective of the final result of this exercise, feel free to adjust the obtained risk level,
-                        taking into account specific characteristics of the data processing operation (that have been missed during
-                        the assessment process) and provide adequate justification for this adjustment.
-                    </p>
-                </mat-panel-description>
             </mat-expansion-panel-header>
 
+            <p class="my-2 text-justify">
+                Irrespective of the final result of this exercise, feel free to adjust the obtained risk level,
+                taking into account specific characteristics of the data processing operation (that have been missed during
+                the assessment process) and provide adequate justification for this adjustment.
+            </p>
+            
             <div class="table-responsive" style="border-top: none; border-left: none;">
                 <table *ngIf="threatLikelihoods && dataImpacts" class="table">
                     <thead class="thead-light">
