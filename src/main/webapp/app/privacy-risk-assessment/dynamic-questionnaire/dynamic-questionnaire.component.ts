@@ -37,6 +37,7 @@ import {Role} from "../../entities/enumerations/Role.enum";
 import {forkJoin} from "rxjs/observable/forkJoin";
 import {of} from "rxjs/observable/of";
 import {Status} from "../../entities/enumerations/Status.enum";
+import {JhiAlertService} from "ng-jhipster";
 
 @Component({
     selector: 'jhi-dynamic-questionnaire',
@@ -80,6 +81,7 @@ export class DynamicQuestionnaireComponent implements OnInit, OnChanges, OnDestr
                 private dataOperationMgmService: DataOperationMgmService,
                 private dynamicQuestionnaireService: DynamicQuestionnaireService,
                 private dataSharingService: DataSharingService,
+                private alertService: JhiAlertService,
                 private changeDetector: ChangeDetectorRef) {
     }
 
@@ -232,7 +234,16 @@ export class DynamicQuestionnaireComponent implements OnInit, OnChanges, OnDestr
                 this.dataOperation = operationResponse.body;
                 this.dataSharingService.dataOperation = this.dataOperation;
 
-                this.router.navigate(['/privacy-board']);
+                // await can be used only inside async function
+                (async () => {
+                    // Do something before delay
+                    this.alertService.success('hermeneutApp.messages.saved', null, 'top');
+
+                    await this.delay(1000);
+
+                    // Do something after
+                    this.router.navigate(['/privacy-board']);
+                })();
             })
         );
     }
@@ -257,7 +268,16 @@ export class DynamicQuestionnaireComponent implements OnInit, OnChanges, OnDestr
                             this._dataOperation = operationResponse.body;
                             this.dataSharingService.dataOperation = this._dataOperation;
 
-                            this.router.navigate(['/privacy-board']);
+                            // await can be used only inside async function
+                            (async () => {
+                                // Do something before delay
+                                this.alertService.success('hermeneutApp.messages.saved', null, 'top');
+
+                                await this.delay(1000);
+
+                                // Do something after
+                                this.router.navigate(['/privacy-board']);
+                            })();
                         }
                     );
             } else {
@@ -296,7 +316,16 @@ export class DynamicQuestionnaireComponent implements OnInit, OnChanges, OnDestr
                                 this._dataOperation = operationResponse.body;
                                 this.dataSharingService.dataOperation = this._dataOperation;
 
-                                this.router.navigate(['/privacy-board']);
+                                // await can be used only inside async function
+                                (async () => {
+                                    // Do something before delay
+                                    this.alertService.success('hermeneutApp.messages.saved', null, 'top');
+
+                                    await this.delay(1000);
+
+                                    // Do something after
+                                    this.router.navigate(['/privacy-board']);
+                                })();
                             });
                     }
                 }
@@ -540,5 +569,10 @@ export class DynamicQuestionnaireComponent implements OnInit, OnChanges, OnDestr
                 }
             });
         }
+    }
+
+    // Delay functions
+    private delay(ms: number) {
+        return new Promise(resolve => setTimeout(resolve, ms));
     }
 }
