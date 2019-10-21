@@ -28,7 +28,11 @@ import {QualitativeComponent} from "./qualitative/qualitative.component";
 const routes: Routes = [
     {
         path: '',
-        component: ChoiceComponent
+        component: ChoiceComponent,
+        data: {
+            pageTitle: 'impactEvaluation.page.title',
+            authorities: ['ROLE_CISO']
+        },
     },
     {
         path: 'quantitative',
@@ -37,8 +41,8 @@ const routes: Routes = [
                 path: '',
                 component: ImpactEvaluationComponent,
                 data: {
-                    pageTitle: 'hermeneutApp.impactEvaluation.home.title',
-                    authorities: ['ROLE_CISO'],
+                    pageTitle: 'impactEvaluation.quantitative.page.title',
+                    authorities: ['ROLE_CISO']
                 },
                 canActivate: [UserRouteAccessService]
             },
@@ -74,6 +78,10 @@ const routes: Routes = [
     {
         path: 'qualitative',
         component: QualitativeComponent,
+        data:{
+            pageTitle: 'impactEvaluation.qualitative.page.title',
+            authorities: ['ROLE_CISO']
+        },
         children: []
     }
 ];
