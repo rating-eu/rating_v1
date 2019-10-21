@@ -1,6 +1,5 @@
 package eu.hermeneut.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -65,15 +64,6 @@ public class DataOperation implements Serializable {
 
     @ManyToOne
     private CompanyProfile companyProfile;
-
-    @OneToOne(mappedBy = "operation", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-    private OverallSecurityImpact overallSecurityImpact;
-
-    @OneToOne(mappedBy = "operation", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-    private OverallDataThreat overallDataThreat;
-
-    @OneToOne(mappedBy = "operation", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-    private OverallDataRisk overallDataRisk;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here, do not remove
     public Long getId() {
@@ -248,33 +238,6 @@ public class DataOperation implements Serializable {
 
     public void setCompanyProfile(CompanyProfile companyProfile) {
         this.companyProfile = companyProfile;
-    }
-
-    @JsonIgnore
-    public OverallSecurityImpact getOverallSecurityImpact() {
-        return overallSecurityImpact;
-    }
-
-    public void setOverallSecurityImpact(OverallSecurityImpact overallSecurityImpact) {
-        this.overallSecurityImpact = overallSecurityImpact;
-    }
-
-    @JsonIgnore
-    public OverallDataThreat getOverallDataThreat() {
-        return overallDataThreat;
-    }
-
-    public void setOverallDataThreat(OverallDataThreat overallDataThreat) {
-        this.overallDataThreat = overallDataThreat;
-    }
-
-    @JsonIgnore
-    public OverallDataRisk getOverallDataRisk() {
-        return overallDataRisk;
-    }
-
-    public void setOverallDataRisk(OverallDataRisk overallDataRisk) {
-        this.overallDataRisk = overallDataRisk;
     }
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here, do not remove

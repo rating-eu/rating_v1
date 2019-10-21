@@ -16,31 +16,41 @@
  */
 
 .low {
-    background-color: #2ecc71;
+    background-color: #2ECC71A6;
     color: black;
 }
 
-.low-medium {
-    background-color: #f1c40f;
+.low-background {
+    background-color: #2ECC71A5;
     color: black;
 }
 
 .medium {
-    background-color: #f39c12;
+    background-color: #F39C12A6;
     color: black;
 }
 
-.medium-high {
-    background-color: #d35400;
+.medium-background {
+    background-color: #F39C12A5;
     color: black;
 }
 
 .high {
-    background-color:#c0392b;
+    background-color:#C0392BA6;
+    color: black;
+}
+
+.high-background {
+    background-color:#C0392BA5;
     color: black;
 }
 
 .very-high{
-    background-color:#FF0000;
+    background-color:#FF0000A6;
+    color: black;
+}
+
+.very-high-background{
+    background-color:#FF0000A5;
     color: black;
 }

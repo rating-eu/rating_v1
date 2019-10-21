@@ -3,10 +3,8 @@ package eu.hermeneut.service.impl;
 import eu.hermeneut.aop.annotation.gdpr.OverallDataRiskHook;
 import eu.hermeneut.aop.annotation.gdpr.OverallSecurityImpactHook;
 import eu.hermeneut.domain.*;
-import eu.hermeneut.service.DataOperationService;
+import eu.hermeneut.service.*;
 import eu.hermeneut.repository.DataOperationRepository;
-import eu.hermeneut.service.DataRiskLevelConfigService;
-import eu.hermeneut.service.GDPRQuestionnaireStatusService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +30,15 @@ public class DataOperationServiceImpl implements DataOperationService {
 
     @Autowired
     private DataRiskLevelConfigService dataRiskLevelConfigService;
+
+    @Autowired
+    private OverallSecurityImpactService overallSecurityImpactService;
+
+    @Autowired
+    private OverallDataThreatService overallDataThreatService;
+
+    @Autowired
+    private OverallDataRiskService overallDataRiskService;
 
     public DataOperationServiceImpl(DataOperationRepository dataOperationRepository) {
         this.dataOperationRepository = dataOperationRepository;
@@ -116,8 +123,26 @@ public class DataOperationServiceImpl implements DataOperationService {
 
         List<DataRiskLevelConfig> riskLevelConfigs = this.dataRiskLevelConfigService.findAllByDataOperation(id);
 
-        if(riskLevelConfigs != null && !riskLevelConfigs.isEmpty()){
+        if (riskLevelConfigs != null && !riskLevelConfigs.isEmpty()) {
             this.dataRiskLevelConfigService.delete(riskLevelConfigs);
+        }
+
+        OverallSecurityImpact overallSecurityImpact = this.overallSecurityImpactService.findOneByDataOperation(id);
+
+        if (overallSecurityImpact != null) {
+            this.overallSecurityImpactService.delete(overallSecurityImpact.getId());
+        }
+
+        OverallDataThreat overallDataThreat = this.overallDataThreatService.findOneByDataOperation(id);
+
+        if (overallDataThreat != null) {
+            this.overallDataThreatService.delete(overallDataThreat.getId());
+        }
+
+        OverallDataRisk overallDataRisk = this.overallDataRiskService.findOneByDataOperation(id);
+
+        if (overallDataRisk != null) {
+            this.overallDataRiskService.delete(overallDataRisk.getId());
         }
 
         log.debug("Request to delete DataOperation : {}", id);

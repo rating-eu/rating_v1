@@ -3,7 +3,11 @@
 </ng-container>
 <ng-container *ngIf="!loading">
     <mat-accordion *ngIf="dataOperation">
-        <mat-expansion-panel [expanded]="true">
+        <mat-expansion-panel *ngIf="privacyBoardStatus"
+                             [expanded]="privacyBoardStatus.operationDefinition !== statusEnum.FULL
+                                || privacyBoardStatus.impactEvaluation !== statusEnum.FULL
+                                || privacyBoardStatus.threatIdentification !== statusEnum.FULL
+                                || privacyBoardStatus.riskEvaluation !== statusEnum.FULL">
             <mat-expansion-panel-header>
                 <mat-panel-title>
                     <h2>
@@ -29,7 +33,7 @@
                     </thead>
                     <tbody>
                     <tr>
-                        <td>Definition of the processing operation and its context</td>
+                        <td>Operation Definition</td>
                         <td>This step is the starting point of the risk assessment and is fundamental for the data
                             controller in order to
                             define the boundaries of the data processing system (under assessment) and its relevant
@@ -56,7 +60,7 @@
                     </tr>
                     <tr>
                         <td>Impact Evaluation</td>
-                        <td>Based on the analysis of Step 1, the data controller at this stage must assess the impact on
+                        <td>Based on the analysis of the previous phase, the data controller at this stage must assess the impact on
                             the
                             fundamental rights and freedoms of the individuals, resulting from the possible loss of
                             security of the personal data.
@@ -73,7 +77,7 @@
                         <td class="text-center">
                             <ng-container>
                                 <a *ngIf="privacyBoardStatus && privacyBoardStatus.operationDefinition === statusEnum.FULL"
-                                    [routerLink]="['/privacy-risk-assessment/impact']">
+                                   [routerLink]="['/privacy-risk-assessment/impact']">
                                     <i placement="top" class="fa fa-pencil-square-o fa-lg"
                                        aria-hidden="true"></i>
                                 </a>
@@ -81,7 +85,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td>Definition of possible threats and evaluation of their likelihood</td>
+                        <td>Threats Likelihood Evaluation</td>
                         <td>At this step, the scope for the data controller is to understand the threats related to the
                             overall environment
                             of the personal data processing (external or internal) and assess their likelihood (threat
@@ -100,7 +104,7 @@
                         <td class="text-center">
                             <ng-container>
                                 <a *ngIf="privacyBoardStatus && privacyBoardStatus.operationDefinition === statusEnum.FULL && privacyBoardStatus.impactEvaluation === statusEnum.FULL"
-                                    [routerLink]="['/privacy-risk-assessment/threat']">
+                                   [routerLink]="['/privacy-risk-assessment/threat']">
                                     <i placement="top" class="fa fa-pencil-square-o fa-lg"
                                        aria-hidden="true"></i>
                                 </a>
@@ -108,7 +112,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td>Evaluation of risk</td>
+                        <td>Risk Evaluation</td>
                         <td>After evaluating the impact of the personal data processing operation and the relevant
                             threat occurrence
                             probability, the final evaluation of risk is possible.

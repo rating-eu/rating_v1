@@ -1,4 +1,8 @@
 <div *ngIf="questionnaire && dataOperation" [ngSwitch]="questionnaire.purpose" style="margin-bottom: 10%">
+    <div style="position: fixed; z-index: 1000; width: 100%">
+        <jhi-alert></jhi-alert>
+        <jhi-alert-error></jhi-alert-error>
+    </div>
     <div *ngSwitchCase="purposeEnum.OPERATION_CONTEXT">
         <form *ngIf="form" [formGroup]="form">
             <div *ngFor="let question of questions; trackBy: trackByID"

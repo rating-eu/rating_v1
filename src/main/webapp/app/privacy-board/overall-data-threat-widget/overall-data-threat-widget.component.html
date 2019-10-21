@@ -3,11 +3,11 @@
 </ng-container>
 <ng-container *ngIf="!loading">
     <mat-accordion>
-        <mat-expansion-panel>
+        <mat-expansion-panel [expanded]="true">
             <mat-expansion-panel-header>
                 <mat-panel-title>
                     <h2 style="font-size: large;">
-                        <a href="javascript:void(0);" class="collapse-link">Threats</a>
+                        <a href="javascript:void(0);" class="collapse-link">Threats Likelihood Evaluation</a>
                     </h2>
                 </mat-panel-title>
             </mat-expansion-panel-header>
@@ -16,15 +16,15 @@
                 <table class="table table-striped">
                     <thead class="thead-light">
                     <tr>
-                        <th class="text-center" style="font-size: large;">Threat Area</th>
-                        <th class="text-center" style="font-size: large;">Likelihood</th>
+                        <th class="text-center" style="font-size: large;">Assessment Area</th>
+                        <th class="text-center" style="font-size: large;">Probability</th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr *ngFor="let threatArea of threatAreas">
                         <th class="text-left">{{threatArea | replace:'_':' ' | titlecase}}</th>
                         <td class="text-center">
-                            <span style="font-size: medium" [ngClass]="{
+                            <span *ngIf="dataThreatsMap.has(threatArea)" style="font-size: medium" [ngClass]="{
                             'low': dataThreatsMap.get(threatArea).likelihood === threatLikelihoodEnum.LOW,
                             'medium': dataThreatsMap.get(threatArea).likelihood === threatLikelihoodEnum.MEDIUM,
                             'high': dataThreatsMap.get(threatArea).likelihood === threatLikelihoodEnum.HIGH
@@ -34,9 +34,9 @@
                         </td>
                     </tr>
                     <tr *ngIf="overallDataThreat" class="thead-light">
-                        <th class="text-center" style="font-size: large;">Overall Threat Occurrence Likelihood</th>
+                        <th class="text-center" style="font-size: large;">Overall Threat Occurrence Probability</th>
                         <td class="text-center">
-                            <span style="font-size: large" [ngClass]="{
+                            <span style="font-size: large; border: 1px dashed;" [ngClass]="{
                             'low': overallDataThreat.likelihood === threatLikelihoodEnum.LOW,
                             'medium': overallDataThreat.likelihood === threatLikelihoodEnum.MEDIUM,
                             'high': overallDataThreat.likelihood === threatLikelihoodEnum.HIGH

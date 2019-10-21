@@ -3,22 +3,31 @@
 </ng-container>
 <ng-container *ngIf="!loading">
     <mat-accordion>
-        <mat-expansion-panel>
-            <mat-expansion-panel-header>
+        <mat-expansion-panel [expanded]="true">
+            <mat-expansion-panel-header [collapsedHeight]="'auto'" [expandedHeight]="'auto'">
                 <mat-panel-title>
-                    <h2 style="font-size: large;">
-                        <a href="javascript:void(0);" class="collapse-link">Risks</a>
+                    <h2 class="my-2" style="font-size: large;">
+                        <a href="javascript:void(0);" class="collapse-link">Risk Evaluation</a>
                     </h2>
                 </mat-panel-title>
+                <mat-panel-description>
+                    <p class="my-2 text-justify">
+                        Irrespective of the final result of this exercise, feel free to adjust the obtained risk level,
+                        taking into account specific characteristics of the data processing operation (that have been missed during
+                        the assessment process) and provide adequate justification for this adjustment.
+                    </p>
+                </mat-panel-description>
             </mat-expansion-panel-header>
 
             <div class="table-responsive" style="border-top: none; border-left: none;">
-                <table *ngIf="threatLikelihoods && dataImpacts" class="table table-striped">
+                <table *ngIf="threatLikelihoods && dataImpacts" class="table">
                     <thead class="thead-light">
                     <tr>
                         <th style="visibility: hidden;"></th>
                         <th style="visibility: hidden;"></th>
-                        <th class="text-center align-middle" style="font-size: large;" [colSpan]="dataImpacts.length">Impact Level</th>
+                        <th class="text-center align-middle" style="font-size: large;" [colSpan]="dataImpacts.length">
+                            Impact Level
+                        </th>
                     </tr>
                     <tr>
                         <th style="visibility: hidden;"></th>
@@ -35,50 +44,94 @@
                                 Likelihood
                             </p>
                         </th>
-                        <th class="text-center align-middle" style="font-size: large;">{{likelihood | replace:'_':' ' | titlecase}}</th>
-                        <td *ngFor="let impact of dataImpacts" class="text-center align-middle">
-                            <i *ngIf="selectedDataRiskLevelConfig && riskLevelConfigsMap.has(likelihood)
+                        <th class="text-center align-middle"
+                            style="font-size: large;">{{likelihood | replace:'_':' ' | titlecase}}</th>
+                        <td *ngFor="let impact of dataImpacts" class="text-center align-middle pointer"
+                            (click)="selectDataRiskLevelConfig(riskLevelConfigsMap.get(likelihood).get(impact))"
+                            [ngClass]="{
+                                'low-background': riskLevelConfigsMap.get(likelihood).get(impact).risk === dataRiskLevelEnum.LOW,
+                                'medium-background': riskLevelConfigsMap.get(likelihood).get(impact).risk === dataRiskLevelEnum.MEDIUM,
+                                'high-background': riskLevelConfigsMap.get(likelihood).get(impact).risk === dataRiskLevelEnum.HIGH
+                                }"
+                        >
+                            <i *ngIf="selectedDataRiskLevelConfig
+                                && riskLevelConfigsMap.has(likelihood)
                                 && riskLevelConfigsMap.get(likelihood).has(impact)
                                 && riskLevelConfigsMap.get(likelihood).get(impact)===selectedDataRiskLevelConfig"
-                               class="fas fa-check"></i>
+                               class="fas fa-edit"></i>
                             <span
-                                *ngIf="riskLevelConfigsMap.has(likelihood) && riskLevelConfigsMap.get(likelihood).has(impact)"
+                                *ngIf="riskLevelConfigsMap.has(likelihood)
+                                        && riskLevelConfigsMap.get(likelihood).has(impact)
+                                        && overallDataThreat && overallDataThreat.likelihood === likelihood
+                                        && overallSecurityImpact && overallSecurityImpact.impact === impact"
                                 (click)="selectDataRiskLevelConfig(riskLevelConfigsMap.get(likelihood).get(impact))"
+                                [style.border]="overallDataThreat && overallDataThreat.likelihood === likelihood
+                                                && overallSecurityImpact && overallSecurityImpact.impact === impact ? '1px dashed' : 'none'"
                                 style="font-size: medium" [ngClass]="{
                                 'low': riskLevelConfigsMap.get(likelihood).get(impact).risk === dataRiskLevelEnum.LOW,
                                 'medium': riskLevelConfigsMap.get(likelihood).get(impact).risk === dataRiskLevelEnum.MEDIUM,
                                 'high': riskLevelConfigsMap.get(likelihood).get(impact).risk === dataRiskLevelEnum.HIGH
                             }"
-                                class="badge badge-pill badge-secondary pointer">{{riskLevelConfigsMap.get(likelihood).get(impact).risk | replace:'_':' ' | titlecase}}</span>
-                            <i *ngIf="overallDataThreat && overallDataThreat.likelihood === likelihood && overallSecurityImpact && overallSecurityImpact.impact === impact"
-                               class="fas fa-flag"></i>
+                                class="badge badge-pill badge-secondary">
+                                <ng-container
+                                    *ngIf="overallDataThreat && overallDataThreat.likelihood === likelihood && overallSecurityImpact && overallSecurityImpact.impact === impact">
+                                {{riskLevelConfigsMap.get(likelihood).get(impact).risk | replace:'_':' ' | titlecase}}
+                                </ng-container>
+                            </span>
                         </td>
                     </tr>
                     <!--The remaining Likelihoods-->
                     <tr *ngFor="let likelihood of threatLikelihoods | slice:1" class="thead-light">
-                        <th class="text-center align-middle" style="font-size: large;">{{likelihood | replace:'_':' ' | titlecase}}</th>
-                        <td *ngFor="let impact of dataImpacts" class="text-center align-middle">
-                            <i *ngIf="selectedDataRiskLevelConfig && riskLevelConfigsMap.has(likelihood)
+                        <th class="text-center align-middle"
+                            style="font-size: large;">{{likelihood | replace:'_':' ' | titlecase}}</th>
+                        <td *ngFor="let impact of dataImpacts" class="text-center align-middle pointer"
+                            (click)="selectDataRiskLevelConfig(riskLevelConfigsMap.get(likelihood).get(impact))"
+                            [ngClass]="{
+                                'low-background': riskLevelConfigsMap.get(likelihood).get(impact).risk === dataRiskLevelEnum.LOW,
+                                'medium-background': riskLevelConfigsMap.get(likelihood).get(impact).risk === dataRiskLevelEnum.MEDIUM,
+                                'high-background': riskLevelConfigsMap.get(likelihood).get(impact).risk === dataRiskLevelEnum.HIGH
+                                }"
+                        >
+                            <i *ngIf="selectedDataRiskLevelConfig
+                            && riskLevelConfigsMap.has(likelihood)
                             && riskLevelConfigsMap.get(likelihood).has(impact)
                             && riskLevelConfigsMap.get(likelihood).get(impact)===selectedDataRiskLevelConfig"
-                               class="fas fa-check"></i>
+                               class="fas fa-edit"></i>
                             <span
-                                *ngIf="riskLevelConfigsMap.has(likelihood) && riskLevelConfigsMap.get(likelihood).has(impact)"
-                                (click)="selectDataRiskLevelConfig(riskLevelConfigsMap.get(likelihood).get(impact))"
+                                *ngIf="riskLevelConfigsMap.has(likelihood)
+                                        && riskLevelConfigsMap.get(likelihood).has(impact)
+                                        && overallDataThreat && overallDataThreat.likelihood === likelihood
+                                        && overallSecurityImpact && overallSecurityImpact.impact === impact"
+                                [style.border]="overallDataThreat && overallDataThreat.likelihood === likelihood
+                                                && overallSecurityImpact && overallSecurityImpact.impact === impact ? '1px dashed' : 'none'"
                                 style="font-size: medium" [ngClass]="{
                                 'low': riskLevelConfigsMap.get(likelihood).get(impact).risk === dataRiskLevelEnum.LOW,
                                 'medium': riskLevelConfigsMap.get(likelihood).get(impact).risk === dataRiskLevelEnum.MEDIUM,
                                 'high': riskLevelConfigsMap.get(likelihood).get(impact).risk === dataRiskLevelEnum.HIGH
                             }"
-                                class="badge badge-pill badge-secondary pointer">{{riskLevelConfigsMap.get(likelihood).get(impact).risk | replace:'_':' ' | titlecase}}</span>
-                            <i *ngIf="overallDataThreat && overallDataThreat.likelihood === likelihood && overallSecurityImpact && overallSecurityImpact.impact === impact"
-                               class="fas fa-flag"></i>
+                                class="badge badge-pill badge-secondary">
+                                <ng-container
+                                    *ngIf="overallDataThreat && overallDataThreat.likelihood === likelihood && overallSecurityImpact && overallSecurityImpact.impact === impact">
+                                {{riskLevelConfigsMap.get(likelihood).get(impact).risk | replace:'_':' ' | titlecase}}
+                                </ng-container>
+                            </span>
                         </td>
                     </tr>
                     </tbody>
                 </table>
             </div>
             <br/>
+            <div *ngIf="selectedDataRiskLevelConfig" class="row">
+                <div class="col-md-3 text-center">
+                </div>
+                <div class="col-md-8">
+                    <p class="text-justify">
+                        Please report here any notes about the risk criteria that has been used to evaluate the data processing operation.
+                    </p>
+                </div>
+                <div class="col-md-1 text-center">
+                </div>
+            </div>
             <div *ngIf="selectedDataRiskLevelConfig" class="row">
                 <div class="col-md-3 text-center">
                     <ng-container *ngFor="let riskLevel of dataRiskLevels">

@@ -3,11 +3,11 @@
 </ng-container>
 <ng-container *ngIf="!loading">
     <mat-accordion>
-        <mat-expansion-panel>
+        <mat-expansion-panel [expanded]="true">
             <mat-expansion-panel-header>
                 <mat-panel-title>
                     <h2 style="font-size: large;">
-                        <a href="javascript:void(0);" class="collapse-link">Impacts</a>
+                        <a href="javascript:void(0);" class="collapse-link">Impact Assessment</a>
                     </h2>
                 </mat-panel-title>
             </mat-expansion-panel-header>
@@ -36,7 +36,7 @@
                     <tr *ngIf="overallSecurityImpact" class="thead-light">
                         <th [colSpan]="securityPillars.length - 1" class="text-center" style="font-size: large;">Overall Impact Evaluation</th>
                         <td class="text-center">
-                            <span style="font-size: large" [ngClass]="{
+                            <span style="font-size: large; border: 1px dashed;" [ngClass]="{
                             'low': overallSecurityImpact.impact === dataImpactEnum.LOW,
                             'medium': overallSecurityImpact.impact === dataImpactEnum.MEDIUM,
                             'high': overallSecurityImpact.impact === dataImpactEnum.HIGH,
