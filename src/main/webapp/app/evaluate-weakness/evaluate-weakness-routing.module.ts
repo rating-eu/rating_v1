@@ -34,6 +34,7 @@ const routes: Routes = [
                 path: 'questionnaires/:purpose',
                 loadChildren: '../questionnaires/questionnaires.module#QuestionnairesModule',
                 data: {
+                    pageTitle: 'evaluate-weakness.questionnaires.page.title',
                     authorities: ['ROLE_CISO', 'ROLE_EXTERNAL_AUDIT'],
                 },
                 canActivate: [UserRouteAccessService]
