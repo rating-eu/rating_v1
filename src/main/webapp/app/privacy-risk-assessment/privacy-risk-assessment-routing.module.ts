@@ -9,23 +9,38 @@ import {DataRiskComponent} from "./data-risk/data-risk.component";
 const routes: Routes = [
     {
         path: 'operations',
-        component: DataOperationsComponent
+        component: DataOperationsComponent,
+        data: {
+            pageTitle: 'gdpr.data-operations.page.title'
+        }
     },
     {
         path: 'context',
-        component: DataOperationContextComponent
+        component: DataOperationContextComponent,
+        data: {
+            pageTitle: 'gdpr.operation-context.page.title'
+        }
     },
     {
         path: 'impact',
-        component: SecurityImpactComponent
+        component: SecurityImpactComponent,
+        data: {
+            pageTitle: 'gdpr.operation-impacts.page.title'
+        }
     },
     {
         path: 'threat',
-        component: DataThreatComponent
+        component: DataThreatComponent,
+        data: {
+            pageTitle: 'gdpr.operation-threats.page.title'
+        }
     },
     {
         path: 'risk',
-        component: DataRiskComponent
+        component: DataRiskComponent,
+        data: {
+            pageTitle: 'gdpr.operation-risks.page.title'
+        }
     }
 ];
 
