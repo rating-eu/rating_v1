@@ -196,5 +196,6 @@
     <include file="config/liquibase/changelog/20191022120933_added_join_table_question_areas.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20191022122042_added_entity_constraints_question.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20191022134826_load_vulnerability_areas.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/201910221625003_load_question_vulnerability_areas.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
 </databaseChangeLog>
