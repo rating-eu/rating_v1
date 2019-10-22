@@ -56,6 +56,7 @@
     <include file="config/liquibase/changelog/20190924115811_added_entity_Translation.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20191010142907_added_entity_OverallDataRisk.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20191011102510_added_entity_DataRiskLevelConfig.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20191022095226_added_entity_VulnerabilityArea.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
     <include file="config/liquibase/changelog/20180410085152_added_entity_constraints_CompanyProfile.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180410085155_added_entity_constraints_SelfAssessment.xml" relativeToChangelogFile="false"/>
