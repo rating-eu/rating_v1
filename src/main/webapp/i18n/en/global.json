@@ -60,6 +60,7 @@
                 "translationMgm": "Translation",
                 "overallDataRiskMgm": "Overall Data Risk",
                 "dataRiskLevelConfigMgm": "Data Risk Level Config",
+                "vulnerabilityAreaMgm": "Vulnerability Area",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {
