@@ -194,5 +194,6 @@
     <include file="config/liquibase/changelog/20191011121559_added_UK_data_risk_level_config_DataOperation_Likelihood_Impact.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20191015165349_add_SecurityImpact_UK_DataOperation_SecurityPillar.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20191022120933_added_join_table_question_areas.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20191022122042_added_entity_constraints_question.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
 </databaseChangeLog>
