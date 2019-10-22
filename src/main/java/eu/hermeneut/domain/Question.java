@@ -87,7 +87,7 @@ public class Question implements Serializable {
                inverseJoinColumns = @JoinColumn(name="answers_id", referencedColumnName="id"))
     private Set<Answer> answers = new HashSet<>();
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     @JoinTable(name = "question_areas",
                joinColumns = @JoinColumn(name="questions_id", referencedColumnName="id"),
