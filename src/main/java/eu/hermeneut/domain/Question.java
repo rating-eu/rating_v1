@@ -87,6 +87,13 @@ public class Question implements Serializable {
                inverseJoinColumns = @JoinColumn(name="answers_id", referencedColumnName="id"))
     private Set<Answer> answers = new HashSet<>();
 
+    @ManyToMany
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    @JoinTable(name = "question_areas",
+               joinColumns = @JoinColumn(name="questions_id", referencedColumnName="id"),
+               inverseJoinColumns = @JoinColumn(name="areas_id", referencedColumnName="id"))
+    private Set<VulnerabilityArea> areas = new HashSet<>();
+
     @ManyToOne
     private Questionnaire questionnaire;
 
@@ -226,6 +233,29 @@ public class Question implements Serializable {
 
     public void setAnswers(Set<Answer> answers) {
         this.answers = answers;
+    }
+
+    public Set<VulnerabilityArea> getAreas() {
+        return areas;
+    }
+
+    public Question areas(Set<VulnerabilityArea> vulnerabilityAreas) {
+        this.areas = vulnerabilityAreas;
+        return this;
+    }
+
+    public Question addAreas(VulnerabilityArea vulnerabilityArea) {
+        this.areas.add(vulnerabilityArea);
+        return this;
+    }
+
+    public Question removeAreas(VulnerabilityArea vulnerabilityArea) {
+        this.areas.remove(vulnerabilityArea);
+        return this;
+    }
+
+    public void setAreas(Set<VulnerabilityArea> vulnerabilityAreas) {
+        this.areas = vulnerabilityAreas;
     }
 
     public Questionnaire getQuestionnaire() {
