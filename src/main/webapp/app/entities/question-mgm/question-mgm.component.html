@@ -1,121 +1,97 @@
-<!--
-  ~ Copyright 2019 HERMENEUT Consortium
-  ~  
-  ~ Licensed under the Apache License, Version 2.0 (the "License");
-  ~ you may not use this file except in compliance with the License.
-  ~ You may obtain a copy of the License at
-  ~  
-  ~     http://www.apache.org/licenses/LICENSE-2.0
-  ~  
-  ~ Unless required by applicable law or agreed to in writing, software
-  ~ distributed under the License is distributed on an "AS IS" BASIS,
-  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  ~ See the License for the specific language governing permissions and
-  ~ limitations under the License.
-  ~
-  -->
-
-<div class="row">
-
-    <div class="col-lg-9 col-md-12">
-    </div>
-    <div class="col-lg-3 col-md-12">
-        <div class="card-box">
-            <button class="btn btn-block btn-primary waves-effect waves-light btn-info jh-create-entity create-question-mgm"
-                (click)="popUpService.setOnUserBehaviour()"
-                [routerLink]="['/', { outlets: { popup: ['question-mgm-new'] } }]">
-                <i class="fas fa-plus"></i>
-                <span class="hidden-sm-down" jhiTranslate="hermeneutApp.question.home.createLabel">
-                    Create new Question
-                </span>
-            </button>
-        </div>
-    </div>
-
-</div>
-<div class="card-box">
+<div>
     <h2>
         <span jhiTranslate="hermeneutApp.question.home.title">Questions</span>
-        <!-- <button class="btn btn-primary float-right jh-create-entity create-question-mgm" [routerLink]="['/', { outlets: { popup: ['question-mgm-new'] } }]">
+        <button class="btn btn-primary float-right jh-create-entity create-question-mgm" [routerLink]="['/', { outlets: { popup: ['question-mgm-new'] } }]">
             <span class="fa fa-plus"></span>
-            <span class="hidden-sm-down"  jhiTranslate="hermeneutApp.question.home.createLabel">
+            <span  jhiTranslate="hermeneutApp.question.home.createLabel">
             Create new Question
             </span>
-        </button> -->
+        </button>
     </h2>
     <jhi-alert></jhi-alert>
+    <div class="row">
+    </div>
+    <br/>
     <div class="table-responsive" *ngIf="questions">
         <table class="table table-striped">
             <thead>
-                <tr>
-                    <!--<th><span jhiTranslate="global.field.id">ID</span></th>-->
-                    <th><span jhiTranslate="hermeneutApp.question.name">Name</span></th>
-                    <th><span jhiTranslate="hermeneutApp.question.created">Created</span></th>
-                    <th><span jhiTranslate="hermeneutApp.question.modified">Modified</span></th>
-                    <th><span jhiTranslate="hermeneutApp.question.order">Order</span></th>
-                    <th><span jhiTranslate="hermeneutApp.question.questionType">Question Type</span></th>
-                    <th><span jhiTranslate="hermeneutApp.question.answerType">Answer Type</span></th>
-                    <th><span jhiTranslate="hermeneutApp.question.attackStrategies">Attack Strategies</span></th>
-                    <th><span jhiTranslate="hermeneutApp.question.answers">Answers</span></th>
-                    <th><span jhiTranslate="hermeneutApp.question.questionnaire">Questionnaire</span></th>
-                    <th><span jhiTranslate="hermeneutApp.question.threatAgent">Threat Agent</span></th>
-                    <th></th>
-                </tr>
+            <tr>
+            <th><span jhiTranslate="global.field.id">ID</span></th>
+            <th><span jhiTranslate="hermeneutApp.question.name">Name</span></th>
+            <th><span jhiTranslate="hermeneutApp.question.created">Created</span></th>
+            <th><span jhiTranslate="hermeneutApp.question.modified">Modified</span></th>
+            <th><span jhiTranslate="hermeneutApp.question.order">Order</span></th>
+            <th><span jhiTranslate="hermeneutApp.question.questionType">Question Type</span></th>
+            <th><span jhiTranslate="hermeneutApp.question.answerType">Answer Type</span></th>
+            <th><span jhiTranslate="hermeneutApp.question.attackStrategies">Attack Strategies</span></th>
+            <th><span jhiTranslate="hermeneutApp.question.answers">Answers</span></th>
+            <th><span jhiTranslate="hermeneutApp.question.areas">Areas</span></th>
+            <th><span jhiTranslate="hermeneutApp.question.questionnaire">Questionnaire</span></th>
+            <th><span jhiTranslate="hermeneutApp.question.threatAgent">Threat Agent</span></th>
+            <th></th>
+            </tr>
             </thead>
             <tbody>
-                <tr *ngFor="let question of questions ;trackBy: trackId">
-                    <!--<td><a [routerLink]="['../question-mgm', question.id ]">{{question.id}}</a></td>-->
-                    <td>{{question.name}}</td>
-                    <td>{{question.created | date:'medium'}}</td>
-                    <td>{{question.modified | date:'medium'}}</td>
-                    <td>{{question.order}}</td>
-                    <td jhiTranslate="{{'hermeneutApp.QuestionType.' + question.questionType}}">{{question.questionType}}</td>
-                    <td jhiTranslate="{{'hermeneutApp.AnswerType.' + question.answerType}}">{{question.answerType}}</td>
-                    <td>
-                        <span *ngFor="let attackStrategies of question.attackStrategies; let last = last">
-                            <a class="form-control-static" [routerLink]="['../attack-strategy-mgm', attackStrategies?.id ]">{{attackStrategies.name}}</a>{{last
-                            ? '' : ', '}}
+            <tr *ngFor="let question of questions ;trackBy: trackId">
+                <td><a [routerLink]="['../question-mgm', question.id ]">{{question.id}}</a></td>
+                <td>{{question.name}}</td>
+                <td>{{question.created | date:'medium'}}</td>
+                <td>{{question.modified | date:'medium'}}</td>
+                <td>{{question.order}}</td>
+                <td jhiTranslate="{{'hermeneutApp.QuestionType.' + question.questionType}}">{{question.questionType}}</td>
+                <td jhiTranslate="{{'hermeneutApp.AnswerType.' + question.answerType}}">{{question.answerType}}</td>
+                <td>
+                    <span *ngFor="let attackStrategies of question.attackStrategies; let last = last">
+                            <a class="form-control-static" [routerLink]="['../attack-strategy-mgm', attackStrategies?.id ]">{{attackStrategies.name}}</a>{{last ? '' : ', '}}
                         </span>
-                    </td>
-                    <td>
-                        <span *ngFor="let answers of question.answers; let last = last">
-                            <a class="form-control-static" [routerLink]="['../answer-mgm', answers?.id ]">{{answers.name}}</a>{{last
-                            ? '' : ', '}}
+                </td>
+                <td>
+                    <span *ngFor="let answers of question.answers; let last = last">
+                            <a class="form-control-static" [routerLink]="['../answer-mgm', answers?.id ]">{{answers.name}}</a>{{last ? '' : ', '}}
                         </span>
-                    </td>
-                    <td>
-                        <div *ngIf="question.questionnaire">
-                            <a [routerLink]="['../questionnaire-mgm', question.questionnaire?.id ]">{{question.questionnaire?.name}}</a>
-                        </div>
-                    </td>
-                    <td>
-                        <div *ngIf="question.threatAgent">
-                            <a [routerLink]="['../threat-agent-mgm', question.threatAgent?.id ]">{{question.threatAgent?.name}}</a>
-                        </div>
-                    </td>
-                    <td class="text-right">
-                        <div class="btn-group flex-btn-group-container">
-                            <button type="submit" [routerLink]="['../question-mgm', question.id ]" class="btn btn-info btn-sm">
-                                <span class="fa fa-eye"></span>
-                                <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
-                            </button>
-                            <button type="submit"
-                                (click)="popUpService.setOnUserBehaviour()"
+                </td>
+                <td>
+                    <span *ngFor="let areas of question.areas; let last = last">
+                            <a class="form-control-static" [routerLink]="['../vulnerability-area-mgm', areas?.id ]">{{areas.name}}</a>{{last ? '' : ', '}}
+                        </span>
+                </td>
+                <td>
+                    <div *ngIf="question.questionnaire">
+                        <a [routerLink]="['../questionnaire-mgm', question.questionnaire?.id ]" >{{question.questionnaire?.name}}</a>
+                    </div>
+                </td>
+                <td>
+                    <div *ngIf="question.threatAgent">
+                        <a [routerLink]="['../threat-agent-mgm', question.threatAgent?.id ]" >{{question.threatAgent?.name}}</a>
+                    </div>
+                </td>
+                <td class="text-right">
+                    <div class="btn-group flex-btn-group-container">
+                        <button type="submit"
+                                [routerLink]="['../question-mgm', question.id ]"
+                                class="btn btn-info btn-sm">
+                            <span class="fa fa-eye"></span>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                        </button>
+                        <button type="submit"
                                 [routerLink]="['/', { outlets: { popup: 'question-mgm/'+ question.id + '/edit'} }]"
-                                replaceUrl="true" queryParamsHandling="merge" class="btn btn-primary btn-sm">
-                                <span class="fa fa-pencil"></span>
-                                <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
-                            </button>
-                            <button type="submit"
-                                (click)="popUpService.setOnUserBehaviour()"
+                                replaceUrl="true"
+                                queryParamsHandling="merge"
+                                class="btn btn-primary btn-sm">
+                            <span class="fa fa-pencil"></span>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                        </button>
+                        <button type="submit"
                                 [routerLink]="['/', { outlets: { popup: 'question-mgm/'+ question.id + '/delete'} }]"
-                                replaceUrl="true" queryParamsHandling="merge" class="btn btn-danger btn-sm">
-                                <span class="fa fa-remove"></span>
-                                <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
-                            </button>
-                        </div>
-                    </td>
-                </tr>
+                                replaceUrl="true"
+                                queryParamsHandling="merge"
+                                class="btn btn-danger btn-sm">
+                            <span class="fa fa-remove"></span>
+                            <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                        </button>
+                    </div>
+                </td>
+            </tr>
             </tbody>
         </table>
     </div>
