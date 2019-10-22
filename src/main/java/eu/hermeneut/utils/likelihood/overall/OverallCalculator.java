@@ -1,12 +1,12 @@
 /*
  * Copyright 2019 HERMENEUT Consortium
- *  
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *  
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- *  
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -49,9 +49,9 @@ public class OverallCalculator {
      * taking into account all the possible AttackStrategies
      * against the identified ThreatAgent.
      *
-     * @param threatAgent
-     * @param attackMap
-     * @return
+     * @param threatAgent The ThreatAgent taken into account.
+     * @param attackMap   The Map of the AttackStrategies by Level and Phase.
+     * @return The value of the OverallInitialLikelihood.
      */
     public float overallInitialLikelihoodByThreatAgent(ThreatAgent threatAgent, AttackMap attackMap) {
 
@@ -68,10 +68,7 @@ public class OverallCalculator {
                 Phase phase = internalEntry.getKey();
                 logger.debug("Phase: " + phase);
 
-                Set<AugmentedAttackStrategy> phaseAttackSet = internalEntry.getValue();
-                //Remove attacks that are not feasible by the ThreatAgent
-                //Warning: it may contain no AttackStrategy if the ThreatAgent has low skills.
-                phaseAttackSet = phaseAttackSet.stream().filter(augmentedAttackStrategy -> ThreatAttackFilter.isAttackPossible(threatAgent, augmentedAttackStrategy)).collect(Collectors.toSet());
+                Set<AugmentedAttackStrategy> phaseAttackSet = this.toPhaseAttacksSet(threatAgent, internalEntry);
 
                 //Warning: it may remain NULL if the ThreatAgent has low skills.
                 AugmentedAttackStrategy localMax = null;
@@ -138,6 +135,15 @@ public class OverallCalculator {
         return Precision.round(numerator / DENOMINATOR, 2);
     }
 
+    /**
+     * Calculates the Overall Contextual Likelihood,
+     * taking into account all the possible AttackStrategies
+     * against the identified ThreatAgent.
+     *
+     * @param threatAgent The ThreatAgent taken into account.
+     * @param attackMap   The Map of the AttackStrategies by Level and Phase.
+     * @return The value of the OverallContextualLikelihood.
+     */
     public float overallContextualLikelihoodByThreatAgent(ThreatAgent threatAgent, AttackMap attackMap) {
 
         //Placeholder to store the Max of each Attack phase.
@@ -153,10 +159,7 @@ public class OverallCalculator {
                 Phase phase = internalEntry.getKey();
                 logger.debug("Phase: " + phase);
 
-                Set<AugmentedAttackStrategy> phaseAttacksSet = internalEntry.getValue();
-                //Remove attacks that are not feasible by the ThreatAgent
-                //Warning: it may contain no AttackStrategy if the ThreatAgent has low skills.
-                phaseAttacksSet = phaseAttacksSet.stream().filter(augmentedAttackStrategy -> ThreatAttackFilter.isAttackPossible(threatAgent, augmentedAttackStrategy)).collect(Collectors.toSet());
+                Set<AugmentedAttackStrategy> phaseAttacksSet = this.toPhaseAttacksSet(threatAgent, internalEntry);
 
                 //Warning: it may remain NULL if the ThreatAgent has low skills.
                 AugmentedAttackStrategy localMax = null;
@@ -206,6 +209,15 @@ public class OverallCalculator {
         return Precision.round(numerator / DENOMINATOR, 2);
     }
 
+    /**
+     * Calculates the Overall Initial Likelihood,
+     * taking into account all the possible AttackStrategies
+     * against the identified ThreatAgent.
+     *
+     * @param threatAgent The ThreatAgent taken into account.
+     * @param attackMap   The Map of the AttackStrategies by Level and Phase.
+     * @return The value of the OverallRefinedLikelihood.
+     */
     public float overallRefinedLikelihoodByThreatAgent(ThreatAgent threatAgent, AttackMap attackMap) {
         //Placeholder to store the Max of each Attack phase.
         Map<Phase, AugmentedAttackStrategy> phaseMaxMap = new HashMap<>();
@@ -221,10 +233,7 @@ public class OverallCalculator {
                 Phase phase = phaseAttacks.getKey();
                 logger.debug("Phase: " + phase);
 
-                Set<AugmentedAttackStrategy> phaseAttacksSet = phaseAttacks.getValue();
-                //Remove attacks that are not feasible by the ThreatAgent
-                //Warning: it may contain no AttackStrategy if the ThreatAgent has low skills.
-                phaseAttacksSet = phaseAttacksSet.stream().filter(augmentedAttackStrategy -> ThreatAttackFilter.isAttackPossible(threatAgent, augmentedAttackStrategy)).collect(Collectors.toSet());
+                Set<AugmentedAttackStrategy> phaseAttacksSet = this.toPhaseAttacksSet(threatAgent, phaseAttacks);
 
                 //Warning: it may remain NULL if the ThreatAgent has low skills.
                 AugmentedAttackStrategy localMax = null;
@@ -272,5 +281,14 @@ public class OverallCalculator {
         }
 
         return Precision.round(numerator / DENOMINATOR, 2);
+    }
+
+    // Helper methods
+    private Set<AugmentedAttackStrategy> toPhaseAttacksSet(ThreatAgent threatAgent, Map.Entry<Phase, Set<AugmentedAttackStrategy>> internalEntry) {
+        Set<AugmentedAttackStrategy> phaseAttacksSet = internalEntry.getValue();
+        //Remove attacks that are not feasible by the ThreatAgent
+        //Warning: it may contain no AttackStrategy if the ThreatAgent has low skills.
+        phaseAttacksSet = phaseAttacksSet.stream().filter(augmentedAttackStrategy -> ThreatAttackFilter.isAttackPossible(threatAgent, augmentedAttackStrategy)).collect(Collectors.toSet());
+        return phaseAttacksSet;
     }
 }
