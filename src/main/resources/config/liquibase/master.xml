@@ -198,5 +198,6 @@
     <include file="config/liquibase/changelog/20191022134826_load_vulnerability_areas.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20191022162503_load_question_vulnerability_areas.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20191022172125_load_LPA_question_vulnerability_areas.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20191023075817_added_UC_VulnerabilityArea_name.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
 </databaseChangeLog>
