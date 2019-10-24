@@ -1,0 +1,28 @@
+{
+    "fluentMethods": true,
+    "relationships": [],
+    "fields": [
+        {
+            "fieldName": "key",
+            "fieldType": "ConfigKey",
+            "fieldValues": "SERVICE_EMAIL",
+            "fieldValidateRules": [
+                "required"
+            ]
+        },
+        {
+            "fieldName": "value",
+            "fieldType": "String",
+            "fieldValidateRules": [
+                "required"
+            ]
+        }
+    ],
+    "changelogDate": "20191024152116",
+    "entityTableName": "system_config",
+    "dto": "no",
+    "pagination": "no",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "angularJSSuffix": "mgm"
+}

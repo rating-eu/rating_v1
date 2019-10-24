@@ -1,0 +1,23 @@
+
+{
+    "hermeneutApp": {
+        "systemConfig" : {
+            "home": {
+                "title": "SystemConfigs",
+                "createLabel": "Créer un nouveau System Config",
+                "createOrEditLabel": "Créer ou éditer un System Config"
+            },
+            "created": "Un nouveau System Config a été créé avec l'identifiant {{ param }}",
+            "updated": "Le System Config avec l'identifiant {{ param }} a été mis à jour",
+            "deleted": "Le System Config avec l'identifiant {{ param }} a été supprimé",
+            "delete": {
+                "question": "Etes-vous certain de vouloir supprimer le System Config {{ id }} ?"
+            },
+            "detail": {
+                "title": "System Config"
+            },
+            "key": "Key",
+            "value": "Value"
+        }
+    }
+}
