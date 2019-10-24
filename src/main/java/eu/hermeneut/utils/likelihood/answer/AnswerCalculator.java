@@ -1,12 +1,12 @@
 /*
  * Copyright 2019 HERMENEUT Consortium
- *  
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *  
+ *
  *     http://www.apache.org/licenses/LICENSE-2.0
- *  
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -17,19 +17,17 @@
 
 package eu.hermeneut.utils.likelihood.answer;
 
-import eu.hermeneut.domain.AnswerWeight;
-import eu.hermeneut.domain.MyAnswer;
+import eu.hermeneut.domain.*;
 import eu.hermeneut.domain.enumeration.AnswerLikelihood;
+import eu.hermeneut.domain.enumeration.ContainerType;
 import eu.hermeneut.domain.enumeration.QuestionType;
 import eu.hermeneut.service.AnswerWeightService;
 import org.apache.commons.math3.util.Precision;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Component
 public class AnswerCalculator {
@@ -64,22 +62,22 @@ public class AnswerCalculator {
     //###################################ANSWERS LIKELIHOOD#######################################
 
     /**
-     * Calculates the likelihood of the given answers.
+     * Calculates the vulnerability of the given answers.
      * Important: all the given MyAnswers must be linked to a SINGLE AttackStrategy for the result to make sense.
      *
      * @param myAnswers The answers about the AttackStrategy
-     * @return the likelihood of the given MyAnswers about a single AttackStrategy.
+     * @return the vulnerability of the given MyAnswers about a single AttackStrategy.
      */
-    public float getAnswersLikelihood(Set<MyAnswer> myAnswers) {
+    public float getAnswersVulnerability(Set<MyAnswer> myAnswers) {
         float numerator = 0;
         float denominator = 0;
 
         for (MyAnswer myAnswer : myAnswers) {
             QuestionType questionType = myAnswer.getQuestion().getQuestionType();
-            AnswerLikelihood answerLikelihood = myAnswer.getAnswer().getLikelihood();
-            AnswerWeight answerWeight = this.getAnswerWeight(questionType, answerLikelihood);
+            AnswerLikelihood vulnerability = myAnswer.getAnswer().getLikelihood();
+            AnswerWeight answerWeight = this.getAnswerWeight(questionType, vulnerability);
 
-            numerator += answerWeight.getWeight() * answerLikelihood.getValue();
+            numerator += answerWeight.getWeight() * vulnerability.getValue();
             denominator += answerWeight.getWeight();
         }
 
@@ -88,6 +86,43 @@ public class AnswerCalculator {
         } else {
             return 0;
         }
+    }
+
+    public float getAnswersVulnerability(Set<MyAnswer> myAnswers, ContainerType containerType) {
+        Set<MyAnswer> myAnswersByContainer = new HashSet<>();
+
+        // Filter the MyAnswers
+        myAnswersByContainer = myAnswers.stream().parallel().filter((myAnswer) -> {
+            Question question = myAnswer.getQuestion();
+
+            if (question != null) {
+                Set<AttackStrategy> attackStrategies = question.getAttackStrategies();
+
+                if (attackStrategies != null && !attackStrategies.isEmpty()) {
+                    boolean isContainerMatching = false;
+
+                    for (AttackStrategy attackStrategy : attackStrategies) {
+                        Set<Level> levels = attackStrategy.getLevels();
+
+                        if (levels != null && !levels.isEmpty()) {
+                            isContainerMatching = levels.stream().anyMatch(level -> containerType.equals(level.getContainer().getContainerType()));
+
+                            if (isContainerMatching) {
+                                break;
+                            }
+                        }
+                    }
+
+                    return isContainerMatching;
+                } else {
+                    return false;
+                }
+            } else {
+                return false;
+            }
+        }).collect(Collectors.toSet());
+
+        return this.getAnswersVulnerability(myAnswersByContainer);
     }
 
     //###################################HELPER METHODS###################################

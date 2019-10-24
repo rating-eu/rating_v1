@@ -73,7 +73,7 @@ public class Question implements Serializable {
     @Column(name = "answer_type", nullable = false)
     private AnswerType answerType;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     @JoinTable(name = "question_attack_strategies",
                joinColumns = @JoinColumn(name="questions_id", referencedColumnName="id"),

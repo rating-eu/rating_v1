@@ -87,14 +87,14 @@ public class AttackStrategy implements Serializable {
                inverseJoinColumns = @JoinColumn(name="mitigations_id", referencedColumnName="id"))
     protected Set<Mitigation> mitigations = new HashSet<>();
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     @JoinTable(name = "attack_strategy_level",
                joinColumns = @JoinColumn(name="attack_strategies_id", referencedColumnName="id"),
                inverseJoinColumns = @JoinColumn(name="levels_id", referencedColumnName="id"))
     protected Set<Level> levels = new HashSet<>();
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     @JoinTable(name = "attack_strategy_phase",
                joinColumns = @JoinColumn(name="attack_strategies_id", referencedColumnName="id"),

@@ -81,7 +81,7 @@ public class AttackStrategyCalculator {
 
             if (myAnswerSet != null) {
 
-                final float refinedVulnerability = this.answerCalculator.getAnswersLikelihood(myAnswerSet);
+                final float refinedVulnerability = this.answerCalculator.getAnswersVulnerability(myAnswerSet);
 
                 if (refinedVulnerability != 0F) {
                     augmentedAttackStrategy.setRefinedVulnerability(Precision.round(refinedVulnerability, 2));
@@ -143,7 +143,7 @@ public class AttackStrategyCalculator {
             logger.debug("MyAnswerSet: " + myAnswerSet);
 
             if (myAnswerSet != null) {
-                final float contextualVulnerability = this.answerCalculator.getAnswersLikelihood(myAnswerSet);
+                final float contextualVulnerability = this.answerCalculator.getAnswersVulnerability(myAnswerSet);
 
                 if (contextualVulnerability != 0F) {
                     augmentedAttackStrategy.setContextualVulnerability(Precision.round(contextualVulnerability, 2));

@@ -22,10 +22,8 @@ import eu.hermeneut.domain.enumeration.ContainerType;
 import eu.hermeneut.domain.enumeration.QuestionnairePurpose;
 import eu.hermeneut.domain.enumeration.Status;
 import eu.hermeneut.exceptions.NotFoundException;
-import eu.hermeneut.service.AnswerService;
-import eu.hermeneut.service.MyAnswerService;
-import eu.hermeneut.service.QuestionService;
-import eu.hermeneut.service.QuestionnaireStatusService;
+import eu.hermeneut.service.*;
+import eu.hermeneut.utils.likelihood.answer.AnswerCalculator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -49,13 +47,21 @@ public class ChartController {
     @Autowired
     private MyAnswerService myAnswerService;
 
-    @PostMapping("/radar/vulnerability/{questionnaireStatusID}")
-    public Map<Long/*VulnerabilityArea.ID*/, Map<ContainerType, Double/*Vulnerability*/>> getVulnerabilityRadar(@PathVariable Long questionnaireStatusID, @RequestBody List<VulnerabilityArea> areas) throws NotFoundException {
+    @Autowired
+    private VulnerabilityAreaService vulnerabilityAreaService;
+
+    @Autowired
+    private AnswerCalculator answerCalculator;
+
+    @GetMapping("/radar/vulnerability/{questionnaireStatusID}")
+    public Map<Long/*VulnerabilityArea.ID*/, Map<ContainerType, Float/*Vulnerability*/>> getVulnerabilityRadar(@PathVariable Long questionnaireStatusID) throws NotFoundException {
 
         QuestionnaireStatus questionnaireStatus = this.questionnaireStatusService.findOne(questionnaireStatusID);
 
         if (questionnaireStatus == null) {
             throw new NotFoundException("QuestionnaireStatus not found!");
+        } else if (questionnaireStatus.getRefinement() != null) { // Switch to the Refinement's one
+            questionnaireStatus = questionnaireStatus.getRefinement();
         }
 
         Questionnaire questionnaire = questionnaireStatus.getQuestionnaire();
@@ -92,6 +98,8 @@ public class ChartController {
             throw new NotFoundException("Questions not found!");
         }
 
+        List<VulnerabilityArea> areas = this.vulnerabilityAreaService.findAll();
+
         // Keep only the Questions belonging to a certain VulnerabilityArea
         if (areas != null && !areas.isEmpty()) {
             Map<Long, VulnerabilityArea> areasMap = areas.stream().parallel().collect(Collectors.toMap(
@@ -110,27 +118,37 @@ public class ChartController {
             }).collect(Collectors.toList());
         }
 
-        Map<Long, List<Question>> questionsByAreaIDMap = questions.stream().parallel()
+        Map<Long/*AreaID*/, List<Question>> questionsByAreaIDMap = questions.stream().parallel()
             .flatMap(question -> question.getAreas().stream().parallel()
                 .map(area -> new AbstractMap.SimpleEntry<VulnerabilityArea, Question>(area, question)))
             .collect(Collectors.groupingBy(o -> o.getKey().getId(), Collectors.mapping(Map.Entry::getValue, Collectors.toList())));
 
+        Map<Long/*AreaID*/, List<MyAnswer>> myAnswersByAreaIDMap = myAnswers.stream().parallel()
+            .flatMap(myAnswer -> myAnswer.getQuestion().getAreas().stream().parallel()
+                .map(area -> new AbstractMap.SimpleEntry<VulnerabilityArea, MyAnswer>(area, myAnswer)))
+            .collect(Collectors.groupingBy(o -> o.getKey().getId(), Collectors.mapping(Map.Entry::getValue, Collectors.toList())));
 
-        // TODO Calculate the vulnerability for each AREA by the corresponding MyANswers previously stored.
 
-        Map<Long/*VulnerabilityArea.ID*/, Map<ContainerType, Double/*Vulnerability*/>> vulnerabilitiesByAreaDataSet = new HashMap<>();
+        Map<Long/*VulnerabilityArea.ID*/, Map<ContainerType, Float/*Vulnerability*/>> vulnerabilitiesByAreaDataSet = new HashMap<>();
 
         if (areas != null && !areas.isEmpty()) {
             Random random = new Random();
 
+            // Calculate the vulnerability for each AREA by the corresponding MyAnswers previously stored.
             for (VulnerabilityArea area : areas) {
-                Map<ContainerType, Double> vulnerabilities = new HashMap<>();
+                List<MyAnswer> areaAnswers = myAnswersByAreaIDMap.get(area.getId());
 
-                vulnerabilities.put(ContainerType.HUMAN, random.nextDouble() * 4 + 1);
-                vulnerabilities.put(ContainerType.IT, random.nextDouble() * 4 + 1);
-                vulnerabilities.put(ContainerType.PHYSICAL, random.nextDouble() * 4 + 1);
+                if (areaAnswers != null && !areaAnswers.isEmpty()) {
+                    Set<MyAnswer> answerSet = new HashSet<>(areaAnswers);
 
-                vulnerabilitiesByAreaDataSet.put(area.getId(), vulnerabilities);
+                    Map<ContainerType, Float> vulnerabilities = new HashMap<>();
+                    
+                    vulnerabilities.put(ContainerType.HUMAN, this.answerCalculator.getAnswersVulnerability(answerSet, ContainerType.HUMAN));
+                    vulnerabilities.put(ContainerType.IT, this.answerCalculator.getAnswersVulnerability(answerSet, ContainerType.IT));
+                    vulnerabilities.put(ContainerType.PHYSICAL, this.answerCalculator.getAnswersVulnerability(answerSet, ContainerType.PHYSICAL));
+
+                    vulnerabilitiesByAreaDataSet.put(area.getId(), vulnerabilities);
+                }
             }
         }
 
