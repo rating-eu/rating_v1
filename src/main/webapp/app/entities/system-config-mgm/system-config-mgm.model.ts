@@ -1,8 +1,5 @@
-import { BaseEntity } from './../../shared';
-
-export const enum ConfigKey {
-    'SERVICE_EMAIL'
-}
+import {BaseEntity} from './../../shared';
+import {ConfigKey} from '../enumerations/configurations/ConfigKey.enum';
 
 export class SystemConfigMgm implements BaseEntity {
     constructor(

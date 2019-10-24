@@ -1,45 +1,55 @@
-import { Injectable } from '@angular/core';
-import { HttpClient, HttpResponse } from '@angular/common/http';
-import { Observable } from 'rxjs/Observable';
-import { SERVER_API_URL } from '../../app.constants';
+import {Injectable} from '@angular/core';
+import {HttpClient, HttpResponse} from '@angular/common/http';
+import {Observable} from 'rxjs/Observable';
+import {SERVER_API_URL} from '../../app.constants';
 
-import { SystemConfigMgm } from './system-config-mgm.model';
-import { createRequestOption } from '../../shared';
+import {SystemConfigMgm} from './system-config-mgm.model';
+import {createRequestOption} from '../../shared';
+import {ConfigKey} from "../enumerations/configurations/ConfigKey.enum";
 
 export type EntityResponseType = HttpResponse<SystemConfigMgm>;
+
+const KEY_PLACEHOLDER = '{key}';
 
 @Injectable()
 export class SystemConfigMgmService {
 
-    private resourceUrl =  SERVER_API_URL + 'api/system-configs';
+    private resourceUrl = SERVER_API_URL + 'api/system-configs';
+    private resourceByKeyUrl = SERVER_API_URL + 'api/system-configs/key/' + KEY_PLACEHOLDER;
 
-    constructor(private http: HttpClient) { }
+    constructor(private http: HttpClient) {
+    }
 
     create(systemConfig: SystemConfigMgm): Observable<EntityResponseType> {
         const copy = this.convert(systemConfig);
-        return this.http.post<SystemConfigMgm>(this.resourceUrl, copy, { observe: 'response' })
+        return this.http.post<SystemConfigMgm>(this.resourceUrl, copy, {observe: 'response'})
             .map((res: EntityResponseType) => this.convertResponse(res));
     }
 
     update(systemConfig: SystemConfigMgm): Observable<EntityResponseType> {
         const copy = this.convert(systemConfig);
-        return this.http.put<SystemConfigMgm>(this.resourceUrl, copy, { observe: 'response' })
+        return this.http.put<SystemConfigMgm>(this.resourceUrl, copy, {observe: 'response'})
             .map((res: EntityResponseType) => this.convertResponse(res));
     }
 
     find(id: number): Observable<EntityResponseType> {
-        return this.http.get<SystemConfigMgm>(`${this.resourceUrl}/${id}`, { observe: 'response'})
+        return this.http.get<SystemConfigMgm>(`${this.resourceUrl}/${id}`, {observe: 'response'})
+            .map((res: EntityResponseType) => this.convertResponse(res));
+    }
+
+    findByKey(key: ConfigKey): Observable<EntityResponseType> {
+        return this.http.get<SystemConfigMgm>(this.resourceByKeyUrl.replace(KEY_PLACEHOLDER, ConfigKey[key]), {observe: 'response'})
             .map((res: EntityResponseType) => this.convertResponse(res));
     }
 
     query(req?: any): Observable<HttpResponse<SystemConfigMgm[]>> {
         const options = createRequestOption(req);
-        return this.http.get<SystemConfigMgm[]>(this.resourceUrl, { params: options, observe: 'response' })
+        return this.http.get<SystemConfigMgm[]>(this.resourceUrl, {params: options, observe: 'response'})
             .map((res: HttpResponse<SystemConfigMgm[]>) => this.convertArrayResponse(res));
     }
 
     delete(id: number): Observable<HttpResponse<any>> {
-        return this.http.delete<any>(`${this.resourceUrl}/${id}`, { observe: 'response'});
+        return this.http.delete<any>(`${this.resourceUrl}/${id}`, {observe: 'response'});
     }
 
     private convertResponse(res: EntityResponseType): EntityResponseType {
