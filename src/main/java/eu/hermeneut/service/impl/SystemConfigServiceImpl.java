@@ -1,5 +1,6 @@
 package eu.hermeneut.service.impl;
 
+import eu.hermeneut.domain.enumeration.ConfigKey;
 import eu.hermeneut.service.SystemConfigService;
 import eu.hermeneut.domain.SystemConfig;
 import eu.hermeneut.repository.SystemConfigRepository;
@@ -71,5 +72,12 @@ public class SystemConfigServiceImpl implements SystemConfigService {
     public void delete(Long id) {
         log.debug("Request to delete SystemConfig : {}", id);
         systemConfigRepository.delete(id);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public SystemConfig findOneByKey(ConfigKey key) {
+        log.debug("Request to get SystemConfig : {}", key);
+        return systemConfigRepository.findOneByKey(key);
     }
 }

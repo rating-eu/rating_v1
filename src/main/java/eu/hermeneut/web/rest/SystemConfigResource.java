@@ -2,6 +2,7 @@ package eu.hermeneut.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import eu.hermeneut.domain.SystemConfig;
+import eu.hermeneut.domain.enumeration.ConfigKey;
 import eu.hermeneut.service.SystemConfigService;
 import eu.hermeneut.web.rest.errors.BadRequestAlertException;
 import eu.hermeneut.web.rest.util.HeaderUtil;
@@ -87,7 +88,21 @@ public class SystemConfigResource {
     public List<SystemConfig> getAllSystemConfigs() {
         log.debug("REST request to get all SystemConfigs");
         return systemConfigService.findAll();
-        }
+    }
+
+    /**
+     * GET  /system-configs/:key : get the "key" systemConfig.
+     *
+     * @param key the key of the systemConfig to retrieve
+     * @return the ResponseEntity with status 200 (OK) and with body the systemConfig, or with status 404 (Not Found)
+     */
+    @GetMapping("/system-configs/key/{key}")
+    @Timed
+    public ResponseEntity<SystemConfig> getSystemConfig(@PathVariable ConfigKey key) {
+        log.debug("REST request to get SystemConfig : {}", key);
+        SystemConfig systemConfig = systemConfigService.findOneByKey(key);
+        return ResponseUtil.wrapOrNotFound(Optional.ofNullable(systemConfig));
+    }
 
     /**
      * GET  /system-configs/:id : get the "id" systemConfig.

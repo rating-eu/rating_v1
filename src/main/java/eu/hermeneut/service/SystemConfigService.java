@@ -1,6 +1,8 @@
 package eu.hermeneut.service;
 
 import eu.hermeneut.domain.SystemConfig;
+import eu.hermeneut.domain.enumeration.ConfigKey;
+
 import java.util.List;
 
 /**
@@ -37,4 +39,12 @@ public interface SystemConfigService {
      * @param id the id of the entity
      */
     void delete(Long id);
+
+    /**
+     * Get the "key" systemConfig.
+     *
+     * @param key the key of the entity
+     * @return the entity
+     */
+    SystemConfig findOneByKey(ConfigKey key);
 }
