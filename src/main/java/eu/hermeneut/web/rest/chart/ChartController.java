@@ -126,9 +126,9 @@ public class ChartController {
             for (VulnerabilityArea area : areas) {
                 Map<ContainerType, Double> vulnerabilities = new HashMap<>();
 
-                vulnerabilities.put(ContainerType.HUMAN, random.nextDouble() * 5 + 1);
-                vulnerabilities.put(ContainerType.IT, random.nextDouble() * 5 + 1);
-                vulnerabilities.put(ContainerType.PHYSICAL, random.nextDouble() * 5 + 1);
+                vulnerabilities.put(ContainerType.HUMAN, random.nextDouble() * 4 + 1);
+                vulnerabilities.put(ContainerType.IT, random.nextDouble() * 4 + 1);
+                vulnerabilities.put(ContainerType.PHYSICAL, random.nextDouble() * 4 + 1);
 
                 vulnerabilitiesByAreaDataSet.put(area.getId(), vulnerabilities);
             }
