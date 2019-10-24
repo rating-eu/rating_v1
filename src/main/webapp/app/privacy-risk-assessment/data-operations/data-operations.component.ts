@@ -74,8 +74,6 @@ export class DataOperationsComponent implements OnInit, OnDestroy {
     }
 
     public selectDataOperation(dataOperation: DataOperationMgm) {
-        console.log('DataOperation: ' + dataOperation.name);
-
         this.dataSharingService.dataOperation = dataOperation;
     }
 

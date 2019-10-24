@@ -64,10 +64,6 @@ export class QuestionControlService {
             group[question.id + '.external.note'] = new FormControl('');
         });
 
-        setTimeout(() => {
-            console.log(group);
-        }, 6000);
-
         const formGroup: FormGroup = new FormGroup(group);
         formGroup.validator = atLeastOneRefinementValidator();
 

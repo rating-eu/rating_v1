@@ -126,8 +126,6 @@ export class DynamicQuestionnaireComponent implements OnInit, OnChanges, OnDestr
     }
 
     ngOnChanges(changes: SimpleChanges): void {
-        console.log('Dynamic Questionnaire OnChanges...');
-
         if (this._dataOperation && this._questionnaire && this._questions) {
             const purpose: GDPRQuestionnairePurpose = this._questionnaire.purpose;
 
@@ -137,8 +135,6 @@ export class DynamicQuestionnaireComponent implements OnInit, OnChanges, OnDestr
                     break;
                 }
                 case GDPRQuestionnairePurpose.IMPACT_EVALUATION: {
-                    console.log('Case ImpactEvaluation...');
-
                     if (this.dataOperation.impacts && this.dataOperation.impacts.length) {
                         this.dataOperation.impacts.forEach((impact: SecurityImpactMgm) => {
                             this.securityImpactsMap.set(impact.securityPillar, impact);
@@ -168,14 +164,9 @@ export class DynamicQuestionnaireComponent implements OnInit, OnChanges, OnDestr
                         });
                     }
 
-                    console.log('SecurityImpactsMap:');
-                    console.log('Keys.length: ' + this.securityImpactsMap.size);
-
                     break;
                 }
                 case GDPRQuestionnairePurpose.THREAT_LIKELIHOOD: {
-                    console.log('Case Threat Likelihood...');
-
                     if (this._dataOperation && this._questionnaire && !this.threatAreasQuestionnaireStatus) {
 
                         if (this.user && this.role) {
@@ -187,14 +178,9 @@ export class DynamicQuestionnaireComponent implements OnInit, OnChanges, OnDestr
                                         this.threatAreasQuestionnaireStatus = response.body;
                                         this.handleThreatAreasQuestionnaireStatus();
                                         this.setOriginalAnswers();
-
-                                        console.log('Got ThreatAreas QuestionnaireStatus...');
                                     }
                                 )
                                 .catch((reason: HttpErrorResponse) => {
-                                        console.log('GDPR QuestionnaireStatus rejected...');
-                                        console.log(reason);
-
                                         if (reason.status === 404) {
                                             // Create the QuestionnaireStatus
                                             this.threatAreasQuestionnaireStatus = new GDPRQuestionnaireStatusMgm();
@@ -249,11 +235,7 @@ export class DynamicQuestionnaireComponent implements OnInit, OnChanges, OnDestr
     }
 
     public submitSecurityImpacts() {
-        console.log('Submit SecurityImpacts...');
-
         if (this._dataOperation.impacts && this.dataOperation.impacts.length) {
-            console.log('Impacts are set on the DataOperation...');
-
             // Filter only the SecurityImpacts with a not null Impact value.
             this._dataOperation.impacts = _.filter(this.dataOperation.impacts, function (securityImpact: SecurityImpactMgm) {
                 return securityImpact.impact != null;
@@ -290,8 +272,6 @@ export class DynamicQuestionnaireComponent implements OnInit, OnChanges, OnDestr
     }
 
     public submitThreatLikelihood() {
-        console.log('Submit ThreatLikelihood...');
-
         if (this.threatAreasQuestionnaireStatus && this.threatAreasQuestionnaireStatus.answers) {
             // Keep only the MyAnswers where the answer is NOT NULL!
             this.threatAreasQuestionnaireStatus.answers = _.filter(this.threatAreasQuestionnaireStatus.answers,

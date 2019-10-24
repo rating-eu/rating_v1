@@ -78,8 +78,6 @@ export class LoginService {
                 return false;
             }
         }).catch((error: any) => {
-            console.log('Error');
-            console.log(error);
             return false;
         }));
     }
