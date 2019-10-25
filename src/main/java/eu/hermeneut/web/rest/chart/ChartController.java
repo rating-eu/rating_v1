@@ -18,12 +18,14 @@
 package eu.hermeneut.web.rest.chart;
 
 import eu.hermeneut.domain.*;
+import eu.hermeneut.domain.enumeration.AnswerLikelihood;
 import eu.hermeneut.domain.enumeration.ContainerType;
 import eu.hermeneut.domain.enumeration.QuestionnairePurpose;
 import eu.hermeneut.domain.enumeration.Status;
 import eu.hermeneut.exceptions.NotFoundException;
 import eu.hermeneut.service.*;
 import eu.hermeneut.utils.likelihood.answer.AnswerCalculator;
+import org.apache.commons.math3.util.Precision;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -142,7 +144,7 @@ public class ChartController {
                     Set<MyAnswer> answerSet = new HashSet<>(areaAnswers);
 
                     Map<ContainerType, Float> vulnerabilities = new HashMap<>();
-                    
+
                     vulnerabilities.put(ContainerType.HUMAN, this.answerCalculator.getAnswersVulnerability(answerSet, ContainerType.HUMAN));
                     vulnerabilities.put(ContainerType.IT, this.answerCalculator.getAnswersVulnerability(answerSet, ContainerType.IT));
                     vulnerabilities.put(ContainerType.PHYSICAL, this.answerCalculator.getAnswersVulnerability(answerSet, ContainerType.PHYSICAL));
@@ -150,6 +152,32 @@ public class ChartController {
                     vulnerabilitiesByAreaDataSet.put(area.getId(), vulnerabilities);
                 }
             }
+
+            int maxContainerVulnerability = AnswerLikelihood.LOW.getValue() * areas.size();
+
+            Map<ContainerType, Float> totalVulnerabilitiesByContainer = new HashMap<>();
+            vulnerabilitiesByAreaDataSet.put(-1L, totalVulnerabilitiesByContainer);
+
+            // Calculate the Total Vulnerability % for each of the containers
+            for (ContainerType containerType : ContainerType.values()) {
+                if (containerType.equals(ContainerType.INTANGIBLE)) {
+                    break;
+                }
+
+                float vulnerabilitiesSum = 0F;
+
+                for (VulnerabilityArea area : areas) {
+                    Map<ContainerType, Float> vulnerabilities = vulnerabilitiesByAreaDataSet.get(area.getId());
+
+                    if (vulnerabilities != null && !vulnerabilities.isEmpty()) {
+                        vulnerabilitiesSum += vulnerabilities.get(containerType);
+                    }
+                }
+
+                float totalVulnerabilityPercentage = Precision.round(vulnerabilitiesSum / maxContainerVulnerability, 2);
+                totalVulnerabilitiesByContainer.put(containerType, totalVulnerabilityPercentage);
+            }
+
         }
 
         return vulnerabilitiesByAreaDataSet;
