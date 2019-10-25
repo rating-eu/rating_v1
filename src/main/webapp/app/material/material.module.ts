@@ -28,7 +28,7 @@ import {
     MatPaginatorModule,
     MatProgressSpinnerModule,
     MatRadioModule,
-    MatSelectModule,
+    MatSelectModule, MatSlideToggleModule,
     MatStepperModule,
     MatTabsModule,
     MatTooltipModule
@@ -50,7 +50,8 @@ import {
         MatPaginatorModule,
         MatSelectModule,
         MatDividerModule,
-        MatCardModule
+        MatCardModule,
+        MatSlideToggleModule
     ],
     exports: [
         MatTabsModule,
@@ -66,7 +67,8 @@ import {
         MatPaginatorModule,
         MatSelectModule,
         MatDividerModule,
-        MatCardModule
+        MatCardModule,
+        MatSlideToggleModule
     ]
 })
 export class MaterialModule {

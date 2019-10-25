@@ -18,6 +18,14 @@
             "ownerSide": true
         },
         {
+            "relationshipType": "many-to-many",
+            "otherEntityRelationshipName": "",
+            "relationshipName": "areas",
+            "otherEntityName": "vulnerabilityArea",
+            "otherEntityField": "name",
+            "ownerSide": true
+        },
+        {
             "relationshipType": "many-to-one",
             "relationshipName": "questionnaire",
             "otherEntityName": "questionnaire",

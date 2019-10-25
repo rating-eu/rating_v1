@@ -1,0 +1,24 @@
+{
+    "employees": {
+        "employee": {
+            "page": {
+                "title": "Person"
+            }
+        },
+        "ciso": {
+            "page": {
+                "title": "CISO People"
+            }
+        },
+        "external": {
+            "page": {
+                "title": "External Auditor People"
+            }
+        },
+        "financial": {
+            "page": {
+                "title": "Financial Deputy People"
+            }
+        }
+    }
+}

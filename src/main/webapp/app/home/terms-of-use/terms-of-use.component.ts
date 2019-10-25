@@ -16,6 +16,9 @@
  */
 
 import {Component, OnDestroy, OnInit} from '@angular/core';
+import {SystemConfigMgm, SystemConfigMgmService} from "../../entities/system-config-mgm";
+import {ConfigKey} from "../../entities/enumerations/configurations/ConfigKey.enum";
+import {HttpErrorResponse, HttpResponse} from "@angular/common/http";
 
 @Component({
     selector: 'jhi-terms-of-use',
@@ -24,11 +27,22 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 })
 export class TermsOfUseComponent implements OnInit, OnDestroy {
 
-    constructor() {
+    public serviceEmailConfig: SystemConfigMgm;
+
+    constructor(private configService: SystemConfigMgmService) {
 
     }
 
     ngOnInit() {
+        this.configService.findByKey(ConfigKey.SERVICE_EMAIL).toPromise()
+            .then((response: HttpResponse<SystemConfigMgm>) => {
+                if (response && response.body) {
+                    this.serviceEmailConfig = response.body;
+                }
+            })
+            .catch((reason: HttpErrorResponse) => {
+                this.serviceEmailConfig = null;
+            });
     }
 
     ngOnDestroy() {

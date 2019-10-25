@@ -32,6 +32,7 @@ import { QuestionnaireMgm, QuestionnaireMgmService } from '../questionnaire-mgm'
 import { ThreatAgentMgm, ThreatAgentMgmService } from '../threat-agent-mgm';
 import { SessionStorageService } from 'ngx-webstorage';
 import { PopUpService } from '../../shared/pop-up-services/pop-up.service';
+import {VulnerabilityAreaMgm, VulnerabilityAreaMgmService} from "../vulnerability-area-mgm";
 
 @Component({
     selector: 'jhi-question-mgm-dialog',
@@ -49,6 +50,7 @@ export class QuestionMgmDialogComponent implements OnInit {
     questionnaires: QuestionnaireMgm[];
 
     threatagents: ThreatAgentMgm[];
+    vulnerabilityAreas: VulnerabilityAreaMgm[];
 
     constructor(
         public activeModal: NgbActiveModal,
@@ -58,6 +60,7 @@ export class QuestionMgmDialogComponent implements OnInit {
         private answerService: AnswerMgmService,
         private questionnaireService: QuestionnaireMgmService,
         private threatAgentService: ThreatAgentMgmService,
+        private vulnerabilityAreaService: VulnerabilityAreaMgmService,
         private eventManager: JhiEventManager
     ) {
     }
@@ -72,6 +75,9 @@ export class QuestionMgmDialogComponent implements OnInit {
             .subscribe((res: HttpResponse<QuestionnaireMgm[]>) => { this.questionnaires = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
         this.threatAgentService.query()
             .subscribe((res: HttpResponse<ThreatAgentMgm[]>) => { this.threatagents = res.body; }, (res: HttpErrorResponse) => this.onError(res.message));
+        this.vulnerabilityAreaService.query().toPromise().then((response: HttpResponse<VulnerabilityAreaMgm[]>) => {
+            this.vulnerabilityAreas = response.body;
+        });
     }
 
     clear() {
@@ -109,6 +115,10 @@ export class QuestionMgmDialogComponent implements OnInit {
     }
 
     trackAttackStrategyById(index: number, item: AttackStrategyMgm) {
+        return item.id;
+    }
+
+    trackVulnerabilityAreaById(index: number, item: VulnerabilityAreaMgm){
         return item.id;
     }
 

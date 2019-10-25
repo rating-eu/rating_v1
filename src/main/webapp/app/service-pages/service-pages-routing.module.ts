@@ -22,7 +22,10 @@ import {ComingSoonComponent} from './coming-soon/coming-soon.component';
 const routes: Routes = [
     {
         path: 'coming-soon',
-        component: ComingSoonComponent
+        component: ComingSoonComponent,
+        data: {
+            pageTitle: 'pages.coming-soon.page.title'
+        }
     }
 ];
 

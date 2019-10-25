@@ -37,10 +37,12 @@
             substantial changes regarding the rights and obligations of the parties will be presented in detail in the
             announcement, but it is also your responsibility to check for such changes. In the announcement it will be
             indicated the date when the changes will apply. If you do not wish to accept the new Terms, you should not
-            continue to use it and you should ask the cancellation of your account (<a
-                href="mailto:paolo.roccetti@eng.it">paolo.roccetti@eng.it</a>). If you continue to use RATING after the
-            date on which the change comes into effect, your use of it indicates your agreement to be bound by the new
-            Terms. <strong>The Terms were last updated 01/02/2019.</strong></p>
+            continue to use it and you should ask for the cancellation of your account<span *ngIf="!serviceEmailConfig">.</span>
+            <span *ngIf="serviceEmailConfig">
+                at <a [href]="'mailto:' + serviceEmailConfig.value">{{serviceEmailConfig.value}}</a>.
+            </span>
+            If you continue to use RATING after the date on which the change comes into effect, your use of it indicates
+            your agreement to be bound by the new Terms. <strong>The Terms were last updated 01/02/2019.</strong></p>
     </li>
     <li>
         <h5>Registration</h5>

@@ -1,20 +1,3 @@
-/*
- * Copyright 2019 HERMENEUT Consortium
- *  
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *  
- *     http://www.apache.org/licenses/LICENSE-2.0
- *  
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- *
- */
-
 /* tslint:disable max-line-length */
 import { ComponentFixture, TestBed, async, inject, fakeAsync, tick } from '@angular/core/testing';
 import { HttpResponse } from '@angular/common/http';
@@ -28,6 +11,7 @@ import { QuestionMgmService } from '../../../../../../main/webapp/app/entities/q
 import { QuestionMgm } from '../../../../../../main/webapp/app/entities/question-mgm/question-mgm.model';
 import { AttackStrategyMgmService } from '../../../../../../main/webapp/app/entities/attack-strategy-mgm';
 import { AnswerMgmService } from '../../../../../../main/webapp/app/entities/answer-mgm';
+import { VulnerabilityAreaMgmService } from '../../../../../../main/webapp/app/entities/vulnerability-area-mgm';
 import { QuestionnaireMgmService } from '../../../../../../main/webapp/app/entities/questionnaire-mgm';
 import { ThreatAgentMgmService } from '../../../../../../main/webapp/app/entities/threat-agent-mgm';
 
@@ -47,6 +31,7 @@ describe('Component Tests', () => {
                 providers: [
                     AttackStrategyMgmService,
                     AnswerMgmService,
+                    VulnerabilityAreaMgmService,
                     QuestionnaireMgmService,
                     ThreatAgentMgmService,
                     QuestionMgmService

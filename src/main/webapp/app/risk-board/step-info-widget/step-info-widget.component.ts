@@ -89,10 +89,6 @@ export class StepInfoWidgetComponent implements OnInit, OnDestroy {
         this.subscriptions.push(
             this.datasharingService.selfAssessment$.pipe(
                 switchMap((newAssessment: SelfAssessmentMgm) => {
-
-                    console.log('Step info: New assessment:');
-                    console.log(newAssessment);
-
                     if (newAssessment) {
                         // Check if there is no self assessment or if it has changed
                         if (!this.selfAssessment || this.selfAssessment.id !== newAssessment.id) {

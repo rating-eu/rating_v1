@@ -1,0 +1,34 @@
+{
+    "gdpr": {
+        "privacy-board": {
+            "page": {
+                "title": "Privacy Board"
+            }
+        },
+        "data-operations": {
+            "page": {
+                "title": "Data Operations"
+            }
+        },
+        "operation-context": {
+            "page": {
+                "title": "Operation Context"
+            }
+        },
+        "operation-impacts": {
+            "page": {
+                "title": "Impact Evaluation"
+            }
+        },
+        "operation-threats": {
+            "page": {
+                "title": "Likelihood Evaluation"
+            }
+        },
+        "operation-risks": {
+            "page": {
+                "title": "Risk Evaluation"
+            }
+        }
+    }
+}

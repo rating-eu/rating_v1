@@ -157,7 +157,6 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
                 this.registerChangeInQuestionnaireStatuses();
 
                 if (this.account && this.user && this.role && this.myCompany && this.myCompany.companyProfile) {
-                    console.log('Calling loadQuestionnaires subscription');
                     this.loadQuestionnaireStatuses();
                 }
             })
@@ -168,11 +167,7 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
     }
 
     private loadQuestionnaireStatuses() {
-        console.log('Loading questionnaires');
-
         if (!this.loadingQuestionnairesSemaphore) {
-            console.log('Inside if ! loading questionnaires semaphore');
-
             this.loadingQuestionnairesSemaphore = true;
 
             const params$ = this.route.params;
@@ -181,9 +176,6 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
             const questionnaireAndStatusesJoin$: Observable<[QuestionnaireMgm, QuestionnaireStatusMgm[]]> = params$.pipe(
                 switchMap((params: Params) => {
                     const routeQuestionnairePurpose = params['purpose'];
-
-                    console.log('Inside Params:');
-                    console.log(routeQuestionnairePurpose);
 
                     switch (routeQuestionnairePurpose) {
                         case QuestionnairePurpose[QuestionnairePurpose.ID_THREAT_AGENT]: {
@@ -242,8 +234,6 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
                     this.questionnaire = response[0];
                     this.questionnaireStatuses = response[1];
 
-                    console.log('Inside Questionnaires and Statuses...');
-
                     if (this.purpose === QuestionnairePurpose.SELFASSESSMENT && this.role === Role.ROLE_CISO) {
                         return this.userService.getExternalAuditsByCompanyProfile(this.myCompany.companyProfile.id)
                             .catch((err) => {
@@ -262,8 +252,6 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
                         } else {
                             this.externalAudits = [];
                         }
-
-                        console.log('Inside How to proceed...');
 
                         if (this.questionnaireStatuses.length === 0) {
                             switch (this.purpose) {
@@ -460,9 +448,6 @@ export class QuestionnairesComponent implements OnInit, OnDestroy {
             this.questionnaireStatusesChangeEventSubscription = this.eventManagerService.observe(EventType.QUESTIONNAIRE_STATUS_LIST_UPDATE)
                 .subscribe(
                     (event: Event) => {
-                        console.log('Event: ');
-                        console.log(event);
-
                         if (this.account && this.user && this.myCompany && this.myCompany.companyProfile) {
                             this.loadQuestionnaireStatuses();
                         }

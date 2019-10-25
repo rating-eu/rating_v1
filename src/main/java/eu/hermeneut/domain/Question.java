@@ -73,7 +73,7 @@ public class Question implements Serializable {
     @Column(name = "answer_type", nullable = false)
     private AnswerType answerType;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     @JoinTable(name = "question_attack_strategies",
                joinColumns = @JoinColumn(name="questions_id", referencedColumnName="id"),
@@ -86,6 +86,13 @@ public class Question implements Serializable {
                joinColumns = @JoinColumn(name="questions_id", referencedColumnName="id"),
                inverseJoinColumns = @JoinColumn(name="answers_id", referencedColumnName="id"))
     private Set<Answer> answers = new HashSet<>();
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    @JoinTable(name = "question_areas",
+               joinColumns = @JoinColumn(name="questions_id", referencedColumnName="id"),
+               inverseJoinColumns = @JoinColumn(name="areas_id", referencedColumnName="id"))
+    private Set<VulnerabilityArea> areas = new HashSet<>();
 
     @ManyToOne
     private Questionnaire questionnaire;
@@ -226,6 +233,29 @@ public class Question implements Serializable {
 
     public void setAnswers(Set<Answer> answers) {
         this.answers = answers;
+    }
+
+    public Set<VulnerabilityArea> getAreas() {
+        return areas;
+    }
+
+    public Question areas(Set<VulnerabilityArea> vulnerabilityAreas) {
+        this.areas = vulnerabilityAreas;
+        return this;
+    }
+
+    public Question addAreas(VulnerabilityArea vulnerabilityArea) {
+        this.areas.add(vulnerabilityArea);
+        return this;
+    }
+
+    public Question removeAreas(VulnerabilityArea vulnerabilityArea) {
+        this.areas.remove(vulnerabilityArea);
+        return this;
+    }
+
+    public void setAreas(Set<VulnerabilityArea> vulnerabilityAreas) {
+        this.areas = vulnerabilityAreas;
     }
 
     public Questionnaire getQuestionnaire() {

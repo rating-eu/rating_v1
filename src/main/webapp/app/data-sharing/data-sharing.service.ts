@@ -87,7 +87,7 @@ export class DataSharingService {
 
     // Vulnerability Assessment
     private _vulnerabilityAssessment: QuestionnaireStatusMgm = null;
-    private _vulnerabilityAssessmentSubject: ReplaySubject<QuestionnaireStatusMgm> = new ReplaySubject<QuestionnaireStatusMgm>();
+    private _vulnerabilityAssessment$: ReplaySubject<QuestionnaireStatusMgm> = new ReplaySubject<QuestionnaireStatusMgm>();
 
     // DataOperation
     private _dataOperation: DataOperationMgm = null;
@@ -328,11 +328,11 @@ export class DataSharingService {
 
     set vulnerabilityAssessment(status: QuestionnaireStatusMgm) {
         this._vulnerabilityAssessment = status;
-        this._vulnerabilityAssessmentSubject.next(this._vulnerabilityAssessment);
+        this._vulnerabilityAssessment$.next(this._vulnerabilityAssessment);
     }
 
     get vulnerabilityAssessment$(): Observable<QuestionnaireStatusMgm> {
-        return this._vulnerabilityAssessmentSubject.asObservable();
+        return this._vulnerabilityAssessment$.asObservable();
     }
 
     // DataOperation property

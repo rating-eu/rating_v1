@@ -1,0 +1,8 @@
+{
+    "hermeneutApp": {
+        "ConfigKey" : {
+            "null": "",
+            "SERVICE_EMAIL": "SERVICE_EMAIL"
+        }
+    }
+}

@@ -16,23 +16,38 @@ const routes: Routes = [
         children: [
             {
                 path: 'employee/:role',
-                component: EmployeeComponent
+                component: EmployeeComponent,
+                data: {
+                    pageTitle: 'employees.employee.page.title'
+                }
             },
             {
                 path: 'employee/:role/:id',
-                component: EmployeeComponent
+                component: EmployeeComponent,
+                data: {
+                    pageTitle: 'employees.employee.page.title'
+                }
             },
             {
                 path: 'ciso',
-                component: CisoComponent
+                component: CisoComponent,
+                data: {
+                    pageTitle: 'employees.ciso.page.title'
+                }
             },
             {
                 path: 'external',
                 component: ExternalAuditorComponent,
+                data: {
+                    pageTitle: 'employees.external.page.title'
+                }
             },
             {
                 path: 'financial',
-                component: FinancialDeputyComponent
+                component: FinancialDeputyComponent,
+                data: {
+                    pageTitle: 'employees.financial.page.title'
+                }
             }
         ]
     }

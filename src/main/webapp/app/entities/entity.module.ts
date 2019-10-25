@@ -27,7 +27,6 @@ import {HermeneutAssetMgmModule} from './asset-mgm/asset-mgm.module';
 import {HermeneutAttackStrategyMgmModule} from './attack-strategy-mgm/attack-strategy-mgm.module';
 import {HermeneutMitigationMgmModule} from './mitigation-mgm/mitigation-mgm.module';
 import {HermeneutQuestionnaireMgmModule} from './questionnaire-mgm/questionnaire-mgm.module';
-import {HermeneutQuestionMgmModule} from './question-mgm/question-mgm.module';
 import {HermeneutAnswerMgmModule} from './answer-mgm/answer-mgm.module';
 import {HermeneutExternalAuditMgmModule} from './external-audit-mgm/external-audit-mgm.module';
 import {HermeneutMyAnswerMgmModule} from './my-answer-mgm/my-answer-mgm.module';
@@ -70,6 +69,9 @@ import { HermeneutGDPRMyAnswerMgmModule } from './gdpr-my-answer-mgm/gdpr-my-ans
 import { HermeneutTranslationMgmModule } from './translation-mgm/translation-mgm.module';
 import { HermeneutOverallDataRiskMgmModule } from './overall-data-risk-mgm/overall-data-risk-mgm.module';
 import { HermeneutDataRiskLevelConfigMgmModule } from './data-risk-level-config-mgm/data-risk-level-config-mgm.module';
+import { HermeneutQuestionMgmModule } from './question-mgm/question-mgm.module';
+import { HermeneutVulnerabilityAreaMgmModule } from './vulnerability-area-mgm/vulnerability-area-mgm.module';
+import { HermeneutSystemConfigMgmModule } from './system-config-mgm/system-config-mgm.module';
 /* jhipster-needle-add-entity-module-import - JHipster will add entity modules imports here */
 
 @NgModule({
@@ -127,6 +129,8 @@ import { HermeneutDataRiskLevelConfigMgmModule } from './data-risk-level-config-
         HermeneutTranslationMgmModule,
         HermeneutOverallDataRiskMgmModule,
         HermeneutDataRiskLevelConfigMgmModule,
+        HermeneutVulnerabilityAreaMgmModule,
+        HermeneutSystemConfigMgmModule,
         /* jhipster-needle-add-entity-module - JHipster will add entity modules here */
     ],
     declarations: [],

@@ -25,12 +25,13 @@ import {ThreatAgentsWidgetComponent} from './threat-agents-widget/threat-agents-
 import {AttackStrategiesWidgetComponent} from './attack-strategies-widget/attack-strategies-widget.component';
 import {ImpactEvaluationModule} from '../impact-evaluation/impact-evaluation.module';
 import {RiskManagementModule} from '../risk-management/risk-management.module';
-import {MaterialModule} from "../material/material.module";
-import {HermeneutAttackStrategyMgmModule} from "../entities/attack-strategy-mgm/attack-strategy-mgm.module";
-import {AttackMapWidgetComponent} from "./attack-map-widget/attack-map-widget.component";
-import {EvaluateWeaknessModule} from "../evaluate-weakness/evaluate-weakness.module";
-import {DtoModule} from "../dto/dto.module";
+import {MaterialModule} from '../material/material.module';
+import {HermeneutAttackStrategyMgmModule} from '../entities/attack-strategy-mgm/attack-strategy-mgm.module';
+import {AttackMapWidgetComponent} from './attack-map-widget/attack-map-widget.component';
+import {EvaluateWeaknessModule} from '../evaluate-weakness/evaluate-weakness.module';
+import {DtoModule} from '../dto/dto.module';
 import { VulnerabilityAssessmentSelectorComponent } from './vulnerability-assessment-selector/vulnerability-assessment-selector.component';
+import {VulnerabilityRadarService} from './vulnerability-radar-widget/vulnerability-radar.service';
 
 @NgModule({
     imports: [
@@ -94,7 +95,8 @@ import { VulnerabilityAssessmentSelectorComponent } from './vulnerability-assess
                 Injector
             ]
         },
-        DashboardService
+        DashboardService,
+        VulnerabilityRadarService
     ]
 })
 export class DashboardModule {

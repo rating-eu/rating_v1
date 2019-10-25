@@ -56,6 +56,8 @@
     <include file="config/liquibase/changelog/20190924115811_added_entity_Translation.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20191010142907_added_entity_OverallDataRisk.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20191011102510_added_entity_DataRiskLevelConfig.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20191022095226_added_entity_VulnerabilityArea.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20191024152116_added_entity_SystemConfig.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
     <include file="config/liquibase/changelog/20180410085152_added_entity_constraints_CompanyProfile.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20180410085155_added_entity_constraints_SelfAssessment.xml" relativeToChangelogFile="false"/>
@@ -192,5 +194,11 @@
     <include file="config/liquibase/changelog/20191011102510_added_entity_constraints_DataRiskLevelConfig.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20191011121559_added_UK_data_risk_level_config_DataOperation_Likelihood_Impact.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20191015165349_add_SecurityImpact_UK_DataOperation_SecurityPillar.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20191022120933_added_join_table_question_areas.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20191022122042_added_entity_constraints_question.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20191022134826_load_vulnerability_areas.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20191022162503_load_question_vulnerability_areas.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20191022172125_load_LPA_question_vulnerability_areas.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20191023075817_added_UC_VulnerabilityArea_name.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
 </databaseChangeLog>
