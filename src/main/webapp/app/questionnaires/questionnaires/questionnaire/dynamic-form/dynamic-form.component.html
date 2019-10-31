@@ -55,7 +55,6 @@
                                     [ngClass]="{'ng-valid': isValid(question.id) === true, 'ng-invalid': isValid(question.id) === false}"
                                     class="card-box">
                                     <label class="form-control-label" [attr.for]="question?.id">
-                                        <i *ngIf="questionAreasMap && questionAreasMap.has(question.id) && questionAreasMap.get(question.id).has(areaID)" class="fas fa-map-marker-alt"></i>
                                         <h5 class="h3-dynamic-form d-inline"> {{question?.name}}</h5>
                                     </label>
                                     <div class="row">
@@ -89,7 +88,6 @@
                                     [ngClass]="{'ng-valid': isValid(question.id) === true, 'ng-invalid': isValid(question.id) === false}"
                                     class="card-box">
                                     <label class="form-control-label" [attr.for]="question?.id">
-                                        <i *ngIf="questionAreasMap && questionAreasMap.has(question.id) && questionAreasMap.get(question.id).has(areaID)" class="fas fa-map-marker-alt"></i>
                                         <h5 class="h3-dynamic-form d-inline"> {{question?.name}}</h5>
                                     </label>
                                     <div class="row">
@@ -123,7 +121,6 @@
                                     [ngClass]="{'ng-valid': isValid(question.id) === true, 'ng-invalid': isValid(question.id) === false}"
                                     class="card-box">
                                     <label class="form-control-label" [attr.for]="question?.id">
-                                        <i *ngIf="questionAreasMap && questionAreasMap.has(question.id) && questionAreasMap.get(question.id).has(areaID)" class="fas fa-map-marker-alt"></i>
                                         <h5 class="h3-dynamic-form d-inline"> {{question?.name}}</h5>
                                     </label>
                                     <div class="row">
