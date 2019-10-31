@@ -49,10 +49,10 @@ import {HttpResponse} from '@angular/common/http';
 import {switchMap} from 'rxjs/operators';
 import {NgbModal, NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
 import {PartialSubmitDialogComponent} from '../partial-submit-dialog/partial-submit-dialog.component';
-import {MyCompanyMgm, MyCompanyMgmService} from "../../../../entities/my-company-mgm";
-import {Role} from "../../../../entities/enumerations/Role.enum";
-import {ContainerType} from "../../../../entities/enumerations/ContainerType.enum";
-import {VulnerabilityAreaMgm, VulnerabilityAreaMgmService} from "../../../../entities/vulnerability-area-mgm";
+import {MyCompanyMgm, MyCompanyMgmService} from '../../../../entities/my-company-mgm';
+import {Role} from '../../../../entities/enumerations/Role.enum';
+import {ContainerType} from '../../../../entities/enumerations/ContainerType.enum';
+import {VulnerabilityAreaMgm, VulnerabilityAreaMgmService} from '../../../../entities/vulnerability-area-mgm';
 
 @Component({
     selector: 'jhi-dynamic-form',
