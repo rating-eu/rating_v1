@@ -80,9 +80,6 @@ export class QuestionnaireComponent implements OnInit, OnDestroy {
                                 break;
                             }
                         }
-
-                        console.log("ContainerType: " + this.containerType);
-                        console.log("AreaID: " + this.areaID);
                     }
                 }
             )

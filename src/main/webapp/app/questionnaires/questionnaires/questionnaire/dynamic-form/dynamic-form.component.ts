@@ -861,8 +861,6 @@ export class DynamicFormComponent implements OnInit, OnDestroy, OnChanges {
         if (this.questionsArray && this.questionsArray.length && this._containerType && this._areaID) {
             this.questionAreasMap = new Map();
 
-            console.log("DynamicForm inside if");
-
             this.questionsArray.forEach((question: QuestionMgm) => {
                 const areas: VulnerabilityAreaMgm[] = question.areas;
 
