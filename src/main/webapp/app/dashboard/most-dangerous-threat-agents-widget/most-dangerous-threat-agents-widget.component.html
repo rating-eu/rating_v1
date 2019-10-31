@@ -35,7 +35,7 @@
                 </div>
                 <div *ngIf="mdtaEntities.length > 0" class="table-responsive table-hover-no-pointer">
                     <table class="table table-striped">
-                        <thead>
+                        <thead class="thead-light">
                         <tr>
                             <th scope="col" class="text-center align-middle">Threat Agent
                                 <i *ngIf="!sortedBy.get(THREAT_AGENT_NAME)?.key"
@@ -85,8 +85,8 @@
                         </thead>
                         <tbody align="center">
                         <ng-container *ngFor="let item of mdtaEntities | paginate: threatAgentsPaginator">
-                            <tr>
-                                <td>{{item.threatAgent}}</td>
+                            <tr class="thead-light">
+                                <th>{{item.threatAgent}}</th>
                                 <td *ngIf="item.initial">{{item.initial}}%</td>
                                 <td *ngIf="!item.initial">-</td>
                                 <td *ngIf="item.contextual">{{item.contextual}}%</td>
