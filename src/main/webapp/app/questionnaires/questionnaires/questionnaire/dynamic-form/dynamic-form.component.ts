@@ -52,7 +52,7 @@ import {PartialSubmitDialogComponent} from '../partial-submit-dialog/partial-sub
 import {MyCompanyMgm, MyCompanyMgmService} from "../../../../entities/my-company-mgm";
 import {Role} from "../../../../entities/enumerations/Role.enum";
 import {ContainerType} from "../../../../entities/enumerations/ContainerType.enum";
-import {VulnerabilityAreaMgm} from "../../../../entities/vulnerability-area-mgm";
+import {VulnerabilityAreaMgm, VulnerabilityAreaMgmService} from "../../../../entities/vulnerability-area-mgm";
 
 @Component({
     selector: 'jhi-dynamic-form',
@@ -99,6 +99,7 @@ export class DynamicFormComponent implements OnInit, OnDestroy, OnChanges {
     private _questionnaire: QuestionnaireMgm;
     private _containerType: ContainerType;
     private _areaID: number;
+    public area: VulnerabilityAreaMgm;
 
     public questionAreasMap: Map<number/*QuestionID*/, Map<number/*areaID*/, VulnerabilityAreaMgm>>;
 
@@ -113,6 +114,7 @@ export class DynamicFormComponent implements OnInit, OnDestroy, OnChanges {
                 private userService: UserService,
                 private questionService: QuestionMgmService,
                 private threatAgentService: ThreatAgentMgmService,
+                private vulnerabilityAreaService: VulnerabilityAreaMgmService,
                 private modalService: NgbModal,
                 private changeDetector: ChangeDetectorRef) {
     }
@@ -155,6 +157,12 @@ export class DynamicFormComponent implements OnInit, OnDestroy, OnChanges {
     @Input()
     set areaID(areaID: number) {
         this._areaID = areaID;
+
+        if(this._areaID){
+            this.vulnerabilityAreaService.find(this._areaID).toPromise().then((response: HttpResponse<VulnerabilityAreaMgm>) => {
+                this.area = response.body;
+            });
+        }
     }
 
     get areaID(): number {

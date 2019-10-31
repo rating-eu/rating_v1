@@ -16,8 +16,8 @@
   -->
 
 <div *ngIf="questionnaireStatus?.questionnaire?.purpose" [ngSwitch]="questionnaireStatus?.questionnaire?.purpose">
-    <h2 *ngSwitchCase="purposeEnum.ID_THREAT_AGENT" class="text-center">Identify Threat Agents</h2>
-    <h2 *ngSwitchCase="purposeEnum.SELFASSESSMENT" class="text-center">Vulnerability Assessment</h2>
+    <h4 *ngSwitchCase="purposeEnum.ID_THREAT_AGENT" class="text-center">Identify Threat Agents</h4>
+    <h4 *ngSwitchCase="purposeEnum.SELFASSESSMENT" class="text-center">Vulnerability Assessment</h4>
 </div>
 
 <ng-container *ngIf="questionnaireStatus">

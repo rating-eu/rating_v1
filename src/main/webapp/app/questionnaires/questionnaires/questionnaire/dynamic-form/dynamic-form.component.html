@@ -45,6 +45,7 @@
                 </ol>
             </div>
             <div *ngIf="questionnaire.purpose === purposeEnum.SELFASSESSMENT">
+                <h6 *ngIf="containerType && areaID && area" class="text-center">{{area.name}}</h6>
                 <mat-tab-group [(selectedIndex)]="currentTabIndex">
                     <mat-tab label="Human">
                         <ol *ngIf="humanQuestionsArray">
