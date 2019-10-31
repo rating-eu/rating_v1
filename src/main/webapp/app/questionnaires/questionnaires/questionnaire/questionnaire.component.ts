@@ -17,14 +17,14 @@
 
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {QuestionnairesService} from '../../questionnaires.service';
-import {DatasharingService} from '../../../datasharing/datasharing.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {QuestionnairePurpose} from '../../../entities/enumerations/QuestionnairePurpose.enum';
 import {SelfAssessmentMgm} from '../../../entities/self-assessment-mgm';
 import {User} from '../../../shared';
-import {QuestionnaireStatusMgm} from "../../../entities/questionnaire-status-mgm";
-import {ContainerType} from "../../../entities/enumerations/ContainerType.enum";
-import {Subscription} from "rxjs";
+import {QuestionnaireStatusMgm} from '../../../entities/questionnaire-status-mgm';
+import {ContainerType} from '../../../entities/enumerations/ContainerType.enum';
+import {Subscription} from 'rxjs';
+import {DataSharingService} from '../../../data-sharing/data-sharing.service';
 
 @Component({
     selector: 'jhi-questionnaire',
