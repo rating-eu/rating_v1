@@ -48,12 +48,15 @@
                 <mat-tab-group [(selectedIndex)]="currentTabIndex">
                     <mat-tab label="Human">
                         <ol *ngIf="humanQuestionsArray">
-                            <li *ngFor="let question of humanQuestionsArray; trackBy: trackByID">
+                            <li *ngFor="let question of humanQuestionsArray; trackBy: trackByID"
+                                [ngClass]="{'d-none': containerType && areaID && !(questionAreasMap && questionAreasMap.has(question.id) && questionAreasMap.get(question.id).has(areaID))}"
+                            >
                                 <div
                                     [ngClass]="{'ng-valid': isValid(question.id) === true, 'ng-invalid': isValid(question.id) === false}"
                                     class="card-box">
                                     <label class="form-control-label" [attr.for]="question?.id">
-                                        <h5 class="h3-dynamic-form"> {{question?.name}}</h5>
+                                        <i *ngIf="questionAreasMap && questionAreasMap.has(question.id) && questionAreasMap.get(question.id).has(areaID)" class="fas fa-map-marker-alt"></i>
+                                        <h5 class="h3-dynamic-form d-inline"> {{question?.name}}</h5>
                                     </label>
                                     <div class="row">
                                         <div class="col-md-9 bg2">
@@ -79,12 +82,15 @@
 
                     <mat-tab label="IT">
                         <ol *ngIf="itQuestionsArray">
-                            <li *ngFor="let question of itQuestionsArray; trackBy: trackByID">
+                            <li *ngFor="let question of itQuestionsArray; trackBy: trackByID"
+                                [ngClass]="{'d-none': containerType && areaID && !(questionAreasMap && questionAreasMap.has(question.id) && questionAreasMap.get(question.id).has(areaID))}"
+                            >
                                 <div
                                     [ngClass]="{'ng-valid': isValid(question.id) === true, 'ng-invalid': isValid(question.id) === false}"
                                     class="card-box">
                                     <label class="form-control-label" [attr.for]="question?.id">
-                                        <h5 class="h3-dynamic-form"> {{question?.name}}</h5>
+                                        <i *ngIf="questionAreasMap && questionAreasMap.has(question.id) && questionAreasMap.get(question.id).has(areaID)" class="fas fa-map-marker-alt"></i>
+                                        <h5 class="h3-dynamic-form d-inline"> {{question?.name}}</h5>
                                     </label>
                                     <div class="row">
                                         <div class="col-md-9 bg2">
@@ -110,12 +116,15 @@
 
                     <mat-tab label="Physical">
                         <ol *ngIf="physicalQuestionsArray">
-                            <li *ngFor="let question of physicalQuestionsArray; trackBy: trackByID">
+                            <li *ngFor="let question of physicalQuestionsArray; trackBy: trackByID"
+                                [ngClass]="{'d-none': containerType && areaID && !(questionAreasMap && questionAreasMap.has(question.id) && questionAreasMap.get(question.id).has(areaID))}"
+                            >
                                 <div
                                     [ngClass]="{'ng-valid': isValid(question.id) === true, 'ng-invalid': isValid(question.id) === false}"
                                     class="card-box">
                                     <label class="form-control-label" [attr.for]="question?.id">
-                                        <h5 class="h3-dynamic-form"> {{question?.name}}</h5>
+                                        <i *ngIf="questionAreasMap && questionAreasMap.has(question.id) && questionAreasMap.get(question.id).has(areaID)" class="fas fa-map-marker-alt"></i>
+                                        <h5 class="h3-dynamic-form d-inline"> {{question?.name}}</h5>
                                     </label>
                                     <div class="row">
                                         <div class="col-md-9 bg2">

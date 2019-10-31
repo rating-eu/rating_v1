@@ -15,7 +15,16 @@
  *
  */
 
-import {Component, HostListener, Input, OnDestroy, OnInit} from '@angular/core';
+import {
+    ChangeDetectorRef,
+    Component,
+    HostListener,
+    Input,
+    OnChanges,
+    OnDestroy,
+    OnInit,
+    SimpleChanges, ViewRef
+} from '@angular/core';
 import {QuestionControlService} from './services/question-control.service';
 import {FormGroup} from '@angular/forms';
 import {QuestionMgm, QuestionMgmService} from '../../../../entities/question-mgm';
@@ -43,6 +52,7 @@ import {PartialSubmitDialogComponent} from '../partial-submit-dialog/partial-sub
 import {MyCompanyMgm, MyCompanyMgmService} from "../../../../entities/my-company-mgm";
 import {Role} from "../../../../entities/enumerations/Role.enum";
 import {ContainerType} from "../../../../entities/enumerations/ContainerType.enum";
+import {VulnerabilityAreaMgm} from "../../../../entities/vulnerability-area-mgm";
 
 @Component({
     selector: 'jhi-dynamic-form',
@@ -50,7 +60,7 @@ import {ContainerType} from "../../../../entities/enumerations/ContainerType.enu
     styleUrls: ['../../../css/radio.css', 'dynamic-form.css'],
     providers: [QuestionControlService]
 })
-export class DynamicFormComponent implements OnInit, OnDestroy {
+export class DynamicFormComponent implements OnInit, OnDestroy, OnChanges {
 
     private static YES = 'YES';
     private static NO = 'NO';
@@ -87,6 +97,10 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
     private myCompany: MyCompanyMgm;
     private subscriptions: Subscription[] = [];
     private _questionnaire: QuestionnaireMgm;
+    private _containerType: ContainerType;
+    private _areaID: number;
+
+    public questionAreasMap: Map<number/*QuestionID*/, Map<number/*areaID*/, VulnerabilityAreaMgm>>;
 
     constructor(private questionControlService: QuestionControlService,
                 private dataSharingSerivce: DataSharingService,
@@ -99,7 +113,8 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
                 private userService: UserService,
                 private questionService: QuestionMgmService,
                 private threatAgentService: ThreatAgentMgmService,
-                private modalService: NgbModal) {
+                private modalService: NgbModal,
+                private changeDetector: ChangeDetectorRef) {
     }
 
     @Input()
@@ -109,6 +124,41 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
 
     get questionnaire() {
         return this._questionnaire;
+    }
+
+    @Input()
+    set containerType(containerType: ContainerType) {
+        this._containerType = containerType;
+
+        if (this._containerType) {
+            switch (this._containerType) {
+                case ContainerType.HUMAN: {
+                    this.currentTabIndex = 0;
+                    break;
+                }
+                case ContainerType.IT: {
+                    this.currentTabIndex = 1;
+                    break;
+                }
+                case ContainerType.PHYSICAL: {
+                    this.currentTabIndex = 2;
+                    break;
+                }
+            }
+        }
+    }
+
+    get containerType(): ContainerType {
+        return this._containerType;
+    }
+
+    @Input()
+    set areaID(areaID: number) {
+        this._areaID = areaID;
+    }
+
+    get areaID(): number {
+        return this._areaID;
     }
 
     isValid(questionID) {
@@ -233,15 +283,17 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
                     }
                 }
 
+                this.buildQuestionAreasMap();
+
                 return this.userService.find(this.account.login);
             }
         );
 
         const myCompany$ = user$.pipe(
             switchMap((response: HttpResponse<User>) => {
-                if(Array.isArray(response.body)){
+                if (Array.isArray(response.body)) {
                     this.user = response.body[0];
-                }else{
+                } else {
                     this.user = response.body;
                 }
 
@@ -283,10 +335,14 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy() {
-        if (this.subscriptions) {
+        if (this.subscriptions && this.subscriptions.length) {
             this.subscriptions.forEach((subscription: Subscription) => {
                 subscription.unsubscribe();
             });
+        }
+
+        if (this.changeDetector) {
+            this.changeDetector.detach();
         }
     }
 
@@ -786,6 +842,36 @@ export class DynamicFormComponent implements OnInit, OnDestroy {
             return this.externalQuestionnaireStatus;
         } else {
 
+        }
+    }
+
+    ngOnChanges(changes: SimpleChanges): void {
+        this.buildQuestionAreasMap();
+    }
+
+    private buildQuestionAreasMap() {
+        if (this.questionsArray && this.questionsArray.length && this._containerType && this._areaID) {
+            this.questionAreasMap = new Map();
+
+            console.log("DynamicForm inside if");
+
+            this.questionsArray.forEach((question: QuestionMgm) => {
+                const areas: VulnerabilityAreaMgm[] = question.areas;
+
+                const areasMap: Map<number/*AreaID*/, VulnerabilityAreaMgm> = new Map();
+
+                if (areas && areas.length) {
+                    areas.forEach((area: VulnerabilityAreaMgm) => {
+                        areasMap.set(area.id, area);
+                    });
+                }
+
+                this.questionAreasMap.set(question.id, areasMap);
+            });
+
+            if (this.changeDetector && !(this.changeDetector as ViewRef).destroyed) {
+                this.changeDetector.detectChanges();
+            }
         }
     }
 }

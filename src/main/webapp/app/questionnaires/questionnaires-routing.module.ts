@@ -22,7 +22,8 @@ import {QuestionnairesComponent} from './questionnaires/questionnaires.component
 
 const routes: Routes = [
     {path: '', component: QuestionnairesComponent},
-    {path: 'questionnaire', component: QuestionnaireComponent}
+    {path: 'questionnaire', component: QuestionnaireComponent},
+    {path: 'questionnaire/container/:container-type/area/:area-id', component: QuestionnaireComponent}
 ];
 
 @NgModule({

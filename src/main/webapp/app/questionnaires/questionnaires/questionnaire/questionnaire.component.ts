@@ -15,22 +15,25 @@
  *
  */
 
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {QuestionnairesService} from '../../questionnaires.service';
-import {DataSharingService} from '../../../data-sharing/data-sharing.service';
-import {Router} from '@angular/router';
-import {LocalStorageService} from 'ngx-webstorage';
+import {DatasharingService} from '../../../datasharing/datasharing.service';
+import {ActivatedRoute, Router} from '@angular/router';
 import {QuestionnairePurpose} from '../../../entities/enumerations/QuestionnairePurpose.enum';
-import {SelfAssessmentMgm, SelfAssessmentMgmService} from '../../../entities/self-assessment-mgm';
-import {AccountService, User, UserService} from '../../../shared';
+import {SelfAssessmentMgm} from '../../../entities/self-assessment-mgm';
+import {User} from '../../../shared';
 import {QuestionnaireStatusMgm} from "../../../entities/questionnaire-status-mgm";
+import {ContainerType} from "../../../entities/enumerations/ContainerType.enum";
+import {Subscription} from "rxjs";
 
 @Component({
     selector: 'jhi-questionnaire',
     templateUrl: './questionnaire.component.html',
     styles: [],
 })
-export class QuestionnaireComponent implements OnInit {
+export class QuestionnaireComponent implements OnInit, OnDestroy {
+
+    private subscriptions: Subscription[];
 
     questionnaireStatus: QuestionnaireStatusMgm;
     purposeEnum = QuestionnairePurpose;
@@ -38,17 +41,59 @@ export class QuestionnaireComponent implements OnInit {
     account: Account;
     user: User;
 
+    public containerType: ContainerType;
+    public areaID: number;
+
     constructor(
         private router: Router,
+        private route: ActivatedRoute,
         private questionnairesService: QuestionnairesService,
         private dataSharingService: DataSharingService) {
     }
 
     ngOnInit() {
+        this.subscriptions = [];
         this.questionnaireStatus = this.dataSharingService.cisoQuestionnaireStatus;
 
         if (!this.questionnaireStatus || !this.questionnaireStatus.questionnaire) {
             this.router.navigate(['/']);
+        }
+
+        this.subscriptions.push(
+            this.route.params.subscribe(
+                (params) => {
+                    if (params["container-type"] && params["area-id"]) {
+                        const cType: string = params['container-type'];
+                        this.areaID = Number(params['area-id']);
+
+                        switch (cType) {
+                            case ContainerType[ContainerType.HUMAN]: {
+                                this.containerType = ContainerType.HUMAN;
+                                break;
+                            }
+                            case ContainerType[ContainerType.IT]: {
+                                this.containerType = ContainerType.IT;
+                                break;
+                            }
+                            case ContainerType[ContainerType.PHYSICAL]: {
+                                this.containerType = ContainerType.PHYSICAL;
+                                break;
+                            }
+                        }
+
+                        console.log("ContainerType: " + this.containerType);
+                        console.log("AreaID: " + this.areaID);
+                    }
+                }
+            )
+        );
+    }
+
+    ngOnDestroy(): void {
+        if (this.subscriptions && this.subscriptions.length) {
+            this.subscriptions.forEach(subscription => {
+                subscription.unsubscribe();
+            });
         }
     }
 }
