@@ -24,7 +24,7 @@ import {JhiAlertService} from "ng-jhipster";
 })
 export class OverallDataRiskWidgetComponent implements OnInit, OnDestroy {
 
-    public loading = false;
+    public loading: boolean;
 
     public dataImpactEnum = DataImpact;
     public dataImpacts: DataImpact[];
@@ -46,6 +46,8 @@ export class OverallDataRiskWidgetComponent implements OnInit, OnDestroy {
     private riskLevelConfigsMap: Map<DataThreatLikelihood, Map<DataImpact, DataRiskLevelConfigMgm>>;
     public selectedDataRiskLevelConfig: DataRiskLevelConfigMgm;
 
+    public configurationMode: boolean;
+
     constructor(private dataRiskLevelConfigService: DataRiskLevelConfigMgmService,
                 private overallSecurityImpactService: OverallSecurityImpactMgmService,
                 private overallDataThreatService: OverallDataThreatMgmService,
@@ -57,6 +59,9 @@ export class OverallDataRiskWidgetComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
+        this.loading = false;
+        this.configurationMode = false;
+
         this.dataImpacts = Object.keys(DataImpact).map((key) => DataImpact[key]);
         this.threatLikelihoods = Object.keys(DataThreatLikelihood).map((key) => DataThreatLikelihood[key]);
         this.dataRiskLevels = Object.keys(DataRiskLevel).map((key) => DataRiskLevel[key]);
@@ -72,6 +77,11 @@ export class OverallDataRiskWidgetComponent implements OnInit, OnDestroy {
                     this.riskLevelConfigs = response.body;
 
                     this.riskLevelConfigsMap = this.mapRiskLevelConfigs(this.riskLevelConfigs);
+
+                    // Update UI
+                    if (this.changeDetector && !(this.changeDetector as ViewRef).destroyed) {
+                        this.changeDetector.detectChanges();
+                    }
                 });
 
             const join$: Observable<[HttpResponse<OverallSecurityImpactMgm>, HttpResponse<OverallDataThreatMgm>, HttpResponse<OverallDataThreatMgm>]>
@@ -86,12 +96,13 @@ export class OverallDataRiskWidgetComponent implements OnInit, OnDestroy {
                     this.overallSecurityImpact = response[0].body;
                     this.overallDataThreat = response[1].body;
                     this.overallDataRisk = response[2].body;
+
+                    // Update UI
+                    if (this.changeDetector && !(this.changeDetector as ViewRef).destroyed) {
+                        this.changeDetector.detectChanges();
+                    }
                 }
             });
-        }
-
-        if (this.changeDetector && !(this.changeDetector as ViewRef).destroyed) {
-            this.changeDetector.detectChanges();
         }
     }
 
