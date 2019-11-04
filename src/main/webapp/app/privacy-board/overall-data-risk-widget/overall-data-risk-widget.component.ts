@@ -8,7 +8,7 @@ import {DataRiskLevel} from "../../entities/enumerations/gdpr/DataRiskLevel.enum
 import {OverallDataRiskMgm, OverallDataRiskMgmService} from "../../entities/overall-data-risk-mgm";
 import {OverallSecurityImpactMgm, OverallSecurityImpactMgmService} from "../../entities/overall-security-impact-mgm";
 import {OverallDataThreatMgm, OverallDataThreatMgmService} from "../../entities/overall-data-threat-mgm";
-import {Observable} from "rxjs";
+import {Observable, Subscription} from "rxjs";
 import {forkJoin} from "rxjs/observable/forkJoin";
 import {OverallDataRiskWidgetService} from "./overall-data-risk-widget.service";
 import {EventManagerService} from "../../data-sharing/event-manager.service";
@@ -24,6 +24,7 @@ import {JhiAlertService} from "ng-jhipster";
 })
 export class OverallDataRiskWidgetComponent implements OnInit, OnDestroy {
 
+    private subscriptions: Subscription[];
     public loading: boolean;
 
     public dataImpactEnum = DataImpact;
@@ -59,6 +60,10 @@ export class OverallDataRiskWidgetComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
+        if(!this.subscriptions || !this.subscriptions.length){
+            this.subscriptions = [];
+        }
+
         this.loading = false;
         this.configurationMode = false;
 
@@ -103,6 +108,31 @@ export class OverallDataRiskWidgetComponent implements OnInit, OnDestroy {
                     }
                 }
             });
+
+            if(!this.subscriptions || !this.subscriptions.length){
+                this.subscriptions = [];
+            }
+
+            // Register for the update of the RiskLevelConfigs
+            this.subscriptions.push(
+              this.eventManagerService.observe(EventType.DATA_RISK_LEVEL_CONFIG_LIST_UPDATE).subscribe(
+                  (event: Event) => {
+                      if(event && event.type===EventType.DATA_RISK_LEVEL_CONFIG_LIST_UPDATE){
+                          // Update the OverallDataRisk
+                          this.overallDataRiskService.getByDataOperation(this._dataOperation.id).toPromise().then(
+                              (response: HttpResponse<OverallDataRiskMgm>)=>{
+                                  this.overallDataRisk = response.body;
+
+                                  // Update UI
+                                  if (this.changeDetector && !(this.changeDetector as ViewRef).destroyed) {
+                                      this.changeDetector.detectChanges();
+                                  }
+                              }
+                          );
+                      }
+                  }
+              )
+            );
         }
     }
 
@@ -125,6 +155,12 @@ export class OverallDataRiskWidgetComponent implements OnInit, OnDestroy {
     ngOnDestroy(): void {
         if (this.changeDetector) {
             this.changeDetector.detach();
+        }
+
+        if(this.subscriptions && this.subscriptions.length){
+            this.subscriptions.forEach((subscription: Subscription) => {
+                subscription.unsubscribe();
+            });
         }
     }
 
