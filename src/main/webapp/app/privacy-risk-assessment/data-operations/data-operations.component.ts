@@ -10,11 +10,14 @@ import {EventManagerService} from '../../data-sharing/event-manager.service';
 import {EventType} from '../../entities/enumerations/EventType.enum';
 import {Event} from '../../data-sharing/event.model';
 import {ActionType} from "../../entities/enumerations/ActionType.enum";
+import {DataImpact} from "../../entities/enumerations/gdpr/DataImpact.enum";
+import {DataThreatLikelihood} from "../../entities/enumerations/gdpr/DataThreatLikelihood.enum";
+import {DataRiskLevel} from "../../entities/enumerations/gdpr/DataRiskLevel.enum";
 
 @Component({
     selector: 'jhi-data-operations',
     templateUrl: './data-operations.component.html',
-    styles: []
+    styleUrls: ["./data-operations.component.css"]
 })
 export class DataOperationsComponent implements OnInit, OnDestroy {
 
@@ -22,6 +25,15 @@ export class DataOperationsComponent implements OnInit, OnDestroy {
 
     public myCompany: MyCompanyMgm;
     public dataOperations: DataOperationMgm[];
+
+    public dataImpactEnum = DataImpact;
+    public dataImpacts: DataImpact[];
+
+    public dataThreatLikelihoodEnum = DataThreatLikelihood;
+    public threatLikelihoods: DataThreatLikelihood[];
+
+    public dataRiskLevelEnum = DataRiskLevel;
+    public dataRiskLevels: DataRiskLevel[];
 
     constructor(private dataSharingService: DataSharingService,
                 private eventManagerService: EventManagerService,
@@ -32,6 +44,10 @@ export class DataOperationsComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.subscriptions = [];
+
+        this.dataImpacts = Object.keys(DataImpact).map((key) => DataImpact[key]);
+        this.threatLikelihoods = Object.keys(DataThreatLikelihood).map((key) => DataThreatLikelihood[key]);
+        this.dataRiskLevels = Object.keys(DataRiskLevel).map((key) => DataRiskLevel[key]);
 
         this.myCompany = this.dataSharingService.myCompany;
         this.fetchDataOperations();

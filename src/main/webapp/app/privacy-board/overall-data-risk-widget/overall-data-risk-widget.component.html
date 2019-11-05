@@ -22,7 +22,7 @@
                                 'medium': overallDataRisk.riskLevel === dataRiskLevelEnum.MEDIUM,
                                 'high': overallDataRisk.riskLevel === dataRiskLevelEnum.HIGH
                             }"
-                      class="badge badge-pill badge-secondary pointer">{{overallDataRisk.riskLevel | replace:'_':' ' | titlecase}}</span>
+                      class="badge badge-pill badge-secondary">{{overallDataRisk.riskLevel | replace:'_':' ' | titlecase}}</span>
             </p>
 
             <p class="my-2 text-justify">
@@ -78,7 +78,7 @@
                                 && riskLevelConfigsMap.get(likelihood).get(impact)===selectedDataRiskLevelConfig"
                                    class="fas fa-edit"></i>
                                 <!--DataOperation risk level placeholder-->
-                                <!--<span
+                                <span
                                     *ngIf="riskLevelConfigsMap.has(likelihood)
                                             && riskLevelConfigsMap.get(likelihood).has(impact)
                                             && overallDataThreat && overallDataThreat.likelihood === likelihood
@@ -96,7 +96,7 @@
                                         *ngIf="overallDataThreat && overallDataThreat.likelihood === likelihood && overallSecurityImpact && overallSecurityImpact.impact === impact">
                                     {{riskLevelConfigsMap.get(likelihood).get(impact).risk | replace:'_':' ' | titlecase}}
                                     </ng-container>
-                                </span>-->
+                                </span>
                             </td>
                         </tr>
                         <!--The remaining Likelihoods-->
@@ -117,7 +117,7 @@
                             && riskLevelConfigsMap.get(likelihood).get(impact)===selectedDataRiskLevelConfig"
                                    class="fas fa-edit"></i>
                                 <!--DataOperation risk level placeholder-->
-                                <!--<span
+                                <span
                                     *ngIf="riskLevelConfigsMap.has(likelihood)
                                             && riskLevelConfigsMap.get(likelihood).has(impact)
                                             && overallDataThreat && overallDataThreat.likelihood === likelihood
@@ -134,7 +134,7 @@
                                         *ngIf="overallDataThreat && overallDataThreat.likelihood === likelihood && overallSecurityImpact && overallSecurityImpact.impact === impact">
                                     {{riskLevelConfigsMap.get(likelihood).get(impact).risk | replace:'_':' ' | titlecase}}
                                     </ng-container>
-                                </span>-->
+                                </span>
                             </td>
                         </tr>
                         </tbody>

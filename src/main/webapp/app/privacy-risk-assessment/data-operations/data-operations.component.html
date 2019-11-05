@@ -9,7 +9,7 @@
             </span>
         </button>-->
         <button class="btn btn-primary float-right jh-create-entity create-data-operation-mgm"
-        (click)="createNewDataOperation()">
+                (click)="createNewDataOperation()">
             <span class="fa fa-plus"></span>
             <span jhiTranslate="hermeneutApp.dataOperation.home.createLabel">
             Create new Data Operation
@@ -18,68 +18,210 @@
     </h2>
     <jhi-alert></jhi-alert>
     <div class="row">
+        <div class="col-md-3 text-center">
+            <ng-container *ngFor="let riskLevel of dataRiskLevels">
+                              <span
+                                  style="font-size: medium" [ngClass]="{
+                                'low': riskLevel === dataRiskLevelEnum.LOW,
+                                'medium': riskLevel=== dataRiskLevelEnum.MEDIUM,
+                                'high': riskLevel=== dataRiskLevelEnum.HIGH
+                            }"
+                                  class="badge badge-pill badge-secondary pointer">{{riskLevel | replace:'_':' ' | titlecase}}</span>
+            </ng-container>
+        </div>
     </div>
-    <br/>
-    <div class="table-responsive table-hover" *ngIf="dataOperations">
-        <table class="table table-striped">
-            <thead>
+    <!--Check if there is at least one DataOperation with the OverallDataRisk-->
+    <div *ngIf="dataOperations && dataOperations.length" class="table-responsive"
+         style="border-top: none; border-left: none;">
+        <table *ngIf="threatLikelihoods && dataImpacts" class="table">
+            <thead class="thead-light">
             <tr>
-                <th><span jhiTranslate="hermeneutApp.dataOperation.name">Name</span></th>
-                <th><span jhiTranslate="hermeneutApp.dataOperation.processedData">Processed Data</span></th>
-                <th><span jhiTranslate="hermeneutApp.dataOperation.processingPurpose">Processing Purpose</span></th>
-                <th><span jhiTranslate="hermeneutApp.dataOperation.dataSubject">Data Subject</span></th>
-                <th><span jhiTranslate="hermeneutApp.dataOperation.processingMeans">Processing Means</span></th>
-                <th><span jhiTranslate="hermeneutApp.dataOperation.dataProcessor">Data Processor</span></th>
-                <th><span jhiTranslate="hermeneutApp.dataOperation.companyProfile">Company Profile</span></th>
-                <th></th>
+                <th style="visibility: hidden;"></th>
+                <th style="visibility: hidden;"></th>
+                <th class="text-center align-middle" style="font-size: large;" [colSpan]="dataImpacts.length">
+                    Impact Level
+                </th>
+            </tr>
+            <tr>
+                <th style="visibility: hidden;"></th>
+                <th style="visibility: hidden;"></th>
+                <th class="text-center align-middle" style="font-size: large;"
+                    *ngFor="let impactLevel of dataImpacts">{{impactLevel | replace:'_':' ' | titlecase}}</th>
             </tr>
             </thead>
             <tbody>
-            <tr *ngFor="let dataOperation of dataOperations; trackBy: trackId"
-                (click)="selectDataOperation(dataOperation)"
-                [routerLink]="['/privacy-board']"
-            >
-                <td>{{dataOperation.name}}</td>
-                <td>{{dataOperation.processedData}}</td>
-                <td>{{dataOperation.processingPurpose}}</td>
-                <td>{{dataOperation.dataSubject}}</td>
-                <td>{{dataOperation.processingMeans}}</td>
-                <td>{{dataOperation.dataProcessor}}</td>
-                <td>
-                    <div *ngIf="dataOperation.companyProfile">
-                        <a [routerLink]="['/company-profile-mgm', dataOperation.companyProfile?.id ]">{{dataOperation.companyProfile?.name}}</a>
-                    </div>
+            <!--Just the First Likelihood-->
+            <tr *ngFor="let likelihood of threatLikelihoods | slice:0:1" class="thead-light">
+                <th class="text-center" style="font-size: large;" [rowSpan]="threatLikelihoods.length">
+                    <p style="writing-mode: vertical-rl; text-orientation: upright; margin: 0 auto;">
+                        Likelihood
+                    </p>
+                </th>
+                <th class="text-center align-middle"
+                    style="font-size: large;">{{likelihood | replace:'_':' ' | titlecase}}</th>
+                <td *ngFor="let impact of dataImpacts" class="text-center align-middle pointer">
+                    <!--<i *ngIf="selectedDataRiskLevelConfig
+                        && riskLevelConfigsMap.has(likelihood)
+                        && riskLevelConfigsMap.get(likelihood).has(impact)
+                        && riskLevelConfigsMap.get(likelihood).get(impact)===selectedDataRiskLevelConfig"
+                       class="fas fa-edit"></i>-->
+                    <!--DataOperation risk level placeholder-->
+                    <!--<span
+                        *ngIf="riskLevelConfigsMap.has(likelihood)
+                                && riskLevelConfigsMap.get(likelihood).has(impact)
+                                && overallDataThreat && overallDataThreat.likelihood === likelihood
+                                && overallSecurityImpact && overallSecurityImpact.impact === impact"
+                        (click)="selectDataRiskLevelConfig(riskLevelConfigsMap.get(likelihood).get(impact))"
+                        [style.border]="overallDataThreat && overallDataThreat.likelihood === likelihood
+                                        && overallSecurityImpact && overallSecurityImpact.impact === impact ? '1px dashed' : 'none'"
+                        style="font-size: medium" [ngClass]="{
+                        'low': riskLevelConfigsMap.get(likelihood).get(impact).risk === dataRiskLevelEnum.LOW,
+                        'medium': riskLevelConfigsMap.get(likelihood).get(impact).risk === dataRiskLevelEnum.MEDIUM,
+                        'high': riskLevelConfigsMap.get(likelihood).get(impact).risk === dataRiskLevelEnum.HIGH
+                    }"
+                        class="badge badge-pill badge-secondary">
+                        <ng-container
+                            *ngIf="overallDataThreat && overallDataThreat.likelihood === likelihood && overallSecurityImpact && overallSecurityImpact.impact === impact">
+                        {{riskLevelConfigsMap.get(likelihood).get(impact).risk | replace:'_':' ' | titlecase}}
+                        </ng-container>
+                    </span>-->
                 </td>
-                <td class="text-right" (click)="$event.stopPropagation()">
-                    <div class="btn-group flex-btn-group-container">
-                        <button type="submit"
-                                (click)="selectDataOperation(dataOperation)"
-                                [routerLink]="['/privacy-board']"
-                                class="btn btn-info btn-sm">
-                            <span class="fa fa-eye"></span>
-                            <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
-                        </button>
-                        <button type="submit"
-                                (click)="selectDataOperation(dataOperation)"
-                                [routerLink]="['/privacy-risk-assessment/context']"
-                                replaceUrl="true"
-                                queryParamsHandling="merge"
-                                class="btn btn-primary btn-sm">
-                            <span class="fa fa-pencil"></span>
-                            <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
-                        </button>
-                        <button type="submit"
-                                [routerLink]="['/', { outlets: { popup: 'data-operation-mgm/'+ dataOperation.id + '/delete'} }]"
-                                replaceUrl="true"
-                                queryParamsHandling="merge"
-                                class="btn btn-danger btn-sm">
-                            <span class="fa fa-remove"></span>
-                            <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
-                        </button>
-                    </div>
+            </tr>
+            <!--The remaining Likelihoods-->
+            <tr *ngFor="let likelihood of threatLikelihoods | slice:1" class="thead-light">
+                <th class="text-center align-middle"
+                    style="font-size: large;">{{likelihood | replace:'_':' ' | titlecase}}</th>
+                <td *ngFor="let impact of dataImpacts" class="text-center align-middle pointer"
+                >
+                    <!--<i *ngIf="selectedDataRiskLevelConfig
+                    && riskLevelConfigsMap.has(likelihood)
+                    && riskLevelConfigsMap.get(likelihood).has(impact)
+                    && riskLevelConfigsMap.get(likelihood).get(impact)===selectedDataRiskLevelConfig"
+                       class="fas fa-edit"></i>-->
+                    <!--DataOperation risk level placeholder-->
+                    <!--<span
+                        *ngIf="riskLevelConfigsMap.has(likelihood)
+                                && riskLevelConfigsMap.get(likelihood).has(impact)
+                                && overallDataThreat && overallDataThreat.likelihood === likelihood
+                                && overallSecurityImpact && overallSecurityImpact.impact === impact"
+                        [style.border]="overallDataThreat && overallDataThreat.likelihood === likelihood
+                                        && overallSecurityImpact && overallSecurityImpact.impact === impact ? '1px dashed' : 'none'"
+                        style="font-size: medium" [ngClass]="{
+                        'low': riskLevelConfigsMap.get(likelihood).get(impact).risk === dataRiskLevelEnum.LOW,
+                        'medium': riskLevelConfigsMap.get(likelihood).get(impact).risk === dataRiskLevelEnum.MEDIUM,
+                        'high': riskLevelConfigsMap.get(likelihood).get(impact).risk === dataRiskLevelEnum.HIGH
+                    }"
+                        class="badge badge-pill badge-secondary">
+                        <ng-container
+                            *ngIf="overallDataThreat && overallDataThreat.likelihood === likelihood && overallSecurityImpact && overallSecurityImpact.impact === impact">
+                        {{riskLevelConfigsMap.get(likelihood).get(impact).risk | replace:'_':' ' | titlecase}}
+                        </ng-container>
+                    </span>-->
                 </td>
             </tr>
             </tbody>
         </table>
     </div>
+    <br/>
+    <!--<div *ngIf="selectedDataRiskLevelConfig" class="row">
+        <div class="col-md-3 text-center">
+        </div>
+        <div class="col-md-8">
+            <p class="text-justify">
+                Please report here any notes about the risk criteria that has been used to evaluate the data
+                processing operation.
+            </p>
+        </div>
+        <div class="col-md-1 text-center">
+        </div>
+    </div>-->
+    <!--<div *ngIf="selectedDataRiskLevelConfig" class="row">
+        <div class="col-md-3 text-center">
+            <ng-container *ngFor="let riskLevel of dataRiskLevels">
+                      <span
+                          (click)="updateRiskLevelConfigs(riskLevel)"
+                          style="font-size: medium" [ngClass]="{
+                        'low': riskLevel === dataRiskLevelEnum.LOW,
+                        'medium': riskLevel=== dataRiskLevelEnum.MEDIUM,
+                        'high': riskLevel=== dataRiskLevelEnum.HIGH
+                    }"
+                          class="badge badge-pill badge-secondary pointer">{{riskLevel | replace:'_':' ' | titlecase}}</span>
+            </ng-container>
+        </div>
+        <div class="col-md-8">
+            <form>
+                <div class="form-group">
+                    <input type="text" class="form-control"
+                           name="rationale"
+                           [(ngModel)]="selectedDataRiskLevelConfig.rationale"/>
+                </div>
+            </form>
+        </div>
+        <div class="col-md-1">
+            <button (click)="submitRiskLevelConfigs()" type="button" class="btn btn-success">Save</button>
+        </div>
+    </div>-->
+</div>
+<br/>
+<div class="table-responsive table-hover" *ngIf="dataOperations">
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th><span jhiTranslate="hermeneutApp.dataOperation.name">Name</span></th>
+            <th><span jhiTranslate="hermeneutApp.dataOperation.processedData">Processed Data</span></th>
+            <th><span jhiTranslate="hermeneutApp.dataOperation.processingPurpose">Processing Purpose</span></th>
+            <th><span jhiTranslate="hermeneutApp.dataOperation.dataSubject">Data Subject</span></th>
+            <th><span jhiTranslate="hermeneutApp.dataOperation.processingMeans">Processing Means</span></th>
+            <th><span jhiTranslate="hermeneutApp.dataOperation.dataProcessor">Data Processor</span></th>
+            <th><span jhiTranslate="hermeneutApp.dataOperation.companyProfile">Company Profile</span></th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let dataOperation of dataOperations; trackBy: trackId"
+            (click)="selectDataOperation(dataOperation)"
+            [routerLink]="['/privacy-board']"
+        >
+            <td>{{dataOperation.name}}</td>
+            <td>{{dataOperation.processedData}}</td>
+            <td>{{dataOperation.processingPurpose}}</td>
+            <td>{{dataOperation.dataSubject}}</td>
+            <td>{{dataOperation.processingMeans}}</td>
+            <td>{{dataOperation.dataProcessor}}</td>
+            <td>
+                <div *ngIf="dataOperation.companyProfile">
+                    <a [routerLink]="['/company-profile-mgm', dataOperation.companyProfile?.id ]">{{dataOperation.companyProfile?.name}}</a>
+                </div>
+            </td>
+            <td class="text-right" (click)="$event.stopPropagation()">
+                <div class="btn-group flex-btn-group-container">
+                    <button type="submit"
+                            (click)="selectDataOperation(dataOperation)"
+                            [routerLink]="['/privacy-board']"
+                            class="btn btn-info btn-sm">
+                        <span class="fa fa-eye"></span>
+                        <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                    </button>
+                    <button type="submit"
+                            (click)="selectDataOperation(dataOperation)"
+                            [routerLink]="['/privacy-risk-assessment/context']"
+                            replaceUrl="true"
+                            queryParamsHandling="merge"
+                            class="btn btn-primary btn-sm">
+                        <span class="fa fa-pencil"></span>
+                        <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                    </button>
+                    <button type="submit"
+                            [routerLink]="['/', { outlets: { popup: 'data-operation-mgm/'+ dataOperation.id + '/delete'} }]"
+                            replaceUrl="true"
+                            queryParamsHandling="merge"
+                            class="btn btn-danger btn-sm">
+                        <span class="fa fa-remove"></span>
+                        <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                    </button>
+                </div>
+            </td>
+        </tr>
+        </tbody>
+    </table>
 </div>
