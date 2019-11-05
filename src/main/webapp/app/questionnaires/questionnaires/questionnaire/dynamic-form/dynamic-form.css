@@ -16,6 +16,7 @@
  */
 
 @import url("https://fonts.googleapis.com/css?family=Lato:400,400i,700");
+@import "../../../../impact-evaluation/qualitative/assets-impact/assets-impact.css";
 
 .loader {
     border: 16px solid #f3f3f3;

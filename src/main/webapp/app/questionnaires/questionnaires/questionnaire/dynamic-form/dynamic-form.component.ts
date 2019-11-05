@@ -53,6 +53,7 @@ import {MyCompanyMgm, MyCompanyMgmService} from '../../../../entities/my-company
 import {Role} from '../../../../entities/enumerations/Role.enum';
 import {ContainerType} from '../../../../entities/enumerations/ContainerType.enum';
 import {VulnerabilityAreaMgm, VulnerabilityAreaMgmService} from '../../../../entities/vulnerability-area-mgm';
+import {AnswerLikelihood} from "../../../../entities/enumerations/AnswerLikelihood.enum";
 
 @Component({
     selector: 'jhi-dynamic-form',
@@ -71,25 +72,27 @@ export class DynamicFormComponent implements OnInit, OnDestroy, OnChanges {
     public loading = false;
     public debug = false;
 
-    roleEnum = Role;
-    purposeEnum = QuestionnairePurpose;
+    public roleEnum = Role;
+    public purposeEnum = QuestionnairePurpose;
+    public answerLikelihoodEnum = AnswerLikelihood;
 
-    questionsArray: QuestionMgm[];
-    humanQuestionsArray: QuestionMgm[];
-    itQuestionsArray: QuestionMgm[];
-    physicalQuestionsArray: QuestionMgm[];
-    currentTabIndex: number;
+
+    public questionsArray: QuestionMgm[];
+    public humanQuestionsArray: QuestionMgm[];
+    public itQuestionsArray: QuestionMgm[];
+    public physicalQuestionsArray: QuestionMgm[];
+    public currentTabIndex: number;
 
     /**
      * Map QuestionID ==> Question
      */
-    questionsArrayMap: Map<number, QuestionMgm>;
-    form: FormGroup;
-    cisoQuestionnaireStatus: QuestionnaireStatusMgm;
-    externalQuestionnaireStatus: QuestionnaireStatusMgm;
+    public questionsArrayMap: Map<number, QuestionMgm>;
+    public form: FormGroup;
+    public cisoQuestionnaireStatus: QuestionnaireStatusMgm;
+    public externalQuestionnaireStatus: QuestionnaireStatusMgm;
 
-    cisoMyAnswers: MyAnswerMgm[];
-    externalMyAnswers: MyAnswerMgm[];
+    public cisoMyAnswers: MyAnswerMgm[];
+    public externalMyAnswers: MyAnswerMgm[];
 
     private account: Account;
     private role: Role;

@@ -46,8 +46,10 @@
             </div>
             <div *ngIf="questionnaire.purpose === purposeEnum.SELFASSESSMENT">
                 <h6 *ngIf="containerType && areaID && area" class="text-center text-primary">{{area.name}}</h6>
-                <p class="text-justify text-secondary" style="font-size: medium">In this section it is possible to review the questions linked to the above <em>Assessment Area</em>
-                    and eventually adjust the corresponding answers in order to update the current <em>Vulnerability</em> value accordingly.</p>
+                <p class="text-justify text-secondary" style="font-size: medium">In this section it is possible to
+                    review the questions linked to the above <em>Assessment Area</em>
+                    and eventually adjust the corresponding answers in order to update the current
+                    <em>Vulnerability</em> value accordingly.</p>
                 <mat-tab-group [(selectedIndex)]="currentTabIndex">
                     <mat-tab label="Human">
                         <ol *ngIf="humanQuestionsArray">
@@ -61,7 +63,7 @@
                                         <h5 class="h3-dynamic-form d-inline"> {{question?.name}}</h5>
                                     </label>
                                     <div class="row">
-                                        <div class="col-md-9 bg2">
+                                        <div class="bg2" [ngClass]="{'col-md-9': !(containerType && areaID), 'col-md-6': (containerType && areaID)}">
                                             <mat-radio-group [formControlName]="question.id" class="radio-group">
                                                 <mat-radio-button *ngFor="let answer of sort(question.answers)"
                                                                   class="radio-button"
@@ -70,10 +72,31 @@
                                                 </mat-radio-button>
                                             </mat-radio-group>
                                         </div>
+                                        <div *ngIf="containerType && areaID" class="col-md-3 text-center" style="margin: auto 0;">
+                                            <mat-progress-spinner [diameter]="100" style="margin: 0 auto;"
+                                                                  [ngClass]="{
+                                              'low': answerLikelihoodEnum[form.value[question.id].likelihood]/5 > 0 && answerLikelihoodEnum[form.value[question.id].likelihood]/5 <= 0.2,
+                                              'low-medium': answerLikelihoodEnum[form.value[question.id].likelihood]/5 > 0.2 && answerLikelihoodEnum[form.value[question.id].likelihood]/5 <= 0.4,
+                                              'medium': answerLikelihoodEnum[form.value[question.id].likelihood]/5 > 0.4 && answerLikelihoodEnum[form.value[question.id].likelihood]/5 <= 0.6,
+                                              'medium-high': answerLikelihoodEnum[form.value[question.id].likelihood]/5 > 0.6 && answerLikelihoodEnum[form.value[question.id].likelihood]/5 <= 0.8,
+                                              'high': answerLikelihoodEnum[form.value[question.id].likelihood]/5 > 0.8 && answerLikelihoodEnum[form.value[question.id].likelihood]/5 <= 1
+                                              }"
+                                                                  [value]="answerLikelihoodEnum[form.value[question.id].likelihood]/5 * 100"
+                                                                  matTooltip="Vulnerability"
+                                                                  [matTooltipPosition]="'above'"
+                                            >
+                                            </mat-progress-spinner>
+                                            <div style="top:-60px; z-index:2;position:relative;">
+                                                {{answerLikelihoodEnum[form.value[question.id].likelihood]/5 | percent}}
+                                            </div>
+                                            <div>
+                                                Vulnerability is {{answerLikelihoodEnum[form.value[question.id].likelihood]}}
+                                            </div>
+                                        </div>
                                         <div class="col-md-3 bg3 text-center">
                                             <mat-form-field>
-                                    <textarea matInput [formControlName]="question.id + '.ciso.note'" [rows]="7"
-                                              placeholder="Notes"></textarea>
+                                            <textarea matInput [formControlName]="question.id + '.ciso.note'" [rows]="7"
+                                                      placeholder="Notes"></textarea>
                                             </mat-form-field>
                                         </div>
                                     </div>
@@ -94,7 +117,7 @@
                                         <h5 class="h3-dynamic-form d-inline"> {{question?.name}}</h5>
                                     </label>
                                     <div class="row">
-                                        <div class="col-md-9 bg2">
+                                        <div class="bg2" [ngClass]="{'col-md-9': !(containerType && areaID), 'col-md-6': (containerType && areaID)}">
                                             <mat-radio-group [formControlName]="question.id" class="radio-group">
                                                 <mat-radio-button *ngFor="let answer of sort(question.answers)"
                                                                   class="radio-button"
@@ -103,10 +126,31 @@
                                                 </mat-radio-button>
                                             </mat-radio-group>
                                         </div>
+                                        <div *ngIf="containerType && areaID" class="col-md-3 text-center" style="margin: auto 0;">
+                                            <mat-progress-spinner [diameter]="100" style="margin: 0 auto;"
+                                                                  [ngClass]="{
+                                              'low': answerLikelihoodEnum[form.value[question.id].likelihood]/5 > 0 && answerLikelihoodEnum[form.value[question.id].likelihood]/5 <= 0.2,
+                                              'low-medium': answerLikelihoodEnum[form.value[question.id].likelihood]/5 > 0.2 && answerLikelihoodEnum[form.value[question.id].likelihood]/5 <= 0.4,
+                                              'medium': answerLikelihoodEnum[form.value[question.id].likelihood]/5 > 0.4 && answerLikelihoodEnum[form.value[question.id].likelihood]/5 <= 0.6,
+                                              'medium-high': answerLikelihoodEnum[form.value[question.id].likelihood]/5 > 0.6 && answerLikelihoodEnum[form.value[question.id].likelihood]/5 <= 0.8,
+                                              'high': answerLikelihoodEnum[form.value[question.id].likelihood]/5 > 0.8 && answerLikelihoodEnum[form.value[question.id].likelihood]/5 <= 1
+                                              }"
+                                                                  [value]="answerLikelihoodEnum[form.value[question.id].likelihood]/5 * 100"
+                                                                  matTooltip="Vulnerability"
+                                                                  [matTooltipPosition]="'above'"
+                                            >
+                                            </mat-progress-spinner>
+                                            <div style="top:-60px; z-index:2;position:relative;">
+                                                {{answerLikelihoodEnum[form.value[question.id].likelihood]/5 | percent}}
+                                            </div>
+                                            <div>
+                                                Vulnerability is {{answerLikelihoodEnum[form.value[question.id].likelihood]}}
+                                            </div>
+                                        </div>
                                         <div class="col-md-3 bg3 text-center">
                                             <mat-form-field>
-                                    <textarea matInput [formControlName]="question.id + '.ciso.note'" [rows]="7"
-                                              placeholder="Notes"></textarea>
+                                            <textarea matInput [formControlName]="question.id + '.ciso.note'" [rows]="7"
+                                                      placeholder="Notes"></textarea>
                                             </mat-form-field>
                                         </div>
                                     </div>
@@ -127,7 +171,7 @@
                                         <h5 class="h3-dynamic-form d-inline"> {{question?.name}}</h5>
                                     </label>
                                     <div class="row">
-                                        <div class="col-md-9 bg2">
+                                        <div class="bg2" [ngClass]="{'col-md-9': !(containerType && areaID), 'col-md-6': (containerType && areaID)}">
                                             <mat-radio-group [formControlName]="question.id" class="radio-group">
                                                 <mat-radio-button *ngFor="let answer of sort(question.answers)"
                                                                   class="radio-button"
@@ -136,10 +180,31 @@
                                                 </mat-radio-button>
                                             </mat-radio-group>
                                         </div>
+                                        <div *ngIf="containerType && areaID" class="col-md-3 text-center" style="margin: auto 0;">
+                                            <mat-progress-spinner [diameter]="100" style="margin: 0 auto;"
+                                                                  [ngClass]="{
+                                              'low': answerLikelihoodEnum[form.value[question.id].likelihood]/5 > 0 && answerLikelihoodEnum[form.value[question.id].likelihood]/5 <= 0.2,
+                                              'low-medium': answerLikelihoodEnum[form.value[question.id].likelihood]/5 > 0.2 && answerLikelihoodEnum[form.value[question.id].likelihood]/5 <= 0.4,
+                                              'medium': answerLikelihoodEnum[form.value[question.id].likelihood]/5 > 0.4 && answerLikelihoodEnum[form.value[question.id].likelihood]/5 <= 0.6,
+                                              'medium-high': answerLikelihoodEnum[form.value[question.id].likelihood]/5 > 0.6 && answerLikelihoodEnum[form.value[question.id].likelihood]/5 <= 0.8,
+                                              'high': answerLikelihoodEnum[form.value[question.id].likelihood]/5 > 0.8 && answerLikelihoodEnum[form.value[question.id].likelihood]/5 <= 1
+                                              }"
+                                                                  [value]="answerLikelihoodEnum[form.value[question.id].likelihood]/5 * 100"
+                                                                  matTooltip="Vulnerability"
+                                                                  [matTooltipPosition]="'above'"
+                                            >
+                                            </mat-progress-spinner>
+                                            <div style="top:-60px; z-index:2;position:relative;">
+                                                {{answerLikelihoodEnum[form.value[question.id].likelihood]/5 | percent}}
+                                            </div>
+                                            <div>
+                                                Vulnerability is {{answerLikelihoodEnum[form.value[question.id].likelihood]}}
+                                            </div>
+                                        </div>
                                         <div class="col-md-3 bg3 text-center">
                                             <mat-form-field>
-                                    <textarea matInput [formControlName]="question.id + '.ciso.note'" [rows]="7"
-                                              placeholder="Notes"></textarea>
+                                            <textarea matInput [formControlName]="question.id + '.ciso.note'" [rows]="7"
+                                                      placeholder="Notes"></textarea>
                                             </mat-form-field>
                                         </div>
                                     </div>
@@ -210,7 +275,7 @@
                                         </div>
                                         <div class="col-md-2 bg3 text-center">
                                             <mat-form-field>
-                                    <textarea matInput [formControlName]="question.id + '.external.note'" [rows]="7"
+                                            <textarea matInput [formControlName]="question.id + '.external.note'" [rows]="7"
                                               placeholder="External Notes"></textarea>
                                             </mat-form-field>
                                         </div>
@@ -261,7 +326,7 @@
                                         </div>
                                         <div class="col-md-2 bg3 text-center">
                                             <mat-form-field>
-                                    <textarea matInput [formControlName]="question.id + '.external.note'" [rows]="7"
+                                            <textarea matInput [formControlName]="question.id + '.external.note'" [rows]="7"
                                               placeholder="External Notes"></textarea>
                                             </mat-form-field>
                                         </div>
@@ -282,7 +347,7 @@
                                     <div class="row">
                                         <div class="col-md-2 bg3 text-center">
                                             <mat-form-field>
-                                    <textarea matInput [formControlName]="question.id + '.ciso.note'" [rows]="7"
+                                            <textarea matInput [formControlName]="question.id + '.ciso.note'" [rows]="7"
                                               placeholder="CISO Notes" readonly></textarea>
                                             </mat-form-field>
                                         </div>
@@ -312,7 +377,7 @@
                                         </div>
                                         <div class="col-md-2 bg3 text-center">
                                             <mat-form-field>
-                                    <textarea matInput [formControlName]="question.id + '.external.note'" [rows]="7"
+                                            <textarea matInput [formControlName]="question.id + '.external.note'" [rows]="7"
                                               placeholder="External Notes"></textarea>
                                             </mat-form-field>
                                         </div>
