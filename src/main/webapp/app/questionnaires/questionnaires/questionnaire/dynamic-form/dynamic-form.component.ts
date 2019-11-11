@@ -54,6 +54,8 @@ import {Role} from '../../../../entities/enumerations/Role.enum';
 import {ContainerType} from '../../../../entities/enumerations/ContainerType.enum';
 import {VulnerabilityAreaMgm, VulnerabilityAreaMgmService} from '../../../../entities/vulnerability-area-mgm';
 import {AnswerLikelihood} from "../../../../entities/enumerations/AnswerLikelihood.enum";
+import {AnswerWeightMgm, AnswerWeightMgmService} from "../../../../entities/answer-weight-mgm";
+import {QuestionType} from "../../../../entities/enumerations/QuestionType.enum";
 
 @Component({
     selector: 'jhi-dynamic-form',
@@ -104,6 +106,9 @@ export class DynamicFormComponent implements OnInit, OnDestroy, OnChanges {
     private _areaID: number;
     public area: VulnerabilityAreaMgm;
 
+    private answerWeights: AnswerWeightMgm[];
+    public answerWeightsMap: Map<QuestionType, Map<AnswerLikelihood, AnswerWeightMgm>>;
+
     public questionAreasMap: Map<number/*QuestionID*/, Map<number/*areaID*/, VulnerabilityAreaMgm>>;
 
     constructor(private questionControlService: QuestionControlService,
@@ -111,6 +116,7 @@ export class DynamicFormComponent implements OnInit, OnDestroy, OnChanges {
                 private router: Router,
                 private myAnswerService: MyAnswerMgmService,
                 private answerService: AnswerMgmService,
+                private answerWeightService: AnswerWeightMgmService,
                 private questionnaireStatusService: QuestionnaireStatusMgmService,
                 private myCompanyService: MyCompanyMgmService,
                 private accountService: AccountService,
@@ -343,6 +349,15 @@ export class DynamicFormComponent implements OnInit, OnDestroy, OnChanges {
                 }
             }
         );
+
+        this.answerWeightService.query().toPromise()
+            .then((response: HttpResponse<AnswerWeightMgm[]>) => {
+                if(response && response.body){
+                    this.answerWeights = response.body;
+
+                    this.buildAnswerWeightsMap();
+                }
+            });
     }
 
     ngOnDestroy() {
@@ -881,6 +896,26 @@ export class DynamicFormComponent implements OnInit, OnDestroy, OnChanges {
             if (this.changeDetector && !(this.changeDetector as ViewRef).destroyed) {
                 this.changeDetector.detectChanges();
             }
+        }
+    }
+
+    private buildAnswerWeightsMap() {
+        if(this.answerWeights && this.answerWeights.length){
+            this.answerWeightsMap = new Map();
+
+            this.answerWeights.forEach((answerWeight: AnswerWeightMgm) => {
+               const questionType: QuestionType = answerWeight.questionType;
+               const answerLikelihood: AnswerLikelihood = answerWeight.likelihood;
+
+               let innerMap: Map<AnswerLikelihood, AnswerWeightMgm> = this.answerWeightsMap.get(questionType);
+
+               if(!innerMap){
+                   innerMap = new Map();
+                   this.answerWeightsMap.set(questionType, innerMap);
+               }
+
+               innerMap.set(answerLikelihood, answerWeight);
+            });
         }
     }
 }
