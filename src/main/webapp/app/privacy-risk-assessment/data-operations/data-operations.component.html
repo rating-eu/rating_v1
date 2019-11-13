@@ -37,12 +37,15 @@
         <thead>
         <tr>
             <th><span jhiTranslate="hermeneutApp.dataOperation.name">Name</span></th>
-            <th><span jhiTranslate="hermeneutApp.dataOperation.processedData">Processed Data</span></th>
+            <th><span>Impact</span></th>
+            <th><span>Likelihood</span></th>
+            <th><span>Overall Risk</span></th>
+            <!--<th><span jhiTranslate="hermeneutApp.dataOperation.processedData">Processed Data</span></th>
             <th><span jhiTranslate="hermeneutApp.dataOperation.processingPurpose">Processing Purpose</span></th>
             <th><span jhiTranslate="hermeneutApp.dataOperation.dataSubject">Data Subject</span></th>
             <th><span jhiTranslate="hermeneutApp.dataOperation.processingMeans">Processing Means</span></th>
             <th><span jhiTranslate="hermeneutApp.dataOperation.dataProcessor">Data Processor</span></th>
-            <th><span jhiTranslate="hermeneutApp.dataOperation.companyProfile">Company Profile</span></th>
+            <th><span jhiTranslate="hermeneutApp.dataOperation.companyProfile">Company Profile</span></th>-->
             <th></th>
         </tr>
         </thead>
@@ -52,7 +55,10 @@
             [routerLink]="['/privacy-board']"
         >
             <td>{{dataOperation.name}}</td>
-            <td>{{dataOperation.processedData}}</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <!--<td>{{dataOperation.processedData}}</td>
             <td>{{dataOperation.processingPurpose}}</td>
             <td>{{dataOperation.dataSubject}}</td>
             <td>{{dataOperation.processingMeans}}</td>
@@ -61,7 +67,7 @@
                 <div *ngIf="dataOperation.companyProfile">
                     <a [routerLink]="['/company-profile-mgm', dataOperation.companyProfile?.id ]">{{dataOperation.companyProfile?.name}}</a>
                 </div>
-            </td>
+            </td>-->
             <td class="text-right" (click)="$event.stopPropagation()">
                 <div class="btn-group flex-btn-group-container">
                     <button type="submit"
