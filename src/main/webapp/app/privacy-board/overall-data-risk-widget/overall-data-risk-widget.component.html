@@ -11,9 +11,23 @@
                     </h2>
                 </mat-panel-title>
             </mat-expansion-panel-header>
-
             <p class="my-2 text-justify">
-                Based on the results of the <em>Impact</em> and <em>Likelihood</em> evaluations, the level of
+                Based on the results of the <em>Impact</em>&nbsp;<span
+                *ngIf="overallSecurityImpact && overallSecurityImpact.impact"
+                style="font-size: medium"
+                [ngClass]="{
+                                'low': overallSecurityImpact.impact === dataImpactEnum.LOW,
+                                'medium': overallSecurityImpact.impact === dataImpactEnum.MEDIUM,
+                                'high': overallSecurityImpact.impact === dataImpactEnum.HIGH,
+                                'very-high': overallSecurityImpact.impact === dataImpactEnum.VERY_HIGH
+                            }"  class="badge badge-pill badge-secondary">{{overallSecurityImpact.impact | replace:'_':' ' | titlecase}}</span>
+                and <em>Likelihood</em>&nbsp;<span *ngIf="overallDataThreat && overallDataThreat.likelihood"
+                                               style="font-size: medium"
+                                               [ngClass]="{
+                                'low': overallDataThreat.likelihood === dataThreatLikelihoodEnum.LOW,
+                                'medium': overallDataThreat.likelihood === dataThreatLikelihoodEnum.MEDIUM,
+                                'high': overallDataThreat.likelihood === dataThreatLikelihoodEnum.HIGH
+                            }"  class="badge badge-pill badge-secondary">{{overallDataThreat.likelihood | replace:'_':' ' | titlecase}}</span> evaluations, the level of
                 <em>Risk</em>
                 associated to this <i>Data Operation</i> is
                 <span *ngIf="overallDataRisk"
@@ -43,7 +57,8 @@
                         <tr>
                             <th style="visibility: hidden;"></th>
                             <th style="visibility: hidden;"></th>
-                            <th class="text-center align-middle" style="font-size: large;" [colSpan]="dataImpacts.length">
+                            <th class="text-center align-middle" style="font-size: large;"
+                                [colSpan]="dataImpacts.length">
                                 Impact Level
                             </th>
                         </tr>
@@ -78,7 +93,7 @@
                                 && riskLevelConfigsMap.get(likelihood).get(impact)===selectedDataRiskLevelConfig"
                                    class="fas fa-edit"></i>
                                 <!--DataOperation risk level placeholder-->
-                                <span
+                                <!--<span
                                     *ngIf="riskLevelConfigsMap.has(likelihood)
                                             && riskLevelConfigsMap.get(likelihood).has(impact)
                                             && overallDataThreat && overallDataThreat.likelihood === likelihood
@@ -96,7 +111,7 @@
                                         *ngIf="overallDataThreat && overallDataThreat.likelihood === likelihood && overallSecurityImpact && overallSecurityImpact.impact === impact">
                                     {{riskLevelConfigsMap.get(likelihood).get(impact).risk | replace:'_':' ' | titlecase}}
                                     </ng-container>
-                                </span>
+                                </span>-->
                             </td>
                         </tr>
                         <!--The remaining Likelihoods-->
@@ -117,7 +132,7 @@
                             && riskLevelConfigsMap.get(likelihood).get(impact)===selectedDataRiskLevelConfig"
                                    class="fas fa-edit"></i>
                                 <!--DataOperation risk level placeholder-->
-                                <span
+                                <!--<span
                                     *ngIf="riskLevelConfigsMap.has(likelihood)
                                             && riskLevelConfigsMap.get(likelihood).has(impact)
                                             && overallDataThreat && overallDataThreat.likelihood === likelihood
@@ -134,7 +149,7 @@
                                         *ngIf="overallDataThreat && overallDataThreat.likelihood === likelihood && overallSecurityImpact && overallSecurityImpact.impact === impact">
                                     {{riskLevelConfigsMap.get(likelihood).get(impact).risk | replace:'_':' ' | titlecase}}
                                     </ng-container>
-                                </span>
+                                </span>-->
                             </td>
                         </tr>
                         </tbody>
