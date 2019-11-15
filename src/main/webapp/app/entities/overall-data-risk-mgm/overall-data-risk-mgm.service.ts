@@ -9,12 +9,16 @@ import {createRequestOption} from '../../shared';
 export type EntityResponseType = HttpResponse<OverallDataRiskMgm>;
 
 const OPERATION_ID = '{operationID}';
+const COMPANY_PLACEHOLDER = '{companyProfileID}';
+
 
 @Injectable()
 export class OverallDataRiskMgmService {
 
     private resourceUrl = SERVER_API_URL + 'api/overall-data-risks';
     private resourceByDataOperationUrl = SERVER_API_URL + 'api/overall-data-risks/operation/' + OPERATION_ID;
+    private resourceUrlByCompanyProfile = SERVER_API_URL + 'api/overall-data-risks/company-profile/' + COMPANY_PLACEHOLDER;
+
 
     constructor(private http: HttpClient) {
     }
@@ -36,6 +40,12 @@ export class OverallDataRiskMgmService {
             .map((res: EntityResponseType) => this.convertResponse(res));
     }
 
+    getAllByCompanyProfile(companyID: number): Observable<HttpResponse<OverallDataRiskMgm[]>> {
+        const options = createRequestOption();
+        return this.http.get<OverallDataRiskMgm[]>(this.resourceUrlByCompanyProfile
+            .replace(COMPANY_PLACEHOLDER, String(companyID)), {params: options, observe: 'response'})
+            .map((res: HttpResponse<OverallDataRiskMgm[]>) => this.convertArrayResponse(res));
+    }
 
     getByDataOperation(operationID: number) {
         return this.http.get<OverallDataRiskMgm>(this.resourceByDataOperationUrl.replace(OPERATION_ID, String(operationID)), {observe: 'response'})

@@ -13,6 +13,11 @@ import {ActionType} from "../../entities/enumerations/ActionType.enum";
 import {DataImpact} from "../../entities/enumerations/gdpr/DataImpact.enum";
 import {DataThreatLikelihood} from "../../entities/enumerations/gdpr/DataThreatLikelihood.enum";
 import {DataRiskLevel} from "../../entities/enumerations/gdpr/DataRiskLevel.enum";
+import {OverallSecurityImpactMgm, OverallSecurityImpactMgmService} from "../../entities/overall-security-impact-mgm";
+import {OverallDataThreatMgm, OverallDataThreatMgmService} from "../../entities/overall-data-threat-mgm";
+import {OverallDataRiskMgm, OverallDataRiskMgmService} from "../../entities/overall-data-risk-mgm";
+import {SecurityPillar} from "../../entities/enumerations/gdpr/SecurityPillar.enum";
+import {SecurityImpactMgm} from "../../entities/security-impact-mgm";
 
 @Component({
     selector: 'jhi-data-operations',
@@ -23,8 +28,23 @@ export class DataOperationsComponent implements OnInit, OnDestroy {
 
     private subscriptions: Subscription[];
 
+    public securityPillars: SecurityPillar[];
+
     public myCompany: MyCompanyMgm;
+
     public dataOperations: DataOperationMgm[];
+    public dataOperationsToggleMap: Map<number/*OperationID*/, boolean/*Toggled*/>;
+
+    public securityImpactsByDataOperationAndSecurityPillarMap: Map<number/*OperationID*/, Map<SecurityPillar, SecurityImpactMgm>>;
+
+    public overallSecurityImpacts: OverallSecurityImpactMgm[];
+    public overallSecurityImpactsMap: Map<number/*OperationID*/, OverallSecurityImpactMgm>;
+
+    public overallDataThreats: OverallDataThreatMgm[];
+    public overallDataThreatsMap: Map<number/*OperationID*/, OverallDataThreatMgm>;
+
+    public overallDataRisks: OverallDataRiskMgm[];
+    public overallDataRisksMap: Map<number/*OperationID*/, OverallDataRiskMgm>;
 
     public dataImpactEnum = DataImpact;
     public dataImpacts: DataImpact[];
@@ -38,12 +58,17 @@ export class DataOperationsComponent implements OnInit, OnDestroy {
     constructor(private dataSharingService: DataSharingService,
                 private eventManagerService: EventManagerService,
                 private dataOperationsService: DataOperationsService,
+                private overallSecurityImpactService: OverallSecurityImpactMgmService,
+                private overallDataThreatService: OverallDataThreatMgmService,
+                private overallDataRiskService: OverallDataRiskMgmService,
                 private changeDetector: ChangeDetectorRef,
                 private router: Router) {
     }
 
     ngOnInit() {
         this.subscriptions = [];
+
+        this.securityPillars = Object.keys(SecurityPillar).map((key) => SecurityPillar[key]);
 
         this.dataImpacts = Object.keys(DataImpact).map((key) => DataImpact[key]);
         this.threatLikelihoods = Object.keys(DataThreatLikelihood).map((key) => DataThreatLikelihood[key]);
@@ -81,8 +106,85 @@ export class DataOperationsComponent implements OnInit, OnDestroy {
                     (response: HttpResponse<DataOperationMgm[]>) => {
                         this.dataOperations = response.body;
 
-                        if(this.changeDetector && !(this.changeDetector as ViewRef).destroyed){
+                        this.dataOperationsToggleMap = new Map();
+
+                        this.securityImpactsByDataOperationAndSecurityPillarMap = new Map();
+
+                        this.dataOperations.forEach((operation: DataOperationMgm) => {
+                            this.dataOperationsToggleMap.set(operation.id, false);
+
+                            const impactsMap: Map<SecurityPillar, SecurityImpactMgm> = new Map();
+                            this.securityImpactsByDataOperationAndSecurityPillarMap.set(operation.id, impactsMap);
+
+                            if (operation.impacts && operation.impacts.length) {
+                                operation.impacts.forEach((impact: SecurityImpactMgm) => {
+                                    impactsMap.set(impact.securityPillar, impact);
+                                });
+                            }
+                        });
+
+                        if (this.changeDetector && !(this.changeDetector as ViewRef).destroyed) {
                             this.changeDetector.detectChanges();
+                        }
+                    }
+                );
+
+            this.overallSecurityImpactService.getAllByCompanyProfile(this.myCompany.companyProfile.id)
+                .toPromise()
+                .then(
+                    (response: HttpResponse<OverallSecurityImpactMgm[]>) => {
+                        this.overallSecurityImpactsMap = new Map();
+
+                        this.overallSecurityImpacts = response.body;
+
+                        if (this.overallSecurityImpacts && this.overallSecurityImpacts.length) {
+                            this.overallSecurityImpacts.forEach((impact: OverallSecurityImpactMgm) => {
+                                this.overallSecurityImpactsMap.set(impact.operation.id, impact);
+                            });
+
+                            if (this.changeDetector && !(this.changeDetector as ViewRef).destroyed) {
+                                this.changeDetector.detectChanges();
+                            }
+                        }
+                    }
+                );
+
+            this.overallDataThreatService.getAllByCompanyProfile(this.myCompany.companyProfile.id)
+                .toPromise()
+                .then(
+                    (response: HttpResponse<OverallDataThreatMgm[]>) => {
+                        this.overallDataThreatsMap = new Map();
+
+                        this.overallDataThreats = response.body;
+
+                        if (this.overallDataThreats && this.overallDataThreats.length) {
+                            this.overallDataThreats.forEach((threat: OverallDataThreatMgm) => {
+                                this.overallDataThreatsMap.set(threat.operation.id, threat);
+                            });
+
+                            if (this.changeDetector && !(this.changeDetector as ViewRef).destroyed) {
+                                this.changeDetector.detectChanges();
+                            }
+                        }
+                    }
+                );
+
+            this.overallDataRiskService.getAllByCompanyProfile(this.myCompany.companyProfile.id)
+                .toPromise()
+                .then(
+                    (response: HttpResponse<OverallDataRiskMgm[]>) => {
+                        this.overallDataRisksMap = new Map();
+
+                        this.overallDataRisks = response.body;
+
+                        if (this.overallDataRisks && this.overallDataRisks.length) {
+                            this.overallDataRisks.forEach((risk: OverallDataRiskMgm) => {
+                                this.overallDataRisksMap.set(risk.operation.id, risk);
+                            });
+
+                            if (this.changeDetector && !(this.changeDetector as ViewRef).destroyed) {
+                                this.changeDetector.detectChanges();
+                            }
                         }
                     }
                 );

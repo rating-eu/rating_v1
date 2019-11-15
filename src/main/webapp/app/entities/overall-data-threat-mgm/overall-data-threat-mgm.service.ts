@@ -11,11 +11,16 @@ export type EntityResponseType = HttpResponse<OverallDataThreatMgm>;
 
 const OPERATION_ID_PLACEHOLDER = '{operationID}';
 
+const COMPANY_PLACEHOLDER = '{companyProfileID}';
+
+
 @Injectable()
 export class OverallDataThreatMgmService {
 
     private resourceUrl = SERVER_API_URL + 'api/overall-data-threats';
     private resourceUrlByDataOperation = SERVER_API_URL + 'api/overall-data-threats/operation/' + OPERATION_ID_PLACEHOLDER;
+    private resourceUrlByCompanyProfile = SERVER_API_URL + 'api/overall-data-threats/company-profile/' + COMPANY_PLACEHOLDER;
+
 
     constructor(private http: HttpClient) {
     }
@@ -40,6 +45,13 @@ export class OverallDataThreatMgmService {
     query(req?: any): Observable<HttpResponse<OverallDataThreatMgm[]>> {
         const options = createRequestOption(req);
         return this.http.get<OverallDataThreatMgm[]>(this.resourceUrl, {params: options, observe: 'response'})
+            .map((res: HttpResponse<OverallDataThreatMgm[]>) => this.convertArrayResponse(res));
+    }
+
+    getAllByCompanyProfile(companyID: number): Observable<HttpResponse<OverallDataThreatMgm[]>> {
+        const options = createRequestOption();
+        return this.http.get<OverallSecurityImpactMgm[]>(this.resourceUrlByCompanyProfile
+            .replace(COMPANY_PLACEHOLDER, String(companyID)), {params: options, observe: 'response'})
             .map((res: HttpResponse<OverallDataThreatMgm[]>) => this.convertArrayResponse(res));
     }
 
