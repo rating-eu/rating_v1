@@ -6,6 +6,8 @@ import org.springframework.stereotype.Repository;
 
 import org.springframework.data.jpa.repository.*;
 
+import java.util.List;
+
 
 /**
  * Spring Data JPA repository for the OverallSecurityImpact entity.
@@ -16,4 +18,7 @@ public interface OverallSecurityImpactRepository extends JpaRepository<OverallSe
 
     @Query("SELECT impact FROM OverallSecurityImpact impact WHERE impact.operation.id = :dataOperationID")
     OverallSecurityImpact findOneByDataOperation(@Param("dataOperationID") Long dataOperationID);
+
+    @Query("SELECT impact FROM OverallSecurityImpact impact WHERE impact.operation.companyProfile.id = :companyID")
+    List<OverallSecurityImpact> findAllByCompanyProfile(@Param("companyID") Long companyID);
 }

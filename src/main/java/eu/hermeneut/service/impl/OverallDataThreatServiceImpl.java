@@ -79,4 +79,11 @@ public class OverallDataThreatServiceImpl implements OverallDataThreatService {
 
         return this.overallDataThreatRepository.findOneByDataOperation(operationID);
     }
+
+    @Override
+    public List<OverallDataThreat> findAllByCompanyProfile(Long companyID) {
+        log.debug("Request to get OverallDataThreat by CompanyProfile: {}", companyID);
+
+        return this.overallDataThreatRepository.findAllByCompanyProfile(companyID);
+    }
 }

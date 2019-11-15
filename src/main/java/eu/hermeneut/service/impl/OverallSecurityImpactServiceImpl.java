@@ -79,4 +79,11 @@ public class OverallSecurityImpactServiceImpl implements OverallSecurityImpactSe
         log.debug("Request to delete OverallSecurityImpact : {}", id);
         overallSecurityImpactRepository.delete(id);
     }
+
+    @Override
+    public List<OverallSecurityImpact> findAllByCompanyProfile(Long companyProfileID) {
+        log.debug("Request to get OverallSecurityImpacts by CompanyProfile : {}", companyProfileID);
+
+        return this.overallSecurityImpactRepository.findAllByCompanyProfile(companyProfileID);
+    }
 }

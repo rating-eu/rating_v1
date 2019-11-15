@@ -1,5 +1,6 @@
 package eu.hermeneut.service.impl;
 
+import eu.hermeneut.domain.OverallSecurityImpact;
 import eu.hermeneut.service.OverallDataRiskService;
 import eu.hermeneut.domain.OverallDataRisk;
 import eu.hermeneut.repository.OverallDataRiskRepository;
@@ -77,5 +78,11 @@ public class OverallDataRiskServiceImpl implements OverallDataRiskService {
     public void delete(Long id) {
         log.debug("Request to delete OverallDataRisk : {}", id);
         overallDataRiskRepository.delete(id);
+    }
+
+    @Override
+    public List<OverallDataRisk> findAllByCompanyProfile(Long companyID) {
+        log.debug("Request to get OverallDataRisks by CompanyProfile: {}", companyID);
+        return overallDataRiskRepository.findAllByCompanyProfile(companyID);
     }
 }

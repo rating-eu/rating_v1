@@ -1,6 +1,8 @@
 package eu.hermeneut.service;
 
 import eu.hermeneut.domain.OverallDataRisk;
+import eu.hermeneut.domain.OverallSecurityImpact;
+
 import java.util.List;
 
 /**
@@ -45,4 +47,6 @@ public interface OverallDataRiskService {
      * @param id the id of the entity
      */
     void delete(Long id);
+
+    List<OverallDataRisk> findAllByCompanyProfile(Long companyID);
 }

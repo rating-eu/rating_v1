@@ -2,6 +2,7 @@ package eu.hermeneut.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import eu.hermeneut.domain.OverallDataRisk;
+import eu.hermeneut.domain.OverallSecurityImpact;
 import eu.hermeneut.service.OverallDataRiskService;
 import eu.hermeneut.web.rest.errors.BadRequestAlertException;
 import eu.hermeneut.web.rest.util.HeaderUtil;
@@ -101,6 +102,14 @@ public class OverallDataRiskResource {
         log.debug("REST request to get OverallDataRisk : {}", id);
         OverallDataRisk overallDataRisk = overallDataRiskService.findOne(id);
         return ResponseUtil.wrapOrNotFound(Optional.ofNullable(overallDataRisk));
+    }
+
+    @GetMapping("/overall-data-risks/company-profile/{companyProfileID}")
+    @Timed
+    public List<OverallDataRisk> getOverallSecurityImpactsByCompanyProfile(@PathVariable Long companyProfileID){
+        log.debug("REST request to get OverallDataRisks by CompanyProfile : {}", companyProfileID);
+
+        return this.overallDataRiskService.findAllByCompanyProfile(companyProfileID);
     }
 
     /**
