@@ -18,6 +18,9 @@ import {OverallDataThreatMgm, OverallDataThreatMgmService} from "../../entities/
 import {OverallDataRiskMgm, OverallDataRiskMgmService} from "../../entities/overall-data-risk-mgm";
 import {SecurityPillar} from "../../entities/enumerations/gdpr/SecurityPillar.enum";
 import {SecurityImpactMgm} from "../../entities/security-impact-mgm";
+import {VulnerabilityAreaMgm, VulnerabilityAreaMgmService} from "../../entities/vulnerability-area-mgm";
+import {DataThreatMgm} from "../../entities/data-threat-mgm";
+import {ThreatArea} from "../../entities/enumerations/gdpr/ThreatArea.enum";
 
 @Component({
     selector: 'jhi-data-operations',
@@ -55,12 +58,16 @@ export class DataOperationsComponent implements OnInit, OnDestroy {
     public dataRiskLevelEnum = DataRiskLevel;
     public dataRiskLevels: DataRiskLevel[];
 
+    public threatAreas: ThreatArea[];
+    public dataThreatsByDataOperationAndThreatAreaMap: Map<number/*OperationID*/, Map<ThreatArea, DataThreatMgm>>;
+
     constructor(private dataSharingService: DataSharingService,
                 private eventManagerService: EventManagerService,
                 private dataOperationsService: DataOperationsService,
                 private overallSecurityImpactService: OverallSecurityImpactMgmService,
                 private overallDataThreatService: OverallDataThreatMgmService,
                 private overallDataRiskService: OverallDataRiskMgmService,
+                private vulnerabilityAreaService: VulnerabilityAreaMgmService,
                 private changeDetector: ChangeDetectorRef,
                 private router: Router) {
     }
@@ -69,6 +76,7 @@ export class DataOperationsComponent implements OnInit, OnDestroy {
         this.subscriptions = [];
 
         this.securityPillars = Object.keys(SecurityPillar).map((key) => SecurityPillar[key]);
+        this.threatAreas = Object.keys(ThreatArea).map((key) => ThreatArea[key]);
 
         this.dataImpacts = Object.keys(DataImpact).map((key) => DataImpact[key]);
         this.threatLikelihoods = Object.keys(DataThreatLikelihood).map((key) => DataThreatLikelihood[key]);
@@ -110,17 +118,30 @@ export class DataOperationsComponent implements OnInit, OnDestroy {
 
                         this.securityImpactsByDataOperationAndSecurityPillarMap = new Map();
 
+                        this.dataThreatsByDataOperationAndThreatAreaMap = new Map();
+
                         this.dataOperations.forEach((operation: DataOperationMgm) => {
                             this.dataOperationsToggleMap.set(operation.id, false);
 
                             const impactsMap: Map<SecurityPillar, SecurityImpactMgm> = new Map();
-                            this.securityImpactsByDataOperationAndSecurityPillarMap.set(operation.id, impactsMap);
 
                             if (operation.impacts && operation.impacts.length) {
                                 operation.impacts.forEach((impact: SecurityImpactMgm) => {
                                     impactsMap.set(impact.securityPillar, impact);
                                 });
                             }
+
+                            this.securityImpactsByDataOperationAndSecurityPillarMap.set(operation.id, impactsMap);
+
+                            const threatsMap: Map<ThreatArea, DataThreatMgm> = new Map();
+
+                            if (operation.threats && operation.threats.length) {
+                                operation.threats.forEach((threat: DataThreatMgm) => {
+                                    threatsMap.set(threat.threatArea, threat);
+                                });
+                            }
+
+                            this.dataThreatsByDataOperationAndThreatAreaMap.set(operation.id, threatsMap);
                         });
 
                         if (this.changeDetector && !(this.changeDetector as ViewRef).destroyed) {
