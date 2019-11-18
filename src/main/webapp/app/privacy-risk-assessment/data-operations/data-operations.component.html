@@ -88,7 +88,7 @@
                         </span>
                     </span>
                 </td>
-                <td class="text-center"  (click)="$event.stopPropagation()">
+                <td class="text-center"  (click)="$event.stopPropagation()" style="cursor: default;">
                     <div class="btn-group flex-btn-group-container">
                         <button type="submit"
                                 (click)="selectDataOperation(dataOperation)"
@@ -117,7 +117,7 @@
                     </div>
                 </td>
             </tr>
-            <tr *ngIf="dataOperationsToggleMap.has(dataOperation.id) && dataOperationsToggleMap.get(dataOperation.id)">
+            <tr *ngIf="dataOperationsToggleMap.has(dataOperation.id) && dataOperationsToggleMap.get(dataOperation.id)" style="cursor: default;">
                 <td></td>
                 <td class="text-center" >
                     <ul class="list-unstyled" *ngIf="securityPillars && securityImpactsByDataOperationAndSecurityPillarMap && securityImpactsByDataOperationAndSecurityPillarMap.has(dataOperation.id)">
