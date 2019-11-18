@@ -56,6 +56,7 @@ import {VulnerabilityAreaMgm, VulnerabilityAreaMgmService} from '../../../../ent
 import {AnswerLikelihood} from "../../../../entities/enumerations/AnswerLikelihood.enum";
 import {AnswerWeightMgm, AnswerWeightMgmService} from "../../../../entities/answer-weight-mgm";
 import {QuestionType} from "../../../../entities/enumerations/QuestionType.enum";
+import {VulnerabilityRadarService} from "../../../../dashboard/vulnerability-radar-widget/vulnerability-radar.service";
 
 @Component({
     selector: 'jhi-dynamic-form',
@@ -102,14 +103,21 @@ export class DynamicFormComponent implements OnInit, OnDestroy, OnChanges {
     private myCompany: MyCompanyMgm;
     private subscriptions: Subscription[] = [];
     private _questionnaire: QuestionnaireMgm;
+
+    public containerTypeEnum = ContainerType;
+
     private _containerType: ContainerType;
     private _areaID: number;
+
     public area: VulnerabilityAreaMgm;
 
     private answerWeights: AnswerWeightMgm[];
     public answerWeightsMap: Map<QuestionType, Map<AnswerLikelihood, AnswerWeightMgm>>;
 
     public questionAreasMap: Map<number/*QuestionID*/, Map<number/*areaID*/, VulnerabilityAreaMgm>>;
+
+    // VulnerabilityRadar Data
+    public vulnerabilityRadarData: Map<number/*AreaID*/, Map<ContainerType, number/*Vulnerability*/>>;
 
     constructor(private questionControlService: QuestionControlService,
                 private dataSharingSerivce: DataSharingService,
@@ -124,6 +132,7 @@ export class DynamicFormComponent implements OnInit, OnDestroy, OnChanges {
                 private questionService: QuestionMgmService,
                 private threatAgentService: ThreatAgentMgmService,
                 private vulnerabilityAreaService: VulnerabilityAreaMgmService,
+                private vulnerabilityRadarService: VulnerabilityRadarService,
                 private modalService: NgbModal,
                 private changeDetector: ChangeDetectorRef) {
     }
@@ -167,7 +176,7 @@ export class DynamicFormComponent implements OnInit, OnDestroy, OnChanges {
     set areaID(areaID: number) {
         this._areaID = areaID;
 
-        if(this._areaID){
+        if (this._areaID) {
             this.vulnerabilityAreaService.find(this._areaID).toPromise().then((response: HttpResponse<VulnerabilityAreaMgm>) => {
                 this.area = response.body;
             });
@@ -329,6 +338,13 @@ export class DynamicFormComponent implements OnInit, OnDestroy, OnChanges {
                 if (this.cisoQuestionnaireStatus && this.cisoQuestionnaireStatus.answers && this.cisoQuestionnaireStatus.answers.length > 0) {
                     this.cisoMyAnswers = this.cisoQuestionnaireStatus.answers;
 
+                    // Fetch Vulnerabilities by Area
+                    this.vulnerabilityRadarService.getVulnerabilityRadar(this.cisoQuestionnaireStatus.id)
+                        .toPromise()
+                        .then((response: HttpResponse<Map<number, Map<ContainerType, number>>>) => {
+                            this.vulnerabilityRadarData = response.body;
+                        });
+
                     // Restore the checked status of the Form inputs
                     this.form.patchValue(this.myAnswersToFormValue(this.cisoMyAnswers, this.questionsArrayMap));
                 }
@@ -352,7 +368,7 @@ export class DynamicFormComponent implements OnInit, OnDestroy, OnChanges {
 
         this.answerWeightService.query().toPromise()
             .then((response: HttpResponse<AnswerWeightMgm[]>) => {
-                if(response && response.body){
+                if (response && response.body) {
                     this.answerWeights = response.body;
 
                     this.buildAnswerWeightsMap();
@@ -872,6 +888,8 @@ export class DynamicFormComponent implements OnInit, OnDestroy, OnChanges {
     }
 
     ngOnChanges(changes: SimpleChanges): void {
+        console.log("OnCHanges...");
+
         this.buildQuestionAreasMap();
     }
 
@@ -900,22 +918,50 @@ export class DynamicFormComponent implements OnInit, OnDestroy, OnChanges {
     }
 
     private buildAnswerWeightsMap() {
-        if(this.answerWeights && this.answerWeights.length){
+        if (this.answerWeights && this.answerWeights.length) {
             this.answerWeightsMap = new Map();
 
             this.answerWeights.forEach((answerWeight: AnswerWeightMgm) => {
-               const questionType: QuestionType = answerWeight.questionType;
-               const answerLikelihood: AnswerLikelihood = answerWeight.likelihood;
+                const questionType: QuestionType = answerWeight.questionType;
+                const answerLikelihood: AnswerLikelihood = answerWeight.likelihood;
 
-               let innerMap: Map<AnswerLikelihood, AnswerWeightMgm> = this.answerWeightsMap.get(questionType);
+                let innerMap: Map<AnswerLikelihood, AnswerWeightMgm> = this.answerWeightsMap.get(questionType);
 
-               if(!innerMap){
-                   innerMap = new Map();
-                   this.answerWeightsMap.set(questionType, innerMap);
-               }
+                if (!innerMap) {
+                    innerMap = new Map();
+                    this.answerWeightsMap.set(questionType, innerMap);
+                }
 
-               innerMap.set(answerLikelihood, answerWeight);
+                innerMap.set(answerLikelihood, answerWeight);
             });
         }
     }
+
+    /*private filterQuestionsByArea() {
+        console.log("Filtering Questions by Area...");
+
+        if (this.questionAreasMap) {
+            if (this.humanQuestionsArray) {
+                this.humanQuestionsArray = this.humanQuestionsArray.filter((question: QuestionMgm) => {
+                    return this.questionAreasMap.get(question.id).has(this._areaID);
+                });
+            }
+
+            if (this.itQuestionsArray) {
+                this.itQuestionsArray = this.itQuestionsArray.filter((question: QuestionMgm) => {
+                    return this.questionAreasMap.get(question.id).has(this._areaID);
+                });
+            }
+
+            if (this.physicalQuestionsArray) {
+                this.physicalQuestionsArray = this.physicalQuestionsArray.filter((question: QuestionMgm) => {
+                    return this.questionAreasMap.get(question.id).has(this._areaID);
+                });
+            }
+
+            if (this.changeDetector) {
+                this.changeDetector.detach();
+            }
+        }
+    }*/
 }

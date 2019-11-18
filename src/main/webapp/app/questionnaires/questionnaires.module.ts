@@ -31,7 +31,8 @@ import {PartialSubmitPopupService} from './questionnaires/questionnaire/partial-
 import {PartialSubmitDialogComponent, PartialSubmitPopupComponent} from './questionnaires/questionnaire/partial-submit-dialog/partial-submit-dialog.component';
 import {HermeneutSharedModule, JhiLanguageHelper} from '../shared';
 import {JhiLanguageService} from 'ng-jhipster';
-import {DtoModule} from "../dto/dto.module";
+import {DtoModule} from '../dto/dto.module';
+import {DashboardModule} from '../dashboard/dashboard.module';
 
 @NgModule({
     imports: [
@@ -43,7 +44,8 @@ import {DtoModule} from "../dto/dto.module";
         EvaluateWeaknessModule,
         DataSharingModule,
         MaterialModule,
-        DtoModule
+        DtoModule,
+        DashboardModule
     ],
     declarations: [
         QuestionnairesComponent,
