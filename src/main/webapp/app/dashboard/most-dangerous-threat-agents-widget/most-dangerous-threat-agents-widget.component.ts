@@ -67,11 +67,6 @@ export class MostDangerousThreatAgentsWidgetComponent implements OnInit {
     public loading = false;
     public isCollapsed = true;
     public mdtaEntities: MdtaEntity[] = [];
-    public threatAgentsPaginator = {
-        id: 'threat_agents_paginator',
-        itemsPerPage: 7,
-        currentPage: 1
-    };
 
     private myCompany: MyCompanyMgm;
 
@@ -189,10 +184,6 @@ export class MostDangerousThreatAgentsWidgetComponent implements OnInit {
             elem.contextual = Math.round((elem.contextual / 5) * 100);
             elem.refined = Math.round((elem.refined / 5) * 100);
         }
-    }
-
-    onThreatAgentsPageChange(number: number) {
-        this.threatAgentsPaginator.currentPage = number;
     }
 
     public sortTableBy(orderColumn: string, asc: boolean) {

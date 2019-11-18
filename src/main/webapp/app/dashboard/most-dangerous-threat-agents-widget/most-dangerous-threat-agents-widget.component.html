@@ -29,6 +29,11 @@
                 </mat-panel-title>
             </mat-expansion-panel-header>
 
+            <div class="float-right mb-1"><a
+                [routerLink]="['/evaluate-weakness/questionnaires/SELFASSESSMENT/questionnaire']">
+                <i class="fas fa-cog fa-lg" aria-hidden="true"></i></a>
+            </div>
+
             <div class="table-responsive" style="padding:0px !important;">
                 <div *ngIf="mdtaEntities.length === 0" class="text-center">
                     No data available, please complete the relative questionnaire!
@@ -84,7 +89,7 @@
                         </tr>
                         </thead>
                         <tbody align="center">
-                        <ng-container *ngFor="let item of mdtaEntities | paginate: threatAgentsPaginator">
+                        <ng-container *ngFor="let item of mdtaEntities">
                             <tr class="thead-light">
                                 <th>{{item.threatAgent}}</th>
                                 <td *ngIf="item.initial">{{item.initial}}%</td>
@@ -97,10 +102,6 @@
                         </ng-container>
                         </tbody>
                     </table>
-                    <div class="text-center">
-                        <pagination-controls (pageChange)="onThreatAgentsPageChange($event)"
-                                             [id]="threatAgentsPaginator.id"></pagination-controls>
-                    </div>
                 </div>
                 <div *ngIf="!mdtaEntities" class="text-center">
                     No Threat Agents founded
