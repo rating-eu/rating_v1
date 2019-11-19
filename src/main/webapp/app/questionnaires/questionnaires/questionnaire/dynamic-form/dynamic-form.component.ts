@@ -119,6 +119,8 @@ export class DynamicFormComponent implements OnInit, OnDestroy, OnChanges {
     // VulnerabilityRadar Data
     public vulnerabilityRadarData: Map<number/*AreaID*/, Map<ContainerType, number/*Vulnerability*/>>;
 
+    // Vulnerability formula
+    public vulnerabilityFormula: string = "Vulnerability=\\frac{\\sum_{i=1}^nAnswer_i.Vulnerability \\times Answer_i.Weight}{\\sum_{i=1}^nAnswer_i.Weight}";
     constructor(private questionControlService: QuestionControlService,
                 private dataSharingSerivce: DataSharingService,
                 private router: Router,

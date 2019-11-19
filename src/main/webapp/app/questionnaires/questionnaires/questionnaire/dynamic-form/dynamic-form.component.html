@@ -51,7 +51,8 @@
                     review the questions linked to the above <em>Assessment Area</em>.
                     By adjusting the corresponding answers, the current
                     <em>Vulnerability</em> value will be updated accordingly.</p>
-                <div *ngIf="containerType && areaID && area && vulnerabilityRadarData && form && !form.dirty" class="text-center align-middle">
+                <div *ngIf="containerType && areaID && area && vulnerabilityRadarData && form && !form.dirty"
+                     class="text-center align-middle">
                     <h6>Total Vulnerability</h6>
                     <mat-progress-spinner [diameter]="150" style="margin: 0 auto;"
                                           class="pointer"
@@ -70,6 +71,7 @@
                     <div style="top:-85px; z-index:2;position:relative;">
                         {{vulnerabilityRadarData.get(area.id).get(containerTypeEnum.INTANGIBLE) | percent}}
                     </div>
+                    <ng-katex [equation]="vulnerabilityFormula" style="font-size: x-large;"></ng-katex>
                 </div>
                 <mat-tab-group [(selectedIndex)]="currentTabIndex">
                     <mat-tab label="Human">
