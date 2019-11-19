@@ -14,13 +14,12 @@
  * limitations under the License.
  *
  */
-
 @import "../../risk-board/risk-board.css";
 
-.btn{
+.btn {
     font-size: 14px !important;
     font-weight: 400 !important;
-    font-family: "Helvetica Neue",Roboto,Arial,"Droid Sans",sans-serif !important;
+    font-family: "Helvetica Neue", Roboto, Arial, "Droid Sans", sans-serif !important;
     white-space: normal !important;
 }
 
@@ -45,15 +44,19 @@
 }
 
 .high {
-    background-color:#c0392b;
+    background-color: #c0392b;
     color: black;
 }
 
-.level{
+.level {
     background: #cc99ff4d;
 }
 
 .disabled {
     background-color: #808080;
     color: white;
+}
+
+table thead tr th, table tbody tr th {
+    font-size: medium;
 }
