@@ -33,6 +33,7 @@ import {HermeneutSharedModule, JhiLanguageHelper} from '../shared';
 import {JhiLanguageService} from 'ng-jhipster';
 import {DtoModule} from '../dto/dto.module';
 import {DashboardModule} from '../dashboard/dashboard.module';
+import {KatexModule} from 'ng-katex';
 
 @NgModule({
     imports: [
@@ -45,7 +46,8 @@ import {DashboardModule} from '../dashboard/dashboard.module';
         DataSharingModule,
         MaterialModule,
         DtoModule,
-        DashboardModule
+        DashboardModule,
+        KatexModule
     ],
     declarations: [
         QuestionnairesComponent,
