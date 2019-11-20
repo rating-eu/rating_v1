@@ -195,17 +195,7 @@
                                         <h5 class="h3-dynamic-form d-inline"> {{question?.name}}</h5>
                                     </label>
                                     <div class="row">
-                                        <div class="bg2"
-                                             [ngClass]="{'col-md-9': !(containerType && areaID), 'col-md-6': (containerType && areaID)}">
-                                            <mat-radio-group [formControlName]="question.id" class="radio-group">
-                                                <mat-radio-button *ngFor="let answer of sort(question.answers)"
-                                                                  class="radio-button"
-                                                                  [value]="answer">
-                                                    {{answer.name}}
-                                                </mat-radio-button>
-                                            </mat-radio-group>
-                                        </div>
-                                        <div *ngIf="containerType && areaID" class="col-md-3 text-center"
+                                        <div *ngIf="containerType && areaID && area" class="col-md-3 text-center"
                                              style="margin: auto 0;">
                                             <mat-progress-spinner [diameter]="100" style="margin: 0 auto;"
                                                                   [ngClass]="{
@@ -223,7 +213,7 @@
                                             <div style="top:-60px; z-index:2;position:relative;">
                                                 {{answerLikelihoodEnum[form.value[question.id].likelihood] / 5 | percent}}
                                             </div>
-                                            <div
+                                            <!--<div
                                                 *ngIf="answerWeightsMap && answerWeightsMap.size && answerWeightsMap.has(question.questionType) && answerWeightsMap.get(question.questionType).has(form.value[question.id].likelihood)">
                                                 <i class="fas fa-weight"></i>&nbsp;Weight
                                                 is {{answerWeightsMap.get(question.questionType).get(form.value[question.id].likelihood).weight}}
@@ -231,7 +221,17 @@
                                             <div>
                                                 <i class="fas fa-exclamation-circle"></i>&nbsp;Vulnerability is
                                                 <sup>{{answerLikelihoodEnum[form.value[question.id].likelihood]}}</sup>&#8260;<sub>{{answerLikelihoodEnum.LOW}}</sub>
-                                            </div>
+                                            </div>-->
+                                        </div>
+                                        <div class="bg2"
+                                             [ngClass]="{'col-md-9': !(containerType && areaID), 'col-md-6': (containerType && areaID)}">
+                                            <mat-radio-group [formControlName]="question.id" class="radio-group">
+                                                <mat-radio-button *ngFor="let answer of sort(question.answers)"
+                                                                  class="radio-button"
+                                                                  [value]="answer">
+                                                    {{answer.name}}
+                                                </mat-radio-button>
+                                            </mat-radio-group>
                                         </div>
                                         <div class="col-md-3 bg3 text-center">
                                             <mat-form-field>
@@ -246,7 +246,7 @@
                     </mat-tab>
 
                     <mat-tab label="IT">
-                        <div *ngIf="containerType && areaID && area && vulnerabilityRadarData && form && !form.dirty"
+                        <!--<div *ngIf="containerType && areaID && area && vulnerabilityRadarData && form && !form.dirty"
                              class="my-3 text-center align-middle">
                             <h6>Container Vulnerability</h6>
                             <mat-progress-spinner [diameter]="100" style="margin: 0 auto;"
@@ -266,7 +266,7 @@
                             <div style="top:-60px; z-index:2;position:relative;">
                                 {{vulnerabilityRadarData.get(area.id).get(containerTypeEnum.IT) / 5 | percent}}
                             </div>
-                        </div>
+                        </div>-->
                         <ol *ngIf="itQuestionsArray">
                             <li *ngFor="let question of itQuestionsArray; trackBy: trackByID"
                                 [ngClass]="{'d-none': containerType && areaID && !(questionAreasMap && questionAreasMap.has(question.id) && questionAreasMap.get(question.id).has(areaID))}"
@@ -278,17 +278,7 @@
                                         <h5 class="h3-dynamic-form d-inline"> {{question?.name}}</h5>
                                     </label>
                                     <div class="row">
-                                        <div class="bg2"
-                                             [ngClass]="{'col-md-9': !(containerType && areaID), 'col-md-6': (containerType && areaID)}">
-                                            <mat-radio-group [formControlName]="question.id" class="radio-group">
-                                                <mat-radio-button *ngFor="let answer of sort(question.answers)"
-                                                                  class="radio-button"
-                                                                  [value]="answer">
-                                                    {{answer.name}}
-                                                </mat-radio-button>
-                                            </mat-radio-group>
-                                        </div>
-                                        <div *ngIf="containerType && areaID" class="col-md-3 text-center"
+                                        <div *ngIf="containerType && areaID && area" class="col-md-3 text-center"
                                              style="margin: auto 0;">
                                             <mat-progress-spinner [diameter]="100" style="margin: 0 auto;"
                                                                   [ngClass]="{
@@ -306,7 +296,7 @@
                                             <div style="top:-60px; z-index:2;position:relative;">
                                                 {{answerLikelihoodEnum[form.value[question.id].likelihood] / 5 | percent}}
                                             </div>
-                                            <div
+                                            <!--<div
                                                 *ngIf="answerWeightsMap && answerWeightsMap.size && answerWeightsMap.has(question.questionType) && answerWeightsMap.get(question.questionType).has(form.value[question.id].likelihood)">
                                                 <i class="fas fa-weight"></i>&nbsp;Weight
                                                 is {{answerWeightsMap.get(question.questionType).get(form.value[question.id].likelihood).weight}}
@@ -314,7 +304,17 @@
                                             <div>
                                                 <i class="fas fa-exclamation-circle"></i>&nbsp;Vulnerability is
                                                 <sup>{{answerLikelihoodEnum[form.value[question.id].likelihood]}}</sup>&#8260;<sub>{{answerLikelihoodEnum[answerLikelihoodEnum[answerLikelihoodEnum.LOW]]}}</sub>
-                                            </div>
+                                            </div>-->
+                                        </div>
+                                        <div class="bg2"
+                                             [ngClass]="{'col-md-9': !(containerType && areaID), 'col-md-6': (containerType && areaID)}">
+                                            <mat-radio-group [formControlName]="question.id" class="radio-group">
+                                                <mat-radio-button *ngFor="let answer of sort(question.answers)"
+                                                                  class="radio-button"
+                                                                  [value]="answer">
+                                                    {{answer.name}}
+                                                </mat-radio-button>
+                                            </mat-radio-group>
                                         </div>
                                         <div class="col-md-3 bg3 text-center">
                                             <mat-form-field>
@@ -329,27 +329,9 @@
                     </mat-tab>
 
                     <mat-tab label="Physical">
-                        <div *ngIf="containerType && areaID && area && vulnerabilityRadarData && form && !form.dirty"
+                        <!--<div *ngIf="containerType && areaID && area && vulnerabilityRadarData && form && !form.dirty"
                              class="my-3 text-center align-middle">
-                            <h6>Container Vulnerability</h6>
-                            <mat-progress-spinner [diameter]="100" style="margin: 0 auto;"
-                                                  class="pointer"
-                                                  [ngClass]="{
-                                              'low': vulnerabilityRadarData.get(area.id).get(containerTypeEnum.PHYSICAL)/5 > 0 && vulnerabilityRadarData.get(area.id).get(containerTypeEnum.PHYSICAL)/5 <= 0.2,
-                                              'low-medium': vulnerabilityRadarData.get(area.id).get(containerTypeEnum.PHYSICAL)/5 > 0.2 && vulnerabilityRadarData.get(area.id).get(containerTypeEnum.PHYSICAL)/5 <= 0.4,
-                                              'medium': vulnerabilityRadarData.get(area.id).get(containerTypeEnum.PHYSICAL)/5 > 0.4 && vulnerabilityRadarData.get(area.id).get(containerTypeEnum.PHYSICAL)/5 <= 0.6,
-                                              'medium-high': vulnerabilityRadarData.get(area.id).get(containerTypeEnum.PHYSICAL)/5 > 0.6 && vulnerabilityRadarData.get(area.id).get(containerTypeEnum.PHYSICAL)/5 <= 0.8,
-                                              'high': vulnerabilityRadarData.get(area.id).get(containerTypeEnum.PHYSICAL)/5 > 0.8 && vulnerabilityRadarData.get(area.id).get(containerTypeEnum.PHYSICAL)/5 <= 1
-                                              }"
-                                                  [value]="vulnerabilityRadarData.get(area.id).get(containerTypeEnum.PHYSICAL)/5 * 100"
-                                                  matTooltip="Physical Vulnerability"
-                                                  [matTooltipPosition]="'above'"
-                            >
-                            </mat-progress-spinner>
-                            <div style="top:-60px; z-index:2;position:relative;">
-                                {{vulnerabilityRadarData.get(area.id).get(containerTypeEnum.PHYSICAL) / 5 | percent}}
-                            </div>
-                        </div>
+                        </div>-->
                         <ol *ngIf="physicalQuestionsArray">
                             <li *ngFor="let question of physicalQuestionsArray; trackBy: trackByID"
                                 [ngClass]="{'d-none': containerType && areaID && !(questionAreasMap && questionAreasMap.has(question.id) && questionAreasMap.get(question.id).has(areaID))}"
@@ -361,17 +343,7 @@
                                         <h5 class="h3-dynamic-form d-inline"> {{question?.name}}</h5>
                                     </label>
                                     <div class="row">
-                                        <div class="bg2"
-                                             [ngClass]="{'col-md-9': !(containerType && areaID), 'col-md-6': (containerType && areaID)}">
-                                            <mat-radio-group [formControlName]="question.id" class="radio-group">
-                                                <mat-radio-button *ngFor="let answer of sort(question.answers)"
-                                                                  class="radio-button"
-                                                                  [value]="answer">
-                                                    {{answer.name}}
-                                                </mat-radio-button>
-                                            </mat-radio-group>
-                                        </div>
-                                        <div *ngIf="containerType && areaID" class="col-md-3 text-center"
+                                        <div *ngIf="containerType && areaID && area" class="col-md-3 text-center"
                                              style="margin: auto 0;">
                                             <mat-progress-spinner [diameter]="100" style="margin: 0 auto;"
                                                                   [ngClass]="{
@@ -389,7 +361,7 @@
                                             <div style="top:-60px; z-index:2;position:relative;">
                                                 {{answerLikelihoodEnum[form.value[question.id].likelihood] / 5 | percent}}
                                             </div>
-                                            <div
+                                            <!--<div
                                                 *ngIf="answerWeightsMap && answerWeightsMap.size && answerWeightsMap.has(question.questionType) && answerWeightsMap.get(question.questionType).has(form.value[question.id].likelihood)">
                                                 <i class="fas fa-weight"></i>&nbsp;Weight
                                                 is {{answerWeightsMap.get(question.questionType).get(form.value[question.id].likelihood).weight}}
@@ -397,7 +369,17 @@
                                             <div>
                                                 <i class="fas fa-exclamation-circle"></i>&nbsp;Vulnerability is
                                                 <sup>{{answerLikelihoodEnum[form.value[question.id].likelihood]}}</sup>&#8260;<sub>{{answerLikelihoodEnum[answerLikelihoodEnum[answerLikelihoodEnum.LOW]]}}</sub>
-                                            </div>
+                                            </div>-->
+                                        </div>
+                                        <div class="bg2"
+                                             [ngClass]="{'col-md-9': !(containerType && areaID), 'col-md-6': (containerType && areaID)}">
+                                            <mat-radio-group [formControlName]="question.id" class="radio-group">
+                                                <mat-radio-button *ngFor="let answer of sort(question.answers)"
+                                                                  class="radio-button"
+                                                                  [value]="answer">
+                                                    {{answer.name}}
+                                                </mat-radio-button>
+                                            </mat-radio-group>
                                         </div>
                                         <div class="col-md-3 bg3 text-center">
                                             <mat-form-field>
