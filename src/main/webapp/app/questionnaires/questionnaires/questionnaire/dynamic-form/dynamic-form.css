@@ -63,3 +63,8 @@ ol li::before {
 :host ::ng-deep .radio-button .mat-radio-label .mat-radio-label-content {
     white-space: normal !important;
 }
+
+.spinner-percentage{
+    font-weight: bold;
+    font-size: medium;
+}

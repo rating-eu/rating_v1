@@ -96,7 +96,7 @@
                                               [matTooltipPosition]="'above'"
                         >
                         </mat-progress-spinner>
-                        <div style="top:-60px; z-index:2;position:relative;">
+                        <div class="spinner-percentage" style="top:-60px; z-index:2;position:relative;">
                             {{vulnerabilityRadarData.get(area.id).get(containerTypeEnum.HUMAN) / 5 | percent}}
                         </div>
                     </div>
@@ -116,7 +116,7 @@
                                               [matTooltipPosition]="'above'"
                         >
                         </mat-progress-spinner>
-                        <div style="top:-60px; z-index:2;position:relative;">
+                        <div class="spinner-percentage" style="top:-60px; z-index:2;position:relative;">
                             {{vulnerabilityRadarData.get(area.id).get(containerTypeEnum.IT) / 5 | percent}}
                         </div>
                     </div>
@@ -136,7 +136,7 @@
                                               [matTooltipPosition]="'above'"
                         >
                         </mat-progress-spinner>
-                        <div style="top:-60px; z-index:2;position:relative;">
+                        <div class="spinner-percentage" style="top:-60px; z-index:2;position:relative;">
                             {{vulnerabilityRadarData.get(area.id).get(containerTypeEnum.PHYSICAL) / 5 | percent}}
                         </div>
                     </div>
@@ -156,7 +156,7 @@
                                               [matTooltipPosition]="'above'"
                         >
                         </mat-progress-spinner>
-                        <div style="top:-85px; z-index:2;position:relative;">
+                        <div class="spinner-percentage" style="top:-85px; z-index:2;position:relative;">
                             {{vulnerabilityRadarData.get(area.id).get(containerTypeEnum.INTANGIBLE) | percent}}
                         </div>
                     </div>
@@ -210,7 +210,7 @@
                                                                   [matTooltipPosition]="'above'"
                                             >
                                             </mat-progress-spinner>
-                                            <div style="top:-60px; z-index:2;position:relative;">
+                                            <div class="spinner-percentage" style="top:-60px; z-index:2;position:relative;">
                                                 {{answerLikelihoodEnum[form.value[question.id].likelihood] / 5 | percent}}
                                             </div>
                                             <!--<div
@@ -293,7 +293,7 @@
                                                                   [matTooltipPosition]="'above'"
                                             >
                                             </mat-progress-spinner>
-                                            <div style="top:-60px; z-index:2;position:relative;">
+                                            <div class="spinner-percentage" style="top:-60px; z-index:2;position:relative;">
                                                 {{answerLikelihoodEnum[form.value[question.id].likelihood] / 5 | percent}}
                                             </div>
                                             <!--<div
@@ -358,7 +358,7 @@
                                                                   [matTooltipPosition]="'above'"
                                             >
                                             </mat-progress-spinner>
-                                            <div style="top:-60px; z-index:2;position:relative;">
+                                            <div class="spinner-percentage" style="top:-60px; z-index:2;position:relative;">
                                                 {{answerLikelihoodEnum[form.value[question.id].likelihood] / 5 | percent}}
                                             </div>
                                             <!--<div
