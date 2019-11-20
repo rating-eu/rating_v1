@@ -78,7 +78,7 @@ export class DynamicFormComponent implements OnInit, OnDestroy, OnChanges {
     public roleEnum = Role;
     public purposeEnum = QuestionnairePurpose;
     public answerLikelihoodEnum = AnswerLikelihood;
-
+    public questionTypeEnum = QuestionType;
 
     public questionsArray: QuestionMgm[];
     public humanQuestionsArray: QuestionMgm[];

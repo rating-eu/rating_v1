@@ -192,11 +192,17 @@
                                     [ngClass]="{'ng-valid': isValid(question.id) === true, 'ng-invalid': isValid(question.id) === false}"
                                     class="card-box">
                                     <label class="form-control-label" [attr.for]="question?.id">
+                                        <i class="fas"
+                                           [ngClass]="{
+                                            'fa-hard-hat': question.questionType===questionTypeEnum[questionTypeEnum.REGULAR],
+                                            'fa-crown': question.questionType===questionTypeEnum[questionTypeEnum.RELEVANT]}"></i>
                                         <h5 class="h3-dynamic-form d-inline"> {{question?.name}}</h5>
                                     </label>
                                     <div class="row">
                                         <div *ngIf="containerType && areaID && area" class="col-md-3 text-center"
                                              style="margin: auto 0;">
+                                            <rating [max]="5" [customTemplate]="bomb" [customTemplate]="bomb"></rating>
+                                            <h6>Vulnerability</h6>
                                             <mat-progress-spinner [diameter]="100" style="margin: 0 auto;"
                                                                   [ngClass]="{
                                               'low': answerLikelihoodEnum[form.value[question.id].likelihood]/5 > 0 && answerLikelihoodEnum[form.value[question.id].likelihood]/5 <= 0.2,
@@ -210,7 +216,8 @@
                                                                   [matTooltipPosition]="'above'"
                                             >
                                             </mat-progress-spinner>
-                                            <div class="spinner-percentage" style="top:-60px; z-index:2;position:relative;">
+                                            <div class="spinner-percentage"
+                                                 style="top:-60px; z-index:2;position:relative;">
                                                 {{answerLikelihoodEnum[form.value[question.id].likelihood] / 5 | percent}}
                                             </div>
                                             <!--<div
@@ -275,11 +282,17 @@
                                     [ngClass]="{'ng-valid': isValid(question.id) === true, 'ng-invalid': isValid(question.id) === false}"
                                     class="card-box">
                                     <label class="form-control-label" [attr.for]="question?.id">
+                                        <i class="fas"
+                                           [ngClass]="{
+                                            'fa-hard-hat': question.questionType===questionTypeEnum[questionTypeEnum.REGULAR],
+                                            'fa-crown': question.questionType===questionTypeEnum[questionTypeEnum.RELEVANT]}"></i>
                                         <h5 class="h3-dynamic-form d-inline"> {{question?.name}}</h5>
                                     </label>
                                     <div class="row">
                                         <div *ngIf="containerType && areaID && area" class="col-md-3 text-center"
                                              style="margin: auto 0;">
+                                            <rating [max]="5" [customTemplate]="bomb" [customTemplate]="bomb"></rating>
+                                            <h6>Vulnerability</h6>
                                             <mat-progress-spinner [diameter]="100" style="margin: 0 auto;"
                                                                   [ngClass]="{
                                               'low': answerLikelihoodEnum[form.value[question.id].likelihood]/5 > 0 && answerLikelihoodEnum[form.value[question.id].likelihood]/5 <= 0.2,
@@ -293,7 +306,8 @@
                                                                   [matTooltipPosition]="'above'"
                                             >
                                             </mat-progress-spinner>
-                                            <div class="spinner-percentage" style="top:-60px; z-index:2;position:relative;">
+                                            <div class="spinner-percentage"
+                                                 style="top:-60px; z-index:2;position:relative;">
                                                 {{answerLikelihoodEnum[form.value[question.id].likelihood] / 5 | percent}}
                                             </div>
                                             <!--<div
@@ -340,11 +354,17 @@
                                     [ngClass]="{'ng-valid': isValid(question.id) === true, 'ng-invalid': isValid(question.id) === false}"
                                     class="card-box">
                                     <label class="form-control-label" [attr.for]="question?.id">
+                                        <i class="fas"
+                                           [ngClass]="{
+                                            'fa-hard-hat': question.questionType===questionTypeEnum[questionTypeEnum.REGULAR],
+                                            'fa-crown': question.questionType===questionTypeEnum[questionTypeEnum.RELEVANT]}"></i>
                                         <h5 class="h3-dynamic-form d-inline"> {{question?.name}}</h5>
                                     </label>
                                     <div class="row">
                                         <div *ngIf="containerType && areaID && area" class="col-md-3 text-center"
                                              style="margin: auto 0;">
+                                            <rating [max]="5" [customTemplate]="bomb" [customTemplate]="bomb"></rating>
+                                            <h6>Vulnerability</h6>
                                             <mat-progress-spinner [diameter]="100" style="margin: 0 auto;"
                                                                   [ngClass]="{
                                               'low': answerLikelihoodEnum[form.value[question.id].likelihood]/5 > 0 && answerLikelihoodEnum[form.value[question.id].likelihood]/5 <= 0.2,
@@ -358,7 +378,8 @@
                                                                   [matTooltipPosition]="'above'"
                                             >
                                             </mat-progress-spinner>
-                                            <div class="spinner-percentage" style="top:-60px; z-index:2;position:relative;">
+                                            <div class="spinner-percentage"
+                                                 style="top:-60px; z-index:2;position:relative;">
                                                 {{answerLikelihoodEnum[form.value[question.id].likelihood] / 5 | percent}}
                                             </div>
                                             <!--<div
@@ -592,3 +613,12 @@
         </div>
     </div>
 </form>
+
+<ng-template #bomb let-i="index" let-v="value">
+    <button class="btn text-muted" type="button">
+
+        <i class="fas fa-bomb" style="font-size: large"
+           [ngClass]="{'text-muted': i >= v , 'text-dark': i < v}"
+        ></i>
+    </button>
+</ng-template>
