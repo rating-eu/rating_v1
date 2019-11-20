@@ -193,6 +193,9 @@
                                     class="card-box">
                                     <label class="form-control-label" [attr.for]="question?.id">
                                         <i class="fas"
+                                           matTooltip="Criticality = Likelihood X Vulnerability"
+                                           [matTooltip]="question.questionType===questionTypeEnum[questionTypeEnum.REGULAR] ? 'Regular' : question.questionType===questionTypeEnum[questionTypeEnum.RELEVANT]? 'Relevant' : null"
+                                           [matTooltipPosition]="'above'"
                                            [ngClass]="{
                                             'fa-hard-hat': question.questionType===questionTypeEnum[questionTypeEnum.REGULAR],
                                             'fa-crown': question.questionType===questionTypeEnum[questionTypeEnum.RELEVANT]}"></i>
@@ -283,6 +286,8 @@
                                     class="card-box">
                                     <label class="form-control-label" [attr.for]="question?.id">
                                         <i class="fas"
+                                           [matTooltip]="question.questionType===questionTypeEnum[questionTypeEnum.REGULAR] ? 'Regular' : question.questionType===questionTypeEnum[questionTypeEnum.RELEVANT]? 'Relevant' : null"
+                                           [matTooltipPosition]="'above'"
                                            [ngClass]="{
                                             'fa-hard-hat': question.questionType===questionTypeEnum[questionTypeEnum.REGULAR],
                                             'fa-crown': question.questionType===questionTypeEnum[questionTypeEnum.RELEVANT]}"></i>
@@ -355,6 +360,8 @@
                                     class="card-box">
                                     <label class="form-control-label" [attr.for]="question?.id">
                                         <i class="fas"
+                                           [matTooltip]="question.questionType===questionTypeEnum[questionTypeEnum.REGULAR] ? 'Regular' : question.questionType===questionTypeEnum[questionTypeEnum.RELEVANT]? 'Relevant' : null"
+                                           [matTooltipPosition]="'above'"
                                            [ngClass]="{
                                             'fa-hard-hat': question.questionType===questionTypeEnum[questionTypeEnum.REGULAR],
                                             'fa-crown': question.questionType===questionTypeEnum[questionTypeEnum.RELEVANT]}"></i>
