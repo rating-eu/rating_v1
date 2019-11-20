@@ -34,6 +34,7 @@ import {JhiLanguageService} from 'ng-jhipster';
 import {DtoModule} from '../dto/dto.module';
 import {DashboardModule} from '../dashboard/dashboard.module';
 import {KatexModule} from 'ng-katex';
+import {RatingModule} from 'ngx-bootstrap/rating'
 
 @NgModule({
     imports: [
@@ -47,7 +48,8 @@ import {KatexModule} from 'ng-katex';
         MaterialModule,
         DtoModule,
         DashboardModule,
-        KatexModule
+        KatexModule,
+        RatingModule
     ],
     declarations: [
         QuestionnairesComponent,
