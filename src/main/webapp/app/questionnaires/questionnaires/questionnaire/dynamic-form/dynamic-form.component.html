@@ -191,24 +191,31 @@
                                 <div
                                     [ngClass]="{'ng-valid': isValid(question.id) === true, 'ng-invalid': isValid(question.id) === false}"
                                     class="card-box">
-                                    <label class="form-control-label" [attr.for]="question?.id">
-                                        <!--<i class="fas"
-                                           [matTooltip]="question.questionType===questionTypeEnum[questionTypeEnum.REGULAR] ? 'Regular' : question.questionType===questionTypeEnum[questionTypeEnum.RELEVANT]? 'Relevant' : null"
-                                           [matTooltipPosition]="'above'"
-                                           [ngClass]="{
-                                            'fa-hard-hat': question.questionType===questionTypeEnum[questionTypeEnum.REGULAR],
-                                            'fa-crown': question.questionType===questionTypeEnum[questionTypeEnum.RELEVANT]}"
-                                           [ngStyle]="{
-                                                'color': question.questionType===questionTypeEnum[questionTypeEnum.REGULAR] ? '#000000' : question.questionType===questionTypeEnum[questionTypeEnum.RELEVANT] ? '#FFD700': '#000000'
-                                            }"
-                                        ></i>-->
-                                        <h5 class="h3-dynamic-form d-inline"> {{question?.name}}</h5>
-                                    </label>
+                                    <div class="row">
+                                        <div class="col-md-10">
+                                            <label class="form-control-label" [attr.for]="question?.id">
+                                                <!--<i class="fas"
+                                                   [matTooltip]="question.questionType===questionTypeEnum[questionTypeEnum.REGULAR] ? 'Regular' : question.questionType===questionTypeEnum[questionTypeEnum.RELEVANT]? 'Relevant' : null"
+                                                   [matTooltipPosition]="'above'"
+                                                   [ngClass]="{
+                                                    'fa-hard-hat': question.questionType===questionTypeEnum[questionTypeEnum.REGULAR],
+                                                    'fa-crown': question.questionType===questionTypeEnum[questionTypeEnum.RELEVANT]}"
+                                                   [ngStyle]="{
+                                                        'color': question.questionType===questionTypeEnum[questionTypeEnum.REGULAR] ? '#000000' : question.questionType===questionTypeEnum[questionTypeEnum.RELEVANT] ? '#FFD700': '#000000'
+                                                    }"
+                                                ></i>-->
+                                                <h5 class="h3-dynamic-form d-inline"> {{question?.name}}</h5>
+                                            </label>
+                                        </div>
+                                        <div class="col-md-2 text-right">
+                                            <rating [max]="5" [titles]="['1','2','3','4','5']" [customTemplate]="bomb"
+                                                    [customTemplate]="bomb"></rating>
+                                        </div>
+                                    </div>
+
                                     <div class="row">
                                         <div *ngIf="containerType && areaID && area" class="col-md-3 text-center"
                                              style="margin: auto 0;">
-                                            <rating [max]="5" [titles]="['1','2','3','4','5']" [customTemplate]="bomb"
-                                                    [customTemplate]="bomb"></rating>
                                             <h6>Vulnerability</h6>
                                             <mat-progress-spinner [diameter]="100" style="margin: 0 auto;"
                                                                   [ngClass]="{
@@ -288,23 +295,30 @@
                                 <div
                                     [ngClass]="{'ng-valid': isValid(question.id) === true, 'ng-invalid': isValid(question.id) === false}"
                                     class="card-box">
-                                    <label class="form-control-label" [attr.for]="question?.id">
-                                        <!--<i class="fas"
-                                           [matTooltip]="question.questionType===questionTypeEnum[questionTypeEnum.REGULAR] ? 'Regular' : question.questionType===questionTypeEnum[questionTypeEnum.RELEVANT]? 'Relevant' : null"
-                                           [matTooltipPosition]="'above'"
-                                           [ngClass]="{
-                                            'fa-hard-hat': question.questionType===questionTypeEnum[questionTypeEnum.REGULAR],
-                                            'fa-crown': question.questionType===questionTypeEnum[questionTypeEnum.RELEVANT]}"
-                                           [ngStyle]="{
-                                                'color': question.questionType===questionTypeEnum[questionTypeEnum.REGULAR] ? '#000000' : question.questionType===questionTypeEnum[questionTypeEnum.RELEVANT] ? '#FFD700': '#000000'
-                                            }"></i>-->
-                                        <h5 class="h3-dynamic-form d-inline"> {{question?.name}}</h5>
-                                    </label>
+                                    <div class="row">
+                                        <div class="col-md-10">
+                                            <label class="form-control-label" [attr.for]="question?.id">
+                                                <!--<i class="fas"
+                                                   [matTooltip]="question.questionType===questionTypeEnum[questionTypeEnum.REGULAR] ? 'Regular' : question.questionType===questionTypeEnum[questionTypeEnum.RELEVANT]? 'Relevant' : null"
+                                                   [matTooltipPosition]="'above'"
+                                                   [ngClass]="{
+                                                    'fa-hard-hat': question.questionType===questionTypeEnum[questionTypeEnum.REGULAR],
+                                                    'fa-crown': question.questionType===questionTypeEnum[questionTypeEnum.RELEVANT]}"
+                                                   [ngStyle]="{
+                                                        'color': question.questionType===questionTypeEnum[questionTypeEnum.REGULAR] ? '#000000' : question.questionType===questionTypeEnum[questionTypeEnum.RELEVANT] ? '#FFD700': '#000000'
+                                                    }"></i>-->
+                                                <h5 class="h3-dynamic-form d-inline"> {{question?.name}}</h5>
+                                            </label>
+                                        </div>
+                                        <div class="col-md-2 text-right">
+                                            <rating [max]="5" [titles]="['1','2','3','4','5']" [customTemplate]="bomb"
+                                                    [customTemplate]="bomb"></rating>
+                                        </div>
+                                    </div>
+
                                     <div class="row">
                                         <div *ngIf="containerType && areaID && area" class="col-md-3 text-center"
                                              style="margin: auto 0;">
-                                            <rating [max]="5" [titles]="['1','2','3','4','5']" [customTemplate]="bomb"
-                                                    [customTemplate]="bomb"></rating>
                                             <h6>Vulnerability</h6>
                                             <mat-progress-spinner [diameter]="100" style="margin: 0 auto;"
                                                                   [ngClass]="{
@@ -366,23 +380,29 @@
                                 <div
                                     [ngClass]="{'ng-valid': isValid(question.id) === true, 'ng-invalid': isValid(question.id) === false}"
                                     class="card-box">
-                                    <label class="form-control-label" [attr.for]="question?.id">
-                                        <!--<i class="fas"
-                                           [matTooltip]="question.questionType===questionTypeEnum[questionTypeEnum.REGULAR] ? 'Regular' : question.questionType===questionTypeEnum[questionTypeEnum.RELEVANT]? 'Relevant' : null"
-                                           [matTooltipPosition]="'above'"
-                                           [ngClass]="{
-                                            'fa-hard-hat': question.questionType===questionTypeEnum[questionTypeEnum.REGULAR],
-                                            'fa-crown': question.questionType===questionTypeEnum[questionTypeEnum.RELEVANT]}"
-                                           [ngStyle]="{
-                                                'color': question.questionType===questionTypeEnum[questionTypeEnum.REGULAR] ? '#000000' : question.questionType===questionTypeEnum[questionTypeEnum.RELEVANT] ? '#FFD700': '#000000'
-                                            }"></i>-->
-                                        <h5 class="h3-dynamic-form d-inline"> {{question?.name}}</h5>
-                                    </label>
+                                    <div class="row">
+                                        <div class="col-md-10">
+                                            <label class="form-control-label" [attr.for]="question?.id">
+                                                <!--<i class="fas"
+                                                   [matTooltip]="question.questionType===questionTypeEnum[questionTypeEnum.REGULAR] ? 'Regular' : question.questionType===questionTypeEnum[questionTypeEnum.RELEVANT]? 'Relevant' : null"
+                                                   [matTooltipPosition]="'above'"
+                                                   [ngClass]="{
+                                                    'fa-hard-hat': question.questionType===questionTypeEnum[questionTypeEnum.REGULAR],
+                                                    'fa-crown': question.questionType===questionTypeEnum[questionTypeEnum.RELEVANT]}"
+                                                   [ngStyle]="{
+                                                        'color': question.questionType===questionTypeEnum[questionTypeEnum.REGULAR] ? '#000000' : question.questionType===questionTypeEnum[questionTypeEnum.RELEVANT] ? '#FFD700': '#000000'
+                                                    }"></i>-->
+                                                <h5 class="h3-dynamic-form d-inline"> {{question?.name}}</h5>
+                                            </label>
+                                        </div>
+                                        <div class="col-md-2 text-right">
+                                            <rating [max]="5" [titles]="['1','2','3','4','5']" [customTemplate]="bomb"
+                                                    [customTemplate]="bomb"></rating>
+                                        </div>
+                                    </div>
                                     <div class="row">
                                         <div *ngIf="containerType && areaID && area" class="col-md-3 text-center"
                                              style="margin: auto 0;">
-                                            <rating [max]="5" [titles]="['1','2','3','4','5']" [customTemplate]="bomb"
-                                                    [customTemplate]="bomb"></rating>
                                             <h6>Vulnerability</h6>
                                             <mat-progress-spinner [diameter]="100" style="margin: 0 auto;"
                                                                   [ngClass]="{
@@ -412,7 +432,7 @@
                                             </div>-->
                                         </div>
                                         <div class="bg2"
-                                             [ngClass]="{'col-md-9': !(containerType && areaID), 'col-md-6': (containerType && areaID)}">
+                                             [ngClass]="{'col-md-10': !(containerType && areaID), 'col-md-6': (containerType && areaID)}">
                                             <mat-radio-group [formControlName]="question.id" class="radio-group">
                                                 <mat-radio-button *ngFor="let answer of sort(question.answers)"
                                                                   class="radio-button"
@@ -634,7 +654,7 @@
 </form>
 
 <ng-template #bomb let-i="index" let-v="value">
-    <button class="btn text-muted" type="button">
+    <button class="btn text-muted p-0" type="button">
 
         <i class="fas fa-bomb" style="font-size: large"
            [ngClass]="{'text-muted': i >= v , 'text-dark': i < v}"
