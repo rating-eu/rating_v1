@@ -192,8 +192,7 @@
                                     [ngClass]="{'ng-valid': isValid(question.id) === true, 'ng-invalid': isValid(question.id) === false}"
                                     class="card-box">
                                     <label class="form-control-label" [attr.for]="question?.id">
-                                        <i class="fas"
-                                           matTooltip="Criticality = Likelihood X Vulnerability"
+                                        <!--<i class="fas"
                                            [matTooltip]="question.questionType===questionTypeEnum[questionTypeEnum.REGULAR] ? 'Regular' : question.questionType===questionTypeEnum[questionTypeEnum.RELEVANT]? 'Relevant' : null"
                                            [matTooltipPosition]="'above'"
                                            [ngClass]="{
@@ -202,7 +201,7 @@
                                            [ngStyle]="{
                                                 'color': question.questionType===questionTypeEnum[questionTypeEnum.REGULAR] ? '#000000' : question.questionType===questionTypeEnum[questionTypeEnum.RELEVANT] ? '#FFD700': '#000000'
                                             }"
-                                        ></i>
+                                        ></i>-->
                                         <h5 class="h3-dynamic-form d-inline"> {{question?.name}}</h5>
                                     </label>
                                     <div class="row">
@@ -290,7 +289,7 @@
                                     [ngClass]="{'ng-valid': isValid(question.id) === true, 'ng-invalid': isValid(question.id) === false}"
                                     class="card-box">
                                     <label class="form-control-label" [attr.for]="question?.id">
-                                        <i class="fas"
+                                        <!--<i class="fas"
                                            [matTooltip]="question.questionType===questionTypeEnum[questionTypeEnum.REGULAR] ? 'Regular' : question.questionType===questionTypeEnum[questionTypeEnum.RELEVANT]? 'Relevant' : null"
                                            [matTooltipPosition]="'above'"
                                            [ngClass]="{
@@ -298,7 +297,7 @@
                                             'fa-crown': question.questionType===questionTypeEnum[questionTypeEnum.RELEVANT]}"
                                            [ngStyle]="{
                                                 'color': question.questionType===questionTypeEnum[questionTypeEnum.REGULAR] ? '#000000' : question.questionType===questionTypeEnum[questionTypeEnum.RELEVANT] ? '#FFD700': '#000000'
-                                            }"></i>
+                                            }"></i>-->
                                         <h5 class="h3-dynamic-form d-inline"> {{question?.name}}</h5>
                                     </label>
                                     <div class="row">
@@ -368,7 +367,7 @@
                                     [ngClass]="{'ng-valid': isValid(question.id) === true, 'ng-invalid': isValid(question.id) === false}"
                                     class="card-box">
                                     <label class="form-control-label" [attr.for]="question?.id">
-                                        <i class="fas"
+                                        <!--<i class="fas"
                                            [matTooltip]="question.questionType===questionTypeEnum[questionTypeEnum.REGULAR] ? 'Regular' : question.questionType===questionTypeEnum[questionTypeEnum.RELEVANT]? 'Relevant' : null"
                                            [matTooltipPosition]="'above'"
                                            [ngClass]="{
@@ -376,7 +375,7 @@
                                             'fa-crown': question.questionType===questionTypeEnum[questionTypeEnum.RELEVANT]}"
                                            [ngStyle]="{
                                                 'color': question.questionType===questionTypeEnum[questionTypeEnum.REGULAR] ? '#000000' : question.questionType===questionTypeEnum[questionTypeEnum.RELEVANT] ? '#FFD700': '#000000'
-                                            }"></i>
+                                            }"></i>-->
                                         <h5 class="h3-dynamic-form d-inline"> {{question?.name}}</h5>
                                     </label>
                                     <div class="row">
