@@ -39,6 +39,26 @@ thead {
     stroke: #FF0000;
 }
 
+.circle.low {
+    background-color: #00FF00;
+}
+
+.circle.low-medium{
+    background-color: #FFFF00;
+}
+
+.circle.medium{
+    background-color: #FFBB00;
+}
+
+.circle.medium-high{
+    background-color: #FF7700;
+}
+
+.circle.high{
+    background-color: #FF0000;
+}
+
 table tbody tr th {
     vertical-align: middle;
 }
