@@ -46,170 +46,310 @@
             </div>
             <div *ngIf="questionnaire.purpose === purposeEnum.SELFASSESSMENT">
                 <h5 *ngIf="containerType && areaID && area" class="text-center text-primary pt-1">{{area.name}}</h5>
-                <p *ngIf="containerType && areaID && area" class="text-justify text-dark alert alert-primary"
+                <!--<p *ngIf="containerType && areaID && area" class="text-justify text-dark alert alert-primary"
                    style="font-size: medium">In this section it is possible to
                     review the questions linked to the above <em>Assessment Area</em>.
                     By adjusting the corresponding answers, the current
-                    <em>Vulnerability</em> value will be updated accordingly.</p>
+                    <em>Vulnerability</em> value will be updated accordingly.</p>-->
 
-                <div class="row">
-                    <div class="col-md-4 mt-auto">
-                        <mat-tab-group [(selectedIndex)]="currentTabIndex">
-                            <mat-tab label="Human">
-                            </mat-tab>
-                            <mat-tab label="IT">
-                            </mat-tab>
-                            <mat-tab label="Physical">
-                            </mat-tab>
-                        </mat-tab-group>
-                    </div>
-                    <div class="col-md-8">
-                        <div *ngIf="containerType && areaID && area && vulnerabilityRadarData" class="row my-2">
-                            <!--<div class="col-md-6 text-center my-auto">
-                                <ng-katex [equation]="vulnerabilityFormula"
-                                          style="font-size: x-large;"></ng-katex>
-                            </div>
+                <div class="row" *ngIf="vulnerabilityRadarData && vulnerabilityRadarData.has(area.id)">
+                    <div class="col-md-10 mt-auto">
+                        <div class="row">
+                            <div class="col-md-6"></div>
                             <div class="col-md-6">
-                                <div *ngIf="containerType && areaID && area && vulnerabilityRadarData && form && !form.dirty"
-                                     class="text-center align-middle">
-                                    <h6>Total Vulnerability</h6>
-                                    <mat-progress-spinner [diameter]="150" style="margin: 0 auto;"
-                                                          class="pointer"
-                                                          [ngClass]="{
-                                                      'low': vulnerabilityRadarData.get(area.id).get(containerTypeEnum.INTANGIBLE) > 0 && vulnerabilityRadarData.get(area.id).get(containerTypeEnum.INTANGIBLE) <= 0.2,
-                                                      'low-medium': vulnerabilityRadarData.get(area.id).get(containerTypeEnum.INTANGIBLE) > 0.2 && vulnerabilityRadarData.get(area.id).get(containerTypeEnum.INTANGIBLE) <= 0.4,
-                                                      'medium': vulnerabilityRadarData.get(area.id).get(containerTypeEnum.INTANGIBLE) > 0.4 && vulnerabilityRadarData.get(area.id).get(containerTypeEnum.INTANGIBLE) <= 0.6,
-                                                      'medium-high': vulnerabilityRadarData.get(area.id).get(containerTypeEnum.INTANGIBLE) > 0.6 && vulnerabilityRadarData.get(area.id).get(containerTypeEnum.INTANGIBLE) <= 0.8,
-                                                      'high': vulnerabilityRadarData.get(area.id).get(containerTypeEnum.INTANGIBLE) > 0.8 && vulnerabilityRadarData.get(area.id).get(containerTypeEnum.INTANGIBLE) <= 1
+                                <div class="row">
+                                    <div class="col-md-4 text-center my-auto">
+                                        <h6 [ngStyle]="{'border-bottom': currentTabIndex === 0 ? '2px solid #3F51B5' : 'none'}">
+                                            Human<br/>Vulnerability</h6>
+                                        <div class="circle"
+                                             [ngClass]="{
+                                              'low': vulnerabilityRadarData.get(area.id).get(containerTypeEnum.INTANGIBLE) > 0 && vulnerabilityRadarData.get(area.id).get(containerTypeEnum.INTANGIBLE) <= 0.2,
+                                              'low-medium': vulnerabilityRadarData.get(area.id).get(containerTypeEnum.INTANGIBLE) > 0.2 && vulnerabilityRadarData.get(area.id).get(containerTypeEnum.INTANGIBLE) <= 0.4,
+                                              'medium': vulnerabilityRadarData.get(area.id).get(containerTypeEnum.INTANGIBLE) > 0.4 && vulnerabilityRadarData.get(area.id).get(containerTypeEnum.INTANGIBLE) <= 0.6,
+                                              'medium-high': vulnerabilityRadarData.get(area.id).get(containerTypeEnum.INTANGIBLE) > 0.6 && vulnerabilityRadarData.get(area.id).get(containerTypeEnum.INTANGIBLE) <= 0.8,
+                                              'high': vulnerabilityRadarData.get(area.id).get(containerTypeEnum.INTANGIBLE) > 0.8 && vulnerabilityRadarData.get(area.id).get(containerTypeEnum.INTANGIBLE) <= 1
+                                              }"></div>
+                                        <div class="spinner-percentage" style="top:-55px; z-index:2;position:relative;">
+                                            {{vulnerabilityRadarData.get(area.id).get(containerTypeEnum.HUMAN) / 5 | percent}}
+                                        </div>
+                                        <!--<mat-progress-spinner [diameter]="100" style="margin: 0 auto;"
+                                                              class="pointer"
+                                                              [ngClass]="{
+                                                      'low': vulnerabilityRadarData.get(area.id).get(containerTypeEnum.HUMAN)/5 > 0 && vulnerabilityRadarData.get(area.id).get(containerTypeEnum.HUMAN)/5 <= 0.2,
+                                                      'low-medium': vulnerabilityRadarData.get(area.id).get(containerTypeEnum.HUMAN)/5 > 0.2 && vulnerabilityRadarData.get(area.id).get(containerTypeEnum.HUMAN)/5 <= 0.4,
+                                                      'medium': vulnerabilityRadarData.get(area.id).get(containerTypeEnum.HUMAN)/5 > 0.4 && vulnerabilityRadarData.get(area.id).get(containerTypeEnum.HUMAN)/5 <= 0.6,
+                                                      'medium-high': vulnerabilityRadarData.get(area.id).get(containerTypeEnum.HUMAN)/5 > 0.6 && vulnerabilityRadarData.get(area.id).get(containerTypeEnum.HUMAN)/5 <= 0.8,
+                                                      'high': vulnerabilityRadarData.get(area.id).get(containerTypeEnum.HUMAN)/5 > 0.8 && vulnerabilityRadarData.get(area.id).get(containerTypeEnum.HUMAN)/5 <= 1
                                                       }"
-                                                          [value]="vulnerabilityRadarData.get(area.id).get(containerTypeEnum.INTANGIBLE) * 100"
-                                                          [matTooltip]="area.name + '\'s Vulnerability'"
-                                                          [matTooltipPosition]="'above'"
-                                    >
-                                    </mat-progress-spinner>
-                                    <div style="top:-85px; z-index:2;position:relative;">
-                                        {{vulnerabilityRadarData.get(area.id).get(containerTypeEnum.INTANGIBLE) | percent}}
+                                                              [value]="vulnerabilityRadarData.get(area.id).get(containerTypeEnum.HUMAN)/5 * 100"
+                                                              matTooltip="Human Vulnerability"
+                                                              [matTooltipPosition]="'above'"
+                                        >
+                                        </mat-progress-spinner>
+                                        <div class="spinner-percentage" style="top:-60px; z-index:2;position:relative;">
+                                            {{vulnerabilityRadarData.get(area.id).get(containerTypeEnum.HUMAN) / 5 | percent}}
+                                        </div>-->
+                                    </div>
+                                    <div class="col-md-4 text-center my-auto">
+                                        <h6 [ngStyle]="{'border-bottom': currentTabIndex === 1 ? '2px solid #3F51B5' : 'none'}">
+                                            IT<br/>Vulnerability</h6>
+                                        <div class="circle"
+                                             [ngClass]="{
+                                              'low': vulnerabilityRadarData.get(area.id).get(containerTypeEnum.INTANGIBLE) > 0 && vulnerabilityRadarData.get(area.id).get(containerTypeEnum.INTANGIBLE) <= 0.2,
+                                              'low-medium': vulnerabilityRadarData.get(area.id).get(containerTypeEnum.INTANGIBLE) > 0.2 && vulnerabilityRadarData.get(area.id).get(containerTypeEnum.INTANGIBLE) <= 0.4,
+                                              'medium': vulnerabilityRadarData.get(area.id).get(containerTypeEnum.INTANGIBLE) > 0.4 && vulnerabilityRadarData.get(area.id).get(containerTypeEnum.INTANGIBLE) <= 0.6,
+                                              'medium-high': vulnerabilityRadarData.get(area.id).get(containerTypeEnum.INTANGIBLE) > 0.6 && vulnerabilityRadarData.get(area.id).get(containerTypeEnum.INTANGIBLE) <= 0.8,
+                                              'high': vulnerabilityRadarData.get(area.id).get(containerTypeEnum.INTANGIBLE) > 0.8 && vulnerabilityRadarData.get(area.id).get(containerTypeEnum.INTANGIBLE) <= 1
+                                              }"></div>
+                                        <div class="spinner-percentage" style="top:-55px; z-index:2;position:relative;">
+                                            {{vulnerabilityRadarData.get(area.id).get(containerTypeEnum.IT) / 5 | percent}}
+                                        </div>
+                                        <!--<mat-progress-spinner [diameter]="100" style="margin: 0 auto;"
+                                                              class="pointer"
+                                                              [ngClass]="{
+                                                      'low': vulnerabilityRadarData.get(area.id).get(containerTypeEnum.IT)/5 > 0 && vulnerabilityRadarData.get(area.id).get(containerTypeEnum.IT)/5 <= 0.2,
+                                                      'low-medium': vulnerabilityRadarData.get(area.id).get(containerTypeEnum.IT)/5 > 0.2 && vulnerabilityRadarData.get(area.id).get(containerTypeEnum.IT)/5 <= 0.4,
+                                                      'medium': vulnerabilityRadarData.get(area.id).get(containerTypeEnum.IT)/5 > 0.4 && vulnerabilityRadarData.get(area.id).get(containerTypeEnum.IT)/5 <= 0.6,
+                                                      'medium-high': vulnerabilityRadarData.get(area.id).get(containerTypeEnum.IT)/5 > 0.6 && vulnerabilityRadarData.get(area.id).get(containerTypeEnum.IT)/5 <= 0.8,
+                                                      'high': vulnerabilityRadarData.get(area.id).get(containerTypeEnum.IT)/5 > 0.8 && vulnerabilityRadarData.get(area.id).get(containerTypeEnum.IT)/5 <= 1
+                                                      }"
+                                                              [value]="vulnerabilityRadarData.get(area.id).get(containerTypeEnum.IT)/5 * 100"
+                                                              matTooltip="IT Vulnerability"
+                                                              [matTooltipPosition]="'above'"
+                                        >
+                                        </mat-progress-spinner>
+                                        <div class="spinner-percentage" style="top:-60px; z-index:2;position:relative;">
+                                            {{vulnerabilityRadarData.get(area.id).get(containerTypeEnum.IT) / 5 | percent}}
+                                        </div>-->
+                                    </div>
+                                    <div class="col-md-4 text-center my-auto">
+                                        <h6 [ngStyle]="{'border-bottom': currentTabIndex === 2 ? '2px solid #3F51B5' : 'none'}">
+                                            Physical<br/>Vulnerability</h6>
+                                        <div class="circle"
+                                             [ngClass]="{
+                                              'low': vulnerabilityRadarData.get(area.id).get(containerTypeEnum.INTANGIBLE) > 0 && vulnerabilityRadarData.get(area.id).get(containerTypeEnum.INTANGIBLE) <= 0.2,
+                                              'low-medium': vulnerabilityRadarData.get(area.id).get(containerTypeEnum.INTANGIBLE) > 0.2 && vulnerabilityRadarData.get(area.id).get(containerTypeEnum.INTANGIBLE) <= 0.4,
+                                              'medium': vulnerabilityRadarData.get(area.id).get(containerTypeEnum.INTANGIBLE) > 0.4 && vulnerabilityRadarData.get(area.id).get(containerTypeEnum.INTANGIBLE) <= 0.6,
+                                              'medium-high': vulnerabilityRadarData.get(area.id).get(containerTypeEnum.INTANGIBLE) > 0.6 && vulnerabilityRadarData.get(area.id).get(containerTypeEnum.INTANGIBLE) <= 0.8,
+                                              'high': vulnerabilityRadarData.get(area.id).get(containerTypeEnum.INTANGIBLE) > 0.8 && vulnerabilityRadarData.get(area.id).get(containerTypeEnum.INTANGIBLE) <= 1
+                                              }"></div>
+                                        <div class="spinner-percentage" style="top:-55px; z-index:2;position:relative;">
+                                            {{vulnerabilityRadarData.get(area.id).get(containerTypeEnum.PHYSICAL) / 5 | percent}}
+                                        </div>
+                                        <!--<mat-progress-spinner [diameter]="100" style="margin: 0 auto;"
+                                                              class="pointer"
+                                                              [ngClass]="{
+                                                      'low': vulnerabilityRadarData.get(area.id).get(containerTypeEnum.PHYSICAL)/5 > 0 && vulnerabilityRadarData.get(area.id).get(containerTypeEnum.PHYSICAL)/5 <= 0.2,
+                                                      'low-medium': vulnerabilityRadarData.get(area.id).get(containerTypeEnum.PHYSICAL)/5 > 0.2 && vulnerabilityRadarData.get(area.id).get(containerTypeEnum.PHYSICAL)/5 <= 0.4,
+                                                      'medium': vulnerabilityRadarData.get(area.id).get(containerTypeEnum.PHYSICAL)/5 > 0.4 && vulnerabilityRadarData.get(area.id).get(containerTypeEnum.PHYSICAL)/5 <= 0.6,
+                                                      'medium-high': vulnerabilityRadarData.get(area.id).get(containerTypeEnum.PHYSICAL)/5 > 0.6 && vulnerabilityRadarData.get(area.id).get(containerTypeEnum.PHYSICAL)/5 <= 0.8,
+                                                      'high': vulnerabilityRadarData.get(area.id).get(containerTypeEnum.PHYSICAL)/5 > 0.8 && vulnerabilityRadarData.get(area.id).get(containerTypeEnum.PHYSICAL)/5 <= 1
+                                                      }"
+                                                              [value]="vulnerabilityRadarData.get(area.id).get(containerTypeEnum.PHYSICAL)/5 * 100"
+                                                              matTooltip="Physical Vulnerability"
+                                                              [matTooltipPosition]="'above'"
+                                        >
+                                        </mat-progress-spinner>
+                                        <div class="spinner-percentage" style="top:-60px; z-index:2;position:relative;">
+                                            {{vulnerabilityRadarData.get(area.id).get(containerTypeEnum.PHYSICAL) / 5 | percent}}
+                                        </div>-->
                                     </div>
                                 </div>
-                            </div>-->
-                            <div class="col-md-2 text-center my-auto">
-                                <h6 [ngStyle]="{'border-bottom': currentTabIndex === 0 ? '2px solid #3F51B5' : 'none'}">
-                                    Human Vulnerability</h6>
-                                <div class="circle"
-                                     [ngClass]="{
-                                              'low': vulnerabilityRadarData.get(area.id).get(containerTypeEnum.INTANGIBLE) > 0 && vulnerabilityRadarData.get(area.id).get(containerTypeEnum.INTANGIBLE) <= 0.2,
-                                              'low-medium': vulnerabilityRadarData.get(area.id).get(containerTypeEnum.INTANGIBLE) > 0.2 && vulnerabilityRadarData.get(area.id).get(containerTypeEnum.INTANGIBLE) <= 0.4,
-                                              'medium': vulnerabilityRadarData.get(area.id).get(containerTypeEnum.INTANGIBLE) > 0.4 && vulnerabilityRadarData.get(area.id).get(containerTypeEnum.INTANGIBLE) <= 0.6,
-                                              'medium-high': vulnerabilityRadarData.get(area.id).get(containerTypeEnum.INTANGIBLE) > 0.6 && vulnerabilityRadarData.get(area.id).get(containerTypeEnum.INTANGIBLE) <= 0.8,
-                                              'high': vulnerabilityRadarData.get(area.id).get(containerTypeEnum.INTANGIBLE) > 0.8 && vulnerabilityRadarData.get(area.id).get(containerTypeEnum.INTANGIBLE) <= 1
-                                              }"></div>
-                                <div class="spinner-percentage" style="top:-55px; z-index:2;position:relative;">
-                                    {{vulnerabilityRadarData.get(area.id).get(containerTypeEnum.HUMAN) / 5 | percent}}
-                                </div>
-                                <!--<mat-progress-spinner [diameter]="100" style="margin: 0 auto;"
-                                                      class="pointer"
-                                                      [ngClass]="{
-                                              'low': vulnerabilityRadarData.get(area.id).get(containerTypeEnum.HUMAN)/5 > 0 && vulnerabilityRadarData.get(area.id).get(containerTypeEnum.HUMAN)/5 <= 0.2,
-                                              'low-medium': vulnerabilityRadarData.get(area.id).get(containerTypeEnum.HUMAN)/5 > 0.2 && vulnerabilityRadarData.get(area.id).get(containerTypeEnum.HUMAN)/5 <= 0.4,
-                                              'medium': vulnerabilityRadarData.get(area.id).get(containerTypeEnum.HUMAN)/5 > 0.4 && vulnerabilityRadarData.get(area.id).get(containerTypeEnum.HUMAN)/5 <= 0.6,
-                                              'medium-high': vulnerabilityRadarData.get(area.id).get(containerTypeEnum.HUMAN)/5 > 0.6 && vulnerabilityRadarData.get(area.id).get(containerTypeEnum.HUMAN)/5 <= 0.8,
-                                              'high': vulnerabilityRadarData.get(area.id).get(containerTypeEnum.HUMAN)/5 > 0.8 && vulnerabilityRadarData.get(area.id).get(containerTypeEnum.HUMAN)/5 <= 1
-                                              }"
-                                                      [value]="vulnerabilityRadarData.get(area.id).get(containerTypeEnum.HUMAN)/5 * 100"
-                                                      matTooltip="Human Vulnerability"
-                                                      [matTooltipPosition]="'above'"
-                                >
-                                </mat-progress-spinner>
-                                <div class="spinner-percentage" style="top:-60px; z-index:2;position:relative;">
-                                    {{vulnerabilityRadarData.get(area.id).get(containerTypeEnum.HUMAN) / 5 | percent}}
-                                </div>-->
                             </div>
-                            <div class="col-md-2 text-center my-auto">
-                                <h6 [ngStyle]="{'border-bottom': currentTabIndex === 1 ? '2px solid #3F51B5' : 'none'}">
-                                    IT Vulnerability</h6>
-                                <div class="circle"
-                                     [ngClass]="{
-                                              'low': vulnerabilityRadarData.get(area.id).get(containerTypeEnum.INTANGIBLE) > 0 && vulnerabilityRadarData.get(area.id).get(containerTypeEnum.INTANGIBLE) <= 0.2,
-                                              'low-medium': vulnerabilityRadarData.get(area.id).get(containerTypeEnum.INTANGIBLE) > 0.2 && vulnerabilityRadarData.get(area.id).get(containerTypeEnum.INTANGIBLE) <= 0.4,
-                                              'medium': vulnerabilityRadarData.get(area.id).get(containerTypeEnum.INTANGIBLE) > 0.4 && vulnerabilityRadarData.get(area.id).get(containerTypeEnum.INTANGIBLE) <= 0.6,
-                                              'medium-high': vulnerabilityRadarData.get(area.id).get(containerTypeEnum.INTANGIBLE) > 0.6 && vulnerabilityRadarData.get(area.id).get(containerTypeEnum.INTANGIBLE) <= 0.8,
-                                              'high': vulnerabilityRadarData.get(area.id).get(containerTypeEnum.INTANGIBLE) > 0.8 && vulnerabilityRadarData.get(area.id).get(containerTypeEnum.INTANGIBLE) <= 1
-                                              }"></div>
-                                <div class="spinner-percentage" style="top:-55px; z-index:2;position:relative;">
-                                    {{vulnerabilityRadarData.get(area.id).get(containerTypeEnum.IT) / 5 | percent}}
-                                </div>
-                                <!--<mat-progress-spinner [diameter]="100" style="margin: 0 auto;"
-                                                      class="pointer"
-                                                      [ngClass]="{
-                                              'low': vulnerabilityRadarData.get(area.id).get(containerTypeEnum.IT)/5 > 0 && vulnerabilityRadarData.get(area.id).get(containerTypeEnum.IT)/5 <= 0.2,
-                                              'low-medium': vulnerabilityRadarData.get(area.id).get(containerTypeEnum.IT)/5 > 0.2 && vulnerabilityRadarData.get(area.id).get(containerTypeEnum.IT)/5 <= 0.4,
-                                              'medium': vulnerabilityRadarData.get(area.id).get(containerTypeEnum.IT)/5 > 0.4 && vulnerabilityRadarData.get(area.id).get(containerTypeEnum.IT)/5 <= 0.6,
-                                              'medium-high': vulnerabilityRadarData.get(area.id).get(containerTypeEnum.IT)/5 > 0.6 && vulnerabilityRadarData.get(area.id).get(containerTypeEnum.IT)/5 <= 0.8,
-                                              'high': vulnerabilityRadarData.get(area.id).get(containerTypeEnum.IT)/5 > 0.8 && vulnerabilityRadarData.get(area.id).get(containerTypeEnum.IT)/5 <= 1
-                                              }"
-                                                      [value]="vulnerabilityRadarData.get(area.id).get(containerTypeEnum.IT)/5 * 100"
-                                                      matTooltip="IT Vulnerability"
-                                                      [matTooltipPosition]="'above'"
-                                >
-                                </mat-progress-spinner>
-                                <div class="spinner-percentage" style="top:-60px; z-index:2;position:relative;">
-                                    {{vulnerabilityRadarData.get(area.id).get(containerTypeEnum.IT) / 5 | percent}}
-                                </div>-->
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 mt-auto">
+                                <mat-tab-group [(selectedIndex)]="currentTabIndex">
+                                    <mat-tab label="Human">
+                                    </mat-tab>
+                                    <mat-tab label="IT">
+                                    </mat-tab>
+                                    <mat-tab label="Physical">
+                                    </mat-tab>
+                                </mat-tab-group>
                             </div>
-                            <div class="col-md-2 text-center my-auto">
-                                <h6 [ngStyle]="{'border-bottom': currentTabIndex === 2 ? '2px solid #3F51B5' : 'none'}">
-                                    Physical Vulnerability</h6>
-                                <div class="circle"
-                                     [ngClass]="{
-                                              'low': vulnerabilityRadarData.get(area.id).get(containerTypeEnum.INTANGIBLE) > 0 && vulnerabilityRadarData.get(area.id).get(containerTypeEnum.INTANGIBLE) <= 0.2,
-                                              'low-medium': vulnerabilityRadarData.get(area.id).get(containerTypeEnum.INTANGIBLE) > 0.2 && vulnerabilityRadarData.get(area.id).get(containerTypeEnum.INTANGIBLE) <= 0.4,
-                                              'medium': vulnerabilityRadarData.get(area.id).get(containerTypeEnum.INTANGIBLE) > 0.4 && vulnerabilityRadarData.get(area.id).get(containerTypeEnum.INTANGIBLE) <= 0.6,
-                                              'medium-high': vulnerabilityRadarData.get(area.id).get(containerTypeEnum.INTANGIBLE) > 0.6 && vulnerabilityRadarData.get(area.id).get(containerTypeEnum.INTANGIBLE) <= 0.8,
-                                              'high': vulnerabilityRadarData.get(area.id).get(containerTypeEnum.INTANGIBLE) > 0.8 && vulnerabilityRadarData.get(area.id).get(containerTypeEnum.INTANGIBLE) <= 1
-                                              }"></div>
-                                <div class="spinner-percentage" style="top:-55px; z-index:2;position:relative;">
-                                    {{vulnerabilityRadarData.get(area.id).get(containerTypeEnum.PHYSICAL) / 5 | percent}}
-                                </div>
-                                <!--<mat-progress-spinner [diameter]="100" style="margin: 0 auto;"
-                                                      class="pointer"
-                                                      [ngClass]="{
-                                              'low': vulnerabilityRadarData.get(area.id).get(containerTypeEnum.PHYSICAL)/5 > 0 && vulnerabilityRadarData.get(area.id).get(containerTypeEnum.PHYSICAL)/5 <= 0.2,
-                                              'low-medium': vulnerabilityRadarData.get(area.id).get(containerTypeEnum.PHYSICAL)/5 > 0.2 && vulnerabilityRadarData.get(area.id).get(containerTypeEnum.PHYSICAL)/5 <= 0.4,
-                                              'medium': vulnerabilityRadarData.get(area.id).get(containerTypeEnum.PHYSICAL)/5 > 0.4 && vulnerabilityRadarData.get(area.id).get(containerTypeEnum.PHYSICAL)/5 <= 0.6,
-                                              'medium-high': vulnerabilityRadarData.get(area.id).get(containerTypeEnum.PHYSICAL)/5 > 0.6 && vulnerabilityRadarData.get(area.id).get(containerTypeEnum.PHYSICAL)/5 <= 0.8,
-                                              'high': vulnerabilityRadarData.get(area.id).get(containerTypeEnum.PHYSICAL)/5 > 0.8 && vulnerabilityRadarData.get(area.id).get(containerTypeEnum.PHYSICAL)/5 <= 1
-                                              }"
-                                                      [value]="vulnerabilityRadarData.get(area.id).get(containerTypeEnum.PHYSICAL)/5 * 100"
-                                                      matTooltip="Physical Vulnerability"
-                                                      [matTooltipPosition]="'above'"
-                                >
-                                </mat-progress-spinner>
-                                <div class="spinner-percentage" style="top:-60px; z-index:2;position:relative;">
-                                    {{vulnerabilityRadarData.get(area.id).get(containerTypeEnum.PHYSICAL) / 5 | percent}}
-                                </div>-->
-                            </div>
-                            <div class="col-md-6 text-center align-middle">
-                                <span class="badge badge-primary" style="font-size: medium;">{{area.name}}</span>
-                                <h6>&nbsp;Vulnerability</h6>
-                                <mat-progress-spinner [diameter]="150" style="margin: 0 auto;"
-                                                      class="pointer"
-                                                      [ngClass]="{
+                        </div>
+                    </div>
+                    <div class="col-md-2 text-center my-auto"><!--Total Vulnerability-->
+                        <span class="badge badge-primary"
+                              style="font-size: medium; white-space: normal;">{{area.name}}</span>
+                        <h6>&nbsp;Vulnerability</h6>
+                        <mat-progress-spinner [diameter]="150" style="margin: 0 auto;"
+                                              class="pointer"
+                                              [ngClass]="{
                                                               'low': vulnerabilityRadarData.get(area.id).get(containerTypeEnum.INTANGIBLE) > 0 && vulnerabilityRadarData.get(area.id).get(containerTypeEnum.INTANGIBLE) <= 0.2,
                                                               'low-medium': vulnerabilityRadarData.get(area.id).get(containerTypeEnum.INTANGIBLE) > 0.2 && vulnerabilityRadarData.get(area.id).get(containerTypeEnum.INTANGIBLE) <= 0.4,
                                                               'medium': vulnerabilityRadarData.get(area.id).get(containerTypeEnum.INTANGIBLE) > 0.4 && vulnerabilityRadarData.get(area.id).get(containerTypeEnum.INTANGIBLE) <= 0.6,
                                                               'medium-high': vulnerabilityRadarData.get(area.id).get(containerTypeEnum.INTANGIBLE) > 0.6 && vulnerabilityRadarData.get(area.id).get(containerTypeEnum.INTANGIBLE) <= 0.8,
                                                               'high': vulnerabilityRadarData.get(area.id).get(containerTypeEnum.INTANGIBLE) > 0.8 && vulnerabilityRadarData.get(area.id).get(containerTypeEnum.INTANGIBLE) <= 1
                                                               }"
-                                                      [value]="vulnerabilityRadarData.get(area.id).get(containerTypeEnum.INTANGIBLE) * 200"
-                                >
-                                </mat-progress-spinner>
-                                <div class="spinner-percentage" style="top:-85px; z-index:2;position:relative;">
-                                    {{vulnerabilityRadarData.get(area.id).get(containerTypeEnum.INTANGIBLE) | percent}}
-                                </div>
-                            </div>
+                                              [value]="vulnerabilityRadarData.get(area.id).get(containerTypeEnum.INTANGIBLE) * 200"
+                        >
+                        </mat-progress-spinner>
+                        <div class="spinner-percentage" style="top:-85px; z-index:2;position:relative;">
+                            {{vulnerabilityRadarData.get(area.id).get(containerTypeEnum.INTANGIBLE) | percent}}
                         </div>
                     </div>
                 </div>
+
+                <!--<div class="row">-->
+                <!--<div class="col-md-5 mt-auto">
+                    <mat-tab-group [(selectedIndex)]="currentTabIndex">
+                        <mat-tab label="Human">
+                        </mat-tab>
+                        <mat-tab label="IT">
+                        </mat-tab>
+                        <mat-tab label="Physical">
+                        </mat-tab>
+                    </mat-tab-group>
+                </div>-->
+                <!--<div class="col-md-7">
+                    <div *ngIf="containerType && areaID && area && vulnerabilityRadarData" class="row my-2">-->
+                <!--<div class="col-md-6 text-center my-auto">
+                    <ng-katex [equation]="vulnerabilityFormula"
+                              style="font-size: x-large;"></ng-katex>
+                </div>
+                <div class="col-md-6">
+                    <div *ngIf="containerType && areaID && area && vulnerabilityRadarData && form && !form.dirty"
+                         class="text-center align-middle">
+                        <h6>Total Vulnerability</h6>
+                        <mat-progress-spinner [diameter]="150" style="margin: 0 auto;"
+                                              class="pointer"
+                                              [ngClass]="{
+                                          'low': vulnerabilityRadarData.get(area.id).get(containerTypeEnum.INTANGIBLE) > 0 && vulnerabilityRadarData.get(area.id).get(containerTypeEnum.INTANGIBLE) <= 0.2,
+                                          'low-medium': vulnerabilityRadarData.get(area.id).get(containerTypeEnum.INTANGIBLE) > 0.2 && vulnerabilityRadarData.get(area.id).get(containerTypeEnum.INTANGIBLE) <= 0.4,
+                                          'medium': vulnerabilityRadarData.get(area.id).get(containerTypeEnum.INTANGIBLE) > 0.4 && vulnerabilityRadarData.get(area.id).get(containerTypeEnum.INTANGIBLE) <= 0.6,
+                                          'medium-high': vulnerabilityRadarData.get(area.id).get(containerTypeEnum.INTANGIBLE) > 0.6 && vulnerabilityRadarData.get(area.id).get(containerTypeEnum.INTANGIBLE) <= 0.8,
+                                          'high': vulnerabilityRadarData.get(area.id).get(containerTypeEnum.INTANGIBLE) > 0.8 && vulnerabilityRadarData.get(area.id).get(containerTypeEnum.INTANGIBLE) <= 1
+                                          }"
+                                              [value]="vulnerabilityRadarData.get(area.id).get(containerTypeEnum.INTANGIBLE) * 100"
+                                              [matTooltip]="area.name + '\'s Vulnerability'"
+                                              [matTooltipPosition]="'above'"
+                        >
+                        </mat-progress-spinner>
+                        <div style="top:-85px; z-index:2;position:relative;">
+                            {{vulnerabilityRadarData.get(area.id).get(containerTypeEnum.INTANGIBLE) | percent}}
+                        </div>
+                    </div>
+                </div>-->
+                <!--<div class="col-md-2 text-center my-auto">
+                    <h6 [ngStyle]="{'border-bottom': currentTabIndex === 0 ? '2px solid #3F51B5' : 'none'}">
+                        Human<br/>Vulnerability</h6>
+                    <div class="circle"
+                         [ngClass]="{
+                                  'low': vulnerabilityRadarData.get(area.id).get(containerTypeEnum.INTANGIBLE) > 0 && vulnerabilityRadarData.get(area.id).get(containerTypeEnum.INTANGIBLE) <= 0.2,
+                                  'low-medium': vulnerabilityRadarData.get(area.id).get(containerTypeEnum.INTANGIBLE) > 0.2 && vulnerabilityRadarData.get(area.id).get(containerTypeEnum.INTANGIBLE) <= 0.4,
+                                  'medium': vulnerabilityRadarData.get(area.id).get(containerTypeEnum.INTANGIBLE) > 0.4 && vulnerabilityRadarData.get(area.id).get(containerTypeEnum.INTANGIBLE) <= 0.6,
+                                  'medium-high': vulnerabilityRadarData.get(area.id).get(containerTypeEnum.INTANGIBLE) > 0.6 && vulnerabilityRadarData.get(area.id).get(containerTypeEnum.INTANGIBLE) <= 0.8,
+                                  'high': vulnerabilityRadarData.get(area.id).get(containerTypeEnum.INTANGIBLE) > 0.8 && vulnerabilityRadarData.get(area.id).get(containerTypeEnum.INTANGIBLE) <= 1
+                                  }"></div>
+                    <div class="spinner-percentage" style="top:-55px; z-index:2;position:relative;">
+                        {{vulnerabilityRadarData.get(area.id).get(containerTypeEnum.HUMAN) / 5 | percent}}
+                    </div>-->
+                <!--<mat-progress-spinner [diameter]="100" style="margin: 0 auto;"
+                                      class="pointer"
+                                      [ngClass]="{
+                              'low': vulnerabilityRadarData.get(area.id).get(containerTypeEnum.HUMAN)/5 > 0 && vulnerabilityRadarData.get(area.id).get(containerTypeEnum.HUMAN)/5 <= 0.2,
+                              'low-medium': vulnerabilityRadarData.get(area.id).get(containerTypeEnum.HUMAN)/5 > 0.2 && vulnerabilityRadarData.get(area.id).get(containerTypeEnum.HUMAN)/5 <= 0.4,
+                              'medium': vulnerabilityRadarData.get(area.id).get(containerTypeEnum.HUMAN)/5 > 0.4 && vulnerabilityRadarData.get(area.id).get(containerTypeEnum.HUMAN)/5 <= 0.6,
+                              'medium-high': vulnerabilityRadarData.get(area.id).get(containerTypeEnum.HUMAN)/5 > 0.6 && vulnerabilityRadarData.get(area.id).get(containerTypeEnum.HUMAN)/5 <= 0.8,
+                              'high': vulnerabilityRadarData.get(area.id).get(containerTypeEnum.HUMAN)/5 > 0.8 && vulnerabilityRadarData.get(area.id).get(containerTypeEnum.HUMAN)/5 <= 1
+                              }"
+                                      [value]="vulnerabilityRadarData.get(area.id).get(containerTypeEnum.HUMAN)/5 * 100"
+                                      matTooltip="Human Vulnerability"
+                                      [matTooltipPosition]="'above'"
+                >
+                </mat-progress-spinner>
+                <div class="spinner-percentage" style="top:-60px; z-index:2;position:relative;">
+                    {{vulnerabilityRadarData.get(area.id).get(containerTypeEnum.HUMAN) / 5 | percent}}
+                </div>-->
+                <!--</div>-->
+                <!--<div class="col-md-2 text-center my-auto">
+                    <h6 [ngStyle]="{'border-bottom': currentTabIndex === 1 ? '2px solid #3F51B5' : 'none'}">
+                        IT<br/>Vulnerability</h6>
+                    <div class="circle"
+                         [ngClass]="{
+                                  'low': vulnerabilityRadarData.get(area.id).get(containerTypeEnum.INTANGIBLE) > 0 && vulnerabilityRadarData.get(area.id).get(containerTypeEnum.INTANGIBLE) <= 0.2,
+                                  'low-medium': vulnerabilityRadarData.get(area.id).get(containerTypeEnum.INTANGIBLE) > 0.2 && vulnerabilityRadarData.get(area.id).get(containerTypeEnum.INTANGIBLE) <= 0.4,
+                                  'medium': vulnerabilityRadarData.get(area.id).get(containerTypeEnum.INTANGIBLE) > 0.4 && vulnerabilityRadarData.get(area.id).get(containerTypeEnum.INTANGIBLE) <= 0.6,
+                                  'medium-high': vulnerabilityRadarData.get(area.id).get(containerTypeEnum.INTANGIBLE) > 0.6 && vulnerabilityRadarData.get(area.id).get(containerTypeEnum.INTANGIBLE) <= 0.8,
+                                  'high': vulnerabilityRadarData.get(area.id).get(containerTypeEnum.INTANGIBLE) > 0.8 && vulnerabilityRadarData.get(area.id).get(containerTypeEnum.INTANGIBLE) <= 1
+                                  }"></div>
+                    <div class="spinner-percentage" style="top:-55px; z-index:2;position:relative;">
+                        {{vulnerabilityRadarData.get(area.id).get(containerTypeEnum.IT) / 5 | percent}}
+                    </div>-->
+                <!--<mat-progress-spinner [diameter]="100" style="margin: 0 auto;"
+                                      class="pointer"
+                                      [ngClass]="{
+                              'low': vulnerabilityRadarData.get(area.id).get(containerTypeEnum.IT)/5 > 0 && vulnerabilityRadarData.get(area.id).get(containerTypeEnum.IT)/5 <= 0.2,
+                              'low-medium': vulnerabilityRadarData.get(area.id).get(containerTypeEnum.IT)/5 > 0.2 && vulnerabilityRadarData.get(area.id).get(containerTypeEnum.IT)/5 <= 0.4,
+                              'medium': vulnerabilityRadarData.get(area.id).get(containerTypeEnum.IT)/5 > 0.4 && vulnerabilityRadarData.get(area.id).get(containerTypeEnum.IT)/5 <= 0.6,
+                              'medium-high': vulnerabilityRadarData.get(area.id).get(containerTypeEnum.IT)/5 > 0.6 && vulnerabilityRadarData.get(area.id).get(containerTypeEnum.IT)/5 <= 0.8,
+                              'high': vulnerabilityRadarData.get(area.id).get(containerTypeEnum.IT)/5 > 0.8 && vulnerabilityRadarData.get(area.id).get(containerTypeEnum.IT)/5 <= 1
+                              }"
+                                      [value]="vulnerabilityRadarData.get(area.id).get(containerTypeEnum.IT)/5 * 100"
+                                      matTooltip="IT Vulnerability"
+                                      [matTooltipPosition]="'above'"
+                >
+                </mat-progress-spinner>
+                <div class="spinner-percentage" style="top:-60px; z-index:2;position:relative;">
+                    {{vulnerabilityRadarData.get(area.id).get(containerTypeEnum.IT) / 5 | percent}}
+                </div>-->
+                <!--</div>-->
+                <!--<div class="col-md-2 text-center my-auto">
+                    <h6 [ngStyle]="{'border-bottom': currentTabIndex === 2 ? '2px solid #3F51B5' : 'none'}">
+                        Physical<br/>Vulnerability</h6>
+                    <div class="circle"
+                         [ngClass]="{
+                                  'low': vulnerabilityRadarData.get(area.id).get(containerTypeEnum.INTANGIBLE) > 0 && vulnerabilityRadarData.get(area.id).get(containerTypeEnum.INTANGIBLE) <= 0.2,
+                                  'low-medium': vulnerabilityRadarData.get(area.id).get(containerTypeEnum.INTANGIBLE) > 0.2 && vulnerabilityRadarData.get(area.id).get(containerTypeEnum.INTANGIBLE) <= 0.4,
+                                  'medium': vulnerabilityRadarData.get(area.id).get(containerTypeEnum.INTANGIBLE) > 0.4 && vulnerabilityRadarData.get(area.id).get(containerTypeEnum.INTANGIBLE) <= 0.6,
+                                  'medium-high': vulnerabilityRadarData.get(area.id).get(containerTypeEnum.INTANGIBLE) > 0.6 && vulnerabilityRadarData.get(area.id).get(containerTypeEnum.INTANGIBLE) <= 0.8,
+                                  'high': vulnerabilityRadarData.get(area.id).get(containerTypeEnum.INTANGIBLE) > 0.8 && vulnerabilityRadarData.get(area.id).get(containerTypeEnum.INTANGIBLE) <= 1
+                                  }"></div>
+                    <div class="spinner-percentage" style="top:-55px; z-index:2;position:relative;">
+                        {{vulnerabilityRadarData.get(area.id).get(containerTypeEnum.PHYSICAL) / 5 | percent}}
+                    </div>-->
+                <!--<mat-progress-spinner [diameter]="100" style="margin: 0 auto;"
+                                      class="pointer"
+                                      [ngClass]="{
+                              'low': vulnerabilityRadarData.get(area.id).get(containerTypeEnum.PHYSICAL)/5 > 0 && vulnerabilityRadarData.get(area.id).get(containerTypeEnum.PHYSICAL)/5 <= 0.2,
+                              'low-medium': vulnerabilityRadarData.get(area.id).get(containerTypeEnum.PHYSICAL)/5 > 0.2 && vulnerabilityRadarData.get(area.id).get(containerTypeEnum.PHYSICAL)/5 <= 0.4,
+                              'medium': vulnerabilityRadarData.get(area.id).get(containerTypeEnum.PHYSICAL)/5 > 0.4 && vulnerabilityRadarData.get(area.id).get(containerTypeEnum.PHYSICAL)/5 <= 0.6,
+                              'medium-high': vulnerabilityRadarData.get(area.id).get(containerTypeEnum.PHYSICAL)/5 > 0.6 && vulnerabilityRadarData.get(area.id).get(containerTypeEnum.PHYSICAL)/5 <= 0.8,
+                              'high': vulnerabilityRadarData.get(area.id).get(containerTypeEnum.PHYSICAL)/5 > 0.8 && vulnerabilityRadarData.get(area.id).get(containerTypeEnum.PHYSICAL)/5 <= 1
+                              }"
+                                      [value]="vulnerabilityRadarData.get(area.id).get(containerTypeEnum.PHYSICAL)/5 * 100"
+                                      matTooltip="Physical Vulnerability"
+                                      [matTooltipPosition]="'above'"
+                >
+                </mat-progress-spinner>
+                <div class="spinner-percentage" style="top:-60px; z-index:2;position:relative;">
+                    {{vulnerabilityRadarData.get(area.id).get(containerTypeEnum.PHYSICAL) / 5 | percent}}
+                </div>-->
+                <!--</div>-->
+                <!--<div class="col-md-6 text-center align-middle">
+                    <span class="badge badge-primary" style="font-size: medium;">{{area.name}}</span>
+                    <h6>&nbsp;Vulnerability</h6>
+                    <mat-progress-spinner [diameter]="150" style="margin: 0 auto;"
+                                          class="pointer"
+                                          [ngClass]="{
+                                                  'low': vulnerabilityRadarData.get(area.id).get(containerTypeEnum.INTANGIBLE) > 0 && vulnerabilityRadarData.get(area.id).get(containerTypeEnum.INTANGIBLE) <= 0.2,
+                                                  'low-medium': vulnerabilityRadarData.get(area.id).get(containerTypeEnum.INTANGIBLE) > 0.2 && vulnerabilityRadarData.get(area.id).get(containerTypeEnum.INTANGIBLE) <= 0.4,
+                                                  'medium': vulnerabilityRadarData.get(area.id).get(containerTypeEnum.INTANGIBLE) > 0.4 && vulnerabilityRadarData.get(area.id).get(containerTypeEnum.INTANGIBLE) <= 0.6,
+                                                  'medium-high': vulnerabilityRadarData.get(area.id).get(containerTypeEnum.INTANGIBLE) > 0.6 && vulnerabilityRadarData.get(area.id).get(containerTypeEnum.INTANGIBLE) <= 0.8,
+                                                  'high': vulnerabilityRadarData.get(area.id).get(containerTypeEnum.INTANGIBLE) > 0.8 && vulnerabilityRadarData.get(area.id).get(containerTypeEnum.INTANGIBLE) <= 1
+                                                  }"
+                                          [value]="vulnerabilityRadarData.get(area.id).get(containerTypeEnum.INTANGIBLE) * 200"
+                    >
+                    </mat-progress-spinner>
+                    <div class="spinner-percentage" style="top:-85px; z-index:2;position:relative;">
+                        {{vulnerabilityRadarData.get(area.id).get(containerTypeEnum.INTANGIBLE) | percent}}
+                    </div>
+                </div>-->
+                <!--</div>
+            </div>
+        </div>-->
                 <mat-tab-group [(selectedIndex)]="currentTabIndex" class="no-labels">
                     <mat-tab label="Human">
                         <!--<div *ngIf="containerType && areaID && area && vulnerabilityRadarData && form && !form.dirty"
@@ -274,7 +414,8 @@
                                               'medium-high': answerLikelihoodEnum[form.value[question.id].likelihood]/5 > 0.6 && answerLikelihoodEnum[form.value[question.id].likelihood]/5 <= 0.8,
                                               'high': answerLikelihoodEnum[form.value[question.id].likelihood]/5 > 0.8 && answerLikelihoodEnum[form.value[question.id].likelihood]/5 <= 1
                                               }"></div>
-                                            <div class="spinner-percentage" style="top:-55px; z-index:2;position:relative;">
+                                            <div class="spinner-percentage"
+                                                 style="top:-55px; z-index:2;position:relative;">
                                                 {{answerLikelihoodEnum[form.value[question.id].likelihood] / 5 | percent}}
                                             </div>
                                             <!--<mat-progress-spinner [diameter]="100" style="margin: 0 auto;"
@@ -388,7 +529,8 @@
                                               'medium-high': answerLikelihoodEnum[form.value[question.id].likelihood]/5 > 0.6 && answerLikelihoodEnum[form.value[question.id].likelihood]/5 <= 0.8,
                                               'high': answerLikelihoodEnum[form.value[question.id].likelihood]/5 > 0.8 && answerLikelihoodEnum[form.value[question.id].likelihood]/5 <= 1
                                               }"></div>
-                                            <div class="spinner-percentage" style="top:-55px; z-index:2;position:relative;">
+                                            <div class="spinner-percentage"
+                                                 style="top:-55px; z-index:2;position:relative;">
                                                 {{answerLikelihoodEnum[form.value[question.id].likelihood] / 5 | percent}}
                                             </div>
                                             <!--<mat-progress-spinner [diameter]="100" style="margin: 0 auto;"
@@ -483,7 +625,8 @@
                                               'medium-high': answerLikelihoodEnum[form.value[question.id].likelihood]/5 > 0.6 && answerLikelihoodEnum[form.value[question.id].likelihood]/5 <= 0.8,
                                               'high': answerLikelihoodEnum[form.value[question.id].likelihood]/5 > 0.8 && answerLikelihoodEnum[form.value[question.id].likelihood]/5 <= 1
                                               }"></div>
-                                            <div class="spinner-percentage" style="top:-55px; z-index:2;position:relative;">
+                                            <div class="spinner-percentage"
+                                                 style="top:-55px; z-index:2;position:relative;">
                                                 {{answerLikelihoodEnum[form.value[question.id].likelihood] / 5 | percent}}
                                             </div>
                                             <!--<mat-progress-spinner [diameter]="100" style="margin: 0 auto;"
