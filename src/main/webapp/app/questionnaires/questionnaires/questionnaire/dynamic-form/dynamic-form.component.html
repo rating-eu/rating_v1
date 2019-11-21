@@ -263,10 +263,21 @@
                                     </div>
 
                                     <div class="row">
-                                        <div *ngIf="containerType && areaID && area" class="col-md-3 text-center"
+                                        <div *ngIf="containerType && areaID && area" class="col-md-2 text-center"
                                              style="margin: auto 0;">
                                             <h6>Vulnerability</h6>
-                                            <mat-progress-spinner [diameter]="100" style="margin: 0 auto;"
+                                            <div class="circle"
+                                                 [ngClass]="{
+                                              'low': answerLikelihoodEnum[form.value[question.id].likelihood]/5 > 0 && answerLikelihoodEnum[form.value[question.id].likelihood]/5 <= 0.2,
+                                              'low-medium': answerLikelihoodEnum[form.value[question.id].likelihood]/5 > 0.2 && answerLikelihoodEnum[form.value[question.id].likelihood]/5 <= 0.4,
+                                              'medium': answerLikelihoodEnum[form.value[question.id].likelihood]/5 > 0.4 && answerLikelihoodEnum[form.value[question.id].likelihood]/5 <= 0.6,
+                                              'medium-high': answerLikelihoodEnum[form.value[question.id].likelihood]/5 > 0.6 && answerLikelihoodEnum[form.value[question.id].likelihood]/5 <= 0.8,
+                                              'high': answerLikelihoodEnum[form.value[question.id].likelihood]/5 > 0.8 && answerLikelihoodEnum[form.value[question.id].likelihood]/5 <= 1
+                                              }"></div>
+                                            <div class="spinner-percentage" style="top:-55px; z-index:2;position:relative;">
+                                                {{answerLikelihoodEnum[form.value[question.id].likelihood] / 5 | percent}}
+                                            </div>
+                                            <!--<mat-progress-spinner [diameter]="100" style="margin: 0 auto;"
                                                                   [ngClass]="{
                                               'low': answerLikelihoodEnum[form.value[question.id].likelihood]/5 > 0 && answerLikelihoodEnum[form.value[question.id].likelihood]/5 <= 0.2,
                                               'low-medium': answerLikelihoodEnum[form.value[question.id].likelihood]/5 > 0.2 && answerLikelihoodEnum[form.value[question.id].likelihood]/5 <= 0.4,
@@ -282,7 +293,7 @@
                                             <div class="spinner-percentage"
                                                  style="top:-60px; z-index:2;position:relative;">
                                                 {{answerLikelihoodEnum[form.value[question.id].likelihood] / 5 | percent}}
-                                            </div>
+                                            </div>-->
                                             <!--<div
                                                 *ngIf="answerWeightsMap && answerWeightsMap.size && answerWeightsMap.has(question.questionType) && answerWeightsMap.get(question.questionType).has(form.value[question.id].likelihood)">
                                                 <i class="fas fa-weight"></i>&nbsp;Weight
@@ -294,7 +305,7 @@
                                             </div>-->
                                         </div>
                                         <div class="bg2"
-                                             [ngClass]="{'col-md-9': !(containerType && areaID), 'col-md-6': (containerType && areaID)}">
+                                             [ngClass]="{'col-md-10': !(containerType && areaID), 'col-md-8': (containerType && areaID)}">
                                             <mat-radio-group [formControlName]="question.id" class="radio-group">
                                                 <mat-radio-button *ngFor="let answer of sort(question.answers)"
                                                                   class="radio-button"
@@ -303,7 +314,7 @@
                                                 </mat-radio-button>
                                             </mat-radio-group>
                                         </div>
-                                        <div class="col-md-3 bg3 text-center">
+                                        <div class="col-md-2 bg3 text-center">
                                             <mat-form-field>
                                             <textarea matInput [formControlName]="question.id + '.ciso.note'" [rows]="7"
                                                       placeholder="Notes"></textarea>
@@ -366,10 +377,21 @@
                                     </div>
 
                                     <div class="row">
-                                        <div *ngIf="containerType && areaID && area" class="col-md-3 text-center"
+                                        <div *ngIf="containerType && areaID && area" class="col-md-2 text-center"
                                              style="margin: auto 0;">
                                             <h6>Vulnerability</h6>
-                                            <mat-progress-spinner [diameter]="100" style="margin: 0 auto;"
+                                            <div class="circle"
+                                                 [ngClass]="{
+                                              'low': answerLikelihoodEnum[form.value[question.id].likelihood]/5 > 0 && answerLikelihoodEnum[form.value[question.id].likelihood]/5 <= 0.2,
+                                              'low-medium': answerLikelihoodEnum[form.value[question.id].likelihood]/5 > 0.2 && answerLikelihoodEnum[form.value[question.id].likelihood]/5 <= 0.4,
+                                              'medium': answerLikelihoodEnum[form.value[question.id].likelihood]/5 > 0.4 && answerLikelihoodEnum[form.value[question.id].likelihood]/5 <= 0.6,
+                                              'medium-high': answerLikelihoodEnum[form.value[question.id].likelihood]/5 > 0.6 && answerLikelihoodEnum[form.value[question.id].likelihood]/5 <= 0.8,
+                                              'high': answerLikelihoodEnum[form.value[question.id].likelihood]/5 > 0.8 && answerLikelihoodEnum[form.value[question.id].likelihood]/5 <= 1
+                                              }"></div>
+                                            <div class="spinner-percentage" style="top:-55px; z-index:2;position:relative;">
+                                                {{answerLikelihoodEnum[form.value[question.id].likelihood] / 5 | percent}}
+                                            </div>
+                                            <!--<mat-progress-spinner [diameter]="100" style="margin: 0 auto;"
                                                                   [ngClass]="{
                                               'low': answerLikelihoodEnum[form.value[question.id].likelihood]/5 > 0 && answerLikelihoodEnum[form.value[question.id].likelihood]/5 <= 0.2,
                                               'low-medium': answerLikelihoodEnum[form.value[question.id].likelihood]/5 > 0.2 && answerLikelihoodEnum[form.value[question.id].likelihood]/5 <= 0.4,
@@ -385,7 +407,7 @@
                                             <div class="spinner-percentage"
                                                  style="top:-60px; z-index:2;position:relative;">
                                                 {{answerLikelihoodEnum[form.value[question.id].likelihood] / 5 | percent}}
-                                            </div>
+                                            </div>-->
                                             <!--<div
                                                 *ngIf="answerWeightsMap && answerWeightsMap.size && answerWeightsMap.has(question.questionType) && answerWeightsMap.get(question.questionType).has(form.value[question.id].likelihood)">
                                                 <i class="fas fa-weight"></i>&nbsp;Weight
@@ -397,7 +419,7 @@
                                             </div>-->
                                         </div>
                                         <div class="bg2"
-                                             [ngClass]="{'col-md-9': !(containerType && areaID), 'col-md-6': (containerType && areaID)}">
+                                             [ngClass]="{'col-md-10': !(containerType && areaID), 'col-md-8': (containerType && areaID)}">
                                             <mat-radio-group [formControlName]="question.id" class="radio-group">
                                                 <mat-radio-button *ngFor="let answer of sort(question.answers)"
                                                                   class="radio-button"
@@ -406,7 +428,7 @@
                                                 </mat-radio-button>
                                             </mat-radio-group>
                                         </div>
-                                        <div class="col-md-3 bg3 text-center">
+                                        <div class="col-md-2 bg3 text-center">
                                             <mat-form-field>
                                             <textarea matInput [formControlName]="question.id + '.ciso.note'" [rows]="7"
                                                       placeholder="Notes"></textarea>
@@ -450,10 +472,21 @@
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div *ngIf="containerType && areaID && area" class="col-md-3 text-center"
+                                        <div *ngIf="containerType && areaID && area" class="col-md-2 text-center"
                                              style="margin: auto 0;">
                                             <h6>Vulnerability</h6>
-                                            <mat-progress-spinner [diameter]="100" style="margin: 0 auto;"
+                                            <div class="circle"
+                                                 [ngClass]="{
+                                              'low': answerLikelihoodEnum[form.value[question.id].likelihood]/5 > 0 && answerLikelihoodEnum[form.value[question.id].likelihood]/5 <= 0.2,
+                                              'low-medium': answerLikelihoodEnum[form.value[question.id].likelihood]/5 > 0.2 && answerLikelihoodEnum[form.value[question.id].likelihood]/5 <= 0.4,
+                                              'medium': answerLikelihoodEnum[form.value[question.id].likelihood]/5 > 0.4 && answerLikelihoodEnum[form.value[question.id].likelihood]/5 <= 0.6,
+                                              'medium-high': answerLikelihoodEnum[form.value[question.id].likelihood]/5 > 0.6 && answerLikelihoodEnum[form.value[question.id].likelihood]/5 <= 0.8,
+                                              'high': answerLikelihoodEnum[form.value[question.id].likelihood]/5 > 0.8 && answerLikelihoodEnum[form.value[question.id].likelihood]/5 <= 1
+                                              }"></div>
+                                            <div class="spinner-percentage" style="top:-55px; z-index:2;position:relative;">
+                                                {{answerLikelihoodEnum[form.value[question.id].likelihood] / 5 | percent}}
+                                            </div>
+                                            <!--<mat-progress-spinner [diameter]="100" style="margin: 0 auto;"
                                                                   [ngClass]="{
                                               'low': answerLikelihoodEnum[form.value[question.id].likelihood]/5 > 0 && answerLikelihoodEnum[form.value[question.id].likelihood]/5 <= 0.2,
                                               'low-medium': answerLikelihoodEnum[form.value[question.id].likelihood]/5 > 0.2 && answerLikelihoodEnum[form.value[question.id].likelihood]/5 <= 0.4,
@@ -469,7 +502,7 @@
                                             <div class="spinner-percentage"
                                                  style="top:-60px; z-index:2;position:relative;">
                                                 {{answerLikelihoodEnum[form.value[question.id].likelihood] / 5 | percent}}
-                                            </div>
+                                            </div>-->
                                             <!--<div
                                                 *ngIf="answerWeightsMap && answerWeightsMap.size && answerWeightsMap.has(question.questionType) && answerWeightsMap.get(question.questionType).has(form.value[question.id].likelihood)">
                                                 <i class="fas fa-weight"></i>&nbsp;Weight
@@ -481,7 +514,7 @@
                                             </div>-->
                                         </div>
                                         <div class="bg2"
-                                             [ngClass]="{'col-md-10': !(containerType && areaID), 'col-md-6': (containerType && areaID)}">
+                                             [ngClass]="{'col-md-10': !(containerType && areaID), 'col-md-8': (containerType && areaID)}">
                                             <mat-radio-group [formControlName]="question.id" class="radio-group">
                                                 <mat-radio-button *ngFor="let answer of sort(question.answers)"
                                                                   class="radio-button"
@@ -490,7 +523,7 @@
                                                 </mat-radio-button>
                                             </mat-radio-group>
                                         </div>
-                                        <div class="col-md-3 bg3 text-center">
+                                        <div class="col-md-2 bg3 text-center">
                                             <mat-form-field>
                                             <textarea matInput [formControlName]="question.id + '.ciso.note'" [rows]="7"
                                                       placeholder="Notes"></textarea>
