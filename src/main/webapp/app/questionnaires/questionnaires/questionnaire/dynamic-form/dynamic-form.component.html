@@ -198,13 +198,18 @@
                                            [matTooltipPosition]="'above'"
                                            [ngClass]="{
                                             'fa-hard-hat': question.questionType===questionTypeEnum[questionTypeEnum.REGULAR],
-                                            'fa-crown': question.questionType===questionTypeEnum[questionTypeEnum.RELEVANT]}"></i>
+                                            'fa-crown': question.questionType===questionTypeEnum[questionTypeEnum.RELEVANT]}"
+                                           [ngStyle]="{
+                                                'color': question.questionType===questionTypeEnum[questionTypeEnum.REGULAR] ? '#000000' : question.questionType===questionTypeEnum[questionTypeEnum.RELEVANT] ? '#FFD700': '#000000'
+                                            }"
+                                        ></i>
                                         <h5 class="h3-dynamic-form d-inline"> {{question?.name}}</h5>
                                     </label>
                                     <div class="row">
                                         <div *ngIf="containerType && areaID && area" class="col-md-3 text-center"
                                              style="margin: auto 0;">
-                                            <rating [max]="5" [customTemplate]="bomb" [customTemplate]="bomb"></rating>
+                                            <rating [max]="5" [titles]="['1','2','3','4','5']" [customTemplate]="bomb"
+                                                    [customTemplate]="bomb"></rating>
                                             <h6>Vulnerability</h6>
                                             <mat-progress-spinner [diameter]="100" style="margin: 0 auto;"
                                                                   [ngClass]="{
@@ -290,13 +295,17 @@
                                            [matTooltipPosition]="'above'"
                                            [ngClass]="{
                                             'fa-hard-hat': question.questionType===questionTypeEnum[questionTypeEnum.REGULAR],
-                                            'fa-crown': question.questionType===questionTypeEnum[questionTypeEnum.RELEVANT]}"></i>
+                                            'fa-crown': question.questionType===questionTypeEnum[questionTypeEnum.RELEVANT]}"
+                                           [ngStyle]="{
+                                                'color': question.questionType===questionTypeEnum[questionTypeEnum.REGULAR] ? '#000000' : question.questionType===questionTypeEnum[questionTypeEnum.RELEVANT] ? '#FFD700': '#000000'
+                                            }"></i>
                                         <h5 class="h3-dynamic-form d-inline"> {{question?.name}}</h5>
                                     </label>
                                     <div class="row">
                                         <div *ngIf="containerType && areaID && area" class="col-md-3 text-center"
                                              style="margin: auto 0;">
-                                            <rating [max]="5" [customTemplate]="bomb" [customTemplate]="bomb"></rating>
+                                            <rating [max]="5" [titles]="['1','2','3','4','5']" [customTemplate]="bomb"
+                                                    [customTemplate]="bomb"></rating>
                                             <h6>Vulnerability</h6>
                                             <mat-progress-spinner [diameter]="100" style="margin: 0 auto;"
                                                                   [ngClass]="{
@@ -364,13 +373,17 @@
                                            [matTooltipPosition]="'above'"
                                            [ngClass]="{
                                             'fa-hard-hat': question.questionType===questionTypeEnum[questionTypeEnum.REGULAR],
-                                            'fa-crown': question.questionType===questionTypeEnum[questionTypeEnum.RELEVANT]}"></i>
+                                            'fa-crown': question.questionType===questionTypeEnum[questionTypeEnum.RELEVANT]}"
+                                           [ngStyle]="{
+                                                'color': question.questionType===questionTypeEnum[questionTypeEnum.REGULAR] ? '#000000' : question.questionType===questionTypeEnum[questionTypeEnum.RELEVANT] ? '#FFD700': '#000000'
+                                            }"></i>
                                         <h5 class="h3-dynamic-form d-inline"> {{question?.name}}</h5>
                                     </label>
                                     <div class="row">
                                         <div *ngIf="containerType && areaID && area" class="col-md-3 text-center"
                                              style="margin: auto 0;">
-                                            <rating [max]="5" [customTemplate]="bomb" [customTemplate]="bomb"></rating>
+                                            <rating [max]="5" [titles]="['1','2','3','4','5']" [customTemplate]="bomb"
+                                                    [customTemplate]="bomb"></rating>
                                             <h6>Vulnerability</h6>
                                             <mat-progress-spinner [diameter]="100" style="margin: 0 auto;"
                                                                   [ngClass]="{
